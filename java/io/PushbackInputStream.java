@@ -1,26 +1,28 @@
 /*************************************************************************
 /* PushbackInputStream.java -- An input stream that can unread bytes
 /*
-/* Copyright (c) 1998 by Aaron M. Renn (arenn@urbanophile.com)
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
-/* This program is free software; you can redistribute it and/or modify
+/* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
 /*
-/* This program is distributed in the hope that it will be useful, but
+/* This library is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
+/* GNU Library General Public License for more details.
 /*
 /* You should have received a copy of the GNU Library General Public License
-/* along with this program; if not, write to the Free Software Foundation
+/* along with this library; if not, write to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
 package java.io;
 
 /**
-  * This subclass of @code{FilterInputStream} provides the ability to 
+  * This subclass of <code>FilterInputStream</code> provides the ability to 
   * unread data from a stream.  It maintains an internal buffer of unread
   * data that is supplied to the next read operation.  This is conceptually
   * similar to mark/reset functionality, except that in this case the 
@@ -56,15 +58,16 @@ private static final int DEFAULT_BUFFER_SIZE = 1;
 /**
   * This is the buffer that is used to store the pushed back data
   */
-protected byte[] buf;
+private byte[] buf;
 
 /**
   * This is the position in the buffer from which the next byte will be
   * read.  Bytes are stored in reverse order in the buffer, starting from
-  * @code{buf[buf.length - 1]} to @code{buf[0]}.  Thus when @code{pos} is
-  * 0 the buffer is full and @code{buf.length} when it is empty
+  * <code>buf[buf.length - 1]</code> to <code>buf[0]</code>.  Thus when 
+  * <code>pos</code> is 0 the buffer is full and <code>buf.length</code> when 
+  * it is empty
   */
-protected int pos;
+private int pos;
 
 /*************************************************************************/
 
@@ -73,8 +76,8 @@ protected int pos;
  */
 
 /**
-  * This method initializes a @code{PushbackInputStream} to read from the
-  * specified subordinate @code{InputStream} with a default pushback buffer 
+  * This method initializes a <code>PushbackInputStream</code> to read from the
+  * specified subordinate <code>InputStream</code> with a default pushback buffer 
   * size of 1.
   *
   * @code in The subordinate stream to read from
@@ -88,11 +91,11 @@ PushbackInputStream(InputStream in)
 /*************************************************************************/
 
 /**
-  * This method initializes a @code{PushbackInputStream} to read from the
-  * specified subordinate @code{InputStream} with the specified buffer
+  * This method initializes a <code>PushbackInputStream</code> to read from the
+  * specified subordinate <code>InputStream</code> with the specified buffer
   * size
   *
-  * @param in The subordinate @code{InputStream} to read from
+  * @param in The subordinate <code>InputStream</code> to read from
   * @param bufsize The pushback buffer size to use
   */
 public
@@ -111,10 +114,10 @@ PushbackInputStream(InputStream in, int bufsize)
  */
 
 /**
-  * This method returns @code{false} to indicate that it does not support
+  * This method returns <code>false</code> to indicate that it does not support
   * mark/reset functionality.
   *
-  * @return @code{true} if mark/reset functionality is supported, @code{false} otherwise
+  * @return This method returns <code>false</code> to indicate that this class does not support mark/reset functionality
   *
   */
 public boolean
@@ -166,8 +169,8 @@ available() throws IOException
   * requested amount.
   *
   * This method first discards bytes from the buffer, then calls the
-  * @code{skip} method on the underlying @code{InputStream} to skip additional
-  * bytes if necessary.
+  * <code>skip</code> method on the underlying <code>InputStream</code> to 
+  * skip additional bytes if necessary.
   *
   * @param num_bytes The requested number of bytes to skip
   *
@@ -175,9 +178,12 @@ available() throws IOException
   *
   * @exception IOException If an error occurs
   */
-public long
+public synchronized long
 skip(long num_bytes) throws IOException
 {
+  if (num_bytes <= 0)
+    return(0);
+
   if ((buf.length - pos) >= num_bytes)
     {
       pos += num_bytes;
@@ -207,22 +213,22 @@ skip(long num_bytes) throws IOException
   *
   * @exception IOException If an error occurs
   */
-public int
+public synchronized int
 read() throws IOException
 {
   if (pos == buf.length)
     return(in.read());
  
   ++pos;
-  return(buf[pos - 1]);
+  return((buf[pos - 1] & 0xFF));
 }
 
 /*************************************************************************/
 
 /**
   * This method read bytes from a stream and stores them into a caller
-  * supplied buffer.  It starts storing the data at index @code{offset} into
-  * the buffer and attempts to read @code{len} bytes.  This method can
+  * supplied buffer.  It starts storing the data at index <code>offset</code> into
+  * the buffer and attempts to read <code>len</code> bytes.  This method can
   * return before reading the number of bytes requested.  The actual number
   * of bytes read is returned as an int.  A -1 is returned to indicate the
   * end of the stream.
@@ -242,7 +248,7 @@ read() throws IOException
   *
   * @exception IOException If an error occurs.
   */
-public int
+public synchronized int
 read(byte[] buf, int offset, int len) throws IOException
 {
   if (len == 0)
@@ -307,14 +313,14 @@ read(byte[] buf, int offset, int len) throws IOException
   *
   * If the pushback buffer is full, this method throws an exception.
   *
-  * The argument to this method is an @code{int}.  Only the low eight bits
+  * The argument to this method is an <code>int</code>.  Only the low eight bits
   * of this value are pushed back.
   *
   * @param b The byte to be pushed back, passed as an int
   *
   * @exception IOException If the pushback buffer is full.
   */
-public void
+public synchronized void
 unread(int b) throws IOException
 {
   if (pos == 0)
@@ -330,7 +336,7 @@ unread(int b) throws IOException
   * This method pushes all of the bytes in the passed byte array into 
   * the pushback buffer.  These bytes are pushed in reverse order so that
   * the next byte read from the stream after this operation will be
-  * @code{buf[0]} followed by @code{buf[1]}, etc.
+  * <code>buf[0]</code> followed by <code>buf[1]</code>, etc.
   *
   * If the pushback buffer cannot hold all of the requested bytes, an
   * exception is thrown.
@@ -339,7 +345,7 @@ unread(int b) throws IOException
   *
   * @exception IOException If the pushback buffer is full
   */
-public void
+public synchronized void
 unread(byte[] buf) throws IOException
 {
   unread(buf, 0, buf.length);
@@ -349,10 +355,10 @@ unread(byte[] buf) throws IOException
 
 /**
   * This method pushed back bytes from the passed in array into the pushback
-  * buffer.  The bytes from @code{buf[offset]} to @code{buf[offset + len]}
+  * buffer.  The bytes from <code>buf[offset]</code> to <cdoe>buf[offset + len]</code>
   * are pushed in reverse order so that the next byte read from the stream
-  * after this operation will be @code{buf[offset]} followed by
-  * @code{buf[offset + 1]}, etc.
+  * after this operation will be <code>buf[offset]</code> followed by
+  * <code>buf[offset + 1]</code>, etc.
   *
   * If the pushback buffer cannot hold all of the requested bytes, an
   * exception is thrown.
@@ -363,7 +369,7 @@ unread(byte[] buf) throws IOException
   *
   * @exception IOException If the pushback buffer is full
   */
-public void
+public synchronized void
 unread(byte[] buf, int offset, int len) throws IOException
 {
   if (pos < (len - 1))

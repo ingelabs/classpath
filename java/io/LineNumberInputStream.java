@@ -1,26 +1,28 @@
 /*************************************************************************
 /* LineNumberInputStream.java -- An input stream which counts line numbers
 /*
-/* Copyright (c) 1998 by Aaron M. Renn (arenn@urbanophile.com)
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
-/* This program is free software; you can redistribute it and/or modify
+/* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
 /*
-/* This program is distributed in the hope that it will be useful, but
+/* This library is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
+/* GNU Library General Public License for more details.
 /*
 /* You should have received a copy of the GNU Library General Public License
-/* along with this program; if not, write to the Free Software Foundation
+/* along with this library; if not, write to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
 package java.io;
 
 /**
-  * This class functions like a standard @code{InputStream} except that it
+  * This class functions like a standard <code>InputStream</code> except that it
   * counts line numbers, and canonicalizes newline characters.  As data
   * is read, whenever the byte sequences "\r", "\n", or "\r\n" are encountered,
   * the running line count is incremeted by one.  Additionally, the whatever
@@ -35,12 +37,12 @@ package java.io;
   *
   * Note that since this class operates as a filter on an underlying stream,
   * it has the same mark/reset functionality as the underlying stream.  The
-  * @code{mark()} and @code{reset()} methods in this class handle line numbers
+  * <code>mark()</code> and <code>reset()</code> methods in this class handle line numbers
   * correctly.  Calling @code{reset()} resets the line number to the point
-  * at which @code{mark()} was called if the subordinate stream supports
+  * at which <code>mark()</code> was called if the subordinate stream supports
   * that functionality.
   *
-  * This method is deprecated in favor if @code{LineNumberReader} because
+  * This class is deprecated in favor if <code>LineNumberReader</code> because
   * it operates on ASCII bytes instead of an encoded character stream.  This
   * class is for backward compatibility only and should not be used in
   * new applications.
@@ -57,7 +59,7 @@ public class LineNumberInputStream extends FilterInputStream
 /*************************************************************************/
 
 /*
- * Instance Methods
+ * Instance Variables
  */
 
 /**
@@ -67,7 +69,7 @@ private int line_number;
 
 /**
   * This variable is used to keep track of the line number that was
-  * current when the @code{mark()} method was called
+  * current when the <code>mark()</code> method was called.
   */
 private int marked_line_number;
 
@@ -78,10 +80,10 @@ private int marked_line_number;
  */
 
 /**
-  * Create a new @code{LineNumberInputStream} that reads from the 
-  * specified subordinate @code{InputStream}
+  * Create a new <code>LineNumberInputStream</code> that reads from the 
+  * specified subordinate <code>InputStream</code>
   *
-  * @param in The subordinate @code{InputStream} to read from
+  * @param in The subordinate <code>InputStream</code> to read from
   */
 public
 LineNumberInputStream(InputStream in)
@@ -127,10 +129,10 @@ setLineNumber(int line_number)
 /**
   * This method returns the number of bytes that can be read from the 
   * stream before the stream can block.  This method is tricky because
-  * the subordinate @code{InputStream} might return only "\r\n" characters,
-  * which are replaced by a single "\n" character by the @code{read()} method
+  * the subordinate <code>InputStream</code> might return only "\r\n" characters,
+  * which are replaced by a single "\n" character by the <code>read()</code> method
   * of this class.  So this method can only guarantee that
-  * @code{in.available() / 2} bytes can actually be read before blocking.
+  * <code>in.available() / 2</code> bytes can actually be read before blocking.
   * In practice, considerably more bytes might be read before blocking
   *
   * Note that the stream may not block if additional bytes beyond the count
@@ -150,17 +152,17 @@ available() throws IOException
 
 /**
   * This method marks a position in the input to which the stream can be
-  * "reset" byte calling the @code{reset()} method.  The parameter
-  * @code{readlimit} is the number of bytes that can be read from the
+  * "reset" byte calling the <code>reset()</code> method.  The parameter
+  * <code>readlimit</code> is the number of bytes that can be read from the
   * stream after setting the mark before the mark becomes invalid.   For
-  * example, if @code{mark()} is called with a read limit of 10, then when
-  * 11 bytes of data are read from the stream before the @code{reset()}
+  * example, if <code>mark()</code> is called with a read limit of 10, then when
+  * 11 bytes of data are read from the stream before the <code>reset()</code>
   * method is called, then the mark is invalid and the stream object
   * instance is not required to remember the mark.
   *
   * In this class, this method will remember the current line number as well
-  * as the current position in the stream.  When the @code{reset()} method is
-  * called, the line number will be restored to the saved line number in
+  * as the current position in the stream.  When the <code>reset()</code> method 
+  * is called, the line number will be restored to the saved line number in
   * addition to the stream position.
   *
   * This method only works if the subordinate stream supports mark/reset
@@ -168,7 +170,7 @@ available() throws IOException
   *
   * @param readlimit The number of bytes that can be read before the mark becomes invalid
   */
-public void
+public synchronized void
 mark(int readlimit)
 {
   in.mark(readlimit);
@@ -179,19 +181,19 @@ mark(int readlimit)
 /*************************************************************************/
 
 /**
-  * This method resets a stream to the point where the @code{mark()} method
+  * This method resets a stream to the point where the <code>mark()</code> method
   * was called.  Any bytes that were read after the mark point was set will
   * be re-read during subsequent reads.
   *
   * In this class, this method will also restore the line number that was
-  * current when the @code{mark()} method was called.
+  * current when the <code>mark()</code> method was called.
   * 
   * This method only works if the subordinate stream supports mark/reset
   * functionality.
   *
   * @exception IOException If an error occurs
   */
-public void
+public synchronized void
 reset() throws IOException
 {
   in.reset();
@@ -219,7 +221,7 @@ reset() throws IOException
   * 
   * @exception IOException If an error occurs
   */
-public int
+public synchronized int
 read() throws IOException
 {
   int byte_read = in.read();
@@ -245,8 +247,8 @@ read() throws IOException
 
 /**
   * This method reads bytes from a stream and stores them into a caller
-  * supplied buffer.  It starts storing data at index @code{offset} into
-  * the buffer and attemps to read @code{len} bytes.  This method can
+  * supplied buffer.  It starts storing data at index <code>offset</code> into
+  * the buffer and attemps to read <code>len</code> bytes.  This method can
   * return before reading the number of bytes requested.  The actual number
   * of bytes read is returned as an int.  A -1 is returned to indicated the
   * end of the stream.
@@ -266,7 +268,7 @@ read() throws IOException
   *
   * @exception IOException If an error occurs.
   */
-public int
+public synchronized int
 read(byte[] buf, int offset, int len) throws IOException
 {
   if (len == 0)

@@ -4,17 +4,18 @@
 /* Copyright (c) 1998 Free Software Foundation, Inc.
 /* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
-/* This program is free software; you can redistribute it and/or modify
+/* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
 /*
-/* This program is distributed in the hope that it will be useful, but
+/* This library is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
+/* GNU Library General Public License for more details.
 /*
 /* You should have received a copy of the GNU Library General Public License
-/* along with this program; if not, write to the Free Software Foundation
+/* along with this library; if not, write to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
@@ -281,7 +282,7 @@ toString(int high_byte)
   *
   * @param b The byte to be read passed as an int
   */
-public void
+public synchronized void
 write(int b)
 {
   if (count == buf.length)
@@ -302,7 +303,7 @@ write(int b)
   * @param offset The index into the buffer to start writing data from
   * @param len The number of bytes to write
   */
-public void
+public synchronized void
 write(byte[] buf, int offset, int len)
 {
   int i = 0;

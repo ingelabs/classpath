@@ -1,34 +1,34 @@
 /*************************************************************************
 /* WriteAbortedException.java -- An exception occured while writing a serialization stream
 /*
-/* Copyright (c) 1998 by Aaron M. Renn (arenn@urbanophile.com)
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
-/* This program is free software; you can redistribute it and/or modify
+/* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
 /*
-/* This program is distributed in the hope that it will be useful, but
+/* This library is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
+/* GNU Library General Public License for more details.
 /*
 /* You should have received a copy of the GNU Library General Public License
-/* along with this program; if not, write to the Free Software Foundation
+/* along with this library; if not, write to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
 package java.io;
 
-/** 
-    This exception is thrown when an
-    <code>ObjectStreamException</code> is read in from a serialized
-    stream.  This is the result of the exception having been thrown
-    when the stream was written.
-  
-    @version 0.1
-  
-    @author Aaron M. Renn (arenn@urbanophile.com)
-*/
+/**
+  * This exception is thrown when one of the other ObjectStreamException 
+  * subclasses was thrown during a serialization write.
+  *
+  * @version 0.0
+  *
+  * @author Aaron M. Renn (arenn@urbanophile.com)
+  */
 public class WriteAbortedException extends ObjectStreamException
 {
 
@@ -52,11 +52,9 @@ public Exception detail;
   * the detailed Exception that caused this exception to be thrown.
   *
   * @param detail The exception that caused this exception to be thrown
-  * @param msg A message explainging why this exception was thrown
   */
-WriteAbortedException(String msg, Exception detail)
+WriteAbortedException(Exception detail)
 {
-  super(msg);
   this.detail = detail;
 }
 

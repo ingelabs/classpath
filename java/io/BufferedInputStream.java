@@ -1,26 +1,28 @@
 /*************************************************************************
 /* BufferedInputStream.java -- An input stream that implements buffering
 /*
-/* Copyright (c) 1998 by Aaron M. Renn (arenn@urbanophile.com)
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
-/* This program is free software; you can redistribute it and/or modify
+/* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
 /*
-/* This program is distributed in the hope that it will be useful, but
+/* This library is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
+/* GNU Library General Public License for more details.
 /*
 /* You should have received a copy of the GNU Library General Public License
-/* along with this program; if not, write to the Free Software Foundation
+/* along with this library; if not, write to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
 package java.io;
 
 /**
-  * This subclass of @code{FilterInputStream} buffers input from an 
+  * This subclass of <code>FilterInputStream</code> buffers input from an 
   * underlying implementation to provide a possibly more efficient read
   * mechanism.  It maintains the buffer and buffer state in instance 
   * variables that are available to subclasses.  The default buffer size
@@ -28,10 +30,10 @@ package java.io;
   *
   * This class also implements mark/reset functionality.  It is capable
   * of remembering any number of input bytes, to the limits of
-  * system memory or the size of Integer.MAX_VALUE
+  * system memory or the size of <code>Integer.MAX_VALUE</code>
   *
   * Please note that this class does not properly handle character
-  * encodings.  Consider using the @code{BufferedReader} class which
+  * encodings.  Consider using the <code>BufferedReader</code> class which
   * does.
   *
   * @version 0.0
@@ -76,15 +78,15 @@ protected int count;
 protected int pos;
 
 /**
-  * The value of @code{pos} when the @code{mark()} method was called.  This
-  * is set to -1 if there is no mark set.
+  * The value of <code>pos</code> when the <code>mark()</code> method was called.  
+  * This is set to -1 if there is no mark set.
   */
 protected int markpos = -1;
 
 /**
   * This is the maximum number of bytes than can be read after a 
-  * call to @code{mark()} before the mark can be discarded.  After this may
-  * bytes are read, the @code{reset()} method may not be called successfully.
+  * call to <code>mark()</code> before the mark can be discarded.  After this may
+  * bytes are read, the <code>reset()</code> method may not be called successfully.
   */
 protected int marklimit;
 
@@ -107,8 +109,8 @@ private int markbufpos;
 private int markbufcount;
 
 /**
-  * This boolean variable is used to let the refillBuffer() method know
-  * if it should read from markbuf or the underlying stream.  true means
+  * This boolean variable is used to let the <code>refillBuffer()</code> method 
+  * know if it should read from markbuf or the underlying stream.  true means
   * read from markbuf.
   */
 private boolean doing_reset = false;
@@ -125,7 +127,7 @@ private boolean primed = false;
  */
 
 /**
-  * This method initializes a new @code{BufferedInputStream} that will
+  * This method initializes a new <code>BufferedInputStream</code> that will
   * read from the specified subordinate stream with a default buffer size
   * of 512 bytes
   *
@@ -140,7 +142,7 @@ BufferedInputStream(InputStream in)
 /*************************************************************************/
 
 /**
-  * This method initializes a new @code{BufferedInputStream} that will
+  * This method initializes a new <code>BufferedInputStream</code> that will
   * read from the specified subordinate stream with a buffer size that
   * is specified by the caller.
   *
@@ -157,13 +159,17 @@ BufferedInputStream(InputStream in, int bufsize)
 
 /*************************************************************************/
 
+/*
+ * Instance Methods
+ */
+
 /**
   * This method marks a position in the input to which the stream can be
-  * "reset" by calling the @code{reset()} method.  The parameter
-  * @code{readlimit} is the number of bytes that can be read from the 
+  * "reset" by calling the <code>reset()</code> method.  The parameter
+  * <code>readlimit</code> is the number of bytes that can be read from the 
   * stream after setting the mark before the mark becomes invalid.  For
-  * example, if @code{mark()} is called with a read limit of 10, then when
-  * 11 bytes of data are read from the stream before the @code{reset()} 
+  * example, if <code>mark()</code> is called with a read limit of 10, then when
+  * 11 bytes of data are read from the stream before the <code>reset()</code>
   * method is called, then the mark is invalid and the stream object
   * instance is not required to remember the mark.
   * 
@@ -174,7 +180,7 @@ BufferedInputStream(InputStream in, int bufsize)
   *
   * @param readlimit The number of bytes that can be read before the mark becomes invalid
   */
-public void
+public synchronized void
 mark(int readlimit)
 {
   // If we already have a special buffer that we are reading text from,
@@ -225,10 +231,10 @@ mark(int readlimit)
 /*************************************************************************/
 
 /**
-  * This method returns @code{true} to indicate that this class supports
+  * This method returns <code>true</code> to indicate that this class supports
   * mark/reset functionality.
   *
-  * @return @code{true} to indicate that mark/reset functionality is supported
+  * @return <code>true</code> to indicate that mark/reset functionality is supported
   *
   */
 public boolean
@@ -240,17 +246,17 @@ markSupported()
 /*************************************************************************/
 
 /**
-  * This method resets a stream to the point where the @code{mark()} method
+  * This method resets a stream to the point where the <code>mark()</code> method
   * was called.  Any bytes that were read after the mark point was set will
   * be re-read during subsequent reads.
   *
   * This method will throw an IOException if the number of bytes read from
-  * the stream since the call to @code{mark()} exceeds the mark limit
+  * the stream since the call to <code>mark()</code> exceeds the mark limit
   * passed when establishing the mark.
   *
   * @exception IOException If an error occurs;
   */
-public void
+public synchronized void
 reset() throws IOException
 {
   if (markpos == -1)
@@ -317,7 +323,7 @@ available() throws IOException
   * requested amount.
   *
   * This method first discards bytes in the buffer, then calls the
-  * @code{skip} method on the underlying stream to skip the remaining bytes.
+  * <code>skip</code> method on the underlying stream to skip the remaining bytes.
   *
   * @param num_bytes The requested number of bytes to skip
   *
@@ -325,9 +331,12 @@ available() throws IOException
   *
   * @exception IOException If an error occurs
   */
-public long
+public synchronized long
 skip(long num_bytes) throws IOException
 {
+  if (num_bytes <= 0)
+    return(0);
+
   if ((count - pos) >= num_bytes)
     {
       pos += num_bytes;
@@ -356,41 +365,33 @@ skip(long num_bytes) throws IOException
   *
   * @exception IOException If an error occurs
   */
-public int
+public synchronized int
 read() throws IOException
 {
   if ((pos == count) || !primed)
     {
       refillBuffer(1);
+      
       if (pos == count)
         return(-1);
     }
 
   ++pos;
 
-  return(buf[pos - 1]);
+  return((buf[pos - 1] & 0xFF));
 }
 
 /*************************************************************************/
 
 /**
   * This method read bytes from a stream and stores them into a caller
-  * supplied buffer.  It starts storing the data at index @code{offset} into
-  * the buffer and attempts to read @code{len} bytes.  This method can
+  * supplied buffer.  It starts storing the data at index <code>offset</code> into
+  * the buffer and attempts to read <code>len</code> bytes.  This method can
   * return before reading the number of bytes requested.  The actual number
   * of bytes read is returned as an int.  A -1 is returned to indicate the
   * end of the stream.
   * 
   * This method will block until some data can be read.
-  *
-  * This method operates by calling the single byte @code{read()} method
-  * in a loop until the desired number of bytes are read.  The read loop
-  * stops short if the end of the stream is encountered or if an IOException
-  * is encountered on any read operation except the first.  If the first
-  * attempt to read a bytes fails, the IOException is allowed to propagate
-  * upward.  And subsequent IOException is caught and treated identically
-  * to an end of stream condition.  Subclasses can (and should if possible)
-  * override this method to provide a more efficient implementation.
   *
   * @param buf The array into which the bytes read should be stored
   * @param offset The offset into the array to start storing bytes
@@ -400,7 +401,7 @@ read() throws IOException
   *
   * @exception IOException If an error occurs.
   */
-public int
+public synchronized int
 read(byte[] buf, int offset, int len) throws IOException
 {
   if (len == 0)
@@ -409,7 +410,7 @@ read(byte[] buf, int offset, int len) throws IOException
   // Read the first byte here in order to allow IOException's to 
   // propagate up
   int byte_read = read();
-  if (byte_read == -1)
+  if (byte_read == -1) 
     return(-1);
   buf[offset] = (byte)byte_read;
 
@@ -420,33 +421,41 @@ read(byte[] buf, int offset, int len) throws IOException
   // Read the rest of the bytes
   try
     {
-      for(;;)
+      for(;total_read != len;)
         {
+          if (pos == count)
+            refillBuffer(len - total_read);
+
+          if (pos == count)
+            if (total_read == 0)
+              return(-1);
+            else
+              return(total_read);
+
           if ((len - total_read) <= (count - pos))
             {
-              System.arraycopy(this.buf, pos, buf, total_read, 
+              System.arraycopy(this.buf, pos, buf, offset + total_read, 
                                len - total_read);
 
               pos += (len - total_read);
-
-              return(len);
+              total_read += (len - total_read);
             }
           else
             {
-              System.arraycopy(this.buf, pos, buf, total_read, count - pos);
+              System.arraycopy(this.buf, pos, buf, offset + total_read, 
+                               count - pos);
 
-              total_read += count - pos;
+              total_read += (count - pos);
+              pos += (count - pos);
             }
-
-          refillBuffer(len - total_read);
-          if (pos == count)
-            return(total_read);
         }
     }
   catch (IOException e)
     {
       return(total_read);
     }
+
+  return(total_read);
 }
 
 /*************************************************************************/

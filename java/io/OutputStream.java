@@ -1,19 +1,21 @@
 /*************************************************************************
 /* OutputStream.java -- Base class for byte output streams
 /*
-/* Copyright (c) 1998 by Aaron M. Renn (arenn@urbanophile.com)
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
-/* This program is free software; you can redistribute it and/or modify
+/* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
 /*
-/* This program is distributed in the hope that it will be useful, but
+/* This library is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
+/* GNU Library General Public License for more details.
 /*
 /* You should have received a copy of the GNU Library General Public License
-/* along with this program; if not, write to the Free Software Foundation
+/* along with this library; if not, write to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
@@ -93,7 +95,7 @@ close() throws IOException
 
 /**
   * This method writes a single byte to the output stream.  The byte written
-  * is the low eight bits of the @code{int} passed and a argument.
+  * is the low eight bits of the <code>int</code> passed and a argument.
   *
   * Subclasses must provide an implementation of this abstract method
   *
@@ -128,7 +130,7 @@ write(byte[] buf) throws IOException
   * <code>buf</code> starting at index <code>offset</code> into the array.
   *
   * This method in this class calls the single byte <code>write()</code>
-  * method in a loop until att bytes have been written.  Subclasses should
+  * method in a loop until all bytes have been written.  Subclasses should
   * override this method if possible in order to provide a more efficent
   * implementation.
   *
@@ -138,7 +140,7 @@ write(byte[] buf) throws IOException
   * 
   * @exception If an error occurs
   */
-public void
+public synchronized void
 write(byte[] buf, int offset, int len) throws IOException
 {
   for (int i = offset; i < (len + offset); i++)

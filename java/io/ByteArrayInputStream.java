@@ -1,19 +1,21 @@
 /*************************************************************************
 /* ByteArrayInputStream.java -- Read an array as a stream
 /*
-/* Copyright (c) 1998 by Aaron M. Renn (arenn@urbanophile.com)
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
-/* This program is free software; you can redistribute it and/or modify
+/* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
 /*
-/* This program is distributed in the hope that it will be useful, but
+/* This library is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
+/* GNU Library General Public License for more details.
 /*
 /* You should have received a copy of the GNU Library General Public License
-/* along with this program; if not, write to the Free Software Foundation
+/* along with this library; if not, write to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
@@ -41,7 +43,7 @@ public class ByteArrayInputStream extends InputStream
 protected byte[] buf;
 
 /**
-  * The array index of the next byte to be read from the buffer @code{buf}
+  * The array index of the next byte to be read from the buffer <code>buf</code>
   */
 protected int pos;
 
@@ -56,7 +58,7 @@ protected int mark;
 /**
   * This indicates the maximum number of bytes that can be read from this
   * stream.  It is the array index of the position after the last valid
-  * byte in the buffer @code{buf}
+  * byte in the buffer <code>buf</code>
   */
 protected int count;
   
@@ -66,7 +68,7 @@ protected int count;
   * Create a new ByteArrayInputStream that will read bytes from the passed
   * in byte array.  This stream will read from the beginning to the end
   * of the array.  It is identical to calling an overloaded constructor
-  * as @code{ByteArrayInputStream(buf, 0, buf.length)}.
+  * as <code>ByteArrayInputStream(buf, 0, buf.length)</code>.
   *
   * Note that this array is not copied.  If its contents are changed 
   * while this stream is being read, those changes will be reflected in the
@@ -85,10 +87,10 @@ ByteArrayInputStream(byte[] buf)
 
 /**
   * Create a new ByteArrayInputStream that will read bytes from the passed
-  * in byte array.  This stream will read from position @code{offset} in
-  * the array for a length of @code{length} bytes past @code{offset}.  If the
-  * stream is reset to a position before @code{offset} then more than
-  * @code{length} bytes can be read from the stream.  The @code{length} value
+  * in byte array.  This stream will read from position <code>offset</code> in
+  * the array for a length of <code>length</code> bytes past <code>offset</code>.  If the
+  * stream is reset to a position before <code>offset</code> then more than
+  * <code>length</code> bytes can be read from the stream.  The <code>length</code> value
   * should be viewed as the array index one greater than the last position
   * in the buffer to read.
   *
@@ -117,7 +119,7 @@ ByteArrayInputStream(byte[] buf, int offset, int length)
 
 /**
   * This method returns the number of bytes available to be read from this
-  * stream.  The value returned will be equal to @code{count - pos}.
+  * stream.  The value returned will be equal to <code>count - pos</code>.
   *
   * @return The number of bytes that can be read from this stream before blocking, which is all of them
   */
@@ -130,11 +132,11 @@ available()
 /*************************************************************************/
 
 /**
-  * This method overrides the @code{markSupported} method in @code{InputStream}
-  * in order to return @code{true} - indicating that this stream class
+  * This method overrides the <code>markSupported</code> method in <code>InputStream</code>
+  * in order to return <code>true</code> - indicating that this stream class
   * supports mark/reset functionality.
   *
-  * @return @code{true} to indicate that this class supports mark/reset.
+  * @return <code>true</code> to indicate that this class supports mark/reset.
   */
 public boolean
 markSupported()
@@ -146,7 +148,7 @@ markSupported()
 
 /**
   * This method sets the mark position in this stream to the current
-  * position.  Note that the @code{readlimit} parameter in this method does
+  * position.  Note that the <code>readlimit</code> parameter in this method does
   * nothing as this stream is always capable of remembering all the bytes
   * int it.
   *
@@ -166,7 +168,7 @@ mark(int readlimit)
 
 /**
   * This method sets the read position in the stream to the mark point by
-  * setting the @code{pos} variable equal to the @code{mark} variable.
+  * setting the <code>pos</code> variable equal to the <code>mark</code> variable.
   * Since a mark can be set anywhere in the array, the mark/reset methods
   * int this class can be used to provide random search capabilities for
   * this type of stream.
@@ -181,7 +183,7 @@ reset()
 
 /**
   * This method attempts to skip the requested number of bytes in the
-  * input stream.  It does this by advancing the @code{pos} value by the
+  * input stream.  It does this by advancing the <code>pos</code> value by the
   * specified number of bytes.  It this would exceed the length of the
   * buffer, then only enough bytes are skipped to position the stream at
   * the end of the buffer.  The actual number of bytes skipped is returned.
@@ -190,7 +192,7 @@ reset()
   *
   * @return The actual number of bytes skipped.
   */
-public long
+public synchronized long
 skip(long num_bytes)
 {
   if (num_bytes > (count - pos))
@@ -207,7 +209,7 @@ skip(long num_bytes)
 /*************************************************************************/
 
 /**
-  * This method reads one byte from the stream.  The @code{pos} counter is
+  * This method reads one byte from the stream.  The <code>pos</code> counter is
   * advanced to the next byte to be read.  The byte read is returned as
   * an int in the range of 0-255.  If the stream position is already at the
   * end of the buffer, no byte is read and a -1 is returned in order to
@@ -215,7 +217,7 @@ skip(long num_bytes)
   *
   * @return The byte read, or -1 if end of stream
   */
-public int
+public synchronized int
 read()
 {
   if (pos >= count)
@@ -223,15 +225,15 @@ read()
 
   ++pos;
 
-  return(buf[pos - 1]);
+  return((buf[pos - 1] & 0xFF));
 }  
 
 /*************************************************************************/
 
 /**
   * This method reads bytes from the stream and stores them into a caller
-  * supplied buffer.  It starts storing the data at index @code{offset} into
-  * the buffer and attempts to read @code{len} bytes.  This method can
+  * supplied buffer.  It starts storing the data at index <code>offset</code> into
+  * the buffer and attempts to read <code>len</code> bytes.  This method can
   * return before reading the number of bytes requested if the end of the
   * stream is encountered first.  The actual number of bytes read is 
   * returned.  If no bytes can be read because the stream is already at 
@@ -245,7 +247,7 @@ read()
   *
   * @return The actual number of bytes read, or -1 if end of stream.
   */
-public int
+public synchronized int
 read(byte[] buf, int offset, int len)
 {
   if (len == 0)

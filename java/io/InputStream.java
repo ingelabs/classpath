@@ -1,19 +1,21 @@
 /*************************************************************************
 /* InputStream.java -- Base class for input
 /*
-/* Copyright (c) 1998 by Aaron M. Renn (arenn@urbanophile.com)
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
-/* This program is free software; you can redistribute it and/or modify
+/* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
 /*
-/* This program is distributed in the hope that it will be useful, but
+/* This library is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
+/* GNU Library General Public License for more details.
 /*
 /* You should have received a copy of the GNU Library General Public License
-/* along with this program; if not, write to the Free Software Foundation
+/* along with this library; if not, write to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
@@ -56,11 +58,11 @@ InputStream()
 
 /**
   * This method marks a position in the input to which the stream can be
-  * "reset" by calling the @code{reset()} method.  The parameter
+  * "reset" by calling the <code>reset()</code> method.  The parameter
   * @code{readlimit} is the number of bytes that can be read from the 
   * stream after setting the mark before the mark becomes invalid.  For
-  * example, if @code{mark()} is called with a read limit of 10, then when
-  * 11 bytes of data are read from the stream before the @code{reset()} 
+  * example, if <code>mark()</code> is called with a read limit of 10, then when
+  * 11 bytes of data are read from the stream before the <code>reset()</code> 
   * method is called, then the mark is invalid and the stream object
   * instance is not required to remember the mark.
   * 
@@ -83,11 +85,11 @@ mark(int readlimit)
   * remember a specific point in the stream and reset the stream to that
   * point.
   *
-  * This method always returns @code{false} in this class, but subclasses
-  * can override this method to return @code{true} if they support 
+  * This method always returns <code>false</code> in this class, but subclasses
+  * can override this method to return </code>true</code> if they support 
   * mark/reset functionality.
   *
-  * @return @code{true} if mark/reset functionality is supported, @code{false} otherwise
+  * @return <code>true</code> if mark/reset functionality is supported, <code>false</code> otherwise
   *
   */
 public boolean
@@ -99,7 +101,7 @@ markSupported()
 /*************************************************************************/
 
 /**
-  * This method resets a stream to the point where the @code{mark()} method
+  * This method resets a stream to the point where the <code>mark()</code> method
   * was called.  Any bytes that were read after the mark point was set will
   * be re-read during subsequent reads.
   *
@@ -214,7 +216,7 @@ read() throws IOException;
   * This method will block until some data can be read.
   *
   * This method operates by calling an overloaded read method like so:
-  * @code{read(buf, 0, buf.length)}
+  * <code>read(buf, 0, buf.length)</code>
   *
   * @param buf The buffer into which the bytes read will be stored.
   *
@@ -232,15 +234,15 @@ read(byte[] buf) throws IOException
 
 /**
   * This method read bytes from a stream and stores them into a caller
-  * supplied buffer.  It starts storing the data at index @code{offset} into
-  * the buffer and attempts to read @code{len} bytes.  This method can
+  * supplied buffer.  It starts storing the data at index <code>offset</code> into
+  * the buffer and attempts to read <code>len</code> bytes.  This method can
   * return before reading the number of bytes requested.  The actual number
   * of bytes read is returned as an int.  A -1 is returned to indicate the
   * end of the stream.
   * 
   * This method will block until some data can be read.
   *
-  * This method operates by calling the single byte @code{read()} method
+  * This method operates by calling the single byte <code>read()</code> method
   * in a loop until the desired number of bytes are read.  The read loop
   * stops short if the end of the stream is encountered or if an IOException
   * is encountered on any read operation except the first.  If the first
@@ -298,7 +300,7 @@ read(byte[] buf, int offset, int len) throws IOException
 
 /**
   * This method closes the stream.  Any futher attempts to read from the
-  * stream may generate an @code{IOException}
+  * stream may generate an <code>IOException</code>
   *
   * This method does nothing in this class, but subclasses may override
   * this method in order to provide additional functionality.
