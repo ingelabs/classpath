@@ -159,10 +159,7 @@ public class GtkComponentPeer extends GtkGenericPeer
     {
     }
 
-  public void repaint (long tm, int x, int y, int width, int height) 
-    {
-      System.out.println("componentpeer: repaint");
-    }
+  native public void repaint (long tm, int x, int y, int width, int height);
 
   public void requestFocus () 
     {
