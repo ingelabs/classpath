@@ -1960,6 +1960,29 @@ prepareImage(Image image, int width, int height, ImageObserver observer)
 /*************************************************************************/
 
 /**
+  * Called when an image has changed so that this component is
+  * repainted.
+  *
+  * @param image The image that has been updated.
+  * @param flags Flags as specified in <code>ImageObserver</code>.
+  * @param x The X coordinate 
+  * @param y The Y coordinate
+  * @param width The width
+  * @param height The height
+  *
+  * @return <code>true</code> if the image has been fully loaded,
+  * <code>false</code> otherwise.
+  */
+public boolean
+imageUpdate(Image image, int flags, int x, int y, int width, int height)
+{
+  // FIXME: Implement
+  return(false);
+}
+
+/*************************************************************************/
+
+/**
   * Paints this component on the screen.  The clipping region in the
   * graphics context will indicate the region that requires painting.
   *
