@@ -87,7 +87,7 @@ runReadTest(String filename, int seq, String testname)
           System.out.println("Failed to read int. Expected 8675309 and got " + i);
         }
       long l = dis.readLong();
-      if (l != 696969696969)
+      if (l != 696969696969L)
         {
           passed = false;
           System.out.println("Failed to read long. Expected 696969696969 and got " + l);
@@ -149,7 +149,7 @@ main(String[] argv)
       dos.writeChar((char)'\uE2D2');
       dos.writeShort((short)32000);
       dos.writeInt((int)8675309);
-      dos.writeLong((long)696969696969);
+      dos.writeLong(696969696969L);
       dos.writeFloat((float)3.1415);
       dos.writeDouble((double)999999999.999);
       dos.writeUTF("Testing code is such a boring activity but it must be done");
