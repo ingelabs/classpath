@@ -766,9 +766,9 @@ public class Hashtable extends Dictionary
   /**
    * Returns true if this Hashtable equals the supplied Object <code>o</code>.
    * As specified by Map, this is:
-   * <pre>
+   * <code>
    * (o instanceof Map) && entrySet().equals(((Map) o).entrySet());
-   * </pre>
+   * </code>
    *
    * @param o the object to compare to
    * @return true if o is an equal map
@@ -875,7 +875,7 @@ public class Hashtable extends Dictionary
   /**
    * Increases the size of the Hashtable and rehashes all keys to new array
    * indices; this is called when the addition of a new value would cause
-   * size() > threshold. Note that the existing Entry objects are reused in
+   * size() &gt; threshold. Note that the existing Entry objects are reused in
    * the new hash table.
    * <p>
    *
