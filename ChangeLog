@@ -1,5 +1,12 @@
 2003-08-16  Mark Wielaard  <mark@klomp.org>
 
+	* java/util/Properties.java: Use the word umlaut, not &auml; in api
+	documentation.
+	* java/util/PropertyResourceBundle.java: Likewise and add closing code
+	tag.
+
+2003-08-16  Mark Wielaard  <mark@klomp.org>
+
 	* NEWS: Fix java.swing.border -> javax.swing.border and nativee ->
 	native.
 
