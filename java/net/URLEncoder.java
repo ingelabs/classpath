@@ -50,9 +50,9 @@ public class URLEncoder
 /**
   * A lookup table array of hexadecimal character equivalents
   */
-protected static final char[] hexchars = { '0', '1', '2', '3', '4', '5', '6', 
-                                           '7', '8', '9', 'A', 'B', 'C', 'D', 
-                                           'E', 'F' };
+private static final char[] hexchars = { '0', '1', '2', '3', '4', '5', '6', 
+                                         '7', '8', '9', 'A', 'B', 'C', 'D', 
+                                         'E', 'F' };
 
 /*************************************************************************/
 
@@ -106,6 +106,22 @@ encode(String source)
     }
 
   return(result.toString());
+}
+
+/*************************************************************************/
+
+/*
+ * Constructors
+ */
+
+/**
+  * Private constructor that does nothing. Included to avoid a default
+  * public constructor being created by the compiler.
+  */
+private
+URLEncoder()
+{
+  ;
 }
 
 } // class URLEncoder
