@@ -1,5 +1,9 @@
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
+	* java/io/PipedWriter.java (write): Changed argument to `int'.
+
+	* java/util/Comparator.java (equals): Added.
+
 	* java/beans/VetoableChangeSupport.java: Updated copyright
 	header.
 
