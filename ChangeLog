@@ -1,3 +1,8 @@
+2003-11-04  Michael Koch  <konqueror@gmx.de>
+
+	* java/nio/ByteBuffer.java
+	(equals): Removed unneeded obj != null check.
+
 2003-11-02  Mark Wielaard  <mark@klomp.org>
 
 	* configure.in (AC_CHECK_FUNC): Add ftruncate, fsync and select.
