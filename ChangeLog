@@ -1,5 +1,10 @@
 2004-11-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/channels/spi/AbstractSelectableChannel.java
+	(register): Only reuse valid selection keys.
+
+2004-11-23  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/NIOServerSocket.java
 	(getPlainSocketImpl): Removed debug code.
 
