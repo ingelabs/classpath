@@ -1,3 +1,18 @@
+2005-01-20  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/awt/Checkbox.java:
+	(AccessibleAWTCheckbox): Added class documentation
+	* java/awt/Scrollbar.java:
+	(AccessibleAWTScrollBar): typo corrected and docs added
+	(AccessibleAWTScrollBar.getAccessibleRole()): documented
+	(AccessibleAWTScrollBar.getAccessibleStateSet()): likewise
+	(AccessibleAWTScrollBar.getAccessibleValue()): likewise
+	(AccessibleAWTScrollBar.getCurrentAccessibleValue()): likewise
+	(AccessibleAWTScrollBar.setCurrentAccessibleValue(java.lang.Number)): likewise
+	(AccessibleAWTScrollBar.getMinimumAccessibleValue()): likewise
+	(AccessibleAWTScrollBar.getMaximumAccessibleValue()): likewise
+	(getAccessibleContext()): name of accessible class corrected
+
 2005-01-20  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/Currency.java (Currency(Locale)): Add Locale to
@@ -43,7 +58,7 @@
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
 	(env_union): Use union to avoid type-punning warning.
-
+	
 2005-01-20  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/awt/Checkbox.java:
@@ -57,7 +72,7 @@
 	(AccessibleAWTCheckbox.getAccessibleActionDescription(int)): likewise
 	(AccessibleAWTCheckbox.doAccessibleAction(int)): likewise
 	(AccessibleAWTCheckbox.getCurrentAccessibleValue()): likewise
-	(AccessibleAWTCheckbox.setCurrentAccessibleValue(int)): likewise
+	(AccessibleAWTCheckbox.setCurrentAccessibleValue(java.lang.Number)): likewise
 	(AccessibleAWTCheckbox.getMinimumAccessibleValue()): likewise
 	(AccessibleAWTCheckbox.getMaximumAccessibleValue()): likewise
 	(AccessibleAWTCheckbox.getAccessibleRole()): likewise
