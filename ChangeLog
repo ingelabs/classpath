@@ -1,5 +1,9 @@
 2004-12-26  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/locale/LocaleInformation_de_AT.java: Reformatted.
+
+2004-12-26  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/locale/LocaleInformation_de_BE.java: Reformatted.
 
 2004-12-26  Michael Koch  <konqueror@gmx.de>

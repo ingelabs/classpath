@@ -44,9 +44,37 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_de_AT extends ListResourceBundle
 {
-  static final String[] shortMonths = { "J\u00E4n", "Feb", "M\u00E4r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez", null };
+  private static final String[] shortMonths = {
+    "J\u00e4n",
+    "Feb",
+    "M\u00e4r",
+    "Apr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Okt",
+    "Nov",
+    "Dez",
+    null,
+  };
 
-  static final String[] months = { "J\u00E4nner", "Feber", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember", null };
+  private static final String[] months = {
+    "J\u00e4nner",
+    "Feber",
+    "M\u00E4rz",
+    "April",
+    "Mai",
+    "Juni",
+    "Juli",
+    "August",
+    "September",
+    "Oktober",
+    "November",
+    "Dezember",
+    null,
+  };
 
   private static final Object[][] contents =
   {
