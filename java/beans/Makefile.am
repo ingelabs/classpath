@@ -9,6 +9,7 @@ BeanInfo.java \
 Beans.java \
 Customizer.java \
 DesignMode.java \
+EventHandler.java \
 EventSetDescriptor.java \
 ExceptionListener.java \
 Expression.java \
