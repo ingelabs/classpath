@@ -5,7 +5,8 @@
 //
 // This is a JDK 1.2 compliant version of HashMap.java
 //
-// Copyright (c) 1998 by Jon A. Zeppieri (jon@eease.com)
+// Copyright (c) 1998 by Jon A. Zeppieri (jon@eease.com),
+//                    Free Software Foundation, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU Library General Public License as published
@@ -51,8 +52,8 @@ import java.io.ObjectStreamField;
  * does not support "Enumeration views."
  *
  * @author         Jon Zeppieri
- * @version        $Revision: 1.1 $
- * @modified       $Id: HashMap.java,v 1.1 1998-10-13 00:38:36 jaz Exp $
+ * @version        $Revision: 1.2 $
+ * @modified       $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
  */
 public class HashMap extends AbstractMap 
     implements Map, Cloneable, Serializable
@@ -90,13 +91,13 @@ public class HashMap extends AbstractMap
     // INSTANCE VARIABLES -------------------------------------------------
 
     /** the capacity of this HashMap:  denotes the size of the bucket array */
-    private int capacity;
+    int capacity;
 
     /** the size of this HashMap:  denotes the number of key-value pairs */
     private int size;
 
     /** the load factor of this HashMap:  used in computing the threshold */
-    private float loadFactor;
+    float loadFactor;
 
     /* the rounded product of the capacity and the load factor; when the number of
      * elements exceeds the threshold, the HashMap calls <pre>rehash()</pre> */
@@ -542,8 +543,8 @@ public class HashMap extends AbstractMap
      * overriding a number of them.  And so I did.
      *
      * @author      Jon Zeppieri
-     * @version     $Revision: 1.1 $
-     * @modified    $Id: HashMap.java,v 1.1 1998-10-13 00:38:36 jaz Exp $
+     * @version     $Revision: 1.2 $
+     * @modified    $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
      */
     private class HashMapSet extends AbstractSet
 	implements Set
@@ -642,8 +643,8 @@ public class HashMap extends AbstractMap
      * in the HashMap
      *
      * @author       Jon Zeppieri
-     * @version      $Revision: 1.1 $
-     * @modified     $Id: HashMap.java,v 1.1 1998-10-13 00:38:36 jaz Exp $
+     * @version      $Revision: 1.2 $
+     * @modified     $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
      */
     private class HashMapCollection extends AbstractCollection
 	implements Collection
@@ -719,8 +720,8 @@ public class HashMap extends AbstractMap
      * as per the Javasoft spec.
      *
      * @author       Jon Zeppieri
-     * @version      $Revision: 1.1 $
-     * @modified     $Id: HashMap.java,v 1.1 1998-10-13 00:38:36 jaz Exp $
+     * @version      $Revision: 1.2 $
+     * @modified     $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
      */
     class HashMapIterator implements Iterator
     {
@@ -823,8 +824,8 @@ public class HashMap extends AbstractMap
      * is used to represent the null key in HashMap objects
      *
      * @author     Jon Zeppieri
-     * @version    $Revision: 1.1 $
-     * @modified   $Id: HashMap.java,v 1.1 1998-10-13 00:38:36 jaz Exp $
+     * @version    $Revision: 1.2 $
+     * @modified   $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
      */
     private static class Null
     {
@@ -842,8 +843,8 @@ public class HashMap extends AbstractMap
      * Simply, a key / value pair
      *
      * @author      Jon Zeppieri
-     * @version     $Revision: 1.1 $
-     * @modified    $Id: HashMap.java,v 1.1 1998-10-13 00:38:36 jaz Exp $
+     * @version     $Revision: 1.2 $
+     * @modified    $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
      */
     private static class HashMapEntry extends Bucket.Node implements Map.Entry
     {

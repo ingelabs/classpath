@@ -28,13 +28,13 @@ public abstract class AbstractMap implements Map {
 
   public void clear()
   {
-    entries().clear();
+    entrySet().clear();
   }
 
   public boolean containsKey( Object key )
   {
     Object k;
-    Iterator entries = entries().iterator();
+    Iterator entries = entrySet().iterator();
   
     while( entries.hasNext() )
     {
@@ -49,7 +49,7 @@ public abstract class AbstractMap implements Map {
   public boolean containsValue( Object value )
   {
     Object v;
-    Iterator entries = entries().iterator();
+    Iterator entries = entrySet().iterator();
   
     while( entries.hasNext() )
     {
@@ -61,7 +61,7 @@ public abstract class AbstractMap implements Map {
     return false; 
   }
 
-  public abstract Set entries();
+  public abstract Set entrySet();
 
   public boolean equals( Object o )
   {
@@ -77,7 +77,7 @@ public abstract class AbstractMap implements Map {
     
     Object key, value1, value2;
     Map.Entry entry;
-    Iterator entries = entries().iterator();
+    Iterator entries = entrySet().iterator();
     while( entries.hasNext() )
     {
       entry = (Map.Entry)entries.next();
@@ -97,7 +97,7 @@ public abstract class AbstractMap implements Map {
   {
     Object k;
     Map.Entry entry;
-    Iterator entries = entries().iterator();
+    Iterator entries = entrySet().iterator();
   
     while( entries.hasNext() )
     {
@@ -113,7 +113,7 @@ public abstract class AbstractMap implements Map {
   public int hashCode()
   {
     int hashcode = 0;
-    Iterator entries = entries().iterator();
+    Iterator entries = entrySet().iterator();
   
     while( entries.hasNext() )
       hashcode += entries.next().hashCode();
@@ -142,7 +142,7 @@ public abstract class AbstractMap implements Map {
           {
 	    return new Iterator()
             {
-	      Iterator map_iterator = AbstractMap.this.entries().iterator();
+	      Iterator map_iterator = AbstractMap.this.entrySet().iterator();
 	      
 	      public boolean hasNext()
               {
@@ -174,7 +174,7 @@ public abstract class AbstractMap implements Map {
   public void putAll( Map m )
   {
     Map.Entry entry;
-    Iterator entries = m.entries().iterator();
+    Iterator entries = m.entrySet().iterator();
     while( entries.hasNext() )
     {
       entry = (Map.Entry)entries.next();
@@ -186,7 +186,7 @@ public abstract class AbstractMap implements Map {
   {
     Object k, value;
     Map.Entry entry;
-    Iterator entries = entries().iterator();
+    Iterator entries = entrySet().iterator();
   
     while( entries.hasNext() )
     {
@@ -205,14 +205,14 @@ public abstract class AbstractMap implements Map {
 
   public int size()
   {
-    return entries().size();
+    return entrySet().size();
   }
 
   public String toString()
   {
     Map.Entry entry;
     String rep = "AbstractMap< ";
-    Iterator entries = entries().iterator();
+    Iterator entries = entrySet().iterator();
   
     while( entries.hasNext() )
     {
@@ -239,7 +239,7 @@ public abstract class AbstractMap implements Map {
           {
 	    return new Iterator()
             {
-	      Iterator map_iterator = AbstractMap.this.entries().iterator();
+	      Iterator map_iterator = AbstractMap.this.entrySet().iterator();
 	      
 	      public boolean hasNext()
               {
