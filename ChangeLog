@@ -1,5 +1,8 @@
 2001-09-05  Tom Tromey  <tromey@redhat.com>
 
+	* java/lang/Character.java: Replaced non-ASCII characters in
+	comments.  Report from Etienne M. Gagnon.
+
 	Report from Gansha Wu:
 	* java/io/FileOutputStream.java (write(byte[],int,int)): Correctly
 	pass `offset' to writeInternal.

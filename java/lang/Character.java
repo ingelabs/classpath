@@ -885,7 +885,7 @@ public final class Character implements Serializable, Comparable
   /**
    * Determines if a character is Java whitespace.
    * <br>
-   * Java whitespace = ([Zs]¬Nb)|[Zl]|[Zp]|U+0009-U+000D|U+001C-U+001F
+   * Java whitespace = ([Zs] not Nb)|[Zl]|[Zp]|U+0009-U+000D|U+001C-U+001F
    *
    * @param ch character to test
    *
@@ -919,7 +919,7 @@ public final class Character implements Serializable, Comparable
   /**
    * Determines if a character is part of the Unicode Standard.
    * <br>
-   * defined = ¬[Cn]
+   * defined = not [Cn]
    *
    * @param ch character to test
    *
