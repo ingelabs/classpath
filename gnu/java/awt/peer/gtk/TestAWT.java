@@ -75,13 +75,13 @@ class PrettyFrame extends Frame
     }
 }
 
+
 class MainWindow extends PrettyFrame implements ActionListener 
 {
   Button closeButton, buttonsButton, dialogButton, cursorsButton,
-    textFieldButton;
-  Frame buttonsWindow = null, cursorsWindow = null,
-    textFieldWindow = null;
-  Dialog dialogWindow = null;
+    textFieldButton, fileButton, labelButton;
+  Window buttonsWindow = null, dialogWindow = null, cursorsWindow = null,
+    textFieldWindow = null, fileWindow = null, labelWindow = null;
 
   MainWindow () 
     {
@@ -119,6 +119,14 @@ class MainWindow extends PrettyFrame implements ActionListener
       textFieldButton.addActionListener (this);
       p.add (textFieldButton);
 
+      fileButton = new Button ("file selection");
+      fileButton.addActionListener (this);
+      p.add (fileButton);
+
+      labelButton = new Button ("labels");
+      labelButton.addActionListener (this);
+      p.add (labelButton);
+
       setSize (200, 400);
     }
 
@@ -130,50 +138,70 @@ class MainWindow extends PrettyFrame implements ActionListener
       System.out.println (closeButton);
 
       if (source==closeButton)
-	{
-	  dispose();
-	  System.exit (0);
-	}
+        {
+          dispose();
+          System.exit (0);
+        }
       if (source==buttonsButton)
-	{
-	  if (buttonsWindow == null)
-	    {
-	      buttonsWindow = new ButtonsWindow (this);
-	      buttonsWindow.show();
-	    }
-	  else 
-	    buttonsWindow.dispose();
-	}
+        {
+          if (buttonsWindow == null)
+            {
+              buttonsWindow = new ButtonsWindow (this);
+              buttonsWindow.show();
+            }
+          else 
+            buttonsWindow.dispose();
+        }
       if (source==dialogButton)
-	{
-	  if (dialogWindow == null)
-	    {
-	      dialogWindow = new DialogWindow (this);
-	      dialogWindow.show();
-	    }
-	  else 
-	    dialogWindow.dispose();
-	}
+        {
+          if (dialogWindow == null)
+            {
+              dialogWindow = new DialogWindow (this);
+              dialogWindow.show();
+            }
+          else 
+            dialogWindow.dispose();
+        }
       if (source==cursorsButton)
-	{
-	  if (cursorsWindow == null)
-	    {
-	      cursorsWindow = new CursorsWindow (this);
-	      cursorsWindow.show();
-	    }
-	  else 
-	    cursorsWindow.dispose();
-	}
+        {
+          if (cursorsWindow == null)
+            {
+              cursorsWindow = new CursorsWindow (this);
+              cursorsWindow.show();
+            }
+          else 
+            cursorsWindow.dispose();
+        }
       if (source==textFieldButton)
-	{
-	  if (textFieldWindow == null)
-	    {
-	      textFieldWindow = new TextFieldWindow (this);
-	      textFieldWindow.show();
-	    }
-	  else 
-	    textFieldWindow.dispose();
-	}
+        {
+          if (textFieldWindow == null)
+            {
+              textFieldWindow = new TextFieldWindow (this);
+              textFieldWindow.show();
+            }
+          else 
+            textFieldWindow.dispose();
+        }
+      if (source==fileButton)
+        {
+          if (fileWindow == null)
+            {
+              fileWindow = new FileWindow (this);
+              fileWindow.show();
+            }
+          else 
+            fileWindow.dispose();
+        }
+      if (source==labelButton)
+        {
+          if (labelWindow == null)
+            {
+              labelWindow = new LabelWindow (this);
+              labelWindow.show();
+            }
+          else 
+            labelWindow.dispose();
+        }
     }
 }
 
@@ -445,6 +473,66 @@ class TextFieldWindow extends PrettyFrame implements ItemListener
   public void dispose()
     {
       mainWindow.textFieldWindow=null;
+      super.dispose();
+    }
+}
+
+
+class FileWindow extends FileDialog
+{
+  static FileDialog f;
+  MainWindow mainWindow;
+
+  public FileWindow (MainWindow mw)
+    {
+      super (mw);
+      mainWindow = mw;
+    }
+
+  public void dispose()
+    {
+      mainWindow.fileWindow=null;
+      super.dispose();
+    }
+}
+
+class LabelWindow extends PrettyFrame
+{
+  static Frame f;
+  MainWindow mainWindow;
+
+  public LabelWindow (MainWindow mw)
+    {
+      super ("Labels");
+
+      mainWindow = mw;
+
+      Panel p = new Panel();
+      p.setLayout (new GridLayout (3, 1));
+      ((GridLayout) p.getLayout ()).setHgap (5);
+      ((GridLayout) p.getLayout ()).setVgap (5);
+
+      p.add (new Label ("left justified label", Label.LEFT));
+      p.add (new Label ("center justified label", Label.CENTER));
+      p.add (new Label ("right justified label", Label.RIGHT));
+
+      add (p, "Center");
+
+      Button cb = new Button ("Close");
+      cb.addMouseListener(new MouseAdapter () {
+        public void mouseClicked (MouseEvent e) {
+	  dispose();
+        }
+      });
+
+      add (cb, "South");
+
+      setSize (160, 180);
+    }
+
+  public void dispose()
+    {
+      mainWindow.labelWindow=null;
       super.dispose();
     }
 }
