@@ -1,3 +1,11 @@
+2001-08-30  Tom Tromey  <tromey@redhat.com>
+
+	Re-merged classes with libgcj:
+	* java/io/PipedReader.java (ready): Throw IOException if pipe
+	closed.
+	* java/io/BufferedReader.java (mark, reset, ready, read, skip):
+	Perform checkStatus check inside synchronized block.
+
 2001-08-27  Tom Tromey  <tromey@redhat.com>
 
 	* java/rmi/activation/Activatable.java,

@@ -1,5 +1,5 @@
 /* BufferedReader.java
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,7 +24,7 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
- 
+
 package java.io;
 
 /* Written using "Java Class Libraries", 2nd edition, plus online
@@ -71,8 +71,6 @@ public class BufferedReader extends Reader
      The implicit read-limit is (buffer.length - markPos), which is
      guaranteed to be >= the read-limit requested in the call to mark. */
   int markPos = -1;
-  
-  static final int DEFAULT_BUFFER_SIZE = 4096;
 
   /**
     * Create a new <code>BufferedReader</code> that will read from the 
@@ -82,7 +80,7 @@ public class BufferedReader extends Reader
     */
   public BufferedReader(Reader in)
   {
-    this(in, DEFAULT_BUFFER_SIZE);
+    this(in, 8192);
   }
 
   /**
@@ -149,9 +147,9 @@ public class BufferedReader extends Reader
     */
   public void mark(int readLimit) throws IOException
   {
-    checkStatus();
     synchronized (lock)
       {
+	checkStatus();
 	// In this method we need to be aware of the special case where
 	// pos + 1 == limit.  This indicates that a '\r' was the last char
 	// in the buffer during a readLine.  We'll want to maintain that
@@ -206,9 +204,9 @@ public class BufferedReader extends Reader
     */
   public void reset() throws IOException
   {
-    checkStatus();
     synchronized (lock)
       {
+	checkStatus();
 	if (markPos < 0)
 	  throw new IOException("mark never set or invalidated");
 
@@ -236,9 +234,9 @@ public class BufferedReader extends Reader
     */
   public boolean ready() throws IOException
   {
-    checkStatus();
     synchronized (lock)
       {
+	checkStatus();
 	return pos < limit || in.ready();
       }
   }
@@ -263,9 +261,9 @@ public class BufferedReader extends Reader
     */
   public int read(char[] buf, int offset, int count) throws IOException
   {
-    checkStatus();
     synchronized (lock)
       {
+	checkStatus();
 	// Once again, we need to handle the special case of a readLine
 	// that has a '\r' at the end of the buffer.  In this case, we'll
 	// need to skip a '\n' if it is the next char to be read.
@@ -350,9 +348,9 @@ public class BufferedReader extends Reader
   
   public int read() throws IOException
   {
-    checkStatus();
     synchronized (lock)
       {
+	checkStatus();
 	if (pos >= limit && fill () <= 0)
 	  return -1;
 	return buffer[pos++];
@@ -465,11 +463,11 @@ public class BufferedReader extends Reader
     */
   public long skip(long count) throws IOException
   {
-    checkStatus();
-    if (count <= 0)
-      return 0;
     synchronized (lock)
       {
+	checkStatus();
+	if (count <= 0)
+	  return 0;
 	// Yet again, we need to handle the special case of a readLine
 	// that has a '\r' at the end of the buffer.  In this case, we need
 	// to ignore a '\n' if it is the next char to be read.
