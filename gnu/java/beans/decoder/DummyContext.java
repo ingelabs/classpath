@@ -69,6 +69,7 @@ public class DummyContext extends AbstractContext
     public Object endContext(Context outerContext) throws AssemblyException
     {
         fail();
+	return null;
     }
 
     /* (non-Javadoc)
@@ -77,6 +78,7 @@ public class DummyContext extends AbstractContext
     public boolean subContextFailed()
     {
         fail();
+	return false;
     }
 
     /* (non-Javadoc)
@@ -93,6 +95,7 @@ public class DummyContext extends AbstractContext
     public Object get(int index) throws AssemblyException
     {
         fail();
+	return null;
     }
 
     /* (non-Javadoc)
@@ -101,10 +104,13 @@ public class DummyContext extends AbstractContext
     public Object getResult()
     {
         fail();
+	return null;
     }
 
     private void fail()
     {
-        throw new InternalError("Invoking the DummyContext is not expected - Please file a bug report at gnu.org/software/classpath.");
+        throw new InternalError("Invoking the DummyContext is not expected"
+				+ " - Please file a bug report at"
+				+ " http://www/gnu.org/software/classpath/.");
     }
 }

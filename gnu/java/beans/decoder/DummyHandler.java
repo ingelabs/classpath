@@ -89,6 +89,7 @@ class DummyHandler implements ElementHandler
         throws ClassNotFoundException
     {
         fail();
+	return null;
     }
 
     /* (non-Javadoc)
@@ -137,15 +138,19 @@ class DummyHandler implements ElementHandler
     public Object getObject(String objectId)
     {
         fail();
+	return null;
     }
 
     public ElementHandler getParent()
     {
         fail();
+	return null;
     }
 
     private void fail()
     {
-        throw new InternalError("Invoking the DummyHandler is not expected - Please file a bug report at gnu.org/software/classpath.");
+        throw new InternalError("Invoking the DummyHandler is not expected"
+			        + " - Please file a bug report at "
+				+ " http://www.gnu.org/software/classpath/.");
     }
 }
