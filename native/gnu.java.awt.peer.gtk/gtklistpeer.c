@@ -22,10 +22,20 @@
 #include "gtkpeer.h"
 #include "GtkListPeer.h"
 
+struct list_item_event_hook_info
+{
+  jobject peer_obj;
+  jint index;
+};
+
+static void
+connect_list_item_selectable_hook (JNIEnv *env, jobject peer_obj, 
+				     GtkItem *item, jint index);
+
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
   (JNIEnv *env, jobject obj, jobject parent_obj,
-   jobject jlist, jobjectArray items, int mode, jboolean visible)
+   jobject jlist, jobjectArray items, jboolean mode, jboolean visible)
 {
   GtkWidget *list, *listitem, *sw, *parent;
   jsize count;
@@ -52,8 +62,8 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
   connect_awt_hook (env, obj, list, 1, list->window);
 
   gtk_list_set_selection_mode (GTK_LIST (list),
-			       mode? GTK_SELECTION_MULTIPLE : 
-			       GTK_SELECTION_SINGLE);
+			       mode ? GTK_SELECTION_MULTIPLE : 
+			              GTK_SELECTION_SINGLE);
   
   for (i = 0; i < count; i++) 
     {
@@ -61,16 +71,16 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
       jobject item;
 
       item = (*env)->GetObjectArrayElement (env, items, i);
-      text = (*env)->GetStringUTFChars (env, item, NULL);
 
+      text = (*env)->GetStringUTFChars (env, item, NULL);
       listitem = gtk_list_item_new_with_label (text);
+      (*env)->ReleaseStringUTFChars (env, item, text);
 
       gtk_widget_show (listitem);
       gtk_container_add (GTK_CONTAINER (list), listitem);
       gtk_widget_realize (listitem);
       connect_awt_hook (env, obj, listitem, 1, listitem->window);
-
-      (*env)->ReleaseStringUTFChars (env, item, text);
+      connect_list_item_selectable_hook (env, obj, GTK_ITEM (listitem), i);
     }
 
   gdk_threads_leave ();
@@ -102,6 +112,8 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListInsert
   gtk_widget_realize (item_list->data);
   connect_awt_hook (env, obj, item_list->data, 1, 
 		    GTK_WIDGET(item_list->data)->window);
+  connect_list_item_selectable_hook (env, obj, 
+				     GTK_ITEM (item_list->data), index);
 
   gdk_threads_leave ();
 
@@ -297,7 +309,7 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListScrollVertical
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListSetSelectionMode
-  (JNIEnv *env, jobject obj, jobject jlist, jint mode)
+  (JNIEnv *env, jobject obj, jobject jlist, jboolean mode)
 {
   void *ptr;
   GtkList *list;
@@ -308,7 +320,43 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListSetSelectionMode
   list = GTK_LIST (ptr);
   gtk_list_set_selection_mode (GTK_LIST (list),
 			       mode ? GTK_SELECTION_MULTIPLE : 
-			       GTK_SELECTION_SINGLE);
+                                      GTK_SELECTION_SINGLE);
   gdk_threads_leave ();
 }
 
+static void
+item_select (GtkItem *item, struct list_item_event_hook_info *ie)
+{
+  (*gdk_env)->CallVoidMethod (gdk_env, ie->peer_obj,
+			      postListItemEventID,
+			      ie->index,
+			      (jint) AWT_ITEM_SELECTED);
+}
+
+static void
+item_deselect (GtkItem *item, struct list_item_event_hook_info *ie)
+{
+  (*gdk_env)->CallVoidMethod (gdk_env, ie->peer_obj,
+			      postListItemEventID,
+			      ie->index,
+	   		      (jint) AWT_ITEM_DESELECTED);
+}
+
+static void
+connect_list_item_selectable_hook (JNIEnv *env, jobject peer_obj, 
+				     GtkItem *item, jint index)
+{
+  struct list_item_event_hook_info *ie;
+
+  ie = (struct list_item_event_hook_info *) 
+    malloc (sizeof (struct list_item_event_hook_info));
+
+  ie->peer_obj = (*env)->NewGlobalRef (env, peer_obj);
+  ie->index = index;
+
+  gtk_signal_connect (GTK_OBJECT (item), "select", 
+		      GTK_SIGNAL_FUNC (item_select), ie);
+
+  gtk_signal_connect (GTK_OBJECT (item), "deselect", 
+		      GTK_SIGNAL_FUNC (item_deselect), ie);
+}

@@ -27,7 +27,7 @@ public class GtkListPeer extends GtkComponentPeer
     implements ListPeer
 {
   native void gtkListNew (ComponentPeer parent,
-			  Object list, String [] items, int mode, 
+			  Object list, String [] items, boolean mode, 
 			  boolean visible);
   native void gtkListInsert (Object list, String item, int index);    
   native void gtkListClearItems (Object list, int start, int end);
@@ -36,7 +36,7 @@ public class GtkListPeer extends GtkComponentPeer
   native void gtkListGetSize (Object list, int rows, int dims[]);
   native int[] gtkListGetSelected (Object list);
   native void gtkListScrollVertical (Object list, int index);
-  native void gtkListSetSelectionMode (Object list, int mode);
+  native void gtkListSetSelectionMode (Object list, boolean mode);
 
   Object myGtkList;
 
@@ -48,7 +48,7 @@ public class GtkListPeer extends GtkComponentPeer
       myGtkList = new Object();
 
       gtkListNew (cp, myGtkList, items, 
-		  l.isMultipleMode() ? 1 : 0, 
+		  l.isMultipleMode(), 
 		  l.isVisible ());
     }
   
@@ -125,11 +125,16 @@ public class GtkListPeer extends GtkComponentPeer
 
   public void setMultipleMode (boolean b)
     {
-      gtkListSetSelectionMode (myGtkList, b? 1 : 0);
+      gtkListSetSelectionMode (myGtkList, b);
     }
 
   public void setMultipleSelections (boolean b)
     {
       setMultipleMode (b);
     }
+
+  protected void postItemEvent (int item, int stateChange)
+  {
+    postItemEvent (new Integer (item), stateChange);
+  }
 }
