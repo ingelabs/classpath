@@ -1,3 +1,7 @@
+2004-04-10  Mark Wielaard  <mark@klomp.org>
+
+	* native/fdlibm/Makefile.am (libfdlibm_la_SOURCES): Add java-assert.h.
+
 2004-04-09  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac (AM_CFLAGS): Don't define _POSIX_SOURCE.
@@ -128,7 +132,7 @@
 	* resource/gnu/regexp/.cvsignore: New file.
 
 2004-04-08  Michael Koch  <konqueror@gmx.de>
-,
+
 	* java/nio/Buffer.java,
 	java/nio/ByteBufferImpl.java,
 	java/nio/CharBufferImpl.java,
