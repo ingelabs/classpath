@@ -1,16 +1,28 @@
 SUBDIRS=spi
 EXTRA_DIST= \
 AlreadyConnectedException.java \
+AsynchronousCloseException.java \
 ByteChannel.java \
+CancelledKeyException.java \
 Channel.java \
 Channels.java \
+ClosedByInterruptException.java \
 ClosedChannelException.java \
+ConnectionPendingException.java \
 DatagramChannel.java \
 FileChannel.java \
 FileLock.java \
+FileLockInterruptionException.java \
 GatheringByteChannel.java \
 IllegalBlockingModeException.java \
+IllegalSelectorException.java \
 InterruptibleChannel.java \
+NoConnectionPendingException.java \
+NonReadableChannelException.java \
+NonWritableChannelException.java \
+NotYetBoundException.java \
+NotYetConnectedException.java \
+OverlappingFileLockException.java \
 Pipe.java \
 ReadableByteChannel.java \
 ScatteringByteChannel.java \
@@ -19,6 +31,8 @@ SelectionKey.java \
 Selector.java \
 ServerSocketChannel.java \
 SocketChannel.java \
+UnresolvedAddressException.java \
+UnsupportedAddressTypeException.java \
 WritableByteChannel.java \
 package.html
 

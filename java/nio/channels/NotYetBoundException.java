@@ -1,4 +1,4 @@
-/* ServerSocketChannel.java -- 
+/* NotYetBoundException.java -- 
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,64 +37,16 @@ exception statement from your version. */
 
 package java.nio.channels;
 
-import java.nio.channels.spi.AbstractSelectableChannel;
-import java.nio.channels.spi.SelectorProvider;
-import java.nio.ByteOrder;
-import java.nio.ByteBuffer;
-import java.io.IOException;
-import java.net.ServerSocket;
-
 /**
  * @author Michael Koch
  * @since 1.4
  */
-public abstract class ServerSocketChannel
-  extends AbstractSelectableChannel
+public class NotYetBoundException extends IllegalStateException
 {
   /**
-   * Initializes this channel.
+   * Creates the exception
    */
-  public ServerSocketChannel (SelectorProvider provider)
+  public NotYetBoundException()
   {
-    super (provider);
   }
-  
-  /**
-   * Accepts a connection made to this channel's socket.
-   *
-   * @exception IOException If an error occurs
-   * @exception AsynchronousCloseException If another thread closes this
-   * channel while the accept operation is in progress.
-   * @exception ClosedByInterruptException If another thread interrupts the
-   * current thread while the accept operation is in progress, thereby closing
-   * the channel and setting the current thread's interrupt status.
-   * @exception ClosedChannelException If the channel is closed.
-   * @exception NotYetBoundException If the channel's socket is not yet bound.
-   * @exception SecurityException If a security manager has been installed and
-   * it does not permit access to the remote endpoint of the new connection.
-   */
-  public abstract SocketChannel accept ();
-  
-  /**
-   * Retrieves the channels socket.
-   */
-  public abstract ServerSocket socket ();
-    
-  /**
-   * Opens a server socket channel.
-   *
-   * @exception IOException If an error occurs
-   */
-  public static ServerSocketChannel open () throws IOException
-  {
-    return SelectorProvider.provider ().openServerSocketChannel ();
-  }
-
-  /**
-   * Retrieves the valid operations for this channel.
-   */
-  public final int validOps ()
-  {
-    return SelectionKey.OP_ACCEPT;
-  } 
 }
