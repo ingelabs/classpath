@@ -699,7 +699,7 @@ _javanet_bind(JNIEnv *env, jobject this, jobject addr, jint port, int stream)
 
   if (result != TARGET_NATIVE_OK)
     {
-      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+      JCL_ThrowException(env, BIND_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
       return;
     }
   DBG("_javanet_bind(): Past bind\n");

@@ -1,5 +1,12 @@
 2004-04-21  Michael Koch  <konqueror@gmx.de>
 
+	* native/jni/java-net/javanet.h
+	(BIND_EXCEPTION): New define.
+	* native/jni/java-net/javanet.c
+	(_javanet_bind): Throw correct exception on failed bind().
+
+2004-04-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/channels/spi/AbstractSelectableChannel.java
 	(register): Check ops for validity.
 
