@@ -1,3 +1,14 @@
+2001-04-20  J. Russell Smyth  <drfish@uswest.net>
+
+	* java/math/BigInteger.java (forEachDigit): Corrected
+	ArrayIndexOutOfBounds exception.
+
+	* gnu/java/io/decode/DecoderEightBitLookup.java (convertToChars):
+	Corrected table lookup index.
+
+	* native/java.lang/Double.c (toString): Corrected format
+	specifiers for sprintf call to give better precision.
+
 2001-04-25  Tom Tromey  <tromey@redhat.com>
 
 	* native/java.lang/Float.c (Java_java_lang_Float_toString): Fixed
