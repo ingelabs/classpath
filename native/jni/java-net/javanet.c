@@ -577,6 +577,10 @@ _javanet_bind(JNIEnv *env, jobject this, jobject addr, jint port, int stream)
     }
   DBG("_javanet_bind(): Past native_fd lookup\n");
 
+  _javanet_set_option (env, this, SOCKOPT_SO_REUSEADDR, 
+		       _javanet_create_boolean (env, JNI_TRUE));
+
+
   /* Bind the socket */
   memset(&si, 0, sizeof(struct sockaddr_in));
 
@@ -942,6 +946,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
         break;
 
       /* SO_TIMEOUT case. Val will be an integer with the new value */
+      /* Not writable on Linux */
       case SOCKOPT_SO_TIMEOUT:
 #ifdef SO_TIMEOUT
         mid = (*env)->GetMethodID(env, cls, "intValue", "()I");
@@ -954,11 +959,8 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 	  return;
 
         rc = setsockopt(fd, SOL_SOCKET, SO_TIMEOUT, &optval, sizeof(int));
-#else
-        JCL_ThrowException(env, SOCKET_EXCEPTION, 
-                                 "SO_TIMEOUT not supported by this platform");
-        return;
 #endif
+	return;  // ignore errors and do not throw an exception
         break;
 
       case SOCKOPT_SO_SNDBUF:
@@ -1005,6 +1007,21 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 
         rc = setsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &si, 
                         sizeof(struct sockaddr_in));
+        break;
+
+      case SOCKOPT_SO_REUSEADDR:
+        mid = (*env)->GetMethodID(env, cls, "booleanValue", "()Z");
+        if (mid == NULL)
+          { JCL_ThrowException(env, IO_EXCEPTION, 
+                                     "Internal error: _javanet_set_option()"); return; }
+
+        /* Should be a 0 or a 1 */
+        optval = (*env)->CallBooleanMethod(env, val, mid);
+	if ((*env)->ExceptionOccurred(env))
+	  return;
+
+        rc = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void*)&optval, 
+			sizeof(int));
         break;
 
       default:
@@ -1055,9 +1072,9 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
           }
 
         if (optval)
-          return(_javanet_create_boolean(env, 1));
+          return(_javanet_create_boolean(env, JNI_TRUE));
         else
-          return(_javanet_create_boolean(env, 0));
+          return(_javanet_create_boolean(env, JNI_FALSE));
   
         break;
 
@@ -1077,7 +1094,7 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
         if (linger.l_onoff)
           return(_javanet_create_integer(env, linger.l_linger));
         else
-          return(_javanet_create_boolean(env, 0));
+          return(_javanet_create_boolean(env, JNI_FALSE));
 
         break;
 
@@ -1149,6 +1166,22 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
 
          return(_javanet_create_inetaddress(env, ntohl(si.sin_addr.s_addr)));
          break;
+
+      case SOCKOPT_SO_REUSEADDR:
+        optlen = sizeof(int);
+        rc = getsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void*)&optval, &optlen);
+        if (rc == -1)
+          {
+            JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
+            return(0);
+          }
+
+        if (optval)
+          return(_javanet_create_boolean(env, JNI_TRUE));
+        else
+          return(_javanet_create_boolean(env, JNI_FALSE));
+
+        break;
 
       default:
         JCL_ThrowException(env, SOCKET_EXCEPTION, "No such option" ); 

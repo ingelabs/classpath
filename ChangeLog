@@ -1,3 +1,15 @@
+2003-01-30  C. Brian Jones  <cbj@gnu.org>
+
+	* native/jni/java-net/javanet.c (_javanet_bind): following gcj's 
+	example and setting SO_REUSEADDR before binding the port, testing 
+	with JDK seems to indicate it does this as well
+	(_javanet_set_option): support SO_REUSEADDR; use JNI_TRUE/JNI_FALSE 
+	instead of 1/0 where applicable.  Do not throw exception if setting
+	SO_TIMEOUT fails; appears JDK does not throw exception and may be
+	using alarm or setitimer (see `man 7 socket' on GNU/Linux)
+	(_javanet_get_option): support SO_REUSEADDR; use JNI_TRUE/JNI_FALSE
+	instead of 1/0 where applicable
+
 2003-01-28  Oscar Pearce  <oscar@pearceenterprises.com>
 
 	* java/awt/Component.java (processPaintEvent): Dispose of Graphics
