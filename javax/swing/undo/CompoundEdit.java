@@ -67,7 +67,7 @@ public class CompoundEdit
    * The identifier of this class in object serialization. Determined
    * using the serialver tool of Sun J2SE 1.4.1_01.
    */
-  static final long serialVersionUID = -6512679249930119683L;
+  private static final long serialVersionUID = -6512679249930119683L;
 
 
   /**
