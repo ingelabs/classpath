@@ -448,7 +448,7 @@ public final class URL implements Serializable
     // if one exists, otherwise pass the end of the string.
     int hashAt = spec.indexOf('#', colon + 1);
     this.ph.parseURL(this, spec, colon + 1,
-			  hashAt < 0 ? spec.length() : hashAt);
+		     hashAt < 0 ? spec.length() : hashAt);
     if (hashAt >= 0)
       ref = spec.substring(hashAt + 1);
 
@@ -465,7 +465,7 @@ public final class URL implements Serializable
    *
    * @return true if the URL is equal, false otherwise
    */
-  public boolean equals(Object obj)
+  public boolean equals (Object obj)
   {
     if (obj == null || ! (obj instanceof URL))
       return false;
@@ -792,7 +792,7 @@ public final class URL implements Serializable
           }
       }
 
-    // Next check the factory and use that if set
+    // If a non-default factory has been set, use it to find the protocol.
     if (factory != null)
       {
         ph = factory.createURLStreamHandler(protocol);
