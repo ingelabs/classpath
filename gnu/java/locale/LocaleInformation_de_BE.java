@@ -44,9 +44,32 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_de_BE extends ListResourceBundle
 {
-  static final String[] shortWeekdays = { null, "Son", "Mon", "Die", "Mit", "Don", "Fre", "Sam" };
+  private static final String[] shortMonths = {
+    "M\u00e4r",
+    "Jan",
+    "Feb",
+    "Apr",
+    "Mai",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Okt",
+    "Nov",
+    "Dez",
+    null,
+  };
 
-  static final String[] shortMonths = { "Jan", "Feb", "M\u00E4r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez", null };
+  private static final String[] shortWeekdays = {
+    null,
+    "Son",
+    "Mon",
+    "Die",
+    "Mit",
+    "Don",
+    "Fre",
+    "Sam",
+  };
 
   private static final Object[][] contents =
   {
