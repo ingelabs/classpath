@@ -1,5 +1,13 @@
 2004-02-27  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Thread.java: Rearranged some methods. Renamed some
+	variables.
+	(runnable): Renamed from 'toRun'.
+	(destroy): Just throw NoSuchMedthodError as Sun does.
+	(setContextClassLoader): Made sychronized.
+
+2004-02-27  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/AbstractButton.java: Made several constants final.
 
 2004-02-27  Anthony Green  <green@redhat.com>

@@ -107,7 +107,7 @@ public class Thread implements Runnable
   volatile ThreadGroup group;
 
   /** The object to run(), null if this is the target. */
-  final Runnable toRun;
+  final Runnable runnable;
 
   /** The thread name, non-null. */
   volatile String name;
@@ -183,41 +183,28 @@ public class Thread implements Runnable
   }
 
   /**
-   * Allocate a new Thread object, as if by
-   * <code>Thread(null, toRun, <i>fake name</i>)</code>, where the fake name
-   * is "Thread-" + <i>unique integer</i>.
+   * Allocates a new <code>Thread</code> object. This constructor has
+   * the same effect as <code>Thread(null, target,</code>
+   * <i>gname</i><code>)</code>, where <i>gname</i> is
+   * a newly generated name. Automatically generated names are of the
+   * form <code>"Thread-"+</code><i>n</i>, where <i>n</i> is an integer.
    *
-   * @param toRun the Runnable object to execute
-   * @see #Thread(ThreadGroup, Runnable, String)
+   * @param target the object whose <code>run</code> method is called.
+   * @see java.lang.Thread#Thread(java.lang.ThreadGroup,
+   *                              java.lang.Runnable, java.lang.String)
    */
-  public Thread(Runnable toRun)
+  public Thread(Runnable target)
   {
-    this(null, toRun);
-  }
-  
-  /**
-   * Allocate a new Thread object, as if by
-   * <code>Thread(group, toRun, <i>fake name</i>)</code>, where the fake name
-   * is "Thread-" + <i>unique integer</i>.
-   *
-   * @param group the group to put the Thread into
-   * @param target the Runnable object to execute
-   * @throws SecurityException if this thread cannot access <code>group</code>
-   * @throws IllegalThreadStateException if group is destroyed
-   * @see #Thread(ThreadGroup, Runnable, String)
-   */
-  public Thread(ThreadGroup group, Runnable toRun)
-  {
-    this(group, toRun, "Thread-" + ++numAnonymousThreadsCreated, 0);
+    this(null, target);
   }
 
   /**
-   * Allocate a new Thread object, as if by
-   * <code>Thread(null, null, name)</code>.
+   * Allocates a new <code>Thread</code> object. This constructor has
+   * the same effect as <code>Thread(null, null, name)</code>.
    *
-   * @param name the name for the Thread
-   * @throws NullPointerException if name is null
-   * @see #Thread(ThreadGroup, Runnable, String)
+   * @param   name   the name of the new thread.
+   * @see     java.lang.Thread#Thread(java.lang.ThreadGroup,
+   *          java.lang.Runnable, java.lang.String)
    */
   public Thread(String name)
   {
@@ -225,8 +212,26 @@ public class Thread implements Runnable
   }
 
   /**
-   * Allocate a new Thread object, as if by
-   * <code>Thread(group, null, name)</code>.
+   * Allocates a new <code>Thread</code> object. This constructor has
+   * the same effect as <code>Thread(group, target,</code>
+   * <i>gname</i><code>)</code>, where <i>gname</i> is
+   * a newly generated name. Automatically generated names are of the
+   * form <code>"Thread-"+</code><i>n</i>, where <i>n</i> is an integer.
+   *
+   * @param group the group to put the Thread into
+   * @param target the Runnable object to execute
+   * @throws SecurityException if this thread cannot access <code>group</code>
+   * @throws IllegalThreadStateException if group is destroyed
+   * @see #Thread(ThreadGroup, Runnable, String)
+   */
+  public Thread(ThreadGroup group, Runnable target)
+  {
+    this(group, target, "Thread-" + ++numAnonymousThreadsCreated, 0);
+  }
+
+  /**
+   * Allocates a new <code>Thread</code> object. This constructor has
+   * the same effect as <code>Thread(group, null, name)</code>
    *
    * @param group the group to put the Thread into
    * @param name the name for the Thread
@@ -241,17 +246,17 @@ public class Thread implements Runnable
   }
 
   /**
-   * Allocate a new Thread object, as if by
-   * <code>Thread(group, null, name)</code>.
+   * Allocates a new <code>Thread</code> object. This constructor has
+   * the same effect as <code>Thread(null, target, name)</code>.
    *
-   * @param toRun the Runnable object to execute
+   * @param target the Runnable object to execute
    * @param name the name for the Thread
    * @throws NullPointerException if name is null
    * @see #Thread(ThreadGroup, Runnable, String)
    */
-  public Thread(Runnable toRun, String name)
+  public Thread(Runnable target, String name)
   {
-    this(null, toRun, name, 0);
+    this(null, target, name, 0);
   }
 
   /**
@@ -283,9 +288,9 @@ public class Thread implements Runnable
    * @see SecurityManager#checkAccess(ThreadGroup)
    * @see ThreadGroup#checkAccess()
    */
-  public Thread(ThreadGroup group, Runnable toRun, String name)
+  public Thread(ThreadGroup group, Runnable target, String name)
   {
-    this(group, toRun, name, 0);
+    this(group, target, name, 0);
   }
 
   /**
@@ -308,7 +313,7 @@ public class Thread implements Runnable
    * @throws IllegalThreadStateException if group is destroyed
    * @since 1.4
    */
-  public Thread(ThreadGroup group, Runnable toRun, String name, long size)
+  public Thread(ThreadGroup group, Runnable target, String name, long size)
   {
     // Bypass System.getSecurityManager, for bootstrap efficiency.
     SecurityManager sm = Runtime.securityManager;
@@ -326,7 +331,7 @@ public class Thread implements Runnable
     this.group = group;
     // Use toString hack to detect null.
     this.name = name.toString();
-    this.toRun = toRun;
+    this.runnable = target;
     this.stacksize = size;
 
     priority = current.priority;
@@ -350,7 +355,7 @@ public class Thread implements Runnable
   Thread(VMThread vmThread, String name, int priority, boolean daemon)
   {
     this.vmThread = vmThread;
-    this.toRun = null;
+    this.runnable = null;
     if (name == null)
 	name = "Thread-" + ++numAnonymousThreadsCreated;
     this.name = name;
@@ -423,6 +428,7 @@ public class Thread implements Runnable
    */
   public void destroy()
   {
+    throw new NoSuchMethodError();
   }
   
   /**
@@ -454,7 +460,7 @@ public class Thread implements Runnable
   {
     return currentThread().group.enumerate(array);
   }
-
+  
   /**
    * Get this Thread's name.
    *
@@ -492,7 +498,7 @@ public class Thread implements Runnable
    * Checks whether the current thread holds the monitor on a given object.
    * This allows you to do <code>assert Thread.holdsLock(obj)</code>.
    *
-   * @param obj the object to check
+   * @param obj the object to test lock ownership on.
    * @return true if the current thread is currently synchronized on obj
    * @throws NullPointerException if obj is null
    * @since 1.4
@@ -645,7 +651,7 @@ public class Thread implements Runnable
     if (t != null)
 	t.resume();
   }
-
+  
   /**
    * The method of Thread that will be run if there is no Runnable object
    * associated with the Thread. Thread's implementation does nothing at all.
@@ -655,14 +661,14 @@ public class Thread implements Runnable
    */
   public void run()
   {
-    if (toRun != null)
-      toRun.run();
+    if (runnable != null)
+      runnable.run();
   }
 
   /**
    * Set the daemon status of this Thread.  If this is a daemon Thread, then
    * the VM may exit even if it is still running.  This may only be called
-   * while the Thread is not running. There may be a security check,
+   * before the Thread starts running. There may be a security check,
    * <code>checkAccess</code>.
    *
    * @param daemon whether this should be a daemon thread or not
@@ -693,7 +699,7 @@ public class Thread implements Runnable
    * @see setContextClassLoader(ClassLoader)
    * @since 1.2
    */
-  public ClassLoader getContextClassLoader()
+  public synchronized ClassLoader getContextClassLoader()
   {
     // Bypass System.getSecurityManager, for bootstrap efficiency.
     SecurityManager sm = Runtime.securityManager;
@@ -715,7 +721,7 @@ public class Thread implements Runnable
    * @see getContextClassLoader()
    * @since 1.2
    */
-  public void setContextClassLoader(ClassLoader classloader)
+  public synchronized void setContextClassLoader(ClassLoader classloader)
   {
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)
