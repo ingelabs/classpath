@@ -1,3 +1,8 @@
+2004-10-01  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/geom/AffineTransform.java:
+	Fixed javadocs overall.
+
 2004-10-01  Jerry Quinn  <jlquinn@optonline.net>
 
 	* java/awt/image/IndexColorModel.java: Fix use of immutable
