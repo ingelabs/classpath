@@ -543,7 +543,7 @@ pushBack()
   * to lower case, even if lower case mode is enabled.  The token type returned
   * is the value of the quote character encountered.  Any escape sequences
   * (\b (backspace), '\t' (HTAB), \n (linefeed), \f (form feed), 'r' 
-  * (carriage return), '\"' (double quote), '\'' (single quote), '\\'
+  * (carriage return), '\"' (double quote), '\'' (single quote), '\\' 
   * (backslash), '\XXX' (octal esacpe) are converted to the appropriate
   * char values.  Invalid esacape sequences are left in untranslated.  
   * Unicode characters like ('\u0000') are not recognized. 
@@ -807,7 +807,8 @@ nextToken() throws IOException
                     break;
 
                   case 'r': // Carriage return
-                    c = '\u000d';
+                    /* c = '\u000d'; */
+                    c = '\r';
                     break;
 
                   case '"': // Double quote
