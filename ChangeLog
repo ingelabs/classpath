@@ -1,3 +1,15 @@
+2005-01-08  Michael Koch  <konqueror@gmx.de>
+
+	* resource/java/util/iso639_fr.properties,
+	resource/java/util/iso3166.properties,
+	resource/java/util/iso3166_de.properties,
+	resource/java/util/iso639-a3.properties,
+	resource/java/util/iso639_de.properties,
+	resource/java/util/iso639.properties,
+	resource/java/util/iso639-a2-old.properties,
+	resource/java/util/iso3166-a3.properties,
+	resource/java/util/iso639_ga.properties: Removed.
+
 2005-01-07  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/Package.java (getPackages): Use VMClassLoader when
