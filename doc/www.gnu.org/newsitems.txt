@@ -1,5 +1,5 @@
 <newsitem date="12 Jul 2004">
-<createlink name="GNU Classpath 0.10" url="announce/20040712.wml">
+<createlink name="GNU Classpath 0.10" url="announce/20040712.html">
 </newsitem>
 
 <newsitem date="06 Jul 2004">
