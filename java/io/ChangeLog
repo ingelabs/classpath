@@ -1,3 +1,15 @@
+2000-10-05  Warren Levy  <warrenl@cygnus.com>
+
+	* Makefile.am: Removed Replaceable.java and Resolvable.java.
+	* ObjectInputStream.java (processResolution): Fixed typo
+	in method name.
+	(processResolution): Handle readResolve method via reflection with
+	removal of Resolvable interface.
+	* ObjectOutputStream.java (writeObject): Handle writeReplace
+	method via reflection with removal of Replaceable interface.
+	* Replaceable.java: Removed.
+	* Resolvable.java: Removed.
+
 2000-08-15  Tom Tromey  <tromey@cygnus.com>
 
 	* ByteArrayOutputStream.java: Merged with libgcj.

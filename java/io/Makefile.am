@@ -64,8 +64,6 @@ PushbackInputStream.java \
 PushbackReader.java \
 RandomAccessFile.java \
 Reader.java \
-Replaceable.java \
-Resolvable.java \
 SequenceInputStream.java \
 Serializable.java \
 SerializablePermission.java \
