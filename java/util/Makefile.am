@@ -36,6 +36,7 @@ MissingResourceException.java \
 NoSuchElementException.java \
 Properties.java \
 PropertyResourceBundle.java \
+Random.java \
 ResourceBundle.java \
 Set.java \
 SimpleTimeZone.java \
