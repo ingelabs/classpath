@@ -1,3 +1,9 @@
+2003-06-22  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java: Stubbed to allow
+	compiling other classes.
+	* javax/swing/plaf/basic/BasicSplitPaneDivider.java: Likewise.
+
 2003-06-21  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/PlainSocketImpl.java:
