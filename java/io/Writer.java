@@ -98,7 +98,7 @@ flush() throws IOException;
   * This method closes the stream.  Any internal or native resources associated
   * with this stream are freed.  Any subsequent attempt to access the stream
   * might throw an exception.
-  *
+  * <p>
   * This method in this class does nothing.
   *
   * @exception IOException If an error occurs
@@ -146,7 +146,7 @@ write(char[] buf) throws IOException
 /**
   * This method writes <code>len</code> char from the specified array
   * <code>buf</code> starting at index <code>offset</code> into the array.
-  *
+  * <p>
   * Subclasses must provide an implementation of this abstract method.
   *
   * @param buf The array of char to write from

@@ -24,7 +24,7 @@ package java.io;
 /**
   * This class permits a <code>String</code> to be read as a character 
   * input stream.
-  *
+  * <p>
   * The mark/reset functionality in this class behaves differently than
   * normal.  If no mark has been set, then calling the <code>reset()</code>
   * method rewinds the read pointer to the beginning of the <code>String</code>.
@@ -120,7 +120,7 @@ markSupported()
   * This method marks the current position in the stream so that a subsequent
   * call to the <code>reset()</code> method will reset the read position in
   * the stream to this point.
-  *
+  * <p>
   * Note that the read limit, which would normally be used to specify the
   * maximum amount of characters than could be read before the mark is
   * discarded, is ignored in this class.  Objects of this class can always
@@ -219,7 +219,7 @@ read()
   * stream is encountered first.  The actual number of chars read is 
   * returned.  If no chars can be read because the stream is already at 
   * the end of stream position, a -1 is returned.
-  *
+  * <p>
   * This method does not block.
   *
   * @param buf The array into which the chars read should be stored.

@@ -307,7 +307,7 @@ reset() throws IOException
   *
   * @return The number of bytes that can be read before blocking could occur
   *
-  * @return IOException If an error occurs
+  * @exception IOException If an error occurs
   */
 public int
 available() throws IOException

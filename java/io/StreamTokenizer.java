@@ -539,7 +539,7 @@ pushBack()
   * encountered are not discarded, but rather terminate the comment.
   * <li>If a quote character is parsed, then all characters up to the 
   * second occurrence of the same quote character are parsed into a <code>String</code>
-  * This <code>String</code> is stored as <code> sval, but is not converted 
+  * This <code>String</code> is stored as <code>sval</code>, but is not converted 
   * to lower case, even if lower case mode is enabled.  The token type returned
   * is the value of the quote character encountered.  Any escape sequences
   * (\b (backspace), '\t' (HTAB), \n (linefeed), \f (form feed), 'r' 
@@ -558,6 +558,7 @@ pushBack()
   * <li>If all cases above are not met, then the character is an ordinary
   * character that is parsed as a token by itself.  The char encountered
   * is returned as the token type.
+  * </ul>
   *
   * @return The token type
   *
@@ -1007,7 +1008,8 @@ enlargeBuffer()
 /**
   * This method returns the current token value as a <code>String</code> in
   * the form "Token[x], line n", where 'n' is the current line numbers and
-  * 'x' is determined as follows:
+  * 'x' is determined as follows.
+  * <p>
   * <ul>
   * <li>If no token has been read, then 'x' is "NOTHING" and 'n' is 0
   * <li>If <code>ttype</code> is TT_EOF, then 'x' is "EOF"
