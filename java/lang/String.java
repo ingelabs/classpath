@@ -1128,4 +1128,33 @@ Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i])
     internTable.put(this, this);
     return this;
   }
+
+  /**
+   * Creates a string from the character array. The array is first copied.
+   *
+   * @param data the array of characters
+   *
+   * @return a String object that contains the characters of the character array
+   */
+  
+  public static String copyValueOf(char[] data) {
+    char[] duplicate = (char[]) data.clone();
+    return new String(duplicate);
+  }
+
+  /**
+   * Creates a string from the specifed character subarray. The array is first copied.
+   *
+   * @param data the array of characters
+   * @param offset the array index indicating the start of the subarray
+   * @param count the number of characters to use for the subarray
+   *
+   * @return a String object that contains the characters of the character subarray
+   */
+  
+  public static String copyValueOf(char[] data, int offset, int count) {
+    char[] duplicate = new char[count];
+    System.arraycopy(duplicate, 0, data, offset, count);
+    return new String(duplicate);
+  }
 }
