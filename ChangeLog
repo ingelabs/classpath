@@ -1,3 +1,9 @@
+2003-06-25  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/ObjectInputStream.java,
+	java/io/ObjectOutputStream.java:
+	Merged new versions from libgcj.
+
 2003-06-25  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/SpinnerUI.java: Initial check-in of new file.
