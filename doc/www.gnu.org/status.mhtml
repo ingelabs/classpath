@@ -53,7 +53,7 @@
      release is out.  Look for 1.2 support as soon as we have Security.
   </status>
 
-  <status "<rao>, <cbj>, <shalom>, <arenn>">
+  <status "<rao>, <cbj>, <shalom>, <arenn>" "All the Rest">
     Mostly 1.2-complete in most non-VM-specific areas, including
     Character and String.
   </status>
