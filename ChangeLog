@@ -2,6 +2,12 @@
 
 	* java/io/PushbackReader.java: Reformat.
 
+	Based on patch from Intel's ORP team:
+	* java/io/PushbackInputStream.java (available): Calculate correct 
+	number of bytes in buffer.
+	(read): Remove redundant bound check. Return bytes from both the
+	buffer and the stream.
+
 2002-03-24  Fred Gray  <fegray@uiuc.edu>
 
 	* java/lang/String.java (toCharArray): Remove optimization that
