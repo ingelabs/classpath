@@ -40,7 +40,7 @@ endif
 
 ## for JIKES
 if USER_SPECIFIED_JIKES
-JAVAC = @JIKES@ -classpath $(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/lib -d $(top_srcdir)/lib @@classes
+JAVAC = @JIKES@ -classpath $(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/lib:@USER_CLASSLIB@ -d $(top_srcdir)/lib @classes
 endif
 
 ## for JAVAH
@@ -49,11 +49,11 @@ if USER_SPECIFIED_JAVAH
 ##   if USER_SPECIFIED_CLASSLIB
 if USER_SPECIFIED_CLASSLIB
 ##     JAVAH = 
-JAVAHEADER = @USER_JAVAH@ -classpath ../lib:@USER_CLASSLIB@ -d ../include
+JAVAH = @USER_JAVAH@ -jni -classpath ../lib:@USER_CLASSLIB@ 
 ##   else
 else
 ##     JAVAH = 
-JAVAHEADER = @USER_JAVAH@ -classpath ../lib:/usr/local/java/lib/classes.zip -d ../include
+JAVAH = @USER_JAVAH@ -jni -classpath ../lib:/usr/local/java/lib/classes.zip
 ##   endif
 endif
 ## else
@@ -61,17 +61,17 @@ else
 ##   if JAPHAR
 if JAPHAR
 ##     JAVAH = 
-JAVAHEADER = @JAPHAR_JAVAH@ --classpath ../lib:@JAPHAR_CLASSLIB@ -d ../include  
+JAVAH = @JAPHAR_JAVAH@ --jni --classpath ../lib:@USER_CLASSLIB@
 ##   else
 else
 ##     if USER_SPECIFIED_CLASSLIB
 if USER_SPECIFIED_CLASSLIB
 ##       JAVAH = 
-JAVAHEADER = javah -classpath ../lib:@USER_CLASSLIB@ -d ../include
+JAVAH = javah -jni -classpath ../lib:@USER_CLASSLIB@
 ##     else
 else
 ##       JAVAH = 
-JAVAHEADER = javah -classpath ../lib:/usr/local/java/lib/classes.zip -d ../include
+JAVAH = javah -jni -classpath ../lib:/usr/local/java/lib/classes.zip
 ##     endif
 endif
 ##   endif
@@ -89,21 +89,24 @@ install-data-local :
 	unzip -d $(datadir) glibj.zip
 
 include $(JAVA_DEPEND)
+include $(HEADERS_DEPEND)
 
-all: jar-classes $(MAKEFILE_DEPEND)
+all: jar-classes $(MAKEFILE_DEPEND) $(HEADERS_DEPEND) $(HEADERS)
+
+$(HEADERS) : jar-classes
 
 .PHONY: jar-classes
 jar-classes glibj.zip: classes compile-classes
-	-mkdir gnu
-	-mkdir gnu/java
-	-mkdir gnu/java/locale
+	if ! [ -e gnu ]; then -mkdir gnu; fi
+	if ! [ -e gnu/java ]; then -mkdir gnu/java; fi
+	if ! [ -e gnu/java/locale ]; then -mkdir gnu/java/locale; fi
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
 	# do something with all the .u files from jikes
-	$(ZIP) -r -D glibj.zip gnu java javax
+	$(ZIP) -r -D glibj.zip gnu java javax > /dev/null
 
 classes: gen-classlist.sh standard.omit $(top_srcdir)/java $(top_srcdir)/javax $(top_srcdir)/gnu
-	$(SHELL) -c "cd $(top_srcdir)/lib; ./gen-classlist.sh standard"
+	$(SHELL) -c "cd $(top_srcdir)/lib && ./gen-classlist.sh standard"
 
 .PHONY: dep
 dep: classes
@@ -111,7 +114,7 @@ dep: classes
 
 .PHONY: compile-classes
 compile-classes: classes $(JAVA_SRCS) 
-	$(SHELL) -c "@JIKES@ -classpath ..:../vm/reference:. +CSO +M -d . @classes 2>errors.txt; exit 0"
+	$(SHELL) -c "@JIKES@ -classpath ..:../vm/reference:.:@USER_CLASSLIB@ +CSO +M -d . @classes 2>errors.txt; exit 0"
 	touch compile-classes
 
 $(MAKEFILE_DEPEND): classes $(HEADERS_DEPEND) $(CLASSES_DEPEND)
