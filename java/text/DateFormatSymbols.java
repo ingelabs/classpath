@@ -43,6 +43,52 @@ public class DateFormatSymbols
 
   private final String[] formatPrefixes = { "short", "medium", "long", "full", "default" };
 
+  private static boolean
+  arrayEquals(Object[] o1, Object[] o2)
+  {
+    if (o1 == null)
+      {
+        if (o2 == null)
+          return(true);
+        else
+          return(false);
+      }
+    else
+      if (o2 == null)
+        return(false);
+  
+    // We assume ordering is important.
+    for (int i = 0; i < o1.length; i++)
+      if (o1[i] instanceof Object[])
+        {
+          if (o2[i] instanceof Object[]) 
+            {
+              if (!arrayEquals((Object[])o1[i], (Object[])o2[i]))
+                return(false);
+            }
+          else
+            return(false);
+        }
+      else
+        {
+          if (o1[i] == null)
+            {
+              if (o2[i] == null)
+                return(true);
+              else
+                return(false);
+            }
+          else
+            if (o2[1] == null)
+              return(false);
+
+          if (!o1[i].equals(o2[i]))
+            return(false);
+        }
+  
+    return(true);
+  }
+
   // These are each arrays with a value for SHORT, MEDIUM, LONG, FULL,
   // and DEFAULT (constants defined in java.text.DateFormat).  While
   // not part of the official spec, we need a way to get at locale-specific
@@ -134,21 +180,21 @@ public class DateFormatSymbols
 
     DateFormatSymbols dfs = (DateFormatSymbols)obj;
 
-    if (!dfs.ampms.equals(ampms))
+    if (!arrayEquals(getAmPmStrings(), dfs.getAmPmStrings()))
       return(false);
-    if (!dfs.eras.equals(eras))
+    if (!arrayEquals(getEras(), dfs.getEras()))
       return(false);
-    if (!dfs.months.equals(months))
+    if (!arrayEquals(getMonths(), dfs.getMonths()))
       return(false);
-    if (!dfs.shortMonths.equals(shortMonths))
+    if (!arrayEquals(getShortMonths(), dfs.getShortMonths()))
       return(false);
-    if (!dfs.weekdays.equals(weekdays))
+    if (!arrayEquals(getWeekdays(), dfs.getWeekdays()))
       return(false);
-    if (!dfs.shortWeekdays.equals(shortWeekdays))
+    if (!arrayEquals(getShortWeekdays(), dfs.getShortWeekdays()))
       return(false);
-    if (!dfs.zoneStrings.equals(zoneStrings))
+    if (!arrayEquals(getZoneStrings(), dfs.getZoneStrings()))
       return(false);
-    if (!dfs.localPatternChars.equals(localPatternChars))
+    if (!getLocalPatternChars().equals(dfs.getLocalPatternChars()))
       return(false);
 
     // Don't check non-spec variables
