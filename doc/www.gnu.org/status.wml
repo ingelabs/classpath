@@ -8,7 +8,7 @@
 <lang:new id=en short>
 <lang:star:slice:>
 
-<set-var last-modified-author="<cbj>">
+<set-var last-modified-author="<mjw>">
 
 #include <include/macros.wml>
 <header title="<en>GNU Classpath Status</en>">
@@ -24,12 +24,11 @@
 <package name="java.awt">
   <status name="Various">
     <en>
-    The AWT classes we have are licensed under the LGPL although RMS
-    has demanded this be changed to the GPL.  At the same time the GCJ
-    team has written their own AWT that is available under a license
-    more like the rest of GNU Classpath and this may be available in
-    GCC 3.0.  For now these AWT issues remain unresolved and GNU
-    Classpath does not have a working AWT.
+    Most 1.1 classes have been written and a few 1.2 classes have been
+    implemented. There is a mostly working GTK+ peer implementation.
+    The AWT classes don't work out of the box at the moment. Work is
+    currently underway to merge the libgcj and Classpath classes and get
+    the peers working with gcj. See the mailinglist archives for progress.
     </en>
   </status>
 </package>
@@ -75,14 +74,16 @@
   <status name="Various" component="VM Interface">
     <en>
      1.1-complete.  A little shuffling will commence now that the first
-     release is out.  Look for 1.2 support as soon as we have Security.
+     release is out.  Most of the 1.2 classloading support is in place but
+     not used at the moment. This will need some VM support.
      </en>
   </status>
 
   <status name="Various" component="All the Rest">
     <en>
     Mostly 1.2-complete in most non-VM-specific areas, including
-    Character and String.
+    Character and String. Some classes have been updated to support 1.3
+    and 1.4.
     </en>
   </status>
 </package>
@@ -90,9 +91,8 @@
 <package name="java.math">
   <status name="Various"> 
     <en>
-    With the exception of <code>BigInteger (int, int, Random)</code>,
-    java.math is fully Java 1.2 compliant.  Implementation depends
-    upon <A HREF="/software/gmp/gmp.html">gmp</A>.
+    Pure java implementation that is fully Java 1.2 compliant.
+    Based on code found in <link url="/software/kawa/kawa.html" name="Kawa">.
     </en>
   </status>
 </package>
@@ -104,7 +104,7 @@
     and URLClassLoader. Included are protocol handlers for the "http"
     and "file" protocol, and a "text/plain" content handler. More need
     to be written, however. Note also that the HTTP protocol handler
-    only supports the "GET" request method.
+    only supports the "GET" request method. Needs merging with libgcj.
     </en>
   </status>
 </package>
@@ -121,7 +121,7 @@
 <package name="java.security">
   <status name="Various">
     <en>
-    All done for 1.1, but not tested and not fully integrated with the
+    All done for 1.2, but not tested and not fully integrated with the
     rest of Classpath.
     </en>
   </status>
@@ -146,7 +146,7 @@
 <package name="java.util">
   <status name="Various" component="Collections">
     <en>
-    Full Java 1.2 implementation complete.
+    Full Java 1.3 implementation complete. Most of 1.4 done.
     </en>
   </status>
 
@@ -154,6 +154,25 @@
     <en>
     Most of java.util has been implemented by various contributors.
     It's pretty much Java 1.2 compliant.
+    </en>
+  </status>
+</package>
+
+<package name="java.util.jar">
+  <status name="Various">
+    <en>
+    Mostly 1.3 complete but jar signatures and Manifest verification hasn't
+    been implemented yet.
+    </en>
+  </status>
+</package>
+
+<package name="java.util.prefs">
+  <status name="Various">
+    <en>
+    Basic structure has been implemented but reading and writing of the
+    preferences does not work yet. Code currently not bundled in the release.
+    Please look in CVS for the current status.
     </en>
   </status>
 </package>
