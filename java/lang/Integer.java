@@ -176,7 +176,7 @@ public final class Integer extends Number implements Comparable
     if (val == null) return def;
     try
       {
-      return decode(nm);
+      return decode(val);
       }
     catch (NumberFormatException e)
       {
