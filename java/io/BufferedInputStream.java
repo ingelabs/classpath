@@ -164,6 +164,20 @@ BufferedInputStream(InputStream in, int bufsize)
  */
 
 /**
+  * This method closes the underlying input stream and frees any
+  * resources associated with it.
+  *
+  * @exception IOException If an error occurs.
+  */
+public void
+close() throws IOException
+{
+  super.close();
+}
+
+/*************************************************************************/
+
+/**
   * This method marks a position in the input to which the stream can be
   * "reset" by calling the <code>reset()</code> method.  The parameter
   * <code>readlimit</code> is the number of bytes that can be read from the 
