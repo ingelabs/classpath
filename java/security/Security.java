@@ -407,12 +407,19 @@ public final class Security extends Object
 
     serviceName = serviceName.toUpperCase()+".";
     Provider[] providers = getProviders();
+    int ndx;
     for (int i = 0; i < providers.length; i++)
       for (Enumeration e = providers[i].propertyNames(); e.hasMoreElements(); )
         {
           String service = ((String) e.nextElement()).trim();
           if (service.toUpperCase().startsWith(serviceName))
-            result.add(service.substring(serviceName.length()));
+            {
+              service = service.substring(serviceName.length()).trim();
+              ndx = service.indexOf(' '); // get rid of attributes
+              if (ndx != -1)
+                service = service.substring(0, ndx);
+              result.add(service);
+            }
         }
     return Collections.unmodifiableSet(result);
   }
