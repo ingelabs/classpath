@@ -1,5 +1,5 @@
-/* AbstractTableModel.java --
-   Copyright (C) 2002 Free Software Foundation, Inc.
+/* StateEditable.java --
+   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -44,19 +44,17 @@ import java.util.Hashtable;
  * StateEditable interface
  * @author Andrew Selkirk
  */
-public interface StateEditable {
+public interface StateEditable
+{
+  /**
+   * Restore State
+   * @param state State
+   */
+  public void restoreState(Hashtable state);
 
-	/**
-	 * Restore State
-	 * @param state State
-	 */
-	public void restoreState(Hashtable state);
-
-	/**
-	 * Store State
-	 * @param state State
-	 */
-	public void storeState(Hashtable state);
-
-
+  /**
+   * Store State
+   * @param state State
+   */
+  public void storeState(Hashtable state);
 } // StateEditable
