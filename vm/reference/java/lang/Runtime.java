@@ -195,7 +195,7 @@ public class Runtime
     if (sm != null)
       sm.checkExit(status);
 
-    if(runShutdownHooks())
+    if (runShutdownHooks())
       halt(status);
 
     // Someone else already called runShutdownHooks().
@@ -206,9 +206,18 @@ public class Runtime
         if (shutdownHooks != null)
           {
             shutdownHooks.remove(Thread.currentThread());
+	    // Shutdown hooks are still running, so we clear status to
+	    // make sure we don't halt.
+	    status = 0;
           }
       }
-    
+
+    // If exit() is called again after the shutdown hooks have run, but
+    // while finalization for exit is going on and the status is non-zero
+    // we halt immediately.
+    if (status != 0)
+      halt(status);
+
     while (true)
       try
         {
