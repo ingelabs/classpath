@@ -131,6 +131,28 @@ public abstract class AWTEvent extends java.util.EventObject
 			   HIERARCHY_EVENT_MASK        = 1 << 15,
 			   HIERARCHY_BOUNDS_EVENT_MASK = 1 << 16;
 
+
+  /**
+   * The mask for mouse wheel events.
+   * @since 1.4
+   */
+  public static final long MOUSE_WHEEL_EVENT_MASK = 1 << 17;
+
+
+  /**
+   * The mask for window state events.
+   * @since 1.4
+   */
+  public static final long WINDOW_STATE_EVENT_MASK = 1 << 18;
+
+
+  /**
+   * The mask for window focus events.
+   * @since 1.4
+   */
+  public static final long WINDOW_FOCUS_EVENT_MASK = 1 << 19;
+
+
   /**
    * Initializes a new instance of <code>AWTEvent</code> from the
    * specified Java 1.0 event object.
