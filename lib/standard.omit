@@ -8,6 +8,7 @@
 ../java/awt/event/InputMethodEvent.java$
 ../java/awt/event/InputMethodListener.java$
 ../java/awt/event/InvocationEvent.java$
+../java/nio/.*$
 ../java/util/prefs/.*$
 ../gnu/java/util/prefs/.*$
 ../gnu/classpath/tools/.*$

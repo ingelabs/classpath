@@ -1,3 +1,7 @@
+2002-03-11  Mark Wielaard <mark@klomp.org>
+
+	* lib/standard.omit: add java.nio package.
+
 2002-03-10  Tom Tromey  <tromey@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c
