@@ -1,7 +1,7 @@
 2003-06-16  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/border/LineBorder.java: Re-written from scratch.
-	* javax/swing/border/doc-files/LneBorder-1.png: New image.
+	* javax/swing/border/doc-files/LineBorder-1.png: New image.
 
 2003-06-13  C. Brian Jones  <cbj@gnu.org>
 
