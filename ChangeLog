@@ -1,5 +1,11 @@
 2004-12-07  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/locale/LocaleInformation_pa.java,
+	gnu/java/locale/LocaleInformation_pa_IN.java:
+	New locale files.
+
+2004-12-07  Michael Koch  <konqueror@gmx.de>
+
 	* javax/imageio/stream/FileImageOutputStream.java:
 	Implemented.
 
