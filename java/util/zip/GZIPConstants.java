@@ -1,4 +1,4 @@
-/* java.util.zip.Checksum
+/* java.util.zip.GZIPConstants
    Copyright (C) 2001 Free Software Foundation, Inc.
 
 This file is part of Jazzlib.
@@ -26,37 +26,28 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util.zip;
 
-/**
- * This is an interface for calculating checksums.
- *
- * @author Jochen Hoenicke
- * @since JDK 1.1
- */
-public interface Checksum {
+interface GZIPConstants {
 
-  /**
-   * Updates the checksum with the byte b.
-   * @param b the byte, only the lower 8 bits are used.
-   */
-  public void update(int b); 
+  /* Magic number found at start of GZIP header */
 
-  /**
-   * Calculates the checksum of the given part of the byte array, updating
-   * its current value.  
-   * @param b an array of bytes
-   * @param off the offset into the array.
-   * @param len the length.
-   */
-  public void update(byte[] b, int off, int len);
+  public static final int GZIP_MAGIC = 0x1f8b;
 
-  /**
-   * Resets the checksum to the initial value.
-   */
-  public void reset();
+  /*    The flag byte is divided into individual bits as follows:
+	
+	bit 0   FTEXT
+	bit 1   FHCRC
+	bit 2   FEXTRA
+	bit 3   FNAME
+	bit 4   FCOMMENT
+	bit 5   reserved
+	bit 6   reserved
+	bit 7   reserved
+	*/
 
-  /**
-   * Gets the current checksum value.
-   */
-  public long getValue(); 
+  public static final int FTEXT = 0x1;
+  public static final int FHCRC = 0x2;
+  public static final int FEXTRA = 0x4;
+  public static final int FNAME = 0x8;
+  public static final int FCOMMENT = 0x10;
+
 }
-

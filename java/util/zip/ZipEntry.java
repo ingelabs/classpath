@@ -1,0 +1,371 @@
+/* java.util.zip.ZipEntry
+   Copyright (C) 2001 Free Software Foundation, Inc.
+
+This file is part of Jazzlib.
+
+Jazzlib is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+Jazzlib is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA.
+
+As a special exception, if you link this library with other files to
+produce an executable, this library does not by itself cause the
+resulting executable to be covered by the GNU General Public License.
+This exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU General Public License. */
+
+package java.util.zip;
+import java.util.Calendar;
+import java.util.TimeZone;
+import java.util.Date;
+
+/**
+ * This class represents a member of a zip archive.  ZipFile and
+ * ZipInputStream will give you instances of this class as information
+ * about the members in an archive.  On the other hand ZipOutputStream
+ * needs an instance of this class to create a new member.
+ *
+ * @author Jochen Hoenicke 
+ */
+public class ZipEntry implements Cloneable
+{
+  private static int KNOWN_SIZE   = 1;
+  private static int KNOWN_CSIZE  = 2;
+  private static int KNOWN_CRC    = 4;
+  private static int KNOWN_TIME   = 8;
+
+  private static Calendar cal = Calendar.getInstance();
+
+  private String name;
+  private int size;
+  private int compressedSize;
+  private int crc;
+  private int time;
+  private short known = 0;
+  private short method = -1;
+  private byte[] extra = null;
+  private String comment = null;
+
+  int zipFileIndex = -1;  /* used by ZipFile */
+  int flags;              /* used by ZipOutputStream */
+  int offset;             /* used by ZipFile and ZipOutputStream */
+
+  /**
+   * Creates a zip entry with the given name.
+   * @param name the name. May include directory components separated
+   * by '/'.
+   */
+  public ZipEntry(String name)
+  {
+    if (name == null)
+      throw new NullPointerException();
+    this.name = name;
+  }
+
+  /**
+   * Creates a copy of the given zip entry.
+   * @param e the entry to copy.
+   */
+  public ZipEntry(ZipEntry e)
+  {
+    name = e.name;
+    known = e.known;
+    size = e.size;
+    compressedSize = e.compressedSize;
+    crc = e.crc;
+    time = e.time;
+    method = e.method;
+    extra = e.extra;
+    comment = e.comment;
+  }
+
+  void setDOSTime(int dostime)
+  {
+    int sec = 2 * (dostime & 0x1f);
+    int min = (dostime >> 5) & 0x3f;
+    int hrs = (dostime >> 11) & 0x1f;
+    int day = (dostime >> 16) & 0x1f;
+    int mon = ((dostime >> 21) & 0xf) - 1;
+    int year = ((dostime >> 25) & 0x7f) + 1980; /* since 1900 */
+    
+    // Guard against invalid or missing date causing
+    // IndexOutOfBoundsException.
+    try
+      {
+	synchronized (cal)
+	  {
+	    cal.set(year, mon, day, hrs, min, sec);
+	    time = (int) (cal.getTime().getTime() / 1000L);
+	  }
+	known |= KNOWN_TIME;
+      }
+    catch (RuntimeException ex)
+      {
+	/* Ignore illegal time stamp */
+	known &= ~KNOWN_TIME;
+      }
+  }
+
+  int getDOSTime()
+  {
+    if ((known & KNOWN_TIME) == 0)
+      return 0;
+    synchronized (cal)
+      {
+	cal.setTime(new Date(time*1000L));
+	return (cal.get(cal.YEAR) - 1980 & 0x7f) << 25
+	  | (cal.get(cal.MONTH) + 1) << 21
+	  | (cal.get(cal.DAY_OF_MONTH)) << 16
+	  | (cal.get(cal.HOUR_OF_DAY)) << 11
+	  | (cal.get(cal.MINUTE)) << 5
+	  | (cal.get(cal.SECOND)) >> 1;
+      }
+  }
+
+  /**
+   * Creates a copy of this zip entry.
+   */
+  /**
+   * Clones the entry.
+   */
+  public Object clone()
+  {
+    try
+      {
+	return super.clone();
+      }
+    catch (CloneNotSupportedException ex)
+      {
+	throw new InternalError();
+      }
+  }
+
+  /**
+   * Returns the entry name.  The path components in the entry are
+   * always separated by slashes ('/').  
+   */
+  public String getName()
+  {
+    return name;
+  }
+
+  /**
+   * Sets the time of last modification of the entry.
+   * @time the time of last modification of the entry.
+   */
+  public void setTime(long time)
+  {
+    this.time = (int) (time / 1000L);
+    this.known |= KNOWN_TIME;
+  }
+
+  /**
+   * Gets the time of last modification of the entry.
+   * @return the time of last modification of the entry, or -1 if unknown.
+   */
+  public long getTime()
+  {
+    return (known & KNOWN_TIME) != 0 ? time * 1000L : -1;
+  }
+
+  /**
+   * Sets the size of the uncompressed data.
+   * @exception IllegalArgumentException if size is not in 0..0xffffffffL
+   */
+  public void setSize(long size)
+  {
+    if ((size & 0xffffffff00000000L) != 0)
+	throw new IllegalArgumentException();
+    this.size = (int) size;
+    this.known |= KNOWN_SIZE;
+  }
+
+  /**
+   * Gets the size of the uncompressed data.
+   * @return the size or -1 if unknown.
+   */
+  public long getSize()
+  {
+    return (known & KNOWN_SIZE) != 0 ? size & 0xffffffffL : -1L;
+  }
+
+  /**
+   * Sets the size of the compressed data.
+   * @exception IllegalArgumentException if size is not in 0..0xffffffffL
+   */
+  public void setCompressedSize(long csize)
+  {
+    if ((csize & 0xffffffff00000000L) != 0)
+	throw new IllegalArgumentException();
+    this.compressedSize = (int) csize;
+    this.known |= KNOWN_CSIZE;
+  }
+
+  /**
+   * Gets the size of the compressed data.
+   * @return the size or -1 if unknown.
+   */
+  public long getCompressedSize()
+  {
+    return (known & KNOWN_CSIZE) != 0 ? compressedSize & 0xffffffffL : -1L;
+  }
+
+  /**
+   * Sets the crc of the uncompressed data.
+   * @exception IllegalArgumentException if crc is not in 0..0xffffffffL
+   */
+  public void setCrc(long crc)
+  {
+    if ((crc & 0xffffffff00000000L) != 0)
+	throw new IllegalArgumentException();
+    this.crc = (int) crc;
+    this.known |= KNOWN_CRC;
+  }
+
+  /**
+   * Gets the crc of the uncompressed data.
+   * @return the crc or -1 if unknown.
+   */
+  public long getCrc()
+  {
+    return (known & KNOWN_CRC) != 0 ? crc & 0xffffffffL : -1L;
+  }
+
+  /**
+   * Sets the compression method.  Only DEFLATED and STORED are
+   * supported.
+   * @exception IllegalArgumentException if method is not supported.
+   * @see ZipOutputStream#DEFLATED
+   * @see ZipOutputStream#STORED 
+   */
+  public void setMethod(int method)
+  {
+    if (method != ZipOutputStream.STORED
+	&& method != ZipOutputStream.DEFLATED)
+	throw new IllegalArgumentException();
+    this.method = (short) method;
+  }
+
+  /**
+   * Gets the compression method.  
+   * @return the compression method or -1 if unknown.
+   */
+  public int getMethod()
+  {
+    return method;
+  }
+
+  /**
+   * Sets the extra data.
+   * @exception IllegalArgumentException if extra is longer than 0xffff bytes.
+   */
+  public void setExtra(byte[] extra)
+  {
+    if (extra == null) 
+      {
+	this.extra = null;
+	return;
+      }
+
+    if (extra.length > 0xffff)
+      throw new IllegalArgumentException();
+    this.extra = extra;
+    try
+      {
+	int pos = 0;
+	while (pos < extra.length) 
+	  {
+	    int sig = (extra[pos++] & 0xff)
+	      | (extra[pos++] & 0xff) << 8;
+	    int len = (extra[pos++] & 0xff)
+	      | (extra[pos++] & 0xff) << 8;
+	    if (sig == 0x5455) 
+	      {
+		/* extended time stamp */
+		int flags = extra[pos];
+		if ((flags & 1) != 0)
+		  {
+		    time = ((extra[pos+1] & 0xff)
+			    | (extra[pos+2] & 0xff) << 8
+			    | (extra[pos+3] & 0xff) << 16
+			    | (extra[pos+4] & 0xff) << 24);
+		    known |= KNOWN_TIME;
+		  }
+	      }
+	    pos += len;
+	  }
+      }
+    catch (ArrayIndexOutOfBoundsException ex)
+      {
+	/* be lenient */
+	return;
+      }
+  }
+
+  /**
+   * Gets the extra data.
+   * @return the extra data or null if not set.
+   */
+  public byte[] getExtra()
+  {
+    return extra;
+  }
+
+  /**
+   * Sets the entry comment.
+   * @exception IllegalArgumentException if comment is longer than 0xffff.
+   */
+  public void setComment(String comment)
+  {
+    if (comment.length() > 0xffff)
+      throw new IllegalArgumentException();
+    this.comment = comment;
+  }
+
+  /**
+   * Gets the comment.
+   * @return the comment or null if not set.
+   */
+  public String getComment()
+  {
+    return comment;
+  }
+
+  /**
+   * Gets true, if the entry is a directory.  This is solely
+   * determined by the name, a trailing slash '/' marks a directory.  
+   */
+  public boolean isDirectory()
+  {
+    int nlen = name.length();
+    return nlen > 0 && name.charAt(nlen - 1) == '/';
+  }
+
+  /**
+   * Gets the string representation of this ZipEntry.  This is just
+   * the name as returned by getName().
+   */
+  public String toString()
+  {
+    return name;
+  }
+
+  /**
+   * Gets the hashCode of this ZipEntry.  This is just the hashCode
+   * of the name.  Note that the equals method isn't changed, though.
+   */
+  public int hashCode()
+  {
+    return name.hashCode();
+  }
+}

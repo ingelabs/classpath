@@ -1,4 +1,4 @@
-/* java.util.zip.Checksum
+/* java.util.zip.DeflaterPending
    Copyright (C) 2001 Free Software Foundation, Inc.
 
 This file is part of Jazzlib.
@@ -27,36 +27,17 @@ executable file might be covered by the GNU General Public License. */
 package java.util.zip;
 
 /**
- * This is an interface for calculating checksums.
+ * This class stores the pending output of the Deflater.
  *
  * @author Jochen Hoenicke
- * @since JDK 1.1
+ * @date Jan 5, 2000 
  */
-public interface Checksum {
 
-  /**
-   * Updates the checksum with the byte b.
-   * @param b the byte, only the lower 8 bits are used.
-   */
-  public void update(int b); 
-
-  /**
-   * Calculates the checksum of the given part of the byte array, updating
-   * its current value.  
-   * @param b an array of bytes
-   * @param off the offset into the array.
-   * @param len the length.
-   */
-  public void update(byte[] b, int off, int len);
-
-  /**
-   * Resets the checksum to the initial value.
-   */
-  public void reset();
-
-  /**
-   * Gets the current checksum value.
-   */
-  public long getValue(); 
+class DeflaterPending extends PendingBuffer
+{
+  public DeflaterPending()
+  {
+    super(DeflaterConstants.PENDING_BUF_SIZE);
+  }
 }
 
