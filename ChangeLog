@@ -1,5 +1,11 @@
 2004-06-06  Steven Augart  <augart@watson.ibm.com>
 
+	* doc/vmintegration.texinfo (JNI Version): New section.
+	(VM Threading Model): New section.
+	(Miscellaneous VM Requirements): New chapter.
+
+2004-06-06  Steven Augart  <augart@watson.ibm.com>
+
 	--portable-native-sync implemented for GTK2:
 	
 	* gnu/native/jni/gtk-peer/gthread-jni.c: Indentation fixes.

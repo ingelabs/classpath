@@ -65,7 +65,7 @@ This document is incomplete, as we are still in alpha with the interface.
 * Initialization::              Initializing the classes
 * Classpath Hooks::             Hooks from Classpath to the VM
 * VM Hooks::                    Hooks from the underlying VM to Classpath
-
+* Miscellaneous VM Requirements::  
 @end menu
 
 @node Introduction, Initialization, Top, Top
@@ -224,7 +224,7 @@ Call this method from @code{Thread} when a @code{Thread} is stopped or destroyed
 @end itemize
 
 
-@node VM Hooks,  , Classpath Hooks, Top
+@node VM Hooks, Miscellaneous VM Requirements, Classpath Hooks, Top
 @comment node-name, next, previous, up
 @chapter VM Hooks
 
@@ -293,5 +293,41 @@ reinitialize it yourself, there should be no harm.
 
 @end itemize
 
+@node Miscellaneous VM Requirements,  , VM Hooks, Top
+@comment  node-name,  next,  previous,  up
+@chapter Miscellaneous VM Requirements
+
+Classpath places a few requirements on the VM that uses it.
+
+@menu
+* JNI Version::                 
+* VM Threading Model::          
+@end menu
+
+@node JNI Version, VM Threading Model, Miscellaneous VM Requirements, Miscellaneous VM Requirements
+@comment  node-name,  next,  previous,  up
+@section JNI Version
+
+Classpath currently uses only JNI 1.1, except for one JNI 1.2 function
+in the JNI Invocation API: GetEnv().  And GetEnv() is only used in the
+--portable-native-sync code, so it's only actually used by Jikes RVM
+and Kaffe.  
+
+A future direction will probably be to require that all VMs provide
+JNI 1.2.  If this poses problems, please raise them on the classpath
+mailing list. 
+
+@node VM Threading Model,  , JNI Version, Miscellaneous VM Requirements
+@comment  node-name,  next,  previous,  up
+@section VM Threading Model
+
+Classpath's AWT peers use GTK+.  GTK+ uses GLIB.  GLIB by default uses
+the platform's native threading model -- pthreads in most cases.
+
+If the Java runtime doesn't use the native threading model, then you
+should specify --portable-native-sync when configuring Classpath, so
+that GLIB will use the Java threading primitives instead.
 
 @bye
+
+
