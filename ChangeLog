@@ -1,5 +1,10 @@
 2003-07-30  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* native/jni/java-io/FileDescriptor.c:
+	fixed warning in Java_java_io_FileDescriptor_nativeSync()
+
+2003-07-30  Torsten Rupp  <rupp@lisa.aicas.com>
+
 	* java/net/PlainSocketImpl.java:
 	implemented connect(SocketAddress address, int timeout)
         (preliminary implementation; timeout still not supported)
