@@ -102,6 +102,11 @@ public final class PlainSocketImpl extends SocketImpl
   {
   }
 
+  public int getNativeFD()
+  {
+    return native_fd;
+  }
+
   /**
    * Sets the specified option on a socket to the passed in object.  For
    * options that take an integer argument, the passed in object is an

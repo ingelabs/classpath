@@ -101,6 +101,11 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
   {
   }
 
+  public int getNativeFD()
+  {
+    return native_fd;
+  }
+
   /**
    * Binds this socket to a particular port and interface
    *

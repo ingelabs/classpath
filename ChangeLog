@@ -1,5 +1,24 @@
 2003-09-26  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/PlainDatagramSocketImpl.java,
+	gnu/java/net/PlainSocketImpl.java:
+	(getNativeFD): New method.
+	* gnu/java/nio/DatagramChannelImpl.java,
+	gnu/java/nio/DatagramChannelSelectionKey.java,
+	gnu/java/nio/SelectionKeyImpl.java,
+	gnu/java/nio/SelectorImpl.java,
+	gnu/java/nio/SocketChannelImpl.java:
+	Many fixes, I cant write them all down here again.
+	Files are merged from libgcj.
+	* gnu/java/nio/DatagramChannelSelectionKey.java,
+	gnu/java/nio/SocketChannelSelectionKey.java:
+	New files.
+	* gnu/java/nio/Makefile.am (EXTRA_DIST):
+	Added DatagramChannelSeclectionKey.java and
+	SocketChannelSelectionKey.java.
+
+2003-09-26  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/ByteBufferHelper.java:
 	Totally reworked with help from Eric Blake.
 

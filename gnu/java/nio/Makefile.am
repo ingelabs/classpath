@@ -2,6 +2,7 @@ SUBDIRS = charset
 
 EXTRA_DIST= \
 DatagramChannelImpl.java \
+DatagramChannelSelectionKey.java \
 FileLockImpl.java \
 PipeImpl.java \
 NIOConstants.java \
@@ -11,4 +12,5 @@ SelectionKeyImpl.java \
 SelectorImpl.java \
 SelectorProviderImpl.java \
 ServerSocketChannelImpl.java \
-SocketChannelImpl.java
+SocketChannelImpl.java \
+SocketChannelSelectionKey.java
