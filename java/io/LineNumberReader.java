@@ -31,7 +31,7 @@ package java.io;
   * line terminator is encountered, the line number is incremented to 1, and
   * so on.  Also note that actual "\r" and "\n" characters are looked for.
   * The system dependent line separator sequence is ignored.
-  *
+  * <p>
   * This class counts only line termination characters.  If the last line
   * read from the stream does not end in a line termination sequence, it
   * will not be counted as a line.
@@ -143,7 +143,7 @@ setLineNumber(int line_number)
   * 11 chars of data are read from the stream before the <code>reset()</code>
   * method is called, then the mark is invalid and the stream object
   * instance is not required to remember the mark.
-  *
+  * <p>
   * In this class, this method will remember the current line number as well
   * as the current position in the stream.  When the <code>reset()</code> method 
   * is called, the line number will be restored to the saved line number in
@@ -171,7 +171,7 @@ mark(int readlimit) throws IOException
   * This method resets a stream to the point where the <code>mark()</code> method
   * was called.  Any chars that were read after the mark point was set will
   * be re-read during subsequent reads.
-  *
+  * <p>
   * In this class, this method will also restore the line number that was
   * current when the <code>mark()</code> method was called.
   * 
@@ -195,13 +195,13 @@ reset() throws IOException
   * This method reads an unsigned char from the input stream and returns it
   * as an int in the range of 0-255.  This method will return -1 if the
   * end of the stream has been reached.
-  *
+  * <p>
   * Note that if a line termination sequence is encountered (ie, "\r",
   * "\n", or "\r\n") then that line termination sequence is converted to
   * a single "\n" value which is returned from this method.  This means
   * that it is possible this method reads two chars from the subordinate
   * stream instead of just one.
-  *
+  * <p>
   * Note that this method will block until a char of data is available
   * to be read.
   *
@@ -244,9 +244,9 @@ read() throws IOException
   * return before reading the number of chars requested.  The actual number
   * of chars read is returned as an int.  A -1 is returned to indicated the
   * end of the stream.
-  *
+  * <p>
   * This method will block until some data can be read.
-  *
+  * <p>
   * Note that if a line termination sequence is encountered (ie, "\r",
   * "\n", or "\r\n") then that line termination sequence is converted to
   * a single "\n" value which is stored in the buffer.  Only a single

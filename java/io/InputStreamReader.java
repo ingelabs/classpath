@@ -32,7 +32,7 @@ import gnu.java.io.decode.Decoder;
   * from.  The desired encoding can either be specified by name, or if no
   * encoding is selected, the system default encoding will be used.  The
   * system default encoding name is determined from the system property
-  * <xmp>file.encoding</xmp>.  The only encodings that are guaranteed to 
+  * <code>file.encoding</code>.  The only encodings that are guaranteed to 
   * be availalbe are "8859_1" (the Latin-1 character set) and "UTF8".
   * Unforunately, Java does not provide a mechanism for listing the
   * ecodings that are supported in a given implementation.
@@ -53,11 +53,11 @@ import gnu.java.io.decode.Decoder;
   * <li>UTF8 (UCS Transformation Format-8)
   * <li>More later
   * </ul>
-  *
+  * <p>
   * It is recommended that applications do not use <code>InputStreamReader</code>'s
   * directly.  Rather, for efficiency purposes, an object of this class
   * should be wrapped by a <code>BufferedReader</code>.
-  *
+  * <p>
   * Due to a deficiency the Java class library design, there is no standard
   * way for an application to install its own byte-character encoding.
   *

@@ -30,18 +30,18 @@ package java.io;
   * byte.  Note that this class numbers lines from 0.  When the first
   * line terminator is encountered, the line number is incremented to 1, and
   * so on.
-  *
+  * <p>
   * This class counts only line termination characters.  If the last line
   * read from the stream does not end in a line termination sequence, it
   * will not be counted as a line.
-  *
+  * <p>
   * Note that since this class operates as a filter on an underlying stream,
   * it has the same mark/reset functionality as the underlying stream.  The
   * <code>mark()</code> and <code>reset()</code> methods in this class handle line numbers
   * correctly.  Calling @code{reset()} resets the line number to the point
   * at which <code>mark()</code> was called if the subordinate stream supports
   * that functionality.
-  *
+  * <p>
   * This class is deprecated in favor if <code>LineNumberReader</code> because
   * it operates on ASCII bytes instead of an encoded character stream.  This
   * class is for backward compatibility only and should not be used in
@@ -134,7 +134,7 @@ setLineNumber(int line_number)
   * of this class.  So this method can only guarantee that
   * <code>in.available() / 2</code> bytes can actually be read before blocking.
   * In practice, considerably more bytes might be read before blocking
-  *
+  * <p>
   * Note that the stream may not block if additional bytes beyond the count
   * returned by this method are read.
   *
@@ -159,12 +159,12 @@ available() throws IOException
   * 11 bytes of data are read from the stream before the <code>reset()</code>
   * method is called, then the mark is invalid and the stream object
   * instance is not required to remember the mark.
-  *
+  * <p>
   * In this class, this method will remember the current line number as well
   * as the current position in the stream.  When the <code>reset()</code> method 
   * is called, the line number will be restored to the saved line number in
   * addition to the stream position.
-  *
+  * <p>
   * This method only works if the subordinate stream supports mark/reset
   * functionality.
   *
@@ -184,10 +184,10 @@ mark(int readlimit)
   * This method resets a stream to the point where the <code>mark()</code> method
   * was called.  Any bytes that were read after the mark point was set will
   * be re-read during subsequent reads.
-  *
+  * <p>
   * In this class, this method will also restore the line number that was
   * current when the <code>mark()</code> method was called.
-  * 
+  *  <p>
   * This method only works if the subordinate stream supports mark/reset
   * functionality.
   *
@@ -207,13 +207,13 @@ reset() throws IOException
   * This method reads an unsigned byte from the input stream and returns it
   * as an int in the range of 0-255.  This method will return -1 if the
   * end of the stream has been reached.
-  *
+  * <p>
   * Note that if a line termination sequence is encountered (ie, "\r",
   * "\n", or "\r\n") then that line termination sequence is converted to
   * a single "\n" value which is returned from this method.  This means
   * that it is possible this method reads two bytes from the subordinate
   * stream instead of just one.
-  *
+  * <p>
   * Note that this method will block until a byte of data is available
   * to be read.
   *
@@ -252,9 +252,9 @@ read() throws IOException
   * return before reading the number of bytes requested.  The actual number
   * of bytes read is returned as an int.  A -1 is returned to indicated the
   * end of the stream.
-  *
+  * <p>
   * This method will block until some data can be read.
-  *
+  * <p>
   * Note that if a line termination sequence is encountered (ie, "\r",
   * "\n", or "\r\n") then that line termination sequence is converted to
   * a single "\n" value which is stored in the buffer.  Only a single
