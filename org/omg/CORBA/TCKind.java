@@ -49,397 +49,397 @@ public class TCKind
    * The integer constant, indicating IDL data type
    * <code>null</code>.
    */
-  public static int _tk_null = 0;
+  public static final int _tk_null = 0;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>void</code>.
    */
-  public static int _tk_void = 1;
+  public static final int _tk_void = 1;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>short</code>.
    */
-  public static int _tk_short = 2;
+  public static final int _tk_short = 2;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>long</code>.
    */
-  public static int _tk_long = 3;
+  public static final int _tk_long = 3;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>ushort</code>.
    */
-  public static int _tk_ushort = 4;
+  public static final int _tk_ushort = 4;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>ulong</code>.
    */
-  public static int _tk_ulong = 5;
+  public static final int _tk_ulong = 5;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>float</code>.
    */
-  public static int _tk_float = 6;
+  public static final int _tk_float = 6;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>double</code>.
    */
-  public static int _tk_double = 7;
+  public static final int _tk_double = 7;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>boolean</code>.
    */
-  public static int _tk_boolean = 8;
+  public static final int _tk_boolean = 8;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>char</code>.
    */
-  public static int _tk_char = 9;
+  public static final int _tk_char = 9;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>octet</code>.
    */
-  public static int _tk_octet = 10;
+  public static final int _tk_octet = 10;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>any</code>.
    */
-  public static int _tk_any = 11;
+  public static final int _tk_any = 11;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>TypeCode</code>.
    */
-  public static int _tk_TypeCode = 12;
+  public static final int _tk_TypeCode = 12;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>Principal</code>.
    */
-  public static int _tk_Principal = 13;
+  public static final int _tk_Principal = 13;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>objref</code>.
    */
-  public static int _tk_objref = 14;
+  public static final int _tk_objref = 14;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>struct</code>.
    */
-  public static int _tk_struct = 15;
+  public static final int _tk_struct = 15;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>union</code>.
    */
-  public static int _tk_union = 16;
+  public static final int _tk_union = 16;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>enum</code>.
    */
-  public static int _tk_enum = 17;
+  public static final int _tk_enum = 17;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>string</code>.
    */
-  public static int _tk_string = 18;
+  public static final int _tk_string = 18;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>sequence</code>.
    */
-  public static int _tk_sequence = 19;
+  public static final int _tk_sequence = 19;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>array</code>.
    */
-  public static int _tk_array = 20;
+  public static final int _tk_array = 20;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>alias</code>.
    */
-  public static int _tk_alias = 21;
+  public static final int _tk_alias = 21;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>except</code>.
    */
-  public static int _tk_except = 22;
+  public static final int _tk_except = 22;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>longlong</code>.
    */
-  public static int _tk_longlong = 23;
+  public static final int _tk_longlong = 23;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>ulonglong</code>.
    */
-  public static int _tk_ulonglong = 24;
+  public static final int _tk_ulonglong = 24;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>longdouble</code>.
    */
-  public static int _tk_longdouble = 25;
+  public static final int _tk_longdouble = 25;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>wchar</code>.
    */
-  public static int _tk_wchar = 26;
+  public static final int _tk_wchar = 26;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>wstring</code>.
    */
-  public static int _tk_wstring = 27;
+  public static final int _tk_wstring = 27;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>fixed</code>.
    */
-  public static int _tk_fixed = 28;
+  public static final int _tk_fixed = 28;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>value</code>.
    */
-  public static int _tk_value = 29;
+  public static final int _tk_value = 29;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>value_box</code>.
    */
-  public static int _tk_value_box = 30;
+  public static final int _tk_value_box = 30;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>native</code>.
    */
-  public static int _tk_native = 31;
+  public static final int _tk_native = 31;
 
   /**
    * The integer constant, indicating IDL data type
    * <code>abstract_interface</code>.
    */
-  public static int _tk_abstract_interface = 32;
+  public static final int _tk_abstract_interface = 32;
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>null</code>
    */
-  public static TCKind tk_null = new TCKind(_tk_null);
+  public static final TCKind tk_null = new TCKind(_tk_null);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>void</code>
    */
-  public static TCKind tk_void = new TCKind(_tk_void);
+  public static final TCKind tk_void = new TCKind(_tk_void);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>short</code>
    */
-  public static TCKind tk_short = new TCKind(_tk_short);
+  public static final TCKind tk_short = new TCKind(_tk_short);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>long</code>
    */
-  public static TCKind tk_long = new TCKind(_tk_long);
+  public static final TCKind tk_long = new TCKind(_tk_long);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>ushort</code>
    */
-  public static TCKind tk_ushort = new TCKind(_tk_ushort);
+  public static final TCKind tk_ushort = new TCKind(_tk_ushort);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>ulong</code>
    */
-  public static TCKind tk_ulong = new TCKind(_tk_ulong);
+  public static final TCKind tk_ulong = new TCKind(_tk_ulong);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>float</code>
    */
-  public static TCKind tk_float = new TCKind(_tk_float);
+  public static final TCKind tk_float = new TCKind(_tk_float);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>double</code>
    */
-  public static TCKind tk_double = new TCKind(_tk_double);
+  public static final TCKind tk_double = new TCKind(_tk_double);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>boolean</code>
    */
-  public static TCKind tk_boolean = new TCKind(_tk_boolean);
+  public static final TCKind tk_boolean = new TCKind(_tk_boolean);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>char</code>
    */
-  public static TCKind tk_char = new TCKind(_tk_char);
+  public static final TCKind tk_char = new TCKind(_tk_char);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>octet</code>
    */
-  public static TCKind tk_octet = new TCKind(_tk_octet);
+  public static final TCKind tk_octet = new TCKind(_tk_octet);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>any</code>
    */
-  public static TCKind tk_any = new TCKind(_tk_any);
+  public static final TCKind tk_any = new TCKind(_tk_any);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>TypeCode</code>
    */
-  public static TCKind tk_TypeCode = new TCKind(_tk_TypeCode);
+  public static final TCKind tk_TypeCode = new TCKind(_tk_TypeCode);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>Principal</code>
    */
-  public static TCKind tk_Principal = new TCKind(_tk_Principal);
+  public static final TCKind tk_Principal = new TCKind(_tk_Principal);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>objref</code>
    */
-  public static TCKind tk_objref = new TCKind(_tk_objref);
+  public static final TCKind tk_objref = new TCKind(_tk_objref);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>struct</code>
    */
-  public static TCKind tk_struct = new TCKind(_tk_struct);
+  public static final TCKind tk_struct = new TCKind(_tk_struct);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>union</code>
    */
-  public static TCKind tk_union = new TCKind(_tk_union);
+  public static final TCKind tk_union = new TCKind(_tk_union);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>enum</code>
    */
-  public static TCKind tk_enum = new TCKind(_tk_enum);
+  public static final TCKind tk_enum = new TCKind(_tk_enum);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>string</code>
    */
-  public static TCKind tk_string = new TCKind(_tk_string);
+  public static final TCKind tk_string = new TCKind(_tk_string);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>sequence</code>
    */
-  public static TCKind tk_sequence = new TCKind(_tk_sequence);
+  public static final TCKind tk_sequence = new TCKind(_tk_sequence);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>array</code>
    */
-  public static TCKind tk_array = new TCKind(_tk_array);
+  public static final TCKind tk_array = new TCKind(_tk_array);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>alias</code>
    */
-  public static TCKind tk_alias = new TCKind(_tk_alias);
+  public static final TCKind tk_alias = new TCKind(_tk_alias);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>except</code>
    */
-  public static TCKind tk_except = new TCKind(_tk_except);
+  public static final TCKind tk_except = new TCKind(_tk_except);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>longlong</code>
    */
-  public static TCKind tk_longlong = new TCKind(_tk_longlong);
+  public static final TCKind tk_longlong = new TCKind(_tk_longlong);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>ulonglong</code>
    */
-  public static TCKind tk_ulonglong = new TCKind(_tk_ulonglong);
+  public static final TCKind tk_ulonglong = new TCKind(_tk_ulonglong);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>longdouble</code>
    */
-  public static TCKind tk_longdouble = new TCKind(_tk_longdouble);
+  public static final TCKind tk_longdouble = new TCKind(_tk_longdouble);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>wchar</code>
    */
-  public static TCKind tk_wchar = new TCKind(_tk_wchar);
+  public static final TCKind tk_wchar = new TCKind(_tk_wchar);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>wstring</code>
    */
-  public static TCKind tk_wstring = new TCKind(_tk_wstring);
+  public static final TCKind tk_wstring = new TCKind(_tk_wstring);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>fixed</code>
    */
-  public static TCKind tk_fixed = new TCKind(_tk_fixed);
+  public static final TCKind tk_fixed = new TCKind(_tk_fixed);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>value</code>
    */
-  public static TCKind tk_value = new TCKind(_tk_value);
+  public static final TCKind tk_value = new TCKind(_tk_value);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>value_box</code>
    */
-  public static TCKind tk_value_box = new TCKind(_tk_value_box);
+  public static final TCKind tk_value_box = new TCKind(_tk_value_box);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>native</code>
    */
-  public static TCKind tk_native = new TCKind(_tk_native);
+  public static final TCKind tk_native = new TCKind(_tk_native);
 
   /**
    * The TCKind constant, indicating IDL data type
    * <code>abstract_interface</code>
    */
-  public static TCKind tk_abstract_interface =
+  public static final TCKind tk_abstract_interface =
     new TCKind(_tk_abstract_interface);
 
   /**

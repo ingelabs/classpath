@@ -38,22 +38,22 @@
 
 package org.omg.CORBA;
 
+import org.omg.CORBA.TypeCodePackage.BadKind;
+
 /**
  * An information about a CORBA data type.
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
 import java.io.Serializable;
 
-import org.omg.CORBA.TypeCodePackage.BadKind;
-
 public abstract class TypeCode
   implements IDLEntity, Serializable
 {
-  /** 
+  /**
    * Use serialVersionUID for interoperability.
    */
-  private static final long serialVersionUID = 1445247438437311252L;
-  
+  private static final long serialVersionUID = -6521025782489515676L;
+
   /**
    * Returns the concrete base type for this TypeCode.
    * @return a TypeCode, defining the concrete base type for this
@@ -188,10 +188,9 @@ public abstract class TypeCode
    * @throws org.omg.CORBA.TypeCodePackage.Bounds if the index is out of
    * valid bounds.
    */
-  /* Disabled due to build breakage -- Andrew John Hughes -- 04/03/2005
   public abstract Any member_label(int index)
                             throws BadKind, Bounds;
-  */
+
   /**
    * Retrieves the simple name of the member identified by the given index.
    *
@@ -230,7 +229,7 @@ public abstract class TypeCode
    *
    * @return either PRIVATE_MEMBER.value or PUBLIC_MEMBER.value
    *
-   * @throws org.omg.CORBA.TypeCodePackage.BadKind if this is not a non boxed 
+   * @throws org.omg.CORBA.TypeCodePackage.BadKind if this is not a non boxed
    * value type.
    *
    * @throws org.omg.CORBA.TypeCodePackage.Bounds if the index is out of

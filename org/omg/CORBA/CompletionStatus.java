@@ -45,52 +45,53 @@ import java.io.Serializable;
  * when the exception has been thrown.
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class CompletionStatus implements Serializable
+public class CompletionStatus
+  implements Serializable
 {
-  /** 
-   * Use serialVersionUID for interoperability. 
+  /**
+   * Use serialVersionUID for interoperability.
    */
-  private static final long serialVersionUID = -645279251430243097L;
-  
+  private static final long serialVersionUID = -9047319660881406859L;
+
   /**
    * The method was completed when the exception was thrown.
    */
-  final static int _COMPLETED_YES = 0;
+  static final int _COMPLETED_YES = 0;
 
   /**
    * The method was running when the exception was thrown.
    */
-  final static int _COMPLETED_NO = 1;
+  static final int _COMPLETED_NO = 1;
 
   /**
    * The method was either running or complete (no exact information availabe)
    * when the exception was thrown.
    */
-  final static int _COMPLETED_MAYBE = 2;
+  static final int _COMPLETED_MAYBE = 2;
 
   /**
    * An instance of CompletionStatus, initialized to {@link #COMPLETED_YES }
    */
-  public final static CompletionStatus COMPLETED_YES =
+  public static final CompletionStatus COMPLETED_YES =
     new CompletionStatus(_COMPLETED_YES);
 
   /**
    * An instance of CompletionStatus, initialized to {@link #COMPLETED_NO }
    */
-  public final static CompletionStatus COMPLETED_NO =
+  public static final CompletionStatus COMPLETED_NO =
     new CompletionStatus(_COMPLETED_NO);
 
   /**
    * An instance of CompletionStatus, initialized to {@link #COMPLETED_MAYBE }
    */
-  public final static CompletionStatus COMPLETED_MAYBE =
+  public static final CompletionStatus COMPLETED_MAYBE =
     new CompletionStatus(_COMPLETED_MAYBE);
 
   /**
    * The private array of all states. As long as the states form the uniform
    * sequence, from_int can find the needed value directly indexing this array.
    */
-  private final static CompletionStatus[] states =
+  private static final CompletionStatus[] states =
     new CompletionStatus[] { COMPLETED_YES, COMPLETED_NO, COMPLETED_MAYBE };
   private final int _value;
 

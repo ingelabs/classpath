@@ -1,4 +1,11 @@
 2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
+	* org/omg/CORBA/TypeCodePackage/BadKind.java: add serialVersionUID v1.4
+	* org/omg/CORBA/SystemException.java: add serialVersionUID v1.4
+	* org/omg/CORBA/TypeCode.java: add serialVersionUID v1.4
+	* org/omg/CORBA/UserException.java: add serialVersionUID v1.4
+	* org/omg/CORBA/CompletionStatus.java: add serialVersionUID v1.4
+	
+2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
 	* org/omg/CORBA/TypeCodePackage/BadKind.java: add serialVersionUID 
 	* org/omg/CORBA/SystemException.java: add serialVersionUID
 	* org/omg/CORBA/TypeCode.java: add serialVersionUID

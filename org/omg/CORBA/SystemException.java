@@ -45,14 +45,14 @@ import java.io.Serializable;
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
 public class SystemException
-  extends RuntimeException implements Serializable
+  extends RuntimeException
+  implements Serializable
 {
-  
- /** 
-  * Use serialVersionUID for interoperability. 
-  */
-  private static final long serialVersionUID =-8486391734674855519L;
-  
+  /**
+   * Use serialVersionUID for interoperability.
+   */
+  private static final long serialVersionUID = -8486391734674855519L;
+
   /**
    * The status of the operation that have thrown this exception.
    */
@@ -65,7 +65,7 @@ public class SystemException
 
   /**
    * Constructs an instance of the CORBA standard exception.
-   * @param a_reason a string, explaining the reason why the 
+   * @param a_reason a string, explaining the reason why the
    * exceptions has been thrown.
    * @param a_minor an additional error code (known as the "minor")
    * @param a_completed the task completion status.
