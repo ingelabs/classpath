@@ -1,25 +1,24 @@
 2004-10-28  Sven de Marothy  <sven@physto.se>
 
-	* gnu/java/awt/color/CieXyzConverter.java       
-	* gnu/java/awt/color/GrayScaleConverter.java
-	* gnu/java/awt/color/SrgbConverter.java
-	* gnu/java/awt/color/ClutProfileConverter.java
-	* gnu/java/awt/color/LinearRGBConverter.java
-	* gnu/java/awt/color/TagEntry.java
-	* gnu/java/awt/color/ColorLookUpTable.java      
-	* gnu/java/awt/color/ProfileHeader.java
-	* gnu/java/awt/color/ToneReproductionCurve.java
-	* gnu/java/awt/color/ColorSpaceConverter.java
-	* gnu/java/awt/color/PyccConverter.java
-	* gnu/java/awt/color/GrayProfileConverter.java
-	* gnu/java/awt/color/RgbProfileConverter.java
-	New files
-
-	* java/awt/color/ICC_ColorSpace.java
-	* java/awt/color/ICC_Profile.java
-	* java/awt/color/ICC_ProfileGray.java
-	* java/awt/color/ICC_ProfileRGB.java
-	Implemented (sans PhotoYCC color space)
+	* gnu/java/awt/color/CieXyzConverter.java,
+	gnu/java/awt/color/GrayScaleConverter.java,
+	gnu/java/awt/color/SrgbConverter.java,
+	gnu/java/awt/color/ClutProfileConverter.java,
+	gnu/java/awt/color/LinearRGBConverter.java,
+	gnu/java/awt/color/TagEntry.java,
+	gnu/java/awt/color/ColorLookUpTable.java,
+	gnu/java/awt/color/ProfileHeader.java,
+	gnu/java/awt/color/ToneReproductionCurve.java,
+	gnu/java/awt/color/ColorSpaceConverter.java,
+	gnu/java/awt/color/PyccConverter.java,
+	gnu/java/awt/color/GrayProfileConverter.java,
+	gnu/java/awt/color/RgbProfileConverter.java:
+	New files.
+	* java/awt/color/ICC_ColorSpace.java,
+	java/awt/color/ICC_Profile.java,
+	java/awt/color/ICC_ProfileGray.java,
+	java/awt/color/ICC_ProfileRGB.java:
+	Implemented (sans PhotoYCC color space).
 	
 2004-10-28  Michael Koch  <konqueror@gmx.de>
 
@@ -41,8 +40,8 @@
 
 2004-10-28  Noa Resare  <noa@resare.com>
 
- 	* java/awt/geom/GeneralPath.java (currentSegment):
- 	Fix typo in transform.transform() invocation.
+	* java/awt/geom/GeneralPath.java (currentSegment):
+	Fix typo in transform.transform() invocation.
 
 2004-10-27  Mark Wielaard  <mark@klomp.org>
 
