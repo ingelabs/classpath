@@ -1,3 +1,18 @@
+2003-11-15  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/Font.java,
+	java/awt/datatransfer/DataFlavor.java,
+	java/math/BigInteger.java,
+	java/net/Inet4Address.java,
+	java/net/Inet6Address.java,
+	java/rmi/MarshalledObject.java,
+	java/rmi/server/RMIClassLoader.java,
+	java/security/cert/CertStore.java,
+	java/sql/Timestamp.java,
+	java/text/SimpleDateFormat.java,
+	javax/naming/CompoundName.java (equals):
+	Removed some redundant obj == null checks.
+
 2003-11-15  Guilhem Lavaux <guilhem@kaffe.org>
 	    Jim Pick  <jim@kaffe.org>
 
