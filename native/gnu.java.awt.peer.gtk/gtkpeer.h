@@ -1,5 +1,5 @@
 /*
- * gtkpeer.h -- Some global variables and DEFINES
+ * gtkpeer.h -- Some global variables and #defines
  *
  * Copyright (c) 1998 Free Software Foundation, Inc.
  * Written by James E. Blair <corvus@gnu.org>
@@ -27,7 +27,6 @@
 
 #include <jni.h>
 
-#define DEF_APP_NAME "Classpath"
 #define RC_FILE      ".classpath-gtkrc"
 
 #ifndef __GTKPEER_H__
