@@ -1,35 +1,42 @@
-This package was designed to use the GNU standard for configuration and
-makefiles.  To build and install do the following:
+This package was designed to use the GNU standard for configuration
+and makefiles.  To build and install do the following:
 
-1).  Run configure to configure the package: ./configure
+1).  Run the "configure" script to configure the package.  There are
+various options you might want to pass to configure to control how the
+package is built.  "configure --help" will give a complete list.  Of
+relevance, a target JVM must be specified.  Currently only Japhar is
+supported, and the option for that is --with-japhar.  (This option is
+turned on by default).  The target JVM will be used to compile the
+class library by default, but this can be overridden by specifying a
+java executable to use (the --with-java=<path-to-java> option) and the
+class library archive to use (the --with-classlib=<path-to-classlib>
+option).  It is a good idea to use these last two options to specify
+the JDK for compiling, since Japhar current doesn't work. :-)
 
 2).  Type "make' to build the package
 
-3).  Type "make install" to install everything.
+3).  Type "make install" to install everything.  This may require
+being the superuser.
 
-Be sure that both Sun's JDK and Japhar are in your PATH and that
-Sun's JDK comes first!
+The compiled classes are stored in a file called glibj.zip, which is
+installed in the architecture independent data directory of your
+target JVM.  For Japhar, this is the "share" directory under the
+Japhar root.  The native libraries are stored where the target JVM
+stores its own native libraries.  This is the "lib" directory under
+the Japhar root directory.
 
-This setup currently has minimal configure support.  It looks for Japhar
-in /usr/local/japhar and installs the code there.  In particular, it:
+Once installed, GNU Classpath is ready to be used.  Simply ensure that
+the glibj.zip file is in your $CLASSPATH environment variable.
 
--- Installs the native libraries in /usr/local/japhar/lib
--- Installs the documentation in /usr/local/japhar/docs
--- Installs the Java classes in /usr/local/japhar/share
+Ok, here is a configuration, build, install, and test example.  This
+may or may not be appropriate for your system.
 
-The Java classes are installed into an uncompressed directory structure. 
-Any old code there will be overwritten, but certain stray classes used
-by Sun might still be lying around.  To be sure you are running this
-code, unzip your classes.zip or classes.jar, delete everything in 
-java/net/*, then move classes.{zip,jar} off to another directory
-besides share before installing/running.
+./configure --with-japhar --with-java=/usr/local/jdk1.1.5/bin/javav \
+    --with-classlib=/usr/local/jdk1.1.5/lib/classes.zip
+make
+make install
+japhar --classpath /usr/local/japhar/share/glibj.zip:. FooClass
 
-4).  Run the tests if you'd like.  cd to test/java.net and run the
-runtest script.  This will generate lots of out so redirect and grep
-through it for FAILED.  Note that some things will doubtless fail as 
-they are based on the specifics of my system.  Also note that you need
-to have multicast enabled on your network interfaces and need to have
-your tty/shell settings set to allow background processes to write to
-the terminal.  You should also have the UDP daytime server enabled
-in inetd.conf
+Report bugs to classpath@gnu.org.
 
+Happy Hacking!
