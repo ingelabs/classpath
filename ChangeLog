@@ -1,3 +1,7 @@
+2002-12-05  Dalibor Topic  <robilad@yahoo.com>
+
+	* gnu/java/nio/SocketChannelImpl.java: Removed unused import.
+
 2002-12-05  John Leuner  <jewel@debian.org>
 
 	* gnu/java/net/protocol/file/Handler.java (toExternalForm): make URL format like that

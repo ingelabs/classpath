@@ -46,7 +46,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AlreadyConnectedException;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
-import gnu.classpath.Configuration;
 
 public class SocketChannelImpl extends SocketChannel
 {
