@@ -1,5 +1,10 @@
 2001-09-05  Tom Tromey  <tromey@redhat.com>
 
+	* java/text/DecimalFormat.java (clone): Rewrote.
+	(DecimalFormat(DecimalFormat)): Removed.
+	* java/text/MessageFormat.java: Merged in old Classpath Javadoc.
+	(clone): Rewrote.
+
 	* java/util/Properties.java (load): Use ISO-8859-1 encoding.
 	(store): Likewise.
 
