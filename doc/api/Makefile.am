@@ -43,8 +43,8 @@ uninstall-local:
 #html: create_xml create_catalog create_html
 html: create_html
 
-core := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -regex .*CVS | tr '/' '.' )
-jaxp := $(shell cd $(top_srcdir)/external/jaxp/source && $(FIND) gnu javax org -type d ! -regex .*CVS | tr '/' '.')
+core := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -regex .*CVS | tr '/' '.' | grep -v "java.awt.dnd.peer" | grep -v "java.awt.peer")
+jaxp := $(shell cd $(top_srcdir)/external/jaxp/source && $(FIND) gnu javax org -type d ! -regex .*CVS | tr '/' '.' | grep -v "org.w3c.dom.")
 packages = $(core) $(jaxp)
 #| grep -v "^java\$" )
 date := $(shell $(DATE))
@@ -75,7 +75,7 @@ clean:
 #	-touch create_catalog
 
 create_html:
-#	-$(MKDIR) html > /dev/null 2>&1
+	-$(MKDIR) html > /dev/null 2>&1
 	$(GJDOC) -sourcepath \
 	"$(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/external/jaxp/source" \
 	-d html $(packages)
