@@ -1,3 +1,10 @@
+2002-07-14  Scott Ananian  <cananian@lesser-magoo.lcs.mit.edu>
+
+	* java/lang/AssertionError.java: Documentation updates.
+	* java/net/Authenticator.java: Likewise.
+	* java/net/DatagramSocketImpl.java: Likewise.
+	* java/net/SocketAddress.java: Likewise.
+
 2002-07-12  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/Character.java (toString(char)): use ch not value.

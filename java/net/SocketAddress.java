@@ -40,9 +40,9 @@ package java.net;
 import java.io.*;
 
 /** 
- * Ronald: abstract base class for InetSocketAddress.
+ * Abstract base class for InetSocketAddress.
  * InetSocketAddress is to my knowledge the only derived
- * class.
+ * class. [Ronald]
  */
 
 public abstract class SocketAddress implements Serializable
