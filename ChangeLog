@@ -1,5 +1,33 @@
 2003-03-11  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/ByteBufferImpl.java,
+	gnu/java/nio/CharBufferImpl.java,
+	gnu/java/nio/DoubleBufferImpl.java,
+	gnu/java/nio/FloatBufferImpl.java,
+	gnu/java/nio/IntBufferImpl.java,
+	gnu/java/nio/LongBufferImpl.java,
+	gnu/java/nio/MappedByteFileBuffer.java,
+	gnu/java/nio/MappedCharFileBuffer.java,
+	gnu/java/nio/MappedDoubleFileBuffer.java,
+	gnu/java/nio/MappedFloatFileBuffer.java,
+	gnu/java/nio/MappedIntFileBuffer.java,
+	gnu/java/nio/MappedLongFileBuffer.java,
+	gnu/java/nio/MappedShortFileBuffer.java,
+	gnu/java/nio/ShortBufferImpl.java,
+	java/nio/Buffer.java,
+	java/nio/ByteBuffer.java,
+	java/nio/CharBuffer.java,
+	java/nio/DoubleBuffer.java,
+	java/nio/FloatBuffer.java,
+	java/nio/IntBuffer.java,
+	java/nio/LongBuffer.java,
+	java/nio/MappedByteBuffer.java,
+	java/nio/ShortBuffer.java:
+	More merges with libgcj. Some little changes needed to make jikes
+	happy.
+
+2003-03-11  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/CharBufferImpl.java,
 	gnu/java/nio/DoubleBufferImpl.java,
 	gnu/java/nio/FloatBufferImpl.java,

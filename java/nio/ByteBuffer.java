@@ -46,8 +46,8 @@ public abstract class ByteBuffer extends Buffer implements Comparable
 {
   private ByteOrder endian = ByteOrder.BIG_ENDIAN;
 
-  int offset;
-  byte[] backing_buffer;
+  protected int offset;
+  protected byte[] backing_buffer;
   
   /**
    * Allocates a new direct byte buffer.
@@ -82,6 +82,11 @@ public abstract class ByteBuffer extends Buffer implements Comparable
   final public static ByteBuffer wrap (byte[] array)
   {
     return wrap (array, 0, array.length);
+  }
+
+  protected ByteBuffer (int capacity, int limit, int position, int mark)
+  {
+    super (capacity, limit, position, mark);
   }
 
   /**

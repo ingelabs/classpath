@@ -77,6 +77,11 @@ public abstract class DoubleBuffer extends Buffer implements Comparable
     return wrap(array, 0, array.length);
   }
 
+  protected DoubleBuffer (int capacity, int limit, int position, int mark)
+  {
+    super (capacity, limit, position, mark);
+  }
+  
   public DoubleBuffer get (double[] dst, int offset, int length)
   {
     for (int i = offset; i < offset + length; i++)

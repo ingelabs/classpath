@@ -112,6 +112,11 @@ public abstract class CharBuffer extends Buffer
     return wrap (array, 0, array.length);
   }
  
+  protected CharBuffer (int cap, int lim, int pos, int mark)
+  {
+    super (cap, lim, pos, mark);
+  }
+  
   /**
    * Relative get method.
    * 

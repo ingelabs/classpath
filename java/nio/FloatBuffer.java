@@ -77,6 +77,12 @@ public abstract class FloatBuffer extends Buffer implements Comparable
     return wrap(array, 0, array.length);
   }
 
+  protected FloatBuffer (int capacity, int limit, int position, int mark)
+  {
+    super (capacity, limit, position, mark);
+    array_offset = 0;                    
+  }
+  
   public FloatBuffer get (float[] dst, int offset, int length)
   {
     for (int i = offset; i < offset + length; i++)

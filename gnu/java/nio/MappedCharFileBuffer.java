@@ -58,22 +58,19 @@ final public class MappedCharFileBuffer
 
   public MappedCharFileBuffer(FileChannelImpl ch)
   {
+    // FIXME
+    super (0, 0, 0, 0);
     this.ch = ch;
     address = ch.address;
-    try {
-      long si = ch.size() / 2;
-      limit((int)si);
-    } catch (IOException e) {
-      System.err.println("failed to get size of file-channel's file");
-    }
   }
 
   public MappedCharFileBuffer(MappedCharFileBuffer b)
   {
+    // FIXME
+    super (0, 0, 0, 0);
     this.ro = b.ro;
     this.ch = b.ch;
     address = b.address;
-    limit(b.limit());
   }
 
   final public ByteOrder order ()

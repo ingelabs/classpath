@@ -43,6 +43,11 @@ package java.nio;
  */
 public abstract class MappedByteBuffer extends ByteBuffer
 {
+  protected MappedByteBuffer (int capacity, int limit, int position, int mark)
+  {
+    super (capacity, limit, position, mark);
+  }
+  
   public final MappedByteBuffer force ()
   {
     return this;

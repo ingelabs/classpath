@@ -77,6 +77,12 @@ public abstract class ShortBuffer extends Buffer implements Comparable
     return wrap(array, 0, array.length);
   }
 
+  protected ShortBuffer (int capacity, int limit, int position, int mark)
+  {
+    super (capacity, limit, position, mark);
+    array_offset = 0;
+  }
+  
   public ShortBuffer get (short[] dst, int offset, int length)
   {
     for (int i = offset; i < offset + length; i++)

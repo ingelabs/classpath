@@ -47,21 +47,18 @@ final public class MappedShortFileBuffer
   public FileChannelImpl ch;
   public MappedShortFileBuffer(FileChannelImpl ch)
   {
+    // FIXME
+    //super ((int) ch.size () / 2, (int) ch.size () / 2, 0, 0);
+    super (0, 0, 0, 0);
     this.ch = ch;
     address = ch.address;
-    try {
-      long si = ch.size() / 2;
-      limit((int)si);
-    } catch (IOException e) {
-      System.err.println("failed to get size of file-channel's file");
-    }
   }
   public MappedShortFileBuffer(MappedShortFileBuffer b)
   {
+    super (b.capacity (), b.limit (), b.position (), 0);
     this.ro = b.ro;
     this.ch = b.ch;
     address = b.address;
-    limit(b.limit());
   }
   public boolean isReadOnly()
   {
