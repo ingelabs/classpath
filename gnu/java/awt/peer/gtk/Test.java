@@ -43,7 +43,7 @@ class Test
       TextField tf = new TextField("Hello world!");
       pan.add(tf);
 
-      Choice ch=new Choice();
+      List ch=new List();
       ch.add("Ding");
       ch.add("September");
       ch.add("Red");
@@ -90,4 +90,6 @@ class Test
       System.out.println("done");
     }
 }
+
+
 

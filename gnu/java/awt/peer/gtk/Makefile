@@ -13,12 +13,13 @@ objects  = GtkButtonPeer.class    GtkFileDialogPeer.class GtkPanelPeer.class \
 	   GtkMainThread.class    GtkScrollPanePeer.class GtkChoicePeer.class \
 	   GtkGenericPeer.class   GtkCheckboxPeer.class   Test.class \
 	   GtkTextComponentPeer.class     GtkTextFieldPeer.class \
-	   GtkTextAreaPeer.class  GtkLabelPeer.class
+	   GtkTextAreaPeer.class  GtkLabelPeer.class      GtkListPeer.class
 jniclass = GtkButtonPeer     GtkFileDialogPeer GtkComponentPeer \
 	   GtkContainerPeer  GtkWindowPeer     GtkMainThread \
 	   GtkScrollPanePeer GtkCheckboxPeer   GtkToolkit \
 	   GtkChoicePeer     GtkTextComponentPeer \
-	   GtkTextFieldPeer  GtkTextAreaPeer   GtkLabelPeer
+	   GtkTextFieldPeer  GtkTextAreaPeer   GtkLabelPeer \
+	   GtkListPeer
 jnideps := $(foreach class,$(jniclass),$(package)_$(strip $(class)).h)
 
 all: Test headers
