@@ -1,3 +1,7 @@
+2003-02-16  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/undo/StateEdit.java: Reindented.
+
 2003-02-16  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/NetPermission.java

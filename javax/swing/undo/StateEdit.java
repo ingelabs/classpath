@@ -1,5 +1,5 @@
 /* AbstractTableModel.java --
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -44,108 +44,115 @@ import java.util.*;
  * StateEdit
  * @author	Andrew Selkirk
  */
-public class StateEdit extends AbstractUndoableEdit {
+public class StateEdit extends AbstractUndoableEdit
+{
 
-	//-------------------------------------------------------------
-	// Variables --------------------------------------------------
-	//-------------------------------------------------------------
+  //-------------------------------------------------------------
+  // Variables --------------------------------------------------
+  //-------------------------------------------------------------
 
-	/**
-	 * RCSID
-	 */
-	protected static final String RCSID = ""; // TODO
+  /**
+   * RCSID
+   */
+  protected static final String RCSID = ""; // TODO
 
-	/**
-	 * object
-	 */
-	protected StateEditable object;
+  /**
+   * object
+   */
+  protected StateEditable object;
 
-	/**
-	 * preState
-	 */
-	protected Hashtable preState;
+  /**
+   * preState
+   */
+  protected Hashtable preState;
 
-	/**
-	 * postState
-	 */
-	protected Hashtable postState;
+  /**
+   * postState
+   */
+  protected Hashtable postState;
 
-	/**
-	 * undoRedoName
-	 */
-	protected String undoRedoName;
-
-
-	//-------------------------------------------------------------
-	// Initialization ---------------------------------------------
-	//-------------------------------------------------------------
-
-	/**
-	 * Constructor StateEdit
-	 * @param value0 TODO
-	 */
-	public StateEdit(StateEditable value0) {
-		// TODO
-	} // StateEdit()
-
-	/**
-	 * Constructor StateEdit
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 */
-	public StateEdit(StateEditable value0, String value1) {
-		// TODO
-	} // StateEdit()
+  /**
+   * undoRedoName
+   */
+  protected String undoRedoName;
 
 
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+  //-------------------------------------------------------------
+  // Initialization ---------------------------------------------
+  //-------------------------------------------------------------
 
-	/**
-	 * init
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 */
-	protected void init(StateEditable value0, String value1) {
-		// TODO
-	} // init()
+  /**
+   * Constructor StateEdit
+   * @param value0 TODO
+   */
+  public StateEdit(StateEditable value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * end
-	 */
-	public void end() {
-		// TODO
-	} // end()
-
-	/**
-	 * undo
-	 */
-	public void undo() {
-		// TODO
-	} // undo()
-
-	/**
-	 * redo
-	 */
-	public void redo() {
-		// TODO
-	} // redo()
-
-	/**
-	 * getPresentationName
-	 * @returns String
-	 */
-	public String getPresentationName() {
-		return null; // TODO
-	} // getPresentationName()
-
-	/**
-	 * removeRedundantState
-	 */
-	protected void removeRedundantState() {
-		// TODO
-	} // removeRedundantState()
+  /**
+   * Constructor StateEdit
+   * @param value0 TODO
+   * @param value1 TODO
+   */
+  public StateEdit(StateEditable value0, String value1)
+  {
+    // TODO
+  }
 
 
-} // StateEdit
+  //-------------------------------------------------------------
+  // Methods ----------------------------------------------------
+  //-------------------------------------------------------------
+
+  /**
+   * init
+   * @param value0 TODO
+   * @param value1 TODO
+   */
+  protected void init(StateEditable value0, String value1)
+  {
+    // TODO
+  }
+
+  /**
+   * end
+   */
+  public void end()
+  {
+    // TODO
+  }
+
+  /**
+   * undo
+   */
+  public void undo()
+  {
+    // TODO
+  }
+
+  /**
+   * redo
+   */
+  public void redo()
+  {
+    // TODO
+  }
+
+  /**
+   * getPresentationName
+   * @returns String
+   */
+  public String getPresentationName()
+  {
+    return null; // TODO
+  }
+
+  /**
+   * removeRedundantState
+   */
+  protected void removeRedundantState()
+  {
+    // TODO
+  }
+}
