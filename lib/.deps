@@ -1196,6 +1196,12 @@ java_lang_Thread.h: lib/java/lang/Thread.class
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
 
+java_lang_Thread.h: lib/java/lang/Thread.class 
+
+java_lang_Thread.h: lib/java/lang/Thread.class 
+
+java_lang_Thread.h: lib/java/lang/Thread.class 
+
 java_lang_Runtime.h: lib/java/lang/Runtime.class 
 
 java_lang_Runtime.h: lib/java/lang/Runtime.class 
@@ -1322,6 +1328,30 @@ java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
 
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
+java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+
 java_lang_reflect_Constructor.h: lib/java/lang/reflect/Constructor.class 
 
 java_lang_reflect_Constructor.h: lib/java/lang/reflect/Constructor.class 
@@ -1347,6 +1377,7 @@ CLASSES = \
 	lib/java/lang/VMClassLoader.class\
 	lib/java/lang/ClassLoader.class\
 	lib/java/lang/Runtime.class\
+	lib/java/lang/SecurityManager.class\
 	lib/java/lang/System.class\
 	lib/java/util/Vector.class\
 	lib/java/io/InputStream.class\
@@ -1360,7 +1391,6 @@ CLASSES = \
 	lib/java/lang/ThreadGroup.class\
 	lib/java/lang/Runnable.class\
 	lib/java/lang/Throwable.class\
-	lib/java/lang/SecurityManager.class\
 	lib/java/lang/VMSystem.class\
 	lib/java/lang/SecurityException.class\
 	lib/java/lang/NoSuchMethodException.class\
