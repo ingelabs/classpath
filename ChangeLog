@@ -1,5 +1,14 @@
 2003-06-22  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/plaf/basic/BasicBorders.java (SplitPaneBorder,
+	SplitPaneDividerBorder): New inner classes. The ugly appearance
+	is intentional, each pixel gets painted in the same color
+	as with the JDK.
+	
+	(getSplitPaneBorder, getSplitPaneDividerBorder): New methods.
+
+2003-06-22  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/plaf/basic/BasicSplitPaneUI.java: Stubbed to allow
 	compiling other classes.
 	* javax/swing/plaf/basic/BasicSplitPaneDivider.java: Likewise.
