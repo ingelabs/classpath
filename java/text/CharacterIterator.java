@@ -1,5 +1,5 @@
 /* CharacterIterator.java -- Iterate over a character range
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,135 +41,123 @@ package java.text;
 public interface CharacterIterator extends Cloneable
 {
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/*
- * Static Variables
- */
+  /*
+   * Static Variables
+   */
 
-/**
-  * This is a special constant value that is returned when the beginning or
-  * end of the character range has been reached.
-  */
-public static final char DONE = '\uFFFF';
+  /**
+   * This is a special constant value that is returned when the beginning or
+   * end of the character range has been reached.
+   */
+  public static final char DONE = '\uFFFF';
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/*
- * Instance Methods
- */
+  /*
+   * Instance Methods
+   */
 
-/**
-  * This method returns the character at the current index position
-  *
-  * @return The character at the current index position.
-  */
-public abstract char
-current();
+  /**
+   * This method returns the character at the current index position
+   *
+   * @return The character at the current index position.
+   */
+  public abstract char current ();
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method increments the current index and then returns the character
-  * at the new index value.  If the index is already at <code>getEndIndex() - 1</code>,
-  * it will not be incremented.
-  *
-  * @return The character at the position of the incremented index value, or <code>DONE</code> if the index has reached getEndIndex() - 1
-  */
-public abstract char
-next();
+  /**
+   * This method increments the current index and then returns the character
+   * at the new index value.  If the index is already at <code>getEndIndex() - 1</code>,
+   * it will not be incremented.
+   *
+   * @return The character at the position of the incremented index value, or <code>DONE</code> if the index has reached getEndIndex() - 1
+   */
+  public abstract char next ();
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method decrements the current index and then returns the character
-  * at the new index value.  If the index value is already at the beginning
-  * index, it will not be decremented.
-  *
-  * @return The character at the position of the decremented index value, or <code>DONE</code> if index was already equal to the beginning index value.
-  */
-public abstract char
-previous();
+  /**
+   * This method decrements the current index and then returns the character
+   * at the new index value.  If the index value is already at the beginning
+   * index, it will not be decremented.
+   *
+   * @return The character at the position of the decremented index value, or <code>DONE</code> if index was already equal to the beginning index value.
+   */
+  public abstract char previous ();
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method sets the index value to the beginning of the range and returns
-  * the character there.
-  *
-  * @return The character at the beginning of the range, or <code>DONE</code> if the range is empty.
-  */
-public abstract char
-first();
+  /**
+   * This method sets the index value to the beginning of the range and returns
+   * the character there.
+   *
+   * @return The character at the beginning of the range, or <code>DONE</code> if the range is empty.
+   */
+  public abstract char first ();
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method sets the index value to <code>getEndIndex() - 1</code> and
-  * returns the character there.  If the range is empty, then the index value
-  * will be set equal to the beginning index.
-  *
-  * @return The character at the end of the range, or <code>DONE</code> if the range is empty.
-  */
-public abstract char
-last();  
+  /**
+   * This method sets the index value to <code>getEndIndex() - 1</code> and
+   * returns the character there.  If the range is empty, then the index value
+   * will be set equal to the beginning index.
+   *
+   * @return The character at the end of the range, or <code>DONE</code> if the range is empty.
+   */
+  public abstract char last ();  
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method returns the current value of the index.
-  *
-  * @return The current index value
-  */
-public abstract int
-getIndex();
+  /**
+   * This method returns the current value of the index.
+   *
+   * @return The current index value
+   */
+  public abstract int getIndex ();
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method sets the value of the index to the specified value, then
-  * returns the character at that position.
-  *
-  * @param index The new index value.
-  *
-  * @return The character at the new index value or <code>DONE</code> if the index value is equal to <code>getEndIndex</code>.
-  */
-public abstract char
-setIndex(int index) throws IllegalArgumentException;
+  /**
+   * This method sets the value of the index to the specified value, then
+   * returns the character at that position.
+   *
+   * @param index The new index value.
+   *
+   * @return The character at the new index value or <code>DONE</code> if the index value is equal to <code>getEndIndex</code>.
+   */
+  public abstract char setIndex (int index) throws IllegalArgumentException;
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method returns the character position of the first character in the
-  * range.
-  *
-  * @return The index of the first character in the range.
-  */
-public abstract int
-getBeginIndex();
+  /**
+   * This method returns the character position of the first character in the
+   * range.
+   *
+   * @return The index of the first character in the range.
+   */
+  public abstract int getBeginIndex ();
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method returns the character position of the end of the text range.
-  * This will actually be the index of the first character following the
-  * end of the range.  In the event the text range is empty, this will be
-  * equal to the first character in the range.
-  *
-  * @return The index of the end of the range.
-  */
-public abstract int
-getEndIndex();
+  /**
+   * This method returns the character position of the end of the text range.
+   * This will actually be the index of the first character following the
+   * end of the range.  In the event the text range is empty, this will be
+   * equal to the first character in the range.
+   *
+   * @return The index of the end of the range.
+   */
+  public abstract int getEndIndex ();
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method creates a copy of this <code>CharacterIterator</code>.
-  *
-  * @return A copy of this <code>CharacterIterator</code>.
-  */
-public abstract Object
-clone();
-
-} // interface CharacterIterator
-
+  /**
+   * This method creates a copy of this <code>CharacterIterator</code>.
+   *
+   * @return A copy of this <code>CharacterIterator</code>.
+   */
+  public abstract Object clone ();
+}

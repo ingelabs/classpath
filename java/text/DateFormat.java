@@ -1,5 +1,5 @@
 /* DateFormat.java -- Class for formatting/parsing date/times
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,16 +27,28 @@ executable file might be covered by the GNU General Public License. */
 
 package java.text;
 
-import java.util.TimeZone;
-import java.util.Locale;
-import java.util.Date;
+import java.util.*;
 
-public abstract class DateFormat extends Format implements java.io.Serializable
+/**
+ * @author Per Bothner <bothner@cygnus.com>
+ * @date October 25, 1998.
+ */
+/* Written using "Java Class Libraries", 2nd edition, plus online
+ * API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Mostly complete; search for FIXME to see omissions.
+ */
+
+public abstract class DateFormat extends Format implements Cloneable
 {
-  protected java.util.Calendar calendar;
+  protected Calendar calendar;
   protected NumberFormat numberFormat;
-  
-  private boolean m_lenient = true;
+
+  // (Values determined using a test program.)
+  public static final int FULL = 0;
+  public static final int LONG = 1;
+  public static final int MEDIUM = 2;
+  public static final int SHORT = 3;
+  public static final int DEFAULT = MEDIUM;
 
   /* These constants need to have these exact values.  They
    * correspond to index positions within the localPatternChars
@@ -47,7 +59,7 @@ public abstract class DateFormat extends Format implements java.io.Serializable
   public static final int ERA_FIELD = 0;
   public static final int YEAR_FIELD = 1;
   public static final int MONTH_FIELD = 2;
-  public static final int DATE_FIELD = 3;  // sic, should be "DAY_OF_MONTH"...
+  public static final int DATE_FIELD = 3;
   public static final int HOUR_OF_DAY1_FIELD = 4;
   public static final int HOUR_OF_DAY0_FIELD = 5;
   public static final int MINUTE_FIELD = 6;
@@ -63,18 +75,46 @@ public abstract class DateFormat extends Format implements java.io.Serializable
   public static final int HOUR0_FIELD = 16;
   public static final int TIMEZONE_FIELD = 17;
 
-  public static final int FULL = 0;
-  public static final int LONG = 1;
-  public static final int MEDIUM = 2;
-  public static final int SHORT = 3;
-  // FIXME: XXX: The JCL says this should be set to MEDIUM.  Changing this
-  // to match the spec will affect other modules.
-  public static final int DEFAULT = 4;
-
   /**
    * This method initializes a new instance of <code>DateFormat</code>.
    */
-  protected DateFormat() {
+  protected DateFormat ()
+  {
+  }
+
+  /**
+   * This method tests this object for equality against the specified object.
+   * The two objects will be considered equal if an only if the specified
+   * object:
+   * <P>
+   * <ul>
+   * <li>Is not <code>null</code>.
+   * <li>Is an instance of <code>DateFormat</code>.
+   * <li>Has the same calendar and numberFormat field values as this object.
+   * </ul>
+   *
+   * @param obj The object to test for equality against.
+   * 
+   * @return <code>true</code> if the specified object is equal to this object,
+   * <code>false</code> otherwise.
+   */
+  public boolean equals (Object obj)
+  {
+    if (! (obj instanceof DateFormat))
+      return false;
+    DateFormat d = (DateFormat) obj;
+    return calendar.equals(d.calendar) && numberFormat.equals(d.numberFormat);
+  }
+
+  /**
+   * This method returns a copy of this object.
+   *
+   * @return A copy of this object.
+   */
+  public Object clone ()
+  {
+    // We know the superclass just call's Object's generic cloner.
+    return super.clone ();
   }
 
   /**
@@ -93,15 +133,24 @@ public abstract class DateFormat extends Format implements java.io.Serializable
    * @return The <code>StringBuffer</code> supplied on input, with the
    * formatted date/time appended.
    */
-  public final StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition fieldPosition)
+  public final StringBuffer format (Object obj,
+				    StringBuffer buf, FieldPosition pos)
   {
     if (obj instanceof Number)
-      obj = new Date(((Number)obj).longValue());
+      obj = new Date(((Number) obj).longValue());
+    return format ((Date) obj, buf, pos);
+  }
 
-    if (!(obj instanceof Date))
-      throw new IllegalArgumentException("Invalid object type: " + obj);
-
-    return format((Date)obj, toAppendTo, fieldPosition);
+  /**  
+    * Formats the date argument according to the pattern specified. 
+    *
+    * @param date The formatted date.
+    */
+  public final String format (Date date)
+  {
+    StringBuffer sb = new StringBuffer ();
+    format (date, sb, new FieldPosition (MONTH_FIELD));
+    return sb.toString();
   }
 
   /**
@@ -117,19 +166,312 @@ public abstract class DateFormat extends Format implements java.io.Serializable
    * @return The <code>StringBuffer</code> supplied on input, with the
    * formatted date/time appended.
    */
-  public abstract StringBuffer format(Date date, StringBuffer toAppendTo, 
-                                      FieldPosition fieldPosition);
+  public abstract StringBuffer format (Date date,
+				       StringBuffer buf, FieldPosition pos);
 
-  /**  
-    * Formats the date argument according to the pattern specified. 
-    *
-    * @param The formatted date.
-    */
-  public final String format(Date date)
+  /**
+   * This method returns a list of available locales supported by this
+   * class.
+   */
+  public static Locale[] getAvailableLocales ()
   {
-    // call the StringBuffer abstract method
-    StringBuffer buffer = new StringBuffer();
-    return format(date,buffer,new FieldPosition(0)).toString();
+    // FIXME
+    Locale[] l = new Locale[1];
+    l[0] = Locale.US;
+    return l;
+  }
+
+  /**
+    * This method returns the <code>Calendar</code> object being used by
+    * this object to parse/format datetimes.
+    *
+    * @return The <code>Calendar</code> being used by this object.
+    *
+    * @see java.util.Calendar
+    */
+  public Calendar getCalendar ()
+  {
+    return calendar;
+  }
+
+  private static final DateFormat computeInstance (int style, Locale loc,
+						   boolean use_date,
+						   boolean use_time)
+  {
+    return computeInstance (style, style, loc, use_date, use_time);
+  }
+
+  private static final DateFormat computeInstance (int dateStyle, 
+						   int timeStyle,
+						   Locale loc,
+						   boolean use_date,
+						   boolean use_time)
+  {
+    ResourceBundle res;
+    try
+      {
+	res = ResourceBundle.getBundle("gnu.java.locale.LocaleInformation",
+				       loc);
+      }
+    catch (MissingResourceException x)
+      {
+	res = null;
+      }
+
+    String pattern = null;
+    if (use_date)
+      {
+	String name, def;
+	switch (dateStyle)
+	  {
+	  case FULL:
+	    name = "fullDateFormat";
+	    def = "EEEE MMMM d, yyyy G";
+	    break;
+	  case LONG:
+	    name = "longDateFormat";
+	    def = "MMMM d, yyyy";
+	    break;
+	  case MEDIUM:
+	    name = "mediumDateFormat";
+	    def = "d-MMM-yy";
+	    break;
+	  case SHORT:
+	    name = "shortDateFormat";
+	    def = "M/d/yy";
+	    break;
+	  default:
+	    throw new IllegalArgumentException ();
+	  }
+	try
+	  {
+	    pattern = res == null ? def : res.getString(name);
+	  }
+	catch (MissingResourceException x)
+	  {
+	    pattern = def;
+	  }
+      }
+
+    if (use_time)
+      {
+	if (pattern == null)
+	  pattern = "";
+	else
+	  pattern += " ";
+
+	String name, def;
+	switch (timeStyle)
+	  {
+	  case FULL:
+	    name = "fullTimeFormat";
+	    def = "h:mm:ss;S 'o''clock' a z";
+	    break;
+	  case LONG:
+	    name = "longTimeFormat";
+	    def = "h:mm:ss a z";
+	    break;
+	  case MEDIUM:
+	    name = "mediumTimeFormat";
+	    def = "h:mm:ss a";
+	    break;
+	  case SHORT:
+	    name = "shortTimeFormat";
+	    def = "h:mm a";
+	    break;
+	  default:
+	    throw new IllegalArgumentException ();
+	  }
+
+	String s;
+	try
+	  {
+	    s = res == null ? def : res.getString(name);
+	  }
+	catch (MissingResourceException x)
+	  {
+	    s = def;
+	  }
+	pattern += s;
+      }
+
+    return new SimpleDateFormat (pattern, loc);
+  }
+
+ /**
+   * This method returns an instance of <code>DateFormat</code> that will
+   * format using the default formatting style for dates.
+   *
+   * @return A new <code>DateFormat</code> instance.
+   */
+  public static final DateFormat getDateInstance ()
+  {
+    return getDateInstance (DEFAULT, Locale.getDefault());
+  }
+
+  /**
+   * This method returns an instance of <code>DateFormat</code> that will
+   * format using the specified formatting style for dates.
+   *
+   * @param style The type of formatting to perform. 
+   * 
+   * @return A new <code>DateFormat</code> instance.
+   */
+  public static final DateFormat getDateInstance (int style)
+  {
+    return getDateInstance (style, Locale.getDefault());
+  }
+
+  /**
+   * This method returns an instance of <code>DateFormat</code> that will
+   * format using the specified formatting style for dates.  The specified
+   * localed will be used in place of the default.
+   *
+   * @param style The type of formatting to perform. 
+   * @param aLocale The desired locale.
+   * 
+   * @return A new <code>DateFormat</code> instance.
+   */
+  public static final DateFormat getDateInstance (int style, Locale loc)
+  {
+    return computeInstance (style, loc, true, false);
+  }
+
+  /**
+   * This method returns a new instance of <code>DateFormat</code> that
+   * formats both dates and times using the <code>SHORT</code> style.
+   *
+   * @return A new <code>DateFormat</code>instance.
+   */
+  public static final DateFormat getDateTimeInstance ()
+  {
+    return getDateTimeInstance (DEFAULT, DEFAULT, Locale.getDefault());
+  }
+
+  /**
+   * This method returns a new instance of <code>DateFormat</code> that
+   * formats both dates and times using the <code>DEFAULT</code> style.
+   *
+   * @return A new <code>DateFormat</code>instance.
+   */
+  public static final DateFormat getDateTimeInstance (int dateStyle, 
+						      int timeStyle)
+  {
+    return getDateTimeInstance (dateStyle, timeStyle, Locale.getDefault());
+  }
+
+  /**
+   * This method returns a new instance of <code>DateFormat</code> that
+   * formats both dates and times using the specified styles.
+   * 
+   * @param dateStyle The desired style for date formatting.
+   * @param timeStyle The desired style for time formatting
+   *
+   * @return A new <code>DateFormat</code>instance.
+   */
+  public static final DateFormat getDateTimeInstance (int dateStyle, 
+						      int timeStyle, 
+						      Locale loc)
+  {
+    return computeInstance (dateStyle, timeStyle, loc, true, true);
+  }
+
+  /**
+   * This method returns a new instance of <code>DateFormat</code> that
+   * formats both dates and times using the <code>SHORT</code> style.
+   *
+   * @return A new <code>DateFormat</code>instance.
+   */
+  public static final DateFormat getInstance ()
+  {
+    // JCL book says SHORT.
+    return getDateTimeInstance (SHORT, SHORT, Locale.getDefault());
+  }
+
+  /**
+   * This method returns the <code>NumberFormat</code> object being used
+   * by this object to parse/format time values.
+   *
+   * @return The <code>NumberFormat</code> in use by this object.
+   */
+  public NumberFormat getNumberFormat ()
+  {
+    return numberFormat;
+  }
+
+ /**
+   * This method returns an instance of <code>DateFormat</code> that will
+   * format using the default formatting style for times.
+   *
+   * @return A new <code>DateFormat</code> instance.
+   */
+  public static final DateFormat getTimeInstance ()
+  {
+    return getTimeInstance (DEFAULT, Locale.getDefault());
+  }
+
+  /**
+   * This method returns an instance of <code>DateFormat</code> that will
+   * format using the specified formatting style for times.
+   *
+   * @param style The type of formatting to perform. 
+   * 
+   * @return A new <code>DateFormat</code> instance.
+   */
+  public static final DateFormat getTimeInstance (int style)
+  {
+    return getTimeInstance (style, Locale.getDefault());
+  }
+
+  /**
+   * This method returns an instance of <code>DateFormat</code> that will
+   * format using the specified formatting style for times.  The specified
+   * localed will be used in place of the default.
+   *
+   * @param style The type of formatting to perform. 
+   * @param aLocale The desired locale.
+   * 
+   * @return A new <code>DateFormat</code> instance.
+   */
+  public static final DateFormat getTimeInstance (int style, Locale loc)
+  {
+    return computeInstance (style, loc, false, true);
+  }
+
+  /**
+   * This method returns the <code>TimeZone</code> object being used by
+   * this instance.
+   *
+   * @return The time zone in use.
+   */
+  public TimeZone getTimeZone ()
+  {
+    return calendar.getTimeZone();
+  }
+
+  /**
+   * This method returns a hash value for this object.
+   * 
+   * @return A hash value for this object.
+   */
+  public int hashCode ()
+  {
+    int hash = calendar.hashCode();
+    if (numberFormat != null)
+      hash ^= numberFormat.hashCode();
+    return hash;
+  }
+
+  /**
+   * This method indicates whether or not the parsing of date and time
+   * values should be done in a lenient value.
+   *
+   * @return <code>true</code> if date/time parsing is lenient,
+   * <code>false</code> otherwise.
+   */
+  public boolean isLenient ()
+  {
+    return calendar.isLenient();
   }
 
   /**
@@ -139,9 +481,18 @@ public abstract class DateFormat extends Format implements java.io.Serializable
    *
    * @exception ParseException If the specified string cannot be parsed.
    */
-  public Date parse(String text) throws ParseException
+  public Date parse (String source) throws ParseException
   {
-    return parse(text,new ParsePosition(0));
+    ParsePosition pos = new ParsePosition(0);
+    Date result = parse (source, pos);
+    if (result == null)
+      {
+	int index = pos.getErrorIndex();
+	if (index < 0)
+	  index = pos.getIndex();
+	throw new ParseException("invalid Date syntax", index);
+      }
+    return result;
   }
 
   /** 
@@ -157,7 +508,7 @@ public abstract class DateFormat extends Format implements java.io.Serializable
    * @return The parsed date, or <code>null</code> if the string cannot
    * be parsed.
    */
-  public abstract Date parse(String text, ParsePosition pos);
+  public abstract Date parse (String source, ParsePosition pos);
 
   /**
    * This method is identical to <code>parse(String, ParsePosition)</code>,
@@ -171,201 +522,9 @@ public abstract class DateFormat extends Format implements java.io.Serializable
    * @return The parsed date, or <code>null</code> if the string cannot
    * be parsed.
    */
-  public Object parseObject(String source, ParsePosition pos) 
+  public Object parseObject (String source, ParsePosition pos)
   {
-    return parse(source,pos);
-  }
-
- /**
-   * This method returns an instance of <code>DateFormat</code> that will
-   * format using the default formatting style for times.
-   *
-   * @return A new <code>DateFormat</code> instance.
-   */
-  public static final DateFormat getTimeInstance()
-  {
-    return getTimeInstance(DEFAULT, Locale.getDefault());
-  }
-
-  /**
-   * This method returns an instance of <code>DateFormat</code> that will
-   * format using the specified formatting style for times.
-   *
-   * @param style The type of formatting to perform. 
-   * 
-   * @return A new <code>DateFormat</code> instance.
-   */
-  public static final DateFormat getTimeInstance(int style)
-  {
-    return getTimeInstance(style, Locale.getDefault());
-  }
-
-  /**
-   * This method returns an instance of <code>DateFormat</code> that will
-   * format using the specified formatting style for times.  The specified
-   * localed will be used in place of the default.
-   *
-   * @param style The type of formatting to perform. 
-   * @param aLocale The desired locale.
-   * 
-   * @return A new <code>DateFormat</code> instance.
-   */
-  public static final DateFormat getTimeInstance(int style, Locale aLocale)
-  {
-    switch(style)
-     {
-       case SHORT:
-       case MEDIUM:
-       case LONG:
-       case FULL:
-       case DEFAULT:
-         break;
-
-       default:
-         throw new IllegalArgumentException("Bad style: " + style);
-     }
-
-    DateFormatSymbols dfs = new DateFormatSymbols(aLocale);
-
-    return new SimpleDateFormat(dfs.timeFormats[style],dfs);
-  }
-
- /**
-   * This method returns an instance of <code>DateFormat</code> that will
-   * format using the default formatting style for dates.
-   *
-   * @return A new <code>DateFormat</code> instance.
-   */
-  public static final DateFormat getDateInstance()
-  {
-    return getDateInstance(DEFAULT, Locale.getDefault());
-  }
-
-  /**
-   * This method returns an instance of <code>DateFormat</code> that will
-   * format using the specified formatting style for dates.
-   *
-   * @param style The type of formatting to perform. 
-   * 
-   * @return A new <code>DateFormat</code> instance.
-   */
-  public static final DateFormat getDateInstance(int style)
-  {
-    return getDateInstance(style, Locale.getDefault());
-  }
-
-  /**
-   * This method returns an instance of <code>DateFormat</code> that will
-   * format using the specified formatting style for dates.  The specified
-   * localed will be used in place of the default.
-   *
-   * @param style The type of formatting to perform. 
-   * @param aLocale The desired locale.
-   * 
-   * @return A new <code>DateFormat</code> instance.
-   */
-  public static final DateFormat getDateInstance(int style, Locale aLocale)
-  {
-    switch(style)
-     {
-       case SHORT:
-       case MEDIUM:
-       case LONG:
-       case FULL:
-       case DEFAULT:
-         break;
-
-       default:
-         throw new IllegalArgumentException("Bad style: " + style);
-     }
-
-    DateFormatSymbols dfs = new DateFormatSymbols(aLocale);
-    return new SimpleDateFormat(dfs.dateFormats[style],dfs);
-  }
-
-  /**
-   * This method returns a new instance of <code>DateFormat</code> that
-   * formats both dates and times using the <code>SHORT</code> style.
-   *
-   * @return A new <code>DateFormat</code>instance.
-   */
-  public static final DateFormat getInstance()
-  {
-    return getDateTimeInstance(SHORT, SHORT, Locale.getDefault());
-  }
-
-  /**
-   * This method returns a new instance of <code>DateFormat</code> that
-   * formats both dates and times using the <code>DEFAULT</code> style.
-   *
-   * @return A new <code>DateFormat</code>instance.
-   */
-  public static final DateFormat getDateTimeInstance()
-  {
-    return getDateTimeInstance(DEFAULT, DEFAULT, Locale.getDefault());
-  }
-
-  /**
-   * This method returns a new instance of <code>DateFormat</code> that
-   * formats both dates and times using the specified styles.
-   * 
-   * @param dateStyle The desired style for date formatting.
-   * @param timeStyle The desired style for time formatting
-   *
-   * @return A new <code>DateFormat</code>instance.
-   */
-  public static final DateFormat getDateTimeInstance(int dateStyle, 
-                                                     int timeStyle)
-  {
-    return getDateTimeInstance(dateStyle, timeStyle, Locale.getDefault());
-  }
-
-  public static final DateFormat getDateTimeInstance(int dateStyle, 
-                                                     int timeStyle, 
-                                                     Locale aLocale)
-  {
-    switch(dateStyle)
-     {
-       case SHORT:
-       case MEDIUM:
-       case LONG:
-       case FULL:
-       case DEFAULT:
-         break;
-
-       default:
-         throw new IllegalArgumentException("Bad style: " + dateStyle);
-     }
-
-    switch(timeStyle)
-     {
-       case SHORT:
-       case MEDIUM:
-       case LONG:
-       case FULL:
-       case DEFAULT:
-         break;
-
-       default:
-         throw new IllegalArgumentException("Bad style: " + timeStyle);
-     }
-
-    DateFormatSymbols dfs = new DateFormatSymbols(aLocale);
-    return new SimpleDateFormat(dfs.dateFormats[dateStyle] + " "
-                               +dfs.timeFormats[timeStyle], dfs);
-  }
-
-  /**
-   * This method returns a list of available locales supported by this
-   * class.
-   */
-  public static java.util.Locale[] getAvailableLocales()
-  {
-    //****** Just hardcode for now
-    Locale[] l = new Locale[1];
-    l[0] = Locale.getDefault();
-
-    return l;
+    return parse(source, pos);
   }
 
   /**
@@ -376,65 +535,9 @@ public abstract class DateFormat extends Format implements java.io.Serializable
    *
    * @see java.util.Calendar
    */
-  public void setCalendar(java.util.Calendar newCalendar)
+  public void setCalendar (Calendar calendar)
   {
-    calendar = newCalendar;
-  }
-
-  /**
-    * This method returns the <code>Calendar</code> object being used by
-    * this object to parse/format datetimes.
-    *
-    * @return The <code>Calendar</code> being used by this object.
-    *
-    * @see java.util.Calendar
-    */
-  public java.util.Calendar getCalendar()
-  {
-    return calendar;
-  }
-
-  /**
-   * This method specifies the <code>NumberFormat</code> object that should
-   * be used by this object to parse/format times.
-   *
-   * @param The <code>NumberFormat</code> in use by this object.
-   */
-  public void setNumberFormat(NumberFormat newNumberFormat)
-  {
-    numberFormat = newNumberFormat;
-  }
-
-  /**
-   * This method returns the <code>NumberFormat</code> object being used
-   * by this object to parse/format time values.
-   *
-   * @return The <code>NumberFormat</code> in use by this object.
-   */
-  public NumberFormat getNumberFormat()
-  {
-    return numberFormat;
-  }
-
-  /**
-   * This method sets the time zone that should be used by this object.
-   *
-   * @param The new time zone.
-   */
-  public void setTimeZone(TimeZone zone)
-  {
-    calendar.setTimeZone(zone);
-  }
-
-  /**
-   * This method returns the <code>TimeZone</code> object being used by
-   * this instance.
-   *
-   * @return The time zone in use.
-   */
-  public TimeZone getTimeZone()
-  {
-    return calendar.getTimeZone();
+    this.calendar = calendar;
   }
 
   /**
@@ -444,69 +547,29 @@ public abstract class DateFormat extends Format implements java.io.Serializable
    * @param lenient <code>true</code> if parsing should be lenient,
    * <code>false</code> otherwise.
    */
-  public void setLenient(boolean lenient)
+  public void setLenient (boolean lenient)
   {
-    m_lenient = lenient;
+    calendar.setLenient(lenient);
   }
 
   /**
-   * This method indicates whether or not the parsing of date and time
-   * values should be done in a lenient value.
+   * This method specifies the <code>NumberFormat</code> object that should
+   * be used by this object to parse/format times.
    *
-   * @return <code>true</code> if date/time parsing is lenient,
-   * <code>false</code> otherwise.
+   * @param The <code>NumberFormat</code> in use by this object.
    */
-  public boolean isLenient()
+  public void setNumberFormat (NumberFormat numberFormat)
   {
-    return m_lenient;
+    this.numberFormat = numberFormat;
   }
 
   /**
-   * This method returns a hash value for this object.
-   * 
-   * @return A hash value for this object.
-   */
-  public int hashCode()
-  {
-    return System.identityHashCode(this);
-  }
-
-  /**
-   * This method tests this object for equality against the specified object.
-   * The two objects will be considered equal if an only if the specified
-   * object:
-   * <P>
-   * <ul>
-   * <li>Is not <code>null</code>.
-   * <li>Is an instance of <code>DateFormat</code>.
-   * <li>Has the same calendar and numberFormat field values as this object.
-   * </ul>
+   * This method sets the time zone that should be used by this object.
    *
-   * @param obj The object to test for equality against.
-   * 
-   * @return <code>true</code> if the specified object is equal to this object,
-   * <code>false</code> otherwise.
-  public boolean equals(Object obj)
-  {
-    if (obj == null)
-      return false;
-
-    if (!(obj instanceof DateFormat))
-      return false;
-
-    DateFormat df = (DateFormat)obj;
-    return calendar.equals(df.calendar) && numberFormat.equals(df.numberFormat);
-  }
-
-  /**
-   * This method returns a copy of this object.
-   *
-   * @return A copy of this object.
+   * @param The new time zone.
    */
-  public Object clone()
+  public void setTimeZone (TimeZone timeZone)
   {
-    return super.clone();
+    calendar.setTimeZone(timeZone);
   }
-
-} // class DateFormat
-
+}

@@ -1,3 +1,53 @@
+2001-09-04  Tom Tromey  <tromey@redhat.com>
+
+	* java/text/SimpleDateFormat.java
+	(SimpleDateFormat(String,DateFormatSymbols)): Call
+	computeCenturyStart().
+	* gnu/java/locale/LocaleInformation_de.java (word_breaks,
+	sentence_breaks, line_breaks): Removed.
+	(collation_rules): Use `k,K', not `j,K'.  Don't using leading
+	`-'.  Use `0<1', not `0,1'.  Use `9<A', not `9A'.
+	* gnu/java/locale/LocaleInformation_nl.java: Likewise.
+	* gnu/java/locale/LocaleInformation_en.java: Likewise.
+	* java/text/DateFormatSymbols.java: Merged with libgcj.
+	* java/text/StringCharacterIterator.java: Reindented and merged
+	with libgcj.
+	(StringCharacterIterator(String,int,int,int)): Simplified.
+	(current): Likewise.
+	(next): Likewise.
+	(previous): Likewise.
+	(last): Likewise.
+	(equals): Likewise.
+	(setText): Now public.  Also sets all fields.
+	* java/text/RuleBasedCollator.java (clone): Rewrote.
+	* java/text/Collator.java: Mostly merged with libgcj.
+	* java/text/MessageFormat.java: Merged with libgcj.
+	* java/text/FieldPosition.java: Reindented.  Merged with libgcj.
+	* java/text/ParsePosition.java: Reindented.  Merged with libgcj.
+	* java/text/Format.java: Reindented.  Merged with libgcj.
+	(parseObject): Doesn't throw exception on error.
+	* java/text/CharacterIterator.java: Reindented.
+	* java/text/ChoiceFormat.java: Merged with libgcj.
+	* gnu/java/text/Makefile.am: New file.
+	* gnu/java/Makefile.am (SUBDIRS): Added text.
+	* configure.in (AC_OUTPUT): Added gnu/java/text/Makefile.
+	* gnu/java/text/BaseBreakIterator.java: New file from libgcj.
+	* gnu/java/text/CharacterBreakIterator.java: Likewise.
+	* gnu/java/text/LineBreakIterator.java: Likewise.
+	* gnu/java/text/SentenceBreakIterator.java: Likewise.
+	* gnu/java/text/WordBreakIterator.java: Likewise.
+	* java/text/BreakIterator.java: Merged with libgcj.
+	* java/text/DefaultBreakIterator.java: Removed.
+	* java/text/DecimalFormatSymbols.java: Merged with libgcj.
+	* java/text/DateFormat.java: Merged with libgcj.
+	* gnu/java/locale/Makefile.am (EXTRA_DIST): Added new file.
+	* gnu/java/locale/LocaleInformation_en.java: Removed US-specific
+	entries.
+	(collation_rules): Use `k,K', not `j,K'.
+	* gnu/java/locale/LocaleInformation_en_US.java: New file.
+	* java/text/NumberFormat.java: Merged with libgcj.
+	* java/text/DecimalFormat.java: Merged with libgcj.
+
 2001-09-03  Mark Wielaard  <mark@klomp.org>
 
 	* standard.omit: Don't build java.net.URLClassLoader and the

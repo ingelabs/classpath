@@ -1,5 +1,5 @@
 /* ParsePosition.java -- Keep track of position while parsing.
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -28,157 +28,113 @@ executable file might be covered by the GNU General Public License. */
 package java.text;
 
 /**
-  * This class is used to keep track of the current position during parsing
-  * operations.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class is used to keep track of the current position during parsing
+ * operations.
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Per Bothner <bothner@cygnus.com>
+ */
 public class ParsePosition
 {
+  /**
+   * This is the index of the current parse position.
+   */
+  private int index;
 
-/*************************************************************************/
+  /**
+   * This is the index of the position where an error occurred during parsing.
+   */
+  private int error_index;
 
-/*
- * Instance Variables
- */
+  /**
+   * This method initializes a new instance of <code>ParsePosition</code> to
+   * have the specified initial index value.
+   *
+   * @param index The initial parsing index.
+   */
+  public ParsePosition (int index)
+  {
+    this.index = index;
+    error_index = -1;
+  }
 
-/**
-  * This is the index of the current parse position.
-  */
-private int index;
+  /**
+   * This method returns the current parsing index.
+   *
+   * @return The current parsing index
+   */
+  public int getIndex ()
+  {
+    return index;
+  }
 
-/**
-  * This is the index of the position where an error occurred during parsing.
-  */
-private int error_index = -1;
+  /**
+   * This method sets the current parsing index to the specified value.
+   *
+   * @param index The new parsing index.
+   */
+  public void setIndex (int index)
+  {
+    this.index = index;
+  }
 
-/*************************************************************************/
+  /**
+   * This method returns the error index value.  This value defaults to -1
+   * unless explicitly set to another value.
+   *
+   * @return The error index.
+   */
+  public int getErrorIndex ()
+  {
+    return error_index;
+  }
 
-/*
- * Constructors
- */
+  /**
+   * This method sets the error index to the specified value.
+   *
+   * @param error_index The new error index
+   */
+  public void setErrorIndex (int error_index)
+  {
+    this.error_index = error_index;
+  }
 
-/**
-  * This method initializes a new instance of <code>ParsePosition</code> to
-  * have the specified initial index value.
-  *
-  * @param index The initial parsing index.
-  */
-public
-ParsePosition(int index)
-{
-  this.index = index;
+  /**
+   * This method tests the specified object for equality with this
+   * object.  The two objects will be considered equal if and only if
+   * all of the following conditions are met.
+   * <p>
+   * <ul>
+   * <li>The specified object is not <code>null</code>.
+   * <li>The specified object is an instance of <code>ParsePosition</code>.
+   * <li>The specified object has the same index and error index as
+   *     this object.  
+   * </ul>
+   *
+   * @param obj The <code>Object</code> to test for equality against
+   *            this object. 
+   *
+   * @return <code>true</code> if the specified object is equal to
+   * this object, <code>false</code> otherwise.
+   */
+  public boolean equals (Object obj)
+  {
+    if (! (obj instanceof ParsePosition))
+      return false;
+
+    ParsePosition other = (ParsePosition) obj;
+    return index == other.index && error_index == other.error_index;
+  }
+
+  /**
+   * This method returns a <code>String</code> representation of this
+   * object.
+   *
+   * @return A <code>String</code> that represents this object.
+   */
+  public String toString ()
+  {
+    return (getClass ().getName () + "[index=" + getIndex ()
+	    + ",errorIndex=" + getErrorIndex () + "]");
+  }
 }
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * This method returns the current parsing index.
-  *
-  * @return The current parsing index
-  */
-public int
-getIndex()
-{
-  return(index);
-}
-
-/*************************************************************************/
-
-/**
-  * This method sets the current parsing index to the specified value.
-  *
-  * @param index The new parsing index.
-  */
-public void
-setIndex(int index)
-{
-  this.index = index;
-}
-
-/*************************************************************************/
-
-/**
-  * This method returns the error index value.  This value defaults to -1
-  * unless explicitly set to another value.
-  *
-  * @return The error index.
-  */
-public int
-getErrorIndex()
-{
-  return(error_index);
-}
-
-/*************************************************************************/
-
-/**
-  * This method sets the error index to the specified value.
-  *
-  * @param error_index The new error index
-  */
-public void
-setErrorIndex(int error_index)
-{
-  this.error_index = error_index;
-}
-
-/*************************************************************************/
-
-/**
-  * This method tests the specified object for equality with this object.  The
-  * two objects will be considered equal if and only if all of the following
-  * conditions are met.
-  * <p>
-  * <ul>
-  * <li>The specified object is not <code>null</code>.
-  * <li>The specified object is an instance of <code>ParsePosition</code>.
-  * <li>The specified object has the same index and error index as this object. 
-  * </ul>
-  *
-  * @param obj The <code>Object</code> to test for equality against this object.
-  *
-  * @return <code>true</code> if the specified object is equal to this object, <code>false</code> otherwise.
-  */
-public boolean
-equals(Object obj)
-{
-  if (obj == null)
-    return(false);
-
-  if (!(obj instanceof ParsePosition))
-    return(false);
-
-  ParsePosition pp = (ParsePosition)obj;
-
-  if (pp.getIndex() != getIndex())
-    return(false);
-
-  if (pp.getErrorIndex() != getErrorIndex())
-    return(false);
-
-  return(true);
-}
-
-/*************************************************************************/
-
-/**
-  * This method returns a <code>String</code> representation of this
-  * object.
-  *
-  * @return A <code>String</code> that represents this object.
-  */
-public String
-toString()
-{
-  return(getClass().getName() + "[index=" + getIndex() +
-         ",errorIndex=" + getErrorIndex() + "]");
-}
-
-
-} // class ParsePosition
-

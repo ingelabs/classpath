@@ -1,5 +1,5 @@
 /* RuleBasedCollator.java -- Concrete Collator Class
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -540,14 +540,7 @@ hashCode()
 public Object
 clone()
 {
-  try 
-    {
-       return(super.clone());
-    }
-  catch(CloneNotSupportedException e)
-    {
-       return(null);
-    }
+  return super.clone();
 }
 
 } // class RuleBasedCollator

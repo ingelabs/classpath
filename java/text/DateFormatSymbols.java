@@ -1,219 +1,95 @@
-/* DateFormatSymbols.java -- Manage local specific date formatting information
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+/* Copyright (C) 1998, 1999, 2000, 2001  Free Software Foundation
 
-This file is part of GNU Classpath.
+   This file is part of libgcj.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
- 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
-
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
-
+This software is copyrighted work licensed under the terms of the
+Libgcj License.  Please consult the file "LIBGCJ_LICENSE" for
+details.  */
 
 package java.text;
 
-import java.util.ResourceBundle;
 import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
  * This class acts as container for locale specific date/time formatting
  * information such as the days of the week and the months of the year.
+ * @author Per Bothner <bothner@cygnus.com>
+ * @date October 24, 1998.
  */
-public class DateFormatSymbols 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3.
+ * Status:  Believed complete and correct.
+ */
+public class DateFormatSymbols implements java.io.Serializable, Cloneable
 {
-  private ResourceBundle rb;
-  String[] weekdays; // Serialized
-  String[] shortWeekdays; // Serialized
-  String[] months; // Serialized
-  String[] shortMonths; // Serialized
-  String[] eras; // Serialized
-  String[] ampms; // Serialized
-  String[][] zoneStrings; // Serialized
-  String localPatternChars; // Serialized
+  String[] ampms;
+  String[] eras;
+  private String localPatternChars;
+  String[] months;
+  String[] shortMonths;
+  String[] shortWeekdays;
+  String[] weekdays;
+  private String[][] zoneStrings;
+
+  private static final long serialVersionUID = -5987973545549424702L;
 
   // The order of these prefixes must be the same as in DateFormat
-  private static final String[] formatPrefixes = { "full", "long", "medium", "short", "default" };
-
-  private static boolean
-  arrayEquals(Object[] o1, Object[] o2)
+  private static final String[] formatPrefixes =
   {
-    if (o1 == null)
-      {
-        if (o2 == null)
-          return(true);
-        else
-          return(false);
-      }
-    else
-      if (o2 == null)
-        return(false);
-  
-    // We assume ordering is important.
-    for (int i = 0; i < o1.length; i++)
-      if (o1[i] instanceof Object[])
-        {
-          if (o2[i] instanceof Object[]) 
-            {
-              if (!arrayEquals((Object[])o1[i], (Object[])o2[i]))
-                return(false);
-            }
-          else
-            return(false);
-        }
-      else
-        {
-          if (o1[i] == null)
-            {
-              if (o2[i] == null)
-                return(true);
-              else
-                return(false);
-            }
-          else
-            if (o2[1] == null)
-              return(false);
-
-          if (!o1[i].equals(o2[i]))
-            return(false);
-        }
-  
-    return(true);
-  }
+    "full", "long", "medium", "short"
+  };
 
   // These are each arrays with a value for SHORT, MEDIUM, LONG, FULL,
   // and DEFAULT (constants defined in java.text.DateFormat).  While
   // not part of the official spec, we need a way to get at locale-specific
   // default formatting patterns.  They are declared package scope so
   // as to be easily accessible where needed (DateFormat, SimpleDateFormat).
-  String[] dateFormats;
-  String[] timeFormats;
+  transient String[] dateFormats;
+  transient String[] timeFormats;
 
-  private String[] formatsForKey(String key) 
+  private String[] formatsForKey(ResourceBundle res, String key) 
   {
     String[] values = new String [formatPrefixes.length];
-    for (int i = 0; i < formatPrefixes.length; i++) {
-      values[i] = rb.getString(formatPrefixes[i]+key);
-    }
+    for (int i = 0; i < formatPrefixes.length; i++)
+      {
+        values[i] = res.getString(formatPrefixes[i]+key);
+      }
     return values;
-  }
-
-  /**
-   * This method loads the format symbol information for the default
-   * locale.
-   */
-  public DateFormatSymbols() 
-  {
-    this(Locale.getDefault());
   }
 
   /**
    * This method initializes a new instance of <code>DateFormatSymbols</code>
    * by loading the date format information for the specified locale.
    *
-   * @param locale The locale for which date formatting symbols should be loaded.
+   * @param locale The locale for which date formatting symbols should
+   *               be loaded. 
    */
-  public DateFormatSymbols(Locale locale) 
+  public DateFormatSymbols (Locale locale) throws MissingResourceException
   {
-    rb = ResourceBundle.getBundle("gnu/java/locale/LocaleInformation",locale);
+    ResourceBundle res
+      = ResourceBundle.getBundle("gnu.java.locale.LocaleInformation", locale);
 
-    months = (String [])rb.getObject("months");
-    shortMonths = (String [])rb.getObject("shortMonths");
-    weekdays = (String [])rb.getObject("weekdays");
-    shortWeekdays = (String [])rb.getObject("shortWeekdays");
-    ampms = (String [])rb.getObject("ampms");
-    eras = (String [])rb.getObject("eras");
-    zoneStrings = (String [][])rb.getObject("zoneStrings");
-    localPatternChars = rb.getString("localPatternChars");
+    ampms = res.getStringArray ("ampms");
+    eras = res.getStringArray ("eras");
+    localPatternChars = res.getString ("localPatternChars");
+    months = res.getStringArray ("months");
+    shortMonths = res.getStringArray ("shortMonths");
+    shortWeekdays = res.getStringArray ("shortWeekdays");
+    weekdays = res.getStringArray ("weekdays");
+    zoneStrings = (String[][]) res.getObject ("zoneStrings");
 
-    dateFormats = formatsForKey("DateFormat");
-    timeFormats = formatsForKey("TimeFormat");
+    dateFormats = formatsForKey(res, "DateFormat");
+    timeFormats = formatsForKey(res, "TimeFormat");
   }
 
   /**
-   * Returns a new copy of this object.
-   *
-   * @param A copy of this object
+   * This method loads the format symbol information for the default
+   * locale.
    */
-  public Object clone() 
+  public DateFormatSymbols () throws MissingResourceException
   {
-    try
-      {
-        return super.clone();
-      } 
-    catch (CloneNotSupportedException e) 
-      {
-        return null;
-      }
-  }
-
-  /**
-   * This method tests a specified object for equality against this object.
-   * This will be true if and only if the specified object:
-   * <p>
-   * <ul>
-   * <li> Is not <code>null</code>.
-   * <li> Is an instance of <code>DateFormatSymbols</code>.
-   * <li> Contains identical formatting symbols to this object.
-   * </ul>
-   * 
-   * @param obj The <code>Object</code> to test for equality against.
-   *
-   * @return <code>true</code> if the specified object is equal to this one,
-   * </code>false</code> otherwise.
-   */
-  public boolean equals(Object obj) 
-  {
-    if (obj == null)
-      return(false);
-
-    if (!(obj instanceof DateFormatSymbols))
-      return(false);
-
-    DateFormatSymbols dfs = (DateFormatSymbols)obj;
-
-    if (!arrayEquals(getAmPmStrings(), dfs.getAmPmStrings()))
-      return(false);
-    if (!arrayEquals(getEras(), dfs.getEras()))
-      return(false);
-    if (!arrayEquals(getMonths(), dfs.getMonths()))
-      return(false);
-    if (!arrayEquals(getShortMonths(), dfs.getShortMonths()))
-      return(false);
-    if (!arrayEquals(getWeekdays(), dfs.getWeekdays()))
-      return(false);
-    if (!arrayEquals(getShortWeekdays(), dfs.getShortWeekdays()))
-      return(false);
-    if (!arrayEquals(getZoneStrings(), dfs.getZoneStrings()))
-      return(false);
-    if (!getLocalPatternChars().equals(dfs.getLocalPatternChars()))
-      return(false);
-
-    // Don't check non-spec variables
-    return(true);
-  }
-
-  /**
-   * This method returns a hash value for this object.
-   *
-   * @return A hash value for this object.
-  public int hashCode() 
-  {
-    return(System.identityHashCode(this));
+    this (Locale.getDefault());
   }
 
   /**
@@ -223,9 +99,9 @@ public class DateFormatSymbols
    *
    * @return The list of AM/PM display strings.
    */
-  public String[] getAmPmStrings() 
+  public String[] getAmPmStrings()
   {
-    return(ampms);
+    return ampms;
   }
 
   /**
@@ -235,9 +111,9 @@ public class DateFormatSymbols
     *
     * @return The list of era disply strings.
     */
-  public String[] getEras() 
+  public String[] getEras()
   {
-    return(eras);
+    return eras;
   }
 
   /**
@@ -272,9 +148,9 @@ public class DateFormatSymbols
     *
     * @return The format patter characters
     */
-  public String getLocalPatternChars() 
+  public String getLocalPatternChars()
   {
-    return(localPatternChars);
+    return localPatternChars;
   }
 
   /**
@@ -286,9 +162,9 @@ public class DateFormatSymbols
    *
    * @return The list of month display strings.
    */
-  public String[] getMonths() 
+  public String[] getMonths ()
   {
-    return(months);
+    return months;
   }
 
   /**
@@ -300,23 +176,9 @@ public class DateFormatSymbols
    *
    * @return The list of abbreviated month display strings.
    */
-  public String[] getShortMonths() 
+  public String[] getShortMonths ()
   {
-    return(shortMonths);
-  }
-
-  /**
-   * This method returns the list of strings used for displaying weekday
-   * names (e.g., "Sunday" and "Monday").  This is an eight element
-   * <code>String</code> array indexed by <code>Calendar.SUNDAY</code>
-   * through <code>Calendar.SATURDAY</code>.  Note that the first element
-   * of this array is ignored.
-   *
-   * @return This list of weekday display strings.
-   */
-  public String[] getWeekdays() 
-  {
-    return(weekdays);
+    return shortMonths;
   }
 
   /**
@@ -328,9 +190,23 @@ public class DateFormatSymbols
    *
    * @return This list of abbreviated weekday display strings.
    */
-  public String[] getShortWeekdays() 
+  public String[] getShortWeekdays ()
   {
-    return(shortWeekdays);
+    return shortWeekdays;
+  }
+
+  /**
+   * This method returns the list of strings used for displaying weekday
+   * names (e.g., "Sunday" and "Monday").  This is an eight element
+   * <code>String</code> array indexed by <code>Calendar.SUNDAY</code>
+   * through <code>Calendar.SATURDAY</code>.  Note that the first element
+   * of this array is ignored.
+   *
+   * @return This list of weekday display strings.
+   */
+  public String[] getWeekdays ()
+  {
+    return weekdays;
   }
 
   /**
@@ -347,9 +223,9 @@ public class DateFormatSymbols
    *
    * @return The list of time zone display strings.
    */
-  public String[][] getZoneStrings() 
+  public String[] [] getZoneStrings ()
   {
-    return(zoneStrings);
+    return zoneStrings;
   }
 
   /**
@@ -360,9 +236,9 @@ public class DateFormatSymbols
    *
    * @param ampms The new list of AM/PM display strings.
    */
-  public void setAmPmStrings(String[] ampms) 
+  public void setAmPmStrings (String[] value)
   {
-    this.ampms = ampms;
+    ampms = value;
   }
 
   /**
@@ -373,9 +249,9 @@ public class DateFormatSymbols
    *
    * @param eras The new list of era disply strings.
    */
-  public void setEras(String[] eras) 
+  public void setEras (String[] value)
   {
-    this.eras = eras;
+    eras = value;
   }
 
   /**
@@ -411,9 +287,9 @@ public class DateFormatSymbols
     *
     * @param localPatternChars The new format patter characters
     */
-  public void setLocalPatternChars(String localPatternChars) 
+  public void setLocalPatternChars (String value)
   {
-    this.localPatternChars = localPatternChars;
+    localPatternChars = value;
   }
 
   /**
@@ -425,9 +301,9 @@ public class DateFormatSymbols
     *
     * @param months The list of month display strings.
     */
-  public void setMonths(String[] months) 
+  public void setMonths (String[] value)
   {
-    this.months = months;
+    months = value;
   }
 
   /**
@@ -440,23 +316,9 @@ public class DateFormatSymbols
    *
    * @param shortMonths The new list of abbreviated month display strings.
    */
-  public void setShortMonths(String[] shortMonths) 
+  public void setShortMonths (String[] value)
   {
-    this.shortMonths = shortMonths;
-  }
-
-  /**
-   * This method sets the list of strings used to display weekday names.
-   * This is an eight element
-   * <code>String</code> array indexed by <code>Calendar.SUNDAY</code>
-   * through <code>Calendar.SATURDAY</code>.  Note that the first element
-   * of this array is ignored.
-   *
-   * @param weekdays This list of weekday display strings.
-   */
-  public void setWeekdays(String[] weekdays) 
-  {
-    this.weekdays = weekdays;
+    shortMonths = value;
   }
 
   /**
@@ -469,9 +331,23 @@ public class DateFormatSymbols
    *
    * @param shortWeekdays This list of abbreviated weekday display strings.
    */
-  public void setShortWeekdays(String[] shortWeekdays) 
+  public void setShortWeekdays (String[] value)
   {
-    this.shortWeekdays = shortWeekdays;
+    shortWeekdays = value;
+  }
+
+  /**
+   * This method sets the list of strings used to display weekday names.
+   * This is an eight element
+   * <code>String</code> array indexed by <code>Calendar.SUNDAY</code>
+   * through <code>Calendar.SATURDAY</code>.  Note that the first element
+   * of this array is ignored.
+   *
+   * @param weekdays This list of weekday display strings.
+   */
+  public void setWeekdays (String[] value)
+  {
+    weekdays = value;
   }
 
   /**
@@ -488,10 +364,106 @@ public class DateFormatSymbols
    *
    * @return The list of time zone display strings.
    */
-  public void setZoneStrings(String[][] zoneStrings) 
+  public void setZoneStrings (String[][] value)
   {
-    this.zoneStrings = zoneStrings;
+    zoneStrings = value;
   }
 
-} // DateFormatSymbols
+  /* Does a "deep" equality test - recurses into arrays. */
+  private static boolean equals (Object x, Object y)
+  {
+    if (x == y)
+      return true;
+    if (x == null || y == null)
+      return false;
+    if (! (x instanceof Object[]) || ! (y instanceof Object[]))
+      return x.equals(y);
+    Object[] xa = (Object[]) x;
+    Object[] ya = (Object[]) y;
+    if (xa.length != ya.length)
+      return false;
+    for (int i = xa.length;  --i >= 0; )
+      {
+	if (! equals(xa[i], ya[i]))
+	  return false;
+      }
+    return true;
+  }
 
+  private static int hashCode (Object x)
+  {
+    if (x == null)
+      return 0;
+    if (! (x instanceof Object[]))
+      return x.hashCode();
+    Object[] xa = (Object[]) x;
+    int hash = 0;
+    for (int i = 0;  i < xa.length;  i++)
+      hash = 37 * hashCode(xa[i]);
+    return hash;
+  }
+
+  /**
+   * This method tests a specified object for equality against this object.
+   * This will be true if and only if the specified object:
+   * <p>
+   * <ul>
+   * <li> Is not <code>null</code>.
+   * <li> Is an instance of <code>DateFormatSymbols</code>.
+   * <li> Contains identical formatting symbols to this object.
+   * </ul>
+   * 
+   * @param obj The <code>Object</code> to test for equality against.
+   *
+   * @return <code>true</code> if the specified object is equal to this one,
+   * </code>false</code> otherwise.
+   */
+  public boolean equals (Object obj)
+  {
+    if (! (obj instanceof DateFormatSymbols))
+      return false;
+    DateFormatSymbols other = (DateFormatSymbols) obj;
+    return (equals(ampms, other.ampms)
+	    && equals(eras, other.eras)
+	    && equals(localPatternChars, other.localPatternChars)
+	    && equals(months, other.months)
+	    && equals(shortMonths, other.shortMonths)
+	    && equals(shortWeekdays, other.shortWeekdays)
+	    && equals(weekdays, other.weekdays)
+	    && equals(zoneStrings, other.zoneStrings));
+  }
+
+  /**
+   * Returns a new copy of this object.
+   *
+   * @param A copy of this object
+   */
+  public Object clone ()
+  {
+    try
+      {
+        return super.clone ();
+      } 
+    catch (CloneNotSupportedException e) 
+      {
+        return null;
+      }
+  }
+
+  /**
+   * This method returns a hash value for this object.
+   *
+   * @return A hash value for this object.
+   */
+  public int hashCode ()
+  {
+    return (hashCode(ampms)
+	    ^ hashCode(eras)
+	    ^ hashCode(localPatternChars)
+	    ^ hashCode(months)
+	    ^ hashCode(shortMonths)
+	    ^ hashCode(shortWeekdays)
+	    ^ hashCode(weekdays)
+	    ^ hashCode(zoneStrings));
+  }
+}
