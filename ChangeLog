@@ -1,3 +1,8 @@
+2002-05-02  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/TreeMap.java (remove): Fix improper return value.
+	* THANKYOU: Add Xuan Baldauf for spotting this.
+
 2002-05-02  C. Brian Jones <cbj@gnu.org>
 
 	* configure.in: move check for ZIP to --with-zip

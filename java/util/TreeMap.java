@@ -623,8 +623,10 @@ public class TreeMap extends AbstractMap
     Node n = getNode(key);
     if (n == nil)
       return null;
+    // Note: removeNode can alter the contents of n, so save value now.
+    Object result = n.value;
     removeNode(n);
-    return n.value;
+    return result;
   }
 
   /**
@@ -1768,7 +1770,7 @@ public class TreeMap extends AbstractMap
             SubMap.this.clear();
           }
         };
-      return this.keys;
+      return this.values;
     }
   } // class SubMap  
 } // class TreeMap
