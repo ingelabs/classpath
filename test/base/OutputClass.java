@@ -11,7 +11,7 @@ public class OutputClass {
 			args[i] = args[i].replace('/','.');
 			try {
 			try {
-				OutputClass.outputClass(Class.forName(args[i]),new FileOutputStream(args[i]+".out-"+args[0]));
+				OutputClass.outputClass(Class.forName(args[i]),System.out);
 			} catch(ClassNotFoundException E) {
 				new PrintStream(new FileOutputStream(args[i]+".out-"+args[0])).println(args[i] + ": class missing.");
 			}
@@ -20,15 +20,15 @@ public class OutputClass {
 		}
 	}
 
-	static void outputClass(Class c, OutputStream o) {
-		PrintStream out = new PrintStream(o);
-		out.println("%class%" + Modifier.toString(sanitizeModifier(c.getModifiers())));
+	static void outputClass(Class c, PrintStream out) {
+		out.println(c.getName() + ":class:" + Modifier.toString(sanitizeModifier(c.getModifiers())));
 		// Put implemented interfaces here
 		Field[] f = ClassHelper.getAllFields(c);
 		for(int i=0;i<f.length;i++) {
 			if(Modifier.isPublic(f[i].getModifiers()) || Modifier.isProtected(f[i].getModifiers())) {
 				out.println(
-				  "%field%"
+				  c.getName()
+				  + ":field:"
 				  + Modifier.toString(sanitizeModifier(f[i].getModifiers()))
 				  + " "
 				  + f[i].getType().getName()
@@ -41,7 +41,8 @@ public class OutputClass {
 		for(int i=0;i<m.length;i++) {
 			if(Modifier.isPublic(m[i].getModifiers()) || Modifier.isProtected(m[i].getModifiers())) {
 				out.println(
-				  "%method%"
+				  c.getName()
+				  + ":method:"
 				  + Modifier.toString(sanitizeModifier(m[i].getModifiers()))
 				  + " "
 				  + m[i].getReturnType().getName()
@@ -58,7 +59,8 @@ public class OutputClass {
 		for(int i=0;i<cl.length;i++) {
 			if(Modifier.isPublic(cl[i].getModifiers()) || Modifier.isProtected(cl[i].getModifiers())) {
 				out.println(
-				  "%constructor%"
+				  c.getName()
+				  + ":constructor:"
 				  + Modifier.toString(sanitizeModifier(cl[i].getModifiers()))
 				  + " "
 				  + ClassHelper.getTruncatedName(cl[i].getName())
