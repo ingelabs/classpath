@@ -12,12 +12,14 @@ ComponentView.java \
 DefaultCaret.java \
 DefaultEditorKit.java \
 Document.java \
+DocumentFilter.java \
 EditorKit.java \
 Element.java \
 GapContent.java \
 JTextComponent.java \
 Keymap.java \
 MutableAttributeSet.java \
+NavigationFilter.java \
 PlainDocument.java \
 PlainEditorKit.java \
 Position.java \

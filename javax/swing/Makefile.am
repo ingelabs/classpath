@@ -51,6 +51,7 @@ JDesktopPane.java \
 JDialog.java \
 JEditorPane.java \
 JFileChooser.java \
+JFormattedTextField.java \
 JFrame.java \
 JInternalFrame.java \
 JLabel.java \
