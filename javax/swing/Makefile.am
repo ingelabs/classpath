@@ -67,6 +67,8 @@ Renderer.java \
 RootPaneContainer.java \
 Scrollable.java \
 ScrollPaneConstants.java \
+SizeRequirements.java \
+SizeSequence.java \
 SingleSelectionModel.java \
 SwingConstants.java \
 SwingUtilities.java \
