@@ -503,7 +503,7 @@ public void
 write(byte[] buf, int offset, int len) throws IOException
 {
   out.write(buf, offset, len);
-  written += len - offset;
+  written += len;
 }
 
 /*************************************************************************/
