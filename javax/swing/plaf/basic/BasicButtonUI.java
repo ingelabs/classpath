@@ -202,7 +202,7 @@ public class BasicButtonUI extends ButtonUI
     return d;
   }
 
-  static private Icon currentIcon(AbstractButton b)
+  private static Icon currentIcon(AbstractButton b)
   {
     Icon i = b.getIcon();
     ButtonModel model = b.getModel();

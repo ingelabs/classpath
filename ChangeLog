@@ -1,5 +1,20 @@
 2004-10-22  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JWindow.java
+	javax/swing/SpinnerModel.java
+	javax/swing/Timer.java
+	javax/swing/event/MenuKeyEvent.java
+	javax/swing/plaf/basic/BasicButtonUI.java
+	javax/swing/plaf/basic/BasicIconFactory.java
+	javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	javax/swing/text/AttributeSet.java
+	javax/swing/text/Highlighter.java
+	javax/swing/text/StyleConstants.java
+	javax/swing/tree/TreeCellEditor.java:
+	Removed redundant and reordered modifiers.
+
+2004-10-22  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/Math.java,
 	java/lang/StackTraceElement.java,
 	java/nio/Buffer.java,

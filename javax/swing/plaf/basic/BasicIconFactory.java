@@ -56,7 +56,7 @@ public class BasicIconFactory implements Serializable
 {
   static final long serialVersionUID = 5605588811185324383L;
 
-  static private class DummyIcon 
+  private static class DummyIcon 
     implements Icon
   {    
     public int getIconHeight() { return 10; }
