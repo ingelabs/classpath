@@ -1,0 +1,18 @@
+This directory contains libraries maintained externally to GNU Classpath.
+
+jaxp - http://www.gnu.org/software/classpathx/jaxp/
+
+	GNU JAXP, a part of the GNU Classpath Extensions project 
+	(hosted at savannah.gnu.org) is a free implementation of the 
+	standard XML processing APIs for Java:
+
+	* SAX Parser API
+	* DOM Level 2 generic XML data structures
+	* Sun's JAXP v1.1 interfaces
+
+	Import method:
+
+	cvs -d :ext:cbj@subversions.gnu.org:/cvsroot/classpath \
+	import -m "import classpathx jaxp 20030123" \
+	classpath/external/jaxp Classpathx JAXP_CVS_20030123
+

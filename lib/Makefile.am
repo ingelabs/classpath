@@ -45,10 +45,10 @@ endif
 # handling javac definition including programs like jikes here
 #-----------------------------------------------------------------
 if FOUND_JIKES
-JAVAC = $(JIKES) -target 1.1 +F -bootclasspath '' -extdirs '' -sourcepath '' $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -d . @classes
+JAVAC = $(JIKES) +F -bootclasspath '' -extdirs '' -sourcepath '' $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -d . @classes
 else
 if FOUND_GCJ
-JAVAC = $(GCJ) --bootclasspath '' $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -C -d . @classes
+JAVAC = $(GCJ) --bootclasspath '' $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -C -d . @classes
 else
 if FOUND_KJC
 JAVAC = $(USER_JABBA) $(ARG_CLASSPATH_VM) $(KJC_CLASSPATH):$(USER_CLASSLIB) $(KJC_MAIN) $(ARG_CLASSPATH_JAVAC) .:$(USER_CLASSLIB) -d . @classes
@@ -88,17 +88,19 @@ install-data-local :
 	if ! [ -e glibj.zip ]; then cp -R gnu $(DESTDIR)$(pkgdatadir); fi
 	if ! [ -e glibj.zip ]; then cp -R java $(DESTDIR)$(pkgdatadir); fi
 	if ! [ -e glibj.zip ]; then cp -R javax $(DESTDIR)$(pkgdatadir); fi
+	if ! [ -e glibj.zip ]; then cp -R org $(DESTDIR)$(pkgdatadir); fi
 
 # FIXME - should mimic doc/api/Makefile.am instead...
 uninstall-local:
 	rm -rf $(DESTDIR)$(pkgdatadir)/gnu
 	rm -rf $(DESTDIR)$(pkgdatadir)/java
 	rm -rf $(DESTDIR)$(pkgdatadir)/javax
+	rm -rf $(DESTDIR)$(pkgdatadir)/org
 
 .PHONY: genclasses
 
 glibj.zip: classes compile-classes resources
-	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip gnu java javax > /dev/null; fi
+	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip gnu java javax org > /dev/null; fi
 
 resources:
 	if ! [ -e gnu ]; then mkdir gnu; fi
@@ -131,3 +133,4 @@ maintainer-clean-local:
 	-rm -rf gnu
 	-rm -rf java
 	-rm -rf javax
+	-rm -rf org

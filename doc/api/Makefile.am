@@ -42,7 +42,9 @@ uninstall-local:
 
 html: create_xml create_catalog create_html
 
-packages := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -regex .*CVS | tr '/' '.' )
+core := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -regex .*CVS | tr '/' '.' )
+jaxp := $(shell cd $(top_srcdir)/external/jaxp/source && $(FIND) gnu javax org -type d ! -regex .*CVS | tr '/' '.')
+packages = $(core) $(jaxp)
 #| grep -v "^java\$" )
 date := $(shell $(DATE))
 
@@ -55,7 +57,7 @@ clean:
 create_xml:
 	-$(MKDIR) xml > /dev/null 2>&1
 	$(GJDOC) -sourcepath \
-		"$(top_srcdir):$(top_srcdir)/vm/reference" \
+		"$(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_srcdir)/vm/reference" \
 		-doclet gnu.classpath.tools.doclets.xmldoclet.Driver \
 		-d xml $(packages) 
 	-touch create_xml

@@ -1,3 +1,15 @@
+2003-02-01  C. Brian Jones  <cbj@gnu.org>
+
+	* external/README: new file
+	* external/jaxp: import Classpathx JAXP from January 31, 2003 CVS
+	* LICENSE: new file
+	* Makefile.am: distribute LICENSE, external/jaxp/source
+	* lib/Makefile.am: add external/jaxp/source to classpath; removed
+	-target 1.1 from jikes invocation
+	* lib/gen-classlist.sh.in: add external/jaxp/source to directories 
+	to search
+	* doc/api/Makefile.am: add external/jaxp/source to source path
+
 2003-01-31  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkToolkit.java (static): Use
