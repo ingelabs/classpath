@@ -1,3 +1,7 @@
+2001-10-01  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/CharSequence.java: Fix javadoc comment.
+
 2001-09-30  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/FileWriter.java: Merged with libgcj.

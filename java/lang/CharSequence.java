@@ -66,7 +66,7 @@ public interface CharSequence {
      * Returns a new <code>CharSequence</char> of the indicated range.
      *
      * @exception IndexOutOfBoundsException when <code>begin &lt; 0</code>,
-     *         <code>end &lt; 0</code>, <code>end &gt; length()</code or
+     *         <code>end &lt; 0</code>, <code>end &gt; length()</code> or
      *         <code>begin &gt; end</code>
      */
     CharSequence subSequence(int begin, int end);
