@@ -101,14 +101,14 @@ public class Utilities
         if (c == '\t' || c == '\n')
           {
             if (len > 0) {
-	    g.drawChars(buffer, pos, len, pixelX, pixelY + ascent);            
-            pixelX += pixelWidth;
-            pixelWidth = 0;
+              g.drawChars(buffer, pos, len, pixelX, pixelY + ascent);            
+              pixelX += pixelWidth;
+              pixelWidth = 0;
             }
             pos = offset+1;
             len = 0;
           }
-          
+        
 	switch (c)
 	  {
 	  case '\t':

@@ -1,3 +1,11 @@
+2004-11-11  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java: Indentation fixups.
+	* javax/swing/plaf/basic/BasicViewportUI.java: Likewise.
+	* javax/swing/text/PlainDocument.java: Likewise.
+	* javax/swing/text/SimpleAttributeSet.java: Likewise.
+	* javax/swing/text/Utilities.java: Likewise.
+
 2004-11-11  Graydon Hoare  <graydon@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java:
