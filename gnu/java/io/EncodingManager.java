@@ -174,6 +174,12 @@ private static Constructor
 findDecoderConstructor(String encoding, boolean cache) 
                              throws UnsupportedEncodingException
 {
+  // First check for an aliased encoding name
+  String alias = System.getProperty("gnu.java.io.encoding_scheme_alias." + 
+                                    encoding);
+  if (alias != null)
+    encoding = alias;
+
   StringTokenizer st = new StringTokenizer(encoding_path, ":");
 
   while (st.hasMoreTokens())
@@ -211,6 +217,12 @@ private static Constructor
 findEncoderConstructor(String encoding, boolean cache) 
                              throws UnsupportedEncodingException
 {
+  // First check for an aliased encoding name
+  String alias = System.getProperty("gnu.java.io.encoding_scheme_alias." + 
+                                    encoding);
+  if (alias != null)
+    encoding = alias;
+
   StringTokenizer st = new StringTokenizer(encoding_path, ":");
 
   while (st.hasMoreTokens())
