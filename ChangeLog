@@ -1,5 +1,8 @@
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
+	* java/io/InvalidClassException.java: Re-merged from libgcj
+	(indentation cleanup).
+
 	* java/io/BufferedReader.java (DEFAULT_BUFFER_SIZE): Default to 8k.
 
 2001-08-31  C. Brian Jones <cbj@gnu.org>
