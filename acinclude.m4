@@ -38,6 +38,9 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
   conditional_with_japhar=true
   AC_MSG_RESULT(yes)
 
+  dnl define WITH_JAPHAR for native compilation
+  AC_DEFINE(WITH_JAPHAR)
+
   dnl Reset prefix so that we install into Japhar directory
   prefix=$JAPHAR_PREFIX
   AC_SUBST(prefix)
@@ -73,6 +76,7 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_KAFFE,
   JVM="no"
   AC_SUBST(JVM)
   AC_MSG_ERROR(Help GNU Classpath support Kaffe!)
+  dnl AC_DEFINE(WITH_KAFFE)
 ])
 
 dnl CLASSPATH_CHECK_JAPHAR - checks for japhar
