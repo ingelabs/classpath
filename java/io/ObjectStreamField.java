@@ -22,7 +22,7 @@ package java.io;
 import gnu.java.lang.reflect.TypeSignature;
 
 // XXX doc
-public class ObjectStreamField implements Comparable
+public class ObjectStreamField implements java.lang.Comparable
 {
   public ObjectStreamField( String name, Class type )
   {
