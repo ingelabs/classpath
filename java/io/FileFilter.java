@@ -25,7 +25,7 @@ package java.io;
   * This interface has one method which is used for filtering pathnames
   * returned in a pathname listing.  It is currently used by the 
   * <code>File.listFiles()</code> method.
-  *
+  * <p>
   * The method in this interface determines if a particular pathname should
   * or should not be included in the pathname listing.
   *

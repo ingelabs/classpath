@@ -25,7 +25,7 @@ package java.io;
   * This interface has one method which is used for filtering filenames
   * returned in a directory listing.  It is currently used by the 
   * <code>File.list()</code> method and by the filename dialog in AWT.
-  *
+  * <p>
   * The method in this interface determines if a particular file should
   * or should not be included in the file listing.
   *

@@ -22,15 +22,15 @@
 package java.io;
 
 /**
-  * This interface extends @code{DataOutpu} to provide the additional
+  * This interface extends <code>DataOutput</code> to provide the additional
   * facility of writing object instances to a stream.  It also adds some
-  * additional methods to make the interface more @code{OutputStream} like.
+  * additional methods to make the interface more <code>OutputStream</code> like.
   *
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface ObjectOutput extends DataOutput
+public interface ObjectOutput extends DataOutput
 {
 
 /**

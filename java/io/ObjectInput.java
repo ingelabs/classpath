@@ -22,10 +22,10 @@
 package java.io; 
 
 /**
-  * This interface extends the @code{DataInput} interface to provide a
+  * This interface extends the <code>DataInput</code> interface to provide a
   * facility to read objects as well as primitive types from a stream.  It
   * also has methods that allow input to be done in a manner similar to
-  * @code{InputStream}
+  * <code>InputStream</code>
   *
   * @version 0.0
   *
@@ -79,10 +79,10 @@ read(byte[] buf) throws IOException;
 
 /**
   * This method reads raw bytes and stores them in a byte array buffer
-  * @code{buf} starting at position @code{offset} into the buffer.  A 
-  * maximum of @code{len} bytes will be read.  Note that this method
+  * <code>buf</code> starting at position <code>offset</code> into the buffer.  A 
+  * maximum of <code>len</code> bytes will be read.  Note that this method
   * blocks if no data is available, but will not necessarily block until
-  * it can read @code{len} bytes of data.  That is, a "short count" is
+  * it can read <code>len</code> bytes of data.  That is, a "short count" is
   * possible.
   *
   * @param buf The byte array to receive the data read
