@@ -1,5 +1,9 @@
 2004-05-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/ObjectStreamField.java: Merge copyright year with libgcj.
+
+2004-05-17  Michael Koch  <konqueror@gmx.de>
+
 	* acinclude.m4: Depend on GCJ 3.3 or newer.
 
 2004-05-17  Michael Koch  <konqueror@gmx.de>

@@ -1,5 +1,5 @@
 /* ObjectStreamField.java -- Class used to store name and class of fields
-   Copyright (C) 1998, 1999, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2003, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
