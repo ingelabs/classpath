@@ -14,6 +14,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_beep (JNIEnv *env, 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenSizeDimensions (JNIEnv *env, jobject, jintArray);
 JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenResolution (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_sync (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_loadSystemColors (JNIEnv *env, jobject, jintArray);
 
 #ifdef __cplusplus
 }
