@@ -296,38 +296,65 @@ public class DefaultTreeSelectionModel
 		// TODO
 	} // clearSelection()
 
-	/**
-	 * addTreeSelectionListener
-	 * @param value0 TODO
-	 */
-	public void addTreeSelectionListener(TreeSelectionListener value0) {
-		// TODO
-	} // addTreeSelectionListener()
+  /**
+   * Adds a <code>TreeSelectionListener</code> object to this model.
+   * 
+   * @param listener the listener to add
+   */
+  public void addTreeSelectionListener(TreeSelectionListener listener)
+  {
+    listenerList.add(TreeSelectionListener.class, listener);
+  }
 
-	/**
-	 * removeTreeSelectionListener
-	 * @param value0 TODO
-	 */
-	public void removeTreeSelectionListener(TreeSelectionListener value0) {
-		// TODO
-	} // removeTreeSelectionListener()
+  /**
+   * Removes a <code>TreeSelectionListener</code> object from this model.
+   * 
+   * @param listener the listener to remove
+   */
+  public void removeTreeSelectionListener(TreeSelectionListener listener)
+  {
+    listenerList.remove(TreeSelectionListener.class, listener);
+  }
 
-	/**
-	 * fireValueChanged
-	 * @param value0 TODO
-	 */
-	protected void fireValueChanged(TreeSelectionEvent value0) {
-		// TODO
-	} // fireValueChanged()
+  /**
+   * Returns all <code>TreeSelectionListener</code> added to this model.
+   * 
+   * @return an array of listeners
+   *
+   * @since 1.4
+   */
+  public TreeSelectionListener[] getTreeSelectionListeners()
+  {
+    return (TreeSelectionListener[])
+	      listenerList.getListeners(TreeSelectionListener.class);
+  }
 
-	/**
-	 * getListeners
-	 * @param value0 TODO
-	 * @returns EventListener[]
-	 */
-	public EventListener[] getListeners(Class value0) {
-		return null; // TODO
-	} // getListeners()
+  /**
+   * fireValueChanged
+   * 
+   * @param event the event to fire.
+   */
+  protected void fireValueChanged(TreeSelectionEvent event)
+  {
+    TreeSelectionListener[] listeners = getTreeSelectionListeners();
+
+    for (int i = listeners.length - 1; i >= 0; --i)
+      listeners[i].valueChanged(event);
+  }
+
+  /**
+   * Returns all added listeners of a special type.
+   * 
+   * @param listenerType the listener type
+   * 
+   * @return an array of listeners
+   *
+   * @since 1.3
+   */
+  public EventListener[] getListeners(Class listenerType)
+  {
+    return listenerList.getListeners(listenerType);
+  }
 
 	/**
 	 * getSelectionRows
@@ -385,21 +412,37 @@ public class DefaultTreeSelectionModel
 		return null; // TODO
 	} // getLeadSelectionPath()
 
-	/**
-	 * addPropertyChangeListener
-	 * @param value0 TODO
-	 */
-	public synchronized void addPropertyChangeListener(PropertyChangeListener value0) {
-		// TODO
-	} // addPropertyChangeListener()
+  /**
+   * Adds a <code>PropertyChangeListener</code> object to this model.
+   * 
+   * @param listener the listener to add.
+   */
+  public void addPropertyChangeListener(PropertyChangeListener listener)
+  {
+    changeSupport.addPropertyChangeListener(listener);
+  }
 
-	/**
-	 * removePropertyChangeListener
-	 * @param value0 TODO
-	 */
-	public synchronized void removePropertyChangeListener(PropertyChangeListener value0) {
-		// TODO
-	} // removePropertyChangeListener()
+  /**
+   * Removes a <code>PropertyChangeListener</code> object from this model.
+   * 
+   * @param listener the listener to remove.
+   */
+  public void removePropertyChangeListener(PropertyChangeListener listener)
+  {
+    changeSupport.removePropertyChangeListener(listener);
+  }
+
+  /**
+   * Returns all added <code>PropertyChangeListener</code> objects.
+   *
+   * @return an array of listeners.
+   * 
+   * @since 1.4
+   */
+  public PropertyChangeListener[] getPropertyChangeListeners()
+  {
+    return changeSupport.getPropertyChangeListeners();
+  }
 
 	/**
 	 * insureRowContinuity

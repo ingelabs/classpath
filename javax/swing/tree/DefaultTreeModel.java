@@ -45,6 +45,7 @@ import java.io.Serializable;
 import java.util.EventListener;
 
 import javax.swing.event.EventListenerList;
+import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 
 /**
@@ -305,74 +306,119 @@ public class DefaultTreeModel implements Serializable, TreeModel
 		return null; // TODO
 	} // getPathToRoot()
 
-	/**
-	 * addTreeModelListener
-	 * @param value0 TODO
-	 */
-	public void addTreeModelListener(TreeModelListener listener) {
-		listenerList.add(TreeModelListener.class, listener);
-	} // addTreeModelListener()
+  /**
+   * Registers a listere to the model.
+   * 
+   * @param listener the listener to add
+   */
+  public void addTreeModelListener(TreeModelListener listener)
+  {
+    listenerList.add(TreeModelListener.class, listener);
+  }
 
-	/**
-	 * removeTreeModelListener
-	 * @param value0 TODO
-	 */
-	public void removeTreeModelListener(TreeModelListener listener) {
-		listenerList.remove(TreeModelListener.class, listener);
-	} // removeTreeModelListener()
+  /**
+   * Removes a listener from the model.
+   * 
+   * @param listener the listener to remove
+   */
+  public void removeTreeModelListener(TreeModelListener listener)
+  {
+    listenerList.remove(TreeModelListener.class, listener);
+  }
 
-	/**
-	 * fireTreeNodesChanged
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * @param value2 TODO
-	 * @param value3 TODO
-	 */
-	protected void fireTreeNodesChanged(Object value0, Object[] value1, int[] value2, Object[] value3) {
-		// TODO
-	} // fireTreeNodesChanged()
+  /**
+   * Returns all registered <code>TreeModelListener</code> listeners.
+   *
+   * @return an array of listeners.
+   *
+   * @since 1.4
+   */
+  public TreeModelListener[] getTreeModelListeners()
+  {
+    return (TreeModelListener[]) listenerList.getListeners(TreeModelListener.class);
+  }
 
-	/**
-	 * fireTreeNodesInserted
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * @param value2 TODO
-	 * @param value3 TODO
-	 */
-	protected void fireTreeNodesInserted(Object value0, Object[] value1, int[] value2, Object[] value3) {
-		// TODO
-	} // fireTreeNodesInserted()
+  /**
+   * fireTreeNodesChanged
+   * 
+   * @param source the node being changed
+   * @param path the path to the root node
+   * @param childIndices the indices of the changed elements
+   * @param children the changed elements
+   */
+  protected void fireTreeNodesChanged(Object source, Object[] path, int[] childIndices, Object[] children)
+  {
+    TreeModelEvent event = new TreeModelEvent(source, path, childIndices, children);
+    TreeModelListener[] listeners = getTreeModelListeners();
 
-	/**
-	 * fireTreeNodesRemoved
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * @param value2 TODO
-	 * @param value3 TODO
-	 */
-	protected void fireTreeNodesRemoved(Object value0, Object[] value1, int[] value2, Object[] value3) {
-		// TODO
-	} // fireTreeNodesRemoved()
+    for (int i = listeners.length - 1; i >= 0; --i)
+      listeners[i].treeNodesChanged(event);
+  }
 
-	/**
-	 * fireTreeStructureChanged
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * @param value2 TODO
-	 * @param value3 TODO
-	 */
-	protected void fireTreeStructureChanged(Object value0, Object[] value1, int[] value2, Object[] value3) {
-		// TODO
-	} // fireTreeStructureChanged()
+  /**
+   * fireTreeNodesInserted
+   * 
+   * @param source the node where new nodes got inserted
+   * @param path the path to the root node
+   * @param childIndices the indices of the new elements
+   * @param children the new elements
+   */
+  protected void fireTreeNodesInserted(Object source, Object[] path, int[] childIndices, Object[] children)
+  {
+    TreeModelEvent event = new TreeModelEvent(source, path, childIndices, children);
+    TreeModelListener[] listeners = getTreeModelListeners();
 
-	/**
-	 * getListeners
-	 * @param value0 TODO
-	 * @returns EventListener[]
-	 */
-	public EventListener[] getListeners(Class classType) {
-		return listenerList.getListeners(classType);
-	} // getListeners()
+    for (int i = listeners.length - 1; i >= 0; --i)
+      listeners[i].treeNodesInserted(event);
+  }
+
+  /**
+   * fireTreeNodesRemoved
+   * 
+   * @param source the node where nodes got removed-
+   * @param path the path to the root node
+   * @param childIndices the indices of the removed elements
+   * @param children the removed elements
+   */
+  protected void fireTreeNodesRemoved(Object source, Object[] path, int[] childIndices, Object[] children)
+  {
+    TreeModelEvent event = new TreeModelEvent(source, path, childIndices, children);
+    TreeModelListener[] listeners = getTreeModelListeners();
+
+    for (int i = listeners.length - 1; i >= 0; --i)
+      listeners[i].treeNodesRemoved(event);
+  }
+
+  /**
+   * fireTreeStructureChanged
+   * 
+   * @param source the node where the model has changed
+   * @param path the path to the root node
+   * @param childIndices the indices of the affected elements
+   * @param children the affected elements
+   */
+  protected void fireTreeStructureChanged(Object source, Object[] path, int[] childIndices, Object[] children)
+  {
+    TreeModelEvent event = new TreeModelEvent(source, path, childIndices, children);
+    TreeModelListener[] listeners = getTreeModelListeners();
+
+    for (int i = listeners.length - 1; i >= 0; --i)
+      listeners[i].treeStructureChanged(event);
+  }
+
+  /**
+   * Returns the registered listeners of a given type.
+   * 
+   * @param listenerType the listener type to return
+   * 
+   * @return an array of listeners
+   *
+   * @since 1.3
+   */
+  public EventListener[] getListeners(Class listenerType)
+  {
+    return listenerList.getListeners(listenerType);
+  }
 
 
 } // DefaultTreeModel

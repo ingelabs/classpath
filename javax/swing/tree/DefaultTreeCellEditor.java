@@ -56,6 +56,7 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.event.CellEditorListener;
+import javax.swing.event.EventListenerList;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
@@ -63,7 +64,9 @@ import javax.swing.event.TreeSelectionListener;
  * DefaultTreeCellEditor
  * @author Andrew Selkirk
  */
-public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor, TreeSelectionListener {
+public class DefaultTreeCellEditor
+  implements ActionListener, TreeCellEditor, TreeSelectionListener
+{
 
 	//-------------------------------------------------------------
 	// Classes ----------------------------------------------------
@@ -83,18 +86,27 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor, Tr
 		// Initialization ---------------------------------------------
 		//-------------------------------------------------------------
 
-		/**
-		 * Constructor EditorContainer
-		 * @param value0 TODO
-		 */
-		public EditorContainer(DefaultTreeCellEditor value0) {
-			// TODO
-		} // EditorContainer()
+    /**
+     * Creates an <code>EditorContainer</code> object.
+     */
+    public EditorContainer()
+    {
+      // Do nothing here.
+    }
 
 
 		//-------------------------------------------------------------
 		// Methods ----------------------------------------------------
 		//-------------------------------------------------------------
+
+    /**
+     * This method only exists for API compatibility and is useless as it does
+     * nothing. It got probably introduced by accident.
+     */
+    public void EditorContainer()
+    {
+      // Do nothing here.
+    }
 
 		/**
 		 * getPreferredSize
@@ -141,16 +153,16 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor, Tr
 		// Initialization ---------------------------------------------
 		//-------------------------------------------------------------
 
-		/**
-		 * Constructor DefaultTextField
-		 * @param value0 TODO
-		 * @param value1 TODO
-		 */
-		public DefaultTextField(DefaultTreeCellEditor value0, Border value1) {
-			// TODO
-		} // DefaultTextField()
 
-
+    /**
+     * Creates a <code>DefaultTextField</code> object.
+     * 
+     * @param border the border to use
+     */
+    public DefaultTextField(Border border)
+    {
+      this.border = border;
+    }
 		//-------------------------------------------------------------
 		// Methods ----------------------------------------------------
 		//-------------------------------------------------------------
@@ -163,13 +175,15 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor, Tr
 			return null; // TODO
 		} // getFont()
 
-		/**
-		 * getBorder
-		 * @returns Border
-		 */
-		public Border getBorder() {
-			return null; // TODO
-		} // getBorder()
+    /**
+     * Returns the border of the text field.
+     * 
+     * @return the border
+     */
+    public Border getBorder()
+    {
+      return border;
+    }
 
 		/**
 		 * getPreferredSize
@@ -186,6 +200,8 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor, Tr
 	//-------------------------------------------------------------
 	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
+
+  private EventListenerList listenerList = new EventListenerList();
 
 	/**
 	 * realEditor
@@ -387,21 +403,38 @@ public class DefaultTreeCellEditor implements ActionListener, TreeCellEditor, Tr
 		// TODO
 	} // cancelCellEditing()
 
-	/**
-	 * addCellEditorListener
-	 * @param value0 TODO
-	 */
-	public void addCellEditorListener(CellEditorListener value0) {
-		// TODO
-	} // addCellEditorListener()
+  /**
+   * Adds a <code>CellEditorListener</code> object to this editor.
+   * 
+   * @param listener the listener to add
+   */
+  public void addCellEditorListener(CellEditorListener listener)
+  {
+    listenerList.add(CellEditorListener.class, listener);
+  }
 
-	/**
-	 * removeCellEditorListener
-	 * @param value0 TODO
-	 */
-	public void removeCellEditorListener(CellEditorListener value0) {
-		// TODO
-	} // removeCellEditorListener()
+  /**
+   * Removes a <code>CellEditorListener</code> object.
+   * 
+   * @param listener the listener to remove
+   */
+  public void removeCellEditorListener(CellEditorListener listener)
+  {
+    listenerList.remove(CellEditorListener.class, listener);
+  }
+
+  /**
+   * Returns all added <code>CellEditorListener</code> objects to this editor.
+   *
+   * @return an array of listeners
+   * 
+   * @since 1.4
+   */
+  public CellEditorListener[] getCellEditorListeners()
+  {
+    return (CellEditorListener[])
+	     listenerList.getListeners(CellEditorListener.class);
+  }
 
 	/**
 	 * valueChanged

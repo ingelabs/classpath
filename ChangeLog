@@ -1,3 +1,33 @@
+2004-10-24  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(EditorContainer.EditorContainer): Fixed arguments.
+	(EditorContainer.EditorContainer): New method.
+	(DefaultTextField.DefaultTextField): Fixed arguments, implemented.
+	(DefaultTextField.getBorder): Implemented.
+	(listenerList): New field.
+	(addCellEditorListener): Implemented.
+	(removeCellEditorListener): Implemented.
+	(getCellEditorListeners): New method.
+	* javax/swing/tree/DefaultTreeModel.java
+	(addTreeModelListener): Fixed javadoc.
+	(removeTreeModelListener): Likewise.
+	(getTreeModelListeners): New method.
+	(fireTreeNodesChanged): Implemented.
+	(fireTreeNodesInserted): Likewise.
+	(fireTreeNodesRemoved): Likewise.
+	(fireTreeStructureChanged): Likewise.
+	(getListeners): Fixed javadoc.
+	* javax/swing/tree/DefaultTreeSelectionModel.java
+	(addTreeSelectionListener): Implemented.
+	(removeTreeSelectionListener): Likewise.
+	(fireValueChanged): Likewise.
+	(getListeners): Likewise.
+	(addPropertyChangeListener): Likewise.
+	(removePropertyChangeListener): Likewise.
+	(getTreeSelectionListeners): New method.
+	(getPropertyChangeListeners): Likewise.
+
 2004-10-23  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/plaf/basic/BasicScrollBarUI.java
