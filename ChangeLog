@@ -1,5 +1,16 @@
 2003-05-18  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/ShortBuffer.java
+	(get): Merged from libgcj.
+	(put): Likewise.
+	(compact): Likewise.
+	(isDirect): Likewise.
+	(slice): Likewise.
+	(duplicate): Likewise.
+	(asReadOnlyBuffer): Likewise.
+
+2003-05-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/ByteBuffer.java: Merged documentation all over from libgcj,
 	reformatted code, no functional changes.
 	* java/nio/CharBuffer.java: Likewise.

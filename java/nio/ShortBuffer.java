@@ -296,13 +296,70 @@ public abstract class ShortBuffer extends Buffer
    * Returns the byte order of this buffer.
    */
   public abstract ByteOrder order ();
-  public abstract short get();
-  public abstract java.nio. ShortBuffer put(short b);
-  public abstract short get(int index);
-  public abstract java.nio. ShortBuffer put(int index, short b);
-  public abstract ShortBuffer compact();
-  public abstract boolean isDirect();
-  public abstract ShortBuffer slice();
-  public abstract ShortBuffer duplicate();
-  public abstract ShortBuffer asReadOnlyBuffer();
+
+  /**
+   * Reads the <code>short</code> at this buffer's current position,
+   * and then increments the position.
+   *
+   * @exception BufferUnderflowException If there are no remaining
+   * <code>shorts</code> in this buffer.
+   */
+  public abstract short get ();
+
+  /**
+   * Writes the <code>short</code> at this buffer's current position,
+   * and then increments the position.
+   *
+   * @exception BufferOverflowException If there no remaining 
+   * <code>shorts</code> in this buffer.
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
+  public abstract ShortBuffer put (short b);
+
+  /**
+   * Absolute get method.
+   *
+   * @exception IndexOutOfBoundsException If index is negative or not smaller
+   * than the buffer's limit.
+   */
+  public abstract short get (int index);
+  
+  /**
+   * Absolute put method.
+   *
+   * @exception IndexOutOfBoundsException If index is negative or not smaller
+   * than the buffer's limit.
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
+  public abstract ShortBuffer put (int index, short b);
+
+  /**
+   * Compacts this buffer.
+   * 
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
+  public abstract ShortBuffer compact ();
+
+  /**
+   * Tells wether or not this buffer is direct.
+   */
+  public abstract boolean isDirect ();
+
+  /**
+   * Creates a new <code>ShortBuffer</code> whose content is a shared
+   * subsequence of this buffer's content.
+   */
+  public abstract ShortBuffer slice ();
+
+  /**
+   * Creates a new <code>ShortBuffer</code> that shares this buffer's
+   * content.
+   */
+  public abstract ShortBuffer duplicate ();
+
+  /**
+   * Creates a new read-only <code>ShortBuffer</code> that shares this
+   * buffer's content.
+   */
+  public abstract ShortBuffer asReadOnlyBuffer ();
 }
