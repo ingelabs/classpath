@@ -40,8 +40,8 @@ package java.nio;
 
 public final class ByteOrder
 {
-  static final ByteOrder BIG_ENDIAN     = new ByteOrder();
-  static final ByteOrder LITTLE_ENDIAN  = new ByteOrder();
+  public static final ByteOrder BIG_ENDIAN     = new ByteOrder();
+  public static final ByteOrder LITTLE_ENDIAN  = new ByteOrder();
 
   public static ByteOrder nativeOrder()
   {
