@@ -33,13 +33,15 @@
 #include <jni.h>
 #include "javaio.h"
 
+#include "java_io_File.h"
+
 /*************************************************************************/
 
 /*
  * Method to create an empty file
  */
 
-JNIEXPORT jint JNICALL
+JNIEXPORT jboolean JNICALL
 Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
 {
   const char *fname;
@@ -47,7 +49,7 @@ Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
 
   fname = _javaio_jstring_to_cstring(env, name);
   if (!fname)
-    return;
+    return(0);
 
   fd = open(fname, O_CREAT|O_EXCL|O_RDWR, 0777);
   if (fd == -1)

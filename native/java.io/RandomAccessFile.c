@@ -28,7 +28,7 @@
 
 #include <jni.h>
 
-//#include "java_io_RandomAccessFile.h"
+#include "java_io_RandomAccessFile.h"
 
 #include "javaio.h"
 
@@ -83,7 +83,7 @@ Java_java_io_RandomAccessFile_open(JNIEnv *env, jobject obj, jstring name,
 JNIEXPORT void JNICALL
 Java_java_io_RandomAccessFile_closeInternal(JNIEnv *env, jobject obj, jint fd)
 {
-  return(_javaio_close(env, fd));
+  _javaio_close(env, fd);
 }
 
 /*************************************************************************/

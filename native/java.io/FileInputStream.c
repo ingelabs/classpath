@@ -30,6 +30,8 @@
 
 #include "javaio.h"
 
+#include "java_io_FileInputStream.h"
+
 /*************************************************************************/
 
 /*
@@ -90,7 +92,7 @@ Java_java_io_FileInputStream_readInternal(JNIEnv *env, jobject obj, jint fd,
 JNIEXPORT void JNICALL
 Java_java_io_FileInputStream_closeInternal(JNIEnv *env, jobject obj, jint fd)
 {
-  return(_javaio_close(env, fd));
+  _javaio_close(env, fd);
 }
 
 
