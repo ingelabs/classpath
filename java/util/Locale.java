@@ -47,11 +47,14 @@ public final class Locale implements Cloneable, Serializable {
   static {
     try {
       ISO639A3 = new Properties();
-      ISO639A3.load(Locale.class.getResourceAsStream("iso639-a3.properties"));
+      ISO639A3.load(Locale.class.getResourceAsStream(
+                    "/gnu/java/locale/iso639-a3.properties"));
       ISO3166A3 = new Properties();
-      ISO3166A3.load(Locale.class.getResourceAsStream("iso3166-a3.properties"));
+      ISO3166A3.load(Locale.class.getResourceAsStream(
+                    "/gnu/java/locale/iso3166-a3.properties"));
       new639 = new Properties();
-      new639.load(Locale.class.getResourceAsStream("iso639-a2-old.properties"));
+      new639.load(Locale.class.getResourceAsStream(
+                    "/gnu/java/locale/iso639-a2-old.properties"));
     } catch (IOException e) {
       throw new Error("Locale init error: " + e);
     }
@@ -265,7 +268,7 @@ public final class Locale implements Cloneable, Serializable {
    * has no country code.
    */
   public String getDisplayCountry(Locale inLocale) {
-    ResourceBundle ISO3166 = ResourceBundle.getBundle("java.util.iso3166",
+    ResourceBundle ISO3166 = ResourceBundle.getBundle("/gnu/java/locale/iso3166",
 						      inLocale);
     try {
       return ISO3166.getString(country);
@@ -303,8 +306,8 @@ public final class Locale implements Cloneable, Serializable {
    * has no language code.
    */
   public String getDisplayLanguage(Locale inLocale) {
-    ResourceBundle ISO639 = ResourceBundle.getBundle("java.util.iso639",
-						     inLocale);
+    ResourceBundle ISO639 = ResourceBundle.getBundle(
+                                "/gnu/java/locale/iso639", inLocale);
     try {
       return ISO639.getString(language);
     } catch (MissingResourceException e) {
@@ -479,7 +482,7 @@ public final class Locale implements Cloneable, Serializable {
     if (a3 == null)
       throw new 
 	MissingResourceException("No ISO 639-2/T code for " + language,
-				 "java.util.iso639-a3",
+				 "/gnu/java/locale/iso639-a3 ",
 				 language);
     return a3;
   }
@@ -499,7 +502,7 @@ public final class Locale implements Cloneable, Serializable {
     if (a3 == null)
       throw new 
 	MissingResourceException("No ISO 3166 A3 code for " + country,
-				 "java.util.iso3166-a3",
+				 "gnu.java.locale.iso3166-a3",
 				 country);
     return a3;
   }
