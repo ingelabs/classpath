@@ -1,3 +1,10 @@
+2004-05-01  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/DecimalFormat.java
+	(MAXIMUM_INTEGER_DIGITS): New constant to keep the numeric value 309.
+	(applyPatternWithSymbols): Use MAXIMUM_INTEGER_DIGITS.
+	(parse): Fixed handling of exponentiation notation and grouping.
+
 2004-05-01  Michael Koch  <konqueror@gmx.de>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c,
