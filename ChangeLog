@@ -1,5 +1,10 @@
 2004-11-23  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/NIOServerSocket.java
+	(getPlainSocketImpl): Removed debug code.
+
+2004-11-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/Component.java:
 	Fixed argument names to match javadocs.
 	(setFont): Rewritten set property first and then fire event.
