@@ -1,3 +1,9 @@
+2004-10-25  Michael Koch  <konqueror@gmx.de>
+
+	* scripts/checkstyle.css,
+	scripts/checkstyle2html.xsl:
+	New files
+
 2004-10-24  Casey Marshall  <csm@gnu.org>
 
 	* gnu/java/security/action/GetSecurityPropertyAction.java: new file.
