@@ -20,6 +20,7 @@
 
 #include "gtkpeer.h"
 #include "GtkMenuItemPeer.h"
+#include "GtkComponentPeer.h"
 
 static void
 connect_activate_hook (JNIEnv *, jobject, GtkMenuItem *);
@@ -46,6 +47,39 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create
   (*env)->ReleaseStringUTFChars (env, label, str);
 
   NSA_SET_PTR (env, obj, widget);
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_setLabel
+  (JNIEnv *env, jobject obj, jstring label)
+{
+  void *ptr;
+  const char *str;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  str = (*env)->GetStringUTFChars (env, label, NULL);
+
+  gdk_threads_enter ();
+
+  if (strcmp (str, "-") == 0) /* "-" signals that we need a separator */
+    gtk_container_remove (GTK_CONTAINER (ptr), GTK_BIN (ptr)->child);
+  else
+    {
+      GtkAccelLabel *accel_label = GTK_ACCEL_LABEL (GTK_BIN (ptr)->child);
+
+      gtk_label_set_text (GTK_LABEL (accel_label), str);
+      gtk_accel_label_refetch (accel_label);
+    }
+
+  gdk_threads_leave ();
+
+  (*env)->ReleaseStringUTFChars (env, label, str);
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_setEnabled
+  (JNIEnv *env, jobject obj, jboolean enabled)
+{
+  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setEnabled (env, obj, enabled);
 }
 
 static void

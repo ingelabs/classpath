@@ -34,6 +34,7 @@ public class GtkMenuItemPeer extends GtkMenuComponentPeer
   {
     super (item);
     create (item.getLabel ());
+    setEnabled (item.isEnabled ());
     setParent (item);
   }
 
@@ -63,13 +64,8 @@ public class GtkMenuItemPeer extends GtkMenuComponentPeer
     setEnabled (true);
   }
 
-  public void setEnabled (boolean b)
-  {
-  }
-
-  public void setLabel (String label)
-  {
-  }
+  native public void setEnabled (boolean b);
+  native public void setLabel (String label);
 
   protected void postMenuActionEvent ()
   {
