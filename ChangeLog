@@ -1,3 +1,11 @@
+2003-12-27  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/protocol/http/Connection.java
+	(setRequestProperty): New method.
+	(getRequestProperty): New method.
+	(getHeaderField): Reformated.
+	(getHeaderFieldKey): Reformated.
+
 2003-12-27  Mark Wielaard  <mark@klomp.org>
 
 	* include/Makefile.am: Add java_lang_VMRuntime.h generation rule.
