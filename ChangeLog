@@ -1,6 +1,19 @@
 2002-12-19  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/DatagramSocket.java
+	(remoteAddress): Renamed from remote_addr.
+	(remotePort): Renamed from remote_port.
+	(getSoTimeout): Throw exception
+	if not initialized socket successfully.
+	(getSendBufferSize): Throw exception
+	if not initialized socket successfully.
+	(getReceiveBufferSize): Throw exception
+	if not initialized socket successfully.
+	(receive): Added SecurityManager check.
+	
+2002-12-19  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/DatagramSocket.java
 	(factory): New member to store default DatagramSocketFactory object.
 	(bind): New method.
 	(getChannel): New method.

@@ -86,19 +86,17 @@ public class DatagramSocket
   /**
    * This is the address we are "connected" to
    */
-  private InetAddress remote_addr;
+  private InetAddress remoteAddress;
 
   /**
    * This is the port we are "connected" to
    */
-  private int remote_port = -1;
+  private int remotePort = -1;
 
   /**
    * Is this a "connected" datagram socket?
    */
   private boolean connected = false;
-
-  // Constructors
 
   /**
    * Initializes a new instance of <code>DatagramSocket</code> that binds to 
@@ -195,7 +193,7 @@ public class DatagramSocket
    */
   public InetAddress getInetAddress()
   {
-    return remote_addr;
+    return remoteAddress;
   }
 
   /**
@@ -209,7 +207,7 @@ public class DatagramSocket
    */
   public int getPort()
   {
-    return remote_port;
+    return remotePort;
   }
 
   /**
@@ -220,7 +218,7 @@ public class DatagramSocket
   public InetAddress getLocalAddress()
   {
     if (impl == null)
-      return(null);
+      return null;
 
     // FIXME: According to libgcj, checkConnect() is supposed to be called
     // before performing this operation.  Problems: 1) We don't have the
@@ -256,6 +254,9 @@ public class DatagramSocket
    */
   public synchronized int getSoTimeout() throws SocketException
   {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
     Object timeout = impl.getOption(SocketOptions.SO_TIMEOUT);
 
     if (timeout instanceof Integer) 
@@ -296,6 +297,9 @@ public class DatagramSocket
    */
   public int getSendBufferSize() throws SocketException
   {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
     Object obj = impl.getOption(SocketOptions.SO_SNDBUF);
 
     if (obj instanceof Integer)
@@ -337,6 +341,9 @@ public class DatagramSocket
    */
   public int getReceiveBufferSize() throws SocketException
   {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
     Object obj = impl.getOption(SocketOptions.SO_RCVBUF);
   
     if (obj instanceof Integer)
@@ -393,8 +400,8 @@ public class DatagramSocket
     if (sm != null)
       sm.checkConnect(addr.getHostName(), port);
 
-    this.remote_addr = addr;
-    this.remote_port = port;
+    this.remoteAddress = addr;
+    this.remotePort = port;
 
     /* FIXME: Shit, we can't do this even though the OS supports it since this 
        method isn't in DatagramSocketImpl. */
@@ -413,8 +420,8 @@ public class DatagramSocket
   public void disconnect()
   {
     // FIXME: See my comments on connect()
-    this.remote_addr = null;
-    this.remote_port = -1;
+    this.remoteAddress = null;
+    this.remotePort = -1;
     connected = false;
   }
 
@@ -435,6 +442,10 @@ public class DatagramSocket
       s.checkAccept(p.getAddress().getHostAddress(), p.getPort());
 
     impl.receive(p);
+
+    SecurityManager s = System.getSecurityManager();
+    if (s != null && isConnected ())
+      s.checkAccept (p.getAddress().getHostName (), p.getPort ());
   }
 
   /**
@@ -554,7 +565,7 @@ public class DatagramSocket
    */
   public boolean isConnected()
   {
-    return remote_addr != null;
+    return remoteAddress != null;
   }
 
   /**
@@ -568,7 +579,7 @@ public class DatagramSocket
     if (!isConnected ())
       return null;
 
-    return new InetSocketAddress (remote_addr, remote_port);
+    return new InetSocketAddress (remoteAddress, remotePort);
   }
 
   /**
