@@ -778,7 +778,6 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    */
   public String toLowerCase() {
     char[] newStr = new char[len];
-    System.arraycopy(str, 0, newStr, 0, len);
     for (int i = 0; i < len; i++)
       newStr[i] = Character.toLowerCase(str[i]);
     for (int i = 0; i < len; i++)
@@ -806,7 +805,6 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    */
   public String toUpperCase() {
     char[] newStr = new char[len];
-    System.arraycopy(str, 0, newStr, 0, len);
     for (int i = 0; i < len; i++)
       newStr[i] = Character.toUpperCase(str[i]);
     for (int i = 0; i < len; i++)
