@@ -1,5 +1,6 @@
 2003-06-16  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/border/EmptyBorder.java (getBorderInsets()): New method.
 	* javax/swing/border/Border.java: Added API documentation.
 	* javax/swing/border/SoftBevelBorder.java: Initial check-in.
 	* javax/swing/border/doc-files/SoftBevelBorder-1.png,
