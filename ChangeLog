@@ -1,5 +1,9 @@
 2002-11-16  Michael Koch <konqueror@gmx.de>
 
+	* java/net/SocketAddress.java: Added some documentation.
+
+2002-11-16  Michael Koch <konqueror@gmx.de>
+
 	* java/nio/ByteBuffer.java, java/nio/CharBuffer.java:
 	Reindented.
 	* java/nio/DoubleBuffer.java

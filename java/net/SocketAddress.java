@@ -37,16 +37,20 @@ exception statement from your version. */
 
 package java.net;
 
-import java.io.*;
+import java.io.Serializable;
 
 /** 
  * Abstract base class for InetSocketAddress.
  * InetSocketAddress is to my knowledge the only derived
  * class. [Ronald]
+ *
+ * @since 1.4
  */
-
 public abstract class SocketAddress implements Serializable
 {
+  /**
+   * Initializes the socket address.
+   */
   public SocketAddress()
   {
   }
