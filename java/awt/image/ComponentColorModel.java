@@ -60,6 +60,32 @@ public class ComponentColorModel extends ColorModel
 	  transparency, transferType);
   }
 
+  /**
+   * Construct a new ComponentColorModel.
+   * 
+   * This constructor makes all bits of each sample significant, so for a
+   * transferType of DataBuffer.BYTE, the bits per sample is 8, etc.  If
+   * both hasAlpha and isAlphaPremultiplied are true, color samples are
+   * assumed to be premultiplied by the alpha component.  Transparency may be
+   * one of OPAQUE, BITMASK, or TRANSLUCENT. 
+   * 
+   * @param colorSpace The colorspace for this color model.
+   * @param hasAlpha True if there is an alpha component.
+   * @param isAlphaPremultiplied True if colors are already multiplied by
+   * alpha.
+   * @param transparency The type of alpha values.
+   * @param transferType Data type of pixel sample values.
+   * @since 1.4
+   */
+  public ComponentColorModel(ColorSpace colorSpace,
+			     boolean hasAlpha,
+			     boolean isAlphaPremultiplied,
+			     int transparency, int transferType)
+  {	
+    this(colorSpace, null, hasAlpha, isAlphaPremultiplied,
+         transparency, transferType);
+  }
+
   public int getRed(int pixel)
   {
     if (getNumComponents()>1) throw new IllegalArgumentException();

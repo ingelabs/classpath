@@ -542,6 +542,7 @@ public abstract class ColorModel implements Transparency
    * @param offset Position of the first value of the pixel in components.
    *
    * @return pixel value encoded according to the color model.
+   * @since 1.4
    */
   public int getDataElement (float[] components, int offset)
   {
@@ -581,6 +582,7 @@ public abstract class ColorModel implements Transparency
    * @return pixel value encoded according to the color model.
    * @throws ArrayIndexOutOfBounds
    * @throws ClassCastException
+   * @since 1.4
    */
   public Object getDataElements(float[] components, int offset, Object obj)
   {

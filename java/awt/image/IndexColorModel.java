@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.awt.image;
 
+import java.awt.color.ColorSpace;
+
 /**
  * @author C. Brian Jones (cbj@gnu.org) 
  */
@@ -164,6 +166,37 @@ public class IndexColorModel extends ColorModel
                           boolean hasAlpha, int trans)
   {
     super (bits);
+    map_size = size;
+    opaque = !hasAlpha;
+    this.trans = trans;
+  }
+
+  /**
+   * Each array much contain <code>size</code> elements.  For each 
+   * array, the i-th color is described by reds[i], greens[i], 
+   * blues[i], alphas[i], unless alphas is not specified, then all the 
+   * colors are opaque except for the transparent color. 
+   *
+   * @param bits the number of bits needed to represent <code>size</code> colors
+   * @param size the number of colors in the color map
+   * @param cmap packed color components
+   * @param start the offset of the first color component in <code>cmap</code>
+   * @param hasAlpha <code>cmap</code> has alpha values
+   * @param trans the index of the transparent color
+   * @param transferType DataBuffer.TYPE_BYTE or DataBuffer.TYPE_USHORT
+   */
+  public IndexColorModel (int bits, int size, byte[] cmap, int start, 
+                          boolean hasAlpha, int trans, int transferType)
+  {
+    super(bits * 4, // total bits, sRGB, four channels
+	  nArray(bits, 4), // bits for each channel
+	  ColorSpace.getInstance(ColorSpace.CS_sRGB), // sRGB
+	  true, // has alpha
+	  false, // not premultiplied
+	  TRANSLUCENT, transferType);
+    if (transferType != DataBuffer.TYPE_BYTE
+        && transferType != DataBuffer.TYPE_USHORT)
+      throw new IllegalArgumentException();
     map_size = size;
     opaque = !hasAlpha;
     this.trans = trans;

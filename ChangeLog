@@ -1,3 +1,13 @@
+2004-09-27  Jerry Quinn  <jlquinn@optonline.net>
+
+	* java/awt/image/BandedSampleModel.java: Implement.
+	* java/awt/image/ColorModel.java (getDataElement,
+	getDataElements): Document since 1.4.
+	* java/awt/image/ComponentColorModel.java (ComponentColorModel):
+	Implement missing 1.4 constructor.
+	* java/awt/image/IndexColorModel.java (IndexColorModel): Implement
+	missing constructor.
+
 2004-09-27  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JFrame.java,
