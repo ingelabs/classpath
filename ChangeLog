@@ -1,5 +1,10 @@
 2003-06-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/SimpleTimeZone.java:
+	New version from libgcj.
+
+2003-06-21  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/FileChannelImpl.java:
 	Use new MappedByteBufferImpl instead of MappedByteFileBuffer.
 	* java/nio/MappedByteBufferImpl.java:
