@@ -1,5 +1,10 @@
 2004-12-21  Michael Koch  <konqueror@gmx.de>
 
+	* lib/.cvsignore,  scripts/.cvsignore:
+	Added more files to ignore.
+
+2004-12-21  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JFrame.java
 	(setDefaultLookAndFeelDecorated): Removed wrong code again.
 	* javax/swing/JInternalFrame.java
