@@ -44,10 +44,10 @@ Systems    : all
 #define __TARGET_GENERIC_MISC__
 
 #ifdef __cplusplus
-extern "C"
+extern "C" {
 #endif
 
-/* check if target_native_network.h included */
+/* check if target_native_misc.h included */
 #ifndef __TARGET_NATIVE_MISC__
   #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
 #endif
@@ -69,6 +69,36 @@ extern "C"
 /***************************** Variables *******************************/
 
 /****************************** Macros *********************************/
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_FORMAT_STRING
+* Purpose    : format a string with arguments
+* Input      : buffer     - buffer for string
+*              bufferSize - size of buffer
+*              format     - format string (like printf)
+* Output     : -
+* Return     : -
+* Side-effect: unknown
+* Notes      : - this is a "safe" macro to format string; buffer-
+*                overflows will be avoided. Direct usage of e. g.
+*                snprintf() is not permitted because it is not ANSI C
+*                (not portable!)
+*              - do not use this routine in a function without
+*                variable number of arguments (ellipses), because
+*                va_list/va_start/va_end is used!
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_FORMAT_STRING
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING(buffer,bufferSize,format) \
+    do { \
+      va_list __arguments; \
+      \
+      va_start(__arguments,format); \
+      vsnprintf(buffer,bufferSize,format,__arguments); \
+      va_end(__arguments); \
+    } while (0)
+#endif
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_UTIL_GET_TIMEZONE_STRING
