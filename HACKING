@@ -7,6 +7,7 @@ have the following installed:
         - GTK+ 1.2.x
         - IBM jikes 1.0.9+
 	- libart_lgpl 2.1.0
+	- gdk-pixbuf (latest out of gnome.org's CVS)
 
 If you start from the current CVS version, you will have to run the
 following from the toplevel directory.
