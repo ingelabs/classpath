@@ -515,6 +515,7 @@ public abstract class ClassLoader
    */
   public URL getResource(String name)
   {
+    name = normalize(name);
     URL result;
 
     if (parent == null)
@@ -549,12 +550,51 @@ public abstract class ClassLoader
    */
   public final Enumeration getResources(String name) throws IOException
   {
+    name = normalize(name);
     Enumeration parentResources;
     if (parent == null)
       parentResources = VMClassLoader.getResources(name);
     else
       parentResources = parent.getResources(name);
     return new DoubleEnumeration(parentResources, findResources(name));
+  }
+
+  /**
+   * Normalizes a resource path name. This removes all ./ from the start and
+   * all further '//', "/../" and "/./" from the given name.
+   */
+  private static String normalize(String resource)
+  {
+    while (resource.startsWith("./"))
+      resource = resource.substring(2);
+
+    int index = resource.indexOf("//");
+    while (index != -1)
+      {
+	resource = resource.substring(0, index) + resource.substring(index+1);
+	index = resource.indexOf("//");
+      }
+
+    index = resource.indexOf("/../");
+    while (index != -1)
+      {
+	int last = resource.lastIndexOf('/', index-1);
+	if (last != -1)
+	  resource = resource.substring(0, last+1)
+		  + resource.substring(index+4);
+	else
+	  resource = resource.substring(index+4);
+	index = resource.indexOf("/../");
+      }
+
+    index = resource.indexOf("/./");
+    while (index != -1)
+      {
+	resource = resource.substring(0, index) + resource.substring(index+2);
+	index = resource.indexOf("/./");
+      }
+
+    return resource;
   }
 
   /**
