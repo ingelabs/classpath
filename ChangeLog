@@ -1,3 +1,8 @@
+2003-12-28  Michael Koch  <konqueror@gmx.de>
+
+	* java/nio/channels/FileChannelImpl.java
+	(implRead): Only put data into buffer when data was read.
+
 2003-12-27  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/ObjectStreamField.java
