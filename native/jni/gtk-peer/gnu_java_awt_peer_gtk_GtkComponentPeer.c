@@ -172,7 +172,15 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen
   point = (*env)->GetIntArrayElements (env, jpoint, 0);
 
   gdk_threads_enter ();
+
   gdk_window_get_origin (GTK_WIDGET (ptr)->window, point, point+1);
+
+  if (!GTK_IS_CONTAINER (ptr))
+    {
+      *point += GTK_WIDGET(ptr)->allocation.x;
+      *(point+1) += GTK_WIDGET(ptr)->allocation.y;
+    }
+
   gdk_threads_leave ();
 
   (*env)->ReleaseIntArrayElements(env, jpoint, point, 0);
