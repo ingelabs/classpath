@@ -14,7 +14,7 @@ IndexedPropertyDescriptor.java \
 IntrospectionException.java \
 Introspector.java \
 MethodDescriptor.java \
-ParameterDescriptor.java
+ParameterDescriptor.java \
 PropertyChangeEvent.java \
 PropertyChangeListener.java \
 PropertyChangeSupport.java \
