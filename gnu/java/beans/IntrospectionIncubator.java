@@ -141,7 +141,7 @@ public class IntrospectionIncubator {
 		}
 
 		} catch(IntrospectionException e) {
-			System.err.println("Uhoh, Introspection failed in findAddRemovePairs()");
+			System.err.println("Uhoh, Introspection failed in findAddRemovePairs(): " + e);
 		}
 	}
 
