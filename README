@@ -1,4 +1,4 @@
-GNU Classpath README - Last updated: Arpil 30, 2004
+GNU Classpath README - Last updated: May 2, 2004
 
 GNU Classpath, Essential Libraries for Java is a project to create
 a complete "clean room" implementation of the Java class libraries 
@@ -7,6 +7,10 @@ a sub-project called GNU Classpath Tools whose goal is to provide
 a number of free replacements for standard Java development tools like
 javadoc, javap, javah, and others.
 
+This is a development snapshot release only and is not ready for general
+purpose use.  You need to combine it at least with one of the development
+environments mentioned below.
+
 Eventually, these essential libraries for Java will work with as many 
 free JVMs as possible.  Complete development environments known to be
 based on GNU Classpath include (recommended for end users):
@@ -14,8 +18,8 @@ based on GNU Classpath include (recommended for end users):
 	* GCC with GCJ 	(http://gcc.gnu.org/java/)
 	* Kaffe		(http://www.kaffe.org/)
 
-Smaller (runtime only) environments based on GNU Classpath includei
-(recommended for GNU Classpath hackers):
+Smaller (runtime only) environments which work with unmodified GNU Classpath
+releases include (recommended for GNU Classpath hackers):
 
 	* JamVM		(http://www.jamvmv.org/)
 	* Jikes RVM	(http://www.ibm.com/developerworks/oss/jikesrvm/)
@@ -25,18 +29,22 @@ In general the latest releases of the above VMs will work out of the box
 with the latest GNU Classpath release (and in most cases directly with the
 development sources from CVS).
 
-See for other GNU Classpath based runtimes, compilers and tools the
-GNU Classpath website: http://www.gnu.org/software/classpath/stories.html
-
-This is a development snapshot release only and is not ready for general
-purpose use.  You need to combine it at least with one of the development
-environments mentioned above.
-
-Most JVMs come with their own customized version of GNU Classpath.
-Please check if there is a customised version available for the JVM you
+Some tools come with their own customized version of GNU Classpath.
+Please check if there is a customised version available for the tool you
 use before trying the bare bones GNU Classpath release. We are working with
-the JVM creators to keep the differences between the core classes as small
-as possible. Please tell us if you make GNU Classpath work with a new JVM.
+the tool creators to keep the differences between the core classes as small
+as possible. Please tell us if you make GNU Classpath work with a new tool.
+
+Active projects which use modified versions of the Classpath libraries
+some of which synchronizes with the Classpath CVS head every couple of weeks:
+
+	* IKVM.NET	(http://www.ikvm.net/)
+	* JC		(http://jcvm.sourceforge.net/)
+	* JNode		(http://jnode.sourceforge.net/)
+	* SableVM       (http://www.sablevm.org)
+
+See for a more complete list of GNU Classpath based projects the
+GNU Classpath website: http://www.gnu.org/software/classpath/stories.html
 
 See the file INSTALL for details on installing GNU Classpath.
 See the file NEWS for details on what is included in this release.

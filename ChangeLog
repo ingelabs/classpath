@@ -1,5 +1,12 @@
 2004-05-02  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Set version to 0.09.
+	* README: Move text around. Add section on active projects which use
+	modified versions of the libraries.
+	* NEWS: Add important updates for this release.
+
+2004-05-02  Mark Wielaard  <mark@klomp.org>
+
 	Reverting bad commit from 2004-04-29
 	* javax/swing/JComponent.java (reshape): Call super.reshape().
 	* javax/swing/ViewportLayout.java (layoutContainer): Call
