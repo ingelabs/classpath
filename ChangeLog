@@ -1,3 +1,12 @@
+2004-04-22  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/Class.java: Changed all calls to VMClass to static calls.
+	(vmClass) Removed. (vmdata) Added. (Class) Changed argument type
+	from VMClass to Object.
+	* vm/reference/java/lang/VMClass.java: Changed all instance methods
+	to static methods.
+	* NEWS: Added entry to describe Class/VMClass interface change.
+
 2004-04-22 Dalibor Topic <robilad@kaffe.org>
 
 	* java/sql/DriverManager.java:
@@ -29,6 +38,7 @@
         java/util/WeakHashMap.java:
 	Cleaned up imports.
 
+>>>>>>> 1.2087
 2004-04-22  Dalibor Topic  <robilad@kaffe.org>
 
 	* java/util/logging/FileHandler.java,

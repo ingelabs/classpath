@@ -2,6 +2,9 @@ New in release 0.09
 
 VM Interface changes:
 
+* java.lang.Class/VMClass interface was changed. The interface now no
+longer requires an instance of VMClass for each Class instance. Instead
+the field vmdata in Class is now of type Object.
 * GNU Classpath now assumes that JNI calls SetXField can modify final
 fields. This was previously used silently for System.in/out/err and should
 be considered as a feature now. 

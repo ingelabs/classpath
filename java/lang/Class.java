@@ -105,7 +105,7 @@ public final class Class implements Serializable
     unknownProtectionDomain = new ProtectionDomain(null, permissions);
   }
 
-  transient final VMClass vmClass;
+  transient final Object vmdata;
 
   /** newInstance() caches the default constructor */
   private transient Constructor constructor;
@@ -114,9 +114,9 @@ public final class Class implements Serializable
    * Class is non-instantiable from Java code; only the VM can create
    * instances of this class.
    */
-  Class(VMClass vmClass)
+  Class(Object vmdata)
   {
-    this.vmClass = vmClass;
+    this.vmdata = vmdata;
   }
 
   /**
@@ -190,7 +190,7 @@ public final class Class implements Serializable
 	if (c != null)
 	  {
 	    if (initialize)
-	      c.vmClass.initialize();
+	      VMClass.initialize(c);
 	    return c;
 	  }
         throw new ClassNotFoundException(name);
@@ -200,7 +200,7 @@ public final class Class implements Serializable
     Class c = classloader.loadClass(name);
     classloader.resolveClass(c);
     if (initialize)
-      c.vmClass.initialize();
+      VMClass.initialize(c);
     return c;
   }
   
@@ -256,7 +256,7 @@ public final class Class implements Serializable
     if (name.startsWith("java.") || name.startsWith("gnu.java."))
       return null;
 
-    ClassLoader loader = vmClass.getClassLoader();
+    ClassLoader loader = VMClass.getClassLoader(this);
     // Check if we may get the classloader
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)
@@ -282,7 +282,7 @@ public final class Class implements Serializable
    */
   public Class getComponentType()
   {
-    return vmClass.getComponentType ();
+    return VMClass.getComponentType (this);
   }
 
   /**
@@ -378,7 +378,7 @@ public final class Class implements Serializable
 
   Class[] getDeclaredClasses (boolean publicOnly)
   {
-    return vmClass.getDeclaredClasses (publicOnly);
+    return VMClass.getDeclaredClasses (this, publicOnly);
   }
 
   /**
@@ -401,7 +401,7 @@ public final class Class implements Serializable
 
   Constructor[] getDeclaredConstructors (boolean publicOnly)
   {
-    return vmClass.getDeclaredConstructors (publicOnly);
+    return VMClass.getDeclaredConstructors (this, publicOnly);
   }
   
   /**
@@ -449,7 +449,7 @@ public final class Class implements Serializable
 
   Field[] getDeclaredFields (boolean publicOnly)
   {
-    return vmClass.getDeclaredFields (publicOnly);
+    return VMClass.getDeclaredFields (this, publicOnly);
   }
 
   /**
@@ -507,7 +507,7 @@ public final class Class implements Serializable
 
   Method[] getDeclaredMethods (boolean publicOnly)
   {
-    return vmClass.getDeclaredMethods (publicOnly);
+    return VMClass.getDeclaredMethods (this, publicOnly);
   }
  
   /**
@@ -519,7 +519,7 @@ public final class Class implements Serializable
    */
   public Class getDeclaringClass()
   {
-    return vmClass.getDeclaringClass ();
+    return VMClass.getDeclaringClass (this);
   }
 
   /**
@@ -608,7 +608,7 @@ public final class Class implements Serializable
    */
   public Class[] getInterfaces()
   {
-    return vmClass.getInterfaces ();
+    return VMClass.getInterfaces (this);
   }
 
   private static final class MethodKey
@@ -837,7 +837,7 @@ public final class Class implements Serializable
    */
   public int getModifiers()
   {
-    return vmClass.getModifiers ();
+    return VMClass.getModifiers (this);
   }
   
   /**
@@ -862,7 +862,7 @@ public final class Class implements Serializable
    */
   public String getName()
   { 
-    return vmClass.getName ();
+    return VMClass.getName (this);
   }
 
   /**
@@ -969,7 +969,7 @@ public final class Class implements Serializable
    */
   public Class getSuperclass()
   {
-    return vmClass.getSuperclass ();
+    return VMClass.getSuperclass (this);
   }
   
   /**
@@ -980,11 +980,7 @@ public final class Class implements Serializable
    */
   public boolean isArray()
   {
-    int result = -1;
-    if ((result = vmClass.isArray ()) < 0)
-      return getName().charAt(0) == '[';
-
-    return result == 1;
+    return VMClass.isArray (this);
   }
   
   /**
@@ -1003,7 +999,7 @@ public final class Class implements Serializable
    */
   public boolean isAssignableFrom(Class c)
   {
-    return vmClass.isAssignableFrom (c);
+    return VMClass.isAssignableFrom (this, c);
   }
  
   /**
@@ -1016,7 +1012,7 @@ public final class Class implements Serializable
    */
   public boolean isInstance(Object o)
   {
-    return vmClass.isInstance (o);
+    return VMClass.isInstance (this, o);
   }
   
   /**
@@ -1027,7 +1023,7 @@ public final class Class implements Serializable
    */
   public boolean isInterface()
   {
-    return vmClass.isInterface ();
+    return VMClass.isInterface (this);
   }
   
   /**
@@ -1051,7 +1047,7 @@ public final class Class implements Serializable
    */
   public boolean isPrimitive()
   {
-    return vmClass.isPrimitive ();
+    return VMClass.isPrimitive (this);
   }
   
   /**

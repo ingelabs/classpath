@@ -1,5 +1,5 @@
 /* VMClass.java -- VM Specific Class methods
-   Copyright (C) 2003 Free Software Foundation
+   Copyright (C) 2003, 2004 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -37,7 +37,6 @@ exception statement from your version. */
 
 package java.lang;
 
-import gnu.classpath.RawData;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -67,17 +66,6 @@ public final class VMClass
   private native void setInitialized();
   private native void step7();
   private native void step8();
-
-  /**
-   * Pointer to VM internal class structure.
-   */
-
-  private final RawData vmData;  
-
-  private VMClass(RawData vmData) 
-  { 
-    this.vmData = vmData;
-  }
 
   private void initialize(int thread) throws InterruptedException
   {
@@ -156,11 +144,12 @@ public final class VMClass
    * Discover whether an Object is an instance of this Class.  Think of it
    * as almost like <code>o instanceof (this class)</code>.
    *
+   * @param klass the Class object that's calling us
    * @param o the Object to check
    * @return whether o is an instance of this class
    * @since 1.1
    */
-  native boolean isInstance(Object o);
+  static native boolean isInstance(Class klass, Object o);
 
   /**
    * Discover whether an instance of the Class parameter would be an
@@ -170,21 +159,23 @@ public final class VMClass
    * checks widening conversions for objects, it must be exact for primitive
    * types.
    *
+   * @param klass the Class object that's calling us
    * @param c the class to check
    * @return whether an instance of c would be an instance of this class
    *         as well
    * @throws NullPointerException if c is null
    * @since 1.1
    */
-  native boolean isAssignableFrom(Class c);
+  static native boolean isAssignableFrom(Class klass, Class c);
 
   /**
    * Check whether this class is an interface or not.  Array types are not
    * interfaces.
    *
+   * @param klass the Class object that's calling us
    * @return whether this class is an interface or not
    */
-  native boolean isInterface();
+  static native boolean isInterface(Class klass);
 
   /**
    * Return whether this class is a primitive type.  A primitive type class
@@ -193,6 +184,7 @@ public final class VMClass
    * classes through java.lang.Boolean.TYPE, java.lang.Integer.TYPE, etc.,
    * or through boolean.class, int.class, etc.
    *
+   * @param klass the Class object that's calling us
    * @return whether this class is a primitive type
    * @see Boolean#TYPE
    * @see Byte#TYPE
@@ -205,7 +197,7 @@ public final class VMClass
    * @see Void#TYPE
    * @since 1.1
    */
-  native boolean isPrimitive();
+  static native boolean isPrimitive(Class klass);
 
   /**
    * Get the name of this class, separated by dots for package separators.
@@ -224,18 +216,20 @@ public final class VMClass
    * class or interface, alone: &lt;dotted name&gt;
    * class or interface, as element type: L&lt;dotted name&gt;;
    *
+   * @param klass the Class object that's calling us
    * @return the name of this class
    */
-  native String getName();
+  static native String getName(Class klass);
 
   /**
    * Get the direct superclass of this class.  If this is an interface,
    * Object, a primitive type, or void, it will return null. If this is an
    * array type, it will return Object.
    *
+   * @param klass the Class object that's calling us
    * @return the direct superclass of this class
    */
-  native Class getSuperclass();
+  static native Class getSuperclass(Class klass);
 
   /**
    * Get the interfaces this class <EM>directly</EM> implements, in the
@@ -243,9 +237,10 @@ public final class VMClass
    * for Object, primitives, void, and classes or interfaces with no direct
    * superinterface. Array types return Cloneable and Serializable.
    *
+   * @param klass the Class object that's calling us
    * @return the interfaces this class directly implements
    */
-  native Class[] getInterfaces();
+  static native Class[] getInterfaces(Class klass);
 
   /**
    * If this is an array, get the Class representing the type of array.
@@ -253,11 +248,12 @@ public final class VMClass
    * calling getComponentType on that would give "java.lang.String".  If
    * this is not an array, returns null.
    *
+   * @param klass the Class object that's calling us
    * @return the array type of this class, or null
    * @see Array
    * @since 1.1
    */
-  native Class getComponentType();
+  static native Class getComponentType(Class klass);
 
   /**
    * Get the modifiers of this class.  These can be decoded using Modifier,
@@ -267,56 +263,63 @@ public final class VMClass
    * marked final but not an interface. Primitive types and void are marked
    * public and final, but not an interface.
    *
+   * @param klass the Class object that's calling us
    * @return the modifiers of this class
    * @see Modifer
    * @since 1.1
    */
-  native int getModifiers();
+  static native int getModifiers(Class klass);
 
   /**
    * If this is a nested or inner class, return the class that declared it.
    * If not, return null.
    *
+   * @param klass the Class object that's calling us
    * @return the declaring class of this class
    * @since 1.1
    */
-  native Class getDeclaringClass();
+  static native Class getDeclaringClass(Class klass);
 
   /**
    * Like <code>getDeclaredClasses()</code> but without the security checks.
    *
+   * @param klass the Class object that's calling us
    * @param pulicOnly Only public classes should be returned
    */
-  native Class[] getDeclaredClasses(boolean publicOnly);
+  static native Class[] getDeclaredClasses(Class klass, boolean publicOnly);
 
   /**
    * Like <code>getDeclaredFields()</code> but without the security checks.
    *
+   * @param klass the Class object that's calling us
    * @param pulicOnly Only public fields should be returned
    */
-  native Field[] getDeclaredFields(boolean publicOnly);
+  static native Field[] getDeclaredFields(Class klass, boolean publicOnly);
 
   /**
    * Like <code>getDeclaredMethods()</code> but without the security checks.
    *
+   * @param klass the Class object that's calling us
    * @param pulicOnly Only public methods should be returned
    */
-  native Method[] getDeclaredMethods(boolean publicOnly);
+  static native Method[] getDeclaredMethods(Class klass, boolean publicOnly);
 
   /**
    * Like <code>getDeclaredConstructors()</code> but without
    * the security checks.
    *
+   * @param klass the Class object that's calling us
    * @param pulicOnly Only public constructors should be returned
    */
-  native Constructor[] getDeclaredConstructors(boolean publicOnly);
+  static native Constructor[] getDeclaredConstructors(Class klass, boolean publicOnly);
 
   /**
    * Return the class loader of this class.
    *
+   * @param klass the Class object that's calling us
    * @return the class loader
    */
-  native ClassLoader getClassLoader();
+  static native ClassLoader getClassLoader(Class klass);
 
   /**
    * VM implementors are free to make this method a noop if 
@@ -335,19 +338,21 @@ public final class VMClass
   /**
    * Return whether this class is an array type.
    *
-   * @return 1 if this class is an array type, 0 otherwise, -1 if unsupported
+   * @param klass the Class object that's calling us
+   * @return true if this class is an array type
    * operation
    */
-  native int isArray();
+  static native boolean isArray(Class klass);
 
   /**
    * This method should trigger class initialization (if the
    * class hasn't already been initialized)
    * 
+   * @param klass the Class object that's calling us
    * @throws ExceptionInInitializerError if an exception
    *         occurs during initialization
    */
-  native void initialize();
+  static native void initialize(Class klass);
 
   /**
    * Load an array class.
