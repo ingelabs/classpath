@@ -47,7 +47,7 @@ public class DatagramSocket
 /**
   * This is the implementation object used by this socket.
   */
-private DatagramSocketImpl impl;
+DatagramSocketImpl impl;
 
 /**
   * This is the address we are bound to
@@ -158,7 +158,7 @@ close()
 public InetAddress
 getInetAddress()
 {
-  return(remote_address);
+  return(remote_addr);
 }
 
 /*************************************************************************/
@@ -268,7 +268,7 @@ getSendBufferSize() throws SocketException
   * @exception SocketException If an error occurs.
   */
 public synchronized void
-setSendBufferSize(int size)
+setSendBufferSize(int size) throws SocketException
 {
   impl.setOption(SocketOptions.SO_SNDBUF, new Integer(size));
 }
@@ -307,7 +307,7 @@ getReceiveBufferSize() throws SocketException
   * @exception SocketException If an error occurs.
   */
 public synchronized void
-setReceiveBufferSize(int size)
+setReceiveBufferSize(int size) throws SocketException
 {
   impl.setOption(SocketOptions.SO_RCVBUF, new Integer(size));
 }
@@ -335,7 +335,7 @@ connect(InetAddress addr, int port) throws SecurityException,
 
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    sm.checkConnect(addr, port);
+    sm.checkConnect(addr.getHostName(), port);
 
   this.remote_addr = addr;
   this.remote_port = port;

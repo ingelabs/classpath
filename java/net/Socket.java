@@ -65,7 +65,7 @@ private static SocketImplFactory factory;
 /**
   * The implementation object to which calls are redirected
   */
-private SocketImpl impl;
+SocketImpl impl;
 
 /**
   * The local address to which we are connected
