@@ -1,5 +1,10 @@
 2003-06-23  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/plaf/basic/BasicBorders.java (FieldBorder): New class.
+	(getTextFieldBorder): New method.
+	(MarginBorder.getBorderInsets): Amended to also retrieve the margin
+	of javax.swing.text.JTextComponent.
+	
 	* javax/swing/plaf/basic/doc-files/BasicBorders.FieldBorder.png:
 	New image.
 
