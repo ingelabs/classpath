@@ -1,3 +1,10 @@
+2003-07-28  C. Brian Jones  <cbj@gnu.org>
+
+	* vm/reference/java/lang/Thread.java (stop): no longer remove 
+	thread from thread group in this method.  JVMs must remove thread
+	from thread group after thread has had a chance to finishing running
+	after catching ThreadDeath.  Mauve test case exists, see bug #2685.
+
 2003-07-28  Torsten Rupp  <rupp@lisa.aicas.com>
 
 	* include/jni.h.in:

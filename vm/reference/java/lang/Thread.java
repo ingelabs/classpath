@@ -441,7 +441,6 @@ public class Thread implements Runnable
         if (this != currentThread())
           sm.checkPermission(new RuntimePermission("stopThread"));
       }
-    group.removeThread(this);
     nativeStop(t);
   }
 
