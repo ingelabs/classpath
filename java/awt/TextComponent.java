@@ -368,6 +368,8 @@ processEvent(AWTEvent event)
 {
   if (event instanceof TextEvent)
     processTextEvent((TextEvent)event);
+  else
+    super.processEvent(event);
 }
 
 /*************************************************************************/
