@@ -89,7 +89,7 @@ getValue()
 public String
 toString()
 {
-  return("java.text.Annotation for: " + attrib.toString());
+  return(getClass().getName() + "[value=" + attrib.toString() + "]");
 }
 
 } // class Annotation
