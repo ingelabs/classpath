@@ -38,16 +38,21 @@ exception statement from your version. */
 package gnu.java.nio;
 
 import java.io.EOFException;
+import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.channels.NonReadableChannelException;
+import java.nio.channels.NonWritableChannelException;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import gnu.classpath.RawData;
 
 /**
  * This file is not user visible !
@@ -59,72 +64,93 @@ import java.nio.channels.WritableByteChannel;
 
 public class FileChannelImpl extends FileChannel
 {
-  public long address;
-  public int length;
-  public int fd;
-  public MappedByteBuffer buf;
-  public Object file_obj; // just to keep it live...
+  RawData map_address;
+  
+  int length;
+  FileDescriptor fd;
+  MappedByteBuffer buf;
+  Object file_obj; // just to keep it live...
 
-  /**
-   * This method came from java.io.RandomAccessFile
-   * It is private there so we will repeat it here.
-   */
-  private native long	lengthInternal (int native_fd) throws IOException;
-
-  public FileChannelImpl (int fd, Object obj)
+  public FileChannelImpl (FileDescriptor fd, boolean write, Object obj)
   {
+    if (!(obj instanceof RandomAccessFile)
+        && !(obj instanceof FileInputStream)
+        && !(obj instanceof FileOutputStream))
+      throw new InternalError ();
+
     this.fd = fd;
     this.file_obj = obj;
   }
 
-  public long size () throws IOException
+  public FileChannelImpl ()
   {
-    return lengthInternal (fd);
+    this (new FileDescriptor (), true, null);
   }
-    
-  protected void implCloseChannel()  throws IOException
-  {
-    if (address != 0)
-	    {
-        nio_unmmap_file (fd, address, (int) length);
-	    }
 
-    // FIXME
-    fd = 0;
+  private native long implPosition ();
+  private native FileChannel implPosition (long newPosition);
+  private native FileChannel implTruncate (long size);
+  
+  private native RawData nio_mmap_file (long pos, long size, int mode);
+  private native void nio_unmmap_file (RawData map_address, int size);
+  private native void nio_msync (RawData map_address, int length);
+
+  public native long size () throws IOException;
+    
+  protected void implCloseChannel() throws IOException
+  {
+    if (map_address != null)
+      {
+        nio_unmmap_file (map_address, (int) length);
+        map_address = null;
+      }
 
     if (file_obj instanceof RandomAccessFile)
-	    {
+      {
         RandomAccessFile o = (RandomAccessFile) file_obj;
         o.close();
-	    }
+      }
     else if (file_obj instanceof FileInputStream)
-	    {
+      {
         FileInputStream o = (FileInputStream) file_obj;
         o.close();
-	    }
+      }
     else if (file_obj instanceof FileOutputStream)
-	    {
+      {
         FileOutputStream o = (FileOutputStream) file_obj;
         o.close();
-	    }
+      }
   }
 
   public int read (ByteBuffer dst) throws IOException
   {
-    int w = 0;
     int s = (int)size();
 
     if (buf == null)
-	    {
+      {
         throw new EOFException("file not mapped");
-	    }
+      }
 
-    for (int i=0; i<s; i++)
-	    {
-        dst.put( buf.get() );
-	    }
+    for (int i = 0; i < s; i++)
+      {
+        dst.put (buf.get());
+      }
 
     return s;
+  }
+
+  public int read (ByteBuffer dst, long position)
+    throws IOException
+  {
+    if (position < 0)
+      throw new IllegalArgumentException ();
+
+    if (!isOpen ())
+      throw new ClosedChannelException ();
+    
+    // FIXME: check for NonReadableChannelException
+
+    throw new Error ("Not implemented");
   }
 
   public long read (ByteBuffer[] dsts, int offset, int length)
@@ -133,51 +159,56 @@ public class FileChannelImpl extends FileChannel
     long result = 0;
 
     for (int i = offset; i < offset + length; i++)
-	    {
-        result += write (dsts[i]);
-	    }
+      {
+        result += write (dsts [i]);
+      }
 
     return result;
   }
 
-  public int read (ByteBuffer src, long position) throws IOException
-  {
-    return 0;
-  }
-				   
   public int write (ByteBuffer src) throws IOException
   {
     int w = 0;
 
     if (buf == null)
-	    {
+      {
         throw new EOFException ("file not mapped");
-	    }
+      }
 
     while (src.hasRemaining ())
-	    {
+      {
         buf.put (src.get ());
         w++;
-	    }
+      }
 
     return w;
   }
     
+  public int write (ByteBuffer src, long position)
+    throws IOException
+  {
+    if (position < 0)
+      throw new IllegalArgumentException ();
+
+    if (!isOpen ())
+      throw new ClosedChannelException ();
+    
+    // FIXME: check for NonWritableChannelException
+
+    throw new Error ("Not implemented");
+  }
+  
   public long write(ByteBuffer[] srcs, int offset, int length)
     throws IOException
   {
-    long res = 0;
+    long result = 0;
 
     for (int i = offset;i < offset + length;i++)
-	    {
-        res += write (srcs[i]);
-	    }
-	return res;
-    }
-
-  public int write (ByteBuffer src, long position) throws IOException
-  {
-    return 0;
+      {
+        result += write (srcs[i]);
+      }
+    
+    return result;
   }
 				   
   public MappedByteBuffer map (FileChannel.MapMode mode, long position,
@@ -192,11 +223,12 @@ public class FileChannelImpl extends FileChannel
     return null;
   }
 
-  static MappedByteBuffer create_direct_mapped_buffer (long address,
+  static MappedByteBuffer create_direct_mapped_buffer (RawData map_address,
                                                        long length)
+    throws IOException
   {
-    FileChannelImpl ch = new FileChannelImpl (-1, null);
-    ch.address = address;
+    FileChannelImpl ch = new FileChannelImpl ();
+    ch.map_address = map_address;
     ch.length = (int) length;
     ch.buf = new MappedByteFileBuffer (ch);
     return ch.buf;			 
@@ -211,51 +243,109 @@ public class FileChannelImpl extends FileChannel
   /**
    * msync with the disk
    */
-  public void force (boolean metaData)
+  public void force (boolean metaData) throws IOException
   {
-    nio_msync (fd, address, length);
-  }
+    if (!isOpen ())
+      throw new ClosedChannelException ();
 
-  static native long nio_mmap_file (int fd, long pos, int size, int mode);
-
-  static native void nio_unmmap_file (int fd, long address, int size);
-
-  static native void nio_msync (int fd, long address, int length);
-
-  public FileLock lock (long position, long size, boolean shared) throws IOException
-  {
-    return null;
-  }
-
-  public FileLock tryLock (long position, long size, boolean shared) throws IOException
-  {
-    return null;
-  }
-
-  public long position () throws IOException
-  {
-    return 0;
-  }
-
-  public FileChannel position (long newPosition) throws IOException
-  {
-    return this;
+    // FIXME: What to do with metaData ?
+    
+    nio_msync (map_address, length);
   }
 
   public long transferTo (long position, long count, WritableByteChannel target)
     throws IOException
   {
-    return 0;
+    if (position < 0
+        || count < 0)
+      throw new IllegalArgumentException ();
+
+    if (!isOpen ())
+      throw new ClosedChannelException ();
+
+    // FIXME: check for NonReadableChannelException
+    // FIXME: check for NonWritableChannelException
+    
+    throw new Error ("Not implemented");
   }
 
   public long transferFrom (ReadableByteChannel src, long position, long count)
     throws IOException
   {
-    return 0;
+    if (position < 0
+        || count < 0)
+      throw new IllegalArgumentException ();
+
+    if (!isOpen ())
+      throw new ClosedChannelException ();
+
+    // FIXME: check for NonReadableChannelException
+    // FIXME: check for NonWritableChannelException
+    
+    throw new Error ("Not implemented");
   }
 
-  public FileChannel truncate (long size) throws IOException
+  public FileLock lock (long position, long size, boolean shared)
+    throws IOException
   {
-    return null;
+    if (position < 0
+        || size < 0)
+      throw new IllegalArgumentException ();
+
+    if (!isOpen ())
+      throw new ClosedChannelException ();
+
+    // FIXME: check for NonReadableChannelException
+    // FIXME: check for NonWritableChannelException
+    
+    throw new Error ("Not implemented");
+  }
+  
+  public FileLock tryLock (long position, long size, boolean shared)
+    throws IOException
+  {
+    if (position < 0
+        || size < 0)
+      throw new IllegalArgumentException ();
+
+    if (!isOpen ())
+      throw new ClosedChannelException ();
+
+    throw new Error ("Not implemented");
+  }
+
+  public long position ()
+    throws IOException
+  {
+    if (!isOpen ())
+      throw new ClosedChannelException ();
+
+    return implPosition ();
+  }
+  
+  public FileChannel position (long newPosition)
+    throws IOException
+  {
+    if (newPosition < 0)
+      throw new IllegalArgumentException ();
+
+    if (!isOpen ())
+      throw new ClosedChannelException ();
+
+    return implPosition (newPosition);
+  }
+  
+  public FileChannel truncate (long size)
+    throws IOException
+  {
+    if (size < 0)
+      throw new IllegalArgumentException ();
+
+    if (!isOpen ())
+      throw new ClosedChannelException ();
+
+    // FIXME: check for NonWritableChannelException
+
+    return implTruncate (size);
   }
 }

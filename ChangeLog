@@ -1,5 +1,22 @@
 2003-04-06  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/FileChannelImpl.java
+	Mostly merged from libgcj.
+	* gnu/java/nio/MappedByteFileBuffer.java,
+	gnu/java/nio/MappedCharFileBuffer.java,
+	gnu/java/nio/MappedDoubleFileBuffer.java,
+	gnu/java/nio/MappedFloatFileBuffer.java,
+	gnu/java/nio/MappedIntFileBuffer.java,
+	gnu/java/nio/MappedLongFileBuffer.java,
+	gnu/java/nio/MappedShortFileBuffer.java:
+	Renamed address to map_address.
+	* java/io/FileInputStream.java,
+	java/io/FileOutputStream.java,
+	java/io/RandomAccessFile.java:
+	(getChannel): Merged from libgcj.
+
+2003-04-06  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/FileInputStream.java
 	(skip): Merged with version from libgcj.
 

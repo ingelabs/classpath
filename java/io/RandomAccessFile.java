@@ -1099,7 +1099,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   public synchronized FileChannel getChannel ()
   {
     if (ch == null)
-      ch = new FileChannelImpl ((int) (fd.getNativeFd() & 0xFFFF), this);
+      ch = new FileChannelImpl (fd, true, this);
 
     return ch;
   }

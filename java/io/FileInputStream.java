@@ -306,7 +306,7 @@ public class FileInputStream extends InputStream
   public synchronized FileChannel getChannel () 
   {
     if (ch == null)
-      ch = new FileChannelImpl ((int) (fd.getNativeFd () & 0xFFFF), this);
+      ch = new FileChannelImpl (fd, false, this);
     
     return ch;
   }
