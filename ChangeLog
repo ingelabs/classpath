@@ -1,5 +1,10 @@
 2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/plaf/ListUI.java: Re-written.
+	* javax/swing/plaf/LabelUI.java: Made abstract.
+	
+2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/plaf/InputMapUIResource.java: Reformatted, wrote JavaDoc.
 	* javax/swing/plaf/InternalFrameUI.java: Likewise.
 	* javax/swing/plaf/LabelUI.java: Likewise.
