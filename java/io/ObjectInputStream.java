@@ -78,7 +78,7 @@ import gnu.java.lang.reflect.TypeSignature;
    @see java.io.Externalizable
    @see java.io.ObjectOutputStream
    @see java.io.Serializable
-   @see TODO: java serialization spec
+   @see XXX: java serialization spec
 */
 public class ObjectInputStream extends InputStream
   implements ObjectInput, ObjectStreamConstants
@@ -105,10 +105,8 @@ public class ObjectInputStream extends InputStream
     myBlockDataPosition = 0;
     myBlockDataBytes = 0;
     myBlockData = new byte[ BUFFER_SIZE ];
-    //DEBUG
-    myBlockDataInput = new PrintingDataInputStream(new DataInputStream(this));
-    myRealInputStream = new PrintingDataInputStream(new DataInputStream(in));
-    //eDEBUG
+    myBlockDataInput = new DataInputStream( this );
+    myRealInputStream = new DataInputStream( in );
     myNextOID = baseWireHandle;
     myObjectLookupTable = new Hashtable();
     setBlockDataMode( true );
@@ -145,7 +143,6 @@ public class ObjectInputStream extends InputStream
       //DEBUG
       if( !first_time )
 	throw new RuntimeException( "Help me!! I'm in an infinite loop." );
-      
       first_time = false;
       //eDEBUG
       
@@ -153,6 +150,8 @@ public class ObjectInputStream extends InputStream
 
       if( ! was_deserializing )
 	setBlockDataMode( false );
+
+      myIsDeserializing = true;
 
       DEBUG( "MARKER " );
       byte marker = myRealInputStream.readByte();
@@ -167,8 +166,7 @@ public class ObjectInputStream extends InputStream
       {
 	ret_val = null;
 	break;
-      }
-      
+      }      
 
       if( marker == TC_REFERENCE )
       {
@@ -200,6 +198,10 @@ public class ObjectInputStream extends InputStream
 	short field_count = myRealInputStream.readShort();
 	OSCField[] fields = new OSCField[ field_count ];
 
+	ObjectStreamClass osc = new ObjectStreamClass( name, uid,
+						       flags, fields );
+	assignNewHandle( osc );
+      
 	for( int i=0; i < field_count; i++ )
 	{
 	  DEBUG( "TYPE CODE " );
@@ -211,16 +213,12 @@ public class ObjectInputStream extends InputStream
 	  if( type_code == 'L' || type_code == '[' )
 	    class_name = (String)readObject();
 	  else
-	    class_name = new String( new char[] { type_code } );
+	    class_name = String.valueOf( type_code );
 	
 	  fields[i] = new OSCField( field_name,
 				    TypeSignature.getClassForEncoding
 				    ( class_name ) );
 	}
-      
-	ObjectStreamClass osc = new ObjectStreamClass( name, uid,
-						       flags, fields );
-	assignNewHandle( osc );
       
 	setBlockDataMode( true );
 	osc.setClass( resolveClass( osc ) );
@@ -274,15 +272,19 @@ public class ObjectInputStream extends InputStream
 	  }
 	  catch( InstantiationException e )
 	  {
-	    throw new ClassNotFoundException( "Instance of " + clazz +
-					      " could not be created" );
+	    throw new ClassNotFoundException( "Instance of " + clazz
+					      + " could not be created" );
 	  }
 	  catch( IllegalAccessException e )
 	  {
-	    throw new ClassNotFoundException( "Instance of " + clazz +
-					      " could not be created" );
+	    throw new ClassNotFoundException( "Instance of " + clazz
+					      + " could not be created because class or zero-argument constructor is not accessible" );
 	  }
-	  
+	  catch( NoSuchMethodError e )
+	  {
+	    throw new ClassNotFoundException( "Instance of " + clazz
+					      + " could not be created because zero-argument constructor is not defined" );
+	  }
 
 	  int handle = assignNewHandle( obj );
 
@@ -305,9 +307,7 @@ public class ObjectInputStream extends InputStream
 	Class first_nonserial = clazz.getSuperclass();
 	while( Serializable.class.isAssignableFrom( first_nonserial )
 	       || Modifier.isAbstract( first_nonserial.getModifiers() ) )
-	{
 	  first_nonserial = first_nonserial.getSuperclass();
-	}
 	
 	DEBUGln( "Using " + first_nonserial
 		 + " as starting point for constructing " + clazz );
@@ -326,7 +326,7 @@ public class ObjectInputStream extends InputStream
 
 	DEBUGln( "Got class hierarchy of depth " + hierarchy.length );
 
-	// TODO: rewrite this loop natively??
+	// XXX: rewrite this loop natively??
 	boolean has_read;
 	for( int i=0; i < hierarchy.length; i++ )
 	{
@@ -421,6 +421,41 @@ public class ObjectInputStream extends InputStream
   }
 
 
+  /**
+     @XXX Currently just does checks, does not remember validators
+
+     Registers a <code>ObjectInputValidation</code> to be carried out
+     on the object graph currently being deserialized before it is
+     returned to the original caller of <code>readObject()</code>.
+     The order of validation for multiple
+     <code>ObjectInputValidation</code>s can be controled using
+     <code>priority</code>.  Validators with higher priorities are
+     called first.
+
+     @see java.io.ObjectInputValidation
+
+     @exception InvalidObjectException <code>validator</code> is
+     <code>null</code>
+
+     @exception NotActiveException an attempt was made to add a
+     validator outside of the <code>readObject</code> method of the
+     object currently being deserialized
+  */
+  public void registerValidation( ObjectInputValidation validator,
+				  int priority )
+    throws InvalidObjectException, NotActiveException
+  
+  {
+    if( myCurrentObject == null || myCurrentObjectStreamClass == null )
+      throw new NotActiveException( "registerValidation called by non-active class and/or object" );
+    
+    if( validator == null )
+      throw new InvalidObjectException( "attempt to add a null ObjectInputValidation object" );
+    
+    
+  }
+  
+
   /** 
      Called when a class is being deserialized.  This is a hook to
      allow subclasses to read in information written by the
@@ -437,7 +472,7 @@ public class ObjectInputStream extends InputStream
   protected Class resolveClass( ObjectStreamClass osc )
     throws ClassNotFoundException, IOException
   {
-    // TODO: search up stack for class loader
+    // XXX: search up stack for class loader
     return Class.forName( osc.getName() );
   }
 
@@ -546,7 +581,6 @@ public class ObjectInputStream extends InputStream
 
   public void close() throws IOException
   {
-    myDataInputStream.close();
     myRealInputStream.close();
   }
 
@@ -641,7 +675,7 @@ public class ObjectInputStream extends InputStream
   protected ObjectInputStream()
     throws IOException, StreamCorruptedException
   {
-    //TODO: security check
+    //XXX: security check
     myUseSubclassMethod = true;
   }
 
@@ -670,7 +704,8 @@ public class ObjectInputStream extends InputStream
 
     try
     {
-      DEBUGln( "Assigning handle " + myNextOID + " to " + obj );
+      DEBUG( "Assigning handle " + myNextOID );
+      DEBUGln( " to " + obj );
     }
     catch( Throwable t ) {}
 
@@ -808,7 +843,7 @@ public class ObjectInputStream extends InputStream
 			   boolean call_read_method, ObjectStreamClass osc )
     throws ClassNotFoundException, IOException
   {
-    //TODO: handle different class versions
+    //XXX: handle different class versions
     if( call_read_method )
     {
       setBlockDataMode( true );
@@ -851,6 +886,8 @@ public class ObjectInputStream extends InputStream
   // Toggles writing primitive data to block-data buffer.
   private void setBlockDataMode( boolean on )
   {
+    DEBUGln( "Setting block data mode to " + on );
+
     myReadDataFromBlock = on;
 
     if( on )
@@ -865,7 +902,7 @@ public class ObjectInputStream extends InputStream
     try
     {
       Object obj = allocateObject( real_class );
-      //TODO: figure out how to construct an object using a superclass
+      //XXX: figure out how to construct an object using a superclass
       // constructor, but have the resulting object be of the subclass
       // e.g. make an Integer by calling the constructor for Object,
       // but still have the class of the new object be Integer
@@ -905,9 +942,9 @@ public class ObjectInputStream extends InputStream
 
   private static final int BUFFER_SIZE = 1024;
   
-  private PrintingDataInputStream myRealInputStream;
-  private PrintingDataInputStream myDataInputStream;
-  private PrintingDataInputStream myBlockDataInput;
+  private DataInputStream myRealInputStream;
+  private DataInputStream myDataInputStream;
+  private DataInputStream myBlockDataInput;
   private int myBlockDataPosition;
   private int myBlockDataBytes;
   private byte[] myBlockData;
@@ -942,3 +979,27 @@ public class ObjectInputStream extends InputStream
   }
   
 }
+
+
+
+// XXX: add this when Comparable is supported
+//       alternatively check to see if there is a priority queue in
+//       1.2 java.util
+
+// class ValidatorAndPriority imlements Comparable
+// {
+//   int priority;
+//   ObjectInputValidation validator;
+
+//   ValidatorAndPriority( int priority, ObjectInputValidation validator )
+//   {
+//     this.priority = priority;
+//     this.validator = validator;
+//   }
+
+//   public int compareTo( Object o )
+//   {
+//     ValidatorAndPriority vap = (ValidatorAndPriority)o;
+//     return this.priority - vap.priority;
+//   }
+// }
