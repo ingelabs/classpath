@@ -574,26 +574,64 @@ public class BorderUIResource
   }
   
   
+  /**
+   * An {@link javax.swing.border.LineBorder} that also implements the
+   * {@link UIResource} marker interface.  This is useful for
+   * implementing pluggable look-and-feels: When switching the current
+   * LookAndFeel, only those borders are replaced that are marked as
+   * {@link UIResource}.  For this reason, a look-and-feel should
+   * always install borders that implement <code>UIResource</code>,
+   * such as the borders provided by this class.
+   *
+   * <p><img src="../border/LineBorder-1.png" width="500" height="200"
+   * alt="[An illustration of two LineBorders] />
+   *
+   * @author Brian Jones (cbj@gnu.org)
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
+  public static class LineBorderUIResource
+    extends LineBorder
+    implements UIResource, Serializable
+  {
     /**
-     * @serial */
-    public static class LineBorderUIResource
-	extends LineBorder
-	implements UIResource, Serializable
+     * Constructs a LineBorderUIResource given its color.  The border
+     * will be one pixel thick and have plain corners.
+     *
+     * @param color the color for drawing the border.
+     */
+    public LineBorderUIResource(Color color)
     {
-	public LineBorderUIResource(Color color)
-	{
-	   super (color); 
-	}
-	public LineBorderUIResource(Color color,
-				    int thickness)
-	{
-	   super (color, thickness);
-	}
+      super(color); 
     }
+    
+    
+    /**
+     * Constructs a LineBorder given its color and thickness.  The
+     * border will have plain corners.
+     *
+     * @param color the color for drawing the border.
+     * @param thickness the width of the line in pixels.
+     */
+    public LineBorderUIResource(Color color, int thickness)
+    {
+      super(color, thickness);
+    }
+    
+    
+    /* Note: Since JDK1.3, javax.swing.border.LineBorder also has a
+     * constructor which accepts a value for the roundedCorners
+     * property. However, as of JDK1.4.1, the LineBorderUIResource
+     * subclass does not have a corresponding constructor.
+     * 
+     * A request for enhancing the Swing API has been filed with Sun.
+     * It currently is under review, its "review ID" is 188305.
+     *
+     *                         -- Sascha Brawer (brawer@dandelis.ch)
+     */
+  }
 
     /**
-     * @serial
-     */
+     * @serial */
     public static class MatteBorderUIResource
 	extends MatteBorder
 	implements UIResource, Serializable
