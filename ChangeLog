@@ -1,3 +1,8 @@
+2002-02-10  Mark Wielaard <mark@klomp.org>
+
+	* doc/www.gnu.org/doc/orp.wml: Revert CLASSPATH setting. No zip file
+	in this release.
+
 2002-02-10  C. Brian Jones <cbj@gnu.org>
 
 	* configure.in: pretend we do not have zip to force class copying,

@@ -68,7 +68,7 @@ the default prefix.
   <LI>Set the CLASSPATH variable (ORP doesn't yet use this but it
   makes the command line easier).</LI>
   <OL>
-    <LI><tt>export CLASSPATH=/usr/local/classpath/share/classpath/glibj.zip:.</tt></LI>
+    <LI><tt>export CLASSPATH=/usr/local/classpath/share/classpath/:.</tt></LI>
   </OL>
 </UL>
 <UL>
