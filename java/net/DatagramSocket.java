@@ -67,7 +67,7 @@ public class DatagramSocket
    * This is the user DatagramSocketImplFactory for this class.  If this
    * variable is null, a default factory is used.
    */
-  static DatagramSocketImplFactory factory;
+  private static DatagramSocketImplFactory factory;
 	  
   /**
    * This is the implementation object used by this socket.
@@ -85,11 +85,6 @@ public class DatagramSocket
   private int remotePort = -1;
 
   /**
-   * Indicates when the socket is closed.
-   */
-  private boolean closed = false;
-
-  /**
    * Creates a <code>DatagramSocket</code> from a specified 
    * <code>DatagramSocketImpl</code> instance
    *
@@ -100,6 +95,9 @@ public class DatagramSocket
    */
   protected DatagramSocket (DatagramSocketImpl impl)
   {
+    if (impl == null)
+      throw new NullPointerException("impl may not be null");
+
     this.impl = impl;
     this.remoteAddress = null;
     this.remotePort = -1;
@@ -189,12 +187,12 @@ public class DatagramSocket
    */
   public void close()
   {
-    if (!closed)
+    if (!isClosed())
       {
         impl.close();
         remoteAddress = null;
         remotePort = -1;
-        closed = true;
+	impl = null;
       }
   }
 
@@ -233,8 +231,7 @@ public class DatagramSocket
    */
   public InetAddress getLocalAddress()
   {
-    if (impl == null
-	|| closed)
+    if (isClosed())
       return null;
     
     InetAddress localAddr;
@@ -266,6 +263,9 @@ public class DatagramSocket
    */
   public int getLocalPort()
   {
+    if (isClosed())
+      return -1;
+	      
     return impl.getLocalPort();
   }
 
@@ -281,8 +281,9 @@ public class DatagramSocket
    */
   public synchronized int getSoTimeout() throws SocketException
   {
-    if (impl == null)
-      throw new SocketException ("Cannot initialize Socket implementation");
+    if (isClosed())
+      throw new SocketException("socket is closed");
+
 
     Object timeout = impl.getOption(SocketOptions.SO_TIMEOUT);
 
@@ -305,6 +306,9 @@ public class DatagramSocket
    */
   public synchronized void setSoTimeout(int timeout) throws SocketException
   {
+    if (isClosed())
+      throw new SocketException("socket is closed");
+    
     if (timeout < 0)
       throw new IllegalArgumentException("Invalid timeout: " + timeout);
 
@@ -324,8 +328,9 @@ public class DatagramSocket
    */
   public int getSendBufferSize() throws SocketException
   {
-    if (impl == null)
-      throw new SocketException ("Cannot initialize Socket implementation");
+    if (isClosed())
+      throw new SocketException("socket is closed");
+    
 
     Object obj = impl.getOption(SocketOptions.SO_SNDBUF);
 
@@ -349,6 +354,9 @@ public class DatagramSocket
    */
   public void setSendBufferSize(int size) throws SocketException
   {
+    if (isClosed())
+      throw new SocketException("socket is closed");
+    
     if (size < 0)
       throw new IllegalArgumentException("Buffer size is less than 0");
   
@@ -368,8 +376,8 @@ public class DatagramSocket
    */
   public int getReceiveBufferSize() throws SocketException
   {
-    if (impl == null)
-      throw new SocketException ("Cannot initialize Socket implementation");
+    if (isClosed())
+      throw new SocketException("socket is closed");
 
     Object obj = impl.getOption(SocketOptions.SO_RCVBUF);
   
@@ -393,8 +401,8 @@ public class DatagramSocket
    */
   public void setReceiveBufferSize(int size) throws SocketException
   {
-    if (impl == null)
-      throw new SocketException ("Cannot initialize Socket implementation");
+    if (isClosed())
+      throw new SocketException("socket is closed");
 
     if (size < 0)
       throw new IllegalArgumentException("Buffer size is less than 0");
@@ -477,9 +485,9 @@ public class DatagramSocket
    */
   public synchronized void receive(DatagramPacket p) throws IOException
   {
-    if (impl == null)
-      throw new IOException ("Cannot initialize Socket implementation");
-
+    if (isClosed())
+      throw new SocketException("socket is closed");
+    
     if (remoteAddress != null && remoteAddress.isMulticastAddress ())
       throw new IOException (
         "Socket connected to a multicast address my not receive");
@@ -512,6 +520,9 @@ public class DatagramSocket
    */
   public void send(DatagramPacket p) throws IOException
   {
+    if (isClosed())
+      throw new SocketException("socket is closed");
+    
     // JDK1.2: Don't do security checks if socket is connected; see jdk1.2 api.
     SecurityManager s = System.getSecurityManager();
     if (s != null && !isConnected ())
@@ -556,6 +567,9 @@ public class DatagramSocket
   public void bind (SocketAddress address)
     throws SocketException
   {
+    if (isClosed())
+      throw new SocketException("socket is closed");
+    
     if (! (address instanceof InetSocketAddress))
       throw new IllegalArgumentException("unsupported address type");
 
@@ -596,11 +610,13 @@ public class DatagramSocket
   /**
    * Checks if the datagram socket is closed.
    *
+   * @return True if socket is closed, false otherwise.
+   * 
    * @since 1.4
    */
   public boolean isClosed()
   {
-    return closed;
+    return impl == null;
   }
 
   /**
@@ -625,6 +641,9 @@ public class DatagramSocket
    */
   public void connect (SocketAddress address) throws SocketException
   {
+    if (isClosed())
+      throw new SocketException("socket is closed");
+    
     if ( !(address instanceof InetSocketAddress) )
       throw new IllegalArgumentException (
 		      "SocketAddress is not InetSocketAddress");
@@ -709,8 +728,8 @@ public class DatagramSocket
    */
   public void setReuseAddress(boolean on) throws SocketException
   {
-    if (impl == null)
-      throw new SocketException ("Cannot initialize Socket implementation");
+    if (isClosed())
+      throw new SocketException("socket is closed");
 
     impl.setOption (SocketOptions.SO_REUSEADDR, new Boolean (on));
   }
@@ -724,8 +743,8 @@ public class DatagramSocket
    */
   public boolean getReuseAddress() throws SocketException
   {
-    if (impl == null)
-      throw new SocketException ("Cannot initialize Socket implementation");
+    if (isClosed())
+      throw new SocketException("socket is closed");
 
     Object obj = impl.getOption (SocketOptions.SO_REUSEADDR);
   
@@ -746,8 +765,8 @@ public class DatagramSocket
    */
   public void setBroadcast(boolean on) throws SocketException
   {
-    if (impl == null)
-      throw new SocketException ("Cannot initialize Socket implementation");
+    if (isClosed())
+      throw new SocketException("socket is closed");
 
     impl.setOption (SocketOptions.SO_BROADCAST, new Boolean (on));
   }
@@ -761,8 +780,8 @@ public class DatagramSocket
    */
   public boolean getBroadcast() throws SocketException
   {
-    if (impl == null)
-      throw new SocketException ("Cannot initialize Socket implementation");
+    if (isClosed())
+      throw new SocketException("socket is closed");
 
     Object obj = impl.getOption (SocketOptions.SO_BROADCAST);
   
@@ -787,8 +806,8 @@ public class DatagramSocket
   public void setTrafficClass(int tc)
     throws SocketException
   {
-    if (impl == null)
-      throw new SocketException ("Cannot initialize Socket implementation");
+    if (isClosed())
+      throw new SocketException("socket is closed");
 
     if (tc < 0 || tc > 255)
       throw new IllegalArgumentException();
@@ -807,8 +826,9 @@ public class DatagramSocket
    */
   public int getTrafficClass() throws SocketException
   {
-    if (impl == null)
-      throw new SocketException( "Cannot initialize Socket implementation");
+    if (isClosed())
+      throw new SocketException("socket is closed");
+    
 
     Object obj = impl.getOption(SocketOptions.IP_TOS);
 
