@@ -43,7 +43,12 @@ AC_C_BIGENDIAN
 dnl guile checks - shouldn't need now that mauve exists
 dnl GUILE_FLAGS
 
-# We want warnings, lots of warnings :-)
+dnl We want to avoid -O2 at the moment, gcc 2.96 from Red Hat 7
+dnl cannot compile some native functions (gcc errors) with this
+dnl flag.
+CFLAGS="-g"
+
+dnl We want warnings, lots of warnings :-)
 if eval "test x$GCC = xyes"; then
   JAPHAR_GREP_CFLAGS(-Wall, [
     CFLAGS="$CFLAGS -Wall"
