@@ -214,8 +214,8 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl Check for libxml and libxslt libraries (when xmlj is enabled).
   if test "x${COMPILE_XMLJ}" = xyes
   then
-    PKG_CHECK_MODULES(XML, xml2 >= 2-2.6.8)
-    PKG_CHECK_MODULES(XSLT, xslt >= 1.1.11)
+    PKG_CHECK_MODULES(XML, libxml-2.0 >= 2.6.8)
+    PKG_CHECK_MODULES(XSLT, libxslt >= 1.1.11)
     AC_SUBST(XML_LIBS)
     AC_SUBST(XML_CFLAGS)
     AC_SUBST(XSLT_LIBS)

@@ -254,7 +254,9 @@ Java_gnu_xml_libxmlj_dom_GnomeAttr_xmljIsId (JNIEnv * env, jobject self)
 
 JNIEXPORT void JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeDocument_free (JNIEnv * env,
-                                             jobject self, jobject id)
+                                             jobject self
+					     __attribute__ ((__unused__)),
+					     jobject id)
 {
   xmlDocPtr doc;
 
@@ -712,10 +714,14 @@ Java_gnu_xml_libxmlj_dom_GnomeDocument_xmljAdoptNode (JNIEnv *env,
 
 JNIEXPORT jobject JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeDocument_renameNode (JNIEnv * env,
-                                                   jobject self,
-                                                   jobject n,
-                                                   jstring namespaceURI,
-                                                   jstring qName)
+                                                   jobject self
+						   __attribute__ ((__unused__)),
+                                                   jobject n
+ 						   __attribute__ ((__unused__)),
+                                                   jstring namespaceURI
+						   __attribute__ ((__unused__)),
+                                                   jstring qName
+						   __attribute__ ((__unused__)))
 {
   xmlNodePtr node;
   xmlNsPtr ns;
@@ -944,7 +950,8 @@ Java_gnu_xml_libxmlj_dom_GnomeDocumentType_getSystemId (JNIEnv * env,
 
 JNIEXPORT jstring JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeDocumentType_getInternalSubset (JNIEnv * env,
-                                                              jobject self)
+                                                             jobject self
+							     __attribute__ ((__unused__)))
 {
   /* TODO */
   xmljThrowDOMException (env, 9, NULL); /* NOT_SUPPORTED_ERR */
@@ -1044,7 +1051,8 @@ Java_gnu_xml_libxmlj_dom_GnomeElement_setAttributeNode (JNIEnv * env,
 
 JNIEXPORT jobject JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeElement_removeAttributeNode (JNIEnv * env,
-                                                           jobject self,
+                                                           jobject self
+							   __attribute__ ((__unused__)),
                                                            jobject oldAttr)
 {
   xmlNodePtr attr;
@@ -1251,7 +1259,8 @@ Java_gnu_xml_libxmlj_dom_GnomeEntity_getSystemId (JNIEnv * env, jobject self)
 
 JNIEXPORT jstring JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeEntity_getNotationName (JNIEnv * env,
-                                                      jobject self)
+                                                      jobject self
+						      __attribute__ ((__unused__)))
 {
   /* TODO */
   xmljThrowDOMException (env, 9, NULL); /* NOT_SUPPORTED_ERR */
@@ -2517,11 +2526,16 @@ Java_gnu_xml_libxmlj_dom_GnomeTypeInfo_getTypeNamespace (JNIEnv *env,
 }
 
 JNIEXPORT jboolean JNICALL 
-Java_gnu_xml_libxmlj_dom_GnomeTypeInfo_isDerivedFrom (JNIEnv *env,
-                                                      jobject self,
-                                                      jstring typeNS,
-                                                      jstring typeName,
-                                                      jint method)
+Java_gnu_xml_libxmlj_dom_GnomeTypeInfo_isDerivedFrom (JNIEnv *env
+						      __attribute__ ((__unused__)),
+                                                      jobject self
+						      __attribute__ ((__unused__)),
+                                                      jstring typeNS
+						      __attribute__ ((__unused__)),
+                                                      jstring typeName
+						      __attribute__ ((__unused__)),
+                                                      jint method
+						      __attribute__ ((__unused__)))
 {
   /* TODO when XML Schema support is available */
   return 0;

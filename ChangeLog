@@ -1,3 +1,14 @@
+2005-01-02  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Fix pkg checks for libxml-2.0 and libxslt.
+	* native/jni/xmlj/Makefile.am (AM_CFLAGS): Add STRICT_WARNING_CFLAGS
+	but disable ERROR_CFLAGS.
+	* native/jni/xmlj/xmlj_dom.c: Add __attribute__ ((__unused__)) where
+	obvious.
+	* native/jni/xmlj/xmlj_sax.c: Likewise.
+	* native/jni/xmlj/xmlj_transform.c: Likewise.
+	* native/jni/xmlj/xmlj_xpath.c: Likewise.
+
 2005-01-02  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/text/AbstractDocument.java

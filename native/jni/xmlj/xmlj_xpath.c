@@ -48,7 +48,7 @@ exception statement from your version. */
 /* Local function prototypes */
 
 xmlXPathContextPtr
-xmljCreateXPathContextPtr (JNIEnv *env, xmlNodePtr node);
+xmljCreateXPathContextPtr (xmlNodePtr node);
 
 jobject
 xmljGetXPathResult (JNIEnv *env, xmlXPathObjectPtr obj);
@@ -63,7 +63,7 @@ xmljGetXPathObjectID (JNIEnv *env, jobject obj);
  * Creates an XPath context for the given node.
  */
 xmlXPathContextPtr
-xmljCreateXPathContextPtr (JNIEnv *env, xmlNodePtr node)
+xmljCreateXPathContextPtr (xmlNodePtr node)
 {
   xmlXPathContextPtr ctx;
 
@@ -160,7 +160,8 @@ xmljGetXPathObjectID (JNIEnv *env, jobject obj)
 
 JNIEXPORT jobject JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeDocument_evaluate (JNIEnv *env,
-                                                 jobject self,
+                                                 jobject self
+						 __attribute__((__unused__)),
                                                  jstring expression,
                                                  jobject contextNode,
                                                  jobject resolver,
@@ -178,7 +179,7 @@ Java_gnu_xml_libxmlj_dom_GnomeDocument_evaluate (JNIEnv *env,
     {
       return NULL;
     }
-  ctx = xmljCreateXPathContextPtr (env, node);
+  ctx = xmljCreateXPathContextPtr (node);
   if (ctx != NULL)
     {
       eval = xmlXPathEval (str, ctx);
@@ -190,7 +191,8 @@ Java_gnu_xml_libxmlj_dom_GnomeDocument_evaluate (JNIEnv *env,
 
 JNIEXPORT jobject JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeXPathExpression_init (JNIEnv *env,
-                                                    jobject self,
+                                                    jobject self
+						    __attribute__((__unused__)),
                                                     jstring expression)
 {
   const xmlChar *str;
@@ -204,7 +206,8 @@ Java_gnu_xml_libxmlj_dom_GnomeXPathExpression_init (JNIEnv *env,
 
 JNIEXPORT void JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeXPathExpression_free (JNIEnv *env,
-                                                    jobject self,
+                                                    jobject self
+						    __attribute__((__unused__)),
                                                     jobject ptr)
 {
   xmlXPathCompExprPtr expr;
@@ -215,7 +218,8 @@ Java_gnu_xml_libxmlj_dom_GnomeXPathExpression_free (JNIEnv *env,
 
 JNIEXPORT jobject JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeXPathExpression_doEvaluate (JNIEnv *env,
-                                                          jobject self,
+                                                          jobject self
+							  __attribute__((__unused__)),
                                                           jobject ptr,
                                                           jobject contextNode,
                                                           jshort type,
@@ -232,7 +236,7 @@ Java_gnu_xml_libxmlj_dom_GnomeXPathExpression_doEvaluate (JNIEnv *env,
     {
       return NULL;
     }
-  ctx = xmljCreateXPathContextPtr (env, node);
+  ctx = xmljCreateXPathContextPtr (node);
   if (ctx != NULL)
     {
       eval = xmlXPathCompiledEval (expr, ctx);
@@ -243,7 +247,8 @@ Java_gnu_xml_libxmlj_dom_GnomeXPathExpression_doEvaluate (JNIEnv *env,
 
 JNIEXPORT void JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeXPathResult_free (JNIEnv *env,
-                                                jobject self,
+                                                jobject self
+						__attribute__((__unused__)),
                                                 jobject obj)
 {
   xmlXPathFreeObject ((xmlXPathObjectPtr) xmljAsPointer (env, obj));
@@ -453,7 +458,7 @@ Java_gnu_xml_libxmlj_dom_GnomeElement_getElementsByTagName (JNIEnv *env,
         }
     }
   xmlFree ((xmlChar *) s_name);
-  ctx = xmljCreateXPathContextPtr (env, node);
+  ctx = xmljCreateXPathContextPtr (node);
   if (ctx != NULL)
     {
       eval = xmlXPathEval (expr, ctx);
@@ -556,7 +561,7 @@ Java_gnu_xml_libxmlj_dom_GnomeElement_getElementsByTagNameNS (JNIEnv *env,
     }
   xmlFree ((xmlChar *) s_uri);
   xmlFree ((xmlChar *) s_localName);
-  ctx = xmljCreateXPathContextPtr (env, node);
+  ctx = xmljCreateXPathContextPtr (node);
   if (ctx != NULL)
     {
       eval = xmlXPathEval (expr, ctx);
@@ -567,7 +572,8 @@ Java_gnu_xml_libxmlj_dom_GnomeElement_getElementsByTagNameNS (JNIEnv *env,
 
 JNIEXPORT void JNICALL
 Java_gnu_xml_libxmlj_dom_GnomeXPathNodeList_free (JNIEnv *env,
-                                                  jobject self,
+                                                  jobject self
+						  __attribute__((__unused__)),
                                                   jobject obj)
 {
   xmlXPathFreeObject ((xmlXPathObjectPtr) xmljAsPointer (env, obj));

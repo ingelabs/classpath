@@ -56,7 +56,8 @@ xmljDispatchError (xmlParserCtxtPtr ctx,
 
 JNIEXPORT jstring JNICALL
 Java_gnu_xml_libxmlj_sax_GnomeLocator_publicId (JNIEnv * env,
-                                                jobject self,
+                                                jobject self
+						__attribute__((__unused__)),
                                                 jobject j_ctx,
                                                 jobject j_loc)
 {
@@ -73,7 +74,8 @@ Java_gnu_xml_libxmlj_sax_GnomeLocator_publicId (JNIEnv * env,
 
 JNIEXPORT jstring JNICALL
 Java_gnu_xml_libxmlj_sax_GnomeLocator_systemId (JNIEnv * env,
-                                                jobject self,
+                                                jobject self
+						__attribute__((__unused__)),
                                                 jobject j_ctx,
                                                 jobject j_loc)
 {
@@ -90,7 +92,8 @@ Java_gnu_xml_libxmlj_sax_GnomeLocator_systemId (JNIEnv * env,
 
 JNIEXPORT jint JNICALL
 Java_gnu_xml_libxmlj_sax_GnomeLocator_lineNumber (JNIEnv * env,
-                                                  jobject self,
+                                                  jobject self
+						  __attribute__((__unused__)),
                                                   jobject j_ctx,
                                                   jobject j_loc)
 {
@@ -108,7 +111,8 @@ Java_gnu_xml_libxmlj_sax_GnomeLocator_lineNumber (JNIEnv * env,
 
 JNIEXPORT jint JNICALL
 Java_gnu_xml_libxmlj_sax_GnomeLocator_columnNumber (JNIEnv * env,
-                                                    jobject self,
+                                                    jobject self
+						    __attribute__((__unused__)),
                                                     jobject j_ctx,
                                                     jobject j_loc)
 {
@@ -397,7 +401,7 @@ xmljSAXResolveEntity (void *vctx,
 }
 
 xmlEntityPtr
-xmljSAXGetEntity (void *vctx, const xmlChar * name)
+xmljSAXGetEntity (void *vctx __attribute__((__unused__)), const xmlChar * name)
 {
   xmlEntityPtr ret;
   

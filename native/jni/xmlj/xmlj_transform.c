@@ -608,7 +608,6 @@ xmljDocLoader (const xmlChar *uri, xmlDictPtr dict, int options,
   jobject inputStream;
   jbyteArray detectBuffer;
 
-  /*fprintf(stderr,"xmljDocLoader:1\n");*/
   fflush(stdout);
   env = xmljGetJNIEnv ();
   if (!env)
@@ -860,7 +859,8 @@ Java_gnu_xml_libxmlj_transform_GnomeTransformer_free (JNIEnv *env,
 /* GnomeTransformerFactory.freeLibxsltGlobal */
 JNIEXPORT void JNICALL
 Java_gnu_xml_libxmlj_transform_GnomeTransformerFactory_freeLibxsltGlobal (
-  JNIEnv *env, jclass clazz)
+  JNIEnv *env __attribute__((__unused__)),
+  jclass clazz __attribute__((__unused__)))
 {
   xsltCleanupGlobals ();
   xmlCleanupParser ();
