@@ -259,24 +259,10 @@ public class SimpleTimeZone extends TimeZone {
         setStartRule(startMonth, startDayOfWeekInMonth, 
                      startDayOfWeek, startTime);
         setEndRule(endMonth, endDayOfWeekInMonth, 
-                     endDayOfWeek, endTime);
-        if (endDayOfWeek == 0)
-            endMode = DOM_MODE;
-        else if (endDayOfWeek > 0)
-            endMode = DOW_IN_MONTH_MODE;
-        else if (endDayOfWeek < 0) {
-            endDayOfWeek = -endDayOfWeek;
-            if (endDay < 0) {
-                endDay = -endDay;
-                endMode = DOW_LE_DOM_MODE;
-            } else
-                endMode = DOW_GE_DOM_MODE;
-        }
-
-        this.endMonth       = endMonth;
-        this.endDay         = endDayOfWeekInMonth;
-        this.endDayOfWeek   = endDayOfWeek;
-        this.endTime        = endTime;
+		   endDayOfWeek, endTime);
+	if (startMonth == endMonth)
+	  throw new IllegalArgumentException
+	    ("startMonth and endMonth must be different");
         this.startYear      = 0;
     }
 
@@ -312,6 +298,48 @@ public class SimpleTimeZone extends TimeZone {
         useDaylight = true;
     }
 
+  /**
+   * Checks if the month, day, dayOfWeek arguments are in range and
+   * returns the mode of the rule.
+   * @param month the month parameter as in the constructor
+   * @param day the day parameter as in the constructor
+   * @param dayOfWeek the day of week parameter as in the constructor
+   * @return the mode of this rule see startMode.
+   * @exception IllegalArgumentException if parameters are out of range.
+   * @see #SimpleTimeZone(int, String, int, int, int, int, int, int, int, int)
+   * @see #startMode
+   */
+  private int checkRule(int month, int day, int dayOfWeek) 
+  {
+    int daysInMonth = getDaysInMonth(month, 1);
+    if (dayOfWeek == 0) 
+      {
+	if (day <= 0 || day > daysInMonth)
+	  throw new IllegalArgumentException("day out of range");
+	return DOM_MODE;
+      } 
+    else if (dayOfWeek > 0) 
+      {
+	if (Math.abs(day) > (daysInMonth + 6) / 7)
+	  throw new IllegalArgumentException("dayOfWeekInMonth out of range");
+	if (dayOfWeek > Calendar.SATURDAY)
+	  throw new IllegalArgumentException("dayOfWeek out of range");
+	return DOW_IN_MONTH_MODE;
+      } 
+    else
+      {
+	if (day == 0 || Math.abs(day) > daysInMonth)
+	  throw new IllegalArgumentException("day out of range");
+	if (dayOfWeek < -Calendar.SATURDAY)
+	  throw new IllegalArgumentException("dayOfWeek out of range");
+	if (day < 0)
+	  return DOW_LE_DOM_MODE;
+	else
+	  return DOW_GE_DOM_MODE;
+    }
+  }
+  
+
     /**
      * Sets the daylight savings start rule.  You must also set the
      * end rule with <code>setEndRule</code> or the result of
@@ -327,22 +355,10 @@ public class SimpleTimeZone extends TimeZone {
      * @see SimpleTimeZone */
     public void setStartRule(int month, int day, 
                              int dayOfWeek, int time) {
-        if (dayOfWeek == 0)
-            startMode = DOM_MODE;
-        else if (dayOfWeek > 0)
-            startMode = DOW_IN_MONTH_MODE;
-        else if (dayOfWeek < 0) {
-            dayOfWeek = -dayOfWeek;
-            if (day < 0) {
-                day = -day;
-                startMode = DOW_LE_DOM_MODE;
-            } else
-                startMode = DOW_GE_DOM_MODE;
-        }
-
+        this.startMode      = checkRule(month, day, dayOfWeek);
         this.startMonth     = month;
-        this.startDay       = day;
-        this.startDayOfWeek = dayOfWeek;
+        this.startDay       = Math.abs(day);
+        this.startDayOfWeek = Math.abs(dayOfWeek);
         this.startTime      = time;
         useDaylight = true;
     }
@@ -362,22 +378,10 @@ public class SimpleTimeZone extends TimeZone {
      * @see #setStartRule */
     public void setEndRule(int month, int day, 
                            int dayOfWeek, int time) {
-        if (dayOfWeek == 0)
-            endMode = DOM_MODE;
-        else if (dayOfWeek > 0)
-            endMode = DOW_IN_MONTH_MODE;
-        else if (dayOfWeek < 0) {
-            dayOfWeek = -dayOfWeek;
-            if (day < 0) {
-                day = -day;
-                endMode = DOW_LE_DOM_MODE;
-            } else
-                endMode = DOW_GE_DOM_MODE;
-        }
-
+        this.endMode      = checkRule(month, day, dayOfWeek);
         this.endMonth     = month;
-        this.endDay       = day;
-        this.endDayOfWeek = dayOfWeek;
+        this.endDay       = Math.abs(day);
+        this.endDayOfWeek = Math.abs(dayOfWeek);
         this.endTime      = time;
         useDaylight = true;
     }
@@ -406,35 +410,38 @@ public class SimpleTimeZone extends TimeZone {
      * @param millis the millis in the day (in local standard time)
      * @return the time zone offset in milliseconds.  */
     public int getOffset(int era, int year, int month, 
-                         int day, int dayOfWeek, int millis) {
-
-        boolean daylightSavings;
-        if (!useDaylight || era < GregorianCalendar.AD || era < startYear)
-            // This does only work for Gregorian calendars :-(
-            // This is mainly because setStartYear doesn't take an era.
-            daylightSavings = false;
-
-        else { 
-	    boolean afterStart
-		= !isBefore(year, month, day, dayOfWeek, millis,
-			    startMode, startMonth, 
-			    startDay, startDayOfWeek, startTime);
-	    boolean beforeEnd
-                = isBefore(year, month, day, dayOfWeek, millis,
-			   endMode, endMonth, 
-			   endDay, endDayOfWeek, endTime);
-
-	    if (startMonth < endMonth) {
-		// use daylight savings, if the date is after the start of
-		// savings, and before the end of savings.
-		daylightSavings = afterStart && beforeEnd;
-	    } else {
-		// use daylight savings, if the date is before the end of
-		// savings, or after the start of savings.
-		daylightSavings = beforeEnd || afterStart;
+                         int day, int dayOfWeek, int millis)
+    {
+      // This method is called by Calendar, so we mustn't use that class.
+      int daylightSavings = 0;
+      if (useDaylight && era == GregorianCalendar.AD && year >= startYear)
+	{
+	  // This does only work for Gregorian calendars :-(
+	  // This is mainly because setStartYear doesn't take an era.
+	  
+	  boolean afterStart
+	    = !isBefore(year, month, day, dayOfWeek, millis,
+			startMode, startMonth, 
+			startDay, startDayOfWeek, startTime);
+	  boolean beforeEnd
+	    = isBefore(year, month, day, dayOfWeek, millis,
+		       endMode, endMonth, 
+		       endDay, endDayOfWeek, endTime);
+	  
+	  if (startMonth < endMonth) 
+	    {
+	      // use daylight savings, if the date is after the start of
+	      // savings, and before the end of savings.
+	      daylightSavings = afterStart && beforeEnd ? dstSavings : 0;
+	    } 
+	  else
+	    {
+	      // use daylight savings, if the date is before the end of
+	      // savings, or after the start of savings.
+	      daylightSavings = beforeEnd || afterStart ? dstSavings : 0;
 	    }
-        }
-        return rawOffset + (daylightSavings ? dstSavings : 0);
+	}
+      return rawOffset + daylightSavings;
     }
     
     /**
@@ -471,7 +478,7 @@ public class SimpleTimeZone extends TimeZone {
         // Most of this is copied from GregorianCalendar.getActualMaximum()
         if (month == Calendar.FEBRUARY) {
             return ((year&3) == 0 && (year % 100 != 0 || year % 400 == 0))
-                ? 366 : 365;
+                ? 29 : 28;
         } else if (month < Calendar.AUGUST)
             return 31 - (month & 1);
         else
@@ -500,11 +507,14 @@ public class SimpleTimeZone extends TimeZone {
                              int calMillis, int mode, int month,
                              int day, int dayOfWeek, int millis) {
 
+        // This method is called by Calendar, so we mustn't use that class.
+        // We have to do all calculations by hand.
+
         // check the months:
 
         // XXX - this is not correct:
         // for the DOW_GE_DOM and DOW_LE_DOM modes the change date may
-        // be in a different month. 
+        // be in a different month.
         if (calMonth != month)
             return calMonth < month;
 
@@ -742,7 +752,7 @@ public class SimpleTimeZone extends TimeZone {
             // fall through
         case DOW_GE_DOM_MODE:
         case DOW_LE_DOM_MODE:
-            startDay = (startDay-1) / 7 + 1;
+            startDay = (startDay+6) / 7;
         }
         switch (endMode) {
         case DOM_MODE:
@@ -750,7 +760,7 @@ public class SimpleTimeZone extends TimeZone {
             // fall through
         case DOW_GE_DOM_MODE:
         case DOW_LE_DOM_MODE:
-            endDay = (endDay-1) / 7 + 1;
+            endDay = (endDay+6) / 7;
         }
 
         // the required part:

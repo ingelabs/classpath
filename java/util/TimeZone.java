@@ -271,8 +271,8 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
       timezones.put("America/Rosario", tz);
       tz = new SimpleTimeZone
 	(-3000 * 3600, "America/Godthab",
-	 Calendar.MARCH, 29, -Calendar.SATURDAY, 22000 * 3600,
-	 Calendar.OCTOBER, 29, -Calendar.SATURDAY, 22000 * 3600);
+	 Calendar.MARCH, 30, -Calendar.SATURDAY, 22000 * 3600,
+	 Calendar.OCTOBER, 30, -Calendar.SATURDAY, 22000 * 3600);
       timezones.put("America/Godthab", tz);
       tz = new SimpleTimeZone
 	(-3000 * 3600, "America/Miquelon",
@@ -853,11 +853,18 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
         {
         }
       
-      return getDefaultDisplayName();
+      return getDefaultDisplayName(dst);
     }
 
-    private String getDefaultDisplayName() {
+    private String getDefaultDisplayName(boolean dst) {
       int offset = getRawOffset();
+      if (dst && this instanceof SimpleTimeZone) 
+	{
+	  // ugly, but this is a design failure of the API:
+	  // getDisplayName takes a dst parameter even though
+	  // TimeZone knows nothing about daylight saving offsets.
+	  offset += ((SimpleTimeZone) this).getDSTSavings();
+	}
 
       StringBuffer sb = new StringBuffer(9);
       sb.append("GMT");
@@ -892,7 +899,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
      */
     public static TimeZone getTimeZone(String ID) 
     {
-        // First check aliases
+        // First check timezones hash
 	TimeZone tz = (TimeZone) timezones.get(ID);
 	if (tz != null)
 	  {
@@ -914,7 +921,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
 	// Note that GMT is in the table so we know it is different.
         if (ID.startsWith("GMT"))
           {
-	    int pos = 4;
+	    int pos = 3;
             int offset_direction = 1;
 
             if (ID.charAt(pos) == '-') {
