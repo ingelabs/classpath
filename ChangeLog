@@ -1,5 +1,11 @@
 2004-08-16  Tom Tromey  <tromey@redhat.com>
 
+	Bug 9946.
+	* gnu/java/security/util/Prime.java (generateRandomPrime): Use
+	return result from `add'.
+
+2004-08-16  Tom Tromey  <tromey@redhat.com>
+
 	Bug 9944.
 	* java/rmi/server/UID.java (UID): Read `nextCount', not count.
 
