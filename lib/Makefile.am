@@ -91,7 +91,7 @@ install-data-local :
 include $(JAVA_DEPEND)
 include $(HEADERS_DEPEND)
 
-all: glibj.zip $(MAKEFILE_DEPEND) $(HEADERS_DEPEND) $(HEADERS)
+all: $(HEADERS_DEPEND) glibj.zip $(MAKEFILE_DEPEND) $(HEADERS)
 #jar-classes
 
 # this makes headers always generate after making glibj.zip
@@ -117,9 +117,9 @@ dep: classes
 #.PHONY: compile-classes
 compile-classes: classes $(JAVA_DEPEND) $(JAVA_SRCS) Makefile
 if USER_SPECIFIED_CLASSLIB
-	$(SHELL) -c "@JIKES@ -nowarn -classpath ..:../vm/reference:.:@USER_CLASSLIB@ +CSO +M +F -d . @classes 2>errors.txt; exit 0"
+	$(SHELL) -c "@JIKES@ -nowarn -classpath ..:../vm/reference:.:@USER_CLASSLIB@ +CSO +M +F -d . @classes"
 else
-	$(SHELL) -c "@JIKES@ -nowarn -classpath ..:../vm/reference:. +CSO +M +F -d . @classes 2>errors.txt; exit 0"
+	$(SHELL) -c "@JIKES@ -nowarn -classpath ..:../vm/reference:. +CSO +M +F -d . @classes"
 endif
 	touch compile-classes
 
