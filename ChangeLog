@@ -1,3 +1,22 @@
+2004-10-02  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/awt/peer/gtk/GdkClasspathFontPeer.java,
+	gnu/java/awt/peer/gtk/GdkClasspathFontPeerMetrics.java,
+	gnu/java/awt/peer/gtk/GdkGlyphVector.java,
+	gnu/java/awt/peer/gtk/GdkGraphics2D.java,
+	gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java,
+	gnu/java/awt/peer/gtk/GdkPixbufDecoder.java,
+	gnu/java/awt/peer/gtk/GtkButtonPeer.java,
+	gnu/java/awt/peer/gtk/GtkClipboard.java,
+	gnu/java/awt/peer/gtk/GtkDialogPeer.java,
+	gnu/java/awt/peer/gtk/GtkFileDialogPeer.java,
+	gnu/java/awt/peer/gtk/GtkFontPeer.java,
+	gnu/java/awt/peer/gtk/GtkListPeer.java,
+	gnu/java/awt/peer/gtk/GtkMenuItemPeer.java,
+	gnu/java/awt/peer/gtk/GtkToolkit.java,
+	gnu/java/awt/peer/gtk/GtkWindowPeer.java: Import statements reworked.
+	Some little reformattings.
+
 2004-10-01  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/image/AffineTransformOp.java
