@@ -1,5 +1,14 @@
 2004-10-13  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/image/ByteLookupTable.java
+	(ByteLookupTable) :Fixed HTML entities in javadocs.
+	(lookupPixel): Fix case when dst is null.
+	* java/awt/image/ShortLookupTable.java
+	(ShortLookupTable) :Fixed HTML entities in javadocs.
+	(lookupPixel): Fix case when dst is null.
+
+2004-10-13  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/BitwiseXORComposite.java,
 	gnu/java/awt/ClasspathToolkit.java,
 	gnu/java/awt/image/XBMDecoder.java,
