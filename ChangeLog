@@ -1,5 +1,10 @@
 2004-04-08  Michael Koch  <konqueror@gmx.de>
 
+	* autogen.sh: New script to generate configure and friends.
+	* ltmain.sh: Removed. This gets added now by calling libtoolize.
+
+2004-04-08  Michael Koch  <konqueror@gmx.de>
+
 	* configure.ac: Added gnu/java/nio/channels/Makefile to output files.
 	* gnu/java/nio/Makefile.am: Added subdir channels.
 	* include/gnu_java_nio_channels_FileChannelImpl.h: New file.
