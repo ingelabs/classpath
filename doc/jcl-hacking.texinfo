@@ -110,11 +110,11 @@ room environment, we could be very embarrassed someday in court.  Please
 don't let that happen.
 
 @item
-JCL is licensed under the terms of the 
-@uref{http://www.fsf.org/copyleft/lgpl.html,GNU Library General Public License}.
-To preserve freedom for all users and to maintain uniform licensing of JCL,
-we will not accept code into the main distribution that is not licensed
-under these terms.
+JCL is licensed under the terms of the
+@uref{http://www.fsf.org/copyleft/lgpl.html,GNU Library General Public
+License}.  To preserve freedom for all users and to maintain uniform
+licensing of JCL, we will not accept code into the main distribution
+that is not licensed under these terms.
 
 @item
 JCL is GNU software and this project is being officially sponsored by
