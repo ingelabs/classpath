@@ -29,13 +29,13 @@
 	Implement
 	(drawArc, drawOval, drawRoundRect, fillArc, fillOval, fillRoundRect): 
 	Implement.
-	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c: 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c: 
 	Match changes to java side.
-	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeer.c: 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeer.c: 
 	Release resources.
-	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGlyphVector.c: 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGlyphVector.c: 
 	Don't use pango for metrics.
-	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c: 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c: 
 	New file.
 
 2003-11-19  Dalibor Topic <robilad@kaffe.org>
