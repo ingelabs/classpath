@@ -1,5 +1,9 @@
 2004-05-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/DeleteFileHelper.java (static): Removed.
+
+2004-05-21  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/beans/BeanInfoEmbryo.java,
 	java/awt/im/InputContext.java,
 	java/io/SequenceInputStream.java,
