@@ -40,7 +40,7 @@ import java.util.Calendar;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface PreparedStatement extends Statement
+public interface PreparedStatement extends Statement
 {
 
 /**
@@ -468,6 +468,16 @@ setObject(int index, Object value, int type) throws SQLException;
 public abstract void
 setObject(int index, Object value, int type, int scale) throws SQLException;
 
+/*************************************************************************/
+
+/**
+  * This method adds a set of parameters to the batch for JDBC 2.0.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract void
+addBatch() throws SQLException;
+  
 /*************************************************************************/
 
 /**

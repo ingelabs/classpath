@@ -33,7 +33,7 @@ package java.sql;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface DatabaseMetaData
+public interface DatabaseMetaData
 {
 
 /**
@@ -2473,7 +2473,7 @@ getIndexInfo(String catalog, String schema, String table, boolean unique,
   * @see ResultSet
   */
 public abstract boolean
-supportsResultType(int type) throws SQLException;
+supportsResultSetType(int type) throws SQLException;
 
 /*************************************************************************/
 

@@ -34,7 +34,7 @@ import java.util.Map;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface Connection
+public interface Connection
 {
 
 /**
@@ -385,7 +385,7 @@ getTransactionIsolation() throws SQLException;
 /*************************************************************************/
 
 /**
-  * This method returns the current transaction isolation mode.  This must
+  * This method sets the current transaction isolation mode.  This must
   * be one of the constants defined in this interface.
   *
   * @param level The transaction isolation level.
@@ -393,7 +393,7 @@ getTransactionIsolation() throws SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract void
-getTransactionIsolation(int level) throws SQLException;
+setTransactionIsolation(int level) throws SQLException;
 
 /*************************************************************************/
 

@@ -1,3 +1,34 @@
+2000-11-30  Warren Levy <warrenl@cygnus.com>
+
+	* java/sql/Array.java: Adjusted class signature to match spec.
+	* java/sql/BatchUpdateException.java: Ditto.
+	* java/sql/Blob.java: Ditto.
+	* java/sql/CallableStatement.java: Ditto.
+	* java/sql/Clob.java: Ditto.
+	* java/sql/DataTruncation.java: Ditto.
+	* java/sql/Driver.java: Ditto.
+	* java/sql/Ref.java: Ditto.
+	* java/sql/ResultSetMetaData.java: Ditto.
+	* java/sql/SQLData.java: Ditto.
+	* java/sql/SQLException.java: Ditto.
+	* java/sql/SQLInput.java: Ditto.
+	* java/sql/SQLWarning.java: Ditto.
+	* java/sql/Statement.java: Ditto.
+	* java/sql/Struct.java: Ditto.
+	* java/sql/Connection.java: Ditto.
+	(setTransactionIsolation): Renamed to match the spec.
+	* java/sql/DatabaseMetaData.java: Ditto on class signature.
+	(supportsResultSetType): Renamed to match the spec.
+	* java/sql/PreparedStatement.java: Ditto on class signature.
+	(addBatch): New abstract method.
+	* java/sql/ResultSet.java: Ditto on class signature.
+	(first): returns boolean.
+	(last): returns boolean.
+	* java/sql/SQLOutput.java: Ditto on class signature.
+	(writeAsciiStream): New abstract method.
+	* java/sql/DriverManager.java (registerDriver): Throws SQLException.
+	(deregisterDriver): Throws SQLException.
+
 2000-11-28  Warren Levy <warrenl@cygnus.com>
 
 	* java/text/DateFormatSymbols.java (formatPrefixes): Made field static.

@@ -1,5 +1,5 @@
 /* CallableStatement.java -- A statement for calling stored procedures.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,7 +38,7 @@ import java.util.Map;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface CallableStatement
+public interface CallableStatement extends PreparedStatement
 {
 
 /*************************************************************************/

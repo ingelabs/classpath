@@ -1,5 +1,5 @@
 /* SQLOutput.java -- Write SQL values to a stream
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,7 +38,7 @@ import java.math.BigDecimal;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface SQLOutput
+public interface SQLOutput
 {
 
 /*************************************************************************/
@@ -226,7 +226,7 @@ writeCharacterStream(Reader value) throws SQLException;
 /*************************************************************************/
 
 /**
-  * This method writes the specified ASCII text stream
+  * This method writes the specified uninterpreted binary byte stream
   * to the SQL stream.
   *
   * @param value The value to write to the stream.
@@ -235,6 +235,19 @@ writeCharacterStream(Reader value) throws SQLException;
   */
 public abstract void
 writeBinaryStream(InputStream value) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method writes the specified ASCII text stream
+  * to the SQL stream.
+  *
+  * @param value The value to write to the stream.
+  * 
+  * @exception SQLException If an error occurs.
+  */
+public abstract void
+writeAsciiStream(InputStream value) throws SQLException;
 
 /*************************************************************************/
 

@@ -1,5 +1,5 @@
 /* ResultSet.java -- A SQL statement result set.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -47,7 +47,7 @@ import java.util.Map;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface ResultSet
+public interface ResultSet
 {
 
 /**
@@ -887,10 +887,13 @@ afterLast() throws SQLException;
 /**
   * This method repositions the cursor on the first row in the
   * result set.
+  *
+  * @return <code>true</code> if the cursor is on a valid row;
+  * <code>false</code> if there are no rows in the result set.
   * 
   * @exception SQLException If an error occurs.
   */
-public abstract void
+public abstract boolean
 first() throws SQLException;
 
 /*************************************************************************/
@@ -899,9 +902,12 @@ first() throws SQLException;
   * This method repositions the cursor on the last row in the result
   * set.
   * 
+  * @return <code>true</code> if the cursor is on a valid row;
+  * <code>false</code> if there are no rows in the result set.
+  * 
   * @exception SQLException If an error occurs.
   */
-public abstract void
+public abstract boolean
 last() throws SQLException;
 
 /*************************************************************************/

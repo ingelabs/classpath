@@ -1,5 +1,5 @@
 /* DriverManager.java -- Manage JDBC drivers
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -218,9 +218,11 @@ println(String str)
   * called by the driver itself in a static initializer.
   *
   * @param driver The new <code>Driver</code> to add.
+  *
+  * @exception SQLException If an error occurs.
   */
 public static void
-registerDriver(Driver driver)
+registerDriver(Driver driver) throws SQLException
 {
   if (!drivers.contains(driver))
     drivers.addElement(driver);
@@ -232,9 +234,11 @@ registerDriver(Driver driver)
   * This method de-registers a driver from the manager.
   *
   * @param driver The <code>Driver</code> to unregister.
+  *
+  * @exception SQLException If an error occurs.
   */
 public static void
-deregisterDriver(Driver driver)
+deregisterDriver(Driver driver) throws SQLException
 {
   if (drivers.contains(driver))
     drivers.removeElement(driver);

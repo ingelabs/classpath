@@ -43,7 +43,7 @@ import java.util.Properties;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface Driver
+public interface Driver
 {
 
 /**

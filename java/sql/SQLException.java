@@ -32,7 +32,7 @@ package java.sql;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public class SQLException extends Exception implements java.io.Serializable
+public class SQLException extends Exception
 {
 
 /*************************************************************************/

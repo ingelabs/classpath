@@ -1,5 +1,5 @@
 /* Statement.java -- Interface for executing SQL statements.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -32,7 +32,7 @@ package java.sql;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface Statement
+public interface Statement
 {
 
 /**

@@ -33,7 +33,7 @@ package java.sql;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public class DataTruncation extends SQLWarning implements java.io.Serializable
+public class DataTruncation extends SQLWarning
 {
 
 /*************************************************************************/

@@ -1,5 +1,5 @@
 /* BatchUpdateException.java -- Exception for batch oriented SQL errors
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,7 +35,6 @@ package java.sql;
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public class BatchUpdateException extends SQLException 
-                                  implements java.io.Serializable
 {
 
 /*************************************************************************/

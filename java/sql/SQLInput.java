@@ -1,5 +1,5 @@
 /* SQLInput.java -- Read SQL values from a stream
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,7 +38,7 @@ import java.math.BigDecimal;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface SQLInput
+public interface SQLInput
 {
 
 /*************************************************************************/
