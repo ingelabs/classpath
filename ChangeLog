@@ -1,5 +1,17 @@
 2002-04-25  Andrew Selkirk  <aselkirk@sympatico.ca>
 
+	* javax/swing/undo/AbstractUndoableEdit.java: New file.
+	* javax/swing/undo/CannotRedoException.java: New file.
+	* javax/swing/undo/CannotUndoException.java: New file.
+	* javax/swing/undo/CompoundEdit.java: New file.
+	* javax/swing/undo/StateEditable.java: New file.
+	* javax/swing/undo/StateEdit.java: New file (stubbed).
+	* javax/swing/undo/UndoableEdit.java: New file.
+	* javax/swing/undo/UndoableEditSupport.java: New file (stubbed).
+	* javax/swing/undo/UndoManager.java: New file (stubbed).
+
+2002-04-25  Andrew Selkirk  <aselkirk@sympatico.ca>
+
         * javax/swing/event/AncestorEvent.java: New file.
         * javax/swing/event/AncestorListener.java: New file.
         * javax/swing/event/CaretEvent.java: New file.
