@@ -121,7 +121,7 @@ import java.util.StringTokenizer;
 public final class URL implements Serializable
 {
   private static final String DEFAULT_SEARCH_PATH =
-    "gnu.java.net.protocol|sun.net.www.protocol";
+    "gnu.java.net.protocol|gnu.inet";
 
   /**
    * The name of the protocol for this URL.
@@ -684,7 +684,8 @@ public final class URL implements Serializable
    * Sets the specified fields of the URL. This is not a public method so
    * that only URLStreamHandlers can modify URL fields. This might be called
    * by the <code>parseURL()</code> method in that class. URLs are otherwise
-   * constant.
+   * constant. If the given protocol does not exist, it will keep the previously
+   * set protocol.
    *
    * @param protocol The protocol name for this URL
    * @param host The hostname or IP address for this URL
@@ -695,12 +696,15 @@ public final class URL implements Serializable
   protected void set(String protocol, String host, int port, String file,
                      String ref)
   {
-    // TBD: Theoretically, a poorly written StreamHandler could pass an
-    // invalid protocol.  It will cause the handler to be set to null
-    // thus overriding a valid handler.  Callers of this method should
-    // be aware of this.
-    this.ph = getURLStreamHandler(protocol);
-    this.protocol = protocol.toLowerCase();
+    URLStreamHandler protocolHandler = getURLStreamHandler(protocol);
+    
+    // It is an hidden feature of the JDK. If the protocol does not exist,
+    // we keep the previously initialized protocol.
+    if (protocolHandler != null)
+      {
+        this.ph = protocolHandler;
+        this.protocol = protocol.toLowerCase();
+      }
     this.authority = "";
     this.port = port;
     this.host = host;
@@ -718,7 +722,8 @@ public final class URL implements Serializable
   /**
    * Sets the specified fields of the URL. This is not a public method so
    * that only URLStreamHandlers can modify URL fields. URLs are otherwise
-   * constant.
+   * constant. If the given protocol does not exist, it will keep the previously
+   * set protocol.
    *
    * @param protocol The protocol name for this URL.
    * @param host The hostname or IP address for this URL.
@@ -734,12 +739,15 @@ public final class URL implements Serializable
   protected void set(String protocol, String host, int port, String authority,
                      String userInfo, String path, String query, String ref)
   {
-    // TBD: Theoretically, a poorly written StreamHandler could pass an
-    // invalid protocol.  It will cause the handler to be set to null
-    // thus overriding a valid handler.  Callers of this method should
-    // be aware of this.
-    this.ph = getURLStreamHandler(protocol);
-    this.protocol = protocol.toLowerCase();
+    URLStreamHandler protocolHandler = getURLStreamHandler(protocol);
+    
+    // It is an hidden feature of the JDK. If the protocol does not exist,
+    // we keep the previously initialized protocol.
+    if (protocolHandler != null)
+      {
+        this.ph = protocolHandler;
+        this.protocol = protocol.toLowerCase();
+      }
     this.host = host;
     this.userInfo = userInfo;
     this.port = port;
