@@ -28,11 +28,11 @@ package java.io;
   * Additionally, this stream can be designated as "autoflush" when 
   * created so that any writes are automatically flushed to the underlying
   * output sink when the current line is terminated.
-  *
+  * <p>
   * <b>Note that this class is deprecated</b>.  It exists for backward  
   * compatibility only.  New code should be written to use 
   * <code>PrintWriter</code> instead.  
-  *
+  * <p>
   * This class converts char's into byte's using the system default encoding.
   *
   * @deprecated
@@ -109,7 +109,7 @@ PrintStream(OutputStream out)
   * to the specified output sink.  This constructor also allows "auto-flush"
   * functionality to be specified where the stream will be flushed after
   * every line is terminated or newline character is written.
-  *
+  * <p>
   * Note that this class is deprecated in favor of <code>PrintWriter</code>.
   *
   * @param out The <code>OutputStream</code> to write to.
@@ -305,7 +305,7 @@ print(char[] s)
   * This method prints a <code>String</code> to the stream.  The actual
   * value printed depends on the system default encoding.
   *
-  * @param s The <code>String</object> to print.
+  * @param s The <code>String</code> to print.
   */
 public void
 print(String s)
@@ -320,7 +320,7 @@ print(String s)
 /*************************************************************************/
 
 /**
-  * This method prints an <code>Object<code> to the stream.  The actual
+  * This method prints an <code>Object</code> to the stream.  The actual
   * value printed is determined by calling the <code>String.valueOf()</code>
   * method.
   *
@@ -353,7 +353,7 @@ println()
   * This methods prints a boolean value to the stream.  <code>true</code>
   * values are printed as "true" and <code>false</code> values are printed
   * as "false".
-  *
+  * <p>
   * This method prints a line termination sequence after printing the value.
   *
   * @param b The <code>boolean</code> value to print
@@ -369,7 +369,7 @@ println(boolean b)
 /**
   * This method prints a char to the stream.  The actual value printed is
   * determined by the character encoding in use.
-  *
+  * <p>
   * This method prints a line termination sequence after printing the value.
   *
   * @param c The <code>char</code> value to be printed
@@ -385,7 +385,7 @@ println(char c)
 /**
   * This method prints an integer to the stream.  The value printed is
   * determined using the <code>String.valueOf()</code> method.
-  *
+  * <p>
   * This method prints a line termination sequence after printing the value.
   *
   * @param i The <code>int</code> value to be printed
@@ -401,7 +401,7 @@ println(int i)
 /**
   * This method prints a long to the stream.  The value printed is
   * determined using the <code>String.valueOf()</code> method.
-  *
+  * <p>
   * This method prints a line termination sequence after printing the value.
   *
   * @param l The <code>long</code> value to be printed
@@ -417,7 +417,7 @@ println(long l)
 /**
   * This method prints a float to the stream.  The value printed is
   * determined using the <code>String.valueOf()</code> method.
-  *
+  * <p>
   * This method prints a line termination sequence after printing the value.
   *
   * @param f The <code>float</code> value to be printed
@@ -433,7 +433,7 @@ println(float f)
 /**
   * This method prints a double to the stream.  The value printed is
   * determined using the <code>String.valueOf()</code> method.
-  *
+  * <p>
   * This method prints a line termination sequence after printing the value.
   *
   * @param d The <code>double</code> value to be printed
@@ -449,7 +449,7 @@ println(double d)
 /**
   * This method prints an array of characters to the stream.  The actual
   * value printed depends on the system default encoding.
-  *
+  * <p>
   * This method prints a line termination sequence after printing the value.
   *
   * @param s The array of characters to print.
@@ -465,10 +465,10 @@ println(char[] s)
 /**
   * This method prints a <code>String</code> to the stream.  The actual
   * value printed depends on the system default encoding.
-  *
+  * <p>
   * This method prints a line termination sequence after printing the value.
   *
-  * @param s The <code>String</object> to print.
+  * @param s The <code>String</code> to print.
   */
 public void
 println(String s)
@@ -479,10 +479,10 @@ println(String s)
 /*************************************************************************/
 
 /**
-  * This method prints an <code>Object<code> to the stream.  The actual
+  * This method prints an <code>Object</code> to the stream.  The actual
   * value printed is determined by calling the <code>String.valueOf()</code>
   * method.
-  *
+  * <p>
   * This method prints a line termination sequence after printing the value.
   *
   * @param obj The <code>Object</code> to print.

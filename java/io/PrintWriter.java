@@ -353,7 +353,7 @@ print(char[] s)
   * This method prints a <code>String</code> to the stream.  The actual
   * value printed depends on the system default encoding.
   *
-  * @param s The <code>String</object> to print.
+  * @param s The <code>String</code> to print.
   */
 public void
 print(String s)
@@ -372,7 +372,7 @@ print(String s)
 /*************************************************************************/
 
 /**
-  * This method prints an <code>Object<code> to the stream.  The actual
+  * This method prints an <code>Object</code> to the stream.  The actual
   * value printed is determined by calling the <code>String.valueOf()</code>
   * method.
   *
@@ -520,7 +520,7 @@ println(char[] s)
   *
   * This method prints a line termination sequence after printing the value.
   *
-  * @param s The <code>String</object> to print.
+  * @param s The <code>String</code> to print.
   */
 public void
 println(String s)
@@ -531,7 +531,7 @@ println(String s)
 /*************************************************************************/
 
 /**
-  * This method prints an <code>Object<code> to the stream.  The actual
+  * This method prints an <code>Object</code> to the stream.  The actual
   * value printed is determined by calling the <code>String.valueOf()</code>
   * method.
   *
