@@ -131,9 +131,9 @@ Java_java_io_FileDescriptor_nativeOpen(JNIEnv *env, jobject obj, jstring name,
   if (!strcmp(cmode,"r"))
     rc = open(cname, O_RDONLY);
   else if (!strcmp(cmode,"w"))
-    rc = open(cname, O_WRONLY);
+    rc = open(cname, O_WRONLY | O_CREAT);
   else if (!strcmp(cmode,"a"))
-    rc = open(cname, O_WRONLY | O_APPEND);
+    rc = open(cname, O_WRONLY | O_CREAT | O_APPEND);
   else if (!strcmp(cmode, "rw"))
     rc = open(cname, O_RDWR | O_CREAT);
   else if (!strcmp(cmode, "rwa"))
