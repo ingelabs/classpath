@@ -18,6 +18,9 @@
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
+#include <jni.h>
+#include "javaio.h"
+
 #include "java_io_ObjectStreamClass.h"
 
 

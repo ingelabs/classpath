@@ -27,7 +27,7 @@
 #include <unistd.h>
 
 #include <jni.h>
-#include "jcl.h"
+#include "javaio.h"
 
 /*************************************************************************/
 
@@ -42,7 +42,7 @@ Java_java_io_FileDescriptor_syncInternal(JNIEnv *env, jobject obj, jint fd)
 
   rc = fsync(fd); 
   if (rc == -1) 
-    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
 }
 
 /*************************************************************************/

@@ -21,7 +21,9 @@
 //TODO: check exceptions
 //      comments
 
-#include <jcl.h>
+#include <jni.h>
+
+#include "javaio.h"
 
 #include "java_io_ObjectOutputStream.h"
 
@@ -59,7 +61,7 @@ Java_java_io_ObjectOutputStream_getBooleanField( JNIEnv * env,
 						 jstring field_name )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -68,7 +70,7 @@ Java_java_io_ObjectOutputStream_getBooleanField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "Z" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -85,7 +87,7 @@ Java_java_io_ObjectOutputStream_getByteField( JNIEnv * env,
 					      jstring field_name )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -94,7 +96,7 @@ Java_java_io_ObjectOutputStream_getByteField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "B" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -111,7 +113,7 @@ Java_java_io_ObjectOutputStream_getCharField( JNIEnv * env,
 					      jstring field_name )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -120,7 +122,7 @@ Java_java_io_ObjectOutputStream_getCharField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "C" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -137,7 +139,7 @@ Java_java_io_ObjectOutputStream_getDoubleField( JNIEnv * env,
 						jstring field_name )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -146,7 +148,7 @@ Java_java_io_ObjectOutputStream_getDoubleField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "D" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -163,7 +165,7 @@ Java_java_io_ObjectOutputStream_getFloatField( JNIEnv * env,
 					       jstring field_name )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -172,7 +174,7 @@ Java_java_io_ObjectOutputStream_getFloatField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "F" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -189,7 +191,7 @@ Java_java_io_ObjectOutputStream_getIntField( JNIEnv * env,
 					     jstring field_name )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -198,7 +200,7 @@ Java_java_io_ObjectOutputStream_getIntField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "I" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -215,7 +217,7 @@ Java_java_io_ObjectOutputStream_getLongField( JNIEnv * env,
 					      jstring field_name )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -224,7 +226,7 @@ Java_java_io_ObjectOutputStream_getLongField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "J" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -241,7 +243,7 @@ Java_java_io_ObjectOutputStream_getShortField( JNIEnv * env,
 					       jstring field_name )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -250,7 +252,7 @@ Java_java_io_ObjectOutputStream_getShortField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "S" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     /* Exception was thrown, so value is arbitrary */
@@ -271,25 +273,25 @@ Java_java_io_ObjectOutputStream_getObjectField( JNIEnv * env,
   char * name_cstr;
   char * type_cstr;
 
-  name_cstr = JCL_jstring_to_cstring( env, field_name );
+  name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     /* Exception was thrown, so value is arbitrary */
     return NULL;
   
-  type_cstr = JCL_jstring_to_cstring( env, type_code );
+  type_cstr = _javaio_jstring_to_cstring( env, type_code );
   
   if( type_cstr == NULL )
   {
-    JCL_free_cstring( env, field_name, name_cstr );
+    _javaio_free_cstring( env, field_name, name_cstr );
     return NULL;
   }
 
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, type_cstr );
   
-  JCL_free_cstring( env, field_name, name_cstr );
-  JCL_free_cstring( env, type_code, type_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, type_code, type_cstr );
 
   if( id == NULL )
     /* Exception was thrown, so value is arbitrary */

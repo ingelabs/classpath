@@ -27,7 +27,6 @@
 #include <unistd.h>
 
 #include <jni.h>
-#include "jcl.h"
 
 #include "javaio.h"
 

@@ -27,7 +27,6 @@
 #include <unistd.h>
 
 #include <jni.h>
-#include "jcl.h"
 
 #include "javaio.h"
 
@@ -48,7 +47,7 @@ Java_java_io_FileOutputStream_open(JNIEnv *env, jobject obj, jstring name,
       int rc = lseek(fd, 0, SEEK_END);
       if (rc == -1)
         {
-          JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+          _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
           close(fd);
           return(-1);
         }

@@ -28,11 +28,104 @@
 #include <sys/stat.h>
 
 #include <jni.h>
-#include "jcl.h"
 
 #include "javaio.h"
 
-/*************************************************************************/
+#include <malloc.h>
+
+static char errstr[4098]; // this way the memory is pre-allocated, so that we do not have to worry if we are out of memory.
+
+JNIEXPORT void JNICALL _javaio_ThrowException(JNIEnv * env, char * className, char * errMsg) {
+	jclass excClass;
+	if((*env)->ExceptionOccurred(env)) {
+		(*env)->ExceptionClear(env);
+	}
+	excClass = (*env)->FindClass(env, className);
+	if(excClass == NULL) {
+		jclass errExcClass;
+		errExcClass = (*env)->FindClass(env, "java/lang/ClassNotFoundException");
+		if(errExcClass == NULL) {
+			errExcClass = (*env)->FindClass(env, "java/lang/InternalError");
+			if(errExcClass == NULL) {
+				sprintf(errstr,"JCL: Utterly failed to throw exeption %s with message %s.",className,errMsg);
+				fprintf(stderr, errstr);
+				return;
+			}
+		}
+		sprintf(errstr,"JCL: Failed to throw exception %s with message %s: could not find exception class.", className, errMsg);
+		(*env)->ThrowNew(env, errExcClass, errstr);
+	}
+	(*env)->ThrowNew(env, excClass, errMsg);
+}
+
+JNIEXPORT void * JNICALL _javaio_malloc(JNIEnv * env, size_t size) {
+	void * mem = malloc(size);
+	if(mem == NULL) {
+		_javaio_ThrowException(env, "java/lang/OutOfMemoryError", "malloc() failed.");
+		return NULL;
+	}
+	return mem;
+}
+
+JNIEXPORT void * JNICALL
+_javaio_realloc(JNIEnv *env, void *ptr, size_t size)
+{
+  ptr = realloc(ptr, size);
+  if (ptr == 0)
+    {
+      _javaio_ThrowException(env, "java/lang/OutOfMemoryError", 
+                             "malloc() failed.");
+      return NULL;
+    }
+  return(ptr);
+}
+
+JNIEXPORT void JNICALL _javaio_free(JNIEnv * env, void * p) {
+	if(p != NULL)
+		free(p);
+}
+
+JNIEXPORT char * JNICALL _javaio_jstring_to_cstring(JNIEnv * env, jstring s) {
+	char* cstr;
+	if(s == NULL) {
+		_javaio_ThrowException(env, "java/lang/NullPointerException","Null string");
+		return NULL;
+	}
+	cstr = (char*)(*env)->GetStringUTFChars(env, s, NULL);
+	if(cstr == NULL) {
+		_javaio_ThrowException(env, "java/lang/InternalError", "GetStringUTFChars() failed.");
+		return NULL;
+	}
+	return cstr;
+}
+
+JNIEXPORT void JNICALL _javaio_free_cstring(JNIEnv * env, jstring s, char * cstr) {
+	(*env)->ReleaseStringUTFChars(env, s, cstr);
+}
+
+JNIEXPORT jint JNICALL _javaio_MonitorEnter(JNIEnv * env, jobject o) {
+	jint retval = (*env)->MonitorEnter(env,o);
+	if(retval != 0) {
+		_javaio_ThrowException(env, "java/lang/InternalError", "MonitorEnter() failed.");
+	}
+	return retval;
+}
+
+JNIEXPORT jint JNICALL _javaio_MonitorExit(JNIEnv * env, jobject o) {
+	jint retval = (*env)->MonitorExit(env,o);
+	if(retval != 0) {
+		_javaio_ThrowException(env, "java/lang/InternalError", "MonitorExit() failed.");
+	}
+	return retval;
+}
+
+JNIEXPORT jclass JNICALL _javaio_FindClass(JNIEnv * env, char * className) {
+	jclass retval = (*env)->FindClass(env,className);
+	if(retval != NULL) {
+		_javaio_ThrowException(env, "java/lang/ClassNotFoundException", className);
+	}
+	return retval;
+}
 
 /*
  * Function to open a file
@@ -44,7 +137,7 @@ _javaio_open(JNIEnv *env, jstring name, int flags)
   char *str_name;
   int fd;
 
-  str_name = JCL_jstring_to_cstring(env, name); 
+  str_name = _javaio_jstring_to_cstring(env, name); 
   if (!str_name)
     return(-1);
 
@@ -53,10 +146,10 @@ _javaio_open(JNIEnv *env, jstring name, int flags)
   if (fd == -1)
     {
       if (errno == ENOENT)
-        JCL_ThrowException(env, "java/io/FileNotFoundException", 
+        _javaio_ThrowException(env, "java/io/FileNotFoundException", 
                            strerror(errno));
       else
-        JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+        _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
     }
 
   return(fd);
@@ -75,7 +168,7 @@ _javaio_close(JNIEnv *env, jint fd)
 
   rc = close(fd);
   if (rc == -1)
-    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
 }
 
 /*************************************************************************/
@@ -91,7 +184,7 @@ _javaio_skip_bytes(JNIEnv *env, jint fd, jlong num_bytes)
 
   rc = lseek(fd, num_bytes, SEEK_CUR);
   if (rc == -1)
-    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
 }
 
 /*************************************************************************/
@@ -109,7 +202,7 @@ _javaio_get_file_length(JNIEnv *env, jint fd)
   rc = fstat(fd, &buf);
   if (rc == -1)
     {
-      JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+      _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
       return(-1);
     }
 
@@ -132,13 +225,13 @@ _javaio_read(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
   bufptr = (*env)->GetByteArrayElements(env, buf, 0);
   if (!bufptr)
     {
-      JCL_ThrowException(env, "java/io/IOException", "Internal Error");
+      _javaio_ThrowException(env, "java/io/IOException", "Internal Error");
       return(-1);
     }
 
   rc = read(fd, (bufptr + offset), len);
   if (rc == -1)
-    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
 
   (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
 
@@ -164,13 +257,13 @@ _javaio_write(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
   bufptr = (*env)->GetByteArrayElements(env, buf, 0);
   if (!bufptr)
     {
-      JCL_ThrowException(env, "java/io/IOException", "Internal Error");
+      _javaio_ThrowException(env, "java/io/IOException", "Internal Error");
       return(-1);
     }
 
   rc = write(fd, (bufptr + offset), len);
   if (rc == -1)
-    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
 
   (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
 

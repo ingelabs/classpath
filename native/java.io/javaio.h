@@ -33,6 +33,25 @@ extern void _javaio_close(JNIEnv *, jint fd);
 extern jint _javaio_read(JNIEnv *, jobject obj, jint, jarray, jint, jint);
 extern jint _javaio_write(JNIEnv *, jobject obj, jint, jarray, jint, jint);
 
+JNIEXPORT jclass JNICALL _javaio_FindClass(JNIEnv * env, char * className);
+JNIEXPORT void JNICALL _javaio_ThrowException(JNIEnv * env, char * className, char * errMsg);
+JNIEXPORT void * JNICALL _javaio_malloc(JNIEnv * env, size_t size);
+JNIEXPORT void * JNICALL _javaio_realloc(JNIEnv * env, void *, size_t size);
+JNIEXPORT void JNICALL _javaio_free(JNIEnv * env, void * p);
+JNIEXPORT char * JNICALL _javaio_jstring_to_cstring(JNIEnv * env, jstring s);
+JNIEXPORT void JNICALL _javaio_free_cstring(JNIEnv * env, jstring s, char * cstr);
+JNIEXPORT jint JNICALL _javaio_MonitorEnter(JNIEnv * env, jobject o);
+JNIEXPORT jint JNICALL _javaio_MonitorExit(JNIEnv * env, jobject o);
+
+#define _javaio_RETHROW_EXCEPTION(env) if((*(env))->ExceptionOccurred((env)) != NULL) return NULL;
+
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
 
 #endif /* JAVAIO_H_INCLUDED */
 

@@ -21,7 +21,8 @@
 //TODO: check exceptions
 //      comments
 
-#include <jcl.h>
+#include <jni.h>
+#include "javaio.h"
 #include "java_io_ObjectInputStream.h"
 
 JNIEXPORT jobject JNICALL
@@ -90,7 +91,7 @@ Java_java_io_ObjectInputStream_setBooleanField( JNIEnv * env,
 						 jboolean val )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     return;
@@ -98,7 +99,7 @@ Java_java_io_ObjectInputStream_setBooleanField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "Z" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     return;
@@ -115,7 +116,7 @@ Java_java_io_ObjectInputStream_setByteField( JNIEnv * env,
 					      jbyte val )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     return;
@@ -123,7 +124,7 @@ Java_java_io_ObjectInputStream_setByteField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "B" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     return;
@@ -140,7 +141,7 @@ Java_java_io_ObjectInputStream_setCharField( JNIEnv * env,
 					      jchar val )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     return;
@@ -148,7 +149,7 @@ Java_java_io_ObjectInputStream_setCharField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "C" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     return;
@@ -165,7 +166,7 @@ Java_java_io_ObjectInputStream_setDoubleField( JNIEnv * env,
 						jdouble val )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     return;
@@ -173,7 +174,7 @@ Java_java_io_ObjectInputStream_setDoubleField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "D" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     return;
@@ -190,7 +191,7 @@ Java_java_io_ObjectInputStream_setFloatField( JNIEnv * env,
 					       jfloat val )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     return;
@@ -198,7 +199,7 @@ Java_java_io_ObjectInputStream_setFloatField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "F" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     return;
@@ -215,7 +216,7 @@ Java_java_io_ObjectInputStream_setIntField( JNIEnv * env,
 					     jint val )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     return;
@@ -223,7 +224,7 @@ Java_java_io_ObjectInputStream_setIntField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "I" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     return;
@@ -240,7 +241,7 @@ Java_java_io_ObjectInputStream_setLongField( JNIEnv * env,
 					      jlong val )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     return;
@@ -248,7 +249,7 @@ Java_java_io_ObjectInputStream_setLongField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "J" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     return;
@@ -265,7 +266,7 @@ Java_java_io_ObjectInputStream_setShortField( JNIEnv * env,
 					       jshort val )
 {
   jfieldID id;
-  char * name_cstr = JCL_jstring_to_cstring( env, field_name );
+  char * name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     return;
@@ -273,7 +274,7 @@ Java_java_io_ObjectInputStream_setShortField( JNIEnv * env,
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, "S" );
   
-  JCL_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
 
   if( id == NULL )
     return;
@@ -294,24 +295,24 @@ Java_java_io_ObjectInputStream_setObjectField( JNIEnv * env,
   char * name_cstr;
   char * type_cstr;
 
-  name_cstr = JCL_jstring_to_cstring( env, field_name );
+  name_cstr = _javaio_jstring_to_cstring( env, field_name );
 
   if( name_cstr == NULL )
     return;
   
-  type_cstr = JCL_jstring_to_cstring( env, type_code );
+  type_cstr = _javaio_jstring_to_cstring( env, type_code );
   
   if( type_cstr == NULL )
   {
-    JCL_free_cstring( env, field_name, name_cstr );
+    _javaio_free_cstring( env, field_name, name_cstr );
     return;
   }
 
   id = (*env)->GetFieldID( env, (*env)->GetObjectClass( env, obj ),
 			   name_cstr, type_cstr );
   
-  JCL_free_cstring( env, field_name, name_cstr );
-  JCL_free_cstring( env, type_code, type_cstr );
+  _javaio_free_cstring( env, field_name, name_cstr );
+  _javaio_free_cstring( env, type_code, type_cstr );
 
   if( id == NULL )
     return;

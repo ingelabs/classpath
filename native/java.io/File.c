@@ -31,8 +31,7 @@
 #include <dirent.h>
 
 #include <jni.h>
-#include "jcl.h"
-#include "jnilink.h"
+#include "javaio.h"
 
 /*************************************************************************/
 
@@ -46,7 +45,7 @@ Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
   const char *fname;
   int fd;
 
-  fname = JCL_jstring_to_cstring(env, name);
+  fname = _javaio_jstring_to_cstring(env, name);
   if (!fname)
     return;
 
@@ -54,7 +53,7 @@ Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
   if (fd == -1)
     {
       if (errno != EEXIST)
-        JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+        _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
       return(0);
     }
 
@@ -466,7 +465,7 @@ Java_java_io_File_listInternal(JNIEnv *env, jobject obj, jstring name)
     return(0);
 
   /* Read the files from the directory */ 
-  filelist = (char **)JCL_malloc(env, sizeof(char *) * realloc_size);
+  filelist = (char **)_javaio_malloc(env, sizeof(char *) * realloc_size);
   //filelist = (char **)malloc(sizeof(char *) * realloc_size);
   dir = opendir(dirname);
   (*env)->ReleaseStringUTFChars(env, name, dirname);
@@ -487,7 +486,7 @@ Java_java_io_File_listInternal(JNIEnv *env, jobject obj, jstring name)
         {
           char **newlist;
  
-          newlist = JCL_realloc(env, filelist, ((i + 1) + realloc_size) *
+          newlist = _javaio_realloc(env, filelist, ((i + 1) + realloc_size) *
                                 sizeof(char *));
           //newlist = realloc(filelist, (i + 1) + realloc_size);
           if (!filelist)
@@ -511,7 +510,7 @@ Java_java_io_File_listInternal(JNIEnv *env, jobject obj, jstring name)
     }
 
   /* Now put the list of files into a Java String array and return it */
-  str_clazz = LINK_LinkClass(env, str_clazz, "java/lang/String"); 
+  str_clazz = (*env)->FindClass(env, "java/lang/String"); 
   if (!str_clazz)
     {
       free(filelist);
