@@ -1,3 +1,7 @@
+2002-05-26  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/TimerTask.java:  Fix javadoc code example.
+
 2002-05-23  C. Brian Jones <cbj@gnu.org>
 
 	* doc/www.gnu.org/home.wml: add blurb about Mauve
