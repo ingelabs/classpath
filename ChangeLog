@@ -1,3 +1,8 @@
+2004-04-25  Mark Wielaard  <mark@klomp.org>
+
+	* vm/reference/java/lang/VMClass.java: Make final and package local.
+	Add private constructor.  Removed all instance fields and methods.
+
 2004-04-23  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/OutputStreamWriter.java (getEncoding): Return null when

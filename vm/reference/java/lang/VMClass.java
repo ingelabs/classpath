@@ -53,91 +53,12 @@ import java.lang.reflect.Method;
  * @author Archie Cobbs <archie@dellroad.org>
  * @author C. Brian Jones <cbj@gnu.org>
  */
-public final class VMClass 
+final class VMClass 
 {
-  /*
-   * Class initialization mostly-in-Java copied from SableVM.
-   * The steps below follow the JVM spec, 2nd edition, sec. 2.17.5.
-   */
-  private int initializing_thread;
-  private boolean erroneous_state;
 
-  private native boolean isInitialized();
-  private native void setInitialized();
-  private native void step7();
-  private native void step8();
-
-  private void initialize(int thread) throws InterruptedException
+  // Only static methods. Cannot be instantiated.
+  private VMClass()
   {
-    Error error;
-
-    /* 1 */
-    synchronized (this)
-    {
-      /* 2 */
-      while (initializing_thread != 0 && initializing_thread != thread)
-        wait();
-
-      /* 3 */
-      if (initializing_thread == thread)
-        return;
-
-      /* 4 */
-      if (isInitialized())
-        return;
-
-      /* 5 */
-      if (erroneous_state)
-        throw new NoClassDefFoundError();
-
-      /* 6 */
-      initializing_thread = thread;
-    }
-
-    /* 7 */
-    try {
-      step7();
-    }
-    catch(Error e) {
-      synchronized(this) {
-        erroneous_state = true;
-        initializing_thread = 0;
-        notifyAll();
-        throw e;
-      }
-    }
-
-    /* 8 */
-    try {
-      step8();
-
-      /* 9 */
-      synchronized(this) {
-        setInitialized();
-        initializing_thread = 0;
-        notifyAll();
-        return;
-      }
-    }
-
-    /* 10 */
-    catch(Exception e) {
-      try {
-        error = new ExceptionInInitializerError(e);
-      } catch (OutOfMemoryError e2) {
-        error = e2;
-      }
-    } catch(Error e) {
-      error = e;
-    }
-
-    /* 11 */
-    synchronized(this) {
-      erroneous_state = true;
-      initializing_thread = 0;
-      notifyAll();
-      throw error;
-    }
   }
 
   /**
