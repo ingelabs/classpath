@@ -1,7 +1,7 @@
 /* SecureClassLoader.java --- A Secure Class Loader
    
   Copyright (c) 1999 by Free Software Foundation, Inc.
-  Written by Mark Benvenuto <ivymccough@worldnet.att.net>
+  Written by Mark Benvenuto <mcb@gnu.org>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU Library General Public License as published 
@@ -69,7 +69,10 @@ protected SecureClassLoader()
 	SecurityManager sm = System.getSecurityManager();
 	if(sm != null)
 		sm.checkCreateClassLoader();
+	this.parent = getClass().getClassLoader();
+	/* FIXME - Use this code when Classloader is JDK 1.2 compatible
 	this.parent = ClassLoader.getSystemClassLoader();
+	*/
 }
 
 /** 
@@ -88,11 +91,15 @@ protected SecureClassLoader()
 */
 protected final Class defineClass(String name, byte[] b, int off, int len, CodeSource cs)
 {
-	ProtectionDomain protectionDomain = new ProtectionDomain( codesource, getPermissions( codesource ) );
+	ProtectionDomain protectionDomain = new ProtectionDomain( cs, getPermissions( cs ) );
 	try {
-
+	    /*
+	       FIXME after 1.2 support is added to Classloader
 		Class c = parent.defineClass(name, b, off, len, protectionDomain);
 		return c;
+	    */
+	    System.err.println("SecureClassLoader is broken because it is waiting got ClassLoader to be JDK 1.2 compatible");
+	    return null;
 	} catch( ClassFormatError cfe )	{
 		return null;
 	}
@@ -108,10 +115,29 @@ protected final Class defineClass(String name, byte[] b, int off, int len, CodeS
 	being defined.
 	
 */
-protected PermissionCollection getPermissions(CodeSource codesource)
+protected PermissionCollection getPermissions(CodeSource cs)
 {
 	Policy policy = Policy.getPolicy();
-	return policy.getPermissions( codesource );
+	return policy.getPermissions( cs );
+}
+
+/**
+FIXME 
+JDK 1.1 hack to make this work
+loadClass is not abstract in JDK 1.2
+*/
+
+protected Class loadClass(String name,
+                          boolean resolve)
+                   throws ClassNotFoundException
+{
+    Class c = findLoadedClass(name);
+    if( c != null )
+	parent.loadClass(name);
+    /*if( c!= null ) <-- JDK 1.2 only
+      findClass( name );*/
+    resolveClass( c );
+    return c;
 }
 
 }
