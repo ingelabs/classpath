@@ -8,7 +8,7 @@ public class GdkGraphics extends Graphics
   private final int native_state = java.lang.System.identityHashCode (this);
 
   int xOrigin = 0, yOrigin = 0;
-  Color color, xorColor, xorFGColor;
+  Color color, xorColor;
   GtkComponentPeer component;
   Font font;
   boolean paintMode;
@@ -190,7 +190,9 @@ public class GdkGraphics extends Graphics
     if (paintMode)
       setFGColor (color.getRed (), color.getGreen (), color.getBlue ());
     else
-      setXORMode (xorColor);
+      setFGColor (color.getRed   () ^ xorColor.getRed (),
+		  color.getGreen () ^ xorColor.getGreen (),
+		  color.getBlue  () ^ xorColor.getBlue ());
   }
 
   public void setFont (Font font)
@@ -211,16 +213,12 @@ public class GdkGraphics extends Graphics
   public void setXORMode (Color c)
   {
     paintMode = false;
-
     xorColor = new Color (c.getRGB ());
-    xorFGColor = new Color (color.getRed   () ^ xorColor.getRed (),
-			    color.getGreen () ^ xorColor.getGreen (),
-			    color.getBlue  () ^ xorColor.getBlue ());
 
     setFunction (GDK_XOR);
-    setFGColor (xorFGColor.getRed (), 
-		xorFGColor.getGreen (), 
-		xorFGColor.getBlue ());
+    setFGColor (color.getRed   () ^ xorColor.getRed (),
+		color.getGreen () ^ xorColor.getGreen (),
+		color.getBlue  () ^ xorColor.getBlue ());
   }
 
   public void translate (int x, int y)
