@@ -67,7 +67,7 @@ public class ViewportLayout implements LayoutManager, Serializable
           return null;
 	}
 	public void layoutContainer(Container parent) {
-          if (parent.countComponents() == 1)
+          if (parent.getComponentCount() == 1)
             {
               // This should usually be true, but if it's not it is
               // probably nicer if we do not panic.
