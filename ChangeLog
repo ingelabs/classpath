@@ -1,5 +1,12 @@
 2003-06-11  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/zip/InflaterInputStream.java:
+	Reworked formatting and documentation.
+	(close): Set in to null.
+	(fill): Check if stream is already closed.
+
+2003-06-11  Michael Koch  <konqueror@gmx.de>
+
 	* javax/naming/directory/Attribute.java
 	(serialVersionUID): New member variable.
 

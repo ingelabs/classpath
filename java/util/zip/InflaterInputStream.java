@@ -49,38 +49,30 @@ import java.io.IOException;
  * as the <code>GZIPInputStream</code>.
  *
  * @author John Leuner
- * @since JDK 1.1
+ * @since 1.1
  */
-
-public class InflaterInputStream extends FilterInputStream {
-
-  //Variables
-
+public class InflaterInputStream extends FilterInputStream
+{
   /**
    * Decompressor for this filter 
    */
-
   protected Inflater inf;
 
   /**
    * Byte array used as a buffer 
    */
-
   protected byte[] buf;
 
   /**
    * Size of buffer   
    */
-
   protected int len;
 
 
-  //We just use this if we are decoding one byte at a time with the read() call
-
+  /*
+   * We just use this if we are decoding one byte at a time with the read() call
+   */
   private byte[] onebytebuffer = new byte[1];
-
-  //Constructors
-
 
   /**
    * Create an InflaterInputStream with the default decompresseor
@@ -88,7 +80,6 @@ public class InflaterInputStream extends FilterInputStream {
    *
    * @param in the InputStream to read bytes from
    */
-
   public InflaterInputStream(InputStream in) 
   {
     this(in, new Inflater(), 4096);
@@ -101,7 +92,6 @@ public class InflaterInputStream extends FilterInputStream {
    * @param in the InputStream to read bytes from
    * @param inf the decompressor used to decompress data read from in
    */
-
   public InflaterInputStream(InputStream in, Inflater inf) 
   {
     this(in, inf, 4096);
@@ -115,7 +105,6 @@ public class InflaterInputStream extends FilterInputStream {
    * @param inf the decompressor used to decompress data read from in
    * @param size size of the buffer to use
    */
-
   public InflaterInputStream(InputStream in, Inflater inf, int size) 
   {
     super(in);
@@ -127,13 +116,10 @@ public class InflaterInputStream extends FilterInputStream {
     buf = new byte[size]; //Create the buffer
   }
 
-  //Methods
-
   /**
    * Returns 0 once the end of the stream (EOF) has been reached.
    * Otherwise returns 1.
    */
-
   public int available() throws IOException
   {
     return inf.finished() ? 0 : 1;
@@ -145,6 +131,7 @@ public class InflaterInputStream extends FilterInputStream {
   public void close() throws IOException
   {
     in.close();
+    in = null;
   }
 
   /**
@@ -152,10 +139,14 @@ public class InflaterInputStream extends FilterInputStream {
    */
   protected void fill() throws IOException
   {
+    if (in == null)
+      throw new ZipException ("InflaterInputStream is closed");
+    
     len = in.read(buf, 0, buf.length);
 
     if (len < 0)
       throw new ZipException("Deflated stream ends early.");
+    
     inf.setInput(buf, 0, len);
   }
 
@@ -167,14 +158,15 @@ public class InflaterInputStream extends FilterInputStream {
   public int read() throws IOException
   { 
     int nread = read(onebytebuffer, 0, 1); //read one byte
+    
     if (nread > 0)
       return onebytebuffer[0] & 0xff;
+    
     return -1;
   }
 
   /**
    * Decompresses data into the byte array
-   *
    *
    * @param b the array to read and decompress data into
    * @param off the offset indicating where the data should be placed
@@ -182,7 +174,6 @@ public class InflaterInputStream extends FilterInputStream {
    */
   public int read(byte[] b, int off, int len) throws IOException
   {
-
     if (len == 0) return 0;
 
     for (;;)
@@ -201,8 +192,7 @@ public class InflaterInputStream extends FilterInputStream {
 	  return count;
 	
 	if (inf.needsDictionary())
-	  throw new ZipException("Need a dictionary");
-	else if (inf.finished())
+	    | inf.finished())
 	  return -1;
 	else if (inf.needsInput())
 	  fill();
@@ -216,7 +206,6 @@ public class InflaterInputStream extends FilterInputStream {
    *
    * @param n number of bytes to skip
    */
-
   public long skip(long n) throws IOException
   {
     if (n < 0)
@@ -238,29 +227,5 @@ public class InflaterInputStream extends FilterInputStream {
   public boolean markSupported()
   {
     return false;
-  }
-
-  /**
-   *  Throws an exception.
-   *
-   * @see #markSupported
-   *
-   * @param readlimit The parameter passed to <code>in.mark(int)</code>
-   */
-  public void mark(int readlimit)
-  {
-
-  }
-
-  /**
-   *  Throws an exception.
-   *
-   * @see #markSupported
-   *
-   * @exception IOException If an error occurs
-   */
-  public void reset() throws IOException
-  {
-    throw new IOException("mark/reset not supported by " + getClass());
   }
 }
