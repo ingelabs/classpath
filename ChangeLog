@@ -1,3 +1,9 @@
+2003-12-26  Michael Koch  <konqueror@gmx.de>
+
+	* native/target/generic/target_generic_file.h
+	(TARGET_NATIVE_FILE_FILEFLAG_SYNC): Define to O_FSYNC on systems where
+	O_SYNC doesnt exist but O_FSYNC does (like FreeBSD).
+
 2003-12-26  Olga Rodimina <rodimina@redhat.com>
 
 	* java/awt/Polygon.java (translate):
