@@ -228,7 +228,7 @@ public class File implements Serializable, Comparable
     
     File other = (File) obj;
 
-    if (VMFile.caseSensitive)
+    if (VMFile.IS_CASE_SENSITIVE)
       return path.equals(other.path);
     else
       return path.equalsIgnoreCase(other.path);
@@ -631,7 +631,7 @@ public class File implements Serializable, Comparable
    */
   public int hashCode()
   {
-    if (VMFile.caseSensitive)
+    if (VMFile.IS_CASE_SENSITIVE)
       return path.hashCode() ^ 1234321;
     else
       return path.toLowerCase().hashCode() ^ 1234321;
@@ -1101,17 +1101,10 @@ public class File implements Serializable, Comparable
     if (suffix == null)
       suffix = ".tmp";
 
-    /* Now identify a file name and make sure it doesn't exist.
-       If the separator is '\' a DOS-style-filesystem is assumed and
-       a 8+3-filename is used, otherwise use a long name.
-       WARNGIN: some implementation of DOS-style-filesystems also
-       accept '/' as separator. In that case the following code
-       will fail.
-    */
+    // Now identify a file name and make sure it doesn't exist.
     File file;
-    if (separatorChar!='\\')
+    if (!VMFile.IS_DOS_8_3)
       {      
-        // probably a non-DOS-filesystem, use long names
         do
           {
             String filename = prefix + System.currentTimeMillis() + suffix;
@@ -1121,8 +1114,6 @@ public class File implements Serializable, Comparable
       }
     else
       {
-        // probably a DOS-filesystem, use short names (8+3)
-
         // make sure prefix is not longer than 7 characters
         if (prefix.length() >= 8)
           throw new IllegalArgumentException("Prefix too long: " + prefix + "(valid length 3..7)");
@@ -1241,7 +1232,7 @@ public class File implements Serializable, Comparable
    */
   public int compareTo(File other)
   {
-    if (VMFile.caseSensitive)
+    if (VMFile.IS_CASE_SENSITIVE)
       return path.compareTo (other.path);
     else
       return path.compareToIgnoreCase (other.path);

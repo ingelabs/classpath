@@ -1,5 +1,14 @@
 2004-11-08  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/io/File.java:
+	(createTempFile): Use VMFile.IS_DOS_8_3 instead of separatorChar
+	to determine file system naming restrictions.
+	* vm/reference/java/io/VMFile.java
+	(caseSensitive): Renamed to IS_CASE_SENSITIVE.
+	(IS_DOS_8_3): New field.
+
+2004-11-08  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/lang/ClassLoader.java: Updated some comments.
 	(systemClassLoader): Moved to java.lang.System to remove
 	circular initialization dependency.
