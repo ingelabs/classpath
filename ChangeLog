@@ -1,5 +1,19 @@
 2004-10-21  Michael Koch  <konqueror@gmx.de>
 
+	* javax/imageio/event/IIOReadProgressListener.java,
+	javax/imageio/event/IIOReadUpdateListener.java,
+	javax/imageio/event/IIOReadWarningListener.java,
+	javax/imageio/event/IIOWriteProgressListener.java,
+	javax/imageio/event/IIOWriteWarningListener.java,
+	javax/imageio/metadata/IIOMetadataFormat.java,
+	javax/imageio/stream/FileCacheImageInputStream.java,
+	javax/imageio/stream/FileCacheImageOutputStream.java,
+	javax/imageio/stream/ImageInputStreamImpl.java:
+	Import cleanup.
+	* javax/imageio/metadata/package.html: New file.
+
+2004-10-21  Michael Koch  <konqueror@gmx.de>
+
 	* javax/crypto/Cipher.java,
 	javax/crypto/EncryptedPrivateKeyInfo.java,
 	javax/crypto/ExemptionMechanism.java,
