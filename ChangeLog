@@ -1,3 +1,8 @@
+2003-06-21  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/BorderUIResource.java (LineBorderUIResource):
+	Note URL of enhancement request filed with Sun.
+
 2003-06-20  Sascha Brawer  <brawer@dandelis.ch>
 
 	* AUTHORS (Sascha Brawer): Changed e-mail address.
