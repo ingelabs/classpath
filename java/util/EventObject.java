@@ -1,5 +1,5 @@
-/* EventObject.java
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* EventObject.java - Represent events fired by objects.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
    This file is part of GNU Classpath.
 
@@ -29,6 +29,11 @@ package java.util;
 
 import java.io.Serializable;
 
+/**
+ * Represents Events fired by Objects.
+ *
+ * @see EventListener
+ */
 public class EventObject implements Serializable
 {
   private static final long serialVersionUID = 5516075349620653480L;
@@ -56,6 +61,6 @@ public class EventObject implements Serializable
    */
   public String toString()
   {
-    return source.toString();
+    return this.getClass() + "[source=" + source.toString() + "]";
   }
 }

@@ -3,6 +3,8 @@
 	* java/util/*.java: Reformat all to unofficial standard coding style. 
 	No changes of substance.
 	* java/util/jar/*.java: Ditto.
+	
+	* java/util/EventObject.java (toString): Corrected output.
 
 2000-10-10  Warren Levy  <warrenl@cygnus.com>
 
