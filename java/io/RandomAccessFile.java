@@ -1099,7 +1099,7 @@ public class RandomAccessFile implements DataOutput, DataInput
     *
     * @exception IOException If an error occurs
     *
-    * @see writeInt
+    * @see #writeInt(int)
     */
   public final void writeFloat(float f) throws IOException
   {
@@ -1122,7 +1122,7 @@ public class RandomAccessFile implements DataOutput, DataInput
     *
     * @exception IOException If an error occurs
     *
-    * @see writeLong
+    * @see #writeLong(long)
     */
   public final void writeDouble(double d) throws IOException
   {

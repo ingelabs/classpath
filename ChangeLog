@@ -1,5 +1,31 @@
 2003-03-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/ByteArrayOutputStream.java
+	(size): Fixed @see tag.
+	* java/io/CharArrayWriter.java
+	(size): Fixed @see tag.
+	* java/io/DataInputStream.java
+	(readUTF): Fixed typo in @return tag.
+	* java/io/DataOutputStream.java
+	(writeFloat): Fixed @see tag.
+	(writeDouble): Fixed @see tag.
+	* java/io/FilePermission.java
+	(FilePermission): Replaced @XXX with FIXME to make javadoc happy.
+	* java/io/LineNumberInputStream.java
+	(LineNumberInputStream): Replaced @code with html tags.
+	(getLineNumber): Fixed typo @return tag.
+	* java/io/LineNumberReader.java
+	(getLineNumber): Fixed typo @return tag.
+	* java/io/PushbackReader.java
+	(PushbackReader): Replaced @code with @param.
+	* java/io/RandomAccessFile.java
+	(writeInt): Fixed @see tag.
+	(writeDouble): Fixed @see tag.
+	* java/io/StreamTokenizer.java
+	(writeDouble): Fixed @see tag.
+
+2003-03-23  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JFormattedTextField.java,
 	javax/swing/text/DocumentFilter.java,
 	javax/swing/text/NavigationFilter.java:

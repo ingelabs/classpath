@@ -627,7 +627,7 @@ public class DataInputStream extends FilterInputStream implements DataInput
    * This method can read data that was written by an object implementing the
    * <code>writeUTF()</code> method in <code>DataOutput</code>
    * 
-   * @returns The <code>String</code> read
+   * @return The <code>String</code> read
    *
    * @exception EOFException If end of file is reached before reading
    * the String

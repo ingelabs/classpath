@@ -1,5 +1,5 @@
 /* LineNumberReader.java -- A character input stream which counts line numbers
-   Copyright (C) 1998, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -100,7 +100,7 @@ public class LineNumberReader extends BufferedReader
   /**
     * This method returns the current line number
     *
-    * @returns The current line number
+    * @return The current line number
     */
   public int getLineNumber()
   {
