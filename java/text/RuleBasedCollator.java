@@ -1,5 +1,5 @@
 /* RuleBasedCollator.java -- Concrete Collator Class
-   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2003  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,6 +40,11 @@ package java.text;
 
 import java.util.Vector;
 
+/* Written using "Java Class Libraries", 2nd edition, plus online
+ * API docs for JDK 1.2 from http://www.javasoft.com.
+ * Status: Believed complete and correct
+ */
+
 /**
  * This class is a concrete subclass of <code>Collator</code> suitable
  * for string collation in a wide variety of languages.  An instance of
@@ -51,15 +56,15 @@ import java.util.Vector;
  * Rules take the form of a <code>String</code> with the following syntax
  * <ul>
  * <li> Modifier: '@' 
- * <li> Relation: '<' | ';' | ',' | '=' : <text>
- * <li> Reset: '&' : <text>
+ * <li> Relation: '&lt;' | ';' | ',' | '=' : <text>
+ * <li> Reset: '&amp;' : <text>
  * </ul>
  * The modifier character indicates that accents sort backward as is the
  * case with French.  The relational operators specify how the text 
  * argument relates to the previous term.  The relation characters have
  * the following meanings:
  * <ul>
- * <li>'<' - The text argument is greater than the prior term at the primary
+ * <li>'&lt;' - The text argument is greater than the prior term at the primary
  * difference level.
  * <li>';' - The text argument is greater than the prior term at the secondary
  * difference level.
@@ -89,20 +94,20 @@ import java.util.Vector;
  * <p>
  * Here are a couple of example of rule strings:
  * <p>
- * "< a < b < c" - This string says that a is greater than b which is 
+ * "&lt; a &lt; b &lt; c" - This string says that a is greater than b which is 
  * greater than c, with all differences being primary differences.
  * <p>
- * "< a,A < b,B < c,C" - This string says that 'A' is greater than 'a' with
+ * "&lt; a,A &lt; b,B &lt; c,C" - This string says that 'A' is greater than 'a' with
  * a tertiary strength comparison.  Both 'b' and 'B' are greater than 'a' and
  * 'A' during a primary strength comparison.  But 'B' is greater than 'b'
  * under a tertiary strength comparison.
  * <p>
- * "< a < c & a < b " - This sequence is identical in function to the 
- * "< a < b < c" rule string above.  The '&' reset symbol indicates that
- * the rule "< b" is to be inserted after the text argument "a" in the
+ * "&lt; a &lt; c &amp; a &lt; b " - This sequence is identical in function to the 
+ * "&lt; a &lt; b &lt; c" rule string above.  The '&amp;' reset symbol indicates that
+ * the rule "&lt; b" is to be inserted after the text argument "a" in the
  * previous rule string segment.
  * <p>
- * "< a < b & y < z" - This is an error.  The character 'y' does not appear
+ * "&lt; a &lt; b &amp; y &lt; z" - This is an error.  The character 'y' does not appear
  * anywhere in the previous rule string segment so the rule following the
  * reset rule cannot be inserted.
  * <p>
@@ -112,7 +117,7 @@ import java.util.Vector;
  * As an additional complication to this already overly complex rule scheme,
  * if any characters precede the first rule, these characters are considered
  * ignorable.  They will be treated as if they did not exist during 
- * comparisons.  For example, "- < a < b ..." would make '-' an ignorable
+ * comparisons.  For example, "- &lt; a &lt; b ..." would make '-' an ignorable
  * character such that the strings "high-tech" and "hightech" would
  * be considered identical.
  * <p>
@@ -125,7 +130,9 @@ import java.util.Vector;
  * the previous rule string section.
  * </ul>
  *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Tom Tromey <tromey@cygnus.com>
+ * @date March 25, 1999
  */
 public class RuleBasedCollator extends Collator
 {

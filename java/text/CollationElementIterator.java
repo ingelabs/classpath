@@ -1,5 +1,5 @@
 /* CollationElementIterator.java -- Walks through collation elements
-   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2002, 2003  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -38,6 +38,22 @@ exception statement from your version. */
 
 package java.text;
 
+/* Written using "Java Class Libraries", 2nd edition, plus online
+ * API docs for JDK 1.2 from http://www.javasoft.com.
+ * Status: Believed complete and correct to JDK 1.1.
+ */
+
+/**
+ * This class walks through the character collation elements of a 
+ * <code>String</code> as defined by the collation rules in an instance of 
+ * <code>RuleBasedCollator</code>.  There is no public constructor for
+ * this class.  An instance is created by calling the
+ * <code>getCollationElementIterator</code> method on 
+ * <code>RuleBasedCollator</code>.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Tom Tromey <tromey@cygnus.com>
+ */
 public final class CollationElementIterator
 {
   /**
@@ -49,17 +65,31 @@ public final class CollationElementIterator
   /**
    * This is the RuleBasedCollator this object was created from.
    */
-  private RuleBasedCollator rbc;
+  private RuleBasedCollator collator;
 
   /**
    * This is the String that is being iterated over.
    */
-  private String str;
+  private String text;
 
   /**
    * This is the index into the String where we are currently scanning.
    */
-  private int pos;
+  private int index;
+
+  /**
+   * This method initializes a new instance of <code>CollationElementIterator</code>
+   * to iterate over the specified <code>String</code> using the rules in the
+   * specified <code>RuleBasedCollator</code>.
+   *
+   * @param collator The <code>RuleBasedCollation</code> used for calculating collation values
+   * @param text The <code>String</code> to iterate over.
+   */
+  CollationElementIterator (RuleBasedCollator collator, String text)
+  {
+    this.collator = collator;
+    this.text = text;
+  }
 
   /**
    * This method returns the collation ordering value of the next character
@@ -70,12 +100,12 @@ public final class CollationElementIterator
    */
   public int next ()
   {
-    ++pos;
-    if (pos >= str.length())
-      return(NULLORDER);
+    ++index;
+    if (index >= text.length ())
+      return NULLORDER;
 
-    String s = str.charAt(pos) + "";
-    return(rbc.getCollationElementValue(s));
+    String s = text.charAt (index) + "";
+    return collator.getCollationElementValue (s);
   }
 
   /**
@@ -98,7 +128,7 @@ public final class CollationElementIterator
    */
   public void reset ()
   {
-    pos = 0;
+    index = 0;
   }
 
   /**
@@ -130,29 +160,15 @@ public final class CollationElementIterator
   }
 
   /**
-   * This method initializes a new instance of <code>CollationElementIterator</code>
-   * to iterate over the specified <code>String</code> using the rules in the
-   * specified <code>RuleBasedCollator</code>.
-   *
-   * @param rbc The <code>RuleBasedCollation</code> used for calculating collation values
-   * @param str The <code>String</code> to iterate over.
-   */
-  CollationElementIterator(RuleBasedCollator rbc, String str)
-  {
-    this.rbc = rbc;
-    this.str = str;
-  }
-
-  /**
    * This method sets the <code>String</code> that it is iterating over
    * to the specified <code>String</code>.
    *
    * @param The new <code>String</code> to iterate over.
    */
-  public void setText(String str)
+  public void setText (String text)
   {
-    this.str = str;
-    pos = 0;
+    this.text = text;
+    index = 0;
   }
 
   /**
@@ -162,19 +178,19 @@ public final class CollationElementIterator
    *
    * @param ci The <code>CharacterIterator</code> containing the new <code>String</code> to iterate over.
    */
-  public void setText(CharacterIterator ci)
+  public void setText (CharacterIterator ci)
   {
-    StringBuffer sb = new StringBuffer("");
+    StringBuffer sb = new StringBuffer ("");
 
     // For now assume we read from the beginning of the string.
-    char c = ci.first();
+    char c = ci.first ();
     while (c != CharacterIterator.DONE)
       {
-        sb.append(c);
-        c = ci.next();
+        sb.append (c);
+        c = ci.next ();
       }
 
-    setText(sb.toString());
+    setText (sb.toString ());
   }
 
   /**
@@ -183,9 +199,9 @@ public final class CollationElementIterator
    *
    * @return The iteration index position.
    */
-  public int getOffset()
+  public int getOffset ()
   {
-    return(pos);
+    return index;
   }
 
   /**
@@ -198,17 +214,17 @@ public final class CollationElementIterator
    *
    * @exception IllegalArgumentException If the new offset is not valid.
    */
-  public void setOffset(int offset)
+  public void setOffset (int offset)
   {
     if (offset < 0)
-      throw new IllegalArgumentException("Negative offset: " + offset);
+      throw new IllegalArgumentException ("Negative offset: " + offset);
 
-    if ((str.length() > 0) && (offset > 0))
-      throw new IllegalArgumentException("Offset too large: " + offset);
-    else if (offset > (str.length() - 1))
-      throw new IllegalArgumentException("Offset too large: " + offset);
+    if ((text.length () > 0) && (offset > 0))
+      throw new IllegalArgumentException ("Offset too large: " + offset);
+    else if (offset > (text.length () - 1))
+      throw new IllegalArgumentException ("Offset too large: " + offset);
 
-    pos = offset;
+    index = offset;
   }    
 
   /**
@@ -219,10 +235,10 @@ public final class CollationElementIterator
    *
    * @param The maximum length of an expansion sequence.
    */
-  public int getMaxExpansion(int value)
+  public int getMaxExpansion (int value)
   {
     //************ Implement me!!!!!!!!!
-    return(5);
+    return 5;
   }
 
   /**
@@ -232,13 +248,13 @@ public final class CollationElementIterator
    *
    * @return The collation ordering value.
    */
-  public int previous()
+  public int previous ()
   {
-    --pos;
-    if (pos < 0)
-      return(NULLORDER);
+    --index;
+    if (index < 0)
+      return NULLORDER;
 
-    String s = str.charAt(pos) + "";
-    return(rbc.getCollationElementValue(s));
+    String s = text.charAt (index) + "";
+    return collator.getCollationElementValue (s);
   }
 }

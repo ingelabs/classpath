@@ -1,5 +1,5 @@
 /* CollationKey.java -- Precomputed collation value
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2003  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
