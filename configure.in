@@ -265,7 +265,6 @@ vm/reference/java/lang/Makefile
 vm/reference/java/Makefile
 vm/reference/Makefile
 vm/Makefile
-lib/deps.sh
 lib/gen-classlist.sh
 lib/Makefile,
 [ chmod 755 lib/deps.sh
