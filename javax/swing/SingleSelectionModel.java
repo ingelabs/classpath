@@ -1,4 +1,4 @@
-/* MenuElement.java --
+/* SingleSelectionModel.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,55 +38,53 @@ exception statement from your version. */
 package javax.swing;
 
 // Imports
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*;
 
 /**
- * MenuElement
+ * SingleSelectionModel
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public interface MenuElement {
+public interface SingleSelectionModel {
 
 	//-------------------------------------------------------------
 	// Methods ----------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * processMouseEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * getSelectedIndex
+	 * @returns int
 	 */
-	public void processMouseEvent(MouseEvent event,
-			MenuElement[] path, MenuSelectionManager manager);
+	public int getSelectedIndex();
 
 	/**
-	 * processKeyEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * setSelectedIndex
+	 * @param index TODO
 	 */
-	public abstract void processKeyEvent(KeyEvent event, 
-			MenuElement[] path, MenuSelectionManager manager);
+	public void setSelectedIndex(int index);
 
 	/**
-	 * menuSelectionChanged
-	 * @param included TODO
+	 * clearSelection
 	 */
-	public abstract void menuSelectionChanged(boolean included);
+	public void clearSelection();
 
 	/**
-	 * getSubElements
-	 * @returns MenuElement[]
+	 * isSelected
+	 * @returns boolean
 	 */
-	public abstract MenuElement[] getSubElements();
+	public boolean isSelected();
 
 	/**
-	 * getComponent
-	 * @returns Component
+	 * addChangeListener
+	 * @param listener TODO
 	 */
-	public abstract Component getComponent();
+	public  void addChangeListener(ChangeListener listener);
+
+	/**
+	 * removeChangeListener
+	 * @param listener TODO
+	 */
+	public void removeChangeListener(ChangeListener listener);
 
 
-} // MenuElement
+} // SingleSelectionModel

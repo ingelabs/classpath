@@ -1,4 +1,4 @@
-/* MenuElement.java --
+/* RootPaneContainer.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -39,54 +39,59 @@ package javax.swing;
 
 // Imports
 import java.awt.*;
-import java.awt.event.*;
 
 /**
- * MenuElement
+ * RootPaneContainer
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public interface MenuElement {
+public interface RootPaneContainer {
 
 	//-------------------------------------------------------------
 	// Methods ----------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * processMouseEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * getRootPane
+	 * @returns JRootPane
 	 */
-	public void processMouseEvent(MouseEvent event,
-			MenuElement[] path, MenuSelectionManager manager);
+	public JRootPane getRootPane();
 
 	/**
-	 * processKeyEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * setContentPane
+	 * @param contentPane TODO
 	 */
-	public abstract void processKeyEvent(KeyEvent event, 
-			MenuElement[] path, MenuSelectionManager manager);
+	public void setContentPane(Container contentPane);
 
 	/**
-	 * menuSelectionChanged
-	 * @param included TODO
+	 * getContentPane
+	 * @returns Container
 	 */
-	public abstract void menuSelectionChanged(boolean included);
+	public Container getContentPane();
 
 	/**
-	 * getSubElements
-	 * @returns MenuElement[]
+	 * setLayeredPane
+	 * @param layeredPane TODO
 	 */
-	public abstract MenuElement[] getSubElements();
+	public void setLayeredPane(JLayeredPane layeredPane);
 
 	/**
-	 * getComponent
+	 * getLayeredPane
+	 * @returns JLayeredPane
+	 */
+	public JLayeredPane getLayeredPane();
+
+	/**
+	 * setGlassPane
+	 * @param glassPane TODO
+	 */
+	public void setGlassPane(Component glassPane);
+
+	/**
+	 * getGlassPane
 	 * @returns Component
 	 */
-	public abstract Component getComponent();
+	public Component getGlassPane();
 
 
-} // MenuElement
+} // RootPaneContainer

@@ -1,4 +1,4 @@
-/* MenuElement.java --
+/* DesktopManager.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,56 +37,119 @@ exception statement from your version. */
 
 package javax.swing;
 
-// Imports
-import java.awt.*;
-import java.awt.event.*;
-
 /**
- * MenuElement
+ * DesktopManager
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public interface MenuElement {
+public interface DesktopManager {
 
 	//-------------------------------------------------------------
 	// Methods ----------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * processMouseEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * openFrame
+	 * @param frame TODO
 	 */
-	public void processMouseEvent(MouseEvent event,
-			MenuElement[] path, MenuSelectionManager manager);
+	public void openFrame(JInternalFrame frame);
 
 	/**
-	 * processKeyEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * closeFrame
+	 * @param frame TODO
 	 */
-	public abstract void processKeyEvent(KeyEvent event, 
-			MenuElement[] path, MenuSelectionManager manager);
+	public void closeFrame(JInternalFrame frame);
 
 	/**
-	 * menuSelectionChanged
-	 * @param included TODO
+	 * maximizeFrame
+	 * @param frame TODO
 	 */
-	public abstract void menuSelectionChanged(boolean included);
+	public void maximizeFrame(JInternalFrame frame);
 
 	/**
-	 * getSubElements
-	 * @returns MenuElement[]
+	 * minimizeFrame
+	 * @param frame TODO
 	 */
-	public abstract MenuElement[] getSubElements();
+	public void minimizeFrame(JInternalFrame frame);
 
 	/**
-	 * getComponent
-	 * @returns Component
+	 * iconifyFrame
+	 * @param frame TODO
 	 */
-	public abstract Component getComponent();
+	public void iconifyFrame(JInternalFrame frame);
+
+	/**
+	 * deiconifyFrame
+	 * @param frame TODO
+	 */
+	public void deiconifyFrame(JInternalFrame frame);
+
+	/**
+	 * activateFrame
+	 * @param frame TODO
+	 */
+	public void activateFrame(JInternalFrame vframe);
+
+	/**
+	 * deactivateFrame
+	 * @param frame TODO
+	 */
+	public void deactivateFrame(JInternalFrame frame);
+
+	/**
+	 * beginDraggingFrame
+	 * @param frame TODO
+	 */
+	public void beginDraggingFrame(JComponent frame);
+
+	/**
+	 * dragFrame
+	 * @param frame TODO
+	 * @param x TODO
+	 * @param y TODO
+	 */
+	public void dragFrame(JComponent frame, int x, int y);
+
+	/**
+	 * endDraggingFrame
+	 * @param frame TODO
+	 */
+	public void endDraggingFrame(JComponent frame);
+
+	/**
+	 * beginResizingFrame
+	 * @param frame TODO
+	 * @param direction TODO
+	 */
+	public void beginResizingFrame(JComponent frame, int direction);
+
+	/**
+	 * resizeFrame
+	 * @param frame TODO
+	 * @param x TODO
+	 * @param y TODO
+	 * @param width TODO
+	 * @param height TODO
+	 */
+	public void resizeFrame(JComponent frame, int x, int y, 
+					int width, int height);
+
+	/**
+	 * endResizingFrame
+	 * @param frame TODO
+	 */
+	public void endResizingFrame(JComponent frame);
+
+	/**
+	 * setBoundsForFrame
+	 * @param frame TODO
+	 * @param x TODO
+	 * @param y TODO
+	 * @param width TODO
+	 * @param height TODO
+	 */
+	public void setBoundsForFrame(JComponent frame, int x, int y, 
+					int width, int height);
 
 
-} // MenuElement
+} // DesktopManager

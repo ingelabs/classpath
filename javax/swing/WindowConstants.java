@@ -1,4 +1,4 @@
-/* MenuElement.java --
+/* WindowConstants.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,56 +37,31 @@ exception statement from your version. */
 
 package javax.swing;
 
-// Imports
-import java.awt.*;
-import java.awt.event.*;
-
 /**
- * MenuElement
+ * WindowConstants
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public interface MenuElement {
+public interface WindowConstants {
 
 	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
+	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * processMouseEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * DO_NOTHING_ON_CLOSE
 	 */
-	public void processMouseEvent(MouseEvent event,
-			MenuElement[] path, MenuSelectionManager manager);
+	public static final int DO_NOTHING_ON_CLOSE = 0;
 
 	/**
-	 * processKeyEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * HIDE_ON_CLOSE
 	 */
-	public abstract void processKeyEvent(KeyEvent event, 
-			MenuElement[] path, MenuSelectionManager manager);
+	public static final int HIDE_ON_CLOSE = 1;
 
 	/**
-	 * menuSelectionChanged
-	 * @param included TODO
+	 * DISPOSE_ON_CLOSE
 	 */
-	public abstract void menuSelectionChanged(boolean included);
-
-	/**
-	 * getSubElements
-	 * @returns MenuElement[]
-	 */
-	public abstract MenuElement[] getSubElements();
-
-	/**
-	 * getComponent
-	 * @returns Component
-	 */
-	public abstract Component getComponent();
+	public static final int DISPOSE_ON_CLOSE = 2;
 
 
-} // MenuElement
+} // WindowConstants

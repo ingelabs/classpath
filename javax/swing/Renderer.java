@@ -1,4 +1,4 @@
-/* MenuElement.java --
+/* Renderer.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -39,54 +39,30 @@ package javax.swing;
 
 // Imports
 import java.awt.*;
-import java.awt.event.*;
 
 /**
- * MenuElement
+ * Renderer
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public interface MenuElement {
+public interface Renderer {
 
 	//-------------------------------------------------------------
 	// Methods ----------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * processMouseEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * setValue
+	 * @param value TODO
+	 * @param selected TODO
 	 */
-	public void processMouseEvent(MouseEvent event,
-			MenuElement[] path, MenuSelectionManager manager);
-
-	/**
-	 * processKeyEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
-	 */
-	public abstract void processKeyEvent(KeyEvent event, 
-			MenuElement[] path, MenuSelectionManager manager);
-
-	/**
-	 * menuSelectionChanged
-	 * @param included TODO
-	 */
-	public abstract void menuSelectionChanged(boolean included);
-
-	/**
-	 * getSubElements
-	 * @returns MenuElement[]
-	 */
-	public abstract MenuElement[] getSubElements();
+	public void setValue(Object value, boolean selected);
 
 	/**
 	 * getComponent
 	 * @returns Component
 	 */
-	public abstract Component getComponent();
+	public Component getComponent();
 
 
-} // MenuElement
+} // Renderer

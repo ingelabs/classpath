@@ -1,4 +1,4 @@
-/* MenuElement.java --
+/* MutableComboBoxModel.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,56 +37,41 @@ exception statement from your version. */
 
 package javax.swing;
 
-// Imports
-import java.awt.*;
-import java.awt.event.*;
-
 /**
- * MenuElement
+ * MutableComboBoxModel
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public interface MenuElement {
+public interface MutableComboBoxModel extends ComboBoxModel {
 
 	//-------------------------------------------------------------
 	// Methods ----------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * processMouseEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * addElement
+	 * @param object TODO
 	 */
-	public void processMouseEvent(MouseEvent event,
-			MenuElement[] path, MenuSelectionManager manager);
+	public void addElement(Object object);
 
 	/**
-	 * processKeyEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * removeElementAt
+	 * @param index TODO
 	 */
-	public abstract void processKeyEvent(KeyEvent event, 
-			MenuElement[] path, MenuSelectionManager manager);
+	public void removeElementAt(int index);
 
 	/**
-	 * menuSelectionChanged
-	 * @param included TODO
+	 * insertElementAt
+	 * @param object TODO
+	 * @param index TODO
 	 */
-	public abstract void menuSelectionChanged(boolean included);
+	public void insertElementAt(Object object, int index);
 
 	/**
-	 * getSubElements
-	 * @returns MenuElement[]
+	 * removeElement
+	 * @param object TODO
 	 */
-	public abstract MenuElement[] getSubElements();
-
-	/**
-	 * getComponent
-	 * @returns Component
-	 */
-	public abstract Component getComponent();
+	public void removeElement(Object object);
 
 
-} // MenuElement
+} // MutableComboBoxModel

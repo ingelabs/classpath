@@ -37,30 +37,89 @@ exception statement from your version. */
 
 package javax.swing;
 
+// Imports
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeListener;
 
-
 /**
- * Empty
- *
+ * Action
  * @author Ronald Veldema (rveldema@cs.vu.nl)
+ * @author Andrew Selkirk
  */
+public interface Action extends ActionListener {
 
-public interface Action extends ActionListener
-{
-  static String DEFAULT = "";
-  static String LONG_DESCRIPTION="";
-  static String NAME = "";
-  static String SHORT_DESCRIPTION="";
-  static String SMALL_ICON=""; 
+	//-------------------------------------------------------------
+	// Constants --------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * DEFAULT
+	 */
+	public static final	String	DEFAULT				= "Default";
+
+	/**
+	 * LONG_DESCRIPTION
+	 */
+	public static final	String	LONG_DESCRIPTION	= "LongDescription";
+
+	/**
+	 * NAME
+	 */
+	public static final	String	NAME				= "Name";
+
+	/**
+	 * SHORT_DESCRIPTION
+	 */
+	public static final	String	SHORT_DESCRIPTION	= "ShortDescription";
+
+	/**
+	 * SMALL_ICON
+	 */
+	public static final	String	SMALL_ICON			= "SmallIcon";
 
 
-  void addPropertyChangeListener(PropertyChangeListener listener);
-  Object getValue(String key);
-  boolean isEnabled();
-  void putValue(String key, Object value);
-  void removePropertyChangeListener(PropertyChangeListener listener);
-  void setEnabled(boolean b);
-}
+	//-------------------------------------------------------------
+	// Interface: Action ------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * getValue
+	 * @param key TODO
+	 * @returns TODO
+	 */
+	public Object getValue(String key);
+
+	/**
+	 * setValue
+	 * @param key TODO
+	 * @param value TODO
+	 */
+	public void putValue(String key, Object value);
+
+	/**
+	 * isEnabled
+	 * @returns TODO
+	 */
+	public boolean isEnabled();
+
+	/**
+	 * setEnabled
+	 * @param b TODO
+	 */
+	public void setEnabled(boolean b);
+
+	/**
+	 * addPropertyChangeListener
+	 * @param listener TODO
+	 */
+	public void addPropertyChangeListener(PropertyChangeListener listener);
+
+	/**
+	 * removePropertyChangeListener
+	 * @param listener TODO
+	 */
+	public void removePropertyChangeListener(PropertyChangeListener listener);
+
+
+} // Action

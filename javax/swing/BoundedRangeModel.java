@@ -1,4 +1,4 @@
-/* MenuElement.java --
+/* BoundedRangeModel.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,55 +38,101 @@ exception statement from your version. */
 package javax.swing;
 
 // Imports
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.event.*;
 
 /**
- * MenuElement
+ * BoundedRangeModel
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public interface MenuElement {
+public interface BoundedRangeModel {
 
 	//-------------------------------------------------------------
 	// Methods ----------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * processMouseEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * getValue
+	 * @returns int
 	 */
-	public void processMouseEvent(MouseEvent event,
-			MenuElement[] path, MenuSelectionManager manager);
+	public int getValue();
 
 	/**
-	 * processKeyEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * setValue
+	 * @param value TODO
 	 */
-	public abstract void processKeyEvent(KeyEvent event, 
-			MenuElement[] path, MenuSelectionManager manager);
+	public void setValue(int value);
 
 	/**
-	 * menuSelectionChanged
-	 * @param included TODO
+	 * getMinimum
+	 * @returns int
 	 */
-	public abstract void menuSelectionChanged(boolean included);
+	public int getMinimum();
 
 	/**
-	 * getSubElements
-	 * @returns MenuElement[]
+	 * setMinimum
+	 * @param minimum TODO
 	 */
-	public abstract MenuElement[] getSubElements();
+	public void setMinimum(int minimum);
 
 	/**
-	 * getComponent
-	 * @returns Component
+	 * getMaximum
+	 * @returns int
 	 */
-	public abstract Component getComponent();
+	public absint getMaximum();
+
+	/**
+	 * setMaximum
+	 * @param maximum TODO
+	 */
+	public void setMaximum(int maximum);
+
+	/**
+	 * getValueIsAdjusting
+	 * @returns boolean
+	 */
+	public boolean getValueIsAdjusting();
+
+	/**
+	 * setValueIsAdjusting
+	 * @param adjusting TODO
+	 */
+	public void setValueIsAdjusting(boolean adjusting);
+
+	/**
+	 * getExtent
+	 * @returns int
+	 */
+	public int getExtent();
+
+	/**
+	 * setExtent
+	 * @param extent TODO
+	 */
+	public void setExtent(int extent);
+
+	/**
+	 * setRangeProperties
+	 * @param value TODO
+	 * @param extent TODO
+	 * @param min TODO
+	 * @param max TODO
+	 * @param adjusting TODO
+	 */
+	public void setRangeProperties(int value, int extent, int min, 
+					int max, boolean adjusting);
+
+	/**
+	 * addChangeListener
+	 * @param listener TODO
+	 */
+	public void addChangeListener(ChangeListener listener);
+
+	/**
+	 * removeChangeListener
+	 * @param listener TODO
+	 */
+	public void removeChangeListener(ChangeListener listener);
 
 
-} // MenuElement
+} // BoundedRangeModel

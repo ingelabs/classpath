@@ -1,4 +1,4 @@
-/* MenuElement.java --
+/* ComboBoxEditor.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -42,51 +42,50 @@ import java.awt.*;
 import java.awt.event.*;
 
 /**
- * MenuElement
+ * ComboBoxEditor
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public interface MenuElement {
+public interface ComboBoxEditor {
 
 	//-------------------------------------------------------------
 	// Methods ----------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * processMouseEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
-	 */
-	public void processMouseEvent(MouseEvent event,
-			MenuElement[] path, MenuSelectionManager manager);
-
-	/**
-	 * processKeyEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
-	 */
-	public abstract void processKeyEvent(KeyEvent event, 
-			MenuElement[] path, MenuSelectionManager manager);
-
-	/**
-	 * menuSelectionChanged
-	 * @param included TODO
-	 */
-	public abstract void menuSelectionChanged(boolean included);
-
-	/**
-	 * getSubElements
-	 * @returns MenuElement[]
-	 */
-	public abstract MenuElement[] getSubElements();
-
-	/**
-	 * getComponent
+	 * getEditorComponent
 	 * @returns Component
 	 */
-	public abstract Component getComponent();
+	public Component getEditorComponent();
+
+	/**
+	 * setItem
+	 * @param item TODO
+	 */
+	public void setItem(Object item);
+
+	/**
+	 * getItem
+	 * @returns Object
+	 */
+	public Object getItem();
+
+	/**
+	 * selectAll
+	 */
+	public void selectAll();
+
+	/**
+	 * addActionListener
+	 * @param listener TODO
+	 */
+	public void addActionListener(ActionListener listener);
+
+	/**
+	 * removeActionListener
+	 * @param listener TODO
+	 */
+	public void removeActionListener(ActionListener listener);
 
 
-} // MenuElement
+} // ComboBoxEditor

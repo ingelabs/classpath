@@ -1,4 +1,4 @@
-/* InputMap.java --
+/* ActionMap.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,29 +38,29 @@ exception statement from your version. */
 package javax.swing;
 
 // Imports
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 /**
- * InputMap
+ * ActionMap
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public class InputMap implements Serializable {
+public class ActionMap implements Serializable {
 
 	//-------------------------------------------------------------
 	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * inputMap
+	 * actionMap
 	 */
-	private Map inputMap = new HashMap();
+	private Map actionMap = new HashMap();
 
 	/**
 	 * parent
 	 */
-	private InputMap parent = null;
+	private ActionMap parent = null;
 
 
 	//-------------------------------------------------------------
@@ -68,11 +68,10 @@ public class InputMap implements Serializable {
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor InputMap
+	 * Constructor ActionMap
 	 */
-	public InputMap() {
-		// TODO
-	} // InputMap()
+	public ActionMap() {
+	} // ActionMap()
 
 
 	//-------------------------------------------------------------
@@ -81,52 +80,52 @@ public class InputMap implements Serializable {
 
 	/**
 	 * get
-	 * @param value0 TODO
-	 * @returns Object
+	 * @param key TODO
+	 * @returns Action
 	 */
-	public Object get(KeyStroke keystroke) {
+	public Action get(Object key) {
 
 		// Variables
 		Object	result;
 
 		// Check Local store
-		result = inputMap.get(keystroke);
+		result = actionMap.get(key);
 
 		// Check Parent
 		if (result == null) {
-			result = parent.get(keystroke);
+			result = parent.get(key);
 		} // if
 
-		return result;
+		return (Action) result;
 
 	} // get()
 
 	/**
 	 * put
-	 * @param keystroke TODO
-	 * @param actionMapKey TODO
+	 * @param key TODO
+	 * @param action TODO
 	 */
-	public void put(KeyStroke keystroke, Object actionMapKey) {
-		if (actionMapKey == null) {
-			inputMap.remove(keystroke);
+	public void put(Object key, Action action) {
+		if (action == null) {
+			actionMap.remove(key);
 		} else {
-			inputMap.put(keystroke, actionMapKey);
+			actionMap.put(key, action);
 		} // if
 	} // put()
 
 	/**
 	 * remove
-	 * @param keystroke TODO
+	 * @param key TODO
 	 */
-	public void remove(KeyStroke keystroke) {
-		inputMap.remove(keystroke);
+	public void remove(Object key) {
+		actionMap.remove(key);
 	} // remove()
 
 	/**
 	 * getParent
-	 * @returns InputMap
+	 * @returns ActionMap
 	 */
-	public InputMap getParent() {
+	public ActionMap getParent() {
 		return parent;
 	} // getParent()
 
@@ -134,7 +133,7 @@ public class InputMap implements Serializable {
 	 * setParent
 	 * @param parentMap TODO
 	 */
-	public void setParent(InputMap parentMap) {
+	public void setParent(ActionMap parentMap) {
 		parent = parentMap;
 	} // setParent()
 
@@ -143,29 +142,29 @@ public class InputMap implements Serializable {
 	 * @returns int
 	 */
 	public int size() {
-		return inputMap.size();
+		return actionMap.size();
 	} // size()
 
 	/**
 	 * clear
 	 */
 	public void clear() {
-		inputMap.clear();
+		actionMap.clear();
 	} // clear()
 
 	/**
 	 * keys
-	 * @returns KeyStroke[]
+	 * @returns Object[]
 	 */
-	public KeyStroke[] keys() {
-		return convertSet(inputMap.keySet());
+	public Object[] keys() {
+		return convertSet(actionMap.keySet());
 	} // keys()
 
 	/**
 	 * allKeys
-	 * @returns KeyStroke[]
+	 * @returns Object[]
 	 */
-	public KeyStroke[] allKeys() {
+	public Object[] allKeys() {
 
 		// Variables
 		Set			set;
@@ -177,25 +176,25 @@ public class InputMap implements Serializable {
 		if (parent != null) {
 			set.addAll(Arrays.asList(parent.allKeys()));
 		} // if
-		set.addAll(inputMap.keySet());
+		set.addAll(actionMap.keySet());
 
 		return convertSet(set);
 
 	} // allKeys()
 
-	private KeyStroke[] convertSet(Set set) {
+	private Object[] convertSet(Set set) {
 
 		// Variables
 		int			index;
 		Iterator	iterator;
-		KeyStroke[]	keys;
+		Object[]	keys;
 
 		// Create Final array
-		keys = new KeyStroke[set.size()];
+		keys = new Object[set.size()];
 		iterator = set.iterator();
 		index = 0;
 		while (iterator.hasNext()) {
-			keys[index++] = (KeyStroke) iterator.next();
+			keys[index++] = iterator.next();
 		} // while
 
 		return keys;
@@ -212,7 +211,7 @@ public class InputMap implements Serializable {
 	 * @param stream TODO
 	 * @exception IOException TODO
 	 */
-	private void writeObject(ObjectOutputStream stream) throws IOException {
+	private void writeObject(ObjectOutputStream value0) throws IOException {
 		// TODO
 	} // writeObject()
 
@@ -222,9 +221,9 @@ public class InputMap implements Serializable {
 	 * @exception ClassNotFoundException TODO
 	 * @exception IOException TODO
 	 */
-	private void readObject(ObjectInputStream stream) throws ClassNotFoundException, IOException {
+	private void readObject(ObjectInputStream value0) throws ClassNotFoundException, IOException {
 		// TODO
 	} // readObject()
 
 
-} // InputMap
+} // ActionMap

@@ -1,4 +1,4 @@
-/* MenuElement.java --
+/* InputVerifier.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,56 +37,43 @@ exception statement from your version. */
 
 package javax.swing;
 
-// Imports
-import java.awt.*;
-import java.awt.event.*;
-
 /**
- * MenuElement
+ * InputVerifier
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public interface MenuElement {
+public abstract class InputVerifier {
+
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * Constructor InputVerifier
+	 */
+	public InputVerifier() {
+	} // InputVerifier()
+
 
 	//-------------------------------------------------------------
 	// Methods ----------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * processMouseEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * verify
+	 * @param component TODO
+	 * @returns boolean
 	 */
-	public void processMouseEvent(MouseEvent event,
-			MenuElement[] path, MenuSelectionManager manager);
+	public abstract boolean verify(JComponent component);
 
 	/**
-	 * processKeyEvent
-	 * @param event TODO
-	 * @param path TODO
-	 * @param manager TODO
+	 * shouldYieldFocus
+	 * @param component TODO
+	 * @returns boolean
 	 */
-	public abstract void processKeyEvent(KeyEvent event, 
-			MenuElement[] path, MenuSelectionManager manager);
-
-	/**
-	 * menuSelectionChanged
-	 * @param included TODO
-	 */
-	public abstract void menuSelectionChanged(boolean included);
-
-	/**
-	 * getSubElements
-	 * @returns MenuElement[]
-	 */
-	public abstract MenuElement[] getSubElements();
-
-	/**
-	 * getComponent
-	 * @returns Component
-	 */
-	public abstract Component getComponent();
+	public boolean shouldYieldFocus(JComponent component) {
+		return verify(component);
+	} // shouldYieldFocus()
 
 
-} // MenuElement
+} // InputVerifier

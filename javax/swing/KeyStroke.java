@@ -1,4 +1,4 @@
-/* KeyStroke.java -- 
+/* KeyStroke.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,15 +37,233 @@ exception statement from your version. */
 
 package javax.swing;
 
+// Imports
+import java.awt.event.*;
 import java.io.*;
-/**
- * STUBBED
- */
-public class KeyStroke implements Serializable
-{
-  public static KeyStroke getKeyStroke(int code, int modifiers)
-  {
-    return null;
-  }
-}
 
+/**
+ * KeyStroke
+ * @author	Andrew Selkirk
+ * @version	1.0
+ */
+public class KeyStroke implements Serializable {
+
+	//-------------------------------------------------------------
+	// Variables --------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * keyChar
+	 */
+	private	char	keyChar			= 0;
+
+	/**
+	 * keyCode
+	 */
+	private	int		keyCode			= 0;
+
+	/**
+	 * modifiers
+	 */
+	private	int		modifiers		= 0;
+
+	/**
+	 * onKeyRelease
+	 */
+	private	boolean	onKeyRelease	= false;
+
+
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * Constructor KeyStroke
+	 */
+	private KeyStroke() {
+	} // KeyStroke()
+
+
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * hashCode
+	 * @returns int
+	 */
+	public int hashCode() {
+		return 0; // TODO
+	} // hashCode()
+
+	/**
+	 * equals
+	 * @param object TODO
+	 * @returns boolean
+	 */
+	public boolean equals(Object object) {
+
+		// Variables
+		KeyStroke	key;
+
+		if (object instanceof KeyStroke) {
+			key = (KeyStroke) object;
+			if (key.keyChar == keyChar &&
+				key.keyCode == keyCode &&
+				key.modifiers == modifiers &&
+				key.onKeyRelease == onKeyRelease) {
+				return true;
+			} // if
+		} // if
+		return false;
+
+	} // equals()
+
+	/**
+	 * toString
+	 * @returns String
+	 */
+	public String toString() {
+		return null; // TODO
+	} // toString()
+
+	/**
+	 * getKeyStroke
+	 * @param keyChar TODO
+	 * @returns KeyStroke
+	 */
+	public static KeyStroke getKeyStroke(char keyChar) {
+
+		// Variables
+		KeyStroke	key;
+
+		key = new KeyStroke();
+		key.keyChar = keyChar;
+		return key;
+
+	} // getKeyStroke()
+
+	/**
+	 * getKeyStroke - deprecated
+	 * @param keyChar TODO
+	 * @param onKeyRelease TODO
+	 * @returns KeyStroke
+	 */
+	public static KeyStroke getKeyStroke(char keyChar, boolean onKeyRelease) {
+		KeyStroke key = getKeyStroke(keyChar);
+		key.onKeyRelease = onKeyRelease;
+		return key;
+	} // getKeyStroke()
+
+	/**
+	 * getKeyStroke
+	 * @param keyChar TODO
+	 * @param modifiers TODO
+	 * @returns KeyStroke
+	 */
+	public static KeyStroke getKeyStroke(Character keyChar, int modifiers) {
+		KeyStroke key = getKeyStroke(keyChar.charValue());
+		key.modifiers = modifiers;
+		return key;
+	} // getKeyStroke()
+
+	/**
+	 * getKeyStroke
+	 * @param keyCode TODO
+	 * @param modifiers TODO
+	 * @param onKeyRelease TODO
+	 * @returns KeyStroke
+	 */
+	public static KeyStroke getKeyStroke(int keyCode, int modifiers, 
+				boolean onKeyRelease) {
+
+		// Variables
+		KeyStroke	key;
+
+		key = new KeyStroke();
+		key.keyCode = keyCode;
+		key.modifiers = modifiers;
+		key.onKeyRelease = onKeyRelease;
+		return key;
+
+	} // getKeyStroke()
+
+	/**
+	 * getKeyStroke
+	 * @param keyCode TODO
+	 * @param modifiers TODO
+	 * @returns KeyStroke
+	 */
+	public static KeyStroke getKeyStroke(int keyCode, int modifiers) {
+		return getKeyStroke(keyCode, modifiers, false);
+	} // getKeyStroke()
+
+	/**
+	 * getKeyStroke
+	 * @param string TODO
+	 * @returns KeyStroke
+	 */
+	public static KeyStroke getKeyStroke(String string) {
+		return null; // TODO
+	} // getKeyStroke()
+
+	/**
+	 * getKeyStrokeForEvent
+	 * @param event TODO
+	 * @returns KeyStroke
+	 */
+	public static KeyStroke getKeyStrokeForEvent(KeyEvent event) {
+
+		// Variables
+		int	eventID;
+		int	eventMod;
+
+		// Get Event ID
+		eventID = event.getID();
+		eventMod = event.getModifiers();
+
+		// Check for KEY_TYPED event
+		if (eventID == KeyEvent.KEY_TYPED) {
+			return getKeyStroke(event.getKeyChar(), eventMod);
+
+		// KEY_PRESSED or KEY_RELEASED event
+		} else {
+			return getKeyStroke(event.getKeyCode(), eventMod);
+		} // if
+
+	} // getKeyStrokeForEvent()
+
+	/**
+	 * getKeyChar
+	 * @returns char
+	 */
+	public char getKeyChar() {
+		return keyChar;
+	} // getKeyChar()
+
+	/**
+	 * getKeyCode
+	 * @returns int
+	 */
+	public int getKeyCode() {
+		return keyCode;
+	} // getKeyCode()
+
+	/**
+	 * getModifiers
+	 * @returns int
+	 */
+	public int getModifiers() {
+		return modifiers; // TODO
+	} // getModifiers()
+
+	/**
+	 * isOnKeyRelease
+	 * @returns boolean
+	 */
+	public boolean isOnKeyRelease() {
+		return onKeyRelease;
+	} // isOnKeyRelease()
+
+
+} // KeyStroke

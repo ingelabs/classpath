@@ -1,3 +1,24 @@
+2002-05-20  Andrew Selkirk  <aselkirk@sympatico.ca>
+
+	* javax/swing/Action.java: Updated.
+	* javax/swing/ActionMap.java: New file.
+	* javax/swing/BoundedRangeModel.java: New file.
+	* javax/swing/ComboBoxEditor.java: New file.
+	* javax/swing/ComboBoxModel.java: New file.
+	* javax/swing/DefaultListModel.java: New file (unstubbed).
+	* javax/swing/DesktopManager.java: New file.
+	* javax/swing/CellEditor.java: New file (unstubbed).
+	* javax/swing/InputMap.java: New file (unstubbed).
+	* javax/swing/InputVerifier.java: New file.
+	* javax/swing/KeyStroke.java: New file (unstubbed).
+	* javax/swing/MenuElement.java: New file (unstubbed).
+	* javax/swing/MutableComboBoxModel.java: New file.
+	* javax/swing/Renderer.java: New file.
+	* javax/swing/RootPaneContainer.java: New file.
+	* javax/swing/ScrollPaneConstants.java: New file.
+	* javax/swing/SingleSelectionModel.java: New file.
+	* javax/swing/WindowConstants.java: New file.
+
 2002-05-13  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/TimeZone.java: Removed some FIXME comments.
