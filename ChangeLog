@@ -1,5 +1,10 @@
 2005-01-19  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/DefaultListSelectionModel.java
+	(clone): New method.
+
+2005-01-19  Michael Koch  <konqueror@gmx.de>
+
 	* scripts/check_jni_methods.sh: Call sed with LC_ALL=C.
 
 2005-01-19  Michael Koch  <konqueror@gmx.de>
