@@ -1,3 +1,18 @@
+2004-07-31  Mark Wielaard  <mark@klomp.org>
+
+	* include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h: Regenerated.
+
+2004-07-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkTextFieldPeer.java (create): Use tf
+	variable in setEditable call.
+
+	* gnu/java/awt/peer/gtk/GtkTextFieldPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextFieldPeer.c
+	(gtkWidgetSetBackground): New method.
+	(gtkWidgetSetForeground): Likewise.
+	(create): Set peer's editable state based on awtComponent's.
+
 2004-07-31  David Jee  <djee@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
