@@ -1,5 +1,15 @@
 2003-12-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/DatagramSocket.java
+	(DatagramSocket): Move binding code to bind(), simplify constructors.
+	* java/net/MulticastSocket.java
+	(MulticastSocket): Call parent constructor with null argument,
+	bind socket after setReuseAddress is called, simplify constructors.
+	* java/net/Socket.java
+	(various): Some more getImpl() fixes.
+
+2003-12-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/Socket.java
 	(implCreated): New variable that indicates created impl.
 	(getImpl): New method.

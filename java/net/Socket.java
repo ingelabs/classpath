@@ -347,7 +347,6 @@ public class Socket
     try
       {
         getImpl().bind (tmp.getAddress(), tmp.getPort());
-	bound = true;
       }
     catch (IOException exception)
       {
@@ -444,7 +443,16 @@ public class Socket
    */
   public InetAddress getInetAddress ()
   {
-    return getImpl().getInetAddress();
+    try
+      {
+	return getImpl().getInetAddress();
+      }
+    catch (SocketException e)
+      {
+	// This cannot happen as we are connected.
+      }
+
+    return null;
   }
 
   /**
@@ -458,6 +466,7 @@ public class Socket
   public InetAddress getLocalAddress ()
   {
     InetAddress addr = null;
+    
     try
       {
         addr = (InetAddress) getImpl().getOption(SocketOptions.SO_BINDADDR);
@@ -490,8 +499,15 @@ public class Socket
    */
   public int getPort ()
   {
-    if (impl != null)
-      return getImpl().getPort();
+    try
+      {
+	if (getImpl() != null)
+	  return getImpl().getPort();
+      }
+    catch (SocketException e)
+      {
+	// This cannot happen as we are connected.
+      }
 
     return -1;
   }
@@ -504,8 +520,15 @@ public class Socket
    */
   public int getLocalPort ()
   {
-    if (impl != null)
-      return getImpl().getLocalPort();
+    try
+      {
+	if (getImpl() != null)
+	  return getImpl().getLocalPort();
+      }
+    catch (SocketException e)
+      {
+	// This cannot happen as we are bound.
+      }
 
     return -1;
   }
@@ -518,12 +541,20 @@ public class Socket
    */
   public SocketAddress getLocalSocketAddress()
   {
-    InetAddress addr = getLocalAddress ();
-
-    if (addr == null)
+    if (!isBound())
       return null;
     
-    return new InetSocketAddress (addr, getImpl().getLocalPort());
+    InetAddress addr = getLocalAddress ();
+
+    try
+      {
+	return new InetSocketAddress (addr, getImpl().getLocalPort());
+      }
+    catch (SocketException e)
+      {
+	// This cannot happen as we are bound.
+	return null;
+      }
   }
 
   /**
@@ -537,7 +568,15 @@ public class Socket
     if (!isConnected ())
       return null;
 
-    return new InetSocketAddress(getImpl().getInetAddress (), getImpl().getPort ());
+    try
+      {
+	return new InetSocketAddress (getImpl().getInetAddress (), getImpl().getPort ());
+      }
+    catch (SocketException e)
+      {
+	// This cannot happen as we are connected.
+	return null;
+      }
   }
 
   /**
@@ -1068,7 +1107,14 @@ public class Socket
    */
   public boolean isConnected ()
   {
-    return getImpl().getInetAddress () != null;
+    try
+      {
+	return getImpl().getInetAddress () != null;
+      }
+    catch (SocketException e)
+      {
+	return false;
+      }
   }
 
   /**

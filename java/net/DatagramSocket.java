@@ -138,21 +138,31 @@ public class DatagramSocket
    * the specified local port and address.
    *
    * @param port The local port number to bind to.
-   * @param laddr The local address to bind to.
+   * @param addr The local address to bind to.
    *
    * @exception SecurityException If a security manager exists and its
    * checkListen method doesn't allow the operation.
    * @exception SocketException If an error occurs.
    */
-  public DatagramSocket(int port, InetAddress laddr) throws SocketException
+  public DatagramSocket(int port, InetAddress addr) throws SocketException
   {
-    if (port < 0 || port > 65535)
-      throw new IllegalArgumentException("Invalid port: " + port);
+    this(new InetSocketAddress(addr, port));
+  }
 
-    SecurityManager s = System.getSecurityManager();
-    if (s != null)
-      s.checkListen(port);
-
+  /**
+   * Initializes a new instance of <code>DatagramSocket</code> that binds to 
+   * the specified local port and address.
+   *
+   * @param address The local address and port number to bind to.
+   *
+   * @exception SecurityException If a security manager exists and its
+   * <code>checkListen</code> method doesn't allow the operation.
+   * @exception SocketException If an error occurs.
+   *
+   * @since 1.4
+   */
+  public DatagramSocket (SocketAddress address) throws SocketException
+  {
     String propVal = System.getProperty("impl.prefix");
     if (propVal == null || propVal.equals(""))
       impl = new PlainDatagramSocketImpl();
@@ -170,49 +180,10 @@ public class DatagramSocket
 	}
     impl.create();
 
-    if (laddr == null)
-      laddr = InetAddress.ANY_IF;
-    
-    try
-      {
-        impl.bind (port, laddr);
-      }
-    catch (SocketException exception)
-      {
-        impl.close ();
-        throw exception;
-      }
-    catch (RuntimeException exception)
-      {
-        impl.close ();
-        throw exception;
-      }
-    catch (Error error)
-      {
-        impl.close ();
-        throw error;
-      }
+    if (address != null)
+      bind(address);
   }
 
-  /**
-   * Initializes a new instance of <code>DatagramSocket</code> that binds to 
-   * the specified local port and address.
-   *
-   * @param port The local port number to bind to.
-   * @param laddr The local address to bind to.
-   *
-   * @exception SecurityException If a security manager exists and its
-   * <code>checkListen</code> method doesn't allow the operation.
-   * @exception SocketException If an error occurs.
-   *
-   * @since 1.4
-   */
-  public DatagramSocket (SocketAddress address) throws SocketException
-  {
-    this (((InetSocketAddress) address).getPort (),
-          ((InetSocketAddress) address).getAddress ());
-  }
-  
   /**
    * Closes this datagram socket.
    */
@@ -586,15 +557,40 @@ public class DatagramSocket
     throws SocketException
   {
     if (! (address instanceof InetSocketAddress))
-      throw new IllegalArgumentException ();
+      throw new IllegalArgumentException("unsupported address type");
 
-    InetSocketAddress tmp = (InetSocketAddress) address;
+    InetAddress addr = ((InetSocketAddress) address).getAddress();
+    int port = ((InetSocketAddress) address).getPort();
+
+    if (port < 0 || port > 65535)
+      throw new IllegalArgumentException("Invalid port: " + port);
 
     SecurityManager s = System.getSecurityManager ();
     if (s != null)
-      s.checkListen(tmp.getPort ());
+      s.checkListen(port);
 
-    impl.bind (tmp.getPort (), tmp.getAddress ());
+    if (addr == null)
+      addr = InetAddress.ANY_IF;
+    
+    try
+      {
+        impl.bind (port, addr);
+      }
+    catch (SocketException exception)
+      {
+        impl.close ();
+        throw exception;
+      }
+    catch (RuntimeException exception)
+      {
+        impl.close ();
+        throw exception;
+      }
+    catch (Error error)
+      {
+        impl.close ();
+        throw error;
+      }
   }
 
   /**

@@ -67,10 +67,6 @@ import java.util.Enumeration;
  */
 public class MulticastSocket extends DatagramSocket
 {
-  // FIXME: the local addr bound to the multicast socket can be reused;
-  // unlike unicast sockets.  It binds to any available network interface.
-  // See p.1159 JCL book.
-
   /**
    * Create a MulticastSocket that this not bound to any address
    *
@@ -80,8 +76,7 @@ public class MulticastSocket extends DatagramSocket
    */
   public MulticastSocket() throws IOException
   {
-    super(0, null);
-    setReuseAddress (true);
+    this(new InetSocketAddress(0));
   }
 
   /**
@@ -95,8 +90,7 @@ public class MulticastSocket extends DatagramSocket
    */
   public MulticastSocket(int port) throws IOException
   {
-    super(port, null);
-    setReuseAddress (true);
+    this(new InetSocketAddress(port));
   }
 
   /**
@@ -112,8 +106,10 @@ public class MulticastSocket extends DatagramSocket
    */
   public MulticastSocket(SocketAddress address) throws IOException
   {
-    super(address);
-    setReuseAddress (true);
+    super((SocketAddress) null);
+    setReuseAddress(true);
+    if (address != null)
+      bind(address);
   }
   
   /**
