@@ -1,5 +1,5 @@
 /* Proxy.java -- build a proxy class that implements reflected interfaces
-   Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2002, 2003, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,15 +38,16 @@ exception statement from your version. */
 
 package java.lang.reflect;
 
-import java.io.Serializable;
-import java.security.ProtectionDomain;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Iterator;
 import gnu.classpath.Configuration;
 import gnu.java.lang.reflect.TypeSignature;
+
+import java.io.Serializable;
+import java.security.ProtectionDomain;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class allows you to dynamically create an instance of any (or
@@ -153,7 +154,7 @@ import gnu.java.lang.reflect.TypeSignature;
  * @see InvocationHandler
  * @see UndeclaredThrowableException
  * @see Class
- * @author Eric Blake <ebb9@email.byu.edu>
+ * @author Eric Blake (ebb9@email.byu.edu)
  * @since 1.3
  * @status updated to 1.4, except for the use of ProtectionDomain
  */
@@ -1302,7 +1303,7 @@ public class Proxy implements Serializable
      *        implies the bootstrap class loader
      * @return the proxy class Class object
      */
-    final Class generate(ClassLoader loader)
+    Class generate(ClassLoader loader)
     {
       byte[] bytecode = new byte[pool.length() + stream.length()];
       // More efficient to bypass calling charAt() repetitively.

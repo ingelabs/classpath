@@ -1,5 +1,16 @@
 2004-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/reflect/AccessibleObject.java
+	(checkPermission): Removed redundant final modifier.
+	(secureSetAccessible): Likewise.
+	* java/lang/reflect/Proxy.java:
+	Reworked import statements.
+	(generate): Removed redundant final modifier.
+	* java/lang/reflect/ReflectPermission.java:
+	Reorder package declaration and import statement.
+
+2004-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/ByteOrder.java,
 	java/nio/MappedByteBuffer.java,
 	java/nio/MappedByteBufferImpl.java,
