@@ -244,6 +244,14 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
   char *buf, *endptr;
   jdouble val = 0.0;
 
+/*
+  if (str == NULL)
+    {
+      JCL_ThrowException (env, "java/lang/NullPointerException", "null");
+      return val;
+    }
+*/
+
   buf = (char *) (*env)->GetStringUTFChars(env, str, &isCopy);
   if (buf == NULL)
     {

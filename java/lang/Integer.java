@@ -364,6 +364,9 @@ public final class Integer extends Number implements Comparable
   {
     final int len;
 
+    if (str == null)
+      throw new NumberFormatException ();
+
     if ((len = str.length()) == 0 ||
         radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
       throw new NumberFormatException();
