@@ -28,8 +28,10 @@ public class GtkCheckboxPeer extends GtkComponentPeer
 {
 
   native void gtkRadioButtonSetGroup (Object group);
-  native void gtkRadioButtonNew (Object group, boolean checked, String label);
-  native void gtkCheckButtonNew (boolean checked, String label);
+  native void gtkRadioButtonNew (Object group, boolean checked, String label,
+				 boolean visible);
+  native void gtkCheckButtonNew (boolean checked, String label,
+				 boolean visible);
   native void gtkCheckButtonSetState (boolean checked);
   native void gtkCheckButtonSetLabel (String label);
 
@@ -43,9 +45,9 @@ public class GtkCheckboxPeer extends GtkComponentPeer
     CheckboxGroup group = c.getCheckboxGroup ();
     
     if (group == null)
-      gtkCheckButtonNew (c.getState (), c.getLabel ());
+      gtkCheckButtonNew (c.getState (), c.getLabel (), c.isVisible ());
     else
-      gtkRadioButtonNew (group, c.getState(), c.getLabel ());
+      gtkRadioButtonNew (group, c.getState(), c.getLabel (), c.isVisible ());
     
     gtkFixedPut (cp, p.x, p.y);
   }

@@ -27,7 +27,8 @@ public class GtkTextAreaPeer extends GtkTextComponentPeer
   implements TextAreaPeer
 {
 
-  native void gtkTextNew (Object edit, String text, int hscroll, int vscroll);
+  native void gtkTextNew (Object edit, String text, int hscroll, int vscroll,
+			  boolean visible);
   native void gtkTextGetSize (Object edit, int rows, int cols, int dims[]);
   native String gtkTextGetText (Object edit);
   native void gtkTextSetText (Object edit, String text);
@@ -58,7 +59,7 @@ public class GtkTextAreaPeer extends GtkTextComponentPeer
 
       editable = new Object();
 
-      gtkTextNew (editable, text, hscroll, vscroll);
+      gtkTextNew (editable, text, hscroll, vscroll, ta.isVisible ());
 
       Point p=ta.getLocation();
       gtkFixedPut (cp,p.x,p.y);

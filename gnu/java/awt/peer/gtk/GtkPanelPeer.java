@@ -34,7 +34,7 @@ public class GtkPanelPeer extends GtkContainerPeer
     Dimension d=p.getSize();
     Point pnt=p.getLocation();
 
-    gtkFixedNew(d.width, d.height);
+    gtkFixedNew (d.width, d.height, p.isVisible ());
     gtkFixedPut (parent, pnt.x, pnt.y);
   }
 }

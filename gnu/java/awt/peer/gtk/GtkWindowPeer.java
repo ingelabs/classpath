@@ -30,7 +30,7 @@ public class GtkWindowPeer extends GtkContainerPeer
   static final int dialogType=2;
   static final int popupType=3;
 
-  native void gtkWindowNew(int type, int w, int h);    
+  native void gtkWindowNew(int type, int width, int height, boolean visible);
   native void gtkWindowSetTitle(String title);    
   native void gtkWindowSetPolicy(int shrink, int grow, int autos);    
   
@@ -41,17 +41,17 @@ public class GtkWindowPeer extends GtkContainerPeer
     
     /* A bogusType indicates that we should not create a GTK window. */
     
-    if(type!=bogusType)
+    if (type != bogusType)
       {
-	Dimension d=w.getSize();
-	gtkWindowNew(type,d.width,d.height);
+	Dimension d = w.getSize();
+	gtkWindowNew (type, d.width, d.height, w.isVisible ());
       }
   }
 
   public GtkWindowPeer(Window w)
   {
-    this(popupType,w);
-    System.out.println("WindowPeer default cons");
+    this (popupType, w);
+    System.out.println ("WindowPeer default cons");
   }
   
   native public void toBack ();

@@ -27,13 +27,13 @@ import java.awt.peer.*;
 public class GtkButtonPeer extends GtkComponentPeer
     implements ButtonPeer
 {
-  native void gtkButtonNewWithLabel (String label);
+  native void gtkButtonNewWithLabel (String label, boolean visible);
   native void gtkButtonLabelSet (String label);    
 
   public GtkButtonPeer (Button b, ComponentPeer cp)
   {
     super (b);
-    gtkButtonNewWithLabel (b.getLabel());
+    gtkButtonNewWithLabel (b.getLabel(), b.isVisible());
     Point p = b.getLocation ();
     System.out.println ("buttonpeer: location: "+p.x+","+p.y);
     

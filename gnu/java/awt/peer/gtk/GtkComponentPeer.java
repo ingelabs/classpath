@@ -37,7 +37,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 //    native void gtkWidgetSetUsize(int width, int height);
   native void gtkWidgetSetCursor (int type);
 
-  native void gtkFixedNew (int w, int h);
+  native void gtkFixedNew (int w, int h, boolean visible);
   native void gtkFixedPut (Object parent, int x, int y);
 //    native void gtkFixedMove(int x, int y);
 

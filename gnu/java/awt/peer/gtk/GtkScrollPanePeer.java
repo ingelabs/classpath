@@ -29,7 +29,8 @@ public class GtkScrollPanePeer extends GtkContainerPeer
   int sbHeight, sbWidth;
   ScrollPane myScrollPane;
 
-  native void gtkScrolledWindowNew(int policy, int w, int h, int[] dims);
+  native void gtkScrolledWindowNew(int policy, int w, int h, int[] dims,
+				   boolean visible);
   native void gtkScrolledWindowSetScrollPosition(int x, int y);
   native void gtkScrolledWindowSetHScrollIncrement (int u);
   native void gtkScrolledWindowSetVScrollIncrement (int u);
@@ -58,7 +59,8 @@ public class GtkScrollPanePeer extends GtkContainerPeer
 
       int dims[]=new int[2];
 
-      gtkScrolledWindowNew(mypolicy, pdim.width, pdim.height, dims);
+      gtkScrolledWindowNew(mypolicy, pdim.width, pdim.height, dims,
+			   p.isVisible ());
 
       sbWidth=dims[0];
       sbHeight=dims[1];

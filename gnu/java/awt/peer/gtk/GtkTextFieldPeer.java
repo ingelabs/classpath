@@ -27,7 +27,7 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
   implements TextFieldPeer
 {
 
-  native void gtkEntryNew (String text);
+  native void gtkEntryNew (String text, boolean visible);
   native void gtkEntryGetSize (int cols, int dims[]);
   native void gtkEntrySetEchoChar (char c);
   native String gtkEntryGetText ();
@@ -40,7 +40,7 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
       
       System.out.println ("TFP: new");
 
-      gtkEntryNew (text);
+      gtkEntryNew (text, tf.isVisible ());
 
       System.out.println ("got here");
       Point p=tf.getLocation();
