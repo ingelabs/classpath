@@ -249,6 +249,8 @@ public class Thread {
 	 ** Thread's implementation does nothing at all.
 	 **/
 	public void run() {
+		if (toRun != null)
+			toRun.run();
 	}
 
 	/** Cause this Thread to stop abnormally and throw a ThreadDeath
