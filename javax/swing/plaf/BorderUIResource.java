@@ -1,5 +1,5 @@
 /* BorderUIResource.java
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,6 +37,7 @@ exception statement from your version. */
 
 
 package javax.swing.plaf;
+
 import javax.swing.border.*;
 import javax.swing.Icon;
 import java.io.Serializable;
@@ -47,69 +48,207 @@ import java.awt.Font;
 import java.awt.Color;
 
 /**
+ * A wrapper for {@link javax.swing.border.Border} that also
+ * implements the {@link UIResource} marker interface.  This is useful
+ * for implementing pluggable look-and-feels: When switching the
+ * current LookAndFeel, only those borders are replaced that are
+ * marked as {@link UIResource}.  For this reason, a look-and-feel
+ * should always install borders that implement
+ * <code>UIResource</code>, such as the borders provided by this
+ * class.
+ *
  * @serial
  * @serialField delegate Border the <code>Border</code> wrapped
+ *
  * @author Brian Jones
+ * @author Sascha Brawer
  */
 public class BorderUIResource 
-    extends Object 
-    implements Border, UIResource, Serializable
+  extends Object 
+  implements Border, UIResource, Serializable
 {
   static final long serialVersionUID = -3440553684010079691L;
 
-    private Border delegate;
 
-    /**
-     * Creates a <code>UIResource</code> wrapper for a <code>Border</code>
-     * object.
-     * 
-     * @param delegate the border to be wrapped
-     */
-    public BorderUIResource(Border delegate)
-    {
-	this.delegate = delegate;
-    }
+  /**
+   * A shared instance of an {@link EtchedBorderUIResource}, or
+   * <code>null</code> if the {@link #getEtchedBorderUIResource()}
+   * method has not yet been called.
+   */
+  private static Border etchedBorderUIResource;
 
-    /**
-     */
-    public static Border getEtchedBorderUIResource() { 
-	return null;
-    }
 
-    /**
-     */
-    public static Border getLoweredBevelBorderUIResource() { 
-	return null;
-    }
+  /**
+   * A shared instance of a {@link BevelBorderUIResource} whose
+   * <code>bevelType</code> is {@link
+   * javax.swing.border.BevelBorder#LOWERED}, or <code>null</code> if
+   * the {@link #getLoweredBevelBorderUIResource()} has not yet been
+   * called.
+   */
+  private static Border loweredBevelBorderUIResource;
+  
+  
+  /**
+   * A shared instance of a {@link BevelBorderUIResource} whose
+   * <code>bevelType</code> is {@link
+   * javax.swing.border.BevelBorder#RAISED}, or <code>null</code> if
+   * the {@link #getRaisedBevelBorderUIResource()} has not yet been
+   * called.
+   */
+  private static Border raisedBevelBorderUIResource;
+  
+  
+  /**
+   * A shared instance of a {@link LineBorderUIResource} for
+   * a one-pixel thick black line, or <code>null</code> if
+   * the {@link #getBlackLineBorderUIResource()} has not yet been
+   * called.
+   */
+  private static Border blackLineBorderUIResource;
 
-    /**
-     */
-    public static Border getRaisedBevelBorderUIResource() { 
-	return null;
-    }
 
-    /**
+  /**
+   * Returns a shared instance of an etched border which also
+   * is marked as an {@link UIResource}.
+   *
+   * @see javax.swing.border.EtchedBorder
+   */
+  public static Border getEtchedBorderUIResource()
+  {
+    /* Swing is not designed to be thread-safe, so there is no
+     * need to synchronize the access to the global variable.
      */
-    public static Border getBlackLineBorderUIResource() { 
-	return null;
-    }
+    if (etchedBorderUIResource == null)
+      etchedBorderUIResource = new EtchedBorderUIResource();
+    return etchedBorderUIResource;
+  }
+  
 
-    /**
+  /**
+   * Returns a shared instance of {@link BevelBorderUIResource} whose
+   * <code>bevelType</code> is {@link
+   * javax.swing.border.BevelBorder#LOWERED}.
+   *
+   * @see javax.swing.border.BevelBorder
+   */
+  public static Border getLoweredBevelBorderUIResource()
+  {
+    /* Swing is not designed to be thread-safe, so there is no
+     * need to synchronize the access to the global variable.
      */
-    public void paintBorder(Component c, Graphics g, int x, int y, 
-			    int width, int height) { }
+    if (loweredBevelBorderUIResource == null)
+      loweredBevelBorderUIResource = new BevelBorderUIResource(
+        BevelBorder.LOWERED);
+    return loweredBevelBorderUIResource;
+  }
 
-    /**
-     */
-    public Insets getBorderInsets(Component c) { 
-	return null;
-    }
 
-    /**
+  /**
+   * Returns a shared instance of {@link BevelBorderUIResource} whose
+   * <code>bevelType</code> is {@link
+   * javax.swing.border.BevelBorder#RAISED}.
+   *
+   * @see javax.swing.border.BevelBorder
+   */
+  public static Border getRaisedBevelBorderUIResource()
+  {
+    /* Swing is not designed to be thread-safe, so there is no
+     * need to synchronize the access to the global variable.
      */
-    public boolean isBorderOpaque() { 
-	return false;
-    }
+    if (raisedBevelBorderUIResource == null)
+      raisedBevelBorderUIResource = new BevelBorderUIResource(
+        BevelBorder.RAISED);
+    return raisedBevelBorderUIResource;
+  }
+  
+  
+  /**
+   * Returns a shared instance of {@link LineBorderUIResource} for
+   * a black, one-pixel width border.
+   *
+   * @see javax.swing.border.LineBorder
+   */
+  public static Border getBlackLineBorderUIResource()
+  {
+    /* Swing is not designed to be thread-safe, so there is no
+     * need to synchronize the access to the global variable.
+     */
+    if (blackLineBorderUIResource == null)
+      blackLineBorderUIResource = new LineBorderUIResource(Color.black);
+    return blackLineBorderUIResource;
+  }
+
+
+  /**
+   * The wrapped border.
+   */
+  private Border delegate;
+  
+  
+  /**
+   * Constructs a <code>BorderUIResource</code> for wrapping
+   * a <code>Border</code> object.
+   * 
+   * @param delegate the border to be wrapped.
+   */
+  public BorderUIResource(Border delegate)
+  {
+    if (delegate == null)
+      throw new IllegalArgumentException();
+    
+    this.delegate = delegate;
+  }
+
+  
+  /**
+   * Paints the border around an enclosed component by calling
+   * the <code>paintBorder</code> method of the wrapped delegate.
+   *
+   * @param c the component whose border is to be painted.
+   * @param g the graphics for painting.
+   * @param x the horizontal position for painting the border.
+   * @param y the vertical position for painting the border.
+   * @param width the width of the available area for painting the border.
+   * @param height the height of the available area for painting the border.
+   */
+  public void paintBorder(Component c, Graphics g,
+                          int x, int y, int width, int height)
+  {
+    delegate.paintBorder(c, g, x, y, width, height);
+  }
+  
+  
+  /**
+   * Measures the width of this border by calling the
+   * <code>getBorderInsets</code> method of the wrapped
+   * delegate.
+   *
+   * @param c the component whose border is to be measured.
+   *
+   * @return an Insets object whose <code>left</code>, <code>right</code>,
+   *         <code>top</code> and <code>bottom</code> fields indicate the
+   *         width of the border at the respective edge.
+   */
+  public Insets getBorderInsets(Component c)
+  { 
+    return delegate.getBorderInsets(c);
+  }
+  
+  
+  /**
+   * Determines whether this border fills every pixel in its area
+   * when painting by calling the <code>isBorderOpaque</code>
+   * method of the wrapped delegate.
+   *
+   * @return <code>true</code> if the border is fully opaque, or
+   *         <code>false</code> if some pixels of the background
+   *         can shine through the border.
+   */
+  public boolean isBorderOpaque()
+  { 
+    return delegate.isBorderOpaque();
+  }
+
 
     /**
      * @serial
