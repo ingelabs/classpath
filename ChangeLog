@@ -1,3 +1,7 @@
+2003-06-19  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/UIManager.java (getLookAndFeelDefaults): Made public.
+
 2003-06-18  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/Inet6Address.java (isAnyLocalAddress): Don't use "=="
