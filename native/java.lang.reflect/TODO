@@ -1,9 +1,14 @@
 TODO for java.lang.reflect Native side:
 
-- Field.c: reimplement almost everything.  Don't even know if this compiles.
+- Field.c: if wrapper classes are wrong in setNative(), it
+  will set the field to null before throwing an exception,
+  or possibly observe undefined behavior.  Put error
+  checking in there.
 
-- Note: I am planning on moving all JDK 1.2 dependencies to VMI so that 1.1 VMs
-  like Kaffe that do not implement JVMDI can still interface to
-  java.lang.reflect.
+- Member classes: cache some native info regarding the type
+  of the return value / field value, and maybe the argument
+  types as well, so that IsAssignableFrom needs to be
+  called less.
 
 - Makefile needs to be created, as well.
+
