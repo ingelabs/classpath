@@ -1,3 +1,10 @@
+2004-11-27  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
+        Reformatted.
+        (drawRaster): Added FIXME.
+        (drawRaster): Changed to work with packed-sample models.
+
 2004-11-26  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JList.java, javax/swing/JTree.java:
