@@ -82,7 +82,22 @@ package java.util.logging;
 public class MemoryHandler
   extends Handler
 {
+  /**
+   * The storage area used for buffering the unpushed log records in
+   * memory.
+   */
   private final LogRecord[] buffer;
+
+
+  /**
+   * The current position in the circular buffer. For a new
+   * MemoryHandler, or immediately after {@link #push()} was called,
+   * the value of this variable is zero.  Each call to {@link
+   * #publish(LogRecord)} will store the published LogRecord into
+   * <code>buffer[position]</code> before position is incremented by
+   * one.  If position becomes greater than the size of the buffer, it
+   * is reset to zero.
+   */
   private int position;
 
 
@@ -99,7 +114,7 @@ public class MemoryHandler
    * to the <code>pushLevel</code> of this <code>MemoryHandler</code>,
    * the {@link #push()} method will be invoked for pushing the buffer
    * contents to the target <code>Handler</code>.
-  */
+   */
   private Level pushLevel;
 
 
@@ -114,31 +129,66 @@ public class MemoryHandler
    * Constructs a <code>MemoryHandler</code> for keeping a circular
    * buffer of LogRecords; the initial configuration is determined by
    * the <code>LogManager</code> properties described above.
-   *
-   * @throws java.lang.IllegalArgumentException if the
-   *         <code>java.util.logging.MemoryHandler.target</code>
-   *         LogManager property is not defined, or does not specify
-   *         the name of a subclass of {@link Handler}.
-   *         <p><em><strong>Specification Note:</strong> The documentation
-   *         of the Sun reference implementation does not specify
-   *         that this exception is thrown, but this would be
-   *         the analogous behaviour to other handlers.
-   *         FIXME: Verify this, and file a bug report with Sun
-   *         asking to clarify their documentation.</em>
    */
   public MemoryHandler()
   {
-    this(null,
-	 LogManager.getIntProperty("java.util.logging.MemoryHandler.size", 1000),
-	 Level.INFO);
+    this((Handler) LogManager.getInstanceProperty(
+	   "java.util.logging.MemoryHandler.target",
+	   Handler.class, /* default */ null),
+	 LogManager.getIntPropertyClamped(
+	   "java.util.logging.MemoryHandler.size",
+	   /* default */ 1000,
+	   /* minimum value */ 1,
+	   /* maximum value */ Integer.MAX_VALUE),
+	 LogManager.getLevelProperty(
+	   "java.util.logging.MemoryHandler.push",
+	   /* default push level */ Level.SEVERE));
   }
 
-    
+  
+  /**
+   * Constructs a <code>MemoryHandler</code> for keeping a circular
+   * buffer of LogRecords, given some parameters. The values of the
+   * other parameters are taken from LogManager properties, as
+   * described above.
+   *
+   * @param target the target handler that will receive those
+   *               log records that are passed on for publication.
+   *
+   * @param size the number of log records that are kept in the buffer.
+   *             The value must be a at least one.
+   *
+   * @param pushLevel the push level threshold for this
+   *     <code>MemoryHandler</code>.  When a record is published whose
+   *     severity level is greater than or equal to
+   *     <code>pushLevel</code>, the {@link #push()} method will be
+   *     invoked in order to push the bufffer contents to
+   *     <code>target</code>.
+   *
+   * @throws java.lang.IllegalArgumentException if <code>size</code>
+   *         is negative or zero. The GNU implementation also throws
+   *         an IllegalArgumentException if <code>target</code> or
+   *         <code>pushLevel</code> are <code>null</code>, but the
+   *         API specification does not prescribe what should happen
+   *         in those cases.
+   */
   public MemoryHandler(Handler target, int size, Level pushLevel)
-  {
+  { 
+    if ((target == null) || (size <= 0) || (pushLevel == null))
+      throw new IllegalArgumentException();
+
     buffer = new LogRecord[size];
     this.pushLevel = pushLevel;
     this.target = target;
+
+    setLevel(LogManager.getLevelProperty(
+      "java.util.logging.MemoryHandler.level",
+      /* default value */ Level.ALL));
+
+    setFilter((Filter) LogManager.getInstanceProperty(
+      "java.util.logging.MemoryHandler.filter",
+      /* must be instance of */ Filter.class,
+      /* default value */ null));
   }
 
 

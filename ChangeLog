@@ -1,3 +1,30 @@
+2002-09-30  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/LogManager.java (pcs): Pass the LogManager
+	class object, not the singleton instance, to the constructor of the
+	PropertyChangeSupport delegate. The generated PropertyChangeEvents
+	now indicate the same event source as the Sun J2SE 1.4 reference
+	implementation.
+	
+	* java/util/logging/LogManager.java (readConfiguration):
+	Pass null for the property name, so listeners receive the same
+	PropertyChangeEvent as they would when running Sun J2SE 1.4.
+	
+	* java/util/logging/LogManager.java (getLogger): Passing null
+	now throws a NullPointerException, as with Sun J2SE 1.4.
+	
+	* java/util/logging/LogManager.java (reset): Fix a bug which
+	would cause spurious NullPointerExceptions upon resetting
+	the log manager configuration.  A WeakReference had not been
+	checked for null.
+	
+	* java/util/logging/LogManager.java (getIntPropertyClamped):
+	New package-private method for properties inside an integer range.
+
+	* java/util/logging/MemoryHandler.java (constructor):
+	Take configuration from log manager properties.  Docfixes.
+	Throw exception for size values <= 0.
+
 2002-09-29  C. Brian Jones <cbj@gnu.org>
 
 	* configure.in: use AC_DEFINE templates instead of acconfig.h

@@ -123,9 +123,19 @@ public class LogManager {
   private Properties properties;
 
   /**
-   * Support for handling PropertyChangeEvents.
+   * A delegate object that provides support for handling
+   * PropertyChangeEvents.  The API specification does not
+   * mention which bean should be the source in the distributed
+   * PropertyChangeEvents, but Mauve test code has determined that
+   * the Sun J2SE 1.4 reference implementation uses the LogManager
+   * class object. This is somewhat strange, as the class object
+   * is not the bean with which listeners have to register, but
+   * there is no reason for the GNU Classpath implementation to
+   * behave differently from the reference implementation in
+   * this case.
    */
-  private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+  private final PropertyChangeSupport pcs
+    = new PropertyChangeSupport(/* source bean */ LogManager.class);
 
   protected LogManager()
   {
@@ -358,16 +368,20 @@ public class LogManager {
   /**
    * Returns a Logger given its name.
    *
-   * @param name the name of the logger.  Passing <code>null</code>
-   *             will not throw an exception, but always lead to a
-   *             <code>null</code> result.
+   * @param name the name of the logger.
    *
-   * @return a named Logger, or <code>null</code> if there is no logger
-   *         with that name.
+   * @return a named Logger, or <code>null</code> if there is no
+   *     logger with that name.
+   *
+   * @throw java.lang.NullPointerException if <code>name</code>
+   *     is <code>null</code>.
    */
   public synchronized Logger getLogger(String name)
   {
     WeakReference  ref;
+
+    /* Throw a NullPointerException if name is null. */
+    name.getClass();
 
     ref = (WeakReference) loggers.get(name);
     if (ref != null)
@@ -382,8 +396,8 @@ public class LogManager {
    * Since other threads can register loggers at any time, the
    * result could be different any time this method is called.
    *
-   * @return an Enumeration with the names of the currently registered 
-   *         Loggers.
+   * @return an Enumeration with the names of the currently
+   *    registered Loggers.
    */
   public synchronized Enumeration getLoggerNames()
   {
@@ -416,7 +430,9 @@ public class LogManager {
       {
 	logger = (Logger) ref.get();
 
-	if (logger != rootLogger)
+	if (logger == null)
+	  iter.remove();
+	else if (logger != rootLogger)
 	  logger.setLevel(null);
       }
     }
@@ -516,7 +532,13 @@ public class LogManager {
       }
     }
 
-    pcs.firePropertyChange("config", null, null);
+    /* The API specification does not talk about the
+     * property name that is distributed with the
+     * PropertyChangeEvent.  With test code, it could
+     * be determined that the Sun J2SE 1.4 reference
+     * implementation uses null for the property name.
+     */
+    pcs.firePropertyChange(null, null, null);
   }
 
 
@@ -551,6 +573,34 @@ public class LogManager {
     {
       return defaultValue;
     }
+  }
+
+
+  /**
+   * Returns the value of a configuration property as an integer,
+   * provided it is inside the acceptable range.
+   * This function is a helper used by the Classpath implementation
+   * of java.util.logging, it is <em>not</em> specified in the
+   * logging API.
+   *
+   * @param name the name of the configuration property.
+   *
+   * @param minValue the lowest acceptable value.
+   *
+   * @param maxValue the highest acceptable value.
+   *
+   * @param defaultValue the value that will be returned if the
+   *        property is not defined, or if its value is not an integer
+   *        number, or if it is less than the minimum value,
+   *        or if it is greater than the maximum value.
+   */
+  static int getIntPropertyClamped(String name, int defaultValue,
+				   int minValue, int maxValue)
+  {
+    int val = getIntProperty(name, defaultValue);
+    if ((val < minValue) || (val > maxValue))
+      val = defaultValue;
+    return val;
   }
 
 
