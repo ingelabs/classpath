@@ -1,3 +1,8 @@
+2004-12-30  Chris Burdess <dog@gnu.org>
+
+	* GnomeDocument.java,GnomeXPathNSResolver: Fixed XPathNSResolver
+	implementation to resolve relative to node argument.
+
 2004-12-30  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/plaf/metal/DefaultMetalTheme.java

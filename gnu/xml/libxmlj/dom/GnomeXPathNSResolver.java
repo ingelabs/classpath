@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package gnu.xml.libxmlj.dom;
 
+import org.w3c.dom.Node;
 import org.w3c.dom.xpath.XPathNSResolver;
 
 /**
@@ -45,18 +46,20 @@ import org.w3c.dom.xpath.XPathNSResolver;
  * @author <a href='mailto:dog@gnu.org'>Chris Burdess</a>
  */
 class GnomeXPathNSResolver
-implements XPathNSResolver
+  implements XPathNSResolver
 {
 
-  GnomeDocument doc;
+  Node node;
 
-  GnomeXPathNSResolver (GnomeDocument doc)
+  GnomeXPathNSResolver(Node node)
   {
-    this.doc = doc;
+    this.node = node;
   }
 
-  public String lookupNamespaceURI (String prefix)
+  public String lookupNamespaceURI(String prefix)
   {
-    return doc.lookupNamespaceURI (prefix);
+    return node.lookupNamespaceURI(prefix);
   }
+  
 }
+

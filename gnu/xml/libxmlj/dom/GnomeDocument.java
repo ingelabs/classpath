@@ -513,7 +513,7 @@ public class GnomeDocument
 
   public XPathNSResolver createNSResolver(Node nodeResolver)
   {
-    return new GnomeXPathNSResolver(this);
+    return new GnomeXPathNSResolver(nodeResolver);
   }
 
   public native Object evaluate(String expression,
