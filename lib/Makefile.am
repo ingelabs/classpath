@@ -53,7 +53,7 @@ JAVAH = @USER_JAVAH@ -jni -classpath ../lib:@USER_CLASSLIB@
 ##   else
 else
 ##     JAVAH = 
-JAVAH = @USER_JAVAH@ -jni -classpath ../lib:/usr/local/java/lib/classes.zip
+JAVAH = @USER_JAVAH@ -jni -classpath ../lib
 ##   endif
 endif
 ## else
@@ -91,12 +91,14 @@ install-data-local :
 include $(JAVA_DEPEND)
 include $(HEADERS_DEPEND)
 
-all: jar-classes $(MAKEFILE_DEPEND) $(HEADERS_DEPEND) $(HEADERS)
+all: glibj.zip $(MAKEFILE_DEPEND) $(HEADERS_DEPEND) $(HEADERS)
+#jar-classes
 
-$(HEADERS) : jar-classes
+$(HEADERS) : glibj.zip 
+#jar-classes
 
-.PHONY: jar-classes
-jar-classes glibj.zip: classes compile-classes
+#.PHONY: jar-classes
+glibj.zip: classes compile-classes
 	if ! [ -e gnu ]; then -mkdir gnu; fi
 	if ! [ -e gnu/java ]; then -mkdir gnu/java; fi
 	if ! [ -e gnu/java/locale ]; then -mkdir gnu/java/locale; fi
@@ -112,19 +114,27 @@ classes: gen-classlist.sh standard.omit $(top_srcdir)/java $(top_srcdir)/javax $
 dep: classes
 	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -s"
 
-.PHONY: compile-classes
-compile-classes: classes $(JAVA_SRCS) 
-	$(SHELL) -c "@JIKES@ -classpath ..:../vm/reference:.:@USER_CLASSLIB@ +CSO +M -d . @classes 2>errors.txt; exit 0"
+#.PHONY: compile-classes
+compile-classes: classes $(JAVA_DEPEND) $(JAVA_SRCS) Makefile
+if USER_SPECIFIED_CLASSLIB
+	$(SHELL) -c "@JIKES@ -nowarn -classpath ..:../vm/reference:.:@USER_CLASSLIB@ +CSO +M +F -d . @classes 2>errors.txt; exit 0"
+else
+	$(SHELL) -c "@JIKES@ -nowarn -classpath ..:../vm/reference:. +CSO +M +F -d . @classes 2>errors.txt; exit 0"
+endif
 	touch compile-classes
 
 $(MAKEFILE_DEPEND): classes $(HEADERS_DEPEND) $(CLASSES_DEPEND)
 	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -d"
 
 $(HEADERS_DEPEND): classes
+	if ! [ -e $(top_srcdir)/include ]; then -mkdir $(top_srcdir)/include; fi	
 	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -h"
 
 $(CLASSES_DEPEND): classes
 	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -c"
+
+$(JAVA_DEPEND): classes
+	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -j"
 
 ## neither developer nor maintainer...
 
