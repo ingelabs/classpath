@@ -2,4 +2,4 @@
 
 gnujavaiodir = $(datadir)/gnu/java/io
 
-gnujavaio_JAVA = NullOutputStream.java UniqueObjectWrapper.java
+gnujavaio_JAVA = NullOutputStream.java ObjectIdentityWrapper.java

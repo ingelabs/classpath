@@ -51,6 +51,8 @@ gnu/java/net/Makefile \
 gnu/java/net/content/Makefile \
 gnu/java/net/content/text/Makefile \
 gnu/java/net/http/Makefile \
+gnu/tools/Makefile \
+gnu/tools/serialver/Makefile \
 java/Makefile \
 java/io/Makefile \
 java/net/Makefile \
@@ -58,6 +60,7 @@ native/Makefile \
 native/java.io/Makefile \
 native/java.net/Makefile \
 test/Makefile \
+test/gnu.java.lang.reflect/Makefile \
 test/java.io/Makefile \
 test/java.net/Makefile)
 

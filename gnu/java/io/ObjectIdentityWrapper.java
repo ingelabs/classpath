@@ -1,7 +1,7 @@
 /*************************************************************************
-/* UniqueObjectWrapper.java -- Wrapper class used to override equals()
-/*                             and hashCode() to be as discriminating
-/*			       as possible
+/* ObjectIdentityWrapper.java -- Wrapper class used to override equals()
+/*                               and hashCode() to be as discriminating
+/*			         as possible
 /*
 /* Copyright (c) 1998 by Geoffrey C. Berry (gcb@cs.duke.edu)
 /*
@@ -26,14 +26,14 @@ package gnu.java.io;
    the methods <code>hashCode()</code> and <code>equals(Object)</code>
    as discriminating as possible.
 */
-public class UniqueObjectWrapper
+public class ObjectIdentityWrapper
 {
 
   /**
-     Constructs a <code>UniqueObjectWrapper</code> that is wrapped
+     Constructs a <code>ObjectIdentityWrapper</code> that is wrapped
      around o.
   */
-  public UniqueObjectWrapper( Object o )
+  public ObjectIdentityWrapper( Object o )
   {
     object = o;
   }
@@ -41,7 +41,7 @@ public class UniqueObjectWrapper
   /**
      Uses <code>System.identityHashCode(Object)</code> to compute a
      hash code for the object wrapped by this
-     <code>UniqueObjectWrapper</code>.
+     <code>ObjectIdentityWrapper</code>.
 
      @see java.lang.System#identityHashCode(java.lang.Object)
      @see java.util.Hashtable
@@ -54,29 +54,29 @@ public class UniqueObjectWrapper
 
   /**
      Uses the <code>==</code> operator to test for equality between
-     the object wrapped by this <code>UniqueObjectWrapper</code> and
-     the object wrapped by the <code>UniqueObjectWrapper</code> o.
-     Returns false if o is not a <code>UniqueObjectWrapper</code>.
+     the object wrapped by this <code>ObjectIdentityWrapper</code> and
+     the object wrapped by the <code>ObjectIdentityWrapper</code> o.
+     Returns false if o is not a <code>ObjectIdentityWrapper</code>.
 
      @see java.util.Hashtable
      @see java.lang.Object#equals()
   */
   public boolean equals( Object o )
   {
-    if( o instanceof UniqueObjectWrapper )
-      return object == ((UniqueObjectWrapper)o).object;
+    if( o instanceof ObjectIdentityWrapper )
+      return object == ((ObjectIdentityWrapper)o).object;
     else
       return false;
   }
 
   public String toString()
   {
-    return "UniqueObjectWrapper< " + object + ", " + hashCode() + " >";
+    return "ObjectIdentityWrapper< " + object + ", " + hashCode() + " >";
   }
 
   /**
      The <code>Object</code> wrapped by this
-     <code>UniqueObjectWrapper</code>.
+     <code>ObjectIdentityWrapper</code>.
   */
   public Object object;
 }

@@ -1,3 +1,12 @@
+1998-07-07  Geoff Berry  <gcb@nutzoid.salmon>
+
+	* ObjectStreamClass.java (setFlags(Class)): Use
+	Class.isAssignableFrom(Class) instead of looking through
+	interfaces for Serializable and Externalizable.
+	(hasDefinedSUID(Class)): changed to getDefinedSUID(Class).
+	Checking for the field is now done in Java to be sure the field is
+	final.
+
 1998-07-06  Geoff Berry  <gcb@cs.duke.edu>
 
 	* ObjectStreamClass.java, ObjectStreamConstants.java: Added

@@ -24,7 +24,7 @@ package java.io;
 import java.lang.reflect.Field;
 import java.util.Hashtable;
 
-import gnu.java.io.UniqueObjectWrapper;
+import gnu.java.io.ObjectIdentityWrapper;
 import gnu.java.lang.reflect.TypeSignature;
 
 public class ObjectOutputStream extends OutputStream
@@ -432,13 +432,13 @@ public class ObjectOutputStream extends OutputStream
 
   private Integer findHandle( Object obj )
   {
-    return (Integer)myOIDLookupTable.get( new UniqueObjectWrapper( obj ) );
+    return (Integer)myOIDLookupTable.get( new ObjectIdentityWrapper( obj ) );
   }
 
 
   private int assignNewHandle( Object obj )
   {
-    myOIDLookupTable.put( new UniqueObjectWrapper( obj ),
+    myOIDLookupTable.put( new ObjectIdentityWrapper( obj ),
 			  new Integer( myNextOID ) );
     return myNextOID++;
   }

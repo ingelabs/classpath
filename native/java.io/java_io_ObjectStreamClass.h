@@ -9,18 +9,10 @@ extern "C" {
 #endif
 /*
  * Class:     java_io_ObjectStreamClass
- * Method:    initializeClass
- * Signature: ()V
+ * Method:    getDefinedSUID
+ * Signature: (Ljava/lang/Class;)J
  */
-JNIEXPORT void JNICALL Java_java_io_ObjectStreamClass_initializeClass
-  (JNIEnv *, jclass);
-
-/*
- * Class:     java_io_ObjectStreamClass
- * Method:    hasDefinedSUID
- * Signature: (Ljava/lang/Class;)Z
- */
-JNIEXPORT jboolean JNICALL Java_java_io_ObjectStreamClass_hasDefinedSUID
+JNIEXPORT jlong JNICALL Java_java_io_ObjectStreamClass_getDefinedSUID
   (JNIEnv *, jobject, jclass);
 
 /*

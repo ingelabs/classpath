@@ -21,8 +21,6 @@
 #include "java_io_ObjectStreamClass.h"
 
 
-static jfieldID mysuid_fid = NULL;
-static const char * myUID_str = "myUID";
 static const char * myLongTypeId = "J";
 static const char * serialVersionUID_str = "serialVersionUID";
 static const char * class_init_str = "<clinit>";
@@ -30,25 +28,12 @@ static const char * class_init_sig = "()V";
 
 
 /*
-  Precomputes jfieldID for the `myUID' field in ObjectStreamClass.
-*/ 
-JNIEXPORT void JNICALL
-Java_java_io_ObjectStreamClass_initializeClass( JNIEnv * env,
-						jclass myclass )
-{
-  mysuid_fid = (*env)->GetFieldID( env, myclass, myUID_str, myLongTypeId );
-}
-
-
-/*
-  Returns true if CLAZZ has a long field named `serialVersionUID'.  A
-  side-effect of this method is that the `myUID' field of SELF is set
-  to the value of CLAZZ's `serialVersionUID' field.
+  Returns the value of CLAZZ's static long field named `serialVersionUID'.
 
   A NoSuchFieldError is raised if CLAZZ has no such field.
 */
-JNIEXPORT jboolean JNICALL
-Java_java_io_ObjectStreamClass_hasDefinedSUID( JNIEnv * env,
+JNIEXPORT jlong JNICALL
+Java_java_io_ObjectStreamClass_getDefinedSUID( JNIEnv * env,
 					       jobject self,
 					       jclass clazz )
 {
@@ -57,12 +42,9 @@ Java_java_io_ObjectStreamClass_hasDefinedSUID( JNIEnv * env,
 						myLongTypeId );
 
   if( suid_fid == NULL )
-    return FALSE;
+    return 0;
   
-  (*env)->SetLongField( env, self, mysuid_fid,
-			(*env)->GetStaticLongField( env, clazz, suid_fid ) );
-  
-  return TRUE;
+  return (*env)->GetStaticLongField( env, clazz, suid_fid );
 }
 
 
@@ -81,5 +63,5 @@ Java_java_io_ObjectStreamClass_hasClassInitializer( JNIEnv * env,
 					     class_init_str,
 					     class_init_sig );
 
-  return !(mid == NULL);
+  return mid != NULL;
 }

@@ -18,8 +18,6 @@
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
-// TODO: test suite
-
 package java.io;
 
 import java.lang.reflect.Constructor;
@@ -233,25 +231,11 @@ public class ObjectStreamClass implements Serializable
   // Sets bits in myFlags according to features of CL.
   private void setFlags( Class cl )
   {
-    Class[] interfaces = cl.getInterfaces();
-    
-    boolean serializable = false;
-    boolean externalizable = false;
-    for( int i=0; i < interfaces.length; i++ )
-    {
-      if( interfaces[i] == java.io.Serializable.class )
-	serializable = true;
-      else if( interfaces[i] == java.io.Externalizable.class )
-	externalizable = true;
-    }
-
-
-    if( externalizable )
+    if( java.io.Externalizable.class.isAssignableFrom( cl ) )
       myFlags |= ObjectStreamConstants.SC_EXTERNALIZABLE;
-    else if( serializable )
+    else if( java.io.Serializable.class.isAssignableFrom( cl ) )
       // only set this bit if CL is NOT Externalizable
       myFlags |= ObjectStreamConstants.SC_SERIALIZABLE;
-
 
     try
     {
@@ -294,7 +278,7 @@ public class ObjectStreamClass implements Serializable
 	num_good_fields++;
     }
     
-    // make a copy of serializable fields
+    // make a copy of serializable (non-null) fields
     myFields = new Field[ num_good_fields ];
     for( int from=0, to=0; from < all_fields.length; from++ )
       if( all_fields[from] != null )
@@ -313,13 +297,18 @@ public class ObjectStreamClass implements Serializable
   {
     try
     {
-      // hasDefinedSUID sets myUID if it is defined by the class
-      if( hasDefinedSUID( cl ) )
+      Field suid = cl.getDeclaredField( ourSUIDFieldName );
+      int modifiers = suid.getModifiers();
+
+      if( Modifier.isStatic( modifiers )
+	  && Modifier.isFinal( modifiers ) )
+      {
+	myUID = getDefinedSUID( cl );
 	return;
+      }
     }
-    catch( NoSuchFieldError oh_well )
+    catch( NoSuchFieldException ignore )
     {}
-    
 
     // cl didn't define serialVersionUID, so we have to compute it
     try
@@ -409,6 +398,9 @@ public class ObjectStreamClass implements Serializable
       
 	data_out.writeUTF( method.getName() );
 	data_out.writeInt( modifiers );
+
+	// the replacement of '/' with '.' was needed to make computed
+	// SUID's agree with those computed by JDK
 	data_out.writeUTF(
 	  TypeSignature.getEncodingOfMethod( method ).replace( '/', '.' ) );
       }
@@ -433,16 +425,11 @@ public class ObjectStreamClass implements Serializable
   }
   
 
-  // Precomputes jfieldID for the `myUID' field in ObjectStreamClass.
-  private static native void initializeClass();
-
-
-  // Returns true if CLAZZ has a long field named `serialVersionUID'.
-  // A side-effect of this method is that this object's `myUID' field is
-  // set to the value of CLAZZ's `serialVersionUID' field.
+  // Returns the value of CLAZZ's final static long field named
+  // `serialVersionUID'.
   //
   // A NoSuchFieldError is raised if CLAZZ has no such field.
-  private native boolean hasDefinedSUID( Class clazz );
+  private native long getDefinedSUID( Class clazz );
 
     
   // Returns true if CLAZZ has a static class initializer
@@ -463,6 +450,7 @@ public class ObjectStreamClass implements Serializable
   private static final Comparator ourSerializableFieldComparator;
   private static final Comparator ourInterfaceComparartor;
   private static final Comparator ourMemberComparator;
+  private static final String ourSUIDFieldName = "serialVersionUID";
   private static final String ourWriteMethodName = "writeObject";
   private static final
   Class[] ourWriteMethodArgTypes = { java.io.ObjectOutputStream.class };
@@ -487,7 +475,6 @@ public class ObjectStreamClass implements Serializable
     //eDEBUG
 
     System.loadLibrary( "java_io_ObjectStreamClass" );
-    initializeClass();
 
     ourClassLookupTable = new Hashtable();
     ourNullOutputStream = new NullOutputStream();
