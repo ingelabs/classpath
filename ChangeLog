@@ -1,6 +1,9 @@
 2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/InputMapUIResource.java: Reformatted, wrote JavaDoc.
+	* javax/swing/plaf/InternalFrameUI.java: Likewise.
+	* javax/swing/plaf/LabelUI.java: Likewise.
+
 	* javax/swing/plaf/InsetsUIResource.java: Reformatted, wrote JavaDoc.
 	(serialVersionUID): New field.
 
