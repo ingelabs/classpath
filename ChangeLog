@@ -1,5 +1,10 @@
 2004-09-21  Michael Koch  <konqueror@gmx.de>
 
+	* scripts/jalopy-gnu.xml: throws clauses have to be indented by
+	two spaces.
+
+2004-09-21  Michael Koch  <konqueror@gmx.de>
+
 	* scripts/checkstyle-config.xml:
 	Enabled check for ordered import statements.
 	* scripts/jalopy-gnu.xml:
