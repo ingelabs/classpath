@@ -106,9 +106,9 @@ public class ZipFile implements ZipConstants
   /**
    * Opens a Zip file reading the given File in the given mode.
    *
-   * If the OPEN_DELETE mode is specified, the zip file will be deleted at some time moment
-   * after it is opened. It will be deleted before the zip file is closed or the Virtual Machine
-   * exits.
+   * If the OPEN_DELETE mode is specified, the zip file will be deleted at
+   * some time moment after it is opened. It will be deleted before the zip
+   * file is closed or the Virtual Machine exits.
    * 
    * The contents of the zip file will be accessible until it is closed.
    *
@@ -125,7 +125,8 @@ public class ZipFile implements ZipConstants
   {
     if ((mode & OPEN_DELETE) != 0)
       {
-	throw new IllegalArgumentException("OPEN_DELETE mode not supported yet in java.util.zip.ZipFile");
+	throw new IllegalArgumentException
+	  ("OPEN_DELETE mode not supported yet in java.util.zip.ZipFile");
       }
     this.raf = new RandomAccessFile(file, "r");
     this.name = file.getName();
@@ -137,7 +138,8 @@ public class ZipFile implements ZipConstants
    * @exception IOException if a i/o error occured.
    * @exception EOFException if the file ends prematurely
    */
-  private final int readLeShort(DataInput di) throws IOException {
+  private final int readLeShort(DataInput di) throws IOException
+  {
     byte[] b = new byte[2];
     di.readFully(b);
     return (b[0] & 0xff) | (b[1] & 0xff) << 8;
@@ -148,7 +150,8 @@ public class ZipFile implements ZipConstants
    * @exception IOException if a i/o error occured.
    * @exception EOFException if the file ends prematurely
    */
-  private final int readLeInt(DataInput di) throws IOException {
+  private final int readLeInt(DataInput di) throws IOException
+  {
     byte[] b = new byte[4];
     di.readFully(b);
     return ((b[0] & 0xff) | (b[1] & 0xff) << 8)

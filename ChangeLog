@@ -1,3 +1,7 @@
+2002-10-31  Mark Wielaard  <mark@klomp.org>:
+
+	* java/util/zip/ZipFile.java: Indentation fixes.
+
 2002-10-31  Mark Anderson  <mark@panonet.net>
 
 	* java/awt/GridBagLayout.java (setConstraints): New stubbed method
