@@ -46,12 +46,12 @@ public abstract class ByteBuffer extends Buffer
 {
   private ByteOrder endian = ByteOrder.BIG_ENDIAN;
   
+  protected byte [] backing_buffer;
+  
   /**
    * Allocates a new direct byte buffer.
    */ 
   public static ByteBuffer allocateDirect (int capacity)
-  protected byte [] backing_buffer;
-  
   {
     ByteBuffer b = new gnu.java.nio. ByteBufferImpl(capacity, 0, capacity);
     return b;
