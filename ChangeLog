@@ -4,6 +4,10 @@
 	* java/io/ObjectInputStream.java (readObject): Throw 
 	StreamCorruptedException, not BlockDataException.
 
+	* java/util/TreeSet.java (clone): Made subclass safe, use 
+	super.clone(), not new.
+	* java/util/TreeMap.java (clone): Likewise.
+
 2001-02-15  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/HashMap.java: Rewritten.
