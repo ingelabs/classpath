@@ -70,10 +70,9 @@ public class Handler extends URLStreamHandler
    *
    * @exception IOException If an error occurs
    */
-  protected URLConnection openConnection (URL url)
-    throws IOException
+  protected URLConnection openConnection(URL url) throws IOException
   {
-    return new Connection (url);
+    return new Connection(url);
   }
 
   /**
@@ -315,5 +314,4 @@ public class Handler extends URLStreamHandler
     
     return sb.toString();
   }
-
 } // class Handler
