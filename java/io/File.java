@@ -875,7 +875,7 @@ private native long lastModifiedInternal(String path);
   * @return <code>true</code> if the operation succeeded, <code>false</code>
   * otherwise.
   *
-  * @exception IlegalArgumentException If the specified time is negative.
+  * @exception IllegalArgumentException If the specified time is negative.
   * @exception SecurityException If the <code>SecurityManager</code> will
   * not allow this operation.
   */

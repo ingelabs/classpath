@@ -197,7 +197,7 @@ public class Inflater
   /**
    * Decodes the deflate header.
    * @return false if more input is needed. 
-   * @exception DataFormatException, if header is invalid.
+   * @exception DataFormatException if header is invalid.
    */
   private boolean decodeHeader() throws DataFormatException
   {
@@ -255,7 +255,7 @@ public class Inflater
    * Decodes the huffman encoded symbols in the input stream.
    * @return false if more input is needed, true if output window is
    * full or the current block ends.
-   * @exception DataFormatException, if deflated stream is invalid.  
+   * @exception DataFormatException if deflated stream is invalid.  
    */
   private boolean decodeHuffman() throws DataFormatException
   {
@@ -347,7 +347,7 @@ public class Inflater
   /**
    * Decodes the adler checksum after the deflate stream.
    * @return false if more input is needed. 
-   * @exception DataFormatException, if checksum doesn't match.
+   * @exception DataFormatException if checksum doesn't match.
    */
   private boolean decodeChksum() throws DataFormatException
   {
@@ -371,7 +371,7 @@ public class Inflater
   /**
    * Decodes the deflated stream.
    * @return false if more input is needed, or if finished. 
-   * @exception DataFormatException, if deflated stream is invalid.
+   * @exception DataFormatException if deflated stream is invalid.
    */
   private boolean decode() throws DataFormatException
   {
@@ -553,8 +553,8 @@ public class Inflater
    * @param buffer the output buffer.
    * @return the number of bytes written to the buffer, 0 if no further
    * output can be produced.  
-   * @exception DataFormatException, if deflated stream is invalid.
-   * @exception IllegalArgumentException, if buf has length 0.
+   * @exception DataFormatException if deflated stream is invalid.
+   * @exception IllegalArgumentException if buf has length 0.
    */
   public int inflate(byte[] buf) throws DataFormatException
   {
@@ -571,8 +571,8 @@ public class Inflater
    * @param len the maximum length of the output.
    * @return the number of bytes written to the buffer, 0 if no further
    * output can be produced.  
-   * @exception DataFormatException, if deflated stream is invalid.
-   * @exception IllegalArgumentException, if len is <= 0.
+   * @exception DataFormatException if deflated stream is invalid.
+   * @exception IllegalArgumentException if len is lt;eq; 0.
    * @exception IndexOutOfBoundsException if the off and/or len are wrong.
    */
   public int inflate(byte[] buf, int off, int len) throws DataFormatException

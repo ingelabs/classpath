@@ -2205,7 +2205,7 @@ public class Arrays
    *         comparable
    * @throws NullPointerException if an element is null (since
    *         null.compareTo cannot work)
-   * @throws ArrayIndexOutOfBoundsException, if fromIndex and toIndex
+   * @throws ArrayIndexOutOfBoundsException if fromIndex and toIndex
    *         are not in range.
    * @throws IllegalArgumentException if fromIndex &gt; toIndex
    */
@@ -2229,7 +2229,7 @@ public class Arrays
    *        the elements' natural order
    * @throws ClassCastException if any two elements are not mutually
    *         comparable by the Comparator provided
-   * @throws ArrayIndexOutOfBoundsException, if fromIndex and toIndex
+   * @throws ArrayIndexOutOfBoundsException if fromIndex and toIndex
    *         are not in range.
    * @throws IllegalArgumentException if fromIndex &gt; toIndex
    * @throws NullPointerException if a null element is compared with natural

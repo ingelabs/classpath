@@ -1,4 +1,19 @@
-2002-05-06  C. Brian Jones <cbj@gnu.org>
+2002-05-06  Mark Wielaard <mark@klomp.org>
+
+	* java/awt/Choice.java: Fix javadoc spelling mistake.
+	* java/awt/im/spi/InputMethodContext.java: Import HeadlessException.
+	* java/awt/image/PixelGrabber.java: Fix javadoc spelling mistake.
+	* java/io/File.java: Likewise.
+	* java/lang/String.java: Likewise.
+	* java/security/AccessController.java: Likewise.
+	* java/sql/DatabaseMetaData.java: Likewise.
+	* java/util/Arrays.java: Likewise.
+	* java/util/prefs/AbstractPreferences.java: Likewise.
+	* java/util/prefs/Preferences.java: Likewise.
+	* java/util/zip/Inflater.java: Likewise.
+	* java/util/regex/PatternSyntaxException.java: New class.
+
+2002-05-06  Mark Wielaard <mark@klomp.org>
 
 	* java/applet/package.html: Add stub package description fo gjdoc.
 	* java/awt/color/package.html: Likewise.

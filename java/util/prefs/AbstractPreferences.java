@@ -195,7 +195,7 @@ public abstract class AbstractPreferences extends Preferences {
      * this method will not catch that exception but propagate the exception
      * to the caller.
      *
-     * @exception BackingStroreException when the backing store cannot be
+     * @exception BackingStoreException when the backing store cannot be
      *            reached
      * @exception IllegalStateException when this node has been removed
      */

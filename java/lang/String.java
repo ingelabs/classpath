@@ -43,6 +43,7 @@ import java.util.Comparator;
 import java.util.WeakHashMap;
 import java.util.Locale;
 import java.util.regex.Pattern;
+import java.util.regexp.PatternSyntaxException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.io.CharConversionException;
@@ -1121,7 +1122,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param regex the pattern to match
    * @return true if the pattern matches
    * @throws NullPointerException if regex is null
-   * @throws PatternSyntaxExceptions if regex is invalid
+   * @throws PatternSyntaxException if regex is invalid
    * @see Pattern#matches(String, CharSequence)
    * @since 1.4
    */
@@ -1139,7 +1140,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param replacement the replacement string
    * @return the modified string
    * @throws NullPointerException if regex or replacement is null
-   * @throws PatternSyntaxExceptions if regex is invalid
+   * @throws PatternSyntaxException if regex is invalid
    * @see #replaceAll(String, String)
    * @see Pattern#compile(String)
    * @see Pattern#matcher(CharSequence)
@@ -1160,7 +1161,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param replacement the replacement string
    * @return the modified string
    * @throws NullPointerException if regex or replacement is null
-   * @throws PatternSyntaxExceptions if regex is invalid
+   * @throws PatternSyntaxException if regex is invalid
    * @see #replaceFirst(String, String)
    * @see Pattern#compile(String)
    * @see Pattern#matcher(CharSequence)
@@ -1201,7 +1202,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param limit the limit threshold
    * @return the array of split strings
    * @throws NullPointerException if regex or replacement is null
-   * @throws PatternSyntaxExceptions if regex is invalid
+   * @throws PatternSyntaxException if regex is invalid
    * @see Pattern#compile(String)
    * @see Pattern#split(CharSequence, int)
    * @since 1.4
@@ -1221,7 +1222,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param regex the pattern to match
    * @return the array of split strings
    * @throws NullPointerException if regex or replacement is null
-   * @throws PatternSyntaxExceptions if regex is invalid
+   * @throws PatternSyntaxException if regex is invalid
    * @see #split(String, int)
    * @see Pattern#compile(String)
    * @see Pattern#split(CharSequence, int)

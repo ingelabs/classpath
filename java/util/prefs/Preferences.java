@@ -332,7 +332,7 @@ public abstract class Preferences {
      * Returns all the direct sub nodes of this preferences node.
      * Needs access to the backing store to give a meaningfull answer.
      *
-     * @exception BackingStroreException when the backing store cannot be
+     * @exception BackingStoreException when the backing store cannot be
      *            reached
      * @exception IllegalStateException when this node has been removed
      */

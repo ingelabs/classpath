@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package java.awt.im.spi;
 
+import java.awt.HeadlessException;
 import java.awt.Window;
 import java.awt.font.TextHitInfo;
 import java.awt.im.InputMethodRequests;

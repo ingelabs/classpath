@@ -500,7 +500,7 @@ supportsMixedCaseIdentifiers() throws SQLException;
   * This method tests whether or not the database treats mixed case
   * identifiers as all upper case.
   *
-  * @exception <code>true</code> if the database treats all identifiers as
+  * @return <code>true</code> if the database treats all identifiers as
   * upper case, <code>false</code> otherwise.
   *
   * @exception SQLException If an error occurs.
@@ -514,7 +514,7 @@ storesUpperCaseIdentifiers() throws SQLException;
   * This method tests whether or not the database treats mixed case
   * identifiers as all lower case.
   *
-  * @exception <code>true</code> if the database treats all identifiers as
+  * @return <code>true</code> if the database treats all identifiers as
   * lower case, <code>false</code> otherwise.
   *
   * @exception SQLException If an error occurs.
@@ -556,7 +556,7 @@ supportsMixedCaseQuotedIdentifiers() throws SQLException;
   * This method tests whether or not the database treats mixed case
   * quoted identifiers as all upper case.
   *
-  * @exception <code>true</code> if the database treats all quoted identifiers 
+  * @return <code>true</code> if the database treats all quoted identifiers 
   * as upper case, <code>false</code> otherwise.
   *
   * @exception SQLException If an error occurs.
@@ -570,7 +570,7 @@ storesUpperCaseQuotedIdentifiers() throws SQLException;
   * This method tests whether or not the database treats mixed case
   * quoted identifiers as all lower case.
   *
-  * @exception <code>true</code> if the database treats all quoted identifiers 
+  * @return <code>true</code> if the database treats all quoted identifiers 
   * as lower case, <code>false</code> otherwise.
   *
   * @exception SQLException If an error occurs.
