@@ -1,5 +1,11 @@
 2003-06-10  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/ServerSocketChannelImpl.java,
+	gnu/java/nio/SocketChannelImpl.java:
+	Mainly merged with libgcj.
+
+2003-06-10  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/rmi/server/UnicastRemoteCall.java:
 	New version from libgcj.
 
