@@ -1,5 +1,10 @@
 2003-03-02  Aaron M. Renn <arenn@urbanophile.com>
 
+	* java/io/File.java
+	Re-indent code and eliminate word wrapped comments
+
+2003-03-02  Aaron M. Renn <arenn@urbanophile.com>
+
 	* java/io/DataInputStream.java
 	Fix word wrapped comments
 	Commence primary ignition...
