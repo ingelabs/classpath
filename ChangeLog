@@ -1,3 +1,30 @@
+2003-07-16  David Grove  <groved@us.ibm.com
+
+	* java/lang/Double.java (doubleToLongBits): No longer native,
+	delegates to VMDouble.
+	(doubleToRawLongBits): Likewise.
+	(longBitsToDouble): Likewise.
+	* java/lang/Float.java (static): Moved to VMFloat.
+	(floatToIntBits) No longer native, delegates to VMFloat.
+	(floatToRawIntBits): Likewise.
+	(intBitsToFloat): Likewise.
+	* vm/reference/java/lang/VMDouble.java: New class.
+	* vm/reference/java/lang/VMFloat.java: New class.
+	* native/jni/java-lang/Makefile.am (libjavalang_la_SOURCES): Remove
+	java_lang_Float.c, add java_lang_VMFloat.c and java_lang_VMDouble.c.
+	* native/jni/java-lang/java_lang_Double.c (doubleToLongBits):
+	Removed, moved to java_lang_VMDouble.c.
+	(doubleToRawLongBits): Likewise.
+	(longBitsToDouble): Likewise.
+	* native/jni/java-lang/java_lang_Float.c: Removed file.
+	* native/jni/java-lang/java_lang_VMDouble.c: New file.
+	* native/jni/java-lang/java_lang_VMFloat.c: New file.
+	* include/java_lang_Double.h: Regenerated.
+	* include/java_lang_Float.h: Removed.
+	* include/java_lang_VMDouble.h: New file.
+	* include/java_lang_VMFloat.h: New file.
+	* NEWS: Describe new VM Float/Double conversion methods.
+
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
         * native/jni/classpath/jcl.c:

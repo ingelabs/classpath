@@ -10,6 +10,9 @@ New in release 0.06 (not-yet-released)
 * A VM can now supply its own String.intern() strategy through the
   VMString class. The supplied VMString reference class implements the
   original WeakHashMap strategy.
+* Float and Double to/from bits conversion functions can now be supplied by
+  the VM through VMFloat and VMDouble. Default JNI conversion methods are
+  supplied.
 
 New in release 0.05 (2003/02/15)
 * Supports free Java VMs Jikes RVM and Kissme out of the box, perhaps others.

@@ -1,5 +1,5 @@
-/* Float.c - java.lang.Float native functions
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+/* VMFloat.c - java.lang.VMFloat native functions
+   Copyright (C) 1998, 1999, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,14 +38,14 @@ exception statement from your version. */
 
 #include <config.h>
 
-#include "java_lang_Float.h"
+#include "java_lang_VMFloat.h"
 
 /*
- * Class:     java_lang_Float
+ * Class:     java_lang_VMFloat
  * Method:    floatToIntBits
  * Signature: (F)I
  */
-JNIEXPORT jint JNICALL Java_java_lang_Float_floatToIntBits
+JNIEXPORT jint JNICALL Java_java_lang_VMFloat_floatToIntBits
   (JNIEnv * env, jclass cls, jfloat value)
 {
     jvalue u;
@@ -61,11 +61,11 @@ JNIEXPORT jint JNICALL Java_java_lang_Float_floatToIntBits
 }
 
 /*
- * Class:     java_lang_Float
+ * Class:     java_lang_VMFloat
  * Method:    floatToRawIntBits
  * Signature: (F)I
  */
-JNIEXPORT jint JNICALL Java_java_lang_Float_floatToRawIntBits
+JNIEXPORT jint JNICALL Java_java_lang_VMFloat_floatToRawIntBits
   (JNIEnv * env, jclass cls, jfloat value)
 {
   jvalue u;
@@ -74,11 +74,11 @@ JNIEXPORT jint JNICALL Java_java_lang_Float_floatToRawIntBits
 }
 
 /*
- * Class:     java_lang_Float
+ * Class:     java_lang_VMFloat
  * Method:    intBitsToFloat
  * Signature: (I)F
  */
-JNIEXPORT jfloat JNICALL Java_java_lang_Float_intBitsToFloat
+JNIEXPORT jfloat JNICALL Java_java_lang_VMFloat_intBitsToFloat
   (JNIEnv * env, jclass cls, jint bits)
 {
     jvalue u;

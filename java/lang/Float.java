@@ -1,5 +1,6 @@
 /* Float.java -- object wrapper for float
-   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,8 +38,6 @@ exception statement from your version. */
 
 
 package java.lang;
-
-import gnu.classpath.Configuration;
 
 /**
  * Instances of class <code>Float</code> represent primitive
@@ -100,17 +99,6 @@ public final class Float extends Number implements Comparable
    * @serial the wrapped float
    */
   private final float value;
-
-  /**
-   * Load native routines necessary for this class.
-   */
-  static
-  {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-        System.loadLibrary("javalang");
-      }
-  }
 
   /**
    * Create a <code>Float</code> from the primitive <code>float</code>
@@ -438,7 +426,10 @@ public final class Float extends Number implements Comparable
    * @return the bits of the <code>float</code>
    * @see #intBitsToFloat(int)
    */
-  public static native int floatToIntBits(float value);
+  public static int floatToIntBits(float value)
+  {
+    return VMFloat.floatToIntBits(value);
+  }
 
   /**
    * Convert the float to the IEEE 754 floating-point "single format" bit
@@ -453,7 +444,10 @@ public final class Float extends Number implements Comparable
    * @return the bits of the <code>float</code>
    * @see #intBitsToFloat(int)
    */
-  public static native int floatToRawIntBits(float value);
+  public static int floatToRawIntBits(float value)
+  {
+    return VMFloat.floatToRawIntBits(value);
+  }
 
   /**
    * Convert the argument in IEEE 754 floating-point "single format" bit
@@ -468,7 +462,10 @@ public final class Float extends Number implements Comparable
    * @see #floatToIntBits(float)
    * @see #floatToRawIntBits(float)
    */
-  public static native float intBitsToFloat(int bits);
+  public static float intBitsToFloat(int bits)
+  {
+    return VMFloat.intBitsToFloat(bits);
+  }
 
   /**
    * Compare two Floats numerically by comparing their <code>float</code>

@@ -1,5 +1,5 @@
 /* Double.c - java.lang.Double native functions
-   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -88,53 +88,6 @@ JNIEXPORT void JNICALL Java_java_lang_Double_initIDs
   fprintf(stderr, "java.lang.Double.initIDs() NEGATIVE_INFINITY = %g\n", NEGATIVE_INFINITY);
 #endif
 } 
-
-/*
- * Class:     java_lang_Double
- * Method:    doubleToLongBits
- * Signature: (D)J
- */
-JNIEXPORT jlong JNICALL Java_java_lang_Double_doubleToLongBits
-  (JNIEnv * env, jclass cls, jdouble doubleValue)
-{
-  jvalue val;
-  jlong e, f;
-  val.d = doubleValue;
-  
-  e = val.j & 0x7ff0000000000000LL;
-  f = val.j & 0x000fffffffffffffLL;
-  
-  if (e == 0x7ff0000000000000LL && f != 0L)
-    val.j = 0x7ff8000000000000LL;
-
-  return val.j;
-}
-
-/*
- * Class:     java_lang_Double
- * Method:    doubleToRawLongBits
- * Signature: (D)J
- */
-JNIEXPORT jlong JNICALL Java_java_lang_Double_doubleToRawLongBits
-  (JNIEnv * env, jclass cls, jdouble doubleValue)
-{
-  jvalue val;
-  val.d = doubleValue;
-  return val.j;
-}
-
-/*
- * Class:     java_lang_Double
- * Method:    longBitsToDouble
- * Signature: (J)D
- */
-JNIEXPORT jdouble JNICALL Java_java_lang_Double_longBitsToDouble
-  (JNIEnv * env, jclass cls, jlong longValue)
-{
-  jvalue val;
-  val.j = longValue;
-  return val.d;
-}
 
 /*
  * Class:     java_lang_Double

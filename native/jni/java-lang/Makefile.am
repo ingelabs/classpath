@@ -2,8 +2,9 @@ pkglib_LTLIBRARIES = 	libjavalang.la 	libjavalangreflect.la
 
 libjavalang_la_SOURCES = java_lang_VMSystem.c \
 			java_lang_Object.c \
-			java_lang_Float.c \
+			java_lang_VMFloat.c \
 			java_lang_Double.c \
+			java_lang_VMDouble.c \
 			java_lang_Math.c
 
 libjavalangreflect_la_SOURCES = java_lang_reflect_Array.c

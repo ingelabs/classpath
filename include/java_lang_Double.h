@@ -10,12 +10,9 @@ extern "C"
 {
 #endif
 
-extern jdouble Java_java_lang_Double_parseDouble (JNIEnv *env, jclass, jstring);
-extern jlong Java_java_lang_Double_doubleToLongBits (JNIEnv *env, jclass, jdouble);
-extern jlong Java_java_lang_Double_doubleToRawLongBits (JNIEnv *env, jclass, jdouble);
-extern jdouble Java_java_lang_Double_longBitsToDouble (JNIEnv *env, jclass, jlong);
-extern jstring Java_java_lang_Double_toString__DZ (JNIEnv *env, jclass, jdouble, jboolean);
-extern void Java_java_lang_Double_initIDs (JNIEnv *env, jclass);
+extern JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble (JNIEnv *env, jclass, jstring);
+extern JNIEXPORT jstring JNICALL Java_java_lang_Double_toString__DZ (JNIEnv *env, jclass, jdouble, jboolean);
+extern JNIEXPORT void JNICALL Java_java_lang_Double_initIDs (JNIEnv *env, jclass);
 
 #ifdef __cplusplus
 }
