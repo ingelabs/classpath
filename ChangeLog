@@ -1,5 +1,12 @@
 2004-06-26  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c
+	(ok_clicked): Use Ljava/lang/String; not Ljava.lang.String; in JNI
+	GetMethodID call.
+	(cancel_clicked): Likewise.
+
+2004-06-26  Mark Wielaard  <mark@klomp.org>
+
 	* include/gnu_java_awt_peer_gtk_GdkFontMetrics.h: Regenerated.
 
 	* javax/swing/plaf/basic/BasicMenuUI.java (mousePressed): Don't call
