@@ -186,6 +186,29 @@ public abstract class SignatureSpi
     throws SignatureException;
 
   /**
+   * <p>Verifies the passed-in <code>signature</code> in the specified array of
+   * bytes, starting at the specified <code>offset</code>.</p>
+   *
+   * <p>Note: Subclasses should overwrite the default implementation.</p>
+   *
+   * @param sigBytes the signature bytes to be verified.
+   * @param offset the offset to start from in the array of bytes.
+   * @param length the number of bytes to use, starting at offset.
+   * @return <code>true</code> if the signature was verified, <code>false</code>
+   * if not.
+   * @throws SignatureException if the engine is not initialized properly, or
+   * the passed-in <code>signature</code> is improperly encoded or of the wrong
+   * type, etc.
+   */
+  protected boolean engineVerify(byte[] sigBytes, int offset, int length)
+    throws SignatureException
+  {
+    byte[] tmp = new byte[length];
+    System.arraycopy(sigBytes, offset, tmp, 0, length);
+    return engineVerify(tmp);
+  }
+
+  /**
    * Sets the specified algorithm parameter to the specified value. This method
    * supplies a general-purpose mechanism through which it is possible to set
    * the various parameters of this object. A parameter may be any settable
@@ -220,6 +243,27 @@ public abstract class SignatureSpi
     throws InvalidAlgorithmParameterException
   {
     throw new UnsupportedOperationException();
+  }
+
+  /**
+   * <p>This method is overridden by providers to return the parameters used
+   * with this signature engine, or <code>null</code> if this signature engine
+   * does not use any parameters.</p>
+   *
+   * <p>The returned parameters may be the same that were used to initialize
+   * this signature engine, or may contain a combination of default and randomly
+   * generated parameter values used by the underlying signature implementation
+   * if this signature engine requires algorithm parameters but was not
+   * initialized with any.</p>
+   *
+   * @return the parameters used with this signature engine, or <code>null</code>
+   * if this signature engine does not use any parameters.
+   * @throws UnsupportedOperationException if this method is not overridden by
+   * a provider.
+   */
+  protected AlgorithmParameters engineGetParameters()
+  {
+    throw new UnsupportedOperationException();    
   }
 
   /**
