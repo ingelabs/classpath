@@ -1,3 +1,10 @@
+2002-12-17  C. Brian Jones <cbj@gnu.org>
+
+	* doc/www.gnu.org/home.wml: link to docs directory
+	* doc/www.gnu.org/docs/docs.wml: new file
+	* doc/www.gnu.org/docs/redistribution.wml: new file
+	* doc/www.gnu.org/docs/license.wml: new file
+
 2002-12-15  Raif Naffah  <raif@fl.net.au>
 
 	* java/math/BigInteger.java (euclidInv): Make sure quot and rem are in

@@ -1,0 +1,28 @@
+#!wml --include=..
+
+#use wml::std::page
+#use wml::std::lang
+#use wml::fmt::isolatin
+#use wml::std::case global=upper
+
+<lang:new id=en short>
+<lang:star:slice:>
+
+<set-var last-modified-author="<cbj>">
+
+#include <include/macros.wml>
+
+<header title="GNU Classpath Copyright and Licenses">
+<en>
+<H4>Copyright and Licenses</H4>
+<blockquote>
+  <H4>Documentation</H4>
+  <blockquote>
+    <p>The Free Software Foundation maintains copyright on most, if not all
+       documentation.  The license on the generated API documentation most
+       likely falls under the license of the source code that contains the
+       documentation.
+  </blockquote>
+</blockquote>
+</en>
+<footer>

@@ -80,12 +80,9 @@ name="ftp://alpha.gnu.org/gnu/classpath/">.
 
 <H4>Documentation</H4>
 <UL>
+  <LI><link url="docs/" name="Current Documentation"></LI>
   <LI><link url="docs/orp.html" name="Using GNU
   Classpath with ORP"></LI>
-  <LI><link url="docs/hacking.html"
-       name="GNU Classpath Hacker's Guide"></LI>
-  <LI><link url="docs/vmintegration.html" 
-       name="Virtual Machine Integration Guide"></LI>
   <LI><link url="announce/announcements.html" 
        name="Old News"></LI>
 </UL>

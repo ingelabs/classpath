@@ -1,0 +1,33 @@
+#!wml --include=..
+
+#use wml::std::page
+#use wml::std::lang
+#use wml::fmt::isolatin
+#use wml::std::case global=upper
+
+<lang:new id=en short>
+<lang:star:slice:>
+
+<set-var last-modified-author="<cbj>">
+
+#include <include/macros.wml>
+
+<header title="GNU Classpath Documentation">
+<en>
+<H4>General Information</H4>
+<blockquote>
+  <H4>Legal Notices</H4>
+  <link url="redistribution.html" name="Documentation Redistribution Policy"><br/>
+  <link url="license.html" name="Copyright and License Terms"><br/>
+</blockquote>
+<H4>API & Language Documentation</H4>
+<blockquote>
+  <link url="api/" name="GNU Classpath API Specification"> <link url="api/index_noframes.html" name="(No Frames)"><br/>
+</blockquote>
+<H4>GNU Classpath Developer's Documentation</H4>
+<blockquote>
+  <link url="orp.html" name="GNU Classpath Hacker's Guide"><br/>
+  <link url="vmintegration.html" name="Virtual Machine Integration Guide"><br/>
+</blockquote>
+</en>
+<footer>
