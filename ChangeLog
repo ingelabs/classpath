@@ -1,3 +1,12 @@
+2001-11-18  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/util/AbstractSet.java (removeAll): Fix scoping thinko.
+	* java/util/HashMap.java (putAllInternal): Set size here.
+	* java/util/Hashtable.java (putAllInternal): New method. Copy contents
+	of a map efficiently without calling put() or putAll().
+	(Hashtable (map)): Use putAllInternal.
+	(clone): Likewise.
+
 2001-11-16  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/Timer.java (TaskQueue.isStopped): Remove method.

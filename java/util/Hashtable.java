@@ -220,7 +220,7 @@ public class Hashtable extends Dictionary
   public Hashtable(Map m)
   {
     this(Math.max(m.size() * 2, DEFAULT_CAPACITY), DEFAULT_LOAD_FACTOR);
-    putAll(m);
+    putAllInternal(m);
   }
 
   /**
@@ -549,7 +549,7 @@ public class Hashtable extends Dictionary
         // This is impossible.
       }
     copy.buckets = new HashEntry[buckets.length];
-    copy.putAll(this);
+    copy.putAllInternal(this);
     // Clear the caches.
     copy.keys = null;
     copy.values = null;
@@ -835,6 +835,30 @@ public class Hashtable extends Dictionary
         e = e.next;
       }
     return null;
+  }
+
+  /**
+   * A simplified, more efficient internal implementation of putAll(). The 
+   * Map constructor and clone() should not call putAll or put, in order to 
+   * be compatible with the JDK implementation with respect to subclasses.
+   *
+   * @param m the map to initialize this from
+   */
+  void putAllInternal(Map m)
+  {
+    Iterator itr = m.entrySet().iterator();
+    int msize = m.size();
+    this.size = msize;
+
+    for (; msize > 0; msize--)
+      {
+	Map.Entry e = (Map.Entry) itr.next();
+	Object key = e.getKey();
+	int idx = hash(key);
+	HashEntry he = new HashEntry(key, e.getValue());
+	he.next = buckets[idx];
+	buckets[idx] = he;
+      }
   }
 
   /**

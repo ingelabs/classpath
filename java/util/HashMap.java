@@ -464,6 +464,7 @@ public class HashMap extends AbstractMap
       }
     copy.buckets = new HashEntry[buckets.length];
     copy.putAllInternal(this);
+    // Clear the entry cache. AbstractMap.clone() does the others.
     copy.entries = null;
     return copy;
   }
@@ -685,8 +686,10 @@ public class HashMap extends AbstractMap
   void putAllInternal(Map m)
   {
     Iterator itr = m.entrySet().iterator();
+    int msize = m.size();
+    this.size = msize;
 
-    for (int msize = m.size(); msize > 0; msize--)
+    for (; msize > 0; msize--)
       {
 	Map.Entry e = (Map.Entry) itr.next();
 	Object key = e.getKey();
