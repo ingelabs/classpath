@@ -1,5 +1,13 @@
 2003-04-07  Aaron M. Renn (arenn@urbanophile.com)
 
+	* java/io/BufferedOutputStream.java
+	(close): Delete commented out method
+	(finalize): Delete commented out method
+	* java/io/BufferedReader.java
+	* java/io/BufferedWriter.java
+
+2003-04-07  Aaron M. Renn (arenn@urbanophile.com)
+
 	* java/io/DataInputStream.java
 	Re-order methods to be more logical and consistent with DataInput
 	interface
