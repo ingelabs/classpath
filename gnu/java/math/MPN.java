@@ -1,4 +1,4 @@
-/* gnu.classpath.math.MPN
+/* gnu.java.math.MPN
    Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -27,7 +27,7 @@ executable file might be covered by the GNU General Public License. */
 // Included from Kawa 1.6.62 with permission of the author,
 // Per Bothner <per@bothner.com>.
 
-package gnu.classpath.math;
+package gnu.java.math;
 
 /** This contains various low-level routines for unsigned bigints.
  * The interfaces match the mpn interfaces in gmp,

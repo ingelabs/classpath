@@ -1,5 +1,9 @@
 2001-12-15  Tom Tromey  <tromey@redhat.com>
 
+	* java/math/BigInteger.java: Import gnu.java.math.*.
+	* gnu/java/math/MPN.java: New file, from ...
+	* gnu/classpath/math/MPN.java: ... here.  Deleted.
+
 	* java/math/BigInteger.java: Corrected copyright dates.
 
 2001-12-16  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>

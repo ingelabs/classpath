@@ -26,7 +26,7 @@ executable file might be covered by the GNU General Public License. */
 
 package java.math;
 
-import gnu.classpath.math.*;
+import gnu.java.math.*;
 import java.util.Random;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
