@@ -146,7 +146,7 @@ public abstract class AbstractTableModel implements TableModel, Serializable
       {
         String name = getColumnName (index);
         
-        if (columnName.equals (name))
+        if (name.equals (columnName))
           return index;
     }
 

@@ -1,5 +1,11 @@
 2003-09-29  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/table/AbstractTableModel.java
+	(findColumnName): Prevent from NullPointerException if argument
+	columnName is null.
+
+2003-09-29  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/table/AbstractTableModel.java:
 	This patch is based on a patch done by Arnaud Vandyck
 	<arnaud.vandyck@ulg.ac.be>.
