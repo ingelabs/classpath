@@ -207,12 +207,12 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions
     dims = (*env)->GetIntArrayElements (env, jdims, 0);  
 
     gdk_threads_enter ();
+
     gtk_signal_emit_by_name (GTK_OBJECT (ptr), "size_request", &req);
-    
-	
+
     dims[0] = req.width;
     dims[1] = req.height;
-    
+
     gdk_threads_leave ();
 
     (*env)->ReleaseIntArrayElements(env, jdims, dims, 0);

@@ -1,5 +1,5 @@
 /* Magical NSA API -- Associate a C ptr with an instance of an object
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -72,8 +72,7 @@ init_state_table (JNIEnv *env, jclass clazz)
   return init_state_table_with_size (env, clazz, DEFAULT_TABLE_SIZE);
 }
 
-static
-void *
+static void *
 remove_node (struct state_node **head, jint obj_id)
 {
   struct state_node *back_ptr = NULL;
@@ -99,8 +98,7 @@ remove_node (struct state_node **head, jint obj_id)
   return NULL;
 }
 	    
-static
-void *
+static void *
 get_node (struct state_node **head, jint obj_id)
 {
   struct state_node *back_ptr = NULL;
@@ -129,39 +127,39 @@ get_node (struct state_node **head, jint obj_id)
   return NULL;
 }
 
-static
-void 
+static void 
 add_node (struct state_node **head, jint obj_id, void *state)
 {
   struct state_node *node = *head;
   struct state_node *back_ptr = *head;
 
-  struct state_node *new_node;
-  new_node = (struct state_node *) malloc (sizeof (struct state_node));
-  new_node->key = obj_id;
-  new_node->c_state = state;
+  struct state_node *new_node = NULL;
 
-  /* insert into an empty slot */
-  if (node == NULL)
+  if (node != NULL)
     {
-      new_node->next = NULL;
-      *head = new_node;
-      return;
+      while (node->next != NULL && obj_id != node->key) 
+	{
+	  back_ptr = node;
+	  node = node->next;
+	}
+
+      /* If we're updating a node, setup to move it to the front of
+	 the list.  */
+      if (node->key == obj_id)
+	{
+	  back_ptr->next = node->next;
+	  new_node = node;
+	}
     }
 
-  /* collision resolution */
-  /* try to find the old node, if it exists */
-  while (node->next != NULL && obj_id != node->key) 
+  if (new_node == NULL)
     {
-      back_ptr = node;
-      node = node->next;
+      new_node = (struct state_node *) malloc (sizeof (struct state_node));
+      new_node->key = obj_id;
+      new_node->c_state = state;
     }
 
-  /* if we're updating a node, setup to move it to the front of the list */
-  if (node->key == obj_id)
-    back_ptr->next = node->next;
-  
-  /* move node to the beginning */
+  /* Insert node at the beginning.  */
   new_node->next = *head;
   *head = new_node;
 }

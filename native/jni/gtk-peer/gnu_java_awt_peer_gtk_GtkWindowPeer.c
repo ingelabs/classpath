@@ -235,11 +235,8 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds
 
   gdk_threads_enter ();
 
-  if (ptr)
-    {
-      GtkWidget *widget = GTK_WIDGET (ptr);
-      setBounds (widget, x, y, width, height);
-    }
+  GtkWidget *widget = GTK_WIDGET (ptr);
+  setBounds (widget, x, y, width, height);
 
   gdk_threads_leave ();
 }

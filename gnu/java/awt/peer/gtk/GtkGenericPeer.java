@@ -1,5 +1,5 @@
 /* GtkGenericPeer.java - Has a hashcode.  Yuck.
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -46,6 +46,7 @@ import java.awt.event.*;
 
 public class GtkGenericPeer
 {
+  // FIXME: this isn't guaranteed to give unique numbers.
   final int native_state = java.lang.System.identityHashCode(this);
   protected Object awtWidget;
   protected static EventQueue q = null;
