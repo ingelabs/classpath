@@ -1,4 +1,4 @@
-SUBDIRS 	:= announce downloads docs faq events
+SUBDIRS 	:= announce downloads docs faq events cp-tools
 
 ifndef WMK
   export WMK=wmk
