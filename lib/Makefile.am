@@ -184,6 +184,7 @@ JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
 
 #pkgdata_DATA = glibj.zip
 install-data-local :
+	if ! [ -e $(pkgdatadir) ]; then -mkdir -p $(pkgdatadir); fi
 	unzip -d $(pkgdatadir) glibj.zip
 
 all: $(HEADERS_DEPEND) glibj.zip $(MAKEFILE_DEPEND) $(HEADERS)
