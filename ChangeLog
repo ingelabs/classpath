@@ -1,3 +1,9 @@
+2002-04-07  Mark Wielaard <mark@klomp.org>
+
+	* java/util/Hashtable.java (contains): Remove NullPointer check.
+	(containsValue): Add NullPointer check.
+	(remove): Always throw NullPointerException when key is null.
+
 2002-04-06  Mark Wielaard <mark@klomp.org>
 
 	* java/lang/Character,java (isDefined): getType() != UNASSIGNED.

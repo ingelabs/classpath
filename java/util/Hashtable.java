@@ -1,6 +1,6 @@
 /* Hashtable.java -- a class providing a basic hashtable data structure,
    mapping Object --> Object
-   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -102,9 +102,6 @@ import java.io.ObjectOutputStream;
 public class Hashtable extends Dictionary
   implements Map, Cloneable, Serializable
 {
-  // WARNING: Hashtable is a CORE class in the bootstrap cycle. See the
-  // comments in vm/reference/java/lang/Runtime for implications of this fact.
-
   /** Default number of buckets. This is the value the JDK 1.3 uses. Some
    * early documentation specified this value as 101. That is incorrect.
    */
@@ -179,7 +176,7 @@ public class Hashtable extends Dictionary
    * pair. A Hashtable Entry is identical to a HashMap Entry, except that
    * `null' is not allowed for keys and values.
    */
-  private static final class HashEntry extends AbstractMap.BasicMapEntry
+  private static final class HashEntry extends BasicMapEntry
   {
     /** The next entry in the linked list. */
     HashEntry next;
@@ -325,10 +322,6 @@ public class Hashtable extends Dictionary
    * <code>containsValue()</code>, and is O(n).
    * <p>
    *
-   * Note: this is one of the <i>old</i> Hashtable methods which does
-   * not like null values; it throws NullPointerException if the
-   * supplied parameter is null.
-   *
    * @param value the value to search for in this Hashtable
    * @return true if at least one key maps to the value
    * @throws NullPointerException if <code>value</code> is null
@@ -337,19 +330,17 @@ public class Hashtable extends Dictionary
    */
   public synchronized boolean contains(Object value)
   {
-    // Check if value is null.
-    if (value == null)
-      throw new NullPointerException();
     return containsValue(value);
   }
 
   /**
    * Returns true if this Hashtable contains a value <code>o</code>, such that
    * <code>o.equals(value)</code>. This is the new API for the old
-   * <code>contains()</code>, except that it is forgiving of null.
+   * <code>contains()</code>.
    *
    * @param value the value to search for in this Hashtable
    * @return true if at least one key maps to the value
+   * @throws NullPointerException if <code>value</code> is null
    * @see #contains(Object)
    * @see #containsKey(Object)
    * @since 1.2
@@ -361,11 +352,16 @@ public class Hashtable extends Dictionary
         HashEntry e = buckets[i];
         while (e != null)
           {
-            if (AbstractCollection.equals(value, e.value))
+            if (value.equals(e.value))
               return true;
             e = e.next;
           }
       }
+
+    // Must throw on null argument even if the table is empty
+    if (value == null)
+      throw new NullPointerException();
+
     return false;
   }
 
@@ -471,17 +467,12 @@ public class Hashtable extends Dictionary
    * Removes from the table and returns the value which is mapped by the
    * supplied key. If the key maps to nothing, then the table remains
    * unchanged, and <code>null</code> is returned.
-   * <b>NOTE:</b>Map.remove and Dictionary.remove disagree whether null
-   * is a valid parameter; at the moment, this implementation obeys Map.remove,
-   * and silently ignores null.
    *
    * @param key the key used to locate the value to remove
    * @return whatever the key mapped to, if present
    */
   public synchronized Object remove(Object key)
   {
-    if (key == null)
-      return null;
     int idx = hash(key);
     HashEntry e = buckets[idx];
     HashEntry last = null;
@@ -520,9 +511,9 @@ public class Hashtable extends Dictionary
       {
         Map.Entry e = (Map.Entry) itr.next();
         // Optimize in case the Entry is one of our own.
-        if (e instanceof AbstractMap.BasicMapEntry)
+        if (e instanceof BasicMapEntry)
           {
-            AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
+            BasicMapEntry entry = (BasicMapEntry) e;
             put(entry.key, entry.value);
           }
         else
@@ -821,10 +812,7 @@ public class Hashtable extends Dictionary
    */
   private int hash(Object key)
   {
-    // Note: Inline Math.abs here, for less method overhead, and to avoid
-    // a bootstrap dependency, since Math relies on native methods.
-    int hash = key.hashCode() % buckets.length;
-    return hash < 0 ? -hash : hash;
+    return Math.abs(key.hashCode() % buckets.length);
   }
 
   /**
@@ -1151,4 +1139,4 @@ public class Hashtable extends Dictionary
       return type == VALUES ? e.value : e.key;
     }
   } // class Enumerator
-} // class Hashtable
+}
