@@ -1,5 +1,11 @@
 2003-12-02  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/file/Handler.java:
+	(openConnection): Handle case when host part of file: URL is set.
+	* gnu/java/net/protocol/http/Connection.java: Reformated.
+
+2003-12-02  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/lang/ClassLoaderHelper.java:
 	Explicitly import used classes.
 	* gnu/java/lang/SystemClassLoader.java
