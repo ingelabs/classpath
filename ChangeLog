@@ -1,6 +1,40 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
 	* java/sql/Array.java,
+	java/sql/Blob.java,
+	java/sql/CallableStatement.java,
+	java/sql/Clob.java,
+	java/sql/Connection.java,
+	java/sql/DatabaseMetaData.java,
+	java/sql/Driver.java,
+	java/sql/ParameterMetaData.java,
+	java/sql/PreparedStatement.java,
+	java/sql/Ref.java,
+	java/sql/ResultSet.java,
+	java/sql/ResultSetMetaData.java,
+	java/sql/SQLData.java,
+	java/sql/SQLInput.java,
+	java/sql/SQLOutput.java,
+	java/sql/Savepoint.java,
+	java/sql/Statement.java,
+	java/sql/Struct.java,
+	javax/sql/ConnectionEventListener.java,
+	javax/sql/ConnectionPoolDataSource.java,
+	javax/sql/DataSource.java,
+	javax/sql/PooledConnection.java,
+	javax/sql/RowSet.java,
+	javax/sql/RowSetInternal.java,
+	javax/sql/RowSetListener.java,
+	javax/sql/RowSetMetaData.java,
+	javax/sql/RowSetReader.java,
+	javax/sql/RowSetWriter.java,
+	javax/sql/XAConnection.java,
+	javax/sql/XADataSource.java:
+	Removed redundant modifiers.
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
+	* java/sql/Array.java,
 	java/sql/Blob.java:
 	Removed redundant modifiers.
 
