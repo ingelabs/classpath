@@ -75,7 +75,7 @@ public class FileInputStream extends InputStream
 /**
   * This is the native file handle for the file this stream is reading from
   */
-private int native_fd;
+private int native_fd = -1;
 
 /**
   * This variable keeps track of the total number of bytes read from

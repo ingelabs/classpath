@@ -76,7 +76,7 @@ public class FileOutputStream extends OutputStream
 /**
   * This is the native file handle
   */
-private int native_fd;
+private int native_fd = -1;
 
 /*************************************************************************/
 

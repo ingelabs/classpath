@@ -1,3 +1,9 @@
+2002-07-11  Mark Wielaard  <mark@klomp.org>
+
+	Thanks to Jeroen Frijters <jeroen@sumatra.nl>
+	* java/io/FileInputStream.java (native_fd): Initialize to -1.
+	* java/io/FileOutputStream.java (native_fd): Likewise.
+
 2002-07-06  Jochen Hoenicke <jochen@gnu.org>
 
 	* java/util/zip/InflaterDynHeader.java (decode): Use a single
