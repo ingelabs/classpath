@@ -46,7 +46,7 @@ package java.security;
  * use.</p>
  *
  * @author Mark Benvenuto <ivymccough@worldnet.att.net>
- * @deprecated This class is no longer used. Its functionality has been replaced
+ * @deprecated This class is no longer used. Its functionality has been replaced
  * by <code>java.security.KeyStore</code>, the <code>java.security.cert</code>
  * package, and <code>java.security.Principal</code>.
  */

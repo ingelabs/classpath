@@ -581,7 +581,7 @@ public abstract class Signature extends SignatureSpi
    * signature algorithm engine, the parameter is already set and cannot be set
    * again, a security exception occurs, and so on.
    * @see #getParameter(String)
-   * @deprecated Use setParameter(AlgorithmParameterSpec).
+   * @deprecated Use setParameter(AlgorithmParameterSpec).
    */
   public final void setParameter(String param, Object value)
     throws InvalidParameterException

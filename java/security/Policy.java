@@ -176,7 +176,7 @@ public abstract class Policy
   /**
    * Ensures/forces loading of the configured policy provider, while bypassing
    * the {@link SecurityManager} checks for <code>"getPolicy"</code> security
-   * permission.  Nneeded by {@link ProtectionDomain}.
+   * permission.  Needed by {@link ProtectionDomain}.
    */
   static Policy getCurrentPolicy()
   {
@@ -202,7 +202,7 @@ public abstract class Policy
   /**
    * Tests if <code>currentPolicy</code> is not <code>null</code>,
    * thus allowing clients to not force loading of any policy
-   * provider; needed by {@link ProtectionDomain}.
+   * provider; needed by {@link ProtectionDomain}.
    */
   static boolean isLoaded()
   {

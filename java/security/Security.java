@@ -418,55 +418,55 @@ public final class Security extends Object
   }
 
   /**
-  * <p>Returns an array containing all installed providers that satisfy the
-  * specified selection criterion, or <code>null</code> if no such providers
-  * have been installed. The returned providers are ordered according to their
-  * preference order.</p>
-  *
-  * <p>A cryptographic service is always associated with a particular
-  * algorithm or type. For example, a digital signature service is always
-  * associated with a particular algorithm (e.g., <i>DSA</i>), and a
-  * CertificateFactory service is always associated with a particular
-  * certificate type (e.g., <i>X.509</i>).</p>
-  *
-  * <p>The selection criterion must be specified in one of the following two
-  * formats:</p>
-  *
-  * <ul>
-  *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type></p>
-  *    <p>The cryptographic service name must not contain any dots.</p>
-  *    <p>A provider satisfies the specified selection criterion iff the
-  *    provider implements the specified algorithm or type for the specified
-  *    cryptographic service.</p>
-  *    <p>For example, "CertificateFactory.X.509" would be satisfied by any
-  *    provider that supplied a CertificateFactory implementation for X.509
-  *    certificates.</p></li>
-  *
-  *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type>&nbsp;&lt;attribute_name>:&lt;attribute_value></p>
-  *    <p>The cryptographic service name must not contain any dots. There must
-  *    be one or more space charaters between the the &lt;algorithm_or_type>
-  *    and the &lt;attribute_name>.</p>
-  *    <p>A provider satisfies this selection criterion iff the provider
-  *    implements the specified algorithm or type for the specified
-  *    cryptographic service and its implementation meets the constraint
-  *    expressed by the specified attribute name/value pair.</p>
-  *    <p>For example, "Signature.SHA1withDSA KeySize:1024" would be satisfied
-  *    by any provider that implemented the SHA1withDSA signature algorithm
-  *    with a keysize of 1024 (or larger).</p></li>
-  * </ul>
-  *
-  * <p>See Appendix A in the Java Cryptogaphy Architecture API Specification
-  * &amp; Reference for information about standard cryptographic service names,
-  * standard algorithm names and standard attribute names.</p>
-  *
-  * @param filter the criterion for selecting providers. The filter is case-
-  * insensitive.
-  * @return all the installed providers that satisfy the selection criterion,
-  * or null if no such providers have been installed.
-  * @throws InvalidParameterException if the filter is not in the required
-  * format.
-  * @see #getProviders(Map)
-  */
+   * <p>Returns an array containing all installed providers that satisfy the
+   * specified selection criterion, or <code>null</code> if no such providers
+   * have been installed. The returned providers are ordered according to their
+   * preference order.</p>
+   *
+   * <p>A cryptographic service is always associated with a particular
+   * algorithm or type. For example, a digital signature service is always
+   * associated with a particular algorithm (e.g., <i>DSA</i>), and a
+   * CertificateFactory service is always associated with a particular
+   * certificate type (e.g., <i>X.509</i>).</p>
+   *
+   * <p>The selection criterion must be specified in one of the following two
+   * formats:</p>
+   *
+   * <ul>
+   *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type></p>
+   *    <p>The cryptographic service name must not contain any dots.</p>
+   *    <p>A provider satisfies the specified selection criterion iff the
+   *    provider implements the specified algorithm or type for the specified
+   *    cryptographic service.</p>
+   *    <p>For example, "CertificateFactory.X.509" would be satisfied by any
+   *    provider that supplied a CertificateFactory implementation for X.509
+   *    certificates.</p></li>
+   *
+   *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type>&nbsp;&lt;attribute_name>:&lt;attribute_value></p>
+   *    <p>The cryptographic service name must not contain any dots. There must
+   *    be one or more space charaters between the the &lt;algorithm_or_type>
+   *    and the &lt;attribute_name>.</p>
+   *    <p>A provider satisfies this selection criterion iff the provider
+   *    implements the specified algorithm or type for the specified
+   *    cryptographic service and its implementation meets the constraint
+   *    expressed by the specified attribute name/value pair.</p>
+   *    <p>For example, "Signature.SHA1withDSA KeySize:1024" would be satisfied
+   *    by any provider that implemented the SHA1withDSA signature algorithm
+   *    with a keysize of 1024 (or larger).</p></li>
+   * </ul>
+   *
+   * <p>See Appendix A in the Java Cryptogaphy Architecture API Specification
+   * &amp; Reference for information about standard cryptographic service names,
+   * standard algorithm names and standard attribute names.</p>
+   *
+   * @param filter the criterion for selecting providers. The filter is case-
+   * insensitive.
+   * @return all the installed providers that satisfy the selection criterion,
+   * or null if no such providers have been installed.
+   * @throws InvalidParameterException if the filter is not in the required
+   * format.
+   * @see #getProviders(Map)
+   */
   public static Provider[] getProviders(String filter)
   {
     if (providers == null || providers.isEmpty())
@@ -486,47 +486,47 @@ public final class Security extends Object
   }
 
  /**
-  * <p>Returns an array containing all installed providers that satisfy the
-  * specified selection criteria, or <code>null</code> if no such providers
-  * have been installed. The returned providers are ordered according to their
-  * preference order.</p>
-  *
-  * <p>The selection criteria are represented by a map. Each map entry
-  * represents a selection criterion. A provider is selected iff it satisfies
-  * all selection criteria. The key for any entry in such a map must be in one
-  * of the following two formats:</p>
-  *
-  * <ul>
-  *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type></p>
-  *    <p>The cryptographic service name must not contain any dots.</p>
-  *    <p>The value associated with the key must be an empty string.</p>
-  *    <p>A provider satisfies this selection criterion iff the provider
-  *    implements the specified algorithm or type for the specified
-  *    cryptographic service.</p></li>
-  *
-  *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type> &lt;attribute_name></p>
-  *    <p>The cryptographic service name must not contain any dots. There must
-  *    be one or more space charaters between the &lt;algorithm_or_type> and
-  *    the &lt;attribute_name>.</p>
-  *    <p>The value associated with the key must be a non-empty string. A
-  *    provider satisfies this selection criterion iff the provider implements
-  *    the specified algorithm or type for the specified cryptographic service
-  *    and its implementation meets the constraint expressed by the specified
-  *    attribute name/value pair.</p></li>
-  * </ul>
-  *
-  * <p>See Appendix A in the Java Cryptogaphy Architecture API Specification
-  * &amp; Reference for information about standard cryptographic service names,
-  * standard algorithm names and standard attribute names.</p>
-  *
-  * @param filter the criteria for selecting providers. The filter is case-
-  * insensitive.
-  * @return all the installed providers that satisfy the selection criteria,
-  * or <code>null</code> if no such providers have been installed.
-  * @throws InvalidParameterException if the filter is not in the required
-  * format.
-  * @see #getProviders(String)
-  */
+  * <p>Returns an array containing all installed providers that satisfy the
+  * specified selection criteria, or <code>null</code> if no such providers
+  * have been installed. The returned providers are ordered according to their
+  * preference order.</p>
+  *
+  * <p>The selection criteria are represented by a map. Each map entry
+  * represents a selection criterion. A provider is selected iff it satisfies
+  * all selection criteria. The key for any entry in such a map must be in one
+  * of the following two formats:</p>
+  *
+  * <ul>
+  *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type></p>
+  *    <p>The cryptographic service name must not contain any dots.</p>
+  *    <p>The value associated with the key must be an empty string.</p>
+  *    <p>A provider satisfies this selection criterion iff the provider
+  *    implements the specified algorithm or type for the specified
+  *    cryptographic service.</p></li>
+  *
+  *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type> &lt;attribute_name></p>
+  *    <p>The cryptographic service name must not contain any dots. There must
+  *    be one or more space charaters between the &lt;algorithm_or_type> and
+  *    the &lt;attribute_name>.</p>
+  *    <p>The value associated with the key must be a non-empty string. A
+  *    provider satisfies this selection criterion iff the provider implements
+  *    the specified algorithm or type for the specified cryptographic service
+  *    and its implementation meets the constraint expressed by the specified
+  *    attribute name/value pair.</p></li>
+  * </ul>
+  *
+  * <p>See Appendix A in the Java Cryptogaphy Architecture API Specification
+  * &amp; Reference for information about standard cryptographic service names,
+  * standard algorithm names and standard attribute names.</p>
+  *
+  * @param filter the criteria for selecting providers. The filter is case-
+  * insensitive.
+  * @return all the installed providers that satisfy the selection criteria,
+  * or <code>null</code> if no such providers have been installed.
+  * @throws InvalidParameterException if the filter is not in the required
+  * format.
+  * @see #getProviders(String)
+  */
   public static Provider[] getProviders(Map filter)
   {
     if (providers == null || providers.isEmpty())
@@ -677,7 +677,7 @@ public final class Security extends Object
             if (! realAttr.equalsIgnoreCase(attr))
               continue;
 
-            // eveything matches so far.  do the value
+            // eveything matches so far.  do the value
             realVal = p.getProperty(key);
             if (realVal == null)
               return false;

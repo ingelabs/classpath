@@ -1,3 +1,11 @@
+2003-03-12  Tom Tromey  <tromey@redhat.com>
+
+	* java/security/Signer.java: Removed non-ASCII characters.
+	* java/security/Signature.java: Removed non-ASCII characters.
+	* java/security/Security.java: Removed non-ASCII characters.
+	* java/security/Policy.java (getCurrentPolicy): Typo fix.
+	(isLoaded): Removed non-ASCII character.
+
 2003-03-12  Sascha Brawer  <brawer@acm.org>
 
 	* java/util/logging/Level.java (OFF, SEVERE, WARNING, INFO, CONFIG,
