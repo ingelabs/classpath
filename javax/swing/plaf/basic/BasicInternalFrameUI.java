@@ -828,7 +828,7 @@ public class BasicInternalFrameUI extends InternalFrameUI
       if (e instanceof MouseEvent)
         {
 	  MouseEvent me = SwingUtilities.convertMouseEvent(frame.getRootPane()
-                                                                .getGlassPane(),
+	                                                        .getGlassPane(),
 	                                                   (MouseEvent) e,
 	                                                   frame.getRootPane()
 	                                                        .getGlassPane());
@@ -1109,7 +1109,7 @@ public class BasicInternalFrameUI extends InternalFrameUI
 
 	installDefaults();
 	installListeners();
-	installComponents();	
+	installComponents();
 	installKeyboardActions();
 
 	frame.setOpaque(true);
@@ -1126,7 +1126,7 @@ public class BasicInternalFrameUI extends InternalFrameUI
   public void uninstallUI(JComponent c)
   {
     uninstallKeyboardActions();
-    uninstallComponents();    
+    uninstallComponents();
     uninstallListeners();
     uninstallDefaults();
 

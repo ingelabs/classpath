@@ -1,3 +1,24 @@
+2004-07-31  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/plaf/basic/BasicArrowButton.java: Reindent.
+	* javax/swing/plaf/basic/BasicCheckBoxMenuItemUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicLabelUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicListUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicMenuUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicRadioButtonMenuItemUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicRootPaneUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicScrollBarUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicSliderUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicSplitPaneDivider.java: Reindent.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicTextUI.java: Reindent.
+	* javax/swing/plaf/basic/BasicToolBarUI.java: Reindent.
+
 2004-07-31  Roman Kennke  <roman@ontographics.com>
 
 	* javax/swing/Box.java:
