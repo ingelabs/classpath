@@ -1,5 +1,14 @@
 2003-09-29  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetAddress.java
+	(isLinkLocalAddress): New method.
+	(isMCGlobal): Likewise.
+	(isMCNodeLocal): Likewise.
+	(isMCSiteLocal): Likewise.
+	(isMCOrgLocal): Likewise.
+
+2003-09-29  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetAddress.java: Reformatted.
 	* java/net/URL.java
 	(DEFAULT_SEARCH_PATH): New constant for default handler search path.

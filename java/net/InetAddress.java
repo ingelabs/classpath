@@ -261,6 +261,74 @@ public class InetAddress implements Serializable
     return false;
   }
 
+  /**
+   * Utility routine to check if InetAddress is a link local address
+   * 
+   * @since 1.4
+   */
+  public boolean isLinkLocalAddress()
+  {
+    // This is the IPv4 implementation.
+    // Any class derived from InetAddress should override this.
+
+    // XXX: This seems to not exist with IPv4 addresses
+    return false;
+  }
+
+  /**
+   * Utility routine to check if InetAddress is a global multicast address
+   * 
+   * @since 1.4
+   */
+  public boolean isMCGlobal()
+  {
+    // This is the IPv4 implementation.
+    // Any class derived from InetAddress should override this.
+
+    // XXX: This seems to not exist with IPv4 addresses
+    return false;
+  }
+
+  /**
+   * Utility reoutine to check if InetAddress is a node local multicast address
+   * 
+   * @since 1.4
+   */
+  public boolean isMCNodeLocal()
+  {
+    // This is the IPv4 implementation.
+    // Any class derived from InetAddress should override this.
+
+    // XXX: This seems to not exist with IPv4 addresses
+    return false;
+  }
+
+  /**
+   * Utility routine to check if InetAddress is a site local multicast address
+   *
+   * @since 1.4
+   */
+  public boolean isMCSiteLocal()
+  {
+    // This is the IPv4 implementation.
+    // Any class derived from InetAddress should override this.
+
+    // XXX: This seems to not exist with IPv4 addresses
+    return false;
+  }
+
+  /**
+   * Utility reoutine to check if InetAddress is a organization local
+   * multicast address
+   * 
+   * @since 1.4
+   */
+  public boolean isMCOrgLocal()
+  {
+    // This is the IPv4 implementation.
+    // Any class derived from InetAddress should override this.
+
+    // XXX: This seems to not exist with IPv4 addresses
     return false;
   }
 
