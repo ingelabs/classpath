@@ -1,3 +1,30 @@
+2004-07-30  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/AbstractButton.java: Reformat.
+	* javax/swing/ActionMap.java: Likewise.
+	* javax/swing/ComponentInputMap.java: Likewise.
+	* javax/swing/DefaultDesktopManager.java: Likewise.
+	* javax/swing/ImageIcon.java: Likewise.
+	* javax/swing/InputMap.java: Likewise.
+	* javax/swing/JButton.java: Likewise.
+	* javax/swing/JEditorPane.java: Likewise.
+	* javax/swing/JInternalFrame.java: Likewise.
+	* javax/swing/JMenu.java: Likewise.
+	* javax/swing/JMenuBar.java: Likewise.
+	* javax/swing/JMenuItem.java: Likewise.
+	* javax/swing/JOptionPane.java: Likewise.
+	* javax/swing/JPopupMenu.java: Likewise.
+	* javax/swing/JRootPane.java: Likewise.
+	* javax/swing/JScrollPane.java: Likewise.
+	* javax/swing/JTable.java: Likewise.
+	* javax/swing/JTextField.java: Likewise.
+	* javax/swing/JToolBar.java: Likewise.
+	* javax/swing/MenuSelectionManager.java: Likewise.
+	* javax/swing/RepaintManager.java: Likewise.
+	* javax/swing/ScrollPaneLayout.java: Likewise.
+	* javax/swing/UIManager.java: Likewise.
+	* javax/swing/ViewportLayout.java: Likewise.
+
 2004-07-30  Craig Black  <craig.black@aonix.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java 

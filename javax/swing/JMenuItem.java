@@ -323,11 +323,11 @@ public class JMenuItem extends AbstractButton implements Accessible,
 	break;
       case MouseEvent.MOUSE_ENTERED:
 	if (isRolloverEnabled())
-	      model.setRollover(true);
+	  model.setRollover(true);
 	break;
       case MouseEvent.MOUSE_EXITED:
 	if (isRolloverEnabled())
-	      model.setRollover(false);
+	  model.setRollover(false);
 
 	// for JMenu last element on the path is its popupMenu.
 	// JMenu shouldn't me disarmed.	
@@ -335,11 +335,11 @@ public class JMenuItem extends AbstractButton implements Accessible,
 	  setArmed(false);
 	break;
       case MouseEvent.MOUSE_PRESSED:
-	    if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
-	      {
-		model.setArmed(true);
-		model.setPressed(true);
-	      }
+	if ((event.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
+	  {
+	    model.setArmed(true);
+	    model.setPressed(true);
+	  }
 	break;
       case MouseEvent.MOUSE_RELEASED:
 	break;
@@ -529,14 +529,14 @@ public class JMenuItem extends AbstractButton implements Accessible,
   {
     if (changed)
       {
-      model.setArmed(true);
+	model.setArmed(true);
 
 	if (this.getParent() instanceof JPopupMenu)
 	  ((JPopupMenu) this.getParent()).setSelected(this);
       }
     else
       {
-      model.setArmed(false);
+	model.setArmed(false);
 
 	if (this.getParent() instanceof JPopupMenu)
 	  ((JPopupMenu) this.getParent()).getSelectionModel().clearSelection();
@@ -548,7 +548,7 @@ public class JMenuItem extends AbstractButton implements Accessible,
    *
    * @return $MenuElement[]$ Returns array of sub-components for this menu
    *         item. By default menuItem doesn't have any subcomponents and so
-   *             empty array is returned instead.
+   *         empty array is returned instead.
    */
   public MenuElement[] getSubElements()
   {
