@@ -475,7 +475,10 @@ public class Collections {
 
       // Obtain a random position to swap with. nextIndex is used so that the
       // range of the random number includes the current position.
-      int swap = r.nextInt(i.nextIndex());
+     
+//        int swap = r.nextInt(i.nextIndex());    FIXME
+	// since we don't have java.util.Random implemented to 1.2 specs
+      int swap = r.nextInt();
 
       // Swap the swapth element of the array with the next element of the
       // list.
@@ -596,40 +599,40 @@ public class Collections {
   public static SortedSet synchronizedSortedSet(SortedSet s) {
     return s;
   }
-  public static Collection unmodifiableCollection(final Collection c) {
-    return new AbstractCollection() {
-      public int size() {
-	return c.size();
-      }
-      public Iterator iterator() {
-	return new Iterator() {
-	  final Iterator i = c.iterator();
-	  public Object next() {
-	    return i.next();
-	  }
-	  public boolean hasNext() {
-	    return i.hasNext();
-	  }
-	  public void remove() {
-	    throw new UnsupportedOperationException();
-	  }
+    public static Collection unmodifiableCollection(final Collection c) {
+	return new AbstractCollection() {
+	    public int size() {
+		return c.size();
+	    }
+	    public Iterator iterator() {
+		return new Iterator() {
+		    final Iterator i = c.iterator();
+		    public Object next() {
+			return i.next();
+		    }
+		    public boolean hasNext() {
+			return i.hasNext();
+		    }
+		    public void remove() {
+			throw new UnsupportedOperationException();
+		    }
+		};
+	    }
+	    public boolean contains(Object o) {
+		return c.contains(o);
+	    }
+	    public boolean containsAll(Collection c1) {
+		return c.containsAll(c1);
+	    }
+	    public Object[] toArray() {
+		return c.toArray();
+	    }
+	    public Object[] toArray(Object[] a) {
+		return c.toArray(a);
+	    }
 	};
-      }
-      public boolean contains(Object o) {
-	return c.contains(o);
-      }
-      public boolean containsAll(Collection c) {
-	return c.containsAll(c1);
-      }
-      public Object[] toArray() {
-	return c.toArray();
-      }
-      public Object[] toArray(Object[] a) {
-	return c.toArray(a);
-      }
-    };
-  }
-
+    }
+    
  public static List unmodifiableList(List l) {
     return l;
   }
