@@ -20,8 +20,11 @@ libjavaio_la_SOURCES = 	\
 			java_io_ObjectInputStream.c
 
 libjavalang_la_SOURCES = \
-			javalang.c \
-			javalang.h \
+                        mprec.h \
+                        mprec.c \
+                        fdlibm.h \
+			jcl.h \
+			jcl.c \
 			java_lang_System.c \
 			java_lang_Object.c \
 			java_lang_Float.c \
@@ -55,7 +58,8 @@ libjavanet_la_LDFLAGS = -version-info @LIBVERSION@
 libjavautil_la_LDFLAGS = -version-info @LIBVERSION@
 
 INCLUDES +=  @EXTRA_INCLUDES@ \
-	     -I$(top_srcdir)/include
+             -I$(top_srcdir)/native/lib/ \
+	     -I$(top_builddir)/include 
 
 if JAPHAR
 install-data-local : 

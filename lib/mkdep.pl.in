@@ -62,7 +62,17 @@ use vars qw ( $classout $headerout @dirs @deps @natives $dir $dep $depout );
 sub writeNativeFile
 {
     my ($i, $j, $k, $l) = "";
-
+    my $top_srcdir = "../";
+    if (defined $ENV{'top_srcdir'}) {
+	$top_srcdir = $ENV{'top_srcdir'};
+    }
+    my $top_srcdir_regex = $top_srcdir;
+    if ($top_srcdir_regex !~ /.*\/$/) {
+	$top_srcdir_regex .= '/';
+    }
+    $top_srcdir_regex =~ s/\./\\\./g;   # replace . with \.
+    $top_srcdir_regex =~ s/\//\\\//g;   # replace / with \/
+#    print "regex is $top_srcdir_regex\n";
     open(MAKEDEP, ">$headerout") || die "Could not open file ", $headerout;
 
     # the HEADERS = ... stuff
@@ -72,18 +82,20 @@ sub writeNativeFile
 	foreach $i (0 .. $#natives-1)
 	{
 	    $j = $natives[$i];
-	    $j =~ s/^\.\.\///;          # remove ../
+	    $j =~ s/^$top_srcdir_regex//;   # remove ../ or similar
+	    $j =~ s/^(\.\.\/)+//g;          # remove all preceding ../
 	    $j =~ s/^vm\/current\///;   # remove vm/current/
 	    $j =~ s/\//_/g;             # replace / with _
 	    $j =~ s/\.java$/\.h/;       # replace .java with .h
-	    print MAKEDEP "          ../include/", $j, " \\", "\n";	    
+	    print MAKEDEP "          \$(top_builddir)/include/", $j, " \\", "\n";	    
 	}
 	$j = $natives[$#natives];
-	$j =~ s/^\.\.\///;          # remove ../
+	$j =~ s/^$top_srcdir_regex//;   # remove ../
+	$j =~ s/^(\.\.\/)+//g;          # remove all preceding ../
 	$j =~ s/^vm\/current\///;   # remove vm/current/
 	$j =~ s/\//_/g;             # replace / with _
 	$j =~ s/\.java/\.h/;        # replace .java with .h
-	print MAKEDEP "          ../include/", $j, "\n\n";
+	print MAKEDEP "          \$(top_builddir)/include/", $j, "\n\n";
 
 	# print rules to make .h files
 	# y/x.h : z/x.class
@@ -98,7 +110,8 @@ sub writeNativeFile
 	foreach $i (0 .. $#natives-1)
 	{
 	    $j = $natives[$i];
-	    $j =~ s/^\.\.\///;          # remove ../
+	    $j =~ s/^$top_srcdir_regex//;   # remove ../
+	    $j =~ s/^(\.\.\/)+//g;          # remove all preceding ../
 	    $j =~ s/^vm\/current\///;   # remove vm/current/
 #	    $k = $l = $j;
 	    $l = $j;
@@ -111,27 +124,28 @@ sub writeNativeFile
 	    $l =~ s/\.java$//;          # remove .class
 	    $l =~ s/\//\./g;            # replace / with .
 
-	    print MAKEDEP "../include/", $j, " : ", $k, "\n";
+	    print MAKEDEP "\$(top_builddir)/include/", $j, " : ", $k, "\n";
 	    print MAKEDEP "\t\$(JAVAH) ", $l, "\n";
-	    print MAKEDEP "\tmv ", $j, " \$(top_srcdir)/include\n\n";
+	    print MAKEDEP "\tmv ", $j, " \$(top_builddir)/include\n\n";
 	}
 	$j = $natives[$#natives];
-	$j =~ s/^\.\.\///;          # remove ../
+	$j =~ s/^$top_srcdir_regex//;          # remove ../
+	$j =~ s/^(\.\.\/)+//g;          # remove all preceding ../
 	$j =~ s/^vm\/current\///; # remove vm/current/
 #	$k = $l = $j;
 	$l = $j;
 	$j =~ s/\//_/g;             # replace / with _
 	$j =~ s/\.java/\.h/;        # replace .java with .h
 
-        $k = $natives[$i];          # the original .java file
+        $k = $natives[$#natives];          # the original .java file
 #	$k =~ s/\.java$/\.class/;   # replace .java with .class
 
 	$l =~ s/\.java$//;          # remove .class
 	$l =~ s/\//\./g;            # replace / with .
 
-	print MAKEDEP "../include/", $j, " : ", $k, "\n";
+	print MAKEDEP "\$(top_builddir)/include/", $j, " : ", $k, "\n";
 	print MAKEDEP "\t\$(JAVAH) ", $l, "\n";
-	print MAKEDEP "\tmv ", $j, " \$(top_srcdir)/include\n\n";
+	print MAKEDEP "\tmv ", $j, " \$(top_builddir)/include\n\n";
     }
     close(MAKEDEP);
 }

@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(native/java.net/javanet.c)
+AC_INIT(java/lang/System.java)
 
 AC_CANONICAL_HOST
 
@@ -31,7 +31,11 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_HEADER_STDC
-AC_CHECK_HEADERS(unistd.h)
+AC_CHECK_HEADERS(unistd.h sys/types.h sys/config.h inttypes.h stdint.h)
+AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED))
+AC_EGREP_HEADER(uint32_t, inttypes.h, AC_DEFINE(HAVE_INT32_DEFINED))
+AC_EGREP_HEADER(u_int32_t, sys/types.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED))
+AC_EGREP_HEADER(u_int32_t, sys/config.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED))
 AC_C_CONST
 AC_CHECK_FUNCS(gethostname socket strerror fork pipe execve strtod atof)
 AC_HEADER_TIME
@@ -202,15 +206,37 @@ dnl these statements should be optimized out of the bytecode
 dnl produced by an optimizing Java compiler and not hinder 
 dnl performance.
 dnl -----------------------------------------------------------
-LIBGCJDEBUG="false"
-AC_ARG_ENABLE(libgcj-debug,
-[  --enable-libgcj-debug   enable runtime debugging code],
-  if test "$enable_libgcj_debug" = yes; then
-    AC_DEFINE(DEBUG)
-    LIBGCJDEBUG="true"
-  fi
-])
-AC_SUBST(LIBGCJDEBUG)
+AC_ARG_ENABLE(debug,
+[  --enable-debug   enable runtime debugging code],
+[case "${enableval}" in 
+  yes) 
+	LIBDEBUG="true"
+	AC_DEFINE(DEBUG) 
+	;;
+  no)   LIBDEBUG="false" ;;
+  *) 	AC_MSG_ERROR(bad value ${enableval} for --enable-debug) ;;
+esac],
+[LIBDEBUG="false"])
+AC_SUBST(LIBDEBUG)
+
+dnl -----------------------------------------------------------
+
+
+dnl -----------------------------------------------------------
+dnl Enable execution of all static initializer loadLibrary() 
+dnl calls at compile time.  By default most people will not
+dnl want to disable this, but some VMs (gcj) don't need or want 
+dnl them.
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE(load-library,
+[  --enable-load-library   [default=yes]],
+[case "${enableval}" in 
+  yes) INIT_LOAD_LIBRARY="true" ;;
+  no) INIT_LOAD_LIBRARY="false" ;;
+  *) AC_MSG_ERROR(bad value ${enableval} for --enable-load-library) ;;
+esac],
+[INIT_LOAD_LIBRARY="true"])
+AC_SUBST(INIT_LOAD_LIBRARY)
 
 dnl -----------------------------------------------------------
 

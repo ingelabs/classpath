@@ -39,7 +39,7 @@ libgtkpeer_la_LDFLAGS = -version-info @LIBVERSION@ @GTK_LIBS@ @GLIB_LIBS@ @LIBAR
 INCLUDES += @EXTRA_INCLUDES@ \
 	    @GTK_CFLAGS@ \
 	    @LIBART_CFLAGS@ \
-	    -I$(top_srcdir)/include
+	    -I$(top_builddir)/include
 
 if JAPHAR
 install-data-local : 

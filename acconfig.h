@@ -21,6 +21,12 @@
 /* Define as 1 if building with debugging code included, this is not -g */
 #define DEBUG 0
 
+/* Define if you have int32_t and uint32_t */
+#undef HAVE_INT32_DEFINED
+
+/* Define if you have u_int32_t */
+#undef HAVE_BSD_INT32_DEFINED
+
 /************************************************************************
  * Leave the blank line there, required by autoheader.
  ************************************************************************/

@@ -130,7 +130,8 @@ standard.
 -- Audit the code to identify methods that do not have Javadoc comments
    and/or comments that are incomplete.  All input parameters, return
    values, etc should be documentes.  Also look for Javadoc comments on
-   variables that are serializable.
+   variables that are serializable.  See http://java.sun.com/j2se/javadoc/writingdoccomments/index.html#tag 
+   for details of what should be where in comments.
 
 -- Figure out a way to generate a hardcopy manual for the Java class
    library from the embedded Javadocs.  This probably involves writing

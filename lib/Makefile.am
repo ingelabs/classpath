@@ -3,6 +3,7 @@
 # --cbj
 ## used by automake to generate Makefile.in
 
+PERL = @PERL@
 MAKEFILE_DEPEND = makefile.dep
 HEADERS_DEPEND = headers.dep
 CLASSES_DEPEND = classes.dep
@@ -109,9 +110,9 @@ else
 if USER_SPECIFIED_JIKES
 
 if USER_SPECIFIED_CLASSLIB
-JAVAC = @JIKES@ -nowarn +CSO +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:.:@USER_CLASSLIB@ -d . @classes
+JAVAC = @JIKES@ -nowarn +F $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_builddir)/vm/current:.:@USER_CLASSLIB@ -d . @classes
 else
-JAVAC = @JIKES@ -nowarn +CSO +M +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:. -d . @classes
+JAVAC = @JIKES@ -nowarn +F $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_builddir)/vm/current:. -d . @classes
 endif
 
 else
@@ -204,11 +205,11 @@ glibj.zip: classes compile-classes $(MAKEFILE_DEPEND)
 	$(ZIP) -r -D glibj.zip gnu java javax > /dev/null
 
 classes: gen-classlist.sh standard.omit $(top_srcdir)/java $(top_srcdir)/javax $(top_srcdir)/gnu
-	$(SHELL) -c "cd $(top_srcdir)/lib && ./gen-classlist.sh standard"
+	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
 .PHONY: dep
 dep: classes
-	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -s"
+	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -s
 
 #.PHONY: compile-classes
 compile-classes: classes $(JAVA_DEPEND) $(JAVA_SRCS) Makefile
@@ -216,18 +217,18 @@ compile-classes: classes $(JAVA_DEPEND) $(JAVA_SRCS) Makefile
 	touch compile-classes
 
 $(MAKEFILE_DEPEND): compile-classes
-	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -d"
-	$(SHELL) -c "cd $(top_srcdir)/lib && find -regex ".*\.u$" -exec rm \{\} \;
+	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -d
+	$(SHELL) -c find -regex ".*\.u$$" -exec rm \{\} \; > /dev/null
 
 $(HEADERS_DEPEND): classes
-	if ! [ -e $(top_srcdir)/include ]; then -mkdir $(top_srcdir)/include; fi	
-	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -h"
+	if ! [ -e $(top_builddir)/include ]; then -mkdir $(top_builddir)/include; fi	
+	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -h
 
 $(CLASSES_DEPEND): classes
-	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -c"
+	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -c
 
 $(JAVA_DEPEND): classes
-	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -j"
+	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -j
 
 ## neither developer nor maintainer...
 

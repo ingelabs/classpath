@@ -1,3 +1,48 @@
+2001-06-25  Brian Jones <cbj@gnu.org>
+
+	* native/jni/mprec.h: new file from gcj
+	* native/jni/mprec.c: new file from gcj
+	* native/jni/fdlibm.h: new file from gcj
+	* native/jni/ieeefp.h: new file from gcj
+	* native/jni/java-assert.h: new file from gcj
+	* native/jni/dtoa.c: new file from gcj
+	* native/jni/jcl.c: copy of file in native/jni/lib/
+	* native/jni/jcl.h: copy of file in native/jni/lib/
+	* acconfig.h: added HAVE_INT32_DEFINED and HAVE_BSD_INT32_DEFINED
+	* doc/hacking.texinfo: fixed typo
+	* configure.in: rename --enable-libgcj-debug to --enable-debug.
+	Created new option --enable-load-library potentially to be used
+	to limit all System.loadLibrary() calls in class initializers.
+        Added more header checks and define HAVE_INT32_DEFINED
+	or HAVE_BSD_INT32_DEFINED similarly to gcj.  Renamed libgcj-debug
+	to the neutral sounding debug.  Checks for more headers.
+	* gnu/classpath/Configuration.java.in: INIT_LOAD_LIBRARY added.
+	Should be helpful for more directly using classpath code in gcj.
+	* TODO: added URL to javadoc docs for writing serial tags
+	* java/lang/Double.java: merged with gcj version, credit to 
+	Andrew Haley.
+	(byteValue): added missing function
+	(shortValue): added missing function
+	(compareTo): properly return 0 if both values are NaN
+	* java/lang/Float.java: merged with gcj version, credit to 
+	Andrew Haley.
+	(Float): removed NullPointerException from throws clause
+	(toString): calls Double.toString
+	(valueOf): removed NullPointerException from throws clause
+	(floatToRawIntBits): new native method
+	(parseFloat): removed NullPointerException from throws clause.
+	Calls Double.parseDouble now.
+	* native/jni/java_lang_Float.c (*): aligned with gcj implementation
+	* native/jni/java_lang_Double.c (*): aligned with gcj implementation
+	* lib/Makefile.am: changed to handle separate builddir
+	* lib/gen-classlib.sh.in: changed to handle separate builddir
+	* lib/mkdep.pl.in: changed to handle separate builddir
+	* lib/standard.omit: changed to handle regex of separate builddir
+	* native/jni/Makefile.am: include $(top_builddir)/include instead
+	of $(top_srcdir).  Additions to javalang shared library.
+	* native/jni/awt/Makefile.am: include $(top_builddir)/include
+	instead of $(top_srcdir).
+	
 2001-06-13  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/Date.java (toLocaleString): Deprecated.

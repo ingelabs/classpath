@@ -32,10 +32,23 @@ package gnu.classpath;
  */
 public interface Configuration
 {
-  // The value of DEBUG is substituted according to whether the
-  // "--enable-libgcj-debug" argument was passed to configure. Code
-  // which is made conditional based on the value of this flag will
-  // be removed by the optimizer in a non-debug build.
-    
-  boolean DEBUG = @LIBGCJDEBUG@;
+  /**
+   * The value of DEBUG is substituted according to whether the
+   * "--enable-debug" argument was passed to configure. Code
+   * which is made conditional based on the value of this flag will
+   * be removed by the optimizer in a non-debug build.
+   */
+  boolean DEBUG = @LIBDEBUG@;
+
+  /**
+   * The value of LOAD_LIBRARY is substituted according to whether the
+   * "--enable-load-library" argument was passed to configure.  By
+   * default, configure should define this is as true and typically a
+   * user would use "--disable-load-library" to avert loading
+   * libraries static initializers of all classes.  Code which is made
+   * conditional based on the value of this flag will be removed by
+   * the optimizer in a non-debug build.  
+   */
+  boolean INIT_LOAD_LIBRARY = @INIT_LOAD_LIBRARY@;
+
 }

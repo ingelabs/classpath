@@ -26,10 +26,7 @@ executable file might be covered by the GNU General Public License. */
 
 
 #include <config.h>
-#include <stdlib.h>  /* for strtod() */
-#include <math.h>  /* for HUGE_VAL */
 
-#include "javalang.h"
 #include "java_lang_Float.h"
 
 /*
@@ -38,11 +35,31 @@ executable file might be covered by the GNU General Public License. */
  * Signature: (F)I
  */
 JNIEXPORT jint JNICALL Java_java_lang_Float_floatToIntBits
-  (JNIEnv * env, jclass thisClass, jfloat floatValue)
+  (JNIEnv * env, jclass cls, jfloat value)
 {
-    jvalue val;
-    val.f = floatValue;
-    return val.i;
+    jvalue u;
+    jint e, f;
+    u.f = value;
+    e = u.i & 0x7f800000;
+    f = u.i & 0x007fffff;
+
+    if (e == 0x7f800000 && f != 0)
+      u.i = 0x7fc00000;
+    
+    return u.i;
+}
+
+/*
+ * Class:     java_lang_Float
+ * Method:    floatToRawIntBits
+ * Signature: (F)I
+ */
+JNIEXPORT jint JNICALL Java_java_lang_Float_floatToRawIntBits
+  (JNIEnv * env, jclass cls, jfloat value)
+{
+  jvalue u;
+  u.f = value;
+  return u.i;
 }
 
 /*
@@ -51,97 +68,10 @@ JNIEXPORT jint JNICALL Java_java_lang_Float_floatToIntBits
  * Signature: (I)F
  */
 JNIEXPORT jfloat JNICALL Java_java_lang_Float_intBitsToFloat
-  (JNIEnv * env, jclass thisClass, jint intValue)
+  (JNIEnv * env, jclass cls, jint bits)
 {
-    jvalue val;
-    val.i = intValue;
-    return val.f;
+    jvalue u;
+    u.i = bits;
+    return u.f;
 }
-
-/*
- * Class:    java_lang_Float
- * Method:   toString(float f)
- * Signature: (F)Ljava/lang/String
- */
-JNIEXPORT jstring JNICALL Java_java_lang_Float_toString
-  (JNIEnv * env, jclass thisClass, jfloat f)
-{
-  char buf[1024];
-  jstring retval;
-
-  sprintf((char*)&buf, "%G", f);
-  retval = (*env)->NewStringUTF(env, buf);
-  return retval;
-}
-
-/*
- * Class:     java_lang_Float
- * Method:    parseFloat
- * Signature: (Ljava/lang/String)F
- */
-JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
-  (JNIEnv * env, jclass thisClass, jstring s)
-{
-    const char *nptr;
-    char *endptr, *myptr;
-    jvalue val;
-
-    if (s == NULL)
-	{
-	    _javalang_ThrowException(env, "java/lang/NullPointerException", "null argument");
-	    return 0.0;
-	}
-
-    nptr = (char*)((*env)->GetStringUTFChars(env, s, 0));
-    if (nptr == NULL)
-	{
-	    _javalang_ThrowException(env, "java/lang/NullPointerException", "null returned by GetStringUTFChars");
-	    return 0.0;
-	}
-#if defined(HAVE_STRTOD)
-    val.d = strtod(nptr, &endptr);
-
-
-    /* to catch non-white space characters after conversion */
-    myptr = endptr;
-    while ((myptr) && (*myptr != 0))  /* the null character */
-	{
-	    switch (*myptr)
-		{
-		case ' ':
-		case '\t':
-		case '\r':
-		case '\n':
-		case 'f':
-		case 'F':
-		    myptr++;
-		    break;
-		default:
-		    (*env)->ReleaseStringUTFChars(env, s, nptr);
-		    _javalang_ThrowException(env, "java/lang/NumberFormatException", "bad number format for float");
-		    return 0.0;
-		    break;
-		}
-	}
-
-    if ((val.d == 0) && (nptr == endptr))
-	{
-	    (*env)->ReleaseStringUTFChars(env, s, nptr);
-	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "no conversion performed, possible underflow");
-	    return 0.0;
-	}
-    if ((val.d == -HUGE_VAL) || (val.d == HUGE_VAL))
-	{
-	    (*env)->ReleaseStringUTFChars(env, s, nptr);
-	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "conversion would cause overflow");
-	    return 0.0;
-	}
-#else
-    val.d = atof(nptr);
-#endif
-
-    (*env)->ReleaseStringUTFChars(env, s, nptr);
-    return val.f;
-}
-
 

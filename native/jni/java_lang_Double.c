@@ -26,11 +26,52 @@ executable file might be covered by the GNU General Public License. */
 
 
 #include <config.h>
-#include <stdlib.h>  /* for strtod() */
-#include <math.h>  /* for HUGE_VAL */
+#include <stdlib.h>
+#include <string.h>
 
-#include "javalang.h"
+#include "mprec.h"
+#include "fdlibm.h"
+#include "jcl.h"
+
 #include "java_lang_Double.h"
+
+
+/*
+ * Class:     java_lang_Double
+ * Method:    initIDs
+ * Signature: ()
+ */
+jmethodID isNaNID;
+jdouble NEGATIVE_INFINITY;
+jdouble POSITIVE_INFINITY;
+
+JNIEXPORT void JNICALL Java_java_lang_Double_initIDs
+  (JNIEnv *env, jclass cls)
+{
+  jfieldID negInfID;
+  jfieldID posInfID;
+
+  isNaNID = (*env)->GetStaticMethodID(env, cls, "isNaN", "(D)Z)");
+  if (isNaNID == NULL)
+    {
+      DBG("unable to determine method id of isNaN\n")
+      return;
+    }
+  negInfID = (*env)->GetFieldID(env, cls, "NEGATIVE_INFINITY", "D");
+  if (negInfID == NULL)
+    {
+      DBG("unable to determine field id of NEGATIVE_INFINITY\n")
+      return;
+    }
+  posInfID = (*env)->GetFieldID(env, cls, "POSITIVE_INFINITY", "D");
+  if (posInfID == NULL)
+    {
+      DBG("unable to determine field id of POSITIVE_INFINITY\n")
+      return;
+    }
+  POSITIVE_INFINITY = (*env)->GetStaticDoubleField(env, cls, posInfID);
+  NEGATIVE_INFINITY = (*env)->GetStaticDoubleField(env, cls, negInfID);
+} 
 
 /*
  * Class:     java_lang_Double
@@ -38,11 +79,32 @@ executable file might be covered by the GNU General Public License. */
  * Signature: (D)J
  */
 JNIEXPORT jlong JNICALL Java_java_lang_Double_doubleToLongBits
-  (JNIEnv * env, jclass thisClass, jdouble doubleValue)
+  (JNIEnv * env, jclass cls, jdouble doubleValue)
 {
-    jvalue val;
-    val.d = doubleValue;
-    return val.j;
+  jvalue val;
+  jlong e, f;
+  val.d = doubleValue;
+  
+  e = val.j & 0x7ff0000000000000LL;
+  f = val.j & 0x000fffffffffffffLL;
+  
+  if (e == 0x7ff0000000000000LL && f != 0L)
+    val.j = 0x7ff8000000000000LL;
+
+  return val.j;
+}
+
+/*
+ * Class:     java_lang_Double
+ * Method:    doubleToRawLongBits
+ * Signature: (D)J
+ */
+JNIEXPORT jlong JNICALL Java_java_lang_Double_doubleToRawLongBits
+  (JNIEnv * env, jclass cls, jdouble doubleValue)
+{
+  jvalue val;
+  val.d = doubleValue;
+  return val.j;
 }
 
 /*
@@ -51,11 +113,11 @@ JNIEXPORT jlong JNICALL Java_java_lang_Double_doubleToLongBits
  * Signature: (J)D
  */
 JNIEXPORT jdouble JNICALL Java_java_lang_Double_longBitsToDouble
-  (JNIEnv * env, jclass thisClass, jlong longValue)
+  (JNIEnv * env, jclass cls, jlong longValue)
 {
-    jvalue val;
-    val.j = longValue;
-    return val.d;
+  jvalue val;
+  val.j = longValue;
+  return val.d;
 }
 
 /*
@@ -64,86 +126,130 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_longBitsToDouble
  * Signature: (D)Ljava/lang/String
  */
 JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
-  (JNIEnv * env, jclass thisClass, jdouble d)
+  (JNIEnv * env, jclass cls, jdouble value, jboolean isFloat)
 {
-  char buf[1024];
-  jstring retval;
+  char buffer[50], result[50];
+  int decpt, sign;
+  char *s, *d;
+  int i;
 
-  sprintf((char*)&buf, "%G", d);
-  retval = (*env)->NewStringUTF(env, buf);
-  return retval;
+  if ((*env)->CallStaticBooleanMethod(env, cls, isNaNID, value))
+    return (*env)->NewStringUTF(env, "NaN");
+  
+  if (value == POSITIVE_INFINITY)
+    return (*env)->NewStringUTF(env, "Infinity");
+
+  if (value == NEGATIVE_INFINITY)
+    return (*env)->NewStringUTF(env, "-Infinity");
+
+  _dtoa (value, 0, 20, &decpt, &sign, NULL, buffer, (int)isFloat);
+
+  value = fabs (value);
+
+  s = buffer;
+  d = result;
+
+  if (sign)
+    *d++ = '-';
+
+  if (value >= 1e-3 && value < 1e7 || value == 0)
+    {
+      if (decpt <= 0)
+	*d++ = '0';
+      else
+	{
+	  for (i = 0; i < decpt; i++)
+	    if (*s)
+	      *d++ = *s++;
+	    else
+	      *d++ = '0';
+	}
+
+      *d++ = '.';
+
+      if (*s == 0)
+	{
+	  *d++ = '0';
+	  decpt++;
+	}
+	  
+      while (decpt++ < 0)
+	*d++ = '0';      
+      
+      while (*s)
+	*d++ = *s++;
+
+      *d = 0;
+
+      return (*env)->NewStringUTF(env, result);
+    }
+
+  *d++ = *s++;
+  decpt--;
+  *d++ = '.';
+  
+  if (*s == 0)
+    *d++ = '0';
+
+  while (*s)
+    *d++ = *s++;
+
+  *d++ = 'E';
+  
+  if (decpt < 0)
+    {
+      *d++ = '-';
+      decpt = -decpt;
+    }
+
+  {
+    char exp[4];
+    char *e = exp + sizeof exp;
+    
+    *--e = 0;
+    do
+      {
+	*--e = '0' + decpt % 10;
+	decpt /= 10;
+      }
+    while (decpt > 0);
+
+    while (*e)
+      *d++ = *e++;
+  }
+  
+  *d = 0;
+
+  return (*env)->NewStringUTF(env, result);
 }
-
+  
 /*
  * Class:     java_lang_Double
  * Method:    parseDouble
  * Signature: (Ljava/lang/String)D
  */
-JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
-  (JNIEnv * env, jclass thisClass, jstring s)
+JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble0
+  (JNIEnv * env, jclass cls, jstring str)
 {
-    const char *nptr;
-    char *endptr, *myptr;
-    jvalue val;
+  jboolean isCopy;
+  int length;
+  char *buf, *endptr;
+  jdouble val;
 
-    if (s == NULL)
-	{
-	    _javalang_ThrowException(env, "java/lang/NullPointerException", "null argument");
-	    return 0.0;
-	}
+  buf = (*env)->GetStringUTFChars(env, str, &isCopy);
+  if (buf == NULL)
+    {
+      return 0.0; /* OutOfMemoryError already thrown */
+    }
 
-    nptr = (char*)((*env)->GetStringUTFChars(env, s, 0));
-    if (nptr == NULL)
-	{
-	    _javalang_ThrowException(env, "java/lang/NullPointerException", "null returned by GetStringUTFChars");
-	    return 0.0;
-	}
-#if defined(HAVE_STRTOD)
-    val.d = strtod(nptr, &endptr);
+  if (strlen(buf) > 0)
+    {
+      struct _Jv_reent reent;  
+      memset (&reent, 0, sizeof reent);
 
-
-    /* to catch non-white space characters after conversion */
-    myptr = endptr;
-    while ((myptr) && (*myptr != 0))  /* the null character */
-	{
-	    switch (*myptr)
-		{
-		case ' ':
-		case '\t':
-		case '\r':
-		case '\n':
-		case 'f':
-		case 'F':
-		case 'd':
-		case 'D':
-		    myptr++;
-		    break;
-		default:
-		    (*env)->ReleaseStringUTFChars(env, s, nptr);
-		    _javalang_ThrowException(env, "java/lang/NumberFormatException", "bad number format for floating point literal");
-		    return 0.0;
-		    break;
-		}
-	}
-
-    if ((val.d == 0) && (nptr == endptr))
-	{
-	    (*env)->ReleaseStringUTFChars(env, s, nptr);
-	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "no conversion performed, possible underflow");
-	    return 0.0;
-	}
-    if ((val.d == -HUGE_VAL) || (val.d == HUGE_VAL))
-	{
-	    (*env)->ReleaseStringUTFChars(env, s, nptr);
-	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "conversion would cause overflow");
-	    return 0.0;
-	}
-#else
-    val.d = atof(nptr);
-#endif
-
-    (*env)->ReleaseStringUTFChars(env, s, nptr);
-    return val.d;
+      val = _strtod_r (&reent, buf, &endptr);
+      if (endptr == buf + strlen(buf))
+	return val;
+    }
+  JCL_ThrowException(env, "java/lang/NumberFormatException", "unable to parse double");
 }
-
-

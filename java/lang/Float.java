@@ -35,6 +35,7 @@ package java.lang;
  * related to floats.
  *
  * @author Paul Fisher
+ * @author Andrew Haley <aph@cygnus.com>
  * @since JDK 1.0
  */
 public final class Float extends Number implements Comparable
@@ -108,11 +109,10 @@ public final class Float extends Number implements Comparable
      *
      * @exception NumberFormatException when the <code>String</code> cannot
      *            be parsed into a <code>Float</code>.
-     * @exception NullPointerException when the argument is <code>null</code>.
      * @param s the <code>String</code> to convert
      * @see #parseFloat(java.lang.String)
      */
-    public Float(String s) throws NumberFormatException, NullPointerException
+    public Float(String s) throws NumberFormatException
     {
 	value = parseFloat(s);
     }
@@ -236,7 +236,10 @@ public final class Float extends Number implements Comparable
      * @param f the <code>float</code> to convert
      * @return the <code>String</code> representing the <code>float</code>.
      */
-    public native static String toString(float f);
+  public static String toString(float f)
+  {
+    return Double.toString ((double)f, true);
+  }
 
     /**
      * Return the result of calling <code>new Float(java.lang.String)</code>.
@@ -245,15 +248,13 @@ public final class Float extends Number implements Comparable
      * @return a new <code>Float</code> representing the <code>String</code>'s
      *         numeric value.
      *
-     * @exception NullPointerException thrown if <code>String</code> is 
-     * <code>null</code>.
      * @exception NumberFormatException thrown if <code>String</code> cannot
      * be parsed as a <code>double</code>.
      * @see #Float(java.lang.String)
      * @see #parseFloat(java.lang.String)
      */
     public static Float valueOf(String s)
-	throws NumberFormatException, NullPointerException
+	throws NumberFormatException
     {
 	return new Float(s);
     }
@@ -317,6 +318,19 @@ public final class Float extends Number implements Comparable
     public native static int floatToIntBits(float value);
 
     /**
+     * Return the int bits of the specified <code>float</code>.
+     * The result of this function can be used as the argument to
+     * <code>Float.intBitsToFloat(long)</code> to obtain the
+     * original <code>float</code> value.  The difference between
+     * this function and <code>floatToIntBits</code> is that this
+     * function does not collapse NaN values.
+     *
+     * @param value the <code>float</code> to convert
+     * @return the bits of the <code>float</code>.
+     */
+    public native static int floatToRawIntBits(float value);
+
+    /**
      * Return the <code>float</code> represented by the long
      * bits specified.
      *
@@ -378,15 +392,16 @@ public final class Float extends Number implements Comparable
      * @return the value of the <code>String</code> as a <code>float</code>.
      * @exception NumberFormatException when the string cannot be parsed to a
      *            <code>float</code>.
-     * @exception NullPointerException when the String is null.
      * @since JDK 1.2
      * @see #MIN_VALUE
      * @see #MAX_VALUE
      * @see #POSITIVE_INFINITY
      * @see #NEGATIVE_INFINITY
      */
-    public native static float parseFloat(String s)
-    throws NumberFormatException, NullPointerException;
+    public static float parseFloat(String s)
+      throws NumberFormatException {
+      return (float)Double.parseDouble(s);
+    }
 
     /**
      * Returns 0 if the <code>float</code> value of the argument is 

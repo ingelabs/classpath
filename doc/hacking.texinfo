@@ -138,7 +138,7 @@ with a special exception included to allow linking with non-GPL licensed
 works as long as no other license would restrict such linking.  To
 preserve freedom for all users and to maintain uniform licensing of
 Classpath, we will not accept code into the main distribution that is
-not licensed under these terms.  The license can be read from the any
+not licensed under these terms.  The license can be read from any
 alpha release distributed from @uref{ftp://alpha.gnu.org/gnu/classpath/}
 or by obtaining a copy of the current CVS tree.
 
