@@ -35,25 +35,16 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+/* do not move; needed here because of some macro definitions */
+#include "config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
-#if TIME_WITH_SYS_TIME
-# include <sys/time.h>
-# include <time.h>
-#else
-# if HAVE_SYS_TIME_H
-#  include <sys/time.h>
-# else
-#  include <time.h>
-# endif
-#endif
 
 #include <jni.h>
 
-#include "config.h"
+#include "target_native.h"
+#include "target_native_misc.h"
 
 #include "java_util_TimeZone.h"
 
@@ -70,41 +61,18 @@ exception statement from your version. */
 JNIEXPORT jstring JNICALL
 Java_java_util_TimeZone_getDefaultTimeZoneId(JNIEnv *env, jclass clazz)
 {
-  time_t current_time;
-  char **tzinfo, *tzid;
-  long tzoffset;
+#ifdef HAVE_TZNAME
+  char    buffer[128];
+  int     result;
   jstring retval;
 
-  current_time = time(0);
+  TARGET_NATIVE_UTIL_GET_TIMEZONE_STRING(buffer,sizeof(buffer),result);
 
-  mktime(localtime(&current_time));
-  tzinfo = tzname;
-  tzoffset = timezone;
-
-  if ((tzoffset % 3600) == 0)
-    tzoffset = tzoffset / 3600;
-
-  if (!strcmp(tzinfo[0], tzinfo[1]))  
-    {
-      tzid = (char*)malloc(strlen(tzinfo[0]) + 6);
-      if (!tzid)
-        return(0);
-
-      sprintf(tzid, "%s%ld", tzinfo[0], tzoffset);
-    }
-  else
-    {
-      tzid = (char*)malloc(strlen(tzinfo[0]) + strlen(tzinfo[1]) + 6);
-      if (!tzid)
-        return(0);
-
-      sprintf(tzid, "%s%ld%s", tzinfo[0], tzoffset, tzinfo[1]);
-    }
-
-  retval = (*env)->NewStringUTF(env, tzid);
-  if (!retval)
-    return(0);
+  retval = (*env)->NewStringUTF(env, buffer);
  
   return(retval);
+#else
+  return(0); /* added this statement (crashes without..:-) --Fridi. */
+#endif /* HAVE_TZNAME */
 }
 
