@@ -1,5 +1,5 @@
-/* generic_math_int64.h - Native methods for 64bit math operations
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* target_generic_network.h - Native methods for network operations.
+   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -143,7 +143,7 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-//NYI??? reentrant?
+/* XXX NYI??? reentrant? */
 #ifndef TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_ADDRESS
   #include <netdb.h>
   #define TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_ADDRESS(address,name,maxNameLen,result) \
@@ -181,7 +181,7 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-//NYI??? reentrant?
+/* XXX NYI??? reentrant? */
 #ifndef TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_NAME
   #include <netdb.h>
   #define TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_NAME(name,addresses,maxAddressSize,addressCount,result) \
@@ -317,7 +317,7 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-//??? address in network byte order?
+/* XXX ??? address in network byte order? */
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_BIND
   #include <sys/types.h>
   #include <sys/socket.h>
@@ -347,7 +347,7 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-//??? address in network byte order?
+/* XXX ??? address in network byte order? */
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_LISTEN
   #include <sys/socket.h>
   #define TARGET_NATIVE_NETWORK_SOCKET_LISTEN(socketDescriptor,maxQueueLength,result) \
@@ -367,7 +367,7 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-//??? address in network byte order?
+/* XXX ??? address in network byte order? */
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_ACCEPT
   #include <sys/types.h>
   #include <sys/socket.h>

@@ -1,5 +1,5 @@
 /* javanet.c - Common internal functions for the java.net package
-   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -681,7 +681,7 @@ _javanet_bind(JNIEnv *env, jobject this, jobject addr, jint port, int stream)
     }
   DBG("_javanet_bind(): Past native_fd lookup\n");
 
-// NYI ???
+  /* XXX NYI ??? */
   _javanet_set_option (env, this, SOCKOPT_SO_REUSEADDR, 
 		       _javanet_create_boolean (env, JNI_TRUE));
 
@@ -1099,7 +1099,8 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 
         TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT(fd,optval,result);
 #endif
-	result = TARGET_NATIVE_OK;  // ignore errors and do not throw an exception
+	/* ignore errors and do not throw an exception. */
+	result = TARGET_NATIVE_OK;
         break;
 
       case SOCKOPT_SO_SNDBUF:

@@ -1,5 +1,5 @@
-/* generic_math_int64.h - Native methods for 64bit math operations
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* target_generic_file - Native methods for file operations
+   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -795,7 +795,7 @@ extern "C" {
 * Notes      : -
 \***********************************************************************/
 
-//??? name als buffer?
+/* XXX ??? name als buffer? */
 #ifndef TARGET_NATIVE_FILE_READ_DIR
   #include <sys/types.h>
   #include <dirent.h>

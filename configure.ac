@@ -118,12 +118,16 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl We want to avoid -O2 at the moment, gcc 2.96 from Red Hat 7
   dnl cannot compile some native functions (gcc errors) with this
   dnl flag.
-  CFLAGS="-g" 
+  CFLAGS="-g"
 
   dnl We want warnings, lots of warnings :-)
+  AM_CFLAGS=
   if test "x${GCC}" = xyes; then
-    JAPHAR_GREP_CFLAGS(-Wall, [ CFLAGS="$CFLAGS -Wall" ])
+    dnl We want ISO C90 pedantic ansi, but with longlong (jlong) support
+    dnl and modern POSIX and BSD C library funtions/prototypes.
+    AM_CFLAGS='-ansi -std=c89 -pedantic -Wall -Wno-long-long -D_POSIX_SOURCE -D_BSD_SOURCE'
   fi
+  AC_SUBST(AM_CFLAGS)
 
   dnl Check for AWT related gthread/gtk/libart_lgpl
   if test "x${COMPILE_GTK_PEER}" = xyes; then

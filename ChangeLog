@@ -1,5 +1,27 @@
 2004-04-09  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Set AM_CFLAGS to ISO C90 pedantic ansi, but with
+	longlong (jlong) support and modern POSIX and BSD C library
+	funtions/prototypes.
+	* native/fdlibm/Makefile.am: Cancel out project wide AM_CFLAGS.
+	* native/fdlibm/mprec.h: Remove C++ comments.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c: Turn C++
+	comments into C comments.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.c:
+	Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.c:
+	Likewise.
+	* native/jni/java-io/FileDescriptor.c: Likewise.
+	* native/jni/java-io/java_io_File.c: Likewise.
+	* native/jni/java-io/javaio.c: Remove unused fprintf calls.
+	* native/jni/java-net/javanet.c: Turn C++ comments into C comments.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
+	Likewise.
+	* native/target/generic/target_generic_file.h: Likewise.
+	* native/target/generic/target_generic_network.h: Likewise.
+
+2004-04-09  Mark Wielaard  <mark@klomp.org>
+
 	* config.guess: Removed automatically generated file.
 	* config.sub: Likewise.
 	* .cvsignore: Ignore config.guess and config.sub.

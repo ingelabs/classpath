@@ -1,5 +1,5 @@
 /* File.c - Native methods for java.io.File class
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -81,7 +81,7 @@ Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
   TARGET_NATIVE_FILE_OPEN_CREATE(filename,fd,result);
   if (result != TARGET_NATIVE_OK)
     {
-//??? NYI
+      /* XXX ??? NYI */
       if (errno != EEXIST)
         JCL_ThrowException(env,
                            "java/io/IOException",

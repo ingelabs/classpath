@@ -15,7 +15,6 @@ libfdlibm_la_SOURCES =  \
 			e_sqrt.c \
 			fdlibm.h \
 			ieeefp.h \
-			java-assert.h \
 			k_cos.c \
 			k_rem_pio2.c \
 			k_sin.c \
@@ -46,6 +45,10 @@ libfdlibm_la_SOURCES =  \
 			w_sqrt.c 
 
 libfdlibm_la_LDFLAGS = -module -version-info @LIBVERSION@ 
+
+# We just want the standard flags for fdlibm since it is an upstream lib
+# and our normal -ansi -pedantic -Wall -Werror breaks this lib.
+AM_CFLAGS = 
 
 INCLUDES =  @EXTRA_INCLUDES@ \
 	     -I$(top_builddir)/include 

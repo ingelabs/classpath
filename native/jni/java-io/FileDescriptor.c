@@ -1,5 +1,5 @@
 /* FileDescriptor.c - Native methods for java.io.FileDescriptor class
-   Copyright (C) 1998,2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2003, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -65,19 +65,19 @@ exception statement from your version. */
 
 #include "java_io_FileDescriptor.h"
 
-// FIXME: This can't be right.  Need converter macros
+/* FIXME: This can't be right.  Need converter macros */
 #define CONVERT_JLONG_TO_INT(x) TARGET_NATIVE_MATH_INT_INT64_TO_INT32(x)
 #define CONVERT_INT_TO_JLONG(x) TARGET_NATIVE_MATH_INT_INT32_TO_INT64(x)
 
-// FIXME: This can't be right.  Need converter macros
+/* FIXME: This can't be right.  Need converter macros */
 #define CONVERT_JLONG_TO_OFF_T(x) TARGET_NATIVE_MATH_INT_INT64_TO_INT32(x)
 #define CONVERT_OFF_T_TO_JLONG(x) TARGET_NATIVE_MATH_INT_INT32_TO_INT64(x)
 
-// FIXME: This can't be right.  Need converter macros
+/* FIXME: This can't be right.  Need converter macros */
 #define CONVERT_JINT_TO_INT(x) ((int)(x & 0xFFFFFFFF))
 #define CONVERT_INT_TO_JINT(x) ((int)(x & 0xFFFFFFFF))
 
-// FIXME: This can't be right.  Need converter macros
+/* FIXME: This can't be right.  Need converter macros */
 #define CONVERT_SSIZE_T_TO_JINT(x) ((jint)(x & 0xFFFFFFFF))
 #define CONVERT_JINT_TO_SSIZE_T(x) (x)
 
@@ -420,7 +420,7 @@ Java_java_io_FileDescriptor_nativeAvailable(JNIEnv *env, jobject obj, jlong fd)
       return(0);
     }
 
-// FIXME NYI ??? why only jint and not jlong?
+/* FIXME NYI ??? why only jint and not jlong? */
   return(TARGET_NATIVE_MATH_INT_INT64_TO_INT32(bytes_available));
 }
 

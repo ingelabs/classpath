@@ -1,5 +1,5 @@
 /* javaio.c - Common java.io native functions
-   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -64,7 +64,6 @@ _javaio_open_read(JNIEnv *env, jstring name)
   int        fd;
   int        result;
 
-// fprintf(stderr,"call %s (line %d):\n",__FUNCTION__,__LINE__);
   filename = JCL_jstring_to_cstring(env, name); 
   if (filename == NULL)
     return(-1);
@@ -101,7 +100,6 @@ _javaio_open_readwrite(JNIEnv *env, jstring name)
   int        fd;
   int        result;
 
-// fprintf(stderr,"call %s (line %d):\n",__FUNCTION__,__LINE__);
   filename = JCL_jstring_to_cstring(env, name); 
   if (filename == NULL)
     return(-1);
@@ -163,7 +161,6 @@ _javaio_skip_bytes(JNIEnv *env, jint fd, jlong num_bytes)
   jlong current_offset, new_offset;
   int   result;
 
-// fprintf(stderr,"call %s (line %d):\n",__FUNCTION__,__LINE__);
   TARGET_NATIVE_FILE_SEEK_CURRENT(fd,TARGET_NATIVE_MATH_INT_INT64_CONST_0,current_offset,result);
   if (result != TARGET_NATIVE_OK)
     JCL_ThrowException(env,
@@ -195,7 +192,6 @@ _javaio_get_file_length(JNIEnv *env, jint fd)
   jlong length;
   int   result;
 
-// fprintf(stderr,"call %s (line %d):\n",__FUNCTION__,__LINE__);
   TARGET_NATIVE_FILE_SIZE(fd,length,result);
   if (result != TARGET_NATIVE_OK)
     {
@@ -229,7 +225,6 @@ _javaio_read(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
   assert(offset>=0);
   assert(len>=0);
 
-// fprintf(stderr,"call %s (line %d):\n",__FUNCTION__,__LINE__);
   if (len == 0)
     return 0; /* Nothing todo, and GetByteArrayElements() seems undefined. */
 
@@ -258,7 +253,6 @@ _javaio_read(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
   assert(offset>=0);
   assert(len>=0);
 
-// fprintf(stderr,"call %s (line %d):\n",__FUNCTION__,__LINE__);
   if ((fd==0) || (fd==1) || (fd==2))
   {
     if (len == 0)
