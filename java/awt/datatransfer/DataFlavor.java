@@ -41,6 +41,8 @@ public class DataFlavor implements java.io.Externalizable, Cloneable
  * Static Variables
  */
 
+private static DataFlavor _tmp = null;
+
 /**
   * This is the data flavor used for tranferring plain text.  The MIME
   * type is "text/plain; charset=unicode".  The representation class
@@ -88,24 +90,27 @@ static
 {
   try
     {
-      plainTextFlavor = new DataFlavor("text/plain; charset=unicode", 
+      _tmp = new DataFlavor("text/plain; charset=unicode", 
                                        "java.io.InputStream");
     }
-  catch(Exception e) { plainTextFlavor = null; }
+  catch(Exception e) { _tmp = null; }
+  plainTextFlavor = _tmp;
 
   try
     {
-      stringFlavor = new DataFlavor("application/x-java-serialized-object",
+      _tmp = new DataFlavor("application/x-java-serialized-object",
                                     "java.lang.String");
     }
-  catch(Exception e) { stringFlavor = null; }
+  catch(Exception e) { _tmp = null; }
+  stringFlavor = _tmp;
 
   try
     {
-      javaFileListFlavor = new DataFlavor("application/x-java-file-list", 
+      _tmp = new DataFlavor("application/x-java-file-list", 
                                           "java.util.List");
     }
-  catch(Exception e) { javaFileListFlavor = null; }
+  catch(Exception e) { _tmp = null; }
+  javaFileListFlavor = _tmp;
 }
 
 /*************************************************************************/
