@@ -1,3 +1,7 @@
+2003-03-01  Tom Tromey  <tromey@redhat.com>
+
+	* java/rmi/registry/RegistryHandler.java: Deprecate.
+
 2003-02-28  Michael Koch  <konqueror@gmx.de>
 
 	* java/beans/Beans.java,
