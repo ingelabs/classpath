@@ -2,6 +2,10 @@ New in release 0.05 [ no date yet ]
 * Runtime.execInternal contract changed to allow for null `env'
   and to accept `dir' argument.
 * VMObject.getClass() removed. It was never used.
+* java.lang.Throwable is now a 'normal' GNU Classpath class that uses the
+  VM specific java.lang.VMThrowable to get at the VM state and (if needed)
+  the StackTraceElements for a particular exception. A default implementation
+  (that does nothing) is provided in vm/reference/java/lang/VMThrowable.java.
 
 New in release 0.04 (2002/05/05)
 * Additional configure options to disable zip creation and installation as

@@ -12,7 +12,7 @@ This file contains important information you will need to know if you
 are going to write an interface between GNU Classpath and a Virtual
 Machine.
 
-Copyright (C) 1998-2001 Free Software Foundation, Inc.
+Copyright (C) 1998-2002 Free Software Foundation, Inc.
 
 @end ifinfo
 
@@ -24,7 +24,7 @@ Copyright (C) 1998-2001 Free Software Foundation, Inc.
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1998-2001 Free Software Foundation, Inc.
+Copyright @copyright{} 1998-2002 Free Software Foundation, Inc.
 @sp 2
 Permission is granted to make and distribute verbatim copies of
 this document provided the copyright notice and this permission notice
@@ -142,6 +142,9 @@ The order of initialization, as far as I can tell, doesn't matter just
 yet.  However, when we move to 1.2 support, it probably will matter, so
 we'll have a note in here at that time.
 
+The current initialization order is currently documented in the
+Runtime.java source file.
+
 @node Classpath Hooks, VM Hooks, Initialization, Top
 @comment node-name, next, previous, up
 @chapter Classpath Hooks
@@ -153,7 +156,6 @@ work.  These classes are:
 @item java.lang.Class
 @item java.lang.Runtime
 @item java.lang.Thread
-@item java.lang.Throwable
 @item java.lang.reflect.Constructor
 @item java.lang.reflect.Method
 @item java.lang.reflect.Field
@@ -175,6 +177,12 @@ method and the identityHashCode of an Object.
 @item java.lang.VMSecurityManager
 provides the class context (stack trace) of the currently
 executing thread and a way to get the currently active ClassLoader.
+@item java.lang.VMThrowable
+used to hold the VM state of a throwable, created when a Throwable is
+created or the fillInStacktrace() method is called, when the actual stack
+trace is needed (a lot of exceptions are never actually used), the
+getStackTrace() method is used to create a real StackTraceElement array
+for the exception.
 @end itemize
 
 Some of the classes you implement for the VM will need to call back to
@@ -231,26 +239,9 @@ done.  No harm will come, as long as you follow the guidelines in the
 @emph{Note: this is written in anticipation of 1.2 support and does not
 apply just yet.}
 
-@item java.lang.Throwable (Classpath 0.02) @*
-The VM may choose to implement this class in whatever fashion it would
-like.  If you choose to use the reference implementation, then you must
-define two functions within some library and change Throwable.java to
-load your library.  The two functions are printStackTrace0(Object), and
-fillInStackTrace().
-
 @item Top-level Exception Handler @*
 Exceptions take care of themselves in Classpath; all you need to do in
 the top-level exception handler is call Throwable.printStackTrace().
-
-XXX I think this was a bad design on my part.  It takes up memory and
-CPU cycles that do not need to be taken up for exceptions which are
-simply caught.  This portion of the VM interface will be changed so that
-VMs must associate native stacktrace data with the Throwable itself or
-even do some sort of lazy stacktrace information addition to the
-Throwable, only copying stacktrace data as it is lost (as functions are
-exited) to preserve memory and cycles.  The usual case is the one where
-an exception is caught.  The top-level exception handler is, well, an
-exception among exceptions.
 
 @item Security and Traces @*
 There will eventually be a feature in the 1.2 security that keeps the
