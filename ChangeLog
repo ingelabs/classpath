@@ -1,3 +1,8 @@
+2003-11-21  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/plaf/basic/BasicDefaults.java (BasicDefaults): Put
+	AbstractUndoableEdit.undoText and AbstractUndoableEdit.redoText.
+
 2003-11-18  Graydon Hoare  <graydon@redhat.com>
 
 	* java/awt/font/TextLayout.java: Implement simple layouts
