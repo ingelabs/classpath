@@ -38,11 +38,14 @@ exception statement from your version. */
 
 package gnu.java.awt.image;
 
-import java.awt.*;
-import java.awt.image.*;
-import java.util.*;
-import java.io.*;
+import java.awt.image.ColorModel;
+import java.awt.image.DirectColorModel;
+import java.awt.image.ImageConsumer;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Vector;
 import gnu.classpath.Configuration;
 
 public class GdkPixbufDecoder extends ImageDecoder

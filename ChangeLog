@@ -1,5 +1,10 @@
 2003-06-10  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/awt/image/GdkPixbufDecoder.java:
+	Reworked imports to explicitely import classes only.
+
+2003-06-10  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/ServerSocketChannelImpl.java,
 	gnu/java/nio/SocketChannelImpl.java:
 	Mainly merged with libgcj.
