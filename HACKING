@@ -5,7 +5,7 @@ have the following installed:
         - GNU automake 1.4
         - GNU libtool 1.3.3
         - Kaffe 1.0.5+
-        - GTK 1.2
+        - GTK+ 1.2.x
         - IBM jikes 1.0.9+
 
 If you start from the current CVS version, you will have to run the
@@ -14,11 +14,15 @@ following from the toplevel directory.
         aclocal; autoheader; automake; autoconf
 
 Next you run configure.  Options you'll probably want to specify
-include --with-jikes, --with-javah={path to kaffeh},
---with-classlib={path to Klasses.jar}
+include --with-jikes, --with-javah={path to kaffeh}/kaffeh,
+--with-classlib={path to Klasses.jar}/Klasses.jar and 
+--with-japhar={prefix to Japhar}.  For native compilation you need 
+jni.h from the JDK or Japhar in your include path.  This is done 
+automatically for you if you specify --with-japhar.
 
 Eventually jikes should contain a patch for placing .u (dependency
-files) where -d would also place class files.
+files) where -d would also place class files.  This will be used in 
+'make dist'.
 
 The following is a rough list of tasks which need to be completed:
 
@@ -29,7 +33,12 @@ The following is a rough list of tasks which need to be completed:
 
         * java.awt does not work yet.        
 
-        * java.math needs some work.
+        * java.math needs some work.  This includes one missing 
+	  function and setting up BigInteger.c in the native compile.
+
+	* java.security needs some work.  SecureClassLoader needs work
+	  but it relies on some 1.2 ClassLoader stuff which isn't 
+	  implemented at the moment.
 
         * GNU Classpath needs to work with Kaffe.  There is
           documentation on the efforts made to originally make
@@ -37,12 +46,13 @@ The following is a rough list of tasks which need to be completed:
 
         * Update the web-site
 
-        * Make multiple 'dist' targets for different packages
-          including java.awt, java.lang, etc. but also for
+        * Make multiple 'dist' or 'install' targets for different 
+	  packages including java.awt, java.lang, etc. but also for
           gnu.java.awt.peer.gtk.
 
         * Fix the build so that distributions won't have the same high
-          requires as CVS.  Shouldn't be much left to do this.
+          requires as CVS.  Shouldn't be much left to do this.  Some
+	  more work can be done to make builds from CVS easier.
 
         * Create configure, etc. for the swing project.
 
