@@ -1,5 +1,10 @@
 2004-01-30  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/http/Connection.java
+	(getOutputStream): Fixed typo.
+
+2004-01-30  Michael Koch  <konqueror@gmx.de>
+
 	* configure.ac (AC_CONFIG_FILES): Removed lib/gen_nio.sh and fixed
 	quotation.
 	* java/nio/GenericBuffer.cpp: Removed.
