@@ -165,7 +165,7 @@ dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_JAPHAR],
 [
   AC_ARG_WITH([japhar], 
-  	      [AS_HELP_STRINH(--with-japhar,configure GNU Classpath for Japhar [default=yes])],
+  	      [AS_HELP_STRING(--with-japhar,configure GNU Classpath for Japhar [default=yes])],
   [
     if test "x${withval}" = xyes || test "x${withval}" = x; then
       CLASSPATH_CHECK_JAPHAR

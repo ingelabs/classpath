@@ -1,3 +1,7 @@
+2004-05-18  Michael Koch  <konqueror@gmx.de>
+
+	* acinclude.m4: Fixed typo.
+
 2004-05-17  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/Writer.java (Writer(Object)): Fixed API doc.
