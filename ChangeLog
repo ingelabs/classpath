@@ -1,5 +1,18 @@
 2004-11-07  Casey Marshall  <csm@gnu.org>
 
+	* gnu/java/security/provider/GnuDSAPrivateKey.java
+	(encodedKey): new field.
+	(getFormat): return "PKCS#8".
+	(getEncoded): implemented.
+	(toString): check for 'null' values.
+	* gnu/java/security/provider/GnuDSAPublicKey.java
+	(encodedKey): new field.
+	(getFormat): return "X.509".
+	(getEncoded): implemented.
+	(toString): check for 'null' values.
+
+2004-11-07  Casey Marshall  <csm@gnu.org>
+
 	* NEWS: started 0.12 entry; mention signed JAR files and X.509
 	improvements.
 
