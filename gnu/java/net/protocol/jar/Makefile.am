@@ -2,4 +2,4 @@
 
 EXTRA_DIST = \
 Handler.java \
-JarURLConnection.java
+Connection.java

@@ -1,3 +1,12 @@
+2003-10-23  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/net/protocol/file/Makefile.am (EXTRA_DIST): Renamed
+	FileURLConnection.java to Connection.java.
+	* gnu/java/net/protocol/http/Makefile.am (EXTRA_DIST): Renamed
+	HttpURLConnection.java to Connection.java.
+	* gnu/java/net/protocol/jar/Makefile.am (EXTRA_DIST): Renamed
+	JarURLConnection.java to Connection.java.
+
 2003-10-23  Sascha Brawer  <brawer@dandelis.ch>
 
         * java/awt/geom/CubicCurve2D.java (contains): Docfix for URL of embedded drawing.

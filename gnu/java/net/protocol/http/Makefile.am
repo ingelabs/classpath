@@ -3,5 +3,5 @@
 EXTRA_DIST = \
 TODO \
 Handler.java \
-HttpURLConnection.java 
+Connection.java 
 
