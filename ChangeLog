@@ -1,5 +1,12 @@
 2003-11-27  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/http/Connection.java
+	(connect): Always create outputStream, its needed to send request to
+	remote server. Set connected to true after request was sent and reply
+	received.
+
+2003-11-27  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/URLStreamHandler.java
 	(parseURL): Added comment in catch statement.
 	(canonicalizeFilename): Add documentation.

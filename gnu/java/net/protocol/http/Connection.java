@@ -170,18 +170,17 @@ public final class Connection extends HttpURLConnection
       }
 
     if (doInput)
-      inputStream
-        = new DataInputStream (new BufferedInputStream (socket.getInputStream()));
+      inputStream = new DataInputStream
+	(new BufferedInputStream (socket.getInputStream()));
 
-    if (doOutput)
-      outputStream = new BufferedOutputStream (socket.getOutputStream());
-
+    outputStream = new BufferedOutputStream (socket.getOutputStream());
     bufferedOutputStream = new ByteArrayOutputStream (256); //default is too small
     outputWriter = new PrintWriter (new OutputStreamWriter (outputStream, "8859_1")); 
-    connected = true;
 
     sendRequest();
     receiveReply();
+
+    connected = true;
   }
 
   /**
