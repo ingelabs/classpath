@@ -1,6 +1,7 @@
 dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(native/java.net/javanet.c)
+
 AC_CANONICAL_HOST
 
 PACKAGE="classpath"
@@ -11,8 +12,7 @@ AC_SUBST(VERSION)
 AC_SUBST(LIBVERSION)
 AM_INIT_AUTOMAKE(${PACKAGE}, ${VERSION})
 
-# this file is empty, is this supposed to be here? -gcb
-#AM_CONFIG_HEADER(native/config.h)
+AM_CONFIG_HEADER(config.h)
 
 AC_PREFIX_DEFAULT(/usr/local/classpath)
 
@@ -33,7 +33,7 @@ AC_PROG_LN_S
 AC_HEADER_STDC
 AC_CHECK_HEADERS(unistd.h)
 AC_C_CONST
-AC_CHECK_FUNCS(gethostname socket strerror fork pipe execve)
+AC_CHECK_FUNCS(gethostname socket strerror fork pipe execve strtod atof)
 
 dnl guile checks - shouldn't need now that mauve exists
 dnl GUILE_FLAGS
@@ -254,8 +254,11 @@ vm/reference/Makefile
 vm/Makefile
 lib/deps.sh
 lib/gen-classlist.sh
-lib/Makefile)
+lib/Makefile,
+[ chmod 755 lib/deps.sh
+  chmod 755 lib/gen-classlist.sh
+])
 
-AC_OUTPUT_COMMANDS(chmod 755 lib/deps.sh)
-AC_OUTPUT_COMMANDS(chmod 755 lib/gen-classlist.sh)
+#AC_OUTPUT_COMMANDS(chmod 755 lib/deps.sh)
+#AC_OUTPUT_COMMANDS(chmod 755 lib/gen-classlist.sh)
 
