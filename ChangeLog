@@ -1,3 +1,39 @@
+2004-05-21  Mark Wielaard  <mark@klomp.org>
+
+	* native/fdlibm/e_pow.c: CYGNUS LOCAL should be GCJ LOCAL.
+	* native/fdlibm/fdlibm.h: Likewise.
+
+2004-05-21  Richard Henderson  <rth@redhat.com>
+
+	* native/fdlibm/mprec.c (lo0bits): Fix paren typo.
+
+2004-05-21  Matt Kraai  <kraai@alumni.cmu.edu>
+
+	* native/fdlibm/w_exp.c (o_threshold, u_threshold): Define only
+	if _IEEE_LIBM is undefined.
+
+2004-05-21  Bo Thorsen  <bo@berlioz.suse.de>
+
+	* native/fdlibm/ieeefp.h: Add x86-64 support.
+
+2004-05-21  Gerhard Tonn  <GerhardTonn@swol.de>
+
+	* native/fdlibm/ieeefp.h: Define __IEEE_BIG_ENDIAN for S/390.
+
+2004-05-21  Anthony Green  <green@redhat.com>
+
+	* native/fdlibm/ieeefp.h: Add arm thumb support.
+
+2004-05-21  Richard Earnshaw  <rearnsha@arm.com>
+
+	* native/fdlibm/ieeefp.h: Handle ARM platforms that have pure-endian
+	floating point.
+
+2002-1-1  Andrew Pinski  <pinskia@physics.uc.edu>
+
+	* native/fdlibm/ieeefp.h: Define __IEEE_BIG_ENDIAN for
+	PPC Darwin, not for all of Darwin.
+
 2004-05-20  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/System.java (properties): Make package private.

@@ -8,11 +8,23 @@
 #define __IEEE_LITTLE_ENDIAN
 #endif
 
-#ifdef __arm__
-/* ARM always has big-endian words.  Within those words the byte ordering
-   appears to be big or little endian.  Newlib doesn't seem to care about
-   the byte ordering within words.  */
+#if defined(__arm__) || defined(__thumb__)
+/* ARM traditionally used big-endian words; and within those words the
+   byte ordering was big or little endian depending upon the target.  
+   Modern floating-point formats are naturally ordered; in this case
+   __VFP_FP__ will be defined, even if soft-float.  */
+#ifdef __VFP_FP__
+#ifdef __ARMEL__
+#define __IEEE_LITTLE_ENDIAN
+#else
 #define __IEEE_BIG_ENDIAN
+#endif
+#else
+#define __IEEE_BIG_ENDIAN
+#ifdef __ARMEL__
+#define __IEEE_BYTES_LITTLE_ENDIAN
+#endif
+#endif
 #endif
 
 #ifdef __hppa__
@@ -59,6 +71,10 @@
 #define __IEEE_LITTLE_ENDIAN
 #endif
 
+#ifdef __x86_64__
+#define __IEEE_LITTLE_ENDIAN
+#endif
+
 #ifdef __i960__
 #define __IEEE_LITTLE_ENDIAN
 #endif
@@ -68,10 +84,6 @@
 #endif
 
 #ifdef __MIPSEB__
-#define __IEEE_BIG_ENDIAN
-#endif
-
-#ifdef __s390__
 #define __IEEE_BIG_ENDIAN
 #endif
 
@@ -103,8 +115,9 @@
 #define __IEEE_LITTLE_ENDIAN
 #endif
 
-#if (defined( __PPC__ ) || defined( _POWER ))
-#if (defined(_BIG_ENDIAN) && _BIG_ENDIAN) || (defined(_AIX) && _AIX)
+#if defined (__PPC__) || defined (__ppc__)
+#if (defined(_BIG_ENDIAN) && _BIG_ENDIAN) || (defined(_AIX) && _AIX) \
+    || defined (__APPLE__)
 #define __IEEE_BIG_ENDIAN
 #else
 #if (defined(_LITTLE_ENDIAN) && _LITTLE_ENDIAN) || (defined(__sun__) && __sun__) || (defined(__WIN32__) && __WIN32__)
@@ -128,6 +141,10 @@
 #else
 #define __IEEE_LITTLE_ENDIAN
 #endif
+#endif
+
+#ifdef __s390__
+#define __IEEE_BIG_ENDIAN
 #endif
 
 #ifndef __IEEE_BIG_ENDIAN
