@@ -1,5 +1,5 @@
-/* GtkArgList.java
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* GdkGraphicsEnvironment.java -- information about the graphics environment
+   Copyright (C) 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,39 +37,51 @@ exception statement from your version. */
 
 
 package gnu.java.awt.peer.gtk;
-import java.util.Vector;
 
-public class GtkArgList extends Vector
+import java.awt.*;
+import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
+import java.util.Locale;
+
+
+public class GdkGraphicsEnvironment extends GraphicsEnvironment
 {
-  void add (GtkArg arg)
-  {
-    addElement (arg);
-  }
-
-  void add (String name, boolean value)
-  {
-    addElement (new GtkArg (name, Boolean.valueOf(value)));
-  }
-    
-  void add (String name, int value)
-  {
-    addElement (new GtkArg (name, new Integer (value)));
-  }
-
-  void add (String name, float value)
-  {
-    addElement (new GtkArg (name, new Float (value)));
-  }
-
-  void add (String name, Object value)
-  {
-    addElement (new GtkArg (name, value));
-  }
-
-  synchronized void setArgs (GtkComponentPeer cp)
-  {
-    for (int i = 0; i < elementCount; i++)
-      cp.set ((GtkArg)elementData[i]);
-  }
-}
   
+  public GdkGraphicsEnvironment ()
+  {
+  	super();
+  }
+
+  public GraphicsDevice[] getScreenDevices ()
+  {
+    throw new java.lang.UnsupportedOperationException ();
+  }
+
+  public GraphicsDevice getDefaultScreenDevice ()
+  {
+    throw new java.lang.UnsupportedOperationException ();
+  }
+
+  public Graphics2D createGraphics (BufferedImage image)
+  {
+    return new GdkGraphics2D (image);
+  }
+
+  public Font[] getAllFonts ()
+  {
+    throw new java.lang.UnsupportedOperationException ();
+  }
+
+  public String[] getAvailableFontFamilyNames ()
+  {
+    throw new java.lang.UnsupportedOperationException ();
+  }
+
+  public String[] getAvailableFontFamilyNames (Locale l)
+  {
+    throw new java.lang.UnsupportedOperationException ();
+  }
+
+
+} // class GdkGraphicsEnvironment
+

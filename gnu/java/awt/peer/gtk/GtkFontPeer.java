@@ -43,7 +43,6 @@ import java.awt.geom.*;
 import java.awt.font.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.MissingResourceException;
 import java.text.*;
 import gnu.java.awt.peer.ClasspathFontPeer;
 
@@ -63,26 +62,21 @@ public class GtkFontPeer extends ClasspathFontPeer
       }
   }
 
-  final private String Xname; // uses %d for font size.
+  final private String Xname;
 
   public GtkFontPeer (String name, int style)
   {
-    super(name, style, 12 /* kludge */);
+    // All fonts get a default size of 12 if size is not specified.
+    this(name, style, 12);
+  }
 
-    String Xname = null;
+  public GtkFontPeer (String name, int style, int size)
+  {
+    super(name, style, size);
+
     if (bundle != null)
-      {
-	try
-	  {
-	    Xname = bundle.getString (name.toLowerCase () + "." + style);
-	  }
-	catch (MissingResourceException mre)
-	  {
-	    // ignored
-	  }
-      }
-
-    if (Xname == null)
+      Xname = bundle.getString (name.toLowerCase () + "." + style);
+    else
       {
 	String weight;
 	String slant;
@@ -102,10 +96,8 @@ public class GtkFontPeer extends ClasspathFontPeer
 	else
 	  spacing = "c";
 
-        Xname = "-*-*-" + weight + "-" + slant + "-normal-*-%d-*-*-*-" + spacing + "-*-*-*";
+        Xname = "-*-*-" + weight + "-" + slant + "-normal-*-*-" + size + "-*-*-" + spacing + "-*-*-*";
       }
-
-    this.Xname = Xname;
   }
 
   public String getXLFD ()
