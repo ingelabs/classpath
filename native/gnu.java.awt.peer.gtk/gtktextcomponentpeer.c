@@ -98,7 +98,6 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableSelectRegion
   (JNIEnv *env, jobject obj, jobject jedit, jint start, jint end)
 {
   GtkEditable *edit;
-  int pos;
 
   edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
 
@@ -114,7 +113,6 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableSetEditable
   (JNIEnv *env, jobject obj, jobject jedit, jint state)
 {
   GtkEditable *edit;
-  int pos;
 
   edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
 

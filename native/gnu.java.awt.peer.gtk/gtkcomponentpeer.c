@@ -202,7 +202,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedPut
     (JNIEnv *env, jobject obj, jobject container, jint x, jint y)
 {
   GList *child;
-  GtkWidget *fix, *hbox;
+  GtkWidget *fix;
   void *containerptr=NULL;
   void *objptr=NULL;
 
