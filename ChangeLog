@@ -1,3 +1,8 @@
+2004-04-19  Dalibor Topic  <robilad@kaffe.org>
+
+	* javax/security/auth/x500/X500Principal.java:
+	Cleaned up imports.
+
 2004-04-18  Mark Wielaard  <mark@klomp.org>
 
 	* include/Makefile.am: Remove java_nio_FileLockImpl.h generation.
