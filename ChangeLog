@@ -1,5 +1,9 @@
 2002-11-13  Michael Koch <konqueror@gmx.de>
 
+	* java/net/Makefile.am: Added URI.java.
+
+2002-11-13  Michael Koch <konqueror@gmx.de>
+
 	* ChangeLog.usermap: Added myself.
 	* java/nio/channels/Pipe.java
 	(SinkChannel.SinkChannel): Documentation added.

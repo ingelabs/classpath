@@ -42,6 +42,7 @@ SocketPermission.java \
 SocketTimeoutException.java \
 UnknownHostException.java \
 UnknownServiceException.java \
+URI.java \
 URISyntaxException.java \
 URLClassLoader.java \
 URLConnection.java \
