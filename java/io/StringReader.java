@@ -1,284 +1,181 @@
-/* StringReader.java -- Read an String as a character stream
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* Copyright (C) 1998, 1999, 2000  Free Software Foundation
 
-This file is part of GNU Classpath.
+   This file is part of libgcj.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+This software is copyrighted work licensed under the terms of the
+Libgcj License.  Please consult the file "LIBGCJ_LICENSE" for
+details.  */
  
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
-
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
-
-
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct
+ */
+
 /**
-  * This class permits a <code>String</code> to be read as a character 
-  * input stream.
-  * <p>
-  * The mark/reset functionality in this class behaves differently than
-  * normal.  If no mark has been set, then calling the <code>reset()</code>
-  * method rewinds the read pointer to the beginning of the <code>String</code>.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class permits a <code>String</code> to be read as a character 
+ * input stream.
+ * <p>
+ * The mark/reset functionality in this class behaves differently than
+ * normal.  If no mark has been set, then calling the <code>reset()</code>
+ * method rewinds the read pointer to the beginning of the <code>String</code>.
+ *
+ * @version 0.0
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Warren Levy <warrenl@cygnus.com>
+ * @date October 19, 1998.  
+ */
 public class StringReader extends Reader
 {
+  /* A String provided by the creator of the stream. */
+  private String buf;
 
-/*************************************************************************/
+  /* Position of the next char in buf to be read. */
+  private int pos;
 
-/*
- * Instance Variables
- */
+  /* The currently marked position in the stream. */
+  private int markedPos;
 
-/**
-  * The <code>String</code> that contains the data supplied during read 
-  * operations
-  */
-private String buffer;
+  /* The index in buf one greater than the last valid character. */
+  private int count;
 
-/**
-  * The index of the next char to be read from <code>buffer</code>
-  */
-private int pos = 0;
+  /**
+   * Create a new <code>StringReader</code> that will read chars from the 
+   * passed in <code>String</code>.  This stream will read from the beginning to the 
+   * end of the <code>String</code>.
+   *
+   * @param s The <code>String</code> this stream will read from.
+   */
+  public StringReader(String buffer)
+  {
+    super();
+    buf = buffer;
 
-/**
-  * This indicates the maximum number of chars that can be read from this
-  * stream.  It is the length of the <code>String</code> that this stream is
-  * reading chars from.
-  */
-private int count;
-
-/**
-  * This is the position in the <code>String</code> that is marked for
-  * later resetting.
-  */
-private int markpos = 0;
-
-/*************************************************************************/
-
-/**
-  * Create a new <code>StringReader</code> that will read chars from the 
-  * passed in <code>String</code>.  This stream will read from the beginning to the 
-  * end of the <code>String</code>.
-  *
-  * @param s The <code>String</code> this stream will read from.
-  */
-public
-StringReader(String s)
-{
-  buffer = s;
-  count = s.length();
-}
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * This method determines if the stream is ready to be read.  This class
-  * is always ready to read and so always returns <code>true</code>.
-  *
-  * @return <code>true</code> to indicate that this object is ready to be read.
-  */
-public boolean
-ready()
-{
-  return(true);
-}
-
-/*************************************************************************/
-
-/**
-  * This method returns <code>true</code> to indicate that this class
-  * supports mark/reset functionality.
-  *
-  * @return <code>true</code> to indicate this class supports mark/reset functionality
-  */
-public boolean
-markSupported()
-{
-  return(true);
-}
-
-/*************************************************************************/
-
-/**
-  * This method marks the current position in the stream so that a subsequent
-  * call to the <code>reset()</code> method will reset the read position in
-  * the stream to this point.
-  * <p>
-  * Note that the read limit, which would normally be used to specify the
-  * maximum amount of characters than could be read before the mark is
-  * discarded, is ignored in this class.  Objects of this class can always
-  * remember all their chars.
-  *
-  * @param readlimit Ignored
-  *
-  * @exception IOException If an error occurs, which it won't
-  */
-public void
-mark(int readlimit) throws IOException
-{
-  markpos = pos;
-}
-
-/*************************************************************************/
-
-/**
-  * This method sets the read position in the stream to the previously
-  * marked position or to 0 (i.e., the beginning of the stream) if the mark
-  * has not already been set.
-  */
-public void
-reset()
-{
-  pos = markpos;
-} 
-
-/*************************************************************************/
-
-/**
-  * This method attempts to skip the requested number of chars in the
-  * input stream.  It does this by advancing the <code>pos</code> value by the
-  * specified number of chars.  It this would exceed the length of the
-  * buffer, then only enough chars are skipped to position the stream at
-  * the end of the buffer.  The actual number of chars skipped is returned.
-  *
-  * @param num_chars The requested number of chars to skip
-  *
-  * @return The actual number of chars skipped.
-  */
-public long
-skip(long num_chars)
-{
-  if (num_chars <= 0)
-    return(0);
-
-  synchronized (lock) {
-
-  if (num_chars > (count - pos))
-    {
-      int retval = count - pos;
-      pos = count;
-      return(retval);
-    }
-
-  pos += num_chars;
-  return(num_chars); 
-
-  } // synchronized 
-}
-
-/*************************************************************************/
-
-/**
-  * This method reads one char from the stream.  The <code>pos</code> counter 
-  * is advanced to the next char to be read.  The char read is returned as
-  * an int in the range of 0-255.  If the stream position is already at the
-  * end of the buffer, no char is read and a -1 is returned in order to
-  * indicate the end of the stream.
-  *
-  * @return The char read, or -1 if end of stream
-  */
-public int
-read()
-{
-  if (pos >= count)
-    return(-1);
-
-  synchronized (lock) {
-
-  ++pos;
-
-  return(buffer.charAt(pos - 1));
-
+    count = buffer.length();
+    markedPos = pos = 0;
   }
-}  
 
-/*************************************************************************/
-
-/**
-  * This method reads chars from the stream and stores them into a caller
-  * supplied buffer.  It starts storing the data at index <code>offset</code> 
-  * into the buffer and attempts to read <code>len</code> chars.  This method can
-  * return before reading the number of chars requested if the end of the
-  * stream is encountered first.  The actual number of chars read is 
-  * returned.  If no chars can be read because the stream is already at 
-  * the end of stream position, a -1 is returned.
-  * <p>
-  * This method does not block.
-  *
-  * @param buf The array into which the chars read should be stored.
-  * @param offset The offset into the array to start storing chars
-  * @param len The requested number of chars to read
-  *
-  * @return The actual number of chars read, or -1 if end of stream.
-  */
-public int
-read(char[] buf, int offset, int len)
-{
-  if (len == 0)
-    return(0);
-
-  if (pos == count)
-    return(-1);
-
-  synchronized (lock) {
-
-  // All requested chars can be read
-  if (len < (count - pos))
+  public void close()
+  {
+    synchronized (lock)
     {
-      for (int i = 0; i < len; i++)
-        buf[offset + i] = buffer.charAt(pos + i);
-
-      pos +=len;
-      return(len);
+      buf = null;
     }
-  // Cannot read all requested chars because there aren't enough left in buf
-  else
+  }
+
+  public void mark(int readAheadLimit) throws IOException
+  {
+    synchronized (lock)
     {
-      for (int i = 0; i < (count - pos); i++)
-        buf[offset + i] = buffer.charAt(pos + i);
+      if (buf == null)
+        throw new IOException("Stream closed");
 
-      int retval = count - pos;
-      pos = count;
-      return(retval);
+      // readAheadLimit is ignored per Java Class Lib. book, p. 1692.
+      markedPos = pos;
     }
+  }
 
-  } // synchronized
+  public boolean markSupported()
+  {
+    return true;
+  }
+
+  public int read() throws IOException
+  {
+    synchronized (lock)
+    {
+      if (buf == null)
+        throw new IOException("Stream closed");
+
+      if (pos < count)
+        return ((int) buf.charAt(pos++)) & 0xFFFF;
+      return -1;
+    }
+  }
+
+  public int read(char[] b, int off, int len) throws IOException
+  {
+    synchronized (lock)
+    {
+      if (buf == null)
+        throw new IOException("Stream closed");
+
+      /* Don't need to check pos value, arraycopy will check it. */
+      if (off < 0 || len < 0 || off + len > b.length)
+        throw new ArrayIndexOutOfBoundsException();
+
+      if (pos >= count)
+        return -1;
+
+      int lastChar = Math.min(count, pos + len);
+      buf.getChars(pos, lastChar, b, off);
+      int numChars = lastChar - pos;
+      pos = lastChar;
+      return numChars;
+    }
+  }
+
+  /**
+   * This method determines if the stream is ready to be read.  This class
+   * is always ready to read and so always returns <code>true</code>, unless
+   * close() has previously been called in which case an IOException is
+   * thrown.
+   *
+   * @return <code>true</code> to indicate that this object is ready to be read.
+   * @exception IOException If the stream is closed.
+   */
+  public boolean ready() throws IOException
+  {
+    if (buf == null)
+      throw new IOException("Stream closed");
+
+    return true;
+  }
+
+  /**
+   * Sets the read position in the stream to the previously
+   * marked position or to 0 (i.e., the beginning of the stream) if the mark
+   * has not already been set.
+   */
+  public void reset() throws IOException
+  {
+    synchronized (lock)
+    {
+      if (buf == null)
+        throw new IOException("Stream closed");
+
+      pos = markedPos;
+    }
+  }
+
+  /**
+    * This method attempts to skip the requested number of chars in the
+    * input stream.  It does this by advancing the <code>pos</code> value by 
+    * the specified number of chars.  It this would exceed the length of the
+    * buffer, then only enough chars are skipped to position the stream at
+    * the end of the buffer.  The actual number of chars skipped is returned.
+    *
+    * @param num_chars The requested number of chars to skip
+    *
+    * @return The actual number of chars skipped.
+    */
+  public long skip(long n) throws IOException
+  {
+    synchronized (lock)
+    {
+      if (buf == null)
+        throw new IOException("Stream closed");
+
+      // Even though the var numChars is a long, in reality it can never
+      // be larger than an int since the result of subtracting 2 positive
+      // ints will always fit in an int.  Since we have to return a long
+      // anyway, numChars might as well just be a long.
+      long numChars = Math.min((long) (count - pos), n < 0 ? 0L : n);
+      pos += numChars;
+      return numChars;
+    }
+  }
 }
-
-/*************************************************************************/
-
-/**
-  * Closes the stream.  This method has no effect in this class.
-  */
-public void
-close()
-{
-  return;
-}
-
-
-} // class StringReader
-

@@ -1,5 +1,5 @@
 /* FileReader.java -- Convenience class for reading characters from a file
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -28,73 +28,55 @@ executable file might be covered by the GNU General Public License. */
 package java.io;
 
 /**
-  * This class provides a convenient way to set up a <code>Reader</code>
-  * to read from a file.  It opens the specified file for reading and creates
-  * the <code>InputStreamReader</code> to read from the 
-  * resulting <code>FileInputStream</code>.  This class can only be used
-  * to read from files using the default character encoding.  Use
-  * <code>InputStreamReader</code> directly to use a non-default encoding.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class provides a convenient way to set up a <code>Reader</code>
+ * to read from a file.  It opens the specified file for reading and creates
+ * the <code>InputStreamReader</code> to read from the 
+ * resulting <code>FileInputStream</code>.  This class can only be used
+ * to read from files using the default character encoding.  Use
+ * <code>InputStreamReader</code> directly to use a non-default encoding.
+ *
+ * @version 0.0
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public class FileReader extends InputStreamReader
 {
+  /**
+   * This method initializes a <code>FileReader</code> instance to read from
+   * the specified <code>File</code> object.
+   *
+   * @param file The <code>File</code> object representing the file to read from
+   *
+   * @exception FileNotFoundException If the file is not found or some other 
+   *            error occurs
+   */
+  public FileReader(File file) throws FileNotFoundException
+  {
+    super(new FileInputStream(file));
+  }
 
-/*************************************************************************/
+  /**
+   * This method initializes a <code>FileReader</code> instance to read from
+   * this specified <code>FileDescriptor</code> object.
+   *
+   * @param fd The <code>FileDescriptor</code> to read from.
+   */
+  public FileReader(FileDescriptor fd)
+  {
+    super(new FileInputStream(fd));
+  }
 
-/*
- * Constructors
- */
-
-/**
-  * This method initializes a <code>FileReader</code> instance to read from
-  * the specified <code>File</code> object.
-  *
-  * @param file The <code>File</code> object representing the file to read from
-  *
-  * @exception SecurityException If read access to the file is forbidden by the <code>SecurityManager</code>
-  * @exception FileNotFoundException If the file is not found or some other error occurs
-  */
-public
-FileReader(File file) throws FileNotFoundException, SecurityException
-{
-  super(new FileInputStream(file));
+  /**
+   * This method initializes a <code>FileReader</code> instance to read from
+   * the specified named file.
+   *
+   * @param name The name of the file to read from
+   *
+   * @exception FileNotFoundException If the file is not found or some other 
+   *            error occurs
+   */
+  public FileReader(String name) throws FileNotFoundException
+  {
+    super(new FileInputStream(name));
+  }
 }
-
-/*************************************************************************/
-
-/**
-  * This method initializes a <code>FileReader</code> instance to read from
-  * this specified <code>FileDescriptor</code> object.
-  *
-  * @param fd The <code>FileDescriptor</code> to read from.
-  *
-  * @exception SecurityException If read access to the file is forbidden by the <code>SecurityManager</code>
-  */
-public
-FileReader(FileDescriptor fd) throws SecurityException
-{
-  super(new FileInputStream(fd));
-}
- 
-/*************************************************************************/
-
-/**
-  * This method initializes a <code>FileReader</code> instance to read from
-  * the specified named file.
-  *
-  * @param name The name of the file to read from
-  *
-  * @exception SecurityException If read access to the file is forbidden by the <code>SecurityManager</code>
-  * @exception FileNotFoundException If the file is not found or some other error occurs
-  */
-public
-FileReader(String name) throws FileNotFoundException, SecurityException
-{
-  super(new FileInputStream(name));
-}
-
-} // class FileReader
-
