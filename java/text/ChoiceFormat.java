@@ -54,8 +54,6 @@ import java.util.StringTokenizer;
   * array must be sorted in ascending order and the format string array
   * must be the same length as the terminator array.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public class ChoiceFormat extends NumberFormat implements Serializable,
@@ -102,8 +100,10 @@ private double[] choiceLimits;
 public static double
 nextDouble(double d, boolean positive)
 {
-  ; // *****Implement me!
-  return(0);
+  if (d == Double.NaN)
+    return(d);
+
+  throw new RuntimeException("Not Implemented");
 }
 
 /*************************************************************************/
@@ -330,7 +330,13 @@ format(double number, StringBuffer sb, FieldPosition status)
     {
       if (number < choiceLimits[i])
         {
-           sb.append(choiceFormats[i]);
+           if (i == 0)
+             {
+               sb.append(choiceFormats[i]);
+               break;
+             }
+
+           sb.append(choiceFormats[i-1]);
            break;
         }
     }
@@ -349,7 +355,19 @@ format(double number, StringBuffer sb, FieldPosition status)
 public Number
 parse(String text, ParsePosition status)
 {
-  throw new RuntimeException("Not implemented");
+  String str = text.substring(status.getIndex());
+
+  for (int i = 0; i < choiceFormats.length; i++)
+    {
+      if (str.startsWith(choiceFormats[i]))
+        {
+          status.setIndex(status.getIndex() + choiceFormats[i].length());
+
+          return(new Double(choiceLimits[i]));
+        }
+    }
+
+  return(new Double(Double.NaN));
 }
 
 /*************************************************************************/
@@ -412,6 +430,9 @@ hashCode()
   *
   * @return A clone of this object
   */
+
+// No need to override
+/*
 public Object
 clone()
 {
@@ -424,6 +445,7 @@ clone()
       return(null);
     }
 }
+*/
 
 } // class ChoiceFormat
 
