@@ -1,3 +1,9 @@
+2005-01-07  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Package.java (getPackages): Use VMClassLoader when
+	appropriate.
+	(getPackage): Likewise.
+
 2005-01-07  Michael Koch  <konqueror@gmx.de>
 
 	* java/nio/Buffer.java (address): New field.
