@@ -232,13 +232,15 @@ public class Locale implements java.io.Serializable, Cloneable {
     }
 
     /**
-     * Returns the list of available locals.
+     * Returns the list of available locales.
      */
-    public static Locale[] getAvailableLocals() {
+    public static Locale[] getAvailableLocales() {
+	/* I only return those for which localized language
+	 * or country information exists.
+	 * XXX - remove hard coded list.
+	 */
 	return new Locale[] {
-	    ENGLISH, FRENCH, GERMAN, ITALIAN, JAPANESE, KOREAN, CHINESE, 
-	    UK, US, FRANCE, GERMANY, ITALY, JAPAN, KOREA, CHINA, 
-	    PRC, TAIWAN, CANADA, CANADA_FRENCH
+	    ENGLISH, FRENCH, GERMAN, new Locale("ga", "")
 	};
     }
 

@@ -343,6 +343,11 @@ public abstract class Calendar implements Serializable, Cloneable {
     static final long serialVersionUID = -1807547505821590642L;
 
     /**
+     * The name of the resource bundle.
+     */
+    private static final String bundleName = "gnu/java/locale/Calendar";
+
+    /**
      * Constructs a new Calender with the default time zone and the default
      * locale.
      */
@@ -360,8 +365,7 @@ public abstract class Calendar implements Serializable, Cloneable {
         this.zone = zone;
         lenient = true;
 
-	ResourceBundle rb = ResourceBundle.getBundle
-	  ("gnu/java/locale/LocaleInformation", locale);
+	ResourceBundle rb = ResourceBundle.getBundle(bundleName, locale);
 
         firstDayOfWeek = ((Integer) rb.getObject("firstDayOfWeek")).intValue();
         minimalDaysInFirstWeek = 
@@ -402,8 +406,7 @@ public abstract class Calendar implements Serializable, Cloneable {
      */
     public static Calendar getInstance(TimeZone zone, Locale locale){
       String calendarClassName = null;
-      ResourceBundle rb = ResourceBundle.getBundle
-	("gnu/java/locale/LocaleInformation", locale);
+      ResourceBundle rb = ResourceBundle.getBundle(bundleName, locale);
       calendarClassName = rb.getString("calendarClass");
       if (calendarClassName != null) 
 	{
@@ -434,16 +437,14 @@ public abstract class Calendar implements Serializable, Cloneable {
         
     /**
      * Gets the set of locales for which a Calendar is availiable.
+     * @exception MissingResourceException if locale data couldn't be found.
      * @return the set of locales.
      */
-    public static Locale[] getAvailableLocals() {
-        return new Locale[] {
-            Locale.ENGLISH, Locale.FRENCH, Locale.GERMAN, Locale.ITALIAN, 
-            Locale.JAPANESE, Locale.KOREAN, Locale.CHINESE, Locale.FRANCE, 
-            Locale.GERMANY, Locale.ITALY, Locale.JAPAN, Locale.KOREA, 
-            Locale.CHINA, Locale.TAIWAN, Locale.UK, Locale.US, 
-            Locale.CANADA, Locale.CANADA_FRENCH
-        };
+    public static Locale[] getAvailableLocales()
+    {
+      ResourceBundle rb = ResourceBundle.getBundle(bundleName, 
+						   new Locale("", ""));
+      return (Locale[]) rb.getObject("availableLocales");
     }
 
     /**
