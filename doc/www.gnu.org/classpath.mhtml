@@ -31,7 +31,7 @@ ftp://alpha.gnu.org/gnu/classpath/>.  CVSROOT is
 
 <H4>Announcements</H4>
 <UL>
-  <LI><link /software/classpath/announce/200101-06.html 
+  <LI><link /software/classpath/announce/20010106.html 
        "GNU Classpath Version 0.02"> (2001-01-06)</LI>
   <LI><link /software/classpath/announce/20001120.html 
        "GNU Classpath Version 0.01"> (2000-11-20)</LI>
@@ -112,14 +112,14 @@ GNU Classpath-0.00.  Japhar-0.09 is required for newer releases of GNU
 Classpath.  There are however four other target VMs we'd like to work
 with out-of-the-box.  Those are <link http://sources.redhat.com/java/
 GCJ>, <link http://www.sablevm.org/ SableVM>, <link
-http://www.kaffe.org Kaffe>, and <link
-http://www.intel.com/research/mrl/orp/ Intel's ORP>.
+http://www.kaffe.org Kaffe>, <link http://kissme.sourceforge.net/ Kissme>, 
+and <link http://www.intel.com/research/mrl/orp/ Intel's ORP>.
 
 Porting Classpath to <link http://www.transvirtual.com/kaffe.html
 Kaffe> should be rather trivial, but no one has started work on it.
 If you're interested in doing this work, please send us an email to
-<link mailto:classpath@gnu.org &lt;classpath@gnu.org&gt;>.  SableVM
-and ORP both already use some form of GNU Classpath for their class
+<link mailto:classpath@gnu.org &lt;classpath@gnu.org&gt;>.  SableVM,
+Kissme, and ORP both already use some form of GNU Classpath for their class
 libraries.
 
 </plain-text>
