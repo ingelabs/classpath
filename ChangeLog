@@ -1,3 +1,9 @@
+2005-02-07  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/ResourceBundle.java (getObject): Clarify
+	MissingResourceException detailed message.
+	(tryBundle(String,ClassLoader)): Likewise.
+
 2005-02-07  Craig Black  <craig.black@aonix.com>
 
 	* native/jni/classpath/native_state.c
