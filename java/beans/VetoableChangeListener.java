@@ -1,6 +1,6 @@
 /*
  * java.beans.VetoableChangeListener: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -40,6 +40,7 @@ package java.beans;
  **
  ** @author John Keiser
  ** @version 1.1.0, 29 Jul 1998
+ ** @since JDK1.1
  ** @see java.beans.PropertyChangeListener
  ** @see java.beans.VetoableChangeSupport
  **/

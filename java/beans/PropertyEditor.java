@@ -1,6 +1,6 @@
 /*
  * java.beans.PropertyEditor: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -84,6 +84,7 @@ package java.beans;
  ** itself, but rather allow the RAD tool to call setValue() or setAsText().
  **
  ** @author John Keiser
+ ** @since JDK1.1
  ** @version 1.1.0, 30 June 1998
  ** @see java.beans.PropertyEditorManager
  ** @see java.beans.PropertyEditorSupport

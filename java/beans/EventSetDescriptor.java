@@ -1,6 +1,6 @@
 /*
  * java.beans.EventSetDescriptor: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -64,6 +64,7 @@ import gnu.java.lang.*;
  ** make this distinction clear.
  **
  ** @author John Keiser
+ ** @since JDK1.1
  ** @version 1.1.0, 31 May 1998
  **/
 
