@@ -375,9 +375,6 @@ resource/java/util/Makefile
 resource/java/security/Makefile
 vm/Makefile
 vm/reference/Makefile
-vm/reference/gnu/Makefile
-vm/reference/gnu/vm/Makefile
-vm/reference/gnu/vm/stack/Makefile
 vm/reference/java/Makefile
 vm/reference/java/lang/Makefile
 vm/reference/java/lang/reflect/Makefile

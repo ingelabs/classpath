@@ -7,7 +7,5 @@ ArrayHelper.java \
 CharData.java \
 ClassHelper.java \
 ClassLoaderHelper.java \
-ExecutionStack.java \
 MainThread.java \
-StackFrame.java \
 SystemClassLoader.java

@@ -6,6 +6,9 @@ New in release 0.05 [ no date yet ]
   VM specific java.lang.VMThrowable to get at the VM state and (if needed)
   the StackTraceElements for a particular exception. A default implementation
   (that does nothing) is provided in vm/reference/java/lang/VMThrowable.java.
+* The vm/reference classes from the gnu.vm.stack and their counterparts
+  ExecutionStack and StackFrame in gnu.java.lang have been removed since they
+  are not actually part of the VM interface anyway.
 
 New in release 0.04 (2002/05/05)
 * Additional configure options to disable zip creation and installation as

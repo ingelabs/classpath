@@ -1,3 +1,21 @@
+2002-10-06  Mark Wielaard  <mark@klomp.org>
+
+	* configure.in (AC_OUTPUT): Remove vm/reference/gnu/Makefile,
+	vm/reference/gnu/vm/Makefile and vm/reference/gnu/vm/stack/Makefile.
+	* gnu/java/lang/Makefile.am (EXTRA_DIST): Remove ExecutionStack.java
+	and StackFrame.java.
+	* gnu/java/lang/ExecutionStack.java: Removed.
+	* gnu/java/lang/StackFrame.java: Removed.
+	* vm/reference/gnu/.cvsignore: Removed.
+	* vm/reference/gnu/Makefile.am: Removed.
+	* vm/reference/gnu/vm/.cvsignore: Removed.
+	* vm/reference/gnu/vm/Makefile.am: Removed.
+	* vm/reference/gnu/vm/stack/.cvsignore: Removed.
+	* vm/reference/gnu/vm/stack/Makefile.am: Removed.
+	* vm/reference/gnu/vm/stack/StackFrame.java: Removed.
+	* vm/reference/gnu/vm/stack/StackTrace.java: Removed.
+	* NEWS: Explain removal.
+
 2002-10-05  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/Makefile.am (EXTRA_DIST): Add Throwable.java
