@@ -95,8 +95,12 @@ name="ftp://alpha.gnu.org/gnu/classpath/">.
 <en>
 GNU Classpath 1.0 will be fully compatible with Java 1.1 and largely 
 compatible with Java 2.  The current state of GNU Classpath can be
-obtained by looking at the current list of
-<A HREF="http://savannah.gnu.org/pm/task.php?group_id=85&set=custom&advsrch=0&group_project_id=0&_assigned_to=0&_status=1&SUBMIT=Browse">all open tasks</A>.
+obtained by looking at these resources.
+  <ul>
+    <li><link url="http://savannah.gnu.org/pm/task.php?group_id=85&set=custom&advsrch=0&group_project_id=0&_assigned_to=0&_status=1&SUBMIT=Browse" name="All open tasks"></li>
+    <li>Japitool <link url="classpath-jdk13-compare.txt" name="comparison against Java 2, version 1.3">, updated nightly</li>
+    <li>GNU Classpath and GCJ <link url="http://gcc.gnu.org/java/libgcj-classpath-compare.html" name="merge status"></li>
+  </ul>
 </en>
 </p>
 
@@ -142,7 +146,7 @@ of GNU Classpath.
 <tr>
 <td><link url="http://sources.redhat.com/java/" name="GCJ"></td>
 <td>
-Although GNU Classpath cannot be compiled for use with
+Although GNU Classpath cannot be directly compiled for use with
 GCJ at this time, a lot of work has been done to merge GCJ class
 library code and GNU Classpath class library code.  This has resulted
 in a better version of each.  The current merge status between the two
@@ -194,7 +198,7 @@ into the VM's dynamic linking process through pluggable verification
 modules.
 </td>
 </tr>
-<td><link url="www.e-leos.net/" name="E-LEOS"></td>
+<td><link url="http://www.e-leos.net/" name="E-LEOS"></td>
 <td>
 GNU Classpath is used as part of this project to create a Java operating
 system.
