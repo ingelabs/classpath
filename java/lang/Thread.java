@@ -801,6 +801,9 @@ public class Thread implements Runnable
    */
   public static void sleep(long ms, int ns) throws InterruptedException
   {
+    if(ms < 0 || ns < 0 || ns > 999999)
+	throw new IllegalArgumentException();
+
     VMThread.sleep(ms, ns);
   }
 
