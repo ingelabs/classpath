@@ -1,3 +1,8 @@
+2005-01-06  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Add explicit X and libXtst tests when gtk+ peers are
+	enabled.
+
 2005-01-06  Michael Koch  <konqueror@gmx.de>
 
 	* java/util/TimeZone.java

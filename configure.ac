@@ -225,6 +225,13 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl Check for AWT related gthread/gtk/libart_lgpl
   if test "x${COMPILE_GTK_PEER}" = xyes; then
      AC_PATH_XTRA
+     if test "$no_x" = yes; then
+         AC_MSG_ERROR([GTK+ peers requested but no X library available])
+     fi
+     dnl We explicitly want the XTest Extension for Robot support.
+     AC_CHECK_LIB([Xtst], [XTestQueryExtension], [true],
+		  [AC_MSG_ERROR([libXtst NOT found, required for GdkRobot])],
+		  [${X_LIBS}])
      PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.4 gthread-2.0 >= 2.2 libart-2.0)
      AC_SUBST(GTK_CFLAGS)
      AC_SUBST(GTK_LIBS)
