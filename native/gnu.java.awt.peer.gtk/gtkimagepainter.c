@@ -28,8 +28,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
   (*env)->ReleaseIntArrayElements (env, jpixels, elems, 0);
 
 #if __BYTEORDER == __LITTE_ENDIAN
-/*    for (i = 0; i < num_pixels; i++) */
-/*      pixels[i] = SWAPU32 ((unsigned)pixels[i]); */
+  /* convert pixels from 0xBBGGRRAA to 0xAARRGGBB */
+  for (i = 0; i < num_pixels; i++)
+    pixels[i] = SWAPU32 ((unsigned)pixels[i]);
 #endif
 
   packed = (guchar *) malloc (sizeof (guchar) * 3 * num_pixels);
@@ -40,7 +41,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
      and process the alpha channel */
   for (i = 0; i < num_pixels; i++)
     {
-      jint ialpha = *(j_rgba+3);
+      jint ialpha = *j_rgba++;
 
       switch (ialpha)
 	{
@@ -66,8 +67,6 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
 	  }
 	  break;
 	}
-
-      j_rgba++;			/* skip over the processed alpha component */
     }
 
   gdk_threads_enter ();
