@@ -1,1 +1,1 @@
-info_TEXINFOS = hacking.texinfo
+info_TEXINFOS = hacking.texinfo vmintegration.texinfo
