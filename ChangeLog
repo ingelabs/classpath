@@ -1,3 +1,8 @@
+2003-06-19  Sascha Brawer  <brawer@dandelis.ch>
+
+	* java/awt/Font.java (getLineMetrics(String, FontRenderContext)):
+	Stubbed for avoiding compilation errors in Swing.
+
 2003-06-18  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/basic/BasicGraphicsUtils.java: Re-written
