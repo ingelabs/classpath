@@ -1,3 +1,5 @@
+Makefile
+Makefile.in
 stamp-h
 config.h
 stamp-h.in

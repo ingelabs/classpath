@@ -1,5 +1,9 @@
 2003-09-18  Michael Koch  <konqueror@gmx.de>
 
+	* include/.cvsignore: Ignore Makefile.in and Makefile.
+
+2003-09-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/event/KeyEvent.java: Some reformatting.
 	This merges KeyEvent with libgcj.
 
