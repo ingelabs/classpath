@@ -1261,10 +1261,10 @@ public class Collections
 
 
     /**
-     * The single element.
+     * The single element; package visible for use in nested class.
      * @serial the singleton
      */
-    private final Object element;
+    final Object element;
 
     /**
      * Construct a singleton.

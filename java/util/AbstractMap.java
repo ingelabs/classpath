@@ -218,7 +218,8 @@ public abstract class AbstractMap implements Map
 
   /**
    * Returns the hash code for this map. As defined in Map, this is the sum
-   * of all hashcodes for each Map.Entry object in entrySet.
+   * of all hashcodes for each Map.Entry object in entrySet, or basically
+   * entrySet().hashCode().
    *
    * @return the hash code
    * @see Map.Entry#hashCode()
@@ -226,12 +227,7 @@ public abstract class AbstractMap implements Map
    */
   public int hashCode()
   {
-    int hashcode = 0;
-    Iterator itr = entrySet().iterator();
-    int pos = size();
-    while (--pos >= 0)
-      hashcode += itr.next().hashCode();
-    return hashcode;
+    return entrySet().hashCode();
   }
 
   /**

@@ -1,3 +1,24 @@
+2001-10-19  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/IdentityHashMap.java: Improve javadoc, fix member
+	visibility for less code generation.
+	(modCount): Add fail-safe iteration.
+	(entries): Cache the entry set.
+	(hash): Rename from getHash, and make it more powerful - common
+	code for iterating over the table is now in one location.
+	(entrySet): Add missing method hashCode, optimize methods contains
+	and remove.
+	(equals, putAll): Add missing (but useless) methods.
+	(hashCode): Add missing (and important) method.
+	(keySet): Add missing method hashCode.
+	(values): Add missing method remove.
+	(class IdentityIterator): Add fail-safe iteration, fix next to be
+	correctly parameterized.
+	(class IdentityEntry): Add a class for entrySet iteration.
+	* java/util/AbstractMap.java (hashCode): Optimize.
+	* java/util/Collections.java (SingletonSet): Fix visibility for
+	less code generation.
+
 2001-10-18  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/BitSet.java: Improve javadoc.
