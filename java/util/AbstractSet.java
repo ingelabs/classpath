@@ -28,7 +28,7 @@ package java.util;
  * simply provides implementations of equals() and hashCode() to fulfil the
  * contracts required of them by the Set interface.
  */
-public abstract class AbstractSet extends AbstractCollection implements {
+public abstract class AbstractSet extends AbstractCollection implements Set {
 
   /**
    * Tests whether the given object is equal to this Set. This implementation
