@@ -1,3 +1,9 @@
+2004-12-03  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/protocol/ftp/package.html,
+	gnu/java/net/protocol/http/package.html:
+	Add missing files.
+
 2004-12-02  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/awt/EventDispatchThread.java,
