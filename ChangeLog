@@ -1,5 +1,13 @@
 2003-03-11  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/JarURLConnection.java: Reformated, no code changes.
+	* java/net/MulticastSocket.java: Fixed some @see tags for javadoc.
+	* java/net/PlainDatagramSocketImpl.java: Reformated, no code changes.
+	* java/net/Socket.java:  Fixed some @see tags for javadoc.
+	* java/net/URLConnection.java: Reformated, no code changes.
+
+2003-03-11  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetAddress.java
 	(InetAddress): Constructors must be package-private, not public.
 

@@ -42,278 +42,225 @@ import java.io.IOException;
 import gnu.classpath.Configuration;
 
 /**
-  * This is the default socket implementation for datagram sockets.
-  * It makes native calls to C routines that implement BSD style
-  * SOCK_DGRAM sockets in the AF_INET family.
-  *
-  * @version 0.1
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This is the default socket implementation for datagram sockets.
+ * It makes native calls to C routines that implement BSD style
+ * SOCK_DGRAM sockets in the AF_INET family.
+ *
+ * @version 0.1
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public class PlainDatagramSocketImpl extends DatagramSocketImpl
 {
-
-/*************************************************************************/
-
-/*
- * Static Variables
- */
-
-/**
-  * Option id for the IP_TTL (time to live) value.
-  */
-private static final int IP_TTL = 0x1E61; // 7777
+  /**
+   * Option id for the IP_TTL (time to live) value.
+   */
+  private static final int IP_TTL = 0x1E61; // 7777
 
 
-// Static initializer to load native library
+  // Static initializer to load native library
   static
   {
     if (Configuration.INIT_LOAD_LIBRARY)
       {
-	System.loadLibrary("javanet");
+        System.loadLibrary("javanet");
       }
   }
 
-/*************************************************************************/
+  /**
+   * This is the actual underlying file descriptor
+   */
+  protected int native_fd = -1;
 
-/*
- * Instance Variables
- */
+  /**
+   * Default do nothing constructor
+   */
+  public PlainDatagramSocketImpl()
+  {
+  }
 
-/**
-  * This is the actual underlying file descriptor
-  */
-protected int native_fd = -1;
+  /**
+   * Creates a new datagram socket
+   *
+   * @exception SocketException If an error occurs
+   */
+  protected native synchronized void create() throws SocketException;
 
-/*************************************************************************/
+  /**
+   * Closes the socket
+   */
+  protected native synchronized void close();
 
-/*
- * Constructors
- */
+  /**
+   * Binds this socket to a particular port and interface
+   *
+   * @param port The port to bind to
+   * @param addr The address to bind to
+   *
+   * @exception SocketException If an error occurs
+   */
+  protected native synchronized void bind(int port, InetAddress addr)
+    throws SocketException;
 
-/**
-  * Default do nothing constructor
-  */
-public
-PlainDatagramSocketImpl()
-{
-  ;
-}
+  /**
+   * Sends a packet of data to a remote host
+   *
+   * @param packet The packet to send
+   *
+   * @exception IOException If an error occurs
+   */
+  protected synchronized void send(DatagramPacket packet) throws IOException
+  {
+    sendto(packet.getAddress(), packet.getPort(), packet.getData(), 
+           packet.getLength());
+  }
 
-/*************************************************************************/
+  /**
+   * Sends a packet of data to a remote host
+   *
+   * @param addr The address to send to
+   * @param port The port to send to 
+   * @param buf The buffer to send
+   * @param len The length of the data to send
+   *
+   * @exception IOException If an error occurs
+   */
+  private native synchronized void sendto (InetAddress addr, int port,
+                                           byte[] buf, int len)
+    throws IOException;
 
-/*
- * Instance Methods
- */
+  /**
+   * What does this method really do?
+   */
+  protected synchronized int peek(InetAddress addr) throws IOException
+  {
+    throw new IOException("Not Implemented Yet");
+  }
 
-/**
-  * Creates a new datagram socket
-  *
-  * @exception SocketException If an error occurs
-  */
-protected native synchronized void create() throws SocketException;
+  /**
+   * Receives a UDP packet from the network
+   *
+   * @param packet The packet to fill in with the data received
+   *
+   * @exception IOException IOException If an error occurs
+   */
+  protected native synchronized void receive(DatagramPacket packet)
+    throws IOException;
 
-/*************************************************************************/
+  /**
+   * Joins a multicast group
+   *
+   * @param addr The group to join
+   *
+   * @exception IOException If an error occurs
+   */
+  protected native synchronized void join(InetAddress addr) throws IOException;
 
-/**
-  * Closes the socket
-  */
-protected native synchronized void close();
+  /**
+   * Leaves a multicast group
+   *
+   * @param addr The group to leave
+   *
+   * @exception IOException If an error occurs
+   */
+  protected native synchronized void leave(InetAddress addr) throws IOException;
 
-/*************************************************************************/
+  /**
+   * Gets the Time to Live value for the socket
+   *
+   * @return The TTL value
+   *
+   * @exception IOException If an error occurs
+   */
+  protected synchronized byte getTTL() throws IOException
+  {
+    Object obj = getOption(IP_TTL);
 
-/**
-  * Binds this socket to a particular port and interface
-  *
-  * @param port The port to bind to
-  * @param addr The address to bind to
-  *
-  * @exception SocketException If an error occurs
-  */
-protected native synchronized void bind(int port, InetAddress addr) throws SocketException;
+    if (!(obj instanceof Integer))
+      throw new IOException("Internal Error");
 
-/*************************************************************************/
+    return(((Integer)obj).byteValue());
+  }
 
-/**
-  * Sends a packet of data to a remote host
-  *
-  * @param packet The packet to send
-  *
-  * @exception IOException If an error occurs
-  */
-protected synchronized void
-send(DatagramPacket packet) throws IOException
-{
-  sendto(packet.getAddress(), packet.getPort(), packet.getData(), 
-        packet.getLength());
-}
+  /**
+   * Sets the Time to Live value for the socket
+   *
+   * @param ttl The new TTL value
+   *
+   * @exception IOException If an error occurs
+   */
+  protected synchronized void setTTL(byte ttl) throws IOException
+  {
+    setOption(IP_TTL, new Integer(ttl));
+  }
 
-/*************************************************************************/
+  /**
+   * Gets the Time to Live value for the socket
+   *
+   * @return The TTL value
+   *
+   * @exception IOException If an error occurs
+   */
+  protected synchronized int getTimeToLive() throws IOException
+  {
+    Object obj = getOption(IP_TTL);
 
-/**
-  * Sends a packet of data to a remote host
-  *
-  * @param addr The address to send to
-  * @param port The port to send to 
-  * @param buf The buffer to send
-  * @param len The length of the data to send
-  *
-  * @exception IOException If an error occurs
-  */
-private native synchronized void sendto(InetAddress addr, int port, byte[] buf, int len) throws IOException;
+    if (!(obj instanceof Integer))
+      throw new IOException("Internal Error");
 
-/*************************************************************************/
+    return(((Integer)obj).intValue());
+  }
 
-/**
-  * What does this method really do?
-  */
-protected synchronized int
-peek(InetAddress addr) throws IOException
-{
-  throw new IOException("Not Implemented Yet");
-}
+  /**
+   * Sets the Time to Live value for the socket
+   *
+   * @param ttl The new TTL value
+   *
+   * @exception IOException If an error occurs
+   */
+  protected synchronized void setTimeToLive(int ttl) throws IOException
+  {
+    setOption(IP_TTL, new Integer(ttl));
+  }
 
-/*************************************************************************/
+  /**
+   * Retrieves the value of an option on the socket
+   *
+   * @param option_id The identifier of the option to retrieve
+   *
+   * @return The value of the option
+   *
+   * @exception SocketException If an error occurs
+   */
+  public native synchronized Object getOption(int option_id)
+    throws SocketException;
 
-/**
-  * Receives a UDP packet from the network
-  *
-  * @param packet The packet to fill in with the data received
-  *
-  * @exception IOException IOException If an error occurs
-  */
-protected native synchronized void receive(DatagramPacket packet) throws IOException;
+  /**
+   * Sets the value of an option on the socket
+   *
+   * @param option_id The identifier of the option to set
+   * @param val The value of the option to set
+   *
+   * @exception SocketException If an error occurs
+   */
+  public native synchronized void setOption(int option_id, Object val)
+    throws SocketException;
 
-/*************************************************************************/
+  public int peekData(DatagramPacket packet)
+  {
+    throw new InternalError
+      ("PlainDatagramSocketImpl::peekData is not implemented");
+  }
 
-/**
-  * Joins a multicast group
-  *
-  * @param addr The group to join
-  *
-  * @exception IOException If an error occurs
-  */
-protected native synchronized void join(InetAddress addr) throws IOException;
+  public void joinGroup(SocketAddress address, NetworkInterface netIf)
+  {
+    throw new InternalError
+      ("PlainDatagramSocketImpl::joinGroup is not implemented");
+  }
 
-/*************************************************************************/
-
-/**
-  * Leaves a multicast group
-  *
-  * @param addr The group to leave
-  *
-  * @exception IOException If an error occurs
-  */
-protected native synchronized void leave(InetAddress addr) throws IOException;
-
-/*************************************************************************/
-
-/**
-  * Gets the Time to Live value for the socket
-  *
-  * @return The TTL value
-  *
-  * @exception IOException If an error occurs
-  */
-protected synchronized byte
-getTTL() throws IOException
-{
-  Object obj = getOption(IP_TTL);
-
-  if (!(obj instanceof Integer))
-    throw new IOException("Internal Error");
-
-  return(((Integer)obj).byteValue());
-}
-
-/*************************************************************************/
-
-/**
-  * Sets the Time to Live value for the socket
-  *
-  * @param ttl The new TTL value
-  *
-  * @exception IOException If an error occurs
-  */
-protected synchronized void
-setTTL(byte ttl) throws IOException
-{
-  setOption(IP_TTL, new Integer(ttl));
-}
-
-/*************************************************************************/
-
-/**
-  * Gets the Time to Live value for the socket
-  *
-  * @return The TTL value
-  *
-  * @exception IOException If an error occurs
-  */
-protected synchronized int
-getTimeToLive() throws IOException
-{
-  Object obj = getOption(IP_TTL);
-
-  if (!(obj instanceof Integer))
-    throw new IOException("Internal Error");
-
-  return(((Integer)obj).intValue());
-}
-
-/*************************************************************************/
-
-/**
-  * Sets the Time to Live value for the socket
-  *
-  * @param ttl The new TTL value
-  *
-  * @exception IOException If an error occurs
-  */
-protected synchronized void
-setTimeToLive(int ttl) throws IOException
-{
-  setOption(IP_TTL, new Integer(ttl));
-}
-
-/*************************************************************************/
-
-/**
-  * Retrieves the value of an option on the socket
-  *
-  * @param option_id The identifier of the option to retrieve
-  *
-  * @return The value of the option
-  *
-  * @exception SocketException If an error occurs
-  */
-public native synchronized Object getOption(int option_id) throws SocketException;
-
-/*************************************************************************/
-
-/**
-  * Sets the value of an option on the socket
-  *
-  * @param option_id The identifier of the option to set
-  * @param val The value of the option to set
-  *
-  * @exception SocketException If an error occurs
-  */
-public native synchronized void setOption(int option_id, Object val) throws SocketException;
-
-public int peekData(DatagramPacket packet)
-{
-  throw new InternalError ("PlainDatagramSocketImpl::peekData is not implemented");
-}
-
-public void joinGroup(SocketAddress address, NetworkInterface netIf)
-{
-  throw new InternalError ("PlainDatagramSocketImpl::joinGroup is not implemented");
-}
-
-public void leaveGroup(SocketAddress address, NetworkInterface netIf)
-{
-  throw new InternalError ("PlainDatagramSocketImpl::leaveGroup is not implemented");
-}
-
+  public void leaveGroup(SocketAddress address, NetworkInterface netIf)
+  {
+    throw new InternalError
+      ("PlainDatagramSocketImpl::leaveGroup is not implemented");
+  }
 } // class PlainDatagramSocketImpl
