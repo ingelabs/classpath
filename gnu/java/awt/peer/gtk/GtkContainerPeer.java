@@ -88,7 +88,9 @@ public class GtkContainerPeer extends GtkComponentPeer
               ((GtkComponentPeer) peer).setParentAndBounds ();
           }
 
-        setParentAndBounds ();
+        // GTK windows don't have parents.
+        if (!(awtComponent instanceof Window))
+          setParentAndBounds ();
       }
 
     isValidating = false;

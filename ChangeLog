@@ -1,5 +1,10 @@
 2004-10-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java (endValidate):
+	Don't call setParentAndBounds on GtkWindowPeers.
+
+2004-10-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* java/awt/Component.java (static): Don't set default keyboard
 	focus manager.
 	* java/awt/KeyboardFocusManager.java
