@@ -1,3 +1,15 @@
+2005-03-31  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(getClipBounds): Handle clip being null.
+	(setClip): Likewise.
+	* java/beans/beancontext/BeanContextSupport.java
+	(add): Implemented.
+	(addAll): Likewise.
+	(clear): Likewise.
+	(removeAll): Likewise.
+	(retainAll): Likewise.
+
 2005-03-30  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java:
