@@ -1,5 +1,11 @@
 2004-10-13  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/beans/ExplicitBeanInfo.java:
+	Explicitely import java.awt.Image.
+	(getIcon): Fixed off-by-one error.
+
+2004-10-13  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/image/DataBufferByte.java,
 	java/awt/image/DataBufferDouble.java,
 	java/awt/image/DataBufferFloat.java,
