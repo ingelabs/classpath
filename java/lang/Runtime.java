@@ -158,7 +158,10 @@ public class Runtime
         if (shutdownHooks != null)
           {
             shutdownHooks.remove(Thread.currentThread());
-	    // Shutdown hooks are still running, so we clear status to
+            // Interrupt the exit sequence thread, in case it was waiting
+            // inside a join on our thread.
+            exitSequence.interrupt();
+            // Shutdown hooks are still running, so we clear status to
 	    // make sure we don't halt.
 	    status = 0;
           }
@@ -224,7 +227,7 @@ public class Runtime
             // itself from the set, then waits indefinitely on the
             // exitSequence thread. Once the set is empty, set it to null to
             // signal all finalizer threads that halt may be called.
-            while (! shutdownHooks.isEmpty())
+            while (true)
               {
                 Thread[] hooks;
                 synchronized (libpath)
@@ -232,14 +235,28 @@ public class Runtime
                     hooks = new Thread[shutdownHooks.size()];
                     shutdownHooks.toArray(hooks);
                   }
-                for (int i = hooks.length; --i >= 0; )
-                  if (! hooks[i].isAlive())
-                    synchronized (libpath)
+                if (hooks.length == 0)
+                  break;
+                for (int i = 0; i < hooks.length; i++)
+                  {
+                    try
                       {
-                        shutdownHooks.remove(hooks[i]);
+                        synchronized (libpath)
+                          {
+                            if (!shutdownHooks.contains(hooks[i]))
+                              continue;
+                          }
+                        hooks[i].join();
+                        synchronized (libpath)
+                          {
+                            shutdownHooks.remove(hooks[i]);
+                          }
                       }
-
-                    Thread.yield(); // Give other threads a chance.
+                    catch (InterruptedException x)
+                      {
+                        // continue waiting on the next thread
+                      }
+                  }
               }
             synchronized (libpath)
               {
