@@ -1,27 +1,33 @@
+## input for automake
+
+SUBDIRS = beancontext
+
 EXTRA_DIST = \
 BeanDescriptor.java \
-PropertyChangeEvent.java \
 BeanInfo.java \
-PropertyChangeListener.java \
 Beans.java \
+Customizer.java \
+DesignMode.java \
+EventSetDescriptor.java \
+FeatureDescriptor.java \
+IndexedPropertyDescriptor.java \
+IntrospectionException.java \
+Introspector.java \
+MethodDescriptor.java \
+ParameterDescriptor.java
+PropertyChangeEvent.java \
+PropertyChangeListener.java \
 PropertyChangeSupport.java \
 PropertyDescriptor.java \
-ChangeLog \
 PropertyEditor.java \
-Customizer.java \
 PropertyEditorManager.java \
-EventSetDescriptor.java \
 PropertyEditorSupport.java \
-FeatureDescriptor.java \
+ChangeLog \
+Customizer.java \
 PropertyVetoException.java \
-IndexedPropertyDescriptor.java \
 SimpleBeanInfo.java \
-IntrospectionException.java \
 TODO \
-Introspector.java \
 VetoableChangeListener.java \
 VetoableChangeSupport.java \
-MethodDescriptor.java \
-Visibility.java \
-ParameterDescriptor.java
+Visibility.java 
 
