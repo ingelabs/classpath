@@ -1,5 +1,16 @@
 2004-01-06  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/file/Connection.java
+	(Connection): Don't re-initialize doOutput with the default value.
+	* java/net/JarURLConnection.java
+	(JarURLConnection): Initialize entryName with null if no entry
+	present, fixed off by one error.
+	* java/net/URLConnection.java: Reformating.
+	(getHeaderFields): Return empty map.
+	(getPermission): Don't use package in class name.
+
+2004-01-06  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/SecurityManager.java
 	(currentClassLoader): Use VMSecurityManager to get current class
 	loader.

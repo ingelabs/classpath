@@ -117,7 +117,7 @@ public abstract class JarURLConnection extends URLConnection
     jarFileURL = new URL (spec.substring (0, bang));
 
     // Get the name of the entry, if any.
-    entryName = spec.length() == (bang + 1) ? "" : spec.substring (bang + 2);
+    entryName = spec.length() == (bang + 2) ? null : spec.substring (bang + 2);
   }
 
   /**
