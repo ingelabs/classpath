@@ -34,7 +34,6 @@
 #include "jnilink.h"
 
 #include "java_io_File.h"
-#include "java_io_File_stubs.c"
 
 /*************************************************************************/
 

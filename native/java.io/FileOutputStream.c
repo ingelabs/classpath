@@ -30,7 +30,6 @@
 #include "jcl.h"
 
 #include "java_io_FileOutputStream.h"
-#include "java_io_FileOutputStream_stubs.c"
 
 #include "javaio.h"
 

@@ -30,7 +30,6 @@
 #include "jcl.h"
 
 #include "java_io_FileDescriptor.h"
-#include "java_io_FileDescriptor_stubs.c"
 
 /*************************************************************************/
 

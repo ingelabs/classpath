@@ -30,7 +30,6 @@
 #include "jcl.h"
 
 #include "java_io_RandomAccessFile.h"
-#include "java_io_RandomAccessFile_stubs.c"
 
 #include "javaio.h"
 
