@@ -60,6 +60,8 @@ abstract public class SocketChannel extends AbstractSelectableChannel
  
   /**
    * Opens a socket channel.
+   *
+   * @exception IOException If an error occurs
    */
   public static SocketChannel open () throws IOException
   {
@@ -68,6 +70,8 @@ abstract public class SocketChannel extends AbstractSelectableChannel
   
   /**
    * Opens a channel and connects it to a remote address.
+   *
+   * @exception IOException If an error occurs
    */
   public static SocketChannel open (SocketAddress remote) throws IOException
   {
@@ -82,6 +86,8 @@ abstract public class SocketChannel extends AbstractSelectableChannel
     
   /**
    * Reads data from the channel.
+   *
+   * @exception IOException If an error occurs
    */
   public final long read (ByteBuffer[] dsts)
   {
@@ -97,6 +103,8 @@ abstract public class SocketChannel extends AbstractSelectableChannel
     
   /**
    * Writes data to the channel.
+   *
+   * @exception IOException If an error occurs
    */
   public final long write (ByteBuffer[] dsts)
   {
@@ -120,16 +128,22 @@ abstract public class SocketChannel extends AbstractSelectableChannel
 
   /**
    * Reads data from the channel.
+   *
+   * @exception IOException If an error occurs
    */
   public abstract int read (ByteBuffer dst);
 
   /**
    * Connects the channel's socket to the remote address.
+   *
+   * @exception IOException If an error occurs
    */
   public abstract boolean connect (SocketAddress remote) throws IOException;
   
   /**
    * Finishes the process of connecting a socket channel.
+   *
+   * @exception IOException If an error occurs
    */
   public abstract boolean finishConnect ();
  
@@ -145,6 +159,8 @@ abstract public class SocketChannel extends AbstractSelectableChannel
   
   /**
    * Reads data from the channel.
+   *
+   * @exception IOException If an error occurs
    */
   public abstract long read (ByteBuffer[] dsts, int offset, int length);
  
@@ -155,11 +171,15 @@ abstract public class SocketChannel extends AbstractSelectableChannel
   
   /**
    * Writes data to the channel.
+   *
+   * @exception IOException If an error occurs
    */
   public abstract int write (ByteBuffer src);
   
   /**
    * Writes data to the channel.
+   *
+   * @exception IOException If an error occurs
    */
   public abstract long write (ByteBuffer[] srcs, int offset, int length);
 }

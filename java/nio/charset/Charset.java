@@ -57,7 +57,16 @@ public abstract class Charset implements Comparable
 {
   private static CharsetEncoder cachedEncoder;
   private static CharsetDecoder cachedDecoder;
-  
+ 
+  static
+  {
+    synchronized (Charset.class)
+      {
+        cachedEncoder = null;
+        cachedDecoder = null;
+      }
+  }
+
   private final String canonicalName;
   private final String[] aliases;
   
@@ -198,14 +207,21 @@ public abstract class Charset implements Comparable
   {
     try
       {
-	if (cachedEncoder == null)
+        // NB: This implementation serializes different threads calling
+        // Charset.encode(), a potential performance problem.  It might
+        // be better to remove the cache, or use ThreadLocal to cache on
+        // a per-thread basis.
+        synchronized (Charset.class)
           {
-            cachedEncoder = newEncoder ()
-              .onMalformedInput (CodingErrorAction.REPLACE)
-              .onUnmappableCharacter (CodingErrorAction.REPLACE);
-	  }
-		  
-        return cachedEncoder.encode (cb);
+            if (cachedEncoder == null)
+              {
+                cachedEncoder = newEncoder ()
+                  .onMalformedInput (CodingErrorAction.REPLACE)
+                  .onUnmappableCharacter (CodingErrorAction.REPLACE);
+              }
+
+            return cachedEncoder.encode (cb);
+          }
       }
     catch (CharacterCodingException e)
       {
@@ -221,15 +237,22 @@ public abstract class Charset implements Comparable
   public CharBuffer decode (ByteBuffer bb)
   {
     try
-     {
-        if (cachedDecoder == null)
+      {
+        // NB: This implementation serializes different threads calling
+        // Charset.decode(), a potential performance problem.  It might
+        // be better to remove the cache, or use ThreadLocal to cache on
+        // a per-thread basis.
+        synchronized (Charset.class)
           {
-	    cachedDecoder = newDecoder ()
-              .onMalformedInput (CodingErrorAction.REPLACE)
-              .onUnmappableCharacter (CodingErrorAction.REPLACE);
-	  }
-	
-        return cachedDecoder.decode (bb);
+            if (cachedDecoder == null)
+              {
+                cachedDecoder = newDecoder ()
+                  .onMalformedInput (CodingErrorAction.REPLACE)
+                  .onUnmappableCharacter (CodingErrorAction.REPLACE);
+              }
+
+            return cachedDecoder.decode (bb);
+          }
       }
     catch (CharacterCodingException e)
       {

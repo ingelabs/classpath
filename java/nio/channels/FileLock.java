@@ -37,62 +37,99 @@ exception statement from your version. */
 
 package java.nio.channels;
 
-
+/**
+ * @since 1.4
+ */
 public abstract class FileLock
 {
-    FileChannel channel;
-    long position;
-    long size;
-    boolean shared;
-    
-    protected FileLock(FileChannel channel, 
-		       long position, 
-		       long size,
-		       boolean shared)
-    {
-	this.channel = channel;
-	this.position = position;
-	this.size = size;
-	this.shared = shared;
-    }
+  FileChannel channel;
+  long position;
+  long size;
+  boolean shared;
+  
+  /**
+   * Initializes the file lock.
+   *
+   * @exception IllegalArgumentException If the preconditions on the parameters do not hold
+   */
+  protected FileLock (FileChannel channel, long position, long size,
+                      boolean shared)
+  {
+    if (position < 0 ||
+        size < 0)
+      throw new IllegalArgumentException ();
+
+    this.channel = channel;
+    this.position = position;
+    this.size = size;
+    this.shared = shared;
+  }
  
-    public abstract  boolean isValid();
-    public abstract  void release();
+  /**
+   * Tells whether or not this lock is valid.
+   */
+  public abstract boolean isValid();
+ 
+  /**
+   * Releases this lock.
+   *
+   * @exception IOException If an error occurs
+   * @exception ClosedChannelException If the locked channel is no longer open.
+   */
+  public abstract void release ();
+  
+  /**
+   * Returns the file channel upon whose file this lock is held.
+   */
+  public final FileChannel channel ()
+  {
+    return channel;
+  }
 
+  /**
+   * Tells whether this lock is shared.
+   */
+  public final boolean isShared ()
+  {
+    return shared;
+  }    
 
-    public FileChannel channel()
-    {
-	return channel;
-    }
+  /**
+   * Tells whether or not this lock overlaps the given lock range.
+   */
+  public final boolean overlaps (long position, long size)
+  {
+    if (position > this.position +this.size)
+      return false;
 
-    public boolean isShared()
-    {
-	return shared;
-    }    
+    if (position + size < this.position)
+      return false;
 
-    public boolean overlaps(long position, long size)
-    {
-	if (position > this.position+this.size)
-	    return false;
+    return true;
+  }
 
-	if (position+size < this.position)
-	    return false;
-
-	return true;
-    }
-
-    public long position()
-    {
-	return position;
-    }
+  /**
+   * Returns the position within the file of the first byte of the
+   * locked region.
+   */
+  public final long position ()
+  {
+    return position;
+  }
     
-    public long size()
-    {
-	return size;
-    }
+  /**
+   * Returns the size of the locked region in bytes.
+   */
+  public final long size ()
+  {
+    return size;
+  }
 
-    public String toString()
-    {
-	return "file-lock:pos="+position+"size="+size;
-    }
+  /**
+   * Returns a string describing the range, type, and validity of this lock.
+   */
+  public final String toString ()
+  {
+    return "file-lock:pos=" + position + "size=" + size;
+  }
 }

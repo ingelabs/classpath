@@ -37,50 +37,94 @@ exception statement from your version. */
 
 package java.nio.channels;
 
-import java.io.*;
-import java.nio.*;
-import java.nio.charset.*;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.channels.WritableByteChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
 
-
+/**
+ * @since 1.4
+ */
 public final class Channels 
 {
-    public static InputStream newInputStream(ReadableByteChannel ch)
-    {
-	return null;
-    }
-    public static OutputStream newOutputStream(final WritableByteChannel ch) 
-    {
-	return null;
-    }
-    public static ReadableByteChannel newChannel(final InputStream in)
-    {
-	return null;
-    }
-    public static WritableByteChannel newChannel(final OutputStream out)
-    {
+  /**
+   * Constructs a stream that reads bytes from the given channel.
+   */
+  public static InputStream newInputStream (ReadableByteChannel ch)
+  {
+    return null;
+  }
+  
+  /**
+   * Constructs a stream that writes bytes to the given channel.
+   */
+  public static OutputStream newOutputStream (WritableByteChannel ch) 
+  {
+    return null;
+  }
+  
+  /**
+   * Constructs a channel that reads bytes from the given stream.
+   */
+  public static ReadableByteChannel newChannel (InputStream in)
+  {
+    return null;
+  }
+  
+  /**
+   * Constructs a channel that writes bytes to the given stream.
+   */
+  public static WritableByteChannel newChannel (OutputStream out)
+  {
+    return null;	
+  }
 
-	return null;	
-    }
-    public static Reader newReader(ReadableByteChannel ch,
-                                   CharsetDecoder dec,
-                                   int minBufferCap)
-    {
-	return null;
-    }
-    public static Reader newReader(ReadableByteChannel ch,
-                                   String csName)
-    {
-	return newReader(ch, null, 0);
-    }
-    public static Writer newWriter(final WritableByteChannel ch,
-                                   final CharsetEncoder enc,
-                                   final int minBufferCap)
-    {
-	return null;
-    }
-    public static Writer newWriter(WritableByteChannel ch,
-                                   String csName)
-    {
-	return newWriter(ch, null, 0);
-    }
+  /**
+   * Constructs a reader that decodes bytes from the given channel using the
+   * given decoder.
+   */
+  public static Reader newReader (ReadableByteChannel ch, CharsetDecoder dec,
+                                  int minBufferCap)
+  {
+    return null;
+  }
+
+  /**
+   * Constructs a reader that decodes bytes from the given channel according to
+   * the named charset.
+   *
+   * @exception UnsupportedCharsetException If no support for the named charset
+   * is available in this instance of the Java virtual machine.
+   */
+  public static Reader newReader (ReadableByteChannel ch, String csName)
+  {
+    return newReader (ch, Charset.forName (csName).newDecoder (), -1);
+  }
+
+  /**
+   * Constructs a writer that encodes characters using the given encoder and
+   * writes the resulting bytes to the given channel.
+   */
+  public static Writer newWriter (WritableByteChannel ch, CharsetEncoder enc,
+                                  int minBufferCap)
+  {
+    return null;
+  }
+
+  /**
+   * Constructs a writer that encodes characters according to the named charset
+   * and writes the resulting bytes to the given channel.
+   *
+   * @exception UnsupportedCharsetException If no support for the named charset
+   * is available in this instance of the Java virtual machine.
+   */
+  public static Writer newWriter (WritableByteChannel ch,
+                                  String csName)
+  {
+    return newWriter (ch, Charset.forName (csName).newEncoder (), -1);
+  }
 }

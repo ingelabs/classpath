@@ -1,3 +1,14 @@
+2002-11-22  Michael Koch <konqueror@gmx.de>
+
+	* java/nio/channels/Channels.java:
+	Reindented, documentation added.
+	(newInputStream): Documentation added.
+	(newOutputStream): Documentation added.
+	(newChannel): Documentation added.
+	(newReader): JDK 1.4 conform implementation, documentation added.
+	(newWriter: JDK 1.4 conform implementation, documentation added.
+	
+
 2002-11-21  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/jar/JarFile.java (getManifest): Throws IOException.
