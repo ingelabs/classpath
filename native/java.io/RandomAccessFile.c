@@ -27,9 +27,8 @@
 #include <unistd.h>
 
 #include <jni.h>
-#include "jcl.h"
 
-#include "java_io_RandomAccessFile.h"
+//#include "java_io_RandomAccessFile.h"
 
 #include "javaio.h"
 
@@ -125,7 +124,7 @@ Java_java_io_RandomAccessFile_getFilePointerInternal(JNIEnv *env, jobject obj,
 {
   int rc = lseek(fd, 0, SEEK_CUR);
   if (rc == -1)
-    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
 
   return(rc);
 }
@@ -142,7 +141,7 @@ Java_java_io_RandomAccessFile_seekInternal(JNIEnv *env, jobject obj,
 {
   int rc = lseek(fd, pos, SEEK_SET);
   if (rc == -1)
-    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
 }
 
 /*************************************************************************/
@@ -171,6 +170,6 @@ Java_java_io_RandomAccessFile_setLengthInternal(JNIEnv *env, jobject obj,
     return;
 
   if (rc == -1)
-    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
 }
 
