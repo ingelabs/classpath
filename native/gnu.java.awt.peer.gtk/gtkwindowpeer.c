@@ -149,7 +149,6 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds
 {
   GtkWidget *widget;
   void *ptr;
-  GtkAllocation alloc;
 
   ptr = NSA_GET_PTR (env, obj);
 
