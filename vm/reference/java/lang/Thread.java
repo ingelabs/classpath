@@ -78,20 +78,22 @@ public class Thread implements Runnable {
 	private ClassLoader contextClassLoader
 				= ClassLoader.getSystemClassLoader();
 
-	/** The maximum priority for a Thread.
-	 ** @XXX find out the value for this.
-	 **/
-	public static final int MAX_PRIORITY  = 100;
+  /**
+   * The maximum priority for a Thread.
+   */
+  public static final int MAX_PRIORITY = 10;
 
-	/** The priority a Thread gets by default.
-	 ** @XXX find out the value for this.
-	 **/
-	public static final int NORM_PRIORITY = 50;
 
-	/** The minimum priority for a Thread.
-	 ** @XXX find out the value for this.
-	 **/
-	public static final int MIN_PRIORITY = 0;
+  /**
+   * The priority a Thread gets by default.
+   */
+  public static final int NORM_PRIORITY = 5;
+
+
+  /**
+   * The minimum priority for a Thread.
+   */
+  public static final int MIN_PRIORITY = 1;
 
 	static int numAnonymousThreadsCreated = 0;
 
