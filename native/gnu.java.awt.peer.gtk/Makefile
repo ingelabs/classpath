@@ -6,7 +6,7 @@ objects  = native_state.o  gtklistpeer.o gtkwindowpeer.o \
 	   gtktoolkit.o	   gtkchoicepeer.o     gtktextcomponentpeer.o \
 	   gtktextfieldpeer.o  gtktextareapeer.o gtklabelpeer.o gtkevents.o \
            gtkscrollbarpeer.o gdkgraphics.o gtkcanvaspeer.o gtkpanelpeer.o \
-	   gtkcontainerpeer.o
+	   gtkcontainerpeer.o gtkdialogpeer.o
 CPPFLAGS = -I/usr/local/jdk/include -I/usr/local/jdk/include/genunix
 CFLAGS   = -Wall `gtk-config --cflags`
 LDFLAGS  = `gtk-config --libs` `glib-config --libs gthread`
