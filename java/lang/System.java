@@ -56,35 +56,21 @@ import gnu.classpath.Configuration;
  * @since 1.0
  * @status still missing 1.4 functionality
  */
-public class System
+public final class System
 {
+  // WARNING: System is a CORE class in the bootstrap cycle. See the comments
+  // in vm/reference/java/lang/Runtime for implications of this fact.
+
   /**
-   * Load native methods.
+   * Add to the default properties. The field is stored in Runtime, because
+   * of the bootstrap sequence; but this adds several useful properties to
+   * the defaults. Once the default is stabilized, it should not be modified;
+   * instead it is passed as a parent properties for fast setup of the
+   * defaults when calling <code>setProperties(null)</code>.
    */
   static
   {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-	System.loadLibrary("javalang");
-      }
-  }
-
-  /**
-   * This class is uninstantiable.
-   */
-  private System()
-  {
-  }
-
-  /**
-   * The default properties. Read them in once, then stuff them as defaults
-   * into future properties to save time when recreating properties via
-   * <code>setProperties(null)</code>. This should not be modified.
-   */
-  private static final Properties defaultProperties = new Properties();
-  static
-  {
-    VMSystem.insertSystemProperties(defaultProperties);
+    Properties defaultProperties = Runtime.defaultProperties;
     defaultProperties.put("gnu.cpu.endian",
                           isWordsBigEndian() ? "big" : "little");
 
@@ -198,7 +184,8 @@ public class System
    * {@link #setProperties(Properties)}, but will never be null, because
    * setProperties(null) sucks in the default properties.
    */
-  private static Properties properties = new Properties(defaultProperties);
+  private static Properties properties
+    = new Properties(Runtime.defaultProperties);
 
   /**
    * The standard InputStream. This is assigned at startup and starts its
@@ -238,6 +225,13 @@ public class System
     = new PrintStream(new FileOutputStream(FileDescriptor.err));
 
   /**
+   * This class is uninstantiable.
+   */
+  private System()
+  {
+  }
+
+  /**
    * Set {@link #in} to a new InputStream. This uses some VM magic to change
    * a "final" variable, so naturally there is a security check,
    * <code>RuntimePermission("setIO")</code>.
@@ -248,7 +242,7 @@ public class System
    */
   public static void setIn(InputStream in)
   {
-    SecurityManager sm = Runtime.getSecurityManager();
+    SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPermission(new RuntimePermission("setIO"));
     setIn0(in);
@@ -265,7 +259,7 @@ public class System
    */
   public static void setOut(PrintStream out)
   {
-    SecurityManager sm = Runtime.getSecurityManager();
+    SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPermission(new RuntimePermission("setIO"));
     setOut0(out);
@@ -282,7 +276,7 @@ public class System
    */
   public static void setErr(PrintStream err)
   {
-    SecurityManager sm = Runtime.getSecurityManager();
+    SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPermission(new RuntimePermission("setIO"));
     setErr0(err);
@@ -299,14 +293,18 @@ public class System
    * There is probably some way to set the original security manager as a
    * command line argument to the VM, but I don't know it.
    *
-   * @param securityManager the new SecurityManager
+   * @param sm the new SecurityManager
    * @throws SecurityException if permission is denied
    */
-  public static void setSecurityManager(SecurityManager securityManager)
+  public synchronized static void setSecurityManager(SecurityManager sm)
   {
-    // Implementation note: this is done in Runtime because of bootstrap
-    // initialization issues.
-    Runtime.setSecurityManager(securityManager);
+    // Implementation note: the field lives in Runtime because of bootstrap
+    // initialization issues. This method is synchronized so that no other
+    // thread changes it to null before this thread makes the change.
+    if (Runtime.securityManager != null)
+      Runtime.securityManager.checkPermission
+        (new RuntimePermission("setSecurityManager"));
+    Runtime.securityManager = sm;
   }
 
   /**
@@ -317,9 +315,9 @@ public class System
    */
   public static SecurityManager getSecurityManager()
   {
-    // Implementation note: this is done in Runtime because of bootstrap
+    // Implementation note: the field lives in Runtime because of bootstrap
     // initialization issues.
-    return Runtime.getSecurityManager();
+    return Runtime.securityManager;
   }
 
   /**
@@ -432,7 +430,7 @@ public class System
    */
   public static Properties getProperties()
   {
-    SecurityManager sm = Runtime.getSecurityManager();
+    SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPropertiesAccess();
     return properties;
@@ -449,11 +447,11 @@ public class System
    */
   public static void setProperties(Properties properties)
   {
-    SecurityManager sm = Runtime.getSecurityManager();
+    SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPropertiesAccess();
     if (properties == null)
-      properties = new Properties(defaultProperties);
+      properties = new Properties(Runtime.defaultProperties);
     System.properties = properties;
   }
 
@@ -469,7 +467,7 @@ public class System
    */
   public static String getProperty(String key)
   {
-    SecurityManager sm = Runtime.getSecurityManager();
+    SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPropertyAccess(key);
     return properties.getProperty(key);
@@ -488,7 +486,7 @@ public class System
    */
   public static String getProperty(String key, String def)
   {
-    SecurityManager sm = Runtime.getSecurityManager();
+    SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPropertyAccess(key);
     return properties.getProperty(key, def);
@@ -508,7 +506,7 @@ public class System
    */
   public static String setProperty(String key, String value)
   {
-    SecurityManager sm = Runtime.getSecurityManager();
+    SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPermission(new PropertyPermission(key, "write"));
     return (String) properties.setProperty(key, value);
@@ -664,4 +662,4 @@ public class System
    * @see #setErr(PrintStream)
    */
   private static native void setErr0(PrintStream err);
-}
+} // class System

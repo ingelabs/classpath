@@ -102,6 +102,9 @@ import java.io.ObjectOutputStream;
 public class Hashtable extends Dictionary
   implements Map, Cloneable, Serializable
 {
+  // WARNING: Hashtable is a CORE class in the bootstrap cycle. See the
+  // comments in vm/reference/java/lang/Runtime for implications of this fact.
+
   /** Default number of buckets. This is the value the JDK 1.3 uses. Some
    * early documentation specified this value as 101. That is incorrect.
    */
@@ -1145,4 +1148,4 @@ public class Hashtable extends Dictionary
       return type == VALUES ? e.value : e.key;
     }
   } // class Enumerator
-}
+} // class Hashtable

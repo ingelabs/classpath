@@ -1,4 +1,4 @@
-/* java.util.WeakHashMap -- a hashtable that keeps only weak references
+/* WeakHashMap -- a hashtable that keeps only weak references
    to its keys, allowing the virtual machine to reclaim them
    Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
@@ -85,6 +85,9 @@ import java.lang.ref.ReferenceQueue;
  */
 public class WeakHashMap extends AbstractMap implements Map
 {
+  // WARNING: WeakHashMap is a CORE class in the bootstrap cycle. See the
+  // comments in vm/reference/java/lang/Runtime for implications of this fact.
+
   /**
    * The default capacity for an instance of HashMap.
    * Sun's documentation mildly suggests that this (11) is the correct
@@ -869,4 +872,4 @@ public class WeakHashMap extends AbstractMap implements Map
     cleanQueue();
     return super.values();
   }
-}
+} // class WeakHashMap

@@ -76,6 +76,9 @@ import gnu.java.lang.CharData;
  */
 public final class String implements Serializable, Comparable, CharSequence
 {
+  // WARNING: String is a CORE class in the bootstrap cycle. See the comments
+  // in vm/reference/java/lang/Runtime for implications of this fact.
+
   /**
    * This is probably not necessary because this class is special cased already
    * but it will avoid showing up as a discrepancy when comparing SUIDs.

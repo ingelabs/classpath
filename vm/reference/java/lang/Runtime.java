@@ -38,13 +38,14 @@ exception statement from your version. */
 package java.lang;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
-import java.util.StringTokenizer;
-import java.util.Set;
-import java.util.Iterator;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * Runtime represents the Virtual Machine.
@@ -53,13 +54,9 @@ import java.util.HashSet;
  * @author Eric Blake <ebb9@email.byu.edu>
  * @status still missing 1.4 functionality
  */
+// No idea why this class isn't final, since you can't build a subclass!
 public class Runtime
 {
-  /**
-   * The one and only runtime instance.
-   */
-  private static final Runtime current = new Runtime();
-
   /**
    * The library path, to search when loading libraries. We can also safely use
    * this as a lock for synchronization.
@@ -69,9 +66,50 @@ public class Runtime
   /**
    * The current security manager. This is located here instead of in
    * Runtime, to avoid security problems, as well as bootstrap issues.
-   * Make sure to access it in a thread-safe manner.
+   * Make sure to access it in a thread-safe manner; it is package visible
+   * to avoid overhead in java.lang.
    */
-  private static SecurityManager securityManager;
+  static SecurityManager securityManager;
+
+  /**
+   * The default properties defined by the system. This is likewise located
+   * here instead of in Runtime, to avoid bootstrap issues; it is package
+   * visible to avoid overhead in java.lang. Note that System will add a
+   * few more properties to this collection, but that after that, it is
+   * treated as read-only.
+   *
+   * No matter what class you start initialization with, it defers to the
+   * superclass, therefore Object.<clinit> will be the first Java code
+   * executed. From there, the bootstrap sequence, up to the point that
+   * native libraries are loaded (as of March 24, when I traced this
+   * manually) is as follows:
+   *
+   * Object.<clinit> uses a String literal, possibly triggering initialization
+   *  String.<clinit> calls WeakHashMap.<init>, triggering initialization
+   *   AbstractMap, WeakHashMap, WeakHashMap$1 have no dependencies
+   *  String.<clinit> calls CaseInsensitiveComparator.<init>, triggering
+   *      initialization
+   *   CaseInsensitiveComparator has no dependencies
+   * Object.<clinit> calls System.loadLibrary, triggering initialization
+   *  System.<clinit> calls System.loadLibrary
+   *  System.loadLibrary calls Runtime.getRuntime, triggering initialization
+   *   Runtime.<clinit> calls Properties.<init>, triggering initialization
+   *    Dictionary, Hashtable, and Properties have no dependencies
+   *   Runtime.<clinit> calls insertSystemProperties; the VM must make sure
+   *      that there are not any harmful dependencies
+   *   Runtime.<clinit> calls Runtime.<init>
+   *    Runtime.<init> calls StringTokenizer.<init>, triggering initialization
+   *     StringTokenizer has no dependencies
+   *  System.loadLibrary calls Runtime.loadLibrary
+   *   Runtime.loadLibrary should be able to load the library, although it
+   *       will probably set off another string of initializations from
+   *       ClassLoader first
+   */
+  static Properties defaultProperties = new Properties();
+  static
+  {
+    insertSystemProperties(defaultProperties);
+  }
 
   /**
    * The thread that started the exit sequence. Access to this field must
@@ -89,26 +127,26 @@ public class Runtime
   private Set shutdownHooks;
 
   /**
+   * The one and only runtime instance. This must appear after the default
+   * properties have been initialized by the VM.
+   */
+  private static final Runtime current = new Runtime();
+
+  /**
    * Not instantiable by a user, this should only create one instance.
    */
   private Runtime()
   {
     if (current != null)
       throw new InternalError("Attempt to recreate Runtime");
-    // XXX Does this need special privileges?
-    String path = System.getProperty("java.library.path");
-    if (path == null)
-      // Default lib path is current directory.
-      libpath = new String[] { "." };
-    else
-      {
-        // XXX This might cause bootstrap problems using a field of File;
-        // we may need to grab the path separator property directly.
-        StringTokenizer t = new StringTokenizer(path, File.pathSeparator);
-        libpath = new String[t.countTokens()];
-        for (int i = 0; i < libpath.length; i++)
-          libpath[i] = t.nextToken();
-      }
+    // Using defaultProperties directly avoids a security check, as well
+    // as bootstrap issues (since System is not initialized yet).
+    String path = defaultProperties.getProperty("java.library.path", ".");
+    String separator = defaultProperties.getProperty("path.separator", "/");
+    StringTokenizer t = new StringTokenizer(path, separator);
+    libpath = new String[t.countTokens()];
+    for (int i = 0; i < libpath.length; i++)
+      libpath[i] = t.nextToken();
   }
 
   /**
@@ -665,34 +703,6 @@ public class Runtime
   private static native void runFinalizersOnExitInternal(boolean value);
 
   /**
-   * This was moved to Runtime so that Runtime would no longer trigger
-   * System's class initializer.  Runtime does native library loading, and
-   * the System class initializer requires native libraries to have been
-   * loaded.
-   *
-   * @param manager the new security manager
-   * @throws SecurityException if permission is denied
-   */
-  static synchronized void setSecurityManager(SecurityManager manager)
-  {
-    if (securityManager != null)
-      securityManager.checkPermission
-        (new RuntimePermission("setSecurityManager"));
-    securityManager = manager;
-  }
-
-  /**
-   * Get the security manager. This is here instead of system because of
-   * bootstrap issues.
-   *
-   * @return the security manager
-   */
-  static SecurityManager getSecurityManager()
-  {
-    return securityManager;
-  }
-
-  /**
    * Native method that actually shuts down the virtual machine.
    *
    * @param status the status to end the process with
@@ -734,4 +744,47 @@ public class Runtime
    */
   //  native Process execInternal(String[] cmd, String[] env, File dir);
   native Process execInternal(String[] cmd, String[] env);
-}
+
+  /**
+   * Get the system properties. This is done here, instead of in System,
+   * because of the bootstrap sequence. Note that the native code should
+   * not try to use the Java I/O classes yet, as they rely on the properties
+   * already existing. The only safe method to use to insert these default
+   * system properties is {@link Properties#setProperty(String, String)}.
+   *
+   * <p>These properties MUST include:
+   * <dl>
+   * <dt>java.version         <dd>Java version number
+   * <dt>java.vendor          <dd>Java vendor specific string
+   * <dt>java.vendor.url      <dd>Java vendor URL
+   * <dt>java.home            <dd>Java installation directory
+   * <dt>java.vm.specification.version <dd>VM Spec version
+   * <dt>java.vm.specification.vendor  <dd>VM Spec vendor
+   * <dt>java.vm.specification.name    <dd>VM Spec name
+   * <dt>java.vm.version      <dd>VM implementation version
+   * <dt>java.vm.vendor       <dd>VM implementation vendor
+   * <dt>java.vm.name         <dd>VM implementation name
+   * <dt>java.specification.version    <dd>Java Runtime Environment version
+   * <dt>java.specification.vendor     <dd>Java Runtime Environment vendor
+   * <dt>java.specification.name       <dd>Java Runtime Environment name
+   * <dt>java.class.version   <dd>Java class version number
+   * <dt>java.class.path      <dd>Java classpath
+   * <dt>java.library.path    <dd>Path for finding Java libraries
+   * <dt>java.io.tmpdir       <dd>Default temp file path
+   * <dt>java.compiler        <dd>Name of JIT to use
+   * <dt>java.ext.dirs        <dd>Java extension path
+   * <dt>os.name              <dd>Operating System Name
+   * <dt>os.arch              <dd>Operating System Architecture
+   * <dt>os.version           <dd>Operating System Version
+   * <dt>file.separator       <dd>File separator ("/" on Unix)
+   * <dt>path.separator       <dd>Path separator (":" on Unix)
+   * <dt>line.separator       <dd>Line separator ("\n" on Unix)
+   * <dt>user.name            <dd>User account name
+   * <dt>user.home            <dd>User home directory
+   * <dt>user.dir             <dd>User's current working directory
+   * </dl>
+   *
+   * @param p the Properties object to insert the system properties into
+   */
+  static native void insertSystemProperties(Properties p);
+} // class Runtime

@@ -93,6 +93,9 @@ import java.io.OutputStreamWriter;
  */
 public class Properties extends Hashtable
 {
+  // WARNING: Properties is a CORE class in the bootstrap cycle. See the
+  // comments in vm/reference/java/lang/Runtime for implications of this fact.
+
   /**
    * The property list that contains default values for any keys not
    * in this property list.
@@ -553,4 +556,4 @@ public class Properties extends Hashtable
           head = key;
       }
   }
-}
+} // class Properties

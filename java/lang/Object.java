@@ -61,12 +61,13 @@ import gnu.classpath.Configuration;
  */
 public class Object
 {
+  // WARNING: Object is a CORE class in the bootstrap cycle. See the comments
+  // in vm/reference/java/lang/Runtime for implications of this fact.
+
   static
   {
     if (Configuration.INIT_LOAD_LIBRARY)
-      {
-	System.loadLibrary("javalang");
-      }
+      System.loadLibrary("javalang");
   }
 
   // Some VM's rely on the order that these methods appear when laying
@@ -526,5 +527,4 @@ public class Object
       throw new IllegalArgumentException("argument out of range");
     VMObject.wait(this, ms, ns);
   }
-
-}
+} // class Object

@@ -1,3 +1,24 @@
+2002-03-25  Eric Blake  <ebb9@email.byu.edu>
+
+	* vm/reference/java/lang/Runtime.java (defaultProperties): New
+	field, to work around bootstrap issue.
+	(securityManager): Make package visible.
+	(Runtime): Remove bootstrap dependencies from constructor.
+	* vm/reference/java/lang/Thread.java: Use securityManager field
+	directly.
+	* vm/reference/java/lang/VMSystem.java (insertSystemProperties):
+	Move to Runtime, for bootstrap issue.
+	* java/lang/Object.java: Document bootstrap importance.
+	* java/lang/String.java: Ditto.
+	* java/lang/ThreadGroup.java: Use securityManager field directly.
+	* java/lang/System.java (defaultProperties): Remove, to work
+	around bootstrap issue.
+	* java/util/Dictionary.java: Document bootstrap importance.
+	* java/util/Hashtable.java: Ditto.
+	* java/util/Propeties.java: Ditto.
+	* java/util/StringTokenizer.java: Ditto.
+	* java/util/WeakHashMap.java: Ditto.
+
 2002-03-25  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/Component.java (processEvent): Check ComponentEvent

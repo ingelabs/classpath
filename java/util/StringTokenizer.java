@@ -60,6 +60,9 @@ package java.util;
  */
 public class StringTokenizer implements Enumeration
 {
+  // WARNING: StringTokenizer is a CORE class in the bootstrap cycle. See the
+  // comments in vm/reference/java/lang/Runtime for implications of this fact.
+
   /**
    * The position in the str, where we currently are.
    */
@@ -262,4 +265,4 @@ public class StringTokenizer implements Enumeration
     // if counting delmiters add them into the token count
     return retDelims ? count + delimiterCount : count;
   }
-}
+} // class StringTokenizer
