@@ -1,5 +1,10 @@
 2004-12-22  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JTextField.java (getPreferredSize):
+	Re-implemented.
+
+2004-12-22  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/plaf/basic/BasicEditorPaneUI.java: New file.
 
 2004-12-22  Michael Koch  <konqueror@gmx.de>
