@@ -311,7 +311,7 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
                         MenuItem item = menu.getItem (j);
                         MenuShortcut shortcut = item.getShortcut ();
 
-                        if (shortcut != null)
+                        if (item.isEnabled() && shortcut != null)
                           {
                             // Dispatch a new ActionEvent if:
                             //
