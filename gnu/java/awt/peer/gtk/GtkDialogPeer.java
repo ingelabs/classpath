@@ -1,7 +1,7 @@
 /*
  * GtkDialogPeer.java -- Implements DialogPeer with GTK
  *
- * Copyright (c) 1998 Free Software Foundation, Inc.
+ * Copyright (c) 1998, 1999 Free Software Foundation, Inc.
  * Written by James E. Blair <corvus@gnu.org>
  *
  * This library is free software; you can redistribute it and/or modify
@@ -26,29 +26,30 @@ import java.awt.peer.*;
 public class GtkDialogPeer extends GtkWindowPeer
     implements DialogPeer
 {
-    public GtkDialogPeer(Dialog d)
+  native void gtkDialogNew(int width, int height, boolean visible,
+			   boolean resizable, String title, boolean modal,
+			   Object parent);
+  
+  public GtkDialogPeer (Dialog w, ComponentPeer parent)
     {
-	super(dialogType,d);
-	System.out.println("DialogPeer contructor");
+      super (bogusType, w);
+      
+      Dimension d = w.getSize();
+      System.out.println ("DIALOG:  modal =" + w.isModal());
+      gtkDialogNew (d.width, d.height, w.isVisible (), w.isResizable (),
+		    w.getTitle (), w.isModal(), parent);
     }
 
-    public GtkDialogPeer(int type, Dialog d)
+  public void setTitle(String title)
     {
-	super(type,d);
-	System.out.println("DialogPeer int contstructor");
+      System.out.println("setting title");
+      gtkWindowSetTitle(title);
     }
-
-    public void setTitle(String title)
+  
+  public void setResizable(boolean resizable)
     {
-	System.out.println("setting title");
-	gtkWindowSetTitle(title);
-    }
-
-    public void setResizable(boolean resizable)
-    {
-	int r=resizable?1:0;
-
-	gtkWindowSetPolicy(r,r,0); //shrink,grow,auto
+      int r=resizable?1:0;
+      
+      gtkWindowSetPolicy(r,r,0); //shrink,grow,auto
     }
 }
-
