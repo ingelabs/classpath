@@ -1,3 +1,10 @@
+2002-02-09  C. Brian Jones <cbj@gnu.org>
+
+        * lib/Makefile.am: without zip, try copying class files instead
+        during install, and avoid zip during make
+        * configure.in: new automake conditional to handle presence or
+        absence of zip
+
 2002-02-09  Mark Wielaard <mark@klomp.org>
 
 	* doc/www.gnu.org/home.wml: Add 0.03 announcement.

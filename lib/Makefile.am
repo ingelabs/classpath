@@ -76,12 +76,19 @@ ARG_CLASSPATH_JAVAH = -classpath
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
 
 
+if HAVE_ZIP
 pkgdata_DATA = glibj.zip
 noinst_DATA = genclasses classes
+else
+noinst_DATA = genclasses classes glibj.zip
+endif
 
-##install-data-local :
-##	if ! [ -e $(pkgdatadir) ]; then mkdir -p $(pkgdatadir); fi
-##	$(UNZIP) -d $(pkgdatadir) glibj.zip
+install-data-local :
+	-$(top_srcdir)/mkinstalldirs $(pkgdatadir)
+	if ! [ -e glibj.zip ]; then cp -R com $(pkgdatadir); fi
+	if ! [ -e glibj.zip ]; then cp -R gnu $(pkgdatadir); fi
+	if ! [ -e glibj.zip ]; then cp -R java $(pkgdatadir); fi
+	if ! [ -e glibj.zip ]; then cp -R javax $(pkgdatadir); fi
 
 glibj.zip: classes compile-classes
 	if ! [ -e gnu ]; then mkdir gnu; fi
@@ -89,7 +96,7 @@ glibj.zip: classes compile-classes
 	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
-	$(ZIP) -r -D glibj.zip gnu java javax > /dev/null
+	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip com gnu java javax > /dev/null; fi
 
 .PHONY: genclasses
 

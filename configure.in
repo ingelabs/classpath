@@ -221,8 +221,10 @@ dnl zip, and perl, however it should be okay since it is only used
 dnl in maintainer mode.
 AC_PATH_PROG(FIND, find)
 AC_PATH_PROG(ZIP, zip)
-AC_PATH_PROG(UNZIP, unzip)
+dnl AC_PATH_PROG(UNZIP, unzip)
 dnl AC_PATH_PROG(PERL, perl)
+
+AM_CONDITIONAL(HAVE_ZIP, test x$ZIP != x)
 
 AC_OUTPUT(Makefile
 com/Makefile
