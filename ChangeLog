@@ -1,5 +1,13 @@
 2003-08-11  Ingo Proetel  <proetel@aicas.com>
 
+	* gnu/java/rmi/server/UnicastRef.java: make constructor public and check if serverobject  
+	is compatible in case client and server are running in the same VM
+	* gnu/java/rmi/rmic/RMIC.java: fix that methods of the remote interfaces are used
+	instead of the xxxImpl class
+	
+
+2003-08-11  Ingo Proetel  <proetel@aicas.com>
+
 	* gnu/java/net/protocol/http/HttpURLConnection.java: fixed NullPointerException.
 	* gnu/java/net/protocol/http/Handler.java: override getDefaultPort() to return 80
 
