@@ -738,12 +738,12 @@ public final class String implements Serializable, Comparable, CharSequence
 
   /**
    * Compares this String and another String (case insensitive). This
-   * comparison is <em>different</em> from equalsIgnoreCase, in that it uses
-   * <code>this.toUpperCase().toLowerCase()
-   *    .compareTo(s.toUpperCase().toLowerCase())</code>, which can perform
-   * multi-character capitalization expansions. However, this is still
-   * unsatisfactory for certain locales, in which case you should use
-   * {@link java.text.Collator}.
+   * comparison is <em>similar</em> to equalsIgnoreCase, in that it ignores
+   * locale and multi-characater capitalization, and compares characters
+   * after performing
+   * <code>Character.toLowerCase(Character.toUpperCase(c))</code> on each
+   * character of the string. This is unsatisfactory for locale-based
+   * comparison, in which case you should use {@link java.text.Collator}.
    *
    * @param s the string to compare against
    * @return the comparison
@@ -752,8 +752,17 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public int compareToIgnoreCase(String s)
   {
-    return toUpperCase().toLowerCase().compareTo(s.toUpperCase()
-                                                 .toLowerCase());
+    int i = Math.min(count, s.count);
+    int x = offset;
+    int y = s.offset;
+    while (--i >= 0)
+      {
+        int result = Character.toLowerCase(Character.toUpperCase(value[x++]))
+          - Character.toLowerCase(Character.toUpperCase(s.value[y++]));
+        if (result != 0)
+          return result;
+      }
+    return count - s.count;
   }
 
   /**

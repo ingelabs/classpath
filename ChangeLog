@@ -1,3 +1,10 @@
+2002-09-16  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/String.java (compareToIgnoreCase): Update to use the
+	new behavior documented in JDK 1.4.1.
+	* java/lang/Package.java: Improve comments and formatting.
+	* java/lang/System.java: Ditto.
+
 2002-09-12  Stephen Crawley  <crawley@dstc.edu.au>
 
 	* java/net/URLClassLoader.java: import java.io.File.

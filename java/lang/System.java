@@ -38,7 +38,13 @@ exception statement from your version. */
 
 package java.lang;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.Properties;
 import java.util.PropertyPermission;
 import gnu.classpath.Configuration;
@@ -201,7 +207,7 @@ public final class System
    * however.
    */
   public static final InputStream in
-    = new BufferedInputStream (new FileInputStream(FileDescriptor.in));
+    = new BufferedInputStream(new FileInputStream(FileDescriptor.in));
   /**
    * The standard output PrintStream.  This is assigned at startup and
    * starts its life perfectly valid. Although it is marked final, you can
@@ -213,7 +219,8 @@ public final class System
    * you, however.
    */
   public static final PrintStream out
-    = new PrintStream(new BufferedOutputStream (new FileOutputStream(FileDescriptor.out)), true);
+    = new PrintStream(new BufferedOutputStream
+      (new FileOutputStream(FileDescriptor.out)), true);
   /**
    * The standard output PrintStream.  This is assigned at startup and
    * starts its life perfectly valid. Although it is marked final, you can
@@ -225,7 +232,8 @@ public final class System
    * you, however.
    */
   public static final PrintStream err
-    = new PrintStream(new BufferedOutputStream (new FileOutputStream(FileDescriptor.err)), true);
+    = new PrintStream(new BufferedOutputStream
+      (new FileOutputStream(FileDescriptor.err)), true);
 
   /**
    * This class is uninstantiable.
