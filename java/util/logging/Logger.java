@@ -52,43 +52,92 @@ import java.util.List;
  * is a shared instance for components that make only occasional use of
  * the logging framework.
  *
- * FIXME: Write more documentation.
+ * <p>It is common to name a logger after the name of a corresponding
+ * Java package.  Loggers are organized into a hierarchical namespace;
+ * for example, the logger <code>"org.gnu.foo"</code> is the
+ * <em>parent</em> of logger <code>"org.gnu.foo.bar"</code>.
+ *
+ * <p>A logger for a named subsystem can be obtained through {@link
+ * java.util.logging.Logger#getLogger(java.lang.String)}.  However,
+ * only code which has been granted the permission to control the
+ * logging infrastructure will be allowed to customize that logger.
+ * Untrusted code can obtain a private, anonymous logger through
+ * {@link #getAnonymousLogger()} if it wants to perform any
+ * modifications to the logger.
+ *
+ * <p>FIXME: Write more documentation.
  *
  * @author Sascha Brawer (brawer@acm.org)
  */
 public class Logger
 {
   /**
-   * A logger provided to applications that make only occasional
-   * use of the logging framework, typically early prototypes.
-   * Serious products are supposed to create and use their own
-   * Loggers, so they can be controlled individually.
+   * A logger provided to applications that make only occasional use
+   * of the logging framework, typically early prototypes.  Serious
+   * products are supposed to create and use their own Loggers, so
+   * they can be controlled individually.
    */
   public static final Logger global = getLogger("global");
 
+
   /**
-   * The name of the Logger, or <code>null</code> if the logger is anonymous.
+   * The name of the Logger, or <code>null</code> if the logger is
+   * anonymous.
+   *
+   * <p>A previous version of the GNU Classpath implementation granted
+   * untrusted code the permission to control any logger whose name
+   * was null.  However, test code revealed that the Sun J2SE 1.4
+   * reference implementation enforces the security control for any
+   * logger that was not created through getAnonymousLogger, even if
+   * it has a null name.  Therefore, a separate flag {@link
+   * Logger#anonymous} was introduced.
    */
   private final String name;
 
-  private final String resourceBundleName;
-  private final ResourceBundle resourceBundle;
+
+  /**
+   * The name of the resource bundle used for localization.
+   *
+   * <p>This variable cannot be declared as <code>final</code>
+   * because its value can change as a result of calling
+   * getLogger(String,String).
+   */
+  private String resourceBundleName;
+
+
+  /**
+   * The resource bundle used for localization.
+   *
+   * <p>This variable cannot be declared as <code>final</code>
+   * because its value can change as a result of calling
+   * getLogger(String,String).
+   */
+  private ResourceBundle resourceBundle;
 
   private Filter filter;
 
   private final List handlerList = new java.util.ArrayList(4);
   private Handler[] handlers = new Handler[0];
 
+  /**
+   * Indicates whether or not this logger is anonymous.  While
+   * a LoggingPermission is required for any modifications to
+   * a normal logger, untrusted code can obtain an anonymous logger
+   * and modify it according to its needs.
+   *
+   * <p>A previous version of the GNU Classpath implementation
+   * granted access to every logger whose name was null.
+   * However, test code revealed that the Sun J2SE 1.4 reference
+   * implementation enforces the security control for any logger
+   * that was not created through getAnonymousLogger, even
+   * if it has a null name.
+   */
+  private boolean anonymous;
+
 
   private boolean useParentHandlers;
 
   private Level level;
-
-  /**
-   * Indicates a numeric threshold under which log messages can
-   * be discarded immediately.
-   */
-  private int   threshold;
 
   private Logger parent;
 
@@ -133,7 +182,6 @@ public class Logger
     parent = LogManager.getLogManager().rootLogger;
 
     useParentHandlers = (parent != null);
-    recalcThreshold();
   }
 
 
@@ -164,11 +212,30 @@ public class Logger
 
     
   /**
-   * Finds a registered logger for a subsystem, or creates one in
-   * case no logger has been registered yet.
+   * Finds a registered logger for a subsystem, or creates one in case
+   * no logger has been registered yet.
+   *
+   * <p>If a logger with the specified name has already been
+   * registered, the behavior depends on the resource bundle that is
+   * currently associated with the existing logger.
+   *
+   * <ul><li>If the existing logger uses the same resource bundle as
+   * specified by <code>resourceBundleName</code>, the existing logger
+   * is returned.</li>
+   *
+   * <li>If the existing logger currently does not localize messages,
+   * the existing logger is modified to use the bundle specified by
+   * <code>resourceBundleName</code>.  The existing logger is then
+   * returned.  Therefore, all subsystems currently using this logger
+   * will produce localized messages from now on.</li>
+   *
+   * <li>If the existing logger already has an associated resource
+   * bundle, but a different one than specified by
+   * <code>resourceBundleName</code>, an
+   * <code>IllegalArgumentException</code> is thrown.</li></ul>
    *
    * @param name the name for the logger, for example "java.awt"
-   *             or "com.foo.bar". The name should be based on
+   *             or "org.gnu.foo". The name should be based on
    *             the name of the package issuing log records
    *             and consist of dot-separated Java identifiers.
    *
@@ -224,12 +291,8 @@ public class Logger
 
 	result = new Logger(name, resourceBundleName);
 	couldBeAdded = lm.addLogger(result);
-
-	/* FIXME: As soon as it is ok to use assert in Classpath
-	 * code (i.e., as soon as free Java compilers support
-	 * assert statements), uncomment the following line.
-	 */
-	/* assert couldBeAdded; */
+	if (!couldBeAdded)
+	  throw new IllegalStateException("cannot register new logger");
       }
       else
       {
@@ -238,12 +301,29 @@ public class Logger
 	 */
 	String existingBundleName = result.getResourceBundleName();
 
+	/* The Sun J2SE 1.4 reference implementation will return the
+	 * registered logger object, even if it does not have a resource
+	 * bundle associated with it. However, it seems to change the
+	 * resourceBundle of the registered logger to the bundle
+	 * whose name was passed to getLogger.
+	 */
+	if ((existingBundleName == null) && (resourceBundleName != null))
+	{
+	  /* If ResourceBundle.getBundle throws an exception, the
+	   * existing logger will be unchanged.  This would be
+	   * different if the assignment to resourceBundleName
+	   * came first.
+	   */
+	  result.resourceBundle = ResourceBundle.getBundle(resourceBundleName);
+	  result.resourceBundleName = resourceBundleName;
+	  return result;
+	}
+
 	if ((existingBundleName != resourceBundleName)
 	    && ((existingBundleName == null)
 		|| !existingBundleName.equals(resourceBundleName)))
 	{
-	  throw new IllegalArgumentException("existing Logger uses"
-					     + " different ResourceBundle");
+	  throw new IllegalArgumentException();
 	}
       }
     }
@@ -294,6 +374,7 @@ public class Logger
     Logger  result;
 
     result = new Logger(null, resourceBundleName);
+    result.anonymous = true;
     return result;
   }
 
@@ -351,8 +432,8 @@ public class Logger
    */
   public synchronized boolean isLoggable(Level level)
   {
-    if (threshold <= level.intValue())
-      return true;
+    if (this.level != null)
+      return this.level.intValue() <= level.intValue();
 
     if (parent != null)
       return parent.isLoggable(level);
@@ -386,20 +467,10 @@ public class Logger
      * without having the permission to control the logging
      * infrastructure.
      */
-    if (name != null)
+    if (!anonymous)
       LogManager.getLogManager().checkAccess();
 
     this.level = level;
-    recalcThreshold();
-  }
-
-
-  private void recalcThreshold()
-  {
-    if (useParentHandlers || (level == null))
-      threshold = Level.ALL.intValue();
-    else
-      threshold = level.intValue();
   }
 
 
@@ -424,7 +495,7 @@ public class Logger
      * without having the permission to control the logging
      * infrastructure.
      */
-    if (name != null)
+    if (!anonymous)
       LogManager.getLogManager().checkAccess();
 
     this.filter = filter;
@@ -473,11 +544,38 @@ public class Logger
     if ((filter != null) && !filter.isLoggable(record))
       return;
 
-    for (int i = 0; i < handlers.length; i++)
-      handlers[i].publish(record);
+    /* If no logger name has been set for the log record,
+     * use the name of this logger.
+     */
+    if (record.getLoggerName() == null)
+      record.setLoggerName(name);
 
-    if (useParentHandlers && (parent != null))
-      parent.log(record);
+    /* Avoid that some other thread is changing the logger hierarchy
+     * while we are traversing it.
+     */
+    synchronized (LogManager.getLogManager())
+    {
+      Logger curLogger = this;
+
+      do
+      {
+        /* The Sun J2SE 1.4 reference implementation seems to call the
+	 * filter only for the logger whose log method is called,
+	 * never for any of its parents.  Also, parent loggers publish
+	 * log record whatever their level might be.  This is pretty
+	 * weird, but GNU Classpath tries to be as compatible as
+	 * possible to the reference implementation.
+	 */
+        for (int i = 0; i < curLogger.handlers.length; i++)
+          curLogger.handlers[i].publish(record);
+
+	if (curLogger.getUseParentHandlers() == false)
+	  break;
+	
+	curLogger = curLogger.getParent();
+      }
+      while (parent != null);
+    }
   }
 
 
@@ -485,15 +583,6 @@ public class Logger
   {
     log(level, message, (Object[]) null);
   }
-
-
-  private static final int SEVERE_THRESHOLD = Level.SEVERE.intValue();
-  private static final int WARNING_THRESHOLD = Level.WARNING.intValue();
-  private static final int INFO_THRESHOLD = Level.INFO.intValue();
-  private static final int CONFIG_THRESHOLD = Level.CONFIG.intValue();
-  private static final int FINE_THRESHOLD = Level.FINE.intValue();
-  private static final int FINER_THRESHOLD = Level.FINER.intValue();
-  private static final int FINEST_THRESHOLD = Level.FINEST.intValue();
 
 
   public synchronized void log(Level level,
@@ -671,7 +760,7 @@ public class Logger
   public synchronized void entering(String sourceClass,
 				    String sourceMethod)
   {
-    if (threshold <= FINER_THRESHOLD)
+    if (isLoggable(Level.FINER))
       logp(Level.FINER, sourceClass, sourceMethod, "ENTRY");
   }
 
@@ -680,7 +769,7 @@ public class Logger
 				    String sourceMethod,
 				    Object param)
   {
-    if (threshold <= FINER_THRESHOLD)
+    if (isLoggable(Level.FINER))
       logp(Level.FINER, sourceClass, sourceMethod, "ENTRY {0}", param);
   }
 
@@ -689,7 +778,7 @@ public class Logger
 				    String sourceMethod,
 				    Object[] params)
   {
-    if (threshold <= FINER_THRESHOLD)
+    if (isLoggable(Level.FINER))
     {
       StringBuffer buf = new StringBuffer(80);
       buf.append("ENTRY");
@@ -708,7 +797,7 @@ public class Logger
   public synchronized void exiting(String sourceClass,
 				   String sourceMethod)
   {
-    if (threshold <= FINER_THRESHOLD)
+    if (isLoggable(Level.FINER))
       logp(Level.FINER, sourceClass, sourceMethod, "RETURN");
   }
 
@@ -717,7 +806,7 @@ public class Logger
 				   String sourceMethod,
 				   Object result)
   {
-    if (threshold <= FINER_THRESHOLD)
+    if (isLoggable(Level.FINER))
       logp(Level.FINER, sourceClass, sourceMethod, "RETURN {0}", result);
   }
 
@@ -726,7 +815,7 @@ public class Logger
 				    String sourceMethod,
 				    Throwable thrown)
   {
-    if (threshold <= FINER_THRESHOLD)
+    if (isLoggable(Level.FINER))
       logp(Level.FINER, sourceClass, sourceMethod, "THROW", thrown);
   }
 
@@ -749,7 +838,7 @@ public class Logger
    */
   public synchronized void severe(String message)
   {
-    if (threshold <= SEVERE_THRESHOLD)
+    if (isLoggable(Level.SEVERE))
       log(Level.SEVERE, message);
   }
 
@@ -773,19 +862,20 @@ public class Logger
    */
   public synchronized void warning(String message)
   {
-    if (threshold <= WARNING_THRESHOLD)
+    if (isLoggable(Level.WARNING))
       log(Level.WARNING, message);
   }
 
 
   /**
    * Logs a message with severity level INFO.  {@link Level#INFO} is
-   * intended for informational messages, for example [FIXME:
-   * Examples?].  In the default logging configuration, INFO messages
-   * will be written to the system console.  For this reason, the INFO
-   * level should be used only for messages that are important to end
-   * users and system administrators.  Messages at this level should
-   * be understandable to an inexperienced, non-technical user.
+   * intended for purely informational messages that do not indicate
+   * error or warning situations. In the default logging
+   * configuration, INFO messages will be written to the system
+   * console.  For this reason, the INFO level should be used only for
+   * messages that are important to end users and system
+   * administrators.  Messages at this level should be understandable
+   * to an inexperienced, non-technical user.
    *
    * @param message the message text, also used as look-up key if the
    *                logger is localizing messages with a resource
@@ -796,7 +886,7 @@ public class Logger
    */
   public synchronized void info(String message)
   {
-    if (threshold <= INFO_THRESHOLD)
+    if (isLoggable(Level.INFO))
       log(Level.INFO, message);
   }
 
@@ -814,7 +904,7 @@ public class Logger
    */
   public synchronized void config(String message)
   {
-    if (threshold <= CONFIG_THRESHOLD)
+    if (isLoggable(Level.CONFIG))
       log(Level.CONFIG, message);
   }
 
@@ -834,7 +924,7 @@ public class Logger
    */
   public synchronized void fine(String message)
   {
-    if (threshold <= FINE_THRESHOLD)
+    if (isLoggable(Level.FINE))
       log(Level.FINE, message);
   }
 
@@ -853,7 +943,7 @@ public class Logger
    */
   public synchronized void finer(String message)
   {
-    if (threshold <= FINER_THRESHOLD)
+    if (isLoggable(Level.FINER))
       log(Level.FINER, message);
   }
 
@@ -872,7 +962,7 @@ public class Logger
    */
   public synchronized void finest(String message)
   {
-    if (threshold <= FINEST_THRESHOLD)
+    if (isLoggable(Level.FINEST))
       log(Level.FINEST, message);
   }
 
@@ -880,6 +970,11 @@ public class Logger
   /**
    * Adds a handler to the set of handlers that get notified
    * when a log record is to be published.
+   *
+   * @param handler the handler to be added.
+   *
+   * @throws NullPointerException if <code>handler</code>
+   *     is <code>null</code>.
    *
    * @throws SecurityException if this logger is not anonymous, a
    *     security manager exists, and the caller is not granted
@@ -891,14 +986,17 @@ public class Logger
   public synchronized void addHandler(Handler handler)
     throws SecurityException
   {
+    /* Throw a new NullPointerException if handler is null. */
+    handler.getClass();
+
     /* An application is allowed to control an anonymous logger
      * without having the permission to control the logging
      * infrastructure.
      */
-    if (name != null)
+    if (!anonymous)
       LogManager.getLogManager().checkAccess();
 
-    if ((handler != null) && !handlerList.contains(handler))
+    if (!handlerList.contains(handler))
     {
       handlerList.add(handler);
       handlers = getHandlers();
@@ -910,12 +1008,17 @@ public class Logger
    * Removes a handler from the set of handlers that get notified
    * when a log record is to be published.
    *
+   * @param handler the handler to be removed.
+   *
    * @throws SecurityException if this logger is not anonymous, a
-   *     security manager exists, and the caller is not granted
-   *     the permission to control the logging infrastructure by
-   *     having LoggingPermission("control").  Untrusted code can
-   *     obtain an anonymous logger through the static factory method
-   *     {@link #getAnonymousLogger(java.lang.String) getAnonymousLogger}.
+   *     security manager exists, and the caller is not granted the
+   *     permission to control the logging infrastructure by having
+   *     LoggingPermission("control").  Untrusted code can obtain an
+   *     anonymous logger through the static factory method {@link
+   *     #getAnonymousLogger(java.lang.String) getAnonymousLogger}.
+   *
+   * @throws NullPointerException if <code>handler</code>
+   *     is <code>null</code>.
    */
   public synchronized void removeHandler(Handler handler)
     throws SecurityException
@@ -924,8 +1027,11 @@ public class Logger
      * without having the permission to control the logging
      * infrastructure.
      */
-    if (name != null)
+    if (!anonymous)
       LogManager.getLogManager().checkAccess();
+
+    /* Throw a new NullPointerException if handler is null. */
+    handler.getClass();
 
     handlerList.remove(handler);
     handlers = getHandlers();
@@ -992,11 +1098,10 @@ public class Logger
      * without having the permission to control the logging
      * infrastructure.
      */
-    if (name != null)
+    if (!anonymous)
       LogManager.getLogManager().checkAccess();
 
     this.useParentHandlers = useParentHandlers;
-    recalcThreshold();
   }
 
 
@@ -1018,9 +1123,12 @@ public class Logger
   /**
    * Sets the parent of this logger.  Usually, applications do not
    * call this method directly.  Instead, the LogManager will ensure
-   * that the tree of loggers reflects the hierarchical logger namespace.
-   * Basically, this method should not be public at all, but the
-   * GNU implementation follows the Sun specification.
+   * that the tree of loggers reflects the hierarchical logger
+   * namespace.  Basically, this method should not be public at all,
+   * but the GNU implementation follows the API specification.
+   *
+   * @throws NullPointerException if <code>parent</code> is
+   *     <code>null</code>.
    *
    * @throws SecurityException if this logger is not anonymous, a
    *     security manager exists, and the caller is not granted
@@ -1031,7 +1139,12 @@ public class Logger
    */
   public synchronized void setParent(Logger parent)
   {
-    LogManager lm = LogManager.getLogManager();
+    LogManager lm;
+
+    /* Throw a new NullPointerException if parent is null. */
+    parent.getClass();
+
+    lm = LogManager.getLogManager();
 
     if (this == lm.rootLogger)
     {
@@ -1042,17 +1155,13 @@ public class Logger
       return;
     }
 
-
     /* An application is allowed to control an anonymous logger
      * without having the permission to control the logging
      * infrastructure.
      */
-    if (name != null)
+    if (!anonymous)
       LogManager.getLogManager().checkAccess();
 
-    /* FIXME: Is it ok to pass null? Is it ok to make an anonymous
-     * logger the child of a named logger without having LoggingPermisson?
-     */
     this.parent = parent;
   }
 }
