@@ -1,3 +1,18 @@
+2003-10-13  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/rmi/server/ProtocolConstants.java,
+	gnu/java/security/der/DER.java,
+	java/net/URLStreamHandlerFactory.java,
+	java/rmi/activation/ActivationInstantiator.java,
+	java/rmi/activation/ActivationMonitor.java,
+	java/rmi/activation/ActivationSystem.java,
+	java/rmi/activation/Activator.java:
+	Removed redundant modifiers.
+	* java/sql/DatabaseMetaData.java,
+	java/sql/ParameterMetaData.java,
+	java/sql/PreparedStatement.java:
+	Readded accidently removed modifiers.
+
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/File.java: Reformated.
