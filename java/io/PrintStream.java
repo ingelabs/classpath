@@ -153,7 +153,7 @@ public class PrintStream extends FilterOutputStream
   {
     super (out);
 
-    pw = new PrintWriter (new OutputStreamWriter (out, encoding), autoFlush);
+    pw = new PrintWriter (new OutputStreamWriter (out, encoding), auto_flush);
     this.auto_flush = auto_flush;
   }
 

@@ -343,23 +343,19 @@ public abstract class URLConnection
    */
   public int getHeaderFieldInt(String name, int defaultValue)
   {
-    String value = getHeaderField (key);
+    String value = getHeaderField (name);
     
     if (value == null)
       return defaultValue;
 
-    int retsult = defaultValue;
-    
     try
       {
-        retsult = Integer.parseInt (value);
+        return Integer.parseInt (value);
       }
     catch (NumberFormatException e) 
       { 
         return defaultValue;
       }
-    
-    return result;
   }
 
   /**
