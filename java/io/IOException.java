@@ -21,6 +21,8 @@
 
 package java.io;
 
+import java.lang.Exception;
+
 /**
   * This exception is thrown to indicate an I/O problem of some sort
   * occurred.  Since this is a fairly generic exception, often a subclass
@@ -31,7 +33,7 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public class IOException extends Exception
+public class IOException extends java.lang.Exception
 {
 
 /*
