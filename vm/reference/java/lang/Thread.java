@@ -206,6 +206,7 @@ public class Thread {
 		nativeInit();
 
 		this.group.addThread(this);
+		InheritableThreadLocal.newChildThread(this);
 	}
 
 	/** Get the currently executing Thread.
