@@ -382,53 +382,26 @@ public class LinkedHashMap extends HashMap
    * @param key the key of the new Entry
    * @param value the value
    * @param idx the index in buckets where the new Entry belongs
+   * @param callRemove Whether to call the removeEldestEntry method.
    * @see #put(Object, Object)
    * @see #removeEldestEntry(Map.Entry)
    */
-  void addEntry(Object key, Object value, int idx)
+  void addEntry(Object key, Object value, int idx, boolean callRemove)
   {
     LinkedHashEntry e = new LinkedHashEntry(key, value);
 
     e.next = buckets[idx];
     buckets[idx] = e;
 
-    if (removeEldestEntry(head))
+    if (callRemove && removeEldestEntry(head))
       remove(head);
   }
 
-  /**
-   * Helper method, called by clone() to rethread the doubly-linked
-   * list.  In this method, this is a cloned object, but all the entries
-   * in <code>buckets</code> are still pointing to ones in the original.
-   * So, we must rethread the list within this Map alone.  We rely on
-   * the fact that the key of the original and cloned Entry are ==.
-   * @see #clone()
-   */
-  void rethread()
+  void putAllInternal(Map m)
   {
-    for (int i = buckets.length - 1; i >= 0; i--)
-      {
-        LinkedHashEntry l = (LinkedHashEntry) buckets[i];
-        while (l != null)
-          {
-            if (l.pred == null)
-              {
-                head = l;
-              }
-            else
-              {
-                HashEntry e = buckets[hash(l.pred.key)];
-                while (e.key != l.pred.key)
-                  e = e.next;
-                LinkedHashEntry link = (LinkedHashEntry) e;
-                l.pred = link;
-                link.succ = l;
-              }
-            if (l.succ == null)
-              tail = l;
-            l = (LinkedHashEntry) l.next;
-          }
-      }
+    head = null;
+    tail = null;
+    super.putAllInternal(m);
   }
 
   /**

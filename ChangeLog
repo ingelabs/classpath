@@ -1,3 +1,15 @@
+2001-10-15  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/util/HashMap.java (HashEntry.clone): Removed.
+	(HashMap(Map)): Use putAllInternal.
+	(clone): Likewise.
+	(putAllInternal): New method. Efficient counterpart to putAll which 
+	does not call put().	
+	* java/util/LinkedHashMap.java (rethread): Removed.
+	(putAllInternal): New method. Clear "head" and "tail".
+	(addEntry): New argument "callRemove". Don't call removeEldestEntry()
+	if callRemove == false. 
+
 2001-10-15  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/reflect/Makefile.am (EXTRA_DIST): Added new file.

@@ -158,28 +158,11 @@ public class HashMap extends AbstractMap
     /**
      * Called when this entry is removed from the map. This version simply
      * returns the value, but in LinkedHashMap, it must also do bookkeeping.
-     * @return the value of this key as it is removed
+     * @return the value of this key as it is removed.
      */
     Object cleanup()
     {
       return value;
-    }
-
-    /**
-     * Clone this Entry.
-     * @return the cloned object
-     */
-    protected Object clone()
-    {
-      try
-        {
-          return super.clone();
-        }
-      catch (CloneNotSupportedException e)
-        {
-          // This is impossible.
-          return null;
-        }
     }
   }
 
@@ -207,7 +190,7 @@ public class HashMap extends AbstractMap
   public HashMap(Map m)
   {
     this(Math.max(m.size() * 2, DEFAULT_CAPACITY), DEFAULT_LOAD_FACTOR);
-    putAll(m);
+    putAllInternal(m);
   }
 
   /**
@@ -367,7 +350,7 @@ public class HashMap extends AbstractMap
       }
 
     // LinkedHashMap cannot override put(), hence this call.
-    addEntry(key, value, idx);
+    addEntry(key, value, idx, true);
     return null;
   }
 
@@ -378,9 +361,10 @@ public class HashMap extends AbstractMap
    * @param key the key of the new Entry
    * @param value the value
    * @param idx the index in buckets where the new Entry belongs
+   * @param callRemove Whether to call the removeEldestEntry method.
    * @see #put(Object, Object)
    */
-  void addEntry(Object key, Object value, int idx)
+  void addEntry(Object key, Object value, int idx, boolean callRemove)
   {
     HashEntry e = new HashEntry(key, value);
 
@@ -449,7 +433,7 @@ public class HashMap extends AbstractMap
           }
       }
   }
-
+  
   /**
    * Clears the Map so it has no keys. This is O(1).
    */
@@ -478,34 +462,7 @@ public class HashMap extends AbstractMap
         // This is impossible.
       }
     copy.buckets = new HashEntry[buckets.length];
-
-    for (int i = buckets.length - 1; i >= 0; i--)
-      {
-        HashEntry e = buckets[i];
-        HashEntry last = null;
-
-        // Since LinkedHashMap does not override clone, we must clone
-        // the HashEntries to get the one of the correct type.
-        while (e != null)
-          {
-            if (last == null)
-              {
-                last = (HashEntry) e.clone();
-                copy.buckets[i] = last;
-              }
-            else
-              {
-                last.next = (HashEntry) e.clone();
-                last = last.next;
-              }
-            e = e.next;
-          }
-      }
-
-    // Perform extra bookkeeping required by LinkedHashMap.
-    if (this instanceof LinkedHashMap)
-      ((LinkedHashMap) this).rethread();
-
+    copy.putAllInternal(this);
     return copy;
   }
 
@@ -733,6 +690,24 @@ public class HashMap extends AbstractMap
   Iterator iterator(int type)
   {
     return new HashIterator(type);
+  }
+
+  /**
+   * A simplified, more efficient internal implementation of putAll(). The 
+   * Map constructor and clone() should not call putAll or put, in order to 
+   * be compatible with the JDK implementation with respect to subclasses.
+   */
+  void putAllInternal(Map m)
+  {
+    Iterator itr = m.entrySet().iterator();
+
+    for (int msize = m.size(); msize > 0; msize--)
+      {
+	Map.Entry e = (Map.Entry) itr.next();
+	Object key = e.getKey();
+	int idx = hash(key);
+	addEntry(key, e.getValue(), idx, false);
+      }
   }
 
   /**
