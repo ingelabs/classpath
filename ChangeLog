@@ -1,5 +1,11 @@
 2003-06-28  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/GridBagLayout.java,
+	java/awt/GridBagLayoutInfo.java:
+	More work done to implement this beasts.
+
+2003-06-28  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/GridBagLayout.java:
 	More work done. API should now be complete.
 

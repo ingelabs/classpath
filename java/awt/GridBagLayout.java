@@ -56,7 +56,6 @@ public class GridBagLayout
   protected Hashtable comptable;
   protected GridBagLayoutInfo layoutInfo;
   protected GridBagConstraints defaultConstraints = new GridBagConstraints();
-  
 
   public double[] columnWeights;
   public int[] columnWidths;
@@ -83,28 +82,30 @@ public class GridBagLayout
 
   public void removeLayoutComponent (Component component)
   {
-    comptable.remove (component);
+    // do nothing here
   }
 
   public Dimension preferredLayoutSize (Container parent)
   {
-    if (layoutInfo == null)
-      layoutContainer (parent);
+    if (parent == null)
+      return new Dimension (0, 0);
     
-    throw new Error ("Not implemented");
+    GridBagLayoutInfo li = getLayoutInfo (parent, PREFERREDSIZE);
+    return getMinSize (parent, li);
   }
 
   public Dimension minimumLayoutSize (Container parent)
   {
-    if (layoutInfo == null)
-      layoutContainer (parent);
+    if (parent == null)
+      return new Dimension (0, 0);
     
-    throw new Error ("Not implemented");
+    GridBagLayoutInfo li = getLayoutInfo (parent, MINSIZE);
+    return getMinSize (parent, li);
   }
 
   public Dimension maximumLayoutSize (Container target)
   {
-    throw new Error ("Not implemented");
+    return new Dimension (Integer.MAX_VALUE, Integer.MAX_VALUE);
   }
 
   public void layoutContainer (Container parent)
@@ -171,15 +172,15 @@ public class GridBagLayout
 
   protected GridBagConstraints lookupConstraints (Component component)
   {
-    return (GridBagConstraints) comptable.get (component);
-  }
+    GridBagConstraints result = (GridBagConstraints) comptable.get (component);
 
-  /**
-   * @since 1.1
-   */
-  public int[][] getLayoutDimensions ()
-  {
-    throw new Error ("Not implemented");
+    if (result == null)
+      {
+	setConstraints (component, defaultConstraints);
+	result = (GridBagConstraints) comptable.get (component);
+      }
+    
+    return result;
   }
 
   /**
@@ -187,12 +188,39 @@ public class GridBagLayout
    */
   public Point getLayoutOrigin ()
   {
-    throw new Error ("Not implemented");
+    if (layoutInfo == null)
+      return new Point (0, 0);
+    
+    return new Point (layoutInfo.x, layoutInfo.y);
+  }
+
+  /**
+   * @since 1.1
+   */
+  public int[][] getLayoutDimensions ()
+  {
+    if (layoutInfo == null)
+      return new int [2][];
+
+    int[][] result = new int [2][];
+    result [0] = new int [layoutInfo.cols];
+    System.arraycopy (layoutInfo.colWidths, 0, result [0], 0, layoutInfo.cols);
+    result [1] = new int [layoutInfo.rows];
+    System.arraycopy (layoutInfo.rowHeights, 0, result [1], 0, layoutInfo.rows);
+    return result;
   }
 
   public double[][] getLayoutWeights ()
   {
-    throw new Error ("Not implemented");
+    if (layoutInfo == null)
+      return new double [2][];
+      
+    double[][] result = new double [2][];
+    result [0] = new double [layoutInfo.cols];
+    System.arraycopy (layoutInfo.colWeights, 0, result [0], 0, layoutInfo.cols);
+    result [1] = new double [layoutInfo.rows];
+    System.arraycopy (layoutInfo.rowWeights, 0, result [1], 0, layoutInfo.rows);
+    return result;
   }
 
   /**
@@ -200,7 +228,31 @@ public class GridBagLayout
    */
   public Point location (int x, int y)
   {
-    throw new Error ("Not implemented");
+    if (layoutInfo == null)
+      return new Point (0, 0);
+
+    int col;
+    int row;
+    int pixel_x = layoutInfo.x;
+    int pixel_y = layoutInfo.y;
+
+    for (col = 0; col < layoutInfo.cols; col++)
+      {
+        if (pixel_x < x)
+	  break;
+
+	pixel_x += layoutInfo.colWidths [col];
+      }
+
+    for (row = 0; row < layoutInfo.rows; row++)
+      {
+	if (pixel_y < y)
+	  break;
+
+	pixel_y += layoutInfo.rowHeights [row];
+      }
+
+    return new Point (col, row);
   }
 
   /**
@@ -208,6 +260,9 @@ public class GridBagLayout
    */
   protected GridBagLayoutInfo getLayoutInfo (Container parent, int sizeflag)
   {
+    if (sizeflag != MINSIZE && sizeflag != PREFERREDSIZE)
+      throw new IllegalArgumentException();
+
     throw new Error ("Not implemented");
   }
 
@@ -221,11 +276,27 @@ public class GridBagLayout
    */
   protected Dimension getMinSize (Container parent, GridBagLayoutInfo info)
   {
-    throw new Error ("Not implemented");
+    if (parent == null || info == null)
+      return new Dimension (0, 0);
+
+    int width = 0;
+    int height = 0;
+
+    for (int i = 0; i < info.cols; i++)
+      width += info.colWidths [i];
+
+    for (int i = 0; i < info.rows; i++)
+      height += info.rowHeights [i];
+  
+    Insets insets = parent.getInsets();
+    width += insets.left + insets.right;
+    height += insets.top + insets.bottom;
+
+    return new Dimension (width, height);
   }
 
   protected Dimension GetMinSize (Container parent, GridBagLayoutInfo info)
   {
-    throw new Error ("Not implemented");
+    return getMinSize (parent, info);
   }
 }

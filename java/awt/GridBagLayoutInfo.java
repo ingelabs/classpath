@@ -47,20 +47,22 @@ class GridBagLayoutInfo implements Serializable
 {
   private static final long serialVersionUID = -4899416460737170217L;
 
+  int x = 0;
+  int y = 0;
   int cols;
   int rows;
   int colWidths[];
-  int rowWidths[];
-  double colWeigths[];
-  double rowWeigths[];
+  int rowHeights[];
+  double colWeights[];
+  double rowWeights[];
 
   GridBagLayoutInfo (int cols, int rows)
   {
     this.cols = cols;
     this.rows = rows;
     this.colWidths = new int [cols];
-    this.rowWidths = new int [rows];
-    this.colWeigths = new double [cols];
-    this.rowWeigths = new double [rows];
+    this.rowHeights = new int [rows];
+    this.colWeights = new double [cols];
+    this.rowWeights = new double [rows];
   }
 }
