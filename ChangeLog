@@ -1,3 +1,11 @@
+2004-12-20  Michael Koch  <konqueror@gmx.de>
+
+	* lib/Makefile.am: Generate java/util/LocaleData.java in build tree.
+	* lib/gen-classlist.sh.in: Include classes in java.* packages in build
+	tree.
+	* scripts/Makefile.am: Include generate-locale-list.sh in dist
+	tarball.
+
 2004-12-19  Robert Schuster <thebohemian@gmx.net>
 
         * javax/swing/JComboBox.java:
