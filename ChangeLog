@@ -1,3 +1,8 @@
+2002-03-21  Sascha Brawer  <brawer@localhost>
+
+	* java/util/zip/ZipFile.java (OPEN_DELETE): Match constant
+	value given by Sun J2SE 1.4 Javadoc.
+
 2002-03-21  C. Brian Jones <cbj@gnu.org>
 
 	The following changes are all from patch submissions from Intel's
@@ -102,6 +107,7 @@
 	* java/rmi/server/LogStream.java (BRIEF, VERBOSE): Match values
 	given by Sun J2SE 1.4 Javadoc.
 	* java/sql/Types.java: Mark 1.2 constant fields with @since.
+	* java/sql/Types.java (DATALINK, BOOLEAN): Add 1.4 constants.
 	
 2002-03-19  Eric Blake  <ebb9@email.byu.edu>
 
