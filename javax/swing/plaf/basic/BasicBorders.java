@@ -440,7 +440,133 @@ public class BasicBorders
     {
     }
   } // class SplitPaneBorder
+
+
+  /**
+   * A border for toggle buttons in the Basic look and feel.
+   *
+   * <p><img src="BasicBorders.ToggleButtonBorder-1.png" width="270"
+   * height="135" alt="[A screen shot of this border]" />
+   *
+   * <p>The Sun implementation always seems to draw exactly
+   * the same border, irrespective of the state of the button.
+   * This is rather surprising, but GNU Classpath emulates the
+   * observable behavior.
+   *
+   * @see javax.swing.plaf.basic.BasicGraphicsUtils#drawBezel
+   *
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
   public static class ToggleButtonBorder
+    extends ButtonBorder
   {
-  } // class ToggleButtonBorder
-} // class BasicBorders
+    /**
+     * Determined using the <code>serialver</code> tool
+     * of Apple/Sun JDK 1.3.1 on MacOS X 10.1.5.
+     */
+    static final long serialVersionUID = -3528666548001058394L;
+
+    
+    /**
+     * Constructs a new border for drawing a JToggleButton in
+     * the Basic look and feel.
+     *
+     * @param shadow the shadow color.
+     * @param darkShadow a darker variant of the shadow color.
+     * @param highlight the highlight color.
+     * @param lightHighlight a brighter variant of the highlight  color.
+     */
+    public ToggleButtonBorder(Color shadow, Color darkShadow,
+                              Color highlight, Color lightHighlight)
+    {
+      /* The superclass ButtonBorder substitutes null arguments
+       * with fallback colors.
+       */
+      super(shadow, darkShadow, highlight, lightHighlight);
+    }
+
+
+    /**
+     * Paints the ToggleButtonBorder around a given component.
+     *
+     * <p>The Sun implementation always seems to draw exactly
+     * the same border, irrespective of the state of the button.
+     * This is rather surprising, but GNU Classpath emulates the
+     * observable behavior.
+     *
+     * @param c the component whose border is to be painted.
+     * @param g the graphics for painting.
+     * @param x the horizontal position for painting the border.
+     * @param y the vertical position for painting the border.
+     * @param width the width of the available area for painting the border.
+     * @param height the height of the available area for painting the border.
+     *
+     * @see javax.swing.plaf.basic.BasicGraphicsUtils#drawBezel
+     */
+    public void paintBorder(Component c, Graphics  g,
+                            int x, int y, int width, int height)
+    {
+      /* The author of this code tried various variants for setting
+       * the state of the enclosed JToggleButton, but it seems that
+       * the drawn border is always identical. Weird, because this
+       * means that the user does not see whether the JToggleButton
+       * is selected or not.
+       */
+      BasicGraphicsUtils.drawBezel(g, x, y, width, height,
+                                   /* pressed */ false, 
+                                   /* default */ false,
+                                   shadow, darkShadow,
+                                   highlight, lightHighlight);
+    }
+
+
+    /**
+     * Measures the width of this border.
+     *
+     * @param c the component whose border is to be measured.
+     *
+     * @return an Insets object whose <code>left</code>,
+     *         <code>right</code>, <code>top</code> and
+     *         <code>bottom</code> fields indicate the width of the
+     *         border at the respective edge.
+     *
+     * @see #getBorderInsets(java.awt.Component, java.awt.Insets) 
+     */
+    public Insets getBorderInsets(Component c)
+    {
+      /* There is no obvious reason for overriding this method, but we
+       * try to have exactly the same API as the Sun reference
+       * implementation.
+       */
+      return getBorderInsets(c, null);
+    }
+
+    
+    /**
+     * Measures the width of this border, storing the results into a
+     * pre-existing Insets object.
+     *
+     * @param insets an Insets object for holding the result values.
+     *        After invoking this method, the <code>left</code>,
+     *        <code>right</code>, <code>top</code> and
+     *        <code>bottom</code> fields indicate the width of the
+     *        border at the respective edge.
+     *
+     * @return the same object that was passed for <code>insets</code>.
+     *
+     * @see #getBorderInsets()
+     */
+    public Insets getBorderInsets(Component c, Insets insets)
+    {
+      /* The exact amount has been determined using a test program
+       * that was run on the Apple/Sun JDK 1.3.1 on MacOS X, and the
+       * Sun JDK 1.4.1_01 on GNU/Linux for x86. Both gave [2,2,2,2].
+       */
+      if (insets == null)
+        return new Insets(2, 2, 2, 2);
+
+      insets.left = insets.right = insets.top = insets.bottom = 2;
+      return insets;
+    }
+  }
+}
