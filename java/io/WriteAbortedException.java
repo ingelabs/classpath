@@ -19,14 +19,16 @@
 
 package java.io;
 
-/**
-  * This exception is thrown when one of the other ObjectStreamException 
-  * subclasses was thrown during a serialization write.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+/** 
+    This exception is thrown when an
+    <code>ObjectStreamException</code> is read in from a serialized
+    stream.  This is the result of the exception having been thrown
+    when the stream was written.
+  
+    @version 0.1
+  
+    @author Aaron M. Renn (arenn@urbanophile.com)
+*/
 public class WriteAbortedException extends ObjectStreamException
 {
 
@@ -50,9 +52,11 @@ public Exception detail;
   * the detailed Exception that caused this exception to be thrown.
   *
   * @param detail The exception that caused this exception to be thrown
+  * @param msg A message explainging why this exception was thrown
   */
-WriteAbortedException(Exception detail)
+WriteAbortedException(String msg, Exception detail)
 {
+  super(msg);
   this.detail = detail;
 }
 
