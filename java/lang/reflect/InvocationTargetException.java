@@ -20,46 +20,106 @@
 
 package java.lang.reflect;
 
+import java.io.*;
+
 /**
- ** InvocationTargetException is sort of a way to "wrap" whatever exception comes up when a method or
- ** constructor is called via Reflection.
- **
- ** @author John Keiser
- ** @version 1.1.0, 31 May 1998
- ** @see Method#invoke(Object,Object[])
- ** @see Constructor#newInstance(Object[])
- **/
+ * InvocationTargetException is sort of a way to "wrap" whatever exception 
+ * comes up when a method or constructor is called via Reflection.
+ *
+ * @author John Keiser
+ * @version 1.1.0, 31 May 1998
+ * @see Method#invoke(Object,Object[])
+ * @see Constructor#newInstance(Object[])
+ */
 
-public class InvocationTargetException extends Exception {
-	private Throwable targetException;
+public class InvocationTargetException extends Exception 
+{
+  static final long serialVersionUID = 4085088731926701167L;
+  private Throwable targetException = null;
+  
+  protected InvocationTargetException() 
+    {
+      super();
+    }
+  
+  /**
+   * Create an <code>InvocationTargetException</code> using another 
+   * exception.
+   * @param targetException the exception to wrap
+   */
+  public InvocationTargetException(Throwable targetException) 
+    {
+      super();
+      this.targetException = targetException;
+    }
+  
+  /** 
+   * Create an <code>InvocationTargetException</code> using another 
+   * exception and an error message.
+   *
+   * @param targetException the exception to wrap
+   * @param err an extra reason for the exception-throwing
+   */
+  public InvocationTargetException(Throwable targetException, String err) 
+    {
+      super(err);
+      this.targetException = targetException;
+    }
+  
+  /**
+   * Get the wrapped (targeted) exception.
+   * 
+   * @return the targeted exception.
+   */
+  public Throwable getTargetException() 
+    {
+      return targetException;
+    }
 
-	/** <B>I am not sure if I'm supposed to copy the protected functions from the spec or not ... ?</B> **/
-	protected InvocationTargetException() {
-		super();
-		this.targetException = null;
-	}
+  public void printStackTrace()
+    {
+      if (targetException == null)
+	super.printStackTrace();
+      else
+	targetException.printStackTrace();
+    }
 
-	/** Create an <code>InvocationTargetException</code> using another exception.
-	 ** @param targetException the exception to wrap
-	 **/
-	public InvocationTargetException(Throwable targetException) {
-		super("Invoked method threw " + targetException.getClass().getName());
-		this.targetException = targetException;
-	}
+  public void printStackTrace(PrintStream ps)
+    {
+      if (targetException == null)
+	super.printStackTrace(ps);
+      else
+	targetException.printStackTrace(ps);
+    }
 
-	/** Create an <code>InvocationTargetException</code> using another exception and an error message.
-	 ** @param targetException the exception to wrap
-	 ** @param err an extra reason for the exception-throwing
-	 **/
-	public InvocationTargetException(Throwable targetException, String err) {
-		super(err);
-		this.targetException = targetException;
-	}
+  public void printStackTrace(PrintWriter pw)
+    {
+      if (targetException == null)
+	super.printStackTrace(pw);
+      else
+	targetException.printStackTrace(pw);
+    }
 
-	/** Get the wrapped (targeted) exception.
-	 ** @return the targeted exception.
-	 **/
-	public Throwable getTarget() {
-		return targetException;
-	}
+  /**
+   * Serialize the object in a manner binary compatible with the JDK 1.2
+   */
+  private void writeObject(java.io.ObjectOutputStream s) 
+    throws IOException
+    {
+      ObjectOutputStream.PutField oFields;
+      oFields = s.putFields();
+      oFields.put("target", targetException);
+      s.writeFields(); 
+    }
+
+  /**
+   * Deserialize the object in a manner binary compatible with the JDK 1.2
+   */    
+  private void readObject(java.io.ObjectInputStream s)
+    throws IOException, ClassNotFoundException
+    {
+      ObjectInputStream.GetField oFields;
+      oFields = s.readFields();
+      targetException = (Throwable)oFields.get("target", (Throwable)null);
+    }
 }
