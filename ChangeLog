@@ -1,3 +1,10 @@
+2003-11-07  Stuart Ballard <stuart.ballard@corp.fast.net>
+
+	* java/util/HashMap.java (putAll): Use Iterator hasNext() method.
+	(putAllInternal): Likewise.
+	* java/util/Hashtable.java (putAll): Use Iterator hasNext() method.
+	(putAllInternal): Likewise.
+
 2003-11-06  Sascha Brawer  <brawer@dandelis.ch>
 
 	* gnu/java/awt/BitwiseXORComposite.java: New file.
