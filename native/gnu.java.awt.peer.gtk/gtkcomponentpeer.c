@@ -88,6 +88,27 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetVisible (JNIEnv *env,
 }
 
 /*
+ * Redraw a widget
+ */
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_repaint
+  (JNIEnv *env, jobject obj, jlong tm, jint x, jint y, jint width, jint height)
+{
+  void *ptr;
+  GtkWidget *widget;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  (*env)->MonitorEnter (env, java_mutex);
+  widget = GTK_WIDGET (ptr);
+
+  gtk_widget_queue_draw_area (widget, x, y, width, height);
+
+  gdk_threads_wake ();
+  (*env)->MonitorExit (env, java_mutex);
+}
+
+/*
  * Find the preferred size of a widget.
  */
 JNIEXPORT void JNICALL 
