@@ -1,0 +1,30 @@
+Aug 9 12:01:22 MDT 1998 - John Keiser (jkeiser@iname.com)
+
+There is no way Sun can support our Reflection.  We can't implement Class,
+we can't ever create a Reflected Object.
+
+This class is relatively complete.  Most changes are going on in the other
+side.  Need to implement some CLI functions, ToReflectedField,
+ToReflectedMethod, FromReflectedField, FromReflectedMethod, in order to
+do this right.  Should be able to do so with JVMDI, which we will require
+VMs to support if they want to support java.lang.reflect.  (No way around it.)
+
+Jun 20 9:20:20 MDT 1998 - John Keiser (jkeiser@iname.com)
+
+OK, the Java side was easy.
+
+The difficult part is the native side, and while that has gone somewhere, there
+is so much integration between the VM and class libraries in Sun's version that
+a whole new API had to be created (the VMI being the prominent one).  JCL
+Reflection will likely never work with Sun's JDK 1.1 unless we manage some real
+magic.  Therefore I am targeting it to Japhar and Kaffe 1.1, where we at least
+have some ability to create VMI functionality.
+
+I am not even certain if Sun's JDK 1.2 will be able to support JCL Reflection.
+I am not getting my hopes up.  Unless their JVMDI spec improves, it will be
+impossible to do so efficiently, and probably impossible in any case, without
+knowing their internal structures.
+
+This whole thing has been compiled but has never run.  I am checking this in
+right now so that Geoffrey Berry, who is working on Serialization, will have
+some starting points, especially in regards to his native code.
