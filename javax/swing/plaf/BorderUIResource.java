@@ -418,25 +418,60 @@ public class BorderUIResource
       super(outsideBorder, insideBorder);
     }
   }
-
-
+  
+  
+  /**
+   * An {@link javax.swing.border.EmptyBorder} that also implements the
+   * {@link UIResource} marker interface.  This is useful for
+   * implementing pluggable look-and-feels: When switching the current
+   * LookAndFeel, only those borders are replaced that are marked as
+   * {@link UIResource}.  For this reason, a look-and-feel should
+   * always install borders that implement <code>UIResource</code>,
+   * such as the borders provided by this class.
+   *
+   * <p><img src="../border/EmptyBorder-1.png" width="290" height="200"
+   * alt="[An illustration of EmptyBorder]" />
+   *
+   * @author Brian Jones (cbj@gnu.org)
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
+  public static class EmptyBorderUIResource 
+    extends EmptyBorder
+    implements UIResource, Serializable
+  {
     /**
-     * @serial
+     * Constructs an empty border given the number of pixels required
+     * on each side.
+     *
+     * @param top the number of pixels that the border will need
+     *        for its top edge.
+     *
+     * @param left the number of pixels that the border will need
+     *        for its left edge.
+     *
+     * @param bottom the number of pixels that the border will need
+     *        for its bottom edge.
+     *
+     * @param right the number of pixels that the border will need
+     *        for its right edge.
      */
-    public static class EmptyBorderUIResource 
-	extends EmptyBorder
-	implements UIResource, Serializable
+    public EmptyBorderUIResource(int top, int left, int bottom, int right)
     {
-	public EmptyBorderUIResource(int top, int left, int bottom, int right)
-	{
-	    this(new Insets(top,left,bottom,right));
-	}
-	
-	public EmptyBorderUIResource(Insets insets)
-	{
-	  super (insets);
-	}
+      super(top, left, bottom, right);
     }
+    
+    
+    /**
+     * Constructs an empty border given the number of pixels required
+     * on each side, passed in an Insets object.
+     *
+     * @param insets the Insets for the new border.
+     */
+    public EmptyBorderUIResource(Insets insets)
+    {
+      super(insets);
+    }
+  }
 
     /**
      * @serial
