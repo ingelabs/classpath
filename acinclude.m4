@@ -1,7 +1,8 @@
 dnl
 dnl Add macros
 dnl JAPHAR_GREP_CFLAGS
-dnl CLASPATH_CHECK_JVM
+dnl CLASSPATH_CHECK_JAPHAR
+dnl CLASSPATH_CHECK_KAFFE
 dnl CLASSPATH_CHECK_THREADS
 dnl
 
@@ -17,66 +18,50 @@ AC_DEFUN(JAPHAR_GREP_CFLAGS,
 esac
 ])
 
-dnl CLASSPATH_INTERNAL_CHECK_JVM(jvm_name)
-AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JVM,
+dnl CLASSPATH_INTERNAL_CHECK_JAPHAR
+AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
 [
-  if test "$1" = "japhar"; then
-dnl I get errors trying to use AC_PATH_PROG, so screw it
-dnl    AC_PATH_PROG(JAPHARCONFIG, japhar, "", $PATH:/usr/local/japhar/bin:/usr/japhar/bin)
-dnl    if test "$JAPHARCONFIG" = ""; then
-dnl      AC_MSG_ERROR("configure: cannot find japhar-config: is Japhar installed?")
-dnl      exit 1
-dnl    fi
-    japhar-config --cflags > /dev/null || {
-      AC_MSG_ERROR("configure: cannot execute japhar-config: is Japhar installed?")
-      echo "configure: cannot execute japhar-config: is Japhar installed?" 1>&2
-      exit 1
-    }
-    JAPHAR_CFLAGS="`japhar-config --cflags`"
-    JAPHAR_JNI_LIBS="`japhar-config --jni-libs`"
-    AC_SUBST(JAPHAR_CFLAGS)
-    AC_SUBST(JAPHAR_JNI_LIBS)
-    AM_CONDITIONAL(JAPHAR, true)
-    AC_MSG_RESULT("yes")
-  elif test "$1" = "kaffe"; then
-    AC_MSG_ERROR("configure: please help make classpath support kaffe!")
-  else
-    AC_MSG_ERROR("configure: unknown jvm $1, try `japhar' or `kaffe' instead")
+  AC_PATH_PROG(JAPHAR_CONFIG, japhar-config, "", $PATH:/usr/local/japhar/bin:/usr/japhar/bin)
+  if test "$JAPHAR_CONFIG" = ""; then
+    echo "configure: cannot find japhar-config: is Japhar installed?" 1>&2
+    exit 1
   fi
-  # add other vms to the if clause with elif 
+  AC_MSG_CHECKING(for Japhar)
+  JAPHAR_CFLAGS="`$JAPHAR_CONFIG --cflags`"
+  JAPHAR_JNI_LIBS="`$JAPHAR_CONFIG --jni-libs`"
+  AC_SUBST(JAPHAR_CFLAGS)
+  AC_SUBST(JAPHAR_JNI_LIBS)
+  AM_CONDITIONAL(JAPHAR, test x = x)
+  AC_MSG_RESULT(yes)
 ])
 
-dnl CLASSPATH_CHECK_JVM - checks for which java virtual machine to use
-AC_DEFUN(CLASSPATH_CHECK_JVM,
+dnl CLASSPATH_INTERNAL_CHECK_KAFFE
+AC_DEFUN(CLASSPATH_INTERNAL_CHECK_KAFFE,
 [
-  AC_ARG_WITH(jvm, 
-  [  --with-jvm		  specify java virtual machine: default=japhar],
-  [   
-    if test ${withval} = ""; then
-      # japhar is default
-      AC_MSG_CHECKING(for Japhar)
-      CLASSPATH_INTERNAL_CHECK_JVM("japhar")
-    elif test ${withval} = "yes" || test ${withval} = "no"; then
-      # argument unspecified
-      AC_MSG_CHECKING(for Japhar)
-      CLASSPATH_INTERNAL_CHECK_JVM("japhar")
-      if test -z "$JAPHAR_CFLAGS"; then
-        AC_MSG_CHECKING(for Kaffe)
-        CLASSPATH_INTERNAL_CHECK_JVM("kaffe")
-      fi
-    else
-      # argument specified
-      AC_MSG_CHECKING(for ${withval})
-      CLASSPATH_INTERNAL_CHECK_JVM(${withval})
-    fi
-  ], 
+  AC_MSG_CHECKING(for Kaffe)
+  AC_MSG_ERROR(Help GNU Classpath support Kaffe!)
+])
+
+dnl CLASSPATH_CHECK_JAPHAR - checks for japhar
+AC_DEFUN(CLASSPATH_CHECK_JAPHAR,
+[
+  AC_ARG_WITH(japhar, 
+  [  --with-japhar		  configure GNU Classpath for Japhar],
   [
-    # argument unspecified
-    AC_MSG_CHECKING(for Japhar)
-    CLASSPATH_INTERNAL_CHECK_JVM("japhar")
-    if test -z "$JAPHAR_CFLAGS"; then
-      AC_MSG_CHECKING(for Kaffe)
-      CLASSPATH_INTERNAL_CHECK_JVM("kaffe")
+    if test ${withval} = "yes" || test ${withval} = ""; then
+      CLASSPATH_INTERNAL_CHECK_JAPHAR
+    fi
+  ])
+])
+
+dnl CLASSPATH_CHECK_KAFFE - checks for which java virtual machine to use
+AC_DEFUN(CLASSPATH_CHECK_KAFFE,
+[
+  AC_ARG_WITH(kaffe, 
+  [  --with-kaffe		  configure GNU Classpath for Kaffe],
+  [   
+    if test ${withval} = "yes" || test ${withval} = ""; then
+      CLASSPATH_INTERNAL_CHECK_KAFFE
     fi
   ])
 ])
