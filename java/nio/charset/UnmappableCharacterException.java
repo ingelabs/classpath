@@ -40,7 +40,7 @@ package java.nio.charset;
 /**
  * @since 1.4
  */
-class UnmappableCharacterException extends CharacterCodingException
+public class UnmappableCharacterException extends CharacterCodingException
 {
   private int inputLength;
   
@@ -66,6 +66,6 @@ class UnmappableCharacterException extends CharacterCodingException
    */
   public String getMessage ()
   {
-    return "";
+    return "Input length = " + inputLength;
   }
 }

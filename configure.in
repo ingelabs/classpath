@@ -263,6 +263,7 @@ gnu/java/locale/Makefile
 gnu/java/net/Makefile
 gnu/java/net/content/Makefile
 gnu/java/nio/Makefile
+gnu/java/nio/charset/Makefile
 gnu/java/net/content/text/Makefile
 gnu/java/net/protocol/Makefile
 gnu/java/net/protocol/file/Makefile

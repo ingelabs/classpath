@@ -37,118 +37,276 @@ exception statement from your version. */
 
 package java.nio.charset;
 
-import java.nio.*;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 
-
+/**
+ * @author Jesse Rosenstock
+ * @since 1.4
+ */
 public abstract class CharsetDecoder
 {
-    Charset cs;
-    float averageCharsPerByte;
-    float maxCharsPerByte;
-    String repl;
+  private static final int STATE_RESET   = 0;
+  private static final int STATE_CODING  = 1;
+  private static final int STATE_END     = 2;
+  private static final int STATE_FLUSHED = 3;
 
-    protected CharsetDecoder(Charset cs,
-			     float averageCharsPerByte, 
-			     float maxCharsPerByte)
-    {
-	this.cs = cs;
-	this.averageCharsPerByte = averageCharsPerByte;
-	this.maxCharsPerByte     = maxCharsPerByte;
-    }
+  private static final String DEFAULT_REPLACEMENT = "\uFFFD";
+
+  private final Charset charset;
+  private final float averageCharsPerByte;
+  private final float maxCharsPerByte;
+  private String replacement;
+
+  private int state = STATE_RESET;
+
+  private CodingErrorAction malformedInputAction
+    = CodingErrorAction.REPORT;
+  private CodingErrorAction unmappableCharacterAction
+    = CodingErrorAction.REPORT;
+
+  private CharsetDecoder (Charset cs, float averageCharsPerByte,
+                          float maxCharsPerByte, String replacement)
+  {
+    if (averageCharsPerByte <= 0.0f)
+      throw new IllegalArgumentException ("Non-positive averageCharsPerByte");
+    if (maxCharsPerByte <= 0.0f)
+      throw new IllegalArgumentException ("Non-positive maxCharsPerByte");
+
+    this.charset = cs;
+    this.averageCharsPerByte
+      = averageCharsPerByte;
+    this.maxCharsPerByte
+      = maxCharsPerByte;
+    this.replacement = replacement;
+    implReplaceWith (replacement);
+  }
+
+  protected CharsetDecoder (Charset cs, float averageCharsPerByte,
+                            float maxCharsPerByte)
+  {
+    this (cs, averageCharsPerByte, maxCharsPerByte, DEFAULT_REPLACEMENT);
+  }
+
+  public final float averageCharsPerByte ()
+  {
+    return averageCharsPerByte;
+  }
+
+  public final Charset charset ()
+  {
+    return charset;
+  }
+
+  public final CharBuffer decode (ByteBuffer in)
+    throws CharacterCodingException
+  {
+    // XXX: Sun's Javadoc seems to contradict itself saying an
+    // IllegalStateException is thrown "if a decoding operation is already
+    // in progress" and also that "it resets this Decoder".
+    // Should we check to see that the state is reset, or should we
+    // call reset()?
+    if (state != STATE_RESET)
+      throw new IllegalStateException ();
+
+    // REVIEW: Using max instead of average may allocate a very large
+    // buffer.  Maybe we should do something more efficient?
+    int remaining = in.remaining ();
+    int n = (int) (remaining * maxCharsPerByte ());
+    CharBuffer out = CharBuffer.allocate (n);
+
+    if (remaining == 0)
+      {
+        state = STATE_FLUSHED;
+        return out;
+      }
+
+    CoderResult cr = decode (in, out, true);
+    if (cr.isError ())
+      cr.throwException ();
+
+    cr = flush (out);
+    if (cr.isError ())
+      cr.throwException ();
+
+    out.flip ();
+    return out;
+  }
+
+  public final CoderResult decode (ByteBuffer in, CharBuffer out,
+                                   boolean endOfInput)
+  {
+    int newState = endOfInput ? STATE_END : STATE_CODING;
+    // XXX: Need to check for "previous step was an invocation [not] of
+    // this method with a value of true for the endOfInput parameter but
+    // a return value indicating an incomplete decoding operation"
+    // XXX: We will not check the previous return value, just
+    // that the previous call passed true for endOfInput
+    if (state != STATE_RESET && state != STATE_CODING
+        && !(endOfInput && state == STATE_END))
+      throw new IllegalStateException ();
+    state = newState;
+
+    for (;;)
+      {
+        CoderResult cr;
+        try
+          {
+            cr = decodeLoop (in, out);
+          }
+        catch (RuntimeException e)
+          {
+            throw new CoderMalfunctionError (e);
+          }
+
+        if (cr.isOverflow ())
+          return cr;
+
+        if (cr.isUnderflow ())
+          {
+            if (endOfInput && in.hasRemaining ())
+              cr = CoderResult.malformedForLength (in.remaining ());
+            else
+              return cr;
+          }
+
+        CodingErrorAction action = cr.isMalformed ()
+                                     ? malformedInputAction
+                                     : unmappableCharacterAction;
+
+        if (action == CodingErrorAction.REPORT)
+          return cr;
+
+        if (action == CodingErrorAction.REPLACE)
+          {
+            if (out.remaining () < replacement.length ())
+              return CoderResult.OVERFLOW;
+            out.put (replacement);
+          }
+
+        in.position (in.position () + cr.length ());
+      }
+  }
+
+  protected abstract CoderResult decodeLoop (ByteBuffer in, CharBuffer out);
+
+  public Charset detectedCharset ()
+  {
+    throw new UnsupportedOperationException ();
+  }
     
-    public float averageCharsPerByte()
-    {
-	return averageCharsPerByte;
-    }
+  public final CoderResult flush (CharBuffer out)
+  {
+    // It seems weird that you can flush after reset, but Sun's javadoc
+    // says an IllegalStateException is thrown "If the previous step of the
+    // current decoding operation was an invocation neither of the reset
+    // method nor ... of the three-argument decode method with a value of
+    // true for the endOfInput parameter."
+    // Further note that flush() only requires that there not be
+    // an IllegalStateException if the previous step was a call to
+    // decode with true as the last argument.  It does not require
+    // that the call succeeded.  decode() does require that it succeeded.
+    // XXX: test this to see if reality matches javadoc
+    if (state != STATE_RESET && state != STATE_END)
+      throw new IllegalStateException ();
 
-    public Charset charset()
-    {
-	return cs;
-    }
+    state = STATE_FLUSHED;
+    return implFlush (out);
+  }
 
-    public CharBuffer decode(ByteBuffer in)
-    {
-	CharBuffer x = CharBuffer.allocate(in.remaining());
-	decode(in, x, false);	
-	x.rewind();
-	return x;
-    }
-     
-    public CoderResult decode(ByteBuffer in, CharBuffer out, boolean endOfInput)
-    {
-	return decodeLoop(in,out);
-    }
+  protected CoderResult implFlush (CharBuffer out)
+  {
+    return CoderResult.UNDERFLOW;
+  }
 
-    protected abstract  CoderResult decodeLoop(ByteBuffer in, CharBuffer out);
+  public final CharsetDecoder onMalformedInput (CodingErrorAction newAction)
+  {
+    if (newAction == null)
+      throw new IllegalArgumentException ("Null action");
 
-    public Charset detectedCharset()
-    {
-	return charset();
-    }
-    
-    public CoderResult flush(CharBuffer out)
-    {
-	return implFlush(out);
-    }
-    protected  CoderResult implFlush(CharBuffer out)
-    {
-	return null;
-    }
-    protected  void implOnMalformedInput(CodingErrorAction newAction)
-    {
-    }
-    protected  void implOnUnmappableCharacter(CodingErrorAction newAction)
-    {
-    }
-    protected  void implReplaceWith(String newReplacement)
-    {
-    }
-    protected  void implReset()
-    {
-    }
+    malformedInputAction = newAction;
+    implOnMalformedInput (newAction);
+    return this;
+  }
 
-    public boolean isAutoDetecting()
-    {
-	return true;
-    }
-    
-    public boolean isCharsetDetected()
-    {
-	return true;
-    }
-    public CodingErrorAction malformedInputAction()
-    {
-	return null;
-    }
-    public float maxCharsPerByte()
-    {
-	return maxCharsPerByte;
-    }
-    public CharsetDecoder onMalformedInput(CodingErrorAction newAction)
-    {
-	return null;
-    }
-    public CharsetDecoder onUnmappableCharacter(CodingErrorAction newAction)
-    {
-	return null;
-    }
-    public String replacement()
-    {
-	return repl;
-    }
+  protected void implOnMalformedInput (CodingErrorAction newAction)
+  {
+    // default implementation does nothing
+  }
 
-    public CharsetDecoder replaceWith(String newReplacement)
-    {
-	return null;
-    }
+  protected void implOnUnmappableCharacter (CodingErrorAction newAction)
+  {
+    // default implementation does nothing
+  }
 
-    public CharsetDecoder reset()
-    {
-	return null;
-    }
-    
-    public CodingErrorAction unmappableCharacterAction()
-    {
-	return null;
-    }
+  protected void implReplaceWith (String newReplacement)
+  {
+    // default implementation does nothing
+  }
+
+  protected void implReset ()
+  {
+    // default implementation does nothing
+  }
+
+  public boolean isAutoDetecting ()
+  {
+    return false;
+  }
+
+  public boolean isCharsetDetected ()
+  {
+    throw new UnsupportedOperationException ();
+  }
+
+  public CodingErrorAction malformedInputAction ()
+  {
+    return malformedInputAction;
+  }
+
+  public final float maxCharsPerByte ()
+  {
+    return maxCharsPerByte;
+  }
+
+  public final CharsetDecoder onUnmappableCharacter
+    (CodingErrorAction newAction)
+  {
+    if (newAction == null)
+      throw new IllegalArgumentException ("Null action");
+
+    unmappableCharacterAction = newAction;
+    implOnUnmappableCharacter (newAction);
+    return this;
+  }
+
+  public final String replacement ()
+  {
+    return replacement;
+  }
+
+  public final CharsetDecoder replaceWith (String newReplacement)
+  {
+    if (newReplacement == null)
+      throw new IllegalArgumentException ("Null replacement");
+    if (newReplacement.length () == 0)
+      throw new IllegalArgumentException ("Empty replacement");
+    // XXX: what about maxCharsPerByte?
+
+    this.replacement = newReplacement;
+    implReplaceWith (newReplacement);
+    return this;
+  }
+
+  public final CharsetDecoder reset ()
+  {
+    state = STATE_RESET;
+    implReset ();
+    return this;
+  }
+
+  public CodingErrorAction unmappableCharacterAction ()
+  {
+    return unmappableCharacterAction;
+  }
 }

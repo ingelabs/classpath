@@ -37,8 +37,7 @@ exception statement from your version. */
 
 package java.nio.charset;
 
-
-class CodingErrorAction
+public class CodingErrorAction
 {
   public static final CodingErrorAction IGNORE
 	  = new CodingErrorAction("ignore");

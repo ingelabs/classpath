@@ -1,3 +1,42 @@
+2002-11-08  Jesse Rosenstock <jmr@fulcrummicro.com>
+
+	* java/nio/charset/CharacterCodingException.java:
+	This class must be public.
+	* java/nio/charset/Charset.java:
+	Implemented whole class.
+	* java/nio/charset/CharsetDecoder.java:
+	Implemented whole class.
+	* java/nio/charset/CharsetEncoder.java:
+	Implemented whole class.
+	* java/nio/charset/CoderMalfunctionError.java:
+	This class must be public.
+	* java/nio/charset/CoderResult.java:
+	Implemented whole class.
+	* java/nio/charset/CodingErrorAction.java:
+	This class must be public.
+	* java/nio/charset/IllegalCharsetNameException.java:
+	This class must be public, better implementation.
+	* java/nio/charset/MalformedInputException.java:
+	This class must be public, better implementation.
+	* java/nio/charset/UnmappableCharacterException.java:
+	This class must be public, better implementation.
+	* java/nio/charset/UnsupportedCharsetException.java:
+	This class must be public, better implementation.
+	* gnu/java/nio/charset/ISO_8859_1.java,
+	gnu/java/nio/charset/Provider.java,
+	gnu/java/nio/charset/US_ASCII.java,
+	gnu/java/nio/charset/UTF_16.java,
+	gnu/java/nio/charset/UTF_16BE.java,
+	gnu/java/nio/charset/UTF_16Decoder.java,
+	gnu/java/nio/charset/UTF_16Encoder.java,
+	gnu/java/nio/charset/UTF_16LE.java,
+	gnu/java/nio/charset/UTF_8.java,
+	gnu/java/nio/charset/Makefile.am,
+	gnu/java/nio/charset/.cvsignore:
+	New files.
+	* gnu/java/nio/Makefile.am: Add new subdir charset.
+	* configure.in: Added gnu/java/nio/charset/Makefile to AC_OUTPUT.
+	
 2002-11-08  Michael Koch <konqueror@gmx.de>
 
 	* java/nio/CharBuffer.java:

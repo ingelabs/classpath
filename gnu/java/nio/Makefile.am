@@ -1,3 +1,5 @@
+SUBDIRS = charset
+
 EXTRA_DIST= \
 ByteBufferImpl.java \
 CharBufferImpl.java \

@@ -40,7 +40,7 @@ package java.nio.charset;
 /**
  * @since 1.4
  */
-class MalformedInputException extends CharacterCodingException
+public class MalformedInputException extends CharacterCodingException
 {
   private int inputLength;
   
@@ -66,6 +66,6 @@ class MalformedInputException extends CharacterCodingException
    */
   public String getMessage ()
   {
-    return "";
+    return "Input length = " + inputLength;
   }
 }

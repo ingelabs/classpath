@@ -42,7 +42,7 @@ import java.io.IOException;
 /**
  * @since 1.4
  */
-class CharacterCodingException extends IOException
+public class CharacterCodingException extends IOException
 {
   /**
    * Creates the exception

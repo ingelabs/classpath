@@ -37,59 +37,156 @@ exception statement from your version. */
 
 package java.nio.charset;
 
-class CoderResult
+import java.nio.BufferOverflowException;
+import java.nio.BufferUnderflowException;
+import java.util.HashMap;
+
+/**
+ * @author Jesse Rosenstock
+ * @since 1.4
+ */
+public class CoderResult
 { 
-    boolean err;
+  public static final CoderResult OVERFLOW
+    = new CoderResult (TYPE_OVERFLOW, 0);
+  public static final CoderResult UNDERFLOW
+    = new CoderResult (TYPE_UNDERFLOW, 0);
+  
+  private static final int TYPE_MALFORMED  = 0;
+  private static final int TYPE_OVERFLOW   = 1;
+  private static final int TYPE_UNDERFLOW  = 2;
+  private static final int TYPE_UNMAPPABLE = 3;
 
-    boolean isError()
-    {
-	return err;
-    }
+  private static final String[] names
+    = { "MALFORMED", "OVERFLOW", "UNDERFLOW", "UNMAPPABLE" };
 
-    boolean isMalformed()
-    {
-	return false;
-    }
+  private static final Cache malformedCache
+    = new Cache ()
+      {
+        protected CoderResult make (int length)
+        {
+          return new CoderResult (TYPE_MALFORMED, length);
+        }
+      };
 
-    boolean isOverflow()
-    {
-	return false;
-    }
+  private static final Cache unmappableCache
+    = new Cache ()
+      {
+        protected CoderResult make (int length)
+        {
+          return new CoderResult (TYPE_UNMAPPABLE, length);
+        }
+      };
 
-    boolean isUnderflow()
-    {
-	return false;
-    }
+  private final int type;
+  private final int length;
 
-    boolean isUnmappable()
-    {
-	return false;
-    }
+  private CoderResult (int type, int length)
+  {
+    this.type = type;
+    this.length = length;
+  }
 
-    int length()
-    {
-	return 0;
-    }
+  public boolean isError ()
+  {
+    return length > 0;
+  }
 
-    static CoderResult malformedForLength(int length)
-    {
-	return null;
-    }
+  public boolean isMalformed ()
+  {
+    return type == TYPE_MALFORMED;
+  }
+
+  public boolean isOverflow ()
+  {
+    return type == TYPE_OVERFLOW;
+  }
+
+  public boolean isUnderflow ()
+  {
+    return type == TYPE_UNDERFLOW;
+  }
+
+  public boolean isUnmappable ()
+  {
+    return type == TYPE_UNMAPPABLE;
+  }
+
+  public int length ()
+  {
+    if (length <= 0)
+      throw new UnsupportedOperationException ();
+    else
+      return length;
+  }
+
+  public static CoderResult malformedForLength (int length)
+  {
+    return malformedCache.get (length);
+  }
     
-    void throwException()
-	throws CharacterCodingException
+  public void throwException ()
+    throws CharacterCodingException
+  {
+    switch (type)
+      {
+        case TYPE_MALFORMED:
+          throw new MalformedInputException (length);
+        case TYPE_OVERFLOW:
+          throw new BufferOverflowException ();
+        case TYPE_UNDERFLOW:
+          throw new BufferUnderflowException ();
+        case TYPE_UNMAPPABLE:
+          throw new UnmappableCharacterException (length);
+      }
+  }
+
+  public String toString ()
+  {
+    String name = names[type];
+    return (length > 0) ? name + '[' + length + ']' : name;
+  }
+
+  public static CoderResult unmappableForLength (int length)
+  {
+    return unmappableCache.get (length);
+  }    
+
+  private abstract static class Cache
+  {
+    private final HashMap cache;
+
+    private Cache ()
     {
-	throw new CharacterCodingException();
+      // If we didn't synchronize on this, then cache would be initialized
+      // without holding a lock.  Undefined behavior would occur if the
+      // first thread to call get(int) was not the same as the one that
+      // called the constructor.
+      synchronized (this)
+        {
+          cache = new HashMap ();
+        }
     }
 
-    public String toString()
+    private synchronized CoderResult get (int length)
     {
-	return "coder error";
+      if (length <= 0)
+        throw new IllegalArgumentException ("Non-positive length");
+
+      Integer len = new Integer (length);
+      CoderResult cr = null;
+      Object o;
+      if ((o = cache.get (len)) != null)
+        cr = (CoderResult) ((WeakReference) o).get ();
+      if (cr == null)
+        {
+          cr = make (length);
+          cache.put (len, cr);
+        }
+
+      return cr;
     }
 
-    static CoderResult unmappableForLength(int length)
-    {
-	return null;
-    }    
-
+    protected abstract CoderResult make (int length);
+  }
 }

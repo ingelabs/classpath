@@ -40,17 +40,14 @@ package java.nio.charset;
 /**
  * @since 1.4
  */
-class IllegalCharsetNameException extends IllegalArgumentException
+public class IllegalCharsetNameException extends IllegalArgumentException
 {
-  private String charsetName;
-  
   /**
    * Creates the exception
    */
   public IllegalCharsetNameException (String charsetName)
   {
-    super ();
-    this.charsetName = charsetName;
+    super (charsetName);
   }
 
   /**
@@ -58,6 +55,6 @@ class IllegalCharsetNameException extends IllegalArgumentException
    */
   public String getCharsetName ()
   {
-    return charsetName;
+    return getMessage ();
   }
 }
