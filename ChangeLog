@@ -1,5 +1,9 @@
 2004-09-21  Michael Koch  <konqueror@gmx.de>
 
+	* scripts/jalopy-gnu.xml: Converted to use Unix-style EOL.
+
+2004-09-21  Michael Koch  <konqueror@gmx.de>
+
 	* javax/crypto/package.html,
 	javax/crypto/interfaces/package.html,
 	javax/crypto/spec/package.html,
