@@ -134,9 +134,9 @@ public interface AccessibleComponent
    *
    * @param font the specified font
    * @return the metrics for the specified font, or null if not supported
+   * @throws NullPointerException if font is null
    * @see #getFont()
    */
-  // XXX What happens if font is null?
   FontMetrics getFontMetrics(Font font);
 
   /**
@@ -201,9 +201,9 @@ public interface AccessibleComponent
    *
    * @param point the Point to locate
    * @return true if the point is within this component
+   * @throws NullPointerException if point is null
    * @see #getBounds()
    */
-  // XXX What happens if point is null?
   boolean contains(Point point);
 
   /**
@@ -232,9 +232,9 @@ public interface AccessibleComponent
    * specified represents the top-left corner of this component.
    *
    * @param point the top-left corner of this component relative to the parent
+   * @throws NullPointerException if point is null
    * @see #getLocation()
    */
-  // XXX What happens if point is null?
   void setLocation(Point point);
 
   /**
@@ -251,8 +251,8 @@ public interface AccessibleComponent
    * relative location to its parent.
    *
    * @param rectangle the new height, width, and relative location
+   * @throws NullPointerException if rectangle is null
    */
-  // XXX What happens if rectangle is null?
   void setBounds(Rectangle rectangle);
 
   /**
@@ -267,13 +267,13 @@ public interface AccessibleComponent
    * Set the size of this component to the given dimensions.
    *
    * @param dimension the new size of the component
+   * @throws NullPointerException if dimension is null
    * @see #getSize()
    */
-  // XXX What happens if dimension is null?
   void setSize(Dimension dimension);
 
   /**
-   * If a object exists at the specified point which is a child of this
+   * If an object exists at the specified point which is a child of this
    * parent component, and it is accessible, then it is returned.
    *
    * @param point the location within this component's coordinate system

@@ -476,6 +476,8 @@ public final class System
     SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPropertyAccess(key);
+    else if (key.length() == 0)
+      throw new IllegalArgumentException("key can't be empty");
     return properties.getProperty(key);
   }
 

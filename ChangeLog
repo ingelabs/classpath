@@ -1,5 +1,10 @@
 2002-04-24  Eric Blake  <ebb9@email.byu.edu>
 
+	* java/lang/System.java: Fix missing exception.
+	* javax/accessibility/AccessibleComponent.java: Update Javadoc.
+
+2002-04-24  Eric Blake  <ebb9@email.byu.edu>
+
 	PR 100787:
 	* gnu/java/rmi/.cvsignore: Ignore Makefile.
 	* gnu/java/rmi/dgc/.cvsignore: Ditto.
