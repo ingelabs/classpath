@@ -1,5 +1,10 @@
 2003-06-25  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/PlainDatagramSocketImpl.java:
+	Reordered methods to match libgcj.
+
+2003-06-25  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/event/AncestorEvent.java,
 	javax/swing/event/HyperlinkEvent.java,
 	javax/swing/event/InternalFrameEvent.java,
