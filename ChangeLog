@@ -1,4 +1,10 @@
 2004-03-15  Patrik Reali  <reali@acm.org>
+	* doc/hacking.texinfo doc/www.gnu.org/benchmarks.wml: link to japitools
+	fixed
+	* doc/www.gnu.org/home.wml: short news moved to page top
+	* doc/www.gnu.org/downloads/downloads.wml: release 0.08 added
+
+2004-03-15  Patrik Reali  <reali@acm.org>
 	* doc/www.gnu.org/announce/20040313.wml doc/www.gnu.org/Makefile
 	doc/www.gnu.org/announce/Makefile doc/www.gnu.org/newsitems.txt:
 	classpath 0.08 release news item

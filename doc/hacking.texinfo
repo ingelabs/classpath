@@ -642,7 +642,7 @@ have a .class file, its serial # is unique, and the computation will
 give the same result no matter what platform you execute on.
 
 Serialzation compatibility can be tested using tools provided with
-@uref{http://rainbow.netreach.net/~sballard/japi/,Japitools}.  These
+@uref{http://www.kaffe.org/~stuart/japi/,Japitools}.  These
 tools can test binary serialization compatibility and also provide
 information about unknown serialized formats by writing these in XML
 instead.  Japitools is also the primary means of checking API

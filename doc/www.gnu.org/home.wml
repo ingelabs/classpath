@@ -4,6 +4,14 @@
 <subject "GNU Classpath">
 
 <box>
+
+<boxtitle><a name="ShortNews">Classpath::Short News</a></boxtitle>
+<boxitem>
+<news>
+#include "newsitems.txt"
+</news>
+</boxitem>
+
 <boxtitle><a name="home">Classpath::Home</a></boxtitle>
 
 <boxitem>
@@ -55,11 +63,5 @@ specification (there are preliminary implementations of
 </p>
 </boxitem>
 
-<boxtitle><a name="ShortNews">Classpath::Short News</a></boxtitle>
-<boxitem>
-<news>
-#include "newsitems.txt"
-</news>
-</boxitem>
 
 </box>

@@ -15,7 +15,7 @@ could do for the project at this time.
 </p>
 <p>
 Java API compatibility testing can be performed using 
-<createlink url="http://japi.sab39.org/"
+<createlink url="http://www.kaffe.org/~stuart/japi/"
 name="japitools">.  Japitools already does
 full API comparisons but it doesn't have the capability to extract
 APIs from the documentation - instead, the "japize" tool uses the
