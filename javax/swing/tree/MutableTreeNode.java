@@ -1,4 +1,4 @@
-/* TreeNode.java --
+/* MutableTreeNode.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,63 +37,47 @@ exception statement from your version. */
 
 package javax.swing.tree;
 
-// Imports
-import java.util.*;
-
 /**
- * TreeNode interface
+ * MutableTreeNode interface
  * @author Andrew Selkirk
  */
-public interface TreeNode {
-
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+public interface MutableTreeNode extends TreeNode {
 
 	/**
-	 * getParent
-	 * @returns TreeNode
+	 * insert
+	 * @param child MutableTreeNode
+	 * @param index Index
 	 */
-	public TreeNode getParent();
+	public void insert(MutableTreeNode child, int index);
 
 	/**
-	 * getIndex
-	 * @param node TODO
-	 * @returns int
+	 * remove
+	 * @param index Index
 	 */
-	public int getIndex(TreeNode node);
+	public void remove(int index);
 
 	/**
-	 * getChildAt
-	 * @param index TODO
-	 * @returns TreeNode
+	 * remove
+	 * @param node MutableTreeNode
 	 */
-	public TreeNode getChildAt(int index);
+	public void remove(MutableTreeNode node);
 
 	/**
-	 * getChildCount
-	 * @returns int
+	 * setUserObject
+	 * @param object Object
 	 */
-	public int getChildCount();
+	public void setUserObject(Object object);
 
 	/**
-	 * getAllowsChildren
-	 * @returns boolean
+	 * removeFromParent
 	 */
-	public abstract boolean getAllowsChildren();
+	public void removeFromParent();
 
 	/**
-	 * isLeaf
-	 * @returns boolean
+	 * setParent
+	 * @param parent MutableTreeNode
 	 */
-	public boolean isLeaf();
-
-	/**
-	 * children
-	 * @returns Enumeration
-	 */
-	public Enumeration children();
+	public void setParent(MutableTreeNode parent);
 
 
-} // TreeNode
-
+} // MutableTreeNode

@@ -1,4 +1,4 @@
-/* TreeNode.java --
+/* ExpandVetoException.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,62 +38,46 @@ exception statement from your version. */
 package javax.swing.tree;
 
 // Imports
-import java.util.*;
+import javax.swing.event.TreeExpansionEvent;
 
 /**
- * TreeNode interface
+ * ExpandVetoException
  * @author Andrew Selkirk
  */
-public interface TreeNode {
+public class ExpandVetoException extends Exception {
 
 	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
+	// Variables --------------------------------------------------
+	//-------------------------------------------------------------
+	
+	/**
+	 * event
+	 */
+	protected TreeExpansionEvent	event	= null;
+
+
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * getParent
-	 * @returns TreeNode
+	 * Constructor ExpandVetoException
+	 * @param event Tree Expansion Event
 	 */
-	public TreeNode getParent();
+	public ExpandVetoException(TreeExpansionEvent event) {
+		super();
+		this.event = event;
+	} // ExpandVetoException()
 
 	/**
-	 * getIndex
-	 * @param node TODO
-	 * @returns int
+	 * Constructor ExpandVetoException
+	 * @param event Tree Expansion Event
+	 * @param message Message
 	 */
-	public int getIndex(TreeNode node);
-
-	/**
-	 * getChildAt
-	 * @param index TODO
-	 * @returns TreeNode
-	 */
-	public TreeNode getChildAt(int index);
-
-	/**
-	 * getChildCount
-	 * @returns int
-	 */
-	public int getChildCount();
-
-	/**
-	 * getAllowsChildren
-	 * @returns boolean
-	 */
-	public abstract boolean getAllowsChildren();
-
-	/**
-	 * isLeaf
-	 * @returns boolean
-	 */
-	public boolean isLeaf();
-
-	/**
-	 * children
-	 * @returns Enumeration
-	 */
-	public Enumeration children();
+	public ExpandVetoException(TreeExpansionEvent event, String message) {
+		super(message);
+		this.event = event;
+	} // ExpandVetoException()
 
 
-} // TreeNode
-
+} // ExpandVetoException

@@ -1,4 +1,4 @@
-/* TreeNode.java --
+/* TreeSelectionModel.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,62 +38,46 @@ exception statement from your version. */
 package javax.swing.tree;
 
 // Imports
-import java.util.*;
+import java.beans.PropertyChangeListener;
+import javax.swing.event.TreeSelectionListener;
 
 /**
- * TreeNode interface
+ * TreeSelectionModel interface
  * @author Andrew Selkirk
  */
-public interface TreeNode {
+public interface TreeSelectionModel {
 
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+	public static final int SINGLE_TREE_SELECTION			= 1;
+	public static final int CONTIGUOUS_TREE_SELECTION		= 2;
+	public static final int DISCONTIGUOUS_TREE_SELECTION	= 4;
 
-	/**
-	 * getParent
-	 * @returns TreeNode
-	 */
-	public TreeNode getParent();
-
-	/**
-	 * getIndex
-	 * @param node TODO
-	 * @returns int
-	 */
-	public int getIndex(TreeNode node);
-
-	/**
-	 * getChildAt
-	 * @param index TODO
-	 * @returns TreeNode
-	 */
-	public TreeNode getChildAt(int index);
-
-	/**
-	 * getChildCount
-	 * @returns int
-	 */
-	public int getChildCount();
-
-	/**
-	 * getAllowsChildren
-	 * @returns boolean
-	 */
-	public abstract boolean getAllowsChildren();
-
-	/**
-	 * isLeaf
-	 * @returns boolean
-	 */
-	public boolean isLeaf();
-
-	/**
-	 * children
-	 * @returns Enumeration
-	 */
-	public Enumeration children();
+	public void setSelectionMode(int mode);
+	public int getSelectionMode();
+	public void setSelectionPath(TreePath path);
+	public void setSelectionPaths(TreePath[] paths);
+	public void addSelectionPath(TreePath path);
+	public void addSelectionPaths(TreePath[] paths);
+	public void removeSelectionPath(TreePath path);
+	public void removeSelectionPaths(TreePath[] paths);
+	public TreePath getSelectionPath();
+	public TreePath[] getSelectionPaths();
+	public int getSelectionCount();
+	public boolean isPathSelected(TreePath path);
+	public boolean isSelectionEmpty();
+	public void clearSelection();
+	public void setRowMapper(RowMapper newMapper);
+	public RowMapper getRowMapper();
+	public int[] getSelectionRows();
+	public int getMinSelectionRow();
+	public int getMaxSelectionRow();
+	public boolean isRowSelected(int row);
+	public void resetRowSelection();
+	public int getLeadSelectionRow();
+	public TreePath getLeadSelectionPath();
+	public void addPropertyChangeListener(PropertyChangeListener listener);
+	public void removePropertyChangeListener(PropertyChangeListener listener);
+	public void addTreeSelectionListener(TreeSelectionListener x);
+	public void removeTreeSelectionListener(TreeSelectionListener x);
 
 
-} // TreeNode
-
+} // TreeSelectionModel

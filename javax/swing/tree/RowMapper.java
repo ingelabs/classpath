@@ -1,4 +1,4 @@
-/* TreeNode.java --
+/* RowMapper.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,63 +37,18 @@ exception statement from your version. */
 
 package javax.swing.tree;
 
-// Imports
-import java.util.*;
-
 /**
- * TreeNode interface
+ * RowMapper interface
  * @author Andrew Selkirk
  */
-public interface TreeNode {
-
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+public interface RowMapper {
 
 	/**
-	 * getParent
-	 * @returns TreeNode
+	 * getRowsForPaths
+	 * @param path TreePath
+	 * @return TODO
 	 */
-	public TreeNode getParent();
-
-	/**
-	 * getIndex
-	 * @param node TODO
-	 * @returns int
-	 */
-	public int getIndex(TreeNode node);
-
-	/**
-	 * getChildAt
-	 * @param index TODO
-	 * @returns TreeNode
-	 */
-	public TreeNode getChildAt(int index);
-
-	/**
-	 * getChildCount
-	 * @returns int
-	 */
-	public int getChildCount();
-
-	/**
-	 * getAllowsChildren
-	 * @returns boolean
-	 */
-	public abstract boolean getAllowsChildren();
-
-	/**
-	 * isLeaf
-	 * @returns boolean
-	 */
-	public boolean isLeaf();
-
-	/**
-	 * children
-	 * @returns Enumeration
-	 */
-	public Enumeration children();
+	public int[] getRowsForPaths(TreePath[] path);
 
 
-} // TreeNode
-
+} // RowMapper

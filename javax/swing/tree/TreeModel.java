@@ -1,4 +1,4 @@
-/* TreeNode.java --
+/* TreeModel.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,62 +38,72 @@ exception statement from your version. */
 package javax.swing.tree;
 
 // Imports
-import java.util.*;
+import javax.swing.event.*;
 
 /**
- * TreeNode interface
+ * TreeModel interface
  * @author Andrew Selkirk
  */
-public interface TreeNode {
+public interface TreeModel {
 
 	//-------------------------------------------------------------
 	// Methods ----------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * getParent
-	 * @returns TreeNode
+	 * getRoot
+	 * @returns Object
 	 */
-	public TreeNode getParent();
+	public abstract Object getRoot();
 
 	/**
-	 * getIndex
-	 * @param node TODO
-	 * @returns int
-	 */
-	public int getIndex(TreeNode node);
-
-	/**
-	 * getChildAt
+	 * getChild
+	 * @param parent TODO
 	 * @param index TODO
-	 * @returns TreeNode
+	 * @returns Object
 	 */
-	public TreeNode getChildAt(int index);
+	public abstract Object getChild(Object parent, int index);
 
 	/**
 	 * getChildCount
+	 * @param parent TODO
 	 * @returns int
 	 */
-	public int getChildCount();
-
-	/**
-	 * getAllowsChildren
-	 * @returns boolean
-	 */
-	public abstract boolean getAllowsChildren();
+	public abstract int getChildCount(Object parent);
 
 	/**
 	 * isLeaf
+	 * @param node TODO
 	 * @returns boolean
 	 */
-	public boolean isLeaf();
+	public abstract boolean isLeaf(Object node);
 
 	/**
-	 * children
-	 * @returns Enumeration
+	 * valueForPathChanged
+	 * @param path TODO
+	 * @param newvalue TODO
 	 */
-	public Enumeration children();
+	public abstract void valueForPathChanged(TreePath path, Object newvalue);
+
+	/**
+	 * getIndexOfChild
+	 * @param parent TODO
+	 * @param ild TODO
+	 * @returns int
+	 */
+	public abstract int getIndexOfChild(Object parent, Object child);
+
+	/**
+	 * addTreeModelListener
+	 * @param listener TODO
+	 */
+	public abstract void addTreeModelListener(TreeModelListener listener);
+
+	/**
+	 * removeTreeModelListener
+	 * @param listener TODO
+	 */
+	public abstract void removeTreeModelListener(TreeModelListener listener);
 
 
-} // TreeNode
-
+} // TreeModel

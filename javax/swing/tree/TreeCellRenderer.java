@@ -1,4 +1,4 @@
-/* TreeNode.java --
+/* TreeCellRenderer.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,62 +38,29 @@ exception statement from your version. */
 package javax.swing.tree;
 
 // Imports
-import java.util.*;
+import java.awt.Component;
+import javax.swing.JTree;
 
 /**
- * TreeNode interface
+ * TreeCellRenderer interface
  * @author Andrew Selkirk
  */
-public interface TreeNode {
-
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+public interface TreeCellRenderer {
 
 	/**
-	 * getParent
-	 * @returns TreeNode
+	 * getTreeCellRendererComponent
+	 * @param tree TODO
+	 * @param value TODO
+	 * @param selected TODO
+	 * @param expanded TODO
+	 * @param leaf TODO
+	 * @param row TODO
+	 * @param us TODO
+	 * @returns TODO
 	 */
-	public TreeNode getParent();
-
-	/**
-	 * getIndex
-	 * @param node TODO
-	 * @returns int
-	 */
-	public int getIndex(TreeNode node);
-
-	/**
-	 * getChildAt
-	 * @param index TODO
-	 * @returns TreeNode
-	 */
-	public TreeNode getChildAt(int index);
-
-	/**
-	 * getChildCount
-	 * @returns int
-	 */
-	public int getChildCount();
-
-	/**
-	 * getAllowsChildren
-	 * @returns boolean
-	 */
-	public abstract boolean getAllowsChildren();
-
-	/**
-	 * isLeaf
-	 * @returns boolean
-	 */
-	public boolean isLeaf();
-
-	/**
-	 * children
-	 * @returns Enumeration
-	 */
-	public Enumeration children();
+	public Component getTreeCellRendererComponent(JTree tree,
+			Object value, boolean selected, boolean expanded,
+			boolean leaf, int row, boolean hasFocus);
 
 
-} // TreeNode
-
+} // TreeCellRenderer
