@@ -382,6 +382,11 @@ public class ObjectOutputStream extends OutputStream
             throw new NotSerializableException (clazz.getName ());
           } // end pseudo-loop
       }
+    catch (ObjectStreamException ose)
+      {
+	// Rethrow these are fatal.
+	throw ose;
+      }
     catch (IOException e)
       {
         realOutput.writeByte (TC_EXCEPTION);

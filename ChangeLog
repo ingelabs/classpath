@@ -1,3 +1,8 @@
+2003-01-24  Mark Wielaard  <mark@klomp.org>
+
+	* java/io/ObjectOutputStream.java (writeObject): Rethrow fatal
+	ObjectStreamExceptions.
+
 2003-01-19  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/ObjectOutputStream.java (writeObject): Reformat.
