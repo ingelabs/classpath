@@ -1,5 +1,12 @@
 2002-02-09  Mark Wielaard <mark@klomp.org>
 
+	* doc/www.gnu.org/home.wml: Add 0.03 announcement.
+	* doc/www.gnu.org/doc/orp.wml: Add glibj.zip to CLASSPATH, make
+	Announcement en Documentation links relative.
+	* doc/www.gnu.org/include/macros.wml: Make status.html link relative.
+
+2002-02-09  Mark Wielaard <mark@klomp.org>
+
 	* doc/www.gnu.org/announce/20020208.wml: Make "Who should use this
 	software?" less pessimistic.
 

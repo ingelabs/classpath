@@ -76,7 +76,7 @@ Updated:
 <define-tag package-item whitespace=delete>
 <preserve section name>
 <set-var %attributes>
-  <li><link url="/software/classpath/status.html#<if <get-var section>
+  <li><link url="status.html#<if <get-var section>
   <get-var section> <get-var name>>" name="<get-var name>">
 <restore section name>
 </define-tag>

@@ -78,21 +78,23 @@ done, and most importantly submit patches!
 
 <H4>Announcements</H4>
 <UL>
-  <LI><link url="/software/classpath/announce/20010106.html" 
+  <LI><link url="announce/20020208.html" 
+       name="GNU Classpath Version 0.03"> (2001-02-08)</LI>
+  <LI><link url="announce/20010106.html" 
        name="GNU Classpath Version 0.02"> (2001-01-06)</LI>
-  <LI><link url="/software/classpath/announce/20001120.html"
+  <LI><link url="announce/20001120.html"
        name="GNU Classpath Version 0.01"> (2000-11-20)</LI>
-  <LI><link url="/software/classpath/announce/19990206.html"
+  <LI><link url="announce/19990206.html"
        name="GNU Classpath Version 0.00"> (1999-02-06)</LI>
 </UL>
 
 <H4>Documentation</H4>
 <UL>
-  <LI><link url="/software/classpath/doc/orp.html" name="Using GNU
+  <LI><link url="doc/orp.html" name="Using GNU
   Classpath with ORP"></LI>
-  <LI><link url="/software/classpath/doc/hacking.html"
+  <LI><link url="doc/hacking.html"
        name="GNU Classpath Hacker's Guide"></LI>
-  <LI><link url="/software/classpath/doc/vmintegration.html"
+  <LI><link url="doc/vmintegration.html"
        name="Virtual Machine Integration Guide"></LI>
 </UL>
 
