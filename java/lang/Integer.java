@@ -267,11 +267,6 @@ public final class Integer extends Number implements Comparable
    */
   public static String toString(int num, int radix)
   {
-    // Use optimized method for the typical case.
-    if (radix == 10 ||
-        radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
-      return toString(num);
-
     // For negative numbers, print out the absolute value w/ a leading '-'.
     // Use an array large enough for a binary number.
     char[] buffer = new char[33];
