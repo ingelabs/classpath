@@ -369,6 +369,16 @@ setSize(int width, int height)
     }
 }
 
+public void
+translate (int dx, int dy)
+{
+  synchronized (this)
+    {
+      this.x += dx;
+      this.y += dy;
+    }
+}
+
 /*************************************************************************/
 
 /**
