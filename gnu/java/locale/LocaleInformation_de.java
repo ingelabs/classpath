@@ -61,7 +61,7 @@ public class LocaleInformation_de extends ListResourceBundle
     "Sep",
     "Okt",
     "Nov",
-    "Dez"
+    "Dez",
     null,
   };
 
@@ -77,7 +77,7 @@ public class LocaleInformation_de extends ListResourceBundle
     "September",
     "Oktober",
     "November",
-    "Dezember"
+    "Dezember",
     null,
   };
 
