@@ -1,0 +1,432 @@
+\input texinfo @c -*-texinfo-*-
+
+@c %**start of header
+@setfilename jcl-hacking.info
+@settitle JCL Hacker's Guide
+@c %**end of header
+
+@setchapternewpage none
+
+@ifinfo
+This file contains important information you will need to know if you
+are going to hack on the JCL project code.
+
+Copyright (C) 1998 Aaron M. Renn
+
+@end finfo
+
+@titlepage
+
+@title{JCL Hacking Guide}
+@author{Aaron M. Renn}
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1998 Aaron M. Renn
+
+@sp2
+Permission is granted to make and distribute verbatim copies of this
+document provided the copyright notice and this permission notice are
+preserved on all copies
+
+Permission is granted to copy and distribute modified versions of this
+document under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions,
+except that this permission notice may be stated in a translation
+approved by the Free Software Foundation.
+
+@end titlepage
+
+@ifinfo
+@node Top, Introduction, (dir), (dir)
+@top JCL Hacker's Guide
+
+This document contains important information you'll want to know if you
+want to hack on JCL, the free implementation of the Java standard class
+libraries.
+
+This document is definitely a work in progress.
+@end ifinfo
+
+@menu 
+* Introduction::			An introduction to the JCL project
+* Requirements::			Very important rules that must be followed
+* Goals::				Goals of the JCL project
+* Volunteering::			So you want to help out
+* Programming Tools::			A list of tools you will need to hack on the JCL code
+* Programming Standards::		The programming standards the project is following
+* Specification Sources::		Where to find the Java class library specs
+* Directory and File Naming Convensions:: How files and directories are named in JCL
+@end menu
+
+@node Introduction, Requirements, Top, Top
+@comment node-name, next, previous, up
+@chapter Introduction
+
+The JCL Project is a dedicated to providing a 100% free, clean room 
+implementation of the standard Java class libraries.  Because there is
+currently no free implementation of the Java environment, no free operating
+system can ship with Java included.  Parts of a free Java implementation
+hava already been written, including free Java virtual machines (JVM's) such
+as @uref{http://www.kaffe.org/,Kaffe} and 
+@uref{http://www.hungry.com/products/japhar/,Japhar}, and Java compilers such
+as @uref{http://www.cs.berkeley.edu/~engberg/guavac/,Guavac}.  However,
+there is currently no free replacement for Sun's proprietary libraries.
+This JCL project aims to correct this problem by supplying a free class
+library implementation that will allow a 100% free Java platform to
+be distributed.
+
+Yes, we know that JCL also stands for Job Control Language.  Think of it
+as a joke.  Or better yet, think up a better name.
+
+@node Requirements, Goals, Introduction, Top
+@comment node-name, next, previous, up
+@chapter Requirements
+
+Although JCL is following an open development model where input from 
+developers is welcome, there are certain base requirements that need to
+be met by anyone who wants to contribute code to this project.  They
+are mostly unfortunately dictated by legal requirements and are not
+arbitrary restrictions chosen by the JCL team.
+
+You will need to adhere to the following things if you want to donate
+code to the JCL project:
+
+@itemize @bullet
+@item
+@b{Never under any circumstances refer to Sun's code while working on JCL}.  It
+is best if you have never looked at Sun's code at all.  To reduce temptation,
+it would be best if you deleted the @samp{src.zip} file from your JDK
+distribution.  If you have signed Sun's non-disclosure statement, then you
+unfortunately cannot work on JCL code at all.  If you have any reason to
+believe that your code might be ''tainted'', please say something on the
+mailing list before writing anything.  If it turns out that your code
+was not developed in a clean room environment, we could be very embarrassed
+someday in court.  Please don't let that happen.
+
+@item
+JCL is licensed under the terms of the 
+@uref{http://www.fsf.org/copyleft/lgpl.html,GNU Library General Public License}.
+To preserve freedom for all users and to maintain uniform licensing of JCL,
+we will not accept code into the main distribution that is not licensed
+under these terms.
+
+@item
+JCL is GNU software and this project is being officially sponsored by
+the @uref{http://www.fsf.org/,Free Software Foundation}.  Because of this,
+the FSF will hold copyright to all code developed as part of JCL.  This
+will allow them to pursue copyright violators in court, something an
+individual developer will have neither the time nor inclination to do.
+Everyone contributing code to JCL will need to sign a copyright assignment
+statement.  Additionally, if you are employed as a programmer, your
+employer may need to sign a copyright waiver disclaiming all interest in
+the software.  This may sound harsh, but unfortunately, it is the only
+way to ensure that the code you write is legally yours to distribute.
+@end itemize
+
+@node Volunteering, Goals, Requirements, Top
+@comment node-name, next, previous, up
+@chapter Volunteering to Help
+
+The JCL project needs volunteers to help us out.  People are needed to
+write unimplemented Java packages, to test JCL on various platforms, and to
+port it to platforms that are currently unsupported.
+
+While pretty much all contributions are welcome (but see 
+@pxref{Requirements}) it is always preferrable that volunteers do the
+whole job when volunteering for a task.  So when you volunteer to write
+a Java package, please be willing to do the following:
+
+@itemize @bullet
+@item
+Implement a complete drop-in replacement for the particular package.  That
+mean implementing any ''internal'' classes.  For example, in the java.net
+package, there are non-public classes for implementing sockets.  Without
+those classes, the public socket interface is useless.  But do not feel
+obligated to completely replace all of Sun's functionality at once.  For
+example, in the java.net package, there are differnt types of protocol
+handlers for different types of URL's.  Not all of these need to be
+written at once.
+
+@item
+Please write complete and thorough javadoc comments for every public and
+protected method and variable.  These should be superior to Sun's and cover 
+everything about the item being documented.
+
+@item
+Please write a regression test package that can be used to run tests of
+your package's funcationality.
+@end itemize
+
+Nobody likes to write documentation and test cases, but they are vital to
+a complete and robust product.  Writing them as you go is much easier than
+going back at the end and adding them.
+
+@node Goals, Programming Tools, Volunteering, Top
+@comment node-name, next, previous, up
+@chapter Project Goals
+
+The goal of the JCL project is to produce a  
+@uref{http://www.fsf.org/philosophy/free-sw.html,free} implementation
+of the standard class library for Java.  However, there are other more
+specific goals as to which platforms should be supported.
+
+JCL is targeted to support the following operating systems:
+
+@enumerate
+@item
+Free operating systems.  This includes GNU/Linux, @{Free,Net,Open@}BSD, and
+GNU/Hurd.
+
+@item
+Other Unix like operating systems
+
+@item
+Platforms which currently have no Java support at all such as the Amiga.
+
+@item 
+Other platform such as MS-Windows.
+@end enumerate
+
+While free operating systems are the top priority, the other priorities 
+can shift depending on whether or not there is a volunteer to port JCL
+to those platforms and to test releases.
+
+Eventually we hope the JCL will support all JVM's that provide JNI
+support.  However, the top priority is free JVM's.  The JVM support
+priority list is:
+
+@enumerate
+@item
+Japhar
+@item
+Kaffe
+@item
+Sun's JDK
+@item
+Other JNI Compliant JVM's.
+@end enumerate
+
+As with OS platform support, this priority list could change if a volunteer
+comes forward to port, maintain, and test releases for a particular JVM.
+
+The initial target version for JCL is Java 1.1.  Java 1.2 can be 
+implemented if desired, but please do not create classes that depend
+on 1.2 features in other packages.
+
+@node Programming Tools, Programming Standards, Goals, Top
+@comment node-name, next, previous, up
+@chapter Programming Tools
+
+If you want to hack on JCL, you should download, install,
+and familiarize yourself with the following tools:
+
+@itemize @bullet
+@item
+CVS 1.9
+@item
+automake 1.3
+@item
+autoconf 2.12
+@item
+dejagnu 1.3
+@item
+libtool 1.2
+@item
+GNU m4 1.4
+@item
+perl 5.X
+@end itemize
+
+All of these tools are available from  
+@uref{ftp://prep.ai.mit.edu/pub/gnu/,ftp://prep.ai.mit.edu} via 
+anonymous ftp.  With the exception of perl and DejaGnu, they are fully 
+documented with a texinfo manuals.  Texinfo can be browsed with the Emacs 
+editor, or with the text editor of your choice.
+
+Here is a brief description of the purpose of those tools.
+
+@table @b
+
+@item CVS  
+A version control system that maintains a centralized Internet
+repository of all code in the JCL system.  Access to the repository
+requies an account.  Contact Paul Fisher (@email{rao@gnu.org}) for details.
+
+@item dejagnu  
+A package for automating regression test suites for programs.  Your 
+regression test package should work with this.
+
+@item automake  
+This tool automatically creates Makefile.in files from
+Makefile.am files.  The Makefile.in is turned into a Makefile by autoconf.
+Why use this?  Because it automatically generates every makefile target
+you would ever want (clean, install, dist, etc) in full compliance with
+the GNU coding standards.  It also simplifies Makefile creation in a
+ton of different ways I can't describe here.  Read the docs for more info.
+
+@item autoconf  
+Automatically configures a package for the platform on
+which it is being built and generates the Makefile for that platform.
+
+@item libtool  
+Handles all of the zillions of hairy platform specific 
+options needed to build shared libraries.
+
+@item m4
+The free GNU replacement for the standard Unix macro processor.  Proprietary
+m4 programs are broken and so GNU m4 is required for autoconf to work.
+
+@item perl
+Larry Wall's scripting language.  It is used internally by automake.
+@end table
+
+@node Programming Standards, Specification Sources, Programming Tools, Top
+@comment node-name, next, previous, up
+@chapter Programming Standards
+
+For C code, follow the 
+@uref{http://www.fsf.org/prep/standards_toc.html,GNU Coding Standards}.  
+The standards also specify various things like the
+install directory structure.  These should be followed if possible.
+
+For Java code, please follow the Sun programming standards.  As an
+exception, do not feel obligated to following their bracket and 
+indendation style if you consider it wrong.
+
+@node Specification Sources, Directory and File Naming Conventions, Programming Standards, Top
+@comment node-name, next, previous, up
+@chapter Specification Sources
+
+All classes should be implemented from the specification as provided in 
+Sun's javadocs.  The exceptions are the packages java.lang, java.io, and
+java.util, where the 
+@uref{http://java.sun.com/docs/books/jls/html/index.html,Java Language Specification} 
+should be used instead where possible.
+
+
+@node Directory and File Naming Conventions, ,Specification Sources, Top
+@comment node-name, next, previous, up
+@chapter Directory and File Naming Conventions
+
+The JCL directory structure is laid out in the following manner:
+
+@lisp
+jcl
+ |
+ |---->java
+ |       |
+ |       |-->awt
+ |       |-->io
+ |       |-->lang
+ |       |-->util
+ |       |     |
+ |       |     |--->zip
+ |       |     |--->jar
+ |       |-->net
+ |       |-->etc
+ |
+ |---->gnu
+ |       |
+ |       |-->java
+ |             |
+ |             |-->awt
+ |             |-->lang
+ |             |-->util
+ |             |     |
+ |             |     |-->zip
+ |             |-->etc
+ |
+ |---->native
+ |       |
+ |       |-->java.io
+ |       |-->java.lang
+ |       |-->java.net
+ |       |-->java.util.jar
+ |       |-->etc
+ |
+ |---->test
+ |       |
+ |       |-->java.io
+ |       |-->java.lang
+ |       |-->etc
+ |
+ |---->compat
+         |
+         |-->java.io
+         |-->java.lang
+         |-->etc
+
+@end lisp
+
+Here is a brief description of the toplevel directories and their contents.
+
+@table @b
+
+@item java
+Contains the source code to the Java packages that make up 
+the core class library.  Because this is the public interface to Java,
+it is important that the public classes, interfaces, methods, and variables
+are exactly the same as specified in Sun's documentation.  The directory
+structure is laid out just like the java package names.  For example, the
+class java.util.zip would be in the directory java/util/zip.
+
+@item gnu/java
+Internal classes (roughly analogous to Sun's sun.* classes)
+should go under the gnu/java directory.  Classes related to a particular
+public Java package should go in a directory named like that package.  For
+example, classes related to java.util.zip should go under a directory
+gnu/java/util/zip.  Sub-packages under the main package name are allowed.
+For classes spanning multiple public Java packages, pick an appropriate
+name and see what everybody else thinks.
+
+@item native
+This directory holds native code needed by the public
+Java packages.  Each package has its own subdirectory, which is the
+''flattened'' name of the package.  For example, native method implementations
+for java.util.zip should go in native/java.util.zip.
+
+@item test
+This directory contains test packages written for DejaGnu used
+to test releases of JCL.  The test scripts for a given package go in the
+subdirectory that is the same as the ''flattened'' name of the package.  For
+example, test scripts for java.util.zip should go in test/java.util.zip
+
+@item compat
+This directory contains misc scripts designed not to
+test an implementation, but to determine various things about Sun's
+reference implementation that are needed in order to write a compatible
+pakcage.  Each package has its own directory which is the ''flattened''
+package name.  For example, compatibility scripts for java.util.zip
+go in compat/java.util.zip
+@end table
+
+Each person working on a package get's his or her own "directory space" 
+underneath each of the toplevel directories.  In addition to the general
+guidelines above, the following standards should be followed:
+
+@itemize @bullet
+
+@item
+Classes that need to load native code should load a library with 
+the same name as the flattened package name, with all periods removed.  For
+example, the native library name specified in LoadLibrary for java.util.zip
+would be "javautilzip".
+
+@item
+Each package has its own shared library for native code (if any).  The
+actual library name to be built will depend on the target JVM.
+
+@item
+The main native method implementation for a given method in class should
+go in a file with the same name as the class with a ".c" extension.  For
+example, the implementation of the native methods in java.util.InetAddress
+would go in native/java.net/InetAddress.c.  "Internal" native functions
+called from the main native method can reside in files of any name.
+@end itemize
+
+@bye
+
