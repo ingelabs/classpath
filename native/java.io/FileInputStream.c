@@ -54,8 +54,7 @@ JNIEXPORT jlong JNICALL
 Java_java_io_FileInputStream_skipInternal(JNIEnv *env, jobject obj, jint fd,
                                           jlong num_bytes)
 {
-  _javaio_skip_bytes(env, fd, num_bytes);
-  return(num_bytes);
+  return(_javaio_skip_bytes(env, fd, num_bytes));
 }
 
 /*************************************************************************/

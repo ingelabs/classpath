@@ -54,8 +54,7 @@ JNIEXPORT jint JNICALL
 Java_java_io_RandomAccessFile_skipInternal(JNIEnv *env, jobject obj, jint fd,
                                            jint num_bytes)
 {
-  _javaio_skip_bytes(env, fd, num_bytes);
-  return(num_bytes);
+  return(_javaio_skip_bytes(env, fd, num_bytes));
 }
 
 /*************************************************************************/

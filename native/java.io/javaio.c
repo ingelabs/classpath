@@ -177,14 +177,20 @@ _javaio_close(JNIEnv *env, jint fd)
  * Skips bytes in a file
  */
 
-void
+jlong
 _javaio_skip_bytes(JNIEnv *env, jint fd, jlong num_bytes)
 {
-  int rc;
+  int cur, new;
 
-  rc = lseek(fd, num_bytes, SEEK_CUR);
-  if (rc == -1)
+  cur = lseek(fd, 0, SEEK_CUR);
+  if (cur == -1)
     _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
+
+  new = lseek(fd, num_bytes, SEEK_CUR);
+  if (new == -1)
+    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
+
+  return(new - cur);
 }
 
 /*************************************************************************/

@@ -27,7 +27,7 @@
  */
 
 extern jlong _javaio_get_file_length(JNIEnv *, jint);
-extern void _javaio_skip_bytes(JNIEnv *, jint, jlong);
+extern jlong _javaio_skip_bytes(JNIEnv *, jint, jlong);
 extern jint _javaio_open(JNIEnv *, jstring, int);
 extern void _javaio_close(JNIEnv *, jint fd);
 extern jint _javaio_read(JNIEnv *, jobject obj, jint, jarray, jint, jint);
