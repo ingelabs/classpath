@@ -83,7 +83,7 @@ public class BackingStoreException extends Exception
    *
    * @param o the output stream
    */
-  private void writeObject(ObjectOutputStream o)
+  private void writeObject(ObjectOutputStream o) throws NotSerializableException
   {
     throw new NotSerializableException
       ("java.util.prefs.BackingStoreException");
@@ -94,7 +94,7 @@ public class BackingStoreException extends Exception
    *
    * @param i the input stream
    */
-  private void readObject(ObjectInputStream i)
+  private void readObject(ObjectInputStream i) throws NotSerializableException
   {
     throw new NotSerializableException
       ("java.util.prefs.BackingStoreException");

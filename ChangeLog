@@ -1,3 +1,15 @@
+2002-04-30  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/prefs/BackingStoreException.java (readObject): Throws
+	NotSerializableException.
+	(writeObject): Likewise.
+	* java/util/prefs/InvalidPreferencesFormatException.java: Remove
+	second super call.
+	(readObject): Throws NotSerializableException.
+	(writeObject): Likewise.
+	* lib/standard.omit: Remove [gnu.]java.util.prefs (which compiles) and
+	gnu.classpath.tools (which does not exist).
+
 2002-04-30  Eric Blake  <ebb9@email.byu.edu>
 
 	* AUTHORS: Add Andrew Selkirk.

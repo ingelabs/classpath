@@ -87,7 +87,6 @@ public class InvalidPreferencesFormatException extends Exception
   public InvalidPreferencesFormatException(String message, Throwable cause)
   {
     super(message, cause);
-    super(message);
   }
 
   /**
@@ -95,7 +94,7 @@ public class InvalidPreferencesFormatException extends Exception
    *
    * @param o the output stream
    */
-  private void writeObject(ObjectOutputStream o)
+  private void writeObject(ObjectOutputStream o) throws NotSerializableException
   {
     throw new NotSerializableException
       ("java.util.prefs.InvalidPreferencesFormatException");
@@ -106,7 +105,7 @@ public class InvalidPreferencesFormatException extends Exception
    *
    * @param i the input stream
    */
-  private void readObject(ObjectInputStream i)
+  private void readObject(ObjectInputStream i) throws NotSerializableException
   {
     throw new NotSerializableException
       ("java.util.prefs.InvalidPreferencesFormatException");
