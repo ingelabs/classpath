@@ -333,8 +333,6 @@ public class ObjectOutputStream extends OutputStream
 
 	    if (obj instanceof Serializable)
 	      {
-		Object prevObject = this.currentObject;
-		ObjectStreamClass prevObjectStreamClass = this.currentObjectStreamClass;
 		currentObject = obj;
 		ObjectStreamClass[] hierarchy =
 		  ObjectStreamClass.getObjectStreamClasses(clazz);
@@ -363,8 +361,8 @@ public class ObjectOutputStream extends OutputStream
 		  }
 		  }
 
-		this.currentObject = prevObject;
-		this.currentObjectStreamClass = prevObjectStreamClass;
+		currentObject = null;
+		currentObjectStreamClass = null;
 		currentPutField = null;
 		break;
 	      }

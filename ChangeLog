@@ -1,5 +1,13 @@
 2004-07-22  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/ObjectInputStream.java:
+	Merge debug code with libgcj.
+	(depth): New field.
+	* java/io/ObjectOutputStream.java
+	(writeObject): Revert not intended change in my last commit.
+
+2004-07-22  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/String.java: Fixed javadocs all over.
 
 2004-07-22  Michael Koch  <konqueror@gmx.de>
