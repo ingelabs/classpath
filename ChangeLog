@@ -1,3 +1,9 @@
+2004-11-30  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JFormattedTextField.java
+	(setDocument): Call setDocument of super class. Don't fire property
+	change event.
+
 2004-11-28  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java: Fix typo.
