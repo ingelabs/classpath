@@ -19,6 +19,7 @@ CellEditor.java \
 ComboBoxEditor.java \
 ComboBoxModel.java \
 ComponentInputMap.java \
+DefaultBoundedRangeModel.java \
 DefaultButtonModel.java \
 DefaultCellRenderer.java \
 DefaultListModel.java \

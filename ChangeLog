@@ -1,5 +1,10 @@
 2002-05-21  Andrew Selkirk  <aselkirk@sympatico.ca>
 
+	* javax/swing/DefaultBoundedRangeModel.java: New file.
+	* javax/swing/Makefile.am: Updated.
+
+2002-05-21  Andrew Selkirk  <aselkirk@sympatico.ca>
+
 	* javax/swing/Makefile.am: Updated.
 	* javax/swing/SizeRequirements.java: New file.
 	* javax/swing/SizeSequence.java: New file.
