@@ -38,11 +38,6 @@ public class FileOutputStream extends OutputStream
  * Class Variables and Initializers
  */
 
-static
-{
-  System.loadLibrary("javaio");
-}
-
 /*************************************************************************/
 
 /*

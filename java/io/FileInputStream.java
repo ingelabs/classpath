@@ -37,12 +37,6 @@ public class FileInputStream extends InputStream
  * Class Variables and Initializers
  */
 
-static
-{
-  System.loadLibrary("javaio");
-  System.loadLibrary("jcllib");
-}
-
 /*************************************************************************/
 
 /*

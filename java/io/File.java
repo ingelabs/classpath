@@ -36,12 +36,6 @@ import java.util.StringTokenizer;
 public class File implements Serializable //, Comparable // Only in 1.2
 {
 
-static
-{
-  System.loadLibrary("jcllib");
-  System.loadLibrary("javaio");
-}
-
 /*************************************************************************/
 
 /*
