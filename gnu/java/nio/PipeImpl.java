@@ -168,12 +168,9 @@ class PipeImpl extends Pipe
     throws IOException
   {
     super();
-    nativeInit (provider);
+    VMPipeImpl.init (this, provider);
   }
 
-  private native void nativeInit (SelectorProvider provider)
-    throws IOException;
-    
   public Pipe.SinkChannel sink()
   {
     return sink;

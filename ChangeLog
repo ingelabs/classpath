@@ -1,3 +1,23 @@
+2004-07-20  Patrik Reali  <reali@acm.org>
+
+	* configure.ac, 
+	gnu/java/nio/PipeImpl.java, 
+	include/Makefile.am, 
+	include/gnu_java_nio_PipeImpl.h,
+	include/gnu_java_nio_VMPipeImpl.h, 
+	native/jni/java-nio/Makefile.am, 
+	native/jni/java-nio/gnu_java_nio_PipeImpl.c, 
+	native/jni/java-nio/gnu_java_nio_VMPipeImpl.c,
+	vm/reference/Makefile.am,
+	vm/reference/gnu/.cvsignore,
+	vm/reference/gnu/Makefile.am,
+	vm/reference/gnu/java/.cvsignore, 
+	vm/reference/gnu/java/Makefile.am,
+	vm/reference/gnu/java/nio/.cvsignore,
+	vm/reference/gnu/java/nio/Makefile.am,
+	vm/reference/gnu/java/nio/VMPipeImpl.java: native method init moved
+	from gnu.java.nio.PipeImpl to gnu.java.nio.VMPipeImpl
+
 2004-07-20  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* java/net/Socket.java (getImpl): Now private. Remove comment.
