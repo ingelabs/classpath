@@ -1,5 +1,17 @@
 2002-11-10  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/GridLayout.java (layoutContainer): Use tree lock.
+	(getSize): Likewise.
+	* java/awt/FlowLayout.java (layoutContainer): Use tree lock.
+	(getSize): Likewise.
+	* java/awt/BorderLayout.java (layoutContainer): Use tree lock.
+	(calcSize): Likewise.
+	* java/awt/CardLayout.java (getSize): Use tree lock.
+	(gotoComponent): Likewise.
+	(layoutContainer): Likewise.
+
+2002-11-10  Tom Tromey  <tromey@redhat.com>
+
 	* java/awt/GridLayout.java (setColumns): Check newCols, not cols.
 	(setRows): Check newRows, not rows.
 
