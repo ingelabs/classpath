@@ -1,6 +1,7 @@
 # this file used by automake to generate Makefile.in
 
 EXTRA_DIST = \
+	DefaultPolicy.java \
 	DERReader.java \
 	DERWriter.java \
 	DSAKeyPairGenerator.java \

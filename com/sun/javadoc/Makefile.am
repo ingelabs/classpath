@@ -1,16 +1,16 @@
 EXTRA_DIST = \
 ClassDoc.java \
 ConstructorDoc.java \
-Doc.java \
 DocErrorReporter.java \
+Doc.java \
 Doclet.java \
 ExecutableMemberDoc.java \
 FieldDoc.java \
 MemberDoc.java \
 MethodDoc.java \
 PackageDoc.java \
-ParamTag.java \
 Parameter.java \
+ParamTag.java \
 ProgramElementDoc.java \
 RootDoc.java \
 SeeTag.java \

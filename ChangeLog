@@ -1,5 +1,36 @@
 2002-02-07  Mark Wielaard  <mark@klomp.org>
 
+	* configure.in (AC_OUTPUT): add gnu/java/math/Makefile and
+	java/awt/font/Makefile.
+	* java/awt/Makefile.am (EXTRA_DIST): add GridBagConstraints.java and
+	sort entries.
+	(SUBDIRS): add font.
+	* java/awt/datatransfer/Makefile.am (EXTRA_DIST): add
+	MimeTypeParseException.java and SystemFlavorMap.java.
+	* java/awt/event/Makefile.am (EXTRA_DIST): Sort entries.
+	* java/awt/font/Makefile.am: new file.
+	* java/lang/Makefile.am (EXTRA_DIST): add CharSequence.java and sort
+	entries.
+	* java/net/Makefile.am (EXTRA_DIST): add URLClassLoader.java and sort
+	entries.
+	* java/security/Makefile.am 9EXTRA_DIST): add AccessController.java
+	and sort entries.
+	* java/text/Makefile.am (EXTRA_DIST): add DecimalFormat.java, remove
+	DefaultBreakIterator.java and sort entries.
+	* java/util/Makefile.am (EXTRA_DIST): remove Bucket.java,
+	DoubleEnumeration.java and sort entries.
+	* com/sun/javadoc/Makefile.am (EXTRA_DIST): sort entries.
+	* gnu/java/Makefile.am (SUBDIRS): add math.
+	* gnu/java/awt/image/Makefile.am (EXTRA_DIST): sort entries.
+	* gnu/java/awt/peer/gtk/Makefile.am (EXTRA_DIST): sort entries.
+	* gnu/java/io/decode/Makefile.am (EXTRA_DIST): sort entries.
+	* gnu/java/io/encode/Makefile.am (EXTRA_DIST): sort entries.
+	* gnu/java/math/Makefile.am: new file.
+	* gnu/java/security/provider/Makefile.am (EXTRA_DIST): add
+	DefaultPolicy.java.
+
+2002-02-07  Mark Wielaard  <mark@klomp.org>
+
 	* README: Update URLs, add more info.
 	* resource/orp-1.0.9.patch: New file.
 	* doc/www.gnu.org/doc/orp.wml: Update for ORP 1.0.9 release.

@@ -12,7 +12,6 @@ ArrayList.java \
 Arrays.java \
 BasicMapEntry.java \
 BitSet.java \
-Bucket.java \
 Calendar.java \
 Collection.java \
 Collections.java \
@@ -20,7 +19,6 @@ Comparator.java \
 ConcurrentModificationException.java \
 Date.java \
 Dictionary.java \
-DoubleEnumeration.java \
 EmptyStackException.java \
 Enumeration.java \
 EventListener.java \
@@ -34,8 +32,8 @@ Iterator.java \
 LinkedHashMap.java \
 LinkedHashSet.java \
 LinkedList.java \
-List.java \
 ListIterator.java \
+List.java \
 ListResourceBundle.java \
 Locale.java \
 Map.java \
@@ -46,8 +44,8 @@ Observer.java \
 Properties.java \
 PropertyPermission.java \
 PropertyResourceBundle.java \
-Random.java \
 RandomAccess.java \
+Random.java \
 ResourceBundle.java \
 Set.java \
 SimpleTimeZone.java \

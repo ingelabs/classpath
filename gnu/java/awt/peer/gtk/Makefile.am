@@ -7,9 +7,9 @@ EXTRA_DIST = \
 	GtkArgList.java \
 	GtkButtonPeer.java \
 	GtkCanvasPeer.java \
-	GtkCheckButtonPeer.java \
 	GtkCheckboxMenuItemPeer.java \
 	GtkCheckboxPeer.java \
+	GtkCheckButtonPeer.java \
 	GtkChoicePeer.java \
 	GtkClipboard.java \
 	GtkComponentPeer.java \
@@ -32,8 +32,8 @@ EXTRA_DIST = \
 	GtkPanelPeer.java \
 	GtkPopupMenuPeer.java \
 	GtkRadioButtonPeer.java \
-	GtkScrollPanePeer.java \
 	GtkScrollbarPeer.java \
+	GtkScrollPanePeer.java \
 	GtkTextAreaPeer.java \
 	GtkTextComponentPeer.java \
 	GtkTextFieldPeer.java \

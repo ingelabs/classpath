@@ -3,6 +3,6 @@
 EXTRA_DIST = \
 	     GdkPixbufDecoder.java \
 	     GtkOffScreenDecoder.java \
-             XBMDecoder.java \
-             ImageDecoder.java 
+	     ImageDecoder.java \
+	     XBMDecoder.java
 

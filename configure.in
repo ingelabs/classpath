@@ -250,6 +250,7 @@ gnu/java/net/content/text/Makefile
 gnu/java/net/protocol/Makefile
 gnu/java/net/protocol/file/Makefile
 gnu/java/net/protocol/http/Makefile
+gnu/java/math/Makefile
 gnu/java/rmi/Makefile
 gnu/java/rmi/dgc/Makefile
 gnu/java/rmi/registry/Makefile
@@ -269,6 +270,7 @@ java/awt/Makefile
 java/awt/color/Makefile
 java/awt/datatransfer/Makefile
 java/awt/event/Makefile
+java/awt/font/Makefile
 java/awt/geom/Makefile
 java/awt/image/Makefile
 java/awt/peer/Makefile

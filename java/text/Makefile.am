@@ -3,8 +3,8 @@
 EXTRA_DIST = \
 Annotation.java \
 AttributedCharacterIterator.java \
-AttributedString.java \
 AttributedStringIterator.java \
+AttributedString.java \
 BreakIterator.java \
 CharacterIterator.java \
 ChoiceFormat.java \
@@ -13,8 +13,8 @@ CollationKey.java \
 Collator.java \
 DateFormat.java \
 DateFormatSymbols.java \
+DecimalFormat.java \
 DecimalFormatSymbols.java \
-DefaultBreakIterator.java \
 FieldPosition.java \
 Format.java \
 MessageFormat.java \

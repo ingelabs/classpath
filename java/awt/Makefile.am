@@ -1,21 +1,21 @@
 ## Input file for automake
 
-SUBDIRS = color datatransfer geom image event peer print
+SUBDIRS = color datatransfer font geom image event peer print
 
 EXTRA_DIST = \
+ActiveEvent.java \
+Adjustable.java	\
 AWTError.java \
 AWTEvent.java \
 AWTEventMulticaster.java \
 AWTException.java \
 AWTPermission.java \
-ActiveEvent.java \
-Adjustable.java	\
 BorderLayout.java \
 Button.java \
 Canvas.java \
-CardLayout.java	\
-Checkbox.java \
+CardLayout.java \
 CheckboxGroup.java \
+Checkbox.java \
 CheckboxMenuItem.java \
 Choice.java \
 Color.java \
@@ -25,17 +25,18 @@ Container.java \
 Cursor.java \
 Dialog.java \
 Dimension.java \
-Event.java \
 EventDispatchThread.java \
+Event.java \
 EventQueue.java	\
 FileDialog.java	\
 FlowLayout.java	\
 Font.java \
 FontMetrics.java \
 Frame.java \
-Graphics.java \
-Graphics2D.java	\
+Graphics2D.java \
 GraphicsConfiguration.java \
+Graphics.java \
+GridBagConstraints.java \
 GridLayout.java	\
 IllegalComponentStateException.java \
 Image.java \
@@ -43,17 +44,18 @@ ImageMediaEntry.java \
 Insets.java \
 ItemSelectable.java \
 Label.java \
-LayoutManager.java \
 LayoutManager2.java \
+LayoutManager.java \
 List.java \
-MediaEntry.java	\
+MediaEntry.java \
 MediaTracker.java \
-Menu.java \
 MenuBar.java \
 MenuComponent.java \
 MenuContainer.java \
 MenuItem.java \
+Menu.java \
 MenuShortcut.java \
+PaintContext.java \
 Paint.java \
 Panel.java \
 Point.java \
@@ -63,9 +65,9 @@ PrintGraphics.java \
 PrintJob.java \
 Rectangle.java \
 RenderingHints.java \
-ScrollPane.java	\
-ScrollPaneAdjustable.java \
 Scrollbar.java \
+ScrollPaneAdjustable.java \
+ScrollPane.java	\
 Shape.java \
 SystemColor.java \
 TextArea.java \
