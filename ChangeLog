@@ -1,5 +1,12 @@
 2004-12-24  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/text/PasswordView.java
+	(drawEchoCharacter): Added javadoc.
+	(drawSelectedText): Likewise.
+	(drawUnselectedText): Likewise.
+
+2004-12-24  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JRootPane.java
 	(windowDecorationStyle): New field.
 	(setMenuBar): New method.
