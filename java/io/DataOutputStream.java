@@ -463,5 +463,53 @@ writeUTF(String s) throws IOException
   written += buf.length;
 }
 
+/*************************************************************************/
+
+/**
+  * This method writes the specified byte (passed as an <code>int</code>)
+  * to the underlying output stream.
+  *
+  * @param b The byte to write, passed as an <code>int</code>.
+  *
+  * @exception IOException If an error occurs.
+  */
+public void
+write(byte b) throws IOException
+{
+  out.write(b);
+}
+
+/*************************************************************************/
+
+/**
+  * This method writes <code>len</code> bytes from the specified byte array
+  * <code>buf</code> starting at position <code>offset</code> into the
+  * buffer to the underlying output stream.
+  *
+  * @param buf The byte array to write from.
+  * @param offset The index into the byte array to start writing from.
+  * @param len The number of bytes to write.
+  *
+  * @exception IOException If an error occurs.
+  */
+public void
+write(byte[] buf, int offset, int len) throws IOException
+{
+  out.write(buf, offset, len);
+}
+
+/*************************************************************************/
+
+/**
+  * This method flushes any unwritten bytes to the underlying stream.
+  *
+  * @exception IOException If an error occurs.
+  */
+public void
+flush() throws IOException
+{
+  out.flush();
+}
+
 } // class DataOutputStream
 
