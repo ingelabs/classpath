@@ -1,5 +1,13 @@
 2003-10-09  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/PlainSocketImpl.java: Added classes SocketInputStream
+	and SocketOutputStream.
+	* gnu/java/net/SocketInputStream.java: Removed.
+	* gnu/java/net/SocketOutputStream.java: Removed.
+	* gnu/java/net/Makefile.am (EXTRA_DIST): Removed removed files.
+
+2003-10-09  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetAddress.java
 	(isSiteLocalAddress): Made hexadecimal numbers lowercase.
 	(getLocalHostname): Renamed from getLocalHostName, fixed
