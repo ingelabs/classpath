@@ -24,28 +24,32 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
-  (JNIEnv *env, jobject obj, jobject jlist, jobjectArray items, int mode,
-   jboolean visible)
+  (JNIEnv *env, jobject obj, jobject parent_obj,
+   jobject jlist, jobjectArray items, int mode, jboolean visible)
 {
-  GtkWidget *list, *listitem, *sw;
+  GtkWidget *list, *listitem, *sw, *parent;
   jsize count;
   int i;
+
+  parent = NSA_GET_PTR (env, parent_obj);
 
   count = (*env)->GetArrayLength (env, items);
 
   gdk_threads_enter ();
 
   list = gtk_list_new ();
-  connect_awt_hook (env, obj, list, 1, &list->window);
   gtk_widget_show (list);
 
   sw = gtk_scrolled_window_new (NULL, NULL);
+  set_parent (sw, GTK_CONTAINER (parent));
+  gtk_widget_realize (sw);
   set_visible (sw, visible);
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);
   gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), list);
+  connect_awt_hook (env, obj, list, 1, list->window);
 
   gtk_list_set_selection_mode (GTK_LIST (list),
 			       mode? GTK_SELECTION_MULTIPLE : 
@@ -60,10 +64,11 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
       text = (*env)->GetStringUTFChars (env, item, NULL);
 
       listitem = gtk_list_item_new_with_label (text);
-      connect_awt_hook (env, obj, listitem, 1, &listitem->window);
 
       gtk_widget_show (listitem);
       gtk_container_add (GTK_CONTAINER (list), listitem);
+      gtk_widget_realize (listitem);
+      connect_awt_hook (env, obj, listitem, 1, listitem->window);
 
       (*env)->ReleaseStringUTFChars (env, item, text);
     }
@@ -91,12 +96,13 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListInsert
   
   item_list = g_list_alloc ();
   item_list->data = gtk_list_item_new_with_label (str);
-  connect_awt_hook (env, obj, item_list->data, 1, 
-		    &GTK_WIDGET(item_list->data)->window);
-
   gtk_widget_show (item_list->data);
 
   gtk_list_insert_items (GTK_LIST (list), item_list, index);
+  gtk_widget_realize (item_list->data);
+  connect_awt_hook (env, obj, item_list->data, 1, 
+		    GTK_WIDGET(item_list->data)->window);
+
   gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, text, str);
