@@ -242,13 +242,13 @@ setTreeLock(Object tree_lock)
   * AWT 1.0 event dispatcher.
   *
   * @deprecated Deprecated in favor of <code>dispatchEvent()</code>.
-
+  */
 public boolean
 postEvent(Event event)
 {
-  return(true);
+  return(false);
 }
-  */
+
 /*************************************************************************/
 
 /**
