@@ -43,9 +43,7 @@ exception statement from your version. */
 #endif
 
 #ifdef HAVE_ASM_IOCTLS_H
-#ifndef _AIX
 #include <asm/ioctls.h>
-#endif
 #endif
 
 #include <string.h>

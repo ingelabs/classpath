@@ -227,4 +227,40 @@ public class InflaterInputStream extends FilterInputStream {
     byte[] tmp = new byte[len];
     return (long) read(tmp);
   }
+
+  /**
+   * Since this stream tends to buffer large (unpredictable?) amounts
+   * of stuff, it causes problems to the mark/reset mechanism.  Hence,
+   * it claims not to support mark.
+   *
+   * @return false
+   */
+  public boolean markSupported()
+  {
+    return false;
+  }
+
+  /**
+   *  Throws an exception.
+   *
+   * @see #markSupported
+   *
+   * @param readlimit The parameter passed to <code>in.mark(int)</code>
+   */
+  public void mark(int readlimit)
+  {
+
+  }
+
+  /**
+   *  Throws an exception.
+   *
+   * @see #markSupported
+   *
+   * @exception IOException If an error occurs
+   */
+  public void reset() throws IOException
+  {
+    throw new IOException("mark/reset not supported by " + getClass());
+  }
 }

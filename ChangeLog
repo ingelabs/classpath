@@ -1,3 +1,15 @@
+2003-02-15  Julian Dolby  <dolby@us.ibm.com>
+
+	* java/util/zip/InflaterInputStream.java (markSupported): added method
+	(mark): added method
+	(reset): added method
+
+2003-02-15  C. Brian Jones  <cbj@gnu.org>
+
+	* native/jni/java-net/java_net_PlainSocketImpl.c: do not need to 
+	specifically test for AIX since the configure check for the header
+	does what is needed.
+
 2003-02-15  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java
