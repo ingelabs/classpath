@@ -98,7 +98,7 @@ SocketImpl()
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 accept(SocketImpl impl) throws IOException;
 
 /*************************************************************************/
@@ -111,7 +111,7 @@ accept(SocketImpl impl) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized int
+protected abstract int
 available() throws IOException;
 
 /*************************************************************************/
@@ -125,7 +125,7 @@ available() throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 bind(InetAddress addr, int port) throws IOException;
 
 /*************************************************************************/
@@ -139,7 +139,7 @@ bind(InetAddress addr, int port) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 close() throws IOException;
 
 /*************************************************************************/
@@ -152,7 +152,7 @@ close() throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void 
+protected abstract void 
 connect(InetAddress addr, int port) throws IOException;
 
 /*************************************************************************/
@@ -165,7 +165,7 @@ connect(InetAddress addr, int port) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void 
+protected abstract void 
 connect(String hostname, int port) throws IOException;
 
 /*************************************************************************/
@@ -242,7 +242,7 @@ getPort()
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized InputStream
+protected abstract InputStream
 getInputStream() throws IOException;
   
 /*************************************************************************/
@@ -254,7 +254,7 @@ getInputStream() throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized OutputStream
+protected abstract OutputStream
 getOutputStream() throws IOException;
 
 /*************************************************************************/
@@ -269,7 +269,7 @@ getOutputStream() throws IOException;
   * 
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 listen(int queuelen) throws IOException;
 
 /*************************************************************************/
