@@ -11,7 +11,7 @@ extern "C"
 #endif
 
 extern JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jstring JNICALL Java_java_lang_Double_toString__DZ (JNIEnv *env, jclass, jdouble, jboolean);
+extern JNIEXPORT jstring JNICALL Java_java_lang_Double_toString (JNIEnv *env, jclass, jdouble, jboolean);
 extern JNIEXPORT void JNICALL Java_java_lang_Double_initIDs (JNIEnv *env, jclass);
 
 #ifdef __cplusplus
