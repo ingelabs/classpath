@@ -1,5 +1,5 @@
 /* ObjectOutputStream.java -- Class used to write serialized objects
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -168,10 +168,10 @@ public class ObjectOutputStream extends OutputStream
   public final void writeObject (Object obj) throws IOException
   {
     if (useSubclassMethod)
-      {
-        writeObjectOverride (obj);
-        return;
-      }
+    {
+      writeObjectOverride (obj);
+      return;
+    }
 
     boolean was_serializing = isSerializing;
     boolean old_mode = setBlockDataMode (false);
@@ -541,12 +541,10 @@ public class ObjectOutputStream extends OutputStream
      @see java.io.ObjectInputStream#resolveClass (java.io.ObjectStreamClass)
   */
   protected void annotateClass (Class cl) throws IOException
-  {
-  }
+  {}
 
   protected void annotateProxyClass(Class cl) throws IOException
-  {
-  }
+  {}
 
   /**
      Allows subclasses to replace objects that are written to the
@@ -645,7 +643,7 @@ public class ObjectOutputStream extends OutputStream
     throw new NotActiveException ("Subclass of ObjectOutputStream must implement writeObjectOverride");
   }
 
-  
+
   /**
      @see java.io.DataOutputStream#write (int)
   */
@@ -666,7 +664,7 @@ public class ObjectOutputStream extends OutputStream
   /**
      @see java.io.DataOutputStream#write (byte[])
   */
-  public void write (byte b[]) throws IOException
+  public void write (byte[] b) throws IOException
   {
     write (b, 0, b.length);
   }
@@ -675,7 +673,7 @@ public class ObjectOutputStream extends OutputStream
   /**
      @see java.io.DataOutputStream#write (byte[],int,int)
   */
-  public void write (byte b[], int off, int len) throws IOException
+  public void write (byte[] b, int off, int len) throws IOException
   {
     if (writeDataAsBlocks)
     {
@@ -1218,17 +1216,185 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
-  private native void callWriteMethod (Object obj);
-  private native boolean getBooleanField (Object obj, String field_name);
-  private native byte getByteField (Object obj, String field_name);
-  private native char getCharField (Object obj, String field_name);
-  private native double getDoubleField (Object obj, String field_name);
-  private native float getFloatField (Object obj, String field_name);
-  private native int getIntField (Object obj, String field_name);
-  private native long getLongField (Object obj, String field_name);
-  private native short getShortField (Object obj, String field_name);
-  private native Object getObjectField (Object obj, String field_name,
-					String type_code);
+  private void callWriteMethod (Object obj) throws IOException
+  {
+    Class klass = obj.getClass ();
+    try
+      {
+	Class classArgs[] = {ObjectOutputStream.class};
+	Method m = getMethod (klass, "writeObject", classArgs);
+	if (m == null)
+	  return;
+	Object args[] = {this};
+	m.invoke (obj, args);	
+      }
+    catch (InvocationTargetException x)
+      {
+        /* Rethrow if possible. */
+	Throwable exception = x.getTargetException();
+	if (exception instanceof RuntimeException)
+	  throw (RuntimeException) exception;
+	if (exception instanceof IOException)
+	  throw (IOException) exception;
+
+	throw new IOException ("Exception thrown from writeObject() on " +
+			       klass + ": " + exception.getClass().getName());
+      }
+    catch (Exception x)
+      {
+	throw new IOException ("Failure invoking writeObject() on " +
+			       klass + ": " + x.getClass().getName());
+      }
+  }
+
+  private boolean getBooleanField (Object obj, String field_name) throws IOException
+  {
+    try
+      {
+	Class klass = obj.getClass ();
+	Field f = getField (klass, field_name);
+	boolean b = f.getBoolean (obj);
+	return b;
+      }
+    catch (Exception _)
+      {
+	throw new IOException ();
+      }    
+  }
+
+  private byte getByteField (Object obj, String field_name) throws IOException
+  {
+    try
+      {
+	Class klass = obj.getClass ();
+	Field f = getField (klass, field_name);
+	byte b = f.getByte (obj);
+	return b;
+      }
+    catch (Exception _)
+      {
+	throw new IOException ();
+      }    
+  }
+
+  private char getCharField (Object obj, String field_name) throws IOException
+  {
+    try
+      {
+	Class klass = obj.getClass ();
+	Field f = getField (klass, field_name);
+	char b = f.getChar (obj);
+	return b;
+      }
+    catch (Exception _)
+      {
+	throw new IOException ();
+      }    
+  }
+
+  private double getDoubleField (Object obj, String field_name) throws IOException
+  {
+    try
+      {
+	Class klass = obj.getClass ();
+	Field f = getField (klass, field_name);
+	double b = f.getDouble (obj);
+	return b;
+      }
+    catch (Exception _)
+      {
+	throw new IOException ();
+      }    
+  }
+
+  private float getFloatField (Object obj, String field_name) throws IOException
+  {
+    try
+      {
+	Class klass = obj.getClass ();
+	Field f = getField (klass, field_name);
+	float b = f.getFloat (obj);
+	return b;
+      }
+    catch (Exception _)
+      {
+	throw new IOException ();
+      }    
+  }
+
+  private int getIntField (Object obj, String field_name) throws IOException
+  {
+    try
+      {
+	Class klass = obj.getClass ();
+	Field f = getField (klass, field_name);
+	int b = f.getInt (obj);
+	return b;
+      }
+    catch (Exception _)
+      {
+	throw new IOException ();
+      }    
+  }
+
+  private long getLongField (Object obj, String field_name) throws IOException
+  {
+    try
+      {
+	Class klass = obj.getClass ();
+	Field f = getField (klass, field_name);
+	long b = f.getLong (obj);
+	return b;
+      }
+    catch (Exception _)
+      {
+	throw new IOException ();
+      }    
+  }
+
+  private short getShortField (Object obj, String field_name) throws IOException
+  {
+    try
+      {
+	Class klass = obj.getClass ();
+	Field f = getField (klass, field_name);
+	short b = f.getShort (obj);
+	return b;
+      }
+    catch (Exception _)
+      {
+	throw new IOException ();
+      }    
+  }
+
+  private Object getObjectField (Object obj, String field_name,
+				 String type_code) throws IOException
+  {
+    try
+      {
+	Class klass = obj.getClass ();
+	Field f = getField (klass, field_name);
+	Object o = f.get (obj);
+	// FIXME: We should check the type_code here
+	return o;
+      }
+    catch (Exception _)
+      {
+	throw new IOException ();
+      }    
+  }
+
+  private static Field getField (Class klass, String name)
+    throws java.lang.NoSuchFieldException
+  {
+    return klass.getDeclaredField(name);
+  }
+
+  private static Method getMethod (Class klass, String name, Class[] args)
+    throws java.lang.NoSuchMethodException
+  {
+    return klass.getDeclaredMethod(name, args);
+  }
 
 
   // this value comes from 1.2 spec, but is used in 1.1 as well
