@@ -1,3 +1,7 @@
+2001-10-24  Tom Tromey  <tromey@redhat.com>
+
+	* java/sql/Types.java (Types): New constructor.
+
 2001-10-23  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/PropertyResourceBundle.java (handleGetObject): Now
