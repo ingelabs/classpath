@@ -1,3 +1,16 @@
+2003-11-27  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/URLStreamHandler.java
+	(parseURL): Added comment in catch statement.
+	(canonicalizeFilename): Add documentation.
+	(sameURL): Completed documentation.
+	(equals): Likewise.
+	(hostsEqual): Likewise.
+	(getDefaulPort): Likewise.
+	(hashCode): Likewise.
+	(toExternalForm): Likewise.
+	(getHostName): Fix empty hostname check, completed documentation.
+
 2003-11-26  Tom Fitzsimmons  <fitzsim@redhat.com>
 
         * java/awt/GridBagLayout.java (getLayoutDimensions): Return array of
