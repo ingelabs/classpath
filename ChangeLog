@@ -1,3 +1,8 @@
+2005-03-28  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/ClassLoader.java (loadClass): Resolve class even if
+	it was already found.
+
 2005-03-28  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/io/decode/DecoderUnicodeBig.java,
