@@ -238,6 +238,13 @@ public class LinkedList extends AbstractSequentialList implements Serializable{
     public void add(Object o) {
       b.checkMod(knownMod);
       previous.next = next.previous = new Entry(o, next, previous);
+
+      // New for 1.2RC1 - the semantics changed so that the iterator is
+      // positioned *after* the new element.
+      previous = next;
+      next = previous.next;
+      pos++;
+
       size++;
       b.incSize(1);
       knownMod++;

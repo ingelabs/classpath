@@ -90,8 +90,8 @@ public interface ListIterator extends Iterator {
    * Insert an element into the list at the current position of the iterator.
    * The element is inserted in between the element that would be returned by
    * previous and the element that would be returned by next. After the
-   * insertion, a subsequent call to previous would be unaffected, but a call to
-   * next would return the item that was added. This operation is optional, it
+   * insertion, a subsequent call to next is unaffected, but a call to
+   * previous returns the item that was added. This operation is optional, it
    * may throw an UnsupportedOperationException.
    *
    * @param o the object to insert into the list
