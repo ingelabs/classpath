@@ -10,4 +10,5 @@ ObjectFactoryBuilder.java \
 ObjectFactory.java \
 ResolveResult.java \
 Resolver.java \
-StateFactory.java
+StateFactory.java \
+package.html

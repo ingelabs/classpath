@@ -3,5 +3,5 @@
 EXTRA_DIST = \
 XAException.java \
 XAResource.java \
-Xid.java
-
+Xid.java \
+package.html

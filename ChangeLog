@@ -1,3 +1,25 @@
+2004-02-05  Michael Koch  <konqueror@gmx.de>
+
+	* javax/naming/directory/Makefile.am,
+	javax/naming/event/Makefile.am,
+	javax/naming/ldap/Makefile.am,
+	javax/naming/spi/Makefile.am,
+	javax/rmi/CORBA/Makefile.am,
+	javax/rmi/Makefile.am,
+	javax/security/auth/x500/Makefile.am,
+	javax/transaction/Makefile.am,
+	javax/transaction/xa/Makefile.am
+	(EXTRA_DIST): Added package.html.
+	* javax/naming/directory/package.html,
+	javax/naming/event/package.html,
+	javax/naming/ldap/package.html,
+	javax/naming/spi/package.html,
+	javax/rmi/CORBA/package.html,
+	javax/rmi/package.html,
+	javax/security/auth/x500/package.html,
+	javax/transaction/package.html,
+	javax/transaction/xa/package.html: New files.
+
 2004-02-04  Michael Koch  <konqueror@gmx.de>
 
 	* pkg.m4: New file.

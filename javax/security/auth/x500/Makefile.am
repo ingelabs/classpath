@@ -1,2 +1,3 @@
 EXTRA_DIST = \
-X500Principal.java
+X500Principal.java \
+package.html

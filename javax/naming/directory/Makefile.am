@@ -18,4 +18,5 @@ ModificationItem.java \
 NoSuchAttributeException.java \
 SchemaViolationException.java \
 SearchControls.java \
-SearchResult.java
+SearchResult.java \
+package.html

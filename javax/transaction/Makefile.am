@@ -16,4 +16,5 @@ Transaction.java \
 TransactionManager.java \
 TransactionRequiredException.java \
 TransactionRolledbackException.java \
-UserTransaction.java
+UserTransaction.java \
+package.html

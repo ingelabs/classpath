@@ -5,4 +5,5 @@ SUBDIRS = CORBA
 EXTRA_DIST = \
 BAD_OPERATION.java \
 ORB.java \
-PortableRemoteObject.java
+PortableRemoteObject.java \
+package.html

@@ -5,4 +5,5 @@ NamespaceChangeListener.java \
 NamingEvent.java \
 NamingExceptionEvent.java \
 NamingListener.java \
-ObjectChangeListener.java
+ObjectChangeListener.java \
+package.html

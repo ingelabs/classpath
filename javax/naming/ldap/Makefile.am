@@ -9,4 +9,5 @@ LdapContext.java \
 LdapReferralException.java \
 UnsolicitedNotificationEvent.java \
 UnsolicitedNotification.java \
-UnsolicitedNotificationListener.java
+UnsolicitedNotificationListener.java \
+package.html
