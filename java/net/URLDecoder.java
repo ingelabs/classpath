@@ -24,14 +24,15 @@ package java.net;
 /**
   * This utility class contains one static method that converts a 
   * string into a decoded string from a string encoded in 
-  * in x-www-form-urlencoded  format.  This format replaces certain disallowed 
-  * characters with
+  * in x-www-form-urlencoded  format.  The x-www-form-urlencoded format 
+  * replaces certain disallowed characters with
   * encoded equivalents.  All upper case and lower case letters in the
   * US alphabet remain as is, the space character (' ') is replaced with
   * '+' sign, and all other characters are converted to a "%XX" format
   * where XX is the hexadecimal representation of that character.  Note
   * that since unicode characters are 16 bits, and this method encodes only
   * 8 bits of information, the lower 8 bits of the character are used.
+  * All encoded information is converted back to its original form.
   * <p>
   * This method is very useful for decoding strings sent to CGI scripts
   *
@@ -57,7 +58,7 @@ unhex(char c)
   c = Character.toUpperCase(c);
   int i;
 
-  if ((c >= '0') && (c <= 9))
+  if ((c >= '0') && (c <= '9'))
     i = c - '0';
   else if ((c >= 'A') && (c <= 'F'))
     i = 10 + (c - 'A');
@@ -76,7 +77,7 @@ unhex(char c)
   * @return The converted String
   */
 public static String
-encode(String source) throws Exception
+decode(String source) throws Exception
 {
   StringBuffer result = new StringBuffer("");
 
