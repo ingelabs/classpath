@@ -226,6 +226,32 @@ public class BasicBorders
 
 
   /**
+   * Returns a border for drawing a two-pixel thick separator line
+   * below menu bars.
+   *
+   * <p>The colors of the border are retrieved from the
+   * <code>UIDefaults</code> of the currently active look and feel
+   * using the keys <code>&#x201c;MenuBar.shadow&#x201d;</code> and
+   * <code>&#x201c;MenuBar.highlight&#x201d;</code>.
+   *
+   * <p><img src="BasicBorders.MenuBarBorder-1.png" width="500"
+   * height="140" alt="[A screen shot of a JMenuBar with this border]" />
+   *
+   * @return a {@link #MenuBarBorder}.
+   *
+   * @see javax.swing.JMenuBar
+   */
+  public static Border getMenuBarBorder()
+  {
+    UIDefaults defaults;
+
+    defaults = UIManager.getLookAndFeelDefaults();
+    return new MenuBarBorder(defaults.getColor("MenuBar.shadow"),
+                             defaults.getColor("MenuBar.highlight"));
+  }
+
+
+  /**
    * Returns a shared MarginBorder.
    */
   static Border getMarginBorder()  // intentionally not public
@@ -525,13 +551,161 @@ public class BasicBorders
     }
   }
   
-  
+
+  /**
+   * A border for drawing a separator line below JMenuBar.
+   *
+   * <p><img src="BasicBorders.MenuBarBorder-1.png" width="500"
+   * height="140" alt="[A screen shot of a JMenuBar with this border]" />
+   *
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
   public static class MenuBarBorder
+    extends AbstractBorder
+    implements UIResource
   {
+    /**
+     * Determined using the <code>serialver</code> tool
+     * of Apple/Sun JDK 1.3.1 on MacOS X 10.1.5.
+     */
+    static final long serialVersionUID = -6909056571935227506L;
+    
+    
+    /**
+     * The shadow color, which is used for the upper line of the
+     * two-pixel thick bottom edge.
+     */
+    private Color shadow;
+
+
+    /**
+     * The highlight color, which is used for the lower line of the
+     * two-pixel thick bottom edge.
+     */
+    private Color highlight;
+
+
+    /**
+     * Constructs a new MenuBarBorder for drawing a JMenuBar in
+     * the Basic look and feel.
+     *
+     * <p><img src="BasicBorders.MenuBarBorder-1.png" width="500"
+     * height="140" alt="[A screen shot of a JMenuBar with this
+     * border]" />
+     *
+     * @param shadow the shadow color, which is used for the upper
+     *        line of the two-pixel thick bottom edge.
+     *
+     * @param highlight the shadow color, which is used for the lower
+     *        line of the two-pixel thick bottom edge.
+     */
     public MenuBarBorder(Color shadow, Color highlight)
     {
+      /* These colors usually come from the UIDefaults of the current
+       * look and feel. Use fallback values if the colors are not
+       * supplied.  The API specification is silent about what
+       * behavior is expected for null colors, so users should not
+       * rely on this fallback (which is why it is not documented in
+       * the above Javadoc).
+       */
+      this.shadow = (shadow != null) ? shadow : Color.gray;
+      this.highlight = (highlight != null) ? highlight : Color.white;
     }
-  } // class MenuBarBorder
+
+
+    /**
+     * Paints the MenuBarBorder around a given component.
+     *
+     * @param c the component whose border is to be painted, usually
+     *        an instance of {@link javax.swing.JMenuBar}.
+     *
+     * @param g the graphics for painting.
+     * @param x the horizontal position for painting the border.
+     * @param y the vertical position for painting the border.
+     * @param width the width of the available area for painting the border.
+     * @param height the height of the available area for painting the border.
+     */
+    public void paintBorder(Component c, Graphics  g,
+                            int x, int y, int width, int height)
+    {
+      Color oldColor;
+
+      /* To understand this code, it might be helpful to look at the
+       * image "BasicBorders.MenuBarBorder-1.png" that is included
+       * with the JavaDoc. It is located in the "doc-files"
+       * subdirectory.
+       */
+      oldColor = g.getColor();
+      y = y + height - 2;
+      try
+      {
+        g.setColor(shadow);
+        g.drawLine(x, y, x + width - 2, y);
+        g.drawLine(x, y + 1, x, y + 1);
+        g.drawLine(x + width - 2, y + 1, x + width - 2, y + 1);
+
+        g.setColor(highlight);
+        g.drawLine(x + 1, y + 1, x + width - 3, y + 1);
+        g.drawLine(x + width - 1, y, x + width - 1, y + 1);        
+      }
+      finally
+      {
+        g.setColor(oldColor);
+      }
+    }
+
+
+    /**
+     * Measures the width of this border.
+     *
+     * @param c the component whose border is to be measured.
+     *
+     * @return an Insets object whose <code>left</code>,
+     *         <code>right</code>, <code>top</code> and
+     *         <code>bottom</code> fields indicate the width of the
+     *         border at the respective edge.
+     *
+     * @see #getBorderInsets(java.awt.Component, java.awt.Insets)
+     */
+    public Insets getBorderInsets(Component c)
+    {
+      /* There is no obvious reason for overriding this method, but we
+       * try to have exactly the same API as the Sun reference
+       * implementation.
+       */
+      return getBorderInsets(c, null);
+    }
+
+
+    /**
+     * Measures the width of this border, storing the results into a
+     * pre-existing Insets object.
+     *
+     * @param insets an Insets object for holding the result values.
+     *        After invoking this method, the <code>left</code>,
+     *        <code>right</code>, <code>top</code> and
+     *        <code>bottom</code> fields indicate the width of the
+     *        border at the respective edge.
+     *
+     * @return the same object that was passed for <code>insets</code>.
+     *
+     * @see #getBorderInsets()
+     */
+    public Insets getBorderInsets(Component c, Insets insets)
+    {
+      /* The exact amount has been determined using a test program
+       * that was run on the Apple/Sun JDK 1.3.1 on MacOS X, and the
+       * Sun JDK 1.4.1_01 on GNU/Linux for x86. Both gave [0,0,2,0],
+       * which was expected from looking at the screen shot.
+       */
+      if (insets == null)
+        return new Insets(0, 0, 2, 0);
+
+      insets.left = insets.right = insets.top = 0;
+      insets.bottom = 2;
+      return insets;
+    }
+  }
 
 
   /**
