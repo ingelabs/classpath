@@ -1,5 +1,9 @@
 2003-02-01  C. Brian Jones  <cbj@gnu.org>
 
+	* Makefile.am: fix copy of external/jaxp to $(distdir)
+
+2003-02-01  C. Brian Jones  <cbj@gnu.org>
+
 	* external/README: new file
 	* external/jaxp: import Classpathx JAXP from January 31, 2003 CVS
 	* LICENSE: new file
