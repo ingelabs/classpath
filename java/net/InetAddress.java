@@ -605,7 +605,7 @@ toString()
   * value "localhost" we be used.  This native method wrappers the
   * "gethostname" function.
   *
-  * @return The local hostname.
+  * @return The local hostname.
   */
 private static native String getLocalHostName();
 
