@@ -1,5 +1,10 @@
 2003-05-22  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/zip/Inflater.java:
+	Merged copyright from libgcj, reformatted and reordered some methods.
+
+2003-05-22  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/StringBuffer.java:
 	Merged copyright from libgcj.
 	* java/lang/System.java
