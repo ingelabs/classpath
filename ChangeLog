@@ -1,7 +1,17 @@
 2003-06-16  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/border/EmptyBorder.java (getBorderInsets()): New method.
+
 	* javax/swing/border/Border.java: Added API documentation.
+	
+	* javax/swing/border/MatteBorder.java: Re-written from scratch.
+	* javax/swing/border/doc-files/MatteBorder-1.png,
+	javax/swing/border/doc-files/MatteBorder-2.png,
+	javax/swing/border/doc-files/MatteBorder-3.png,
+	javax/swing/border/doc-files/MatteBorder-4.png,
+	javax/swing/border/doc-files/MatteBorder-5.png,
+	javax/swing/border/doc-files/MatteBorder-6.png: New image.
+	
 	* javax/swing/border/SoftBevelBorder.java: Initial check-in.
 	* javax/swing/border/doc-files/SoftBevelBorder-1.png,
 	* javax/swing/border/doc-files/SoftBevelBorder-2.png,
