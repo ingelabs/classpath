@@ -1,3 +1,16 @@
+2005-02-01  Sven de Marothy  <sven@physto.se>
+	
+        * java/util/Calendar.java
+        (clear): Set values to Epoch instead of zero.
+        (set): Set isSet to the relevant field pattern instead of just the
+	field.
+        * java/util/GregorianCalendar.java
+        (getBundle): Removed.
+        (getDayOfYear): Removed.
+        (getFirstDayOfMonth): New private method.
+        (nonLeniencyCheck): New private method.
+        (computeTime): Correct handling of insufficient data.
+
 2005-02-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/security/auth/callback/Callback.java,
