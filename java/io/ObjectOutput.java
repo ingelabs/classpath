@@ -30,7 +30,7 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public interface ObjectOutput extends DataOutput
+public abstract interface ObjectOutput extends DataOutput
 {
 
 /**
