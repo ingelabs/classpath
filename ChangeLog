@@ -1,5 +1,9 @@
 2004-09-09  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/awt/SystemColor.java: Fix @link doc entries.
+
+2004-09-09  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/image/DataBuffer.java: Update API documentation.
 	* java/awt/image/DataBufferByte.java: Likewise.
 	* java/awt/image/DataBufferDouble.java: Likewise.
