@@ -1,5 +1,6 @@
 2001-08-11  John Leuner  <jewel@debian.org>
-
+	
+	* java/awt/ActiveEvent.java: added this file (new interface)
 	* gnu/java/awt/peer/gtk/Test.java (new MouseAdapter): changed event name from e to me
 	* gnu/java/awt/peer/gtk/TestAWT.java:  fixed ambiguous references to getSize()
  	and getBackground()
