@@ -1,3 +1,14 @@
+2002-12-03  Tom Tromey  <tromey@redhat.com>
+
+	* native/jni/classpath/native_state.c (add_node): Never create a
+	loop in the linked list.
+	* gnu/java/awt/peer/gtk/GdkGraphics.java (native_state): Use
+	GtkGenericPeer.getUniqueInteger.
+	* gnu/java/awt/peer/gtk/GdkFontMetrics.java (native_state): Use
+	GtkGenericPeer.getUniqueInteger.
+	* gnu/java/awt/peer/gtk/GtkGenericPeer.java (getUniqueInteger): No
+	longer private.
+
 2002-12-01  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/java-net/java_net_InetAddress.c (getHostByName):

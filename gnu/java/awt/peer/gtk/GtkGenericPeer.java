@@ -76,7 +76,7 @@ public class GtkGenericPeer
   // Return a unique integer for use in the native state mapping
   // code.  We can't use a hash code since that is not guaranteed to
   // be unique.
-  private static synchronized int getUniqueInteger ()
+  static synchronized int getUniqueInteger ()
   {
     // Let's assume this will never wrap.
     return next_native_state++;

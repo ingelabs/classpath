@@ -108,7 +108,7 @@ get_node (struct state_node **head, jint obj_id)
     {
       if (node->key == obj_id)
 	{
-	  /* move the node we found to the front of the list */
+	  /* Move the node we found to the front of the list.  */
 	  if (back_ptr != NULL)
 	    {
 	      back_ptr->next = node->next;
@@ -116,7 +116,7 @@ get_node (struct state_node **head, jint obj_id)
 	      *head = node;
 	    }
 
-	  /* return the match */
+	  /* Return the match.  */
 	  return node->c_state;
 	}
   
@@ -131,9 +131,9 @@ static void
 add_node (struct state_node **head, jint obj_id, void *state)
 {
   struct state_node *node = *head;
-  struct state_node *back_ptr = *head;
+  struct state_node *back_ptr = NULL;
 
-  struct state_node *new_node = NULL;
+  struct state_node *new_node;
 
   if (node != NULL)
     {
@@ -143,25 +143,24 @@ add_node (struct state_node **head, jint obj_id, void *state)
 	  node = node->next;
 	}
 
-      /* If we're updating a node, setup to move it to the front of
-	 the list.  */
       if (node->key == obj_id)
 	{
-	  back_ptr->next = node->next;
-	  new_node = node;
+	  /* If we're updating a node, move it to the front of the
+	     list.  */
+	  if (back_ptr != NULL)
+	    {
+	      back_ptr->next = node->next;
+	      node->next = *head;
+	    }
+	  node->c_state = state;
+	  return;
 	}
     }
 
-  if (new_node == NULL)
-    {
-      new_node = (struct state_node *) malloc (sizeof (struct state_node));
-      new_node->key = obj_id;
-      new_node->c_state = state;
-    }
-
-  /* Insert node at the beginning.  */
-  new_node->next = *head;
+  new_node = (struct state_node *) malloc (sizeof (struct state_node));
+  new_node->key = obj_id;
   new_node->c_state = state;
+  new_node->next = *head;
   *head = new_node;
 }
 

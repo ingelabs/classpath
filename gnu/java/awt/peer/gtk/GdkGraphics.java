@@ -43,7 +43,7 @@ import java.awt.image.*;
 
 public class GdkGraphics extends Graphics
 {
-  private final int native_state = java.lang.System.identityHashCode (this);
+  private final int native_state = GtkGenericPeer.getUniqueInteger();
 
   Color color, xorColor;
   GtkComponentPeer component;

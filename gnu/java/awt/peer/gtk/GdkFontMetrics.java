@@ -1,5 +1,5 @@
 /* GdkFontMetrics.java
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -42,7 +42,7 @@ import java.awt.*;
 
 public class GdkFontMetrics extends FontMetrics
 {
-  private final int native_state = java.lang.System.identityHashCode (this);
+  private final int native_state = GtkGenericPeer.getUniqueInteger();
 
   private static final int ASCENT = 0, MAX_ASCENT = 1, 
                        DESCENT = 2, MAX_DESCENT = 3, 
