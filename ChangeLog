@@ -1,5 +1,14 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/channels/Channel.java,
+	java/nio/channels/GatheringByteChannel.java,
+	java/nio/channels/ReadableByteChannel.java,
+	java/nio/channels/ScatteringByteChannel.java,
+	java/nio/channels/WritableByteChannel.java:
+	Removed redundant modifiers.
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/Externalizable.java,
 	java/io/FileFilter.java,
 	java/io/ObjectInput.java,
