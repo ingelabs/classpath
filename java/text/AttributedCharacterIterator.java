@@ -1,5 +1,5 @@
 /* AttributedCharacterIterator.java -- Iterate over attributes
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -60,7 +60,7 @@ public interface AttributedCharacterIterator extends CharacterIterator
   /**
    * This class defines attribute keys that are used as text attributes.
    */
-  public static class Attribute implements Serializable
+  class Attribute implements Serializable
   {
     private static final long serialVersionUID = -9142742483513960612L;
 

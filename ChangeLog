@@ -1,3 +1,24 @@
+2004-04-02  Tom Tromey  <tromey@redhat.com>
+
+	* java/rmi/MarshalledObject.java (MarshalledObject): Removed
+	redundant `extends'.
+	* java/security/Security.java (Security): Removed redundant
+	`extends'.
+	* java/security/spec/DSAPublicKeySpec.java (DSAPublicKeySpec):
+	Removed redundant `extends'.
+	* java/security/spec/DSAPrivateKeySpec.java (DSAPrivateKeySpec):
+	Removed redundant `extends'.
+	* java/security/spec/DSAParameterSpec.java (DSAParameterSpec):
+	Removed redundant `extends'.
+	* javax/naming/directory/SearchControls.java (SearchControls):
+	Removed redundant `extends'.
+	* javax/naming/spi/DirStateFactory.java (Result): Removed
+	redundant modifiers.
+	* java/util/Map.java (Entry): Removed redundant modifiers.
+	* java/text/AttributedCharacterIterator.java (Attribute): Removed
+	redundant modifiers.
+	* java/security/Security.java (provides): Removed unused label.
+
 2004-04-02  Mark Wielaard  <mark@klomp.org>
 
 	* doc/hacking.texi: Added sections on needed libraries, coding
