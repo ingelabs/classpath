@@ -53,7 +53,7 @@ public final class Field implements Member {
 	}
 
 	/* This class is uninstantiable except natively. */
-	private Field();
+        private Field() {}
 
 	/** Gets the class that declared this field.
 	 ** <B>It is unclear whether this returns the class that actually syntactically declared

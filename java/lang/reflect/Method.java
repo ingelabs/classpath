@@ -108,7 +108,7 @@ public final class Method implements Member {
 	}
 
 	/* This class is uninstantiable. */
-	private Method();
+        private Method() {}
 
 	/** Gets the class that declared this method.
 	 ** <STRONG>It is unclear whether this returns the class that actually syntactically declared
