@@ -58,21 +58,6 @@ public class GregorianCalendar extends Calendar {
 
     static final long serialVersionUID = -8125100834729963327L;
 
-    // Placeholder constructors
-    public GregorianCalendar(int year, int month, int day)
-    {
-      ;
-    }
-    public GregorianCalendar(int year, int month, int day, int hour, int min)
-    {
-      ;
-    }
-    public GregorianCalendar(int year, int month, int day, int hour, int min,
-                             int sec)
-    {
-      ;
-    } 
-
     /**
      * Constructs a new GregorianCalender representing the current
      * time, using the default time zone and the default locale.  
@@ -111,6 +96,49 @@ public class GregorianCalendar extends Calendar {
     }
 
     /**
+     * Constructs a new GregorianCalendar representing midnight on the
+     * given date with the default time zone and locale.
+     * @param year corresponds to the YEAR time field.
+     * @param month corresponds to the MONTH time field.
+     * @param day corresponds to the DAY time field.
+     */
+    public GregorianCalendar(int year, int month, int day) {
+	super();
+	set(year, month, day);
+    }
+
+    /**
+     * Constructs a new GregorianCalendar representing midnight on the
+     * given date with the default time zone and locale.
+     * @param year corresponds to the YEAR time field.
+     * @param month corresponds to the MONTH time field.
+     * @param day corresponds to the DAY time field.
+     * @param hour corresponds to the HOUR_OF_DAY time field.
+     * @param minute corresponds to the MINUTE time field.
+     */
+    public GregorianCalendar(int year, int month, int day, 
+			     int hour, int minute) {
+	super();
+	set(year, month, day, hour, minute);
+    }
+
+    /**
+     * Constructs a new GregorianCalendar representing midnight on the
+     * given date with the default time zone and locale.
+     * @param year corresponds to the YEAR time field.
+     * @param month corresponds to the MONTH time field.
+     * @param day corresponds to the DAY time field.
+     * @param hour corresponds to the HOUR_OF_DAY time field.
+     * @param minute corresponds to the MINUTE time field.
+     * @param second corresponds to the SECOND time field.
+     */
+    public GregorianCalendar(int year, int month, int day,
+			     int hour, int minute, int second) {
+	super();
+	set(year, month, day, hour, minute, second);
+    }
+
+    /**
      * Determines if the given year is a leap year.  The result is
      * undefined if the gregorian change took place on Februar/March
      * 1800 and you give that year (well...).
@@ -120,8 +148,7 @@ public class GregorianCalendar extends Calendar {
      * rule.
      *
      * @param year a year use nonnegative value for BC.
-     * @return true, if the given year is a leap year, false otherwise.  
-     */
+     * @return true, if the given year is a leap year, false otherwise.  */
     public boolean isLeapYear(int year) {
         if ((year & 3) != 0)
             // Only years divisible by 4 can be leap years
