@@ -78,6 +78,7 @@ fi
 AC_OUTPUT(compat/java.net/Makefile
 compat/Makefile
 Makefile
+doc/Makefile
 gnu/java/io/Makefile
 gnu/java/lang/reflect/Makefile
 gnu/java/lang/Makefile
