@@ -70,8 +70,8 @@ import java.util.regex.Pattern;
  * literal in the object stream.
  *
  * @author Paul N. Fisher
- * @author Eric Blake <ebb9@email.byu.edu>
- * @author Per Bothner <bothner@cygnus.com>
+ * @author Eric Blake (ebb9@email.byu.edu)
+ * @author Per Bothner (bothner@cygnus.com)
  * @since 1.0
  * @status updated to 1.4; but could use better data sharing via offset field
  */
@@ -223,7 +223,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param count the number of characters from data to copy
    * @throws NullPointerException if data is null
    * @throws IndexOutOfBoundsException if (offset &lt; 0 || count &lt; 0
-   *         || offset + count > data.length)
+   *         || offset + count &gt; data.length)
    *         (while unspecified, this is a StringIndexOutOfBoundsException)
    */
   public String(char[] data, int offset, int count)
@@ -237,7 +237,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * corresponding byte b, is created in the new String as if by performing:
    *
    * <pre>
-   * c = (char) (((hibyte & 0xff) << 8) | (b & 0xff))
+   * c = (char) (((hibyte &amp; 0xff) &lt;&lt; 8) | (b &amp; 0xff))
    * </pre>
    *
    * @param ascii array of integer values
@@ -246,7 +246,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param count the number of characters from ascii to copy
    * @throws NullPointerException if ascii is null
    * @throws IndexOutOfBoundsException if (offset &lt; 0 || count &lt; 0
-   *         || offset + count > ascii.length)
+   *         || offset + count &gt; ascii.length)
    *         (while unspecified, this is a StringIndexOutOfBoundsException)
    * @see #String(byte[])
    * @see #String(byte[], String)
@@ -274,7 +274,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * as if by performing:
    *
    * <pre>
-   * c = (char) (((hibyte & 0xff) << 8) | (b & 0xff))
+   * c = (char) (((hibyte &amp; 0xff) &lt;&lt; 8) | (b &amp; 0xff))
    * </pre>
    *
    * @param ascii array of integer values
@@ -788,7 +788,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param ignoreCase true if case should be ignored in comparision
    * @param toffset index to start comparison at for this String
    * @param other String to compare region to this String
-   * @param ooffset index to start comparison at for other
+   * @param oofset index to start comparison at for other
    * @param len number of characters to compare
    * @return true if regions match, false otherwise
    * @throws NullPointerException if other is null
@@ -1034,11 +1034,11 @@ public final class String implements Serializable, Comparable, CharSequence
    * Creates a substring of this String, starting at a specified index
    * and ending at one character before a specified index.
    *
-   * @param beginIndex index to start substring (inclusive, base 0)
-   * @param endIndex index to end at (exclusive)
+   * @param begin index to start substring (inclusive, base 0)
+   * @param end index to end at (exclusive)
    * @return new String which is a substring of this String
    * @throws IndexOutOfBoundsException if begin &lt; 0 || end &gt; length()
-   *         || begin > end (while unspecified, this is a
+   *         || begin &gt; end (while unspecified, this is a
    *         StringIndexOutOfBoundsException)
    */
   public String substring(int beginIndex, int endIndex)
@@ -1056,18 +1056,18 @@ public final class String implements Serializable, Comparable, CharSequence
   /**
    * Creates a substring of this String, starting at a specified index
    * and ending at one character before a specified index. This behaves like
-   * <code>substring(beginIndex, endIndex)</code>.
+   * <code>substring(begin, end)</code>.
    *
-   * @param beginIndex index to start substring (inclusive, base 0)
-   * @param endIndex index to end at (exclusive)
+   * @param begin index to start substring (inclusive, base 0)
+   * @param end index to end at (exclusive)
    * @return new String which is a substring of this String
    * @throws IndexOutOfBoundsException if begin &lt; 0 || end &gt; length()
-   *         || begin > end
+   *         || begin &gt; end
    * @since 1.4
    */
-  public CharSequence subSequence(int beginIndex, int endIndex)
+  public CharSequence subSequence(int begin, int end)
   {
-    return substring(beginIndex, endIndex);
+    return substring(begin, end);
   }
 
   /**
@@ -1470,7 +1470,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @return String containing the chars from data[offset..offset+count]
    * @throws NullPointerException if data is null
    * @throws IndexOutOfBoundsException if (offset &lt; 0 || count &lt; 0
-   *         || offset + count > data.length)
+   *         || offset + count &gt; data.length)
    *         (while unspecified, this is a StringIndexOutOfBoundsException)
    * @see #String(char[], int, int)
    */
@@ -1490,7 +1490,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @return String containing the chars from data[offset..offset+count]
    * @throws NullPointerException if data is null
    * @throws IndexOutOfBoundsException if (offset &lt; 0 || count &lt; 0
-   *         || offset + count > data.length)
+   *         || offset + count &gt; data.length)
    *         (while unspecified, this is a StringIndexOutOfBoundsException)
    * @see #String(char[], int, int)
    */
@@ -1511,7 +1511,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public static String copyValueOf(char[] data)
   {
-    return new String(data, 0, data.length, false);
+    return copyValueOf (data, 0, data.length);
   }
 
   /**
@@ -1671,4 +1671,4 @@ public final class String implements Serializable, Comparable, CharSequence
 
     return value;
   }
-} // class String
+}
