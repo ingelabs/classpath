@@ -1,5 +1,5 @@
 /*************************************************************************
-/* CharacterIterator.java -- Iterate over a character range
+/* StringCharacterIterator.java -- Iterate over a character range in a string
 /*
 /* Copyright (c) 1998 Free Software Foundation, Inc.
 /* Written by Aaron M. Renn (arenn@urbanophile.com)
@@ -123,10 +123,10 @@ StringCharacterIterator(String text, int begin, int end, int index)
     }
   else
     {
-      if ((begin < 0) || (begin > (len - 1)))
+      if ((begin < 0) || (begin > len))
         throw new IllegalArgumentException("Bad begin position");
 
-      if ((end < begin) || (end > (len - 1)))
+      if ((end < begin) || (end > len))
         throw new IllegalArgumentException("Bad end position");
 
       if ((index < begin) || (index > end))
@@ -323,6 +323,50 @@ public Object
 clone()
 {
   return(new StringCharacterIterator(text, begin, end, index));
+}
+
+/*************************************************************************/
+
+/**
+  * This method tests this object for equality againt the specified 
+  * object.  This will be true if and only if the specified object:
+  * <p>
+  * <ul>
+  * <li>is not <code>null</code>.
+  * <li>is an instance of <code>StringCharacterIterator</code>
+  * <li>has the same text as this object
+  * <li>has the same beginning, ending, and current index as this object.
+  * </ul>
+  *
+  * @param obj The object to test for equality against.
+  *
+  * @return <code>true</code> if the specified object is equal to this
+  * object, <code>false</code> otherwise.
+  */
+public boolean
+equals(Object obj)
+{
+  if (obj == null)
+    return(false);
+
+  if (!(obj instanceof StringCharacterIterator))
+    return(false);
+
+  StringCharacterIterator sci = (StringCharacterIterator)obj;
+
+  if (!sci.text.equals(this.text))
+    return(false);
+
+  if (sci.begin != this.begin)
+    return(false);
+
+  if (sci.end != this.end)
+    return(false);
+
+  if (sci.index != this.index)
+    return(false);
+
+  return(true);
 }
 
 /*************************************************************************/
