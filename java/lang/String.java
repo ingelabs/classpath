@@ -41,9 +41,7 @@ package java.lang;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.lang.ref.WeakReference;
 import java.util.Comparator;
-import java.util.WeakHashMap;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -87,13 +85,6 @@ public final class String implements Serializable, Comparable, CharSequence
    * but it will avoid showing up as a discrepancy when comparing SUIDs.
    */
   private static final long serialVersionUID = -6849794470754667710L;
-
-  /**
-   * Holds the references for each intern()'d String. If all references to
-   * the string disappear, and the VM properly supports weak references,
-   * the String will be GC'd.
-   */
-  private static final WeakHashMap internTable = new WeakHashMap();
 
   /**
    * Stores unicode multi-character uppercase expansion table.
@@ -1596,30 +1587,17 @@ public final class String implements Serializable, Comparable, CharSequence
   }
 
   /**
-   * Fetches this String from the intern hashtable. If two Strings are
-   * considered equal, by the equals() method, then intern() will return the
-   * same String instance. ie. if (s1.equals(s2)) then
-   * (s1.intern() == s2.intern()). All string literals and string-valued
-   * constant expressions are already interned.
+   * If two Strings are considered equal, by the equals() method, 
+   * then intern() will return the same String instance. ie. 
+   * if (s1.equals(s2)) then (s1.intern() == s2.intern()). 
+   * All string literals and string-valued constant expressions 
+   * are already interned.
    *
    * @return the interned String
    */
   public String intern()
   {
-    synchronized (internTable)
-      {
-        WeakReference ref = (WeakReference) internTable.get(this);
-        if (ref != null)
-          {
-            String s = (String) ref.get();
-            // If s is null, then no strong references exist to the String;
-            // the weak hash map will soon delete the key.
-            if (s != null)
-              return s;
-          }
-        internTable.put(this, new WeakReference(this));
-      }
-    return this;
+    return VMString.intern(this);
   }
 
   /**

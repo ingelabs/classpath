@@ -7,6 +7,9 @@ New in release 0.06 (not-yet-released)
 * Native methods in Class have been moved to VMClass.  A few additional
   methods are also available in VMClass to provide optional performance
   improvements.
+* A VM can now supply its own String.intern() strategy through the
+  VMString class. The supplied VMString reference class implements the
+  original WeakHashMap strategy.
 
 New in release 0.05 (2003/02/15)
 * Supports free Java VMs Jikes RVM and Kissme out of the box, perhaps others.

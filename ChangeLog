@@ -1,3 +1,10 @@
+2003-07-15  David Grove  <groved@us.ibm.com
+
+	* java/lang/String.java (internTable): Removed.
+	(intern): Use VMString.intern().
+	* vm/reference/java/lang/VMString.java: New VM interface class.
+	* NEWS: Document new VM interface.
+
 2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
 
         * native/jni/java-net/java_net_InetAddress.c,
