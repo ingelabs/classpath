@@ -851,8 +851,16 @@ public final class Class implements Serializable
   
   /**
    * Get the name of this class, separated by dots for package separators.
-   * Primitive types and arrays are encoded as:
+   * If the class represents a primitive type, or void, then the
+   * name of the type as it appears in the Java programming language
+   * is returned.  For instance, <code>Byte.TYPE.getName()</code>
+   * returns "byte".
+   *
+   * Arrays are specially encoded as shown on this table.
    * <pre>
+   * array type          [<em>element type</em>
+   *                     (note that the element type is encoded per
+   *                      this table)
    * boolean             Z
    * byte                B
    * char                C
@@ -862,7 +870,6 @@ public final class Class implements Serializable
    * float               F
    * double              D
    * void                V
-   * array type          [<em>element type</em>
    * class or interface, alone: &lt;dotted name&gt;
    * class or interface, as element type: L&lt;dotted name&gt;;
    * </pre>

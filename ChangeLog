@@ -1,5 +1,10 @@
 2004-08-16  Tom Tromey  <tromey@redhat.com>
 
+	Bug 9596.
+	* java/lang/Class.java (getName): Fixed javadoc.
+
+2004-08-16  Tom Tromey  <tromey@redhat.com>
+
 	Bug 9949.
 	* java/text/AttributedString.java (AttributedString): Use
 	ArrayList to build array of attribute ranges.  Don't use
