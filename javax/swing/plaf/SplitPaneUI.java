@@ -1,4 +1,4 @@
-/* ScrollPaneUI.java --
+/* SplitPaneUI.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,23 +37,75 @@ exception statement from your version. */
 
 package javax.swing.plaf;
 
+// Imports
+import java.awt.*;
+import javax.swing.*;
+
 /**
- * ScrollPaneUI
+ * SplitPaneUI
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public abstract class ScrollPaneUI extends ComponentUI {
+public abstract class SplitPaneUI extends ComponentUI {
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ScrollPaneUI
+	 * Constructor SplitPaneUI
 	 */
-	public ScrollPaneUI() {
+	public SplitPaneUI() {
 		// TODO
-	} // ScrollPaneUI()
+	} // SplitPaneUI()
 
 
-} // ScrollPaneUI
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * resetToPreferredSizes
+	 * @param splitpane TODO
+	 */
+	public abstract void resetToPreferredSizes(JSplitPane splitpane);
+
+	/**
+	 * setDividerLocation
+	 * @param splitpane TODO
+	 * @param location TODO
+	 */
+	public abstract void setDividerLocation(JSplitPane splitpane,
+		int location);
+
+	/**
+	 * getDividerLocation
+	 * @param splitpane TODO
+	 * @returns int
+	 */
+	public abstract int getDividerLocation(JSplitPane splitpane);
+
+	/**
+	 * getMinimumDividerLocation
+	 * @param splitpane TODO
+	 * @returns int
+	 */
+	public abstract int getMinimumDividerLocation(JSplitPane splitpane);
+
+	/**
+	 * getMaximumDividerLocation
+	 * @param splitpane TODO
+	 * @returns int
+	 */
+	public abstract int getMaximumDividerLocation(JSplitPane splitpane);
+
+	/**
+	 * finishedPaintingChildren
+	 * @param splitpane TODO
+	 * @param graphics TODO
+	 */
+	public abstract void finishedPaintingChildren(JSplitPane splitpane,
+		Graphics graphics);
+
+
+} // SplitPaneUI

@@ -1,4 +1,4 @@
-/* ScrollPaneUI.java --
+/* ComboBoxUI.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,23 +37,52 @@ exception statement from your version. */
 
 package javax.swing.plaf;
 
+// Imports
+import javax.swing.*;
+
 /**
- * ScrollPaneUI
+ * ComboBoxUI
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public abstract class ScrollPaneUI extends ComponentUI {
+public abstract class ComboBoxUI extends ComponentUI {
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ScrollPaneUI
+	 * Constructor ComboBoxUI
 	 */
-	public ScrollPaneUI() {
+	public ComboBoxUI() {
 		// TODO
-	} // ScrollPaneUI()
+	} // ComboBoxUI()
 
 
-} // ScrollPaneUI
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * setPopupVisible
+	 * @param combobox TODO
+	 * @param visible TODO
+	 */
+	public abstract void setPopupVisible(JComboBox combobox, boolean visible);
+
+	/**
+	 * isPopupVisible
+	 * @param combobox TODO
+	 * @returns boolean
+	 */
+	public abstract boolean isPopupVisible(JComboBox combobox);
+
+	/**
+	 * isFocusTraversable
+	 * @param combobox TODO
+	 * @returns boolean
+	 */
+	public abstract boolean isFocusTraversable(JComboBox combobox);
+
+
+} // ComboBoxUI

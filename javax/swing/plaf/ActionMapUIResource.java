@@ -1,4 +1,4 @@
-/* ScrollPaneUI.java --
+/* ActionMapUIResource.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,23 +37,26 @@ exception statement from your version. */
 
 package javax.swing.plaf;
 
+// Imports
+import javax.swing.*;
+
 /**
- * ScrollPaneUI
+ * ActionMapUIResource
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public abstract class ScrollPaneUI extends ComponentUI {
+public class ActionMapUIResource extends ActionMap implements UIResource {
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ScrollPaneUI
+	 * Constructor ActionMapUIResource
 	 */
-	public ScrollPaneUI() {
+	public ActionMapUIResource() {
 		// TODO
-	} // ScrollPaneUI()
+	} // ActionMapUIResource()
 
 
-} // ScrollPaneUI
+} // ActionMapUIResource

@@ -1,4 +1,4 @@
-/* ScrollPaneUI.java --
+/* DesktopPaneUI.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,22 +38,22 @@ exception statement from your version. */
 package javax.swing.plaf;
 
 /**
- * ScrollPaneUI
+ * DesktopPaneUI
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public abstract class ScrollPaneUI extends ComponentUI {
+public abstract class DesktopPaneUI extends ComponentUI {
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ScrollPaneUI
+	 * Constructor DesktopPaneUI
 	 */
-	public ScrollPaneUI() {
+	public DesktopPaneUI() {
 		// TODO
-	} // ScrollPaneUI()
+	} // DesktopPaneUI()
 
 
-} // ScrollPaneUI
+} // DesktopPaneUI

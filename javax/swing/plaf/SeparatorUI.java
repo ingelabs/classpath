@@ -1,4 +1,4 @@
-/* ScrollPaneUI.java --
+/* SeparatorUI.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,22 +38,22 @@ exception statement from your version. */
 package javax.swing.plaf;
 
 /**
- * ScrollPaneUI
+ * SeparatorUI
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public abstract class ScrollPaneUI extends ComponentUI {
+public abstract class SeparatorUI extends ComponentUI {
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ScrollPaneUI
+	 * Constructor SeparatorUI
 	 */
-	public ScrollPaneUI() {
+	public SeparatorUI() {
 		// TODO
-	} // ScrollPaneUI()
+	} // SeparatorUI()
 
 
-} // ScrollPaneUI
+} // SeparatorUI

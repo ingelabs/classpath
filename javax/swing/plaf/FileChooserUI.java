@@ -1,4 +1,4 @@
-/* ScrollPaneUI.java --
+/* FileChooserUI.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,23 +37,75 @@ exception statement from your version. */
 
 package javax.swing.plaf;
 
+// Imports
+import java.io.*;
+import javax.swing.*;
+import javax.swing.filechooser.*;
+import javax.swing.filechooser.FileFilter;
+
 /**
- * ScrollPaneUI
+ * FileChooserUI
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public abstract class ScrollPaneUI extends ComponentUI {
+public abstract class FileChooserUI extends ComponentUI {
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ScrollPaneUI
+	 * Constructor FileChooserUI
 	 */
-	public ScrollPaneUI() {
+	public FileChooserUI() {
 		// TODO
-	} // ScrollPaneUI()
+	} // FileChooserUI()
 
 
-} // ScrollPaneUI
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * getAcceptAllFileFilter
+	 * @param chooser TODO
+	 * @returns FileFilter
+	 */
+	public abstract FileFilter getAcceptAllFileFilter(JFileChooser chooser);
+
+	/**
+	 * getFileView
+	 * @param chooser TODO
+	 * @returns FileView
+	 */
+	public abstract FileView getFileView(JFileChooser chooser);
+
+	/**
+	 * getApproveButtonText
+	 * @param chooser TODO
+	 * @returns String
+	 */
+	public abstract String getApproveButtonText(JFileChooser chooser);
+
+	/**
+	 * getDialogTitle
+	 * @param chooser TODO
+	 * @returns String
+	 */
+	public abstract String getDialogTitle(JFileChooser chooser);
+
+	/**
+	 * rescanCurrentDirectory
+	 * @param value0 TODO
+	 */
+	public abstract void rescanCurrentDirectory(JFileChooser chooser);
+
+	/**
+	 * ensureFileIsVisible
+	 * @param chooser TODO
+	 * @param file TODO
+	 */
+	public abstract void ensureFileIsVisible(JFileChooser chooser, File file);
+
+
+} // FileChooserUI

@@ -1,4 +1,4 @@
-/* ScrollPaneUI.java --
+/* MenuBarUI.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,22 +38,22 @@ exception statement from your version. */
 package javax.swing.plaf;
 
 /**
- * ScrollPaneUI
+ * MenuBarUI
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public abstract class ScrollPaneUI extends ComponentUI {
+public abstract class MenuBarUI extends ComponentUI {
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ScrollPaneUI
+	 * Constructor MenuBarUI
 	 */
-	public ScrollPaneUI() {
+	public MenuBarUI() {
 		// TODO
-	} // ScrollPaneUI()
+	} // MenuBarUI()
 
 
-} // ScrollPaneUI
+} // MenuBarUI

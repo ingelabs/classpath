@@ -1,4 +1,4 @@
-/* ScrollPaneUI.java --
+/* ComponentInputMapUIResource.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,23 +37,28 @@ exception statement from your version. */
 
 package javax.swing.plaf;
 
+// Imports
+import javax.swing.*;
+
 /**
- * ScrollPaneUI
+ * ComponentInputMapUIResource
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public abstract class ScrollPaneUI extends ComponentUI {
+public class ComponentInputMapUIResource extends ComponentInputMap implements UIResource {
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ScrollPaneUI
+	 * Constructor ComponentInputMapUIResource
+	 * @param component TODO
 	 */
-	public ScrollPaneUI() {
+	public ComponentInputMapUIResource(JComponent component) {
+		super(component);
 		// TODO
-	} // ScrollPaneUI()
+	} // ComponentInputMapUIResource()
 
 
-} // ScrollPaneUI
+} // ComponentInputMapUIResource

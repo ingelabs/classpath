@@ -1,4 +1,4 @@
-/* ScrollPaneUI.java --
+/* PopupMenuUI.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,23 +37,40 @@ exception statement from your version. */
 
 package javax.swing.plaf;
 
+// Imports
+import java.awt.event.*;
+
 /**
- * ScrollPaneUI
+ * PopupMenuUI
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public abstract class ScrollPaneUI extends ComponentUI {
+public abstract class PopupMenuUI extends ComponentUI {
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ScrollPaneUI
+	 * Constructor PopupMenuUI
 	 */
-	public ScrollPaneUI() {
+	public PopupMenuUI() {
 		// TODO
-	} // ScrollPaneUI()
+	} // PopupMenuUI()
 
 
-} // ScrollPaneUI
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * isPopupTrigger
+	 * @param event TODO
+	 * @returns boolean
+	 */
+	public boolean isPopupTrigger(MouseEvent event) {
+		return false; // TODO
+	} // isPopupTrigger()
+
+
+} // PopupMenuUI
