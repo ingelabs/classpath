@@ -213,8 +213,16 @@ public final class SocketChannelImpl extends SocketChannel
     
     byte[] data;
     int offset = 0;
+    InputStream input = socket.getInputStream();
+    int available = input.available();
     int len = dst.remaining();
 	
+    if (available == 0)
+      return 0;
+    
+    if (len > available)
+      len = available;
+
     if (dst.hasArray())
       {
         offset = dst.arrayOffset() + dst.position();
@@ -224,15 +232,6 @@ public final class SocketChannelImpl extends SocketChannel
       {
         data = new byte [len];
       }
-
-    InputStream input = socket.getInputStream();
-    int available = input.available();
-
-    if (available == 0)
-      return 0;
-    
-    if (len > available)
-      len = available;
 
     int readBytes = 0;
     boolean completed = false;
@@ -248,11 +247,15 @@ public final class SocketChannelImpl extends SocketChannel
         end (completed);
       }
 
-    if (readBytes > 0
-        && !dst.hasArray())
-      {
-        dst.put (data);
-      }
+    if (readBytes > 0)
+      if (dst.hasArray())
+	{
+	  dst.position (dst.position() + readBytes);
+	}
+      else
+        {
+          dst.put (data, offset, len);
+        }
 
     return readBytes;
   }
@@ -302,6 +305,12 @@ public final class SocketChannelImpl extends SocketChannel
     
     OutputStream output = socket.getOutputStream();
     output.write (data, offset, len);
+
+    if (src.hasArray())
+      {
+	src.position (src.position() + len);
+      }
+    
     return len;
   }
 

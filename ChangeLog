@@ -1,5 +1,17 @@
 2003-10-20  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/PipeImpl.java
+	(PipeImpl): New constructor implementation which takes
+	SelectorProvider argument.
+	* gnu/java/nio/SelectorProviderImpl.java
+	(openPipe): Give SelectorProvider argument to PipeImpl.
+	* gnu/java/nio/SocketChannelImpl.java
+	(read): Fixed reading into ByteBuffer objects which are backed by an
+	array.
+	(write): Likewise.
+
+2003-10-20  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/FileLockImpl.java,
 	gnu/java/nio/SelectorImpl.java,
 	java/nio/ByteOrder.java,
