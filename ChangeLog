@@ -1,5 +1,10 @@
 2004-04-07  Ingo Proetel  <proetel@aicas.com>
 
+	* java/awt/image/SampleModel.java (<init>): Added error cause information to 
+	thrown exception.
+
+2004-04-07  Ingo Proetel  <proetel@aicas.com>
+
 	* java/awt/image/SinglePixelPackedSampleModel.java (getDataElements): New method.
 	(setDataElements): New method.
 	(setPixels): New method.
