@@ -232,8 +232,10 @@ public class Date implements Cloneable, Comparable, java.io.Serializable {
 	    + hour.substring(hour.length()-2) + ":"
 	    + min.substring(min.length()-2) + ":"
 	    + sec.substring(sec.length()-2) + " "
-	    + cal.getTimeZone().getID() + " "
+	    + cal.getTimeZone().getDisplayName(
+                cal.getTimeZone().inDaylightTime(this), TimeZone.SHORT) + " "
 	    + year.substring(year.length()-4);
+
     }
 
     public String toLocaleString() {
