@@ -556,7 +556,7 @@ getPageIncrement()
 public synchronized void
 setBlockIncrement(int blockIncrement)
 {
-  setPageIncrement (pageIncrement);
+  setPageIncrement (blockIncrement);
 }
 
 /*************************************************************************/

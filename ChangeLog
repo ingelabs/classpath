@@ -1,5 +1,10 @@
 2004-02-06  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/Scrollbar.java
+	(setBlockIncrement): Fixed.
+
+2004-02-06  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/datatransfer/DataFlavor.java
 	(imageFlavor): Javadoc added.
 	(javaJVMLocalObjectType): Fixed.
