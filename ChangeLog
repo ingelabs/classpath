@@ -1,5 +1,9 @@
 2002-12-31  Tom Tromey  <tromey@redhat.com>
 
+	* java/util/logging/LogManager.java (readConfiguration): Remove
+	extra `lib'.
+	* javax/naming/InitialContext.java (init): Remove extra `lib'.
+
 	* javax/naming/InitialContext.java (init): Use
 	gnu.classpath.home.url.
 	* java/util/logging/LogManager.java (readConfiguration): Use

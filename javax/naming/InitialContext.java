@@ -129,7 +129,7 @@ public class InitialContext implements Context
       String home = System.getProperty("gnu.classpath.home.url");
       if (home != null)
 	{
-	  String url = home + "/lib/jndi.properties";
+	  String url = home + "/jndi.properties";
 	  Properties p = new Properties ();
 	
 	  try

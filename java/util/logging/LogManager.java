@@ -93,7 +93,7 @@ import java.lang.ref.WeakReference;
  *
  * <li>If the system property <code>java.util.logging.config.file</code>
  *     is not set, however, the contents of the URL
- *     "{gnu.classpath.home.url}/lib/logging.properties" are passed to
+ *     "{gnu.classpath.home.url}/logging.properties" are passed to
  *     {@link #readConfiguration(java.io.InputStream)}.
  *     Here, "{gnu.classpath.home.url}" stands for the value of
  *     the system property <code>gnu.classpath.home.url</code>.</li>
@@ -469,7 +469,7 @@ public class LogManager
    * The name and location of this file are specified by the system
    * property <code>java.util.logging.config.file</code>.  If this
    * property is not set, the URL
-   * "{gnu.classpath.home.url}/lib/logging.properties" is taken, where
+   * "{gnu.classpath.home.url}/logging.properties" is taken, where
    * "{gnu.classpath.home.url}" stands for the value of the system
    * property <code>gnu.classpath.home.url</code>.
    *
@@ -496,7 +496,7 @@ public class LogManager
     if ((path == null) || (path.length() == 0))
     {
       String url = (System.getProperty("gnu.classpath.home.url")
-		    + "/lib/logging.properties");
+		    + "/logging.properties");
       inputStream = new URL(url).openStream();
     }
     else
