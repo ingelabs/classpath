@@ -56,6 +56,7 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.BorderUIResource;
+import javax.swing.text.JTextComponent;
 
 
 /**
@@ -322,6 +323,41 @@ public class BasicBorders
 
 
   /**
+   * Returns a border for drawing a border around a text field
+   * that makes the field appear as etched into the surface.
+   *
+   * <p>The colors of the border are retrieved from the
+   * <code>UIDefaults</code> of the currently active look and feel
+   * using the keys <code>&#x201c;TextField.shadow&#x201d;</code>,
+   * <code>&#x201c;TextField.darkShadow&#x201d;</code>,
+   * <code>&#x201c;TextField.light&#x201d;</code>, and
+   * <code>&#x201c;TextField.highlight&#x201d;</code>.
+   *
+   * <p><img src="BasicBorders.FieldBorder-1.png" width="500"
+   * height="200" alt="[A screen shot of a border returned by
+   * this method]" />
+   *
+   * @return an instance of
+   * {@link javax.swing.plaf.basic.BasicBorders$FieldBorder}.
+   *
+   * @see javax.swing.JTextField
+   * @see javax.swing.text.JTextComponent
+   */
+  public static Border getTextFieldBorder()
+  {
+    UIDefaults defaults;
+
+    /* See comment in methods above for why this border is not shared. */
+    defaults = UIManager.getLookAndFeelDefaults();
+    return new FieldBorder(
+      defaults.getColor("TextField.shadow"),
+      defaults.getColor("TextField.darkShadow"),
+      defaults.getColor("TextField.light"),
+      defaults.getColor("TextField.highlight"));
+  }
+  
+  
+  /**
    * Returns a shared MarginBorder.
    */
   static Border getMarginBorder()  // intentionally not public
@@ -512,15 +548,172 @@ public class BasicBorders
   }
   
   
+  /**
+   * A border that makes its enclosed component appear as lowered
+   * into the surface. Typically used for text fields.
+   *
+   * <p><img src="BasicBorders.FieldBorder-1.png" width="500"
+   * height="200" alt="[A screen shot of this border]" />
+   *
+   * @see javax.swing.plaf.basic.BasicGraphicsUtils#drawEtchedRect
+   *
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
   public static class FieldBorder
+    extends AbstractBorder
+    implements UIResource
   {
+    /**
+     * Determined using the <code>serialver</code> tool
+     * of Apple/Sun JDK 1.3.1 on MacOS X 10.1.5.
+     */
+    static final long serialVersionUID = 949220756998454908L;
+
+
+    /**
+     * The color for drawing the outer half of the top and left
+     * edges.
+     */
+    protected Color shadow;
+
+
+    /**
+     * The color for drawing the inner half of the top and left
+     * edges.
+     */
+    protected Color darkShadow;
+
+
+    /**
+     * The color for drawing the inner half of the bottom and right
+     * edges.
+     */
+    protected Color highlight;
+
+
+    /**
+     * The color for drawing the outer half of the bottom and right
+     * edges.
+     */
+    protected Color lightHighlight;
+
+
+    /**
+     * Constructs a new border for drawing a text field in the Basic
+     * look and feel.
+     *
+     * @param shadow the color for drawing the outer half
+     *        of the top and left edges.
+     *
+     * @param darkShadow the color for drawing the inner half
+     *        of the top and left edges.
+     *
+     * @param highlight the color for drawing the inner half
+     *        of the bottom and right edges.
+     *
+     * @param lightHighlight the color for drawing the outer half
+     *        of the bottom and right edges.
+     */
     public FieldBorder(Color shadow, Color darkShadow,
                        Color highlight, Color lightHighlight)
     {
+      /* These colors usually come from the UIDefaults of the current
+       * look and feel. Use fallback values if the colors are not
+       * supplied.  The API specification is silent about what
+       * behavior is expected for null colors, so users should not
+       * rely on this fallback (which is why it is not documented in
+       * the above Javadoc).
+       */
+      this.shadow = (shadow != null) ? shadow : Color.gray;
+      this.darkShadow = (darkShadow != null) ? darkShadow : Color.black;
+      this.highlight = (highlight != null) ? highlight : Color.lightGray;
+      this.lightHighlight = (lightHighlight != null)
+        ? lightHighlight : Color.white;
     }
-  } // class FieldBorder
+
+    
+    /**
+     * Paints the FieldBorder around a given component.
+     *
+     * @param c the component whose border is to be painted.
+     * @param g the graphics for painting.
+     * @param x the horizontal position for painting the border.
+     * @param y the vertical position for painting the border.
+     * @param width the width of the available area for painting the border.
+     * @param height the height of the available area for painting the border.
+     *
+     * @see javax.swing.plaf.basic.BasicGraphicsUtils#drawEtchedRect
+     */
+    public void paintBorder(Component c, Graphics  g,
+                            int x, int y, int width, int height)
+    {
+      BasicGraphicsUtils.drawEtchedRect(g, x, y, width, height,
+                                        shadow, darkShadow,
+                                        highlight, lightHighlight);
+    }
+    
+    
+    /**
+     * Measures the width of this border.
+     *
+     * @param c the component whose border is to be measured.
+     *        If <code>c</code> is an instance of {@link
+     *        javax.swing.text.JTextComponent}, its margin is
+     *        added to the border size.
+     *
+     * @return an Insets object whose <code>left</code>,
+     *         <code>right</code>, <code>top</code> and
+     *         <code>bottom</code> fields indicate the width of the
+     *         border at the respective edge.
+     *
+     * @see #getBorderInsets(java.awt.Component, java.awt.Insets)
+     */
+    public Insets getBorderInsets(Component c)
+    {
+      return getBorderInsets(c, null);
+    }
 
 
+    /**
+     * Measures the width of this border, storing the results into a
+     * pre-existing Insets object.
+     *
+     * @param c the component whose border is to be measured.
+     *        If <code>c</code> is an instance of {@link
+     *        javax.swing.text.JTextComponent}, its margin is
+     *        added to the border size.
+     *
+     * @param insets an Insets object for holding the result values.
+     *        After invoking this method, the <code>left</code>,
+     *        <code>right</code>, <code>top</code> and
+     *        <code>bottom</code> fields indicate the width of the
+     *        border at the respective edge.
+     *
+     * @return the same object that was passed for <code>insets</code>.
+     *
+     * @see #getBorderInsets()
+     */
+    public Insets getBorderInsets(Component c, Insets insets)
+    {
+      if (insets == null)
+        insets = new Insets(2, 2, 2, 2);
+      else
+        insets.top = insets.left = insets.bottom = insets.right = 2;
+
+      if (c instanceof JTextComponent)
+      {
+        Insets margin = ((JTextComponent) c).getMargin();
+        insets.top += margin.top;
+        insets.left += margin.left;
+        insets.bottom += margin.bottom;
+        insets.right += margin.right;
+      }
+
+      return insets;
+    }
+  }
+  
+  
   /**
    * An invisible, but spacing border whose margin is determined
    * by calling the <code>getMargin()</code> method of the enclosed
@@ -582,8 +775,9 @@ public class BasicBorders
      * determine the existence of this method, this would be slow on
      * many virtual machines. Therefore, the current implementation
      * knows about {@link javax.swing.AbstractButton#getMargin()},
-     * {@link javax.swing.JPopupMenu#getMargin()}, and {@link
-     * javax.swing.JToolBar#getMargin()}. If <code>c</code> is an
+     * {@link javax.swing.JPopupMenu#getMargin()}, {@link
+     * javax.swing.JToolBar#getMargin()}, and {@link
+     * javax.swing.text.JTextComponent}. If <code>c</code> is an
      * instance of a known class, the respective
      * <code>getMargin()</code> method is called to determine the
      * correct margin. Otherwise, a zero-width margin is returned.
@@ -606,7 +800,9 @@ public class BasicBorders
         margin = ((JPopupMenu) c).getMargin();
       else if (c instanceof JToolBar)
         margin = ((JToolBar) c).getMargin();
-
+      else if (c instanceof JTextComponent)
+        margin = ((JTextComponent) c).getMargin();
+      
       if (margin == null)
         insets.top = insets.left = insets.bottom = insets.right = 0;
       else
