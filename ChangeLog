@@ -1,5 +1,14 @@
 2002-12-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/URI.java
+	(create): Doesnt throw URISyntaxException.
+	* java/net/URLConnection.java
+	(guessContentTypeFromName): Made public.
+	* java/nio/MappedByteBuffer.java
+	(MappedByteBuffer): added @author and @since.
+	
+2002-12-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/SocketPermission.java:
 	Reindented.
 	* java/net/URLDecoder.java

@@ -279,8 +279,10 @@ setDefaultRequestProperty(String key, String value)
   * @param filename The filename to determine the MIME type for
   *
   * @return The MIME type String
+  *
+  * @specnote public since jdk 1.4
   */
-protected static String 
+public static String 
 guessContentTypeFromName(String filename)
 {
   return(fileNameMap.getContentTypeFor(filename.toLowerCase()));
