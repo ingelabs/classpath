@@ -48,12 +48,11 @@ exception statement from your version. */
 /* do not move; needed here because of some macro definitions */
 #include <config.h>
 
+#include <stdlib.h>
+
 /* FIXME: Need to make configure set these for us */
 /* #define HAVE_SYS_IOCTL_H */
 /* #define HAVE_SYS_FILIO_H */
-#define HAVE_FTRUNCATE
-#define HAVE_FSYNC
-#define HAVE_SELECT
 
 #include <jni.h>
 #include "jcl.h"
@@ -197,7 +196,7 @@ Java_java_io_FileDescriptor_nativeOpen(JNIEnv *env, jobject obj, jstring name,
       JCL_ThrowException(env,
                          "java/io/FileNotFoundException",
                          TARGET_NATIVE_LAST_ERROR_STRING());
-      return JNI_JLONG_CONST_MINUS_1;
+      return TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1;
     }
 
   return CONVERT_INT_TO_JLONG(native_fd);
@@ -222,10 +221,10 @@ Java_java_io_FileDescriptor_nativeClose(JNIEnv *env, jobject obj, jlong fd)
       JCL_ThrowException(env,
                          "java/io/IOException",
                          TARGET_NATIVE_LAST_ERROR_STRING());
-      return(JNI_JLONG_CONST_MINUS_1);
+      return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
     }
 
-  return(JNI_JLONG_CONST_0);
+  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 }
 
 /*************************************************************************/
@@ -254,12 +253,12 @@ Java_java_io_FileDescriptor_nativeWriteByte(JNIEnv *env, jobject obj,
           JCL_ThrowException(env,
                              "java/io/IOException",
                              TARGET_NATIVE_LAST_ERROR_STRING());
-          return(JNI_JLONG_CONST_MINUS_1);
+          return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
 	}
     }
   while (result != TARGET_NATIVE_OK);
 
-  return(JNI_JLONG_CONST_0);
+  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 }
 
 /*************************************************************************/
@@ -284,7 +283,7 @@ Java_java_io_FileDescriptor_nativeWriteBuf(JNIEnv *env, jobject obj,
   if (!bufptr)
     {
       JCL_ThrowException(env, "java/io/IOException", "Unexpected JNI error");
-      return(JNI_JLONG_CONST_MINUS_1);
+      return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
     }
 
   bytes_written = 0;
@@ -298,14 +297,14 @@ Java_java_io_FileDescriptor_nativeWriteBuf(JNIEnv *env, jobject obj,
                              "java/io/IOException",
                              TARGET_NATIVE_LAST_ERROR_STRING());
           (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
-          return(JNI_JLONG_CONST_MINUS_1);
+          return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
 	}
       bytes_written += n;
     }
 
   (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
 
-  return(JNI_JLONG_CONST_0);
+  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 }
 
 /*************************************************************************/
@@ -459,7 +458,7 @@ Java_java_io_FileDescriptor_nativeSeek(JNIEnv *env, jobject obj, jlong fd,
     {
       JCL_ThrowException(env, "java/io/IOException",
                          "Cannot represent position correctly on this system");
-      return(JNI_JLONG_CONST_MINUS_1);
+      return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
     }
 #endif /* 0 */
     
@@ -472,7 +471,7 @@ Java_java_io_FileDescriptor_nativeSeek(JNIEnv *env, jobject obj, jlong fd,
           JCL_ThrowException(env,
                              "java/io/IOException",
                              TARGET_NATIVE_LAST_ERROR_STRING());
-          return(JNI_JLONG_CONST_MINUS_1);
+          return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
         }
 
       /* set file read/write position (seek) */
@@ -489,7 +488,7 @@ Java_java_io_FileDescriptor_nativeSeek(JNIEnv *env, jobject obj, jlong fd,
               JCL_ThrowException(env,
                                  "java/io/IOException",
                                  TARGET_NATIVE_LAST_ERROR_STRING());
-              return(JNI_JLONG_CONST_MINUS_1);
+              return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
             }
           if (TARGET_NATIVE_MATH_INT_INT64_GT(TARGET_NATIVE_MATH_INT_INT64_ADD(current_offset,offset),file_size))
             {
@@ -499,13 +498,13 @@ Java_java_io_FileDescriptor_nativeSeek(JNIEnv *env, jobject obj, jlong fd,
         }
       else if (TARGET_NATIVE_MATH_INT_INT64_GT(offset,0)) /* Default to END case */
         {
-          offset = JNI_JLONG_CONST_0;
+          offset = TARGET_NATIVE_MATH_INT_INT64_CONST_0;
         }
     }
 
   /* Now do it */
   result = TARGET_NATIVE_ERROR;
-  new_offset = JNI_JLONG_CONST_MINUS_1;
+  new_offset = TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1;
   if (whence == FILEDESCRIPTOR_FILESEEK_SET)
     TARGET_NATIVE_FILE_SEEK_BEGIN(native_fd, offset, new_offset, result);
   if (whence == FILEDESCRIPTOR_FILESEEK_CUR)
@@ -518,7 +517,7 @@ Java_java_io_FileDescriptor_nativeSeek(JNIEnv *env, jobject obj, jlong fd,
       JCL_ThrowException(env,
                          "java/io/IOException",
                          TARGET_NATIVE_LAST_ERROR_STRING());
-      return(JNI_JLONG_CONST_MINUS_1);
+      return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
     }
 
   return(new_offset);
@@ -545,7 +544,7 @@ Java_java_io_FileDescriptor_nativeGetFilePointer(JNIEnv *env, jobject obj,
       JCL_ThrowException(env,
                          "java/io/IOException",
                          TARGET_NATIVE_LAST_ERROR_STRING());
-      return(JNI_JLONG_CONST_MINUS_1);
+      return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
     }
 
   return(current_offset);
@@ -571,7 +570,7 @@ Java_java_io_FileDescriptor_nativeGetLength(JNIEnv *env, jobject obj, jlong fd)
       JCL_ThrowException(env,
                          "java/io/IOException",
                          TARGET_NATIVE_LAST_ERROR_STRING());
-      return(JNI_JLONG_CONST_MINUS_1);
+      return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
     }
 
   return(file_size);
@@ -614,7 +613,7 @@ Java_java_io_FileDescriptor_nativeSetLength(JNIEnv *env, jobject obj,
                          "Cannot represent position correctly on this system");
       return;
     }
-#endif
+#endif /* 0 */
 
   /* get file size */
   TARGET_NATIVE_FILE_SIZE(native_fd, file_size, result);
