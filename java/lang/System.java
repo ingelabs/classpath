@@ -40,7 +40,8 @@ public class System {
 	private static Properties properties;
 
 	static {
-		properties = VMSystem.getSystemProperties();
+		properties = new Properties();
+		VMSystem.insertSystemProperties(properties);
 	}
 
 	/** The standard InputStream.  This is assigned at
