@@ -1,3 +1,8 @@
+2005-03-16  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/lang/MainThread.java (MainThread): Load main class
+	using system class loader.
+
 2005-03-16  Archie Cobbs  <archie@dellroad.org>
 
 	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c: use
