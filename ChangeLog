@@ -1,3 +1,10 @@
+2004-07-15  Andrew Haley  <aph@redhat.com>
+
+	* java/io/ObjectOutputStream.java: Add DEBUG statements
+	everywhere.
+	(dumpElementln): New method.
+	(depth): New field.
+
 2004-07-14  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/newsitems.txt: SableVM and JC releases
