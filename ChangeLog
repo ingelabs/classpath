@@ -1,5 +1,12 @@
 2003-10-24  Julian Dolby  <dolby@us.ibm.com>
 
+	* javax/naming/spi/NamingManager.java (getContinuationContext): Call
+	getObjectInstance() with Object, Name, Context and environment
+	Hashtable from exception. Call fillInStackTrace() on exception when
+	rethrown.
+
+2003-10-24  Julian Dolby  <dolby@us.ibm.com>
+
 	* javax/naming/InitialContext.java (lookup(Name)): When a
 	CannotProceedException is thrown use the ContinuationContext.
 	(lookup(String)): Likewise.
