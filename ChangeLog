@@ -1,3 +1,14 @@
+2002-12-23  Michael Koch  <konqueror@gmx.de>
+
+	* java/lang/reflect/Proxy.java
+	(h): This member was never final in any jdk release.
+	* java/awt/Graphics2D.java
+	(drawImage): Fixed Arguments.
+	* java/awt/event/WindowEvent.java
+	(WINDOW_LAST): Constant value must be 209, not 207.
+	* java/awt/im/InputMethodHighlight.java
+	(getStyle): Fixed typo.
+	
 2002-12-21  Mark Wielaard  <mark@klomp.org>
 
 	* java/net/URLClassLoader.java (getCanonicalFileURL): Make sure that
