@@ -48,12 +48,12 @@ public static final int SCROLLBARS_ALWAYS = 0;
   * Constant indicating that scrollbars are created as needed in this
   * windows.
   */
-public static final int SCROLLBARS_AS_NEEDED = 1;
+public static final int SCROLLBARS_AS_NEEDED = 2;
 
 /**
   * Constant indicating that scrollbars are never displayed in this window.
   */
-public static final int SCROLLBARS_NEVER = 2;
+public static final int SCROLLBARS_NEVER = 1;
 
 // Serialization constant
 private static final long serialVersionUID = 7956609840827222915L;
