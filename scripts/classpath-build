@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# cvs may timeout ...
 set -e
 
 export CVS_RSH=ssh
@@ -12,6 +13,8 @@ DATE=`date +"%Y%m%d"`
 OUTPUTDIR=$HOME/public_html/classpath/daily
 LOGFILE=$OUTPUTDIR/classpath-$DATE.log
 
+echo -n > $LOGFILE
+
 if [ -d $CLASSPATH_CVSSRCDIR ] ; then
   echo "update cvs source tree" >> $LOGFILE
   cd $CLASSPATH_CVSSRCDIR
@@ -22,8 +25,12 @@ if [ -d $CLASSPATH_SRCDIR ] ; then
 
   # delete old sources
   echo "delete old source tree" >> $LOGFILE
+
+  # workaround for automake safety behaviour with umask
+  chmod u+w -R $CLASSPATH_SRCDIR
+
   rm -rf $CLASSPATH_SRCDIR
- 
+
 fi
 
 echo "copy cvs tree to source tree" >> $LOGFILE
@@ -37,10 +44,7 @@ if [ -f configure.ac ] ; then
 fi
 
 # generate autofriends stuff
-aclocal -I /usr/local/share/aclocal -I . >> $LOGFILE 2>&1
-autoheader >> $LOGFILE 2>&1
-autoconf >> $LOGFILE 2>&1
-automake >> $LOGFILE 2>&1
+./autogen.sh >> $LOGFILE 2>&1
 
 # create build directory
 mkdir build
@@ -48,7 +52,7 @@ cd build
   
 # configure and build classpath
 export LD_LIBRARY_PATH=/usr/local/lib
-../configure --prefix=$HOME/local/classpath --with-jikes=/usr/bin/jikes --enable-jni --enable-gtk-peer --enable-regen-headers >> $LOGFILE 2>&1
+../configure --prefix=$HOME/local/classpath --with-jikes=/usr/bin/jikes --enable-glibj=both --enable-jni --enable-gtk-peer --enable-regen-headers >> $LOGFILE 2>&1
 make >> $LOGFILE 2>&1
 make install >> $LOGFILE 2>&1
 
@@ -59,3 +63,6 @@ cp classpath-$DATE.tar.gz $OUTPUTDIR
 cd $OUTPUTDIR
 ln -sf classpath-$DATE.tar.gz LATEST-SNAPSHOT
 ln -sf classpath-$DATE.log LATEST-BUILDLOG
+
+exit 0
+
