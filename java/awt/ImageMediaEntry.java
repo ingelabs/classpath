@@ -28,7 +28,7 @@ import java.io.Serializable;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-synchronized class ImageMediaEntry extends MediaEntry implements ImageObserver,
+class ImageMediaEntry extends MediaEntry implements ImageObserver,
                                                                  Serializable
 {
 
@@ -54,7 +54,14 @@ public void
 startLoad()
 {
   int status = getStatus();
-  status |= LOADSTARTED;
+//  status |= MediaEntry.LOADSTARTED;
+}
+
+public boolean
+imageUpdate(Image image, int flags, int x, int y, int width, int height)
+{
+  // implement me
+  return true;
 }
 
 } // class ImageMediaEntry
