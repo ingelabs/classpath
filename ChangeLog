@@ -1,3 +1,8 @@
+2002-02-22  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/rmi/rmic/RMIC.java (parseOptions): Only print most
+	recent copyright date.
+
 2002-02-22  C. Brian Jones <cbj@gnu.org>
 
 	* java/beans/Introspector.java: added new static final fields 
