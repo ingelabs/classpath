@@ -1,3 +1,8 @@
+2004-12-13  Michael Koch  <konqueror@gmx.de>
+
+	* vm/reference/java/lang/VMClassLoader.java:
+	Reworked import statements.
+
 2004-12-12  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/util/zip/ZipFile.java
