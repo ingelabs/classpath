@@ -184,7 +184,7 @@ JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
 
 #pkgdata_DATA = glibj.zip
 install-data-local :
-	if ! [ -e $(pkgdatadir) ]; then -mkdir -p $(pkgdatadir); fi
+	if ! [ -e $(pkgdatadir) ]; then mkdir -p $(pkgdatadir); fi
 	unzip -d $(pkgdatadir) glibj.zip
 
 all: $(HEADERS_DEPEND) glibj.zip $(MAKEFILE_DEPEND) $(HEADERS)
@@ -195,9 +195,9 @@ all: $(HEADERS_DEPEND) glibj.zip $(MAKEFILE_DEPEND) $(HEADERS)
 
 #.PHONY: jar-classes
 glibj.zip: classes compile-classes
-	if ! [ -e gnu ]; then -mkdir gnu; fi
-	if ! [ -e gnu/java ]; then -mkdir gnu/java; fi
-	if ! [ -e gnu/java/locale ]; then -mkdir gnu/java/locale; fi
+	if ! [ -e gnu ]; then mkdir gnu; fi
+	if ! [ -e gnu/java ]; then mkdir gnu/java; fi
+	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
 	# do something with all the .u files from jikes
