@@ -123,7 +123,7 @@ public class VetoableChangeSupport implements java.io.Serializable {
 	 ** @param propertyName the property to stop listening on.
 	 ** @param l the listener to remove.
 	 **/
-	public void removePropertyChangeListener(String propertyName, VetoableChangeListener l) {
+	public void removeVetoableChangeListener(String propertyName, VetoableChangeListener l) {
 		synchronized(propertyListeners) {
 			Vector v = (Vector)propertyListeners.get(propertyName);
 			try {
