@@ -26,6 +26,8 @@ import java.awt.peer.FramePeer;
 public class GtkFramePeer extends GtkWindowPeer
     implements FramePeer
 {
+  native int getMenuBarHeight ();
+
   public GtkFramePeer (Frame f)
   {
     super (toplevelType, f);
@@ -35,6 +37,29 @@ public class GtkFramePeer extends GtkWindowPeer
   public void setIconImage (Image image) 
   {
       /* TODO: Waiting on Toolkit Image routines */
+  }
+
+  public void setBounds (int x, int y, int width, int height)
+  {
+    Insets insets = ((Frame)awtComponent).getInsets ();
+    super.setBounds (x, y, 
+		     width - insets.left - insets.right, 
+		     height - insets.top - insets.bottom + 
+		     getMenuBarHeight ());
+  }
+
+  protected void postConfigureEvent (int x, int y, int width, int height,
+				     int top, int left, int bottom, int right)
+  {
+    if (((Frame)awtComponent).getMenuBar () != null)
+      {
+	top += getMenuBarHeight ();
+      }
+
+    super.postConfigureEvent (x, y, 
+			      width + left + right,
+			      height + top + bottom - getMenuBarHeight(), 
+			      top, left, bottom, right);
   }
 }
 

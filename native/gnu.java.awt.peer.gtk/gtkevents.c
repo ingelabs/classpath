@@ -356,9 +356,17 @@ awt_event_handler (GdkEvent *event)
 	    
 	    if (widget && GTK_IS_WINDOW (widget))
 	      {
-		gint x, y;
-		/* ignore where the WM puts us */
-		gdk_window_get_root_origin (widget->window, &x, &y);
+		gint top, left, right, bottom;
+		gint x, y, w, h, wb, d;
+
+		/* calculate our insets */
+		gdk_window_get_root_geometry (widget->window, 
+					      &x, &y, &w, &h, &wb, &d);
+
+		top = event->configure.y - y;
+		left = event->configure.x - x;
+		bottom = h - event->configure.height - top;
+		right = w - event->configure.width - left;
 
 		/* configure events are not posted to the AWT event queue,
 		   and as such, gdk/gtk will be called back before
@@ -366,21 +374,27 @@ awt_event_handler (GdkEvent *event)
 		gdk_threads_leave ();
 		(*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, 
 					    postConfigureEventID,
-					    (jint)x,
-					    (jint)y,
+					    (jint)event->configure.x,
+					    (jint)event->configure.y,
 					    (jint)event->configure.width,
-					    (jint)event->configure.height);
+					    (jint)event->configure.height,
+					    (jint)top,
+					    (jint)left,
+					    (jint)bottom,
+					    (jint)right);
 		gdk_threads_enter ();
 	      }
 	  }
 	  break;
 	case GDK_EXPOSE:
-	  (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
-				      postExposeEventID,
-				      (jint)event->expose.area.x,
-				      (jint)event->expose.area.y,
-				      (jint)event->expose.area.width,
-				      (jint)event->expose.area.height);
+	  {
+	    (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
+					postExposeEventID,
+					(jint)event->expose.area.x,
+					(jint)event->expose.area.y,
+					(jint)event->expose.area.width,
+					(jint)event->expose.area.height);
+	  }
 	  break;
 
 	case GDK_KEY_PRESS:

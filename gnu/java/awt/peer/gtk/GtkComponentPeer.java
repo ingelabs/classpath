@@ -201,7 +201,21 @@ public class GtkComponentPeer extends GtkGenericPeer
   {
   }
 
-  native public void setBounds (int x, int y, int width, int height);
+  native public void setNativeBounds (int x, int y, int width, int height);
+
+  public void setBounds (int x, int y, int width, int height)
+  {
+    Component parent = awtComponent.getParent ();
+    
+    if (parent instanceof Frame)
+      {
+	Insets insets = ((Frame)parent).getInsets ();
+	/* convert Java's coordinate space into GTK+'s coordinate space */
+	setNativeBounds (x-insets.left, y-insets.top, width, height);
+      }
+    else
+      setNativeBounds (x, y, width, height);
+  }
 
   public void setCursor (Cursor cursor) 
   {

@@ -178,26 +178,16 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions
 {
     void *ptr;
     jint *dims;
-    GtkRequisition myreq;
+    GtkRequisition req;
 
     ptr = NSA_GET_PTR (env,obj);
     dims = (*env)->GetIntArrayElements (env, jdims, 0);  
 
     gdk_threads_enter ();
-
-    //    dims[0]=GTK_WIDGET(ptr)->allocation.width;
-    //    dims[1]=GTK_WIDGET(ptr)->allocation.height;
-
-    gtk_signal_emit_by_name (GTK_OBJECT (ptr), "size_request", &myreq);
-
-    //    gtk_widget_size_request(GTK_WIDGET(ptr),&myreq);
-
-    //    if (dims[0]<=1 && dims[1]<=1)
-    //      {
-	dims[0]=myreq.width;
-	dims[1]=myreq.height;
-	//      }
-
+    gtk_signal_emit_by_name (GTK_OBJECT (ptr), "size_request", &req);
+	
+    dims[0] = req.width;
+    dims[1] = req.height;
     
     gdk_threads_leave ();
 
@@ -334,7 +324,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedMove (JNIEnv *env,
     }
 }
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setBounds
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBounds
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
 {
   GtkWidget *widget;

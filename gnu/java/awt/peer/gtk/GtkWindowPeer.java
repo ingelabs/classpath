@@ -36,11 +36,11 @@ public class GtkWindowPeer extends GtkContainerPeer
     super (w);
     System.out.println("WindowPeer int cons");
     
+    Dimension d = w.getSize();
+
     /* A bogusType indicates that we should not create a GTK window. */
-    
     if (type != bogusType)
       {
-	Dimension d = w.getSize();
 	gtkWindowNew (type, d.width, d.height, w.isVisible ());
       }
   }
@@ -68,8 +68,28 @@ public class GtkWindowPeer extends GtkContainerPeer
       setMenuBarPeer ((MenuBarPeer) bar.getPeer ());
   }
 
-  protected void postConfigureEvent (int x, int y, int width, int height)
+  protected void postConfigureEvent (int x, int y, int width, int height,
+				     int top, int left, int bottom, int right)
   {
+    /* 
+       If our borders change (which often happens when we opaque resize),
+       we need to make sure that a new layout will happen, since Sun
+       forgets to handle this case.
+    */
+    if (insets.top != top)
+      awtComponent.invalidate ();
+    if (insets.left != left)
+      awtComponent.invalidate ();
+    if (insets.bottom != bottom)
+      awtComponent.invalidate ();
+    if (insets.right != right)
+      awtComponent.invalidate ();
+    
+    insets.top = top;
+    insets.left = left;
+    insets.bottom = bottom;
+    insets.right = right;
+
     awtComponent.setBounds (x, y, width, height);
     awtComponent.validate ();
   }

@@ -21,6 +21,9 @@
 #include "gtkpeer.h"
 #include "GtkMenuItemPeer.h"
 
+static void
+connect_activate_hook (JNIEnv *, jobject, GtkMenuItem *);
+
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create
   (JNIEnv *env, jobject obj, jstring label)
 {
@@ -36,10 +39,30 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create
   else
     widget = gtk_menu_item_new_with_label (str);
 
+  connect_activate_hook (env, obj, GTK_MENU_ITEM (widget));
   gtk_widget_show (widget);
   gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, label, str);
 
   NSA_SET_PTR (env, obj, widget);
+}
+
+static void
+item_activate (GtkMenuItem *item, jobject *peer_obj)
+{
+  (*gdk_env)->CallVoidMethod (gdk_env, *peer_obj,
+			      postMenuActionEventID);
+}
+
+static void
+connect_activate_hook (JNIEnv *env, jobject peer_obj, GtkMenuItem *item)
+{
+  jobject *obj;
+
+  obj = (jobject *) malloc (sizeof (jobject));
+  *obj = (*env)->NewGlobalRef (env, peer_obj);
+
+  gtk_signal_connect (GTK_OBJECT (item), "activate", 
+		      GTK_SIGNAL_FUNC (item_activate), obj);
 }

@@ -28,6 +28,7 @@
 #endif
 
 jmethodID postActionEventID;
+jmethodID postMenuActionEventID;
 jmethodID postMouseEventID;
 jmethodID postConfigureEventID;
 jmethodID postExposeEventID;
@@ -50,7 +51,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   char **argv;
   char *homedir, *rcpath = NULL;
 /*    jclass gtkgenericpeer; */
-  jclass gtkcomponentpeer, gtkwindowpeer, gtkscrollbarpeer, gtklistpeer;
+  jclass gtkcomponentpeer, gtkwindowpeer, gtkscrollbarpeer, gtklistpeer, gtkmenuitempeer;
 
   printf ("init\n");
 
@@ -103,16 +104,21 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   gtkscrollbarpeer = (*env)->FindClass (env, 
 				     "gnu/java/awt/peer/gtk/GtkScrollbarPeer");
   gtklistpeer = (*env)->FindClass (env, "gnu/java/awt/peer/gtk/GtkListPeer");
+  gtkmenuitempeer = (*env)->FindClass (env, "gnu/java/awt/peer/gtk/GtkMenuItemPeer");
 /*    gdkColor = (*env)->FindClass (env, */
 /*  				"gnu/java/awt/peer/gtk/GdkColor"); */
 /*    gdkColorID = (*env)->GetMethodID (env, gdkColor, "<init>", "(III)V"); */
 /*    postActionEventID = (*env)->GetMethodID (env, gtkgenericpeer,  */
 /*  					   "postActionEvent",  */
 /*  					   "(Ljava/lang/String;I)V"); */
+
+  postMenuActionEventID = (*env)->GetMethodID (env, gtkmenuitempeer,
+					       "postMenuActionEvent",
+					       "()V");
   postMouseEventID = (*env)->GetMethodID (env, gtkcomponentpeer, 
 					  "postMouseEvent", "(IJIIIIZ)V");
   postConfigureEventID = (*env)->GetMethodID (env, gtkwindowpeer, 
-					  "postConfigureEvent", "(IIII)V");
+					  "postConfigureEvent", "(IIIIIIII)V");
   postExposeEventID = (*env)->GetMethodID (env, gtkcomponentpeer, 
 					  "postExposeEvent", "(IIII)V");
   postKeyEventID = (*env)->GetMethodID (env, gtkcomponentpeer,

@@ -230,6 +230,7 @@ struct graphics
 #define AWT_FOCUS_GAINED 1005
 
 extern jmethodID postActionEventID;
+extern jmethodID postMenuActionEventID;
 extern jmethodID postMouseEventID;
 extern jmethodID postConfigureEventID;
 extern jmethodID postExposeEventID;
@@ -242,6 +243,15 @@ extern jmethodID syncAttrsID;
 extern jclass gdkColor;
 extern jmethodID gdkColorID;
 extern JNIEnv *gdk_env;
+
+void
+gdk_window_get_root_geometry (GdkWindow *window,
+			      gint      *x,
+			      gint      *y,
+			      gint      *width,
+			      gint      *height,
+			      gint      *border,
+			      gint      *depth);
 
 void awt_event_handler (GdkEvent *event);
 

@@ -27,7 +27,7 @@ import java.awt.peer.ContainerPeer;
 public class GtkContainerPeer extends GtkComponentPeer
   implements ContainerPeer
 {
-  Insets myInsets;
+  Insets insets;
   Container c;
 
   native void gtkContainerCheckResize ();
@@ -36,7 +36,7 @@ public class GtkContainerPeer extends GtkComponentPeer
   {
     super (c);
     this.c = c;
-    myInsets = new Insets (0, 0, 0, 0);
+    insets = new Insets (0, 0, 0, 0);
   }
 
   public void beginValidate() 
@@ -62,12 +62,12 @@ public class GtkContainerPeer extends GtkComponentPeer
 
   public Insets getInsets() 
   {
-    return myInsets;
+    return insets;
   }
 
   public Insets insets() 
   {
-    return getInsets();
+    return getInsets ();
   }
 
   public void setBounds (int x, int y, int width, int height)
