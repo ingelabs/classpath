@@ -1,3 +1,8 @@
+2000-08-04  Tom Tromey  <tromey@cygnus.com>
+
+	* java/io/StreamTokenizer.java (TT_NONE): Now private.
+	(nextToken): Handle backslashed newline.  From Oskar Liljeblad.
+
 2000-07-28  Weldon Washburn <weldon.washburn@intel.com>
 
 	* java/lang/String.java (String(byte[],int,int,int)): Properly
