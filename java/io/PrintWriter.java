@@ -55,7 +55,10 @@ static
   sep = System.getProperty("line.separator");
 
   if (sep == null)
-    throw new Error("Cannot determine the system line separator");
+    // XXX Stopgap measure until we figure out what's wrong with
+    // XXX system properties
+    // throw new Error("Cannot determine the system line separator");
+    sep = "\n";
 } 
 
 /*************************************************************************/
