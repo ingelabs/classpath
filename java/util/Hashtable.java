@@ -557,7 +557,7 @@ public class Hashtable extends Dictionary
     for (int pos = size; pos > 0; pos--)
       {
         r.append(entries.next());
-        if (pos == 1)
+        if (pos > 1)
           r.append(", ");
       }
     r.append("}");
@@ -823,7 +823,7 @@ public class Hashtable extends Dictionary
     threshold = (int) (newcapacity * loadFactor);
     buckets = new HashEntry[newcapacity];
 
-    for (int i =oldBuckets.length - 1; i >= 0; i--)
+    for (int i = oldBuckets.length - 1; i >= 0; i--)
       {
         HashEntry e = oldBuckets[i];
         while (e != null)
@@ -899,9 +899,6 @@ public class Hashtable extends Dictionary
     // Read and use capacity.
     buckets = new HashEntry[s.readInt()];
     int len = s.readInt();
-    // Already happens automatically.
-    // size = 0;
-    // modCount = 0;
 
     // Read and use key/value pairs.
     for ( ; len > 0; len--)
