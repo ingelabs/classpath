@@ -1,3 +1,11 @@
+2003-08-10  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/awt/Container.java
+	(getPreferredSize): Call preferredSize.
+	(preferredSize): Moved body of getPreferredSize here.
+	(getMinimumSize): Call minimumSize.
+	(minimumSize): Moved body of getMinimumSize here.
+
 2003-08-10  Bryce McKinlay  <bryce@mckinlay.net.nz>
 
 	* java/io/PrintStream.java (print): Always flush if auto_flush is
