@@ -1,5 +1,9 @@
 2004-12-06  Michael Koch  <konqueror@gmx.de>
 
+	* include/java_io_ObjectInputStream.h: Regenerated.
+
+2004-12-06  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/DefaultListCellRenderer.java
 	(serialVersionUID): Made private.
 	(getListCellRendererComponent): Set horizontal alignment.
