@@ -212,11 +212,13 @@ public final class Boolean implements Serializable
    *
    * @param name the property name to look up
    * @return true if the property resulted in "true"
+   * @throws SecurityException if accessing the system property is forbidden
    * @see System#getProperty(String)
    */
   public static boolean getBoolean(String name)
   {
-    String val = System.getProperty(name);
-    return "true".equalsIgnoreCase(val);
+    if (name == null || "".equals(name))
+      return false;
+    return "true".equalsIgnoreCase(System.getProperty(name));
   }
 }

@@ -327,24 +327,22 @@ public final class Float extends Number implements Comparable
    *
    * @return the byte value
    * @since 1.1
-   * @XXX Add this method
+   */
   public byte byteValue()
   {
     return (byte) value;
   }
-   */
 
   /**
    * Return the value of this <code>Float</code> as a <code>short</code>.
    *
    * @return the short value
    * @since 1.1
-   * @XXX Add this method
+   */
   public short shortValue()
   {
     return (short) value;
   }
-   */
 
   /**
    * Return the value of this <code>Integer</code> as an <code>int</code>.
@@ -502,7 +500,7 @@ public final class Float extends Number implements Comparable
    */
   public int compareTo(Object o)
   {
-    return compareTo(value, ((Float) o).value);
+    return compare(value, ((Float) o).value);
   }
 
   /**

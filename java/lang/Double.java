@@ -246,8 +246,7 @@ public final class Double extends Number implements Comparable
    * @see #NEGATIVE_INFINITY
    * @since 1.2
    */
-  public static native double parseDouble(String s)
-    throws NumberFormatException;
+  public static native double parseDouble(String s);
 
   /**
    * Return <code>true</code> if the <code>double</code> has the same
@@ -317,24 +316,22 @@ public final class Double extends Number implements Comparable
    *
    * @return the byte value
    * @since 1.1
-   * @XXX Add this method
+   */
   public byte byteValue()
   {
     return (byte) value;
   }
-   */
 
   /**
    * Return the value of this <code>Double</code> as a <code>short</code>.
    *
    * @return the short value
    * @since 1.1
-   * @XXX Add this method
+   */
   public short shortValue()
   {
     return (short) value;
   }
-   */
 
   /**
    * Return the value of this <code>Double</code> as an <code>int</code>.
@@ -366,7 +363,7 @@ public final class Double extends Number implements Comparable
     return (float) value;
   }
 
-n  /**
+  /**
    * Return the value of this <code>Double</code>.
    *
    * @return the double value
@@ -497,7 +494,7 @@ n  /**
    */
   public int compareTo(Object o)
   {
-    return compareTo(value, ((Double) o).value);
+    return compare(value, ((Double) o).value);
   }
 
   /**

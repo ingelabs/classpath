@@ -106,7 +106,7 @@ public final class Long extends Number implements Comparable
    */
   public Long(String s)
   {
-    value = parseLong(s, 10);
+    value = parseLong(s, 10, false);
   }
 
   /**
@@ -123,20 +123,18 @@ public final class Long extends Number implements Comparable
    */
   public static String toString(long num, int radix)
   {
-    // Use optimized method for the typical case.
-    if (radix == 10 ||
-        radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
-      return toString(num);
-
     // Use the Integer toString for efficiency if possible.
     if ((int) num == num)
       return Integer.toString((int) num, radix);
+
+    if (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
+      radix = 10;
 
     // For negative numbers, print out the absolute value w/ a leading '-'.
     // Use an array large enough for a binary number.
     char[] buffer = new char[65];
     int i = 65;
-    boolean isNeg;
+    boolean isNeg = false;
     if (num < 0)
       {
         isNeg = true;
@@ -144,18 +142,12 @@ public final class Long extends Number implements Comparable
 
         // When the value is MIN_VALUE, it overflows when made positive
         if (num < 0)
-          {
-            buffer[--i] = Character.forDigit((int) (-(num + radix) % radix),
-                                             radix);
-            num = -(num / radix);
-          }
+          return "" + MIN_VALUE;
       }
-    else
-      isNeg = false;
 
     do
       {
-        buffer[--i] = Character.forDigit((int) (num % radix), radix);
+        buffer[--i] = digits[(int) (num % radix)];
         num /= radix;
       }
     while (num > 0);
@@ -212,39 +204,7 @@ public final class Long extends Number implements Comparable
    */
   public static String toString(long num)
   {
-    // Use the Integer toString for efficiency if possible.
-    if ((int) num ==  num)
-      return String.valueOf((int) num);
-
-    // Use an array large enough for "-9223372036854775808"; i.e. 20 chars.
-    char[] buffer = new char[20];
-    int i = 20;
-    boolean isNeg;
-    if (num < 0)
-      {
-        isNeg = true;
-        num = -(num);
-        if (num < 0)
-          {
-            // Must be MIN_VALUE, so handle this special case.
-            buffer[--i] = '8';
-            num = 922337203685477580L;
-          }
-      }
-    else
-      isNeg = false;
-
-    do
-      {
-        buffer[--i] = (char) ((int) '0' + (num % 10));
-        num /= 10;
-      }
-    while (num > 0);
-
-    if (isNeg)
-      buffer[--i] = '-';
-
-    return String.valueOf(buffer, i, 20 - i);
+    return toString(num, 10);
   }
 
   /**
@@ -267,24 +227,7 @@ public final class Long extends Number implements Comparable
    */
   public static long parseLong(String str, int radix)
   {
-    final int len;
-
-    if ((len = str.length()) == 0 || radix < Character.MIN_RADIX
-         || radix > Character.MAX_RADIX)
-      throw new NumberFormatException();
-
-    boolean isNeg = false;
-    int index = 0;
-    if (str.charAt(index) == '-')
-      if (len > 1)
-        {
-          isNeg = true;
-          index++;
-        }
-      else
-        throw new NumberFormatException();
-
-    return parseLong(str, index, len, isNeg, radix);
+    return parseLong(str, radix, false);
   }
 
   /**
@@ -299,7 +242,7 @@ public final class Long extends Number implements Comparable
    */
   public static long parseLong(String s)
   {
-    return parseLong(s, 10);
+    return parseLong(s, 10, false);
   }
 
   /**
@@ -315,7 +258,7 @@ public final class Long extends Number implements Comparable
    */
   public static Long valueOf(String s, int radix)
   {
-    return new Long(parseLong(s, radix));
+    return new Long(parseLong(s, radix, false));
   }
 
   /**
@@ -331,7 +274,7 @@ public final class Long extends Number implements Comparable
    */
   public static Long valueOf(String s)
   {
-    return new Long(parseLong(s, 10));
+    return new Long(parseLong(s, 10, false));
   }
 
   /**
@@ -355,60 +298,20 @@ public final class Long extends Number implements Comparable
    * <em>DecimalDigit</em>:
    *        <em>Character.digit(d, 16) has value 0 to 15</em>
    * </pre>
-   * Note that you cannot decode MIN_VALUE, as the specification requires
-   * that the digits be parsed before negating the result, but
-   * 9223372036854775808 will not fit in a long. Also, you may not use a
-   * trailing 'l' or 'L', unlike in Java source code.
+   * Finally, the value must be in the range <code>MIN_VALUE</code> to
+   * <code>MAX_VALUE</code>, or an exception is thrown. Note that you cannot
+   * use a trailing 'l' or 'L', unlike in Java source code.
    *
    * @param s the <code>String</code> to interpret
    * @return the value of the String as a <code>Long</code>
    * @throws NumberFormatException if <code>s</code> cannot be parsed as a
    *         <code>long</code>
-   * @throws NullPointerException if s is null
+   * @throws NullPointerException if <code>s</code> is null
    * @since 1.2
    */
   public static Long decode(String str)
   {
-    boolean isNeg = false;
-    int index = 0;
-    int radix = 10;
-    final int len;
-
-    if ((len = str.length()) == 0)
-      throw new NumberFormatException();
-
-    // Negative numbers are always radix 10.
-    if (str.charAt(0) == '-')
-      {
-        radix = 10;
-        index++;
-        isNeg = true;
-      }
-    else if (str.charAt(index) == '#')
-      {
-        radix = 16;
-        index++;
-      }
-    else if (str.charAt(index) == '0')
-      {
-        // Check if str is just "0"
-        if (len == 1)
-          return new Long(0L);
-
-        index++;
-        if (str.charAt(index) == 'x')
-          {
-            radix = 16;
-            index++;
-          }
-        else
-          radix = 8;
-      }
-
-    if (index >= len)
-      throw new NumberFormatException();
-
-    return new Long(parseLong(str, index, len, isNeg, radix));
+    return new Long(parseLong(str, 10, true));
   }
 
   /**
@@ -556,8 +459,10 @@ public final class Long extends Number implements Comparable
    */
   public static Long getLong(String nm, Long def)
   {
-    String val = System.getProperty(nm);
-    if (val == null)
+    if (nm == null || "".equals(nm))
+      return def;
+    nm = System.getProperty(nm);
+    if (nm == null)
       return def;
     try
       {
@@ -583,7 +488,7 @@ public final class Long extends Number implements Comparable
     if (value == l.value)
       return 0;
     // Returns just -1 or 1 on inequality; doing math might overflow the long.
-    return value > i.value ? 1 : -1;
+    return value > l.value ? 1 : -1;
   }
 
   /**
@@ -611,14 +516,13 @@ public final class Long extends Number implements Comparable
   private static String toUnsignedString(long num, int exp)
   {
     // Use an array large enough for a binary number.
-    int radix = 1 << exp;
-    int mask = radix - 1;
+    int mask = (1 << exp) - 1;
     char[] buffer = new char[64];
     int i = 64;
     do
       {
-        buffer[--i] = Character.forDigit((int) num & mask, radix);
-        num = num >>> exp;
+        buffer[--i] = digits[(int) num & mask];
+        num >>>= exp;
       }
     while (num != 0);
 
@@ -629,40 +533,62 @@ public final class Long extends Number implements Comparable
    * Helper for parsing longs.
    *
    * @param str the string to parse
-   * @param index the index to start at
-   * @param len the string length
-   * @param isNeg if the result should be negated
-   * @param radix the radix to use
+   * @param radix the radix to use, must be 10 if decode is true
+   * @param decode if called from decode
    * @return the parsed long value
    * @throws NumberFormatException if there is an error
+   * @throws NullPointerException if decode is true and str is null
+   * @see #parseLong(String, int)
+   * @see #decode(String)
    */
-  private static long parseLong(String str, int index, int len, boolean isNeg,
-                                int radix)
+  private static long parseLong(String str, int radix, boolean decode)
   {
-    long val = 0;
-    int digval;
-
-    long max = MAX_VALUE / radix;
-    // We can't directly write `max = (MAX_VALUE + 1) / radix'.
-    // So instead we fake it.
-    if (isNeg && MAX_VALUE % radix == radix - 1)
-      ++max;
-
-    for ( ; index < len; index++)
+    if (! decode && str == null)
+      throw new NumberFormatException();
+    int index = 0;
+    int len = str.length();
+    boolean isNeg = false;
+    if (len == 0)
+      throw new NumberFormatException();
+    int ch = str.charAt(index);
+    if (ch == '-')
       {
-        if (val < 0 || val > max)
+        if (len == 1)
           throw new NumberFormatException();
-
-        if ((digval = Character.digit(str.charAt(index), radix)) < 0)
-          throw new NumberFormatException();
-
-        // Throw an exception for overflow if result is negative.
-        // However, we special-case the most negative value.
-        val = val * radix + digval;
-        if (val < 0 && (! isNeg || val != MIN_VALUE))
+        isNeg = true;
+        ch = str.charAt(++index);
+      }
+    if (decode)
+      {
+        if (ch == '0')
+          {
+            if (++index == len)
+              return 0;
+            if ((str.charAt(index) & ~('x' ^ 'X')) == 'X')
+              {
+                radix = 16;
+                index++;
+              }
+            else
+              radix = 8;
+          }
+        else if (ch == '#')
+          {
+            radix = 16;
+            index++;
+          }
+      }
+    if (index == len)
+      throw new NumberFormatException();
+    long val = 0;
+    while (index < len)
+      {
+        ch = Character.digit(str.charAt(index++), radix);
+        val = val * radix + ch;
+        if (ch < 0 || (val < 0 && (index < len || ! isNeg
+                                   || val != MIN_VALUE)))
           throw new NumberFormatException();
       }
-
     return isNeg ? -val : val;
   }
 }

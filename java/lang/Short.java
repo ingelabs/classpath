@@ -150,7 +150,7 @@ public final class Short extends Number implements Comparable
    */
   public static short parseShort(String s, int radix)
   {
-    int i = Integer.parseInt(s, radix);
+    int i = Integer.parseInt(s, radix, false);
     if ((short) i != i)
       throw new NumberFormatException();
     return (short) i;
@@ -209,20 +209,19 @@ public final class Short extends Number implements Comparable
    * <em>DecimalDigit</em>:
    *        <em>Character.digit(d, 16) has value 0 to 15</em>
    * </pre>
-   * Note that you cannot decode MIN_VALUE, as the specification requires
-   * that the digits be parsed before negating the result, but 32768 will
-   * not fit in a short.
+   * Finally, the value must be in the range <code>MIN_VALUE</code> to
+   * <code>MAX_VALUE</code>, or an exception is thrown.
    *
    * @param s the <code>String</code> to interpret
    * @return the value of the String as a <code>Short</code>
    * @throws NumberFormatException if <code>s</code> cannot be parsed as a
    *         <code>short</code>
-   * @throws NullPointerException if s is null
+   * @throws NullPointerException if <code>s</code> is null
    * @see Integer#decode(String)
    */
   public static Short decode(String s)
   {
-    int i = (Integer.decode(s)).intValue();
+    int i = Integer.parseInt(s, 10, true);
     if ((short) i != i)
       throw new NumberFormatException();
     return new Short((short) i);

@@ -106,7 +106,7 @@ public final class Integer extends Number implements Comparable
    */
   public Integer(String s)
   {
-    value = parseInt(s, 10);
+    value = parseInt(s, 10, false);
   }
 
   /**
@@ -130,7 +130,7 @@ public final class Integer extends Number implements Comparable
     // Use an array large enough for a binary number.
     char[] buffer = new char[33];
     int i = 33;
-    boolean isNeg;
+    boolean isNeg = false;
     if (num < 0)
       {
         isNeg = true;
@@ -138,17 +138,12 @@ public final class Integer extends Number implements Comparable
 
         // When the value is MIN_VALUE, it overflows when made positive
         if (num < 0)
-          {
-            buffer[--i] = Character.forDigit(-(num + radix) % radix, radix);
-            num = -(num / radix);
-          }
+          return "" + MIN_VALUE;
       }
-    else
-      isNeg = false;
 
     do
       {
-        buffer[--i] = Character.forDigit(num % radix, radix);
+        buffer[--i] = digits[num % radix];
         num /= radix;
       }
     while (num > 0);
@@ -229,27 +224,7 @@ public final class Integer extends Number implements Comparable
    */
   public static int parseInt(String str, int radix)
   {
-    final int len;
-
-    if (str == null)
-      throw new NumberFormatException();
-
-    if ((len = str.length()) == 0 ||
-        radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
-      throw new NumberFormatException();
-
-    boolean isNeg = false;
-    int index = 0;
-    if (str.charAt(index) == '-')
-      if (len > 1)
-        {
-          isNeg = true;
-          index++;
-        }
-      else
-        throw new NumberFormatException();
-
-    return parseInt(str, index, len, isNeg, radix);
+    return parseInt(str, radix, false);
   }
 
   /**
@@ -264,7 +239,7 @@ public final class Integer extends Number implements Comparable
    */
   public static int parseInt(String s)
   {
-    return parseInt(s, 10);
+    return parseInt(s, 10, false);
   }
 
   /**
@@ -280,7 +255,7 @@ public final class Integer extends Number implements Comparable
    */
   public static Integer valueOf(String s, int radix)
   {
-    return new Integer(parseInt(s, radix));
+    return new Integer(parseInt(s, radix, false));
   }
 
   /**
@@ -296,7 +271,7 @@ public final class Integer extends Number implements Comparable
    */
   public static Integer valueOf(String s)
   {
-    return new Integer(parseInt(s, 10));
+    return new Integer(parseInt(s, 10, false));
   }
 
   /**
@@ -443,12 +418,14 @@ public final class Integer extends Number implements Comparable
    */
   public static Integer getInteger(String nm, Integer def)
   {
-    String val = System.getProperty(nm);
-    if (val == null)
+    if (nm == null || "".equals(nm))
+      return def;
+    nm = System.getProperty(nm);
+    if (nm == null)
       return def;
     try
       {
-        return decode(val);
+        return decode(nm);
       }
     catch (NumberFormatException e)
       {
@@ -477,59 +454,19 @@ public final class Integer extends Number implements Comparable
    * <em>DecimalDigit</em>:
    *        <em>Character.digit(d, 16) has value 0 to 15</em>
    * </pre>
-   * Note that you cannot decode MIN_VALUE, as the specification requires
-   * that the digits be parsed before negating the result, but 2147483648
-   * will not fit in an int.
+   * Finally, the value must be in the range <code>MIN_VALUE</code> to
+   * <code>MAX_VALUE</code>, or an exception is thrown.
    *
    * @param s the <code>String</code> to interpret
    * @return the value of the String as an <code>Integer</code>
    * @throws NumberFormatException if <code>s</code> cannot be parsed as a
    *         <code>int</code>
-   * @throws NullPointerException if s is null
+   * @throws NullPointerException if <code>s</code> is null
    * @since 1.2
    */
   public static Integer decode(String str)
   {
-    boolean isNeg = false;
-    int index = 0;
-    int radix = 10;
-    final int len;
-
-    if (str == null || (len = str.length()) == 0)
-      throw new NumberFormatException("string null or empty");
-
-    // Negative numbers are always radix 10.
-    if (str.charAt(index) == '-')
-      {
-        radix = 10;
-        index++;
-        isNeg = true;
-      }
-    else if (str.charAt(index) == '#')
-      {
-        radix = 16;
-        index++;
-      }
-    else if (str.charAt(index) == '0')
-      {
-        // Check if str is just "0"
-        if (len == 1)
-          return new Integer(0);
-
-        index++;
-        if (str.charAt(index) == 'x' || str.charAt(index) == 'X')
-          {
-            radix = 16;
-            index++;
-          }
-        else
-          radix = 8;
-      }
-
-    if (index >= len)
-      throw new NumberFormatException("empty value");
-
-    return new Integer(parseInt(str, index, len, isNeg, radix));
+    return new Integer(parseInt(str, 10, true));
   }
 
   /**
@@ -574,14 +511,13 @@ public final class Integer extends Number implements Comparable
   private static String toUnsignedString(int num, int exp)
   {
     // Use an array large enough for a binary number.
-    int radix = 1 << exp;
-    int mask = radix - 1;
+    int mask = (1 << exp) - 1;
     char[] buffer = new char[32];
     int i = 32;
     do
       {
-        buffer[--i] = Character.forDigit(num & mask, radix);
-        num = num >>> exp;
+        buffer[--i] = digits[num & mask];
+        num >>>= exp;
       }
     while (num != 0);
 
@@ -589,43 +525,67 @@ public final class Integer extends Number implements Comparable
   }
 
   /**
-   * Helper for parsing ints.
+   * Helper for parsing ints, used by Integer, Short, and Byte.
    *
    * @param str the string to parse
-   * @param index the index to start at
-   * @param len the string length
-   * @param isNeg if the result should be negated
-   * @param radix the radix to use
+   * @param radix the radix to use, must be 10 if decode is true
+   * @param decode if called from decode
    * @return the parsed int value
    * @throws NumberFormatException if there is an error
+   * @throws NullPointerException if decode is true and str if null
+   * @see #parseInt(String, int)
+   * @see #decode(String)
+   * @see Byte#parseInt(String, int)
+   * @see Short#parseInt(String, int)
    */
-  private static int parseInt(String str, int index, int len, boolean isNeg,
-                              int radix)
+  static int parseInt(String str, int radix, boolean decode)
   {
-    int val = 0;
-    int digval;
-
-    int max = MAX_VALUE / radix;
-    // We can't directly write `max = (MAX_VALUE + 1) / radix'.
-    // So instead we fake it.
-    if (isNeg && MAX_VALUE % radix == radix - 1)
-      ++max;
-
-    for ( ; index < len; index++)
+    if (! decode && str == null)
+      throw new NumberFormatException();
+    int index = 0;
+    int len = str.length();
+    boolean isNeg = false;
+    if (len == 0)
+      throw new NumberFormatException();
+    int ch = str.charAt(index);
+    if (ch == '-')
       {
-        if (val < 0 || val > max)
+        if (len == 1)
           throw new NumberFormatException();
-
-        if ((digval = Character.digit(str.charAt(index), radix)) < 0)
-          throw new NumberFormatException();
-
-        // Throw an exception for overflow if result is negative.
-        // However, we special-case the most negative value.
-        val = val * radix + digval;
-        if (val < 0 && (! isNeg || val != MIN_VALUE))
+        isNeg = true;
+        ch = str.charAt(++index);
+      }
+    if (decode)
+      {
+        if (ch == '0')
+          {
+            if (++index == len)
+              return 0;
+            if ((str.charAt(index) & ~('x' ^ 'X')) == 'X')
+              {
+                radix = 16;
+                index++;
+              }
+            else
+              radix = 8;
+          }
+        else if (ch == '#')
+          {
+            radix = 16;
+            index++;
+          }
+      }
+    if (index == len)
+      throw new NumberFormatException();
+    int val = 0;
+    while (index < len)
+      {
+        ch = Character.digit(str.charAt(index++), radix);
+        val = val * radix + ch;
+        if (ch < 0 || (val < 0 && (index < len || ! isNeg
+                                   || val != MIN_VALUE)))
           throw new NumberFormatException();
       }
-
     return isNeg ? -val : val;
   }
 }

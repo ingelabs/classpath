@@ -1,3 +1,28 @@
+2002-02-25  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/Double.java (byteValue, shortValue, compareTo): Add
+	missing methods, fix typo in last commit.
+	* java/lang/Float.java (byteValue, shortValue, compareTo): Ditto.
+	* java/lang/Number.java (digits): Add lookup table.
+	* java/lang/Character.java (forDigit): Use table.
+	* java/lang/Integer.java (toString(int, int)): Optimize
+	case for MIN_VALUE.
+	(getInteger(String, Integer)): Trap NullPointerException,
+	IllegalArgumentException from System.getProperty.
+	(parseInt(String, int, boolean)): Combine parseInt and decode into
+	one method, and optimize.
+	(parseInt, decode, valueOf): Use improved parseInt.
+	* java/lang/Byte.java (parseByte, decode): Ditto.
+	* java/lang/Short.java (parseShort, decode): Ditto.
+	* java/lang/Long.java (parseLong(String, int, boolean)): Combine
+	parseLong and decode into one method, and optimize.
+	(parseLong, decode, valueOf): Use improved parseLong.
+	(toString): Optimize case for MIN_VALUE.
+	(getLong(String, Long)): Trap NullPointerException,
+	IllegalArgumentException from System.getProperty.
+	* java/lang/Boolean.java (getBoolean): Trap NullPointerException,
+	IllegalArgumentException from System.getProperty.
+
 2002-02-24  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/lang/Byte.java: Reformat, improve Javadoc.

@@ -153,7 +153,7 @@ public final class Byte extends Number implements Comparable
    */
   public static byte parseByte(String s, int radix)
   {
-    int i = Integer.parseInt(s, radix);
+    int i = Integer.parseInt(s, radix, false);
     if ((byte) i != i)
       throw new NumberFormatException();
     return (byte) i;
@@ -212,20 +212,19 @@ public final class Byte extends Number implements Comparable
    * <em>DecimalDigit</em>:
    *        <em>Character.digit(d, 16) has value 0 to 15</em>
    * </pre>
-   * Note that you cannot decode MIN_VALUE, as the specification requires
-   * that the digits be parsed before negating the result, but 128 will not
-   * fit in a byte.
+   * Finally, the value must be in the range <code>MIN_VALUE</code> to
+   * <code>MAX_VALUE</code>, or an exception is thrown.
    *
    * @param s the <code>String</code> to interpret
    * @return the value of the String as a <code>Byte</code>
    * @throws NumberFormatException if <code>s</code> cannot be parsed as a
    *         <code>byte</code>
-   * @throws NullPointerException if s is null
+   * @throws NullPointerException if <code>s</code> is null
    * @see Integer#decode(String)
    */
   public static Byte decode(String s)
   {
-    int i = (Integer.decode(str)).intValue();
+    int i = Integer.parseInt(s, 10, true);
     if ((byte) i != i)
       throw new NumberFormatException();
     return new Byte((byte) i);
