@@ -1,3 +1,7 @@
+2003-12-24  Mark Wielaard  <mark@klomp.org>
+
+	* configure.in: Set version to 0.07+cvs.
+
 2003-12-03  Fernando Nasser  <fnasser@redhat.com>
 
 	* java/awt/List.java (getSelectedIndex):
