@@ -85,10 +85,10 @@ public final class CollationElementIterator
    * @param collator The <code>RuleBasedCollation</code> used for calculating collation values
    * @param text The <code>String</code> to iterate over.
    */
-  CollationElementIterator (RuleBasedCollator collator, String text)
+  CollationElementIterator (String text, RuleBasedCollator collator)
   {
+    setText (text);
     this.collator = collator;
-    this.text = text;
   }
 
   /**
@@ -98,9 +98,9 @@ public final class CollationElementIterator
    *
    * @return The collation ordering value.
    */
-  public int next ()
+  public int next()
   {
-    if (index >= text.length ())
+    if (index == text.length())
       return NULLORDER;
 
     String s = text.charAt (index) + "";
@@ -126,7 +126,7 @@ public final class CollationElementIterator
    * This method resets the internal position pointer to read from the
    * beginning of the <code>String again.
    */
-  public void reset ()
+  public void reset()
   {
     index = 0;
   }
@@ -163,7 +163,9 @@ public final class CollationElementIterator
    * This method sets the <code>String</code> that it is iterating over
    * to the specified <code>String</code>.
    *
-   * @param The new <code>String</code> to iterate over.
+   * @param text The new <code>String</code> to iterate over.
+   *
+   * @since 1.2
    */
   public void setText (String text)
   {
@@ -180,17 +182,17 @@ public final class CollationElementIterator
    */
   public void setText (CharacterIterator ci)
   {
+    // For now assume we read from the beginning of the string.
+    char c = ci.first();
     StringBuffer sb = new StringBuffer ("");
 
-    // For now assume we read from the beginning of the string.
-    char c = ci.first ();
     while (c != CharacterIterator.DONE)
       {
         sb.append (c);
-        c = ci.next ();
+        c = ci.next();
       }
 
-    setText (sb.toString ());
+    setText (sb.toString());
   }
 
   /**
@@ -198,8 +200,10 @@ public final class CollationElementIterator
    * that is being iterated over.
    *
    * @return The iteration index position.
+   *
+   * @since 1.2
    */
-  public int getOffset ()
+  public int getOffset()
   {
     return index;
   }
@@ -248,7 +252,7 @@ public final class CollationElementIterator
    *
    * @return The collation ordering value.
    */
-  public int previous ()
+  public int previous()
   {
     --index;
     if (index < 0)
@@ -257,4 +261,6 @@ public final class CollationElementIterator
     String s = text.charAt (index) + "";
     return collator.getCollationElementValue (s);
   }
-}
+
+} // class CollationElementIterator
+

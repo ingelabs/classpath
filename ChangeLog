@@ -1,5 +1,21 @@
 2003-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/CollationElementIterator.java
+	(CollationElementIterator): Exchange arguments, call setText.
+	(next): Reformated.
+	(reset): Reformated.
+	(setText): Fixed documentation, added @since tag, reformated.
+	(getOffset): Added @since tag, reformated.
+	(previous): Reformated.
+	* java/text/CollationKey.java
+	(getSourceString): Reformated.
+	(hashCode): Reformated.
+	(toByteArray): Reformated.
+	* java/text/RuleBasedCollator.java: Reordered all methods to match
+	order in libgcj.
+
+2003-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/AttributedCharacterIterator.java,
 	java/text/CharacterIterator.java:
 	Reformated.

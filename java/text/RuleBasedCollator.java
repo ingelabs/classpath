@@ -174,7 +174,7 @@ public class RuleBasedCollator extends Collator
    *
    * @exception ParseException If the rule string contains syntax errors.
    */
-  public RuleBasedCollator(String rules) throws ParseException
+  public RuleBasedCollator (String rules) throws ParseException
   {
     this.rules = rules;
 
@@ -293,76 +293,13 @@ public class RuleBasedCollator extends Collator
   }
 
   /**
-   * This method returns a <code>String</code> containing the collation rules
-   * for this object.
+   * This method creates a copy of this object.
    *
-   * @return The collation rules for this object.
+   * @return A copy of this object.
    */
-  public String getRules()
+  public Object clone()
   {
-    return(rules);
-  }
-
-  /**
-   * This method calculates the collation element value for the specified
-   * character(s).
-   */
-  int getCollationElementValue(String str)
-  {
-    CollationElement e = null;
-
-    // The table is sorted.  Change to a binary search later.
-    for (int i = 0; i < ce_table.length; i++) 
-      if (((CollationElement)ce_table[i]).char_seq.equals(str))
-        {
-          e = (CollationElement)ce_table[i];
-          break;
-        }
-
-    if (e == null)
-      e = new CollationElement(str, 0xFFFF, (short)0xFF, (short)0xFF);
-
-    int retval = (e.primary << 16) + (e.secondary << 8) + e.tertiary;
-
-    return(retval);
-  }
-
-  /**
-   * This method returns an instance for <code>CollationElementIterator</code>
-   * for the specified <code>String</code> under the collation rules for this
-   * object.
-   *
-   * @param str The <code>String</code> to return the <code>CollationElementIterator</code> instance for.
-   *
-   * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
-   */
-  public CollationElementIterator getCollationElementIterator(String str)
-  {
-    return(new CollationElementIterator(this, str));
-  }  
-
-  /**
-   * This method returns an instance of <code>CollationElementIterator</code>
-   * for the <code>String</code> represented by the specified
-   * <code>CharacterIterator</code>.
-   *
-   * @param ci The <code>CharacterIterator</code> with the desired <code>String</code>.
-   *
-   * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
-   */
-  public CollationElementIterator getCollationElementIterator(CharacterIterator ci)
-  {
-    StringBuffer sb = new StringBuffer("");
-
-    // Right now we assume that we will read from the beginning of the string.
-    char c = ci.first();
-    while (c != CharacterIterator.DONE) 
-      {
-        sb.append(c);
-        c = ci.next();
-      }
-
-    return(getCollationElementIterator(sb.toString()));
+    return super.clone();
   }
 
   /**
@@ -377,7 +314,7 @@ public class RuleBasedCollator extends Collator
    * @return A negative integer if s1 &lt; s2, a positive integer
    * if s1 &gt; s2, or 0 if s1 == s2.
    */
-  public int compare(String s1, String s2)
+  public int compare (String s1, String s2)
   {
     CollationElementIterator cei1 = getCollationElementIterator(s1);
     CollationElementIterator cei2 = getCollationElementIterator(s2);
@@ -434,6 +371,61 @@ public class RuleBasedCollator extends Collator
   }
 
   /**
+   * This method tests this object for equality against the specified 
+   * object.  This will be true if and only if the specified object is
+   * another reference to this object.
+   *
+   * @param obj The <code>Object</code> to compare against this object.
+   *
+   * @return <code>true</code> if the specified object is equal to this object, <code>false</code> otherwise.
+   */
+  public boolean equals (Object obj)
+  {
+    if (obj == this)
+      return(true);
+    else
+      return(false);
+  }
+
+  /**
+   * This method returns an instance for <code>CollationElementIterator</code>
+   * for the specified <code>String</code> under the collation rules for this
+   * object.
+   *
+   * @param str The <code>String</code> to return the <code>CollationElementIterator</code> instance for.
+   *
+   * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
+   */
+  public CollationElementIterator getCollationElementIterator (String str)
+  {
+    return new CollationElementIterator (this, str);
+  }  
+
+  /**
+   * This method returns an instance of <code>CollationElementIterator</code>
+   * for the <code>String</code> represented by the specified
+   * <code>CharacterIterator</code>.
+   *
+   * @param ci The <code>CharacterIterator</code> with the desired <code>String</code>.
+   *
+   * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
+   */
+  public CollationElementIterator getCollationElementIterator(CharacterIterator ci)
+  {
+    StringBuffer sb = new StringBuffer("");
+
+    // Right now we assume that we will read from the beginning of the string.
+    char c = ci.first();
+    while (c != CharacterIterator.DONE) 
+      {
+        sb.append(c);
+        c = ci.next();
+      }
+
+    return(getCollationElementIterator(sb.toString()));
+  }
+
+  /**
    * This method returns an instance of <code>CollationKey</code> for the
    * specified <code>String</code>.  The object returned will have a
    * more efficient mechanism for its comparison function that could
@@ -444,7 +436,7 @@ public class RuleBasedCollator extends Collator
    *
    * @return A <code>CollationKey</code> for the specified <code>String</code>.
    */
-  public CollationKey getCollationKey(String str)
+  public CollationKey getCollationKey (String str)
   {
     CollationElementIterator cei = getCollationElementIterator(str);
     Vector vect = new Vector(25);
@@ -487,20 +479,14 @@ public class RuleBasedCollator extends Collator
   }
 
   /**
-   * This method tests this object for equality against the specified 
-   * object.  This will be true if and only if the specified object is
-   * another reference to this object.
+   * This method returns a <code>String</code> containing the collation rules
+   * for this object.
    *
-   * @param obj The <code>Object</code> to compare against this object.
-   *
-   * @return <code>true</code> if the specified object is equal to this object, <code>false</code> otherwise.
+   * @return The collation rules for this object.
    */
-  public boolean equals(Object obj)
+  public String getRules()
   {
-    if (obj == this)
-      return(true);
-    else
-      return(false);
+    return(rules);
   }
 
   /**
@@ -514,12 +500,27 @@ public class RuleBasedCollator extends Collator
   }
 
   /**
-   * This method creates a copy of this object.
-   *
-   * @return A copy of this object.
+   * This method calculates the collation element value for the specified
+   * character(s).
    */
-  public Object clone()
+  int getCollationElementValue(String str)
   {
-    return super.clone();
+    CollationElement e = null;
+
+    // The table is sorted.  Change to a binary search later.
+    for (int i = 0; i < ce_table.length; i++) 
+      if (((CollationElement)ce_table[i]).char_seq.equals(str))
+        {
+          e = (CollationElement)ce_table[i];
+          break;
+        }
+
+    if (e == null)
+      e = new CollationElement(str, 0xFFFF, (short)0xFF, (short)0xFF);
+
+    int retval = (e.primary << 16) + (e.secondary << 8) + e.tertiary;
+
+    return(retval);
   }
-}
+
+} // class RuleBaseCollator
