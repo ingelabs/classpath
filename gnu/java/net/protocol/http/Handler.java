@@ -91,5 +91,14 @@ openConnection(URL url) throws IOException
   return(new gnu.java.net.protocol.http.HttpURLConnection(url));
 }
 
+
+/**
+ * Returns the default port for a URL parsed by this handler.
+ */
+protected int getDefaultPort ()
+{
+  return 80;
+}
+
 } // class Handler
 

@@ -1,3 +1,8 @@
+2003-08-11  Ingo Proetel  <proetel@aicas.com>
+
+	* gnu/java/net/protocol/http/HttpURLConnection.java: fixed NullPointerException.
+	* gnu/java/net/protocol/http/Handler.java: override getDefaultPort() to return 80
+
 2003-08-11  Ingo Proetel <proetel@aicas.com>
 
 	* native/jni/classpath/jcl.c: removed static array for error string.
