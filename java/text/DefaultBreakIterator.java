@@ -28,8 +28,6 @@ package java.text;
   * English like locales.  It also doesn't handle things like merging
   * consecutive spaces into a single break character.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 class DefaultBreakIterator extends BreakIterator
@@ -58,6 +56,16 @@ private String[] breaks;
   */
 private boolean before_and_after;
 
+/**
+  * Index of the break we broke before when doing a next().
+  */
+private int broke_before_next;
+
+/**
+  * Index of the break we broke before when doing a previous().
+  */
+private int broke_before_previous;
+
 /*************************************************************************/
 
 /*
@@ -70,7 +78,8 @@ private boolean before_and_after;
 public
 DefaultBreakIterator()
 {
-  ;
+  this.broke_before_next = -1;
+  this.broke_before_previous = -1;
 }
 
 /*************************************************************************/
@@ -82,6 +91,8 @@ DefaultBreakIterator()
 public
 DefaultBreakIterator(String[] breaks, boolean before_and_after)
 {
+  this();
+
   this.breaks = breaks;
   this.before_and_after = before_and_after;
 }
@@ -101,6 +112,9 @@ current()
 public int
 first()
 {
+  broke_before_next = -1;
+  broke_before_previous = -1;
+
   if (ci.first() == CharacterIterator.DONE)
     return(DONE);
   return(ci.getIndex());
@@ -109,6 +123,9 @@ first()
 public int
 last()
 {
+  broke_before_next = -1;
+  broke_before_previous = -1;
+
   if (ci.last() == CharacterIterator.DONE)
     return(DONE);
   return(ci.getIndex());
@@ -117,11 +134,22 @@ last()
 public int
 next()
 {
+  broke_before_previous = -1;
+
   // Handle character case
   if (breaks == null)
     {
       if (ci.next() == CharacterIterator.DONE)
         return(DONE);
+      return(ci.getIndex());
+    }
+
+  // Handle case where we broke before a break last time and now we
+  // want to break after it.
+  if (broke_before_next != -1)
+    {
+      ci.setIndex(ci.getIndex() + breaks[broke_before_next].length());
+      broke_before_next = -1;
       return(ci.getIndex());
     }
 
@@ -144,14 +172,13 @@ next()
               // Check to see if we already broke at beginning of break seq
               if (before_and_after)
                 {
-                  if ((ci.getIndex() - start_index) == breaks[i].length())
-                    return(ci.getIndex());
-
-                  ci.setIndex(start_index);
-                  return(start_index);
+                  broke_before_next = i;
+                  ci.setIndex(ci.getIndex() - breaks[i].length() + 1);
+                  return(ci.getIndex());
                 }
               else
                 {
+                  ci.next();
                   return(ci.getIndex());
                 }
             }
@@ -178,11 +205,20 @@ next(int index)
 public int
 previous()
 {
+  broke_before_next = -1;
+
   // Handle character case
   if (breaks == null)
     {
       if (ci.previous() == CharacterIterator.DONE)
         return(DONE);
+      return(ci.getIndex());
+    }
+
+  if (broke_before_previous != -1)
+    {
+      ci.setIndex(ci.getIndex() - breaks[broke_before_previous].length());
+      broke_before_previous = -1;
       return(ci.getIndex());
     }
 
@@ -205,15 +241,13 @@ previous()
               // Check to see if we already broke at beginning of break seq
               if (before_and_after)
                 {
-                  if ((start_index - ci.getIndex()) == breaks[i].length())
-                    return(ci.getIndex());
-
-                  ci.setIndex(start_index);
-                  return(start_index);
+                  broke_before_previous = i;
+                  ci.setIndex(ci.getIndex() + breaks[i].length());
+                  return(ci.getIndex());
                 }
               else
                 {
-                  return(ci.getIndex());
+                  return(ci.getIndex()+breaks[i].length());
                 }
             }
 
@@ -239,6 +273,9 @@ previous(int index)
 public int
 following(int index)
 {
+  broke_before_next = -1;
+  broke_before_previous = -1;
+
   ci.setIndex(index);
   return(next());
 }
@@ -246,6 +283,9 @@ following(int index)
 public int
 preceding(int index)
 {
+  broke_before_next = -1;
+  broke_before_previous = -1;
+
   ci.setIndex(index);
   return(previous());
 }
@@ -260,6 +300,9 @@ public void
 setText(CharacterIterator ci)
 {
   this.ci = ci;
+
+  broke_before_next = -1;
+  broke_before_previous = -1;
 }
 
 public boolean

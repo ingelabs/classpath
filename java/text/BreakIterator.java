@@ -34,8 +34,6 @@ import java.util.MissingResourceException;
   * type is created by calling one of the static factory methods, not
   * by directly calling a constructor.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public abstract class BreakIterator implements Cloneable, Serializable
