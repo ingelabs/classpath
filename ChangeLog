@@ -1,5 +1,13 @@
 2004-04-18  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JLayeredPane.java
+	* javax/swing/plaf/BorderUIResource.java
+	* javax/swing/plaf/ComponentUI.java
+	* javax/swing/undo/CompoundEdit.java
+	* javax/swing/undo/StateEdit.java
+
+2004-04-18  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/attribute/EnumSyntax.java
 	(getOffset): Has to be protected.
 	* javax/print/attribute/HashAttributeSet.java
