@@ -1,5 +1,15 @@
 2004-04-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/CharArrayWriter.java,
+	java/io/PipedInputStream.java,
+	java/io/PipedReader.java,
+	java/io/SerializablePermission.java,
+	java/io/StreamTokenizer.java,
+	java/io/WriteAbortedException.java:
+	Fixed HTML in javadocs.
+
+2004-04-12  Michael Koch  <konqueror@gmx.de>
+
 	* native/jni/java-io/FileDescriptor.c: Removed.
 	* native/jni/java-io/Makefile.am: Don't compile FileDescriptor.c
 	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
