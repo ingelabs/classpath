@@ -1,3 +1,10 @@
+2004-10-09  Michael Koch  <konqueror@gmx.de>
+
+	* javax/imageio/metadata/IIOInvalidTreeException.java,
+	javax/imageio/metadata/IIOMetadataFormatImpl.java,
+	javax/imageio/metadata/IIOMetadataNode.java:
+	New stub files.
+
 2004-10-09  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Don't create a link to the VM specific files.
