@@ -121,7 +121,7 @@ JCL is GNU software and this project is being officially sponsored by
 the @uref{http://www.fsf.org/,Free Software Foundation}.  Because of this,
 the FSF will hold copyright to all code developed as part of JCL.  This
 will allow them to pursue copyright violators in court, something an
-individual developer will have neither the time nor inclination to do.
+individual developer may neither have the time nor resources to do.
 Everyone contributing code to JCL will need to sign a copyright assignment
 statement.  Additionally, if you are employed as a programmer, your
 employer may need to sign a copyright waiver disclaiming all interest in
