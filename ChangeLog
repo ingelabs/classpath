@@ -1,5 +1,13 @@
 2005-01-03  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/text/AbstractDocument.java
+	(documentFilter): New field.
+	(getDocumentFilter): New method.
+	(setDocumentFilter): Likewise.
+	(dump): Likewise.
+
+2005-01-03  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JTree.java
 	(DynamicUtilTreeNode.hasChildren): Clarify javadoc.
 
