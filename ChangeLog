@@ -1,5 +1,13 @@
 2002-02-07  Mark Wielaard <mark@klomp.org>
 
+	* gnu/java/io/encode/Encoder8859_1.java (static): explicitly mention
+	superclass when calling static method as workaround for jikes 1.15a
+	combined with orp 1.0.9.
+	* gnu/java/io/encode/Encoder8859_2.java (static): Likewise
+	* gnu/java/io/encode/Encoder8859_3.java (static): Likewise
+
+2002-02-07  Mark Wielaard <mark@klomp.org>
+
 	* java/security/BasicPermission.java: extends with fully qualified
 	classname as workaround for gcj 3.0.4.
 

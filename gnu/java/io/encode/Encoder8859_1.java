@@ -320,7 +320,8 @@ static
   scheme_name = "8859_1";
   scheme_description = "ISO-8859-1 (Latin-1 character set)";
   lookup_table = lookup_table_8859_1;
-  loadTable();
+  EncoderEightBitLookup.loadTable();
+  // FIXME explicit super class is workaround for jikes1.15a and orp 1.0.9
 }
 
 /*************************************************************************/
