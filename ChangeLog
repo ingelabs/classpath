@@ -1,3 +1,7 @@
+2003-02-01  Stephen Crawley  <crawley@dstc.edu.au>
+	* java/math/BigDecimal(valueOf): fix DiagBigDecimal val008, val013
+	tests; see patch #1016 on Savannah.
+
 2003-02-01  C. Brian Jones  <cbj@gnu.org>
 
 	* Makefile.am: fix copy of external/jaxp to $(distdir)

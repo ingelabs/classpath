@@ -212,7 +212,7 @@ public class BigDecimal extends Number implements Comparable
   public static BigDecimal valueOf (long val, int scale) 
     throws NumberFormatException 
   {
-    if (scale == 0)
+    if ((scale == 0) && ((int)val == val))
       switch ((int) val)
 	{
 	case 0:
