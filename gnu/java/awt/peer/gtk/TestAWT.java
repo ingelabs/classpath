@@ -27,15 +27,20 @@ import java.awt.peer.*;
 class TestAWT
 {
   public static void main(String args[])
-    {
-      if (args.length==0)
-	{
-	  Properties prop = System.getProperties ();
-	  prop.put ("awt.toolkit", "gnu.java.awt.peer.gtk.GtkToolkit");
-	}
-      MainWindow f = new MainWindow();
-      f.show();
-    }
+  {
+    if (args.length==0)
+      {
+	Properties prop = System.getProperties ();
+	prop.put ("awt.toolkit", "gnu.java.awt.peer.gtk.GtkToolkit");
+      }
+    MainWindow f = new MainWindow();
+    f.show();
+  }
+}
+
+interface SubWindow
+{
+  public void init ();
 }
 
 class PrettyPanel extends Panel
@@ -43,556 +48,445 @@ class PrettyPanel extends Panel
   Insets myInsets;
 
   public PrettyPanel ()
-    {
-      myInsets = new Insets (10, 10, 10, 10);
-    }
+  {
+    myInsets = new Insets (10, 10, 10, 10);
+  }
   public Insets getInsets ()
-    {
-      return myInsets;
-    }
+  {
+    return myInsets;
+  }
 }
 
-class PrettyFrame extends Frame
+abstract class PrettyFrame extends Frame
 {
-  Insets myInsets;
-
-  public PrettyFrame (String title)
-    {
-      super (title);
-      myInsets = new Insets (10, 10, 10, 10);
-      ((BorderLayout) getLayout ()).setHgap (5);
-      ((BorderLayout) getLayout ()).setVgap (5);
-    }
-
   public PrettyFrame ()
-    {
-      this ("");
-    }
+  {
+    ((BorderLayout) getLayout ()).setHgap (5);
+    ((BorderLayout) getLayout ()).setVgap (5);
+  }
 
   public Insets getInsets()
-    {
-      return myInsets;
-    }
+  {
+    Insets oldInsets = super.getInsets ();
+    return new Insets (oldInsets.top+10,
+		       oldInsets.left+10,
+		       oldInsets.bottom+10,
+		       oldInsets.right+10);
+  }
 }
 
+abstract class SubFrame extends PrettyFrame implements SubWindow
+{
+  boolean initted = false;
+
+  public void setVisible (boolean visible)
+  {
+    if (!initted && visible)
+      init();
+    super.setVisible (visible);
+  } 
+}
 
 class MainWindow extends PrettyFrame implements ActionListener 
 {
-  Button closeButton, buttonsButton, dialogButton, cursorsButton,
-    textFieldButton, fileButton, labelButton, radioButton;
-  Window buttonsWindow = null, dialogWindow = null, cursorsWindow = null,
-    textFieldWindow = null, fileWindow = null, labelWindow = null,
-    radioWindow = null;
+  Button closeButton;
+
+  Hashtable windows;
+  Vector buttons;
+
+  void addSubWindow (String name, SubWindow w)
+  {
+    Button b = new Button (name);
+    b.addActionListener (this);
+
+    buttons.addElement (b);
+    windows.put (b, w);    
+  }
 
   MainWindow () 
-    {
-      super ("TestAWT");
+  {
+    System.out.println (getInsets ());
 
-      System.out.println (getInsets ());
-
-      ScrollPane sp = new ScrollPane();
-
-      PrettyPanel p = new PrettyPanel();
-
-      p.setLayout (new GridLayout (10, 1));
-      sp.add (p);
-      add (sp, "Center");
-
-      add (new Label ("Classpath v0.0.0"), "North");
+    add (new Label ("Classpath v0.0.0"), "North");
       
-      closeButton = new Button ("Close");
-      closeButton.addActionListener (this);
-      add (closeButton, "South");
+    closeButton = new Button ("Close");
+    closeButton.addActionListener (this);
+    add (closeButton, "South");
 
-      buttonsButton = new Button ("buttons");
-      buttonsButton.addActionListener (this);
-      p.add (buttonsButton);
+    windows = new Hashtable ();
+    buttons = new Vector ();
 
-      dialogButton = new Button ("dialog");
-      dialogButton.addActionListener (this);
-      p.add (dialogButton);
+    addSubWindow ("Buttons", new ButtonsWindow ());
+    addSubWindow ("Dialog", new DialogWindow (this));
+    addSubWindow ("Cursors", new CursorsWindow ());
+    addSubWindow ("TextField", new TextFieldWindow ());
+    addSubWindow ("File", new FileWindow (this));
+    addSubWindow ("Labels", new LabelWindow ());
+    addSubWindow ("Radio Buttons", new RadioWindow ());
 
-      cursorsButton = new Button ("cursors");
-      cursorsButton.addActionListener (this);
-      p.add (cursorsButton);
+    ScrollPane sp = new ScrollPane();
+    PrettyPanel p = new PrettyPanel();
+    p.setLayout (new GridLayout (windows.size(), 1));
 
-      textFieldButton = new Button ("text field");
-      textFieldButton.addActionListener (this);
-      p.add (textFieldButton);
+    for (Enumeration e = buttons.elements (); e.hasMoreElements (); )
+      {
+	p.add ((Button) e.nextElement ());
+      }
 
-      fileButton = new Button ("file selection");
-      fileButton.addActionListener (this);
-      p.add (fileButton);
+    sp.add (p);
+    add (sp, "Center");
 
-      labelButton = new Button ("labels");
-      labelButton.addActionListener (this);
-      p.add (labelButton);
-
-      radioButton = new Button ("radio button");
-      radioButton.addActionListener (this);
-      p.add (radioButton);
-
-      setSize (200, 400);
-    }
+    setSize (200, 86 + (windows.size ()*22));
+    setTitle ("TestAWT");
+  }
 
   public void actionPerformed (ActionEvent evt)
-    {
-      Button source = (Button) evt.getSource ();
+  {
+    Button source = (Button) evt.getSource ();
       
-      System.out.println (source);
-      System.out.println (closeButton);
+    System.out.println (source);
+    System.out.println (closeButton);
 
-      if (source==closeButton)
-        {
-          dispose();
-          System.exit (0);
-        }
-      if (source==buttonsButton)
-        {
-          if (buttonsWindow == null)
-            {
-              buttonsWindow = new ButtonsWindow (this);
-              buttonsWindow.show();
-            }
-          else 
-            buttonsWindow.dispose();
-        }
-      if (source==dialogButton)
-        {
-          if (dialogWindow == null)
-            {
-              dialogWindow = new DialogWindow (this);
-              dialogWindow.show();
-            }
-          else 
-            dialogWindow.dispose();
-        }
-      if (source==cursorsButton)
-        {
-          if (cursorsWindow == null)
-            {
-              cursorsWindow = new CursorsWindow (this);
-              cursorsWindow.show();
-            }
-          else 
-            cursorsWindow.dispose();
-        }
-      if (source==textFieldButton)
-        {
-          if (textFieldWindow == null)
-            {
-              textFieldWindow = new TextFieldWindow (this);
-              textFieldWindow.show();
-            }
-          else 
-            textFieldWindow.dispose();
-        }
-      if (source==fileButton)
-        {
-          if (fileWindow == null)
-            {
-              fileWindow = new FileWindow (this);
-              fileWindow.show();
-            }
-          else 
-            fileWindow.dispose();
-        }
-      if (source==labelButton)
-        {
-          if (labelWindow == null)
-            {
-              labelWindow = new LabelWindow (this);
-              labelWindow.show();
-            }
-          else 
-            labelWindow.dispose();
-        }
-      if (source==radioButton)
-        {
-          if (radioWindow == null)
-            {
-              radioWindow = new RadioWindow (this);
-              radioWindow.show();
-            }
-          else 
-            radioWindow.dispose();
-        }
-    }
+    if (source==closeButton)
+      {
+	dispose();
+	System.exit (0);
+      }
+
+    Window w = (Window) windows.get (source);
+    if (w.isVisible ())
+      w.dispose ();
+    else 
+      w.setVisible (true);
+  }
 }
 
-class ButtonsWindow extends PrettyFrame
+class ButtonsWindow extends SubFrame implements ActionListener
 {
-  static Frame f;
-  MainWindow mainWindow;
+  Button b[] = new Button [9];
 
-  public ButtonsWindow (MainWindow mw)
-    {
-      super ("GtkButton");
-
-      mainWindow=mw;
-      Panel p = new Panel ();
-      p.setLayout (new GridLayout (0, 3, 5, 5));
+  public void init ()
+  {
+    initted = true;
+    Panel p = new Panel ();
+    p.setLayout (new GridLayout (0, 3, 5, 5));
       
-      final Button b[] = new Button [9];
-
-      for (int i=0; i<9; i++) 
+    for (int i=0; i<9; i++) 
+      {
 	b[i]=new Button ("button" + (i+1));
+	b[i].addActionListener (this);
+      }
 
-      p.add (b[0]);
-      p.add (b[6]);
-      p.add (b[4]);
-      p.add (b[8]);
-      p.add (b[1]);
-      p.add (b[7]);
-      p.add (b[3]);
-      p.add (b[5]);
-      p.add (b[2]);
+    p.add (b[0]);
+    p.add (b[6]);
+    p.add (b[4]);
+    p.add (b[8]);
+    p.add (b[1]);
+    p.add (b[7]);
+    p.add (b[3]);
+    p.add (b[5]);
+    p.add (b[2]);
 
-      for (int i=0; i<9; i++)
-	{
-	  final int i2=((i+1)==9)?0:(i+1);
+    add (p, "North");
 
-	  b[i].addActionListener(new ActionListener () {
-	    public void actionPerformed (ActionEvent e) {
-	      if (b[i2].isVisible())
-		b[i2].setVisible(false);
-	      else 
-		b[i2].setVisible(true);
-	    }
-	  });
-	}
+    Button cb = new Button ("close");
+    cb.addActionListener(new ActionListener () {
+      public void actionPerformed (ActionEvent e) {
+	dispose();
+      }
+    });
+    add (cb, "South");
+    setTitle ("Buttons");
+    pack ();
+  }
 
-      add (p, "North");
-
-      Button cb = new Button ("close");
-      cb.addActionListener(new ActionListener () {
-        public void actionPerformed (ActionEvent e) {
-	  dispose();
-        }
-      });
-      add (cb, "South");
-
-      setTitle ("GtkButton");
-      pack ();
-    }
-
-  public void dispose()
-    {
-      mainWindow.buttonsWindow=null;
-      super.dispose();
-    }
+  public void actionPerformed (ActionEvent evt)
+  {
+    Button source = (Button) evt.getSource ();
+      
+    for (int i=0; i<9; i++)
+      {
+	if (source == b[i])
+	  {
+	    int i2=((i+1)==9)?0:(i+1);
+	    if (b[i2].isVisible())
+	      b[i2].setVisible(false);
+	    else 
+	      b[i2].setVisible(true);
+	  }
+      }
+  }
 }
 
 
-class DialogWindow extends Dialog
+class DialogWindow extends Dialog implements SubWindow
 {
-  static Frame f;
-  MainWindow mainWindow;
   Label text;
+  boolean initted = false;
 
-  public DialogWindow (MainWindow mw)
-    {
-      super (mw);
+  public DialogWindow (Frame f)
+  {
+    super (f);
+  }
 
-      mainWindow = mw;
+  public void setVisible (boolean visible)
+  {
+    if (!initted && visible)
+      init();
+    super.setVisible (visible);
+  }
 
-      setModal (true);
+  public void init ()
+  {
+    text = new Label ("Dialog Test");
+    text.setAlignment (Label.CENTER);
 
-      text = new Label ("Dialog Test");
-      text.setAlignment (Label.CENTER);
+    add (text, "North");
+    text.setVisible (false);
 
-      add (text, "North");
-      text.setVisible (false);
+    Panel p = new PrettyPanel();
 
-      Panel p = new PrettyPanel();
-
-      Button cb = new Button ("OK");
-      cb.addActionListener(new ActionListener () {
-        public void actionPerformed (ActionEvent e) {
+    Button cb = new Button ("OK");
+    cb.addActionListener(new ActionListener () {
+      public void actionPerformed (ActionEvent e) 
+	{
 	  dispose();
-        }
-      });
-      p.setLayout (new GridLayout (1, 2));
-      ((GridLayout) p.getLayout ()).setHgap (5);
-      ((GridLayout) p.getLayout ()).setVgap (5);
-      p.add (cb);
+	}
+    });
+    
+    p.setLayout (new GridLayout (1, 2));
+    ((GridLayout) p.getLayout ()).setHgap (5);
+    ((GridLayout) p.getLayout ()).setVgap (5);
+    p.add (cb);
 
-      Button toggle = new Button ("Toggle");
-      p.add (toggle);
+    Button toggle = new Button ("Toggle");
+    p.add (toggle);
 
-      toggle.addActionListener(new ActionListener () {
-	public void actionPerformed (ActionEvent e) {
-	  if (text.isVisible())
-	    text.setVisible(false);
+    toggle.addActionListener(new ActionListener () {
+      public void actionPerformed (ActionEvent e) 
+	{
+	  if (text.isVisible ())
+	    text.setVisible (false);
 	  else 
-	    text.setVisible(true);
+	    text.setVisible (true);
 	  doLayout();
 	}
-      });
-
-      add (p, "South");
-      setTitle ("AWTDialog");
-      setSize (130, 70);
-    }
-
-  public void dispose()
-    {
-      mainWindow.dialogWindow=null;
-      super.dispose();
-    }
+    });
+    
+    add (p, "South");
+    setTitle ("Dialog");
+    setSize (130, 70);
+  }
 }
 
-class CursorsWindow extends PrettyFrame implements ItemListener
+class CursorsWindow extends SubFrame implements ItemListener
 {
-  static Frame f;
-  MainWindow mainWindow;
   Choice cursorChoice;
   Canvas cursorCanvas;
 
-  public CursorsWindow (MainWindow mw)
-    {
-      super ("Cursors");
+  public void init ()
+  {
+    cursorChoice = new Choice();
+    cursorChoice.add ("Default");
+    cursorChoice.add ("Crosshair");
+    cursorChoice.add ("Text");
+    cursorChoice.add ("Wait");
+    cursorChoice.add ("Southwest Resize");
+    cursorChoice.add ("Southeast Resize");
+    cursorChoice.add ("Northwest Resize");
+    cursorChoice.add ("Northeast Resize");
+    cursorChoice.add ("North Resize");
+    cursorChoice.add ("South Resize");
+    cursorChoice.add ("West Resize");
+    cursorChoice.add ("East Resize");
+    cursorChoice.add ("Hand");
+    cursorChoice.add ("Move");
 
-      mainWindow = mw;
+    cursorChoice.addItemListener(this);
 
-      cursorChoice = new Choice();
-      cursorChoice.add ("Default");
-      cursorChoice.add ("Crosshair");
-      cursorChoice.add ("Text");
-      cursorChoice.add ("Wait");
-      cursorChoice.add ("Southwest Resize");
-      cursorChoice.add ("Southeast Resize");
-      cursorChoice.add ("Northwest Resize");
-      cursorChoice.add ("Northeast Resize");
-      cursorChoice.add ("North Resize");
-      cursorChoice.add ("South Resize");
-      cursorChoice.add ("West Resize");
-      cursorChoice.add ("East Resize");
-      cursorChoice.add ("Hand");
-      cursorChoice.add ("Move");
+    add (cursorChoice, "North");
 
-      cursorChoice.addItemListener(this);
+    cursorCanvas = new Canvas () 
+    { 
+      public void paint (Graphics g) 
+      {
+	Dimension d = getSize();
+	g.setColor (Color.white);
+	g.fillRect (0, 0, d.width, d.height/2);
+	g.setColor (Color.black);
+	g.fillRect (0, d.height/2, d.width, d.height/2);
+	g.setColor (getBackground());
+	g.fillRect (d.width/3, d.height/3, d.width/3,
+		    d.height/3);
+      }
+    };
 
-      add (cursorChoice, "North");
+    cursorCanvas.setSize (80,80);
 
-      cursorCanvas = new Canvas () 
-      { 
-	public void paint (Graphics g) 
-	{
-	  Dimension d = getSize();
-	  g.setColor (Color.white);
-	  g.fillRect (0, 0, d.width, d.height/2);
-	  g.setColor (Color.black);
-	  g.fillRect (0, d.height/2, d.width, d.height/2);
-	  g.setColor (getBackground());
-	  g.fillRect (d.width/3, d.height/3, d.width/3,
-		      d.height/3);
-	}
-      };
+    add (cursorCanvas, "Center");
 
-      cursorCanvas.setSize (80,80);
+    Button cb = new Button ("Close");
+    cb.addActionListener(new ActionListener () {
+      public void actionPerformed (ActionEvent e) {
+	dispose();
+      }
+    });
 
-      add (cursorCanvas, "Center");
-
-      Button cb = new Button ("Close");
-      cb.addActionListener(new ActionListener () {
-        public void actionPerformed (ActionEvent e) {
-	  dispose();
-        }
-      });
-
-      add (cb, "South");
-
-      setSize (160, 180);
-    }
+    add (cb, "South");
+    setTitle ("Cursors");
+    setSize (160, 180);
+  }
 
   public void itemStateChanged (ItemEvent e)
-    {
-      System.out.println (cursorChoice.getSelectedIndex());
-      cursorCanvas.setCursor (Cursor.getPredefinedCursor (cursorChoice.getSelectedIndex()));
-    }
-
-  public void dispose()
-    {
-      mainWindow.cursorsWindow=null;
-      super.dispose();
-    }
+  {
+    System.out.println (cursorChoice.getSelectedIndex());
+    cursorCanvas.setCursor (Cursor.getPredefinedCursor (cursorChoice.getSelectedIndex()));
+  }
 }
 
-
-class TextFieldWindow extends PrettyFrame implements ItemListener
+class TextFieldWindow extends SubFrame implements ItemListener
 {
-  static Frame f;
-  MainWindow mainWindow;
   Checkbox editable, visible, sensitive;
   TextField text;
 
-  public TextFieldWindow (MainWindow mw)
-    {
-      super ("TextField");
+  public void init ()
+  {
+    initted = true;
+    text = new TextField ("hello world");
+    add (text, "North");
 
-      mainWindow = mw;
+    Panel p = new Panel();
+    p.setLayout (new GridLayout (3, 1));
+    ((GridLayout) p.getLayout ()).setHgap (5);
+    ((GridLayout) p.getLayout ()).setVgap (5);
 
-      text = new TextField ("hello world");
-      add (text, "North");
+    editable = new Checkbox("Editable", true);
+    p.add (editable);
+    editable.addItemListener (this);
 
-      Panel p = new Panel();
-      p.setLayout (new GridLayout (3, 1));
-      ((GridLayout) p.getLayout ()).setHgap (5);
-      ((GridLayout) p.getLayout ()).setVgap (5);
+    visible = new Checkbox("Visible", true);
+    p.add (visible);
+    visible.addItemListener (this);
 
-      editable = new Checkbox("Editable", true);
-      p.add (editable);
-      editable.addItemListener (this);
+    sensitive = new Checkbox("Sensitive", true);
+    p.add (sensitive);
+    sensitive.addItemListener (this);
 
-      visible = new Checkbox("Visible", true);
-      p.add (visible);
-      visible.addItemListener (this);
+    add (p, "Center");
 
-      sensitive = new Checkbox("Sensitive", true);
-      p.add (sensitive);
-      sensitive.addItemListener (this);
+    Button cb = new Button ("Close");
+    cb.addActionListener(new ActionListener () {
+      public void actionPerformed (ActionEvent e) {
+	dispose();
+      }
+    });
 
-      add (p, "Center");
-
-      Button cb = new Button ("Close");
-      cb.addActionListener(new ActionListener () {
-        public void actionPerformed (ActionEvent e) {
-	  dispose();
-        }
-      });
-
-      add (cb, "South");
-
-      setSize (160, 180);
-    }
+    add (cb, "South");
+    setTitle ("TextField");
+    setSize (160, 180);
+  }
 
   public void itemStateChanged (ItemEvent e)
-    {
-      boolean on=true;
+  {
+    boolean on=true;
 
-      if (e.getStateChange () == ItemEvent.DESELECTED)
-	on=false;
-      if (e.getSource() == editable)
-	text.setEditable (on);
-      if (e.getSource() == visible)
-	if (on)
-	  text.setEchoChar ((char) 0);
-	else
-	  text.setEchoChar ('*');
-      if (e.getSource() == sensitive)
-	text.setEnabled (on);
+    if (e.getStateChange () == ItemEvent.DESELECTED)
+      on=false;
+    if (e.getSource() == editable)
+      text.setEditable (on);
+    if (e.getSource() == visible)
+      if (on)
+	text.setEchoChar ((char) 0);
+      else
+	text.setEchoChar ('*');
+    if (e.getSource() == sensitive)
+      text.setEnabled (on);
 	  
-    }
-
-  public void dispose()
-    {
-      mainWindow.textFieldWindow=null;
-      super.dispose();
-    }
+  }
 }
 
-
-class FileWindow extends FileDialog
+class FileWindow extends FileDialog implements SubWindow
 {
-  static FileDialog f;
-  MainWindow mainWindow;
+  boolean initted = false;
 
   public FileWindow (MainWindow mw)
-    {
-      super (mw);
-      mainWindow = mw;
-    }
+  {
+    super (mw);
+  }
+  
+  public void setVisible (boolean visible)
+  {
+    if (!initted && visible)
+      init();
+    super.setVisible (visible);
+  }
 
-  public void dispose()
-    {
-      mainWindow.fileWindow=null;
-      super.dispose();
-    }
+  public void init() 
+  {
+    initted = true;
+  }
 }
 
-class LabelWindow extends PrettyFrame
+class LabelWindow extends SubFrame
 {
-  static Frame f;
-  MainWindow mainWindow;
+  public void init ()
+  {
+    initted = true;
+    
+    Panel p = new Panel();
+    p.setLayout (new GridLayout (3, 1));
+    ((GridLayout) p.getLayout ()).setHgap (5);
+    ((GridLayout) p.getLayout ()).setVgap (5);
 
-  public LabelWindow (MainWindow mw)
-    {
-      super ("Labels");
+    p.add (new Label ("left justified label", Label.LEFT));
+    p.add (new Label ("center justified label", Label.CENTER));
+    p.add (new Label ("right justified label", Label.RIGHT));
 
-      mainWindow = mw;
+    add (p, "Center");
 
-      Panel p = new Panel();
-      p.setLayout (new GridLayout (3, 1));
-      ((GridLayout) p.getLayout ()).setHgap (5);
-      ((GridLayout) p.getLayout ()).setVgap (5);
+    Button cb = new Button ("Close");
+    cb.addActionListener(new ActionListener () {
+      public void actionPerformed (ActionEvent e) {
+	dispose();
+      }
+    });
 
-      p.add (new Label ("left justified label", Label.LEFT));
-      p.add (new Label ("center justified label", Label.CENTER));
-      p.add (new Label ("right justified label", Label.RIGHT));
-
-      add (p, "Center");
-
-      Button cb = new Button ("Close");
-      cb.addActionListener(new ActionListener () {
-        public void actionPerformed (ActionEvent e) {
-	  dispose();
-        }
-      });
-
-      add (cb, "South");
-
-      setSize (160, 180);
-    }
-
-  public void dispose()
-    {
-      mainWindow.labelWindow=null;
-      super.dispose();
-    }
+    add (cb, "South");
+    setTitle ("Labels");
+    setSize (160, 180);
+  }
 }
 
 
-class 
-RadioWindow extends PrettyFrame
+class RadioWindow extends SubFrame
 {
-  static Frame f;
-  MainWindow mainWindow;
+  public void init ()
+  {
+    initted = true;
 
-  public RadioWindow (MainWindow mw)
-    {
-      super ("Radio Buttons");
+    Panel p = new Panel();
+    p.setLayout (new GridLayout (3, 1));
+    ((GridLayout) p.getLayout ()).setHgap (5);
+    ((GridLayout) p.getLayout ()).setVgap (5);
 
-      mainWindow = mw;
+    CheckboxGroup cg = new CheckboxGroup();
+    p.add(new Checkbox("button1", cg, true));
+    p.add(new Checkbox("button2", cg, false));
+    p.add(new Checkbox("button3", cg, false));
 
-      Panel p = new Panel();
-      p.setLayout (new GridLayout (3, 1));
-      ((GridLayout) p.getLayout ()).setHgap (5);
-      ((GridLayout) p.getLayout ()).setVgap (5);
+    add (p, "Center");
 
-      CheckboxGroup cg = new CheckboxGroup();
-      p.add(new Checkbox("button1", cg, true));
-      p.add(new Checkbox("button2", cg, false));
-      p.add(new Checkbox("button3", cg, false));
+    Button cb = new Button ("Close");
+    cb.addActionListener(new ActionListener () {
+      public void actionPerformed (ActionEvent e) {
+	dispose();
+      }
+    });
 
-      add (p, "Center");
-
-      Button cb = new Button ("Close");
-      cb.addActionListener(new ActionListener () {
-        public void actionPerformed (ActionEvent e) {
-	  dispose();
-        }
-      });
-
-      add (cb, "South");
-
-      setSize (85, 167);
-    }
-
-  public void dispose()
-    {
-      mainWindow.radioWindow=null;
-      super.dispose();
-    }
+    add (cb, "South");
+    setTitle ("Radio Buttons");
+    setSize (85, 167);
+  }
 }
+
 

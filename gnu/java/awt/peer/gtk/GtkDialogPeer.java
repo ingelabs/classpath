@@ -24,37 +24,35 @@ import java.awt.*;
 import java.awt.peer.*;
 
 public class GtkDialogPeer extends GtkWindowPeer
-    implements DialogPeer
+  implements DialogPeer
 {
   native void gtkDialogNew(int width, int height, boolean visible,
 			   boolean resizable, String title, boolean modal,
 			   Object parent);
   
   public GtkDialogPeer (Dialog w, ComponentPeer parent)
-    {
-      super (bogusType, w);
+  {
+    super (bogusType, w);
       
-      Dimension d = w.getSize();
-      System.out.println ("DIALOG:  modal =" + w.isModal());
-      gtkDialogNew (d.width, d.height, w.isVisible (), w.isResizable (),
-		    w.getTitle (), w.isModal(), parent);
-    }
+    Dimension d = w.getSize();
+    gtkDialogNew (d.width, d.height, w.isVisible (), w.isResizable (),
+		  w.getTitle (), w.isModal(), parent);
+  }
 
   public GtkDialogPeer (int type, Dialog w)
-    {
-      super (bogusType, w);
-    }
+  {
+    super (bogusType, w);
+  }
 
   public void setTitle(String title)
-    {
-      System.out.println("setting title");
-      gtkWindowSetTitle(title);
-    }
+  {
+    gtkWindowSetTitle(title);
+  }
   
   public void setResizable(boolean resizable)
-    {
-      int r=resizable?1:0;
+  {
+    int r=resizable?1:0;
       
-      gtkWindowSetPolicy(r,r,0); //shrink,grow,auto
-    }
+    gtkWindowSetPolicy(r,r,0); //shrink,grow,auto
+  }
 }

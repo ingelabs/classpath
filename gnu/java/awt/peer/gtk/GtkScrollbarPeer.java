@@ -30,7 +30,7 @@ public class GtkScrollbarPeer extends GtkComponentPeer
 
   native void gtkScrollbarNew (ComponentPeer parent, 
 			       int orientation, int value, int visibleAmount,
-			       int min, int max, boolean visible);
+			       int min, int max);
   native public void setLineIncrement (int amount);
   native public void setPageIncrement (int amount);
   native public void setValues (int value, int visible, int min, int max);
@@ -44,8 +44,8 @@ public class GtkScrollbarPeer extends GtkComponentPeer
 		     s.getValue(),
 		     s.getVisibleAmount(),
 		     s.getMinimum(),
-		     s.getMaximum(),
-		     s.isVisible ());
+		     s.getMaximum());
+    syncAttributes ();
   }
 
   protected void postAdjustmentEvent (int type, int value)

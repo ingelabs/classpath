@@ -28,20 +28,18 @@ import java.awt.peer.*;
 public class GtkButtonPeer extends GtkComponentPeer
     implements ButtonPeer
 {
-  native void gtkButtonNewWithLabel (ComponentPeer parent,
-				     String label, boolean visible);
+  native void gtkButtonNewWithLabel (ComponentPeer parent, String label);
   native void gtkButtonLabelSet (String label);    
 
   public GtkButtonPeer (Button b, ComponentPeer cp)
   {
     super (b);
-    gtkButtonNewWithLabel (cp, b.getLabel(), b.isVisible());
-    System.out.println ("buttonpeer <init>");
+    gtkButtonNewWithLabel (cp, b.getLabel());
+    syncAttributes ();
   }
     
   public void setLabel (String label) 
   {
-    System.out.println ("java setlabel");
     gtkButtonLabelSet (label);
   }
 
@@ -68,3 +66,6 @@ public class GtkButtonPeer extends GtkComponentPeer
     super.handleEvent (e);
   }
 }
+
+
+

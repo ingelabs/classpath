@@ -30,85 +30,80 @@ public class GtkScrollPanePeer extends GtkContainerPeer
   ScrollPane myScrollPane;
 
   native void gtkScrolledWindowNew(ComponentPeer parent,
-				   int policy, int w, int h, int[] dims,
-				   boolean visible);
+				   int policy, int w, int h, int[] dims);
   native void gtkScrolledWindowSetScrollPosition(int x, int y);
   native void gtkScrolledWindowSetHScrollIncrement (int u);
   native void gtkScrolledWindowSetVScrollIncrement (int u);
   native void gtkScrolledWindowSetSize(int w, int h);
-
+  
   public GtkScrollPanePeer(ScrollPane p, ComponentPeer parent)
-    {
-      super (p);
-      System.out.println("new scrollpanepeer");
+  {
+    super (p);
 
-      myScrollPane=p;
-      policy=p.getScrollbarDisplayPolicy();
+    myScrollPane=p;
+    policy=p.getScrollbarDisplayPolicy();
       
-      int mypolicy=1;
-      switch (policy)
-	{
-	case ScrollPane.SCROLLBARS_ALWAYS: mypolicy=1; break;
-	case ScrollPane.SCROLLBARS_AS_NEEDED: mypolicy=2; break;
-	case ScrollPane.SCROLLBARS_NEVER: mypolicy=3; break;
-	}
+    int mypolicy=1;
+    switch (policy)
+      {
+      case ScrollPane.SCROLLBARS_ALWAYS: mypolicy=1; break;
+      case ScrollPane.SCROLLBARS_AS_NEEDED: mypolicy=2; break;
+      case ScrollPane.SCROLLBARS_NEVER: mypolicy=3; break;
+      }
 
-      Point pnt=p.getLocation();
-      Dimension pdim=p.getSize();
+    Point pnt=p.getLocation();
+    Dimension pdim=p.getSize();
 
-      System.out.println(":" + pdim.width + " " + pdim.height);
+    int dims[]=new int[2];
 
-      int dims[]=new int[2];
+    gtkScrolledWindowNew(parent, mypolicy, pdim.width, pdim.height, dims);
+    syncAttributes ();
 
-      gtkScrolledWindowNew(parent,
-			   mypolicy, pdim.width, pdim.height, dims,
-			   p.isVisible ());
-
-      sbWidth=dims[0];
-      sbHeight=dims[1];
-    }
+    sbWidth=dims[0];
+    sbHeight=dims[1];
+  }
 
   public void childResized (int w, int h)
-    {
-      System.out.println("SPP: child resized to: "+ w + " x " + h);
+  {
+    System.out.println("SPP: child resized to: "+ w + " x " + h);
 
-      gtkScrolledWindowSetSize(w, h);
-    }
+    gtkScrolledWindowSetSize(w, h);
+  }
 
   public int getHScrollbarHeight ()
-    {
-      return sbHeight;
-    }
+  {
+    return sbHeight;
+  }
 
   public int getVScrollbarWidth ()
-    {
-      return sbWidth;
-    }
+  {
+    return sbWidth;
+  }
 
   public void setScrollPosition (int x, int y)
-    {
-      gtkScrolledWindowSetScrollPosition(x, y);
-    }
+  {
+    gtkScrolledWindowSetScrollPosition(x, y);
+  }
 
   public void setUnitIncrement (Adjustable adj, int u)
-    {
-      /* Er... What calls this? */
+  {
+    /* Er... What calls this? */
       
-      System.out.println("SPP: setUI: "+adj+":"+u);
-      if (adj.getOrientation()==Adjustable.HORIZONTAL)
-	gtkScrolledWindowSetHScrollIncrement (u);
-      else
-	gtkScrolledWindowSetVScrollIncrement (u);
-    }
+    System.out.println("SPP: setUI: "+adj+":"+u);
+    if (adj.getOrientation()==Adjustable.HORIZONTAL)
+      gtkScrolledWindowSetHScrollIncrement (u);
+    else
+      gtkScrolledWindowSetVScrollIncrement (u);
+  }
 
   public void setValue (Adjustable adj, int v)
-    {
-      System.out.println("SPP: setVal: "+adj+":"+v);
-      Point p=myScrollPane.getScrollPosition ();
-      if (adj.getOrientation()==Adjustable.HORIZONTAL)
-	gtkScrolledWindowSetScrollPosition (v,p.y);
-      else
-	gtkScrolledWindowSetScrollPosition (p.x,v);
-      adj.setValue(v);
-    }
+  {
+    System.out.println("SPP: setVal: "+adj+":"+v);
+    Point p=myScrollPane.getScrollPosition ();
+    if (adj.getOrientation()==Adjustable.HORIZONTAL)
+      gtkScrolledWindowSetScrollPosition (v,p.y);
+    else
+      gtkScrolledWindowSetScrollPosition (p.x,v);
+    adj.setValue(v);
+  }
 }

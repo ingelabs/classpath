@@ -25,35 +25,34 @@ import java.awt.peer.*;
 import java.awt.*;
 
 public class GtkFileDialogPeer extends GtkDialogPeer
-    implements FileDialogPeer
+  implements FileDialogPeer
 {
   
   native void gtkFileSelectionNew();
   native void gtkFileSelectionSetFilename(String file);
   
-    public GtkFileDialogPeer(FileDialog fd)
-    {
-      super (bogusType, fd);
-      System.out.println("FileDialogPeer contructor");
-      gtkFileSelectionNew();
-      /*
-	FIXME:  need to work like DialogPeer
-      */
-    }
+  public GtkFileDialogPeer(FileDialog fd)
+  {
+    super (bogusType, fd);
+    gtkFileSelectionNew();
+    /*
+      FIXME:  need to work like DialogPeer
+    */
+  }
 
-    public void setDirectory(String directory)
-    {
-	gtkFileSelectionSetFilename(directory);
-    }
+  public void setDirectory(String directory)
+  {
+    gtkFileSelectionSetFilename(directory);
+  }
 
-    public void setFile(String file)
-    {
-	gtkFileSelectionSetFilename(file);
-    }
+  public void setFile(String file)
+  {
+    gtkFileSelectionSetFilename(file);
+  }
 
-    public void setFilenameFilter(FilenameFilter filter)
-    {
-      /* GTK has no filters. */
-    }
+  public void setFilenameFilter(FilenameFilter filter)
+  {
+    /* GTK has no filters. */
+  }
 }
 

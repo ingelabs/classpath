@@ -24,11 +24,10 @@ import java.awt.*;
 import java.awt.peer.*;
 
 public class GtkListPeer extends GtkComponentPeer
-    implements ListPeer
+  implements ListPeer
 {
   native void gtkListNew (ComponentPeer parent,
-			  Object list, String [] items, boolean mode, 
-			  boolean visible);
+			  Object list, String [] items, boolean mode);
   native void gtkListInsert (Object list, String item, int index);    
   native void gtkListClearItems (Object list, int start, int end);
   native void gtkListSelectItem (Object list, int index);
@@ -41,97 +40,96 @@ public class GtkListPeer extends GtkComponentPeer
   Object myGtkList;
 
   public GtkListPeer (List l, ComponentPeer cp)
-    {
-      super (l);
-      String items[] = l.getItems();
+  {
+    super (l);
+    String items[] = l.getItems();
       
-      myGtkList = new Object();
+    myGtkList = new Object();
 
-      gtkListNew (cp, myGtkList, items, 
-		  l.isMultipleMode(), 
-		  l.isVisible ());
-    }
+    gtkListNew (cp, myGtkList, items, l.isMultipleMode());
+    syncAttributes ();
+  }
   
   public void add (String item, int index)
-    {
-      gtkListInsert (myGtkList, item, index);
-    }
+  {
+    gtkListInsert (myGtkList, item, index);
+  }
   
   public void addItem (String item, int index)
-    {
-      add (item, index);
-    }
+  {
+    add (item, index);
+  }
   
   public void clear ()
-    {
-      removeAll ();
-    }
+  {
+    removeAll ();
+  }
   
   public void delItems (int start, int end)
-    {
-      gtkListClearItems (myGtkList, start, end);
-    }
+  {
+    gtkListClearItems (myGtkList, start, end);
+  }
 
   public void deselect (int index)
-    {
-      gtkListUnselectItem (myGtkList, index);
-    }
+  {
+    gtkListUnselectItem (myGtkList, index);
+  }
   
   public Dimension getMinimumSize (int rows)
-    {
-      int dims[] = new int[2];
+  {
+    int dims[] = new int[2];
 
-      gtkListGetSize (myGtkList, rows, dims);
-      return (new Dimension (dims[0], dims[1]));
-    }
+    gtkListGetSize (myGtkList, rows, dims);
+    return (new Dimension (dims[0], dims[1]));
+  }
 
   public Dimension getPreferredSize (int rows)
-    {
-      int dims[] = new int[2];
+  {
+    int dims[] = new int[2];
 
-      gtkListGetSize (myGtkList, rows, dims);
-      return (new Dimension (dims[0], dims[1]));
-    }
+    gtkListGetSize (myGtkList, rows, dims);
+    return (new Dimension (dims[0], dims[1]));
+  }
   
   public int[] getSelectedIndexes ()
-    {
-      return (gtkListGetSelected (myGtkList));
-    }
+  {
+    return (gtkListGetSelected (myGtkList));
+  }
   
   public void makeVisible (int index)
-    {
-      gtkListScrollVertical (myGtkList, index);
-    }
+  {
+    gtkListScrollVertical (myGtkList, index);
+  }
 
   public Dimension minimumSize (int rows)
-    {
-      return (getMinimumSize (rows));
-    }
+  {
+    return (getMinimumSize (rows));
+  }
 
   public Dimension preferredSize (int rows)
-    {
-      return (getPreferredSize (rows));
-    }
+  {
+    return (getPreferredSize (rows));
+  }
 
   public void removeAll ()
-    {
-      gtkListClearItems (myGtkList, 0, -1);
-    }
+  {
+    gtkListClearItems (myGtkList, 0, -1);
+  }
 
   public void select (int index)
-    {
-      gtkListSelectItem (myGtkList, index);
-    }
+  {
+    gtkListSelectItem (myGtkList, index);
+  }
 
   public void setMultipleMode (boolean b)
-    {
-      gtkListSetSelectionMode (myGtkList, b);
-    }
+  {
+    gtkListSetSelectionMode (myGtkList, b);
+  }
 
   public void setMultipleSelections (boolean b)
-    {
-      setMultipleMode (b);
-    }
+  {
+    setMultipleMode (b);
+  }
 
   protected void postItemEvent (int item, int stateChange)
   {

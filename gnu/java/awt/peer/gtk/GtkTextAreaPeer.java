@@ -27,8 +27,8 @@ public class GtkTextAreaPeer extends GtkTextComponentPeer
   implements TextAreaPeer
 {
 
-  native void gtkTextNew (Object edit, String text, int hscroll, int vscroll,
-			  boolean visible);
+  native void gtkTextNew (Object parent, Object edit, String text, 
+			  int hscroll, int vscroll);
   native void gtkTextGetSize (Object edit, int rows, int cols, int dims[]);
   native String gtkTextGetText (Object edit);
   native void gtkTextSetText (Object edit, String text);
@@ -36,100 +36,96 @@ public class GtkTextAreaPeer extends GtkTextComponentPeer
   native void gtkTextReplace (Object edit, String text, int start, int end);
 
   public GtkTextAreaPeer (TextArea ta, ComponentPeer cp)
-    {
-      super (ta);
-      String text = ta.getText();
-      int hscroll=0;
-      int vscroll=0;
+  {
+    super (ta);
+    String text = ta.getText();
+    int hscroll=0;
+    int vscroll=0;
 
-      switch (ta.getScrollbarVisibility())
-	{
-	case TextArea.SCROLLBARS_BOTH:
-	  hscroll=vscroll=1;
-	  break;
-	case TextArea.SCROLLBARS_HORIZONTAL_ONLY:
-	  hscroll=1;
-	  break;
-	case TextArea.SCROLLBARS_VERTICAL_ONLY:
-	  vscroll=1;
-	  break;
-	}
+    switch (ta.getScrollbarVisibility())
+      {
+      case TextArea.SCROLLBARS_BOTH:
+	hscroll=vscroll=1;
+	break;
+      case TextArea.SCROLLBARS_HORIZONTAL_ONLY:
+	hscroll=1;
+	break;
+      case TextArea.SCROLLBARS_VERTICAL_ONLY:
+	vscroll=1;
+	break;
+      }
 
-      System.out.println ("TAP: new: "+ text + " - " + hscroll + " - " + vscroll);
+    editable = new Object();
 
-      editable = new Object();
-
-      gtkTextNew (editable, text, hscroll, vscroll, ta.isVisible ());
-
-      Point p=ta.getLocation();
-      gtkFixedPut (cp,p.x,p.y);
-    }
+    gtkTextNew (cp, editable, text, hscroll, vscroll);
+    syncAttributes ();
+  }
 
   public Dimension getMinimumSize (int rows, int cols)
-    {
-      int dims[] = new int[2];
+  {
+    int dims[] = new int[2];
 
-      gtkTextGetSize (editable, rows, cols, dims);
+    gtkTextGetSize (editable, rows, cols, dims);
 
-      System.out.println ("TAP: getMinimumSize " + cols + " = " + dims[0] + 
-			  " x " + dims[1]);
+    System.out.println ("TAP: getMinimumSize " + cols + " = " + dims[0] + 
+			" x " + dims[1]);
       
-      return (new Dimension (dims[0], dims[1]));
-    }
+    return (new Dimension (dims[0], dims[1]));
+  }
 
   public Dimension getPreferredSize (int rows, int cols)
-    {
-      int dims[] = new int[2];
+  {
+    int dims[] = new int[2];
 
-      gtkTextGetSize (editable, rows, cols, dims);
+    gtkTextGetSize (editable, rows, cols, dims);
 
-      System.out.println ("TAP: getPreferredSize " + cols + " = " + dims[0] + 
-			  " x " + dims[1]);
+    System.out.println ("TAP: getPreferredSize " + cols + " = " + dims[0] + 
+			" x " + dims[1]);
       
-      return (new Dimension (dims[0], dims[1]));
-    }
+    return (new Dimension (dims[0], dims[1]));
+  }
   
   public String getText ()
-    {
-      System.out.println ("TAP: getText");
-      return (gtkTextGetText(editable));
-    }
+  {
+    System.out.println ("TAP: getText");
+    return (gtkTextGetText(editable));
+  }
 
   public void setText (String text)
-    {
-      System.out.println ("TAP: setText");
-      gtkTextSetText (editable, text);
-    }
+  {
+    System.out.println ("TAP: setText");
+    gtkTextSetText (editable, text);
+  }
 
   public void insert (String str, int pos)
-    {
-      gtkTextInsert (editable, str, pos);
-    }
+  {
+    gtkTextInsert (editable, str, pos);
+  }
 
   public void replaceRange (String str, int start, int end)
-    {
-      gtkTextReplace (editable, str, start, end);
-    }
+  {
+    gtkTextReplace (editable, str, start, end);
+  }
 
   /* Deprecated */
 
   public Dimension minimumSize (int rows, int cols)
-    {
-      return getMinimumSize (rows, cols);
-    }
+  {
+    return getMinimumSize (rows, cols);
+  }
 
   public Dimension preferredSize (int rows, int cols)
-    {
-      return getPreferredSize (rows, cols);
-    }
+  {
+    return getPreferredSize (rows, cols);
+  }
 
   public void replaceText (String str, int start, int end)
-    {
-      replaceRange (str, start, end);
-    }
+  {
+    replaceRange (str, start, end);
+  }
 
   public void insertText (String str, int pos)
-    {
-      insert (str, pos);
-    }
+  {
+    insert (str, pos);
+  }
 }

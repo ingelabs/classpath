@@ -28,30 +28,32 @@ public class GtkMainThread extends GtkGenericPeer implements Runnable
   static native void gtkInit();
   native void gtkMain();
   
-  public GtkMainThread() {
+  public GtkMainThread() 
+  {
     super (null);
-    synchronized (mainThreadLock) {
-      if (mainThread != null)
-	throw new IllegalStateException();
-      mainThread = new Thread(this, "GtkMain");
-    }
-
-    synchronized (this) {
-      mainThread.start();
-      try {
-	wait();
-      } catch (InterruptedException e) { }
-    }
+    synchronized (mainThreadLock) 
+      {
+	if (mainThread != null)
+	  throw new IllegalStateException();
+	mainThread = new Thread(this, "GtkMain");
+      }
+    
+    synchronized (this) 
+      {
+	mainThread.start();
+	try {
+	  wait();
+	} catch (InterruptedException e) { }
+      }
   }
   
-  public void run() {
-    synchronized (this) {
-      gtkInit();
-      notify();
-    }
-//      try {
-//      Thread.sleep (5000);
-//      } catch (InterruptedException e) {}
+  public void run() 
+  {
+    synchronized (this) 
+      {
+	gtkInit();
+	notify();
+      }
     gtkMain();
   }
 }

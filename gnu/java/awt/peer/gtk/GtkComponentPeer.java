@@ -31,180 +31,171 @@ public class GtkComponentPeer extends GtkGenericPeer
   Component awtComponent;
 
   /* this isEnabled differs from Component.isEnabled, in that it
-     knows if a parent is disabled, in which case Component.isEnabled 
-     will return true, but our isEnabled will return false */
+     knows if a parent is disabled.  In that case Component.isEnabled 
+     may return true, but our isEnabled will always return false */
   native boolean isEnabled ();
   native static boolean modalHasGrab ();
 
-  //  native void gtkWidgetPaint();
   native int[] gtkWidgetGetForeground ();
   native int[] gtkWidgetGetBackground ();
   native void gtkWidgetSetVisible (boolean b);
   native void gtkWidgetGetDimensions(int[] dim);
   native void gtkWidgetGetLocationOnScreen(int[] point);
-//    native void gtkWidgetSetUsize(int width, int height);
   native void gtkWidgetSetCursor (int type);
 
-  native void gtkFixedNew (int w, int h, boolean visible);
-  native void gtkFixedPut (Object parent, int x, int y);
-//    native void gtkFixedMove(int x, int y);
-
   protected GtkComponentPeer (Component awtComponent)
-    {
-      super (awtComponent);
-      this.awtComponent = awtComponent;
-    }
+  {
+    super (awtComponent);
+    this.awtComponent = awtComponent;
+  }
 
-  /* this method should be called from a gtk-realize hook */
-  protected void syncAttrs ()
-    {
-      setCursor (awtComponent.getCursor ());
-    }
+  /* This method should be called from Peer constructors
+     to synchronize mundane attributes. */
+  protected void syncAttributes ()
+  {
+    setCursor (awtComponent.getCursor ());
+    Dimension d = awtComponent.getSize ();
+    
+    Point p = awtComponent.getLocation ();
+    setBounds (p.x, p.y, d.width, d.height);
+    
+    setVisible (awtComponent.isVisible ());
+  }
     
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
-    {
-      return 0;
-    }
+  {
+    return 0;
+  }
 
   public Image createImage (ImageProducer producer) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   public Image createImage (int width, int height)
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   public void disable () 
-    {
-      setEnabled (false);
-    }
+  {
+    setEnabled (false);
+  }
 
   native public void dispose ();
 
   public void enable () 
-    {
-      setEnabled (true);
-    }
+  {
+    setEnabled (true);
+  }
 
   public ColorModel getColorModel () 
-    {
-      System.out.println("componentpeer: getcolormodel");
-      return null;
-    }
+  {
+    System.out.println("componentpeer: getcolormodel");
+    return null;
+  }
 
   public FontMetrics getFontMetrics (Font f)
-    {
-      System.out.println("componentpeer: getfontmetrics");
-      return null;
-    }
+  {
+    System.out.println("componentpeer: getfontmetrics");
+    return null;
+  }
 
   public Graphics getGraphics ()
   {
     return new GdkGraphics (this);
   }
 
-//    public Graphics getGraphics () 
-//      {
-//        throw new InternalError ("Graphics object unavailable for " +
-//  			       awtComponent);
-//      }
-
   public Point getLocationOnScreen () 
-    { 
-      int point[] = new int[2];
-      gtkWidgetGetLocationOnScreen (point);
-      return new Point (point[0], point[1]);
-    }
+  { 
+    int point[] = new int[2];
+    gtkWidgetGetLocationOnScreen (point);
+    return new Point (point[0], point[1]);
+  }
 
   public Dimension getMinimumSize () 
-    {
-      int dim[]=new int[2];
-      gtkWidgetGetDimensions (dim);
-      System.out.println ("componentpeer: min: " + dim[0] + ", " + dim[1]);
-      Dimension d = new Dimension (dim[0],dim[1]);
-      return (d);
-    }
+  {
+    int dim[]=new int[2];
+    gtkWidgetGetDimensions (dim);
+    Dimension d = new Dimension (dim[0],dim[1]);
+    System.out.println ("min: " + this + d);
+    return (d);
+  }
 
   public Dimension getPreferredSize ()
-    {
-      int dim[]=new int[2];
-      gtkWidgetGetDimensions (dim);
-      Dimension d = new Dimension (dim[0],dim[1]);
-
-      System.out.println ("Cpeer.pref: " +this+":"+ dim[0] + ", " + dim[1]);
-      return (d);
-    }
+  {
+    int dim[]=new int[2];
+    gtkWidgetGetDimensions (dim);
+    Dimension d = new Dimension (dim[0],dim[1]);
+    System.out.println ("min: " + this + d);
+    return (d);
+  }
 
   public Toolkit getToolkit ()
-    {
-      return Toolkit.getDefaultToolkit();
-    }
+  {
+    return Toolkit.getDefaultToolkit();
+  }
   
   public void handleEvent (AWTEvent event)
-    {
-      int id = event.getID();
+  {
+    int id = event.getID();
       
-      switch (id)
+    switch (id)
+      {
+      case PaintEvent.PAINT:
+      case PaintEvent.UPDATE:
 	{
-	case PaintEvent.PAINT:
-	case PaintEvent.UPDATE:
-	  {
-	    try 
-	      {
-		Graphics g = getGraphics ();
+	  try 
+	    {
+	      Graphics g = getGraphics ();
 		
-		if (id == PaintEvent.PAINT)
-		  awtComponent.paint (g);
-		else
-		  awtComponent.update (g);
+	      if (id == PaintEvent.PAINT)
+		awtComponent.paint (g);
+	      else
+		awtComponent.update (g);
 	      
-		g.dispose ();
-	      } 
-	    catch (InternalError e)
-	      { 
-		System.err.println (e);
-	      }
-	  }
-	  break;
+	      g.dispose ();
+	    } 
+	  catch (InternalError e)
+	    { 
+	      System.err.println (e);
+	    }
 	}
-    }
+	break;
+      }
+  }
   
   public boolean isFocusTraversable () 
-    {
-      return true;
-    }
+  {
+    return true;
+  }
 
   public Dimension minimumSize () 
-    {
-      System.out.println("componentpeer: minimumsize");
-      return getMinimumSize();
-    }
+  {
+    return getMinimumSize();
+  }
 
   public void paint (Graphics g)
-    {
-      //      gtkWidgetPaint();
-      awtComponent.paint (g);
-    }
+  {
+    awtComponent.paint (g);
+  }
 
   public Dimension preferredSize()
-    {
-      System.out.println("Cpeer.preferredsize");
-      return getPreferredSize();
-    }
+  {
+    return getPreferredSize();
+  }
 
   public boolean prepareImage (Image image, int width, int height,
 			       ImageObserver observer) 
-    {
-      return false;
-    }
+  {
+    return false;
+  }
 
   public void print (Graphics g) 
-    {
-      throw new RuntimeException();
-    }
+  {
+    throw new RuntimeException();
+  }
 
   public void repaint (long tm, int x, int y, int width, int height)
   {
@@ -215,58 +206,58 @@ public class GtkComponentPeer extends GtkGenericPeer
   native public void requestFocus ();
 
   public void reshape (int x, int y, int width, int height) 
-    {
-      setBounds (x, y, width, height);
-    }
+  {
+    setBounds (x, y, width, height);
+  }
 
   public void setBackground (Color c) 
-    {
-    }
+  {
+  }
 
   native public void setBounds (int x, int y, int width, int height);
 
   public void setCursor (Cursor cursor) 
-    {
-      System.out.println("setCursorCalled");
-      gtkWidgetSetCursor (cursor.getType ());
-    }
+  {
+    gtkWidgetSetCursor (cursor.getType ());
+  }
 
   native public void setEnabled (boolean b);
 
   public void setFont (Font f) 
-    {
-    }
+  {
+  }
 
   public void setForeground (Color c) 
-    {
-    }
+  {
+  }
 
   public Color getForeground ()
-    {
-      int rgb[] = gtkWidgetGetForeground ();
-      return new Color (rgb[0], rgb[1], rgb[2]);
-    }
+  {
+    int rgb[] = gtkWidgetGetForeground ();
+    return new Color (rgb[0], rgb[1], rgb[2]);
+  }
 
   public Color getBackground ()
-    {
-      int rgb[] = gtkWidgetGetBackground ();
-      return new Color (rgb[0], rgb[1], rgb[2]);
-    }
+  {
+    int rgb[] = gtkWidgetGetBackground ();
+    return new Color (rgb[0], rgb[1], rgb[2]);
+  }
 
   native public void setVisible (boolean b);
   
   public void hide () 
-    {
-      setVisible (false);
-    }
+  {
+    setVisible (false);
+  }
 
   public void show () 
-    {
-      setVisible (true);
-    }
+  {
+    setVisible (true);
+  }
 
   protected void postMouseEvent(int id, long when, int mods, int x, int y, 
-				int clickCount, boolean popupTrigger) {
+				int clickCount, boolean popupTrigger) 
+  {
     q.postEvent(new MouseEvent(awtComponent, id, when, mods, x, y, 
 			       clickCount, popupTrigger));
   }

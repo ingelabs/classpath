@@ -27,14 +27,13 @@ public class GtkLabelPeer extends GtkComponentPeer
     implements LabelPeer
 {
 
-  native void gtkLabelNew (ComponentPeer parent, 
-			   String text, int just, boolean visible);
+  native void gtkLabelNew (ComponentPeer parent, String text, int just);
 
   public GtkLabelPeer (Label l, ComponentPeer cp)
   {
     super (l);
-    System.out.println("labelpeer<init> called");
-    gtkLabelNew (cp, l.getText(), l.getAlignment (), l.isVisible ());
+    gtkLabelNew (cp, l.getText (), l.getAlignment ());
+    syncAttributes ();
   }
     
   native public void setText (String text);
