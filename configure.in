@@ -260,6 +260,9 @@ AC_PATH_PROG(ZIP, zip)
 AC_PATH_PROG(PERL, perl)
 
 AC_OUTPUT(Makefile
+com/Makefile
+com/sun/Makefile
+com/sun/javadoc/Makefile
 doc/Makefile
 gnu/Makefile
 gnu/java/Makefile
@@ -283,10 +286,13 @@ gnu/java/net/protocol/Makefile
 gnu/java/net/protocol/file/Makefile
 gnu/java/net/protocol/http/Makefile
 gnu/java/security/Makefile
+gnu/java/security/der/Makefile
 gnu/java/security/provider/Makefile
+gnu/java/security/util/Makefile
 gnu/tools/Makefile
 gnu/tools/serialver/Makefile
 java/Makefile
+java/applet/Makefile
 java/awt/Makefile
 java/awt/datatransfer/Makefile
 java/awt/event/Makefile
@@ -306,6 +312,7 @@ java/security/acl/Makefile
 java/security/cert/Makefile
 java/security/interfaces/Makefile
 java/security/spec/Makefile
+java/sql/Makefile
 java/text/Makefile
 java/util/Makefile
 java/util/jar/Makefile
