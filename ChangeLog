@@ -1,5 +1,10 @@
 2003-06-24  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/LineNumberReader.java:
+	New version from libgcj.
+
+2003-06-24  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/color/ColorSpace.java
 	(isCS_sRGB): Implemented.
 

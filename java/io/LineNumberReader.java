@@ -374,45 +374,22 @@ public class LineNumberReader extends BufferedReader
     *
     * @exception IOException If an error occurs
     */
-  public long skip(long count) throws IOException
+  public long skip (long count) throws IOException
   {
-    return(super.skip(count)); 
-    // FIXME: This method not merged from gcj. The code below is the original
-    // gcj code that doesn't work.  I'm not sure if the method above (from
-    // Classpath) is broken or not, but it seems to work correctly in all
-    // methods I've tested.  If somebody wants to investigate why the code
-    // below fails, feel free.
-/*
     if (count <= 0)
       return 0;
-    long to_do = count;
-    do
+
+    int skipped;
+    
+    for (skipped = 0; skipped < count; skipped++)
       {
-	int ch = read();
-	if (ch < 0)
-	  break;
-	to_do--;
-	if (ch == '\n' || ch == '\r')
-	  lineNumber++;
-	else
-	  {
-	    long fence = pos + to_do;
-	    if (limit < fence)
-	      fence = limit;
-	    int end = pos;
-	    for (; end < fence; end++)
-	      {
-		char endch = buffer[end];
-		if (endch == '\n' || endch == '\r')
-		  break;
-	      }
-	    to_do -= end - pos;
-	    pos = end;
-	  }
+        int ch = read();
+
+        if (ch < 0)
+          break;
       }
-    while (to_do > 0);
-    return count - to_do;
-*/
+
+    return skipped;
   }
 }
 
