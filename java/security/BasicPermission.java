@@ -1,0 +1,223 @@
+/*************************************************************************
+/* BasicPermission.java -- Implements a simple named permission.
+/*
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
+/*
+/* This library is free software; you can redistribute it and/or modify
+/* it under the terms of the GNU Library General Public License as published 
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
+/*
+/* This library is distributed in the hope that it will be useful, but
+/* WITHOUT ANY WARRANTY; without even the implied warranty of
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/* GNU Library General Public License for more details.
+/*
+/* You should have received a copy of the GNU Library General Public License
+/* along with this library; if not, write to the Free Software Foundation
+/* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
+/*************************************************************************/
+
+package java.security;
+
+import java.io.Serializable;
+import java.util.StringTokenizer;
+
+/**
+  * This class implements a simple model for named permissions without an
+  * associated action list.  That is, either the named permission is granted
+  * or it is not.  
+  * <p>
+  * It also supports trailing wildcards to allow the
+  * easy granting of permissions in a hierarchical fashion.  (For example,
+  * the name "org.gnu.*" might grant all permissions under the "org.gnu"
+  * permissions hierarchy).  The only valid wildcard character is a '*'
+  * which matches anything.  It must be the rightmost element in the
+  * permission name and must follow a '.' or else the Permission name must
+  * consist of only a '*'.  Any other occurrence of a '*' is not valid.
+  * <p>
+  * This class ignores the action list.  Subclasses can choose to implement
+  * actions on top of this class if desired.
+  *
+  * @version 0.0
+  *
+  * @author Aaron M. Renn (arenn@urbanophile.com)
+  */
+public abstract class BasicPermission extends Permission implements Serializable
+{
+
+/*************************************************************************/
+
+/*
+ * Constructors
+ */
+
+/**
+  * This method initializes a new instance of <code>BasicPermission</code>
+  * with the specified name.  If the name contains an illegal wildcard
+  * character, an exception is thrown.
+  *
+  * @param name The name of this permission.
+  *
+  * @exception IllegalArgumentException If the name contains an invalid wildcard character
+  */
+public 
+BasicPermission(String name) throws IllegalArgumentException
+{
+  this(name, null);
+}
+
+/*************************************************************************/
+
+/**
+  * This method initializes a new instance of <code>BasicPermission</code>
+  * with the specified name.  If the name contains an illegal wildcard
+  * character, an exception is thrown.  The action list passed to this
+  * form of the constructor is ignored.
+  *
+  * @param name The name of this permission.
+  * @param actions The list of actions for this permission - ignored in this class.
+  *
+  * @exception IllegalArgumentException If the name contains an invalid wildcard character
+  */
+public
+BasicPermission(String name, String actions) throws IllegalArgumentException
+{
+  super(name);
+
+  if (name.indexOf("*") != -1)
+    {
+       if (!name.endsWith(".*") && !name.equals("*"))
+          throw new IllegalArgumentException("Bad wildcard: " + name);
+
+       if (name.indexOf("*") != name.lastIndexOf("*"))
+          throw new IllegalArgumentException("Bad wildcard: " + name);
+    }
+}
+
+/*************************************************************************/
+
+/**
+  * This method tests to see if the specified permission is implied by 
+  * this permission.  This will be true if the following conditions are met:
+  * <p>
+  * <ul>
+  * <li>The specified object is an instance of <code>BasicPermission</code>, 
+  * or a subclass.
+  * <li>The name of the specified permission is identical to this permission's
+  * name or the name of the specified permission satisfies a wildcard match 
+  * on this permission.
+  * </ul>
+  *
+  * @param perm The <code>Permission</code> object to test against.
+  *
+  * @return <code>true</code> if the specified permission is implied by this one or <code>false</code> otherwise.
+  */
+public boolean
+implies(Permission perm)
+{
+  if (!(perm instanceof BasicPermission))
+    return(false);
+
+  if (perm.equals(this))
+    return(true);
+
+  StringTokenizer st_perm = new StringTokenizer(perm.getName(), ".");
+  StringTokenizer st_this = new StringTokenizer(getName(), ".");
+
+  while(st_this.hasMoreTokens())
+    {
+      String term_this = st_this.nextToken();
+
+      if (term_this.equals("*"))
+        return(true);
+
+      if (!st_perm.hasMoreTokens())
+        return(false);
+      String term_perm = st_perm.nextToken();
+        
+      if (!term_this.equals(term_perm))
+        return(false);
+    }
+
+  return(false); // We already failed an equality test, remember.
+}
+
+/*************************************************************************/
+
+/**
+  * This method tests to see if this object is equal to the specified
+  * <code>Object</code>.  This will be true if and only if the specified
+  * object meets the following conditions:
+  * <p>
+  * <ul>
+  * <li>It is an instance of <code>BasicPermission</code>, or a subclass.
+  * <li>It has the same name as this permission.
+  * </ul>
+  *
+  * @param obj The <code>Object</code> to test for equality against this object
+  *
+  * @return <code>true</code> if the specified <code>Object</code> is equal to this object or <code>false</code> otherwise.
+  */
+public boolean
+equals(Object obj)
+{
+  if (!(obj instanceof BasicPermission))
+    return(false);
+
+  if (!getName().equals(((BasicPermission)obj).getName()))
+    return(false);
+
+  return(true);
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a hash code for this permission object.  The hash
+  * code returned is the value returned by calling the <code>hashCode</code>
+  * method on the <code>String</code> that is the name of this permission.
+  *
+  * @return A hash value for this object
+  */
+public int
+hashCode()
+{
+  return(getName().hashCode());
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a list of the actions associated with this 
+  * permission.  This method always returns the empty string ("") since
+  * this class ignores actions.
+  *
+  * @return The action list.
+  */
+public String
+getActions()
+{
+  return("");
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns an instance of <code>PermissionCollection</code>
+  * suitable for storing <code>BasicPermission</code> objects.  This will
+  * be an instance of <code>BasicPermissionCollection</code>, an internal
+  * class that allows for an efficient and consistent implementation of
+  * the <code>implies</code> method.
+  *
+  * @return A new <code>PermissionCollection</code> object.
+  */
+public PermissionCollection
+newPermissionCollection()
+{
+  return(null);
+}
+
+} // class BasicPermission
+
