@@ -187,7 +187,10 @@ public final class Class implements Serializable
             if (cl != null)
               sm.checkPermission(new RuntimePermission("getClassLoader"));
           }
-	return VMClassLoader.loadClass(name, initialize);
+	Class c = VMClassLoader.loadClass(name, initialize);
+        if (c != null)
+          return c;
+        throw new ClassNotFoundException(name);
       }
     return classloader.loadClass(name, initialize);
   }

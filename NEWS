@@ -1,3 +1,10 @@
+New in release 0.06 (not-yet-released)
+* VMClassLoader.loadClass(), the bootstrap classloader called by
+  Class.forName() and ClassLoader.loadClass(), may now return null when
+  a class is not found instead of throwing a new ClassNotFoundException.
+  This is a performance optimization in some cases. This also changes
+  the Class.forName() reference code.
+
 New in release 0.05 (2003/02/15)
 * Supports free Java VMs Jikes RVM and Kissme out of the box, perhaps others.
 * Supports GNU Crypto 1.1 as the official provider of cryptographic primitives

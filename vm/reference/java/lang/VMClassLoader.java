@@ -117,12 +117,14 @@ final class VMClassLoader
    *
    * @param name the class name to load
    * @param resolve whether to resolve it
-   * @return the class, loaded by the bootstrap classloader
+   * @return the class, loaded by the bootstrap classloader or null
+   * if the class wasn't found. Returning null is equivalent to throwing
+   * a ClassNotFoundException (but a possible performance optimization).
    */
   static final Class loadClass(String name, boolean resolve)
     throws ClassNotFoundException
   {
-    throw new ClassNotFoundException(name);
+    return null;
   }
 
   /**

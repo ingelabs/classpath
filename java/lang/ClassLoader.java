@@ -288,21 +288,28 @@ public abstract class ClassLoader
       if (c != null)
         return c;
 
-      // Can the class been loaded by a parent?
+      // Can the class be loaded by a parent?
       try
+      {
+        if (parent == null)
         {
-          if (parent == null)
-            return VMClassLoader.loadClass(name, resolve);
+          c = VMClassLoader.loadClass(name, resolve);
+          if (c != null)
+            return c;
+        }
+        else
+        {
           return parent.loadClass(name, resolve);
         }
+      }
       catch (ClassNotFoundException e)
-        {
-          // Still not found, we have to do it ourself.
-          c = findClass(name);
-          if (resolve)
-            resolveClass(c);
-          return c;
-        }
+      {
+      }
+      // Still not found, we have to do it ourself.
+      c = findClass(name);
+      if (resolve)
+        resolveClass(c);
+      return c;
     }
 
   /**

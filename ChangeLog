@@ -1,3 +1,14 @@
+2003-03-15  Jeroen Frijters  <jeroen@sumatra.nl>
+
+	* vm/reference/java/lang/VMClassLoader.java (loadClass): Changed
+	documentation to make clear null can be returned to signal that the
+	class wasn't found.
+	* java/lang/ClassLoader.java (loadClass(String,boolean)): Added check
+	for null return value from VMClassLoader.loadClass.
+	* vm/reference/java/lang/Class.java
+	(forName(String,boolean,ClassLoader)): Likewise. 
+	* NEWS: Add note about VM interface changes.
+
 2003-03-15  Aaron M. Renn <arenn@urbanophile.com>
 
 	* java/io/FileOutputStream - Fix 1.4 compatibility issue
@@ -37,7 +48,6 @@
 	(nativeReadBuf): offset, len to int, return int
 	(nativeAvailable): return int
 	
-
 2003-03-14  Michael Koch  <konqueror@gmx.de>
 
 	* java/beans/beancontext/BeanContextServicesSupport.java
