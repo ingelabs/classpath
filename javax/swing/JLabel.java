@@ -162,7 +162,8 @@ public class JLabel extends JComponent implements SwingConstants
 	this.icon = icon;
 	if (icon != null)
 	    {
-		icon.setParent(this);
+                  // XXX FIXME - icons do not know their parent
+//  		icon.setParent(this);
 	    }
 	revalidate();
 	repaint();
@@ -200,8 +201,3 @@ public class JLabel extends JComponent implements SwingConstants
 	setUI(b);
     }
 }
-
-
-
-
-

@@ -144,8 +144,10 @@ public class JFrame extends Frame
 
     /////////////////////////////////////////////////////////////////////////////////
   
-    AccessibleContext getAccessibleContext()
-    {    return null;  }
+  public AccessibleContext getAccessibleContext()
+  {
+    return accessibleContext;
+  }
   
     int getDefaultCloseOperation()
     {    return close_action;   }

@@ -12,6 +12,10 @@ public class JTextField extends JEditorPane
 {
     Vector actions = new Vector();
 
+  public JTextField()
+  {
+  }
+
     public JTextField(int a)
     {
     }

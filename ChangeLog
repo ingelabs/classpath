@@ -1,5 +1,59 @@
 2002-04-30  Eric Blake  <ebb9@email.byu.edu>
 
+	* AUTHORS: Add Andrew Selkirk.
+	* configure.in: Configure the swing directories.
+	* lib/standard.omit: Made sure swing at least compiles (although
+	it is non-functional).
+	* javax/Makefile.am: Visit swing.
+	* javax/swing/.cvsignore: New file.
+	* javax/swing/AbstractButton.java: Fix for compilation.
+	* javax/swing/CellEditor.java: New file.
+	* javax/swing/Icon.java: Fix for compilation.
+	* javax/swing/ImageIcon.java: Fix for compilation.
+	* javax/swing/JComponent.java: Fix for compilation.
+	* javax/swing/JEditorPane.java: Fix for compilation.
+	* javax/swing/JFrame.java: Fix for compilation.
+	* javax/swing/JInternalFrame.java: New file.
+	* javax/swing/JLabel.java: Fix for compilation.
+	* javax/swing/JTable.java: New file.
+	* javax/swing/JTextField.java: Fix for compilation.
+	* javax/swing/KeyStroke.java: Fix for compilation.
+	* javax/swing/Makefile.am: New file.
+	* javax/swing/MenuElement.java: New file.
+	* javax/swing/MenuSelectionManager.java: New file.
+	* javax/swing/UIDefaults.java: Fix for compilation.
+	* javax/swing/border/.cvsignore: New file.
+	* javax/swing/border/Makefile.am: New file.
+	* javax/swing/event/.cvsignore: New file.
+	* javax/swing/event/Makefile.am: New file.
+	* javax/swing/plaf/.cvsignore: New file.
+	* javax/swing/plaf/ColorUIResource.java: New file.
+	* javax/swing/plaf/DimensionUIResource.java: New file.
+	* javax/swing/plaf/FontUIResource.java: New file.
+	* javax/swing/plaf/IconUIResource.java: New file.
+	* javax/swing/plaf/InsetsUIResource.java: New file.
+	* javax/swing/plaf/Makefile.am: New file.
+	* javax/swing/plaf/basic/.cvsignore: New file.
+	* javax/swing/plaf/basic/BasicBorders.java: New file.
+	* javax/swing/plaf/basic/BasicIconFactory.java: New file.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java: Fix for compilation.
+	* javax/swing/plaf/basic/Makefile.am: New file.
+	* javax/swing/plaf/metal/.cvsignore: New file.
+	* javax/swing/plaf/metal/Makefile.am: New file.
+	* javax/swing/table/.cvsignore: New file.
+	* javax/swing/table/DefaultTableCellRenderer.java: New file.
+	* javax/swing/table/Makefile.am: New file.
+	* javax/swing/text/.cvsignore: New file.
+	* javax/swing/text/JTextComponent.java: Fix for compilation.
+	* javax/swing/text/Makefile.am: New file.
+	* javax/swing/tree/.cvsignore: New file.
+	* javax/swing/tree/Makefile.am: New file.
+	* javax/swing/tree/TreeCellEditor.java: Fix for compilation.
+	* javax/swing/undo/.cvsignore: New file.
+	* javax/swing/undo/Makefile.am: New file.
+
+2002-04-30  Eric Blake  <ebb9@email.byu.edu>
+
 	* java/security/cert/Makefile.am (EXTRA_DIST): Add CertPath.java.
 	* java/security/cert/CertPath.java: New file.
 	* java/security/cert/CertificateFactory.java (generateCertPath):

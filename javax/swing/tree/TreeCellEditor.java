@@ -40,7 +40,6 @@ package javax.swing.tree;
 // Imports
 import java.awt.Component;
 import javax.swing.JTree;
-import javax.swing.CellEditor;
 
 /**
  * TreeCellEditor interface

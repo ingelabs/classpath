@@ -72,9 +72,9 @@ public class JEditorPane extends JTextComponent
 	return super.getPreferredSize();
     }
 
-  boolean getScrollableTracksViewportHeight()
+  public boolean getScrollableTracksViewportHeight()
     {  return false;  }
-  boolean getScrollableTracksViewportWidth()
+  public boolean getScrollableTracksViewportWidth()
     {  return false;  }
 
   URL getPage()
@@ -179,10 +179,4 @@ public class JEditorPane extends JTextComponent
     {	
 	super.setText(t);
     }
-}
-
-
-
-
-
-
+} // class JEditorPane

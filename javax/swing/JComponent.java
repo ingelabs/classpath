@@ -162,7 +162,7 @@ public abstract class JComponent extends Container implements Serializable
 		//Reports a bound property change. protected
 	}
 
-	public void firePropertyChange(String propertyName, Object oldValue, Object newValue)
+  protected void firePropertyChange(String propertyName, Object oldValue, Object newValue)
 	{
 		//       Support for reporting bound property changes.
 	}

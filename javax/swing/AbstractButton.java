@@ -203,7 +203,8 @@ public abstract class AbstractButton extends JComponent
 		default_icon = defaultIcon;
 		if (default_icon != null)
 		{
-			default_icon.setParent(this);
+                  // XXX FIXME - icons do not know their parent
+//  			default_icon.setParent(this);
 		}
 		revalidate();
 		repaint();

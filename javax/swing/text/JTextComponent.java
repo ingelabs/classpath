@@ -1,23 +1,43 @@
 package javax.swing.text;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-
-
+import java.awt.AWTEvent;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Rectangle;
+import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleRole;
 import javax.accessibility.AccessibleState;
 import javax.accessibility.AccessibleStateSet;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
+import javax.swing.Scrollable;
+import javax.swing.UIManager;
+import javax.swing.plaf.TextUI;
 
-public class JTextComponent extends JComponent
+public abstract class JTextComponent extends JComponent
+  implements Scrollable, Accessible
 {
-    public class KeyBinding
+//    public class AccessibleJTextComponent extends AccessibleJComponent
+//      implements AccessibleText, CaretListener, DocumentListener,
+//                 AccessibleAction, AccessibleEditableText
+//    {
+//    } // class AccessibleJTextComponent
+
+  public static class KeyBinding
+  {
+    public KeyStroke key;
+    public String actionName;
+    public KeyBinding(KeyStroke key, String actionName)
     {
-	char from, to;
+      this.key = key;
+      this.actionName = actionName;
     }
-    
-    int icon_gap;
+  } // class KeyBinding
+
+  int icon_gap;
     Icon icon;
     int align;
     Document doc;
@@ -212,7 +232,22 @@ public class JTextComponent extends JComponent
 	TextUI b = (TextUI)UIManager.getUI(this);
 	setUI(b);
     }
-}
+
+  public Dimension getPreferredScrollableViewportSize()
+  {
+    return null;
+  }
+  public int getScrollableUnitIncrement(Rectangle visible, int orientation,
+                                        int direction)
+  {
+    return 0;
+  }
+  public int getScrollableBlockIncrement(Rectangle visible, int orientation,
+                                         int direction)
+  {
+    return 0;
+  }
+} // class JTextComponent
 
 
 

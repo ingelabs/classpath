@@ -11,12 +11,12 @@ public class ImageIcon implements Icon
     String file, descr;
     Component observer;
 
-    ImageIcon(String s)
+  public ImageIcon(String s)
     {
 	this(s, "");
     }
 
-    ImageIcon(String file,
+  public ImageIcon(String file,
 	      String descr)
     {
         this.file = file;

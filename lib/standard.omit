@@ -5,4 +5,3 @@
 ../java/util/prefs/.*$
 ../gnu/java/util/prefs/.*$
 ../gnu/classpath/tools/.*$
-../javax/swing/.*$
