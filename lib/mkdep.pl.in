@@ -119,8 +119,10 @@ sub writeNativeFile
 	$j =~ s/\//_/g;             # replace / with _
 	$j =~ s/\.java/\.h/;        # replace .java with .h
 
-	$l =~ s/\.class$//;         # remove .class
-	$l =~ s/\//\./;             # replace / with .
+	$k =~ s/\.java$/\.class/;   # replace .java with .class
+
+	$l =~ s/\.java$//;          # remove .class
+	$l =~ s/\//\./g;            # replace / with .
 
 	print MAKEDEP "../include/", $j, " : ", $k, "\n";
 	print MAKEDEP "\t\$(JAVAH) ", $l, "\n";
