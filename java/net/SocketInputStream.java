@@ -1,5 +1,5 @@
 /* SocketInputStream.java -- An InputStream for Sockets
-   Copyright (C) 1998,2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -160,7 +160,7 @@ read() throws IOException
   int bytes_read = read(buf, 0, buf.length);
  
   if (bytes_read != -1)
-    return((int)buf[0]);
+    return(buf[0] & 0xFF);
   else
     return(-1);
 }
