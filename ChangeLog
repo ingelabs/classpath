@@ -1,3 +1,15 @@
+2004-04-09  Michael Koch  <konqueror@gmx.de>
+
+	* include/gnu_java_nio_PipeImpl.h,
+	include/gnu_java_nio_SelectorImpl.h,
+	native/jni/java-nio/gnu_java_nio_PipeImpl.c,
+	native/jni/java-nio/gnu_java_nio_SelectorImpl.c:
+	New files.
+	* native/jni/java-nio/Makefile.am:
+	Build gnu_java_nio_PipeImpl.c and gnu_java_nio_SelectorImpl.c.
+	* include/Makefile.am:
+	Generate gnu_java_nio_PipeImpl.h and gnu_java_nio_SelectorImpl.h.
+
 2004-04-08  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c
