@@ -1,6 +1,16 @@
 2003-12-28  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/io/LineNumberReader.java
+	(countLines): Removed.
+	(fill): New private method.
+	(mark): Changed logic to use savedLineNumber and matchedNewLine.
+	(reset): Likewise.
+	(read): Likewise.
+	(skipRedundantLF): Likewise.
+
+2003-12-28  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/io/LineNumberReader.java
 	(mark): Improved error checking.
 	(read): Likewise.
 	(skip): Likewise. Skip is now really eating the specified number of
