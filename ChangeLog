@@ -1,5 +1,11 @@
 2004-12-01  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/geom/Area.java
+	(QuadSegment.curveArea): Remove unused variables.
+	(CubicSegment.curveArea): Likewise.
+
+2004-12-01  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/locale/LocaleInformation_en.java,
 	gnu/java/locale/LocaleInformation_nl.java:
 	Removed unneeded comments.
