@@ -595,7 +595,14 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
       return;
     }
 
-  _javanet_set_remhost(env, this, remote_address);
+  if (remote_address == netaddr)
+    {
+      _javanet_set_remhost_addr(env, this, addr);
+    }
+  else
+    {
+      _javanet_set_remhost(env, this, remote_address);
+    }
   if ((*env)->ExceptionOccurred(env))
     {
       TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);

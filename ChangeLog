@@ -1,3 +1,14 @@
+2003-07-29  Stephen Crawley <crawley@dstc.edu.au>
+
+	* java/net/SocketImpl.java (toString): Display the remote address
+	of an unconnected server socket as "0.0.0.0/0.0.0.0".
+	* native/jni/java-net/javanet.c (_javanet_connect):
+	Don't create a new InetAddress for the remote host.
+	Instead, attach the parameter InetAddress to the
+	connected SocketImpl object.
+	* java/net/PlainSocketImpl.java (connect):
+	Implemented connect(SocketAddress, int) overloading.
+
 2003-07-28  C. Brian Jones  <cbj@gnu.org>
 
 	* vm/reference/java/lang/Thread.java (stop): no longer remove 
