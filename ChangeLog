@@ -1,5 +1,13 @@
 2003-12-02  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/file/Connection.java: Reformated.
+	(inputStream): Made an InputStream.
+	(outputStream): Made an OutputStream.
+	(connect): Don't throw FileNotFoundException directly. FileInputStream
+	constructor does this for us.
+
+2003-12-02  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/protocol/jar/Connection.java:
 	Reformated.
 
