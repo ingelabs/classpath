@@ -25,7 +25,7 @@ page describing them in more detail:
 <ul>
 <li><b>gjdoc</b>
     A documentation generation framework for java source files.</li>
-<li><b><createlink url="texidoclet.html" name="texidoclet"/></b>
+<li><b><createlink url="cp-tools/texidoclet.html" name="texidoclet"/></b>
     A "doclet" for converting comments into GNU TexInfo source.</li>
 <li>RMI tools such as rmic and rmiregistry.</li>
 <li>Miscellaneous tools such as javap, javah, serialver and native2ascii/</a>
