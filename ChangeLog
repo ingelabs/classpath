@@ -1,3 +1,7 @@
+2001-10-06  Mark Wielaard  <mark@klomp.org>
+
+	* java/io/BufferedInputStream.java: Merge with libgcj
+
 2001-10-05  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/DecimalFormat.java (format): Use localized minus sign
