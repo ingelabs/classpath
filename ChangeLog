@@ -1,5 +1,12 @@
 2003-08-12  Ingo Proetel  <proetel@aicas.com>
 
+	* java/util/TimeZone.java: initialize lazily 
+	* java/util/Locale.java:readManifest: fix check for country 
+	* java/util/GregorianCalendar.java:make use of ResourceBundle better traceable 
+	* java/util/Calendar.java: make use of ResourceBundle better traceable 
+
+2003-08-12  Ingo Proetel  <proetel@aicas.com>
+
 	* gnu/java/io/encode/EncoderEightBitLookup.java: conserve memory 
 	* gnu/java/io/decode/DecoderEightBitLookup.java: override ready()-method 
 
