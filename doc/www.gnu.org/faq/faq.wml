@@ -96,6 +96,26 @@ exception statement from your version.
 Please check the FSF FAQ on the GNU GPL: <createlink name="http://www.fsf.org/licenses/gpl-faq.html" url="http://www.fsf.org/licenses/gpl-faq.html">.
 </faq>
 
+<faq question="What does the exception allow me to do?">
+<p>If you combine GNU Classpath <em>with independent modules to produce an
+executable</em> you can <em>copy and distribute the resulting executable under
+terms of your choice</em>.</p>
+
+<p>So you can use and distribute GNU Classpath as is in your program without changing the license of your software.</p>
+</faq>
+
+<faq question="I have a question about licensing GNU Classpath. Who can I ask?">
+Direct such questions to <a href="mailto:licensing@gnu.org">licensing@gnu.org</a>. The FSF is the
+official copyright holder of Classpath and sets the distribution terms
+</faq>
+
+<faq question="How can I be sure that my application does not break the license?">
+The FSF has a GPL-compliance lab which offers consulting services for
+companies who are working to develop products that incorporate Free
+Software so that they can do so in ways that comply with the terms of
+the GPL and other Free Software licenses. If you are interested in this
+service, please write to <a href="mailto:compliance-lab@fsf.org">compliance-lab@fsf.org</a>.
+</faq>
 </faq-section>
 
 <faq-section name="Classpath Development">
@@ -108,6 +128,8 @@ of all authors. For this reason, and for others that are specific to the
 intellectual property system of the United States, GNU projects tend to
 be a bit picky about getting signatures from all contributors. Please do
 not see this as a personal offence.
+
+<p>Giving the copyright to the FSF also gives us a clear paper trail where changes come from, which confirms our clean-room status.
 
 <p>See also <a href="http://www.gnu.org/licenses/why-assign.html">http://www.gnu.org/licenses/why-assign.html</a>.
 </p>
