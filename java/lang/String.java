@@ -1397,8 +1397,7 @@ public final class String implements Serializable, Comparable, CharSequence
     while (value[begin++] <= '\u0020');
     int end = limit;
     while (value[--end] <= '\u0020');
-
-    return substring(begin, end + 1);
+    return substring(begin - offset - 1, end - offset + 1);
   }
 
   /**
