@@ -62,13 +62,13 @@ ARG_CLASSPATH_JAVAH = -classpath
 
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
 
-if CREATE_GLIBJ
+if INSTALL_GLIBJ_ZIP
 
 dist_pkgdata_DATA = glibj.zip
 
-endif # CREATE_GLIBJ
+endif # INSTALL_GLIBJ_ZIP
 
-if INSTALL_CLASSFILES
+if INSTALL_CLASS_FILES
 
 noinst_DATA = genclasses compile-classes resources
 
@@ -86,7 +86,7 @@ uninstall-local:
 	rm -rf $(DESTDIR)$(pkgdatadir)/javax
 	rm -rf $(DESTDIR)$(pkgdatadir)/org
 
-endif # INSTALL_CLASSFILES
+endif # INSTALL_CLASS_FILES
 
 .PHONY: genclasses
 

@@ -1,3 +1,12 @@
+2004-04-12  Michael Koch  <konqueror@gmx.de>
+
+	* configure.ac: Call only CLASSPATH_WITH_GLIBJ to get what to install.
+	* acinclude.m4
+	(CLASSPATH_WITH_GLIBJ): New function to specify what to install.
+	(CLASSPATH_ENABLE_GLIBJ): Removed.
+	(CLASSPATH_ENABLE_CLASS_INSTALL): Removed.
+	* lib/Makefile.am: Handle INSTALL_GLIBJ_ZIP and INSTALL_CLASS_FILES.
+
 2004-04-11  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac (CFLAGS): Remove definition.

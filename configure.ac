@@ -250,14 +250,9 @@ dnl -----------------------------------------------------------
 AC_PATH_PROG(FIND, find)
 
 dnl -----------------------------------------------------------
-dnl Create glibj.zip (enabled by default)
+dnl Specify what to install (install only glibj.zip by default)
 dnl -----------------------------------------------------------
-CLASSPATH_ENABLE_GLIBJ
-
-dnl -----------------------------------------------------------
-dnl Install class files (disabled by default)
-dnl -----------------------------------------------------------
-CLASSPATH_ENABLE_CLASS_INSTALL
+CLASSPATH_WITH_GLIBJ
 
 dnl -----------------------------------------------------------
 dnl Enable API documentation generation (disabled by default)

@@ -555,47 +555,38 @@ AC_DEFUN([CLASSPATH_WITH_INCLUDEDIR],
 ])
 
 dnl -----------------------------------------------------------
-dnl CLASSPATH_ENABLE_GLIBJ - allow user to specify without zip
+dnl CLASSPATH_WITH_GLIBJ - specify what to install
 dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_ENABLE_GLIBJ],
+AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 [
-  AC_ARG_ENABLE([glibj],
-                [AS_HELP_STRING([--enable-glibj],[enable creation of glibj.zip [default=yes]])],
-                [
-                  if test "x${enableval}" = xyes; then
-      		    AC_PATH_PROG(ZIP, zip)
-                  elif test "x${enableval}" = xno; then
-                    ZIP=
-                  else
-                   ZIP="${enableval}"
-                  fi
-		],
-  		[
+  AC_ARG_WITH([glibj],
+              [AS_HELP_STRING([--with-glibj],[define what to install (zip|flat|both) [default=zip]])],
+              [
+                if test "x${withval}" = xyes || test "x${withval}" = xzip; then
+      		  AC_PATH_PROG(ZIP, zip)
+		  install_class_files=no
+		elif test "x${withval}" = xboth; then
+		  AC_PATH_PROG(ZIP, zip)
+		  install_class_files=yes
+		elif test "x${withval}" = xflat; then
+		  ZIP=
+		  install_class_files=yes
+                elif test "x${withval}" = xno || test "x${withval}" = xnone; then
                   ZIP=
-		])
-
-  AC_SUBST(ZIP)
-  AM_CONDITIONAL(CREATE_GLIBJ, test "x${ZIP}" != x)
-])
-
-dnl -----------------------------------------------------------
-dnl CLASSPATH_ENABLE_CLASS_INSTALL
-dnl   - allow user to install all classfiles
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_ENABLE_CLASS_INSTALL],
-[
-  AC_ARG_ENABLE([class-install],
-		[AS_HELP_STRING([--enable-class-install],[enable installation of class files [default=no]])],
-		[
-                  case "${enableval}" in
-                    yes) ENABLE_CLASS_INSTALL=yes ;;
-                    no) ENABLE_CLASS_INSTALL=no ;;
-                    *) ENABLE_CLASS_INSTALL=no ;;
-                  esac
-		],
-		[ENABLE_CLASS_INSTALL=no])
-
-  AM_CONDITIONAL(INSTALL_CLASSFILES, test "x${ENABLE_CLASS_INSTALL}" = xyes)
+		  install_class_files=no
+                else
+		  AC_MSG_ERROR([unknown value given to --with-glibj])
+                fi
+	      ],
+  	      [
+		AC_PATH_PROG(ZIP, zip)
+		install_class_files=no
+	      ])
+  if test "x${ZIP}" = x && test "x${install_class_files}" = xno; then
+    AC_MSG_ERROR([you need to either install class files or glibj.zip])
+  fi
+  AM_CONDITIONAL(INSTALL_GLIBJ_ZIP, test "x${ZIP}" != x)
+  AM_CONDITIONAL(INSTALL_CLASS_FILES, test "x${install_class_files}" = xyes)
 ])
 
 dnl -----------------------------------------------------------
