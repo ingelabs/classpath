@@ -1,3 +1,9 @@
+2004-12-19  Robert Schuster <thebohemian@gmx.net>
+
+        * javax/swing/JComboBox.java:
+        (JComboBox): Removed selection of the
+        first item in the model.
+
 2004-12-19  Michael Koch  <konqueror@gmx.de>
 
 	* resource/Makfile.am: Don't call make for subdirs.
