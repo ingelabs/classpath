@@ -1,3 +1,8 @@
+2003-07-29  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/StrictMath.java: Typo fix.
+	* java/lang/Math.java: Typo fix.
+
 2003-07-29  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkButtonPeer.java: Call getName rather
