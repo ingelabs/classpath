@@ -1,3 +1,24 @@
+2003-03-25  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/ContainerOrderFocusTraversalPolicy.java
+	(getFirstComponent): Implemented.
+	(getLastComponent): Implemented.
+	(getDefaultComponent): Implemented.
+	(setImplicitDownCycleTraversal): Fixed implementation.
+	* java/awt/Robot.java
+	(Robot): Documentation added.
+	* java/awt/Toolkit.java
+	(getFontList): Deprecated.
+	(getFontMetrics): Deprecated.
+	(getPrintJob): Documentation added.
+	(getSystemSelection): Documentation added.
+	(getLockingKeyState): Documentation addded.
+	(setLockingKeyState): Documentation addded.
+	(createCustonCursor): Documentation addded.
+	(getBestCursorSize): Documentation addded.
+	(getMaximumCursorColors): Documentation addded.
+	(isFrameStateSupported): Documentation addded.
+
 2003-03-24  C. Brian Jones  <cbj@gnu.org>
 
 	* doc/www.gnu.org/home.wml: link to mauve results on gnu.org
