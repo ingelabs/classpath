@@ -1,0 +1,1201 @@
+/*************************************************************************
+/* File.java -- Class representing a file on disk
+/*
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
+/*
+/* This library is free software; you can redistribute it and/or modify
+/* it under the terms of the GNU Library General Public License as published 
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
+/*
+/* This library is distributed in the hope that it will be useful, but
+/* WITHOUT ANY WARRANTY; without even the implied warranty of
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/* GNU Library General Public License for more details.
+/*
+/* You should have received a copy of the GNU Library General Public License
+/* along with this library; if not, write to the Free Software Foundation
+/* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
+/*************************************************************************/
+
+package java.io;
+
+import java.util.StringTokenizer;
+
+/**
+  * This class represents a file or directory on a local disk.  It provides
+  * facilities for dealing with a variety of systems that use various
+  * types of path separators ("/" versus "\", for example).  It also
+  * contains method useful for creating and deleting files and directories.
+  *
+  * @version 0.0
+  *
+  * @author Aaron M. Renn (arenn@urbanophile.com)
+  */
+public class File implements Serializable //, Comparable // Only in 1.2
+{
+
+static
+{
+  System.loadLibrary("jcllib");
+  System.loadLibrary("javaio");
+}
+
+/*************************************************************************/
+
+/*
+ * Class Variables
+ */
+
+/**
+  * This is the path separator string for the current host. This field
+  * contains the value of the <xmp>file.separator</xmp> system property.
+  * An example separator string would be "/" on the GNU system.
+  */
+public static final String separator = System.getProperty("file.separator");
+
+/**
+  * This is the first character of the file separator string.  On many
+  * hosts (for example, on the GNU system), this represents the entire 
+  * separator string.  The complete separator string is obtained from the
+  * <xmp>file.separator</xmp>system property.
+  */
+public static final char separatorChar = separator.charAt(0);
+
+/**
+  * This is the string that is used to separate the host name from the
+  * path name in paths than include the host name.  It is the value of
+  * the <xmp>path.separator</xmp> system property.
+  */
+public static final String pathSeparator = System.getProperty("path.separator");
+
+/**
+  * This is the first character of the string used to separate the host name
+  * from the path name in paths that include a host.  The separator string
+  * is taken from the <xmp>path.separator</xmp> system property.
+  */
+public static final char pathSeparatorChar = pathSeparator.charAt(0);
+
+/*************************************************************************/
+
+/*
+ * Instance Variables
+ */
+
+/**
+  * This is the path to the file set when the object is created.  It
+  * may be an absolute or relative path name.
+  */
+private String path;
+
+/*************************************************************************/
+
+/*
+ * Class Methods
+ */
+
+/**
+  * This method creates a temporary file in the system temporary directory. The
+  * files created are guaranteed not to currently exist and the same file name
+  * will never be used twice in the same virtual machine instance.  The
+  * system temporary directory is determined by examinging the 
+  * <xmp>java.tmpdir</xmp> system property.
+  *
+  * The <code>pattern</code>argument determines a portion of the filename
+  * created.  It should follow a format of <xmp>prefix[#suffix]</xmp> where
+  * prefix is a character string of at least three characters that will
+  * be used to prefix the temporary file name and suffix is an optional
+  * string that will be used as the suffix of the temporary file name.  The
+  * suffix must be separated from the prefix by a <xmp>#</xmp> char. The
+  * brackets in the format example are to indicate that the suffix is 
+  * optional and should not be included.  The case of the prefix and suffix 
+  * is not guaranteed to be preserved.  Additionally, the suffix may be
+  * truncated to a minimum of three characters.  A <xmp>#</xmp>
+  * character in the prefix or suffix must be escaped with a <xmp>\</xmp>.
+  * If no suffix is specified, the suffix defaults to <xmp>.tmp</code>.
+  *
+  * If a <code>SecurityManager</code> exists, then its <code>checkWrite</code>
+  * method is used to verify that this operation is permitted.
+  *
+  * This method is identical to calling 
+  * <code>createTempFile("pattern", null)</code>.
+  *
+  * @param pattern The pattern of the filename to create as described above
+  *
+  * @exception IllegalArgumentException If the patterns is not valid
+  * @exception SecurityException If there is no permission to perform this operation
+  * @exception IOException If an error occurs
+  */
+public static File
+createTempFile(String pattern) throws IllegalArgumentException, 
+                                      SecurityException, IOException
+{
+  return(createTempFile(pattern, null));
+}
+
+/*************************************************************************/
+
+/**
+  * This method creates a temporary file in the specified directory.  If 
+  * the directory name is null, then this method uses the system temporary 
+  * directory. The files created are guaranteed not to currently exist and the 
+  * same file name will never be used twice in the same virtual machine instance.  
+  * The system temporary directory is determined by examinging the 
+  * <xmp>java.tmpdir</xmp> system property.
+  *
+  * The <code>pattern</code>argument determines a portion of the filename
+  * created.  It should follow a format of <xmp>prefix[#suffix]</xmp> where
+  * prefix is a character string of at least three characters that will
+  * be used to prefix the temporary file name and suffix is an optional
+  * string that will be used as the suffix of the temporary file name.  The
+  * suffix must be separated from the prefix by a <xmp>#</xmp> char. The
+  * brackets in the format example are to indicate that the suffix is 
+  * optional and should not be included.  The case of the prefix and suffix 
+  * is not guaranteed to be preserved.  Additionally, the suffix may be
+  * truncated to a minimum of three characters.  A <xmp>#</xmp>
+  * character in the prefix or suffix must be escaped with a <xmp>\</xmp>.
+  * If no suffix is specified, the suffix defaults to <xmp>.tmp</code>.
+  *
+  * If a <code>SecurityManager</code> exists, then its <code>checkWrite</code>
+  * method is used to verify that this operation is permitted.
+  *
+  * @param pattern The pattern of the filename to create as described above
+  * @param directory The directory to create the file in, or <code>null</code> for the default temporary directory
+  *
+  * @exception IllegalArgumentException If the patterns is not valid
+  * @exception SecurityException If there is no permission to perform this operation
+  * @exception IOException If an error occurs
+  */
+public static synchronized File
+createTempFile(String pattern, File directory) throws IllegalArgumentException,
+                                                      SecurityException,
+                                                      IOException
+{
+  // Grab the system temp directory if necessary
+  if (directory == null)
+    {
+      String dirname = System.getProperty("java.tmpdir");
+      if (dirname == null)
+        throw new IOException("Cannot determine system temporary directory"); 
+
+      directory = new File(dirname);
+      if (!directory.exists())
+        throw new IOException("System temporary directory " + 
+                              directory.getName() + " does not exist.");
+      if (!directory.isDirectory())
+        throw new IOException("System temporary directory " + 
+                              directory.getName() + " is not really a directory.");
+    }
+
+  // Now parse the pattern
+  String prefix = null; 
+  String suffix = ".tmp";
+  int pos = -1;
+  while ((pos = pattern.indexOf("#", pos + 1)) != -1)
+    {
+      // Watch out for jokers
+      if (pos == 0)
+        throw new IllegalArgumentException("Bad pattern string: " + pattern);
+
+      if (pos == (pattern.length() - 1))
+        throw new IllegalArgumentException("Bad pattern string: " + pattern);
+
+      // Ignore if escape sequence
+      if (pattern.charAt(pos - 1) == '\\')
+        continue;
+
+      // Just to follow the spec, if we find another unescaped delimiter,
+      // that is invalid.
+      if (prefix != null)
+        throw new IllegalArgumentException("Too many delimiters in pattern: " +
+                                           pattern);
+
+      prefix = pattern.substring(0, pos);
+      suffix = pattern.substring(pos + 1);
+    }
+  if (prefix == null)
+    prefix = pattern;
+
+  // Now identify a file name and make sure it doesn't exist
+  File f;
+  for(;;)
+    {
+      String filename = prefix + System.currentTimeMillis() + suffix;
+      f = new File(directory, filename);
+
+      if (f.exists())
+        continue;
+      else
+        break;
+    }
+
+  // Verify that we are allowed to create this file
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+          sm.checkWrite(f.getAbsolutePath());
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+
+  // Now create the file and return our file object
+  createInternal(f.getAbsolutePath()); 
+  return(f);
+}
+
+/*************************************************************************/
+
+/**
+  * This method is used to create a temporary file
+  */
+private static native void
+createInternal(String name) throws IOException;
+
+/*************************************************************************/
+
+/*
+ * Constructors
+ */
+
+/**
+  * This method initializes a new <code>File</code> object to represent
+  * a file in the specified directory.  If the <code>directory</code>
+  * argument is <code>null</code>, the file is assumed to be in the
+  * current directory as specified by the <xmp>user.dir</xmp> system
+  * property
+  *
+  * @param directory The directory this file resides in
+  * @param name The name of the file
+  */
+public
+File(File directory, String name)
+{
+  if (directory == null)
+    {
+      String dirname = System.getProperty("user.dir");
+      if (dirname == null)
+        throw new IllegalArgumentException("Cannot determine default user directory");
+
+      directory = new File(dirname);
+    }
+
+  path = directory.getPath() + separator + name;
+}
+
+/*************************************************************************/
+
+/**
+  * This method initializes a new <code>File</code> object to represent
+  * a file in the specified named directory.  The path name to the file
+  * will be the directory name plus the separator string plus the file
+  * name.  If the directory path name ends in the separator string, another
+  * separator string will still be appended.
+  *
+  * @param dirname The path to the directory the file resides in
+  * @param name The name of the file
+  */
+public
+File(String dirname, String name)
+{
+  this(dirname + separator + name);
+}
+
+/*************************************************************************/
+
+/**
+  * This method initializes a new <code>File</code> object to represent
+  * a file with the specified path.
+  *
+  * @param name The path name of the file
+  */
+public
+File(String name)
+{
+  path = name;
+
+  // Per the spec
+  if (path == null)
+    throw new NullPointerException("File name is null");
+}
+
+/*************************************************************************/
+
+/*
+ * Instance Methods
+ */
+
+/**
+  * This method returns the name of the file.  This is everything in the
+  * complete path of the file after the last instance of the separator
+  * string.
+  *
+  * @return The file name
+  */
+public String
+getName()
+{
+  int pos = path.lastIndexOf(separator);
+  if (pos == -1)
+    return(path);
+
+  if (path.endsWith(separator))
+    return("");
+
+  return(path.substring(pos + separator.length()));
+}
+
+/*************************************************************************/
+
+/**
+  * Returns the path name that represents this file.  May be a relative
+  * or an absolute path name
+  *
+  * @return The pathname of this file
+  */
+public String
+getPath()
+{
+  return(path);
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns the path of this file as an absolute path name.
+  * If the path name is already absolute, then it is returned.  Otherwise
+  * the value returned is the current directory plus the separatory
+  * string plus the path of the file.  The current directory is determined
+  * from the <xmp>user.dir</xmp> system property.
+  *
+  * @return The absolute path of this file
+  */
+public String
+getAbsolutePath()
+{
+  if (path.startsWith(separator))
+    return(path);
+
+  return(System.getProperty("user.dir") + separator + path);
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a canonical representation of the pathname of
+  * this file.  The actual form of the canonical representation is
+  * different.  On the GNU system, the canonical form differs from the
+  * absolute form in that all relative file references to "." and ".."
+  * are resolved and removed.
+  *
+  * Note that this method, unlike the other methods which return path
+  * names, can throw an IOException.  This is because native method 
+  * might be required in order to resolve the canonical path
+  *
+  * @exception IOException If an error occurs
+  */
+public String
+getCanonicalPath() throws IOException
+{
+  String abspath = getAbsolutePath();
+  StringBuffer canonpath = new StringBuffer(separator);
+  StringTokenizer st = new StringTokenizer(abspath, separator);
+
+  // Traverse each element of the path, handling "." and ".."
+  // Should be handle "~" too?
+  if (st.hasMoreTokens())
+    do
+      {
+        String s = st.nextToken();
+  
+        // Handle "." or an empty element.  
+        if (s.equals(".") || s.equals(""))
+          continue;
+  
+        // Handle ".." by deleting the last element from the path
+        if (s.equals(".."))
+          {
+            if (canonpath.equals(separator))
+              continue;
+  
+            // Strip of trailing separator
+            String tmpstr = canonpath.toString().substring(0, 
+                              canonpath.length() - separator.length());
+            int idx = tmpstr.lastIndexOf(separator); 
+            if ((idx == -1) || ((idx + separator.length()) > tmpstr.length()))
+              throw new IOException("Can't happen error"); // Shouldn't happen 
+  
+            tmpstr = tmpstr.substring(0, idx + separator.length());
+            canonpath = new StringBuffer(tmpstr);
+            continue;
+          }       
+  
+        canonpath.append(s);
+        if (st.hasMoreTokens())
+          canonpath.append(separator);
+      }
+    while(st.hasMoreTokens());
+
+  String tmpstr = canonpath.toString();
+  if (tmpstr.endsWith(separator) && !tmpstr.equals(separator))
+    tmpstr = tmpstr.substring(0, tmpstr.length() - 1);
+
+  return(tmpstr);
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a <code>String</code> the represents this file's
+  * parent.  <code>null</code> is returned if the file has no parent.  The
+  * parent is determined via a simple operation which removes the
+  *
+  * @return The parent directory of this file
+  */
+public String
+getParent()
+{
+  if (path.equals("/"))
+    return(null);
+
+  String par_path;
+  if (path.endsWith(separator))
+    par_path = path.substring(0, path.length() - 1);
+  else
+    par_path = path;
+
+  int pos = par_path.lastIndexOf(separator);
+  if (pos == -1)
+    return(null);
+
+  return(par_path.substring(0, pos));
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns true if this object represents an absolute file
+  * path and false if it does not.  The definition of an absolute path varies
+  * by system.  As an example, on GNU systems, a path is absolute if it starts
+  * with a "/".
+  */
+public boolean
+isAbsolute()
+{
+  if (path.startsWith(separator))
+    return(true);
+  else
+    return(false);
+}
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the current thread is allowed to
+  * to read the file pointed to by this object.  This will be true if and
+  * and only if 1) the file exists and 2) the <code>SecurityManager</code>
+  * (if any) allows access to the file via it's <code>checkRead</code>
+  * method 3) the file is readable.
+  *
+  * @return <code>true</code> if reading is allowed, <code>false</code> otherwise
+  *
+  * @exception SecurityException If the <code>SecurityManager</code> does not allow access to the file
+  */
+public boolean
+canRead() throws SecurityException
+{
+  // Test for existence. This also does the SecurityManager check
+  if (!exists())
+    return(false);
+
+  return(canReadInternal(path));
+}
+
+/*************************************************************************/
+
+/**
+  * This native method checks file permissions for reading
+  */
+private synchronized native boolean
+canReadInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * This method test whether or not the current thread is allowed to
+  * write to this object.  This will be true if and only if 1) The
+  * <code>SecurityManager</code> (if any) allows write access to the
+  * file and 2) The file exists and 3) The file is writable.  To determine
+  * whether or not a non-existent file can be created, check the parent
+  * directory for write access.
+  *
+  * @return <code>true</code> if writing is allowed, <code>false</code> otherwise
+  *
+  * @exception SecurityException If the <code>SecurityManager</code> does not allow access to the file
+  */
+public boolean
+canWrite() throws SecurityException
+{
+  // Test for existence.  This is required by the spec
+  if (!exists())
+    return(false);
+
+  // We still need to do a SecurityCheck since exists() only checks
+  // for read access
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkWrite(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+   
+  return(canWriteInternal(path));
+}
+
+/*************************************************************************/
+
+/**
+  * This native method checks file permissions for writing
+  */
+private synchronized native boolean
+canWriteInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the file represented by the object
+  * actually exists on the filesystem.
+  *
+  * @return <code>true</code> if the file exists, <code>false</code>otherwise.
+  *
+  * @exception SecurityException If reading of the file is not permitted
+  */
+public boolean
+exists() throws SecurityException
+{
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkRead(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+   
+  return(existsInternal(path));
+}
+
+/*************************************************************************/
+
+/**
+  * This native method does the actual checking of file existence.
+  */
+private native boolean
+existsInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the file represented by this object
+  * is a "plain" file.  A file is a plain file if and only if it 1) Exists,
+  * 2) Is not a directory or other type of special file.
+  *
+  * @return <code>true</code> if this is a plain file, <code>false</code> otherwise
+  *
+  * @exception SecurityException If reading of the file is not permitted
+  */
+public boolean isFile() throws SecurityException
+{
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkRead(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+
+  return(isFileInternal(path)); 
+}
+
+/*************************************************************************/
+
+/**
+  * This native method does the actual check of whether or not a file
+  * is a plain file or not.  It also handles the existence check to
+  * eliminate the overhead of a call to exists()
+  */
+private native boolean
+isFileInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the file represented by this object
+  * is a directory.  In order for this method to return <code>true</code>,
+  * the file represented by this object must exist and be a directory.
+  * 
+  * @return <code>true</code> if this file is a directory, <code>false</code> otherwise
+  *
+  * @exception SecurityException If reading of the file is not permitted
+  */
+public boolean isDirectory() throws SecurityException
+{
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkRead(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+
+  return(isDirectoryInternal(path)); 
+}
+
+/*************************************************************************/
+
+/**
+  * This method does the actual check of whether or not a file is a
+  * directory or not.  It also handle the existence check to eliminate
+  * the overhead of a call to exists()
+  */
+private native boolean
+isDirectoryInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * This method returns the length of the file represented by this object,
+  * or 0 if the specified file does not exist.
+  *
+  * @return The length of the file
+  *
+  * @exception SecurityException If reading of the file is not permitted
+  */
+public long
+length() throws SecurityException
+{
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkRead(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+
+  return(lengthInternal(path));
+}
+
+/*************************************************************************/
+
+/**
+  * This native method actually determines the length of the file and
+  * handles the existence check
+  */
+private native long
+lengthInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * This method returns the last modification time of this file.  The
+  * time value returned is an abstract value that should not be interpreted
+  * as a specified time value.  It is only useful for comparing to other
+  * such time values returned on the same system.  In that case, the larger
+  * value indicates a more recent modification time. 
+  *
+  * If the file does not exist, then a value of 0 is returned.
+  *
+  * @return The last modification time of the file
+  *
+  * @exception SecurityException If reading of the file is not permitted
+  */
+public long
+lastModified() throws SecurityException
+{
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkRead(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+
+  return(lastModifiedInternal(path));
+}
+
+/*************************************************************************/
+
+/**
+  * This native method does the actual work of getting the last file
+  * modification time.  It also does the existence check to avoid the
+  * overhead of a call to exists()
+  */
+public native long
+lastModifiedInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * This method deletes the file represented by this object.  If this file
+  * is a directory, it must be empty in order for the delete to succeed.
+  *
+  * @return <code>true</code> if the file was deleted, <code>false</code> otherwise
+  *
+  * @exception SecurityException If deleting of the file is not allowed
+  */
+public synchronized boolean
+delete() throws SecurityException
+{
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkDelete(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+
+  return(deleteInternal(path));
+}
+
+/*************************************************************************/
+
+/**
+  * This native method handles the actual deleting of the file
+  */
+public native boolean
+deleteInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * Calling this method requests that the file represented by this object
+  * be deleted when the virtual machine exits.  Note that this request cannot
+  * be cancelled.  Also, it will only be carried out if the virtual machine
+  * exits normally.
+  *
+  * @exception SecurityException If deleting of the file is not allowed
+  */
+public void
+deleteOnExit() throws SecurityException
+{
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkDelete(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+
+  // Sounds like we need to do some VM specific stuff here. We could delete
+  // the file in finalize() and set FinalizeOnExit to true, but delete on
+  // finalize != delete on exit and we should not be setting up system
+  // parameters without the user's knowledge.
+  //********IMPLEMENT ME!!!!!!***************
+  return;
+}
+
+/*************************************************************************/
+
+/**
+  * This method creates a directory for the path represented by this object.
+  *
+  * @return <code>true</code> if the directory was created, <code>false</code> otherwise
+  *
+  * @exception SecurityException If write access is not allowed to this file
+  */
+public boolean
+mkdir() throws SecurityException
+{
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkWrite(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+
+  String mk_path;
+  if (path.endsWith(separator) && !path.equals(separator))
+    mk_path = path.substring(0, path.length() - 1);
+  else
+    mk_path = path;
+  
+  return(mkdirInternal(mk_path));
+}
+
+/*************************************************************************/
+
+/**
+  * This native method actually creates the directory
+  */
+public native boolean
+mkdirInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * This method creates a directory for the path represented by this file.
+  * It will also create any intervening parent directories if necessary.
+  *
+  * @return <code>true</code> if the directory was created, <code>false</code> otherwise
+  *
+  * @exception SecurityException If write access is not allowed to this file
+  */
+public boolean
+mkdirs() throws SecurityException
+{
+  String parent = getParent();
+  if (parent == null)
+    {
+      return(mkdir());
+    }
+    
+  File f = new File(parent);
+  if (!f.exists())
+    {
+      boolean rc = f.mkdirs();
+      if (rc == false)
+        return(false);
+    }
+
+  return(mkdir());
+}
+
+/*************************************************************************/
+
+/**
+  * This method renames the file represented by this object to the path
+  * of the file represented by the argument <code>File</code>.
+  *
+  * @param dest The <code>File</code> object representing the target name
+  *
+  * @return <code>true<code> if the rename succeeds, <code>false</code> otherwise.
+  *
+  * @exception SecurityException If write access is not allowed to the file by the <code>SecurityMananger</code>.
+  */
+public synchronized boolean
+renameTo(File dest) throws SecurityException
+{
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkWrite(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+
+  // Call our native rename method
+  boolean rc = renameToInternal(path, dest.getPath());
+  if (rc)
+    path = dest.getPath();
+
+  return(rc);
+}
+
+/*************************************************************************/
+
+/**
+  * This native method actually performs the rename.
+  */
+private native boolean
+renameToInternal(String target, String dest);
+
+/*************************************************************************/
+
+/**
+  * This method returns a array of <code>String</code>'s representing the
+  * list of files is then directory represented by this object.  If this
+  * object represents a non-directory file or a non-existent file, then
+  * <code>null</code> is returned.  The list of files will not contain
+  * any names such as "." or ".." which indicate the current or parent
+  * directory.  Also, the names are not guaranteed to be sorted.
+  *
+  * A <code>SecurityManager</code> check is made prior to reading the
+  * directory.  If read access to the directory is denied, an exception
+  * will be thrown.
+  *
+  * @return An array of files in the directory, or <code>null</code> if this object does not represent a valid directory.
+  * 
+  * @exception SecurityException If read access is not allowed to the directory by the <code>SecurityManager</code>
+  */
+public String[]
+list()
+{
+  return(list(null));
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a array of <code>String</code>'s representing the
+  * list of files is then directory represented by this object.  If this
+  * object represents a non-directory file or a non-existent file, then
+  * <code>null</code> is returned.  The list of files will not contain
+  * any names such as "." or ".." which indicate the current or parent
+  * directory.  Also, the names are not guaranteed to be sorted.
+  *
+  * In this form of the <code>list()</code> method, a filter is specified
+  * that allows the caller to control which files are returned in the
+  * list.  The <code>FilenameFilter</code> specified is called for each
+  * file returned to determine whether or not that file should be included
+  * in the list.
+  *
+  * A <code>SecurityManager</code> check is made prior to reading the
+  * directory.  If read access to the directory is denied, an exception
+  * will be thrown.
+  *
+  * @param filter An object which will identify files to exclude from the directory listing.
+  *
+  * @return An array of files in the directory, or <code>null</code> if this object does not represent a valid directory.
+  * 
+  * @exception SecurityException If read access is not allowed to the directory by the <code>SecurityManager</code>
+  */
+public String[]
+list(FilenameFilter filter)
+{
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkRead(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+
+  // Get the list of files
+  String list_path;
+  if (path.endsWith(separator) && !path.equals(separator))
+    list_path = path.substring(0, path.length() - 1);
+  else
+    list_path = path;
+  
+  String files[] = listInternal(list_path);
+  if (files == null)
+    return(null);
+  if (filter == null)
+    return(files);
+  
+  // Apply the filter
+/*
+  int count = 0;
+  boolean b[] = new boolean[files.length];
+  for (int i = 0; i < files.length; i++)
+    if (filter.accept(this, files[i]))
+      {
+        b[i] = true;
+        ++count;
+      }
+
+  String[] retfiles = new String[count];
+  count = 0;
+  for (int i = 0; i < files.length; i++)
+    if (b[i])
+      retfiles[count++] = files[i];
+
+  return(retfiles);
+*/
+  return(files); //BNooooo
+}
+
+/*************************************************************************/
+
+/**
+  * This native function actually produces the list of file in this
+  * directory
+  */
+private native String[]
+listInternal(String dirname);
+
+/*************************************************************************/
+
+/**
+  * This method compares the specified <code>Object</code> to this one
+  * to test for equality.  It does this by comparing the canonical path names
+  * of the files.  This method is identical to <code>compareTo(File)</code>
+  * except that if the <code>Object</code> passed to it is not a 
+  * <code>File</code>, it throws a <code>ClassCastException</code>
+  *
+  * The canonical paths of the files are determined by calling the
+  * <code>getCanonicalPath</code> method on each object.
+  *
+  * This method returns a 0 if the specified <code>Object</code> is equal
+  * to this one, a negative value if it is less than this one 
+  * a positive value if it is greater than this one.
+  *
+  * @return An integer as described above
+  *
+  * @exception ClassCastException If the passed <code>Object</code> is not a <code>File</code>
+  */
+public int
+compareTo(Object obj) throws ClassCastException
+{
+  return(compareTo((File)obj));
+}
+
+/*************************************************************************/
+
+/**
+  * This method compares the specified <code>File</code> to this one
+  * to test for equality.  It does this by comparing the canonical path names
+  * of the files. 
+  *
+  * The canonical paths of the files are determined by calling the
+  * <code>getCanonicalPath</code> method on each object.
+  *
+  * This method returns a 0 if the specified <code>Object</code> is equal
+  * to this one, a negative value if it is less than this one 
+  * a positive value if it is greater than this one.
+  *
+  * @return An integer as described above
+  */
+public int
+compareTo(File file)
+{
+  String p1, p2;
+  try
+    {  
+      p1 = getCanonicalPath();
+      p2 = file.getCanonicalPath();
+    }
+  catch(IOException e)
+    {
+      // What do we do here?  The spec requires the canonical path.  Even
+      // if we don't call the method, we must replicate the functionality
+      // which per the spec can fail.  What happens in that situation?
+      // I just assume the files are equal!
+      //
+      return(0);
+    }
+
+  return(p1.compareTo(p2));
+}
+
+/*************************************************************************/
+
+/**
+  * This method tests two <code>File</code> objects for equality by 
+  * comparing the path of the specified <code>File</code> against the path
+  * of this object.  The two objects are equal if an only if 1) The
+  * argument is not null 2) The argument is a <code>File</code> object and
+  * 3) The path of the <code>File</code>argument is equal to the path
+  * of this object.
+  *
+  * The paths of the files are determined by calling the <code>getPath()</code>
+  * method on each object.
+  *
+  * @return <code>true</code> if the two objects are equal, <code>false</code> otherwise.
+  */
+public boolean
+equals(Object obj)
+{
+  if (obj == null)
+    return(false);
+
+  if (!(obj instanceof File))
+    return(false);
+
+  File f = (File)obj;
+
+  return(f.getPath().equals(getPath()));
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a hash code representing this file.  It is the
+  * hash code of the path of this file (as returned by <code>getPath()</code>)
+  * exclusived or-ed with the value 1234321.
+  *
+  * @return The hash code for this object
+  */
+public int
+hashCode()
+{
+  return(getPath().hashCode() ^ 1234321);
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a <code>String</code> that is the path name of the
+  * file as returned by <code>getPath</code>.
+  *
+  * @return A <code>String</code> representation of this file
+  */
+public String
+toString()
+{
+  return(path);
+}
+
+} // class File
+
