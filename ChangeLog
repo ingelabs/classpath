@@ -1,3 +1,8 @@
+2003-02-20  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/prefs/AbstractPreferences.java (isUserNode):
+	Implemented.
+
 2003-02-20  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/zip/ZipFile.java (finalize): New method.
