@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+    <classpathentry
+        excluding="external/jaxp/source/|vm/reference/|compat/|test/|external/jaxp/tests/|testsuite/|**/Test.java|**/TestAWT.java|gnu/javax/swing/|**/SliderTest.java"
+        kind="src" path=""/>
+    <classpathentry kind="src" path="external/jaxp/source"/>
+    <classpathentry kind="src" path="vm/reference"/>
+    <classpathentry kind="output" path="bin"/>
+</classpath>

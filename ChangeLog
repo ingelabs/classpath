@@ -1,5 +1,10 @@
 2004-04-29  Tom Tromey  <tromey@redhat.com>
 
+	* .classpath: New file.
+	* .project: New file.
+
+2004-04-29  Tom Tromey  <tromey@redhat.com>
+
 	* java/text/AttributedString.java: Cleaned up imports.
 	* java/util/zip/Deflater.java (strategy): Removed.
 	* java/util/zip/DeflaterEngine.java (buffer): Removed.
