@@ -1,0 +1,126 @@
+<set-var last-modified-author="rao">
+
+<include macros.mhtml>
+<header "GNU Classpath Status">
+
+<package java.applet>
+  <status <smith>>
+    Work has started on java.applet as well as a free implementation
+    of appletviewer.
+  </status>
+</package>
+
+<package java.awt>
+  <status "<corvus>, <rao>">
+    Work has yet to begin on the AWT classes.  We're busy working away
+    on a GTK+ peer implementation, and once that's been completed we'll
+    start work on the AWT classes.
+  </status>
+</package>
+
+<package java.awt.image>
+  <status <rao>> 
+    Initial image code is coming along nicely.  We currently support
+    loading of XBMs.  All the image framework has been written, and if
+    anyone is interested in writing Java decoders for PNG, JPEG, GIF,
+    TIFF, or any other image format, please contact me.
+  </status>
+</package>
+
+<package java.beans>
+  <status <shalom>>
+    Package complete.
+  </status>
+</package>
+
+<package java.io>
+  <status <geoff> Serialization>
+    Full Java 1.1 implementation complete.  Mostly complete Java 1.2
+    implementation.
+  </status>
+
+  <status <arenn> "All the rest">
+    Full Java 1.2 implementation complete.
+  </status>
+</package>
+
+<package java.lang>
+  <status "<rao>, <cbj>, <shalom>, <arenn>">
+    Mostly Java 1.2 complete.
+  </status>
+</package>
+
+<package java.lang.reflect>
+  <status <shalom>>
+    Full Java 1.2 implementation complete.
+  </status>
+</package>
+
+<package java.math>
+  <status <rao>> 
+    With the exception of <code>BigInteger (int, int, Random)</code>,
+    java.math is fully Java 1.2 compliant.  Implementation depends
+    upon <A HREF="/software/gmp/gmp.html">gmp</A>.
+  </status>
+</package>
+
+<package java.net>
+  <status <arenn>>
+    Mostly Java 1.2 implementation complete. Missing JarURLConnection
+    and URLClassLoader. Included are protocol handlers for the "http"
+    and "file" protocol, and a "text/plain" content handler. More need
+    to be written, however. Note also that the HTTP protocol handler
+    only supports the "GET" request method.
+  </status>
+</package>
+
+<package java.rmi>
+  <status <mdw>>
+    Matt Welsh is writing a free replacement for the java.rmi packages
+    using a modified version of <link
+    http://www.cs.berkeley.edu/~mdw/proj/ninja/ninjarmi.html
+    NinjaRMI>.  The modified NinjaRMI will <i>not</i> be a part of GNU
+    Classpath, but for convenience, we will distribute a copy of
+    NinjaRMI will the Classpath distribution.
+  </status>
+</package>
+
+<package java.security>
+  <status <arenn>>
+    The interface only packages (java.security.acl and
+    java.security.interfaces) are complete. Work has been suspended
+    here in order to concentrate on classes relevant to the first
+    development release.
+  </status>
+</package>
+
+<package java.sql>
+  <status <arenn>>
+    Full Java 1.2 implementation complete.
+  </status>
+</package>
+
+<package java.text>
+  <status "<wes>, <arenn>">
+    Collation classes are mostly complete; however, they're untested.
+  </status>
+</package>
+
+<package java.util>
+  <status <stuart> Collections>
+    Full Java 1.2 implementation complete.
+  </status>
+
+  <status Various "All the rest">
+    Most of java.util has been implemented by various contributors.
+    It's pretty much Java 1.2 compliant.
+  </status>
+</package>
+
+<package java.util.zip>
+  <status <loren>>
+    Almost complete.
+  </status>
+</package>
+    
+<footer>

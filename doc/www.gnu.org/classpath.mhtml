@@ -1,0 +1,100 @@
+<set-var last-modified-author="rao">
+
+<include macros.mhtml>
+<header "GNU Classpath">
+<plain-text>
+GNU Classpath is a set of essential libraries for supporting the Java
+language.  Our goal is to provide a free replacement for Sun's
+proprietary class libraries so that the GNU system can run programs
+written in the Java language.
+
+Classpath is licensed under the terms of the <link /copyleft/lgpl.html
+"GNU Library General Public License">.  As such, it can be used to run
+free as well as proprietary applications and applets.
+
+Classpath is a work in progress.  There have been no public releases;
+however, pre-release source code is available via GNU's anonymous CVS
+server.  CVSROOT is
+<tt>:pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot</tt>; Module is
+<tt>classpath</tt>.  There is no password.
+</plain-text>
+
+<!-- 
+<H4>Announcements</H4>
+<UL>
+  <LI><link announce/19981204.html "Initial GNU Classpath
+  announcement"> (1998-12-04)</LI>
+</UL>
+-->
+
+<H4>Documentation</H4>
+<UL>
+  <LI><link doc/hacking.html 
+       "GNU Classpath Hacker's Guide"></LI>
+  <LI><link doc/vmintegration.html
+       "Virtual Machine Integration Guide"></LI>
+</UL>
+
+<H4>Mailing List</H4>
+<plain-text>
+There is one general discussion list for Classpath. To subscribe, send
+a message with a subject of "subscribe" to <link
+mailto:classpath-request@gnu.org?subject=subscribe
+&lt;classpath-request@gnu.org&gt;>.  To unsubscribe, send a message to
+the same address with a subject of "unsubscribe" to <link
+mailto:classpath-request@gnu.org?subject=unsubscribe
+&lt;classpath-request@gnu.org&gt;>.  To send a message to the list,
+mail it to <link mailto:classpath@gnu.org &lt;classpath@gnu.org&gt;>
+
+A tempory archive of the list is available at <link
+http://lyta.nortel.net/~classpath/archive/archive/
+http://lyta.nortel.net/~classpath/archive/archive/>.
+</plain-text>
+
+<H4>Status</H4>
+<plain-text>
+We're aiming for GNU Classpath 1.0 to be fully compatible with Java
+1.1 and largely compatible with Java 1.2.  Detailed information on the
+current state of a package can be obtained by clicking on the
+appropriate link below.
+</plain-text>
+<package-list>
+  <package-item java.applet>
+  <package-item java.awt>
+  <package-item java.awt.datatransfer java.awt>
+  <package-item java.awt.event java.awt>
+  <package-item java.awt.image>
+  <package-item java.awt.peer java.awt>
+  <package-item java.beans>
+  <package-item java.io>
+  <package-item java.lang>
+  <package-item java.lang.reflect>
+  <package-item java.math>
+  <package-item java.net>
+  <package-item java.rmi>
+  <package-item java.rmi.dgc java.rmi>
+  <package-item java.rmi.registry java.rmi>
+  <package-item java.rmi.server java.rmi>
+  <package-item java.security>
+  <package-item java.security.acl java.security>
+  <package-item java.security.cert java.security>
+  <package-item java.security.interfaces java.security>
+  <package-item java.security.spec java.security>
+  <package-item java.sql>
+  <package-item java.text>
+  <package-item java.util>
+  <package-item java.util.zip>
+</package-list>
+
+<H4>Virtual Machines</H4>
+<plain-text>
+The primary target for GNU Classpath is <link http://www.japhar.org
+Japhar>.  Japhar-0.07 works out-of-the-box with GNU Classpath.
+
+Porting Classpath to <link http://www.transvirtual.com/kaffe.html
+Kaffe> should be rather trivial, but no one has started work on it.
+If you're interested in doing this work, please send us an email to
+<link mailto:classpath@gnu.org &lt;classpath@gnu.org&gt;>.
+</plain-text>
+
+<footer>
