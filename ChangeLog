@@ -1,3 +1,17 @@
+2001-10-15  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/Collection.java: Updated javadoc.
+	* java/util/Comparator.java: Updated javadoc.
+	* java/util/Enumeration.java: Updated javadoc.
+	* java/util/Iterator.java: Updated javadoc.
+	* java/util/List.java: Updated javadoc.
+	* java/util/ListIterator.java: Updated javadoc.
+	* java/util/Map.java: Updated javadoc.
+	* java/util/RandomAccess.java: New file.
+	* java/util/Set.java: Updated javadoc.
+	* java/util/SortedMap.java: Updated javadoc.
+	* java/util/SortedSet.java: Updated javadoc.
+
 2001-10-13  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/SecurityManager.java (SecurityManager): Now public.
