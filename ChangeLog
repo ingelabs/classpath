@@ -1,3 +1,12 @@
+2004-11-13  Robert Schuster <thebohemian@gmx.net>
+
+	Complete 1.4 support
+	* java/beans/PropertyDescriptor.java:
+	(setReadMethod): New method
+	(setWriteMethod): New method
+	(equals): Implemented (1.4)
+	(checkMethods): operates on arguments now (private)
+
 2004-11-12  Steven Augart  <augart@watson.ibm.com>
 
 	* gnu/classpath/Configuration.java.in: Added
@@ -6,7 +15,6 @@
 	--enable-java-lang-system-explicit-initialization. 
 	* java/lang/System.java: Added support for
 	JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION. 
-	
 	
 2004-11-12  Sven de Marothy  <sven@physto.se>
 
