@@ -1,3 +1,10 @@
+2004-07-08  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* java/text/MessageFormat.java
+	(formatInternal): Append "{n}" if argument n is unavailable.
+	(format(Object, StringBuffer, FieldPosition)): This
+	should be equivalent to format(Object[], StringBuffer, FieldPosition).
+
 2004-07-07  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* include/jni.h: Fixed compilation in C++ mode.
@@ -143,7 +150,7 @@
 
 2003-06-27  Dalibor Topic  <robilad@kaffe.org>
 
-        * java/text/DateFormat.java (parse):
+	* java/text/DateFormat.java (parse):
 	Improved javadoc. Improved exception message.
 
 2003-06-27  Dalibor Topic  <robilad@kaffe.org>
@@ -2434,6 +2441,7 @@
 	* doc/www.gnu.org/news.wml: show first 9999 entries
 
 2004-05-25  Patrik Reali  <reali@acm.org>
+
 	* doc/www.gnu.org/news.wml, doc/www.gnu.org/home.wml, 
 	doc/www.gnu.org/include/layout.wml: added page with all newsitems, 
 	newsitems on home limited to 8
@@ -2535,9 +2543,9 @@
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
 	(requestFocus): Re-add function.
-                                                                                            
+
 2004-05-20  Guilhem Lavaux <guilhem@kaffe.org>
-                                                                                            
+
 	* java/text/CollationElementIterator.java
 	(nextBlock, previousBlock): Use text_indexes to compute
 	textIndex.
