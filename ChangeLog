@@ -1,5 +1,12 @@
 2004-10-09  Michael Koch  <konqueror@gmx.de>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c:
+	Removed.
+	* native/jni/gtk-peer/Makefile.am: Removed files.
+
+2004-10-09  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/peer/gtk/GdkFontMetrics.java,
 	gnu/java/awt/peer/gtk/GdkGraphics.java,
 	gnu/java/awt/peer/gtk/GdkGraphics2D.java,

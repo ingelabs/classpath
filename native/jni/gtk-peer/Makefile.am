@@ -3,8 +3,6 @@ pkglib_LTLIBRARIES = libgtkpeer.la
 # Gtk/Cairo JNI sources.
 if GTK_CAIRO
   gtk_cairo_c_source_files = \
-    gnu_java_awt_peer_gtk_GdkClasspathFontPeer.c \
-    gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c \
     gnu_java_awt_peer_gtk_GdkGlyphVector.c \
     gnu_java_awt_peer_gtk_GdkGraphics2D.c
 else
