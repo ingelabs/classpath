@@ -128,6 +128,8 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_CHECK_HEADERS([unistd.h sys/types.h sys/config.h sys/ioctl.h asm/ioctls.h])
   AC_CHECK_HEADERS([inttypes.h stdint.h utime.h sys/utime.h sys/filio.h])
   AC_CHECK_HEADERS([sys/time.h])
+  dnl Check for crt_externs.h on Darwin.
+  AC_CHECK_HEADERS([crt_externs.h])
 
   AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(uint32_t, inttypes.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))

@@ -1,5 +1,12 @@
 2004-12-21  Chris Burdess  <dog@gnu.org>
 
+	* configure.ac: Check for presence of crt_externs.h on Darwin.
+	* native/jni/java-lang/java_lang_VMProcess.c: If HAVE_CRT_EXTERNS_H
+	is defined, define environ as calling _NSGetEnviron(), otherwise
+	define it as an external variable.
+
+2004-12-21  Chris Burdess  <dog@gnu.org>
+
 	* acinclude.m4: Check version of Jikes.
 
 2004-12-21  Michael Koch  <konqueror@gmx.de>
