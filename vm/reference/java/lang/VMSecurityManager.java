@@ -48,5 +48,5 @@ class VMSecurityManager {
 	 ** top of the stack.
 	 ** @return the current ClassLoader.
 	 **/
-	static native Class currentClassLoader();
+	static native ClassLoader currentClassLoader();
 }
