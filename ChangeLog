@@ -1,3 +1,10 @@
+2001-09-05  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/text/MessageFormat.java (setLocale): Don't catch ParseException 
+	here, DecimalFormat.applyPattern() does not throw it.
+	* java/awt/Component.java (setLocation(Point)): Implemented.
+	* gnu/classpath/Configuration.java.in: Clarify comments.
+
 2001-09-04  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/IdentityHashMap.java (clone): Return the value.
