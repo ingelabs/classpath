@@ -99,9 +99,9 @@ dist-hook:
 	mkdir -p $(distdir)
 	cp -dfR $(top_srcdir)/gnu $(top_srcdir)/java $(top_srcdir)/javax $(top_srcdir)/org $(top_srcdir)/vm $(top_distdir)
 # Delete not wanted files.
-	$(FIND) $(top_distdir)/gnu $(top_distdir)/java $(top_distdir)/javax $(top_distdir)/vm -name CVS -print | xargs rm -fr
-	$(FIND) $(top_distdir)/gnu $(top_distdir)/java $(top_distdir)/javax $(top_distdir)/vm -name .cvsignore -print | xargs rm -f
-	$(FIND) $(top_distdir)/gnu $(top_distdir)/java $(top_distdir)/javax $(top_distdir)/vm -name class-dependencies.conf -print | xargs rm -f
+	$(FIND) $(top_distdir)/gnu $(top_distdir)/java $(top_distdir)/javax $(top_distdir)/org $(top_distdir)/vm -name CVS -print | xargs rm -fr
+	$(FIND) $(top_distdir)/gnu $(top_distdir)/java $(top_distdir)/javax $(top_distdir)/org $(top_distdir)/vm -name .cvsignore -print | xargs rm -f
+	$(FIND) $(top_distdir)/gnu $(top_distdir)/java $(top_distdir)/javax $(top_distdir)/org $(top_distdir)/vm -name class-dependencies.conf -print | xargs rm -f
 	rm -f $(top_distdir)/gnu/classpath/Configuration.java
 # Omit files listed in standard.omit.
 	( cd $(top_distdir)/lib ; cat $(top_builddir)/lib/standard.omit | sed -e 's/\$$//' | sed -e 's/\/\.\*//' | xargs rm -fr )
