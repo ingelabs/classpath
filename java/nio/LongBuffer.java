@@ -51,16 +51,34 @@ public abstract class LongBuffer extends Buffer
   protected LongBuffer (int capacity, int limit, int position, int mark)
   {
     super (capacity, limit, position, mark);
-  }
-  
-  public static LongBuffer allocate(int capacity)
-  {
-    return new LongBufferImpl(capacity, 0, capacity);
+    array_offset = 0;
   }
 
-  final public static LongBuffer wrap(long[] array, int offset, int length)
+  protected LongBuffer (long[] buffer, int offset, int capacity, int limit, int position, int mark)
   {
-    return new LongBufferImpl (array, offset, length);
+    super (capacity, limit, position, mark);
+    this.backing_buffer = buffer;
+    this.array_offset = offset;
+  }
+
+  /**
+   * Allocates a new <code>LongBuffer</code> object with a given capacity.
+   */
+  public static LongBuffer allocate (int capacity)
+  {
+    return new LongBufferImpl (capacity);
+  }
+
+  /**
+   * Wraps a <code>long</code> array into a <code>LongBuffer</code>
+   * object.
+   *
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold
+   */
+  final public static LongBuffer wrap (long[] array, int offset, int length)
+  {
+    return new LongBufferImpl (array, 0, array.length, offset + length, offset, -1, false);
   }
 
   /**
@@ -71,7 +89,7 @@ public abstract class LongBuffer extends Buffer
   {
     return wrap (array, 0, array.length);
   }
-
+  
   /**
    * This method transfers <code>longs<code> from this buffer into the given
    * destination array.
@@ -124,8 +142,18 @@ public abstract class LongBuffer extends Buffer
    */
   public LongBuffer put (LongBuffer src)
   {
-    while (src.hasRemaining())
-      put(src.get());
+    if (src == this)
+      throw new IllegalArgumentException ();
+
+    if (src.remaining () > remaining ())
+      throw new BufferOverflowException ();
+
+    if (src.remaining () > 0)
+      {
+        long[] toPut = new long [src.remaining ()];
+        src.get (toPut);
+        src.put (toPut);
+      }
 
     return this;
   }

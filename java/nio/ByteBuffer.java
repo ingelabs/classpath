@@ -47,12 +47,20 @@ public abstract class ByteBuffer extends Buffer
 {
   private ByteOrder endian = ByteOrder.BIG_ENDIAN;
 
-  protected int offset;
+  protected int array_offset;
   protected byte[] backing_buffer;
   
   protected ByteBuffer (int capacity, int limit, int position, int mark)
   {
     super (capacity, limit, position, mark);
+    array_offset = 0;
+  }
+
+  protected ByteBuffer (byte[] buffer, int offset, int capacity, int limit, int position, int mark)
+  {
+    super (capacity, limit, position, mark);
+    this.backing_buffer = buffer;
+    this.array_offset = offset;
   }
   
   /**
@@ -68,7 +76,7 @@ public abstract class ByteBuffer extends Buffer
    */
   public static ByteBuffer allocate (int capacity)
   {
-    return new ByteBufferImpl (capacity, 0, capacity);
+    return new ByteBufferImpl (capacity);
   }
 
   /**
@@ -80,7 +88,7 @@ public abstract class ByteBuffer extends Buffer
    */
   final public static ByteBuffer wrap (byte[] array, int offset, int length)
   {
-    return new ByteBufferImpl (array, offset, length);
+    return new ByteBufferImpl (array, 0, array.length, offset + length, offset, -1, false);
   }
 
   /**
@@ -91,7 +99,7 @@ public abstract class ByteBuffer extends Buffer
   {
     return wrap (array, 0, array.length);
   }
-
+  
   /**
    * This method transfers <code>bytes<code> from this buffer into the given
    * destination array.
@@ -153,9 +161,16 @@ public abstract class ByteBuffer extends Buffer
     if (src == this)
       throw new IllegalArgumentException ();
 
-    while (src.hasRemaining ())
-      put (src.get ());
-    
+    if (src.remaining () > remaining ())
+      throw new BufferOverflowException ();
+
+    if (src.remaining () > 0)
+      {
+        byte[] toPut = new byte [src.remaining ()];
+        src.get (toPut);
+        src.put (toPut);
+      }
+
     return this;
   }
 
@@ -246,8 +261,8 @@ public abstract class ByteBuffer extends Buffer
 
     if (isReadOnly ())
       throw new ReadOnlyBufferException ();
-
-    return offset;
+    
+    return array_offset;
   }
 
   /**
@@ -283,13 +298,11 @@ public abstract class ByteBuffer extends Buffer
   {
     ByteBuffer a = (ByteBuffer) obj;
 
-    if (a.remaining() != remaining())
-      {
-        return 1;
-      }
-   
-    if (! hasArray() ||
-        ! a.hasArray())
+    if (a.remaining () != remaining ())
+      return 1;
+
+    if (! hasArray () ||
+        ! a.hasArray ())
       {
         return 1;
       }
@@ -590,7 +603,7 @@ public abstract class ByteBuffer extends Buffer
    * @exception BufferUnderflowException If there are fewer than eight bytes
    * remaining in this buffer.
    */
-  public abstract double getDouble();
+  public abstract double getDouble ();
   
   /**
    * Relative put method for writing a double value.

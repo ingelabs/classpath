@@ -47,18 +47,26 @@ public abstract class CharBuffer extends Buffer
 {
   protected int array_offset = 0;
   protected char [] backing_buffer;
-  
-  protected CharBuffer (int cap, int lim, int pos, int mark)
+
+  protected CharBuffer (int capacity, int limit, int position, int mark)
   {
-    super (cap, lim, pos, mark);
+    super (capacity, limit, position, mark);
+    array_offset = 0;
   }
-  
+
+  protected CharBuffer (char[] buffer, int offset, int capacity, int limit, int position, int mark)
+  {
+    super (capacity, limit, position, mark);
+    this.backing_buffer = buffer;
+    this.array_offset = offset;
+  }
+
   /**
    * Allocates a new <code>CharBuffer</code> object with a given capacity.
    */
   public static CharBuffer allocate (int capacity)
   {
-    return new CharBufferImpl (capacity, 0, capacity);
+    return new CharBufferImpl (capacity);
   }
 
   /**
@@ -70,7 +78,7 @@ public abstract class CharBuffer extends Buffer
    */
   final public static CharBuffer wrap (char[] array, int offset, int length)
   {
-    return new CharBufferImpl (array, offset, length);
+    return new CharBufferImpl (array, 0, array.length, offset + length, offset, -1, false);
   }
   
   /**
@@ -105,8 +113,6 @@ public abstract class CharBuffer extends Buffer
         buffer [i] = a.charAt (i);
       }
     
-    // FIXME: make it read-only.
-    //return wrap (buffer, offset, length);
     return wrap (buffer, offset, length).asReadOnlyBuffer ();
   }
 
@@ -118,7 +124,7 @@ public abstract class CharBuffer extends Buffer
   {
     return wrap (array, 0, array.length);
   }
- 
+  
   /**
    * This method transfers <code>chars<code> from this buffer into the given
    * destination array.
@@ -174,9 +180,12 @@ public abstract class CharBuffer extends Buffer
     if (src == this)
       throw new IllegalArgumentException ();
 
-    if (src.length () > 0)
+    if (src.remaining () > remaining ())
+      throw new BufferOverflowException ();
+
+    if (src.remaining () > 0)
       {
-        char [] toPut = new char [src.length ()];
+        char[] toPut = new char [src.remaining ()];
         src.get (toPut);
         src.put (toPut);
       }
@@ -205,7 +214,7 @@ public abstract class CharBuffer extends Buffer
     if (offset < 0
         || offset >= src.length
         || length < 0
-        || length >= (src.length - offset))
+        || length > (src.length - offset))
       throw new IndexOutOfBoundsException ();
      
     // Put nothing into this buffer when not enough space left.
@@ -338,6 +347,11 @@ public abstract class CharBuffer extends Buffer
   }
 
   /**
+   * Returns the byte order of this buffer.
+   */
+  public abstract ByteOrder order ();
+
+  /**
    * Reads the <code>char</code> at this buffer's current position,
    * and then increments the position.
    *
@@ -408,9 +422,14 @@ public abstract class CharBuffer extends Buffer
    */
   public String toString ()
   {
-    char[] data = new char [length ()];
-    get (data, 0, length ());
-    return new String (data, position (), length ());
+    if (hasArray ())
+      return new String (array (), position (), length ());
+
+    char[] buf = new char [length ()];
+    int pos = position ();
+    get (buf, 0, buf.length);
+    position (pos);
+    return new String (buf);
   }
 
   /**
@@ -420,11 +439,6 @@ public abstract class CharBuffer extends Buffer
   { 
     return remaining ();
   }
-
-  /**
-   * Returns the byte order of this buffer.
-   */
-  public abstract ByteOrder order ();
 
   /**
    * Creates a new character buffer that represents the specified subsequence
@@ -458,7 +472,7 @@ public abstract class CharBuffer extends Buffer
    */
   public final CharBuffer put (String str)
   {
-    return put (str, 0, str.length ());
+    return put (str.toCharArray (), 0, str.length ());
   }
   
   /**

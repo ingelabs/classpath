@@ -51,16 +51,34 @@ public abstract class ShortBuffer extends Buffer
   protected ShortBuffer (int capacity, int limit, int position, int mark)
   {
     super (capacity, limit, position, mark);
-  }
-  
-  public static ShortBuffer allocate(int capacity)
-  {
-    return new ShortBufferImpl(capacity, 0, capacity);
+    array_offset = 0;
   }
 
-  final public static ShortBuffer wrap(short[] array, int offset, int length)
+  protected ShortBuffer (short[] buffer, int offset, int capacity, int limit, int position, int mark)
   {
-    return new ShortBufferImpl(array, offset, length);
+    super (capacity, limit, position, mark);
+    this.backing_buffer = buffer;
+    this.array_offset = offset;
+  }
+
+  /**
+   * Allocates a new <code>ShortBuffer</code> object with a given capacity.
+   */
+  public static ShortBuffer allocate (int capacity)
+  {
+    return new ShortBufferImpl (capacity);
+  }
+
+  /**
+   * Wraps a <code>short</code> array into a <code>ShortBuffer</code>
+   * object.
+   *
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold
+   */
+  final public static ShortBuffer wrap (short[] array, int offset, int length)
+  {
+    return new ShortBufferImpl (array, 0, array.length, offset + length, offset, -1, false);
   }
 
   /**
@@ -71,7 +89,7 @@ public abstract class ShortBuffer extends Buffer
   {
     return wrap (array, 0, array.length);
   }
-
+  
   /**
    * This method transfers <code>shorts<code> from this buffer into the given
    * destination array.
@@ -124,8 +142,18 @@ public abstract class ShortBuffer extends Buffer
    */
   public ShortBuffer put (ShortBuffer src)
   {
-    while (src.hasRemaining())
-      put(src.get());
+    if (src == this)
+      throw new IllegalArgumentException ();
+
+    if (src.remaining () > remaining ())
+      throw new BufferOverflowException ();
+
+    if (src.remaining () > 0)
+      {
+        short[] toPut = new short [src.remaining ()];
+        src.get (toPut);
+        src.put (toPut);
+      }
 
     return this;
   }

@@ -51,16 +51,34 @@ public abstract class FloatBuffer extends Buffer
   protected FloatBuffer (int capacity, int limit, int position, int mark)
   {
     super (capacity, limit, position, mark);
-  }
-  
-  public static FloatBuffer allocate(int capacity)
-  {
-    return new FloatBufferImpl (capacity, 0, capacity);
+    array_offset = 0;
   }
 
-  final public static FloatBuffer wrap(float[] array, int offset, int length)
+  protected FloatBuffer (float[] buffer, int offset, int capacity, int limit, int position, int mark)
   {
-    return new FloatBufferImpl(array, offset, length);
+    super (capacity, limit, position, mark);
+    this.backing_buffer = buffer;
+    this.array_offset = offset;
+  }
+
+  /**
+   * Allocates a new <code>FloatBuffer</code> object with a given capacity.
+   */
+  public static FloatBuffer allocate (int capacity)
+  {
+    return new FloatBufferImpl (capacity);
+  }
+
+  /**
+   * Wraps a <code>float</code> array into a <code>FloatBuffer</code>
+   * object.
+   *
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold
+   */
+  final public static FloatBuffer wrap (float[] array, int offset, int length)
+  {
+    return new FloatBufferImpl (array, 0, array.length, offset + length, offset, -1, false);
   }
 
   /**
@@ -71,7 +89,7 @@ public abstract class FloatBuffer extends Buffer
   {
     return wrap (array, 0, array.length);
   }
-
+  
   /**
    * This method transfers <code>floats<code> from this buffer into the given
    * destination array.
@@ -124,8 +142,18 @@ public abstract class FloatBuffer extends Buffer
    */
   public FloatBuffer put (FloatBuffer src)
   {
-    while (src.hasRemaining())
-      put(src.get());
+    if (src == this)
+      throw new IllegalArgumentException ();
+
+    if (src.remaining () > remaining ())
+      throw new BufferOverflowException ();
+
+    if (src.remaining () > 0)
+      {
+        float[] toPut = new float [src.remaining ()];
+        src.get (toPut);
+        src.put (toPut);
+      }
 
     return this;
   }

@@ -51,16 +51,34 @@ public abstract class IntBuffer extends Buffer
   protected IntBuffer (int capacity, int limit, int position, int mark)
   {
     super (capacity, limit, position, mark);
-  }
-  
-  public static IntBuffer allocate(int capacity)
-  {
-    return new IntBufferImpl (capacity, 0, capacity);
+    array_offset = 0;
   }
 
-  final public static IntBuffer wrap(int[] array, int offset, int length)
+  protected IntBuffer (int[] buffer, int offset, int capacity, int limit, int position, int mark)
   {
-    return new IntBufferImpl(array, offset, length);
+    super (capacity, limit, position, mark);
+    this.backing_buffer = buffer;
+    this.array_offset = offset;
+  }
+
+  /**
+   * Allocates a new <code>IntBuffer</code> object with a given capacity.
+   */
+  public static IntBuffer allocate (int capacity)
+  {
+    return new IntBufferImpl (capacity);
+  }
+
+  /**
+   * Wraps a <code>int</code> array into a <code>IntBuffer</code>
+   * object.
+   *
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold
+   */
+  final public static IntBuffer wrap (int[] array, int offset, int length)
+  {
+    return new IntBufferImpl (array, 0, array.length, offset + length, offset, -1, false);
   }
 
   /**
@@ -71,7 +89,7 @@ public abstract class IntBuffer extends Buffer
   {
     return wrap (array, 0, array.length);
   }
-
+  
   /**
    * This method transfers <code>ints<code> from this buffer into the given
    * destination array.
@@ -124,8 +142,18 @@ public abstract class IntBuffer extends Buffer
    */
   public IntBuffer put (IntBuffer src)
   {
-    while (src.hasRemaining())
-      put(src.get());
+    if (src == this)
+      throw new IllegalArgumentException ();
+
+    if (src.remaining () > remaining ())
+      throw new BufferOverflowException ();
+
+    if (src.remaining () > 0)
+      {
+        int[] toPut = new int [src.remaining ()];
+        src.get (toPut);
+        src.put (toPut);
+      }
 
     return this;
   }

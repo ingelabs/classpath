@@ -51,16 +51,34 @@ public abstract class DoubleBuffer extends Buffer
   protected DoubleBuffer (int capacity, int limit, int position, int mark)
   {
     super (capacity, limit, position, mark);
-  }
-  
-  public static DoubleBuffer allocate(int capacity)
-  {
-    return new DoubleBufferImpl(capacity, 0, capacity);
+    array_offset = 0;
   }
 
+  protected DoubleBuffer (double[] buffer, int offset, int capacity, int limit, int position, int mark)
+  {
+    super (capacity, limit, position, mark);
+    this.backing_buffer = buffer;
+    this.array_offset = offset;
+  }
+
+  /**
+   * Allocates a new <code>DoubleBuffer</code> object with a given capacity.
+   */
+  public static DoubleBuffer allocate (int capacity)
+  {
+    return new DoubleBufferImpl (capacity);
+  }
+
+  /**
+   * Wraps a <code>double</code> array into a <code>DoubleBuffer</code>
+   * object.
+   *
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold
+   */
   final public static DoubleBuffer wrap (double[] array, int offset, int length)
   {
-    return new DoubleBufferImpl(array, offset, length);
+    return new DoubleBufferImpl (array, 0, array.length, offset + length, offset, -1, false);
   }
 
   /**
@@ -71,7 +89,7 @@ public abstract class DoubleBuffer extends Buffer
   {
     return wrap (array, 0, array.length);
   }
-
+  
   /**
    * This method transfers <code>doubles<code> from this buffer into the given
    * destination array.
@@ -124,8 +142,18 @@ public abstract class DoubleBuffer extends Buffer
    */
   public DoubleBuffer put (DoubleBuffer src)
   {
-    while (src.hasRemaining())
-      put(src.get());
+    if (src == this)
+      throw new IllegalArgumentException ();
+
+    if (src.remaining () > remaining ())
+      throw new BufferOverflowException ();
+
+    if (src.remaining () > 0)
+      {
+        double[] toPut = new double [src.remaining ()];
+        src.get (toPut);
+        src.put (toPut);
+      }
 
     return this;
   }

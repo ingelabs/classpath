@@ -1,3 +1,23 @@
+2003-05-19  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/ByteBufferImpl.java,
+	gnu/java/nio/CharBufferImpl.java,
+	gnu/java/nio/DoubleBufferImpl.java,
+	gnu/java/nio/FloatBufferImpl.java,
+	gnu/java/nio/IntBufferImpl.java,
+	gnu/java/nio/LongBufferImpl.java,
+	gnu/java/nio/ShortBufferImpl.java,
+	java/nio/Buffer.java,
+	java/nio/ByteBuffer.java,
+	java/nio/CharBuffer.java,
+	java/nio/DoubleBuffer.java,
+	java/nio/FloatBuffer.java,
+	java/nio/IntBuffer.java,
+	java/nio/LongBuffer.java,
+	java/nio/ShortBuffer.java:
+	Big (partly-)merge from libgcj, only little changes are needed because gcj
+	handles package-private as public. 
+
 2003-05-18  Michael Koch  <konqueror@gmx.de>
 
 	* java/nio/ByteBuffer.java
