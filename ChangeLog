@@ -1,5 +1,11 @@
 2003-10-21  Sascha Brawer  <brawer@dandelis.ch>
 
+	Fix for Classpath bug #6089.
+	* java/awt/geom/GeneralPath.java (curveTo): Set correct segment type.
+	(getPathIterator, GeneralPathIterator): Re-written from scratch.
+
+2003-10-21  Sascha Brawer  <brawer@dandelis.ch>
+
 	Fix for bug #2944, reported by David Holmes <dholmes@dltech.com.au>
         * java/util/logging/ErrorManager.java (everUsed): Made volatile.
         (error): Synchronize on instance, not class.
