@@ -1,3 +1,8 @@
+2003-09-23  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/ClassLoader.java: Don't import SystemClassLoader.
+	(systemClassLoader): Fixed indentation.
+
 2003-09-24  Sascha Brawer  <brawer@dandelis.ch>
 
 	* java/awt/geom/Rectangle2D.java (getPathIterator): Use the same

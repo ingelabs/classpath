@@ -49,7 +49,6 @@ import java.security.ProtectionDomain;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import gnu.java.lang.SystemClassLoader;
 import gnu.java.util.DoubleEnumeration;
 import gnu.java.util.EmptyEnumeration;
 
@@ -154,7 +153,8 @@ public abstract class ClassLoader
    * is somewhat circular - getSystemClassLoader() checks whether this
    * field is null in order to bypass a security check.
    */
-  static final ClassLoader systemClassLoader = VMClassLoader.getSystemClassLoader();
+  static final ClassLoader systemClassLoader =
+    VMClassLoader.getSystemClassLoader();
 
   /**
    * The default protection domain, used when defining a class with a null
