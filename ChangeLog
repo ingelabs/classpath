@@ -1,3 +1,9 @@
+2005-01-11  Steven Augart  <augart@watson.ibm.com>
+
+	* scripts/check_jni_methods.sh: Portable to the OpenBSD
+	"mktemp", as used in Red Hat Linux 7.3.
+	Check whether "mktemp" fails; abort if it does.
+	
 2005-01-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/text/DecimalFormatSymbols.java
