@@ -360,9 +360,7 @@ public class JList extends JComponent implements Accessible, Scrollable
     valueIsAdjusting = false;
     visibleRowCount = 8;
 
-    System.out.println ("here!");
-    //    cellRenderer = new DefaultListCellRenderer();
-    System.out.println ("done here!");
+    cellRenderer = new DefaultListCellRenderer();
     listListener = new ListListener();
 
     setModel(new DefaultListModel());
