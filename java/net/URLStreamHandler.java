@@ -1,5 +1,5 @@
 /* URLStreamHandler.java -- Abstract superclass for all protocol handlers
-   Copyright (C) 1998, 1999, 2002, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002, 2003, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -204,9 +204,11 @@ public abstract class URLStreamHandler
       {
 	// Context is available, but only override it if there is a new file.
 	int lastSlash = file.lastIndexOf('/');
-
-	file =
-	  file.substring(0, lastSlash) + '/' + spec.substring(start, end);
+	if (lastSlash < 0)
+	  file = spec.substring(start, end);
+	else
+	  file = (file.substring(0, lastSlash)
+		  + '/' + spec.substring(start, end));
 
 	if (url.getProtocol().equals("file"))
 	  {

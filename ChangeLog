@@ -1,5 +1,11 @@
 2004-07-01  Mark Wielaard  <mark@klomp.org>
 
+	Reported by Roman Kennke <roman@ontographics.com> (bug #9331)
+	* java/net/URLStreamHandler.java (parseURL): When url file part
+	doesn't contain a '/' just ignore context.
+
+2004-07-01  Mark Wielaard  <mark@klomp.org>
+
 	* java/net/URL.java (systemClassLoader): New static field.
 	(getURLStreamHandler): Always use system/application classloader
 	for finding URLStreamhandler. Remove unecessary instanceof checks.
