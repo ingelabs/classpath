@@ -1,3 +1,7 @@
+2002-10-06  C. Brian Jones <cbj@gnu.org>
+
+	* doc/www.gnu.org/status.wml: removed since it is no longer used
+
 2002-10-06  Mark Wielaard  <mark@klomp.org>
 
 	* configure.in (AC_OUTPUT): Remove com/Makefile, com/sun/Makefile
