@@ -263,7 +263,301 @@ public class InetAddress implements Serializable
     return (false);
   }
 
-  
+  /**
+   * Returns the hostname for this address.  This will return the IP address
+   * as a String if there is no hostname available for this address
+   *
+   * @return The hostname for this address
+   */
+  public String getHostName()
+  {
+    if (hostName != null)
+      return hostName;
+
+    try
+      {
+        hostName = getHostByAddr (addr);
+        return hostName;
+      }
+    catch (UnknownHostException e)
+      {
+        if (hostname_alias != null)
+          return hostname_alias;
+        else
+          return getHostAddress();
+      }
+  }
+
+  /**
+   * Returns the IP address of this object as a int array.
+   *
+   * @return IP address
+   */
+  public byte[] getAddress()
+  {
+    byte[] ipaddr = new byte [addr.length];
+
+    for (int i = 0; i < addr.length; i++)
+      {
+        ipaddr [i] = (byte) addr [i];
+      }
+
+    return ipaddr;
+  }
+
+  /**
+   * Returns the IP address of this object as a String.  The address is in 
+   * the dotted octet notation, for example, "127.0.0.1".
+   *
+   * @return The IP address of this object in String form
+   */
+  public String getHostAddress()
+  {
+    StringBuffer sb = new StringBuffer();
+
+    for (int i = 0; i < addr.length; i++)
+      {
+        sb.append (addr [i] & 0xff);
+
+        if (i < (addr.length - 1))
+          sb.append (".");
+      }
+
+    return sb.toString();
+  }
+
+  /**
+   * Returns a hash value for this address.  Useful for creating hash
+   * tables.  Overrides Object.hashCode()
+   *
+   * @return A hash value for this address.
+   */
+  public int hashCode()
+  {
+    long val1 = 0, val2 = 0;
+
+    // Its obvious here that I have no idea how to generate a good
+    // hash key
+    for (int i = 0; i < addr.length; i++)
+      val1 = val1 + (addr [i] << ((addr.length - i) / 8));
+
+    for (int i = 0; i < addr.length; i++)
+      val2 = val2 + (addr [i] * 10 * i);
+
+    val1 = (val1 >> 1) ^ val2;
+
+    return ((int) val1);
+  }
+
+  /**
+   * Tests this address for equality against another InetAddress.  The two
+   * addresses are considered equal if they contain the exact same octets.
+   * This implementation overrides Object.equals()
+   *
+   * @param obj The address to test for equality
+   *
+   * @return true if the passed in object's address is equal to this one's,
+   * false otherwise
+   */
+  public boolean equals (Object obj)
+  {
+    if (!(obj instanceof InetAddress))
+      return false;
+
+    byte[] test_ip = ((InetAddress) obj).getAddress();
+
+    if (test_ip.length != addr.length)
+      return false;
+
+    for (int i = 0; i < addr.length; i++)
+      if (test_ip [i] != (byte) addr [i])
+        return false;
+
+    return true;
+  }
+
+  /**
+   * Converts this address to a String.  This string contains the IP in
+   * dotted decimal form. For example: "127.0.0.1"  This method is equivalent
+   * to getHostAddress() and overrides Object.toString()
+   *
+   * @return This address in String form
+   */
+  public String toString()
+  {
+    StringBuffer sb;
+    
+    if (hostName != null)
+      sb = new StringBuffer (hostName).append ('/');
+    else if (hostname_alias != null)
+      sb = new StringBuffer (hostname_alias).append ('/');
+    else
+      sb = new StringBuffer();
+
+    sb.append (getHostAddress());
+    return (sb.toString());
+  }
+
+  /**
+   * Returns an InetAddress object given the raw IP address.
+   *
+   * The argument is in network byte order: the highest order byte of the
+   * address is in getAddress()[0].
+   *
+   * @param addr The IP address to create the InetAddress object from
+   *
+   * @exception UnknownHostException If IP address has illegal length
+   *
+   * @since 1.4
+   */
+  public static InetAddress getByAddress (byte[] addr)
+    throws UnknownHostException
+  {
+    if (addr.length != 4 && addr.length != 16)
+      throw new UnknownHostException ("IP address has illegal length");
+
+    if (addr.length == 4)
+      return new Inet4Address (addr, null);
+
+    return new Inet6Address (addr, null);
+  }
+
+  /**
+   * Creates an InetAddress based on the provided host name and IP address.
+   * No name service is checked for the validity of the address.
+   *
+   * @param host The hostname of the InetAddress object to create
+   * @param addr The IP address to create the InetAddress object from
+   *
+   * @exception UnknownHostException If IP address is of illegal length
+   *
+   * @since 1.4
+   */
+  public static InetAddress getByAddress (String host, byte[] addr)
+    throws UnknownHostException
+  {
+    if (addr.length == 4)
+      return new Inet4Address (addr, host);
+
+    if (addr.length == 16)
+      return new Inet6Address (addr, host);
+    
+    throw new UnknownHostException ("IP address has illegal length");
+  }
+
+  /**
+   * Returns an InetAddress object representing the IP address of the given
+   * hostname.  This name can be either a hostname such as "www.urbanophile.com"
+   * or an IP address in dotted decimal format such as "127.0.0.1".  If the
+   * hostname is null, the hostname of the local machine is supplied by
+   * default.  This method is equivalent to returning the first element in
+   * the InetAddress array returned from GetAllByName.
+   *
+   * @param hostname The name of the desired host, or null for the local machine
+   *
+   * @return The address of the host as an InetAddress
+   *
+   * @exception UnknownHostException If no IP address can be found for the
+   * given hostname
+   */
+  public static InetAddress getByName (String hostname)
+    throws UnknownHostException
+  {
+    // Default to current host if necessary
+    if (hostname == null)
+      return getLocalHost();
+
+    // First, check to see if it is an IP address.  If so, then don't 
+    // do a DNS lookup.
+    StringTokenizer st = new StringTokenizer (hostname, ".");
+    
+    if (st.countTokens() == 4)
+      {
+        int i;
+        short n;
+        byte[] ip = new byte [4];
+	
+        for (i = 0; i < 4; i++)
+          {
+            try
+              {
+                n = Short.parseShort (st.nextToken());
+                
+		if ((n < 0) || (n > 255))
+                  break;
+                
+		ip [i] = (byte) n;
+              }
+            catch (NumberFormatException e)
+              {
+                break;
+              }
+          }
+        if (i == 4)
+          {
+            return new InetAddress (ip);
+          }
+      }
+
+    // Wasn't an IP, so try the lookup
+    InetAddress[] addresses = getAllByName (hostname);
+
+    return addresses [0];
+  }
+
+  /**
+   * Returns an array of InetAddress objects representing all the host/ip
+   * addresses of a given host, given the host's name.  This name can be
+   * either a hostname such as "www.urbanophile.com" or an IP address in
+   * dotted decimal format such as "127.0.0.1".  If the value is null, the
+   * hostname of the local machine is supplied by default.
+   *
+   * @param hostname The name of the desired host, or null for the local machine
+   *
+   * @return All addresses of the host as an array of InetAddress's
+   *
+   * @exception UnknownHostException If no IP address can be found for the
+   * given hostname
+   */
+  public static InetAddress[] getAllByName (String hostname)
+    throws UnknownHostException
+  {
+    // Default to current host if necessary
+    if (hostname == null)
+      {
+        InetAddress local = getLocalHost();
+        return getAllByName (local.getHostName());
+      }
+
+    // Check the cache for this host before doing a lookup
+    InetAddress[] addresses = checkCacheFor (hostname);
+    
+    if (addresses != null)
+      return addresses;
+
+    // Not in cache, try the lookup
+    byte[][] iplist = getHostByName (hostname);
+    
+    if (iplist.length == 0)
+      throw new UnknownHostException (hostname);
+
+    addresses = new InetAddress [iplist.length];
+
+    for (int i = 0; i < iplist.length; i++)
+      {
+        if (iplist[i].length != 4)
+          throw new UnknownHostException (hostname);
+
+        // Don't store the hostname in order to force resolution of the
+        // canonical names of these ip's when the user asks for the hostname
+        // But do specify the host alias so if the IP returned won't
+        // reverse lookup we don't throw an exception.
+        addresses[i] = new InetAddress (iplist[i], null, hostname);
+      }
+
+    addToCache (hostname, addresses);
+    return addresses;
+  }
 
   /**
    * This method checks the DNS cache to see if we have looked this hostname
@@ -346,115 +640,6 @@ public class InetAddress implements Serializable
   }
 
   /**
-   * Returns an array of InetAddress objects representing all the host/ip
-   * addresses of a given host, given the host's name.  This name can be
-   * either a hostname such as "www.urbanophile.com" or an IP address in
-   * dotted decimal format such as "127.0.0.1".  If the value is null, the
-   * hostname of the local machine is supplied by default.
-   *
-   * @param hostname The name of the desired host, or null for the local machine
-   *
-   * @return All addresses of the host as an array of InetAddress's
-   *
-   * @exception UnknownHostException If no IP address can be found for the
-   * given hostname
-   */
-  public static InetAddress[] getAllByName (String hostname)
-    throws UnknownHostException
-  {
-    // Default to current host if necessary
-    if (hostname == null)
-      {
-        InetAddress local = getLocalHost ();
-        return getAllByName (local.getHostName ());
-      }
-
-    // Check the cache for this host before doing a lookup
-    InetAddress[] addresses = checkCacheFor (hostname);
-    if (addresses != null)
-      return (addresses);
-
-    // Not in cache, try the lookup
-    byte[][]iplist = getHostByName (hostname);
-    if (iplist.length == 0)
-      throw new UnknownHostException (hostname);
-
-    addresses = new InetAddress[iplist.length];
-
-    for (int i = 0; i < iplist.length; i++)
-      {
-        if (iplist[i].length != 4)
-          throw new UnknownHostException (hostname);
-
-        // Don't store the hostname in order to force resolution of the
-        // canonical names of these ip's when the user asks for the hostname
-        // But do specify the host alias so if the IP returned won't
-        // reverse lookup we don't throw an exception.
-        addresses[i] = new InetAddress (iplist[i], null, hostname);
-      }
-
-    addToCache (hostname, addresses);
-
-    return addresses;
-  }
-
-  /**
-   * Returns an InetAddress object representing the IP address of the given
-   * hostname.  This name can be either a hostname such as "www.urbanophile.com"
-   * or an IP address in dotted decimal format such as "127.0.0.1".  If the
-   * hostname is null, the hostname of the local machine is supplied by
-   * default.  This method is equivalent to returning the first element in
-   * the InetAddress array returned from GetAllByName.
-   *
-   * @param hostname The name of the desired host, or null for the local machine
-   *
-   * @return The address of the host as an InetAddress
-   *
-   * @exception UnknownHostException If no IP address can be found for the
-   * given hostname
-   */
-  public static InetAddress getByName (String hostname)
-    throws UnknownHostException
-  {
-    // Default to current host if necessary
-    if (hostname == null)
-      return getLocalHost ();
-
-    // First, check to see if it is an IP address.  If so, then don't 
-    // do a DNS lookup.
-    StringTokenizer st = new StringTokenizer (hostname, ".");
-    if (st.countTokens () == 4)
-      {
-        int    i;
-        short  n;
-        byte[] ip = new byte[4];
-        for (i = 0; i < 4; i++)
-          {
-            try
-              {
-                n = Short.parseShort(st.nextToken());
-                if ((n < 0) || (n > 255))
-                  break;
-                ip[i] = (byte) n;
-              }
-            catch (NumberFormatException e)
-              {
-                break;
-              }
-          }
-        if (i == 4)
-          {
-            return (new InetAddress (ip));
-          }
-      }
-
-    // Wasn't an IP, so try the lookup
-    InetAddress[]addresses = getAllByName (hostname);
-
-    return addresses[0];
-  }
-
-  /**
    * Returns an InetAddress object representing the address of the current
    * host.
    *
@@ -466,186 +651,6 @@ public class InetAddress implements Serializable
   {
     String hostname = getLocalHostName ();
     return getByName (hostname);
-  }
-
-  /**
-   * Tests this address for equality against another InetAddress.  The two
-   * addresses are considered equal if they contain the exact same octets.
-   * This implementation overrides Object.equals()
-   *
-   * @param obj The address to test for equality
-   *
-   * @return true if the passed in object's address is equal to this one's,
-   * false otherwise
-   */
-  public boolean equals (Object obj)
-  {
-    if (!(obj instanceof InetAddress))
-      return false;
-
-    byte[]test_ip = ((InetAddress) obj).getAddress ();
-
-    if (test_ip.length != addr.length)
-      return (false);
-
-    for (int i = 0; i < addr.length; i++)
-      if (test_ip[i] != (byte) addr[i])
-        return (false);
-
-    return (true);
-  }
-
-  /**
-   * Returns the IP address of this object as a int array.
-   *
-   * @return IP address
-   */
-  public byte[] getAddress ()
-  {
-    byte[]ipaddr = new byte[addr.length];
-
-    for (int i = 0; i < addr.length; i++)
-      {
-        ipaddr[i] = (byte) addr[i];
-      }
-
-    return ipaddr;
-  }
-
-  /**
-   * Returns the IP address of this object as a String.  The address is in 
-   * the dotted octet notation, for example, "127.0.0.1".
-   *
-   * @return The IP address of this object in String form
-   */
-  public String getHostAddress ()
-  {
-    StringBuffer sb = new StringBuffer ();
-
-    for (int i = 0; i < addr.length; i++)
-      {
-        sb.append (addr[i] & 0xff);
-        if (i < (addr.length - 1))
-          sb.append (".");
-      }
-
-    return sb.toString ();
-  }
-
-  /**
-   * Returns the hostname for this address.  This will return the IP address
-   * as a String if there is no hostname available for this address
-   *
-   * @return The hostname for this address
-   */
-  public String getHostName ()
-  {
-    if (hostName != null)
-      return (hostName);
-
-    try
-      {
-        hostName = getHostByAddr (addr);
-        return (hostName);
-      }
-    catch (UnknownHostException e)
-      {
-        if (hostname_alias != null)
-          return (hostname_alias);
-        else
-          return (getHostAddress ());
-      }
-  }
-
-  /**
-   * Returns a hash value for this address.  Useful for creating hash
-   * tables.  Overrides Object.hashCode()
-   *
-   * @return A hash value for this address.
-   */
-  public int hashCode ()
-  {
-    long val1 = 0, val2 = 0;
-
-    // Its obvious here that I have no idea how to generate a good
-    // hash key
-    for (int i = 0; i < addr.length; i++)
-      val1 = val1 + (addr[i] << ((addr.length - i) / 8));
-
-    for (int i = 0; i < addr.length; i++)
-      val2 = val2 + (addr[i] * 10 * i);
-
-    val1 = (val1 >> 1) ^ val2;
-
-    return ((int) val1);
-  }
-
-  /**
-   * Converts this address to a String.  This string contains the IP in
-   * dotted decimal form. For example: "127.0.0.1"  This method is equivalent
-   * to getHostAddress() and overrides Object.toString()
-   *
-   * @return This address in String form
-   */
-  public String toString ()
-  {
-    StringBuffer sb;
-    if (hostName != null)
-      sb = new StringBuffer (hostName).append ('/');
-    else if (hostname_alias != null)
-      sb = new StringBuffer (hostname_alias).append ('/');
-    else
-      sb = new StringBuffer ();
-
-    sb.append (getHostAddress ());
-    return (sb.toString ());
-  }
-
-  /**
-   * Returns an InetAddress object given the raw IP address.
-   *
-   * The argument is in network byte order: the highest order byte of the
-   * address is in getAddress()[0].
-   *
-   * @param addr The IP address to create the InetAddress object from
-   *
-   * @exception UnknownHostException If IP address has illegal length
-   *
-   * @since 1.4
-   */
-  public static InetAddress getByAddress (byte[] addr)
-    throws UnknownHostException
-  {
-    if (addr.length != 4 && addr.length != 16)
-      throw new UnknownHostException ("IP address has illegal length");
-
-    if (addr.length == 4)
-      return new Inet4Address (addr, null);
-
-    return new Inet6Address (addr, null);
-  }
-
-  /**
-   * Creates an InetAddress based on the provided host name and IP address.
-   * No name service is checked for the validity of the address.
-   *
-   * @param host The hostname of the InetAddress object to create
-   * @param addr The IP address to create the InetAddress object from
-   *
-   * @exception UnknownHostException If IP address is of illegal length
-   *
-   * @since 1.4
-   */
-  public static InetAddress getByAddress (String host, byte[] addr)
-    throws UnknownHostException
-  {
-    if (addr.length == 4)
-      return new Inet4Address (addr, host);
-
-    if (addr.length == 16)
-      return new Inet6Address (addr, host);
-    
-    throw new UnknownHostException ("IP address has illegal length");
   }
 
   /**
