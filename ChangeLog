@@ -1,5 +1,14 @@
 2003-06-28  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/GridBagLayout.java:
+	Totally reworked and partly implemented.
+	* java/awt/GridBagLayoutInfo.java:
+	New file.
+	* java/awt/Makefile.am
+	(EXTRA_DIST): Added GridBagLayoutInfo.java.
+
+2003-06-28  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/Timer.java
 	(finalize): Throws Throwable.
 

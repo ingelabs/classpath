@@ -1,5 +1,5 @@
 /* GridBagLayout - Layout manager for components according to GridBagConstraints
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,64 +35,157 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package java.awt;
 
 import java.io.Serializable;
+import java.util.Hashtable;
 
 /**
- * Stub implementation.
+ * @author Michael Koch <konqueror@gmx.de>
  */
 public class GridBagLayout
   implements Serializable, LayoutManager2
 {
-  static final long serialVersionUID = 8838754796412211005L;
+  private static final long serialVersionUID = 8838754796412211005L;
 
-  public void addLayoutComponent(String name, Component component)
+  protected static final int MINSIZE = 1;
+  protected static final int PREFERREDSIZE = 2;
+  protected static final int MAXGRIDSIZE = 512;
+
+  protected Hashtable comptable;
+  protected GridBagConstraints layoutInfo;
+  protected GridBagConstraints defaultConstraints = new GridBagConstraints();
+
+  public double[] columnWeights;
+  public int[] columnWidths;
+  public double[] rowWeights;
+  public int[] rowHeights;
+
+  // FIXME: How should this class look like ?
+  //protected GridBagLayoutInfo layoutInfo;
+  public GridBagLayout ()
   {
+    // Do nothing here.
   }
 
-  public void removeLayoutComponent(Component component)
+  public void addLayoutComponent (String name, Component component)
   {
+    // do nothing here.
   }
 
-  public Dimension preferredLayoutSize(Container parent)
+  public void addLayoutComponent (Component component, Object constraints)
   {
-    return null;
+    if (!(constraints instanceof GridBagConstraints))
+      throw new IllegalArgumentException();
+
+    setConstraints (component, (GridBagConstraints) constraints);
   }
 
-  public Dimension minimumLayoutSize(Container parent)
+  public void removeLayoutComponent (Component component)
   {
-    return null;
+    comptable.remove (component);
   }
 
-  public void layoutContainer(Container parent)
+  public Dimension preferredLayoutSize (Container parent)
   {
+    if (layoutInfo == null)
+      layoutContainer (parent);
+    
+    throw new Error ("Not implemented");
   }
 
-  public void addLayoutComponent(Component component, Object contraint)
+  public Dimension minimumLayoutSize (Container parent)
   {
+    if (layoutInfo == null)
+      layoutContainer (parent);
+    
+    throw new Error ("Not implemented");
   }
 
-  public Dimension maximumLayoutSize(Container target)
+  public Dimension maximumLayoutSize (Container target)
   {
-    return null;
+    throw new Error ("Not implemented");
   }
 
-  public float getLayoutAlignmentX(Container target)
+  public void layoutContainer (Container parent)
   {
-    return 0.0f;
+    arrangeGrid (parent);
   }
 
-  public float getLayoutAlignmentY(Container target)
+  public float getLayoutAlignmentX (Container target)
   {
-    return 0.0f;
+    throw new Error ("Not implemented");
   }
 
-  public void invalidateLayout(Container target)
+  public float getLayoutAlignmentY (Container target)
   {
+    throw new Error ("Not implemented");
   }
 
-  public void setConstraints(Component comp, GridBagConstraints constraints)
+  public void invalidateLayout (Container target)
   {
+    this.layoutInfo = null;
+  }
+
+  protected void adjustForGravity (GridBagConstraints gbc, Rectangle rect)
+  {
+    throw new Error ("Not implemented");
+  }
+
+  protected void AdjustForGravity (GridBagConstraints gbc, Rectangle rect)
+  {
+    adjustForGravity (gbc, rect);
+  }
+
+  protected void arrangeGrid (Container parent)
+  {
+    throw new Error ("Not implemented");
+  }
+
+  protected void ArrangeGrid (Container parent)
+  {
+    arrangeGrid (parent);
+  }
+
+  public void setConstraints (Component component,
+			      GridBagConstraints constraints)
+  {
+    comptable.put (component, constraints);
+  }
+
+  public GridBagConstraints getConstraints (Component component)
+  {
+    GridBagConstraints constraints = lookupConstraints (component);
+
+    if (constraints == null)
+      return null;
+
+    return (GridBagConstraints) constraints.clone();
+  }
+
+  protected GridBagConstraints lookupConstraints (Component component)
+  {
+    return (GridBagConstraints) comptable.get (component);
+  }
+
+  public int[][] getLayoutDimensions ()
+  {
+    throw new Error ("Not implemented");
+  }
+
+  public Point getLayoutOrigin ()
+  {
+    throw new Error ("Not implemented");
+  }
+
+  public double[][] getLayoutWeights ()
+  {
+    throw new Error ("Not implemented");
+  }
+
+  public Point location (int x, int y)
+  {
+    throw new Error ("Not implemented");
   }
 }
