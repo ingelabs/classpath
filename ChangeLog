@@ -1,5 +1,12 @@
 2005-02-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Class.java,
+	java/lang/SecurityManager.java,
+	java/net/URL.java:
+	Formatting cleanups.
+
+2005-02-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/Button.java,
 	java/awt/Container.java,
 	java/awt/Font.java,

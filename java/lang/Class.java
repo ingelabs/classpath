@@ -1,5 +1,5 @@
 /* Class.java -- Representation of a Java class.
-   Copyright (C) 1998, 1999, 2000, 2002, 2003, 2004
+   Copyright (C) 1998, 1999, 2000, 2002, 2003, 2004, 2005
    Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -1116,8 +1116,10 @@ public final class Class implements Serializable
 	if (!Modifier.isPublic(constructor.getModifiers()))
 	  {
 	    final Constructor finalConstructor = constructor;
-	    AccessController.doPrivileged(new PrivilegedAction() {
-		public Object run() {
+	    AccessController.doPrivileged(new PrivilegedAction()
+	      {
+		public Object run()
+	        {
 		  finalConstructor.setAccessible(true);
 		  return null;
 		}
