@@ -1,4 +1,4 @@
-<set-var last-modified-author="corvus">
+<set-var last-modified-author="cbj">
 
 <include macros.mhtml>
 <header "GNU Classpath">
@@ -38,16 +38,19 @@ is <tt>classpath</tt>.  There is no password.
 
 <H4>Mailing List</H4>
 <plain-text>
-There is one general discussion list for Classpath.  To subscribe, send
-a message with a subject of "subscribe" to <link
-mailto:classpath-request@gnu.org?subject=subscribe
-&lt;classpath-request@gnu.org&gt;>.  To unsubscribe, send a message to
-the same address with a subject of "unsubscribe" to <link
-mailto:classpath-request@gnu.org?subject=unsubscribe
-&lt;classpath-request@gnu.org&gt;>.  To send a message to the list,
+There is one general discussion list for Classpath. You may  
+<link http://mail.gnu.org/mailman/listinfo/classpath/ subscribe> to 
+the mailing list via the web.  However, you may also 
+just send an email message with a subject of "subscribe" 
+to <link mailto:classpath-request@gnu.org?subject=subscribe
+&lt;classpath-request@gnu.org&gt;>.  You may  
+<link http://mail.gnu.org/mailman/listinfo/classpath/ unsubscribe> 
+from the mailing list via the web as well.  To send a message to the list, 
 mail it to <link mailto:classpath@gnu.org &lt;classpath@gnu.org&gt;>. 
 An <link http://www.mail-archive.com/classpath%40gnu.org/ archive> of 
-the list is available.
+the list is available which dates back to the beginning of the project.  
+A new, but less comprehensive, archive of the mailing list is now located 
+on <link http://mail.gnu.org/mailman/listinfo/classpath/ mail.gnu.org>.
 </plain-text>
 
 <H4>Status</H4>
