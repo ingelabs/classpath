@@ -1,5 +1,14 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/ContentHandlerFactory.java,
+	java/net/DatagramSocketImplFactory.java,
+	java/net/FileNameMap.java,
+	java/net/SocketImplFactory.java,
+	java/net/SocketOptions.java:
+	Removing redundant modifiers.
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/rmi/dgc/DGC.java,
 	java/rmi/registry/Registry.java,
 	java/rmi/registry/RegistryHandler.java,
