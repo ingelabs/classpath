@@ -59,7 +59,7 @@ class libraries.
 * Programming Tools::           A list of tools you will need for hacking
 * Programming Standards::       Standards to use when writing code for Classpath
 * Programming Goals::           What to consider when writing code for Classpath
-* API Compatibility::           
+* API Compatibility::           How to handle serialization and deprecated methods
 * Specification Sources::       Where to find the Java class library specs
 * Naming Conventions::          How files and directories are named in Classpath
 * Character Conversions::       Working on Character conversions
@@ -614,6 +614,10 @@ Programming for Linux and Unix HOWTO}.
 @comment  node-name,  next,  previous,  up
 @chapter API Compatibility
 
+@node Serialization, Deprecated Methods, , API Compatibility
+@comment  node-name,  next,  previous,  up
+@section Serialization
+
 Sun has produced documentation concerning much of the information
 needed to make Classpath serializable compatible with Sun
 implementations.  Part of doing this is to make sure that every class
@@ -638,6 +642,52 @@ tools can test binary serialization compatibility and also provide
 information about unknown serialized formats by writing these in XML
 instead.  Japitools is also the primary means of checking API
 compatibility for GNU Classpath with Sun's Java Platform.
+
+@node Deprecated Methods, , Serialization, API Compatibility
+@comment  node-name,  next,  previous,  up
+@section Deprecated Methods
+
+Sun has a practice of creating ``alias'' methods, where a public or
+protected method is deprecated in favor of a new one that has the same
+function but a different name.  Sun's reasons for doing this vary; as
+an example, the original name may contain a spelling error or it may
+not follow Java naming conventions.
+
+Unfortunately, this practice complicates class library code that calls
+these aliased methods.  Library code must still call the deprecated
+method so that old client code that overrides it continues to work.
+But library code must also call the new version, because new code is
+expected to override the new method.
+
+The correct way to handle this (and the way Sun does it) may seem
+counterintuitive because it means that new code is less efficient than
+old code: the new method must call the deprecated method, and throughout
+the library code calls to the old method must be replaced with calls to
+the new one.
+
+Take the example of a newly-written container laying out a component and
+wanting to know its preferred size.  The Component class has a
+deprecated preferredSize method and a new method, getPreferredSize. 
+Assume that the container is laying out an old component that overrides
+preferredSize and a new component that overrides getPreferredSize.  If
+the container calls getPreferredSize and the default implementation of
+getPreferredSize calls preferredSize, then the old component will have
+its preferredSize method called and new code will have its
+getPreferredSize method called.
+
+Even using this calling scheme, an old component may still be laid out
+improperly if it implements a method, getPreferredSize, that has the
+same signature as the new Component.getPreferredSize.  But that is a
+general problem -- adding new public or protected methods to a
+widely-used class that calls those methods internally is risky, because
+existing client code may have already declared methods with the same
+signature.
+
+The solution may still seem counterintuitive -- why not have the
+deprecated method call the new method, then have the library always call
+the old method?  One problem with that, using the preferred size example
+again, is that new containers, which will use the non-deprecated
+getPreferredSize, will not get the preferred size of old components.
 
 @node Specification Sources, Naming Conventions, API Compatibility, Top
 @comment node-name, next, previous, up

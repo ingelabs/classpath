@@ -1,3 +1,8 @@
+2004-02-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* doc/hacking.texinfo (Serialization): Add section header.
+	(Deprecated Methods): New section.
+
 2004-02-02  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/Thread.java (setDaemon): Allow daemon state to be
