@@ -1,5 +1,38 @@
 2004-09-05  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGlyphVector.c
+	(setChars): Only call pango_itemize() when vec->glyphitems != NULL.
+	Only call pango_shape() when gi->glyphs->num_glyphs > 0.
+
+2004-09-05  Mark Wielaard  <mark@klomp.org>
+	
+	* gnu/java/awt/peer/gtk/GdkGraphics.java (setColor): Use
+	Color.BLACK if c == null, don't create new Color object each time.
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (comp): New private
+	field.
+	(setColor): Use Color.BLACK when argument null.
+	(setComposite): Set this.comp field.
+	(getComposite): Return this.comp, or AlphaComposite.SrcOver when null.
+	(DrawState.comp): New private field.
+	(DrawState.save): Save Composite.
+	(DrawState.restore): Restore comp field.
+	* java/awt/FontMetrics.java (gRC): New static final private field.
+	(getLineMetrics(String, Graphics)): New method.
+	(getLineMetrics(String, int, int, Graphics)): Likewise.
+	(getLineMetrics(char[], int, int, Graphics)): Likewise.
+	(getLineMetrics(CharacterIterator, int, int, Graphics)): Likewise.
+	* javax/swing/JMenu.java (JMenu(String, boolean)): Ignore tearoff
+	argument. PR SWING/17294.
+	* javax/swing/plaf/basic/BasicGraphicsUtils.java (): Always use
+	the fall-back code since none of the TextArea methods are really
+	implemented now. PR SWING/17296.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGlyphVector.c
+	(GdkGlyphVector_setChars): Replace assert() with if block when
+	pango_itemize() returns null. PR AWT/17295.
+	(GdkGlyphVector_allInkExtents): Likewise when vec->glyphitems is null.
+	
+2004-09-05  Mark Wielaard  <mark@klomp.org>
+
 	* examples/gnu/classpath/examples/swing/Demo.java (mkComboBox):
 	New method.
 
