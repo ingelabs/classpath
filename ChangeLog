@@ -1,3 +1,10 @@
+2003-06-25  Stephen Crawley <crawley@dstc.edu.au>
+
+	* gnu/java/locale/LocaleInformation_de.java,
+	gnu/java/locale/LocaleInformation_en.java,
+	gnu/java/locale/LocaleInformation_nl.java:
+	Fixed collation rules.
+
 2003-06-25  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/SplitPaneUI.java: Made imports specific,
