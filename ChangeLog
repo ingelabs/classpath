@@ -1,5 +1,10 @@
 2001-07-13  John Leuner <jewel@debian.org>
 
+	* java/text/DecimalFormat.java: Added a skeleton (ie non-working
+	and incomplete) version to allow MessageFormat to compile.
+
+2001-07-13  John Leuner <jewel@debian.org>
+
 	* java/net/SocketOptions.java: changed 'abstract interface' to 'interface'
 	* java/net/URLStreamHandlerFactory.java: idem
 	* java/net/SocketImplFactory.java: idem
