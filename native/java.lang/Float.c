@@ -53,6 +53,22 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_intBitsToFloat
 }
 
 /*
+ * Class:    java_lang_Float
+ * Method:   toString(float f)
+ * Signature: (F)Ljava/lang/String
+ */
+JNIEXPORT jstring JNICALL Java_java_lang_Float_toString
+  (JNIEnv * env, jclass thisClass, jfloat f)
+{
+  char buf[1024];
+  jstring retval;
+
+  sprintf((char*)&buf, "%G", f);
+  retval = (*env)->NewStringUTF(env, buf);
+  return retval;
+}
+
+/*
  * Class:     java_lang_Float
  * Method:    parseFloat
  * Signature: (Ljava/lang/String)F
@@ -64,17 +80,25 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
     char *endptr, *myptr;
     jvalue val;
 
-    nptr = (char*)((*env)->GetStringUTFChars(env, s, 0));
-    if (!nptr)
-	_javalang_ThrowException(env, "java/lang/NumberFormatException", "null not allowed");
+    if (s == NULL)
+	{
+	    _javalang_ThrowException(env, "java/lang/NullPointerException", "null string");
+	    return 0.0;
+	}
 
+    nptr = (char*)((*env)->GetStringUTFChars(env, s, 0));
+    if (nptr == NULL)
+	{
+	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "null not allowed");
+	    return 0.0;
+	}
 #if defined(HAVE_STRTOD)
     val.d = strtod(nptr, &endptr);
 
 
     /* to catch non-white space characters after conversion */
     myptr = endptr;
-    while (*myptr != 0)  /* the null character */
+    while ((myptr) && (*myptr != 0))  /* the null character */
 	{
 	    switch (*myptr)
 		{
@@ -90,7 +114,9 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
 		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
 #else
 		    (*env)->ReleaseStringUTFChars(env, s, nptr);
-#endif		    _javalang_ThrowException(env, "java/lang/NumberFormatException", "cannot use float designators 'f' or 'F' in string for conversion");
+#endif		    
+		    _javalang_ThrowException(env, "java/lang/NumberFormatException", "cannot use float designators 'f' or 'F' in string for conversion");
+		    return 0.0;
 		    break;
 		default:
 #if defined(WITH_JAPHAR)
@@ -99,6 +125,7 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
 		    (*env)->ReleaseStringUTFChars(env, s, nptr);
 #endif
 		    _javalang_ThrowException(env, "java/lang/NumberFormatException", "bad number format for float");
+		    return 0.0;
 		    break;
 		}
 	}
@@ -111,6 +138,7 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
 	    (*env)->ReleaseStringUTFChars(env, s, nptr);
 #endif
 	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "no conversion performed, possible underflow");
+	    return 0.0;
 	}
     if ((val.d == -HUGE_VAL) || (val.d == HUGE_VAL))
 	{
@@ -120,6 +148,7 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
 	    (*env)->ReleaseStringUTFChars(env, s, nptr);
 #endif
 	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "conversion would cause overflow");
+	    return 0.0;
 	}
 #else
     val.d = atof(nptr);
