@@ -1,5 +1,9 @@
 2005-03-18  Audrius Meskauskas  <audriusa@bluewin.ch>
 
+	* ChangeLog.usermap: New file (replacing).
+
+2005-03-18  Audrius Meskauskas  <audriusa@bluewin.ch>
+
 	* javax/swing/text/html/parser/Entity.java (getType): New method.
 	* javax/swing/text/html/parser/DocumentParser.java:
 	Inherit from javax.swing.text.html.parser.Parser.
