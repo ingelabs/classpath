@@ -19,6 +19,7 @@
  */
 
 package java.util;
+import java.lang.reflect.InvocationTargetException;
 import java.io.*;
 
 /**
@@ -105,7 +106,7 @@ public abstract class Calendar implements Serializable, Cloneable {
      */
     public static final int WEEK_OF_MONTH = 4;
     /**
-     * Constant representing the day time field, synomnym for DAY_OF_MONTH.
+     * Constant representing the day time field, synonym for DAY_OF_MONTH.
      */
     public static final int DATE = 5;
     /**
@@ -359,9 +360,12 @@ public abstract class Calendar implements Serializable, Cloneable {
         this.zone = zone;
         lenient = true;
 
-        // Should this be locale specific?
-        firstDayOfWeek = SUNDAY; 
-        minimalDaysInFirstWeek = 1;
+	ResourceBundle rb = ResourceBundle.getBundle
+	  ("gnu/java/locale/LocaleInformation", locale);
+
+        firstDayOfWeek = ((Integer) rb.getObject("firstDayOfWeek")).intValue();
+        minimalDaysInFirstWeek = 
+	  ((Integer) rb.getObject("minimalDaysInFirstWeek")).intValue();
     }
 
     /**
@@ -369,7 +373,7 @@ public abstract class Calendar implements Serializable, Cloneable {
      * time zone and locale.
      */
     public static Calendar getInstance() {
-        return new GregorianCalendar();
+        return getInstance(TimeZone.getDefault(), Locale.getDefault());
     }
 
     /**
@@ -378,7 +382,7 @@ public abstract class Calendar implements Serializable, Cloneable {
      * @param zone a time zone.
      */
     public static Calendar getInstance(TimeZone zone) {
-        return new GregorianCalendar(zone);
+        return getInstance(zone, Locale.getDefault());
     }
 
     /**
@@ -387,7 +391,7 @@ public abstract class Calendar implements Serializable, Cloneable {
      * @param locale a locale.
      */
     public static Calendar getInstance(Locale locale) {
-        return new GregorianCalendar(locale);
+        return getInstance(TimeZone.getDefault(), locale);
     }
 
     /**
@@ -396,8 +400,36 @@ public abstract class Calendar implements Serializable, Cloneable {
      * @param zone a time zone.
      * @param locale a locale.
      */
-    public static Calendar getInstance(TimeZone zone, Locale locale) {
-        return new GregorianCalendar(zone, locale);
+    public static Calendar getInstance(TimeZone zone, Locale locale){
+      String calendarClassName = null;
+      ResourceBundle rb = ResourceBundle.getBundle
+	("gnu/java/locale/LocaleInformation", locale);
+      calendarClassName = rb.getString("calendarClass");
+      if (calendarClassName != null) 
+	{
+	  try
+	    {
+	      Class calendarClass = Class.forName(calendarClassName);
+	      if (Calendar.class.isAssignableFrom(calendarClass))
+		{
+		  return (Calendar) calendarClass.getConstructor
+		    (new Class[] { TimeZone.class, Locale.class })
+		    .newInstance(new Object[] { zone, locale });
+		}
+	    }
+	  catch (ClassNotFoundException ex)
+	    { }
+	  catch (IllegalAccessException ex)
+	    { }
+	  catch (NoSuchMethodException ex)
+	    { }
+	  catch (InstantiationException ex)
+	    { }
+	  catch (InvocationTargetException ex)
+	    { }
+	  // XXX should we ignore these errors or throw an exception ?
+	}
+      return new GregorianCalendar(zone, locale);
     }
         
     /**
@@ -813,10 +845,51 @@ public abstract class Calendar implements Serializable, Cloneable {
      */
     public Object clone() {
         try {
-            return super.clone();
+            Calendar cal = (Calendar) super.clone();
+	    cal.fields = (int[]) fields.clone();
+	    cal.isSet = (boolean[]) isSet.clone();
+	    return cal;
         } catch (CloneNotSupportedException ex) {
             return null;
         }
+    }
+
+    private final static String[] fieldNames = {
+	",ERA=", ",YEAR=", ",MONTH=", 
+	",WEEK_OF_YEAR=", ",WEEK_OF_MONTH=",
+	",DAY_OF_MONTH=", ",DAY_OF_YEAR=", ",DAY_OF_WEEK=", 
+	",DAY_OF_WEEK_IN_MONTH=", 
+	",AM_PM", ",HOUR=", ",HOUR_OF_DAY=", 
+	",MINUTE=", ",SECOND=", ",MILLISECOND=", 
+	",ZONE_OFFSET=", ",DST_OFFSET="
+    };
+
+
+    /**
+     * Returns a string representation of this object.  It is mainly
+     * for debugging purposes and its content is implementation
+     * specific.
+     */
+    public String toString() {
+	StringBuffer sb = new StringBuffer();
+	String comma = "";
+	sb.append(getClass().getName()).append('[');
+	sb.append("zone="+zone);
+	if (isTimeSet) {
+	    sb.append(",time="+time);
+	}
+	if (areFieldsSet) {
+	    for (int i=0; i < FIELD_COUNT; i++) {
+		if (isSet[i]) {
+		    sb.append(fieldNames[i]).append(fields[i]);
+		}
+	    }
+	}
+	sb.append(",lenient=").append(lenient);
+	sb.append(",firstDayOfWeek=").append(firstDayOfWeek);
+	sb.append(",minimalDaysInFirstWeek=").append(minimalDaysInFirstWeek);
+	sb.append("]");
+	return sb.toString();
     }
 
     /**
@@ -826,8 +899,7 @@ public abstract class Calendar implements Serializable, Cloneable {
      *
      * This doesn't write the JDK1.1 field nextStamp to the stream, as
      * I don't know what it is good for, and because the documentation
-     * says, that it could be omitted.
-     */
+     * says, that it could be omitted.  */
     private void writeObject(ObjectOutputStream stream)
         throws IOException {
         if (!isTimeSet)
