@@ -308,6 +308,11 @@ public class Socket
    */
   public void bind (SocketAddress bindpoint) throws IOException
   {
+    if ( !(bindpoint instanceof InetSocketAddress))
+      throw new IllegalArgumentException ();
+
+    InetSocketAddress tmp = (InetSocketAddress) bindpoint;
+    impl.bind (tmp.getAddress(), tmp.getPort());
   }
   
   /**
@@ -325,6 +330,13 @@ public class Socket
   public void connect (SocketAddress endpoint)
     throws IOException
   {
+    if (! (endpoint instanceof InetSocketAddress))
+      throw new IllegalArgumentException ("Address type not supported");
+
+    if (ch != null && !ch.isBlocking ())
+      throw new IllegalBlockingModeException ();
+    
+    impl.connect (endpoint, 0);
   }
 
   /**
@@ -345,6 +357,13 @@ public class Socket
   public void connect (SocketAddress endpoint, int timeout)
     throws IOException
   {
+    if (! (endpoint instanceof InetSocketAddress))
+      throw new IllegalArgumentException ("Address type not supported");
+
+    if (ch != null && !ch.isBlocking ())
+      throw new IllegalBlockingModeException ();
+    
+    impl.connect (endpoint, timeout);
   }
 
   /**
@@ -597,6 +616,7 @@ public class Socket
    */
   public void sendUrgentData (int data) throws IOException
   {
+    impl.sendUrgentData (data);
   }
 
   /**
@@ -882,6 +902,9 @@ public class Socket
    */
   public void shutdownInput() throws IOException
   {
+    if (impl != null)
+      impl.shutdownInput();
+
     inputShutdown = true;
   }
 
@@ -892,6 +915,9 @@ public class Socket
    */
   public void shutdownOutput() throws IOException
   {
+    if (impl != null)
+      impl.shutdownOutput();
+    
     outputShutdown = true;
   }
 

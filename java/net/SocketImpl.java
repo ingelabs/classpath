@@ -122,6 +122,21 @@ public abstract class SocketImpl implements SocketOptions
     throws IOException;
 
   /**
+   * Connects to the socket to the host specified in address. This
+   * method blocks until successful connected or the timeout occurs.
+   * A timeout of zero means no timout.
+   *
+   * @param address Data of remote host
+   * @param timeout time to wait to stop connecting
+   *
+   * @exception IOException If an error occurs
+   *
+   * @since 1.4
+   */
+  protected abstract void connect(SocketAddress address, int timeout)
+    throws IOException;
+
+  /**
    * Binds to the specified port on the specified addr.  Note that this addr
    * must represent a local IP address.
    * <p>
@@ -230,6 +245,18 @@ public abstract class SocketImpl implements SocketOptions
   }
   
   /**
+   * Sends one byte of urgent data to the socket.
+   *
+   * @param data The byte to send, the low eight bits of it
+   *
+   * @exception IOException If an error occurs
+   *
+   * @since 1.4
+   */
+  protected abstract void sendUrgentData(int data)
+    throws IOException;
+  
+  /**
    * Returns the local port this socket is bound to
    *
    * @return The local port
@@ -279,4 +306,20 @@ public abstract class SocketImpl implements SocketOptions
    * @XXX This redeclaration from SocketOptions is a workaround to a gcj bug.
    */
   public abstract Object getOption(int option_id) throws SocketException;
+
+  /**
+   * Shut down the input side of this socket.  Subsequent reads will
+   * return end-of-file.
+   *
+   * @exception IOException if an error occurs
+   */
+  protected abstract void shutdownInput () throws IOException;
+
+  /**
+   * Shut down the output side of this socket.  Subsequent writes will
+   * fail with an IOException.
+   *
+   * @exception IOException if an error occurs
+   */
+  protected abstract void shutdownOutput () throws IOException;
 }

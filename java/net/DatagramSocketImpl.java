@@ -115,6 +115,23 @@ public abstract class DatagramSocketImpl implements SocketOptions
   protected abstract int peek(InetAddress i) throws IOException;
 
   /**
+   * Takes a peek at the next packet received.  This packet is not consumed.
+   * With the next peekData/receive operation this packet will be read again.
+   * 
+   * @param p The DatagramPacket to fill in with the data sent.
+   *
+   * @return The port number of the sender of the packet.
+   * 
+   * @exception IOException If an error occurs
+   * @exception PortUnreachableException May be thrown if the socket is
+   * connected to a currently unreachable destination. Note, there is no
+   * guarantee that the exception will be thrown.
+   * 
+   * @since 1.4
+   */
+  protected abstract int peekData (DatagramPacket p) throws IOException;
+
+  /**
    * Transmits the specified packet of data to the network.  The destination
    * host and port should be encoded in the packet.
    *
@@ -222,6 +239,35 @@ public abstract class DatagramSocketImpl implements SocketOptions
    */
   protected abstract void leave(InetAddress inetaddr) throws IOException;
 
+  /**
+   * Causes this socket to join the specified multicast group on a specified
+   * device 
+   * 
+   * @param mcastaddr The address to leave
+   * @param netIf The specified network interface to join the group at
+   *
+   * @exception IOException If an error occurs
+   * 
+   * @since 1.4
+   */
+  protected abstract void joinGroup (SocketAddress mcastaddr,
+		                     NetworkInterface netIf)
+    throws IOException;
+
+  /**
+   * Leaves a multicast group
+   * 
+   * @param mcastaddr The address to join
+   * @param netIf The specified network interface to leave the group at
+   *
+   * @exception IOException If an error occurs
+   * 
+   * @since 1.4
+   */
+  protected abstract void leaveGroup (SocketAddress mcastaddr,
+		                      NetworkInterface netIf)
+    throws IOException;
+  
   /**
    * Returns the FileDescriptor for this socket
    */

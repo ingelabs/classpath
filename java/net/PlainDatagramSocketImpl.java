@@ -301,5 +301,19 @@ public native synchronized Object getOption(int option_id) throws SocketExceptio
   */
 public native synchronized void setOption(int option_id, Object val) throws SocketException;
 
-} // class PlainDatagramSocketImpl
+public int peekData(DatagramPacket packet)
+{
+  throw new InternalError ("PlainDatagramSocketImpl::peekData is not implemented");
+}
 
+public void joinGroup(SocketAddress address, NetworkInterface netIf)
+{
+  throw new InternalError ("PlainDatagramSocketImpl::joinGroup is not implemented");
+}
+
+public void leaveGroup(SocketAddress address, NetworkInterface netIf)
+{
+  throw new InternalError ("PlainDatagramSocketImpl::leaveGroup is not implemented");
+}
+
+} // class PlainDatagramSocketImpl

@@ -1,3 +1,38 @@
+2002-11-12  Michael Koch <konqueror@gmx.de>
+
+	* java/net/NetworkInterface.java: New file.
+	* java/net/DatagramSocketImpl.java
+	(peekData): New method.
+	(joinGroup): New method.
+	(leaveGroup): New method.
+	* java/net/MulticastSocket.java
+	(setNetworkInterface): New method.
+	(getNetworkInterface): New method.
+	(joinGroup): New method.
+	(leaveGroup): New method.
+	* java/net/PlainDatagramSocketImpl.java
+	(peekData): New method.
+	(joinGroup): New method.
+	(leaveGroup): New method.
+	* java/net/PlainSocketImpl.java
+	(connect): New method.
+	(sendUrgentData): New method.
+	(shutdownInput): New method.
+	(shutdownOutput): New method.
+	* java/net/ServerSocket.java
+	(bind): Implemented.
+	* java/net/Socket.java
+	(bind): Implemented.
+	(connect): Implemented.
+	(sendUrgentData): Implemented.
+	(shutdownInput): Implemented.
+	(shutdownOutput): Implemented.
+	* java/net/SocketImpl.java
+	(connect): New method.
+	(sendUrgentData): New method.
+	(shutdownInput): New method.
+	(shutdownOutput): New method.
+
 2002-11-11  Michael Koch <konqueror@gmx.de>
 
 	* gnu/java/nio/FileChannelImpl.java

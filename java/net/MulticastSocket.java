@@ -144,6 +144,58 @@ public class MulticastSocket extends DatagramSocket
   }
 
   /**
+   * Sets the local network interface used to send multicast messages
+   *
+   * @param netIF The local network interface used to send multicast messages
+   * 
+   * @exception SocketException If an error occurs
+   * 
+   * @see MulticastSocket:getNetworkInterface
+   * 
+   * @since 1.4
+   */
+  public void setNetworkInterface(NetworkInterface netIf)
+    throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException (
+		      "MulticastSocket: Cant access socket implementation");
+
+    Enumeration e = netIf.getInetAddresses ();
+
+    if (!e.hasMoreElements ())
+      throw new SocketException ("MulticastSocket: Error");
+
+    InetAddress address = (InetAddress) e.nextElement ();
+    impl.setOption (SocketOptions.IP_MULTICAST_IF, address);
+  }
+
+  /**
+   * Gets the local network interface which is used to send multicast messages
+   *
+   * @return The local network interface to send multicast messages
+   *
+   * @exception SocketException If an error occurs
+   *
+   * @see MulticastSocket:setNetworkInterface
+   * 
+   * @since 1.4
+   */
+  public NetworkInterface getNetworkInterface()
+    throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException (
+		      "MulticastSocket: Cant access socket implementation");
+
+    InetAddress address =
+	    (InetAddress) impl.getOption (SocketOptions.IP_MULTICAST_IF);
+    NetworkInterface netIf = NetworkInterface.getByInetAddress (address);
+
+    return netIf;
+  }
+
+  /**
    * Sets the interface to use for multicast packets.
    *
    * @param addr The new interface to use
@@ -237,6 +289,74 @@ public class MulticastSocket extends DatagramSocket
     impl.leave(mcastaddr);
   }
 
+  /**
+   * Joins the specified mulitcast group on a specified interface.
+   *
+   * @param mcastaddr The multicast address to join
+   * @param netIf The local network interface to receive the multicast
+   * messages on or null to defer the interface set by #setInterface or
+   * #setNetworkInterface
+   * 
+   * @exception IOException If an error occurs
+   * @exception IllegalArgumentException If address type is not supported
+   * @exception SecurityException If a security manager exists and its
+   * checkMulticast method doesn't allow the operation
+   *
+   * @see MulticastSocket:setInterface
+   * @see MulticastSocket:setNetworkInterface
+   *
+   * @since 1.4
+   */
+  public void joinGroup(SocketAddress mcastaddr, NetworkInterface netIf)
+    throws IOException
+  {
+    if (! (mcastaddr instanceof InetSocketAddress))
+      throw new IllegalArgumentException ("SocketAddress type not supported");
+
+    InetSocketAddress tmp = (InetSocketAddress) mcastaddr;
+    
+    if (! tmp.getAddress ().isMulticastAddress ())
+      throw new IOException ("Not a Multicast address");
+
+    SecurityManager s = System.getSecurityManager ();
+    if (s != null)
+      s.checkMulticast (tmp.getAddress ());
+
+    impl.joinGroup (mcastaddr, netIf);
+  }
+  
+  /**
+   * Leaves the specified mulitcast group on a specified interface.
+   *
+   * @param mcastaddr The multicast address to leave
+   * @param netIf The local networki interface or null to defer to the
+   * interface set by setInterface or setNetworkInterface 
+   *
+   * @exception IOException If an error occurs
+   * @exception IllegalArgumentException If address type is not supported
+   * @exception SecurityException If a security manager exists and its
+   * checkMulticast method doesn't allow the operation
+   *
+   * @see MulticastSocket:setInterface
+   * @see MulticastSocket:setNetworkInterface
+   *
+   * @since 1.4
+   */
+  public void leaveGroup(SocketAddress mcastaddr, NetworkInterface netIf)
+    throws IOException
+  {
+    InetSocketAddress tmp = (InetSocketAddress) mcastaddr;
+    
+    if (! tmp.getAddress ().isMulticastAddress ())
+      throw new IOException ("Not a Multicast address");
+
+    SecurityManager s = System.getSecurityManager ();
+    if (s != null)
+      s.checkMulticast (tmp.getAddress ());
+
+    impl.leaveGroup (mcastaddr, netIf);
+  }
+  
   /**
    * Sends a packet of data to a multicast address with a TTL that is
    * different from the default TTL on this socket.  The default TTL for

@@ -244,4 +244,24 @@ class PlainSocketImpl extends SocketImpl
   {
     return(new SocketOutputStream(this));
   }
+
+  public void connect(SocketAddress address, int timeout)
+  {
+    throw new InternalError ("PlainSocketImpl::connect not implemented");
+  }
+
+  public void sendUrgentData(int data)
+  {
+    throw new InternalError ("PlainSocketImpl::sendUrgentData not implemented");
+  }
+
+  public void shutdownInput()
+  {
+    throw new InternalError ("PlainSocketImpl::shutdownInput not implemented");
+  }
+
+  public void shutdownOutput()
+  {
+    throw new InternalError ("PlainSocketImpl::shutdownOutput not implemented");
+  }
 } // class PlainSocketImpl
