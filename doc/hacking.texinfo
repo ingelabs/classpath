@@ -358,64 +358,26 @@ following chapters will give some hints on how to do this.
 @comment node-name, next, previous, up
 @chapter Portability
 
-The ultimate portability goal would be to create:
+The portability goal for Classpath is the following:
 
 @enumerate
 @item
-a binary set for each platform that works across all VMs on that
+native functions for each platform that work across all VMs on that
 platform
 @item
 a single classfile set that work across all VMs on all platforms that
-support the binary set.
+support the native functions.
 @end enumerate
 
-With Java code, this is no problem.  You end up delegating VM- or
-platform-specific stuff to native code anyway.  Unfortunately, it is
-impossible to write native code that works out of the box on multiple
-VMs, even on a given platform.  The APIs Sun has created just do not
-give the flexibility required to do that if you are implementing the
-java.* hierarchy.
+For almost all of Classpath, this is a very feasible goal, using a
+combination of JNI and native interfaces.  This is what you should shoot
+for.  For those few places that require knowledge of the Virtual Machine
+beyond that provided by the Java standards, the VM Interface was designed.
+Read the Virtual Machine Integration Guide for more information.
 
-The native libraries we use in Classpath are JNI, JVMDI, and VMI.  JNI
-you should be familiar with; introduced in Java 1.1, it is the basis for
-our native code.  JVMDI is a 1.2 concoction, and thus we can only
-support it on 1.1 VMs that we have source access to (i.e. Japhar and
-Kaffe).  VMI is our own invention entirely; it is where we push the
-VM-specific functionality that JNI and JVMDI do not support.
-
-However, using JVMDI and VMI in 1.1 breaks the "ideal goal" for the
-project.  With these two in the mix, Classpath's portability becomes:
-
-@enumerate
-@item
-a JVMDI and VMI lib per VM per platform;
-@item
-a binary set for each platform that works across all VM/platform combos
-supporting the JVMDI/VMI;
-@item
-a single classfile set that works across all VM / platform combos that
-support both of the above.
-@end enumerate
-
-When writing, therefore, you should always keep shy of anything
-VM-specific yourself, and talk to the VM using the VMI.  If you need a
-VM-specific function that is not supported by JNI or JVMDI, write a new
-VMI function!
-
-Note that the preferred method is not to use the JVMDI or VMI at
-@emph{all}, but to use only JNI.  If you can write it without the VMI,
-your code will be quicker to port to new VMs.
-
-There is another issue, however, and that is the efficiency issue.  Some
-things can be done using JNI only, but they are a ton slower than they
-would be if you used the VMI or talked directly to the VM.
-
-In these cases, the preferred method in Classpath is to create a
-@emph{library}.  Hide the implementation of the functions from the
-caller.  If the library can be written using only JNI, no matter how
-inefficient, you should write a version of it for that.  Portability,
-remember, is the ultimate goal, and the closer we are to it, the better
-off we are.
+Right now the only supported platform is Linux.  This will change as that
+version stabilizes and we begin the effort to port to many other
+platforms.
 
 @node Robustness, Java Efficiency, Portability, Top
 @comment node-name, next, previous, up
@@ -481,10 +443,9 @@ how small, is important.
 
 You might think that using native methods all over the place would give
 our implementation of Java speed, speed, blinding speed.  You'd be
-thinking wrong.  Would you believe me if I told you that an
+thinking wrong.  Would you believe me if I told you that an empty
 @emph{interpreted} Java method is typically about three and a half times
-@emph{faster} than the equivalent native method?  This is true even for
-a totally blank method.
+@emph{faster} than the equivalent native method?
 
 Bottom line: JNI is overhead incarnate.  In Sun's implementation, even
 the JNI functions you use once you get into Java are slow.
@@ -519,9 +480,9 @@ issue--how to make certain the class reference remains valid.
 
 If you need to associate native C data with your class, use Paul
 Fisher's native_state library (NSA).  It will allow you to get and set
-state fairly efficiently.  Note that there is no built-in mechanism to
-associate C data with instances of a class.  This is a library Paul
-built from scratch.
+state fairly efficiently.  Japhar now supports this library, making
+native state get and set calls as fast as accessing a C variable
+directly.
 
 @node Specification Sources, Naming Conventions, Native Efficiency, Top
 @comment node-name, next, previous, up
