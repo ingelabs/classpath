@@ -1,5 +1,16 @@
 2004-04-15  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/imageio/package.html, javax/imageio/spi/package.html,
+	javax/imageio/stream/package.html: Added boilerplate docs.
+
+	* javax/imageio/Makefile.am, javax/imageio/spi/Makefile.am,
+	javax/imageio/stream/Makefile.am: New files.
+
+	* gnu/classpath/Makefile.am (EXTRA_DIST): Include
+	ServiceFactory.java and ServiceProviderLoadingAction.java.
+
+2004-04-15  Sascha Brawer  <brawer@dandelis.ch>
+
 	* java/awt/image/ComponentColorModel.java
 	(createCompatibleSampleModel): Return PixelInterleavedSampleModel
 	for TYPE_BYTE and TYPE_USHORT transferTypes, in order to pass the

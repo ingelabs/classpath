@@ -2,5 +2,6 @@
 
 EXTRA_DIST = \
 Configuration.java.in \
-RawData.java
-
+RawData.java \
+ServiceFactory.java \
+ServiceProviderLoadingAction.java
