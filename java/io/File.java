@@ -145,10 +145,10 @@ public class File implements Serializable, Comparable
   public boolean canRead ()
   {
     // Test for existence. This also does the SecurityManager check
-    if (!exists())
-      return(false);
+    if (!exists ())
+      return false;
 
-    return(canReadInternal(path));
+    return canReadInternal (path);
   }
 
   /**
@@ -169,9 +169,7 @@ public class File implements Serializable, Comparable
   {
     // We still need to do a SecurityCheck since exists() only checks
     // for read access
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkWrite(path);
+    checkWrite ();
      
     // Test for existence.  This is required by the spec
     if (!exists())
@@ -210,11 +208,7 @@ public class File implements Serializable, Comparable
    */
   public boolean createNewFile() throws IOException
   {
-    SecurityManager s = System.getSecurityManager ();
-    
-    if (s != null)
-      s.checkWrite (path);
-     
+    checkWrite (); 
     return createInternal (getPath ());
   }
  
@@ -285,12 +279,8 @@ public class File implements Serializable, Comparable
    */
   public boolean exists ()
   {
-    // Check the SecurityManager
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkRead(path);
-     
-    return(existsInternal(path));
+    checkRead ();
+    return existsInternal (path);
   }
 
   /**
@@ -539,12 +529,8 @@ public class File implements Serializable, Comparable
    */
   public boolean isDirectory ()
   {
-    SecurityManager s = System.getSecurityManager ();
-    
-    if (s != null)
-      s.checkRead (path);
-
-    return isDirectoryInternal(path); 
+    checkRead ();
+    return isDirectoryInternal (path); 
   }
 
   /**
@@ -559,11 +545,7 @@ public class File implements Serializable, Comparable
    */
   public boolean isFile ()
   {
-    SecurityManager s = System.getSecurityManager ();
-    
-    if (s != null)
-      s.checkRead(path);
-
+    checkRead ();
     return isFileInternal (path);
   }
 
@@ -609,12 +591,8 @@ public class File implements Serializable, Comparable
    */
   public long lastModified ()
   {
-    SecurityManager s = System.getSecurityManager ();
-    
-    if (s != null)
-      s.checkRead (path);
-
-    return lastModifiedInternal(path);
+    checkRead ();
+    return lastModifiedInternal (path);
   }
 
   /*
@@ -633,11 +611,8 @@ public class File implements Serializable, Comparable
    */
   public long length ()
   {
-    SecurityManager s = System.getSecurityManager ();
-    if (s != null)
-      s.checkRead (path);
-
-    return lengthInternal(path);
+    checkRead ();
+    return lengthInternal (path);
   }
 
   /*
@@ -675,10 +650,7 @@ public class File implements Serializable, Comparable
    */
   public String[] list (FilenameFilter filter)
   {
-    // Check the SecurityManager
-    SecurityManager s = System.getSecurityManager ();
-    if (s != null)
-      s.checkRead (path);
+    checkRead ();
 
     // Get the list of files
     String list_path = PlatformHelper.removeTailSeparator(path);
@@ -691,7 +663,7 @@ public class File implements Serializable, Comparable
     if (files == null)
       return new String[0];
     if (filter == null)
-      return(files);
+      return files;
     
     // Apply the filter
     int count = 0;
@@ -709,7 +681,7 @@ public class File implements Serializable, Comparable
       if (files[i] != null)
         retfiles[count++] = files[i];
 
-    return(retfiles);
+    return retfiles;
   }
 
   /**
@@ -899,15 +871,9 @@ public class File implements Serializable, Comparable
    */
   public boolean mkdir ()
   {
-    // Check the SecurityManager
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkWrite(path);
-
-    String mk_path;
-    mk_path = PlatformHelper.removeTailSeparator(path);
-    
-    return(mkdirInternal(mk_path));
+    checkWrite ();
+    String mk_path = PlatformHelper.removeTailSeparator (path);
+    return mkdirInternal (mk_path);
   }
 
   /**
@@ -1046,16 +1012,13 @@ public class File implements Serializable, Comparable
   public boolean setReadOnly ()
   {
     // Test for existence.
-    if (!exists())
-      return(false);
+    if (!exists ())
+      return false;
 
     // We still need to do a SecurityCheck since exists() only checks
     // for read access
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkWrite(path);
-     
-    return setReadOnlyInternal(path);
+    checkWrite ();
+    return setReadOnlyInternal (path);
   }
 
   /**
@@ -1193,16 +1156,9 @@ public class File implements Serializable, Comparable
    */
   public synchronized boolean renameTo (File dest)
   {
-    // Check the SecurityManager
-    SecurityManager s = System.getSecurityManager ();
-    
-    if (s != null)
-      s.checkWrite (path);
-
+    checkWrite ();
     // Call our native rename method
-    boolean rc = renameToInternal(path, dest.getPath());
-
-    return rc;
+    return renameToInternal (path, dest.getPath ());
   }
 
   /*
@@ -1231,12 +1187,26 @@ public class File implements Serializable, Comparable
     if (time < 0)
       throw new IllegalArgumentException("Negative modification time: " + time);
 
+    checkWrite ();
+    return setLastModifiedInternal (path, time);
+  }
+
+  private void checkWrite ()
+  {
     // Check the SecurityManager
     SecurityManager s = System.getSecurityManager ();
+    
     if (s != null)
       s.checkWrite (path);
+  }
+
+  private void checkRead ()
+  {
+    // Check the SecurityManager
+    SecurityManager s = System.getSecurityManager ();
     
-    return setLastModifiedInternal (path, time);
+    if (s != null)
+      s.checkRead (path);
   }
 
   /**
@@ -1260,6 +1230,25 @@ public class File implements Serializable, Comparable
     // parameters without the user's knowledge.
     // FIXME: ********IMPLEMENT ME!!!!!!***************
     return;
+  }
+
+  private void writeObject (ObjectOutputStream oos) throws IOException
+  {
+    oos.defaultWriteObject ();
+    oos.writeChar (separatorChar);
+  }
+
+  private void readObject (ObjectInputStream ois)
+    throws ClassNotFoundException, IOException
+  {
+    ois.defaultReadObject ();
+
+    // If the file was from an OS with a different dir separator,
+    // fixup the path to use the separator on this OS.
+    char oldSeparatorChar = ois.readChar ();
+    
+    if (oldSeparatorChar != separatorChar)
+      path = path.replace (oldSeparatorChar, separatorChar);
   }
 } // class File
 

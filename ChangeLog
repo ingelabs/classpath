@@ -1,5 +1,22 @@
 2003-05-06  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/File.java
+	(checkWrite): New method (from libgcj).
+	(checkRead): Likewise.
+	(writeObject): Likewise.
+	(readObject): Likewise.
+	(canRead): Replaced SecurityManager code with checkRead() call.
+	(exists): Likewise.
+	(isDirectory): Likewise.
+	(isFile): Likewise.
+	(lastModified): Likewise.
+	(length): Likewise.
+	(canWrite): Replaced SecurityManager code with checkWrite() call.
+	(mkdir): Likewise.
+	(renameTo): Likewise.
+
+2003-05-06  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/DataOutputStream.java
 	(write): Renamed argument to "value", merged documentation with
 	libgcj.
