@@ -1,3 +1,7 @@
+2005-04-01  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/AssertionError.java: Typo fix.
+
 2005-04-01  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/PipedInputStream.java
