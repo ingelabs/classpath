@@ -325,6 +325,7 @@ resource/java/Makefile
 resource/java/util/Makefile
 resource/java/security/Makefile
 lib/Makefile
-lib/gen-classlist.sh])
+lib/gen-classlist.sh
+examples/Makefile])
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])
 AC_OUTPUT

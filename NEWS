@@ -12,6 +12,7 @@ New in release 0.11 (not released yet)
 * java.awt.image LookupTables and kernel support.
 * Improved java.awt.image.BufferedImage support.
 * AWT 1.0 event model support.
+* GNU Classpath now comes with some example programs (see examples/README).
 
 New in release 0.10 (Jul 9, 2004)
 

@@ -1,3 +1,17 @@
+2004-08-01  Mark Wielaard  <mark@klomp.org>
+
+	* NEWS: Mention new examples.
+	* Makefile.am (SUBDIRS): Add examples directory.
+	* configure.ac (AC_CONFIG_FILES): Add examples/Makefile.
+	* lib/standard.omit: Remove TestAWT.java and Test.java
+	* gnu/java/awt/peer/gtk/TestAWT.java: Removed.
+	* gnu/java/awt/peer/gtk/Test.java: Removed.
+	* examples/README: New file.
+	* examples/Makefile.am: New file.
+	* examples/gnu/classpath/examples/icons/*.png: New icon resources.
+	* examples/gnu/classpath/examples/awt/Demo.java: New class.
+	* examples/gnu/classpath/examples/swing/Demo.java: New class.
+
 2004-08-01  Michael Koch  <konqueror@gmx.de>
 
 	* native/jni/gtk-peer/Makefile.am
