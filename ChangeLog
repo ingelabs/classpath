@@ -1,5 +1,9 @@
 2005-02-12  Graydon Hoare  <graydon@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GdkGraphicsConfiguration.java: Add.
+
+2005-02-12  Graydon Hoare  <graydon@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GdkFontPeer.java
 	(getGlyphVector):
 	(getFontMetrics):
