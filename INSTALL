@@ -1,3 +1,11 @@
+Before installing, note that only Japhar 0.07 or later is supported.
+Currently only Japhar 0.06 is in distribution which means you will need
+the latest and greatest Japhar from CVS in order for Classpath to
+work.  (This will only be needed until the next Japhar development
+release).  If you don't have the current Japhar from CVS, Classpath
+won't work.  See http://www.japhar.org/ for details on anonymous CVS
+access to the Japhar sources.
+
 This package was designed to use the GNU standard for configuration
 and makefiles.  To build and install do the following:
 
