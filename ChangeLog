@@ -1,5 +1,25 @@
 2003-01-19  Mark Wielaard  <mark@klomp.org>
 
+	* java/io/ObjectOutputStream.java (writeObject): Reformat.
+	(annotateClass): Likewise.
+	(annotateProxyClass): Likewise.
+	(write): Likewise.
+	* (callWriteMethod): No longer native.
+	* (getBooleanField): Likewise.
+	* (getByte): Likewise.
+	* (getCharField): Likewise.
+	* (getDoubleField): Likewise.
+	* (getFloatField): Likewise.
+	* (getIntField): Likewise.
+	* (getLongField): Likewise.
+	* (getShortField): Likewise.
+	* (getObjectField): Likewise.
+	* native/jni/java-io/java_io_ObjectOutputStream.c: Removed.
+	* native/jni/java-io/Makefile.am (libjavaio_la_SOURCES): Remove
+	java_io_ObjectOutputStream.c.
+
+2003-01-19  Mark Wielaard  <mark@klomp.org>
+
 	* java/io/ObjectInputStream.java (ObjectInputStream): Set dump flag
 	according to System property.
 	(resolveObject): Moved to allign with libgcj version.
