@@ -42,7 +42,6 @@ grep -v /javax/ classes | grep -v /awt/ \
 			| grep -v /xml/ > classes.standard
 grep /awt/ classes > classes.awt
 grep /beans/ classes >> classes.awt
-grep /locale/ classes | grep _[j-z][a-z].java > classes.locale1
-grep /locale/ classes | grep -v _[j-z][a-z].java > classes.locale2
+grep /locale/ classes > classes.locale
 grep /xml/ classes > classes.xml
 grep /javax/ classes | grep -v /xml/ > classes.standardx

@@ -1,3 +1,11 @@
+2005-01-05  Mark Wielaard  <mark@klomp.org>
+
+	* lib/gen-classlist.sh.in: Don't split locales in classes.locale1
+	and classes.locale2.
+	* lib/Makefile.am (JAVAC): Compile only classes.locale.
+	(CLEANFILES): Remove classes.locale1 and classes.locale2,
+	add classes.locale.
+
 2005-01-05  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/zip/ZipEntry.java (setCompressedSize): Allow any
