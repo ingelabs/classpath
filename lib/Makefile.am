@@ -16,7 +16,7 @@ FIND = @FIND@
 propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -type d ! -name CVS -print)
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -name \*\.properties -print)
 
-compile_classpath = $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB)
+compile_classpath = $(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:.:$(USER_CLASSLIB)
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_GCJ
@@ -24,6 +24,7 @@ JAVAC = $(GCJ) --bootclasspath '' --classpath $(compile_classpath) -C -d . @clas
 && $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.awt \
 && $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.locale1 \
 && $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.locale2 \
+&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.xml \
 && $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.standardx
 else
 if FOUND_JIKES
@@ -97,7 +98,7 @@ compile-classes: classes $(JAVA_SRCS) Makefile
 
 EXTRA_DIST = standard.omit mkcollections.pl.in
 CLEANFILES = compile-classes resources classes \
-	classes.standard classes.awt classes.standardx \
+	classes.standard classes.awt classes.standardx classes.xml \
 	classes.locale1 classes.locale2 glibj.zip classes.1 \
 	$(top_builddir)/java/util/LocaleData.java \
 	$(JAVA_DEPEND)

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="**/Demo.java|**/SliderTest.java|**/Test.java|**/TestAWT.java|compat/|external/jaxp/source/|external/jaxp/tests/|gnu/javax/swing/|test/|testsuite/|vm/reference/" kind="src" path=""/>
+	<classpathentry excluding="compat/|examples/|external/|gnu/javax/swing/|test/|testsuite/|vm/reference/" kind="src" path=""/>
 	<classpathentry kind="src" path="vm/reference"/>
+	<classpathentry kind="src" path="external/sax"/>
+	<classpathentry kind="src" path="external/w3c_dom"/>
+	<classpathentry kind="src" path="examples"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

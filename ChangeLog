@@ -1,5 +1,25 @@
 2004-12-23  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/xml/*: Imported from GNU JAXP.
+	* javax/xml/*: Likewise.
+	* external/*: Imported external sax and w3c_dom projects.
+	* LICENSE: Add new copyright and distribution notices.
+	* Makefile.am (SUBDirs): Add external.
+	(DIST_SUBDIRS): Likewise.
+	* configure.ac (AC_CONFIG_FILES): Add external/Makefile,
+	external/sax/Makefile and external/w3c_dom/Makefile.
+	* lib/gen-classlist.sh.in (FIND): Search in external/sax and
+	external/w3c_dom. 
+	(Split): Add new classes.xml for gcj.
+	* lib/Makefile.am (compile_classpath): Add external/sax and
+	external/w3c_dom.
+	(FOUND_GCJ): Compile classes.xml.
+	* lib/.cvsignore: Add classes.xml.
+	* .classpath: Updated exclusion filter and add external projects plus
+	examples.
+
+2004-12-23  Mark Wielaard  <mark@klomp.org>
+
 	* lib/Makefile.am (compile_classpath): New variable.
 	Use when compiling with either jikes or gcj.
 	(LocaleData.java): New rules.
