@@ -1,5 +1,5 @@
 /* StringBuffer.java -- Growable strings
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -73,7 +73,7 @@ import java.io.Serializable;
  * @author Tom Tromey
  * @see java.lang.String
  */
-public final class StringBuffer implements Serializable
+public final class StringBuffer implements Serializable, CharSequence
 {
   /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
    *  Uses <code>String.valueOf()</code> to convert to
@@ -217,7 +217,7 @@ public final class StringBuffer implements Serializable
    *  @param index the index of the character to get, starting at 0.
    *  @return the character at the specified index.
    *  @exception IndexOutOfBoundsException if the desired character index
-   *             is not between 0 and length() - 1 (inclusive).
+   *             is negative or greater then length() - 1.
    */
   public synchronized char charAt (int index)
   {
@@ -671,6 +671,28 @@ public final class StringBuffer implements Serializable
     // enable sharing here.
     return new String (value, beginIndex, endIndex - beginIndex);
   }
+
+  /**
+   * Creates a substring of this StringBuffer, starting at a specified index
+   * and ending at one character before a specified index.
+   * <p>
+   * To implement <code>CharSequence</code>.
+   * Calls <code>substring(beginIndex, endIndex)</code>.
+   *
+   * @param beginIndex index to start substring (base 0)
+   * @param endIndex index after the last character to be 
+   *   copied into the substring
+   * 
+   * @return new String which is a substring of this StringBuffer
+   *
+   * @exception StringIndexOutOfBoundsException 
+   *   if (beginIndex < 0 || endIndex > this.length() || beginIndex > endIndex)
+   */
+  public CharSequence subSequence (int beginIndex, int endIndex) 
+  {
+    return substring(beginIndex, endIndex);
+  }
+
 
   /** Convert this <code>StringBuffer</code> to a <code>String</code>.
    *  @return the characters in this StringBuffer

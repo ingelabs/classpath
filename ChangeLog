@@ -1,4 +1,12 @@
 2001-07-10  Mark Wielaard <mark@klomp.org>
+	* java/lang/CharSequence.java: new 1.4 interface
+	* java/lang/String.java: implements Serializable, CharSequence
+	(contentEquals StringBuffer): new 1.4 method
+	(subSequence): new 1.4 method needed for CharSequence
+	* java/lang/StringBuffer.java: implements CharSequence
+	(subSequence): new 1.4 method needed for CharSequence
+
+2001-07-10  Mark Wielaard <mark@klomp.org>
 	* java/lang/Boolean.java (valueOf boolean): new 1.4 method
 	(toString boolean): idem
 	(valueOf String): return one of the predefined Boolean instances

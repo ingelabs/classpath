@@ -40,7 +40,7 @@ import java.io.*;
  * @author Paul N. Fisher
  * @since JDK1.0
  */
-public final class String implements Comparable {
+public final class String implements Comparable, CharSequence, Serializable {
   /**
    * Holds the references for each intern()'d String.
    * Once a String has been intern()'d it cannot be GC'd.
@@ -351,6 +351,22 @@ public final class String implements Comparable {
     if (count != str2.count) return false;
     for (int i = 0; i < count; i++)
       if (value[i] != str2.value[i]) return false;
+    return true;
+  }
+
+  /**
+   * Compares the given StringBuffer to this String.
+   *
+   * @return true if the given StringBuffer has the same character
+   * sequence as this String, else false
+   * @exception NullPointerException if the given StringBuffer is null
+   *
+   * @since 1.4
+   */
+  public boolean contentEquals(StringBuffer buffer) {
+    if (count != buffer.count) return false;
+    for (int i = 0; i < count; i++)
+      if (value[i] != buffer.value[i]) return false;
     return true;
   }
 
@@ -846,6 +862,27 @@ Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i])
     char[] newStr = new char[endIndex-beginIndex];
     System.arraycopy(value, beginIndex, newStr, 0, endIndex-beginIndex);
     return new String(newStr);
+  }
+
+  /**
+   * Creates a substring of this String, starting at a specified index
+   * and ending at one character before a specified index.
+   * <p>
+   * To implement <code>CharSequence</code>.
+   * Calls <code>substring(beginIndex, endIndex)</code>.
+   *
+   * @param beginIndex index to start substring (base 0)
+   * @param endIndex index after the last character to be 
+   *   copied into the substring
+   * 
+   * @return new String which is a substring of this String
+   *
+   * @exception StringIndexOutOfBoundsException 
+   *   if (beginIndex < 0 || endIndex > this.length() || beginIndex > endIndex)
+   */
+  public CharSequence subSequence(int beginIndex, int endIndex) 
+       throws IndexOutOfBoundsException {
+    return substring(beginIndex, endIndex);
   }
 
   /**
