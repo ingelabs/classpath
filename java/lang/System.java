@@ -212,7 +212,7 @@ public final class System
    * you, however.
    */
   public static final PrintStream out
-    = new PrintStream(new BufferedOutputStream (new FileOutputStream(FileDescriptor.out)));
+    = new PrintStream(new BufferedOutputStream (new FileOutputStream(FileDescriptor.out)), true);
   /**
    * The standard output PrintStream.  This is assigned at startup and
    * starts its life perfectly valid. Although it is marked final, you can
@@ -224,7 +224,7 @@ public final class System
    * you, however.
    */
   public static final PrintStream err
-    = new PrintStream(new BufferedOutputStream (new FileOutputStream(FileDescriptor.err)));
+    = new PrintStream(new BufferedOutputStream (new FileOutputStream(FileDescriptor.err)), true);
 
   /**
    * This class is uninstantiable.
