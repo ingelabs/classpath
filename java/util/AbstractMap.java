@@ -215,17 +215,19 @@ public abstract class AbstractMap implements Map {
 
   public String toString()
   {
-    Map.Entry entry;
-    String rep = "AbstractMap< ";
+    StringBuffer sb = new StringBuffer("{");
+    String comma = "";
     Iterator entries = entrySet().iterator();
   
     while( entries.hasNext() )
     {
-      entry = (Map.Entry)entries.next();
-      rep += entry.getKey() + " -> " + entry.getValue() + ", ";
+      Map.Entry entry = (Map.Entry)entries.next();
+      sb.append(comma).append(entry.getKey())
+	.append('=').append(entry.getValue());
+      comma = ", ";
     }
 
-    return rep.substring( 0, rep.length() - 2 ) + " >";
+    return sb.append('}').toString();
   }
 
   public Collection values()

@@ -52,8 +52,8 @@ import java.io.ObjectStreamField;
  * does not support "Enumeration views."
  *
  * @author         Jon Zeppieri
- * @version        $Revision: 1.4 $
- * @modified       $Id: HashMap.java,v 1.4 2000-03-03 13:01:09 jochen Exp $
+ * @version        $Revision: 1.5 $
+ * @modified       $Id: HashMap.java,v 1.5 2000-03-05 18:49:58 jochen Exp $
  */
 public class HashMap extends AbstractMap 
     implements Map, Cloneable, Serializable
@@ -296,25 +296,6 @@ public class HashMap extends AbstractMap
     }
 
     /**
-     * part of the Map interface; for each Map.Entry in t, the key / value pair is
-     * added to this Map, <b>using the <pre>put()</pre> method -- this may not be
-     * you want, so be warned (if you override the put() method, this could lead to
-     * off behavior)</b>
-     *
-     * @param    t       a Map whose key / value pairs will be added to this Hashtable
-     */
-    public void putAll(Map t)
-    {
-	Map.Entry entry;
-	Iterator it = t.entrySet().iterator();
-	while (it.hasNext())
-	    {
-		entry = (Map.Entry) it.next();
-		put(entry.getKey(), entry.getValue());
-	    }
-    }
-
-    /**
      * removes from the HashMap and returns the value which is mapped by the 
      * supplied key; if the key maps to nothing, then the HashMap remains unchanged,
      * and <pre>null</pre> is returned
@@ -548,8 +529,8 @@ public class HashMap extends AbstractMap
      * overriding a number of them.  And so I did.
      *
      * @author      Jon Zeppieri
-     * @version     $Revision: 1.4 $
-     * @modified    $Id: HashMap.java,v 1.4 2000-03-03 13:01:09 jochen Exp $
+     * @version     $Revision: 1.5 $
+     * @modified    $Id: HashMap.java,v 1.5 2000-03-05 18:49:58 jochen Exp $
      */
     private class HashMapSet extends AbstractSet
 	implements Set
@@ -648,8 +629,8 @@ public class HashMap extends AbstractMap
      * in the HashMap
      *
      * @author       Jon Zeppieri
-     * @version      $Revision: 1.4 $
-     * @modified     $Id: HashMap.java,v 1.4 2000-03-03 13:01:09 jochen Exp $
+     * @version      $Revision: 1.5 $
+     * @modified     $Id: HashMap.java,v 1.5 2000-03-05 18:49:58 jochen Exp $
      */
     private class HashMapCollection extends AbstractCollection
 	implements Collection
@@ -725,8 +706,8 @@ public class HashMap extends AbstractMap
      * as per the Javasoft spec.
      *
      * @author       Jon Zeppieri
-     * @version      $Revision: 1.4 $
-     * @modified     $Id: HashMap.java,v 1.4 2000-03-03 13:01:09 jochen Exp $
+     * @version      $Revision: 1.5 $
+     * @modified     $Id: HashMap.java,v 1.5 2000-03-05 18:49:58 jochen Exp $
      */
     class HashMapIterator implements Iterator
     {
@@ -819,6 +800,7 @@ public class HashMap extends AbstractMap
 		{
 		    HashMap.this.remove(currentKey);
 		    knownMods++;
+		    position--;
 		    currentKey = null;
 		}
 	}
@@ -829,8 +811,8 @@ public class HashMap extends AbstractMap
      * is used to represent the null key in HashMap objects
      *
      * @author     Jon Zeppieri
-     * @version    $Revision: 1.4 $
-     * @modified   $Id: HashMap.java,v 1.4 2000-03-03 13:01:09 jochen Exp $
+     * @version    $Revision: 1.5 $
+     * @modified   $Id: HashMap.java,v 1.5 2000-03-05 18:49:58 jochen Exp $
      */
     private static class Null
     {
@@ -848,8 +830,8 @@ public class HashMap extends AbstractMap
      * Simply, a key / value pair
      *
      * @author      Jon Zeppieri
-     * @version     $Revision: 1.4 $
-     * @modified    $Id: HashMap.java,v 1.4 2000-03-03 13:01:09 jochen Exp $
+     * @version     $Revision: 1.5 $
+     * @modified    $Id: HashMap.java,v 1.5 2000-03-05 18:49:58 jochen Exp $
      */
     private static class HashMapEntry extends Bucket.Node implements Map.Entry
     {

@@ -205,7 +205,7 @@ public class WeakHashMap extends AbstractMap implements Map
 
 	      while (true)
 		{
-		  do
+		  while (nextBucket != null)
 		    {
 		      WeakBucket.Entry entry = nextBucket.getEntry();
 		      if (entry != null)
@@ -215,18 +215,13 @@ public class WeakHashMap extends AbstractMap implements Map
 		      /* entry was cleared, try next */
 		      nextBucket = nextBucket.next;
 		    }
-		  while (nextBucket != null);
 
-		  do
-		    {
-		      slot++;
-		      if (slot == buckets.length)
-			/* No more buckets, we are through */
-			return null;
-
-		      nextBucket = buckets[slot];
-		    }
-		  while (nextBucket == null);
+		  slot++;
+		  if (slot == buckets.length)
+		    /* No more buckets, we are through */
+		    return null;
+		  
+		  nextBucket = buckets[slot];
 		}
 	    }
 		      
