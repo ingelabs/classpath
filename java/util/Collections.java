@@ -595,7 +595,7 @@ public class Collections
    * of this method is Serializable.
    *
    * @param o the single element.
-   * @returns an immutable Set containing only o.
+   * @return an immutable Set containing only o.
    */
   // It's not serializable because the spec is broken.
   public static Set singleton(final Object o)
@@ -645,7 +645,7 @@ public class Collections
    * of this method is Serializable.
    *
    * @param o the single element.
-   * @returns an immutable List containing only o.
+   * @return an immutable List containing only o.
    */
   // It's not serializable because the spec is broken.
   public static List singletonList(final Object o)
@@ -677,7 +677,7 @@ public class Collections
    *
    * @param key the single key.
    * @param value the single value.
-   * @returns an immutable Map containing only the single key value pair.
+   * @return an immutable Map containing only the single key value pair.
    */
   // It's not serializable because the spec is broken.
   public static Map singletonMap(final Object key, final Object value)
@@ -686,7 +686,7 @@ public class Collections
     {
       public Set entrySet()
       {
-	return singleton(new HashMap.Entry(key, value));
+	return singleton(new BasicMapEntry(key, value));
       }
     };
   }

@@ -1,3 +1,13 @@
+2001-09-20  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/Makefile.am: Added LinkedHashMap.java.
+	* java/util/LinkedHashMap.java: Added new file.
+	* java/util/Collections.java (singletonMap): Fix constructor call.
+	* java/util/Hashtable.java: Fix up some efficiency issues pointed
+	out by others.
+	* java/util/HashMap.java: Fix up some efficiency issues, and redo
+	the documentation. Add hooks for LinkedHashMap to use.
+
 2001-09-18  John Leuner  <jewel@debian.org>
 
 	* java/util/zip/*.java: Changed headers of files imported from 

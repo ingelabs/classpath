@@ -31,6 +31,7 @@ HashSet.java \
 Hashtable.java \
 IdentityHashMap.java \
 Iterator.java \
+LinkedHashMap.java \
 LinkedList.java \
 List.java \
 ListIterator.java \
