@@ -1,3 +1,8 @@
+2004-01-30  Tom Tromey  <tromey@redhat.com>
+
+	* doc/hacking.texinfo (Programming Standards): Added more
+	guidelines.
+
 2004-01-30  Michael Koch  <konqueror@gmx.de>
 
 	* java/util/logging/Makefile.am: Include logging.properties in dist

@@ -386,15 +386,35 @@ else
 @end example
 
 @item
-Don't use redundant modifiers.  For instance, all members of an
-interface are implicitly @code{public}, so there is no need to
-explicitly declare them as @code{public}.
+Don't use redundant modifiers.  Here is some sample code that shows
+redundant modifiers in comments:
+
+@example
+/*abstract*/ interface I {
+   /*public abstract*/ void m();
+   /*public static final*/ int i = 1;
+   /*public static*/ class Inner {}
+}
+final class C {
+   /*final*/ void m() {}
+}
+@end example
+
+Note that Jikes will generate warnings for these if you use
+@code{+Predundant-modifiers} on the command line.
+
+@item
+Modifiers should be listed in the standard order recommended by the
+JLS.  Jikes will warn for this when given @code{+Pmodifier-order}.
 
 @item
 Because the output of different compilers differs, we have
 standardized on explicitly specifying @code{serialVersionUID} in
 @code{Serializable} classes in Classpath.  This field should be
-declared as @code{private static final}.
+declared as @code{private static final}.  Note that a class may be
+@code{Serializable} without being explicitly marked as such, due to
+inheritance.  For instance, all subclasses of @code{Throwable} need to
+have @code{serialVersionUID} declared.
 @c fixme index
 @c fixme link to the discussion
 
@@ -402,6 +422,10 @@ declared as @code{private static final}.
 Don't declare unchecked exceptions in the @code{throws} clause of a
 method.  However, if throwing an unchecked exception is part of the
 method's API, you should mention it in the Javadoc.
+
+@item
+When overriding @code{Object.equals}, remember that @code{instanceof}
+filters out @code{null}, so an explicit check is not needed.
 
 @end itemize
 
