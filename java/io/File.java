@@ -180,7 +180,7 @@ public class File implements Serializable, Comparable
     else
       try
         {
-  	  File test = createTempFile ("test-dir-write", null, this);
+  	  File test = createTempFile ("tst", null, this);
   	  return (test != null && test.delete ());
         }
       catch (IOException ioe)
@@ -963,19 +963,23 @@ public class File implements Serializable, Comparable
 
     // Now process the prefix and suffix.
     if (prefix.length () < 3)
-      throw new IllegalArgumentException ("Prefix too short: " + prefix);
+      throw new IllegalArgumentException ("Prefix too short: " + prefix + "(valid length 3..7)");
+    if (prefix.length() >= 8)
+      throw new IllegalArgumentException("Prefix too long: " + prefix + "(valid length 3..7)");
 
     if (suffix == null)
       suffix = ".tmp";
 
-    // Now identify a file name and make sure it doesn't exist
+    // Now identify a file name and make sure it doesn't exist (limit the name to 8 for DOS-compatibility)
     File f;
+    int  mask = (int)(0x000000ffffFFFFL >> (long)(prefix.length() * 4));
     for(;;)
       {
-        String filename = prefix + System.currentTimeMillis () + suffix;
-        f = new File (directory, filename);
+        int n = (int)(System.currentTimeMillis() & mask);
+        String filename = prefix + java.lang.Integer.toHexString(n) + suffix;
+        f = new File(directory, filename);
 
-        if (f.exists ())
+        if (f.exists())
           continue;
         else
           break;
