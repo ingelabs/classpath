@@ -48,6 +48,7 @@ import java.util.Hashtable;
 
 import gnu.java.io.ObjectIdentityWrapper;
 import gnu.java.lang.reflect.TypeSignature;
+import gnu.java.security.action.SetAccessibleAction;
 import gnu.classpath.Configuration;
 
 /**
@@ -1514,20 +1515,14 @@ public class ObjectOutputStream extends OutputStream
       }    
   }
 
-  private static Field getField (Class klass, String name)
+  private Field getField (Class klass, String name)
     throws java.io.InvalidClassException
   {
     try
       {
 	final Field f = klass.getDeclaredField(name);
-	AccessController.doPrivileged(new PrivilegedAction()
-	  {
-	    public Object run()
-	    {
-	      f.setAccessible(true);
-	      return null;
-	    }
-	  });
+	setAccessible.setMember(f);
+	AccessController.doPrivileged(setAccessible);
 	return f;
       }
     catch (java.lang.NoSuchFieldException e)
@@ -1537,18 +1532,12 @@ public class ObjectOutputStream extends OutputStream
       }
   }
 
-  private static Method getMethod (Class klass, String name, Class[] args)
+  private Method getMethod (Class klass, String name, Class[] args)
     throws java.lang.NoSuchMethodException
   {
     final Method m = klass.getDeclaredMethod(name, args);
-    AccessController.doPrivileged(new PrivilegedAction()
-      {
-	public Object run()
-	{
-	  m.setAccessible(true);
-	  return null;
-	}
-      });
+    setAccessible.setMember(m);
+    AccessController.doPrivileged(setAccessible);
     return m;
   }
 
@@ -1581,6 +1570,7 @@ public class ObjectOutputStream extends OutputStream
   private Hashtable OIDLookupTable;
   private int protocolVersion;
   private boolean useSubclassMethod;
+  private SetAccessibleAction setAccessible = new SetAccessibleAction();
 
   // The nesting depth for debugging output
   private int depth = 0;
