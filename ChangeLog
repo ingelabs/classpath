@@ -1,3 +1,12 @@
+2002-09-23  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/ResourceBundle.java (tryBundle): Cache `null' if we
+	didn't find a given bundle.
+	(getBundle): Don't require base bundle.
+	(setParent): Removed old comment.
+	(tryLocalBundle): Try components even if preceding components were
+	empty.
+
 2002-09-22  C. Brian Jones <cbj@gnu.org>
 
 	* doc/www.gnu.org/home.wml: remove old task list, refer to Savannah instead.
