@@ -1,3 +1,8 @@
+2003-04-23  Torsten Rupp  <rupp@homer.aicas.com>
+
+        * /cvsroot/classpath/classpath/java/net/InetAddress.java:
+        Fixed parsing of IP numbers in getByName if sub-numbers are >127
+
 2003-04-21  Tom Tromey  <tromey@redhat.com>
 
 	* include/java_io_FileDescriptor.h: Rebuilt.

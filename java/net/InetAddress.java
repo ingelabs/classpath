@@ -340,15 +340,17 @@ public class InetAddress implements Serializable
     StringTokenizer st = new StringTokenizer (hostname, ".");
     if (st.countTokens () == 4)
       {
-        int i;
+        int    i;
+        short  n;
         byte[] ip = new byte[4];
         for (i = 0; i < 4; i++)
           {
             try
               {
-                ip[i] = Byte.parseByte (st.nextToken ());
-                if ((ip[i] < 0) || (ip[1] > 255))
+                n = Short.parseShort(st.nextToken());
+                if ((n < 0) || (n > 255))
                   break;
+                ip[i] = (byte) n;
               }
             catch (NumberFormatException e)
               {
