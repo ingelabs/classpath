@@ -17,7 +17,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRect (JNIEnv 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyArea (JNIEnv *env, jobject, jint, jint, jint, jint, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_dispose (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyPixmap (JNIEnv *env, jobject, jobject, jint, jint, jint, jint);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyAndScalePixmap(JNIEnv *env, jobject, jobject, jboolean, jboolean, jint, jint, jint, jint, jint, jint, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyAndScalePixmap (JNIEnv *env, jobject, jobject, jboolean, jboolean, jint, jint, jint, jint, jint, jint, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawLine (JNIEnv *env, jobject, jint, jint, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawArc (JNIEnv *env, jobject, jint, jint, jint, jint, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_fillArc (JNIEnv *env, jobject, jint, jint, jint, jint, jint, jint);

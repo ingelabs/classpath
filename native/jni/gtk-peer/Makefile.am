@@ -1,10 +1,21 @@
 pkglib_LTLIBRARIES = libgtkpeer.la
 
-libgtkpeer_la_SOURCES = \
+# Gtk/Cairo JNI sources.
+if GTK_CAIRO
+  gtk_cairo_c_source_files = \
+    gnu_java_awt_peer_gtk_GdkClasspathFontPeer.c \
+    gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c \
+    gnu_java_awt_peer_gtk_GdkGlyphVector.c \
+    gnu_java_awt_peer_gtk_GdkGraphics2D.c
+else
+  gtk_cairo_c_source_files =
+endif
+
+libgtkpeer_la_SOURCES = $(gtk_cairo_c_source_files) \
+			gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c \
 			gnu_java_awt_peer_gtk_GdkFontMetrics.c \
 			gnu_java_awt_peer_gtk_GdkGraphics.c \
 			gnu_java_awt_peer_gtk_GdkPixbufDecoder.c \
-			gnu_java_awt_peer_gtk_GtkFileDialogPeer.c \
 			gnu_java_awt_peer_gtk_GtkButtonPeer.c \
 			gnu_java_awt_peer_gtk_GtkCanvasPeer.c \
 			gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c \
@@ -13,15 +24,16 @@ libgtkpeer_la_SOURCES = \
 			gnu_java_awt_peer_gtk_GtkChoicePeer.c \
 			gnu_java_awt_peer_gtk_GtkClipboard.c \
 			gnu_java_awt_peer_gtk_GtkComponentPeer.c \
-			gnu_java_awt_peer_gtk_GtkEvents.c \
 			gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.c \
-			gnu_java_awt_peer_gtk_GtkGenericPeer.c	\
+			gnu_java_awt_peer_gtk_GtkEvents.c \
+			gnu_java_awt_peer_gtk_GtkFileDialogPeer.c \
+			gnu_java_awt_peer_gtk_GtkGenericPeer.c \
 			gnu_java_awt_peer_gtk_GtkImagePainter.c \
 			gnu_java_awt_peer_gtk_GtkLabelPeer.c \
-			gnu_java_awt_peer_gtk_GtkListPeer.c	\
+			gnu_java_awt_peer_gtk_GtkListPeer.c \
 			gnu_java_awt_peer_gtk_GtkMainThread.c \
 			gnu_java_awt_peer_gtk_GtkMenuBarPeer.c \
-                        gnu_java_awt_peer_gtk_GtkMenuComponentPeer.c \
+			gnu_java_awt_peer_gtk_GtkMenuComponentPeer.c \
 			gnu_java_awt_peer_gtk_GtkMenuItemPeer.c \
 			gnu_java_awt_peer_gtk_GtkMenuPeer.c \
 			gnu_java_awt_peer_gtk_GtkPanelPeer.c \
@@ -33,11 +45,14 @@ libgtkpeer_la_SOURCES = \
 			gnu_java_awt_peer_gtk_GtkTextFieldPeer.c \
 			gnu_java_awt_peer_gtk_GtkToolkit.c \
 			gnu_java_awt_peer_gtk_GtkWindowPeer.c \
-			gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c \
 			gthread-jni.c \
+			gdkfont.h \
 			gthread-jni.h \
-			gtkpeer.h 
+			gtkcairopeer.h \
+			gtkpeer.h
 
-libgtkpeer_la_CPPFLAGS = $(AM_CPPFLAGS) @GTK_CFLAGS@
+libgtkpeer_la_CPPFLAGS = $(AM_CPPFLAGS) @GTK_CFLAGS@ \
+                         @CAIRO_CFLAGS@ @PANGOFT2_CFLAGS@
 libgtkpeer_la_LIBADD = $(top_builddir)/native/jni/classpath/native_state.lo
-libgtkpeer_la_LDFLAGS = @CLASSPATH_MODULE@ @GTK_LIBS@
+libgtkpeer_la_LDFLAGS = @CLASSPATH_MODULE@ @GTK_LIBS@ \
+                        @CAIRO_LIBS@ @PANGOFT2_LIBS@

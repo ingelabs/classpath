@@ -1,5 +1,27 @@
 2004-08-14  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Add --enable-gtk-cairo checking (cairo, pangoft2).
+	* include/Makefile.am: Add rules for
+	gnu_java_awt_peer_gtk_GdkClasspathFontPeer.h,
+	gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.h,
+	gnu_java_awt_peer_gtk_GdkGlyphVector.h and
+	gnu_java_awt_peer_gtk_GdkGraphics2D.h.
+	* include/gnu_java_awt_peer_gtk_GdkClasspathFontPeer.h: New generated
+	file.
+	* include/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.h: Idem.
+	* include/gnu_java_awt_peer_gtk_GdkGlyphVector.h: Idem.
+	* include/gnu_java_awt_peer_gtk_GdkGraphics.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_GdkGraphics2D.h: New generated file.
+	* include/gnu_java_awt_peer_gtk_GtkFramePeer.h: Regenerated.
+	* native/jni/gtk-peer/Makefile.am: Add gtk_cairo_c_source_files when
+	GTK_CAIRO is set.
+	* native/jni/gtk-peer/
+	gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c: Declare variables
+	at top of functions/block.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c: Likewise.
+
+2004-08-14  Mark Wielaard  <mark@klomp.org>
+
 	* examples/.cvsignore: New file.
 
 2004-08-14  Mark Wielaard  <mark@klomp.org>

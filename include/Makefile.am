@@ -5,8 +5,12 @@ ARG_CLASSPATH_JAVAH = -bootclasspath
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) ../lib:$(USER_CLASSLIB)
 
 H_FILES = \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkClasspathFontPeer.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontMetrics.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGlyphVector.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics2D.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkButtonPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkCanvasPeer.h \
@@ -66,10 +70,18 @@ if CREATE_JNI_HEADERS
 
 all-local: $(H_FILES)
 
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkClasspathFontPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkClasspathFontPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkClasspathFontPeer
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkClasspathFontPeerMetrics.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkClasspathFontPeerMetrics
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontMetrics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkFontMetrics.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkFontMetrics
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGlyphVector.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGlyphVector.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGlyphVector
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGraphics.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGraphics
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics2D.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGraphics2D.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGraphics2D
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkPixbufDecoder.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkPixbufDecoder
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkButtonPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkButtonPeer.java
