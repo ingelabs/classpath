@@ -7,13 +7,13 @@ TMPFILE3=check-jni-methods.$$.3
 # Find all methods defined in the header files generated
 # from the java source files.
 grep -h '^JNIEXPORT .* Java_' include/*.h | \
-        sed -e 's,.*JNICALL \(Java_[a-z_A-Z0-9]*\).*$,\1,' | \
+        LC_ALL=C sed -e 's,.*JNICALL \(Java_[a-z_A-Z0-9]*\).*$,\1,' | \
 	sort > $TMPFILE
 
 # Find all methods in the JNI C source files.
 find native/jni -name \*.c | \
 	xargs grep -h '^Java_' | \
-        sed -e 's,^\(Java_[a-z_A-Z0-9]*\) *(.*$,\1,' | \
+        LC_ALL=C sed -e 's,^\(Java_[a-z_A-Z0-9]*\) *(.*$,\1,' | \
 	sort > $TMPFILE2
 
 # Write temporary ignore file.
