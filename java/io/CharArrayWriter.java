@@ -1,5 +1,5 @@
 /* CharArrayWriter.java -- Write chars to a buffer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -48,319 +48,239 @@ package java.io;
   * across all Java class library implementations.
   * <p>
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@cygnus.com>
   */
 public class CharArrayWriter extends Writer
 {
+  /**
+   * The default initial buffer size
+   */
+  private static final int DEFAULT_INITIAL_BUFFER_SIZE = 32;
 
-/*************************************************************************/
-
-/*
- * Class Variables
- */
-
-/**
-  * The default initial buffer size
-  */
-private static final int DEFAULT_INITIAL_BUFFER_SIZE = 32;
-
-/**
-  * The default buffer increment size
-  */
-private static final int DEFAULT_BUFFER_INCREMENT_SIZE = 1024;
-
-/**
-  * The initial size of the internal buffer
-  */
-private static int initial_buffer_size;
-
-/**
-  * The number of chars by which the buffer will be enlarged if it
-  * is filled up
-  */
-private static int buffer_increment_size;
-
-static
-{
-  initial_buffer_size = Integer.getInteger(
-                      "gnu.java.io.CharArrayWriter.initialBufferSize",
-                      DEFAULT_INITIAL_BUFFER_SIZE).intValue();
-  buffer_increment_size = Integer.getInteger(
-                      "gnu.java.io.CharArrayWriter.bufferIncrementSize",
-                      DEFAULT_BUFFER_INCREMENT_SIZE).intValue();
-
-  if (initial_buffer_size <= 0)
-    initial_buffer_size = DEFAULT_INITIAL_BUFFER_SIZE;
-  if (buffer_increment_size <= 0)
-    buffer_increment_size = DEFAULT_BUFFER_INCREMENT_SIZE;
-}
-
-/*************************************************************************/
-
-/*
- * Instance Variables
- */
-
-/**
-  * The internal buffer where the data written is stored
-  */
-protected char[] buf;
-
-/**
-  * The number of chars that have been written to the buffer
-  */
-protected int count;
-
-/*************************************************************************/
-
-/*
- * Construtors
- */
-
-/**
-  * This method initializes a new <code>CharArrayWriter</code> with
-  * the default buffer size of 32 chars.  If a different initial buffer
-  * size is desired, see the constructor <code>CharArrayWriter(int size)</code>.
-  * For applications where the source code is not available, the default buffer
-  * size can be set using the system property
-  * <xmp>gnu.java.io.CharArrayWriter.initialBufferSize</xmp>
-  */
-public
-CharArrayWriter()
-{
-  this(initial_buffer_size);
-}
-
-/*************************************************************************/
-
-/**
-  * This method initializes a new <code>CharArrayWriter</code> with
-  * a specified initial buffer size.
-  *
-  * @param size The initial buffer size in chars
-  */
-public
-CharArrayWriter(int size)
-{
-  buf = new char[size];
-}
-  
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * This method flushes all buffered chars to the stream.  It does nothing
-  * in this class
-  */
-public void
-flush()
-{
-  ;
-}
-
-/*************************************************************************/
-
-/**
-  * Closes the stream.  This method is guaranteed not to free the contents
-  * of the internal buffer, which can still be retrieved.
-  */
-public void
-close()
-{
-  ;
-}
-
-/*************************************************************************/
-
-/**
-  * This method discards all of the chars that have been written to the
-  * internal buffer so far by setting the <code>count</code> variable to
-  * 0.  The internal buffer remains at its currently allocated size.
-  */
-public void
-reset()
-{
-  count = 0;
-}
-
-/*************************************************************************/
-
-/**
-  * This method returns the number of chars that have been written to
-  * the buffer so far.  This is the same as the value of the protected
-  * <code>count</code> variable.  If the <code>reset</code> method is
-  * called, then this value is reset as well.  Note that this method does
-  * not return the length of the internal buffer, but only the number
-  * of chars that have been written to it.
-  *
-  * @return The number of chars in the internal buffer
-  *
-  * @see reset
-  */
-public int
-size()
-{
-  return(count);
-}
-
-/*************************************************************************/
-
-/**
-  * This method returns a char array containing the chars that have been
-  * written to this stream so far.  This array is a copy of the valid
-  * chars in the internal buffer and its length is equal to the number of
-  * valid chars, not necessarily to the the length of the current 
-  * internal buffer.  Note that since this method allocates a new array,
-  * it should be used with caution when the internal buffer is very large.
-  */
-public char[]
-toCharArray()
-{
-  char[] buf = new char[count];
-
-  System.arraycopy(this.buf, 0, buf, 0, count);
-
-  return(buf);
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the chars in the internal array as a <code>String</code>.  The
-  * chars in the buffer are converted to characters using the system default
-  * encoding.  There is an overloaded <code>toString()</code> method that
-  * allows an application specified character encoding to be used.
-  *
-  * @return A <code>String</code> containing the data written to this stream so far
-  */
-public String
-toString()
-{
-  return(new String(buf));
-}
-
-/*************************************************************************/
-
-/**
-  * This method writes the writes the specified char into the internal
-  * buffer.
-  *
-  * @param b The char to be read passed as an int
-  */
-public void
-write(int b)
-{
-  synchronized (lock) {
-
-  if (count == buf.length)
-    enlargeBuffer();
-
-  buf[count] = (char)b;
-  ++count;
-
+  /**
+   * This method initializes a new <code>CharArrayWriter</code> with
+   * the default buffer size of 32 chars.  If a different initial
+   * buffer size is desired, see the constructor
+   * <code>CharArrayWriter(int size)</code>.
+   */
+  public CharArrayWriter ()
+  {
+    this (DEFAULT_INITIAL_BUFFER_SIZE);
   }
-  // synchronized
+
+  /**
+   * This method initializes a new <code>CharArrayWriter</code> with
+   * a specified initial buffer size.
+   *
+   * @param size The initial buffer size in chars
+   */
+  public CharArrayWriter (int size)
+  {
+    super ();
+    buf = new char[size];
+  }
+
+  /**
+   * Closes the stream.  This method is guaranteed not to free the contents
+   * of the internal buffer, which can still be retrieved.
+   */
+  public void close ()
+  {
+    closed = true;
+  }
+
+  /**
+   * This method flushes all buffered chars to the stream.
+   */
+  public void flush () throws IOException
+  {
+    synchronized (lock)
+      {
+	if (closed)
+	  throw new IOException ("Stream closed");
+      }
+  }
+
+  /**
+   * This method discards all of the chars that have been written to the
+   * internal buffer so far by setting the <code>count</code> variable to
+   * 0.  The internal buffer remains at its currently allocated size.
+   */
+  public void reset ()
+  {
+    synchronized (lock)
+      {
+	count = 0;
+	// Allow this to reopen the stream.
+	// FIXME - what does the JDK do?
+	closed = false;
+      }
+  }
+
+  /**
+   * This method returns the number of chars that have been written to
+   * the buffer so far.  This is the same as the value of the protected
+   * <code>count</code> variable.  If the <code>reset</code> method is
+   * called, then this value is reset as well.  Note that this method does
+   * not return the length of the internal buffer, but only the number
+   * of chars that have been written to it.
+   *
+   * @return The number of chars in the internal buffer
+   *
+   * @see reset
+   */
+  public int size ()
+  {
+    return count;
+  }
+
+  /**
+   * This method returns a char array containing the chars that have been
+   * written to this stream so far.  This array is a copy of the valid
+   * chars in the internal buffer and its length is equal to the number of
+   * valid chars, not necessarily to the the length of the current 
+   * internal buffer.  Note that since this method allocates a new array,
+   * it should be used with caution when the internal buffer is very large.
+   */
+  public char[] toCharArray ()
+  {
+    synchronized (lock)
+      {      
+	char[] nc = new char[count];
+	System.arraycopy(buf, 0, nc, 0, count);
+	return nc;
+      }
+  }
+
+  /**
+   * Returns the chars in the internal array as a <code>String</code>.  The
+   * chars in the buffer are converted to characters using the system default
+   * encoding.  There is an overloaded <code>toString()</code> method that
+   * allows an application specified character encoding to be used.
+   *
+   * @return A <code>String</code> containing the data written to this
+   *         stream so far
+   */
+  public String toString ()
+  {
+    synchronized (lock)
+      {
+	return new String (buf, 0, count);
+      }
+  }
+
+  /**
+   * This method writes the writes the specified char into the internal
+   * buffer.
+   *
+   * @param oneChar The char to be read passed as an int
+   */
+  public void write (int oneChar) throws IOException
+  {
+    synchronized (lock)
+      {
+	if (closed)
+	  throw new IOException ("Stream closed");
+
+	resize (1);
+	buf[count++] = (char) oneChar;
+      }
+  }
+
+  /**
+   * This method writes <code>len</code> chars from the passed in array 
+   * <code>buf</code> starting at index <code>offset</code> into that buffer
+   *
+   * @param buffer The char array to write data from
+   * @param offset The index into the buffer to start writing data from
+   * @param len The number of chars to write
+   */
+  public void write (char[] buffer, int offset, int len) throws IOException
+  {
+    synchronized (lock)
+      {
+	if (closed)
+	  throw new IOException ("Stream closed");
+
+	if (len >= 0)
+	  resize (len);
+	System.arraycopy(buffer, offset, buf, count, len);
+	count += len;
+      }
+  }
+
+  /**
+   * This method writes <code>len</code> chars from the passed in
+   * <code>String</code> <code>buf</code> starting at index
+   * <code>offset</code> into the internal buffer.
+   *
+   * @param str The <code>String</code> to write data from
+   * @param offset The index into the string to start writing data from
+   * @param len The number of chars to write
+   */
+  public void write (String str, int offset, int len) throws IOException
+  {
+    synchronized (lock)
+      {
+	if (closed)
+	  throw new IOException ("Stream closed");
+
+	if (len >= 0)
+	  resize (len);
+	str.getChars(offset, offset + len, buf, count);
+	count += len;
+      }
+  }
+
+  /**
+   * This method writes all the chars that have been written to this stream
+   * from the internal buffer to the specified <code>Writer</code>.
+   *
+   * @param out The <code>Writer</code> to write to
+   *
+   * @exception IOException If an error occurs
+   */
+  public void writeTo (Writer out) throws IOException
+  {
+    synchronized (lock)
+      {
+	out.write(buf, 0, count);
+      }
+  }
+
+  /**
+   * This private method makes the buffer bigger when we run out of room
+   * by allocating a larger buffer and copying the valid chars from the
+   * old array into it.  This is obviously slow and should be avoided by
+   * application programmers by setting their initial buffer size big
+   * enough to hold everything if possible.
+   */
+  private final void resize (int len)
+  {
+    if (count + len >= buf.length)
+      {
+	int newlen = buf.length * 2;
+	if (count + len > newlen)
+	  newlen = count + len;
+	char[] newbuf = new char[newlen];
+	System.arraycopy(buf, 0, newbuf, 0, count);
+	buf = newbuf;
+      }
+  }
+
+  /**
+   * The internal buffer where the data written is stored
+   */
+  protected char[] buf;
+
+  /**
+   * The number of chars that have been written to the buffer
+   */
+  protected int count;
+
+  /**
+   * True if the stream has been closed.
+   */
+  private boolean closed;
 }
-
-/*************************************************************************/
-
-/**
-  * This method writes <code>len</code> chars from the passed in array 
-  * <code>buf</code> starting at index <code>offset</code> into that buffer
-  *
-  * @param buf The char array to write data from
-  * @param offset The index into the buffer to start writing data from
-  * @param len The number of chars to write
-  */
-public void
-write(char[] buf, int offset, int len)
-{
-  synchronized (lock) {
-
-  int i = 0;
-  while (i < (len / buffer_increment_size))
-    {
-      enlargeBuffer();
-      System.arraycopy(buf, offset + (i * buffer_increment_size), this.buf, 
-                       count, buffer_increment_size);
-
-      count += buffer_increment_size;
-      ++i;
-    }
-
-  if ((len % buffer_increment_size) != 0)
-    {
-      if ((buf.length - count) < (len % buffer_increment_size))
-        enlargeBuffer();
-
-      System.arraycopy(buf, offset + (i * buffer_increment_size), this.buf,
-                       count, len % buffer_increment_size);
-
-      count += (len % buffer_increment_size);
-    }
-
-  } // synchronized
-}
-
-/*************************************************************************/
-
-/**
-  * This method writes <code>len</code> chars from the passed in <code>String</code>
-  * <code>buf</code> starting at index <code>offset</code> into the
-  * internal buffer.
-  *
-  * @param str The <code>String</code> to write data from
-  * @param offset The index into the string to start writing data from
-  * @param len The number of chars to write
-  */
-public void
-write(String str, int offset, int len)
-{
-  char[] tmpbuf = new char[len];
-  str.getChars(offset, len - offset, tmpbuf, 0);
-
-  write(tmpbuf, 0, tmpbuf.length);
-}
-
-/*************************************************************************/
-
-/**
-  * This method writes all the chars that have been written to this stream
-  * from the internal buffer to the specified <code>Writer</code>.
-  *
-  * @param out The <code>Writer</code> to write to
-  *
-  * @exception IOException If an error occurs
-  */
-public void
-writeTo(Writer out) throws IOException
-{
-  out.write(buf, 0, count);
-}
-
-/*************************************************************************/
-
-/**
-  * This private method makes the buffer bigger when we run out of room
-  * by allocating a larger buffer and copying the valid chars from the
-  * old array into it.  This is obviously slow and should be avoided by
-  * application programmers by setting their initial buffer size big
-  * enough to hold everything if possible.
-  */
-private void
-enlargeBuffer()
-{
-  char[] newbuf = new char[buf.length + buffer_increment_size];
-
-  System.arraycopy(buf, 0, newbuf, 0, count);
-
-  buf = newbuf;
-}
-
-} // class CharArrayWriter
-

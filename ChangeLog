@@ -1,3 +1,12 @@
+2001-08-05  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/StringWriter.java: Merged with libgcj.
+	* java/io/InputStream.java: Merged with libgcj.
+	* java/io/OutputStream.java: Merged with libgcj.
+	* java/io/PushbackInputStream.java: Merged with libgcj.
+	* java/io/CharArrayReader.java: Merged with libgcj.
+	* java/io/CharArrayWriter.java: Merged with libgcj.
+
 2001-08-05  John Leuner  <jewel@debian.org>
 
 	* java/lang/String.java (copyValueOf (char[],int,int)): Added this method
