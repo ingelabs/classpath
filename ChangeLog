@@ -1,3 +1,14 @@
+2004-08-08  Graydon Hoare  <graydon@redhat.com>
+
+	PR SWING/16576
+	* javax/swing/JLayeredPane.java
+	(setLayer): Permit changing layer after addition.
+	(setPosition): Permit over-length positions.
+	(layerToRange): Compare intValue()s.
+	* javax/swing/Box.java (createHorizontalBox): Implement.
+	(createRigidArea): Likewise.
+	(createVerticalBox): Likewise.
+
 2004-08-06  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/DatagramSocket.java: Fixed typo.
