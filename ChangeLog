@@ -1,5 +1,11 @@
 2003-05-10  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/FileChannelImpl.java:
+	New version from libgcj. Normal file operations should now work with
+	FileChannels.
+
+2003-05-10  Michael Koch  <konqueror@gmx.de>
+
 	* java/security/Identity.java
 	(serialVersionUID): Made it private.
 	* java/security/IdentityScope.java
