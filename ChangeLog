@@ -1,3 +1,7 @@
+2000-06-18  Mark Wielaard <mark@klomp.org>
+
+	* vm/reference/java/lang/Thread.java: yield() is static
+
 2000-06-11  Mark Wielaard <mark@klomp.org>
 
 	* java/util/jar/JarFile.java: new 1.2 class no entry verification yet

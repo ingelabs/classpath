@@ -286,7 +286,7 @@ public class Thread {
  	/**
  	 ** Yield to another thread
 	 **/
-	public synchronized native void yield();
+	public static synchronized native void yield();
 
 	/** Interrupt this Thread.
 	 ** It is not clear whether locks this Thread has should be released.
