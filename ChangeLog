@@ -8,6 +8,7 @@
 	* java/util/LinkedList.java (addLastEntry): Don't increment size before
 	checking for size == 0.
 	(addFirstEntry): Rearrange to match addLastEntry.
+	(add): Do not increment size before inserting the new entry.
 
 2001-11-18  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 

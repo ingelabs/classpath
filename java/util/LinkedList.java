@@ -543,7 +543,6 @@ public class LinkedList extends AbstractSequentialList
     if (index < size)
       {
         modCount++;
-        size++;
         Entry after = getEntry(index);
         e.next = after;
         e.previous = after.previous;
@@ -552,6 +551,7 @@ public class LinkedList extends AbstractSequentialList
         else
           after.previous.next = e;
         after.previous = e;
+        size++;
       }
     else
       addLastEntry(e);
