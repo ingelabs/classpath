@@ -1,5 +1,10 @@
 2004-12-13  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/table/TableColumn.java: Added/fixed javadocs over all.
+	(setHeaderValue): Simplified. Do nothing when old value == new value.
+
+2004-12-13  Michael Koch  <konqueror@gmx.de>
+
 	* vm/reference/java/lang/VMClassLoader.java:
 	Reworked import statements.
 
