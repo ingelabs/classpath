@@ -1,6 +1,6 @@
 /*
  * java.lang.reflect.Constructor: part of the Java Class Libraries project.
- * Copyright (C) 1998 Free Software Foundation
+ * Copyright (C) 1998, 2001 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -191,8 +191,7 @@ public final class Constructor implements Member {
 	 ** The constructor will permit widening argument conversions, but not narrowing conversions.
 	 ** @param args the arguments to the constructor.
 	 ** @return the newly created object.
-	 ** @exception InstantiationException		if the class is abstract.  <B>Never mind that there
-	 **						should be no constructors in an abstract class.</B>
+	 ** @exception InstantiationException		if the class is abstract.
 	 ** @exception IllegalAccessException		if the constructor could not normally be called
 	 **						by the Java code (i.e. it is not public).
 	 ** @exception IllegalArgumentException		if the number of arguments is incorrect, or if the
