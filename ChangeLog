@@ -1,5 +1,9 @@
 2004-09-23  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/table/DefaultTableModel.java: Whitespace cleanup.
+
+2004-09-23  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/Component.java: Whitespace cleanup.
 	* java/awt/Container.java: Likewise.
 	* java/awt/DefaultFocusTraversalPolicy.java: Likewise.
