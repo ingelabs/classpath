@@ -400,7 +400,20 @@ public class Throwable implements Serializable
     pw.print(stackTraceString());
   }
 
-  private static final String nl = System.getProperty("line.separator");
+  /*
+   * We use inner class to avoid a static initializer in this basic class.
+   */
+  private static class StaticData
+  {
+
+    private final static String nl;
+
+    static
+    {
+      nl = System.getProperty("line.separator");
+    }
+  }
+
   // Create whole stack trace in a stringbuffer so we don't have to print
   // it line by line. This prevents printing multiple stack traces from
   // different threads to get mixed up when written to the same PrintWriter.
@@ -453,6 +466,7 @@ public class Throwable implements Serializable
   private static void stackTraceStringBuffer(StringBuffer sb, String name,
 					StackTraceElement[] stack, int equal)
   {
+    String nl = StaticData.nl;
     // (finish) first line
     sb.append(name);
     sb.append(nl);

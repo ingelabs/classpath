@@ -1,3 +1,11 @@
+2004-03-27  Grzegorz B. Prokopski <gadek@debian.org>
+
+	* java/lang/Object.java (static): Remove static initializer.
+	* java/lang/reflect/Array.java (static): Remove static initializer.
+	* java/lang/Throwable.java (nl): Remove static field.
+	(StaticData): New private static inner class.
+	(stackTraceStringBuffer): Use StaticData.nl.
+
 2004-03-27  Etienne M. Gagnon <gagnon.etienne_m@uqam.ca>
 
 	* native/fdlibm/dtoa.c, native/fdlibm/e_acos.c,
