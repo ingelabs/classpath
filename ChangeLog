@@ -1,5 +1,18 @@
 2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
 	
+	* javax/swing/plaf/RootPaneUI.java,
+	javax/swing/plaf/ScrollBarUI.java,
+	javax/swing/plaf/ScrollPaneUI.java,
+	javax/swing/plaf/SeparatorUI.java,
+	javax/swing/plaf/SliderUI.java,
+	javax/swing/plaf/TableHeaderUI.java,
+	javax/swing/plaf/TableUI.java,
+	javax/swing/plaf/ToolBarUI.java,
+	javax/swing/plaf/ToolTipUI.java,
+	javax/swing/plaf/ViewportUI.java: Reformatted, wrote JavaDoc.
+
+2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
+	
 	* javax/swing/plaf/ActionMapUIResource.java,
 	javax/swing/plaf/BorderUIResource.java,
 	javax/swing/plaf/ButtonUI.java,
