@@ -10,6 +10,7 @@ InvalidKeySpecException.java \
 InvalidParameterSpecException.java \
 KeySpec.java \
 PKCS8EncodedKeySpec.java \
+RSAKeyGenParameterSpec.java \
 RSAPrivateCrtKeySpec.java \
 RSAPrivateKeySpec.java \
 RSAPublicKeySpec.java \

@@ -6,6 +6,7 @@ DSAKeyPairGenerator.java \
 DSAParams.java \
 DSAPrivateKey.java \
 DSAPublicKey.java \
+RSAKey.java \
 RSAPrivateCrtKey.java \
 RSAPrivateKey.java \
 RSAPublicKey.java

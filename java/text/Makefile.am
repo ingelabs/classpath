@@ -11,11 +11,16 @@ ChoiceFormat.java \
 CollationElementIterator.java \
 CollationKey.java \
 Collator.java \
+DateFormat.java \
+DateFormatSymbols.java \
+DecimalFormatSymbols.java \
 DefaultBreakIterator.java \
 FieldPosition.java \
 Format.java \
+MessageFormat.java \
 NumberFormat.java \
 ParseException.java \
 ParsePosition.java \
 RuleBasedCollator.java \
+SimpleDateFormat.java \
 StringCharacterIterator.java
