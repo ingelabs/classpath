@@ -47,8 +47,7 @@ import java.io.*;
 
 public abstract class SocketAddress implements Serializable
 {
-    public SocketAddress()
-    {
-    }
+  public SocketAddress()
+  {
+  }
 }
-

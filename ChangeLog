@@ -1,5 +1,14 @@
 2002-11-07  Michael Koch <konqueror@gmx.de>
 
+	* java/net/Inet4Address.java: New file, not used yet.
+	* java/net/Inet6Address.java: New file, not used yet.
+	* java/net/InetSocketAddress.java: Reindented.
+	* java/net/SocketAddress.java: Reindented.
+	* java/net/SocketOptions.java: Merged with libgcj, reindented.
+	* java/net/SocketPermission.java: Merged with libgcj.
+
+2002-11-07  Michael Koch <konqueror@gmx.de>
+
 	* java/awt/Event.java:
 	Made constants more readable (at least for jdiff.sh).
 	* java/awt/Frame.java:

@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package java.net;
 
+import java.io.Serializable;
 import java.security.Permission;
 import java.security.PermissionCollection;
 
@@ -87,7 +88,8 @@ import java.security.PermissionCollection;
  * SocketPermission("www.urbanophile.com:80", "connect,accept");
  *   Can connect to or accept connections from www.urbanophile.com on port 80
  * SocketPermission("localhost:1024-", "listen,accept,connect");
- *   Can connect to, accept from, an listen on any local port number 1024 and up.
+ *   Can connect to, accept from, an listen on any local port number 1024
+ *   and up.
  * SocketPermission("*.edu", "connect");
  *   Can connect to any host in the edu domain
  * SocketPermission("197.197.20.1", "accept");
@@ -99,8 +101,9 @@ import java.security.PermissionCollection;
  * @author Aaron M. Renn (arenn@urbanophile.com)
  */
 public final class SocketPermission extends Permission
-  implements java.io.Serializable
+  implements Serializable
 {
+  static final long serialVersionUID = -7204263841984476862L;
 
 // FIXME: Needs serialization work, including readObject/writeObject methods.
   /**
@@ -118,7 +121,7 @@ public final class SocketPermission extends Permission
    * specified host/port combination and actions string.
    *
    * @param hostport The hostname/port number combination
-   * @param perms The actions string
+   * @param actions The actions string
    */
   public SocketPermission(String hostport, String actions)
   {
@@ -241,7 +244,8 @@ public final class SocketPermission extends Permission
    * <p><ul>
    * <li>The argument's hostname or IP address is equal to this object's.
    * <li>The argument's canonical hostname is equal to this object's.
-   * <li>The argument's canonical name matches this domains hostname with wildcards
+   * <li>The argument's canonical name matches this domains hostname with
+   * wildcards
    * </ul>
    *
    * @param perm The Permission to check against
