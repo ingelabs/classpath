@@ -148,7 +148,7 @@ private static final String longDateFormat = "MMMM d, yyyy";
 /**
   * This is the DateFormat.FULL format
   */
-private static final String fullDateFormat = "EEEE, MMMM, e, yyyy";
+private static final String fullDateFormat = "EEEE, MMMM d, yyyy";
 
 /**
   * This is the DateFormat.DEFAULT format
