@@ -1,4 +1,9 @@
+2005-03-13  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Set version to 0.14+cvs.
+
 2005-03-13  Audrius Meskauskas  <audriusa@bluewin.ch>
+
 	* org/omg/CORBA/BAD_CONTEXT.java,
 	org/omg/CORBA/BAD_INV_ORDER.java,
 	org/omg/CORBA/BAD_OPERATION.java,
@@ -28,6 +33,7 @@
 	public.
 
 2005-03-13  Audrius Meskauskas  <audriusa@bluewin.ch>
+
 	* org/omg/CORBA/StringSeqHolder.java,
 	org/omg/CORBA/WStringSeqHolder.java:
 	replacing replacing CR CR LF by CR LF.
