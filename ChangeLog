@@ -1,3 +1,41 @@
+2002-04-30  Sascha Brawer  <brawer@acm.org>
+
+	* java/text/ChoiceFormat.java (class description):
+	Docfix to avoid angle brackets in Javadoc and for pre-formatted
+	code without asterisks.
+	* java/text/Collator.java (compare(String, String),
+	compare(Object, Object)): Same.
+	* java/text/RuleBasedCollator.java (compare(String,String)): Same.
+	
+	* java/util/AbstractList.java (hashCode):
+	Docfix to avoid angle brackets in Javadoc and for pre-formatted
+	code without asterisks.
+	* java/util/AbstractMap.java (equals, hashCode): Same.
+	* java/util/ArrayList.java (ensureCapacity): Same.
+	* java/util/Arrays.java (sort): Same.
+	* java/util/BitSet.java (hashCode, nextSetBit): Same.
+	* java/util/Calendar.java (class description): Same.
+	* java/util/Dictionary.java (class description): Same.
+	* java/util/HashMap.java (rehash): Same.
+	* java/util/Hashtable.java (rehash, equals): Same.
+	* java/util/IdentityHashMap.java (get(Object), remove(Object),
+	remove()): Same.
+	* java/util/LinkedHashMap.java (LinkedHashMap(int),
+	removeEldestEntry(Map.Entry), class description): Same.
+	* java/util/LinkedList.java (getEntry): Same.
+	* java/util/List.java (hashCode): Same.
+	* java/util/ListResourceBundle.java (class description): Same.
+	* java/util/Map.java (hashCode, equals): Same.
+	* java/util/Properties.java (class description, load): Same.
+	* java/util/PropertyPermissionCollection.java (implies): Same.
+	* java/util/PropertyResourceBundle.java (class description): Same.
+	* java/util/Random.java (setSeed, next, nextBytes, nextInt(),
+	nextInt(int), nextLong, nextBoolean, nextFloat, nextDouble,
+	nextGaussian): Same.
+	* java/util/ResourceBundle.java (class description): Same.
+	* java/util/SimpleTimeZone.java (getOffset): Same.
+	* java/util/WeakHashMap.java (threshold, slot): Same.
+
 2002-04-30  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/nio/ByteBufferImpl.java: Add copyright notice.
