@@ -1,3 +1,10 @@
+2004-02-06  Graydon Hoare  <graydon@redhat.com>
+
+	* javax/swing/SwingUtilities.java: Many new functions.
+	* java/awt/Container.java (LightweightDispatcher): Reimplement.
+	* javax/swing/basic/BasicGraphicsUtils.java 
+	(getPreferredButtonSize): Start layout from top-left corner.
+
 2004-02-06  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/nio/NIOServerSocket.java
