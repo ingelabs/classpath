@@ -44,7 +44,7 @@ uninstall-local:
 html: create_html
 
 core := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -regex .*CVS ! -regex .*doc-files | tr '/' '.' | grep -v "java.awt.dnd.peer" | grep -v "java.awt.peer")
-jaxp := $(shell cd $(top_srcdir)/external/jaxp/source && $(FIND) gnu javax org -type d ! -regex .*CVS | tr '/' '.' | grep -v "org.w3c.dom.")
+jaxp := $(shell cd $(top_srcdir)/external/jaxp/source && $(FIND) javax org -type d ! -regex .*CVS | tr '/' '.' | grep -v "org.w3c.dom.")
 packages = $(core) $(jaxp)
 #| grep -v "^java\$" )
 date := $(shell $(DATE))

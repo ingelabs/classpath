@@ -1,6 +1,7 @@
 2003-08-17  Mark Wielaard  <mark@klomp.org>
 
-	* Makefile.am (core): Don't include doc-files in the package list.
+	* doc/api/Makefile.am (core): Don't include doc-files in package list.
+	(jaxp): Don't include gnu packages.
 	(create_html): Add classpath-copyright.xml as -bottomnote.
 	* doc/api/classpath-copyright.xml: Updated year.
 
