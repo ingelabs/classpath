@@ -1,3 +1,15 @@
+2002-02-20  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/BasicMapEntry.java: Delete; top-level classes in
+	java.util should be public.
+	* java/util/Makefile.am (EXTRA_DIST): Remove BasicMapEntry.java.
+	* java/util/AbstractMap.java: Make BasicMapEntry a nested class.
+	* java/util/Collections.java (SingletonMap.entrySet): Update to
+	new location of BasicMapEntry.	
+	* java/util/HashMap.java (HashEntry):  Ditto.
+	* java/util/Hashtable.java (HashEntry):  Ditto.
+	* java/util/TreeMap.java (Node): Ditto.
+
 2002-02-19  Eric Blake  <ebb9@email.byu.edu>
 
 	* scripts/unicode-blocks.pl: Move from doc/unicode/.

@@ -1,6 +1,6 @@
 /* HashMap.java -- a class providing a basic hashtable data structure,
    mapping Object --> Object
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -162,7 +162,7 @@ public class HashMap extends AbstractMap
    *
    * @author Eric Blake <ebb9@email.byu.edu>
    */
-  static class HashEntry extends BasicMapEntry
+  static class HashEntry extends AbstractMap.BasicMapEntry
   {
     /**
      * The next entry in the linked list. Package visible for use by subclass.
@@ -373,9 +373,9 @@ public class HashMap extends AbstractMap
       {
         Map.Entry e = (Map.Entry) itr.next();
         // Optimize in case the Entry is one of our own.
-        if (e instanceof BasicMapEntry)
+        if (e instanceof AbstractMap.BasicMapEntry)
           {
-            BasicMapEntry entry = (BasicMapEntry) e;
+            AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
             put(entry.key, entry.value);
           }
         else

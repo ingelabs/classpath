@@ -1577,7 +1577,7 @@ public class Collections
     public Set entrySet()
     {
       if (entries == null)
-        entries = singleton(new BasicMapEntry(k, v)
+        entries = singleton(new AbstractMap.BasicMapEntry(k, v)
         {
           public Object setValue(Object o)
           {

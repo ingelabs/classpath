@@ -10,7 +10,6 @@ AbstractSequentialList.java \
 AbstractSet.java \
 ArrayList.java \
 Arrays.java \
-BasicMapEntry.java \
 BitSet.java \
 Calendar.java \
 Collection.java \

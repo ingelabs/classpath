@@ -1,6 +1,6 @@
 /* Hashtable.java -- a class providing a basic hashtable data structure,
    mapping Object --> Object
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -176,7 +176,7 @@ public class Hashtable extends Dictionary
    * pair. A Hashtable Entry is identical to a HashMap Entry, except that
    * `null' is not allowed for keys and values.
    */
-  private static final class HashEntry extends BasicMapEntry
+  private static final class HashEntry extends AbstractMap.BasicMapEntry
   {
     /** The next entry in the linked list. */
     HashEntry next;
@@ -517,9 +517,9 @@ public class Hashtable extends Dictionary
       {
         Map.Entry e = (Map.Entry) itr.next();
         // Optimize in case the Entry is one of our own.
-        if (e instanceof BasicMapEntry)
+        if (e instanceof AbstractMap.BasicMapEntry)
           {
-            BasicMapEntry entry = (BasicMapEntry) e;
+            AbstractMap.BasicMapEntry entry = (AbstractMap.BasicMapEntry) e;
             put(entry.key, entry.value);
           }
         else
