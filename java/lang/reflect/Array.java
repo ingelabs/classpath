@@ -64,6 +64,7 @@ import gnu.classpath.Configuration;
  *
  * @author John Keiser
  * @author Eric Blake <ebb9@email.byu.edu>
+ * @author Per Bothner <bothner@cygnus.com>
  * @see java.lang.Boolean#TYPE
  * @see java.lang.Byte#TYPE
  * @see java.lang.Short#TYPE
@@ -81,14 +82,14 @@ public final class Array
   {
     if (Configuration.INIT_LOAD_LIBRARY)
       {
-        System.loadLibrary ("javalangreflect");
+        System.loadLibrary("javalangreflect");
       }
   }
 
   /**
    * This class is uninstantiable.
    */
-  private Array ()
+  private Array()
   {
   }
 
@@ -257,7 +258,7 @@ public final class Array
       throw new NullPointerException();
     throw new IllegalArgumentException();
   }
-
+  
   /**
    * Gets an element of a byte array.
    *
@@ -437,12 +438,8 @@ public final class Array
 	  throw new IllegalArgumentException();
 	((Object[]) array)[index] = value;
       }
-    else if (value instanceof Boolean)
-      setBoolean(array, index, ((Boolean) value).booleanValue());
     else if (value instanceof Byte)
       setByte(array, index, ((Byte) value).byteValue());
-    else if (value instanceof Character)
-      setChar(array, index, ((Character) value).charValue());
     else if (value instanceof Short)
       setShort(array, index, ((Short) value).shortValue());
     else if (value instanceof Integer)
@@ -453,6 +450,10 @@ public final class Array
       setFloat(array, index, ((Float) value).floatValue());
     else if (value instanceof Double)
       setDouble(array, index, ((Double) value).doubleValue());
+    else if (value instanceof Character)
+      setChar(array, index, ((Character) value).charValue());
+    else if (value instanceof Boolean)
+      setBoolean(array, index, ((Boolean) value).booleanValue());
     else if (array == null)
       throw new NullPointerException();
     else

@@ -1,3 +1,8 @@
+2004-01-07  Michael Koch  <konqueror@gmx.de>
+
+	* java/lang/reflect/Array.java:
+	Reformated to match libgcj's version more.
+
 2004-01-07  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/undo/UndoableEditSupport.java (UndoableEditSupport):
