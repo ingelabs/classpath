@@ -1,8 +1,6 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-## uncomment this when the gtk peers are ready
-## SUBDIRS = java.lang java.net java.io java.lang.reflect java.util lib vmi gnu.java.awt.peer.gtk
-SUBDIRS = java.lang java.net java.io java.lang.reflect java.util lib vmi
+SUBDIRS = java.lang java.net java.io java.lang.reflect java.util lib vmi gnu.java.awt.peer.gtk
 
 noinst_HEADERS = config.h config.h.in
 
