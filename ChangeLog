@@ -1,3 +1,41 @@
+2000-11-23  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/util/Vector.java: Improve exception messages.
+	(Vector): Check initialCapacity for IllegalArgumentException.
+	(tromToSize): Don't check for elementCount == elementData.length
+	case.
+	(toArray): Don't try to set null marker if target array is the same
+	length as the vector.
+
+2000-11-23  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/util/ArrayList.java (addAll(Collection)): Call 
+	addAll(int,Collection) instead of duplicating code.
+	(indexOf): Clean up int initialization.
+	(clear): Set cleared array entries to null, to allow garbage 
+	collection.
+	* java/util/List.java: Minor formatting fixes.
+	* java/util/Random.java: ditto.
+	* java/util/SimpleTimeZone.java: ditto.
+	* java/util/Vector.java: Make many methods synchronized. Increment 
+	modCount unconditionally in line with the JCL spec.
+	(Vector): Simplify constructors. Use for loop in Collection copy
+	constructor for efficiency.
+	(indexOf): Handle `null' elements.
+	(lastIndexOf): Ditto.
+	(toArray): Replace with simpler implementation from ArrayList.
+	(add): Implemented.
+	(remove(int)): Add bounds check.
+	(containsAll): Implemented.
+	(addAll): Implemented.
+	(removeAll): Implemented.
+	(retainAll): Implemented.
+	(equals): Implemented.
+	(hashCode): Implemented.
+	(toString): Use string concatenation, not StringBuffer.
+	(subList): Implemented.
+	(removeRange): Implemented.
+
 2000-11-20  Tom Tromey  <tromey@cygnus.com>
 
         * java/lang/reflect/ReflectPermission.java: New file.

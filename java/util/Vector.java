@@ -27,6 +27,7 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util;
 import java.lang.reflect.Array;
+import java.io.Serializable;
 
 /**
  * the <b>Vector</b> classes implements growable arrays of Objects.
@@ -41,11 +42,16 @@ import java.lang.reflect.Array;
  *
  * Vector implements the JDK 1.2 List interface, and is therefor a fully
  * compliant Collection object.
+ *
+ * @specnote The JCL claims that various methods in this class throw
+ * IndexOutOfBoundsException, which would be consistent with other collections
+ * classes. ArrayIndexOutOfBoundsException is actually thrown, per the online 
+ * docs, even for List method implementations.
  * 
  * @author Scott G. Miller
  */
-public class Vector extends AbstractList implements List,
-  Cloneable, java.io.Serializable
+public class Vector extends AbstractList 
+  implements List, Cloneable, Serializable
 {
   /**
    * The amount the Vector's internal array should be increased in size when
@@ -53,14 +59,14 @@ public class Vector extends AbstractList implements List,
    * or when {@link #ensureCapacity} is called.
    * @serial
    */
-  protected int capacityIncrement;
+  protected int capacityIncrement = 0;
 
   /**
    * The number of elements currently in the vector, also returned by
    * {@link #size}.
    * @serial
    */
-  protected int elementCount;
+  protected int elementCount = 0;
 
   /**
    * The internal array used to hold members of a Vector
@@ -76,7 +82,7 @@ public class Vector extends AbstractList implements List,
    */
   public Vector()
   {
-    this(10, 0);
+    this(10);
   }
 
   /**
@@ -88,13 +94,13 @@ public class Vector extends AbstractList implements List,
    */
   public Vector(Collection c)
   {
-    this(c.size(), 0);
-    elementCount = elementData.length;
-    Iterator collectionIterator = c.iterator();
-    int counter = 0;
-    while (collectionIterator.hasNext())
+    int csize = c.size();
+    elementData = new Object[csize];
+    elementCount = csize;
+    Iterator itr = c.iterator();
+    for (int i = 0; i < csize; i++)
       {
-	elementData[counter++] = collectionIterator.next();
+	elementData[i] = itr.next();
       }
   }
 
@@ -109,10 +115,10 @@ public class Vector extends AbstractList implements List,
    */
   public Vector(int initialCapacity, int capacityIncrement)
   {
-    modCount = 0;
+    if (initialCapacity < 0)
+      throw new IllegalArgumentException();
     elementData = new Object[initialCapacity];
     this.capacityIncrement = capacityIncrement;
-    elementCount = 0;
   }
 
   /**
@@ -122,21 +128,23 @@ public class Vector extends AbstractList implements List,
    */
   public Vector(int initialCapacity)
   {
-    this(initialCapacity, 0);
+    if (initialCapacity < 0)
+      throw new IllegalArgumentException();
+    elementData = new Object[initialCapacity];
   }
 
   /**
    * Copies the contents of a provided array into the Vector.  If the 
-   * array is too large to fit in the Vector, an IndexOutOfBoundsException
+   * array is too large to fit in the Vector, an ArrayIndexOutOfBoundsException
    * is thrown.  Old elements in the Vector are overwritten by the new
    * elements
    *
    * @param anArray An array from which elements will be copied into the Vector
    * 
-   * @throws IndexOutOfBoundsException the array being copied
+   * @throws ArrayIndexOutOfBoundsException the array being copied
    * is larger than the Vectors internal data array
    */
-  public void copyInto(Object[]anArray)
+  public synchronized void copyInto(Object[] anArray)
   {
     System.arraycopy(elementData, 0, anArray, 0, elementCount);
   }
@@ -146,14 +154,13 @@ public class Vector extends AbstractList implements List,
    * than the number of Objects its holding, a new array is constructed
    * that precisely holds the elements.  
    */
-  public void trimToSize()
+  public synchronized void trimToSize()
   {
-    // Check if the Vector is already trimmed, to save execution time
-    if (elementCount == elementData.length)
-      return;
-    // Guess not
+    // Don't bother checking for the case where size() == the capacity of the
+    // vector since that is a much less likely case; it's more efficient to
+    // not do the check and lose a bit of performance in that infrequent case
 
-    Object[]newArray = new Object[elementCount];
+    Object[] newArray = new Object[elementCount];
     System.arraycopy(elementData, 0, newArray, 0, elementCount);
     elementData = newArray;
   }
@@ -169,16 +176,19 @@ public class Vector extends AbstractList implements List,
    * @param minCapacity The minimum capacity the internal array should be
    * able to handle after executing this method
    */
-  public void ensureCapacity(int minCapacity)
+  public synchronized void ensureCapacity(int minCapacity)
   {
+    modCount++;
     if (elementData.length >= minCapacity)
       return;
 
-    int newCapacity = elementData.length + capacityIncrement;
+    int newCapacity; 
     if (capacityIncrement <= 0)
       newCapacity = elementData.length * 2;
-
-    Object[]newArray = new Object[Math.max(newCapacity, minCapacity)];
+    else
+      newCapacity = elementData.length + capacityIncrement;
+      
+    Object[] newArray = new Object[Math.max(newCapacity, minCapacity)];
 
     System.arraycopy(elementData, 0, newArray, 0, elementData.length);
     elementData = newArray;
@@ -187,20 +197,18 @@ public class Vector extends AbstractList implements List,
   /**
    * Explicitly sets the size of the internal data array, copying the 
    * old values to the new internal array.  If the new array is smaller
-   * than the old one, old values that don't fit are lost.
+   * than the old one, old values that don't fit are lost. If the new size
+   * is larger than the old one, the vector is padded with null entries.
    *
    * @param newSize The new size of the internal array
    */
-  public void setSize(int newSize)
+  public synchronized void setSize(int newSize)
   {
-    if (newSize < elementCount)
-      {
-	modCount++;
-	elementCount = newSize;
-      }
+    modCount++;
     Object[] newArray = new Object[newSize];
-    System.arraycopy(elementData, 0, newArray, 0,
-		     Math.min(newSize, elementData.length));
+    System.arraycopy(elementData, 0, newArray, 0, 
+                     Math.min(newSize, elementCount));
+    elementCount = newSize;
     elementData = newArray;
   }
 
@@ -240,16 +248,16 @@ public class Vector extends AbstractList implements List,
    * and returns the index of the first occurence of this Object.  If
    * the object is not found, -1 is returned
    *
-   * @param elem The Object to search for
+   * @param e The Object to search for
    * @param index Start searching at this index
    * @returns The index of the first occurence of <b>elem</b>, or -1
    * if it is not found
    */
-  public int indexOf(Object elem, int index)
+  public synchronized int indexOf(Object e, int index)
   {
     for (int i = index; i < elementCount; i++)
       {
-	if (elementData[i].equals(elem))
+	if (e == null ? elementData[i] == null : e.equals(elementData[i]))
 	  return i;
       }
     return -1;
@@ -284,17 +292,18 @@ public class Vector extends AbstractList implements List,
    * backwards from <b>index</b>.  If the object does not occur in this Vector,
    * -1 is returned.
    *
-   * @param elem The object to search for
+   * @param eThe object to search for
    * @param index The index to start searching in reverse from
    * @returns The index of the Object if found, -1 otherwise
    */
-  public int lastIndexOf(Object elem, int index)
+  public synchronized int lastIndexOf(Object e, int index)
   {
-    if (index > elementCount - 1)
-      throw new ArrayIndexOutOfBoundsException(index);
+    if (index >= elementCount)
+      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
+
     for (int i = index; i >= 0; i--)
       {
-	if ((elementData[i] == elem) || elementData[i].equals(elem))
+	if (e == null ? elementData[i] == null : e.equals(elementData[i]))
 	  return i;
       }
     return -1;
@@ -321,12 +330,12 @@ public class Vector extends AbstractList implements List,
    * @throws ArrayIndexOutOfBoundsException <b>index</b> is
    * larger than the Vector
    */
-  public Object elementAt(int index)
+  public synchronized Object elementAt(int index)
   {
     //Within the bounds of this Vector does not necessarily mean within 
     //the bounds of the internal array
     if (index >= elementCount)
-      throw new ArrayIndexOutOfBoundsException(index);
+      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
 
     return elementData[index];
   }
@@ -338,9 +347,9 @@ public class Vector extends AbstractList implements List,
    * @returns The first Object in the Vector
    * @throws NoSuchElementException the Vector is empty
    */
-  public Object firstElement()
+  public synchronized Object firstElement()
   {
-    if (isEmpty())
+    if (elementCount == 0)
       throw new NoSuchElementException();
 
     return elementAt(0);
@@ -353,9 +362,9 @@ public class Vector extends AbstractList implements List,
    * @returns The last Object in the Vector
    * @throws NoSuchElementException the Vector is empty
    */
-  public Object lastElement()
+  public synchronized Object lastElement()
   {
-    if (isEmpty())
+    if (elementCount == 0)
       throw new NoSuchElementException();
 
     return elementAt(elementCount - 1);
@@ -370,10 +379,10 @@ public class Vector extends AbstractList implements List,
    * @param index The position in the Vector to store the object
    * @throws ArrayIndexOutOfBoundsException the index is out of range
    */
-  public void setElementAt(Object obj, int index)
+  public synchronized void setElementAt(Object obj, int index)
   {
-    if ((index < 0) || (index >= elementCount))
-      throw new ArrayIndexOutOfBoundsException(index);
+    if (index >= elementCount)
+      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
 
     elementData[index] = obj;
   }
@@ -386,11 +395,12 @@ public class Vector extends AbstractList implements List,
    * @param element The Object to store in the Vector
    * @returns The previous object at the specified index
    * @throws ArrayIndexOutOfBoundsException the index is out of range
+   *
    */
-  public Object set(int index, Object element)
+  public synchronized Object set(int index, Object element)
   {
     if (index >= elementCount)
-      throw new ArrayIndexOutOfBoundsException(index);
+      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
 
     Object temp = elementData[index];
     elementData[index] = element;
@@ -403,10 +413,10 @@ public class Vector extends AbstractList implements List,
    *
    * @param index The index of the element to remove
    */
-  public void removeElementAt(int index)
+  public synchronized void removeElementAt(int index)
   {
     if (index >= elementCount)
-      throw new ArrayIndexOutOfBoundsException(index);
+      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
 
     modCount++;
     elementCount--;
@@ -427,10 +437,11 @@ public class Vector extends AbstractList implements List,
    */
   public void insertElementAt(Object obj, int index)
   {
-    if ((index < 0) || (index > elementCount))
-      throw new ArrayIndexOutOfBoundsException(index);
+    if (index > elementCount)
+      throw new ArrayIndexOutOfBoundsException(index + " > " + elementCount);
 
-    ensureCapacity(++elementCount);
+    if (elementCount == elementData.length)
+      ensureCapacity(++elementCount);
     modCount++;
     System.arraycopy(elementData, index, elementData, index + 1,
 		     elementCount - 1 - index);
@@ -445,9 +456,10 @@ public class Vector extends AbstractList implements List,
    *
    * @param obj The object to add to the Vector
    */
-  public void addElement(Object obj)
+  public synchronized void addElement(Object obj)
   {
-    ensureCapacity(elementCount + 1);
+    if (elementCount == elementData.length)
+      ensureCapacity(++elementCount);
     modCount++;
     elementData[elementCount++] = obj;
   }
@@ -460,32 +472,28 @@ public class Vector extends AbstractList implements List,
    * @param obj The object to remove from the Vector
    * @returns true if the Object was in the Vector, false otherwise
    */
-  public boolean removeElement(Object obj)
+  public synchronized boolean removeElement(Object obj)
   {
-    int ix = indexOf(obj);
-    if (ix != -1)
+    int idx = indexOf(obj);
+    if (idx != -1)
       {
-	removeElementAt(ix);
+	removeElementAt(idx);
 	return true;
       }
-    else
-      {
-	return false;
-      }
+    return false;
   }
 
   /**
    * Removes all elements from the Vector.  Note that this does not
    * resize the internal data array.
    */
-  public void removeAllElements()
+  public synchronized void removeAllElements()
   {
-    if (size() != 0)
-      modCount++;
-    else
+    modCount++;
+    if (elementCount == 0)
       return;
 
-    for (int i = 0; i < elementData.length; i++)
+    for (int i = elementCount - 1; i >= 0; --i)
       {
 	elementData[i] = null;
       }
@@ -495,12 +503,12 @@ public class Vector extends AbstractList implements List,
   /**
    * Creates a new Vector with the same contents as this one.
    */
-  public Object clone()
+  public synchronized Object clone()
   {
     try
       {
 	Vector clone = (Vector) super.clone();
-	clone.elementData = (Object[])elementData.clone();
+	clone.elementData = (Object[]) elementData.clone();
 	return clone;
       }
     catch (CloneNotSupportedException ex)
@@ -519,7 +527,7 @@ public class Vector extends AbstractList implements List,
    * @returns An Object[] containing the contents of this Vector in order
    *
    */
-  public Object[] toArray()
+  public synchronized Object[] toArray()
   {
     Object[] newArray = new Object[elementCount];
     copyInto(newArray);
@@ -540,32 +548,20 @@ public class Vector extends AbstractList implements List,
    * array.
    *
    *
-   * @param a An array to copy the Vector into if large enough
+   * @param array An array to copy the Vector into if large enough
    * @returns An array with the contents of this Vector in order
    * @throws ArrayStoreException the runtime type of the provided array
    * cannot hold the elements of the Vector
    */
-  public Object[] toArray(Object[]a)
+  public synchronized Object[] toArray(Object[] array)
   {
-    if (a.length >= elementCount)
-      {
-	copyInto(a);
-	if (a.length > elementCount)
-	  {
-	    a[elementCount] = null;
-	  }
-	return a;
-      }
-    else
-      {
-	//This seems like a kludge.. Is there a better way to find the
-	//Runtime type of an array?
-	Object[]newArray =
-	  (Object[])Array.newInstance(a.getClass().getComponentType(),
-				      elementCount);
-	copyInto(newArray);
-	return newArray;
-      }
+    if (array.length < elementCount)
+      array = (Object[]) Array.newInstance(array.getClass().getComponentType(), 
+        				   elementCount);
+    else if (array.length > elementCount)
+      array[elementCount] = null;
+    System.arraycopy(elementData, 0, array, 0, elementCount);
+    return array;
   }
 
   /**
@@ -575,7 +571,7 @@ public class Vector extends AbstractList implements List,
    * @throws ArrayIndexOutOfBoundsException the index is not within the 
    * range of the Vector
    */
-  public Object get(int index)
+  public synchronized Object get(int index)
   {
     return elementAt(index);
   }
@@ -590,6 +586,17 @@ public class Vector extends AbstractList implements List,
   public boolean remove(Object o)
   {
     return removeElement(o);
+  }
+
+  /**
+   * Adds an object to the Vector.
+   *
+   * @param o The element to add to the Vector
+   */
+  public synchronized boolean add(Object o)
+  {
+    addElement(o);
+    return true;
   }
 
   /**
@@ -612,9 +619,11 @@ public class Vector extends AbstractList implements List,
    * @throws ArrayIndexOutOfBoundsException the index was out of the range
    * of the Vector
    */
-  public Object remove(int index)
+  public synchronized Object remove(int index)
   {
-    modCount++;
+    if (index >= elementCount)
+      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
+  
     Object temp = elementData[index];
     removeElementAt(index);
     return temp;
@@ -628,22 +637,80 @@ public class Vector extends AbstractList implements List,
     removeAllElements();
   }
 
+  public synchronized boolean containsAll(Collection c)
+  {
+    Iterator itr = c.iterator();
+    int size = c.size();
+    for (int pos = 0; pos < size; pos++)
+      {
+	if (!contains(itr.next()))
+	  return false;
+      }
+    return true;
+  }
+
+  public synchronized boolean addAll(Collection c)
+  {
+    return addAll(elementCount, c);
+  }
+  
+  public synchronized boolean removeAll(Collection c)
+  {
+    return super.removeAll(c);
+  }
+  
+  public synchronized boolean retainAll(Collection c)
+  {
+    return super.retainAll(c);
+  }
+
+  public synchronized boolean addAll(int index, Collection c)
+  {
+    if (index < 0 || index > elementCount)
+      throw new ArrayIndexOutOfBoundsException(index);
+    modCount++;
+    Iterator itr = c.iterator();
+    int csize = c.size();
+
+    ensureCapacity(elementCount + csize);
+    int end = index + csize;
+    if (elementCount > 0 && index != elementCount)
+      System.arraycopy(elementData, index, elementData, end, csize);
+    elementCount += csize;
+    for (; index < end; index++)
+      {
+        elementData[index] = itr.next();
+      }
+    return (csize > 0);  
+  }
+
+  public synchronized boolean equals(Object c)
+  {
+    return super.equals(c);
+  }
+
+  public synchronized int hashCode()
+  {
+    return super.hashCode();
+  }
+
   /**
    * Returns a string representation of this Vector in the form 
    * [element0, element1, ... elementN]
    *
    * @returns the String representation of this Vector
    */
-  public String toString()
+  public synchronized String toString()
   {
-    StringBuffer toReturn = new StringBuffer("[");
-    String comma = "";
+    String r = "[";
     for (int i = 0; i < elementCount; i++)
       {
-	toReturn.append(comma).append(elementData[i].toString());
-	comma = ", ";
+	r += elementData[i];
+	if (i < elementCount - 1)
+	  r += ", ";
       }
-    return toReturn.append("]").toString();
+    r += "]";
+    return r;
   }
 
   /**
@@ -654,21 +721,42 @@ public class Vector extends AbstractList implements List,
    *
    * @returns an Enumeration
    */
-  public Enumeration elements()
+  public synchronized Enumeration elements()
   {
     return new Enumeration()
     {
       int i = 0;
-      public final boolean hasMoreElements()
+      public boolean hasMoreElements()
       {
-	return (i < size());
+	return (i < elementCount);
       }
-      public final Object nextElement()
+      public Object nextElement()
       {
-	if (i >= size())
+	if (i >= elementCount)
 	  throw new NoSuchElementException();
 	return (elementAt(i++));
       }
     };
   }
-}				// Vector
+  
+  public List subList(int fromIndex, int toIndex)
+  {
+    List sub = super.subList(fromIndex, toIndex);
+    return Collections.synchronizedList(sub);
+  }
+  
+  /** @specnote This is not specified as synchronized in the JCL, but it seems
+    * to me that is should be. If it isn't, a clear() operation on a sublist
+    * will not be synchronized w.r.t. the Vector object.
+    */
+  protected synchronized void removeRange(int fromIndex, int toIndex)
+  {
+    modCount++;
+    if (fromIndex != toIndex)
+      {
+	System.arraycopy(elementData, toIndex, elementData, fromIndex, 
+	                 elementCount - toIndex);
+	elementCount -= (toIndex - fromIndex);
+      }
+  }
+}
