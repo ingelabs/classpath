@@ -1,27 +1,33 @@
+The following have made minor contributions to the Classpath
+project, such as testing, bug submission, or minor patches. See also
+the AUTHORS file, which lists people who have submitted major
+patches. If your name does not appear on either list, but should, let
+us know. Please keep this list in alphabetic order.
+
 C. Scott Ananian (cananian@lesser-magoo.lcs.mit.edu)
 Artur Biesiadowski (abies@pg.gda.pl)
+Per Bothner (per@bothner.com)
+Sascha Brawer (brawer@acm.org)
+Stephen Crawley (crawley@dstc.edu.au)
 Moses DeJong (dejong@cs.umn.edu)
+Patrick Doyle (doylep@eecg.toronto.edu)
 Raimar Falke (hawk@hawk.shef.ac.uk)
+Fred Gray (fegray@npl.uiuc.edu)
 Christian Grothoff <grothoff@cs.purdue.edu>
 Steven Hugg (hugg@pobox.com)
 jockey@aromasoft.com
+Isaac Jones (ijones@cis.ohio-state.edu)
 Matt Mucklo (mmucklo@jumpsmart.com)
+Takashi Okamoto (tora@debian.org)
 Alexandre Oliva (oliva@dcc.unicamp.br)
 Daniel Rall(dlr@west.net)
 Petter Reinholdtsen (pere@hungry.com)
+Julian Scheid (julian.scheid@sektor37.de)
 Martin Schröder (ms@artcom-gmbh.de)
+Gaute Smaaland (gs@sevenmountains.no)
 Sreenivas Subramoney (sreenivas.subramoney@intel.com)
 Chris Toshok (toshok@hungry.com)
-Mark Wielaard (mark@klomp.org)
-Gaute Smaaland (gs@sevenmountains.no)
 Weldon Washburn (mailto:weldon.washburn@intel.com)
 Adam Welc (welc@cs.purdue.edu)
-Takashi Okamoto (tora@debian.org)
 Gansha Wu (gansha.wu@intel.com)
-Julian Scheid (julian.scheid@sektor37.de)
-Per Bothner (per@bothner.com)
-Fred Gray (fegray@npl.uiuc.edu)
-Isaac Jones (ijones@cis.ohio-state.edu)
-Patrick Doyle (doylep@eecg.toronto.edu)
 Shuhua Zhang (Shuhua.Zhang@echostar.com)
-Sascha Brawer (brawer@acm.org)

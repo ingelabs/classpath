@@ -1,16 +1,23 @@
-Paul Fisher (rao@gnu.org)
-Aaron M. Renn (arenn@urbanophile.com)
-Brian Jones (cbj@gnu.org)
-Geoff Berry (gcb@gnu.org)
-John Keiser (jkeiser@iname.com)
-Jim Blair (jeblair@eos.ncsu.edu)
+The following have made major contributions to the Classpath
+project. See also the THANKYOU file, which lists people who have
+caught bugs or submitted minor patches. If your name does not appear
+on either list, but should, let us know. Please keep this list in
+alphabetic order.
+
 Stuart Ballard (stuart.ballard@mcmail.com)
-Jochen Hoenicke (Jochen.Hoenicke@Informatik.Uni-Oldenburg.de)
-Jon A. Zeppieri (jon@eease.com)
 Mark Benvenuto (mcb54@columbia.edu)
-Bryce McKinlay (bryce@waitaki.otago.ac.nz)
-Mark Wielaard (mark@klomp.org)
-Tom Tromey (tromey@cygnus.com)
-Anthony Green (green@redhat.com)
-Warren Levy (warrenl@cygnus.com)
+Geoff Berry (gcb@gnu.org)
+Jim Blair (jeblair@eos.ncsu.edu)
 Eric Blake (ebb9@email.byu.edu)
+Paul Fisher (rao@gnu.org)
+Anthony Green (green@redhat.com)
+Jochen Hoenicke (Jochen.Hoenicke@Informatik.Uni-Oldenburg.de)
+Brian Jones (cbj@gnu.org)
+John Keiser (jkeiser@iname.com)
+John Leuner (jewel@debian.org)
+Warren Levy (warrenl@cygnus.com)
+Bryce McKinlay (bryce@waitaki.otago.ac.nz)
+Aaron M. Renn (arenn@urbanophile.com)
+Tom Tromey (tromey@cygnus.com)
+Mark Wielaard (mark@klomp.org)
+Jon A. Zeppieri (jon@eease.com)
