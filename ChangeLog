@@ -1,5 +1,35 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/channels/spi/AbstractSelectableChannel.java
+	(registered): Made private.
+	(blocking): Likewise.
+	(LOCK): Likewise.
+	(provider): Likewise.
+	(keys): Made it a private LinkedList.
+	(AbstractSelectableChannel): Initialize keys.
+	(isRegistered): New implementation.
+	(locate): Rewritten.
+	(register): Rewritten.
+	* java/nio/channels/spi/AbstractSelectionKey.java
+	(ok): Removed.
+	(cancelled): New member variable.
+	(cancel): Rewritten.
+	(isValid): Rewritten.
+	* java/nio/channels/spi/AbstractSelector.java:
+	Some methods moved.
+	(closed): Make private.
+	(provider): Likewise.
+	(cancelledKeys): New member variable.
+	(AbstractSelector): Initialize cancelledKeys.
+	(cancelKey): New method.
+	* java/nio/channels/spi/SelectorProvider.java
+	(pr): Removed.
+	(systemDefaultProvider): New member variable.
+	(provider): Made it synchronized, use property
+	java.nio.channels.spi.SelectorProvider.
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/FilePermission.java
 	(implies): Removed unused local variables.
 	* java/io/ObjectStreamClass.java
