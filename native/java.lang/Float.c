@@ -21,7 +21,7 @@
 
 #include <config.h>
 #include <stdlib.h>  /* for strtod() */
-#include <huge_val.h>  /* for HUGE_VAL */
+#include <math.h>  /* for HUGE_VAL */
 
 #include "javalang.h"
 #include "java_lang_Float.h"
