@@ -1,4 +1,8 @@
-New in release 0.0 (1999/02/01)
+New in release 0.01 (2000/11/20)
+* More packages are included now, though many remain untested.
+* Support for Japhar 0.09 included.
+
+New in release 0.00 (1999/02/01)
 * First official development release of clean room class library for Java
 * Following packages included:
 	-- java.beans
@@ -11,7 +15,7 @@ New in release 0.0 (1999/02/01)
 	-- java.security.acl
 	-- java.security.interfaces
 	-- java.util
-* Code is mostly Java 2 (nee JDK 1.2) compatible with some functionality
+* Code is mostly Java 2 (see JDK 1.2) compatible with some functionality
   missing and/or untested.
 * Support for Japhar (http://www.japhar.org/) virtual machine is included.
   Requires the current Japhar from CVS.
