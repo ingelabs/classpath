@@ -16,44 +16,21 @@ propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -type d !
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -name \*\.properties)
 
 #-----------------------------------------------------------------
-# defining how to designate classpath for a vm and a javac type
-# program
-#-----------------------------------------------------------------
-ARG_CLASSPATH_VM = -classpath
-
-if USER_SPECIFIED_KJC
-ARG_CLASSPATH_JAVAC = --classpath
-else
-ARG_CLASSPATH_JAVAC = -classpath
-endif
-
-#-----------------------------------------------------------------
 # handling javac definition including programs like jikes here
 #-----------------------------------------------------------------
 if FOUND_JIKES
-JAVAC = $(JIKES) +F -bootclasspath '' -extdirs '' -sourcepath '' $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -d . @classes
+JAVAC = $(JIKES) +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -d . @classes
 else
 if FOUND_GCJ
-JAVAC = $(GCJ) --bootclasspath '' $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -C -d . @classes
+JAVAC = $(GCJ) --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -C -d . @classes
 else
 if FOUND_KJC
-JAVAC = $(KJC) $(ARG_CLASSPATH_JAVAC) .:$(USER_CLASSLIB) -d . @classes
+JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
 endif # FOUND_KJC
 endif # FOUND_GCJ
 endif # FOUND_JIKES
 
-#-----------------------------------------------------------------
-# defining how to designate classpath for a vm and a javac type 
-# program
-#-----------------------------------------------------------------
-ARG_JNI_JAVAH = -jni
-
-#-----------------------------------------------------------------
-# defining classpath arg for javah-like program
-#-----------------------------------------------------------------
-ARG_CLASSPATH_JAVAH = -classpath
-
-JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
+JAVAH = $(USER_JAVAH) -jni -classpath .:$(USER_CLASSLIB)
 
 if INSTALL_GLIBJ_ZIP
 
