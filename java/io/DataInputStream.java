@@ -311,7 +311,7 @@ readInt() throws EOFException, IOException
 
   readFully(buf);
 
-  int retval = ((buf[0] & 0xFF) << 24) | ((buf[1] & 0xFF) << 16) + 
+  int retval = ((buf[0] & 0xFF) << 24) | ((buf[1] & 0xFF) << 16) | 
                ((buf[2] & 0xFF) << 8) | (buf[3] & 0xFF);
 
   return(retval);
@@ -667,37 +667,23 @@ readFully(byte[] buf, int offset, int len) throws EOFException, IOException
 /*************************************************************************/
 
 /**
-  * This method skips and discards the specified number of bytes in an
-  * input stream
+  * This method attempts to skip and discard the specified number of bytes 
+  * in the input stream.  It may actually skip fewer bytes than requested. 
+  * The actual number of bytes skipped is returned.  This method will not
+  * skip any bytes if passed a negative number of bytes to skip.
   *
-  * @param num_bytes The number of bytes to skip
+  * @param num_bytes The requested number of bytes to skip.
   *
-  * @return The number of bytes actually skipped, which will always be @code{num_bytes}
+  * @return The number of bytes actually skipped.
   *
-  * @exception EOFException If end of file is reached before all bytes can be skipped
-  * @exception IOException If any other error occurs
+  * @exception IOException If an error occurs.
   */
 public final int
 skipBytes(int n) throws EOFException, IOException
 {
-  long total_skipped = 0;
+  long total_skipped = in.skip(n);
 
-  while (total_skipped < n)
-    {
-      long bytes_skipped = in.skip(total_skipped - n);
-
-      // If we can't skip anymore, try once more, then bomb out
-      if (bytes_skipped == 0)
-        {
-          bytes_skipped = in.skip(total_skipped - n);
-          if (bytes_skipped == 0)
-            throw new EOFException("Unexpected end of stream");
-        }
-
-      total_skipped += bytes_skipped;
-    }
-
-  return(n);
+  return((int)n);
 }
 
 } // interface DataInput
