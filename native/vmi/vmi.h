@@ -37,6 +37,8 @@ typedef enum {
 #define VMI_MOD_INTERFACE    0x0200
 #define VMI_MOD_ABSTRACT     0x0400
 
+JNIEXPORT vmiError JNICALL
+VMI_GetFrameClass(JNIEnv *env, jframeID frame, jobject *obj);
 
 JNIEXPORT vmiError JNICALL
 VMI_GetFrameObject(JNIEnv *env, jframeID frame, jobject *obj);

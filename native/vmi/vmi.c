@@ -7,6 +7,14 @@
 #include <native-threads.h>
 
 JNIEXPORT vmiError JNICALL
+VMI_GetFrameClass(JNIEnv *env,
+		      jframeID frame,
+		      jclass *clazz) {
+	
+	return VMI_ERROR_NONE;
+}
+
+JNIEXPORT vmiError JNICALL
 VMI_GetFrameObject(JNIEnv *env,
 		      jframeID frame,
 		      jobject *obj) {
