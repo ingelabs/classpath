@@ -1,5 +1,5 @@
 /* LocaleInformation.java -- Default locale information
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -34,4 +34,3 @@ package gnu.java.locale;
 public class LocaleInformation extends LocaleInformation_en
 {
 }
-
