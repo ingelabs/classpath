@@ -1,3 +1,7 @@
+2003-02-04  Mark Wielaard <mark@klomp.org>
+
+	* java/util/jar/JarFile.java: Reindent.
+
 2003-02-04  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/PipedOutputStream.java (flush): Declare as throwing
@@ -9,6 +13,7 @@
 	IOException.
 
 2003-02-03  John Leuner  <jewel@debian.org>
+
 	* java/util/zip/InflaterInputStream.java: fix problem with 0-length 
 	reads from end of file
 	* java/util/zip/ZipInputStream.java: idem
