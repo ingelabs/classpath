@@ -24,20 +24,6 @@
 #include "gdkjnithreads.h"
 
 /*
- * Initialize the native state table.  This may go away soon.
- */
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkMainThread_GtkInitTable (JNIEnv *env, jclass clazz)
-{
-  window_table=init_state_table (env,clazz);
-  if (window_table==NULL)
-    {
-      printf ("can't make window table\n");
-    }
-}
-
-/*
  * Call gtk_init.  It is very important that this happen before any other
  * gtk calls.
  */
@@ -52,8 +38,10 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_GtkInit (JNIEnv *env, jclass clazz)
 
   printf ("init\n");
 
+  NSA_INIT(env, clazz);
+
   /* GTK requires a program's argc and argv variables, and requires that they
-     be valid.  Presumably this is because X requires them as well.  */
+     be valid.  */
 
   argv=(char **)malloc (sizeof(char*)*2);
   argv[0]="";

@@ -22,11 +22,6 @@
 #include "gtkpeer.h"
 #include "GtkWindowPeer.h"
 
-void
-window_resized_callback(GtkWidget *window, gpointer data)
-{
-}
-
 /*
  * Make a new window (any type)
  */
@@ -54,10 +49,6 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GtkWindowNew (JNIEnv *env, jobject obj,
   fix=gtk_fixed_new();
   
   gtk_widget_set_usize(window,width,height);
-
-  gtk_signal_connect (GTK_OBJECT (window), "configure_event",
-		      GTK_SIGNAL_FUNC (window_resized_callback),
-		      fix);
   
   printf("c: requisition: %i x %i allocation:%i x %i\n",
 	 GTK_WIDGET(window)->requisition.width,
@@ -70,13 +61,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GtkWindowNew (JNIEnv *env, jobject obj,
   gdk_threads_wake();
   (*env)->MonitorExit (env,java_mutex);
 
-  if (window_table!=NULL)
-    {
-      if (set_state (env,obj,window_table,((void *)window))<0)
-	{
-	  printf ("can't set state\n");
-	}
-    }
+  NSA_SET_PTR (env, obj, window);
 }
 
 
@@ -91,23 +76,16 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GtkWindowSetTitle (JNIEnv *env,
   void *ptr;
   char *str;
 
-  ptr=get_state(env,obj,window_table);
+  ptr = NSA_GET_PTR (env, obj);
   
-  if (ptr==NULL)
-    {
-      printf ("can't get state\n");
-    }
-  else
-    {
-      str=(char *)(*env)->GetStringUTFChars (env, title, 0);      
-
-      (*env)->MonitorEnter (env,java_mutex);
-      gtk_window_set_title (GTK_WINDOW (ptr),str);
-      gdk_threads_wake();
-      (*env)->MonitorExit (env,java_mutex);
-
-      (*env)->ReleaseStringUTFChars (env, title, str);
-    }
+  str=(char *)(*env)->GetStringUTFChars (env, title, 0);      
+  
+  (*env)->MonitorEnter (env,java_mutex);
+  gtk_window_set_title (GTK_WINDOW (ptr),str);
+  gdk_threads_wake();
+  (*env)->MonitorExit (env,java_mutex);
+  
+  (*env)->ReleaseStringUTFChars (env, title, str);
 }
 
 /*
@@ -120,19 +98,12 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GtkWindowSetPolicy (JNIEnv *env,
 {
   void *ptr;
   
-  ptr=get_state (env,obj,window_table);
+  ptr = NSA_GET_PTR (env, obj);
   
-  if (ptr==NULL)
-    {
-      printf ("can't get state\n");
-    }
-  else
-    {
-      (*env)->MonitorEnter (env,java_mutex);
-      gtk_window_set_policy (GTK_WINDOW (ptr),shrink,grow,autos);
-      gdk_threads_wake();
-      (*env)->MonitorExit (env,java_mutex);
-    }
+  (*env)->MonitorEnter (env,java_mutex);
+  gtk_window_set_policy (GTK_WINDOW (ptr),shrink,grow,autos);
+  gdk_threads_wake();
+  (*env)->MonitorExit (env,java_mutex);
 }
 
 
@@ -145,19 +116,12 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GdkWindowLower (JNIEnv *env,
     jobject obj)
 {
   void *ptr;
-  ptr=get_state (env,obj,window_table);
+  ptr = NSA_GET_PTR (env, obj);
     
-  if (ptr==NULL)
-    {
-      printf ("can't get state\n");
-    }
-  else
-    {
-      (*env)->MonitorEnter (env,java_mutex);
-      gdk_window_lower (GTK_WIDGET (ptr)->window);
-      gdk_threads_wake();
-      (*env)->MonitorExit (env,java_mutex);
-    }
+  (*env)->MonitorEnter (env,java_mutex);
+  gdk_window_lower (GTK_WIDGET (ptr)->window);
+  gdk_threads_wake();
+  (*env)->MonitorExit (env,java_mutex);
 }
 
 /*
@@ -169,17 +133,10 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GdkWindowRaise (JNIEnv *env,
     jobject obj)
 {
   void *ptr;
-  ptr=get_state (env,obj,window_table);
+  ptr = NSA_GET_PTR (env, obj);
     
-  if (ptr==NULL)
-    {
-      printf ("can't get state\n");
-    }
-  else
-    {
-      (*env)->MonitorEnter (env,java_mutex);
-      gdk_window_raise (GTK_WIDGET (ptr)->window);
-      gdk_threads_wake();
-      (*env)->MonitorExit (env,java_mutex);
-    }
+  (*env)->MonitorEnter (env,java_mutex);
+  gdk_window_raise (GTK_WIDGET (ptr)->window);
+  gdk_threads_wake();
+  (*env)->MonitorExit (env,java_mutex);
 }

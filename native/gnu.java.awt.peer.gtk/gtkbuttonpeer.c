@@ -40,13 +40,8 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_GtkButtonNewWithLabel
   gdk_threads_wake();
   (*env)->MonitorExit (env,java_mutex);
 
-  if (window_table!=NULL)
-    {
-      if (set_state (env,obj,window_table,((void *)button))<0)
-	{
-	  printf ("can't set state\n");
-	}
-    }
+  NSA_SET_PTR (env, obj, button);
+
   (*env)->ReleaseStringUTFChars (env, label, str);
 }
 
@@ -61,33 +56,26 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_GtkButtonLabelSet
   char *str;
   GList *child;
 
-  ptr=get_state(env,obj,window_table);
+  ptr=NSA_GET_PTR (env, obj);
   
   printf("labelset\n");
 
-  if (ptr==NULL)
-    {
-      printf ("can't get state\n");
-    }
-  else
-    {
-      str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
-      (*env)->MonitorEnter (env,java_mutex);
-   
-      /* We assume that the button has 1 child, a label. */
-      /* We'd better not be wrong. */
-
-      child=gtk_container_children (GTK_CONTAINER(ptr));
-      if (!child)
-	printf("No children in button!\n");
-      if(!GTK_IS_LABEL(child->data))
-	printf("Child is not label!\n");
-
-      gtk_label_set (GTK_LABEL(child->data),str);
-      gdk_threads_wake();
-      (*env)->MonitorExit (env,java_mutex);
-      (*env)->ReleaseStringUTFChars (env, label, str);
-      g_list_free(child);
-    }
+  str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
+  (*env)->MonitorEnter (env,java_mutex);
+  
+  /* We assume that the button has 1 child, a label. */
+  /* We'd better not be wrong. */
+  
+  child=gtk_container_children (GTK_CONTAINER(ptr));
+  if (!child)
+    printf("No children in button!\n");
+  if(!GTK_IS_LABEL(child->data))
+    printf("Child is not label!\n");
+  
+  gtk_label_set (GTK_LABEL(child->data),str);
+  gdk_threads_wake();
+  (*env)->MonitorExit (env,java_mutex);
+  (*env)->ReleaseStringUTFChars (env, label, str);
+  g_list_free(child);
 }
 

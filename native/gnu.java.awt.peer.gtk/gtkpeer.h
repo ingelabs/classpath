@@ -28,6 +28,10 @@
 #include <jni.h>
 
 #define RC_FILE      ".classpath-gtkrc"
+#define JVM_SUN
+/*
+  #define JVM_JAPHAR
+*/
 
 #ifndef __GTKPEER_H__
 #define __GTKPEER_H__
@@ -36,5 +40,20 @@
 #define EXTERN extern
 #endif
 
-EXTERN struct state_table *window_table;
+#ifdef JVM_SUN
+
+EXTERN struct state_table *native_state_table;
+
+#define NSA_INIT(env, clazz) \
+  native_state_table = init_state_table (env, clazz)
+
+#define NSA_GET_PTR(env, obj) \
+  get_state (env, obj, native_state_table)
+
+#define NSA_SET_PTR(env, obj, ptr) \
+  set_state (env, obj, native_state_table, (void *)ptr)
+
+#endif /* JVM_SUN */
+
 EXTERN jobject java_mutex;
+

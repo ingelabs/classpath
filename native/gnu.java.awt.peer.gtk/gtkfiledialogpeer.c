@@ -36,13 +36,7 @@ Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_GtkFileSelectionNew (JNIEnv *env,
   window=GTK_WIDGET (gtk_file_selection_new (NULL));
   gdk_threads_wake();
   (*env)->MonitorExit (env,java_mutex);
-  if (window_table!=NULL)
-    {
-      if (set_state (env,obj,window_table,((void *)window))<0)
-	{
-	  printf ("can't set state\n");
-	}
-    }
+  NSA_SET_PTR (env, obj, window);
 }
 
 /*
@@ -55,19 +49,13 @@ Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_GtkFileSelectionSetFilename
 {
   void *ptr;
   char *str;
-  ptr=get_state (env,obj,window_table);
+
+  ptr=NSA_GET_PTR (env, obj);
     
-  if (ptr==NULL)
-    {
-      printf ("can't get state\n");
-    }
-  else
-    {
-      str=(char *)(*env)->GetStringUTFChars (env, filename, 0);      
-      (*env)->MonitorEnter (env,java_mutex);
-      gtk_file_selection_set_filename (GTK_FILE_SELECTION (ptr), str);
-      gdk_threads_wake();
-      (*env)->MonitorExit (env,java_mutex);
-      (*env)->ReleaseStringUTFChars (env, filename, str);
-    }
+  str=(char *)(*env)->GetStringUTFChars (env, filename, 0);      
+  (*env)->MonitorEnter (env,java_mutex);
+  gtk_file_selection_set_filename (GTK_FILE_SELECTION (ptr), str);
+  gdk_threads_wake();
+  (*env)->MonitorExit (env,java_mutex);
+  (*env)->ReleaseStringUTFChars (env, filename, str);
 }

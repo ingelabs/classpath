@@ -57,14 +57,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuNew (JNIEnv *env,
   gdk_threads_wake();
   (*env)->MonitorExit (env,java_mutex);
 
-  if (window_table!=NULL)
-    {
-      if (set_state (env,obj,window_table,((void *)optionmenu))<0)
-	{
-	  printf ("can't set state\n");
-	}
-    }
-
+  NSA_SET_PTR (env, obj, optionmenu);
 }
 
 JNIEXPORT void JNICALL 
@@ -75,7 +68,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuAdd (JNIEnv *env,
   char *label;
   GtkWidget *menu, *menuitem;
 
-  ptr=get_state (env, obj, window_table);
+  ptr=NSA_GET_PTR (env, obj);
   
   printf("add\n");
 
@@ -101,7 +94,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuRemove (JNIEnv *env,
   GtkMenuShell *menu_shell;
   GList *tmp_list, *tmp;
 
-  ptr=get_state (env, obj, window_table);
+  ptr = NSA_GET_PTR (env, obj);
   
   printf("remove\n");
 
@@ -125,7 +118,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuSelect (JNIEnv *env,
 {
   void *ptr;
 
-  ptr=get_state (env, obj, window_table);
+  ptr=NSA_GET_PTR (env, obj);
   
   printf("set\n");
 

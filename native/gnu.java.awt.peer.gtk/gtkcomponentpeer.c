@@ -35,28 +35,21 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetShowChildren (JNIEnv *env,
 
   printf("showing children\n");
 
-  ptr=get_state (env,obj,window_table);
+  ptr=NSA_GET_PTR (env, obj);
   
-  if (ptr==NULL)
+  (*env)->MonitorEnter (env,java_mutex);
+  widget=GTK_WIDGET (ptr);
+  
+  /* Windows are the real reason we are here... to show the fixed and
+     everything in it. */
+  if (GTK_IS_WINDOW(GTK_OBJECT(ptr)))
     {
-      printf ("can't get state\n");
+      child=gtk_container_children (GTK_CONTAINER(widget));
+      gtk_widget_show_all(GTK_WIDGET(child->data));
+      g_list_free(child);
     }
-  else
-    {
-      (*env)->MonitorEnter (env,java_mutex);
-      widget=GTK_WIDGET (ptr);
-
-      /* Windows are the real reason we are here... to show the fixed and
-	 everything in it. */
-      if (GTK_IS_WINDOW(GTK_OBJECT(ptr)))
-	{
-	  child=gtk_container_children (GTK_CONTAINER(widget));
-	  gtk_widget_show_all(GTK_WIDGET(child->data));
-	  g_list_free(child);
-	}
-      gdk_threads_wake();
-      (*env)->MonitorExit (env,java_mutex);
-    }
+  gdk_threads_wake();
+  (*env)->MonitorExit (env,java_mutex);
 }
 
 /*
@@ -70,30 +63,23 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetShow (JNIEnv *env,
   void *ptr;
   GList *child;
 
-  ptr=get_state (env,obj,window_table);
+  ptr = NSA_GET_PTR (env, obj);
   
-  if (ptr==NULL)
+  (*env)->MonitorEnter (env,java_mutex);
+  widget=GTK_WIDGET (ptr);
+  
+  /* Windows are a special case; they have a fixed widget
+     which needs to be shown as well. */
+  if (GTK_IS_WINDOW(GTK_OBJECT(ptr)))
     {
-      printf ("can't get state\n");
+      child=gtk_container_children (GTK_CONTAINER(widget));
+      gtk_widget_show(GTK_WIDGET(child->data));
+      g_list_free(child);
     }
-  else
-    {
-      (*env)->MonitorEnter (env,java_mutex);
-      widget=GTK_WIDGET (ptr);
-
-      /* Windows are a special case; they have a fixed widget
-	 which needs to be shown as well. */
-      if (GTK_IS_WINDOW(GTK_OBJECT(ptr)))
-	{
-	  child=gtk_container_children (GTK_CONTAINER(widget));
-	  gtk_widget_show(GTK_WIDGET(child->data));
-	  g_list_free(child);
-	}
-      
-      gtk_widget_show (widget);
-      gdk_threads_wake();
-      (*env)->MonitorExit (env,java_mutex);
-    }
+  
+  gtk_widget_show (widget);
+  gdk_threads_wake();
+  (*env)->MonitorExit (env,java_mutex);
 }
 
 /*
@@ -103,9 +89,12 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetGetDimensions
     (JNIEnv *env, jobject obj, jintArray jdims)
 {
-    void *ptr=get_state (env,obj,window_table);
-    jint *dims = (*env)->GetIntArrayElements (env, jdims, 0);  
+    void *ptr;
+    jint *dims;
     GtkRequisition myreq;
+
+    ptr = NSA_GET_PTR (env,obj);
+    dims = (*env)->GetIntArrayElements (env, jdims, 0);  
 
     (*env)->MonitorEnter (env,java_mutex);
 
@@ -133,7 +122,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetSetUsize (JNIEnv *env,
   GtkWidget *widget;
   void *ptr=NULL;
 
-  ptr=get_state (env,obj,window_table);
+  ptr = NSA_GET_PTR (env, obj);
   
   (*env)->MonitorEnter (env,java_mutex);
   widget=GTK_WIDGET(ptr);
@@ -155,13 +144,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkFixedNew (JNIEnv *env,
   gdk_threads_wake();
   (*env)->MonitorExit (env,java_mutex);
 
-  if (window_table!=NULL)
-    {
-      if (set_state (env,obj,window_table,((void *)fix))<0)
-	{
-	  printf ("can't set state\n");
-	}
-    }
+  NSA_SET_PTR (env, obj, fix);
 }
 
 /*
@@ -182,8 +165,8 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkFixedPut
      this component added to its fixed.  If it is a fixed, we add the
      component to it. */
   
-  containerptr=get_state (env,container,window_table);
-  objptr=get_state (env,obj,window_table);
+  containerptr=NSA_GET_PTR (env, container);
+  objptr=NSA_GET_PTR (env, obj);
   
   (*env)->MonitorEnter (env,java_mutex);
   if (GTK_IS_WINDOW(GTK_OBJECT(containerptr)))
@@ -254,18 +237,18 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkFixedMove (JNIEnv *env,
   
   if(x>=0 && y>=0) 
     {
-      ptr=get_state (env,obj,window_table);
+      ptr=NSA_GET_PTR (env, obj);
       
-      (*env)->MonitorEnter (env,java_mutex);
-      widget=GTK_WIDGET(ptr);
+      (*env)->MonitorEnter (env, java_mutex);
+      widget=GTK_WIDGET (ptr);
       if (!GTK_IS_WINDOW (widget))
 	{
 	  fix=widget->parent;
 	  
-	  gtk_fixed_move(GTK_FIXED(fix),widget,x,y);
+	  gtk_fixed_move (GTK_FIXED(fix), widget, x, y);
 	}
-      gdk_threads_wake();
-      (*env)->MonitorExit (env,java_mutex);
+      gdk_threads_wake ();
+      (*env)->MonitorExit (env, java_mutex);
     }
 }
 

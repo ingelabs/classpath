@@ -73,13 +73,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowNew
   gdk_threads_wake();
   (*env)->MonitorExit (env,java_mutex);
 
-  if (window_table!=NULL)
-    {
-      if (set_state (env,obj,window_table,((void *)sw))<0)
-	{
-	  printf ("can't set state\n");
-	}
-    }
+  NSA_SET_PTR (env, obj, sw);
   
   (*env)->ReleaseIntArrayElements(env, jdims, dims, 0);
 }
@@ -90,7 +84,9 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowSetScrollPosition
 {
   GtkAdjustment *hadj, *vadj;
   GtkScrolledWindow *sw;
-  void *ptr=get_state (env,obj,window_table);
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
 
   (*env)->MonitorEnter (env,java_mutex);
   sw=GTK_SCROLLED_WINDOW(ptr);
@@ -111,7 +107,9 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowSetHScrollIncremen
 {
   GtkAdjustment *hadj;
   GtkScrolledWindow *sw;
-  void *ptr=get_state (env,obj,window_table);
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
 
   (*env)->MonitorEnter (env,java_mutex);
   sw=GTK_SCROLLED_WINDOW(ptr);
@@ -129,7 +127,9 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowSetVScrollIncremen
 {
   GtkAdjustment *vadj;
   GtkScrolledWindow *sw;
-  void *ptr=get_state (env,obj,window_table);
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
 
   (*env)->MonitorEnter (env,java_mutex);
   sw=GTK_SCROLLED_WINDOW(ptr);
@@ -147,7 +147,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledW
   GtkScrolledWindow *sw;
   GtkWidget *fix;
   GList *child;
-  void *ptr=get_state (env,obj,window_table);
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
 
   (*env)->MonitorEnter (env,java_mutex);
   sw=GTK_SCROLLED_WINDOW(ptr);
