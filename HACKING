@@ -41,7 +41,11 @@ If you start from the current CVS version, you will have to run the
 following from the toplevel directory.  The autoreconf script does not
 always run these as might be expected.
 
-        aclocal; autoheader; automake; autoconf
+  aclocal && libtoolize --force && autoconf && autoheader && automake -a -c
+
+or, alternatively, you can simply run the provided script:
+
+  ./autogen.sh
 
 For those that do not understand why these programs must be executed, here
 is a brief lesson.  
