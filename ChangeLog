@@ -1,3 +1,8 @@
+2001-07-30  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/util/GregorianCalendar.java (GregorianCalendar): Call
+	setTimeInMillis() to set the default/current time.
+
 2001-07-26  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/util/Calendar.java (set): Never recompute fields here. They 
