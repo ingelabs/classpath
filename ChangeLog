@@ -1,3 +1,15 @@
+2001-02-20  Jochen Hoenicke <jochen@gnu.org>
+
+	* scripts/timezones.pl (parseOffset): Parse negative times
+	correctly. (parseTime): Likewise.
+	Adapted to new indentation in TimeZone.java.
+	Read in tzabbrevs.  Improved time zone sort order.
+	* scripts/tzabbrevs: New file containing abbreviated timezone as
+	specified in the JCL.  Corresponds to the change from Warren Levy
+	from 2001-01-09.
+	* java/util/TimeZone.java: Rebuild Timezone database from
+	tzdata2000h.
+
 2001-02-20  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/PipedWriter.java (flush): Throw exception if stream

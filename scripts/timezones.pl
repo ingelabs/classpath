@@ -2,12 +2,13 @@
 # Create the timezone tables  for java/util/TimeZone from the 
 # standard timezone sources by Arthur David Olson (as used by glibc)
 # 
-# This needs the files from the package tzdata1999c which may be found
-# at ftp://elsie.nic.nih.gov/pub/.
+# This needs the files from the package tzdata2000h which may be found
+# at ftp://ftp.cs.mu.oz.au/pub/.
 
-$TIMEZONEDIR = "/usr/src/scratch/glibc-2.1.1/timezone";
+$TIMEZONEDIR = "tzdata";
 @TIMEZONEFILES = ("africa", "antarctica", "asia", "australasia",
-		  "europe", "northamerica", "pacificnew", "southamerica");
+		  "europe", "northamerica", "pacificnew", "southamerica",
+		  "../tzabbrevs");
 
 # rules hash table:
 #  key is a rule name
@@ -30,11 +31,14 @@ my @timezones = ( [ "GMT", 0, "-", [ "GMT", "UTC" ] ]);
 # in milliseconds against UTC
 sub parseOffset($) {
     my $offset = $_[0];
-    $offset =~ /^([+-]?\d+)(:(\d+)(:(\d+))?)?$/
+    $offset =~ /^([+-]?)(\d+)(:(\d+)(:(\d+))?)?$/
 	or die "Can't parse offset $offset";
-    my $seconds = $1 * 3600;
-    $seconds += $3 * 60 if ($2);
-    $seconds += $5 if ($2 && $4);
+    my $seconds = $2 * 3600;
+    $seconds += $4 * 60 if ($3);
+    $seconds += $6 if ($3 && $5);
+    if ($1 eq "-") {
+        $seconds = - $seconds;
+    }
     return $seconds * 1000;
 }
 
@@ -43,14 +47,17 @@ sub parseOffset($) {
     my $timezonename;
 sub parseTime($$$) {
     my ($rawoffset, $stdoffset, $time) = @_;
-    $time =~ /^([+-]?\d+):(\d+)(:(\d+))?([swguz]?)$/
+    $time =~ /^([+-]?)(\d+):(\d+)(:(\d+))?([swguz]?)$/
 	or die "Can't parse time $time";
-    my ($hour, $min) = ($1, $2);
-    my $sec = ($3) ? $4 : 0;
+    my ($hour, $min) = ($2, $3);
+    my $sec = ($4) ? $5 : 0;
     my $millis =  ((($hour * 60) + $min) * 60 + $sec) * 1000;
-    if ($5 =~ /[guz]/) {
+    if ($1 eq "-") {
+      $millis = -$millis;
+    }
+    if ($6 =~ /[guz]/) {
 	$millis += $rawoffset;
-    } elsif ($5 =~ /w/) {
+    } elsif ($6 =~ /w/) {
 	print STDERR "$timezonename not in standard time\n" if $stdoffset;
 	$millis -= $stdoffset;
     }
@@ -193,6 +200,15 @@ sub makePretty($) {
     }
 }
 
+sub tzcompare($$) {
+    my ($a, $b) = @_;
+    if (($a =~ /\//) != ($b =~ /\//)) {
+      return ($a =~ /\//) ? 1 : -1;
+    } else {
+      return $a cmp $b;
+    }
+}
+
 foreach $file (@TIMEZONEFILES) {
 #    print STDERR "$file\n";
     open INPUT, "$TIMEZONEDIR/$file" or die "Can't open $TIMEZONEDIR/$file";
@@ -224,6 +240,27 @@ foreach $file (@TIMEZONEFILES) {
 		$in_time_zone = 1;
 		shift @entries;
 		$timezonename = shift @entries;
+	    } elsif ($entries[0] eq "Remove") {
+		my $found = 0;
+		foreach $tz (@timezones) {
+		    my @newaliases;
+		    foreach $tzname (@{$tz->[3]}) {
+			if ($tzname eq $entries[1]) {
+			    $found = 1;
+			} else {
+			    push @newaliases, $tzname;
+			}
+		    }
+		    if ($found) {
+			if ($tz->[0] eq $entries[1]) {
+			  $tz->[0] = $newaliases[0];
+			}
+			$tz->[3] = \@newaliases;
+			last;
+		    }
+		}
+
+		die "Unknown link $_" if ! $found;
 	    } elsif ($entries[0] eq "Link") {
 		my $alias = 0;
 		foreach $tz (@timezones) {
@@ -236,14 +273,6 @@ foreach $file (@TIMEZONEFILES) {
 		}
 
 		die "Unknown link $_" if ! $alias;
-
-		if (($entries[1] =~ /\//)
-		    && ($entries[2] !~ /\//)) {
-		    # alias is of Country/City form, linkname not
-		    # make timezonename the real zone and add an alias
-		    # the otherway round.
-		    $alias->[0] = $entries[2];
-		}
 	        die "@entries" if $entries[1] =~ /^\d+$/;
 		push @{$alias->[3]}, $entries[2];
 	    } else {
@@ -297,10 +326,12 @@ foreach $file (@TIMEZONEFILES) {
 		    else { $a->[0] cmp $b->[0] } } @timezones;
 for (@timezones) {
     my ($name, $rawoffset, $rule, $aliaslist) = @{$_};
+    my @aliases = sort { tzcompare($a, $b); } @{$aliaslist};
+    $name = $aliases[0];
     $rawoffset = makePretty($rawoffset);
     if ($rule eq "-") {
 	print <<EOF
-      tz = new SimpleTimeZone($rawoffset, \"$name\");
+    tz = new SimpleTimeZone($rawoffset, \"$name\");
 EOF
     } else {
 	my ($endmonth, $endday, $endtime) = @{$rule->[0]};
@@ -310,27 +341,24 @@ EOF
 	my $savings = $rule->[2];
 	if ($savings == 3600 * 1000) {
 	    print <<EOF
-      tz = new SimpleTimeZone
-	($rawoffset, \"$name\",
-	 $startmonth, $startday, $starttime,
-	 $endmonth, $endday, $endtime);
+    tz = new SimpleTimeZone
+      ($rawoffset, \"$name\",
+       $startmonth, $startday, $starttime,
+       $endmonth, $endday, $endtime);
 EOF
 	} else {
 	    $savings = makePretty($savings);
 	    print <<EOF
-      tz = new SimpleTimeZone
-	($rawoffset, \"$name\",
-	 $startmonth, $startday, $starttime,
-	 $endmonth, $endday, $endtime, $savings);
+    tz = new SimpleTimeZone
+      ($rawoffset, \"$name\",
+       $startmonth, $startday, $starttime,
+       $endmonth, $endday, $endtime, $savings);
 EOF
         }
     }
-    my @aliases = sort { return ($a eq $name) ? -1 
-			      : ($b eq $name) ? 1
-			      : $a cmp $b } @{$aliaslist};
     for (@aliases) {
     print <<EOF
-      timezones.put(\"$_\", tz);
+    timezones.put(\"$_\", tz);
 EOF
     }
 }
