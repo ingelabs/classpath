@@ -774,6 +774,7 @@ given locale.
 * String Collation::            Sorting strings in different locales
 * Break Iteration::             Breaking up text into words, sentences, and lines
 * Date Formatting and Parsing:: Locale specific date handling
+* Decimal/Currency Formatting and Parsing:: Local specific number handling
 @end menu
 
 In Classpath, all locale specific data is stored in a 
@@ -886,7 +887,7 @@ sequences.
 @item line_breaks - A @code{String} array of line break character sequences.
 @end itemize
 
-@node Date Formatting and Parsing,  , Break Iteration, Localization
+@node Date Formatting and Parsing, Decimal/Currency Formatting and Parsing, Break Iteration, Localization
 @comment node-name, next, previous, up
 @section Date Formatting and Parsing
 
@@ -935,6 +936,50 @@ locale.
 Note that it may not be possible to use this mechanism for all locales.
 In those cases a special purpose class may need to be written to handle 
 date/time processing.
+
+@node Decimal/Currency Formatting and Parsing,  , Date Formatting and Parsing, Localization
+@comment node-name, next, previous, up
+@section Decimal/Currency Formatting and Parsing
+
+@code{NumberFormat} is an abstract class for formatting and parsing numbers.
+The class @code{DecimalFormat} provides a concrete subclass that handles
+this is in a locale independent manner.  As with @code{SimpleDateFormat},
+this class gets information on how to format numbers from a class that
+wrappers a collection of locale specific formatting values.  In this case,
+the class is @code{DecimalFormatSymbols}.  That class reads its default
+values for a locale from the resource bundle.  The required entries are:
+
+@itemize @bullet
+@item DecimalFormatSymbols - A @code{Boolean} wrappering @code{true} to 
+indicate that this functional area is supported.
+@item currencySymbol - The string representing the local currency.
+@item intlCurrencySymbol - The string representing the local currency in an
+international context.
+@item decimalSeparator - The character to use as the decimal point as a
+@code{String}.
+@item digit - The character used to represent digits in a format string,
+as a @code{String}.
+@item exponential - The char used to represent the exponent separator of a 
+number written in scientific notation, as a @code{String}.
+@item groupingSeparator - The character used to separate groups of numbers
+in a large number, such as the ``,'' separator for thousands in the US, as
+a @code{String}.
+@item infinity - The string representing infinity.
+@item NaN - The string representing the Java not a number value.
+@item minusSign - The character representing the negative sign, as a 
+@code{String}.
+@item monetarySeparator - The decimal point used in currency values, as a
+@code{String}.
+@item patternSeparator - The character used to separate positive and 
+negative format patterns, as a @code{String}.
+@item percent - The percent sign, as a @code{String}.
+@item perMill - The per mille sign, as a @code{String}.
+@item zeroDigit - The character representing the digit zero, as a @code{String}.
+@end itemize
+
+Note that several of these values are an individual character.  These should
+be wrappered in a @code{String} at character position 0, not in a
+@code{Character} object.
 
 @bye
 
