@@ -289,7 +289,14 @@ public class Thread implements Runnable
   }
 
   /**
-   * Get the currently executing Thread.
+   * Get the currently executing Thread. In the situation that the
+   * currently running thread was created by native code and doesn't
+   * have an associated Thread object yet, currentThread() should set
+   * a flag and then attempt to construct and return a new Thread object.
+   * When currentThread() is invoked again recursively by the Thread
+   * constructor, the flag will already be set and in that second case
+   * currentThread() should just return null. currentThread() should not
+   * return a non-null value until after the constructor has returned.
    *
    * @return the currently executing Thread
    */
