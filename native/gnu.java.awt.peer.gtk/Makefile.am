@@ -13,6 +13,9 @@ gtkclipboard.c		   gtkpanelpeer.c \
 gtkcomponentpeer.c	   gtkpopupmenupeer.c \
 gtkevents.c		   gtkscrollbarpeer.c
 
+HEADERS = \
+gthread-jni.h gtkpeer.h native_state.h
+
 libgtkpeer_la_LDFLAGS = -version-info @LIBVERSION@ @GTK_LIBS@ @GLIB_LIBS@ @LIBART_LIBS@
 
 INCLUDES += @EXTRA_INCLUDES@ \
