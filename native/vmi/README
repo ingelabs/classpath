@@ -1,0 +1,9 @@
+README for JCL VMI library:
+
+20 June 1998: John Keiser
+Initial Revision
+
+This is the catchall library that does all the VM-specific
+interface stuff.  It needs to be implemented on a per-VM
+basis.  Currently the only JVM supported is Japhar.
+

@@ -1,0 +1,23 @@
+README for java.lang.reflect:
+
+
+Jun 20 1998 - John Keiser - initial revision, 1.1.0
+
+OK, the Java side was easy.
+
+The difficult part is the native side, and while that has gone somewhere, there
+is so much integration between the VM and class libraries in Sun's version that
+a whole new API had to be created (the VMI being the prominent one).  JCL
+Reflection will likely never work with Sun's JDK 1.1 unless we manage some real
+magic.  Therefore I am targeting it to Japhar and Kaffe 1.1, where we at least
+have some ability to create VMI functionality.
+
+I am not even certain if Sun's JDK 1.2 will be able to support JCL Reflection.
+I am not getting my hopes up.  Unless their JVMDI spec improves, it will be
+impossible to do so efficiently, and probably impossible in any case, without
+knowing their internal structures so that we can .
+
+This whole thing has been compiled but has never run.  I am checking this in
+right now so that Geoffrey Berry, who is working on Serialization, will have
+some starting points, especially in regards to his native code.
+

@@ -1,0 +1,6 @@
+TODO for java.lang.reflect Java side
+
+- Field needs to be overhauled for efficiency the way Method and Constructor
+  have been.
+- Testing needs to be written.
+- See native TODO.

@@ -1,0 +1,17 @@
+STATUS of java.lang.reflect Java side
+
+THIS CODE IS ABSOLUTELY ENTIRELY UNTESTED.  IT HAS NEVER ONCE BEEN RUN.  CURRENTLY INTENDED FOR REFERENCE ONLY.
+
+JDK1.1:
+INTERFACES:
+Member - complete, untested.
+
+CLASSES:
+Array - complete, untested.
+Method - complete, untested.
+Modifier - complete, untested.
+Field - incomplete.  Compiles, but I may still change the modifiers (+ or - native) on some of the methods.
+Constructor - complete, untested.
+
+EXCEPTIONS:
+InvocationTargetException - complete, untested.  Worried about compatibility with Sun's implementation.
