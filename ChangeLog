@@ -1,3 +1,10 @@
+2004-01-13  David Jee  <djee@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java
+	(setBackground): New method. Children with no explicitly-set
+	background will be repainted with the parent container's new
+	background color.
+
 2004-01-12  David Jee  <djee@redhat.com>
 
 	* gnu/java/net/protocol/http/Connection.java
