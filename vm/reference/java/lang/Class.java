@@ -419,3 +419,4 @@ public class Class {
 	private native String nativeGetName();
 	private native Class nativeGetSuperclass();
 }
+
