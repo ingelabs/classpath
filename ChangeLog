@@ -1,5 +1,13 @@
 2003-03-09  Aaron M. Renn (arenn@urbanophile.com)
 
+	* java/io/LineNumberReader.java
+	Merge with gcj by replacing all methods with the versions from
+	gcj with the exception of skip() This file is in essence
+	completely new except for the Javadoc comments, which are carried
+	over from Classpath
+
+2003-03-09  Aaron M. Renn (arenn@urbanophile.com)
+
 	* java/io/BufferedReader.java
 	* java/io/BufferedWriter.java
 	* java/io/ByteArrayOutputStream.java
