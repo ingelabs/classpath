@@ -35,19 +35,14 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+/* do not move; needed here because of some macro definitions */
 #include <config.h>
-#include <errno.h>
 
-#ifdef HAVE_SYS_IOCTL_H
-#include <sys/ioctl.h>
-#endif
-
-#ifdef HAVE_ASM_IOCTLS_H
-#include <asm/ioctls.h>
-#endif
-
+#include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
- 
+#include <assert.h>
+
 #include <jni.h>
 #include <jcl.h>
 
@@ -65,3 +60,4 @@ Java_java_net_NetworkInterface_getRealNetworkInterfaces (JNIEnv* env, jclass cla
   return 0;
 }
 
+/* end of file */

@@ -35,22 +35,25 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+/* do not move; needed here because of some macro definitions */
+#include <config.h>
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-#include <errno.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
+#include <assert.h>
 
 #include <jni.h>
 #include <jcl.h>
 
 #include "javanet.h"
 
+#include "target_native.h"
+#ifndef WITHOUT_NETWORK
+  #include "target_native_network.h"
+#endif /* WITHOUT_NETWORK */
+
+#ifndef WITHOUT_NETWORK
 /* Need to have some value for SO_TIMEOUT */
 #ifndef SO_TIMEOUT
 #ifndef SO_RCVTIMEO
@@ -60,6 +63,7 @@ exception statement from your version. */
 #define SO_TIMEOUT SO_RCVTIMEO
 #endif /* not SO_RCVTIMEO */
 #endif /* not SO_TIMEOUT */
+#endif /* WITHOUT_NETWORK */
 
 /*************************************************************************/
 
@@ -70,8 +74,11 @@ static void
 _javanet_set_int_field(JNIEnv *env, jobject obj, char *class, char *field, 
                        int val)
 {
-  jclass cls;
+  jclass   cls;
   jfieldID fid;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   cls = (*env)->FindClass(env, class);
   if (cls == NULL)
@@ -99,6 +106,9 @@ _javanet_get_int_field(JNIEnv *env, jobject obj, const char *field)
   jfieldID fid;
   int fd;
 
+  assert(env!=NULL);
+  assert((*env)!=NULL);
+
   DBG("_javanet_get_int_field(): Entered _javanet_get_int_field\n");
 
   cls = (*env)->GetObjectClass(env, obj);
@@ -125,10 +135,13 @@ _javanet_get_int_field(JNIEnv *env, jobject obj, const char *field)
 static void
 _javanet_create_localfd(JNIEnv *env, jobject this)
 {
-  jclass this_cls, fd_cls;
-  jfieldID fid;
+  jclass    this_cls, fd_cls;
+  jfieldID  fid;
   jmethodID mid;
-  jobject fd_obj;
+  jobject   fd_obj;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   DBG("_javanet_create_localfd(): Entered _javanet_create_localfd\n");
 
@@ -177,9 +190,12 @@ _javanet_create_localfd(JNIEnv *env, jobject this)
 static jobject
 _javanet_create_boolean(JNIEnv *env, jboolean val)
 {
-  jclass cls;
+  jclass    cls;
   jmethodID mid;
-  jobject obj;
+  jobject   obj;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   cls = (*env)->FindClass(env, "java/lang/Boolean");
   if (cls == NULL)
@@ -208,6 +224,9 @@ _javanet_create_integer(JNIEnv *env, jint val)
   jmethodID mid;
   jobject obj;
 
+  assert(env!=NULL);
+  assert((*env)!=NULL);
+
   cls = (*env)->FindClass(env, "java/lang/Integer");
   if (cls == NULL)
     return NULL;
@@ -231,73 +250,80 @@ _javanet_create_integer(JNIEnv *env, jint val)
 static jobject
 _javanet_create_inetaddress(JNIEnv *env, int netaddr)
 {
-  char buf[16];
-  jclass ia_cls;
-  jmethodID mid;
-  jstring ip_str;
-  jobject ia;
+#ifndef WITHOUT_NETWORK
+  unsigned char octets[4];
+  char          buf[16];
+  jclass        ia_cls;
+  jmethodID     mid;
+  jstring       ip_str;
+  jobject       ia;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   /* Build a string IP address */
-  sprintf(buf, "%d.%d.%d.%d", ((netaddr & 0xFF000000) >> 24), 
-          ((netaddr & 0x00FF0000) >> 16), ((netaddr &0x0000FF00) >> 8),
-          (netaddr & 0x000000FF));
+  TARGET_NATIVE_NETWORK_INT_TO_IPADDRESS_BYTES(netaddr,
+                                               octets[0],
+                                               octets[1],
+                                               octets[2],
+                                               octets[3]
+                                              );
+  sprintf(buf, "%d.%d.%d.%d",
+          octets[0],
+          octets[1],
+          octets[2],
+          octets[3]
+         );
   DBG("_javanet_create_inetaddress(): Created ip addr string\n");
 
   /* Get an InetAddress object for this IP */
   ia_cls = (*env)->FindClass(env, "java/net/InetAddress");
   if (ia_cls == NULL)
-    return NULL;
+    {
+      return NULL;
+    }
 
   DBG("_javanet_create_inetaddress(): Found InetAddress class\n");
 
   mid = (*env)->GetStaticMethodID(env, ia_cls, "getByName", 
                                   "(Ljava/lang/String;)Ljava/net/InetAddress;");
   if (mid == NULL)
-    return NULL;
+    {
+      return NULL;
+    }
 
   DBG("_javanet_create_inetaddress(): Found getByName method\n");
 
   ip_str = (*env)->NewStringUTF(env, buf); 
   if (ip_str == NULL)
-    return NULL;
+    {
+      return NULL;
+    }
 
   ia = (*env)->CallStaticObjectMethod(env, ia_cls, mid, ip_str);
   if (ia == NULL)
-    return NULL;
+    {
+      return NULL;
+    }
 
   DBG("_javanet_create_inetaddress(): Called getByName method\n");
 
   return ia;
+#else /* not WITHOUT_NETWORK */
+  return NULL;
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
 
-static void _javanet_set_remhost_addr(JNIEnv*, jobject, jobject);
-
-/*
- * Set's the value of the "addr" field in PlainSocketImpl with a new
- * InetAddress for the specified addr
- */
-static void
-_javanet_set_remhost(JNIEnv *env, jobject this, int netaddr)
-{
-  jobject ia;
-
-  DBG("_javanet_set_remhost(): Entered _javanet_set_remhost\n");
-
-  /* Get an InetAddress object */
-  ia = _javanet_create_inetaddress(env, netaddr);
-  if (ia == NULL)
-    return;
-
-  _javanet_set_remhost_addr(env, this, ia);
-}
-
 static void
 _javanet_set_remhost_addr(JNIEnv *env, jobject this, jobject ia)
 {
-  jclass this_cls;
+  jclass   this_cls;
   jfieldID fid;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   /* Set the variable in the object */
   this_cls = (*env)->FindClass(env, "java/net/SocketImpl");
@@ -314,6 +340,29 @@ _javanet_set_remhost_addr(JNIEnv *env, jobject this, jobject ia)
   DBG("_javanet_set_remhost_addr(): Set field\n");
 }
 
+/*
+ * Set's the value of the "addr" field in PlainSocketImpl with a new
+ * InetAddress for the specified addr
+ */
+static void
+_javanet_set_remhost(JNIEnv *env, jobject this, int netaddr)
+{
+  jobject ia;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
+
+  DBG("_javanet_set_remhost(): Entered _javanet_set_remhost\n");
+
+  /* Get an InetAddress object */
+  ia = _javanet_create_inetaddress(env, netaddr);
+  if (ia == NULL)
+    return;
+
+  _javanet_set_remhost_addr(env, this, ia);
+}
+
+
 /*************************************************************************/
 
 /*
@@ -322,11 +371,15 @@ _javanet_set_remhost_addr(JNIEnv *env, jobject this, jobject ia)
 int
 _javanet_get_netaddr(JNIEnv *env, jobject addr)
 {
-  jclass cls = 0;
+#ifndef WITHOUT_NETWORK
+  jclass    cls = 0;
   jmethodID mid;
-  jarray arr = 0;
-  jbyte *octets;
-  int netaddr, len;
+  jarray    arr = 0;
+  jbyte     *octets;
+  int       netaddr, len;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   DBG("_javanet_get_netaddr(): Entered _javanet_get_netaddr\n");
 
@@ -362,17 +415,19 @@ _javanet_get_netaddr(JNIEnv *env, jobject addr)
 
   DBG("_javanet_get_netaddr(): Grabbed bytes\n");
 
-  netaddr = (((unsigned char)octets[0]) << 24) + 
-            (((unsigned char)octets[1]) << 16) +
-            (((unsigned char)octets[2]) << 8) +
-            ((unsigned char)octets[3]);
-
-  netaddr = htonl(netaddr);
+  TARGET_NATIVE_NETWORK_IPADDRESS_BYTES_TO_INT(octets[0],
+                                               octets[1],
+                                               octets[2],
+                                               octets[3],
+                                               netaddr
+                                              );
 
   (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
   DBG("_javanet_get_netaddr(): Done getting addr\n");
 
   return netaddr; 
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -383,15 +438,23 @@ _javanet_get_netaddr(JNIEnv *env, jobject addr)
 void
 _javanet_create(JNIEnv *env, jobject this, jboolean stream)
 {
+#ifndef WITHOUT_NETWORK
   int fd;
+  int result;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   if (stream)
-    fd = socket(AF_INET, SOCK_STREAM, 0);
+    TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM(fd,result);
   else
-    fd = socket(AF_INET, SOCK_DGRAM, 0);
+    TARGET_NATIVE_NETWORK_SOCKET_OPEN_DATAGRAM(fd,result);
 
-  if (fd == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); return; }
+  if (result != TARGET_NATIVE_OK)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+      return;
+    }
     
   if (stream)
     _javanet_set_int_field(env, this, "java/net/PlainSocketImpl", 
@@ -399,6 +462,8 @@ _javanet_create(JNIEnv *env, jobject this, jboolean stream)
   else
     _javanet_set_int_field(env, this, "java/net/PlainDatagramSocketImpl", 
                            "native_fd", fd);
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -410,13 +475,18 @@ _javanet_create(JNIEnv *env, jobject this, jboolean stream)
 void
 _javanet_close(JNIEnv *env, jobject this, int stream)
 {
-  int fd = -1;
+#ifndef WITHOUT_NETWORK
+  int fd;
+  int result;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   fd = _javanet_get_int_field(env, this, "native_fd");
   if (fd == -1)
     return;
  
-  close(fd);
+  TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);
 
   if (stream)
     _javanet_set_int_field(env, this, "java/net/PlainSocketImpl",
@@ -424,6 +494,8 @@ _javanet_close(JNIEnv *env, jobject this, int stream)
   else
     _javanet_set_int_field(env, this, "java/net/PlainDatagramSocketImpl",
                            "native_fd", -1);
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -434,8 +506,14 @@ _javanet_close(JNIEnv *env, jobject this, int stream)
 void 
 _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
 {
-  int netaddr, fd = -1, rc, addrlen;
-  struct sockaddr_in si;
+#ifndef WITHOUT_NETWORK
+  int netaddr, fd;
+  int result;
+  int local_address,local_port;
+  int remote_address,remote_port;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   DBG("_javanet_connect(): Entered _javanet_connect\n");
 
@@ -459,68 +537,66 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
   DBG("_javanet_connect(): Got native fd\n");
 
   /* Connect up */
-  memset(&si, 0, sizeof(struct sockaddr_in));
-  si.sin_family = AF_INET;
-  si.sin_addr.s_addr = netaddr;
-  si.sin_port = htons(((short)port));
-
-  rc = connect(fd, (struct sockaddr *) &si, sizeof(struct sockaddr_in));
-  if (rc == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); return; }
+  TARGET_NATIVE_NETWORK_SOCKET_CONNECT(fd,netaddr,port,result);
+  if (result != TARGET_NATIVE_OK)
+    {
+       JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+       return;
+    }
   DBG("_javanet_connect(): Connected successfully\n");
 
   /* Populate instance variables */
-  addrlen = sizeof(struct sockaddr_in);
-  rc = getsockname(fd, (struct sockaddr *) &si, &addrlen);
-  if (rc == -1)
+  TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO(fd,local_address,local_port,result);
+  if (result != TARGET_NATIVE_OK)
     {
-      close(fd);
-      JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); 
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);
+      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
       return;
     }
 
   _javanet_create_localfd(env, this);
   if ((*env)->ExceptionOccurred(env))
     {
-      close(fd);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);
       return;
     }
   DBG("_javanet_connect(): Created fd\n");
 
   _javanet_set_int_field(env, this, "java/net/SocketImpl", "localport", 
-                         ntohs(si.sin_port));
+                         local_port);
   if ((*env)->ExceptionOccurred(env))
     {
-      close(fd);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);
       return;
     }
   DBG("_javanet_connect(): Set the local port\n");
   
-  addrlen = sizeof(struct sockaddr_in);
-  rc = getpeername(fd, (struct sockaddr *) &si, &addrlen);
-  if (rc == -1)
+  TARGET_NATIVE_NETWORK_SOCKET_GET_REMOTE_INFO(fd,remote_address,remote_port,result);
+  if (result != TARGET_NATIVE_OK)
     {
-      close(fd);
-      JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); 
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);
+      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
       return;
     }
 
-  _javanet_set_remhost_addr(env, this, addr);
+  _javanet_set_remhost(env, this, remote_address);
   if ((*env)->ExceptionOccurred(env))
     {
-      close(fd);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);
       return;
     }
   DBG("_javanet_connect(): Set the remote host\n");
 
   _javanet_set_int_field(env, this, "java/net/SocketImpl", "port", 
-                         ntohs(si.sin_port));
+                         remote_port);
   if ((*env)->ExceptionOccurred(env))
     {
-      close(fd);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);
       return;
     }
   DBG("_javanet_connect(): Set the remote port\n");
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -533,13 +609,18 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
 void
 _javanet_bind(JNIEnv *env, jobject this, jobject addr, jint port, int stream)
 {
-  jclass cls;
-  jmethodID mid;
+#ifndef WITHOUT_NETWORK
+  jclass     cls;
+  jmethodID  mid;
   jbyteArray arr = 0;
-  jbyte *octets;
-  jint fd;
-  struct sockaddr_in si;
-  int namelen;
+  jbyte      *octets;
+  jint       fd;
+  int        tmpaddr;
+  int        result;
+  int        local_address,local_port;        
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   DBG("_javanet_bind(): Entering native bind()\n");
 
@@ -577,39 +658,48 @@ _javanet_bind(JNIEnv *env, jobject this, jobject addr, jint port, int stream)
     }
   DBG("_javanet_bind(): Past native_fd lookup\n");
 
+// NYI ???
   _javanet_set_option (env, this, SOCKOPT_SO_REUSEADDR, 
 		       _javanet_create_boolean (env, JNI_TRUE));
 
 
   /* Bind the socket */
-  memset(&si, 0, sizeof(struct sockaddr_in));
-
-  si.sin_family = AF_INET;
-  si.sin_addr.s_addr = *(int *)octets; /* Already in network byte order */ 
-  if (port == -1)
-    si.sin_port = 0;
-  else
-    si.sin_port = htons(port);
+  TARGET_NATIVE_NETWORK_IPADDRESS_BYTES_TO_INT(octets[0],
+                                               octets[1],
+                                               octets[2],
+                                               octets[3],
+                                               tmpaddr
+                                              );
+  TARGET_NATIVE_NETWORK_SOCKET_BIND(fd,tmpaddr,port,result);
 
   (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
 
-  if (bind(fd, (struct sockaddr *) &si, sizeof(struct sockaddr_in)) == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); return; }
+  if (result != TARGET_NATIVE_OK)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+      return;
+    }
   DBG("_javanet_bind(): Past bind\n");
   
   /* Update instance variables, specifically the local port number */
-  namelen = sizeof(struct sockaddr_in);
-  getsockname(fd, (struct sockaddr *) &si, &namelen);
+  TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO(fd,local_address,local_port,result);
+  if (result != TARGET_NATIVE_OK)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+      return;
+    }
 
   if (stream)
     _javanet_set_int_field(env, this, "java/net/SocketImpl", 
-                           "localport", ntohs(si.sin_port));
+                           "localport", local_port);
   else
     _javanet_set_int_field(env, this, "java/net/DatagramSocketImpl", 
-                           "localPort", ntohs(si.sin_port));
+                           "localPort", local_port);
   DBG("_javanet_bind(): Past update port number\n");
 
   return;
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -621,7 +711,12 @@ _javanet_bind(JNIEnv *env, jobject this, jobject addr, jint port, int stream)
 void 
 _javanet_listen(JNIEnv *env, jobject this, jint queuelen)
 {
-  int fd = -1, rc;
+#ifndef WITHOUT_NETWORK
+  int fd;
+  int result;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
@@ -633,11 +728,14 @@ _javanet_listen(JNIEnv *env, jobject this, jint queuelen)
     }
 
   /* Start listening */
-  rc = listen(fd, queuelen);
-  if (rc == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); return; }
-   
-  return;
+  TARGET_NATIVE_NETWORK_SOCKET_LISTEN(fd,queuelen,result);
+  if (result!=TARGET_NATIVE_OK)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+      return;
+    }
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -649,8 +747,14 @@ _javanet_listen(JNIEnv *env, jobject this, jint queuelen)
 void 
 _javanet_accept(JNIEnv *env, jobject this, jobject impl)
 {
-  int fd = -1, newfd, addrlen, rc;
-  struct sockaddr_in si;
+#ifndef WITHOUT_NETWORK
+  int fd, newfd;
+  int result;
+  int local_address,local_port;
+  int remote_address,remote_port;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
@@ -662,13 +766,13 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
     }
 
   /* Accept the connection */
-  addrlen = sizeof(struct sockaddr_in);
-  memset(&si, 0, addrlen);
-
   /******* Do we need to look for EINTR? */
-  newfd = accept(fd, (struct sockaddr *) &si, &addrlen);
-  if (newfd == -1) 
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error: _javanet_accept(): "); return; }
+  TARGET_NATIVE_NETWORK_SOCKET_ACCEPT(fd,newfd,result);
+  if (result != TARGET_NATIVE_OK)
+    {
+       JCL_ThrowException(env, IO_EXCEPTION, "Internal error: _javanet_accept(): ");
+       return;
+    }
 
   /* Populate instance variables */ 
   _javanet_set_int_field(env, impl, "java/net/PlainSocketImpl", "native_fd",
@@ -676,56 +780,57 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
 
   if ((*env)->ExceptionOccurred(env))
     {
-      close(newfd);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(newfd,result);
       return;
     }
 
-  rc = getsockname(newfd, (struct sockaddr *) &si, &addrlen);
-  if (rc == -1)
+  TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO(newfd,local_address,local_port,result);
+  if (result!=TARGET_NATIVE_OK)
     {
-      close(newfd);
-      JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); 
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(newfd,result);
+      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
       return;
     }
 
   _javanet_create_localfd(env, impl);
   if ((*env)->ExceptionOccurred(env))
     {
-      close(newfd);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(newfd,result);
       return;
     }
 
   _javanet_set_int_field(env, impl, "java/net/SocketImpl", "localport", 
-                         ntohs(si.sin_port));
+                         local_port);
   if ((*env)->ExceptionOccurred(env))
     {
-      close(newfd);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(newfd,result);
       return;
     }
   
-  addrlen = sizeof(struct sockaddr_in);
-  rc = getpeername(newfd, (struct sockaddr *) &si, &addrlen);
-  if (rc == -1)
+  TARGET_NATIVE_NETWORK_SOCKET_GET_REMOTE_INFO(newfd,remote_address,remote_port,result);
+  if (result!=TARGET_NATIVE_OK)
     {
-      close(newfd);
-      JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); 
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(newfd,result);
+      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
       return;
     }
 
-  _javanet_set_remhost(env, impl, ntohl(si.sin_addr.s_addr));
+  _javanet_set_remhost(env, impl, remote_address);
   if ((*env)->ExceptionOccurred(env))
     {
-      close(newfd);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(newfd,result);
       return;
     }
 
   _javanet_set_int_field(env, impl, "java/net/SocketImpl", "port", 
-                         ntohs(si.sin_port));
+                         remote_port);
   if ((*env)->ExceptionOccurred(env))
     {
-      close(newfd);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(newfd,result);
       return;
     }
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -748,9 +853,14 @@ int
 _javanet_recvfrom(JNIEnv *env, jobject this, jarray buf, int offset, int len,
                   int *addr, int *port)
 {
-  int fd, rc, si_len;
+#ifndef WITHOUT_NETWORK
+  int   fd;
   jbyte *p;
-  struct sockaddr_in si;
+  int   from_address,from_port;
+  int   received_bytes;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   DBG("_javanet_recvfrom(): Entered _javanet_recvfrom\n");
 
@@ -772,37 +882,40 @@ _javanet_recvfrom(JNIEnv *env, jobject this, jarray buf, int offset, int len,
   DBG("_javanet_recvfrom(): Got buffer\n");
 
   /* Read the data */
-  for (;;)
-    {
-      if (addr == NULL)
-        rc = recv(fd, p + offset, len, 0);
-      else
-        {
-          memset(&si, 0, sizeof(struct sockaddr_in));
-          si_len = sizeof(struct sockaddr_in);
-          rc = recvfrom(fd, p + offset, len, 0, (struct sockaddr *) &si, &si_len);
-        }
-
-      if ((rc == -1) && (errno == EINTR))
-        continue;
-
-      break;
-    }
+  from_address = 0;
+  from_port    = 0;
+  do {
+     if (addr != NULL)
+       {
+         TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_WITH_ADDRESS_PORT(fd,p+offset,len,from_address,from_port,received_bytes);   
+       }
+     else
+       {
+         TARGET_NATIVE_NETWORK_SOCKET_RECEIVE(fd,p+offset,len,received_bytes);
+       }
+  } while ((received_bytes == -1) &&
+           (TARGET_NATIVE_LAST_ERROR() == TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL)
+          );
 
   (*env)->ReleaseByteArrayElements(env, buf, p, 0);
 
-  if (rc == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); return 0; }
-
-  /* Handle return addr case */
-  if (addr)
+  if (received_bytes == -1)
     {
-      *addr = si.sin_addr.s_addr;
-      if (port)
-        *port = si.sin_port;
+       JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+       return 0;
     }
 
-  return(rc);
+  /* Handle return addr case */
+  if (addr != NULL)
+    {
+      (*addr) = from_address;
+      if (port != NULL)
+        (*port) = from_port;
+    }
+
+  return(received_bytes);
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -820,9 +933,13 @@ void
 _javanet_sendto(JNIEnv *env, jobject this, jarray buf, int offset, int len,
                 int addr, int port)
 {
-  int fd, rc;
+#ifndef WITHOUT_NETWORK
+  int   fd;
   jbyte *p;
-  struct sockaddr_in si;
+  int   bytes_sent;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
@@ -842,26 +959,24 @@ _javanet_sendto(JNIEnv *env, jobject this, jarray buf, int offset, int len,
   if (addr == 0)
     {
       DBG("_javanet_sendto(): Sending....\n");
-      rc = send(fd, p + offset, len, 0);
+      TARGET_NATIVE_NETWORK_SOCKET_SEND(fd,p+offset,len,bytes_sent);
     }
   else
     {
-      memset(&si, 0, sizeof(struct sockaddr_in));
-      si.sin_family = AF_INET;
-      si.sin_addr.s_addr = addr;
-      si.sin_port = (unsigned short)port;
-      
       DBG("_javanet_sendto(): Sending....\n");
-      rc = sendto(fd, p + offset, len, 0, (struct sockaddr *) &si, sizeof(struct sockaddr_in));
+      TARGET_NATIVE_NETWORK_SOCKET_SEND_WITH_ADDRESS_PORT(fd,p+offset,len,addr,port,bytes_sent);
     }
 
   (*env)->ReleaseByteArrayElements(env, buf, p, 0);
 
   /***** Do we need to check EINTR? */
-  if (rc == -1) 
-    { JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); return; }
-
-  return;
+  if (bytes_sent<0)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+      return;
+    }
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -872,12 +987,16 @@ _javanet_sendto(JNIEnv *env, jobject this, jarray buf, int offset, int len,
 void 
 _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 {
-  int fd = -1, rc;
-  int optval, sockopt;
-  jclass cls;
+#ifndef WITHOUT_NETWORK
+  int       fd;
+  int       optval;
+  jclass    cls;
   jmethodID mid;
-  struct linger linger;
-  struct sockaddr_in si;
+  int       address;
+  int       result;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
@@ -894,6 +1013,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
     return;
 
   /* Process the option request */
+  result = TARGET_NATIVE_ERROR;
   switch (option_id)
     {
       /* TCP_NODELAY case.  val is a Boolean that tells us what to do */
@@ -908,20 +1028,18 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 	if ((*env)->ExceptionOccurred(env))
 	  return;
 
-        rc = setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &optval, sizeof(int));
+        TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_TCP_NODELAY(fd,optval,result);
         break;
 
       /* SO_LINGER case.  If val is a boolean, then it will always be set
          to false indicating disable linger, otherwise it will be an
          integer that contains the linger value */
       case SOCKOPT_SO_LINGER:
-        memset(&linger, 0, sizeof(struct linger));
-
         mid = (*env)->GetMethodID(env, cls, "booleanValue", "()Z");
         if (mid)
           {
             /* We are disabling linger */
-            linger.l_onoff = 0;
+            TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_LINGER(fd,1,0,result);
           }
         else
           {
@@ -935,14 +1053,12 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
               { JCL_ThrowException(env, IO_EXCEPTION, 
 				   "Internal error: _javanet_set_option()"); return; }
 
-            linger.l_linger = (*env)->CallIntMethod(env, val, mid);
+            optval= (*env)->CallIntMethod(env, val, mid);
 	    if ((*env)->ExceptionOccurred(env))
 	      return;
-	    
-            linger.l_onoff = 1;
+
+            TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_LINGER(fd,0,optval,result);
           }
-        rc = setsockopt(fd, SOL_SOCKET, SO_LINGER, &linger, 
-                        sizeof(struct linger));
         break;
 
       /* SO_TIMEOUT case. Val will be an integer with the new value */
@@ -958,7 +1074,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 	if ((*env)->ExceptionOccurred(env))
 	  return;
 
-        rc = setsockopt(fd, SOL_SOCKET, SO_TIMEOUT, &optval, sizeof(int));
+        TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT(fd,optval,result);
 #endif
 	return;  // ignore errors and do not throw an exception
         break;
@@ -975,11 +1091,9 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 	  return;
         
         if (option_id == SOCKOPT_SO_SNDBUF) 
-          sockopt = SO_SNDBUF;
+          TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_SNDBUF(fd,optval,result);
         else
-          sockopt = SO_RCVBUF;
-        
-        rc = setsockopt(fd, SOL_SOCKET, sockopt, &optval, sizeof(int));
+          TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_RCDBUF(fd,optval,result);
         break;
 
       /* TTL case.  Val with be an Integer with the new time to live value */
@@ -993,20 +1107,17 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 	if ((*env)->ExceptionOccurred(env))
 	  return;
          
-        rc = setsockopt(fd, IPPROTO_IP, IP_TTL, &optval, sizeof(int));
+        TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_IP_TTL(fd,optval,result);
         break;
 
       /* Multicast Interface case - val is InetAddress object */
       case SOCKOPT_IP_MULTICAST_IF:
-        memset(&si, 0, sizeof(struct sockaddr_in));
-        si.sin_family = AF_INET;
-        si.sin_addr.s_addr = _javanet_get_netaddr(env, val);
+        address = _javanet_get_netaddr(env, val);
 
         if ((*env)->ExceptionOccurred(env))
           return;
 
-        rc = setsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &si, 
-                        sizeof(struct sockaddr_in));
+        TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_IP_MULTICAST_IF(fd,address,result);
         break;
 
       case SOCKOPT_SO_REUSEADDR:
@@ -1020,8 +1131,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 	if ((*env)->ExceptionOccurred(env))
 	  return;
 
-        rc = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void*)&optval, 
-			sizeof(int));
+        TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_REUSE_ADDRESS(fd,optval,result);
         break;
 
     case SOCKOPT_SO_KEEPALIVE:
@@ -1035,8 +1145,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 	if ((*env)->ExceptionOccurred(env))
 	  return;
 
-        rc = setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (void*)&optval, 
-			sizeof(int));      
+        TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_KEEP_ALIVE(fd,optval,result);
       break;
     
     case SOCKOPT_SO_BINDADDR:
@@ -1049,10 +1158,13 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
     }
 
   /* Check to see if above operations succeeded */
-  if (rc == -1)
-    JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
-
-  return;
+  if (result != TARGET_NATIVE_OK)
+    {
+      JCL_ThrowException(env, SOCKET_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
+      return;
+    }
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -1063,10 +1175,14 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 jobject 
 _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
 {
-  int fd = -1, rc;
-  int optval, optlen, sockopt;
-  struct linger linger;
-  struct sockaddr_in si;
+#ifndef WITHOUT_NETWORK
+  int fd;
+  int flag,optval;
+  int address;
+  int result;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
@@ -1082,11 +1198,10 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
     {
       /* TCP_NODELAY case.  Return a Boolean indicating on or off */
       case SOCKOPT_TCP_NODELAY:
-        optlen = sizeof(optval);
-        rc = getsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &optval, &optlen);
-        if (rc == -1)
+        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_TCP_NODELAY(fd,optval,result);
+        if (result != TARGET_NATIVE_OK)
           {
-            JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
+            JCL_ThrowException(env, SOCKET_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
             return(0);
           }
 
@@ -1100,18 +1215,15 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
       /* SO_LINGER case.  If disabled, return a Boolean object that represents
          false, else return an Integer that is the value of SO_LINGER */
       case SOCKOPT_SO_LINGER:
-        memset(&linger, 0, sizeof(struct linger));
-        optlen = sizeof(struct linger);
-
-        rc = getsockopt(fd, SOL_SOCKET, SO_LINGER, &linger, &optlen);
-        if (rc == -1)
+        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_LINGER(fd,flag,optval,result);
+        if (result != TARGET_NATIVE_OK)
           {
-            JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
+            JCL_ThrowException(env, SOCKET_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
             return(0);
           }
 
-        if (linger.l_onoff)
-          return(_javanet_create_integer(env, linger.l_linger));
+        if (optval)
+          return(_javanet_create_integer(env, JNI_TRUE));
         else
           return(_javanet_create_boolean(env, JNI_FALSE));
 
@@ -1120,37 +1232,30 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
       /* SO_TIMEOUT case. Return an Integer object with the timeout value */
       case SOCKOPT_SO_TIMEOUT:
 #ifdef SO_TIMEOUT
-        optlen = sizeof(int);
-            
-        rc = getsockopt(fd, SOL_SOCKET, SO_TIMEOUT, &optval, &optlen);
+        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_TIMEOUT(fd,optval,result);
+        if (result != TARGET_NATIVE_OK)
+          {
+            JCL_ThrowException(env, SOCKET_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
+            return(0);
+          }
+
+        return(_javanet_create_integer(env, optval));
 #else
         JCL_ThrowException(env, SOCKET_EXCEPTION, 
                                  "SO_TIMEOUT not supported on this platform");
         return(0);
 #endif /* not SO_TIMEOUT */
-
-        if (rc == -1)
-          {
-            JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
-            return(0);
-          }
-
-        return(_javanet_create_integer(env, optval));
         break;
 
       case SOCKOPT_SO_SNDBUF:
       case SOCKOPT_SO_RCVBUF:
-        optlen = sizeof(int);
         if (option_id == SOCKOPT_SO_SNDBUF)
-          sockopt = SO_SNDBUF;
+          TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_SNDBUF(fd,optval,result);
         else
-          sockopt = SO_RCVBUF;
-            
-        rc = getsockopt(fd, SOL_SOCKET, sockopt, &optval, &optlen);
-
-        if (rc == -1)
+          TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_RCDBUF(fd,optval,result);
+        if (result != TARGET_NATIVE_OK)
           {
-            JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
+            JCL_ThrowException(env, SOCKET_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
             return(0);
           }
 
@@ -1159,12 +1264,10 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
 
       /* The TTL case.  Return an Integer with the Time to Live value */
       case SOCKOPT_IP_TTL:
-        optlen = sizeof(int);
-
-        rc = getsockopt(fd, IPPROTO_IP, IP_TTL, &optval, &optlen);
-        if (rc == -1)
+        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_IP_TTL(fd,optval,result);
+        if (result != TARGET_NATIVE_OK)
           {
-            JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
+            JCL_ThrowException(env, SOCKET_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
             return(0);
           }
 
@@ -1173,38 +1276,32 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
 
       /* Multicast interface case */
       case SOCKOPT_IP_MULTICAST_IF:
-         memset(&si, 0, sizeof(struct sockaddr_in));
-         optlen = sizeof(struct sockaddr_in);
+        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_IP_MULTICAST_IF(fd,address,result);
+        if (result != TARGET_NATIVE_OK)
+          {
+            JCL_ThrowException(env, SOCKET_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+            return(0);
+          }
 
-         rc = getsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &si, &optlen);
-         if (rc == -1)
-           {
-             JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno));
-             return(0);
-           }
-
-         return(_javanet_create_inetaddress(env, ntohl(si.sin_addr.s_addr)));
-         break;
+        return(_javanet_create_inetaddress(env, address));
+        break;
 
       case SOCKOPT_SO_BINDADDR:
-	memset(&si, 0, sizeof(struct sockaddr_in));
-	optlen = sizeof(struct sockaddr_in);
-	rc = getsockname(fd, (struct sockaddr *) &si, &optlen);
-	if (rc == -1)
+        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BIND_ADDRESS(fd,address,result);
+        if (result != TARGET_NATIVE_OK)
 	  {
-	    JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno));
+	    JCL_ThrowException(env, SOCKET_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
 	    return(0);
 	  }
 	
-	return(_javanet_create_inetaddress(env, ntohl(si.sin_addr.s_addr)));
+	return(_javanet_create_inetaddress(env, address));
 	break;
 
       case SOCKOPT_SO_REUSEADDR:
-        optlen = sizeof(int);
-        rc = getsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void*)&optval, &optlen);
-        if (rc == -1)
+        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_REUSE_ADDRESS(fd,optval,result);
+        if (result != TARGET_NATIVE_OK)
           {
-            JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
+            JCL_ThrowException(env, SOCKET_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
             return(0);
           }
 
@@ -1216,11 +1313,10 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
         break;
 
       case SOCKOPT_SO_KEEPALIVE:
-        optlen = sizeof(int);
-        rc = getsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (void*)&optval, &optlen);
-        if (rc == -1)
+        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_KEEP_ALIVE(fd,optval,result);
+        if (result != TARGET_NATIVE_OK)
           {
-            JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
+            JCL_ThrowException(env, SOCKET_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING()); 
             return(0);
           }
 
@@ -1237,5 +1333,8 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
     }
 
   return(0);
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
+/* end of file */

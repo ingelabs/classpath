@@ -35,21 +35,25 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+/* do not move; needed here because of some macro definitions */
+#include <config.h>
 
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-#include <unistd.h>
-#include <netdb.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+#include <assert.h>
 
 #include <jni.h>
 #include <jcl.h>
 
-#include "java_net_InetAddress.h"
-
 #include "javanet.h"
+
+#include "target_native.h"
+#ifndef WITHOUT_NETWORK
+  #include "target_native_network.h"
+#endif /* WITHOUT_NETWORK */
+
+#include "java_net_InetAddress.h"
 
 /*************************************************************************/
 
@@ -59,13 +63,24 @@ exception statement from your version. */
 JNIEXPORT jstring JNICALL
 Java_java_net_InetAddress_getLocalHostName(JNIEnv *env, jclass class)
 {
-  char buf[255];
+  char    hostname[256];
+  int     result;
   jstring retval;
 
-  if (gethostname(buf, sizeof(buf) - 1) == -1)
-    strcpy(buf, "localhost");
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
-  retval = (*env)->NewStringUTF(env, buf);
+#ifndef WITHOUT_NETWORK
+  TARGET_NATIVE_NETWORK_GET_HOSTNAME(hostname,sizeof(hostname),result);
+  if (result != TARGET_NATIVE_OK)
+    {
+      strcpy(hostname,"localhost");
+    }
+#else /* not WITHOUT_NETWORK */
+  strcpy(hostname, "localhost");
+#endif /* not WITHOUT_NETWORK */
+
+  retval = (*env)->NewStringUTF(env, hostname);
 
   return(retval);
 }
@@ -78,28 +93,39 @@ Java_java_net_InetAddress_getLocalHostName(JNIEnv *env, jclass class)
 JNIEXPORT jarray JNICALL
 Java_java_net_InetAddress_lookupInaddrAny(JNIEnv *env, jclass class)
 {
-  jarray arr; 
-  jbyte *octets;
+  jarray IParray; 
+  jbyte  *octets;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   /* Allocate an array for the IP address */
-  arr = (*env)->NewByteArray(env, 4);
-  if (!arr)      
+  IParray = (*env)->NewByteArray(env, 4);
+  if (IParray == NULL)      
     { 
       JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
       return (jarray)NULL; 
     }
 
   /* Copy in the values */
-  octets = (*env)->GetByteArrayElements(env, arr, 0);
+  octets = (*env)->GetByteArrayElements(env, IParray, 0);
 
-  octets[0] = (INADDR_ANY & 0xFF000000) >> 24;
-  octets[1] = (INADDR_ANY & 0x00FF0000) >> 16;
-  octets[2] = (INADDR_ANY & 0x0000FF00) >> 8;
-  octets[3] = (INADDR_ANY & 0x000000FF);
+#ifndef WITHOUT_NETWORK
+  TARGET_NATIVE_NETWORK_INT_TO_IPADDRESS_BYTES(INADDR_ANY,
+                                               octets[0],
+                                               octets[1],
+                                               octets[2],
+                                               octets[3]
+                                              );
+  (*env)->ReleaseByteArrayElements(env, IParray, octets, 0);
+#else /* not WITHOUT_NETWORK */
+  octets[0]=0;
+  octets[1]=0;
+  octets[2]=0;
+  octets[3]=0;
+#endif /* not WITHOUT_NETWORK */
 
-  (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
-
-  return(arr);
+  return(IParray);
 }
 
 /*************************************************************************/
@@ -111,11 +137,16 @@ Java_java_net_InetAddress_lookupInaddrAny(JNIEnv *env, jclass class)
 JNIEXPORT jstring JNICALL
 Java_java_net_InetAddress_getHostByAddr(JNIEnv *env, jclass class, jarray arr)
 {
-  jbyte *octets;
-  jsize len;
-  int addr;
-  struct hostent *hp;
+#ifndef WITHOUT_NETWORK
+  jbyte   *octets;
+  jsize   len;
+  int     addr;
+  char    hostname[255];
+  int     result;
   jstring retval;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   /* Grab the byte[] array with the IP out of the input data */
   len = (*env)->GetArrayLength(env, arr);
@@ -133,23 +164,30 @@ Java_java_net_InetAddress_getHostByAddr(JNIEnv *env, jclass class, jarray arr)
     }
 
   /* Convert it to a 32 bit address */
-  addr = (octets[0] << 24) + (octets[1] << 16) + (octets[2] << 8) + octets[3];
-  addr = htonl(addr); 
+  TARGET_NATIVE_NETWORK_IPADDRESS_BYTES_TO_INT(octets[0],
+                                               octets[1],
+                                               octets[2],
+                                               octets[3],
+                                               addr
+                                              );
 
   /* Release some memory */
   (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
 
   /* Resolve the address and return the name */
-  hp = gethostbyaddr((char*)&addr, sizeof(addr), AF_INET);
-  if (!hp)
+  TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_ADDRESS(addr,hostname,sizeof(hostname),result);
+  if (result != TARGET_NATIVE_OK)
     {
-      JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, "Bad IP Address");
+      JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, "Bad IP address");
       return (jstring)NULL;
     }
 
-  retval = (*env)->NewStringUTF(env, hp->h_name);
+  retval = (*env)->NewStringUTF(env, hostname);
 
   return(retval);
+#else /* not WITHOUT_NETWORK */
+  return (jstring)NULL;
+#endif /* not WITHOUT_NETWORK */
 }
 
 /*************************************************************************/
@@ -157,14 +195,20 @@ Java_java_net_InetAddress_getHostByAddr(JNIEnv *env, jclass class, jarray arr)
 JNIEXPORT jobjectArray JNICALL
 Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
 {
-  const char *hostname;
-  struct hostent *hp;
-  int i, ip;
-  jbyte *octets;
-  jsize num_addrs;
-  jclass arr_class;
-  jobjectArray addrs;
-  jarray ret_octets;
+#ifndef WITHOUT_NETWORK
+  const char     *hostname;
+/* FIXME: limitation of max. 64 addresses - how to make it more flexibale? */
+  int            addresses[64];
+  jsize          addresses_count;
+  int            result;
+  jclass         arr_class;
+  jobjectArray   addrs;
+  int            i;
+  jbyte          *octets;
+  jarray         ret_octets;
+
+  assert(env!=NULL);
+  assert((*env)!=NULL);
 
   /* Grab the hostname string */
   hostname = (*env)->GetStringUTFChars(env, host, 0);
@@ -175,18 +219,19 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
     }
 
   /* Look up the host */
-  hp = gethostbyname(hostname);
-  if (!hp)
+  TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_NAME(hostname,
+                                             addresses,
+                                             sizeof(addresses)/sizeof(addresses[0]),
+                                             addresses_count,
+                                             result
+                                            );
+  if (result != TARGET_NATIVE_OK)
     {
-      JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, hostname);
+      JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, (char*)hostname);
       return (jobjectArray)NULL;
     }
   (*env)->ReleaseStringUTFChars(env, host, hostname);
 
-  /* Figure out how many addresses there are and allocate a return array */
-  for (num_addrs = 0, i = 0; hp->h_addr_list[i] ; i++)
-    ++num_addrs;
- 
   arr_class = (*env)->FindClass(env,"[B");
   if (!arr_class)
     {
@@ -194,7 +239,7 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
       return (jobjectArray)NULL;
     }
 
-  addrs = (*env)->NewObjectArray(env, num_addrs, arr_class, 0);
+  addrs = (*env)->NewObjectArray(env, addresses_count, arr_class, 0);
   if (!addrs)
     {
       JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
@@ -202,7 +247,7 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
     }
 
   /* Now loop and copy in each address */
-  for (i = 0; i < num_addrs; i++)
+  for (i = 0; i < addresses_count; i++)
     {
       ret_octets = (*env)->NewByteArray(env, 4);
       if (!ret_octets)      
@@ -213,17 +258,22 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
 
       octets = (*env)->GetByteArrayElements(env, ret_octets, 0);
 
-      ip = ntohl(*(int*)(hp->h_addr_list[i]));
-      octets[0] = (ip & 0xFF000000) >> 24;
-      octets[1] = (ip & 0x00FF0000) >> 16;
-      octets[2] = (ip & 0x0000FF00) >> 8;
-      octets[3] = (ip & 0x000000FF);
+      TARGET_NATIVE_NETWORK_INT_TO_IPADDRESS_BYTES(addresses[i],
+                                                   octets[0],
+                                                   octets[1],
+                                                   octets[2],
+                                                   octets[3]
+                                                  );
 
       (*env)->ReleaseByteArrayElements(env, ret_octets, octets, 0);
+
       (*env)->SetObjectArrayElement(env, addrs, i, ret_octets);
     }
 
   return(addrs);
+#else /* not WITHOUT_NETWORK */
+  return (jobjectArray)NULL;
+#endif /* not WITHOUT_NETWORK */
 }
 
-
+/* end of file */
