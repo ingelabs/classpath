@@ -146,11 +146,13 @@ public class BasicTextUI extends TextUI
     }
     
     public Rectangle modelToView(JTextComponent t, int pos)
+      throws BadLocationException
     {
 	return modelToView(t, pos, null);
     }
     
     public Rectangle modelToView(JTextComponent t, int pos, Position.Bias bias)
+      throws BadLocationException
     {
 	return null;
     }

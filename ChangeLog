@@ -4,6 +4,8 @@
 	out to avoid errors when compiling with the Sun JDK.  The
 	implementation was way too incomplete to be of any use.
 
+	(modelToView): Declare to throw javax.swing.text.BadLocationException.
+	
 2003-06-26  Sascha Brawer  <brawer@dandelis.ch>
 	
         * javax/swing/plaf/TextUI.java: Made imports specific, reformatted,
