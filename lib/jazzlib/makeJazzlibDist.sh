@@ -12,7 +12,7 @@ echo "----- Edit this script to change the release number       -----"
 echo "----- Do rm -rf dist when you're finished                 -----"
 echo "----- 30 May 2002 John Leuner <jewel@debian.org>      -----"
 
-RELEASE_NUMBER=06
+RELEASE_NUMBER=07
 
 # $1 is the archive command, eg "tar czvf" or "zip" or "jar cf"
 # $2 is the archive suffix, eg ".zip" or ".tar.gz"
@@ -56,7 +56,7 @@ case "$1" in
     popd
 
     #make binary distro second
-    cp *.class dist/java/util/zip
+    cp ../../../lib/java/util/zip/*.class dist/java/util/zip
     pushd dist
 
     foo=(java/util/zip/*.class)
@@ -69,18 +69,16 @@ case "$1" in
     mkdir -p dist/java/util/zip
     mkdir -p dist/java/util/jar
 
-    
-
     #make binary distro second
-    cp *.class dist/java/util/zip
-    cp ../jar/*.class dist/java/util/jar
+    cp ../../../lib/java/util/zip/*.class dist/java/util/zip
+    cp ../../../lib/java/util/zip/../jar/*.class dist/java/util/jar
     pushd dist
 
     cp ../../../../COPYING .
     foo=(java/util/zip/*.class)
     foo=($foo java/util/jar/*.class)
 
-    create_archive "jar cf" ".jar" "-binary" "-juz" "$foo" "md5sums md5sums.asc COPYING"
+    create_archive "fastjar cf" ".jar" "-binary" "-juz" "$foo" "md5sums md5sums.asc COPYING"
     
     popd
     ;;
