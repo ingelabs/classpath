@@ -1,3 +1,10 @@
+2000-11-03  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/util/AbstractList.java (SubList): Make it a top-level private
+	class.
+	* java/util/LinkedList.java (remove): Do update modCount and knownMod.
+	(add): Ditto.
+
 2000-11-02  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/AbstractList.java: Throw messages with 
