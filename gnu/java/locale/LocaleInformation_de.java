@@ -391,6 +391,8 @@ public class LocaleInformation_de extends ListResourceBundle
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
+    { "groupingSeparator", "." },
+    { "localPatternChars", "GjMtkHmsSEDFwWahKzJeugAZ" },
     { "shortMonths", shortMonths },
     { "collation_rules", collation_rules },
     { "months", months },
@@ -404,7 +406,7 @@ public class LocaleInformation_de extends ListResourceBundle
     { "fullDateFormat", "EEEE, d. MMMM yyyy" },
     { "fullTimeFormat", "H:mm' Uhr 'z" },
     { "zoneStrings", zoneStrings },
-    { "longDateFormat", longDateFormat },
+    { "territories", territories },
     { "defaultDateFormat", defaultDateFormat },
     { "shortTimeFormat", shortTimeFormat },
     { "mediumTimeFormat", mediumTimeFormat },

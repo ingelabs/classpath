@@ -1,5 +1,10 @@
 2004-11-16  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/locale/LocaleInformation_de.java:
+	Added some new locale informations to the contents object.
+
+2004-11-16  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/BufferedReader.java,
 	java/io/FileInputStream.java,
 	java/io/FileOutputStream.java,
