@@ -1,5 +1,18 @@
 2003-04-29  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/attribute/Attribute.java,
+	* javax/print/attribute/AttributeSet.java,
+	* javax/print/attribute/PrintRequestAttributeSet.java:
+	New files merged from libgcj.
+	* javax/print/attribute/package.html: New files
+	* javax/print/Makefile.am,
+	javax/print/attribute/Makefile.am: New files.
+	* configure.in
+	(AC_OUTPUT): Added javax/print/Makefile and
+	javax/print/attribute/Makefile.
+
+2003-04-29  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/AbstractListModel.java:
 	Reformatted.
 	(getListDataListeners): New method.

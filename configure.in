@@ -369,6 +369,8 @@ javax/naming/directory/Makefile
 javax/naming/event/Makefile
 javax/naming/ldap/Makefile
 javax/naming/spi/Makefile
+javax/print/Makefile
+javax/print/attribute/Makefile
 javax/rmi/Makefile
 javax/rmi/CORBA/Makefile
 javax/security/Makefile
