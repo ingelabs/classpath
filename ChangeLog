@@ -1,5 +1,9 @@
 2004-05-17  Michael Koch  <konqueror@gmx.de>
 
+	* acinclude.m4: Depend on GCJ 3.3 or newer.
+
+2004-05-17  Michael Koch  <konqueror@gmx.de>
+
 	* acinclude.m4: Fix escaping of arguments to AC_ARG_WITH and use
 	AS_HELP_STRING for ./configure --help output.
 

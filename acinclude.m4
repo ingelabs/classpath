@@ -327,14 +327,14 @@ AC_DEFUN([CLASSPATH_CHECK_GCJ],
       GCJ=""
     fi
     if expr "$GCJ_VERSION_MAJOR" = 3 > /dev/null; then
-      if expr "$GCJ_VERSION_MINOR" \< 1; then
+      if expr "$GCJ_VERSION_MINOR" \< 3; then
         GCJ=""
       fi
     fi
     if test "x$GCJ" != x; then
       AC_MSG_RESULT($GCJ_VERSION)
     else
-      AC_MSG_WARN($GCJ_VERSION: gcj 3.1 or higher required)
+      AC_MSG_WARN($GCJ_VERSION: gcj 3.3 or higher required)
     fi
   fi 
 ])
