@@ -1,5 +1,15 @@
 2004-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/ByteOrder.java,
+	java/nio/MappedByteBuffer.java,
+	java/nio/MappedByteBufferImpl.java,
+	java/nio/channels/Channels.java,
+	java/nio/channels/spi/SelectorProvider.java,
+	java/nio/charset/Charset.java:
+	Cleanup.
+
+2004-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* configure.ac: Removed CNI "support".
 	* native/Makefile.am (SUBDIRS): Don't compile cni subdir
 	* native/cni/.cvsignore, native/cni/Makefile.am: Removed.
