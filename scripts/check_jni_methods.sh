@@ -18,7 +18,6 @@ find native/jni -name \*.c | \
 
 # Write temporary ignore file.
 cat > $TMPFILE3 << EOF
--Java_gnu_java_awt_peer_gtk_GtkFramePeer_nativeSetIconImageFromData
 -Java_gnu_java_awt_peer_gtk_GtkMenuComponentPeer_dispose
 -Java_java_lang_VMSystem_arraycopy
 -Java_java_lang_VMSystem_identityHashCode

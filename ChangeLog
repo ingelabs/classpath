@@ -1,3 +1,8 @@
+2005-01-10  Michael Koch  <konqueror@gmx.de>
+
+	* scripts/check_jni_methods.sh: Dont ignore
+	Java_gnu_java_awt_peer_gtk_GtkFramePeer_nativeSetIconImageFromData.
+
 2005-01-10  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFramePeer.c
