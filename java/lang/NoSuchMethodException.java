@@ -25,6 +25,8 @@ package java.lang;
  * by another in order to deal with exceptional conditions.  
  * Thrown to indicate the class does not have the specified method.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class NoSuchMethodException extends Exception

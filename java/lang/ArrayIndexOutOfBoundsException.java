@@ -27,6 +27,8 @@ package java.lang;
  * accessing an index which is either negative or greater than the size of
  * the array minus one.
  *
+ * @since JDK 1.0
+ *
  * @author Brian Jones
  */
 public class ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException

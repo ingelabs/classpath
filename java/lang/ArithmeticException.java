@@ -26,6 +26,8 @@ package java.lang;
  * In this case an ArithmeticException is thrown when things like trying
  * to divide a number by zero.
  *
+ * @since JDK 1.0
+ *
  * @author Brian Jones
  */
 public class ArithmeticException extends RuntimeException

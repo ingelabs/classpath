@@ -26,6 +26,8 @@ package java.lang;
  * The security manager will throw this exception to indicate a security
  * violation.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class SecurityException extends RuntimeException

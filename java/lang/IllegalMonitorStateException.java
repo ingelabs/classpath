@@ -28,6 +28,8 @@ package java.lang;
  * exception is also thrown to give a message to other threads also waiting
  * on an object's monitor without owning the monitor.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class IllegalMonitorStateException extends RuntimeException

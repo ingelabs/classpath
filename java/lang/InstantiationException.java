@@ -27,6 +27,8 @@ package java.lang;
  * <code>newInstance</code> method of class <code>Class</code>.  Trying
  * to do so results in this exception being thrown.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class InstantiationException extends Exception

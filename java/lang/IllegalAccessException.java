@@ -30,6 +30,8 @@ package java.lang;
  * access to the zero argument constructor as in using the 
  * <code>newsInstance</code> method of class <code>Class</code>.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class IllegalAccessException extends Exception

@@ -26,6 +26,8 @@ package java.lang;
  * Thrown when attempting to use <code>null</code> where an object
  * is required, such as when accessing an instance method of a null object.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class NullPointerException extends RuntimeException

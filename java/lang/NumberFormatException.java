@@ -27,6 +27,8 @@ package java.lang;
  * one of the numeric types, but the operation fails because the string
  * has the wrong format.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class NumberFormatException extends IllegalArgumentException

@@ -21,9 +21,11 @@
 package java.lang;
 
 /** 
-    This exception is thrown by an object when an operation is
-    requested of it that it does not support.
-*/
+ * This exception is thrown by an object when an operation is
+ * requested of it that it does not support.
+ *
+ * @since JDK 1.2
+ */
 public class UnsupportedOperationException extends RuntimeException
 {
   /**

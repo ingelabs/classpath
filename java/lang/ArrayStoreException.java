@@ -25,6 +25,8 @@ package java.lang;
  * by another in order to deal with exceptional conditions, in this case
  * when trying to store an object into an array of a different type.
  *
+ * @since JDK 1.0
+ *
  * @author Brian Jones
  */
 public class ArrayStoreException extends RuntimeException

@@ -27,10 +27,14 @@ package java.lang;
  * and <code>Class</code> when attempting to load a class when no definition
  * for the specified class can be found.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class ClassNotFoundException extends Exception
 {
+  private Throwable ex = null;
+  
   /**
    * Create an exception without a message.
    */
@@ -45,5 +49,30 @@ public class ClassNotFoundException extends Exception
   public ClassNotFoundException(String s)
     {
       super(s);
+    }
+
+  /**
+   * Create an exception with a message and include the exception 
+   * which occurred while loading the class.
+   *
+   * @param ex the exception which occurred while loading the class
+   *
+   * @since JDK 1.2
+   */
+  public ClassNotFoundException(String s, Throwable ex)
+    {
+      super(s);
+      this.ex = ex;
+    }
+
+  /**
+   * Returns the exception which occurred while loading the class, 
+   * otherwise returns null.
+   * 
+   * @since JDK 1.2
+   */
+  public Throwable getException()
+    {
+      return ex;
     }
 }

@@ -30,6 +30,8 @@ package java.lang;
  * integer greater than or equal to the size of the object is an index
  * which would be out of bounds.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class IndexOutOfBoundsException extends RuntimeException

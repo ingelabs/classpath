@@ -28,6 +28,8 @@ package java.lang;
  * Methods which throw these exceptions are not required to declare them
  * in their throws clause.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class RuntimeException extends Exception

@@ -26,6 +26,8 @@ package java.lang;
  * Invoking a method at an illegal or inappropriate time can result
  * in an <code>IllegalStateException</code>.
  *
+ * @since JDK 1.1
+ * 
  * @author Brian Jones
  */
 public class IllegalStateException extends RuntimeException

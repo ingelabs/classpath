@@ -25,6 +25,8 @@ package java.lang;
  * by another in order to deal with exceptional conditions.  
  * Thrown to indicate the class does not have the specified field.
  *
+ * @since JDK 1.1
+ * 
  * @author Brian Jones
  */
 public class NoSuchFieldException extends Exception

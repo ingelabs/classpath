@@ -25,6 +25,8 @@ package java.lang;
  * by another in order to deal with the cause of the exception, such as
  * mouse movements, keyboard clicking, etc.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class Exception extends Throwable

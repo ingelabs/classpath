@@ -29,6 +29,8 @@ package java.lang;
  * the <code>clone</code> method of <code>Object</code> to indicate 
  * that object does not implement the <code>Cloneable</code> interface.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class CloneNotSupportedException extends Exception

@@ -30,6 +30,8 @@ package java.lang;
  * String s = (String)o;
  * </pre>
  *
+ * @since JDK 1.0
+ *
  * @author Brian Jones
  */
 public class ClassCastException extends RuntimeException

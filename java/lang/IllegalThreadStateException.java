@@ -28,6 +28,7 @@ package java.lang;
  * of class <code>Thread</code> when it is not in an appropriate state
  * for the operation.
  *
+ * @since JDK 1.0
  * @author Brian Jones
  */
 public class IllegalThreadStateException extends IllegalArgumentException

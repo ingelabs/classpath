@@ -28,6 +28,8 @@ package java.lang;
  * sleeping, waiting, or paused in some other way.  See the 
  * <code>interrupt</code> method of class <code>Thread</code>.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class InterruptedException extends Exception

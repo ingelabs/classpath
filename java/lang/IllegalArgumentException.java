@@ -25,6 +25,8 @@ package java.lang;
  * When a method is passed an illegal or inappropriate argument 
  * this exception may be thrown.
  *
+ * @since JDK 1.0
+ * 
  * @author Brian Jones
  */
 public class IllegalArgumentException extends RuntimeException
