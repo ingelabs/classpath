@@ -246,7 +246,9 @@ public class ArraysTest {
     passfail("comparator sort", Arrays.equals(a3, a4));
     passfail("comparator search", Arrays.binarySearch(a4, "sorting", c) == 8 &&
                                   Arrays.binarySearch(a4, "nice", c) == -11);
-    passfail("toList toString", Arrays.toList(a4).toString().equals(list));
+
+    // toList doesn't exist -gcb
+//    passfail("toList toString", Arrays.toList(a4).toString().equals(list));
   }
 
   static void passfail(String desc, boolean didpass) {
