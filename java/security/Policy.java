@@ -37,6 +37,11 @@ exception statement from your version. */
 
 package java.security;
 
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * <p>This is an abstract class for representing the system security policy for
  * a Java application environment (specifying which permissions are available
@@ -90,25 +95,10 @@ package java.security;
  */
 public abstract class Policy
 {
-  // FIXME: The class name of the Policy provider should really be sourced
-  // from the "java.security" configuration file. For now, just hard-code
-  // a stub implementation.
   static private Policy currentPolicy = null;
-  static
-  {
-    String pp = System.getProperty ("policy.provider");
-    if (pp != null)
-      try
-	{
-	  currentPolicy = (Policy)Class.forName(pp).newInstance();
-	}
-      catch (Exception _)
-	{
-	  currentPolicy = null;
-	}
-    if (currentPolicy == null)
-      currentPolicy = new gnu.java.security.provider.DefaultPolicy();
-  }
+
+  /** Map of ProtectionDomains to PermissionCollections for this instance. */
+  private Map pd2pc = null;
 
   /** Constructs a new <code>Policy</code> object. */
   public Policy()
@@ -135,7 +125,7 @@ public abstract class Policy
     if (sm != null)
       sm.checkPermission(new SecurityPermission("getPolicy"));
 
-    return currentPolicy;
+    return getCurrentPolicy();
   }
 
   /**
@@ -157,9 +147,67 @@ public abstract class Policy
     if (sm != null)
       sm.checkPermission(new SecurityPermission("setPolicy"));
 
+    setup(policy);
     currentPolicy = policy;
   }
 
+  private static void setup(final Policy policy)
+  {
+    if (policy.pd2pc == null)
+      policy.pd2pc = Collections.synchronizedMap(new LinkedHashMap());
+
+    ProtectionDomain pd = policy.getClass().getProtectionDomain();
+    if (pd.getCodeSource() != null)
+      {
+        PermissionCollection pc = null;
+        if (currentPolicy != null)
+          pc = currentPolicy.getPermissions(pd);
+
+        if (pc == null) // assume it has all
+          {
+            pc = new Permissions();
+            pc.add(new AllPermission());
+          }
+
+        policy.pd2pc.put(pd, pc); // add the mapping pd -> pc
+      }
+  }
+
+  /**
+   * Ensures/forces loading of the configured policy provider, while bypassing
+   * the {@link SecurityManager} checks for <code>"getPolicy"</code> security
+   * permission.  Nneeded by {@link ProtectionDomain}.
+   */
+  static Policy getCurrentPolicy()
+  {
+    // FIXME: The class name of the Policy provider should really be sourced
+    // from the "java.security" configuration file. For now, just hard-code
+    // a stub implementation.
+    if (currentPolicy == null)
+      {
+        String pp = System.getProperty ("policy.provider");
+        if (pp != null)
+          try
+            {
+              currentPolicy = (Policy) Class.forName(pp).newInstance();
+            }
+          catch (Exception ignored) {}
+
+        if (currentPolicy == null)
+          currentPolicy = new gnu.java.security.provider.DefaultPolicy();
+      }
+    return currentPolicy;
+  }
+
+  /**
+   * Tests if <code>currentPolicy</code> is not <code>null</code>, thus allowing
+   * clients to not force loading of any policy provider.  needed by {@link
+   * ProtectionDomain}.
+   */
+  static boolean isLoaded()
+  {
+    return currentPolicy != null;
+  }
 
   /**
    * Evaluates the global policy and returns a {@link PermissionCollection}
@@ -174,6 +222,81 @@ public abstract class Policy
    * instance and it must support heterogeneous {@link Permission} types.
    */
   public abstract PermissionCollection getPermissions(CodeSource codesource);
+
+  /**
+   * Evaluates the global policy and returns a {@link PermissionCollection}
+   * object specifying the set of permissions allowed given the characteristics
+   * of the protection domain.
+   *
+   * @param domain the {@link ProtectionDomain} associated with the caller.
+   * @return the set of permissions allowed for the domain according to the
+   * policy. The returned set of permissions must be a new mutable instance and
+   * it must support heterogeneous {@link Permission} types.
+   * @since 1.4
+   * @see ProtectionDomain
+   * @see SecureClassLoader
+   */
+  public PermissionCollection getPermissions(ProtectionDomain domain)
+  {
+    if (domain == null)
+      return new Permissions();
+
+    if (pd2pc == null)
+      setup(this);
+
+    PermissionCollection result = (PermissionCollection) pd2pc.get(domain);
+    if (result != null)
+      {
+        Permissions realResult = new Permissions();
+        for (Enumeration e = result.elements(); e.hasMoreElements(); )
+          realResult.add((Permission) e.nextElement());
+
+        return realResult;
+      }
+
+    result = getPermissions(domain.getCodeSource());
+    if (result == null)
+      result = new Permissions();
+
+    PermissionCollection pc = domain.getPermissions();
+    if (pc != null)
+      for (Enumeration e = pc.elements(); e.hasMoreElements(); )
+        result.add((Permission) e.nextElement());
+
+    return result;
+  }
+
+  /**
+   * Evaluates the global policy for the permissions granted to the {@link
+   * ProtectionDomain} and tests whether the <code>permission</code> is granted.
+   *
+   * @param domain the {@link ProtectionDomain} to test.
+   * @param permission the {@link Permission} object to be tested for
+   * implication.
+   * @return <code>true</code> if <code>permission</code> is a proper subset of
+   * a permission granted to this {@link ProtectionDomain}.
+   * @since 1.4
+   * @see ProtectionDomain
+   */
+  public boolean implies(ProtectionDomain domain, Permission permission)
+  {
+    if (pd2pc == null)
+      setup(this);
+
+    PermissionCollection pc = (PermissionCollection) pd2pc.get(domain);
+    if (pc != null)
+      return pc.implies(permission);
+
+    boolean result = false;
+    pc = getPermissions(domain);
+    if (pc != null)
+      {
+        result = pc.implies(permission);
+        pd2pc.put(domain, pc);
+      }
+
+    return result;
+  }
 
   /**
    * Refreshes/reloads the policy configuration. The behavior of this method
