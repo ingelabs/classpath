@@ -1,5 +1,12 @@
 2003-05-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/zip/DeflaterOutputStream.java,
+	java/util/zip/GZIPInputStream.java,
+	java/util/zip/GZIPOutputStream.java:
+	Reformatted.
+
+2003-05-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/CollationKey.java:
 	Reformatted.
 	(originalText): Renamed from str to match libgcj.
