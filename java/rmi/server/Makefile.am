@@ -6,6 +6,7 @@ LogStream.java \
 ObjID.java \
 Operation.java \
 RMIClassLoader.java \
+RMIClassLoaderSpi.java \
 RMIClientSocketFactory.java \
 RMIFailureHandler.java \
 RMIServerSocketFactory.java \

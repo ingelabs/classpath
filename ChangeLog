@@ -1,5 +1,10 @@
 2002-12-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/rmi/server/RMIClassLoaderSpi.java:
+	New abstract class.
+
+2002-12-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/reflect/Proxy.java
 	(h): This member was never final in any jdk release.
 	* java/awt/Graphics2D.java
