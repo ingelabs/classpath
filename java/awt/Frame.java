@@ -365,6 +365,17 @@ remove(MenuComponent menu)
 /*************************************************************************/
 
 /**
+  * Notifies this frame that it should create its native peer.
+  */
+public void
+addNotify()
+{
+  setPeer(getToolkit().createFrame(this));
+}
+
+/*************************************************************************/
+
+/**
   * Destroys any resources associated with this frame.  This includes
   * all components in the frame and all owned toplevel windows.
   */
