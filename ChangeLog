@@ -1,3 +1,8 @@
+2004-07-16  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/net/URL.java (URL(String,String,int,String,URLStreamHandler):
+	Don't set authority if host isn't specified.
+
 2004-07-16  Michael Koch  <konqueror@gmx.de>
 
 	* java/nio/ByteOrder.java
