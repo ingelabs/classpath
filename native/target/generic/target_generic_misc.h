@@ -72,7 +72,7 @@ extern "C" {
 /****************************** Macros *********************************/
 
 /***********************************************************************\
-* Name       : TARGET_NATIVE_FORMAT_STRING
+* Name       : TARGET_NATIVE_MISC_FORMAT_STRING
 * Purpose    : format a string with arguments
 * Input      : buffer     - buffer for string
 *              bufferSize - size of buffer
@@ -91,20 +91,20 @@ extern "C" {
 *                va_list/va_start/va_end is used!
 \***********************************************************************/
 
-#ifndef TARGET_NATIVE_FORMAT_STRING
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING
   #ifdef __GNUC__
     #include <stdarg.h>
-    #define TARGET_NATIVE_FORMAT_STRING(buffer,bufferSize,format,args...) \
+    #define TARGET_NATIVE_MISC_FORMAT_STRING(buffer,bufferSize,format,args...) \
       do { \
         snprintf(buffer,bufferSize,format, ## args); \
       } while (0)
   #else
-    #error TARGET_NATIVE_FORMAT_STRING with variable number of arguments is only supported by GNU gcc! Use TARGET_NATIVE_FORMAT_STRING<n> instead.
+    #error TARGET_NATIVE_MISC_FORMAT_STRING with variable number of arguments is only supported by GNU gcc! Use TARGET_NATIVE_FORMAT_STRING<n> instead.
   #endif
 #endif
 
 /***********************************************************************\
-* Name       : TARGET_NATIVE_FORMAT_STRING<n>
+* Name       : TARGET_NATIVE_MISC_FORMAT_STRING<n>
 * Purpose    : format a string (with a fixed number of) arguments
 * Input      : buffer     - buffer for string
 *              bufferSize - size of buffer
@@ -122,72 +122,72 @@ extern "C" {
 *                va_list/va_start/va_end is used!
 \***********************************************************************/
 
-#ifndef TARGET_NATIVE_FORMAT_STRING0
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING0
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING0(buffer,bufferSize,format) \
+  #define TARGET_NATIVE_MISC_FORMAT_STRING0(buffer,bufferSize,format) \
     do { \
       snprintf(buffer,bufferSize,format); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_FORMAT_STRING1
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING1
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING1(buffer,bufferSize,format,arg1) \
+  #define TARGET_NATIV_MISCE_FORMAT_STRING1(buffer,bufferSize,format,arg1) \
     do { \
       snprintf(buffer,bufferSize,format,arg1); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_FORMAT_STRING2
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING2
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING2(buffer,bufferSize,format,arg1,arg2) \
+  #define TARGET_NATIVE_MISC_FORMAT_STRING2(buffer,bufferSize,format,arg1,arg2) \
     do { \
       snprintf(buffer,bufferSize,format,arg1,arg2); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_FORMAT_STRING3
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING3
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING3(buffer,bufferSize,format,arg1,arg2,arg3) \
+  #define TARGET_NATIVE_MISC_FORMAT_STRING3(buffer,bufferSize,format,arg1,arg2,arg3) \
     do { \
       snprintf(buffer,bufferSize,format,arg1,arg2,arg3); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_FORMAT_STRING4
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING4
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING4(buffer,bufferSize,format,arg1,arg2,arg3,arg4) \
+  #define TARGET_NATIVE_MISC_FORMAT_STRING4(buffer,bufferSize,format,arg1,arg2,arg3,arg4) \
     do { \
       snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_FORMAT_STRING5
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING5
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING5(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5) \
+  #define TARGET_NATIVE_MISC_FORMAT_STRING5(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5) \
     do { \
       snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_FORMAT_STRING6
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING6
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING6(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6) \
+  #define TARGET_NATIVE_MISC_FORMAT_STRING6(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6) \
     do { \
       snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_FORMAT_STRING7
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING7
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING7(buffer,bufferSize,format,arg1,arg2,arg3,arg14,arg5,arg6,arg7) \
+  #define TARGET_NATIVE_MISC_FORMAT_STRING7(buffer,bufferSize,format,arg1,arg2,arg3,arg14,arg5,arg6,arg7) \
     do { \
       snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_FORMAT_STRING8
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING8
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING8(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8) \
+  #define TARGET_NATIVE_MISC_FORMAT_STRING8(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8) \
     do { \
       snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_FORMAT_STRING9
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING9
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING9(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9) \
+  #define TARGET_NATIVE_MISC_FORMAT_STRING9(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9) \
     do { \
       snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9); \
     } while (0)
@@ -211,7 +211,7 @@ extern "C" {
 *                va_list/va_start/va_end is used!
 \***********************************************************************/
 
-#ifndef TARGET_NATIVE_FORMAT_STRING_ELLIPSE
+#ifndef TARGET_NATIVE_MISC_FORMAT_STRING_ELLIPSE
   #include <stdarg.h>
   #define TARGET_NATIVE_FORMAT_STRING_ELLIPSE(buffer,bufferSize,format) \
     do { \
@@ -224,7 +224,7 @@ extern "C" {
 #endif
 
 /***********************************************************************\
-* Name       : TARGET_NATIVE_UTIL_GET_TIMEZONE_STRING
+* Name       : TARGET_NATIVE_MISC_GET_TIMEZONE_STRING
 * Purpose    : get timezone string
 * Input      : string          - buffer for timezone string
 *              maxStringLength - max. string length
@@ -236,7 +236,7 @@ extern "C" {
 *              'timezone' (e. g. Cygwin)
 \***********************************************************************/
 
-#ifndef TARGET_NATIVE_UTIL_GET_TIMEZONE_STRING
+#ifndef TARGET_NATIVE_MISC_GET_TIMEZONE_STRING
   #if TIME_WITH_SYS_TIME
      #include <sys/time.h>
      #include <time.h>
