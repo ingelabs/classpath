@@ -791,7 +791,7 @@ readLine() throws IOException
   * <p>
   * Note that all characters are encoded in the method that requires the
   * fewest number of bytes with the exception of the character with the
-  * value of <code>\u<llll>0000</code> which is encoded as two bytes.  This is a 
+  * value of <code>&#92;u0000</code> which is encoded as two bytes.  This is a 
   * modification of the UTF standard used to prevent C language style
   * <code>NUL</code> values from appearing in the byte stream.
   * <p>
@@ -1166,14 +1166,14 @@ writeDouble(double d) throws IOException
   * encoded <code>String</code> not the <code>String</code> length.  Next
   * come the encoded characters.  Each character in the <code>String</code>
   * is encoded as either one, two or three bytes.  For characters in the
-  * range of <code>\u0001</code> to <\u007F>, one byte is used.  The character
+  * range of <code>&#92;u0001</code> to <code>&#92;u007F</code>, one byte is used.  The character
   * value goes into bits 0-7 and bit eight is 0.  For characters in the range
-  * of <code>\u0080</code> to <code>\u007FF</code>, two bytes are used.  Bits
+  * of <code>&#92;u0080</code> to <code>&#92;u007FF</code>, two bytes are used.  Bits
   * 6-10 of the character value are encoded bits 0-4 of the first byte, with
   * the high bytes having a value of "110".  Bits 0-5 of the character value
   * are stored in bits 0-5 of the second byte, with the high bits set to
   * "10".  This type of encoding is also done for the null character
-  * <code>\u0000</code>.  This eliminates any C style NUL character values
+  * <code>&#92;u0000</code>.  This eliminates any C style NUL character values
   * in the output.  All remaining characters are stored as three bytes.
   * Bits 12-15 of the character value are stored in bits 0-3 of the first
   * byte.  The high bits of the first bytes are set to "1110".  Bits 6-11

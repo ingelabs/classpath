@@ -676,7 +676,7 @@ readLine() throws IOException
   * <p>
   * Note that all characters are encoded in the method that requires the
   * fewest number of bytes with the exception of the character with the
-  * value of <code>\u<llll>0000</code> which is encoded as two bytes.  This is a 
+  * value of <code>&#92;u0000</code> which is encoded as two bytes.  This is a 
   * modification of the UTF standard used to prevent C language style
   * <code>NUL</code> values from appearing in the byte stream.
   * <p>
