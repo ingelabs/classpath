@@ -1,3 +1,8 @@
+2004-07-25  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac (AC_CONFIG_FILES): gnu/java/security/action/Makefile
+	added.
+
 2004-07-23  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* gnu/java/net/protocol/http/Connection.java: Use GetPropertyAction

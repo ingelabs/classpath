@@ -332,6 +332,7 @@ gnu/java/rmi/registry/Makefile
 gnu/java/rmi/rmic/Makefile
 gnu/java/rmi/server/Makefile
 gnu/java/security/Makefile
+gnu/java/security/action/Makefile
 gnu/java/security/der/Makefile
 gnu/java/security/provider/Makefile
 gnu/java/security/util/Makefile
