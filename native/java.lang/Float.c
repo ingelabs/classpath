@@ -106,17 +106,9 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
 		case '\t':
 		case '\r':
 		case '\n':
-		    myptr++;
-		    break;
 		case 'f':
 		case 'F':
-#if defined(WITH_JAPHAR)
-		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
-#else
-		    (*env)->ReleaseStringUTFChars(env, s, nptr);
-#endif		    
-		    _javalang_ThrowException(env, "java/lang/NumberFormatException", "cannot use float designators 'f' or 'F' in string for conversion");
-		    return 0.0;
+		    myptr++;
 		    break;
 		default:
 #if defined(WITH_JAPHAR)
