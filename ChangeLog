@@ -1,3 +1,13 @@
+2002-11-23  Jesse Rosenstock <jmr@ugcs.caltech.edu>
+
+	* gnu/java/nio/CharBufferImpl.java
+	(subSequence): Implemented.
+	(toString): Removed.
+	* java/nio/CharBuffer.java
+	(length): Return remaining() instead of limit().
+	(charAt): Implemented correctly.
+	(toString): Implemented correctly.
+
 2002-11-23  Michael Koch <konqueror@gmx.de>
 
 	* java/net/DatagramSocket.java

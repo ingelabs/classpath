@@ -132,8 +132,15 @@ public final class CharBufferImpl extends CharBuffer
 
   final public CharSequence subSequence (int start, int end)
   {
-    // FIXME
-    return null;
+    if (start < 0 ||
+        end > length () ||
+        start > end)
+      throw new IndexOutOfBoundsException ();
+
+    // No support for direct buffers yet.
+    // assert array () != null;
+    return new CharBufferImpl (array (), position () + start,
+                               position () + end);
   }
   
   final public char get()
@@ -167,14 +174,4 @@ public final class CharBufferImpl extends CharBuffer
   final public long getLong() { long a = nio_get_Long(this, position(), limit()); inc_pos(8); return a; } final public CharBuffer putLong(long value) { nio_put_Long(this, position(), limit(), value); inc_pos(8); return this; } final public long getLong(int index) { long a = nio_get_Long(this, index, limit()); return a; } final public CharBuffer putLong(int index, long value) { nio_put_Long(this, index, limit(), value); return this; };
   final public float getFloat() { float a = nio_get_Float(this, position(), limit()); inc_pos(4); return a; } final public CharBuffer putFloat(float value) { nio_put_Float(this, position(), limit(), value); inc_pos(4); return this; } final public float getFloat(int index) { float a = nio_get_Float(this, index, limit()); return a; } final public CharBuffer putFloat(int index, float value) { nio_put_Float(this, index, limit(), value); return this; };
   final public double getDouble() { double a = nio_get_Double(this, position(), limit()); inc_pos(8); return a; } final public CharBuffer putDouble(double value) { nio_put_Double(this, position(), limit(), value); inc_pos(8); return this; } final public double getDouble(int index) { double a = nio_get_Double(this, index, limit()); return a; } final public CharBuffer putDouble(int index, double value) { nio_put_Double(this, index, limit(), value); return this; };
-
-  public String toString()
-  {
-    if (backing_buffer != null)
-      {
-        return new String(backing_buffer, position(), limit());
-      }
-      
-    return super.toString();
-  }
 }

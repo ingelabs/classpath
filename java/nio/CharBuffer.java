@@ -160,29 +160,30 @@ public abstract class CharBuffer extends Buffer
 
   public final int length ()
   {
-    return limit ();
+    return remaining ();
   }
 
   public final char charAt (int i)
   {
-    if (hasArray ())
-      {
-	return backing_buffer[i];
-      }
+    if (i < 0 || i >= length ())
+      throw new IndexOutOfBoundsException ();
 
-    // FIXME: there must be a more elegant way of doing this.
-    return toString ().charAt (i);
+    return get (position () + i);
   }
 
   public String toString()
   {
     if (hasArray ())
       {
-	return new String (backing_buffer);
+        return new String (array (), position (), length ());
       }
 
-    // FIXME: Implement this.
-    return "";
+    StringBuffer sb = new StringBuffer (length ());
+
+    for (int i = position (); i < limit (); ++i)
+      sb.append (get (i));
+
+    return sb.toString ();
   }
  
   public int compareTo(Object obj)
