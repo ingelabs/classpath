@@ -168,8 +168,19 @@ class PlainSocketImpl extends SocketImpl
     throws IOException;
 
   protected void connect(SocketAddress address, int timeout)
+    throws IOException    
   {
-    throw new InternalError ("PlainSocketImpl::connect not implemented");
+    // NYI: this method need to support timeout
+    if (address instanceof InetSocketAddress)
+      {
+        connect(((InetSocketAddress) address).getAddress(),
+                ((InetSocketAddress) address).getPort()    );
+      }
+    else
+      {
+        throw new InternalError("PlainSocketImpl:connect not implemented for anything other than InetSocketAddress");
+      }
+      //     throw new InternalError ("PlainSocketImpl::connect not implemented");
   }
 
   /**
