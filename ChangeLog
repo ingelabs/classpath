@@ -1,5 +1,10 @@
 2002-02-03  Mark Wielaard  <mark@klomp.org>
 
+	* vm/reference/java/lang/Class.java (pd): rename field to pd from
+	protectionDomain as a workaround for compiling with gcj 3.1 (CVS)
+
+2002-02-03  Mark Wielaard  <mark@klomp.org>
+
 	* java/math/BigInteger.java: import gnu.java.math.MPN not the whole
 	package as a workaround for gcj 3.0.x
 

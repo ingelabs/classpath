@@ -68,7 +68,7 @@ import gnu.java.lang.*;
 
 public class Class {
     private Object[] signers = null;
-    private ProtectionDomain protectionDomain = null;
+    private ProtectionDomain pd = null;
     
     // The unknown protection domain.
     private final static ProtectionDomain unknownProtectionDomain;
@@ -546,10 +546,10 @@ public class Class {
         if (sm != null)
             sm.checkPermission(protectionDomainPermission);
 
-        if (protectionDomain == null)
+        if (pd == null)
             return unknownProtectionDomain;
         else
-            return protectionDomain;
+            return pd;
     }
 
 }
