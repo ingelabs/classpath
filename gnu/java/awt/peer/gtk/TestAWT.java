@@ -46,12 +46,10 @@ class PrettyPanel extends Panel
     {
       myInsets = new Insets (10, 10, 10, 10);
     }
-  /*
   public Insets getInsets ()
     {
       return myInsets;
     }
-  */
 }
 
 class PrettyFrame extends Frame
@@ -62,26 +60,27 @@ class PrettyFrame extends Frame
     {
       super (title);
       myInsets = new Insets (10, 10, 10, 10);
-      //      ((BorderLayout) getLayout ()).setHgap (5);
-      //      ((BorderLayout) getLayout ()).setVgap (5);
+      ((BorderLayout) getLayout ()).setHgap (5);
+      ((BorderLayout) getLayout ()).setVgap (5);
     }
 
   public PrettyFrame ()
     {
       this ("");
     }
-  /*
+
   public Insets getInsets()
     {
       return myInsets;
     }
-  */
 }
 
 class MainWindow extends PrettyFrame implements ActionListener 
 {
-  Button closeButton, buttonsButton, dialogButton, cursorsButton;
-  Frame buttonsWindow = null, cursorsWindow = null;
+  Button closeButton, buttonsButton, dialogButton, cursorsButton,
+    textFieldButton;
+  Frame buttonsWindow = null, cursorsWindow = null,
+    textFieldWindow = null;
   Dialog dialogWindow = null;
 
   MainWindow () 
@@ -90,23 +89,9 @@ class MainWindow extends PrettyFrame implements ActionListener
 
       System.out.println (getInsets ());
 
-      ScrollPane sp = new ScrollPane()
-      {
-	public void setBounds (int x, int y, int w, int h)
-	{
-	  System.out.println (getVScrollbarWidth());
-	  System.out.println ("SP bounds: " + x +", "+ y + " " + w + "x" + h);
-	  super.setBounds (x, y, w, h);
-	}
-      };
-      PrettyPanel p = new PrettyPanel()
-      {
-	public void setBounds (int x, int y, int w, int h)
-	{
-	  System.out.println ("Panel bounds: " + x +", "+ y + " " + w + "x" + h);
-	  super.setBounds (x, y, w, h);
-	}
-      };
+      ScrollPane sp = new ScrollPane();
+
+      PrettyPanel p = new PrettyPanel();
 
       p.setLayout (new GridLayout (10, 1));
       sp.add (p);
@@ -129,6 +114,10 @@ class MainWindow extends PrettyFrame implements ActionListener
       cursorsButton = new Button ("cursors");
       cursorsButton.addActionListener (this);
       p.add (cursorsButton);
+
+      textFieldButton = new Button ("text field");
+      textFieldButton.addActionListener (this);
+      p.add (textFieldButton);
 
       setSize (200, 400);
     }
@@ -174,6 +163,16 @@ class MainWindow extends PrettyFrame implements ActionListener
 	    }
 	  else 
 	    cursorsWindow.dispose();
+	}
+      if (source==textFieldButton)
+	{
+	  if (textFieldWindow == null)
+	    {
+	      textFieldWindow = new TextFieldWindow (this);
+	      textFieldWindow.show();
+	    }
+	  else 
+	    textFieldWindow.dispose();
 	}
     }
 }
@@ -264,12 +263,15 @@ class DialogWindow extends Dialog
 
       Panel p = new PrettyPanel();
 
-      Button cb = new Button ("close");
+      Button cb = new Button ("OK");
       cb.addMouseListener(new MouseAdapter () {
         public void mouseClicked (MouseEvent e) {
 	  dispose();
         }
       });
+      p.setLayout (new GridLayout (1, 2));
+      ((GridLayout) p.getLayout ()).setHgap (5);
+      ((GridLayout) p.getLayout ()).setVgap (5);
       p.add (cb);
 
       Button toggle = new Button ("Toggle");
@@ -346,20 +348,8 @@ class CursorsWindow extends PrettyFrame implements ItemListener
       };
 
       cursorCanvas.setSize (80,80);
-      /*
-      Panel p = new Panel() 
-      {
-	public Insets getInsets ()
-	{
-	  return new Insets (10, 0, 10, 0);
-	}
-      };
-      
-      p.add (cursorCanvas);
-      add (p, "Center");
-      */
+
       add (cursorCanvas, "Center");
-     Panel p = new Panel();
 
       Button cb = new Button ("Close");
       cb.addMouseListener(new MouseAdapter () {
@@ -367,9 +357,8 @@ class CursorsWindow extends PrettyFrame implements ItemListener
 	  dispose();
         }
       });
-      p.add (cb);
 
-      add (p, "South");
+      add (cb, "South");
 
       setSize (160, 180);
     }
@@ -383,6 +372,79 @@ class CursorsWindow extends PrettyFrame implements ItemListener
   public void dispose()
     {
       mainWindow.cursorsWindow=null;
+      super.dispose();
+    }
+}
+
+
+class TextFieldWindow extends PrettyFrame implements ItemListener
+{
+  static Frame f;
+  MainWindow mainWindow;
+  Checkbox editable, visible, sensitive;
+  TextField text;
+
+  public TextFieldWindow (MainWindow mw)
+    {
+      super ("TextField");
+
+      mainWindow = mw;
+
+      text = new TextField ("hello world");
+      add (text, "North");
+
+      Panel p = new Panel();
+      p.setLayout (new GridLayout (3, 1));
+      ((GridLayout) p.getLayout ()).setHgap (5);
+      ((GridLayout) p.getLayout ()).setVgap (5);
+
+      editable = new Checkbox("Editable", true);
+      p.add (editable);
+      editable.addItemListener (this);
+
+      visible = new Checkbox("Visible", true);
+      p.add (visible);
+      visible.addItemListener (this);
+
+      sensitive = new Checkbox("Sensitive", true);
+      p.add (sensitive);
+      sensitive.addItemListener (this);
+
+      add (p, "Center");
+
+      Button cb = new Button ("Close");
+      cb.addMouseListener(new MouseAdapter () {
+        public void mouseClicked (MouseEvent e) {
+	  dispose();
+        }
+      });
+
+      add (cb, "South");
+
+      setSize (160, 180);
+    }
+
+  public void itemStateChanged (ItemEvent e)
+    {
+      boolean on=true;
+
+      if (e.getStateChange () == ItemEvent.DESELECTED)
+	on=false;
+      if (e.getSource() == editable)
+	text.setEditable (on);
+      if (e.getSource() == visible)
+	if (on)
+	  text.setEchoChar ((char) 0);
+	else
+	  text.setEchoChar ('*');
+      if (e.getSource() == sensitive)
+	text.setEnabled (on);
+	  
+    }
+
+  public void dispose()
+    {
+      mainWindow.textFieldWindow=null;
       super.dispose();
     }
 }
