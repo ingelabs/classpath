@@ -16,6 +16,7 @@ Collection.java \
 Collections.java \
 Comparator.java \
 ConcurrentModificationException.java \
+Currency.java \
 Date.java \
 Dictionary.java \
 EmptyStackException.java \

@@ -1,3 +1,9 @@
+2003-10-24  Mark Wielaard  <mark@klomp.org>
+
+	From Guilhem Lavaux  <guilhem.lavaux@free.fr>
+	* java/util/Currency.java: New file.
+	* java/util/Makefile.am (EXTRA_DIST): Add Currency.java.
+
 2003-10-23  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/net/protocol/file/Makefile.am (EXTRA_DIST): Renamed
