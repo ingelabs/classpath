@@ -1,3 +1,9 @@
+2001-01-05  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* test/java.io/RandomAccessFileTest.java: Fix overflow of integer 
+	constant.
+	* test/java.io/dataoutput-jdk.out: Update with corrected JDK output.
+
 2000-12-27  Jeff Sturm  <jeff.sturm@commerceone.com>
 
 	* java/sql/DriverManager.java (getConnection): Don't set user/password

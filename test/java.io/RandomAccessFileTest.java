@@ -86,7 +86,7 @@ runReadTest(String filename, int seq, String testname)
           System.out.println("Failed to read int. Expected 8675309 and got " + i);
         }
       long l = ras.readLong();
-      if (l != 696969696969)
+      if (l != 696969696969L)
         {
           passed = false;
           System.out.println("Failed to read long. Expected 696969696969 and got " + l);
@@ -146,7 +146,7 @@ main(String[] argv)
       raf.writeChar((char)'\uE2D2');
       raf.writeShort((short)32000);
       raf.writeInt((int)8675309);
-      raf.writeLong((long)696969696969);
+      raf.writeLong((long) 696969696969L);
       raf.writeFloat((float)3.1415);
       raf.writeDouble((double)999999999.999);
       raf.writeUTF("Testing code is such a boring activity but it must be done");
