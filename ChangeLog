@@ -1,3 +1,13 @@
+2004-09-13  Mark Wielaard  <mark@klomp.org>
+
+	* NEWS: Set release date.
+	* configure.ac: Set version to 0.11. Add java/util/logging/Makefile.
+
+	* java/util/logging/logging.properties: Removed.
+	* resource/java/util/Makefile.am (SUBDIRS): Add logging.
+	* resource/java/util/logging/Makefile.am: Added.
+	* resource/java/util/logging/logging.properties: Added.
+
 2004-09-12  Tom Tromey  <tromey@redhat.com>
 
 	* javax/naming/CompoundName.java (CompoundName): Don't check for
