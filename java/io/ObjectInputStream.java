@@ -339,8 +339,8 @@ public class ObjectInputStream extends InputStream
 	
 	  try
 	  {
-	    myCurrentObjectStreamClass.forClass().getDeclaredMethod
-	      ( "readObject", new Class[] { ObjectInputStream.class } );
+	    myCurrentObjectStreamClass.forClass().
+	      getDeclaredMethod( ourReadObjectName, ourReadObjectParams );
 	  }
 	  catch( NoSuchMethodException e )
 	  {
@@ -941,6 +941,8 @@ public class ObjectInputStream extends InputStream
 
 
   private static final int BUFFER_SIZE = 1024;
+  private static final String ourReadObjectName = "readObject";
+  private static final Class[] ourReadObjectParams = { ObjectInputStream.class };
   
   private DataInputStream myRealInputStream;
   private DataInputStream myDataInputStream;
