@@ -205,7 +205,7 @@ abstract class B extends A
 {
   private B( int[] ar ) {}
   public B() {}
-  public static void foo() {};
+  public static void foo() {}
   public abstract void absfoo();
   
   private static String s;
