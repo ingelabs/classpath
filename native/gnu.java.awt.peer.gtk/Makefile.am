@@ -11,10 +11,8 @@ gtkcheckboxpeer.c	   gtkmenuitempeer.c	native_state.c \
 gtkchoicepeer.c		   gtkmenupeer.c \
 gtkclipboard.c		   gtkpanelpeer.c \
 gtkcomponentpeer.c	   gtkpopupmenupeer.c \
-gtkevents.c		   gtkscrollbarpeer.c
-
-HEADERS = \
-gthread-jni.h gtkpeer.h native_state.h
+gtkevents.c		   gtkscrollbarpeer.c \
+gthread-jni.h 		   gtkpeer.h            native_state.h
 
 libgtkpeer_la_LDFLAGS = -version-info @LIBVERSION@ @GTK_LIBS@ @GLIB_LIBS@ @LIBART_LIBS@
 
