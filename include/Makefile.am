@@ -22,6 +22,7 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkLabelPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkListPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMainThread.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuBarPeer.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuComponentPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuItemPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkPanelPeer.h \
@@ -95,6 +96,8 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMainThread.h: $(top_srcdir)/gnu/j
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkMainThread
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuBarPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkMenuBarPeer.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkMenuBarPeer
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuComponentPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkMenuComponentPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkMenuComponentPeer
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuItemPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkMenuItemPeer.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkMenuItemPeer
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkMenuPeer.java
