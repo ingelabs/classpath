@@ -26,14 +26,13 @@ JNIEXPORT jint JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableGetPosition
   (JNIEnv *env, jobject obj, jobject jedit)
 {
-  GtkEditable *edit;
+  void *ptr;
   int pos;
 
+  ptr = NSA_GET_PTR (env, jedit);
+
   gdk_threads_enter ();
-
-  edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-  pos = gtk_editable_get_position (edit);
-
+  pos = gtk_editable_get_position (GTK_EDITABLE (ptr));
   gdk_threads_leave ();
   
   return pos;
@@ -43,14 +42,12 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableSetPosition
   (JNIEnv *env, jobject obj, jobject jedit, jint pos)
 {
-  GtkEditable *edit;
+  void *ptr;
 
+  ptr = NSA_GET_PTR (env, jedit);
 
   gdk_threads_enter ();
-
-  edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-  gtk_editable_set_position (edit, pos);
-
+  gtk_editable_set_position (GTK_EDITABLE (ptr), pos);
   gdk_threads_leave ();
 }
 
@@ -58,14 +55,13 @@ JNIEXPORT jint JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableGetSelectionStart
   (JNIEnv *env, jobject obj, jobject jedit)
 {
-  GtkEditable *edit;
+  void *ptr;
   int pos;
 
+  ptr = NSA_GET_PTR (env, jedit);
+
   gdk_threads_enter ();
-
-  edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-  pos = edit->selection_start_pos;
-
+  pos = GTK_EDITABLE (ptr)->selection_start_pos;
   gdk_threads_leave ();
 
   return pos;
@@ -75,14 +71,13 @@ JNIEXPORT jint JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableGetSelectionEnd
   (JNIEnv *env, jobject obj, jobject jedit)
 {
-  GtkEditable *edit;
+  void *ptr;
   int pos;
 
+  ptr = NSA_GET_PTR (env, jedit);
+
   gdk_threads_enter ();
-
-  edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-  pos = edit->selection_end_pos;
-
+  pos = GTK_EDITABLE (ptr)->selection_end_pos;
   gdk_threads_leave ();
 
   return pos;
@@ -92,13 +87,12 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableSelectRegion
   (JNIEnv *env, jobject obj, jobject jedit, jint start, jint end)
 {
-  GtkEditable *edit;
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, jedit);
 
   gdk_threads_enter ();
-
-  edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-  gtk_editable_select_region (edit, start, end);
-
+  gtk_editable_select_region (GTK_EDITABLE (ptr), start, end);
   gdk_threads_leave ();
 }
 
@@ -106,13 +100,12 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableSetEditable
   (JNIEnv *env, jobject obj, jobject jedit, jint state)
 {
-  GtkEditable *edit;
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, jedit);
 
   gdk_threads_enter ();
-
-  edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-  gtk_editable_set_editable (edit, state);
-
+  gtk_editable_set_editable (GTK_EDITABLE (ptr), state);
   gdk_threads_leave ();
 }
 
