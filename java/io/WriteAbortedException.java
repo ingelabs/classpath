@@ -54,6 +54,7 @@ private String message;
   *
   * @param detail The exception that caused this exception to be thrown
   */
+public
 WriteAbortedException(String msg, Exception detail)
 {
   this.message = msg;
