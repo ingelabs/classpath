@@ -1,3 +1,8 @@
+2001-10-14  Tom Tromey  <tromey@redhat.com>
+
+	* java/net/SocketPermission.java (hostport, actions): Now
+	private.
+
 2001-10-15  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/Collection.java: Updated javadoc.
