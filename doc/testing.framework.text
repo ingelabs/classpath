@@ -16,7 +16,8 @@ methods:
 When getName() is called, your test should return the name of the
 test.  When test() is called, your test should be performed.  Upon
 completion of the test (either through success or failure), a Result
-object is returned.  test() should never throw an exception or error.
+object is returned.  test() may throw runtime exceptions and errors --
+if this happens, an implicit error result is returned.
 
 There are seven predefined result types, including the POSIX 1003.3
 result codes.  All result objects may optionally be constructed with a
