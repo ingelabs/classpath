@@ -52,6 +52,13 @@ public interface Configuration
   String CLASSPATH_HOME = "@prefix@";
 
   /**
+   * The release version number of GNU Classpath.
+   * It is set according to the value of 'version' in the configure[.in] file
+   * and used to set the System property gnu.classpath.version.
+   */
+  String CLASSPATH_VERSION = "@VERSION@";
+
+  /**
    * The value of DEBUG is substituted according to whether the
    * "--enable-debug" argument was passed to configure. Code
    * which is made conditional based on the value of this flag - typically 

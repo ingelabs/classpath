@@ -79,7 +79,11 @@ public final class System
       loadLibrary("javalang");
 
     Properties defaultProperties = Runtime.defaultProperties;
-    defaultProperties.put("gnu.classpath.home", Configuration.CLASSPATH_HOME);
+    defaultProperties.put("gnu.classpath.home",
+		    Configuration.CLASSPATH_HOME);
+    defaultProperties.put("gnu.classpath.version",
+		    Configuration.CLASSPATH_VERSION);
+
     defaultProperties.put("gnu.cpu.endian",
                           isWordsBigEndian() ? "big" : "little");
 
@@ -426,6 +430,8 @@ public final class System
    * In addition, gnu defines several other properties, where ? stands for
    * each character in '0' through '9':
    * <dl>
+   * <dl> gnu.classpath.home <dd> Path to the classpath libraries.
+   * <dl> gnu.classpath.version <dd> Version of the classpath libraries.
    * <dt> gnu.cpu.endian      <dd>big or little
    * <dt> gnu.java.io.encoding_scheme_alias.ISO-8859-?   <dd>8859_?
    * <dt> gnu.java.io.encoding_scheme_alias.iso-8859-?   <dd>8859_?
