@@ -782,13 +782,7 @@ Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i])
   public String toLowerCase() {
     char[] newStr = new char[count];
     for (int i = 0; i < count; i++)
-      // Temporary Change until Character is fully operational
-      //newStr[i] = Character.toLowerCase(value[i]);
-      if ((value[i] >= 'A') && (value[i] <= 'Z'))
-        newStr[i] = (char)(value[i] + 'A');
-      else
-        newStr[i] = value[i];
-      // End of temporary change
+      newStr[i] = Character.toLowerCase(value[i]);
     for (int i = 0; i < count; i++)
       if (value[i] != newStr[i])
 	return new String(newStr);
