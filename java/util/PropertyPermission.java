@@ -175,27 +175,51 @@ public final class PropertyPermission extends BasicPermission
   {
     return new PermissionCollection() 
       {
-	Vector permissions;
-	boolean readOnly;
+	Hashtable permissions = new Hashtable();
+	int allActions = 0;
 	
 	public void add(Permission permission) 
 	  {
-	    if (readOnly)
+	    if (isReadOnly())
 	      throw new IllegalStateException("readonly");
+
 	    // also check that permission is of correct type.
-	    permissions.add((PropertyPermission) permission);
+	    PropertyPermission pp = (PropertyPermission) permission;
+	    String name = pp.getName();
+	    if (name.equals("*"))
+	      allActions |= pp.actions;
+	    permissions.put(name, pp);
 	  }
 	
 	public boolean implies(Permission permission)
 	  {
-	    PropertyPermission[] perms = (PropertyPermission[]) 
-	      permissions.toArray(new PropertyPermission[permissions.size()]);
-	    for (int i=0; i< perms.length; i++)
-	      {
-		if (perms[i].implies(permission))
-		  return true;
-	      }
-	    return false;
+	    if (!(permission instanceof PropertyPermission))
+	      return false;
+
+	    PropertyPermission toImply = (PropertyPermission) permission;
+	    if ((toImply.actions & ~allActions) == 0)
+	      return true;
+
+	    String name = toImply.getName();
+	    if (name.equals("*"))
+	      return false;
+
+	    int prefixLength = name.length();
+	    if (name.endsWith("*"))
+	      prefixLength -= 2;
+
+	    while (true) {
+	      PropertyPermission forName = 
+		(PropertyPermission) permissions.get(name);
+	      if (forName != null
+		  && (toImply.actions & ~forName.actions) == 0)
+		return true;
+
+	      prefixLength = name.lastIndexOf('.', prefixLength);
+	      if (prefixLength < 0)
+		return false;
+	      name = name.substring(0, prefixLength + 1) + '*';
+	    }
 	  }
 	
 	public Enumeration elements()
