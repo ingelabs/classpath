@@ -425,3 +425,19 @@ set_parent (GtkWidget *widget, GtkContainer *parent)
     else
       gtk_container_add (parent, widget);
 }
+
+JNIEXPORT jboolean JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_isEnabled 
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+  jboolean ret_val;
+  
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  ret_val = GTK_WIDGET_IS_SENSITIVE (GTK_WIDGET (ptr));
+  gdk_threads_leave ();
+
+  return ret_val;
+}
