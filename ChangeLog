@@ -1,5 +1,10 @@
 2005-01-21  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/SwingUtilities.java
+	(findFocusOwner): New method.
+
+2005-01-21  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/text/DefaultEditorKit.java
 	(read): Added '\n' after each line.
 	* javax/swing/text/PlainView.java
