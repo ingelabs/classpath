@@ -95,7 +95,7 @@ public abstract class AccessibleHyperlink implements AccessibleAction
    * @return the link anchor text
    * @see #getAccessibleActionCount()
    */
-  String getAccessibleActionDescription(int i);
+  public abstract String getAccessibleActionDescription(int i);
 
   /**
    * Get the link location, or null if the index is out of bounds. For

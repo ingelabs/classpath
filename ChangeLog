@@ -1,5 +1,12 @@
 2002-03-18  Eric Blake  <ebb9@email.byu.edu>
 
+	* javax/accessibility/AccessibleExtendedComponent.java: Typos in
+	original commit.
+	* javax/accessibility/AccessibleExtendedTable.java: Ditto.
+	* javax/accessibility/AccessibleHyperlink.java: Ditto.
+
+2002-03-18  Eric Blake  <ebb9@email.byu.edu>
+
 	* lib/standard.omit: Remove javax/accessibility.
 	* configure.in (AC_OUTPUT): Add javax/accessibility/Makefile.
 

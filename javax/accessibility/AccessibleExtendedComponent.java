@@ -70,9 +70,9 @@ public interface AccessibleExtendedComponent extends AccessibleComponent
   String getTitledBorderText();
 
   /**
-   * Returns the accessibility key bindings for this component.
+   * Returns the accessible key bindings for this component.
    *
    * @return the key bindings, or null if not supported
    */
-  AccessibilityKeyBinding getAccessibilityKeyBinding();
+  AccessibleKeyBinding getAccessibleKeyBinding();
 } // interface AccessibleExtendedComponent

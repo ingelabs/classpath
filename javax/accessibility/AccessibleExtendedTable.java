@@ -60,7 +60,7 @@ public interface AccessibleExtendedTable extends AccessibleTable
    * @param index the cell index, in row-major form from (0,0)
    * @return the row number, or -1 if out of bounds
    */
-  int getAccessibleRow(int index)
+  int getAccessibleRow(int index);
 
   /**
    * Returns the column number of an index in the table.
@@ -68,7 +68,7 @@ public interface AccessibleExtendedTable extends AccessibleTable
    * @param index the cell index, in row-major form from (0,0)
    * @return the column number, or -1 if out of bounds
    */
-  int getAccessibleColumn(int index)
+  int getAccessibleColumn(int index);
 
   /**
    * Returns the cell number for a row-major address from (0,0).
