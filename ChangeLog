@@ -1,3 +1,12 @@
+2002-07-26  Tom Tromey  <tromey@redhat.com>
+
+	* java/nio/ByteOrder.java (toString): Simplified; now conforms to
+	spec.
+	(BIG_ENDIAN, LITTLE_ENDIAN): Reordered modifiers.
+	(nativeOrder): Now public, per spec.
+	(ByteOrder): Class now final, per spec.
+	(ByteOrder()): New constructor.
+
 2002-07-24  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/image/MemoryImageSource.java: Change constructor to take

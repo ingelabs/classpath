@@ -38,26 +38,23 @@ exception statement from your version. */
 package java.nio;
 
 
-public class ByteOrder
+public final class ByteOrder
 {
-    final static ByteOrder BIG_ENDIAN     = new ByteOrder();
-    final static ByteOrder LITTLE_ENDIAN  = new ByteOrder();
+  static final ByteOrder BIG_ENDIAN     = new ByteOrder();
+  static final ByteOrder LITTLE_ENDIAN  = new ByteOrder();
 
-    static ByteOrder nativeOrder()
-    {
-	return BIG_ENDIAN;
-    }
+  public static ByteOrder nativeOrder()
+  {
+    return BIG_ENDIAN;
+  }
 
-    public String toString()
-    {
-	if (this == BIG_ENDIAN)
-	    {
-		return "big endian";
-	    }
-	else
-	    {
-		return "little endian";
-	    }
-    }
- 
+  public String toString()
+  {
+    return this == BIG_ENDIAN ? "BIG_ENDIAN" : "LITTLE_ENDIAN";
+  }
+
+  // This class can only be instantiated here.
+  private ByteOrder ()
+  {
+  }
 }
