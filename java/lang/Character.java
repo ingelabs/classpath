@@ -552,9 +552,12 @@ public final class Character implements Serializable, Comparable
 
   // open up the Unicode attribute database and read the index into memory
   static {
-    File cFile = ClassLoaderHelper.getSystemResourceAsFile("character.uni");
-    File blockFile = ClassLoaderHelper.getSystemResourceAsFile("block.uni");
-    File tcFile = ClassLoaderHelper.getSystemResourceAsFile("titlecase.uni");
+    File cFile = ClassLoaderHelper.getSystemResourceAsFile(
+                   "/gnu/java/locale/character.uni");
+    File blockFile = ClassLoaderHelper.getSystemResourceAsFile(
+                   "/gnu/java/locale/block.uni");
+    File tcFile = ClassLoaderHelper.getSystemResourceAsFile(
+                   "/gnu/java/locale/titlecase.uni");
     if (cFile == null || blockFile == null || tcFile == null)
       throw new Error("Cannot locate Unicode attribute database.");
 
@@ -854,7 +857,8 @@ public final class Character implements Serializable, Comparable
     return ((category == SPACE_SEPARATOR && !attr.isNoBreakSpace()) ||
 	    category == LINE_SEPARATOR ||
 	    category == PARAGRAPH_SEPARATOR ||
-	    (ch >= '\u0009' && ch <= '\u000D') ||
+	    //(ch >= '\u0009' && ch <= '\ u000D') ||
+	    (ch >= '\u0009' && ch <= '\r') || // Change to make javadep work
 	    (ch >= '\u001C' && ch <= '\u001F'));
   }
     
