@@ -1,5 +1,12 @@
 2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
 
+	Fix for Classpath bug #7109.
+	* javax/swing/undo/UndoableEditSupport.java: Re-format, document.
+	(beginUpdate, endUpdate): Support nested updates.
+	(postEdit): Use compound edit if present.
+	
+2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/event/EventListenerList.java (toString): Implemented.
 
 2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
