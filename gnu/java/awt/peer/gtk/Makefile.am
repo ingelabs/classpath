@@ -44,4 +44,6 @@ EXTRA_DIST = \
 	GtkTextComponentPeer.java \
 	GtkTextFieldPeer.java \
 	GtkToolkit.java \
-	GtkWindowPeer.java
+	GtkWindowPeer.java \
+	GThreadNativeMethodRunner.java \
+	GThreadMutex.java

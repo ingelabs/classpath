@@ -1,3 +1,12 @@
+2004-06-20  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/Makefile.am (EXTRA_DIST): Add
+	gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h.
+	(libgtkpeer_la_SOURCES): Add
+	gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c.
+	* gnu/java/awt/peer/gtk/Makefile.am (EXTRA_DIST): Add
+	GThreadNativeMethodRunner.java and GThreadMutex.java
+
 2004-06-18  Steven Augart  <augart@watson.ibm.com>
 
 	* configure.ac: Complain if user types --enable-gtk-peers.
