@@ -1,3 +1,57 @@
+2003-03-02  Aaron M. Renn <arenn@urbanophile.com>
+
+	* java/io/DataInputStream.java
+	Fix word wrapped comments
+	Commence primary ignition...
+	(convertToBoolean)
+	(convertToByte)
+	(convertToUnsignedInt)
+	(convertToChar)
+	(convertToShort)
+	(convertToUnsignedShort)
+	(convertToInt)
+	(convertToLong)
+	Diked out.
+	Elimate call to convert methods above and inline functionality in:
+	(readBoolean)
+	(readByte)
+	(readChar) + synchronized
+	(readInt) + synchronized
+	(readLong) + synchronized
+	(readShort) + synchronized
+	(readUnsignedByte)
+	* java/io/DataOutputStream.java
+	Re-indented code and fixed word wrapped comments
+	Commence primary ignition...
+	(convertFromBoolean)
+	(convertFromChar)
+	(getConvertedStringChars)
+	(convertFromShort)
+	(convertFromInt)
+	(convertFromLong)
+	Diked out.
+	(buf) Added new instance variable
+	Elimate call to convert methods above and inline functionality in:
+	(writeChar) + synchronized 
+	(writeShort) + synchronized
+	(writeInt) + synchronized
+	(writeLong) + synchronized
+	* java/io/RandomAccessFile.java
+	Re-indented code and fixed word wrapped comments
+	(buf) Added new instance variable
+	Eliminate call to convert methods and inline functionality in:
+	(readByte)
+	(readUnsignedByte)
+	(readChar)
+	(readShort)
+	(readUnsignedShort)
+	(readInt)
+	(readLong)
+	(writeBoolean)
+	(writeChar)
+	(writeShort)
+	(writeInt)
+	(writeLong)
 2003-03-02  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/Properties.java (load): Only skip line if the first
