@@ -1,3 +1,9 @@
+2003-08-29  Jeroen Frijters <jeroen@frijters.net>
+
+	* java/lang/Thread.java: New file.
+	* vm/reference/java/lang/Thread.java: Removed.
+	* vm/reference/java/lang/VMThread.java: New file.
+
 2003-08-26  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/reflect/Proxy.java (ProxyData): `pack' now a String.
