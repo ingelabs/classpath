@@ -1,3 +1,10 @@
+2003-08-31  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/home.wml: Update project description and status.
+	Mark links which are temporarily unreachable. Add news section.
+	Move distribution terms to the end. Add Kaffe OpenVM.
+	* doc/www.gnu.org/docs/docs.wml: Mark api doc as temporarily down.
+
 2003-08-31  David P Grove  <groved@us.ibm.com>
 
 	* java/io/LineNumberReader (read): Don't reset pos & limit when

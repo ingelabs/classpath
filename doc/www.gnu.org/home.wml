@@ -8,7 +8,7 @@
 <lang:new id="en" short>
 <lang:star:slice:>
 
-<set-var last-modified-author="<cbj>">
+<set-var last-modified-author="<mjw>">
 
 #include <include/macros.wml>
 
@@ -27,8 +27,10 @@
       <a class=tabs href="http://savannah.gnu.org/mail/?group=classpath">Mailing Lists</a>&nbsp;&nbsp;|&nbsp;&nbsp;
       <a class=tabs href="http://savannah.gnu.org/pm/?group=classpath">Tasks</a>&nbsp;&nbsp;|&nbsp;&nbsp;
       <a class=tabs href="http://savannah.gnu.org/news/?group=classpath">News</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-      <a class=tabs href="http://savannah.gnu.org/cvs/?group=classpath">CVS</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class=tabs href="http://savannah.gnu.org/cvs/?group=classpath">CVS</a>&nbsp;&nbsp;<!-- |&nbsp;&nbsp;
+      Doesn't work ATM
       <a class=tabs href="http://savannah.gnu.org/files/?group=classpath">Files</a>
+      -->
     </td>
   </tr>
   <tr>
@@ -42,46 +44,21 @@
       <a class="tabs" href="http://savannah.gnu.org/mail/?group=cp-tools">Mailing Lists</a>&nbsp;&nbsp;|&nbsp;&nbsp;
       <a class="tabs" href="http://savannah.gnu.org/pm/?group=cp-tools">Tasks</a>&nbsp;&nbsp;|&nbsp;&nbsp;
       <a class="tabs" href="http://savannah.gnu.org/news/?group=cp-tools">News</a>&nbsp;&nbsp;|&nbsp;&nbsp;
-      <a class="tabs" href="http://savannah.gnu.org/cvs/?group=cp-tools">CVS</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class="tabs" href="http://savannah.gnu.org/cvs/?group=cp-tools">CVS</a>&nbsp;&nbsp;<!-- |&nbsp;&nbsp;
+      <!-- Doesn't work ATM
       <a class="tabs" href="http://savannah.gnu.org/files/?group=cp-tools">Files</a>
+      -->
     </td>
   </tr>
 </table>
-<p>
-GNU Classpath is a set of essential libraries for supporting the Java
-language.  Our goal is to provide a free replacement for Sun's
-proprietary class libraries so that the GNU system can run programs
-written in the Java language.
-</p>
+</en>
 
+<!-- Description -->
+<en>
 <p>
-Classpath is licensed under the terms of the <createlink url="/copyleft/gpl.html"
-name="GNU General Public License"> with the following special exception.
-</p>
-
-<p>
-<blockquote>
-<code>
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version.
-</code>
-</blockquote>
-</p>
-
-<p>
-As such, it can be used to run free as well as proprietary
-applications and applets.  Using GNU Classpath as the class library 
-for a Java virtual machine (JVM) does not affect the licensing of the 
-JVM.
+GNU Classpath, Essential Libraries for Java, is a GNU project to
+create free core class libraries for use with virtual machines and
+compilers for the java programming language.
 </p>
 
 <p>
@@ -91,32 +68,48 @@ source code is available via GNU's anonymous
 <createlink url="http://savannah.gnu.org/cvs/?group_id=85" name="CVS server">
 , and snapshots of the Classpath tree have been released and are
 available from <createlink url="ftp://alpha.gnu.org/gnu/classpath/"
-name="ftp://alpha.gnu.org/gnu/classpath/">.  
+name="ftp://alpha.gnu.org/gnu/classpath/"> (temporarily down, try the
+<createlink url="http://www.klomp.org/mark/classpath/" name="backup">).  
 </p>
-
 </en>
 
 <H4>Documentation</H4>
+<en>
 <UL>
   <LI><createlink url="docs/" name="Current Documentation"></LI>
   <LI><createlink url="announce/announcements.html" 
        name="Old News"></LI>
 </UL>
+</en>
 
 <H4><en>Status</en></H4>
-<p>
 <en>
-GNU Classpath 1.0 will be fully compatible with Java 1.1 and largely 
-compatible with Java 2.  The current state of GNU Classpath can be
+<p>
+GNU Classpath 1.0 will be fully compatible with the 1.1 and largely
+compliant with the 1.2 API specification and will have a stable API
+for interacting with virtual machines.
+</p>
+<p>
+Current snapshot releases have implementations for the following
+packages (and some subpackages) <code>java.applet, java.awt,
+java.beans, java.io, java.lang, java.math, java.net, java.rmi,
+java.security, java.sql, java.text, java.util, java.util.jar,
+java.util.zip</code>. Not all classes and methods are implemented yet,
+but most are. many of the implemented classes are already up to the
+1.2 API spec. Some are already compliant with the 1.3 and 1.4 API
+specification (there are preliminary implementations of
+<code>java.nio</code> and <code>javax.swing</code>).
+</p>
+<p>
+An up to date view of the current state of GNU Classpath can be
 obtained by looking at these resources.
   <ul>
     <li><createlink url="http://savannah.gnu.org/pm/task.php?group_id=85&set=custom&advsrch=0&group_project_id=0&_assigned_to=0&_status=1&SUBMIT=Browse" name="All open tasks"></li>
     <li>GNU Classpath vs: <createlink url="http://japi.sab39.org/htmlout/h-jdk10-classpath.html" name="JDK 1.0"> <createlink url="http://japi.sab39.org/htmlout/h-jdk11-classpath.html" name="JDK 1.1"> <createlink url="http://japi.sab39.org/htmlout/h-jdk12-classpath.html" name="JDK 1.2"> <createlink url="http://japi.sab39.org/htmlout/h-jdk13-classpath.html" name="JDK 1.3"> <createlink url="http://japi.sab39.org/htmlout/h-jdk14-classpath.html" name="JDK 1.4"> (updated nightly)</li>
-    <li>GNU Classpath <createlink url="mauve/" name="Mauve Results"></li>
-    <li>GNU Classpath and GCJ <createlink url="http://gcc.gnu.org/java/libgcj-classpath-compare.html" name="Merge Status"></li>
+    <li>GNU Classpath <createlink url="mauve/" name="Mauve Results"> (temporarily down)</li>
   </ul>
-</en>
 </p>
+</en>
 
 <H4>Testing</H4>
 <en>
@@ -146,13 +139,14 @@ name="jdiff.sh">, at least until this functionality is merged into
 japitools.
 </en>
 
-<H4>Package Providers</H4>
+<H4>Other Package Providers</H4>
 <en>
-<p>Below is a table of providers for core packages not already available
+<p>Below is a table of providers for free core packages not already available
 with GNU Classpath
 </p>
 <table border="1" width="100%">
 <th>Core Package</th><th>Provider</th>
+<tr><td>Various non-core packages</td><td><createlink url="http://www.gnu.org/software/classpathx/" name="GNU ClasspathX"></td></tr>
 <tr><td>javax.crypto</td><td><createlink url="http://www.gnu.org/software/gnu-crypto/" name="GNU Crypto"></td></tr>
 <tr><td>javax.sound</td><td><createlink url="http://tritonus.org/" 
                              name="Tritonus"></td></tr>
@@ -260,12 +254,20 @@ implementation of a JVM particularly attractive and simple.
 A JRE implementation for the Amiga Platform.
 </td>
 </tr>
+<tr>
+<td><createlink url="http://www.kaffe.org/" name="Kaffe"></td>
+<td>
+Kaffe OpenVM is a complete virtual machine, library framework and
+tools for programming in the java language. It has its own
+implementation of part of the core libraries, but uses large parts of
+the GNU Classpath framework.
+</td>
+</tr>
 </table>
+</en>
 
 <H4>Other projects using GNU classpath</H4> 
-<p>
-</p>
-
+<en>
 <table border="1" width="100%">
 <tr><th>Project</th><th>Description</th></tr>
 <tr>
@@ -280,4 +282,51 @@ platform with gcc.
 </tr>
 </table>
 </en>
+
+<H4>Distribution terms</H4>
+<en>
+<p>
+Classpath is distributed under the terms of the
+<createlink url="/copyleft/gpl.html" name="GNU General Public License"> with
+the following clarification and special exception.
+</p>
+
+<p>
+<blockquote>
+<p>
+<code>
+Linking this library statically or dynamically with other modules is
+making a combined work based on this library.  Thus, the terms and
+conditions of the GNU General Public License cover the whole
+combination.
+</code>
+</p>
+<p>
+<code>
+As a special exception, the copyright holders of this library give you
+permission to link this library with independent modules to produce an
+executable, regardless of the license terms of these independent
+modules, and to copy and distribute the resulting executable under
+terms of your choice, provided that you also meet, for each linked
+independent module, the terms and conditions of the license of that
+module.  An independent module is a module which is not derived from
+or based on this library.  If you modify this library, you may extend
+this exception to your version of the library, but you are not
+obligated to do so.  If you do not wish to do so, delete this
+exception statement from your version.
+</code>
+</p>
+</blockquote>
+</p>
+
+<p>
+As such, it can be used to run, create and distribute a large class of
+applications and applets. When GNU Classpath is used unmodified as the
+core class library for a virtual machine, compiler for the java languge,
+or for a program written in the java programming language it does not
+affect the licensing for distributing those programs directly.
+</p>
+
+</en>
+
 <footer>

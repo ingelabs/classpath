@@ -8,7 +8,7 @@
 <lang:new id=en short>
 <lang:star:slice:>
 
-<set-var last-modified-author="<cbj>">
+<set-var last-modified-author="<mjw>">
 
 #include <include/macros.wml>
 
@@ -24,6 +24,7 @@
 <blockquote>
   <createlink url="api/" name="GNU Classpath API Specification"> <createlink url="api/index_noframes.html" name="(No Frames)"><br/>
 </blockquote>
+(temporarily down)
 <H4>GNU Classpath Developer's Documentation</H4>
 <blockquote>
   <createlink url="hacking.html" name="GNU Classpath Hacker's Guide"><br/>
