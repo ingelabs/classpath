@@ -79,10 +79,10 @@ JNIEXPORT jarray JNICALL
 Java_java_net_InetAddress_lookupInaddrAny(JNIEnv *env, jclass class)
 {
   jarray arr; 
-  int *octets;
+  jbyte *octets;
 
   /* Allocate an array for the IP address */
-  arr = (*env)->NewIntArray(env, 4);
+  arr = (*env)->NewByteArray(env, 4);
   if (!arr)      
     { 
       JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
@@ -90,14 +90,14 @@ Java_java_net_InetAddress_lookupInaddrAny(JNIEnv *env, jclass class)
     }
 
   /* Copy in the values */
-  octets = (*env)->GetIntArrayElements(env, arr, 0);
+  octets = (*env)->GetByteArrayElements(env, arr, 0);
 
   octets[0] = (INADDR_ANY & 0xFF000000) >> 24;
   octets[1] = (INADDR_ANY & 0x00FF0000) >> 16;
   octets[2] = (INADDR_ANY & 0x0000FF00) >> 8;
   octets[3] = (INADDR_ANY & 0x000000FF);
 
-  (*env)->ReleaseIntArrayElements(env, arr, octets, 0);
+  (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
 
   return(arr);
 }
@@ -111,7 +111,7 @@ Java_java_net_InetAddress_lookupInaddrAny(JNIEnv *env, jclass class)
 JNIEXPORT jstring JNICALL
 Java_java_net_InetAddress_getHostByAddr(JNIEnv *env, jclass class, jarray arr)
 {
-  jint *octets;
+  jbyte *octets;
   jsize len;
   int addr;
   struct hostent *hp;
@@ -125,7 +125,7 @@ Java_java_net_InetAddress_getHostByAddr(JNIEnv *env, jclass class, jarray arr)
       return (jstring)NULL;
     }
 
-  octets = (*env)->GetIntArrayElements(env, arr, 0);
+  octets = (*env)->GetByteArrayElements(env, arr, 0);
   if (!octets)
     {
       JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, "Bad IP Address");
@@ -137,7 +137,7 @@ Java_java_net_InetAddress_getHostByAddr(JNIEnv *env, jclass class, jarray arr)
   addr = htonl(addr); 
 
   /* Release some memory */
-  (*env)->ReleaseIntArrayElements(env, arr, octets, 0);
+  (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
 
   /* Resolve the address and return the name */
   hp = gethostbyaddr((char*)&addr, sizeof(addr), AF_INET);
@@ -159,7 +159,8 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
 {
   const char *hostname;
   struct hostent *hp;
-  int i, ip, *octets;
+  int i, ip;
+  jbyte *octets;
   jsize num_addrs;
   jclass arr_class;
   jobjectArray addrs;
@@ -177,7 +178,7 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
   hp = gethostbyname(hostname);
   if (!hp)
     {
-      JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, hostname);
+      JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, host);
       return (jobjectArray)NULL;
     }
   (*env)->ReleaseStringUTFChars(env, host, hostname);
@@ -203,14 +204,14 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
   /* Now loop and copy in each address */
   for (i = 0; i < num_addrs; i++)
     {
-      ret_octets = (*env)->NewIntArray(env, 4);
+      ret_octets = (*env)->NewByteArray(env, 4);
       if (!ret_octets)      
       {
         JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
         return (jobjectArray)NULL;
       }
 
-      octets = (*env)->GetIntArrayElements(env, ret_octets, 0);
+      octets = (*env)->GetByteArrayElements(env, ret_octets, 0);
 
       ip = ntohl(*(int*)(hp->h_addr_list[i]));
       octets[0] = (ip & 0xFF000000) >> 24;
@@ -218,7 +219,7 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
       octets[2] = (ip & 0x0000FF00) >> 8;
       octets[3] = (ip & 0x000000FF);
 
-      (*env)->ReleaseIntArrayElements(env, ret_octets, octets, 0);
+      (*env)->ReleaseByteArrayElements(env, ret_octets, octets, 0);
       (*env)->SetObjectArrayElement(env, addrs, i, ret_octets);
     }
 

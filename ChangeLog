@@ -1,5 +1,12 @@
 2002-11-22  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/java-net/java_net_InetAddress.c (lookupInaddrAny): Use
+	Byte not Int arrays.
+	(getHostByAddr): Likewise.
+	(getHostByName): Likewise.
+
+2002-11-22  Mark Wielaard  <mark@klomp.org>
+
 	* java/net/URL.java (getURLStreamHandler): Fall through to standard
 	handlers when a stream factory doesn't handle a protocol.
 	(getPath): Handle file == null case.
