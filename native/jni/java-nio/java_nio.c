@@ -144,7 +144,6 @@ double convert_Double(double X)
 
 #define READ_WRITE_MMAPED_FILE(TYPE,ELT)							  \
 												  \
-												  \
 ELT Java_gnu_java_nio_MappedByteFileBuffer_nio_1read_1 ## TYPE ## _1file_1channel(JNIEnv *env,	  \
                                        jclass c, jobject b,					  \
 				       int index, int limit, jlong jaddress)	\
@@ -155,11 +154,6 @@ ELT Java_gnu_java_nio_MappedByteFileBuffer_nio_1read_1 ## TYPE ## _1file_1channe
   address += index;										  \
   return convert_ ## TYPE  (*(ELT *) address);							  \
 }												  \
-												  \
-												  \
-												  \
-												  \
-												  \
 												  \
 void Java_gnu_java_nio_MappedByteFileBuffer_nio_1write_1 ## TYPE ## _1file_1channel(JNIEnv *env,  \
                                           jclass c, jobject b,					  \
@@ -173,18 +167,11 @@ NIO_DEBUG(  fprintf(stderr, "WRITE:index = %d [0]=%c [1]=%c\n", index, address[0
   *(ELT *) address = value;									  \
 }												  \
 												  \
-												  \
-												  \
-												  \
-												  \
 ELT Java_gnu_java_nio_MappedByteFileBuffer_nio_1get_1 ## TYPE(JNIEnv *env, jclass c, jobject b,	  \
 			int index, int limit, jlong jaddress)						  \
 {	\
  fprintf(stderr, "unimplemented\n"); return 0; \
 }												  \
-												  \
-												  \
-												  \
 												  \
 void Java_gnu_java_nio_MappedByteFileBuffer_nio_1put_1 ## TYPE(JNIEnv *env, jclass c, jobject b,  \
 			 int index, int limit, 						  \
@@ -193,7 +180,6 @@ void Java_gnu_java_nio_MappedByteFileBuffer_nio_1put_1 ## TYPE(JNIEnv *env, jcla
  fprintf(stderr, "unimplemented\n");  \
 }
 
-
 READ_WRITE_MMAPED_FILE(Byte,u_int8_t);
 READ_WRITE_MMAPED_FILE(Char,u_int16_t);
 READ_WRITE_MMAPED_FILE(Short,u_int16_t);
@@ -201,16 +187,6 @@ READ_WRITE_MMAPED_FILE(Int,u_int32_t);
 READ_WRITE_MMAPED_FILE(Long,u_int64_t);
 READ_WRITE_MMAPED_FILE(Float,float);
 READ_WRITE_MMAPED_FILE(Double,double);
-
-
-
-
-JNIEXPORT jlong JNICALL
-Java_gnu_java_nio_FileChannelImpl_lengthInternal(JNIEnv *env, jobject obj, jint fd)
-{
-  return(_javaio_get_file_length(env, fd));
-}
-
 
 u_int64_t nio_mmap_file(jint fd,
 			jlong  pos,

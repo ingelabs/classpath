@@ -1,5 +1,10 @@
 2004-10-28  Michael Koch  <konqueror@gmx.de>
 
+	* native/jni/java-nio/java_nio.c
+	(Java_gnu_java_nio_FileChannelImpl_lengthInternal): Removed.
+
+2004-10-28  Michael Koch  <konqueror@gmx.de>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c,
 	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontMetrics.c,
 	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c,
