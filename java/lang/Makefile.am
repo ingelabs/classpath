@@ -70,8 +70,9 @@ StringBuffer.java \
 StringIndexOutOfBoundsException.java \
 String.java \
 System.java \
-ThreadDeath.java \
+Thread.java \
 ThreadGroup.java \
+ThreadDeath.java \
 ThreadLocal.java \
 Throwable.java \
 UnknownError.java \

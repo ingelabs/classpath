@@ -1,3 +1,10 @@
+2003-09-25  Mark Wielaard  <mark@klomp.org>
+
+	* java/nio/Makefile.am (EXTRA_DIST): Add ByteBufferHelper.java. 
+	* java/lang/Makefile.am (EXTRA_DIST): Add Thread.java.
+	* vm/reference/java/lang/Makefile.am (EXTRA_DIST): Remove Thread.java.
+	Add VMThread.java.
+
 2003-09-25  Sascha Brawer  <brawer@dandelis.ch>
 
 	* java/awt/image/Raster.java(Raster): Interpret null origin as (0,0).
