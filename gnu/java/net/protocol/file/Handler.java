@@ -145,7 +145,7 @@ parseURL(URL url, String url_string, int start, int end)
             // If encounter another "/", it's end of a null host part or beginning of root path 
             if ( url_string.startsWith("/") ){
                 hostpart = false;
-                url_string = url_string.substring(1);
+                // url_string = url_string.substring(1);
             }
         }
         
@@ -251,7 +251,7 @@ protected String
 toExternalForm(URL url)
 { 
     StringBuffer sb = new StringBuffer(PlatformHelper.INITIAL_MAX_PATH);
-    sb.append("file://");
+    sb.append("file:");
     
     String prefix = url.getHost();
     if(prefix != null && prefix.length() > 0){

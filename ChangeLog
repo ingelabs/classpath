@@ -1,3 +1,9 @@
+2002-12-05  John Leuner  <jewel@debian.org>
+
+	* gnu/java/net/protocol/file/Handler.java (toExternalForm): make URL format like that
+	produced by SUN JVM
+	* java/net/URLStreamHandler.java: ditto
+
 2002-12-03  Jeroen Frijters  <jeroen@sumatra.nl>
 
 	* gnu/java/lang/SystemClassLoader.java (getResource): Renamed to
