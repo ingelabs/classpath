@@ -12,17 +12,18 @@ This file contains important information you will need to know if you
 are going to write an interface between GNU Classpath and a Virtual
 Machine.
 
-Copyright (C) 1998 Free Software Foundation, Inc.
+Copyright (C) 1998-2001 Free Software Foundation, Inc.
 
 @end ifinfo
 
 @titlepage
 @title GNU Classpath VM Integration Guide
 @author John Keiser
+@author C. Brian Jones
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1998 Free Software Foundation, Inc.
+Copyright @copyright{} 1998-2001 Free Software Foundation, Inc.
 @sp 2
 Permission is granted to make and distribute verbatim copies of
 this document provided the copyright notice and this permission notice
@@ -69,13 +70,47 @@ of the standard Java class libraries cannot be fulfilled without some
 level of integration with the Virtual Machine, the underlying machinery
 that actually runs Java.
 
-There are several VMs out there, including
-@uref{http://www.japhar.org,Japhar},
-@uref{http://www.kaffe.org,Kaffe}, and
-@uref{http://www.mozilla.org/projects/ef,Electrical Fire}.  Current
-integration efforts are focused mainly on Japhar with an eye towards
-getting Electrical Fire to work.  All information contained in this
-document is gleaned from these efforts.
+There are several VMs out there, here is a small list.
+
+@itemize @bullet
+@item @uref{http://www.japhar.org,Japhar}
+Japhar was the first VM to use GNU Classpath.  Today you can see that
+sort of relationship in the source tree which denotes several Japhar
+specific files as a reference implementation of those pieces.  This VM
+has been primarily tested against Linux and lacks garbage collections, a
+JIT, and suffers recently from slow development.
+
+@item @uref{http://www.intel.com/research/mrl/orp/,Intel's Open Runtime Platform}
+Intel surprised us not long ago with the release of this rather advanced
+VM that uses GNU Classpath for a set of class libraries and works on
+Linux and Windows 2000.
+
+@item @uref{http://www.sablevm.org/,SableVM}
+The goal of this project is to build an efficient Java virtual machine
+in C for the GNU/Linux operating system. SableVM implements the Java
+virtual machine specification, second edition, and like the Intel VM
+includes a special version of the GNU Classpath libraries.
+
+@item @uref{http://www.kaffe.org,Kaffe}
+Kaffe is an advanced VM and together with its own class libraries
+provides a Java 1.1 compatible environment.
+
+@item @uref{http://www.mozilla.org/projects/ef,Electrical Fire}
+The Electrical File VM continues to be listed as a Mozilla project
+though development has been somewhat quiet.  A number of concepts from
+EF were expected at one point to be rolled into Japhar, but that
+development has not occured as of yet.
+
+@item @uref{http://latte.snu.ac.kr/,LaTTe}
+This VM project so far supports only Sun UltraSparc processors using the
+proprietary Solaris 2.5.1 or higher operating system.  LaTTe was derived
+from Kaffe but claims a number of improvements.
+
+@end itemize
+
+Current integration efforts are focused mainly on Japhar with an eye
+towards getting Electrical Fire to work.  All information contained in
+this document is gleaned from these efforts.
 
 
 @node Initialization, Classpath Hooks, Introduction, Top
@@ -94,9 +129,10 @@ Several core classes must be implemented by the VM for Classpath to
 work.  These classes are:
 
 @itemize @bullet
+@item java.lang.Class
 @item java.lang.Runtime
 @item java.lang.Thread
-@item java.lang.Class
+@item java.lang.Throwable
 @item java.lang.reflect.Constructor
 @item java.lang.reflect.Method
 @item java.lang.reflect.Field
@@ -106,12 +142,10 @@ You also need to implement some helper classes in java.lang that classes
 from Classpath call out to to get certain VM-specific dirty work done:
 
 @itemize @bullet
-@item VMObject
-@item VMClassLoader
-@item VMSystem
-@item VMSecurityManager
-@item StackFrame
-@item StackTrace
+@item java.lang.VMObject
+@item java.lang.VMClassLoader
+@item java.lang.VMSystem
+@item java.lang.VMSecurityManager
 @end itemize
 
 Some of the classes you implement for the VM will need to call back to
@@ -138,7 +172,7 @@ classes.  This is a guide to all of the things the VM itself needs to
 know about classes.
 
 @itemize @bullet
-@item java.lang.Class
+@item java.lang.Class @*
 You, the VM, get to create this Class, so you may define the internal
 structure any way you wish.  You probably have code somewhere to
 translate your internal class structure into a Class object.  That is
@@ -146,7 +180,7 @@ the only known place where this matters.  Some VMs do not create the
 Class object at the point where the class is defined; instead, they wait
 until a Class object is actually used.
 
-@item array classes
+@item Array Classes @*
 When you are creating an array class, you should set the ClassLoader of
 the array class to the ClassLoader of its component type.  Whenever you
 add a class to a ClassLoader, you need to notify the ClassLoader and
@@ -154,7 +188,7 @@ add the new Class to its internal cache of classes.  To do this, call
 ClassLoader.addVMCreatedClass(Class).  @emph{Note: this is written in
 anticipation of 1.2 support and does not apply just yet.}
 
-@item primordial class loader
+@item Primordial Class Loader @*
 When the primordial class loader loads a class, it needs to tell
 Classpath what it has done in order for security stuff to work right.
 To do this, call the static method
@@ -168,13 +202,14 @@ done.  No harm will come, as long as you follow the guidelines in the
 @emph{Note: this is written in anticipation of 1.2 support and does not
 apply just yet.}
 
-@item throwing exceptions
-You do not need to fill in the stack trace or anything when throwing an
-exception; this is all handled automatically with Classpath when the
-constructor is called.  Of course, you are really the ones filling it in
-because you implement StackTrace and StackFrame.
+@item java.lang.Throwable (Classpath 0.02) @*
+The VM may choose to implement this class in whatever fashion it would
+like.  If you choose to use the reference implementation, then you must
+define two functions within some library and change Throwable.java to
+load your library.  The two functions are printStackTrace0(Object), and
+fillInStackTrace().
 
-@item top-level exception handler
+@item Top-level Exception Handler @*
 Exceptions take care of themselves in Classpath; all you need to do in
 the top-level exception handler is call Throwable.printStackTrace().
 
@@ -188,7 +223,7 @@ exited) to preserve memory and cycles.  The usual case is the one where
 an exception is caught.  The top-level exception handler is, well, an
 exception among exceptions.
 
-@item Security and traces
+@item Security and Traces @*
 There will eventually be a feature in the 1.2 security that keeps the
 AccessController from having to evaluate @emph{all} of the
 ProtectionDomains every time a security check is made.  I think a common
@@ -204,7 +239,7 @@ do the check.  I am not sure, however, whether the savings are
 substantial enough to outweigh the integer check and set after every
 method call.  I will investigate.
 
-@item Threading
+@item Threading @*
 I figured I'd put this here because a VM guy might be wondering about it.
 We implement ThreadGroup, but that class is almost entirely
 VM-independent.  The root ThreadGroup, a static field called

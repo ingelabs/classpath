@@ -1,3 +1,5 @@
 ## used by automake to generate Makefile.in
 
-SUBDIRS = util security
+EXTRA_DIST = \
+classpath.security
+

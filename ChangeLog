@@ -1,3 +1,12 @@
+2000-12-17  Brian Jones  <cbj@gnu.org>
+
+	* doc/hacking.texinfo: Updated slightly.
+	* doc/vmintegration.texinfo: Updated slightly.
+	* resource/java/security/classpath.security: New file.
+	* resource/java/security/Makefile.am: New file.
+	* resource/java/security/.cvsignore: New file.
+	* resource/java/Makefile.am: Add security to SUBDIRS.
+
 2001-01-06  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* test/java.io/PipedReaderWriterTest.java: Use Thread.sleep() to 

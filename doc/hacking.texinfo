@@ -11,7 +11,7 @@
 This file contains important information you will need to know if you
 are going to hack on the GNU Classpath project code.
 
-Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+Copyright (C) 1998-2001 Free Software Foundation, Inc.
 
 @end ifinfo
 
@@ -20,10 +20,11 @@ Copyright (C) 1998, 1999 Free Software Foundation, Inc.
 @author Aaron M. Renn
 @author Paul N. Fisher
 @author John Keiser
+@author C. Brian Jones
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1998, 1999 Free Software Foundation, Inc.
+Copyright @copyright{} 1998-2001 Free Software Foundation, Inc.
 @sp 2
 Permission is granted to make and distribute verbatim copies of
 this document provided the copyright notice and this permission notice
@@ -48,8 +49,6 @@ approved by the Free Software Foundation.
 This document contains important information you'll want to know if you
 want to hack on GNU Classpath, the free implementation of the Java standard
 class libraries.
-
-This document is definitely a work in progress.
 @end ifinfo
 
 @menu
@@ -126,7 +125,7 @@ Please don't let that happen.
 
 @item
 @b{Never decompile Sun's class libraries.}  While the wording of the
-license in Sun's JDK version 1.2 has changed, it not acceptable, under
+license in Sun's Java 2 releases has changed, it is not acceptable, under
 any circumstances, for a person working on Classpath to decompile Sun's
 class libraries.  Allowing the use of decompilation in the Classpath
 project would open up a giant can of legal worms, which we wish to
@@ -134,10 +133,14 @@ avoid.
 
 @item
 Classpath is licensed under the terms of the
-@uref{http://www.fsf.org/copyleft/lgpl.html,GNU Library General Public
-License}.  To preserve freedom for all users and to maintain uniform
-licensing of Classpath, we will not accept code into the main
-distribution that is not licensed under these terms.
+@uref{http://www.fsf.org/copyleft/gpl.html,GNU General Public License},
+with a special exception included to allow linking with non-GPL licensed
+works as long as no other license would restrict such linking.  To
+preserve freedom for all users and to maintain uniform licensing of
+Classpath, we will not accept code into the main distribution that is
+not licensed under these terms.  The license can be read from the any
+alpha release distributed from @uref{ftp://alpha.gnu.org/gnu/classpath/}
+or by obtaining a copy of the current CVS tree.
 
 @item
 Classpath is GNU software and this project is being officially sponsored
@@ -185,12 +188,15 @@ cover everything about the item being documented.
 
 @item
 Please write a regression test package that can be used to run tests of
-your package's functionality.
+your package's functionality.  
 @end itemize
 
 Nobody likes to write documentation and test cases, but they are vital
 to a complete and robust product.  Writing them as you go is much easier
-than going back at the end and adding them.
+than going back at the end and adding them.  We use the Mauve testsuite, see
+@uref{http://sources.redhat.com/mauve/,Mauve}.  There is always room for
+improvement when testing software and there is plenty of headroom left
+before Mauve becomes close to complete.
 
 @node Project Goals, Programming Tools, Volunteering, Top
 @comment node-name, next, previous, up
@@ -223,16 +229,22 @@ can shift depending on whether or not there is a volunteer to port
 Classpath to those platforms and to test releases.
 
 Eventually we hope the Classpath will support all JVM's that provide JNI
-support.  However, the top priority is free JVM's.  The JVM support
-priority list is:
+or CNI support.  However, the top priority is free JVM's.  A small, and
+probably incomplete list is below.
 
 @enumerate
 @item
-Japhar
+@uref{http://www.japhar.org/,Japhar}
 @item
-Kaffe
+@uref{http://www.kaffe.org/,Kaffe}
 @item
-Sun's JDK
+@uref{http://www.sablevm.org/,SableVM}
+@item
+@uref{http://www.intel.com/research/mrl/orp/,Intel's Open Runtime Platform}
+@item 
+@uref{http://www.mozilla.org/projects/ef,Electrical File}
+@item
+@uref{http://latte.snu.ac.kr/,LaTTe}
 @item
 Other JNI Compliant JVM's.
 @end enumerate
@@ -240,7 +252,8 @@ Other JNI Compliant JVM's.
 As with OS platform support, this priority list could change if a
 volunteer comes forward to port, maintain, and test releases for a
 particular JVM.  Kaffe is now developing its own class library, so the
-priority of supporting that platform is not as high as for Japhar.
+priority of supporting that platform is not as high as for Japhar or any
+other free VM.
 
 The initial target version for Classpath is Java 1.1.  Java 1.2 can be
 implemented if desired, but please do not create classes that depend on
@@ -255,23 +268,23 @@ familiarize yourself with the following tools:
 
 @itemize @bullet
 @item
-CVS 1.9
+CVS 1.11
 @item
 automake 1.4
 @item
 autoconf 2.13
 @item
-libtool 1.2d
+libtool 1.3.5
 @item
 GNU m4 1.4
 @item
-perl 5.X
+perl 5.6
 @item
 GNU MP 2.0.2
 @end itemize
 
 All of these tools are available from
-@uref{ftp://prep.ai.mit.edu/pub/gnu/,prep.ai.mit.edu} via anonymous ftp.
+@uref{ftp://gnudist.gnu.org/pub/gnu/,gnudist.gnu.org} via anonymous ftp.
 With the exception of perl, they are fully documented with texinfo
 manuals.  Texinfo can be browsed with the Emacs editor, or with the text
 editor of your choice.
@@ -569,25 +582,13 @@ classpath
  |             |-->etc
  |
  |---->native
- |       |
- |       |-->java.io
- |       |-->java.lang
- |       |-->java.net
- |       |-->java.util.jar
- |       |-->etc
- |
- |---->test
- |       |
- |       |-->java.io
- |       |-->java.lang
- |       |-->etc
- |
- |---->compat
          |
          |-->java.io
          |-->java.lang
+         |-->java.net
+         |-->java.util.jar
          |-->etc
-
+  
 @end example
 
 Here is a brief description of the toplevel directories and their contents.
@@ -617,20 +618,6 @@ Each package has its own subdirectory, which is the ``flattened'' name
 of the package.  For example, native method implementations for
 java.util.zip should go in native/java.util.zip.
 
-@item test
-This directory contains test packages written for DejaGnu used to test
-releases of Classpath.  The test scripts for a given package go in the
-subdirectory that is the same as the ``flattened'' name of the package.
-For example, test scripts for java.util.zip should go in
-test/java.util.zip
-
-@item compat
-This directory contains misc scripts designed not to test an
-implementation, but to determine various things about Sun's reference
-implementation that are needed in order to write a compatible package.
-Each package has its own directory which is the ``flattened'' package
-name.  For example, compatibility scripts for java.util.zip go in
-compat/java.util.zip
 @end table
 
 Each person working on a package get's his or her own ``directory
