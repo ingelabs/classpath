@@ -1,5 +1,25 @@
 2004-11-30  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/ftp/ActiveModeDTP.java,
+	gnu/java/net/protocol/ftp/BlockInputStream.java,
+	gnu/java/net/protocol/ftp/BlockOutputStream.java,
+	gnu/java/net/protocol/ftp/CompressedInputStream.java,
+	gnu/java/net/protocol/ftp/CompressedOutputStream.java,
+	gnu/java/net/protocol/ftp/DTP.java,
+	gnu/java/net/protocol/ftp/DTPInputStream.java,
+	gnu/java/net/protocol/ftp/DTPOutputStream.java,
+	gnu/java/net/protocol/ftp/FTPConnection.java,
+	gnu/java/net/protocol/ftp/FTPException.java,
+	gnu/java/net/protocol/ftp/FTPResponse.java,
+	gnu/java/net/protocol/ftp/FTPURLConnection.java,
+	gnu/java/net/protocol/ftp/Handler.java,
+	gnu/java/net/protocol/ftp/PassiveModeDTP.java,
+	gnu/java/net/protocol/ftp/StreamInputStream.java,
+	gnu/java/net/protocol/ftp/StreamOutputStream.java:
+	New files. Merged from GNU inetlib.
+
+2004-11-30  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/tree/DefaultMutableTreeNode.java:
 	Completely Revised.
 	* javax/swing/tree/MutableTreeNode.java:
