@@ -1,3 +1,15 @@
+2001-01-09  Oskar Liljeblad <osk@hem.passagen.se>
+
+	* java/io/StreamTokenizer.java (nextToken): Handle // and /* before
+	commentChar.  Fixed typos in comments.
+
+2001-01-09  Andrew Haley  <aph@redhat.com>
+
+        * java/io/StreamTokenizer.java: Don't throw a
+        NumberFormatException if a field is numeric as far as the
+        StreamTokenizer is concerned but not as far as Double.valueOf() is
+        concerned: return a zero instead.	
+
 2001-01-09  Warren Levy  <warrenl@redhat.com>
 
 	* java/util/TimeZone.java: Add standard ID names per JCL; removed
