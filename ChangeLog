@@ -1,5 +1,18 @@
 2004-04-18  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/attribute/EnumSyntax.java
+	(getOffset): Has to be protected.
+	* javax/print/attribute/HashAttributeSet.java
+	(HashAttributeSet): Likewise.
+	* javax/print/attribute/ResolutionSyntax.java
+	(getFeedResolution): Fixed typo in exception name in javadoc.
+	(getCrossFeedResolution): Likewise.
+	* javax/print/attribute/TextSyntax.java
+	(equals): Fixed typo in @return tag.
+	(toString): New method.
+
+2004-04-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/rmi/Naming.java,
 	java/rmi/RemoteException.java,
 	java/rmi/activation/ActivationException.java,
