@@ -1,3 +1,8 @@
+2003-09-07  Dalibor Topic <robilad@kaffe.org>
+
+       * java/awt/BasicStroke.java (BasicStroke): Fixed illegal argument
+       checking to follow 1.4.2 spec.
+
 2003-08-25  Scott Gilbertson  <scottg@mantatest.com>
 
 	* java/awt/Component.java (createImage): changed to use peer method.
