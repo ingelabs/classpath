@@ -1,3 +1,7 @@
+2004-07-28  Tom Tromey  <tromey@redhat.com>
+
+	* configure.ac: Correct text for --disable-gtk-peer option.
+
 2004-07-28  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* gnu/java/security/action/GetPropertyAction.java (setParameters):
