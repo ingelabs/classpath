@@ -1,5 +1,5 @@
-/* AbstractTableModel.java --
-   Copyright (C) 2002 Free Software Foundation, Inc.
+/* UndoableEditSupport.java --
+   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -45,126 +45,136 @@ import javax.swing.event.*;
  * UndoableEditSupport
  * @author	Andrew Selkirk
  */
-public class UndoableEditSupport {
+public class UndoableEditSupport
+{
 
-	//-------------------------------------------------------------
-	// Variables --------------------------------------------------
-	//-------------------------------------------------------------
+  //-------------------------------------------------------------
+  // Variables --------------------------------------------------
+  //-------------------------------------------------------------
 
-	/**
-	 * updateLevel
-	 */
-	protected int updateLevel;
+  /**
+   * updateLevel
+   */
+  protected int updateLevel;
 
-	/**
-	 * compoundEdit
-	 */
-	protected CompoundEdit compoundEdit;
+  /**
+   * compoundEdit
+   */
+  protected CompoundEdit compoundEdit;
 
-	/**
-	 * listeners
-	 */
-	protected Vector listeners = new Vector();
+  /**
+   * listeners
+   */
+  protected Vector listeners = new Vector();
 
-	/**
-	 * realSource
-	 */
-	protected Object realSource;
-
-
-	//-------------------------------------------------------------
-	// Initialization ---------------------------------------------
-	//-------------------------------------------------------------
-
-	/**
-	 * Constructor UndoableEditSupport
-	 */
-	public UndoableEditSupport() {
-		// TODO
-	} // UndoableEditSupport()
-
-	/**
-	 * Constructor UndoableEditSupport
-	 * @param object TODO
-	 */
-	public UndoableEditSupport(Object object) {
-		realSource = object;
-	} // UndoableEditSupport()
+  /**
+   * realSource
+   */
+  protected Object realSource;
 
 
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+  //-------------------------------------------------------------
+  // Initialization ---------------------------------------------
+  //-------------------------------------------------------------
 
-	/**
-	 * toString
-	 * @returns String
-	 */
-	public String toString() {
-		return null; // TODO
-	} // toString()
+  /**
+   * Constructor UndoableEditSupport
+   */
+  public UndoableEditSupport()
+  {
+    // TODO
+  }
 
-	/**
-	 * addUndoableEditListener
-	 * @param value0 TODO
-	 */
-	public synchronized void addUndoableEditListener(UndoableEditListener value0) {
-		// TODO
-	} // addUndoableEditListener()
-
-	/**
-	 * removeUndoableEditListener
-	 * @param value0 TODO
-	 */
-	public synchronized void removeUndoableEditListener(UndoableEditListener value0) {
-		// TODO
-	} // removeUndoableEditListener()
-
-	/**
-	 * _postEdit
-	 * @param value0 TODO
-	 */
-	protected void _postEdit(UndoableEdit value0) {
-		// TODO
-	} // _postEdit()
-
-	/**
-	 * postEdit
-	 * @param value0 TODO
-	 */
-	public synchronized void postEdit(UndoableEdit value0) {
-		// TODO
-	} // postEdit()
-
-	/**
-	 * getUpdateLevel
-	 * @returns int
-	 */
-	public int getUpdateLevel() {
-		return 0; // TODO
-	} // getUpdateLevel()
-
-	/**
-	 * beginUpdate
-	 */
-	public synchronized void beginUpdate() {
-		// TODO
-	} // beginUpdate()
-
-	/**
-	 * createCompoundEdit
-	 * @returns CompoundEdit
-	 */
-	protected CompoundEdit createCompoundEdit() {
-		return null; // TODO
-	} // createCompoundEdit()
-
-	/**
-	 * endUpdate
-	 */
-	public synchronized void endUpdate() {
-		// TODO
-	} // endUpdate()
+  /**
+   * Constructor UndoableEditSupport
+   * @param object TODO
+   */
+  public UndoableEditSupport(Object object)
+  {
+    realSource = object;
+  }
 
 
-} // UndoableEditSupport
+  //-------------------------------------------------------------
+  // Methods ----------------------------------------------------
+  //-------------------------------------------------------------
+
+  /**
+   * toString
+   * @returns String
+   */
+  public String toString()
+  {
+    return null; // TODO
+  }
+
+  /**
+   * addUndoableEditListener
+   * @param value0 TODO
+   */
+  public synchronized void addUndoableEditListener(UndoableEditListener value0)
+  {
+    // TODO
+  }
+
+  /**
+   * removeUndoableEditListener
+   * @param value0 TODO
+   */
+  public synchronized void removeUndoableEditListener(UndoableEditListener value0)
+  {
+    // TODO
+  }
+
+  /**
+   * _postEdit
+   * @param value0 TODO
+   */
+  protected void _postEdit(UndoableEdit value0)
+  {
+    // TODO
+  }
+
+  /**
+   * postEdit
+   * @param value0 TODO
+   */
+  public synchronized void postEdit(UndoableEdit value0)
+  {
+    // TODO
+  }
+
+  /**
+   * getUpdateLevel
+   * @returns int
+   */
+  public int getUpdateLevel()
+  {
+    return 0; // TODO
+  }
+
+  /**
+   * beginUpdate
+   */
+  public synchronized void beginUpdate()
+  {
+    // TODO
+  }
+
+  /**
+   * createCompoundEdit
+   * @returns CompoundEdit
+   */
+  protected CompoundEdit createCompoundEdit()
+  {
+    return null; // TODO
+  }
+
+  /**
+   * endUpdate
+   */
+  public synchronized void endUpdate()
+  {
+    // TODO
+  }
+}
