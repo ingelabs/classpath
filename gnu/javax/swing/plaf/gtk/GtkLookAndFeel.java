@@ -37,6 +37,7 @@ public class GtkLookAndFeel extends BasicLookAndFeel
      */
     public GtkLookAndFeel()
     {
+	super();
     }
 
     /**
@@ -180,11 +181,14 @@ public class GtkLookAndFeel extends BasicLookAndFeel
 	// insets
 	// borders
 	// colors
-	ColorUIResource controlDkShadow = (ColorUIResource)table.get("controlDkShadow");
-	ColorUIResource controlShadow = (ColorUIResource)table.get("controlShadow");
-	ColorUIResource control = (ColorUIResource)table.get("control");
-	ColorUIResource scrollbar = (ColorUIResource)table.get("scrollbar");
-//  	System.out.println((ColorUIResource)table.get("control"));
+	ColorUIResource controlDkShadow = new ColorUIResource(table.getColor("controlDkShadow"));
+	ColorUIResource controlShadow = new ColorUIResource(table.getColor("controlShadow"));
+	ColorUIResource control = new ColorUIResource(table.getColor("control"));
+	ColorUIResource scrollbar = new ColorUIResource(table.getColor("scrollbar"));
+	ColorUIResource controlHighlight = new ColorUIResource(table.getColor("controlHighlight"));
+	if (scrollbar == null)
+	    System.out.println("scrollbar is null");
+
   	ColorUIResource white = new ColorUIResource(Color.white);
   	ColorUIResource black = new ColorUIResource(Color.black);
 	ColorUIResource blue = new ColorUIResource(Color.blue);
@@ -200,9 +204,18 @@ public class GtkLookAndFeel extends BasicLookAndFeel
 	    "CheckBox.font", sansSerifPlain10,
   	    "RadioButton.pressed", black,
 	    "Slider.focus", blue,
-	    "Slider.foreground", control,
-  	    "Slider.highlight", white,
-  	    "Slider.shadow", black
+  	    "Slider.foreground", control,
+  	    "Slider.highlight", controlHighlight,
+  	    "Slider.shadow", controlShadow,
+	    "Slider.background", controlDkShadow
+	   
+//  	    "Slider.background", "#888888",
+//  	    "Slider.focus", "#c3c3c3",
+//  	    "Slider.foreground", "#d6d6d6",
+//  	    "Slider.highlight", "#ffffff",
+//  	    "Slider.shadow", "#000000"
+
+
 	};
 
 	table.putDefaults(defaults);

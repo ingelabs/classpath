@@ -50,6 +50,7 @@ public class GtkIconFactory implements Serializable
 
 	public void paintIcon(Component c, Graphics g, int x, int y) 
 	{
+	    System.out.println("radiobuttonicon: paintIcon()");
 	    // get the button and model containing the state we are 
 	    // supposed to show
 	    AbstractButton b = (AbstractButton)c;
@@ -62,6 +63,7 @@ public class GtkIconFactory implements Serializable
 	    
 	    if (model.isPressed() && model.isArmed())
 		{
+		    System.out.println("radiobuttonicon: pressed & armed");
 		    g.setColor(UIManager.getColor("RadioButton.pressed"));
 		    g.fillOval(x,y,size-1, size-1);
 		}
@@ -70,8 +72,10 @@ public class GtkIconFactory implements Serializable
 	    g.drawOval(x,y,size-1, size-1);
 	    
 	    // fill a small circle inside if the button is selected
-	    if (model.isSelected())
+	    if (model.isSelected()) {
 		g.fillOval(x+4, y+4, size-8, size-8);
+		System.out.println("radiobuttonicon: is selected");
+	    }
 	}
     }
 }

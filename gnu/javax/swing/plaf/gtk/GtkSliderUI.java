@@ -24,31 +24,41 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 /**
- * This is probably the first UI class I'll work on and hopefully finish.
- * It has major problems right now with anything it is trying to draw.
+ * Gtk-like slider
  *
  * @author Brian Jones
  * @see javax.swing.LookAndFeel
  */
 public class GtkSliderUI extends BasicSliderUI
 {
-    private static Color bgcolor;
-    private static Color fgcolor;
-    private static Color focuscolor;
+    private static Color thumbFgColor;
+    private static Color thumbBgColor;
+    private static Color thumbHighlight;
+    private static Color thumbFocus;
+
+    private static Color bgColor;
+    private static Color fgColor;
+    private static Color focusColor;
     private static Color highlight;
     private static Color shadow;
+
+    private static final Dimension PREF_HORIZ = new Dimension(250, 15);
+    private static final Dimension PREF_VERT = new Dimension(15, 250);
+    private static final Dimension MIN_HORIZ = new Dimension(25, 15);
+    private static final Dimension MIN_VERT = new Dimension(15, 25);
 
     public GtkSliderUI() 
     {
 	super(null);
-	bgcolor = UIManager.getColor("Slider.background");
-	fgcolor = UIManager.getColor("Slider.foreground");
-	focuscolor = UIManager.getColor("Slider.focus");
+	bgColor = UIManager.getColor("Slider.background");
+	fgColor = UIManager.getColor("Slider.foreground");
+	focusColor = UIManager.getColor("Slider.focus");
 	highlight = UIManager.getColor("Slider.highlight");
 	shadow = UIManager.getColor("Slider.shadow");
-	System.out.println("bgcolor: " + bgcolor);
-	System.out.println("fgcolor: " + fgcolor);
-	System.out.println("focuscolor: " + focuscolor);
+
+	System.out.println("bgColor: " + bgColor);
+	System.out.println("fgColor: " + fgColor);
+	System.out.println("focusColor: " + focusColor);
 	System.out.println("highlight: " + highlight);
 	System.out.println("shadow: " + shadow);
     }
@@ -61,11 +71,6 @@ public class GtkSliderUI extends BasicSliderUI
     // methods not overridden here, using Basic defaults
     // installUI()
     // uninstall()
-
-    private static final Dimension PREF_HORIZ = new Dimension(250, 15);
-    private static final Dimension PREF_VERT = new Dimension(15, 250);
-    private static final Dimension MIN_HORIZ = new Dimension(25, 15);
-    private static final Dimension MIN_VERT = new Dimension(15, 25);
 
     public Dimension getPreferredHorizontalSize()
     {
@@ -154,22 +159,19 @@ public class GtkSliderUI extends BasicSliderUI
 //  	    "Slider.highlight", "#ffffff",
 //  	    "Slider.shadow", "#000000"
 
-//  	bgcolor = UIManager.getColor("Slider.background");
-//  	fgcolor = UIManager.getColor("Slider.foreground");
-//  	focuscolor = UIManager.getColor("Slider.focus");
-//  	highlight = UIManager.getColor("Slider.highlight");
-//  	shadow = UIManager.getColor("Slider.shadow");
-
-	g.setColor(bgcolor);
+	g.setColor(fgColor);
+	g.fillRect(x,y,w,h);
+	g.setColor(bgColor);
+	
 	if (slider.getOrientation() == JSlider.HORIZONTAL) {
 	    g.drawRect(x, y, w, h);
 	    g.setColor(highlight);
-	    g.drawLine(x+1, y+14, x+33, y+14);
-	    g.setColor(focuscolor);
-	    g.drawLine(x+2, y+13, x+33, y+13);
+	    g.drawLine(x+1, y+h-1, x+w, y+h-1);
+	    g.setColor(focusColor);
+	    g.drawLine(x+2, y+h-2, x+w, y+h-2);
 	    g.setColor(Color.black);
-	    g.drawLine(x+1, y+13, x+1, y+13);
-	    g.drawRect(x+1, y+1, 32, 12);	    
+	    g.drawLine(x+1, y+h-2, x+1, y+h-2);
+	    g.drawRect(x+1, y+1, w-1, 12);	    
 	}	
 	else 
 	    g.drawRect(x, y, w, h);
@@ -181,13 +183,16 @@ public class GtkSliderUI extends BasicSliderUI
     
     public void paintTrack(Graphics g)
     {
-	super.paintTrack(g);
-//  	int x = trackRect.x;
-//  	int y = trackRect.y;
-//  	int h = trackRect.height;
-//  	int w = trackRect.width;
+//  	super.paintTrack(g);
+	int x = trackRect.x;
+	int y = trackRect.y;
+	int h = trackRect.height;
+	int w = trackRect.width;
 
-//  	g.setColor(slider.getForeground());
+	System.err.println("track " + trackRect);
+
+	g.setColor(Color.black);
+	g.fillRect(x,y,w,h);
 
 //  	if (slider.getOrientation() == JSlider.HORIZONTAL)
 //  	    g.drawLine(x, y+h-1, x+w-1, y+h-1);
