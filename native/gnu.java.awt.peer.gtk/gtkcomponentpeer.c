@@ -269,6 +269,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedNew (JNIEnv *env,
 
   gdk_threads_enter ();
   fix = gtk_fixed_new ();
+  connect_awt_hook (env, obj, fix, 1, &fix->window);
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, fix);

@@ -47,6 +47,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, jobject obj,
   /* Every window needs a fixed widget to support absolute positioning. */
 
   fix=gtk_fixed_new();
+  connect_awt_hook (env, obj, fix, 1, &fix->window);
   
   gtk_widget_set_usize(window,width,height);
   
