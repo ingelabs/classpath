@@ -1,5 +1,5 @@
 /* PlainSocketImpl.java -- Default socket implementation
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -195,7 +195,7 @@ public final class PlainSocketImpl extends SocketImpl
    *
    * @param stream true for a stream socket, false for a datagram socket
    */
-  protected native synchronized void create(boolean stream) throws IOException;
+  protected synchronized native void create(boolean stream) throws IOException;
 
   /**
    * Connects to the remote hostname and port specified as arguments.
@@ -264,7 +264,7 @@ public final class PlainSocketImpl extends SocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected native synchronized void bind(InetAddress addr, int port)
+  protected synchronized native void bind(InetAddress addr, int port)
     throws IOException;
 
   /**
@@ -277,7 +277,7 @@ public final class PlainSocketImpl extends SocketImpl
    * 
    * @exception IOException If an error occurs
    */
-  protected native synchronized void listen(int queuelen)
+  protected synchronized native void listen(int queuelen)
     throws IOException;
 
   /**
@@ -286,7 +286,7 @@ public final class PlainSocketImpl extends SocketImpl
    *
    * @param impl The SocketImpl object to accept this connection.
    */
-  protected native synchronized void accept(SocketImpl impl)
+  protected synchronized native void accept(SocketImpl impl)
     throws IOException;
 
   /**

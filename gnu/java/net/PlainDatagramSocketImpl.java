@@ -1,5 +1,5 @@
 /* PlainDatagramSocketImpl.java -- Default DatagramSocket implementation
-   Copyright (C) 1998, 1999, 2001, 2003, 2004  Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2003, 2004, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -123,7 +123,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
    *
    * @exception SocketException If an error occurs
    */
-  protected native synchronized void bind(int port, InetAddress addr)
+  protected synchronized native void bind(int port, InetAddress addr)
     throws SocketException;
 
   /**
@@ -131,7 +131,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
    *
    * @exception SocketException If an error occurs
    */
-  protected native synchronized void create() throws SocketException;
+  protected synchronized native void create() throws SocketException;
 
   /**
    * Sets the Time to Live value for the socket
@@ -227,7 +227,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
    *
    * @exception SocketException If an error occurs
    */
-  public native synchronized void setOption(int option_id, Object val)
+  public synchronized native void setOption(int option_id, Object val)
     throws SocketException;
 
   /**
@@ -239,13 +239,13 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
    *
    * @exception SocketException If an error occurs
    */
-  public native synchronized Object getOption(int option_id)
+  public synchronized native Object getOption(int option_id)
     throws SocketException;
 
   /**
    * Closes the socket
    */
-  protected native synchronized void close();
+  protected synchronized native void close();
 
   /**
    * Gets the Time to Live value for the socket
@@ -282,7 +282,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected native synchronized void join(InetAddress addr) throws IOException;
+  protected synchronized native void join(InetAddress addr) throws IOException;
 
   /**
    * Leaves a multicast group
@@ -291,7 +291,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected native synchronized void leave(InetAddress addr) throws IOException;
+  protected synchronized native void leave(InetAddress addr) throws IOException;
 
   /**
    * What does this method really do?
