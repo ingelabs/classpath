@@ -1,5 +1,5 @@
 /* javanet.c - Common internal functions for the java.net package
-   Copyright (C) 1998, 2002, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002, 2004, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -1367,6 +1367,58 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
   return(0);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
+}
+
+void 
+_javanet_shutdownInput (JNIEnv *env, jobject this)
+{
+  int fd;
+
+  assert (env != NULL);
+  assert ((*env) != NULL);
+
+  /* Get the real file descriptor. */
+  fd = _javanet_get_int_field (env, this, "native_fd");
+  if (fd == -1)
+    { 
+      JCL_ThrowException(env, SOCKET_EXCEPTION, 
+			 "Internal error: _javanet_get_option(): no native file descriptor"); 
+      return; 
+    }
+
+  /* Shutdown input stream of socket. */
+  if (shutdown (fd, SHUT_RD) == -1)
+    {
+      JCL_ThrowException (env, SOCKET_EXCEPTION,
+			  "Can't shutdown input of socket");
+      return;
+    }
+}
+
+void 
+_javanet_shutdownOutput (JNIEnv *env, jobject this)
+{
+  int fd;
+
+  assert (env != NULL);
+  assert ((*env) != NULL);
+
+  /* Get the real file descriptor. */
+  fd = _javanet_get_int_field (env, this, "native_fd");
+  if (fd == -1)
+    { 
+      JCL_ThrowException(env, SOCKET_EXCEPTION, 
+			 "Internal error: _javanet_get_option(): no native file descriptor"); 
+      return; 
+    }
+
+  /* Shutdown output stream of socket. */
+  if (shutdown (fd, SHUT_WR) == -1)
+    {
+      JCL_ThrowException (env, SOCKET_EXCEPTION,
+			  "Can't shutdown output of socket");
+      return;
+    }
 }
 
 /* end of file */

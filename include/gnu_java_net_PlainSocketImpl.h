@@ -12,6 +12,8 @@ extern "C"
 
 JNIEXPORT void JNICALL Java_gnu_java_net_PlainSocketImpl_setOption (JNIEnv *env, jobject, jint, jobject);
 JNIEXPORT jobject JNICALL Java_gnu_java_net_PlainSocketImpl_getOption (JNIEnv *env, jobject, jint);
+JNIEXPORT void JNICALL Java_gnu_java_net_PlainSocketImpl_shutdownInput (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_net_PlainSocketImpl_shutdownOutput (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_net_PlainSocketImpl_create (JNIEnv *env, jobject, jboolean);
 JNIEXPORT void JNICALL Java_gnu_java_net_PlainSocketImpl_connect (JNIEnv *env, jobject, jobject, jint);
 JNIEXPORT void JNICALL Java_gnu_java_net_PlainSocketImpl_bind (JNIEnv *env, jobject, jobject, jint);

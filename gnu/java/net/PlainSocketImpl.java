@@ -177,15 +177,21 @@ public final class PlainSocketImpl extends SocketImpl
    */
   public native Object getOption(int optID) throws SocketException;
 
-  public void shutdownInput()
-  {
-    throw new InternalError ("PlainSocketImpl::shutdownInput not implemented");
-  }
+  /**
+   * Flushes the input stream and closes it. If you read from the input stream
+   * after calling this method a <code>IOException</code> will be thrown.
+   * 
+   * @throws IOException if an error occurs
+   */
+  public native void shutdownInput() throws IOException;
 
-  public void shutdownOutput()
-  {
-    throw new InternalError ("PlainSocketImpl::shutdownOutput not implemented");
-  }
+  /**
+   * Flushes the output stream and closes it. If you write to the output stream
+   * after calling this method a <code>IOException</code> will be thrown.
+   * 
+   * @throws IOException if an error occurs
+   */
+  public native void shutdownOutput() throws IOException;
 
   /**
    * Creates a new socket that is not bound to any local address/port and

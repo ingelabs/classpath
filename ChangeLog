@@ -1,5 +1,21 @@
 2005-01-12  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/PlainSocketImpl.java
+	(shutdownInput): Made native. Throws IOException. Added Javadoc.
+	(shutdownOutput): Likewise.
+	* include/gnu_java_net_PlainSocketImpl.h: Regenerated.
+	* native/jni/java-net/gnu_java_net_PlainSocketImpl.c
+	(Java_gnu_java_net_PlainSocketImpl_shutdownInput): New method.
+	(Java_gnu_java_net_PlainSocketImpl_shutdownOutput): Likewise.
+	* native/jni/java-net/javanet.c
+	(_javanet_shutdownInput): Likewise.
+	(_javanet_shutdownOutput): Likewise.
+	* native/jni/java-net/javanet.h
+	(_javanet_shutdownInput): Likewise.
+	(_javanet_shutdownOutput): Likewise.
+
+2005-01-12  Michael Koch  <konqueror@gmx.de>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
 	(Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetVisible):
 	Removed setting of gdk_env.

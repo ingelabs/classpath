@@ -1,5 +1,5 @@
 /* javanet.h - Declarations for common functions for the java.net package
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -100,6 +100,8 @@ extern int _javanet_recvfrom(JNIEnv *, jobject, jarray, int, int, int *, int *);
 extern void _javanet_sendto(JNIEnv *, jobject, jarray, int, int, int, int);
 extern jobject _javanet_get_option(JNIEnv *, jobject, jint);
 extern void _javanet_set_option(JNIEnv *, jobject, jint, jobject);
+extern void _javanet_shutdownInput (JNIEnv *, jobject);
+extern void _javanet_shutdownOutput (JNIEnv *, jobject);
 
 /*************************************************************************/
 

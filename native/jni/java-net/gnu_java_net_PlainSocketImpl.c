@@ -1,5 +1,5 @@
 /* PlainSocketImpl.c - Native methods for PlainSocketImpl class
-   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -285,6 +285,30 @@ Java_gnu_java_net_PlainSocketImpl_write(JNIEnv *env, jobject this, jarray buf,
   assert((*env)!=NULL);
 
   _javanet_sendto(env, this, buf, offset, len, 0, 0);
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_net_PlainSocketImpl_shutdownInput (JNIEnv *env, jobject this)
+{
+#ifndef WITHOUT_NETWORK
+  assert (env != NULL);
+assert ((*env) != NULL);
+
+  _javanet_shutdownInput (env, this);
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_net_PlainSocketImpl_shutdownOutput (JNIEnv *env, jobject this)
+{
+#ifndef WITHOUT_NETWORK
+  assert (env != NULL);
+  assert ((*env) != NULL);
+
+  _javanet_shutdownOutput (env, this);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
