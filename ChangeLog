@@ -1,3 +1,9 @@
+2004-09-30   Olga Rodimina  <rodimina@redhat.com>
+
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(SCROLL_DOWN): made final.
+	(SCROLL_UP): made final.
+
 2004-09-30  Jerry Quinn  <jlquinn@optonline.net>
 
 	* java/awt/image/RescaleOp.java: Fix formatting.
