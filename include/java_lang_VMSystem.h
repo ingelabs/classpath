@@ -12,7 +12,6 @@ extern "C"
 
 JNIEXPORT void JNICALL Java_java_lang_VMSystem_arraycopy (JNIEnv *env, jclass, jobject, jint, jobject, jint, jint);
 JNIEXPORT jint JNICALL Java_java_lang_VMSystem_identityHashCode (JNIEnv *env, jclass, jobject);
-JNIEXPORT jboolean JNICALL Java_java_lang_VMSystem_isWordsBigEndian (JNIEnv *env, jclass);
 JNIEXPORT void JNICALL Java_java_lang_VMSystem_setIn (JNIEnv *env, jclass, jobject);
 JNIEXPORT void JNICALL Java_java_lang_VMSystem_setOut (JNIEnv *env, jclass, jobject);
 JNIEXPORT void JNICALL Java_java_lang_VMSystem_setErr (JNIEnv *env, jclass, jobject);

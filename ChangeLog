@@ -1,3 +1,8 @@
+2004-12-07  Jeroen Frijters  <jeroen@frijters.net>
+
+	* include/java_lang_VMSystem.h:
+	Removed isWordsBigEndian.
+
 2004-12-06  Jeroen Frijters  <jeroen@frijters.net>
 
 	* NEWS: Updated.
