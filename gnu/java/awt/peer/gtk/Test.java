@@ -130,6 +130,24 @@ class Test
 	}
       });
 
+      wb.addMouseListener(new MouseAdapter() {
+	public void mousePressed(MouseEvent e) {
+	  System.out.println("mouse pressed wb");
+	}
+	public void mouseReleased(MouseEvent e) {
+	  System.out.println("mouse released wb");
+	}
+	public void mouseClicked(MouseEvent e) {
+	  System.out.println("mouse clicked wb");
+	}
+	public void mouseEntered(MouseEvent e) {
+	  System.out.println("mouse entered wb");
+	}
+	public void mouseExited(MouseEvent e) {
+	  System.out.println("mouse exited wb");
+	}
+      });
+
       f.add(wb,"West");
       
       f.pack();
