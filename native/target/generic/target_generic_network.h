@@ -804,31 +804,6 @@ extern "C" {
 #endif
 
 /***********************************************************************\
-* Name       : TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT
-* Purpose    : set socket option SO_TIMEOUT
-* Input      : socketDescriptor - socket descriptor
-*              value            - value
-* Output     : result - TARGET_NATIVE_OK if no error occurred, 
-*                       TARGET_NATIVE_ERROR otherwise
-* Return     : -
-* Side-effect: unknown
-* Notes      : -
-\***********************************************************************/
-
-#ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT(socketDescriptor,value,result) \
-    do { \
-      int __value; \
-      \
-      __value=value; \
-      result=(setsockopt(socketDescriptor,SOL_SOCKET,SO_TIMEOUT,&__value,sizeof(__value))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-    } while (0)
-#endif
-
-/***********************************************************************\
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_ADD_MEMBERSHIP
 * Purpose    : set socket option IP_ADD_MEMBERSHIP
 * Input      : socketDescriptor - socket descriptor
@@ -906,6 +881,33 @@ extern "C" {
       result=(setsockopt(socketDescriptor,SOL_SOCKET,SO_KEEPALIVE,&__value,sizeof(__value))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
 #endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST
+* Purpose    : set socket option SO_BROADCAST
+* Input      : socketDescriptor - socket descriptor
+*              flag             - 1 or 0
+* Output     : result - TARGET_NATIVE_OK if no error occurred, 
+*                       TARGET_NATIVE_ERROR otherwise
+* Return     : -
+* Side-effect: unknown
+* Notes      : -
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST 
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netinet/tcp.h>
+  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST(socketDescriptor,flag,result) \
+    do { \
+      int __value; \
+      \
+      __value=flag; \
+      result=(setsockopt(socketDescriptor,SOL_SOCKET,SO_BROADCAST,&__value,sizeof(__value))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+    } while (0)
+#endif
+
+/*---------------------------------------------------------------------*/
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_TCP_NODELAY
@@ -1232,6 +1234,39 @@ extern "C" {
       \
       __len=sizeof(__value); \
       result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_KEEPALIVE,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+      if (result==TARGET_NATIVE_OK) \
+      { \
+        assert(__len>=sizeof(__value)); \
+        flag=__value; \
+      } \
+    } while (0)
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST
+* Purpose    : get socket option SO_BROADCAST
+* Input      : socketDescriptor - socket descriptor
+* Output     : flag   - 1 or 0
+*              result - TARGET_NATIVE_OK if no error occurred, 
+*                       TARGET_NATIVE_ERROR otherwise
+* Return     : -
+* Side-effect: unknown
+* Notes      : -
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST 
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netinet/tcp.h>
+  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST(socketDescriptor,flag,result) \
+    do { \
+      int __value; \
+      socklen_t __len; \
+      \
+      flag=0; \
+      \
+      __len=sizeof(__value); \
+      result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_BROADCAST,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
         assert(__len>=sizeof(__value)); \
