@@ -38,19 +38,20 @@ exception statement from your version. */
 
 package gnu.java.net.protocol.http;
 
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.Socket;
-import java.net.ProtocolException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.Socket;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Iterator;
 import java.util.Map;
 import gnu.java.net.HeaderFieldHelper;
@@ -61,7 +62,7 @@ import gnu.java.net.HeaderFieldHelper;
  *
  * @author Aaron M. Renn (arenn@urbanophile.com)
  */
-public class HttpURLConnection extends java.net.HttpURLConnection
+public class Connection extends HttpURLConnection
 {
   /**
    * The socket we are connected to
@@ -97,7 +98,7 @@ public class HttpURLConnection extends java.net.HttpURLConnection
   /**
    * Calls superclass constructor to initialize
    */
-  protected HttpURLConnection (URL url)
+  protected Connection (URL url)
   {
     super (url);
 

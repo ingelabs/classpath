@@ -64,7 +64,7 @@ public class Handler extends URLStreamHandler
    */
   protected URLConnection openConnection (URL url) throws IOException
   {
-    return new gnu.java.net.protocol.jar.JarURLConnection (url);
+    return new Connection (url);
   }
 
   /**

@@ -42,6 +42,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.net.JarURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -55,7 +56,7 @@ import java.util.zip.ZipFile;
  * the "jar" protocol.
  *
  */
-public class JarURLConnection extends java.net.JarURLConnection
+public class Connection extends JarURLConnection
 {
   private JarFile jar_file;
   private JarEntry jar_entry;
@@ -118,7 +119,7 @@ public class JarURLConnection extends java.net.JarURLConnection
     }
   }
   
-  public JarURLConnection (URL url) throws MalformedURLException, IOException
+  public Connection (URL url) throws MalformedURLException, IOException
   {
     super (url);
     jar_url = getJarFileURL();

@@ -59,7 +59,7 @@ import java.util.NoSuchElementException;
  * @author Aaron M. Renn (arenn@urbanophile.com)
  * @author Nic Ferrier (nferrier@tapsellferrier.co.uk)
  */
-public class FileURLConnection extends URLConnection
+public class Connection extends URLConnection
 {
   /**
    * This is a File object for this connection
@@ -79,7 +79,7 @@ public class FileURLConnection extends URLConnection
   /**
    * Calls superclass constructor to initialize.
    */
-  protected FileURLConnection (URL url)
+  protected Connection (URL url)
   {
     super (url);
     

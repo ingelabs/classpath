@@ -70,7 +70,7 @@ public class Handler extends URLStreamHandler
   protected URLConnection openConnection (URL url)
     throws IOException
   {
-    return new gnu.java.net.protocol.file.FileURLConnection (url);
+    return new Connection (url);
   }
 
   /**

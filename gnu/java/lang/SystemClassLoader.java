@@ -46,7 +46,7 @@ import java.util.Vector;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
 import gnu.java.io.PlatformHelper;
-import gnu.java.net.protocol.jar.JarURLConnection.JarFileCache;
+import gnu.java.net.protocol.jar.Connection.JarFileCache;
 
 /**
  * The default system class loader. VMs may wish to replace this with a
