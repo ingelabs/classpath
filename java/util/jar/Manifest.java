@@ -129,7 +129,7 @@ public class Manifest implements Cloneable {
      * @return the attributes associated with the entry or null when none
      */
     public Attributes getAttributes(String entryName) {
-        return (Attributes)getEntries.get(entryName);
+        return (Attributes)getEntries().get(entryName);
     }
 
     /**
