@@ -1,5 +1,5 @@
 /* Button.java -- AWT button widget
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -31,11 +31,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.peer.ButtonPeer;
 import java.awt.peer.ComponentPeer;
+import java.util.EventListener;
 
 /**
   * This class provides a button widget for the AWT. 
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@cygnus.com>
   */
 public class Button extends Component implements java.io.Serializable
 {
@@ -80,7 +82,7 @@ private transient ActionListener action_listeners;
 public
 Button()
 {
-  this("");
+  this(null);
 }
 
 /*************************************************************************/
@@ -126,10 +128,11 @@ public synchronized void
 setLabel(String label)
 {
   this.label = label;
-
-  ButtonPeer bp = (ButtonPeer)getPeer();
-  if (bp != null)
-    bp.setLabel(label);
+  if (peer != null)
+    {
+      ButtonPeer bp = (ButtonPeer) peer;
+      bp.setLabel (label);
+    }
 }
 
 /*************************************************************************/
@@ -155,7 +158,7 @@ getActionCommand()
 public void
 setActionCommand(String actionCommand)
 {
-  this.actionCommand = actionCommand;
+  this.actionCommand = actionCommand == null ? label : actionCommand;
 }
 
 /*************************************************************************/
@@ -186,6 +189,14 @@ removeActionListener(ActionListener listener)
   action_listeners = AWTEventMulticaster.remove(action_listeners, listener);
 }
 
+public EventListener[]
+getListeners(Class listenerType)
+{
+  if (listenerType == ActionListener.class)
+    return getListenersImpl(listenerType, action_listeners);
+  return super.getListeners(listenerType);
+}
+
 /*************************************************************************/
 
 /**
@@ -194,11 +205,9 @@ removeActionListener(ActionListener listener)
 public void
 addNotify()
 {
-  ButtonPeer bp = (ButtonPeer)getPeer();
-  if (bp != null)
-    return;
-
-  setPeer((ComponentPeer)getToolkit().createButton(this));
+  if (peer == null)
+    peer = getToolkit ().createButton (this);
+  super.addNotify();
 }
 
 /*************************************************************************/
@@ -236,6 +245,18 @@ processActionEvent(ActionEvent event)
 {
   if (action_listeners != null)
     action_listeners.actionPerformed(event);
+}
+
+void
+dispatchEventImpl(AWTEvent e)
+{
+  super.dispatchEventImpl(e);
+
+  if (e.id <= ActionEvent.ACTION_LAST 
+      && e.id >= ActionEvent.ACTION_FIRST
+      && (action_listeners != null 
+	  || (eventMask & AWTEvent.ACTION_EVENT_MASK) != 0))
+    processEvent(e);
 }
 
 /*************************************************************************/

@@ -1,5 +1,5 @@
 /* MenuItem.java -- An item in a menu
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -31,6 +31,7 @@ import java.awt.peer.MenuItemPeer;
 import java.awt.peer.MenuComponentPeer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.EventListener;
 
 /**
   * This class represents an item in a menu.
@@ -156,10 +157,11 @@ public synchronized void
 setLabel(String label)
 {
   this.label = label;
-
-  MenuItemPeer mip = (MenuItemPeer)getPeer();
-  if (mip != null)
-    mip.setLabel(label);
+  if (peer != null)
+    {
+      MenuItemPeer mp = (MenuItemPeer) peer;
+      mp.setLabel (label);
+    }
 }
 
 /*************************************************************************/
@@ -191,10 +193,11 @@ setEnabled(boolean enabled)
     return;
 
   this.enabled = enabled;
-
-  MenuItemPeer mip = (MenuItemPeer)getPeer();
-  if (mip != null)
-    mip.setEnabled(enabled);
+  if (peer != null)
+    {
+      MenuItemPeer mp = (MenuItemPeer) peer;
+      mp.setEnabled (enabled);
+    }
 }
 
 /*************************************************************************/
@@ -320,6 +323,7 @@ protected final void
 enableEvents(long events)
 {
   eventMask |= events;
+  // TODO: see comment in Component.enableEvents().    
 }
 
 /*************************************************************************/
@@ -344,10 +348,8 @@ disableEvents(long events)
 public void
 addNotify()
 {
-  if (getPeer() != null)
-    return;
-
-  setPeer((MenuComponentPeer)getToolkit().createMenuItem(this));
+  if (peer != null)
+    peer = getToolkit ().createMenuItem (this);
 }
 
 /*************************************************************************/
@@ -366,7 +368,37 @@ addActionListener(ActionListener listener)
   enableEvents(AWTEvent.ACTION_EVENT_MASK);
 }
 
+public synchronized void
+removeActionListener(ActionListener l)
+{
+  action_listeners = AWTEventMulticaster.remove(action_listeners, l);
+}
+
+/** Returns all registered EventListers of the given listenerType. 
+ * listenerType must be a subclass of EventListener, or a 
+ * ClassClassException is thrown.
+ * @since 1.3 
+ */
+public EventListener[]
+getListeners(Class listenerType)
+{
+  if (listenerType == ActionListener.class)
+    return Component.getListenersImpl(listenerType, action_listeners);
+  else
+    return Component.getListenersImpl(listenerType, null);
+}
+
 /*************************************************************************/
+
+void
+dispatchEventImpl(AWTEvent e)
+{
+  if (e.id <= ActionEvent.ACTION_LAST 
+      && e.id >= ActionEvent.ACTION_FIRST
+      && (action_listeners != null
+	  || (eventMask & AWTEvent.ACTION_EVENT_MASK) != 0))
+    processEvent(e);
+}
 
 /**
   * Processes the specified event by calling <code>processActionEvent()</code>
@@ -409,5 +441,7 @@ paramString()
          ",actionCommand=" + actionCommand + ")");
 }
 
-} // class MenuItem 
+// Accessibility API not yet implemented.
+// public AccessibleContext getAccessibleContext()
 
+} // class MenuItem 

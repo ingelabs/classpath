@@ -1,5 +1,31 @@
 2002-01-17  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/MenuComponent.java (peer): Now transient and
+	package-private.
+	(parent): Now transient.
+	(tree_lock): Likewise.
+	(toolkit): Now transient and static.	
+	(dispatchEvent): Call dispatchEventImpl.
+	(dispatchEventImpl): New method.
+	(processEvent): Removed redundant `return'.
+	* java/awt/MenuItem.java (setLabel): Use `peer' field directly.
+	Don't cast peer unless it is non-null.
+	(setEnabled): Likewise.
+	(removeActionListener): New method.
+	(addNotify): Use `peer' field directly.
+	(getListeners): New method.
+	(dispatchEventImpl): Likewise.
+	Import EventListener.
+	* java/awt/Button.java (Button): Use `null' as default.
+	(addNotify): Call superclass addNotify().  Use `peer' field
+	directly.
+	(dispatchEventImpl): New method.
+	(getListeners): Likewise.
+	(setActionCommand): Handle case where argument is `null'.
+	(setLabel): Use `peer' field directly.  Don't cast peer unless it
+	is non-null.
+	Import EventListener.
+
 	* java/awt/ActiveEvent.java: Replaced with libgcj version.
 
 2002-01-16  Tom Tromey  <tromey@redhat.com>

@@ -1,5 +1,5 @@
 /* MenuComponent.java -- Superclass of all AWT menu components
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -52,6 +52,9 @@ private static final long serialVersionUID = -4536902356223894379L;
  * Instance Variables
  */
 
+  // FIXME: missing serialized fields `nameExplicitlySet',
+  // `newEventsOnly', and `accessibleContext'.
+
 // The font for this component
 private Font font;
 
@@ -59,16 +62,16 @@ private Font font;
 private String name;
 
 // The parent of this component
-private MenuContainer parent;
+private transient MenuContainer parent;
 
 // The native peer for this componet
-private MenuComponentPeer peer;
+transient MenuComponentPeer peer;
 
 // The synchronization locking object for this component
-private Object tree_lock = this;
+private transient Object tree_lock = this;
 
 // The toolkit for this object
-private Toolkit toolkit = Toolkit.getDefaultToolkit();
+private static transient Toolkit toolkit = Toolkit.getDefaultToolkit();
 
 /*************************************************************************/
 
@@ -256,8 +259,14 @@ postEvent(Event event)
 public final void
 dispatchEvent(AWTEvent event)
 {
-  // FIXME: What is this really supposed to do?
-  ((MenuComponent)event.getSource()).processEvent(event);
+  // See comment in Component.dispatchEvent().
+  dispatchEventImpl(event);
+}
+
+void
+dispatchEventImpl(AWTEvent e)
+{
+  // This is overridden by subclasses that support events.
 }
 
 /*************************************************************************/
@@ -271,7 +280,6 @@ dispatchEvent(AWTEvent event)
 protected void
 processEvent(AWTEvent event)
 {
-  return;
 }
 
 /*************************************************************************/
@@ -298,5 +306,7 @@ paramString()
   return(toString());
 }
 
-} // class Component
+// Accessibility API not yet implemented.
+// public AccessibleContext getAccessibleContext()
 
+} // class Component
