@@ -60,13 +60,17 @@ import java.awt.Color;
  * @serial
  * @serialField delegate Border the <code>Border</code> wrapped
  *
- * @author Brian Jones
- * @author Sascha Brawer
+ * @author Brian Jones (cbj@gnu.org)
+ * @author Sascha Brawer (brawer@dandelis.ch)
  */
 public class BorderUIResource 
   extends Object 
   implements Border, UIResource, Serializable
 {
+  /**
+   * Verified using the <code>serialver</code> tool
+   * of Apple/Sun JDK 1.3.1 on MacOS X 10.1.5.
+   */
   static final long serialVersionUID = -3440553684010079691L;
 
 
@@ -250,38 +254,135 @@ public class BorderUIResource
   }
 
 
+  /**
+   * A {@link javax.swing.border.BevelBorder} that also implements the
+   * {@link UIResource} marker interface.  This is useful for
+   * implementing pluggable look-and-feels: When switching the current
+   * LookAndFeel, only those borders are replaced that are marked as
+   * {@link UIResource}.  For this reason, a look-and-feel should
+   * always install borders that implement <code>UIResource</code>,
+   * such as the borders provided by this class.
+   *
+   * @author Brian Jones (cbj@gnu.org)
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
+  public static class BevelBorderUIResource 
+    extends BevelBorder
+    implements UIResource, Serializable
+  {
     /**
-     * @serial
+     * Constructs a BevelBorderUIResource whose colors will be derived
+     * from the background of the enclosed component. The background
+     * color is retrieved each time the border is painted, so a border
+     * constructed by this method will automatically reflect a change
+     * to the component&#x2019;s background color.
+     *
+     * <p><img src="../border/BevelBorder-1.png" width="500" height="150"
+     * alt="[An illustration showing raised and lowered BevelBorders]" />
+     *
+     * @param bevelType the desired appearance of the border. The value
+     *        must be either {@link javax.swing.border.BevelBorder#RAISED}
+     *        or {@link javax.swing.border.BevelBorder#LOWERED}.
+     *
+     * @throws IllegalArgumentException if <code>bevelType</code> has
+     *         an unsupported value.
      */
-    public static class BevelBorderUIResource 
-	extends BevelBorder
-	implements UIResource, Serializable
+    public BevelBorderUIResource(int bevelType) 
+    { 
+      super(bevelType);
+    }
+    
+    
+    /**
+     * Constructs a BevelBorderUIResource given its appearance type
+     * and two colors for its highlight and shadow.
+     *
+     * <p><img src="../border/BevelBorder-2.png" width="500" height="150"
+     * alt="[An illustration showing BevelBorders that were constructed
+     * with this method]" />
+     *
+     * @param bevelType the desired appearance of the border. The value
+     *        must be either {@link javax.swing.border.BevelBorder#RAISED}
+     *        or {@link javax.swing.border.BevelBorder#LOWERED}.
+     *
+     * @param highlight the color that will be used for the inner side
+     *        of the highlighted edges (top and left if if
+     *        <code>bevelType</code> is {@link
+     *        javax.swing.border.BevelBorder#RAISED}; bottom and right
+     *        otherwise). The color for the outer side is a brightened
+     *        version of this color.
+     *
+     * @param shadow the color that will be used for the outer side of
+     *        the shadowed edges (bottom and right if
+     *        <code>bevelType</code> is {@link
+     *        javax.swing.border.BevelBorder#RAISED}; top and left
+     *        otherwise). The color for the inner side is a brightened
+     *        version of this color.
+     *
+     * @throws IllegalArgumentException if <code>bevelType</code> has
+     *         an unsupported value.
+     *
+     * @throws NullPointerException if <code>highlight</code> or
+     *         <code>shadow</code> is <code>null</code>.
+     */
+    public BevelBorderUIResource(int bevelType, 
+                                 Color highlight, 
+                                 Color shadow) 
     {
-	public BevelBorderUIResource(int bevelType) 
-	{ 
-	    super (bevelType);
-	}
-
-	public BevelBorderUIResource(int bevelType, 
-				     Color highlight, 
-				     Color shadow) 
-	{
-	  super (bevelType, highlight, shadow);
-	}
-	public BevelBorderUIResource(int bevelType,
-				     Color highlightOuter,
-				     Color highlightInner,
-				     Color shadowOuter,
-				     Color shadowInner) 
-	{
-	  super (bevelType, highlightOuter, highlightInner, shadowOuter,
-		 shadowInner);
-	}
+      super(bevelType, highlight, shadow);
     }
 
+
     /**
-     * @serial
+     * Constructs a BevelBorderUIResource given its appearance type
+     * and all its colors.
+     *
+     * <p><img src="../border/BevelBorder-3.png" width="500" height="150"
+     * alt="[An illustration showing BevelBorders that were constructed
+     * with this method]" />
+     *
+     * @param bevelType the desired appearance of the border. The value
+     *        must be either {@link javax.swing.border.BevelBorder#RAISED}
+     *        or {@link javax.swing.border.BevelBorder#LOWERED}.
+     *
+     * @param highlightOuter the color that will be used for the outer
+     *        side of the highlighted edges (top and left if
+     *        <code>bevelType</code> is {@link
+     *        javax.swing.border.BevelBorder#RAISED}; bottom and right
+     *        otherwise).
+     *
+     * @param highlightInner the color that will be used for the inner
+     *        side of the highlighted edges.
+     *
+     * @param shadowOuter the color that will be used for the outer
+     *        side of the shadowed edges (bottom and right if
+     *        <code>bevelType</code> is {@link
+     *        javax.swing.border.BevelBorder#RAISED}; top and left
+     *        otherwise).
+     *
+     * @param shadowInner the color that will be used for the inner
+     *        side of the shadowed edges.
+     *
+     * @throws IllegalArgumentException if <code>bevelType</code> has
+     *         an unsupported value.
+     *
+     * @throws NullPointerException if one of the passed colors
+     *         is <code>null</code>.
      */
+    public BevelBorderUIResource(int bevelType,
+                                 Color highlightOuter,
+                                 Color highlightInner,
+                                 Color shadowOuter,
+                                 Color shadowInner) 
+    {
+      super(bevelType,
+            highlightOuter, highlightInner,
+            shadowOuter, shadowInner);
+    }
+  }
+
+    /**
+     * @serial */
     public static class CompoundBorderUIResource
 	extends CompoundBorder
 	implements UIResource, Serializable
