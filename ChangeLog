@@ -1,5 +1,18 @@
 2003-12-26  Michael Koch  <konqueror@gmx.de>
 
+	* java/beans/BeanDescriptor.java,
+	java/beans/EventSetDescriptor.java,
+	java/beans/FeatureDescriptor.java,
+	java/beans/IndexedPropertyDescriptor.java,
+	java/beans/Introspector.java,
+	java/beans/MethodDescriptor.java,
+	java/beans/PropertyDescriptor.java,
+	java/beans/SimpleBeanInfo.java: Explicitely import used classes.
+	* java/beans/beancontext/BeanContextServicesSupport.java
+	(serialVersionUID): New field.
+
+2003-12-26  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/image/PixelGrabber.java: Removed assert() statements added
 	in last commit as this breaks compilation with jikes.
 
