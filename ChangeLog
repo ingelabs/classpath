@@ -1,3 +1,145 @@
+2002-03-24  C. Brian Jones <cbj@gnu.org>
+
+	The following changes are all from patch submissions from Intel's
+	ORP team to get Classpath into a JBOSS compatible state.  This 
+	is primarily just the non-public API patches.
+	* java/io/BufferedOutputStream.java (flush): after writing out the
+	current buffer contents flush the underlying output stream
+	* java/io/File.java
+	(File(String,String)): make use of gnu.java.io.PlatformHelper; avoid
+	possible double separator char when setting path
+	(getName): make use of gnu.java.io.PlatformHelper
+	(getAbsolutePath): make use of PlatformHelper; avoid possible
+	double separator char if user.dir ends with separator
+	(getCanonicalPath): mostly replaced with call to 
+	gnu.java.io.PlatformHelper.toCanonicalForm()
+	(getParent): make use of gnu.java.io.PlatformHelper
+	(isAbsolute): make use of gnu.java.io.PlatformHelper when checking
+	root prefix
+	(mkdir): make use of gnu.java.io.PlatformHelper to consolidate 
+	removal of trailing separator character
+	(list): ditto
+	(toURL): add trailing separator for directory
+	* java/io/ObjectInputStream.java (readObject): place code in 
+	finally clause to it always executes
+	(defaultReadObject): change block data mode before/after read
+	(resolveProxyClass): formatting
+	(read): ??? modified algorithm, needs testing
+	(readBoolean): change block data mode as needed
+	(readByte): ditto
+	(readUnsignedByte): ditto
+	(readShort): ditto
+	(readUnsignedShort): ditto
+	(readChar): ditto
+	(readInt): ditto
+	(readLong): ditto
+	(readFloat): ditto
+	(readDouble): ditto
+	(readFields): change block data mode preserving old mode
+	(readFields): ditto; catch NoSuchFieldError and dump error message
+	(dump): set field to false by default to avoid debug messages
+	* java/io/ObjectOutputStream.java (writeObject): save old mode before
+	unsetting block data mode. Handle proxy classes writing instances of
+	Class
+	(annotateProxyClass): new method
+	(drain): conditionally write block data header
+	(close): flush stream before closing
+	(writeBoolean): blockDataOutput instead of dataOutput
+	(writeByte): ditto
+	(writeShort): ditto
+	(writeChar): ditto
+	(writeInt): ditto
+	(writeLong): ditto
+	(writeFloat): ditto
+	(writeDouble): ditto
+	(put): throw IllegalArgumentException if field not found
+	(write): save and reset block data mode
+	(writeArraySizeAndElements): optimize byte array case
+	(writeFields): save and reset block data mode; call 
+	ObjectStreamField.getTypeString instead of 
+	TypeSignature.getEncodingOfClass
+	(setBlockDataMode): added call to drain() and return boolean oldmode
+	* java/io/ObjectStreamClass.java 
+	(lookup): call lookupForClassObject
+	(lookupForClassObject): new method
+	(isProxyClass): new method
+	(setClass): set _isProxyClass
+	(ObjectStreamClass): set _isProxyClass; only set UID if serializable
+	(setFields): code to interoperate with JDK if Throwable serialized
+	form is not the same as the Java API, but commented out
+	* java/io/ObjectStreamConstants.java:
+	(TC_LONGSTRING): new constant
+	(TC_PROXYCLASSDESC): new constant
+	* java/io/ObjectStreamField.java (ObjectStreamField): store typename
+	(ObjectStreamField): new package private constructor for cases
+	where access to a Class is not available
+	(getTypeCode): use stored type name
+	(getTypeString): ditto
+	* java/io/PushbackInputStream.java (available): calculate available
+	correctly
+	(read): recalculate numBytes
+	(skip): skip ahead only the amount available that is already read
+	* java/security/DigestOutputStream.java
+	(write): use out.write instead of super.write
+	* java/security/MessageDigest.java (update): use offset
+	* java/security/PermissionCollection.java (static): do not override
+	private linesep
+	(toString): indicate readonly and output PermissionCollection
+	* java/security/Permissions.java (add): add perm to allPermissions
+	(add): do nothing if permission already added
+	* java/security/Policy.java (static): added static initializer to 
+	create policy
+	* java/security/ProtectionDomain.java (toString): output 
+	ProtectionDomain
+	* java/security/SecureClassLoader.java (SecureClassLoader): FIXME 
+	removed, call SecurityManager.checkCreateClassLoader
+	(SecureClassLoader): call SecurityManager.checkCreateClassLoader
+	* java/net/InetAddress.java (serialVersionUID): needed for 
+	serialization compatibility
+	(hostname): renamed hostName
+	(hostname_alias): changed to transient
+	(my_ip[]): ditto
+	(lookup_time): ditto
+	(address): new field for serialization
+	(family): ditto
+	(getHostName): use changed variable name hostName
+	(InetAddress): set family and address
+	* java/net/JarURLConnection.java (JarURLConnection): correct getting
+	of embedded URL
+	* java/net/PlainSocketImpl.java (available): implement natively
+	(getOption): do not synchronize
+	(setOption): ditto
+	(connect): ditto
+	(close): ditto
+	* java/net/URL.java (authority): new field
+	(userInfo): new transient field
+	(ph): changed to transient
+	(URL): removed previous hack of treating the spec URL as a file
+	to append to the context
+	(sameFile): missing brackets and incorrect formatting for the given
+	code make this a great catch
+	(writeObject): new method
+	(readObject): new method, throw IOException for unhandled protocol
+	(getPath): new method (1.3 spec)
+	* java/net/URLClassLoader.java (findClass): handled jars better
+	(findResource): treat as directory if it does not end with .zip or .jar
+	(getURLs): pass unnamed array of the appropriate size to toArray
+	* java/net/URLStreamHandler.java: import gnu.java.io.PlatformHelper
+	(parseURL): simplifying method
+	* java/rmi/MarshalledObject.java (MarshalledObject): implemented
+	(equals): implemented
+	(get): implemented
+	(hashCode): implemented
+	* java/rmi/server/RMIClassLoader.java
+	(MyClassLoader): new constructor
+	(static): initialize state
+	(loadClass): reimplemented; I think the new method may inappropriately 
+	miss the use of tok in caching loaders which also means not checking
+	for the loader correctly
+	(getClassAnnotation): implemented
+	* include/java_net_PlainSocketImpl.h: need to write native method
+	available
+
 2002-03-24  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/io/PushbackReader.java: Reformat.

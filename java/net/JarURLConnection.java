@@ -117,7 +117,7 @@ JarURLConnection(URL url) throws MalformedURLException
   if (url_string.indexOf("!/") == -1)
     throw new MalformedURLException(url_string);
 
-  String real_url_string = url_string.substring(4, url_string.indexOf("!/") - 4);
+  String real_url_string = url_string.substring(4, url_string.indexOf("!/"));
 
   real_url = new URL(real_url_string);
   if (url_string.length() == (url_string.indexOf("!/") + 1))

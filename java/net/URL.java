@@ -41,6 +41,8 @@ package java.net;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.StringTokenizer;
 import java.util.Hashtable;
 
@@ -118,6 +120,8 @@ public final class URL implements Serializable
  * Class Variables
  */
 
+  private static final long serialVersionUID = -7627629688361524110L;
+
 /**
   * If an application installs in own protocol handler factory, this is
   * where we keep track of it.
@@ -184,15 +188,22 @@ private int port = -1;
   */
 private String file;
 
+  /**
+   * The "authority" portion of the URL
+   */
+  private String authority;
+
 /**
   * The anchor portion of the URL
   */
 private String ref;
 
+  private transient String userInfo;
+
 /**
   * The protocol handler in use for this URL
   */
-private URLStreamHandler ph;
+private transient URLStreamHandler ph;
 
 /**
   * This is the hashCode for this URL
@@ -492,30 +503,13 @@ URL(URL context, String url, URLStreamHandler ph) throws MalformedURLException
   end = url.indexOf("#");
   if (end == -1)
     end = url.length();
-  if (end != (url.length()))
-    ref = url.substring(end + 1);
 
   // Ok, parseURL will not work here right now.  Instead, we just 
   // do a hack by treating the spec URL as a file that should be
   // appended to the context.  Only if the context is null do we try
   // to parse.
 
-  if (context == null)
-    {
       this.ph.parseURL(this, url, start, end);
-    }
-  else
-    {
-      int idx = file.lastIndexOf("/"); 
-      if (idx == -1)
-        file = url;
-      else if (idx == (file.length() - 1))
-        file = file + url;
-      else
-        {
-          file = file.substring(0, idx+1) + url;
-        }
-    }
 
   hashCode = toString().hashCode();
 }
@@ -697,16 +691,20 @@ sameFile(URL url)
   // Do the protocol's match?
   String s = url.getProtocol();
   if (s != null)
-    if (!s.equals(getProtocol()))
-      return(false);
+    {
+      if (!s.equals(getProtocol()))
+	return(false);
+    }
   else if (getProtocol() != null)
     return(false);
 
   // Do the hostname's match?
   s = url.getHost();
   if (s != null)
-    if (!s.equals(getHost()))
-      return(false);
+    {
+      if (!s.equals(getHost()))
+	return(false);
+    }
   else if (getHost() != null)
     return(false);
 
@@ -717,8 +715,10 @@ sameFile(URL url)
   // Do the file's match?
   s = url.getFile();
   if (s != null)
-    if (!s.equals(getFile()))
-      return(false);
+    {
+      if (!s.equals(getFile()))
+	return(false);
+    }
   else if (getFile() != null)
     return(false);
 
@@ -836,6 +836,33 @@ hashCode()
 {
   return(hashCode);
 }
+
+//According to Java API Documentation "Serialized form"
+private synchronized void writeObject(ObjectOutputStream stream) 
+  throws IOException
+{
+  stream.defaultWriteObject();    // write the fields
+}
+
+private synchronized void readObject(ObjectInputStream stream) 
+  throws IOException, ClassNotFoundException
+{
+  stream.defaultReadObject();     // read the fields
+  ph = getProtocolHandler(protocol);
+  if (ph == null)
+    throw new IOException("Can't handle protocol: " + protocol);
+}
+
+/**
+ * Return the path portion of this URL
+ * 
+ * @since 1.3
+ */
+public String getPath()
+{
+  return file;
+}
+
 
 } // class URL
 

@@ -103,6 +103,7 @@ public final class Permissions
 	  {
 	    allPermission = new
 	      DefaultPermissionCollection("java.security.AllPermission");
+	    allPermission.add(perm);
 
 	    perms.put("java.security.AllPermission", allPermission);
 	  }
@@ -190,7 +191,7 @@ public final class Permissions
 		    }
 		}
 	    }
-	else if (!sub_enum.hasMoreElements())
+	if (!sub_enum.hasMoreElements())
 	  {
 	    sub_enum = null;
 	    return (hasMoreElements());
@@ -242,8 +243,9 @@ public final class Permissions
                                 	   perm.getClass().getName());
 
       if (perms.get(perm.getName()) != null)
-	throw new IllegalArgumentException("Duplicate permission: " +
-                                	   perm.getName());
+// 	throw new IllegalArgumentException("Duplicate permission: " +
+//                                 	   perm.getName());
+	return;
 
       perms.put(perm.getName(), perm);
     }

@@ -88,16 +88,13 @@ class PlainSocketImpl extends SocketImpl
 
   /**
    * Returns the number of bytes that the caller can read from this socket
-   * without blocking. //*****Figure out if we can do something here
+   * without blocking. 
    *
    * @return The number of readable bytes before blocking
    *
    * @exception IOException If an error occurs
    */
-  protected int available() throws IOException
-  {
-    return(0);
-  }
+  protected native int available() throws IOException;
 
   /**
    * Binds to the specified port on the specified addr.  Note that this addr
@@ -120,7 +117,7 @@ class PlainSocketImpl extends SocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected native synchronized void close() throws IOException;
+  protected native void close() throws IOException;
 
   /**
    * Connects to the remote address and port specified as arguments.
@@ -130,7 +127,7 @@ class PlainSocketImpl extends SocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected native synchronized void connect(InetAddress addr, int port)
+  protected native void connect(InetAddress addr, int port)
     throws IOException;
 
   /**
@@ -205,7 +202,7 @@ class PlainSocketImpl extends SocketImpl
    *
    * @exception SocketException If an error occurs
    */
-  public native synchronized void setOption(int option_id, Object val) 
+  public native void setOption(int option_id, Object val) 
     throws SocketException;
 
   /**
@@ -219,7 +216,7 @@ class PlainSocketImpl extends SocketImpl
    *
    * @exception SocketException If an error occurs
    */
-  public native synchronized Object getOption(int option_id)
+  public native Object getOption(int option_id)
     throws SocketException;
 
   /**

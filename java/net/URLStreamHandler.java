@@ -39,6 +39,7 @@ exception statement from your version. */
 package java.net;
 
 import java.io.IOException;
+import gnu.java.io.PlatformHelper;
 
 /**
   * This class is the superclass of all URL protocol handlers.  The URL
@@ -152,76 +153,25 @@ parseURL(URL url, String url_string, int start, int end)
   // the beginning
   end = url_string.length() - end;
 
-  if(url_string.startsWith("file:"))
-      {
-	  String file;
-	  url_string = url_string.substring(5);
-	  if(url_string.startsWith("//"))
-	      {
-		  file = url_string.substring(2);
-	      }
-	  else
-	      {
-		  file = url_string;
-	      }
-	  setURL(url, url.getProtocol(),null,0, file, null);
-	  return;
-      }
-
   // Skip remains of protocol
   url_string = url_string.substring(start);
-  boolean nohost = false; //whether no host part presents
 
-  /* root path prefix of a file: could be "/", and for some windows file: "drive:/" */
-  String prefix = "/";    
+  boolean needContext = url.getFile() != null;
 
-  if (! url.getProtocol().equals ("file"))
+  // Skip the leading "//"
+  if (url_string.startsWith("//"))
     {
-      if (! url_string.startsWith ("//"))
-	return;
       url_string = url_string.substring (2);
-    } 
-  else 
-    { 
-      // The following special work is for file protocol...
-    
-      //normalize the file separator
-      url_string = url_string.replace 
-	(System.getProperty ("file.separator").charAt (0), '/');
-      
-      //deal with the case: file:///d|/dir/dir/file and file:///d%7C/dir/dir/file
-      url_string = url_string.replace ('|', ':');
-      int i;
-      if((i = url_string.toUpperCase().indexOf ("%7C")) >= 0)
-	url_string = url_string.substring (0, i) 
-	  + ":" + url_string.substring (i+3);
-      
-      if (url_string.startsWith("//"))
-	url_string = url_string.substring (2);  //filter the leading "//"
-      
-      // if another "/" encounters, it's end of a null host part or beginning of root path 
-      if (url_string.startsWith("/"))
-	{ 
-	  nohost = true;
-	  url_string = url_string.substring (1);
-	}
-      
-      // Check whether it's a windows platform file: drive:/dir/dir/file
-      if(url_string.charAt (1) == ':' && url_string.charAt (2) == '/')
-	{
-	  nohost = true;
-	  prefix = url_string.substring (0, 3); //assign "drive:/" to prefix
-	  url_string = url_string.substring (3);
-	}
-    } // url.getProtocol().equals("file")
-  
+      needContext = false;
+    }
+        
   // Declare some variables
   String host = null;
   int port = -1;
   String file = null;
   String anchor = null;
 
-  if (! nohost )
+  if (!needContext)
     {
       // Process host and port
       int slash_index = url_string.indexOf("/");
@@ -257,25 +207,47 @@ parseURL(URL url, String url_string, int start, int end)
     }
 
   // Process file and anchor 
-  if (end == 0)
+  if (needContext) 
     {
-      file = prefix + url_string;
-      anchor = null;
+      host = url.getHost();
+      port = url.getPort();
+      if (url_string.startsWith("/")) //url string is an absolute path
+	file = url_string;
+      else
+	{
+	  file = url.getFile();
+	  int idx = file.lastIndexOf("/");  
+	  if (idx == -1) //context path is weird
+	    file = "/" + url_string; 
+	  else if (idx == (file.length() - 1))
+	    //just concatenate two parts
+	    file = file + url_string;
+	  else
+	    file = file.substring(0, idx+1) + url_string;
+	}
     }
   else
-    {
-      file = prefix + url_string.substring(0, url_string.length() - end);
+    file = "/" + url_string;
 
+  if (end == 0) 
+    {
+      anchor = null;
+    } 
+  else 
+    {
       // Only set anchor if end char is a '#'.  Otherwise assume we're
       // just supposed to stop scanning for some reason
-      if (url_string.charAt(url_string.length() - end) == '#')
-        anchor = url_string.substring((url_string.length() - end) + 1,
-                                      url_string.length());
+      if (file.charAt(file.length() - end) == '#')
+	{
+	  int len = file.length();
+	  anchor = file.substring( len - end + 1, len);
+	  file = file.substring(0, len - end);
+	}
       else
         anchor = null;
     }
-  if ((file == null) || (file == ""))
-    file = "/";
+    
+  file = PlatformHelper.toCanonicalForm(file, '/');
 
   // Now set the values
   setURL(url, url.getProtocol(), host, port, file, anchor); 

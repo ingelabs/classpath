@@ -285,6 +285,13 @@ public class URLClassLoader extends SecureClassLoader {
             if (url.getProtocol().equals("jar")) {
                 Certificate[] certificates =
                                    ((JarURLConnection)conn).getCertificates();
+                String u = url.toExternalForm ();
+                u = u.substring (4); //skip "jar:"
+                int i = u.indexOf ('!');
+                if ( i >= 0)
+		  u = u.substring (0, i);
+                url = new URL (u);
+
                 source = new CodeSource(url, certificates);
             }
 
@@ -340,7 +347,8 @@ public class URLClassLoader extends SecureClassLoader {
         String file = url.getFile();
 
         // Construct the resourceURL
-        if (file.endsWith("/")) {
+	if (!file.endsWith(".zip") && !file.endsWith(".jar")) 
+	  {	  
             // Interpret it as a directory and just append the resource name
             try {
                 resourceURL = new URL(url, resourceName,
@@ -463,7 +471,7 @@ public class URLClassLoader extends SecureClassLoader {
      * @return All the currently used URLs
      */
     public URL[] getURLs() {
-        return (URL[]) urls.toArray();
+        return (URL[]) urls.toArray(new URL[urls.size()]);
     }
 
     /**

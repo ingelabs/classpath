@@ -75,13 +75,14 @@ public abstract class PermissionCollection
   extends Object
   implements Serializable
 {
-  private static final String linesep = null;
+  private static final String linesep;
 
   static
   {
-    String linesep = System.getProperty("line.separator");
-    if (linesep == null);
-      linesep = "\n";
+    String s = System.getProperty("line.separator");
+    if (s == null)
+      s = "\n";
+    linesep = s;
   }
 
   /**
@@ -160,7 +161,9 @@ public abstract class PermissionCollection
   {
     StringBuffer sb = new StringBuffer("");
 
-    sb.append(super.toString() + " (" + linesep);
+    sb.append("PermissionCollection (" + linesep);
+    if(isReadOnly())
+      sb.append("readonly " + linesep);
     Enumeration e = elements();
     while (e.hasMoreElements())
       {

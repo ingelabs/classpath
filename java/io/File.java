@@ -43,6 +43,7 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 import gnu.classpath.Configuration;
+import gnu.java.io.PlatformHelper;
 
 /**
   * This class represents a file or directory on a local disk.  It provides
@@ -311,7 +312,17 @@ File(File directory, String name)
 public
 File(String dirname, String name)
 {
-  this((name == null || dirname == null) ? name : dirname + separator + name);
+  this (name); //set path field & check null
+  if (!isAbsolute ())
+    {
+      if (dirname != null)
+	{
+	  if (PlatformHelper.endWithSeparator (dirname))
+	    path = dirname + name;
+	  else
+	    path = dirname + separator + name;
+	}
+    }
 }
 
 /*************************************************************************/
@@ -348,11 +359,11 @@ File(String name)
 public String
 getName()
 {
-  int pos = path.lastIndexOf(separator);
+  int pos = PlatformHelper.lastIndexOfSeparator (path);
   if (pos == -1)
     return(path);
 
-  if (path.endsWith(separator))
+  if (PlatformHelper.endWithSeparator (path))
     return("");
 
   return(path.substring(pos + separator.length()));
@@ -386,10 +397,17 @@ getPath()
 public String
 getAbsolutePath()
 {
-  if (path.startsWith(separator))
-    return(path);
+  if (isAbsolute ())
+    return path;
+  
+  String dir = System.getProperty ("user.dir");
+  if (dir == null)
+    return path;
 
-  return(System.getProperty("user.dir") + separator + path);
+  if (PlatformHelper.endWithSeparator (dir))
+    return dir + path;
+
+  return dir + separator + path;
 }
 
 /*************************************************************************/
@@ -425,49 +443,7 @@ public String
 getCanonicalPath() throws IOException
 {
   String abspath = getAbsolutePath();
-  StringBuffer canonpath = new StringBuffer(separator);
-  StringTokenizer st = new StringTokenizer(abspath, separator);
-
-  // Traverse each element of the path, handling "." and ".."
-  // Should be handle "~" too?
-  if (st.hasMoreTokens())
-    do
-      {
-        String s = st.nextToken();
-  
-        // Handle "." or an empty element.  
-        if (s.equals(".") || s.equals(""))
-          continue;
-  
-        // Handle ".." by deleting the last element from the path
-        if (s.equals(".."))
-          {
-            if (canonpath.equals(separator))
-              continue;
-  
-            // Strip of trailing separator
-            String tmpstr = canonpath.toString().substring(0, 
-                              canonpath.length() - separator.length());
-            int idx = tmpstr.lastIndexOf(separator); 
-            if ((idx == -1) || ((idx + separator.length()) > tmpstr.length()))
-              throw new IOException("Can't happen error"); // Shouldn't happen 
-  
-            tmpstr = tmpstr.substring(0, idx + separator.length());
-            canonpath = new StringBuffer(tmpstr);
-            continue;
-          }       
-  
-        canonpath.append(s);
-        if (st.hasMoreTokens())
-          canonpath.append(separator);
-      }
-    while(st.hasMoreTokens());
-
-  String tmpstr = canonpath.toString();
-  if (tmpstr.endsWith(separator) && !tmpstr.equals(separator))
-    tmpstr = tmpstr.substring(0, tmpstr.length() - 1);
-
-  return(tmpstr);
+  return PlatformHelper.toCanonicalForm(abspath);
 }
 
 /*************************************************************************/
@@ -499,18 +475,13 @@ getCanonicalFile() throws IOException
 public String
 getParent()
 {
-  if (path.equals("/"))
-    return(null);
+  if (PlatformHelper.isRootDirectory(path))
+    return null;
 
-  String par_path;
-  if (path.endsWith(separator))
-    par_path = path.substring(0, path.length() - 1);
-  else
-    par_path = path;
-
-  int pos = par_path.lastIndexOf(separator);
+  String par_path = PlatformHelper.removeTailSeparator(path);
+  int pos = PlatformHelper.lastIndexOfSeparator(path);
   if (pos == -1)
-    return(null);
+    return null;
 
   return(par_path.substring(0, pos));
 }
@@ -547,7 +518,7 @@ getParentFile()
 public boolean
 isAbsolute()
 {
-  if (path.startsWith(separator))
+  if (PlatformHelper.beginWithRootPathPrefix (path) > 0)
     return(true);
   else
     return(false);
@@ -1073,10 +1044,7 @@ mkdir() throws SecurityException
     } 
 
   String mk_path;
-  if (path.endsWith(separator) && !path.equals(separator))
-    mk_path = path.substring(0, path.length() - 1);
-  else
-    mk_path = path;
+  mk_path = PlatformHelper.removeTailSeparator(path);
   
   return(mkdirInternal(mk_path));
 }
@@ -1229,11 +1197,8 @@ list(FilenameFilter filter)
     } 
 
   // Get the list of files
-  String list_path;
-  if (path.endsWith(separator) && !path.equals(separator))
-    list_path = path.substring(0, path.length() - 1);
-  else
-    list_path = path;
+  String list_path = PlatformHelper.removeTailSeparator(path);
+
   
   String files[] = listInternal(list_path);
   if (files == null)
@@ -1510,8 +1475,16 @@ toString()
 public URL
 toURL() throws MalformedURLException
 {
-  String url_string = "file://" + getAbsolutePath();
-
+  String abspath = getAbsolutePath();
+  try
+    {
+      if(new File(abspath).isDirectory())
+	abspath = abspath + separator;
+    }
+  catch(Exception _) { }
+  
+  String url_string = "file://" + abspath;
+  
   return(new URL(url_string));
 }
 

@@ -44,6 +44,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Proxy;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -72,6 +73,19 @@ public class ObjectStreamClass implements Serializable
     if (cl == null)
       return null;
     if (! (Serializable.class).isAssignableFrom (cl))
+      return null;
+
+    return lookupForClassObject (cl);
+  }
+
+  /**
+   * This lookup for internal use by ObjectOutputStream.  Suppose
+   * we have a java.lang.Class object C for class A, though A is not
+   * serializable, but it's okay to serialize C.
+   */
+  static ObjectStreamClass lookupForClassObject (Class cl)
+  {
+    if (cl == null)
       return null;
 
     ObjectStreamClass osc = (ObjectStreamClass)classLookupTable.get (cl);
@@ -246,6 +260,12 @@ public class ObjectStreamClass implements Serializable
   }
 
 
+  final boolean isProxyClass()
+  {
+    return _isProxyClass;
+  }
+
+
   ObjectStreamClass (String name, long uid, byte flags,
 		     ObjectStreamField[] fields)
   {
@@ -258,7 +278,13 @@ public class ObjectStreamClass implements Serializable
 
   void setClass (Class clazz)
   {
+    _isProxyClass = Proxy.isProxyClass(clazz);
     this.clazz = clazz;
+    ObjectStreamClass osc = (ObjectStreamClass)classLookupTable.get (clazz);
+    if (osc == null)
+      classLookupTable.put (clazz, this);
+    superClass = lookupForClassObject (clazz.getSuperclass ());
+    calculateOffsets ();
   }
 
 
@@ -312,12 +338,15 @@ public class ObjectStreamClass implements Serializable
   {
     uid = 0;
     flags = 0;
+    _isProxyClass = Proxy.isProxyClass (cl);
 
     clazz = cl;
     name = cl.getName ();
     setFlags (cl);
     setFields (cl);
-    setUID (cl);
+    // to those class nonserializable, its uid field is 0
+    if ( (Serializable.class).isAssignableFrom (cl) )
+      setUID (cl);
     superClass = lookup (cl.getSuperclass ());
   }
 
@@ -397,7 +426,14 @@ public class ObjectStreamClass implements Serializable
       if (all_fields[from] != null)
       {
 	Field f = all_fields[from];
-	fields[to] = new ObjectStreamField (f.getName (), f.getType ());
+	String name = f.getName();
+	// here is a hack to interoperate with JDK
+	/* if Throwable is not align with serialized form of Java API spec,
+	   you should uncomment the following two line.
+	   if (name.equals("message") && getName().equals("java.lang.Throwable"))
+           name = "detailMessage";
+	*/
+	fields[to] = new ObjectStreamField (name, f.getType ());
 	to++;
       }
 
@@ -602,6 +638,12 @@ public class ObjectStreamClass implements Serializable
 
     try
       {
+	/*
+	 * There exists a problem here, JDK run of 
+	 * clazz.getDeclaredMethod ("<clinit>", classArgs);
+	 * will always throw NoSuchMethodException, even the static 
+	 * intializer does exist.
+	 */
 	Class classArgs[] = {};
 	m = clazz.getDeclaredMethod ("<clinit>", classArgs);
       }
@@ -635,7 +677,9 @@ public class ObjectStreamClass implements Serializable
   // these are accessed by ObjectIn/OutputStream
   int primFieldSize = -1;  // -1 if not yet calculated
   int objectFieldCount;
- 
+
+  boolean _isProxyClass = false;
+
   // This is probably not necessary because this class is special cased already
   // but it will avoid showing up as a discrepancy when comparing SUIDs.
   private static final long serialVersionUID = -6120832682080437368L;

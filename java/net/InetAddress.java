@@ -76,6 +76,8 @@ public final class InetAddress implements Serializable
       }
   }
 
+private static final long serialVersionUID = 3286316764910316507L;
+
 /**
   * The default DNS hash table size
   */
@@ -162,22 +164,28 @@ static
 /**
   * An array of octets representing an IP address
   */
-int[] my_ip;
+transient int[] my_ip;
 
 /**
   * The name of the host for this address
   */
-String hostname;
+String hostName;
 
 /**
   * Backup hostname alias for this address.
   */
-String hostname_alias;
+transient String hostname_alias;
 
 /**
   * The time this address was looked up
   */
-long lookup_time;
+transient long lookup_time;
+
+  /**
+   * Required for serialized form
+   */
+  int address;
+  int family;
 
 /*************************************************************************/
 
@@ -452,9 +460,16 @@ InetAddress(int[] addr, String hostname, String hostname_alias)
   for (int i = 0; i < addr.length; i++)
     my_ip[i] = addr[i];    
 
-  this.hostname = hostname;
+  this.hostName = hostname;
   this.hostname_alias = hostname_alias;
   lookup_time = System.currentTimeMillis();
+
+  family = 2; /* AF_INET */
+  address = addr[3] & 0xff;
+  address |= ((addr[2] << 8) & 0xff00);
+  address |= ((addr[1] << 16) & 0xff0000);
+  address |= ((addr[0] << 24) & 0xff000000);
+  
 }
 
 /*************************************************************************/
@@ -544,13 +559,13 @@ getHostAddress()
 public String
 getHostName()
 {
-  if (hostname != null)
-    return(hostname);
+  if (hostName != null)
+    return(hostName);
 
   try
     {
-      hostname = getHostByAddr(my_ip);  
-      return(hostname);
+      hostName = getHostByAddr(my_ip);  
+      return(hostName);
     }
   catch (UnknownHostException e)
     {
