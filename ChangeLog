@@ -1,5 +1,15 @@
 2003-04-29  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/security/x509/.cvsignore,
+	javax/print/.cvsignore,
+	javax/print/attribute/.cvsignore,
+	javax/security/.cvsignore,
+	javax/security/auth/.cvsignore,
+	javax/security/auth/x500/.cvsignore:
+	New files to ignore Makefile and Makefile.in
+
+2003-04-29  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/attribute/Attribute.java,
 	* javax/print/attribute/AttributeSet.java,
 	* javax/print/attribute/PrintRequestAttributeSet.java:
