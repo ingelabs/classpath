@@ -13,9 +13,9 @@
 
 2004-12-19  Robert Schuster <thebohemian@gmx.net>
 
-        * javax/swing/JComboBox.java:
-        (JComboBox): Removed selection of the
-        first item in the model.
+	* javax/swing/JComboBox.java:
+	(JComboBox): Removed selection of the
+	first item in the model.
 
 2004-12-19  Michael Koch  <konqueror@gmx.de>
 
@@ -1498,9 +1498,9 @@
 2004-11-27  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
-        Reformatted.
-        (drawRaster): Added FIXME.
-        (drawRaster): Changed to work with packed-sample models.
+	Reformatted.
+	(drawRaster): Added FIXME.
+	(drawRaster): Changed to work with packed-sample models.
 
 2004-11-26  Michael Koch  <konqueror@gmx.de>
 
@@ -1509,8 +1509,8 @@
 
 2004-11-26  Sven de Marothy  <sven@physto.se>
 
-        * gnu/java/awt/peer/gtk/GdkGraphics2D.java
-        (drawRaster): Set alpha component to opaque if image has no alpha
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
+	(drawRaster): Set alpha component to opaque if image has no alpha
 	
 2004-11-26  Jeroen Frijters  <jeroen@frijters.net>
 
@@ -5236,7 +5236,7 @@
 	(setUI): New method.
 
 2004-09-25  Shashank Bapat  <shashankbapat@yahoo.com>
-            Mark Wielaard  <mark@klomp.org>
+	    Mark Wielaard  <mark@klomp.org>
 
 	* gnu/regexp/RE.java (initialize): Add RETokenLookAhead support.
 	* gnu/regexp/RETokenLookAhead.java: New file.
