@@ -1,6 +1,11 @@
+2005-03-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* doc/hacking.texinfo:
+	Added note on reserved word usage.
+	
 2005-03-26  Dalibor Topic  <robilad@kaffe.org>
 
-        * native/jni/java-nio/gnu_java_nio_VMSelector.c:
+	* native/jni/java-nio/gnu_java_nio_VMSelector.c:
         Moved include statement for config.h to the top to
         fix the build on Darwin6.
 

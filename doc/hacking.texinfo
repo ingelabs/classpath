@@ -669,6 +669,17 @@ the caught exception.
     @}
 @end example
 
+@item
+Avoid the use of reserved words for identifiers.  This is obvious with those
+such as @code{if} and @code{while} which have always been part of the Java
+programming language, but you should be careful about accidentally using
+words which have been added in later versions.  Notable examples are
+@code{assert} (added in 1.4) and @code{enum} (added in 1.5).  Jikes will warn
+of the use of the word @code{enum}, but, as it doesn't yet support the 1.5
+version of the language, it will still allow this usage through.  A
+compiler which supports 1.5 (e.g. the Eclipse compiler, ecj) will simply
+fail to compile the offending source code.
+
 @c fixme Describe Anonymous classes (example).
 @c fixme Descibe Naming conventions when different from GNU Coding Standards.
 @c fixme Describee API doc javadoc tags used.
