@@ -1,3 +1,7 @@
+2003-08-29  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* ltmain.sh: Define SED and max_cmd_len when undefined.
+
 2003-08-29  Jeroen Frijters <jeroen@frijters.net>
 
 	* java/lang/Thread.java: New file.
