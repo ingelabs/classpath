@@ -1,3 +1,11 @@
+2004-07-04  Stephen Crawley <crawley@dstc.edu.au>
+
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(Java_gnu_java_nio_channels_FileChannelImpl_read___3BII):
+	Check zero length early.
+	(Java_gnu_java_nio_channels_FileChannelImpl_write___3BII):
+	Check zero length early. Return immediatly when exception is thrown.
+
 2004-07-04  Casey Marshall <csm@gnu.org>
 
 	* java/security/AccessControlContext.java

@@ -539,16 +539,16 @@ Java_gnu_java_nio_channels_FileChannelImpl_read___3BII (JNIEnv *env, jobject obj
 
   native_fd = get_native_fd(env, obj);
 
+  /* Must return 0 if an attempt is made to read 0 bytes. */
+  if (length == 0)
+    return 0;
+
   bufptr = (*env)->GetByteArrayElements(env, buffer, 0);
   if (!bufptr)
     {
       JCL_ThrowException(env, IO_EXCEPTION, "Unexpected JNI error");
       return(-1);
     }
-
-  /* Must return 0 if an attempt is made to read 0 bytes. */
-  if (length == 0)
-    return 0;
 
   bytes_read = 0;
   do
@@ -621,10 +621,15 @@ Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (JNIEnv *env, jobject ob
 
   native_fd = get_native_fd(env, obj);
 
+  /* Just return if an attempt is made to write 0 bytes. */
+  if (length == 0)
+    return;
+
   bufptr = (*env)->GetByteArrayElements(env, buffer, 0);
   if (!bufptr)
     {
       JCL_ThrowException(env, IO_EXCEPTION, "Unexpected JNI error");
+      return;
     }
 
   bytes_written = 0;
@@ -637,6 +642,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (JNIEnv *env, jobject ob
           JCL_ThrowException(env, IO_EXCEPTION,
                              TARGET_NATIVE_LAST_ERROR_STRING());
           (*env)->ReleaseByteArrayElements(env, buffer, bufptr, 0);
+          return;
 	}
       bytes_written += n;
     }
