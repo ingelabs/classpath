@@ -47,15 +47,16 @@ import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
+import java.security.AccessController;
 import java.security.AllPermission;
 import java.security.Permissions;
-import java.security.ProtectionDomain;
-import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+
 
 /**
  * A Class represents a Java type.  There will never be multiple Class
@@ -81,8 +82,8 @@ import java.util.HashSet;
  * see {@link ObjectStreamClass}.
  *
  * @author John Keiser
- * @author Eric Blake <ebb9@email.byu.edu>
- * @author Tom Tromey <tromey@cygnus.com>
+ * @author Eric Blake (ebb9@email.byu.edu)
+ * @author Tom Tromey (tromey@cygnus.com)
  * @since 1.0
  * @see ClassLoader
  */

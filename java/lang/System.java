@@ -36,11 +36,9 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package java.lang;
 
 import gnu.classpath.Configuration;
-
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Properties;
@@ -51,7 +49,7 @@ import java.util.PropertyPermission;
  * general environment.  As such, all methods are static.
  *
  * @author John Keiser
- * @author Eric Blake <ebb9@email.byu.edu>
+ * @author Eric Blake (ebb9@email.byu.edu)
  * @since 1.0
  * @status still missing 1.4 functionality
  */
@@ -254,7 +252,7 @@ public final class System
    * other processes or files.  That should all be transparent to you,
    * however.
    */
-   public static final InputStream in = VMSystem.makeStandardInputStream();
+  public static final InputStream in = VMSystem.makeStandardInputStream();
 
   /**
    * The standard output PrintStream.  This is assigned at startup and
@@ -266,7 +264,7 @@ public final class System
    * output to other processes or files.  That should all be transparent to
    * you, however.
    */
-   public static final PrintStream out = VMSystem.makeStandardOutputStream();
+  public static final PrintStream out = VMSystem.makeStandardOutputStream();
 
   /**
    * The standard output PrintStream.  This is assigned at startup and
@@ -278,7 +276,7 @@ public final class System
    * output to other processes or files.  That should all be transparent to
    * you, however.
    */
-   public static final PrintStream err = VMSystem.makeStandardErrorStream();
+  public static final PrintStream err = VMSystem.makeStandardErrorStream();
 
   /**
    * This class is uninstantiable.
@@ -353,7 +351,7 @@ public final class System
    * @param sm the new SecurityManager
    * @throws SecurityException if permission is denied
    */
-  public synchronized static void setSecurityManager(SecurityManager sm)
+  public static synchronized void setSecurityManager(SecurityManager sm)
   {
     // Implementation note: the field lives in Runtime because of bootstrap
     // initialization issues. This method is synchronized so that no other
@@ -385,8 +383,9 @@ public final class System
    * @return the current time
    * @see java.util.Date
    */
-  public static long currentTimeMillis() {
-      return VMSystem.currentTimeMillis();
+  public static long currentTimeMillis()
+  {
+    return VMSystem.currentTimeMillis();
   }
 
   /**

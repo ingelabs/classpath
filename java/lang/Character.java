@@ -38,8 +38,9 @@ exception statement from your version. */
 
 package java.lang;
 
-import java.io.Serializable;
 import gnu.java.lang.CharData;
+
+import java.io.Serializable;
 
 /**
  * Wrapper class for the primitive char data type.  In addition, this class
@@ -58,10 +59,10 @@ import gnu.java.lang.CharData;
  * <p>See <a href="http://www.unicode.org">http://www.unicode.org</a>
  * for more information on the Unicode Standard.
  *
- * @author Tom Tromey <tromey@cygnus.com>
+ * @author Tom Tromey (tromey@cygnus.com)
  * @author Paul N. Fisher
  * @author Jochen Hoenicke
- * @author Eric Blake <ebb9@email.byu.edu>
+ * @author Eric Blake (ebb9@email.byu.edu)
  * @see CharData
  * @since 1.0
  * @status updated to 1.4
@@ -72,7 +73,7 @@ public final class Character implements Serializable, Comparable
    * A subset of Unicode blocks.
    *
    * @author Paul N. Fisher
-   * @author Eric Blake <ebb9@email.byu.edu>
+   * @author Eric Blake (ebb9@email.byu.edu)
    * @since 1.2
    */
   public static class Subset

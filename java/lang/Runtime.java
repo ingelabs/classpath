@@ -35,11 +35,12 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package java.lang;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -107,6 +108,7 @@ public class Runtime
    *       ClassLoader first
    */
   static Properties defaultProperties = new Properties();
+
   static
   {
     VMRuntime.insertSystemProperties(defaultProperties);

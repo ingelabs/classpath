@@ -1,5 +1,14 @@
 2004-10-13  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Character.java, java/lang/Class.java,
+	java/lang/Math.java, java/lang/Object.java,
+	java/lang/Package.java, java/lang/Runtime.java,
+	java/lang/StrictMath.java, java/lang/System.java:
+	Reorganized import statements. Reworked modifiers.
+	Fix @author tags to be valid HTML.
+
+2004-10-13  Michael Koch  <konqueror@gmx.de>
+
 	* java/math/BigDecimal.java, java/math/BigInteger.java:
 	Reorganized import statements, removed redundant and reorganized
 	modifiers.
