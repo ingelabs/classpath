@@ -200,6 +200,8 @@ read(char[] cbuf, int offset, int len) throws IOException
           {
             if (more != 0)
                 cbuf[offset++] = REPLACEMENT_CHARACTER;
+            if (offset - start_offset == 0)
+                return -1;
             return offset - start_offset;
           }
 

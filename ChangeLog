@@ -1,5 +1,10 @@
 2004-11-17  Jeroen Frijters  <jeroen@frijters.net>
 
+	* gnu/java/io/decode/DecoderUTF8.java
+	(read): Fixed EOF bug introduced in last commit.
+
+2004-11-17  Jeroen Frijters  <jeroen@frijters.net>
+
 	* gnu/java/io/decode/Decoder.java: Removed throws
 	CharConversionException from the various methods.
 	* gnu/java/io/decode/DecoderUTF8.java
