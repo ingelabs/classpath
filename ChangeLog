@@ -1,5 +1,16 @@
 2004-10-02  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/rmi/rmic/RMIC.java,
+	gnu/java/rmi/server/RMIHashes.java,
+	gnu/java/rmi/server/RMIObjectInputStream.java,
+	gnu/java/rmi/server/UnicastConnection.java,
+	gnu/java/rmi/server/UnicastConnectionManager.java,
+	gnu/java/rmi/server/UnicastRemoteCall.java,
+	gnu/java/rmi/server/UnicastServerRef.java:
+	Import statements cleaned up.
+
+2004-10-02  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/peer/gtk/GdkClasspathFontPeer.java,
 	gnu/java/awt/peer/gtk/GdkClasspathFontPeerMetrics.java,
 	gnu/java/awt/peer/gtk/GdkGlyphVector.java,
