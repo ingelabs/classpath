@@ -40,6 +40,33 @@ GUILE_FLAGS
 dnl Initialize maintainer mode
 dnl AM_MAINTAINER_MODE
 
+# We want warnings, lots of warnings :-)
+if eval "test x$GCC = xyes"; then
+  JAPHAR_GREP_CFLAGS(-Wall, [
+    CFLAGS="$CFLAGS -Wall"
+  ])
+  JAPHAR_GREP_CFLAGS(-Wstrict-prototypes, [
+    CFLAGS="$CFLAGS -Wstrict-prototypes"
+  ])
+  JAPHAR_GREP_CFLAGS(-Wmissing-prototypes, [
+    CFLAGS="$CFLAGS -Wmissing-prototypes"
+  ])
+  JAPHAR_GREP_CFLAGS(-Wmissing-declarations, [
+    CFLAGS="$CFLAGS -Wmissing-declarations"
+  ])
+  JAPHAR_GREP_CFLAGS(-Wreturn-type, [
+    CFLAGS="$CFLAGS -Wreturn-type"                    
+  ])
+  JAPHAR_GREP_CFLAGS(-Wcast-align, [
+    CFLAGS="$CFLAGS -Wcast-align"
+  ])
+  JAPHAR_GREP_CFLAGS(-pedantic, [
+    CFLAGS="$CFLAGS -pedantic"
+  ])
+fi
+
+
+
 dnl threads packages (stolen from Japhar)
 threads=no
 
