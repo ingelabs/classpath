@@ -1,5 +1,13 @@
 2004-08-16  Tom Tromey  <tromey@redhat.com>
 
+	Bug 9948.
+	* javax/swing/JDesktopPane.java (LIVE_DRAG_MODE): Now final.
+	(OUTLINE_DRAG_MODE): LIVE_DRAG_MODE.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(NON_CONTINUOUS_DIVIDER): Now final.  Initialize.
+
+2004-08-16  Tom Tromey  <tromey@redhat.com>
+
 	Bug 9946.
 	* gnu/java/security/util/Prime.java (generateRandomPrime): Use
 	return result from `add'.
