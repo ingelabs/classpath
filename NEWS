@@ -1,12 +1,44 @@
-New in release 0.12 (unreleased)
+New in release 0.12 (Nov 14, 2004)
 
 * GNU Classpath's JAR implementation now has preliminary support for
   signed entries, for so called "signed JAR" file support. Signed JAR
-  files are one of the key security features of the Java platform, and
-  allow code to run privileged given unforgeable proofs of identity.
+  files are one of the key security features of managed runtimes, and
+  allows code to run privileged given unforgeable proofs of identity.
 * A much improved version of X.509 certificates has been added,
   including a robust certificate path checking algorithm. Also
   included is an implementation of the RSA signature scheme.
+* Full java.awt.color implementation, with all standard ICC profiles,
+  except for PhotoYCC color space.
+* java.beans 1.4 updates and bug fixes.
+* java.awt.image support updated to 1.4.
+* Improved build process. Uses less memory with gcj and C code is
+  buildable with -Werror on most platform. Please configure with
+  --enable-Werror and report any remaining issues.
+* Big-endian (PowerPC) fixes for native awt GTK+ peers.
+* Checkstyle support, see scripts/checkstyle-config.xml.
+* Better AWT focus management fro GTK+ peers.
+* Much faster and better fonts support
+  (for both gdk Graphics and cairo Graphics2D)
+* AWT Choice fixes for hidden components.
+* HTTP Connection Handler fixes for POST support.
+* Much fuller collection documentation.
+* Lots of Calendar bug fixes.
+* More javax.imageio support.
+* Better AWT Help MenuBar support.
+* Lookahead support for regular expressions.
+* Serialization object stream fixes for multiple ClassLoader scenarios.
+* Swing TabbedPane, ColorChooser and ComboBox improvements.
+* Start of JTree functionality.
+* Improved Eclipse 3 support for GNU Classpath based runtimes.
+
+Runtime interface Changes:
+
+* New --enable-java-lang-system-explicit-initialization configuration
+  option. (Warning, will be replaced in next release, please consult
+  the mailinglist.)
+* The reference implementation of VMClassLoader has default
+  implementations for getResource(s) and provides support for a new
+  default getSystemClassLoader implementation.
 
 New in release 0.11 (Sep 13, 2004)
 
