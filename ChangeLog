@@ -294,7 +294,6 @@
 	(getDisplayVariant(java.util.Locale)): Likewise.
 	(getDisplayString()): Rewritten in LocaleHelper.
 	
->>>>>>> 1.3159
 2005-01-29  Quentin Anciaux  <quentin.anciaux@advalvas.be>
 
 	* gnu/classpath/SystemProperties.java (static): Add all aliases
