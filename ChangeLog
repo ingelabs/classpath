@@ -8,6 +8,9 @@
 	super.clone(), not new.
 	* java/util/TreeMap.java (clone): Likewise.
 
+	* java/util/TreeMap.java (nil): Made non-final.
+	(clone): Create new sentinal for copy.
+
 2001-02-15  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/HashMap.java: Rewritten.
