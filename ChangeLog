@@ -1,5 +1,10 @@
 2004-09-21  Mark Wielaard  <mark@klomp.org>
 
+	* vm/reference/java/util/VMTimeZone.java
+	(getDefaultTimeZoneId): Remove debug output.
+
+2004-09-21  Mark Wielaard  <mark@klomp.org>
+
 	Fixes bug #10447
 	* java/util/Collections.java
 	(binarySearch(List, Object, Comparator): Explicitly reverse direction
