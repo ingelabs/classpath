@@ -1,4 +1,0 @@
-#! @SH@
-# @configure_input@
-@top_srcdir@/lib/gen-classlist.sh standard
-@JAVADEPS@ -b "\$(JAVAC)" -d . -f classes -v > @top_srcdir@/lib/.deps
