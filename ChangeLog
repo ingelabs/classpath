@@ -1,3 +1,14 @@
+2004-06-21  David Grove <groved@us.ibm.com> 
+	    Steven Augart <augart@watson.ibm.com>
+
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
+	Trivial formatting (trim trailing spaces).
+	(native_fd_fieldID): New variable.
+	(Java_gnu_java_nio_channels_FileChannelImpl_init): 
+	Cache native_fd_fieldID. 
+	Fix "return with value in function returning void" warning.
+	(get_native_fd): Use cached native_fd_fieldID.
+	
 2004-06-20  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/Makefile.am (EXTRA_DIST): Add
