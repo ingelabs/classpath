@@ -6,3 +6,8 @@ classes
 glibj.zip
 deps.sh
 gen-classlist.sh
+mkdep.pl
+errors.txt
+headers.dep
+classes.dep
+makefile.dep
