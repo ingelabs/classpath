@@ -1,3 +1,7 @@
+2003-12-02  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/io/PlatformHelper.java: Reformated.
+
 2003-12-02  Graydon Hoare  <graydon@redhat.com>
 
 	* javax/swing/JLayeredPane.java: Implement.
