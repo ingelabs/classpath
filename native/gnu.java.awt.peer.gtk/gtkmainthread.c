@@ -22,7 +22,7 @@
 #include "gtkpeer.h"
 #include "GtkMainThread.h"
 #include "gdkjnithreads.h"
-#include <errno.h>
+
 /*
  * Initialize the native state table.  This may go away soon.
  */
@@ -50,18 +50,13 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_GtkInit (JNIEnv *env, jclass clazz)
   GdkJavaMutex *initret;
   char *homedir, *rcpath=NULL;
 
-  printf("init\n");
+  printf ("init\n");
 
   /* GTK requires a program's argc and argv variables, and requires that they
-     be valid.  Presumably this is because X requires them as well.  We
-     currently have no way of knowing what program we are, so we fake them
-     and call ourselves "Classpath".  This will cause window titles to 
-     default to "Classpath".  It may have adverse effects on X resources as
-     well.  It remains to be seen if this is the case, and, if anyone cares.
-     Who used X resources with java apps? */
+     be valid.  Presumably this is because X requires them as well.  */
 
   argv=(char **)malloc (sizeof(char*)*2);
-  argv[0]=strdup(DEF_APP_NAME);
+  argv[0]="";
   argv[1]=NULL;
 
   /* This sets the gdk thread function pointers to our set. */
@@ -71,20 +66,18 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_GtkInit (JNIEnv *env, jclass clazz)
   java_mutex=*(initret->mutex);
 
   gtk_init (&argc,&argv);
-  /*
+
   if ((homedir=getenv("HOME")))
     {
       rcpath=(char *)malloc (strlen (homedir)+strlen (RC_FILE)+2);
       sprintf (rcpath, "%s/%s", homedir, RC_FILE);
     }
   
-    gtk_rc_parse ((rcpath) ? rcpath : RC_FILE);
-  */
-  /*
-    if (rcpath)
+  gtk_rc_parse ((rcpath) ? rcpath : RC_FILE);
+
+  if (rcpath)
     free (rcpath);
-  */
-  free (argv[0]);
+
   free (argv);
 }
 
