@@ -38,7 +38,8 @@ exception statement from your version. */
 package java.net;
 
 import java.io.*;
-import java.nio.channels.*;
+import java.nio.channels.SocketChannel;
+import java.nio.channels.IllegalBlockingModeException;
 
 /* Written using on-line Java Platform 1.2 API Specification.
  * Status:  I believe all methods are implemented.
@@ -79,14 +80,18 @@ public class Socket
    */
   SocketImpl impl;
 
+  SocketChannel ch; // this field must have been set if created by SocketChannel
+
   // Constructors
 
   /**
    * Initializes a new instance of <code>Socket</code> object without 
    * connecting to a remote host.  This useful for subclasses of socket that 
    * might want this behavior.
+   *
+   * @specnote This constructor is public since JDK 1.4
    */
-  protected Socket ()
+  public Socket ()
   {
     if (factory != null)
       impl = factory.createSocketImpl();
@@ -125,6 +130,8 @@ public class Socket
    * @exception UnknownHostException If the hostname cannot be resolved to a
    * network address.
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkConnect method doesn't allow the operation
    */
   public Socket (String host, int port)
     throws UnknownHostException, IOException
@@ -140,6 +147,8 @@ public class Socket
    * @param port The port number to connect to
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkConnect method doesn't allow the operation
    */
   public Socket (InetAddress address, int port)
     throws IOException 
@@ -179,6 +188,8 @@ public class Socket
    * @param localPort The local port to connect to
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkConnect method doesn't allow the operation
    */
   public Socket (InetAddress address, int port,
 		 InetAddress localAddr, int localPort) throws IOException
@@ -198,6 +209,8 @@ public class Socket
    * for a datagram socket
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkConnect method doesn't allow the operation
    *
    * @deprecated Use the <code>DatagramSocket</code> class to create
    * datagram oriented sockets.
@@ -219,6 +232,8 @@ public class Socket
    * <code>false</code> to create a datagram socket.
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkConnect method doesn't allow the operation
    *
    * @deprecated Use the <code>DatagramSocket</code> class to create
    * datagram oriented sockets.
@@ -242,6 +257,8 @@ public class Socket
    * @param stream true for a stream socket, false for a datagram socket
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkConnect method doesn't allow the operation
    */
   private Socket(InetAddress raddr, int rport, InetAddress laddr, int lport,
                  boolean stream) throws IOException
@@ -425,6 +442,7 @@ public class Socket
    * SO_LINGER not set.
    *
    * @exception SocketException If an error occurs or Socket not connected
+   * @exception IllegalArgumentException If linger is negative
    */
   public void setSoLinger(boolean on, int linger) throws SocketException
   {
@@ -534,6 +552,7 @@ public class Socket
    * @param size The new send buffer size.
    *
    * @exception SocketException If an error occurs or Socket not connected
+   * @exception IllegalArgumentException If size is 0 or negative
    *
    * @since 1.2
    */
@@ -580,6 +599,7 @@ public class Socket
    * @param size The new receive buffer size.
    *
    * @exception SocketException If an error occurs or Socket is not connected
+   * @exception IllegalArgumentException If size is 0 or negative
    *
    * @since 1.2
    */
@@ -669,25 +689,32 @@ public class Socket
     factory = fac;
   }
 
+  /**
+   * Closes the input side of the socket stream.
+   *
+   * @exception IOException If an error occurs.
+   */
   public void shutdownInput() throws IOException
   {
     // impl.shutdownInput();
   }
 
+  /**
+   * Closes the output side of the socket stream.
+   *
+   * @exception IOException If an error occurs.
+   */
   public void shutdownOutput() throws IOException
   {
     // impl.shutdownOutput();
   }
 
-  SocketChannel ch; // this field must have been set if created by SocketChannel
-
   /**
-   * Returns the socket channel associated with 
-   * this socket.
-   * 
+   * Returns the socket channel associated with this socket.
+   *
    * It returns null if no associated socket exists.
    */
-  public SocketChannel getChannel() 
+  public SocketChannel getChannel()
   {
     return ch;
   }

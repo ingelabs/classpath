@@ -108,6 +108,9 @@ public abstract class DatagramSocketImpl implements SocketOptions
    * @return The port number of the sender of the packet
    *
    * @exception IOException If an error occurs
+   * @exception PortUnreachableException May be thrown if the socket is
+   * connected to a currently unreachable destination. Note, there is no
+   * guarantee that the exception will be thrown.
    */
   protected abstract int peek(InetAddress i) throws IOException;
 
@@ -118,6 +121,9 @@ public abstract class DatagramSocketImpl implements SocketOptions
    * @param p The packet to send
    *
    * @exception IOException If an error occurs
+   * @exception PortUnreachableException May be thrown if the socket is
+   * connected to a currently unreachable destination. Note, there is no
+   * guarantee that the exception will be thrown.
    */
   protected abstract void send(DatagramPacket p) throws IOException;
 
@@ -129,6 +135,9 @@ public abstract class DatagramSocketImpl implements SocketOptions
    * @param p A place to store the incoming packet.
    *
    * @exception IOException If an error occurs
+   * @exception PortUnreachableException May be thrown if the socket is
+   * connected to a currently unreachable destination. Note, there is no
+   * guarantee that the exception will be thrown.
    */
   protected abstract void receive(DatagramPacket p) throws IOException;
 
@@ -208,7 +217,7 @@ public abstract class DatagramSocketImpl implements SocketOptions
    * Sets the specified option on a socket to the passed in object.  For
    * options that take an integer argument, the passed in object is an
    * <code>Integer</code>.  For options that are set to on or off, the
-   * value passed will be a <code>Boolean</code>.   The <code>option_id</code> 
+   * value passed will be a <code>Boolean</code>.   The <code>option_id</code>
    * parameter is one of the defined constants in the superinterface.
    *
    * @param option_id The identifier of the option

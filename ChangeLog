@@ -1,3 +1,16 @@
+2002-11-07  Michael Koch <konqueror@gmx.de>
+
+	* java/net/DatagramSocketImpl.java: Added documentation.
+	* java/net/Inet4Address.java: Made final again.
+	* java/net/MulticastSocket.java: Reindented.
+	* java/net/ServerSocket.java: Added documentation.
+	* java/net/Socket.java: Added documentation.
+	(Socket): Must be public now.
+	* java/net/SocketImpl.java: Added documentation.
+	* java/nio/channels/IllegalBlockingModeException.java: New file.
+	* java/nio/channels/Makefile.am:
+	Added IllegalBlockingModeException.java.
+
 2002-11-07  Mark Wielaard  <mark@klomp.org>
 
 	* java/nio/charset/CodingErrorAction.java: New private constructor to

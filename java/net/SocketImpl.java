@@ -95,6 +95,8 @@ public abstract class SocketImpl implements SocketOptions
    * if the stream parameter is false.
    *
    * @param stream true for a stream socket, false for a datagram socket
+   *
+   * @exception IOException If an error occurs
    */
   protected abstract void create(boolean stream) throws IOException;
 

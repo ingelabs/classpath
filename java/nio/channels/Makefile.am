@@ -9,6 +9,7 @@ DatagramChannel.java \
 FileChannel.java \
 FileLock.java \
 GatheringByteChannel.java \
+IllegalBlockingModeException.java \
 InterruptibleChannel.java \
 Pipe.java \
 ReadableByteChannel.java \

@@ -38,6 +38,8 @@ exception statement from your version. */
 package java.net;
 
 import java.io.IOException;
+import java.nio.channels.IllegalBlockingModeException;
+import java.nio.channels.ServerSocketChannel;
 
 /* Written using on-line Java Platform 1.2 API Specification.
  * Status:  I believe all methods are implemented.
@@ -49,7 +51,7 @@ import java.io.IOException;
  * listens for and accepts connections.  At that point the client and
  * server sockets are ready to communicate with one another utilizing
  * whatever application layer protocol they desire.
- * <p>
+ *
  * As with the <code>Socket</code> class, most instance methods of this class 
  * simply redirect their calls to an implementation class.
  *
@@ -75,9 +77,13 @@ public class ServerSocket
   private SocketImpl impl;
 
   /**
-   * Private constructor that simply sets the implementation.
+   * Constructor that simply sets the implementation.
+   * 
+   * @exception IOException If an error occurs
+   *
+   * @specnote This constructor is public since JDK 1.4
    */
-  private ServerSocket()
+  public ServerSocket() throws IOException
   {
     if (factory != null)
       impl = factory.createSocketImpl();
@@ -93,9 +99,11 @@ public class ServerSocket
    * @param port The port number to bind to
    * 
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation
    */
   public ServerSocket (int port)
-    throws java.io.IOException
+    throws IOException
   {
     this(port, 50);
   }
