@@ -1,5 +1,11 @@
 2005-01-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JTextField.java
+	(postActionEvent): Use text in field when actionCommand is null.
+	(getActionCommand): Removed.
+
+2005-01-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/AbstractSet.java: Removed.
 
 2005-01-26  Michael Koch  <konqueror@gmx.de>
