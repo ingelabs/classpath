@@ -58,7 +58,7 @@ private static final int DEFAULT_BUFFER_SIZE = 1;
 /**
   * This is the buffer that is used to store the pushed back data
   */
-private byte[] buf;
+protected byte[] buf;
 
 /**
   * This is the position in the buffer from which the next byte will be
@@ -67,7 +67,7 @@ private byte[] buf;
   * <code>pos</code> is 0 the buffer is full and <code>buf.length</code> when 
   * it is empty
   */
-private int pos;
+protected int pos;
 
 /*************************************************************************/
 
@@ -112,6 +112,19 @@ PushbackInputStream(InputStream in, int bufsize)
 /*
  * Instance Methods
  */
+
+/**
+  * This method closes the stream and releases any associated resources.
+  * 
+  * @exception IOException If an error occurs.
+  */
+public void
+close() throws IOException
+{
+  super.close();
+}
+
+/*************************************************************************/
 
 /**
   * This method returns <code>false</code> to indicate that it does not support
