@@ -21,10 +21,9 @@ for the java programming language.
 </P>
 <P>Classpath is still a work in progress. The first public release 
 will be version 1.0. There have been no public releases; however, pre-release 
-source code is available via GNU's anonymous <A href="http://savannah.gnu.org/cvs/?group_id=85">
+source code is available via GNU's anonymous <A href="https://savannah.gnu.org/cvs/?group=classpath">
 CVS server</A> , and snapshots of the Classpath tree have been released and 
-are available from <A href="ftp://alpha.gnu.org/gnu/classpath/">ftp://alpha.gnu.org/gnu/classpath/</A>
-(older releases can be found in the <A href="http://www.klomp.org/mark/classpath/">archive</A>).
+are available from <A href="ftp://ftp.gnu.org/gnu/classpath/">ftp://ftp.gnu.org/gnu/classpath/</A>
 </P>
 </boxitem>
 
