@@ -1,5 +1,10 @@
 2003-03-03  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/Socket.java
+	(setSoTimeout): Clarify documentation.
+
+2003-03-03  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/channels/Channels.java:
 	Merged from libgcj.
 	* java/nio/channels/FileChannel.java:
