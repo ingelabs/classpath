@@ -1,3 +1,11 @@
+2004-06-03  Michael Koch  <konqueror@gmx.de>
+
+	* java/security/AccessControlContext.java,
+	java/security/ProtectionDomain.java,
+	java/security/SecureClassLoader.java,
+	java/util/PropertyPermissionCollection.java:
+	Fixed javadocs all over.
+
 2004-06-03  Casey Marshall <csm@gnu.org>
 
 	* java/security/AccessControlContext.java
