@@ -1,3 +1,8 @@
+2003-07-09  Torsten Rupp  <rupp@lisa.aicas.com>
+
+        * classpath/include/jni.h.in:
+        Fixed missing JNI_JLONG_CONST* definitions (preliminary fix)
+
 2003-07-09  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/awt/peer/gtk/GdkFontMetrics.java,
