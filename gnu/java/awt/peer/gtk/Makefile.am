@@ -31,6 +31,7 @@ EXTRA_DIST = \
 	GtkOffScreenImage.java \
 	GtkPanelPeer.java \
 	GtkPopupMenuPeer.java \
+	GtkRadioButtonPeer.java \
 	GtkScrollPanePeer.java \
 	GtkScrollbarPeer.java \
 	GtkTextAreaPeer.java \
