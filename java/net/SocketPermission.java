@@ -65,18 +65,20 @@ import java.security.PermissionCollection;
  * value for a port (respectively) is used by default.  Here are some
  * examples:
  * <p><ul>
- * <li>8080 - Represents port 8080 only
- * <li>2000-3000 - Represents ports 2000 through 3000 inclusive
- * <li>-4000 - Represents ports 0 through 4000 inclusive
- * <li>1024- - Represents ports 1024 through 65535 inclusive
+ * <li>8080 - Represents port 8080 only</li>
+ * <li>2000-3000 - Represents ports 2000 through 3000 inclusive</li>
+ * <li>-4000 - Represents ports 0 through 4000 inclusive</li>
+ * <li>1024- - Represents ports 1024 through 65535 inclusive</li>
  * </ul><p>
  * The permission list is a comma separated list of individual permissions.
  * These individual permissions are:
  * <p>
- * accept<br>
- * connect<br>
- * listen<br>
- * resolve<br>
+ * <pre>
+ * accept
+ * connect
+ * listen
+ * resolve
+ * </pre>
  * <p>
  * The "listen" permission is only relevant if the host is localhost.  If
  * any permission at all is specified, then resolve permission is implied to
@@ -232,20 +234,22 @@ public final class SocketPermission extends Permission implements Serializable
 
   /**
    * Returns true if the permission object passed it is implied by the
-   * this permission.  This will be true if
-   * <p><ul>
-   * <li>The argument is of type <code>SocketPermission</code>
-   * <li>The actions list of the argument are in this object's actions
-   * <li>The port range of the argument is within this objects port range
-   * <li>The hostname is equal to or a subset of this objects hostname
+   * this permission.  This will be true if:
+   * 
+   * <ul>
+   * <li>The argument is of type <code>SocketPermission</code></li>
+   * <li>The actions list of the argument are in this object's actions</li>
+   * <li>The port range of the argument is within this objects port range</li>
+   * <li>The hostname is equal to or a subset of this objects hostname</li>
    * </ul>
-   * <p>
-   * The argument's hostname will be a subset of this object's hostname if:
-   * <p><ul>
-   * <li>The argument's hostname or IP address is equal to this object's.
-   * <li>The argument's canonical hostname is equal to this object's.
+   *
+   * <p>The argument's hostname will be a subset of this object's hostname if:</p>
+   * 
+   * <ul>
+   * <li>The argument's hostname or IP address is equal to this object's.</li>
+   * <li>The argument's canonical hostname is equal to this object's.</li>
    * <li>The argument's canonical name matches this domains hostname with
-   * wildcards
+   * wildcards</li>
    * </ul>
    *
    * @param perm The <code>Permission</code> to check against

@@ -50,7 +50,7 @@ import java.util.jar.Manifest;
  * of jar URL's.  A jar URL is a special type of URL that allows JAR
  * files on remote systems to be accessed.  It has the form:
  * <p>
- * jar:<standard URL pointing to jar file>!/file/within/jarfile
+ * jar:&lt;standard URL pointing to jar filei&gt;!/file/within/jarfile
  * <p> for example:
  * <p>
  * jar:http://www.urbanophile.com/java/foo.jar!/com/urbanophile/bar.class

@@ -1,5 +1,13 @@
 2004-04-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/JarURLConnection.java,
+	java/net/NetPermission.java,
+	java/net/SocketPermission.java,
+	java/net/URLConnection.java:
+	Fixed HTML tags in javadocs all over.
+
+2004-04-17  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/ChoiceFormat.java,
 	java/text/CollationElementIterator.java,
 	java/text/CollationKey.java,

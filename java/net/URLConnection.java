@@ -408,7 +408,7 @@ public abstract class URLConnection
    * This class first determines the MIME type of the content, then creates
    * a ContentHandler object to process the input.  If the ContentHandlerFactory
    * is set, then that object is called to load a content handler, otherwise
-   * a class called gnu.java.net.content.<content_type> is tried.
+   * a class called gnu.java.net.content.&lt;content_type&gt; is tried.
    * The default class will also be used if the content handler factory returns
    * a null content handler.
    *

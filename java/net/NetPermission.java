@@ -51,11 +51,11 @@ import java.security.BasicPermission;
  * <ul>
  * <li>setDefaultAuthenticator - Grants the ability to install a facility
  * to collect username and password information when requested by a
- * web site or proxy server.
+ * web site or proxy server.</li>
  * <li>requestPasswordAuthentication - Grants the ability to ask the
- * authentication facility for the user's password.
+ * authentication facility for the user's password.</li>
  * <li>specifyStreamHandler - Grants the permission to specify the
- * stream handler class used when loading from a URL.
+ * stream handler class used when loading from a URL.</li>
  * </ul>
  *
  * @author Aaron M. Renn (arenn@urbanophile.com)
