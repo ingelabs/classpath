@@ -1,3 +1,41 @@
+2003-05-22  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/Checkbox.java
+	(getItemListeners): New method.
+	* java/awt/Dialog.java
+	(Dialog): Reformatted classs documentation.
+	(undecorated): New member variable.
+	(isUndecorated): New method.
+	(setUndecorated): New method.
+	* java/awt/Font.java
+	(getPeer): Added @deprecated tag.
+	* java/awt/Frame.java
+	(maximizedBounds): New member variable.	
+	(undecorated): New member variable.
+	(getState): New implementation.
+	(setState): New method.
+	(setExtendedState): New method.
+	(getExtendedState): New method.
+	(getMaximizedBounds): New method.
+	(setMaximizedBounds): New method.
+	(isUndecorated): New method.
+	(setUndecorated): New method.
+	* java/awt/ScrollPaneAdjustable.java
+	(valueIsAdvertising): New member variable.
+	(getValueIsAdjusting): New method.
+	(setValueIsAdjusting): New method.
+	* java/awt/Scrollbar.java
+	(valueIsAdvertising): New member variable.
+	(getValueIsAdjusting): New method.
+	(setValueIsAdjusting): New method.
+	* java/awt/Window.java
+	(focusMgr): Added @since 1.2 tag.
+	(state): Likewise.
+	(focusableWindowState): New member variable.
+	(isFocusableWindow): New method.
+	(getFocusableWindowState): New method.
+	(setFocusableWindowState): New method.
+
 2003-05-21  Michael Koch  <konqueror@gmx.de>
 
 	* java/util/zip/DeflaterOutputStream.java,
