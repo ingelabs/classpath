@@ -774,37 +774,44 @@ public class URLClassLoader extends SecureClassLoader
       {
 	byte [] data;
 	InputStream in = resource.getInputStream();
-	int length = resource.getLength();
-	if (length != -1)
+	try
 	  {
-	    // We know the length of the data.
-	    // Just try to read it in all at once
-	    data = new byte[length];
-	    int pos = 0;
-	    while(length - pos > 0)
-	      {
-		int len = in.read(data, pos, length - pos);
-		if (len == -1)
-		  throw new EOFException("Not enough data reading from: "
-					 + in);
-		pos += len;
-	      }
+	    int length = resource.getLength();
+	    if (length != -1)
+	    {
+		// We know the length of the data.
+		// Just try to read it in all at once
+		data = new byte[length];
+		int pos = 0;
+		while(length - pos > 0)
+		{
+		    int len = in.read(data, pos, length - pos);
+		    if (len == -1)
+		    throw new EOFException("Not enough data reading from: "
+					    + in);
+		    pos += len;
+		}
+	    }
+	    else
+	    {
+		// We don't know the data length.
+		// Have to read it in chunks.
+		ByteArrayOutputStream out = new ByteArrayOutputStream(4096);
+		byte b[] = new byte[4096];
+		int l = 0;
+		while (l != -1)
+		{
+		    l = in.read(b);
+		    if (l != -1)
+		    out.write(b, 0, l);
+		}
+		data = out.toByteArray();
+	    }
 	  }
-	else
-	  {
-	    // We don't know the data length.
-	    // Have to read it in chunks.
-	    ByteArrayOutputStream out = new ByteArrayOutputStream(4096);
-	    byte b[] = new byte[4096];
-	    int l = 0;
-	    while (l != -1)
-	      {
-		l = in.read(b);
-		if (l != -1)
-		  out.write(b, 0, l);
-	      }
-	    data = out.toByteArray();
-	  }
+        finally
+          {
+	    in.close();
+          }
 	final byte[] classData = data;
 
 	// Now get the CodeSource
