@@ -267,11 +267,12 @@ public class TreeSet extends AbstractSet
   private void writeObject(ObjectOutputStream out) throws IOException
   {
     Iterator itr = map.keySet().iterator();
+    int size = map.size();
 
     out.writeObject(map.comparator());
-    out.writeInt(map.size());
+    out.writeInt(size);
 
-    while (itr.hasNext())
+    for (int i = 0; i < size; i++)
       out.writeObject(itr.next());
   }
 

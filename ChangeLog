@@ -1,3 +1,8 @@
+2001-03-06  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/util/TreeSet.java (writeObject): Use a for-loop instead of
+	Iterator.hasNext().
+
 2001-03-05  Jochen Hoenicke  <jochen@gnu.org>
 
 	* java/util/TreeMap.java (writeObject): Use defaultWriteObject()
