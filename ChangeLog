@@ -1,5 +1,12 @@
 2003-12-02  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/lang/ClassLoaderHelper.java:
+	Explicitly import used classes.
+	* gnu/java/lang/SystemClassLoader.java
+	(systemFindResource): Fixed typo.
+
+2003-12-02  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/protocol/file/Connection.java: Reformated.
 	(inputStream): Made an InputStream.
 	(outputStream): Made an OutputStream.

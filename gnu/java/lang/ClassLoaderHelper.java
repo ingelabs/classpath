@@ -38,9 +38,13 @@ exception statement from your version. */
 
 package gnu.java.lang;
 
-import java.io.*;
-import java.util.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import gnu.java.io.PlatformHelper;
 
 /**

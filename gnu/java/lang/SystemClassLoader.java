@@ -159,7 +159,7 @@ public class SystemClassLoader extends ClassLoader
 		ZipFile zf;
 		try
 		  {
-		    // Construct URL object for the parth
+		    // Construct URL object for the path
 		    StringBuffer sb = 
 		      new StringBuffer(PlatformHelper.INITIAL_MAX_PATH);
 		    sb.append("file://");
