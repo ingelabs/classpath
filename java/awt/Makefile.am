@@ -1,3 +1,7 @@
+## Input file for automake
+
+SUBDIRS = datatransfer event peer print
+
 EXTRA_DIST = \
 AWTError.java \
 AWTEvent.java \
