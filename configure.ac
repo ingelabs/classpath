@@ -451,5 +451,5 @@ vm/reference/java/lang/reflect/Makefile
 vm/reference/java/io/Makefile
 lib/Makefile
 lib/gen-classlist.sh])
-AC_OUTPUT_COMMANDS([chmod 755 lib/gen-classlist.sh])
+AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])
 AC_OUTPUT
