@@ -771,59 +771,66 @@ public final class URL implements Serializable
   {
     URLStreamHandler ph;
 
-    // First, see if a protocol handler is in our cache
+    // First, see if a protocol handler is in our cache.
     if (cache_handlers)
       {
-        Class cls = (Class)ph_cache.get(protocol);
+        Class cls = (Class) ph_cache.get (protocol);
+        
         if (cls != null)
           {
             try
               {
-                ph = (URLStreamHandler)cls.newInstance();
-                return(ph);
+                return (URLStreamHandler) cls.newInstance();
               }
-            catch (Exception e) { ; }
+            catch (Exception e)
+              {
+                // Can't instantiate; handler still null.
+              }
           }
       }
 
     // If a non-default factory has been set, use it to find the protocol.
     if (factory != null)
       {
-        ph = factory.createURLStreamHandler(protocol);
-        if (ph != null)
-          {
-            if (cache_handlers)
-	      ph_cache.put(protocol, ph.getClass());
-
-            return(ph);
-	  }
+        ph = factory.createURLStreamHandler (protocol);
       }
 
-    // Finally loop through our search path looking for a match
-    StringTokenizer st = new StringTokenizer(ph_search_path, "|");
-    while (st.hasMoreTokens())
+    // Non-default factory may have returned null or a factory wasn't set.
+    // Use the default search algorithm to find a handler for this protocol.
+    if (ph == null)
       {
-        String clsname = st.nextToken() + "." + protocol + ".Handler";
-         
-        try
+	// Finally loop through our search path looking for a match.
+	StringTokenizer pkgPrefix = new StringTokenizer (ph_search_path, "|");
+        
+        while (pkgPrefix.hasMoreTokens())
           {
-            Class cls = Class.forName(clsname); 
-            Object obj = cls.newInstance();
-            if (!(obj instanceof URLStreamHandler))
-              continue;
-            else
-              ph = (URLStreamHandler)obj;
-
-            if (cache_handlers)
-              ph_cache.put(protocol, cls);
-
-            return(ph);
+            String clsName = pkgPrefix.nextToken() + "." + protocol + ".Handler";
+         
+            try
+              {
+                Object obj = Class.forName (clsName).newInstance();
+	    
+                if (!(obj instanceof URLStreamHandler))
+                  continue;
+                else
+                  ph = (URLStreamHandler) obj;
+              }
+            catch (Exception e)
+              {
+                // Can't instantiate; handler still null, go on to next element.
+              }
           }
-        catch (Exception e) { ; }
       }
 
-    // Still here, which is bad
-    return null;
+    // Update the hashtable with the new protocol handler.
+    if (ph != null
+        && cache_handlers)
+      if (ph instanceof URLStreamHandler)
+	ph_cache.put (protocol, ph.getClass());
+      else
+	ph = null;
+
+    return ph;
   }
 
   private void readObject(ObjectInputStream ois)
