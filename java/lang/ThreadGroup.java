@@ -638,7 +638,7 @@ public class ThreadGroup
         i = groups.size();
         while (--i >= 0 && next < list.length)
           {
-            ThreadGroup g = (ThreadGroup) threads.get(i);
+            ThreadGroup g = (ThreadGroup) groups.get(i);
             next = g.enumerate(list, next, true);
           }
       }

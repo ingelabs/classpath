@@ -1,3 +1,8 @@
+2002-06-18  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/ThreadGroup.java (enumerate(Thread[],int,boolean): Get
+	groups from `groups' Vector.
+
 2002-06-16  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/LineNumberInputStream.java: Merged with libgcj version.
