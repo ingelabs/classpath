@@ -16,13 +16,29 @@ following from the toplevel directory.
 
 Next you run configure.  Options you'll probably want to specify
 include --with-jikes, --with-javah={path to jdk}/javah,
---with-classlib={path to classes.jar}/classes.jar and
---with-japhar={prefix to Japhar}.  For native compilation you need
-jni.h from the JDK or Japhar in your include path.  This is done
-automatically for you if you specify --with-japhar.  Otherwise you
-could probably copy it to classpath/include and it will work.  Kaffeh
-appears to have a small bug which keeps us from using it to generate
-valid header files.
+--with-classlib={path to classes.jar}/classes.jar and --with-japhar or
+--with-kaffe, neither of which take an argument.  
+
+You can also now specify --with-includedir=DIR multiple times to
+indicate more include directories.  For native compilation you need
+jni.h from the JDK, Japhar, or Kaffe in your include path.  This is
+done automatically for you if you specify --with-japhar or
+--with-kaffe.  Otherwise you could probably copy it to
+classpath/include and it will work.  Kaffeh appears to have a small
+bug which keeps us from using it to generate valid header files.  The
+file kaffe-config is needed to support Kaffe and so far that has not
+been incorporated into Kaffe (any version) but you can find the
+message in the archives of the Classpath list and add it to your own
+installation of Kaffe (reconfigure and install needed).
+
+If you have a new VM you would like to compile Classpath for then
+you'll probably want to modify acinclude.m4 and configure.in to add
+whatever is relevant but most importantly defining JVM_REFERENCE and
+then giving us the necessary files to add to the vm/$JVM_REFERENCE
+directory.  The vm integration document describes what those files
+should minimally include.  Otherwise you'll have to have one of Japhar
+or Kaffe installed and the programs japhar-config or kaffe-config
+available respectively.
 
 Jikes 1.11 should contain a code for placing .u (dependency files)
 where -d would also place class files.  This will be used in the
@@ -47,8 +63,6 @@ The following is a rough list of tasks which need to be completed:
 	  we are using configure to determine the endian-ness of
 	  the platform.
 
-        * java.awt.image needs to be stubbed out.
-
         * java.awt does not work yet.        
 
         * java.math needs some work.  This includes one missing 
@@ -57,10 +71,6 @@ The following is a rough list of tasks which need to be completed:
         * GNU Classpath needs to work with Kaffe.  There is
           documentation on the efforts made to originally make
           Classpath work with Japhar in docs/ and on the web-site.
-
-	* GNU Classpath should not depend on Japhar or Kaffe for 
-	  jni.h.  It should be possible to generate a proper jni.h
-	  from configure for instance.
 
         * Update the web-site
 
@@ -75,4 +85,4 @@ The following is a rough list of tasks which need to be completed:
         * Create configure, etc. for the swing project.
 
 If you have any questions, suggestions, etc., send them to
-<classpath@gnu.org>.
+classpath@gnu.org.
