@@ -979,7 +979,7 @@ nextToken() throws IOException
   * This convenience method reads a char from the stream and masks off
   * the high bytes
   */
-public int
+private int
 readChar() throws IOException
 {
   int c = pbr.read();
@@ -994,7 +994,7 @@ readChar() throws IOException
 /**
   * Makes the token buffer bigger
   */
-public void
+private void
 enlargeBuffer()
 {
   char[] newbuf = new char[token_buf.length + BUFFER_INCREMENT_SIZE];
