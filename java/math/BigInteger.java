@@ -1,13 +1,9 @@
-
 package java.math;
 
-
 public class BigInteger {
-
   final int native_state = System.identityHashCode(this);
 
   static {
-    System.loadLibrary("gmp2");
     System.loadLibrary("bigint");
     initNativeState();
   }
@@ -24,7 +20,7 @@ public class BigInteger {
   native public BigInteger multiply(BigInteger val);
   native public BigInteger divide(BigInteger val) 
     throws ArithmeticException;
-  native public BigInteger remainder(BigInteger val) 
+  native public BigInteger remainder(BigInteger val)
     throws ArithmeticException;
   native public BigInteger gcd(BigInteger val);
 
@@ -69,10 +65,7 @@ public class BigInteger {
   native public int signum();
 
   public boolean equals(Object o) {
-    if (o == null || (!(o instanceof BigInteger))) return false;
-    BigInteger integ = (BigInteger) o;
-    if (this == integ) return true;
-    return nativeEquals(integ);
+    return (o instanceof BigInteger && nativeEquals((BigInteger)o));
   }
     
   static native void initNativeState();
