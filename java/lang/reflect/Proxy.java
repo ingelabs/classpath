@@ -1,5 +1,5 @@
-/* java.lang.reflect.Proxy
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* Proxy.java -- build a proxy class that implements reflected interfaces
+   Copyright (C) 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -39,13 +39,14 @@ exception statement from your version. */
 package java.lang.reflect;
 
 import java.io.Serializable;
-//  import java.protection.ProtectionDomain;
+import java.security.ProtectionDomain;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
 import gnu.classpath.Configuration;
+import gnu.java.lang.reflect.TypeSignature;
 
 /**
  * This class allows you to dynamically create an instance of any (or
@@ -253,39 +254,39 @@ public class Proxy implements Serializable
   // synchronized so that we aren't trying to build the same class
   // simultaneously in two threads
   public static synchronized Class getProxyClass(ClassLoader loader,
-						 Class[] interfaces)
+                                                 Class[] interfaces)
   {
     interfaces = (Class[]) interfaces.clone();
     ProxyType pt = new ProxyType(loader, interfaces);
     Class clazz = (Class) proxyClasses.get(pt);
     if (clazz == null)
       {
-	if (Configuration.HAVE_NATIVE_GET_PROXY_CLASS)
-	  clazz = getProxyClass0(loader, interfaces);
-	else
-	  {
-	    ProxyData data = (Configuration.HAVE_NATIVE_GET_PROXY_DATA
-			      ? getProxyData0(loader, interfaces)
-			      : ProxyData.getProxyData(pt));
+        if (Configuration.HAVE_NATIVE_GET_PROXY_CLASS)
+          clazz = getProxyClass0(loader, interfaces);
+        else
+          {
+            ProxyData data = (Configuration.HAVE_NATIVE_GET_PROXY_DATA
+                              ? getProxyData0(loader, interfaces)
+                              : ProxyData.getProxyData(pt));
 
-	    // FIXME workaround for bug in gcj 3.0.x
-	    // Not needed with the latest gcj from cvs
-	    //clazz = (Configuration.HAVE_NATIVE_GENERATE_PROXY_CLASS
-	    //	       ? generateProxyClass0(loader, data)
-	    //         : new ClassFactory(data).generate(loader));
-	    if (Configuration.HAVE_NATIVE_GENERATE_PROXY_CLASS)
-	      clazz = generateProxyClass0(loader, data);
-	    else
-	      {
-	        ClassFactory cf = new ClassFactory(data);
-		clazz = cf.generate(loader);
-	      }
-	  }
+            // FIXME workaround for bug in gcj 3.0.x
+            // Not needed with the latest gcj from cvs
+            //clazz = (Configuration.HAVE_NATIVE_GENERATE_PROXY_CLASS
+            //	       ? generateProxyClass0(loader, data)
+            //         : new ClassFactory(data).generate(loader));
+            if (Configuration.HAVE_NATIVE_GENERATE_PROXY_CLASS)
+              clazz = generateProxyClass0(loader, data);
+            else
+              {
+                ClassFactory cf = new ClassFactory(data);
+                clazz = cf.generate(loader);
+              }
+          }
 
-	Object check = proxyClasses.put(pt, clazz);
-	// assert check == null && clazz != null;
-	if (check != null || clazz == null)
-	  throw new InternalError(/*"Fatal flaw in getProxyClass"*/);
+        Object check = proxyClasses.put(pt, clazz);
+        // assert check == null && clazz != null;
+        if (check != null || clazz == null)
+          throw new InternalError(/*"Fatal flaw in getProxyClass"*/);
       }
     return clazz;
   }
@@ -316,37 +317,36 @@ public class Proxy implements Serializable
    * @see Constructor#newInstance(Object[])
    */
   public static Object newProxyInstance(ClassLoader loader,
-					Class[] interfaces,
-					InvocationHandler handler)
+                                        Class[] interfaces,
+                                        InvocationHandler handler)
   {
     try
       {
-	// getProxyClass() and Proxy() throw the necessary exceptions
-	return getProxyClass(loader, interfaces)
-	  .getConstructor(new Class[] {InvocationHandler.class})
-	  .newInstance(new Object[] {handler});
+        // getProxyClass() and Proxy() throw the necessary exceptions
+        return getProxyClass(loader, interfaces)
+          .getConstructor(new Class[] {InvocationHandler.class})
+          .newInstance(new Object[] {handler});
       }
     catch (RuntimeException e)
       {
-	// Let IllegalArgumentException, NullPointerException escape.
+        // Let IllegalArgumentException, NullPointerException escape.
         // assert e instanceof IllegalArgumentException
         //   || e instanceof NullPointerException;
-	throw e;
+        throw e;
       }
     catch (InvocationTargetException e)
       {
-	// Let wrapped NullPointerException escape.
-	// assert e.getTargetException() instanceof NullPointerException
-	throw (NullPointerException) e.getTargetException();
+        // Let wrapped NullPointerException escape.
+        // assert e.getTargetException() instanceof NullPointerException
+        throw (NullPointerException) e.getCause();
       }
     catch (Exception e)
       {
-	// Covers InstantiationException, IllegalAccessException,
-	// NoSuchMethodException, none of which should be generated
-	// if the proxy class was generated correctly.
-	e.printStackTrace();
-	// assert false;
-	throw new InternalError(/*"Should not get here"*/);
+        // Covers InstantiationException, IllegalAccessException,
+        // NoSuchMethodException, none of which should be generated
+        // if the proxy class was generated correctly.
+        // assert false;
+        throw (Error) new InternalError("Unexpected: " + e).initCause(e);
       }
   }
 
@@ -416,7 +416,7 @@ public class Proxy implements Serializable
    * @see #generateProxyClass0(ProxyData)
    */
   private static native Class getProxyClass0(ClassLoader loader,
-					     Class[] interfaces);
+                                             Class[] interfaces);
 
   /**
    * Optional native method to replace (and speed up) the pure Java
@@ -439,7 +439,7 @@ public class Proxy implements Serializable
    * @see ProxyType#getProxyData()
    */
   private static native ProxyData getProxyData0(ClassLoader loader,
-						Class[] interfaces);
+                                                Class[] interfaces);
 
   /**
    * Optional native method to replace (and speed up) the pure Java
@@ -460,7 +460,7 @@ public class Proxy implements Serializable
    * @see ProxyData#generateProxyClass(ClassLoader)
    */
   private static native Class generateProxyClass0(ClassLoader loader,
-						  ProxyData data);
+                                                  ProxyData data);
 
 
   /**
@@ -503,7 +503,7 @@ public class Proxy implements Serializable
     {
       int hash = (loader == null) ? 0 : loader.hashCode();
       for (int i = 0; i < interfaces.length; i++)
-	hash = hash * 31 + interfaces[i].hashCode();
+        hash = hash * 31 + interfaces[i].hashCode();
       return hash;
     }
 
@@ -517,11 +517,11 @@ public class Proxy implements Serializable
     {
       ProxyType pt = (ProxyType) other;
       if (loader != pt.loader || interfaces.length != pt.interfaces.length)
-	return false;
+        return false;
       int i = interfaces.length;
       while (--i >= 0)
-	if (interfaces[i] != pt.interfaces[i])
-	  return false;
+        if (interfaces[i] != pt.interfaces[i])
+          return false;
       return true;
     }
   } // class ProxyType
@@ -557,7 +557,7 @@ public class Proxy implements Serializable
       catch (Exception e)
         {
           // assert false;
-          throw new InternalError();
+          throw (Error) new InternalError("Unexpected: " + e).initCause(e);
         }
     }
 
@@ -601,7 +601,7 @@ public class Proxy implements Serializable
     void checkCompatibility(ProxySignature other)
     {
       if (method.getReturnType() != other.method.getReturnType())
-	throw new IllegalArgumentException("incompatible return types: "
+        throw new IllegalArgumentException("incompatible return types: "
                                            + method + ", " + other.method);
 
       // if you can think of a more efficient way than this O(n^2) search,
@@ -613,35 +613,35 @@ public class Proxy implements Serializable
       Iterator itr = exceptions.iterator();
       int pos = size1;
       while (--pos >= 0)
-	{
-	  Class c1 = (Class) itr.next();
+        {
+          Class c1 = (Class) itr.next();
           Iterator itr2 = other.exceptions.iterator();
           int pos2 = size2;
           while (--pos2 >= 0)
-	    {
-	      Class c2 = (Class) itr2.next();
-	      if (c2.isAssignableFrom(c1))
-		valid1[pos] = true;
-	      if (c1.isAssignableFrom(c2))
-		valid2[pos2] = true;
-	    }
-	}
+            {
+              Class c2 = (Class) itr2.next();
+              if (c2.isAssignableFrom(c1))
+                valid1[pos] = true;
+              if (c1.isAssignableFrom(c2))
+                valid2[pos2] = true;
+            }
+        }
       pos = size1;
       itr = exceptions.iterator();
       while (--pos >= 0)
-	{
-	  itr.next();
-	  if (! valid1[pos])
-	    itr.remove();
-	}
+        {
+          itr.next();
+          if (! valid1[pos])
+            itr.remove();
+        }
       pos = size2;
       itr = other.exceptions.iterator();
       while (--pos >= 0)
-	{
-	  itr.next();
-	  if (! valid2[pos])
-	    itr.remove();
-	}
+        {
+          itr.next();
+          if (! valid2[pos])
+            itr.remove();
+        }
       exceptions.addAll(other.exceptions);
     }
 
@@ -655,7 +655,7 @@ public class Proxy implements Serializable
       int hash = method.getName().hashCode();
       Class[] types = method.getParameterTypes();
       for (int i = 0; i < types.length; i++)
-	hash = hash * 31 + types[i].hashCode();
+        hash = hash * 31 + types[i].hashCode();
       return hash;
     }
 
@@ -671,12 +671,12 @@ public class Proxy implements Serializable
       Class[] types1 = method.getParameterTypes();
       Class[] types2 = ps.method.getParameterTypes();
       if (! method.getName().equals(ps.method.getName())
-	  || types1.length != types2.length)
-	return false;
+          || types1.length != types2.length)
+        return false;
       int i = types1.length;
       while (--i >= 0)
-	if (types1[i] != types2[i])
-	  return false;
+        if (types1[i] != types2[i])
+          return false;
       return true;
     }
   } // class ProxySignature
@@ -761,22 +761,22 @@ public class Proxy implements Serializable
       // pool overflows
       int i = data.interfaces.length;
       while (--i >= 0)
-	{
-	  Class inter = data.interfaces[i];
-	  if (! inter.isInterface())
-	    throw new IllegalArgumentException("not an interface: " + inter);
-	  try
-	    {
-	      if (Class.forName(inter.getName(), false, pt.loader) != inter)
-		throw new IllegalArgumentException("not accessible in "
+        {
+          Class inter = data.interfaces[i];
+          if (! inter.isInterface())
+            throw new IllegalArgumentException("not an interface: " + inter);
+          try
+            {
+              if (Class.forName(inter.getName(), false, pt.loader) != inter)
+                throw new IllegalArgumentException("not accessible in "
                                                    + "classloader: " + inter);
-	    }
-	  catch (ClassNotFoundException e)
-	    {
+            }
+          catch (ClassNotFoundException e)
+            {
               throw new IllegalArgumentException("not accessible in "
                                                  + "classloader: " + inter);
-	    }
-	  if (! Modifier.isPublic(inter.getModifiers()))
+            }
+          if (! Modifier.isPublic(inter.getModifiers()))
             if (in_package)
               {
                 Package p = inter.getPackage();
@@ -790,32 +790,32 @@ public class Proxy implements Serializable
                 in_package = true;
                 data.pack = inter.getPackage();
               }
-	  for (int j = i; j >= 0; j--)
-	    if (data.interfaces[j] == inter)
-	      throw new IllegalArgumentException("duplicate interface: "
+          for (int j = i; j >= 0; j--)
+            if (data.interfaces[j] == inter)
+              throw new IllegalArgumentException("duplicate interface: "
                                                  + inter);
-	  Method[] methods = inter.getMethods();
+          Method[] methods = inter.getMethods();
           int j = methods.length;
           while (--j >= 0)
-	    {
-	      ProxySignature sig = new ProxySignature(methods[j]);
+            {
+              ProxySignature sig = new ProxySignature(methods[j]);
               ProxySignature old = (ProxySignature) method_set.put(sig, sig);
-	      if (old != null)
+              if (old != null)
                 sig.checkCompatibility(old);
-	    }
-	}
+            }
+        }
 
       i = method_set.size();
       data.methods = new Method[i];
       data.exceptions = new Class[i][];
       Iterator itr = method_set.values().iterator();
       while (--i >= 0)
-	{
-	  ProxySignature sig = (ProxySignature) itr.next();
-	  data.methods[i] = sig.method;
-	  data.exceptions[i] = (Class[]) sig.exceptions
+        {
+          ProxySignature sig = (ProxySignature) itr.next();
+          data.methods[i] = sig.method;
+          data.exceptions[i] = (Class[]) sig.exceptions
             .toArray(new Class[sig.exceptions.size()]);
-	}
+        }
       return data;
     }
   } // class ProxyData
@@ -836,9 +836,9 @@ public class Proxy implements Serializable
     private static final byte METHOD = 2;
     private static final byte INTERFACE = 3;
     private static final String CTOR_SIG
-      = "(Ljava/lang/reflect/InvocationHandler;)V"; 
+      = "(Ljava/lang/reflect/InvocationHandler;)V";
     private static final String INVOKE_SIG = "(Ljava/lang/Object;"
-      + "Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;"; 
+      + "Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object;";
 
     /** Bytecodes for insertion in the class definition byte[] */
     private static final char ACONST_NULL = 1;
@@ -918,7 +918,7 @@ public class Proxy implements Serializable
       // this_class
       qualName = ((data.pack == null ? "" : data.pack.getName() + '.')
                   + "$Proxy" + data.id);
-      putU2(classInfo(internal(qualName, false)));
+      putU2(classInfo(TypeSignature.getEncodingOfClass(qualName, false)));
       // super_class
       putU2(classInfo("java/lang/reflect/Proxy"));
 
@@ -926,7 +926,7 @@ public class Proxy implements Serializable
       putU2(data.interfaces.length);
       // interfaces[]
       for (int i = 0; i < data.interfaces.length; i++)
-	putU2(classInfo(data.interfaces[i]));
+        putU2(classInfo(data.interfaces[i]));
 
       // Recall that Proxy classes serialize specially, so we do not need
       // to worry about a <clinit> method for this field.  Instead, we
@@ -1063,8 +1063,8 @@ public class Proxy implements Serializable
       int handler_pc = code_length - 1;
       StringBuffer signature = new StringBuffer("(");
       for (int j = 0; j < paramtypes.length; j++)
-        signature.append(internal(paramtypes[j]));
-      signature.append(")").append(internal(ret_type));
+        signature.append(TypeSignature.getEncodingOfClass(paramtypes[j]));
+      signature.append(")").append(TypeSignature.getEncodingOfClass(ret_type));
 
       // Now we have enough information to emit the method.
 
@@ -1111,8 +1111,8 @@ public class Proxy implements Serializable
                     "Ljava/lang/reflect/InvocationHandler;"));
       putU1(ALOAD_0);
       putU1(GETSTATIC);
-      putU2(refInfo(FIELD, internal(qualName, false), "m",
-                    "[Ljava/lang/reflect/Method;"));
+      putU2(refInfo(FIELD, TypeSignature.getEncodingOfClass(qualName, false),
+                    "m", "[Ljava/lang/reflect/Method;"));
       putConst(i);
       putU1(AALOAD);
       if (paramtypes.length > 0)
@@ -1131,12 +1131,14 @@ public class Proxy implements Serializable
                   putU2(classInfo(wrapper(paramtypes[j])));
                   putU1(DUP);
                 }
-              putLoad(j, paramtypes[j]);
+              putLoad(param_count, paramtypes[j]);
               if (paramtypes[j].isPrimitive())
                 {
                   putU1(INVOKESPECIAL);
                   putU2(refInfo(METHOD, wrapper(paramtypes[j]), "<init>",
-                                '(' + internal(paramtypes[j]) + ")V"));
+                                '(' + (TypeSignature
+                                       .getEncodingOfClass(paramtypes[j])
+                                       + ")V")));
                   if (paramtypes[j] == long.class
                       || paramtypes[j] == double.class)
                     param_count++;
@@ -1160,7 +1162,7 @@ public class Proxy implements Serializable
           putU1(INVOKEVIRTUAL);
           putU2(refInfo(METHOD, wrapper(ret_type),
                         ret_type.getName() + "Value",
-                        "()" + internal(ret_type)));
+                        "()" + TypeSignature.getEncodingOfClass(ret_type)));
           if (ret_type == long.class)
             putU1(LRETURN);
           else if (ret_type == float.class)
@@ -1262,11 +1264,14 @@ public class Proxy implements Serializable
       byte[] bytecode = new byte[pool.length() + stream.length()];
       // More efficient to bypass calling charAt() repetitively.
       char[] c = pool.toString().toCharArray();
-      for (int i = c.length - 1; i >= 0; i--)
+      int i = c.length;
+      while (--i >= 0)
         bytecode[i] = (byte) c[i];
       c = stream.toString().toCharArray();
-      for (int i = c.length - 1, j = bytecode.length; i >= 0; i--, j--)
-        bytecode[j] = (byte) c[i];
+      i = c.length;
+      int j = bytecode.length;
+      while (i > 0)
+        bytecode[--j] = (byte) c[--i];
 
       // Patch the constant pool size, which we left at 0 earlier.
       int count = poolEntries.size() + 1;
@@ -1274,7 +1279,7 @@ public class Proxy implements Serializable
       bytecode[9] = (byte) count;
 
       try
-	{
+        {
           // XXX Do we require more native support here?
 
           // XXX Security hole - it is possible for another thread to grab the
@@ -1305,20 +1310,19 @@ public class Proxy implements Serializable
 
           // No security risk here, since clazz has not been exposed yet,
           // so user code cannot grab the same reflection object.
-	  Field f = clazz.getDeclaredField("m");
-	  f.flag = true;
-	  // we can share the array, because it is not publicized
-	  f.set(null, methods);
-	  f.flag = false;
+          Field f = clazz.getDeclaredField("m");
+          f.flag = true;
+          // we can share the array, because it is not publicized
+          f.set(null, methods);
+          f.flag = false;
 
           return clazz;
-	}
+        }
       catch (Throwable e)
-	{
-	  e.printStackTrace();
-	  // assert false;
-	  throw new InternalError(/*"shouldn't get here"*/);
-	}
+        {
+          // assert false;
+          throw (Error) new InternalError("Unexpected: " + e).initCause(e);
+        }
     }
 
     /**
@@ -1401,51 +1405,6 @@ public class Proxy implements Serializable
     }
 
     /**
-     * Given a fully-qualified Java type of the format returned by
-     * Class.getName(), return the form for .class files.
-     *
-     * @param type the fully qualified type, in Java format
-     * @param descriptor true if this is descriptor format (primitives and
-     *        L<name>; notation), false if class format
-     * @return the internal representation of the type
-     */
-    private String internal(String type, boolean descriptor)
-    {
-      if (! descriptor || type.charAt(0) == '[')
-        return type.replace('.', '/');
-      if (type.equals("boolean"))
-        return "Z";
-      if (type.equals("byte"))
-        return "B";
-      if (type.equals("short"))
-        return "S";
-      if (type.equals("char"))
-        return "C";
-      if (type.equals("int"))
-        return "I";
-      if (type.equals("long"))
-        return "J";
-      if (type.equals("float"))
-        return "F";
-      if (type.equals("double"))
-        return "D";
-      if (type.equals("void"))
-        return "V";
-      return 'L' + type.replace('.', '/') + ';';
-    }
-
-    /**
-     * Given a Class object, return the internal version for .class files.
-     *
-     * @param clazz the class object
-     * @return the internal representation of the type
-     */
-    private String internal(Class clazz)
-    {
-      return internal(clazz.getName(), true);
-    }
-
-    /**
      * Given a primitive type, return its wrapper class name.
      *
      * @param clazz the primitive type (but not void.class)
@@ -1510,7 +1469,8 @@ public class Proxy implements Serializable
      */
     private char classInfo(Class clazz)
     {
-      return classInfo(internal(clazz.getName(), false));
+      return classInfo(TypeSignature.getEncodingOfClass(clazz.getName(),
+                                                        false));
     }
 
     /**
@@ -1583,12 +1543,12 @@ public class Proxy implements Serializable
           if (c > 0 && c <= '\u007f')
             sb.append(c);
           else if (c <= '\u07ff') // includes '\0'
-	    {
+            {
               sb.append((char) (0xc0 | (c >> 6)));
               sb.append((char) (0x80 | (c & 0x6f)));
             }
           else
-	    {
+            {
               sb.append((char) (0xe0 | (c >> 12)));
               sb.append((char) (0x80 | ((c >> 6) & 0x6f)));
               sb.append((char) (0x80 | (c & 0x6f)));

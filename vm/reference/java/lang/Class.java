@@ -39,10 +39,15 @@ package java.lang;
 
 import java.io.Serializable;
 import java.io.InputStream;
-import java.lang.reflect.*;
-import java.security.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
-import gnu.java.lang.*;
+import java.security.AllPermission;
+import java.security.Permissions;
+import java.security.ProtectionDomain;
+import gnu.java.lang.ClassHelper;
 
 /*
  * This class is a reference version, mainly for compiling a class library
@@ -96,10 +101,6 @@ public final class Class implements Serializable
     permissions.add(new AllPermission());
     unknownProtectionDomain = new ProtectionDomain(null, permissions);
   }
-
-  /** Permission needed to get the protection domain. */
-  private final static Permission protectionDomainPermission
-    = new RuntimePermission("getProtectionDomain");
 
   /**
    * Class is non-instantiable from Java code; only the VM can create
@@ -215,16 +216,16 @@ public final class Class implements Serializable
       {
         return getConstructor(null).newInstance(null);
       }
-    catch(IllegalArgumentException e)
+    catch (IllegalArgumentException e)
       {
         throw (Error) new InternalError("Should not happen").initCause(e);
       }
-    catch(InvocationTargetException e)
+    catch (InvocationTargetException e)
       {
         throw (InstantiationException)
           new InstantiationException(e.toString()).initCause(e);
       }
-    catch(NoSuchMethodException e)
+    catch (NoSuchMethodException e)
       {
         throw (InstantiationException)
           new InstantiationException(e.toString()).initCause(e);
@@ -330,7 +331,23 @@ public final class Class implements Serializable
    * @see ClassLoader
    * @see RuntimePermission
    */
-  public native ClassLoader getClassLoader();
+  public ClassLoader getClassLoader()
+  {
+    if (isPrimitive())
+      return null;
+    ClassLoader loader = getClassLoader0();
+    // Check if we may get the classloader
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      {
+        // Get the calling class and classloader
+        Class c = VMSecurityManager.getClassContext()[1];
+        ClassLoader cl = c.getClassLoader();
+        if (cl != null && cl != ClassLoader.systemClassLoader)
+          sm.checkPermission(new RuntimePermission("getClassLoader"));
+      }
+    return loader;
+  }
 
   /**
    * Get the direct superclass of this class.  If this is an interface,
@@ -380,14 +397,41 @@ public final class Class implements Serializable
    */
   public Class getComponentType()
   {
-    if(isArray())
+    if (isArray())
       try
         {
-          return Class.forName(getName().substring(1), false,
-                               getClassLoader());
+          String name = getName();
+          switch (name.charAt(1))
+            {
+            case 'B':
+              return byte.class;
+            case 'C':
+              return char.class;
+            case 'D':
+              return double.class;
+            case 'F':
+              return float.class;
+            case 'I':
+              return int.class;
+            case 'J':
+              return long.class;
+            case 'S':
+              return short.class;
+            case 'Z':
+              return boolean.class;
+            default:
+              return null;
+            case '[':
+              name = name.substring(1);
+              break;
+            case 'L':
+              name = name.substring(2, name.length() - 1);
+            }
+          return Class.forName(name, false, getClassLoader());
         }
       catch(ClassNotFoundException e)
         {
+          // Shouldn't happen, but ignore it anyway.
         }
     return null;
   }
@@ -748,7 +792,7 @@ public final class Class implements Serializable
   {
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)
-      sm.checkPermission(protectionDomainPermission);
+      sm.checkPermission(new RuntimePermission("getProtectionDomain"));
 
     return pd == null ? unknownProtectionDomain : pd;
   }
@@ -821,5 +865,11 @@ public final class Class implements Serializable
       }
     return c.defaultAssertionStatus;
   }
-}
 
+  /**
+   * Return the class loader of this class.
+   *
+   * @return the class loader
+   */
+  native ClassLoader getClassLoader0();
+} // class Class

@@ -38,12 +38,16 @@ exception statement from your version. */
 
 package java.lang;
 
-import java.lang.reflect.*;
-import gnu.java.lang.*;
-import java.io.*;
-import java.net.*;
-import java.security.*;
-import java.util.*;
+import java.io.InputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.PermissionCollection;
+import java.security.Policy;
+import java.security.ProtectionDomain;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import gnu.java.util.DoubleEnumeration;
 import gnu.java.util.EmptyEnumeration;
 
@@ -76,7 +80,7 @@ import gnu.java.util.EmptyEnumeration;
  * <p>The bootstrap classloader in GNU Classpath is implemented as a couple of
  * static (native) methods on the package private class
  * <code>java.lang.VMClassLoader</code>, the system classloader is an
- * instance of <code>gnu.java.lang.SystemClassloader</code>
+ * instance of <code>gnu.java.lang.SystemClassLoader</code>
  * (which is a subclass of <code>java.net.URLClassLoader</code>).
  *
  * <p>Users of a <code>ClassLoader</code> will normally just use the methods
@@ -113,11 +117,19 @@ import gnu.java.util.EmptyEnumeration;
  */
 public abstract class ClassLoader
 {
-  /** All classes loaded by this classloader. */
-  private final Map loadedClasses = new HashMap();
+  /**
+   * All classes loaded by this classloader. VM's may choose to implement
+   * this cache natively; but it is here available for use if necessary. It
+   * is not private in order to allow native code (and trusted subclasses)
+   * access to this field.
+   */
+  final Map loadedClasses = new HashMap();
 
-  /** All packages defined by this classloader. */
-  private final Map definedPackages = new HashMap();
+  /**
+   * All packages defined by this classloader. It is not private in order to
+   * allow native code (and trusted subclasses) access to this field.
+   */
+  final Map definedPackages = new HashMap();
 
   /**
    * The classloader that is consulted before this classloader.
@@ -129,10 +141,9 @@ public abstract class ClassLoader
    * System/Application classloader: defaults to an instance of
    * gnu.java.lang.SystemClassLoader, unless the first invocation of
    * getSystemClassLoader loads another class loader because of the
-   * java.system.class.loader property.
-   *
-   * XXX - The VM may needs to modify this field or set it to something
-   * else, until gnu.java.lang.SystemClassLoader is correctly implemented.
+   * java.system.class.loader property. The initialization of this field
+   * is somewhat circular - getSystemClassLoader() checks whether this
+   * field is null in order to bypass a security check.
    */
   static final ClassLoader systemClassLoader = getSystemClassLoader();
 
@@ -485,6 +496,8 @@ public abstract class ClassLoader
    */
   protected final Class findLoadedClass(String name)
   {
+    // NOTE: If the VM is keeping its own cache, it may make sense to have
+    // this method be native.
     return (Class) loadedClasses.get(name);
   }
 
@@ -596,38 +609,7 @@ public abstract class ClassLoader
    */
   public static final URL getSystemResource(String name)
   {
-    //XXX This should be:
-    // return getSystemClassLoader().getResource(name);
-    if (name.startsWith("/"))
-      name = name.substring(1);
-    String cp = System.getProperty("java.class.path");
-    if (cp == null)
-      return null;
-
-    StringTokenizer st = new StringTokenizer(cp, File.pathSeparator);
-    while (st.hasMoreTokens())
-      {
-        String path = st.nextToken();
-        if (path.toLowerCase().endsWith(".zip") ||
-            path.toLowerCase().endsWith(".jar"))
-          return null; // Not implemented yet
-        File f;
-        if (path.endsWith(File.separator))
-          f = new File(path + name);
-        else
-          f = new File(path + File.separator + name);
-
-        if (f.exists())
-          try
-            {
-              return new URL("file://" + f.getAbsolutePath());
-            }
-          catch (MalformedURLException e)
-            {
-              return null;
-            }
-      }
-    return null;
+    return getSystemClassLoader().getResource(name);
   }
 
   /**
@@ -706,8 +688,6 @@ public abstract class ClassLoader
    * name of the class to use as the system class loader, otherwise this
    * uses gnu.java.lang.SystemClassLoader.
    *
-   * XXX - overriding the class loader does not currently work
-   *
    * <p>Note that this is different from the bootstrap classloader that
    * actually loads all the real "system" classes (the bootstrap classloader
    * is the parent of the returned system classloader).
@@ -729,7 +709,17 @@ public abstract class ClassLoader
     // for java.system.class.loader.
     if (systemClassLoader == null)
       {
-        // XXX return SystemClassLoader.getInstance();
+        String loader = System.getProperty("java.system.class.loader",
+                                           "gnu.java.lang.SystemClassLoader");
+        try
+          {
+            return (ClassLoader) Class.forName(loader).newInstance();
+          }
+        catch (Exception e)
+          {
+            throw (Error) new InternalError
+              ("System class loader could not be found: " + e).initCause(e);
+          }
       }
     // Check if we may return the system classloader
     SecurityManager sm = System.getSecurityManager();

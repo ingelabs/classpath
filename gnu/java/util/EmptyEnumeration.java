@@ -1,5 +1,5 @@
-/* gnu.java.util.EmptyEnumeration
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* EmptyEnumeration.java -- a constant empty enumeration
+   Copyright (C) 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -37,52 +37,60 @@ exception statement from your version. */
 
 package gnu.java.util;
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 /**
- * This is a helper class that produces an empty Enumerations.
- * There is only one instance of this class that can be used whenever one
- * needs a non-null but empty enumeration. Using this class prevents multiple
+ * This is a helper class that produces an empty Enumerations. There is only
+ * one instance of this class that can be used whenever one needs a
+ * non-null but empty enumeration. Using this class prevents multiple
  * small objects and inner classes. <code>getInstance()</code> returns
  * the only instance of this class. It can be shared by multiple objects and
- * threads
- * <p>
- * <code>hasMoreElements()</code> always returns <code>false</code>.
- * <code>nextElement()</code> always throws <code>NoSuchElementException</code>.
- * 
+ * threads.
+ *
  * @author Mark Wielaard (mark@klomp.org)
  */
-public final class EmptyEnumeration implements Enumeration {
+public final class EmptyEnumeration implements Enumeration, Serializable
+{
+  /** The only instance of this class */
+  private static final EmptyEnumeration instance = new EmptyEnumeration();
 
-    /** The only instance of this class */
-    private static final EmptyEnumeration instance = new EmptyEnumeration();
+  /**
+   * Private constructor that creates a new empty Enumeration.
+   */
+  private EmptyEnumeration()
+  {
+  }
 
-    /**
-     * Private constructor that creates a new empty Enumeration.
-     */
-    private EmptyEnumeration() {
-    }
+  /**
+   * Returns the only instance of this class.
+   * It can be shared by multiple objects and threads.
+   *
+   * @return the common empty enumeration
+   */
+  public static EmptyEnumeration getInstance()
+  {
+    return instance;
+  }
 
-    /**
-     * Returns the only instance of this class.
-     * It can be shared by multiple objects and threads.
-     */
-    public static EmptyEnumeration getInstance() {
-        return instance;
-    }
+  /**
+   * Returns false, since there are no elements.
+   *
+   * @return false
+   */
+  public boolean hasMoreElements()
+  {
+    return false;
+  }
 
-    /**
-     * Always returns <code>false</code>.
-     */
-    public boolean hasMoreElements() {
-        return false;
-    }
-
-    /**
-     * Always throws <code>NoSuchElementException</code>.
-     */
-    public Object nextElement() throws NoSuchElementException {
-        throw new NoSuchElementException();
-    }
+  /**
+   * Always throws <code>NoSuchElementException</code>, since it is empty.
+   *
+   * @throws NoSuchElementException this is empty
+   */
+  public Object nextElement()
+  {
+    throw new NoSuchElementException();
+  }
 }

@@ -1,5 +1,5 @@
-/* java.util.ResourceBundle
-   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
+/* ResourceBundle -- aids in loading resource bundles
+   Copyright (C) 1998, 1999, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,8 +37,11 @@ exception statement from your version. */
 
 
 package java.util;
+
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
+import java.io.InputStream;
+import java.io.IOException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import gnu.classpath.Configuration;
@@ -76,7 +79,7 @@ import gnu.classpath.Configuration;
  * When a bundle is searched, we look first for a class with
  * the given name and if that is not found for a file with
  * <code>.properties</code> extension in the classpath.  The name
- * must be a fully qualified classname (with dots as path separators).  
+ * must be a fully qualified classname (with dots as path separators).
  * <br>
  * (Note: This implementation always backs up the class with a
  * properties file if that is existing, but you shouldn't rely on
@@ -90,19 +93,19 @@ public abstract class ResourceBundle
   /**
    * The parent bundle.  This is consulted when you call getObject
    * and there is no such resource in the current bundle.  This
-   * field may be null.  
+   * field may be null.
    */
   protected ResourceBundle parent;
 
   /**
    * The locale of this resource bundle.  You can read this with
    * <code>getLocale</code> and it is automatically set in
-   * <code>getBundle</code>.  
+   * <code>getBundle</code>.
    */
   private Locale locale;
 
   /**
-   * We override SecurityManager in order to access getClassContext(). 
+   * We override SecurityManager in order to access getClassContext().
    */
   static class Security extends SecurityManager
   {
@@ -117,7 +120,7 @@ public abstract class ResourceBundle
       return null;
     }
   }
-  
+
   // This will always work since java.util classes have (all) system
   // permissions.
   static Security security = (Security) AccessController.doPrivileged
@@ -143,7 +146,7 @@ public abstract class ResourceBundle
    * Objects are Strings, this method provides a convenient way to get
    * them without casting.
    * @param key the name of the resource.
-   * @exception MissingResourceException
+   * @throws MissingResourceException
    *   if that particular object could not be found in this bundle nor
    *   the parent bundle.
    */
@@ -156,7 +159,7 @@ public abstract class ResourceBundle
    * Get an array of Strings from this resource bundle.  This method
    * provides a convenient way to get it without casting.
    * @param key the name of the resource.
-   * @exception MissingResourceException
+   * @throws MissingResourceException
    *   if that particular object could not be found in this bundle nor
    *   the parent bundle.
    */
@@ -169,7 +172,7 @@ public abstract class ResourceBundle
   /**
    * Get an object from this resource bundle.
    * @param key the name of the resource.
-   * @exception MissingResourceException
+   * @throws MissingResourceException
    *   if that particular object could not be found in this bundle nor
    *   the parent bundle.
    */
@@ -192,13 +195,12 @@ public abstract class ResourceBundle
   }
 
   /**
-   * Get the appropriate ResourceBundle for the default locale.  
+   * Get the appropriate ResourceBundle for the default locale.
    * @param baseName the name of the ResourceBundle.  This should be
    * a name of a Class or a properties-File.  See the class
-   * description for details.  
+   * description for details.
    * @return the desired resource bundle
-   * @exception MissingResourceException 
-   *    if the resource bundle couldn't be found.  
+   * @throws MissingResourceException if the resource bundle can't be found
    */
   public static final ResourceBundle getBundle(String baseName)
     throws MissingResourceException
@@ -208,14 +210,13 @@ public abstract class ResourceBundle
   }
 
   /**
-   * Get the appropriate ResourceBundle for the given locale.  
+   * Get the appropriate ResourceBundle for the given locale.
    * @param baseName the name of the ResourceBundle.  This should be
    * a name of a Class or a properties-File.  See the class
-   * description for details.  
+   * description for details.
    * @param locale A locale.
    * @return the desired resource bundle
-   * @exception MissingResourceException 
-   *    if the resource bundle couldn't be found.
+   * @throws MissingResourceException if the resource bundle can't be found
    */
   public static final ResourceBundle getBundle(String baseName,
 					       Locale locale)
@@ -233,7 +234,7 @@ public abstract class ResourceBundle
 
   /**
    * The `empty' locale is created once in order to optimize
-   * tryBundle().  
+   * tryBundle().
    */
   private static final Locale emptyLocale = new Locale ("", "");
 
@@ -243,7 +244,7 @@ public abstract class ResourceBundle
    * @param locale the locale, that must be used exactly.
    * @param classloader the classloader.
    * @param bundle the back up (parent) bundle
-   * @return the resource bundle if that could be loaded, otherwise 
+   * @return the resource bundle if that could be loaded, otherwise
    * <code>bundle</code>.
    */
   private static final ResourceBundle tryBundle(String localizedName,
@@ -269,27 +270,6 @@ public abstract class ResourceBundle
     // foundBundle holds exact matches for the localizedName resource
     // bundle, which may later be cached.
     ResourceBundle foundBundle = null;
-
-    try
-      {
-	java.io.InputStream is;
-	final String resourceName =
-	  localizedName.replace('.', '/') + ".properties";
-	if (classloader == null)
-	  is = ClassLoader.getSystemResourceAsStream (resourceName);
-	else
-	  is = classloader.getResourceAsStream (resourceName);
-	if (is != null)
-	  {
-	    foundBundle = new PropertyResourceBundle(is);
-	    foundBundle.parent = bundle;
-	    foundBundle.locale = locale;
-	  }
-      }
-    catch (java.io.IOException ex)
-      {
-      }
-
     try
       {
 	Class rbClass;
@@ -312,6 +292,26 @@ public abstract class ResourceBundle
 	// ignore them all
 	// XXX should we also ignore ClassCastException?
       }
+    if (foundBundle == null)
+      try
+        {
+          InputStream is;
+          final String resourceName
+            = localizedName.replace('.', '/') + ".properties";
+          if (classloader == null)
+            is = ClassLoader.getSystemResourceAsStream (resourceName);
+          else
+            is = classloader.getResourceAsStream (resourceName);
+          if (is != null)
+	    {
+              foundBundle = new PropertyResourceBundle(is);
+              foundBundle.parent = bundle;
+              foundBundle.locale = locale;
+            }
+        }
+      catch (IOException ex)
+        {
+        }
 
     if (foundBundle != null)
       cache.put(localizedName, new SoftReference(foundBundle));
@@ -327,7 +327,7 @@ public abstract class ResourceBundle
    * @param locale the locale, that must be used exactly.
    * @param classloader the classloader.
    * @param bundle the back up (parent) bundle
-   * @return the resource bundle if that could be loaded, otherwise 
+   * @return the resource bundle if that could be loaded, otherwise
    * <code>bundle</code>.
    */
   private static final ResourceBundle tryLocalBundle(String baseName,
@@ -337,19 +337,21 @@ public abstract class ResourceBundle
 						     HashMap cache)
   {
     final String language = locale.getLanguage();
+    StringBuffer sb = new StringBuffer(60);
 
     if (language.length() > 0)
       {
 	final String country = locale.getCountry();
-	String name = baseName + "_" + language;
+        sb.append(baseName).append('_').append(language);
+	String name = sb.toString();
 
 	if (country.length() != 0)
 	  {
 	    bundle = tryBundle(name,
 			       new Locale(language, ""),
 			       classloader, bundle, cache);
-
-	    name += "_" + country;
+            sb.append('_').append(country);
+	    name = sb.toString();
 
 	    final String variant = locale.getVariant();
 
@@ -359,8 +361,8 @@ public abstract class ResourceBundle
 				   new Locale(language,
 					      country),
 				   classloader, bundle, cache);
-
-		name += "_" + variant;
+                sb.append('_').append(variant);
+		name = sb.toString();
 	      }
 	  }
 	bundle = tryBundle(name, locale, classloader, bundle, cache);
@@ -369,15 +371,14 @@ public abstract class ResourceBundle
   }
 
   /**
-   * Get the appropriate ResourceBundle for the given locale.  
+   * Get the appropriate ResourceBundle for the given locale.
    * @param baseName the name of the ResourceBundle.  This should be
    * a name of a Class or a properties file.  See the class
-   * description for details.  
+   * description for details.
    * @param locale A locale.
    * @param classloader a ClassLoader.
    * @return the desired resource bundle
-   * @exception MissingResourceException 
-   *    if the resource bundle couldn't be found.
+   * @throws MissingResourceException if the resource bundle can't be found
    */
   // This method is synchronized so that the cache is properly
   // handled.
@@ -390,6 +391,10 @@ public abstract class ResourceBundle
     // and builds the parent chain on the fly.
 
     HashMap cache = (HashMap) resourceBundleCache.get(classLoader);
+    StringBuffer sb = new StringBuffer(60);
+    sb.append(baseName).append('_').append(locale);
+    String name = sb.toString();
+
     if (cache == null)
       {
 	cache = new HashMap();
@@ -397,8 +402,6 @@ public abstract class ResourceBundle
       }
     else
       {
-	// Fast path: If baseName + "_" + locale is in cache use it.
-	String name = baseName + "_" + locale.toString();
 	Reference ref = (Reference) cache.get(name);
 	if (ref != null)
 	  {
@@ -427,6 +430,14 @@ public abstract class ResourceBundle
 	bundle = tryLocalBundle(baseName, Locale.getDefault(),
 				classLoader, baseBundle, cache);
       }
+
+    // Check whether baseName_locale has been loaded; if not, map the
+    // "baseName" bundle to "baseName_locale" to avoid retrying to load
+    // baseName_locale.
+    Reference ref = (Reference) cache.get(name);
+    if (ref == null)
+      cache.put(name, new SoftReference(bundle));
+
     return bundle;
   }
 
@@ -455,13 +466,12 @@ public abstract class ResourceBundle
    * Override this method to provide the resource for a keys.  This gets
    * called by <code>getObject</code>.  If you don't have a resource
    * for the given key, you should return null instead throwing a
-   * MissingResourceException.   You don't have to ask the parent, 
+   * MissingResourceException.   You don't have to ask the parent,
    * getObject() already does this.
    *
    * @param key The key of the resource.
    * @return The resource for the key, or null if not in bundle.
-   * @exception MissingResourceException
-   *   you shouldn't throw this.
+   * @throws MissingResourceException you shouldn't throw this
    */
   protected abstract Object handleGetObject(String key)
     throws MissingResourceException;

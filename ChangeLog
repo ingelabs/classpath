@@ -1,5 +1,29 @@
 2002-03-22  Eric Blake  <ebb9@email.byu.edu>
 
+	Portions of Patch 70:
+	* gnu/java/lang/ClassLoaderHelper.java: Remove special casing for
+	String, which no longer uses this.
+	* gnu/java/lang/Makefile.am (EXTRA_DIST) Add
+	SystemClassLoader.java.
+	* gnu/java/lang/SystemClassLoader.java: New file.
+	* gnu/java/lang/reflect/TypeSignature.java: Clean up, borrowing
+	ideas from java.lang.reflect.Proxy.
+	* gnu/java/util/EmptyEnumeration.java: Improve formatting.
+	* java/lang/ClassLoader.java: Use the new
+	gnu.java.lang.SystemClassLoader, plus support for loading an
+	alternative at startup.
+	* java/lang/reflect/Proxy.java: Fix some off-by-one bugs, use
+	gnu.java.lang.reflect.TypeSignature.
+	* java/sql/DriverManager.java: Throw appropriate exception.
+	* java/util/ResourceBundle.java: Rearrange code to favor common
+	case; use string buffers for speed.
+	* vm/reference/java/lang/Class.java (getClassLoader): Perform
+	security checks.
+	(getComponentType): Fix bugs.
+	* vm/reference/java/lang/Runtime.java: Include "." in search path.
+
+2002-03-22  Eric Blake  <ebb9@email.byu.edu>
+
 	* java/awt/geom/AffineTransform.java: Update to 1.4.
 	* java/awt/geom/Arc2D.java: New file (stubbed).
 	* java/awt/geom/Area.java: New file (stubbed).

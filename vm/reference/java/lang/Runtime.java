@@ -98,9 +98,12 @@ public class Runtime
     // XXX Does this need special privileges?
     String path = System.getProperty("java.library.path");
     if (path == null)
-      libpath = new String[0];
+      // Default lib path is current directory.
+      libpath = new String[] { "." };
     else
       {
+        // XXX This might cause bootstrap problems using a field of File;
+        // we may need to grab the path separator property directly.
         StringTokenizer t = new StringTokenizer(path, File.pathSeparator);
         libpath = new String[t.countTokens()];
         for (int i = 0; i < libpath.length; i++)
