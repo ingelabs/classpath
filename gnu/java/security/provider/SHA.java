@@ -30,8 +30,13 @@ public class SHA extends MessageDigest implements Cloneable
 {
   public SHA ()
   {
-    super ("SHA");
+    super("SHA");
     engineReset ();
+  }
+
+  public int engineGetDigestLength()
+  {
+    return 16;
   }
 
   public void engineUpdate (byte b)
@@ -73,7 +78,7 @@ public class SHA extends MessageDigest implements Cloneable
   public byte[] engineDigest ()
   {
     long bitcount = bytecount * 8;
-    engineUpdate ((byte)-128); // 10000000 in binary; the start of the padding
+    engineUpdate ((byte)0x80); // 10000000 in binary; the start of the padding
 
     // add the rest of the padding to fill this block out, but leave 8
     // bytes to put in the original bytecount
