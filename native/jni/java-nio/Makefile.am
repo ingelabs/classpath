@@ -1,6 +1,7 @@
 pkglib_LTLIBRARIES = libjavanio.la
 
-libjavanio_la_SOURCES = java_nio_DirectByteBufferImpl.c \
+libjavanio_la_SOURCES = gnu_java_nio_NIOServerSocket.c \
+			java_nio_DirectByteBufferImpl.c \
 			java_nio_FileChannelImpl.c \
 			java_nio_FileLockImpl.c
 

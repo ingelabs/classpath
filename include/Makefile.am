@@ -35,6 +35,7 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkToolkit.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkWindowPeer.h \
 $(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h \
 $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h \
+$(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h \
 $(top_srcdir)/include/java_io_FileDescriptor.h \
 $(top_srcdir)/include/java_io_File.h \
 $(top_srcdir)/include/java_io_ObjectInputStream.h \
@@ -120,6 +121,8 @@ $(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h: $(top_srcdir)/gnu/
 	$(JAVAH) -o $@ gnu.java.net.PlainDatagramSocketImpl
 $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h: $(top_srcdir)/gnu/java/net/PlainSocketImpl.java
 	$(JAVAH) -o $@ gnu.java.net.PlainSocketImpl
+$(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h: $(top_srcdir)/gnu/java/nio/NIOServerSocket.java
+	$(JAVAH) -o $@ gnu.java.nio.NIOServerSocket
 $(top_srcdir)/include/java_io_FileDescriptor.h: $(top_srcdir)/java/io/FileDescriptor.java
 	$(JAVAH) -o $@ java.io.FileDescriptor
 $(top_srcdir)/include/java_io_File.h: $(top_srcdir)/java/io/File.java
