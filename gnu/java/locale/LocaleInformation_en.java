@@ -39,7 +39,7 @@ public class LocaleInformation_en extends ListResourceBundle
   * to sort strings properly.  See the documentation of that class for the 
   * proper format.
   */
-private static String collation_rules = 
+private static final String collation_rules = 
   "-<0,1<2<3<4<5<6<7<8<9A,a<b,B<c,C<d,D<e,E<f,F<g,G<h,H<i,I<j,J<j,K" +
   "<l,L<m,M<n,N<o,O<p,P<q,Q<r,R<s,S<t,T<u,U<v,V<w,W<x,X<y,Y,z<Z";
 
@@ -53,18 +53,122 @@ private static String collation_rules =
   * This is the list of word separator characters used by 
   * java.text.BreakIterator 
   */
-private static String[] word_breaks = { " ", "\t", "\r\n", "\n" }; 
+private static final String[] word_breaks = { " ", "\t", "\r\n", "\n" }; 
 
 /**
   * This is the list of sentence break sequences used by 
   * java.text.BreakIterator
   */
-private static String[] sentence_breaks = { ". " };
+private static final String[] sentence_breaks = { ". " };
 
 /**
   * This is the list of potential line break locations.
   */
-private static String[] line_breaks = { " ", "\t", "-", "\r\n", "\n" };
+private static final String[] line_breaks = { " ", "\t", "-", "\r\n", "\n" };
+
+/**
+  * This is the list of months, fully spelled out
+  */
+private static final String[] months = { "January", "February", "March", 
+  "April", "May", "June", "July", "August", "September", "October",
+  "November", "December", null };
+
+/**
+  * This is the list of abbreviated month names
+  */
+private static final String[] shortMonths = { "Jan", "Feb", "Mar", "Apr", "May",
+  "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", null };
+
+/**
+  * This is the list of weekdays, fully spelled out
+  */
+private static final String[] weekdays = { null, "Sunday", "Monday", "Tuesday",
+  "Wednesday", "Thursday", "Friday", "Saturday" };
+
+/**
+  * This is the list of abbreviated weekdays
+  */
+private static final String[] shortWeekdays = { null, "Sun", "Mon", "Tue", "Wed",
+  "Thu", "Fri", "Sat" };
+
+/**
+  * This is the list of AM/PM strings
+  */
+private static final String[] ampms = { "AM", "PM" };
+
+/**
+  * This is the list of era identifiers
+  */
+private static final String[] eras = { "BC", "AD" };
+
+/**
+  * This is the list of timezone strings.
+  */
+private static final String[][] zoneStrings =
+{
+  { "EST6EDT", "Eastern Standard Time", "EST", "Eastern Daylight Time", "EDT" },
+  { "EST6", "Eastern Standard Time", "EST", "Eastern Standard Time", "EST" },
+  { "CST6CDT", "Central Standard Time", "CST", "Central Daylight Time", "CDT" },
+  { "MST6MDT", "Mountain Standard Time", "MST", "Mountain Daylight Time", 
+    "MDT" },
+  { "MST6", "Mountain Standard Time", "MST", "Mountain Standard Time", "MST" },
+  { "PST6PDT", "Pacific Standard Time", "PDT", "Pacific Daylight Time", "PDT" }
+};
+
+/**
+  * This is the list of pattern characters for formatting dates
+  */
+private static final String localPatternChars = "GyMdhHmsSEDFwWakKz"; // Not a mistake!
+
+/**
+  * This is the DateFormat.SHORT date format
+  */
+private static final String shortDateFormat = "M/d/yy";
+
+/**
+  * This is the DateFormat.MEDIUM format
+  */
+private static final String mediumDateFormat = "dd-MMM-yy";
+
+/**
+  * This is the DateFormat.LONG format
+  */
+private static final String longDateFormat = "MMMM d, yyyy";
+
+/**
+  * This is the DateFormat.FULL format
+  */
+private static final String fullDateFormat = "EEEE, MMMM, e, yyyy";
+
+/**
+  * This is the DateFormat.DEFAULT format
+  */
+private static final String defaultDateFormat = "dd-MMM-yy";
+
+/**
+  * This is the DateFormat.SHORT format
+  */
+private static final String shortTimeFormat = "h:mm a";
+
+/**
+  * This is the DateFormat.MEDIUM format
+  */
+private static final String mediumTimeFormat = "h:mm:ss a";
+
+/**
+  * This is the DateFormat.LONG format
+  */
+private static final String longTimeFormat = "h:mm:ss a z";
+
+/**
+  * This is the DateFormat.FULL format
+  */
+private static final String fullTimeFormat = "h:mm:ss 'o''clock' a z";
+
+/**
+  * This is the DateFormat.DEFAULT format
+  */
+private static final String defaultTimeFormat = "h:mm:ss a";
 
 /*************************************************************************/
 
@@ -78,7 +182,25 @@ private static final Object[][] contents =
   { "collation_rules", collation_rules },
   { "word_breaks", word_breaks },
   { "sentence_breaks", sentence_breaks },
-  { "line_breaks", line_breaks }
+  { "line_breaks", line_breaks },
+  { "months", months },
+  { "shortMonths", shortMonths },
+  { "weekdays", weekdays },
+  { "shortWeekdays", shortWeekdays },
+  { "ampms", ampms },
+  { "eras", eras },
+  { "zoneStrings", zoneStrings },
+  { "localPatternChars", localPatternChars },
+  { "shortDateFormat", shortDateFormat },
+  { "mediumDateFormat", mediumDateFormat },
+  { "longDateFormat", longDateFormat },
+  { "fullDateFormat", fullDateFormat },
+  { "defaultDateFormat", defaultDateFormat },
+  { "shortTimeFormat", shortTimeFormat },
+  { "mediumTimeFormat", mediumTimeFormat },
+  { "longTimeFormat", longTimeFormat },
+  { "fullTimeFormat", fullTimeFormat },
+  { "defaultTimeFormat", defaultTimeFormat },
 };
 
 /*************************************************************************/
