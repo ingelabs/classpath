@@ -177,7 +177,7 @@ public class RuleBasedCollator extends Collator
   public RuleBasedCollator (String rules) throws ParseException
   { 
     if (rules.equals (""))
-      throw new ParseException ("empty rule set", 0);
+      throw new IllegalArgumentException ("Empty rule set");
     
     this.rules = rules;
     Vector vec = new Vector();
@@ -196,7 +196,7 @@ public class RuleBasedCollator extends Collator
 	if (Character.isWhitespace (c))
 	  continue;
 
-        // Primary difference.
+        // Primary difference
         if (c == '<')
           {
             ignore_chars = false;
@@ -212,7 +212,7 @@ public class RuleBasedCollator extends Collator
             continue;
           }
 
-        // Secondary difference.
+        // Secondary difference
         if (c == ';')
           {
             if (primary_seq == 0)
@@ -229,14 +229,13 @@ public class RuleBasedCollator extends Collator
             continue;
           }
 
-        // Tertiary difference.
+        // Tertiary difference
         if (c == ',')
           {
             if (primary_seq == 0)
               throw new ParseException (rules, index);
 
-            CollationElement e = new CollationElement (argument.toString(),
-			                               primary_seq,
+            CollationElement e = new CollationElement (argument.toString(), primary_seq,
                                                        secondary_seq,
                                                        tertiary_seq);
             ++tertiary_seq;
@@ -246,14 +245,13 @@ public class RuleBasedCollator extends Collator
             continue;
           }
 
-        // Is equal to.
+        // Is equal to
         if (c == '=')
           {
             if (primary_seq == 0)
               throw new ParseException (rules, index);
 
-            CollationElement e = new CollationElement (argument.toString(),
-			                               primary_seq,
+            CollationElement e = new CollationElement (argument.toString(), primary_seq,
                                                        secondary_seq,
                                                        tertiary_seq);
             vec.add (e);
@@ -261,24 +259,24 @@ public class RuleBasedCollator extends Collator
             continue;
           }
 
-        // Sort accents backwards.
+        // Sort accents backwards
         if (c == '@')
           {
-            throw new ParseException ("French style accents not implemented yet", 0);
+            throw new ParseException("French style accents not implemented yet", 0);
           }
 
-        // Reset command.
+        // Reset command
         if (c == '&')
           {
-            throw new ParseException ("Reset not implemented yet", 0);
+            throw new ParseException("Reset not implemented yet", 0);
           }
 
-        // See if we are still reading characters to skip.
+        // See if we are still reading characters to skip
         if (ignore_chars == true)
           {
-            CollationElement e = new CollationElement (c + "", 0, (short) 0, 
-                                                       (short) 0);
-            vec.add (e);
+            CollationElement e = new CollationElement (c + "", 0, (short)0, 
+                                                       (short)0);
+            vec.add(e);
             continue;
           }
 
