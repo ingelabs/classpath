@@ -1,4 +1,8 @@
 2005-04-06  Audrius Meskauskas  <audriusa@bluewin.ch>
+	* org/omg/CORBA/Context.java: new file
+	* org/omg/CORBA/ContextList.java: new file
+
+2005-04-06  Audrius Meskauskas  <audriusa@bluewin.ch>
 	* org/omg/CORBA/TCKind.java: making fields final
 
 2005-04-06  Audrius Meskauskas  <audriusa@bluewin.ch>
