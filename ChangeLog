@@ -1,5 +1,19 @@
 2004-01-07  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/attribute/standard/DateTimeAtCompleted.java,
+	javax/print/attribute/standard/DateTimeAtCreation.java,
+	javax/print/attribute/standard/DateTimeAtProcessing.java,
+	javax/print/attribute/standard/JobImpressionsCompleted.java,
+	javax/print/attribute/standard/JobKOctets.java,
+	javax/print/attribute/standard/JobKOctetsProcessed.java,
+	javax/print/attribute/standard/JobMediaSheetsCompleted.java,
+	javax/print/attribute/standard/JobPrioritySupported.java:
+	New files.
+	* javax/print/attribute/standard/Makefile.am (EXTRA_DIST):
+	Added new files.
+
+2004-01-07  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/CollationElementIterator.java
 	(collator): Made package-private.
 	(text): Likewise.
