@@ -59,8 +59,10 @@ import gnu.java.lang.CharData;
  * for more information on the Unicode Standard.
  *
  * @author Paul N. Fisher
+ * @author Jochen Hoenicke
  * @author Eric Blake <ebb9@email.byu.edu>
  * @since 1.0
+ * @see CharData
  */
 public final class Character implements Serializable, Comparable
 {
@@ -875,7 +877,7 @@ public final class Character implements Serializable, Comparable
 
     /**
      * Specials.
-     * '\uFFF0' - '\uFFFD'.
+     * '\uFEFF', '\uFFF0' - '\uFFFD'.
      */
     public final static UnicodeBlock SPECIALS
       = new UnicodeBlock('\uFFF0', '\uFFFD',
@@ -1431,13 +1433,15 @@ public final class Character implements Serializable, Comparable
    */
   private static final int TYPE_MASK = 0x1F;
 
-  /** Mask for grabbing the non-breaking space flag out of the contents of
+  /**
+   * Mask for grabbing the non-breaking space flag out of the contents of
    * data.
    * @see CharData#DATA
    */
   private static final int NO_BREAK_MASK = 0x20;
 
-  /** Mask for grabbing the mirrored directionality flag out of the contents
+  /**
+   * Mask for grabbing the mirrored directionality flag out of the contents
    * of data.
    * @see CharData#DATA
    */
@@ -1455,8 +1459,8 @@ public final class Character implements Serializable, Comparable
    */
   private static char readChar(char ch)
   {
-    return data[blocks[ch >> CharData.SHIFT]
-                + (ch & ~(-1 << CharData.SHIFT))];
+    // Perform 16-bit addition to find the correct entry in data.
+    return data[(char) (blocks[ch >> CharData.SHIFT] + ch)];
   }
 
   /**

@@ -56,26 +56,26 @@ open (BLOCKS, $ARGV[0]) || die "Can't open Unicode block file: $!\n";
 
 # A hash of added fields and the JDK they were added in, to automatically
 # print @since tags.  Maintaining this is optional (and tedious), but nice.
-%additions = ("SYRIAC" => "1.4",
-              "THAANA" => "1.4",
-              "SINHALA" => "1.4",
-              "MYANMAR" => "1.4",
-              "ETHIOPIC" => "1.4",
-              "CHEROKEE" => "1.4",
-              "UNIFIED_CANADIAN_ABORIGINAL_SYLLABICS" => "1.4",
-              "OGHAM" => "1.4",
-              "RUNIC" => "1.4",
-              "KHMER" => "1.4",
-              "MONGOLIAN" => "1.4",
-              "BRAILLE_PATTERNS" => "1.4",
-              "CJK_RADICALS_SUPPLEMENT" => "1.4",
-              "KANGXI_RADICALS" => "1.4",
-              "IDEOGRAPHIC_DESCRIPTION_CHARACTERS" => "1.4",
-              "BOPOMOFO_EXTENDED" => "1.4",
-              "CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A" => "1.4",
-              "YI_SYLLABLES" => "1.4",
-              "YI_RADICALS" => "1.4",
-          );
+my %additions = ("SYRIAC" => "1.4",
+                 "THAANA" => "1.4",
+                 "SINHALA" => "1.4",
+                 "MYANMAR" => "1.4",
+                 "ETHIOPIC" => "1.4",
+                 "CHEROKEE" => "1.4",
+                 "UNIFIED_CANADIAN_ABORIGINAL_SYLLABICS" => "1.4",
+                 "OGHAM" => "1.4",
+                 "RUNIC" => "1.4",
+                 "KHMER" => "1.4",
+                 "MONGOLIAN" => "1.4",
+                 "BRAILLE_PATTERNS" => "1.4",
+                 "CJK_RADICALS_SUPPLEMENT" => "1.4",
+                 "KANGXI_RADICALS" => "1.4",
+                 "IDEOGRAPHIC_DESCRIPTION_CHARACTERS" => "1.4",
+                 "BOPOMOFO_EXTENDED" => "1.4",
+                 "CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A" => "1.4",
+                 "YI_SYLLABLES" => "1.4",
+                 "YI_RADICALS" => "1.4",
+                 );
 
 print <<'EOF';
   /**
@@ -138,12 +138,13 @@ print <<'EOF';
     }
 EOF
 
-$seenSpecials = 0;
-$seenSurrogates = 0;
-$surrogateStart = 0;
+my $seenSpecials = 0;
+my $seenSurrogates = 0;
+my $surrogateStart = 0;
+my @names = ();
 while (<BLOCKS>) {
     next if /^\#/;
-    ($start, $end, $block) = split(/; /);
+    my ($start, $end, $block) = split(/; /);
     next unless defined $block;
     chomp $block;
     $block =~ s/ *$//;
@@ -169,15 +170,16 @@ while (<BLOCKS>) {
     # Special case the name of PRIVATE_USE_AREA.
     $block =~ s/(Private Use)/$1 Area/;
 
-    ($name = $block) =~ tr/a-z -/A-Z__/;
+    (my $name = $block) =~ tr/a-z -/A-Z__/;
     push @names, $name;
-    $since = (defined $additions{$name}
-              ? "\n     * \@since $additions{$name}" : "");
+    my $since = (defined $additions{$name}
+                 ? "\n     * \@since $additions{$name}" : "");
+    my $extra = ($block =~ /Specials/ ? "'\\uFEFF', " : "");
     print <<EOF;
 
     /**
      * $block.
-     * '\\u$start' - '\\u$end'.$since
+     * $extra'\\u$start' - '\\u$end'.$since
      */
     public final static UnicodeBlock $name
       = new UnicodeBlock('\\u$start', '\\u$end',

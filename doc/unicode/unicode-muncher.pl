@@ -64,12 +64,12 @@ sub javaChar($) {
 ## Convert the text UnicodeData file from www.unicode.org into a Java
 ## interface with string constants holding the compressed information.
 ##
-@TYPECODES = qw(Cn Lu Ll Lt Lm Lo Mn Me Mc Nd Nl No Zs Zl Zp Cc Cf
-                SKIPPED Co Cs Pd Ps Pe Pc Po Sm Sc Sk So Pi Pf);
-@DIRCODES = qw(L R AL EN ES ET AN CS NSM BN B S WS ON LRE LRO RLE RLO PDF);
+my @TYPECODES = qw(Cn Lu Ll Lt Lm Lo Mn Me Mc Nd Nl No Zs Zl Zp Cc Cf
+                   SKIPPED Co Cs Pd Ps Pe Pc Po Sm Sc Sk So Pi Pf);
+my @DIRCODES = qw(L R AL EN ES ET AN CS NSM BN B S WS ON LRE LRO RLE RLO PDF);
 
-$NOBREAK_FLAG  = 32;
-$MIRRORED_FLAG = 64;
+my $NOBREAK_FLAG  = 32;
+my $MIRRORED_FLAG = 64;
 
 my @info = ();
 my $titlecase = "";
@@ -161,7 +161,7 @@ my $info = ();
 my %charhash = ();
 my @charinfo = ();
 
-for $ch (0 .. 0xffff) {
+for my $ch (0 .. 0xffff) {
     print "." unless $count++ % 0x1000;
     if (! defined $info[$ch]) {
         $info[$ch] = pack("n5", 0, -1, 0, 0, -1);
@@ -179,10 +179,10 @@ my $charlen = @charinfo;
 my $bestshift;
 my $bestest = 1000000;
 my $bestblkstr;
-die "Too many unique character entrie: $charlen\n" if $charlen > 512;
+die "Too many unique character entries: $charlen\n" if $charlen > 512;
 print "\nUnique character entries: $charlen\n";
 
-for $i (3 .. 8) {
+for my $i (3 .. 8) {
     my $blksize = 1 << $i;
     my %blocks = ();
     my @blkarray = ();
@@ -265,7 +265,7 @@ for $i (3 .. 8) {
     }
 
     die "Unexpected $blocklen" if length($blockstr) != 2 * $blocklen;
-    my $estimate = 2 * $blocklen + (0x20000 >> $i) + 8 * $charlen;
+    my $estimate = 2 * $blocklen + (0x20000 >> $i);
 
     printf " after merge %5d: %6d bytes\n", $blocklen, $estimate;
     if ($estimate < $bestest) {
@@ -277,14 +277,14 @@ for $i (3 .. 8) {
 
 my @blocks;
 my $blksize = 1 << $bestshift;
-for ($j = 0; $j < 0x10000; $j += $blksize) {
+for (my $j = 0; $j < 0x10000; $j += $blksize) {
     my $blkkey = substr $info, 2 * $j, 2 * $blksize;
     my $index = index $bestblkstr, $blkkey;
     while ($index & 1) {
         die "not found: $j" if $index == -1;
         $index = index $bestblkstr, $blkkey, $index + 1;
     }
-    push @blocks, ($index / 2);
+    push @blocks, ($index / 2 - $j) & 0xffff;
 }
 
 # Phase 3: Generate the file
@@ -294,6 +294,8 @@ die "UTF-8 limit of data may be exceeded: " . length($bestblkstr) . "\n"
     if length($bestblkstr) > 0xffff / 3;
 {
     print "Generating $ARGV[1] with shift of $bestshift";
+    my ($i, $j);
+
     open OUTPUT, "> $ARGV[1]" or die "Failed creating output file: $!\n";
     print OUTPUT <<EOF;
 /* gnu/java/lang/CharData -- Database for java.lang.Character Unicode info
@@ -362,14 +364,16 @@ package gnu.java.lang;
 public interface CharData
 {
   /**
-   * The character shift amount to look up the block offset. In other
-   * words, <code>BLOCKS.value[ch >> SHIFT] + (ch & ~(-1 << SHIFT))</code>
-   * is the index where <code>ch</code> is described in <code>DATA</code>.
+   * The character shift amount to look up the block offset. In other words,
+   * <code>(char) (BLOCKS.value[ch >> SHIFT] + ch)</code> is the index where
+   * <code>ch</code> is described in <code>DATA</code>.
    */
   int SHIFT = $bestshift;
 
   /**
    * The mapping of character blocks to their location in <code>DATA</code>.
+   * Each entry has been adjusted so that the 16-bit sum with the desired
+   * character gives the actual index into <code>DATA</code>.
    */
   String BLOCKS
 EOF

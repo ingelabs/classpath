@@ -1,3 +1,11 @@
+2002-02-18  Eric Blake  <ebb9@email.byu.edu>
+
+	* doc/unicode/unicode-blocks.pl: Minor tweaks.
+	* doc/unicode/unicode-muncher.pl: Minor tweaks.
+	* java/lang/Character.java: Update to latest tweaks in
+	doc/unicode/*.pl.
+	* gnu/java/lang/CharData.java: Ditto.
+
 2002-02-18  C. Brian Jones <cbj@gnu.org>
 
 	* native/jni/java-io/java_io_File.c 
