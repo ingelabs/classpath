@@ -1,3 +1,22 @@
+2004-08-27  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/Arrays.java
+	(sort(byte[], int, int)): Check fromIndex < 0.
+	(sort(char[], int, int)): Likewise.
+	(sort(short[], int, int)): Likewise.
+	(sort(int[], int, int)): Likewise.
+	(sort(long[], int, int)): Likewise.
+	(sort(float[], int, int)): Likewise.
+	(sort(double[], int, int)): Likewise.
+	(sort(Object[], int, int, Comparator)): Likewise.
+	(qsort(byte[], int, int)): Honor lower bound from in insertion sort.
+	(qsort(char[], int, int)): Honor lower bound from in insertion sort.
+	(qsort(short[], int, int)): Honor lower bound from in insertion sort.
+	(qsort(int[], int, int)): Honor lower bound from in insertion sort.
+	(qsort(long[], int, int)): Honor lower bound from in insertion sort.
+	(qsort(float[], int, int)): Honor lower bound from in insertion sort.
+	(qsort(double[], int, int)): Honor lower bound from in insertion sort.
+
 2004-08-27  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/RenderingHints.java: Documented.
