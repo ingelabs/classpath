@@ -1,3 +1,7 @@
+2004-08-12  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* java/net/URL.java (URL): Delete whitespaces in the protocol string.
+
 2004-08-12  Tom Tromey  <tromey@redhat.com>
 
 	* vm/reference/java/lang/VMClassLoader.java: Added security
