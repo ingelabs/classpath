@@ -1,3 +1,11 @@
+2002-09-26  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/applet/AppletContext.java (setStream): Fix signature typo.
+	* javax/accessibility/AccessibleEditableText.java (cut, delete):
+	Ditto.
+	* javax/accessibility/AccessibleHyperlink.java
+	(getAccessibleActionAnchor, getAccessibleActionObject): Ditto.
+
 2002-09-26  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/Choice.java

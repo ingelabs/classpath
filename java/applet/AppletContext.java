@@ -130,7 +130,7 @@ public interface AppletContext
    * @throws IOException if the stream is too large
    * @since 1.4
    */
-  public void setString(String key, InputStream stream) throws IOException;
+  public void setStream(String key, InputStream stream) throws IOException;
 
   /**
    * Return the stream associated with a given key in this applet context, or
