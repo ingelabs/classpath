@@ -54,6 +54,8 @@ import gnu.java.nio.FileChannelImpl;
  */
 public class RandomAccessFile implements DataOutput, DataInput
 {
+
+  // The underlying file.
   private FileDescriptor fd;
   
   private FileChannel ch; /* cached associated file-channel */
@@ -85,11 +87,11 @@ public class RandomAccessFile implements DataOutput, DataInput
    * is not allowed
    * @exception IOException If any other error occurs
    */
-  public RandomAccessFile(File file, String mode) throws FileNotFoundException
+  public RandomAccessFile (File file, String mode) throws FileNotFoundException
   {
-    this(file.getPath(), mode);
+    this (file.getPath(), mode);
   }
-  
+
   /**
    * This method initializes a new instance of <code>RandomAccessFile</code>
    * to read from the specified file name with the specified access mode.
@@ -139,18 +141,19 @@ public class RandomAccessFile implements DataOutput, DataInput
         throw new FileNotFoundException(e.getMessage()); 
       }
   }
-  
+
   /**
    * This method closes the file and frees up all file related system
    * resources.  Since most operating systems put a limit on how many files
    * may be opened at any given time, it is a good idea to close all files
    * when no longer needed to avoid hitting this limit
    */
-  public void close() throws IOException
+  public void close () throws IOException
   {
-    fd.close();
+    if (fd.valid())
+      fd.close();
   }
-  
+
   /**
    * This method returns a <code>FileDescriptor</code> object that 
    * represents the native file handle for this file.
@@ -159,11 +162,13 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final FileDescriptor getFD() throws IOException
+  public final FileDescriptor getFD () throws IOException
   {
-    return(fd);
+    if (! fd.valid())
+      throw new IOException ();
+    return fd;
   }
-  
+
   /**
    * This method returns the current offset in the file at which the next
    * read or write will occur
@@ -172,11 +177,11 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public long getFilePointer() throws IOException
+  public long getFilePointer () throws IOException
   {
-    return(fd.getFilePointer());
+    return fd.getFilePointer();
   }
-  
+
   /**
    * This method sets the length of the file to the specified length.  If
    * the currently length of the file is longer than the specified length,
@@ -197,7 +202,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   
     fd.setLength(newlen);
   }
-  
+
   /**
    * This method returns the length of the file in bytes
    *
@@ -205,24 +210,24 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public long length() throws IOException
+  public long length () throws IOException
   {
-    return(fd.getLength());
+    return fd.length();
   }
-  
+
   /**
-    * This method reads a single byte of data from the file and returns it
-    * as an integer.
-    *
-    * @return The byte read as an int, or -1 if the end of the file was reached.
-    *
-    * @exception IOException If an error occurs
-    */
-  public int read() throws IOException
+   * This method reads a single byte of data from the file and returns it
+   * as an integer.
+   *
+   * @return The byte read as an int, or -1 if the end of the file was reached.
+   *
+   * @exception IOException If an error occurs
+   */
+  public int read () throws IOException
   {
-    return(fd.read());
+    return in.read();
   }
-  
+
   /**
    * This method reads bytes from the file into the specified array.  The
    * bytes are stored starting at the beginning of the array and up to 
@@ -238,7 +243,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   {
     return(read(buf, 0, buf.length));
   }
-  
+
   /**
    * This methods reads up to <code>len</code> bytes from the file into the s
    * pecified array starting at position <code>offset</code> into the array.
@@ -255,7 +260,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   {
     return(fd.read(buf,offset, len));
   }
-  
+
   /**
    * This method reads a Java boolean value from an input stream.  It does
    * so by reading a single byte of data.  If that byte is zero, then the
@@ -282,7 +287,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   
     return(byte_read != 0);
   }
-  
+
   /**
    * This method reads a Java byte value from an input stream.  The value
    * is in the range of -128 to 127.
@@ -307,7 +312,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   
     return (byte)byte_read;
   }
-  
+
   /**
    * This method reads 8 unsigned bits into a Java <code>int</code> value 
    * from the 
@@ -365,7 +370,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   
     return (char) ((buf[0] << 8) | (buf[1] & 0xff));
   }
-  
+
   /**
    * This method reads a signed 16-bit value into a Java in from the stream.
    * It operates by reading two bytes from the stream and converting them to 
@@ -398,7 +403,7 @@ public class RandomAccessFile implements DataOutput, DataInput
     readFully(buf, 0, 2);
     return (short) ((buf[0] << 8) | (buf[1] & 0xff));
   }
-  
+
   /**
    * This method reads 16 unsigned bits into a Java int value from the stream.
    * It operates by reading two bytes from the stream and converting them to 
@@ -538,7 +543,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   
     return(Float.intBitsToFloat(val));
   }
-  
+
   /**
    * This method reads raw bytes into the passed array until the array is
    * full.  Note that this method blocks until the data is available and
@@ -555,7 +560,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   {
     readFully(buf, 0, buf.length);
   }
-  
+
   /**
    * This method reads raw bytes into the passed array <code>buf</code> 
    * starting
@@ -587,7 +592,7 @@ public class RandomAccessFile implements DataOutput, DataInput
         total_read += bytes_read;
       }
   }
-  
+
   /**
    * This method reads a Java double value from an input stream.  It operates
    * by first reading a <code>logn</code> value from the stream by calling the
@@ -616,7 +621,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   
     return(Double.longBitsToDouble(val));
   }
-  
+
   /**
    * This method reads the next line of text data from an input stream.
    * It operates by reading bytes and converting those bytes to 
@@ -672,7 +677,7 @@ public class RandomAccessFile implements DataOutput, DataInput
         sb.append(c);
       }
   }
-  
+
   /**
    * This method reads a <code>String</code> from an input stream that 
    * is encoded in
