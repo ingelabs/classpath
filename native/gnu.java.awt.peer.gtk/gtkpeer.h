@@ -49,6 +49,9 @@ extern struct state_table *native_state_table;
 #define NSA_SET_PTR(env, obj, ptr) \
   set_state (env, obj, native_state_table, (void *)ptr)
 
+#define NSA_DEL_PTR(env, obj) \
+  remove_state_slot (env, obj, native_state_table)
+
 #endif /* JVM_SUN */
 
 #define AWT_DEFAULT_CURSOR 0
@@ -93,7 +96,8 @@ extern jmethodID postMouseEventID;
 extern jmethodID postConfigureEventID;
 extern jmethodID postExposeEventID;
 extern jmethodID syncAttrsID;
-
+extern jclass gdkColor;
+extern jmethodID gdkColorID;
 extern JNIEnv *gdk_env;
 
 void awt_event_handler (GdkEvent *event);

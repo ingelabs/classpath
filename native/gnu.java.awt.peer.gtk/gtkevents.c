@@ -202,8 +202,12 @@ awt_event_handler (GdkEvent *event)
 	    if (GTK_IS_WINDOW (widget))
 	      {
 		gint x, y;
+		/* ignore where the WM puts us */
 		gdk_window_get_root_origin (widget->window, &x, &y);
 
+		/* configure events are not posted to the AWT event queue,
+		   and as such, gdk/gtk will be called back before
+		   postConfigureEvent returns */
 		gdk_threads_leave ();
 		(*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, 
 					    postConfigureEventID,
@@ -222,15 +226,14 @@ awt_event_handler (GdkEvent *event)
 	    gdk_window_get_user_data (event->any.window, (void **) &widget);
 	    if (!widget) break;
 
-	    if (GTK_IS_DRAWING_AREA (widget))
-	      {
-		(*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
-					    postExposeEventID,
-					    (jint)event->expose.area.x,
-					    (jint)event->expose.area.y,
-					    (jint)event->expose.area.width,
-					    (jint)event->expose.area.height);
-	      }
+	    /* only canvases and containers can be drawn on in Java */
+	    if (GTK_IS_DRAWING_AREA (widget) || GTK_IS_FIXED (widget))
+	      (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
+					  postExposeEventID,
+					  (jint)event->expose.area.x,
+					  (jint)event->expose.area.y,
+					  (jint)event->expose.area.width,
+					  (jint)event->expose.area.height);
 	  }
 	  break;
 	default:

@@ -437,6 +437,9 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetBackground
   array = (*env)->NewIntArray (env, 3);
   rgb = (*env)->GetIntArrayElements (env, array, NULL);
   /* convert color data from 16 bit values down to 8 bit values */
+/*    rgb[0] = (jint) rint (fg.red   * 0xFF / (jfloat) 0xFFFF); */
+/*    rgb[1] = (jint) rint (fg.green * 0xFF / (jfloat) 0xFFFF); */
+/*    rgb[2] = (jint) rint (fg.blue  * 0xFF / (jfloat) 0xFFFF); */
   rgb[0] = bg.red   * 0xFF / 0xFFFF;
   rgb[1] = bg.green * 0xFF / 0xFFFF;
   rgb[2] = bg.blue  * 0xFF / 0xFFFF;
@@ -451,7 +454,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetForeground
 {
   void *ptr;
   jintArray array;
-  int *rgb;
+  jint *rgb;
   GdkColor fg;
 
   ptr = NSA_GET_PTR (env, obj);

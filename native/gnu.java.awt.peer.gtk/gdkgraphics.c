@@ -5,16 +5,20 @@ struct graphics
 {
   GdkDrawable *drawable;
   GdkGC *gc;
+  GdkColormap *cm;
 };
 
 /* copy the native state of the peer (GtkWidget *) to the native state
    of the graphics object */
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState
+JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState
   (JNIEnv *env, jobject obj, jobject peer)
 {
   struct graphics *g = (struct graphics *) malloc (sizeof (struct graphics));
   void *ptr;
   GtkWidget *widget;
+  GdkColor color;
+  jintArray array;
+  jint *rgb;
 
   ptr = NSA_GET_PTR (env, peer);
 
@@ -26,11 +30,37 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState
   else
     g->drawable = NULL;
 
-  g->gc = widget->style->fg_gc[GTK_STATE_NORMAL];
+  g->cm = gtk_widget_get_colormap (widget);
+  g->gc = gdk_gc_new (g->drawable);
+  gdk_gc_copy (g->gc, widget->style->fg_gc[GTK_STATE_NORMAL]);
+  color = widget->style->fg[GTK_STATE_NORMAL];
 
   gdk_threads_leave ();
 
+  array = (*env)->NewIntArray (env, 3);
+  rgb = (*env)->GetIntArrayElements (env, array, NULL);
+  rgb[0] = color.red   * 0xFF / 0xFFFF;
+  rgb[1] = color.green * 0xFF / 0xFFFF;
+  rgb[2] = color.blue  * 0xFF / 0xFFFF;
+  (*env)->ReleaseIntArrayElements (env, array, rgb, 0);
+
   NSA_SET_PTR (env, obj, g);
+
+  return array;
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_dispose
+  (JNIEnv *env, jobject obj)
+{
+  struct graphics *g;
+
+  g = (struct graphics *) NSA_DEL_PTR (env, obj);
+
+  gdk_threads_enter ();
+  gdk_gc_destroy (g->gc);
+  gdk_threads_leave ();
+
+  free (g);
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawLineNative
@@ -57,6 +87,46 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_fillRectNative
   gdk_threads_leave ();
 }
 
-		 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRectNative
+  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
+{
+  struct graphics *g;
 
+  g = (struct graphics *) NSA_GET_PTR (env, obj);
 
+  gdk_threads_enter ();
+  gdk_window_clear_area ((GdkWindow *)g->drawable, x, y, width, height);
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setColorNative
+  (JNIEnv *env, jobject obj, jint red, jint green, jint blue)
+{
+  GdkColor color;
+  struct graphics *g;
+
+  color.red = red * 0xFFFF / 0xFF;
+  color.green = green * 0xFFFF / 0xFF;
+  color.blue = blue * 0xFFFF / 0xFF;
+
+  g = (struct graphics *) NSA_GET_PTR (env, obj);
+  
+  gdk_threads_enter ();
+  gdk_color_alloc (g->cm, &color);
+  gdk_gc_set_foreground (g->gc, &color);
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawArcNative
+  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height, 
+   jint angle1, jint angle2)
+{
+  struct graphics *g;
+
+  g = (struct graphics *) NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  gdk_draw_arc (g->drawable, g->gc, FALSE, x, y, width, height,
+		angle1, angle2);
+  gdk_threads_leave ();
+}  
