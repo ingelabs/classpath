@@ -1,3 +1,9 @@
+2004-02-06  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/GenericBuffer.cpp,
+	* gnu/java/nio/GenericMappedByteFileBuffer.cpp:
+	Removed.
+
 2004-02-05  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/Component.java (getFont): Return a default font
