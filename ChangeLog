@@ -1,3 +1,9 @@
+2003-06-11  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/URL.java,
+	java/net/URLStreamHandler.java:
+	New versions from libgcj.
+
 2003-06-11  Torsten Rupp  <rupp@aicas.com>
 
         * native/jni/java-io/java_io_File.c:
