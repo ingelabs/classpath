@@ -1771,10 +1771,14 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void resetKeyboardActions()
   {
-    inputMap_whenFocused.clear();
-    inputMap_whenAncestorOfFocused.clear();
-    inputMap_whenInFocusedWindow.clear();
-    actionMap.clear();
+    if (inputMap_whenFocused != null)
+      inputMap_whenFocused.clear();
+    if (inputMap_whenAncestorOfFocused != null)
+      inputMap_whenAncestorOfFocused.clear();
+    if (inputMap_whenInFocusedWindow != null)
+      inputMap_whenInFocusedWindow.clear();
+    if (actionMap != null)
+      actionMap.clear();
   }
 
 
