@@ -1,5 +1,10 @@
 2004-11-16  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/locale/LocaleInformation_de.java: Removed some comments to
+	make it easier to merge this with the new generated classes.
+
+2004-11-16  Michael Koch  <konqueror@gmx.de>
+
 	* configure.ac: Added scripts/Makefile to output files.
 	* Makefile.am (SUBDIRS): Add scripts
 	* scripts/Makefile.am: New file.
