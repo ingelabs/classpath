@@ -1,5 +1,13 @@
 2004-12-31  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/DefaultBoundedRangeModel.java:
+	Fixed javadocs all over.
+	(fireStateChanged): Simplified.
+	* javax/swing/BoundedRangeModel.java:
+	Reformatted.
+
+2004-12-31  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JRootPane.java
 	(setMenuBar): Added @deprecated tag.
 	(getMenuBar): Likewise.
