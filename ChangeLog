@@ -1,3 +1,15 @@
+2004-12-26  Graydon Hoare  <graydon@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java:
+	Rework painting into BufferedImages
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java:
+	Construct BufferedImage with alpha only when alpha is
+	present in colormodel.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c:
+	Rework painting into client-side jint arrays.
+	* jni/gtk-peer/gtkcairopeer.h:
+	Likewise.
+
 2004-12-26  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java: Reformatted.
