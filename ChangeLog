@@ -1,5 +1,7 @@
 2002-01-16  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/Canvas.java: Merged with libgcj.
+
 	* java/awt/CheckboxGroup.java (setSelectedCheckbox): Handle case
 	where argument is null.
 	* java/awt/Checkbox.java (setLabel): Only cast peer if it exists.

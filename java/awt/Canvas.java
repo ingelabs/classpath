@@ -1,5 +1,4 @@
-/* Canvas.java -- An AWT canvas widget
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* Copyright (C) 1999, 2000, 2002  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -27,71 +26,55 @@ executable file might be covered by the GNU General Public License. */
 
 package java.awt;
 
-import java.awt.peer.CanvasPeer;
 import java.awt.peer.ComponentPeer;
 
-/**
-  * This class implements an AWT canvas widget.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
 public class Canvas extends Component implements java.io.Serializable
 {
+  transient GraphicsConfiguration graphicsConfiguration;
 
-/*
- * Static Variables
- */
+  /**
+   * Initializes a new instance of <code>Canvas</code>.
+   */
+  public Canvas() { }
 
-// Serialization constant
-private static final long serialVersionUID = -2284879212465893870L;
+  public Canvas(GraphicsConfiguration graphicsConfiguration)
+  {
+    this.graphicsConfiguration = graphicsConfiguration;
+  }
 
-/*************************************************************************/
+  GraphicsConfiguration getGraphicsConfigurationImpl()
+  {
+    if (graphicsConfiguration != null)
+      return graphicsConfiguration;
+    return super.getGraphicsConfigurationImpl();
+  }
 
-/*
- * Constructors
- */
+  /**
+   * Creates the native peer for this object.
+   */
+  public void addNotify()
+  {
+    if (peer == null)
+      peer = (ComponentPeer) getToolkit().createCanvas(this);
+    super.addNotify();
+  }
 
-/**
-  * Initializes a new instance of <code>Canvas</code>.
-  */
-public 
-Canvas()
-{
+  /**
+   * Repaints the canvas window.  This method should be overriden by 
+   * a subclass to do something useful, as this method simply paints
+   * the window with the background color.
+   */
+  public void paint(Graphics gfx)
+  {
+    /* This implementation doesn't make much sense since the filling
+      of background color is guaranteed for heavyweight components
+      such as this.  But there's no need to worry, since paint() is
+      usually overridden anyway.  */
+    gfx.setColor(getBackground());
+    Dimension size = getSize();
+    gfx.fillRect(0, 0, size.width, size.height);
+  }
+
+  // Serialization constant
+  private static final long serialVersionUID = -2284879212465893870L;
 }
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * Creates the native peer for this object.
-  */
-public void
-addNotify()
-{
-  if (getPeer() != null)
-    return;
-
-  setPeer((ComponentPeer)getToolkit().createCanvas(this));
-}
-
-/*************************************************************************/
-
-/**
-  * Repaints the canvas window.  This method should be overriden by 
-  * a subclass to do something useful, as this method simply paints
-  * the window with the background color.
-  */
-public void
-paint(Graphics graphics)
-{
-  Dimension dim = getSize();
-
-  graphics.setColor(getBackground());
-  graphics.fillRect(0, 0, dim.width, dim.height);
-}
-
-} // class Canvas 
-
