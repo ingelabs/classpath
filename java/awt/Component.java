@@ -23,11 +23,14 @@ package java.awt;
 
 import java.awt.event.*;
 import java.awt.image.*;
+import java.awt.peer.ComponentPeer;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.Locale;
 
 // FIXME: Java 1.0 event model unimplemented
 
-// FIXME: Image Update
+// FIXME: This isn't even close to serialization compatible with the JDK.
 
 /**
   * This is the superclass of all non-menu AWT widgets. 
@@ -47,7 +50,7 @@ public abstract class Component implements ImageObserver, MenuContainer,
   * that the component wishes to be aligned to the bottom relative to
   * other components.
   */
-public static final float BOTTOM_ALIGNMENT = 1.0;
+public static final float BOTTOM_ALIGNMENT = (float)1.0;
 
 /**
   * Constant returned by the <code>getAlignmentY</code> and 
@@ -55,28 +58,28 @@ public static final float BOTTOM_ALIGNMENT = 1.0;
   * that the component wishes to be aligned to the center relative to
   * other components.
   */
-public static final float CENTER_ALIGNMENT = 0.5;
+public static final float CENTER_ALIGNMENT = (float)0.5;
 
 /**
   * Constant returned by the <code>getAlignmentY</code> method to indicate
   * that the component wishes to be aligned to the top relative to
   * other components.
   */
-public static final float TOP_ALIGNMENT = 0.0;
+public static final float TOP_ALIGNMENT = (float)0.0;
 
 /**
   * Constant returned by the <code>getAlignmentX</code> method to indicate
   * that the component wishes to be aligned to the right relative to
   * other components.
   */
-public static final float RIGHT_ALIGNMENT = 1.0;
+public static final float RIGHT_ALIGNMENT = (float)1.0;
 
 /**
   * Constant returned by the <code>getAlignmentX</code> method to indicate
   * that the component wishes to be aligned to the left relative to
   * other components.
   */
-public static final float LEFT_ALIGNMENT = 0.0;
+public static final float LEFT_ALIGNMENT = (float)0.0;
 
 /*************************************************************************/
 
@@ -111,11 +114,30 @@ private Container parent;
 // The native peer for this componet
 private ComponentPeer peer;
 
+// Indicates whether or not this component is valid.
+private boolean valid;
+
+// Indicates whether or not this component is visible
+private boolean visible = true;
+
+// Indicates whether or not this component is enabled.
+private boolean enabled = true;
+
 // The toolkit for this componet
 private Toolkit toolkit = Toolkit.getDefaultToolkit();
 
 // The synchronization locking object for this component
 private Object tree_lock = this;
+
+// The mask for all events that are enabled for this component
+private long enabled_events = 0L;
+
+// Listeners for dispatching events
+private ComponentListener component_listener;
+private FocusListener focus_listener;
+private KeyListener key_listener;
+private MouseListener mouse_listener;
+private MouseMotionListener mouse_motion_listener;
 
 /*************************************************************************/
 
@@ -213,7 +235,7 @@ getForeground()
 public void
 setForeground(Color foreground_color)
 {
-  this.foreground_color = foreground_color);
+  this.foreground_color = foreground_color;
   getPeer().setForeground(foreground_color);
 }
 
@@ -261,7 +283,8 @@ bounds()
 public void
 setBounds(Rectangle bounding_rectangle)
 {
-  this.bounding_rectangle = bounding_rectangle;
+  setBounds(bounding_rectangle.x, bounding_rectangle.y,
+            bounding_rectangle.width, bounding_rectangle.height);
 }
 
 /*************************************************************************/
@@ -279,8 +302,8 @@ setBounds(Rectangle bounding_rectangle)
 public void
 setBounds(int x, int y, int width, int height)
 {
-  setBounds(new Rectangle(x, y, width, height));
-  getPeer().getBounds(x, y, width, height);
+  bounding_rectangle = new Rectangle(x, y, width, height);
+  getPeer().setBounds(x, y, width, height);
 }
 
 /*************************************************************************/
@@ -314,7 +337,7 @@ reshape(int x, int y, int width, int height)
 public ColorModel
 getColorModel()
 {
-  return(getPeer.()getColorModel);
+  return(getPeer().getColorModel());
 }
 
 /*************************************************************************/
@@ -354,7 +377,7 @@ getComponentAt(int x, int y)
 public Component
 getComponentAt(Point point)
 {
-  return(getBounds(point.x, point.y));
+  return(getComponentAt(point.x, point.y));
 }
 
 /*************************************************************************/
@@ -374,7 +397,7 @@ getComponentAt(Point point)
   * <code>getComponentAt()</code>.
   */
 public Component
-getComponentAt(int x, int y)
+locate(int x, int y)
 {
   return(getComponentAt(x, y));
 }
@@ -403,7 +426,7 @@ public void
 setCursor(Cursor cursor)
 {
   this.cursor = cursor;
-  getPeer().getCursor(cursor);
+  getPeer().setCursor(cursor);
 }
 
 /*************************************************************************/
@@ -430,7 +453,7 @@ public void
 setFont(Font font)
 {
   this.font = font;
-  getPeer().getFont(font);
+  getPeer().setFont(font);
 }
 
 /*************************************************************************/
@@ -445,7 +468,7 @@ setFont(Font font)
 public FontMetrics
 getFontMetrics(Font font)
 {
-  getPeer().getFontMetrics(font);
+  return(getPeer().getFontMetrics(font));
 }
 
 /*************************************************************************/
@@ -508,7 +531,7 @@ setLocale(Locale locale)
 public Point
 getLocation()
 {
-  return(getBounds.getLocation());
+  return(getBounds().getLocation());
 }
 
 /*************************************************************************/
@@ -571,7 +594,7 @@ move(int x, int y)
 public Point
 getLocationOnScreen()
 {
-  getPeer().getLocationOnScreen();
+  return(getPeer().getLocationOnScreen());
 }
 
 /*************************************************************************/
@@ -724,7 +747,7 @@ setPeer(ComponentPeer peer)
 public Dimension
 getSize()
 {
-  return(getBounds.getSize());
+  return(getBounds().getSize());
 }
 
 /*************************************************************************/
@@ -750,7 +773,7 @@ size()
   * @param dim The new size of this component.
   */
 public void
-setSize(Dimensino dim)
+setSize(Dimension dim)
 {
   Rectangle rect = getBounds();
   setBounds(rect.x, rect.y, dim.width, dim.height);
@@ -766,7 +789,7 @@ setSize(Dimensino dim)
   * @deprecated This method is deprecated in favor of <code>setSize</code>.
   */
 public void
-resize(Dimensino dim)
+resize(Dimension dim)
 {
   setSize(dim);
 }
@@ -785,9 +808,6 @@ public void
 resize(int width, int height)
 {
   setSize(new Dimension(width, height));
-}
-{
-  setSize(dim);
 }
 
 /*************************************************************************/
@@ -829,6 +849,43 @@ setTreeLock(Object tree_lock)
 /*************************************************************************/
 
 /**
+  * Tests whether or not this component is visible.
+  *
+  * @return <code>true</code> if the component is visible,
+  * <code>false</code> otherwise.
+  */
+public boolean
+isVisible()
+{
+  return(visible);
+}
+
+/*************************************************************************/
+
+/**
+  * Tests whether or not this component is actually being shown on
+  * the screen.  This will be true if and only if it this component is
+  * visible and its parent components are all visible.
+  *
+  * @return <code>true</code> if the component is showing on the screen,
+  * <code>false</code> otherwise.
+  */
+public boolean
+isShowing()
+{
+  if (!visible)
+    return(false);
+
+  Component c = getParent();
+  if (c != null)
+    return(c.isShowing());
+  else
+    return(true);
+}
+
+/*************************************************************************/
+
+/**
   * Makes this component visible or invisible.
   *
   * @param visible <code>true</code> to make this component visible,
@@ -837,6 +894,7 @@ setTreeLock(Object tree_lock)
 public void
 setVisible(boolean visible)
 {
+  this.visible = visible;
   getPeer().setVisible(visible);
 }
 
@@ -885,6 +943,20 @@ hide()
 /*************************************************************************/
 
 /**
+  * Tests whether or not this component is enabled.
+  *
+  * @return <code>true</code> if the component is enabled,
+  * <code>false</code> otherwise.
+  */
+public boolean
+isEnabled()
+{
+  return(enabled);
+}
+
+/*************************************************************************/
+
+/**
   * Enables or disables this component.
   *
   * @param enabled <code>true</code> to enable this component, 
@@ -895,6 +967,7 @@ hide()
 public void
 setEnabled(boolean enabled)
 {
+  this.enabled = enabled;
   getPeer().setEnabled(enabled);
 }
 
@@ -995,7 +1068,7 @@ contains(Point point)
   * @deprecated Deprecated in favor of <code>contains(int, int)</code>.
   */
 public boolean
-inside(int x, int y);
+inside(int x, int y)
 {
   return(contains(x, y));
 }
@@ -1024,6 +1097,45 @@ public boolean
 lostFocus(Event event, Object what)
 {
   return(true);
+}
+
+/*************************************************************************/
+
+/**
+  * Tests whether or not this component is in the group that can
+  * be traversed using the keyboard traversal mechanism (such as the TAB
+  * key).
+  *
+  * @return <code>true</code> if the component is traversed via the TAB
+  * key, <code>false</code> otherwise.
+  */
+public boolean
+isFocusTraversable()
+{
+  return(getPeer().isFocusTraversable());
+}
+
+/*************************************************************************/
+
+/**
+  * Requests that this component be given focus.  The <code>gotFocus()</code>
+  * method on this event will be called when and if this request was
+  * successful.
+  */
+public void
+requestFocus()
+{
+  getPeer().requestFocus();
+}
+
+/*************************************************************************/
+
+/**
+  * Transfers focus to the next component in the focus traversal order.
+  */
+public void
+transferFocus()
+{
 }
 
 /*************************************************************************/
@@ -1073,9 +1185,9 @@ action(Event event, Object what)
   *
   * @deprecated Deprecated in favor of <code>dispatchEvent()</code>.
   */
-public deliverEvent(Event event)
+public void
+deliverEvent(Event event)
 {
-  dispatchEvent(new AWTEvent(event));
 }
 
 /*************************************************************************/
@@ -1085,9 +1197,10 @@ public deliverEvent(Event event)
   *
   * @deprecated Deprecated in favor of <code>dispatchEvent()</code>.
   */
-public PostEvent(Event event)
+public boolean
+postEvent(Event event)
 {
-  dispatchEvent(new AWTEvent(event));
+  return(true);
 }
 
 /*************************************************************************/
@@ -1192,6 +1305,903 @@ public boolean
 mouseMove(Event event, int x, int y)
 {
   return(true);
+}
+
+/*************************************************************************/
+
+/**
+  * Enables the specified events.  The events to enable are specified
+  * by OR-ing together the desired masks from <code>AWTEvent</code>.
+  * <p>
+  * Events are enabled by default when a listener is attached to the
+  * component for that event type.  This method can be used by subclasses
+  * to ensure the delivery of a specified event regardless of whether
+  * or not a listener is attached.
+  *
+  * @param enable_events The desired events to enable.
+  */
+protected final void
+enableEvents(long enable_events)
+{
+  enabled_events |= enable_events;
+}
+
+/*************************************************************************/
+
+/**
+  * Disables the specified events.  The events to disable are specified
+  * by OR-ing together the desired masks from <code>AWTEvent</code>.
+  *
+  * @param disable_events The desired events to disable.
+  */
+protected final void
+disableEvents(long disable_events)
+{
+  enabled_events &= ~disable_events;
+}
+
+/*************************************************************************/
+
+/**
+  * Adds the specified listener to this component.
+  *
+  * @param listener The new listener to add.
+  */
+public synchronized void
+addComponentListener(ComponentListener listener)
+{
+  component_listener = AWTEventMulticaster.add(component_listener, listener);
+  enableEvents(AWTEvent.COMPONENT_EVENT_MASK);
+}
+
+/*************************************************************************/
+
+/**
+  * Removes the specified listener from the component.
+  *
+  * @param listener The listener to remove.
+  */
+public synchronized void
+removeComponentListener(ComponentListener listener)
+{
+  component_listener = AWTEventMulticaster.remove(component_listener, listener);
+}
+
+/*************************************************************************/
+
+/**
+  * Adds the specified listener to this component.
+  *
+  * @param listener The new listener to add.
+  */
+public synchronized void
+addFocusListener(FocusListener listener)
+{
+  focus_listener = AWTEventMulticaster.add(focus_listener, listener);
+  enableEvents(AWTEvent.FOCUS_EVENT_MASK);
+}
+
+/*************************************************************************/
+
+/**
+  * Removes the specified listener from the component.
+  *
+  * @param listener The listener to remove.
+  */
+public synchronized void
+removeFocusListener(FocusListener listener)
+{
+  focus_listener = AWTEventMulticaster.remove(focus_listener, listener);
+}
+
+/*************************************************************************/
+
+/**
+  * Adds the specified listener to this component.
+  *
+  * @param listener The new listener to add.
+  */
+public synchronized void
+addKeyListener(KeyListener listener)
+{
+  key_listener = AWTEventMulticaster.add(key_listener, listener);
+  enableEvents(AWTEvent.KEY_EVENT_MASK);
+}
+
+/*************************************************************************/
+
+/**
+  * Removes the specified listener from the component.
+  *
+  * @param listener The listener to remove.
+  */
+public synchronized void
+removeKeyListener(KeyListener listener)
+{
+  key_listener = AWTEventMulticaster.remove(key_listener, listener);
+}
+
+/*************************************************************************/
+
+/**
+  * Adds the specified listener to this component.
+  *
+  * @param listener The new listener to add.
+  */
+public synchronized void
+addMouseListener(MouseListener listener)
+{
+  mouse_listener = AWTEventMulticaster.add(mouse_listener, listener);
+  enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+}
+
+/*************************************************************************/
+
+/**
+  * Removes the specified listener from the component.
+  *
+  * @param listener The listener to remove.
+  */
+public synchronized void
+removeMouseListener(MouseListener listener)
+{
+  mouse_listener = AWTEventMulticaster.remove(mouse_listener, listener);
+}
+
+/*************************************************************************/
+
+/**
+  * Adds the specified listener to this component.
+  *
+  * @param listener The new listener to add.
+  */
+public synchronized void
+addMouseMotionListener(MouseMotionListener listener)
+{
+  mouse_motion_listener = AWTEventMulticaster.add(mouse_motion_listener, 
+                                                  listener);
+  enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK);
+}
+
+/*************************************************************************/
+
+/**
+  * Removes the specified listener from the component.
+  *
+  * @param listener The listener to remove.
+  */
+public synchronized void
+removeMouseMotionListener(MouseMotionListener listener)
+{
+  mouse_motion_listener = AWTEventMulticaster.remove(mouse_motion_listener, 
+                                                     listener);
+}
+
+/*************************************************************************/
+
+/**
+  * Sends this event to this component or a subcomponent for processing.
+  *
+  * @param event The event to dispatch
+  */
+public final void
+dispatchEvent(AWTEvent event)
+{
+  // FIXME: What is this really supposed to do?
+
+  // Only dispatch enabled events
+  if (!isEventEnabled(event))
+    return;
+
+  ((Component)event.getSource()).processEvent(event);
+}
+
+private boolean isEventEnabled(ActionEvent e) 
+  { return((enabled_events & AWTEvent.ACTION_EVENT_MASK) != 0); }
+private boolean isEventEnabled(AdjustmentEvent e) 
+  { return((enabled_events & AWTEvent.ADJUSTMENT_EVENT_MASK) != 0); }
+private boolean isEventEnabled(ComponentEvent e) 
+  { return((enabled_events & AWTEvent.COMPONENT_EVENT_MASK) != 0); }
+private boolean isEventEnabled(ContainerEvent e) 
+  { return((enabled_events & AWTEvent.CONTAINER_EVENT_MASK) != 0); }
+private boolean isEventEnabled(FocusEvent e) 
+  { return((enabled_events & AWTEvent.FOCUS_EVENT_MASK) != 0); }
+private boolean isEventEnabled(ItemEvent e) 
+  { return((enabled_events & AWTEvent.ITEM_EVENT_MASK) != 0); }
+private boolean isEventEnabled(KeyEvent e) 
+  { return((enabled_events & AWTEvent.KEY_EVENT_MASK) != 0); }
+private boolean isEventEnabled(MouseEvent e) 
+  { 
+    if ((e.getID() == MouseEvent.MOUSE_MOVED) ||
+        (e.getID() == MouseEvent.MOUSE_DRAGGED))
+      return((enabled_events & AWTEvent.MOUSE_MOTION_EVENT_MASK) != 0); 
+    else
+      return((enabled_events & AWTEvent.MOUSE_EVENT_MASK) != 0); 
+  }
+private boolean isEventEnabled(TextEvent e) 
+  { return((enabled_events & AWTEvent.TEXT_EVENT_MASK) != 0); }
+private boolean isEventEnabled(WindowEvent e) 
+  { return((enabled_events & AWTEvent.WINDOW_EVENT_MASK) != 0); }
+private boolean isEventEnabled(Object e)
+  {  return(false); }
+
+/*************************************************************************/
+
+/**
+  * Processes the specified event.  In this class, this method simply
+  * calls one of the more specific event handlers.
+  * 
+  * @param event The event to process.
+  */
+protected void
+processEvent(AWTEvent event)
+{
+  processEventInternal(event);
+}
+
+private void processEventInternal(ComponentEvent e) 
+  { processComponentEvent(e); }
+private void processEventInternal(FocusEvent e) 
+  { processFocusEvent(e); }
+private void processEventInternal(KeyEvent e) 
+  { processKeyEvent(e); }
+private void processEventInternal(MouseEvent e) 
+  { 
+    if ((e.getID() == MouseEvent.MOUSE_MOVED) ||
+        (e.getID() == MouseEvent.MOUSE_DRAGGED))
+      processMouseMotionEvent(e); 
+    else
+      processMouseEvent(e); 
+  }
+private void processEventInternal(Object e) {  }
+
+/*************************************************************************/
+
+/**
+  * Called when a component event is dispatched and component events are
+  * enabled.  This method passes the event along to any listeners
+  * that are attached.
+  *
+  * @param event The <code>ComponentEvent</code> to process.
+  */
+protected void
+processComponentEvent(ComponentEvent event)
+{
+  if (component_listener != null)
+    {
+      switch(event.getID())
+        {
+          case ComponentEvent.COMPONENT_HIDDEN:
+            component_listener.componentHidden(event);
+            break;
+
+          case ComponentEvent.COMPONENT_SHOWN:
+            component_listener.componentShown(event);
+            break;
+
+          case ComponentEvent.COMPONENT_MOVED:
+            component_listener.componentMoved(event);
+            break;
+
+          case ComponentEvent.COMPONENT_RESIZED:
+            component_listener.componentResized(event);
+            break;
+
+          default:
+            break;
+        }
+    }
+}
+
+/*************************************************************************/
+
+/**
+  * Called when a focus event is dispatched and component events are
+  * enabled.  This method passes the event along to any listeners
+  * that are attached.
+  *
+  * @param event The <code>FocusEvent</code> to process.
+  */
+protected void
+processFocusEvent(FocusEvent event)
+{
+  if (focus_listener != null)
+    {
+      switch(event.getID())
+        {
+          case FocusEvent.FOCUS_GAINED:
+            focus_listener.focusGained(event);
+            break;
+
+          case FocusEvent.FOCUS_LOST:
+            focus_listener.focusLost(event);
+            break;
+
+          default:
+            break;
+        }
+    }
+}
+
+/*************************************************************************/
+
+/**
+  * Called when a key event is dispatched and component events are
+  * enabled.  This method passes the event along to any listeners
+  * that are attached.
+  *
+  * @param event The <code>KeyEvent</code> to process.
+  */
+protected void
+processKeyEvent(KeyEvent event)
+{
+  if (key_listener != null)
+    {
+      switch(event.getID())
+        {
+          case KeyEvent.KEY_PRESSED:
+            key_listener.keyPressed(event);
+            break;
+
+          case KeyEvent.KEY_RELEASED:
+            key_listener.keyReleased(event);
+            break;
+
+          case KeyEvent.KEY_TYPED:
+            key_listener.keyTyped(event);
+            break;
+
+          default:
+            break;
+        }
+    }
+}
+
+/*************************************************************************/
+
+/**
+  * Called when a regular mouse event is dispatched and component events are
+  * enabled.  This method passes the event along to any listeners
+  * that are attached.
+  *
+  * @param event The <code>MouseEvent</code> to process.
+  */
+protected void
+processMouseEvent(MouseEvent event)
+{
+  if (mouse_listener != null)
+    {
+      switch(event.getID())
+        {
+          case MouseEvent.MOUSE_PRESSED:
+            mouse_listener.mousePressed(event);
+            break;
+
+          case MouseEvent.MOUSE_RELEASED:
+            mouse_listener.mouseReleased(event);
+
+          case MouseEvent.MOUSE_CLICKED:
+            mouse_listener.mouseClicked(event);
+            break;
+
+          case MouseEvent.MOUSE_ENTERED:
+            mouse_listener.mouseEntered(event);
+            break;
+
+          case MouseEvent.MOUSE_EXITED:
+            mouse_listener.mouseExited(event);
+            break;
+
+          default:
+            break;
+        }
+    }
+}
+
+/*************************************************************************/
+
+/**
+  * Called when a mouse motion event is dispatched and component events are
+  * enabled.  This method passes the event along to any listeners
+  * that are attached.
+  *
+  * @param event The <code>MouseMotionEvent</code> to process.
+  */
+protected void
+processMouseMotionEvent(MouseEvent event)
+{
+  if (mouse_motion_listener != null)
+    {
+      switch(event.getID())
+        {
+          case MouseEvent.MOUSE_DRAGGED:
+            mouse_motion_listener.mouseDragged(event);
+            break;
+
+          case MouseEvent.MOUSE_MOVED:
+            mouse_motion_listener.mouseMoved(event);
+            break;
+
+          default:
+            break;
+        }
+    }
+}
+
+/*************************************************************************/
+
+/**
+  * Called to inform this component it has been added to a container.
+  * A native peer - if any - is created at this time.  This method is
+  * called automatically by the AWT system and should not be called by
+  * user level code.
+  */
+public void
+addNotify()
+{
+}
+
+/*************************************************************************/
+
+/**
+  * Called to inform this component is has been removed from its
+  * container.  Its native peer - if any - is destroyed at this time.
+  * This method is called automatically by the AWT system and should
+  * not be called by user level code.
+  */
+public void
+removeNotify()
+{
+}
+
+/*************************************************************************/
+
+/**
+  * Tests whether or not this component is valid.  A invalid component needs
+  * to have its layout redone.
+  *
+  * @return <code>true</code> if this component is valid, <code>false</code>
+  * otherwise.
+  */
+public boolean
+isValid()
+{
+  return(valid);
+}
+
+/*************************************************************************/
+
+/**
+  * Invalidates this component and all of its parent components.  This will
+  * cause them to have their layout redone.
+  */
+public void
+invalidate()
+{
+  valid = false;
+  Component c = getParent();
+  if (c != null)
+    c.invalidate(); 
+}
+
+/*************************************************************************/
+
+/**
+  * Called to ensure that the layout for this component is valid.
+  */
+public void
+validate()
+{
+  valid = true;
+} 
+
+/*************************************************************************/
+
+/**
+  * Calls the layout manager to re-layout the component.  This is called
+  * during validation of a container in most cases.
+  */
+public void
+doLayout()
+{
+}
+
+/*************************************************************************/
+
+/**
+  * Calls the layout manager to re-layout the component.  This is called
+  * during validation of a container in most cases.
+  *
+  * @deprecated This method is deprecated in favor of <code>doLayout()</code>.
+  */
+public void
+layout()
+{
+  doLayout();
+}
+
+/*************************************************************************/
+
+/**
+  * Adds the specified popup menu to this component.
+  *
+  * @param menu The popup menu to be added.
+  */
+public synchronized void
+add(PopupMenu menu)
+{
+  // FIXME: Implement
+}
+
+/*************************************************************************/
+
+/**
+  * Removes the specified popup menu from this component.
+  *
+  * @param menu The popup menu to remove.
+  */
+public synchronized void
+remove(MenuComponent menu)
+{
+  // FIXME: Implement
+}
+
+/*************************************************************************/
+
+/**
+  * Returns the status of the loading of the specified image. The value
+  * returned will be those flags defined in <code>ImageObserver</code>.
+  *
+  * @param image The image to check on.
+  * @param observer The observer to be notified as the image loading
+  * progresses.
+  *
+  * @return The image observer flags indicating the status of the load.
+  */
+public int
+checkImage(Image image, ImageObserver observer)
+{
+  return(checkImage(image, image.getWidth(observer), 
+         image.getHeight(observer), observer));
+}
+
+/*************************************************************************/
+
+/**
+  * Returns the status of the loading of the specified image. The value
+  * returned will be those flags defined in <code>ImageObserver</code>.
+  *
+  * @param image The image to check on.
+  * @param width The scaled image width.
+  * @param height The scaled image height.
+  * @param observer The observer to be notified as the image loading
+  * progresses.
+  *
+  * @return The image observer flags indicating the status of the load.
+  */
+public int
+checkImage(Image image, int width, int height, ImageObserver observer)
+{
+  return(getPeer().checkImage(image, width, height, observer));
+}
+
+/*************************************************************************/
+
+/**
+  * Creates an image from the specified producer.
+  *
+  * @param producer The image procedure to create the image from.
+  *
+  * @return The resulting image.
+  */
+public Image
+createImage(ImageProducer producer)
+{
+  return(getPeer().createImage(producer));
+}
+
+/*************************************************************************/
+
+/**
+  * Creates an image with the specified width and height for use in
+  * double buffering.
+  *
+  * @param width The width of the image.
+  * @param height The height of the image.
+  *
+  * @return The requested image.
+  */
+public Image
+createImage(int width, int height)
+{
+  return(getPeer().createImage(width, height));
+}
+
+/*************************************************************************/
+
+/**
+  * Prepares the specified image for rendering on this component.
+  *
+  * @param image The image to prepare for rendering.
+  * @param observer The image observer to notify of the status of the
+  * image preparation.
+  *
+  * @return <code>true</code> if the image is already fully prepared
+  * for rendering, <code>false</code> otherwise.
+  */
+public boolean
+prepareImage(Image image, ImageObserver observer)
+{
+  return(prepareImage(image, image.getWidth(observer), 
+         image.getHeight(observer), observer));
+}
+
+/*************************************************************************/
+
+/**
+  * Prepares the specified image for rendering on this component at the
+  * specified scaled width and height
+  *
+  * @param image The image to prepare for rendering.
+  * @param width The scaled width of the image.
+  * @param height The scaled height of the image.
+  * @param observer The image observer to notify of the status of the
+  * image preparation.
+  *
+  * @return <code>true</code> if the image is already fully prepared
+  * for rendering, <code>false</code> otherwise.
+  */
+public boolean
+prepareImage(Image image, int width, int height, ImageObserver observer)
+{
+  return(getPeer().prepareImage(image, width, height, observer));
+}
+
+/*************************************************************************/
+
+/**
+  * Paints this component on the screen.  The clipping region in the
+  * graphics context will indicate the region that requires painting.
+  *
+  * @param graphics The graphics context for this paint job.
+  */
+public void
+paint(Graphics graphics)
+{
+}
+
+/*************************************************************************/
+
+/**
+  * Paints this entire component, including any sub-components.
+  *
+  * @param graphics The graphics context for this paint job.
+  */
+public void
+paintAll(Graphics graphics)
+{
+}
+
+/*************************************************************************/
+
+/**
+  * Repaint this entire component.  The <code>update()</code> method
+  * on this component will be called as soon as possible.
+  * // FIXME: What are the coords relative to?
+  */
+public void
+repaint()
+{
+  repaint(0, 0, 0, bounding_rectangle.width, bounding_rectangle.height);
+}
+
+/*************************************************************************/
+
+/**
+  * Repaint this entire component.  The <code>update()</code> method
+  * on this component will be called in approximate the specified number
+  * of milliseconds.
+  * // FIXME: What are the coords relative to?
+  *
+  * @param tm The number of milliseconds before this component should
+  * be repainted.
+  */
+public void
+repaint(long tm)
+{
+  repaint(tm, 0, 0, bounding_rectangle.width, bounding_rectangle.height);
+}
+
+/*************************************************************************/
+
+/**
+  * Repaints the specified rectangular region within this component.
+  * This <code>update</code> method on this component will be called as
+  * soon as possible.
+  * // FIXME: What are the coords relative to?
+  *
+  * @param x The X coordinate of the upper left of the region to repaint
+  * @param y The Y coordinate of the upper left of the region to repaint
+  * @param width The width of the region to repaint.
+  * @param height The height of the region to repaint.
+  */
+public void
+repaint(int x, int y, int width, int height)
+{
+  repaint(0, x, y, width, height);
+}
+
+/*************************************************************************/
+
+/**
+  * Repaints the specified rectangular region within this component.
+  * This <code>update</code> method on this component will be called in
+  * approximately the specified number of milliseconds.
+  * // FIXME: What are the coords relative to?
+  *
+  * @param tm The number of milliseconds before this component should
+  * be repainted.
+  * @param x The X coordinate of the upper left of the region to repaint
+  * @param y The Y coordinate of the upper left of the region to repaint
+  * @param width The width of the region to repaint.
+  * @param height The height of the region to repaint.
+  */
+public void
+repaint(long tm, int x, int y, int width, int height)
+{
+  Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(new PaintEvent(
+    this, PaintEvent.UPDATE, new Rectangle(x, y, width, height)));
+}
+
+/*************************************************************************/
+
+/**
+  * Updates this component.  This method fills the component
+  * with the background color, then sets the foreground color of the
+  * specified graphics context to the foreground color of this component
+  * and calls the <code>paint()</code> method.
+  * // FIXME: What are the coords relative to?
+  *
+  * @param graphics The graphics context for this update.
+  */
+public void
+update(Graphics graphics)
+{
+  graphics.clearRect(0, 0, bounding_rectangle.width, 
+                     bounding_rectangle.height);
+  graphics.setColor(getForeground());
+  paint(graphics);
+}
+
+/*************************************************************************/
+
+/**
+  * Prints this component.  This method is
+  * provided so that printing can be done in a different manner from
+  * painting.  However, the implementation in this class simply calls
+  * the <code>paint()</code> method.
+  *
+  * @param graphics The graphics context of the print device.
+  */
+public void
+print(Graphics graphics)
+{
+  paint(graphics);
+}
+
+/*************************************************************************/
+
+/**
+  * Prints this component, including all sub-components.  This method is
+  * provided so that printing can be done in a different manner from
+  * painting.  However, the implementation in this class simply calls
+  * the <code>paintAll()</code> method.
+  *
+  * @param graphics The graphics context of the print device.
+  */
+public void
+printAll(Graphics graphics)
+{
+  paintAll(graphics);
+}
+
+/*************************************************************************/
+
+/**
+  * Prints a listing of this component to the standard output.
+  */
+public void
+list()
+{
+  System.out.println(toString());
+}
+
+/*************************************************************************/
+
+/**
+  * Prints a listing of this component to the specified print stream.
+  *
+  * @param stream The <code>PrintStream</code> to print to.
+  */
+public void
+list(PrintStream stream)
+{
+  stream.println(toString());
+}
+
+/*************************************************************************/
+
+/**
+  * Prints a listing of this component to the specified print stream,
+  * starting at the specified indentation point.
+  *
+  * @param stream The <code>PrintStream</code> to print to.
+  * @param indent The indentation point.
+  */
+public void
+list(PrintStream stream, int indent)
+{
+  for(int i = 0; i < indent; i++)
+    stream.print(" ");
+
+  stream.println(toString());
+}
+
+/*************************************************************************/
+
+/**
+  * Prints a listing of this component to the specified print writer.
+  *
+  * @param writer The <code>PrintWrinter</code> to print to.
+  */
+public void
+list(PrintWriter writer)
+{
+  writer.println(toString());
+}
+
+/*************************************************************************/
+
+/**
+  * Prints a listing of this component to the specified print writer,
+  * starting at the specified indentation point.
+  *
+  * @param writer The <code>PrintWriter</code> to print to.
+  * @param indent The indentation point.
+  */
+public void
+list(PrintWriter writer, int indent)
+{
+  for(int i = 0; i < indent; i++)
+    writer.print(" ");
+
+  writer.println(toString());
+}
+
+/*************************************************************************/
+
+/**
+  * Returns a debugging string representing this component.
+  *
+  * @return A string representing this component.
+  */
+protected String
+paramString()
+{
+  return(toString());
+} 
+
+/*************************************************************************/
+
+/**
+  * Returns a string representation of this component.
+  *
+  * @return A string representation of this component
+  */
+public String
+toString()
+{
+  return(getClass().getName() + "(" + getName() + ")");
 }
 
 } // class Component
