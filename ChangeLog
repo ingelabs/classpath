@@ -1,3 +1,8 @@
+2001-04-15  Ian D. Stewart  <idstewart@softhome.net>
+
+	* javax/accessibility/AccessibleComponent.java (getAccessibleAt): Added
+	identifier 'point' to method declaration.
+
 2001-03-24  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/HashMap.java (HashMap): If 0 is given for initialCapacity 

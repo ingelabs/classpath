@@ -1,6 +1,6 @@
 /* AccessibleComponent.java -- Java interface for aiding in accessibly rendering 
    other Java components
-   Copyright (C) 2000 Free Software Foundation, Inc.
+   Copyright (C) 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -81,7 +81,7 @@ public abstract interface AccessibleComponent {
      * @return <code>null</code> if no <code>Accessible</code> child exists
      * at the given point 
      */
-    public abstract Accessible getAccessibleAt(Point);
+    public abstract Accessible getAccessibleAt(Point point);
 
     /**
      * Get the background color of this component.
