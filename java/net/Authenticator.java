@@ -95,7 +95,8 @@ private String scheme;
  */
 
 /**
-  * This method sets the default <code>Authenticator</code> object (an instance of a
+  * This method sets the default <code>Authenticator</code> object (an 
+  * instance of a
   * subclass of <code>Authenticator</code>) to use when prompting the user for
   * information.  Note that this method checks to see if the caller is
   * allowed to set this value (the "setDefaultAuthenticator" permission)
@@ -103,7 +104,8 @@ private String scheme;
   *
   * @param def_auth The new default <code>Authenticator</code> object to use
   *
-  * @exception SecurityException If the caller does not have permission to perform this operation
+  * @exception SecurityException If the caller does not have permission 
+  * to perform this operation
   */ 
 public static void
 setDefault(Authenticator def_auth)
