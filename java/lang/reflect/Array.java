@@ -61,8 +61,8 @@ public final class Array {
 	 **/
 	public static Object newInstance(Class componentType, int length)
 		throws NegativeArraySizeException {
-		if(componentType.isAssignableFrom(objectClass)) {
-			return createObjectArray(componentType, length);
+		if(componentType == Boolean.TYPE) {
+			return new boolean[length];
 		} else if(componentType==Byte.TYPE) {
 			return new byte[length];
 		} else if(componentType==Character.TYPE) {
@@ -80,7 +80,7 @@ public final class Array {
 		} else if(componentType==Void.TYPE) {
 			return null;
 		} else {
-			return null;
+			return createObjectArray(componentType, length);
 		}
 	}
 
@@ -148,7 +148,7 @@ public final class Array {
 		} else if(array instanceof double[]) {
 			return new Double(((double[])array)[index]);
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Parameter not an array.");
 		}
 	}
 
@@ -165,7 +165,7 @@ public final class Array {
 		if(array instanceof boolean[]) {
 			return ((boolean[])array)[index];
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Not a boolean array.");
 		}
 	}
 
@@ -182,7 +182,7 @@ public final class Array {
 		if(array instanceof byte[]) {
 			return ((byte[])array)[index];
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Array is not of appropriate type.");
 		}
 	}
 
@@ -217,7 +217,7 @@ public final class Array {
 		if(array instanceof char[]) {
 			return ((char[])array)[index];
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Not a char array.");
 		}
 	}
 
@@ -303,7 +303,8 @@ public final class Array {
 	 ** @param array	the array to set a value of.
 	 ** @param index	the array index to set the value to.
 	 ** @param value	the value to set.
-	 ** @exception IllegalArgumentException		if <code>array</code> is not an array.
+	 ** @exception IllegalArgumentException		if <code>array</code> is not an array or the value
+	 **                                             is of the wrong type for the array.
 	 ** @exception ArrayIndexOutOfBoundsException	if <code>index</code> is out of bounds.
          **/
 	public static void set(Object array, int index, Object value)
@@ -328,7 +329,7 @@ public final class Array {
 		} else if(value instanceof Double) {
 			setDouble(array,index,((Double)value).doubleValue());
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Tried to set a value on a non-array.");
 		}
 	}		
 
@@ -346,7 +347,7 @@ public final class Array {
 		if(array instanceof boolean[]) {
 			((boolean[])array)[index] = value;
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Not a boolean array.");
 		}
 	}
 
@@ -478,7 +479,7 @@ public final class Array {
 		if(array instanceof double[]) {
 			((double[])array)[index] = value;
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Array is not of appropriate primitive type");
 		}
 	}
 
@@ -510,7 +511,8 @@ public final class Array {
 			}
 			return retval;
 		} else {
-			return newInstance(type,dimensions[0]);
+			Object toAdd = newInstance(type,dimensions[0]);
+			return toAdd; 
 		}
 	}
 
