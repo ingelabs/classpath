@@ -72,7 +72,7 @@ ARG_CLASSPATH_JAVAH = -classpath
 
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
 
-
+if BUILD_GLIBJ_ZIP
 if HAVE_ZIP
 dist_pkgdata_DATA = glibj.zip
 noinst_DATA = genclasses
@@ -93,6 +93,8 @@ uninstall-local:
 	rm -rf $(DESTDIR)$(pkgdatadir)/java
 	rm -rf $(DESTDIR)$(pkgdatadir)/javax
 	rm -rf $(DESTDIR)$(pkgdatadir)/org
+
+endif # BUILD_GLIBJ_ZIP
 
 .PHONY: genclasses
 

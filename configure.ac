@@ -19,9 +19,6 @@ AM_INIT_AUTOMAKE(1.7.0)
 AC_CONFIG_HEADERS([include/config.h])
 AC_PREFIX_DEFAULT(/usr/local/classpath)
 
-dnl required if SUBDIRS is used
-AC_PROG_MAKE_SET
-
 AC_ARG_ENABLE([java],
               [AS_HELP_STRING(--enable-java,compile Java source [default=yes])],
               [case "${enableval}" in 
@@ -30,6 +27,7 @@ AC_ARG_ENABLE([java],
                  *) COMPILE_JAVA=yes ;;
                esac],
               [COMPILE_JAVA=yes])
+AM_CONDITIONAL(BUILD_GLIBJ_ZIP, test "x${COMPILE_JAVA}" = xyes)
 
 AC_ARG_ENABLE([jni],
               [AS_HELP_STRING(--enable-jni,compile JNI source [default=yes])],
@@ -122,17 +120,9 @@ if test "x${COMPILE_JNI}" = xyes; then
 
   dnl Check for AWT related gthread/gtk/libart_lgpl
   if test "x${COMPILE_GTK_PEER}" = xyes; then
-     PKG_CHECK_MODULES(GTHREAD, gthread-2.0 >= 2.2)
-     AC_SUBST(GTHREAD_CFLAGS)
-     AC_SUBST(GTHREAD_LIBS)
-
-     PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.2)
+     PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.2 gthread >= 2.2 libart-2.0)
      AC_SUBST(GTK_CFLAGS)
      AC_SUBST(GTK_LIBS)
-
-     PKG_CHECK_MODULES(LIBART, libart-2.0)
-     AC_SUBST(LIBART_CFLAGS)
-     AC_SUBST(LIBART_LIBS)
   fi
 
 fi

@@ -1,5 +1,13 @@
 2004-02-04  Michael Koch  <konqueror@gmx.de>
 
+	* configure.ac: No need to call AC_PROG_MAKE_SET explicitely.
+	Define conditiional for building glibj.zip. Simplified GTK checks.
+	* lib/Makefile.am: Build glibj.zip conditionally.
+	* native/jni/gtk-peer/Makefile.am: Removed references of GTHREAD_*
+	and LIBART_*, all is now in GTK_*.
+
+2004-02-04  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/zip/Deflater.java,
 	java/util/zip/DeflaterOutputStream.java,
 	java/util/zip/GZIPInputStream.java,
