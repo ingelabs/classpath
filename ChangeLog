@@ -1,3 +1,17 @@
+2003-12-27  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/protocol/http/Connection.java
+	(outputWriter): Removed.
+	(connect): Always initialize inputStream, don't initialize
+	outputWriter.
+	(sendRequest): Create PrintWriter object locally.
+	(receiveReply): Made private.
+	(getInputStream): Return inputStream confitionally.
+	(getOuputStream): Documentation added.
+	(setRequestMethod): Reordered.
+	(getHeaderField): Reordered.
+	(getHeaderFieldKey): Reordered.
+
 2003-12-27  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/System.java (mapLibraryName): Changed to call
