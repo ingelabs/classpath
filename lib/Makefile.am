@@ -71,17 +71,19 @@ endif
 ## endif
 endif
 
-default: all
+data_DATA = glibj.zip
+
+#default: all
 include .deps
-all: .deps $(CLASSES) $(STUBS) glibj.zip
+#all: .deps $(CLASSES) $(STUBS) glibj.zip
+
+glibj.zip: .deps $(CLASSES)
+	zip -r -D glibj.zip gnu java
 
 if MAINTAINER_BUILD
 .deps:	Makefile deps.sh gen-classlist.sh
 	./deps.sh
 endif
-
-glibj.zip: $(CLASSES)
-	zip -r -D -0 glibj.zip gnu java
 
 EXTRA_DIST = glibj.zip .deps
 
