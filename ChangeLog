@@ -1,3 +1,10 @@
+2003-06-12  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/FileOutputStream.java
+	(FileOutputStream): Fix parens.
+	* java/util/zip/InflaterInputStream.java
+	(read): Fix parens.
+
 2003-06-12  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/UIManager.java (getFont): Made public in conformance with

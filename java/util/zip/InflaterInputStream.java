@@ -191,7 +191,7 @@ public class InflaterInputStream extends FilterInputStream
 	if (count > 0)
 	  return count;
 	
-	if (inf.needsDictionary())
+	if (inf.needsDictionary()
 	    | inf.finished())
 	  return -1;
 	else if (inf.needsInput())
