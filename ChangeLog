@@ -1,5 +1,11 @@
 2004-10-22  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Character.java,
+	scripts/unicode-blocks.pl:
+	Reordered modifiers.
+
+2004-10-22  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JEditorPane.java
 	(getStream): Throws IOException.
 	(read): Likewise.

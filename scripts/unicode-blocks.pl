@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 # unicode-blocks.pl -- Script to generate java.lang.Character.UnicodeBlock
-# Copyright (C) 2002 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2004 Free Software Foundation, Inc.
 #
 # This file is part of GNU Classpath.
 #
@@ -186,7 +186,7 @@ while (<BLOCKS>) {
      * $block.
      * $extra'\\u$start' - '\\u$end'.$since
      */
-    public final static UnicodeBlock $name
+    public static final UnicodeBlock $name
       = new UnicodeBlock('\\u$start', '\\u$end',
                          "$name");
 EOF
