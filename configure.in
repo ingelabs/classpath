@@ -82,20 +82,6 @@ CLASSPATH_CHECK_JAPHAR
 dnl --with-kaffe
 CLASSPATH_CHECK_KAFFE
 
-dnl if no jvm yet defined, check for japhar
-if test -z "$JVM" || test "$JVM" = "no"; then
-  CLASSPATH_INTERNAL_CHECK_JAPHAR
-fi
-AC_MSG_CHECKING(for defined vm)
-if test -z "$JVM" || test "$JVM" = "no"; then
-  AC_MSG_ERROR(no: try --with-japhar)
-else
-  AC_MSG_RESULT(yes)
-fi
-
-dnl must check our conditionals from vm checks
-AM_CONDITIONAL(JAPHAR, test x$conditional_with_japhar = xtrue)
-
 AC_ARG_WITH(java,
   [  --with-java		  specify path to a java-like program ],
   [
@@ -135,7 +121,7 @@ AC_ARG_WITH(classlib,
   [  --with-classlib		specify path to a classes.zip like file ],
   [
     if test ${withval} != "" || test ${withval} != "yes" || test ${withval} != "no"; then
-      # set javac to user input value
+      # set class library to user input value
       AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test x = y)
       AC_MSG_CHECKING(for classlib)
       USER_CLASSLIB=${withval}
@@ -182,6 +168,28 @@ if test x${conditional_maintainer_build} = "xtrue"; then
   conditional_developer_build=false
 fi
 AM_CONDITIONAL(DEVELOPER_BUILD, test x$conditional_developer_build = xtrue)
+
+dnl if no jvm yet defined, check for japhar
+if test -z "$JVM" || test "$JVM" = "no"; then
+  # forcing this definition only in developer/maintainer build modes
+  if test x$conditional_developer_build = xtrue || test x$conditional_maintainer_build = xtrue; then
+    # need to have these defined if no vm selected, default to japhar
+    if test x$conditional_with_classlib != xtrue || test x$conditional_with_javah !=  xtrue; then
+      echo classlib $conditional_with_classlib
+      echo javah $conditional_with_javah
+      CLASSPATH_INTERNAL_CHECK_JAPHAR
+      AC_MSG_CHECKING(for defined vm)
+      if test -z "$JVM" || test "$JVM" = "no"; then
+        AC_MSG_ERROR(no: try --with-japhar)
+      else
+        AC_MSG_RESULT(yes)
+      fi
+    fi
+  fi
+fi
+
+dnl must check our conditionals from vm checks
+AM_CONDITIONAL(JAPHAR, test x$conditional_with_japhar = xtrue)
 
 dnl no longer used... cbj
 dnl java dependency creation
