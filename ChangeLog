@@ -1,3 +1,12 @@
+2003-07-19  Torsten Rupp  <rupp@lisa.aicas.com>
+
+        * java/io/File.java:
+        canWrite(): set prefix for temporary file to "tmp" to make methode
+        usable on systems with DOS-style filesystems (8+3-limitation)
+        createTempFile(): limit length of filename from temporary file to
+        8-length(prefix) to make methode usuable on systems with DOS-style
+        filesystems (8+3-limitation)
+
 2003-07-18  Graydon Hoare  <graydon@redhat.com>
 
 	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c: 
