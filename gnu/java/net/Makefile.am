@@ -1,6 +1,6 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = content http protocol
+SUBDIRS = content protocol
 
 EXTRA_DIST = \
 HeaderFieldHelper.java
