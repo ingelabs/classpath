@@ -37,6 +37,8 @@ exception statement from your version.  */
 
 package gnu.java.net.protocol.file;
 
+import gnu.java.security.action.GetPropertyAction;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -46,10 +48,12 @@ import java.io.FilePermission;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StringBufferInputStream;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.Permission;
+import java.security.AccessController;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -70,6 +74,15 @@ public class Connection extends URLConnection
    */
   private static final String DEFAULT_PERMISSION = "read";
 
+  private static final String lineSeparator;
+  
+  static
+  {
+    GetPropertyAction getProperty = new GetPropertyAction("line.separator");
+    lineSeparator = (String) AccessController.doPrivileged(getProperty);
+
+  }
+  
   /**
    * This is a File object for this connection
    */
@@ -111,11 +124,32 @@ public class Connection extends URLConnection
     
     // If not connected, then file needs to be openned.
     file = new File (getURL().getFile());
-    if (doInput)
-      inputStream = new BufferedInputStream(new FileInputStream(file));
+
+    if (! file.isDirectory())
+      {
+	if (doInput)
+	  inputStream = new BufferedInputStream(new FileInputStream(file));
     
-    if (doOutput)
-      outputStream = new BufferedOutputStream(new FileOutputStream(file));
+	if (doOutput)
+	  outputStream = new BufferedOutputStream(new FileOutputStream(file));
+      }
+    else
+      {
+	if (doInput)
+	  {
+	    StringBuffer sb = new StringBuffer();
+	    String[] files = file.list();
+
+	    for (int index = 0; index < files.length; ++index)
+	       sb.append(files[index]).append(lineSeparator);
+
+	    inputStream = new StringBufferInputStream(sb.toString());
+	  }
+
+	if (doOutput)
+	  throw new ProtocolException
+	    ("file: protocol does not support output on directories");
+      }
     
     connected = true;
   }
