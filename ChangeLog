@@ -1,3 +1,7 @@
+2004-03-22  Ingo Proetel  <proetel@aicas.com>
+
+	* java/awt/event/MouseEvent.java (<init>): fixed field assignment 
+
 2004-03-22 Ingo Proetel <proetel@aicas.com>
 
 	* java/awt/Graphics.java (draw3DRect): fixed lower horizontal line
