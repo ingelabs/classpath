@@ -1,5 +1,11 @@
 2005-01-11  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/UIDefaults.java (UIDefaults):
+	Fixed typo in javadoc (Thanks to Thomas Zander for reporting)
+	Fixed HTML entity and removed a redundant comma.
+
+2005-01-11  Michael Koch  <konqueror@gmx.de>
+
 	* configure.ac: Check for gdk-pixbuf-2.0.
 
 2005-01-11  Graydon Hoare  <graydon@redhat.com>
