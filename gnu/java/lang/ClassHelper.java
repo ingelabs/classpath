@@ -75,11 +75,15 @@ public class ClassHelper {
 				v.addElement(currentMethods[i]);
 			}
 			for(int i=0;i<superMethods.length;i++) {
+				boolean addOK = true;
 				for(int j=0;j<currentMethods.length;j++) {
-					if(!getTruncatedName(superMethods[i].getName()).equals(getTruncatedName(currentMethods[j].getName()))
-					   || !ArrayHelper.equalsArray(superMethods[i].getParameterTypes(),currentMethods[j].getParameterTypes())) {
-						v.addElement(superMethods[i]);
+					if(getTruncatedName(superMethods[i].getName()).equals(getTruncatedName(currentMethods[j].getName()))
+					   && ArrayHelper.equalsArray(superMethods[i].getParameterTypes(),currentMethods[j].getParameterTypes())) {
+						addOK = false;
 					}
+				}
+				if(addOK) {
+					v.addElement(superMethods[i]);
 				}
 			}
 
@@ -109,17 +113,98 @@ public class ClassHelper {
 				v.addElement(superMethods[i]);
 			}
 			for(int i=0;i<superMethods.length;i++) {
+				boolean addOK = true;
 				for(int j=0;j<currentMethods.length;j++) {
-					if(!getTruncatedName(superMethods[i].getName()).equals(getTruncatedName(currentMethods[j].getName()))
-					   || !ArrayHelper.equalsArray(superMethods[i].getParameterTypes(),currentMethods[j].getParameterTypes())) {
-						v.addElement(currentMethods[i]);
+					if(getTruncatedName(superMethods[i].getName()).equals(getTruncatedName(currentMethods[j].getName()))
+					   && ArrayHelper.equalsArray(superMethods[i].getParameterTypes(),currentMethods[j].getParameterTypes())) {
+						addOK = false;
 					}
+				}
+				if(addOK) {
+					v.addElement(superMethods[i]);
 				}
 			}
 
 			retval = new Method[v.size()];
 			v.copyInto(retval);
 			allMethodsAtDeclaration.put(clazz,retval);
+		}
+		return retval;
+	}
+
+	static Hashtable allFields = new Hashtable();
+	static Hashtable allFieldsAtDeclaration = new Hashtable();
+
+	/** Get all the fields, public, private and
+	 ** otherwise, from the class, getting them
+	 ** from the most recent class to find them.
+	 **/
+	public static Field[] getAllFields(Class clazz) {
+		Field[] retval = (Field[])allFields.get(clazz);
+		if(retval == null) {
+			Field[] superFields;
+			if(clazz.getSuperclass() != null) {
+				superFields = getAllFields(clazz.getSuperclass());
+			} else {
+				superFields = new Field[0];
+			}
+			Vector v = new Vector();
+			Field[] currentFields = clazz.getDeclaredFields();
+			for(int i=0;i<currentFields.length;i++) {
+				v.addElement(currentFields[i]);
+			}
+			for(int i=0;i<superFields.length;i++) {
+				boolean addOK = true;
+				for(int j=0;j<currentFields.length;j++) {
+					if(getTruncatedName(superFields[i].getName()).equals(getTruncatedName(currentFields[j].getName()))) {
+						addOK = false;
+					}
+				}
+				if(addOK) {
+					v.addElement(superFields[i]);
+				}
+			}
+
+			retval = new Field[v.size()];
+			v.copyInto(retval);
+			allFields.put(clazz,retval);
+		}
+		return retval;
+	}
+
+	/** Get all the fields, public, private and
+	 ** otherwise, from the class, and get them from
+	 ** their point of declaration.
+	 **/
+	public static Field[] getAllFieldsAtDeclaration(Class clazz) {
+		Field[] retval = (Field[])allFieldsAtDeclaration.get(clazz);
+		if(retval == null) {
+			Field[] superFields;
+			if(clazz.getSuperclass() != null) {
+				superFields = getAllFieldsAtDeclaration(clazz.getSuperclass());
+			} else {
+				superFields = new Field[0];
+			}
+			Vector v = new Vector();
+			Field[] currentFields = clazz.getDeclaredFields();
+			for(int i=0;i<superFields.length;i++) {
+				v.addElement(superFields[i]);
+			}
+			for(int i=0;i<superFields.length;i++) {
+				boolean addOK = true;
+				for(int j=0;j<currentFields.length;j++) {
+					if(getTruncatedName(superFields[i].getName()).equals(getTruncatedName(currentFields[j].getName()))) {
+						addOK = false;
+					}
+				}
+				if(addOK) {
+					v.addElement(superFields[i]);
+				}
+			}
+
+			retval = new Field[v.size()];
+			v.copyInto(retval);
+			allFieldsAtDeclaration.put(clazz,retval);
 		}
 		return retval;
 	}
