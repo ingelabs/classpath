@@ -1,3 +1,10 @@
+2003-06-25  Sascha Brawer  <brawer@dandelis.ch>
+	
+        * javax/swing/plaf/TextUI.java: Made imports specific, reformatted,
+	wrote JavaDoc.
+	(modelToView): Declare to throw javax.swing.text.BadLocationException.
+	(getToolTipText): New method.
+	
 2003-06-25  Stephen Crawley <crawley@dstc.edu.au>
 
 	* gnu/java/locale/LocaleInformation_de.java,
