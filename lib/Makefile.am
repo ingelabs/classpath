@@ -3,17 +3,13 @@
 # --cbj
 ## used by automake to generate Makefile.in
 
-PERL = @PERL@
-MAKEFILE_DEPEND = makefile.dep
-HEADERS_DEPEND = headers.dep
-CLASSES_DEPEND = classes.dep
+##PERL = @PERL@
 JAVA_DEPEND = java.dep
 
 ## silently try to include these, if it fails gnu make
 ## will remake these 'makefiles' with the rules given in
 ## this file and restart the make process again
 sinclude $(JAVA_DEPEND)
-sinclude $(HEADERS_DEPEND)
 
 KJC_CLASSPATH=@KJC_CLASSPATH@
 
@@ -81,23 +77,13 @@ JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
 
 
 pkgdata_DATA = glibj.zip
-install-data-local :
-	if ! [ -e $(pkgdatadir) ]; then mkdir -p $(pkgdatadir); fi
-	unzip -d $(pkgdatadir) glibj.zip
+noinst_DATA = genclasses classes
 
-if CREATE_JNI_HEADERS
-all: $(HEADERS_DEPEND) glibj.zip $(CP_HEADERS)
-else
-all: glibj.zip
-endif
+##install-data-local :
+##	if ! [ -e $(pkgdatadir) ]; then mkdir -p $(pkgdatadir); fi
+##	$(UNZIP) -d $(pkgdatadir) glibj.zip
 
-#jar-classes
-
-# this makes headers always generate after making glibj.zip
-$(CP_HEADERS) : headers.dep
-
-#.PHONY: jar-classes
-glibj.zip: classes compile-classes $(MAKEFILE_DEPEND)
+glibj.zip: classes compile-classes
 	if ! [ -e gnu ]; then mkdir gnu; fi
 	if ! [ -e gnu/java ]; then mkdir gnu/java; fi
 	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
@@ -105,67 +91,25 @@ glibj.zip: classes compile-classes $(MAKEFILE_DEPEND)
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
 	$(ZIP) -r -D glibj.zip gnu java javax > /dev/null
 
+.PHONY: genclasses
+
 classes: gen-classlist.sh standard.omit
 	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
-.PHONY: dep
-dep: classes
-	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -s
+genclasses: gen-classlist.sh standard.omit
+	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
-#.PHONY: compile-classes
-compile-classes: classes $(JAVA_DEPEND) $(JAVA_SRCS) Makefile
+$(JAVA_DEPEND): genclasses
+
+compile-classes: classes $(JAVA_SRCS) Makefile
 	$(JAVAC)
 	touch compile-classes
 
-$(MAKEFILE_DEPEND): compile-classes
-	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -d
-#	$(SHELL) -c find -regex ".*\.u$$" -exec rm \{\} \; > /dev/null
-
-$(HEADERS_DEPEND): classes
-	if ! [ -e $(top_builddir)/include ]; then -mkdir $(top_builddir)/include; fi	
-	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -h
-
-$(CLASSES_DEPEND): classes
-	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -c
-
-$(JAVA_DEPEND): classes
-	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -j
-
-## neither developer nor maintainer...
-
-##MDEPEND = $(SHELL test -r $(MAKEFILE_DEPEND) && echo "true")
-##@REMOVE@ifeq ($(MDEPEND),true)
-##@REMOVE@	include $(MAKEFILE_DEPEND)
-##@REMOVE@else
-##@REMOVE@	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -d"
-##@REMOVE@	include $(MAKEFILE_DEPEND)
-##@REMOVE@endif
-
-##HDEPEND = $(SHELL test -r $(HEADERS_DEPEND) && echo "true")
-##@REMOVE@ifeq ($(HDEPEND),true)
-##@REMOVE@	include $(HEADERS_DEPEND)
-##@REMOVE@else
-##@REMOVE@	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -h"
-##@REMOVE@	include $(HEADERS_DEPEND)
-##@REMOVE@endif
-
-##CDEPEND = $(SHELL test -r $(CLASSES_DEPEND) && echo "true")
-##@REMOVE@ifeq ($(CDEPEND),true)
-##@REMOVE@	include $(CLASSES_DEPEND)
-##@REMOVE@else
-##@REMOVE@	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -c"
-##@REMOVE@	include $(CLASSES_DEPEND)
-##@REMOVE@endif
-
-##endif
-
-##endif
-
-EXTRA_DIST = glibj.zip standard.omit mkcollections.pl.in
+EXTRA_DIST = standard.omit mkcollections.pl.in
 ## not sure if we want to let the user easily get rid of glibj.zip
 ## CLEANFILES = glibj.zip
-DISTCLEANFILES = $(CLASSES) $(CP_HEADERS)
-MAINTAINERCLEANFILES = classes makefile.dep $(JAVA_DEPEND) $(HEADERS_DEPEND)
+DISTCLEANFILES = 
+MAINTAINERCLEANFILES = classes $(JAVA_DEPEND)
 
 maintainer-clean-local:
 	-rm -rf com

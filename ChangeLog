@@ -1,3 +1,81 @@
+2002-02-09  C. Brian Jones <cbj@gnu.org>
+
+	* lib/Makefile.am: no JNI header generation, do not use mkdep.pl,
+	Remake classes when source changes or new classes are added.
+	Do not bother including glibj.zip in dist, it has to be remade 
+	regardless due to path differences to source files we cannot control
+	in users' environment
+	* lib/gen-classlist.sh: create java.dep from this script instead of
+	mkdep.pl.in
+	* native/jni/gtk-peer/Makefile.am: added $(top_srcdir)/include to
+	INCLUDES
+	* native/jni/java-io/Makefile.am: added $(top_srcdir)/include to
+	INCLUDES
+	* native/jni/java-lang/Makefile.am: added $(top_srcdir)/include to
+	INCLUDES
+	* native/jni/java-net/Makefile.am: added $(top_srcdir)/include to
+	INCLUDES
+	* configure.in: removed mkdep.pl, mkcollections.pl from output.
+	Commented out check for Perl.
+	* acinclude.m4: do not fail if no javah program found
+	* include/.cvsignore: no longer ignore JNI headers
+	* include/gnu_java_awt_image_GdkPixbufDecoder.h: new file
+	* include/gnu_java_awt_peer_gtk_GdkFontMetrics.h: ditto
+	* include/gnu_java_awt_peer_gtk_GdkGraphics.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkButtonPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkCanvasPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkCheckboxPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkCheckButtonPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkChoicePeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkClipboard.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkFileDialogPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkFramePeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkImagePainter.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkLabelPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkListPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkMainThread.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkMenuBarPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkMenuItemPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkMenuPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkPanelPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkScrollbarPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkScrollPanePeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkTextAreaPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkTextComponentPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkToolkit.h: ditto
+	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h: ditto
+	* include/gnu_java_lang_ExecutionStack.h: ditto
+	* include/java_io_FileDescriptor.h: ditto
+	* include/java_io_File.h: ditto
+	* include/java_io_FileInputStream.h: ditto
+	* include/java_io_FileOutputStream.h: ditto
+	* include/java_io_ObjectInputStream.h: ditto
+	* include/java_io_ObjectOutputStream.h: ditto
+	* include/java_io_RandomAccessFile.h: ditto
+	* include/java_lang_Class.h: ditto
+	* include/java_lang_Double.h: ditto
+	* include/java_lang_Float.h: ditto
+	* include/java_lang_Math.h: ditto
+	* include/java_lang_Object.h: ditto
+	* include/java_lang_reflect_Array.h: ditto
+	* include/java_lang_reflect_Constructor.h: ditto
+	* include/java_lang_reflect_Field.h: ditto
+	* include/java_lang_reflect_Method.h: ditto
+	* include/java_lang_reflect_Proxy.h: ditto
+	* include/java_lang_Runtime.h: ditto
+	* include/java_lang_System.h: ditto
+	* include/java_lang_Thread.h: ditto
+	* include/java_lang_Throwable.h: ditto
+	* include/java_lang_VMClassLoader.h: ditto
+	* include/java_net_InetAddress.h: ditto
+	* include/java_net_PlainDatagramSocketImpl.h: ditto
+	* include/java_net_PlainSocketImpl.h: ditto
+	* include/java_util_TimeZone.h: ditto
+
 2002-02-09  Mark Wielaard <mark@klomp.org>
 
 	Thanks to Takashi Okamoto

@@ -13,7 +13,7 @@ libjavaio_la_SOURCES = 	javaio.h \
 libjavaio_la_LDFLAGS = -module -version-info @LIBVERSION@ 
 
 libjavaio_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo
-INCLUDES = @EXTRA_INCLUDES@ \
+INCLUDES = -I. @EXTRA_INCLUDES@ \
 	   -I$(top_srcdir)/native/jni/classpath \
+           -I$(top_srcdir)/include \
 	   -I$(top_builddir)/include 
-

@@ -10,7 +10,7 @@ AC_CANONICAL_TARGET
 if expr match ${target_cpu} .*86 > /dev/null; then target_cpu=x86; fi
 
 PACKAGE="classpath"
-VERSION="0.03"
+VERSION="0.03-pre1"
 LIBVERSION="0:0:0"
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
@@ -221,7 +221,8 @@ dnl zip, and perl, however it should be okay since it is only used
 dnl in maintainer mode.
 AC_PATH_PROG(FIND, find)
 AC_PATH_PROG(ZIP, zip)
-AC_PATH_PROG(PERL, perl)
+AC_PATH_PROG(UNZIP, unzip)
+dnl AC_PATH_PROG(PERL, perl)
 
 AC_OUTPUT(Makefile
 com/Makefile
@@ -332,12 +333,8 @@ vm/reference/java/Makefile
 vm/reference/java/lang/Makefile
 vm/reference/java/lang/reflect/Makefile
 lib/Makefile
-lib/gen-classlist.sh
-lib/mkdep.pl
-lib/mkcollections.pl,
-[ chmod 755 lib/mkdep.pl
-  chmod 755 lib/mkcollections.pl
-  chmod 755 lib/gen-classlist.sh
+lib/gen-classlist.sh,
+[ chmod 755 lib/gen-classlist.sh
 ])
 
 

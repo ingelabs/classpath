@@ -13,8 +13,9 @@ libjavalang_la_LIBADD = $(wildcard $(top_builddir)/native/fdlibm/*.lo) \
 libjavalang_la_LDFLAGS = -module -version-info @LIBVERSION@
 libjavalangreflect_la_LDFLAGS = -module -version-info @LIBVERSION@
 
-INCLUDES = @EXTRA_INCLUDES@ \
+INCLUDES = -I. @EXTRA_INCLUDES@ \
 	   -I$(top_srcdir)/native/jni/classpath \
 	   -I$(top_srcdir)/native/fdlibm \
+           -I$(top_srcdir)/include \
 	   -I$(top_builddir)/include 
 

@@ -455,10 +455,10 @@ AC_DEFUN(CLASSPATH_CHECK_JAVAH,
     done
   fi
   
-  if test "$USER_JAVAH" = ""; then
-    echo "configure: cannot find javah" 1>&2
-    exit 1
-  fi
+#  if test "$USER_JAVAH" = ""; then
+#    echo "configure: cannot find javah" 1>&2
+#    exit 1
+#  fi
 ])
 
 dnl CLASSPATH_WITH_CLASSLIB - checks for user specified classpath additions
