@@ -1,3 +1,24 @@
+2004-04-13  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/imageio/spi/IIOServiceProvider.java,
+	javax/imageio/spi/ImageInputStreamSpi.java,
+	javax/imageio/spi/ImageOutputStreamSpi.java,
+	javax/imageio/spi/ImageReaderWriterSpi.java,
+	javax/imageio/spi/ImageTranscoderSpi.java: Implemented.
+
+	* javax/imageio/stream: New directory.
+
+	* javax/imageio/stream/IIOByteBuffer.java,
+	javax/imageio/stream/ImageInputStream.java: Implemented,
+	but not documented.
+	
+	* javax/imageio/ImageReader.java,
+	javax/imageio/ImageWriter.java,
+	javax/imageio/ImageTranscoder.java,
+	javax/imageio/stream/ImageOutputStream.java:
+	Added empty class/interface in order to allow compilation of
+	javax.imageio.spi.
+
 2004-04-13  Jeroen Frijters <jeroen@frijters.net>
 
 	* gnu/java/nio/channels/FileChannelImpl.java:
