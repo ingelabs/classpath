@@ -10,13 +10,19 @@ endif
 WML_SRC = $(wildcard *.wml)
 WML_OBJS = $(patsubst %.wml,%.html,$(WML_SRC))
 
+all : $(WML_OBJS) subdirs
+
 %.texinfo :
 	cp ../$(notdir $(@)) docs
 
-%.html: %.wml include/macros.wml include/layout.wml
+# home and news html includes newsitems.txt so we list that here explicitly
+home.html: home.wml include/macros.wml include/layout.wml newsitems.txt
+	$(WML) -o $@ $<
+news.html: news.wml include/macros.wml include/layout.wml newsitems.txt
 	$(WML) -o $@ $<
 
-all : $(WML_OBJS) subdirs
+%.html: %.wml include/macros.wml include/layout.wml
+	$(WML) -o $@ $<
 
 .PHONY : clean
 clean :
