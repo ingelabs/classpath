@@ -210,6 +210,22 @@ Classpath Hacker&#x2019;s Guide</a>, and pick up a <createlink name="task" url="
 No. In fact, if you read Sun's sources we can't accept any code from you.
 </faq>
 
+<faq question="I'm tainted by; can I help anyway?">
+Even if you have seen Sun's source and you cannot contribute code to GNU Classpath, there are still many way you can help us.
+
+Here's a few examples of contributions you can make that would greatly help us:
+<ul>
+<li>Mauve test cases
+<li>Example programs for GNU Classpath
+<li>Documentation fixes
+<li>Help programs (e.g. japitools) and scripts
+</ul>
+
+In general, if you just accidentally saw some of the source code and had no intention (and didn't actually) study the implementation (with the intention of contributing to GNU Classpath), there is no problem.
+
+In case of doubt, please refer to FSF legal.
+</faq>
+
 <faq question="Why do I have to give the copyright to the FSF?">
 Some contributors of Classpath might be annoyed if their work was being
 used under conditions that are not according to the terms of the license.

@@ -29,6 +29,7 @@
 <blockquote>
   <createlink url="docs/hacking.html" name="GNU Classpath Hacker's Guide"><br/>
   <createlink url="docs/vmintegration.html" name="Virtual Machine Integration Guide"><br/>
+  <createlink url="http://developer.classpath.org/mediation/" name="GNU Classpath Wiki"><br/>
 </blockquote>
 </boxitem>
 

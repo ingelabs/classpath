@@ -1,3 +1,9 @@
+2005-03-14  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/newsitems.txt: news on gui branch and calientra
+	* doc/www.gnu.org/docs/docs.wml: link to the wiki added
+	* doc/www.gnu.org/faq/faq.wml: entry on tainted developers
+
 2005-03-14  Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* javax/swing/text/html/parser/Parser.java,
