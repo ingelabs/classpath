@@ -38,14 +38,19 @@ class VMClassLoader {
 	 ** @return the class that was defined.
 	 ** @exception ClassFormatError if the byte array is not in proper classfile format.
 	 **/
-	final static Class defineClass(String name, byte[] data, int offset, int len) throws ClassFormatError {
-		throw new UnsupportedOperationException();
-	}
+	final static native Class defineClass(String name, byte[] data, int offset, int len) throws ClassFormatError;
 
 	/** Helper to resolve all references to other classes from this class.
 	 ** @param c the class to resolve.
 	 **/
-	final static void resolveClass(Class c) {
-		throw new UnsupportedOperationException();
-	}
+	final static native void resolveClass(Class c);
+
+	/** Helper for java.lang.Integer, Byte, etc. to get the TYPE class
+	 ** at initialization time.  If there are multiple classloaders, this
+	 ** method may be called once per ClassLoader per type.
+	 ** @param type name of the primitive type; i.e. "int", "byte", "long",
+	 **             etc.
+	 ** @return a "bogus" class representing the primitive type.
+	 **/
+	final static native Class getPrimitiveClass(String type);
 }
