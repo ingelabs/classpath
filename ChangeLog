@@ -1,3 +1,7 @@
+2004-08-02  Bryce McKinlay  <mckinlay@redhat.com>
+
+	* java/sql/Timestamp.java (valueOf): Synchronize access to dateFormat.
+
 2004-08-02  Michael Koch  <konqueror@gmx.de>
 
 	* doc/api/Makefile.am,
