@@ -1384,41 +1384,19 @@ public final class Character implements Serializable, Comparable
   public static final byte DIRECTIONALITY_POP_DIRECTIONAL_FORMAT = 18;
 
   /**
-   * Returns the value array of the given string if it is zero based or a
-   * copy of it that is zero based (stripping offset and making length equal
-   * to count). Used for accessing the char[]s of gnu.java.lang.CharData.
-   * Package private for use in String.
-   */
-  static char[] zeroBasedStringValue(String s)
-  {
-    char[] value;
-
-    if (s.offset == 0 && s.count == s.value.length)
-      value = s.value;
-    else
-      {
-	int count = s.count;
-	value = new char[count];
-	System.arraycopy(s.value, s.offset, value, 0, count);
-      }
-
-    return value;
-  }
-
-  /**
    * Stores unicode block offset lookup table. Exploit package visibility of
    * String.value to avoid copying the array.
    * @see #readChar(char)
    * @see CharData#BLOCKS
    */
-  private static final char[] blocks = zeroBasedStringValue(CharData.BLOCKS);
+  private static final char[] blocks = String.zeroBasedStringValue(CharData.BLOCKS);
 
   /**
    * Stores unicode attribute offset lookup table. Exploit package visibility
    * of String.value to avoid copying the array.
    * @see CharData#DATA
    */
-  private static final char[] data = zeroBasedStringValue(CharData.DATA);
+  private static final char[] data = String.zeroBasedStringValue(CharData.DATA);
 
   /**
    * Stores unicode numeric value attribute table. Exploit package visibility
@@ -1426,21 +1404,21 @@ public final class Character implements Serializable, Comparable
    * @see CharData#NUM_VALUE
    */
   private static final char[] numValue
-	  = zeroBasedStringValue(CharData.NUM_VALUE);
+	  = String.zeroBasedStringValue(CharData.NUM_VALUE);
 
   /**
    * Stores unicode uppercase attribute table. Exploit package visibility
    * of String.value to avoid copying the array.
    * @see CharData#UPPER
    */
-  private static final char[] upper = zeroBasedStringValue(CharData.UPPER);
+  private static final char[] upper = String.zeroBasedStringValue(CharData.UPPER);
 
   /**
    * Stores unicode lowercase attribute table. Exploit package visibility
    * of String.value to avoid copying the array.
    * @see CharData#LOWER
    */
-  private static final char[] lower = zeroBasedStringValue(CharData.LOWER);
+  private static final char[] lower = String.zeroBasedStringValue(CharData.LOWER);
 
   /**
    * Stores unicode direction attribute table. Exploit package visibility
@@ -1448,14 +1426,14 @@ public final class Character implements Serializable, Comparable
    * @see CharData#DIRECTION
    */
   // Package visible for use by String.
-  static final char[] direction = zeroBasedStringValue(CharData.DIRECTION);
+  static final char[] direction = String.zeroBasedStringValue(CharData.DIRECTION);
 
   /**
    * Stores unicode titlecase table. Exploit package visibility of
    * String.value to avoid copying the array.
    * @see CharData#TITLE
    */
-  private static final char[] title = zeroBasedStringValue(CharData.TITLE);
+  private static final char[] title = String.zeroBasedStringValue(CharData.TITLE);
 
   /**
    * Mask for grabbing the type out of the contents of data.

@@ -1,3 +1,10 @@
+2002-10-03  C. Scott Ananian <cananian@lesser-magoo.lcs.mit.edu>
+
+	* java/lang/Character.java (zeroBasedStringValue): Removed.
+	* java/lang/String.java (zeroBasedStringValue): Added.
+	* java/lang/ProtectionDomain.java (linesep): Remove field.
+	(toString): Use System.getProperty("line.separator").
+
 2002-10-03  Stephen Crawley  <crawley@dstc.edu.au>
 
 	* vm/reference/java/lang/Thread.java (Thread): Use root ThreadGroup,

@@ -99,7 +99,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @see CharData#UPPER_EXPAND
    */
   private static final char[] upperExpand
-	= Character.zeroBasedStringValue(CharData.UPPER_EXPAND);
+	= zeroBasedStringValue(CharData.UPPER_EXPAND);
 
   /**
    * Stores unicode multi-character uppercase special casing table.
@@ -107,7 +107,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @see CharData#UPPER_SPECIAL
    */
   private static final char[] upperSpecial
-	  = Character.zeroBasedStringValue(CharData.UPPER_SPECIAL);
+	  = zeroBasedStringValue(CharData.UPPER_SPECIAL);
   
   /**
    * Characters which make up the String.
@@ -1668,5 +1668,27 @@ public final class String implements Serializable, Comparable, CharSequence
         c = upperSpecial[mid];
       }
     return upperSpecial[mid + 1];
+  }
+
+  /**
+   * Returns the value array of the given string if it is zero based or a
+   * copy of it that is zero based (stripping offset and making length equal
+   * to count). Used for accessing the char[]s of gnu.java.lang.CharData.
+   * Package private for use in Character.
+   */
+  static char[] zeroBasedStringValue(String s)
+  {
+    char[] value;
+
+    if (s.offset == 0 && s.count == s.value.length)
+      value = s.value;
+    else
+      {
+	int count = s.count;
+	value = new char[count];
+	System.arraycopy(s.value, s.offset, value, 0, count);
+      }
+
+    return value;
   }
 } // class String
