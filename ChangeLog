@@ -1,3 +1,7 @@
+2003-02-21  Tom Tromey  <tromey@redhat.com>
+
+	* vm/reference/java/lang/Runtime.java: Reverted previous patch.
+
 2003-02-21  Anthony Green  <green@redhat.com>
 
 	* vm/reference/java/lang/Runtime.java (getLocalizedInputStream):

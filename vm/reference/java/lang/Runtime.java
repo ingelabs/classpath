@@ -682,7 +682,6 @@ public class Runtime
    * @deprecated <code>InputStreamReader</code> is the preferred way to read
    *             local encodings
    * @XXX This implementation does not localize, yet.
-   * @deprecated
    */
   public InputStream getLocalizedInputStream(InputStream in)
   {
@@ -698,7 +697,6 @@ public class Runtime
    * @deprecated <code>OutputStreamWriter</code> is the preferred way to write
    *             local encodings
    * @XXX This implementation does not localize, yet.
-   * @deprecated
    */
   public OutputStream getLocalizedOutputStream(OutputStream out)
   {
