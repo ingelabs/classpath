@@ -1,5 +1,10 @@
 2004-12-01  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/SelectorImpl.java
+	(register): Removed redundant code.
+
+2004-12-01  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/print/Book.java: Reformatted.
 
 2004-12-01  Michael Koch  <konqueror@gmx.de>
