@@ -1,3 +1,16 @@
+2005-01-11  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/text/DecimalFormatSymbols.java
+	(DecimalFormatSymbols(java.util.Locale)): check for
+	errors in setting the currency and default to null and
+	empty strings if unavailable
+	(setCurrency(Currency)): moved assignment to ensure
+	currency is not accidentally set to null
+	* java/util/Currency.java
+	(Currency(java.util.Locale)): throw IllegalArgumentException
+	for empty country string and NullPointerException for null
+	locale or country
+
 2005-01-11  Graydon Hoare  <graydon@redhat.com>
 
 	* gnu/java/awt/ClasspathToolkit.java

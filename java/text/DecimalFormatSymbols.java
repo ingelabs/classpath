@@ -139,6 +139,10 @@ public final class DecimalFormatSymbols implements Cloneable, Serializable
   public DecimalFormatSymbols (Locale loc)
   {
     ResourceBundle res;
+
+    currency = null;
+    currencySymbol = "";
+    intlCurrencySymbol = "";
     try
       {
 	res = ResourceBundle.getBundle("gnu.java.locale.LocaleInformation",
@@ -148,7 +152,20 @@ public final class DecimalFormatSymbols implements Cloneable, Serializable
       {
 	res = null;
       }
-    setCurrency(Currency.getInstance(loc));
+    try
+      {
+	Currency localeCurrency;
+
+	localeCurrency = Currency.getInstance(loc);
+	if (localeCurrency != null)
+	  {
+	    setCurrency(localeCurrency);
+	  }
+      }
+    catch(IllegalArgumentException exception)
+      {
+	/* Locale has an invalid currency */
+      }
     decimalSeparator = safeGetChar (res, "decimalSeparator", '.');
     digit = safeGetChar (res, "digit", '#');
     exponential = safeGetChar (res, "exponential", 'E');
@@ -393,9 +410,9 @@ public final class DecimalFormatSymbols implements Cloneable, Serializable
    */
   public void setCurrency (Currency currency)
   {
-    this.currency = currency;
     intlCurrencySymbol = currency.getCurrencyCode();
     currencySymbol = currency.getSymbol();
+    this.currency = currency;
   }
 
   /**
