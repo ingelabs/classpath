@@ -141,8 +141,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_requestFocus
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetEnabled
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setEnabled
   (JNIEnv *env, jobject obj, jboolean enabled)
 {
   void *ptr;
@@ -158,8 +157,8 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetEnabled
  * Show a widget
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setVisible (JNIEnv *env, 
-    jobject obj, jboolean visible)
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetVisible
+  (JNIEnv *env, jobject obj, jboolean visible)
 {
   GtkWidget *widget;
   void *ptr;
