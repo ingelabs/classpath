@@ -1,3 +1,7 @@
+2002-05-23  C. Brian Jones <cbj@gnu.org>
+
+	* doc/www.gnu.org/home.wml: add blurb about Mauve
+
 2002-05-21  Andrew Selkirk  <aselkirk@sympatico.ca>
 
 	* javax/swing/DefaultBoundedRangeModel.java: New file.

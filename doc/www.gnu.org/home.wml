@@ -130,11 +130,20 @@ Tasks information in the future and no longer appear on this page.
   <package-item name="java.util.zip">
 </package-list>
 
+<H4>Testing</H4>
+<en>
+<p>
+The test framework for GNU Classpath is called 
+<link url="http://sources.redhat.com/mauve/" name="Mauve">.  There 
+are instructions within the Mauve website on how to download and use Mauve.
+</en>
+</p>
+
 <H4>Virtual Machines</H4> 
 <en>
 <p>
 The primary target for GNU Classpath was originally <link
-url="http://www.japhar.org" name="Japhar">.  Japhar-0.07 works out-of-the-box with
+url="http://www.japhar.org/" name="Japhar">.  Japhar-0.07 works out-of-the-box with
 GNU Classpath-0.00.  Japhar-0.09 is required for newer releases of GNU
 Classpath.  In the past couple of years no one has been able to take
 over the maintenance of Japhar and once again Japhar does not work
