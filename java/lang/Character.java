@@ -961,7 +961,7 @@ public final class Character implements Serializable, Comparable
    *
    * @param ch character to convert to uppercase
    *
-   * @return lowercase mapping of ch, or ch if uppercase mapping does
+   * @return uppercase mapping of ch, or ch if uppercase mapping does
    * not exist.
    */
   public static char toUpperCase(char ch) {
@@ -987,7 +987,7 @@ public final class Character implements Serializable, Comparable
    *
    * @param ch character to convert to titlecase
    *
-   * @return lowercase mapping of ch, or ch if titlecase mapping does
+   * @return titlecase mapping of ch, or ch if titlecase mapping does
    * not exist.
    */
   public static char toTitleCase(char ch) {
