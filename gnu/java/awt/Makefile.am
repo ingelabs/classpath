@@ -4,6 +4,7 @@ SUBDIRS = image peer
 
 EXTRA_DIST = \
 BitMaskExtent.java \
+BitwiseXORComposite.java \
 Buffers.java \
 ComponentDataBlitOp.java \
 ClasspathToolkit.java \

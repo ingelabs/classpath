@@ -1,3 +1,11 @@
+2003-11-06  Sascha Brawer  <brawer@dandelis.ch>
+
+	* gnu/java/awt/BitwiseXORComposite.java: New file.
+	* gnu/java/awt/doc-files: New directory.
+	* gnu/java/awt/doc-files/BitwiseXORComposite-1.png: New image.
+	* gnu/java/awt/Makefile.am (EXTRA_DIST):
+	Added BitwiseXORComposite.java.
+
 2003-11-04  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/awt/ClasspathToolkit.java: New file.
