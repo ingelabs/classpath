@@ -1,3 +1,8 @@
+2001-10-01  Jochen Hoenicke  <jochen@gnu.org>
+
+	* java/util/zip/DeflaterEngine.java (deflate): Fixed a bug
+	in the logic which lead to ArrayIndexOutOfBoundsException.
+
 2001-10-12  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/Double.java: Partial merge with libgcj

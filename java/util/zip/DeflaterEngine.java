@@ -553,8 +553,8 @@ class DeflaterEngine implements DeflaterConstants {
 	    throw new InternalError();
 	  }
       }
-    while (!pending.isFlushed()  /* repeat while we have no pending output */
-	   && progress);         /* and progress was made */
+    while (pending.isFlushed()  /* repeat while we have no pending output */
+	   && progress);        /* and progress was made */
 
     return progress;
   }
