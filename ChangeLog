@@ -1,3 +1,43 @@
+2002-08-11  Etienne M. Gagnon <etienne.gagnon@uqam.ca>
+
+	* java/nio/channels/spi/AbstractChannel.java,
+	java/nio/channels/spi/AbstractInterruptibleChannel.java,
+	java/nio/channels/spi/AbstractSelectableChannel.java,
+	java/nio/channels/spi/AbstractSelectionKey.java,
+	java/nio/channels/spi/AbstractSelector.java,
+	java/nio/channels/spi/SelectorProvider.java,
+	javax/swing/BorderFactory.java, javax/swing/plaf/ButtonUI.java,
+	javax/swing/plaf/ColorUIResource.java,
+	javax/swing/plaf/ComponentUI.java,
+	javax/swing/plaf/DimensionUIResource.java,
+	javax/swing/plaf/FontUIResource.java,
+	javax/swing/plaf/IconUIResource.java,
+	javax/swing/plaf/InsetsUIResource.java,
+	javax/swing/plaf/LabelUI.java, javax/swing/plaf/ListUI.java,
+	javax/swing/plaf/OptionPaneUI.java, javax/swing/plaf/PanelUI.java,
+	javax/swing/plaf/TabbedPaneUI.java, javax/swing/plaf/TextUI.java,
+	javax/swing/plaf/TreeUI.java, javax/swing/plaf/ViewportUI.java,
+	javax/swing/plaf/basic/BasicBorders.java,
+	javax/swing/plaf/basic/BasicButtonUI.java,
+	javax/swing/plaf/basic/BasicCheckBoxUI.java,
+	javax/swing/plaf/basic/BasicDefaults.java,
+	javax/swing/plaf/basic/BasicGraphicsUtils.java,
+	javax/swing/plaf/basic/BasicIconFactory.java,
+	javax/swing/plaf/basic/BasicLabelUI.java,
+	javax/swing/plaf/basic/BasicListUI.java,
+	javax/swing/plaf/basic/BasicOptionPaneUI.java,
+	javax/swing/plaf/basic/BasicPanelUI.java,
+	javax/swing/plaf/basic/BasicRadioButtonUI.java,
+	javax/swing/plaf/basic/BasicScrollPaneUI.java,
+	javax/swing/plaf/basic/BasicTabbedPaneUI.java,
+	javax/swing/plaf/basic/BasicTextUI.java,
+	javax/swing/plaf/basic/BasicToggleButtonUI.java,
+	javax/swing/plaf/basic/BasicTreeUI.java,
+	javax/swing/plaf/basic/BasicViewportUI.java,
+	javax/swing/plaf/metal/MetalLookAndFeel.java,
+	javax/swing/table/DefaultTableCellRenderer.java: Added missing
+	copyright statement.  
+
 2002-07-31  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/awt/Frame.java (Frame): Remove println calls.
