@@ -1,3 +1,8 @@
+2004-03-19  Michael Koch  <konqueror@gmx.de>
+
+	* java/util/Locale.java
+	(getISO3Country): Added comment for string comparison optimization.
+	(getISO3Language): Likewise.
 2004-03-15  Mark Wielaard  <mark@klomp.org>
 
 	* include/Makefile.am: Add java_io_VMObjectStreamClass.h generation.
