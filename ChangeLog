@@ -1,3 +1,8 @@
+2004-06-07  Steven Augart  <augart@watson.ibm.com>
+
+	* native/jni/gtk-peer/gthread-jni.c (c-font-lock-extra-types):
+	  Added jfieldID, jmethodID.
+
 2004-06-06  Steven Augart  <augart@watson.ibm.com>
 
 	* doc/vmintegration.texinfo (JNI Version): New section.
