@@ -1,5 +1,8 @@
 2004-01-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* java/awt/Component.java (show): Set visible to true before
+	showing the peer.
+
 	* java/awt/TextArea.java: Fix indentation.  Flesh out javadocs.
 	(getMinimumSize (int, int)): Fix FIXME -- return Dimension (0,0)
 	when peer is null.
