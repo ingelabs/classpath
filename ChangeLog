@@ -1,5 +1,12 @@
 2004-04-07  Ingo Proetel  <proetel@aicas.com>
 
+	* java/awt/image/SinglePixelPackedSampleModel.java (getDataElements): New method.
+	(setDataElements): New method.
+	(setPixels): New method.
+	(toString): New method.
+
+2004-04-07  Ingo Proetel  <proetel@aicas.com>
+
 	* java/awt/Polygon.java (getBoundingBox): Use correct y-coordinate
 	in Rectangle constructor.
 
