@@ -36,8 +36,6 @@ package java.text;
   * @author John Leuner (jewel@debian.org)
   */
 
-package java.text;
-
 public class DecimalFormat extends NumberFormat
 {
   public StringBuffer format(long number, StringBuffer sb, FieldPosition pos)
