@@ -1,3 +1,8 @@
+2004-03-08  Mark Wielaard  <mark@klomp.org>
+
+	* libraries/javalib/java/beans/BeanDescriptor.java
+	(BeanDescriptor): Set the FeatureDescriptor programmatic name.
+
 2004-03-07  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Add gnu/regexp/Makefile and
