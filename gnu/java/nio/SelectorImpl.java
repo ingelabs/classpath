@@ -80,21 +80,23 @@ public class SelectorImpl extends AbstractSelector
     return Collections.unmodifiableSet (keys);
   }
     
-  public int selectNow ()
+  public final int selectNow()
+    throws IOException
   {
     return select (1);
   }
 
-  public int select ()
+  public final int select()
+    throws IOException
   {
     return select (-1);
   }
 
   // A timeout value of -1 means block forever.
-  private static native int java_do_select (int[] read, int[] write,
-                                            int[] except, long timeout);
+  private static native int implSelect (int[] read, int[] write,
+                                        int[] except, long timeout);
 
-  private int[] getFDsAsArray (int ops)
+  private final int[] getFDsAsArray (int ops)
   {
     int[] result;
     int counter = 0;
@@ -141,18 +143,18 @@ public class SelectorImpl extends AbstractSelector
         return 0;
 	    }
 
-    int ret = 0;
-
     deregisterCancelledKeys();
 
     // Set only keys with the needed interest ops into the arrays.
     int[] read = getFDsAsArray (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT);
     int[] write = getFDsAsArray (SelectionKey.OP_WRITE | SelectionKey.OP_CONNECT);
     int[] except = new int [0]; // FIXME: We dont need to check this yet
-
-    // Call the native select () on all file descriptors.
     int anzahl = read.length + write.length + except.length;
-    ret = java_do_select (read, write, except, timeout);
+
+    // Call the native select() on all file descriptors.
+    begin();
+    int result = implSelect (read, write, except, timeout);
+    end();
 
     Iterator it = keys.iterator ();
 
@@ -206,7 +208,7 @@ public class SelectorImpl extends AbstractSelector
         // If key is not yet selected add it.
         if (!selected.contains (key))
           {
-            add_selected (key);
+            selected.add (key);
           }
 
         // Set new ready ops
@@ -214,30 +216,20 @@ public class SelectorImpl extends AbstractSelector
       }
 
     deregisterCancelledKeys();
-    return ret;
+    return result;
   }
     
-  public Set selectedKeys ()
+  public final Set selectedKeys()
   {
     return selected;
   }
 
-  public Selector wakeup ()
+  public final Selector wakeup()
   {
     return null;
   }
 
-  public void add (SelectionKeyImpl k)
-  {
-    keys.add (k);
-  }
-
-  void add_selected (SelectionKeyImpl k)
-  {
-    selected.add (k);
-  }
-
-  private void deregisterCancelledKeys ()
+  private final void deregisterCancelledKeys()
   {
     Iterator it = cancelledKeys().iterator();
 
@@ -253,8 +245,8 @@ public class SelectorImpl extends AbstractSelector
     return register ((AbstractSelectableChannel) ch, ops, att);
   }
 
-  protected SelectionKey register (AbstractSelectableChannel ch, int ops,
-                                   Object att)
+  protected final SelectionKey register (AbstractSelectableChannel ch, int ops,
+                                         Object att)
   {
     SelectionKeyImpl result;
     
@@ -278,7 +270,7 @@ public class SelectorImpl extends AbstractSelector
         throw new InternalError ("No known channel type");
       }
 
-    add (result);
+    keys.add (result);
     result.interestOps (ops);
     result.attach (att);
     return result;

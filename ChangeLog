@@ -1,3 +1,18 @@
+2003-09-25  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/SelectorImpl.java
+	(implSelect): Renamed from java_do_select.
+	(select): Made final, throws IOException,
+	call native implSelect() and add support for Thread interruption.
+	(selectNow): Made final, throws IOException.
+	(getFDsAsArray): Made final.
+	(selectedKeys): Likewise.
+	(wakeup): Likewise.
+	(deregisterCancelledKeys): Likewise.
+	(register): Likewise.
+	(ass): Removed.
+	(add_selected): Removed.
+
 2003-09-25  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/Math.java (min): Revert to using != for NaN
