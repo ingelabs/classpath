@@ -267,7 +267,7 @@ sub hasNativeMethod
 	     ($line =~ /^\s*abstract\s.*native\s+\S+\s+\S+\s*\(/) ||
 	     ($line =~ /^\s*final\s.*native\s+\S+\s+\S+\s*\(/) ||
 	     ($line =~ /^\s*synchronized\s.*native\s+\S+\s+\S+\s*\(/) ||
-	     ($line =~ /^\s*native\s+\S+\s+\S+\s*\(/) )
+	     ($line =~ /^\s*native\s.*/) )
 	{
 	    close(FILE);
 	    return 1;
