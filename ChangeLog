@@ -1,3 +1,11 @@
+2004-04-29  Stephen Crawley  <crawley@dstc.edu.au>
+	    Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(Java_gnu_java_nio_channels_FileChannelImpl_read___3BII):
+	Fill buffer with a  do-while bytes_read < 1 loop.
+	Check for length == 0.
+
 2004-04-29  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/AbstractButton.java,

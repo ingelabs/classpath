@@ -549,8 +549,12 @@ Java_gnu_java_nio_channels_FileChannelImpl_read___3BII (JNIEnv *env, jobject obj
       return(-1);
     }
 
+  /* Must return 0 if an attempt is made to read 0 bytes. */
+  if (length == 0)
+    return 0;
+
   bytes_read = 0;
-  while (bytes_read < length)
+  do
     {
       TARGET_NATIVE_FILE_READ(native_fd, (bufptr + offset + bytes_read), (length - bytes_read), n, result);
       if ((result == TARGET_NATIVE_OK) && (n == 0))
@@ -571,6 +575,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_read___3BII (JNIEnv *env, jobject obj
         }
       bytes_read += n;
     }
+  while (bytes_read < 1);
 
   (*env)->ReleaseByteArrayElements(env, buffer, bufptr, 0);
   return CONVERT_SSIZE_T_TO_JINT(bytes_read);
