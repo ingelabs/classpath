@@ -245,7 +245,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected PopupMenuPeer createPopupMenu (PopupMenu target) 
   {
-    return null;
+    return new GtkPopupMenuPeer (target);
   }
 
   protected ScrollPanePeer createScrollPane (ScrollPane sp) 

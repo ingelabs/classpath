@@ -34,7 +34,11 @@ public class GtkMenuItemPeer extends GtkMenuComponentPeer
   {
     super (item);
     create (item.getLabel ());
+    setParent (item);
+  }
 
+  void setParent (MenuItem item)
+  {
     // add ourself differently, based on what type of parent we have
     // yes, the typecasting here is nasty.
     Object parent = item.getParent ();
