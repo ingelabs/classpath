@@ -1,3 +1,11 @@
+2003-12-26  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* java/rmi/Naming.java (lookup): Check if the first character of the
+	filename returned by URL.getFile() is a '/', only if it is the case
+	we cut this first character and call the registry with the good name.
+	(bind): Likewise.
+	(rebind): Likewise.
+
 2003-12-26  Dalibor Topic <robilad@kaffe.org>
 
 	* java/net/Socket.java (close): Allow a Socket to be closed
