@@ -1,7 +1,11 @@
+2004-03-08  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* java/text/DateFormatSymbols.java: Fixed copyright notice.
+
 2004-03-08  Mark Wielaard  <mark@klomp.org>
 
-	* libraries/javalib/java/beans/BeanDescriptor.java
-	(BeanDescriptor): Set the FeatureDescriptor programmatic name.
+	* java/beans/BeanDescriptor.java (BeanDescriptor):
+	Set the FeatureDescriptor programmatic name.
 
 2004-03-07  Mark Wielaard  <mark@klomp.org>
 
