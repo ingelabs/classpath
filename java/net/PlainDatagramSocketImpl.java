@@ -42,22 +42,21 @@ import java.io.IOException;
 import gnu.classpath.Configuration;
 
 /**
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * Status:  Believed complete and correct.
+ */
+
+/**
  * This is the default socket implementation for datagram sockets.
  * It makes native calls to C routines that implement BSD style
  * SOCK_DGRAM sockets in the AF_INET family.
  *
- * @version 0.1
- *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Warren Levy <warrenl@cygnus.com>
  */
 public class PlainDatagramSocketImpl extends DatagramSocketImpl
 {
-  /**
-   * Option id for the IP_TTL (time to live) value.
-   */
-  private static final int IP_TTL = 0x1E61; // 7777
-
-
   // Static initializer to load native library
   static
   {
@@ -66,6 +65,11 @@ public class PlainDatagramSocketImpl extends DatagramSocketImpl
         System.loadLibrary("javanet");
       }
   }
+
+  /**
+   * Option id for the IP_TTL (time to live) value.
+   */
+  private static final int IP_TTL = 0x1E61; // 7777
 
   /**
    * This is the actual underlying file descriptor
