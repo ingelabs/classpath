@@ -1,3 +1,9 @@
+2004-10-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/ClasspathFontPeer.java
+	(setStandardAttributes(String,Map)): If size attribute doesn't
+	exist, default to size 12.  Clamp size value to a minimum of 1.
+
 2004-10-22  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/AbstractButton.java
