@@ -1,5 +1,11 @@
 2004-04-28  Ingo Proetel  <proetel@aicas.com>
 
+	* java/awt/image/ColorModel.java (getRGBdefault): Default ColorModel has
+        32 bit pixels not 8 bit pixels.
+	(isCompatibleRaster): Added javadoc comment.
+
+2004-04-28  Ingo Proetel  <proetel@aicas.com>
+
 	* java/awt/image/ComponentSampleModel.java (setDataSamples):Do not reset
 	scanline stride.
 
