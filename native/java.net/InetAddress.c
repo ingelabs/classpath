@@ -64,8 +64,8 @@ Java_java_net_InetAddress_lookupInaddrAny(JNIEnv *env, jclass class)
   /* Allocate an array for the IP address */
   arr = (*env)->NewIntArray(env, 4);
   if (!arr)      
-    return(_javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
-                                         "Internal Error"));
+    return (jarray) _javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
+                                             "Internal Error");
 
   /* Copy in the values */
   octets = (*env)->GetIntArrayElements(env, arr, 0);
@@ -98,13 +98,13 @@ Java_java_net_InetAddress_getHostByAddr(JNIEnv *env, jclass class, jarray arr)
   /* Grab the byte[] array with the IP out of the input data */
   len = (*env)->GetArrayLength(env, arr);
   if (len != 4)
-    return((int)_javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
-                                         "Bad IP Address"));
+    return (jstring)_javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
+                                             "Bad IP Address");
 
   octets = (*env)->GetIntArrayElements(env, arr, 0);
   if (!octets)
-    return(_javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
-                                   "Bad IP Address"));
+    return (jstring) _javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
+                                              "Bad IP Address");
 
   /* Convert it to a 32 bit address */
   addr = (octets[0] << 24) + (octets[1] << 16) + (octets[2] << 8) + octets[3];
@@ -116,8 +116,8 @@ Java_java_net_InetAddress_getHostByAddr(JNIEnv *env, jclass class, jarray arr)
   /* Resolve the address and return the name */
   hp = gethostbyaddr((char*)&addr, sizeof(addr), AF_INET);
   if (!hp)
-    return(_javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
-                                   "Bad IP Address"));
+    return (jstring) _javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
+                                              "Bad IP Address");
 
   retval = (*env)->NewStringUTF(env, hp->h_name);
 
@@ -140,14 +140,14 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
   /* Grab the hostname string */
   hostname = (*env)->GetStringUTFChars(env, host, 0);
   if (!hostname)  
-    return(_javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
-                                   "Null hostname"));
+    return (jobjectArray) _javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
+                                                   "Null hostname");
 
   /* Look up the host */
   hp = gethostbyname(hostname);
   if (!hp)
-    return(_javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
-                                   hostname));
+    return (jobjectArray) _javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
+                                                   hostname);
   (*env)->ReleaseStringUTFChars(env, host, hostname);
 
   /* Figure out how many addresses there are and allocate a return array */
@@ -156,21 +156,21 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
  
   arr_class = (*env)->FindClass(env,"[I");
   if (!arr_class)
-    return(_javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
-                                   "Internal Error"));
+    return (jobjectArray) _javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
+                                                   "Internal Error");
 
   addrs = (*env)->NewObjectArray(env, num_addrs, arr_class, 0);
   if (!addrs)
-    return(_javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
-                                   "Internal Error"));
+    return (jobjectArray) _javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
+                                                   "Internal Error");
 
   /* Now loop and copy in each address */
   for (i = 0; i < num_addrs; i++)
     {
       ret_octets = (*env)->NewIntArray(env, 4);
       if (!ret_octets)      
-        return(_javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
-                                       "Internal Error"));
+        return (jobjectArray) _javanet_throw_exception(env, UNKNOWN_HOST_EXCEPTION, 
+                                       "Internal Error");
 
       octets = (*env)->GetIntArrayElements(env, ret_octets, 0);
 
