@@ -1,9 +1,0 @@
-DEPENDENCIES of java.lang.reflect Java side.
-
-1.1:
-No known direct dependencies on 1.2 or even 1.1-specific
-stuff.  While java.lang.Class methods defined in 1.1 are
-the only way to create these classes, once they are created
-they do not depend on any 1.1-specific methods.  The native
-side, however, is a different story, so this stuff really
-couldn't run on 1.0.

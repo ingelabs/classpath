@@ -1,6 +1,5 @@
 TODO for java.lang.reflect Java side
 
-- Field needs to be overhauled for efficiency the way Method and Constructor
-  have been.
-- Testing needs to be written.
+- Write CLI ToReflected*, FromReflected* methods
+- Test Field, Method, Constructor, InvocationTargetException
 - See native TODO.
