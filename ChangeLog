@@ -1,3 +1,32 @@
+2002-11-23  Michael Koch <konqueror@gmx.de>
+
+	* java/nio/ByteBuffer.java
+	(put): Documentation added.
+	(get): Documentation added.
+	(compact): Documentation added.
+	(isDirect): Documentation added.
+	(slice): Documentation added.
+	(duplicate): Documentation added.
+	(asReadOnlyBuffer): Documentation added.
+	(asShortBuffer): Documentation added.
+	(asCharBuffer): Documentation added.
+	(asIntBuffer): Documentation added.
+	(asLongBuffer): Documentation added.
+	(asFloatBuffer): Documentation added.
+	(asDoubleBuffer): Documentation added.
+	(getChar): Documentation added.
+	(putChar): Documentation added.
+	(getShort): Documentation added.
+	(putShort): Documentation added.
+	(getInt): Documentation added.
+	(putInt): Documentation added.
+	(getLong): Documentation added.
+	(putLong): Documentation added.
+	(getFloat): Documentation added.
+	(putFloat): Documentation added.
+	(getDouble): Documentation added.
+	(putDouble): Documentation added.
+
 2002-11-23  Jesse Rosenstock <jmr@ugcs.caltech.edu>
 
 	* gnu/java/nio/CharBufferImpl.java
