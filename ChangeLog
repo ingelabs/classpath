@@ -1,5 +1,9 @@
 2004-02-04  Michael Koch  <konqueror@gmx.de>
 
+	* pkg.m4: New file.
+
+2004-02-04  Michael Koch  <konqueror@gmx.de>
+
 	* configure.ac: Fixed little bug (s/gthread/gthread-2.0/).
 	* doc/hacking.texinfo (API COmpatibility): Added menu to make makeinfo silent.
 
