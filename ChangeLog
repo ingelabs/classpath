@@ -1,3 +1,7 @@
+2003-03-28  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Package.java (toString): Formatting fixlet.
+
 2003-03-24  Michael Koch  <konqueror@gmx.de>
 
 	* java/util/Date.java:

@@ -1,5 +1,5 @@
 /* Package.java -- information about a package
-   Copyright (C) 2000, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -311,7 +311,7 @@ public class Package
    */
   public String toString()
   {
-    return "package " + name + (specTitle == null ? "" : ", " + specTitle)
-      + (specVersion == null ? "" : ", version " + specVersion);
+    return ("package " + name + (specTitle == null ? "" : ", " + specTitle)
+	    + (specVersion == null ? "" : ", version " + specVersion));
   }
 } // class Package
