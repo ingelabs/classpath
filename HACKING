@@ -1,3 +1,10 @@
+HACKING GNU Classpath - Last updated: Feb 07, 2002
+Please read the README and INSTALL files first.
+
+You only need the information in this file when working on non-released (CVS)
+versions of GNU Classpath. Installation information for released versions
+of GNU Classpath can be found in the INSTALL file.
+
 If you want to hack on GNU Classpath it will make things easier if you
 have the following installed:
 
@@ -20,6 +27,14 @@ For building the JNI native libraries, the following are required.
         - GTK+ 1.2.x
 	- libart_lgpl 2.1.0
 	- gdk-pixbuf (Only needed if you want to compile the native library)
+
+You can get CVS (development) versions of GNU Classpath by giving cvs the
+-d option with (or setting the environment variable CVSROOT to)
+:pserver:anoncvs@subversions.gnu.org:/cvsroot/classpath
+    --> First do "cvs login".  Hit <Return> when prompted for a password
+    --> Then do "cvs checkout classpath"
+    --> More detailed instructions available on the Savannah project website.
+        <http://savannah.gnu.org/projects/classpath/>
 
 If you start from the current CVS version, you will have to run the
 following from the toplevel directory.
@@ -54,5 +69,4 @@ checking it in.
 
 If you have any questions, suggestions, etc., send them to
 classpath@gnu.org.
-
 

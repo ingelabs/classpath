@@ -1,5 +1,11 @@
 2002-02-07  Mark Wielaard  <mark@klomp.org>
 
+	* HACKING: add "last updated" and some new information.
+	* INSTALL: add information on different byte code compilers.
+	* README: add "last updated"
+
+2002-02-07  Mark Wielaard  <mark@klomp.org>
+
 	* configure.in (AC_OUTPUT): add gnu/java/math/Makefile and
 	java/awt/font/Makefile.
 	* java/awt/Makefile.am (EXTRA_DIST): add GridBagConstraints.java and

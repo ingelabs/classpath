@@ -1,8 +1,9 @@
-Installing GNU Classpath - Nov. 03, 2001
+Installing GNU Classpath - Last updated: Feb. 07, 2002
 
 First, this is a development release only! Unless you are interested in
 active development and debugging, or just like running random alpha code,
-this release is probably not for you. 
+this release is probably not for you. Please see the README file for a
+list of VMs that work with GNU Classpath.
 
 ------------------------------------------------------------------
 Suggested Software
@@ -19,6 +20,15 @@ Suggested Software
         - IBM jikes 1.13 (newer versions up to 1.15 appear to be broken)
           or GCJ 3.0.2+.  The kjc compiler is supported with configure 
           but we have been unable to successfully compiled with it.
+	  Jikes is currently the default compiler.  You can select the
+	  compiler using --with-jikes, --with-gcj or --with-kjc as argument
+	  to configure.
+
+	  Note that GCC 3.1 (from CVS) is currently broken, if you do
+	  want to use it look at the status of the following bug:
+	<http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view&database=gcc&pr=4715>
+	  Applying the patch in that report to gcc/jva/parse.y does seem to
+	  solve/work around the problem.
 
 	For building the JNI native libraries, the following are required.
 
@@ -47,7 +57,8 @@ gives a complete list.
 dependency problem and we aim to keep it that way.
 
 3).  Type "make install" to install everything.  This may require
-being the superuser.
+being the superuser. The default install path is /usr/local/classpath
+you may change it by giving configure the --prefix=<path> option.
 
 Report bugs to classpath@gnu.org or much better via Savannah at this
 URL: http://savannah.gnu.org/support/?func=addsupport&group_id=85
@@ -67,6 +78,10 @@ If you don't know what this means then the examples are correct.
 LD_LIBRARY_PATH=/usr/local/classpath/lib/classpath
 CLASSPATH=/usr/local/classpath/share/classpath:.
 export LD_LIBRARY_PATH CLASSPATH
+
+More information about the VMs that use GNU Classpath can be found in the
+README file. Information on using the above setup with the ORP VM can be
+found at <http://www.gnu.org/software/classpath/doc/orp.html>.
 
 ------------------------------------------------------------------
 Misc. Notes
