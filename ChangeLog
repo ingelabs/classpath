@@ -1,3 +1,10 @@
+2003-07-24  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* Makefile.am (SUBDIRS): Add include.
+	* configure.in: Add --enable-regen-headers flag.
+	(AC_OUTPUT): Add include/Makefile.
+	* include/Makefile.am: New file.
+
 2003-07-24  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/sql/Timestamp.java
