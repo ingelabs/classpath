@@ -1,4 +1,5 @@
 Guile Testing Framework for GNU Classpath
+Written by Paul Fisher (rao@gnu.org)
 
 GNU Classpath tests are written in Java.  Guile is responsible for
 executing the tests and organizing the results.  Guile and Java
