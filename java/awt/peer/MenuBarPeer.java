@@ -23,7 +23,7 @@ package java.awt.peer;
 
 import java.awt.Menu;
 
-public interface MenuBarPeer extends MenuComponentPeer
+public interface MenuBarPeer implements MenuComponentPeer
 {
 
 public abstract void addHelpMenu(Menu menu);

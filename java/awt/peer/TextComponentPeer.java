@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface TextComponentPeer extends ComponentPeer
+public interface TextComponentPeer implements ComponentPeer
 {
 
 public abstract int getSelectionEnd();

@@ -23,7 +23,7 @@ package java.awt.peer;
 
 import java.awt.Event;
 
-public interface PopupMenuPeer extends MenuPeer
+public interface PopupMenuPeer implements MenuPeer
 {
 
 public abstract void show(java.awt.Component component, int x, int y);

@@ -23,7 +23,7 @@ package java.awt.peer;
 
 import java.awt.Dimension;
 
-public interface ListPeer extends ComponentPeer
+public interface ListPeer implements ComponentPeer
 {
 
 public abstract void add(String item, int index);

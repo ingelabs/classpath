@@ -23,7 +23,7 @@ package java.awt.peer;
 
 import java.awt.Dimension;
 
-public interface TextFieldPeer extends TextComponentPeer
+public interface TextFieldPeer implements TextComponentPeer
 {
 
 public abstract Dimension minimumSize(int len);

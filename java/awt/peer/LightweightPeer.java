@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface LightweightPeer
+public interface LightweightPeer implements ComponentPeer
 {
 
 } // interface LightweightPeer
