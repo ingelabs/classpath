@@ -1,3 +1,17 @@
+2004-08-15  Casey Marshall  <csm@gnu.org>
+
+	* java/security/DummyKeyPairGenerator.java (clone): removed
+	useless instanceof check.
+	* java/security/DummyMessageDigest.java (clone): likewise.
+	* java/security/DummySignature.java (clone): likewise.
+	* java/security/MessageDigest.java (clone): remove useless
+	instanceof check.
+	* java/security/MessageDigestSpi.java (clone): likewise.
+	* java/security/Signature.java (clone): provide meaningful
+	implementation.
+	* java/security/SignatureSpi.java (clone): likewise.
+	* javax/crypto/MacSpi.java (clone): likewise.
+
 2004-08-14  Ka-Hing Cheung  <kahing@javabsp.org>
 
 	* javax/swing/AbstractSpinnerModel.java,
