@@ -53,7 +53,7 @@ public class PipedReader extends Reader
   * <p>
   * The value for this variable is 2048.
   */
-protected static final int PIPE_SIZE = 2048;
+private static final int PIPE_SIZE = 2048;
 
 /**
   * This is the real pipe size.  It defaults to PIPE_SIZE, unless overridden
@@ -105,7 +105,7 @@ static
   * This is the internal circular buffer used for storing chars written
   * to the pipe and from which chars are read by this stream
   */
-protected char[] buffer = new char[pipe_size];
+private char[] buffer = new char[pipe_size];
 
 /**
   * The index into buffer where the chars written char the connected
@@ -113,12 +113,12 @@ protected char[] buffer = new char[pipe_size];
   * than 0, then the buffer is empty.  If this variable is equal to 
   * <code>out</code>, then the buffer is full
   */
-protected int in = -1;
+private int in = -1;
 
 /**
   * This index into the buffer where chars will be read from.
   */
-protected int out = 0;
+private int out = 0;
 
 /**
   * This variable is <code>true</code> if this object has ever been connected
@@ -258,6 +258,27 @@ ready() throws IOException
 /*************************************************************************/
 
 /**
+  * This method reads a single char from the pipe and returns it as an
+  * <code>int</code>.
+  * <p>
+  * This method will block if no chars are available to be read.
+  *
+  * @return An char read from the pipe, or -1 if the end of stream is 
+  * reached.
+  *
+  * @exception IOException If an error occurs.
+  */
+public int
+read() throws IOException
+{
+  char[] buf = new char[1];
+
+  return(read(buf, 0, buf.length));
+}
+
+/*************************************************************************/
+
+/**
   * This method reads chars from the stream into a caller supplied buffer.
   * It starts storing chars at position <code>offset</code> into the buffer and
   * reads a maximum of <cod>>len</code> chars.  Note that this method can actually
@@ -265,7 +286,7 @@ ready() throws IOException
   * returned.  A -1 is returned to indicated that no chars can be read
   * because the end of the stream was reached.  If the stream is already
   * closed, a -1 will again be returned to indicate the end of the stream.
-  *  <p>
+  * <p>
   * This method will block if no chars are available to be read.
   *
   * @param buf The buffer into which chars will be stored
