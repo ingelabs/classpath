@@ -1,3 +1,11 @@
+<newsitem date="23 Jul 2004">
+HTTP client added to inetlib
+</newsitem>
+
+<newsitem date="22 Jul 2004">
+Latest "montly-changes" for AWT committed. This now required GTK+ 2.4.
+</newsitem>
+
 <newsitem date="18 Jul 2004">
 Roman Kennke's <createlink name="automated mauve reports" url="http://ontographics.com/classpath/report-index.html">.
 </newsitem>

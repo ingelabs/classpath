@@ -234,6 +234,47 @@ maintainer of GNU Classpath, Mark Wielaard <mark@klomp.org>.
 <faq question="How do I install GNU Classpath?">
 <p>Follow these steps to install GNU Classpath. Please note that you need this only if you want to work directly with it; usually JVMs contain a pre-packaged version of GNU Classpath.
 
+<bold>Prerequisites</bold>
+
+Please check the exact version of the prerequisites from your release's INSTALL file.
+
+In every case, you need:
+<ul>
+<li>GNU gmake
+<li>GNU autoconf
+<li>GNU automake
+<li>GNU libtool
+</ul>
+
+For building the Java bytecode (.class files), one of these compilers are required.  You can select which compiler using --with-jikes, --with-gcj or --with-kjc as argument to configure; the present default is gcj.
+
+<ul>
+<li>GCJ (part of GNU GCC)
+<li>IBM Jikes
+</ul>
+
+For building the JNI native libraries, the following are required unless --disable-gtk-peer is used as an argument to configure.
+<ul>
+<li><createlink name="GTK+ 2" url="http://www.gtk.org/">
+<li>libart-gpl
+<li>gdk-pixbuf
+</ul>
+
+For building the documentation you will need:
+<ul>
+<li>texinfo
+</ul>
+
+<bold>Install from CVS</bold>
+
+<commented-code>
+<code-line code="cvs checkout" />
+<code-line code="./autogen.sh" />
+<code-line code="./configure" />
+<code-line code="make" />
+</commented-code>
+
+<bold>Install a release</bold>
 <commented-code>
 <code-line code="<createlink url="ftp://ftp.gnu.org/gnu/classpath/">">
   Download the current release
