@@ -1,3 +1,6 @@
+import gnu.test;
+import java.lang;
+
 /**
  * Test the Byte object wrapper class.
  *
@@ -5,266 +8,490 @@
  */
 public class ByteTest
 {
-  public static void main(String[] argv)
-    {
-      ByteTest test = new ByteTest();
-      test.constructorsTest();
-      test.byteValueTest();
-      test.decodeTest();
-      test.doubleValueTest();
-      test.equalsTest();
-      test.floatValueTest();
-      test.hashCodeTest();
-      test.intValueTest();
-      test.longValueTest();
-      test.parseByteTest();
-      test.shortValueTest();
-      test.toStringTest();
-      test.valueOfTest();
-      test.variables();
-      test.typeInstance();
+  public static class constructorTest1 implements Test
+  {
+    byte b = 1;
+    Byte byteObject = null;
+    
+    public String getName() {
+      return "Byte(byte)";
     }
-
-  public void constructorsTest()
-    {
+    
+    public Result test() {
+      try {
+	Byte byteObject = new Byte(b);
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Pass();
+    }
+  }
+  
+  public static class constructorTest2 implements Test
+  {
+    Byte byteObject = null;
+    
+    public String getName() {
+      return "Byte(String)";
+    }
+    
+    public Result test() {
+      try {
+	byteObject = new Byte("1");
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Pass();
+    }
+  }
+  
+  public static class byteValueTest implements Test
+  {
+    public String getName() {
+      return "Byte.byteValue()";
+    }
+    
+    public Result test() {
       byte b = 1;
-      Byte obj1 = null, obj2 = null;
-      String y;
+      Byte byteObject = null;
+      try {
+	byteObject = new Byte(b);
+	if (byteObject.byteValue() == b)
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
 
-      obj1 = new Byte(b);
-      y = obj1.toString();
-      if (y.equals("1") != true)
-	failed("Byte(byte)");
-      else
-	passed("Byte(byte)");
-
-      try 
-	{
-	  obj2 = new Byte("1");
-	  y = obj2.toString();
-	  if (y.equals("1") != true)
-	    failed("Byte(String)");
-	  else
-	    passed("Byte(String)");
-	}
-      catch (NumberFormatException nfe)
-	{
-	  failed("Byte(String)");
-	}
+  public static class decodeTest implements Test
+  {
+    public String getName() {
+      return "Byte.decode(String)";
+    }
+    
+    public Result test() {
+      try {
+	Byte obj = Byte.decode("1");
+	if (obj.byteValue() == 1)
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
+    
+  public static class doubleValueTest implements Test
+  {
+    public String getName() {
+      return "Byte.doubleValue()";
+    }
+    
+    public Result test() {
+      try {
+	byte b = 4;
+	double d = b;
+	Byte obj = new Byte(b);
+	if (obj.doubleValue() == d)
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
+  
+  public static class equalsTest1 implements Test
+  {
+    public String getName() {
+      return "Byte.equals(Object)";
     }
 
-  public void byteValueTest()
-    {
-      byte b = 1;
-      Byte obj = new Byte(b);
-      if (obj.byteValue() == b)
-	passed("Byte.byteValue()");
-      else
-	failed("Byte.byteValue()");
+    public Result test() {
+      try {
+	Byte obj1 = null, obj2 = null;
+	obj1 = new Byte((byte)1);
+	obj2 = new Byte((byte)2);
+	if (obj1.equals(obj2))
+	  return new Fail("1 != 2");
+	else
+	  return new Pass("1 != 2");
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }	
+
+  public static class equalsTest2 implements Test
+  {
+    public String getName() {
+      return "Byte.equals(Object)";
     }
 
-  public void decodeTest()
-    {
-      try
-	{
-	  Byte obj = Byte.decode("1");
-	  if (obj.byteValue() == 1)
-	    passed("Byte.decode(String)");
-	  else
-	    failed("Byte.decode(String)");
-	}
-      catch (NumberFormatException nfe)
-	{
-	  failed("Byte.decode(String) threw NumberFormatException");
-	}
+    public Result test() {
+      try {
+	Byte obj1 = null, obj2 = null;
+	obj1 = new Byte((byte)1);
+	obj2 = new Byte((byte)2);
+	obj2 = obj1;
+	if (obj1.equals(obj2))
+	  return new Pass("1 == 1");
+	else
+	  return new Fail("1 == 1");
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
+  
+  public static class floatValueTest implements Test
+  {
+    public String getName() {
+      return "Byte.floatValue()";
     }
 
-  public void doubleValueTest()
-    {
-      byte b = 4;
-      double d = b;
-      Byte obj = new Byte(b);
-      if (obj.doubleValue() == d)
-	passed("Byte.doubleValue()");
-      else
-	failed("Byte.doubleValue()");
+    public Result test() {
+      try {
+	byte b = 4;
+	float f = b;
+	Byte obj = new Byte(b);
+	if (obj.floatValue() == f)
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
+
+  public static class hashCodeTest implements Test
+  {
+    public String getName() {
+      return "Byte.hashCode()";
     }
 
-  public void equalsTest()
-    {
-      Byte obj1 = null, obj2 = null;
-      obj1 = new Byte((byte)1);
-      obj2 = new Byte((byte)2);
-      if (obj1.equals(obj2))
-	failed("Byte.equals() 1 != 2");
-      else
-	passed("Byte.equals() 1 != 2");
-
-      obj2 = obj1;
-      if (obj1.equals(obj2))
-	passed("Byte.equals() 1 == 1");
-      else
-	failed("Byte.equals() 1 == 1");
+    public Result test() {
+      try {
+	boolean caught = false;
+	Byte obj = new Byte((byte)1);
+	int i = obj.hashCode();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Pass();
+    }
+  }
+      
+  public static class intValueTest implements Test
+  {
+    public String getName() {
+      return "Byte.intValue()";
     }
 
-  public void floatValueTest()
-    {
-      byte b = 4;
-      float f = b;
-      Byte obj = new Byte(b);
-      if (obj.floatValue() == f)
-	passed("Byte.floatValue()");
-      else
-	failed("Byte.floatValue()");
+    public Result test() {
+      try {
+	byte b = 4;
+	int i = b;
+	Byte obj = new Byte(b);
+	if (obj.intValue() == i)
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
+  
+  public static class longValueTest implements Test
+  {
+    public String getName() {
+      return "Byte.longValue()";
     }
 
-  public void hashCodeTest()
-    {
-      boolean caught = false;
-      Byte obj = new Byte((byte)1);
-      try
-	{
-	  int i = obj.hashCode();
-	}
-      catch (Exception e)
-	{
-	  caught = true;
-	  failed("Byte.hashCode()");
-	}
-      if (!caught)
-	passed("Byte.hashCode()");
+    public Result test() {
+      try {
+	byte b = 4;
+	long l = b;
+	Byte obj = new Byte(b);
+	if (obj.longValue() == l)
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }    
+
+  public static class parseByteTest1 implements Test
+  {
+    public String getName() {
+      return "Byte.parseByte(String)";
     }
 
-  public void intValueTest()
-    {
-      byte b = 4;
-      int i = b;
-      Byte obj = new Byte(b);
-      if (obj.intValue() == i)
-	passed("Byte.intValue()");
-      else
-	failed("Byte.intValue()");
+    public Result test() {
+      try {
+	byte b = Byte.parseByte("1");
+	if (b == (byte)1)
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }      
+
+  public static class parseByteTest2 implements Test
+  {
+    public String getName() {
+      return "Byte.parseByte(String, int)";
     }
 
-  public void longValueTest()
-    {
-      byte b = 4;
-      long l = b;
-      Byte obj = new Byte(b);
-      if (obj.longValue() == l)
-	passed("Byte.longValue()");
-      else
-	failed("Byte.longValue()");
+    public Result test() {
+      try {
+	b = Byte.parseByte("-4", 10);
+	if (b == (byte)-4)
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
+
+  public static class shortValueTest implements Test
+  {
+    public String getName() {
+      return "Byte.shortValue()";
     }
 
-  public void parseByteTest()
-    {
-      byte b = Byte.parseByte("1");
-      if (b == (byte)1)
-	passed("Byte.parseByte(String)");
-      else
-	failed("Byte.parseByte(String)");
+    public Result test() {
+      try {
+	byte b = 4;
+	short s = b;
+	Byte obj = new Byte(b);
+	if (obj.shortValue() == s)
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
 
-      b = Byte.parseByte("-4", 10);
-      if (b == (byte)-4)
-	passed("Byte.parseByte(String, int)");
-      else
-	failed("Byte.parseByte(String, int)");
+  public static class toStringTest1 implements Test
+  {
+    public String getName() {
+      return "Byte.toString()";
     }
 
-  public void shortValueTest()
-    {
-      byte b = 4;
-      short s = b;
-      Byte obj = new Byte(b);
-      if (obj.shortValue() == s)
-	passed("Byte.shortValue()");
-      else
-	failed("Byte.shortValue()");
+    public Result test() {
+      try {
+	Byte obj = new Byte((byte)-2);
+	String x = obj.toString();
+	if (x.equals("-2"))
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
+	
+  public static class toStringTest2 implements Test
+  {
+    public String getName() {
+      return "Byte.toString(byte)";
     }
 
-  public void toStringTest()
-    {
-      Byte obj = new Byte((byte)-2);
-      String x = obj.toString();
-      if (x.equals("-2"))
-	passed("Byte.toString()");
-      else
-	failed("Byte.toString()");
+    public Result test() {
+      try {
+	x = Byte.toString((byte)-2);
+	if (x.equals("-2"))
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
 
-      x = Byte.toString((byte)-2);
-      if (x.equals("-2"))
-	passed("Byte.toString(byte)");
-      else
-	failed("Byte.toString(byte)");
+  public static class valueOfTest1 implements Test
+  {
+    public String getName() {
+      return "Byte.valueOf(String, int)";
     }
 
-  public void valueOfTest()
-    {
-      Byte obj1 = Byte.valueOf("2",10);
-      Byte obj2 = new Byte((byte)2);
-      if (obj1.intValue() == obj2.intValue())
-	passed("Byte.valueOf(String,int)");
-      else
-	failed("Byte.valueOf(String,int)");
+    public Result test() {
+      try {
+	Byte obj1 = Byte.valueOf("2",10);
+	Byte obj2 = new Byte((byte)2);
+	if (obj1.intValue() == obj2.intValue())
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
 
-      obj1 = Byte.valueOf("2");
-      if (obj1.intValue() == obj2.intValue())
-	passed("Byte.valueOf(String)");
-      else
-	failed("Byte.valueOf(String)");
+  public static class valueOfTest2 implements Test
+  {
+    public String getName() {
+      return "Byte.valueOf(String)";
     }
 
-  public void variables()
-    {
+    public Result test() {
+      try {
+	obj1 = Byte.valueOf("2");
+	if (obj1.intValue() == obj2.intValue())
+	  return new Pass();
+	else
+	  return new Fail();
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
+  
+  public static class variablesTest1 implements Test
+  {
+    public String getName() {
+      return "Byte.MIN_VALUE";
+    }
+
+    public Result test() {
       byte min = Byte.MIN_VALUE;
       byte max = Byte.MAX_VALUE;
       
       if (min == (byte)-128)
-	passed("Byte.MIN_VALUE is -128");
+	return new Pass("Byte.MIN_VALUE is -128");
       else
-	failed("Byte.MIN_VALUE is " + min + " != -128");
+	return new Fail("Byte.MIN_VALUE is " + min + " != -128");
+    }
+  }
 
-      if (max == (byte)127)
-	passed("Byte.MIN_VALUE is 127");
-      else
-	failed("Byte.MIN_VALUE is " + min + " != 127");
-
-      String x = Byte.TYPE.getName();
-      if (x.equals("byte") != true)
-        failed("Byte.TYPE.getName() is " + x + " != byte");
-      else
-        passed("Byte.TYPE.getName() is byte");
+  public static class variablesTest2 implements Test
+  {
+    public String getName() {
+      return "Byte.MAX_VALUE";
     }
 
-  public void typeInstance()
-    {
+    public Result test() {
+      byte min = Byte.MIN_VALUE;
+      byte max = Byte.MAX_VALUE;
+      
+      if (max == (byte)127)
+	return new Pass("Byte.MAX_VALUE is 127");
+      else
+	return new Fail("Byte.MAX_VALUE is " + max + " != 127");
+    }
+  }
+
+  public static class variablesTest3 implements Test
+  {
+    public String getName() {
+      return "Byte.TYPE.getName()";
+    }
+
+    public Result test() {
+      try {
+	String x = Byte.TYPE.getName();
+	if (x.equals("byte") != true)
+	  return new Fail("Byte.TYPE.getName() is " + x + " != byte");
+	else
+	  return new Pass("Byte.TYPE.getName() is byte");
+      } catch (Exception e) {
+	return new Fail(e.getMessage());
+      } catch (Error err) {
+	return new Fail(err.getMessage());
+      }
+      return new Fail();  // shouldn't get here
+    }
+  }
+
+  public static class typeInstance implements Test
+  {
+    public String getName() {
+      return "Byte.TYPE.newInstance()";
+    }
+
+    public Result test() {
       try {
         Object b = Byte.TYPE.newInstance();
-
-        failed("Byte.TYPE.newInstance succeeded.");
+        return new Fail("Byte.TYPE.newInstance succeeded.");
       }
       catch (InstantiationException e) {
-	passed("Byte.TYPE.newInstance failed with exception '" + e.toString() + "'");
+	return new Pass("Byte.TYPE.newInstance failed with exception '" + e.toString() + "'");
       }
-      catch (Exception e) {
-        failed("Byte.TYPE.newInstance threw incorrect exception '" + e.toString() + "'");
+      catch (Exception ex) {
+        return new Fail("Byte.TYPE.newInstance threw incorrect exception '" + ex.toString() + "'");
       }
+      return new Fail();  // shouldn't get here
     }
-
-  public void failed(String s)
-    {
-      if (s != null)
-	System.out.println("FAILED: " + s);
-      else
-	System.out.println("FAILED: ");
-    }
-
-  public void passed(String s)
-    {
-      if (s != null)
-	System.out.println("PASSED: " + s);
-      else
-	System.out.println("PASSED: ");
-    }
+  }
 }
