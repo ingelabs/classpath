@@ -110,16 +110,15 @@ public abstract class JarURLConnection extends URLConnection
     if (!url_string.startsWith("jar:"))
       throw new MalformedURLException(url_string);
 
-    if (url_string.indexOf("!/") == -1)
+    int bang = url_string.indexOf ("!/");
+    if (bang == -1)
       throw new MalformedURLException(url_string);
 
-    String real_url_string = url_string.substring(4, url_string.indexOf("!/"));
-
-    real_url = new URL(real_url_string);
-    if (url_string.length() == (url_string.indexOf("!/") + 1))
+    real_url = new URL (url_string.substring (4, bang));
+    if (url_string.length() == (bang + 1))
       entry_name = "";
     else
-      entry_name = url_string.substring(url_string.indexOf("!/") + 2);
+      entry_name = url_string.substring (bang + 2);
   }
 
   /**

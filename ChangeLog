@@ -1,5 +1,11 @@
 2003-09-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/JarURLConnection.java
+	(JarURLConnection): Store result of url_string.index ("!/") in a local
+	variable instead of computing it 4 times.
+
+2003-09-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/DatagramSocket.java
 	(DatagramSocket): Implemented socket implementaion initialization
 	with respect to "impl.prefix" property. This is a merge from libgcj.
