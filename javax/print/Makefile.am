@@ -14,6 +14,7 @@ MultiDocPrintJob.java \
 MultiDocPrintService.java \
 PrintException.java \
 PrintService.java \
+PrintServiceLookup.java \
 ServiceUIFactory.java \
 StreamPrintService.java \
 URIException.java

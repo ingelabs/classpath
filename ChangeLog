@@ -1,5 +1,11 @@
 2004-04-29  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/PrintServiceLookup.java: New file.
+	* javax/print/Makefile.am (EXTRA_DIST):
+	Added PrintServiceLookup.java.
+
+2004-04-29  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/DocFlavor.java:
 	Implemented all flavor classes.
 
