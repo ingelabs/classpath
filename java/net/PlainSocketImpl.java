@@ -204,7 +204,7 @@ protected native synchronized void listen(int queuelen) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected native synchronized int read(byte[] buf, int offset, int len) throws IOException;
+protected native int read(byte[] buf, int offset, int len) throws IOException;
 
 /*************************************************************************/
 
@@ -215,7 +215,7 @@ protected native synchronized int read(byte[] buf, int offset, int len) throws I
   *
   * @exception IOException If an error occurs
   */
-protected native synchronized void write(byte[] buf, int offset, int len) throws IOException;
+protected native void write(byte[] buf, int offset, int len) throws IOException;
 
 /*************************************************************************/
 

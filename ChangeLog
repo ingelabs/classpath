@@ -1,4 +1,18 @@
-2001-06-25  Takashi Okamoto <toraneko@kun.ne.jp>
+2001-07-05  Julian Scheid <julian.scheid@sektor37.de>
+	* com/sun/javadoc/Doc.java (getRawCommentText): previously
+	mistakenly said setRawCommentText.
+	* com/sun/javadoc/DocErrorReporter.java (printNotice): missing
+	argument has been added.
+
+2001-07-05  Gansha Wu <gansha.wu@intel.com>
+	* java/net/PlainSocketImpl.java (read): remove synchronized keyword
+        to avoid deadlock between readers and writers using the same socket.
+	(write): remove synchronized keyword to avoid deadlock betweeen 
+        readers and writers using the same socket.
+	* java/io/File.java (File): in File (String, String) ignore null
+	first argument which then assumes current working directory.
+	
+2001-06-25  Takashi Okamoto <tora@debian.org>
 	* gnu/java/io/encode/EncoderUTF8.java (convertToBytes): create 
         valid UTF8 encoding.
 

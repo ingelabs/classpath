@@ -53,7 +53,7 @@ printWarning(String warn);
   * @param msg The message to print.
   */
 public abstract void
-printNotice();
+printNotice(String notice);
 
 } // interface DocErrorReporter
 

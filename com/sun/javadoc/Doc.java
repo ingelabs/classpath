@@ -105,7 +105,7 @@ firstSentenceTags();
   * @return The unprocessed comment text.
   */
 public abstract String
-setRawCommentText();
+getRawCommentText();
 
 /*************************************************************************/
 
