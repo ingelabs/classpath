@@ -1,5 +1,9 @@
 2003-11-30  Mark Wielaard  <mark@klomp.org>
 
+	* java/security/Security.java: Don't use &nbsp; in the api doc.
+
+2003-11-30  Mark Wielaard  <mark@klomp.org>
+
 	* doc/api/Makefile.am (packages, create_html): Only generate api doc
 	for the core packages, not the external ones.
 
