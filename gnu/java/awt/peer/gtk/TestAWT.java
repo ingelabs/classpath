@@ -79,9 +79,10 @@ class PrettyFrame extends Frame
 class MainWindow extends PrettyFrame implements ActionListener 
 {
   Button closeButton, buttonsButton, dialogButton, cursorsButton,
-    textFieldButton, fileButton, labelButton;
+    textFieldButton, fileButton, labelButton, radioButton;
   Window buttonsWindow = null, dialogWindow = null, cursorsWindow = null,
-    textFieldWindow = null, fileWindow = null, labelWindow = null;
+    textFieldWindow = null, fileWindow = null, labelWindow = null,
+    radioWindow = null;
 
   MainWindow () 
     {
@@ -126,6 +127,10 @@ class MainWindow extends PrettyFrame implements ActionListener
       labelButton = new Button ("labels");
       labelButton.addActionListener (this);
       p.add (labelButton);
+
+      radioButton = new Button ("radio button");
+      radioButton.addActionListener (this);
+      p.add (radioButton);
 
       setSize (200, 400);
     }
@@ -201,6 +206,16 @@ class MainWindow extends PrettyFrame implements ActionListener
             }
           else 
             labelWindow.dispose();
+        }
+      if (source==radioButton)
+        {
+          if (radioWindow == null)
+            {
+              radioWindow = new RadioWindow (this);
+              radioWindow.show();
+            }
+          else 
+            radioWindow.dispose();
         }
     }
 }
@@ -533,6 +548,50 @@ class LabelWindow extends PrettyFrame
   public void dispose()
     {
       mainWindow.labelWindow=null;
+      super.dispose();
+    }
+}
+
+
+class 
+RadioWindow extends PrettyFrame
+{
+  static Frame f;
+  MainWindow mainWindow;
+
+  public RadioWindow (MainWindow mw)
+    {
+      super ("Radio Buttons");
+
+      mainWindow = mw;
+
+      Panel p = new Panel();
+      p.setLayout (new GridLayout (3, 1));
+      ((GridLayout) p.getLayout ()).setHgap (5);
+      ((GridLayout) p.getLayout ()).setVgap (5);
+
+      CheckboxGroup cg = new CheckboxGroup();
+      p.add(new Checkbox("button1", cg, true));
+      p.add(new Checkbox("button2", cg, false));
+      p.add(new Checkbox("button3", cg, false));
+
+      add (p, "Center");
+
+      Button cb = new Button ("Close");
+      cb.addMouseListener(new MouseAdapter () {
+        public void mouseClicked (MouseEvent e) {
+	  dispose();
+        }
+      });
+
+      add (cb, "South");
+
+      setSize (85, 167);
+    }
+
+  public void dispose()
+    {
+      mainWindow.radioWindow=null;
       super.dispose();
     }
 }
