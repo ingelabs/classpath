@@ -396,7 +396,8 @@ getCollationElementIterator(CharacterIterator ci)
   * @param s1 The first <code>String</code> to compare.
   * @param s2 A second <code>String</code> to compare to the first.
   *
-  * @return A negative integer if s1 < s2, a positive integer if s1 > s2, or 0 if s1 == s2.
+  * @return A negative integer if s1 &lt; s2, a positive integer
+  * if s1 &gt; s2, or 0 if s1 == s2.
   */
 public int
 compare(String s1, String s2)
