@@ -1,5 +1,9 @@
 2003-08-15  Mark Wielaard  <mark@klomp.org>
 
+	* NEWS: Updated with important improvements for 0.06 release.
+
+2003-08-15  Mark Wielaard  <mark@klomp.org>
+
 	* HACKING: Updated known working/not-working versions of auto-tools.
 
 2003-08-14  Archie Cobbs  <archie@dellroad.org>

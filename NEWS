@@ -1,4 +1,20 @@
 New in release 0.06 (not-yet-released)
+
+* Update java.awt peers to GTK+2.
+* java.awt.GridBagLayout implementation.
+* New JNI nativee target code layer. See native/target/readme.txt.
+* java.swing.border implementation.
+* java.security and java.security.cert updated to 1.4 spec.
+* --enable-regen-headers configure flag for automatic jni .h file generation.
+* Removed workaround for gcj 3.2 and lower, gcj 3.3+ or jikes 1.18+ is now
+  needed for compiling.
+* Lots of improvements and/or new classes for java.awt, java.awt.dnd,
+  java.awt.font, java.awt.geom, java.awt.image, java.io, java.math, java.net,
+  java.nio, java.rmi, java.text, java.util, javax.swing, javax.swing.plaf,
+  javax.swing.text.
+
+VM Interface changes:
+
 * VMClassLoader.loadClass(), the bootstrap classloader called by
   Class.forName() and ClassLoader.loadClass(), may now return null when
   a class is not found instead of throwing a new ClassNotFoundException.
