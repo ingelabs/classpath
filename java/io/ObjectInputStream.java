@@ -1377,18 +1377,18 @@ public class ObjectInputStream extends InputStream
 
   private static boolean dump;
 
-  public static void setDump (boolean dump)
+  public static void setDump (boolean dodump)
   {
-    this.dump = dump;
+    dump = dodump;
   }
 
-  private void dumpElement (String msg);
+  private void dumpElement (String msg)
   {
     if (dump)
       Systm.out.print (msg);
   }
 
-  private void dumpElementln (String msg);
+  private void dumpElementln (String msg)
   {
     if (dump)
       Systm.out.println (msg);
