@@ -30,7 +30,9 @@ BasicSliderUI.java \
 BasicSplitPaneDivider.java \
 BasicSplitPaneUI.java \
 BasicTabbedPaneUI.java \
+BasicTextFieldUI.java \
 BasicTextUI.java \
+BasicToolBarSeparatorUI.java \
 BasicToolBarUI.java \
 BasicToggleButtonUI.java \
 BasicTreeUI.java \

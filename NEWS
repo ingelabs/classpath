@@ -1,3 +1,18 @@
+New in release 0.11 (not released yet)
+
+* javax.swing.Spring and SpringLayout support.
+* Added pluggable look and feel support for BasicTextFieldUI and
+  BasicToolBarSeparatorUI.
+* java.swing.text support for (Default and Layered) Highlighter, FieldView,
+  PlainView, TabExpander and TabableView added.
+* Start of JTable and JTree implementation.
+* Internal Swing frames work.
+* JMenu and JPopupMenu work.
+* New gtk+ AWT FileDialog peer now based on gtk+2.4 or higher.
+* java.awt.image LookupTables and kernel support.
+* Improved java.awt.image.BufferedImage support.
+* AWT 1.0 event model support.
+
 New in release 0.10 (Jul 9, 2004)
 
 * java.net.URL now uses application classloader to load URLStreamHandlers

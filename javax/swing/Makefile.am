@@ -107,6 +107,8 @@ SizeRequirements.java \
 SizeSequence.java \
 SingleSelectionModel.java \
 SpinnerModel.java \
+Spring.java \
+SpringLayout.java \
 SwingConstants.java \
 SwingUtilities.java \
 Timer.java \

@@ -6,6 +6,7 @@ AreaAveragingScaleFilter.java \
 BufferedImage.java \
 BufferedImageOp.java \
 BufferStrategy.java \
+ByteLookupTable.java \
 ColorModel.java	\
 ComponentColorModel.java \
 ComponentSampleModel.java \
@@ -25,6 +26,8 @@ ImageObserver.java \
 ImageProducer.java \
 ImagingOpException.java \
 IndexColorModel.java \
+Kernel.java \
+LookupTable.java \
 MemoryImageSource.java \
 PackedColorModel.java \
 PixelGrabber.java \
@@ -36,6 +39,7 @@ RasterOp.java \
 RenderedImage.java \
 ReplicateScaleFilter.java \
 SampleModel.java \
+ShortLookupTable.java \
 SinglePixelPackedSampleModel.java \
 TileObserver.java \
 VolatileImage.java \
