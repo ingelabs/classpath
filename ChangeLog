@@ -1,11 +1,17 @@
+2003-02-14  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/System.java (properties): Use Properties.clone.
+	(setProperties): Likewise.
+
 2003-02-14  Michael Koch  <konqueror@gmx.de>
  
- 	* java/util/prefs/NodeChangeEvent.java
+	* java/util/prefs/NodeChangeEvent.java
 	(serialVersionUID): New member variable (Merge back from libgcj).
 	* java/util/prefs/PreferenceChangeEvent.java
 	(serialVersionUID): New member variable (Merge back from libgcj).
 	* java/util/prefs/PreferenceChangeListener.java
-	(preferenceChange): Renamed from PreferenceChange (Merge back from libgcj).
+	(preferenceChange): Renamed from PreferenceChange (Merge back from
+	libgcj).
 
 2003-02-13  Michael Koch  <konqueror@gmx.de>
  
