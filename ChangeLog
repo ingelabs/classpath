@@ -1,3 +1,11 @@
+2001-11-10  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Double.java (parseDouble): Now native.
+	(parseDouble0): Removed.
+	* native/jni/java-lang/java_lang_Double.c
+	(Java_java_lang_Double_parseDouble): Renamed.  Rewrote to trim
+	String internally.  Free the UTF buffer at end.
+
 2001-11-06  Joseph S. Myers  <jsm28@cam.ac.uk>
 
 	* java/io/ByteArrayOutputStream.java,
