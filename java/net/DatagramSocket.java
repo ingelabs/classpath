@@ -453,6 +453,7 @@ send(DatagramPacket packet) throws IOException
         }
     }
 
+  // FIXME: if this is a subclass of MulticastSocket, use getTTL for TTL val.
   impl.send(packet);
 }
 
