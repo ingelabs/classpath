@@ -294,7 +294,7 @@ public class ArrayList extends AbstractList
    */
   public Object get(int index)
   {
-    rangeExclusive(index);
+    checkBoundExclusive(index);
     return data[index];
   }
 
@@ -308,7 +308,7 @@ public class ArrayList extends AbstractList
    */
   public Object set(int index, Object e)
   {
-    rangeExclusive(index);
+    checkBoundExclusive(index);
     Object result = data[index];
     data[index] = e;
     return result;
@@ -339,7 +339,7 @@ public class ArrayList extends AbstractList
    */
   public void add(int index, Object e)
   {
-    rangeInclusive(index);
+    checkBoundInclusive(index);
     modCount++;
     if (size == data.length)
       ensureCapacity(size + 1);
@@ -358,7 +358,7 @@ public class ArrayList extends AbstractList
    */
   public Object remove(int index)
   {
-    rangeExclusive(index);
+    checkBoundExclusive(index);
     Object r = data[index];
     modCount++;
     if (index != --size)
@@ -407,7 +407,7 @@ public class ArrayList extends AbstractList
    */
   public boolean addAll(int index, Collection c)
   {
-    rangeInclusive(index);
+    checkBoundInclusive(index);
     Iterator itr = c.iterator();
     int csize = c.size();
 
@@ -444,13 +444,13 @@ public class ArrayList extends AbstractList
    * Checks that the index is in the range of possible elements (inclusive).
    *
    * @param index the index to check
-   * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size
+   * @throws IndexOutOfBoundsException if index &gt; size
    */
-  private void rangeInclusive(int index)
+  private void checkBoundInclusive(int index)
   {
     // Implementation note: we do not check for negative ranges here, since
-    // that will cause an ArrayIndexOutOfBoundsException, a subclass of
-    // the required exception, with no effort on our part.
+    // use of a negative index will cause an ArrayIndexOutOfBoundsException,
+    // a subclass of the required exception, with no effort on our part.
     if (index > size)
       throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
                                           + size);
@@ -460,13 +460,13 @@ public class ArrayList extends AbstractList
    * Checks that the index is in the range of existing elements (exclusive).
    *
    * @param index the index to check
-   * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size
+   * @throws IndexOutOfBoundsException if index &gt;= size
    */
-  private void rangeExclusive(int index)
+  private void checkBoundExclusive(int index)
   {
     // Implementation note: we do not check for negative ranges here, since
-    // that will cause an ArrayIndexOutOfBoundsException, a subclass of
-    // the required exception, with no effort on our part.
+    // use of a negative index will cause an ArrayIndexOutOfBoundsException,
+    // a subclass of the required exception, with no effort on our part.
     if (index >= size)
       throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
                                           + size);

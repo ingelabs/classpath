@@ -176,7 +176,7 @@ public class LinkedList extends AbstractSequentialList
    * @param index the index to check
    * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size
    */
-  private void rangeInclusive(int index)
+  private void checkBoundsInclusive(int index)
   {
     if (index < 0 || index > size)
       throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
@@ -189,7 +189,7 @@ public class LinkedList extends AbstractSequentialList
    * @param index the index to check
    * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size
    */
-  private void rangeExclusive(int index)
+  private void checkBoundsExclusive(int index)
   {
     if (index < 0 || index >= size)
       throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
@@ -428,7 +428,7 @@ public class LinkedList extends AbstractSequentialList
    */
   public boolean addAll(int index, Collection c)
   {
-    rangeInclusive(index);
+    checkBoundsInclusive(index);
     int csize = c.size();
 
     if (csize == 0)
@@ -506,7 +506,7 @@ public class LinkedList extends AbstractSequentialList
    */
   public Object get(int index)
   {
-    rangeExclusive(index);
+    checkBoundsExclusive(index);
     return getEntry(index).data;
   }
 
@@ -520,7 +520,7 @@ public class LinkedList extends AbstractSequentialList
    */
   public Object set(int index, Object o)
   {
-    rangeExclusive(index);
+    checkBoundsExclusive(index);
     Entry e = getEntry(index);
     Object old = e.data;
     e.data = o;
@@ -536,7 +536,7 @@ public class LinkedList extends AbstractSequentialList
    */
   public void add(int index, Object o)
   {
-    rangeInclusive(index);
+    checkBoundsInclusive(index);
     Entry e = new Entry(o);
 
     if (index < size)
@@ -565,7 +565,7 @@ public class LinkedList extends AbstractSequentialList
    */
   public Object remove(int index)
   {
-    rangeExclusive(index);
+    checkBoundsExclusive(index);
     Entry e = getEntry(index);
     removeEntry(e);
     return e.data;
@@ -622,7 +622,7 @@ public class LinkedList extends AbstractSequentialList
    */
   public ListIterator listIterator(int index)
   {
-    rangeInclusive(index);
+    checkBoundsInclusive(index);
     return new LinkedListItr(index);
   }
 

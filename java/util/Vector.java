@@ -354,9 +354,7 @@ public class Vector extends AbstractList
    */
   public synchronized int lastIndexOf(Object e, int index)
   {
-    if (index >= elementCount)
-      throw new IndexOutOfBoundsException(index + " >= " + elementCount);
-
+    checkBoundExclusive(index);
     for (int i = index; i >= 0; i--)
       if (equals(e, elementData[i]))
         return i;
@@ -373,11 +371,7 @@ public class Vector extends AbstractList
    */
   public synchronized Object elementAt(int index)
   {
-    // Within the bounds of this Vector does not necessarily mean within
-    // the bounds of the internal array.
-    if (index >= elementCount)
-      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
-
+    checkBoundExclusive(index);
     return elementData[index];
   }
 
@@ -446,9 +440,7 @@ public class Vector extends AbstractList
    */
   public synchronized void insertElementAt(Object obj, int index)
   {
-    if (index > elementCount)
-      throw new ArrayIndexOutOfBoundsException(index + " > " + elementCount);
-
+    checkBoundInclusive(index);
     if (elementCount == elementData.length)
       ensureCapacity(elementCount + 1);
     modCount++;
@@ -598,9 +590,7 @@ public class Vector extends AbstractList
    */
   public synchronized Object set(int index, Object element)
   {
-    if (index >= elementCount)
-      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
-
+    checkBoundExclusive(index);
     Object temp = elementData[index];
     elementData[index] = element;
     return temp;
@@ -656,9 +646,7 @@ public class Vector extends AbstractList
    */
   public synchronized Object remove(int index)
   {
-    if (index >= elementCount)
-      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
-
+    checkBoundExclusive(index);
     Object temp = elementData[index];
     modCount++;
     elementCount--;
@@ -771,8 +759,7 @@ public class Vector extends AbstractList
    */
   public synchronized boolean addAll(int index, Collection c)
   {
-    if (index > elementCount)
-      throw new ArrayIndexOutOfBoundsException(index);
+    checkBoundInclusive(index);
     Iterator itr = c.iterator();
     int csize = c.size();
 
@@ -870,5 +857,35 @@ public class Vector extends AbstractList
         elementCount -= toIndex - fromIndex;
         Arrays.fill(elementData, elementCount, save, null);
       }
+  }
+
+  /**
+   * Checks that the index is in the range of possible elements (inclusive).
+   *
+   * @param index the index to check
+   * @throws ArrayIndexOutOfBoundsException if index &gt; size
+   */
+  private void checkBoundInclusive(int index)
+  {
+    // Implementation note: we do not check for negative ranges here, since
+    // use of a negative index will cause an ArrayIndexOutOfBoundsException
+    // with no effort on our part.
+    if (index > elementCount)
+      throw new ArrayIndexOutOfBoundsException(index + " > " + elementCount);
+  }
+
+  /**
+   * Checks that the index is in the range of existing elements (exclusive).
+   *
+   * @param index the index to check
+   * @throws ArrayIndexOutOfBoundsException if index &gt;= size
+   */
+  private void checkBoundExclusive(int index)
+  {
+    // Implementation note: we do not check for negative ranges here, since
+    // use of a negative index will cause an ArrayIndexOutOfBoundsException
+    // with no effort on our part.
+    if (index >= elementCount)
+      throw new ArrayIndexOutOfBoundsException(index + " >= " + elementCount);
   }
 }

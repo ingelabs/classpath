@@ -1,5 +1,15 @@
 2001-10-21  Eric Blake  <ebb9@email.byu.edu>
 
+	* java/util/ArrayList.java (checkBoundExclusive),
+	(checkBoundInclusive): Rename from range??clusive, to match
+	AbstractList.
+	* java/util/LinkedList.java (checkBoundsExclusive),
+	(checkBoundsInclusive): ditto
+	* java/util/Vector.java (checkBoundExclusive),
+	(checkBoundInclusive): Move bounds checking into common methods.
+
+2001-10-21  Eric Blake  <ebb9@email.byu.edu>
+
 	* java/util/AbstractList.java:
 	(modCount): Make sure it is updated in all needed places.
 	* java/util/ArrayList.java: Improve javadoc. Implements
