@@ -22,6 +22,11 @@
 #include "gtkpeer.h"
 #include "GtkCheckboxPeer.h"
 
+static void connect_checkbox_item_selectable_hook (JNIEnv *env, 
+						   jobject peer_obj, 
+						   GtkToggleButton *item, 
+						   jobject item_obj);
+
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonSetGroup
   (JNIEnv *env, jobject obj, jobject group)
@@ -77,6 +82,8 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
   gtk_widget_realize (button);
   connect_awt_hook (env, obj, button, 1, 
 		    GTK_TOGGLE_BUTTON (button)->event_window);
+  connect_checkbox_item_selectable_hook (env, obj, GTK_TOGGLE_BUTTON (button),
+					 label);
   set_visible (button, visible);
 
   if (checked)
@@ -114,6 +121,8 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
   gtk_widget_realize (button);
   connect_awt_hook (env, obj, button, 1, 
 		    GTK_TOGGLE_BUTTON (button)->event_window);
+  connect_checkbox_item_selectable_hook (env, obj, GTK_TOGGLE_BUTTON (button),
+					 label);
   set_visible (button, visible);
   gdk_threads_leave ();
 
@@ -168,3 +177,29 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonSetLabel
   (*env)->ReleaseStringUTFChars (env, label, str);
 }
 
+static void
+item_toggled (GtkToggleButton *item, struct item_event_hook_info *ie)
+{
+  (*gdk_env)->CallVoidMethod (gdk_env, ie->peer_obj,
+			      postItemEventID,
+			      ie->item_obj,
+			      item->active ?
+			      (jint) AWT_ITEM_SELECTED :
+			      (jint) AWT_ITEM_DESELECTED);
+}
+
+static void
+connect_checkbox_item_selectable_hook (JNIEnv *env, jobject peer_obj, 
+				       GtkToggleButton *item, jobject item_obj)
+{
+  struct item_event_hook_info *ie;
+
+  ie = (struct item_event_hook_info *) 
+    malloc (sizeof (struct item_event_hook_info));
+
+  ie->peer_obj = (*env)->NewGlobalRef (env, peer_obj);
+  ie->item_obj = (*env)->NewGlobalRef (env, item_obj);
+
+  gtk_signal_connect (GTK_OBJECT (item), "toggled", 
+		      GTK_SIGNAL_FUNC (item_toggled), ie);
+}

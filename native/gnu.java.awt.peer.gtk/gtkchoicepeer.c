@@ -22,12 +22,6 @@
 #include "gtkpeer.h"
 #include "GtkChoicePeer.h"
 
-struct item_event_hook_info
-{
-  jobject peer_obj;
-  jobject item_obj;
-};
-
 static void connect_choice_item_selectable_hook (JNIEnv *env, 
 						 jobject peer_obj, 
 						 GtkItem *item, 

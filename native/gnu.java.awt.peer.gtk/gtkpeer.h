@@ -246,4 +246,10 @@ void set_parent (GtkWidget *widget, GtkContainer *parent);
 void setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width, 
 		   jint height, jboolean visible);
 
+struct item_event_hook_info
+{
+  jobject peer_obj;
+  jobject item_obj;
+};
+
 #endif /* __GTKPEER_H */
