@@ -1,5 +1,10 @@
 2003-11-21  Mark Wielaard  <mark@klomp.org>
 
+	* configure.in: Depend on gtk+ 2.2.x.
+	* HACKING, NEWS: Document.
+
+2003-11-21  Mark Wielaard  <mark@klomp.org>
+
 	* vm/reference/java/lang/Runtime.java (exit): Add extra comments.
 
 2003-11-21  Mark Wielaard  <mark@klomp.org>

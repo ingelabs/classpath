@@ -26,7 +26,7 @@ is required.
 
 For building the JNI native libraries, the following are required.
 
-        - GTK+ 2.x.x
+        - GTK+ 2.2.x
 	- libart_lgpl 2.1.0
 	- gdk-pixbuf (Only needed if you want to compile the native library)
 

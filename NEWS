@@ -1,4 +1,8 @@
-New in release 0.06 (not-yet-released)
+New in release 0.07 (not-yet-released)
+
+* java.awt gtk+ peers now depend on gtk+ 2.2.x.
+
+New in release 0.06 (2003/22/08)
 
 * Update java.awt peers to GTK+2.
 * java.awt.GridBagLayout implementation.
