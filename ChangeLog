@@ -1,5 +1,9 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/File.java: Reformated.
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/File.java
 	(caseSensitive): New class varibale indicatinc case sensitivity.
 	Currently set to true statically to support only case sensitive file
