@@ -1,5 +1,5 @@
 /* Double.c - java.lang.Double native functions
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -231,56 +231,97 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
 
   return (*env)->NewStringUTF(env, result);
 }
-  
+
 /*
  * Class:     java_lang_Double
  * Method:    parseDouble
  * Signature: (Ljava/lang/String)D
  */
-JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble0
+JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
   (JNIEnv * env, jclass cls, jstring str)
 {
   jboolean isCopy;
-  int length;
   char *buf, *endptr;
-  jdouble val;
+  jdouble val = 0.0;
 
-  buf = (*env)->GetStringUTFChars(env, str, &isCopy);
+  buf = (char *) (*env)->GetStringUTFChars(env, str, &isCopy);
   if (buf == NULL)
     {
-      return 0.0; /* OutOfMemoryError already thrown */
+      /* OutOfMemoryError already thrown */
     }
-
+  else
+    {
+      unsigned char *p = buf, *end, *last_non_ws;
+      int ok = 1;
+ 
 #ifdef DEBUG
-  fprintf (stderr, "java.lang.Double.parseDouble0 (%s)\n", buf);
+      fprintf (stderr, "java.lang.Double.parseDouble (%s)\n", buf);
 #endif
 
-  if (strlen(buf) > 0)
-    {
-      struct _Jv_reent reent;  
-      memset (&reent, 0, sizeof reent);
+      /* Trim the buffer, similar to String.trim().  First the leading
+	 characters.  */
+      while (*p && *p <= ' ')
+ 	++p;
+
+      /* Find the last non-whitespace character.  This method is safe
+ 	 even with multi-byte UTF-8 characters.  */
+      end = p;
+      last_non_ws = NULL;
+      while (*end)
+ 	{
+ 	  if (*end > ' ')
+ 	    last_non_ws = end;
+ 	  ++end;
+ 	}
+
+      if (last_non_ws == NULL)
+ 	last_non_ws = p + strlen (p);
+      else
+	{
+	  /* Skip past the last non-whitespace character.  */
+	  ++last_non_ws;
+	}
+
+      /* Skip a trailing `f' or `d'.  */
+      if (last_non_ws > p
+	  && (last_non_ws[-1] == 'f'
+	      || last_non_ws[-1] == 'F'
+	      || last_non_ws[-1] == 'd'
+	      || last_non_ws[-1] == 'D'))
+	--last_non_ws;
+
+      if (last_non_ws > p)
+ 	{
+ 	  struct _Jv_reent reent;  
+ 	  memset (&reent, 0, sizeof reent);
 
 #ifdef KISSME_LINUX_USER
-      val = strtod ( buf, &endptr);
+ 	  val = strtod (p, &endptr);
 #else
-      val = _strtod_r (&reent, buf, &endptr);
+ 	  val = _strtod_r (&reent, p, &endptr);
 #endif
-
-      length = strlen(buf);
-      if    ((buf[length-1] == 'f')
-         || (buf[length-1] == 'F')
-         || (buf[length-1] == 'd')
-         || (buf[length-1] == 'D'))
-        length = length - 1;
 
 #ifdef DEBUG
-  fprintf (stderr, "java.lang.Double.parseDouble0 val = %g\n", val);
-  fprintf (stderr, "java.lang.Double.parseDouble0 %i = %i + %i\n", endptr, buf, length);
+	  fprintf (stderr, "java.lang.Double.parseDouble val = %g\n", val);
+	  fprintf (stderr, "java.lang.Double.parseDouble %i != %i ???\n",
+		   endptr, last_non_ws);
 #endif
+ 	  if ((unsigned char *) endptr != last_non_ws)
+ 	    ok = 0;
+ 	}
+      else
+ 	ok = 0;
 
-      if (endptr == buf + length)
-	return val;
+      if (! ok)
+ 	{
+ 	  val = 0.0;
+ 	  JCL_ThrowException (env,
+ 			      "java/lang/NumberFormatException",
+ 			      "unable to parse double");
+ 	}
+
+      (*env)->ReleaseStringUTFChars (env, str, buf);
     }
-  JCL_ThrowException(env, "java/lang/NumberFormatException", "unable to parse double");
-  return 0.0; /* NumberFormatException already thrown */
+
+  return val;
 }
