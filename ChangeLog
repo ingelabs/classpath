@@ -1,5 +1,13 @@
 2004-09-06  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/Runtime.java
+	(load): Added link security check.
+	(loadLib): Changed link security check to read check.
+	(loadLibrary): Added link security check and throw if ClassLoader
+	supplied library doesn't exist.
+
+2004-09-06  Jeroen Frijters  <jeroen@frijters.net>
+
 	* gnu/java/io/EncodingManager.java
 	(decoder_cons): Removed.
 	(encoder_cons): Removed.
