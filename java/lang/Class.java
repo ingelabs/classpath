@@ -62,9 +62,11 @@ import java.util.HashSet;
  * objects with identical names and ClassLoaders. Primitive types, array
  * types, and void also have a Class object.
  *
- * <p>Arrays with identical type and number of dimensions share the same
- * class (and null "system" ClassLoader, incidentally).  The name of an
- * array class is <code>[&lt;signature format&gt;;</code> ... for example,
+ * <p>Arrays with identical type and number of dimensions share the same class.
+ * The array class ClassLoader is the same as the ClassLoader of the element
+ * type of the array (which can be null to indicate the bootstrap classloader).
+ * The name of an array class is <code>[&lt;signature format&gt;;</code>.
+ * <p> For example,
  * String[]'s class is <code>[Ljava.lang.String;</code>. boolean, byte,
  * short, char, int, long, float and double have the "type name" of
  * Z,B,S,C,I,J,F,D for the purposes of array classes.  If it's a
@@ -236,10 +238,11 @@ public final class Class implements Serializable
   }
   
   /**
-   * Get the ClassLoader that loaded this class.  If it was loaded by the
-   * system classloader, this method will return null. If there is a security
-   * manager, and the caller's class loader does not match the requested
-   * one, a security check of <code>RuntimePermission("getClassLoader")</code>
+   * Get the ClassLoader that loaded this class.  If the class was loaded
+   * by the bootstrap classloader, this method will return null.
+   * If there is a security manager, and the caller's class loader does not
+   * match the requested one, a security check of
+   * <code>RuntimePermission("getClassLoader")</code>
    * must first succeed. Primitive types and void return null.
    *
    * @return the ClassLoader that loaded this class

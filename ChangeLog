@@ -1,5 +1,11 @@
 2004-04-30  Mark Wielaard  <mark@klomp.org>
 
+	Reported by David Holmes
+	* java/lang/Class.java: Clean up confusing stateements about system
+	classloader versus bootstrap classloader.
+
+2004-04-30  Mark Wielaard  <mark@klomp.org>
+
 	Reported by Nikolay Fiykov [bugs #8611]
 	* java/lang/Runtime.java (loadLib): New private method.
 	(load): Call loadLib.
