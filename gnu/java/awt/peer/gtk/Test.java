@@ -53,33 +53,39 @@ class Test
       TextField tf = new TextField("Hello world!");
       pan.add(tf);
 
-      List ch=new List();
-      ch.add("Ding");
-      ch.add("September");
-      ch.add("Red");
-      ch.add("Quassia");
-      ch.add("Pterodactyl");
+      Canvas ch = new Canvas () { 
+	public void paint (Graphics g) {
+	  g.drawLine(5,5,20,20);
+	}
+      };
+      ch.setSize(50, 50);
+//        List ch=new List();
+//        ch.add("Ding");
+//        ch.add("September");
+//        ch.add("Red");
+//        ch.add("Quassia");
+//        ch.add("Pterodactyl");
 
-      ch.addMouseListener(new MouseAdapter() {
-	public void mousePressed(MouseEvent e) {
-	  System.out.println("mouse pressed ch");
-	  System.out.println("shift = " + e.isShiftDown());
-	  System.out.println("meta = " + e.isMetaDown());
-	  System.out.println("alt = " + e.isAltDown());
-	  System.out.println("ctrl = " + e.isControlDown());
-	  System.out.println("x = " + e.getX());
-	  System.out.println("y = " + e.getY());
-	  System.out.println("clickcount = " + e.getClickCount());
-	  System.out.println("when = " + e.getWhen());
-	  System.out.println();
-	}
-	public void mouseReleased(MouseEvent e) {
-	  System.out.println("mouse released ch");
-	}
-	public void mouseClicked(MouseEvent e) {
-	  System.out.println("mouse clicked ch");
-	}
-      });
+//        ch.addMouseListener(new MouseAdapter() {
+//  	public void mousePressed(MouseEvent e) {
+//  	  System.out.println("mouse pressed ch");
+//  	  System.out.println("shift = " + e.isShiftDown());
+//  	  System.out.println("meta = " + e.isMetaDown());
+//  	  System.out.println("alt = " + e.isAltDown());
+//  	  System.out.println("ctrl = " + e.isControlDown());
+//  	  System.out.println("x = " + e.getX());
+//  	  System.out.println("y = " + e.getY());
+//  	  System.out.println("clickcount = " + e.getClickCount());
+//  	  System.out.println("when = " + e.getWhen());
+//  	  System.out.println();
+//  	}
+//  	public void mouseReleased(MouseEvent e) {
+//  	  System.out.println("mouse released ch");
+//  	}
+//  	public void mouseClicked(MouseEvent e) {
+//  	  System.out.println("mouse clicked ch");
+//  	}
+//        });
 
       pan.add(ch);
       f.add(pan,"North");
@@ -166,18 +172,20 @@ class Test
       
       f.pack();
       f.show();
+      ch.getGraphics().drawLine(5,5,20,20);
+
       sp.setScrollPosition (10,0);
 
       Toolkit t = Toolkit.getDefaultToolkit();
       /* t.beep(); */
       System.out.println("screen size: " + t.getScreenSize());
       System.out.println("resolution : " + t.getScreenResolution());
-      try {
-	Thread.sleep (5000);
-      } catch (InterruptedException e) {}
-      f.setSize(500,500);
+//        try {
+//  	Thread.sleep (5000);
+//        } catch (InterruptedException e) {}
+//        f.setSize(500,500);
 
-      System.out.println (wb.getGraphics());
+      System.out.println (wb.getGraphics().getColor());
       System.out.println("done");
     }
 }

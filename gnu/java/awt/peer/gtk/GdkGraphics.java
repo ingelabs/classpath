@@ -5,8 +5,14 @@ import java.awt.image.*;
 
 public class GdkGraphics extends Graphics
 {
+  private final int native_state = java.lang.System.identityHashCode (this);
+
+  native void initState (GtkComponentPeer component);
+
   GdkGraphics (GtkComponentPeer component)
   {
+    super ();
+    initState (component);
   }
 
   public void clearRect (int x, int y, int width, int height)
@@ -72,9 +78,7 @@ public class GdkGraphics extends Graphics
     return false;
   }
 
-  public void drawLine (int x1, int y1, int x2, int y2)
-  {
-  }
+  native public void drawLine (int x1, int y1, int x2, int y2);
 
   public void drawOval(int x, int y, int width, int height)
   {

@@ -128,12 +128,12 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected ButtonPeer createButton (Button b)
     {
-      return(new GtkButtonPeer (b,b.getParent().getPeer()));
+      return(new GtkButtonPeer (b, b.getParent().getPeer()));
     }
 
   protected CanvasPeer createCanvas (Canvas c) 
     {
-      return null;
+      return (new GtkCanvasPeer (c, c.getParent().getPeer()));
     }
 
   protected CheckboxPeer createCheckbox (Checkbox cb) 
