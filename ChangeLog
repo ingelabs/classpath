@@ -1,3 +1,11 @@
+2003-06-23  John Leuner  <jewel@debian.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c: cosmetic changes
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c: add specifc code for GtkButton to connect to event_window
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c (Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit): call gdk_threads_init
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c: added some debugging code
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c (connectHooks): don't use deprecated gtk methods
+
 2003-06-23  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/doc-files: New directory.

@@ -88,9 +88,13 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 #ifdef PORTABLE_NATIVE_SYNC
   (*env)->GetJavaVM( env, &gdk_vm );
   g_thread_init ( &g_thread_jni_functions );
+  printf("called gthread init\n");
 #else
   g_thread_init ( NULL );
 #endif
+
+  /* From GDK 2.0 onwards we have to explicitly call gdk_threads_init */
+  gdk_threads_init();
 
   gtk_init (&argc, &argv);
 

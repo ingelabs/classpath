@@ -42,14 +42,13 @@ exception statement from your version. */
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkButtonPeer_create
   (JNIEnv *env, jobject obj)
 {
-  GtkWidget *widget, *label;
+  GtkButton *button;
 
   gdk_threads_enter ();
-  widget = gtk_button_new ();
-  gtk_widget_show (widget);
+  button = gtk_button_new();
+  gtk_widget_show (GTK_WIDGET(button));
   gdk_threads_leave ();
-
-  NSA_SET_PTR (env, obj, widget);
+  NSA_SET_PTR (env, obj, button);
 }
 
 JNIEXPORT void JNICALL 

@@ -526,7 +526,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_la
   GTK_VALUE_BOOL (arg) = value;
 
   gdk_threads_enter();                          
-  g_object_set(ptr, name, GTK_VALUE_BOOL(arg), NULL);
+  g_object_set(ptr, name, value, NULL);
   gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
@@ -637,6 +637,15 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks
 
   gdk_threads_enter ();
   gtk_widget_realize (GTK_WIDGET (ptr));
-  connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
+  if(GTK_IS_BUTTON(ptr))
+    {
+      g_print("-- connecting a button --\n");
+      connect_awt_hook (env, obj, 1, GTK_BUTTON(ptr)->event_window);
+    }
+  else
+    {
+      connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
+      g_print("Connection object %p with window %p (but ptr is %p)\n", obj, GTK_WIDGET(ptr)->window, ptr);
+    }
   gdk_threads_leave ();
 }

@@ -300,7 +300,7 @@ awt_event_handler (GdkEvent *event)
 				      (jint)event->button.y, 
 				      click_count, 
 				      (event->button.button == 3) ? JNI_TRUE :
-				                                    JNI_FALSE);
+				      JNI_FALSE);
 
 	  /*	  grab_counter++;
 	  gdk_pointer_grab (event->any.window,
@@ -526,6 +526,7 @@ attach_jobject (GdkWindow *window, jobject *obj)
 			 | GDK_KEY_PRESS_MASK
 			 | GDK_FOCUS_CHANGE_MASK);
 
+  //  g_print("storing obj %p property on window %p\n", obj, window);
   gdk_property_change (window,
 		       addr_atom,
 		       type_atom,
@@ -538,20 +539,22 @@ attach_jobject (GdkWindow *window, jobject *obj)
 void
 connect_awt_hook (JNIEnv *env, jobject peer_obj, int nwindows, ...)
 {
-  int i;
   va_list ap;
   jobject *obj;
 
   obj = (jobject *) malloc (sizeof (jobject));
   *obj = (*env)->NewGlobalRef (env, peer_obj);
-  printf("Connection obj %p\n", peer_obj);
+  //g_print("Connection obj %p\n", peer_obj);
   
   va_start (ap, nwindows);
+  {
+  int i;
   for (i = 0; i < nwindows; i++)
     {
       GdkWindow* attach = (va_arg (ap, GdkWindow *));
-      printf("attach peer obj %p and %p\n", peer_obj, attach);
+      //g_print("attach peer obj %p and %p\n", peer_obj, attach);
       attach_jobject(attach, obj);
     }
+  }
   va_end (ap);
 }

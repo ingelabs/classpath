@@ -94,23 +94,37 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectHooks
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
+  GtkVBox* vbox;
   GtkWidget *layout;
   GList* children;
-
+  char* name;
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
 
-  children = gtk_container_get_children(GTK_CONTAINER(ptr));
-  layout = children->data;
-  if(!GTK_IS_LAYOUT(layout))
-    {
+   children = gtk_container_get_children(GTK_CONTAINER(ptr));
+   vbox = children->data;
+   name = GTK_OBJECT_TYPE_NAME(vbox);
+   if(!GTK_IS_VBOX(vbox))
+     {
+       printf("*** this is not a vbox\n");
+     }
+   children = gtk_container_get_children(GTK_CONTAINER(vbox));
+   layout = children->data;
+   name = GTK_OBJECT_TYPE_NAME(layout);
+   if(!GTK_IS_LAYOUT(layout))
+     {
       printf("*** widget is not a layout ***");
-    }
-  gtk_widget_realize (layout);
-  connect_awt_hook (env, obj, 1, GTK_LAYOUT (layout)->bin_window);
-  gtk_widget_realize (GTK_WIDGET (ptr));
-  connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
+     }
+
+    gtk_widget_realize (layout);
+
+    connect_awt_hook (env, obj, 1, GTK_LAYOUT (layout)->bin_window);
+  
+    gtk_widget_realize (ptr);
+
+   connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
+  
   gdk_threads_leave ();
 }
 
