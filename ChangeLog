@@ -1,3 +1,7 @@
+2001-11-14  C. Brian Jones
+	* java/lang/Double.java (valueOf): Throw NullPointerException
+	explicitly in the case of a null argument.
+
 2001-11-14  Tom Tromey  <tromey@redhat.com>
         * java/lang/Double.java (parseDouble): Now native.
         (parseDouble0): Removed.

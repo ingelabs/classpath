@@ -234,6 +234,8 @@ public final class Double extends Number implements Comparable
    */
   public static Double valueOf (String s) throws NumberFormatException
   {
+    if (s == null)
+	throw new NullPointerException (s);
     return new Double (s);
   }
 
