@@ -33,7 +33,7 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public class RandomAccessFile implements DataInput, DataOutput
+public class RandomAccessFile implements DataOutput, DataInput
 {
 
 /*************************************************************************/
@@ -882,7 +882,7 @@ readFully(byte[] buf, int offset, int len) throws EOFException, IOException
   *
   * @exception IOException If an error occurs.
   */
-public final int
+public int
 skipBytes(int n) throws EOFException, IOException
 {
   if (n <= 0)
