@@ -191,9 +191,9 @@ write(byte[] buf) throws IOException;
 /*************************************************************************/
 
 /**
-  * This method writes raw bytes from the passed array @code{buf} starting
-  * @code{offset} bytes into the buffer.  The number of bytes written will be
-  * exactly @code{len}. 
+  * This method writes raw bytes from the passed array <code>buf</code> starting
+  * <code>offset</code> bytes into the buffer.  The number of bytes written will be
+  * exactly <code>len</code>. 
   *
   * @param buf The buffer from which to write the data
   * @param offset The offset into the buffer to start writing data from
