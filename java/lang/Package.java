@@ -202,22 +202,23 @@ public class Package
     StringTokenizer versionTokens = new StringTokenizer(version, ".");
     StringTokenizer specTokens = new StringTokenizer(specVersion, ".");
     try
+      {
+	while (versionTokens.hasMoreElements())
 	  {
-        while (versionTokens.hasMoreElements()) {
-        int vers = Integer.parseInt(versionTokens.nextToken());
-        int spec = Integer.parseInt(specTokens.nextToken());
-        if (spec < vers) {
-          return false;
-        } else if (spec > vers) {
-          return true;
-        }
-        // They must be equal, next Token please!
+	    int vers = Integer.parseInt(versionTokens.nextToken());
+	    int spec = Integer.parseInt(specTokens.nextToken());
+	    if (spec < vers)
+	      return false;
+	    else if (spec > vers)
+	      return true;
+	    // They must be equal, next Token please!
+	  }
       }
- }
-    catch (NoSuchElementException e) {
-      // this must have been thrown by spec.netToken() so return false
-      return false;
-    }
+    catch (NoSuchElementException e)
+      {
+	// this must have been thrown by spec.netToken() so return false
+	return false;
+      }
 
     // They must have been exactly the same version.
     // Or the specVersion has more subversions. That is also good.
@@ -233,10 +234,10 @@ public class Package
    */
   public static Package getPackage(String name)
   {
-    // get the callers classloader
+    // Get the caller's classloader
     Class c = VMSecurityManager.getClassContext()[1];
     ClassLoader cl = c.getClassLoader();
-    
+
     if (cl != null)
       return cl.getPackage(name);
     else
@@ -249,10 +250,10 @@ public class Package
    */
   public static Package[] getPackages()
   {
-    // get the callers classloader
+    // Get the caller's classloader
     Class c = VMSecurityManager.getClassContext()[1];
     ClassLoader cl = c.getClassLoader();
-      
+
     if (cl != null)
       return cl.getPackages();
     else
