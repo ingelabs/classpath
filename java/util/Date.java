@@ -247,12 +247,12 @@ public class Date implements Cloneable, Comparable, java.io.Serializable
     return (int) time ^ (int) (time >>> 32);
   }
 
-  private static String[] weekNames = { "Sun", "Mon", "Tue", "Wed",
-					"Thu", "Fri", "Sat" };
+  private static final String[] weekNames = { "Sun", "Mon", "Tue", "Wed",
+					      "Thu", "Fri", "Sat" };
 
-  private static String[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May",
-					 "Jun", "Jul", "Aug", "Sep", "Oct",
-					 "Nov", "Dec" };
+  private static final String[] monthNames = { "Jan", "Feb", "Mar", "Apr",
+					       "May", "Jun", "Jul", "Aug",
+					       "Sep", "Oct", "Nov", "Dec" };
 
   public String toString()
   {
