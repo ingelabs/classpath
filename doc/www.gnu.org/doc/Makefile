@@ -33,3 +33,11 @@ clean :
 .PHONY : subdirs
 subdirs :
 	$(foreach dir, $(SUBDIRS), sh -c "cd $(dir) && $(MAKE)";)
+
+.PHONY : publish
+publish : 
+	@sh -c "if [ "$(CLASSPATH_WEBROOT)x" = x ]; then echo 'You must set CLASSPATH_WEBROOT in your environment first'; exit 1; fi"
+	@sh -c "if [ ! -d $(CLASSPATH_WEBROOT) ]; then echo 'You must set CLASSPATH_WEBROOT in your environment first'; exit 1; fi"
+	$(foreach dir, $(SUBDIRS), sh -c "cd $(dir) && $(MAKE) publish";)
+	-cp -f *.html $(CLASSPATH_WEBROOT)/doc/
+
