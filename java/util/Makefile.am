@@ -45,4 +45,5 @@ SortedSet.java \
 Stack.java \
 StringTokenizer.java \
 TimeZone.java \
-Vector.java
+Vector.java \
+WeakHashMap.java
