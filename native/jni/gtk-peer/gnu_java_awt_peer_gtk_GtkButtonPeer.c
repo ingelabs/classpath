@@ -84,7 +84,6 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_connectSignals
 
   gdk_threads_enter ();
 
-  gtk_widget_realize (GTK_WIDGET (ptr));
   button = gtk_bin_get_child (GTK_BIN (ptr));
 
   g_signal_connect (G_OBJECT (ptr), "event",

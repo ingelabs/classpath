@@ -1,3 +1,104 @@
+2004-10-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/swing/JList.java (init): Revert accidental commit.
+	* gnu/java/awt/peer/gtk/GdkGraphics.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c (GdkGraphics):
+	Call initComponentGraphics or connectSignals depending on
+	component's realization status.
+	(realize_cb): New function.
+	(initComponentGraphics): New method.
+	(connectSignals): New method.
+	(clipRect): Return immediately if component is not realized.
+	(setClip): Likewise.
+	(translate): Likewise.
+	(drawImage variants): Return false immediately if component is
+	not realized.
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(connectSignals): New method.
+	(GdkGraphics2D): Call initComponentGraphics2D or connectSignals
+	depending on component's realization status.  Move other
+	initialization calls to ...
+	(initComponentGraphics2D): New method.
+	(realize_cb): New function.
+	(cairoSetMatrix): Return immediately if gr is NULL.
+	(cairoNewPath): Likewise.
+	(cairoRectangle): Likewise.
+	(cairoClip): Likewise.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(gtkWidgetRepaintArea): Remove method.
+	(isRealized): New method.
+	(GtkComponentPeer): Move setParent, connectJObject and setCursor
+	calls to setParentAndBounds.  Call setParentAndBounds.
+	(setParentAndBounds): New method.
+	(setComponentBounds): Return immediately if bounds are all zero.
+	(repaint): Remove call to gtkWidgetRepaintArea.  Return
+	immediately if requested paint region is 0x0.
+	(setCursor): New method.
+	(gtkWidgetSetParent): Only set widget's parent if its parent is
+	currently NULL.
+	(setNativeBounds): Only set widget's bounds if it has a parent.
+	(connectSignals): Don't call gtk_widget_realize.  Connect
+	"realize" signal to connect_awt_hook_cb handler.
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java (isValidating):
+	New field.
+	(beginValidate): Set isValidating true.
+	(endValidate): Set parents and bounds for children first, then
+	for this.  Set isValidating false.
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c
+	(connectJObject): Remove method.
+	(connectSignals): Don't call gtk_widget_realize.
+	* gnu/java/awt/peer/gtk/GtkListPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkListPeer.c
+	(connectJObject): Remove method.
+	(connectSignals): Don't call gtk_widget_realize.
+	* gnu/java/awt/peer/gtk/GtkPanelPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPanelPeer.c
+	(connectJObject): Remove method.
+	* gnu/java/awt/peer/gtk/GtkScrollbarPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c
+	(connectJObject): Remove method.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(create): Don't call gtk_widget_realize.
+	(connectJObject): Remove method.
+	(connectSignals): Don't call gtk_widget_realize.  Connect
+	"realize" signal to connect_awt_hook_cb handler.
+	(nativeSetBounds): Don't attempt to move GDK window if it is
+	NULL.
+	* java/awt/Container.java (addImpl): Don't call comp.addNotify
+	if peer is not null.
+	(validateTree): Create peers for all children before calling
+	doLayout.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(connectSignals): Don't call gtk_widget_realize.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c
+	(connect_awt_hook_cb): New function.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c
+	(initComponentGraphicsID): New variable.
+	(initComponentGraphics2DID): Likewise.
+	(setCursorID): Likewise.
+	(gtkInit): Initialize new fields with method IDs.
+	* jni/gtk-peer/gtkpeer.h (initComponentGraphicsID): Declare
+	extern.
+	(initComponentGraphics2DID): Declare extern.
+	(setCursorID): Likewise.
+	(connect_awt_hook_cb): Declare function.
+
+2004-10-09  Michael Koch  <konqueror@gmx.de>
+
+	* include/gnu_java_awt_peer_gtk_GdkGraphics.h,
+	include/gnu_java_awt_peer_gtk_GdkGraphics2D.h,
+	include/gnu_java_awt_peer_gtk_GtkComponentPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkFileDialogPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkListPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkPanelPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkScrollbarPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkWindowPeer.h:
+	Regenerated.
+
 2004-10-09  Graydon Hoare  <graydon@redhat.com>
 
 	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c

@@ -46,6 +46,7 @@ exception statement from your version. */
 GdkPoint *
 translate_points (JNIEnv *env, jintArray xpoints, jintArray ypoints, 
 		  jint npoints, jint x_offset, jint y_offset);
+static void realize_cb (GtkWidget *widget, jobject peer);
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyState
   (JNIEnv *env, jobject obj, jobject old)
@@ -122,6 +123,23 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__Lgnu_ja
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, g);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GdkGraphics_connectSignals
+  (JNIEnv *env, jobject obj, jobject peer)
+{
+  void *ptr;
+  jobject *gref;
+
+  ptr = NSA_GET_PTR (env, peer);
+
+  gdk_threads_enter ();
+
+  g_signal_connect_after (G_OBJECT (ptr), "realize",
+                          G_CALLBACK (realize_cb), obj);
+
+  gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_dispose
@@ -619,4 +637,13 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setClipRectangle
   gdk_threads_enter ();
   gdk_gc_set_clip_rectangle (g->gc, &rectangle);
   gdk_threads_leave ();
+}
+
+static void realize_cb (GtkWidget *widget, jobject peer)
+{
+  gdk_threads_leave ();
+
+  (*gdk_env)->CallVoidMethod (gdk_env, peer, initComponentGraphicsID);
+
+  gdk_threads_enter ();
 }

@@ -450,6 +450,10 @@ extern jmethodID postListItemEventID;
 extern jmethodID postTextEventID;
 extern jmethodID postWindowEventID;
 
+extern jmethodID initComponentGraphicsID;
+extern jmethodID initComponentGraphics2DID;
+extern jmethodID setCursorID;
+
 extern jmethodID syncAttrsID;
 extern jclass gdkColor;
 extern jmethodID gdkColorID;
@@ -466,6 +470,7 @@ gboolean pre_event_handler (GtkWidget *widget,
 			       jobject peer);
 
 void connect_awt_hook (JNIEnv *env, jobject peer_obj, int nwindows, ...);
+void connect_awt_hook_cb (GtkWidget *widget, jobject peer);
 
 void set_visible (GtkWidget *widget, jboolean visible);
 void set_parent (GtkWidget *widget, GtkContainer *parent);

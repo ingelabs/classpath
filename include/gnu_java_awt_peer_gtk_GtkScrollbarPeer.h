@@ -11,7 +11,6 @@ extern "C"
 #endif
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create (JNIEnv *env, jobject, jint, jint, jint, jint, jint, jint, jint);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectJObject (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectSignals (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setLineIncrement (JNIEnv *env, jobject, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setPageIncrement (JNIEnv *env, jobject, jint);

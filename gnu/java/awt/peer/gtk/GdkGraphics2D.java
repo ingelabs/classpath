@@ -134,6 +134,7 @@ public class GdkGraphics2D extends Graphics2D
   native public void dispose ();
   native private int[] getImagePixels();
   native private void cairoSurfaceSetFilter(int filter);
+  native void connectSignals (GtkComponentPeer component);
 
   public void finalize ()
   {
@@ -209,12 +210,22 @@ public class GdkGraphics2D extends Graphics2D
   GdkGraphics2D (GtkComponentPeer component)
   {
     this.component = component;
+
+    setFont (new Font("SansSerif", Font.PLAIN, 12));
+
+    if (component.isRealized ())
+      initComponentGraphics2D ();
+    else
+      connectSignals (component);
+  }
+
+  void initComponentGraphics2D ()
+  {
     initState (component);
 
     setColor (component.awtComponent.getForeground ());
     setBackground (component.awtComponent.getBackground ());
     setPaint (getColor());
-    setFont (new Font("SansSerif", Font.PLAIN, 12));
     setTransform (new AffineTransform ());
     setStroke (new BasicStroke ());
     setRenderingHints (getDefaultHints());

@@ -17,6 +17,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_copyState (JNIEn
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_dispose (JNIEnv *env, jobject);
 JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_getImagePixels (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSurfaceSetFilter (JNIEnv *env, jobject, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_connectSignals (JNIEnv *env, jobject, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_gdkDrawDrawable (JNIEnv *env, jobject, jobject, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_drawPixels (JNIEnv *env, jobject, jintArray, jint, jint, jint, jdoubleArray);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_setTexturePixels (JNIEnv *env, jobject, jintArray, jint, jint, jint);
