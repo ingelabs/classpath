@@ -23,6 +23,28 @@
 #include "GtkDialogPeer.h"
 
 JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkDialogPeer_create
+  (JNIEnv *env, jobject obj, jstring title)
+{
+  GtkWidget *window;
+  const char *str;
+
+  str = (*env)->GetStringUTFChars (env, title, NULL);
+  
+  gdk_threads_enter ();
+
+  window = gtk_window_new (GTK_WINDOW_DIALOG);
+  gtk_window_set_title (GTK_WINDOW (window), str);
+  
+  NSA_SET_PTR (env, obj, window);
+  gdk_threads_leave ();
+  
+  (*env)->ReleaseStringUTFChars (env, title, str);
+}
+
+/* equivalent functionality should eventually be added,
+   since we no longer use this function. */
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkDialogPeer_gtkDialogNew
   (JNIEnv *env, jobject obj, jint width, jint height, jboolean visible, 
    jboolean resizable, jstring title, jboolean modal, jobject parent)

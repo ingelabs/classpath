@@ -27,15 +27,21 @@
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_gtkFileSelectionNew (JNIEnv *env, 
-    jobject obj)
+Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_create 
+  (JNIEnv *env, jobject obj, jstring title)
 {
   GtkWidget *window;
+  const char *str;
+
+  str = (*env)->GetStringUTFChars (env, title, NULL);
   
   gdk_threads_enter ();
-  window=GTK_WIDGET (gtk_file_selection_new (NULL));
-  gdk_threads_leave ();
+  window = gtk_file_selection_new (str);
+
   NSA_SET_PTR (env, obj, window);
+  gdk_threads_leave ();
+  
+  (*env)->ReleaseStringUTFChars (env, title, str);
 }
 
 /*
@@ -47,11 +53,11 @@ Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_gtkFileSelectionSetFilename
     (JNIEnv *env, jobject obj, jstring filename)
 {
   void *ptr;
-  char *str;
+  const char *str;
 
-  ptr=NSA_GET_PTR (env, obj);
+  ptr = NSA_GET_PTR (env, obj);
     
-  str=(char *)(*env)->GetStringUTFChars (env, filename, 0);      
+  str = (*env)->GetStringUTFChars (env, filename, 0);      
   gdk_threads_enter ();
   gtk_file_selection_set_filename (GTK_FILE_SELECTION (ptr), str);
   gdk_threads_leave ();
