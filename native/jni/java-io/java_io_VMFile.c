@@ -1,4 +1,4 @@
-/* File.c - Native methods for java.io.File class
+/* java_io_VMFile.c - Native methods for java.io.File class
    Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -52,20 +52,20 @@ exception statement from your version. */
 
 #include "javaio.h"
 
-#include "java_io_File.h"
+#include "java_io_VMFile.h"
 
 /*************************************************************************/
 
 /*
  * Method to create an empty file.
  *
- * Class:     java_io_File
- * Method:    createInternal
+ * Class:     java_io_VMFile
+ * Method:    create
  * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
+Java_java_io_VMFile_create(JNIEnv *env, jclass clazz, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -101,13 +101,13 @@ Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
 /*
  * This method checks to see if we have read permission on a file.
  *
- * Class:     java_io_File
- * Method:    canReadInternal
+ * Class:     java_io_VMFile
+ * Method:    canRead
  * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_canReadInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_canRead(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -143,13 +143,13 @@ Java_java_io_File_canReadInternal(JNIEnv *env, jobject obj, jstring name)
 /*
  * This method checks to see if we have write permission on a file.
  *
- * Class:     java_io_File
- * Method:    canWriteInternal
+ * Class:     java_io_VMFile
+ * Method:    canWrite
  * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_canWriteInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_canWrite(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -185,13 +185,13 @@ Java_java_io_File_canWriteInternal(JNIEnv *env, jobject obj, jstring name)
 /*
  * This method makes a file read only.
  *
- * Class:     java_io_File
- * Method:    setReadOnlyInternal
+ * Class:     java_io_VMFile
+ * Method:    setReadOnly
  * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_setReadOnlyInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_setReadOnly(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -219,13 +219,13 @@ Java_java_io_File_setReadOnlyInternal(JNIEnv *env, jobject obj, jstring name)
 /*
  * This method checks to see if a file exists.
  *
- * Class:     java_io_File
- * Method:    existsInternal
+ * Class:     java_io_VMFile
+ * Method:    exists
  * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_existsInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_exists(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -254,13 +254,13 @@ Java_java_io_File_existsInternal(JNIEnv *env, jobject obj, jstring name)
  * This method checks to see if a file is a "plain" file; that is, not
  * a directory, pipe, etc.
  *
- * Class:     java_io_File
- * Method:    isFileInternal
+ * Class:     java_io_VMFile
+ * Method:    isFile
  * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_isFileInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_isFile(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -288,13 +288,13 @@ Java_java_io_File_isFileInternal(JNIEnv *env, jobject obj, jstring name)
 /*
  * This method checks to see if a file is a directory or not.
  *
- * Class:     java_io_File
- * Method:    isDirectoryInternal
+ * Class:     java_io_VMFile
+ * Method:    isDirectory
  * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_isDirectoryInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_isDirectory(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -322,13 +322,13 @@ Java_java_io_File_isDirectoryInternal(JNIEnv *env, jobject obj, jstring name)
 /*
  * This method returns the length of the file.
  *
- * Class:     java_io_File
- * Method:    lengthInternal
+ * Class:     java_io_VMFile
+ * Method:    length
  * Signature: (Ljava/lang/String;)J
  */
 
 JNIEXPORT jlong JNICALL
-Java_java_io_File_lengthInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_length(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -370,13 +370,13 @@ Java_java_io_File_lengthInternal(JNIEnv *env, jobject obj, jstring name)
 /*
  * This method returns the modification date of the file.
  *
- * Class:     java_io_File
- * Method:    lastModifiedInternal
+ * Class:     java_io_VMFile
+ * Method:    lastModified
  * Signature: (Ljava/lang/String;)J
  */
 
 JNIEXPORT jlong JNICALL
-Java_java_io_File_lastModifiedInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_lastModified(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -405,13 +405,13 @@ Java_java_io_File_lastModifiedInternal(JNIEnv *env, jobject obj, jstring name)
 /*
  * This method sets the modification date of the file.
  *
- * Class:     java_io_File
- * Method:    setLastModifiedInternal
+ * Class:     java_io_VMFile
+ * Method:    setLastModified
  * Signature: (Ljava/lang/String;J)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_setLastModifiedInternal(JNIEnv *env, jobject obj,
+Java_java_io_VMFile_setLastModified(JNIEnv *env, jobject obj,
                                           jstring name, jlong newtime)
 {
 #ifndef WITHOUT_FILESYSTEM
@@ -441,13 +441,13 @@ Java_java_io_File_setLastModifiedInternal(JNIEnv *env, jobject obj,
  * This method deletes a file (actually a name for a file - additional
  * links could exist).
  *
- * Class:     java_io_File
- * Method:    deleteInternal
+ * Class:     java_io_VMFile
+ * Method:    delete
  * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_deleteInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_delete(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -475,13 +475,13 @@ Java_java_io_File_deleteInternal(JNIEnv *env, jobject obj, jstring name)
 /*
  * This method creates a directory.
  *
- * Class:     java_io_File
- * Method:    mkdirInternal
+ * Class:     java_io_VMFile
+ * Method:    mkdir
  * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_mkdirInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_mkdir(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *pathname;
@@ -509,13 +509,13 @@ Java_java_io_File_mkdirInternal(JNIEnv *env, jobject obj, jstring name)
 /*
  * This method renames a (link to a) file.
  *
- * Class:     java_io_File
- * Method:    renameToInternal
+ * Class:     java_io_VMFile
+ * Method:    renameTo
  * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_renameToInternal(JNIEnv *env, jobject obj, jstring t, jstring d)
+Java_java_io_VMFile_renameTo(JNIEnv *env, jobject obj, jstring t, jstring d)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *old_filename, *new_filename;
@@ -552,13 +552,13 @@ Java_java_io_File_renameToInternal(JNIEnv *env, jobject obj, jstring t, jstring 
  * This method returns an array of String representing all the files
  * in a directory except "." and "..".
  *
- * Class:     java_io_File
- * Method:    listInternal
+ * Class:     java_io_VMFile
+ * Method:    list
  * Signature: (Ljava/lang/String;)[Ljava/lang/String;
  */
 
 JNIEXPORT jobjectArray JNICALL
-Java_java_io_File_listInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_list(JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const int REALLOC_SIZE = 10;

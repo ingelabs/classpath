@@ -1,3 +1,18 @@
+2004-04-26  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/File.java: Moved all native methods to the new class
+	VMFile and removed the "Internal" suffix.
+	* vm/reference/java/io/VMFile.java: New file.
+	* vm/reference/java/io/Makefile.am (EXTRA_DIST): Added VMFile.java.
+	* include/java_io_File.h: Removed.
+	* include/java_io_VMFile.h: New file.
+	* include/Makefile.am: Generate java_io_VMFile.h.
+	* native/jni/java-io/java_io_File.c: Moved all methods to
+	java_io_VMFile.c and renamed them accordingly.
+	* native/jni/java-io/java_io_VMFile.c: New file.
+	* native/jni/java-io/Makefile.am: Removed java_io_File.c and added
+	java_io_VMFile.c to build.
+
 2004-04-25  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/java-net/javanet.c (_javanet_accept): Retry when we get

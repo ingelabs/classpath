@@ -41,7 +41,7 @@ package java.io;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import gnu.classpath.Configuration;
+
 import gnu.java.io.PlatformHelper;
 
 /* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
@@ -92,48 +92,11 @@ public class File implements Serializable, Comparable
    */
   public static final char pathSeparatorChar = pathSeparator.charAt(0);
 
-  static boolean caseSensitive;
-  
-  static
-  {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-        System.loadLibrary("javaio");
-      }
-    
-    // FIXME: We support only caseSensitive filesystems currently.
-    caseSensitive = true;
-  }
-  
   /**
    * This is the path to the file set when the object is created.  It
    * may be an absolute or relative path name.
    */
   private String path;
-
-  /*
-   * This native method does the actual check of whether or not a file
-   * is a plain file or not.  It also handles the existence check to
-   * eliminate the overhead of a call to exists()
-   */
-  private native boolean isFileInternal(String path);
-
-  /*
-   * This method does the actual check of whether or not a file is a
-   * directory or not.  It also handle the existence check to eliminate
-   * the overhead of a call to exists()
-   */
-  private native boolean isDirectoryInternal(String path);
-
-  /**
-   * This native method checks file permissions for reading
-   */
-  private synchronized native boolean canReadInternal(String path);
-
-  /**
-   * This native method checks file permissions for writing
-   */
-  private synchronized native boolean canWriteInternal(String path);
 
   /**
    * This method tests whether or not the current thread is allowed to
@@ -154,7 +117,7 @@ public class File implements Serializable, Comparable
     if (!exists())
       return false;
 
-    return canReadInternal(path);
+    return VMFile.canRead(path);
   }
 
   /**
@@ -177,11 +140,11 @@ public class File implements Serializable, Comparable
     checkWrite();
      
     // Test for existence.  This is required by the spec
-    if (!existsInternal(path))
+    if (! VMFile.exists(path))
       return false;
 
-    if (!isDirectoryInternal(path))
-      return canWriteInternal(path);
+    if (!VMFile.isDirectory(path))
+      return VMFile.canWrite(path);
     else
       try
         {
@@ -221,14 +184,8 @@ public class File implements Serializable, Comparable
   public boolean createNewFile() throws IOException
   {
     checkWrite();
-    return createInternal(path);
+    return VMFile.create(path);
   }
- 
-  /*
-   * This native method handles the actual deleting of the file
-   */
-  private native boolean deleteInternal(String path);
-
   /**
    * This method deletes the file represented by this object.  If this file
    * is a directory, it must be empty in order for the delete to succeed.
@@ -245,7 +202,7 @@ public class File implements Serializable, Comparable
     if (s != null)
       s.checkDelete(path);
     
-    return deleteInternal(path);
+    return VMFile.delete(path);
   }
 
   /**
@@ -270,16 +227,11 @@ public class File implements Serializable, Comparable
     
     File other = (File) obj;
 
-    if (caseSensitive)
+    if (VMFile.caseSensitive)
       return path.equals(other.path);
     else
       return path.equalsIgnoreCase(other.path);
   }
-
-  /*
-   * This native method does the actual checking of file existence.
-   */
-  private native boolean existsInternal(String path);
 
   /**
    * This method tests whether or not the file represented by the object
@@ -292,7 +244,7 @@ public class File implements Serializable, Comparable
   public boolean exists()
   {
     checkRead();
-    return existsInternal(path);
+    return VMFile.exists(path);
   }
 
   /**
@@ -439,14 +391,7 @@ public class File implements Serializable, Comparable
    */
   public String getName()
   {
-    int pos = PlatformHelper.lastIndexOfSeparator(path);
-    if (pos == -1)
-      return path;
-
-    if (PlatformHelper.endWithSeparator(path))
-      return "";
-
-    return path.substring(pos + separator.length());
+  	return VMFile.getName(path);
   }
 
   /**
@@ -506,7 +451,7 @@ public class File implements Serializable, Comparable
    */
   public int hashCode()
   {
-    if (caseSensitive)
+    if (VMFile.caseSensitive)
       return path.hashCode() ^ 1234321;
     else
       return path.toLowerCase().hashCode() ^ 1234321;
@@ -539,7 +484,7 @@ public class File implements Serializable, Comparable
   public boolean isDirectory()
   {
     checkRead();
-    return isDirectoryInternal(path); 
+    return VMFile.isDirectory(path); 
   }
 
   /**
@@ -555,7 +500,7 @@ public class File implements Serializable, Comparable
   public boolean isFile()
   {
     checkRead();
-    return isFileInternal(path);
+    return VMFile.isFile(path);
   }
 
   /**
@@ -571,16 +516,8 @@ public class File implements Serializable, Comparable
    */
   public boolean isHidden()
   {
-    // FIXME: this only works on UNIX
-    return getName().startsWith(".");
+    return VMFile.isHidden(path);
   }
-
-  /*
-   * This native method does the actual work of getting the last file
-   * modification time.  It also does the existence check to avoid the
-   * overhead of a call to exists()
-   */
-  private native long lastModifiedInternal(String path);
 
   /**
    * This method returns the last modification time of this file.  The
@@ -598,14 +535,8 @@ public class File implements Serializable, Comparable
   public long lastModified()
   {
     checkRead();
-    return lastModifiedInternal(path);
+    return VMFile.lastModified(path);
   }
-
-  /*
-   * This native method actually determines the length of the file and
-   * handles the existence check
-   */
-  private native long lengthInternal(String path);
 
   /**
    * This method returns the length of the file represented by this object,
@@ -618,14 +549,8 @@ public class File implements Serializable, Comparable
   public long length()
   {
     checkRead();
-    return lengthInternal(path);
+    return VMFile.length(path);
   }
-
-  /*
-   * This native function actually produces the list of file in this
-   * directory
-   */
-  private native String[] listInternal(String dirname);
 
   /**
    * This method returns a array of <code>String</code>'s representing the
@@ -665,7 +590,7 @@ public class File implements Serializable, Comparable
     if (! dir.exists() || ! dir.isDirectory())
       return null;
     
-    String files[] = listInternal(list_path);
+    String files[] = VMFile.list(list_path);
     
     // Check if an error occured in listInternal().
     if (files == null)
@@ -864,11 +789,6 @@ public class File implements Serializable, Comparable
     return new URL("file", "", abspath.replace(separatorChar, '/'));
   }
 
-  /*
-   * This native method actually creates the directory
-   */
-  private native boolean mkdirInternal(String path);
-
   /**
    * This method creates a directory for the path represented by this object.
    *
@@ -880,7 +800,7 @@ public class File implements Serializable, Comparable
   public boolean mkdir()
   {
     checkWrite();
-    return mkdirInternal(PlatformHelper.removeTailSeparator(path));
+    return VMFile.mkdir(PlatformHelper.removeTailSeparator(path));
   }
 
   /**
@@ -910,11 +830,6 @@ public class File implements Serializable, Comparable
 
     return mkdir();
   }
-
-  /**
-   * This method is used to create a temporary file
-   */
-  private static native boolean createInternal(String name) throws IOException;
 
   /**
    * This method creates a temporary file in the specified directory.  If 
@@ -958,10 +873,10 @@ public class File implements Serializable, Comparable
           throw new IOException("Cannot determine system temporary directory"); 
 	
         directory = new File(dirname);
-        if (!directory.existsInternal(directory.path))
+        if (! VMFile.exists(directory.path))
           throw new IOException("System temporary directory "
                                 + directory.getName() + " does not exist.");
-        if (!directory.isDirectoryInternal(directory.path))
+        if (! VMFile.isDirectory(directory.path))
           throw new IOException("System temporary directory "
                                 + directory.getName()
                                 + " is not really a directory.");
@@ -991,7 +906,7 @@ public class File implements Serializable, Comparable
             String filename = prefix + System.currentTimeMillis() + suffix;
             file = new File(directory, filename);
           }
-        while (file.existsInternal(file.path));
+        while (VMFile.exists(file.path));
       }
     else
       {
@@ -1008,7 +923,7 @@ public class File implements Serializable, Comparable
             String filename = prefix + java.lang.Integer.toHexString(n) + suffix;
             file = new File(directory, filename);
           }
-        while (file.existsInternal(file.path));
+        while (VMFile.exists(file.path));
       }
 
     // Verify that we are allowed to create this file
@@ -1018,14 +933,9 @@ public class File implements Serializable, Comparable
 
     // Now create the file and return our file object
     // XXX - FIXME race condition.
-    createInternal(file.getAbsolutePath()); 
+    VMFile.create(file.getAbsolutePath()); 
     return file;
   }
-
-  /*
-   * This native method sets the permissions to make the file read only.
-   */
-  private native boolean setReadOnlyInternal(String path);
 
   /**
    * This method sets the file represented by this object to be read only.
@@ -1047,10 +957,10 @@ public class File implements Serializable, Comparable
     checkWrite();
 
     // Test for existence.
-    if (!existsInternal(path))
+    if (! VMFile.exists(path))
       return false;
 
-    return setReadOnlyInternal(path);
+    return VMFile.setReadOnly(path);
   }
 
   /**
@@ -1066,9 +976,7 @@ public class File implements Serializable, Comparable
    */
   public static File[] listRoots()
   {
-    File[] roots = new File[1];
-    roots[0] = new File("/");
-    return roots;
+    return VMFile.listRoots();
   }
 
   /**
@@ -1138,7 +1046,7 @@ public class File implements Serializable, Comparable
         return 0;
       }
     
-    if (caseSensitive)
+    if (VMFile.caseSensitive)
       return p1.compareTo(p2);
     else
       return p1.compareToIgnoreCase(p2);
@@ -1170,11 +1078,6 @@ public class File implements Serializable, Comparable
     return compareTo((File) obj);
   }
 
-  /*
-   * This native method actually performs the rename.
-   */
-  private native boolean renameToInternal(String target, String dest);
-
   /**
    * This method renames the file represented by this object to the path
    * of the file represented by the argument <code>File</code>.
@@ -1192,14 +1095,9 @@ public class File implements Serializable, Comparable
     checkWrite();
     dest.checkWrite();
     // Call our native rename method
-    return renameToInternal(path, dest.path);
+    return VMFile.renameTo(path, dest.path);
   }
 
-  /*
-   * This method does the actual setting of the modification time.
-   */
-  private native boolean setLastModifiedInternal(String path, long time);
- 
   /**
    * This method sets the modification time on the file to the specified
    * value.  This is specified as the number of seconds since midnight
@@ -1222,7 +1120,7 @@ public class File implements Serializable, Comparable
       throw new IllegalArgumentException("Negative modification time: " + time);
 
     checkWrite();
-    return setLastModifiedInternal(path, time);
+    return VMFile.setLastModified(path, time);
   }
 
   private void checkWrite()
