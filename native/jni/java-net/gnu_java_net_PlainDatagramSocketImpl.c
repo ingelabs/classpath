@@ -67,13 +67,13 @@ exception statement from your version. */
  * Creates a new datagram socket
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainDatagramSocketImpl_create(JNIEnv *env, jobject this)
+Java_gnu_java_net_PlainDatagramSocketImpl_create(JNIEnv *env, jobject obj)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
 
 #ifndef WITHOUT_NETWORK
-  _javanet_create(env, this, 0);
+  _javanet_create(env, obj, 0);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -84,13 +84,13 @@ Java_gnu_java_net_PlainDatagramSocketImpl_create(JNIEnv *env, jobject this)
  * Close the socket.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainDatagramSocketImpl_close(JNIEnv *env, jobject this)
+Java_gnu_java_net_PlainDatagramSocketImpl_close(JNIEnv *env, jobject obj)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
 
 #ifndef WITHOUT_NETWORK
-  _javanet_close(env, this, 0);
+  _javanet_close(env, obj, 0);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -103,14 +103,14 @@ Java_gnu_java_net_PlainDatagramSocketImpl_close(JNIEnv *env, jobject this)
  * variables. 
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainDatagramSocketImpl_bind(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_bind(JNIEnv *env, jobject obj, 
                                            jint port, jobject addr)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
 
 #ifndef WITHOUT_NETWORK
-  _javanet_bind(env, this, addr, port, 0);
+  _javanet_bind(env, obj, addr, port, 0);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -121,14 +121,14 @@ Java_gnu_java_net_PlainDatagramSocketImpl_bind(JNIEnv *env, jobject this,
  * This method sets the specified option for a socket
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainDatagramSocketImpl_setOption(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_setOption(JNIEnv *env, jobject obj, 
                                                 jint option_id, jobject val)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
 
 #ifndef WITHOUT_NETWORK
-  _javanet_set_option(env, this, option_id, val);
+  _javanet_set_option(env, obj, option_id, val);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -139,14 +139,14 @@ Java_gnu_java_net_PlainDatagramSocketImpl_setOption(JNIEnv *env, jobject this,
  * This method sets the specified option for a socket
  */
 JNIEXPORT jobject JNICALL
-Java_gnu_java_net_PlainDatagramSocketImpl_getOption(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_getOption(JNIEnv *env, jobject obj, 
                                                 jint option_id)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
 
 #ifndef WITHOUT_NETWORK
-  return(_javanet_get_option(env, this, option_id));
+  return(_javanet_get_option(env, obj, option_id));
 #else /* not WITHOUT_NETWORK */
   return NULL;
 #endif /* not WITHOUT_NETWORK */
@@ -158,12 +158,12 @@ Java_gnu_java_net_PlainDatagramSocketImpl_getOption(JNIEnv *env, jobject this,
  * Reads a buffer from a remote host
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject obj, 
                                               jobject packet)
 {
 #ifndef WITHOUT_NETWORK
-  int  addr, port, bytes_read;
-  unsigned int maxlen, offset;
+  int           addr, port, bytes_read;
+  unsigned int  maxlen, offset;
   jclass        cls, addr_cls;
   jfieldID	fid;
   jmethodID     mid;
@@ -243,7 +243,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
 
   /* Receive the packet */
   /* should we try some sort of validation on the length? */
-  bytes_read = _javanet_recvfrom(env, this, arr, offset, maxlen, &addr, &port); 
+  bytes_read = _javanet_recvfrom(env, obj, arr, offset, maxlen, &addr, &port); 
   if ((bytes_read == -1) || (*env)->ExceptionOccurred(env))
     {
       JCL_ThrowException(env, IO_EXCEPTION, "Internal error: receive");
@@ -356,7 +356,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
  * Writes a buffer to the remote host
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject obj, 
                                              jobject addr, jint port, jarray buf, 
                                              jint offset, jint len)
 {
@@ -372,7 +372,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject this,
 
   DBG("PlainDatagramSocketImpl.sendto(): have addr\n");
 
-  _javanet_sendto(env, this, buf, offset, len, netAddress, port);
+  _javanet_sendto(env, obj, buf, offset, len, netAddress, port);
   if ((*env)->ExceptionOccurred(env))
     { JCL_ThrowException(env, IO_EXCEPTION, "Internal error: send data"); return; }
 
@@ -387,7 +387,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject this,
  * Joins a multicast group
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainDatagramSocketImpl_join(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_join(JNIEnv *env, jobject obj, 
                                            jobject addr)
 {
 #ifndef WITHOUT_NETWORK
@@ -405,7 +405,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_join(JNIEnv *env, jobject this,
       return;
     }
 
-  fd = _javanet_get_int_field(env, this, "native_fd");
+  fd = _javanet_get_int_field(env, obj, "native_fd");
   if ((*env)->ExceptionOccurred(env))
     {
       JCL_ThrowException(env, IO_EXCEPTION, "Internal error");
@@ -433,7 +433,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_join(JNIEnv *env, jobject this,
  * Leaves a multicast group
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainDatagramSocketImpl_leave(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_leave(JNIEnv *env, jobject obj, 
                                             jobject addr)
 {
 #ifndef WITHOUT_NETWORK
@@ -451,7 +451,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_leave(JNIEnv *env, jobject this,
       return;
     }
 
-  fd = _javanet_get_int_field(env, this, "native_fd");
+  fd = _javanet_get_int_field(env, obj, "native_fd");
   if ((*env)->ExceptionOccurred(env))
     { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
 
@@ -468,3 +468,4 @@ Java_gnu_java_net_PlainDatagramSocketImpl_leave(JNIEnv *env, jobject this,
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
+
