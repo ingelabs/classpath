@@ -22,6 +22,8 @@
 package java.io;
 
 import java.util.StringTokenizer;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 /**
   * This class represents a file or directory on a local disk.  It provides
@@ -33,7 +35,7 @@ import java.util.StringTokenizer;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public class File implements Serializable //, Comparable // Only in 1.2
+public class File implements Serializable, Comparable
 {
 
 /*************************************************************************/
@@ -96,36 +98,31 @@ private String path;
   * system temporary directory is determined by examinging the 
   * <code>java.tmpdir</code> system property.
   * <p>
-  * The <code>pattern</code>argument determines a portion of the filename
-  * created.  It should follow a format of <code>prefix[#suffix]</code> where
-  * prefix is a character string of at least three characters that will
-  * be used to prefix the temporary file name and suffix is an optional
-  * string that will be used as the suffix of the temporary file name.  The
-  * suffix must be separated from the prefix by a <code>#</code> char. The
-  * brackets in the format example are to indicate that the suffix is 
-  * optional and should not be included.  The case of the prefix and suffix 
-  * is not guaranteed to be preserved.  Additionally, the suffix may be
-  * truncated to a minimum of three characters.  A <code>#</code>
-  * character in the prefix or suffix must be escaped with a <code>\ </code>.
-  * If no suffix is specified, the suffix defaults to <code>.tmp</code>.
+  * The <code>prefix</code> parameter is a sequence of at least three
+  * characters that are used as the start of the generated filename.  The
+  * <code>suffix</code> parameter is a sequence of characters that is used
+  * to terminate the file name.  This parameter may be <code>null</code>
+  * and if it is, the suffix defaults to ".tmp".
   * <p>
   * If a <code>SecurityManager</code> exists, then its <code>checkWrite</code>
   * method is used to verify that this operation is permitted.
   * <p>
   * This method is identical to calling 
-  * <code>createTempFile("pattern", null)</code>.
+  * <code>createTempFile(prefix, suffix, null)</code>.
   *
-  * @param pattern The pattern of the filename to create as described above
+  * @param prefix The character prefix to use in generating the path name.
+  * @param suffix The character suffix to use in generating the path name.
   *
-  * @exception IllegalArgumentException If the patterns is not valid
+  * @exception IllegalArgumentException If the prefix or suffix are not valid.
   * @exception SecurityException If there is no permission to perform this operation
   * @exception IOException If an error occurs
   */
 public static File
-createTempFile(String pattern) throws IllegalArgumentException, 
-                                      SecurityException, IOException
+createTempFile(String prefix, String suffix) throws IllegalArgumentException, 
+                                                    SecurityException, 
+                                                    IOException
 {
-  return(createTempFile(pattern, null));
+  return(createTempFile(prefix, suffix, null));
 }
 
 /*************************************************************************/
@@ -138,23 +135,17 @@ createTempFile(String pattern) throws IllegalArgumentException,
   * The system temporary directory is determined by examinging the 
   * <code>java.tmpdir</code> system property.
   * <p>
-  * The <code>pattern</code>argument determines a portion of the filename
-  * created.  It should follow a format of <code>prefix[#suffix]</code> where
-  * prefix is a character string of at least three characters that will
-  * be used to prefix the temporary file name and suffix is an optional
-  * string that will be used as the suffix of the temporary file name.  The
-  * suffix must be separated from the prefix by a <code>#</code> char. The
-  * brackets in the format example are to indicate that the suffix is 
-  * optional and should not be included.  The case of the prefix and suffix 
-  * is not guaranteed to be preserved.  Additionally, the suffix may be
-  * truncated to a minimum of three characters.  A <code>#</code>
-  * character in the prefix or suffix must be escaped with a <code>\</code>.
-  * If no suffix is specified, the suffix defaults to <code>.tmp</code>.
+  * The <code>prefix</code> parameter is a sequence of at least three
+  * characters that are used as the start of the generated filename.  The
+  * <code>suffix</code> parameter is a sequence of characters that is used
+  * to terminate the file name.  This parameter may be <code>null</code>
+  * and if it is, the suffix defaults to ".tmp".
   * <p>
   * If a <code>SecurityManager</code> exists, then its <code>checkWrite</code>
   * method is used to verify that this operation is permitted.
   *
-  * @param pattern The pattern of the filename to create as described above
+  * @param prefix The character prefix to use in generating the path name.
+  * @param suffix The character suffix to use in generating the path name.
   * @param directory The directory to create the file in, or <code>null</code> for the default temporary directory
   *
   * @exception IllegalArgumentException If the patterns is not valid
@@ -162,9 +153,8 @@ createTempFile(String pattern) throws IllegalArgumentException,
   * @exception IOException If an error occurs
   */
 public static synchronized File
-createTempFile(String pattern, File directory) throws IllegalArgumentException,
-                                                      SecurityException,
-                                                      IOException
+createTempFile(String prefix, String suffix, File directory) 
+               throws IllegalArgumentException, SecurityException, IOException
 {
   // Grab the system temp directory if necessary
   if (directory == null)
@@ -182,34 +172,12 @@ createTempFile(String pattern, File directory) throws IllegalArgumentException,
                               directory.getName() + " is not really a directory.");
     }
 
-  // Now parse the pattern
-  String prefix = null; 
-  String suffix = ".tmp";
-  int pos = -1;
-  while ((pos = pattern.indexOf("#", pos + 1)) != -1)
-    {
-      // Watch out for jokers
-      if (pos == 0)
-        throw new IllegalArgumentException("Bad pattern string: " + pattern);
+  // Now process the prefix and suffix.
+  if (prefix.length() < 3)
+    throw new IllegalArgumentException("Prefix too short: " + prefix);
 
-      if (pos == (pattern.length() - 1))
-        throw new IllegalArgumentException("Bad pattern string: " + pattern);
-
-      // Ignore if escape sequence
-      if (pattern.charAt(pos - 1) == '\\')
-        continue;
-
-      // Just to follow the spec, if we find another unescaped delimiter,
-      // that is invalid.
-      if (prefix != null)
-        throw new IllegalArgumentException("Too many delimiters in pattern: " +
-                                           pattern);
-
-      prefix = pattern.substring(0, pos);
-      suffix = pattern.substring(pos + 1);
-    }
-  if (prefix == null)
-    prefix = pattern;
+  if (suffix == null)
+    suffix = ".tmp";
 
   // Now identify a file name and make sure it doesn't exist
   File f;
@@ -248,8 +216,28 @@ createTempFile(String pattern, File directory) throws IllegalArgumentException,
 /**
   * This method is used to create a temporary file
   */
-private static native void
+private static native boolean
 createInternal(String name) throws IOException;
+
+/*************************************************************************/
+
+/**
+  * This method returns an array of filesystem roots.  Some operating systems
+  * have volume oriented filesystem.  This method provides a mechanism for
+  * determining which volumes exist.  GNU systems use a single hierarchical
+  * filesystem, so will have only one "/" filesystem root.
+  *
+  * @return An array of <code>File</code> objects for each filesystem root
+  * available.
+  */
+public static File[]
+listRoots()
+{
+  File[] f = new File[1];
+  f[0] = new File("/");
+
+  return(f);
+}
 
 /*************************************************************************/
 
@@ -381,6 +369,20 @@ getAbsolutePath()
 /*************************************************************************/
 
 /**
+  * This method returns a <code>File</code> object representing the
+  * absolute path of this object.
+  *
+  * @return A <code>File</code> with the absolute path of the object.
+  */
+public File
+getAbsoluteFile()
+{
+  return(new File(getAbsolutePath()));
+}
+
+/*************************************************************************/
+
+/**
   * This method returns a canonical representation of the pathname of
   * this file.  The actual form of the canonical representation is
   * different.  On the GNU system, the canonical form differs from the
@@ -445,6 +447,23 @@ getCanonicalPath() throws IOException
 /*************************************************************************/
 
 /**
+  * This method returns a <code>File</code> object representing the
+  * canonical path of this object.
+  *
+  * @return A <code>File</code> instance representing the canonical path of
+  * this object.
+  *
+  * @exception IOException If an error occurs.
+  */
+public File
+getCanonicalFile() throws IOException
+{
+  return(new File(getCanonicalPath()));
+}
+
+/*************************************************************************/
+
+/**
   * This method returns a <code>String</code> the represents this file's
   * parent.  <code>null</code> is returned if the file has no parent.  The
   * parent is determined via a simple operation which removes the
@@ -468,6 +487,25 @@ getParent()
     return(null);
 
   return(par_path.substring(0, pos));
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a <code>File</code> object representing the parent
+  * file of this one.
+  *
+  * @param A <code>File</code> for the parent of this object.  <code>null</code>
+  * will be returned if this object does not have a parent.
+  */
+public File
+getParentFile()
+{
+  String parent = getParent();
+  if (parent == null)
+    return(null);
+
+  return(new File(parent));
 }
 
 /*************************************************************************/
@@ -566,6 +604,53 @@ canWrite() throws SecurityException
   */
 private synchronized native boolean
 canWriteInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * This method sets the file represented by this object to be read only.
+  * A read only file or directory cannot be modified.  Please note that 
+  * GNU systems allow read only files to be deleted if the directory it
+  * is contained in is writable.
+  *
+  * @return <code>true</code> if the operation succeeded, <code>false</code>
+  * otherwise.
+  *
+  * @exception SecurityException If the <code>SecurityManager</code> does
+  * not allow this operation.
+  */
+public boolean
+setReadOnly() throws SecurityException
+{
+  // Test for existence.
+  if (!exists())
+    return(false);
+
+  // We still need to do a SecurityCheck since exists() only checks
+  // for read access
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkWrite(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+   
+  return(setReadOnlyInternal(path));
+}
+
+/*************************************************************************/
+
+/*
+ * This native method sets the permissions to make the file read only.
+ */
+private native boolean
+setReadOnlyInternal(String path);
 
 /*************************************************************************/
 
@@ -688,6 +773,26 @@ isDirectoryInternal(String path);
 /*************************************************************************/
 
 /**
+  * This method tests whether or not this file represents a "hidden" file.
+  * On GNU systems, a file is hidden if its name begins with a "."
+  * character.  Files with these names are traditionally not shown with
+  * directory listing tools.
+  *
+  * @return <code>true</code> if the file is hidden, <code>false</code>
+  * otherwise.
+  */
+public boolean
+isHidden()
+{
+  if (getName().startsWith("."))
+    return(true);
+  else
+    return(false);
+}
+
+/*************************************************************************/
+
+/**
   * This method returns the length of the file represented by this object,
   * or 0 if the specified file does not exist.
   *
@@ -766,8 +871,91 @@ lastModified() throws SecurityException
   * modification time.  It also does the existence check to avoid the
   * overhead of a call to exists()
   */
-public native long
+private native long
 lastModifiedInternal(String path);
+
+/*************************************************************************/
+
+/**
+  * This method sets the modification time on the file to the specified
+  * value.  This is specified as the number of seconds since midnight
+  * on January 1, 1970 GMT.
+  *
+  * @param time The desired modification time.
+  *
+  * @return <code>true</code> if the operation succeeded, <code>false</code>
+  * otherwise.
+  *
+  * @exception IlegalArgumentException If the specified time is negative.
+  * @exception SecurityException If the <code>SecurityManager</code> will
+  * not allow this operation.
+  */
+public boolean
+setLastModified(long time) throws IllegalArgumentException, SecurityException
+{
+  if (time < 0)
+    throw new IllegalArgumentException("Negative modification time: " + time);
+
+  // Check the SecurityManager
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkWrite(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+  
+  return(setLastModifiedInternal(path, time));
+}
+
+/*************************************************************************/
+
+/*
+ * This method does the actual setting of the modification time.
+ */
+private native boolean
+setLastModifiedInternal(String path, long time);
+
+/*************************************************************************/
+
+/**
+  * This method creates a new file of zero length with the same name as
+  * the path of this <code>File</code> object if an only if that file
+  * does not already exist.
+  * <p>
+  * A <code>SecurityManager</code>checkWrite</code> check is done prior
+  * to performing this action.
+  *
+  * @return <code>true</code> if the file was created, <code>false</code> if
+  * the file alread existed.
+  *
+  * @exception IOException If an I/O error occurs
+  * @exception SecurityException If the <code>SecurityManager</code> will
+  * not allow this operation to be performed.
+  */
+public boolean
+createNewFile() throws IOException, SecurityException
+{
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    {
+//      try
+//        {
+            sm.checkWrite(path);
+//        }
+//      catch(AccessControlException e)
+//        {
+//          throw new SecurityException(e.getMessage())
+//        }
+    } 
+   
+  return(createInternal(getPath()));
+}
 
 /*************************************************************************/
 
@@ -804,7 +992,7 @@ delete() throws SecurityException
 /**
   * This native method handles the actual deleting of the file
   */
-public native boolean
+private native boolean
 deleteInternal(String path);
 
 /*************************************************************************/
@@ -882,7 +1070,7 @@ mkdir() throws SecurityException
 /**
   * This native method actually creates the directory
   */
-public native boolean
+private native boolean
 mkdirInternal(String path);
 
 /*************************************************************************/
@@ -1074,6 +1262,112 @@ listInternal(String dirname);
 /*************************************************************************/
 
 /**
+  * This method returns an array of <code>File</code> objects representing
+  * all the files in the directory represented by this object. If this
+  * object does not represent a directory, <code>null</code> is returned.
+  * Each of the returned <code>File</code> object is constructed with this
+  * object as its parent.
+  * <p>
+  * A <code>SecurityManager</code> check is made prior to reading the
+  * directory.  If read access to the directory is denied, an exception
+  * will be thrown.
+  *
+  * @return An array of <code>File</code> objects for this directory.
+  *
+  * @exception SecurityException If the <code>SecurityManager</code> denies
+  * access to this directory.
+  */
+public File[]
+listFiles()
+{
+  return(listFiles((FilenameFilter)null));
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns an array of <code>File</code> objects representing
+  * all the files in the directory represented by this object. If this
+  * object does not represent a directory, <code>null</code> is returned.
+  * Each of the returned <code>File</code> object is constructed with this
+  * object as its parent.
+  * <p> 
+  * In this form of the <code>listFiles()</code> method, a filter is specified
+  * that allows the caller to control which files are returned in the
+  * list.  The <code>FilenameFilter</code> specified is called for each
+  * file returned to determine whether or not that file should be included
+  * in the list.
+  * <p>
+  * A <code>SecurityManager</code> check is made prior to reading the
+  * directory.  If read access to the directory is denied, an exception
+  * will be thrown.
+  *
+  * @return An array of <code>File</code> objects for this directory.
+  *
+  * @exception SecurityException If the <code>SecurityManager</code> denies
+  * access to this directory.
+  */
+public File[]
+listFiles(FilenameFilter filter)
+{
+  String[] filelist = list(filter);
+  File[] fobjlist = new File[filelist.length];
+
+  for (int i = 0; i < filelist.length; i++)
+    fobjlist[i] = new File(this, filelist[i]);
+
+  return(fobjlist);
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns an array of <code>File</code> objects representing
+  * all the files in the directory represented by this object. If this
+  * object does not represent a directory, <code>null</code> is returned.
+  * Each of the returned <code>File</code> object is constructed with this
+  * object as its parent.
+  * <p> 
+  * In this form of the <code>listFiles()</code> method, a filter is specified
+  * that allows the caller to control which files are returned in the
+  * list.  The <code>FileFilter</code> specified is called for each
+  * file returned to determine whether or not that file should be included
+  * in the list.
+  * <p>
+  * A <code>SecurityManager</code> check is made prior to reading the
+  * directory.  If read access to the directory is denied, an exception
+  * will be thrown.
+  *
+  * @return An array of <code>File</code> objects for this directory.
+  *
+  * @exception SecurityException If the <code>SecurityManager</code> denies
+  * access to this directory.
+  */
+public File[]
+listFiles(FileFilter filter)
+{
+  File[] fobjlist = listFiles((FilenameFilter)null);
+
+  int count = 0;
+  for (int i = 0; i < fobjlist.length; i++)
+    if (filter.accept(fobjlist[i]) == true)
+      ++count;
+
+  File[] final_list = new File[count];
+  count = 0;
+  for (int i = 0; i < fobjlist.length; i++)
+    if (filter.accept(fobjlist[i]) == true)
+      {
+        final_list[count] = fobjlist[i];
+        ++count;
+      }
+
+  return(final_list);
+}
+
+/*************************************************************************/
+
+/**
   * This method compares the specified <code>Object</code> to this one
   * to test for equality.  It does this by comparing the canonical path names
   * of the files.  This method is identical to <code>compareTo(File)</code>
@@ -1191,6 +1485,25 @@ public String
 toString()
 {
   return(path);
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a <code>URL</code> with the <code>file:</code>
+  * protocol that represents this file.  The exact form of this URL is
+  * system dependent.
+  *
+  * @return A <code>URL</code> for this object.
+  *
+  * @exception MalformedURLException If the URL cannot be created successfully.
+  */
+public URL
+toURL() throws MalformedURLException
+{
+  String url_string = "file://" + getAbsolutePath();
+
+  return(new URL(url_string));
 }
 
 } // class File
