@@ -338,7 +338,7 @@ public abstract class ClassLoader {
             loadedClasses.put(retval.getName(),retval);
           return retval;
         */
-        return defineClass(name, data, offset, len, domain);
+        return defineClass(name, data, offset, len);
     }
 
 	/** Helper to resolve all references to other classes from this class.

@@ -1,5 +1,11 @@
 2002-02-15  Wu Gansha  <gansha.wu@intel.com>
 
+	* java/lang/ClassLoader.java
+	(defineClass(String,byte[],int,int, ProtectionDomain)): removed an
+	infinite recursive call.
+
+2002-02-15  Wu Gansha  <gansha.wu@intel.com>
+
 	* java/io/RandomAccessFile.java (read(byte[],int,int): fix a bug in
 	calling readInternal, use offset and len.
 
