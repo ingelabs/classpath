@@ -63,7 +63,7 @@ public class SecurityManager {
 	 **         on the Java execution stack.
 	 **/
 	protected Class[] getClassContext() {
-		return VMSecurityManager.getClassContext(this);
+		return VMSecurityManager.getClassContext();
 	}
 
 	/** Find the ClassLoader for the most recent class on the

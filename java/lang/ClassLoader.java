@@ -114,7 +114,7 @@ public abstract class ClassLoader {
 	 ** @exception ClassFormatError if the byte array is not in proper classfile format.
 	 **/
 	protected final Class defineClass(String name, byte[] data, int offset, int len) throws ClassFormatError {
-		Class retval = VMClassLoader.defineClass(name,data,offset,len);
+		Class retval = VMClassLoader.defineClass(this,name,data,offset,len);
 		loadedClasses.put(retval.getName(),retval);
 		return retval;
 	}
