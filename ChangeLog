@@ -5,6 +5,7 @@
 	(addMethod): corrected classification of normal and property methods
 	(capitalize): added documentation
 	(DoubleKey): [class] added documentation
+	(isReachable): new method, refactoring of a large expression
 
 2004-11-08  Jeroen Frijters  <jeroen@frijters.net>
 
