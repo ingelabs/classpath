@@ -1,3 +1,11 @@
+2004-07-22  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/Class.java (pd): Made final. (unknownProtectionDomain):
+	Removed. (StaticData): New inner class.
+	(Class(Object, ProtectionDomain): New constructor.
+	(getProtectionDomain): Get unknownProtectionDomain from StaticData
+	inner class.
+
 2004-07-21  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* java/net/URLConnection.java (position): New field.

@@ -96,15 +96,19 @@ public final class Class implements Serializable
   /** The class signers. */
   private Object[] signers = null;
   /** The class protection domain. */
-  private ProtectionDomain pd = null;
+  private final ProtectionDomain pd;
 
-  /** The unknown protection domain. */
-  private final static ProtectionDomain unknownProtectionDomain;
-  static
+  /* We use an inner class, so that Class doesn't have a static initializer */
+  private static final class StaticData
   {
-    Permissions permissions = new Permissions();
-    permissions.add(new AllPermission());
-    unknownProtectionDomain = new ProtectionDomain(null, permissions);
+    final static ProtectionDomain unknownProtectionDomain;
+
+    static
+    {
+      Permissions permissions = new Permissions();
+      permissions.add(new AllPermission());
+      unknownProtectionDomain = new ProtectionDomain(null, permissions);
+    }
   }
 
   transient final Object vmdata;
@@ -118,7 +122,13 @@ public final class Class implements Serializable
    */
   Class(Object vmdata)
   {
+    this(vmdata, null);
+  }
+
+  Class(Object vmdata, ProtectionDomain pd)
+  {
     this.vmdata = vmdata;
+    this.pd = pd;
   }
 
   /**
@@ -272,7 +282,7 @@ public final class Class implements Serializable
       }
     return loader;
   }
-  
+
   /**
    * If this is an array, get the Class representing the type of array.
    * Examples: "[[Ljava.lang.String;" would return "[Ljava.lang.String;", and
@@ -1151,7 +1161,7 @@ public final class Class implements Serializable
     if (sm != null)
       sm.checkPermission(new RuntimePermission("getProtectionDomain"));
 
-    return pd == null ? unknownProtectionDomain : pd;
+    return pd == null ? StaticData.unknownProtectionDomain : pd;
   }
 
   /**
