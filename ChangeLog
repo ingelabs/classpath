@@ -1,3 +1,7 @@
+2000-07-12  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/applet/*.java: Reformatted to match current coding style.
+
 2000-06-29  Warren Levy  <warrenl@cygnus.com>
 
 	* java/beans/PropertyChangeEvent.java (oldVal): Renamed to oldValue.
