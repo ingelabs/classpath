@@ -61,4 +61,10 @@ public class GtkContainerPeer extends GtkComponentPeer
   {
     return getInsets();
   }
+
+  public void setBounds (int x, int y, int width, int height)
+  {
+    super.setBounds (x, y, width, height);
+    awtComponent.validate ();
+  }
 }

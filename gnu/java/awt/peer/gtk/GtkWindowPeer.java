@@ -54,13 +54,14 @@ public class GtkWindowPeer extends GtkContainerPeer
     System.out.println("WindowPeer default cons");
   }
   
-  native public void toBack();
-  native public void toFront();
+  native public void toBack ();
+  native public void toFront ();
 
   native public void setBounds (int x, int y, int width, int height);
 
   protected void postConfigureEvent (int x, int y, int width, int height)
   {
     awtComponent.setBounds (x, y, width, height);
+    awtComponent.validate ();
   }
 }

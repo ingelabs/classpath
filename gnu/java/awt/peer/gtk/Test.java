@@ -34,14 +34,14 @@ class Test
 
       final Frame f=new Frame();
       
-      f.addComponentListener (new ComponentAdapter() {
-	public void componentMoved (ComponentEvent e) {
-	  System.out.println("component moved");
-	}
-	public void componentResized (ComponentEvent e) {
-	  System.out.println("component resized");
-	}
-      });
+//        f.addComponentListener (new ComponentAdapter() {
+//  	public void componentMoved (ComponentEvent e) {
+//  	  System.out.println("component moved");
+//  	}
+//  	public void componentResized (ComponentEvent e) {
+//  	  System.out.println("component resized");
+//  	}
+//        });
       f.setSize(200,200);
 
       Panel pan=new Panel();
@@ -172,6 +172,11 @@ class Test
       /* t.beep(); */
       System.out.println("screen size: " + t.getScreenSize());
       System.out.println("resolution : " + t.getScreenResolution());
+      try {
+	Thread.sleep (5000);
+      } catch (InterruptedException e) {}
+      f.setSize(500,500);
+
       System.out.println("done");
     }
 }
