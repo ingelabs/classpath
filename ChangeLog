@@ -3,6 +3,7 @@
 	* javax/swing/border/BevelBorder.java: Re-written from scratch.
 	* javax/swing/border/doc-files/: New directory for JavaDoc images.
 	* javax/swing/border/doc-files/BevelBorder-1/2/3.png: New images.
+	* javax/swing/border/.cvsignore: New file.
 
 2003-06-12  Michael Koch  <konqueror@gmx.de>
 
