@@ -102,7 +102,7 @@ jar-classes glibj.zip: classes compile-classes
 	# do something with all the .u files from jikes
 	$(ZIP) -r -D glibj.zip gnu java javax
 
-classes: gen-classlist.sh standard.omit
+classes: gen-classlist.sh standard.omit $(top_srcdir)/java $(top_srcdir)/javax $(top_srcdir)/gnu
 	$(SHELL) -c "cd $(top_srcdir)/lib; ./gen-classlist.sh standard"
 
 .PHONY: dep
@@ -110,17 +110,18 @@ dep: classes
 	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -s"
 
 .PHONY: compile-classes
-compile-classes: $(JAVA_SRCS)
-	@JIKES@ -classpath ..:../vm/reference:. +CSO +M -d . @classes 2>errors.txt
+compile-classes: classes $(JAVA_SRCS) 
+	$(SHELL) -c "@JIKES@ -classpath ..:../vm/reference:. +CSO +M -d . @classes 2>errors.txt; exit 0"
+	touch compile-classes
 
 $(MAKEFILE_DEPEND): classes $(HEADERS_DEPEND) $(CLASSES_DEPEND)
-	$(SHELL) -c "cd $top_builddir/lib && ./mkdep.pl -d"
+	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -d"
 
 $(HEADERS_DEPEND): classes
-	$(SHELL) -c "cd $top_builddir/lib && ./mkdep.pl -h"
+	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -h"
 
 $(CLASSES_DEPEND): classes
-	$(SHELL) -c "cd $top_builddir/lib && ./mkdep.pl -c"
+	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -c"
 
 ## neither developer nor maintainer...
 
