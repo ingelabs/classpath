@@ -1,5 +1,10 @@
 2003-06-26  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/plaf/TreeUI.java (getPathBounds, getPathForRow,
+	getRowForPath, getRowCount, getClosesPathForLocation,
+	isEditing, stopEditing, cancelEditing, startEditingAtPath,
+	getEditingPath): New abstract methods.
+	
 	* javax/swing/plaf/doc-files/TreeUI-1.png: New image.
 	
 	* javax/swing/plaf/basic/BasicTextUI.java (RootView): Commented
