@@ -79,13 +79,16 @@ exception statement from your version. */
 #include "java_io_FileDescriptor.h"
 
 // FIXME: This can't be right.  Need converter macros
-#define CONVERT_JLONG_TO_INT(x) ((int)(x & 0xFFFF))
+#define CONVERT_JLONG_TO_INT(x) ((int)(x & 0xFFFFFFFF))
 
 // FIXME: This can't be right.  Need converter macros
 #define CONVERT_JLONG_TO_OFF_T(x) (x)
 
 // FIXME: This can't be right.  Need converter macros
-#define CONVERT_JINT_TO_INT(x) ((int)(x & 0xFFFF))
+#define CONVERT_JINT_TO_INT(x) ((int)(x & 0xFFFFFFFF))
+
+// FIXME: This can't be right.  Need converter macros
+#define CONVERT_SSIZE_T_TO_JINT(x) ((jint)(x & 0xFFFFFFFF))
 
 /* These values must be kept in sync with FileDescriptor.java.  */
 #define SET 0
@@ -342,7 +345,7 @@ Java_java_io_FileDescriptor_nativeReadBuf(JNIEnv *env, jobject obj,
           if (bytes_read == 0)
             return(-1); /* Signal end of file to Java */
           else 
-            return((jint)(bytes_read & 0xFFFF));
+            return(CONVERT_SSIZE_T_TO_JINT(bytes_read));
         }
 
       if ((rc == -1) && (errno != EINTR))
@@ -355,7 +358,7 @@ Java_java_io_FileDescriptor_nativeReadBuf(JNIEnv *env, jobject obj,
     }
 
   (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
-  return((jint)(bytes_read & 0xFFFF));
+  return(CONVERT_SSIZE_T_TO_JINT(bytes_read));
 }
 
 /*************************************************************************/
@@ -430,7 +433,7 @@ Java_java_io_FileDescriptor_nativeAvailable(JNIEnv *env, jobject obj, jlong fd)
   if (!found)
     return(0);
   else
-    return((jint)(num & 0xFFFF));
+    return(CONVERT_SSIZE_T_TO_JINT(num));
 
 #else /* defined FIONREAD, HAVE_SELECT, HAVE_FSTAT */
  /* FIXME: Probably operation isn't supported, but this exception

@@ -1,3 +1,15 @@
+2003-05-01  David P. Grove  <groved@us.ibm.com>
+
+	This patch fixes a regression for the past month that made it 
+	difficult to read files larger than 2^16 bytes.
+	* native/jni/java-io/FileDescriptor.c
+	(CONVERT_JLONG_TO_INT): modified macro to fix large file problem
+	(CONVERT_JINT_TO_INT): ditto
+	(CONVERT_SSIZE_T_TO_INT): new macro
+	(Java_java_io_FileDescriptor_nativeReadBuf): use 
+	CONVERT_SSIZE_T_TO_INT macro
+	(Java_java_io_FileDescriptor_nativeAvailable): ditto
+
 2003-05-01  C. Brian Jones  <cbj@gnu.org>
 
 	* native/jni/java-lang/java_lang_VMSystem.c:
