@@ -1,5 +1,5 @@
-/* java.util.zip.Inflater
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* Inflater.java - Decompress a data stream
+   Copyright (C) 1999, 2000, 2001, 2003  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
-
+ 
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -37,6 +37,11 @@ exception statement from your version. */
 
 package java.util.zip;
 
+/* Written using on-line Java Platform 1.2 API Specification
+ * and JCL book.
+ * Believed complete and correct.
+ */
+
 /**
  * Inflater is used to decompress data that has been compressed according 
  * to the "deflate" standard described in rfc1950.
@@ -57,6 +62,8 @@ package java.util.zip;
  * needed at a later stage.
  *
  * @author John Leuner, Jochen Hoenicke
+ * @author Tom Tromey
+ * @date May 17, 1999
  * @since JDK 1.1
  */
 public class Inflater
@@ -156,11 +163,11 @@ public class Inflater
   /**
    * Creates a new inflater.
    */
-  public Inflater() 
+  public Inflater ()
   {
-    this(false);
+    this (false);
   }
-  
+
   /**
    * Creates a new inflater.
    * @param nowrap true if no header and checksum field appears in the
@@ -168,7 +175,7 @@ public class Inflater
    * Sun JDK you should provide one byte of input more than needed in
    * this case.
    */
-  public Inflater(boolean nowrap) 
+  public Inflater (boolean nowrap)
   {
     this.nowrap = nowrap;
     this.adler = new Adler32();
@@ -178,10 +185,171 @@ public class Inflater
   }
 
   /**
+   * Finalizes this object.
+   */
+  protected void finalize ()
+  {
+    /* Exists only for compatibility */
+  }
+
+  /**
+   * Frees all objects allocated by the inflater.  There's no reason
+   * to call this, since you can just rely on garbage collection (even
+   * for the Sun implementation).  Exists only for compatibility
+   * with Sun's JDK, where the compressor allocates native memory.
+   * If you call any method (even reset) afterwards the behaviour is
+   * <i>undefined</i>.  
+   * @deprecated Just clear all references to inflater instead.
+   */
+  public void end ()
+  {
+    outputWindow = null;
+    input = null;
+    dynHeader = null;
+    litlenTree = null;
+    distTree = null;
+    adler = null;
+  }
+
+  /**
+   * Returns true, if the inflater has finished.  This means, that no
+   * input is needed and no output can be produced.
+   */
+  public boolean finished() 
+  {
+    return mode == FINISHED && outputWindow.getAvailable() == 0;
+  }
+
+  /**
+   * Gets the adler checksum.  This is either the checksum of all
+   * uncompressed bytes returned by inflate(), or if needsDictionary()
+   * returns true (and thus no output was yet produced) this is the
+   * adler checksum of the expected dictionary.
+   * @returns the adler checksum.
+   */
+  public int getAdler()
+  {
+    return needsDictionary() ? readAdler : (int) adler.getValue();
+  }
+  
+  /**
+   * Gets the number of unprocessed input.  Useful, if the end of the
+   * stream is reached and you want to further process the bytes after
+   * the deflate stream.  
+   * @return the number of bytes of the input which were not processed.
+   */
+  public int getRemaining()
+  {
+    return input.getAvailableBytes();
+  }
+  
+  /**
+   * Gets the total number of processed compressed input bytes.
+   * @return the total number of bytes of processed input bytes.
+   */
+  public int getTotalIn()
+  {
+    return totalIn - getRemaining();
+  }
+
+  /**
+   * Gets the total number of output bytes returned by inflate().
+   * @return the total number of output bytes.
+   */
+  public int getTotalOut()
+  {
+    return totalOut;
+  }
+
+  /**
+   * Inflates the compressed stream to the output buffer.  If this
+   * returns 0, you should check, whether needsDictionary(),
+   * needsInput() or finished() returns true, to determine why no 
+   * further output is produced.
+   * @param buffer the output buffer.
+   * @return the number of bytes written to the buffer, 0 if no further
+   * output can be produced.  
+   * @exception DataFormatException if deflated stream is invalid.
+   * @exception IllegalArgumentException if buf has length 0.
+   */
+  public int inflate (byte[] buf) throws DataFormatException
+  {
+    return inflate (buf, 0, buf.length);
+  }
+
+  /**
+   * Inflates the compressed stream to the output buffer.  If this
+   * returns 0, you should check, whether needsDictionary(),
+   * needsInput() or finished() returns true, to determine why no 
+   * further output is produced.
+   * @param buffer the output buffer.
+   * @param off the offset into buffer where the output should start.
+   * @param len the maximum length of the output.
+   * @return the number of bytes written to the buffer, 0 if no further
+   * output can be produced.  
+   * @exception DataFormatException if deflated stream is invalid.
+   * @exception IndexOutOfBoundsException if the off and/or len are wrong.
+   */
+  public int inflate (byte[] buf, int off, int len) throws DataFormatException
+  {
+    /* Special case: len may be zero */
+    if (len == 0)
+      return 0;
+    /* Check for correct buff, off, len triple */
+    if (0 > off || off > off + len || off + len > buf.length)
+      throw new ArrayIndexOutOfBoundsException();
+    int count = 0;
+    int more;
+    do
+      {
+	if (mode != DECODE_CHKSUM)
+	  {
+	    /* Don't give away any output, if we are waiting for the
+	     * checksum in the input stream.
+	     *
+	     * With this trick we have always:
+	     *   needsInput() and not finished() 
+	     *   implies more output can be produced.  
+	     */
+	    more = outputWindow.copyOutput(buf, off, len);
+	    adler.update(buf, off, more);
+	    off += more;
+	    count += more;
+	    totalOut += more;
+	    len -= more;
+	    if (len == 0)
+	      return count;
+	  }
+      }
+    while (decode() || (outputWindow.getAvailable() > 0
+			&& mode != DECODE_CHKSUM));
+    return count;
+  }
+
+  /**
+   * Returns true, if a preset dictionary is needed to inflate the input.
+   */
+  public boolean needsDictionary ()
+  {
+    return mode == DECODE_DICT && neededBits == 0;
+  }
+
+  /**
+   * Returns true, if the input buffer is empty.
+   * You should then call setInput(). <br>
+   *
+   * <em>NOTE</em>: This method also returns true when the stream is finished.
+   */
+  public boolean needsInput () 
+  {
+    return input.needsInput ();
+  }
+
+  /**
    * Resets the inflater so that a new stream can be decompressed.  All
    * pending input and output will be discarded.
    */
-  public void reset()
+  public void reset ()
   {
     mode = nowrap ? DECODE_BLOCKS : DECODE_HEADER;
     totalIn = totalOut = 0;
@@ -195,11 +363,78 @@ public class Inflater
   }
 
   /**
+   * Sets the preset dictionary.  This should only be called, if
+   * needsDictionary() returns true and it should set the same
+   * dictionary, that was used for deflating.  The getAdler()
+   * function returns the checksum of the dictionary needed.
+   * @param buffer the dictionary.
+   * @exception IllegalStateException if no dictionary is needed.
+   * @exception IllegalArgumentException if the dictionary checksum is
+   * wrong.  
+   */
+  public void setDictionary (byte[] buffer)
+  {
+    setDictionary(buffer, 0, buffer.length);
+  }
+
+  /**
+   * Sets the preset dictionary.  This should only be called, if
+   * needsDictionary() returns true and it should set the same
+   * dictionary, that was used for deflating.  The getAdler()
+   * function returns the checksum of the dictionary needed.
+   * @param buffer the dictionary.
+   * @param off the offset into buffer where the dictionary starts.
+   * @param len the length of the dictionary.
+   * @exception IllegalStateException if no dictionary is needed.
+   * @exception IllegalArgumentException if the dictionary checksum is
+   * wrong.  
+   * @exception IndexOutOfBoundsException if the off and/or len are wrong.
+   */
+  public void setDictionary (byte[] buffer, int off, int len)
+  {
+    if (!needsDictionary())
+      throw new IllegalStateException();
+
+    adler.update(buffer, off, len);
+    if ((int) adler.getValue() != readAdler)
+      throw new IllegalArgumentException("Wrong adler checksum");
+    adler.reset();
+    outputWindow.copyDict(buffer, off, len);
+    mode = DECODE_BLOCKS;
+  }
+
+  /**
+   * Sets the input.  This should only be called, if needsInput()
+   * returns true.
+   * @param buffer the input.
+   * @exception IllegalStateException if no input is needed.
+   */
+  public void setInput (byte[] buf) 
+  {
+    setInput (buf, 0, buf.length);
+  }
+
+  /**
+   * Sets the input.  This should only be called, if needsInput()
+   * returns true.
+   * @param buffer the input.
+   * @param off the offset into buffer where the input starts.
+   * @param len the length of the input.  
+   * @exception IllegalStateException if no input is needed.
+   * @exception IndexOutOfBoundsException if the off and/or len are wrong.
+   */
+  public void setInput (byte[] buf, int off, int len) 
+  {
+    input.setInput (buf, off, len);
+    totalIn += len;
+  }
+
+  /**
    * Decodes the deflate header.
    * @return false if more input is needed. 
    * @exception DataFormatException if header is invalid.
    */
-  private boolean decodeHeader() throws DataFormatException
+  private boolean decodeHeader () throws DataFormatException
   {
     int header = input.peekBits(16);
     if (header < 0)
@@ -237,7 +472,7 @@ public class Inflater
    * Decodes the dictionary checksum after the deflate header.
    * @return false if more input is needed. 
    */
-  private boolean decodeDict()
+  private boolean decodeDict ()
   {
     while (neededBits > 0)
       {
@@ -257,7 +492,7 @@ public class Inflater
    * full or the current block ends.
    * @exception DataFormatException if deflated stream is invalid.  
    */
-  private boolean decodeHuffman() throws DataFormatException
+  private boolean decodeHuffman () throws DataFormatException
   {
     int free = outputWindow.getFreeSpace();
     while (free >= 258)
@@ -349,7 +584,7 @@ public class Inflater
    * @return false if more input is needed. 
    * @exception DataFormatException if checksum doesn't match.
    */
-  private boolean decodeChksum() throws DataFormatException
+  private boolean decodeChksum () throws DataFormatException
   {
     while (neededBits > 0)
       {
@@ -373,7 +608,7 @@ public class Inflater
    * @return false if more input is needed, or if finished. 
    * @exception DataFormatException if deflated stream is invalid.
    */
-  private boolean decode() throws DataFormatException
+  private boolean decode () throws DataFormatException
   {
     switch (mode) 
       {
@@ -476,233 +711,5 @@ public class Inflater
       default:
 	throw new IllegalStateException();
       }	
-  }
-
-  /**
-   * Sets the preset dictionary.  This should only be called, if
-   * needsDictionary() returns true and it should set the same
-   * dictionary, that was used for deflating.  The getAdler()
-   * function returns the checksum of the dictionary needed.
-   * @param buffer the dictionary.
-   * @exception IllegalStateException if no dictionary is needed.
-   * @exception IllegalArgumentException if the dictionary checksum is
-   * wrong.  
-   */
-  public void setDictionary(byte[] buffer)
-  {
-    setDictionary(buffer, 0, buffer.length);
-  }
-
-  /**
-   * Sets the preset dictionary.  This should only be called, if
-   * needsDictionary() returns true and it should set the same
-   * dictionary, that was used for deflating.  The getAdler()
-   * function returns the checksum of the dictionary needed.
-   * @param buffer the dictionary.
-   * @param off the offset into buffer where the dictionary starts.
-   * @param len the length of the dictionary.
-   * @exception IllegalStateException if no dictionary is needed.
-   * @exception IllegalArgumentException if the dictionary checksum is
-   * wrong.  
-   * @exception IndexOutOfBoundsException if the off and/or len are wrong.
-   */
-  public void setDictionary(byte[] buffer, int off, int len)
-  {
-    if (!needsDictionary())
-      throw new IllegalStateException();
-
-    adler.update(buffer, off, len);
-    if ((int) adler.getValue() != readAdler)
-      throw new IllegalArgumentException("Wrong adler checksum");
-    adler.reset();
-    outputWindow.copyDict(buffer, off, len);
-    mode = DECODE_BLOCKS;
-  }
-
-  /**
-   * Sets the input.  This should only be called, if needsInput()
-   * returns true.
-   * @param buffer the input.
-   * @exception IllegalStateException if no input is needed.
-   */
-  public void setInput(byte[] buf) 
-  {
-    setInput(buf, 0, buf.length);
-  }
-
-  /**
-   * Sets the input.  This should only be called, if needsInput()
-   * returns true.
-   * @param buffer the input.
-   * @param off the offset into buffer where the input starts.
-   * @param len the length of the input.  
-   * @exception IllegalStateException if no input is needed.
-   * @exception IndexOutOfBoundsException if the off and/or len are wrong.
-   */
-  public void setInput(byte[] buf, int off, int len) 
-  {
-    input.setInput(buf, off, len);
-    totalIn += len;
-  }
-
-  /**
-   * Inflates the compressed stream to the output buffer.  If this
-   * returns 0, you should check, whether needsDictionary(),
-   * needsInput() or finished() returns true, to determine why no 
-   * further output is produced.
-   * @param buffer the output buffer.
-   * @return the number of bytes written to the buffer, 0 if no further
-   * output can be produced.  
-   * @exception DataFormatException if deflated stream is invalid.
-   * @exception IllegalArgumentException if buf has length 0.
-   */
-  public int inflate(byte[] buf) throws DataFormatException
-  {
-    return inflate(buf, 0, buf.length);
-  }
-  
-  /**
-   * Inflates the compressed stream to the output buffer.  If this
-   * returns 0, you should check, whether needsDictionary(),
-   * needsInput() or finished() returns true, to determine why no 
-   * further output is produced.
-   * @param buffer the output buffer.
-   * @param off the offset into buffer where the output should start.
-   * @param len the maximum length of the output.
-   * @return the number of bytes written to the buffer, 0 if no further
-   * output can be produced.  
-   * @exception DataFormatException if deflated stream is invalid.
-   * @exception IndexOutOfBoundsException if the off and/or len are wrong.
-   */
-  public int inflate(byte[] buf, int off, int len) throws DataFormatException
-  {
-    /* Special case: len may be zero */
-    if (len == 0)
-      return 0;
-    /* Check for correct buff, off, len triple */
-    if (0 > off || off > off + len || off + len > buf.length)
-      throw new ArrayIndexOutOfBoundsException();
-    int count = 0;
-    int more;
-    do
-      {
-	if (mode != DECODE_CHKSUM)
-	  {
-	    /* Don't give away any output, if we are waiting for the
-	     * checksum in the input stream.
-	     *
-	     * With this trick we have always:
-	     *   needsInput() and not finished() 
-	     *   implies more output can be produced.  
-	     */
-	    more = outputWindow.copyOutput(buf, off, len);
-	    adler.update(buf, off, more);
-	    off += more;
-	    count += more;
-	    totalOut += more;
-	    len -= more;
-	    if (len == 0)
-	      return count;
-	  }
-      }
-    while (decode() || (outputWindow.getAvailable() > 0
-			&& mode != DECODE_CHKSUM));
-    return count;
-  }
-
-  /**
-   * Returns true, if the input buffer is empty.
-   * You should then call setInput(). <br>
-   *
-   * <em>NOTE</em>: This method also returns true when the stream is finished.
-   */
-  public boolean needsInput() 
-  {
-    return input.needsInput();
-  }
-
-  /**
-   * Returns true, if a preset dictionary is needed to inflate the input.
-   */
-  public boolean needsDictionary()
-  {
-    return mode == DECODE_DICT && neededBits == 0;
-  }
-
-  /**
-   * Returns true, if the inflater has finished.  This means, that no
-   * input is needed and no output can be produced.
-   */
-  public boolean finished() 
-  {
-    return mode == FINISHED && outputWindow.getAvailable() == 0;
-  }
-
-  /**
-   * Gets the adler checksum.  This is either the checksum of all
-   * uncompressed bytes returned by inflate(), or if needsDictionary()
-   * returns true (and thus no output was yet produced) this is the
-   * adler checksum of the expected dictionary.
-   * @returns the adler checksum.
-   */
-  public int getAdler()
-  {
-    return needsDictionary() ? readAdler : (int) adler.getValue();
-  }
-
-  /**
-   * Gets the total number of output bytes returned by inflate().
-   * @return the total number of output bytes.
-   */
-  public int getTotalOut()
-  {
-    return totalOut;
-  }
-
-  /**
-   * Gets the total number of processed compressed input bytes.
-   * @return the total number of bytes of processed input bytes.
-   */
-  public int getTotalIn()
-  {
-    return totalIn - getRemaining();
-  }
-
-  /**
-   * Gets the number of unprocessed input.  Useful, if the end of the
-   * stream is reached and you want to further process the bytes after
-   * the deflate stream.  
-   * @return the number of bytes of the input which were not processed.
-   */
-  public int getRemaining()
-  {
-    return input.getAvailableBytes();
-  }
-
-  /**
-   * Frees all objects allocated by the inflater.  There's no reason
-   * to call this, since you can just rely on garbage collection (even
-   * for the Sun implementation).  Exists only for compatibility
-   * with Sun's JDK, where the compressor allocates native memory.
-   * If you call any method (even reset) afterwards the behaviour is
-   * <i>undefined</i>.  
-   * @deprecated Just clear all references to inflater instead.
-   */
-  public void end()
-  {
-    outputWindow = null;
-    input = null;
-    dynHeader = null;
-    litlenTree = null;
-    distTree = null;
-    adler = null;
-  }
-
-  /**
-   * Finalizes this object.
-   */
-  protected void finalize()
-  {
-    /* Exists only for compatibility */
   }
 }
