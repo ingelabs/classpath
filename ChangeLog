@@ -1,4 +1,7 @@
 2000-12-10  Brian Jones  <cbj@gnu.org>
+	* configure.in : fixed a small syntax error
+
+2000-12-10  Brian Jones  <cbj@gnu.org>
 	* gnu/classpath/.cvsignore : Ignore Configuration.java
 	* native/java.lang/System.c (Java_java_lang_System_setIn) : fixed 
 	call to GetStaticFieldID().
