@@ -150,7 +150,7 @@ private static final long serialVersionUID = -4536902356223894379L;
    * variable; it is merely provided for serialization compatability.
    *
    * @see #dispatchEvent(AWTEvent)
-   * @serial true if events are to be processed locally.
+   * @serial true if events are to be processed locally.  Unused.
    */
   private boolean newEventsOnly;
 
