@@ -1,3 +1,8 @@
+2002-04-07  Mark Wielaard <mark@klomp.org>
+
+	* java/util/AbstractMap.java (putAll): Use entrySet size.
+	(toString): Explicitly use getKey() and getValue().
+
 2002-04-06  Tom Tromey  <tromey@redhat.com>
 
 	* lib/Makefile.am (JAVAC): Added -bootclasspath and
