@@ -675,7 +675,7 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    * Lowercases this String.
    *
    * @return new lowercased String, 
-   *   or `this' if not characters where lowercased
+   *   or `this' if no characters where lowercased
    */
   public String toLowerCase() {
     char[] newStr = new char[len];
