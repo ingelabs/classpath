@@ -12,9 +12,10 @@ extern "C"
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkChoicePeer_create (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkChoicePeer_append (JNIEnv *env, jobject, jobjectArray);
-JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkChoicePeer_getHistory (JNIEnv *env, jobject);
+JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkChoicePeer_nativeGetSelected (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkChoicePeer_nativeAdd (JNIEnv *env, jobject, jstring, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkChoicePeer_nativeRemove (JNIEnv *env, jobject, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkChoicePeer_nativeRemoveAll (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkChoicePeer_select (JNIEnv *env, jobject, jint);
 
 #ifdef __cplusplus
