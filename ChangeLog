@@ -1,5 +1,35 @@
 2003-05-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/URI.java
+	(create): Doesnt throws IllegalArgumentException.
+	* java/net/URLConnection
+	(URLConnection): Merged documentation with libgcj.
+	(getExpiration): Merged implementation with libgcj.
+	(getDate): Likewise.
+	(getLastModified): Likewise.
+	(getHeaderField): Likewise.
+	(getHeaderFieldKey): Likewise.
+	(setDoInput): Likewise.
+	(getHeaderFieldInt): Merged documentation with libgcj.
+	(getPermission): Likewise.
+	(setAllowUserInteraction): Likewise.
+	(setUseCaches): Likewise.
+	(setIfModifiedSince): Likewise.
+	(getDefaultUseCaches): Likewise.
+	(setRequestProperty): Likewise.
+	(getRequestProperty): Likewise.
+	(getRequestProperties): Likewise.
+	(setDefaultRequestProperty): Likewise.
+	(getDefaultRequestProperty): Likewise.
+	(guessContentTypeFromName): Likewise.
+	(setDoOutput): Merged implementation and documentation with libgcj.
+	(setContentHandlerFactory): Likewise.
+	(getFileNameMap): Likewise.
+	(setFileNameMap): Likewise.
+	(setDefaultAllowUserInteraction): No need to make this sychronized.
+
+2003-05-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/URLConnection.java:
 	More merging with libgcj.
 

@@ -42,13 +42,9 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Permission;
-import java.text.DateFormat;
-import java.text.ParsePosition;
-import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -175,9 +171,12 @@ public abstract class URLConnection
   private final Hashtable req_props;
 
   /**
-   * This constructs a URLConnection from a URL object
+   * Creates a URL connection to a given URL. A real connection is not made.
+   * Use #connect to do this.
    *
-   * @param url The URL for this connection
+   * @param url The Object to create the URL connection to
+   *
+   * @see URLConnection#connect()
    */
   protected URLConnection(URL url)
   {
@@ -185,7 +184,6 @@ public abstract class URLConnection
     this.url = url;
     allowUserInteraction = defaultAllowUserInteraction;
     useCaches = defaultUseCaches;
-
     req_props = new Hashtable(def_req_props);
   }
 
@@ -255,7 +253,7 @@ public abstract class URLConnection
    */
   public long getExpiration()
   {
-    return(getHeaderFieldDate("expires", 0));
+    return getHeaderFieldDate("expires", 0L);
   }
 
   /**
@@ -268,7 +266,7 @@ public abstract class URLConnection
    */
   public long getDate()
   {
-    return(getHeaderFieldDate("date", 0));
+    return getHeaderFieldDate("date", 0L);
   }
 
   /**
@@ -280,7 +278,7 @@ public abstract class URLConnection
    */
   public long getLastModified()
   {
-    return(getHeaderFieldDate("last-modified", 0));
+    return getHeaderFieldDate("last-modified", 0L);
   }
 
   /**
@@ -295,8 +293,9 @@ public abstract class URLConnection
    */
   public String getHeaderField(int index)
   {
-    return(null);
-  }     
+    // Subclasses for specific protocols override this.
+    return null;
+  }
 
   /**
    * Returns a String representing the value of the header field having
@@ -327,6 +326,9 @@ public abstract class URLConnection
    * @param key The header field key to lookup
    * @param def The defaule value if the header field is not found
    * or can't be parsed.
+   *
+   * @return The value of the header field or the default value if the field
+   * is missing or malformed
    */
   public int getHeaderFieldInt(String key, int def)
   {
@@ -389,8 +391,9 @@ public abstract class URLConnection
    */
   public String getHeaderFieldKey(int index)
   {
-    return(null);
-  }     
+    // Subclasses for specific protocols override this.
+    return null;
+  }
 
   /**
    * This method returns the content of the document pointed to by the URL
@@ -463,7 +466,8 @@ public abstract class URLConnection
    *
    * @return A Permission object
    *
-   * @exception IOException If an error occurs
+   * @exception IOException If the computation of the permission requires
+   * network or file I/O and an exception occurs while computing it
    */
   public Permission getPermission() throws IOException
   {
@@ -519,6 +523,9 @@ public abstract class URLConnection
    */
   public void setDoInput(boolean input)
   {
+    if (connected)
+      throw new IllegalStateException ("Already connected");
+
     doInput = input;
   }
 
@@ -540,9 +547,14 @@ public abstract class URLConnection
    * be used to override the default
    *
    * @param output ture if output is to be done, false otherwise
+   *
+   * @exception IllegalStateException If already connected
    */
   public void setDoOutput(boolean output)
   {
+    if (connected)
+      throw new IllegalStateException ("Already connected");
+
     doOutput = output;
   }
 
@@ -563,6 +575,8 @@ public abstract class URLConnection
    * username and password info.
    *
    * @param allow true if user interaction should be allowed, false otherwise.
+   *
+   * @exception IllegalStateException If already connected
    */
   public void setAllowUserInteraction(boolean allow)
   {
@@ -587,7 +601,7 @@ public abstract class URLConnection
    *
    * @param allow true to allow user interaction, false otherwise
    */
-  public static synchronized void setDefaultAllowUserInteraction(boolean allow)
+  public static void setDefaultAllowUserInteraction(boolean allow)
   {
     defaultAllowUserInteraction = allow;
   }
@@ -609,6 +623,8 @@ public abstract class URLConnection
    *
    * @param use_cache true if caching should be used if possible,
    * false otherwise.
+   *
+   * @exception IllegalStateException If already connected
    */
   public void setUseCaches(boolean use_caches)
   {
@@ -634,6 +650,8 @@ public abstract class URLConnection
    * as the number of seconds since midnight 1/1/1970 GMT otherwise.
    *
    * @param modified_since The new ifModifiedSince value
+   *
+   * @exception IllegalStateException If already connected
    */
   public void setIfModifiedSince(long modified_since)
   {
@@ -670,6 +688,9 @@ public abstract class URLConnection
    * of documents will be done when possible.
    *
    * @return true if caches will be used, false otherwise
+   *
+   * @see URLConnection#getRequestProperty(String key)
+   * @see URLConnection#addRequestProperty(String key, String value)
    */
   public boolean getDefaultUseCaches()
   {
@@ -681,6 +702,11 @@ public abstract class URLConnection
    *
    * @param key The name of the property
    * @param value The value of the property
+   * 
+   * @see URLConnection#getRequestProperty(String key)
+   * @see URLConnection#setRequestProperty(String key, String value)
+   * 
+   * @since 1.4
    */
   public void setRequestProperty(String key, String value)
   {
@@ -692,7 +718,12 @@ public abstract class URLConnection
    *
    * @param key The name of the property
    *
-   * @return The value of the property
+   * @return Value of the property
+   *
+   * @exception IllegalStateException If already connected
+   *
+   * @see URLConnection#setRequestProperty(String key, String value)
+   * @see URLConnection#addRequestProperty(String key, String value)
    */
   public String getRequestProperty(String key)
   {
@@ -701,6 +732,10 @@ public abstract class URLConnection
 
   /**
    * Returns an unmodifiable Map containing the request properties.
+   *
+   * @return The map of properties
+   *
+   * @exception IllegalStateException If already connected
    *
    * @since 1.4
    */
@@ -716,6 +751,10 @@ public abstract class URLConnection
    *
    * @param key The request property name the default is being set for
    * @param value The value to set the default to
+   *
+   * @deprecated 1.3 The method setRequestProperty should be used instead
+   *
+   * @see URLConnectionr#setRequestProperty(String key, String value)
    */
   public static synchronized void setDefaultRequestProperty (String key,
                                                              String value)
@@ -729,8 +768,12 @@ public abstract class URLConnection
    * overridden.
    *
    * @param key The request property to return the default value of
+   *
+   * @return The value of the default property or null if not available
    * 
-   * @return The default request property
+   * @deprecated 1.3 The method getRequestProperty should be used instead
+   *
+   * @see URLConnection#getRequestProperty(String key)
    */
   public static String getDefaultRequestProperty(String key)
   {
@@ -745,13 +788,21 @@ public abstract class URLConnection
    *
    * @param factory The ContentHandlerFactory for this application
    *
-   * @error Error If the factory is already set
+   * @exception Error If the factory has already been defined
+   * @exception SecurityException If a security manager exists and its
+   * checkSetFactory method doesn't allow the operation
    */
   public static synchronized void setContentHandlerFactory
                                     (ContentHandlerFactory fac)
   {
     if (factory != null)
-      throw new Error("The ContentHandlerFactory is already set");
+      throw new Error("ContentHandlerFactory already set");
+
+    // Throw an exception if an extant security mgr precludes
+    // setting the factory.
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
+      s.checkSetFactory();
 
     factory = fac;
   }
@@ -766,7 +817,7 @@ public abstract class URLConnection
    *
    * @return The MIME type String
    *
-   * @specnote public since jdk 1.4
+   * @specnote public since JDK 1.4
    */
   public static String guessContentTypeFromName(String filename)
   {
@@ -800,21 +851,34 @@ public abstract class URLConnection
    * to decode MIME types by file extension.
    *
    * @return The <code>FileNameMap</code>.
+   *
+   * @since 1.2
    */
   public static FileNameMap getFileNameMap()
   {
-    return(fileNameMap);
+    return fileNameMap;
   }
 
   /**
    * This method set the <code>FileNameMap</code> object being used
    * to decode MIME types by file extension.
    *
-   * @param fileNameMap The <code>FileNameMap</code>.
+   * @param map The <code>FileNameMap</code>.
+   *
+   * @exception SecurityException If a security manager exists and its
+   * checkSetFactory method doesn't allow the operation
+   * 
+   * @since 1.2
    */
-  public static void setFileNameMap(FileNameMap fileNameMap)
+  public static void setFileNameMap(FileNameMap map)
   {
-    URLConnection.fileNameMap = fileNameMap;  
+    // Throw an exception if an extant security mgr precludes
+    // setting the factory.
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
+      s.checkSetFactory();
+
+    fileNameMap = map;
   }
 } // class URLConnection
 
