@@ -143,6 +143,33 @@ public class PrintStream extends FilterOutputStream
 
   /*************************************************************************/
 
+  /**
+    * This method intializes a new <code>PrintStream</code> object to write
+    * to the specified output sink.  This constructor also allows "auto-flush"
+    * functionality to be specified where the stream will be flushed after
+    * every line is terminated or newline character is written.
+    * <p>
+    * Note that this class is deprecated in favor of <code>PrintWriter</code>.
+    *
+    * @param out The <code>OutputStream</code> to write to.
+    * @param autoFlush <code>true</code> to flush the stream after every 
+    * line, <code>false</code> otherwise
+    * @param encoding The name of the character encoding to use for this
+    * object.
+    *
+    * @deprecated
+    */
+  public PrintStream(OutputStream out, boolean autoFlush, String encoding)
+    throws UnsupportedEncodingException
+  {
+    super(out);
+
+    pw = new PrintWriter(new OutputStreamWriter(out, encoding), autoFlush);
+    this.auto_flush = autoFlush;
+  }
+
+  /*************************************************************************/
+
   /*
    * Instance Methods
    */

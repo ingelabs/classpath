@@ -1,5 +1,14 @@
 2003-03-15  Aaron M. Renn <arenn@urbanophile.com>
 
+	* java/io/FileOutputStream - Fix 1.4 compatibility issue
+	(FileOutputStream(File, boolean)): new constructor
+	* java/io/FileWriter - Fix 1.4 compatibility issue
+	(FileWriter(File, boolean)): new constructor
+	* java/io/PrintStream - Fix 1.4 compatibility issue
+	(PrintStream(OutputStream, boolean, String)): new constructor
+
+2003-03-15  Aaron M. Renn <arenn@urbanophile.com>
+
 	* java/io/RandomAccessFile - Fix 1.4 compatibility problems
 	(RandomAccessFile(File, String)) - Delete implementation, call
 	RandomAccessFile(String, String), throw FileNotFound instead of IOExcep
