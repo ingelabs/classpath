@@ -1,5 +1,7 @@
 2004-11-09  Tom Tromey  <tromey@redhat.com>
 
+	* scripts/eclipse-gnu.xml: New file.
+
 	* java/io/File.java (directory.getName): Removed redundant cast.
 	Changed "mask" to be of type "long".
 
