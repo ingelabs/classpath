@@ -1,0 +1,1034 @@
+/* Logger.java
+   -- a class for logging messages
+
+Copyright (C) 2002 Free Software Foundation, Inc.
+
+This file is part of GNU Classpath.
+
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA.
+
+Linking this library statically or dynamically with other modules is
+making a combined work based on this library.  Thus, the terms and
+conditions of the GNU General Public License cover the whole
+combination.
+
+As a special exception, the copyright holders of this library give you
+permission to link this library with independent modules to produce an
+executable, regardless of the license terms of these independent
+modules, and to copy and distribute the resulting executable under
+terms of your choice, provided that you also meet, for each linked
+independent module, the terms and conditions of the license of that
+module.  An independent module is a module which is not derived from
+or based on this library.  If you modify this library, you may extend
+this exception to your version of the library, but you are not
+obligated to do so.  If you do not wish to do so, delete this
+exception statement from your version.
+
+*/
+
+
+package java.util.logging;
+
+import java.util.ResourceBundle;
+import java.util.MissingResourceException;
+import java.util.List;
+
+/**
+ * FIXME: Documentation.
+ *
+ * @author Sascha Brawer (brawer@acm.org)
+ */
+public class Logger
+{
+  /**
+   * A logger provided to applications that make only occasional
+   * use of the logging framework, typically early prototypes.
+   * Serious products are supposed to create and use their own
+   * Loggers, so they can be controlled individually.
+   */
+  public static final Logger global = getLogger("global");
+
+  /**
+   * The name of the Logger, or <code>null</code> if the logger is anonymous.
+   */
+  private final String name;
+
+  private final String resourceBundleName;
+  private final ResourceBundle resourceBundle;
+
+  private Filter filter;
+
+  private final List handlerList = new java.util.ArrayList(4);
+  private Handler[] handlers = new Handler[0];
+
+
+  private boolean useParentHandlers;
+
+  private Level level;
+
+  /**
+   * Indicates a numeric threshold under which log messages can
+   * be discarded immediately.
+   */
+  private int   threshold;
+
+  private Logger parent;
+
+  /**
+   * Constructs a Logger for a subsystem.  Most applications do not
+   * need to create new Loggers explicitly; instead, they should call
+   * the static factory methods
+   * {@link #getLogger(java.lang.String,java.lang.String) getLogger}
+   * (with ResourceBundle for localization) or
+   * {@link #getLogger(java.lang.String) getLogger} (without
+   * ResourceBundle), respectively.
+   *
+   * @param name the name for the logger, for example "java.awt"
+   *             or "com.foo.bar". The name should be based on
+   *             the name of the package issuing log records
+   *             and consist of dot-separated Java identifiers.
+   *
+   * @param resourceBundleName the name of a resource bundle
+   *        for localizing messages, or <code>null</code>
+   *	    to indicate that messages do not need to be localized.
+   *
+   * @throws java.util.MissingResourceException if
+   *         <code>resourceBundleName</code> is not <code>null</code>
+   *         and no such bundle could be located.
+   */
+  protected Logger(String name, String resourceBundleName)
+    throws MissingResourceException
+  {
+    this.name = name;
+    this.resourceBundleName = resourceBundleName;
+
+    if (resourceBundleName == null)
+      resourceBundle = null;
+    else
+      resourceBundle = ResourceBundle.getBundle(resourceBundleName);
+
+    level = null;
+
+    /* This is null when the root logger is being constructed,
+     * and the root logger afterwards.
+     */
+    parent = LogManager.getLogManager().rootLogger;
+
+    useParentHandlers = (parent != null);
+    recalcThreshold();
+  }
+
+
+
+  /**
+   * Finds a registered logger for a subsystem, or creates one in
+   * case no logger has been registered yet.
+   *
+   * @param name the name for the logger, for example "java.awt"
+   *             or "com.foo.bar". The name should be based on
+   *             the name of the package issuing log records
+   *             and consist of dot-separated Java identifiers.
+   *
+   * @throws IllegalArgumentException if a logger for the subsystem
+   *         identified by <code>name</code> has already been created,
+   *         but uses a a resource bundle for localizing messages.
+   *
+   * @throws NullPointerException if <code>name</code> is
+   *         <code>null</code>.
+   *
+   * @return a logger for the subsystem specified by <code>name</code>
+   *         that does not localize messages.
+   */
+  public static Logger getLogger(String name)
+  {
+    return getLogger(name, null);
+  }
+
+    
+  /**
+   * Finds a registered logger for a subsystem, or creates one in
+   * case no logger has been registered yet.
+   *
+   * @param name the name for the logger, for example "java.awt"
+   *             or "com.foo.bar". The name should be based on
+   *             the name of the package issuing log records
+   *             and consist of dot-separated Java identifiers.
+   *
+   * @param resourceBundleName the name of a resource bundle
+   *        for localizing messages, or <code>null</code>
+   *	    to indicate that messages do not need to be localized.
+   *
+   * @return a logger for the subsystem specified by <code>name</code>.
+   *
+   * @throws java.util.MissingResourceException if
+   *         <code>resourceBundleName</code> is not <code>null</code>
+   *         and no such bundle could be located.   
+   *
+   * @throws IllegalArgumentException if a logger for the subsystem
+   *         identified by <code>name</code> has already been created,
+   *         but uses a different resource bundle for localizing
+   *         messages.
+   *
+   * @throws NullPointerException if <code>name</code> is
+   *         <code>null</code>.
+   */
+  public static Logger getLogger(String name, String resourceBundleName)
+  {
+    LogManager lm = LogManager.getLogManager();
+    Logger     result;
+
+    /* Throw NullPointerException if name is null. */
+    name.getClass();
+
+    /* Without synchronized(lm), it could happen that another thread
+     * would create a logger between our calls to getLogger and
+     * addLogger.  While addLogger would indicate this by returning
+     * false, we could not be sure that this other logger was still
+     * existing when we called getLogger a second time in order
+     * to retrieve it -- note that LogManager is only allowed to
+     * keep weak references to registered loggers, so Loggers
+     * can be garbage collected at any time in general, and between
+     * our call to addLogger and our second call go getLogger
+     * in particular.
+     *
+     * Of course, we assume here that LogManager.addLogger etc.
+     * are synchronizing on the global LogManager object. There
+     * is a comment in the implementation of LogManager.addLogger
+     * referring to this comment here, so that any change in
+     * the synchronization of LogManager will be reflected here.
+     */
+    synchronized (lm)
+    {
+      result = lm.getLogger(name);
+      if (result == null)
+      {
+	boolean couldBeAdded;
+
+	result = new Logger(name, resourceBundleName);
+	couldBeAdded = lm.addLogger(result);
+
+	/* FIXME: As soon as it is ok to use assert in Classpath
+	 * code (i.e., as soon as free Java compilers support
+	 * assert statements), uncomment the following line.
+	 */
+	/* assert couldBeAdded; */
+      }
+      else
+      {
+	/* The logger already exists. Make sure it uses
+	 * the same resource bundle for localizing messages.
+	 */
+	String existingBundleName = result.getResourceBundleName();
+
+	if ((existingBundleName != resourceBundleName)
+	    && ((existingBundleName == null)
+		|| !existingBundleName.equals(resourceBundleName)))
+	{
+	  throw new IllegalArgumentException("existing Logger uses"
+					     + " different ResourceBundle");
+	}
+      }
+    }
+
+    return result;
+  }
+
+  
+  /**
+   * FIXME: Write Javadoc.
+   */
+  public static Logger getAnonymousLogger()
+  {
+    return getAnonymousLogger(null);
+  }
+
+
+  /**
+   * FIXME: Write Javadoc.
+   *
+   * @param resourceBundleName the name of a resource bundle
+   *        for localizing messages, or <code>null</code>
+   *	    to indicate that messages do not need to be localized.
+   *
+   * @throws java.util.MissingResourceException if
+   *         <code>resourceBundleName</code> is not <code>null</code>
+   *         and no such bundle could be located.
+   */
+  public static Logger getAnonymousLogger(String resourceBundleName)
+    throws MissingResourceException
+  {
+    Logger  result;
+
+    result = new Logger(null, resourceBundleName);
+    return result;
+  }
+
+
+  /**
+   * FIXME: Write Javadoc.
+   */
+  public synchronized String getResourceBundleName()
+  {
+    return resourceBundleName;
+  }
+
+
+  /**
+   * FIXME: Write Javadoc.
+   */
+  public synchronized ResourceBundle getResourceBundle()
+  {
+    return resourceBundle;
+  }
+
+
+  /**
+   * Returns the severity level threshold for this <code>Handler</code>.
+   * All log records with a lower severity level will be discarded;
+   * a log record of the same or a higher level will be published
+   * unless an installed <code>Filter</code> decides to discard it.
+   *
+   * @return the severity level below which all log messages
+   *         will be discarded, or <code>null</code> if
+   *         the logger inherits the threshold from its parent.
+   */
+  public synchronized Level getLevel()
+  {
+    return level;
+  }
+
+
+  /**
+   * FIXME: Javadoc.
+   *
+   * @throws NullPointerException if <code>level</code>
+   *         is <code>null</code>.
+   */
+  public synchronized boolean isLoggable(Level level)
+  {
+    if (threshold <= level.intValue())
+      return true;
+
+    if (parent != null)
+      return parent.isLoggable(level);
+    else
+      return false;
+  }
+
+
+  /**
+   * Sets the severity level threshold for this <code>Handler</code>.
+   * All log records with a lower severity level will be discarded
+   * immediately.  A log record of the same or a higher level will be
+   * published unless an installed <code>Filter</code> decides to
+   * discard it.
+   *
+   * @param level the severity level below which all log messages
+   *              will be discarded, or <code>null</code> to
+   *              indicate that the logger should inherit the
+   *              threshold from its parent.
+   *
+   * @throws SecurityException if this logger is not anonymous, a
+   *     security manager exists, and the caller is not granted
+   *     the permission to control the logging infrastructure by
+   *     having LoggingPermission("control").  Untrusted code can
+   *     obtain an anonymous logger through the static factory method
+   *     {@link #getAnonymousLogger(java.lang.String) getAnonymousLogger}.
+   */
+  public synchronized void setLevel(Level level)
+  {
+    /* An application is allowed to control an anonymous logger
+     * without having the permission to control the logging
+     * infrastructure.
+     */
+    if (name != null)
+      LogManager.getLogManager().checkAccess();
+
+    this.level = level;
+    recalcThreshold();
+  }
+
+
+  private void recalcThreshold()
+  {
+    if (useParentHandlers || (level == null))
+      threshold = Level.ALL.intValue();
+    else
+      threshold = level.intValue();
+  }
+
+
+  public synchronized Filter getFilter()
+  {
+    return filter;
+  }
+
+
+  /**
+   * @throws SecurityException if this logger is not anonymous, a
+   *     security manager exists, and the caller is not granted
+   *     the permission to control the logging infrastructure by
+   *     having LoggingPermission("control").  Untrusted code can
+   *     obtain an anonymous logger through the static factory method
+   *     {@link #getAnonymousLogger(java.lang.String) getAnonymousLogger}.
+   */
+  public synchronized void setFilter(Filter filter)
+    throws SecurityException
+  {
+    /* An application is allowed to control an anonymous logger
+     * without having the permission to control the logging
+     * infrastructure.
+     */
+    if (name != null)
+      LogManager.getLogManager().checkAccess();
+
+    this.filter = filter;
+  }
+
+
+
+
+  /**
+   * Returns the name of this logger.
+   *
+   * @return the name of this logger, or <code>null</code> if
+   *         the logger is anonymous.
+   */
+  public String getName()
+  {
+    /* Note that the name of a logger cannot be changed during
+     * its lifetime, so no synchronization is needed.
+     */
+    return name;
+  }
+
+
+  public String toString()
+  {
+    return "<java.util.logging.Logger \"" + name + "\">";
+  }
+
+
+  /**
+   * Passes a record to registered handlers, provided the record
+   * is considered as loggable both by {@link #isLoggable(Level)}
+   * and a possibly installed custom {@link #setFilter(Filter) filter}.
+   *
+   * <p>If the logger has been configured to use parent handlers,
+   * the record will be forwarded to the parent of this logger
+   * in addition to being processed by the handlers registered with
+   * this logger.
+   *
+   * <p>The other logging methods in this class are convenience methods
+   * that merely create a new LogRecord and pass it to this method.
+   * Therefore, subclasses usually just need to override this single
+   * method for customizing the logging behavior.
+   *
+   * @param record the log record to be inspected and possibly forwarded.
+   */
+  public synchronized void log(LogRecord record)
+  {
+    if (!isLoggable(record.getLevel()))
+      return;
+
+    if ((filter != null) && !filter.isLoggable(record))
+      return;
+
+    for (int i = 0; i < handlers.length; i++)
+      handlers[i].publish(record);
+
+    if (useParentHandlers && (parent != null))
+      parent.log(record);
+  }
+
+
+  public void log(Level level, String message)
+  {
+    log(level, message, (Object[]) null);
+  }
+
+
+  private static final int SEVERE_THRESHOLD = Level.SEVERE.intValue();
+  private static final int WARNING_THRESHOLD = Level.WARNING.intValue();
+  private static final int INFO_THRESHOLD = Level.INFO.intValue();
+  private static final int CONFIG_THRESHOLD = Level.CONFIG.intValue();
+  private static final int FINE_THRESHOLD = Level.FINE.intValue();
+  private static final int FINER_THRESHOLD = Level.FINER.intValue();
+  private static final int FINEST_THRESHOLD = Level.FINEST.intValue();
+
+
+  public synchronized void log(Level level,
+			       String message,
+			       Object param)
+  {
+    logp(level,
+	 /* sourceClass*/ null,
+	 /* sourceMethod */ null,
+	 message,
+	 param);
+  }
+
+
+  public synchronized void log(Level level,
+			       String message,
+			       Object[] params)
+  {
+    logp(level,
+	 /* sourceClass*/ null,
+	 /* sourceMethod */ null,
+	 message,
+	 params);
+  }
+
+
+  public synchronized void log(Level level,
+			       String message,
+			       Throwable thrown)
+  {
+    logp(level,
+	 /* sourceClass*/ null,
+	 /* sourceMethod */ null,
+	 message,
+	 thrown);
+  }
+
+
+  public synchronized void logp(Level level,
+				String sourceClass,
+				String sourceMethod,
+				String message)
+  {
+    logp(level, sourceClass, sourceMethod, message,
+	 (Object[]) null);
+  }
+
+
+  public synchronized void logp(Level level,
+				String sourceClass,
+				String sourceMethod,
+				String message,
+				Object param)
+  {
+    logp(level, sourceClass, sourceMethod, message,
+	 new Object[] { param });
+  }
+
+
+  private synchronized ResourceBundle findResourceBundle()
+  {
+    if (resourceBundle != null)
+      return resourceBundle;
+
+    if (parent != null)
+      return parent.findResourceBundle();
+
+    return null;
+  }
+
+
+  private synchronized void logImpl(Level level,
+				    String sourceClass,
+				    String sourceMethod,
+				    String message,
+				    Object[] params)
+  {
+    LogRecord rec = new LogRecord(level, message);
+
+    rec.setResourceBundle(findResourceBundle());
+    rec.setSourceClassName(sourceClass);
+    rec.setSourceMethodName(sourceMethod);
+    rec.setParameters(params);
+
+    log(rec);
+  }
+
+
+  public synchronized void logp(Level level,
+				String sourceClass,
+				String sourceMethod,
+				String message,
+				Object[] params)
+  {
+    logImpl(level, sourceClass, sourceMethod, message, params);
+  }
+
+
+  public synchronized void logp(Level level,
+				String sourceClass,
+				String sourceMethod,
+				String message,
+				Throwable thrown)
+  {
+    LogRecord rec = new LogRecord(level, message);
+
+    rec.setResourceBundle(resourceBundle);
+    rec.setSourceClassName(sourceClass);
+    rec.setSourceMethodName(sourceMethod);
+    rec.setThrown(thrown);
+
+    log(rec);
+  }
+
+
+  public synchronized void logrb(Level level,
+				 String sourceClass,
+				 String sourceMethod,
+				 String bundleName,
+				 String message)
+  {
+    logrb(level, sourceClass, sourceMethod, bundleName,
+	  message, (Object[]) null);
+  }
+
+
+  public synchronized void logrb(Level level,
+				 String sourceClass,
+				 String sourceMethod,
+				 String bundleName,
+				 String message,
+				 Object param)
+  {
+    logrb(level, sourceClass, sourceMethod, bundleName,
+	  message, new Object[] { param });
+  }
+
+
+  public synchronized void logrb(Level level,
+				 String sourceClass,
+				 String sourceMethod,
+				 String bundleName,
+				 String message,
+				 Object[] params)
+  {
+    LogRecord rec = new LogRecord(level, message);
+
+    rec.setResourceBundleName(bundleName);
+    rec.setSourceClassName(sourceClass);
+    rec.setSourceMethodName(sourceMethod);
+    rec.setParameters(params);
+
+    log(rec);
+  }
+
+
+  public synchronized void logrb(Level level,
+				 String sourceClass,
+				 String sourceMethod,
+				 String bundleName,
+				 String message,
+				 Throwable thrown)
+  {
+    LogRecord rec = new LogRecord(level, message);
+
+    rec.setResourceBundleName(bundleName);
+    rec.setSourceClassName(sourceClass);
+    rec.setSourceMethodName(sourceMethod);
+    rec.setThrown(thrown);
+
+    log(rec);
+  }
+
+
+  public synchronized void entering(String sourceClass,
+				    String sourceMethod)
+  {
+    if (threshold <= FINER_THRESHOLD)
+      logp(Level.FINER, sourceClass, sourceMethod, "ENTRY");
+  }
+
+
+  public synchronized void entering(String sourceClass,
+				    String sourceMethod,
+				    Object param)
+  {
+    if (threshold <= FINER_THRESHOLD)
+      logp(Level.FINER, sourceClass, sourceMethod, "ENTRY {0}", param);
+  }
+
+
+  public synchronized void entering(String sourceClass,
+				    String sourceMethod,
+				    Object[] params)
+  {
+    if (threshold <= FINER_THRESHOLD)
+    {
+      StringBuffer buf = new StringBuffer(80);
+      buf.append("ENTRY");
+      for (int i = 0; i < params.length; i++)
+      {
+	buf.append(" {");
+	buf.append(i);
+	buf.append('}');
+      }
+      
+      logp(Level.FINER, sourceClass, sourceMethod, buf.toString(), params);
+    }
+  }
+
+
+  public synchronized void exiting(String sourceClass,
+				   String sourceMethod)
+  {
+    if (threshold <= FINER_THRESHOLD)
+      logp(Level.FINER, sourceClass, sourceMethod, "RETURN");
+  }
+
+   
+  public synchronized void exiting(String sourceClass,
+				   String sourceMethod,
+				   Object result)
+  {
+    if (threshold <= FINER_THRESHOLD)
+      logp(Level.FINER, sourceClass, sourceMethod, "RETURN {0}", result);
+  }
+
+ 
+  public synchronized void throwing(String sourceClass,
+				    String sourceMethod,
+				    Throwable thrown)
+  {
+    if (threshold <= FINER_THRESHOLD)
+      logp(Level.FINER, sourceClass, sourceMethod, "THROW", thrown);
+  }
+
+
+  /**
+   * Logs a message with severity level SEVERE, indicating a serious
+   * failure that prevents normal program execution.  Messages at this
+   * level should be understandable to an inexperienced, non-technical
+   * end user.  Ideally, they explain in simple words what actions the
+   * user can take in order to resolve the problem.
+   *
+   * @see Level#SEVERE
+   *
+   * @param message the message text, also used as look-up key if the
+   *                logger is localizing messages with a resource
+   *                bundle.  While it is possible to pass
+   *                <code>null</code>, this is not recommended, since
+   *                a logging message without text is unlikely to be
+   *                helpful.
+   */
+  public synchronized void severe(String message)
+  {
+    if (threshold <= SEVERE_THRESHOLD)
+      log(Level.SEVERE, message);
+  }
+
+
+  /**
+   * Logs a message with severity level WARNING, indicating a
+   * potential problem that does not prevent normal program execution.
+   * Messages at this level should be understandable to an
+   * inexperienced, non-technical end user.  Ideally, they explain in
+   * simple words what actions the user can take in order to resolve
+   * the problem.
+   *
+   * @see Level#WARNING
+   *
+   * @param message the message text, also used as look-up key if the
+   *                logger is localizing messages with a resource
+   *                bundle.  While it is possible to pass
+   *                <code>null</code>, this is not recommended, since
+   *                a logging message without text is unlikely to be
+   *                helpful.
+   */
+  public synchronized void warning(String message)
+  {
+    if (threshold <= WARNING_THRESHOLD)
+      log(Level.WARNING, message);
+  }
+
+
+  /**
+   * Logs a message with severity level INFO.  {@link Level#INFO} is
+   * intended for informational messages, for example [FIXME:
+   * Examples?].  In the default logging configuration, INFO messages
+   * will be written to the system console.  For this reason, the INFO
+   * level should be used only for messages that are important to end
+   * users and system administrators.  Messages at this level should
+   * be understandable to an inexperienced, non-technical user.
+   *
+   * @param message the message text, also used as look-up key if the
+   *                logger is localizing messages with a resource
+   *                bundle.  While it is possible to pass
+   *                <code>null</code>, this is not recommended, since
+   *                a logging message without text is unlikely to be
+   *                helpful.
+   */
+  public synchronized void info(String message)
+  {
+    if (threshold <= INFO_THRESHOLD)
+      log(Level.INFO, message);
+  }
+
+
+  /**
+   * Logs a message with severity level CONFIG.  {@link Level#CONFIG} is
+   * intended for static configuration messages, for example
+   * [FIXME: (Sun's Javadoc mentions graphics depth, GUI look-and-feel)],
+   * etc.
+   *
+   * @param message the message text, also used as look-up key if the
+   *                logger is localizing messages with a resource
+   *                bundle.  While it is possible to pass
+   *                <code>null</code>, this is not recommended, since
+   *                a logging message without text is unlikely to be
+   *                helpful.
+   */
+  public synchronized void config(String message)
+  {
+    if (threshold <= CONFIG_THRESHOLD)
+      log(Level.CONFIG, message);
+  }
+
+
+  /* FIXME: Phrase copied verbatim from Sun's Javadoc.  We absolutely
+   * must use different words.  (only "information that will be
+   * broadly interesting to developers who do not have a specialized
+   * interest in the subsystem")
+   */
+  /**
+   * Logs a message with severity level FINE.  {@link Level#FINE} is
+   * intended for information that will be broadly interesting to
+   * developers who do not have a specialized interest in the
+   * subsystem emitting log messages, such as minor, recoverable
+   * failures or potential performance problems.
+   *
+   * @param message the message text, also used as look-up key if the
+   *                logger is localizing messages with a resource
+   *                bundle.  While it is possible to pass
+   *                <code>null</code>, this is not recommended, since
+   *                a logging message without text is unlikely to be
+   *                helpful.
+   */
+  public synchronized void fine(String message)
+  {
+    if (threshold <= FINE_THRESHOLD)
+      log(Level.FINE, message);
+  }
+
+
+  /**
+   * Logs a message with severity level FINER.  {@link Level#FINER} is
+   * intended for rather detailed tracing, for example entering a
+   * method, returning from a method, or throwing an exception.
+   *
+   * @param message the message text, also used as look-up key if the
+   *                logger is localizing messages with a resource
+   *                bundle.  While it is possible to pass
+   *                <code>null</code>, this is not recommended, since
+   *                a logging message without text is unlikely to be
+   *                helpful.
+   */
+  public synchronized void finer(String message)
+  {
+    if (threshold <= FINER_THRESHOLD)
+      log(Level.FINER, message);
+  }
+
+
+  /**
+   * Logs a message with severity level FINEST.  {@link Level#FINEST}
+   * is intended for highly detailed tracing, for example reaching a
+   * certain point inside the body of a method.
+   *
+   * @param message the message text, also used as look-up key if the
+   *                logger is localizing messages with a resource
+   *                bundle.  While it is possible to pass
+   *                <code>null</code>, this is not recommended, since
+   *                a logging message without text is unlikely to be
+   *                helpful.
+   */
+  public synchronized void finest(String message)
+  {
+    if (threshold <= FINEST_THRESHOLD)
+      log(Level.FINEST, message);
+  }
+
+
+  /**
+   * Adds a handler to the set of handlers that get notified
+   * when a log record is to be published.
+   *
+   * @throws SecurityException if this logger is not anonymous, a
+   *     security manager exists, and the caller is not granted
+   *     the permission to control the logging infrastructure by
+   *     having LoggingPermission("control").  Untrusted code can
+   *     obtain an anonymous logger through the static factory method
+   *     {@link #getAnonymousLogger(java.lang.String) getAnonymousLogger}.
+   */
+  public synchronized void addHandler(Handler handler)
+    throws SecurityException
+  {
+    /* An application is allowed to control an anonymous logger
+     * without having the permission to control the logging
+     * infrastructure.
+     */
+    if (name != null)
+      LogManager.getLogManager().checkAccess();
+
+    if ((handler != null) && !handlerList.contains(handler))
+    {
+      handlerList.add(handler);
+      handlers = getHandlers();
+    }
+  }
+
+
+  /**
+   * Removes a handler from the set of handlers that get notified
+   * when a log record is to be published.
+   *
+   * @throws SecurityException if this logger is not anonymous, a
+   *     security manager exists, and the caller is not granted
+   *     the permission to control the logging infrastructure by
+   *     having LoggingPermission("control").  Untrusted code can
+   *     obtain an anonymous logger through the static factory method
+   *     {@link #getAnonymousLogger(java.lang.String) getAnonymousLogger}.
+   */
+  public synchronized void removeHandler(Handler handler)
+    throws SecurityException
+  {
+    /* An application is allowed to control an anonymous logger
+     * without having the permission to control the logging
+     * infrastructure.
+     */
+    if (name != null)
+      LogManager.getLogManager().checkAccess();
+
+    handlerList.remove(handler);
+    handlers = getHandlers();
+  }
+
+
+  /**
+   * Returns the handlers currently registered for this Logger.
+   * When a log record has been deemed as being loggable,
+   * it will be passed to all registered handlers for
+   * publication.  In addition, if the logger uses parent handlers
+   * (see {@link #getUseParentHandlers() getUseParentHandlers}
+   * and {@link #setUseParentHandlers(boolean) setUseParentHandlers},
+   * the log record will be passed to the parent's handlers.
+   */
+  public synchronized Handler[] getHandlers()
+  {
+    /* We cannot return our internal handlers array
+     * because we do not have any guarantee that the
+     * caller would not change the array entries.
+     */
+    return (Handler[]) handlerList.toArray(new Handler[handlerList.size()]);
+  }
+
+
+  /**
+   * Returns whether or not this Logger forwards log records to
+   * handlers registered for its parent loggers.
+   *
+   * @return <code>false</code> if this Logger sends log records
+   *         merely to Handlers registered with itself;
+   *         <code>true</code> if this Logger sends log records
+   *         not only to Handlers registered with itself, but also
+   *         to those Handlers registered with parent loggers.
+   */
+  public synchronized boolean getUseParentHandlers()
+  {
+    return useParentHandlers;
+  }
+
+
+  /**
+   * Sets whether or not this Logger forwards log records to
+   * handlers registered for its parent loggers.
+   *
+   * @param useParentHandlers <code>false</code> to let this
+   *         Logger send log records merely to Handlers registered
+   *         with itself; <code>true</code> to let this Logger
+   *         send log records not only to Handlers registered
+   *         with itself, but also to those Handlers registered with
+   *         parent loggers.
+   *
+   * @throws SecurityException if this logger is not anonymous, a
+   *     security manager exists, and the caller is not granted
+   *     the permission to control the logging infrastructure by
+   *     having LoggingPermission("control").  Untrusted code can
+   *     obtain an anonymous logger through the static factory method
+   *     {@link #getAnonymousLogger(java.lang.String) getAnonymousLogger}.
+   *
+   */
+  public synchronized void setUseParentHandlers(boolean useParentHandlers)
+  {
+    /* An application is allowed to control an anonymous logger
+     * without having the permission to control the logging
+     * infrastructure.
+     */
+    if (name != null)
+      LogManager.getLogManager().checkAccess();
+
+    this.useParentHandlers = useParentHandlers;
+    recalcThreshold();
+  }
+
+
+  /**
+   * FIXME: Write Javadoc.
+   *
+   * @return the parent of this logger (as detemined by the LogManager
+   *         by inspecting logger names), the root logger if no
+   *         other logger has a name which is a prefix of this
+   *         logger's name, or <code>null</code> for the root logger.
+   */
+  public synchronized Logger getParent()
+  {
+    return parent;
+  }
+
+
+  /**
+   * FIXME: Write Javadoc.
+   *
+   * @throws SecurityException if this logger is not anonymous, a
+   *     security manager exists, and the caller is not granted
+   *     the permission to control the logging infrastructure by
+   *     having LoggingPermission("control").  Untrusted code can
+   *     obtain an anonymous logger through the static factory method
+   *     {@link #getAnonymousLogger(java.lang.String) getAnonymousLogger}.
+   */
+  public synchronized void setParent(Logger parent)
+  {
+    LogManager lm = LogManager.getLogManager();
+
+    if (this == lm.rootLogger)
+    {
+      if (parent != null)
+	throw new IllegalArgumentException("only the root logger can have a null parent");
+      this.parent = null;
+      return;
+    }
+
+
+    /* An application is allowed to control an anonymous logger
+     * without having the permission to control the logging
+     * infrastructure.
+     */
+    if (name != null)
+      LogManager.getLogManager().checkAccess();
+
+    /* FIXME: Is it ok to pass null? Is it ok to make an anonymous
+     * logger the child of a named logger without having LoggingPermisson?
+     */
+    this.parent = parent;
+  }
+}
