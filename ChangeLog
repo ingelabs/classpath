@@ -1,5 +1,11 @@
 2005-03-02  Audrius Meskauskas  <audriusa@bluewin.ch>
 
+        * org/omg/CORBA/TypeCode.java: new file 
+        * org/omg/CORBA/UserException.java: new file 
+        * org/omg/CORBA/TypeCodePackage/BadKind.java: new file 
+	
+2005-03-02  Audrius Meskauskas  <audriusa@bluewin.ch>
+
 	* org/omg/CORBA/TCKind.java
 	* org/omg/CORBA/BAD_PARAM.java
 	* org/omg/CORBA/CompletionStatus.java
