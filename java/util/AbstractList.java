@@ -237,20 +237,22 @@ public abstract class AbstractList extends AbstractCollection implements List
   }
 
   /**
-   * Obtain a hash code for this list. In order to obey the general contract of
-   * the hashCode method of class Object, this value is calculated as follows:
-   * <pre>
-   *   hashCode = 1;
-   *   Iterator i = list.iterator();
-   *   while (i.hasNext())
-   *     {
-   *       Object obj = i.next();
-   *       hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
-   *     }
-   * </pre>
+   * Obtains a hash code for this list. In order to obey the general
+   * contract of the hashCode method of class Object, this value is
+   * calculated as follows:
+   * 
+<pre>hashCode = 1;
+Iterator i = list.iterator();
+while (i.hasNext())
+{
+  Object obj = i.next();
+  hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
+}</pre>
+   *
    * This ensures that the general contract of Object.hashCode() is adhered to.
    *
    * @return the hash code of this list
+   *
    * @see Object#hashCode()
    * @see #equals(Object)
    */
