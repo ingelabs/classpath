@@ -11,7 +11,6 @@ public class GdkGraphics extends Graphics
   Color color, xorColor;
   GtkComponentPeer component;
   Font font;
-  boolean paintMode;
 
   static final int GDK_COPY = 0, GDK_XOR = 2;
 
@@ -23,7 +22,6 @@ public class GdkGraphics extends Graphics
     int rgb[] = initState (component);
     color = new Color (rgb[0], rgb[1], rgb[2]);
     font = new Font ("Dialog", Font.PLAIN, 10);
-    paintMode = true;
   }
 
   native private void clearRectNative (int x, int y, int width, int height);
@@ -183,13 +181,14 @@ public class GdkGraphics extends Graphics
   }
 
   private native void setFGColor (int red, int green, int blue);
+
   public void setColor (Color c)
   {
-    color = new Color (c.getRGB ());
+    color = c;
 
-    if (paintMode)
+    if (xorColor == null) /* paint mode */
       setFGColor (color.getRed (), color.getGreen (), color.getBlue ());
-    else
+    else		  /* xor mode */
       setFGColor (color.getRed   () ^ xorColor.getRed (),
 		  color.getGreen () ^ xorColor.getGreen (),
 		  color.getBlue  () ^ xorColor.getBlue ());
@@ -204,7 +203,7 @@ public class GdkGraphics extends Graphics
 
   public void setPaintMode ()
   {
-    paintMode = true;
+    xorColor = null;
 
     setFunction (GDK_COPY);
     setFGColor (color.getRed (), color.getGreen (), color.getBlue ());
@@ -212,8 +211,7 @@ public class GdkGraphics extends Graphics
 
   public void setXORMode (Color c)
   {
-    paintMode = false;
-    xorColor = new Color (c.getRGB ());
+    xorColor = c;
 
     setFunction (GDK_XOR);
     setFGColor (color.getRed   () ^ xorColor.getRed (),
