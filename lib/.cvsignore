@@ -3,3 +3,6 @@ Makefile.in
 gnu
 java
 classes
+glibj.zip
+deps.sh
+gen-classlist.sh
