@@ -1,5 +1,7 @@
 2003-12-01  Graydon Hoare  <graydon@redhat.com>
 
+	* java/awt/Container.java (swapComponents): New method.
+	* (visitChild): Handle null clip bounds.
 	* javax/swing/JLayeredPane.java: Conform to mauve test, javadoc.
 
 2003-12-01  Olga Rodimina <rodimina@redhat.com>
