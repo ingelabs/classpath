@@ -1,8 +1,0 @@
-STATUS for generic JCL libs:
-
-1.1:
-
-JNILINK: compiled, untested.
-PRIMLIB: compiled, untested.
-JCL: compiled, untested.
-

@@ -10,5 +10,9 @@ TODO for java.lang.reflect Native side:
   types as well, so that IsAssignableFrom needs to be
   called less.
 
-- Makefile needs to be created, as well.
+- Overhaul checkMemberAccess to call
+  SecurityManager.checkMember(...).  At least I think this
+  needs to be done.  Though the spec wants even more specific
+  tests, so perhaps not.
 
+- test Method,Field,Constructor.

@@ -1,8 +1,4 @@
-README for generic JCL libs:
-
-
-Jun 20 1998: John Keiser
-Initial Revision: 1.1.0
+Jun 20 1998: John Keiser (jkeiser@iname.com)
 
 OK, everything in the JCL libs is 1.1-compliant: if it uses
 anything that could be VM-specific, it pawns the job off on
@@ -19,9 +15,5 @@ primlib.h is a way of caching the reflective types and the
 wrapper types and does a little conversion between types to
 boot.
 
-jnilink.h allows you to do typical linker functions:
-caching of the methodID if it is final, private, or static
-method and thus cannot be overriden; or re-resolution of
-the methodID for each different class.  Even re-resolution
-can be made efficient by making it VM-specific; I.E.
-caching the slot number instead of the name and signature.
+jnilink.h allows you to safely cache classes, fields and
+methods in your native code.

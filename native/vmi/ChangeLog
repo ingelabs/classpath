@@ -1,6 +1,9 @@
-README for JCL VMI library:
+Sun Aug  9 11:08:14 MDT 1998 - John Keiser (jkeiser@iname.com)
 
-20 June 1998: John Keiser
+Added this ChangeLog.  No change to VMI proper.
+
+20 June 1998 - John Keiser (jkeiser@iname.com)
+
 Initial Revision
 
 This is the catchall library that does all the VM-specific
