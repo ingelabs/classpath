@@ -1,9 +1,27 @@
 #include "gtkpeer.h"
 #include "GdkGraphics.h"
 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__II
+  (JNIEnv *env, jobject obj, jint width, jint height)
+{
+  struct graphics *g;
+
+  g = (struct graphics *) malloc (sizeof (struct graphics));
+  g->x_offset = g->y_offset = 0;
+
+  gdk_threads_enter ();
+  g->drawable = (GdkDrawable *) gdk_pixmap_new (NULL, width, height, 
+						gdk_rgb_get_visual ()->depth);
+  g->cm = gdk_rgb_get_cmap ();
+  g->gc = gdk_gc_new (g->drawable);
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, g);
+}
+
 /* copy the native state of the peer (GtkWidget *) to the native state
    of the graphics object */
-JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState
+JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__Lgnu_java_awt_peer_gtk_GtkComponentPeer_2
   (JNIEnv *env, jobject obj, jobject peer)
 {
   struct graphics *g = (struct graphics *) malloc (sizeof (struct graphics));
@@ -14,6 +32,7 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState
   jint *rgb;
 
   ptr = NSA_GET_PTR (env, peer);
+  g->x_offset = g->y_offset = 0;
 
   gdk_threads_enter ();
 
@@ -35,7 +54,6 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState
   g->cm = gtk_widget_get_colormap (widget);
   g->gc = gdk_gc_new (g->drawable);
   gdk_gc_copy (g->gc, widget->style->fg_gc[GTK_STATE_NORMAL]);
-  g->x_offset = g->y_offset = 0;
   color = widget->style->fg[GTK_STATE_NORMAL];
 
   gdk_threads_leave ();
@@ -156,12 +174,34 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyArea
   gdk_threads_enter ();
   gdk_window_copy_area ((GdkWindow *)g->drawable,
 			g->gc,
-			x + g->x_offset, y + g->y_offset,
-			(GdkWindow *)g->drawable,
 			x + g->x_offset + dx, y + g->y_offset + dy,
+			(GdkWindow *)g->drawable,
+			x + g->x_offset, y + g->y_offset,
 			width, height);
   gdk_threads_leave ();
 }
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyPixmap
+  (JNIEnv *env, jobject obj, jobject offscreen, 
+   jint x, jint y, jint width, jint height)
+{
+  struct graphics *g1, *g2;
+
+  g1 = (struct graphics *) NSA_GET_PTR (env, obj);
+  g2 = (struct graphics *) NSA_GET_PTR (env, offscreen);
+
+  gdk_threads_enter ();
+  gdk_window_copy_area ((GdkWindow *)g1->drawable,
+			g1->gc,
+			x + g1->x_offset, y + g1->y_offset,
+			(GdkWindow *)g2->drawable,
+			0, 0, width, height);
+  gdk_threads_leave ();
+}
+  
+
+
+
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRect
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)

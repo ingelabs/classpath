@@ -73,7 +73,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
 
   gdk_draw_rgb_image (g->drawable,
 		      g->gc,
-		      x, y, width, height, GDK_RGB_DITHER_NORMAL,
+		      x + g->x_offset, 
+		      y + g->y_offset, 
+		      width, height, GDK_RGB_DITHER_NORMAL,
 		      packed + offset, scansize * 3);
 
   gdk_threads_leave ();

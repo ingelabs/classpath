@@ -57,12 +57,13 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public Image createImage (ImageProducer producer) 
   {
-    return null;
+    return new GtkImage (producer, null);
   }
 
   public Image createImage (int width, int height)
   {
-    return null;
+    GdkGraphics g = new GdkGraphics (width, height);
+    return new GtkOffScreenImage (null, g, width, height);
   }
 
   public void disable () 

@@ -15,6 +15,15 @@ public class GdkGraphics extends Graphics
   static final int GDK_COPY = 0, GDK_XOR = 2;
 
   native int[] initState (GtkComponentPeer component);
+  native void initState (int width, int height);
+
+  GdkGraphics (int width, int height)
+  {
+    initState (width, height);
+    color = Color.black;
+    clip = new Rectangle (0, 0, width, height);
+    font = new Font ("Dialog", Font.PLAIN, 10);
+  }
 
   GdkGraphics (GtkComponentPeer component)
   {
@@ -53,9 +62,17 @@ public class GdkGraphics extends Graphics
 
   native public void dispose ();
 
+  native void copyPixmap (Graphics g, int x, int y, int width, int height);
   public boolean drawImage (Image img, int x, int y, 
 			    Color bgcolor, ImageObserver observer)
   {
+    if (img instanceof GtkOffScreenImage)
+      {
+	copyPixmap (img.getGraphics (), 
+		    x, y, img.getWidth (null), img.getHeight (null));
+	return true;
+      }
+
     GtkImage image = (GtkImage) img;
     new GtkImagePainter (image, this, x, y, bgcolor);
     return image.isLoaded ();
