@@ -1,3 +1,8 @@
+2005-03-11  Archie Cobbs  <archie@dellroad.org>
+
+	* native/jni/java-lang/java_lang_VMProcess.c: Fix segfault
+	in the case that a zero length command array is passed.
+
 2005-03-11  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/fdlibm/ieeefp.h: Merge m32r bits from libgcj to keep the diff

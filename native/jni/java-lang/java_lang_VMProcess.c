@@ -177,6 +177,8 @@ Java_java_lang_VMProcess_nativeSpawn(JNIEnv *env, jobject this,
    * directory into a single array for simplicity of (de)allocation.
    */
   cmdArrayLen = (*env)->GetArrayLength(env, cmdArray);
+  if (cmdArrayLen == 0)
+    goto null_pointer_exception;
   if (envArray != NULL)
     envArrayLen = (*env)->GetArrayLength(env, envArray);
   if ((strings = malloc(((cmdArrayLen + 1)
