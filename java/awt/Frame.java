@@ -35,8 +35,6 @@ import java.util.Vector;
 public class Frame extends Window implements MenuContainer, Serializable
 {
 
-// FIXME: Figure out how to register owned windows.
-
 /*
  * Static Variables
  */
