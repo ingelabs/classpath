@@ -1,3 +1,16 @@
+2004-07-20  Patrik Reali  <reali@acm.org>
+
+	* gnu/java/nio/PipeImpl.java,
+	include/Makefile.am,
+	include/gnu_java_nio_VMPipe.h,
+	include/gnu_java_nio_VMPipeImpl.h,
+	native/jni/java-nio/Makefile.am,
+	native/jni/java-nio/gnu_java_nio_VMPipe.c,
+	native/jni/java-nio/gnu_java_nio_VMPipeImpl.c,
+	vm/reference/gnu/java/nio/Makefile.am,
+	vm/reference/gnu/java/nio/VMPipe.java,
+	vm/reference/gnu/java/nio/VMPipeImpl.java: VMPipeImpl renamed to VMPipe
+
 2004-07-21  Michael Koch  <konqueror@gmx.de>
 
 	* include/Makefile.am: Fixed generation of VMPipeImpl.h

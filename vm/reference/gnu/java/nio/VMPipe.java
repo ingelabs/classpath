@@ -1,4 +1,4 @@
-/* VMPipeImpl.java -- Reference implementation for VM hooks used by PipeImpl
+/* VMPipe.java -- Reference implementation for VM hooks used by PipeImpl
    Copyright (C) 2004 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -47,7 +47,7 @@ import gnu.classpath.Configuration;
  *
  * @author Patrik Reali
  */
-final class VMPipeImpl
+final class VMPipe
 {
 
   static

@@ -1,4 +1,4 @@
-/* gnu_java_nio_VMPipeImpl.c - Native methods for PipeImpl class
+/* gnu_java_nio_VMPipe.c - Native methods for PipeImpl class
    Copyright (C) 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -41,15 +41,15 @@ exception statement from your version. */
 #include <jni.h>
 #include <jcl.h>
 
-#include "gnu_java_nio_VMPipeImpl.h"
+#include "gnu_java_nio_VMPipe.h"
 
 #define IO_EXCEPTION "java/io/IOException"
 
 JNIEXPORT void JNICALL
-Java_gnu_java_nio_VMPipeImpl_init (JNIEnv *env, jclass cls,
+Java_gnu_java_nio_VMPipe_init (JNIEnv *env, jclass cls,
                                        jobject self,
 				       jobject provider)
 {
-  JCL_ThrowException (env, IO_EXCEPTION, "gnu.java.nio.VMPipeImpl.init(): not implemented");
+  JCL_ThrowException (env, IO_EXCEPTION, "gnu.java.nio.VMPipe.init(): not implemented");
 }
 

@@ -168,7 +168,7 @@ class PipeImpl extends Pipe
     throws IOException
   {
     super();
-    VMPipeImpl.init (this, provider);
+    VMPipe.init (this, provider);
   }
 
   public Pipe.SinkChannel sink()
