@@ -11,6 +11,7 @@ CertificateFactory.java \
 CertificateFactorySpi.java \
 CertificateNotYetValidException.java \
 CertificateParsingException.java \
+CertPath.java \
 CertPathBuilderException.java \
 CertPathValidatorException.java \
 CertStoreException.java \

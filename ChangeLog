@@ -1,3 +1,12 @@
+2002-04-30  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/security/cert/Makefile.am (EXTRA_DIST): Add CertPath.java.
+	* java/security/cert/CertPath.java: New file.
+	* java/security/cert/CertificateFactory.java (generateCertPath):
+	New method.
+	* lib/standard.omit: Update java.awt and java.security classes
+	that now compile.
+
 2002-04-30  Patrik Reali  <reali@acm.org>
 
 	Patch 284:

@@ -2,14 +2,7 @@
 ../gnu/java/awt/peer/gtk/TestAWT.java$
 ../gnu/java/awt/peer/gtk/Test.java$
 ../gnu/javax/swing/plaf/gtk/.*$
-../java/awt/ImageMediaEntry.java$
-../java/awt/MediaEntry.java$
-../java/awt/MediaTracker.java$
-../java/awt/event/InputMethodEvent.java$
-../java/awt/event/InputMethodListener.java$
-../java/awt/event/InvocationEvent.java$
 ../java/util/prefs/.*$
 ../gnu/java/util/prefs/.*$
 ../gnu/classpath/tools/.*$
-../java/security/cert/CertPathValidatorException.java
 ../javax/swing/.*$
