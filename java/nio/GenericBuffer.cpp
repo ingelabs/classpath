@@ -21,13 +21,13 @@ public abstract class BUFFER extends Buffer
     
     public static BUFFER allocateDirect(int capacity)
     {
-	BUFFER b = new manta.runtime. BUFFERImpl(capacity, 0, capacity);
+	BUFFER b = new gnu.java.nio. BUFFERImpl(capacity, 0, capacity);
 	return b;
     }
 
     public static BUFFER allocate(int capacity)
     {
-	BUFFER b = new manta.runtime. BUFFERImpl(capacity, 0, capacity);
+	BUFFER b = new gnu.java.nio. BUFFERImpl(capacity, 0, capacity);
 	return b;
     }
 
@@ -35,7 +35,7 @@ public abstract class BUFFER extends Buffer
 			      int offset,
 			      int length)
     {
-        manta.runtime.BUFFERImpl b = new manta.runtime. BUFFERImpl(array, offset, length);
+        gnu.java.nio.BUFFERImpl b = new gnu.java.nio. BUFFERImpl(array, offset, length);
 	return b;
     }
 
@@ -143,7 +143,7 @@ public abstract class BUFFER extends Buffer
 	int i2 = a.pos;
 	for (int i=0;i<r;i++)
 	    {
-		ELT t = get(i1)- a.get(i2);
+		ELT t = (ELT)(get(i1)- a.get(i2));
 		if (t != 0)
 		    {
 			return (int) t;

@@ -1,6 +1,5 @@
 package java.nio.charset;
 
-
 import java.nio.*;
 
 public class Charset
