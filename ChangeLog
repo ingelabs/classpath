@@ -1,5 +1,16 @@
 2004-11-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/CardLayout.java:
+	Made some constants static.
+	(serialVersionUID): Made private.
+	(addLayoutComponent): Simplified code.
+	* java/awt/event/InputEvent.java
+	(getModifiersEx): Added missing @param tag.
+	* java/awt/image/RGBImageFilter.java
+	(filterRGBPixels): Reformatted, removed wrong @param tag.
+
+2004-11-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/URLConnection.java
 	(getContent): Added missing @return tag.
 
