@@ -141,6 +141,8 @@ markSupported()
 
 /*************************************************************************/
 
+// Don't delete this method just because the spec says it shouldn't be
+// there.  See the CVS log for details.
 /**
   * This method always throws an IOException in this class because
   * mark/reset functionality is not supported.

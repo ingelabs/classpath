@@ -196,6 +196,8 @@ ready() throws IOException
 
 /*************************************************************************/
 
+// Don't delete this method just because the spec says it shouldn't be there!
+// See the CVS log for details.
 /**
   * This method skips the specified number of chars in the stream.  It
   * returns the actual number of chars skipped, which may be less than the
