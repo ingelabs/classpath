@@ -286,4 +286,5 @@ test/Makefile
 test/gnu.java.lang.reflect/Makefile
 test/java.lang.reflect/Makefile
 test/java.net/Makefile
-test/java.util/Makefile)
+test/java.util/Makefile
+lib/Makefile)
