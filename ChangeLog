@@ -1,3 +1,13 @@
+2004-11-12  Steven Augart  <augart@watson.ibm.com>
+
+	* gnu/classpath/Configuration.java.in: Added
+	JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION. 
+	* configure.ac: Added
+	--enable-java-lang-system-explicit-initialization. 
+	* java/lang/System.java: Added support for
+	JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION. 
+	
+	
 2004-11-12  Sven de Marothy  <sven@physto.se>
 
         * java/awt/Polygon.java (contains): Reimplemented.

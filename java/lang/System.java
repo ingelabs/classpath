@@ -64,8 +64,11 @@ public final class System
    * The System Class Loader (a.k.a. Application Class Loader). The one
    * returned by ClassLoader.getSystemClassLoader. It lives here to prevent
    * a circular initialization dependency between System and ClassLoader.
+   *
+   * We can't make it a blank final, since initSystemClassLoader is a
+   * sub-function.
    */
-  static final ClassLoader systemClassLoader;
+  static ClassLoader systemClassLoader;
 
   /**
    * Stores the current system properties. This can be modified by
@@ -119,12 +122,32 @@ public final class System
    */
   static
   {
+    if (! Configuration.JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION) {
+      initLoadLibrary();
+      initProperties();
+    }
+    // We *have to* explicitly initialize the streams here, since they're a
+    // blank final field.
+    in = VMSystem.makeStandardInputStream();
+    out = VMSystem.makeStandardOutputStream();
+    err = VMSystem.makeStandardErrorStream();
+    
+    if (! Configuration.JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION) {
+      initSystemClassLoader();
+      initSecurityManager();    // Includes getting the class loader.
+    }
+  }
+
+  static void initLoadLibrary () {
     // Note that this loadLibrary() takes precedence over the one in Object,
     // since Object.<clinit> is waiting for System.<clinit> to complete
     // first; but loading a library twice is harmless.
     if (Configuration.INIT_LOAD_LIBRARY)
       loadLibrary("javalang");
 
+  }
+
+  static void initProperties() {
     Properties defaultProperties = Runtime.defaultProperties;
     defaultProperties.put("gnu.classpath.home",
 		    Configuration.CLASSPATH_HOME);
@@ -286,13 +309,13 @@ public final class System
     // Note that we use clone here and not new.  Some programs assume
     // that the system properties do not have a parent.
     properties = (Properties) Runtime.defaultProperties.clone();
+  }
 
-    in = VMSystem.makeStandardInputStream();
-    out = VMSystem.makeStandardOutputStream();
-    err = VMSystem.makeStandardErrorStream();
-
+  static void initSystemClassLoader() {
     systemClassLoader = VMClassLoader.getSystemClassLoader();
+  }
 
+  static void initSecurityManager () {
     String secman = properties.getProperty("java.security.manager");
     if (secman != null)
       {
