@@ -1,5 +1,20 @@
 2004-09-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JPasswordField.java:
+	Reformated. Implemented construtors.
+	* javax/swing/plaf/basic/BasicPasswordFieldUI.java
+	(create): New method.
+	* javax/swing/text/PlainView.java
+	(selectedColor): Made package-private to allow access from sub-classes
+	in same package too.
+	(unselectedColor): Likewise.
+	(font): Likewise.
+	(drawSelectedText): Make protected.
+	(drawUnselectedText): Likewise.
+	* javax/swing/text/PasswordView.java: New file.
+
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/text/DocumentFilter.java
 	(FilterBypass): New inner class.
 	(insertString): New method.
