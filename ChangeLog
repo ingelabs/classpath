@@ -1,3 +1,7 @@
+2003-06-30  Dalibor Topic  <robilad@kaffe.org>
+
+	* gnu/regexp/CharIndexedInputStream.java: Reorganized imports.
+
 2004-06-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* doc/www.gnu.org/faq/faq.wml: Update CVS locations.
