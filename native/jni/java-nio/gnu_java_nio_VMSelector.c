@@ -265,6 +265,7 @@ Java_gnu_java_nio_VMSelector_select (JNIEnv *env,
     		 */
     		JCL_ThrowException(env, "java/lang/InternalError",
     			"Not enough space in message buffer.");
+    		return 0;
     	}
     	
 		JCL_ThrowException (env, "java/io/IOException", message_buf);
