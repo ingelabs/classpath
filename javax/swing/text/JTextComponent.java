@@ -42,16 +42,14 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Rectangle;
-import javax.accessibility.Accessible;
-import javax.accessibility.AccessibleContext;
-import javax.accessibility.AccessibleRole;
-import javax.accessibility.AccessibleState;
-import javax.accessibility.AccessibleStateSet;
+import java.awt.Point;
+import javax.accessibility.*;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.Scrollable;
 import javax.swing.UIManager;
+import javax.swing.event.*;
 import javax.swing.plaf.TextUI;
 
 public abstract class JTextComponent extends JComponent
@@ -62,6 +60,206 @@ public abstract class JTextComponent extends JComponent
 //                 AccessibleAction, AccessibleEditableText
 //    {
 //    } // class AccessibleJTextComponent
+
+	/**
+	 * AccessibleJTextComponent
+	 */
+	public class AccessibleJTextComponent extends AccessibleJComponent
+		implements AccessibleText, CaretListener, DocumentListener {
+
+		//-------------------------------------------------------------
+		// Variables --------------------------------------------------
+		//-------------------------------------------------------------
+
+		/**
+		 * caretPos
+		 */
+		int caretPos;
+
+
+		//-------------------------------------------------------------
+		// Initialization ---------------------------------------------
+		//-------------------------------------------------------------
+
+		/**
+		 * Constructor AccessibleJTextComponent
+		 * @param component TODO
+		 */
+		public AccessibleJTextComponent(JTextComponent component) {
+			super(component);
+			// TODO
+		} // AccessibleJTextComponent()
+
+
+		//-------------------------------------------------------------
+		// Methods ----------------------------------------------------
+		//-------------------------------------------------------------
+
+		/**
+		 * getCaretPosition
+		 * @returns int
+		 */
+		public int getCaretPosition() {
+			return 0; // TODO
+		} // getCaretPosition()
+
+		/**
+		 * getSelectedText
+		 * @returns String
+		 */
+		public String getSelectedText() {
+			return null; // TODO
+		} // getSelectedText()
+
+		/**
+		 * getSelectionStart
+		 * @returns int
+		 */
+		public int getSelectionStart() {
+			return 0; // TODO
+		} // getSelectionStart()
+
+		/**
+		 * getSelectionEnd
+		 * @returns int
+		 */
+		public int getSelectionEnd() {
+			return 0; // TODO
+		} // getSelectionEnd()
+
+		/**
+		 * caretUpdate
+		 * @param value0 TODO
+		 */
+		public void caretUpdate(CaretEvent value0) {
+			// TODO
+		} // caretUpdate()
+
+		/**
+		 * getAccessibleStateSet
+		 * @returns AccessibleStateSet
+		 */
+		public AccessibleStateSet getAccessibleStateSet() {
+			return null; // TODO
+		} // getAccessibleStateSet()
+
+		/**
+		 * getAccessibleRole
+		 * @returns AccessibleRole
+		 */
+		public AccessibleRole getAccessibleRole() {
+			return null; // TODO
+		} // getAccessibleRole()
+
+		/**
+		 * getAccessibleText
+		 * @returns AccessibleText
+		 */
+		public AccessibleText getAccessibleText() {
+			return null; // TODO
+		} // getAccessibleText()
+
+		/**
+		 * insertUpdate
+		 * @param value0 TODO
+		 */
+		public void insertUpdate(DocumentEvent value0) {
+			// TODO
+		} // insertUpdate()
+
+		/**
+		 * removeUpdate
+		 * @param value0 TODO
+		 */
+		public void removeUpdate(DocumentEvent value0) {
+			// TODO
+		} // removeUpdate()
+
+		/**
+		 * changedUpdate
+		 * @param value0 TODO
+		 */
+		public void changedUpdate(DocumentEvent value0) {
+			// TODO
+		} // changedUpdate()
+
+		/**
+		 * getIndexAtPoint
+		 * @param value0 TODO
+		 * @returns int
+		 */
+		public int getIndexAtPoint(Point value0) {
+			return 0; // TODO
+		} // getIndexAtPoint()
+
+		/**
+		 * getRootEditorRect
+		 * @returns Rectangle
+		 */
+		Rectangle getRootEditorRect() {
+			return null; // TODO
+		} // getRootEditorRect()
+
+		/**
+		 * getCharacterBounds
+		 * @param value0 TODO
+		 * @returns Rectangle
+		 */
+		public Rectangle getCharacterBounds(int value0) {
+			return null; // TODO
+		} // getCharacterBounds()
+
+		/**
+		 * getCharCount
+		 * @returns int
+		 */
+		public int getCharCount() {
+			return 0; // TODO
+		} // getCharCount()
+
+		/**
+		 * getCharacterAttribute
+		 * @param value0 TODO
+		 * @returns AttributeSet
+		 */
+		public AttributeSet getCharacterAttribute(int value0) {
+			return null; // TODO
+		} // getCharacterAttribute()
+
+		/**
+		 * getAtIndex
+		 * @param value0 TODO
+		 * @param value1 TODO
+		 * @returns String
+		 */
+		public String getAtIndex(int value0, int value1) {
+			return null; // TODO
+		} // getAtIndex()
+
+		/**
+		 * getAfterIndex
+		 * @param value0 TODO
+		 * @param value1 TODO
+		 * @returns String
+		 */
+		public String getAfterIndex(int value0, int value1) {
+			return null; // TODO
+		} // getAfterIndex()
+
+		/**
+		 * getBeforeIndex
+		 * @param value0 TODO
+		 * @param value1 TODO
+		 * @returns String
+		 */
+		public String getBeforeIndex(int value0, int value1) {
+			return null; // TODO
+		} // getBeforeIndex()
+
+
+	} // AccessibleJTextComponent
+
+
 
   public static class KeyBinding
   {

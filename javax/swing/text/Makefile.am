@@ -13,11 +13,15 @@ Element.java \
 GapContent.java \
 JTextComponent.java \
 Keymap.java \
+MutableAttributeSet.java \
 PlainDocument.java \
 PlainEditorKit.java \
 Position.java \
 Segment.java \
 Style.java \
+StyledDocument.java \
+StyledEditorKit.java \
+TextAction.java \
 View.java \
 ViewFactory.java \
 package.html
