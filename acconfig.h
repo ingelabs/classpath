@@ -18,6 +18,9 @@
 /* #undef PACKAGE */
 /* #undef VERSION */
 
+/* Define as 1 if building with debugging code included, this is not -g */
+#define DEBUG 0
+
 /************************************************************************
  * Leave the blank line there, required by autoheader.
  ************************************************************************/
