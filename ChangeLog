@@ -1,3 +1,19 @@
+2004-12-30  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/locale/LocaleInformation.java,
+	gnu/java/locale/LocaleInformation_bg.java,
+	gnu/java/locale/LocaleInformation_cs.java,
+	gnu/java/locale/LocaleInformation_da.java,
+	gnu/java/locale/LocaleInformation_es.java,
+	gnu/java/locale/LocaleInformation_fi.java,
+	gnu/java/locale/LocaleInformation_it.java,
+	gnu/java/locale/LocaleInformation_ja.java,
+	gnu/java/locale/LocaleInformation_pt.java,
+	gnu/java/locale/LocaleInformation_sv.java,
+	gnu/java/locale/LocaleInformation_zh.java,
+	gnu/java/locale/LocaleInformation_zh_Hant.java:
+	Updated to match update CLDR data more.
+
 2004-12-30  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/Thread.java (sleep): Update documentation. Make sure
