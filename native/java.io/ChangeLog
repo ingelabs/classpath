@@ -1,4 +1,29 @@
+
+Fri Jul 17 21:18:10 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* RandomAccessFile.c: Wrote this module and got a clean compile.
+
+Thu Jul 16 21:02:02 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* FileOutputStream.c: Wrote this module and got clean compile.
+
+	* File.c: Debugged module. Misc bug fixes.
+
+Wed Jul  8 19:27:50 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* File.c: Finished this module and got a clean compile.
+
+Tue Jul  7 19:32:12 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* File.c: Started writing this module
+
 1998-07-06  Geoff Berry  <gcb@cs.duke.edu>
 
 	* java_io_ObjectStreamClass.c: Added comments.
 
+Sun Jul  5 11:53:14 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* FileInputStream.c Wrote this module and got a clean compile.
+
+	* FileDescriptor.c Wrote this module and got a clean compile.
+	
