@@ -38,9 +38,10 @@ exception statement from your version. */
 
 package gnu.java.security.der;
 
-public class DEREncodingException extends java.io.IOException
-{
+import java.io.IOException;
 
+public class DEREncodingException extends IOException
+{
   public DEREncodingException()
   {
     super ();

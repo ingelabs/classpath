@@ -41,6 +41,7 @@ package gnu.java.security.x509;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.Serializable;
 
 import java.math.BigInteger;
 
@@ -91,7 +92,7 @@ import gnu.java.security.der.DERWriter;
  * @author Casey Marshall (rsdio@metastatic.org)
  */
 public class X509Certificate extends java.security.cert.X509Certificate
-  implements java.io.Serializable
+  implements Serializable
 {
 
   // Constants and fields.

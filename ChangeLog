@@ -1,5 +1,12 @@
 2003-04-30  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/security/der/DEREncodingException.java:
+	Explicitly import java.io.IOException.
+	* gnu/java/security/x509/X509Certificate.java:
+	Explicitly import java.io.Serializable.
+
+2003-04-30  Michael Koch  <konqueror@gmx.de>
+
 	* java/security/SecureClassLoader.java,
 	java/security/SecureRandom.java,
 	java/security/Security.java,
