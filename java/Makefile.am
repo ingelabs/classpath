@@ -1,4 +1,4 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = net io
+SUBDIRS = io lang net util
 
