@@ -1,5 +1,5 @@
 /* gdkfontmetrics.c
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,7 +36,7 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 #include "gtkpeer.h"
-#include "gnu_java_awt_peer_gtk_GdkGraphics.h"
+#include "gnu_java_awt_peer_gtk_GdkFontMetrics.h"
 #include <gdk/gdkx.h>
 
 #define ASCENT      0

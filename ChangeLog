@@ -1,3 +1,8 @@
+2003-01-30  Tom Tromey  <tromey@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontMetrics.c:
+	Include GdkFontMetrics.h, not GdkGraphics.h.
+
 2003-01-30  C. Brian Jones  <cbj@gnu.org>
 
 	* java/net/SocketImpl.java (localport): set to -1 by default
