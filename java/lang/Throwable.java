@@ -67,9 +67,11 @@ public class Throwable extends Object implements Serializable {
 	 ** @param s the PrintStream to write the trace to.
 	 **/
 	public void printStackTrace(PrintStream s) {
+		synchronized(st) {
 		for(int i=st.numFrames()-1;i>=0;i++) {
 			StackFrame f = st.frameAt(i);
 			s.println("in " + f.getCalledMethod().getName() + " at " + f.getSourceFilename() + ":" + f.getSourceLineNumber());
+		}
 		}
 	}
 
@@ -77,9 +79,11 @@ public class Throwable extends Object implements Serializable {
 	 ** @param w the PrintWriter to write the trace to.
 	 **/
 	public void printStackTrace(PrintWriter w) {
+		synchronized(st) {
 		for(int i=st.numFrames()-1;i>=0;i++) {
 			StackFrame f = st.frameAt(i);
 			w.println("in " + f.getCalledMethod().getName() + " at " + f.getSourceFilename() + ":" + f.getSourceLineNumber());
+		}
 		}
 	}
 
