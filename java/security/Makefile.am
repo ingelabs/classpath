@@ -1,6 +1,6 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = acl interfaces
+SUBDIRS = acl cert interfaces spec
 
 EXTRA_DIST = \
 AccessControlException.java \
