@@ -1,3 +1,10 @@
+2002-02-07  Mark Wielaard <mark@klomp.org>
+
+	* java/security/BasicPermission.java: extends with fully qualified
+	classname as workaround for gcj 3.0.4.
+
+	* doc/www.gnu.org/announce/20020208.wml: grammar fix.
+
 2002-02-07  C. Brian Jones <cbj@gnu.org>
 
 	* configure.in: fixed broken make dist by moving some of the checks

@@ -99,7 +99,7 @@ More information on the current status of each package can be found at
 <en>
 GNU Classpath requires a working GNU build environment and a byte code
 compiler such as jikes, gcj or kjc.  When creating native code you will
-also need a working C compiler and a recent Gnome development libraries
+also need a working C compiler and up to date Gnome development libraries
 (gtk+, libart and gdk-pixbuf).  More information on the precise version
 numbers for the tools and libraries can be found in the INSTALL file.
 </en>
