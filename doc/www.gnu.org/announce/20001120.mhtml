@@ -2,22 +2,23 @@
 <set-var MHTML::INCLUDE-PREFIX="../">
 
 <include macros.mhtml>
-<header "GNU Classpath Annoucement (1999-02-06)">
+<header "GNU Classpath Annoucement (2000-11-20)">
 <plain-text>
-I am pleased to announce the first development release of GNU Classpath,
+I am pleased to announce a new development release of GNU Classpath,
 a project to create a free software replacement for Sun's proprietary
 Java class libraries.  The project is initially providing class library
-support for the Japhar JVM.
+support for the Japhar JVM.  There are a few other JVMs which have taken
+the project libraries and used them in their own projects as well.
 
 Here are the answers to some questions you might have about this project 
 and this release.
 
 1).  Where can I get it?
 
-GNU Classpath 0.00 can be downloaded from:
+GNU Classpath 0.01 can be downloaded from:
 
-<link ftp://alpha.gnu.org/pub/gnu/classpath/classpath-0.00.tar.gz
-      ftp://alpha.gnu.org/pub/gnu/classpath/classpath-0.00.tar.gz>
+<link ftp://alpha.gnu.org/pub/gnu/classpath/classpath-0.01.tar.gz
+      ftp://alpha.gnu.org/pub/gnu/classpath/classpath-0.01.tar.gz>
 
 2).  What is included?
 
@@ -35,18 +36,23 @@ The following java packages are supported:
   <LI>java.util</LI>
 </UL>
 
-This is enough to run many non-awt programs.  Not all classes and methods
-are implemented in this release, but most are.  The major missing piece
-of core functionality is java.text.  Many of the implemented classes are
-already up to the Java 1.2 spec.
+This is enough to run many non-awt programs.  Not all classes and
+methods are implemented in this release, but most are.  Many of the
+implemented classes are already up to the Java 1.2 spec.
 
 3).  What is required to build/install/run?
 
-GNU Classpath requires that Japhar 0.07 be installed.  Information on
+GNU Classpath requires that Japhar 0.09 be installed.  Information on
 obtaining Japhar is available from <link http://www.japhar.org/
 http://www.japhar.org/>.  A working C compiler is also required.  You
-will need the Sun JDK installed if you elect to recompile the Java
-classes.
+will need IBM's Jikes Java compiler installed if you elect to
+recompile the Java classes and Sun's 1.1.8 JDK javah installed to
+create native header files.  RPMs compatible with Red Hat 7 have been
+created of Japhar, NSPR, a cross platform thread library Japhar uses,
+and GNU Classpath.  Installing onto a Gnome workstation should
+provide the rest of the required libraries automatically.  Otherwise,
+you may need to install libart and other packages detailed more
+precisely in the HACKING file.
 
 4).  What platforms are supported?
 

@@ -1,0 +1,15 @@
+<set-var last-modified-author="cbj">
+<set-var MHTML::INCLUDE-PREFIX="../">
+
+<include macros.mhtml>
+<header "GNU Classpath Annoucements">
+<plain-text>
+
+<H4>Announcements</H4>
+<UL>
+<LI><link /software/classpath/announce/19990206.html "GNU Classpath Version 0.00"> (1999-02-06)</LI>
+<LI><link /software/classpath/announce/20001120.html "GNU Classpath Version 0.01"> (2000-11-20)</LI>
+</UL>
+
+</plain-text>
+<footer>
