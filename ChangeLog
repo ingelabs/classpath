@@ -1,3 +1,8 @@
+2005-03-21  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/events/escape_fosdem05.wml: Add link to kaffe
+	presentation.
+
 2005-03-17  Archie Cobbs  <archie@dellroad.org>
 
 	* vm/reference/java/lang/VMClassLoader.java: handle ZIP files
