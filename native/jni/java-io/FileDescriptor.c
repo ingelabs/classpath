@@ -130,9 +130,13 @@ Java_java_io_FileDescriptor_nativeOpen(JNIEnv *env, jobject obj, jstring name,
   // FIXME: Should we manually set permission mode?
   if (!strcmp(cmode,"r"))
     rc = open(cname, O_RDONLY);
+  else if (!strcmp(cmode,"w"))
+    rc = open(cname, O_WRONLY);
+  else if (!strcmp(cmode,"a"))
+    rc = open(cname, O_WRONLY | O_APPEND);
   else if (!strcmp(cmode, "rw"))
     rc = open(cname, O_RDWR | O_CREAT);
-  else if (!strcmp(cmode, "ra"))
+  else if (!strcmp(cmode, "rwa"))
     rc = open(cname, O_RDWR | O_CREAT | O_APPEND);
   else if (!strcmp(cmode, "rws") || !strcmp(cmode,"rwd"))
     rc = open(cname, O_RDWR | O_CREAT | O_SYNC);

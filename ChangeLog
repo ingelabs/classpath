@@ -1,3 +1,14 @@
+2003-03-09  Aaron M. Renn (arenn@urbanophile.com)
+
+	* java/io/FileOutputStream.java
+	(FileOutputStream(String,boolean)) Open write only
+	* java/io/FileDescriptor.java
+	(open) Support new open modes "w" & "a", change "ra" to "rwa"
+	* java/io/RandomAccessFile.java
+	(RandomAccessFile(String,String)) Always do checkRead on open
+	* native/jni/java-io/FileDescriptor.c
+	(nativeOpen) Support new open modes "w" "a", change "ra" to "rwa"
+
 2003-03-09  Raif S. Naffah  <raif@fl.net.au>
 
 	* java.security.AlgorithmParameterGenerator.java

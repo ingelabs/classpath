@@ -134,9 +134,8 @@ public class RandomAccessFile implements DataOutput, DataInput
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)
       {
-        if (mode.equals("r"))
-          sm.checkRead(name);
-        else
+        sm.checkRead(name);
+        if (!mode.equals("r"))
           sm.checkWrite(name);
       }
   

@@ -141,9 +141,9 @@ public class FileOutputStream extends OutputStream
     try 
       {
         if (append)
-          fd.open(name, "ra");
+          fd.open(name, "a");
         else
-          fd.open(name, "rw");
+          fd.open(name, "w");
       }
     catch(IOException e)
       {

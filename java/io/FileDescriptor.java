@@ -185,7 +185,8 @@ public final class FileDescriptor
       throw new IllegalArgumentException("Path cannot be null");
 
     if (!mode.equals("r") && !mode.equals("rw") && !mode.equals("rws") &&
-        !mode.equals("rwd") & !mode.equals("ra"))
+        !mode.equals("rwd") && !mode.equals("rwa") && !mode.equals("w") &&
+        !mode.equals("a"))
       throw new IllegalArgumentException("Invalid mode value: " + mode);
     // Note above implicitly checks mode for null value
 
