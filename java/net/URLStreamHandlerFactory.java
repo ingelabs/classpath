@@ -30,7 +30,7 @@ package java.net;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public interface URLStreamHandlerFactory
+public abstract interface URLStreamHandlerFactory
 {
 /**
   * This method maps the protocol portion of a URL to a URLStreamHandler
