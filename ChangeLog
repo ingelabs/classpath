@@ -1,3 +1,11 @@
+2005-01-20  Mark Wielaard  <mark@klomp.org>
+
+	* javax/naming/directory/BasicAttributes.java (equals): Compare to any
+	Attributes and attribute order doesn't matter.
+	(BasicAttributesEnumeration.where): Initialize to zero.
+	(BasicAttributesEnumeration.nextElement): Update and compare where
+	appropriately (zero based).
+
 2005-01-20  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JTextField.java
