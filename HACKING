@@ -29,6 +29,10 @@ where -d would also place class files.  This will be used in the
 distributions of classpath to make compilation with javac, etc.
 easier/possible.
 
+Gnome cvs can be obtained with 
+:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome and a blank password.  
+The module name for gdk-pixbuf is gdk-pixbuf.
+
 There should be no compiling errors within Java source code which is
 checked in.  Code should be compiled in the build process before
 checking it in.
