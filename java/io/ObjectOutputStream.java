@@ -169,245 +169,241 @@ public class ObjectOutputStream extends OutputStream
   {
     if (useSubclassMethod)
       {
-	writeObjectOverride (obj);
-	return;
+        writeObjectOverride (obj);
+        return;
       }
-    
+
     boolean was_serializing = isSerializing;
-    
     boolean old_mode = setBlockDataMode (false);
-    
     try
       {
-	isSerializing = true;
-	boolean replaceDone = false;
-	
-	Object replacedObject = null;
-	
-	while (true)
-	  {
-	    if (obj == null)
-	      {
-		realOutput.writeByte (TC_NULL);
-		break;
-	      }
-	    
-	    Integer handle = findHandle (obj);
-	    if (handle != null)
-	      {
-		realOutput.writeByte (TC_REFERENCE);
-		realOutput.writeInt (handle.intValue ());
-		break;
-	      }
-	    
-	    if (obj instanceof Class)
-	      {
-		Class cl = (Class)obj;
-		ObjectStreamClass osc = ObjectStreamClass.lookupForClassObject (cl);
-		assignNewHandle (obj);
-		realOutput.writeByte (TC_CLASS);
-		if (!osc.isProxyClass)
-		  {
-		    writeObject (osc);
-		  }
-		else
-		  {
-		    realOutput.writeByte (TC_PROXYCLASSDESC);
-		    Class[] intfs = cl.getInterfaces();
-		    realOutput.writeInt(intfs.length);
-		    for (int i = 0; i < intfs.length; i++)
-		      realOutput.writeUTF(intfs[i].getName());
+        isSerializing = true;
+        boolean replaceDone = false;
+        Object replacedObject = null;
+        
+        while (true)
+          {
+            if (obj == null)
+              {
+                realOutput.writeByte (TC_NULL);
+                break;
+              }
+
+            Integer handle = findHandle (obj);
+            if (handle != null)
+              {
+                realOutput.writeByte (TC_REFERENCE);
+                realOutput.writeInt (handle.intValue ());
+                break;
+              }
+
+            if (obj instanceof Class)
+              {
+                Class cl = (Class)obj;
+                ObjectStreamClass osc = ObjectStreamClass.lookupForClassObject (cl);
+                assignNewHandle (obj);
+                realOutput.writeByte (TC_CLASS);
+                if (!osc.isProxyClass)
+                  {
+                    writeObject (osc);
+                  }
+                else
+                  {
+                    realOutput.writeByte (TC_PROXYCLASSDESC);
+                    Class[] intfs = cl.getInterfaces();
+                    realOutput.writeInt(intfs.length);
+                    for (int i = 0; i < intfs.length; i++)
+                      realOutput.writeUTF(intfs[i].getName());
 		    
-		    boolean oldmode = setBlockDataMode (true);
-		    annotateProxyClass(cl);
-		    setBlockDataMode (oldmode);
-		    realOutput.writeByte(TC_ENDBLOCKDATA);
+                    boolean oldmode = setBlockDataMode (true);
+                    annotateProxyClass(cl);
+                    setBlockDataMode (oldmode);
+                    realOutput.writeByte(TC_ENDBLOCKDATA);
 		    
-		    writeObject (osc.getSuper());
-		  }
-		break;
-	      }
+                    writeObject (osc.getSuper());
+                  }
+                break;
+              }
+
+            if (obj instanceof ObjectStreamClass)
+              {
+                ObjectStreamClass osc = (ObjectStreamClass)obj;
+                realOutput.writeByte (TC_CLASSDESC);
+                realOutput.writeUTF (osc.getName ());
+                realOutput.writeLong (osc.getSerialVersionUID ());
+                assignNewHandle (obj);
+
+                int flags = osc.getFlags ();
+
+                if (protocolVersion == PROTOCOL_VERSION_2
+                    && osc.isExternalizable ())
+                  flags |= SC_BLOCK_DATA;
+
+                realOutput.writeByte (flags);
+
+                ObjectStreamField[] fields = osc.fields;
+                realOutput.writeShort (fields.length);
+
+                ObjectStreamField field;
+                for (int i=0; i < fields.length; i++)
+                  {
+                    field = fields[i];
+                    realOutput.writeByte (field.getTypeCode ());
+                    realOutput.writeUTF (field.getName ());
+
+                    if (! field.isPrimitive ())
+                      writeObject (field.getTypeString ());
+                  }
+
+                boolean oldmode = setBlockDataMode (true);
+                annotateClass (osc.forClass ());
+                setBlockDataMode (oldmode);
+                realOutput.writeByte (TC_ENDBLOCKDATA);
+
+                if (osc.isSerializable ())
+                  writeObject (osc.getSuper ());
+                else
+                  writeObject (null);
+                break;
+              }
 
 
-	    if (obj instanceof ObjectStreamClass)
-	      {
-		ObjectStreamClass osc = (ObjectStreamClass)obj;
-		realOutput.writeByte (TC_CLASSDESC);
-		realOutput.writeUTF (osc.getName ());
-		realOutput.writeLong (osc.getSerialVersionUID ());
-		assignNewHandle (obj);
+            if ((replacementEnabled || obj instanceof Serializable)
+                && ! replaceDone)
+              {
+                replacedObject = obj;
 
-		int flags = osc.getFlags ();
+                if (obj instanceof Serializable)
+                  {
+                    Method m = null;
+                    try
+                      {
+                        Class classArgs[] = {};
+                        m = obj.getClass ().getDeclaredMethod ("writeReplace",
+                                                               classArgs);
+                        // m can't be null by definition since an exception would
+                        // have been thrown so a check for null is not needed.
+                        obj = m.invoke (obj, new Object[] {});
+                      }
+                    catch (NoSuchMethodException ignore)
+                      {
+                      }
+                    catch (IllegalAccessException ignore)
+                      {
+                      }
+                    catch (InvocationTargetException ignore)
+                      {
+                      }
+                  }
 
-		if (protocolVersion == PROTOCOL_VERSION_2
-		    && osc.isExternalizable ())
-		  flags |= SC_BLOCK_DATA;
+                if (replacementEnabled)
+                  obj = replaceObject (obj);
 
-		realOutput.writeByte (flags);
-		
-		ObjectStreamField[] fields = osc.fields;
-		realOutput.writeShort (fields.length);
+                replaceDone = true;
+                continue;
+              }
 
-		ObjectStreamField field;
-		for (int i=0; i < fields.length; i++)
-		  {
-		    field = fields[i];
-		    realOutput.writeByte (field.getTypeCode ());
-		    realOutput.writeUTF (field.getName ());
+            if (obj instanceof String)
+              {
+                realOutput.writeByte (TC_STRING);
+                assignNewHandle (obj);
+                realOutput.writeUTF ((String)obj);
+                break;
+              }
 
-		    if (! field.isPrimitive ())
-		      writeObject (field.getTypeString ());
-		  }
+            Class clazz = obj.getClass ();
+            ObjectStreamClass osc = ObjectStreamClass.lookupForClassObject (clazz);
+            if (osc == null)
+              throw new NotSerializableException (clazz.getName ());
 
-		boolean oldmode = setBlockDataMode (true);
-		annotateClass (osc.forClass ());
-		setBlockDataMode (oldmode);
-		realOutput.writeByte (TC_ENDBLOCKDATA);
+            if (clazz.isArray ())
+              {
+                realOutput.writeByte (TC_ARRAY);
+                writeObject (osc);
+                assignNewHandle (obj);
+                writeArraySizeAndElements (obj, clazz.getComponentType ());
+                break;
+              }
 
-		if (osc.isSerializable ())
-		  writeObject (osc.getSuper ());
-		else
-		  writeObject (null);
-		break;
-	      }
+            realOutput.writeByte (TC_OBJECT);
+            writeObject (osc);
 
+            if (replaceDone)
+              assignNewHandle (replacedObject);
+            else
+              assignNewHandle (obj);
 
-	    if ((replacementEnabled || obj instanceof Serializable)
-		&& ! replaceDone)
-	      {
-		replacedObject = obj;
+            if (obj instanceof Externalizable)
+              {
+                if (protocolVersion == PROTOCOL_VERSION_2)
+                  setBlockDataMode (true);
 
-		if (obj instanceof Serializable)
-		  {
-		    Method m = null;
-		    try
-		      {
-			Class classArgs[] = {};
-			m = obj.getClass ().getDeclaredMethod ("writeReplace",
-							       classArgs);
-			// m can't be null by definition since an exception would
-			// have been thrown so a check for null is not needed.
-			obj = m.invoke (obj, new Object[] {});
-		      }
-		    catch (NoSuchMethodException ignore)
-		      {
-		      }
-		    catch (IllegalAccessException ignore)
-		      {
-		      }
-		    catch (InvocationTargetException ignore)
-		      {
-		      }
-		  }
-		
-		if (replacementEnabled)
-		  obj = replaceObject (obj);
-		
-		replaceDone = true;
-		continue;
-	      }
+                ((Externalizable)obj).writeExternal (this);
 
-	    if (obj instanceof String)
-	      {
-		realOutput.writeByte (TC_STRING);
-		assignNewHandle (obj);
-		realOutput.writeUTF ((String)obj);
-		break;
-	      }
+                if (protocolVersion == PROTOCOL_VERSION_2)
+                  {
+                    setBlockDataMode (false);
+                    realOutput.writeByte (TC_ENDBLOCKDATA);
+                  }
 
-	    Class clazz = obj.getClass ();
-	    ObjectStreamClass osc = ObjectStreamClass.lookupForClassObject (clazz);
-	    if (osc == null)
-	      throw new NotSerializableException (clazz.getName ());
+                break;
+              }
 
-	    if (clazz.isArray ())
-	      {
-		realOutput.writeByte (TC_ARRAY);
-		writeObject (osc);
-		assignNewHandle (obj);
-		writeArraySizeAndElements (obj, clazz.getComponentType ());
-		break;
-	      }
+            if (obj instanceof Serializable)
+              {
+                currentObject = obj;
+                ObjectStreamClass[] hierarchy =
+                  ObjectStreamClass.getObjectStreamClasses (clazz);
 
-	    realOutput.writeByte (TC_OBJECT);
-	    writeObject (osc);
+                boolean has_write;
+                for (int i=0; i < hierarchy.length; i++)
+                  {
+                    currentObjectStreamClass = hierarchy[i];
 
-	    if (replaceDone)
-	      assignNewHandle (replacedObject);
-	    else
-	      assignNewHandle (obj);
+                    fieldsAlreadyWritten = false;
+                    has_write = currentObjectStreamClass.hasWriteMethod ();
 
-	    if (obj instanceof Externalizable)
-	      {
-		if (protocolVersion == PROTOCOL_VERSION_2)
-		  setBlockDataMode (true);
+                    writeFields (obj, currentObjectStreamClass.fields,
+                                 has_write);
 
-		((Externalizable)obj).writeExternal (this);
+                    // 		    if (has_write)
+                    // 		      {
+                    // 			drain ();
+                    // 			realOutput.writeByte (TC_ENDBLOCKDATA);
+                    // 		      }
+                  }
 
-		if (protocolVersion == PROTOCOL_VERSION_2)
-		  {
-		    setBlockDataMode (false);
-		    realOutput.writeByte (TC_ENDBLOCKDATA);
-		  }
-		
-		break;
-	      }
+                currentObject = null;
+                currentObjectStreamClass = null;
+                currentPutField = null;
+                break;
+              }
 
-	    if (obj instanceof Serializable)
-	      {
-		currentObject = obj;
-		ObjectStreamClass[] hierarchy =
-		  ObjectStreamClass.getObjectStreamClasses (clazz);
-
-		boolean has_write;
-		for (int i=0; i < hierarchy.length; i++)
-		  {
-		    currentObjectStreamClass = hierarchy[i];
-
-		    fieldsAlreadyWritten = false;
-		    has_write = currentObjectStreamClass.hasWriteMethod ();
-
-		    writeFields (obj, currentObjectStreamClass.fields,
-				 has_write);
-
-// 		    if (has_write)
-// 		      {
-// 			drain ();
-// 			realOutput.writeByte (TC_ENDBLOCKDATA);
-// 		      }
-		  }
-
-		currentObject = null;
-		currentObjectStreamClass = null;
-		currentPutField = null;
-		break;
-	      }
-
-	    throw new NotSerializableException (clazz.getName ());
-	  } // end pseudo-loop
+            throw new NotSerializableException (clazz.getName ());
+          } // end pseudo-loop
       }
     catch (IOException e)
       {
-	realOutput.writeByte (TC_EXCEPTION);
-	reset (true);
+        realOutput.writeByte (TC_EXCEPTION);
+        reset (true);
 
-	setBlockDataMode (false); // ??
-	try
-	  {
-	    writeObject (e);
-	  }
-	catch (IOException ioe)
-	  {
-	    throw new StreamCorruptedException ("Exception " + ioe + " thrown while exception was being written to stream.");
-	  }
+        setBlockDataMode (false); // ??
+        try
+          {
+            writeObject (e);
+          }
+        catch (IOException ioe)
+          {
+            throw new StreamCorruptedException ("Exception " + ioe + " thrown while exception was being written to stream.");
+          }
 
-	reset (true);
-    }
+        reset (true);
+      }
     finally
       {
-	isSerializing = was_serializing;
+        isSerializing = was_serializing;
 	
-	setBlockDataMode (old_mode);
+        setBlockDataMode (old_mode);
       }
   }
 
@@ -545,10 +541,12 @@ public class ObjectOutputStream extends OutputStream
      @see java.io.ObjectInputStream#resolveClass (java.io.ObjectStreamClass)
   */
   protected void annotateClass (Class cl) throws IOException
-  {}
+  {
+  }
 
   protected void annotateProxyClass(Class cl) throws IOException
-  {}
+  {
+  }
 
   /**
      Allows subclasses to replace objects that are written to the
@@ -647,7 +645,7 @@ public class ObjectOutputStream extends OutputStream
     throw new NotActiveException ("Subclass of ObjectOutputStream must implement writeObjectOverride");
   }
 
-
+  
   /**
      @see java.io.DataOutputStream#write (int)
   */
@@ -989,7 +987,6 @@ public class ObjectOutputStream extends OutputStream
 	      = currentObjectStreamClass.getField (name);
 	    if (field == null)
 	      throw new IllegalArgumentException ();
-	    
 	    if (value != null &&
 	    	! field.getType ().isAssignableFrom (value.getClass ()))
 	      throw new IllegalArgumentException ();
@@ -1210,7 +1207,6 @@ public class ObjectOutputStream extends OutputStream
     
     drain();
     boolean oldmode = writeDataAsBlocks;
-    
     writeDataAsBlocks = on;
 
     if (on)
@@ -1265,4 +1261,3 @@ public class ObjectOutputStream extends OutputStream
       }
   }
 }
-

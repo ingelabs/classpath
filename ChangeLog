@@ -1,3 +1,8 @@
+2003-01-10  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/ObjectOuputStream.java:
+	Reformated, no code or documentation changes.
+
 2003-01-05  C. Brian Jones  <cbj@gnu.org>
 
 	* THANKYOU: fixed Weldon's email reference
