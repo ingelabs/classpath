@@ -1,3 +1,25 @@
+2004-12-06  Guilhem Lavaux  <guilhem@kaffe.org>
+	Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/io/ObjectInputStream.java
+	(newObject): Changed prototype. Get a constructor reflect object
+	directly.
+	(callConstructor): Removed.
+	(allocateObject): Changed prototype.
+	(readClassDescriptor): Build the constructor reflection directly.
+	(readObject): Invoke newObject using the new prototype.
+
+	* java/io/ObjectStreamClass.java
+	(firstNonSerializableParent): Removed.
+	(firstNonSerializableParentConstructor): Added.
+	
+	* include/java_io_ObjectInputStream.h: Regenerated.
+
+	* native/jni/java-io/java_io_ObjectInputStream.c
+	(allocateObject): Allocate an object and call the requested
+	constructor.
+	(callConstructor): Removed.
+	
 2004-12-06  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/BufferedInputStream.java

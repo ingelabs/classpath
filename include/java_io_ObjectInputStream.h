@@ -10,11 +10,8 @@ extern "C"
 {
 #endif
 
-JNIEXPORT jobject JNICALL Java_java_io_ObjectInputStream_currentClassLoader (JNIEnv *env, jclass, jobject);
-JNIEXPORT jobject JNICALL Java_java_io_ObjectInputStream_allocateObject (JNIEnv *env, jobject, jclass);
-JNIEXPORT void JNICALL Java_java_io_ObjectInputStream_callConstructor (JNIEnv *env, jobject, jclass, jobject);
-#undef java_io_ObjectInputStream_BUFFER_SIZE
-#define java_io_ObjectInputStream_BUFFER_SIZE 1024L
+extern JNIEXPORT jobject JNICALL Java_java_io_ObjectInputStream_currentClassLoader (JNIEnv *env, jclass, jobject);
+extern JNIEXPORT jobject JNICALL Java_java_io_ObjectInputStream_allocateObject (JNIEnv *env, jobject, jclass, jclass, jobject);
 
 #ifdef __cplusplus
 }
