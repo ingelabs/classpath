@@ -127,7 +127,8 @@ public class StreamHandler
     Level defaultLevel,
     Formatter formatter, Class defaultFormatterClass)
   {
-    this.level = LogManager.getLevelProperty(propertyPrefix + ".level", defaultLevel);
+    this.level = LogManager.getLevelProperty(propertyPrefix + ".level",
+					     defaultLevel);
 
     this.filter = (Filter) LogManager.getInstanceProperty(
       propertyPrefix + ".filter",
@@ -144,7 +145,8 @@ public class StreamHandler
 
     try
     {
-      String enc = LogManager.getLogManager().getProperty(propertyPrefix + ".encoding");
+      String enc = LogManager.getLogManager().getProperty(propertyPrefix
+							  + ".encoding");
 
       /* make sure enc actually is a valid encoding */
       if ((enc != null) && (enc.length() > 0))
@@ -223,49 +225,51 @@ public class StreamHandler
    * @param encoding the name of a character encoding, or <code>null</code>
    *            for the default encoding.
    *
-   * @exception SecurityException if a security manager exists and
-   *            the caller is not granted the permission to control
-   *            the logging infrastructure.
+   * @throws SecurityException if a security manager exists and
+   *     the caller is not granted the permission to control the
+   *     the logging infrastructure.
    *
    * @exception IllegalStateException if any log records have been
-   *            published to this <code>StreamHandler</code> before.
-   *
+   *     published to this <code>StreamHandler</code> before.  Please
+   *     be aware that this is a pecularity of the GNU implementation.
+   *     While the API specification indicates that it is an error
+   *     if the encoding is set after records have been published,
+   *     it does not mandate any specific behavior for that case.
    */
   public void setEncoding(String encoding)
     throws SecurityException, UnsupportedEncodingException
   {
-    /* Now, this might be a bit paranoid: If we did not call
-     * checkAccess() before checking the state of the stream,
-     * untrusted code would have a possibility to learn
-     * whether a StreamHandler had been written to: If yes,
-     * an IllegalStateException would be thrown, otherwise
-     * a SecurityException.  While it is entirely unclear
-     * what untrusted code would do with this kind of
-     * information, it still might be better to check for
-     * untrusted callers before giving out any information
-     * about the state of the stream.
+    /* The inherited implementation first checks whether the invoking
+     * code indeed has the permission to control the logging infra-
+     * structure, and throws a SecurityException if this was not the
+     * case.
+     *
+     * Next, it verifies that the encoding is supported and throws
+     * an UnsupportedEncodingExcpetion otherwise. Finally, it remembers
+     * the name of the encoding.
      */
-    LogManager.getLogManager().checkAccess();
+    super.setEncoding(encoding);
 
     checkFresh();
 
-    /* If out is null, setEncoding is being called before an output stream
-     * has been set. In that case, we need to check that the encoding
-     * is valid, and remember it if this is the case.  Since this
-     * is exactly what the inherited implementation of Handler.setEncoding
-     * does, we can delegate.
+    /* If out is null, setEncoding is being called before an output
+     * stream has been set. In that case, we need to check that the
+     * encoding is valid, and remember it if this is the case.  Since
+     * this is exactly what the inherited implementation of
+     * Handler.setEncoding does, we can delegate.
      */
-    if (out == null)
+    if (out != null)
     {
-      super.setEncoding(encoding);
-      return;
+      /* The logging API says that a null encoding means the default
+       * platform encoding. However, java.io.OutputStreamWriter needs
+       * another constructor for the default platform encoding, passing
+       * null would throw an exception.
+       */
+      if (encoding == null)
+	writer = new OutputStreamWriter(out);
+      else
+	writer = new OutputStreamWriter(out, encoding);
     }
-
-    /* super.setEncoding(encoding) would do the same, but only
-     * after checking for permissions again.  Since we did call
-     * checkAccess() already, this is not necessary.
-     */
-    changeWriter(out, encoding);
   }
 
 
@@ -318,6 +322,18 @@ public class StreamHandler
    * of this <code>Handler</code> will be informed, but the caller
    * of this method will not receive an exception.
    *
+   * <p>If a log record is being published to a
+   * <code>StreamHandler</code> that has been closed earlier, the Sun
+   * J2SE 1.4 reference can be observed to silently ignore the
+   * call. The GNU implementation, however, intentionally behaves
+   * differently by informing the <code>ErrorManager</code> associated
+   * with this <code>StreamHandler</code>.  Since the condition
+   * indicates a programming error, the programmer should be
+   * informed. It also seems extremely unlikely that any application
+   * would depend on the exact behavior in this rather obscure,
+   * erroneous case -- especially since the API specification does not
+   * prescribe what is supposed to happen.
+   * 
    * @param record the log event to be published.
    */
   public void publish(LogRecord record)
@@ -405,6 +421,18 @@ public class StreamHandler
    * <p>In case of an I/O failure, the <code>ErrorManager</code>
    * of this <code>Handler</code> will be informed, but the caller
    * of this method will not receive an exception.
+   *
+   * <p>If a <code>StreamHandler</code> that has been closed earlier
+   * is closed a second time, the Sun J2SE 1.4 reference can be
+   * observed to silently ignore the call. The GNU implementation,
+   * however, intentionally behaves differently by informing the
+   * <code>ErrorManager</code> associated with this
+   * <code>StreamHandler</code>.  Since the condition indicates a
+   * programming error, the programmer should be informed. It also
+   * seems extremely unlikely that any application would depend on the
+   * exact behavior in this rather obscure, erroneous case --
+   * especially since the API specification does not prescribe what is
+   * supposed to happen.
    */
   public void flush()
   {
@@ -436,6 +464,18 @@ public class StreamHandler
    * of this <code>Handler</code> will be informed, but the caller
    * of this method will not receive an exception.</p>
    *
+   * <p>If a <code>StreamHandler</code> that has been closed earlier
+   * is closed a second time, the Sun J2SE 1.4 reference can be
+   * observed to silently ignore the call. The GNU implementation,
+   * however, intentionally behaves differently by informing the
+   * <code>ErrorManager</code> associated with this
+   * <code>StreamHandler</code>.  Since the condition indicates a
+   * programming error, the programmer should be informed. It also
+   * seems extremely unlikely that any application would depend on the
+   * exact behavior in this rather obscure, erroneous case --
+   * especially since the API specification does not prescribe what is
+   * supposed to happen.
+   *
    * @throws SecurityException if a security manager exists and
    *         the caller is not granted the permission to control
    *         the logging infrastructure.
@@ -445,22 +485,38 @@ public class StreamHandler
   {
     LogManager.getLogManager().checkAccess();
 
-    /* flush() calls checkOpen() */
-    flush();
-
     try
     {
+      /* Although  flush also calls checkOpen, it catches
+       * any exceptions and reports them to the ErrorManager
+       * as flush failures.  However, we want to report
+       * a closed stream as a close failure, not as a
+       * flush failure here.  Therefore, we call checkOpen()
+       * before flush().
+       */
+      checkOpen();
+      flush();
+
       if (writer != null)
       {
-	if ((streamState == STATE_PUBLISHED) && (formatter != null))
-	  writer.write(formatter.getTail(this));
-
+	if (formatter != null)
+	{
+	  /* Even if the StreamHandler has never published a record,
+	   * it emits head and tail upon closing. An earlier version
+	   * of the GNU Classpath implementation did not emitted
+	   * anything. However, this had caused XML log files to be
+	   * entirely empty instead of containing no log records.
+	   */
+	  if (streamState == STATE_FRESH)
+            writer.write(formatter.getHead(this));
+	  if (streamState != STATE_CLOSED)
+	    writer.write(formatter.getTail(this));
+	}
+	streamState = STATE_CLOSED;
         writer.close();
       }
-
-      streamState = STATE_CLOSED;
     }
-    catch (java.io.IOException ex)
+    catch (Exception ex)
     {
       reportError(null, ex, ErrorManager.CLOSE_FAILURE);
     }
