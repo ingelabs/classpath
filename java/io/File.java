@@ -39,12 +39,12 @@ exception statement from your version. */
 
 package java.io;
 
+import gnu.java.io.PlatformHelper;
+
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-
-import gnu.java.io.PlatformHelper;
 
 /* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
  * "The Java Language Specification", ISBN 0-201-63451-1
@@ -1180,12 +1180,7 @@ public class File implements Serializable, Comparable
     if (sm != null)
       sm.checkDelete(path);
 
-    // Sounds like we need to do some VM specific stuff here. We could delete
-    // the file in finalize() and set FinalizeOnExit to true, but delete on
-    // finalize != delete on exit and we should not be setting up system
-    // parameters without the user's knowledge.
-    // FIXME: ********IMPLEMENT ME!!!!!!***************
-    return;
+    DeleteFileHelper.add(this);
   }
 
   private void writeObject(ObjectOutputStream oos) throws IOException

@@ -1,3 +1,9 @@
+2004-05-19  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* java/io/DeleteFileHelper.java: New file.
+	* java/io/File.java
+	(deleteOnExit): Implemented.
+
 2004-05-19  Michael Koch  <konqueror@gmx.de>
 
 	* native/testsuite/Makefile.am: Removed more dead Japhar code.
