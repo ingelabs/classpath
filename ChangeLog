@@ -1,3 +1,7 @@
+2005-03-13  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/xml/aelfred2/XmlParser.java: Fixed typo.
+
 2005-03-12  Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* org/omg/CORBA/StringSeqHelper.java,
