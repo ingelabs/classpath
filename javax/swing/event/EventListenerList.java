@@ -282,11 +282,21 @@ public class EventListenerList
 
 
   /**
-   * Get a string representation
-   * @returns String representation
+   * Returns a string representation of this object that may be useful
+   * for debugging purposes.
    */
   public String toString()
   {
-    return null; // TODO
+    StringBuffer buf = new StringBuffer("EventListenerList: ");
+    buf.append(listenerList.length / 2);
+    buf.append(" listeners: ");
+    for (int i = 0; i < listenerList.length; i += 2)
+      {
+        buf.append(" type ");
+        buf.append(((Class) listenerList[i]).getName());
+        buf.append(" listener ");
+        buf.append(listenerList[i + 1]);
+      }
+    return buf.toString();
   }
 }

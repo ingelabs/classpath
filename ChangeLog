@@ -1,5 +1,9 @@
 2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/event/EventListenerList.java (toString): Implemented.
+
+2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
+
 	Fix for Classpath bug #7107.
 	* javax/swing/DefaultBoundedRangeModel.java: Documented API.
 	(changeEvent): Create event object on demand.
