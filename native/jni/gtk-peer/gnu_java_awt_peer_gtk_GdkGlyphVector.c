@@ -40,12 +40,14 @@
 
 struct state_table *native_glyphvector_state_table;
 
-typedef struct { 
+typedef struct _rect_t_struct rect_t;
+struct _rect_t_struct
+{ 
   double x;
   double y;
   double width;
   double height;
-} rect_t;
+};
 
 #define DOUBLE_TO_26_6(d) ((FT_F26Dot6)((d) * 64.0))
 #define DOUBLE_FROM_26_6(t) ((double)(t) / 64.0)

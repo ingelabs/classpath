@@ -236,7 +236,8 @@ extern int   __kernel_rem_pio2f __P((float*,float*,int,int,int,const int32_t*));
 
 #ifdef __IEEE_BIG_ENDIAN
 
-typedef union 
+typedef union _ieee_double_shape_type_union ieee_double_shape_type;
+union _ieee_double_shape_type_union
 {
   double value;
   struct 
@@ -244,13 +245,14 @@ typedef union
     uint32_t msw;
     uint32_t lsw;
   } parts;
-} ieee_double_shape_type;
+};
 
 #endif
 
 #ifdef __IEEE_LITTLE_ENDIAN
 
-typedef union 
+typedef union _ieee_double_shape_type_union ieee_double_shape_type;
+union _ieee_double_shape_type_union
 {
   double value;
   struct 
@@ -258,7 +260,7 @@ typedef union
     uint32_t lsw;
     uint32_t msw;
   } parts;
-} ieee_double_shape_type;
+};
 
 #endif
 
@@ -323,11 +325,12 @@ do {								\
 /* A union which permits us to convert between a float and a 32 bit
    int.  */
 
-typedef union
+typedef union _ieee_float_shape_type_union ieee_float_shape_type;
+union _ieee_float_shape_type_union
 {
   float value;
   uint32_t word;
-} ieee_float_shape_type;
+};
 
 /* Get a 32 bit int from a float.  */
 

@@ -43,7 +43,9 @@ exception statement from your version. */
 typedef void * jframeID;
 typedef void * jthread;
 
-typedef enum {
+typedef enum _vmiError_enum vmiError;
+enum _vmiError_enum
+{
   VMI_ERROR_NONE,
   VMI_ERROR_NULL_POINTER,
   VMI_ERROR_OUT_OF_MEMORY,
@@ -59,7 +61,7 @@ typedef enum {
   VMI_ERROR_NO_MORE_FRAMES,
   VMI_ERROR_INVALID_THREAD,
   VMI_ERROR_THREAD_NOT_SUSPENDED
-} vmiError;
+};
 
 
 #define VMI_MOD_PUBLIC       0x0001

@@ -16,3 +16,18 @@ dist-hook:
 
 ChangeLog:
 	cvs2cl.pl -b --gmt --log-opts "-d'1998-06-30< now'" --window 7200 --usermap ChangeLog.usermap --ignore ChangeLog --fsf
+
+indent:
+	find .  | \
+	grep \\.[ch]$$ | \
+	awk ' \
+	{print "indent " $$1 " -o " $$1 ".indented && \
+	if cmp -s " $$1 " " $$1 ".indented; \
+	then rm " $$1 ".indented; \
+	else mv " $$1 " " $$1 ".bak; \
+	mv " $$1 ".indented " $$1 "; \
+	echo " $$1 "; \
+	fi"} \
+	' | \
+	sh
+
