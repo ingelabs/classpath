@@ -1,0 +1,8 @@
+STATUS for java.lang.reflect Native side
+
+1.1:
+Method.c     : compiled, untested.
+Field.c      : unknown.  Needs changes before I'm happy with it.
+Constructor.c: all methods compile.
+Array.c      : compiled, untested.
+reflect.c    : compiled, untested.

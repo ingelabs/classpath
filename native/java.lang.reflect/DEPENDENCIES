@@ -1,0 +1,29 @@
+DEPENDENCIES for java.lang.reflect Native side.
+
+1.1:
+Array.c:
+	1.1: JNI
+Method.c:
+	1.1: JNI,JCL,PRIMLIB,JNILINK,NSA
+	1.2: JVMDI: JVMDI_GetCallerFrame
+	1.2: VMI: VMI_GetThisFrame
+	1.2: VMI: VMI_GetFrameObject
+	1.2: VMI: VMI_MOD_STATIC
+	1.2: VMI: VMI_ThrowAppropriateException
+	1.2: VMI: VMI_ThrowAppropriateJVMDIException
+Constructor.c:
+	1.1: JNI,JCL,PRIMLIB,JNILINK,NSA
+	1.2: JVMDI: GetCallerFrame
+	1.2: VMI: VMI_GetThisFrame
+	1.2: VMI: VMI_GetFrameObject
+	1.2: VMI: VMI_ThrowAppropriateException
+	1.2: VMI: VMI_ThrowAppropriateJVMDIException
+Field.c:
+	untested
+reflect.c:
+	1.1: JNI,JCL,PRIMLIB
+	1.2: JVMDI: GetClassModifiers
+	1.2: JVMDI: GetClassName
+	1.2: VMI: VMI_MOD_STATIC
+	1.2: VMI: VMI_MOD_FINAL
+	1.2: VMI_MOD_PRIVATE

@@ -1,0 +1,17 @@
+README for java.lang.reflect Native side
+
+
+Jun 20 1998: John Keiser
+Initial Version
+
+Currently Reflection depends heavily on the VMI and JVMDI.  The only way I can
+think of to deal with this is to make a VMI 1.1 API that handles what JVMDI
+does not.  When one compiles the 1.1 version of Reflection, it can just use
+that.
+
+Field is not done yet.  Don't bother compiling it.
+
+This whole thing is quite untested.  I am checking in now because I want
+Geoffrey, the Serialization dude, to have some reference code to work with.
+His stuff is not altogether different from mine, and in order to make his
+code efficient he may need to borrow from mine.

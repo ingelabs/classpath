@@ -1,0 +1,9 @@
+TODO for java.lang.reflect Native side:
+
+- Field.c: reimplement almost everything.  Don't even know if this compiles.
+
+- Note: I am planning on moving all JDK 1.2 dependencies to VMI so that 1.1 VMs
+  like Kaffe that do not implement JVMDI can still interface to
+  java.lang.reflect.
+
+- Makefile needs to be created, as well.
