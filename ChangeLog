@@ -1,5 +1,10 @@
 2004-11-08  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/net/URLStreamHandler.java
+	(parseURL): Fixed file path canonicalisation.
+
+2004-11-08  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/io/File.java:
 	(createTempFile): Use VMFile.IS_DOS_8_3 instead of separatorChar
 	to determine file system naming restrictions.
