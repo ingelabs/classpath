@@ -1,4 +1,4 @@
-\input texinfo @c -*-texinfo-*-
+input texinfo @c -*-texinfo-*-
 
 @c %**start of header
 @setfilename vmintegration.info
@@ -302,6 +302,7 @@ Classpath places a few requirements on the VM that uses it.
 @menu
 * JNI Version::                 
 * VM Threading Model::          
+* Boot Library Path Property::
 @end menu
 
 @node JNI Version, VM Threading Model, Miscellaneous VM Requirements, Miscellaneous VM Requirements
@@ -317,7 +318,7 @@ A future direction will probably be to require that all VMs provide
 JNI 1.2.  If this poses problems, please raise them on the classpath
 mailing list. 
 
-@node VM Threading Model,  , JNI Version, Miscellaneous VM Requirements
+@node VM Threading Model, Boot Library Path Property, JNI Version, Miscellaneous VM Requirements
 @comment  node-name,  next,  previous,  up
 @section VM Threading Model
 
@@ -357,6 +358,21 @@ static void insertSystemProperties(Properties @var{p})
 So, the configure option
 @option{--portable-native-sync} is deprecated, and should go away in a
 subsequent release of GNU Classpath.
+
+@node Boot Library Path Property,  , VM Threading Model, Miscellaneous VM Requirements
+@comment  node-name,  next,  previous,  up
+@section Boot Library Path Property
+
+As of GNU Classpath 0.15 a system property named @code{gnu.classpath.boot.library.path}
+can be set by the VM to specify the directories which contain GNU Classpath's native
+libraries. Usually this value is given at configuration time and is then hardcoded
+in the VM. However for development purposes it is handy to switch to another installation
+by overriding the properties' value on the command line.
+
+A VM that does not support this feature can simply ignore the property.
+
+For compatibility reasons we suggest to set the default value of @code{java.library.path}
+to the value of the @code{LD_LIBRARY_PATH} environment if it exists on your platform.
 
 @bye
 
