@@ -419,7 +419,7 @@ append(String str)
   if (tap == null) 
     return;
 
-  tap.insert(text, tap.getText().length());
+  tap.insert(str, tap.getText().length());
 }
 
 /*************************************************************************/
