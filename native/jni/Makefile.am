@@ -4,6 +4,6 @@ if CREATE_GTK_PEER_LIBRARIES
   GTKDIR = gtk-peer
 endif
 
-SUBDIRS = classpath java-io java-lang java-net java-nio java-util $(GTKDIR)
-DIST_SUBDIRS = classpath java-io java-lang java-net java-nio java-util gtk-peer
+SUBDIRS = classpath java-awt java-io java-lang java-net java-nio java-util $(GTKDIR)
+DIST_SUBDIRS = classpath java-awt java-io java-lang java-net java-nio java-util gtk-peer
 

@@ -1,5 +1,31 @@
 2004-02-12  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/awt/EmbeddedWindow.java,
+	gnu/java/awt/EmbeddedWindowSupport.java,
+	gnu/java/awt/peer/EmbeddedWindowPeer.java,
+	gnu/java/awt/peer/gtk/GtkEmbeddedWindowPeer.java,
+	include/gnu_java_awt_EmbeddedWindow.h,
+	include/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.h,
+	native/jni/java-awt/gnu_java_awt_EmbeddedWindow.c,
+	native/jni/java-awt/Makefile.am,
+	native/jni/java-awt/.cvsignore: New files.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	* configure.ac (AC_OUTPUT_FILES): Added native/jni/java-awt/Makefile
+	* gnu/java/awt/Makefile.am
+	(EXTRA_DIST): Added EmbeddedWindow.java and
+	EmbeddedWindowSupport.java.
+	* gnu/java/awt/peer/Makefile.am
+	(EXTRA_DIST): Added EmbeddedWindowPeer.java.
+	* gnu/java/awt/peer/gtk/Makefile.am
+	(EXTRA_DIST): Added GtkEmbeddedWindowPeer.java.
+	* include/Makefile.am: Generate gnu_java_awt_EmbeddedWindow.h and
+	gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.h.
+	* native/jni/Makefile.am: Added subdir java-awt.
+	* native/jni/gtk-peer/Makefile.am: Added
+	gnu_java_awt_EmbeddedWindow.c.
+
+2004-02-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/DatagramSocket.java
 	(setReuseAddress): Use Boolean.valueOf() instead of creating a new
 	Boolean object.

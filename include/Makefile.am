@@ -3,6 +3,7 @@ ARG_CLASSPATH_JAVAH = -bootclasspath
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) ../lib:$(USER_CLASSLIB)
 
 H_FILES = \
+$(top_srcdir)/include/gnu_java_awt_EmbeddedWindow.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontMetrics.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h \
@@ -14,6 +15,7 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkCheckboxPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkChoicePeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkClipboard.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkComponentPeer.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkFileDialogPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkFramePeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkGenericPeer.h \
@@ -58,6 +60,8 @@ if CREATE_JNI_HEADERS
 
 all-local: $(H_FILES)
 
+$(top_srcdir)/include/gnu_java_awt_EmbeddedWindow.h: $(top_srcdir)/gnu/java/awt/EmbeddedWindow.java
+	$(JAVAH) -o $@ gnu.java.awt.EmbeddedWindow
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontMetrics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkFontMetrics.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkFontMetrics
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGraphics.java
@@ -80,6 +84,8 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkClipboard.h: $(top_srcdir)/gnu/ja
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkClipboard
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkComponentPeer.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkComponentPeer
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkEmbeddedWindowPeer.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkEmbeddedWindowPeer
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkFileDialogPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkFileDialogPeer
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkFramePeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkFramePeer.java

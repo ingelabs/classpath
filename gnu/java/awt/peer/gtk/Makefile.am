@@ -20,6 +20,7 @@ EXTRA_DIST = \
 	GtkComponentPeer.java \
 	GtkContainerPeer.java \
 	GtkDialogPeer.java \
+	GtkEmbeddedWindowPeer.java \
 	GtkFileDialogPeer.java \
 	GtkFontPeer.java \
 	GtkFramePeer.java \

@@ -53,6 +53,9 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Properties;
+import gnu.java.awt.EmbeddedWindow;
+import gnu.java.awt.EmbeddedWindowSupport;
+import gnu.java.awt.peer.EmbeddedWindowPeer;
 import gnu.java.awt.peer.ClasspathFontPeer;
 import gnu.classpath.Configuration;
 import gnu.java.awt.peer.gtk.GdkPixbufDecoder;
@@ -73,6 +76,7 @@ import gnu.java.awt.peer.gtk.GdkPixbufDecoder;
  */
 
 public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
+  implements EmbeddedWindowSupport
 {
   GtkMainThread main;
   Hashtable containers = new Hashtable();
@@ -351,6 +355,11 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
   protected WindowPeer createWindow (Window w)
   {
     return new GtkWindowPeer (w);
+  }
+
+  public EmbeddedWindowPeer createEmbeddedWindow (EmbeddedWindow w)
+  {
+    return new GtkEmbeddedWindowPeer (w);
   }
 
   /** 

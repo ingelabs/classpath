@@ -8,4 +8,6 @@ BitwiseXORComposite.java \
 Buffers.java \
 ComponentDataBlitOp.java \
 ClasspathToolkit.java \
+EmbeddedWindow.java \
+EmbeddedWindowSupport.java \
 EventModifier.java
