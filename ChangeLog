@@ -1,3 +1,13 @@
+2003-06-11  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* java/io/FileOutputStream.java
+	(FileOutputStream): Set the WRITE bit when opening a file for append.
+	* java/io/InputStreamReader.java
+	(close): Null the wrapped stream.
+	(ready): Test for closed Reader.
+	(read): Likewise.
+	(skip): New method.
+
 2003-06-11  Michael Koch  <konqueror@gmx.de>
 
 	* java/nio/ByteBuffer.java,

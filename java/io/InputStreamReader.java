@@ -138,6 +138,7 @@ public class InputStreamReader extends Reader
   public void close() throws IOException
   {
     in.close();
+    in = null;
   }
 
   /**
@@ -149,7 +150,7 @@ public class InputStreamReader extends Reader
    */
   public String getEncoding()
   {
-    return(in.getSchemeName());
+    return in.getSchemeName();
   }
 
   /**
@@ -165,7 +166,10 @@ public class InputStreamReader extends Reader
    */
   public boolean ready() throws IOException
   {
-    return(in.ready());
+    if (in == null)
+      throw new IOException("Reader has been closed");
+    
+    return in.ready();
   }
 
   /**
@@ -183,6 +187,9 @@ public class InputStreamReader extends Reader
    */
   public int read (char[] buf, int offset, int length) throws IOException
   {
+    if (in == null)
+      throw new IOException("Reader has been closed");
+    
     return in.read(buf, offset, length);
   }
 
@@ -195,7 +202,29 @@ public class InputStreamReader extends Reader
    */
   public int read() throws IOException
   {
-    return(in.read());
+    if (in == null)
+      throw new IOException("Reader has been closed");
+    
+    return in.read();
+  }
+
+   /**
+    * Skips the specified number of chars in the stream.  It
+    * returns the actual number of chars skipped, which may be less than the
+    * requested amount.
+    *
+    * @param num_chars The requested number of chars to skip
+    *
+    * @return The actual number of chars skipped.
+    *
+    * @exception IOException If an error occurs
+    */
+   public long skip(long count) throws IOException
+   {
+     if (in == null)
+       throw new IOException("Reader has been closed");
+     
+     return super.skip(count);
   }
 
 } // class InputStreamReader
