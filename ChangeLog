@@ -1,5 +1,107 @@
 2002-12-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/Adjustable.java
+	(HORIZONTAL): Made static final.
+	(VERTICAL): Made static final.
+	(NO_ORITENTATION): Made static final.
+	* java/awt/AlphaComposite.java
+	(getInstance): Documentation added.
+	* java/awt/BasicStroke.java
+	(BasicStroke): Documentation added, reformated code.
+	* java/awt/CheckboxMenuItem.java
+	(CheckboxMenuItem): Throw HeadlessException,
+	added exception documentation.
+	* java/awt/Choice.java
+	(Choice): Throw exception, added documentation.
+	(add): Throw NullPointerException instead of IllegalArgumentException,
+	added some documentation.
+	(addItem): Added some documentation.
+	(insert): Throw exception, added documentation.
+	* java/awt/Container.java:
+	Made some documentation looking better.
+	(getListeners): Added documentation.
+	(setFocusTraversalKeys): Throw exception.
+	(getFocusTraversalKeys): Throw exception.
+	(areFocusTraversalKeys): Throw exception.
+	* java/awt/Cursor.java
+	(Cursor): Added documentation.
+	(getSystemCustomCursor): Throw exception, added documentation.
+	* java/awt/EventQueue.java
+	(postEvent): Added documentation.
+	(invodeAndWait): Added documentation.
+	(push): Added documentation.
+	(pop): Added documentation.
+	(dispatchEvent): Added documentation.
+	* java/awt/FileDialog.java
+	(FileDialog): Call setMode() instead of code duplication,
+	added documentation.
+	(setMode): Added documentation.
+	* java/awt/Label.java
+	(Label): Throw exception, added documentation.
+	* java/awt/List.java
+	(List): Throw exception, added documentation.
+	* java/awt/Menu.java
+	(Menu): Throw exception, added documentation.
+	* java/awt/MenuBar.java
+	(MenuBar): Throw exception, added documentation.
+	* java/awt/MenuComponent.java
+	(MenuComponent): Throw exception, added documentation.
+	* java/awt/PopupMenu.java
+	(PopupMenu): Throw exception, added documentation.
+	* java/awt/ScrollPane.java
+	(ScrollPane): Throw exception, added documentation.
+	* java/awt/Scrollbar.java
+	(Scrollbar): Throw exception, added documentation.
+	* java/awt/TextArea.java
+	(TextArea): Throw exception, added documentation.
+	* java/awt/TextField.java
+	(TextField): Throw exception, added documentation.
+	* java/awt/Transparency.java
+	(OPAQUE): Made static final.
+	(BITMASK): Made static final.
+	(TRANSLUCENT): Made static final.
+	* java/awt/color/CMMException.java:
+	(CMMException): Extends RuntimeException not Exception.
+	* java/awt/color/ColorSpace.java
+	(ColorSpace): Implements Serializable.
+	* java/awt/color/ICC_Profile.java
+	(write): Throws IOException.
+	* java/awt/color/ProfileDataException.java
+	(ProfileDataException): Extends RuntimeException not Exception.
+	* java/awt/datatransfer/Clipboard.java
+	(getContents): Added documentation.
+	(setContents): Added documentation.
+	* java/awt/datatransfer/DataFlavor.java
+	(DataFlavor): Added documentation.
+	(isMimeTypeEqual): Added documentation.
+	(clone): Added documentation.
+	(readExternal): Added documentation.
+	(writeExternal): Added documentation.
+	* java/awt/datatransfer/SystemDataFlavor.java:
+	Reintented, Reformated.	
+	(SystemDataFlavor): Added implements FlavorTable.
+	(getFalvorsForNative): New stubbed method.
+	(getNativesForFlavor): New stubbed method.
+	* java/awt/dnd/DragGestureEvent.java
+	(startDrag): Added documentation.
+	* java/awt/dnd/DragGestureRecognizer.java
+	(addDragGestureListener): Added documentation.
+	* java/awt/dnd/DragSource.java
+	(DragSource): Throw exception, documentation added.
+	(getDefaultDragSource): Added documentation.
+	(startDrag): Added documentation.
+	(createDragSourceContext): Added documentation.
+	* java/awt/dnd/DropTarget.java
+	(DropTarget): Implements DropTargetListener, EventListener,
+	Serializable.
+	(isActive): New member variable to save state.
+	(setActive): Implemented.
+	(isActive): Implemented.
+	* java/awt/geom/PathIterator.java:
+	Fixed two documentations to be HTML conform.
+	
+2002-12-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/rmi/server/RMIClassLoaderSpi.java:
 	New abstract class.
 
