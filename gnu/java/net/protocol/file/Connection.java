@@ -38,6 +38,8 @@
 */
 package gnu.java.net.protocol.file;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -71,12 +73,12 @@ public class Connection extends URLConnection
   /**
    * InputStream if we are reading from the file
    */
-  private FileInputStream inputStream;
+  private BufferedInputStream inputStream;
 
   /**
    * OutputStream if we are writing to the file
    */
-  private FileOutputStream outputStream;
+  private BufferedOutputStream outputStream;
   
   /**
    * Calls superclass constructor to initialize.
@@ -105,10 +107,10 @@ public class Connection extends URLConnection
       throw new FileNotFoundException (file.getPath());
 
     if (doInput)
-      inputStream = new FileInputStream (file);
+      inputStream = new BufferedInputStream (new FileInputStream (file));
     
     if (doOutput)
-      outputStream = new FileOutputStream (file);
+      outputStream = new BufferedOutputStream (new FileOutputStream (file));
     
     connected = true;
   }

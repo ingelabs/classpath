@@ -75,6 +75,35 @@ public final class Connection extends HttpURLConnection
    * The socket we are connected to
    */
   private Socket socket;
+  
+  private static String proxyHost = null;
+  private static int proxyPort = 80;
+  private static boolean proxyInUse = false;
+
+  static 
+  {
+    // Recognize some networking properties listed at
+    // http://java.sun.com/j2se/1.4/docs/guide/net/properties.html.
+    String port = null;
+    proxyHost = System.getProperty ("http.proxyHost");
+    
+    if (proxyHost != null)
+      {
+	proxyInUse = true;
+	
+	if ((port = System.getProperty ("http.proxyPort")) != null)
+	  {
+	    try
+	      {
+		proxyPort = Integer.parseInt (port);
+	      }
+	    catch (Throwable t)
+	      {
+		// Nothing.  
+	      }
+	  }
+      }
+  }
 
   /**
    * The InputStream for this connection.
@@ -119,12 +148,27 @@ public final class Connection extends HttpURLConnection
    */
   public void connect() throws IOException
   {
-    // Connect up
-    if (url.getPort() == -1)
-      socket = new Socket(url.getHost(), 80);
-    else
-      socket = new Socket(url.getHost(), url.getPort());
+    // Call is ignored if already connected.
+    if (connected)
+      return;
+
+    // Get address and port number.
+    int port;
     
+    if (proxyInUse)
+      {
+	port = proxyPort;
+	socket = new Socket (proxyHost, port);
+      }
+    else
+      {
+	if ((port = url.getPort()) == -1)
+	  port = 80;
+
+	// Open socket and output stream.
+	socket = new Socket (url.getHost(), port);
+      }
+
     if (doInput)
       inputStream
         = new DataInputStream (new BufferedInputStream (socket.getInputStream()));
@@ -170,7 +214,7 @@ public final class Connection extends HttpURLConnection
                         + " HTTP/1.1\r\n");
 
     // Set additional HTTP headers.
-    if (getRequestProperty ("host") == null)
+    if (getRequestProperty ("Host") == null)
       {
         setRequestProperty ("Host", url.getHost());
       }
@@ -340,7 +384,7 @@ public final class Connection extends HttpURLConnection
    */
   public boolean usingProxy()
   {
-    return false;
+    return proxyInUse;
   }
 
   /**
