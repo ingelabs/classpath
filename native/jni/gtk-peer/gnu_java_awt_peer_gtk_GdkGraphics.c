@@ -40,7 +40,7 @@ exception statement from your version. */
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 
-#define GDK_STABLE_IS_PIXMAP(d) (((GdkWindowPrivate *)d)->window_type == GDK_WINDOW_PIXMAP)
+#define GDK_STABLE_IS_PIXMAP(d) (GDK_IS_PIXMAP(d))
 
 GdkPoint *
 translate_points (JNIEnv *env, jintArray xpoints, jintArray ypoints, 

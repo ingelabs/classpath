@@ -36,7 +36,7 @@ Suggested Software
 	For building the JNI native libraries, the following are required
         unless --disable-gtk-peer is used as an argument to configure.
 
-        - GTK+ 1.2.x
+        - GTK+ 2.x.x
         - libart_lgpl 2.1.0
         - gdk-pixbuf (Only needed if you want to compile the native library)
 

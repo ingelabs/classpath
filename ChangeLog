@@ -1,3 +1,58 @@
+2003-05-01  C. Brian Jones  <cbj@gnu.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
+	(GDK_STABLE_IS_PIXMAP): converted macro to use GDK_IS_PIXMAP
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextAreaPeer.c
+	(TEXT_FROM_SW): convert macro to use GTK_TEXT_VIEW
+	(Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create): convert
+	gtk_text_new to gtk_text_view_new
+	(Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_old_create): removed
+	(Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextGetSize): converted
+	to use just gtk_widget_size_request, though this may be in error it
+	at least isn't as bad as the previous implementation
+	(Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_insert): convert to new
+	GTK2 GtkTextBuffer/GtkTextIter usage
+	(Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_replaceRange): ditto
+	(Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkSetFont): convert
+	to Pango, new to GTK2
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextComponentPeer.c
+	(getCaretPosition): GtkTextView and GtkEntry handled separately 
+	since in GTK2 they do not share common ancestory.
+	(setCaretPosition): ditto
+	(getSelectionStart): ditto
+	(getSelectionEnd): ditto
+	(select): ditto
+	(setEditable): ditto
+	(getText): ditto
+	(setText): ditto
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkButtonPeer_create): use gtk_button_new
+	(Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkSetFont): use Pango
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkListPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkListPeer_getSize): converted to use
+	just gtk_widget_size_request, though this may be in error it at least
+	isn't as bad as the previous implementation
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextField.c
+	(Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetSize): ditto
+	(Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkSetFont): use Pango
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(gdk_window_get_root_geometry): GdkWindowPrivate changed to GdkWindow;
+	attempting to use gdk_window_get_geometry instead of direct Xlib calls
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(GTK_OBJECT_SETV): unsure about use of the private API to set data
+	generically for different types, but updated to compile with GTK2
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectHooks): give
+	connect_awt_hook the only structure member, range, in GTK2 instead;
+	changed to connect to signal on the scroll bar instead of the 
+	adjustment since that is the one with GtkScrollType in GTK2
+	(post_adjustment_event): modified to fit GtkScrollBar move_slider
+	signal signature
+	* configure.in: require gtk 2.0+, glib 2.0+
+	* HACKING: mention change in GTK requirements
+	* INSTALL: mention change in GTK requirements
+	* THANKYOU: add David P. Grove, fix order
+
 2003-05-01  David P. Grove  <groved@us.ibm.com>
 
 	This patch fixes a regression for the past month that made it 
