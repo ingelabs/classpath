@@ -1,5 +1,13 @@
 2005-03-09  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/locale/Calendar.java,
+	gnu/java/locale/Calendar_nl.java,
+	gnu/java/locale/Calendar_de.java,
+	gnu/java/locale/Calendar_en.java:
+	Removed.
+
+2005-03-09  Sven de Marothy  <sven@physto.se>
+
 	* java/util/Calendar.java:
 	Updated to use gnu.java.locale.LocaleInformation for locale info.
 	* java/util/GregorianCalendar.java:
