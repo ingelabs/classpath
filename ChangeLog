@@ -1,5 +1,10 @@
 2003-06-22  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/plaf/basic/Makefile.am: Added BasicSplitPaneDivider.java,
+	BasicSplitPaneUI.java.
+
+2003-06-22  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/plaf/basic/BasicBorders.java (SplitPaneBorder,
 	SplitPaneDividerBorder): New inner classes. The ugly appearance
 	is intentional, each pixel gets painted in the same color
