@@ -1,3 +1,8 @@
+2001-11-25  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/util/LinkedList.java (LinkedListItr.add): Don't skip the next
+	entry.
+
 2001-11-23  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/TreeMap.java (removeNode): Fix bug in node removal.

@@ -919,10 +919,7 @@ public class LinkedList extends AbstractSequentialList
         first = e;
 
       if (next != null)
-        {
-          next.previous = e;
-          next = next.next;
-        }
+        next.previous = e;
       else
         last = e;
 
