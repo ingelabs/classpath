@@ -1,5 +1,7 @@
 package java.lang;
 
+import java.io.Serializable;
+
 public abstract class Number implements Serializable
 {
   public abstract int intValue();
