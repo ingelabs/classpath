@@ -1,3 +1,17 @@
+2005-01-27  Michael Koch  <konqueror@gmx.de>
+
+	* java/util/zip/ZipFile.java
+	(ZIP_MAGIC): New constant.
+	(ZipFile): Check if given file is really a zip file.
+	(checkZipFile): New method.
+	(checkClosed): New method.
+	(entries): Check if file was closed. Return an empty enumeration in
+	error case.
+	(getEntries): Use checkClosed().
+	(getEntry): Check if file was closed.
+	(getInputStream): Likewise.
+	(size): Likewise.
+
 2005-01-27  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/faq/faq.wml: current command to generate doc
