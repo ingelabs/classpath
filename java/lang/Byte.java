@@ -15,154 +15,196 @@ public final class Byte extends Number {
       'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
       'u', 'v', 'w', 'x', 'y', 'z' };
     
-  public Byte(byte value) {
-    this.value = value;
-  }
-
-  public Byte(String s) throws NumberFormatException {
-    value = parseByte(s, 10);
-  }
-
-  public int hashCode() {
-    return value;
-  }
-
-  public boolean equals(Object obj) {
-    if (obj == null || (!(obj instanceof Byte))) return false;
-    return (value == ((Byte)obj).byteValue());
-  }
-
-  public static String toString(byte i) {
-    return toStringStatic(i);
-  }
-
-  public String toString() {
-    return toStringStatic(value);
-  }
-
-  private static String toStringStatic(byte i) {
-    StringBuffer tmp = new StringBuffer();
-    
-    boolean negative = (i < 0);
-    do
-      tmp.append(digits[Math.abs(i % 10)]);
-    while ((i /= 10) != 0);
-    if (negative) tmp.append('-');
-    return tmp.reverse().toString();
-  }
-  
-  public static Byte valueOf(String s) throws NumberFormatException {
-    return new Byte(parseByte(s));
-  }
-
-  public static Byte valueOf(String s, int radix) 
-    throws NumberFormatException {
-    return new Byte(parseByte(s, radix));
-  }
-
-  public static byte parseByte(String s) throws NumberFormatException {
-    return parseByte(s, 10);
-  }
-
-  public static byte parseByte(String s, int radix) 
-  throws NumberFormatException {
-    return parseByte(s, radix, false);
-  }
-
-  public static Byte decode(String s) throws NumberFormatException {
-    return new Byte(parseByte(s, 10, true));
-  }
-
-  private static byte parseByte(String s, int radix, boolean decode) 
-    throws NumberFormatException {
-    if (s == null || s.length() == 0)
-      throw new NumberFormatException("string null or empty");
-
-    if (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
-      throw new NumberFormatException("radix outside of range: " + radix);
-
-    /* check for a negative value, and setup the initial index for digits */
-    boolean negative = false;
-    int i = 0;
-    if (s.charAt(0) == '-') {
-      if (s.length() == 1)
-	throw new NumberFormatException("negative sign without value");
-      negative = true;
-      i++;
+  public Byte(byte value) 
+    {
+      this.value = value;
     }
 
-    /* attempt to determine the base.  any previous value of radix is
-       overwritten, if decoding succeeds. */
-    if (decode && !negative) {
-      if (s.charAt(i) == '0') {
-	try {
-	  if (Character.toUpperCase(s.charAt(i+1)) == 'X') {
-	    i += 2;
+  public Byte(String s) throws NumberFormatException 
+    {
+      value = parseByte(s, 10);
+    }
+  
+  public int hashCode() 
+    {
+      return value;
+    }
+
+  public boolean equals(Object obj) 
+    {
+      if (obj == null || (!(obj instanceof Byte))) return false;
+      return (value == ((Byte)obj).byteValue());
+    }
+
+  public static String toString(byte i) 
+    {
+      return toStringStatic(i);
+    }
+
+  public String toString() 
+    {
+      return toStringStatic(value);
+    }
+  
+  private static String toStringStatic(byte i) 
+    {
+      StringBuffer tmp = new StringBuffer();
+      
+      boolean negative = (i < 0);
+      do
+	tmp.append(digits[Math.abs(i % 10)]);
+      while ((i /= 10) != 0);
+      if (negative) tmp.append('-');
+      return tmp.reverse().toString();
+    }
+  
+  public static Byte valueOf(String s) throws NumberFormatException 
+    {
+      return new Byte(parseByte(s));
+    }
+  
+  public static Byte valueOf(String s, int radix) 
+    throws NumberFormatException 
+    {
+      return new Byte(parseByte(s, radix));
+    }
+
+  public static byte parseByte(String s) throws NumberFormatException 
+    {
+      return parseByte(s, 10);
+    }
+  
+  public static byte parseByte(String s, int radix) 
+    throws NumberFormatException 
+    {
+      return parseByte(s, radix, false);
+    }
+  
+  public static Byte decode(String s) throws NumberFormatException 
+    {
+      return new Byte(parseByte(s, 10, true));
+    }
+  
+  private static byte parseByte(String s, int radix, boolean decode) 
+    throws NumberFormatException 
+    {
+      if (s == null || s.length() == 0)
+	throw new NumberFormatException("string null or empty");
+      
+      if (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
+	throw new NumberFormatException("radix outside of range: " + radix);
+      
+      /* check for a negative value, and setup the initial index for digits */
+      boolean negative = false;
+      int i = 0;
+      if (s.charAt(0) == '-') {
+	if (s.length() == 1)
+	  throw new NumberFormatException("negative sign without value");
+	negative = true;
+	i++;
+      }
+      
+      /* attempt to determine the base.  any previous value of radix is
+	 overwritten, if decoding succeeds. */
+      if (decode && !negative) {
+	if (s.charAt(i) == '0') {
+	  try {
+	    if (Character.toUpperCase(s.charAt(i+1)) == 'X') {
+	      i += 2;
+	      radix = 16;
+	      if (i >= s.length()) 
+		throw new NumberFormatException("string empty");
+	    }
+	    else
+	      radix = 8;
+	  } catch (StringIndexOutOfBoundsException e) { }
+	}
+	else
+	  if (s.charAt(i) == '#') {
+	    i++;
 	    radix = 16;
 	    if (i >= s.length()) 
 	      throw new NumberFormatException("string empty");
 	  }
 	  else
-	    radix = 8;
-	} catch (StringIndexOutOfBoundsException e) { }
+	    radix = 10;
       }
-      else
-	if (s.charAt(i) == '#') {
-	  i++;
-	  radix = 16;
-	  if (i >= s.length()) 
-	    throw new NumberFormatException("string empty");
+      
+      byte cutoff = (byte) (MAX_VALUE / radix);
+      byte cutlim = (byte) (MAX_VALUE % radix);
+      byte result = 0;
+      
+      while (i < s.length()) {
+	int c = Character.digit(s.charAt(i++), radix);
+	if (c == -1) 
+	  throw new NumberFormatException("char at index " + i + 
+					  " is not of specified radix");
+	if (result > cutoff || (result == cutoff && c > cutlim)) {
+	  // check to see if we have a MIN_VALUE, by forcing an overflow
+	  if (negative) {
+	    result *= radix;
+	    result += c;
+	    if (result == MIN_VALUE && i == s.length()) return MIN_VALUE;
+	  }
+	  throw new NumberFormatException("overflow");
 	}
-	else
-	  radix = 10;
+	
+	result *= radix;
+	result += c;
+      }
+      return (byte) ((negative) ? -result : result);
+    }
+  
+  public byte byteValue() 
+    {
+      return value;
+    }
+  
+  public short shortValue() 
+    {
+      return value;
+    }
+  
+  public int intValue() 
+    {
+      return value;
+    }
+  
+  public long longValue() 
+    {
+      return value;
+    }
+  
+  public float floatValue() 
+    {
+      return value;
+    }
+  
+  public double doubleValue() 
+    {
+      return value;
     }
 
-    byte cutoff = (byte) (MAX_VALUE / radix);
-    byte cutlim = (byte) (MAX_VALUE % radix);
-    byte result = 0;
-
-    while (i < s.length()) {
-      int c = Character.digit(s.charAt(i++), radix);
-      if (c == -1) 
-	throw new NumberFormatException("char at index " + i + 
-					" is not of specified radix");
-      if (result > cutoff || (result == cutoff && c > cutlim)) {
-	// check to see if we have a MIN_VALUE, by forcing an overflow
-	if (negative) {
-	  result *= radix;
-	  result += c;
-	  if (result == MIN_VALUE && i == s.length()) return MIN_VALUE;
-	}
-	throw new NumberFormatException("overflow");
-      }
-
-      result *= radix;
-      result += c;
+  /**
+   * Compare two Bytes numerically by comparing their <code>byte</code> values.
+   * @return a positive value if this <code>Byte</code> is greater in value 
+   * than the argument <code>Byte</code>; a negative value if this 
+   * <code>Byte</code> is smaller in value than the argument <code>Byte</code>;
+   * and <code>0</code>, zero, if this <code>Byte</code> is equal in value to
+   * the argument <code>Byte</code>.
+   */
+  public int compareTo(Byte b)
+    {
+      return (int)(value - b.byteValue());
     }
-    return (byte) ((negative) ? -result : result);
-  }
 
-  public byte byteValue() {
-    return value;
-  }
-
-  public short shortValue() {
-    return value;
-  }
-
-  public int intValue() {
-    return value;
-  }
-
-  public long longValue() {
-    return value;
-  }
-
-  public float floatValue() {
-    return value;
-  }
-
-  public double doubleValue() {
-    return value;
-  }
+  /**
+   * Behaves like <code>compareTo(java.lang.Byte)</code> unless the Object
+   * is not a <code>Byte</code>.  Then it throws a 
+   * <code>ClassCastException</code>.
+   * @throw ClassCastException if the argument is not a <code>Byte</code>.
+  public int compareTo(Object o)
+    {
+      return (int)(value - (Byte)o.byteValue());
+    }
 }
