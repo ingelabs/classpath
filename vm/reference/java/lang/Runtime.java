@@ -198,6 +198,9 @@ public class Runtime
     if(runShutdownHooks())
       halt(status);
 
+    // Someone else already called runShutdownHooks().
+    // Make sure we are not/no longer in the shutdownHooks set.
+    // And wait till the thread that is calling runShutdownHooks() finishes.
     synchronized (libpath)
       {
         if (shutdownHooks != null)
