@@ -1,47 +1,47 @@
 2005-03-10  Audrius Meskauskas  <audriusa@bluewin.ch>
 
-	* testsuite\javax.swing.text.html.parser\
+	* testsuite/javax.swing.text.html.parser/
 	AllParserTests.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\HTML_Test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\AttributeList_test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\DTD_test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\Element_Test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\Entity_Test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\HTML_parsing.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\HTML_randomTable.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\parameterDefaulter_Test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\Parser_Test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\ParserEntityResolverTest.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\ParserTest.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\supplementaryNotifications.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\TagElement_Test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\TestCase.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\Text.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\textPreProcessor_Test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\Token_locations.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\low\Buffer_Test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\low\Constants_Test.java,
-	testsuite\javax.swing.text.html.parser\
-	test\gnu\javax\swing\text\html\parser\low\ReaderTokenizer_Test.java:
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/HTML_Test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/AttributeList_test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/DTD_test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/Element_Test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/Entity_Test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/HTML_parsing.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/HTML_randomTable.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/parameterDefaulter_Test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/Parser_Test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/ParserEntityResolverTest.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/ParserTest.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/supplementaryNotifications.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/TagElement_Test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/TestCase.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/Text.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/textPreProcessor_Test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/Token_locations.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/low/Buffer_Test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/low/Constants_Test.java,
+	testsuite/javax.swing.text.html.parser/
+	test/gnu/javax/swing/text/html/parser/low/ReaderTokenizer_Test.java:
 	New Classpath specific tests for the parser classes in gnu namespace.
 
 2005-03-10  Audrius Meskauskas  <audriusa@bluewin.ch>
