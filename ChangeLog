@@ -1,5 +1,11 @@
 2003-06-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/PlainSocketImpl.java:
+	Reformatting, merged class documentation with libgcj,
+	Moved all methods to match order of libgcj.
+
+2003-06-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/SimpleTimeZone.java:
 	New version from libgcj.
 

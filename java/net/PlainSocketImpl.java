@@ -44,18 +44,24 @@ import java.io.OutputStream;
 import gnu.classpath.Configuration;
 
 /**
-  * Unless the application installs its own SocketImplFactory, this is the
-  * default socket implemetation that will be used.  It simply uses a
-  * combination of Java and native routines to implement standard BSD
-  * style sockets of family AF_INET and types SOCK_STREAM and SOCK_DGRAM
-  *
-  * @version 0.1
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * Status:  Believed complete and correct.
+ */
+
+/**
+ * Unless the application installs its own SocketImplFactory, this is the
+ * default socket implemetation that will be used.  It simply uses a
+ * combination of Java and native routines to implement standard BSD
+ * style sockets of family AF_INET and types SOCK_STREAM and SOCK_DGRAM
+ *
+ * @author Per Bothner <bothner@cygnus.com>
+ * @author Nic Ferrier <nferrier@tapsellferrier.co.uk>
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ */
 class PlainSocketImpl extends SocketImpl
 {
-  // Static initializer to load native library
+  // Static initializer to load native library.
   static
   {
     if (Configuration.INIT_LOAD_LIBRARY)
@@ -65,10 +71,13 @@ class PlainSocketImpl extends SocketImpl
   }
 
   /**
-   * This is the native file descriptor for this socket
+   * The OS file handle representing the socket.
+   * This is used for reads and writes to/from the socket and
+   * to close it.
+   *
+   * When the socket is closed this is reset to -1.
    */
   protected int native_fd = -1;
-
 
   /**
    * Default do nothing constructor
@@ -76,120 +85,6 @@ class PlainSocketImpl extends SocketImpl
   public PlainSocketImpl()
   {
   }
-
-  /**
-   * Accepts a new connection on this socket and returns in in the 
-   * passed in SocketImpl.
-   *
-   * @param impl The SocketImpl object to accept this connection.
-   */
-  protected native synchronized void accept(SocketImpl impl)
-    throws IOException;
-
-  /**
-   * Returns the number of bytes that the caller can read from this socket
-   * without blocking. 
-   *
-   * @return The number of readable bytes before blocking
-   *
-   * @exception IOException If an error occurs
-   */
-  protected native int available() throws IOException;
-
-  /**
-   * Binds to the specified port on the specified addr.  Note that this addr
-   * must represent a local IP address.  **** How bind to INADDR_ANY? ****
-   *
-   * @param addr The address to bind to
-   * @param port The port number to bind to
-   *
-   * @exception IOException If an error occurs
-   */
-  protected native synchronized void bind(InetAddress addr, int port)
-    throws IOException;
-
-  /**
-   * Closes the socket.  This will cause any InputStream or OutputStream
-   * objects for this Socket to be closed as well.
-   * <p>
-   * Note that if the SO_LINGER option is set on this socket, then the
-   * operation could block.
-   *
-   * @exception IOException If an error occurs
-   */
-  protected native void close () throws IOException;
-
-  /**
-   * Connects to the remote address and port specified as arguments.
-   *
-   * @param addr The remote address to connect to
-   * @param port The remote port to connect to
-   *
-   * @exception IOException If an error occurs
-   */
-  protected native void connect(InetAddress addr, int port)
-    throws IOException;
-
-  /**
-   * Connects to the remote hostname and port specified as arguments.
-   *
-   * @param hostname The remote hostname to connect to
-   * @param port The remote port to connect to
-   *
-   * @exception IOException If an error occurs
-   */
-  protected synchronized void connect(String hostname, int port)
-    throws IOException
-  {
-    InetAddress addr = InetAddress.getByName(hostname);
-    connect(addr, port);
-  }
-
-  /**
-   * Creates a new socket that is not bound to any local address/port and
-   * is not connected to any remote address/port.  This will be created as
-   * a stream socket if the stream parameter is true, or a datagram socket
-   * if the stream parameter is false.
-   *
-   * @param stream true for a stream socket, false for a datagram socket
-   */
-  protected native synchronized void create(boolean stream)
-    throws IOException;
-
-  /**
-   * Starts listening for connections on a socket. The queuelen parameter
-   * is how many pending connections will queue up waiting to be serviced
-   * before being accept'ed.  If the queue of pending requests exceeds this
-   * number, additional connections will be refused.
-   *
-   * @param queuelen The length of the pending connection queue
-   * 
-   * @exception IOException If an error occurs
-   */
-  protected native synchronized void listen(int queuelen)
-    throws IOException;
-
-  /**
-   * Internal method used by SocketInputStream for reading data from
-   * the connection.  Reads up to len bytes of data into the buffer
-   * buf starting at offset bytes into the buffer.
-   *
-   * @return The actual number of bytes read or -1 if end of stream.
-   *
-   * @exception IOException If an error occurs
-   */
-  protected native int read(byte[] buf, int offset, int len)
-    throws IOException;
-
-  /**
-   * Internal method used by SocketOuputStream for writing data to
-   * the connection.  Writes up to len bytes of data from the buffer
-   * buf starting at offset bytes into the buffer.
-   *
-   * @exception IOException If an error occurs
-   */
-  protected native void write(byte[] buf, int offset, int len)
-    throws IOException;
 
   /**
    * Sets the specified option on a socket to the passed in object.  For
@@ -219,6 +114,140 @@ class PlainSocketImpl extends SocketImpl
   public native Object getOption(int option_id)
     throws SocketException;
 
+  public void shutdownInput()
+  {
+    throw new InternalError ("PlainSocketImpl::shutdownInput not implemented");
+  }
+
+  public void shutdownOutput()
+  {
+    throw new InternalError ("PlainSocketImpl::shutdownOutput not implemented");
+  }
+
+  /**
+   * Creates a new socket that is not bound to any local address/port and
+   * is not connected to any remote address/port.  This will be created as
+   * a stream socket if the stream parameter is true, or a datagram socket
+   * if the stream parameter is false.
+   *
+   * @param stream true for a stream socket, false for a datagram socket
+   */
+  protected native synchronized void create(boolean stream)
+    throws IOException;
+
+  /**
+   * Connects to the remote hostname and port specified as arguments.
+   *
+   * @param hostname The remote hostname to connect to
+   * @param port The remote port to connect to
+   *
+   * @exception IOException If an error occurs
+   */
+  protected synchronized void connect(String hostname, int port)
+    throws IOException
+  {
+    InetAddress addr = InetAddress.getByName(hostname);
+    connect(addr, port);
+  }
+
+  /**
+   * Connects to the remote address and port specified as arguments.
+   *
+   * @param addr The remote address to connect to
+   * @param port The remote port to connect to
+   *
+   * @exception IOException If an error occurs
+   */
+  protected native void connect(InetAddress addr, int port)
+    throws IOException;
+
+  public void connect(SocketAddress address, int timeout)
+  {
+    throw new InternalError ("PlainSocketImpl::connect not implemented");
+  }
+
+  /**
+   * Binds to the specified port on the specified addr.  Note that this addr
+   * must represent a local IP address.  **** How bind to INADDR_ANY? ****
+   *
+   * @param addr The address to bind to
+   * @param port The port number to bind to
+   *
+   * @exception IOException If an error occurs
+   */
+  protected native synchronized void bind(InetAddress addr, int port)
+    throws IOException;
+
+  /**
+   * Starts listening for connections on a socket. The queuelen parameter
+   * is how many pending connections will queue up waiting to be serviced
+   * before being accept'ed.  If the queue of pending requests exceeds this
+   * number, additional connections will be refused.
+   *
+   * @param queuelen The length of the pending connection queue
+   * 
+   * @exception IOException If an error occurs
+   */
+  protected native synchronized void listen(int queuelen)
+    throws IOException;
+
+  /**
+   * Accepts a new connection on this socket and returns in in the 
+   * passed in SocketImpl.
+   *
+   * @param impl The SocketImpl object to accept this connection.
+   */
+  protected native synchronized void accept(SocketImpl impl)
+    throws IOException;
+
+  /**
+   * Returns the number of bytes that the caller can read from this socket
+   * without blocking. 
+   *
+   * @return The number of readable bytes before blocking
+   *
+   * @exception IOException If an error occurs
+   */
+  protected native int available() throws IOException;
+
+  /**
+   * Closes the socket.  This will cause any InputStream or OutputStream
+   * objects for this Socket to be closed as well.
+   * <p>
+   * Note that if the SO_LINGER option is set on this socket, then the
+   * operation could block.
+   *
+   * @exception IOException If an error occurs
+   */
+  protected native void close () throws IOException;
+
+  public void sendUrgentData(int data)
+  {
+    throw new InternalError ("PlainSocketImpl::sendUrgentData not implemented");
+  }
+
+  /**
+   * Internal method used by SocketInputStream for reading data from
+   * the connection.  Reads up to len bytes of data into the buffer
+   * buf starting at offset bytes into the buffer.
+   *
+   * @return The actual number of bytes read or -1 if end of stream.
+   *
+   * @exception IOException If an error occurs
+   */
+  protected native int read(byte[] buf, int offset, int len)
+    throws IOException;
+
+  /**
+   * Internal method used by SocketOuputStream for writing data to
+   * the connection.  Writes up to len bytes of data from the buffer
+   * buf starting at offset bytes into the buffer.
+   *
+   * @exception IOException If an error occurs
+   */
+  protected native void write(byte[] buf, int offset, int len)
+    throws IOException;
+
   /**
    * Returns an InputStream object for reading from this socket.  This will
    * be an instance of SocketInputStream.
@@ -244,24 +273,4 @@ class PlainSocketImpl extends SocketImpl
   {
     return(new SocketOutputStream(this));
   }
-
-  public void connect(SocketAddress address, int timeout)
-  {
-    throw new InternalError ("PlainSocketImpl::connect not implemented");
-  }
-
-  public void sendUrgentData(int data)
-  {
-    throw new InternalError ("PlainSocketImpl::sendUrgentData not implemented");
-  }
-
-  public void shutdownInput()
-  {
-    throw new InternalError ("PlainSocketImpl::shutdownInput not implemented");
-  }
-
-  public void shutdownOutput()
-  {
-    throw new InternalError ("PlainSocketImpl::shutdownOutput not implemented");
-  }
-} // class PlainSocketImpl
+}
