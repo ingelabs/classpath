@@ -173,26 +173,6 @@ read() throws IOException
 /*************************************************************************/
 
 /**
-  * Calls the <code>read(char[], int, int)</code> overloaded method.  Note that 
-  * this method does not redirect its call directly to a corresponding
-  * method in <code>in</code>.  This allows subclasses to override only the
-  * three argument version of <code>read</code>.
-  *
-  * @param buf The buffer to read chars into
-  *
-  * @return The value retured from <code>in.read(char[], int, int)</code>
-  *
-  * @exception IOException If an error occurs
-  */
-public int
-read(char[] buf) throws IOException
-{
-  return(read(buf, 0, buf.length));
-}
-
-/*************************************************************************/
-
-/**
   * Calls the <code>in.read(char[], int, int)</code> method.
   *
   * @param buf The buffer to read chars into
