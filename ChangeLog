@@ -1,3 +1,11 @@
+2001-01-06  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* test/java.io/PipedReaderWriterTest.java: Use Thread.sleep() to 
+	implement delay, not System.gc().
+	* test/java.io/PipedStreamTest.java: Ditto.
+
+	* java/io/PipedReader: Synchronize on "lock" instead of this.
+
 2001-01-05  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* test/java.io/RandomAccessFileTest.java: Fix overflow of integer 

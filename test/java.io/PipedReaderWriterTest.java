@@ -25,7 +25,7 @@ public class PipedReaderWriterTest
 {
 
 public static void
-main(String[] argv)
+main(String[] argv) throws InterruptedException
 {
   // Set up a reasonable buffer size for this test if one is not already
   // specified
@@ -55,7 +55,7 @@ main(String[] argv)
         {
           System.out.print(new String(buf, 0, chars_read));
           System.out.flush();
-          System.gc(); // A short delay
+	  Thread.sleep(10); // A short delay
           total_read += chars_read;
         }
 
