@@ -1,3 +1,11 @@
+2001-02-20  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/PipedWriter.java (flush): Throw exception if stream
+	closed.
+	* java/io/BufferedWriter.java (close): Clear `buffer'.
+	(flush): Throw IOException if stream is closed.
+	(write): Likewise.
+
 2001-02-16  Tom Tromey  <tromey@cygnus.com>
 
 	* java/lang/ThreadGroup.java (activeCount): Only include threads

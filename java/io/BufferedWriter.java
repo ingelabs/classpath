@@ -84,8 +84,14 @@ public class BufferedWriter extends Writer
    */
   public void close () throws IOException
   {
-    localFlush ();
-    out.close();
+    synchronized (lock)
+      {
+	// It is safe to call localFlush even if the stream is already
+	// closed.
+	localFlush ();
+	out.close();
+	buffer = null;
+      }
   }
 
   /**
@@ -96,8 +102,13 @@ public class BufferedWriter extends Writer
    */
   public void flush () throws IOException
   {
-    localFlush ();
-    out.flush();
+    synchronized (lock)
+      {
+	if (buffer == null)
+	  throw new IOException ("Stream closed");
+	localFlush ();
+	out.flush();
+      }
   }
 
   /**
@@ -126,6 +137,8 @@ public class BufferedWriter extends Writer
   {
     synchronized (lock)
       {
+	if (buffer == null)
+	  throw new IOException ("Stream closed");
 	buffer[count++] = (char) oneChar;
 	if (count == buffer.length)
 	  localFlush ();
@@ -152,6 +165,9 @@ public class BufferedWriter extends Writer
 
     synchronized (lock)
       {
+	if (buffer == null)
+	  throw new IOException ("Stream closed");
+
 	// Bypass buffering if there is too much incoming data.
 	if (count + len > buffer.length)
 	  {
@@ -188,6 +204,9 @@ public class BufferedWriter extends Writer
 
     synchronized (lock)
       {
+	if (buffer == null)
+	  throw new IOException ("Stream closed");
+
 	if (count + len > buffer.length)
 	  {
 	    localFlush ();
