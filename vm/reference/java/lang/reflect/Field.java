@@ -125,7 +125,7 @@ public final class Field implements Member {
 	 **					(i.e. it is not public).
 	 ** @exception IllegalArgumentException	if this field is not a field of <code>o</code>.
 	 **/
-	public Object get(Object o)
+	public native Object get(Object o)
 		throws IllegalAccessException,
 		       IllegalArgumentException;
 
@@ -219,7 +219,7 @@ public final class Field implements Member {
 	 **					a field of <code>o</code> but cannot be converted
 	 **					via a widening conversion to a float.
 	 **/
-	public float getFloat(Object o)
+	public native float getFloat(Object o)
 		throws IllegalAccessException,
 		       IllegalArgumentException;
 
@@ -233,7 +233,7 @@ public final class Field implements Member {
 	 **					a field of <code>o</code> but cannot be converted
 	 **					via a widening conversion to a double.
 	 **/
-	public double getDouble(Object o)
+	public native double getDouble(Object o)
 		throws IllegalAccessException,
 		       IllegalArgumentException;
 
@@ -248,7 +248,7 @@ public final class Field implements Member {
 	 **					widening conversion to the underlying type of
 	 **					the Field.
 	 **/
-	public void set(Object o, Object value)
+	public native void set(Object o, Object value)
 		throws IllegalAccessException,
 		        IllegalArgumentException;
 
@@ -260,7 +260,7 @@ public final class Field implements Member {
 	 **					(i.e. it is not public).
 	 ** @exception IllegalArgumentException	if this field is not a primitive boolean field.
 	 **/
-	public void setBoolean(Object o, boolean value)
+	public native void setBoolean(Object o, boolean value)
 		throws IllegalAccessException,
 		        IllegalArgumentException;
 
@@ -273,7 +273,7 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if a byte cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public void setByte(Object o, byte value)
+	public native void setByte(Object o, byte value)
 		throws IllegalAccessException,
 		        IllegalArgumentException;
 
@@ -286,7 +286,7 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if a byte cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public void setShort(Object o, short value)
+	public native void setShort(Object o, short value)
 		throws IllegalAccessException,
 		        IllegalArgumentException;
 
@@ -299,7 +299,7 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if a char cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public void setChar(Object o, char value)
+	public native void setChar(Object o, char value)
 		throws IllegalAccessException,
 		        IllegalArgumentException;
 
@@ -312,7 +312,7 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if an int cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public void setInt(Object o, int value)
+	public native void setInt(Object o, int value)
 		throws IllegalAccessException,
 		        IllegalArgumentException;
 
@@ -325,7 +325,7 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if a long cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public void setLong(Object o, long value)
+	public native void setLong(Object o, long value)
 		throws IllegalAccessException,
 		        IllegalArgumentException;
 
@@ -338,7 +338,7 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if a float cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public void setFloat(Object o, float value)
+	public native void setFloat(Object o, float value)
 		throws IllegalAccessException,
 		        IllegalArgumentException;
 
@@ -350,7 +350,7 @@ public final class Field implements Member {
 	 **					(i.e. it is not public).
 	 ** @exception IllegalArgumentException	if this field is not a primitive double field.
 	 **/
-	public void setDouble(Object o, double value)
+	public native void setDouble(Object o, double value)
 		throws IllegalAccessException,
 		        IllegalArgumentException;
 }
