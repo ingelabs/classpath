@@ -1,5 +1,14 @@
 2003-10-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/CollationKey.java
+	(compareTo): Simplified implementation.
+	(equals): Reoved redundant obj == null check.
+	* java/text/RuleBasedCollator.java
+	(RuleBasedCollator): Throw ParseException instead of
+	IllegalArgumentException.
+
+2003-10-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/File.java
 	(equals): Removed redundant obj == null check.
 

@@ -175,9 +175,9 @@ public class RuleBasedCollator extends Collator
    * @exception ParseException If the rule string contains syntax errors.
    */
   public RuleBasedCollator (String rules) throws ParseException
-  { 
+  {
     if (rules.equals (""))
-      throw new IllegalArgumentException ("Empty rule set");
+      throw new ParseException ("empty rule set", 0);
     
     this.rules = rules;
     Vector vec = new Vector();
