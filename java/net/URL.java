@@ -444,11 +444,13 @@ URL(URL context, String url, URLStreamHandler ph) throws MalformedURLException
 
   // Default in items as necessary
   if (context != null)
-    if (context.getProtocol().equals(protocol))
+    if (context.getProtocol().toLowerCase().equals(protocol))
       {
         host = context.getHost();
         port = context.getPort();
         file = context.getFile();
+        if (file == null)
+          file = "";
       }
 
   // Get the protocol handler and parse the rest of the URL string.
@@ -476,7 +478,28 @@ URL(URL context, String url, URLStreamHandler ph) throws MalformedURLException
   if (end != (url.length()))
     ref = url.substring(end + 1);
 
-  this.ph.parseURL(this, url, start, end);
+  // Ok, parseURL will not work here right now.  Instead, we just 
+  // do a hack by treating the spec URL as a file that should be
+  // appended to the context.  Only if the context is null do we try
+  // to parse.
+
+  if (context == null)
+    {
+      this.ph.parseURL(this, url, start, end);
+    }
+  else
+    {
+      int idx = file.lastIndexOf("/"); 
+      if (idx == -1)
+        file = url;
+      else if (idx == (file.length() - 1))
+        file = file + url;
+      else
+        {
+          file = file.substring(0, idx+1) + url;
+        }
+    }
+
   hashCode = toString().hashCode();
 }
 
