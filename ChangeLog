@@ -1,3 +1,9 @@
+2003-06-26  Stephen Crawley  <crawley@dstc.edu.au>
+ 
+	* java/test/RuleBasedCollator.java
+	(RuleBasedCollator): Fix bugs in building the collator data structures
+	that resulted in the wrong keys being associated collated characters.
+
 2003-06-26  Stephen Crawley <crawley@dstc.edu.au>
 
 	* java/text/CollationElementIterator.java

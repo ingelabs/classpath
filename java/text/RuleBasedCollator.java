@@ -199,13 +199,13 @@ public class RuleBasedCollator extends Collator
         if (c == '<')
           {
             ignore_chars = false;
+            CollationElement e = new CollationElement(sb.toString(), primary_seq,
+                                                      secondary_seq,
+                                                      tertiary_seq);
             secondary_seq = 0;
             tertiary_seq = 0;
             ++primary_seq;
 
-            CollationElement e = new CollationElement(sb.toString(), primary_seq,
-                                                      secondary_seq,
-                                                      tertiary_seq);
             v.add(e);
             sb.setLength(0);
             continue;
@@ -217,12 +217,12 @@ public class RuleBasedCollator extends Collator
             if (primary_seq == 0)
               throw new ParseException(rules, i);
 
-            ++secondary_seq;
-            tertiary_seq = 0;
-
             CollationElement e = new CollationElement(sb.toString(), primary_seq,
                                                       secondary_seq,
                                                       tertiary_seq);
+            ++secondary_seq;
+            tertiary_seq = 0;
+
             v.add(e);
             sb.setLength(0);
             continue;
@@ -234,11 +234,11 @@ public class RuleBasedCollator extends Collator
             if (primary_seq == 0)
               throw new ParseException(rules, i);
 
-            ++tertiary_seq;
-
             CollationElement e = new CollationElement(sb.toString(), primary_seq,
                                                       secondary_seq,
                                                       tertiary_seq);
+            ++tertiary_seq;
+
             v.add(e);
             sb.setLength(0);
             continue;
@@ -280,6 +280,13 @@ public class RuleBasedCollator extends Collator
           }
 
         sb.append(c);
+      }
+
+    if (sb.length() > 0)
+      {
+	CollationElement e = new CollationElement (sb.toString(), primary_seq,
+						   secondary_seq, tertiary_seq);
+	v.add (e);
       }
 
     ce_table = v.toArray();
