@@ -1,3 +1,19 @@
+2003-03-08  Raif S. Naffah  <raif@fl.net.au>
+
+	* java.security.AlgorithmParameters.java: formatting + documentation
+	* java.security.Identity.java: formatting + documentation
+	* java.security.IdentityScope.java: formatting + documentation
+	* java.security.KeyFactory.java: formatting + documentation
+	* java.security.KeyPairGenerator.java: formatting + documentation
+	* java.security.MessageDigest.java: formatting + documentation
+	* java.security.Policy.java: formatting + documentation
+	* java.security.ProtectionDomain.java: formatting + documentation
+	* java.security.Security.java: formatting + documentation
+	* java.security.Signature.java: formatting + documentation
+	* java.security.SignatureSpi.java: formatting + documentation
+	* java.security.SignedObject.java: formatting + documentation
+	* java.security.Signer.java: formatting + documentation
+
 2003-03-05  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/ClassLoader.java (initialized): New global.
