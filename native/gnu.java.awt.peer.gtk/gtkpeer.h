@@ -260,8 +260,7 @@ gdk_window_get_root_geometry (GdkWindow *window,
 
 void awt_event_handler (GdkEvent *event);
 
-void connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
-		       int nwindows, ...);
+void connect_awt_hook (JNIEnv *env, jobject peer_obj, int nwindows, ...);
 
 void set_visible (GtkWidget *widget, jboolean visible);
 void set_parent (GtkWidget *widget, GtkContainer *parent);

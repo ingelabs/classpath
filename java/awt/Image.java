@@ -152,6 +152,8 @@ getProperty(String name, ImageObserver observer);
 /**
   * Scales the image to the requested dimension.
   * 
+  * XXX: FIXME
+  * 
   * @param width The width of the scaled image.
   * @param height The height of the scaled image.
   * @param flags A value indicating the algorithm to use, which will be
@@ -159,8 +161,11 @@ getProperty(String name, ImageObserver observer);
   *
   * @return The scaled <code>Image</code> object.
   */
-public abstract Image
-getScaledInstance(int width, int height, int flags);
+public Image
+getScaledInstance(int width, int height, int flags)
+  {
+    return null;
+  }
 
 /*************************************************************************/
 

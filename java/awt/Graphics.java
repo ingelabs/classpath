@@ -380,8 +380,11 @@ fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight);
   * @param raised <code>true</code> if the rectangle appears raised,
   * <code>false</code> if it should appear etched.
   */
-public abstract void
-fill3DRect(int x, int y, int width, int height, boolean raised);
+public void
+fill3DRect(int x, int y, int width, int height, boolean raised)
+{
+  // FIXME
+}
 
 /*************************************************************************/
 

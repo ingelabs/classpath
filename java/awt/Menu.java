@@ -220,6 +220,8 @@ add(String label)
   * @param item The menu item to add.
   * @param index The index of the menu item.
   *
+  * XXX: FIXME
+  *
   * @exception IllegalArgumentException If the index is less than zero.
   * @exception ArrayIndexOutOfBoundsException If the index is otherwise invalid.
   */
@@ -232,8 +234,8 @@ insert(MenuItem item, int index)
   items.insertElementAt(item, index);
 
   MenuPeer mp = (MenuPeer)getPeer();
-  if (mp != null)
-    mp.insertItem(item, index);
+//    if (mp != null)
+//      mp.insertItem(item, index);
 }
 
 /*************************************************************************/
@@ -274,6 +276,8 @@ addSeparator()
   *
   * @param index The index at which to insert a separator bar.
   *
+  * XXX: FIXME
+  *
   * @exception IllegalArgumentException If the index is less than zero.
   * @exception ArrayIndexOutOfBoundsException If the index is otherwise invalid.
   */
@@ -284,9 +288,9 @@ insertSeparator(int index)
     throw new IllegalArgumentException("Index is less than zero");
 
   // FIXME: How do we note in the items array what this is?
-  MenuPeer mp = (MenuPeer)getPeer();
-  if (mp != null)
-    mp.insertSeparator(index);
+//    MenuPeer mp = (MenuPeer)getPeer();
+//    if (mp != null)
+//      mp.insertSeparator(index);
 }
 
 /*************************************************************************/

@@ -21,7 +21,9 @@
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
 import java.net.*;
-import java.util.*;
+import java.util.Hashtable;
+import java.util.Properties;
+import java.util.MissingResourceException;
 import java.awt.datatransfer.*;
 import java.awt.image.*;
 import java.awt.peer.*;
@@ -53,8 +55,8 @@ public class GtkToolkit extends java.awt.Toolkit
     GtkGenericPeer.enableQueue (q);
   }
   
-  native public void beep();
-  native private void getScreenSizeDimensions(int[] xy);
+  native public void beep ();
+  native private void getScreenSizeDimensions (int[] xy);
   
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
@@ -102,8 +104,7 @@ public class GtkToolkit extends java.awt.Toolkit
     return null;
   }
 
-  public PrintJob getPrintJob (Frame frame, String jobtitle, 
-			       Properties props) 
+  public PrintJob getPrintJob (Frame frame, String jobtitle, Properties props) 
   {
     return null;
   }

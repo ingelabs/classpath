@@ -41,7 +41,7 @@ public abstract Point getLocationOnScreen();
 public abstract Dimension getMinimumSize();
 public abstract Dimension getPreferredSize();
 public abstract Toolkit getToolkit();
-public abstract boolean handleEvent(AWTEvent e);
+public abstract void handleEvent(AWTEvent e);
 public abstract void hide();
 public abstract boolean isFocusTraversable();
 public abstract Dimension minimumSize();

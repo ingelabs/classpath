@@ -9,3 +9,4 @@
 ^../java/awt/AWTEvent.java$
 ^../java/awt/event/InputMethodEvent.java$
 ^../java/awt/event/InvocationEvent.java$
+^../gnu/java/awt/image/Gdk.*$

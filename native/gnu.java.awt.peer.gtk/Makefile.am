@@ -1,18 +1,21 @@
 lib_LTLIBRARIES = libgtkpeer.la
 
 libgtkpeer_la_SOURCES = \
-gdkgraphics.c	    gtkscrollpanepeer.c \
-gthread-jni.c       gtkevents.c          gtktextareapeer.c \
-gtkbuttonpeer.c     gtkfiledialogpeer.c  gtktextcomponentpeer.c \
-gtkcanvaspeer.c     gtkimagepainter.c    gtktextfieldpeer.c \
-gtkcheckboxpeer.c   gtklabelpeer.c       gtktoolkit.c \
-gtkchoicepeer.c     gtklistpeer.c        gtkwindowpeer.c \
-gtkclipboard.c      gtkmainthread.c      native_state.c \
-gtkcomponentpeer.c  gtkpanelpeer.c \
-gtkscrollbarpeer.c
+gdkfontmetrics.c	   gtkfiledialogpeer.c	gtkscrollpanepeer.c \
+gdkgraphics.c		   gtkimagepainter.c	gtktextareapeer.c \
+gthread-jni.c		   gtklabelpeer.c	gtktextcomponentpeer.c \
+gtkbuttonpeer.c		   gtklistpeer.c	gtktextfieldpeer.c \
+gtkcanvaspeer.c		   gtkmainthread.c	gtktoolkit.c \
+gtkcheckboxmenuitempeer.c  gtkmenubarpeer.c	gtkwindowpeer.c \
+gtkcheckboxpeer.c	   gtkmenuitempeer.c	native_state.c \
+gtkchoicepeer.c		   gtkmenupeer.c \
+gtkclipboard.c		   gtkpanelpeer.c \
+gtkcomponentpeer.c	   gtkpopupmenupeer.c \
+gtkevents.c		   gtkscrollbarpeer.c
 
-libgtkpeer_la_LDFLAGS = -version-info 0:0:0 @GTK_LIBS@ @GLIB_LIBS@
+libgtkpeer_la_LDFLAGS = -version-info 0:0:0 @GTK_LIBS@ @GLIB_LIBS@ @LIBART_LIBS@
 
 INCLUDES += @JAPHAR_CFLAGS@ \
 	    @GTK_CFLAGS@ \
+	    @LIBART_CFLAGS@ \
 	    -I$(top_srcdir)/include

@@ -49,32 +49,17 @@ if eval "test x$GCC = xyes"; then
   JAPHAR_GREP_CFLAGS(-Wall, [
     CFLAGS="$CFLAGS -Wall"
   ])
-  JAPHAR_GREP_CFLAGS(-Wstrict-prototypes, [
-    CFLAGS="$CFLAGS -Wstrict-prototypes"
-  ])
-  JAPHAR_GREP_CFLAGS(-Wmissing-prototypes, [
-    CFLAGS="$CFLAGS -Wmissing-prototypes"
-  ])
-  JAPHAR_GREP_CFLAGS(-Wmissing-declarations, [
-    CFLAGS="$CFLAGS -Wmissing-declarations"
-  ])
-  JAPHAR_GREP_CFLAGS(-Wreturn-type, [
-    CFLAGS="$CFLAGS -Wreturn-type"                    
-  ])
-  JAPHAR_GREP_CFLAGS(-Wcast-align, [
-    CFLAGS="$CFLAGS -Wcast-align"
-  ])
-  JAPHAR_GREP_CFLAGS(-pedantic, [
-    CFLAGS="$CFLAGS -pedantic"
-  ])
 fi
 
 dnl Check for cthreads, w32 threads, pthreads
 dnl CLASSPATH_CHECK_THREADS
 
-dnl Check for AWT related glib/gtk
-CLASSPATH_CHECK_GTK
-CLASSPATH_CHECK_GLIB
+dnl Check for AWT related glib/gtk/libart_lgpl
+AM_PATH_GTK(1.2.4,,exit 1)
+AM_PATH_GLIB(1.2.4,,exit 1,gthread)
+dnl XXX Fix me when libart.m4 has the compile test fixed!
+enable_libarttest=no
+AM_PATH_LIBART(2.1.0,,exit 1)
 
 dnl --with-japhar
 CLASSPATH_CHECK_JAPHAR

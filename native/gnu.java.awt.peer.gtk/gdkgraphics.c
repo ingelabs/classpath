@@ -4,6 +4,10 @@
 
 #define GDK_STABLE_IS_PIXMAP(d) (((GdkWindowPrivate *)d)->window_type == GDK_WINDOW_PIXMAP)
 
+GdkPoint *
+translate_points (JNIEnv *env, jintArray xpoints, jintArray ypoints, 
+		  jint npoints, jint x_offset, jint y_offset);
+
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyState
   (JNIEnv *env, jobject obj, jobject old)
 {

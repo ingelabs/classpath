@@ -208,7 +208,7 @@ setModal(boolean modal)
   * otherwise.
   */
 public boolean
-isResizeable()
+isResizable()
 {
   return(resizable);
 }

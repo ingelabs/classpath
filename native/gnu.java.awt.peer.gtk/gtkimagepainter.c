@@ -1,5 +1,5 @@
 #include "gtkpeer.h"
-#include "GtkImagePainter.h"
+#include "gnu_java_awt_peer_gtk_GtkImagePainter.h"
 #include <libart_lgpl/art_misc.h>
 #include <libart_lgpl/art_rgb_affine.h>
 

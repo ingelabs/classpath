@@ -65,14 +65,14 @@ abstract class PrettyFrame extends Frame
     ((BorderLayout) getLayout ()).setVgap (5);
   }
 
-  public Insets getInsets()
-  {
-    Insets oldInsets = super.getInsets ();
-    return new Insets (oldInsets.top+10,
-		       oldInsets.left+10,
-		       oldInsets.bottom+10,
-		       oldInsets.right+10);
-  }
+//    public Insets getInsets()
+//    {
+//      Insets oldInsets = super.getInsets ();
+//      return new Insets (oldInsets.top+10,
+//  		       oldInsets.left+10,
+//  		       oldInsets.bottom+10,
+//  		       oldInsets.right+10);
+//    }
 }
 
 abstract class SubFrame extends PrettyFrame implements SubWindow
@@ -105,11 +105,13 @@ class MainWindow extends PrettyFrame implements ActionListener
 
   MainWindow () 
   {
-    System.out.println (getInsets ());
+    System.out.println ("INSET:" + getInsets ());
 
     MenuBar mb = new MenuBar ();
     Menu menu = new Menu ("File");
-    menu.add (new MenuItem ("Foobar"));
+    Menu submenu = new Menu ("Testing");
+    submenu.add (new CheckboxMenuItem ("Foobar"));
+    menu.add (submenu);
     mb.add (menu);
 
     setMenuBar (mb);
@@ -118,6 +120,7 @@ class MainWindow extends PrettyFrame implements ActionListener
       
     closeButton = new Button ("Close");
     closeButton.addActionListener (this);
+    closeButton.setFont (new Font ("Serif", Font.BOLD | Font.ITALIC, 18));
     add (closeButton, "South");
 
     windows = new Hashtable ();
@@ -144,6 +147,7 @@ class MainWindow extends PrettyFrame implements ActionListener
     sp.add (p);
     add (sp, "Center");
 
+    System.out.println (86 + (windows.size ()*22));
     setSize (200, 86 + (windows.size ()*22));
     setTitle ("TestAWT");
   }
@@ -157,6 +161,9 @@ class MainWindow extends PrettyFrame implements ActionListener
 
     if (source==closeButton)
       {
+	System.out.println ("INSET:" + getInsets ());
+	System.out.println ("BOUNDS:" + getBounds ());
+	System.getProperties ().list (System.out);
 	dispose();
 	System.exit (0);
       }
@@ -234,7 +241,7 @@ class DialogWindow extends Dialog implements SubWindow
 
   public DialogWindow (Frame f)
   {
-    super (f);
+    super (f, true);
   }
 
   public void setVisible (boolean visible)
