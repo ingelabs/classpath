@@ -1,5 +1,10 @@
 2004-04-29  Michael Koch  <konqueror@gmx.de>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c
+	(create): Declare variable on top of function.
+
+2004-04-29  Michael Koch  <konqueror@gmx.de>
+
 	* native/jni/java-io/java_io_VMObjectStreamClass.c
 	(getFieldReference): Use char* for strings, not jbyte*.
 	* native/jni/java-lang/java_lang_VMProcess.c
