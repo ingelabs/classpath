@@ -1,5 +1,10 @@
 2003-07-03  Torsten Rupp  <rupp@lisa.aicas.com>
 
+        * native/jni/java-nio/java_nio_FileChannelImpl.c:
+        Fixed header Java_gnu_java_nio_FileChannelImpl_implPosition__
+
+2003-07-03  Torsten Rupp  <rupp@lisa.aicas.com>
+
         * gnu/java/rmi/server/UnicastServerRef.java:
         Fixed getReturnMethodType
 

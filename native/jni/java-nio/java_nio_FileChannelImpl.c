@@ -53,7 +53,7 @@ Java_gnu_java_nio_FileChannelImpl_size (JNIEnv *env, jclass class)
 }
 
 JNIEXPORT jlong JNICALL
-Java_gnu_java_nio_FileChannelImpl_implPosition (JNIEnv *env, jclass class)
+Java_gnu_java_nio_FileChannelImpl_implPosition__ (JNIEnv *env, jclass class)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implPosition(): not implemented");
   return 0;
