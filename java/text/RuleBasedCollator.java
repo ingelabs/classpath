@@ -189,9 +189,9 @@ public class RuleBasedCollator extends Collator
     StringBuffer sb = new StringBuffer("");
     int len = rules.length();
     
-    for (int index = 0; index < len(); index++)
+    for (int index = 0; index < len; ++index)
       {
-        char c = rules.charAt (index);
+	char c = rules.charAt (index);
 
 	// Just skip whitespace.
 	if (Character.isWhitespace (c))
