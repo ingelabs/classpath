@@ -1,5 +1,13 @@
 2004-11-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/CardLayout.java,
+	java/awt/Component.java,
+	java/awt/Font.java,
+	java/awt/image/SinglePixelPackedSampleModel.java:
+	Fixed javadocs and argument names all over.
+
+2004-11-17  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/image/DataBufferShort.java: Fixed file header.
 	* java/awt/image/DataBufferUShort.java: Likewise.
 	(DataBufferUShort): Throw NullPointerException if dataArray is null.
