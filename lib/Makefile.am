@@ -13,8 +13,8 @@ USER_JABBA = @USER_JABBA@
 USER_JAVAH = @USER_JAVAH@
 FIND = @FIND@
 
-propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -type d ! -regex .*CVS)
-propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -name \*\.properties)
+propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -type d ! -name CVS -print)
+propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -name \*\.properties -print)
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_GCJ

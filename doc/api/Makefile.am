@@ -4,7 +4,7 @@ endif
 
 EXTRA_DIST = classpath-copyright.xml
 
-htmllist := $(shell $(FIND) html | grep -v "^html$$")
+htmllist := $(shell $(FIND) html -print | grep -v "^html$$")
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/api
@@ -30,8 +30,8 @@ uninstall-local:
 #html: create_xml create_catalog create_html
 html: create_html
 
-core := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -regex .*CVS ! -regex .*doc-files | tr '/' '.' | grep -v "java.awt.dnd.peer" | grep -v "java.awt.peer")
-jaxp := $(shell cd $(top_srcdir)/external/jaxp/source && $(FIND) javax org -type d ! -regex .*CVS | tr '/' '.' | grep -v "org.w3c.dom.")
+core := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -name CVS ! -name doc-files -print | tr '/' '.' | grep -v "java.awt.dnd.peer" | grep -v "java.awt.peer")
+jaxp := $(shell cd $(top_srcdir)/external/jaxp/source && $(FIND) javax org -type d ! -name CVS -print | tr '/' '.' | grep -v "org.w3c.dom.")
 
 # Just generate api doc for the core packages.
 # Adding the external ones takes a lot more time and we should reference

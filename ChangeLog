@@ -1,3 +1,10 @@
+2004-08-02  Michael Koch  <konqueror@gmx.de>
+
+	* doc/api/Makefile.am,
+	external/Makefile.am,
+	lib/Makefile.am:
+	Fixed usage of find.
+
 2004-08-01  Mark Wielaard  <mark@klomp.org>
 
 	* NEWS: Mention new examples.

@@ -3,7 +3,7 @@
 # When importing a new version of jaxp.
 # You need to add the output of the following command to the
 # jaxp_FILES in Makefile.am (remove the last \ from the last entry):
-# $ for i in $(find jaxp -type f | grep -v CVS); do echo $i \\; done
+# $ for i in $(find jaxp -type f -print | grep -v CVS); do echo $i \\; done
 
 jaxp_FILES = \
 jaxp/source/gnu/xml/aelfred2/JAXPFactory.java \
