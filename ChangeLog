@@ -1,3 +1,32 @@
+2004-10-28  Michael Koch  <konqueror@gmx.de>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontMetrics.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGlyphVector.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCanvasPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkGenericPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImagePainter.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuBarPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuItemPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.c,
+	native/jni/java-lang/java_lang_Double.c,
+	native/jni/java-lang/java_lang_Math.c,
+	native/jni/java-lang/java_lang_Object.c,
+	native/jni/java-lang/java_lang_VMDouble.c,
+	native/jni/java-lang/java_lang_VMFloat.c,
+	native/jni/java-lang/java_lang_reflect_Array.c:
+	Fixed method names to start at begin of line. This is desired by GNU
+	coding style guide.
+
 2004-10-28  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/color/CieXyzConverter.java,

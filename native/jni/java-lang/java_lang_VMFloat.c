@@ -45,7 +45,8 @@ exception statement from your version. */
  * Method:    floatToIntBits
  * Signature: (F)I
  */
-JNIEXPORT jint JNICALL Java_java_lang_VMFloat_floatToIntBits
+JNIEXPORT jint JNICALL
+Java_java_lang_VMFloat_floatToIntBits
   (JNIEnv * env __attribute__((__unused__)),
    jclass cls __attribute__((__unused__)),
    jfloat value)
@@ -67,7 +68,8 @@ JNIEXPORT jint JNICALL Java_java_lang_VMFloat_floatToIntBits
  * Method:    floatToRawIntBits
  * Signature: (F)I
  */
-JNIEXPORT jint JNICALL Java_java_lang_VMFloat_floatToRawIntBits
+JNIEXPORT jint JNICALL
+Java_java_lang_VMFloat_floatToRawIntBits
   (JNIEnv * env __attribute__((__unused__)),
    jclass cls __attribute__((__unused__)),
    jfloat value)
@@ -82,7 +84,8 @@ JNIEXPORT jint JNICALL Java_java_lang_VMFloat_floatToRawIntBits
  * Method:    intBitsToFloat
  * Signature: (I)F
  */
-JNIEXPORT jfloat JNICALL Java_java_lang_VMFloat_intBitsToFloat
+JNIEXPORT jfloat JNICALL
+Java_java_lang_VMFloat_intBitsToFloat
   (JNIEnv * env __attribute__((__unused__)),
    jclass cls __attribute__((__unused__)),
    jint bits)

@@ -46,7 +46,8 @@ exception statement from your version. */
  * Method:    doubleToLongBits
  * Signature: (D)J
  */
-JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToLongBits
+JNIEXPORT jlong JNICALL
+Java_java_lang_VMDouble_doubleToLongBits
   (JNIEnv *env __attribute__((__unused__)),
    jclass cls __attribute__((__unused__)),
    jdouble doubleValue)
@@ -69,7 +70,8 @@ JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToLongBits
  * Method:    doubleToRawLongBits
  * Signature: (D)J
  */
-JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToRawLongBits
+JNIEXPORT jlong JNICALL
+Java_java_lang_VMDouble_doubleToRawLongBits
   (JNIEnv *env __attribute__((__unused__)),
    jclass cls __attribute__((__unused__)),
    jdouble doubleValue)
@@ -84,7 +86,8 @@ JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToRawLongBits
  * Method:    longBitsToDouble
  * Signature: (J)D
  */
-JNIEXPORT jdouble JNICALL Java_java_lang_VMDouble_longBitsToDouble
+JNIEXPORT jdouble JNICALL
+Java_java_lang_VMDouble_longBitsToDouble
   (JNIEnv *env __attribute__((__unused__)),
    jclass cls __attribute__((__unused__)),
    jlong longValue)
