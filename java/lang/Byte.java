@@ -131,7 +131,7 @@ public final class Byte extends Number implements Comparable
     /**
      * Calls <code>Byte(String</code> but uses the specified radix.
      * @see #Byte(java.lang.String)
-     * @see #parseByte(java.lang.String int)
+     * @see #parseByte(java.lang.String, int)
      */    
     public static Byte valueOf(String s, int radix) 
 	throws NumberFormatException 
@@ -145,7 +145,8 @@ public final class Byte extends Number implements Comparable
      *
      * @param s the <code>String</code> to convert
      * @exception NumberFormatException thrown if the <code>String</code> 
-     * cannot be parsed as a <code>byte</code>.    
+     * cannot be parsed as a <code>byte</code>.
+     */    
     public static byte parseByte(String s) throws NumberFormatException 
     {
 	return parseByte(s, 10);
@@ -158,7 +159,7 @@ public final class Byte extends Number implements Comparable
      * @param radix the radix to use in the conversion
      * @exception NumberFormatException thrown if the <code>String</code> 
      * cannot be parsed as a <code>byte</code>.    
-         
+     */ 
     public static byte parseByte(String s, int radix) 
 	throws NumberFormatException 
     {
