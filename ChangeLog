@@ -1,5 +1,25 @@
 2003-05-23  Aaron M. Renn (arenn@urbanophile.com)
 
+	* java/net/ContentHandlerFactory.java
+	Reformat, minor doc fixes
+	(createContentHandler): Explicitly declare public
+	* java/net/DatagramSocketImplFactory.java
+	Minor doc fixes
+	(createDatagramSocketImpl): Explicitly declare public
+	* java/net/FileNameMap.java
+	Reformat
+	(getContentTypeFor): Explicitly declare public
+	* java/net/SocketImplFactory.java
+	Reformat, minor doc fixes
+	(createSocketImpl): Explicitly declare public
+	* java/net/SocketOptions.java
+	Minor reformatting
+	* java/net/URLStreamHandlerFactory.java
+	Reformat, minor doc fixes
+	(createURLStreamHandler): Explicitly declare public
+
+2003-05-23  Aaron M. Renn (arenn@urbanophile.com)
+
 	* java/io/PushbackInputStream.java
 	Minor doc fixes
 
