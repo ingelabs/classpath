@@ -1,5 +1,13 @@
 2003-12-26  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/MenuComponent.java: Import java.io.Serialization.
+	* java/awt/MenuItem.java: Likewise.
+	* java/awt/TextComponent.java: Likewise.
+	* java/awt/image/ImagingOpException.java
+	(serialVersionUID): Fixed.
+
+2003-12-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/attribute/AttributeSetUtilities.java,
 	javax/print/attribute/DateTimeSyntax.java,
 	javax/print/attribute/DocAttribute.java,
