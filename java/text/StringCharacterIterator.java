@@ -141,6 +141,22 @@ StringCharacterIterator(String text, int begin, int end, int index)
 
 /*************************************************************************/
 
+/**
+  * This is a package level constructor that copies the text out of
+  * an existing StringCharacterIterator and resets the beginning and
+  * ending index.
+  *
+  * @param scci The StringCharacterIterator to copy the info from
+  * @param begin The beginning index of the range we are interested in.
+  * @param end The ending index of the range we are interested in.
+  */
+StringCharacterIterator(StringCharacterIterator sci, int begin, int end)
+{
+  this(sci.text, begin, end, begin);
+}
+
+/*************************************************************************/
+
 /*
  * Instance Methods
  */
@@ -253,9 +269,11 @@ getIndex()
   * @param index The new index value.
   *
   * @return The character at the new index value or <code>DONE</code> if the index value is equal to <code>getEndIndex</code>.
+  *
+  * @exception IllegalArgumentException If the specified index is not valid
   */
 public char
-setIndex(int index) throws IllegalArgumentException
+setIndex(int index)
 {
   if ((index < begin) || (index > end))
     throw new IllegalArgumentException("Bad index specified");
