@@ -53,7 +53,7 @@ static void *NIOGetPointer (JNIEnv *, jobject);
 static jobject NIOGetRawData (JNIEnv *, void *pointer);
 
 static void *
-NIOGetPointer (JNIEnv *env, jobject rawdata)
+NIOGetPointer (JNIEnv * env, jobject rawdata)
 {
 #if SIZEOF_VOID_P == 4
   return (void *) (*env)->GetIntField (env, rawdata, fieldNativePointer);
@@ -65,7 +65,7 @@ NIOGetPointer (JNIEnv *env, jobject rawdata)
 }
 
 static jobject
-NIOGetRawData (JNIEnv *env, void *pointer)
+NIOGetRawData (JNIEnv * env, void *pointer)
 {
 #if SIZEOF_VOID_P == 4
   return (*env)->NewObject (env, classRawData, methodRawDataInit,
@@ -79,15 +79,15 @@ NIOGetRawData (JNIEnv *env, void *pointer)
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_VMDirectByteBuffer_init
-  (JNIEnv *env, jclass clazz __attribute__ ((__unused__)))
+  Java_java_nio_VMDirectByteBuffer_init
+  (JNIEnv * env, jclass clazz __attribute__ ((__unused__)))
 {
 #if SIZEOF_VOID_P == 4
   classRawData = (*env)->FindClass (env, "gnu/classpath/RawData32");
   if (classRawData == NULL)
     {
-      JCL_ThrowException(env, "java/lang/InternalError",
-			      "unable to find internal class");
+      JCL_ThrowException (env, "java/lang/InternalError",
+			  "unable to find internal class");
       return;
     }
 
@@ -95,24 +95,24 @@ Java_java_nio_VMDirectByteBuffer_init
 					   "<init>", "(I)V");
   if (methodRawDataInit == NULL)
     {
-      JCL_ThrowException(env, "java/lang/InternalError",
-			      "unable to find internal constructor");
+      JCL_ThrowException (env, "java/lang/InternalError",
+			  "unable to find internal constructor");
       return;
     }
-  
+
   fieldNativePointer = (*env)->GetFieldID (env, classRawData, "data", "I");
   if (fieldNativePointer == NULL)
     {
-      JCL_ThrowException(env, "java/lang/InternalError",
-			      "unable to find internal field");
+      JCL_ThrowException (env, "java/lang/InternalError",
+			  "unable to find internal field");
       return;
     }
 #elif SIZEOF_VOID_P == 8
   classRawData = (*env)->FindClass (env, "gnu/classpath/RawData64");
   if (classRawData == NULL)
     {
-      JCL_ThrowException(env, "java/lang/InternalError",
-			      "unable to find internal class");
+      JCL_ThrowException (env, "java/lang/InternalError",
+			  "unable to find internal class");
       return;
     }
 
@@ -120,16 +120,16 @@ Java_java_nio_VMDirectByteBuffer_init
 					   "<init>", "(J)V");
   if (methodRawDataInit == NULL)
     {
-      JCL_ThrowException(env, "java/lang/InternalError",
-			      "unable to find internal constructor");
+      JCL_ThrowException (env, "java/lang/InternalError",
+			  "unable to find internal constructor");
       return;
     }
-  
+
   fieldNativePointer = (*env)->GetFieldID (env, classRawData, "data", "J");
   if (fieldNativePointer == NULL)
     {
-      JCL_ThrowException(env, "java/lang/InternalError",
-			      "unable to find internal field");
+      JCL_ThrowException (env, "java/lang/InternalError",
+			  "unable to find internal field");
       return;
     }
 #else
@@ -137,20 +137,20 @@ Java_java_nio_VMDirectByteBuffer_init
 #endif
 
   /* We need to wrap the jclass in global reference to make it persistent */
-  if ((classRawData = (*env)->NewGlobalRef(env, classRawData)) == NULL)
+  if ((classRawData = (*env)->NewGlobalRef (env, classRawData)) == NULL)
     {
-      JCL_ThrowException(env, "java/lang/InternalError",
-			      "failed to create global reference");
+      JCL_ThrowException (env, "java/lang/InternalError",
+			  "failed to create global reference");
       return;
     }
 }
 
 JNIEXPORT jobject JNICALL
-Java_java_nio_VMDirectByteBuffer_allocate
-  (JNIEnv *env, jclass clazz __attribute__ ((__unused__)), jint capacity)
+  Java_java_nio_VMDirectByteBuffer_allocate
+  (JNIEnv * env, jclass clazz __attribute__ ((__unused__)), jint capacity)
 {
   void *buffer;
-  
+
   buffer = malloc (capacity);
 
   if (buffer == NULL)
@@ -159,28 +159,28 @@ Java_java_nio_VMDirectByteBuffer_allocate
 			  "unable to allocate memory for direct byte buffer");
       return 0;
     }
-  
+
   return NIOGetRawData (env, buffer);
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_VMDirectByteBuffer_free
-  (JNIEnv *env, jclass clazz __attribute__ ((__unused__)), jobject address)
+  Java_java_nio_VMDirectByteBuffer_free
+  (JNIEnv * env, jclass clazz __attribute__ ((__unused__)), jobject address)
 {
   free (NIOGetPointer (env, address));
 }
 
 JNIEXPORT jbyte JNICALL
-Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I
-  (JNIEnv *env, jclass clazz __attribute__ ((__unused__)),
+  Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I
+  (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index)
 {
   return ((jbyte *) NIOGetPointer (env, address))[index];
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_VMDirectByteBuffer_put
-  (JNIEnv *env, jclass clazz __attribute__ ((__unused__)),
+  Java_java_nio_VMDirectByteBuffer_put
+  (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index, jbyte value)
 {
   jbyte *pointer = (jbyte *) NIOGetPointer (env, address) + index;
@@ -188,17 +188,18 @@ Java_java_nio_VMDirectByteBuffer_put
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I_3BII
-  (JNIEnv *env, jclass clazz __attribute__ ((__unused__)),
+  Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I_3BII
+  (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index, jbyteArray dst, jint dst_offset, jint dst_len)
 {
   jbyte *src = (jbyte *) NIOGetPointer (env, address) + index;
-  memcpy ((*env)->GetByteArrayElements (env, dst, NULL) + dst_offset, src, dst_len);
+  memcpy ((*env)->GetByteArrayElements (env, dst, NULL) + dst_offset, src,
+	  dst_len);
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_VMDirectByteBuffer_shiftDown
-  (JNIEnv *env, jclass clazz __attribute__ ((__unused__)),
+  Java_java_nio_VMDirectByteBuffer_shiftDown
+  (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint dst_offset, jint src_offset, jint count)
 {
   jbyte *dst = (jbyte *) NIOGetPointer (env, address) + dst_offset;
@@ -207,8 +208,8 @@ Java_java_nio_VMDirectByteBuffer_shiftDown
 }
 
 JNIEXPORT jobject JNICALL
-Java_java_nio_VMDirectByteBuffer_adjustAddress
-  (JNIEnv *env, jclass clazz __attribute__ ((__unused__)),
+  Java_java_nio_VMDirectByteBuffer_adjustAddress
+  (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint offset)
 {
   return NIOGetRawData (env, (jbyte *) NIOGetPointer (env, address) + offset);

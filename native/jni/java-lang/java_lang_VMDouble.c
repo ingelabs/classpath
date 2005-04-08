@@ -47,18 +47,17 @@ exception statement from your version. */
  * Signature: (D)J
  */
 JNIEXPORT jlong JNICALL
-Java_java_lang_VMDouble_doubleToLongBits
-  (JNIEnv *env __attribute__((__unused__)),
-   jclass cls __attribute__((__unused__)),
-   jdouble doubleValue)
+  Java_java_lang_VMDouble_doubleToLongBits
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jdouble doubleValue)
 {
   jvalue val;
   jlong e, f;
   val.d = doubleValue;
-  
+
   e = val.j & 0x7ff0000000000000LL;
   f = val.j & 0x000fffffffffffffLL;
-  
+
   if (e == 0x7ff0000000000000LL && f != 0L)
     val.j = 0x7ff8000000000000LL;
 
@@ -71,10 +70,9 @@ Java_java_lang_VMDouble_doubleToLongBits
  * Signature: (D)J
  */
 JNIEXPORT jlong JNICALL
-Java_java_lang_VMDouble_doubleToRawLongBits
-  (JNIEnv *env __attribute__((__unused__)),
-   jclass cls __attribute__((__unused__)),
-   jdouble doubleValue)
+  Java_java_lang_VMDouble_doubleToRawLongBits
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jdouble doubleValue)
 {
   jvalue val;
   val.d = doubleValue;
@@ -87,13 +85,11 @@ Java_java_lang_VMDouble_doubleToRawLongBits
  * Signature: (J)D
  */
 JNIEXPORT jdouble JNICALL
-Java_java_lang_VMDouble_longBitsToDouble
-  (JNIEnv *env __attribute__((__unused__)),
-   jclass cls __attribute__((__unused__)),
-   jlong longValue)
+  Java_java_lang_VMDouble_longBitsToDouble
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jlong longValue)
 {
   jvalue val;
   val.j = longValue;
   return val.d;
 }
-

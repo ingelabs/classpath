@@ -46,21 +46,20 @@ exception statement from your version. */
  * Signature: (F)I
  */
 JNIEXPORT jint JNICALL
-Java_java_lang_VMFloat_floatToIntBits
-  (JNIEnv * env __attribute__((__unused__)),
-   jclass cls __attribute__((__unused__)),
-   jfloat value)
+  Java_java_lang_VMFloat_floatToIntBits
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jfloat value)
 {
-    jvalue u;
-    jint e, f;
-    u.f = value;
-    e = u.i & 0x7f800000;
-    f = u.i & 0x007fffff;
+  jvalue u;
+  jint e, f;
+  u.f = value;
+  e = u.i & 0x7f800000;
+  f = u.i & 0x007fffff;
 
-    if (e == 0x7f800000 && f != 0)
-      u.i = 0x7fc00000;
-    
-    return u.i;
+  if (e == 0x7f800000 && f != 0)
+    u.i = 0x7fc00000;
+
+  return u.i;
 }
 
 /*
@@ -69,10 +68,9 @@ Java_java_lang_VMFloat_floatToIntBits
  * Signature: (F)I
  */
 JNIEXPORT jint JNICALL
-Java_java_lang_VMFloat_floatToRawIntBits
-  (JNIEnv * env __attribute__((__unused__)),
-   jclass cls __attribute__((__unused__)),
-   jfloat value)
+  Java_java_lang_VMFloat_floatToRawIntBits
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jfloat value)
 {
   jvalue u;
   u.f = value;
@@ -85,13 +83,11 @@ Java_java_lang_VMFloat_floatToRawIntBits
  * Signature: (I)F
  */
 JNIEXPORT jfloat JNICALL
-Java_java_lang_VMFloat_intBitsToFloat
-  (JNIEnv * env __attribute__((__unused__)),
-   jclass cls __attribute__((__unused__)),
-   jint bits)
+  Java_java_lang_VMFloat_intBitsToFloat
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jint bits)
 {
-    jvalue u;
-    u.i = bits;
-    return u.f;
+  jvalue u;
+  u.i = bits;
+  return u.f;
 }
-

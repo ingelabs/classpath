@@ -56,7 +56,7 @@ exception statement from your version. */
 
 #include "java_util_VMTimeZone.h"
 
-static size_t jint_to_charbuf (char* bufend, jint num);
+static size_t jint_to_charbuf (char *bufend, jint num);
 
 /**
  * This method returns a time zone id string which is in the form
@@ -75,9 +75,9 @@ static size_t jint_to_charbuf (char* bufend, jint num);
  * TimeZone object.
  */
 JNIEXPORT jstring JNICALL
-Java_java_util_VMTimeZone_getSystemTimeZoneId(JNIEnv *env,
-					      jclass clazz
-					      __attribute__ ((__unused__)))
+Java_java_util_VMTimeZone_getSystemTimeZoneId (JNIEnv * env,
+					       jclass clazz
+					       __attribute__ ((__unused__)))
 {
   struct tm tim;
 #ifndef HAVE_LOCALTIME_R
@@ -94,15 +94,15 @@ Java_java_util_VMTimeZone_getSystemTimeZoneId(JNIEnv *env,
   char *tzid;
   jstring retval;
 
-  time(&current_time);
+  time (&current_time);
 #ifdef HAVE_LOCALTIME_R
-  localtime_r(&current_time, &tim);
+  localtime_r (&current_time, &tim);
 #else
   /* Fall back on non-thread safe localtime. */
-  lt_tim = localtime(&current_time);
-  memcpy(&tim, lt_tim, sizeof (struct tm));
+  lt_tim = localtime (&current_time);
+  memcpy (&tim, lt_tim, sizeof (struct tm));
 #endif
-  mktime(&tim);
+  mktime (&tim);
 
 #ifdef HAVE_STRUCT_TM_TM_ZONE
   /* We will cycle through the months to make sure we hit dst. */
@@ -111,30 +111,30 @@ Java_java_util_VMTimeZone_getSystemTimeZoneId(JNIEnv *env,
   while (tz1 == NULL || tz2 == NULL)
     {
       if (tim.tm_isdst > 0)
-        tz2 = tim.tm_zone;
+	tz2 = tim.tm_zone;
       else if (tz1 == NULL)
-        {
-          tz1 = tim.tm_zone;
-          month = tim.tm_mon;
-        }
+	{
+	  tz1 = tim.tm_zone;
+	  month = tim.tm_mon;
+	}
 
       if (tz1 == NULL || tz2 == NULL)
-        {
-          tim.tm_mon++;
-          tim.tm_mon %= 12;
-        }
+	{
+	  tim.tm_mon++;
+	  tim.tm_mon %= 12;
+	}
 
       if (tim.tm_mon == month && tz2 == NULL)
-        tz2 = "";
+	tz2 = "";
       else
-        mktime(&tim);
+	mktime (&tim);
     }
   /* We want to make sure the tm struct we use later on is not dst. */
   tim.tm_mon = month;
-  mktime(&tim);
+  mktime (&tim);
 #elif defined (HAVE_TZNAME)
   /* If dst is never used, tzname[1] is the empty string. */
-  tzset();
+  tzset ();
   tz1 = tzname[0];
   tz2 = tzname[1];
 #else
@@ -153,7 +153,7 @@ Java_java_util_VMTimeZone_getSystemTimeZoneId(JNIEnv *env,
   tzoffset = (long) _timezone;
 #elif HAVE_TIMEZONE
   /* timezone is secs WEST of UTC. */
-  tzoffset = timezone;	
+  tzoffset = timezone;
 #else
   /* FIXME: there must be another global if neither tm_gmtoff nor timezone
      is available, esp. if tzname is valid.
@@ -166,10 +166,10 @@ Java_java_util_VMTimeZone_getSystemTimeZoneId(JNIEnv *env,
   if ((tzoffset % 3600) == 0)
     tzoffset = tzoffset / 3600;
 
-  tz1_len = strlen(tz1);
-  tz2_len = strlen(tz2);
+  tz1_len = strlen (tz1);
+  tz2_len = strlen (tz2);
   tzoff_len = jint_to_charbuf (tzoff + 11, tzoffset);
-  tzid = (char*) malloc (tz1_len + tz2_len + tzoff_len + 1); /* FIXME alloc */
+  tzid = (char *) malloc (tz1_len + tz2_len + tzoff_len + 1);	/* FIXME alloc */
   memcpy (tzid, tz1, tz1_len);
   memcpy (tzid + tz1_len, tzoff + 11 - tzoff_len, tzoff_len);
   memcpy (tzid + tz1_len + tzoff_len, tz2, tz2_len);
@@ -191,33 +191,33 @@ Java_java_util_VMTimeZone_getSystemTimeZoneId(JNIEnv *env,
 */
 
 static size_t
-jint_to_charbuf (char* bufend, jint num)
+jint_to_charbuf (char *bufend, jint num)
 {
-  register char* ptr = bufend;
+  register char *ptr = bufend;
   jboolean isNeg;
   if (num < 0)
     {
       isNeg = JNI_TRUE;
       num = -(num);
       if (num < 0)
-        {
-          /* Must be MIN_VALUE, so handle this special case.
+	{
+	  /* Must be MIN_VALUE, so handle this special case.
 	     FIXME use 'unsigned jint' for num. */
-          *--ptr = '8';
-          num = 214748364;
-        }
+	  *--ptr = '8';
+	  num = 214748364;
+	}
     }
   else
     isNeg = JNI_FALSE;
 
-    do
-      {
-        *--ptr = (char) ((int) '0' + (num % 10));
-        num /= 10;
-      }
-    while (num > 0);
+  do
+    {
+      *--ptr = (char) ((int) '0' + (num % 10));
+      num /= 10;
+    }
+  while (num > 0);
 
-    if (isNeg)
-      *--ptr = '-';
-    return bufend - ptr;
+  if (isNeg)
+    *--ptr = '-';
+  return bufend - ptr;
 }

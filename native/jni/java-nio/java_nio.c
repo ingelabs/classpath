@@ -47,14 +47,14 @@ exception statement from your version. */
 
 #include "target_native.h"
 #ifndef WITHOUT_NETWORK
-  #include "target_native_network.h"
+#include "target_native_network.h"
 #endif /* WITHOUT_NETWORK */
 
 #include "java_nio_channels_FileChannelImpl.h"
 
 #include "javaio.h"
 
-#define NIO_DEBUG(X) /* no debug */
+#define NIO_DEBUG(X)		/* no debug */
 //#define NIO_DEBUG(X) X
 
 /***************************************
@@ -64,78 +64,69 @@ exception statement from your version. */
  *************/
 
 
-static char *compare(int i, int lim, char *buffer)
+static char *
+compare (int i, int lim, char *buffer)
 {
-  sprintf(buffer, "(%d >= %d)", i, lim);
+  sprintf (buffer, "(%d >= %d)", i, lim);
   return buffer;
 }
 
-static inline					
-int convert_Int(int X)				
-{						
-  unsigned char *a = (unsigned char*)&X;
-  int res =					
-    (((int)a[0]) << 24) + 			
-    (((int)a[1]) << 16) + 			
-    (((int)a[2]) << 8) + 			
-    (((int)a[3]) << 0);										
-  return res;					
+static inline int
+convert_Int (int X)
+{
+  unsigned char *a = (unsigned char *) &X;
+  int res =
+    (((int) a[0]) << 24) +
+    (((int) a[1]) << 16) + (((int) a[2]) << 8) + (((int) a[3]) << 0);
+  return res;
 }
 
-static inline					
-jlong convert_Long(jlong X)				
-{				
-  unsigned char *a = (unsigned char*)&X;		
-  int res1 =					
-    (((int)a[0]) << 24) + 			
-    (((int)a[1]) << 16) + 			
-    (((int)a[2]) << 8) + 			
-    (((int)a[3]) << 0);		
+static inline jlong
+convert_Long (jlong X)
+{
+  unsigned char *a = (unsigned char *) &X;
+  int res1 =
+    (((int) a[0]) << 24) +
+    (((int) a[1]) << 16) + (((int) a[2]) << 8) + (((int) a[3]) << 0);
   int res2;
   a += 4;
-  res2 =					
-    (((int)a[0]) << 24) + 			
-    (((int)a[1]) << 16) + 			
-    (((int)a[2]) << 8) + 			
-    (((int)a[3]) << 0);										
-  return ((jlong)res1) | ((jlong)res2) << 32LL;
+  res2 =
+    (((int) a[0]) << 24) +
+    (((int) a[1]) << 16) + (((int) a[2]) << 8) + (((int) a[3]) << 0);
+  return ((jlong) res1) | ((jlong) res2) << 32LL;
 }
 
-static inline					
-short convert_Short(short X)				
-{						
-  unsigned char *a =(unsigned char*) &X;			
-  int res =					
-    (((int)a[2]) << 8) + 			
-    (((int)a[3]) << 0);										
-  return res;					
+static inline short
+convert_Short (short X)
+{
+  unsigned char *a = (unsigned char *) &X;
+  int res = (((int) a[2]) << 8) + (((int) a[3]) << 0);
+  return res;
 }
-static inline					
-short convert_Char(short X)				
-{						
-  unsigned char *a =(unsigned char*) &X;			
-  int res =					
-    (((int)a[2]) << 8) + 			
-    (((int)a[3]) << 0);										
-  return res;					
+static inline short
+convert_Char (short X)
+{
+  unsigned char *a = (unsigned char *) &X;
+  int res = (((int) a[2]) << 8) + (((int) a[3]) << 0);
+  return res;
 }
 
-static inline					
-unsigned char convert_Byte(unsigned char X)				
-{						
-  return X;					
+static inline unsigned char
+convert_Byte (unsigned char X)
+{
+  return X;
 }
 
-static inline					
-float convert_Float(float X)				
-{						
-  return X;					
+static inline float
+convert_Float (float X)
+{
+  return X;
 }
 
-static inline					
-double convert_Double(double X)				
-{						
-  return X;					
+static inline double
+convert_Double (double X)
+{
+  return X;
 }
 
 
@@ -180,120 +171,109 @@ void Java_gnu_java_nio_MappedByteFileBuffer_nio_1put_1 ## TYPE(JNIEnv *env, jcla
  fprintf(stderr, "unimplemented\n");  \
 }
 
-READ_WRITE_MMAPED_FILE(Byte,u_int8_t);
-READ_WRITE_MMAPED_FILE(Char,u_int16_t);
-READ_WRITE_MMAPED_FILE(Short,u_int16_t);
-READ_WRITE_MMAPED_FILE(Int,u_int32_t);
-READ_WRITE_MMAPED_FILE(Long,u_int64_t);
-READ_WRITE_MMAPED_FILE(Float,float);
-READ_WRITE_MMAPED_FILE(Double,double);
+READ_WRITE_MMAPED_FILE (Byte, u_int8_t);
+READ_WRITE_MMAPED_FILE (Char, u_int16_t);
+READ_WRITE_MMAPED_FILE (Short, u_int16_t);
+READ_WRITE_MMAPED_FILE (Int, u_int32_t);
+READ_WRITE_MMAPED_FILE (Long, u_int64_t);
+READ_WRITE_MMAPED_FILE (Float, float);
+READ_WRITE_MMAPED_FILE (Double, double);
 
-u_int64_t nio_mmap_file(jint fd,
-			jlong  pos,
-			jint size,
-			jint jflags)
+u_int64_t
+nio_mmap_file (jint fd, jlong pos, jint size, jint jflags)
 {
 #ifdef HAVE_MMAP
   u_int64_t ret = 0;
   void *address;
-  
-  int   flags = (jflags != 2) ? MAP_SHARED : MAP_PRIVATE;
-  int   prot  = PROT_READ;
 
-  if (jflags == 1) 
+  int flags = (jflags != 2) ? MAP_SHARED : MAP_PRIVATE;
+  int prot = PROT_READ;
+
+  if (jflags == 1)
     prot |= PROT_WRITE;
 
   //  fprintf(stderr, "mapping file: %d\n", fd);
 
-  address = mmap(0, 
-		 size, 
-		 prot,
-		 flags, 
-		 fd,
-		 pos);
+  address = mmap (0, size, prot, flags, fd, pos);
 
-  if (address == (void*)-1)
+  if (address == (void *) -1)
     {
-      perror("mapping file failed");
+      perror ("mapping file failed");
       return 0;
     }
 
   //  fprintf(stderr, "address = %p, fd = %d, pos=%lld, size=%d\n", address, fd, pos, size);
-  
+
   *(void **) &ret = address;
 
   return ret;
 #else /* not HAVE_MMAP */
-  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+  return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #endif /* not HAVE_MMAP */
 }
 
 
-void nio_msync(int fd, 
-	       jlong jaddress,
-	       int size)
+void
+nio_msync (int fd, jlong jaddress, int size)
 {
 #ifdef HAVE_MMAP
   int res;
-  char *address = *(void **) &jaddress;	
+  char *address = *(void **) &jaddress;
 
   //  fprintf(stderr, "synchronizing with file (%p -> %d bytes (%s))\n", address, size, address);
 
-  res = msync(address, size, MS_SYNC | MS_INVALIDATE);
+  res = msync (address, size, MS_SYNC | MS_INVALIDATE);
 
   if (res == -1)
     {
-      perror("synchronize with file failed");
+      perror ("synchronize with file failed");
     }
 #else /* not HAVE_MMAP */
 #endif /* not HAVE_MMAP */
 }
 
-void nio_unmmap_file(int fd,
-		     jlong jaddress,
-		     int size)
+void
+nio_unmmap_file (int fd, jlong jaddress, int size)
 {
 #ifdef HAVE_MMAP
   int res = 0;
-  char *address = *(void **) &jaddress;	
+  char *address = *(void **) &jaddress;
 
   //  nio_msync(fd, jaddress, size);
 
   //  fprintf(stderr, "unmapping (%p -> %d bytes)\n", address, size);
-  
-  res = munmap(address, size);
+
+  res = munmap (address, size);
   if (res == -1)
     {
-      perror("un-mapping file failed");
+      perror ("un-mapping file failed");
     }
 #else /* not HAVE_MMAP */
 #endif /* not HAVE_MMAP */
 }
 
 
-jlong Java_gnu_java_nio_FileChannelImpl_nio_1mmap_1file(JNIEnv *env,
-							    jclass c,
-							    jint fd,
-							    jlong pos,
-							    jint size,
-							    jint jflags)
+jlong
+Java_gnu_java_nio_FileChannelImpl_nio_1mmap_1file (JNIEnv * env,
+						   jclass c,
+						   jint fd,
+						   jlong pos,
+						   jint size, jint jflags)
 {
   //  fprintf(stderr, "fd=%d, pos=%lld, size=%d, flags=%d\n", fd, pos, size, jflags);
 
-  return nio_mmap_file(fd, pos, size, jflags);
+  return nio_mmap_file (fd, pos, size, jflags);
 }
 
-void Java_gnu_java_nio_FileChannelImpl_nio_1unmmap_1file(JNIEnv *env,
-							 jclass c,
-							 jint fd,
-							 jlong pos,
-							 jint size)
+void
+Java_gnu_java_nio_FileChannelImpl_nio_1unmmap_1file (JNIEnv * env,
+						     jclass c,
+						     jint fd,
+						     jlong pos, jint size)
 {
   //  fprintf(stderr, "size=%d, fd=%d, pos=%p\n", fd, size, (void*)pos);
 
-  nio_unmmap_file(fd,
-		  pos,
-		  size);
+  nio_unmmap_file (fd, pos, size);
 }
 
 
@@ -311,8 +291,8 @@ void Java_gnu_java_nio_FileChannelImpl_nio_1unmmap_1file(JNIEnv *env,
  * It's a copy to avoid a link error in orp.
  */
 
-static
-int socket_channel_get_net_addr(JNIEnv *env, jobject addr)
+static int
+socket_channel_get_net_addr (JNIEnv * env, jobject addr)
 {
 #ifndef WITHOUT_NETWORK
   jclass cls = 0;
@@ -321,88 +301,93 @@ int socket_channel_get_net_addr(JNIEnv *env, jobject addr)
   jbyte *octets;
   int netaddr, len;
 
-  DBG("socket_channel_get_net_addr(): Entered socket_channel_get_net_addr\n");
+  DBG
+    ("socket_channel_get_net_addr(): Entered socket_channel_get_net_addr\n");
 
   /* Call the getAddress method on the object to retrieve the IP address */
-  cls = (*env)->GetObjectClass(env, addr);
+  cls = (*env)->GetObjectClass (env, addr);
   if (cls == NULL)
-    return(0);
+    return (0);
 
-  mid = (*env)->GetMethodID(env, cls, "getAddress", "()[B");
+  mid = (*env)->GetMethodID (env, cls, "getAddress", "()[B");
   if (mid == NULL)
-    return(0);
+    return (0);
 
-  DBG("socket_channel_get_net_addr(): Got getAddress method\n");
+  DBG ("socket_channel_get_net_addr(): Got getAddress method\n");
 
-  arr = (*env)->CallObjectMethod(env, addr, mid);
+  arr = (*env)->CallObjectMethod (env, addr, mid);
   if (arr == NULL)
-    return(0);
+    return (0);
 
-  DBG("socket_channel_get_net_addr(): Got the address\n");
+  DBG ("socket_channel_get_net_addr(): Got the address\n");
 
   /* Turn the IP address into a 32 bit Internet address in network byte order */
-  len = (*env)->GetArrayLength(env, arr);
+  len = (*env)->GetArrayLength (env, arr);
   if (len != 4)
     {
-      JCL_ThrowException(env, "java/io/IOException", "Internal Error: invalid byte array length");
-      return(0);
+      JCL_ThrowException (env, "java/io/IOException",
+			  "Internal Error: invalid byte array length");
+      return (0);
     }
-  DBG("socket_channel_get_net_addr(): Length ok\n");
+  DBG ("socket_channel_get_net_addr(): Length ok\n");
 
-  octets = (*env)->GetByteArrayElements(env, arr, 0);  
+  octets = (*env)->GetByteArrayElements (env, arr, 0);
   if (octets == NULL)
-    return(0);
+    return (0);
 
-  DBG("socket_channel_get_net_addr(): Grabbed bytes\n");
+  DBG ("socket_channel_get_net_addr(): Grabbed bytes\n");
 
-  TARGET_NATIVE_NETWORK_IPADDRESS_BYTES_TO_INT(octets[0],
-                                               octets[1],
-                                               octets[2],
-                                               octets[3],
-                                               netaddr
-                                              );
+  TARGET_NATIVE_NETWORK_IPADDRESS_BYTES_TO_INT (octets[0],
+						octets[1],
+						octets[2],
+						octets[3], netaddr);
 
-  (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
-  DBG("socket_channel_get_net_addr(): Done getting addr\n");
+  (*env)->ReleaseByteArrayElements (env, arr, octets, 0);
+  DBG ("socket_channel_get_net_addr(): Done getting addr\n");
 
-  return netaddr; 
+  return netaddr;
 #else /* not WITHOUT_NETWORK */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_NETWORK */
 }
 
-int Java_gnu_java_nio_SocketChannelImpl_SocketCreate(JNIEnv *env,jclass c)
+int
+Java_gnu_java_nio_SocketChannelImpl_SocketCreate (JNIEnv * env, jclass c)
 {
 #ifndef WITHOUT_NETWORK
   int fd;
   int result;
-  
-  TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM(fd, result);
+
+  TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM (fd, result);
   if (result != TARGET_NATIVE_OK)
     {
-      return(0);
+      return (0);
     }
 
-  TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_REUSE_ADDRESS(fd, 1, result);
+  TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_REUSE_ADDRESS (fd, 1, result);
   if (result != TARGET_NATIVE_OK)
     {
-      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);
-      return(0);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
+      return (0);
     }
-  TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_TCP_NODELAY(fd, 1, result);
+  TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_TCP_NODELAY (fd, 1, result);
   if (result != TARGET_NATIVE_OK)
     {
-      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd, result);
-      return(0);
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
+      return (0);
     }
 
-  return(fd);
+  return (fd);
 #else /* not WITHOUT_NETWORK */
-  return(-1);
+  return (-1);
 #endif /* not WITHOUT_NETWORK */
 }
 
-int Java_gnu_java_nio_SocketChannelImpl_SocketConnect(JNIEnv *env,jclass c,int fd, jobject InetAddress, int port)
+int
+Java_gnu_java_nio_SocketChannelImpl_SocketConnect (JNIEnv * env, jclass c,
+						   int fd,
+						   jobject InetAddress,
+						   int port)
 {
 #ifndef WITHOUT_NETWORK
   int inet_addr;
@@ -410,36 +395,41 @@ int Java_gnu_java_nio_SocketChannelImpl_SocketConnect(JNIEnv *env,jclass c,int f
   int local_address;
   int local_port;
 
-  inet_addr = socket_channel_get_net_addr(env, InetAddress);
+  inet_addr = socket_channel_get_net_addr (env, InetAddress);
 
   /* connect */
   do
     {
-      TARGET_NATIVE_NETWORK_SOCKET_CONNECT(fd, inet_addr, inet_addr, result);
-    } while ((result != TARGET_NATIVE_OK) &&
-             (TARGET_NATIVE_LAST_ERROR() == TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL)
-            );
+      TARGET_NATIVE_NETWORK_SOCKET_CONNECT (fd, inet_addr, inet_addr, result);
+    }
+  while ((result != TARGET_NATIVE_OK) &&
+	 (TARGET_NATIVE_LAST_ERROR () ==
+	  TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL));
   if (result != TARGET_NATIVE_OK)
     {
-      return(-1);
+      return (-1);
     }
 
   /* get local address info */
-  TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO(fd, local_address, local_port, result);
+  TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO (fd, local_address, local_port,
+					       result);
   if (result != TARGET_NATIVE_OK)
     {
 //??? NYI
-      perror("getsockname: ");
-      return(-1);
+      perror ("getsockname: ");
+      return (-1);
     }
 
-  return(local_port);
+  return (local_port);
 #else /* not WITHOUT_NETWORK */
-  return(-1);
+  return (-1);
 #endif /* not WITHOUT_NETWORK */
 }
 
-int Java_gnu_java_nio_SocketChannelImpl_SocketBind(JNIEnv *env,jclass c,int fd, jobject InetAddress, int port)
+int
+Java_gnu_java_nio_SocketChannelImpl_SocketBind (JNIEnv * env, jclass c,
+						int fd, jobject InetAddress,
+						int port)
 {
 #ifndef WITHOUT_NETWORK
   int inet_addr;
@@ -447,119 +437,135 @@ int Java_gnu_java_nio_SocketChannelImpl_SocketBind(JNIEnv *env,jclass c,int fd, 
   int local_address;
   int local_port;
 
-  inet_addr =  socket_channel_get_net_addr(env, InetAddress);
+  inet_addr = socket_channel_get_net_addr (env, InetAddress);
 
-  TARGET_NATIVE_NETWORK_SOCKET_BIND(fd, inet_addr, port, result);
+  TARGET_NATIVE_NETWORK_SOCKET_BIND (fd, inet_addr, port, result);
   if (result != TARGET_NATIVE_OK)
     {
 //??? NYI
-      perror("BIND");
+      perror ("BIND");
       return -1;
     }
   if (port == 0)
     {
       /* get local address info */
-      TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO(fd, local_address, local_port, result);
+      TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO (fd, local_address,
+						   local_port, result);
       if (result != TARGET_NATIVE_OK)
-        {
+	{
 //??? NYI
-          perror("getsockname: ");
-          return -1;
-        }
+	  perror ("getsockname: ");
+	  return -1;
+	}
     }
   else
     {
       local_port = port;
     }
 
-  return(local_port);
+  return (local_port);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
 
-int Java_gnu_java_nio_SocketChannelImpl_SocketListen(JNIEnv *env,jclass c,int fd, int backlog)
+int
+Java_gnu_java_nio_SocketChannelImpl_SocketListen (JNIEnv * env, jclass c,
+						  int fd, int backlog)
 {
 #ifndef WITHOUT_NETWORK
   int result;
 
-  TARGET_NATIVE_NETWORK_SOCKET_LISTEN(fd, backlog, result);
+  TARGET_NATIVE_NETWORK_SOCKET_LISTEN (fd, backlog, result);
   if (result != TARGET_NATIVE_OK)
-  {
-    return(-1);
-  }
+    {
+      return (-1);
+    }
 
-  return(0);
+  return (0);
 #else /* not WITHOUT_NETWORK */
-  return(-1);
+  return (-1);
 #endif /* not WITHOUT_NETWORK */
 }
 
-int Java_gnu_java_nio_SocketChannelImpl_SocketAvailable(JNIEnv *env,jclass c,int fd)
+int
+Java_gnu_java_nio_SocketChannelImpl_SocketAvailable (JNIEnv * env, jclass c,
+						     int fd)
 {
 #ifndef WITHOUT_NETWORK
   int bytes_available;
   int result;
 
-  TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_AVAILABLE(fd, bytes_available, result);
-  if (result!=TARGET_NATIVE_OK)
-  {
-    return(0);
-  }
+  TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_AVAILABLE (fd, bytes_available,
+						  result);
+  if (result != TARGET_NATIVE_OK)
+    {
+      return (0);
+    }
 
-  return(bytes_available);
+  return (bytes_available);
 #else /* not WITHOUT_NETWORK */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_NETWORK */
 }
 
-int Java_gnu_java_nio_SocketChannelImpl_SocketClose(JNIEnv *env,jclass c,int fd)
+int
+Java_gnu_java_nio_SocketChannelImpl_SocketClose (JNIEnv * env, jclass c,
+						 int fd)
 {
 #ifndef WITHOUT_NETWORK
   int result;
 
-  if (fd >= 0) {
-    TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd, result);
-  }
+  if (fd >= 0)
+    {
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
+    }
 
-  return(0);
+  return (0);
 #else /* not WITHOUT_NETWORK */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_NETWORK */
 }
 
-int Java_gnu_java_nio_SocketChannelImpl_SocketRead(JNIEnv *env,jclass c,int fd, jarray buf, int off, int len)
+int
+Java_gnu_java_nio_SocketChannelImpl_SocketRead (JNIEnv * env, jclass c,
+						int fd, jarray buf, int off,
+						int len)
 {
 #ifndef WITHOUT_NETWORK
   jbyte *buffer;
-  int   bytes_received;
+  int bytes_received;
 
-  buffer = (*env)->GetByteArrayElements(env, buf, 0);
-  assert(buffer != NULL);
+  buffer = (*env)->GetByteArrayElements (env, buf, 0);
+  assert (buffer != NULL);
 
-  TARGET_NATIVE_NETWORK_SOCKET_RECEIVE(fd, buffer + off, len, bytes_received);
+  TARGET_NATIVE_NETWORK_SOCKET_RECEIVE (fd, buffer + off, len,
+					bytes_received);
 
-  (*env)->ReleaseByteArrayElements(env, buf, buffer, 0);
+  (*env)->ReleaseByteArrayElements (env, buf, buffer, 0);
 
-  return(bytes_received);
+  return (bytes_received);
 #else /* not WITHOUT_NETWORK */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_NETWORK */
 }
 
-int Java_gnu_java_nio_SocketChannelImpl_SocketWrite(JNIEnv *env,jclass c,int fd, jarray buf, int off, int len)
+int
+Java_gnu_java_nio_SocketChannelImpl_SocketWrite (JNIEnv * env, jclass c,
+						 int fd, jarray buf, int off,
+						 int len)
 {
 #ifndef WITHOUT_NETWORK
   jbyte *buffer;
-  int   bytes_sent;
+  int bytes_sent;
 
-  buffer = (*env)->GetByteArrayElements(env, buf, 0);
+  buffer = (*env)->GetByteArrayElements (env, buf, 0);
 
-  TARGET_NATIVE_NETWORK_SOCKET_SEND(fd, buffer + off, len, bytes_sent);
+  TARGET_NATIVE_NETWORK_SOCKET_SEND (fd, buffer + off, len, bytes_sent);
 
-  (*env)->ReleaseByteArrayElements(env, buf, buffer, 0);
+  (*env)->ReleaseByteArrayElements (env, buf, buffer, 0);
 
-  return(bytes_sent);
+  return (bytes_sent);
 #else /* not WITHOUT_NETWORK */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_NETWORK */
 }

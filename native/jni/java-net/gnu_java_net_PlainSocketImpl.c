@@ -42,7 +42,7 @@ exception statement from your version. */
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
- 
+
 #include <jni.h>
 #include <jcl.h>
 
@@ -50,7 +50,7 @@ exception statement from your version. */
 
 #include "target_native.h"
 #ifndef WITHOUT_NETWORK
-  #include "target_native_network.h"
+#include "target_native_network.h"
 #endif /* WITHOUT_NETWORK */
 
 #include "gnu_java_net_PlainSocketImpl.h"
@@ -68,13 +68,14 @@ exception statement from your version. */
  * Creates a new stream or datagram socket
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainSocketImpl_create(JNIEnv *env, jobject this, jboolean stream)
+Java_gnu_java_net_PlainSocketImpl_create (JNIEnv * env, jobject this,
+					  jboolean stream)
 {
 #ifndef WITHOUT_NETWORK
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  assert (env != NULL);
+  assert ((*env) != NULL);
 
-  _javanet_create(env, this, stream);
+  _javanet_create (env, this, stream);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -86,13 +87,13 @@ Java_gnu_java_net_PlainSocketImpl_create(JNIEnv *env, jobject this, jboolean str
  * action as well.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainSocketImpl_close(JNIEnv *env, jobject this)
+Java_gnu_java_net_PlainSocketImpl_close (JNIEnv * env, jobject this)
 {
 #ifndef WITHOUT_NETWORK
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  assert (env != NULL);
+  assert ((*env) != NULL);
 
-  _javanet_close(env, this, 1);
+  _javanet_close (env, this, 1);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -103,14 +104,14 @@ Java_gnu_java_net_PlainSocketImpl_close(JNIEnv *env, jobject this)
  * Connects to the specified destination.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainSocketImpl_connect(JNIEnv *env, jobject this, 
-                                      jobject addr, jint port)
+Java_gnu_java_net_PlainSocketImpl_connect (JNIEnv * env, jobject this,
+					   jobject addr, jint port)
 {
 #ifndef WITHOUT_NETWORK
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  assert (env != NULL);
+  assert ((*env) != NULL);
 
-  _javanet_connect(env, this, addr, port);
+  _javanet_connect (env, this, addr, port);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -123,14 +124,14 @@ Java_gnu_java_net_PlainSocketImpl_connect(JNIEnv *env, jobject this,
  * variables. 
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainSocketImpl_bind(JNIEnv *env, jobject this, jobject addr,
-                                   jint port)
+Java_gnu_java_net_PlainSocketImpl_bind (JNIEnv * env, jobject this,
+					jobject addr, jint port)
 {
 #ifndef WITHOUT_NETWORK
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  assert (env != NULL);
+  assert ((*env) != NULL);
 
-  _javanet_bind(env, this, addr, port, 1);
+  _javanet_bind (env, this, addr, port, 1);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -142,13 +143,14 @@ Java_gnu_java_net_PlainSocketImpl_bind(JNIEnv *env, jobject this, jobject addr,
  * connections allowed.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainSocketImpl_listen(JNIEnv *env, jobject this, jint queuelen)
+Java_gnu_java_net_PlainSocketImpl_listen (JNIEnv * env, jobject this,
+					  jint queuelen)
 {
 #ifndef WITHOUT_NETWORK
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  assert (env != NULL);
+  assert ((*env) != NULL);
 
-  _javanet_listen(env, this, queuelen);
+  _javanet_listen (env, this, queuelen);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -160,13 +162,14 @@ Java_gnu_java_net_PlainSocketImpl_listen(JNIEnv *env, jobject this, jint queuele
  * object. Note that we assume this is a PlainSocketImpl just like us.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainSocketImpl_accept(JNIEnv *env, jobject this, jobject impl)
+Java_gnu_java_net_PlainSocketImpl_accept (JNIEnv * env, jobject this,
+					  jobject impl)
 {
 #ifndef WITHOUT_NETWORK
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  assert (env != NULL);
+  assert ((*env) != NULL);
 
-  _javanet_accept(env, this, impl);
+  _javanet_accept (env, this, impl);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -174,38 +177,39 @@ Java_gnu_java_net_PlainSocketImpl_accept(JNIEnv *env, jobject this, jobject impl
 /*************************************************************************/
 
 JNIEXPORT jint JNICALL
-Java_gnu_java_net_PlainSocketImpl_available(JNIEnv *env, jobject this)
+Java_gnu_java_net_PlainSocketImpl_available (JNIEnv * env, jobject this)
 {
 #ifndef WITHOUT_NETWORK
-  jclass   cls;
+  jclass cls;
   jfieldID fid;
-  int      fd;
-  int      bytesAvailable;
-  int      result;
-  
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  int fd;
+  int bytesAvailable;
+  int result;
 
-  cls = (*env)->GetObjectClass(env, this);
+  assert (env != NULL);
+  assert ((*env) != NULL);
+
+  cls = (*env)->GetObjectClass (env, this);
   if (cls == 0)
     {
-      JCL_ThrowException(env, IO_EXCEPTION, "internal error");
-      return 0;
-    }
-  
-  fid = (*env)->GetFieldID(env, cls, "native_fd", "I"); 
-  if (fid == 0)
-    {
-      JCL_ThrowException(env, IO_EXCEPTION, "internal error");
+      JCL_ThrowException (env, IO_EXCEPTION, "internal error");
       return 0;
     }
 
-  fd = (*env)->GetIntField(env, this, fid);
-  
-  TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_AVAILABLE(fd,bytesAvailable,result);
+  fid = (*env)->GetFieldID (env, cls, "native_fd", "I");
+  if (fid == 0)
+    {
+      JCL_ThrowException (env, IO_EXCEPTION, "internal error");
+      return 0;
+    }
+
+  fd = (*env)->GetIntField (env, this, fid);
+
+  TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_AVAILABLE (fd, bytesAvailable, result);
   if (result != TARGET_NATIVE_OK)
     {
-      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+      JCL_ThrowException (env, IO_EXCEPTION,
+			  TARGET_NATIVE_LAST_ERROR_STRING ());
       return 0;
     }
 
@@ -221,14 +225,14 @@ Java_gnu_java_net_PlainSocketImpl_available(JNIEnv *env, jobject this)
  * This method sets the specified option for a socket
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainSocketImpl_setOption(JNIEnv *env, jobject this, 
-                                        jint option_id, jobject val)
+Java_gnu_java_net_PlainSocketImpl_setOption (JNIEnv * env, jobject this,
+					     jint option_id, jobject val)
 {
 #ifndef WITHOUT_NETWORK
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  assert (env != NULL);
+  assert ((*env) != NULL);
 
-  _javanet_set_option(env, this, option_id, val);
+  _javanet_set_option (env, this, option_id, val);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -239,14 +243,14 @@ Java_gnu_java_net_PlainSocketImpl_setOption(JNIEnv *env, jobject this,
  * This method sets the specified option for a socket
  */
 JNIEXPORT jobject JNICALL
-Java_gnu_java_net_PlainSocketImpl_getOption(JNIEnv *env, jobject this, 
-                                        jint option_id)
+Java_gnu_java_net_PlainSocketImpl_getOption (JNIEnv * env, jobject this,
+					     jint option_id)
 {
 #ifndef WITHOUT_NETWORK
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  assert (env != NULL);
+  assert ((*env) != NULL);
 
-  return(_javanet_get_option(env, this, option_id));
+  return (_javanet_get_option (env, this, option_id));
 #else /* not WITHOUT_NETWORK */
   return NULL;
 #endif /* not WITHOUT_NETWORK */
@@ -258,14 +262,14 @@ Java_gnu_java_net_PlainSocketImpl_getOption(JNIEnv *env, jobject this,
  * Reads a buffer from a remote host
  */
 JNIEXPORT jint JNICALL
-Java_gnu_java_net_PlainSocketImpl_read(JNIEnv *env, jobject this, jarray buf,
-                                   jint offset, jint len)
+Java_gnu_java_net_PlainSocketImpl_read (JNIEnv * env, jobject this,
+					jarray buf, jint offset, jint len)
 {
 #ifndef WITHOUT_NETWORK
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  assert (env != NULL);
+  assert ((*env) != NULL);
 
-  return(_javanet_recvfrom(env, this, buf, offset, len, 0, 0));
+  return (_javanet_recvfrom (env, this, buf, offset, len, 0, 0));
 #else /* not WITHOUT_NETWORK */
   return 0;
 #endif /* not WITHOUT_NETWORK */
@@ -277,24 +281,24 @@ Java_gnu_java_net_PlainSocketImpl_read(JNIEnv *env, jobject this, jarray buf,
  * Writes a buffer to the remote host
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainSocketImpl_write(JNIEnv *env, jobject this, jarray buf,
-                                    jint offset, jint len)
+Java_gnu_java_net_PlainSocketImpl_write (JNIEnv * env, jobject this,
+					 jarray buf, jint offset, jint len)
 {
 #ifndef WITHOUT_NETWORK
-  assert(env!=NULL);
-  assert((*env)!=NULL);
+  assert (env != NULL);
+  assert ((*env) != NULL);
 
-  _javanet_sendto(env, this, buf, offset, len, 0, 0);
+  _javanet_sendto (env, this, buf, offset, len, 0, 0);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainSocketImpl_shutdownInput (JNIEnv *env, jobject this)
+Java_gnu_java_net_PlainSocketImpl_shutdownInput (JNIEnv * env, jobject this)
 {
 #ifndef WITHOUT_NETWORK
   assert (env != NULL);
-assert ((*env) != NULL);
+  assert ((*env) != NULL);
 
   _javanet_shutdownInput (env, this);
 #else /* not WITHOUT_NETWORK */
@@ -302,7 +306,7 @@ assert ((*env) != NULL);
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_net_PlainSocketImpl_shutdownOutput (JNIEnv *env, jobject this)
+Java_gnu_java_net_PlainSocketImpl_shutdownOutput (JNIEnv * env, jobject this)
 {
 #ifndef WITHOUT_NETWORK
   assert (env != NULL);

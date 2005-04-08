@@ -46,7 +46,7 @@ exception statement from your version. */
 
 #include "target_native.h"
 #ifndef WITHOUT_FILESYSTEM
-  #include "target_native_file.h"
+#include "target_native_file.h"
 #endif
 #include "target_native_math_int.h"
 
@@ -57,35 +57,35 @@ exception statement from your version. */
  */
 
 jint
-_javaio_open_read(JNIEnv *env, jstring name)
+_javaio_open_read (JNIEnv * env, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        fd;
-  int        result;
+  int fd;
+  int result;
 
-  filename = JCL_jstring_to_cstring(env, name); 
+  filename = JCL_jstring_to_cstring (env, name);
   if (filename == NULL)
-    return(-1);
+    return (-1);
 
-  TARGET_NATIVE_FILE_OPEN_READ(filename,fd,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
+  TARGET_NATIVE_FILE_OPEN_READ (filename, fd, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
   if (result != TARGET_NATIVE_OK)
     {
-      if (TARGET_NATIVE_LAST_ERROR() == TARGET_NATIVE_ERROR_NO_SUCH_FILE)
-        JCL_ThrowException(env,
-                           "java/io/FileNotFoundException", 
-                           TARGET_NATIVE_LAST_ERROR_STRING());
+      if (TARGET_NATIVE_LAST_ERROR () == TARGET_NATIVE_ERROR_NO_SUCH_FILE)
+	JCL_ThrowException (env,
+			    "java/io/FileNotFoundException",
+			    TARGET_NATIVE_LAST_ERROR_STRING ());
       else
-        JCL_ThrowException(env,
-                           "java/io/IOException",
-                           TARGET_NATIVE_LAST_ERROR_STRING());
+	JCL_ThrowException (env,
+			    "java/io/IOException",
+			    TARGET_NATIVE_LAST_ERROR_STRING ());
     }
 
-  JCL_free_cstring(env, name, filename); 
-  return(fd);
+  JCL_free_cstring (env, name, filename);
+  return (fd);
 #else /* not WITHOUT_FILESYSTEM */
-  return(-1);
+  return (-1);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -94,35 +94,35 @@ _javaio_open_read(JNIEnv *env, jstring name)
  */
 
 jint
-_javaio_open_readwrite(JNIEnv *env, jstring name)
+_javaio_open_readwrite (JNIEnv * env, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        fd;
-  int        result;
+  int fd;
+  int result;
 
-  filename = JCL_jstring_to_cstring(env, name); 
+  filename = JCL_jstring_to_cstring (env, name);
   if (filename == NULL)
-    return(-1);
+    return (-1);
 
-  TARGET_NATIVE_FILE_OPEN_READWRITE(filename,fd,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
+  TARGET_NATIVE_FILE_OPEN_READWRITE (filename, fd, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
   if (result != TARGET_NATIVE_OK)
     {
-      if (TARGET_NATIVE_LAST_ERROR() == TARGET_NATIVE_ERROR_NO_SUCH_FILE)
-        JCL_ThrowException(env,
-                           "java/io/FileNotFoundException", 
-                           TARGET_NATIVE_LAST_ERROR_STRING());
+      if (TARGET_NATIVE_LAST_ERROR () == TARGET_NATIVE_ERROR_NO_SUCH_FILE)
+	JCL_ThrowException (env,
+			    "java/io/FileNotFoundException",
+			    TARGET_NATIVE_LAST_ERROR_STRING ());
       else
-        JCL_ThrowException(env,
-                           "java/io/IOException",
-                           TARGET_NATIVE_LAST_ERROR_STRING());
+	JCL_ThrowException (env,
+			    "java/io/IOException",
+			    TARGET_NATIVE_LAST_ERROR_STRING ());
     }
 
-  JCL_free_cstring(env, name, filename); 
-  return(fd);
+  JCL_free_cstring (env, name, filename);
+  return (fd);
 #else /* not WITHOUT_FILESYSTEM */
-  return(-1);
+  return (-1);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -133,18 +133,18 @@ _javaio_open_readwrite(JNIEnv *env, jstring name)
  */
 
 void
-_javaio_close(JNIEnv *env, jint fd)
+_javaio_close (JNIEnv * env, jint fd)
 {
 #ifndef WITHOUT_FILESYSTEM
   int result;
 
   if (fd != -1)
     {
-      TARGET_NATIVE_FILE_CLOSE(fd,result);
+      TARGET_NATIVE_FILE_CLOSE (fd, result);
       if (result != TARGET_NATIVE_OK)
-        JCL_ThrowException(env,
-                           "java/io/IOException",
-                           TARGET_NATIVE_LAST_ERROR_STRING());
+	JCL_ThrowException (env,
+			    "java/io/IOException",
+			    TARGET_NATIVE_LAST_ERROR_STRING ());
     }
 #else /* not WITHOUT_FILESYSTEM */
 #endif /* not WITHOUT_FILESYSTEM */
@@ -157,27 +157,28 @@ _javaio_close(JNIEnv *env, jint fd)
  */
 
 jlong
-_javaio_skip_bytes(JNIEnv *env, jint fd, jlong num_bytes)
+_javaio_skip_bytes (JNIEnv * env, jint fd, jlong num_bytes)
 {
 #ifndef WITHOUT_FILESYSTEM
   jlong current_offset, new_offset;
-  int   result;
+  int result;
 
-  TARGET_NATIVE_FILE_SEEK_CURRENT(fd,TARGET_NATIVE_MATH_INT_INT64_CONST_0,current_offset,result);
+  TARGET_NATIVE_FILE_SEEK_CURRENT (fd, TARGET_NATIVE_MATH_INT_INT64_CONST_0,
+				   current_offset, result);
   if (result != TARGET_NATIVE_OK)
-    JCL_ThrowException(env,
-                       "java/io/IOException",
-                       TARGET_NATIVE_LAST_ERROR_STRING());
+    JCL_ThrowException (env,
+			"java/io/IOException",
+			TARGET_NATIVE_LAST_ERROR_STRING ());
 
-  TARGET_NATIVE_FILE_SEEK_CURRENT(fd,num_bytes,new_offset,result);
+  TARGET_NATIVE_FILE_SEEK_CURRENT (fd, num_bytes, new_offset, result);
   if (result != TARGET_NATIVE_OK)
-    JCL_ThrowException(env,
-                       "java/io/IOException",
-                       TARGET_NATIVE_LAST_ERROR_STRING());
+    JCL_ThrowException (env,
+			"java/io/IOException",
+			TARGET_NATIVE_LAST_ERROR_STRING ());
 
-  return(TARGET_NATIVE_MATH_INT_INT64_SUB(new_offset,current_offset));
+  return (TARGET_NATIVE_MATH_INT_INT64_SUB (new_offset, current_offset));
 #else /* not WITHOUT_FILESYSTEM */
-  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+  return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -188,24 +189,24 @@ _javaio_skip_bytes(JNIEnv *env, jint fd, jlong num_bytes)
  */
 
 jlong
-_javaio_get_file_length(JNIEnv *env, jint fd)
+_javaio_get_file_length (JNIEnv * env, jint fd)
 {
 #ifndef WITHOUT_FILESYSTEM
   jlong length;
-  int   result;
+  int result;
 
-  TARGET_NATIVE_FILE_SIZE(fd,length,result);
+  TARGET_NATIVE_FILE_SIZE (fd, length, result);
   if (result != TARGET_NATIVE_OK)
     {
-      JCL_ThrowException(env,
-                         "java/io/IOException",
-                         TARGET_NATIVE_LAST_ERROR_STRING());
-      return(TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
+      JCL_ThrowException (env,
+			  "java/io/IOException",
+			  TARGET_NATIVE_LAST_ERROR_STRING ());
+      return (TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1);
     }
 
-  return(length);
+  return (length);
 #else /* not WITHOUT_FILESYSTEM */
-  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+  return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -216,72 +217,74 @@ _javaio_get_file_length(JNIEnv *env, jint fd)
  */
 
 jint
-_javaio_read(JNIEnv *env, jint fd, jarray buf, jint offset, jint len)
+_javaio_read (JNIEnv * env, jint fd, jarray buf, jint offset, jint len)
 {
 #ifndef WITHOUT_FILESYSTEM
   jbyte *bufptr;
-  int   bytesRead;
-  int   result;
+  int bytesRead;
+  int result;
 
-  assert(offset>=0);
-  assert(len>=0);
+  assert (offset >= 0);
+  assert (len >= 0);
 
   if (len == 0)
-    return 0; /* Nothing todo, and GetByteArrayElements() seems undefined. */
+    return 0;			/* Nothing todo, and GetByteArrayElements() seems undefined. */
 
-  bufptr = (*env)->GetByteArrayElements(env, buf, JNI_FALSE);
+  bufptr = (*env)->GetByteArrayElements (env, buf, JNI_FALSE);
   if (bufptr == NULL)
     {
-      JCL_ThrowException(env, "java/io/IOException", "Internal Error: get byte array fail");
-      return(-1);
+      JCL_ThrowException (env, "java/io/IOException",
+			  "Internal Error: get byte array fail");
+      return (-1);
     }
 
-  TARGET_NATIVE_FILE_READ(fd,(bufptr + offset),len,bytesRead,result);
-  (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
+  TARGET_NATIVE_FILE_READ (fd, (bufptr + offset), len, bytesRead, result);
+  (*env)->ReleaseByteArrayElements (env, buf, bufptr, 0);
   if (result != TARGET_NATIVE_OK)
-    JCL_ThrowException(env,
-                       "java/io/IOException",
-                       TARGET_NATIVE_LAST_ERROR_STRING());
+    JCL_ThrowException (env,
+			"java/io/IOException",
+			TARGET_NATIVE_LAST_ERROR_STRING ());
 
   if (bytesRead == 0)
-    return(-1);
+    return (-1);
 
-  return(bytesRead);
+  return (bytesRead);
 #else /* not WITHOUT_FILESYSTEM */
   jbyte *bufptr;
-  int   bytesRead;
+  int bytesRead;
 
-  assert(offset>=0);
-  assert(len>=0);
+  assert (offset >= 0);
+  assert (len >= 0);
 
-  if ((fd==0) || (fd==1) || (fd==2))
-  {
-    if (len == 0)
-      return 0; /* Nothing todo, and GetByteArrayElements() seems undefined. */
+  if ((fd == 0) || (fd == 1) || (fd == 2))
+    {
+      if (len == 0)
+	return 0;		/* Nothing todo, and GetByteArrayElements() seems undefined. */
 
-    bufptr = (*env)->GetByteArrayElements(env, buf, JNI_FALSE);
-    if (bufptr == NULL)
-      {
-        JCL_ThrowException(env, "java/io/IOException", "Internal Error: get byte array");
-        return(-1);
-      }
+      bufptr = (*env)->GetByteArrayElements (env, buf, JNI_FALSE);
+      if (bufptr == NULL)
+	{
+	  JCL_ThrowException (env, "java/io/IOException",
+			      "Internal Error: get byte array");
+	  return (-1);
+	}
 
-    TARGET_NATIVE_FILE_READ(fd,(bufptr + offset),len,bytesRead,result);
-    (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
-    if (result != TARGET_NATIVE_OK)
-      JCL_ThrowException(env,
-                         "java/io/IOException",
-                         TARGET_NATIVE_LAST_ERROR_STRING());
+      TARGET_NATIVE_FILE_READ (fd, (bufptr + offset), len, bytesRead, result);
+      (*env)->ReleaseByteArrayElements (env, buf, bufptr, 0);
+      if (result != TARGET_NATIVE_OK)
+	JCL_ThrowException (env,
+			    "java/io/IOException",
+			    TARGET_NATIVE_LAST_ERROR_STRING ());
 
-    if (bytesRead == 0)
-      return(-1);
+      if (bytesRead == 0)
+	return (-1);
 
-    return(bytesRead);
-  }
+      return (bytesRead);
+    }
   else
-  {
-    return(-1);
-  }
+    {
+      return (-1);
+    }
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -292,66 +295,69 @@ _javaio_read(JNIEnv *env, jint fd, jarray buf, jint offset, jint len)
  */
 
 jint
-_javaio_write(JNIEnv *env, jint fd, jarray buf, jint offset, jint len)
+_javaio_write (JNIEnv * env, jint fd, jarray buf, jint offset, jint len)
 {
 #ifndef WITHOUT_FILESYSTEM
   jbyte *bufptr;
-  int   bytes_written;
-  int   result;
+  int bytes_written;
+  int result;
 
   if (len == 0)
-    return 0; /* Nothing todo, and GetByteArrayElements() seems undefined. */
+    return 0;			/* Nothing todo, and GetByteArrayElements() seems undefined. */
 
-  bufptr = (*env)->GetByteArrayElements(env, buf, 0);
+  bufptr = (*env)->GetByteArrayElements (env, buf, 0);
   if (bufptr == NULL)
     {
-      JCL_ThrowException(env, "java/io/IOException", "Internal Error: get byte array");
-      return(-1);
+      JCL_ThrowException (env, "java/io/IOException",
+			  "Internal Error: get byte array");
+      return (-1);
     }
 
-  TARGET_NATIVE_FILE_WRITE(fd,(bufptr + offset),len,bytes_written,result);
-  (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
+  TARGET_NATIVE_FILE_WRITE (fd, (bufptr + offset), len, bytes_written,
+			    result);
+  (*env)->ReleaseByteArrayElements (env, buf, bufptr, 0);
   if (result != TARGET_NATIVE_OK)
-    JCL_ThrowException(env,
-                       "java/io/IOException",
-                       TARGET_NATIVE_LAST_ERROR_STRING());
+    JCL_ThrowException (env,
+			"java/io/IOException",
+			TARGET_NATIVE_LAST_ERROR_STRING ());
 
   if (bytes_written == 0)
-    return(-1);
+    return (-1);
 
-  return(bytes_written);
+  return (bytes_written);
 #else /* not WITHOUT_FILESYSTEM */
   jbyte *bufptr;
-  int   bytesWritten;
+  int bytesWritten;
 
-  if ((fd==0) || (fd==1) || (fd==2))
-  {
-    if (len == 0)
-      return 0; /* Nothing todo, and GetByteArrayElements() seems undefined. */
+  if ((fd == 0) || (fd == 1) || (fd == 2))
+    {
+      if (len == 0)
+	return 0;		/* Nothing todo, and GetByteArrayElements() seems undefined. */
 
-    bufptr = (*env)->GetByteArrayElements(env, buf, 0);
-    if (bufptr==NULL)
-      {
-        JCL_ThrowException(env, "java/io/IOException", "Internal Error");
-        return(-1);
-      }
+      bufptr = (*env)->GetByteArrayElements (env, buf, 0);
+      if (bufptr == NULL)
+	{
+	  JCL_ThrowException (env, "java/io/IOException", "Internal Error");
+	  return (-1);
+	}
 
-    TARGET_NATIVE_FILE_WRITE(fd,(bufptr + offset),len,bytes_written,result);
-    (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
+      TARGET_NATIVE_FILE_WRITE (fd, (bufptr + offset), len, bytes_written,
+				result);
+      (*env)->ReleaseByteArrayElements (env, buf, bufptr, 0);
 
-    if (bytes_written == -1)
-      JCL_ThrowException(env,
-                         "java/io/IOException",
-                         TARGET_NATIVE_LAST_ERROR_STRING());
+      if (bytes_written == -1)
+	JCL_ThrowException (env,
+			    "java/io/IOException",
+			    TARGET_NATIVE_LAST_ERROR_STRING ());
 
-    if (bytes_written == 0)
-      return(-1);
+      if (bytes_written == 0)
+	return (-1);
 
-    return(bytes_written);
-  }
+      return (bytes_written);
+    }
   else
-  {
-    return(-1);
-  }
+    {
+      return (-1);
+    }
 #endif /* not WITHOUT_FILESYSTEM */
 }

@@ -49,21 +49,20 @@ exception statement from your version. */
  */
 JNIEXPORT void JNICALL
 Java_java_lang_VMSystem_setIn (JNIEnv * env,
-			       jclass thisClass __attribute__((__unused__)),
+			       jclass thisClass __attribute__ ((__unused__)),
 			       jobject obj)
 {
   jclass cls;
   jfieldID field;
 
-  cls = JCL_FindClass(env, "java/lang/System");
+  cls = JCL_FindClass (env, "java/lang/System");
   if (!cls)
     return;
 
-  field = (*env)->GetStaticFieldID(env, cls, "in",
-				   "Ljava/io/InputStream;");
+  field = (*env)->GetStaticFieldID (env, cls, "in", "Ljava/io/InputStream;");
   if (!field)
     return;
-  (*env)->SetStaticObjectField(env, cls, field, obj);
+  (*env)->SetStaticObjectField (env, cls, field, obj);
 }
 
 /*
@@ -73,21 +72,20 @@ Java_java_lang_VMSystem_setIn (JNIEnv * env,
  */
 JNIEXPORT void JNICALL
 Java_java_lang_VMSystem_setOut (JNIEnv * env,
-				jclass thisClass __attribute__((__unused__)),
+				jclass thisClass __attribute__ ((__unused__)),
 				jobject obj)
 {
   jclass cls;
   jfieldID field;
 
-  cls = JCL_FindClass(env, "java/lang/System");
+  cls = JCL_FindClass (env, "java/lang/System");
   if (!cls)
     return;
 
-  field = (*env)->GetStaticFieldID(env, cls, "out",
-				   "Ljava/io/PrintStream;");
+  field = (*env)->GetStaticFieldID (env, cls, "out", "Ljava/io/PrintStream;");
   if (!field)
     return;
-  (*env)->SetStaticObjectField(env, cls, field, obj);
+  (*env)->SetStaticObjectField (env, cls, field, obj);
 }
 
 /*
@@ -97,21 +95,20 @@ Java_java_lang_VMSystem_setOut (JNIEnv * env,
  */
 JNIEXPORT void JNICALL
 Java_java_lang_VMSystem_setErr (JNIEnv * env,
-				jclass thisClass __attribute__((__unused__)),
+				jclass thisClass __attribute__ ((__unused__)),
 				jobject obj)
 {
   jclass cls;
   jfieldID field;
 
-  cls = JCL_FindClass(env, "java/lang/System");
+  cls = JCL_FindClass (env, "java/lang/System");
   if (!cls)
     return;
 
-  field = (*env)->GetStaticFieldID(env, cls, "err",
-				   "Ljava/io/PrintStream;");
+  field = (*env)->GetStaticFieldID (env, cls, "err", "Ljava/io/PrintStream;");
   if (!field)
     return;
-  (*env)->SetStaticObjectField(env, cls, field, obj);
+  (*env)->SetStaticObjectField (env, cls, field, obj);
 }
 
 /*
@@ -120,18 +117,18 @@ Java_java_lang_VMSystem_setErr (JNIEnv * env,
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL
-Java_java_lang_VMSystem_currentTimeMillis
-(JNIEnv * env __attribute__((__unused__)),
- jclass thisClass __attribute__((__unused__)))
+  Java_java_lang_VMSystem_currentTimeMillis
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass thisClass __attribute__ ((__unused__)))
 {
   /* Note: this implementation copied directly from Japhar's, by Chris Toshok. */
   jlong result;
   struct timeval tp;
 
-  if (gettimeofday(&tp, NULL) == -1)
-    (*env)->FatalError(env, "gettimeofday call failed.");
+  if (gettimeofday (&tp, NULL) == -1)
+    (*env)->FatalError (env, "gettimeofday call failed.");
 
-  result = (jlong)tp.tv_sec;
+  result = (jlong) tp.tv_sec;
   result *= 1000;
   result += (tp.tv_usec / 1000);
 
@@ -139,21 +136,21 @@ Java_java_lang_VMSystem_currentTimeMillis
 }
 
 JNIEXPORT jstring JNICALL
-Java_java_lang_VMSystem_getenv (JNIEnv *env,
-				jclass klass __attribute__((__unused__)),
+Java_java_lang_VMSystem_getenv (JNIEnv * env,
+				jclass klass __attribute__ ((__unused__)),
 				jstring jname)
 {
   const char *cname;
   const char *envname;
 
-  cname = JCL_jstring_to_cstring(env, jname);
+  cname = JCL_jstring_to_cstring (env, jname);
   if (cname == NULL)
     return NULL;
 
-  envname = getenv(cname);
+  envname = getenv (cname);
   if (envname == NULL)
     return NULL;
 
-  JCL_free_cstring(env, jname, cname);
-  return (*env)->NewStringUTF(env, envname);
+  JCL_free_cstring (env, jname, cname);
+  return (*env)->NewStringUTF (env, envname);
 }

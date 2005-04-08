@@ -1,3 +1,31 @@
+2005-04-08  Guilhem Lavaux  <guilhem@kaffe.org>
+
+        * native/jni/classpath/jcl.h, 
+	native/jni/java-io/java_io_ObjectInputStream.c,
+	native/jni/java-io/java_io_VMFile.c,
+	native/jni/java-io/java_io_VMObjectStreamClass.c,
+	native/jni/java-io/javaio.c,
+	native/jni/java-lang/java_lang_Double.c,
+	native/jni/java-lang/java_lang_Math.c,
+	native/jni/java-lang/java_lang_Object.c,
+	native/jni/java-lang/java_lang_VMDouble.c,
+	native/jni/java-lang/java_lang_VMFloat.c,
+	native/jni/java-lang/java_lang_VMProcess.c,
+	native/jni/java-lang/java_lang_VMSystem.c,
+	native/jni/java-lang/java_lang_reflect_Array.c,
+	native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c,
+	native/jni/java-net/gnu_java_net_PlainSocketImpl.c,
+	native/jni/java-net/java_net_InetAddress.c,
+	native/jni/java-net/java_net_NetworkInterface.c,
+	native/jni/java-net/javanet.c,
+	native/jni/java-nio/gnu_java_nio_VMPipe.c,
+	native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c,
+	native/jni/java-nio/java_nio.c,
+	native/jni/java-nio/java_nio_MappedByteBufferImpl.c,
+	native/jni/java-nio/java_nio_VMDirectByteBuffer.c,
+	native/jni/java-util/java_util_VMTimeZone.c: Reindented using 
+	GNU indent (GNU style).
+
 2005-04-08  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/JTextComponent.java

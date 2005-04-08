@@ -53,19 +53,19 @@ exception statement from your version. */
  * Signature: (Ljava/lang/SecurityManager;)Ljava/lang/ClassLoader;
  */
 JNIEXPORT jobject JNICALL
-Java_java_io_ObjectInputStream_currentClassLoader( JNIEnv * env,
+Java_java_io_ObjectInputStream_currentClassLoader (JNIEnv * env,
 						   jclass clazz,
-						   jobject loader )
+						   jobject loader)
 {
-  jmethodID id = (*env)->GetMethodID( env,
-				      (*env)->GetObjectClass( env, loader ),
+  jmethodID id = (*env)->GetMethodID (env,
+				      (*env)->GetObjectClass (env, loader),
 				      "currentClassLoader",
-				      "()Ljava/lang/ClassLoader;" );
-  
-  if( id == NULL )
+				      "()Ljava/lang/ClassLoader;");
+
+  if (id == NULL)
     return NULL;
-  
-  return (*env)->CallObjectMethod( env, loader, id, clazz );
+
+  return (*env)->CallObjectMethod (env, loader, id, clazz);
 }
 
 
@@ -75,17 +75,17 @@ Java_java_io_ObjectInputStream_currentClassLoader( JNIEnv * env,
  * Signature: (Ljava/lang/Class;)Ljava/lang/Object;
  */
 JNIEXPORT jobject JNICALL
-Java_java_io_ObjectInputStream_allocateObject( JNIEnv * env,
+Java_java_io_ObjectInputStream_allocateObject (JNIEnv * env,
 					       jobject self
 					       __attribute__ ((__unused__)),
 					       jclass clazz,
 					       jclass constr_clazz,
-	       				       jobject constructor)
+					       jobject constructor)
 {
-  jobject obj = (*env)->AllocObject( env, clazz );
-  jmethodID id = (*env)->FromReflectedMethod( env, constructor);
+  jobject obj = (*env)->AllocObject (env, clazz);
+  jmethodID id = (*env)->FromReflectedMethod (env, constructor);
 
-  (*env)->CallNonvirtualVoidMethod( env, obj, constr_clazz, id);
+  (*env)->CallNonvirtualVoidMethod (env, obj, constr_clazz, id);
 
   return obj;
 }
