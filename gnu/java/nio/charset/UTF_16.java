@@ -75,6 +75,6 @@ final class UTF_16 extends Charset
 
   public CharsetEncoder newEncoder ()
   {
-    return new UTF_16Encoder (this, UTF_16Encoder.BIG_ENDIAN, false);
+    return new UTF_16Encoder (this, UTF_16Encoder.BIG_ENDIAN, true);
   }
 }
