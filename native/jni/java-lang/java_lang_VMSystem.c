@@ -117,7 +117,7 @@ Java_java_lang_VMSystem_setErr (JNIEnv * env,
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL
-  Java_java_lang_VMSystem_currentTimeMillis
+Java_java_lang_VMSystem_currentTimeMillis
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass thisClass __attribute__ ((__unused__)))
 {

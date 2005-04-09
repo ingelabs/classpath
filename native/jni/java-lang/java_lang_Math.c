@@ -41,7 +41,7 @@ exception statement from your version. */
 #include <fdlibm.h>
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_sin
+Java_java_lang_Math_sin
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -49,7 +49,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_cos
+Java_java_lang_Math_cos
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -57,7 +57,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_tan
+Java_java_lang_Math_tan
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -65,7 +65,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_asin
+Java_java_lang_Math_asin
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -73,7 +73,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_acos
+Java_java_lang_Math_acos
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -81,7 +81,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_atan
+Java_java_lang_Math_atan
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -89,7 +89,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_atan2
+Java_java_lang_Math_atan2
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble y, jdouble x)
 {
@@ -97,7 +97,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_exp
+Java_java_lang_Math_exp
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -105,7 +105,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_log
+Java_java_lang_Math_log
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -113,7 +113,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_sqrt
+Java_java_lang_Math_sqrt
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -121,7 +121,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_pow
+Java_java_lang_Math_pow
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x, jdouble y)
 {
@@ -129,7 +129,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_IEEEremainder
+Java_java_lang_Math_IEEEremainder
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x, jdouble y)
 {
@@ -137,7 +137,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_ceil
+Java_java_lang_Math_ceil
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -145,7 +145,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_floor
+Java_java_lang_Math_floor
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {
@@ -153,7 +153,7 @@ JNIEXPORT jdouble JNICALL
 }
 
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Math_rint
+Java_java_lang_Math_rint
   (JNIEnv * env __attribute__ ((__unused__)),
    jclass cls __attribute__ ((__unused__)), jdouble x)
 {

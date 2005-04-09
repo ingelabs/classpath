@@ -58,7 +58,7 @@ static jdouble NaN;
  * Signature: ()V
  */
 JNIEXPORT void JNICALL
-  Java_java_lang_Double_initIDs (JNIEnv * env, jclass cls)
+Java_java_lang_Double_initIDs (JNIEnv * env, jclass cls)
 {
   jfieldID negInfID;
   jfieldID posInfID;
@@ -103,7 +103,7 @@ JNIEXPORT void JNICALL
  * Signature: (DZ)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL
-  Java_java_lang_Double_toString
+Java_java_lang_Double_toString
   (JNIEnv * env, jclass cls, jdouble value, jboolean isFloat)
 {
   char buffer[50], result[50];
@@ -211,7 +211,7 @@ JNIEXPORT jstring JNICALL
  * Signature: (Ljava/lang/String;)D
  */
 JNIEXPORT jdouble JNICALL
-  Java_java_lang_Double_parseDouble
+Java_java_lang_Double_parseDouble
   (JNIEnv * env, jclass cls __attribute__ ((__unused__)), jstring str)
 {
   jboolean isCopy;

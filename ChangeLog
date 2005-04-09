@@ -1,3 +1,25 @@
+2005-04-09  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-lang/java_lang_Double.c: Reindent.
+	* native/jni/java-lang/java_lang_Math.c: Likewise.
+	* native/jni/java-lang/java_lang_Object.c: Likewise.
+	* native/jni/java-lang/java_lang_VMDouble.c: Likewise.
+	* native/jni/java-lang/java_lang_VMFloat.c: Likewise.
+	* native/jni/java-lang/java_lang_VMSystem.c: Likewise.
+	* native/jni/java-lang/java_lang_reflect_Array.c: Likewise.
+	* native/jni/java-nio/java_nio.c
+	(Java_gnu_java_nio_FileChannelImpl_nio_1mmap_1file): Removed.
+	(Java_gnu_java_nio_FileChannelImpl_nio_1unmmap_1file): Likewise.
+	(Java_gnu_java_nio_SocketChannelImpl_SocketCreate): Likewise.
+	(Java_gnu_java_nio_SocketChannelImpl_SocketConnect): Likewise.
+	(Java_gnu_java_nio_SocketChannelImpl_SocketBind): Likewise.
+	(Java_gnu_java_nio_SocketChannelImpl_SocketListen): Likewise.
+	(Java_gnu_java_nio_SocketChannelImpl_SocketAvailable): Likewise.
+	(Java_gnu_java_nio_SocketChannelImpl_SocketClose): Likewise.
+	(Java_gnu_java_nio_SocketChannelImpl_SocketRead): Likewise.
+	(Java_gnu_java_nio_SocketChannelImpl_SocketWrite): Likewise.
+	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c: Reindent.
+
 2005-04-09  Audrius Meskauskas  <audriusa@bluewin.ch>	
 	* org/omg/CORBA/DynAnyPackage/Invalid.java,
 	org/omg/CORBA/DynAnyPackage/InvalidSeq.java,

@@ -79,7 +79,7 @@ NIOGetRawData (JNIEnv * env, void *pointer)
 }
 
 JNIEXPORT void JNICALL
-  Java_java_nio_VMDirectByteBuffer_init
+Java_java_nio_VMDirectByteBuffer_init
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)))
 {
 #if SIZEOF_VOID_P == 4
@@ -146,7 +146,7 @@ JNIEXPORT void JNICALL
 }
 
 JNIEXPORT jobject JNICALL
-  Java_java_nio_VMDirectByteBuffer_allocate
+Java_java_nio_VMDirectByteBuffer_allocate
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)), jint capacity)
 {
   void *buffer;
@@ -164,14 +164,14 @@ JNIEXPORT jobject JNICALL
 }
 
 JNIEXPORT void JNICALL
-  Java_java_nio_VMDirectByteBuffer_free
+Java_java_nio_VMDirectByteBuffer_free
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)), jobject address)
 {
   free (NIOGetPointer (env, address));
 }
 
 JNIEXPORT jbyte JNICALL
-  Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I
+Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index)
 {
@@ -179,7 +179,7 @@ JNIEXPORT jbyte JNICALL
 }
 
 JNIEXPORT void JNICALL
-  Java_java_nio_VMDirectByteBuffer_put
+Java_java_nio_VMDirectByteBuffer_put
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index, jbyte value)
 {
@@ -188,7 +188,7 @@ JNIEXPORT void JNICALL
 }
 
 JNIEXPORT void JNICALL
-  Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I_3BII
+Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I_3BII
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index, jbyteArray dst, jint dst_offset, jint dst_len)
 {
@@ -198,7 +198,7 @@ JNIEXPORT void JNICALL
 }
 
 JNIEXPORT void JNICALL
-  Java_java_nio_VMDirectByteBuffer_shiftDown
+Java_java_nio_VMDirectByteBuffer_shiftDown
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint dst_offset, jint src_offset, jint count)
 {
@@ -208,7 +208,7 @@ JNIEXPORT void JNICALL
 }
 
 JNIEXPORT jobject JNICALL
-  Java_java_nio_VMDirectByteBuffer_adjustAddress
+Java_java_nio_VMDirectByteBuffer_adjustAddress
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint offset)
 {

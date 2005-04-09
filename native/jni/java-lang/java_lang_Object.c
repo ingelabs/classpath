@@ -44,7 +44,7 @@ exception statement from your version. */
  * Signature: ()Ljava/lang/Class;
  */
 JNIEXPORT jclass JNICALL
-  Java_java_lang_Object_getClass (JNIEnv * env, jobject thisObj)
+Java_java_lang_Object_getClass (JNIEnv * env, jobject thisObj)
 {
   return (*env)->GetObjectClass (env, thisObj);
 }
