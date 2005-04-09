@@ -95,7 +95,7 @@ final class UTF_8 extends Charset
     // Package-private to avoid a trampoline constructor.
     Decoder (Charset cs)
     {
-      super (cs, 0.9f, 0.25f);
+      super (cs, 1f, 1f);
     }
 
     protected CoderResult decodeLoop (ByteBuffer in, CharBuffer out)
@@ -117,7 +117,7 @@ final class UTF_8 extends Charset
                       return CoderResult.OVERFLOW;
                     out.put ((char) b1);
                     inPos++;
-                    break;
+                    break;		    
 
                   case 0xC: case 0xD:
                     byte b2;
