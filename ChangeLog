@@ -1,3 +1,10 @@
+2005-04-09  Audrius Meskauskas  <audriusa@bluewin.ch>	
+	* org/omg/CORBA/DynAnyPackage/Invalid.java,
+	org/omg/CORBA/DynAnyPackage/InvalidSeq.java,
+	org/omg/CORBA/DynAnyPackage/InvalidValue.java,
+	org/omg/CORBA/DynAnyPackage/TypeMismatch.java,
+	org/omg/CORBA/DynAnyPackage/package.html: New files.
+	
 2005-04-08  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/nio/charset/UTF_8.java
