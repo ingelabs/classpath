@@ -1,3 +1,24 @@
+2005-04-10  Audrius Meskauskas  <audriusa@bluewin.ch>	
+	* org/omg/CORBA/PRIVATE_MEMBER.java,
+	org/omg/CORBA/PUBLIC_MEMBER.java,
+	org/omg/CORBA/Request.java,
+	org/omg/CORBA/StructMember.java,
+	org/omg/CORBA/UnionMember.java,
+	org/omg/CORBA/UNSUPPORTED_POLICY.java,
+	org/omg/CORBA/UNSUPPORTED_POLICY_VALUE.java,
+	org/omg/CORBA/ValueMember.java,
+	org/omg/CORBA/VM_ABSTRACT.java,
+	org/omg/CORBA/VM_CUSTOM.java,
+	org/omg/CORBA/VM_NONE.java,
+	org/omg/CORBA/VM_TRUNCATABLE.java,
+	org/omg/CORBA/WrongTransaction.java,
+	org/omg/CORBA/BAD_POLICY.java,
+	org/omg/CORBA/BAD_POLICY_TYPE.java,
+	org/omg/CORBA/BAD_POLICY_VALUE.java,
+	org/omg/CORBA/Environment.java,
+	org/omg/CORBA/IDLType.java,
+	org/omg/CORBA/OMGVMCID.java: new files.
+	
 2005-04-09  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/java-lang/java_lang_Double.c: Reindent.
