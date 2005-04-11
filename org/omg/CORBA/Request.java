@@ -216,7 +216,7 @@ public abstract class Request
    * Allow later check of the request status by {@link #poll_response()} and
    * retrieving the results by {@link #get_response()}.
    */
-  public void send_deferred();
+  public abstract void send_deferred();
 
   /**
    * Send a request and forget about it, not waiting for a response.
