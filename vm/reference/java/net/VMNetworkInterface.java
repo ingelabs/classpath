@@ -1,5 +1,5 @@
-/* NetworkInterface.c - Native methods for NetworkInterface class
-   Copyright (C) 2003 Free Software Foundation, Inc.
+/* VMNetworkInterface.java --
+   Copyright (C) 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -35,32 +35,32 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-/* do not move; needed here because of some macro definitions */
-#include <config.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+package java.net;
 
-#include <jni.h>
-#include <jcl.h>
+import gnu.classpath.Configuration;
 
-#include "java_net_NetworkInterface.h"
+import java.util.Enumeration;
+import java.util.Vector;
 
-#include "javanet.h"
-
-/*
- * Returns all local network interfaces as vector
+/**
+ * This class models a network interface on the host computer.  A network
+ * interface contains a name (typically associated with a specific
+ * hardware adapter) and a list of addresses that are bound to it.
+ * For example, an ethernet interface may be named "eth0" and have the
+ * address 192.168.1.101 assigned to it.
+ *
+ * @author Michael Koch (konqueror@gmx.de)
+ * @since 1.4
  */
-JNIEXPORT jobject JNICALL
-Java_java_net_NetworkInterface_getRealNetworkInterfaces (JNIEnv * env,
-							 jclass class
-							 __attribute__ ((__unused__)))
+final class VMNetworkInterface
 {
-  JCL_ThrowException (env, IO_EXCEPTION,
-		      "java.net.NetworkInterface.getRealNetworkInterfaces(): not implemented");
-  return 0;
-}
+  static
+    {
+      if (Configuration.INIT_LOAD_LIBRARY)
+	System.loadLibrary("javanet");
+    }
 
-/* end of file */
+  public static native Vector getInterfaces()
+    throws SocketException;
+}

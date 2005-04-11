@@ -83,8 +83,8 @@ $(top_srcdir)/include/java_lang_VMFloat.h \
 $(top_srcdir)/include/java_lang_VMProcess.h \
 $(top_srcdir)/include/java_lang_VMSystem.h \
 $(top_srcdir)/include/java_lang_reflect_Array.h \
-$(top_srcdir)/include/java_net_InetAddress.h \
-$(top_srcdir)/include/java_net_NetworkInterface.h \
+$(top_srcdir)/include/java_net_VMInetAddress.h \
+$(top_srcdir)/include/java_net_VMNetworkInterface.h \
 $(top_srcdir)/include/java_nio_VMDirectByteBuffer.h \
 $(top_srcdir)/include/java_nio_MappedByteBufferImpl.h \
 $(top_srcdir)/include/java_util_VMTimeZone.h
@@ -135,10 +135,10 @@ $(top_srcdir)/include/java_lang_VMSystem.h: $(top_srcdir)/vm/reference/java/lang
 	$(JAVAH) -o $@ java.lang.VMSystem
 $(top_srcdir)/include/java_lang_reflect_Array.h: $(top_srcdir)/java/lang/reflect/Array.java
 	$(JAVAH) -o $@ java.lang.reflect.Array
-$(top_srcdir)/include/java_net_InetAddress.h: $(top_srcdir)/java/net/InetAddress.java
-	$(JAVAH) -o $@ java.net.InetAddress
-$(top_srcdir)/include/java_net_NetworkInterface.h: $(top_srcdir)/java/net/NetworkInterface.java
-	$(JAVAH) -o $@ java.net.NetworkInterface
+$(top_srcdir)/include/java_net_VMInetAddress.h: $(top_srcdir)/vm/reference/java/net/VMInetAddress.java
+	$(JAVAH) -o $@ java.net.VMInetAddress
+$(top_srcdir)/include/java_net_VMNetworkInterface.h: $(top_srcdir)/vm/reference/java/net/VMNetworkInterface.java
+	$(JAVAH) -o $@ java.net.VMNetworkInterface
 $(top_srcdir)/include/java_nio_VMDirectByteBuffer.h: $(top_srcdir)/vm/reference/java/nio/VMDirectByteBuffer.java
 	$(JAVAH) -o $@ java.nio.VMDirectByteBuffer
 $(top_srcdir)/include/java_nio_MappedByteBufferImpl.h: $(top_srcdir)/java/nio/MappedByteBufferImpl.java

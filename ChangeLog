@@ -1,3 +1,30 @@
+2005-04-11  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/InetAddress.java
+	(static): Removed.
+	(getLocalHostname): Likewise.
+	(lookupInaddrAny): Likewise.
+	(getHostByAddr): Likewise.
+	(getHostByName): Likewise.
+	* java/net/NetworkInterface.java
+	(static): Likewise.
+	(getRealNetworkInterfaces): Likewise.
+	* native/jni/java-net/java_net_InetAddress.c: Renamed to...
+	* native/jni/java-net/java_net_VMInetAddress.c: New file.
+	Renamed from java_net_InetAddress.c. All native methods moved to class
+	VMInetAddress.
+	* native/jni/java-net/java_net_NetworkInterface.c: Renamed to...
+	Renamed from java_net_NetworkInterface.c. All native methods moved to
+	class VMNetworkInterface.
+	* native/jni/java-net/java_net_VMNetworkInterface.c: New file.
+	* vm/reference/java/net/VMInetAddress.java,
+	vm/reference/java/net/VMNetworkInterface.java: New files.
+	* include/java_net_InetAddress.h,
+	include/java_net_NetworkInterface.h: Removed.
+	* include/java_net_VMInetAddress.h,
+	include/java_net_VMNetworkInterface.h: New files.
+	* include/Makefile.am: Build new header files.
+
 2005-04-11  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/ImageIcon.java

@@ -1,5 +1,5 @@
-/* InetAddress.c - Native methods for InetAddress class
-   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
+/* VMInetAddress.c - Native methods for InetAddress class
+   Copyright (C) 1998, 2002, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -53,7 +53,7 @@ exception statement from your version. */
 #include "target_native_network.h"
 #endif /* WITHOUT_NETWORK */
 
-#include "java_net_InetAddress.h"
+#include "java_net_VMInetAddress.h"
 
 /*************************************************************************/
 
@@ -61,9 +61,9 @@ exception statement from your version. */
  * Function to return the local hostname
  */
 JNIEXPORT jstring JNICALL
-Java_java_net_InetAddress_getLocalHostname (JNIEnv * env,
-					    jclass class
-					    __attribute__ ((__unused__)))
+Java_java_net_VMInetAddress_getLocalHostname (JNIEnv * env,
+					      jclass class
+					      __attribute__ ((__unused__)))
 {
   char hostname[256];
   int result;
@@ -93,9 +93,9 @@ Java_java_net_InetAddress_getLocalHostname (JNIEnv * env,
  * Returns the value of the special IP address INADDR_ANY 
  */
 JNIEXPORT jarray JNICALL
-Java_java_net_InetAddress_lookupInaddrAny (JNIEnv * env,
-					   jclass class
-					   __attribute__ ((__unused__)))
+Java_java_net_VMInetAddress_lookupInaddrAny (JNIEnv * env,
+					     jclass class
+					     __attribute__ ((__unused__)))
 {
   jarray IParray;
   jbyte *octets;
@@ -137,10 +137,10 @@ Java_java_net_InetAddress_lookupInaddrAny (JNIEnv * env,
  * in as a byte array
  */
 JNIEXPORT jstring JNICALL
-Java_java_net_InetAddress_getHostByAddr (JNIEnv * env,
-					 jclass class
-					 __attribute__ ((__unused__)),
-					 jarray arr)
+Java_java_net_VMInetAddress_getHostByAddr (JNIEnv * env,
+					   jclass class
+					   __attribute__ ((__unused__)),
+					   jarray arr)
 {
 #ifndef WITHOUT_NETWORK
   jbyte *octets;
@@ -196,10 +196,10 @@ Java_java_net_InetAddress_getHostByAddr (JNIEnv * env,
 /*************************************************************************/
 
 JNIEXPORT jobjectArray JNICALL
-Java_java_net_InetAddress_getHostByName (JNIEnv * env,
-					 jclass class
-					 __attribute__ ((__unused__)),
-					 jstring host)
+Java_java_net_VMInetAddress_getHostByName (JNIEnv * env,
+					   jclass class
+					   __attribute__ ((__unused__)),
+					   jstring host)
 {
 #ifndef WITHOUT_NETWORK
   const char *hostname;

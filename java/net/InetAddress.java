@@ -38,8 +38,6 @@ exception statement from your version. */
 
 package java.net;
 
-import gnu.classpath.Configuration;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -122,10 +120,6 @@ public class InetAddress implements Serializable
 
   static
   {
-    // load the shared library needed for name resolution
-    if (Configuration.INIT_LOAD_LIBRARY)
-      System.loadLibrary("javanet");
-    
     // Look for properties that override default caching behavior
     cache_size =
       Integer.getInteger("gnu.java.net.dns_cache_size", DEFAULT_CACHE_SIZE)
@@ -378,7 +372,7 @@ public class InetAddress implements Serializable
 
     try
       {
-	hostName = getHostByAddr(addr);
+	hostName = VMInetAddress.getHostByAddr(addr);
 	return hostName;
       }
     catch (UnknownHostException e)
@@ -671,7 +665,7 @@ public class InetAddress implements Serializable
       return addresses;
 
     // Not in cache, try the lookup
-    byte[][] iplist = getHostByName(hostname);
+    byte[][] iplist = VMInetAddress.getHostByName(hostname);
 
     if (iplist.length == 0)
       throw new UnknownHostException(hostname);
@@ -762,22 +756,12 @@ public class InetAddress implements Serializable
   {
     if (inaddr_any == null)
       {
-	byte[] tmp = lookupInaddrAny();
+	byte[] tmp = VMInetAddress.lookupInaddrAny();
 	inaddr_any = new Inet4Address(tmp, null);
       }
 
     return inaddr_any;
   }
-
-  /**
-   * This native method looks up the hostname of the local machine
-   * we are on.  If the actual hostname cannot be determined, then the
-   * value "localhost" will be used.  This native method wrappers the
-   * "gethostname" function.
-   *
-   * @return The local hostname.
-   */
-  private static native String getLocalHostname();
 
   /**
    * Returns an InetAddress object representing the address of the current
@@ -790,34 +774,9 @@ public class InetAddress implements Serializable
    */
   public static InetAddress getLocalHost() throws UnknownHostException
   {
-    String hostname = getLocalHostname();
+    String hostname = VMInetAddress.getLocalHostname();
     return getByName(hostname);
   }
-
-  /**
-   * Returns the value of the special address INADDR_ANY
-   */
-  private static native byte[] lookupInaddrAny() throws UnknownHostException;
-
-  /**
-   * This method returns the hostname for a given IP address.  It will
-   * throw an UnknownHostException if the hostname cannot be determined.
-   *
-   * @param ip The IP address as a byte array
-   *
-   * @return The hostname
-   *
-   * @exception UnknownHostException If the reverse lookup fails
-   */
-  private static native String getHostByAddr(byte[] ip)
-    throws UnknownHostException;
-
-  /**
-   * Returns a list of all IP addresses for a given hostname.  Will throw
-   * an UnknownHostException if the hostname cannot be resolved.
-   */
-  private static native byte[][] getHostByName(String hostname)
-    throws UnknownHostException;
 
   /*
    * Needed for serialization
