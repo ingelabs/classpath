@@ -1,5 +1,13 @@
 2005-04-12  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/basic/BasicMenuUI.java
+	(getMaximumSize): Now returns preferredSize because JMenu should
+	never be bigger than that.
+	* javax/swing/JRootPane
+	(RootLayout.layoutContainer): Make JMenuBars take the whole width.
+
+2005-04-12  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicMenuBarUI.java:
 	Fixed tabs to spaces.
 
