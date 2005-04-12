@@ -1,3 +1,11 @@
+2005-04-12  Roman Kennke  <roman@kennke.org>
+
+	* java/awt/MediaTracker.java
+	(addImage): Synchronized list access.
+	(waitForAll): Fixed comparison of time (changed < to >).
+	(waitForID): Fixed comparison of time (changed < to >).
+	(removeImage): Synchronized list access.
+
 2005-04-12  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/FilePermission.java
