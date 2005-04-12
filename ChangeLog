@@ -1,5 +1,11 @@
 2005-04-12  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JRootPane.java:
+	Fixed various tabs to be spaces.
+	(RootLayout.layoutContainer): Made menubar left aligned.
+
+2005-04-12  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JComponent.java:
 	Modified alignmentX and alignmentY to be 0.5 instead of 0.0.
 	Untabified the file.
