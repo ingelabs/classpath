@@ -1,5 +1,12 @@
 2005-04-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/NetworkInterface.java
+	(NetworkInterface): Made constructor package private.
+	Introduced another constructor for more addresses on one
+	interface.
+
+2005-04-12  Michael Koch  <konqueror@gmx.de>
+
 	* native/jni/java-net/Makefile.am
 	Compile new files java_net_VMInetAddress.c and
 	java_net_VMNetworkInterface.
