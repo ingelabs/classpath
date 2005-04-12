@@ -1,5 +1,11 @@
 2005-04-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/print/PrinterJob.java
+	(pageDialog): New method.
+	(printDialog): Implemented.
+
+2005-04-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/FontMetrics.java: Reformatted.
 	(getFontRenderContext): Handle case when java.awt.Graphics context is
 	given.
