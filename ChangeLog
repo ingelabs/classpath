@@ -1,3 +1,12 @@
+2005-04-12  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/nio/charset/Provider.java: Add UnicodeLittle.
+	* gnu/java/nio/charset/UnicodeLittle.java: New file.
+	* gnu/java/nio/charset/UTF_16.java: UnicodeBig is an alias.
+	* gnu/java/nio/charset/UTF_16BE.java,
+	* gnu/java/nio/charset/UTF_16LE.java: No byte-order mark.
+	* gnu/java/nio/charset/UTF_16Encoder.java (encodeLoop): Fixed bug.
+	
 2005-04-11  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/InetAddress.java

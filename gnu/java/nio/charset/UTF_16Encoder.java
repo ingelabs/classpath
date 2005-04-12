@@ -117,9 +117,11 @@ final class UTF_16Encoder extends CharsetEncoder
               }
             else
               {
-		out.order(originalBO);
                 if (out.remaining () < 2)
-                  return CoderResult.OVERFLOW;
+		  {
+		    out.order(originalBO);
+		    return CoderResult.OVERFLOW;
+		  }
                 out.putChar (c);
                 inPos++;
               }

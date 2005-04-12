@@ -106,6 +106,9 @@ public final class Provider extends CharsetProvider
     // UTF-16
     addCharset (new UTF_16 ());
 
+    // UTF-16LE (marked)
+    addCharset (new UnicodeLittle ());
+
     // Windows-1250 aka cp-1250 (East European)
     addCharset (new Windows1250 ());
 

@@ -57,7 +57,7 @@ final class UTF_16 extends Charset
         /* These names are provided by
          * http://oss.software.ibm.com/cgi-bin/icu/convexp?s=ALL
          */
-        "ISO-10646-UCS-2", "unicode", "csUnicode", "ucs-2"
+        "ISO-10646-UCS-2", "unicode", "csUnicode", "ucs-2", "UnicodeBig"
     });
   }
 
