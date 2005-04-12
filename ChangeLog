@@ -1,5 +1,10 @@
 2005-04-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/FontMetrics.java
+	(getStringBounds): New methods.
+
+2005-04-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/NetworkInterface.java
 	(NetworkInterface): Made constructor package private.
 	Introduced another constructor for more addresses on one
