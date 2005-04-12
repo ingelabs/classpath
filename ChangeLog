@@ -1,3 +1,9 @@
+2005-04-12  Michael Koch  <konqueror@gmx.de>
+
+	* native/jni/java-net/Makefile.am
+	Compile new files java_net_VMInetAddress.c and
+	java_net_VMNetworkInterface.
+
 2005-04-12  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/nio/charset/Provider.java: Add UnicodeLittle.
