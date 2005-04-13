@@ -1,3 +1,7 @@
+2005-04-13  Sven de Marothy  <sven@physto.se>
+
+	* java/nio/charset/Charset.java: Cached encoders shouldn't be static.
+	
 2005-04-13  Roman Kennke  <roman@kennke.org>
 
 	* java/awt/MediaTracker.java:
