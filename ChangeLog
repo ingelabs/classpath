@@ -1,5 +1,10 @@
 2005-04-13  Roman Kennke  <roman@kennke.org>
 
+	* java/awt/MediaTracker.java:
+	Reindented tabs to spaces.
+
+2005-04-13  Roman Kennke  <roman@kennke.org>
+
 	* java/awt/MediaTracker.java
 	(MediaEntry.imageUpdate): Removed check for SOMEBITS, this
 	confused the media tracker and lead to lockups. The LOADING
