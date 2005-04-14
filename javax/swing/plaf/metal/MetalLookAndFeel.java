@@ -366,7 +366,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   protected void initClassDefaults(UIDefaults defaults)
   {
-    super(defaults);
+    super.initClassDefaults(defaults);
 
     // Variables
     Object[] uiDefaults;
