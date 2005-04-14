@@ -1,3 +1,18 @@
+2005-04-14  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/metal/MetalButtonUI.java:
+	Fixed year in copyright notice.
+	* javax/swing/plaf/metal/MetalCheckBoxUI.java:
+	Fixed year in copyright notice.
+	* javax/swing/plaf/metal/MetalLabelUI.java:
+	Fixed year in copyright notice.
+	* javax/swing/plaf/metal/MetalRadioButtonUI.java:
+	Fixed year in copyright notice.
+	* javax/swing/plaf/metal/MetalScrollPaneUI.java:
+	Fixed year in copyright notice.
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java:
+	Fixed year in copyright notice.
+
 2005-04-13  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/metal/MetalButtonUI.java:
