@@ -1,5 +1,10 @@
 2005-04-14  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initClassDefaults): Added to include the *UI classes.
+
+2005-04-14  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/metal/MetalComboBoxUI.java:
 	Added.
 	* javax/swing/plaf/metal/MetalDesktopIconUI.java:

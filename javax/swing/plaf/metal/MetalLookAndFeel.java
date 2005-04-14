@@ -307,4 +307,96 @@ public class MetalLookAndFeel extends BasicLookAndFeel
   {
     MetalLookAndFeel.theme = theme;
   }
+
+  /**
+   * Sets the ComponentUI classes for all Swing components to the Metal
+   * implementations.
+   *
+   * In particular this sets the following keys:
+   *
+   * <table>
+   * <tr>
+   * <th>Key</th><th>Value</th>
+   * </tr><tr>
+   * <td>ButtonUI</td><td>{@link MetalButtonUI}</td>
+   * </tr><tr>
+   * <td>CheckBoxUI</td><td>{@link MetalCheckBoxUI}</td>
+   * </tr><tr>
+   * <td>ComboBoxUI</td><td>{@link MetalComboBoxUI}</td>
+   * </tr><tr>
+   * <td>DesktopIconUI</td><td>{@link MetalDesktopIconUI}</td>
+   * </tr><tr>
+   * <td>InternalFrameUI</td><td>{@link MetalInternalFrameUI}</td>
+   * </tr><tr>
+   * <td>LabelUI</td><td>{@link MetalLabelUI}</td>
+   * </tr><tr>
+   * <td>PopupMenuSeparatorUI</td><td>{@link MetalPopupMenuSeparatorUI}</td>
+   * </tr><tr>
+   * <td>ProgressBarUI</td><td>{@link MetalProgressBarUI}</td>
+   * </tr><tr>
+   * <td>RadioButtonUI</td><td>{@link MetalRadioButtonUI}</td>
+   * </tr><tr>
+   * <td>RootPaneUI</td><td>{@link MetalRootPaneUI}</td>
+   * </tr><tr>
+   * <td>ScrollBarUI</td><td>{@link MetalScrollBarUI}</td>
+   * </tr><tr>
+   * <td>ScrollPaneUI</td><td>{@link MetalScrollPaneUI}</td>
+   * </tr><tr>
+   * <td>SeparatorUI</td><td>{@link MetalSeparatorUI}</td>
+   * </tr><tr>
+   * <td>SliderUI</td><td>{@link MetalSliderUI}</td>
+   * </tr><tr>
+   * <td>SplitPaneUI</td><td>{@link MetalSplitPaneUI}</td>
+   * </tr><tr>
+   * <td>TabbedPaneUI</td><td>{@link MetalTabbedPaneUI}</td>
+   * </tr><tr>
+   * <td>TextFieldUI</td><td>{@link MetalTextFieldUI}</td>
+   * </tr><tr>
+   * <td>ToggleButtonUI</td><td>{@link MetalToggleButtonUI}</td>
+   * </tr><tr>
+   * <td>ToolBarUI</td><td>{@link MetalToolBarUI}</td>
+   * </tr><tr>
+   * <td>ToolTipUI</td><td>{@link MetalToolTipUI}</td>
+   * </tr><tr>
+   * <td>TreeUI</td><td>{@link MetalTreeUI}</td>
+   * </tr><tr>
+   * </table>
+   *
+   * @param defaults the UIDefaults where the class defaults are added
+   */
+  protected void initClassDefaults(UIDefaults defaults)
+  {
+    super(defaults);
+
+    // Variables
+    Object[] uiDefaults;
+    // Initialize Class Defaults
+    uiDefaults = new Object[] {
+      "ButtonUI", "javax.swing.plaf.metal.MetalButtonUI",
+      "CheckBoxUI", "javax.swing.plaf.metal.MetalCheckBoxUI",
+      "ComboBoxUI", "javax.swing.plaf.metal.MetalComboBoxUI",
+      "DesktopIconUI", "javax.swing.plaf.metal.MetalDesktopIconUI",
+      "InternalFrameUI", "javax.swing.plaf.metal.MetalInternalFrameUI",
+      "LabelUI", "javax.swing.plaf.metal.MetalLabelUI",
+      "PopupMenuSeparatorUI",
+      "javax.swing.plaf.metal.MetalPopupMenuSeparatorUI",
+      "ProgressBarUI", "javax.swing.plaf.metal.MetalProgressBarUI",
+      "RadioButtonUI", "javax.swing.plaf.metal.MetalRadioButtonUI",
+      "RootPaneUI", "javax.swing.plaf.metal.MetalRootPaneUI",
+      "ScrollBarUI", "javax.swing.plaf.metal.MetalScrollBarUI",
+      "ScrollPaneUI", "javax.swing.plaf.metal.MetalScrollPaneUI",
+      "SeparatorUI", "javax.swing.plaf.metal.MetalSeparatorUI",
+      "SliderUI", "javax.swing.plaf.metal.MetalSliderUI",
+      "SplitPaneUI", "javax.swing.plaf.metal.MetalSplitPaneUI",
+      "TabbedPaneUI", "javax.swing.plaf.metal.MetalTabbedPaneUI",
+      "TextFieldUI", "javax.swing.plaf.metal.MetalTextFieldUI",
+      "ToggleButtonUI", "javax.swing.plaf.metal.MetalToggleButtonUI",
+      "ToolBarUI", "javax.swing.plaf.metal.MetalToolBarUI",
+      "ToolTipUI", "javax.swing.plaf.metal.MetalToolTipUI",
+      "TreeUI", "javax.swing.plaf.metal.MetalTreeUI",
+    };
+    // Add Class Defaults to UI Defaults table
+    defaults.putDefaults(uiDefaults);
+  }
+
 }
