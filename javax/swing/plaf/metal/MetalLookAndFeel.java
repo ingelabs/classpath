@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing.plaf.metal;
 
+import java.awt.Color;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
@@ -399,4 +400,68 @@ public class MetalLookAndFeel extends BasicLookAndFeel
     defaults.putDefaults(uiDefaults);
   }
 
+  /**
+   * Initializes the component defaults for the Metal Look &amp; Feel.
+   *
+   * In particular this sets the following keys (the colors are given
+   * as RGB hex values):
+   *
+   * <table>
+   * <tr>
+   * <th>Key</th><th>Value</th>
+   * </tr><tr>
+   * <td>Button.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>CheckBox.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>CheckBoxMenuItem.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>ToolBar.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>Panel.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>Slider.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>OptionPane.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>ProgressBar.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>TabbedPane.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>Label.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>Menu.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>MenuBar.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>MenuItem.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * <td>ScrollBar.background</td><td>0xcccccc</td>
+   * </tr><tr>
+   * </table>
+   *
+   * @param defaults the UIDefaults instance to which the values are added
+   */
+  protected void initComponentDefaults(UIDefaults defaults)
+  {
+    super.initComponentDefaults(defaults);
+    Color background = new Color(0xcc, 0xcc, 0xcc);
+    Object[] myDefaults = new Object[] {
+      "Button.background", new ColorUIResource(background),
+      "CheckBox.background", new ColorUIResource(background),
+      "CheckBoxMenuItem.background", new ColorUIResource(background),
+      "ToolBar.background", new ColorUIResource(background),
+      "Panel.background", new ColorUIResource(background),
+      "Slider.background", new ColorUIResource(background),
+      "OptionPane.background", new ColorUIResource(background),
+      "ProgressBar.background", new ColorUIResource(background),
+      "TabbedPane.background", new ColorUIResource(background),
+      "Label.background", new ColorUIResource(background),
+      "Menu.background", new ColorUIResource(background),
+      "MenuBar.background", new ColorUIResource(background),
+      "MenuItem.background", new ColorUIResource(background),
+      "ScrollBar.background", new ColorUIResource(background)
+    };
+    defaults.putDefaults(myDefaults);
+  }
 }

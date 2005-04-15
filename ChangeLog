@@ -1,3 +1,9 @@
+2005-04-15  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Added to set Metal specific component
+	defaults.
+
 2005-04-14  Chris Burdess  <dog@gnu.org>
 
 	* java/io/DataOutputStream.java (writeUTF): Use block write for
