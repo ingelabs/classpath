@@ -1,5 +1,12 @@
 2005-04-15  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Added Label.font.
+	(initSystemColorDefaults): Added this method and adjusted the
+	general control color.
+
+2005-04-15  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/metal/MetalTabbedPaneUI.java:
 	Added newline between import blocks. Changed Map to
 	HashMap in field declarations.

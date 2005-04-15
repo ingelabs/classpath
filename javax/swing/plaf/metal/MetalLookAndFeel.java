@@ -439,6 +439,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    * </tr><tr>
    * <td>Label.background</td><td>0xcccccc</td>
    * </tr><tr>
+   * <td>Label.font</td><td>{@link #getControlTextFont}</td>
+   * </tr><tr>
    * <td>Menu.background</td><td>0xcccccc</td>
    * </tr><tr>
    * <td>MenuBar.background</td><td>0xcccccc</td>
@@ -468,6 +470,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "ProgressBar.background", new ColorUIResource(getControl()),
       "TabbedPane.background", new ColorUIResource(getControl()),
       "Label.background", new ColorUIResource(getControl()),
+      "Label.font", getControlTextFont(),
       "Menu.background", new ColorUIResource(getControl()),
       "MenuBar.background", new ColorUIResource(getControl()),
       "MenuItem.background", new ColorUIResource(getControl()),
@@ -475,4 +478,28 @@ public class MetalLookAndFeel extends BasicLookAndFeel
     };
     defaults.putDefaults(myDefaults);
   }
+
+  /**
+   * Initializes the system color defaults.
+   *
+   * In particular this sets the following keys:
+   *
+   * <table>
+   * <tr>
+   * <th>Key</th><th>Value</th><th>Description</th>
+   * </tr><tr>
+   * <td>control</td><td>0xcccccc</td><td>The default color for components</td>
+   * </tr>
+   * </table>
+   */
+  protected void initSystemColorDefaults(UIDefaults defaults)
+  {
+    super.initSystemColorDefaults(defaults);
+    Object[] uiDefaults;
+    uiDefaults = new Object[] {
+      "control", new ColorUIResource(getControl())
+    };
+    defaults.putDefaults(uiDefaults);
+  }
+
 }
