@@ -39,7 +39,7 @@ exception statement from your version. */
 package javax.swing.plaf.metal;
 
 import java.util.HashMap;
-import java.util.Map;
+
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
@@ -49,7 +49,7 @@ public class MetalTabbedPaneUI
 {
 
   /** The shared UI instance for JTabbedPanes. */
-  private static Map instances = null;
+  private static HashMap instances = null;
 
   /**
    * Constructs a new instance of MetalTabbedPaneUI.
