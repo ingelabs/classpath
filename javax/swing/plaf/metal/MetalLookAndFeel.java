@@ -39,6 +39,8 @@ exception statement from your version. */
 package javax.swing.plaf.metal;
 
 import java.awt.Color;
+import java.awt.Insets;
+
 import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
@@ -412,6 +414,13 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    * </tr><tr>
    * <td>Button.background</td><td>0xcccccc</td>
    * </tr><tr>
+   * <td>Button.border</td><td>{@link MetalBorders.ButtonBorder}</td>
+   * </tr><tr>
+   * <td>Button.font</td><td>{@link #getControlTextFont}</td>
+   * </tr><tr>
+   * <td>Button.margin</td><td><code>new java.awt.Insets(2, 14, 2, 14)</code>
+   * </td>
+   * </tr><tr>
    * <td>CheckBox.background</td><td>0xcccccc</td>
    * </tr><tr>
    * <td>CheckBoxMenuItem.background</td><td>0xcccccc</td>
@@ -445,22 +454,24 @@ public class MetalLookAndFeel extends BasicLookAndFeel
   protected void initComponentDefaults(UIDefaults defaults)
   {
     super.initComponentDefaults(defaults);
-    Color background = new Color(0xcc, 0xcc, 0xcc);
     Object[] myDefaults = new Object[] {
-      "Button.background", new ColorUIResource(background),
-      "CheckBox.background", new ColorUIResource(background),
-      "CheckBoxMenuItem.background", new ColorUIResource(background),
-      "ToolBar.background", new ColorUIResource(background),
-      "Panel.background", new ColorUIResource(background),
-      "Slider.background", new ColorUIResource(background),
-      "OptionPane.background", new ColorUIResource(background),
-      "ProgressBar.background", new ColorUIResource(background),
-      "TabbedPane.background", new ColorUIResource(background),
-      "Label.background", new ColorUIResource(background),
-      "Menu.background", new ColorUIResource(background),
-      "MenuBar.background", new ColorUIResource(background),
-      "MenuItem.background", new ColorUIResource(background),
-      "ScrollBar.background", new ColorUIResource(background)
+      "Button.background", new ColorUIResource(getControl()),
+      "Button.border", MetalBorders.getButtonBorder(),
+      "Button.font", getControlTextFont(),
+      "Button.margin", new Insets(2, 14, 2, 14),
+      "CheckBox.background", new ColorUIResource(getControl()),
+      "CheckBoxMenuItem.background", new ColorUIResource(getControl()),
+      "ToolBar.background", new ColorUIResource(getControl()),
+      "Panel.background", new ColorUIResource(getControl()),
+      "Slider.background", new ColorUIResource(getControl()),
+      "OptionPane.background", new ColorUIResource(getControl()),
+      "ProgressBar.background", new ColorUIResource(getControl()),
+      "TabbedPane.background", new ColorUIResource(getControl()),
+      "Label.background", new ColorUIResource(getControl()),
+      "Menu.background", new ColorUIResource(getControl()),
+      "MenuBar.background", new ColorUIResource(getControl()),
+      "MenuItem.background", new ColorUIResource(getControl()),
+      "ScrollBar.background", new ColorUIResource(getControl())
     };
     defaults.putDefaults(myDefaults);
   }
