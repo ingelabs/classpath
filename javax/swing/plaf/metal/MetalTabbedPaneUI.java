@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing.plaf.metal;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
@@ -46,9 +48,8 @@ public class MetalTabbedPaneUI
   extends BasicTabbedPaneUI
 {
 
-  // FIXME: maybe replace by a Map of instances when this becomes stateful
   /** The shared UI instance for JTabbedPanes. */
-  private static MetalTabbedPaneUI instance = null;
+  private static Map instances = null;
 
   /**
    * Constructs a new instance of MetalTabbedPaneUI.
@@ -67,8 +68,19 @@ public class MetalTabbedPaneUI
    */
   public static ComponentUI createUI(JComponent component)
   {
-    if (instance == null)
-      instance = new MetalTabbedPaneUI();
+    if (instances == null)
+      instances = new HashMap();
+
+    Object o = instances.get(component);
+    MetalTabbedPaneUI instance;
+    if (o == null)
+      {
+	instance = new MetalTabbedPaneUI();
+	instances.put(component, instance);
+      }
+    else
+      instance = (MetalTabbedPaneUI) o;
+
     return instance;
   }
 }
