@@ -39,9 +39,16 @@ exception statement from your version. */
 
 package java.lang;
 
-import gnu.java.io.EncodingManager;
 import gnu.java.lang.CharData;
-
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.UnsupportedCharsetException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Comparator;
@@ -105,14 +112,14 @@ public final class String implements Serializable, Comparable, CharSequence
    * Characters which make up the String.
    * Package access is granted for use by StringBuffer.
    */
-  final char[] value;
+  public final char[] value;
 
   /**
    * Holds the number of characters in value.  This number is generally
    * the same as value.length, but can be smaller because substrings and
    * StringBuffers can share arrays. Package visible for use by trusted code.
    */
-  final int count;
+  public final int count;
 
   /**
    * Caches the result of hashCode().  If this value is zero, the hashcode
@@ -125,7 +132,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * substring()'s are common, the use of offset allows the operation
    * to perform in O(1). Package access is granted for use by StringBuffer.
    */
-  final int offset;
+  public final int offset;
 
   /**
    * An implementation for {@link CASE_INSENSITIVE_ORDER}.
@@ -304,7 +311,7 @@ public final class String implements Serializable, Comparable, CharSequence
    *
    * @param data byte array to copy
    * @param offset the offset to start at
-   * @param count the number of characters in the array to use
+   * @param count the number of bytes in the array to use
    * @param encoding the name of the encoding to use
    * @throws NullPointerException if data or encoding is null
    * @throws IndexOutOfBoundsException if offset or count is incorrect
@@ -318,11 +325,34 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (offset < 0 || count < 0 || offset + count > data.length)
       throw new StringIndexOutOfBoundsException();
-    // XXX Consider using java.nio here.
-    value = EncodingManager.getDecoder(encoding)
-        .convertToChars(data, offset, count);
-    this.offset = 0;
-    this.count = value.length;
+    try 
+      {
+        CharsetDecoder csd = Charset.forName(encoding).newDecoder();
+	csd.onMalformedInput(CodingErrorAction.REPLACE);
+	csd.onUnmappableCharacter(CodingErrorAction.REPLACE);
+	CharBuffer cbuf = csd.decode(ByteBuffer.wrap(data, offset, count));
+ 	if(cbuf.hasArray())
+ 	  {
+ 	    value = cbuf.array();
+	    this.offset = cbuf.position();
+	    this.count = cbuf.remaining();
+ 	  } else {
+	    // Doubt this will happen. But just in case.
+	    value = new char[cbuf.remaining()];
+	    cbuf.get(value);
+	    this.offset = 0;
+	    this.count = value.length;
+	  }
+      } catch(CharacterCodingException e){
+	  throw new UnsupportedEncodingException("Encoding: "+encoding+
+						 " not found.");	  
+      } catch(IllegalCharsetNameException e){
+	  throw new UnsupportedEncodingException("Encoding: "+encoding+
+						 " not found.");
+      } catch(UnsupportedCharsetException e){
+	  throw new UnsupportedEncodingException("Encoding: "+encoding+
+						 " not found.");
+      }    
   }
 
   /**
@@ -359,7 +389,7 @@ public final class String implements Serializable, Comparable, CharSequence
    *
    * @param data byte array to copy
    * @param offset the offset to start at
-   * @param count the number of characters in the array to use
+   * @param count the number of bytes in the array to use
    * @throws NullPointerException if data is null
    * @throws IndexOutOfBoundsException if offset or count is incorrect
    * @throws Error if the decoding fails
@@ -370,11 +400,41 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (offset < 0 || count < 0 || offset + count > data.length)
       throw new StringIndexOutOfBoundsException();
-    // XXX Consider using java.nio here.
-    value = EncodingManager.getDecoder()
-        .convertToChars(data, offset, count);
-    this.offset = 0;
-    this.count = value.length;
+    int o, c;
+    char[] v;
+    String encoding;
+    try 
+	{
+	  encoding = System.getProperty("file.encoding");
+	  CharsetDecoder csd = Charset.forName(encoding).newDecoder();
+	  csd.onMalformedInput(CodingErrorAction.REPLACE);
+	  csd.onUnmappableCharacter(CodingErrorAction.REPLACE);
+	  CharBuffer cbuf = csd.decode(ByteBuffer.wrap(data, offset, count));
+	  if(cbuf.hasArray())
+	    {
+              v = cbuf.array();
+	      o = cbuf.position();
+	      c = cbuf.remaining();
+	    } else {
+	      // Doubt this will happen. But just in case.
+	      v = new char[cbuf.remaining()];
+	      cbuf.get(v);
+	      o = 0;
+	      c = v.length;
+	    }
+	} catch(Exception ex){
+	    // If anything goes wrong (System property not set,
+	    // NIO provider not available, etc)
+	    // Default to the 'safe' encoding ISO8859_1
+	    v = new char[count];
+	    o = 0;
+	    c = count;
+	    for (int i=0;i<count;i++)
+	      v[i] = (char)data[offset+i];
+	}
+    this.value = v;
+    this.offset = o;
+    this.count = c;
   }
 
   /**
@@ -556,9 +616,30 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public byte[] getBytes(String enc) throws UnsupportedEncodingException
   {
-    // XXX Consider using java.nio here.
-    return EncodingManager.getEncoder(enc)
-        .convertToBytes(value, offset, count);
+    try 
+      {
+	CharsetEncoder cse = Charset.forName(enc).newEncoder();
+	cse.onMalformedInput(CodingErrorAction.REPLACE);
+	cse.onUnmappableCharacter(CodingErrorAction.REPLACE);
+	ByteBuffer bbuf = cse.encode(CharBuffer.wrap(value, offset, count));
+	if(bbuf.hasArray())
+	  return bbuf.array();
+
+	// Doubt this will happen. But just in case.
+	byte[] bytes = new byte[bbuf.remaining()];
+	bbuf.get(bytes);
+	return bytes;
+
+      } catch(IllegalCharsetNameException e){
+	  throw new UnsupportedEncodingException("Encoding: "+enc+
+						 " not found.");
+      } catch(UnsupportedCharsetException e){
+	  throw new UnsupportedEncodingException("Encoding: "+enc+
+						 " not found.");
+      } catch(CharacterCodingException e){
+	  // XXX - Ignore coding exceptions? They shouldn't really happen.
+	  return null;
+      }	  
   }
 
   /**
@@ -572,10 +653,19 @@ public final class String implements Serializable, Comparable, CharSequence
    * @since 1.1
    */
   public byte[] getBytes()
-  {
-    // XXX Consider using java.nio here.
-    return EncodingManager.getEncoder()
-        .convertToBytes(value, offset, count);
+  { 
+      try 
+	  {
+	      return getBytes(System.getProperty("file.encoding"));
+	  } catch(Exception e) {
+	      // XXX - Throw an error here? 
+	      // For now, default to the 'safe' encoding.
+	      byte[] bytes = new byte[count];
+	      for(int i=0;i<count;i++)
+		  bytes[i] = (byte)((value[offset+i] <= 0xFF)?
+				    value[offset+i]:'?');
+	      return bytes;
+      }
   }
 
   /**
