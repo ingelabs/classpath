@@ -72,8 +72,8 @@ $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h \
 $(top_srcdir)/include/gnu_java_nio_VMPipe.h \
 $(top_srcdir)/include/gnu_java_nio_VMSelector.h \
 $(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h \
-$(top_srcdir)/include/java_io_ObjectInputStream.h \
 $(top_srcdir)/include/java_io_VMFile.h \
+$(top_srcdir)/include/java_io_VMObjectInputStream.h \
 $(top_srcdir)/include/java_io_VMObjectStreamClass.h \
 $(top_srcdir)/include/java_lang_Math.h \
 $(top_srcdir)/include/java_lang_VMDouble.h \
@@ -111,10 +111,10 @@ $(top_srcdir)/include/gnu_java_nio_VMPipe.h: $(top_srcdir)/vm/reference/gnu/java
 	$(JAVAH) -o $@ gnu.java.nio.VMPipe
 $(top_srcdir)/include/gnu_java_nio_VMSelector.h: $(top_srcdir)/vm/reference/gnu/java/nio/VMSelector.java
 	$(JAVAH) -o $@ gnu.java.nio.VMSelector
-$(top_srcdir)/include/java_io_ObjectInputStream.h: $(top_srcdir)/java/io/ObjectInputStream.java
-	$(JAVAH) -o $@ java.io.ObjectInputStream
 $(top_srcdir)/include/java_io_VMFile.h: $(top_srcdir)/vm/reference/java/io/VMFile.java
 	$(JAVAH) -o $@ java.io.VMFile
+$(top_srcdir)/include/java_io_VMObjectInputStream.h: $(top_srcdir)/vm/reference/java/io/VMObjectInputStream.java
+	$(JAVAH) -o $@ java.io.VMObjectInputStream
 $(top_srcdir)/include/java_io_VMObjectStreamClass.h: $(top_srcdir)/vm/reference/java/io/VMObjectStreamClass.java
 	$(JAVAH) -o $@ java.io.VMObjectStreamClass
 $(top_srcdir)/include/java_lang_Math.h: $(top_srcdir)/java/lang/Math.java
