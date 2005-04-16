@@ -1,3 +1,34 @@
+2005-04-16  Michael Koch  <konqueror@gmx.de>
+
+	* include/java_lang_Double.h,
+	include/java_lang_Object.h,
+	native/jni/java-lang/java_lang_Double.c,
+	native/jni/java-lang/java_lang_Object.c: Removed.
+	* include/java_lang_VMDouble.h: Regenerated.
+	* java/lang/Double.java
+	(static): Removed.
+	(toString): Call native method from VMDouble.
+	(parseDouble): Make non-native and call native method from VMDouble.
+	(toString): Removed.
+	* java/lang/Float.java
+	(toString): Call native method from VMDouble.
+	* java/lang/Object.java
+	(getClass): Refactored to call the native in java.lang.VMObject.
+	* include/Makefile.am: Don't generate java_lang_Double.h and
+	java_lang_Object.h.
+	* native/jni/java-lang/Makefile.am: Removed java_lang_Double.c and
+	java_lang_Object.c.
+	* native/jni/java-lang/java_lang_VMDouble.c
+	(initIDs): New method.
+	(toString): Likewise.
+	(parseDouble): Likewise.
+	* vm/reference/java/lang/VMDouble.java
+	(initIDs): Likewise.
+	(toString): Likewise.
+	(parseDouble): Likewise.
+	* vm/reference/java/lang/VMObject.java
+	(getClass): Likewise.
+
 2005-04-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/text/DecimalFormatSymbols.java:

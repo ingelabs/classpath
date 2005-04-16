@@ -75,9 +75,7 @@ $(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h \
 $(top_srcdir)/include/java_io_ObjectInputStream.h \
 $(top_srcdir)/include/java_io_VMFile.h \
 $(top_srcdir)/include/java_io_VMObjectStreamClass.h \
-$(top_srcdir)/include/java_lang_Double.h \
 $(top_srcdir)/include/java_lang_Math.h \
-$(top_srcdir)/include/java_lang_Object.h \
 $(top_srcdir)/include/java_lang_VMDouble.h \
 $(top_srcdir)/include/java_lang_VMFloat.h \
 $(top_srcdir)/include/java_lang_VMProcess.h \
@@ -119,12 +117,8 @@ $(top_srcdir)/include/java_io_VMFile.h: $(top_srcdir)/vm/reference/java/io/VMFil
 	$(JAVAH) -o $@ java.io.VMFile
 $(top_srcdir)/include/java_io_VMObjectStreamClass.h: $(top_srcdir)/vm/reference/java/io/VMObjectStreamClass.java
 	$(JAVAH) -o $@ java.io.VMObjectStreamClass
-$(top_srcdir)/include/java_lang_Double.h: $(top_srcdir)/java/lang/Double.java
-	$(JAVAH) -o $@ java.lang.Double
 $(top_srcdir)/include/java_lang_Math.h: $(top_srcdir)/java/lang/Math.java
 	$(JAVAH) -o $@ java.lang.Math
-$(top_srcdir)/include/java_lang_Object.h: $(top_srcdir)/java/lang/Object.java
-	$(JAVAH) -o $@ java.lang.Object
 $(top_srcdir)/include/java_lang_VMDouble.h: $(top_srcdir)/vm/reference/java/lang/VMDouble.java
 	$(JAVAH) -o $@ java.lang.VMDouble
 $(top_srcdir)/include/java_lang_VMFloat.h: $(top_srcdir)/vm/reference/java/lang/VMFloat.java

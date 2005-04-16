@@ -103,18 +103,6 @@ public final class Double extends Number implements Comparable
   private final double value;
 
   /**
-   * Load native routines necessary for this class.
-   */
-  static
-  {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-	System.loadLibrary("javalang");
-	initIDs();
-      }
-  }
-
-  /**
    * Create a <code>Double</code> from the primitive <code>double</code>
    * specified.
    *
@@ -176,7 +164,7 @@ public final class Double extends Number implements Comparable
    */
   public static String toString(double d)
   {
-    return toString(d, false);
+    return VMDouble.toString(d, false);
   }
 
   /**
@@ -243,7 +231,10 @@ public final class Double extends Number implements Comparable
    * @see #NEGATIVE_INFINITY
    * @since 1.2
    */
-  public static native double parseDouble(String str);
+  public static double parseDouble(String str)
+  {
+    return VMDouble.parseDouble(str);
+  }
 
   /**
    * Return <code>true</code> if the <code>double</code> has the same
@@ -527,20 +518,4 @@ public final class Double extends Number implements Comparable
 
     return x > y ? 1 : -1;
   }
-
-  /**
-   * Helper method to convert to string.
-   *
-   * @param d the double to convert
-   * @param isFloat true if the conversion is requested by Float (results in
-   *        fewer digits)
-   */
-  // Package visible for use by Float.
-  static native String toString(double d, boolean isFloat);
-
-  /**
-   * Initialize JNI cache.  This method is called only by the
-   * static initializer when using JNI.
-   */
-  private static native void initIDs();
 }

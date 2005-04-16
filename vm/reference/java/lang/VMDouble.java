@@ -1,5 +1,5 @@
 /* VMDouble.java -- VM Specific Double methods
-   Copyright (C) 2003 Free Software Foundation
+   Copyright (C) 2003, 2005  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -47,7 +47,7 @@ import gnu.classpath.Configuration;
 
 /**
  * Code relocated from java.lang.Double by 
- * @author Dave Grove <groved@us.ibm.com>
+ * @author Dave Grove (groved@us.ibm.com)
  */
 final class VMDouble
 {
@@ -61,6 +61,8 @@ final class VMDouble
       {
 	System.loadLibrary("javalang");
       }
+
+    initIDs();
   }
 
   /**
@@ -110,5 +112,20 @@ final class VMDouble
    */
   public static native double longBitsToDouble(long bits);
 
+  /**
+   * Helper method to convert to string.
+   *
+   * @param d the double to convert
+   * @param isFloat true if the conversion is requested by Float (results in
+   *        fewer digits)
+   */
+  public static native String toString(double d, boolean isFloat);
 
-} // class VMDouble
+  /**
+   * Initialize JNI cache.  This method is called only by the
+   * static initializer when using JNI.
+   */
+  public static native void initIDs();
+
+  public static native double parseDouble(String str);
+}

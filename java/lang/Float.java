@@ -173,7 +173,7 @@ public final class Float extends Number implements Comparable
    */
   public static String toString(float f)
   {
-    return Double.toString(f, true);
+    return VMDouble.toString(f, true);
   }
 
   /**
