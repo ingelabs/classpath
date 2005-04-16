@@ -1,3 +1,11 @@
+2005-04-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/text/DecimalFormatSymbols.java:
+	Added retrieval of "XXX" instance in place of null.
+	* java/util/Currency.java,
+	(Currency(String)): New constructor for the XXX special case.
+	(getInstance(String)): Allow special case of "XXX".
+
 2005-04-15  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
