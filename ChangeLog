@@ -4,7 +4,7 @@
 	(addAttribute): Check for null and remove key in that case.
 	This fixes http://gcc.gnu.org/bugzilla/show_bug.cgi?id=21064 .
 
-2005-04-15  Roman Kennke  <roman@kennke.org>
+2005-04-16  Roman Kennke  <roman@kennke.org>
 
 	* java/awt/BorderLayout.java
 	(calcSize): Check for overflow when component sizes are added.
