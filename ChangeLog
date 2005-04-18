@@ -1,3 +1,7 @@
+2005-04-18  Sven de Marothy  <sven@physto.se>
+
+	* java/lang/String.java: Value, offset and count should be private.
+
 2005-04-18  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
