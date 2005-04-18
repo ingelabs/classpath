@@ -72,6 +72,8 @@ $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h \
 $(top_srcdir)/include/gnu_java_nio_VMPipe.h \
 $(top_srcdir)/include/gnu_java_nio_VMSelector.h \
 $(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h \
+$(top_srcdir)/include/gnu_java_nio_charset_iconv_IconvEncoder.h \
+$(top_srcdir)/include/gnu_java_nio_charset_iconv_IconvDecoder.h \
 $(top_srcdir)/include/java_io_VMFile.h \
 $(top_srcdir)/include/java_io_VMObjectInputStream.h \
 $(top_srcdir)/include/java_io_VMObjectStreamClass.h \
@@ -139,6 +141,10 @@ $(top_srcdir)/include/java_nio_MappedByteBufferImpl.h: $(top_srcdir)/java/nio/Ma
 	$(JAVAH) -o $@ java.nio.MappedByteBufferImpl
 $(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h: $(top_srcdir)/gnu/java/nio/channels/FileChannelImpl.java
 	$(JAVAH) -o $@ gnu.java.nio.channels.FileChannelImpl
+$(top_srcdir)/include/gnu_java_nio_charset_iconv_IconvDecoder.h: $(top_srcdir)/gnu/java/nio/charset/iconv/IconvDecoder.java
+	$(JAVAH) -o $@ gnu.java.nio.charset.iconv.IconvDecoder
+$(top_srcdir)/include/gnu_java_nio_charset_iconv_IconvEncoder.h: $(top_srcdir)/gnu/java/nio/charset/iconv/IconvEncoder.java
+	$(JAVAH) -o $@ gnu.java.nio.charset.iconv.IconvEncoder
 $(top_srcdir)/include/java_util_VMTimeZone.h: $(top_srcdir)/vm/reference/java/util/VMTimeZone.java
 	$(JAVAH) -o $@ java.util.VMTimeZone
 
