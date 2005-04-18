@@ -1,4 +1,9 @@
 2005-04-18  Sven de Marothy  <sven@physto.se>
+	
+	* java/io/InputStreamReader.java:
+	(read): Fix several bugs leading to incorrect length being returned.
+
+2005-04-18  Sven de Marothy  <sven@physto.se>
 
 	* java/nio/ByteBufferImpl.java:
 	(putChar): Inlined for speed.
