@@ -472,8 +472,11 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "Label.background", new ColorUIResource(getControl()),
       "Label.font", getControlTextFont(),
       "Menu.background", new ColorUIResource(getControl()),
+      "Menu.font", getControlTextFont(),
       "MenuBar.background", new ColorUIResource(getControl()),
+      "MenuBar.font", getControlTextFont(),
       "MenuItem.background", new ColorUIResource(getControl()),
+      "MenuItem.font", getControlTextFont(),
       "ScrollBar.background", new ColorUIResource(getControl())
     };
     defaults.putDefaults(myDefaults);

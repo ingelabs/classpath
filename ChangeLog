@@ -1,5 +1,11 @@
 2005-04-18  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Added defaults for Menu, MenuBar
+	MenuEntry fonts.
+
+2005-04-18  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicScrollBarUI.java
 	(installUI): Install listeners after everything all, otherwise
 	we get strange NPEs in some situations, especially with
