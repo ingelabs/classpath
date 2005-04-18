@@ -1,5 +1,14 @@
 2005-04-18  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/awt/GraphicsEnvironment.java
+	(localGraphicsEnvironment): New field.
+	(getLocalGraphicsEnvironment): Added support for java.awt.graphicsenv
+	property.
+	(isHeadless): Added support for java.awt.headless property.
+	(isHeadlessInstance): Call headless().
+
+2005-04-18  Jeroen Frijters  <jeroen@frijters.net>
+
 	* gnu/java/beans/IntrospectionIncubator.java
 	(addToPropertyHash, addToListenerHash): Don't confuse get(),
 	set(), is(), add() and remove() with properties or events.
