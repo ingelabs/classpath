@@ -1,5 +1,12 @@
 2005-04-18  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/Class.java (getModifiers, newInstance): Changed
+	call to VMClass.getModifiers().
+	* vm/reference/java/lang/VMClass.java
+	(getModifiers(Class, boolean)): New method.
+
+2005-04-18  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/awt/GraphicsEnvironment.java
 	(localGraphicsEnvironment): New field.
 	(getLocalGraphicsEnvironment): Added support for java.awt.graphicsenv

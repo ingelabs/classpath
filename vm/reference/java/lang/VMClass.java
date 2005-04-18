@@ -185,11 +185,18 @@ final class VMClass
    * public and final, but not an interface.
    *
    * @param klass the Class object that's calling us
+   * @param ignoreInnerClassesAttrib if set, return the real modifiers, not
+   * the ones specified in the InnerClasses attribute.
    * @return the modifiers of this class
    * @see Modifer
    * @since 1.1
    */
-  static native int getModifiers(Class klass);
+  static int getModifiers(Class klass, boolean ignoreInnerClassesAttrib)
+  {
+    return getModifiers(klass);
+  }
+
+  private static native int getModifiers(Class klass);
 
   /**
    * If this is a nested or inner class, return the class that declared it.
