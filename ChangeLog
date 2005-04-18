@@ -1,5 +1,13 @@
 2005-04-18  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/metal/BasicScrollBarUI.java:
+	(PropertyChangeHandler.propertyChange): Add default
+	to switch statement to avoid errors with unusual values
+	for orientation.
+	(installComponents): Likewise.
+
+2005-04-18  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/metal/MetalScrollBarUI.java:
 	(createUI): Instances cannot be shared among JScrollPanes.
 
