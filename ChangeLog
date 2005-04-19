@@ -1,3 +1,8 @@
+2005-04-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/net/URL.java:
+	(toURI()): Implemented.
+
 2005-04-18  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/metal/MetalInternalFrameUI.java
