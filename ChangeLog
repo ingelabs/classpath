@@ -1,5 +1,15 @@
 2005-04-19  Roman Kennke  <roman@kennke.org>
 
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	Pulled out GNULookAndFeel so that it can be accessed.
+	On startup, if the property swing.defaultlaf is not set,
+	display a message on how to set the L&F for the demo.
+	Changed font for bottom buttons to normal.
+	* examples/gnu/classpath/examples/swing/GNULookAndFeel.java:
+	Pulled out of Demo.java.
+
+2005-04-19  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicOptionPaneUI.java
 	(createMessageArea): The JPanel that holds the message area
 	doesn't need to override getPreferredSize. This prevents some

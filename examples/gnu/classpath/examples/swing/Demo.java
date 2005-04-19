@@ -32,6 +32,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.border.*;
 
 import java.net.URL;
@@ -42,48 +43,34 @@ public class Demo
   JFrame frame;
   static Color blueGray = new Color(0xdc, 0xda, 0xd5);
 
-  static class GNULookAndFeel extends BasicLookAndFeel
-  {
-    public boolean isNativeLookAndFeel()    { return true; }
-    public boolean isSupportedLookAndFeel() { return true; }
-    public String getDescription()          { return "GNU Look and Feel"; }
-    public String getID()                   { return "GNULookAndFeel"; }
-    public String getName()                 { return "GNU"; }
-    
-    static UIDefaults LAF_defaults;
-    
-    public UIDefaults getDefaults()
-    {
-      if (LAF_defaults == null)
-        {
-          LAF_defaults = super.getDefaults();
-          Object[] myDefaults = new Object[] {
-            "Button.background", new ColorUIResource(blueGray),
-            "CheckBox.background", new ColorUIResource(blueGray),
-            "CheckBoxMenuItem.background", new ColorUIResource(blueGray),
-            "ToolBar.background", new ColorUIResource(blueGray),
-            "Panel.background", new ColorUIResource(blueGray),
-            "Slider.background", new ColorUIResource(blueGray),
-            "OptionPane.background", new ColorUIResource(blueGray),
-            "ProgressBar.background", new ColorUIResource(blueGray),
-            "TabbedPane.background", new ColorUIResource(blueGray),
-            "Label.background", new ColorUIResource(blueGray),
-            "Menu.background", new ColorUIResource(blueGray),
-            "MenuBar.background", new ColorUIResource(blueGray),
-            "MenuItem.background", new ColorUIResource(blueGray),
-            "ScrollBar.background", new ColorUIResource(blueGray)
-          };
-          LAF_defaults.putDefaults(myDefaults);
-        }
-      return LAF_defaults;
-    }
-  }
-  
   static
   {
     try
       {
-        UIManager.setLookAndFeel(new GNULookAndFeel());
+        if (System.getProperty("swing.defaultlaf") == null)
+          {
+            StringBuffer text = new StringBuffer();
+            text.append("\tYou may change the Look and Feel of this\n");
+            text.append("\tDemo by setting the system property\n");
+            text.append("\t-Dswing.defaultlaf=<LAFClassName>\n\n");
+            text.append("\tPossible values for <LAFClassName> are:\n");
+            text.append("\t  * javax.swing.plaf.metal.MetalLookAndFeel\n");
+            text.append("\t\tthe default Java L&F\n");
+            text.append("\t  * gnu.classpath.examples.swing.GNULookAndFeel\n");
+            text.append("\tthe GNU Look and Feel\n");
+            text.append("\t(derived from javax.swing.plaf.basic.BasicLookAndFeel\n\n");
+            text.append("\tthe default is gnu.classpath.examples.swing.GNULookAndFeel\n");
+            JEditorPane textPane = new JEditorPane();
+            // temporary hack, preferred size should be computed by the
+            // component
+            textPane.setPreferredSize(new Dimension(400, 300));
+            textPane.setText(text.toString());
+            JOptionPane.showMessageDialog(null, textPane,
+                                          "Look and Feel notice",
+                                          JOptionPane.INFORMATION_MESSAGE);
+            
+            UIManager.setLookAndFeel(new GNULookAndFeel());
+          }
       }
     catch (UnsupportedLookAndFeelException e)
       {
@@ -566,7 +553,7 @@ public class Demo
   {
     JButton b = new JButton(title);
     b.setMargin(new Insets(5,5,5,5));
-    b.setFont(new Font("Luxi", Font.PLAIN, 14));
+    //b.setFont(new Font("Luxi", Font.PLAIN, 14));
     return b;
   }
 
