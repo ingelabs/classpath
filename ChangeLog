@@ -1,5 +1,11 @@
 2005-04-20  Sven de Marothy  <sven@physto.se>
 
+	* java/nio/charset/Charset.java:
+	(defaultCharset()): New method.
+	Status updated to 1.5
+
+2005-04-20  Sven de Marothy  <sven@physto.se>
+	
 	* gnu/java/io/EncodingManager.java: Removed charset alias properties.
 	* gnu/java/io/decode/Decoder.java,
 	* gnu/java/io/decode/Decoder8859_1.java,
