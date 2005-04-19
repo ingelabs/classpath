@@ -1,3 +1,8 @@
+2005-04-19  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/geom/QuadCurve2D.java:
+	Fixed Brian Gough's name for real.
+
 2005-04-19  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/basic/BasicButtonUI.java
@@ -683,57 +688,57 @@
 	* gnu/java/nio/charset/UTF_8.java,
 	(Decoder): Correct values of maximum chars per byte.
 	(decodeLoop): Handle 4-byte surrogates.
-	* gnu/java/nio/charset/ByteCharset.java
-	* gnu/java/nio/charset/Cp424.java
-	* gnu/java/nio/charset/Cp437.java
-	* gnu/java/nio/charset/Cp737.java
-	* gnu/java/nio/charset/Cp775.java
-	* gnu/java/nio/charset/Cp850.java
-	* gnu/java/nio/charset/Cp852.java
-	* gnu/java/nio/charset/Cp855.java
-	* gnu/java/nio/charset/Cp857.java
-	* gnu/java/nio/charset/Cp860.java
-	* gnu/java/nio/charset/Cp861.java
-	* gnu/java/nio/charset/Cp862.java
-	* gnu/java/nio/charset/Cp863.java
-	* gnu/java/nio/charset/Cp864.java
-	* gnu/java/nio/charset/Cp865.java
-	* gnu/java/nio/charset/Cp866.java
-	* gnu/java/nio/charset/Cp869.java
-	* gnu/java/nio/charset/Cp874.java
-	* gnu/java/nio/charset/EncodingHelper.java
-	* gnu/java/nio/charset/ISO_8859_13.java
-	* gnu/java/nio/charset/ISO_8859_15.java
-	* gnu/java/nio/charset/ISO_8859_2.java
-	* gnu/java/nio/charset/ISO_8859_3.java
-	* gnu/java/nio/charset/ISO_8859_4.java
-	* gnu/java/nio/charset/ISO_8859_5.java
-	* gnu/java/nio/charset/ISO_8859_6.java
-	* gnu/java/nio/charset/ISO_8859_7.java
-	* gnu/java/nio/charset/ISO_8859_8.java
-	* gnu/java/nio/charset/ISO_8859_9.java
-	* gnu/java/nio/charset/KOI_8.java
-	* gnu/java/nio/charset/MS874.java
-	* gnu/java/nio/charset/MacCentralEurope.java
-	* gnu/java/nio/charset/MacCroatian.java
-	* gnu/java/nio/charset/MacCyrillic.java
-	* gnu/java/nio/charset/MacDingbat.java
-	* gnu/java/nio/charset/MacGreek.java
-	* gnu/java/nio/charset/MacIceland.java
-	* gnu/java/nio/charset/MacRoman.java
-	* gnu/java/nio/charset/MacRomania.java
-	* gnu/java/nio/charset/MacSymbol.java
-	* gnu/java/nio/charset/MacThai.java
-	* gnu/java/nio/charset/MacTurkish.java
-	* gnu/java/nio/charset/Windows1250.java
-	* gnu/java/nio/charset/Windows1251.java
-	* gnu/java/nio/charset/Windows1252.java
-	* gnu/java/nio/charset/Windows1253.java
-	* gnu/java/nio/charset/Windows1254.java
-	* gnu/java/nio/charset/Windows1255.java
-	* gnu/java/nio/charset/Windows1256.java
-	* gnu/java/nio/charset/Windows1257.java
-	* gnu/java/nio/charset/Windows1258.java
+	* gnu/java/nio/charset/ByteCharset.java,
+	gnu/java/nio/charset/Cp424.java,
+	gnu/java/nio/charset/Cp437.java,
+	gnu/java/nio/charset/Cp737.java,
+	gnu/java/nio/charset/Cp775.java,
+	gnu/java/nio/charset/Cp850.java,
+	gnu/java/nio/charset/Cp852.java,
+	gnu/java/nio/charset/Cp855.java,
+	gnu/java/nio/charset/Cp857.java,
+	gnu/java/nio/charset/Cp860.java,
+	gnu/java/nio/charset/Cp861.java,
+	gnu/java/nio/charset/Cp862.java,
+	gnu/java/nio/charset/Cp863.java,
+	gnu/java/nio/charset/Cp864.java,
+	gnu/java/nio/charset/Cp865.java,
+	gnu/java/nio/charset/Cp866.java,
+	gnu/java/nio/charset/Cp869.java,
+	gnu/java/nio/charset/Cp874.java,
+	gnu/java/nio/charset/EncodingHelper.java,
+	gnu/java/nio/charset/ISO_8859_13.java,
+	gnu/java/nio/charset/ISO_8859_15.java,
+	gnu/java/nio/charset/ISO_8859_2.java,
+	gnu/java/nio/charset/ISO_8859_3.java,
+	gnu/java/nio/charset/ISO_8859_4.java,
+	gnu/java/nio/charset/ISO_8859_5.java,
+	gnu/java/nio/charset/ISO_8859_6.java,
+	gnu/java/nio/charset/ISO_8859_7.java,
+	gnu/java/nio/charset/ISO_8859_8.java,
+	gnu/java/nio/charset/ISO_8859_9.java,
+	gnu/java/nio/charset/KOI_8.java,
+	gnu/java/nio/charset/MS874.java,
+	gnu/java/nio/charset/MacCentralEurope.java,
+	gnu/java/nio/charset/MacCroatian.java,
+	gnu/java/nio/charset/MacCyrillic.java,
+	gnu/java/nio/charset/MacDingbat.java,
+	gnu/java/nio/charset/MacGreek.java,
+	gnu/java/nio/charset/MacIceland.java,
+	gnu/java/nio/charset/MacRoman.java,
+	gnu/java/nio/charset/MacRomania.java,
+	gnu/java/nio/charset/MacSymbol.java,
+	gnu/java/nio/charset/MacThai.java,
+	gnu/java/nio/charset/MacTurkish.java,
+	gnu/java/nio/charset/Windows1250.java,
+	gnu/java/nio/charset/Windows1251.java,
+	gnu/java/nio/charset/Windows1252.java,
+	gnu/java/nio/charset/Windows1253.java,
+	gnu/java/nio/charset/Windows1254.java,
+	gnu/java/nio/charset/Windows1255.java,
+	gnu/java/nio/charset/Windows1256.java,
+	gnu/java/nio/charset/Windows1257.java,
+	gnu/java/nio/charset/Windows1258.java:
 	New files.
 	
 2005-04-08  Roman Kennke  <roman@kennke.org>
@@ -759,7 +764,7 @@
 
 2005-04-08  Guilhem Lavaux  <guilhem@kaffe.org>
 
-        * native/jni/classpath/jcl.h, 
+	* native/jni/classpath/jcl.h,
 	native/jni/java-io/java_io_ObjectInputStream.c,
 	native/jni/java-io/java_io_VMFile.c,
 	native/jni/java-io/java_io_VMObjectStreamClass.c,
@@ -2367,9 +2372,9 @@
 2005-02-27  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/aelfred2/JAXPFactory.java,
-	  gnu/xml/aelfred2/SAXDriver.java,
-	  gnu/xml/aelfred2/XmlParser.java,
-	  gnu/xml/aelfred2/XmlReader.java: Applied GNU Classpath source code
+	gnu/xml/aelfred2/SAXDriver.java,
+	gnu/xml/aelfred2/XmlParser.java,
+	gnu/xml/aelfred2/XmlReader.java: Applied GNU Classpath source code
 	formatting conventions. Replaced arrays of Object with struct-like
 	classes for easier maintainability. Made SAXDriver.stringInterning
 	package private to allow access from XmlParser inside the loop without
@@ -2384,12 +2389,12 @@
 2005-02-26  Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* javax/swing/Timer.java: documenting and some
-          formatting.	
-        
+	formatting.	
+
 2005-02-26  Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* javax/swing/JTextArea.java (replaceRange): 
-        Fixing doc.remove(start, length) misinterpretation.
+	Fixing doc.remove(start, length) misinterpretation.
 	
 2005-02-26  Roman Kennke  <roman@ontographics.com>
 
