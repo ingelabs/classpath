@@ -1,5 +1,13 @@
 2005-04-20  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	(mousePressed): replaced query to getModifiersEx with getModifiers.
+	This method relied on faulty behaviour in getModifierEx.
+	(mouseReleased): replaced query to getModifiersEx with getModifiers.
+	This method relied on faulty behaviour in getModifierEx.
+
+2005-04-20  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
 	(getDefaults): Call addCustomEntriesToTable on the theme.
 
