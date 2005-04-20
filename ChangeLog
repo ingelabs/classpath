@@ -1,3 +1,16 @@
+2005-04-20  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
+	(getMaximumSize): Return (Short.MAX_VALUE, Short.MAX_VALUE) as it
+	should according to a mauve testcase, instead of the preferred
+	size.
+
+2005-04-20  Roman Kennke  <roman@kennke.org>
+
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(postWindowEvent): Resize window after opening to take the
+	window decoration insets into account.
+
 2005-04-20  Sven de Marothy  <sven@physto.se>
 
 	* java/io/OutputStreamWriter.java:
