@@ -1,3 +1,9 @@
+2005-04-21  Michael Koch  <konqueror@gmx.de>
+
+	* include/gnu_java_nio_charset_iconv_IconvDecoder.h,
+	include/gnu_java_nio_charset_iconv_IconvEncoder.h:
+	Regenerated with gcjh from gcc 4.0 branch.
+
 2005-04-20  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
@@ -1083,7 +1089,7 @@
 	* gnu/java/io/decode/DecoderUnicodeLittle.java,
 	* gnu/java/io/encode/EncoderUnicodeBig.java,
 	* gnu/java/io/encode/EncoderUnicodeLittle.java:
-        New files.
+	New files.
 
 2005-03-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
@@ -1093,22 +1099,22 @@
 2005-03-26  Dalibor Topic  <robilad@kaffe.org>
 
 	* native/jni/java-nio/gnu_java_nio_VMSelector.c:
-        Moved include statement for config.h to the top to
-        fix the build on Darwin6.
+	Moved include statement for config.h to the top to
+	fix the build on Darwin6.
 
-        Reported by:  Riccardo Mottola <zuse@libero.it>
+	Reported by:  Riccardo Mottola <zuse@libero.it>
 
 2005-03-26  Dalibor Topic  <robilad@kaffe.org>
 
-        * native/jni/java-nio/gnu_java_nio_VMSelector.c:
-        Include <sys/types.h> to fix build on OS X.
+	* native/jni/java-nio/gnu_java_nio_VMSelector.c:
+	Include <sys/types.h> to fix build on OS X.
 
-        Reported by: Michael Franz <mvfranz@gmail.com>
+	Reported by: Michael Franz <mvfranz@gmail.com>
 
 2005-03-26  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
-        * java/text/DecimalFormat.java (parse):
-        Check whether the positive suffix matches the pattern.
+	* java/text/DecimalFormat.java (parse):
+	Check whether the positive suffix matches the pattern.
 
 2005-03-26  Chris Burdess  <dog@gnu.org>
 
@@ -1127,7 +1133,7 @@
 
 2005-03-23  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
-	* gnu/xml/dom/html2/DomHTMLParser.java
+	* gnu/xml/dom/html2/DomHTMLParser.java:
 	Changed 'enum' references to become 'enumeration'.
 	
 2005-03-22  Archie Cobbs  <archie@dellroad.org>
@@ -1142,7 +1148,7 @@
 
 2005-03-21  Sven de Marothy  <sven@physto.se>
 
-	* gnu/classpath/SystemProperties.java,
+	* gnu/classpath/SystemProperties.java:
 	Add missing aliases for "UnicodeBigUnmarked" and
 	UnicodeLittleUnmarked".
 	
