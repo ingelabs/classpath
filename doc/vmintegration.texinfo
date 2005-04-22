@@ -126,7 +126,7 @@ the core class libraries, a garbage collector, and a bytecode interpreter.
 libgcj can dynamically load and interpret class files, resulting in mixed
 compiled/interpreted applications.
 GCJ is part of the GNU Compiler Collection (@uref{http://gcc.gnu.org/,GCC}).
-On march 6 2000 the libgcj and GNU Classpath projects were officially merged
+On March 6 2000 the libgcj and GNU Classpath projects were officially merged
 and there is active work on merging all the classes between the projects.
 Licensed under GPL+exception, just as GNU Classpath is.
 
@@ -167,7 +167,7 @@ The order of initialization, as far as I can tell, doesn't matter just
 yet.  However, when we move to 1.2 support, it probably will matter, so
 we'll have a note in here at that time.
 
-The current initialization order is currently documented in the
+The initialization order is currently documented in the
 @file{Runtime.java} source file.
 
 @node Classpath Hooks, VM Hooks, Initialization, Top
