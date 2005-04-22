@@ -2926,9 +2926,8 @@
 	
 2005-02-16  Sven de Marothy  <sven@physto.se>
 
-	* java/util/logging/LogManager.java 
-	Reformatted.
-        (readConfiguration): If a logger for a key is not found, create one.
+	* java/util/logging/LogManager.java: Reformatted.
+	(readConfiguration): If a logger for a key is not found, create one.
 
 2005-02-16  Michael Koch  <konqueror@gmx.de>
 
