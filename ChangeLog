@@ -1,3 +1,11 @@
+2005-04-22  Tom Tromey  <tromey@redhat.com>
+
+	* accross.m4: New file, from gcc.
+	* configure.ac: Only call AC_C_BIGENDIAN once.  Use a single
+	AC_CHECK_HEADERS call for most headers.  Likewise for
+	AC_CHECK_FUNCS.  Use AC_COMPILE_CHECK_SIZEOF.  Don't look for
+	function named 'sizeof'.
+
 2005-04-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
