@@ -1,5 +1,12 @@
 2005-04-24  Tom Tromey  <tromey@redhat.com>
 
+	* native/jni/Makefile.am (JNIDIRS): New macro.
+	(SUBDIRS): Use it.
+	* configure.ac (--enable-core-jni): New option.
+	* NEWS: Document new option.
+
+2005-04-24  Tom Tromey  <tromey@redhat.com>
+
 	* include/jni_md-x86-linux-gnu.h (JNIIMPORT): New define.
 	(jsize): New typedef.
 	* include/jni.h: Re-merged with libgcj.

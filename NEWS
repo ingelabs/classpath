@@ -6,6 +6,9 @@ Runtime interface changes:
   the fully qualified class name of the default AWT toolkit to use.
   If not given, the old default of gnu.java.awt.peerk.gtk.GtkToolkit
   is used.
+* New --disable-core-jni option can be used to disable building the
+  "core" JNI libraries.  This is primarily useful if your VM can use the
+  Gtk peers but not the core JNI libraries.
 
 VM Interface changes:
 

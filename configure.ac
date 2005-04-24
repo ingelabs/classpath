@@ -43,6 +43,20 @@ AC_ARG_ENABLE([jni],
 AM_CONDITIONAL(CREATE_JNI_LIBRARIES, test "x${COMPILE_JNI}" = xyes)
 
 dnl -----------------------------------------------------------
+dnl Enable core JNI libraries (enabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([core-jni],
+              [AS_HELP_STRING(--enable-core-jni,
+	                      compile JNI sources for core [default=yes])],
+              [case "${enableval}" in 
+                yes) COMPILE_CORE_JNI=yes; COMPILE_JAVA=yes ;;
+                no) COMPILE_CORE_JNI=no ;;
+                *) COMPILE_CORE_JNI=yes; COMPILE_JAVA=yes ;;
+              esac],
+              [COMPILE_CORE_JNI=yes])
+AM_CONDITIONAL(CREATE_CORE_JNI_LIBRARIES, test "x${COMPILE_CORE_JNI}" = xyes)
+
+dnl -----------------------------------------------------------
 dnl Whether to compile with -Werror or not (enabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([Werror],
