@@ -216,8 +216,7 @@ if test "x${COMPILE_JNI}" = xyes; then
   fi
 
   dnl Check for libxml and libxslt libraries (when xmlj is enabled).
-  if test "x${COMPILE_XMLJ}" = xyes
-  then
+  if test "x${COMPILE_XMLJ}" = xyes; then
     PKG_CHECK_MODULES(XML, libxml-2.0 >= 2.6.8)
     PKG_CHECK_MODULES(XSLT, libxslt >= 1.1.11)
     AC_SUBST(XML_LIBS)
@@ -241,8 +240,7 @@ if test "x${COMPILE_JNI}" = xyes; then
      AC_SUBST(GTK_LIBS)
   fi
 
-  if test "x${enable_gtk_cairo}" = xyes
-  then
+  if test "x${enable_gtk_cairo}" = xyes; then
     PKG_CHECK_MODULES(CAIRO, cairo)
     PKG_CHECK_MODULES(PANGOFT2, pangoft2)
   fi
@@ -272,13 +270,13 @@ if test "x${COMPILE_JNI}" = xyes; then
     AC_MSG_WARN("no, using x86-linux-gnu")
   fi
   ac_sources="include/jni_md-${target_cpu}-${target_os}.h"
-ac_dests="include/jni_md.h"
-while test -n "$ac_sources"; do
-  set $ac_dests; ac_dest=$1; shift; ac_dests=$*
-  set $ac_sources; ac_source=$1; shift; ac_sources=$*
-  ac_config_links_1="$ac_config_links_1 $ac_dest:$ac_source"
-done
-AC_CONFIG_LINKS([$ac_config_links_1])
+  ac_dests="include/jni_md.h"
+  while test -n "$ac_sources"; do
+    set $ac_dests; ac_dest=$1; shift; ac_dests=$*
+    set $ac_sources; ac_source=$1; shift; ac_sources=$*
+    ac_config_links_1="$ac_config_links_1 $ac_dest:$ac_source"
+  done
+  AC_CONFIG_LINKS([$ac_config_links_1])
 fi
 
 CLASSPATH_FIND_JAVAC

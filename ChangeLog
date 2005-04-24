@@ -1,3 +1,7 @@
+2005-04-24  Tom Tromey  <tromey@redhat.com>
+
+	* configure.ac: Formatting fixes.
+
 2005-03-22  Mike Stump  <mrs@apple.com>
 
 	* native/fdlibm/ieeefp.h: ppc64 is also __IEEE_BIG_ENDIAN.
