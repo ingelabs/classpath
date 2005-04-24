@@ -1,5 +1,13 @@
 2005-04-24  Tom Tromey  <tromey@redhat.com>
 
+	* include/jni_md-x86-linux-gnu.h (JNIIMPORT): New define.
+	(jsize): New typedef.
+	* include/jni.h: Re-merged with libgcj.
+	* doc/vmintegration.texinfo (JNI Implementation): New node.
+	* NEWS: Document the change.
+
+2005-04-24  Tom Tromey  <tromey@redhat.com>
+
 	* gnu/classpath/Configuration.java.in (default_awt_peer_toolkit):
 	Now set by configure.
 	* configure.ac (--enable-default-toolkit): New option.

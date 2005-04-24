@@ -1,5 +1,5 @@
 /* jni_md.h
-   Copyright (C) 2001 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -30,6 +30,7 @@ executable file might be covered by the GNU General Public License. */
 /* Define some defaults */
 #define JNICALL
 #define JNIEXPORT
+#define JNIIMPORT
 
 typedef unsigned char jboolean;
 typedef signed char jbyte;
@@ -39,5 +40,6 @@ typedef int jint;
 typedef long long jlong;
 typedef float jfloat;
 typedef double jdouble;
+typedef jint jsize;
 
 #endif /* __CLASSPATH_JNI_MD_H__ */

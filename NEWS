@@ -7,6 +7,11 @@ Runtime interface changes:
   If not given, the old default of gnu.java.awt.peerk.gtk.GtkToolkit
   is used.
 
+VM Interface changes:
+
+* jni.h changed to better support more VMs; see VM integration guide
+  for details.
+
 New in release 0.14 (Feb 25, 2005)
 
 * Character encoders and decoders have been added for:

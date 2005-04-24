@@ -65,6 +65,7 @@ This document is incomplete, as we are still in alpha with the interface.
 * Initialization::              Initializing the classes
 * Classpath Hooks::             Hooks from Classpath to the VM
 * VM Hooks::                    Hooks from the underlying VM to Classpath
+* JNI Implementation::		Hooking the VM to jni.h
 * Miscellaneous VM Requirements::  
 @end menu
 
@@ -224,7 +225,7 @@ Call this method from @code{Thread} when a @code{Thread} is stopped or destroyed
 @end itemize
 
 
-@node VM Hooks, Miscellaneous VM Requirements, Classpath Hooks, Top
+@node VM Hooks, JNI Implementation, Classpath Hooks, Top
 @comment node-name, next, previous, up
 @chapter VM Hooks
 
@@ -293,7 +294,51 @@ reinitialize it yourself, there should be no harm.
 
 @end itemize
 
-@node Miscellaneous VM Requirements,  , VM Hooks, Top
+@node JNI Implementation, Miscellaneous VM Requirements, VM Hooks, Top
+@comment  node-name,  next,  previous,  up
+@chapter JNI Implementation
+
+Classpath comes with its own implementation of @file{jni.h}.  This
+file can be customized by the VM in a few ways, by defining macros
+that affect the interpretation of the file.  These macros are all
+intended for use by a VM which uses GNU Classpath and which wants to
+use a single copy of @file{jni.h} for both internal and external use.
+
+@itemize @bullet
+@item _CLASSPATH_VM_JNI_TYPES_DEFINED
+Some VMs like to define JNI ``object'' types in a special way.  If
+this macro is defined, the Classpath @file{jni.h} will avoid defining
+these types.  By default, these types are defined in @file{jni.h}.
+The full list of types and macros treated this way is: @samp{jobject},
+@samp{jclass}, @samp{jstring}, @samp{jthrowable}, @samp{jweak},
+@samp{jarray}, @samp{jobjectArray}, @samp{jbyteArray},
+@samp{jshortArray}, @samp{jintArray}, @samp{jlongArray},
+@samp{jbooleanArray}, @samp{jcharArray}, @samp{jfloatArray},
+@samp{jdoubleArray}, @samp{JNIEnv}, @samp{JavaVM}, @samp{JNI_TRUE}
+(macro), @samp{JNI_FALSE} (macro).
+
+@item _CLASSPATH_VM_INTERNAL_TYPES_DEFINED
+If the VM has its own definitions for @samp{jfieldID} and
+@samp{jmethodID}, then it should define this macro.  Otherwise,
+@file{jni.h} will provide definitions for these types.
+
+@item _CLASSPATH_JNIIMPEXP
+Three functions -- @samp{JNI_GetDefaultJavaVMInitArgs},
+@samp{JNI_CreateJavaVM}, and @samp{JNI_GetCreatedJavaVMs} -- must be
+marked as @samp{JNIIMPORT} when seen by user code, but most likely
+should be marked as @samp{JNIEXPORT} when defined in the VM
+implementation.  This macro can be defined to one or the other by the
+VM as appropriate.  If this macro is not defined, it defaults to
+@samp{JNIIMPORT}.
+
+@item _CLASSPATH_JNIENV_CONTENTS
+A VM can add fields to the @samp{JNIEnv} structure by defining this to
+be a sequence of field declarations.
+
+@end itemize
+
+
+@node Miscellaneous VM Requirements,  , JNI Implementation, Top
 @comment  node-name,  next,  previous,  up
 @chapter Miscellaneous VM Requirements
 
