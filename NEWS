@@ -1,3 +1,12 @@
+New in release 0.15 ()
+
+Runtime interface changes:
+
+* New --enable-default-toolkit option to configure can be used to set
+  the fully qualified class name of the default AWT toolkit to use.
+  If not given, the old default of gnu.java.awt.peerk.gtk.GtkToolkit
+  is used.
+
 New in release 0.14 (Feb 25, 2005)
 
 * Character encoders and decoders have been added for:

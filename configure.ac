@@ -55,6 +55,18 @@ AC_ARG_ENABLE([Werror],
               [ENABLE_WERROR=no])
 
 dnl -----------------------------------------------------------
+dnl Default AWT toolkit
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE(default-toolkit,
+  AS_HELP_STRING([--enable-default-toolkit],
+                 [fully qualified class name of default AWT toolkit]))
+default_toolkit=$enable_default_tookit
+if test "$default_toolkit" = ""; then
+   default_toolkit=gnu.java.awt.peer.gtk.GtkToolkit
+fi
+AC_SUBST(default_toolkit)
+
+dnl -----------------------------------------------------------
 dnl Native libxml/xslt library (disabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([xmlj],

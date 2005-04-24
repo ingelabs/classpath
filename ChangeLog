@@ -1,5 +1,12 @@
 2005-04-24  Tom Tromey  <tromey@redhat.com>
 
+	* gnu/classpath/Configuration.java.in (default_awt_peer_toolkit):
+	Now set by configure.
+	* configure.ac (--enable-default-toolkit): New option.
+	* NEWS: Document new option.
+
+2005-04-24  Tom Tromey  <tromey@redhat.com>
+
 	* configure.ac: Formatting fixes.
 
 2005-03-22  Mike Stump  <mrs@apple.com>
