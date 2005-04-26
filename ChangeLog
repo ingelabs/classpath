@@ -1,3 +1,8 @@
+2005-04-26  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/Robot.java (waitForIdle): Call invokeAndWait in a
+	static way.
+
 2005-04-26  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/basic/BasicToggleButtonUI.java:
