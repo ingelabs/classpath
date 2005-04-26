@@ -1,4 +1,4 @@
-2005-04-24  Mark Wielaard  <mark@klomp.org>
+2005-04-25  Mark Wielaard  <mark@klomp.org>
 
 	* iconv.m4: New file.
 	* configure.ac: Use AM_ICONV.
@@ -112,7 +112,6 @@
 
 	* native/fdlibm/ieeefp.h: ppc64 is also __IEEE_BIG_ENDIAN.
 
->>>>>>> 1.3514
 2005-04-23  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/text/StyleConstants.java (StyleConstants): Now
