@@ -8,7 +8,8 @@ libjavanio_la_SOURCES = gnu_java_nio_VMPipe.c \
 			java_nio_MappedByteBufferImpl.c \
 			java_nio_VMDirectByteBuffer.c
 
-libjavanio_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo
+libjavanio_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo \
+		       $(LTLIBICONV) 
 
 AM_LDFLAGS = @CLASSPATH_MODULE@
 AM_CPPFLAGS = @CLASSPATH_INCLUDES@

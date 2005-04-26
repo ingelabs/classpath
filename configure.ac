@@ -217,6 +217,9 @@ if test "x${COMPILE_JNI}" = xyes; then
 
   AC_C_CONST
 
+  dnl See if we HAVE_ICONV, how ICONV_CONST is set and LTLIBICONV
+  AM_ICONV
+
   dnl When using gcc we want warnings, lots of warnings :-)
   if test "x${GCC}" = xyes; then
     dnl We want ISO C90 pedantic ansi, but with longlong (jlong) support
