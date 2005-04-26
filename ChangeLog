@@ -1,3 +1,11 @@
+2005-04-26  Tom Tromey  <tromey@redhat.com>
+
+	* autogen.sh: Use '-I m4'.
+	* m4/lib-ld.m4, m4/lib-link.m4, m4/lib-prefix.m4: New files.
+	* m4/pkg.m4, m4/accross.m4, m4/iconv.m4, m4/acinclude.m4: Moved
+	from...
+	* pkg.m4, accross.m4, iconv.m4, acinclude.m4: ... here.  Removed.
+
 2005-04-26  Luca Barbieri  <luca.barbieri@gmail.com>
 
 	* gnu/java/nio/channels/FileChannelImpl.java (tryLock): Pass

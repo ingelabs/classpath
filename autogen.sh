@@ -105,8 +105,8 @@ if test -z "$ACLOCAL_FLAGS"; then
 	done
 fi
 
-# Use the "-I ." flag in order to include our pkg.m4.  
-$ACLOCAL -I . $ACLOCAL_FLAGS || exit $?
+# Use the "-I m4 flag in order to include pkg.m4 and other .m4 files.
+$ACLOCAL -I m4 $ACLOCAL_FLAGS || exit $?
 
 libtoolize --force || exit $?
 
