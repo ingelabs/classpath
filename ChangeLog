@@ -1,5 +1,9 @@
 2005-04-28  Robert Schuster  <thebohemian@gmx.net>
 
+	* NEWS: Documented the Java Beans API fixes.
+
+2005-04-28  Robert Schuster  <thebohemian@gmx.net>
+
 	* java/beans/FeatureDescriptor.java:
 	(getShortDescription): Implemented fallback mechanism and fixed
 	documentation (fixes bug #12637).

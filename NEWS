@@ -15,6 +15,11 @@ VM Interface changes:
 * jni.h changed to better support more VMs; see VM integration guide
   for details.
 
+Other changes:
+
+* Fixed compatibility problems in the Java Beans API which affected Eclipse's
+  Visual Editor Project.
+
 New in release 0.14 (Feb 25, 2005)
 
 * Character encoders and decoders have been added for:
