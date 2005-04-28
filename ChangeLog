@@ -1,5 +1,10 @@
 2005-04-28  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JTextArea.java
+	(replaceRange): Removed error throwing.
+
+2005-04-28  Michael Koch  <konqueror@gmx.de>
+
 	* java/security/AccessControlContext.java:
 	Reformatted.
 
