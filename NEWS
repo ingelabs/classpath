@@ -39,6 +39,10 @@ Runtime interface changes:
 * New --disable-core-jni option can be used to disable building the
   "core" JNI libraries.  This is primarily useful if your VM can use the
   Gtk peers but not the core JNI libraries.
+* New system property "gnu.classpath.boot.library.path" can be specified
+  to define the location of the JNI libraries. It is by all means meant
+  ONLY for VM implementors and GNU Classpath hackers. See the hacking
+  guide for more information.
 
 Other changes:
 
