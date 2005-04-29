@@ -1,3 +1,13 @@
+2005-04-29  Sven de Marothy  <sven@physto.se>
+	    Mark Wielaard  <mark@klomp.org>
+
+	* java/nio/charset/Charset.java (defaultCharset): Use
+	SystemProperties.
+	(provider): Check gnu.classpath.nio.charset.provider.iconv system
+	property and return the IconvProvider when set.
+
+	* NEWS: Document new character encoder framework.
+
 2005-04-29  Michael Koch  <konqueror@gmx.de>
 
 	* java/nio/charset/Charset.java

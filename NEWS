@@ -1,7 +1,37 @@
-New in release 0.15 ()
+New in release 0.15 (Apr 29, 2005)
+
+* The old character encoding framework (gnu.java.io.EncodingManager)
+has been replaced by a system based completely on nio.charset
+providers. Many converters have been added, both the io, lang and nio
+frameworks now use the same set of converters and the whole character
+stream framework (Readers and Writers) have been optimized. For some
+workloads this leads to 2x till 20x speedups.
+
+The default charsets supported are:
+
+  Cp424, Cp437, Cp737, Cp775, Cp850, Cp852, Cp855, Cp857, Cp860, Cp861,
+  Cp862, Cp863, Cp864, Cp865, Cp866, Cp869, Cp874, ISO_8859_1, ISO_8859_13,
+  ISO_8859_15, ISO_8859_2, ISO_8859_3, ISO_8859_4, ISO_8859_5, ISO_8859_6,
+  ISO_8859_7, ISO_8859_8, ISO_8859_9, KOI_8, MS874, MacCentralEurope,
+  MacCroatian, MacCyrillic, MacDingbat, MacGreek, MacIceland, MacRoman,
+  MacRomania, MacSymbol, MacThai, MacTurkish, US_ASCII, UTF_16, UTF_16BE,
+  UTF_16Decoder, UTF_16Encoder, UTF_16LE, UTF_8, UnicodeLittle, Windows1250,
+  Windows1251, Windows1252, Windows1253, Windows1254, Windows1255,
+  Windows1256, Windows1257, Windows1258.
+
+Many more encoding are supported through the new IconvProvider
+depending on the platform iconv support. GNU libiconv is recommended.
+The IconvProvider is currently not enabled by default. To enable it
+define the system property gnu.classpath.nio.charset.provider.iconv=true.
+Some runtimes might choose to enable this by default by setting it
+through VMSystemProperties. We would like to get feedback on whether
+enabling or disabling the IconvProvider by default results in the
+highest speedups.
 
 Runtime interface changes:
 
+* jni.h changed to better support more VMs; see VM integration guide
+  for details.
 * New --enable-default-toolkit option to configure can be used to set
   the fully qualified class name of the default AWT toolkit to use.
   If not given, the old default of gnu.java.awt.peerk.gtk.GtkToolkit
@@ -9,11 +39,6 @@ Runtime interface changes:
 * New --disable-core-jni option can be used to disable building the
   "core" JNI libraries.  This is primarily useful if your VM can use the
   Gtk peers but not the core JNI libraries.
-
-VM Interface changes:
-
-* jni.h changed to better support more VMs; see VM integration guide
-  for details.
 
 Other changes:
 
