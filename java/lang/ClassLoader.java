@@ -471,8 +471,9 @@ public abstract class ClassLoader
       domain = StaticData.defaultProtectionDomain;
     if (! initialized)
       throw new SecurityException("attempt to define class from uninitialized class loader");
+    
     Class retval = VMClassLoader.defineClass(this, name, data,
-                                             offset, len, domain);
+					     offset, len, domain);
     loadedClasses.put(retval.getName(), retval);
     return retval;
   }
