@@ -1,3 +1,8 @@
+2005-04-29  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/InetAddress.java
+	(aton): Fixed javadoc.
+
 2005-04-28  Robert Schuster  <thebohemian@gmx.net>
 
 	* NEWS: Documented the Java Beans API fixes.
