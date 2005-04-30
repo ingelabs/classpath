@@ -1,3 +1,8 @@
+2005-04-30  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (prepareImage): Only prepare
+	GtkImages.
+
 2005-04-30  Robert Schuster  <thebohemian@gmx.net>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c: Fixed
