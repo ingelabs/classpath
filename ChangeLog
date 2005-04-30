@@ -1,5 +1,10 @@
 2005-04-30  Robert Schuster  <thebohemian@gmx.net>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c: Fixed
+	copyright header.
+
+2005-04-30  Robert Schuster  <thebohemian@gmx.net>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c:
 	(window_delete_cb): Made the function return TRUE.
 
