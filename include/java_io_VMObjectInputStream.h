@@ -10,7 +10,6 @@ extern "C"
 {
 #endif
 
-JNIEXPORT jobject JNICALL Java_java_io_VMObjectInputStream_currentClassLoader (JNIEnv *env, jclass, jobject);
 JNIEXPORT jobject JNICALL Java_java_io_VMObjectInputStream_allocateObject (JNIEnv *env, jclass, jclass, jclass, jobject);
 
 #ifdef __cplusplus

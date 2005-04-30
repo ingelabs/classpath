@@ -1,5 +1,20 @@
 2005-04-30  Mark Wielaard  <mark@klomp.org>
 
+	* java/io/ObjectInputStream.java
+	(currentLoader): Don't create SecurityManager, directly call
+	VMObjectInputStream.currentClassLoader().
+	(resolveProxyClass): Use currentLoader().
+	* vm/reference/java/io/VMObjectInputStream.java
+	(currentClassLoader(SecurityManager)): Removed.
+	(currentClassLoader): New method.
+	* native/jni/java-io/java_io_VMObjectInputStream.c
+	(Java_java_io_VMObjectInputStream_currentClassLoader): Removed.
+	* include/java_io_VMObjectInputStream.h: Regenerated.
+
+	* NEWS: Document new interface and reference implementation.
+
+2005-04-30  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/awt/peer/gtk/GtkToolkit.java (prepareImage): Only prepare
 	GtkImages.
 

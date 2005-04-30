@@ -43,6 +43,9 @@ Runtime interface changes:
   to define the location of the JNI libraries. It is by all means meant
   ONLY for VM implementors and GNU Classpath hackers. See the hacking
   guide for more information.
+* The helper methods currentLoader() and allocateObject() for
+  java.io.ObjectInputStream have been moved to a VMObjectInputStream class.
+  Reference implementations are provided.
 
 Other changes:
 
