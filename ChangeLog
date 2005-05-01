@@ -1,5 +1,13 @@
 2005-05-01  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Set version to 0.15+cvs.
+
+	* doc/www.gnu.org/announce/20050429.wml: New file.
+	* doc/www.gnu.org/newsitems.txt: Add announcement.
+	* doc/www.gnu.org/downloads/downloads.wml: Add 0.15 download.
+
+2005-05-01  Mark Wielaard  <mark@klomp.org>
+
 	* NEWS: Add 0.15 release date and new features.
 	* configure.ac: Set version to 0.15.
 

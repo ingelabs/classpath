@@ -1,6 +1,11 @@
-<newsitem date="Feb 25 2005">
+<newsitem date="29 Apr 2005">
+<createlink name="GNU Classpath 0.15"
+            url="announce/20050429.html">
+</newsitem>
+
+<newsitem date="25 Feb 2005">
 <createlink name="GNU Classpath 0.14"
-            url="https://savannah.gnu.org/forum/forum.php?forum_id=3690">
+            url="announce/20050226.html">
 Base core class libraries for the GCC 4.0 (gcj) and Kaffe 1.1.5 releases.
 </newsitem>
 
