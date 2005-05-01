@@ -28,10 +28,31 @@ through VMSystemProperties. We would like to get feedback on whether
 enabling or disabling the IconvProvider by default results in the
 highest speedups.
 
+* Free swing metal and pluggable look and feels have been improved.
+The GNU Classpath free swing example can now be run with different
+"skins" by setting the system property swing.defaultlaf to the GNU,
+Basic or Metal look and feel.
+
+* Some of the org.omg.CORBA classes and packages have now been
+implemented. The Savannah bug tracker contains additional tasks for
+which we are seeking help.
+
+* Fixed compatibility problems in the java.beans which affected
+Eclipse's Visual Editor Project.
+
+* New completely lock free (Inheritable)ThreadLocal implementation.
+
+* javax.swing.text.rtf framework added which can handle simple (plain)
+text tokens.
+
+* Support for parsing html files into Level 2 Document Object Model
+(org.w3c.dom.html2 and javax.swing.text.html.parser). And a start of
+javax.swing.text.html framework added.
+
 Runtime interface changes:
 
-* jni.h changed to better support more VMs; see VM integration guide
-  for details.
+* jni.h changed to better support compiling runtimes implementing jni;
+  see VM integration guide for details.
 * New --enable-default-toolkit option to configure can be used to set
   the fully qualified class name of the default AWT toolkit to use.
   If not given, the old default of gnu.java.awt.peerk.gtk.GtkToolkit
@@ -46,11 +67,21 @@ Runtime interface changes:
 * The helper methods currentLoader() and allocateObject() for
   java.io.ObjectInputStream have been moved to a VMObjectInputStream class.
   Reference implementations are provided.
+* java.net.InetAddress now uses VMInetAddress for runtime/platform
+  specific methods getLocalHostname(), getHostByAddr() and
+  getHostByName(). java.net.NetworkInterface now uses VMNetworkInterface
+  for runtime/platform specific getInterfaces() support. Default
+  (Posix/GNU JNI) implementations are provided.
+* VMClass has a new method getModifiers(Class, boolean) which can be
+  used to get the real modifiers for an inner class or the ones
+  specified by the InnerClasses attribute.
+* All (possible) runtime specific methods of Object and Double are now
+  in VMObject and VMDouble. Where possible generic reference
+  implementations are provided.
+* The reference implementation of VMClassLoader now handles zip files
+  on the boot loader class path in getResources().
 
 Other changes:
-
-* Fixed compatibility problems in the Java Beans API which affected Eclipse's
-  Visual Editor Project.
 
 New in release 0.14 (Feb 25, 2005)
 

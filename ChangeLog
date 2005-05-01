@@ -1,3 +1,14 @@
+2005-05-01  Mark Wielaard  <mark@klomp.org>
+
+	* NEWS: Add 0.15 release date and new features.
+	* configure.ac: Set version to 0.15.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c:
+	(window_delete_cb): Don't use C++ style comments.
+
+	* doc/api/Makefile.am (clean): Renamed.
+	(clean-local): Renamed from clean.
+
 2005-04-30  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/ObjectInputStream.java
@@ -1749,7 +1760,7 @@
 2005-03-18  Robert Schuster  <thebohemian@gmx>
 
 	* native/jni/java-nio/gnu_java_nio_VMSelector.c: Implemented
-    Java_gnu_java_nio_VMSelector_select.
+	Java_gnu_java_nio_VMSelector_select.
 	* configure.ac: Added check for sys/select.h and strerro_r().
 
 2005-03-17  Mark Wielaard  <mark@klomp.org>

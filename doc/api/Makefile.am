@@ -29,7 +29,7 @@ uninstall-local:
 
 html: create_html
 
-clean:
+clean-local:
 	-rm -rf html create_html gjdoc_rawcomment.cache
 
 create_html:
