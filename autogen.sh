@@ -12,9 +12,18 @@ FILE=java/lang/Object.java
 
 DIE=0
 
-have_libtool=false
-if libtoolize --version < /dev/null > /dev/null 2>&1 ; then
-	libtool_version=`libtoolize --version | sed 's/^[^0-9]*\([0-9.][0-9.]*\).*/\1/'`
+case `uname -s` in
+Darwin)
+	LIBTOOLIZE=glibtoolize
+	;;
+*)
+	LIBTOOLIZE=libtoolize
+	;;
+esac
+
+have_libtool=true
+if ${LIBTOOLIZE} --version < /dev/null > /dev/null 2>&1 ; then
+	libtool_version=`${LIBTOOLIZE} --version | sed 's/^[^0-9]*\([0-9.][0-9.]*\).*/\1/'`
 	case $libtool_version in
 	    1.5*)
 		have_libtool=true
@@ -108,7 +117,7 @@ fi
 # Use the "-I m4 flag in order to include pkg.m4 and other .m4 files.
 $ACLOCAL -I m4 $ACLOCAL_FLAGS || exit $?
 
-libtoolize --force || exit $?
+${LIBTOOLIZE} --force || exit $?
 
 autoheader || exit $?
 
