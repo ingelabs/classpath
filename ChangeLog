@@ -1,3 +1,10 @@
+2005-05-03  Andrew Overholt  <overholt@redhat.com>
+
+	* gnu/java/nio/channels/FileChannelImpl.java: Return null if lock
+	could not be acquired.
+	* java/nio/channels/FileLock.java (toString): Re-implement to be
+	in line with other implementations.
+
 2005-05-03  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/GapContent.java:
