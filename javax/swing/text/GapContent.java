@@ -170,7 +170,6 @@ public class GapContent
     // gap boundaries
     System.arraycopy(str.toCharArray(), 0, buffer, gapStart, strLen);
     gapStart += strLen;
-    dumpArray();
     return null;
   }
 
@@ -206,18 +205,7 @@ public class GapContent
 
     // now we simply have to enlarge the gap
     gapEnd += nitems;
-    dumpArray();
     return null;
-  }
-
-  private void dumpArray() 
-  {
-    for (int i = 0; i < buffer.length; i++) {
-      if (i == gapStart) System.err.print('<');
-      if (i == gapEnd) System.err.print('>');
-      
-      System.err.print("'" + buffer[i] + "' ");
-    }
   }
 
   /**

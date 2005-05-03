@@ -1,6 +1,11 @@
 2005-05-03  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/GapContent.java:
+	Removed debugging output stuff, which I accidentally left in.
+
+2005-05-03  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/text/GapContent.java:
 	Implemented a real GapContent. Only the public methods have
 	been implemented so far and still no UndoableEdit support.
 
