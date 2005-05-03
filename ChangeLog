@@ -1,3 +1,9 @@
+2005-05-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
+	(init_glib_threads): Check if threading system is already
+	initialized.
+
 2005-05-03  Andrew Overholt  <overholt@redhat.com>
 
 	* gnu/java/nio/channels/FileChannelImpl.java: Return null if lock
