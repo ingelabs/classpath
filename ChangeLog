@@ -1,5 +1,13 @@
 2005-05-04  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/PlainView.java
+	(drawUnselectedText): Call Utilities.drawTabbedText() with correct
+	offset parameter.
+	* javax/swing/text/Utilities.java
+	(drawTabbedText): Initilialize local variable pos correctly.
+
+2005-05-04  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/AbstractDocument.java
 	(LeafElement): Made start and end package private fields for
 	effective reindexing.
