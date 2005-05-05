@@ -1,3 +1,8 @@
+2005-05-05  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/transform/StreamSerializer.java: Produce compact,
+	human-readable XML for non-UTF/ASCII encodings using NIO.
+
 2005-05-04  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/BufferCapabilities.java (BufferCapabilities): Make
