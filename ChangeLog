@@ -1,3 +1,8 @@
+2005-05-04  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/BufferCapabilities.java (BufferCapabilities): Make
+	documentation of arguments match code.
+
 2005-05-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/image/BufferStrategy.java: Document.
