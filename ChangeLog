@@ -1,3 +1,8 @@
+2005-05-06  Robert Schuster  <thebohemian@gmx.net>
+
+	* java/awt/Frame.java:
+	(setUndecorated): Toggled boolean expression.
+
 2005-05-06  Mark Wielaard  <mark@klomp.org>
 
 	Reported by Kalle Olavi Niemitalo <kon@iki.fi>.
@@ -151,6 +156,11 @@
 
 	* gnu/java/awt/peer/gtk/GtkToolkit.java (prepareImage): Only prepare
 	GtkImages.
+
+2005-04-30  Robert Schuster  <thebohemian@gmx.net>
+
+    * doc/hacking.texinfo: Added section about dealing with
+    unrealistic code paths.
 
 2005-04-30  Robert Schuster  <thebohemian@gmx.net>
 
