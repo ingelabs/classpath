@@ -1,3 +1,9 @@
+2005-05-06  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/text/PlainView.java
+	(getPreferredSpan): Corrected the calculation of the span of
+	the view.
+
 2005-05-05  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/transform/StreamSerializer.java: Produce compact,
