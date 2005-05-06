@@ -1,3 +1,10 @@
+2005-05-06  Mark Wielaard  <mark@klomp.org>
+
+	Reported by Kalle Olavi Niemitalo <kon@iki.fi>.
+	Workaround for gcj bug #21418
+	* lib/gen-classlist.sh.in: Set LC_ALL and LANG to C. Sort result of
+	find.
+
 2005-05-06  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/PlainView.java
