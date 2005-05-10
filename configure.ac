@@ -290,13 +290,13 @@ AC_SUBST(CLASSPATH_INCLUDES)
 
 dnl -----------------------------------------------------------
 if test "x${COMPILE_JNI}" = xyes; then
-  AC_MSG_CHECKING("jni_md.h support")
+  AC_MSG_CHECKING(jni_md.h support)
   if test -f ${srcdir}/include/jni_md-${target_cpu}-${target_os}.h; then
-    AC_MSG_RESULT("yes")
+    AC_MSG_RESULT(yes)
   else
     target_cpu=x86
     target_os=linux-gnu 
-    AC_MSG_WARN("no, using x86-linux-gnu")
+    AC_MSG_WARN(no, using x86-linux-gnu)
   fi
   ac_sources="include/jni_md-${target_cpu}-${target_os}.h"
   ac_dests="include/jni_md.h"

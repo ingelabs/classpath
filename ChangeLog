@@ -1,3 +1,8 @@
+2005-05-10  Tom Tromey  <tromey@redhat.com>
+
+	* configure.ac (CLASSPATH_INCLUDES): Remove quotes in checking
+	messages.
+
 2005-05-10  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/ClassLoader.java
