@@ -206,8 +206,75 @@ href="docs/hacking.html">GNU
 Classpath Hacker&#x2019;s Guide</a>, and pick up a <createlink name="task" url="tasks.html"> from the list!
 </faq>
 
-<faq question="Can I look as Sun's sources to get inspiration?">
-No. In fact, if you read Sun's sources we can't accept any code from you.
+<faq question="Can I look at source code distributed with other
+implementations to get inspiration?">
+If you are going to contribute source code to GNU Classpath we must
+make sure that you have not studied the source code of the JDK/JRE or
+decompiled any of its classes. Furthermore you must not have signed
+any non-disclosure agreements with Sun or other companies in regard
+with java technology that might cover the core class libaries or
+tools. The reason for this requirement is that we want to make sure
+that Sun or any other company cannot rightfully claim that GNU
+Classpath infringes their copyright. You are therefore questioned
+about your experience with other implementations of similar source
+code and any agreements with companies you might have signed when you
+request to contribute to GNU Classpath.
+<p>
+Please note that this does not mean you cannot help GNU Classpath at
+all in such a case. Here is a list of things you can do instead:
+<ul>
+  <li>write Mauve test cases</li>
+  <li>write example applications demonstrating the usage of the packages</li>
+  <li>writing/fixing helper programs (like japitools) and scripts</li>
+  <li>report bugs</li>
+  <li>help fixing the documentation</li>
+  <li>help in other related Free software projects
+  (e.g. virtual machine development,
+   <createlink name="GUMP" url="http://gump.apache.org/">)
+</ul>
+<p>
+Here are some rough guidelines for deciding whether or not it would be
+wise to accept a contribution from someone that studied source code
+for another implementation of the core libraries or is under contract
+with some company covering implementations of core library classes.
+<p>
+If the developer got access to the source code by signing some
+contract (like the SCSL) with Sun then it would be best to examine
+that contract (by FSF legal) before deciding.
+<p>
+If the developer just accidentally saw some of the source code and had
+no intention (and didn't actually) study the implementation (with the
+intention of contributing to GNU Classpath) there is no problem.
+<p>
+Studying a proprietary implementation with the intention of
+implementing it (better) for GNU Classpath is a clear no-no.
+<strong>The general rule is that if you have looked at or studied any
+(proprietary) implementation of a package you should not work on that
+package for GNU Classpath.</strong> That is because it would be
+difficult to proof that you really did an independent
+implementation. Since what you create might look very similar (which
+is not unlikely). Working on something completely unrelated is OK (as
+long as there are no contractual obligations with Sun or some other
+company to not do this of course).
+<p>
+The important thing is that we want to be clear on the fact that we
+created an independent implementation. We don't want to get into
+tricky legal situations. We want to avoid risking to go to court over
+reverse engineering or clean room situation questions if not
+absolutely necessary. That is why we in general just say "please don't
+contribute if you looked at other implementations". If someone thinks
+that their actions might be explained as copying directly or
+indirectly another (proprietary) implementation then that could be a
+problem that we want to avoid.
+<p>
+FSF Legal will always advise not to take any unnecessary risks that
+might endanger the (perceived) free software status of a GNU
+project. (If we might need to go to court to proof that what we did
+was OK, then don't!)
+<p>
+This isn't a GNU Classpath project specific issue.
+See <createlink name="GNU: Reading Non-Free Code"
+url="http://www.gnu.org/prep/standards/html_node/Reading-Non_002dFree-Code.html">.
 </faq>
 
 <faq question="I'm tainted by; can I help anyway?">
