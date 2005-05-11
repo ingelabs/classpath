@@ -71,6 +71,8 @@ public abstract class AbstractCellEditor
    * Creates a new instance of AbstractCellEditor.
    */
   public AbstractCellEditor() {
+    listenerList = new EventListenerList();
+    changeEvent = new ChangeEvent(this);
   } // AbstractCellEditor()
 
   /**
@@ -84,7 +86,7 @@ public abstract class AbstractCellEditor
    *     <code>event</code>, <code>false</code> if it's not
    */
   public boolean isCellEditable(EventObject event) {
-    return false; // TODO
+    return true;
   } // isCellEditable()
 
   /**
@@ -99,7 +101,7 @@ public abstract class AbstractCellEditor
    *     <code>false</code> otherwise
    */
   public boolean shouldSelectCell(EventObject event) {
-    return false; // TODO
+    return true;
   } // shouldSelectCell()
 
   /**
@@ -110,7 +112,8 @@ public abstract class AbstractCellEditor
    *     <code>false</code>otherwise
    */
   public boolean stopCellEditing() {
-    return false; // TODO
+    fireEditingStopped();
+    return true;
   } // stopCellEditing()
 
   /**
@@ -118,7 +121,7 @@ public abstract class AbstractCellEditor
    * been entered into the cell.
    */
   public void cancelCellEditing() {
-    // TODO
+    fireEditingCanceled();
   } // cancelCellEditing()
 
   /**
@@ -154,7 +157,8 @@ public abstract class AbstractCellEditor
    */
   public CellEditorListener[] getCellEditorListeners()
   {
-    return (CellEditorListener[]) listenerList.getListeners (CellEditorListener.class);
+    return (CellEditorListener[]) listenerList.getListeners
+      (CellEditorListener.class);
   }
 
   /**
@@ -173,7 +177,7 @@ public abstract class AbstractCellEditor
 
   /**
    * Notifies all registered listeners that the editing of the cell has
-   * has been cancelled.
+   * has been canceled.
    */
   protected void fireEditingCanceled()
   {
