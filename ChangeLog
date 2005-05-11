@@ -1,6 +1,11 @@
 2005-05-11  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/AbstractCellEditor.java:
+	Documented this class.
+
+2005-05-11  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/AbstractCellEditor.java:
 	Reformatted this file to our coding style.
 
 2005-05-11  Roman Kennke  <roman@kennke.org>

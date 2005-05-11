@@ -46,7 +46,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.EventListenerList;
 
 /**
- * AbstractCellEditor
+ * The abstract superclass for table and tree cells. This provides some
+ * common shared functionality.
+ *
  * @author	Andrew Selkirk
  * @version	1.0
  */
@@ -56,59 +58,74 @@ public abstract class AbstractCellEditor
   private static final long serialVersionUID = -1048006551406220959L;
 
   /**
-   * listenerList
+   * Our Swing event listeners.
    */
   protected EventListenerList listenerList;
 
   /**
-   * changeEvent
+   * The cached ChangeEvent.
    */
   protected transient ChangeEvent changeEvent;
 
   /**
-   * Constructor AbstractCellEditor
+   * Creates a new instance of AbstractCellEditor.
    */
   public AbstractCellEditor() {
-    // TODO
   } // AbstractCellEditor()
 
   /**
-   * isCellEditable
-   * @param event TODO
-   * @returns boolean
+   * Returns <code>true</code> if the cell is editable using
+   * <code>event</code>, <code>false</code>
+   * if it's not. The default behaviour is to return <code>true</code>.
+   *
+   * @param event an event
+   *
+   * @return <code>true</code> if the cell is editable using
+   *     <code>event</code>, <code>false</code> if it's not
    */
   public boolean isCellEditable(EventObject event) {
     return false; // TODO
   } // isCellEditable()
 
   /**
-   * shouldSelectCell
-   * @param event TODO
-   * @returns boolean
+   * Returns <code>true</code> if the editing cell should be selected,
+   * <code>false</code> otherwise. This is usually returning <code>true</code>,
+   * but in some special cases it might be useful not to switch cell selection
+   * when editing one cell.
+   *
+   * @param event an event
+   *
+   * @return <code>true</code> if the editing cell should be selected,
+   *     <code>false</code> otherwise
    */
   public boolean shouldSelectCell(EventObject event) {
     return false; // TODO
   } // shouldSelectCell()
 
   /**
-   * stopCellEditing
-   * @returns boolean
+   * Stop editing the cell and accept any partial value that has been entered
+   * into the cell.
+   *
+   * @returns <code>true</code> if editing has been stopped successfully,
+   *     <code>false</code>otherwise
    */
   public boolean stopCellEditing() {
     return false; // TODO
   } // stopCellEditing()
 
   /**
-   * cancelCellEditing
+   * Stop editing the cell and do not accept any partial value that has
+   * been entered into the cell.
    */
   public void cancelCellEditing() {
     // TODO
   } // cancelCellEditing()
 
   /**
-   * addCellEditorListener
+   * Adds a CellEditorListener to the list of CellEditorListeners of this
+   * CellEditor.
    *
-   * @param listener The listener to add
+   * @param listener the CellEditorListener to add
    */
   public void addCellEditorListener (CellEditorListener listener)
   {
@@ -116,9 +133,10 @@ public abstract class AbstractCellEditor
   }
 
   /**
-   * removeCellEditorListener
+   * Removes the specified CellEditorListener from the list of the
+   * CellEditorListeners of this CellEditor.
    *
-   * @param listener The listener to remove
+   * @param listener the CellEditorListener to remove
    */
   public void removeCellEditorListener (CellEditorListener listener)
   {
@@ -126,7 +144,11 @@ public abstract class AbstractCellEditor
   }
 	
   /**
-   * getCellEditorListeners
+   * Returns the list of CellEditorListeners that have been registered
+   * in this CellEditor.
+   *
+   * @return the list of CellEditorListeners that have been registered
+   *     in this CellEditor
    *
    * @since 1.4
    */
@@ -136,7 +158,8 @@ public abstract class AbstractCellEditor
   }
 
   /**
-   * fireEditingStopped
+   * Notifies all registered listeners that the editing of the cell has
+   * has been stopped.
    */
   protected void fireEditingStopped()
   {
@@ -149,7 +172,8 @@ public abstract class AbstractCellEditor
   }
 
   /**
-   * fireEditingCanceled
+   * Notifies all registered listeners that the editing of the cell has
+   * has been cancelled.
    */
   protected void fireEditingCanceled()
   {
