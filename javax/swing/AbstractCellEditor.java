@@ -1,5 +1,5 @@
 /* AbstractCellEditor.java --
-   Copyright (C) 2002, 2004 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -65,45 +65,45 @@ public abstract class AbstractCellEditor
    */
   protected transient ChangeEvent changeEvent;
 
-	/**
-	 * Constructor AbstractCellEditor
-	 */
-	public AbstractCellEditor() {
-		// TODO
-	} // AbstractCellEditor()
+  /**
+   * Constructor AbstractCellEditor
+   */
+  public AbstractCellEditor() {
+    // TODO
+  } // AbstractCellEditor()
 
-	/**
-	 * isCellEditable
-	 * @param event TODO
-	 * @returns boolean
-	 */
-	public boolean isCellEditable(EventObject event) {
-		return false; // TODO
-	} // isCellEditable()
+  /**
+   * isCellEditable
+   * @param event TODO
+   * @returns boolean
+   */
+  public boolean isCellEditable(EventObject event) {
+    return false; // TODO
+  } // isCellEditable()
 
-	/**
-	 * shouldSelectCell
-	 * @param event TODO
-	 * @returns boolean
-	 */
-	public boolean shouldSelectCell(EventObject event) {
-		return false; // TODO
-	} // shouldSelectCell()
+  /**
+   * shouldSelectCell
+   * @param event TODO
+   * @returns boolean
+   */
+  public boolean shouldSelectCell(EventObject event) {
+    return false; // TODO
+  } // shouldSelectCell()
 
-	/**
-	 * stopCellEditing
-	 * @returns boolean
-	 */
-	public boolean stopCellEditing() {
-		return false; // TODO
-	} // stopCellEditing()
+  /**
+   * stopCellEditing
+   * @returns boolean
+   */
+  public boolean stopCellEditing() {
+    return false; // TODO
+  } // stopCellEditing()
 
-	/**
-	 * cancelCellEditing
-	 */
-	public void cancelCellEditing() {
-		// TODO
-	} // cancelCellEditing()
+  /**
+   * cancelCellEditing
+   */
+  public void cancelCellEditing() {
+    // TODO
+  } // cancelCellEditing()
 
   /**
    * addCellEditorListener
