@@ -1,6 +1,11 @@
 2005-05-12  Roman Kennke  <roman@kennke.org>
 
 	* examples/gnu/classpath/examples/swing/Demo.java:
+	Added a JTable example.
+
+2005-05-12  Roman Kennke  <roman@kennke.org>
+
+	* examples/gnu/classpath/examples/swing/Demo.java:
 	Added Examples menu to menu bar.
 	Slightly changed the layout of the main panel so that an overlenghty
 	button panel at the bottom is displayed in a useful way.

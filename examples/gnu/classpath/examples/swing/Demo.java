@@ -224,6 +224,10 @@ public class Demo
                     mkTree(),
                     examples);
 
+    new PopUpAction("Table",
+                    mkTable(),
+                    examples);
+
     help.add(new JMenuItem("just play with the widgets"));
     help.add(new JMenuItem("and enjoy the sensation of"));
     help.add(new JMenuItem("your neural connections growing"));
@@ -835,6 +839,28 @@ public class Demo
     JTree tree = new JTree(root);
     return tree;
   }
+
+  private static JTable mkTable()
+  {
+    Object[][] tableData = new Object[][] {
+      {
+        "Field 1", "Field 2" , "Field 3"
+      },
+      {
+        "Field 4", "Field 5" , "Field 6"
+      },
+      {
+        "Field 7", "Field 8" , "Field 9"
+      },
+      {
+        "Field 10", "Field 11" , "Field 12"
+      }
+    };
+    Object[] columnNames = new Object[] {"Column 1", "Column 2", "Column 3"};
+
+    JTable table = new JTable(tableData, columnNames);
+    return table;
+  }
   
   private JPanel mkButtonBar()
   {    
@@ -919,6 +945,10 @@ public class Demo
     
     new PopUpAction("Tree",
                     mkTree(),
+                    panel);
+    
+    new PopUpAction("Table",
+                    mkTable(),
                     panel);
     
     JButton exitDisposer = mkDisposerButton(frame);
