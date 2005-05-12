@@ -143,12 +143,94 @@ public class Demo
     preferences.add(new JCheckBoxMenuItem("World Peace"));
     edit.add(preferences);
 
+    JMenu examples = new JMenu("Examples");
+    new PopUpAction("Buttons",
+		    mkPanel(new JComponent[]
+			{mkBigButton("mango"), 
+			 mkBigButton("guava"),
+			 mkBigButton("lemon")}),
+		    examples);
+    
+    new PopUpAction("Toggles",
+		    mkToggle("cool and refreshing"),
+		    examples);
+
+    new PopUpAction("Checkbox",
+		    mkCheckbox("ice cold"),
+		    examples);
+
+    new PopUpAction("Radio",
+		    mkRadio("delicious"),
+		    examples);
+
+    new PopUpAction("Slider",
+		    mkSliders(),
+		    examples);
+
+    new PopUpAction("List",
+		    mkListPanel(new String[] { "hello",
+					       "this",
+					       "is",
+					       "a",
+					       "list",
+                                               "that",
+                                               "wraps",
+                                               "over"}),
+		    examples);
+
+    new PopUpAction("Scrollbar",
+		    mkScrollBar(),
+		    examples);
+
+    new PopUpAction("Viewport",
+		    mkViewportBox(mkBigButton("View Me!")),
+		    examples);
+
+    new PopUpAction("ScrollPane",
+		    mkScrollPane(mkBigButton("Scroll Me!")),
+		    examples);
+
+    new PopUpAction("TabPane",
+		    mkTabs(new String[] {"happy",
+					 "sad",
+					 "indifferent"}),
+		    examples);
+
+    new PopUpAction("Spinner",
+		    mkSpinner(),
+		    examples);
+
+    new PopUpAction("TextField",
+		    mkTextField("Hello, World!"),
+		    examples);
+
+    new PopUpAction("ColorChooser",
+		    mkColorChooser(),
+		    examples);
+
+    new PopUpAction("ComboBox",
+		    mkComboBox(new String[] {"Stop",
+					     "Software",
+					     "Hoarders",
+					     "Support",
+					     "GNU!"}),
+		    examples);
+
+    new PopUpAction("Editor",
+                    mkEditorPane(),
+                    examples);
+    
+    new PopUpAction("Tree",
+                    mkTree(),
+                    examples);
+
     help.add(new JMenuItem("just play with the widgets"));
     help.add(new JMenuItem("and enjoy the sensation of"));
     help.add(new JMenuItem("your neural connections growing"));
 
     bar.add(file);
     bar.add(edit);
+    bar.add(examples);
     bar.add(help);
     return bar;
   }
@@ -486,9 +568,11 @@ public class Demo
     JComponent component = (JComponent) frame.getContentPane();
     component.setLayout(new BorderLayout());
     component.add(mkToolBar(), BorderLayout.NORTH);
-    component.add(mkTabbedPane(), BorderLayout.CENTER);
-    component.add(mkButtonBar(), BorderLayout.SOUTH);
-
+    JPanel main = new JPanel();
+    main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+    main.add(mkTabbedPane());
+    main.add(mkButtonBar());
+    component.add(main, BorderLayout.CENTER);
     frame.pack();
     frame.show();
   }
@@ -677,6 +761,16 @@ public class Demo
   {
     private JComponent inner;
     private String name;
+
+    PopUpAction(String n, JComponent i, JMenu m)
+    {
+      name = n;
+      inner = i;
+
+      JMenuItem item = new JMenuItem(name);
+      item.addActionListener(this);
+      m.add(item);
+    }
 
     PopUpAction(String n, JComponent i, JPanel p)
     {
