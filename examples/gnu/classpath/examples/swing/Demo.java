@@ -33,6 +33,7 @@ import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.tree.*;
 import javax.swing.border.*;
 
 import java.net.URL;
@@ -487,7 +488,7 @@ public class Demo
     component.add(mkToolBar(), BorderLayout.NORTH);
     component.add(mkTabbedPane(), BorderLayout.CENTER);
     component.add(mkButtonBar(), BorderLayout.SOUTH);
-    
+
     frame.pack();
     frame.show();
   }
@@ -698,6 +699,49 @@ public class Demo
     }
   }
 
+  private static JEditorPane mkEditorPane()
+  {
+    JEditorPane editorPane = new JEditorPane();
+    editorPane.setEditable(true);
+    return editorPane;
+  }
+  
+  private static JTree mkTree()
+  {
+    DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root node");
+    DefaultMutableTreeNode child1 = new DefaultMutableTreeNode("Child node 1");
+    DefaultMutableTreeNode child11 =
+      new DefaultMutableTreeNode("Child node 1.1");
+    DefaultMutableTreeNode child12 =
+      new DefaultMutableTreeNode("Child node 1.2");
+    DefaultMutableTreeNode child13 =
+      new DefaultMutableTreeNode("Child node 1.3");
+    DefaultMutableTreeNode child2 = new DefaultMutableTreeNode("Child node 2");
+    DefaultMutableTreeNode child21 =
+      new DefaultMutableTreeNode("Child node 2.1");
+    DefaultMutableTreeNode child22 =
+      new DefaultMutableTreeNode("Child node 2.2");
+    DefaultMutableTreeNode child23 =
+      new DefaultMutableTreeNode("Child node 2.3");
+    DefaultMutableTreeNode child24 =
+      new DefaultMutableTreeNode("Child node 2.4");
+
+    DefaultMutableTreeNode child3 = new DefaultMutableTreeNode("Child node 3");
+    root.add(child1);
+    root.add(child2);
+    root.add(child3);
+    child1.add(child11);
+    child1.add(child12);
+    child1.add(child13);
+    child2.add(child21);
+    child2.add(child22);
+    child2.add(child23);
+    child2.add(child24);
+
+    JTree tree = new JTree(root);
+    return tree;
+  }
+  
   private JPanel mkButtonBar()
   {    
     JPanel panel = new JPanel ();
@@ -775,6 +819,14 @@ public class Demo
 					     "GNU!"}),
 		    panel);
 
+    new PopUpAction("Editor",
+                    mkEditorPane(),
+                    panel);
+    
+    new PopUpAction("Tree",
+                    mkTree(),
+                    panel);
+    
     JButton exitDisposer = mkDisposerButton(frame);
     panel.add(exitDisposer);
 
