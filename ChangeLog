@@ -1,6 +1,11 @@
 2005-05-13  Roman Kennke  <roman@kennke.org>
 
-	* javax/swing/AbstractButton
+	* javax/swing/DefaultButtonModel.java:
+	Removed superfluous semicolon.
+
+2005-05-13  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/AbstractButton.java
 	(ButtonChangeListener): Added this inner class.
 
 2005-05-13  Roman Kennke  <roman@kennke.org>
