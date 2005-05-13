@@ -1,4 +1,9 @@
-2005-05-12  Roman Kennke  <roman@kennke.org>
+2005-05-13  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/AbstractButton
+	(ButtonChangeListener): Added this inner class.
+
+2005-05-13  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/JComponent.java
 	(requestFocus): Added method.
