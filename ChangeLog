@@ -1,4 +1,9 @@
+2005-05-15  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JComponent.java: Removed invalid char from comment.
+
 2005-05-15  Audrius Meskauskas, Lithuania  <AudriusA@Bioinformatics.org>
+
 	* org/omg/CORBA/TestContextList.java,
 	gnu/CORBA/CDR/testBinaryIO.java: Removing tests from the core.
 
