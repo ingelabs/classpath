@@ -1,3 +1,7 @@
+2005-05-15  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/String.java (startsWith): Fixed javadoc.
+
 2005-05-15  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JComponent.java: Removed invalid char from comment.
