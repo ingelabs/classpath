@@ -1,4 +1,9 @@
 2005-05-15  Audrius Meskauskas, Lithuania  <AudriusA@Bioinformatics.org>
+	* org/omg/CORBA/TestContextList.java,
+	gnu/CORBA/CDR/testBinaryIO.java: Removing tests from the core.
+
+
+2005-05-15  Audrius Meskauskas, Lithuania  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/Version.java,
 	gnu/CORBA/IOR.java,
@@ -38,6 +43,8 @@
 	gnu/CORBA/ExceptionCreator.java,
 	gnu/CORBA/ObjectCreator.java,
 	gnu/CORBA/aliasTypeCode.java: New files.
+	* org/omg/CORBA/TestContextList.java,
+	gnu/CORBA/CDR/testBinaryIO.java: New tests.
 	* gnu/CORBA/NamingService/snConverter.java,
 	gnu/CORBA/NamingService/Ext.java,
 	gnu/CORBA/NamingService/cmpNameComponent.java,
