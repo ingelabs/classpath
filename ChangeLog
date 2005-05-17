@@ -1,3 +1,18 @@
+2005-05-13  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/JTree.java
+	(TreeModelHandler): Added inner class.
+	(TreeSelectionRedirector): Added inner class.
+	(EmptySelectionModel): Added inner class.
+	(DynamicUtilTreeNode.getChildAt): Added method.
+	(constructor(model)): Sets up a model and a selection model.
+	(setModel): Set up the JTree treeModelListener on newly set
+	models.
+	(createModelListener): Added method.
+	(getDefaultTreeModel): Added method.
+	(convertValueToText): Added method.
+	(paramString): Added method.
+
 2005-05-16  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/CurrentOperations.java,
