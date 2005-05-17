@@ -1,4 +1,9 @@
-2005-05-15  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+2005-05-16  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
+	* org/omg/CORBA/portable/OutputStream.java
+	(read): Declaring and commenting the IOException.
+
+2005-05-16  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 
 	* org/omg/CosNaming/BindingIterator.java: Inherit from
 	Serializable, IDLEntity and org.omg.CORBA.Object.
