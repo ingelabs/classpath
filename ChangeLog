@@ -1,3 +1,8 @@
+2005-05-15  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
+	* org/omg/CosNaming/BindingIterator.java: Inherit from
+	Serializable, IDLEntity and org.omg.CORBA.Object.
+
 2005-05-16  Tom Tromey  <tromey@redhat.com>
 
 	* java/nio/charset/Charset.java (encode, decode): Synchronize on
@@ -29,7 +34,6 @@
 
 	* org/omg/CORBA/TestContextList.java,
 	gnu/CORBA/CDR/testBinaryIO.java: Removing tests from the core.
-
 
 2005-05-15  Audrius Meskauskas, Lithuania  <AudriusA@Bioinformatics.org>
 
