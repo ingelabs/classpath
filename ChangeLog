@@ -1,4 +1,11 @@
 2005-05-16  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
+	* org/omg/CORBA/CurrentOperations.java,
+	org/omg/CORBA/Current.java,
+	org/omg/CORBA/PolicyError.java,
+	org/omg/CORBA/NO_RESOURCES.java: New files.
+
+2005-05-16  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 	
 	* org/omg/CORBA/ValueMember: Inherit from Serializable and IDLEntity.
 	* org/omg/CORBA/IDLType: Inherit from org.omg.CORBA.Object.
