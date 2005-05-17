@@ -1679,5 +1679,29 @@ public class JTree extends JComponent
     return "";
   }
 
-
+  /**
+   * Returns all TreePath objects which are a descendants of 
+   * the given path and are exapanded at the moment of the
+   * execution of this method. If the state of any node 
+   * is beeing toggled while this method is executing this 
+   * change may be left unaccounted.
+   *  
+   * @param path The parent of this request
+   * @return An Enumeration containing TreePath objects
+   */
+  public Enumeration getExpandedDescendants(TreePath path) 
+  {
+    Enumeration paths = nodeStates.keys();
+    Vector relevantPaths = new Vector();
+    while(paths.hasMoreElements())
+      {
+        TreePath nextPath = (TreePath) paths.nextElement();
+        if(nodeStates.get(nextPath) == EXPANDED && 
+           path.isDescendant(nextPath)) 
+          {
+            relevantPaths.add(nextPath);
+          }
+      }
+    return relevantPaths.elements();
+  }
 }
