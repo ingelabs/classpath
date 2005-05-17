@@ -1,4 +1,9 @@
 2005-05-16  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+	
+	* org/omg/CORBA/ValueMember: Inherit from Serializable and IDLEntity.
+	* org/omg/CORBA/IDLType: Inherit from org.omg.CORBA.Object.
+
+2005-05-16  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/PRIVATE_MEMBER.java,
 	org/omg/CORBA/PUBLIC_MEMBER.java
