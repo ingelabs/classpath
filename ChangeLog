@@ -1,3 +1,8 @@
+2005-05-18  Sven de Marothy <sven@physto.se>
+
+	* javax/swing/table/DefaultTableCellRenderer
+	(getTableCellRendererComponent): Allow table parameter to be null.
+	
 2005-05-13  Jan Roehrich  <jan@roehrich.info>
 
 	* javax/swing/JTree.java
