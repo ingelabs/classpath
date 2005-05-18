@@ -1,5 +1,11 @@
 2005-05-18  Roman Kennke  <roman@kennke.org>
 
+	* java/util/prefs/AbstractPreferences.java
+	(flushNode): Changed toArray() call to toArray(new String[0]) call
+	to avoid casting errors.
+
+2005-05-18  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/JTextComponent.java
 	(constructor): Make text components editable by default.
 
