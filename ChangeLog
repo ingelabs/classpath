@@ -1,7 +1,5 @@
 2005-05-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
-	* Makefile.am (gtk_awt_peer_sources): Add GtkVolatileImage.java.
-	* Makefile.in: Regenerate.
 	* gnu/java/awt/peer/gtk/GdkGraphicsConfiguration.java
 	(createCompatibleVolatileImage(int,int)): Implement.
 	(createCompatibleVolatileImage(int,int,ImageCapabilities)):
