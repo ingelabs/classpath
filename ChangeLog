@@ -1,3 +1,24 @@
+2005-05-18  Olga Rodimina  <rodimina@redhat.com>
+
+	* javax/swing/MenuSelectionManager.java
+	(processMouseEvent): Clear selected path if the mouse was released
+	over non-menu component.
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java
+	(Constructor): Removed initialization of mouseInputListener.
+	(installListeners): Do not add mouseInputListener to this popup
+	menu. Instead it will be added to the root container of the popup
+	menu.
+	(uninstallListeners): Remove code that removed mouseInputListener
+	from popupMenu.
+	(popupMenuWillBecomeInvisible): If this popup menu is the last
+	menu on the screen, then stop interrupting mouse events through
+	the glass pane.
+	(popupMenuWillBecomeVisible): Add mouseInputListener to glass pane
+	if it was not added before and make glass pane visible in order to
+	interrupt mouse evevents.
+	(MouseInputHandler): Close menu hierarchy if the mouse was clicked
+	on non menu component.
+
 2005-05-18  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/JEditorPane.java
