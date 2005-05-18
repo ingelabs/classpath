@@ -772,12 +772,16 @@ public class Window extends Container implements Accessible
   /**
    * Tests whether or not this window is visible on the screen.
    *
+   * In contrast to the normal behaviour of Container, which is that
+   * a container is showing if its parent is visible and showing, a Window
+   * is even showing, if its parent (i.e. an invisible Frame) is not showing.
+   *
    * @return <code>true</code> if this window is visible, <code>false</code>
    * otherwise.
    */
   public boolean isShowing()
   {
-    return super.isShowing();
+    return isVisible();
   }
 
   public void setLocationRelativeTo (Component c)
