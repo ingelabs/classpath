@@ -1,6 +1,11 @@
 2005-05-18  Roman Kennke  <roman@kennke.org>
 
-	* javax/swing/SwingUtilities
+	* javax/swing/UIManager.java
+	(toString): Added method.
+
+2005-05-18  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/SwingUtilities.java
 	(getUIInputMap): Added method.
 	(getUIActionMap): Added method.
 
@@ -20,7 +25,7 @@
 
 2005-05-18  Roman Kennke  <roman@kennke.org>
 
-	* javax/swing/JComponent
+	* javax/swing/JComponent.java
 	(constructor): Make component requestFocusEnabled by default.
 	(requestFocusInWindow): Added method.
 
