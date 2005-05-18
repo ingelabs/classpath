@@ -1,3 +1,17 @@
+2005-05-18  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
+	* org/omg/CORBA/DynAny.java,
+	org/omg/CORBA/DynArray.java,
+	org/omg/CORBA/DynSequence.java,
+	org/omg/CORBA/DynEnum.java,
+	org/omg/CORBA/DynFixed.java,
+	org/omg/CORBA/DynStruct.java,
+	org/omg/CORBA/DynUnion.java: New interfaces.
+	* org/omg/CORBA/NameValuePair.java,
+	org/omg/CORBA/NameValuePairHelper.java,
+	gnu/CORBA/DynAn/NameValuePairHolder.java:
+	New classes.
+
 2005-05-18  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/JComponent
