@@ -1,5 +1,19 @@
 2005-05-18  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JTable.java:
+	(BooleanCellRenderer): Added default renderer for Boolean cell values.
+	(DateCellRenderer): Added default renderer for Date cell values.
+	(DoubleCellRenderer): Added default renderer for Double cell values.
+	(FloatCellRenderer): Added default renderer for Float cell values.
+	(NumberCellRenderer): Added default renderer for Number cell values.
+	(IconCellRenderer): Added default renderer for Icon cell values.
+	(createDefaultRenderers): Include new default renderers.
+	(distributeSpill): Fix algorithm to do a nice layout, if still not
+	beeing 100% perfect.
+	(doLayout): Correctly calculate the spill variable.
+
+2005-05-18  Roman Kennke  <roman@kennke.org>
+
 	* java/awt/Window.java
 	(isShowing): A Window can be showing even if its parent is not
 	showing.
