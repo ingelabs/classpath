@@ -1,3 +1,8 @@
+2005-05-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/security/provider/DSASignature.java: Import updates
+	from GNU Crypto.
+
 2005-05-18  Olga Rodimina  <rodimina@redhat.com>
 
 	* javax/swing/MenuSelectionManager.java
