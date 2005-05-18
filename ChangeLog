@@ -1,6 +1,11 @@
 2005-05-18  Sven de Marothy <sven@physto.se>
 
-	* javax/swing/table/DefaultTableCellRenderer
+	* java/text/SimpleDateFormat.java
+	(computeOffset): Allow timezone to be first in the parsed String.
+
+2005-05-18  Sven de Marothy <sven@physto.se>
+
+	* javax/swing/table/DefaultTableCellRenderer.java
 	(getTableCellRendererComponent): Allow table parameter to be null.
 	
 2005-05-13  Jan Roehrich  <jan@roehrich.info>
