@@ -14,12 +14,11 @@ compile_classpath = $(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/exter
 if FOUND_GCJ
 JAVAC = $(GCJ) --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.standard \
 && $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.awt \
-&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.locale \
 && $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.xml \
 && $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.standardx
 else
 if FOUND_JIKES
-JAVAC = $(JIKES) +Pno-shadow +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
+JAVAC = $(JIKES) -nowarn +Pno-shadow +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
 else
 if FOUND_KJC
 JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
@@ -113,7 +112,7 @@ compile-classes: classes $(JAVA_SRCS) Makefile
 EXTRA_DIST = standard.omit mkcollections.pl.in
 CLEANFILES = compile-classes resources classes \
 	classes.standard classes.awt classes.standardx classes.xml \
-	classes.locale glibj.zip classes.1 \
+	glibj.zip classes.1 \
 	$(top_builddir)/java/util/LocaleData.java \
 	$(JAVA_DEPEND)
 

@@ -5,7 +5,7 @@ CLASSPATH_SRCDIR=`dirname $0`/..
 cd $CLASSPATH_SRCDIR/gnu/java/locale
 
 echo "/* LocaleData.java --"
-echo "   Copyright (C) 2004  Free Software Foundation, Inc."
+echo "   Copyright (C) 2004, 2005  Free Software Foundation, Inc."
 echo
 echo "This file is part of GNU Classpath."
 echo
@@ -52,7 +52,7 @@ echo "{"
 echo "  public static String[] localeNames ="
 echo "    {"
 
-ls LocaleInformation_*.java | xargs -n 1 echo | sed -e 's/LocaleInformation_\(.*\)\.java/\1/' |
+( cd $CLASSPATH_SRCDIR/resource/gnu/java/locale ; ls LocaleInformation_*.java ) | xargs -n 1 echo | sed -e 's/LocaleInformation_\(.*\)\.java/\1/' |
 while read locale ; do echo "      \"$locale\"," ; done
 
 echo "    };"

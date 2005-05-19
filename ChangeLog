@@ -1,5 +1,21 @@
 2005-05-19  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/DateFormatSymbols.java
+	(getStringArray): New method.
+	(getZoneStrings): Likewise.
+	(DateFormatSymbols): Load symbols from properties files.
+	* java/util/Locale.java
+	(getDisplayLanguage): Handle new way to load language names.
+	(getDisplayCountry): Handle new way to load territory names.
+	(getDisplayVariant): Handle new way to load variant names.
+	* lib/Makefile.am, lib/gen-classlist.sh.in:
+	No need to special case classes from gnu.java.locale anymore.
+	* scripts/generate-locale-list.sh:
+	Generate list from the new properties files.
+	* LICENSE: Added license of locale data properties files.
+
+2005-05-19  Michael Koch  <konqueror@gmx.de>
+
 	* resource/gnu/java/locale/LocaleInformation_aa_DJ.properties,
 	resource/gnu/java/locale/LocaleInformation_aa_ER.properties,
 	resource/gnu/java/locale/LocaleInformation_aa_ER_SAAHO.properties,

@@ -43,10 +43,8 @@ fi
 # Split in multiple parts for gcj
 grep -v /javax/ classes | grep -v /awt/ \
                         | grep -v /beans/ \
-                        | grep -v /locale/ \
 			| grep -v /xml/ > classes.standard
 grep /awt/ classes > classes.awt
 grep /beans/ classes >> classes.awt
-grep /locale/ classes > classes.locale
 grep /xml/ classes > classes.xml
 grep /javax/ classes | grep -v /xml/ > classes.standardx
