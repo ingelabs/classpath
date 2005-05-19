@@ -1,4 +1,11 @@
+2005-05-19  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/metal/MetalComboBoxUI.java
+	(createUI): Do not share instances of this UI class between
+	different JComboBoxes.
+
 2005-05-19  Kim Ho  <kho@luxsci.net>
+
 	* javax/swing/DefaultComboBoxModel.java:
 	(addElement): Set index to be the element of the added item.
 	(removeAllElements): Clear before retrieving new size. Use
