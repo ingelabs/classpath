@@ -1,5 +1,9 @@
 2005-05-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* java/awt/Window.java (createBufferStrategy): Remove unnecessary
+	try-catch blocks.
+	* java/awt/Canvas.java (createBufferStrategy): Likewise.
+
 	* gnu/java/awt/peer/gtk/GtkVolatileImage.java: Fix imports.
 
 	* gnu/java/security/provider/DSASignature.java: Import updates

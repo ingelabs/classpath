@@ -878,33 +878,22 @@ public class Window extends Container implements Accessible
       throw new IllegalStateException("Window.createBufferStrategy: window is"
 				      + " not displayable");
 
+    BufferStrategy newStrategy = null;
+
     // try a flipping strategy
     try
       {
-	bufferStrategy = new WindowFlipBufferStrategy(numBuffers);
-	return;
+	newStrategy = new WindowFlipBufferStrategy(numBuffers);
       }
     catch (AWTException e)
       {
       }
 
-    // try an accelerated blitting strategy
-    try
-      {
-	bufferStrategy = new WindowBltBufferStrategy(numBuffers, true);
-      }
-    catch (AWTException e)
-      {
-      }
+    // fall back to an accelerated blitting strategy
+    if (newStrategy == null)
+      newStrategy = new WindowBltBufferStrategy(numBuffers, true);
 
-    // fall back to an unaccelerated blitting strategy
-    try
-      {
-	bufferStrategy = new WindowBltBufferStrategy(numBuffers, false);
-      }
-    catch (AWTException e)
-      {
-      }
+    bufferStrategy = newStrategy;
   }
 
   /**
