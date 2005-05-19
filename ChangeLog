@@ -1,5 +1,10 @@
 2005-05-19  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/FocusManager.java:
+	Reformatted this file to match our coding standard.
+
+2005-05-19  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/metal/BasicFileChooserUI.java:
 	(installComponents): Include parents ComboBox. This has been
 	commented out because ComboBox was broken (see previous entry).
