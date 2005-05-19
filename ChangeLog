@@ -1,5 +1,10 @@
 2005-05-19  Michael Koch  <konqueror@gmx.de>
 
+	* lib/Makefile.am: Remove accidentally commited -nowarn option for
+	jikes.
+
+2005-05-19  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/DateFormatSymbols.java
 	(getStringArray): New method.
 	(getZoneStrings): Likewise.

@@ -18,7 +18,7 @@ JAVAC = $(GCJ) --bootclasspath '' --classpath $(compile_classpath) -C -d . @clas
 && $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.standardx
 else
 if FOUND_JIKES
-JAVAC = $(JIKES) -nowarn +Pno-shadow +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
+JAVAC = $(JIKES) +Pno-shadow +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
 else
 if FOUND_KJC
 JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
