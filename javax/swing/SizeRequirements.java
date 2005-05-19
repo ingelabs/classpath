@@ -87,7 +87,7 @@ public class SizeRequirements implements Serializable
    */
   public SizeRequirements()
   {
-    // TODO
+    this (0, 0, 0, 0.5F);
   }
 
   /**
@@ -101,7 +101,10 @@ public class SizeRequirements implements Serializable
    */
   public SizeRequirements(int min, int pref, int max, float align)
   {
-    // TODO
+    minimum = min;
+    preferred = pref;
+    maximum = max;
+    alignment = align;
   }
 
   /**
@@ -129,7 +132,14 @@ public class SizeRequirements implements Serializable
   public static SizeRequirements
   getTiledSizeRequirements(SizeRequirements[] children)
   {
-    return null; // TODO
+    SizeRequirements result = new SizeRequirements();
+    for (int i = 0; i < children.length; i++)
+      {
+        result.minimum += children[i].minimum;
+        result.preferred += children[i].preferred;
+        result.maximum += children[i].maximum;
+      }
+    return result;
   }
 
   /**
@@ -162,6 +172,9 @@ public class SizeRequirements implements Serializable
    * The calculated offset and span values for each component are then
    * stored in the arrays <code>offsets</code> and <code>spans</code>.
    *
+   * The components are placed in the forward direction, beginning with
+   * an offset of 0.
+   *
    * @param allocated the amount of allocated space
    * @param total the total size requirements of the components
    * @param children the size requirement of each component
@@ -171,9 +184,9 @@ public class SizeRequirements implements Serializable
   public static void calculateTiledPositions(int allocated,
                                              SizeRequirements total,
                                              SizeRequirements[] children,
-                                             int[] offset, int[] spans)
+                                             int[] offsets, int[] spans)
   {
-    // TODO
+    calculateTiledPositions(allocated, total, children, offsets, spans, true);
   }
 
   /**
@@ -189,6 +202,64 @@ public class SizeRequirements implements Serializable
    * The calculated offset and span values for each component are then
    * stored in the arrays <code>offsets</code> and <code>spans</code>.
    *
+   * Depending on the value of <code>forward</code> the components are
+   * placed in the forward direction (left-right or top-bottom), where
+   * the offsets begin with 0, or in the reverse direction
+   * (right-left or bottom-top).
+   *
+   * @param allocated the amount of allocated space
+   * @param total the total size requirements of the components
+   * @param children the size requirement of each component
+   * @param offsets will hold the offset values for each component
+   * @param spans will hold the span values for each component
+   * @param forward whether the components should be placed in the forward
+   *     direction (left-right or top-bottom) or reverse direction
+   *     (right-left or bottom-top)
+   */
+  public static void calculateTiledPositions(int allocated,
+                                             SizeRequirements total,
+                                             SizeRequirements[] children,
+                                             int[] offsets, int[] spans,
+                                             boolean forward)
+  {
+    if (forward)
+      {
+        int offset = 0;
+        for (int i = 0; i < children.length; i++)
+          {
+            offsets[i] = offset;
+            spans[i] = children[i].preferred;
+            offset += children[i].preferred;
+          }
+      }
+    else
+      {
+        int offset = allocated;
+        for (int i = 0; i < children.length; i++)
+          {
+            offset -= children[i].preferred;
+            offsets[i] = offset;
+            spans[i] = children[i].preferred;
+          }
+      }
+  }
+
+  /**
+   * Calculate the offsets and spans of the components, when they should
+   * be placed end-to-end.
+   *
+   * You must specify the amount of allocated space in
+   * <code>allocated</code>, the total size requirements of the set of
+   * components in <code>total</code> (this can be calculated using
+   * {@link #getTiledSizeRequirements} and the size requirements of the
+   * components in <code>children</code>.
+   *
+   * The calculated offset and span values for each component are then
+   * stored in the arrays <code>offsets</code> and <code>spans</code>.
+   *
+   * The components are tiled in the forward direction, beginning with
+   * an offset of 0.
+   * 
    * @param allocated the amount of allocated space
    * @param total the total size requirements of the components
    * @param children the size requirement of each component
@@ -198,7 +269,43 @@ public class SizeRequirements implements Serializable
   public static void calculateAlignedPositions(int allocated,
                                                SizeRequirements total,
                                                SizeRequirements[] children,
-                                               int[] offset, int[] spans)
+                                               int[] offsets, int[] spans)
+  {
+    calculateTiledPositions(allocated, total, children, offsets, spans, true);
+  }
+
+  /**
+   * Calculate the offsets and spans of the components, when they should
+   * be placed end-to-end.
+   *
+   * You must specify the amount of allocated space in
+   * <code>allocated</code>, the total size requirements of the set of
+   * components in <code>total</code> (this can be calculated using
+   * {@link #getTiledSizeRequirements} and the size requirements of the
+   * components in <code>children</code>.
+   *
+   * The calculated offset and span values for each component are then
+   * stored in the arrays <code>offsets</code> and <code>spans</code>.
+   *
+   * Depending on the value of <code>forward</code> the components are
+   * placed in the forward direction (left-right or top-bottom), where
+   * the offsets begin with 0, or in the reverse direction
+   * (right-left or bottom-top).
+   *
+   * @param allocated the amount of allocated space
+   * @param total the total size requirements of the components
+   * @param children the size requirement of each component
+   * @param offsets will hold the offset values for each component
+   * @param spans will hold the span values for each component
+   * @param forward whether the components should be placed in the forward
+   *     direction (left-right or top-bottom) or reverse direction
+   *     (right-left or bottom-top)
+   */
+  public static void calculateAlignedPositions(int allocated,
+                                               SizeRequirements total,
+                                               SizeRequirements[] children,
+                                               int[] offset, int[] spans,
+                                               boolean forward)
   {
     // TODO
   }
