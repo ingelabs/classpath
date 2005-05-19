@@ -1335,7 +1335,13 @@ public class SwingUtilities
    */
   public static InputMap getUIInputMap(JComponent component, int cond)
   {
-    return component.getInputMap(cond);
+    if (UIManager.getUI(component) != null)
+      // we assume here that the UI class sets the parent of the component's
+      // InputMap, which is the correct behaviour. If it's not, then
+      // this can be considered a bug
+      return component.getInputMap(cond).getParent();
+    else
+      return null;
   }
 
   /**
@@ -1344,8 +1350,14 @@ public class SwingUtilities
    *
    * @param component the component for which the ActionMap is returned
    */
-  public static InputMap getUIActionMap(JComponent component)
+  public static ActionMap getUIActionMap(JComponent component)
   {
-    return component.getInputMap();
+    if (UIManager.getUI(component) != null)
+      // we assume here that the UI class sets the parent of the component's
+      // ActionMap, which is the correct behaviour. If it's not, then
+      // this can be considered a bug
+      return component.getActionMap().getParent();
+    else
+      return null;
   }
 }

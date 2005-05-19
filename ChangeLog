@@ -1,5 +1,13 @@
 2005-05-19  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/SwingUtilities.java
+	(getUIInputMap): Return the InputMap that has been set by
+	the UI of the component, not the component's own InputMap.
+	(getUIActionMap): Return the ActionMap that has been set by
+	the UI of the component, not the component's own ActionMap.
+
+2005-05-19  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/FocusManager.java:
 	Reformatted this file to match our coding standard.
 
