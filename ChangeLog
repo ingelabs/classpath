@@ -1,3 +1,21 @@
+2005-05-19  Kim Ho  <kho@luxsci.net>
+	* javax/swing/DefaultComboBoxModel.java:
+	(addElement): Set index to be the element of the added item.
+	(removeAllElements): Clear before retrieving new size. Use
+	correct size.
+	* javax/swing/JFileChooser.java: Implemented.
+	* javax/swing/filechooser/FileSystemView.java: Implemented.
+	* javax/swing/filechooser/UnixFileSystemView.java: New file.
+	Implemented.
+	* javax/swing/plaf/basic/BasicComboBoxUI.java:
+	(intervalAdded): Set initial index to start.
+	* javax/swing/plaf/basic/BasicDirectoryModel.java: New file.
+	Implemented.
+	* javax/swing/plaf/basic/BasicFileChooserUI.java: New file.
+	Implemented.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java: Add FileChooserUI.
+	Commented out GIF properties for FileChooser stuff.
+
 2005-05-19  Michael Koch  <konqueror@gmx.de>
 
 	* lib/Makefile.am: Remove accidentally commited -nowarn option for
