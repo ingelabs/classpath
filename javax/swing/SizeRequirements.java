@@ -1,5 +1,5 @@
 /* SizeRequirements.java --
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,7 +35,6 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package javax.swing;
 
 import java.io.Serializable;
@@ -49,123 +48,117 @@ public class SizeRequirements implements Serializable
 {
   private static final long serialVersionUID = 9217749429906736553L;
 
-	//-------------------------------------------------------------
-	// Variables --------------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * minimum
+   */
+  public int minimum;
 
-	/**
-	 * minimum
-	 */
-	public int minimum;
+  /**
+   * preferred
+   */
+  public int preferred;
 
-	/**
-	 * preferred
-	 */
-	public int preferred;
+  /**
+   * maximum
+   */
+  public int maximum;
 
-	/**
-	 * maximum
-	 */
-	public int maximum;
+  /**
+   * alignment
+   */
+  public float alignment;
 
-	/**
-	 * alignment
-	 */
-	public float alignment;
+  /**
+   * Constructor SizeRequirements
+   */
+  public SizeRequirements()
+  {
+    // TODO
+  } // SizeRequirements()
 
+  /**
+   * Constructor SizeRequirements
+   * @param min TODO
+   * @param pref TODO
+   * @param max TODO
+   * @param align TODO
+   */
+  public SizeRequirements(int min, int pref, int max, float align)
+  {
+    // TODO
+  }
 
-	//-------------------------------------------------------------
-	// Initialization ---------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * toString
+   * @returns String
+   */
+  public String toString()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * Constructor SizeRequirements
-	 */
-	public SizeRequirements() {
-		// TODO
-	} // SizeRequirements()
+  /**
+   * getTiledSizeRequirements
+   * @param children TODO
+   * @returns SizeRequirements
+   */
+  public static SizeRequirements
+  getTiledSizeRequirements(SizeRequirements[] children)
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * Constructor SizeRequirements
-	 * @param min TODO
-	 * @param pref TODO
-	 * @param max TODO
-	 * @param align TODO
-	 */
-	public SizeRequirements(int min, int pref, int max, float align) {
-		// TODO
-	} // SizeRequirements()
+  /**
+   * getAlignedSizeRequirements
+   * @param children TODO
+   * @returns SizeRequirements
+   */
+  public static SizeRequirements
+  getAlignedSizeRequirements(SizeRequirements[] children)
+  {
+    return null; // TODO
+  }
 
+  /**
+   * calculateTiledPositions
+   * @param allocated TODO
+   * @param total TODO
+   * @param children TODO
+   * @param offset TODO
+   * @param spans TODO
+   */
+  public static void calculateTiledPositions(int allocated,
+                                             SizeRequirements total,
+                                             SizeRequirements[] children,
+                                             int[] offset, int[] spans)
+  {
+    // TODO
+  }
 
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * calculateAlignedPositions
+   * @param allocated TODO
+   * @param total TODO
+   * @param children TODO
+   * @param offset TODO
+   * @param spans TODO
+   */
+  public static void calculateAlignedPositions(int allocated,
+                                               SizeRequirements total,
+                                               SizeRequirements[] children,
+                                               int[] offset, int[] spans)
+  {
+    // TODO
+  }
 
-	/**
-	 * toString
-	 * @returns String
-	 */
-	public String toString() {
-		return null; // TODO
-	} // toString()
-
-	/**
-	 * getTiledSizeRequirements
-	 * @param children TODO
-	 * @returns SizeRequirements
-	 */
-	public static SizeRequirements getTiledSizeRequirements(
-			SizeRequirements[] children) {
-		return null; // TODO
-	} // getTiledSizeRequirements()
-
-	/**
-	 * getAlignedSizeRequirements
-	 * @param children TODO
-	 * @returns SizeRequirements
-	 */
-	public static SizeRequirements getAlignedSizeRequirements(
-			SizeRequirements[] children) {
-		return null; // TODO
-	} // getAlignedSizeRequirements()
-
-	/**
-	 * calculateTiledPositions
-	 * @param allocated TODO
-	 * @param total TODO
-	 * @param children TODO
-	 * @param offset TODO
-	 * @param spans TODO
-	 */
-	public static void calculateTiledPositions(int allocated,
-			SizeRequirements total, SizeRequirements[] children,
-			int[] offset, int[] spans) {
-		// TODO
-	} // calculateTiledPositions()
-
-	/**
-	 * calculateAlignedPositions
-	 * @param allocated TODO
-	 * @param total TODO
-	 * @param children TODO
-	 * @param offset TODO
-	 * @param spans TODO
-	 */
-	public static void calculateAlignedPositions(int allocated,
-			SizeRequirements total, SizeRequirements[] children,
-			int[] offset, int[] spans) {
-		// TODO
-	} // calculateAlignedPositions()
-
-	/**
-	 * adjustSizes
-	 * @param delta TODO
-	 * @param children TODO
-	 * @returns int[]
-	 */
-	public static int[] adjustSizes(int delta, SizeRequirements[] children) {
-		return null; // TODO
-	} // adjustSizes()
-
-
-} // SizeRequirements
+  /**
+   * adjustSizes
+   * @param delta TODO
+   * @param children TODO
+   * @returns int[]
+   */
+  public static int[] adjustSizes(int delta, SizeRequirements[] children)
+  {
+    return null; // TODO
+  }
+}
