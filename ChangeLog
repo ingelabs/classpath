@@ -1,6 +1,11 @@
 2005-05-19  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/SizeRequirements.java:
+	Added API documentation for this class.
+
+2005-05-19  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/SizeRequirements.java:
 	Reformatted file to meet our coding standards.
 
 2005-05-19  Roman Kennke  <roman@kennke.org>

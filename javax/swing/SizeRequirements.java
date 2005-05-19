@@ -40,48 +40,64 @@ package javax.swing;
 import java.io.Serializable;
 
 /**
- * SizeRequirements
- * @author	Andrew Selkirk
- * @version	1.0
+ * This class calculates information about the size and position requirements
+ * of components.
+ *
+ * Two types of layout are supported:
+ * <ul>
+ * <li>Tiled: the components are placed at position top-left or bottom-right
+ *    position within their allocated space</li>
+ * <li>Aligned: the components are placed aligned in their allocated space
+ *    according to their alignment value</li>
+ * </ul>
+ *
+ * @author Andrew Selkirk
+ * @author Roman Kennke (roman@kennke.org)
  */
 public class SizeRequirements implements Serializable
 {
+  /**
+   * The serialVersionUID.
+   */
   private static final long serialVersionUID = 9217749429906736553L;
 
   /**
-   * minimum
+   * The minimum reasonable width or height of a component.
    */
   public int minimum;
 
   /**
-   * preferred
+   * The preferred width or height of a component.
    */
   public int preferred;
 
   /**
-   * maximum
+   * The maximum reasonable width or height of a component.
    */
   public int maximum;
 
   /**
-   * alignment
+   * The horizontal or vertical alignment of a component.
    */
   public float alignment;
 
   /**
-   * Constructor SizeRequirements
+   * Creates a SizeRequirements object with minimum, preferred and
+   * maximum size set to zero, and an alignment value of 0.5.
    */
   public SizeRequirements()
   {
     // TODO
-  } // SizeRequirements()
+  }
 
   /**
-   * Constructor SizeRequirements
-   * @param min TODO
-   * @param pref TODO
-   * @param max TODO
-   * @param align TODO
+   * Creates a SizeRequirements object with the specified minimum,
+   * preferred, maximum and alignment values.
+   *
+   * @param min the minimum reasonable size of the component
+   * @param pref the preferred size of the component
+   * @param max the maximum size of the component
+   * @param align the alignment of the component
    */
   public SizeRequirements(int min, int pref, int max, float align)
   {
@@ -89,8 +105,11 @@ public class SizeRequirements implements Serializable
   }
 
   /**
-   * toString
-   * @returns String
+   * Returns a String representation of this SizeRequirements object,
+   * containing information about the minimum, preferred, maximum and
+   * alignment value.
+   *
+   * @return a String representation of this SizeRequirements object
    */
   public String toString()
   {
@@ -98,9 +117,14 @@ public class SizeRequirements implements Serializable
   }
 
   /**
-   * getTiledSizeRequirements
-   * @param children TODO
-   * @returns SizeRequirements
+   * Calculates how much space is nessecary to place a set of components
+   * end-to-end. The size requirements of the components is specified
+   * in <code>children</code>.
+   *
+   * @param children the SizeRequirements of each of the components
+   *
+   * @return the SizeRequirements that describe how much space is needed
+   *     to place the components end-to-end
    */
   public static SizeRequirements
   getTiledSizeRequirements(SizeRequirements[] children)
@@ -109,9 +133,15 @@ public class SizeRequirements implements Serializable
   }
 
   /**
-   * getAlignedSizeRequirements
-   * @param children TODO
-   * @returns SizeRequirements
+   * Calculates how much space is nessecary to place a set of components
+   * aligned according to their alignment value.
+   * The size requirements of the components is specified in
+   * <code>children</code>.
+   *
+   * @param children the SizeRequirements of each of the components
+   *
+   * @return the SizeRequirements that describe how much space is needed
+   *     to place the components aligned
    */
   public static SizeRequirements
   getAlignedSizeRequirements(SizeRequirements[] children)
@@ -120,12 +150,23 @@ public class SizeRequirements implements Serializable
   }
 
   /**
-   * calculateTiledPositions
-   * @param allocated TODO
-   * @param total TODO
-   * @param children TODO
-   * @param offset TODO
-   * @param spans TODO
+   * Calculate the offsets and spans of the components, when they should
+   * be placed end-to-end.
+   *
+   * You must specify the amount of allocated space in
+   * <code>allocated</code>, the total size requirements of the set of
+   * components in <code>total</code> (this can be calculated using
+   * {@link #getTiledSizeRequirements} and the size requirements of the
+   * components in <code>children</code>.
+   *
+   * The calculated offset and span values for each component are then
+   * stored in the arrays <code>offsets</code> and <code>spans</code>.
+   *
+   * @param allocated the amount of allocated space
+   * @param total the total size requirements of the components
+   * @param children the size requirement of each component
+   * @param offsets will hold the offset values for each component
+   * @param spans will hold the span values for each component
    */
   public static void calculateTiledPositions(int allocated,
                                              SizeRequirements total,
@@ -136,12 +177,23 @@ public class SizeRequirements implements Serializable
   }
 
   /**
-   * calculateAlignedPositions
-   * @param allocated TODO
-   * @param total TODO
-   * @param children TODO
-   * @param offset TODO
-   * @param spans TODO
+   * Calculate the offsets and spans of the components, when they should
+   * be placed end-to-end.
+   *
+   * You must specify the amount of allocated space in
+   * <code>allocated</code>, the total size requirements of the set of
+   * components in <code>total</code> (this can be calculated using
+   * {@link #getTiledSizeRequirements} and the size requirements of the
+   * components in <code>children</code>.
+   *
+   * The calculated offset and span values for each component are then
+   * stored in the arrays <code>offsets</code> and <code>spans</code>.
+   *
+   * @param allocated the amount of allocated space
+   * @param total the total size requirements of the components
+   * @param children the size requirement of each component
+   * @param offsets will hold the offset values for each component
+   * @param spans will hold the span values for each component
    */
   public static void calculateAlignedPositions(int allocated,
                                                SizeRequirements total,
@@ -152,10 +204,16 @@ public class SizeRequirements implements Serializable
   }
 
   /**
-   * adjustSizes
-   * @param delta TODO
-   * @param children TODO
-   * @returns int[]
+   * Returns an array of new preferred sizes for the children based on
+   * <code>delta</code>. <code>delta</code> specifies a change in the
+   * allocated space. The sizes of the children will be shortened or
+   * lengthened to accomodate the new allocation.
+   *
+   * @param delta the change of the size of the total allocation for
+   *     the components
+   * @param children the size requirements of each component
+   *
+   * @return the new preferred sizes for each component
    */
   public static int[] adjustSizes(int delta, SizeRequirements[] children)
   {
