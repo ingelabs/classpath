@@ -1,5 +1,11 @@
 2005-05-19  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/metal/BasicFileChooserUI.java:
+	(installComponents): Include parents ComboBox. This has been
+	commented out because ComboBox was broken (see previous entry).
+
+2005-05-19  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/metal/MetalComboBoxUI.java
 	(createUI): Do not share instances of this UI class between
 	different JComboBoxes.

@@ -1190,13 +1190,13 @@ public class BasicFileChooserUI extends FileChooserUI
   {
     JLabel look = new JLabel("Look In:");
 
-    //parents = new JComboBox();
-    //parents.setRenderer(new CBLabelRenderer());
-    //boxEntries();
-    //look.setLabelFor(parents);
+    parents = new JComboBox();
+    parents.setRenderer(new CBLabelRenderer());
+    boxEntries();
+    look.setLabelFor(parents);
     JPanel parentsPanel = new JPanel();
     parentsPanel.add(look);
-    //parentsPanel.add(parents);
+    parentsPanel.add(parents);
     JPanel buttonPanel = new JPanel();
 
     upFolderButton = new JButton();
