@@ -1,5 +1,11 @@
 2005-05-20  Roman Kennke  <roman@kennke.org>
 
+	* java/awt/Component.java
+	(dispatchEventImpl): Let MouseEvents trigger a focus change
+	on lightweight components.
+
+2005-05-20  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JTextField.java
 	(constructor): Set default value for the horizontalAlignment
 	property.
