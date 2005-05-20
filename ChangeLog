@@ -1,5 +1,13 @@
 2005-05-20  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 
+	* org/omg/CORBA/SetOverrideType.java (_ADD_OVERRIDE, _SET_OVERRIDE),
+	org/omg/CORBA/CompletionStatus.java
+	(_COMPLETED_YES, _COMPLETED_NO, _COMPLETED_MAYBE): Making public.
+	* org/omg/CORBA/ValueMember.java: Inherit from 
+	org.omg.CORBA.portable.IDLEntity.
+
+2005-05-20  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
 	* org/omg/CORBA/portable/ApplicationException.java,
 	org/omg/CORBA/portable/RemarshalException.java:
 	Adding serialVersionUID.
