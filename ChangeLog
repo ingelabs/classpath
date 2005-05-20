@@ -1,3 +1,13 @@
+2005-05-20  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
+	* org/omg/CORBA/portable/ApplicationException.java,
+	org/omg/CORBA/portable/RemarshalException.java:
+	Adding serialVersionUID.
+	*org/omg/CORBA/portable/OutputStream.java(write_Context):
+	Making concrete.
+	org/omg/CORBA/portable/ServantObject.java (servant):
+	Fixing typo in the field name.
+
 2005-05-20  Michael Koch  <konqueror@gmx.de>
 
 	* scripts/generate-locale-list.sh:
