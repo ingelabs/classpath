@@ -124,7 +124,7 @@ public class SizeRequirements implements Serializable
    * end-to-end. The size requirements of the components is specified
    * in <code>children</code>.
    *
-   * @param children the SizeRequirements of each of the components
+   * @param children the SizeRequirements of each of the components
    *
    * @return the SizeRequirements that describe how much space is needed
    *     to place the components end-to-end
@@ -148,7 +148,7 @@ public class SizeRequirements implements Serializable
    * The size requirements of the components is specified in
    * <code>children</code>.
    *
-   * @param children the SizeRequirements of each of the components
+   * @param children the SizeRequirements of each of the components
    *
    * @return the SizeRequirements that describe how much space is needed
    *     to place the components aligned
