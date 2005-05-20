@@ -52,7 +52,7 @@ echo "{"
 echo "  public static String[] localeNames ="
 echo "    {"
 
-( cd $CLASSPATH_SRCDIR/resource/gnu/java/locale ; ls LocaleInformation_*.java ) | xargs -n 1 echo | sed -e 's/LocaleInformation_\(.*\)\.java/\1/' |
+( cd $CLASSPATH_SRCDIR/resource/gnu/java/locale ; ls LocaleInformation_*.properties ) | xargs -n 1 echo | sed -e 's/LocaleInformation_\(.*\)\.properties/\1/' |
 while read locale ; do echo "      \"$locale\"," ; done
 
 echo "    };"
