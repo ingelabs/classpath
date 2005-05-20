@@ -1,5 +1,16 @@
 2005-05-20  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/JTextComponent.java
+	(CaretBlinkTimer): Added inner class to make caret blinking.
+	(constructor): Create one instance of CaretBlinkTimer.
+	(setEditable): Switch caret on and off depending on the editable
+	property.
+	(setCare): Register caret with the CaretBlinkTimer.
+	* javax/swing/text/DefaultCaret.java:
+	Set a good blink rate of 500ms.
+
+2005-05-20  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JEditorPane.java:
 	(processComponentKeyEvent): Removed this method. This blocks
 	key events from beeing delivered and is not in the API.
