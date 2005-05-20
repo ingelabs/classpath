@@ -1,3 +1,9 @@
+2005-05-20  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/SwingUtilities.java
+	(convertPoint): Check for visibility of source and destination
+	before calling convertPointToScreen or convertPointFromScreen.
+
 2005-05-20  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/SetOverrideType.java (_ADD_OVERRIDE, _SET_OVERRIDE),
