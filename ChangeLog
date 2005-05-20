@@ -1,5 +1,11 @@
 2005-05-20  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JTextField.java
+	(constructor): Set default value for the horizontalAlignment
+	property.
+
+2005-05-20  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
 	(setButtonIcons): Added checks for null references.
 
