@@ -1,5 +1,13 @@
 2005-05-20  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JProgressBar.java
+	(paintBorder): Check if border is null before trying to paint it.
+	* javax/swing/plaf/basic/BasicProgressBarUI.java
+	(paint): Don't paint the border here. This would lead to the border
+	beeing painted twice.
+
+2005-05-20  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/SwingUtilities.java
 	(convertPoint): Check for visibility of source and destination
 	before calling convertPointToScreen or convertPointFromScreen.
