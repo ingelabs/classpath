@@ -142,7 +142,7 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
 
   /**
    * This flag indicates for which focus traversal key release event we
-   * possibly wait, bevor letting any more KEY_TYPED events through.
+   * possibly wait, before letting any more KEY_TYPED events through.
    */
   private AWTKeyStroke waitForKeyStroke = null;
 
@@ -374,7 +374,7 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
                                                                    e.getModifiersEx (),
                                                                    !(e.id == KeyEvent.KEY_RELEASED));
 
-    // Here we check if we are currently waiting for a KEY_PRESSED and
+    // Here we check if we are currently waiting for a KEY_RELEASED and
     // swallow all KeyEvents that are to be delivered in between. This
     // should only be the KEY_TYPED events that correspond to the
     // focusTraversalKey's KEY_PRESSED event
