@@ -138,6 +138,21 @@ java.awt.AlphaComposite and its createContext method.
 
 </task-section>
 
+<task-section name="CORBA">
+<task
+	title="Help with CORBA implementation"
+	estimation="This depends from the sub-task you pick."
+	skills="Know or be ready to read the OMG documentation."
+	contact="Audrius Meskauskas"
+>
+The development of CORBA in Classpath project have reached 
+the stage of surely incomplete, but working prototype. A number of CORBA 
+related tasks are available. If you are not a CORBA expert, you should be ready
+to learn by reading the OMG specifications and probably by writing some 
+relatively simple classes.
+</task>
+</task-section>
+
 <task-section name="Testing">
 <task
 	title="Make Mauve an application"
