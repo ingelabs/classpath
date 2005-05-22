@@ -1,3 +1,8 @@
+2005-05-21  Andreas Jaeger  <aj@suse.de>
+
+	* java/lang/mprec.c (mult, lshift, b2d, d2b): Add parenthesis to
+	avoid warnings.
+
 2005-05-21  Archie Cobbs  <archie@dellroad.org>
 
 	* NEWS: document VM interface changes.
