@@ -287,6 +287,11 @@ public class TreePath implements Serializable
    */
   public TreePath getParentPath()
   {
+    // If this path has only one element, then we return null. That
+    // is what the JDK does.
+    if (path.length <= 1)
+      return null;
+
     return new TreePath(this.getPath(), path.length - 1);
   }
 }
