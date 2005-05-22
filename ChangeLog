@@ -1,3 +1,9 @@
+2005-05-22  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
+	* org/omg/CORBA/ServiceDetail.java,
+	org/omg/CORBA/ServiceDetailHelper.java,
+	gnu/CORBA/ServiceDetailHolder.java: New files.
+
 2005-05-21  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/ObjectCreator.java: Use gnu/CORBA namespace.
