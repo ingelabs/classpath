@@ -1,3 +1,10 @@
+2005-05-22  Dalibor Topic  <robilad@kaffe.org>
+
+	* gnu/java/security/provider/SHA1PRNG.java
+	(SEED_SIZE, DATA_SIZE): new constants.  Use them instead of
+	magic numbers.
+	(SHA1PRNG) Added documentation.
+
 2005-05-22  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
