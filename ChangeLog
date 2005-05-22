@@ -1,5 +1,9 @@
 2005-05-21  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/ObjectCreator.java: Use gnu/CORBA namespace.
+
+2005-05-21  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/universalHolder.java: New file.
 	* gnu/CORBA/gnuAny.java (create_input_stream,
 	read_value): Use the universalHolder.
