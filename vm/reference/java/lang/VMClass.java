@@ -191,12 +191,7 @@ final class VMClass
    * @see Modifer
    * @since 1.1
    */
-  static int getModifiers(Class klass, boolean ignoreInnerClassesAttrib)
-  {
-    return getModifiers(klass);
-  }
-
-  private static native int getModifiers(Class klass);
+  static native int getModifiers(Class klass, boolean ignoreInnerClassesAttrib);
 
   /**
    * If this is a nested or inner class, return the class that declared it.

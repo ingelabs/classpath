@@ -50,6 +50,11 @@ package java.lang;
 final class VMThrowable
 {
   /**
+   * VM private data.
+   */
+  private transient Object vmdata;
+
+  /**
    * Private contructor, create VMThrowables with fillInStackTrace();
    */
   private VMThrowable() { }
@@ -63,10 +68,7 @@ final class VMThrowable
    * @return a new VMThrowable containing the current execution stack trace.
    * @see Throwable#fillInStackTrace()
    */
-  static VMThrowable fillInStackTrace(Throwable t)
-  {
-    return null;
-  }
+  static native VMThrowable fillInStackTrace(Throwable t);
 
   /**
    * Returns an <code>StackTraceElement</code> array based on the execution
@@ -76,8 +78,5 @@ final class VMThrowable
    * @return a non-null but possible zero length array of StackTraceElement.
    * @see Throwable#getStackTrace()
    */
-  StackTraceElement[] getStackTrace(Throwable t)
-  {
-    return new StackTraceElement[0];
-  }
+  native StackTraceElement[] getStackTrace(Throwable t);
 }

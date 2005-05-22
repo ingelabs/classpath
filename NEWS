@@ -1,3 +1,24 @@
+New in release 0.16
+
+Runtime interface changes:
+
+* Native method VMClass.getModifiers() now takes an additional
+  boolean parameter.
+* Deprecated native method VMClassLoader.defineClass(ClassLoader,
+  String, byte[], int, int) has been replaced by
+  VMClassLoader.defineClass(ClassLoader, String, byte[], int, int,
+  ProtectionDomain)
+* VMClassLoader.loadClass(String name, boolean resolve) is now native,
+  replacing the former version which just returned null.
+* Deprecated native method VMClassLoader.getPrimitiveClass(String) has
+  been replaced by new native method VMClassLoader.getPrimitiveClass(char).
+* Previously empty implementations of methods VMThread.countStackFrames(),
+  VMThrowable.fillInStackTrace(), and VMThrowable.getStackTrace() have
+  been removed; these methods are now native methods.
+* Fields "exceptionTypes" and "parameterTypes" have been removed from
+  Contructor.java and getExceptionTypes() and getParameterTypes() are
+  now native methods.
+
 New in release 0.15 (Apr 29, 2005)
 
 * The old character encoding framework (gnu.java.io.EncodingManager)

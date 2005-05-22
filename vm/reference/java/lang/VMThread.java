@@ -82,6 +82,11 @@ final class VMThread
     private volatile boolean running;
 
     /**
+     * VM private data.
+     */
+    private transient Object vmdata;
+
+    /**
      * Private constructor, create VMThreads with the static create method.
      *
      * @param thread The Thread object that was just created.
@@ -218,10 +223,7 @@ final class VMThread
      *
      * @deprecated unsafe operation
      */
-    int countStackFrames()
-    {
-	return 0;
-    }
+    native int countStackFrames();
 
     /**
      * Wait the specified amount of time for the Thread in question to die.

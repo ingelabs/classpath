@@ -1,3 +1,21 @@
+2005-05-21  Archie Cobbs  <archie@dellroad.org>
+
+	* NEWS: document VM interface changes.
+	* java/lang/ClassLoader.java: (vmdata): add
+	* vm/reference/java/lang/VMClass.java: (getModifiers()): add
+	new parameter ignoreInnerClassesAttrib
+	* vm/reference/java/lang/VMClassLoader.java: (defineClass()): remove
+	deprecated version (getPrimitiveClass(String)): remove
+	(getPrimitiveClass(char)): make native (loadClass()): make native
+	* vm/reference/java/lang/VMThread.java: (vmdata): add
+	(countStackFrames()): make native
+	* vm/reference/java/lang/VMThrowable.java: (vmdata): add
+	(fillInStackTrace()): make native
+	(getStackTrace()): make native
+	* vm/reference/java/lang/reflect/Constructor.java:
+	(parameterTypes, exceptionTypes): remove
+	(getParameterTypes(), getExceptionTypes()): make native
+
 2005-05-21  Michael Koch  <konqueror@gmx.de>
 
 	* resource/gnu/java/locale/LocaleInformation_as.properties,
