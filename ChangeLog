@@ -1,3 +1,11 @@
+2005-05-21  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/universalHolder.java: New file.
+	* gnu/CORBA/gnuAny.java (create_input_stream,
+	read_value): Use the universalHolder.
+	* gnu/CORBA/CDR/aligningInputStream.java
+	(getBuffer): New method.
+
 2005-05-21  Andreas Jaeger  <aj@suse.de>
 
 	* java/lang/mprec.c (mult, lshift, b2d, d2b): Add parenthesis to

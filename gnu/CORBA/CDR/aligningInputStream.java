@@ -109,4 +109,12 @@ public class aligningInputStream
         throw new BAD_PARAM("Unable to align at " + alignment);
       }
   }
+
+  /**
+   * Get the byte buffer, from where the data are read.
+   */
+  public byte[] getBuffer()
+  {
+    return buf;
+  }
 }
