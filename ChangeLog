@@ -1,3 +1,10 @@
+2005-05-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/CORBA/ORB.java (create_context_list, create_basic_dyn_any,
+	create_dyn_any, create_dyn_array,  create_dyn_enum, create_dyn_sequence,
+	create_dyn_struct, create_dyn_union, create_policy, get_current): New 
+	methods. 
+
 2005-05-23  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/JViewport.java:

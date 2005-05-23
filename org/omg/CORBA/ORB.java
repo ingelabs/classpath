@@ -182,6 +182,111 @@ public abstract class ORB
   public abstract ContextList create_context_list();
 
   /**
+   * The support for {@link DynAny} and derived interfaces
+   * has never been implemented in Sun's java releases,
+   * at least till v1.4 inclusive.
+   *
+   * Since v1.4 this stil missing implementation was replaced
+   * by the new DynamicAny package.
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public DynAny create_basic_dyn_any(org.omg.CORBA.TypeCode t)
+  {
+    throw new NO_IMPLEMENT();
+  };
+
+  /**
+   * The support for {@link DynAny} and derived interfaces
+   * has never been implemented in Sun's java releases,
+   * at least till v1.4 inclusive.
+   *
+   * Since v1.4 this stil missing implementation was replaced
+   * by the new DynamicAny package.
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public DynAny create_dyn_any(org.omg.CORBA.Any a)
+  {
+    throw new NO_IMPLEMENT();
+  };
+
+  /**
+   * The support for {@link DynArray}
+   * has never been implemented in Sun's java releases,
+   * at least till v1.4 inclusive.
+   *
+   * Since v1.4 this stil missing implementation was replaced
+   * by the new DynamicAny package.
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public DynArray create_dyn_array(org.omg.CORBA.TypeCode t)
+   {
+     throw new NO_IMPLEMENT();
+   };
+
+  /**
+   * The support for {@link DynEnum}
+   * has never been implemented in Sun's java releases,
+   * at least till v1.4 inclusive.
+   *
+   * Since v1.4 this stil missing implementation was replaced
+   * by the new DynamicAny package.
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public DynEnum create_dyn_enum(org.omg.CORBA.TypeCode t)
+  {
+    throw new NO_IMPLEMENT();
+  };
+
+  /**
+   * The support for {@link DynSequence}
+   * has never been implemented in Sun's java releases,
+   * at least till v1.4 inclusive.
+   *
+   * Since v1.4 this stil missing implementation was replaced
+   * by the new DynamicAny package.
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public DynSequence create_dyn_sequence(org.omg.CORBA.TypeCode t)
+  {
+    throw new NO_IMPLEMENT();
+  };
+
+  /**
+   * The support for {@link DynStruct} and derived interfaces
+   * has never been implemented in Sun's java releases,
+   * at least till v1.4 inclusive.
+   *
+   * Since v1.4 this stil missing implementation was replaced
+   * by the new DynamicAny package.
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public DynStruct create_dyn_struct(org.omg.CORBA.TypeCode t)
+  {
+    throw new NO_IMPLEMENT();
+  };
+
+  /**
+   * The support for {@link DynUnion} and derived interfaces
+   * has never been implemented in Sun's java releases,
+   * at least till v1.4 inclusive.
+   *
+   * Since v1.4 this stil missing implementation was replaced
+   * by the new DynamicAny package.
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public DynUnion create_dyn_union(org.omg.CORBA.TypeCode t)
+  {
+    throw new NO_IMPLEMENT();
+  };
+
+  /**
    * Create a typecode, defining the given enumeration.
    *
    * @param id the id.
@@ -273,6 +378,23 @@ public abstract class ORB
    * @return a stream to write values into.
    */
   public abstract org.omg.CORBA.portable.OutputStream create_output_stream();
+
+  /**
+   * This should create the new policy with the specified type and initial
+   * state. The policies and methods for getting them are not implemented till
+   * v1.4 inclusive.
+   *
+   * @param type the policy type.
+   * @param value the policy value.
+   *
+   * @return never
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public Policy create_policy(int type, Any value)
+  {
+    throw new NO_IMPLEMENT();
+  }
 
   /**
    * Create typecode, defining the sequence of the elements, having
@@ -381,6 +503,23 @@ public abstract class ORB
       }
 
     return r;
+  }
+
+  /**
+   * This should return the information, related to the current thread.
+   * The {@link Current} is very general interface, with no fields and
+   * operations defined. This method is not implemented in Suns
+   * releases at least till v1.4 inclusive.
+   *
+   * @deprecated since 1.2
+   *
+   * @return never
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public Current get_current()
+  {
+    throw new NO_IMPLEMENT();
   }
 
   /**
