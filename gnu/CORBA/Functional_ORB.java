@@ -52,9 +52,11 @@ import org.omg.CORBA.BAD_PARAM;
 import org.omg.CORBA.CompletionStatus;
 import org.omg.CORBA.MARSHAL;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
-import org.omg.CORBA.ORBPackage.InvalidName;
+import org.omg.CORBA.Request;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.UNKNOWN;
+
+import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CORBA.portable.Delegate;
 import org.omg.CORBA.portable.InvokeHandler;
 import org.omg.CORBA.portable.ObjectImpl;
@@ -158,6 +160,12 @@ public class Functional_ORB
    * The port, on that the name service is expected to be running.
    */
   private int ns_port = 900;
+
+  /**
+   * The instance, stored in this field, handles the asynchronous dynamic
+   * invocations.
+   */
+  protected Asynchron asynchron = new Asynchron();
 
   /**
    * Create the instance of the Functional ORB.
@@ -878,5 +886,75 @@ public class Functional_ORB
                                     );
           }
       }
+  }
+
+  /**
+   * Get the next instance with a response being received. If all currently
+   * sent responses not yet processed, this method pauses till at least one of
+   * them is complete. If there are no requests currently sent, the method
+   * pauses till some request is submitted and the response is received.
+   * This strategy is identical to the one accepted by Suns 1.4 ORB
+   * implementation.
+   *
+   * The returned response is removed from the list of the currently
+   * submitted responses and is never returned again.
+   *
+   * @return the previously sent request that now contains the received
+   * response.
+   *
+   * @throws WrongTransaction If the method was called from the transaction
+   * scope different than the one, used to send the request. The exception
+   * can be raised only if the request is implicitly associated with some
+   * particular transaction.
+   */
+  public Request get_next_response()
+                            throws org.omg.CORBA.WrongTransaction
+  {
+    return asynchron.get_next_response();
+  }
+
+  /**
+   * Find if any of the requests that have been previously sent with
+   * {@link #send_multiple_requests_deferred}, have a response yet.
+   *
+   * @return true if there is at least one response to the previously
+   * sent request, false otherwise.
+   */
+  public boolean poll_next_response()
+  {
+    return asynchron.poll_next_response();
+  }
+
+  /**
+   * Send multiple prepared requests expecting to get a reply. All requests
+   * are send in parallel, each in its own separate thread. When the
+   * reply arrives, it is stored in the agreed fields of the corresponing
+   * request data structure. If this method is called repeatedly,
+   * the new requests are added to the set of the currently sent requests,
+   * but the old set is not discarded.
+   *
+   * @param requests the prepared array of requests.
+   *
+   * @see #poll_next_response()
+   * @see #get_next_response()
+   * @see Request#send_deferred()
+   */
+  public void send_multiple_requests_deferred(Request[] requests)
+  {
+    asynchron.send_multiple_requests_deferred(requests);
+  }
+
+  /**
+   * Send multiple prepared requests one way, do not caring about the answer.
+   * The messages, containing requests, will be marked, indicating that
+   * the sender is not expecting to get a reply.
+   *
+   * @param requests the prepared array of requests.
+   *
+   * @see Request#send_oneway()
+   */
+  public void send_multiple_requests_oneway(Request[] requests)
+  {
+    asynchron.send_multiple_requests_oneway(requests);
   }
 }

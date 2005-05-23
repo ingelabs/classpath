@@ -372,6 +372,62 @@ public abstract class ORB
   public abstract NamedValue create_named_value(String s, Any any, int flags);
 
   /**
+   * Send multiple prepared requests one way, do not caring about the answer.
+   * The messages, containing requests, will be marked, indicating that
+   * the sender is not expecting to get a reply.
+   *
+   * @param requests the prepared array of requests.
+   *
+   * @see Request#send_oneway()
+   */
+  public abstract void send_multiple_requests_oneway(Request[] requests);
+
+  /**
+   * Send multiple prepared requests expecting to get a reply. All requests
+   * are send in parallel, each in its own separate thread. When the
+   * reply arrives, it is stored in the agreed fields of the corresponing
+   * request data structure. If this method is called repeatedly,
+   * the new requests are added to the set of the currently sent requests,
+   * but the old set is not discarded.
+   *
+   * @param requests the prepared array of requests.
+   *
+   * @see #poll_next_response()
+   * @see #get_next_response()
+   * @see Request#send_deferred()
+   */
+  public abstract void send_multiple_requests_deferred(Request[] requests);
+
+  /**
+   * Find if any of the requests that have been previously sent with
+   * {@link #send_multiple_requests_deferred}, have a response yet.
+   *
+   * @return true if there is at least one response to the previously
+   * sent request, false otherwise.
+   */
+  public abstract boolean poll_next_response();
+
+  /**
+   * Get the next instance with a response being received. If all currently
+   * sent responses not yet processed, this method pauses till at least one of
+   * them is complete. If there are no requests currently sent, the method
+   * pauses till some request is submitted and the response is received.
+   * This strategy is identical to the one accepted by Suns 1.4 ORB
+   * implementation.
+   *
+   * @return the previously sent request that now contains the received
+   * response.
+   *
+   * @throws WrongTransaction If the method was called from the transaction
+   * scope different than the one, used to send the request. The exception
+   * can be raised only if the request is implicitly associated with some
+   * particular transaction.
+   */
+  public abstract Request get_next_response()
+                                   throws WrongTransaction;
+
+
+  /**
    * Create a new CDR output stream, where the parameter values can be written
    * during the method invocation.
    *
@@ -678,6 +734,42 @@ public abstract class ORB
    * @see string_to_object(String)
    */
   public abstract String object_to_string(Object forObject);
+
+  /**
+   * This should perform the implementation dependent unit of work in the
+   * main thread.
+   *
+   * This method is part of the support for the distribute use of the
+   * single execution thread.
+   *
+   * Same as in Suns releases at least till 1.4 inclusive,
+   * the distribute use of the single thread is not implemented.
+   * Use multiple threads, provided by jre.
+   *
+   * The method returns without action.
+   */
+  public void perform_work()
+  {
+  }
+
+   /**
+   * Checks if the ORB needs the main thread to perform some work.
+   * The method should return true if the ORB needs the main thread,
+   * and false if it does not.
+   *
+   * This method is part of the support for the distribute use of the
+   * single execution thread.
+   *
+   * Same as in Suns releases at least till 1.4 inclusive,
+   * the distributed use of the single thread is not implemented.
+   * Use multiple threads, provided by jre.
+   *
+   * @return false, always.
+   */
+  public boolean work_pending()
+  {
+    return false;
+  }
 
   /**
    * Find and return the CORBA object, addressed by the given

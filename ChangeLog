@@ -1,3 +1,20 @@
+2005-05-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+    * gnu/CORBA/Asynchron.java: New file.
+    * org/omg/CORBA/ORB.java (send_multiple_requests_oneway,
+    send_multiple_requests_deferred, poll_next_response, 
+    get_next_response, perform_work, work_pending): New methods.
+    * gnu/CORBA/gnuRequest.java (send_deferred, send_oneway):
+    Launch the submission process in a separate thread.
+    * org/omg/CORBA/portable/ObjectImpl.java (hashCode): Removing
+    redundant method.
+    * gnu/CORBA/Functional_ORB.java (send_multiple_requests_oneway,
+    send_multiple_requests_deferred, poll_next_response,
+    get_next_response, perform_work, work_pending): New methods.
+    * gnu/CORBA/Restricted_ORB.java (send_multiple_requests_oneway,
+    send_multiple_requests_deferred, poll_next_response,
+    get_next_response, perform_work, work_pending): New methods.	
+
 2005-05-23  Tom Tromey  <tromey@redhat.com>
 
 	* doc/hacking.texinfo (Source Code Style Guide): Document UTF-8
