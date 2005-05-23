@@ -1,3 +1,10 @@
+2005-05-23  Tom Tromey  <tromey@redhat.com>
+
+	* doc/hacking.texinfo (Source Code Style Guide): Document UTF-8
+	use.
+	* lib/Makefile.am (GCJF): New variable.
+	(JAVAC): Use it.  Add -encoding option where needed.
+
 2005-05-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/NameValuePair.java: Inherit from Serializable, IDLEntity.

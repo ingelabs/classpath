@@ -11,7 +11,7 @@
 This file contains important information you will need to know if you
 are going to hack on the GNU Classpath project code.
 
-Copyright (C) 1998,1999,2000,2001,2002,2003,2004 Free Software Foundation, Inc.
+Copyright (C) 1998,1999,2000,2001,2002,2003,2004, 2005 Free Software Foundation, Inc.
 
 @ifnotplaintext
 @dircategory GNU Libraries
@@ -498,6 +498,11 @@ conventions):
 
 
 @itemize
+
+@item
+Java source files in GNU Classpath are encoded using UTF-8.  However,
+ordinarily it is considered best practice to use the ASCII subset of
+UTF-8 and write non-ASCII characters using \u escapes.
 
 @item
 If possible, generate specific imports (expand) over java.io.* type

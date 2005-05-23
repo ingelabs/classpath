@@ -12,22 +12,26 @@ compile_classpath = $(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/exter
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_GCJ
-JAVAC = $(GCJ) --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.standard \
-&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.awt \
-&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.xml \
-&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.standardx
+## Like GCJ but include some common flags.
+GCJF = $(GCJ) -Wno-deprecated --encoding=UTF-8 \
+    --bootclasspath '' --classpath $(compile_classpath)
+JAVAC = $(GCJF) -C -d . @classes.standard \
+&& $(GCJF) -C -d . @classes.awt \
+&& $(GCJF) -C -d . @classes.xml \
+&& $(GCJF) -C -d . @classes.standardx
 else
 if FOUND_JIKES
-JAVAC = $(JIKES) +Pno-shadow +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
+JAVAC = $(JIKES) +Pno-shadow +F -encoding UTF-8 -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
 else
 if FOUND_KJC
+## FIXME: from what I can tell, kjc does not support a -encoding option.
 JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
 else
 if FOUND_GCJX
-JAVAC = $(GCJX) -classpath .:$(USER_CLASSLIB) -d . @classes
+JAVAC = $(GCJX) -encoding UTF-8 -classpath .:$(USER_CLASSLIB) -d . @classes
 else
 if FOUND_ECJ
-JAVAC = $(ECJ) -warn:-deprecation,serial -proceedOnError -bootclasspath '' -classpath $(compile_classpath) -d . @classes
+JAVAC = $(ECJ) -encoding UTF-8 -warn:-deprecation,serial -proceedOnError -bootclasspath '' -classpath $(compile_classpath) -d . @classes
 endif # FOUND_ECJ
 endif # FOUND_GCJX
 endif # FOUND_KJC
