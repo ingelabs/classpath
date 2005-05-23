@@ -42,6 +42,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentAdapter;
@@ -190,6 +191,7 @@ public class JViewport extends JComponent
   {
     setOpaque(true);
     setScrollMode(BLIT_SCROLL_MODE);
+    setLayout(createLayoutManager());
     updateUI();
   }
 
@@ -471,5 +473,16 @@ public class JViewport extends JComponent
   protected ViewListener createViewListener()
   {
     return new ViewListener();
+  }
+
+  /**
+   * Creates the LayoutManager that is used for this viewport. Override
+   * this method if you want to use a custom LayoutManager.
+   *
+   * @return a LayoutManager to use for this viewport
+   */
+  protected LayoutManager createLayoutManager()
+  {
+    return new ViewportLayout();
   }
 }
