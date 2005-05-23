@@ -1,4 +1,4 @@
-/* IDLType.java --
+/* IDLTypeOperations.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,20 +36,21 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
+/**
+ * Defines operations, applicable for the IDL type.
+ *
+ * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
+ */
 package org.omg.CORBA;
 
-import org.omg.CORBA.portable.IDLEntity;
-
-import java.io.Serializable;
-
-/**
- * An abstract interface
- * that represent OMG IDL types.
- *
- * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
- */
-public interface IDLType
-  extends IDLTypeOperations, IRObject, IDLEntity, org.omg.CORBA.Object,
-          Serializable
+public interface IDLTypeOperations
+  extends IRObjectOperations
 {
+  /**
+   * Get the type code of the interface repository object.
+   *
+   * @return the data structure, describing the type of the object, stored in
+   * the repository.
+   */
+  TypeCode type();
 }

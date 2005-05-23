@@ -1,4 +1,4 @@
-/* IDLType.java --
+/* IRObject.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,18 +38,11 @@ exception statement from your version. */
 
 package org.omg.CORBA;
 
-import org.omg.CORBA.portable.IDLEntity;
-
-import java.io.Serializable;
-
 /**
- * An abstract interface
- * that represent OMG IDL types.
+ * Represents the interface repository object.
  *
- * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+ * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public interface IDLType
-  extends IDLTypeOperations, IRObject, IDLEntity, org.omg.CORBA.Object,
-          Serializable
+public interface IRObject extends IRObjectOperations
 {
 }

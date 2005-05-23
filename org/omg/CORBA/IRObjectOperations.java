@@ -1,4 +1,4 @@
-/* IDLType.java --
+/* IRObjectOperations.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,21 +35,34 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package org.omg.CORBA;
 
-import org.omg.CORBA.portable.IDLEntity;
-
-import java.io.Serializable;
 
 /**
- * An abstract interface
- * that represent OMG IDL types.
+ * Defines the operations, applicable to the interface repository object.
  *
- * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+ * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public interface IDLType
-  extends IDLTypeOperations, IRObject, IDLEntity, org.omg.CORBA.Object,
-          Serializable
-{
+public interface IRObjectOperations {
+  /**
+   * Get the definition kind of this interface repository object.
+   *
+   * @return the defintion kind (one of the DefinitionKind.dk_...
+   * constants).
+   */
+  DefinitionKind def_kind();
+
+  /**
+   * Destroy this interface repository object. If the object is a container,
+   * the method applies to all its contents. If the object is part of some
+   * other object, it is removed.
+   *
+   * @throws BAD_INV_ORDER, minor code 1, if destroying this object would
+   * leave the repository in an incoherent state.
+   *
+   * @throws BAD_INV_ORDER, minor code 2, if the method is invoked on the
+   * Repository or on the definition of the primitive type.
+   */
+  void destroy() throws BAD_INV_ORDER;
+
 }
