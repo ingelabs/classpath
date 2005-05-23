@@ -241,6 +241,20 @@ public class JFileChooser extends JComponent implements Accessible
   }
 
   /**
+   * Creates a new JFileChooser object with the specified directory and
+   * FileSystemView.
+   *
+   * @param currentDirectoryPath the directory that should initially be
+   *     shown the filechooser
+   * @param fsv the FileSystemView object to use
+   */
+  public JFileChooser(String currentDirectoryPath, FileSystemView fsv)
+  {
+    setup(fsv);
+    setCurrentDirectory(fsv.createFileObject(currentDirectoryPath));
+  }
+
+  /**
    * Creates a new JFileChooser object.
    *
    * @param currentDirectory DOCUMENT ME!
