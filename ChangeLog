@@ -1,3 +1,15 @@
+2005-05-24  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/regex/Pattern.java (split): Assign value of variable
+	matched outside while statement.
+	* gnu/regexp/RE.java (getCharUnit): Assign value of unit.bk variable
+	outside if statement.
+	* gnu/CORBA/bufferedResponseHandler.java (createReply): Assign values
+	from static class type constants.
+	* gnu/CORBA/IOR.java (_write_no_endian): Likewise.
+	* gnu/CORBA/Functional_ORB.java (respond_to_client): Likewise.
+	(serve): Likewise.
+
 2005-05-23  Mark Wielaard  <mark@klomp.org>
 
 	* lib/Makefile.am (FOUND_JIKES): Add +Pno-switchcheck.

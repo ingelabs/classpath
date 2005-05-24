@@ -699,11 +699,11 @@ public class Functional_ORB
     ReplyHeader reply = handler.reply_header;
 
     if (sysEx != null)
-      reply.reply_status = reply.SYSTEM_EXCEPTION;
+      reply.reply_status = ReplyHeader.SYSTEM_EXCEPTION;
     else if (handler.isExceptionReply())
-      reply.reply_status = reply.USER_EXCEPTION;
+      reply.reply_status = ReplyHeader.USER_EXCEPTION;
     else
-      reply.reply_status = reply.NO_EXCEPTION;
+      reply.reply_status = ReplyHeader.NO_EXCEPTION;
 
     reply.request_id = rh_request.request_id;
 
@@ -719,7 +719,7 @@ public class Functional_ORB
 
     MessageHeader msh_reply = new MessageHeader();
     msh_reply.version = msh_request.version;
-    msh_reply.message_type = msh_reply.REPLY;
+    msh_reply.message_type = MessageHeader.REPLY;
     msh_reply.message_size = out.buffer.size();
 
     // Write the reply.
@@ -772,7 +772,7 @@ public class Functional_ORB
             n = in.read(r, n, r.length - n);
           }
 
-        if (msh_request.message_type == msh_request.REQUEST)
+        if (msh_request.message_type == MessageHeader.REQUEST)
           {
             RequestHeader rh_request;
 
