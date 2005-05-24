@@ -1,3 +1,7 @@
+2005-05-24  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/CORBA/portable/Delegate.java (equals): Compare parameters.
+
 2005-05-24  Gary Benson  <gbenson@redhat.com>
 
 	* java/text/MessageFormat.java (MessageFormatElement.setLocale):
