@@ -1,5 +1,10 @@
 2005-05-25  Michael Koch  <konqueror@gmx.de>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c
+	(connetJObject): Removed.
+
+2005-05-25  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/Locale.java (getISOStrings):
 	Re-implemented for locale properties files.
 
