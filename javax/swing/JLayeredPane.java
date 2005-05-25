@@ -146,7 +146,29 @@ public class JLayeredPane extends JComponent implements Accessible
     if (lp == null)
       return 0;
     else
-      return lp.getLayer(comp);
+      // The cast here forces the call to the instance method getLayer()
+      // instead of the static method (this would lead to infinite
+      // recursion).
+      return lp.getLayer((Component) comp);
+  }
+
+  /**
+   * Returns the first JLayeredPane that contains the Component
+   * <code>comp</code> or <code>null</code> if <code>comp</code> is
+   * not contained in a JLayeredPane.
+   *
+   * @param comp the component for which we are searching the JLayeredPane
+   *     ancestor
+   *
+   * @return the first JLayeredPane that contains the Component
+   *     <code>comp</code> or <code>null</code> if <code>comp</code> is
+   *     not contained in a JLayeredPane
+   */
+  public static JLayeredPane getLayeredPaneAbove(Component comp)
+  {
+    JLayeredPane lp = (JLayeredPane) SwingUtilities.getAncestorOfClass
+      (JLayeredPane.class, comp);
+    return lp;
   }
 
   /**

@@ -1,5 +1,15 @@
 2005-05-25  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JLayeredPane.java
+	(static getLayer): Add cast to force a call to the instance method
+	getLayer().
+	(getLayeredPaneAbove): Added and implemented method.
+	* javax/swing/JInternalFrame.java
+	(getLayer): Add cast to force a call to the instance method
+	getLayer() of JLayeredPane.
+
+2005-05-25  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicSplitPaneUI.java
 	(paint): Added check to make sure the split pane divider has
 	a valid location.
