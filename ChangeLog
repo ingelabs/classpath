@@ -1,5 +1,9 @@
 2005-05-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* org/omg/CORBA/TRANSIENT.java (serialVersionUID): Added 1.4 SVUID.
+
+2005-05-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* org/omg/CORBA/ValueBaseHelper.java,
 	org/omg/CORBA/ValueBaseHolder.java,
 	org/omg/CORBA/portable/ValueBase.java: New files.
