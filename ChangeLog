@@ -1,3 +1,11 @@
+2005-05-24  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c
+	(connectSignals): Connect to new change-value signal.
+	(post_change_event): Remove signal handler.
+	(slider_moved_cb): New signal handler.
+	* configure.ac: Require gtk+-2.0 >= 2.6.
+
 2005-05-24  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/portable/Delegate.java (equals): Compare parameters.

@@ -36,16 +36,20 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
+#include <math.h>
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 #include "gnu_java_awt_peer_gtk_GtkScrollbarPeer.h"
 
-static void post_change_event (GtkRange *range, jobject peer);
+static gboolean slider_moved_cb (GtkRange *range,
+                                 GtkScrollType scroll,
+                                 gdouble value,
+                                 jobject obj);
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create
-(JNIEnv *env, jobject obj, jint orientation, jint value, 
- jint min, jint max, jint step_incr, jint page_incr, jint visible_amount)
+  (JNIEnv *env, jobject obj, jint orientation, jint value,
+   jint min, jint max, jint step_incr, jint page_incr, jint visible_amount)
 {
   GtkWidget *scrollbar;
   GtkObject *adj;
@@ -54,7 +58,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create
   NSA_SET_GLOBAL_REF (env, obj);
 
   gdk_threads_enter ();
-  
+
   adj = gtk_adjustment_new ((gdouble) value,
                             (gdouble) min,
                             (gdouble) max,
@@ -62,8 +66,9 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create
                             (gdouble) page_incr,
 			    (gdouble) visible_amount);
 
-  scrollbar = (orientation) ? gtk_vscrollbar_new (GTK_ADJUSTMENT (adj)) :
-                       gtk_hscrollbar_new (GTK_ADJUSTMENT (adj));
+  scrollbar = orientation
+    ? gtk_vscrollbar_new (GTK_ADJUSTMENT (adj))
+    : gtk_hscrollbar_new (GTK_ADJUSTMENT (adj));
 
   GTK_RANGE (scrollbar)->round_digits = 0;
   /* These calls seem redundant but they are not.  They clamp values
@@ -78,6 +83,21 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create
 }
 
 JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectJObject
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+
+  connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
+
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectSignals
   (JNIEnv *env, jobject obj)
 {
@@ -87,8 +107,8 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectSignals
 
   gdk_threads_enter ();
 
-  g_signal_connect (G_OBJECT (ptr), "value-changed",
-                    G_CALLBACK (post_change_event), *gref);
+  g_signal_connect (G_OBJECT (ptr), "change-value",
+                    GTK_SIGNAL_FUNC (slider_moved_cb), *gref);
 
   gdk_threads_leave ();
 
@@ -96,10 +116,9 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectSignals
   Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (env, obj);
 }
 
-
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setLineIncrement
-    (JNIEnv *env, jobject obj, jint amount)
+  (JNIEnv *env, jobject obj, jint amount)
 {
   void *ptr;
   GtkAdjustment *adj;
@@ -115,9 +134,9 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setLineIncrement
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setPageIncrement
-    (JNIEnv *env, jobject obj, jint amount)
+  (JNIEnv *env, jobject obj, jint amount)
 {
   void *ptr;
   GtkAdjustment *adj;
@@ -133,9 +152,9 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setPageIncrement
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
-    (JNIEnv *env, jobject obj, jint value, jint visible, jint min, jint max)
+  (JNIEnv *env, jobject obj, jint value, jint visible, jint min, jint max)
 {
   void *ptr;
   GtkAdjustment *adj;
@@ -150,16 +169,61 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
   gtk_range_set_range (GTK_RANGE (ptr), (gdouble) min, (gdouble) max);
   gtk_range_set_value (GTK_RANGE (ptr), (gdouble) value);
 
-  gtk_adjustment_changed (adj);
-
   gdk_threads_leave ();
 }
 
-static void
-post_change_event (GtkRange *range, jobject peer)
+static gboolean
+slider_moved_cb (GtkRange *range,
+                 GtkScrollType scroll,
+                 gdouble value,
+                 jobject obj)
 {
-  GtkAdjustment *adj;
-  adj = gtk_range_get_adjustment (range);
-  (*gdk_env())->CallVoidMethod (gdk_env(), peer, postAdjustmentEventID,
-                              AWT_ADJUSTMENT_TRACK, (jint) adj->value);
+  GtkAdjustment *adj = gtk_range_get_adjustment (GTK_RANGE (range));
+
+  value = CLAMP (value, adj->lower,
+                 (adj->upper - adj->page_size));
+
+  if (range->round_digits >= 0)
+    {
+      gdouble power;
+      gint i;
+
+      i = range->round_digits;
+      power = 1;
+      while (i--)
+        power *= 10;
+      
+      value = floor ((value * power) + 0.5) / power;
+    }
+  
+  switch (scroll)
+    {
+    case GTK_SCROLL_STEP_BACKWARD:
+      (*gdk_env())->CallVoidMethod (gdk_env(), obj, postAdjustmentEventID,
+                                    AWT_ADJUSTMENT_UNIT_DECREMENT,
+                                    (jint) value);
+      break;
+    case GTK_SCROLL_STEP_FORWARD:
+      (*gdk_env())->CallVoidMethod (gdk_env(), obj, postAdjustmentEventID,
+                                    AWT_ADJUSTMENT_UNIT_INCREMENT,
+                                    (jint) value);
+      break;
+    case GTK_SCROLL_PAGE_BACKWARD:
+      (*gdk_env())->CallVoidMethod (gdk_env(), obj, postAdjustmentEventID,
+                                    AWT_ADJUSTMENT_BLOCK_DECREMENT,
+                                    (jint) value);
+      break;
+    case GTK_SCROLL_PAGE_FORWARD:
+      (*gdk_env())->CallVoidMethod (gdk_env(), obj, postAdjustmentEventID,
+                                    AWT_ADJUSTMENT_BLOCK_INCREMENT,
+                                    (jint) value);
+      break;
+    default:
+      /* GTK_SCROLL_JUMP: */
+      (*gdk_env())->CallVoidMethod (gdk_env(), obj, postAdjustmentEventID,
+                                    AWT_ADJUSTMENT_TRACK,
+                                    (jint) value);
+      break;
+    }
+  return FALSE;
 }
