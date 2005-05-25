@@ -1,3 +1,7 @@
+2005-05-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/Component.java (enableInputMethods): Implement.
+
 2005-05-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/TRANSIENT.java (serialVersionUID): Added 1.4 SVUID.

@@ -858,8 +858,10 @@ public abstract class Component
    */
   public void enableInputMethods(boolean enable)
   {
-    // XXX Implement.
-    throw new Error("not implemented");
+    if (enable)
+      eventMask |= AWTEvent.INPUT_ENABLED_EVENT_MASK;
+    else
+      eventMask &= ~AWTEvent.INPUT_ENABLED_EVENT_MASK;
   }
 
   /**
