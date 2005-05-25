@@ -1,3 +1,8 @@
+2005-05-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* NEWS: Add entry describing GTK scrollbar peer change.
+	* INSTALL: Bump GTK requirement to 2.6.x.
+
 2005-05-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/ORB.java (create_dyn_any, create_dyn_array,

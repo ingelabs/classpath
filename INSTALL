@@ -40,7 +40,7 @@ Suggested Software
 	are required unless --disable-gtk-peer is used as an argument to
 	configure.
 
-        - GTK+ 2.4.x (or higher)
+        - GTK+ 2.6.x (or higher)
         - libart_lgpl 2.1.0
         - gdk-pixbuf
 

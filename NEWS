@@ -1,5 +1,7 @@
 New in release 0.16
 
+* Better GTK scrollbar peer implementation requiring GTK 2.6 or higher.
+
 Runtime interface changes:
 
 * Native method VMClass.getModifiers() now takes an additional
