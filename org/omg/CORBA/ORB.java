@@ -45,6 +45,8 @@ import gnu.CORBA.gnuContext;
 import gnu.CORBA.recordTypeCode;
 import gnu.CORBA.recursiveTypeCode;
 
+import org.omg.CORBA.ORBPackage.InconsistentTypeCode;
+
 import java.applet.Applet;
 
 import java.io.BufferedInputStream;
@@ -207,6 +209,7 @@ public abstract class ORB
    * @throws NO_IMPLEMENT, always.
    */
   public DynAny create_dyn_any(org.omg.CORBA.Any a)
+                       throws InconsistentTypeCode
   {
     throw new NO_IMPLEMENT();
   };
@@ -222,6 +225,7 @@ public abstract class ORB
    * @throws NO_IMPLEMENT, always.
    */
   public DynArray create_dyn_array(org.omg.CORBA.TypeCode t)
+                       throws InconsistentTypeCode
    {
      throw new NO_IMPLEMENT();
    };
@@ -237,6 +241,7 @@ public abstract class ORB
    * @throws NO_IMPLEMENT, always.
    */
   public DynEnum create_dyn_enum(org.omg.CORBA.TypeCode t)
+                       throws InconsistentTypeCode
   {
     throw new NO_IMPLEMENT();
   };
@@ -252,6 +257,7 @@ public abstract class ORB
    * @throws NO_IMPLEMENT, always.
    */
   public DynSequence create_dyn_sequence(org.omg.CORBA.TypeCode t)
+                       throws InconsistentTypeCode
   {
     throw new NO_IMPLEMENT();
   };
@@ -267,6 +273,7 @@ public abstract class ORB
    * @throws NO_IMPLEMENT, always.
    */
   public DynStruct create_dyn_struct(org.omg.CORBA.TypeCode t)
+                       throws InconsistentTypeCode
   {
     throw new NO_IMPLEMENT();
   };
@@ -282,6 +289,7 @@ public abstract class ORB
    * @throws NO_IMPLEMENT, always.
    */
   public DynUnion create_dyn_union(org.omg.CORBA.TypeCode t)
+                       throws InconsistentTypeCode
   {
     throw new NO_IMPLEMENT();
   };
@@ -448,6 +456,7 @@ public abstract class ORB
    * @throws NO_IMPLEMENT, always.
    */
   public Policy create_policy(int type, Any value)
+                       throws PolicyError
   {
     throw new NO_IMPLEMENT();
   }

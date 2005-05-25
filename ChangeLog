@@ -1,5 +1,16 @@
 2005-05-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* org/omg/CORBA/ORB.java (create_dyn_any, create_dyn_array,
+	create_dyn_enum, create_dyn_sequence, create_dyn_struct, 
+	create_dyn_union, create_policy): Declaring they may throw an
+	exceptions.
+	* org/omg/CORBA/DefinitionKind.java: Making fields final and inherit
+	from IDLEntity, Serializable.
+	* org/omg/CORBA/IRObject.java: Inherit from 
+	org.omg.CORBA.Object, Serializable, IDLEntity.
+
+2005-05-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/Connected_objects.java (cObject, getKey, add, get,
 	entrySet, remove),
 	* gnu/CORBA/Functional_ORB.java (portServer, getFreePort, connect,
