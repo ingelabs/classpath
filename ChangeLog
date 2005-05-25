@@ -1,3 +1,12 @@
+2005-05-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/Connected_objects.java (cObject, getKey, add, get,
+	entrySet, remove),
+	* gnu/CORBA/Functional_ORB.java (portServer, getFreePort, connect,
+	startService, destroy, disconnect, object_to_string, run, shutdown, 
+	find_connected_object, createIOR, finalize): Implemented 
+	listening on different ports for different objects.
+
 2005-05-25  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/AbstractButton.java:
