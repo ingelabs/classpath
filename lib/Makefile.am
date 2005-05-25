@@ -56,6 +56,7 @@ install-data-local: genclasses compile-classes
 	cp -R java $(DESTDIR)$(pkgdatadir)
 	cp -R javax $(DESTDIR)$(pkgdatadir)
 	cp -R org $(DESTDIR)$(pkgdatadir)
+	cp -R META-INF $(DESTDIR)$(pkgdatadir)
 
 # FIXME - should mimic doc/api/Makefile.am instead...
 uninstall-local:
@@ -63,13 +64,14 @@ uninstall-local:
 	rm -rf $(DESTDIR)$(pkgdatadir)/java
 	rm -rf $(DESTDIR)$(pkgdatadir)/javax
 	rm -rf $(DESTDIR)$(pkgdatadir)/org
+	rm -rf $(DESTDIR)$(pkgdatadir)/META-INF
 
 endif # INSTALL_CLASS_FILES
 
 .PHONY: genclasses
 
 glibj.zip: classes compile-classes resources
-	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip gnu java javax org > /dev/null; fi
+	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip gnu java javax org META-INF > /dev/null; fi
 
 resources:
 	if ! [ -e gnu ]; then mkdir gnu; fi
@@ -81,6 +83,8 @@ resources:
 	@list='$(propertyfiles)'; for p in $$list; do \
 	  cp $(top_srcdir)/resource/$$p $$p; \
 	done
+	if [ -e META-INF ]; then rm -rf META-INF; fi
+	cp -r $(top_srcdir)/resource/META-INF .
 	touch resources
 
 classes: genclasses
@@ -125,6 +129,7 @@ clean-local:
 	-rm -rf java
 	-rm -rf javax
 	-rm -rf org
+	-rm -rf META-INF
 
 dist-hook:
 	mkdir -p $(distdir)

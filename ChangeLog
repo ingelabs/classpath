@@ -1,3 +1,15 @@
+2005-05-25  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* examples/Makefile.am:
+	Fix command-line options for ecj.
+	* lib/Makefile.am:
+	Added a META-INF directory structure to glibj.zip.
+	* resource/META-INF/services/javax.xml.parsers.DocumentBuilderFactory,
+	resource/META-INF/services/javax.xml.parsers.SAXParserFactory,
+	resource/META-INF/services/javax.xml.parsers.TransformerFactory,
+	resource/META-INF/services/org.xml.sax.driver:
+	Properties for the XML facilities.
+
 2005-05-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/Component.java (enableInputMethods): Implement.

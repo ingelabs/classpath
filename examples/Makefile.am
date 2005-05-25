@@ -11,7 +11,7 @@ if FOUND_GCJX
 JCOMPILER = $(GCJX) -bootclasspath '' -sourcepath '' -classpath $(top_builddir)/lib:.
 else
 if FOUND_ECJ
-JCOMPILER = $(ECJ) --bootclasspath '$(top_builddir)/lib' --classpath .
+JCOMPILER = $(ECJ) -bootclasspath '$(top_builddir)/lib' -classpath .
 else
 error dunno how to setup the JCOMPILER and compile
 endif
