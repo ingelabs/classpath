@@ -194,6 +194,7 @@ public abstract class ORB
    * @throws NO_IMPLEMENT, always.
    */
   public DynAny create_basic_dyn_any(org.omg.CORBA.TypeCode t)
+                             throws InconsistentTypeCode
   {
     throw new NO_IMPLEMENT();
   };
@@ -209,7 +210,6 @@ public abstract class ORB
    * @throws NO_IMPLEMENT, always.
    */
   public DynAny create_dyn_any(org.omg.CORBA.Any a)
-                       throws InconsistentTypeCode
   {
     throw new NO_IMPLEMENT();
   };
@@ -444,6 +444,25 @@ public abstract class ORB
   public abstract org.omg.CORBA.portable.OutputStream create_output_stream();
 
   /**
+   * This should create the list, initialised with the argument descriptions
+   * for the given operation definition (CORBA <code>OperationDef</code>).
+   * The information should be obtained from the interface repository.
+   * However this method is oficially documented as not implemented at least
+   * till v1.4 inclusive.
+   *
+   * @param peration_definition the operation definition, must be
+   * CORBA <code>OperationDef</code>.
+   *
+   * @return never
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public NVList create_operation_list(Object operation_definition)
+  {
+    throw new NO_IMPLEMENT();
+  }
+
+  /**
    * This should create the new policy with the specified type and initial
    * state. The policies and methods for getting them are not implemented till
    * v1.4 inclusive.
@@ -460,6 +479,8 @@ public abstract class ORB
   {
     throw new NO_IMPLEMENT();
   }
+
+
 
   /**
    * Create typecode, defining the sequence of the elements, having
@@ -523,6 +544,41 @@ public abstract class ORB
    */
   public abstract TypeCode create_wstring_tc(int bound);
 
+
+  /**
+   * Create a typecode for an abstract interface. The abstract interface
+   * can be either CORBA object or CORBA value type.
+   *
+   * @param id the id of the abstract interface.
+   * @param name the name of the abstract interface.
+   *
+   * @return the created typecode.
+   */
+  public TypeCode create_abstract_interface_tc(String id, String name)
+  {
+    generalTypeCode t = new generalTypeCode(TCKind.tk_abstract_interface);
+    t.setName(name);
+    t.setId(id);
+    return t;
+  }
+
+  /**
+   * Create a typecode for a native interface.
+   *
+   * @param id the id of the native interface.
+   * @param name the name of the native interface.
+   *
+   * @return the created typecode.
+   */
+  public TypeCode create_native_tc(String id, String name)
+  {
+    generalTypeCode t = new generalTypeCode(TCKind.tk_native);
+    t.setName(name);
+    t.setId(id);
+    return t;
+  }
+
+
   /**
    * Create a typecode which serves as a placeholder for typcode, containing
    * recursion.
@@ -583,6 +639,29 @@ public abstract class ORB
    * @throws NO_IMPLEMENT, always.
    */
   public Current get_current()
+  {
+    throw new NO_IMPLEMENT();
+  }
+
+  /**
+   * This should return the information about the CORBA facilities and
+   * services, available from this ORB. However this method is oficially
+   * documented as not implemented at least till v1.4 inclusive.
+   *
+   * @param service_type a type of the service being requested. The OMG
+   * specification currently defines only one value, 1, for security
+   * related services.
+   *
+   * @param service_info a holder, where the returned information should
+   * be stored.
+   *
+   * @return should return true if the service information is available
+   * from the ORB, but this method never returns.
+   *
+   * @throws NO_IMPLEMENT, always.
+   */
+  public boolean get_service_information(short service_type,
+                                       ServiceInformationHolder service_info)
   {
     throw new NO_IMPLEMENT();
   }
