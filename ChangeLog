@@ -1,3 +1,11 @@
+2005-05-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* omg/org/CORBA/DynValue.java: New interface.
+
+2005-05-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* omg/org/CORBA/package.html: Documentation update.
+
 2005-05-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/ORB.java (create_basic_dyn_any): 
