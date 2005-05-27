@@ -1,5 +1,9 @@
 2005-05-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* omg/org/CORBA/ORB.java (create_recursive_sequence_tc): New method.
+
+2005-05-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* omg/org/CORBA/DynValue.java: New interface.
 
 2005-05-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
