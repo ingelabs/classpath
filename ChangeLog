@@ -1,3 +1,8 @@
+2005-05-27  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java (setFont): Handle
+	lightweight peers specially.
+
 2005-05-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* omg/org/CORBA/ORB.java (create_recursive_sequence_tc): New method.
@@ -63,6 +68,10 @@
 	Properties for the XML facilities.
 
 2005-05-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c
+	(create): Prevent min == max scrollbars.
+	(setValues): Likewise.
 
 	* java/awt/Component.java (enableInputMethods): Implement.
 
