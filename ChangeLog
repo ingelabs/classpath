@@ -1,5 +1,10 @@
 2005-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* org/omg/CORBA/Functional_ORB.java (serve, useProperties, init): Implementing
+	the property-configurable time-outs. 
+
+2005-05-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/gnuRequest.java (p_invoke): Wrap the received UserException into
 	UnknownUserException.
 	* gnu/CORBA/streamReadyHolder.java: New wrapper for UserException. 
