@@ -1,5 +1,11 @@
 2005-05-30  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JComponent.java:
+	Made JComponent.AccessibleJComponent implement
+	AccessibleExtendedComponent.
+
+2005-05-30  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JButton.java
 	(constructor): Set initial actionCommand equal to the buttons label.
 
