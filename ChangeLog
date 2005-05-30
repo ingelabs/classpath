@@ -36,12 +36,6 @@
 
 2005-05-30  Roman Kennke  <roman@kennke.org>
 
-	* javax/swing/JList.java
-	(getNextMatch): Implemented new method.
-	(getCellBounds): Implemented new method.
-
-2005-05-30  Roman Kennke  <roman@kennke.org>
-
 	* javax/swing/JLayeredPane.java
 	(putLayer): Implemented new method.
 
