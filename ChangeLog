@@ -1,5 +1,11 @@
 2005-05-30  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/metal/MetalSplitPaneUI.java:
+	(createUI): Do not share one instance of MetalSplitPaneUI
+	between multiple JSplitPanes.
+
+2005-05-30  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JComponent.java:
 	Made JComponent.AccessibleJComponent implement
 	AccessibleExtendedComponent.
