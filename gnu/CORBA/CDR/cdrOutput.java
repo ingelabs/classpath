@@ -88,7 +88,7 @@ public abstract class cdrOutput
    * This instance is used to convert primitive data types into the
    * byte sequences.
    */
-  protected DataOutputStream b;
+  protected abstractDataOutputStream b;
 
   /**
    * The associated orb, if any.
@@ -129,6 +129,17 @@ public abstract class cdrOutput
    * is instantiated when writing characters.
    */
   private boolean wide_native;
+
+  /**
+   * If true, the Little Endian encoding is used to write the
+   * data. Otherwise, the Big Endian encoding is used.
+   */
+  private boolean little_endian;
+
+  /**
+   * The stream whre the data are actually written.
+   */
+  private java.io.OutputStream actual_stream;
 
   /**
    * Creates the stream.
@@ -193,7 +204,12 @@ public abstract class cdrOutput
    */
   public void setOutputStream(java.io.OutputStream writeTo)
   {
-    b = new DataOutputStream(writeTo);
+    if (little_endian)
+      b = new LittleEndianOutputStream(writeTo);
+    else
+      b = new BigEndianOutputStream(writeTo);
+
+    actual_stream = writeTo;
   }
 
   /**
@@ -203,6 +219,19 @@ public abstract class cdrOutput
   public void setVersion(Version giop_version)
   {
     giop = giop_version;
+  }
+
+  /**
+   * Specify if the stream should use the Big Endian (usual for java)
+   * or Little Encoding. The default is Big Endian.
+   *
+   * @param use_big_endian if true, use Big Endian, if false,
+   * use Little Endian.
+   */
+  public void setBigEndian(boolean use_big_endian)
+  {
+    little_endian = !use_big_endian;
+    setOutputStream(actual_stream);
   }
 
   /**
@@ -219,11 +248,14 @@ public abstract class cdrOutput
    * It is not allowed to write to the current stream directly
    * before the encapsulation stream is closed.
    *
+   * The encoding (Big/Little Endian) inside the encapsulated
+   * sequence is the same as used into the parent stream.
+   *
    * @return the encapsulated stream.
    */
   public cdrOutput createEncapsulation()
   {
-    return new encapsulatedOutput(this);
+    return new encapsulatedOutput(this, !little_endian);
   }
 
   /**
@@ -407,7 +439,8 @@ public abstract class cdrOutput
           b.write(x);
         else
           {
-            OutputStreamWriter ow = new OutputStreamWriter(b, narrow_charset);
+            OutputStreamWriter ow =
+              new OutputStreamWriter((OutputStream) b, narrow_charset);
             ow.write(x);
             ow.flush();
           }
@@ -438,7 +471,8 @@ public abstract class cdrOutput
           }
         else
           {
-            OutputStreamWriter ow = new OutputStreamWriter(b, narrow_charset);
+            OutputStreamWriter ow =
+              new OutputStreamWriter((OutputStream) b, narrow_charset);
             ow.write(chars, offset, length);
             ow.flush();
           }
@@ -835,7 +869,8 @@ public abstract class cdrOutput
           b.writeShort(x);
         else
           {
-            OutputStreamWriter ow = new OutputStreamWriter(b, wide_charset);
+            OutputStreamWriter ow =
+              new OutputStreamWriter((OutputStream) b, wide_charset);
             ow.write(x);
             ow.flush();
           }
@@ -872,7 +907,8 @@ public abstract class cdrOutput
           }
         else
           {
-            OutputStreamWriter ow = new OutputStreamWriter(b, wide_charset);
+            OutputStreamWriter ow =
+              new OutputStreamWriter((OutputStream) b, wide_charset);
             ow.write(chars, offset, length);
             ow.flush();
           }

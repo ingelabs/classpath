@@ -1082,6 +1082,7 @@ public class Functional_ORB
     handler.getBuffer().buffer.writeTo(out);
 
     MessageHeader msh_reply = new MessageHeader();
+
     msh_reply.version = msh_request.version;
     msh_reply.message_type = MessageHeader.REPLY;
     msh_reply.message_size = out.buffer.size();
@@ -1205,6 +1206,7 @@ public class Functional_ORB
                 cin.setOrb(this);
                 cin.setVersion(msh_request.version);
                 cin.setOffset(msh_request.getHeaderSize());
+                cin.setBigEndian(msh_request.isBigEndian());
 
                 rh_request = msh_request.create_request_header();
 

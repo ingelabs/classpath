@@ -1,3 +1,23 @@
+2005-05-31 Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/CDR/BigEndianInputStream.java,
+	gnu/CORBA/CDR/BigEndianOutputStream.java,
+	gnu/CORBA/CDR/LittleEndianInputStream.java,
+	gnu/CORBA/CDR/LittleEndianOutputStream.java: New streams.
+	gnu/CORBA/CDR/abstractDataInputStream.java,
+	gnu/CORBA/CDR/abstractDataOutputStream.java: New interfaces.
+	* gnu/CORBA/IOR.java: Implemented parsing of the Little
+	Endian encoded IOR references. 
+	* gnu/CORBA/Functional_ORB.java, 
+	gnu/CORBA/binaryReply.java, 
+	gnu/CORBA/gnuRequest.java, 
+	gnu/CORBA/CDR/cdrInput.java, 
+	gnu/CORBA/CDR/cdrOutput.java, 
+	gnu/CORBA/CDR/encapsulatedOutput.java, 
+	gnu/CORBA/GIOP/MessageHeader.java: Implemented support
+	for Big and Little Endian.
+	* org/omg/CORBA/package.html: Documentation update.
+
 2005-05-31  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/net/ServerSocket.java

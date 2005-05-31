@@ -62,6 +62,7 @@ import org.omg.CORBA.TypeCodePackage.Bounds;
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.ObjectImpl;
 
+import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
@@ -93,7 +94,13 @@ public abstract class cdrInput
    * This instance is used to convert primitive data types into the
    * byte sequences.
    */
-  protected DataInputStream b;
+  protected abstractDataInputStream b;
+
+  /**
+   * The input stream, from where the data are actually
+   * being read.
+   */
+  protected java.io.InputStream actual_stream;
 
   /**
    * The associated orb, if any.
@@ -137,7 +144,16 @@ public abstract class cdrInput
   private boolean wide_native;
 
   /**
-   * Creates the stream.
+   * If true, the stream expect
+   * the multi-byte data in the form "less significant byte
+   * first" (Little Endian). This is the opposite to the
+   * java standard (Big Endian).
+   */
+  private boolean little_endian;
+
+  /**
+   * Creates the stream. The stream reads Big Endian by
+   * default.
    *
    * @param readFrom a stream to read CORBA input from.
    */
@@ -157,13 +173,33 @@ public abstract class cdrInput
   }
 
   /**
+   * Set the Big Endian or Little Endian encoding.
+   * The stream reads Big Endian by default.
+   *
+   * @param use_little_endian if true, the stream expect
+   * the multi-byte data in the form "less significant byte
+   * first" (Little Endian). This is the opposite to the
+   * java standard (Big Endian).
+   */
+  public void setBigEndian(boolean use_big_endian)
+  {
+    little_endian = !use_big_endian;
+    setInputStream(actual_stream);
+  }
+
+  /**
    * Set the input stream that receives the CORBA input.
    *
    * @param readFrom the stream.
    */
   public void setInputStream(java.io.InputStream readFrom)
   {
-    b = new DataInputStream(readFrom);
+    if (little_endian)
+      b = new LittleEndianInputStream(readFrom);
+    else
+      b = new BigEndianInputStream(readFrom);
+
+    actual_stream = readFrom;
   }
 
   /**
@@ -436,7 +472,7 @@ public abstract class cdrInput
         if (narrow_native)
           return (char) b.read();
         else
-          return (char) new InputStreamReader(b, narrow_charset).read();
+          return (char) new InputStreamReader((InputStream) b, narrow_charset).read();
       }
     catch (EOFException ex)
       {
@@ -463,7 +499,8 @@ public abstract class cdrInput
           }
         else
           {
-            InputStreamReader reader = new InputStreamReader(b, narrow_charset);
+            InputStreamReader reader =
+              new InputStreamReader((InputStream) b, narrow_charset);
             reader.read(x, offset, length);
           }
       }
@@ -524,8 +561,10 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the encapsulated stream. The endian flag is already extracted from
-   * the returned stream.
+   * Read the encapsulated stream.
+   * If the encapsulated sequence appears to be in the
+   * Little endian format, the flag of the returned stream
+   * is set to read Little endian.
    */
   public cdrBufInput read_encapsulation()
   {
@@ -546,10 +585,9 @@ public abstract class cdrInput
 
         int endian = capsule.read_octet();
 
-        // TODO FIXME implement little endian.
         if (endian != 0)
           {
-            throw new NO_IMPLEMENT("Little endian not supported.");
+            capsule.setBigEndian(false);
           }
 
         return capsule;
@@ -944,7 +982,7 @@ public abstract class cdrInput
         if (wide_native)
           return (char) b.readShort();
         else
-          return (char) new InputStreamReader(b, wide_charset).read();
+          return (char) new InputStreamReader((InputStream) b, wide_charset).read();
       }
     catch (EOFException ex)
       {
@@ -974,7 +1012,8 @@ public abstract class cdrInput
           }
         else
           {
-            InputStreamReader reader = new InputStreamReader(b, wide_charset);
+            InputStreamReader reader =
+              new InputStreamReader((InputStream) b, wide_charset);
             reader.read(x, offset, length);
           }
       }
