@@ -411,6 +411,7 @@ public class Functional_ORB
                   throws BAD_OPERATION
   {
     ServerSocket s;
+    int a_port;
 
     try
       {
@@ -431,14 +432,14 @@ public class Functional_ORB
         // OK then, use a new port.
       }
 
-    for (int i = Port; i < Port + 20; i++)
+    for (a_port = Port; a_port < Port + 20; a_port++)
       {
         try
           {
-            s = new ServerSocket(i);
+            s = new ServerSocket(a_port);
             s.close();
-            Port = i + 1;
-            return s.getLocalPort();
+            Port = a_port + 1;
+            return a_port;
           }
         catch (IOException ex)
           {
@@ -450,14 +451,16 @@ public class Functional_ORB
       {
         // Try any port.
         s = new ServerSocket();
+        a_port = s.getLocalPort();
         s.close();
-        return s.getLocalPort();
+        return a_port;
       }
     catch (IOException ex1)
       {
         throw new NO_RESOURCES("Unable to open the server socket");
       }
   }
+
 
   /**
    * Set the port, on that the server is listening for the client requests.
