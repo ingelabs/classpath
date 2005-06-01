@@ -1,4 +1,14 @@
 2005-06-01  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+	* org/omg/CosNaming/BindingType.java,
+	org/omg/CosNaming/NameComponent.java,
+	org/omg/CosNaming/_BindingIteratorStub.java,
+	org/omg/CosNaming/_NamingContextStub.java,
+    org/omg/CosNaming/_NamingContextExtStub.java,	
+	org/omg/CosNaming/_BindingIteratorImplBase.java,
+	org/omg/CosNaming/_NamingContextImplBase.java: Added SerialVersionUID.
+
+2005-06-01  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 	
 	* org/omg/CosNaming/IstringHelper.java: New class.
 
