@@ -16,6 +16,7 @@ import org.omg.CORBA.Request;
 import org.omg.CORBA.ShortHolder;
 import org.omg.CORBA.StringHolder;
 import org.omg.CORBA.TCKind;
+import org.omg.CORBA.UnknownUserException;
 
 /**
  * This code uses CORBA to call various methods of the remote object,
@@ -226,9 +227,10 @@ public class RequestTest
     rq.add_in_arg().insert_long(123);
     rq.invoke();
 
-    ourUserException ou = (ourUserException) rq.env().exception();
+    UnknownUserException uku = (UnknownUserException) rq.env().exception();
+    ourUserException our_exception = ourUserExceptionHelper.extract(uku.except);
 
-    System.out.println("  Our user exception, field " + ou.ourField +
+    System.out.println("  Our user exception, field " + our_exception.ourField +
                        ", has been thrown on remote side."
                       );
   }

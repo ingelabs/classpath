@@ -68,6 +68,15 @@ public abstract class ourUserExceptionHelper
   }
 
   /**
+   * Extract the exception from the given Any where it might be
+   * wrapped.
+   */
+  public static ourUserException extract(Any a)
+  {
+    return read(a.create_input_stream());
+  }
+
+  /**
    * Read the exception from the CDR stream.
    */
   public static ourUserException read(org.omg.CORBA.portable.InputStream istream)
