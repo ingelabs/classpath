@@ -1,5 +1,11 @@
 2005-05-31  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+	* org/omg/CORBA_2_3/ORB.java,
+	org/omg/CORBA_2_3/portable/InputStream.java,
+	org/omg/CORBA/portable/ValueFactory.java: New classes.
+
+2005-05-31  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
 	* org/omg.CORBA/DynValue.java (declaration): Inherit from DynAny,
 	org.omg.CORBA.Object. (set_members): Declare it may throw InvalidSeq.
 
