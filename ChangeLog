@@ -1,3 +1,8 @@
+2005-06-01  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(setLogicalStyle): Implemented this method.
+
 2005-06-01  Sven de Marothy  <sven@physto.se>
 
 	* java/util/GregorianCalendar.java
