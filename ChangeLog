@@ -1,3 +1,9 @@
+2005-06-01  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* gnu/java/awt/GradientPaintContext.java: New file.
+	* java/awt/GradientPaint.java: Implemented.
+	* java/awt/image/IndexColorModel.java: Reimplemented.
+
 2005-05-31 Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/CDR/BigEndianInputStream.java,
