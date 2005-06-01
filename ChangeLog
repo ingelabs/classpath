@@ -1,3 +1,8 @@
+2005-06-01  Sven de Marothy  <sven@physto.se>
+
+	* java/util/TimeZone (getDefaultTimeZone): Reimplemented.
+	(parseTime, getDateParams): New private methods.
+
 2005-06-01  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* gnu/java/awt/GradientPaintContext.java: New file.
