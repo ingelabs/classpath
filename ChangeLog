@@ -1,5 +1,9 @@
 2005-06-01  Tom Tromey  <tromey@redhat.com>
 
+	* java/io/ObjectInputStream.java (currentLoader): Fixed typo.
+
+2005-06-01  Tom Tromey  <tromey@redhat.com>
+
 	* org/omg/CosNaming/IstringHelper.java: Changed non-ascii
 	characters.
 
