@@ -1,3 +1,8 @@
+2005-06-01  Tom Tromey  <tromey@redhat.com>
+
+	* org/omg/CosNaming/IstringHelper.java: Changed non-ascii
+	characters.
+
 2005-06-01  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
 	* org/omg/SendingContext/package.html,

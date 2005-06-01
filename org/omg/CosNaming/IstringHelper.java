@@ -47,8 +47,8 @@ import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 
 /**
- * "Istring" was a “placeholder for a future IDL internationalized
- * string data type” in the original specification. It is maintained
+ * "Istring" was a "placeholder for a future IDL internationalized
+ * string data type" in the original specification. It is maintained
  * solely for compatibility reasons. In both java and CORBA,
  * Istring is now identical to the narrow (not wide) string and needs
  * no helper. This class is implemented just for compatibility
