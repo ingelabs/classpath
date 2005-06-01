@@ -577,7 +577,7 @@ public abstract class cdrInput
         reading:
         while (n < r.length)
           {
-            n = read(r, n, r.length - n);
+            n += read(r, n, r.length - n);
           }
 
         cdrBufInput capsule = new cdrBufInput(r);

@@ -1,5 +1,12 @@
 2005-06-1  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/Functional_ORB.java (serveStep),
+	gnu/CORBA/gnuRequest.java (submit),
+	gnu/CORBA/CDR/cdrInput.java (read_encapsulation): Correcting
+	data read loop.
+
+2005-06-1  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/Functional_ORG.java (getFreePort): Remember
 	the port number in the local variable.
 

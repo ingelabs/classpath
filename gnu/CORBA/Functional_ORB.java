@@ -1196,7 +1196,7 @@ public class Functional_ORB
             reading:
             while (n < r.length)
               {
-                n = in.read(r, n, r.length - n);
+                n += in.read(r, n, r.length - n);
               }
 
             service.setSoTimeout(TOUT_AFTER_RECEIVING);

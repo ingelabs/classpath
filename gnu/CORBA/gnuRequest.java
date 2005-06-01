@@ -672,7 +672,7 @@ public class gnuRequest
             reading:
             while (n < r.length)
               {
-                n = socketInput.read(r, n, r.length - n);
+                n += socketInput.read(r, n, r.length - n);
               }
             socketInput.close();
             return new binaryReply(orb, response_header, r);
