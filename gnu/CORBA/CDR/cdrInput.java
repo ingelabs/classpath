@@ -1040,7 +1040,7 @@ public abstract class cdrInput
   public String read_wstring()
   {
     // Native encoding or word oriented data.
-    if (wide_charset == null || giop.until_inclusive(1, 1))
+    if (wide_native || giop.until_inclusive(1, 1))
       return read_wstring_UTF_16();
     try
       {
