@@ -1,3 +1,8 @@
+2005-05-31  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+	* org/omg.CORBA/DynValue.java (declaration): Inherit from DynAny,
+	org.omg.CORBA.Object. (set_members): Declare it may throw InvalidSeq.
+
 2005-06-01  Sven de Marothy  <sven@physto.se>
 
 	* java/util/TimeZone (getDefaultTimeZone): Reimplemented.
