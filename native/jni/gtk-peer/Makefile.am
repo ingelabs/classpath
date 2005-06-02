@@ -29,7 +29,7 @@ libgtkpeer_la_SOURCES = $(gtk_cairo_c_source_files) \
 			gnu_java_awt_peer_gtk_GtkFileDialogPeer.c \
 			gnu_java_awt_peer_gtk_GtkFramePeer.c \
 			gnu_java_awt_peer_gtk_GtkGenericPeer.c \
-			gnu_java_awt_peer_gtk_GtkImagePainter.c \
+			gnu_java_awt_peer_gtk_GtkImage.c \
 			gnu_java_awt_peer_gtk_GtkLabelPeer.c \
 			gnu_java_awt_peer_gtk_GtkListPeer.c \
 			gnu_java_awt_peer_gtk_GtkMenuBarPeer.c \

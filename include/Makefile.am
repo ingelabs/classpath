@@ -46,7 +46,7 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkFileDialogPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkFramePeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkGenericPeer.h \
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkImagePainter.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkImage.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkLabelPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkListPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuBarPeer.h \
