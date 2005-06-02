@@ -1,5 +1,10 @@
 2005-06-02  Sven de Marothy  <sven@physto.se>
 
+	* java/awt/Component.java
+	(setBackgroundColor): Return if the color equals the existing bgcolor.
+
+2005-06-02  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java:
 	(drawImage): Remove reference to GtkOffScreenImage.
 	* gnu/java/awt/peer/gtk/GtkImageConsumer.java:
