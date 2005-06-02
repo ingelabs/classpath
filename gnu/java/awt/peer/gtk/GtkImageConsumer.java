@@ -76,7 +76,9 @@ public class GtkImageConsumer implements ImageConsumer
 
   public synchronized void setColorModel (ColorModel model)
   {
-    // we can safely ignore this
+    // This method is to inform on what the most used color model
+    // in the image is, for optimization reasons. We ignore this
+    // information.
   }
 
   public synchronized void setDimensions (int width, int height)
@@ -89,7 +91,9 @@ public class GtkImageConsumer implements ImageConsumer
 
   public synchronized void setHints (int flags)
   {
-    // we ignore this
+    // This method informs us in which order the pixels are
+    // delivered, for progressive-loading support, etc. 
+    // Since we wait until it's all loaded, we can ignore the hints.
   }
 
   public synchronized void setPixels (int x, int y, int width, int height, 
