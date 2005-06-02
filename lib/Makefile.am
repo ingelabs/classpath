@@ -5,8 +5,9 @@ JAVA_DEPEND = java.dep
 ## this file and restart the make process again
 sinclude $(JAVA_DEPEND)
 
-propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -type d ! -name CVS -print)
+propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org META-INF -type d ! -name CVS -print)
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -name \*\.properties -print)
+metafiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) META-INF -print)
 
 compile_classpath = $(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:.:$(USER_CLASSLIB)
 
@@ -83,8 +84,9 @@ resources:
 	@list='$(propertyfiles)'; for p in $$list; do \
 	  cp $(top_srcdir)/resource/$$p $$p; \
 	done
-	if [ -e META-INF ]; then rm -rf META-INF; fi
-	cp -r $(top_srcdir)/resource/META-INF .
+	@list='$(metafiles)'; for p in $$list; do \
+	  cp $(top_srcdir)/resource/$$p $$p; \
+	done
 	touch resources
 
 classes: genclasses
