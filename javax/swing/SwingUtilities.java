@@ -1129,7 +1129,7 @@ public class SwingUtilities
     else
       {
         while(child.getParent() != null
-              && !(child.getParent() instanceof ActionMapUIResource))
+              && (child.getParent() instanceof ActionMapUIResource))
           child = child.getParent();
         if (child != null)
           child.setParent(uiActionMap);

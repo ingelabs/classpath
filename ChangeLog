@@ -1,5 +1,11 @@
 2005-06-03  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/SwingUtilites.java
+	(replaceUIActionMap): Fixed condition in while loop that caused
+	infinite looping.
+
+2005-06-03  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicTableUI.java
 	(uninstallDefault): Don't set properties to null, this corrupts
 	component state.
