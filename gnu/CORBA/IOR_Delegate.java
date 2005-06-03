@@ -211,7 +211,9 @@ public class IOR_Delegate
                 }
               catch (IOException ex)
                 {
-                  throw new MARSHAL(ex + " while reading the forwarding info");
+                  MARSHAL t = new MARSHAL("Cant read forwarding info");
+                  t.initCause(ex);
+                  throw t;
                 }
 
               request.request.setIor(forwarded);

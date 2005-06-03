@@ -245,7 +245,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
     catch (IOException ex)
       {
@@ -266,7 +268,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -296,7 +300,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
   }
 
@@ -312,7 +318,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
   }
 
@@ -328,7 +336,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
   }
 
@@ -380,7 +390,9 @@ public abstract class cdrInput
       }
     catch (IOException ex)
       {
-        throw new BAD_OPERATION(ex.toString());
+        BAD_OPERATION bad = new BAD_OPERATION();
+        bad.initCause(ex);
+        throw bad;
       }
   }
 
@@ -430,7 +442,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
     catch (IOException ex)
       {
@@ -452,7 +466,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -476,7 +492,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -506,7 +524,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -527,7 +547,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -551,7 +573,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -594,7 +618,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -616,7 +642,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -637,7 +665,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -661,7 +691,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -682,7 +714,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -706,7 +740,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -751,7 +787,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -771,7 +809,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -791,7 +831,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -818,7 +860,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -839,7 +883,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -863,7 +909,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -898,7 +946,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -986,7 +1036,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
     catch (IOException ex)
       {
@@ -1019,7 +1071,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -1054,7 +1108,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)
@@ -1108,7 +1164,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.initCause(ex);
+        throw t;
       }
 
     catch (IOException ex)

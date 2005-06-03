@@ -115,7 +115,9 @@ public class encapsulatedOutput
       }
     catch (IOException ex)
       {
-        throw new InternalError();
+        InternalError err = new InternalError();
+        err.initCause(ex);
+        throw err;
       }
   }
 

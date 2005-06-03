@@ -294,7 +294,9 @@ public class MessageHeader
       }
     catch (IOException ex)
       {
-        throw new MARSHAL(ex.toString());
+        MARSHAL t = new MARSHAL();
+        t.initCause(ex);
+        throw t;
       }
   }
 
@@ -340,7 +342,9 @@ public class MessageHeader
       }
     catch (IOException ex)
       {
-        throw new MARSHAL(ex.toString());
+        MARSHAL t = new MARSHAL();
+        t.initCause(ex);
+        throw t;
       }
   }
 }

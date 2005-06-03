@@ -102,7 +102,6 @@ public class Functional_ORB
   class portServer
     extends Thread
   {
-
     /**
      * The number of the currently running parallel threads.
      */
@@ -145,7 +144,10 @@ public class Functional_ORB
         }
       catch (IOException ex)
         {
-          throw new BAD_OPERATION("Unable to open the server socket.");
+          BAD_OPERATION bad =
+            new BAD_OPERATION("Unable to open the server socket.");
+          bad.initCause(ex);
+          throw bad;
         }
 
       while (running)
@@ -372,7 +374,10 @@ public class Functional_ORB
       }
     catch (UnknownHostException ex)
       {
-        throw new BAD_OPERATION("Unable to resolve the local host address.");
+        BAD_OPERATION bad =
+          new BAD_OPERATION("Unable to open the server socket.");
+        bad.initCause(ex);
+        throw bad;
       }
   }
 
@@ -455,12 +460,14 @@ public class Functional_ORB
         s.close();
         return a_port;
       }
-    catch (IOException ex1)
+    catch (IOException ex)
       {
-        throw new NO_RESOURCES("Unable to open the server socket");
+        NO_RESOURCES bad =
+          new NO_RESOURCES("Unable to open the server socket.");
+        bad.initCause(ex);
+        throw bad;
       }
   }
-
 
   /**
    * Set the port, on that the server is listening for the client requests.
@@ -731,7 +738,9 @@ public class Functional_ORB
       }
     catch (Exception ex)
       {
-        throw new InvalidName(name + ":" + ex.getMessage());
+        InvalidName err = new InvalidName(name);
+        err.initCause(ex);
+        throw err;
       }
     if (object != null)
       return object;
@@ -921,10 +930,13 @@ public class Functional_ORB
               }
             catch (NumberFormatException ex)
               {
-                throw new BAD_PARAM("Invalid " + NS_PORT +
-                                    "property, unable to parse '" +
-                                    props.getProperty(NS_PORT) + "'"
-                                   );
+                BAD_PARAM bad =
+                  new BAD_PARAM("Invalid " + NS_PORT +
+                                "property, unable to parse '" +
+                                props.getProperty(NS_PORT) + "'"
+                               );
+                bad.initCause(ex);
+                throw bad;
               }
           }
       }
@@ -1238,7 +1250,8 @@ public class Functional_ORB
 
                 try
                   {
-                    if (no_resources) throw new NO_RESOURCES();
+                    if (no_resources)
+                      throw new NO_RESOURCES();
                     if (target == null)
                       throw new OBJECT_NOT_EXIST();
                     target._invoke(rh_request.operation, cin, handler);

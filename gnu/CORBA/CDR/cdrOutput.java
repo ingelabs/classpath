@@ -706,7 +706,9 @@ public abstract class cdrOutput
       }
     catch (IOException ex)
       {
-        throw new MARSHAL("IOException while writing the data");
+        MARSHAL t = new MARSHAL();
+        t.initCause(ex);
+        throw t;
       }
   }
 
@@ -725,7 +727,9 @@ public abstract class cdrOutput
       }
     catch (IOException ex)
       {
-        throw new MARSHAL("IOException while writing the data");
+        MARSHAL t = new MARSHAL();
+        t.initCause(ex);
+        throw t;
       }
   }
 

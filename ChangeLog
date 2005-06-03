@@ -1,3 +1,28 @@
+2005-06-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/Functional_ORB.java,
+	gnu/CORBA/IOR_Delegate.java,
+	gnu/CORBA/Simple_delegate.java,
+	gnu/CORBA/universalHolder.java,
+	gnu/CORBA/CDR/aligningInputStream.java,
+	gnu/CORBA/CDR/aligningOutputStream.java,
+	gnu/CORBA/CDR/cdrInput.java,
+	gnu/CORBA/CDR/cdrOutput.java,
+	gnu/CORBA/CDR/encapsulatedOutput.java,
+	gnu/CORBA/GIOP/ErrorMessage.java,
+	gnu/CORBA/GIOP/MessageHeader.java,
+	gnu/CORBA/GIOP/cxCodeSet.java,
+	gnu/CORBA/GIOP/v1_2/RequestHeader.java,
+	org/omg/CosNaming/BindingIteratorHelper.java,
+	org/omg/CosNaming/BindingListHelper.java,
+	org/omg/CosNaming/BindingTypeHelper.java,
+	org/omg/CosNaming/NameComponentHelper.java,
+	org/omg/CosNaming/NameHelper.java,
+	org/omg/CosNaming/NamingContextExtHelper.java,
+	org/omg/CosNaming/NamingContextHelper.java:
+	Initialise instances of org.omg.SystemException, thrown
+	after catching the other exception, with InitCause.
+
 2005-06-03  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/basic/BasicListUI.java
