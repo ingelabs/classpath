@@ -1,4 +1,12 @@
 2005-06-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+    * gnu/CORBA/GIOP/uncObjectInputStream.java,
+	gnu/CORBA/GIOP/uncObjectInputStream/uncObjectOutputStream.java:
+	Deleting files.
+    * gnu/CORBA/CDR/uncObjectInputStream.java,
+	gnu/CORBA/CDR/uncObjectInputStream/uncObjectOutputStream.java:
+	Adding files.
+
+2005-06-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/Functional_ORB.java,
 	gnu/CORBA/IOR_Delegate.java,
@@ -43,8 +51,8 @@
 
 2005-06-03  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
-	* gnu/CORBA/CDR/uncObjectInputStream.java,
-	uncObjectInputStream/uncObjectOutputStream.java: New streams.
+	* gnu/CORBA/GIOP/uncObjectInputStream.java,
+	gnu/CORBA/GIOP/uncObjectInputStream/uncObjectOutputStream.java: New streams.
 	* org/omg/CORBA/ValueBaseHelper.java: Removing inner classes,
 	using uncObjectInputStream, uncObjectOutputStream instead.
 	* org/omg/CORBA_2_3/portable (read_value): Delegate call to 
