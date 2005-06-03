@@ -1,5 +1,9 @@
 2005-06-03  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+	* AUTHORS (Roman Kennke): New author.
+
+2005-06-03  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
 	* org/omg/CORBA/portable/BoxedValueHelper.java,
 	org/omg/CORBA_2_3/portable/OutputStream.java,
 	org/omg/CORBA_2_3/portable/Delegate.java,
