@@ -1,5 +1,14 @@
 2005-06-03  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/CDR/uncObjectInputStream.java,
+	uncObjectInputStream/uncObjectOutputStream.java: New streams.
+	* org/omg/CORBA/ValueBaseHelper.java: Removing inner classes,
+	using uncObjectInputStream, uncObjectOutputStream instead.
+	* org/omg/CORBA_2_3/portable (read_value): Delegate call to 
+	ValueBaseHelper.
+
+2005-06-03  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
 	* org/omg/CORBA/SendingContext/Runtime.java,
 	org/omg/CORBA/SendingContext/RunTimeOperations.java:
 	Fixing the package statement.

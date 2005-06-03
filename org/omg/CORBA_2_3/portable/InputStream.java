@@ -39,10 +39,8 @@ exception statement from your version. */
 package org.omg.CORBA_2_3.portable;
 
 import org.omg.CORBA.MARSHAL;
-import org.omg.CORBA.NO_IMPLEMENT;
+import org.omg.CORBA.ValueBaseHelper;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 /**
@@ -140,30 +138,18 @@ public abstract class InputStream
    */
   public Serializable read_value(Class clz)
   {
-    try
-      {
-        ObjectInputStream oin = new ObjectInputStream(this);
-        Serializable rt = (Serializable) oin.readObject();
+    Serializable rt = (Serializable) ValueBaseHelper.read(this);
 
-        if (rt != null && clz != null)
+    if (rt != null && clz != null)
+      {
+        if (!(clz.isAssignableFrom(rt.getClass())))
           {
-            if (!(clz.isAssignableFrom(rt.getClass())))
-              {
-                throw new MARSHAL(rt.getClass().getName() +
-                                  " is not an instance of " + clz.getName()
-                                 );
-              }
+            throw new MARSHAL(rt.getClass().getName() +
+                              " is not an instance of " + clz.getName()
+                             );
           }
-        return rt;
       }
-    catch (ClassNotFoundException ex)
-      {
-        throw new MARSHAL("Class " + clz.getClass().getName() + " not found");
-      }
-    catch (IOException ex)
-      {
-        throw new MARSHAL(ex + ":" + ex.getMessage());
-      }
+    return rt;
   }
 
   /**
