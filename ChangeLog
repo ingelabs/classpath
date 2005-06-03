@@ -1,4 +1,15 @@
+2005-06-03  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+	* org/omg/CosNaming/NamingContextPackage/AlreadyBound.java,
+	org/omg/CosNaming/NamingContextPackage/CannotProceed.java,
+	org/omg/CosNaming/NamingContextPackage/InvalidName.java,
+	org/omg/CosNaming/NamingContextPackage/NotEmpty.java,
+	org/omg/CosNaming/NamingContextPackage/NotFound.java,
+	org/omg/CosNaming/NamingContextPackage/NotFoundReason.java:
+	Added SerialVersionUID.
+
 2005-06-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
     * gnu/CORBA/GIOP/uncObjectInputStream.java,
 	gnu/CORBA/GIOP/uncObjectInputStream/uncObjectOutputStream.java:
 	Deleting files.
