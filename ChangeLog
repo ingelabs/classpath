@@ -1,5 +1,10 @@
 2005-06-04  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+	* org/omg/stub/java/rmi/_Remote_Stub.java,
+	org/omg/stub/java/rmi/package.html: New package.
+
+2005-06-04  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
 	* org/omg/Messaging/SyncScopeHelper.java
 	org/omg/Messaging/SYNC_WITH_TRANSPORT.java
 	org/omg/Messaging/package.html: New package.
