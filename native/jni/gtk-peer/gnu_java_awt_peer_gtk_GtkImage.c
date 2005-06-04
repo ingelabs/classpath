@@ -61,8 +61,9 @@ static void setWidthHeight (JNIEnv * env, jobject obj, int width, int height);
 /**
  * Loads a pixmap from a file.
  */
-JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_loadPixbuf
-(JNIEnv *env, jobject obj, jstring name)
+JNIEXPORT jboolean JNICALL
+Java_gnu_java_awt_peer_gtk_GtkImage_loadPixbuf
+  (JNIEnv *env, jobject obj, jstring name)
 {
   const char *filename;
   int width, height;
@@ -266,10 +267,11 @@ Java_gnu_java_awt_peer_gtk_GtkImage_createScaledPixmap(JNIEnv *env,
  * Draws the pixbuf at x, y, scaled to width and height and 
  * optionally composited with a given background color.
  */
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaled 
-(JNIEnv *env, jobject obj, jobject gc_obj,
- jint bg_red, jint bg_green, jint bg_blue, 
- jint x, jint y, jint width, jint height, jboolean composite)
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaled 
+  (JNIEnv *env, jobject obj, jobject gc_obj,
+   jint bg_red, jint bg_green, jint bg_blue, 
+   jint x, jint y, jint width, jint height, jboolean composite)
 {
   GdkPixbuf* dst;
   struct graphics *g;

@@ -1,3 +1,11 @@
+2005-06-04  Michael Koch  <konqueror@gmx.de>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(Java_gnu_java_awt_peer_gtk_GtkImage_loadPixbuf):
+	Fixed method declaration format.
+	(Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaled):
+	Likewise.
+
 2005-06-03  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
 	* AUTHORS (Roman Kennke): New author.
