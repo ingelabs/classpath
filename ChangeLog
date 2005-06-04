@@ -1,5 +1,19 @@
 2005-06-04  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+	* org/omg/CORBA/DefinitionKindHelper.java,
+	org/omg/CORBA/FieldNameHelper.java,
+	org/omg/CORBA/IdentifierHelper.java,
+	org/omg/CORBA/ParameterMode.java,
+	org/omg/CORBA/ParameterModeHelper.java,
+	org/omg/CORBA/ParameterModeHolder.java,
+	org/omg/CORBA/RepositoryIdHelper.java,
+	org/omg/CORBA/SetOverrideTypeHelper.java,
+	org/omg/CORBA/VersionSpecHelper.java,
+	gnu/CORBA/SetOverrideTypeHolder.java,
+	gnu/CORBA/DefinitionKindHolder.java: New files.
+
+2005-06-04  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
 	* org/omg/stub/java/rmi/_Remote_Stub.java,
 	org/omg/stub/java/rmi/package.html: New package.
 
