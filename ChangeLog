@@ -1,3 +1,36 @@
+2005-06-04  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java (focusListener): Use
+	correct type.
+	(listDataListener, listSelectionListener, mouseInputListener,
+	propertyChangeListener): Likewise.
+	* javax/swing/plaf/basic/BasicMenuUI.java (ChangeHandler): Now
+	public and deprecated.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(TabbedPaneLayout): Now public.
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java
+	(ButtonActionListener): Now public.
+	(PropertyChangeHandler): Likewise.
+	(ButtonAreaLayout): Likewise.
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+	(TitlePaneLayout): Now public.
+	(PropertyChangeHandler): Likewise.
+	* javax/swing/plaf/basic/BasicCheckBoxUI.java
+	(getPropertyPrefix): New method.
+	* javax/swing/plaf/basic/BasicProgressBarUI.java (ChangeHandler):
+	Now public.
+	* javax/swing/plaf/basic/BasicSliderUI.java (ComponentHandler):
+	Now public.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(BasicVerticalLayoutManager): Now public.
+	(FocusHandler): Likewise.
+	(BasicHorizontalLayoutManager): Likewise.
+	* javax/swing/plaf/basic/BasicFileChooserUI.java
+	(AcceptAllFileFilter): New public constructor.
+	(BasicFileView): Likewise.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(BorderListener.RESIZE_NONE): Now final.
+
 2005-06-04  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/DefinitionKindHelper.java,

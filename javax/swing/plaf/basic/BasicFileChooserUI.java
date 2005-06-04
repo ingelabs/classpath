@@ -101,6 +101,10 @@ public class BasicFileChooserUI extends FileChooserUI
    */
   protected class AcceptAllFileFilter extends FileFilter
   {
+    public AcceptAllFileFilter()
+    {
+    }
+    
     /**
      * DOCUMENT ME!
      *
@@ -167,6 +171,10 @@ public class BasicFileChooserUI extends FileChooserUI
   {
     /** DOCUMENT ME! */
     protected Hashtable iconCache = new Hashtable();
+
+    public BasicFileView()
+    {
+    }
 
     /**
      * DOCUMENT ME!
