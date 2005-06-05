@@ -1,4 +1,11 @@
-2005-06-05  Ka-Hing Cheung <kahing@javabsp.org>
+2005-06-05  Ka-Hing Cheung  <kahing@javabsp.org>
+
+	* javax/swing/event/TreeSelectionEvent.java
+	(getPaths): Return a cloned copy.
+	(isAddedPath): Implemented.
+	(cloneWithSource): Likewise.
+
+2005-06-05  Ka-Hing Cheung  <kahing@javabsp.org>
 
 	* javax/swing/event/TreeSelectionEvent.java:
 	Reformatted.
