@@ -47,8 +47,8 @@ import java.io.Serializable;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public interface BoxedValueHelper {
-
+public interface BoxedValueHelper
+{
   /**
    * Get the repository id of this value type.
    *
@@ -72,5 +72,4 @@ public interface BoxedValueHelper {
    * @param value a value to write.
    */
   void write_value(OutputStream ostream, Serializable value);
-
 }

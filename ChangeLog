@@ -1,3 +1,22 @@
+2005-06-05  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+	* org\omg\CORBA\portable\ValueFactory.java (read_value): Changed 
+	parameter type to org.omg.CORBA_2_3.portable.InputStream.
+	* org\omg\CosNaming\_BindingIteratorStub.java,
+	* org\omg\CosNaming\_NamingContextStub.java: Fixed serialVersionUID.
+	* org\omg\CORBA_2_3\portable\InputStream.java 
+	(read_value(BoxedValueHelper)): Implemented.
+	* org\omg\CORBA_2_3\portable\OutputStream.java 
+	(write_abstract_interface): 
+	Changed parameter type to java.lang.Object.
+	* org\omg\CORBA\portable\BoxedValueHelper.java: 
+	Moved wrongly placed bracket.
+	* org\omg\CORBA\ParameterMode.java: Inherit from
+	Serializable, IDLEntity and removing duplicated header.
+	(_PARAM_IN, _PARAM_OUT, _PARAM_INOUT): Making final.
+	* org\omg\Messaging\SyncScopeHelper.java (extract, id, insert, 
+	read, type, write): Making public.
+	
 2005-06-05  Ka-Hing Cheung  <kahing@javabsp.org>
 
 	* javax/swing/event/TreeSelectionEvent.java
@@ -166,8 +185,8 @@
 	gnu/CORBA/GIOP/uncObjectInputStream/uncObjectOutputStream.java: New streams.
 	* org/omg/CORBA/ValueBaseHelper.java: Removing inner classes,
 	using uncObjectInputStream, uncObjectOutputStream instead.
-	* org/omg/CORBA_2_3/portable (read_value): Delegate call to 
-	ValueBaseHelper.
+	* org/omg/CORBA_2_3/portable.InputStream.java (read_value): 
+	Delegate call to ValueBaseHelper.
 
 2005-06-03  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 

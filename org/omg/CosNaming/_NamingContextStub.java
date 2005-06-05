@@ -72,7 +72,7 @@ public class _NamingContextStub
   /**
    * Use serialVersionUID (v1.4) for interoperability.
    */
-  private static final long serialVersionUID = -389233044945385889L;
+  private static final long serialVersionUID = 6835430958405349379L;
 
   /**
    * Create the naming context stub.

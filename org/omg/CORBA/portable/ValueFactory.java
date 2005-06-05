@@ -58,5 +58,5 @@ public interface ValueFactory
    * @return a created value type, intialised with the data from
    * the stream.
    */
-  Serializable read_value(InputStream from_stream);
+  Serializable read_value(org.omg.CORBA_2_3.portable.InputStream from_stream);
 }

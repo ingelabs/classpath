@@ -65,7 +65,7 @@ public class SyncScopeHelper
   /**
    * Delegates call to {@link Any.extract_short()}.
    */
-  static short extract(Any a)
+  public static short extract(Any a)
   {
     return a.extract_short();
   }
@@ -75,7 +75,7 @@ public class SyncScopeHelper
    *
    * @return "IDL:omg.org/Messaging/SyncScope:1.0", always.
    */
-  static String id()
+  public static String id()
   {
     return "IDL:omg.org/Messaging/SyncScope:1.0";
   }
@@ -83,7 +83,7 @@ public class SyncScopeHelper
   /**
    * Delegates call to {@link Any.insert_short(short)}.
    */
-  static void insert(Any a, short that)
+  public static void insert(Any a, short that)
   {
     a.insert_short(that);
   }
@@ -91,7 +91,7 @@ public class SyncScopeHelper
   /**
    * Delegates call to {@link InputStream.read_short()}.
    */
-  static short read(InputStream istream)
+  public static short read(InputStream istream)
   {
     return istream.read_short();
   }
@@ -102,7 +102,7 @@ public class SyncScopeHelper
    *
    * @return a typecode of synchronization scope.
    */
-  static TypeCode type()
+  public static TypeCode type()
   {
     recordTypeCode r = new recordTypeCode(TCKind.tk_alias);
     r.setName("SyncScope");

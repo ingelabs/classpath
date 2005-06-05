@@ -73,20 +73,23 @@ public abstract class OutputStream
    * the boolean discriminator (false for objects, true for value types).
    *
    * The object from value is separated by fact that all values implement
-   * the {@link ValueBase} interface.
+   * the {@link ValueBase} interface. Also, the passed parameter is treated
+   * as value it it does not implement CORBA Object.
    *
    * @param an_interface an abstract interface to write.
    */
-  public void write_abstract_interface(org.omg.CORBA.Object an_interface)
+  public void write_abstract_interface(java.lang.Object an_interface)
   {
-    boolean isValue = an_interface instanceof ValueBase;
+    boolean isValue =
+      an_interface instanceof ValueBase ||
+      (!(an_interface instanceof org.omg.CORBA.Object));
 
     write_boolean(isValue);
 
     if (isValue)
       write_value((ValueBase) an_interface);
     else
-      write_Object(an_interface);
+      write_Object((org.omg.CORBA.Object) an_interface);
   }
 
   /**

@@ -40,6 +40,7 @@ package org.omg.CORBA_2_3.portable;
 
 import org.omg.CORBA.MARSHAL;
 import org.omg.CORBA.ValueBaseHelper;
+import org.omg.CORBA.portable.BoxedValueHelper;
 
 import java.io.Serializable;
 
@@ -185,5 +186,10 @@ public abstract class InputStream
   {
     return ((org.omg.CORBA_2_3.ORB) orb()).lookup_value_factory(repository_id)
             .read_value(this);
+  }
+
+  public Serializable read_value(BoxedValueHelper helper)
+  {
+    return helper.read_value(this);
   }
 }

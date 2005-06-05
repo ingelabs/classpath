@@ -59,7 +59,7 @@ public class _BindingIteratorStub
   /**
    * Use serialVersionUID (v1.4) for interoperability.
    */
-  private static final long serialVersionUID = 359397876031922059L;
+  private static final long serialVersionUID = 8969257760771186704L;
 
   /**
    * The object can be destroyed only once.
