@@ -107,7 +107,7 @@ Java_gnu_java_awt_peer_gtk_GtkImage_getPixels(JNIEnv *env, jobject obj)
   guchar *pixeldata;
   jintArray result_array;
   jint *result_array_iter, *dst;
-  int i;
+  int i,j;
 
   gdk_threads_enter ();
 
@@ -121,13 +121,31 @@ Java_gnu_java_awt_peer_gtk_GtkImage_getPixels(JNIEnv *env, jobject obj)
     (*env)->GetIntArrayElements (env, result_array, NULL);
 
   pixeldata = gdk_pixbuf_get_pixels (pixbuf);
-  for(i = 0 ; i < height; i++)
-    {
-      memcpy(dst, (void *)pixeldata, width * 4);
-      dst += width;
-      pixeldata += rowstride;
-    }
 
+  /* FIXME: handle more bit depths here? */
+  g_assert (gdk_pixbuf_get_bits_per_sample (pixbuf) == 8);
+
+  if (gdk_pixbuf_get_has_alpha (pixbuf))
+    {
+      for(i = 0 ; i < height; i++)
+	{
+	  memcpy(dst, (void *)pixeldata, width * 4);
+	  dst += width;
+	  pixeldata += rowstride;
+	}
+    } else {
+      for(i = 0; i < height; i++)
+	{
+	  for(j = 0; j < width; j++)
+	    dst[j] = 0xFF000000 |
+	      (pixeldata[j*3 + 2] & 0xFF) << 16 |
+	      (pixeldata[j*3 + 1] & 0xFF) << 8 |
+	      (pixeldata[j*3] & 0xFF);
+	  dst += width;
+	  pixeldata += rowstride;
+	}
+    }
+  
   if (offScreen (env, obj) == JNI_TRUE)
     gdk_pixbuf_unref (pixbuf);
     
