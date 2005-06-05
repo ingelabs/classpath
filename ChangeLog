@@ -1,3 +1,8 @@
+2005-06-05  Ka-Hing Cheung  <kahing@javabsp.org>
+
+	* javax/swing/tree/TreePath.java
+	(toString): Implemented.
+
 2005-06-05  Sven de Marothy  <sven@physto.se>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
