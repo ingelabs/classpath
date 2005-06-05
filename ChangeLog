@@ -1,3 +1,10 @@
+2005-06-06  Sven de Marothy <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/GtkImage.java
+	(getSource, deliver): Added null checks.
+	* java/awt/image/RGBImageFilter.java
+	(filterRGBPixels): Reimplement.
+	
 2005-06-05  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/VisibilityHelper.java: New helper.
