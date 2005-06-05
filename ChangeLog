@@ -1,5 +1,10 @@
 2005-06-05  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+	* org/omg/stub/java/rmi/_Remote_Stub.java:
+	Inheriting from Stub, Remote and Serializable.
+
+2005-06-05  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
 	* org\omg\CORBA\portable\ValueFactory.java (read_value): Changed 
 	parameter type to org.omg.CORBA_2_3.portable.InputStream.
 	* org\omg\CosNaming\_BindingIteratorStub.java,
