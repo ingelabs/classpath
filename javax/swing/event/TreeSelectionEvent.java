@@ -1,5 +1,5 @@
 /* TreeSelectionEvent.java --
-   Copyright (C) 2002, 2004 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -49,142 +49,152 @@ import javax.swing.tree.TreePath;
  */
 public class TreeSelectionEvent extends EventObject {
 
-	//-------------------------------------------------------------
-	// Variables --------------------------------------------------
-	//-------------------------------------------------------------
+  //-------------------------------------------------------------
+  // Variables --------------------------------------------------
+  //-------------------------------------------------------------
 
-	/**
-	 * paths
-	 */
-	protected TreePath[] paths;
+  /**
+   * paths
+   */
+  protected TreePath[] paths;
 
-	/**
-	 * areNew
-	 */
-	protected boolean[] areNew;
+  /**
+   * areNew
+   */
+  protected boolean[] areNew;
 
-	/**
-	 * oldLeadSelectionPath
-	 */
-	protected TreePath oldLeadSelectionPath;
+  /**
+   * oldLeadSelectionPath
+   */
+  protected TreePath oldLeadSelectionPath;
 
-	/**
-	 * newLeadSelectionPath
-	 */
-	protected TreePath newLeadSelectionPath;
-
-
-	//-------------------------------------------------------------
-	// Initialization ---------------------------------------------
-	//-------------------------------------------------------------
-
-	/**
-	 * Constructor TreeSelectionEvent
-	 * @param source TODO
-	 * @param paths TODO
-	 * @param areNew TODO
-	 * @param oldLeadSelectionPath TODO
-	 * @param newLeadSelectionPath TODO
-	 */
-	public TreeSelectionEvent(Object source, TreePath[] paths,
-				boolean[] areNew, TreePath oldLeadSelectionPath,
-				TreePath newLeadSelectionPath) {
-		super(source);
-		this.paths					= paths;
-		this.areNew					= areNew;
-		this.oldLeadSelectionPath	= oldLeadSelectionPath;
-		this.newLeadSelectionPath	= newLeadSelectionPath;
-	} // TreeSelectionEvent()
-
-	/**
-	 * Constructor TreeSelectionEvent
-	 * @param source TODO
-	 * @param paths TODO
-	 * @param areNew TODO
-	 * @param oldLeadSelectionPath TODO
-	 * @param newLeadSelectionPath TODO
-	 */
-	public TreeSelectionEvent(Object source, TreePath path,
-				boolean isNew, TreePath oldLeadSelectionPath,
-				TreePath newLeadSelectionPath) {
-		super(source);
-//TODO		this.paths					= new TreePath[1]{path};
-//TODO		this.areNew					= new boolean[1]{isNew};
-		this.oldLeadSelectionPath	= oldLeadSelectionPath;
-		this.newLeadSelectionPath	= newLeadSelectionPath;
-	} // TreeSelectionEvent()
+  /**
+   * newLeadSelectionPath
+   */
+  protected TreePath newLeadSelectionPath;
 
 
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+  //-------------------------------------------------------------
+  // Initialization ---------------------------------------------
+  //-------------------------------------------------------------
 
-	/**
-	 * getPath
-	 * @returns TreePath
-	 */
-	public TreePath getPath() {
-		return paths[0];
-	} // getPath()
+  /**
+   * Constructor TreeSelectionEvent
+   * @param source TODO
+   * @param paths TODO
+   * @param areNew TODO
+   * @param oldLeadSelectionPath TODO
+   * @param newLeadSelectionPath TODO
+   */
+  public TreeSelectionEvent(Object source, TreePath[] paths,
+			    boolean[] areNew, TreePath oldLeadSelectionPath,
+			    TreePath newLeadSelectionPath)
+  {
+    super(source);
+    this.paths					= paths;
+    this.areNew					= areNew;
+    this.oldLeadSelectionPath	= oldLeadSelectionPath;
+    this.newLeadSelectionPath	= newLeadSelectionPath;
+  } // TreeSelectionEvent()
 
-	/**
-	 * getPaths
-	 * @returns TreePath[]
-	 */
-	public TreePath[] getPaths() {
-		return paths;
-	} // getPaths()
+  /**
+   * Constructor TreeSelectionEvent
+   * @param source TODO
+   * @param paths TODO
+   * @param areNew TODO
+   * @param oldLeadSelectionPath TODO
+   * @param newLeadSelectionPath TODO
+   */
+  public TreeSelectionEvent(Object source, TreePath path,
+			    boolean isNew, TreePath oldLeadSelectionPath,
+			    TreePath newLeadSelectionPath)
+  {
+    super(source);
+    //TODO		this.paths					= new TreePath[1]{path};
+    //TODO		this.areNew					= new boolean[1]{isNew};
+    this.oldLeadSelectionPath	= oldLeadSelectionPath;
+    this.newLeadSelectionPath	= newLeadSelectionPath;
+  } // TreeSelectionEvent()
 
-	/**
-	 * isAddedPath
-	 * @returns boolean
-	 */
-	public boolean isAddedPath() {
-		return false; // TODO
-	} // isAddedPath()
 
-	/**
-	 * isAddedPath
-	 * @param path TODO
-	 * @returns boolean
-	 */
-	public boolean isAddedPath(TreePath path) {
-		return false; // TODO
-	} // isAddedPath()
+  //-------------------------------------------------------------
+  // Methods ----------------------------------------------------
+  //-------------------------------------------------------------
 
-	/**
-	 * isAddedPath
-	 * @param index TODO
-	 * @returns boolean
-	 */
-	public boolean isAddedPath(int index) {
-		return false; // TODO
-	} // isAddedPath()
+  /**
+   * getPath
+   * @returns TreePath
+   */
+  public TreePath getPath()
+  {
+    return paths[0];
+  } // getPath()
 
-	/**
-	 * getOldLeadSelectionPath
-	 * @returns TreePath
-	 */
-	public TreePath getOldLeadSelectionPath() {
-		return oldLeadSelectionPath;
-	} // getOldLeadSelectionPath()
+  /**
+   * getPaths
+   * @returns TreePath[]
+   */
+  public TreePath[] getPaths()
+  {
+    return paths;
+  } // getPaths()
 
-	/**
-	 * getNewLeadSelectionPath
-	 * @returns TreePath
-	 */
-	public TreePath getNewLeadSelectionPath() {
-		return newLeadSelectionPath;
-	} // getNewLeadSelectionPath()
+  /**
+   * isAddedPath
+   * @returns boolean
+   */
+  public boolean isAddedPath()
+  {
+    return false; // TODO
+  } // isAddedPath()
 
-	/**
-	 * cloneWithSource
-	 * @param source TODO
-	 * @returns Object
-	 */
-	public Object cloneWithSource(Object source) {
-		return null; // TODO
-	} // cloneWithSource()
+  /**
+   * isAddedPath
+   * @param path TODO
+   * @returns boolean
+   */
+  public boolean isAddedPath(TreePath path)
+  {
+    return false; // TODO
+  } // isAddedPath()
+
+  /**
+   * isAddedPath
+   * @param index TODO
+   * @returns boolean
+   */
+  public boolean isAddedPath(int index)
+  {
+    return false; // TODO
+  } // isAddedPath()
+
+  /**
+   * getOldLeadSelectionPath
+   * @returns TreePath
+   */
+  public TreePath getOldLeadSelectionPath()
+  {
+    return oldLeadSelectionPath;
+  } // getOldLeadSelectionPath()
+
+  /**
+   * getNewLeadSelectionPath
+   * @returns TreePath
+   */
+  public TreePath getNewLeadSelectionPath()
+  {
+    return newLeadSelectionPath;
+  } // getNewLeadSelectionPath()
+
+  /**
+   * cloneWithSource
+   * @param source TODO
+   * @returns Object
+   */
+  public Object cloneWithSource(Object source)
+  {
+    return null; // TODO
+  } // cloneWithSource()
 
 
 } // TreeSelectionEvent
