@@ -1,5 +1,9 @@
 2005-06-05  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+	* org/omg/CORBA/VisibilityHelper.java: New helper.
+
+2005-06-05  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
 	* org/omg/stub/java/rmi/_Remote_Stub.java:
 	Inheriting from Stub, Remote and Serializable.
 
