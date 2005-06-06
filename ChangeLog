@@ -1,3 +1,8 @@
+2005-06-06  Sven de Marothy <sven@physto.se>
+
+	* javax/swing/JLabel.java
+	(JLabel): Horizontal justification changed to default to LEADING.
+
 2005-06-06  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/DefaultFormatter.java:
