@@ -1,5 +1,12 @@
 2005-06-06  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	(focusLost): Don't unarm button on focus lost. This behaviour is
+	not documented anywhere and disturbs correct event processing
+	in buttons.
+
+2005-06-06  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(getKeymapName): Removed debug statement.
 
