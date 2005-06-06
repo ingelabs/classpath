@@ -354,7 +354,11 @@ public abstract class BasicTextUI extends TextUI
 
   protected String getKeymapName()
   {
-    return "BasicTextUI";
+    String fullClassName = getClass().getName();
+    int index = fullClassName.lastIndexOf('.');
+    String className = fullClassName.substring(index + 1);
+    System.err.println("getKeymapName: " + className);
+    return className;
   }
 
   protected Keymap createKeymap()
