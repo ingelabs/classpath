@@ -41,7 +41,11 @@ package org.omg.CORBA.portable;
 import java.io.Serializable;
 
 /**
- * Provides a helper operations for the value type.
+ * Provides a helper operations for the boxed value type.
+ * A boxed value type is a value type with no inheritance, no methods
+ * and with a single state member. No additional properties can
+ * be defined. It is an error to box value types.
+ *
  * The value type may have its own helper, implementing
  * this interface.
  *
