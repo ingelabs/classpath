@@ -1,5 +1,10 @@
 2005-06-06  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+	* org/omg/CORBA/CompletionStatusHelper.java (type): New method.
+	* org/omg/CORBA/Current.java: Inherit from org.omg.portable.IDLEntity.
+
+2005-06-06  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
 	* org/omg/CORBA/StringValueHelper.java,
 	org/omg/CORBA/WStringValueHelper.java: New helpers.
 	* org/omg/CORBA/portable/BoxedValueHelper.java: Documentation update.
