@@ -1,3 +1,7 @@
+2005-06-05  Tom Tromey  <tromey@redhat.com>
+
+	* scripts/generate-locale-list.sh: Remove redundant 'cd'.
+
 2005-06-06  Sven de Marothy <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GtkImage.java

@@ -2,8 +2,6 @@
 
 CLASSPATH_SRCDIR=`dirname $0`/..
 
-cd $CLASSPATH_SRCDIR/gnu/java/locale
-
 echo "/* LocaleData.java --"
 echo "   Copyright (C) 2004, 2005  Free Software Foundation, Inc."
 echo
