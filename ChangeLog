@@ -1,5 +1,9 @@
 2005-06-05  Tom Tromey  <tromey@redhat.com>
 
+	* java/lang/Class.java (resourcePath): Reindented.
+
+2005-06-05  Tom Tromey  <tromey@redhat.com>
+
 	* scripts/generate-locale-list.sh: Remove redundant 'cd'.
 
 2005-06-06  Sven de Marothy <sven@physto.se>
