@@ -83,6 +83,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import gnu.CORBA.GIOP.CloseMessage;
 
 /**
  * The ORB implementation, capable to handle remote invocations on the
@@ -266,7 +267,7 @@ public class Functional_ORB
    */
   private int TOUT_START_READING_MESSAGE = 20 * 1000;
 
-  // (Here and below, we use * to make meaning of the constant clearler).
+  // (Here and below, we use * to make the meaning of the constant clearler).
 
   /**
    * If the client has started to send the request message, the socket time
@@ -285,17 +286,11 @@ public class Functional_ORB
    * Some clients tend to submit multiple requests over the
    * same socket. The server waits for the next request on
    * the same socket for the duration, specified
-   * below. The default time is seven seconds.
+   * below. In additions, the request of this implementation also
+   * waits for the same duration before closing the socket.
+   * The default time is seven seconds.
    */
-  public int TANDEM_REQUESTS = 7000;
-
-  /**
-   * If the maximal number of threads per object is reached,
-   * the server waits for the given time interval before checking
-   * again maybe some threads are already complete.
-   * Thr default time is 0.5 second.
-   */
-  public int PAUSE_ON_THREAD_OVERLOAD = 500;
+  public static int TANDEM_REQUESTS = 7000;
 
   /**
    * The map of the already conncted objects.
@@ -1127,9 +1122,10 @@ public class Functional_ORB
     service = serverSocket.accept();
 
     // Tell the server there are no more resources.
-    while (p.running_threads >= MAX_RUNNING_THREADS)
+    if (p.running_threads >= MAX_RUNNING_THREADS)
       {
         serveStep(service, true);
+        return;
       }
 
     new Thread()
@@ -1284,6 +1280,14 @@ public class Functional_ORB
                                      );
                   }
               }
+            else if (msh_request.message_type == MessageHeader.CLOSE_CONNECTION ||
+                     msh_request.message_type == MessageHeader.MESSAGE_ERROR
+                    )
+              {
+                CloseMessage.close(service.getOutputStream());
+                service.close();
+                return;
+              }
             else
               ;
 
@@ -1291,7 +1295,7 @@ public class Functional_ORB
             if (service != null && !service.isClosed())
               {
                 // Wait for the subsequent invocations on the
-                // same socket for 2 minutes.
+                // same socket for the TANDEM_REQUEST duration.
                 service.setSoTimeout(TANDEM_REQUESTS);
               }
             else

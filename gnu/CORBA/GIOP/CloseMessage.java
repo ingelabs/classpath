@@ -1,4 +1,4 @@
-/* IOR_contructed_object.java --
+/* CloseMessage.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,74 +36,67 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.CORBA;
+package gnu.CORBA.GIOP;
 
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.portable.ObjectImpl;
+import gnu.CORBA.IOR;
+
+import org.omg.CORBA.MARSHAL;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
+import java.net.Socket;
 
 /**
- * Implements an object, constructed from an IOR reference.
+ * The explicit command to close the connection.
+ *
+ *
+ * The close message consists from the message header only and
+ * is the same for GIOP 1.0, 1.1, 1.2 and 1.3. The CloseMessage
+ * uses the default value from the {@link MessageHeader}.
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class IOR_contructed_object
-  extends ObjectImpl
+public class CloseMessage
+  extends MessageHeader
 {
   /**
-   * The IOR, from which the object was constructed.
+   * The singleton close message is typically enough, despite new
+   * instances may be instantiated if the specific version field
+   * value is mandatory.
    */
-  protected final IOR ior;
+  private static final CloseMessage Singleton = new CloseMessage();
 
   /**
-   * The object id, as defined in IOR.
+   * Create a new error message, setting the message field
+   * to the {@link MESSAGE_CLOSE} and the version number to
+   * the given major and minor values.
    */
-  protected final String[] id;
+  public CloseMessage()
+  {
+    message_type = CLOSE_CONNECTION;
+  }
 
   /**
-   * Create the object from the given IOR.
+   * Send the close message to the given output stream. The method,
+   * however, does not close the socket itself, this must be done
+   * explicitly in the calling code.
    *
-   * @param an_ior the IOR.
+   * @param socketStream a stream, where the close message is
+   * written.
    */
-  public IOR_contructed_object(ORB orb, IOR an_ior)
+  public static void close(OutputStream socketStream)
   {
-    ior = an_ior;
-    _set_delegate(new IOR_Delegate(orb, ior));
-    id = new String[] { ior.Id };
-  }
-
-  /**
-   * Create the object from the given string IOR representation.
-   *
-   * @param an_ior the IOR in the string form.
-   */
-  public IOR_contructed_object(Functional_ORB orb, String an_ior)
-  {
-    ior = IOR.parse(an_ior);
-    _set_delegate(new IOR_Delegate(orb, ior));
-    id = new String[] { ior.Id };
-  }
-
-  public String[] _ids()
-  {
-    return id;
-  }
-
-  /**
-   * Get a string reference for this object.
-   *
-   * @return the class name:IOR profile
-   */
-  public String toString()
-  {
-    return getClass().getName() + ":IOR:" + ior;
-  }
-
-  /**
-   * Calls realease on the delegate.
-   */
-  protected void finalize()
-                   throws java.lang.Throwable
-  {
-    _get_delegate().release(this);
+    try
+      {
+        Singleton.write(socketStream);
+        socketStream.flush();
+      }
+    catch (IOException ex)
+      {
+        MARSHAL m = new MARSHAL("Unable to flush the stream");
+        m.initCause(ex);
+        throw m;
+      }
   }
 }

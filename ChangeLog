@@ -1,3 +1,13 @@
+2005-06-07  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/IOR_Delegate.java (release),
+	gnu/CORBA/IOR_contructed_object.java (finalize):
+	Close the associated socket if the finalizer is called.
+	gnu/CORBA/gnuRequest.java (submit),
+	gnu/CORBA/Functional_ORB.java (serveStep): Try to reuse the opened sockets.
+	* gnu/CORBA/SocketRepository.java,
+	gnu/CORBA/GIOP/CloseMessage.java: New files.
+
 2005-06-06  Sven de Marothy <sven@physto.se>
 
 	* javax/swing/JLabel.java

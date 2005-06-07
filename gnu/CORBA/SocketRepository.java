@@ -1,4 +1,4 @@
-/* IOR_contructed_object.java --
+/* SocketRepository.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,72 +38,56 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.portable.ObjectImpl;
+import java.net.Socket;
+
+import java.util.HashMap;
 
 /**
- * Implements an object, constructed from an IOR reference.
+ * This class caches the opened sockets that are reused during the
+ * frequent calls. Otherwise, some CORBA applications may spend
+ * up to 90 % of the working time just for closing and opening the sockets.
  *
- * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+ * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class IOR_contructed_object
-  extends ObjectImpl
+public class SocketRepository
 {
   /**
-   * The IOR, from which the object was constructed.
+   * The socket map.
    */
-  protected final IOR ior;
+  private static HashMap sockets = new HashMap();
 
   /**
-   * The object id, as defined in IOR.
-   */
-  protected final String[] id;
-
-  /**
-   * Create the object from the given IOR.
+   * Put a socket.
    *
-   * @param an_ior the IOR.
-   */
-  public IOR_contructed_object(ORB orb, IOR an_ior)
-  {
-    ior = an_ior;
-    _set_delegate(new IOR_Delegate(orb, ior));
-    id = new String[] { ior.Id };
-  }
-
-  /**
-   * Create the object from the given string IOR representation.
+   * @param key as socket key.
    *
-   * @param an_ior the IOR in the string form.
+   * @param s a socket.
    */
-  public IOR_contructed_object(Functional_ORB orb, String an_ior)
+  public static void put_socket(Object key, Socket s)
   {
-    ior = IOR.parse(an_ior);
-    _set_delegate(new IOR_Delegate(orb, ior));
-    id = new String[] { ior.Id };
-  }
-
-  public String[] _ids()
-  {
-    return id;
+    sockets.put(key, s);
   }
 
   /**
-   * Get a string reference for this object.
+   * Get a socket.
    *
-   * @return the class name:IOR profile
+   * @param key a socket key.
+   *
+   * @return an opened socket for reuse, null if no such
+   * available or it is closed.
    */
-  public String toString()
+  public static Socket get_socket(Object key)
   {
-    return getClass().getName() + ":IOR:" + ior;
-  }
-
-  /**
-   * Calls realease on the delegate.
-   */
-  protected void finalize()
-                   throws java.lang.Throwable
-  {
-    _get_delegate().release(this);
+    Socket s = (Socket) sockets.get(key);
+    if (s != null && s.isClosed())
+      {
+        sockets.remove(key);
+        return null;
+      }
+    else
+      {
+        sockets.remove(key);
+        return s;
+      }
   }
 }
