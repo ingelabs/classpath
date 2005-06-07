@@ -1,3 +1,7 @@
+2005-06-07  Audrius Meskauskas <AudriusA@Bioinformatics.org>.
+
+	* doc/www.gnu.org/home.wml: Added "omg.org"
+
 2005-06-07  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/IOR_Delegate.java (release),
