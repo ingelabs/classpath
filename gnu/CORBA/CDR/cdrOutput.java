@@ -315,10 +315,18 @@ public abstract class cdrOutput
   * form of the plain (not a string-encoded) IOR profile without the
   * heading endian indicator. The responsible method for reading such
   * data is {@link IOR.write_no_endian}.
+  *
+  * The null value is written as defined in OMG specification
+  * (zero length string, followed by an empty set of profiles).
   */
   public void write_Object(org.omg.CORBA.Object x)
   {
-    if (x instanceof ObjectImpl)
+    if (x == null)
+      {
+        IOR.write_null(this);
+        return;
+      }
+    else if (x instanceof ObjectImpl)
       {
         Delegate d = ((ObjectImpl) x)._get_delegate();
 

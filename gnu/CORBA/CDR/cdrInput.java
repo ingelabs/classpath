@@ -352,6 +352,9 @@ public abstract class cdrInput
    * the .narrow method of its helper, despite in some cases the direct
    * cast would also work.
    *
+   * The null objects are recognised from the empty profile set.
+   * For such objects, null is returned.
+   *
    * @return the loaded and constructed object.
    */
   public Object read_Object()
@@ -360,6 +363,8 @@ public abstract class cdrInput
       {
         IOR ior = new IOR();
         ior._read_no_endian(this);
+
+        if (ior.Id == null) return null;
 
         // Check maybe this is a remote reference to the local object.
         // This is only possible if we access the repository of the

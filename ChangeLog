@@ -1,3 +1,15 @@
+2005-06-08  Audrius Meskauskas <AudriusA@Bioinformatics.org>.
+
+	* org/omg/CORBA/UnionMemberHelper.java
+	org/omg/CORBA/ValueMemberHelper.java
+	org/omg/CORBA/StructMemberHelper.java
+	org/omg/CORBA/IDLTypeHelper.java
+	org/omg/CORBA/_IDLTypeStub.java: New files.
+	* gnu/CORBA/IOR.java (write_null, _read_no_endian),
+	gnu/CORBA/CDR/cdrInput.java (read_Object),
+	gnu/CORBA/CDR/cdrOutput.java (write_Object):
+	Implemented sending of java null.
+
 2005-06-07  Audrius Meskauskas <AudriusA@Bioinformatics.org>.
 
 	* doc/www.gnu.org/home.wml: Added "omg.org"
