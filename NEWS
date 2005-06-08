@@ -1,5 +1,6 @@
 New in release 0.16
 
+* GdkGraphics2D has been updated to use Cairo 0.5.0 APIs.
 * Better GTK scrollbar peer implementation requiring GTK 2.6 or higher.
 
 Runtime interface changes:

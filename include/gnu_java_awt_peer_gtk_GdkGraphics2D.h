@@ -26,8 +26,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSave (JNIEn
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoRestore (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetMatrix (JNIEnv *env, jobject, jdoubleArray);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetOperator (JNIEnv *env, jobject, jint);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetRGBColor (JNIEnv *env, jobject, jdouble, jdouble, jdouble);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetAlpha (JNIEnv *env, jobject, jdouble);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetRGBAColor (JNIEnv *env, jobject, jdouble, jdouble, jdouble, jdouble);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetFillRule (JNIEnv *env, jobject, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetLineWidth (JNIEnv *env, jobject, jdouble);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetLineCap (JNIEnv *env, jobject, jint);

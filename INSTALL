@@ -46,6 +46,9 @@ Suggested Software
 
 	- XTest Extension (libXtst) for GdkRobot support in java.awt.
 
+	For building the Cairo GdkGraphics2D backend you need at least
+	Cairo 0.5.0.
+
 	For building the xmlj JAXP implementation (dsabled by default, use
 	configure --enable-xmlj) you need the following installed:
 	- The XML C library for Gnome (libxml2)
