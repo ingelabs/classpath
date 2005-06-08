@@ -1,5 +1,11 @@
 2005-06-08  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JComponent.java:
+	(setMinimumSize): Adjust preferredSize and maximumSize when
+	minimumSize is greater than preferred or maximumSize.
+
+2005-06-08  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/DefaultEditorKit.java:
 	Added some API documentation.
 
