@@ -1,3 +1,15 @@
+2005-06-08  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/BandedSampleModel.java
+	(createBankArray): New method.
+	(BandedSampleModel(int, int, int, int)): reimplemented.
+	(BandedSampleModel(int, int, int, int, int[], int[]): 
+	RasterFormatException nearer to start of constructor.
+	(getPixel): Use band index, not zero.
+	(getPixels): Fixed loop indices.
+	(getSamples): Fixed loop indices.
+	(setDataElements): Use band index, not zero.
+
 2005-06-08 Audrius Meskauskas <AudriusA@Bioinformatics.org>.
 
 	* org/omg/CORBA/CustomValue.java,
