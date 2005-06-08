@@ -1,5 +1,15 @@
 2005-06-08  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/DefaultFormatter.java
+	(FormatterDocumentFilter.remove): Added check for valid input.
+	(FormatterDocumentFilter.insertString): Added check for valid input.
+	Added support for overwriteMode property.
+	(FormatterDocumentFilter.replace): Added check for valid input.
+	(checkValidInput): New helper method to check for valid input
+	and roll it back if necessary.
+
+2005-06-08  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JFormattedTextField.java
 	(getActions): Call super.getActions instead of throwing an exception.
 	This is safe here.
