@@ -102,6 +102,13 @@ public class DefaultEditorKit extends EditorKit
 
     public void actionPerformed(ActionEvent event)
     {
+      // first we filter the following events:
+      // - control characters
+      // - key events with the ALT modifier (FIXME: filter that too!)
+      char c = event.getActionCommand().charAt(0);
+      if (Character.isISOControl(c))
+        return;
+
       JTextComponent t = getTextComponent(event);
       if (t != null)
         {
@@ -129,6 +136,8 @@ public class DefaultEditorKit extends EditorKit
 
     public void actionPerformed(ActionEvent event)
     {
+      JTextComponent t = getTextComponent(event);
+      t.replaceSelection("\n");
     }
   }
 
