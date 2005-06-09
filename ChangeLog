@@ -1,3 +1,8 @@
+2005-06-08  Bryce McKinlay  <mckinlay@redhat.com>
+
+	* java/rmi/server/RMIClassLoader.java (getClassLoader): Make public.
+	From Gary Benson.
+
 2005-06-08  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (cairoSetRGBColor,
