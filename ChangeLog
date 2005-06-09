@@ -1,5 +1,9 @@
 2005-06-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(copyState): Check if cairo pattern is null before copying it.
+	(drawPixels): Check if cairo pattern is null before retrieving it.
+
 	* java/awt/MenuItem.java (label): Initialize to empty string.
 
 2005-06-08  Bryce McKinlay  <mckinlay@redhat.com>

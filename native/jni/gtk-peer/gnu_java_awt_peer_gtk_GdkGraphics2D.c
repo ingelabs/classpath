@@ -403,7 +403,8 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_copyState
 	init_graphics2d_as_pixbuf (g);
     }
 
-  cairo_pattern_set_filter (g->pattern, CAIRO_FILTER_FAST);
+  if (g->pattern)
+    cairo_pattern_set_filter (g->pattern, CAIRO_FILTER_FAST);
 
   NSA_SET_G2D_PTR (env, obj, g);
   gdk_threads_leave();
@@ -826,7 +827,8 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_drawPixels
 
    p = cairo_pattern_create_for_surface (surf);
    cairo_pattern_set_matrix (p, &mat);
-   cairo_pattern_set_filter (p, cairo_pattern_get_filter (gr->pattern));
+   if (gr->pattern)
+     cairo_pattern_set_filter (p, cairo_pattern_get_filter (gr->pattern));
    cairo_set_source_surface (gr->cr, surf, w, h);
    cairo_paint (gr->cr);
    cairo_surface_destroy (surf);
