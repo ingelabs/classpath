@@ -1,3 +1,7 @@
+2005-06-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/MenuItem.java (label): Initialize to empty string.
+
 2005-06-08  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* java/rmi/server/RMIClassLoader.java (getClassLoader): Make public.
