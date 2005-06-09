@@ -1,5 +1,11 @@
 2005-06-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkPanelPeer.java,
+	gnu_java_awt_peer_gtk_GtkPanelPeer.c (connectSignals): New method.
+	* include/gnu_java_awt_peer_gtk_GtkPanelPeer.h: Regenerate.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(window_focus_in_cb, window_focus_out_cb): Remove FIXMEs.
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
 	(copyState): Check if cairo pattern is null before copying it.
 	(drawPixels): Check if cairo pattern is null before retrieving it.
