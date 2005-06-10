@@ -504,9 +504,9 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_gdkDrawDrawable
   height = min (s_height, d_height);
 
   cairo_get_matrix (src->cr, &matrix);
-  cairo_matrix_translate (&matrix, (double)-x, (double)-y);
-  cairo_pattern_set_matrix (src->pattern, &matrix);
-
+  cairo_matrix_translate (&matrix, (double)-x, (double)-y); 
+  if (src->pattern)
+    cairo_pattern_set_matrix (src->pattern, &matrix); 
   tmp_op = cairo_get_operator (dst->cr); 
   cairo_set_operator(dst->cr, CAIRO_OPERATOR_SOURCE); 
   cairo_set_source_surface (dst->cr, src->surface, width, height);
@@ -514,7 +514,8 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_gdkDrawDrawable
   cairo_set_operator(dst->cr, tmp_op);
 
   cairo_matrix_translate (&matrix, (double)x, (double)y);
-  cairo_pattern_set_matrix (src->pattern, &matrix);
+  if (src->pattern)
+    cairo_pattern_set_matrix (src->pattern, &matrix);
 
   gdk_flush();
 

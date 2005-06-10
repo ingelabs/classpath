@@ -1,3 +1,9 @@
+2005-06-10  Sven de Marothy  <sven@physto.se>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(gdkDrawDrawable): Check if cairo pattern is non-null before 
+	setting its matrix.
+	
 2005-06-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkPanelPeer.java,
