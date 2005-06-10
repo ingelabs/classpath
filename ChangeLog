@@ -1,5 +1,10 @@
 2005-06-10  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/InternationalFormatter.java
+	Implemented new class.
+
+2005-06-10  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicSplitPaneUI.java
 	(BasicHorizontalLayoutManager.preferredLayoutSize): fixed return
 	statement.
