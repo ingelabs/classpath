@@ -1,5 +1,12 @@
 2005-06-10  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(BasicHorizontalLayoutManager.preferredLayoutSize): fixed return
+	statement.
+	(BasicVerticalLayoutManager.preferredLayoutSize): Likewise.
+	
+2005-06-10  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JTextArea.java
 	(getPreferredSize): Implemented new method. This is overridden
 	in order to support custom set rows and columns.
