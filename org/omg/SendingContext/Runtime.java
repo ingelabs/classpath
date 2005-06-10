@@ -1,4 +1,4 @@
-/* RunTimeOperations.java --
+/* Runtime.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,22 +36,25 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package org.omg.CORBA.SendingContext;
+package org.omg.SendingContext;
 
+import org.omg.CORBA.Object;
+import org.omg.CORBA.portable.IDLEntity;
+
+import java.io.Serializable;
 
 /**
- * Defines the operations, applicable for Sending Context. The sending
+ * Defines the base class that represents the Sending Context. The sending
  * context provides access to information about the originator of a
  * GIOP message. For example, when a value type is sent in a GIOP
  * Request, the receiver may need to ask the sender about
  * the CodeBase for the implementation of the value type.
  *
- * Unfortunately, no public operations are defined up till 1.4 inclusive.
- *
  * @since 1.3
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public interface RunTimeOperations
+public interface Runtime
+  extends IDLEntity, Object, RunTimeOperations, Serializable
 {
 }

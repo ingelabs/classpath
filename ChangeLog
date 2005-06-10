@@ -1,3 +1,12 @@
+2005-06-10  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+	* org/omg/CORBA/SendingContext/package.html,
+	org/omg/CORBA/SendingContext/Runtime.java,
+	org/omg/CORBA/SendingContext/RuntimeOperations.java: Removed.
+	* org/omg/SendingContext/package.html,
+	org/omg/SendingContext/Runtime.java,
+	org/omg/SendingContext/RuntimeOperations.java: Added.
+
 2005-06-10  Sven de Marothy  <sven@physto.se>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
