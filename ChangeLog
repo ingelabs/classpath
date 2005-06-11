@@ -1,4 +1,17 @@
 2005-06-11  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+	* org/omg/CORBA/ORB.java,
+	org/omg/CORBA/CustomValue.java,
+	org/omg/CORBA/VM_ABSTRACT.java,
+	org/omg/CORBA/VM_CUSTOM.java,
+	org/omg/CORBA/VM_NONE.java,
+	org/omg/CORBA/VM_TRUNCATABLE.java,
+	org/omg/CORBA/VM_TRUNCATABLE.java,
+	org/omg/CORBA/portable/ValueBase.java,
+	org/omg/CORBA_2_3/portable/package.html: Documentation update.
+	org/omg/CORBA_2_3/package.html: New file.
+
+2005-06-11  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 	
 	* org/omg/CORBA/portable/StreamableValue.java,
 	org/omg/CORBA/portable/CustomValue.java,

@@ -1,4 +1,4 @@
-/* VM_TRUNCATABLE.java -- 
+/* VM_TRUNCATABLE.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,15 +38,15 @@ exception statement from your version. */
 package org.omg.CORBA;
 
 /**
- * Holds a single constant, specifying, that
- * the code used to represent a truncatable value type in a typecode.
- * 
+ * Indicates a truncatable value type. One of the possible
+ * values, returned by {@link TypeCode#type_modifier()}.
+ *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
 public interface VM_TRUNCATABLE
 {
   /**
-   * States that the code used to represent a truncatable 
+   * States that the code used to represent a truncatable
    * value type in a typecode.
    */
   short value = 3;

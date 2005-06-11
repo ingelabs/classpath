@@ -58,7 +58,16 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * When creating an ORB instance is being created, the class name
+ * A central class in CORBA implementation, responsible for sending and
+ * handling remote invocations. ORB also works as a factory for
+ * creating instances of certain CORBA classes.
+ *
+ * Despite the core library contains the fully working CORBA implementation,
+ * it also provides a simple way to plug-in the alternative CORBA support.
+ * This is done by replacing the ORB. The alternative ORB can be specified
+ * via properties, passed to ORB.Init(...).
+ *
+ * When creating an ORB instance, the class name
  * is searched in the following locations:
  * <p>
  * 1. Applet parameter or application string array, if any.<br>
