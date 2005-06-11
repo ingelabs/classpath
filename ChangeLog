@@ -1,3 +1,31 @@
+2005-06-11  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+	
+	* org/omg/CORBA/portable/StreamableValue.java,
+	org/omg/CORBA/portable/CustomValue.java,
+	gnu/CORBA/CDR/Vio.java: New files.
+	* org/omg/CORBA/ValueBaseHelper.java: Using	gnu.CORBA.Vio.
+	* org/omg/CORBA_2_3/portable/OutputStream.java: Documentatin update. 
+	(write_value): Using gnu.CORBA.Vio.
+	* org/omg/CORBA_2_3/portable/InputStream.java Documentation update. 
+	(read_value): Using gnu.CORBA.Vio.
+	* gnu/CORBA/ObjectCreator.java (Idl2class, Idl2Object): New methods.
+	(toIDL): Do not insert OMG prefix.
+	* gnu/CORBA/Restricted_ORB.java (create_any): Set ORB for that Any.
+	(register_value_factory, unregister_value_factory, lookup_value_factory): 
+	New CORBA 2_3 methods.
+	* gnu/CORBA/gnuAny.java (extract_Value): Use reflection if holder does
+	not implement ValueBaseHolder.
+	* gnu/CORBA/CDR/cdrInput.java: Implementing 2_3 stream and 
+	DataInputStream, (read_Value, read_Abstract, read_char_array, 
+	read_wchar_array, ensureArray, read_ulong_array, read_long_array, 
+	read_float_array, read_double_array, read_short_array, read_ushort_array,
+	read_octet_array, read_longlong_array, read_ulonglong_array, 
+	read_boolean_array, read_any_array, _truncatable_ids): New methods.
+	* gnu/CORBA/CDR/cdrOutput.java: Implementing 2_3 stream 
+	and DataOutputStream, (write_any_array, _truncatable_ids, write_Abstract, 
+	write_Value): New methods.
+	* org/omg/CORBA/portable/ValueBase.java: Documentation update.
+
 2005-06-10  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/InternationalFormatter.java

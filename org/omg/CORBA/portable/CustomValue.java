@@ -1,4 +1,4 @@
-/* ValueBase.java --
+/* CustomValue.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,38 +38,20 @@ exception statement from your version. */
 
 package org.omg.CORBA.portable;
 
+import org.omg.CORBA.CustomMarshal;
 
 /**
- * ValueBase is the basic interface for all CORBA value data types. A value
- * type is something between CORBA structure and CORBA object. Like CORBA
- * object, it can have methods, supporting some IDL-defined interface.
- * However, like structures, they are always local and passed by value,
- * not by IOR reference. The Sun's implementation transfers the value types
- * using java serialization mechanism.
+ * If the value type provides the user defined methods for reading
+ * and writing its content, it must implement this interface for reading
+ * and writing the content in a user-defined default way. This is done by
+ * implementing the {@link CustomMarshal#marshal} and
+ * {@link CustomMarshal#unmarshal}. The user must provide the supporting code.
  *
- * Unlike CORBA objects, values are not connected to any ORB by
- * default; they hanlde the implemented functionality locally. The classes,
- * required to implement that functionality, should either be pre-defined
- * or they can be downloaded from the certain URL, defined as CodeBase.
- *
- * The value types can have both public and private members. They support
- * inheritance. Value types can also be abstract.
- *
- * For transferring the value type data via stream, it must implement either
- * {@link CustomValue} or {@link StreamableValue}.
- *
- * @since 1.3
+ * @see StreamableValue for specifying the IDL compiler generated IO methods.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public interface ValueBase
-  extends IDLEntity
+public interface CustomValue
+  extends ValueBase, CustomMarshal
 {
-  /**
-   * Get the truncatable repository ids.
-   *
-   * @return the array of repository ids, defining the base types, to that
-   * basic types this value base can be truncated.
-   */
-  String[] _truncatable_ids();
 }
