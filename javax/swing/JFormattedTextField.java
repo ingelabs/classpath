@@ -296,7 +296,18 @@ public class JFormattedTextField extends JTextField
   {
     if (value == newValue)
       return;
-    
+
+    // format value
+    AbstractFormatter formatter = formatterFactory.getFormatter(this);
+    try
+      {
+        setText(formatter.valueToString(newValue));
+      }
+    catch (ParseException ex)
+      {
+        // TODO: what should we do with this?
+      }
+
     Object oldValue = value;
     value = newValue;
     firePropertyChange("value", oldValue, newValue);
