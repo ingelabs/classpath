@@ -1,3 +1,8 @@
+2005-06-13  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+    * org/omg/SendingContext/Runtime.java: Deleted.
+	* org/omg/SendingContext/RunTime.java: Added.
+
 2005-06-13  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/DateFormatter.java:
@@ -33,7 +38,7 @@
 	org/omg/CORBA/VM_TRUNCATABLE.java,
 	org/omg/CORBA/portable/ValueBase.java,
 	org/omg/CORBA_2_3/portable/package.html: Documentation update.
-	org/omg/CORBA_2_3/package.html: New file.
+	* org/omg/CORBA_2_3/package.html: New file.
 
 2005-06-11  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 	
