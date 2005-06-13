@@ -7,7 +7,7 @@ sinclude $(JAVA_DEPEND)
 
 propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org META-INF -type d ! -name CVS -print)
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -name \*\.properties -print)
-metafiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) META-INF -print)
+metafiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) META-INF -path \*/CVS -prune -o -type f -print)
 
 compile_classpath = $(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:.:$(USER_CLASSLIB)
 

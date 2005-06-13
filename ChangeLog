@@ -1,3 +1,7 @@
+2005-06-13  Keith Seitz  <keiths@redhat.com>
+
+	* lib/Makefile.am (metafiles): Exclude directories and CVS files.
+
 2005-06-13  Ziga Mahkovec  <ziga.mahkovec@klika.si>
 
 	* java/text/AttributedStringIterator.java (getRunLimit): Fixed the
