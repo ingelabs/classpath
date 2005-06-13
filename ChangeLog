@@ -1,5 +1,21 @@
 2005-06-13  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/metal/MetalUtils.java:
+	Added new package-private helper class.
+	* javax/swing/plaf/metal/MetalSplitPaneDivider.java:
+	Added new package-private class. This is the divider used
+	by JSplitPane.
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	(paintThumb): Use new MetalUtils class for drawing the typical
+	Metal pattern on the thumb.
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	(initComponentDefaults): Added color defaults for SplitPane.
+	* javax/swing/plaf/metal/MetalSplitPaneUI.java:
+	(createDefaultDivider): Implemented new method. This creates
+	the Metal divider for JSplitPane.
+
+2005-06-13  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JSpinner.java
 	(StubEditor): Removed this inner class.
 	(DefaultEditor): Implemented this class and its dummy methods.
