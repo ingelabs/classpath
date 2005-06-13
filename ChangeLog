@@ -1,3 +1,8 @@
+2005-06-13  Ziga Mahkovec  <ziga.mahkovec@klika.si>
+
+	* java/awt/image/SampleModel.java (getPixels): Fixed array
+	assignment.
+
 2005-06-13  Keith Seitz  <keiths@redhat.com>
 
 	* lib/Makefile.am (metafiles): Exclude directories and CVS files.
