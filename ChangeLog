@@ -1,5 +1,12 @@
 2005-06-13  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JSpinner.java
+	(StubEditor): Removed this inner class.
+	(DefaultEditor): Implemented this class and its dummy methods.
+	(DateEditor): Added and implemented this inner class.
+
+2005-06-13  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JFormattedTextField.java
 	(setValue): Creates an AbstractFormatter instance based on the type
 	of the value beeing set.
