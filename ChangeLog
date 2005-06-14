@@ -1,5 +1,10 @@
 2005-06-14  Ziga Mahkovec  <ziga.mahkovec@klika.si>
 
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (updateBufferedImage):
+	Fixed pixelBuffer array index.
+
+2005-06-14  Ziga Mahkovec  <ziga.mahkovec@klika.si>
+
 	Classpath bug #13353:
 	* gnu/java/net/protocol/jar/Handler.java (parseURL, toExternalForm):
 	Append fragments (#ref) to URLs.
