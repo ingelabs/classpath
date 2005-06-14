@@ -9,7 +9,7 @@ propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org META-
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -name \*\.properties -print)
 metafiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) META-INF -path \*/CVS -prune -o -type f -print)
 
-compile_classpath = $(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:.:$(USER_CLASSLIB)
+compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:.:$(USER_CLASSLIB)
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_GCJ
@@ -47,9 +47,11 @@ pkgdata_DATA = glibj.zip
 
 endif # INSTALL_GLIBJ_ZIP
 
-if INSTALL_CLASS_FILES
-
+if BUILD_CLASS_FILES
 noinst_DATA = genclasses compile-classes resources
+endif # BUILD_CLASS_FILES
+
+if INSTALL_CLASS_FILES
 
 install-data-local: genclasses compile-classes
 	-$(top_srcdir)/mkinstalldirs $(DESTDIR)$(pkgdatadir)

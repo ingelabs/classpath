@@ -301,6 +301,11 @@ AC_DEFUN([CLASSPATH_WITH_CLASSLIB],
   ],
   [ conditional_with_classlib=false ])
   AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test "x${conditional_with_classlib}" = xtrue)
+
+  AC_ARG_WITH([vm-classes],
+	      [AS_HELP_STRING(--with-vm-classes,specify path to VM override source files)], [vm_classes="$with_vm_classes"],
+	      [vm_classes="${top_srcdir}/vm/reference"])
+  AC_SUBST(vm_classes)
 ])
 
 dnl -----------------------------------------------------------
@@ -309,20 +314,28 @@ dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 [
   AC_ARG_WITH([glibj],
-              [AS_HELP_STRING([--with-glibj],[define what to install (zip|flat|both|none) [default=zip]])],
+              [AS_HELP_STRING([--with-glibj],[define what to install (zip|flat|both|none|build) [default=zip]])],
               [
                 if test "x${withval}" = xyes || test "x${withval}" = xzip; then
       		  AC_PATH_PROG(ZIP, zip)
 		  install_class_files=no
+		  build_class_files=yes
 		elif test "x${withval}" = xboth; then
 		  AC_PATH_PROG(ZIP, zip)
 		  install_class_files=yes
+		  build_class_files=yes
 		elif test "x${withval}" = xflat; then
 		  ZIP=
 		  install_class_files=yes
+		  build_class_files=yes
                 elif test "x${withval}" = xno || test "x${withval}" = xnone; then
                   ZIP=
 		  install_class_files=no
+		  build_class_files=no
+		elif test "x${withval}" = xbuild; then
+                  ZIP=
+		  install_class_files=no
+		  build_class_files=yes
                 else
 		  AC_MSG_ERROR([unknown value given to --with-glibj])
                 fi
@@ -333,6 +346,7 @@ AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 	      ])
   AM_CONDITIONAL(INSTALL_GLIBJ_ZIP, test "x${ZIP}" != x)
   AM_CONDITIONAL(INSTALL_CLASS_FILES, test "x${install_class_files}" = xyes)
+  AM_CONDITIONAL(BUILD_CLASS_FILES, test "x${build_class_files}" = xyes)
 
   AC_ARG_ENABLE([examples],
 		[AS_HELP_STRING(--enable-examples,enable build of the examples [default=yes])],

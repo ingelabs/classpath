@@ -7,10 +7,24 @@ LANG=C; export LANG
 
 echo "Adding java source files from srcdir '@top_srcdir@'."
 @FIND@ @top_srcdir@/java @top_srcdir@/javax @top_srcdir@/gnu \
-       @top_srcdir@/org @top_srcdir@/vm/reference \
+       @top_srcdir@/org \
        @top_srcdir@/external/w3c_dom @top_srcdir@/external/sax \
        -follow -type f -print | sort | grep '\.java$' \
        > ${top_builddir}/lib/classes.1
+
+# Generate files for the VM classes.
+: > vm.omit
+: > vm.add
+vm_dirlist=`echo "@vm_classes@" | sed -e 's/:/ /g'`
+echo "Adding java source files from VM directory $vm_dirlist"
+for dir in $vm_dirlist; do
+   (cd $dir && @FIND@ java javax gnu org -name '*.java' -print |
+    sed -e 's,^[.]/,,') |
+   while read f; do
+      echo $dir/$f >> vm.add
+      echo $f >> vm.omit
+   done
+done
 
 # Only include generated files once.
 if test ! "${top_builddir}" -ef "@top_srcdir@"; then
@@ -19,7 +33,29 @@ if test ! "${top_builddir}" -ef "@top_srcdir@"; then
   | sort | grep '\.java$' >> ${top_builddir}/lib/classes.1
 fi
 
-for filexp in `cat @top_srcdir@/lib/$1.omit` ; do { grep -v ${filexp} < ${top_builddir}/lib/classes.1 > ${top_builddir}/lib/classes.2 ; mv ${top_builddir}/lib/classes.2 ${top_builddir}/lib/classes.1 ; } ; done
+
+cat @top_srcdir@/lib/$1.omit vm.omit > tmp.omit
+for dir in $vm_dirlist; do
+   if test -f $dir/$1.omit; then
+      cat $dir/$1.omit >> tmp.omit
+   fi
+done
+
+for filexp in `cat tmp.omit`; do
+   grep -v ${filexp} < ${top_builddir}/lib/classes.1 > ${top_builddir}/lib/classes.2
+   mv ${top_builddir}/lib/classes.2 ${top_builddir}/lib/classes.1
+done
+
+
+for dir in $vm_dirlist; do
+   if test -f $dir/$1.omit; then
+      for filexp in `cat $dir/$1.omit`; do
+	 grep -v $filexp < vm.add > vm.add.1
+	 mv vm.add.1 vm.add
+      done
+   fi
+done
+cat vm.add >> classes.1
 
 new=
 if test -e ${top_builddir}/lib/classes; then
@@ -48,3 +84,5 @@ grep /awt/ classes > classes.awt
 grep /beans/ classes >> classes.awt
 grep /xml/ classes > classes.xml
 grep /javax/ classes | grep -v /xml/ > classes.standardx
+
+exit 0

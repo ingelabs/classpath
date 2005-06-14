@@ -1,3 +1,11 @@
+2005-06-14  Tom Tromey  <tromey@redhat.com>
+
+	* m4/acinclude.m4 (--with-vm-classes): New option.
+	* lib/gen-classlist.sh.in: Handle 'vm_classes' feature.
+	* lib/Makefile.am (compile_classpath): Updated for new
+	classpath-setting approach.
+	(noinst_DATA): Now unconditional.
+
 2005-06-14  Ziga Mahkovec  <ziga.mahkovec@klika.si>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (updateBufferedImage):
