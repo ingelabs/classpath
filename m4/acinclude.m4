@@ -304,7 +304,7 @@ AC_DEFUN([CLASSPATH_WITH_CLASSLIB],
 
   AC_ARG_WITH([vm-classes],
 	      [AS_HELP_STRING(--with-vm-classes,specify path to VM override source files)], [vm_classes="$with_vm_classes"],
-	      [vm_classes="${top_srcdir}/vm/reference"])
+	      [vm_classes='${top_srcdir}/vm/reference'])
   AC_SUBST(vm_classes)
 ])
 

@@ -18,8 +18,12 @@ echo "Adding java source files from srcdir '@top_srcdir@'."
 vm_dirlist=`echo "@vm_classes@" | sed -e 's/:/ /g'`
 echo "Adding java source files from VM directory $vm_dirlist"
 for dir in $vm_dirlist; do
-   (cd $dir && @FIND@ java javax gnu org -name '*.java' -print |
-    sed -e 's,^[.]/,,') |
+   (cd $dir
+   for subdir in java javax gnu org; do
+      if test -d $subdir; then
+	 @FIND@ $subdir -name '*.java' -print
+      fi
+   done) |
    while read f; do
       echo $dir/$f >> vm.add
       echo $f >> vm.omit

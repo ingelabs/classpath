@@ -1,3 +1,11 @@
+2005-06-14  Tom Tromey  <tromey@redhat.com>
+
+	* lib/gen-classlist.sh.in (vm_dirlist): Prune non-existing
+	directories.
+	* lib/Makefile.am (genclasses): Pass top_srcdir to
+	gen-classlist.sh.
+	* m4/acinclude.m4: Quote default value of vm_classes.
+
 2005-06-14  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JComponent.java (setMinimumSize): Only adjust
