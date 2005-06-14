@@ -1,2 +1,3 @@
 ../gnu/test/.*$
 ../gnu/javax/swing/plaf/gtk/.*$
+../gnu/classpath/jdwp/.*$

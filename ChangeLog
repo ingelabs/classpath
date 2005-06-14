@@ -1,3 +1,7 @@
+2005-06-14  Mark Wielaard  <mark@klomp.org>
+
+	* lib/standard.omit: Add gnu/classpath/jdwp.
+	
 2005-06-13  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/id/ArrayId.java: New file.
