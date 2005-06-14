@@ -1,3 +1,10 @@
+2005-06-14  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JComponent.java (setMinimumSize): Only adjust
+	prefferedSize or maximumSize when they are set.
+	* javax/swing/JScrollPane.java (JScrollPane(Component,int,int)):
+	Set viewport and view manually.
+
 2005-06-14  Tom Tromey  <tromey@redhat.com>
 
 	* m4/acinclude.m4 (--with-vm-classes): New option.
