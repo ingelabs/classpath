@@ -1,3 +1,7 @@
+2005-06-14  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/text/InternationalFormatter.java (clone): Disabled.
+
 2005-06-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/text/DecimalFormat.java
