@@ -1,3 +1,11 @@
+2005-06-14  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/text/DecimalFormat.java
+	(DecimalFormat(String, DecimalFormatSymbols)): store clone of symbols;
+	(equals): add missing checks;
+	(getDecimalFormatSymbols): return clone of symbols;
+	(setDecimalFormatSymbols): store clone of symbols.
+	
 2005-06-14  Mark Wielaard  <mark@klomp.org>
 
 	* lib/standard.omit: Add gnu/classpath/jdwp.
