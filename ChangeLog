@@ -1,3 +1,8 @@
+2005-06-15  Mark Wielaard  <mark@klomp.org>
+
+	* lib/gen-classlist.sh.in: Remove vm.omit, vm.add and tmp.omit files
+	after use.
+
 2005-06-15  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
         * org/omg/Messaging/SyncScopeHelper.java (write): Made public.

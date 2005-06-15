@@ -61,6 +61,10 @@ for dir in $vm_dirlist; do
 done
 cat vm.add >> classes.1
 
+rm vm.omit
+rm vm.add
+rm tmp.omit
+
 new=
 if test -e ${top_builddir}/lib/classes; then
   p=`diff ${top_builddir}/lib/classes ${top_builddir}/lib/classes.1`
