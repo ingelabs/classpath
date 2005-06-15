@@ -1,3 +1,7 @@
+2005-06-15  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+        * org/omg/Messaging/SyncScopeHelper.java (write): Made public.
+
 2005-06-14  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/id/JdwpIdFactory.java: New file.
