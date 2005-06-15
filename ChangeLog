@@ -1,3 +1,9 @@
+2005-06-15  Roman Kennke  <roman@kennke.org>
+
+	* java/io/DataInputStream.java
+	(readLine): Added checks for InputStream that support have a pos field
+	for repositioning the stream.
+
 2005-06-15  Mark Wielaard  <mark@klomp.org>
 
 	* lib/gen-classlist.sh.in: Remove vm.omit, vm.add and tmp.omit files
