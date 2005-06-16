@@ -1,12 +1,21 @@
 2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+        * org/omg/CosNaming/NamingContextPackage/CannotProceed.java,
+        org/omg/CosNaming/NamingContextPackage/NotEmpty.java,
+        org/omg/CosNaming/NamingContextPackage/NotFound.java: 
+        Added 1.4 constructors.
+        * org/omg/CosNaming/NamingContextExtPackage/InvalidAddress.java:
+        Added 1.4 constructors and serialVersionUID.
+
+2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
         * org/omg/ProtableServer/IdAssignmentPolicyValue.java,
         org/omg/ProtableServer/IdUniquenessPolicyValue.java,
         org/omg/ProtableServer/ImplicitActivationPolicyValue.java,
         org/omg/ProtableServer/LifespanPolicyValue.java,
         org/omg/ProtableServer/RequestProcessingPolicyValue.java,
         org/omg/ProtableServer/ServantRetentionPolicyValue.java: 
-        New enumerations.
+        New files.
 
 2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
