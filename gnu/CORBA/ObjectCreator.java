@@ -184,11 +184,11 @@ public class ObjectCreator
   {
     try
       {
-        String holder = toHelperName(idl);
-        Class holderClass = Class.forName(holder);
+        String helper = toHelperName(idl);
+        Class helperClass = Class.forName(helper);
 
         Method read =
-          holderClass.getMethod("read",
+          helperClass.getMethod("read",
                                 new Class[]
                                 {
                                   org.omg.CORBA.portable.InputStream.class

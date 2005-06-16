@@ -1,3 +1,26 @@
+2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+        * org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCode.java, 
+        org/omg/IOP/CodecFactoryPackage/UnknownEncoding.java, 
+        org/omg/IOP/CodecPackage/FormatMismatch.java, 
+        org/omg/IOP/CodecPackage/InvalidTypeForEncoding.java,
+        org/omg/IOP/CodecPackage/TypeMismatch.java, 
+        org/omg/IOP/CodecPackage/TypeMismatchHelper.java, 
+        org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateName.java, 
+        org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidName.java, 
+        org/omg/PortableServer/CurrentPackage/NoContext.java: New exceptions.
+        org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCodeHelper.java, 
+        org/omg/IOP/CodecFactoryPackage/UnknownEncodingHelper.java, 
+        org/omg/IOP/CodecPackage/FormatMismatchHelper.java, 
+        org/omg/IOP/CodecPackage/InvalidTypeForEncodingHelper.java, 
+        org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateNameHelper.java, 
+        org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidNameHelper.java, 
+        org/omg/PortableServer/CurrentPackage/NoContextHelper.java: New helpers.
+        * gnu/CORBA/ObjectCreator.java (readUserException): 
+        Renamed misleading variable.
+        * gnu/CORBA/DuplicateNameHolder.java, 
+        gnu/CORBA/EmptyExceptionHolder.java: New holders. 
+
 2005-06-15  Goffredo Baroncelli  <kreijack@inwind.it>
 
 	* gnu/java/net/protocol/http/HTTPURLConnection.java
