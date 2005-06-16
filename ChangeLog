@@ -1,5 +1,10 @@
 2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+        * gnu/CORBA/CDR/uncObjectOutputStream.java,
+        gnu/CORBA/CDR/uncObjectInputStream.java: Deleted.
+
+2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
         * org/omg/CosNaming/NamingContextPackage/CannotProceed.java,
         org/omg/CosNaming/NamingContextPackage/NotEmpty.java,
         org/omg/CosNaming/NamingContextPackage/NotFound.java: 
