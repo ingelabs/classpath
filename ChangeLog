@@ -1,3 +1,16 @@
+2005-06-16  Robert Schuster <thebohemian@gmx.net>
+
+		* gnu/java/nio/charset/Windows1250.java,
+		gnu/java/nio/charset/Windows1251.java,
+		gnu/java/nio/charset/Windows1252.java,
+		gnu/java/nio/charset/Windows1253.java,
+		gnu/java/nio/charset/Windows1254.java,
+		gnu/java/nio/charset/Windows1255.java,
+		gnu/java/nio/charset/Windows1256.java,
+		gnu/java/nio/charset/Windows1257.java,
+		gnu/java/nio/charset/Windows1258.java: Fixed canonical NIO
+		charset name.
+
 2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/CDR/uncObjectOutputStream.java,
