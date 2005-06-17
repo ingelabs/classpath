@@ -1,3 +1,8 @@
+2005-06-17  Roman Kennke  <roman@kennke.org>
+
+	* java/io/DataInputStream.java:
+	Reverted my patch from 2005-06-15.
+
 2005-06-16  Robert Schuster <thebohemian@gmx.net>
 
 		* gnu/java/nio/charset/Windows1250.java,
