@@ -1,3 +1,19 @@
+2005-06-16  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/DefaultListSelectionModel.java:
+	(addSelectionInterval):	Added update to leadSelectionIndex
+	and anchorSelectionIndex variables.
+	(removeSelectionInterval): Same as above.
+	(setSelectionInterval): Same as above.
+	* javax/swing/JList.java:
+	(getSelectedIndices): Increased for loop upper bound by 1.
+	* javax/swing/plaf/basic/BasicListUI.java: 
+	(KeyHandler): New class.
+	(MouseInputHandler): Moved code from MousePressed to
+	MouseClicked.
+	(MouseInputHandler.MouseClicked): Added check for control
+	key being down.
+
 2005-06-17  Roman Kennke  <roman@kennke.org>
 
 	* java/io/DataInputStream.java:
@@ -5,63 +21,63 @@
 
 2005-06-16  Robert Schuster <thebohemian@gmx.net>
 
-		* gnu/java/nio/charset/Windows1250.java,
-		gnu/java/nio/charset/Windows1251.java,
-		gnu/java/nio/charset/Windows1252.java,
-		gnu/java/nio/charset/Windows1253.java,
-		gnu/java/nio/charset/Windows1254.java,
-		gnu/java/nio/charset/Windows1255.java,
-		gnu/java/nio/charset/Windows1256.java,
-		gnu/java/nio/charset/Windows1257.java,
-		gnu/java/nio/charset/Windows1258.java: Fixed canonical NIO
-		charset name.
+	* gnu/java/nio/charset/Windows1250.java,
+	gnu/java/nio/charset/Windows1251.java,
+	gnu/java/nio/charset/Windows1252.java,
+	gnu/java/nio/charset/Windows1253.java,
+	gnu/java/nio/charset/Windows1254.java,
+	gnu/java/nio/charset/Windows1255.java,
+	gnu/java/nio/charset/Windows1256.java,
+	gnu/java/nio/charset/Windows1257.java,
+	gnu/java/nio/charset/Windows1258.java: Fixed canonical NIO
+	charset name.
 
 2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
-        * gnu/CORBA/CDR/uncObjectOutputStream.java,
-        gnu/CORBA/CDR/uncObjectInputStream.java: Deleted.
+	* gnu/CORBA/CDR/uncObjectOutputStream.java,
+	gnu/CORBA/CDR/uncObjectInputStream.java: Deleted.
 
 2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
-        * org/omg/CosNaming/NamingContextPackage/CannotProceed.java,
-        org/omg/CosNaming/NamingContextPackage/NotEmpty.java,
-        org/omg/CosNaming/NamingContextPackage/NotFound.java: 
-        Added 1.4 constructors.
-        * org/omg/CosNaming/NamingContextExtPackage/InvalidAddress.java:
-        Added 1.4 constructors and serialVersionUID.
+	* org/omg/CosNaming/NamingContextPackage/CannotProceed.java,
+	org/omg/CosNaming/NamingContextPackage/NotEmpty.java,
+	org/omg/CosNaming/NamingContextPackage/NotFound.java: 
+	Added 1.4 constructors.
+	* org/omg/CosNaming/NamingContextExtPackage/InvalidAddress.java:
+	Added 1.4 constructors and serialVersionUID.
 
 2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
-        * org/omg/ProtableServer/IdAssignmentPolicyValue.java,
-        org/omg/ProtableServer/IdUniquenessPolicyValue.java,
-        org/omg/ProtableServer/ImplicitActivationPolicyValue.java,
-        org/omg/ProtableServer/LifespanPolicyValue.java,
-        org/omg/ProtableServer/RequestProcessingPolicyValue.java,
-        org/omg/ProtableServer/ServantRetentionPolicyValue.java: 
-        New files.
+	* org/omg/ProtableServer/IdAssignmentPolicyValue.java,
+	org/omg/ProtableServer/IdUniquenessPolicyValue.java,
+	org/omg/ProtableServer/ImplicitActivationPolicyValue.java,
+	org/omg/ProtableServer/LifespanPolicyValue.java,
+	org/omg/ProtableServer/RequestProcessingPolicyValue.java,
+	org/omg/ProtableServer/ServantRetentionPolicyValue.java: 
+	New files.
 
 2005-06-16  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
-        * org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCode.java, 
-        org/omg/IOP/CodecFactoryPackage/UnknownEncoding.java, 
-        org/omg/IOP/CodecPackage/FormatMismatch.java, 
-        org/omg/IOP/CodecPackage/InvalidTypeForEncoding.java,
-        org/omg/IOP/CodecPackage/TypeMismatch.java, 
-        org/omg/IOP/CodecPackage/TypeMismatchHelper.java, 
-        org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateName.java, 
-        org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidName.java, 
-        org/omg/PortableServer/CurrentPackage/NoContext.java: New exceptions.
-        org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCodeHelper.java, 
-        org/omg/IOP/CodecFactoryPackage/UnknownEncodingHelper.java, 
-        org/omg/IOP/CodecPackage/FormatMismatchHelper.java, 
-        org/omg/IOP/CodecPackage/InvalidTypeForEncodingHelper.java, 
-        org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateNameHelper.java, 
-        org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidNameHelper.java, 
-        org/omg/PortableServer/CurrentPackage/NoContextHelper.java: New helpers.
-        * gnu/CORBA/ObjectCreator.java (readUserException): 
-        Renamed misleading variable.
-        * gnu/CORBA/DuplicateNameHolder.java, 
-        gnu/CORBA/EmptyExceptionHolder.java: New holders. 
+	* org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCode.java, 
+	org/omg/IOP/CodecFactoryPackage/UnknownEncoding.java, 
+	org/omg/IOP/CodecPackage/FormatMismatch.java, 
+	org/omg/IOP/CodecPackage/InvalidTypeForEncoding.java,
+	org/omg/IOP/CodecPackage/TypeMismatch.java, 
+	org/omg/IOP/CodecPackage/TypeMismatchHelper.java, 
+	org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateName.java, 
+	org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidName.java, 
+	org/omg/PortableServer/CurrentPackage/NoContext.java: New exceptions.
+	org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCodeHelper.java, 
+	org/omg/IOP/CodecFactoryPackage/UnknownEncodingHelper.java, 
+	org/omg/IOP/CodecPackage/FormatMismatchHelper.java, 
+	org/omg/IOP/CodecPackage/InvalidTypeForEncodingHelper.java, 
+	org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateNameHelper.java, 
+	org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidNameHelper.java, 
+	org/omg/PortableServer/CurrentPackage/NoContextHelper.java: New helpers.
+	* gnu/CORBA/ObjectCreator.java (readUserException): 
+	Renamed misleading variable.
+	* gnu/CORBA/DuplicateNameHolder.java, 
+	gnu/CORBA/EmptyExceptionHolder.java: New holders. 
 
 2005-06-15  Goffredo Baroncelli  <kreijack@inwind.it>
 
@@ -81,7 +97,7 @@
 
 2005-06-15  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
-        * org/omg/Messaging/SyncScopeHelper.java (write): Made public.
+	* org/omg/Messaging/SyncScopeHelper.java (write): Made public.
 
 2005-06-14  Keith Seitz  <keiths@redhat.com>
 
