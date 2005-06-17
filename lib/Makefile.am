@@ -22,7 +22,7 @@ JAVAC = $(GCJF) -C -d . @classes.standard \
 && $(GCJF) -C -d . @classes.standardx
 else
 if FOUND_JIKES
-JAVAC = $(JIKES) +Pno-shadow +Pno-switchcheck +F -encoding UTF-8 -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
+JAVAC = $(JIKES) +Pno-shadow +Pno-switchcheck +F $(JIKESENCODING) -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
 else
 if FOUND_KJC
 ## FIXME: from what I can tell, kjc does not support a -encoding option.

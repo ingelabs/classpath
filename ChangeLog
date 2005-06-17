@@ -1,3 +1,10 @@
+2005-06-17  Tom Tromey  <tromey@redhat.com>
+
+	* lib/Makefile.am (JAVAC): Use JIKESENCODING.
+	* m4/acinclude.m4 (CLASSPATH_CHECK_JIKES): Check for -encoding
+	option to jikes.
+	(JIKESENCODING): New subst.
+
 2005-06-17  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/exception/VmDeadException.java: New file.

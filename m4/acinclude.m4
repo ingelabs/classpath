@@ -157,6 +157,12 @@ AC_DEFUN([CLASSPATH_CHECK_JIKES],
     else
       AC_MSG_WARN($JIKES_VERSION: jikes 1.19 or higher required)
     fi
+
+    JIKESENCODING=
+    if test -n "`$JIKES --help 2>&1 | grep encoding`"; then
+       JIKESENCODING='-encoding UTF-8'
+    fi
+    AC_SUBST(JIKESENCODING)
   fi
 ])
 
