@@ -1,3 +1,23 @@
+2005-06-17  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JApplet.java,
+	javax/swing/JDialog.java,
+	javax/swing/JFrame.java,
+	javax/swing/JInternalFrame.java,
+	javax/swing/JWindow.java: Added support for adding and setting
+	layout managers directly for these top-level containers tocomply
+	with J2SE 5.0.  Added private boolean initStageDone.
+	Initialized rootPaneCheckingEnabled to false.
+	(JDialog.dialogInit): Set initStageDone to true.
+	(JApplet.JApplet): Set initStageDone to true.
+	(JFrame.frameInit) : Set initStageDone to true.
+	(JInternalFrame.JInternalFrame): Set initStageDone to true.
+	(JWindow.windowInit): Set initStageDone to true.
+	(addImpl): Added check for direct adds (J2SE 5.0) and directed
+	them to getContentPane().add.
+	(setLayout): Added check for direct calls to setLayout.
+	(remove): Added check for direct calls to remove.
+
 2005-06-17  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/ToolTipManager.java
