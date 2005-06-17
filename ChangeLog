@@ -1,3 +1,26 @@
+2005-06-17  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+        * org/omg/PortableServer/ID_ASSIGNMENT_POLICY_ID.java, 
+        org/omg/PortableServer/ID_UNIQUENESS_POLICY_ID.java, 
+        org/omg/PortableServer/IMPLICIT_ACTIVATION_POLICY_ID.java, 
+        org/omg/PortableServer/LIFESPAN_POLICY_ID.java, 
+        org/omg/PortableServer/REQUEST_PROCESSING_POLICY_ID.java, 
+        org/omg/PortableServer/SERVANT_RETENTION_POLICY_ID.java, 
+        org/omg/PortableServer/THREAD_POLICY_ID.java, 
+        org/omg/IOP/ENCODING_CDR_ENCAPS.java, 
+        org/omg/IOP/TAG_ALTERNATE_IIOP_ADDRESS.java, 
+        org/omg/IOP/TAG_CODE_SETS.java, 
+        org/omg/IOP/TAG_INTERNET_IOP.java, 
+        org/omg/IOP/TAG_JAVA_CODEBASE.java, 
+        org/omg/IOP/TAG_MULTIPLE_COMPONENTS.java, 
+        org/omg/IOP/TAG_ORB_TYPE.java, 
+        org/omg/IOP/TAG_POLICIES.java, 
+        org/omg/PortableInterceptor/LOCATION_FORWARD.java, 
+        org/omg/PortableInterceptor/SUCCESSFUL.java, 
+        org/omg/PortableInterceptor/SYSTEM_EXCEPTION.java, 
+        org/omg/PortableInterceptor/TRANSPORT_RETRY.java, 
+        org/omg/PortableInterceptor/USER_EXCEPTION.java: New files.
+
 2005-06-17  Tom Tromey  <tromey@redhat.com>
 
 	* lib/Makefile.am (JAVAC): Use JIKESENCODING.
