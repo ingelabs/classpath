@@ -1,3 +1,8 @@
+2005-06-18  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+        * org/omg/IOP/TransactionService.java, 
+        org/omg/IOP/CodeSets.java: New files.
+
 2005-06-17  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
         * org/omg/PortableServer/ID_ASSIGNMENT_POLICY_ID.java, 
