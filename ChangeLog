@@ -1,3 +1,11 @@
+2005-06-19  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(gnu_java_awt_peer_gtk_GtkImage_getPixbuf,
+	gnu_java_awt_peer_gtk_GtkImage_getPixmap,
+	gnu_java_awt_peer_gtk_GtkImage_isOffScreen): Move declaration to ...
+	* native/jni/gtk-peer/gtkpeer.h: here.
+
 2005-06-18  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
         * org/omg/IOP/TransactionService.java, 
