@@ -1,5 +1,12 @@
 2005-06-20  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+        * javax/swing/text/html/HTMLEditorKit.java:
+        Inherit from StyledEditorKit, Cloneable, Serializable and adding
+        string constants. 
+        (handleStartTag): Fixed typo in comment.
+
+2005-06-20  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
         * org/omg/CORBA/PolicyHelper.java,
         org/omg/CORBA/PolicyHolder.java,
         org/omg/CORBA/_PolicyStub.java,
