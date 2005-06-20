@@ -2161,8 +2161,6 @@ public abstract class JComponent extends Container implements Serializable
     boolean oldOpaque = opaque;
     opaque = isOpaque;
     firePropertyChange("opaque", oldOpaque, opaque);
-    revalidate();
-    repaint();
   }
 
   /**
