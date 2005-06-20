@@ -5,6 +5,11 @@
 
 2005-06-20  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/DefaultDesktopManager
+        (getBoundsForIconOf): No reason to check if desktopPane is null after         dereferencing desktopPane in code. Fixes bug #13461.
+
+2005-06-20  Lillian Angel  <langel@redhat.com>
+
        * javax/swing/JScrollPane.java
         (JScrollPane): Viewport was not being set when 
         the view was null. Whenever a view would be added to container
