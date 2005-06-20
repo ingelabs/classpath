@@ -1,0 +1,19 @@
+? a.diff
+Index: javax/swing/JScrollPane.java
+===================================================================
+RCS file: /cvsroot/classpath/classpath/javax/swing/JScrollPane.java,v
+retrieving revision 1.20
+diff -u -r1.20 JScrollPane.java
+--- javax/swing/JScrollPane.java	14 Jun 2005 22:29:45 -0000	1.20
++++ javax/swing/JScrollPane.java	17 Jun 2005 14:17:00 -0000
+@@ -588,9 +588,7 @@
+     setVerticalScrollBar(createVerticalScrollBar());
+     setHorizontalScrollBarPolicy(hsbPolicy);
+     setHorizontalScrollBar(createHorizontalScrollBar());
+-    viewport = createViewport();
+-    if (view != null)
+-      viewport.setView(view);
++	setViewportView(view);
+     setLayout(new ScrollPaneLayout());
+     setOpaque(false);
+     updateUI();
