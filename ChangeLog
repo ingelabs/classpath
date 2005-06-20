@@ -1,5 +1,10 @@
 2005-06-20  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
+        * javax/swing/text/html/HTML.java: Added public parameterless 
+        constructor for Tag.
+
+2005-06-20  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
         * org\omg\CORBA\PolicyListHolder.java,
         org\omg\CORBA\PolicyListHelper.java: New files.
 
