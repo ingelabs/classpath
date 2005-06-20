@@ -1,3 +1,8 @@
+2005-06-20  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+        * org\omg\CORBA\PolicyListHolder.java,
+        org\omg\CORBA\PolicyListHelper.java: New files.
+
 2005-06-20  Lillian Angel  <langel@redhat.com>
 
        * javax/swing/JScrollPane.java
