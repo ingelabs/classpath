@@ -1024,17 +1024,25 @@ public abstract class JComponent extends Container implements Serializable
    */
   public Dimension getPreferredSize()
   {
+    Dimension prefSize = null;
     if (preferredSize != null)
-      return preferredSize;
+      prefSize = preferredSize;
 
     if (ui != null)
       {
         Dimension s = ui.getPreferredSize(this);
         if (s != null)
-          return s;
+          prefSize = s;
       }
-    Dimension p = super.getPreferredSize();
-    return p;
+    if (prefSize == null)
+      prefSize = super.getPreferredSize();
+    // make sure that prefSize is not smaller than minSize
+    if (minimumSize != null && prefSize != null
+        && (minimumSize.width > prefSize.width
+            || minimumSize.height > prefSize.height))
+        prefSize = new Dimension(Math.max(minimumSize.width, prefSize.width),
+                                 Math.max(minimumSize.height, prefSize.height));
+    return prefSize;
   }
 
   /**
@@ -2063,22 +2071,6 @@ public abstract class JComponent extends Container implements Serializable
     firePropertyChange("minimumSize", oldMinimumSize, minimumSize);
     revalidate();
     repaint();
-
-    // adjust preferred and maximum size accordingly
-    if (preferredSize != null)
-      {
-	Dimension prefSize = getPreferredSize();
-	prefSize.width = Math.max(prefSize.width, minimumSize.width);
-	prefSize.height = Math.max(prefSize.height, minimumSize.height);
-	setPreferredSize(prefSize);
-      }
-    if (maximumSize != null)
-      {
-	Dimension maxSize = getMaximumSize();
-	maxSize.width = Math.max(maxSize.width, minimumSize.width);
-	maxSize.height = Math.max(maxSize.height, minimumSize.height);
-	setMaximumSize(maxSize);
-      }
   }
 
   /**
