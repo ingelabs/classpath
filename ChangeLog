@@ -1,3 +1,11 @@
+2005-06-21  Lillian Angel  <langel@redhat.com>
+
+* java/util/loggin.Logger
+        (setParent): No lines after throwing an exception are executed 
+        and there is no point to check if the parent is null, because a 
+        NullPointerException would have been thrown earlier. Fixes Bug 
+        #13460.
+
 2005-06-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/IOP/Encoding.java,
