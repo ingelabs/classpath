@@ -1,6 +1,19 @@
+2005-06-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/IOP/Encoding.java,
+	org/omg/IOP/IOR.java,
+	org/omg/IOP/IORHelper.java,
+	org/omg/IOP/IORHolder.java,
+	org/omg/IOP/TaggedProfileHolder.java,
+	org/omg/IOP/TaggedProfile.java,
+	org/omg/IOP/TaggedProfileHelper.java,
+	org/omg/IOP/TaggedComponentHolder.java,
+	org/omg/IOP/TaggedComponent.java,
+	org/omg/IOP/TaggedComponentHelper.java: New files.
+
 2005-06-21  Lillian Angel  <langel@redhat.com>
 
-* gnu/xml/aelfred2/XmlParser
+	* gnu/xml/aelfred2/XmlParser
         (parseAttribute): if (type.equals("CDATA") || type == null) 
         this would always throw a NullPointerException if type is null.
 
