@@ -1,5 +1,14 @@
 2005-06-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/Functional_ORB.java (Port): Documentation
+	update. (setPort): Made static, documentation update.
+	(getPort): Removed.
+	* gnu/CORBA/generalTypeCode.java (UNSET): Changed value.
+	* gnu/CORBA/NamingService/NamingServiceTransient.java (main):
+	Removed call to init.
+
+2005-06-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* org/omg/CORBA/CurrentHelper.java, 
 	org/omg/CORBA/CurrentHolder.java: New files.
 
