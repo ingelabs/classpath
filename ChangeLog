@@ -1,3 +1,9 @@
+2005-06-21  Lillian Angel  <langel@redhat.com>
+
+* gnu/xml/aelfred2/XmlParser
+        (parseAttribute): if (type.equals("CDATA") || type == null) 
+        this would always throw a NullPointerException if type is null.
+
 2005-06-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/Functional_ORB.java (Port): Documentation
