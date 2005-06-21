@@ -85,6 +85,11 @@
 	gnu_java_awt_peer_gtk_GtkImage_isOffScreen): Move declaration to ...
 	* native/jni/gtk-peer/gtkpeer.h: here.
 
+2005-06-18  Chris Burdess <dog@bluezoo.org>
+
+        * java/util/logging/LogManager.java: Set default level of root
+        logger to INFO.
+
 2005-06-18  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
 	* org/omg/IOP/TransactionService.java, 
