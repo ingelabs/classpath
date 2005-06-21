@@ -5,13 +5,13 @@
 
 2005-06-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * javax/swing/text/html/HTML.java: Added public parameterless 
-        constructor for Tag.
+	* javax/swing/text/html/HTML.java: Added public parameterless 
+	constructor for Tag.
 
 2005-06-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/CORBA/PolicyListHolder.java,
-        org/omg/CORBA/PolicyListHelper.java: New files.
+	* org/omg/CORBA/PolicyListHolder.java,
+	org/omg/CORBA/PolicyListHelper.java: New files.
 
 2005-06-20  Lillian Angel  <langel@redhat.com>
 
@@ -93,8 +93,8 @@
 
 2005-06-18  Chris Burdess <dog@bluezoo.org>
 
-        * java/util/logging/LogManager.java: Set default level of root
-        logger to INFO.
+	* java/util/logging/LogManager.java: Set default level of root
+	logger to INFO.
 
 2005-06-18  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
