@@ -41,11 +41,16 @@ package org.omg.CORBA;
 import org.omg.CORBA.portable.IDLEntity;
 
 /**
+ * <p>
  * The interfaces, derived from this class, define the objects, providing
  * information, associated with a particular thread of execution. The examples
  * of such data could be the security information, transaction identifiers
  * and so on.
- *
+ * </p><p>
+ * The various aspects of this information are provided by subinterfaces,
+ * derived from the Current. There are no operations defined for
+ * the "general" Current itself.
+ * </p>
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public interface Current

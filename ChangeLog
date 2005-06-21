@@ -1,3 +1,8 @@
+2005-06-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/CORBA/Current.java, 
+	org/omg/CORBA/CurrentOperations.java: Documentation update.
+	
 2005-06-20  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/DefaultDesktopManager.java (getBoundsForIconOf):

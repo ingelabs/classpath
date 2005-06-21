@@ -40,9 +40,14 @@ package org.omg.CORBA;
 
 
 /**
+ * <p>
  * The interfaces, derived from this class, define operations that provide
  * information, associated with a particular thread of execution.
- *
+ * </p><p>
+ * There are no operations for the general "Current". Instead, the operations
+ * are defined for various subinterfaces that were derived from the
+ * Current.
+ * </p>
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  *
  * @see Current
