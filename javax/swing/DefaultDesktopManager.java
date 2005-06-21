@@ -516,11 +516,11 @@ public class DefaultDesktopManager implements DesktopManager, Serializable
     // the bottom left corner)
     // The icon also must not be placed where another icon is placed 
     // (regardless whether that frame is an icon currently or not)
-	
-	if (desktopPane == null)
-	  return frame.getDesktopIcon().getBounds();
-	
-	JDesktopPane desktopPane = frame.getDesktopPane();
+    JDesktopPane desktopPane = frame.getDesktopPane();
+
+    if (desktopPane == null)
+      return frame.getDesktopIcon().getBounds();
+
     Rectangle paneBounds = desktopPane.getBounds();
     Insets insets = desktopPane.getInsets();
     Dimension pref = frame.getDesktopIcon().getPreferredSize();

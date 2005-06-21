@@ -1,3 +1,8 @@
+2005-06-20  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/DefaultDesktopManager.java (getBoundsForIconOf):
+	Initialize desktopPane before use.
+
 2005-06-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * javax/swing/text/html/HTML.java: Added public parameterless 
