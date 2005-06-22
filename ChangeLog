@@ -1,4 +1,8 @@
 2005-06-22  Anthony Balkissoon  <abalkiss@redhat.com>
+	* javax/swing/SwingUtilities.java:
+	(layoutCompoundLabel): Added check for multi-line text.
+
+2005-06-22  Anthony Balkissoon  <abalkiss@redhat.com>
 	
 	* javax/swing/JDialog.java:
 	(setDefaultCloseOperation): Removed validity check for 
