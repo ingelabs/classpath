@@ -1,4 +1,5 @@
 2005-06-22  Anthony Balkissoon  <abalkiss@redhat.com>
+	
 	* javax/swing/SwingUtilities.java:
 	(layoutCompoundLabel): Added check for multi-line text.
 
