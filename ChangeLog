@@ -1,3 +1,24 @@
+2005-06-22  Anthony Balkissoon  <abalkiss@redhat.com>
+	
+	* javax/swing/JDialog.java:
+	(setDefaultCloseOperation): Removed validity check for 
+	operation code.  Validity is handled in processWindowEvent.
+	* javax/swing/JFrame.java:
+	(setDefaultCloseOperation): Changed error message to be more
+	descriptive and similar to reference implementation.
+	* javax/swing/JInternalFrame.java:
+	(setDefaultCloseOperation): Removed validity check for 
+	operation code.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java:
+	(InternalFramePropertyListener): Added implementation of
+	VetoableChangeListener.
+	(InternalFramePropertyListener.vetoableChange): New method.
+	(InternalFramePropertyListener.propertyChange): Removed
+	check for JInternalFrame.IS_CLOSED_PROPERTY.  This is now
+	handled in vetoableChange.
+	(getDesktopManager): Added a check for null pointer from 
+	JInternalFrame.getDesktopPane().
+
 2005-06-22  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/basic/BasicLabelUI.java
