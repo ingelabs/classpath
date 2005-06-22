@@ -1,3 +1,15 @@
+2005-06-22  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java
+	(pumpBytes): Throws IOException.
+	(pumpDone): New native method.
+	(produce): Call pumpDone().
+	* include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h: Regenerated.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c
+	(Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_pumpDone): New method.
+	(Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_pumpBytes): Check for
+	errors on gdk_pixbuf_loader_write.
+
 2005-06-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/IOP/ProfileIdHelper.java,
