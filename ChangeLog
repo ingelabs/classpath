@@ -1,6 +1,15 @@
+2005-06-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/IOP/ServiceContextListHolder.java,
+	org/omg/IOP/ServiceContext.java
+	org/omg/IOP/ServiceContextHelper.java
+	org/omg/IOP/ServiceContextHolder.java
+	org/omg/IOP/ServiceContextListHelper.java
+	org/omg/IOP/ServiceIdHelper.java: New files.
+
 2005-06-21  Lillian Angel  <langel@redhat.com>
 
-* java/util/loggin.Logger
+	* java/util/loggin.Logger
         (setParent): No lines after throwing an exception are executed 
         and there is no point to check if the parent is null, because a 
         NullPointerException would have been thrown earlier. Fixes Bug 
