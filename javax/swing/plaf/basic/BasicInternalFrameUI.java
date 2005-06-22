@@ -880,7 +880,11 @@ public class BasicInternalFrameUI extends InternalFrameUI
       if (e.getPropertyName().equals(JInternalFrame.IS_CLOSED_PROPERTY))
         {
           if (frame.getDefaultCloseOperation() == JInternalFrame.HIDE_ON_CLOSE)
-            frame.setVisible(false);
+            {
+              frame.setVisible(false);
+              frame.getDesktopPane().repaint();
+              throw new PropertyVetoException ("close operation is HIDE_ON_CLOSE\n", e);
+            }
           else if (frame.getDefaultCloseOperation() == JInternalFrame.DISPOSE_ON_CLOSE)
             closeFrame(frame);
           else

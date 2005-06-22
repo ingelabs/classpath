@@ -1,4 +1,12 @@
 2005-06-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java:
+	(InternalFramePropertyChangeListener.vetoableChange):
+	Repaint the JDesktopPane when JInternalFrame is closed.
+	Also veto the close request, because hiding is not
+	closing.
+
+2005-06-22  Anthony Balkissoon  <abalkiss@redhat.com>
 	
 	* javax/swing/SwingUtilities.java:
 	(layoutCompoundLabel): Added check for multi-line text.
