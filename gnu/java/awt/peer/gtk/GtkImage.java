@@ -399,6 +399,9 @@ public class GtkImage extends Image
 	srcHeight = height - srcY;
       }
 
+    if ( srcWidth <= 0 || srcHeight <= 0 || dstWidth <= 0 || dstHeight <= 0)
+      return true;
+
     if(bgcolor != null)
       drawPixelsScaledFlipped (g, bgcolor.getRed (), bgcolor.getGreen (), 
 			       bgcolor.getBlue (), 
