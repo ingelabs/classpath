@@ -1,3 +1,7 @@
+2005-06-23  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/GtkImage.java: Add case source size > size.
+
 2005-06-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/LocalObject.java: New file.
