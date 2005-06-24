@@ -1,3 +1,21 @@
+2005-06-24  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/table/AbstractTableModel.java:
+	(getColumnName): eliminated temp index to fix very minor bug,
+	(findColumn): throw NullPointerException for null argument,
+	(fireTableDataChanged): set correct row indices.
+	* javax/swing/table/DefaultTableModel.java:
+	(setDataVector): replace null argument with empty vector then call
+	setColumnIdentifiers() to set up column names,
+	(setColumnCount): call fireTableStructureChanged() rather than 
+	fireTableDataChanged(),
+	(addColumn(Object, Object[])): call fireTableStructureChanged() rather 
+	than fireTableDataChanged(),
+	(addRow(Vector)): fixed row indices in TableModelEvent,
+	(moveRow): fixed row indices in TableModelEvent,
+	(getColumnName): for a column index beyond the number of columns in
+	the model, pass control to the superclass.
+
 2005-06-24  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/Container.java:

@@ -78,16 +78,12 @@ public abstract class AbstractTableModel implements TableModel, Serializable
    */
   public String getColumnName (int columnIndex)
   {
-    int index = columnIndex + 1;
     StringBuffer buffer = new StringBuffer();
-
-    while (index > 0)
+    while (columnIndex >= 0)
       {
-	buffer.insert (0, (char) ('A' + ((index - 1) % 26)));
-	index = (index - 1) / 26;
+	buffer.insert (0, (char) ('A' + columnIndex % 26));
+	columnIndex = columnIndex / 26 - 1;
       }
-    
-    // Return column name.
     return buffer.toString();
   }
 
@@ -106,7 +102,7 @@ public abstract class AbstractTableModel implements TableModel, Serializable
       {
         String name = getColumnName (index);
         
-        if (name.equals (columnName))
+        if (columnName.equals(name))
           return index;
     }
 
@@ -189,7 +185,7 @@ public abstract class AbstractTableModel implements TableModel, Serializable
    */
   public void fireTableDataChanged()
   {
-    fireTableChanged (new TableModelEvent (this));
+    fireTableChanged(new TableModelEvent(this, 0, Integer.MAX_VALUE));
   }
 
   /**

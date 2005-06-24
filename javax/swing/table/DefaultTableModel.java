@@ -181,12 +181,11 @@ public class DefaultTableModel extends AbstractTableModel
    */
   public void setDataVector(Vector data, Vector columnNames) 
   {
-    dataVector = data;
-    columnIdentifiers = columnNames;
-    for (int r = 0; r < data.size(); r++) {
-      ((Vector) dataVector.get(r)).setSize(columnNames.size());
-    }          
-    fireTableStructureChanged();
+    if (data == null)
+      dataVector = new Vector();
+    else
+      dataVector = data;
+    setColumnIdentifiers(columnNames);
   }
 
   /**
@@ -320,7 +319,7 @@ public class DefaultTableModel extends AbstractTableModel
       }
     if (columnIdentifiers != null)  
       columnIdentifiers.setSize(columnCount);
-    fireTableDataChanged();
+    fireTableStructureChanged();
   }
 
   /**
@@ -386,7 +385,7 @@ public class DefaultTableModel extends AbstractTableModel
         ((Vector) dataVector.get(i)).add(columnData == null ? null : columnData[i]);
       }
     columnIdentifiers.add(columnName);
-    fireTableDataChanged();
+    fireTableStructureChanged();
   }
 
   /**
@@ -396,9 +395,10 @@ public class DefaultTableModel extends AbstractTableModel
    * @param rowData the row data (<code>null</code> permitted).
    */
   public void addRow(Vector rowData) {
+    int rowIndex = dataVector.size();
     dataVector.add(rowData);
     newRowsAdded(new TableModelEvent(
-      this, dataVector.size(), dataVector.size(), -1, TableModelEvent.INSERT)
+      this, rowIndex, rowIndex, -1, TableModelEvent.INSERT)
     );
   }
 
@@ -451,7 +451,9 @@ public class DefaultTableModel extends AbstractTableModel
     {
       dataVector.insertElementAt(removed.get(i), toIndex);  
     }
-    fireTableDataChanged();
+    int firstRow = Math.min(startIndex, toIndex);
+    int lastRow = Math.max(endIndex, toIndex + (endIndex - startIndex));
+    fireTableRowsUpdated(firstRow, lastRow);
   }
 
   /**
@@ -503,6 +505,8 @@ public class DefaultTableModel extends AbstractTableModel
         else
           result = super.getColumnName(column);
       }
+      else
+        result = super.getColumnName(column);
     }
     return result;
   }
