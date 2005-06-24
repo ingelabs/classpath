@@ -1,3 +1,10 @@
+2005-05-14  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/aelfred2/XmlParser.java: ensure that charset parameter of
+	external MIME entity is trimmed.
+	* gnu/xml/dom/DomDocument.java: DomNsNodes retrieved via
+	createElement/createAttribute should not have localNames.
+
 2005-06-24  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	org/omg/PortableServer/POAPackage/AdapterAlreadyExists.java,
