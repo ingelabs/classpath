@@ -186,6 +186,7 @@ public class DefaultTableModel extends AbstractTableModel
     for (int r = 0; r < data.size(); r++) {
       ((Vector) dataVector.get(r)).setSize(columnNames.size());
     }          
+    fireTableStructureChanged();
   }
 
   /**

@@ -1,3 +1,20 @@
+2005-06-24  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/JTable.java
+	(constructor): Call setModel() instead of setting the model directly.
+	This makes sure that listeners and the columnModel are set up
+	correctly.
+	(initializeLocalVars): Set up tableHeader before the columnModel.
+	This way we already have a tableHeader when setColumnModel is called
+	and it can be updated accordingly.
+	(tableChanged): Update the columnModel when the table structure
+	changes.
+	(setColumnModel): Also set the columnModel of the tableHeader here.
+	This is specified in Sun's API documentation.
+	* javax/swing/table/DefaultTableModel.java
+	(setDataVector): Fire a structureChanged event, so that the
+	columnModel and header columnModel are updated correctly.
+
 2005-06-23  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GtkImage.java: Don't draw 0 size images.
