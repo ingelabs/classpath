@@ -46,6 +46,8 @@ import java.awt.Insets;
 import java.awt.LayoutManager2;
 import java.io.Serializable;
 
+import gnu.java.awt.AWTUtilities;
+
 /**
  * A layout for swing components.
  *
@@ -151,7 +153,7 @@ public class BoxLayout implements LayoutManager2, Serializable
     int x = 0;
     int y = 0;
 
-    Component[] children = parent.getComponents();
+    Component[] children = AWTUtilities.getVisibleChildren(parent);
 
     if (isHorizontalIn(parent))
       {        
@@ -201,7 +203,7 @@ public class BoxLayout implements LayoutManager2, Serializable
     int x = insets.left + insets.right;
     int y = insets.bottom + insets.top;
 
-    Component[] children = parent.getComponents();
+    Component[] children = AWTUtilities.getVisibleChildren(parent);
 
     if (isHorizontalIn(parent))
       {
@@ -246,7 +248,7 @@ public class BoxLayout implements LayoutManager2, Serializable
     Dimension innerSize = new Dimension(size.width - insets.left
                                         - insets.right, size.height
                                         - insets.bottom - insets.top);
-    Component[] children = parent.getComponents();
+    Component[] children = AWTUtilities.getVisibleChildren(parent);
     boolean[] laidOut = new boolean[children.length];
     for (int index = 0; index < laidOut.length; index++)
       laidOut[index] = false;
@@ -465,7 +467,7 @@ public class BoxLayout implements LayoutManager2, Serializable
     int x = insets.left + insets.right;
     int y = insets.top + insets.bottom;
 
-    Component[] children = parent.getComponents();
+    Component[] children = AWTUtilities.getVisibleChildren(parent);
 
     if (isHorizontalIn(parent))
       {

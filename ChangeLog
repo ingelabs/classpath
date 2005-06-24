@@ -1,5 +1,15 @@
 2005-06-24  Roman Kennke  <roman@kennke.org>
 
+	* gnu/java/awt/AWTUtilities.java:
+	Added new utility class. This provides a method for fetching
+	the visible children of a Container.
+	* javax/swing/BoxLayout.java:
+	Use AWTUtilities.getVisibleChildren() instead of
+	Container.getComponents(). LayoutManagers must not layout invisible
+	children.
+
+2005-06-24  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JTable.java
 	(constructor): Call setModel() instead of setting the model directly.
 	This makes sure that listeners and the columnModel are set up
