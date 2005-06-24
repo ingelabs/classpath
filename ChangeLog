@@ -1,3 +1,9 @@
+2005-06-24  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JScrollPane.java
+	(JScrollPane): Add Viewport at index 0 rather than after the
+	JScrollBars.  This complies with reference implementations.
+	
 2005-05-14  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/aelfred2/XmlParser.java: ensure that charset parameter of
