@@ -1,5 +1,28 @@
 2005-06-24  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	org/omg/PortableServer/POAPackage/AdapterAlreadyExists.java,
+	org/omg/PortableServer/POAPackage/AdapterAlreadyExistsHelper.java,
+	org/omg/PortableServer/POAPackage/WrongPolicyHelper.java,
+	org/omg/PortableServer/POAPackage/AdapterNonExistentHelper.java,
+	org/omg/PortableServer/POAPackage/InvalidPolicyHelper.java,
+	org/omg/PortableServer/POAPackage/ServantNotActiveHelper.java,
+	org/omg/PortableServer/POAPackage/ObjectAlreadyActiveHelper.java,
+	org/omg/PortableServer/POAPackage/ObjectNotActiveHelper.java,
+	org/omg/PortableServer/POAPackage/NoServantHelper.java,
+	org/omg/PortableServer/POAPackage/WrongAdapterHelper.java,
+	org/omg/PortableServer/POAPackage/AdapterNonExistent.java,
+	org/omg/PortableServer/POAPackage/InvalidPolicy.java,
+	org/omg/PortableServer/POAPackage/NoServant.java,
+	org/omg/PortableServer/POAPackage/ObjectAlreadyActive.java,
+	org/omg/PortableServer/POAPackage/ObjectNotActive.java,
+	org/omg/PortableServer/POAPackage/ServantNotActive.java,
+	org/omg/PortableServer/POAPackage/WrongAdapter.java,
+	org/omg/PortableServer/POAPackage/WrongPolicy.java,
+	gnu/CORBA/Poa/InvalidPolicyHolder.java,
+	org/omg/PortableServer/POAPackage/package.html: New files.
+
+2005-06-24  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* org/omg/IOP/CodecOperations.java,
 	org/omg/IOP/Codec.java,
 	org/omg/IOP/CodecFactory.java,
