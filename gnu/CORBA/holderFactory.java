@@ -177,7 +177,6 @@ public class holderFactory
       }
     catch (Exception ex)
       {
-        ex.printStackTrace();
         return null;
       }
   }

@@ -1,3 +1,17 @@
+2005-06-24  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/IOP/CodecOperations.java,
+	org/omg/IOP/Codec.java,
+	org/omg/IOP/CodecFactory.java,
+	org/omg/IOP/CodecFactoryHelper.java,
+	org/omg/IOP/CodecFactoryOperations.java,
+	gnu/CORBA/cdrEncapsCodec.java,
+	gnu/CORBA/gnuCodecFactory.java: New files.
+	* gnu/CORBA/Functional_ORB.java (constructor):
+	Put "CodecFactory" into initial references.
+	* gnu/CORBA/holderFactory.java (createHolder): 
+	Removed debug statement.
+
 2005-06-24  Anthony Balkissoon  <abalkiss@redhat.com>
 	
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java:

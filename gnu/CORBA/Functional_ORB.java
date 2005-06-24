@@ -373,6 +373,7 @@ public class Functional_ORB
     try
       {
         LOCAL_HOST = ns_host = InetAddress.getLocalHost().getHostAddress();
+        initial_references.put("CodecFactory", new gnuCodecFactory(this));
       }
     catch (UnknownHostException ex)
       {
