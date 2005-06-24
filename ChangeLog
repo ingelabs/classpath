@@ -1,5 +1,10 @@
 2005-06-24  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/ColorUIResource.java: documented 
+	IllegalArgumentExceptions in constructors;
+	
+2005-06-24  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/table/AbstractTableModel.java:
 	(getColumnName): eliminated temp index to fix very minor bug,
 	(findColumn): throw NullPointerException for null argument,
