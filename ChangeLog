@@ -1,5 +1,16 @@
 2005-06-24  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* java/awt/Container.java:
+	(LightweightDispatcher.acquireComponentForMouseEvent):
+	Use temp variable to set lastComponentEntered to null _before_
+	dispatching MOUSE_EXITED events to avoid infinite loop.
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java:
+	(MouseInputHandler.acquireComponentForMouseEvent):
+	Use temp variable to set lastComponentEntered to null _before_
+	dispatching MOUSE_EXITED events to avoid infinite loop.
+
+2005-06-24  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/JScrollPane.java
 	(JScrollPane): Add Viewport at index 0 rather than after the
 	JScrollBars.  This complies with reference implementations.
