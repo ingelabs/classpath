@@ -1,5 +1,10 @@
 2005-06-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/ObjectIdHelper.java:
+	New file.
+
+2005-06-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* org/omg/PortableServer/POAManagerPackage/AdapterInactive.java, 
 	org/omg/PortableServer/POAManagerPackage/AdapterInactiveHelper.java, 
 	org/omg/PortableServer/POAManagerPackage/State.java, 
