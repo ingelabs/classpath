@@ -1,3 +1,27 @@
+2005-06-27  Ziga Mahkovec  <ziga.mahkovec@klika.si>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_copyState):
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_initState___3III):
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_initState__II):
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_initState__Lgnu_java_awt_peer_gtk_GtkComponentPeer_2):
+	Remove gdk_cairo_create calls.
+	Obtain dimension for the cairo surface.
+	(init_graphics2d_as_renderable): Fix cairo_xlib_surface_create
+	invocation by passing dimension.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_drawPixels): Fix translation
+	matrix sign.
+	Use cairo_set_source for applying patterns.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_gdkDrawDrawable): Fix
+	cairo_set_source_surface invocation by passing position instead of
+	dimension.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_initState___3III):
+	(begin_drawing_operation):
+	(end_drawing_operation): In MODE_JAVA_ARRAY mode, only initialize the
+	cairo context once.  Use GetPrimitiveArrayCritical for pinning down
+	pixel buffers and maintain a buffer copy if necessary.
+	* native/jni/gtk-peer/gtkcairopeer.h (javabuf_copy): New field.
+
 2005-06-27  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
