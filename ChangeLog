@@ -1,5 +1,14 @@
 2005-06-27  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/Box.java
+	(createGlue): Return Short.MAX_VALUE instead of Integer.MAX_VALUE as
+	dimension in the Filler component.
+	(createHorizontalGlue): Return a new Filler object with the correct
+	value instead of relying on createGlue(). The object returned by
+	createHorizontalGlue must not have a vertical dimension.
+
+2005-06-27  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/BoxLayout.java
 	(Direction): New inner interface. This abstracts the layout algorithm
 	from the layout direction.
