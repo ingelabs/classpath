@@ -1,3 +1,11 @@
+2005-06-27  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
+	(glog_func): New static function.
+	(Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkInit): Install glog_func as
+	default log handler.
+	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_LIBADD): Add jcl.
+
 2005-06-27  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/JComponent.java

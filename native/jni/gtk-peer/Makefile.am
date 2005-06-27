@@ -51,7 +51,8 @@ libgtkpeer_la_SOURCES = $(gtk_cairo_c_source_files) \
 			gtkcairopeer.h \
 			gtkpeer.h
 
-libgtkpeer_la_LIBADD = $(top_builddir)/native/jni/classpath/native_state.lo
+libgtkpeer_la_LIBADD = $(top_builddir)/native/jni/classpath/native_state.lo \
+		       $(top_builddir)/native/jni/classpath/jcl.lo
 
 AM_LDFLAGS = @CLASSPATH_MODULE@ @GTK_LIBS@ @CAIRO_LIBS@ @PANGOFT2_LIBS@ @X_LIBS@ -lXtst
 AM_CPPFLAGS = @CLASSPATH_INCLUDES@
