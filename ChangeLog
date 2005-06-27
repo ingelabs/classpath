@@ -1,3 +1,24 @@
+2005-06-27  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/BoxLayout.java
+	(Direction): New inner interface. This abstracts the layout algorithm
+	from the layout direction.
+	(Horizontal): Implementation for the above interface for the
+	horizontal direction.
+	(Vertical): Implementation for the above interface for the
+	vertical direction.
+	(SizeReq): An inner helper class that holds size requirements for
+	Components that are laid out. This is similar but not equal to
+	the SizeRequirements class in javax.swing.
+	(layoutContainer): Removed the actual algorithm into a new method,
+	using the Direction interface.
+	(layoutAlgorithm): This is the new layout algorithm. This uses
+	the Direction interface, so that the algorithm is not duplicated
+	and can be expressed more readable.
+	(distributeSpace): A new helper method that distributes excess
+	space over a set of components. This is the actual 'worker' in
+	BoxLayout.
+
 2005-06-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         org/omg/DynamicAny/DynAnyPackage/InvalidValue.java, 
