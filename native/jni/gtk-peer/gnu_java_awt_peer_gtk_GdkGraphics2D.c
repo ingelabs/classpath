@@ -382,7 +382,24 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_copyState
   g->height = g_old->height;
 
   if (g_old->mode == MODE_JAVA_ARRAY)
-    g->jarray = (*env)->NewGlobalRef (env, g_old->jarray);
+    {
+      jint size = g->width * g->height * 4;
+      
+      g->jarray = (*env)->NewGlobalRef (env, g_old->jarray);
+      g->javabuf = (*env)->GetIntArrayElements (env, g->jarray, &g->isCopy);
+      g->isCopy = JNI_TRUE;
+      g->javabuf_copy = (jint *) malloc (size);
+      memcpy (g->javabuf_copy, g->javabuf, size);
+      g->surface = cairo_image_surface_create_for_data ((unsigned char *) g->javabuf,
+						         CAIRO_FORMAT_ARGB32,
+						         g->width,
+						         g->height,
+						         g->width * 4);
+      g_assert (g->surface != NULL);
+      g->cr = cairo_create (g->surface);
+      g_assert (g->cr != NULL);
+      (*env)->ReleaseIntArrayElements (env, g->jarray, g->javabuf, JNI_ABORT);
+    }
   else
     {
       g->drawable = g_old->drawable;
@@ -843,7 +860,8 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_drawPixels
    cairo_matrix_init (&mat, 
                       native_matrix[0], native_matrix[1],
                       native_matrix[2], native_matrix[3],
-                      -native_matrix[4], -native_matrix[5]);
+                      native_matrix[4], native_matrix[5]);
+
    p = cairo_pattern_create_for_surface (surf);
    cairo_pattern_set_matrix (p, &mat);
    if (gr->pattern)

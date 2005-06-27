@@ -1,5 +1,20 @@
 2005-06-27  Ziga Mahkovec  <ziga.mahkovec@klika.si>
 
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (constructors): Default to
+	a transparent background instead of black.
+	(drawImage): When drawing a raster, pass live data to avoid copying.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (createImage): Return
+	a BufferedImage when using Graphics2D.
+	* javax/swing/JComponent.java (getComponentGraphics): Avoid copying
+	Graphics2D instances.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_copyState): Copy the pixel
+	buffer and initialize a new cairo context in MODE_JAVA_ARRAY.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_drawPixels): Revert
+	previous transformation patch.
+
+2005-06-27  Ziga Mahkovec  <ziga.mahkovec@klika.si>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
 	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_copyState):
 	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_initState___3III):
