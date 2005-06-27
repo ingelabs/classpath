@@ -1,3 +1,18 @@
+2005-06-27  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Integer.java:
+	(valueOf(int)): Implemented.
+	(bitCount(int)): Implemented.
+	(rotateLeft(int,int)): Implemented.
+	(rotateRight(int,int)): Implemented.
+	(highestOneBit(int)): Implemented.
+	(numberOfLeadingZeros(int)): Implemented.
+	(lowestOneBit(int)): Implemented.
+	(numberOfTrailingZeros(int)): Implemented.
+	(signum(int)): Implmented.
+	(reverseBytes(int)): Implemented.
+	(reverse(int)): Implemented.
+	
 2005-06-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/PortableInterceptor/ORBInitInfoPackage/ObjectIdHelper.java:
