@@ -1,5 +1,11 @@
 2005-06-27  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JComponent.java
+	(getPreferredSize): Don't let the UI replace a manually set preferred
+	size.
+
+2005-06-27  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/Box.java
 	(createGlue): Return Short.MAX_VALUE instead of Integer.MAX_VALUE as
 	dimension in the Filler component.
