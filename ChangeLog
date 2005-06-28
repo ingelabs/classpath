@@ -1,3 +1,8 @@
+2005-06-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/CORBA/_IDLTypeStub.java: Added SerialVersionUID.
+        org/omg/CORBA/PolicyTypeHelper.java: New file.
+
 2005-06-28  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/table/AbstractTableModel.java: updated API docs,
