@@ -40,6 +40,8 @@ package org.omg.IOP;
 
 import org.omg.CORBA.portable.IDLEntity;
 
+import java.io.Serializable;
+
 /**
 * The TaggedProfile if part of the {@link IOR}, defining a single specific
 * aspect of the object related information. The content of profile depends
@@ -71,8 +73,13 @@ import org.omg.CORBA.portable.IDLEntity;
 * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
 */
 public class TaggedProfile
-  implements IDLEntity
+  implements IDLEntity, Serializable
 {
+  /**
+   * Use serialVersionUID (v1.4) for interoperability.
+   */
+  private static final long serialVersionUID = -461232684387903343L;
+
   /**
    * The integer tag identifier, typically one of TAG_INTERNET_IOP.value or
    * TAG_MULTIPLE_COMPONENTS.value.

@@ -48,12 +48,15 @@ import java.io.Serializable;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public interface BindingIterator
-  extends org.omg.CORBA.Object, Serializable, IDLEntity
+  extends BindingIteratorOperations, org.omg.CORBA.Object, Serializable,
+          IDLEntity
 {
   /**
    * Destroy the iterator on the server side. This must always be
    * called, as otherwise the iterator will remain on the server even
    * after the client application terminates.
+   *
+   * @specnote since 1.3 this method has moved into BindingIteratorOperations.
    */
   void destroy();
 
@@ -65,6 +68,8 @@ public interface BindingIterator
    *
    * @return false if there are no more bindings available,
    * true otherwise.
+   *
+   * @specnote since 1.3 this method has moved into BindingIteratorOperations.
    */
   boolean next_n(int amount, BindingListHolder a_list);
 
@@ -75,6 +80,8 @@ public interface BindingIterator
    *
    * @return false if there are no more bindings available, true
    * otherwise.
+   *
+   * @specnote since 1.3 this method has moved into BindingIteratorOperations.
    */
   boolean next_one(BindingHolder a_binding);
 }

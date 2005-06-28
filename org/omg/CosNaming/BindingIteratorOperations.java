@@ -1,4 +1,4 @@
-/* TaggedComponent.java --
+/* BindingIterator.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,58 +36,43 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package org.omg.IOP;
-
-import org.omg.CORBA.portable.IDLEntity;
-
-import java.io.Serializable;
+package org.omg.CosNaming;
 
 /**
-* The tagged component in a part of the {@link TaggedProfile}.
-* The examples of the possible components inside the tag are
-* {@link TAG_CODE_SETS}, {@link TAG_ALTERNATE_IIOP_ADDRESS},
-* {@link TAG_JAVA_CODEBASE}, {@link TAG_ORB_TYPE} and {@link TAG_POLICIES}.
-* The complete list (over 20 possible components) can be found
-* in OMG specification. Some of these components occur only once
-* (in the same TaggedProfile), others can be repeated.
-*
-* @see TaggedComponentHolder
-* @see TaggedComponentHelper
-*
-* @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
-*/
-public class TaggedComponent
-  implements IDLEntity, Serializable
+ * The operations, applicable for an iterator for seing the available
+ * bindings.
+ *
+ * @since 1.3
+ *
+ * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
+ */
+public interface BindingIteratorOperations
 {
   /**
-   * Use serialVersionUID (v1.4) for interoperability.
+   * Destroy the iterator on the server side. This must always be
+   * called, as otherwise the iterator will remain on the server even
+   * after the client application terminates.
    */
-  private static final long serialVersionUID = -2084695346022761692L;
+  void destroy();
 
   /**
-   * The integer tag identifier, for instance, TAG_CODE_SETS.value.
+   * Return the desired amount of bindings.
+   *
+   * @param amount the maximal number of bindings to return.
+   * @param a_list a holder to store the returned bindings.
+   *
+   * @return false if there are no more bindings available,
+   * true otherwise.
    */
-  public int tag;
+  boolean next_n(int amount, BindingListHolder a_list);
 
   /**
-   * The tag component data.
+   * Return the next binding.
+   *
+   * @param a_binding a holder, where the next binding will be stored.
+   *
+   * @return false if there are no more bindings available, true
+   * otherwise.
    */
-  public byte[] component_data;
-
-  /**
-   * Create the unitialised instance, assigning to
-   * the all fields java default values.
-   */
-  public TaggedComponent()
-  {
-  }
-
-  /**
-   * Create the instance, initialising the fields to the given values.
-   */
-  public TaggedComponent(int a_tag, byte[] a_component_data)
-  {
-    this.tag = a_tag;
-    this.component_data = a_component_data;
-  }
+  boolean next_one(BindingHolder a_binding);
 }

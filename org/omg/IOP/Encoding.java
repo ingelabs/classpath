@@ -40,6 +40,8 @@ package org.omg.IOP;
 
 import org.omg.CORBA.portable.IDLEntity;
 
+import java.io.Serializable;
+
 /**
  * Defines the encoding format of the {@link Codec}, including the major
  * and minor version numbers. The only currently supported encodings are
@@ -49,8 +51,13 @@ import org.omg.CORBA.portable.IDLEntity;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public class Encoding
-  implements IDLEntity
+  implements IDLEntity, Serializable
 {
+  /**
+   * Use serialVersionUID (v1.4) for interoperability.
+   */
+  private static final long serialVersionUID = -1489257079856841992L;
+
   /**
    * The format of encoding. For instance, {@link ENCODING_CDR_ENCAPS#value}.
    */

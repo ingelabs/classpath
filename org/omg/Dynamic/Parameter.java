@@ -1,4 +1,4 @@
-/* TaggedComponent.java --
+/* Parameter.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,58 +36,55 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package org.omg.IOP;
+package org.omg.Dynamic;
 
+import org.omg.CORBA.Any;
+import org.omg.CORBA.ParameterMode;
 import org.omg.CORBA.portable.IDLEntity;
 
 import java.io.Serializable;
 
 /**
-* The tagged component in a part of the {@link TaggedProfile}.
-* The examples of the possible components inside the tag are
-* {@link TAG_CODE_SETS}, {@link TAG_ALTERNATE_IIOP_ADDRESS},
-* {@link TAG_JAVA_CODEBASE}, {@link TAG_ORB_TYPE} and {@link TAG_POLICIES}.
-* The complete list (over 20 possible components) can be found
-* in OMG specification. Some of these components occur only once
-* (in the same TaggedProfile), others can be repeated.
-*
-* @see TaggedComponentHolder
-* @see TaggedComponentHelper
-*
-* @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
-*/
-public class TaggedComponent
+ * When representing the information about a request,
+ * defines a one of the arguments for the operation being invoked.
+ *
+ * @see org.omg.PortableInterceptor.RequestInfoOperation#arguments()
+ *
+ * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
+ */
+public class Parameter
   implements IDLEntity, Serializable
 {
   /**
    * Use serialVersionUID (v1.4) for interoperability.
    */
-  private static final long serialVersionUID = -2084695346022761692L;
+  private static final long serialVersionUID = 892191606993734699L;
 
   /**
-   * The integer tag identifier, for instance, TAG_CODE_SETS.value.
+   * The {@link Any}, holding the value of the parameter.
    */
-  public int tag;
+  public Any argument;
 
   /**
-   * The tag component data.
+   * The mode of the parameter. Specifies if the parameter is used
+   * to pass the value to the method, to return the value from the
+   * method or for both of these purposes.
    */
-  public byte[] component_data;
+  public ParameterMode mode;
 
   /**
-   * Create the unitialised instance, assigning to
-   * the all fields java default values.
+   * Create the unitialised instance.
    */
-  public TaggedComponent()
+  public Parameter()
   {
   }
 
   /**
-   * Create the instance, initialising the fields to the given values.
+   * Create an instance, initialising field to the passed values.
    */
-  public TaggedComponent(int a_tag, byte[] a_component_data)
+  public Parameter(Any an_argument, ParameterMode a_mode)
   {
-    this.tag = a_tag;
-    this.component_data = a_component_data;
+    argument = an_argument;
+    mode = a_mode;
   }
 }

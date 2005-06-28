@@ -1,5 +1,18 @@
 2005-06-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* org/omg/CosNaming/BindingIterator.java: Inherit from 
+	BindingIteratorOperations, added specnotes for 1.2 specific methods.
+	* org/omg/CosNaming/NamingContext.java: Inherit from
+	NamingContextOperations, added specnotes for 1.2 specific methods.
+	* org/omg/IOP/Encoding.java,
+	org/omg/IOP/TaggedComponent.java,
+	org/omg/IOP/TaggedProfile.java: Inherit from Serializable, added
+	SerialVersionUID.
+	org/omg/CosNaming/BindingIteratorOperations.java,
+	org/omg/Dynamic/Parameter.java: New files.
+
+2005-06-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/gnuRequest.java (submit): If IOException is 
 	thrown while opening a socket, rethrow MARSHAL.
 	* gnu/CORBA/NamingService/NamingServiceTransient.java (main): 
