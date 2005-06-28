@@ -1,3 +1,21 @@
+2005-06-28  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/nio/DatagramChannelImpl.java
+	(getNativeFD): Removed.
+	* gnu/java/nio/DatagramChannelSelectionKey.java
+	(getNativeFD): Modified to extract the native fd via the
+	PlainDatagramSocketImpl.
+	* gnu/java/nio/ServerSocketChannelImpl.java
+	(getNativeFD): Removed.
+	* gnu/java/nio/ServerSocketChannelSelectionKey.java
+	(getNativeFD): Modified to extract the native fd via the
+	PlainSocketImpl.
+	* gnu/java/nio/SocketChannelImpl.java
+	(getNativeFD): Removed.
+	* gnu/java/nio/SocketChannelSelectionKey.java
+	(getNativeFD): Modified to extract the native fd via the
+	PlainSocketImpl.
+
 2005-06-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
         
         NEWS: Added note about CORBA status in 1.6 release.
