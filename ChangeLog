@@ -1,3 +1,10 @@
+2005-06-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/gnuRequest.java (submit): If IOException is 
+	thrown while opening a socket, rethrow MARSHAL.
+	* gnu/CORBA/NamingService/NamingServiceTransient.java (main): 
+	Fixed regression due that the service started on the wrong port. 
+
 2005-06-28  Mark Wielaard  <mark@klomp.org>
 
 	From Christian Thalinger

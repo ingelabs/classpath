@@ -667,7 +667,7 @@ public class gnuRequest
 
     Socket socket = null;
 
-    java.lang.Object key = ior.Internet.host+":"+ior.Internet.port;
+    java.lang.Object key = ior.Internet.host + ":" + ior.Internet.port;
 
     synchronized (SocketRepository.class)
       {
@@ -743,7 +743,12 @@ public class gnuRequest
       }
     catch (IOException io_ex)
       {
-        return null;
+        MARSHAL m =
+          new MARSHAL("Unable to open a socket at " + ior.Internet.host + ":" +
+                      ior.Internet.port
+                     );
+        m.initCause(io_ex);
+        throw m;
       }
     finally
       {
@@ -752,9 +757,7 @@ public class gnuRequest
             if (socket != null && !socket.isClosed())
               {
                 socket.setSoTimeout(Functional_ORB.TANDEM_REQUESTS);
-                SocketRepository.put_socket(key,
-                                            socket
-                                           );
+                SocketRepository.put_socket(key, socket);
               }
           }
         catch (IOException scx)
