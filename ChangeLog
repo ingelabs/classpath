@@ -1,3 +1,8 @@
+2005-06-28  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/table/AbstractTableModel.java: updated API docs,
+	* javax/swing/table/DefaultTableModel.java: fixed API docs.
+	
 2005-06-28  Jeroen Frijters  <jeroen@frijters.net>
 
 	* gnu/java/nio/DatagramChannelImpl.java

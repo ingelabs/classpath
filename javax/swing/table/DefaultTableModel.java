@@ -61,7 +61,7 @@ public class DefaultTableModel extends AbstractTableModel
   protected Vector dataVector;
 
   /**
-   * columnIdentifiers
+   * Storage for the column identifiers.
    */
   protected Vector columnIdentifiers;
 
@@ -160,7 +160,7 @@ public class DefaultTableModel extends AbstractTableModel
   /**
    * Returns the vector containing the row data for the table.
    * 
-   * @returns The data vector.
+   * @return The data vector.
    */
   public Vector getDataVector() 
   {
@@ -281,7 +281,7 @@ public class DefaultTableModel extends AbstractTableModel
    * If <code>rowCount</code> is greater than the current number of rows in
    * the table, new (empty) rows are added.
    * 
-   * @param the row count.
+   * @param rowCount the row count.
    */
   public void setRowCount(int rowCount) 
   {
@@ -468,8 +468,9 @@ public class DefaultTableModel extends AbstractTableModel
   }
 
   /**
-   * getRowCount
-   * @returns int
+   * Returns the number of rows in the model.
+   * 
+   * @return The row count.
    */
   public int getRowCount() {
     return dataVector.size();
@@ -489,7 +490,7 @@ public class DefaultTableModel extends AbstractTableModel
    * 
    * @param column the column index.
    * 
-   * @returns The column name.
+   * @return The column name.
    */
   public String getColumnName(int column) {
     String result = "";
@@ -519,7 +520,7 @@ public class DefaultTableModel extends AbstractTableModel
    * @param row the row index.
    * @param column the column index.
    * 
-   * @returns <code>true</code> in all cases.
+   * @return <code>true</code> in all cases.
    */
   public boolean isCellEditable(int row, int column) {
     return true;
@@ -531,8 +532,8 @@ public class DefaultTableModel extends AbstractTableModel
    * @param row the row index.
    * @param column the column index.
    * 
-   * @returns The value (<code>Object</code>, possibly <code>null</code>) at 
-   *          the specified cell in the table.
+   * @return The value (<code>Object</code>, possibly <code>null</code>) at 
+   *         the specified cell in the table.
    */
   public Object getValueAt(int row, int column) {
     return ((Vector) dataVector.get(row)).get(column);
@@ -556,8 +557,8 @@ public class DefaultTableModel extends AbstractTableModel
    * 
    * @param data the data array (<code>null</code> permitted).
    * 
-   * @returns A vector (or <code>null</code> if the data array 
-   *          is <code>null</code>).
+   * @return A vector (or <code>null</code> if the data array 
+   *         is <code>null</code>).
    */
   protected static Vector convertToVector(Object[] data) {
     if (data == null)
@@ -571,10 +572,10 @@ public class DefaultTableModel extends AbstractTableModel
   /**
    * Converts the data array to a <code>Vector</code> of rows.
    * 
-   * @param the data array (<code>null</code> permitted).
+   * @param data the data array (<code>null</code> permitted).
    * 
-   * @returns A vector (or <code>null</code> if the data array 
-   *          is <code>null</code>.
+   * @return A vector (or <code>null</code> if the data array 
+   *         is <code>null</code>.
    */
   protected static Vector convertToVector(Object[][] data) {
     if (data == null)
