@@ -1,3 +1,8 @@
+2005-06-28  Mark Wielaard  <mark@klomp.org>
+
+	From Christian Thalinger
+	* doc/www.gnu.org/stories.wml: Add CACAO description.
+
 2005-06-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/CORBA/_IDLTypeStub.java: Added SerialVersionUID.

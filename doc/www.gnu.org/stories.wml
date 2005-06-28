@@ -114,6 +114,15 @@ understand, and has many robustness features that have been the object
 of careful design.
 </project>
 
+<project url="http://www.cacaojvm.org/" name="CACAO">
+CACAO is a research Java Virtual Machine developed at the Vienna
+University of Technology. It has a compile-only approach, which means
+there is no interpreter at all but a JIT compiler ported to different
+architectures, like Alpha, i386, MIPS, PowerPC, and x86_64. The main
+aim of CACAO is to keep the JIT compilation time as small as possible
+while producing quite fast code.
+</project>
+
 </table>
 </en>
 
