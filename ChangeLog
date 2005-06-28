@@ -1,3 +1,15 @@
+2005-06-28  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/event/AWTEventListener.java: added imports to fix links 
+	in API docs,
+	* java/awt/event/AWTEventListenerProxy.java: likewise,
+	* java/awt/event/InputMethodListener.java: likewise,
+	* java/awt/event/ItemListener.java: likewise,
+	* java/awt/event/MouseWheelEvent.java: likewise,
+	* java/awt/event/TextEvent.java: likewise,
+	* java/awt/event/WindowEvent.java: likewise,
+	* java/awt/event/WindowListener.java: likewise.
+	
 2005-06-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/CosNaming/BindingIterator.java: Inherit from 
