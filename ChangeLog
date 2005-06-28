@@ -1,3 +1,7 @@
+2005-06-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+        
+        NEWS: Added note about CORBA status in 1.6 release.
+
 2005-06-27  Ziga Mahkovec  <ziga.mahkovec@klika.si>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (constructors): Default to

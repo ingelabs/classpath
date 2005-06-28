@@ -1,5 +1,28 @@
 New in release 0.16
 
+* The CORBA implementation is now a working prototype that should support
+  features up till 1.3 inclusive. 
+  
+  The CORBA prototype is interoperable with Sun's implementation v 1.4,
+    transferring object references, primitive types, narrow and wide 
+    strings, arrays, structures, trees, abstract interfaces and 
+    value types (feature of CORBA 2.3) between these two platforms. 
+  The remote exceptions are transferred and handled correctly.
+  The stringified object references (IORs) from various sources are
+    parsed as required. 
+  The transient (for current session) and permanent (till jre restart)
+    redirections work. 
+  Both Little and Big Endian encoded messages are accepted. 
+  The implementation is verified using tests from the former cost.omg.org.
+  The current release includes the working examples, demonstrating the 
+    client-server communication (both DII and DSI). 
+  These examples also show how to use the Classpath CORBA naming service.
+  The IDL to java compiler is not yet written, but as our library must be 
+    compatible with Sun's implementation, it naturally accepts the output
+    of the Sun's 1.3 idlj.
+  We would invite groups writing CORBA dependent applications to
+    try Classpath implementation, reporting the possible bugs.
+
 * GdkGraphics2D has been updated to use Cairo 0.5.0 APIs.
 * Better GTK scrollbar peer implementation requiring GTK 2.6 or higher.
 * New --with-vm-classes configure option, and new 'build' setting
