@@ -41,10 +41,15 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 #include "gnu_java_awt_peer_gtk_GtkScrollbarPeer.h"
 
+#if GTK_MINOR_VERSION > 4
 static gboolean slider_moved_cb (GtkRange *range,
                                  GtkScrollType scroll,
                                  gdouble value,
                                  jobject obj);
+#else
+static void post_change_event (GtkRange *range,
+			       jobject peer);
+#endif
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create
@@ -92,8 +97,13 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectSignals
 
   gdk_threads_enter ();
 
+#if GTK_MINOR_VERSION > 4
   g_signal_connect (G_OBJECT (ptr), "change-value",
                     GTK_SIGNAL_FUNC (slider_moved_cb), *gref);
+#else
+  g_signal_connect (G_OBJECT (ptr), "value-changed",
+                    G_CALLBACK (post_change_event), *gref);
+#endif
 
   gdk_threads_leave ();
 
@@ -157,6 +167,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
   gdk_threads_leave ();
 }
 
+#if GTK_MINOR_VERSION > 4
 static gboolean
 slider_moved_cb (GtkRange *range,
                  GtkScrollType scroll,
@@ -212,3 +223,13 @@ slider_moved_cb (GtkRange *range,
     }
   return FALSE;
 }
+#else
+static void
+post_change_event (GtkRange *range, jobject peer)
+{
+  GtkAdjustment *adj;
+  adj = gtk_range_get_adjustment (range);
+  (*gdk_env())->CallVoidMethod (gdk_env(), peer, postAdjustmentEventID,
+				AWT_ADJUSTMENT_TRACK, (jint) adj->value);
+}
+#endif

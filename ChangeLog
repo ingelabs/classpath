@@ -1,3 +1,8 @@
+2005-06-29  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c:
+	Re-add GTK 2.4 support.
+
 2005-06-29  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/fdlibm/Makefile.am: Added s_finite.c
