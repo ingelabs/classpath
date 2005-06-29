@@ -1,3 +1,8 @@
+2005-06-29  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* native/fdlibm/Makefile.am: Added s_finite.c
+	* native/fdlibm/s_finite.c: Added
+
 2005-06-29  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/DefaultListSelectionModel.java:
