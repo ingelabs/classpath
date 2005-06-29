@@ -1,3 +1,12 @@
+2005-06-29  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/JComponent.java
+	(getComponentGraphics): Do not replicate the Graphics at this
+	point. This is moved into paintComponent.
+	(paintComponent): Replicate the Graphics object before going into
+	the tree. This makes sure that the state is preserved and is
+	what is specified in the JDKs API docs.
+
 2005-06-29  Lillian Angel  <langel@redhat.com>
 
         * javax/swing/plaf/basic/BasicTreeUI.java:

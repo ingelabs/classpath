@@ -872,19 +872,9 @@ public abstract class JComponent extends Container implements Serializable
    */
   protected Graphics getComponentGraphics(Graphics g)
   {    
-    if (g instanceof Graphics2D)
-      {
-       g.setFont (this.getFont());
-       g.setColor (this.getForeground());
-       return g;
-      }
-    else
-      {
-        Graphics g2 = g.create ();
-        g2.setFont (this.getFont());
-        g2.setColor (this.getForeground());
-        return g2;
-      }
+    g.setFont (this.getFont());
+    g.setColor (this.getForeground());
+    return g;
   }
 
   /**
@@ -1510,7 +1500,14 @@ public abstract class JComponent extends Container implements Serializable
   protected void paintComponent(Graphics g)
   {
     if (ui != null)
-      ui.update(g, this);
+      {
+        Graphics g2 = g;
+        if (!(g instanceof Graphics2D))
+          g2 = g.create();
+        ui.update(getComponentGraphics(g2), this);
+        if (!(g instanceof Graphics2D))
+          g2.dispose();
+      }
   }
 
   /**
