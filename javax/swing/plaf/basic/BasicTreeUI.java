@@ -637,7 +637,7 @@ public class BasicTreeUI
 		// FIXME: check visibility
 		// right now, just returns last element because 
 		// expand/collapse is not implemented
-		return path.length - 1;
+		return path.getPathCount() - 1;
 	}
 
 	/**
