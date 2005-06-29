@@ -1,3 +1,15 @@
+2005-06-29  Roman Kennke  <roman@kennke.org>
+
+	* gnu/java/awt/AWTUtilities.java
+	(VisibleComponentList): Added List implementation that iterates over
+	the child components of a Container and only returns Components
+	that are actually visible.
+	(getVisibleChildren): Now returns a List instead of an array. This
+	list is cached. This greatly decreases allocations in
+	LayoutManagers.
+	* javax/swing/BoxLayout.java:
+	Updated to use the new AWTUtilities.getVisibleChildren() method.
+
 2005-06-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/package.html: added package description,
