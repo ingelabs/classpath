@@ -1,3 +1,7 @@
+2005-06-29  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/Font.java: fixed API doc links.
+	
 2005-06-28  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/event/AWTEventListener.java: added imports to fix links 
