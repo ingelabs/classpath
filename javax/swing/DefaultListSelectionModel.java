@@ -137,6 +137,19 @@ public class DefaultListSelectionModel implements Cloneable,
   BitSet sel = new BitSet();
 
   /**
+   * A variable to store the previous value of sel.
+   * Used to make sure we only fireValueChanged when the BitSet
+   * actually does change.
+   */
+  Object oldSel;
+
+  /**
+   * Whether this call of setLeadSelectionInterval was called locally
+   * from addSelectionInterval
+   */
+  boolean setLeadCalledFromAdd = false;
+
+  /**
    * Gets the value of the {@link #selectionMode} property.
    *
    * @return The current value of the property
@@ -226,6 +239,8 @@ public class DefaultListSelectionModel implements Cloneable,
   public void setLeadSelectionIndex(int leadIndex)
   {
     int oldLeadIndex = leadSelectionIndex;
+    if (setLeadCalledFromAdd == false)
+      oldSel = sel.clone();
     leadSelectionIndex = leadIndex;
 
     if (anchorSelectionIndex == -1)
@@ -258,7 +273,8 @@ public class DefaultListSelectionModel implements Cloneable,
     int beg = sel.nextSetBit(0), end = -1;
     for(int i=beg; i >= 0; i=sel.nextSetBit(i+1)) 
       end = i;
-    fireValueChanged(beg, end, valueIsAdjusting);    
+    if (sel.equals(oldSel) == false)
+      fireValueChanged(beg, end, valueIsAdjusting);    
   }
 
   /**
@@ -390,6 +406,7 @@ public class DefaultListSelectionModel implements Cloneable,
    */
   public void addSelectionInterval(int index0, int index1) 
   {
+    oldSel = sel.clone();
     if (selectionMode == SINGLE_SELECTION
         || selectionMode == SINGLE_INTERVAL_SELECTION)
       sel.clear();
@@ -410,13 +427,20 @@ public class DefaultListSelectionModel implements Cloneable,
              || (index0 + 1 == leadSelectionIndex && (index1 <= index0) 
                  && (leadSelectionIndex <= anchorSelectionIndex)))
         && (anchorSelectionIndex != -1 || leadSelectionIndex != -1))
-      setLeadSelectionIndex(index1);
+      {
+        /* setting setLeadCalledFromAdd to true tells setLeadSelectionIndex
+           not to update oldSel */
+        setLeadCalledFromAdd = true;
+        setLeadSelectionIndex(index1);
+        setLeadCalledFromAdd = false;
+      }
     else
       {
         leadSelectionIndex = index1;
         anchorSelectionIndex = index0;
         sel.set(lo, hi+1);
-        fireValueChanged(lo, hi, valueIsAdjusting);
+        if (sel.equals(oldSel) == false)
+          fireValueChanged(lo, hi, valueIsAdjusting);
       }
   }
 
@@ -434,6 +458,7 @@ public class DefaultListSelectionModel implements Cloneable,
   public void removeSelectionInterval(int index0,
                                       int index1)
   {
+    oldSel = sel.clone();
     int lo = Math.min(index0, index1);
     int hi = Math.max(index0, index1);
     sel.clear(lo, hi+1); 
@@ -441,7 +466,8 @@ public class DefaultListSelectionModel implements Cloneable,
     //TODO: will probably need MouseDragged to test properly and know if this works
     setAnchorSelectionIndex(index0);
     leadSelectionIndex = index1;
-    fireValueChanged(lo, hi, valueIsAdjusting);
+    if (sel.equals(oldSel) == false)
+      fireValueChanged(lo, hi, valueIsAdjusting);
   }
 
   /**
@@ -449,9 +475,11 @@ public class DefaultListSelectionModel implements Cloneable,
    */
   public void clearSelection()
   {
+    oldSel = sel.clone();
     int sz = sel.size();
     sel.clear();
-    fireValueChanged(0, sz, valueIsAdjusting);
+    if (sel.equals(oldSel) == false)
+      fireValueChanged(0, sz, valueIsAdjusting);
   }
   
   /**
@@ -465,6 +493,7 @@ public class DefaultListSelectionModel implements Cloneable,
    */
   public void setSelectionInterval(int index0, int index1)
   {
+    oldSel = sel.clone();
     sel.clear();
     if (selectionMode == SINGLE_SELECTION)
       index0 = index1;
@@ -472,10 +501,11 @@ public class DefaultListSelectionModel implements Cloneable,
     int lo = Math.min(index0, index1);
     int hi = Math.max(index0, index1);
     sel.set(lo, hi+1);
-    fireValueChanged(lo, hi, valueIsAdjusting);
     // update the anchorSelectionIndex and leadSelectionIndex variables
     setAnchorSelectionIndex(index0);
     leadSelectionIndex=index1;
+    if (sel.equals(oldSel) == false)
+      fireValueChanged(lo, hi, valueIsAdjusting);
   }
 
   /**

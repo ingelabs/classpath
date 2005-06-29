@@ -1,3 +1,13 @@
+2005-06-29  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/DefaultListSelectionModel.java:
+	(addSelectionInterval):
+	(clearSelection):
+	(removeSelectionInterval):
+	(setLeadSelectionIndex):
+	(setSelectionInterval): Check that the selection model actually
+	changes before calling fireValueChanged.  
+
 2005-06-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
         
         NEWS: Corrected note about CORBA status in 1.6 release.
