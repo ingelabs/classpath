@@ -1,3 +1,7 @@
+2005-06-29  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/event/TableModelEvent.java: updated API docs all over.
+	
 2005-06-29  Roman Kennke  <roman@kennke.org>
 
 	* gnu/java/awt/AWTUtilities.java
