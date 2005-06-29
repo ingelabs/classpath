@@ -25,7 +25,7 @@ New in release 0.16
     try Classpath implementation, reporting the possible bugs.
 
 * GdkGraphics2D has been updated to use Cairo 0.5.0 APIs.
-* Better GTK scrollbar peer implementation requiring GTK 2.6 or higher.
+* Better GTK scrollbar peer implementation when using GTK >= 2.6.
 * New --with-vm-classes configure option, and new 'build' setting
   for --with-glibj
 
