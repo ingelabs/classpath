@@ -1,3 +1,97 @@
+2005-06-29  Lillian Angel  <langel@redhat.com>
+
+        * javax/swing/plaf/basic/BasicTreeUI.java:
+        (BasicTreeUI): Initalization of listeners and instances.
+        (createUI): Implementation
+        (getHashColor): Implementation
+        (setLeftChildIndent): Implementation
+        (getLeftChildIndent): Implementation
+        (setRightChildIndent): Implementation
+        (getRightChildIndent): Implementation
+        (setExpandedIcon): Implementation
+        (getExpandedIcon): Implementation
+        (setCollapsedIcon): Implementation
+        (getCollapsedIcon): Implementation
+        (setLargeModel): Implementation
+        (isLargeModel): Implementation
+        (setRowHeight): Implementation
+        (getRowHeight): Implementation
+        (setCellRenderer): Implementation
+        (getCellRenderer): Implementation
+        (setModel): Implementation
+        (getModel): Implementation
+        (setRootVisible): Implementation
+        (isRootVisible): Implementation
+        (setShowsRootHandles): Implementation
+        (getShowsRootHandles): Implementation
+        (setCellEditor): Implementation
+        (getCellEditor): Implementation
+        (setEditable): Implementation
+        (isEditable): Implementation
+        (setSelectionModel): Implementation
+        (getSelectionModel): Implementation
+        (getPathForRow): Implementation
+        (getRowForPath): Implementation
+        (getRowCount): Implementation
+        (getClosestPathForLocation): Implementation
+        (createPropertyChangeListener): Implementation
+        (createMouseListener): Implementation
+        (createFocusListener): Implementation
+        (createKeyListener): Implementation
+        (createSelectionModelPropertyChangeListener): Implementation
+        (createTreeSelectionListener): Implementation
+        (createCellEditorListener): Implementation
+        (createComponentListener): Implementation
+        (createTreeExpansionListener): Implementation
+        (createLayoutCache): Implementation
+        (createCellRendererPane): Implementation
+        (createDefaultCellEditor): Implementation
+        (createDefaultCellRenderer): Implementation
+        (createTreeModelListener): Implementation
+        (uninstallListeners): Implementation
+        (getLastChildPath): Implementation
+        (configureLayoutCache): Implementation
+        (installDefaults): Implementation
+        (installListeners): Implementation
+        (installUI): Implementation
+        (uninstallDefaults): Implementation
+        (uninstallUI): Implementation
+        (paint): moderate changes, so painting works with new changes
+        (MouseInputHandler.mouseClicked): Implementation
+        (paintLeaf): made private
+        (paintNonLeaf): made private
+        (paintRecursive): made private
+        Several variables, instances and methods were adding according 
+        to the API. The methods that were added and not in the list 
+        above, have not been implemented yet. All JavaDoc is updated, 
+        as well as formatting.
+        * javax/swing/JTree.java: 
+	(createChildren): checked that children is not null.
+	* javax/swing/tree/AbstractLayoutCache.java:
+        (getNodeDimensions): slight modifications to return initialized 
+        Rectangle when the bounds are null. Implementation not complete.
+        * javax/swing/tree/DefaultTreeSelectionModel.java:
+        (addSelectionPath): Implementation
+        (addSelectionPaths): Implementation
+        (removeSelectionPath): Implementation
+        (removeSelectionPaths): Implementation
+        (getSelectionPaths): returned the selection array
+        (clearSelection): set the selection array to null
+        * javax/swing/tree/FixedHeightLayoutCache.java:
+        (setModel): removed this method because it is defined in the 
+        abstract parent.
+        (setRootVisible): removed this method because it is defined in 
+        the abstract parent.
+        (setRowHeight): removed this method because it is defined in 
+        the abstract parent.
+        Also, some formatting was updated.
+        * javax/swing/tree/VariableHeightLayoutCache.java:
+        (setRowHeight): removed this method because it is defined in 
+        the abstract parent.
+        * javax/swing/tree/DefaultTreeModel.java:
+        (DefaultTreeModel): Needed to initialize root if it was passed 
+        into the constructor as null.
+
 2005-06-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/event/TableModelEvent.java: updated API docs all over.

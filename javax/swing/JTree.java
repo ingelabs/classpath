@@ -462,7 +462,7 @@ public class JTree extends JComponent
               parent.add(new DynamicUtilTreeNode(n,n));
             }
         }
-      else if (children.getClass().isArray())
+      else if (children != null && children.getClass().isArray())
         {
           Object[] arr = (Object[]) children;
           for (int i = 0; i < arr.length; ++i)
@@ -779,6 +779,7 @@ public class JTree extends JComponent
 
     TreeModel oldValue = treeModel;
     treeModel = model;
+    
     firePropertyChange(TREE_MODEL_PROPERTY, oldValue, model);
 
     // add treeModelListener to the new model
