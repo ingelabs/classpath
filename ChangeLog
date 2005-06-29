@@ -1,5 +1,18 @@
 2005-06-29  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/package.html: added package description,
+	* javax/swing/border/package.html: likewise,
+	* javax/swing/colorchooser/package.html: likewise,
+	* javax/swing/event/package.html: likewise,
+	* javax/swing/filechooser/package.html: likewise,
+	* javax/swing/plaf/package.html: likewise,
+	* javax/swing/plaf/basic/package.html: likewise,
+	* javax/swing/plaf/metal/package.html: likewise,
+	* javax/swing/tree/package.html: likewise,
+	* javax/swing/undo/package.html: likewise.
+
+2005-06-29  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/Font.java: fixed API doc links.
 	
 2005-06-28  David Gilbert  <david.gilbert@object-refinery.com>
