@@ -582,8 +582,6 @@ public class BasicListUI extends ListUI
   void damageLayout()
   {
     updateLayoutStateNeeded = 1;
-    if (list != null)
-      list.revalidate();
   }
 
   /**
