@@ -1,3 +1,18 @@
+2005-06-30  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JTable.java:
+	(initializeLocalVars): Set dragEnabled to true by default to comply
+	with reference implementations.
+	(getSelectionModel): Don't return null if row selection is disabled,
+	still return selectionModel.  This complies with reference
+	implemenations.
+	(changeSelection): New method.
+	* javax/swing/plaf/basic/BasicTableUI.java: Added a MouseMotionListener
+	so that MouseDragged events register properly.
+	(MouseInputHandler.updateSelection): Added boolean parameter for
+	Control being pressed and added functionality for this (multiple
+	selection).
+
 2005-06-30  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/JComponent.java:
