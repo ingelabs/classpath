@@ -1,3 +1,11 @@
+2005-06-30  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/transport/JdwpConnection.java (sendEvent): New
+	method.
+	(_bytes): New member.
+	(_doStream): New member.
+	(JdwpConnection): Initialize new members.
+
 2005-06-30  Lillian Angel  <langel@redhat.com>
 	* javax/swing/JTree.java:
         (valueChanged): repaint everytime something is selected in the 
