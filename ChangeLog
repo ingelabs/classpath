@@ -1,5 +1,11 @@
 2005-06-30  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JComponent.java:
+	Removed all calls to repaint() and revalidate(). These are likely
+	causing infinite loops with the RepaintManager.
+
+2005-06-30  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicListUI.java
 	(damageLayout): Removed call to revalidate(). This caused an
 	infinite loop with the RepaintManager and is not necessary.
