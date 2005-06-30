@@ -1,5 +1,9 @@
 2005-06-30  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Set version to 0.16+cvs.
+
+2005-06-30  Mark Wielaard  <mark@klomp.org>
+
 	* NEWS: Add 0.16 release date and new features.
 	* configure.ac: Set version to 0.16.
 
