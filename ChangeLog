@@ -1,3 +1,33 @@
+2005-06-30  Lillian Angel  <langel@redhat.com>
+	* javax/swing/JTree.java:
+        (valueChanged): repaint everytime something is selected in the 
+        tree.
+        (setSelectionModel): set TreeSelectionListeners
+        (isRowSelected): isRowSelected uses isPathSelected
+        * javax/swing/plaf/basic/BasicTreeUI.java
+        (setSelectionModel): works with JTree to set the selection model
+        (getPathForRow): took out unneeded lines
+        (mouseClicked): switched if statements, should check if already 
+        selected first.
+        (paintLeaf): checked selection of Leaf and paint selected 
+        differently than not selected cells
+        (paintNonLeaf): checked selection of nonLeaf and paint selected 
+        differently than not selected cells
+        (paintRecursive): updated to work with other paint functions
+        * javax/swing/tree/DefaultTreeSelectionModel.java:
+        (addSelectionPath): fire change, so selection is registered to 
+        listener
+        (addSelectionPaths): fire change, so selection is registered to 
+        listener
+        (removeSelectionPath): fire change, so selection is registered 
+        to listener
+        (removeSelectionPaths): fire change, so selection is registered 
+        to listener
+        (isPathSelected): took out unneeded lines
+        (getTreeSelectionListeners): made more logical to call 
+        getListeners
+        (fireValueChanged): fixed loop to be more logical
+
 2005-06-30  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JEditorPane.java (getEditorKit): Call

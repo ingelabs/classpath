@@ -1,39 +1,36 @@
-/* BasicTreeUI.java --
-Copyright (C) 2002, 2004  Free Software Foundation, Inc.
-
-This file is part of GNU Classpath.
-
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
-
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
-
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
-
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+/*
+ * BasicTreeUI.java -- Copyright (C) 2002, 2004 Free Software Foundation, Inc.
+ * 
+ * This file is part of GNU Classpath.
+ * 
+ * GNU Classpath is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2, or (at your option) any later version.
+ * 
+ * GNU Classpath is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * GNU Classpath; see the file COPYING. If not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.
+ * 
+ * Linking this library statically or dynamically with other modules is making a
+ * combined work based on this library. Thus, the terms and conditions of the
+ * GNU General Public License cover the whole combination.
+ * 
+ * As a special exception, the copyright holders of this library give you
+ * permission to link this library with independent modules to produce an
+ * executable, regardless of the license terms of these independent modules, and
+ * to copy and distribute the resulting executable under terms of your choice,
+ * provided that you also meet, for each linked independent module, the terms
+ * and conditions of the license of that module. An independent module is a
+ * module which is not derived from or based on this library. If you modify this
+ * library, you may extend this exception to your version of the library, but
+ * you are not obligated to do so. If you do not wish to do so, delete this
+ * exception statement from your version.
+ */
 
 package javax.swing.plaf.basic;
 
@@ -221,23 +218,14 @@ public class BasicTreeUI
 
 	/** Listeners */
 	private PropertyChangeListener propertyChangeListener;
-
 	private FocusListener focusListener;
-
 	private TreeSelectionListener treeSelectionListener;
-
 	private MouseInputListener mouseInputListener;
-
 	private KeyListener keyListener;
-
 	private PropertyChangeListener selectionModelPropertyChangeListener;
-
 	private ComponentListener componentListener;
-
 	private CellEditorListener cellEditorListener;
-
 	private TreeExpansionListener treeExpansionListener;
-
 	private TreeModelListener treeModelListener;
 
 	/**
@@ -564,12 +552,7 @@ public class BasicTreeUI
 	{
 		if (newLSM != null)
 		{
-			tree
-					.removePropertyChangeListener(selectionModelPropertyChangeListener);
 			treeSelectionModel = newLSM;
-			treeState.setSelectionModel(newLSM);
-			tree
-					.addPropertyChangeListener(selectionModelPropertyChangeListener);
 			tree.setSelectionModel(treeSelectionModel);
 		}
 	}
@@ -599,7 +582,7 @@ public class BasicTreeUI
 		// FIXME: not implemented
 		return null;
 	}
-	
+
 	/**
 	 * Returns the path for passed in row. If row is not visible null is
 	 * returned.
@@ -619,6 +602,8 @@ public class BasicTreeUI
 			if (pathForRow != null)
 				pathForRow = pathForRow.getNextNode();
 		}
+		if (pathForRow == null)
+			return null;
 		return new TreePath(pathForRow.getPath());
 	}
 
@@ -635,7 +620,7 @@ public class BasicTreeUI
 	public int getRowForPath(JTree tree, TreePath path)
 	{
 		// FIXME: check visibility
-		// right now, just returns last element because 
+		// right now, just returns last element because
 		// expand/collapse is not implemented
 		return path.getPathCount() - 1;
 	}
@@ -1094,6 +1079,11 @@ public class BasicTreeUI
 		// FIXME: not implemented
 	}
 
+	/**
+	 * Install all defaults for the tree.
+	 * 
+	 * @param tree is the JTree to install defaults for
+	 */
 	protected void installDefaults(JTree tree)
 	{
 		UIDefaults defaults = UIManager.getLookAndFeelDefaults();
@@ -1108,10 +1098,16 @@ public class BasicTreeUI
 		setRowHeight(defaults.getInt("Tree.rowHeight"));
 	}
 
+	/**
+	 * Install all keyboard actions for this
+	 */
 	protected void installKeyboardActions()
 	{
 	}
 
+	/**
+	 * Install all listeners for this
+	 */
 	protected void installListeners()
 	{
 		tree.addPropertyChangeListener(propertyChangeListener);
@@ -1126,6 +1122,11 @@ public class BasicTreeUI
 		treeModel.addTreeModelListener(treeModelListener);
 	}
 
+	/**
+	 * Install the UI for the component
+	 * 
+	 * @param c the component to install UI for
+	 */
 	public void installUI(JComponent c)
 	{
 		super.installUI(c);
@@ -1138,6 +1139,11 @@ public class BasicTreeUI
 		completeUIInstall();
 	}
 
+	/**
+	 * Uninstall the defaults for the tree
+	 * 
+	 * @param tree to uninstall defaults for
+	 */
 	protected void uninstallDefaults(JTree tree)
 	{
 		UIDefaults defaults = UIManager.getLookAndFeelDefaults();
@@ -1147,6 +1153,11 @@ public class BasicTreeUI
 		tree.setCellRenderer(null);
 	}
 
+	/**
+	 * Uninstall the UI for the component
+	 * 
+	 * @param c the component to uninstall UI for
+	 */
 	public void uninstallUI(JComponent c)
 	{
 		uninstallDefaults((JTree) c);
@@ -1156,6 +1167,18 @@ public class BasicTreeUI
 		completeUIUninstall();
 	}
 
+	/**
+	 *     Paints the specified component appropriate for the look and feel.
+	 *     This method is invoked from the ComponentUI.update method when the 
+	 *     specified component is being painted. Subclasses should override 
+	 *     this method and use the specified Graphics object to render the 
+	 *     content of the component.
+	 *     
+	 *     @param g the Graphics context in which to paint
+	 *     @param c the component being painted; this argument is often 
+	 *     ignored, but might be used if the UI object is stateless and 
+	 *     shared by multiple components
+	 */
 	public void paint(Graphics g, JComponent c)
 	{
 		JTree tree = (JTree) c;
@@ -1700,11 +1723,12 @@ public class BasicTreeUI
 		{
 			Point click = e.getPoint();
 			int row = ((int) click.getY() / getRowHeight()) - 1;
-		    
-			if (BasicTreeUI.this.tree.getSelectionModel().getSelectionMode() == treeSelectionModel.SINGLE_TREE_SELECTION)
-				BasicTreeUI.this.tree.addSelectionRow(row);
-			else if (BasicTreeUI.this.tree.isRowSelected(row))
+
+			if (BasicTreeUI.this.tree.isRowSelected(row))
 				BasicTreeUI.this.tree.removeSelectionRow(row);
+			else if (BasicTreeUI.this.tree.getSelectionModel()
+					.getSelectionMode() == treeSelectionModel.SINGLE_TREE_SELECTION)
+				BasicTreeUI.this.tree.addSelectionRow(row);
 			// FIXME: add in selection for more than 1 row, or an entire
 			// path
 		}
@@ -2232,25 +2256,82 @@ public class BasicTreeUI
 
 	/* * HELPER METHODS FOR PAINTING * */
 
+	/**
+	 * Paints a leaf in the tree
+	 * 
+	 * @param g the Graphics context in which to paint
+	 * @param x the x location of the leaf
+	 * @param y the y location of the leaf
+	 * @param tree the tree to draw on
+	 * @param leaf the object to draw
+	 */
 	private void paintLeaf(Graphics g, int x, int y, JTree tree, Object leaf)
 	{
+		TreePath tp = new TreePath(((DefaultMutableTreeNode) leaf).getPath());
+		boolean selected = tree.isPathSelected(tp);
+
 		Component c = tree.getCellRenderer().getTreeCellRendererComponent(tree,
-				leaf, false, false, true, 0, false);
+				leaf, selected, false, true, 0, false);
+
+		if (selected)
+		{
+			Component comp = tree.getCellRenderer()
+					.getTreeCellRendererComponent(tree, leaf, true, false,
+							true, 0, false);
+			rendererPane.paintComponent(g, comp, tree, new Rectangle(x, y, 10,
+					25));
+		}
+
 		g.translate(x, y);
 		c.paint(g);
 		g.translate(-x, -y);
 	}
 
+	/**
+	 * Paints a non-leaf in the tree
+	 * 
+	 * @param g the Graphics context in which to paint
+	 * @param x the x location of the non-leaf
+	 * @param y the y location of the non-leaf
+	 * @param tree the tree to draw on
+	 * @param nonLeaf the object to draw
+	 */
 	private void paintNonLeaf(Graphics g, int x, int y, JTree tree,
 			Object nonLeaf)
 	{
+		TreePath tp = new TreePath(((DefaultMutableTreeNode) nonLeaf).getPath());
+		boolean selected = tree.isPathSelected(tp);
+
 		Component c = tree.getCellRenderer().getTreeCellRendererComponent(tree,
-				nonLeaf, false, false, false, 0, false);
+				nonLeaf, selected, false, false, 0, false);
+
+		if (selected)
+		{
+			Component comp = tree.getCellRenderer()
+					.getTreeCellRendererComponent(tree, nonLeaf, true, false,
+							true, 0, false);
+			rendererPane.paintComponent(g, comp, tree, new Rectangle(x, y, 10,
+					25));
+		}
 		g.translate(x, y);
 		c.paint(g);
 		g.translate(-x, -y);
 	}
 
+	/**
+	 * Recursively paints all elements of the tree
+	 * 
+	 * @param g the Graphics context in which to paint
+	 * @param indentation of the current object
+	 * @param descent is the number of elements drawn
+	 * @param childNumber is the index of the current child in the tree
+	 * @param depth is the depth of the current object in the tree
+	 * @param tree is the tree to draw to
+	 * @param mod is the TreeModel we are using to draw
+	 * @param curr is the current object to draw
+	 * 
+	 * @return int - current descent of the tree
+	 */
 	private int paintRecursive(Graphics g, int indentation, int descent,
 			int childNumber, int depth, JTree tree, TreeModel mod, Object curr)
 	{
