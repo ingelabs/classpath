@@ -55,14 +55,8 @@ abstract class TemplateNode
   static final Comparator documentOrderComparator =
     new DocumentOrderComparator();
 
-  final TemplateNode children;
-  final TemplateNode next;
-
-  TemplateNode(TemplateNode children, TemplateNode next)
-  {
-    this.children = children;
-    this.next = next;
-  }
+  TemplateNode children;
+  TemplateNode next;
 
   final void apply(Stylesheet stylesheet, QName mode,
                    Node context, int pos, int len,

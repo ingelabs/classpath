@@ -118,8 +118,20 @@ public class StreamSerializer
     serialize(node, out, false);
   }
   
-  void serialize(final Node node, final OutputStream out,
+  void serialize(Node node, final OutputStream out,
                  boolean convertToCdata)
+    throws IOException
+  {
+    while (node != null)
+      {
+        Node next = node.getNextSibling();
+        doSerialize(node, out, convertToCdata);
+        node = next;
+      }
+  }
+
+  private void doSerialize(final Node node, final OutputStream out,
+                           boolean convertToCdata)
     throws IOException
   {
     if (out == null)
@@ -128,7 +140,6 @@ public class StreamSerializer
       }
     String value, prefix;
     Node children;
-    Node next = node.getNextSibling();
     String uri = node.getNamespaceURI();
     boolean defined = false;
     short nt = node.getNodeType();
@@ -465,10 +476,6 @@ public class StreamSerializer
     if (defined)
       {
         undefine(uri);
-      }
-    if (next != null)
-      {
-        serialize(next, out, convertToCdata);
       }
   }
 

@@ -1,3 +1,37 @@
+2005-06-30  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/dom/DomDocument.java: Add support for adopting nodes from
+	other implementations.
+	* gnu/xml/dom/DomNamedNodeMap.java: Fix for nodes created outside a
+	namespace context.
+	* gnu/xml/transform/AbstractNumberNode.java,
+	gnu/xml/transform/ApplyImportsNode.java,
+	gnu/xml/transform/ApplyTemplatesNode.java,
+	gnu/xml/transform/AttributeNode.java,
+	gnu/xml/transform/CallTemplateNode.java,
+	gnu/xml/transform/ChooseNode.java,
+	gnu/xml/transform/CommentNode.java,
+	gnu/xml/transform/CopyNode.java,
+	gnu/xml/transform/CopyOfNode.java,
+	gnu/xml/transform/ElementNode.java,
+	gnu/xml/transform/ForEachNode.java,
+	gnu/xml/transform/IfNode.java,
+	gnu/xml/transform/LiteralNode.java,
+	gnu/xml/transform/MessageNode.java,
+	gnu/xml/transform/NodeNumberNode.java,
+	gnu/xml/transform/NumberNode.java,
+	gnu/xml/transform/OtherwiseNode.java,
+	gnu/xml/transform/ParameterNode.java,
+	gnu/xml/transform/ProcessingInstructionNode.java,
+	gnu/xml/transform/StreamSerializer.java,
+	gnu/xml/transform/Stylesheet.java,
+	gnu/xml/transform/Template.java,
+	gnu/xml/transform/TemplateNode.java,
+	gnu/xml/transform/TextNode.java,
+	gnu/xml/transform/ValueOfNode.java,
+	gnu/xml/transform/WhenNode.java: Parsing and serialisation design
+	changes to minimise the number of virtual machine stack frames used.
+
 2005-06-30  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTable.java:
