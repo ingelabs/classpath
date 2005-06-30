@@ -1,3 +1,10 @@
+2005-06-30  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/basic/BasicScrollBarUI.java:
+	Removed all calls to layoutContainer() in this file.
+	(installDefaults): Set this as LayoutManager for the JScrollBar.
+	This way the layoutContainer() method is called when it should be.
+
 2005-06-30  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Set version to 0.16+cvs.
