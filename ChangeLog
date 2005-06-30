@@ -1,3 +1,10 @@
+2005-06-30  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JEditorPane.java (getEditorKit): Call
+	createDefaultEditorKit() and setEditorKit() when editorKit == null.
+	* javax/swing/JTextPane.java: Call super for all methods where
+	possible.
+
 2005-06-29  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* INSTALL: Drop GTK requirement to 2.4.
