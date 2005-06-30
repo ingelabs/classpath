@@ -393,10 +393,14 @@ public class DefaultListSelectionModel implements Cloneable,
 
   /**
    * If the {@link #selectionMode} property is equal to
-   * <code>SINGLE_SELECTION</code> or
-   * <code>SINGLE_INTERVAL_SELECTION</code>, equivalent to calling
-   * <code>setSelectionInterval(index1, index2)</code>; otherwise adds the
-   * range <code>[index0, index1]</code> to the selection interval set.
+   * <code>SINGLE_SELECTION</code> equivalent to calling
+   * <code>setSelectionInterval(index1, index2)</code>; 
+   * If the {@link #selectionMode} property is equal to 
+   * <code>SINGLE_INTERVAL_SELECTION</code> and the interval being
+   * added is not adjacent to an already selected interval,
+   * equivalent to <code>setSelectionInterval(index1, index2)</code>.
+   * Otherwise adds the range <code>[index0, index1]</code> 
+   * to the selection interval set.
    *
    * @param index0 The beginning of the range of indices to select
    * @param index1 The end of the range of indices to select
@@ -406,30 +410,40 @@ public class DefaultListSelectionModel implements Cloneable,
    */
   public void addSelectionInterval(int index0, int index1) 
   {
+    int lo = Math.min(index0, index1);
+    int hi = Math.max(index0, index1);
     oldSel = sel.clone();
-    if (selectionMode == SINGLE_SELECTION
-        || selectionMode == SINGLE_INTERVAL_SELECTION)
+
+    if (selectionMode == SINGLE_SELECTION)
       sel.clear();
+
+    // COMPAT: Like Sun (but not like IBM), we allow calls to 
+    // addSelectionInterval when selectionMode is
+    // SINGLE_SELECTION_INTERVAL iff the interval being added
+    // is adjacent to an already selected interval
+    if (selectionMode == SINGLE_INTERVAL_SELECTION)
+      if (!(isSelectedIndex(index0) || 
+            isSelectedIndex(index1) || 
+            isSelectedIndex(Math.max(lo-1,0)) || 
+            isSelectedIndex(Math.min(hi+1,sel.size()))))
+        sel.clear();
     
     if (selectionMode == SINGLE_SELECTION)
       index0 = index1;
 
-    int lo = Math.min(index0, index1);
-    int hi = Math.max(index0, index1);
-
-    /* We have to update the anchorSelectionIndex and leadSelectionIndex
-       variables */
+    // We have to update the anchorSelectionIndex and leadSelectionIndex
+    // variables
     
-    /* The next if statements breaks down to "if this selection is adjacent
-       to the previous selection and going in the same direction" */
+    // The next if statements breaks down to "if this selection is adjacent
+    // to the previous selection and going in the same direction"
     if (((index0 - 1 == leadSelectionIndex && (index1 >= index0) 
               && (leadSelectionIndex >= anchorSelectionIndex))
              || (index0 + 1 == leadSelectionIndex && (index1 <= index0) 
                  && (leadSelectionIndex <= anchorSelectionIndex)))
         && (anchorSelectionIndex != -1 || leadSelectionIndex != -1))
       {
-        /* setting setLeadCalledFromAdd to true tells setLeadSelectionIndex
-           not to update oldSel */
+        // setting setLeadCalledFromAdd to true tells setLeadSelectionIndex
+        //   not to update oldSel
         setLeadCalledFromAdd = true;
         setLeadSelectionIndex(index1);
         setLeadCalledFromAdd = false;
@@ -461,6 +475,14 @@ public class DefaultListSelectionModel implements Cloneable,
     oldSel = sel.clone();
     int lo = Math.min(index0, index1);
     int hi = Math.max(index0, index1);
+    
+    // if selectionMode is SINGLE_INTERVAL_SELECTION and removing the interval
+    //   (index0,index1) would leave two disjoint selection intervals, remove all
+    //   selected indices from lo to the last selected index
+    if (getMinSelectionIndex() > 0 && getMinSelectionIndex() < lo && 
+        selectionMode == SINGLE_INTERVAL_SELECTION)
+      hi = sel.size() - 1;
+
     sel.clear(lo, hi+1); 
     //update anchorSelectionIndex and leadSelectionIndex variables
     //TODO: will probably need MouseDragged to test properly and know if this works

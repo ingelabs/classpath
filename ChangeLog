@@ -1,3 +1,16 @@
+2005-06-30  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/DefaultListSelectionModel.java:
+	(addSelectionInterval): Don't clear the selection state if JList's
+	selection mode is SINGLE_SELECTION_INTERVAL and index0 and index1
+	correspond to an interval adjacent to an already selected interval.
+	(removeSelectionInterval): Added check for a middle interval being
+	removed when selection mode is SINGLE_SELECTION_INTERVAL.
+	* javax/swing/plaf/basic/BasicListUI.java:
+	(KeyHandler.keyPressed): Added check for scrolling past bottom of list.
+	(MouseHandler.mouseClicked): Added check for shift key being
+	pressed.
+
 2005-06-30  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/transport/JdwpPacket.java (write): New method.
