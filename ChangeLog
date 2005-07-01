@@ -1,3 +1,8 @@
+2005-07-01  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/ListUI.java 
+	(locationToIndex): match parameter name to API docs.
+	
 2005-07-01  Roman Kennke  <roman@kennke.org>
 
 	* gnu/classpath/ObjectPool.java:
