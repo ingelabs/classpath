@@ -1,5 +1,12 @@
 2005-07-01  Roman Kennke  <roman@kennke.org>
 
+	* gnu/classpath/ObjectPool.java:
+	New class. This can and should be used to cache throwaway objects
+	like Rectangles, Points and Dimensions. Of course the use of
+	this class is not limited to this cases.
+
+2005-07-01  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JLayeredPane.java
 	(getLayer): Also search through the components parents to find
 	the one that is actually directly contained in the JLayeredPane.
