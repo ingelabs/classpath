@@ -123,6 +123,7 @@ class Stylesheet
   /**
    * Output options.
    */
+  Node output;
   int outputMethod;
   String outputVersion;
   String outputEncoding;
@@ -385,7 +386,10 @@ class Stylesheet
   TemplateNode getTemplate(QName mode, Node context, boolean applyImports)
     throws TransformerException
   {
-    //System.err.println("getTemplate: mode="+mode+" context="+context);
+    if (debug)
+      {
+        System.err.println("getTemplate: mode="+mode+" context="+context);
+      }
     Set candidates = new TreeSet();
     for (Iterator j = templates.iterator(); j.hasNext(); )
       {
@@ -415,7 +419,10 @@ class Stylesheet
       {
         // Apply built-in template
         // Current template is unchanged
-        //System.err.println("\tbuiltInTemplate context="+context);
+        if (debug)
+          {
+            System.err.println("\tbuiltInTemplate context="+context);
+          }
         switch (context.getNodeType())
           {
           case Node.ELEMENT_NODE:
@@ -436,7 +443,10 @@ class Stylesheet
         Template t = (Template) candidates.iterator().next();
         // Set current template
         currentTemplate = t;
-        //System.err.println("\ttemplate="+t+" context="+context);
+        if (debug)
+          {
+            System.err.println("\ttemplate="+t+" context="+context);
+          }
         return t.node;
       }
   }
@@ -504,6 +514,7 @@ class Stylesheet
   final void parseOutput(Node node, NamedNodeMap attrs)
     throws TransformerConfigurationException
   {
+    output = node;
     String method = getAttribute(attrs, "method");
     if ("xml".equals(method) || method == null)
       {

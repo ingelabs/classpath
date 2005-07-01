@@ -215,7 +215,15 @@ final class NodeNumberNode
                 return false;
               }
             String cn = current.getLocalName();
-            String nn = current.getLocalName();
+            if (cn == null)
+              {
+                cn = current.getNodeName();
+              }
+            String nn = node.getLocalName();
+            if (nn == null)
+              {
+                nn = node.getNodeName();
+              }
             if (!cn.equals(nn))
               {
                 return false;

@@ -75,6 +75,8 @@ abstract class TemplateNode
     if (stylesheet.debug)
       {
         System.err.println("Applying " + toString());
+        System.err.println("\twith context=" + context + ", pos=" + pos +
+                           ", len=" + len);
       }
     doApply(stylesheet, mode, context, pos, len, parent, nextSibling);
   }
