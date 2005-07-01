@@ -1,5 +1,11 @@
 2005-07-01  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/table/JTableHeader.java: added some API docs,
+	* javax/swing/table/TableModel.java: fixed link in API docs,
+	* javax/swing/table/package.html: added package description.
+	
+2005-07-01  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/ListUI.java 
 	(locationToIndex): match parameter name to API docs.
 	
