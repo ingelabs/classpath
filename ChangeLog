@@ -1,3 +1,23 @@
+2005-06-30  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/basic/BasicMenuBarUI.java
+	(installDefaults): Made JMenuBar opaque.
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java
+	(installDefaults): Made JOptionPane opaque.
+	* javax/swing/plaf/basic/BasicPanelUI.java
+	(installUI): Also call installDefaults().
+	(installDefaults): New method. Made JPanel opaque.
+	* javax/swing/plaf/basic/BasicRootPaneUI.java
+	(installDefaults): Made JRootPane opaque.
+	* javax/swing/plaf/basic/BasicSeparatorUI.java
+	(installDefaults): Made JSeparator opaque.
+	* javax/swing/plaf/basic/BasicSpinnerUI.java
+	(installDefaults): Made JSpinner opaque.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(installDefaults): Made JSplitPane opaque.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(installDefaults): Made JSplitPane opaque.
+
 2005-07-01  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
