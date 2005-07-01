@@ -1,5 +1,10 @@
 2005-07-01  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/undo/UndoManager.java: fixed API doc links,
+	* javax/swing/undo/UndoableEditSupport.java: likewise.
+	
+2005-07-01  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/RenderingHints.java: API doc updates.
 
 2005-07-01  Mark Wielaard  <mark@klomp.org>
