@@ -99,7 +99,7 @@ public class TableModelEvent extends EventObject
    */
   public TableModelEvent(TableModel source)
   {
-    this(source, 0, source.getRowCount(), ALL_COLUMNS, UPDATE);
+    this(source, 0, Integer.MAX_VALUE, ALL_COLUMNS, UPDATE);
   }
 
   /**
