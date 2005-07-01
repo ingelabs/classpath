@@ -1,3 +1,16 @@
+2005-07-01  Roman Kennke  <roman@kennke.org>
+
+	* gnu/classpath/ObjectPool.java:
+	Introduced flag for turning on/off caching.
+	(getInstance): Synchronized access to this method.
+	(borrowObject): Synchronized access to the pool.
+	Added some benchmarking statements.
+	(returnObject): Synchronized access to the pool.
+	Added some benchmarking statements.
+	(createObject): Synchronized access to the pool.
+	Added some benchmarking statements.
+	(printStats): New method. Prints out some stats about the pool usage.
+
 2005-07-01  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/table/JTableHeader.java: added some API docs,

@@ -77,6 +77,12 @@ import java.util.Stack;
 public final class ObjectPool
 {
 
+  /** The maximum number of instances that we keep for each type. */
+  private static final int MAX_POOL_SIZE = 128;
+
+  /** This flag turns on/off caching (for benchmarking purposes). */
+  private static final boolean IS_CACHING = true;
+
   /** The only instance of ObjectPool. */
   private static ObjectPool instance;
 
@@ -87,6 +93,14 @@ public final class ObjectPool
    * requested type is in the pool.
    */
   private HashMap pool;
+  
+  /**
+   * Collect some stats in this fields. TODO: Can be removed later.
+   */
+  int created = 0;
+  int requested = 0;
+  int returned = 0;
+  int pooled = 0;
 
   /**
    * Creates a new instance of ObjectPool. This constructor is made private
@@ -102,7 +116,7 @@ public final class ObjectPool
    *
    * @return an ObjectPool instance ready for use
    */
-  public static ObjectPool getInstance()
+  public static synchronized ObjectPool getInstance()
   {
     if (instance == null)
       instance = new ObjectPool();
@@ -123,15 +137,32 @@ public final class ObjectPool
    */
   public Object borrowObject(Class type)
   {
+    // This is only here for benchmarking purposes.
+    if (!IS_CACHING)
+      return createObject(type);
+    // Counts the requested objects. This is only here for benchmarking
+    // purposes.
+    requested++;
+    if (requested % 10000 == 0)
+      printStats();
+
+
     Object object = null;
-    Stack pooledInstances = (Stack) pool.get(type);
+    Stack pooledInstances = null;
+    synchronized (this)
+      {
+	pooledInstances = (Stack) pool.get(type);
+      }
     if (pooledInstances == null)
       object = createObject(type);
     else
       if (pooledInstances.size() == 0)
 	object = createObject(type);
       else
-	object = pooledInstances.pop();
+	synchronized (this)
+	  {
+	    object = pooledInstances.pop();
+	  }
     return object;
   }
 
@@ -142,14 +173,36 @@ public final class ObjectPool
    */
   public void returnObject(Object object)
   {
+    // This is only here for benchmarking purposes.
+    if (!IS_CACHING)
+      return;
+    // Count the returned objects. This is only here for benchmarking purposes.
+    returned++;
+
     Class type = object.getClass();
-    Stack pooledInstances = (Stack) pool.get(type);
+    Stack pooledInstances = null;
+    synchronized (this)
+      {
+	pooledInstances = (Stack) pool.get(type);
+      }
     if (pooledInstances == null)
       {
 	pooledInstances = new Stack();
-	pool.put(type, pooledInstances);
       }
-    pooledInstances.push(object);
+    if (pooledInstances.size() < MAX_POOL_SIZE)
+      synchronized (this)
+	{
+	  pool.put(type, pooledInstances);
+
+	  // Count the objects that are actually pooled. This is only
+	  // here for benchmarking purposes.
+	  pooled++;
+	}
+
+    synchronized (this)
+      {
+	pooledInstances.push(object);
+      }
   }
 
   /**
@@ -162,6 +215,11 @@ public final class ObjectPool
    */
   private Object createObject(Class type)
   {
+    // Counts the objects that are created here. This is only here for
+    // benchmarking purposes.
+    created++;
+
+
     Object object = null;
     try
       {
@@ -176,5 +234,17 @@ public final class ObjectPool
 	// We return null if the object cannot be instantiated.
       }
     return object;
+  }
+
+  /**
+   * This method prints out some stats about the object pool. This gives
+   * an indication on how efficiently the pool is used.
+   */
+  void printStats()
+  {
+    System.err.println("Requested Objects: " + requested);
+    System.err.println("Returned Objects: " + returned);
+    System.err.println("Created Objects: " + created);
+    System.err.println("Pooled Objects: " + pooled);
   }
 }
