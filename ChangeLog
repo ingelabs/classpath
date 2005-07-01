@@ -1,6 +1,13 @@
 2005-07-01  Roman Kennke  <roman@kennke.org>
 
 	* gnu/classpath/ObjectPool.java:
+	Made singleton instance static. Otherwise this class would not
+	be of much use.
+	(getInstance): Made this method static.
+
+2005-07-01  Roman Kennke  <roman@kennke.org>
+
+	* gnu/classpath/ObjectPool.java:
 	New class. This can and should be used to cache throwaway objects
 	like Rectangles, Points and Dimensions. Of course the use of
 	this class is not limited to this cases.

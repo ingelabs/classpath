@@ -78,7 +78,7 @@ public final class ObjectPool
 {
 
   /** The only instance of ObjectPool. */
-  private ObjectPool instance;
+  private static ObjectPool instance;
 
   /**
    * The object pool. This maps Class objects (the type of the pooled objects)
@@ -102,7 +102,7 @@ public final class ObjectPool
    *
    * @return an ObjectPool instance ready for use
    */
-  public ObjectPool getInstance()
+  public static ObjectPool getInstance()
   {
     if (instance == null)
       instance = new ObjectPool();
