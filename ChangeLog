@@ -1,5 +1,12 @@
 2005-07-01  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(isNativeLookAndFeel): fixed return value,
+	* javax/swing/plaf/metal/MetalTheme.java
+	(getMenuDisabledForeground): fixed return value.
+	
+2005-07-01  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/event/TableModelEvent.java:
 	(TableModelEvent(TableModel): set lastRowIndex to Integer.MAX_VALUE.
 	
