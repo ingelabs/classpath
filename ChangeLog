@@ -1,3 +1,9 @@
+2005-06-03  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
+	* org/omg/PortableServer/ServantLocatorPackage/package.html,
+	org/omg/PortableServer/ServantLocatorPackage/CookieHolder.java:
+	New files. 
+
 2005-06-02  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/_PolicyImplBase.java: Ihnerit from Policy.
