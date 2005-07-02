@@ -1,3 +1,14 @@
+2005-06-02  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/_PolicyImplBase.java: Ihnerit from Policy.
+	(ids): Made final non static, new constructor.
+	(type, value, policyCode): New fields.
+	(_invoke): Handle "value" operation.
+	(getValue, getCode, destroy, toString, copy, equals, hashCode):
+	New methods.
+	* org/omg/CORBA/PolicyHelper.java (narrow): Removed check for
+	repository for repository id.
+
 2005-07-02  Audrius Meskauskas, <AudriusA@Bioinformatics.org> 
 
 	* org/omg/PortableServer/IdAssignmentPolicyValue.java,
