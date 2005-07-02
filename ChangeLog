@@ -1,3 +1,13 @@
+2005-07-02  Audrius Meskauskas, <AudriusA@Bioinformatics.org> 
+
+	* org/omg/PortableServer/IdAssignmentPolicyValue.java,
+	org/omg/PortableServer/IdUniquenessPolicyValue.java,
+	org/omg/PortableServer/ImplicitActivationPolicyValue.java,
+	org/omg/PortableServer/LifespanPolicyValue.java,
+	org/omg/PortableServer/ServantRetentionPolicyValue.java,
+	org/omg/PortableServer/RequestProcessingPolicyValue.java: 
+	Documentation update.
+
 2005-07-02  Mark Wielaard  <mark@klomp.org>
 
 	* all files: Update for new FSF address.
