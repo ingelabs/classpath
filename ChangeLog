@@ -1,3 +1,7 @@
+2005-07-02  Mark Wielaard  <mark@klomp.org>
+
+	* all files: Update for new FSF address.
+
 2005-07-01  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/undo/UndoManager.java: fixed API doc links,

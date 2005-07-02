@@ -19,8 +19,8 @@ echo "General Public License for more details."
 echo
 echo "You should have received a copy of the GNU General Public License"
 echo "along with GNU Classpath; see the file COPYING.  If not, write to the"
-echo "Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA"
-echo "02111-1307 USA."
+echo "Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA"
+echo "02110-1301 USA."
 echo
 echo "Linking this library statically or dynamically with other modules is"
 echo "making a combined work based on this library.  Thus, the terms and"
