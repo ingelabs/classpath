@@ -1,3 +1,10 @@
+2005-07-03  Daniel Bonniot  <bonniot@users.sf.net>
+
+	* java/io/ObjectStreamClass.java (inSamePackage): New private method.
+	(findAccessibleMethod): Likewise.
+	(cacheMethods): Lookup readResolve and writeReplace using the new
+	findAccessibleMethod().
+
 2005-07-03  Archie Cobbs  <archie@dellroad.org>
 
 	* m4/acinclude.m4: fix broken expr(1) syntax
