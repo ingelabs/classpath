@@ -147,7 +147,7 @@ AC_DEFUN([CLASSPATH_CHECK_JIKES],
     JIKES_VERSION=`$JIKES --version | awk '/^Jikes Compiler/' | cut -d ' ' -f 5`
     JIKES_VERSION_MAJOR=`echo "$JIKES_VERSION" | cut -d '.' -f 1`
     JIKES_VERSION_MINOR=`echo "$JIKES_VERSION" | cut -d '.' -f 2`
-    if expr "$JIKES_VERSION_MAJOR" == 1 > /dev/null; then
+    if expr "$JIKES_VERSION_MAJOR" = 1 > /dev/null; then
       if expr "$JIKES_VERSION_MINOR" \< 19 > /dev/null; then
         JIKES=""
       fi

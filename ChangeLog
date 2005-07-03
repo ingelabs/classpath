@@ -1,10 +1,14 @@
-2005-06-03  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+2005-07-03  Archie Cobbs  <archie@dellroad.org>
+
+	* m4/acinclude.m4: fix broken expr(1) syntax
+
+2005-07-03  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 
 	* org/omg/PortableServer/ServantLocatorPackage/package.html,
 	org/omg/PortableServer/ServantLocatorPackage/CookieHolder.java:
 	New files. 
 
-2005-06-02  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
+2005-07-02  Audrius Meskauskas, <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/_PolicyImplBase.java: Ihnerit from Policy.
 	(ids): Made final non static, new constructor.
