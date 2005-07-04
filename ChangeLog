@@ -1,5 +1,33 @@
 2005-07-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (postTextEvent): New
+	method.
+	* gnu/java/awt/peer/gtk/GtkTextAreaPeer.java: Add
+	TextComponentPeer method declarations.
+	* gnu/java/awt/peer/gtk/GtkTextFieldPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkTextComponentPeer.java: Remove file.
+	* include/gnu_java_awt_peer_gtk_GtkTextAreaPeer.h: Regenerate.
+	* include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h: Likewise.
+	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_SOURCES): Remove
+	gnu_java_awt_peer_gtk_GtkTextComponentPeer.c.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(classpath_gtk_component_connect_nonfocus_signals): New function.
+	(classpath_gtk_component_connect_signals): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextAreaPeer.c: Add
+	method implementations from
+	gnu_java_awt_peer_gtk_GtkTextComponentPeer.c.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextFieldPeer.c:
+	Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextComponentPeer.c:
+	Remove file.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
+	(gtkInit): Get postTextEventID from GtkComponentPeer, not
+	GtkTextComponentPeer.
+	* native/jni/gtk-peer/gtkpeer.h (classpath_gtk_textcomponent_init_jni): Declare.
+	(classpath_gtk_component_connect_signals): Likewise.
+	(classpath_gtk_component_connect_nonfocus_signals): Likewise.
+	(classpath_gtk_textcomponent_connect_signals): Likewise.
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c:
 	Rename gnu_java_awt_peer_gtk_GtkScrollbarPeer.c.
 	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_SOURCES): Rename
