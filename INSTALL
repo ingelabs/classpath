@@ -41,7 +41,6 @@ Suggested Software
 	configure.
 
         - GTK+ 2.4.x (or higher)
-        - libart_lgpl 2.1.0
         - gdk-pixbuf
 
 	- XTest Extension (libXtst) for GdkRobot support in java.awt.

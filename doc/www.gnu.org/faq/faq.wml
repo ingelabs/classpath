@@ -339,7 +339,6 @@ For building the Java bytecode (.class files), one of these compilers are requir
 For building the JNI native libraries, the following are required unless --disable-gtk-peer is used as an argument to configure.
 <ul>
 <li><createlink name="GTK+ 2" url="http://www.gtk.org/">
-<li>libart-gpl
 <li>gdk-pixbuf
 </ul>
 

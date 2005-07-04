@@ -1,4 +1,4 @@
-# $Id: classpath.spec.in,v 1.1 2005-03-22 19:06:33 archie172 Exp $
+# $Id: classpath.spec.in,v 1.2 2005-07-04 14:31:01 ziga Exp $
 
 %define version_num @PACKAGE_VERSION@
 %define release_num 1
@@ -27,7 +27,7 @@ for the Java programming language.
 pushd ${RPM_BUILD_DIR}/classpath-%{version_num}
 # Determine if we can build the GTK stuff
 GTKPEER='disable'
-if pkg-config --exists 'gtk+-2.0 >= 2.4 gthread-2.0 >= 2.2 libart-2.0 gdk-pixbuf-2.0'; then
+if pkg-config --exists 'gtk+-2.0 >= 2.4 gthread-2.0 >= 2.2 gdk-pixbuf-2.0'; then
     GTKPEER='enable'
 fi
 %configure --with-jikes --enable-jni --${GTKPEER}-gtk-peer

@@ -419,10 +419,6 @@ libraries installed:
 creating graphical user interfaces.  It is used as the basis of the
 GNU desktop project GNOME.
 
-@item libart-lgpl 2.1+
-@uref{http://www.gnome.org/start/,libart} is a GNOME library of
-functions for 2D graphics.
-
 @item gdk-pixbuf
 @uref{http://www.gnome.org/start/,gdk-pixbuf} is a GNOME library for
 representing images.

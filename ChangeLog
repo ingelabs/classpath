@@ -1,3 +1,11 @@
+2005-07-04  Ziga Mahkovec  <ziga.mahkovec@klika.si>
+
+	* configure.ac: Remove libart dependency.
+	* scripts/classpath.spec.in: Likewise.
+	* INSTALL: Remove references to libart.
+	* doc/hacking.texinfo: Likewise.
+	* doc/www.gnu.org/faq/faq.wml: Likewise.
+
 2005-07-03  Daniel Bonniot  <bonniot@users.sf.net>
 
 	* java/io/ObjectStreamClass.java (inSamePackage): New private method.
