@@ -1,5 +1,11 @@
 2005-07-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c:
+	Rename gnu_java_awt_peer_gtk_GtkScrollbarPeer.c.
+	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_SOURCES): Rename
+	gnu_java_awt_peer_gtk_GtkScrollBarPeer.c
+	gnu_java_awt_peer_gtk_GtkScrollbarPeer.c.
+
 	* gnu/java/awt/ClasspathToolkit.java (createEmbeddedWindow): New method.
 	* gnu/java/awt/EmbeddedWindow.java (addNotify): Assume we're using
 	ClasspathToolkit.
