@@ -1,3 +1,8 @@
+2005-07-04  Sven de Marothy  <sven@physto.se>
+
+	* javax/swing/JComponent.java:
+	(setEnabled): Fix typo in event string.
+	
 2005-07-04  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTabbedPane.java
