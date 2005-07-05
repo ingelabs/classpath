@@ -1,5 +1,10 @@
 2005-07-05  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/AbstractAction.java: updated API docs,
+	* javax/swing/Action.java: likewise.
+	
+2005-07-05  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/applet/Applet.java: added import to fix API doc link.
 
 2005-07-05  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
