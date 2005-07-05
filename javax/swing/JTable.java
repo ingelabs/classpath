@@ -672,8 +672,8 @@ public class JTable extends JComponent
   {
     if (column.getHeaderValue() == null)
       {
-	String name = getColumnName(column.getModelIndex());
-	column.setHeaderValue(name);
+        String name = dataModel.getColumnName(column.getModelIndex());
+        column.setHeaderValue(name);
       }
     
     columnModel.addColumn(column);
@@ -1025,8 +1025,6 @@ public class JTable extends JComponent
   {
     if (vc < 0)
       return vc;
-    else if (vc > getColumnCount())
-      return -1;
     else
       return columnModel.getColumn(vc).getModelIndex();
   }
@@ -1946,7 +1944,7 @@ public class JTable extends JComponent
   
   public String getColumnName(int column)
   {
-    return dataModel.getColumnName(column);
+    return this.columnModel.getColumn(column).getIdentifier().toString();
   }
 
   public int getEditingColumn()
@@ -2075,6 +2073,47 @@ public class JTable extends JComponent
   public TableColumn getColumn(Object identifier)
   {
     return columnModel.getColumn(columnModel.getColumnIndex(identifier));
+  }
+
+  /**
+   * Returns <code>true</code> if the specified cell is editable, and
+   * <code>false</code> otherwise.
+   *
+   * @param row  the row index.
+   * @param column  the column index.
+   *
+   * @return A boolean.
+   */
+  public boolean isCellEditable(int row, int column)
+  {
+    return dataModel.isCellEditable(row, convertColumnIndexToModel(column));
+  }
+
+  /**
+   * Clears any existing columns from the <code>JTable</code>'s
+   * {@link TableColumnModel} and creates new columns to match the values in
+   * the data ({@link TableModel}) used by the table.
+   *
+   * @see #setAutoCreateColumnsFromModel(boolean)
+   */
+  public void createDefaultColumnsFromModel()
+  {
+    // remove existing columns
+    int columnIndex = columnModel.getColumnCount() - 1;
+    while (columnIndex >= 0)
+    {
+      columnModel.removeColumn(columnModel.getColumn(columnIndex));
+      columnIndex--;
+    }
+  
+    // add new columns to match the TableModel
+    int columnCount = dataModel.getColumnCount();
+    for (int c = 0; c < columnCount; c++)
+    {
+      TableColumn column = new TableColumn(c);
+      column.setIdentifier(dataModel.getColumnName(c));
+      columnModel.addColumn(column);
+    }
   }
 
   public void changeSelection (int rowIndex, int columnIndex, boolean toggle, boolean extend)

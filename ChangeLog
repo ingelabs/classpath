@@ -1,3 +1,20 @@
+2005-07-05  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JTable.java:
+	(addColumn): retrieve correct column name,
+	(convertColumnIndexToModel): remove check for > columnCount and let
+	exception happen,
+	(getColumnName): retrieve name from TableColumn,
+	(isCellEditable): implemented,
+	(createDefaultColumnsFromModel): implemented.
+	* javax/swing/table/DefaultTableColumnModel.java:
+	(addColumn): throw exception for null argument, set correct column 
+	index in TableColumnModelEvent,
+	(removeColumn): use correct column index,
+	(moveColumn): move the column, don't swap it. Also added argument
+	checks,
+	(getColumnIndex): reimplemented.
+	
 2005-07-05  Sven de Marothy  <sven@physto.se>
 
 	* javax/swing/JLabel.java:
