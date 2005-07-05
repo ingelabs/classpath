@@ -1,3 +1,17 @@
+2005-07-05  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/util/BitSet.java: fixed minor problems in API docs,
+	* java/util/Calendar.java: likewise,
+	* java/util/Collections.java: likewise,
+	* java/util/Date.java: likewise,
+	* java/util/Hashtable.java: likewise,
+	* java/util/LinkedList.java: likewise,
+	* java/util/Properties.java: likewise,
+	* java/util/PropertyResourceBundle.java: likewise,
+	* java/util/ResourceBundle.java: likewise,
+	* java/util/SimpleTimeZone.java: likewise,
+	* java/util/TreeMap.java: likewise.
+	
 2005-07-05  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/text/JTextComponent.java (read, write): New methods. 
