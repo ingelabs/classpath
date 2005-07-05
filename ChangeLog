@@ -1,3 +1,7 @@
+2005-07-05  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JTable.java: fixed API doc links all over.
+
 2005-07-05  Mark Wielaard  <mark@klomp.org>
 
 	* include/Makefile.am (GTKPEER_H_FILES): Removed GtkTextComponentPeer.
