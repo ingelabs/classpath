@@ -1,3 +1,8 @@
+2005-07-05  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/DefaultKeyboardFocusManager.java (dispatchEvent): Check
+	parent and target before casting target to Window.
+
 2005-07-05  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/processor/StringReferenceCommandSet.java:
