@@ -1944,7 +1944,8 @@ public class JTable extends JComponent
   
   public String getColumnName(int column)
   {
-    return this.columnModel.getColumn(column).getIdentifier().toString();
+    int modelColumn = columnModel.getColumn(column).getModelIndex();
+    return dataModel.getColumnName(modelColumn);
   }
 
   public int getEditingColumn()
