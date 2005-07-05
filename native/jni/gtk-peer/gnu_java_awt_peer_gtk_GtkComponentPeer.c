@@ -1078,7 +1078,7 @@ focus_out_cb (GtkWidget *widget __attribute((unused)),
 }
 
 void
-classpath_gtk_component_connect_nonfocus_signals (GObject *ptr, jobject *gref)
+classpath_gtk_component_connect_nonfocus_signals (GObject *ptr __attribute__((unused)), jobject *gref __attribute__((unused)))
  {
    /* FIXME */
 #if 0
@@ -1103,7 +1103,7 @@ classpath_gtk_component_connect_nonfocus_signals (GObject *ptr, jobject *gref)
 }
 
 void
-classpath_gtk_component_connect_signals (GObject *ptr, jobject *gref)
+classpath_gtk_component_connect_signals (GObject *ptr __attribute__((unused)), jobject *gref __attribute__((unused)))
 {
    /* FIXME */
 #if 0
