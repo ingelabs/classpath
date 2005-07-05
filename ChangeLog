@@ -1,3 +1,8 @@
+2005-07-05  Sven de Marothy  <sven@physto.se>
+
+	* javax/swing/JLabel.java:
+	(JLabel): Revert previous change for JLabel(Icon) constructor.
+
 2005-07-05  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/JScrollPane.java:
