@@ -599,26 +599,9 @@ public class BasicTreeUI
 	{
 		DefaultMutableTreeNode node = ((DefaultMutableTreeNode) (tree
 				.getModel()).getRoot());
-		TreePath current = null;
 		
 		for (int i = 0; i < row; i++)
-		{
-			current = new TreePath(node.getPath());
-			if (tree.isExpanded(current))
-				node = getNextVisibleNode(node);
-			else if (tree.isVisible(current))
-			{
-				DefaultMutableTreeNode next = getNextVisibleNode(node);
-				node = node.getNextSibling();
-				
-				// if there is no next sibling, check if any nodes are left
-				if (node == null)
-					if (next == null) 
-						break;
-					else
-						node = next;
-			}
-		}
+			node = getNextVisibleNode(node);
 		
 		// in case nothing was found
 		if (node == null)
