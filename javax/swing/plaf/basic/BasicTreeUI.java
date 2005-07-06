@@ -597,17 +597,36 @@ public class BasicTreeUI
 	 */
 	public TreePath getPathForRow(JTree tree, int row)
 	{
-		// FIXME: check visibility when expand/collapse is implemented
-		DefaultMutableTreeNode pathForRow = ((DefaultMutableTreeNode) (tree
+		DefaultMutableTreeNode node = ((DefaultMutableTreeNode) (tree
 				.getModel()).getRoot());
+		TreePath current = null;
+		
 		for (int i = 0; i < row; i++)
 		{
-			if (pathForRow != null)
-				pathForRow = pathForRow.getNextNode();
+			current = new TreePath(node.getPath());
+			if (tree.isExpanded(current))
+				node = node.getNextNode();
+			else if (tree.isVisible(current))
+			{
+				DefaultMutableTreeNode next = node.getNextNode();
+				node = node.getNextSibling();
+				
+				// if there is no next sibling, check if any nodes are left
+				if (node == null)
+					if (next == null) 
+						break;
+					else
+						node = next;
+			}
 		}
-		if (pathForRow == null)
+		
+		// in case nothing was found
+		if (node == null)
 			return null;
-		return new TreePath(pathForRow.getPath());
+		
+		// something was found
+		return new TreePath(node.getPath());
+			
 	}
 
 	/**
@@ -1446,8 +1465,16 @@ public class BasicTreeUI
 	 */
 	protected boolean isLeaf(int row)
 	{
-		return false;
-		// FIXME: not implemented
+		TreePath pathForRow = getPathForRow(tree, row);
+		if (pathForRow == null)
+			return true;
+		
+		Object node = pathForRow.getLastPathComponent();
+		
+		if (node instanceof TreeNode)
+			return ((TreeNode) node).isLeaf();
+		else
+			return true;
 	}
 
 	/* * INTERNAL CLASSES * */
@@ -1726,30 +1753,50 @@ public class BasicTreeUI
 		{
 			Point click = e.getPoint();
 			int row = ((int) click.getY() / getRowHeight()) - 1;
-			
-			if (BasicTreeUI.this.tree.isRowSelected(row))
-				BasicTreeUI.this.tree.removeSelectionRow(row);
-			else if (BasicTreeUI.this.tree.getSelectionModel()
-					.getSelectionMode() == 
-						treeSelectionModel.SINGLE_TREE_SELECTION)
+			TreePath path = BasicTreeUI.this.tree.getPathForRow(row);
+
+			if (path == null)
 			{
-				// clear selection, since only able to select one row at a time.
+				// nothing should be selected if user clicks outside of tree
 				BasicTreeUI.this.tree.getSelectionModel().clearSelection();
-				BasicTreeUI.this.tree.addSelectionRow(row);
+				BasicTreeUI.this.tree.repaint();
 			}
-			else if (BasicTreeUI.this.tree.getSelectionModel()
-					.getSelectionMode() == 
-						treeSelectionModel.CONTIGUOUS_TREE_SELECTION)
+			
+			if (BasicTreeUI.this.tree.isVisible(path))
 			{
-				//TODO
-			}
-			else
-			{
-				BasicTreeUI.this.tree.getSelectionModel()
-				.setSelectionMode(
-						treeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-				BasicTreeUI.this.tree.addSelectionRow(row);
-			}
+				if (BasicTreeUI.this.tree.isExpanded(path))
+				{
+					BasicTreeUI.this.tree.collapsePath(path);
+					BasicTreeUI.this.tree.fireTreeCollapsed(path);
+				}
+				else
+				{
+					BasicTreeUI.this.tree.expandPath(path);
+					BasicTreeUI.this.tree.fireTreeExpanded(path);
+				}
+				
+				if (BasicTreeUI.this.tree.isRowSelected(row))
+					BasicTreeUI.this.tree.removeSelectionRow(row);
+				else if (BasicTreeUI.this.tree.getSelectionModel()
+						.getSelectionMode() == treeSelectionModel
+						.SINGLE_TREE_SELECTION)
+				{
+					BasicTreeUI.this.tree.getSelectionModel().clearSelection();
+					BasicTreeUI.this.tree.addSelectionRow(row);
+				} 
+				else if (BasicTreeUI.this.tree.getSelectionModel()
+						.getSelectionMode() == treeSelectionModel
+						.CONTIGUOUS_TREE_SELECTION)
+				{
+					// TODO
+				} 
+				else
+				{
+					BasicTreeUI.this.tree.getSelectionModel().setSelectionMode(
+							treeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+					BasicTreeUI.this.tree.addSelectionRow(row);
+				}
+			}		
 		}
 
 		/**
@@ -1969,6 +2016,7 @@ public class BasicTreeUI
 		 */
 		public void treeExpanded(TreeExpansionEvent event)
 		{
+			BasicTreeUI.this.tree.repaint();
 		}
 
 		/**
@@ -1978,6 +2026,7 @@ public class BasicTreeUI
 		 */
 		public void treeCollapsed(TreeExpansionEvent event)
 		{
+			BasicTreeUI.this.tree.repaint();
 		}
 	}// TreeExpansionHandler
 
@@ -2274,7 +2323,7 @@ public class BasicTreeUI
 	} // TreeTraverseAction
 
 	/* * HELPER METHODS FOR PAINTING * */
-
+	
 	/**
 	 * Returns the cell bounds for painting selected cells
 	 * 
@@ -2293,7 +2342,7 @@ public class BasicTreeUI
 		return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s), fm
 				.getHeight());
 	}
-
+	
 	/**
 	 * Paints a leaf in the tree
 	 * 
@@ -2305,25 +2354,29 @@ public class BasicTreeUI
 	 */
 	private void paintLeaf(Graphics g, int x, int y, JTree tree, Object leaf)
 	{
-		TreePath tp = new TreePath(((DefaultMutableTreeNode) leaf).getPath());
-		boolean selected = tree.isPathSelected(tp);
+		TreePath curr = new TreePath(((DefaultMutableTreeNode) leaf)
+				.getPath());
+		boolean selected = tree.isPathSelected(curr);
 
-		if (selected)
-		{
-			Component comp = tree.getCellRenderer()
-					.getTreeCellRendererComponent(tree, leaf, true, false,
-							true, 0, false);
-			rendererPane.paintComponent(g, comp, tree, getCellBounds(x, y, leaf));
-		}
-		else
-		{
-			Component c = tree.getCellRenderer().getTreeCellRendererComponent(tree,
-					leaf, false, false, true, 0, false);
-			
-			g.translate(x, y);
-			c.paint(g);
-			g.translate(-x, -y);
-		}
+		if (tree.isVisible(curr))
+			if (selected)
+			{
+				Component comp = tree.getCellRenderer()
+						.getTreeCellRendererComponent(tree, leaf, true, false,
+								true, 0, false);
+				rendererPane.paintComponent(g, comp, tree, 
+						getCellBounds(x, y, leaf));
+			}
+			else
+			{
+				Component c = tree.getCellRenderer()
+				.getTreeCellRendererComponent(tree,
+						leaf, false, false, true, 0, false);
+				
+				g.translate(x, y);
+				c.paint(g);
+				g.translate(-x, -y);
+			}
 	}
 
 	/**
@@ -2337,26 +2390,31 @@ public class BasicTreeUI
 	 */
 	private void paintNonLeaf(Graphics g, int x, int y, JTree tree,
 			Object nonLeaf)
-	{
-		TreePath tp = new TreePath(((DefaultMutableTreeNode) nonLeaf).getPath());
-		boolean selected = tree.isPathSelected(tp);
-
-		if (selected)
-		{
-			Component comp = tree.getCellRenderer()
-					.getTreeCellRendererComponent(tree, nonLeaf, true, false,
-							true, 0, false);
-			rendererPane.paintComponent(g, comp, tree, getCellBounds(x, y, nonLeaf));
-		}
-		else
-		{
-			Component c = tree.getCellRenderer().getTreeCellRendererComponent(tree,
-					nonLeaf, false, false, false, 0, false);
-			
-			g.translate(x, y);
-			c.paint(g);
-			g.translate(-x, -y);
-		}
+	{	
+		TreePath curr = new TreePath(((DefaultMutableTreeNode) nonLeaf)
+								.getPath());
+		boolean selected = tree.isPathSelected(curr);
+		boolean expanded = tree.isExpanded(curr);
+		
+		if (tree.isVisible(curr))
+			if (selected)
+			{
+				Component comp = tree.getCellRenderer()
+						.getTreeCellRendererComponent(tree, nonLeaf, true, 
+								expanded, false, 0, false);
+				rendererPane.paintComponent(g, comp, tree, 
+						getCellBounds(x, y, nonLeaf));
+			}
+			else
+			{
+				Component c = tree.getCellRenderer()
+						.getTreeCellRendererComponent(tree,
+								nonLeaf, false, expanded, false, 0, false);
+				
+				g.translate(x, y);
+				c.paint(g);
+				g.translate(-x, -y);
+			}
 	}
 
 	/**
@@ -2389,7 +2447,8 @@ public class BasicTreeUI
 		{
 			paintLeaf(g, indentation, descent, tree, curr);
 			descent += getRowHeight();
-		} else
+		} 
+		else
 		{
 			if (depth > 0 || tree.isRootVisible())
 			{
@@ -2398,25 +2457,30 @@ public class BasicTreeUI
 				y0 += halfHeight;
 			}
 			int max = mod.getChildCount(curr);
-			for (int i = 0; i < max; ++i)
-			{
-				g.setColor(getHashColor());
-				g.drawLine(indentation + halfWidth, descent + halfHeight,
-						indentation + rightChildIndent, descent + halfHeight);
-				descent = paintRecursive(g, indentation + rightChildIndent,
-						descent, i, depth + 1, tree, mod, mod.getChild(curr, i));
-			}
+			if (tree.isExpanded(new TreePath(((DefaultMutableTreeNode) curr)
+														.getPath())))
+				for (int i = 0; i < max; ++i)
+				{
+					g.setColor(getHashColor());
+					g.drawLine(indentation + halfWidth, descent + halfHeight,
+							indentation + rightChildIndent, 
+							descent + halfHeight);
+					descent = paintRecursive(g, indentation + rightChildIndent,
+							descent, i, depth + 1, tree, mod, 
+							mod.getChild(curr, i));
+				}
 		}
 
 		int y1 = descent - halfHeight;
-		if (y0 != y1)
-		{
-			g.setColor(getHashColor());
-			g
-					.drawLine(indentation + halfWidth, y0, indentation
-							+ halfWidth, y1);
-		}
-
+		
+		if (tree.isExpanded(new TreePath(((DefaultMutableTreeNode) curr)
+																.getPath())))
+			if (y0 != y1)
+			{
+				g.setColor(getHashColor());
+				g.drawLine(indentation + halfWidth, y0, indentation
+								+ halfWidth, y1);
+			}
 		return descent;
 	}
 
