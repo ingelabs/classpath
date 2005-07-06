@@ -621,13 +621,18 @@ public class BasicTreeUI
 	 */
 	private DefaultMutableTreeNode getNextVisibleNode(DefaultMutableTreeNode node)
 	{
-		if (node != null)
-		{
-			DefaultMutableTreeNode next = node.getNextNode();
-			TreePath current = new TreePath(next.getPath());
-			if (next != null && tree.isVisible(current))
-				return next;
+		DefaultMutableTreeNode next = null;
+		TreePath current = null;
 		
+		if (node != null)
+			next = node.getNextNode();
+		
+		if (next != null)
+		{
+			current = new TreePath(next.getPath());
+			if (tree.isVisible(current))
+				return next;
+	
 			while (next != null && !tree.isVisible(current))
 			{
 				next = next.getNextNode();
@@ -635,9 +640,8 @@ public class BasicTreeUI
 				if (next != null)
 					current = new TreePath(next.getPath());
 			}
-			node = next;
 		}
-		return node; 
+		return next;
 	}
 	
 	/**
@@ -666,6 +670,7 @@ public class BasicTreeUI
 	 */
 	public int getRowCount(JTree tree)
 	{
+		// FIXME: check visibility
 		return treeState.getRowCount();
 	}
 
