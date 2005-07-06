@@ -1,3 +1,10 @@
+2005-07-06  Tom Tromey  <tromey@redhat.com>
+
+	* lib/Makefile.gcj: New file.
+	* lib/Makefile.am (JAVAC): Changed for new gcj build approach.
+	* lib/gen-classlist.sh.in: Don't split list for gcj.
+	* lib/split-for-gcj.sh: New file.
+
 2005-07-06  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicBorders.java: fixed API docs all over.

@@ -84,13 +84,4 @@ if test "$new" = "true"; then
   done
 fi
 
-# Split in multiple parts for gcj
-grep -v /javax/ classes | grep -v /awt/ \
-                        | grep -v /beans/ \
-			| grep -v /xml/ > classes.standard
-grep /awt/ classes > classes.awt
-grep /beans/ classes >> classes.awt
-grep /xml/ classes > classes.xml
-grep /javax/ classes | grep -v /xml/ > classes.standardx
-
 exit 0

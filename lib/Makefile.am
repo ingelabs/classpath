@@ -13,13 +13,8 @@ compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_GCJ
-## Like GCJ but include some common flags.
-GCJF = $(GCJ) -Wno-deprecated --encoding=UTF-8 \
-    --bootclasspath '' --classpath $(compile_classpath)
-JAVAC = $(GCJF) -C -d . @classes.standard \
-&& $(GCJF) -C -d . @classes.awt \
-&& $(GCJF) -C -d . @classes.xml \
-&& $(GCJF) -C -d . @classes.standardx
+JAVAC = $(srcdir)/split-for-gcj.sh && $(MAKE) -f $(srcdir)/Makefile.gcj \
+    GCJ='$(GCJ)' compile_classpath='$(compile_classpath)'
 else
 if FOUND_JIKES
 JAVAC = $(JIKES) +Pno-shadow +Pno-switchcheck +F $(JIKESENCODING) -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
@@ -146,4 +141,3 @@ dist-hook:
 	rm -f $(top_distdir)/java/util/LocaleData.java
 # Omit files listed in standard.omit.
 	( cd $(top_distdir)/lib ; cat $(top_builddir)/lib/standard.omit | sed -e 's/\$$//' | sed -e 's/\/\.\*//' | xargs rm -fr )
-
