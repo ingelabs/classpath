@@ -1,3 +1,7 @@
+2005-07-06  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicBorders.java: fixed API docs all over.
+	
 2005-07-06  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/transform/StreamSerializer.java,
