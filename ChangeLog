@@ -1,4 +1,10 @@
 2005-07-06  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getNextVisibleNode): Implemented
+	(getPathForRow): Fixed so the next node retrieved is visible.
+
+2005-07-06  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTree.java
 	Initialized the Hashtable.

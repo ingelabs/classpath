@@ -605,10 +605,10 @@ public class BasicTreeUI
 		{
 			current = new TreePath(node.getPath());
 			if (tree.isExpanded(current))
-				node = node.getNextNode();
+				node = getNextVisibleNode(node);
 			else if (tree.isVisible(current))
 			{
-				DefaultMutableTreeNode next = node.getNextNode();
+				DefaultMutableTreeNode next = getNextVisibleNode(node);
 				node = node.getNextSibling();
 				
 				// if there is no next sibling, check if any nodes are left
@@ -629,6 +629,34 @@ public class BasicTreeUI
 			
 	}
 
+	/** 
+	 * Get next visible node in the tree.
+	 * 
+	 * @param the current node
+	 * @return the next visible node in the JTree. Return null if there
+	 * are no more.
+	 */
+	private DefaultMutableTreeNode getNextVisibleNode(DefaultMutableTreeNode node)
+	{
+		if (node != null)
+		{
+			DefaultMutableTreeNode next = node.getNextNode();
+			TreePath current = new TreePath(next.getPath());
+			if (next != null && tree.isVisible(current))
+				return next;
+		
+			while (next != null && !tree.isVisible(current))
+			{
+				next = next.getNextNode();
+				
+				if (next != null)
+					current = new TreePath(next.getPath());
+			}
+			node = next;
+		}
+		return node; 
+	}
+	
 	/**
 	 * Returns the row that the last item identified in path is visible at. Will
 	 * return -1 if any of the elments in the path are not currently visible.
