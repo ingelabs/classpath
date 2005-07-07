@@ -1,4 +1,8 @@
 2005-07-07  Lillian Angel  <langel@redhat.com>
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	Formatted code so else's are on new lines
+
+2005-07-07  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	Formatted code to get rid of TABs        

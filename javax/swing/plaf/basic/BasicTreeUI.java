@@ -1786,7 +1786,8 @@ public class BasicTreeUI
             {
                BasicTreeUI.this.tree.collapsePath(path);
                BasicTreeUI.this.tree.fireTreeCollapsed(path);
-            } else
+            }
+            else
             {
                BasicTreeUI.this.tree.expandPath(path);
                BasicTreeUI.this.tree.fireTreeExpanded(path);
@@ -1799,11 +1800,13 @@ public class BasicTreeUI
             {
                BasicTreeUI.this.tree.getSelectionModel().clearSelection();
                BasicTreeUI.this.tree.addSelectionRow(row);
-            } else if (BasicTreeUI.this.tree.getSelectionModel()
+            }
+            else if (BasicTreeUI.this.tree.getSelectionModel()
                   .getSelectionMode() == TreeSelectionModel.CONTIGUOUS_TREE_SELECTION)
             {
                // TODO
-            } else
+            }
+            else
             {
                BasicTreeUI.this.tree.getSelectionModel().setSelectionMode(
                      TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
@@ -2378,7 +2381,8 @@ public class BasicTreeUI
                         0, false);
             rendererPane.paintComponent(g, comp, tree,
                   getCellBounds(x, y, leaf));
-         } else
+         }
+         else
          {
             Component c = tree.getCellRenderer().getTreeCellRendererComponent(
                   tree, leaf, false, false, true, 0, false);
@@ -2413,7 +2417,8 @@ public class BasicTreeUI
                         false, 0, false);
             rendererPane.paintComponent(g, comp, tree, getCellBounds(x, y,
                   nonLeaf));
-         } else
+         }
+         else
          {
             Component c = tree.getCellRenderer().getTreeCellRendererComponent(
                   tree, nonLeaf, false, expanded, false, 0, false);
@@ -2454,7 +2459,8 @@ public class BasicTreeUI
       {
          paintLeaf(g, indentation, descent, tree, curr);
          descent += getRowHeight();
-      } else
+      }
+      else
       {
          if (depth > 0 || tree.isRootVisible())
          {
