@@ -1,5 +1,13 @@
 2005-07-07  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(DocumentHandler.insertUpdate): Update caret position when document
+	changes.
+	(DocumentHandler.removeUpdate): Update caret position when document
+	changes.
+
+2005-07-07  Roman Kennke  <roman@kennke.org>
+
 	* gnu/java/awt/FocusManager.java: New class. Provides a concrete
 	implementation of javax.swing.FocusManager so that we can support
 	the old-style FocusManager in Swing and AWT.
