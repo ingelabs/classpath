@@ -1,3 +1,8 @@
+2005-07-05  Aaron Luchko  <aluchko@redhat.com>
+
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java:New
+	file.
+
 2005-07-07  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/DefaultListSelectionModel.java:
