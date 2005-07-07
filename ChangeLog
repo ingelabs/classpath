@@ -1,3 +1,11 @@
+2005-07-07  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JProgressBar.java
+	(JProgressBar(int, int, int)): fix order of parameters,
+	(JProgressBar()): reorder arguments in call to other constructor,
+	(JProgressBar(int): likewise,
+	(JProgressBar(int, int): likewise.
+	
 2005-07-07  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
