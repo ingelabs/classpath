@@ -1,3 +1,9 @@
+2005-07-07  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/DefaultListSelectionModel.java:
+	(addSelectionInterval): Added check for leadSelectionIndex being
+	unselected (ie - after a remove operation).
+	
 2005-07-07  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java

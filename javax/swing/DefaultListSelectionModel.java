@@ -436,10 +436,12 @@ public class DefaultListSelectionModel implements Cloneable,
     
     // The next if statements breaks down to "if this selection is adjacent
     // to the previous selection and going in the same direction"
-    if (((index0 - 1 == leadSelectionIndex && (index1 >= index0) 
-              && (leadSelectionIndex >= anchorSelectionIndex))
-             || (index0 + 1 == leadSelectionIndex && (index1 <= index0) 
-                 && (leadSelectionIndex <= anchorSelectionIndex)))
+    if ((isSelectedIndex(leadSelectionIndex)) 
+        && ((index0 - 1 == leadSelectionIndex 
+             && (index1 >= index0) 
+             && (leadSelectionIndex >= anchorSelectionIndex))
+            || (index0 + 1 == leadSelectionIndex && (index1 <= index0) 
+                && (leadSelectionIndex <= anchorSelectionIndex)))
         && (anchorSelectionIndex != -1 || leadSelectionIndex != -1))
       {
         // setting setLeadCalledFromAdd to true tells setLeadSelectionIndex
