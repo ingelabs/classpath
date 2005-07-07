@@ -11,6 +11,12 @@
 	
 2005-07-06  Chris Burdess  <dog@gnu.org>
 
+	* gnu/java/net/protocol/http/HTTPConnection.java,
+	gnu/java/net/protocol/http/HTTPURLConnection.java:
+	Fix bug with multiple threads and persistent connections.
+
+2005-07-06  Chris Burdess  <dog@gnu.org>
+
 	* gnu/xml/transform/StreamSerializer.java,
 	gnu/xml/xpath/EqualityExpr.java: XSLT conformance fixes.
 
