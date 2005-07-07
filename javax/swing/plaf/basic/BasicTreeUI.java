@@ -1800,14 +1800,14 @@ public class BasicTreeUI
           if (BasicTreeUI.this.tree.isRowSelected(row))
             BasicTreeUI.this.tree.removeSelectionRow(row);
           else if (BasicTreeUI.this.tree.getSelectionModel()
-                   .getSelectionMode() == treeSelectionModel
+                   .getSelectionMode() == TreeSelectionModel
                    .SINGLE_TREE_SELECTION)
             {
               BasicTreeUI.this.tree.getSelectionModel().clearSelection();
               BasicTreeUI.this.tree.addSelectionRow(row);
             } 
           else if (BasicTreeUI.this.tree.getSelectionModel()
-                   .getSelectionMode() == treeSelectionModel
+                   .getSelectionMode() == TreeSelectionModel
                    .CONTIGUOUS_TREE_SELECTION)
             {
               // TODO
@@ -1815,7 +1815,7 @@ public class BasicTreeUI
           else
             {
               BasicTreeUI.this.tree.getSelectionModel().setSelectionMode
-                (treeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+                (TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
               BasicTreeUI.this.tree.addSelectionRow(row);
             }
         }		
