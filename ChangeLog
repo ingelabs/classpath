@@ -1,5 +1,10 @@
 2005-07-07  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/JTable.java:
+	(clearSelection): Added clearing of columns as well as rows.
+
+2005-07-07  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/plaf/basic/BasicTableUI.java:
 	(MouseInputHandler.mousePressed): Added check for control being pressed
 	and mouse clicked on already selected cell.  In this case, deselect

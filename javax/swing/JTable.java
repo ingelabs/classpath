@@ -893,6 +893,7 @@ public class JTable extends JComponent
   public void clearSelection()
   {
     selectionModel.clearSelection();
+    getColumnModel().getSelectionModel().clearSelection();
   }
 
   /**
