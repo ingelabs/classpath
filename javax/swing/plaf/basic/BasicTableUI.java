@@ -113,7 +113,8 @@ public class BasicTableUI
           ListSelectionModel rowModel = table.getSelectionModel();
           if (lo_row != -1 && hi_row != -1)
             {
-              if (controlPressed && rowModel.getSelectionMode() != ListSelectionModel.SINGLE_SELECTION)
+              if (controlPressed && rowModel.getSelectionMode() 
+                  != ListSelectionModel.SINGLE_SELECTION)
                 rowModel.addSelectionInterval(lo_row, hi_row);
               else
                 rowModel.setSelectionInterval(lo_row, hi_row);
@@ -124,10 +125,12 @@ public class BasicTableUI
         {
           int lo_col = table.columnAtPoint(begin);
           int hi_col = table.columnAtPoint(curr);
-          ListSelectionModel colModel = table.getColumnModel().getSelectionModel();
+          ListSelectionModel colModel = table.getColumnModel().
+            getSelectionModel();
           if (lo_col != -1 && hi_col != -1)
             {
-              if (controlPressed && colModel.getSelectionMode() != ListSelectionModel.SINGLE_SELECTION)
+              if (controlPressed && colModel.getSelectionMode() != 
+                  ListSelectionModel.SINGLE_SELECTION)
                 colModel.addSelectionInterval(lo_col, hi_col);
               else
                 colModel.setSelectionInterval(lo_col, hi_col);
@@ -156,7 +159,19 @@ public class BasicTableUI
     {
       begin = new Point(e.getX(), e.getY());
       curr = new Point(e.getX(), e.getY());
-      updateSelection(e.isControlDown());
+      //if control is pressed and the cell is already selected, deselect it
+      if (e.isControlDown() && table.
+          isCellSelected(table.rowAtPoint(begin),table.columnAtPoint(begin)))
+        {                                       
+          table.getSelectionModel().
+            removeSelectionInterval(table.rowAtPoint(begin), 
+                                    table.rowAtPoint(begin));
+          table.getColumnModel().getSelectionModel().
+            removeSelectionInterval(table.columnAtPoint(begin), 
+                                    table.columnAtPoint(begin));
+        }
+      else
+        updateSelection(e.isControlDown());
       
     }
     public void mouseReleased(MouseEvent e) 
