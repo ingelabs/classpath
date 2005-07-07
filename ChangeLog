@@ -1,3 +1,29 @@
+2005-07-07  Roman Kennke  <roman@kennke.org>
+
+	* gnu/java/awt/FocusManager.java: New class. Provides a concrete
+	implementation of javax.swing.FocusManager so that we can support
+	the old-style FocusManager in Swing and AWT.
+	* gnu/classpath/SystemProperties.java: Add new system property
+	gnu.java.awt.FocusManager that sets the class that should be used
+	as the default FocusManager in AWT and Swing.
+	* java/awt/KeyboardFocusManager.java
+	(setCurrentKeyboardFocusManager): Use createFocusManager instead
+	of creating the instance directly.
+	(createFocusManager): New method. Instantiate a KeyboardFocusManager
+	that is set by the system property gnu.java.awt.FocusManager.
+	* javax/swing.FocusManager.java
+	(constructor): Call super() here.
+	(getCurrentManager): Return the current AWT KeyboardFocusManager
+	here.
+	(setCurrentManager): Set the current AWT KeyboardFocusManager
+	here.
+	(processKeyEvent): Removed method. This is no longer in the
+	API.
+	(focusNextComponent): Removed method. This is no longer in the
+	API.
+	(focusPreviousComponent): Removed method. This is no longer in the
+	API.
+
 2005-07-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JProgressBar.java
