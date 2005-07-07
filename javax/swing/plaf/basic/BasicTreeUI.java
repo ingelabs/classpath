@@ -678,8 +678,17 @@ public class BasicTreeUI
     */
    public int getRowCount(JTree tree)
    {
-      // FIXME: check visibility
-      return treeState.getRowCount();
+      DefaultMutableTreeNode node = ((DefaultMutableTreeNode) (tree.getModel())
+            .getRoot());
+      int count = 0;
+      
+      while (node != null)
+      {
+         count++;
+         node = getNextVisibleNode(node);
+      }
+      
+      return count;
    }
 
    /**
@@ -1286,8 +1295,26 @@ public class BasicTreeUI
     */
    public Dimension getPreferredSize(JComponent c, boolean checkConsistancy)
    {
-      // FIXME: not implemented
-      return new Dimension(200, 900);
+      // FIXME: checkConsistancy not implemented, c not used
+      DefaultMutableTreeNode node = ((DefaultMutableTreeNode) (tree.getModel())
+            .getRoot());
+      int maxWidth = 0;
+      int count = 0;
+      if (node != null)
+      {
+         maxWidth = (int) (getCellBounds(0, 0, node).getWidth());
+         while (node != null)
+         {
+            count++;
+            DefaultMutableTreeNode nextNode = node.getNextNode();
+            if (nextNode != null)
+               maxWidth = Math.max(maxWidth, (int) (getCellBounds(0, 0, nextNode)
+                     .getWidth()));
+            node = nextNode;
+         }
+      }
+      
+      return new Dimension(maxWidth, (getRowHeight() * count));
    }
 
    /**
@@ -1300,7 +1327,7 @@ public class BasicTreeUI
    public Dimension getMinimumSize(JComponent c)
    {
       // FIXME: not implemented
-      return new Dimension(200, 900);
+      return getPreferredSize(c);
    }
 
    /**
@@ -1313,7 +1340,7 @@ public class BasicTreeUI
    public Dimension getMaximumSize(JComponent c)
    {
       // FIXME: not implemented
-      return new Dimension(200, 900);
+      return getPreferredSize(c);
    }
 
    /**
@@ -2351,12 +2378,16 @@ public class BasicTreeUI
     */
    private Rectangle getCellBounds(int x, int y, Object cell)
    {
-      String s = cell.toString();
-      Font f = tree.getFont();
-      FontMetrics fm = tree.getToolkit().getFontMetrics(tree.getFont());
+      if (cell != null)
+      {
+         String s = cell.toString();
+         Font f = tree.getFont();
+         FontMetrics fm = tree.getToolkit().getFontMetrics(tree.getFont());
 
-      return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s), fm
-            .getHeight());
+         return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s),
+               fm.getHeight());
+      }
+      return null;
    }
 
    /**
@@ -2454,6 +2485,7 @@ public class BasicTreeUI
       int halfHeight = getRowHeight() / 2;
       int halfWidth = rightChildIndent / 2;
       int y0 = descent + halfHeight;
+      int heightOfLine = descent + halfHeight;
 
       if (mod.isLeaf(curr))
       {
@@ -2474,23 +2506,21 @@ public class BasicTreeUI
             for (int i = 0; i < max; ++i)
             {
                g.setColor(getHashColor());
-               g.drawLine(indentation + halfWidth, descent + halfHeight,
-                     indentation + rightChildIndent, descent + halfHeight);
+               heightOfLine = descent + halfHeight;
+               g.drawLine(indentation + halfWidth, heightOfLine,
+                     indentation + rightChildIndent, heightOfLine);
                descent = paintRecursive(g, indentation + rightChildIndent,
                      descent, i, depth + 1, tree, mod, mod.getChild(curr, i));
             }
       }
 
-      int y1 = descent - halfHeight;
-
       if (tree.isExpanded(new TreePath(((DefaultMutableTreeNode) curr)
             .getPath())))
-         if (y0 != y1)
+         if (y0 != heightOfLine)
          {
             g.setColor(getHashColor());
-            g
-                  .drawLine(indentation + halfWidth, y0, indentation
-                        + halfWidth, y1);
+            g.drawLine(indentation + halfWidth, y0, indentation + halfWidth,
+                  heightOfLine);
          }
       return descent;
    }

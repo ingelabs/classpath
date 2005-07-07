@@ -1,4 +1,16 @@
 2005-07-07  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getRowCount): Implemented
+	(getPreferredSize): Implemented
+	(getMinimumSize): Implemented
+	(getMaximumSize): Implemented
+	(getCellBounds): checked if parameter is null
+	(paintRecursive): added in a variable to keep track of the 
+	length of vertical line to be drawn. Now paints tree nicely.
+
+2005-07-07  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	Formatted code so else's are on new lines
 
