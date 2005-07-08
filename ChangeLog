@@ -1,3 +1,8 @@
+2005-07-08  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java: new file, implements 
+	core tree icons.
+	
 2005-07-08  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
