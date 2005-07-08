@@ -13,8 +13,10 @@ compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_GCJ
+# Since we don't feed all classes at once gcj needs to know where to find
+# the generated classes (in top_builddir).
 JAVAC = $(srcdir)/split-for-gcj.sh && $(MAKE) -f $(srcdir)/Makefile.gcj \
-    GCJ='$(GCJ)' compile_classpath='$(compile_classpath)'
+    GCJ='$(GCJ)' compile_classpath='$(top_builddir):$(compile_classpath)'
 else
 if FOUND_JIKES
 JAVAC = $(JIKES) +Pno-shadow +Pno-switchcheck +F $(JIKESENCODING) -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
@@ -116,7 +118,7 @@ compile-classes: classes $(JAVA_SRCS) Makefile
 	$(JAVAC)
 	touch compile-classes
 
-EXTRA_DIST = standard.omit mkcollections.pl.in
+EXTRA_DIST = standard.omit mkcollections.pl.in Makefile.gcj split-for-gcj.sh
 CLEANFILES = compile-classes resources classes \
 	classes.standard classes.awt classes.standardx classes.xml \
 	glibj.zip classes.1 \
@@ -129,6 +131,8 @@ clean-local:
 	-rm -rf javax
 	-rm -rf org
 	-rm -rf META-INF
+	-rm -rf lists
+	-rm -f Makefile.deps
 
 dist-hook:
 	mkdir -p $(distdir)
