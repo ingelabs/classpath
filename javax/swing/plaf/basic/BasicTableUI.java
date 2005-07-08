@@ -50,12 +50,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.CellRendererPane;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.TableUI;
@@ -76,6 +78,12 @@ public class BasicTableUI
   protected MouseInputListener	mouseInputListener;   
   protected CellRendererPane rendererPane;   
   protected JTable table;
+
+  /** The normal cell border. */
+  Border cellBorder;
+
+  /** The cell border for selected/highlighted cells. */
+  Border highlightCellBorder;
 
   class FocusHandler implements FocusListener
   {
@@ -221,6 +229,9 @@ public class BasicTableUI
     table.setSelectionForeground(defaults.getColor("Table.selectionForeground"));
     table.setSelectionBackground(defaults.getColor("Table.selectionBackground"));
     table.setOpaque(true);
+
+    highlightCellBorder = defaults.getBorder("Table.focusCellHighlightBorder");
+    cellBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
   }
   protected void installKeyboardActions() 
   {
@@ -320,6 +331,14 @@ public class BasicTableUI
                 Component comp = table.prepareRenderer(rend, r, c);
                 gfx.translate(x, y);
                 comp.setBounds(new Rectangle(0, 0, width, height));
+                // Set correct border on cell renderer.
+                if (comp instanceof JComponent)
+                  {
+                    if (table.isCellSelected(r, c))
+                      ((JComponent) comp).setBorder(highlightCellBorder);
+                    else
+                      ((JComponent) comp).setBorder(cellBorder);
+                  }
                 comp.paint(gfx);
                 gfx.translate(-x, -y);
               }

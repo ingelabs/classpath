@@ -826,7 +826,8 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "Table.focusCellBackground", new ColorUIResource(light),
       "Table.focusCellForeground", new ColorUIResource(darkShadow),
       "Table.focusCellHighlightBorder",
-      new BorderUIResource.LineBorderUIResource(Color.white),
+      new BorderUIResource.LineBorderUIResource(
+                                             new ColorUIResource(255, 255, 0)),
       "Table.font", new FontUIResource("Dialog", Font.PLAIN, 12),
       "Table.foreground", new ColorUIResource(darkShadow),
       "Table.gridColor", new ColorUIResource(Color.gray),

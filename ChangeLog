@@ -1,3 +1,12 @@
+2005-07-08  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(installDefaults): Initialize cell borders.
+	(paint): Set correct cell border before painting.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefault): Corrected color value for the
+	Table.focusCellHighlightBorder UIResource.
+
 2005-07-07  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/ObjectStreamClass.java
