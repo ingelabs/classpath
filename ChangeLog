@@ -1,3 +1,19 @@
+2005-07-08  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicButtonUI.java: minor API doc fixes,
+	* javax/swing/plaf/basic/BasicComboBoxEditor.java: likewise,
+	* javax/swing/plaf/basic/BasicGraphicsUtils.java: likewise,
+	* javax/swing/plaf/basic/BasicLabelUI.java: likewise,
+	* javax/swing/plaf/basic/BasicListUI.java: likewise,
+	* javax/swing/plaf/basic/BasicLookAndFeel.java: likewise,
+	* javax/swing/plaf/basic/BasicMenuBarUI.java: likewise,
+	* javax/swing/plaf/basic/BasicMenuUI.java: likewise,
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java: likewise,
+	* javax/swing/plaf/basic/BasicScrollBarUI.java: likewise,
+	* javax/swing/plaf/basic/BasicSpinnerUI.java: likewise,
+	* javax/swing/plaf/basic/BasicSplitPaneDivider.java: likewise,
+	* javax/swing/plaf/basic/BasicToolTipUI.java: likewise.
+	
 2005-07-08  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/filechooser/FileSystemView.java:
