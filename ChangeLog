@@ -1,3 +1,9 @@
+2005-07-08  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/filechooser/FileSystemView.java:
+	(getFiles): Added check for non-existent directory, in which case
+	default to home directory.
+
 2005-07-08  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java: new file, implements 
