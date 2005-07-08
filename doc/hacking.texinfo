@@ -458,12 +458,12 @@ java.lang.StrictMath.
 @chapter Programming Standards
 
 For C source code, follow the
-@uref{http://www.fsf.org/prep/standards_toc.html,GNU Coding Standards}.
+@uref{http://www.gnu.org/prep/standards/,GNU Coding Standards}.
 The standards also specify various things like the install directory
 structure.  These should be followed if possible.
 
 For Java source code, please follow the
-@uref{http://www.fsf.org/prep/standards_toc.html,GNU Coding
+@uref{http://www.gnu.org/prep/standards/,GNU Coding
 Standards}, as much as possible.  There are a number of exceptions to
 the GNU Coding Standards that we make for GNU Classpath as documented
 in this guide.  We will hopefully be providing developers with a code
@@ -484,7 +484,7 @@ guidelines more tailored to GNU Classpath as part of this document.
 
 Here is a list of some specific rules used when hacking on GNU
 Classpath java source code. We try to follow the standard
-@uref{http://www.gnu.org/prep/standards_23.html,GNU Coding Standards}
+@uref{http://www.gnu.org/prep/standards/,GNU Coding Standards}
 for that. There are lots of tools that can automatically generate it
 (although most tools assume C source, not java source code) and it
 seems as good a standard as any. There are a couple of exceptions and
