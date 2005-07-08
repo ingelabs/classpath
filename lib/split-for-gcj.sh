@@ -13,7 +13,7 @@ for dir in java javax gnu org; do
       f2=`echo "$file" | sed -n -e "s,^.*/\($dir/.*\)$,\1,p"`
       f2=${f2%.java}.class
       echo "$f2: ${list}.stamp" >> Makefile.deps
-      echo "${list}.stamp: $file" >> Makefile.deps
+      echo "${list}.list: $file" >> Makefile.deps
    done
 done
 

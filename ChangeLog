@@ -1,3 +1,8 @@
+2005-07-08  Tom Tromey  <tromey@redhat.com>
+
+	* lib/split-for-gcj.sh: Make list file depend on source file.
+	* lib/Makefile.gcj (%.stamp): Set target name to stamp file.
+
 2005-07-08  Aaron Luchko  <aluchko@redhat.com>
 	* doc/hacking.texinfo: Fixed broken links to GNU Coding
 	Standards to point to http://www.gnu.org/prep/standards/

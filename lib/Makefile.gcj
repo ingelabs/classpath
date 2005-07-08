@@ -7,8 +7,8 @@
 all_list_files := $(shell echo lists/*.list)
 # The corresponding stamp files.
 # Each .class file depends on its package's stamp file.
-# Each list file depends on the java files in its package.
 # Each stamp file depends on the corresponding list file.
+# Each list file depends on the java files in its package.
 # This way touching a single java source will cause the minimum
 # number of rebuilds.
 all_stamp_files := $(all_list_files:.list=.stamp)
@@ -24,7 +24,9 @@ GCJF = $(GCJ) -Wno-deprecated --encoding=UTF-8 \
     --bootclasspath '' --classpath $(compile_classpath) \
     -C -d .
 
-# Rule to rebuild a stamp file and update the deps file.
+# Rule to rebuild a stamp file and update the deps file.  Note that we
+# make the target be the stamp file.  This ensures that if a needed
+# source is changed, this rule is re-run for the appropriate package.
 %.stamp: %.list
-	$(GCJF) -MD -MF ${@:.stamp=.deps} @$<
+	$(GCJF) -MD -MF ${@:.stamp=.deps} -MT $@ @$<
 	echo timestamp > $@
