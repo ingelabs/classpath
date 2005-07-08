@@ -1,3 +1,8 @@
+2005-07-07  Robert Schuster <robertschuster@fsfe.org>
+
+	* javax/swing/JMenu.java
+	(setSelected): Added isEnabled() to expression.
+
 2005-07-07  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/util/Signature.java
