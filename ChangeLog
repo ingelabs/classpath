@@ -1,3 +1,9 @@
+2005-07-08  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicFileChooserUI.java:
+	(ApproveSelectionAction.actionPerformed): Allow directories to be
+	selected unless selection mode is FILES_ONLY.
+
 2005-07-08  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicButtonUI.java: minor API doc fixes,
