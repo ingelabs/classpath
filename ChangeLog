@@ -1,3 +1,9 @@
+2005-07-08  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(getDefaults): Call theme.addCustomEntriesToTable() only once
+	during initialization of the defaults table.
+
 2005-07-08  Mark Wielaard  <mark@klomp.org>
 
 	* lib/Makefile.am (FOUND_GCJ): Add top_builddir to compile_classpath.
