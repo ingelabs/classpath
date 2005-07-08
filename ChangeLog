@@ -1,3 +1,8 @@
+2005-07-07  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/io/ObjectStreamClass.java
+	(findAccessibleMethod): Added code to make method accessible.
+
 2005-07-07  Robert Schuster <robertschuster@fsfe.org>
 
 	* javax/swing/JMenu.java
