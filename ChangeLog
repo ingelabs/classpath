@@ -1,3 +1,18 @@
+2005-07-09  Casey Marshall  <csm@gnu.org>
+
+	* java/util/logging/FileHandler.java
+	(written): new field.
+	(logFiles): new field.
+	(<init>): initialize the OutputStream last.
+	(createFileStream): made non-static; append '.%g' to 'pattern'
+	if not included; open existing files if 'append' is set; return
+	byte-counting stream; use 'has', not 'String.indexOf'.
+	(publish): rotate the file if we go beyond the byte limit; flush
+	the stream after publishing each record.
+	(rotate): new method.
+	(has): new method.
+	(ostr): new member class.
+
 2005-07-08  Tom Tromey  <tromey@redhat.com>
 
 	* lib/split-for-gcj.sh: Make list file depend on source file.
