@@ -1,5 +1,11 @@
 2005-07-10  Dalibor Topic  <robilad@kaffe.org>
 
+        * java/io/ObjectOutputStream.java
+        (getObjectField): Clarified error checking code, and
+        improved exception messages.
+
+2005-07-10  Dalibor Topic  <robilad@kaffe.org>
+
         * java/io/ObjectOutputStream.java (DEBUG): New constant.
         (ObjectOutputStream, writeObject) Use internal debug switch.
 
