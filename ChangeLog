@@ -1,5 +1,11 @@
 2005-07-10  Dalibor Topic  <robilad@kaffe.org>
 
+	* java/io/ObjectInputStream.java (DEBUG): 
+	New private static field.
+	(ObjectInputStream, resolveClass) Use DEBUG.
+
+2005-07-10  Dalibor Topic  <robilad@kaffe.org>
+
         * java/awt/GridBagLayout.java:
         (addLayoutComponent) Improved error message.
 
