@@ -1,3 +1,15 @@
+2005-07-10  Casey Marshall  <csm@gnu.org>
+
+	* gnu/classpath/debug/Component.java: new file.
+	* gnu/classpath/debug/PreciseFilter.java: new file.
+	* gnu/classpath/debug/SystemLogger.java: new file.
+	* gnu/java/security/x509/X509Certificate.java
+	(DEBUG, debug, debug): removed.
+	(logger): new constant; use 'logger' with 'Component.X509'
+	for debug messages throughout.
+	(parse): always read the next DER value after reading the
+	version-specific values.
+
 2005-07-10  Dalibor Topic  <robilad@kaffe.org>
 
         * java/io/ObjectOutputStream.java: Updated copyright 
