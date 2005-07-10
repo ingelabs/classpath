@@ -1,5 +1,5 @@
 /* gnu_java_nio_channels_FileChannelImpl.c -
-   Copyright (C) 2003, 2004  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -51,6 +51,10 @@ exception statement from your version. */
 #include "target_native_math_int.h"
 
 #include "gnu_java_nio_channels_FileChannelImpl.h"
+
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h>
+#endif /* HAVE_FCNTL_H */
 
 /* These values must be kept in sync with FileChannelImpl.java.  */
 #define FILECHANNELIMPL_READ   1
@@ -686,28 +690,72 @@ Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (JNIEnv * env,
 }
 
 JNIEXPORT jboolean JNICALL
-Java_gnu_java_nio_channels_FileChannelImpl_lock (JNIEnv * env,
-						 jobject obj
-						 __attribute__ ((__unused__)),
-						 jlong position
-						 __attribute__ ((__unused__)),
-						 jlong size
-						 __attribute__ ((__unused__)),
-						 jboolean shared
-						 __attribute__ ((__unused__)),
-						 jboolean wait
-						 __attribute__ ((__unused__)))
+Java_gnu_java_nio_channels_FileChannelImpl_lock (JNIEnv *env, jobject obj,
+                                                 jlong position, jlong size,
+                                                 jboolean shared, jboolean wait)
 {
-  JCL_ThrowException (env, IO_EXCEPTION,
-		      "java.nio.FileChannelImpl.lock(): not implemented");
-  return 0;
+#ifdef HAVE_FCNTL
+  int fd = get_native_fd (env, obj);
+  int cmd = wait ? F_SETLKW : F_SETLK;
+  struct flock flock;
+  int ret;
+
+  flock.l_type = shared ? F_RDLCK : F_WRLCK;
+  flock.l_whence = SEEK_SET;
+  flock.l_start = (off_t) position;
+  flock.l_len = (off_t) size;
+
+  ret = fcntl (fd, cmd, &flock);
+  if (ret)
+    {
+      /* Linux man pages for fcntl state that errno might be either
+         EACCES or EAGAIN if we try F_SETLK, and another process has
+         an overlapping lock. */
+      if (errno != EACCES && errno != EAGAIN)
+        {
+          JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
+        }
+      return JNI_FALSE;
+    }
+  return JNI_TRUE;
+#else
+  (void) obj;
+  (void) position;
+  (void) size;
+  (void) shared;
+  (void) wait;
+  JCL_ThrowException (env, "java/lang/UnsupportedOperationException",
+                      "file locks not implemented on this platform");
+  return JNI_FALSE;
+#endif /* HAVE_FCNTL */
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_nio_channels_FileChannelImpl_unlock (JNIEnv * env,
-						   jobject obj
-						   __attribute__ ((__unused__)), jlong position __attribute__ ((__unused__)), jlong length __attribute__ ((__unused__)))
+Java_gnu_java_nio_channels_FileChannelImpl_unlock (JNIEnv *env,
+                                                   jobject obj,
+                                                   jlong position,
+                                                   jlong length)
 {
-  JCL_ThrowException (env, IO_EXCEPTION,
-		      "java.nio.FileChannelImpl.unlock(): not implemented");
+#ifdef HAVE_FCNTL
+  int fd = get_native_fd (env, obj);
+  struct flock flock;
+  int ret;
+
+  flock.l_type = F_UNLCK;
+  flock.l_whence = SEEK_SET;
+  flock.l_start = (off_t) position;
+  flock.l_len = (off_t) length;
+
+  ret = fcntl (fd, F_SETLK, &flock);
+  if (ret)
+    {
+      JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
+    }
+#else
+  (void) obj;
+  (void) position;
+  (void) length;
+  JCL_ThrowException (env, "java/lang/UnsupportedOperationException",
+                      "file locks not implemented on this platform");
+#endif /* HAVE_FCNTL */
 }

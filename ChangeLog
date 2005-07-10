@@ -1,5 +1,15 @@
 2005-07-10  Casey Marshall  <csm@gnu.org>
 
+	* configure.ac (AC_CHECK_HEADERS): add 'fcntl.h'.
+	(AC_CHECK_FUNCS): add 'fcntl'.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannel.c:
+	Include <fcntl.h> if HAVE_FCNTL_H.
+	(Java_gnu_java_nio_channels_FileChannelImpl_lock,
+	Java_gnu_java_nio_channels_FileChannelImpl_unlock): implemented
+	if HAVE_FCNTL.
+
+2005-07-10  Casey Marshall  <csm@gnu.org>
+
 	* gnu/classpath/debug/Component.java: new file.
 	* gnu/classpath/debug/PreciseFilter.java: new file.
 	* gnu/classpath/debug/SystemLogger.java: new file.
