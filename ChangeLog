@@ -1,3 +1,10 @@
+2005-07-10  Dalibor Topic  <robilad@kaffe.org>
+
+	* gnu/java/text/FormatCharacterIterator.java:
+	Removed unnecessary import of gnu.classpath.Configuration.
+	(DEBUG) New private static field.
+	(debug, dumpTable) Use DEBUG.
+
 2005-07-09  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/transform/AbstractNumberNode.java,
