@@ -8,6 +8,7 @@ sinclude $(JAVA_DEPEND)
 propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org META-INF -type d ! -name CVS -print)
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -name \*\.properties -print)
 metafiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) META-INF -path \*/CVS -prune -o -type f -print)
+iconfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu -name *.png -type f -print)
 
 compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax:.:$(USER_CLASSLIB)
 
@@ -57,6 +58,7 @@ install-data-local: genclasses compile-classes
 	cp -R javax $(DESTDIR)$(pkgdatadir)
 	cp -R org $(DESTDIR)$(pkgdatadir)
 	cp -R META-INF $(DESTDIR)$(pkgdatadir)
+	cp -R icons $(DESTDIR)$(pkgdatadir)
 
 # FIXME - should mimic doc/api/Makefile.am instead...
 uninstall-local:
@@ -65,6 +67,7 @@ uninstall-local:
 	rm -rf $(DESTDIR)$(pkgdatadir)/javax
 	rm -rf $(DESTDIR)$(pkgdatadir)/org
 	rm -rf $(DESTDIR)$(pkgdatadir)/META-INF
+	rm -rf $(DESTDIR)$(pkgdatadir)/icons
 
 endif # INSTALL_CLASS_FILES
 
@@ -77,6 +80,7 @@ resources:
 	if ! [ -e gnu ]; then mkdir gnu; fi
 	if ! [ -e gnu/java ]; then mkdir gnu/java; fi
 	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
+	if ! [ -e gnu/icons ]; then mkdir gnu/icons; fi
 	@list='$(propertydirs)'; for p in $$list; do \
 	  if ! [ -e $$p ]; then mkdir $$p; fi; \
 	done
@@ -84,6 +88,9 @@ resources:
 	  cp $(top_srcdir)/resource/$$p $$p; \
 	done
 	@list='$(metafiles)'; for p in $$list; do \
+	  cp $(top_srcdir)/resource/$$p $$p; \
+	done
+	@list='$(iconfiles)'; for p in $$list; do \
 	  cp $(top_srcdir)/resource/$$p $$p; \
 	done
 	touch resources
