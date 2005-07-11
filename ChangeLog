@@ -1,5 +1,10 @@
 2005-07-11  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/io/DataOutput.java: fixed minor API doc errors,
+	* java/io/LineNumberInputStream.java: likewise.
+
+2005-07-11  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalIconFactory.java
 	(HorizontalSliderThumbIcon): new inner class,
 	(VerticalSliderThumbIcon): new inner class,
