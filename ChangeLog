@@ -1,3 +1,14 @@
+2005-07-11  Lillian Angel  <langel@redhat.com>
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getPreviousVisibleNode): Implemented
+	(selectPath): helper method, implemented.
+	(keyPressed): handles up/down/left/right keys
+	(mouseClicked): made more efficent and implemented double 
+	clicking for folders.
+	* javax/swing/JTree.java
+	(clearSelection): Lead selection path is set to null when 
+	nothing is currently selected.
+
 2005-07-11  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicMenuUI.java:
