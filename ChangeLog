@@ -1,3 +1,11 @@
+2005-07-11  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicMenuUI.java:
+	(MouseHandler.popupVisible): new method.
+	(MouseHandler.mouseEntered): Removed check for menu being armed to
+	comply with reference implementation.  Calls popupVisible to check
+	for menus with their popup menu visible.
+
 2005-07-11  Mark Wielaard  <mark@klomp.org>
 
 	* java/net/DatagramSocket.java (getImpl): Record cause of Exception.
