@@ -391,7 +391,7 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_copyState
       g->jarray = (*env)->NewGlobalRef (env, g_old->jarray);
       g->javabuf = (*env)->GetIntArrayElements (env, g->jarray, &g->isCopy);
       g->isCopy = JNI_TRUE;
-      g->javabuf_copy = (jint *) malloc (size);
+      g->javabuf_copy = (jint *) g_malloc (size);
       memcpy (g->javabuf_copy, g->javabuf, size);
       g->surface = cairo_image_surface_create_for_data ((unsigned char *) g->javabuf,
 						         CAIRO_FORMAT_ARGB32,
@@ -450,7 +450,7 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_initState___3III
       /* We didn't get direct access to the pixel buffer, so we'll have to
          maintain a separate copy for Cairo. */
       jint size = gr->width * gr->height * 4;
-      gr->javabuf_copy = (jint *) malloc (size);
+      gr->javabuf_copy = (jint *) g_malloc (size);
       memcpy (gr->javabuf_copy, gr->javabuf, size);
       cairobuf = gr->javabuf_copy;
     }
@@ -677,7 +677,7 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_dispose
     {
       (*env)->DeleteGlobalRef (env, gr->jarray);
       if (gr->javabuf_copy)
-        free (gr->javabuf_copy);
+        g_free (gr->javabuf_copy);
     }
 
   if (gr->debug) printf ("disposed of graphics2d\n");
@@ -804,7 +804,7 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_setGradient
     cairo_surface_destroy (gr->pattern_surface);
 
   if (gr->pattern_pixels)
-    free (gr->pattern_pixels);
+    g_free (gr->pattern_pixels);
   
   gr->pattern_pixels = NULL;  
   gr->pattern_surface = surf;  
@@ -843,13 +843,13 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_setTexturePixels
     cairo_surface_destroy (gr->pattern_surface);
 
   if (gr->pattern_pixels)
-    free (gr->pattern_pixels);
+    g_free (gr->pattern_pixels);
 
   gr->pattern = NULL;
   gr->pattern_surface = NULL;
   gr->pattern_pixels = NULL;
 
-  gr->pattern_pixels = (char *) malloc (h * stride * 4);
+  gr->pattern_pixels = (char *) g_malloc (h * stride * 4);
   g_assert (gr->pattern_pixels != NULL);
 
   jpixels = (*env)->GetIntArrayElements (env, jarr, NULL);
@@ -1183,7 +1183,7 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoDrawGlyphVector
 
   install_font_peer(gr->cr, pfont, gr->debug);
 
-  glyphs = malloc( sizeof(cairo_glyph_t) * n);
+  glyphs = g_malloc( sizeof(cairo_glyph_t) * n);
   g_assert (glyphs != NULL);
 
   native_codes = (*env)->GetIntArrayElements (env, java_codes, NULL);

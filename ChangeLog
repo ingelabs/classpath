@@ -1,5 +1,8 @@
 2005-07-11  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c:
+	Replace occurrences of malloc with g_malloc and free with g_free.
+
 	* gnu/java/awt/peer/gtk/GtkChoicePeer.java (connectSignals): New method.
 	* include/gnu_java_awt_peer_gtk_GtkChoicePeer.h: Regenerate.
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c: Move
