@@ -1,3 +1,25 @@
+2005-07-11  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c:
+	Whenever an ExceptionOccurred just return to throw it, don't mask.
+	* native/jni/java-net/javanet.c (_javanet_get_netaddr): Check for
+	NULL addr.
+	(_javanet_create): Explicitly close socket on failure.
+	(_javanet_close): Save error message and retry closing when
+	interrupted before throwing exception.
+	(_javanet_connect): Keep retrying connect after system call
+	interrupted. First construct exception before cleanup.
+	(_javanet_bind): Save error string for exception.
+	(_javanet_accept): Explicitly close socket on failure.
+	(_javanet_recvfrom): Throw SocketTimeoutException when timed out.
+	(_javanet_sendto): Send all data even when interrupted.
+	(_javanet_set_option): Don't ignore error when setting SO_TIMEOUT.
+	* native/target/generic/target_generic_network.h
+	(TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT): Use timeval for
+	setsockopt.
+	(TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_TIMEOUT): Likewise for
+	getsockopt.
+
 2005-07-11  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicMenuUI.java:

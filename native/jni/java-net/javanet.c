@@ -377,6 +377,13 @@ _javanet_get_netaddr (JNIEnv * env, jobject addr)
 
   DBG ("_javanet_get_netaddr(): Entered _javanet_get_netaddr\n");
 
+  if (addr == NULL)
+    {
+      JCL_ThrowException (env, "java/lang/NullPointerException",
+			  "Null address");
+      return 0;
+    }
+
   /* Call the getAddress method on the object to retrieve the IP address */
   cls = (*env)->GetObjectClass (env, addr);
   if (cls == NULL)
@@ -473,6 +480,22 @@ _javanet_create (JNIEnv * env, jobject this, jboolean stream)
   else
     _javanet_set_int_field (env, this, "gnu/java/net/PlainDatagramSocketImpl",
 			    "native_fd", fd);
+
+  if ((*env)->ExceptionOccurred (env))
+    {
+      /* Try to make sure we close the socket since close() won't work. */
+      do
+	{
+	  TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
+	  if (result != TARGET_NATIVE_OK
+	      && (TARGET_NATIVE_LAST_ERROR ()
+		  != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL))
+	    return;
+	}
+      while (result != TARGET_NATIVE_OK);
+      return;
+    }
+
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -489,6 +512,7 @@ _javanet_close (JNIEnv * env, jobject this, int stream)
 #ifndef WITHOUT_NETWORK
   int fd;
   int result;
+  int error = 0;
 
   assert (env != NULL);
   assert ((*env) != NULL);
@@ -497,14 +521,27 @@ _javanet_close (JNIEnv * env, jobject this, int stream)
   if (fd == -1)
     return;
 
-  TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
-
   if (stream)
     _javanet_set_int_field (env, this, "gnu/java/net/PlainSocketImpl",
 			    "native_fd", -1);
   else
     _javanet_set_int_field (env, this, "gnu/java/net/PlainDatagramSocketImpl",
 			    "native_fd", -1);
+  do
+    {
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
+      if (result != TARGET_NATIVE_OK)
+	{
+	  /* Only throw an error when a "real" error occurs. */
+	  error = TARGET_NATIVE_LAST_ERROR ();
+	  if (error != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL
+	      && error != ENOTCONN && error != ECONNRESET && error != EBADF)
+	    JCL_ThrowException (env, IO_EXCEPTION,
+				TARGET_NATIVE_LAST_ERROR_STRING ());
+	}
+    }
+  while (error == TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL);
+
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -548,13 +585,20 @@ _javanet_connect (JNIEnv * env, jobject this, jobject addr, jint port)
   DBG ("_javanet_connect(): Got native fd\n");
 
   /* Connect up */
-  TARGET_NATIVE_NETWORK_SOCKET_CONNECT (fd, netaddr, port, result);
-  if (result != TARGET_NATIVE_OK)
+  do
     {
-      JCL_ThrowException (env, IO_EXCEPTION,
-			  TARGET_NATIVE_LAST_ERROR_STRING ());
-      return;
+      TARGET_NATIVE_NETWORK_SOCKET_CONNECT (fd, netaddr, port, result);
+      if (result != TARGET_NATIVE_OK
+	  && (TARGET_NATIVE_LAST_ERROR ()
+	      != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL))
+	{
+	  JCL_ThrowException (env, IO_EXCEPTION,
+			      TARGET_NATIVE_LAST_ERROR_STRING ());
+	  return;
+	}
     }
+  while (result != TARGET_NATIVE_OK);
+
   DBG ("_javanet_connect(): Connected successfully\n");
 
   /* Populate instance variables */
@@ -562,15 +606,17 @@ _javanet_connect (JNIEnv * env, jobject this, jobject addr, jint port)
 					       result);
   if (result != TARGET_NATIVE_OK)
     {
-      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
       JCL_ThrowException (env, IO_EXCEPTION,
 			  TARGET_NATIVE_LAST_ERROR_STRING ());
+      /* We don't care whether this succeeds. close() will cleanup later. */
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
       return;
     }
 
   _javanet_create_localfd (env, this);
   if ((*env)->ExceptionOccurred (env))
     {
+      /* We don't care whether this succeeds. close() will cleanup later. */
       TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
       return;
     }
@@ -580,6 +626,7 @@ _javanet_connect (JNIEnv * env, jobject this, jobject addr, jint port)
 			  local_port);
   if ((*env)->ExceptionOccurred (env))
     {
+      /* We don't care whether this succeeds. close() will cleanup later. */
       TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
       return;
     }
@@ -589,9 +636,10 @@ _javanet_connect (JNIEnv * env, jobject this, jobject addr, jint port)
 						remote_port, result);
   if (result != TARGET_NATIVE_OK)
     {
-      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
       JCL_ThrowException (env, IO_EXCEPTION,
 			  TARGET_NATIVE_LAST_ERROR_STRING ());
+      /* We don't care whether this succeeds. close() will cleanup later. */
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
       return;
     }
 
@@ -605,6 +653,7 @@ _javanet_connect (JNIEnv * env, jobject this, jobject addr, jint port)
     }
   if ((*env)->ExceptionOccurred (env))
     {
+      /* We don't care whether this succeeds. close() will cleanup later. */
       TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
       return;
     }
@@ -614,6 +663,7 @@ _javanet_connect (JNIEnv * env, jobject this, jobject addr, jint port)
 			  remote_port);
   if ((*env)->ExceptionOccurred (env))
     {
+      /* We don't care whether this succeeds. close() will cleanup later. */
       TARGET_NATIVE_NETWORK_SOCKET_CLOSE (fd, result);
       return;
     }
@@ -698,15 +748,18 @@ _javanet_bind (JNIEnv * env, jobject this, jobject addr, jint port,
 						octets[3], tmpaddr);
   TARGET_NATIVE_NETWORK_SOCKET_BIND (fd, tmpaddr, port, result);
 
-  (*env)->ReleaseByteArrayElements (env, arr, octets, 0);
-
   if (result != TARGET_NATIVE_OK)
     {
+      char *errorstr = TARGET_NATIVE_LAST_ERROR_STRING ();
+      (*env)->ReleaseByteArrayElements (env, arr, octets, 0);
+
       JCL_ThrowException (env, BIND_EXCEPTION,
-			  TARGET_NATIVE_LAST_ERROR_STRING ());
+			  errorstr);
       return;
     }
   DBG ("_javanet_bind(): Past bind\n");
+
+  (*env)->ReleaseByteArrayElements (env, arr, octets, 0);
 
   /* Update instance variables, specifically the local port number */
   TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO (fd, local_address, local_port,
@@ -816,7 +869,16 @@ _javanet_accept (JNIEnv * env, jobject this, jobject impl)
 
   if ((*env)->ExceptionOccurred (env))
     {
-      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (newfd, result);
+      /* Try to make sure we close the socket since close() won't work. */
+      do
+	{
+	  TARGET_NATIVE_NETWORK_SOCKET_CLOSE (newfd, result);
+	  if (result != TARGET_NATIVE_OK
+	      && (TARGET_NATIVE_LAST_ERROR ()
+		  != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL))
+	    return;
+	}
+      while (result != TARGET_NATIVE_OK);
       return;
     }
 
@@ -824,6 +886,7 @@ _javanet_accept (JNIEnv * env, jobject this, jobject impl)
 					       local_port, result);
   if (result != TARGET_NATIVE_OK)
     {
+      /* We don't care whether this succeeds. close() will cleanup later. */
       TARGET_NATIVE_NETWORK_SOCKET_CLOSE (newfd, result);
       JCL_ThrowException (env, IO_EXCEPTION,
 			  TARGET_NATIVE_LAST_ERROR_STRING ());
@@ -833,6 +896,7 @@ _javanet_accept (JNIEnv * env, jobject this, jobject impl)
   _javanet_create_localfd (env, impl);
   if ((*env)->ExceptionOccurred (env))
     {
+      /* We don't care whether this succeeds. close() will cleanup later. */
       TARGET_NATIVE_NETWORK_SOCKET_CLOSE (newfd, result);
       return;
     }
@@ -841,6 +905,7 @@ _javanet_accept (JNIEnv * env, jobject this, jobject impl)
 			  local_port);
   if ((*env)->ExceptionOccurred (env))
     {
+      /* We don't care whether this succeeds. close() will cleanup later. */
       TARGET_NATIVE_NETWORK_SOCKET_CLOSE (newfd, result);
       return;
     }
@@ -849,15 +914,17 @@ _javanet_accept (JNIEnv * env, jobject this, jobject impl)
 						remote_port, result);
   if (result != TARGET_NATIVE_OK)
     {
-      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (newfd, result);
       JCL_ThrowException (env, IO_EXCEPTION,
 			  TARGET_NATIVE_LAST_ERROR_STRING ());
+      /* We don't care whether this succeeds. close() will cleanup later. */
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE (newfd, result);
       return;
     }
 
   _javanet_set_remhost (env, impl, remote_address);
   if ((*env)->ExceptionOccurred (env))
     {
+      /* We don't care whether this succeeds. close() will cleanup later. */
       TARGET_NATIVE_NETWORK_SOCKET_CLOSE (newfd, result);
       return;
     }
@@ -866,6 +933,7 @@ _javanet_accept (JNIEnv * env, jobject this, jobject impl)
 			  remote_port);
   if ((*env)->ExceptionOccurred (env))
     {
+      /* We don't care whether this succeeds. close() will cleanup later. */
       TARGET_NATIVE_NETWORK_SOCKET_CLOSE (newfd, result);
       return;
     }
@@ -945,14 +1013,20 @@ _javanet_recvfrom (JNIEnv * env, jobject this, jarray buf, int offset,
 	 (TARGET_NATIVE_LAST_ERROR () ==
 	  TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL));
 
-  (*env)->ReleaseByteArrayElements (env, buf, p, 0);
-
   if (received_bytes == -1)
     {
-      JCL_ThrowException (env, IO_EXCEPTION,
-			  TARGET_NATIVE_LAST_ERROR_STRING ());
+      if (TARGET_NATIVE_LAST_ERROR () == EAGAIN)
+	JCL_ThrowException (env, "java/net/SocketTimeoutException", "Timeout");
+      else
+	JCL_ThrowException (env, IO_EXCEPTION,
+			    TARGET_NATIVE_LAST_ERROR_STRING ());
+ 
+      /* Cleanup and return. */
+      (*env)->ReleaseByteArrayElements (env, buf, p, 0);
       return 0;
     }
+
+  (*env)->ReleaseByteArrayElements (env, buf, p, 0);
 
   /* Handle return addr case */
   if (addr != NULL)
@@ -1004,29 +1078,42 @@ _javanet_sendto (JNIEnv * env, jobject this, jarray buf, int offset, int len,
   if (p == NULL)
     return;
 
-  /* Send the data */
-  if (addr == 0)
+  /* We must send all the data, so repeat till done. */
+  while (len > 0)
     {
-      DBG ("_javanet_sendto(): Sending....\n");
-      TARGET_NATIVE_NETWORK_SOCKET_SEND (fd, p + offset, len, bytes_sent);
-    }
-  else
-    {
-      DBG ("_javanet_sendto(): Sending....\n");
-      TARGET_NATIVE_NETWORK_SOCKET_SEND_WITH_ADDRESS_PORT (fd, p + offset,
-							   len, addr, port,
-							   bytes_sent);
+      /* Send the data */
+      if (addr == 0)
+	{
+	  DBG ("_javanet_sendto(): Sending....\n");
+	  TARGET_NATIVE_NETWORK_SOCKET_SEND (fd, p + offset, len, bytes_sent);
+	}
+      else
+	{
+	  DBG ("_javanet_sendto(): Sending....\n");
+	  TARGET_NATIVE_NETWORK_SOCKET_SEND_WITH_ADDRESS_PORT (fd, p + offset,
+							       len, addr, port,
+							       bytes_sent);
+	}
+
+      if (bytes_sent < 0)
+	{
+	  if (TARGET_NATIVE_LAST_ERROR ()
+	      != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL)
+	    {
+	      JCL_ThrowException (env, IO_EXCEPTION,
+				  TARGET_NATIVE_LAST_ERROR_STRING ());
+	      break;
+	    }
+	}
+      else
+	{
+	  len -= bytes_sent;
+	  addr += bytes_sent;
+	}
     }
 
   (*env)->ReleaseByteArrayElements (env, buf, p, 0);
 
-  /***** Do we need to check EINTR? */
-  if (bytes_sent < 0)
-    {
-      JCL_ThrowException (env, IO_EXCEPTION,
-			  TARGET_NATIVE_LAST_ERROR_STRING ());
-      return;
-    }
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
 }
@@ -1139,9 +1226,9 @@ _javanet_set_option (JNIEnv * env, jobject this, jint option_id, jobject val)
 	return;
 
       TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT (fd, optval, result);
-#endif
-      /* ignore errors and do not throw an exception. */
+#else
       result = TARGET_NATIVE_OK;
+#endif
       break;
 
     case SOCKOPT_SO_SNDBUF:
@@ -1326,7 +1413,6 @@ _javanet_get_option (JNIEnv * env, jobject this, jint option_id)
 			      TARGET_NATIVE_LAST_ERROR_STRING ());
 	  return (0);
 	}
-
       return (_javanet_create_integer (env, optval));
 #else
       JCL_ThrowException (env, SOCKET_EXCEPTION,

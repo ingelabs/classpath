@@ -1,5 +1,5 @@
 /* target_generic_network.h - Native methods for network operations.
-   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2004, 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -668,9 +668,10 @@ Systems    : all
   #include <sys/socket.h>
   #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT(socketDescriptor,flag,result) \
     do { \
-      int __value; \
+      struct timeval __value; \
       \
-      __value=flag; \
+      __value.tv_sec = flag / 1000; \
+      __value.tv_usec = (flag % 1000) * 1000; \
       result=(setsockopt(socketDescriptor,SOL_SOCKET,SO_TIMEOUT,&__value,sizeof(__value))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
 #endif
@@ -682,7 +683,7 @@ Systems    : all
 *              size             - size of send buffer
 * Output     : result - TARGET_NATIVE_OK if no error occurred, 
 *                       TARGET_NATIVE_ERROR otherwise
-* Return     : -
+* Return     : -
 * Side-effect: unknown
 * Notes      : -
 \***********************************************************************/
@@ -989,7 +990,7 @@ Systems    : all
   #include <sys/socket.h>
   #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_TIMEOUT(socketDescriptor,flag,result) \
     do { \
-      int       __value; \
+      struct timeval   __value; \
       socklen_t __len; \
       \
       flag=0; \
@@ -998,7 +999,7 @@ Systems    : all
       result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_TIMEOUT,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        flag=__value; \
+        flag = (__value.tv_sec * 1000LL) + (__value.tv_usec / 1000LL); \
       } \
     } while (0)
 #endif

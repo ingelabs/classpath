@@ -207,7 +207,9 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0 (JNIEnv * env, jobject obj,
     }
 
   arr = (*env)->CallObjectMethod (env, packet, mid);
-  if ((arr == NULL) || (*env)->ExceptionOccurred (env))
+  if ((*env)->ExceptionOccurred (env))
+    return;
+  if (arr == NULL)
     {
       JCL_ThrowException (env, IO_EXCEPTION, "Internal error: call getData");
       return;
@@ -223,11 +225,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0 (JNIEnv * env, jobject obj,
 
   offset = (*env)->CallIntMethod (env, packet, mid);
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION,
-			  "Internal error: call getOffset");
-      return;
-    }
+    return;
 
   DBG ("PlainDatagramSocketImpl.receive(): Got the offset\n");
 
@@ -241,16 +239,15 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0 (JNIEnv * env, jobject obj,
 
   maxlen = (*env)->GetIntField (env, packet, fid);
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION, "Internal error: call length");
-      return;
-    }
+    return;
 
   /* Receive the packet */
   /* should we try some sort of validation on the length? */
   bytes_read =
     _javanet_recvfrom (env, obj, arr, offset, maxlen, &addr, &port);
-  if ((bytes_read == -1) || (*env)->ExceptionOccurred (env))
+  if ((*env)->ExceptionOccurred (env))
+    return;
+  if (bytes_read == -1)
     {
       JCL_ThrowException (env, IO_EXCEPTION, "Internal error: receive");
       return;
@@ -292,11 +289,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0 (JNIEnv * env, jobject obj,
 
   addr_obj = (*env)->CallStaticObjectMethod (env, addr_cls, mid, ip_str_obj);
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION,
-			  "Internal error: call getByName");
-      return;
-    }
+    return;
 
   mid = (*env)->GetMethodID (env, cls, "setAddress",
 			     "(Ljava/net/InetAddress;)V");
@@ -308,11 +301,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0 (JNIEnv * env, jobject obj,
 
   (*env)->CallVoidMethod (env, packet, mid, addr_obj);
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION,
-			  "Internal error: call setAddress");
-      return;
-    }
+    return;
 
   DBG ("PlainDatagramSocketImpl.receive(): Stored the address\n");
 
@@ -326,10 +315,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0 (JNIEnv * env, jobject obj,
 
   (*env)->CallVoidMethod (env, packet, mid, port);
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION, "Internal error: call setPort");
-      return;
-    }
+    return;
 
   DBG ("PlainDatagramSocketImpl.receive(): Stored the port\n");
 
@@ -343,10 +329,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0 (JNIEnv * env, jobject obj,
 
   (*env)->SetIntField (env, packet, fid, bytes_read);
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION, "Internal error: call length");
-      return;
-    }
+    return;
 
   DBG ("PlainDatagramSocketImpl.receive(): Stored the length\n");
 #else /* not WITHOUT_NETWORK */
@@ -372,20 +355,13 @@ Java_gnu_java_net_PlainDatagramSocketImpl_sendto (JNIEnv * env, jobject obj,
 
   netAddress = _javanet_get_netaddr (env, addr);
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION,
-			  "Internal error: get network address");
-      return;
-    }
+    return;
 
   DBG ("PlainDatagramSocketImpl.sendto(): have addr\n");
 
   _javanet_sendto (env, obj, buf, offset, len, netAddress, port);
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION, "Internal error: send data");
-      return;
-    }
+    return;
 
   DBG ("PlainDatagramSocketImpl.sendto(): finished\n");
 #else /* not WITHOUT_NETWORK */
@@ -411,17 +387,11 @@ Java_gnu_java_net_PlainDatagramSocketImpl_join (JNIEnv * env, jobject obj,
 
   netAddress = _javanet_get_netaddr (env, addr);
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION, "Internal error");
-      return;
-    }
+    return;
 
   fd = _javanet_get_int_field (env, obj, "native_fd");
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION, "Internal error");
-      return;
-    }
+    return;
 
   DBG ("PlainDatagramSocketImpl.join(): have native fd\n");
 
@@ -459,17 +429,11 @@ Java_gnu_java_net_PlainDatagramSocketImpl_leave (JNIEnv * env, jobject obj,
 
   netAddress = _javanet_get_netaddr (env, addr);
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION, "Internal error");
-      return;
-    }
+    return;
 
   fd = _javanet_get_int_field (env, obj, "native_fd");
   if ((*env)->ExceptionOccurred (env))
-    {
-      JCL_ThrowException (env, IO_EXCEPTION, "Internal error");
-      return;
-    }
+    return;
 
   DBG ("PlainDatagramSocketImpl.leave(): have native fd\n");
 
