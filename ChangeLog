@@ -1,5 +1,9 @@
 2005-07-11  Mark Wielaard  <mark@klomp.org>
 
+	* java/net/DatagramSocket.java (getImpl): Record cause of Exception.
+
+2005-07-11  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c:
 	Whenever an ExceptionOccurred just return to throw it, don't mask.
 	* native/jni/java-net/javanet.c (_javanet_get_netaddr): Check for
