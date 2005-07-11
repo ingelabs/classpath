@@ -1,3 +1,8 @@
+2005-07-12  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * javax/swing/text/html/parser/ParserDelegator.java (gnuParser.getDTD):
+        Added explicit field reference.
+
 2005-07-11  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/lang/IllegalAccessException.java: fixed minor API doc errors,
