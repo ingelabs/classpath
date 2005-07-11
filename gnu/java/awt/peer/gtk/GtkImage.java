@@ -252,7 +252,7 @@ public class GtkImage extends Image
 
     if (width <= 0 || height <= 0 || pixels == null)
       {
-	isError = true;
+	errorLoading = true;
 	return;
       }
 
