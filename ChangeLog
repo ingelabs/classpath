@@ -1,3 +1,14 @@
+2005-07-11  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JMenu.java:
+	(setSelectedHelper): new method.
+	(setSelected): Code moved to setSelectedHelper. Calls
+	setSelectedHelper(selected,true,false) which doesn't expand the popup
+	menu and works whether the menu is enabled or not.
+	(menuSelectionChanged): Changed call to setSelected(changed) to 
+	setSelectedHelper(changed,isEnabled(),true) which does expand the
+	popup menu, but only if the menu is enabled.
+
 2005-07-10  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/nio/channels/FileChannelImpl.java (force): New native
