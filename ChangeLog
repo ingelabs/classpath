@@ -1,5 +1,13 @@
 2005-07-11  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/plaf/basic/BasicMenuUI.java:
+	(MouseInputHandler.mouseEntered): Added check: if a different menu in
+	the menubar was selected, we don't select this one unless the old one
+	had its popup menu showing.  This complies with the reference
+	implementation.
+
+2005-07-11  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/JMenu.java:
 	(setSelectedHelper): new method.
 	(setSelected): Code moved to setSelectedHelper. Calls
