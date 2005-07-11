@@ -1,3 +1,11 @@
+2005-07-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(HorizontalSliderThumbIcon): new inner class,
+	(VerticalSliderThumbIcon): new inner class,
+	(getHorizontalSliderThumbIcon): implemented,
+	(getVerticalSliderThumbIcon): implemented.
+
 2005-07-11  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GtkImage.java:
