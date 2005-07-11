@@ -1,3 +1,9 @@
+2005-07-11  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/JInternalFrame.java
+	(addImpl): Add to the frame itself if we are in the init
+	stage, otherwise add to the contentPane.
+
 2005-07-11  Lillian Angel  <langel@redhat.com>
 	* examples/gnu/classpath/examples/swing/Demo.java
 	(mkTree): fixed so the JTree appears properly.
