@@ -102,6 +102,7 @@ Java_gnu_java_awt_peer_gtk_GdkRobotPeer_mouseMove
 				 x, y, CurrentTime);
 
   XFlush (xdisplay);
+
   gdk_threads_leave ();
 }
 
@@ -123,6 +124,7 @@ Java_gnu_java_awt_peer_gtk_GdkRobotPeer_mousePress
 				 True, CurrentTime);
 
   XFlush (xdisplay);
+
   gdk_threads_leave ();
 }
 
@@ -144,6 +146,7 @@ Java_gnu_java_awt_peer_gtk_GdkRobotPeer_mouseRelease
 				 False, CurrentTime);
 
   XFlush (xdisplay);
+
   gdk_threads_leave ();
 }
 
@@ -182,6 +185,7 @@ Java_gnu_java_awt_peer_gtk_GdkRobotPeer_mouseWheel
       }
 
   XFlush (xdisplay);
+
   gdk_threads_leave ();
 }
 
@@ -225,6 +229,7 @@ Java_gnu_java_awt_peer_gtk_GdkRobotPeer_keyPress
   g_free (keymap_keys);
 
   XFlush (xdisplay);
+
   gdk_threads_leave ();
 }
 
@@ -268,6 +273,7 @@ Java_gnu_java_awt_peer_gtk_GdkRobotPeer_keyRelease
   g_free (keymap_keys);
 
   XFlush (xdisplay);
+
   gdk_threads_leave ();
 }
 

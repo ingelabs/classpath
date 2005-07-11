@@ -47,11 +47,11 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create
   GtkWidget *eventbox;
   const char *str;
 
+  gdk_threads_enter ();
+
   NSA_SET_GLOBAL_REF (env, obj);
 
   str = (*env)->GetStringUTFChars (env, text, 0);
-
-  gdk_threads_enter ();
 
   eventbox = gtk_event_box_new ();
   label = gtk_label_new (str);
@@ -59,11 +59,11 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create
   gtk_container_add (GTK_CONTAINER (eventbox), label);
   gtk_widget_show (label);
 
-  gdk_threads_leave ();
-
   (*env)->ReleaseStringUTFChars (env, text, str);
 
   NSA_SET_PTR (env, obj, eventbox);
+
+  gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL
@@ -75,11 +75,11 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkWidgetModifyFont
   GtkWidget *label;
   PangoFontDescription *font_desc;
 
+  gdk_threads_enter ();
+
   ptr = NSA_GET_PTR (env, obj);
 
   font_name = (*env)->GetStringUTFChars (env, name, NULL);
-
-  gdk_threads_enter ();
 
   label = gtk_bin_get_child (GTK_BIN (ptr));
 
@@ -99,9 +99,9 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkWidgetModifyFont
 
   pango_font_description_free (font_desc);
 
-  gdk_threads_leave ();
-
   (*env)->ReleaseStringUTFChars (env, name, font_name);
+
+  gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL
@@ -112,19 +112,19 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText
   void *ptr;
   GtkWidget *label;
 
+  gdk_threads_enter ();
+
   ptr = NSA_GET_PTR (env, obj);
 
   str = (*env)->GetStringUTFChars (env, text, 0);
-
-  gdk_threads_enter ();
 
   label = gtk_bin_get_child (GTK_BIN (ptr));
 
   gtk_label_set_label (GTK_LABEL (label), str);
 
-  gdk_threads_leave ();
-
   (*env)->ReleaseStringUTFChars (env, text, str);
+
+  gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL
@@ -134,9 +134,9 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_nativeSetAlignment
   void *ptr;
   GtkWidget *label;
 
-  ptr = NSA_GET_PTR (env, obj);
-
   gdk_threads_enter ();
+
+  ptr = NSA_GET_PTR (env, obj);
 
   label = gtk_bin_get_child (GTK_BIN(ptr));
 
@@ -152,9 +152,9 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setNativeBounds
   GtkWidget *widget;
   void *ptr;
 
-  ptr = NSA_GET_PTR (env, obj);
-
   gdk_threads_enter ();
+
+  ptr = NSA_GET_PTR (env, obj);
 
   widget = GTK_WIDGET (ptr);
 
