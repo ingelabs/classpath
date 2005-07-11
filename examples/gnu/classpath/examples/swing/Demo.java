@@ -524,6 +524,7 @@ public class Demo
 				 BorderLayout.CENTER);
           desk.add(f);
           f.setBounds(i, i, 250, 200);
+	  f.setVisible(true);
           i += 30;
         }
       });
