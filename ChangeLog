@@ -1,3 +1,8 @@
+2005-07-11  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JFileChooser.java (getSelectedFiles): Return an one
+	element array containing selectedFile if selectedFiles is null.
+
 2005-07-11  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
