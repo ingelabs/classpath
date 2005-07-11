@@ -1,3 +1,21 @@
+2005-07-10  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/nio/channels/FileChannelImpl.java (force): New native
+	method.
+	(force(boolean)): Call new native force method.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(Java_gnu_java_nio_channels_FileChannelImpl_read__):
+	Test for result != TARGET_NATIVE_OK as stop condition.
+	(Java_gnu_java_nio_channels_FileChannelImpl_read___3BII):
+	Check overflow and underflow. Only increase bytes_read when
+	we didn't get an error.
+	(Java_gnu_java_nio_channels_FileChannelImpl_write__I):
+	Return when we encounter an error.
+	(Java_gnu_java_nio_channels_FileChannelImpl_write___3BII):
+	Only increase bytes_written when we didn't get an error.
+	(Java_gnu_java_nio_channels_FileChannelImpl_force): New function.
+	* include/gnu_java_nio_channels_FileChannelImpl.h: Regenerated.
+
 2005-07-11  Lillian Angel  <langel@redhat.com>
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	(getCellBounds): added width of icon, so selection fits over 

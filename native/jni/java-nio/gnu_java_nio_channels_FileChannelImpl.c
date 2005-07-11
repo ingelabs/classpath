@@ -543,7 +543,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_read__ (JNIEnv * env, jobject obj)
 	  return (-1);
 	}
     }
-  while (bytes_read != 1);
+  while (result != TARGET_NATIVE_OK);
 
   return ((jint) (data & 0xFF));
 }
@@ -571,11 +571,24 @@ Java_gnu_java_nio_channels_FileChannelImpl_read___3BII (JNIEnv * env,
   if (length == 0)
     return 0;
 
+  if (offset < 0)
+    {
+      JCL_ThrowException (env, IO_EXCEPTION, "negative offset");
+      return -1;
+    }
+
   bufptr = (*env)->GetByteArrayElements (env, buffer, 0);
   if (!bufptr)
     {
       JCL_ThrowException (env, IO_EXCEPTION, "Unexpected JNI error");
       return (-1);
+    }
+
+  if (length + offset > (*env)->GetArrayLength (env, buffer))
+    {
+      JCL_ThrowException (env, IO_EXCEPTION,
+			  "length + offset > buffer.length");
+      return -1;
     }
 
   bytes_read = 0;
@@ -600,7 +613,8 @@ Java_gnu_java_nio_channels_FileChannelImpl_read___3BII (JNIEnv * env,
 	  (*env)->ReleaseByteArrayElements (env, buffer, bufptr, 0);
 	  return -1;
 	}
-      bytes_read += n;
+      if (result == TARGET_NATIVE_OK)
+	bytes_read += n;
     }
   while (bytes_read < 1);
 
@@ -634,9 +648,26 @@ Java_gnu_java_nio_channels_FileChannelImpl_write__I (JNIEnv * env,
 	{
 	  JCL_ThrowException (env, IO_EXCEPTION,
 			      TARGET_NATIVE_LAST_ERROR_STRING ());
+	  return;
 	}
     }
   while (result != TARGET_NATIVE_OK);
+}
+
+/*
+ * Copies all parts of a file to disk.
+ */
+JNIEXPORT void JNICALL
+Java_gnu_java_nio_channels_FileChannelImpl_force (JNIEnv * env,
+						  jobject obj)
+{
+  int native_fd;
+  int result;
+  native_fd = get_native_fd (env, obj);
+  TARGET_NATIVE_FILE_FSYNC (native_fd, result);
+  if (result != TARGET_NATIVE_OK)
+    JCL_ThrowException (env, IO_EXCEPTION,
+			TARGET_NATIVE_LAST_ERROR_STRING ());
 }
 
 /*
@@ -683,7 +714,8 @@ Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (JNIEnv * env,
 	  (*env)->ReleaseByteArrayElements (env, buffer, bufptr, 0);
 	  return;
 	}
-      bytes_written += n;
+      if (result == TARGET_NATIVE_OK)
+	bytes_written += n;
     }
 
   (*env)->ReleaseByteArrayElements (env, buffer, bufptr, 0);
