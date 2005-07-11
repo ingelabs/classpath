@@ -1,4 +1,8 @@
 2005-07-11  Lillian Angel  <langel@redhat.com>
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkTree): fixed so the JTree appears properly.
+
+2005-07-11  Lillian Angel  <langel@redhat.com>
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
 	Changed the default row height for the tree.
 
