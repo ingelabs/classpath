@@ -1,5 +1,13 @@
 2005-07-12  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/MediaTracker.java (checkAll): Set and check status of
+	MediaEntry with checkImage() if prepareImage() returns false.
+	(statusAll): Likewise.
+	(checkID): Likewise.
+	(statusID): Likewise.
+
+2005-07-12  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/text/JTextComponent.java
 	(CaretBlinkTimer.actionPerformed): Check that caret != null.
 	(CaretBlinkTimer.update): Likewise.
