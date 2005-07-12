@@ -1,3 +1,10 @@
+2005-07-12  Aaron Luchko  <aluchko@redhat.com>
+
+	* gnu/classpath/jdwp/processor/FieldCommandSet.java:
+	Implemented the Field CommandSet.
+	* gnu/classpath/jdwp/processor/InterFaceTypeCommandSet.java:
+	Implemented the InterfaceType CommandSet.
+
 2005-07-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicMenuItemUI.java:
