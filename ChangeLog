@@ -26,8 +26,8 @@
 	the components here (visible/enableActions). This is not the purpose of
 	a layout manager and can lead to loops. Also correct the layout
 	to be closer to the layout of the reference implementation.
-	(TitlePaneLayout.preferredLayoutSize): Return (Integer.MAX_VALUE, 17)
-	here. That is how high the title pane should be.
+	(TitlePaneLayout.preferredLayoutSize): Return (22, 18)
+	here. That is what the JDK returns for the title bar.
 	(PaneButton): Don't set the border to null.
 	(createButtons): The buttons are opaque.
 	(createButtonIcons): Don't create icons in the Basic L&F.
