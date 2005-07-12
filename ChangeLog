@@ -1,3 +1,9 @@
+2005-07-12  Mark Wielaard  <mark@klomp.org>
+
+	Reported by Simon Kitching <skitching@apache.org>
+	* java/lang/String.java (toCharArray): Return value.clone() when
+	count == value.length.
+
 2005-07-12  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         *  javax/swing/text/html/parser/ParserDelegator.java (gnuParser.getDTD):
