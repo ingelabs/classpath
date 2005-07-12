@@ -253,7 +253,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
 
       "AbstractUndoableEdit.undoText", "Undo",
       "AbstractUndoableEdit.redoText", "Redo",
-      "Button.background", new ColorUIResource(light),
+      "Button.background", new ColorUIResource(Color.LIGHT_GRAY),
       "Button.border",
       new UIDefaults.LazyValue() 
       {
@@ -262,17 +262,17 @@ public abstract class BasicLookAndFeel extends LookAndFeel
           return BasicBorders.getButtonBorder();
         }
       },
-      "Button.darkShadow", new ColorUIResource(shadow),
+      "Button.darkShadow", new ColorUIResource(Color.BLACK),
       "Button.focusInputMap", new UIDefaults.LazyInputMap(new Object[] {
         "SPACE",  "pressed",
         "released SPACE", "released"
       }),
       "Button.font", new FontUIResource("Dialog", Font.PLAIN, 12),
-      "Button.foreground", new ColorUIResource(darkShadow),
-      "Button.highlight", new ColorUIResource(highLight),
-      "Button.light", new ColorUIResource(highLight),
+      "Button.foreground", new ColorUIResource(Color.BLACK),
+      "Button.highlight", new ColorUIResource(Color.WHITE),
+      "Button.light", new ColorUIResource(Color.LIGHT_GRAY),
       "Button.margin", new InsetsUIResource(2, 2, 2, 2),
-      "Button.shadow", new ColorUIResource(shadow),
+      "Button.shadow", new ColorUIResource(Color.GRAY),
       "Button.textIconGap", new Integer(4),
       "Button.textShiftOffset", new Integer(0),
       "CheckBox.background", new ColorUIResource(light),

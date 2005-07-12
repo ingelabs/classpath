@@ -1,3 +1,8 @@
+2005-07-12  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Corrected color values for BasicL&F buttons.
+
 2005-07-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JMenu.java:
