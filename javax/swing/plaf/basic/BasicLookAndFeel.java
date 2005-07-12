@@ -47,9 +47,12 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
 
+import javax.swing.BorderFactory;
 import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
@@ -453,7 +456,24 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "InternalFrame.activeTitleBackground", new ColorUIResource(0, 0, 128),
       "InternalFrame.activeTitleForeground", new ColorUIResource(Color.white),
       "InternalFrame.border",
-      new BorderUIResource.CompoundBorderUIResource(null, null),
+      new UIDefaults.LazyValue()
+      {
+	public Object createValue(UIDefaults table)
+	{
+	  Color lineColor = new Color(238, 238, 238);
+	  Border inner = BorderFactory.createLineBorder(lineColor, 1);
+	  Color shadowInner = new Color(184, 207, 229);
+	  Color shadowOuter = new Color(122, 138, 153);
+	  Border outer = BorderFactory.createBevelBorder(BevelBorder.RAISED,
+							 Color.WHITE,
+							 Color.WHITE,
+							 shadowOuter,
+							 shadowInner);
+	  Border border = new BorderUIResource.CompoundBorderUIResource(outer,
+									inner);
+	  return border;
+	}
+      },
       "InternalFrame.borderColor", new ColorUIResource(light),
       "InternalFrame.borderDarkShadow", new ColorUIResource(Color.BLACK),
       "InternalFrame.borderHighlight", new ColorUIResource(Color.WHITE),
