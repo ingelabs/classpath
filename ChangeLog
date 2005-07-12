@@ -1,3 +1,8 @@
+2005-07-12  Aaron Luchko  <aluchko@redhat.com>
+
+	* gnu/classpath/jdwp/processor/PacketProcessor.java (run): Send
+	shutdown to Jdwp instead of JdwpConnection.
+
 2005-07-12 Lillian Angel <langel@redhat.com>
 	* javax/swing/JTree.java:
 	Formatting copyright
@@ -130,8 +135,8 @@
 
 2005-07-12  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        *  javax/swing/text/html/parser/ParserDelegator.java (gnuParser.getDTD):
-        Added comment about 'super'.
+	* javax/swing/text/html/parser/ParserDelegator.java (gnuParser.getDTD):
+	Added comment about 'super'.
 
 2005-07-11  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
@@ -175,8 +180,8 @@
 
 2005-07-12  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * javax/swing/text/html/parser/ParserDelegator.java (gnuParser.getDTD):
-        Added explicit field reference.
+	* javax/swing/text/html/parser/ParserDelegator.java (gnuParser.getDTD):
+	Added explicit field reference.
 
 2005-07-11  David Gilbert  <david.gilbert@object-refinery.com>
 
@@ -355,19 +360,19 @@
 
 2005-07-10  Dalibor Topic  <robilad@kaffe.org>
 
-        * java/io/ObjectOutputStream.java: Updated copyright 
+	* java/io/ObjectOutputStream.java: Updated copyright 
 	information for 2005.
 
 2005-07-10  Dalibor Topic  <robilad@kaffe.org>
 
-        * java/io/ObjectOutputStream.java
-        (getObjectField): Clarified error checking code, and
-        improved exception messages.
+	* java/io/ObjectOutputStream.java
+	(getObjectField): Clarified error checking code, and
+	improved exception messages.
 
 2005-07-10  Dalibor Topic  <robilad@kaffe.org>
 
-        * java/io/ObjectOutputStream.java (DEBUG): New constant.
-        (ObjectOutputStream, writeObject) Use internal debug switch.
+	* java/io/ObjectOutputStream.java (DEBUG): New constant.
+	(ObjectOutputStream, writeObject) Use internal debug switch.
 
 2005-07-10  Dalibor Topic  <robilad@kaffe.org>
 
@@ -377,8 +382,8 @@
 
 2005-07-10  Dalibor Topic  <robilad@kaffe.org>
 
-        * java/awt/GridBagLayout.java:
-        (addLayoutComponent) Improved error message.
+	* java/awt/GridBagLayout.java:
+	(addLayoutComponent) Improved error message.
 
 2005-07-10  Dalibor Topic  <robilad@kaffe.org>
 
