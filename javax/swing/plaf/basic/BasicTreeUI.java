@@ -1924,7 +1924,7 @@ public class BasicTreeUI
          {
             // nothing should be selected if user clicks outside of tree
             BasicTreeUI.this.tree.getSelectionModel().clearSelection();
-            BasicTreeUI.this.tree.revalidate();
+            BasicTreeUI.this.tree.repaint();
          }
          else if (BasicTreeUI.this.tree.isVisible(path))
          {           
@@ -2168,7 +2168,7 @@ public class BasicTreeUI
        */
       public void treeExpanded(TreeExpansionEvent event)
       {
-         BasicTreeUI.this.tree.revalidate();
+         BasicTreeUI.this.tree.repaint();
       }
 
       /**
@@ -2178,7 +2178,7 @@ public class BasicTreeUI
        */
       public void treeCollapsed(TreeExpansionEvent event)
       {
-         BasicTreeUI.this.tree.revalidate();
+         BasicTreeUI.this.tree.repaint();
       }
    }// TreeExpansionHandler
 

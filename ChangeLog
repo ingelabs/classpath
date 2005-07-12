@@ -1,6 +1,12 @@
 2005-07-12  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
+	I accidentally introduced revalidate calls for repaint calls.
+	Reverted.
+
+2005-07-12  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
 	Fixed formatting of the copyright notice.
 
 2005-07-12  Roman Kennke  <roman@kennke.org>
