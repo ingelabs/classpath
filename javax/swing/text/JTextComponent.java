@@ -322,7 +322,9 @@ public abstract class JTextComponent extends JComponent
      */
     public void actionPerformed(ActionEvent ev)
     {
-      caret.setVisible(!caret.isVisible());
+      Caret c = caret;
+      if (c != null)
+	c.setVisible(!c.isVisible());
     }
 
     /**
@@ -331,11 +333,15 @@ public abstract class JTextComponent extends JComponent
     public void update()
     {
       stop();
-      setDelay(caret.getBlinkRate());
-      if (editable)
-        start();
-      else
-        caret.setVisible(false);
+      Caret c = caret;
+      if (c != null)
+	{
+	  setDelay(c.getBlinkRate());
+	  if (editable)
+	    start();
+	  else
+	    c.setVisible(false);
+	}
     }
   }
 

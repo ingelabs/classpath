@@ -1,5 +1,11 @@
 2005-07-12  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/text/JTextComponent.java
+	(CaretBlinkTimer.actionPerformed): Check that caret != null.
+	(CaretBlinkTimer.update): Likewise.
+
+2005-07-12  Mark Wielaard  <mark@klomp.org>
+
 	Reported by Simon Kitching <skitching@apache.org>
 	* java/lang/String.java (toCharArray): Return value.clone() when
 	count == value.length.
