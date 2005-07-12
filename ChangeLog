@@ -1,3 +1,16 @@
+2005-07-12  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+	(TitlePaneLayout.layoutContainer): Do not change any state of
+	the components here (visible/enableActions). This is not the purpose of
+	a layout manager and can lead to loops. Also correct the layout
+	to be closer to the layout of the reference implementation.
+	(TitlePaneLayout.preferredLayoutSize): Return (Integer.MAX_VALUE, 17)
+	here. That is how high the title pane should be.
+	(PaneButton): Don't set the border to null.
+	(createButtons): The buttons are opaque.
+	(createButtonIcons): Don't create icons in the Basic L&F.
+
 2005-07-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JApplet.java,
