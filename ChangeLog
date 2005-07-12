@@ -1,5 +1,12 @@
 2005-07-12  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/metal/MetalTreeUI.java
+	(createUI): Return a different instance of MetalTreeUI for each
+	JTree. The TreeUI is stateful, so a shared instance would not
+	work.
+
+2005-07-12  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	I accidentally introduced revalidate calls for repaint calls.
 	Reverted.
