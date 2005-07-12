@@ -492,7 +492,6 @@ public class Demo
     l5.add(l65);
 
     final JTree tree = new JTree(root);
-    tree.setRootVisible(true);
     tree.setLargeModel(true);
     DefaultTreeSelectionModel dtsm = new DefaultTreeSelectionModel();
     dtsm.setSelectionMode(DefaultTreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -943,7 +942,6 @@ public class Demo
     child2.add(child24);
 
     JTree tree = new JTree(root);
-    tree.setRootVisible(true);
     tree.setLargeModel(true);
     DefaultTreeSelectionModel dtsm = new DefaultTreeSelectionModel();
     dtsm.setSelectionMode(DefaultTreeSelectionModel.SINGLE_TREE_SELECTION);

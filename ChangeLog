@@ -1,4 +1,9 @@
 2005-07-12 Lillian Angel <langel@redhat.com>
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkTree): no need to make root visible, it is by default
+	(mkTreeWorld): no need to make root visible, it is by default	 
+
+2005-07-12 Lillian Angel <langel@redhat.com>
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	(paintLeaf): fixed size of selection background to depend on 
 	if icon exists
