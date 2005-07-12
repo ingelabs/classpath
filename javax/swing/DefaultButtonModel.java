@@ -318,6 +318,7 @@ public class DefaultButtonModel implements ButtonModel, Serializable
   {
     int oldstate = stateMask;
     int newstate;
+    boolean toggle = (this instanceof JToggleButton.ToggleButtonModel);
 
     if (b)
       newstate = oldstate | stateflag;
@@ -339,6 +340,12 @@ public class DefaultButtonModel implements ButtonModel, Serializable
       {
         fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED,
                                            null, ItemEvent.SELECTED));
+        // If the button is a toggle button then we fire action performed when
+        // the button changes state (selected/deselected), not when it changes
+        // from pressed to unpressed
+        if (toggle)
+          fireActionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+                                              actionCommand));
         if (group != null)
           group.setSelected(this, true);
       }
@@ -347,12 +354,18 @@ public class DefaultButtonModel implements ButtonModel, Serializable
       {
         fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED,
                                            null, ItemEvent.DESELECTED));
+        // If the button is a toggle button then we fire action performed when
+        // the button changes state (selected/deselected), not when it changes
+        // from pressed to unpressed
+        if (toggle)
+          fireActionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
+                                              actionCommand));
         if (group != null)
           group.setSelected(this, false);
       }
 
     else if (((oldstate & ARMED) == ARMED && (oldstate & PRESSED) == PRESSED)
-             && ((newstate & ARMED) == ARMED && (newstate & PRESSED) == 0))
+             && ((newstate & ARMED) == ARMED && (newstate & PRESSED) == 0) && (!toggle))
       fireActionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
                                           actionCommand));
   }

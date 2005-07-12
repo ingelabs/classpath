@@ -1,3 +1,11 @@
+2005-07-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/DefaultButtonModel.java:
+	(changeState): If the button is a JToggleButton fire action events
+	when it changes between (selected/unselected) not when it changes
+	from pressed to unpressed.  Fire action events after firing
+	ItemStateChanged events.
+
 2005-07-12  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/processor/PacketProcessor.java (run): Send
