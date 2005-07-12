@@ -1218,6 +1218,7 @@ public class BasicTreeUI
       installDefaults((JTree) c);
       tree = (JTree) c;
       setModel(tree.getModel());
+      tree.setRootVisible(true);
       treeSelectionModel = tree.getSelectionModel();
       installListeners();
       installKeyboardActions();
@@ -1942,7 +1943,7 @@ public class BasicTreeUI
                   BasicTreeUI.this.tree.fireTreeExpanded(path);
                }
             }
-            
+
             BasicTreeUI.this.selectPath(BasicTreeUI.this.tree, path);
          }
       }
@@ -2489,8 +2490,8 @@ public class BasicTreeUI
          Font f = tree.getFont();
          FontMetrics fm = tree.getToolkit().getFontMetrics(tree.getFont());
          
-         return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s)
-               + 22, fm.getHeight());
+         return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s),
+               fm.getHeight());
       }
       return null;
    }

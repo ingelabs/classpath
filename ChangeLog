@@ -1,3 +1,14 @@
+2005-07-12 Lillian Angel <langel@redhat.com>
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	Took out icon defaults.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(installUI): set root to visible
+	(getCellBounds): took out addition to width since there may not be an icon.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java:
+	Added in icon defaults
+	* lib/Makefile.am:
+	Fixed so icons are installed for the JTree
+
 2005-07-12  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java:

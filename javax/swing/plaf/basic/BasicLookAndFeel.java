@@ -47,7 +47,6 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
 
-import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
@@ -55,7 +54,6 @@ import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.InsetsUIResource;
 import javax.swing.text.JTextComponent;
 
@@ -1019,18 +1017,9 @@ public abstract class BasicLookAndFeel extends LookAndFeel
         "ctrl PAGE_DOWN", "scrollDownChangeLead"
       }),
       "Tree.font", new FontUIResource("Dialog", Font.PLAIN, 12),
-      "Tree.closedIcon",
-         new IconUIResource(new ImageIcon(getClass().getResource(
-            "/gnu/javax/swing/plaf/gtk/icons/TreeClosed.png"))),
       "Tree.foreground", new ColorUIResource(Color.black),
       "Tree.hash", new ColorUIResource(Color.gray),
-      "Tree.leafIcon", 
-         new IconUIResource(new ImageIcon(getClass().getResource(
-            "/gnu/javax/swing/plaf/gtk/icons/TreeLeaf.png"))),
       "Tree.leftChildIndent", new Integer(7),
-      "Tree.openIcon", 
-         new IconUIResource(new ImageIcon(getClass().getResource(
-            "/gnu/javax/swing/plaf/gtk/icons/TreeOpen.png"))),
       "Tree.rightChildIndent", new Integer(13),
       "Tree.rowHeight", new Integer(19),
       "Tree.scrollsOnExpand", Boolean.TRUE,

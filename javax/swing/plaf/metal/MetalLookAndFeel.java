@@ -41,9 +41,11 @@ package javax.swing.plaf.metal;
 import java.awt.Color;
 import java.awt.Insets;
 
+import javax.swing.ImageIcon;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
 public class MetalLookAndFeel extends BasicLookAndFeel
@@ -503,12 +505,19 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       new ColorUIResource(getPrimaryControlDarkShadow()),
       "ScrollBar.thumbHighlight",
       new ColorUIResource(getPrimaryControl()),
-
       "SplitPane.darkShadow",
       new ColorUIResource(getControlDarkShadow()),
       "SplitPane.highlight",
       new ColorUIResource(getControlHighlight()),
-
+      "Tree.openIcon", 
+         new IconUIResource(new ImageIcon(getClass().getResource(
+         "/gnu/javax/swing/plaf/gtk/icons/TreeOpen.png"))),
+      "Tree.leafIcon", 
+         new IconUIResource(new ImageIcon(getClass().getResource(
+            "/gnu/javax/swing/plaf/gtk/icons/TreeLeaf.png"))),  
+      "Tree.closedIcon",
+         new IconUIResource(new ImageIcon(getClass().getResource(
+         "/gnu/javax/swing/plaf/gtk/icons/TreeClosed.png"))),
       "PopupMenu.border", new MetalBorders.PopupMenuBorder()
     };
     defaults.putDefaults(myDefaults);
