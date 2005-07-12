@@ -253,11 +253,29 @@ public class BasicInternalFrameTitlePane extends JComponent
      */
     public void propertyChange(PropertyChangeEvent evt)
     {
-      // The title and frameIcon are taken care of during painting time.
-      // The only other thing this will care about are the "is----izable"
-      // properties. So we call enable actions to properly handle the 
-      // buttons and menu items for us.
-      enableActions();
+      String propName = evt.getPropertyName();
+      if (propName.equals("closable"))
+	{
+	  if (evt.getNewValue().equals(Boolean.TRUE))
+	    closeButton.setVisible(true);
+	  else
+	    closeButton.setVisible(false);
+	}
+      else if (propName.equals("iconifiable"))
+	{
+	  if (evt.getNewValue().equals(Boolean.TRUE))
+	    iconButton.setVisible(true);
+	  else
+	    iconButton.setVisible(false);
+	}
+      else if (propName.equals("maximizable"))
+	{
+	  if (evt.getNewValue().equals(Boolean.TRUE))
+	    maxButton.setVisible(true);
+	  else
+	    maxButton.setVisible(false);
+	}
+	
     }
   }
 
@@ -508,110 +526,14 @@ public class BasicInternalFrameTitlePane extends JComponent
   /** Inactive foreground color. */
   protected Color inactiveFGColor;
 
-  // FIXME: These icons need to be moved to MetalIconFactory.
-
-  /** The size of the icons in the buttons. */
-  private static final int iconSize = 16;
-
-  /** The icon displayed in the close button. */
-  protected Icon closeIcon = new Icon()
-    {
-      public int getIconHeight()
-      {
-	return iconSize;
-      }
-
-      public int getIconWidth()
-      {
-	return iconSize;
-      }
-
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-	g.translate(x, y);
-	Color saved = g.getColor();
-	g.setColor(Color.BLACK);
-
-	int four = iconSize / 4;
-	int six = iconSize * 6 / 16;
-	int ten = iconSize * 10 / 16;
-	int twelve = iconSize * 12 / 16;
-
-	Polygon a = new Polygon(new int[] { four, six, ten, twelve },
-	                        new int[] { six, four, twelve, ten }, 4);
-	Polygon b = new Polygon(new int[] { four, six, ten, twelve },
-	                        new int[] { ten, twelve, four, six }, 4);
-
-	g.fillPolygon(a);
-	g.fillPolygon(b);
-
-	g.setColor(saved);
-	g.translate(-x, -y);
-      }
-    };
-
-  // FIXME: Create new icon.
-
   /** The icon displayed in the restore button. */
-  protected Icon minIcon;
+  protected Icon minIcon = BasicIconFactory.createEmptyFrameIcon();
 
   /** The icon displayed in the maximize button. */
-  protected Icon maxIcon = new Icon()
-    {
-      public int getIconHeight()
-      {
-	return iconSize;
-      }
-
-      public int getIconWidth()
-      {
-	return iconSize;
-      }
-
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-	g.translate(x, y);
-	Color saved = g.getColor();
-	g.setColor(Color.BLACK);
-
-	int four = iconSize / 4;
-	int two = four / 2;
-	int six = iconSize * 6 / 16;
-	int eight = four * 2;
-
-	g.fillRect(four, four, eight, two);
-	g.drawRect(four, six, eight, six);
-
-	g.setColor(saved);
-	g.translate(-x, -y);
-      }
-    };
+  protected Icon maxIcon = BasicIconFactory.createEmptyFrameIcon();
 
   /** The icon displayed in the iconify button. */
-  protected Icon iconIcon = new Icon()
-    {
-      public int getIconHeight()
-      {
-	return iconSize;
-      }
-
-      public int getIconWidth()
-      {
-	return iconSize;
-      }
-
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-	g.translate(x, y);
-	Color saved = g.getColor();
-	g.setColor(Color.BLACK);
-
-	g.fillRect(iconSize / 4, iconSize * 10 / 16, iconSize / 2, iconSize / 8);
-
-	g.setColor(saved);
-	g.translate(-x, -y);
-      }
-    };
+  protected Icon iconIcon = BasicIconFactory.createEmptyFrameIcon();
 
   /** The JInternalFrame that this TitlePane is used in. */
   protected JInternalFrame frame;
@@ -781,8 +703,14 @@ public class BasicInternalFrameTitlePane extends JComponent
   protected void createButtons()
   {
     closeButton = new PaneButton(closeAction);
+    if (!frame.isClosable())
+      closeButton.setVisible(false);
     iconButton = new PaneButton(iconifyAction);
+    if (!frame.isIconifiable())
+      iconButton.setVisible(false);
     maxButton = new PaneButton(maximizeAction);
+    if (!frame.isMaximizable())
+      maxButton.setVisible(false);
   }
 
   /**
