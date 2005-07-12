@@ -2516,11 +2516,16 @@ public class BasicTreeUI
       if (tree.isVisible(curr))
          if (selected)
          {
-            Component comp = tree.getCellRenderer()
-                  .getTreeCellRendererComponent(tree, leaf, true, false, true,
-                        0, false);
-            rendererPane.paintComponent(g, comp, tree,
-                  getCellBounds(x, y, leaf));
+            DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) 
+                                                   tree.getCellRenderer();
+            Component comp = dtcr.getTreeCellRendererComponent(tree, leaf,
+                  true, false, true, 0, false);
+            
+            Rectangle cb = getCellBounds(x, y, leaf);
+            Icon li = dtcr.getLeafIcon(); 
+            if (li != null)
+               cb.width = ((int) cb.getWidth()) + li.getIconWidth() + 4;
+            rendererPane.paintComponent(g, comp, tree, cb);
          }
          else
          {
@@ -2552,11 +2557,17 @@ public class BasicTreeUI
       if (tree.isVisible(curr))
          if (selected)
          {
-            Component comp = tree.getCellRenderer()
-                  .getTreeCellRendererComponent(tree, nonLeaf, true, expanded,
-                        false, 0, false);
-            rendererPane.paintComponent(g, comp, tree, getCellBounds(x, y,
-                  nonLeaf));
+            DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) 
+            tree.getCellRenderer();            
+            Component comp = dtcr.getTreeCellRendererComponent(tree, nonLeaf,
+                  true, expanded, false, 0, false);
+            
+            Rectangle cb = getCellBounds(x, y,
+                  nonLeaf);
+            Icon oi = dtcr.getOpenIcon(); 
+            if (oi != null)
+               cb.width = ((int) cb.getWidth()) + oi.getIconWidth() + 4;            
+            rendererPane.paintComponent(g, comp, tree, cb);
          }
          else
          {

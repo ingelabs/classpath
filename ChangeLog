@@ -1,3 +1,10 @@
+2005-07-12 Lillian Angel <langel@redhat.com>
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(paintLeaf): fixed size of selection background to depend on 
+	if icon exists
+	(paintNonLeaf): fixed size of selection background to depend on
+	if icon exists
+
 2005-07-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/DefaultButtonModel.java:
