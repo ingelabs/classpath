@@ -1035,6 +1035,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "Tree.rowHeight", new Integer(19),
       "Tree.scrollsOnExpand", Boolean.TRUE,
       "Tree.selectionBackground", new ColorUIResource(Color.black),
+      "Tree.nonSelectionBackground", new ColorUIResource(light),
       "Tree.selectionBorderColor", new ColorUIResource(Color.black),
       "Tree.selectionForeground", new ColorUIResource(Color.white),
       "Tree.textBackground", new ColorUIResource(Color.white),

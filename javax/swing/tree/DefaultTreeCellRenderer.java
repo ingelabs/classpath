@@ -136,7 +136,7 @@ public class DefaultTreeCellRenderer
 		setTextNonSelectionColor(defaults.getColor("Tree.textForeground"));
 		setTextSelectionColor(defaults.getColor("Tree.selectionForeground"));
 		setBackgroundNonSelectionColor(defaults
-				.getColor("Tree.textBackground"));
+				.getColor("Tree.nonSelectionBackground"));
 		setBackgroundSelectionColor(defaults
 				.getColor("Tree.selectionBackground"));
 		setBorderSelectionColor(defaults
@@ -401,7 +401,7 @@ public class DefaultTreeCellRenderer
 		}
 		else
 		{
-			super.setBackground((tree.getParent()).getBackground());
+			super.setBackground(getBackgroundNonSelectionColor());
 			setForeground(getTextNonSelectionColor());
 		}		
 		

@@ -2489,7 +2489,6 @@ public class BasicTreeUI
          Font f = tree.getFont();
          FontMetrics fm = tree.getToolkit().getFontMetrics(tree.getFont());
          
-         // add 22 to width for icon, FIXME later
          return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s)
                + 22, fm.getHeight());
       }
