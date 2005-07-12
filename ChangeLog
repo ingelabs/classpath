@@ -1,3 +1,12 @@
+2005-07-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JMenu.java:
+	(isSelected): Call super.isSelected() instead of super.isArmed().
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	(paintMenuItem): Replaced incorrect selection criteria with call to
+	isSelected().
+	(paintText): Likewise.
+
 2005-07-12  Lillian Angel  <langel@redhat.com>
 	* examples/gnu/classpath/examples/swing/Demo.java
 	(mkTreeWorld): Implemented
