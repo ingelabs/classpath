@@ -1,3 +1,12 @@
+2005-07-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JApplet.java,
+	* javax/swing/JDialog.java,
+	* javax/swing/JFrame.java,
+	* javax/swing/JWindow.java:
+	(addImpl): Add to the frame itself if we are in the init
+	stage, otherwise add to the contentPane.
+
 2005-07-12  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/MediaTracker.java (checkAll): Set and check status of
