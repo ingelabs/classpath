@@ -1,3 +1,18 @@
+2005-07-13  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/DefaultButtonModel.java:
+	(changeState): Removed this helper method.
+	(setArmed): Replaced call to changeState by code specific to setArmed.
+	(setEnabled): Likewise, for setEnabled.
+	(setPressed): Likewise, for setPressed.
+	(setRollover): Likewise, for setRollover.
+	(setSelected): Likewise, for setSelected.
+	* javax/swing/JToggleButton.java:
+	(ToggleButtonModel.setPressed): Replaced call to super.setPressed with
+	Toggle-specific code.
+	(ToggleButtonModel.setSelected): New method.  Fire an ActionEvent in
+	addition to calling super.setSelected.
+
 2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/accessibility/AccessibleComponent.java: minor API doc fixes,
