@@ -1,5 +1,14 @@
 2005-07-13  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/AbstractButton.java: Minimal documentation fixes.
+	(getActionCommand): Returns button's label when
+	actionCommand is null.
+	* javax/swing/JButton.java,
+	javax/swing/JToggleButton.java: Removed explicit call to
+	setActionCommand in constructors.
+
+2005-07-13  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/JToggleButton.java:
 	(paramString): Returns value of same method in superclass now.
 	* javax/swing/JRadioButton.java:

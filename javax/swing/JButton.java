@@ -79,7 +79,6 @@ public class JButton extends AbstractButton
   {
     super(text, icon);
     setModel(new DefaultButtonModel());
-    setActionCommand(text);
   }
 
   public Object[] getSelectedObjects()

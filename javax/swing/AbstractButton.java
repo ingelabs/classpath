@@ -598,17 +598,22 @@ public abstract class AbstractButton extends JComponent
  }
  
   /**
-   * Get the action command string for this button's model.
+   * <p>Returns the action command string for this button's model.</p>
+   *
+   * <p>If the action command string is <code>null</code>, the button's
+   * text (label) is returned instead.</p>
    *
    * @return The current action command string from the button's model
    */
   public String getActionCommand()
   {
-    return getModel().getActionCommand();
+    String ac = getModel().getActionCommand();
+
+    return (ac != null) ? ac : text;
   }
 
   /**
-   * Set the action command string for this button's model.
+   * Sets the action command string for this button's model.
    *
    * @param aCommand The new action command string to set in the button's
    * model.

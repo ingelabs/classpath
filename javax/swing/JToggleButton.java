@@ -246,7 +246,6 @@ public class JToggleButton extends AbstractButton implements Accessible
 
     setModel(new ToggleButtonModel());	
     model.setSelected(selected);
-    model.setActionCommand("");
   }
 
   /**
