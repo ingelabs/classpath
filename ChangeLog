@@ -1,3 +1,11 @@
+2005-07-14  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/AbstractButton.java: Minor doc fixes.
+	(getActionCommand): Access field directly.
+	(setActionCommand): Dito.
+	(fireActionPerformed): Copy ActionEvent instance instead
+	of reusing it.
+
 2005-07-13  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/BoundedRangeModel.java:

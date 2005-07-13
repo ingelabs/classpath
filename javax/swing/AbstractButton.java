@@ -600,27 +600,27 @@ public abstract class AbstractButton extends JComponent
   /**
    * <p>Returns the action command string for this button's model.</p>
    *
-   * <p>If the action command string is <code>null</code>, the button's
+   * <p>If the action command was set to <code>null</code>, the button's
    * text (label) is returned instead.</p>
    *
    * @return The current action command string from the button's model
    */
   public String getActionCommand()
   {
-    String ac = getModel().getActionCommand();
+    String ac = model.getActionCommand();
 
-    return (ac != null) ? ac : text;
+    return (ac != null ? ac : text);
   }
 
   /**
    * Sets the action command string for this button's model.
    *
-   * @param aCommand The new action command string to set in the button's
+   * @param actionCommand The new action command string to set in the button's
    * model.
    */
-  public void setActionCommand(String aCommand)
+  public void setActionCommand(String actionCommand)
   {
-    getModel().setActionCommand(aCommand);
+    model.setActionCommand(actionCommand);
   }
 
   /**
@@ -749,11 +749,19 @@ public abstract class AbstractButton extends JComponent
    */
   protected void fireActionPerformed(ActionEvent e)
   {
-    e.setSource(this);
+	// Dispatch a copy of the given ActionEvent in order to
+	// set the source and action command correctly.
+    ActionEvent ae = new ActionEvent(
+        this,
+        e.getID(),
+        getActionCommand(),
+        e.getWhen(),
+        e.getModifiers());
+
     ActionListener[] listeners = getActionListeners();
     
     for (int i = 0; i < listeners.length; i++)
-      listeners[i].actionPerformed(e);
+      listeners[i].actionPerformed(ae);
   }
 
   /**
