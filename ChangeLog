@@ -1,3 +1,8 @@
+2005-07-13  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/awt/AWTEvent.java:
+	(toString): Generalized string generation.
+
 2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/LookAndFeel.java: added API docs all over,
