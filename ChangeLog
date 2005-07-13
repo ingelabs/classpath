@@ -1,5 +1,13 @@
 2005-07-13  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/plaf/basic/BasicListUI.java:
+	(KeyHandler.keyPressed): Implemented actions for the following key
+	presses: "ctrl \\", "END", "shift END", "HOME, "shift HOME", "ctrl /", 
+	"ctrl A", "ctrl SPACE", "KP_UP", "KP_DOWN", "shift KP_UP",
+	"shift KP_DOWN".
+
+2005-07-13  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/DefaultButtonModel.java:
 	(changeState): Removed this helper method.
 	(setArmed): Replaced call to changeState by code specific to setArmed.
