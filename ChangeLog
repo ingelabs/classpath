@@ -1,3 +1,15 @@
+2005-07-13  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/JToggleButton.java:
+	(paramString): Returns value of same method in superclass now.
+	* javax/swing/JRadioButton.java:
+	(paramString): Dito.
+	* javax/swing/JButton.java:
+	(paramString): Returns value of same method in superclass now,
+	more verbose information added.
+	* javax/swing/JCheckBox.java:
+	(paramString): Dito.
+
 2005-07-12  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/processor/FieldCommandSet.java:

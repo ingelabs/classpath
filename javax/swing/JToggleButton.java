@@ -287,7 +287,7 @@ public class JToggleButton extends AbstractButton implements Accessible
    */
   protected  String paramString()
   {
-    return "JToggleButton";
+    return super.paramString();
   }
   
   /**
