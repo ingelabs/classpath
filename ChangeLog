@@ -1,5 +1,10 @@
 2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/table/TableColumn.java: updated API docs,
+	* javax/swing/table/TableColumnModel.java: likewise.
+
+2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/util/zip/Inflater.java: minor API doc fixes.
 
 2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
