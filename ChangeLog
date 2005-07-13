@@ -1,5 +1,12 @@
 2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/LookAndFeel.java: added API docs all over,
+	* javax/swing/plaf/metal/DefaultMetalTheme.java: likewise,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java: likewise,
+	* javax/swing/plaf/metal/MetalTheme.java: likewise.
+
+2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/table/TableColumn.java: updated API docs,
 	* javax/swing/table/TableColumnModel.java: likewise.
 
