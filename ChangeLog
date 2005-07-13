@@ -1,3 +1,14 @@
+2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/accessibility/AccessibleComponent.java: minor API doc fixes,
+	* javax/accessibility/AccessibleRelation.java: likewise,
+	* javax/accessibility/AccessibleRelationSet.java: likewise,
+	* javax/accessibility/AccessibleResourceBundle.java: likewise,
+	* javax/accessibility/AccessibleRole.java: likewise,
+	* javax/accessibility/AccessibleState.java: likewise,
+	* javax/accessibility/AccessibleStateSet.java: likewise,
+	* javax/accessibility/AccessibleText.java: likewise.
+
 2005-07-13  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/awt/AWTEvent.java:
