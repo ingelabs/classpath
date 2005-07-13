@@ -625,12 +625,12 @@ public class BasicTreeUI
 
    /**
     * Get next visible node in the tree.
-    * 
+    * Package private for use in inner classes.
     * @param the current node
     * @return the next visible node in the JTree. Return null if there are no
     *         more.
     */
-   private DefaultMutableTreeNode getNextVisibleNode(DefaultMutableTreeNode node)
+   DefaultMutableTreeNode getNextVisibleNode(DefaultMutableTreeNode node)
    {
       DefaultMutableTreeNode next = null;
       TreePath current = null;
@@ -657,12 +657,13 @@ public class BasicTreeUI
 
    /**
     * Get previous visible node in the tree.
+    * Package private for use in inner classes.
     * 
     * @param the current node
     * @return the next visible node in the JTree. Return null if there are no
     *         more.
     */
-   private DefaultMutableTreeNode getPreviousVisibleNode
+   DefaultMutableTreeNode getPreviousVisibleNode
                                              (DefaultMutableTreeNode node)
    {
       DefaultMutableTreeNode prev = null;
@@ -1562,11 +1563,12 @@ public class BasicTreeUI
 
    /**
     * Selects the specified path in the tree depending on modes.
+    * Package private for use in inner classes.
     * 
     * @param tree is the tree we are selecting the path in
     * @param path is the path we are selecting
     */
-   private void selectPath(JTree tree, TreePath path)
+   void selectPath(JTree tree, TreePath path)
    {
       if (path != null)
       {

@@ -1,3 +1,23 @@
+2005-07-14  Mark Wielaard  <mark@klomp.org>
+
+	* examples/gnu/classpath/examples/awt/Demo.java
+	(TestWindow.parent): Make package private.
+	* gnu/java/net/protocol/http/HTTPURLConnection.java
+	(proxyHostname, proxyPort, agent, keepAlive, maxConnections):
+	Likewise.
+	* java/text/SimpleDateFormat.java (field, size): Likewise.
+	* java/util/jar/JarFile.java (readSignatures): Likewise.
+	* java/util/logging/FileHandler.java (written): Likewise.
+	* javax/swing/plaf/basic/BasicFileChooserUI.java: Make shared
+	fields package private.
+	(closeDialog): Make package private.
+	(filterEntries): Likewise.
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java
+	(mouseInputListener): Likewise.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getNextVisibleNode, getPreviousVisibleNode, selectPath): Likewise.
+	* javax/swing/text/JTextComponent.java (caret, editable): Likewise.
+	
 2005-07-14  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/AbstractButton.java: Minor doc fixes.

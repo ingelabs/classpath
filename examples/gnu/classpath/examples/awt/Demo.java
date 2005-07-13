@@ -613,7 +613,7 @@ class Demo
   static class TestWindow extends SubFrame
   {
     static int xs = 5, ys = 5;
-    private final Frame parent;
+    final Frame parent;
     
     public TestWindow(Frame f)
     {

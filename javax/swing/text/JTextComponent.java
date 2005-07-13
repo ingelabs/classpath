@@ -934,15 +934,16 @@ public abstract class JTextComponent extends JComponent
     return getUI().getEditorKit(this).getActions();
   }
     
-  // This is package-private to avoid an accessor method.
+  // These are package-private to avoid an accessor method.
   Document doc;
-  private Caret caret;
+  Caret caret;
+  boolean editable;
+  
   private Highlighter highlighter;
   private Color caretColor;
   private Color disabledTextColor;
   private Color selectedTextColor;
   private Color selectionColor;
-  private boolean editable;
   private Insets margin;
   private boolean dragEnabled;
 
