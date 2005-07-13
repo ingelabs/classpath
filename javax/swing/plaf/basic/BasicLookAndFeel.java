@@ -1036,7 +1036,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
         "PAGE_UP",  "scrollUpChangeSelection",
         "ctrl PAGE_DOWN", "scrollDownChangeLead"
       }),
-      "Tree.font", new FontUIResource("Dialog", Font.PLAIN, 12),
+      "Tree.font", new FontUIResource(new Font("Helvetica", Font.PLAIN, 12)),
       "Tree.foreground", new ColorUIResource(Color.black),
       "Tree.hash", new ColorUIResource(Color.gray),
       "Tree.leftChildIndent", new Integer(7),

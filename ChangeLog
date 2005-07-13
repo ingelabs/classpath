@@ -1,4 +1,14 @@
-2005-07-13 Lillian Angel <langel@redhat.com>
+2005-07-13 Lillian Angel <langel@redhat.com>i
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java: Changed font to
+	match jdk.
+	* javax/swing/plaf/basic/BasicTreeUI.java: took out unneeded
+	import statement
+	* javax/swing/plaf/metal/MetalLookAndFeel.java: Changed 
+	defaults to match jdk.
+
+2005-07-13 Lillian Angel <langel@redhat.com>i
+
 	* javax/swing/plaf/basic/BasicLookAndFeel.java: Changed rowHeight
 	to the right height. This should be fixed later to something more
 	reasonable, as opposed to a 'magic' number.

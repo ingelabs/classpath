@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing.plaf.metal;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.ImageIcon;
@@ -805,7 +807,21 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "Tree.leafIcon", MetalIconFactory.getTreeLeafIcon(),
       "Tree.collapsedIcon", MetalIconFactory.getTreeControlIcon(true),
       "Tree.expandedIcon", MetalIconFactory.getTreeControlIcon(false),
-
+      "Tree.font", new FontUIResource(new Font("Helvetica", Font.PLAIN, 12)),
+      "Tree.background", new ColorUIResource(Color.white),
+      "Tree.foreground", new ColorUIResource(new Color(204, 204, 255)),
+      "Tree.hash", new ColorUIResource(new Color(204, 204, 255)),
+      "Tree.leftChildIndent", new Integer(7),
+      "Tree.rightChildIndent", new Integer(13),
+      "Tree.rowHeight", new Integer(20),
+      "Tree.scrollsOnExpand", Boolean.TRUE,
+      "Tree.selectionBackground", new ColorUIResource(new Color(204, 204, 255)),
+      "Tree.nonSelectionBackground", new ColorUIResource(Color.white),
+      "Tree.selectionBorderColor", new ColorUIResource(new Color(102, 102, 153)),
+      "Tree.selectionForeground", new ColorUIResource(Color.black),
+      "Tree.textBackground", new ColorUIResource(new Color(204, 204, 255)),
+      "Tree.textForeground", new ColorUIResource(Color.black),
+      "Tree.selectionForeground", new ColorUIResource(Color.black),
       "PopupMenu.border", new MetalBorders.PopupMenuBorder()
     };
     defaults.putDefaults(myDefaults);

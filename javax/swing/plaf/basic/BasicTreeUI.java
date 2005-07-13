@@ -87,7 +87,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.TreeUI;
-import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.FixedHeightLayoutCache;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -2670,6 +2669,7 @@ public class BasicTreeUI
             descent += getRowHeight();
             y0 += halfHeight;
          }
+         
          int max = mod.getChildCount(curr);
          if (tree.isExpanded(new TreePath(((DefaultMutableTreeNode) curr)
                .getPath())))
@@ -2694,5 +2694,4 @@ public class BasicTreeUI
          }
       return descent;
    }
-
 } // BasicTreeUI
