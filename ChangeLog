@@ -1,3 +1,15 @@
+2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/tree/DefaultMutableTreeNode.java: minor API doc fixes,
+	* javax/swing/tree/DefaultTreeSelectionModel.java
+	(addSelectionPath): modified parameter name to match doc comment,
+	(addSelectionPaths): likewise,
+	(removeSelectionPath): likewise,
+	(removeSelectionPaths): likewise,
+	(isPathSelected): likewise,
+	plus other minor API doc fixes all over.
+	* javax/swing/tree/MutableTreeNode.java: minor API doc fixes.
+
 2005-07-13  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/AbstractButton.java: Minimal documentation fixes.
