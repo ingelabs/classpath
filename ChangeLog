@@ -1,5 +1,9 @@
 2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/util/zip/Inflater.java: minor API doc fixes.
+
+2005-07-13  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/tree/DefaultMutableTreeNode.java: minor API doc fixes,
 	* javax/swing/tree/DefaultTreeSelectionModel.java
 	(addSelectionPath): modified parameter name to match doc comment,
