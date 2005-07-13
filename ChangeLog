@@ -1,3 +1,16 @@
+2005-07-13 Lillian Angel <langel@redhat.com>
+	* javax/swing/plaf/basic/BasicLookAndFeel.java: Changed rowHeight
+	to the right height. This should be fixed later to something more
+	reasonable, as opposed to a 'magic' number.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(paintLeaf): added in code to paint icons properly
+	(paintNonLeaf): same as above
+	* javax/swing/plaf/metal/MetalLookAndFeel.java: Changed default
+	icons to MetalIconFactory icons
+	* javax/swing/tree/DefaultTreeCellRenderer.java
+	(getTreeCellRendererComponent): Changed to paint icons separately from
+	Cell.
+
 2005-07-13  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java:

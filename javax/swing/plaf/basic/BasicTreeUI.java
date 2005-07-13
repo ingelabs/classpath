@@ -72,6 +72,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -86,12 +87,12 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.TreeUI;
+import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.FixedHeightLayoutCache;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.SwingUtilities;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
@@ -2514,28 +2515,45 @@ public class BasicTreeUI
       boolean selected = tree.isPathSelected(curr);
 
       if (tree.isVisible(curr))
+      {          
+         DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) 
+                                             tree.getCellRenderer();
+         boolean hasIcons = false;
+         Icon li = dtcr.getLeafIcon();
+         if (li != null)
+            hasIcons = true;
+         
          if (selected)
          {
-            DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) 
-                                                   tree.getCellRenderer();
-            Component comp = dtcr.getTreeCellRendererComponent(tree, leaf,
+            Component c = dtcr.getTreeCellRendererComponent(tree, leaf,
                   true, false, true, 0, false);
             
-            Rectangle cb = getCellBounds(x, y, leaf);
-            Icon li = dtcr.getLeafIcon(); 
-            if (li != null)
-               cb.width = ((int) cb.getWidth()) + li.getIconWidth() + 4;
-            rendererPane.paintComponent(g, comp, tree, cb);
+            if (hasIcons)
+            {
+               li.paintIcon(c, g, x, y + 2);
+               x += (li.getIconWidth() + 4);
+            }
+            rendererPane.paintComponent(g, c, tree, 
+                                    getCellBounds(x, y, leaf));
          }
          else
-         {
-            Component c = tree.getCellRenderer().getTreeCellRendererComponent(
+         {            
+            Component c = dtcr.getTreeCellRendererComponent(
                   tree, leaf, false, false, true, 0, false);
-
+            
             g.translate(x, y);
+            
+            if (hasIcons)
+            {
+               Component icon = dtcr.getTreeCellRendererComponent(tree, 
+                  li, false, false, true, 0, false); 
+               icon.paint(g);
+            }
+            
             c.paint(g);
             g.translate(-x, -y);
          }
+      }
    }
 
    /**
@@ -2555,29 +2573,61 @@ public class BasicTreeUI
       boolean expanded = tree.isExpanded(curr);
 
       if (tree.isVisible(curr))
-         if (selected)
-         {
+      {
             DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) 
-            tree.getCellRenderer();            
-            Component comp = dtcr.getTreeCellRendererComponent(tree, nonLeaf,
-                  true, expanded, false, 0, false);
+                                                tree.getCellRenderer();
+            boolean hasIcons = false;
+            boolean hasOtherIcons = false;
+            Icon oi = dtcr.getOpenIcon();
+            Icon ci = dtcr.getClosedIcon();
             
-            Rectangle cb = getCellBounds(x, y,
-                  nonLeaf);
-            Icon oi = dtcr.getOpenIcon(); 
-            if (oi != null)
-               cb.width = ((int) cb.getWidth()) + oi.getIconWidth() + 4;            
-            rendererPane.paintComponent(g, comp, tree, cb);
-         }
-         else
-         {
-            Component c = tree.getCellRenderer().getTreeCellRendererComponent(
-                  tree, nonLeaf, false, expanded, false, 0, false);
+            if (oi != null || ci != null)
+               hasIcons = true;
+            
+            if (selected)
+            {      
+               Component c = dtcr.getTreeCellRendererComponent(tree, nonLeaf,
+                     true, expanded, false, 0, false);
 
-            g.translate(x, y);
-            c.paint(g);
-            g.translate(-x, -y);
-         }
+               if (hasIcons)
+               {
+                  if (expanded)
+                  {
+                     oi.paintIcon(c, g, x, y + 2);
+                     x += (oi.getIconWidth() + 4);
+                  }
+                  else
+                  {
+                     ci.paintIcon(c, g, x, y + 2);
+                     x += (ci.getIconWidth() + 4);
+                  }
+                  
+               }
+               rendererPane.paintComponent(g, c, tree, 
+                           getCellBounds(x, y, nonLeaf));
+            }
+            else
+            {
+               Component c = dtcr.getTreeCellRendererComponent(tree, nonLeaf, 
+                                          false, expanded, false, 0, false);
+               g.translate(x, y);
+               
+               if (hasIcons)
+               {
+                  Component icon;
+                  if (expanded)
+                     icon = dtcr.getTreeCellRendererComponent(tree, 
+                        oi, false, false, false, 0, false);
+                  else
+                     icon = dtcr.getTreeCellRendererComponent(tree, 
+                        ci, false, false, false, 0, false);
+                  
+                  icon.paint(g);
+               }
+               c.paint(g);
+               g.translate(-x, -y);
+            }
+      }
    }
 
    /**

@@ -379,22 +379,20 @@ public class DefaultTreeCellRenderer
 			boolean selected, boolean expanded, boolean leaf, int row,
 			boolean hasFocus)
 	{
-		this.selected = selected;
-		this.hasFocus = hasFocus;
-
-		setText(val.toString());
-		setHorizontalAlignment(LEFT);
-		setOpaque(true);
-		setVerticalAlignment(TOP);
-		setEnabled(true);
-		setFont(getFont());
-
-		if (leaf)
-			setIcon(getLeafIcon());
-		else if (expanded)
-			setIcon(getOpenIcon());
-		else
-			setIcon(getClosedIcon());
+		if (val instanceof Icon)
+      	setIcon((Icon) val);
+      else
+      {
+         setText(val.toString());
+         setIcon(null);
+         this.selected = selected;
+         this.hasFocus = hasFocus;
+         setHorizontalAlignment(LEFT);
+         setOpaque(true);
+         setVerticalAlignment(TOP);
+         setEnabled(true);
+         setFont(getFont());
+      }
 
 		if (selected) 
 		{

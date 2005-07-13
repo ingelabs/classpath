@@ -794,19 +794,18 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       new ColorUIResource(getPrimaryControlDarkShadow()),
       "ScrollBar.thumbHighlight",
       new ColorUIResource(getPrimaryControl()),
+
       "SplitPane.darkShadow",
       new ColorUIResource(getControlDarkShadow()),
       "SplitPane.highlight",
       new ColorUIResource(getControlHighlight()),
-      "Tree.openIcon", 
-         new IconUIResource(new ImageIcon(getClass().getResource(
-         "/gnu/javax/swing/plaf/gtk/icons/TreeOpen.png"))),
-      "Tree.leafIcon", 
-         new IconUIResource(new ImageIcon(getClass().getResource(
-            "/gnu/javax/swing/plaf/gtk/icons/TreeLeaf.png"))),  
-      "Tree.closedIcon",
-         new IconUIResource(new ImageIcon(getClass().getResource(
-         "/gnu/javax/swing/plaf/gtk/icons/TreeClosed.png"))),
+
+      "Tree.openIcon", MetalIconFactory.getTreeFolderIcon(),
+      "Tree.closedIcon", MetalIconFactory.getTreeFolderIcon(),
+      "Tree.leafIcon", MetalIconFactory.getTreeLeafIcon(),
+      "Tree.collapsedIcon", MetalIconFactory.getTreeControlIcon(true),
+      "Tree.expandedIcon", MetalIconFactory.getTreeControlIcon(false),
+
       "PopupMenu.border", new MetalBorders.PopupMenuBorder()
     };
     defaults.putDefaults(myDefaults);
