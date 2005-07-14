@@ -2737,7 +2737,7 @@ public class BasicTreeUI
       {
          descent += rowHeight;
       }
-      else
+      else 
       {
          if (depth > 0 || tree.isRootVisible())
          {
@@ -2748,14 +2748,16 @@ public class BasicTreeUI
          if (tree.isExpanded(new TreePath(((DefaultMutableTreeNode) node)
                .getPath())))
          {
-            ei.paintIcon(tree, g, indentation - rightChildIndent - 3, h);
+            if (!node.equals(mod.getRoot()))
+               ei.paintIcon(tree, g, indentation - rightChildIndent - 3, h);
+            
             for (int i = 0; i < max; ++i)
             {           
                descent = paintControlIcons(g, indentation + rightChildIndent,
                      descent, i, depth + 1, tree, mod, mod.getChild(node, i));
             }
          }
-         else
+         else if (!node.equals(mod.getRoot()))
             ci.paintIcon(tree, g, indentation - rightChildIndent - 3, 
                   descent - getRowHeight());
       }
