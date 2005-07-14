@@ -1223,6 +1223,8 @@ public class BasicTreeUI
       tree = (JTree) c;
       setModel(tree.getModel());
       tree.setRootVisible(true);
+      tree.expandPath(new TreePath(((DefaultMutableTreeNode) 
+            (tree.getModel()).getRoot()).getPath()));
       treeSelectionModel = tree.getSelectionModel();
       installListeners();
       installKeyboardActions();
@@ -1274,6 +1276,7 @@ public class BasicTreeUI
       TreeModel mod = tree.getModel();
       g.translate(10, 10);
       paintRecursive(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
+      paintControlIcons(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
       g.translate(-10, -10);
    }
 
@@ -2532,7 +2535,7 @@ public class BasicTreeUI
             if (hasIcons)
             {
                li.paintIcon(c, g, x, y + 2);
-               x += (li.getIconWidth() + 4);
+               x += li.getIconWidth() + 4;
             }
             rendererPane.paintComponent(g, c, tree, 
                                     getCellBounds(x, y, leaf));
@@ -2657,17 +2660,17 @@ public class BasicTreeUI
       int halfWidth = rightChildIndent / 2;
       int y0 = descent + halfHeight;
       int heightOfLine = descent + halfHeight;
-
+      
       if (mod.isLeaf(curr))
       {
-         paintLeaf(g, indentation, descent, tree, curr);
+         paintLeaf(g, indentation + 4, descent, tree, curr);
          descent += getRowHeight();
       }
       else
       {
          if (depth > 0 || tree.isRootVisible())
          {
-            paintNonLeaf(g, indentation, descent, tree, curr);
+            paintNonLeaf(g, indentation + 4, descent, tree, curr);
             descent += getRowHeight();
             y0 += halfHeight;
          }
@@ -2675,15 +2678,18 @@ public class BasicTreeUI
          int max = mod.getChildCount(curr);
          if (tree.isExpanded(new TreePath(((DefaultMutableTreeNode) curr)
                .getPath())))
+         {
             for (int i = 0; i < max; ++i)
             {
                g.setColor(getHashColor());
                heightOfLine = descent + halfHeight;
                g.drawLine(indentation + halfWidth, heightOfLine,
                      indentation + rightChildIndent, heightOfLine);
+                              
                descent = paintRecursive(g, indentation + rightChildIndent,
                      descent, i, depth + 1, tree, mod, mod.getChild(curr, i));
             }
+         }
       }
 
       if (tree.isExpanded(new TreePath(((DefaultMutableTreeNode) curr)
@@ -2694,6 +2700,66 @@ public class BasicTreeUI
             g.drawLine(indentation + halfWidth, y0, indentation + halfWidth,
                   heightOfLine);
          }
+      
+      return descent;
+   }
+   
+   /**
+    * Recursively paints all the control icons on the tree.
+    * 
+    * @param g the Graphics context in which to paint
+    * @param indentation of the current object
+    * @param descent is the number of elements drawn
+    * @param childNumber is the index of the current child in the tree
+    * @param depth is the depth of the current object in the tree
+    * @param tree is the tree to draw to
+    * @param mod is the TreeModel we are using to draw
+    * @param curr is the current object to draw
+    * 
+    * @return int - current descent of the tree
+    */
+   private int paintControlIcons(Graphics g, int indentation, int descent,
+         int childNumber, int depth, JTree tree, TreeModel mod, Object node)
+   {
+      int h = descent;
+      int rowHeight = getRowHeight();
+      Icon ei = UIManager.getLookAndFeelDefaults().
+         getIcon("Tree.expandedIcon");
+      Icon ci = UIManager.getLookAndFeelDefaults().
+         getIcon("Tree.collapsedIcon");
+      Rectangle clip = g.getClipBounds();
+      if (ci == null || ei == null || indentation > clip.x + clip.width +
+            rightChildIndent || descent > clip.y + clip.height + 
+               getRowHeight())
+         return descent;
+      
+      if (mod.isLeaf(node))
+      {
+         descent += rowHeight;
+      }
+      else
+      {
+         if (depth > 0 || tree.isRootVisible())
+         {
+            descent += rowHeight;
+         }
+         
+         int max = mod.getChildCount(node);
+         if (tree.isExpanded(new TreePath(((DefaultMutableTreeNode) node)
+               .getPath())))
+         {
+            ei.paintIcon(tree, g, indentation - rightChildIndent - 3, h);
+            for (int i = 0; i < max; ++i)
+            {           
+               descent = paintControlIcons(g, indentation + rightChildIndent,
+                     descent, i, depth + 1, tree, mod, mod.getChild(node, i));
+            }
+         }
+         else
+            ci.paintIcon(tree, g, indentation - rightChildIndent - 3, 
+                  descent - getRowHeight());
+      }
+      
       return descent;
    }
 } // BasicTreeUI

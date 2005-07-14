@@ -391,7 +391,7 @@ public class DefaultTreeCellRenderer
          setOpaque(true);
          setVerticalAlignment(TOP);
          setEnabled(true);
-         setFont(getFont());
+         super.setFont(UIManager.getLookAndFeelDefaults().getFont("Tree.font"));
       }
 
 		if (selected) 
