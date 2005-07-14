@@ -95,7 +95,7 @@ Java_gnu_java_awt_peer_gtk_GtkMenuPeer_create
   toplevel = gtk_widget_get_toplevel (menu);
   if (GTK_IS_WINDOW (toplevel))
     {
-      gtk_window_group_add_window (global_gtk_window_group,
+      gtk_window_group_add_window (cp_gtk_global_window_group,
                                    GTK_WINDOW(toplevel));
     }
 

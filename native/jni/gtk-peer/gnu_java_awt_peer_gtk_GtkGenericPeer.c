@@ -82,7 +82,8 @@ Java_gnu_java_awt_peer_gtk_GtkGenericPeer_gtkWidgetModifyFont
   font_name = (*env)->GetStringUTFChars (env, name, NULL);
 
   font_desc = pango_font_description_from_string (font_name);
-  pango_font_description_set_size (font_desc, size * dpi_conversion_factor);
+  pango_font_description_set_size (font_desc,
+                                   size * cp_gtk_dpi_conversion_factor);
 
   if (style & AWT_STYLE_BOLD)
     pango_font_description_set_weight (font_desc, PANGO_WEIGHT_BOLD);

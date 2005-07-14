@@ -52,19 +52,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct state_table *native_graphics2d_state_table;
+static jmethodID initComponentGraphics2DID;
+
+void
+cp_gtk_graphics2d_init_jni (void)
+{
+  jclass gdkgraphics2d;
+
+  gdkgraphics2d = (*cp_gtk_gdk_env())->FindClass (cp_gtk_gdk_env(),
+                                           "gnu/java/awt/peer/gtk/GdkGraphics2D");
+
+  initComponentGraphics2DID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), gdkgraphics2d,
+                                                         "initComponentGraphics2D",
+                                                         "()V");
+}
+
+static struct state_table *native_graphics2d_state_table;
 
 #define NSA_G2D_INIT(env, clazz) \
-  native_graphics2d_state_table = init_state_table (env, clazz)
+  native_graphics2d_state_table = cp_gtk_init_state_table (env, clazz)
 
 #define NSA_GET_G2D_PTR(env, obj) \
-  get_state (env, obj, native_graphics2d_state_table)
+  cp_gtk_get_state (env, obj, native_graphics2d_state_table)
 
 #define NSA_SET_G2D_PTR(env, obj, ptr) \
-  set_state (env, obj, native_graphics2d_state_table, (void *)ptr)
+  cp_gtk_set_state (env, obj, native_graphics2d_state_table, (void *)ptr)
 
 #define NSA_DEL_G2D_PTR(env, obj) \
-  remove_state_slot (env, obj, native_graphics2d_state_table)
+  cp_gtk_remove_state_slot (env, obj, native_graphics2d_state_table)
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GdkGraphics2D_initStaticState 
@@ -356,7 +371,7 @@ realize_cb (GtkWidget *widget __attribute__ ((unused)), jobject peer)
 {
   gdk_threads_leave ();
 
-  (*gdk_env())->CallVoidMethod (gdk_env(), peer, initComponentGraphics2DID);
+  (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer, initComponentGraphics2DID);
 
   gdk_threads_enter ();
 }

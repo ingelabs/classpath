@@ -39,6 +39,21 @@ exception statement from your version. */
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkChoicePeer.h"
 
+static jmethodID postChoiceItemEventID;
+
+void
+cp_gtk_choice_init_jni (void)
+{
+  jclass gtkchoicepeer;
+
+  gtkchoicepeer = (*cp_gtk_gdk_env())->FindClass (cp_gtk_gdk_env(),
+                                        "gnu/java/awt/peer/gtk/GtkChoicePeer");
+
+  postChoiceItemEventID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), gtkchoicepeer,
+                                               "postChoiceItemEvent",
+                                               "(Ljava/lang/String;I)V");
+}
+
 static void selection_changed_cb (GtkComboBox *combobox, jobject peer);
 
 JNIEXPORT void JNICALL 
@@ -72,8 +87,12 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_connectSignals
   ptr = NSA_GET_PTR (env, obj);
   gref = NSA_GET_GLOBAL_REF (env, obj);
 
+  /* Choice signals */
   g_signal_connect (G_OBJECT (ptr), "changed",
                     G_CALLBACK (selection_changed_cb), *gref);
+
+  /* Component signals */
+  cp_gtk_component_connect_signals (G_OBJECT (ptr), gref);
 
   gdk_threads_leave ();
 }
@@ -215,14 +234,14 @@ static void selection_changed_cb (GtkComboBox *combobox, jobject peer)
       model = gtk_combo_box_get_model (combobox);
       gtk_combo_box_get_active_iter (combobox, &iter);
       gtk_tree_model_get (model, &iter, 0, &selected, -1);
-      label = (*gdk_env())->NewStringUTF (gdk_env(), selected);
+      label = (*cp_gtk_gdk_env())->NewStringUTF (cp_gtk_gdk_env(), selected);
 
       gdk_threads_leave ();
 
-      (*gdk_env())->CallVoidMethod (gdk_env(), peer,
-			          choicePostItemEventID,
-			          label,
-			          (jint) AWT_ITEM_SELECTED);
+      (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
+                                    postChoiceItemEventID,
+                                    label,
+                                    (jint) AWT_ITEM_SELECTED);
 
       gdk_threads_enter ();
     }

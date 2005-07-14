@@ -38,6 +38,21 @@
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkListPeer.h"
 
+static jmethodID postListItemEventID;
+
+void
+cp_gtk_list_init_jni (void)
+{
+  jclass gtklistpeer;
+
+  gtklistpeer = (*cp_gtk_gdk_env())->FindClass (cp_gtk_gdk_env(),
+                                         "gnu/java/awt/peer/gtk/GtkListPeer");
+
+  postListItemEventID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), gtklistpeer,
+                                                   "postItemEvent",
+                                                   "(II)V");
+}
+
 enum
   {
     COLUMN_STRING,
@@ -133,7 +148,7 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_connectSignals
   gtk_tree_selection_set_select_function (selection, item_highlighted_cb,
                                           *gref, NULL);
 
-  classpath_gtk_component_connect_signals (G_OBJECT (list), gref);
+  cp_gtk_component_connect_signals (G_OBJECT (list), gref);
 
   gdk_threads_leave ();
 }
@@ -156,7 +171,8 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkWidgetModifyFont
   font_name = (*env)->GetStringUTFChars (env, name, NULL);
 
   font_desc = pango_font_description_from_string (font_name);
-  pango_font_description_set_size (font_desc, size * dpi_conversion_factor);
+  pango_font_description_set_size (font_desc,
+                                   size * cp_gtk_dpi_conversion_factor);
 
   if (style & AWT_STYLE_BOLD)
     pango_font_description_set_weight (font_desc, PANGO_WEIGHT_BOLD);
@@ -407,7 +423,12 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_getSelectedIndexes
     {
       current_row = rows = gtk_tree_selection_get_selected_rows (selection, NULL);
 
+      gdk_threads_leave ();
+
       result_array = (*env)->NewIntArray (env, count);
+
+      gdk_threads_enter ();
+
       result_array_iter = (*env)->GetIntArrayElements (env, result_array, NULL);
 
       for (i = 0; i < count; i++)
@@ -493,19 +514,23 @@ item_highlighted_cb (GtkTreeSelection *selection __attribute__((unused)),
       if (!path_currently_selected)
         {
           gdk_threads_leave ();
-          (*gdk_env())->CallVoidMethod (gdk_env(), peer,
+
+          (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
                                         postListItemEventID,
                                         row,
                                         (jint) AWT_ITEM_SELECTED);
+
           gdk_threads_enter ();
         }
       else
         {
           gdk_threads_leave ();
-          (*gdk_env())->CallVoidMethod (gdk_env(), peer,
+
+          (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
                                         postListItemEventID,
                                         row,
                                         (jint) AWT_ITEM_DESELECTED);
+
           gdk_threads_enter ();
         }
     }
