@@ -1,3 +1,9 @@
+2005-07-14  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/AbstractButton.java
+	(getActionCommand): If both the actionCommand and text fields
+	are null, then return "".
+
 2005-07-14  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* java/util/logging/Logger.java
@@ -35,6 +41,9 @@
 	(fireActionPerformed): Copy ActionEvent instance instead
 	of reusing it.
 
+2005-07-13  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/BoundedRangeModel.java:
 2005-07-13  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/BoundedRangeModel.java:

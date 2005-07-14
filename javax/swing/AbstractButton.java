@@ -608,8 +608,12 @@ public abstract class AbstractButton extends JComponent
   public String getActionCommand()
   {
     String ac = model.getActionCommand();
-
-    return (ac != null ? ac : text);
+    if (ac != null)
+      return ac;
+    else if (text != null)
+      return text;
+    else
+      return "";
   }
 
   /**
