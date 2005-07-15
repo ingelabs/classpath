@@ -1932,23 +1932,31 @@ public class BasicTreeUI
          TreePath path = BasicTreeUI.this.tree.getPathForRow(row);
          
          boolean inBounds = false;
+         boolean cntlClick = false;
          Rectangle bounds = BasicTreeUI.this.getPathBounds(
                BasicTreeUI.this.tree, path);
          int x = (int) bounds.getX();
          int y = (int) bounds.getY();
-         if ((clickY >= (y - 10) && clickY <= (y + bounds.height + 10))
-               && (clickX >= x && clickX <= (x + bounds.width + 25)))
-            inBounds = true;
 
-         if (inBounds && path != null && BasicTreeUI.this.tree.isVisible(path))
+         if (clickY > y && clickY < (y + bounds.height + 10))
+         {
+            if (clickX > x && clickX < (x + bounds.width + 20))
+               inBounds = true;
+            else if (clickX < (x - rightChildIndent + 5) && 
+                  clickX > (x - rightChildIndent - 5))
+               cntlClick = true;
+         }
+
+         if ((inBounds || cntlClick) && path != null && 
+               BasicTreeUI.this.tree.isVisible(path))
          {           
-            if (!BasicTreeUI.this.isLeaf(row))
+            if (!cntlClick && !BasicTreeUI.this.isLeaf(row))
                clickCount++;
             
-            if (clickCount == 2)
+            if (clickCount == 2 || cntlClick == true)
             {
-               BasicTreeUI.this.tree.getSelectionModel().clearSelection();
                clickCount = 0;
+               BasicTreeUI.this.tree.getSelectionModel().clearSelection();
                if (BasicTreeUI.this.tree.isExpanded(path))
                {
                   BasicTreeUI.this.tree.collapsePath(path);
@@ -1960,7 +1968,7 @@ public class BasicTreeUI
                   BasicTreeUI.this.tree.fireTreeExpanded(path);
                }
             }
-
+            
             BasicTreeUI.this.selectPath(BasicTreeUI.this.tree, path);
          }
       }
