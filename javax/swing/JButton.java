@@ -77,7 +77,8 @@ public class JButton extends AbstractButton
 
   public JButton(String text, Icon icon)
   {
-    super(text, icon);
+    super();
+    init(text, icon);
     setModel(new DefaultButtonModel());
   }
 

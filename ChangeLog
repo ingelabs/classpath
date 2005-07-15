@@ -1,3 +1,35 @@
+2005-07-15  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/AbstractButton.java
+	(AbstractButton): Directly call init() and updateUI().
+	(AbstractButton(String, Icon)): Removed. This is not necessary
+	since we have init(String, Icon) for that purpose.
+	(getActionCommand): Reverted to previous behaviour: If
+	actionCommand is set, return this, otherwise return text, even
+	if text is null.
+	* javax/swing/JButton.java
+	(JButton(String, Icon)): Call super() and init(String, Icon)
+	instead of super(String, Icon).
+	* javax/swing/JMenuItem.java
+	(JMenuItem): Call super() instead of super(String, Icon).
+	(JMenuItem(Icon)): Call this(String, Icon) instead of
+	super(String, Icon).
+	(JMenuItem(String)): Call this(String, Icon) instead of
+	super(String, Icon).
+	(JMenuItem(Action)): Call super() instead of
+	super(String, Icon).
+	(JMenuItem(String, Icon)): Call super() and init(String, Icon)
+	instead of super(String, Icon).
+	(JMenuItem(String, int)): Call this(String, Icon) instead of
+	super(String, Icon).
+	* javax/swing/JToggleButton.java
+	(ToggleButtonModel.setPressed): Fire an ActionEvent if button
+	is released. According to my Mauve tests, it seems that this
+	is what the JDK does, so do we.
+	(ToggleButtonModel.setSelected): Removed.
+	(JToggleButton): Call super() and init(String, Icon) instead
+	of super(String, Icon).
+
 2005-07-15  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/tree/DefaultMutableTreeNode.java:

@@ -133,7 +133,6 @@ public class JToggleButton extends AbstractButton implements Accessible
     /**
      * Sets the pressed state of the button.  The selected state
      * of the button also changes follwing the button being pressed.
-     * Unlike DefaultButtonModel, does not fire an ActionEvent.
      *
      * @param b true if the button is pressed down.
      */
@@ -159,20 +158,12 @@ public class JToggleButton extends AbstractButton implements Accessible
       // setPressed(false) == mouse release on us,
       // if we were armed, we flip the selected state.
       if (!p && isArmed())
-        setSelected(! isSelected());
-    }
-
-    /**
-     * Sets the selected state of the button.  Unlike DefaultButtonModel,
-     * fires an ActionEvent.
-     *
-     * @param s true if button is selected
-     */
-    public void setSelected(boolean s)
-    {
-      super.setSelected(s);
-      fireActionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-                                          actionCommand));
+        {
+          fireActionPerformed(new ActionEvent(this,
+                                              ActionEvent.ACTION_PERFORMED,
+                                              actionCommand));
+          setSelected(! isSelected());
+        }
     }
   }
 
@@ -269,7 +260,8 @@ public class JToggleButton extends AbstractButton implements Accessible
    */
   public JToggleButton (String text, Icon icon, boolean selected) 
   {
-    super(text, icon);
+    super();
+    init(text, icon);
 
     setModel(new ToggleButtonModel());	
     model.setSelected(selected);

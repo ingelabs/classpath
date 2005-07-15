@@ -517,18 +517,7 @@ public abstract class AbstractButton extends JComponent
    */
   public AbstractButton()
   {
-    this("",null);
-  }
-
-  /**
-   * Creates a new AbstractButton object.
-   *
-   * @param txt Value to use for the button's "text" property
-   * @param icon Value to use for the button's "defaultIcon" property
-   */
-  AbstractButton(String txt, Icon icon)
-  {
-    init (txt, icon);
+    init("", null);
     updateUI();
   }
 
@@ -610,10 +599,8 @@ public abstract class AbstractButton extends JComponent
     String ac = model.getActionCommand();
     if (ac != null)
       return ac;
-    else if (text != null)
-      return text;
     else
-      return "";
+      return text;
   }
 
   /**
