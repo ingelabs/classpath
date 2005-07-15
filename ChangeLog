@@ -1,3 +1,10 @@
+2005-07-15  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/metal/MetalCheckBoxIcon.java:
+	New class. An icon implementation for use in JCheckBoxes.
+	* javax/swing/plaf/metal/MetalBorders.java
+	Renamed MetalButtonBorder to ButtonBorder.
+
 2005-07-15  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java:
