@@ -1922,16 +1922,24 @@ public class BasicTreeUI
       public void mouseClicked(MouseEvent e)
       {
          Point click = e.getPoint();
-         int row = ((int) click.getY() / getRowHeight()) - 1;
+         int clickX = (int) click.getX();
+         int clickY = (int) click.getY();
+         int row = (clickY  / getRowHeight()) - 1;
          TreePath path = BasicTreeUI.this.tree.getPathForRow(row);
+         
+         // check if clicked in row area
+         boolean inBounds = false;
+         Object cell = path.getLastPathComponent();
+         TreeModel mod = tree.getModel();
+         Point loc = getCellLocation(0, 0, tree, mod, cell, mod.getRoot());
+         int x = (int) loc.getX();
+         int y = (int) loc.getY();
+         Rectangle bounds = BasicTreeUI.this.getCellBounds(x, y, cell);
+         if ((clickY >= (y - 10) && clickY <= (y + bounds.height + 10))
+               && (clickX >= x && clickX <= (x + bounds.width + 25)))
+            inBounds = true;
 
-         if (path == null)
-         {
-            // nothing should be selected if user clicks outside of tree
-            BasicTreeUI.this.tree.getSelectionModel().clearSelection();
-            BasicTreeUI.this.tree.repaint();
-         }
-         else if (BasicTreeUI.this.tree.isVisible(path))
+         if (inBounds && path != null && BasicTreeUI.this.tree.isVisible(path))
          {           
             if (!BasicTreeUI.this.isLeaf(row))
                clickCount++;
@@ -2479,8 +2487,6 @@ public class BasicTreeUI
       }
    } // TreeTraverseAction
 
-   /* * HELPER METHODS FOR PAINTING * */
-
    /**
     * Returns the cell bounds for painting selected cells
     * 
@@ -2497,13 +2503,48 @@ public class BasicTreeUI
          String s = cell.toString();
          Font f = tree.getFont();
          FontMetrics fm = tree.getToolkit().getFontMetrics(tree.getFont());
-         
+
          return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s),
                fm.getHeight());
       }
       return null;
    }
 
+   /**
+    * Retrieves the location of some node, recursively starting at from
+    * some node.
+    * 
+    * @param x is the starting x position, offset
+    * @param y is the starting y position, offset
+    * @param tree is the tree to traverse
+    * @param mod is the TreeModel to use
+    * @param node is the node to get the location for
+    * @param startNode is the node to start searching from
+    * 
+    * @return Point - the location of node
+    */
+   private Point getCellLocation(int x, int y, JTree tree, TreeModel mod,
+         Object node, Object startNode)
+   {
+      int rowHeight = getRowHeight();
+      if (startNode == null || startNode.equals(node))
+         return new Point(x + ((((DefaultMutableTreeNode) node).
+               getLevel() + 1) * rightChildIndent), y);
+
+      if (!mod.isLeaf(startNode)
+            && tree.isExpanded(new TreePath(
+                  ((DefaultMutableTreeNode) startNode).getPath())))
+      {
+         Object child = mod.getChild(startNode, 0);
+         if (child != null)
+            return getCellLocation(x, y + rowHeight, tree, mod,
+                  node, child);
+      }
+      
+         return getCellLocation(x, y + rowHeight, tree, mod, node,
+               getNextVisibleNode((DefaultMutableTreeNode) startNode));
+   }
+   
    /**
     * Paints a leaf in the tree
     * 
@@ -2734,15 +2775,11 @@ public class BasicTreeUI
          return descent;
       
       if (mod.isLeaf(node))
-      {
          descent += rowHeight;
-      }
       else 
       {
          if (depth > 0 || tree.isRootVisible())
-         {
             descent += rowHeight;
-         }
          
          int max = mod.getChildCount(node);
          if (tree.isExpanded(new TreePath(((DefaultMutableTreeNode) node)
