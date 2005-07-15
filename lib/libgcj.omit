@@ -1,7 +1,0 @@
-^../java/net/Authenticator.java$
-^../java/net/JarURLConnection.java$
-^../java/lang/RuntimePermission.java$
-^../gnu/test/.*$
-^../gnu/java/awt/.*$
-^../gnu/javax/swing/plaf/gtk/.*$
-^../java/awt/.*$
