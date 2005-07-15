@@ -1,3 +1,14 @@
+2005-07-15  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/tree/DefaultMutableTreeNode.java:
+	(removeFromParent): Remove child node from parent now.
+	(preorderEnumeration): Implemented.
+	(postorderEnumeration): Implemented.
+	(depthFirstEnumeration): Implemented.
+	(breadthFirstEnumeration): Implemented.
+	(nextLeaf): Added TODO doc.
+	(previousLeaf): Added TODO doc.
+
 2005-07-15  Mark Wielaard  <mark@klomp.org>
 
 	* lib/standard.omit: Only list gnu/javax/swing/plaf/gtk/.*java and
