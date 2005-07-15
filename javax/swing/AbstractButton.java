@@ -564,7 +564,13 @@ public abstract class AbstractButton extends JComponent
 
  protected void init(String text, Icon icon) 
  {
-    this.text = text;
+    // If text is null, we fall back to the empty
+    // string (which is set using AbstractButton's
+    // constructor).
+    // This way the behavior of the JDK is matched.
+    if(text != null)
+        this.text = text;
+
     default_icon = icon;
     actionListener = createActionListener();
     changeListener = createChangeListener();

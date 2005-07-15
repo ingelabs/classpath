@@ -1,3 +1,8 @@
+2005-07-15  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/AbstractButton.java:
+	(init): Do not change field text if argument text is null.
+
 2005-07-15  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/logging/Logger.java (getCallerStackFrame): 
