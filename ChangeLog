@@ -1,5 +1,9 @@
 2005-07-15  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalComboBoxIcon.java: new file.
+
+2005-07-15  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/tree/TreePath.java: added API docs all over,
 	(TreePath(Object[])): throw IllegalArgumentException for null argument,
 	(TreePath(TreePath, Object)): throw NullPointerException for null Object,
