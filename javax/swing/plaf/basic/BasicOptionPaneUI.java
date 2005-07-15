@@ -161,8 +161,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
    *           but was made public by a compiler bug and is now
    *           public for compatibility.
    */
-  // FIXME: should be static
-  public class ButtonAreaLayout implements LayoutManager
+  public static class ButtonAreaLayout implements LayoutManager
   {
     /** Whether this layout will center the buttons. */
     protected boolean centersChildren = true;
@@ -249,7 +248,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
       for (int i = 0; i < buttonList.length; i++)
         {
 	  Dimension dims = buttonList[i].getPreferredSize();
-	  if (getSizeButtonsToSameWidth())
+	  if (syncAllWidths)
 	    {
 	      buttonList[i].setBounds(x, 0, widthOfWidestButton, dims.height);
 	      x += widthOfWidestButton + getPadding();
@@ -347,7 +346,6 @@ public class BasicOptionPaneUI extends OptionPaneUI
     public void setCentersChildren(boolean newValue)
     {
       centersChildren = newValue;
-      optionPane.invalidate();
     }
 
     /**
@@ -358,7 +356,6 @@ public class BasicOptionPaneUI extends OptionPaneUI
     public void setPadding(int newPadding)
     {
       padding = newPadding;
-      optionPane.invalidate();
     }
 
     /**
@@ -369,7 +366,6 @@ public class BasicOptionPaneUI extends OptionPaneUI
     public void setSyncAllWidths(boolean newValue)
     {
       syncAllWidths = newValue;
-      optionPane.invalidate();
     }
   }
 
