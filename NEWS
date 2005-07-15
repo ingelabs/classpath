@@ -1,3 +1,34 @@
+New in release 0.17 (Jul 15, 2005)
+
+* gnu.xml fix for nodes created outside a namespace context.
+* Add support for output indenting and cdata-section-elements output
+  instruction in xml.transform.
+* xml.xpath corrections for cases where elements/attributes might have
+  been created in non-namespace-aware mode. Corrections to handling of
+  XSL variables and minor conformance updates.
+* DefaultMutableTreeNode preorder, postorder, depthFirst and breadthFirst
+  traversal enumerations implemented.
+* JInternalFrame colors and titlebar draw properly.
+* JTree is working up to par (icons, selection and keyboard traversal).
+* JMenus were made more compatible in visual and programmatic behavior.
+* JTable changeSelection and multiple selections implemented.
+* JButton and JToggleButton change states work properly now.
+* JFileChooser fixes.
+* revalidate and repaint fixes which make Free Swing much more responsive.
+* Correctly handle system call interrupts and timeouts in native nio
+  and net functions.
+* MetalIconFactory implemented.
+* Handle image loading errors correctly for gdkpixbuf and MediaTracker.
+* Added Tree World to GNU Classpath examples Free Swing demo.
+* FileChannel.lock() and FileChannel.force() implemented.
+* java.util.logging.FileHandler now rotates files.
+* Better handle GDK lock. Properly prefix gtkpeer native functions (cp_gtk).
+* Corba bug fixes and documentation updates.
+* Updated gcj build infrastructure.
+* Documentation fixes all over the place.
+  See http://developer.classpath.org/doc/
+* VM Integration Guide updates with a full section on VM/Classpath hooks.
+
 New in release 0.16 (Jun 30, 2005)
 
 * Better GTK scrollbar peer implementation when using GTK >= 2.6.
