@@ -594,8 +594,12 @@ public class BasicTreeUI
     */
    public Rectangle getPathBounds(JTree tree, TreePath path)
    {
-      // FIXME: not implemented
-      return null;
+      Object cell = path.getLastPathComponent();
+      TreeModel mod = tree.getModel();
+      Point loc = getCellLocation(0, 0, tree, mod, cell, mod.getRoot());
+      int x = (int) loc.getX();
+      int y = (int) loc.getY();
+      return getCellBounds(x, y, cell);      
    }
 
    /**
@@ -1927,14 +1931,11 @@ public class BasicTreeUI
          int row = (clickY  / getRowHeight()) - 1;
          TreePath path = BasicTreeUI.this.tree.getPathForRow(row);
          
-         // check if clicked in row area
          boolean inBounds = false;
-         Object cell = path.getLastPathComponent();
-         TreeModel mod = tree.getModel();
-         Point loc = getCellLocation(0, 0, tree, mod, cell, mod.getRoot());
-         int x = (int) loc.getX();
-         int y = (int) loc.getY();
-         Rectangle bounds = BasicTreeUI.this.getCellBounds(x, y, cell);
+         Rectangle bounds = BasicTreeUI.this.getPathBounds(
+               BasicTreeUI.this.tree, path);
+         int x = (int) bounds.getX();
+         int y = (int) bounds.getY();
          if ((clickY >= (y - 10) && clickY <= (y + bounds.height + 10))
                && (clickX >= x && clickX <= (x + bounds.width + 25)))
             inBounds = true;
