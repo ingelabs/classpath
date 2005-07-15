@@ -1,3 +1,9 @@
+2005-07-15  Mark Wielaard  <mark@klomp.org>
+
+	* hacking.texinfo: @setchapternewpage off.
+	* vmintegration.texinfo: Likewise.
+	* www.gnu.org/docs/Makefile: texi2info --ifinfo --ifhtml.
+
 2005-07-14  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkChoicePeer.java (choicePostItemEvent):

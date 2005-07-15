@@ -13,7 +13,7 @@ WML_SRC = $(patsubst ../../%, %, $(TEXI_SRC:.texinfo=.html)) $(wildcard *.wml)
 WML_OBJS = $(patsubst %.wml,%.html,$(WML_SRC))
 
 %.html : %.texinfo
-	texi2html -monolithic $<
+	texi2html -monolithic --ifinfo --ifhtml $<
 #	texi2html -monolithic $<;
 #	cp $< $@
 #	echo '#!wml --include=..' > $@

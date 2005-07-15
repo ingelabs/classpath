@@ -5,7 +5,7 @@
 @settitle GNU Classpath Hacker's Guide
 @c %**end of header
 
-@setchapternewpage none
+@setchapternewpage off
 
 @ifinfo
 This file contains important information you will need to know if you
