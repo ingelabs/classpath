@@ -1,3 +1,10 @@
+2005-07-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): changed Slider.thumbWidth.
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(paintThumb): fixed thumb painting.
+
 2005-07-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/PortableServer/ThreadPolicyValue.java,

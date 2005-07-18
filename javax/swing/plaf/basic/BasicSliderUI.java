@@ -1924,8 +1924,6 @@ public class BasicSliderUI extends SliderUI
   {
     Color saved_color = g.getColor();
 
-    Polygon thumb = new Polygon();
-
     Point a = new Point(thumbRect.x, thumbRect.y);
     Point b = new Point(a);
     Point c = new Point(a);
@@ -1933,7 +1931,8 @@ public class BasicSliderUI extends SliderUI
     Point e = new Point(a);
 
     Polygon bright;
-    Polygon dark;
+    Polygon light;  // light shadow
+    Polygon dark;   // dark shadow
     Polygon all;
 
     // This will be in X-dimension if the slider is inverted and y if it isn't.	  	  
@@ -1943,36 +1942,42 @@ public class BasicSliderUI extends SliderUI
       {
 	turnPoint = thumbRect.height * 3 / 4;
 
-	b.translate(thumbRect.width, 0);
-	c.translate(thumbRect.width, turnPoint);
-	d.translate(thumbRect.width / 2, thumbRect.height);
+	b.translate(thumbRect.width - 1, 0);
+	c.translate(thumbRect.width - 1, turnPoint);
+	d.translate(thumbRect.width / 2 - 1, thumbRect.height - 1);
 	e.translate(0, turnPoint);
 
-	bright = new Polygon(new int[] { b.x, a.x, e.x, d.x },
+	bright = new Polygon(new int[] { b.x - 1, a.x, e.x, d.x },
 	                     new int[] { b.y, a.y, e.y, d.y }, 4);
 
-	dark = new Polygon(new int[] { b.x, c.x, d.x },
-	                   new int[] { b.y, c.y, d.y }, 3);
-	all = new Polygon(new int[] { a.x + 1, b.x, c.x, d.x, e.x + 1 },
-	                  new int[] { a.y + 1, b.y + 1, c.y, d.y + 1, e.y }, 5);
+	dark = new Polygon(new int[] { b.x, c.x, d.x + 1 },
+	                   new int[] { b.y, c.y - 1, d.y }, 3);
+    
+    light = new Polygon(new int[] { b.x - 1, c.x - 1, d.x + 1 },
+                        new int[] { b.y + 1, c.y - 1, d.y - 1 }, 3);
+    
+	all = new Polygon(new int[] { a.x + 1, b.x - 2, c.x - 2, d.x, e.x + 1 },
+	                  new int[] { a.y + 1, b.y + 1, c.y - 1, d.y - 1, e.y }, 5);
       }
     else
       {
-	turnPoint = thumbRect.width * 3 / 4;
+	turnPoint = thumbRect.width * 3 / 4 - 1;
 
 	b.translate(turnPoint, 0);
-	c.translate(thumbRect.width, thumbRect.height / 2);
-	d.translate(turnPoint, thumbRect.height);
-	e.translate(0, thumbRect.height);
+	c.translate(thumbRect.width - 1, thumbRect.height / 2);
+	d.translate(turnPoint, thumbRect.height - 1);
+	e.translate(0, thumbRect.height - 1);
 
-	bright = new Polygon(new int[] { c.x, b.x, a.x, e.x },
-	                     new int[] { c.y, b.y, a.y, e.y }, 4);
+	bright = new Polygon(new int[] { c.x - 1, b.x, a.x, e.x },
+	                     new int[] { c.y - 1, b.y, a.y, e.y - 1 }, 4);
 
-	dark = new Polygon(new int[] { c.x, d.x, e.x + 1 },
+	dark = new Polygon(new int[] { c.x, d.x, e.x },
 	                   new int[] { c.y, d.y, e.y }, 3);
 
-	all = new Polygon(new int[] { a.x + 1, b.x, c.x - 1, d.x, e.x + 1 },
-	                  new int[] { a.y + 1, b.y + 1, c.y, d.y, e.y }, 5);
+    light = new Polygon(new int[] { c.x - 1, d.x, e.x + 1},
+                       new int[] { c.y, d.y - 1, e.y - 1}, 3);
+	all = new Polygon(new int[] { a.x + 1, b.x, c.x - 2, c.x - 2, d.x, e.x + 1 },
+	                  new int[] { a.y + 1, b.y + 1, c.y - 1, c.y, d.y - 2, e.y - 2 }, 6);
       }
 
     g.setColor(Color.WHITE);
@@ -1982,6 +1987,10 @@ public class BasicSliderUI extends SliderUI
     g.drawPolyline(dark.xpoints, dark.ypoints, dark.npoints);
 
     g.setColor(Color.GRAY);
+    g.drawPolyline(light.xpoints, light.ypoints, light.npoints);
+    
+    g.setColor(Color.LIGHT_GRAY);
+    g.drawPolyline(all.xpoints, all.ypoints, all.npoints);
     g.fillPolygon(all);
 
     g.setColor(saved_color);

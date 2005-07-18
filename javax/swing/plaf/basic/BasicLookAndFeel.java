@@ -748,7 +748,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "Slider.highlight", new ColorUIResource(highLight),
       "Slider.shadow", new ColorUIResource(shadow),
       "Slider.thumbHeight", new Integer(20),
-      "Slider.thumbWidth", new Integer(10),
+      "Slider.thumbWidth", new Integer(11),
       "Slider.tickHeight", new Integer(12),
       "Spinner.background", new ColorUIResource(light),
       "Spinner.foreground", new ColorUIResource(light),
