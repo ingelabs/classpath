@@ -1,5 +1,13 @@
 2005-07-18  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JSlider.java:
+	(JSlider(int)): updated API docs,
+	(JSlider(int, int, int)): likewise,
+	(JSlider(BoundedRangeModel)): removed code that handles a null 
+	argument, and updated API docs.
+
+2005-07-18  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JSlider.java: initialise snapToTicks to false.
 	
 2005-07-18  Anthony Balkissoon  <abalkiss@redhat.com>

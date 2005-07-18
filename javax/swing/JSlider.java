@@ -124,8 +124,6 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   
     /**
      * Creates a new AccessibleJSlider object.
-     *
-     * @param value0 DOCUMENT ME!
      */
     protected AccessibleJSlider()
     {
@@ -256,7 +254,11 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
    * Creates a new JSlider object with the given orientation and a minimum of
    * 0, a maximum of 100, and a value of 50.
    *
-   * @param orientation The orientation of the slider.
+   * @param orientation The orientation of the slider ({@link #HORIZONTAL} or
+   *                    {@link #VERTICAL}).
+   * 
+   * @throws IllegalArgumentException if <code>orientation</code> is not one of
+   *         the specified values.
    */
   public JSlider(int orientation)
   {
@@ -293,10 +295,14 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
    * Creates a new JSlider object with the given orientation, minimum,
    * maximum, and value.
    *
-   * @param orientation The orientation of the JSlider.
+   * @param orientation The orientation of the slider ({@link #HORIZONTAL} or
+   *                    {@link #VERTICAL}).
    * @param minimum The minimum value of the JSlider.
    * @param maximum The maximum value of the JSlider.
    * @param value The initial value of the JSlider.
+   * 
+   * @throws IllegalArgumentException if <code>orientation</code> is not one of
+   *         the specified values.
    */
   public JSlider(int orientation, int minimum, int maximum, int value)
   {
@@ -312,14 +318,13 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   /**
    * Creates a new horizontal JSlider object with the given model.
    *
-   * @param model The model the slider will be created with.
+   * @param model The model (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if <code>model</code> is <code>null</code>.
    */
   public JSlider(BoundedRangeModel model)
   {
-    if (model == null)
-      sliderModel = new DefaultBoundedRangeModel(50, 0, 0, 100);
-    else
-      sliderModel = model;
+    sliderModel = model;
     changeListener = createChangeListener();
     sliderModel.addChangeListener(changeListener);
     updateUI();
