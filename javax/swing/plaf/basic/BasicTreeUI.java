@@ -1281,6 +1281,16 @@ public class BasicTreeUI
       g.translate(10, 10);
       paintRecursive(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
       paintControlIcons(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
+      
+      TreePath lead = tree.getLeadSelectionPath();
+      if (lead != null && tree.isPathSelected(lead))
+      {
+         Rectangle cell = getPathBounds(tree, lead);
+         g.setColor(UIManager.getLookAndFeelDefaults().getColor(
+               "Tree.selectionBorderColor"));
+         g.drawRect(cell.x + 11, cell.y, cell.width, cell.height);
+      }
+      
       g.translate(-10, -10);
    }
 
@@ -1935,12 +1945,12 @@ public class BasicTreeUI
          boolean cntlClick = false;
          Rectangle bounds = BasicTreeUI.this.getPathBounds(
                BasicTreeUI.this.tree, path);
-         int x = (int) bounds.getX();
-         int y = (int) bounds.getY();
+         int x = (int) bounds.x;
+         int y = (int) bounds.y;
 
-         if (clickY > y && clickY < (y + bounds.height + 10))
+         if (clickY > (y - 10) && clickY < (y + bounds.height + 10))
          {
-            if (clickX > x && clickX < (x + bounds.width + 20))
+            if (clickX > (x - 5) && clickX < (x + bounds.width + 25))
                inBounds = true;
             else if (clickX < (x - rightChildIndent + 5) && 
                   clickX > (x - rightChildIndent - 5))
@@ -2518,7 +2528,7 @@ public class BasicTreeUI
       }
       return null;
    }
-
+   
    /**
     * Retrieves the location of some node, recursively starting at from
     * some node.
@@ -2591,7 +2601,7 @@ public class BasicTreeUI
                                     getCellBounds(x, y, leaf));
          }
          else
-         {            
+         {  
             Component c = dtcr.getTreeCellRendererComponent(
                   tree, leaf, false, false, true, 0, false);
             
