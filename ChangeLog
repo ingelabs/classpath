@@ -1,5 +1,9 @@
 2005-07-18  Tom Tromey  <tromey@redhat.com>
 
+	* include/.cvsignore: Removed jni.h.
+
+2005-07-18  Tom Tromey  <tromey@redhat.com>
+
 	* native/jni/classpath/classpath_jawt.h: Updated copyright
 	header.
 
