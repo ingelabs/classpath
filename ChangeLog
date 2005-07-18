@@ -1,4 +1,10 @@
+2005-07-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/imageio/stream/ImageInputStream.java: added import to fix
+	minor API doc problems.
+
 2005-07-18  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	(paint): Implemented painting of border around selected path
 	(mouseClicked): Fixed clicking of icon
