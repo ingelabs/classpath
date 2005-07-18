@@ -1283,12 +1283,14 @@ public class BasicTreeUI
       paintControlIcons(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
       
       TreePath lead = tree.getLeadSelectionPath();
-      if (lead != null && tree.isPathSelected(lead))
+      if (lead != null && tree.isPathSelected(lead) && 
+            hasControlIcons())
       {
-         Rectangle cell = getPathBounds(tree, lead);
+         Rectangle cell = getPathBounds(tree, lead);  
          g.setColor(UIManager.getLookAndFeelDefaults().getColor(
                "Tree.selectionBorderColor"));
-         g.drawRect(cell.x + 11, cell.y, cell.width, cell.height);
+         g.drawRect(cell.x + rightChildIndent - 2, cell.y, cell.width,
+               cell.height);
       }
       
       g.translate(-10, -10);
@@ -1952,8 +1954,9 @@ public class BasicTreeUI
          {
             if (clickX > (x - 5) && clickX < (x + bounds.width + 25))
                inBounds = true;
-            else if (clickX < (x - rightChildIndent + 5) && 
-                  clickX > (x - rightChildIndent - 5))
+            else if (BasicTreeUI.this.hasControlIcons() && 
+                  (clickX < (x - rightChildIndent + 5) && 
+                        clickX > (x - rightChildIndent - 5)))
                cntlClick = true;
          }
 
@@ -2586,7 +2589,7 @@ public class BasicTreeUI
          Icon li = dtcr.getLeafIcon();
          if (li != null)
             hasIcons = true;
-         
+
          if (selected)
          {
             Component c = dtcr.getTreeCellRendererComponent(tree, leaf,
@@ -2655,20 +2658,23 @@ public class BasicTreeUI
 
                if (hasIcons)
                {
+                  Rectangle bounds = getCellBounds(x, y, nonLeaf);
                   if (expanded)
                   {
-                     oi.paintIcon(c, g, x, y + 2);
+                     oi.paintIcon(c, g, x, y + (bounds.height - 
+                           oi.getIconHeight())/2);
                      x += (oi.getIconWidth() + 4);
                   }
                   else
                   {
-                     ci.paintIcon(c, g, x, y + 2);
+                     ci.paintIcon(c, g, x, y + (bounds.height - 
+                           oi.getIconHeight())/2);
                      x += (ci.getIconWidth() + 4);
                   }
                   
                }
-               rendererPane.paintComponent(g, c, tree, 
-                           getCellBounds(x, y, nonLeaf));
+               rendererPane.paintComponent(g, c, 
+                     tree, getCellBounds(x, y, nonLeaf));
             }
             else
             {
@@ -2788,7 +2794,9 @@ public class BasicTreeUI
       Icon ci = UIManager.getLookAndFeelDefaults().
          getIcon("Tree.collapsedIcon");
       Rectangle clip = g.getClipBounds();
-      if (ci == null || ei == null || indentation > clip.x + clip.width +
+      if (ci == null || ei == null)
+         return -1;
+      else if (indentation > clip.x + clip.width +
             rightChildIndent || descent > clip.y + clip.height + 
                getRowHeight())
          return descent;
@@ -2819,5 +2827,21 @@ public class BasicTreeUI
       }
       
       return descent;
+   }
+   
+   /**
+    * Returns true if the LookAndFeel implements the control icons
+    * 
+    * @return true if control icons are visible
+    */
+   private boolean hasControlIcons()
+   {
+      Icon ei = UIManager.getLookAndFeelDefaults().
+      getIcon("Tree.expandedIcon");
+      Icon ci = UIManager.getLookAndFeelDefaults().
+         getIcon("Tree.collapsedIcon");
+      if (ci == null || ei == null)
+         return false;
+      return true;
    }
 } // BasicTreeUI

@@ -6,6 +6,13 @@
 2005-07-18  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
+	(paint): Only paint border if using MetalL&F
+	(mouseClicked): Check that control icons exist
+	(paintNonLeaf): Changed to paint icon depending on height
+	(hasControlIcons): Implemented to return true if control icons exist
+
+2005-07-18  Lillian Angel  <langel@redhat.com>
+	* javax/swing/plaf/basic/BasicTreeUI.java
 	(paint): Implemented painting of border around selected path
 	(mouseClicked): Fixed clicking of icon
 
