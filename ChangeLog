@@ -1,3 +1,14 @@
+2005-17-18  Lillian Angel <langel@redhat.com>
+	* javax/swing/plaf/BasicTreeUI
+	(getPathBounds): checked if path was null initially
+	(paint): no need to check for control icons
+	(paintLeaf): reseting of icon
+	(paintNonLeaf): resetting of icon
+	(paintControlIcons): cleaned up
+	(hasControlIcons): cleaned up
+	* javax/swing/tree/DefaultTreeCellRenderer
+	(getTreeCellRendererComponent): fixed to follow API	
+
 2005-07-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JSlider.java:

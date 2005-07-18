@@ -379,20 +379,21 @@ public class DefaultTreeCellRenderer
 			boolean selected, boolean expanded, boolean leaf, int row,
 			boolean hasFocus)
 	{
-		if (val instanceof Icon)
-      	setIcon((Icon) val);
+      if (leaf)
+         setIcon(getLeafIcon());
+      else if (expanded)
+         setIcon(getOpenIcon());
       else
-      {
-         setText(val.toString());
-         setIcon(null);
-         this.selected = selected;
-         this.hasFocus = hasFocus;
-         setHorizontalAlignment(LEFT);
-         setOpaque(true);
-         setVerticalAlignment(TOP);
-         setEnabled(true);
-         super.setFont(UIManager.getLookAndFeelDefaults().getFont("Tree.font"));
-      }
+         setIcon(getClosedIcon());
+      
+      setText(val.toString());
+      this.selected = selected;
+      this.hasFocus = hasFocus;
+      setHorizontalAlignment(LEFT);
+      setOpaque(true);
+      setVerticalAlignment(TOP);
+      setEnabled(true);
+      super.setFont(UIManager.getLookAndFeelDefaults().getFont("Tree.font"));
 
 		if (selected) 
 		{
@@ -404,7 +405,7 @@ public class DefaultTreeCellRenderer
 			super.setBackground(getBackgroundNonSelectionColor());
 			setForeground(getTextNonSelectionColor());
 		}		
-		
+      
 		return this;
 	}
 	

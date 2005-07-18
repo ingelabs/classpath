@@ -594,12 +594,16 @@ public class BasicTreeUI
     */
    public Rectangle getPathBounds(JTree tree, TreePath path)
    {
-      Object cell = path.getLastPathComponent();
-      TreeModel mod = tree.getModel();
-      Point loc = getCellLocation(0, 0, tree, mod, cell, mod.getRoot());
-      int x = (int) loc.getX();
-      int y = (int) loc.getY();
-      return getCellBounds(x, y, cell);      
+      if (path != null)
+      {
+         Object cell = path.getLastPathComponent();
+         TreeModel mod = tree.getModel();
+         Point loc = getCellLocation(0, 0, tree, mod, cell, mod.getRoot());
+         int x = (int) loc.getX();
+         int y = (int) loc.getY();
+         return getCellBounds(x, y, cell);
+      }
+      return null;
    }
 
    /**
@@ -1280,11 +1284,12 @@ public class BasicTreeUI
       TreeModel mod = tree.getModel();
       g.translate(10, 10);
       paintRecursive(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
-      paintControlIcons(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
+      
+      if (hasControlIcons())
+         paintControlIcons(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
       
       TreePath lead = tree.getLeadSelectionPath();
-      if (lead != null && tree.isPathSelected(lead) && 
-            hasControlIcons())
+      if (lead != null && tree.isPathSelected(lead))
       {
          Rectangle cell = getPathBounds(tree, lead);  
          g.setColor(UIManager.getLookAndFeelDefaults().getColor(
@@ -2582,41 +2587,26 @@ public class BasicTreeUI
       boolean selected = tree.isPathSelected(curr);
 
       if (tree.isVisible(curr))
-      {          
-         DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) 
-                                             tree.getCellRenderer();
-         boolean hasIcons = false;
-         Icon li = dtcr.getLeafIcon();
-         if (li != null)
-            hasIcons = true;
+      {
+         DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) tree
+               .getCellRenderer();
 
          if (selected)
          {
-            Component c = dtcr.getTreeCellRendererComponent(tree, leaf,
-                  true, false, true, 0, false);
-            
-            if (hasIcons)
-            {
-               li.paintIcon(c, g, x, y + 2);
-               x += li.getIconWidth() + 4;
-            }
-            rendererPane.paintComponent(g, c, tree, 
-                                    getCellBounds(x, y, leaf));
+            Icon li = dtcr.getLeafIcon();
+            dtcr.setLeafIcon(null);
+            Component c = dtcr.getTreeCellRendererComponent(tree, leaf, true,
+                  false, true, 0, false);
+            dtcr.setLeafIcon(li);
+            rendererPane.paintComponent(g, c, tree, getCellBounds(x +
+                  li.getIconWidth() +  4, y, leaf));  
+            li.paintIcon(c, g, x, y + 2);
          }
          else
-         {  
-            Component c = dtcr.getTreeCellRendererComponent(
-                  tree, leaf, false, false, true, 0, false);
-            
+         {
+            Component c = dtcr.getTreeCellRendererComponent(tree, leaf, false,
+                  false, true, 0, false);
             g.translate(x, y);
-            
-            if (hasIcons)
-            {
-               Component icon = dtcr.getTreeCellRendererComponent(tree, 
-                  li, false, false, true, 0, false); 
-               icon.paint(g);
-            }
-            
             c.paint(g);
             g.translate(-x, -y);
          }
@@ -2641,62 +2631,46 @@ public class BasicTreeUI
 
       if (tree.isVisible(curr))
       {
-            DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) 
-                                                tree.getCellRenderer();
-            boolean hasIcons = false;
-            boolean hasOtherIcons = false;
+         DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) tree
+               .getCellRenderer();
+         
+         if (selected)
+         {
+            Component c;
+            Rectangle bounds = getCellBounds(x, y, nonLeaf);
             Icon oi = dtcr.getOpenIcon();
             Icon ci = dtcr.getClosedIcon();
             
-            if (oi != null || ci != null)
-               hasIcons = true;
-            
-            if (selected)
-            {      
-               Component c = dtcr.getTreeCellRendererComponent(tree, nonLeaf,
+            if (expanded)
+            {
+               dtcr.setOpenIcon(null);
+               c = dtcr.getTreeCellRendererComponent(tree, nonLeaf,
                      true, expanded, false, 0, false);
-
-               if (hasIcons)
-               {
-                  Rectangle bounds = getCellBounds(x, y, nonLeaf);
-                  if (expanded)
-                  {
-                     oi.paintIcon(c, g, x, y + (bounds.height - 
-                           oi.getIconHeight())/2);
-                     x += (oi.getIconWidth() + 4);
-                  }
-                  else
-                  {
-                     ci.paintIcon(c, g, x, y + (bounds.height - 
-                           oi.getIconHeight())/2);
-                     x += (ci.getIconWidth() + 4);
-                  }
-                  
-               }
-               rendererPane.paintComponent(g, c, 
-                     tree, getCellBounds(x, y, nonLeaf));
+               dtcr.setOpenIcon(oi);
+               oi.paintIcon(c, g, x, y + (bounds.height - oi.getIconHeight())
+                     / 2);
             }
             else
             {
-               Component c = dtcr.getTreeCellRendererComponent(tree, nonLeaf, 
-                                          false, expanded, false, 0, false);
-               g.translate(x, y);
-               
-               if (hasIcons)
-               {
-                  Component icon;
-                  if (expanded)
-                     icon = dtcr.getTreeCellRendererComponent(tree, 
-                        oi, false, false, false, 0, false);
-                  else
-                     icon = dtcr.getTreeCellRendererComponent(tree, 
-                        ci, false, false, false, 0, false);
-                  
-                  icon.paint(g);
-               }
-               c.paint(g);
-               g.translate(-x, -y);
+               dtcr.setClosedIcon(null);
+               c = dtcr.getTreeCellRendererComponent(tree, nonLeaf,
+                     true, expanded, false, 0, false);
+               dtcr.setClosedIcon(ci);
+               ci.paintIcon(c, g, x, y + (bounds.height - ci.getIconHeight())
+                     / 2);
             }
+
+            rendererPane.paintComponent(g, c, tree, getCellBounds(x + 
+                  oi.getIconWidth() + 4, y, nonLeaf));
+         }
+         else
+         {
+            Component c = dtcr.getTreeCellRendererComponent(tree, nonLeaf,
+                  false, expanded, false, 0, false);
+            g.translate(x, y);
+            c.paint(g);
+            g.translate(-x, -y);
+         }
       }
    }
 
@@ -2789,16 +2763,13 @@ public class BasicTreeUI
    {
       int h = descent;
       int rowHeight = getRowHeight();
-      Icon ei = UIManager.getLookAndFeelDefaults().
-         getIcon("Tree.expandedIcon");
-      Icon ci = UIManager.getLookAndFeelDefaults().
-         getIcon("Tree.collapsedIcon");
+      Icon ei = UIManager.getLookAndFeelDefaults()
+         .getIcon("Tree.expandedIcon");
+      Icon ci = UIManager.getLookAndFeelDefaults()
+         .getIcon("Tree.collapsedIcon");
       Rectangle clip = g.getClipBounds();
-      if (ci == null || ei == null)
-         return -1;
-      else if (indentation > clip.x + clip.width +
-            rightChildIndent || descent > clip.y + clip.height + 
-               getRowHeight())
+      if (indentation > clip.x + clip.width + rightChildIndent
+            || descent > clip.y + clip.height + getRowHeight())
          return descent;
       
       if (mod.isLeaf(node))
@@ -2836,11 +2807,10 @@ public class BasicTreeUI
     */
    private boolean hasControlIcons()
    {
-      Icon ei = UIManager.getLookAndFeelDefaults().
-      getIcon("Tree.expandedIcon");
-      Icon ci = UIManager.getLookAndFeelDefaults().
-         getIcon("Tree.collapsedIcon");
-      if (ci == null || ei == null)
+      if (UIManager.getLookAndFeelDefaults().
+            getIcon("Tree.expandedIcon") == null ||
+                  UIManager.getLookAndFeelDefaults().
+                     getIcon("Tree.collapsedIcon") == null)
          return false;
       return true;
    }
