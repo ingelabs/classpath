@@ -229,7 +229,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   protected int minorTickSpacing;
 
   /** Whether the slider snaps its values to ticks. */
-  protected boolean snapToTicks = true;
+  protected boolean snapToTicks = false;
 
   /** The orientation of the slider. */
   protected int orientation = HORIZONTAL;
