@@ -1,5 +1,12 @@
 2005-07-18  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	(paintMenuItem): Don't highlight background of a selected 
+	JCheckboxMenuItem.
+	(paintText): Don't highlight text of a selected JCheckBoxMenuItem.
+
+2005-07-18  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/JPopupMenu.java:
 	(insert): Resize the container to its preferred size when an item is
 	inserted.
