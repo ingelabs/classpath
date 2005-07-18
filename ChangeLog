@@ -1,5 +1,13 @@
 2005-07-18  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/JPopupMenu.java:
+	(insert): Resize the container to its preferred size when an item is
+	inserted.
+	(remove): Resize the container to its preferred size when an item is
+	removed.
+
+2005-07-18  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/plaf/basic/BasicMenuUI.java:
 	(getMaximumSize): Added check for this menu not being a top level menu.
 	If that's the case, return the maximum size as if it were a regular

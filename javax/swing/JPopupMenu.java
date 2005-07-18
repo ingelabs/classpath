@@ -232,6 +232,7 @@ public class JPopupMenu extends JComponent implements Accessible, MenuElement
 	constraints.gridy = i;
 	super.add(items[i], constraints, i);
       }
+    this.setSize(this.getPreferredSize());
   }
 
   /**
@@ -276,6 +277,7 @@ public class JPopupMenu extends JComponent implements Accessible, MenuElement
 	    super.add(items[i], constraints, i);
 	  }
       }
+    this.setSize(this.getPreferredSize());
   }
 
   /**
