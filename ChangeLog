@@ -1,3 +1,10 @@
+2005-17-19  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JSlider.java
+	(createStandardLabels(int)): updated API docs,
+	(createStandardLabels(int, int)): throw IllegalArgumentException for
+	bad arguments.
+
 2005-17-18  Lillian Angel <langel@redhat.com>
 	* javax/swing/plaf/BasicTreeUI
 	(getPathBounds): checked if path was null initially

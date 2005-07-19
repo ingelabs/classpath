@@ -648,9 +648,12 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
    * minimum and increase by the increment. Each  label will have a text
    * string indicating their integer value.
    *
-   * @param increment The increment to between labels.
+   * @param increment The increment between labels (must be > 0).
    *
    * @return A hashtable with the labels and their keys.
+   *
+   * @throws IllegalArgumentException if <code>increment</code> is not greater
+   *         than zero.
    */
   public Hashtable createStandardLabels(int increment)
   {
@@ -661,15 +664,23 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
    * Creates a hashtable of (Integer, JLabel) pairs that can be used as a
    * label table for this slider. The labels will start from the given start
    * value and increase by the increment. Each  label will have a text string
-   * indicating their integer value.
+   * indicating its integer value.
    *
-   * @param increment The increment to between labels.
+   * @param increment The increment between labels (must be > 0).
    * @param start The value to start from.
    *
    * @return A hashtable with the labels and their keys.
+   *
+   * @throws IllegalArgumentException if <code>increment</code> is not greater
+   *         than zero, or <code>start</code> is not within the range of the
+   *         model.
    */
   public Hashtable createStandardLabels(int increment, int start)
   {
+    if (increment <= 0) 
+      throw new IllegalArgumentException("Requires 'increment' > 0.");
+    if (start < getMinimum() || start > getMaximum())
+      throw new IllegalArgumentException("The 'start' value is out of range.");
     Hashtable table = new Hashtable();
     JLabel label;
     Dimension dim;
