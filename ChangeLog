@@ -1,3 +1,17 @@
+2005-17-19  Lillian Angel <langel@redhat.com>
+
+	* javax/swing/plaf/BasicTreeUI:
+	Moved several functions around for readability.
+	Some formatting in various places.
+	(paint): extended size of border drawn
+	(mouseClicked): checked if path was null
+	(getCellLocation): Now package-private.
+	(paintNode): Implemented, there is no need to paint the leaf and non
+	leaf separately. Works with custom icons.
+	(paintRecursive): Now package-private. Changed to paint with paintNode.
+	(paintControlIcons): Now package-private.
+	(hasControlIcons): Now package-private.
+
 2005-17-19  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JSlider.java
@@ -6,6 +20,7 @@
 	bad arguments.
 
 2005-17-18  Lillian Angel <langel@redhat.com>
+
 	* javax/swing/plaf/BasicTreeUI
 	(getPathBounds): checked if path was null initially
 	(paint): no need to check for control icons

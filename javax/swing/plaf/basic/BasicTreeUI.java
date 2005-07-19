@@ -224,23 +224,14 @@ public class BasicTreeUI
 
    /** Listeners */
    private PropertyChangeListener propertyChangeListener;
-
    private FocusListener focusListener;
-
    private TreeSelectionListener treeSelectionListener;
-
    private MouseInputListener mouseInputListener;
-
    private KeyListener keyListener;
-
    private PropertyChangeListener selectionModelPropertyChangeListener;
-
    private ComponentListener componentListener;
-
    private CellEditorListener cellEditorListener;
-
    private TreeExpansionListener treeExpansionListener;
-
    private TreeModelListener treeModelListener;
 
    /**
@@ -631,72 +622,6 @@ public class BasicTreeUI
       return new TreePath(node.getPath());
    }
 
-   /**
-    * Get next visible node in the tree.
-    * Package private for use in inner classes.
-    * @param the current node
-    * @return the next visible node in the JTree. Return null if there are no
-    *         more.
-    */
-   DefaultMutableTreeNode getNextVisibleNode(DefaultMutableTreeNode node)
-   {
-      DefaultMutableTreeNode next = null;
-      TreePath current = null;
-
-      if (node != null)
-         next = node.getNextNode();
-
-      if (next != null)
-      {
-         current = new TreePath(next.getPath());
-         if (tree.isVisible(current))
-            return next;
-
-         while (next != null && !tree.isVisible(current))
-         {
-            next = next.getNextNode();
-
-            if (next != null)
-               current = new TreePath(next.getPath());
-         }
-      }
-      return next;
-   }
-
-   /**
-    * Get previous visible node in the tree.
-    * Package private for use in inner classes.
-    * 
-    * @param the current node
-    * @return the next visible node in the JTree. Return null if there are no
-    *         more.
-    */
-   DefaultMutableTreeNode getPreviousVisibleNode
-                                             (DefaultMutableTreeNode node)
-   {
-      DefaultMutableTreeNode prev = null;
-      TreePath current = null;
-
-      if (node != null)
-         prev = node.getPreviousNode();
-
-      if (prev != null)
-      {
-         current = new TreePath(prev.getPath());
-         if (tree.isVisible(current))
-            return prev;
-
-         while (prev != null && !tree.isVisible(current))
-         {
-            prev = prev.getPreviousNode();
-
-            if (prev != null)
-               current = new TreePath(prev.getPath());
-         }
-      }
-      return prev;
-   }
-   
    /**
     * Returns the row that the last item identified in path is visible at. Will
     * return -1 if any of the elments in the path are not currently visible.
@@ -1294,7 +1219,7 @@ public class BasicTreeUI
          Rectangle cell = getPathBounds(tree, lead);  
          g.setColor(UIManager.getLookAndFeelDefaults().getColor(
                "Tree.selectionBorderColor"));
-         g.drawRect(cell.x + rightChildIndent - 2, cell.y, cell.width,
+         g.drawRect(cell.x + rightChildIndent - 4, cell.y, cell.width + 4,
                cell.height);
       }
       
@@ -1584,43 +1509,6 @@ public class BasicTreeUI
       else
          return true;
    }
-
-   /**
-    * Selects the specified path in the tree depending on modes.
-    * Package private for use in inner classes.
-    * 
-    * @param tree is the tree we are selecting the path in
-    * @param path is the path we are selecting
-    */
-   void selectPath(JTree tree, TreePath path)
-   {
-      if (path != null)
-      {
-         if (tree.isPathSelected(path))
-            tree.removeSelectionPath(path);
-         else if (tree.getSelectionModel().getSelectionMode() 
-               == TreeSelectionModel.SINGLE_TREE_SELECTION)
-         {
-            tree.getSelectionModel().clearSelection();
-            tree.addSelectionPath(path);
-            tree.setLeadSelectionPath(path);
-         }
-         else if (tree.getSelectionModel().getSelectionMode() 
-               == TreeSelectionModel.CONTIGUOUS_TREE_SELECTION)
-         {
-            // TODO
-         }
-         else
-         {
-            tree.getSelectionModel().setSelectionMode(
-                  TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-            tree.addSelectionPath(path);
-            tree.setLeadSelectionPath(path);
-         }
-      }
-   }
-   
-   /* * INTERNAL CLASSES * */
 
    /**
     * Updates the preferred size when scrolling, if necessary.
@@ -1945,49 +1833,52 @@ public class BasicTreeUI
          Point click = e.getPoint();
          int clickX = (int) click.getX();
          int clickY = (int) click.getY();
-         int row = (clickY  / getRowHeight()) - 1;
+         int row = (clickY / getRowHeight()) - 1;
          TreePath path = BasicTreeUI.this.tree.getPathForRow(row);
-         
-         boolean inBounds = false;
-         boolean cntlClick = false;
-         Rectangle bounds = BasicTreeUI.this.getPathBounds(
-               BasicTreeUI.this.tree, path);
-         int x = (int) bounds.x;
-         int y = (int) bounds.y;
 
-         if (clickY > (y - 10) && clickY < (y + bounds.height + 10))
+         if (path != null)
          {
-            if (clickX > (x - 5) && clickX < (x + bounds.width + 25))
-               inBounds = true;
-            else if (BasicTreeUI.this.hasControlIcons() && 
-                  (clickX < (x - rightChildIndent + 5) && 
-                        clickX > (x - rightChildIndent - 5)))
-               cntlClick = true;
-         }
+            boolean inBounds = false;
+            boolean cntlClick = false;
+            Rectangle bounds = BasicTreeUI.this.getPathBounds(
+                  BasicTreeUI.this.tree, path);
+            int x = (int) bounds.x;
+            int y = (int) bounds.y;
 
-         if ((inBounds || cntlClick) && path != null && 
-               BasicTreeUI.this.tree.isVisible(path))
-         {           
-            if (!cntlClick && !BasicTreeUI.this.isLeaf(row))
-               clickCount++;
-            
-            if (clickCount == 2 || cntlClick == true)
+            if (clickY > (y - 10) && clickY < (y + bounds.height + 10))
             {
-               clickCount = 0;
-               BasicTreeUI.this.tree.getSelectionModel().clearSelection();
-               if (BasicTreeUI.this.tree.isExpanded(path))
-               {
-                  BasicTreeUI.this.tree.collapsePath(path);
-                  BasicTreeUI.this.tree.fireTreeCollapsed(path);
-               }
-               else
-               {
-                  BasicTreeUI.this.tree.expandPath(path);
-                  BasicTreeUI.this.tree.fireTreeExpanded(path);
-               }
+               if (clickX > (x - 5) && clickX < (x + bounds.width + 25))
+                  inBounds = true;
+               else if (BasicTreeUI.this.hasControlIcons()
+                     && (clickX < (x - rightChildIndent + 5) && clickX > (x
+                           - rightChildIndent - 5)))
+                  cntlClick = true;
             }
-            
-            BasicTreeUI.this.selectPath(BasicTreeUI.this.tree, path);
+
+            if ((inBounds || cntlClick) && BasicTreeUI.this.tree.
+                  isVisible(path))
+            {
+               if (!cntlClick && !BasicTreeUI.this.isLeaf(row))
+                  clickCount++;
+
+               if (clickCount == 2 || cntlClick == true)
+               {
+                  clickCount = 0;
+                  BasicTreeUI.this.tree.getSelectionModel().clearSelection();
+                  if (BasicTreeUI.this.tree.isExpanded(path))
+                  {
+                     BasicTreeUI.this.tree.collapsePath(path);
+                     BasicTreeUI.this.tree.fireTreeCollapsed(path);
+                  }
+                  else
+                  {
+                     BasicTreeUI.this.tree.expandPath(path);
+                     BasicTreeUI.this.tree.fireTreeExpanded(path);
+                  }
+               }
+
+               BasicTreeUI.this.selectPath(BasicTreeUI.this.tree, path);
+            }
          }
       }
 
@@ -2516,6 +2407,7 @@ public class BasicTreeUI
 
    /**
     * Returns the cell bounds for painting selected cells
+    * Package private for use in inner classes.
     * 
     * @param x is the x location of the cell
     * @param y is the y location of the cell
@@ -2523,7 +2415,7 @@ public class BasicTreeUI
     * 
     * @returns Rectangle that represents the cell bounds
     */
-   private Rectangle getCellBounds(int x, int y, Object cell)
+   Rectangle getCellBounds(int x, int y, Object cell)
    {
       if (cell != null)
       {
@@ -2540,6 +2432,7 @@ public class BasicTreeUI
    /**
     * Retrieves the location of some node, recursively starting at from
     * some node.
+    * Package private for use in inner classes.
     * 
     * @param x is the starting x position, offset
     * @param y is the starting y position, offset
@@ -2550,7 +2443,7 @@ public class BasicTreeUI
     * 
     * @return Point - the location of node
     */
-   private Point getCellLocation(int x, int y, JTree tree, TreeModel mod,
+   Point getCellLocation(int x, int y, JTree tree, TreeModel mod,
          Object node, Object startNode)
    {
       int rowHeight = getRowHeight();
@@ -2573,109 +2466,49 @@ public class BasicTreeUI
    }
    
    /**
-    * Paints a leaf in the tree
+    * Paints a node in the tree Package private for use in inner classes.
     * 
     * @param g the Graphics context in which to paint
-    * @param x the x location of the leaf
-    * @param y the y location of the leaf
+    * @param x the x location of the node
+    * @param y the y location of the node
     * @param tree the tree to draw on
-    * @param leaf the object to draw
+    * @param node the object to draw
     */
-   private void paintLeaf(Graphics g, int x, int y, JTree tree, Object leaf)
+   void paintNode(Graphics g, int x, int y, JTree tree, Object node,
+         boolean isLeaf)
    {
-      TreePath curr = new TreePath(((DefaultMutableTreeNode) leaf).getPath());
+      TreePath curr = new TreePath(((DefaultMutableTreeNode) node).getPath());
       boolean selected = tree.isPathSelected(curr);
+      boolean expanded = false;
 
       if (tree.isVisible(curr))
       {
          DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) tree
                .getCellRenderer();
 
+         if (!isLeaf)
+            expanded = tree.isExpanded(curr);
+
+         Component c = dtcr.getTreeCellRendererComponent(tree, node, selected,
+               expanded, isLeaf, 0, false);
+
          if (selected)
          {
-            Icon li = dtcr.getLeafIcon();
-            dtcr.setLeafIcon(null);
-            Component c = dtcr.getTreeCellRendererComponent(tree, leaf, true,
-                  false, true, 0, false);
-            dtcr.setLeafIcon(li);
-            rendererPane.paintComponent(g, c, tree, getCellBounds(x +
-                  li.getIconWidth() +  4, y, leaf));  
-            li.paintIcon(c, g, x, y + 2);
+            Rectangle cell = getPathBounds(tree, curr);
+            g.setColor(dtcr.getBackgroundSelectionColor());
+            g.fillRect(cell.x + rightChildIndent - 4, cell.y, cell.width + 4,
+                  cell.height);
          }
-         else
-         {
-            Component c = dtcr.getTreeCellRendererComponent(tree, leaf, false,
-                  false, true, 0, false);
-            g.translate(x, y);
-            c.paint(g);
-            g.translate(-x, -y);
-         }
+
+         g.translate(x, y);
+         c.paint(g);
+         g.translate(-x, -y);
       }
    }
 
    /**
-    * Paints a non-leaf in the tree
-    * 
-    * @param g the Graphics context in which to paint
-    * @param x the x location of the non-leaf
-    * @param y the y location of the non-leaf
-    * @param tree the tree to draw on
-    * @param nonLeaf the object to draw
-    */
-   private void paintNonLeaf(Graphics g, int x, int y, JTree tree,
-         Object nonLeaf)
-   {
-      TreePath curr = new TreePath(((DefaultMutableTreeNode) nonLeaf).getPath());
-      boolean selected = tree.isPathSelected(curr);
-      boolean expanded = tree.isExpanded(curr);
-
-      if (tree.isVisible(curr))
-      {
-         DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) tree
-               .getCellRenderer();
-         
-         if (selected)
-         {
-            Component c;
-            Rectangle bounds = getCellBounds(x, y, nonLeaf);
-            Icon oi = dtcr.getOpenIcon();
-            Icon ci = dtcr.getClosedIcon();
-            
-            if (expanded)
-            {
-               dtcr.setOpenIcon(null);
-               c = dtcr.getTreeCellRendererComponent(tree, nonLeaf,
-                     true, expanded, false, 0, false);
-               dtcr.setOpenIcon(oi);
-               oi.paintIcon(c, g, x, y + (bounds.height - oi.getIconHeight())
-                     / 2);
-            }
-            else
-            {
-               dtcr.setClosedIcon(null);
-               c = dtcr.getTreeCellRendererComponent(tree, nonLeaf,
-                     true, expanded, false, 0, false);
-               dtcr.setClosedIcon(ci);
-               ci.paintIcon(c, g, x, y + (bounds.height - ci.getIconHeight())
-                     / 2);
-            }
-
-            rendererPane.paintComponent(g, c, tree, getCellBounds(x + 
-                  oi.getIconWidth() + 4, y, nonLeaf));
-         }
-         else
-         {
-            Component c = dtcr.getTreeCellRendererComponent(tree, nonLeaf,
-                  false, expanded, false, 0, false);
-            g.translate(x, y);
-            c.paint(g);
-            g.translate(-x, -y);
-         }
-      }
-   }
-
-   /**
-    * Recursively paints all elements of the tree
+    * Recursively paints all elements of the tree Package private for use in
+    * inner classes.
     * 
     * @param g the Graphics context in which to paint
     * @param indentation of the current object
@@ -2688,7 +2521,7 @@ public class BasicTreeUI
     * 
     * @return int - current descent of the tree
     */
-   private int paintRecursive(Graphics g, int indentation, int descent,
+   int paintRecursive(Graphics g, int indentation, int descent,
          int childNumber, int depth, JTree tree, TreeModel mod, Object curr)
    {
       Rectangle clip = g.getClipBounds();
@@ -2703,14 +2536,14 @@ public class BasicTreeUI
       
       if (mod.isLeaf(curr))
       {
-         paintLeaf(g, indentation + 4, descent, tree, curr);
+         paintNode(g, indentation + 4, descent, tree, curr, true);
          descent += getRowHeight();
       }
       else
       {
          if (depth > 0 || tree.isRootVisible())
          {
-            paintNonLeaf(g, indentation + 4, descent, tree, curr);
+            paintNode(g, indentation + 4, descent, tree, curr, false);
             descent += getRowHeight();
             y0 += halfHeight;
          }
@@ -2746,6 +2579,7 @@ public class BasicTreeUI
    
    /**
     * Recursively paints all the control icons on the tree.
+    * Package private for use in inner classes.
     * 
     * @param g the Graphics context in which to paint
     * @param indentation of the current object
@@ -2758,7 +2592,7 @@ public class BasicTreeUI
     * 
     * @return int - current descent of the tree
     */
-   private int paintControlIcons(Graphics g, int indentation, int descent,
+   int paintControlIcons(Graphics g, int indentation, int descent,
          int childNumber, int depth, JTree tree, TreeModel mod, Object node)
    {
       int h = descent;
@@ -2802,10 +2636,11 @@ public class BasicTreeUI
    
    /**
     * Returns true if the LookAndFeel implements the control icons
+    * Package private for use in inner classes.
     * 
     * @return true if control icons are visible
     */
-   private boolean hasControlIcons()
+   boolean hasControlIcons()
    {
       if (UIManager.getLookAndFeelDefaults().
             getIcon("Tree.expandedIcon") == null ||
@@ -2813,5 +2648,107 @@ public class BasicTreeUI
                      getIcon("Tree.collapsedIcon") == null)
          return false;
       return true;
+   }
+   
+   /**
+    * Get next visible node in the tree.
+    * Package private for use in inner classes.
+    * 
+    * @param the current node
+    * @return the next visible node in the JTree. Return null if there are no
+    *         more.
+    */
+   DefaultMutableTreeNode getNextVisibleNode(DefaultMutableTreeNode node)
+   {
+      DefaultMutableTreeNode next = null;
+      TreePath current = null;
+
+      if (node != null)
+         next = node.getNextNode();
+
+      if (next != null)
+      {
+         current = new TreePath(next.getPath());
+         if (tree.isVisible(current))
+            return next;
+
+         while (next != null && !tree.isVisible(current))
+         {
+            next = next.getNextNode();
+
+            if (next != null)
+               current = new TreePath(next.getPath());
+         }
+      }
+      return next;
+   }
+
+   /**
+    * Get previous visible node in the tree.
+    * Package private for use in inner classes.
+    * 
+    * @param the current node
+    * @return the next visible node in the JTree. Return null if there are no
+    *         more.
+    */
+   DefaultMutableTreeNode getPreviousVisibleNode
+                                             (DefaultMutableTreeNode node)
+   {
+      DefaultMutableTreeNode prev = null;
+      TreePath current = null;
+
+      if (node != null)
+         prev = node.getPreviousNode();
+
+      if (prev != null)
+      {
+         current = new TreePath(prev.getPath());
+         if (tree.isVisible(current))
+            return prev;
+
+         while (prev != null && !tree.isVisible(current))
+         {
+            prev = prev.getPreviousNode();
+
+            if (prev != null)
+               current = new TreePath(prev.getPath());
+         }
+      }
+      return prev;
+   }
+   
+   /**
+    * Selects the specified path in the tree depending on modes.
+    * Package private for use in inner classes.
+    * 
+    * @param tree is the tree we are selecting the path in
+    * @param path is the path we are selecting
+    */
+   void selectPath(JTree tree, TreePath path)
+   {
+      if (path != null)
+      {
+         if (tree.isPathSelected(path))
+            tree.removeSelectionPath(path);
+         else if (tree.getSelectionModel().getSelectionMode() 
+               == TreeSelectionModel.SINGLE_TREE_SELECTION)
+         {
+            tree.getSelectionModel().clearSelection();
+            tree.addSelectionPath(path);
+            tree.setLeadSelectionPath(path);
+         }
+         else if (tree.getSelectionModel().getSelectionMode() 
+               == TreeSelectionModel.CONTIGUOUS_TREE_SELECTION)
+         {
+            // TODO
+         }
+         else
+         {
+            tree.getSelectionModel().setSelectionMode(
+                  TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+            tree.addSelectionPath(path);
+            tree.setLeadSelectionPath(path);
+         }
+      }
    }
 } // BasicTreeUI
