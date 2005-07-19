@@ -454,7 +454,7 @@ public class BasicTreeUI
     */
    protected void setModel(TreeModel model)
    {
-      treeState.setModel(model);
+      tree.setModel(model);
       treeModel = model;
    }
 
@@ -475,7 +475,7 @@ public class BasicTreeUI
     */
    protected void setRootVisible(boolean newValue)
    {
-      treeState.setRootVisible(newValue);
+      tree.setRootVisible(newValue);
    }
 
    /**
@@ -485,7 +485,7 @@ public class BasicTreeUI
     */
    protected boolean isRootVisible()
    {
-      return treeState.isRootVisible();
+      return tree.isRootVisible();
    }
 
    /**
@@ -674,7 +674,20 @@ public class BasicTreeUI
     */
    public TreePath getClosestPathForLocation(JTree tree, int x, int y)
    {
-      return treeState.getPathClosestTo(x, y);
+      //FIXME: what if root is hidden? should not depend on (0,0)
+      // should start counting rows from where root is.
+      
+      int row = Math.round(y / getRowHeight());
+      TreePath path = getPathForRow(tree, row);
+
+      // no row is visible at this node
+      while (row > 0 && path == null)
+      {
+         --row;
+         path = getPathForRow(tree, row);
+      }
+      
+      return path;
    }
 
    /**
@@ -1207,7 +1220,6 @@ public class BasicTreeUI
    {
       JTree tree = (JTree) c;
       TreeModel mod = tree.getModel();
-      g.translate(10, 10);
       paintRecursive(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
       
       if (hasControlIcons())
@@ -1222,8 +1234,6 @@ public class BasicTreeUI
          g.drawRect(cell.x + rightChildIndent - 4, cell.y, cell.width + 4,
                cell.height);
       }
-      
-      g.translate(-10, -10);
    }
 
    /**
@@ -1831,10 +1841,9 @@ public class BasicTreeUI
       public void mouseClicked(MouseEvent e)
       {
          Point click = e.getPoint();
-         int clickX = (int) click.getX();
-         int clickY = (int) click.getY();
-         int row = (clickY / getRowHeight()) - 1;
-         TreePath path = BasicTreeUI.this.tree.getPathForRow(row);
+         int row = Math.round(click.y / BasicTreeUI.this.getRowHeight());
+         TreePath path = BasicTreeUI.this.getClosestPathForLocation(tree,
+               click.x, click.y);
 
          if (path != null)
          {
@@ -1842,21 +1851,19 @@ public class BasicTreeUI
             boolean cntlClick = false;
             Rectangle bounds = BasicTreeUI.this.getPathBounds(
                   BasicTreeUI.this.tree, path);
-            int x = (int) bounds.x;
-            int y = (int) bounds.y;
+            // include icon
+            bounds.x -= rightChildIndent - 4;
+            bounds.width += rightChildIndent + 4;
 
-            if (clickY > (y - 10) && clickY < (y + bounds.height + 10))
-            {
-               if (clickX > (x - 5) && clickX < (x + bounds.width + 25))
-                  inBounds = true;
-               else if (BasicTreeUI.this.hasControlIcons()
-                     && (clickX < (x - rightChildIndent + 5) && clickX > (x
-                           - rightChildIndent - 5)))
-                  cntlClick = true;
-            }
+            if (bounds.contains(click.x, click.y))
+               inBounds = true;
+            else if (BasicTreeUI.this.hasControlIcons()
+                  && (click.x < (bounds.x - rightChildIndent + 5) && 
+                        click.x > (bounds.x - rightChildIndent - 5)))
+               cntlClick = true;
 
-            if ((inBounds || cntlClick) && BasicTreeUI.this.tree.
-                  isVisible(path))
+            if ((inBounds || cntlClick)
+                  && BasicTreeUI.this.tree.isVisible(path))
             {
                if (!cntlClick && !BasicTreeUI.this.isLeaf(row))
                   clickCount++;
