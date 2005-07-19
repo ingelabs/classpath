@@ -1,3 +1,7 @@
+2005-07-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/PortableServer/ForwardRequest.java: New file.
+
 2005-17-19  Lillian Angel <langel@redhat.com>
 
 	* javax/swing/plaf/BasicTreeUI
