@@ -1,5 +1,11 @@
 2005-07-20  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* java/awt/BorderLayout.java:
+	(layoutContainer): Removed addition of horizontal and vertical gaps
+	when there is no corresponding adjacent component.
+
+2005-07-20  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/JTable:
 	(JTable): Set the lead selection index for each of the two lists
 	associated with this table to 0 (instead of -1).  This complies with
