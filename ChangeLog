@@ -1,3 +1,19 @@
+2005-07-20  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(paint): Changed to paint children of root as roots if the 
+	root is not visible, but the root path is expanded.
+	(getPathForRow): If the root is not visible, but expanded, 
+	the first child should be considered row 0.
+	(getRowCount): Likewise.
+	(getPathBounds): Likewise.
+	(getCellLocation): If root is not visible, but expanded, the
+	level of each node is lowered by 1.
+	(paintRecursive): If root is not visible, but expanded, there should
+	be no indentation when the children are drawn. Also, there should be no
+	line drawn connecting the children. This makes it look like there are 2
+	independant trees (works same as JDK).
+
 2005-07-20  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java

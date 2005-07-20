@@ -589,10 +589,14 @@ public class BasicTreeUI
       {
          Object cell = path.getLastPathComponent();
          TreeModel mod = tree.getModel();
-         Point loc = getCellLocation(0, 0, tree, mod, cell, mod.getRoot());
-         int x = (int) loc.getX();
-         int y = (int) loc.getY();
-         return getCellBounds(x, y, cell);
+         DefaultMutableTreeNode root = (DefaultMutableTreeNode) mod.getRoot();
+         if (!tree.isRootVisible()
+               && tree.isExpanded(new TreePath(((DefaultMutableTreeNode) root)
+                     .getPath())))
+            root = root.getNextNode();
+
+         Point loc = getCellLocation(0, 0, tree, mod, cell, root);
+         return getCellBounds(loc.x, loc.y, cell);
       }
       return null;
    }
@@ -610,6 +614,10 @@ public class BasicTreeUI
    {
       DefaultMutableTreeNode node = ((DefaultMutableTreeNode) (tree.getModel())
             .getRoot());
+      if (!tree.isRootVisible()
+            && tree.isExpanded(new TreePath(((DefaultMutableTreeNode) node)
+                  .getPath())))
+         node = node.getNextNode();
 
       for (int i = 0; i < row; i++)
          node = getNextVisibleNode(node);
@@ -650,6 +658,11 @@ public class BasicTreeUI
    {
       DefaultMutableTreeNode node = ((DefaultMutableTreeNode) (tree.getModel())
             .getRoot());
+      if (!tree.isRootVisible()
+            && tree.isExpanded(new TreePath(((DefaultMutableTreeNode) node)
+                  .getPath())))
+         node = node.getNextNode();
+      
       int count = 0;
       
       while (node != null)
@@ -679,7 +692,7 @@ public class BasicTreeUI
       
       int row = Math.round(y / getRowHeight());
       TreePath path = getPathForRow(tree, row);
-
+      
       // no row is visible at this node
       while (row > 0 && path == null)
       {
@@ -1220,10 +1233,16 @@ public class BasicTreeUI
    {
       JTree tree = (JTree) c;
       TreeModel mod = tree.getModel();
-      paintRecursive(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
+      Object root = mod.getRoot();
+      
+      if (!tree.isRootVisible())
+         tree.expandPath(new TreePath(((DefaultMutableTreeNode) root)
+               .getPath()));
+      
+      paintRecursive(g, 0, 0, 0, 0, tree, mod, root);
       
       if (hasControlIcons())
-         paintControlIcons(g, 0, 0, 0, 0, tree, mod, mod.getRoot());
+         paintControlIcons(g, 0, 0, 0, 0, tree, mod, root);
       
       TreePath lead = tree.getLeadSelectionPath();
       if (lead != null && tree.isPathSelected(lead))
@@ -1231,8 +1250,8 @@ public class BasicTreeUI
          Rectangle cell = getPathBounds(tree, lead);  
          g.setColor(UIManager.getLookAndFeelDefaults().getColor(
                "Tree.selectionBorderColor"));
-         g.drawRect(cell.x + rightChildIndent - 4, cell.y, cell.width + 4,
-               cell.height);
+         g.drawRect(cell.x + rightChildIndent - 4, cell.y, 
+               cell.width + 4, cell.height);
       }
    }
 
@@ -2455,8 +2474,15 @@ public class BasicTreeUI
    {
       int rowHeight = getRowHeight();
       if (startNode == null || startNode.equals(node))
-         return new Point(x + ((((DefaultMutableTreeNode) node).
-               getLevel() + 1) * rightChildIndent), y);
+      {
+         if (!tree.isRootVisible() && tree.isExpanded(new TreePath((
+               (DefaultMutableTreeNode) mod.getRoot()).getPath())))
+            return new Point(x + ((((DefaultMutableTreeNode) node).getLevel())
+                  * rightChildIndent), y);
+         
+         return new Point(x + ((((DefaultMutableTreeNode) node).getLevel() + 1)
+               * rightChildIndent), y);
+      }
 
       if (!mod.isLeaf(startNode)
             && tree.isExpanded(new TreePath(
@@ -2540,6 +2566,7 @@ public class BasicTreeUI
       int halfWidth = rightChildIndent / 2;
       int y0 = descent + halfHeight;
       int heightOfLine = descent + halfHeight;
+      boolean isRootVisible = tree.isRootVisible();
       
       if (mod.isLeaf(curr))
       {
@@ -2548,25 +2575,32 @@ public class BasicTreeUI
       }
       else
       {
-         if (depth > 0 || tree.isRootVisible())
+         if (depth > 0 || isRootVisible)
          {
             paintNode(g, indentation + 4, descent, tree, curr, false);
             descent += getRowHeight();
             y0 += halfHeight;
          }
-         
+
          int max = mod.getChildCount(curr);
          if (tree.isExpanded(new TreePath(((DefaultMutableTreeNode) curr)
                .getPath())))
          {
             for (int i = 0; i < max; ++i)
             {
-               g.setColor(getHashColor());
-               heightOfLine = descent + halfHeight;
-               g.drawLine(indentation + halfWidth, heightOfLine,
-                     indentation + rightChildIndent, heightOfLine);
-                              
-               descent = paintRecursive(g, indentation + rightChildIndent,
+               int indent = indentation + rightChildIndent;
+               if (!isRootVisible && depth == 0)
+                  indent = 0;
+               else if ((!isRootVisible && !curr.equals(mod.getRoot())) || 
+                     isRootVisible)
+               {
+                  g.setColor(getHashColor());
+                  heightOfLine = descent + halfHeight;
+                  g.drawLine(indentation + halfWidth, heightOfLine, indentation
+                        + rightChildIndent, heightOfLine);
+               }
+                  
+               descent = paintRecursive(g, indent,
                      descent, i, depth + 1, tree, mod, mod.getChild(curr, i));
             }
          }
@@ -2628,8 +2662,12 @@ public class BasicTreeUI
                ei.paintIcon(tree, g, indentation - rightChildIndent - 3, h);
             
             for (int i = 0; i < max; ++i)
-            {           
-               descent = paintControlIcons(g, indentation + rightChildIndent,
+            {
+               int indent = indentation + rightChildIndent;
+               if (depth == 0 && !tree.isRootVisible())
+                  indent = -1;
+               
+               descent = paintControlIcons(g, indent,
                      descent, i, depth + 1, tree, mod, mod.getChild(node, i));
             }
          }
