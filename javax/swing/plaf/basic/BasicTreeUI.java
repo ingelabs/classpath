@@ -1706,50 +1706,108 @@ public class BasicTreeUI
        * @param e the key pressed
        */
       public void keyPressed(KeyEvent e)
-      {         
+      {
          TreePath start = BasicTreeUI.this.tree.getLeadSelectionPath();
          DefaultMutableTreeNode last = null;
-         
          if (start != null)
             last = (DefaultMutableTreeNode) start.getLastPathComponent();
+
          if (last != null)
          {
-            if (e.getKeyCode() == KeyEvent.VK_DOWN)
+            // DOWN, KP_DOWN
+            if (e.getKeyCode() == KeyEvent.VK_DOWN
+                  || e.getKeyCode() == KeyEvent.VK_KP_DOWN)
             {
                DefaultMutableTreeNode next = (DefaultMutableTreeNode) 
                   BasicTreeUI.this.getNextVisibleNode(last);
-               
                if (next != null)
-                  BasicTreeUI.this.selectPath(BasicTreeUI.this.tree,
-                        new TreePath(next.getPath()));
+               {
+                  TreePath newPath = new TreePath(next.getPath());
+                  BasicTreeUI.this.selectPath(BasicTreeUI.this.tree, newPath);
+                  if (e.isControlDown())
+                     tree.setLeadSelectionPath(newPath);
+                  else if (!next.isLeaf() && e.isShiftDown())
+                  {
+                     BasicTreeUI.this.tree.expandPath(newPath);
+                     BasicTreeUI.this.tree.fireTreeExpanded(newPath);
+                  }
+               }
             }
-            else if (e.getKeyCode() == KeyEvent.VK_UP)
+            // UP, KP_UP
+            else if (e.getKeyCode() == KeyEvent.VK_UP
+                  || e.getKeyCode() == KeyEvent.VK_KP_UP)
             {
                DefaultMutableTreeNode prev = (DefaultMutableTreeNode) 
-               BasicTreeUI.this.getPreviousVisibleNode(last);
-            
-            if (prev != null)
-               BasicTreeUI.this.selectPath(BasicTreeUI.this.tree,
-                     new TreePath(prev.getPath()));
+                  BasicTreeUI.this.getPreviousVisibleNode(last);
+
+               if (prev != null)
+               {
+                  TreePath newPath = new TreePath(prev.getPath());
+                  BasicTreeUI.this.selectPath(BasicTreeUI.this.tree,
+                        new TreePath(prev.getPath()));
+                  if (e.isControlDown())
+                     tree.setLeadSelectionPath(newPath);
+                  else if (!prev.isLeaf() && e.isShiftDown())
+                  {
+                     BasicTreeUI.this.tree.expandPath(newPath);
+                     BasicTreeUI.this.tree.fireTreeExpanded(newPath);
+                  }
+               }
             }
-            else if (e.getKeyCode() == KeyEvent.VK_LEFT)
+            // LEFT, KP_LEFT
+            else if (e.getKeyCode() == KeyEvent.VK_LEFT
+                  || e.getKeyCode() == KeyEvent.VK_KP_LEFT)
             {
                TreePath path = new TreePath(last.getPath());
-               
+               DefaultMutableTreeNode p = (DefaultMutableTreeNode) last
+                     .getParent();
+
                if (!last.isLeaf() && BasicTreeUI.this.tree.isExpanded(path))
                {
                   BasicTreeUI.this.tree.collapsePath(path);
                   BasicTreeUI.this.tree.fireTreeCollapsed(path);
                }
+               else if (p != null)
+                  BasicTreeUI.this.selectPath(BasicTreeUI.this.tree,
+                        new TreePath(p.getPath()));
             }
-            else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
+            // RIGHT, KP_RIGHT
+            else if (e.getKeyCode() == KeyEvent.VK_RIGHT
+                  || e.getKeyCode() == KeyEvent.VK_KP_RIGHT)
             {
                TreePath path = new TreePath(last.getPath());
-   
+
                if (!last.isLeaf() && BasicTreeUI.this.tree.isCollapsed(path))
                {
                   BasicTreeUI.this.tree.expandPath(path);
                   BasicTreeUI.this.tree.fireTreeExpanded(path);
+               }
+               else
+               {
+                  DefaultMutableTreeNode next = (DefaultMutableTreeNode) 
+                     BasicTreeUI.this.getNextVisibleNode(last);
+
+                  if (next != null)
+                     BasicTreeUI.this.selectPath(BasicTreeUI.this.tree,
+                           new TreePath(next.getPath()));
+               }
+            }
+            // Enter
+            else if (e.getKeyCode() == KeyEvent.VK_ENTER)
+            {
+               TreePath path = new TreePath(last.getPath());
+               if (!last.isLeaf())
+               {
+                  if (BasicTreeUI.this.tree.isExpanded(path))
+                  {
+                     BasicTreeUI.this.tree.collapsePath(path);
+                     BasicTreeUI.this.tree.fireTreeCollapsed(path);
+                  }
+                  else
+                  {
+                     BasicTreeUI.this.tree.expandPath(path);
+                     BasicTreeUI.this.tree.fireTreeExpanded(path);
+                  }
                }
             }
          }

@@ -1,3 +1,8 @@
+2005-07-20  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(keyPressed): Implemented some more VK_XXX and VK_KP_XXX events.
+
 2005-07-20  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/processor/ClassObjectReferenceCommandSet.java:
