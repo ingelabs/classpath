@@ -57,6 +57,7 @@ import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.DimensionUIResource;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.InsetsUIResource;
 import javax.swing.text.JTextComponent;
 
@@ -480,8 +481,15 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "InternalFrame.borderLight", new ColorUIResource(Color.LIGHT_GRAY),
       "InternalFrame.borderShadow", new ColorUIResource(Color.GRAY),
       "InternalFrame.closeIcon", BasicIconFactory.createEmptyFrameIcon(),
-      // XXX Don't use gif
-//      "InternalFrame.icon", new IconUIResource(new ImageIcon("icons/JavaCup.gif")),
+      // FIXME: Set a nice icon for InternalFrames here.
+      "InternalFrame.icon",
+      new UIDefaults.LazyValue()
+      {
+        public Object createValue(UIDefaults def)
+        {
+          return new IconUIResource(BasicIconFactory.createEmptyFrameIcon());
+        }
+      },
       "InternalFrame.iconifyIcon", BasicIconFactory.createEmptyFrameIcon(),
       "InternalFrame.inactiveTitleBackground", new ColorUIResource(Color.gray),
       "InternalFrame.inactiveTitleForeground",

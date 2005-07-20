@@ -1,5 +1,12 @@
 2005-07-20  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added value for InternalFrame.icon.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(installDefaults): Install icon from UIDefaults.
+
+2005-07-20  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicOptionPaneUI.java
 	(createSeparator): Return null here.
 	(installComponents): Don't add a separator in the OptionPane.
