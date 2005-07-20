@@ -1,5 +1,12 @@
 2005-07-20  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JOptionPane.java
+	(createInternalFrame): Look up the nearest JLayeredPane instead
+	of JDesktopPane. This is in contrast to the specs but what the JDK
+	does and what makes sense.
+
+2005-07-20  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/SwingUtilities.java:
 	Made class description more concise.
 

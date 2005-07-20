@@ -384,8 +384,8 @@ public class JOptionPane extends JComponent implements Accessible
   }
 
   /**
-   * This method creates a new JInternalFrame that is in the JDesktopPane
-   * which contains the parentComponent given. If no suitable JDesktopPane
+   * This method creates a new JInternalFrame that is in the JLayeredPane
+   * which contains the parentComponent given. If no suitable JLayeredPane
    * can be found from the parentComponent given, a RuntimeException will be
    * thrown.
    *
@@ -395,14 +395,22 @@ public class JOptionPane extends JComponent implements Accessible
    * @return A new JInternalFrame based on the JOptionPane configuration.
    *
    * @throws RuntimeException If no suitable JDesktopPane is found.
+   *
+   * @specnote The specification says that the internal frame is placed
+   *           in the nearest <code>JDesktopPane</code> that is found in
+   *           <code>parent</code>'s ancestors. The behaviour of the JDK
+   *           is that it actually looks up the nearest
+   *           <code>JLayeredPane</code> in <code>parent</code>'s ancestors.
+   *           So do we.
    */
   public JInternalFrame createInternalFrame(Component parentComponent,
                                             String title)
                                      throws RuntimeException
   {
-    JDesktopPane toUse = getDesktopPaneForComponent(parentComponent);
+    JLayeredPane toUse = JLayeredPane.getLayeredPaneAbove(parentComponent);
     if (toUse == null)
-      throw new RuntimeException("parentComponent does not have a valid parent");
+      throw new RuntimeException
+        ("parentComponent does not have a valid parent");
 
     JInternalFrame frame = new JInternalFrame(title);
 
@@ -411,9 +419,8 @@ public class JOptionPane extends JComponent implements Accessible
 
     frame.setClosable(true);
     toUse.add(frame);
-
     // FIXME: JLayeredPane broken? See bug # 16576
-    // frame.setLayer(JLayeredPane.MODAL_LAYER);
+    frame.setLayer(JLayeredPane.MODAL_LAYER);
     return frame;
   }
 
