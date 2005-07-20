@@ -509,7 +509,10 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
    */
   public void setMinimum(int minimum)
   {
+    int old = sliderModel.getMinimum();
     sliderModel.setMinimum(minimum);
+    if (minimum != old)
+      firePropertyChange("minimum", old, minimum);
   }
 
   /**
@@ -529,7 +532,10 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
    */
   public void setMaximum(int maximum)
   {
+    int old = sliderModel.getMaximum();
     sliderModel.setMaximum(maximum);
+    if (maximum != old)
+      firePropertyChange("maximum", old, maximum);
   }
 
   /**
@@ -817,7 +823,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
     if (snap != snapToTicks)
       {
 	snapToTicks = snap;
-	fireStateChanged();
+	firePropertyChange("snapToTicks", !snap, snap);
       }
   }
 
@@ -863,13 +869,19 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   }
 
   /**
-   * This method sets whether the track will be painted.
+   * Sets the flag that controls whether or not the track is painted, and
+   * sends a {@link PropertyChangeEvent} (for the "paintTrack" property) to all
+   * registered listeners.
    *
    * @param paint Whether the track will be painted.
    */
   public void setPaintTrack(boolean paint)
   {
-    paintTrack = paint;
+    if (paintTrack != paint)
+    {
+      paintTrack = paint;
+      firePropertyChange("paintTrack", !paint, paint);
+    }
   }
 
   /**
@@ -891,9 +903,10 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   {
     if (paint != paintLabels)
       {
-	boolean oldPaintLabels = paintLabels;
 	paintLabels = paint;
-	firePropertyChange("paintLabels", oldPaintLabels, paintLabels);
+        if (paint && majorTickSpacing > 0)
+          labelTable = createStandardLabels(majorTickSpacing);
+	firePropertyChange("paintLabels", !paint, paint);
       }
   }
 
