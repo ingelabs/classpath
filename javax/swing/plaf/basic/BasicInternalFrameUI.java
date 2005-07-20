@@ -1150,7 +1150,6 @@ public class BasicInternalFrameUI extends InternalFrameUI
 	installKeyboardActions();
 
 	frame.setOpaque(true);
-	titlePane.setOpaque(true);
 	frame.invalidate();
       }
   }
