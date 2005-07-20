@@ -1,5 +1,10 @@
 2005-07-20  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JButton.java:
+	Made class description more concise.
+
+2005-07-20  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JButton.java
 	(AccessibleJButton): Added accessibility support for JButton.
 	(getAccessibleContext): Implemented to return an AccessibleJButton.

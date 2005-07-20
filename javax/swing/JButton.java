@@ -44,7 +44,8 @@ import javax.swing.plaf.ButtonUI;
 
 
 /**
- * An instance of JButton can be added to a panel, frame etc
+ * A general purpose push button. <code>JButton</code>s can display a label,
+ * an {@link Icon} or both.
  *
  * @author Ronald Veldema (rveldema@cs.vu.nl)
  */
