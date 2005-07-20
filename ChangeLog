@@ -1,3 +1,9 @@
+2005-07-20  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java:
+	(KeyHandler.keyPressed): Restore the lead selection index after doing
+	a "select all" operation.
+
 2005-07-20  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java

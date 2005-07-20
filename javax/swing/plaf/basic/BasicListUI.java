@@ -267,6 +267,9 @@ public class BasicListUI extends ListUI
                 == KeyEvent.VK_SLASH) && evt.isControlDown())
         {
           BasicListUI.this.list.setSelectionInterval(0, max);
+          // this next line is to restore the lead selection index to the old
+          // position, because select-all should not change the lead index
+          BasicListUI.this.list.addSelectionInterval(lead, lead);
         }
       else if (evt.getKeyCode() == KeyEvent.VK_SPACE && evt.isControlDown())
         {
