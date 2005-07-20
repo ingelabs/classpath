@@ -1,5 +1,16 @@
 2005-07-20  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/JTable:
+	(JTable): Set the lead selection index for each of the two lists
+	associated with this table to 0 (instead of -1).  This complies with
+	JDK.
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(KeyHandler.keyPressed):  Implemented the following key actions (with
+	CTRL/SHIFT handling when appropriate): UP/DOWN/LEFT/RIGHT, HOME/END,
+	CTRL-A, CTRL-\, CTRL-/.
+
+2005-07-20  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/plaf/basic/BasicListUI.java:
 	(KeyHandler.keyPressed): Restore the lead selection index after doing
 	a "select all" operation.

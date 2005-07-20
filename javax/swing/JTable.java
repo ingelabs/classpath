@@ -618,9 +618,14 @@ public class JTable extends JComponent
   {
     setModel(dm == null ? createDefaultDataModel() : dm);
     setSelectionModel(sm == null ? createDefaultSelectionModel() : sm);
-
+    
     this.columnModel = cm;
     initializeLocalVars();
+    // The next two lines are for compliance with the JDK which starts
+    // the JLists associated with a JTable  with both lead selection 
+    // indices at 0, rather than -1 as in regular JLists
+    selectionModel.setLeadSelectionIndex(0);
+    columnModel.getSelectionModel().setLeadSelectionIndex(0);
     updateUI();
   }    
 
