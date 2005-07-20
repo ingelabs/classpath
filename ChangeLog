@@ -1,3 +1,15 @@
+2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/text/AttributedCharacterIterator.java: fixed minor API doc
+	problems and 80 column wrapping;
+	* java/text/BreakIterator.java
+	(getCharacterInstance(Locale)): matched argument name to API docs,
+	(getLineInstance(Locale)): likewise,
+	(getSentenceInstance(Locale)): likewise,
+	(getWordInstance(Locale)): likewise,
+	and fixed minor API doc problems all over;
+	* java/text/CharacterIterator.java: fixed minor API doc problems.
+	
 2005-07-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/PortableServer/ForwardRequest.java: New file.
