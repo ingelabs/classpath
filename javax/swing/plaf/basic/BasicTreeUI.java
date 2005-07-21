@@ -1322,7 +1322,7 @@ public class BasicTreeUI
          while (node != null)
          {
             count++;
-            DefaultMutableTreeNode nextNode = node.getNextNode();
+            DefaultMutableTreeNode nextNode = getNextVisibleNode(node);
             if (nextNode != null)
                maxWidth = Math.max(maxWidth, (int) (getCellBounds(0, 0, nextNode)
                      .getWidth()));
@@ -1896,6 +1896,9 @@ public class BasicTreeUI
       
       /** Number of mouse clicks on a non-leaf */
       private int clickCount = 0;
+      
+      /** The last non-leaf cell that was clicked */
+      private Object lastClicked = null;
 
       /**
        * Constructor
@@ -1943,11 +1946,21 @@ public class BasicTreeUI
                   && BasicTreeUI.this.tree.isVisible(path))
             {
                if (!cntlClick && !BasicTreeUI.this.isLeaf(row))
-                  clickCount++;
+               {
+                  Object cell = path.getLastPathComponent();
+                  if (lastClicked != null && lastClicked.equals(cell))
+                     clickCount = 2;
+                  else
+                  {
+                     lastClicked = cell;
+                     clickCount = 1;
+                  }
+               }
 
                if (clickCount == 2 || cntlClick == true)
                {
                   clickCount = 0;
+                  lastClicked = null;
                   BasicTreeUI.this.tree.getSelectionModel().clearSelection();
                   if (BasicTreeUI.this.tree.isExpanded(path))
                   {
