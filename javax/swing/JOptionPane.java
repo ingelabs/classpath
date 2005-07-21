@@ -407,7 +407,12 @@ public class JOptionPane extends JComponent implements Accessible
                                             String title)
                                      throws RuntimeException
   {
-    JLayeredPane toUse = JLayeredPane.getLayeredPaneAbove(parentComponent);
+    // Try to find a JDesktopPane.
+    JLayeredPane toUse = getDesktopPaneForComponent(parentComponent);
+    // If we don't have a JDesktopPane, we try to find a JLayeredPane.
+    if (toUse == null)
+      toUse = JLayeredPane.getLayeredPaneAbove(parentComponent);
+    // If this still fails, we throw a RuntimeException.
     if (toUse == null)
       throw new RuntimeException
         ("parentComponent does not have a valid parent");
@@ -417,10 +422,15 @@ public class JOptionPane extends JComponent implements Accessible
     inputValue = UNINITIALIZED_VALUE;
     value = UNINITIALIZED_VALUE;
 
+    frame.setContentPane(this);
     frame.setClosable(true);
+
     toUse.add(frame);
-    // FIXME: JLayeredPane broken? See bug # 16576
     frame.setLayer(JLayeredPane.MODAL_LAYER);
+
+    frame.pack();
+    frame.setVisible(true);
+
     return frame;
   }
 
@@ -1109,7 +1119,7 @@ public class JOptionPane extends JComponent implements Accessible
     JOptionPane pane = new JOptionPane(message);
     JInternalFrame frame = pane.createInternalFrame(parentComponent, null);
 
-    startModal(frame, pane);
+    startModal(frame);
 
     return ((Integer) pane.getValue()).intValue();
   }
@@ -1134,7 +1144,7 @@ public class JOptionPane extends JComponent implements Accessible
     JOptionPane pane = new JOptionPane(message, PLAIN_MESSAGE, optionType);
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
-    startModal(frame, pane);
+    startModal(frame);
 
     return ((Integer) pane.getValue()).intValue();
   }
@@ -1160,7 +1170,7 @@ public class JOptionPane extends JComponent implements Accessible
     JOptionPane pane = new JOptionPane(message, messageType, optionType);
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
-    startModal(frame, pane);
+    startModal(frame);
 
     return ((Integer) pane.getValue()).intValue();
   }
@@ -1188,7 +1198,7 @@ public class JOptionPane extends JComponent implements Accessible
     JOptionPane pane = new JOptionPane(message, messageType, optionType, icon);
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
-    startModal(frame, pane);
+    startModal(frame);
 
     return ((Integer) pane.getValue()).intValue();
   }
@@ -1211,7 +1221,7 @@ public class JOptionPane extends JComponent implements Accessible
     pane.setWantsInput(true);
     JInternalFrame frame = pane.createInternalFrame(parentComponent, null);
 
-    startModal(frame, pane);
+    startModal(frame);
 
     return (String) pane.getInputValue();
   }
@@ -1237,7 +1247,7 @@ public class JOptionPane extends JComponent implements Accessible
     pane.setWantsInput(true);
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
-    startModal(frame, pane);
+    startModal(frame);
 
     return (String) pane.getInputValue();
   }
@@ -1272,7 +1282,7 @@ public class JOptionPane extends JComponent implements Accessible
     pane.setInitialSelectionValue(initialSelectionValue);
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
-    startModal(frame, pane);
+    startModal(frame);
 
     return (String) pane.getInputValue();
   }
@@ -1291,7 +1301,7 @@ public class JOptionPane extends JComponent implements Accessible
     JOptionPane pane = new JOptionPane(message);
     JInternalFrame frame = pane.createInternalFrame(parentComponent, null);
 
-    startModal(frame, pane);
+    startModal(frame);
   }
 
   /**
@@ -1311,7 +1321,7 @@ public class JOptionPane extends JComponent implements Accessible
     JOptionPane pane = new JOptionPane(message, messageType);
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
-    startModal(frame, pane);
+    startModal(frame);
   }
 
   /**
@@ -1333,7 +1343,7 @@ public class JOptionPane extends JComponent implements Accessible
     pane.setIcon(icon);
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
-    startModal(frame, pane);
+    startModal(frame);
   }
 
   /**
@@ -1365,7 +1375,7 @@ public class JOptionPane extends JComponent implements Accessible
 
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
-    startModal(frame, pane);
+    startModal(frame);
 
     return ((Integer) pane.getValue()).intValue();
   }
@@ -1516,15 +1526,8 @@ public class JOptionPane extends JComponent implements Accessible
    * @param f The JInternalFrame to make modal.
    * @param pane The JOptionPane to add to the JInternalFrame.
    */
-  private static void startModal(JInternalFrame f, JOptionPane pane)
+  private static void startModal(JInternalFrame f)
   {
-    f.getContentPane().add(pane);
-    f.pack();
-    f.show();
-
-    Dimension pref = f.getPreferredSize();
-    f.setBounds(0, 0, pref.width, pref.height);
-
     synchronized (f)
       {
 	final JInternalFrame tmp = f;

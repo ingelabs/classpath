@@ -1,3 +1,23 @@
+2005-07-21  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/JOptionPane.java
+	(createInternalFrame): Look for a JDesktopPane first, then
+	look for a JLayeredPane as fallback. Set this JOptionPane as
+	contentPane for the found JDesktopPane. Make the InternalFrame
+	visible and appropriatly sized here.
+	(showInternalConfirmDialog): ALL VARIANTS OF THIS METHOD:
+	Adjusted call to startModel to only take one parameter.
+	(showInternalInputDialog): ALL VARIANTS OF THIS METHOD:
+	Adjusted call to startModel to only take one parameter.
+	(showInternalMessageDialog): ALL VARIANTS OF THIS METHOD:
+	Adjusted call to startModel to only take one parameter.
+	(showInternalOptionDialog): ALL VARIANTS OF THIS METHOD:
+	Adjusted call to startModel to only take one parameter.
+	(startModal): Now only takes one parameter. This method does no
+	longer add the JOptionPane to the contentPane of the InternalFrame,
+	set the size and make the InternalFrame visible. This is done in
+	createInternalFrame.
+
 2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/DefaultListSelectionModel.java: API doc fixes.
