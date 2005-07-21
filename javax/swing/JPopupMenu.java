@@ -910,13 +910,13 @@ public class JPopupMenu extends JComponent implements Accessible, MenuElement
    */
   private class LightWeightPopup extends Container implements Popup
   {
+    private Component c;
+
     /**
      * Creates a new LightWeightPopup menu
      *
      * @param c Container containing menu items
      */
-    private Component c;
-
     public LightWeightPopup(Container c)
     {
       this.c = c;

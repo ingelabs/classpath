@@ -123,9 +123,9 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
      * <code>part</code> parameter determines what is returned, the character,
      * word or sentence after the index.
      *
-     * @param part one of {@link AccessibleText.CHARACTER},
-     *             {@link AccessibleText.WORD} or
-     *             {@link AccessibleText.SENTENCE}, specifying what is returned
+     * @param part one of {@link AccessibleText#CHARACTER},
+     *             {@link AccessibleText#WORD} or
+     *             {@link AccessibleText#SENTENCE}, specifying what is returned
      * @param index the index
      *
      * @return the character, word or sentence after <code>index</code>
@@ -164,9 +164,9 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
      * <code>part</code> parameter determines what is returned, the character,
      * word or sentence after the index.
      *
-     * @param part one of {@link AccessibleText.CHARACTER},
-     *             {@link AccessibleText.WORD} or
-     *             {@link AccessibleText.SENTENCE}, specifying what is returned
+     * @param part one of {@link AccessibleText#CHARACTER},
+     *             {@link AccessibleText#WORD} or
+     *             {@link AccessibleText#SENTENCE}, specifying what is returned
      * @param index the index
      *
      * @return the character, word or sentence after <code>index</code>
@@ -205,9 +205,9 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
      * <code>part</code> parameter determines what is returned, the character,
      * word or sentence before the index.
      *
-     * @param part one of {@link AccessibleText.CHARACTER},
-     *             {@link AccessibleText.WORD} or
-     *             {@link AccessibleText.SENTENCE}, specifying what is returned
+     * @param part one of {@link AccessibleText#CHARACTER},
+     *             {@link AccessibleText#WORD} or
+     *             {@link AccessibleText#SENTENCE}, specifying what is returned
      * @param index the index
      *
      * @return the character, word or sentence before <code>index</code>
@@ -881,7 +881,7 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
   /**
    * DOCUMENT ME!
    *
-   * @return
+   * @return The accessible context.
    */
   public AccessibleContext getAccessibleContext()
   {

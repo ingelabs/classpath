@@ -61,7 +61,7 @@ public class JButton extends AbstractButton
   {
     /**
      * Returns the accessible role that this component represents.
-     * This is {@link AccessibleRole.PUSH_BUTTON} for <code>JButton</code>s.
+     * This is {@link AccessibleRole#PUSH_BUTTON} for <code>JButton</code>s.
      *
      * @return the accessible role that this component represents
      */

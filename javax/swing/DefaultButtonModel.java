@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing;
 
+import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -265,9 +266,9 @@ public class DefaultButtonModel implements ButtonModel, Serializable
   }
 
   /**
-   * Inform each ItemListener in the {@link listenerList} that an ItemEvent
+   * Inform each ItemListener in the {@link #listenerList} that an ItemEvent
    * has occurred. This happens in response to any change to the {@link
-   * stateMask} field.
+   * #stateMask} field.
    *
    * @param e The ItemEvent to fire
    */
@@ -280,9 +281,9 @@ public class DefaultButtonModel implements ButtonModel, Serializable
   }
 
   /**
-   * Inform each ActionListener in the {@link listenerList} that an
+   * Inform each ActionListener in the {@link #listenerList} that an
    * ActionEvent has occurred. This happens in response to the any change to
-   * the {@link stateMask} field which makes the enabled, armed and pressed
+   * the {@link #stateMask} field which makes the enabled, armed and pressed
    * properties all simultaneously <code>true</code>.
    *
    * @param e The ActionEvent to fire
@@ -296,7 +297,7 @@ public class DefaultButtonModel implements ButtonModel, Serializable
   }
 
   /**
-   * Inform each ChangeListener in the {@link listenerList} that a ChangeEvent
+   * Inform each ChangeListener in the {@link #listenerList} that a ChangeEvent
    * has occurred. This happens in response to the any change to a property
    * of the model.
    */

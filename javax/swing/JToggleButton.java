@@ -134,7 +134,7 @@ public class JToggleButton extends AbstractButton implements Accessible
      * Sets the pressed state of the button.  The selected state
      * of the button also changes follwing the button being pressed.
      *
-     * @param b true if the button is pressed down.
+     * @param p true if the button is pressed down.
      */
     public void setPressed(boolean p)  
     {

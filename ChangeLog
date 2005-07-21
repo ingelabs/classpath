@@ -1,3 +1,31 @@
+2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/AbstractListModel.java: API doc fixes,
+	* javax/swing/BorderFactory.java: likewise,
+	* javax/swing/BoundedRangeModel.java: likewise,
+	* javax/swing/BoxLayout.java: likewise,
+	* javax/swing/CellRendererPane.java: likewise,
+	* javax/swing/ComponentInputMap.java: likewise,
+	* javax/swing/DefaultBoundedRangeModel.java: likewise,
+	* javax/swing/DefaultButtonModel.java: likewise,
+	* javax/swing/DefaultCellEditor.java: likewise,
+	* javax/swing/InputMap.java: likewise,
+	* javax/swing/JButton.java: likewise,
+	* javax/swing/JFrame.java: likewise,
+	* javax/swing/JLabel.java: likewise,
+	* javax/swing/JMenuBar.java: likewise,
+	* javax/swing/JPopupMenu.java: likewise,
+	* javax/swing/JScrollBar.java: likewise,
+	* javax/swing/JScrollPane.java: likewise,
+	* javax/swing/JSeparator.java: likewise,
+	* javax/swing/JSlider.java: likewise,
+	* javax/swing/JSpinner.java: likewise,
+	* javax/swing/JTextArea.java: likewise,
+	* javax/swing/JToggleButton.java: likewise,
+	* javax/swing/SpinnerListModel.java: likewise,
+	* javax/swing/Spring.java: likewise,
+	* javax/swing/SpringLayout.java: likewise.
+	
 2005-07-21  Lillian Angel  <langel@redhat.com>
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	(getPreferredSize): Changed to depend on visible nodes.

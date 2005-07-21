@@ -108,7 +108,7 @@ public interface BoundedRangeModel
    * @return <code>true</code> if value is adjusting,
    * otherwise <code>false</code>
    *
-   * @see setValueIsAdjusting(boolean)
+   * @see #setValueIsAdjusting(boolean)
    */
   boolean getValueIsAdjusting();
 

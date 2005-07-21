@@ -41,6 +41,7 @@ package javax.swing;
 import java.awt.Dimension;
 import java.awt.MenuContainer;
 import java.awt.image.ImageObserver;
+import java.beans.PropertyChangeEvent;
 import java.io.Serializable;
 import java.util.Dictionary;
 import java.util.Enumeration;
