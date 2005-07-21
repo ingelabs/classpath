@@ -1,3 +1,40 @@
+2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicSliderUI.java:
+	(thumbHeight): removed,
+	(thumbWidth): removed,
+	(tickHeight): removed,
+	(installDefaults): deleted initialisation of thumbHeight, thumbWidth 
+	and thumbRect,
+	(getPreferredHorizontalSize): changed source of thumb height and width,
+	(getPreferredVerticalSize): likewise,
+	(getMinimumHorizontalSize): reimplemented,
+	(getMinimumVerticalSize): reimplemented,
+	(getMinimumSize): reimplemented, 
+	(getMaximumSize): reimplemented,
+	(calculateThumbSize): use getThumbSize(),
+        (calculateThumbLocation): use trackRect not contentRect,
+	(calculateTrackBuffer): use half the thumbRect,
+	(getThumbSize): use constant size,
+	(calculateTrackRect): move track down to middle of contentRect,
+	(getTickLength): return constant,
+	(paintTrack): removed unused local variables,
+	(paintTicks): apply a translation to g temporarily before calling 
+	methods to draw ticks, add 0.5 to solve rounding problem,
+	(paintMinorTickForHorizSlider): modified to account for translation 
+	already applied to g,
+	(paintMajorTickForHorizSlider): likewise,
+	(paintMinorTickForVertSlider): likewise,
+	(paintMajorTickForVertSlider): likewise,
+	(xPositionForValue): subtract 1 from width,
+	(yPositionForValue): likewise,
+	*javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): add slider defaults,
+	*javax/swing/plaf/metal/MetalSliderUI.java: implemented missing 
+	methods,
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkSliders): added minor ticks and labels.
+
 2005-07-21  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/AbstractButton.java
@@ -55,15 +92,15 @@
 	set the size and make the InternalFrame visible. This is done in
 	createInternalFrame.
 
-2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/DefaultListSelectionModel.java: API doc fixes.
 
-2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/AbstractButton.java: API doc fixes all over.
 
-2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/UIDefaults.java
 	(getFont(Object, Locale)): matched argument name to API doc comment,
@@ -76,11 +113,11 @@
 	(getInsets(Object, Locale)): likewise,
 	(getDimension(Object, Locale)): likewise.
 	
-2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java: API doc fixes all over.
 
-2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/net/URLClassLoader.java: reordered some API doc comments to 
 	suppress Eclipse warnings, and fixed API doc link.

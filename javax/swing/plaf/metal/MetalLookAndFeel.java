@@ -47,6 +47,7 @@ import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.IconUIResource;
+import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
 /**
@@ -813,6 +814,14 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "SplitPane.highlight",
       new ColorUIResource(getControlHighlight()),
 
+      "Slider.focusInsets", new InsetsUIResource(0, 0, 0, 0),
+      "Slider.horizontalThumbIcon", 
+      MetalIconFactory.getHorizontalSliderThumbIcon(),
+      "Slider.verticalThumbIcon", 
+      MetalIconFactory.getVerticalSliderThumbIcon(),
+      "Slider.trackWidth", new Integer(7),
+      "Slider.majorTickLength", new Integer(6),
+      
       "Tree.openIcon", MetalIconFactory.getTreeFolderIcon(),
       "Tree.closedIcon", MetalIconFactory.getTreeFolderIcon(),
       "Tree.leafIcon", MetalIconFactory.getTreeLeafIcon(),

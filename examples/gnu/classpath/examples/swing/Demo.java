@@ -658,6 +658,8 @@ public class Demo
     slider.setPaintTrack(true);
     slider.setPaintTicks(true);
     slider.setMajorTickSpacing(30);
+    slider.setMinorTickSpacing(5);
+    slider.setPaintLabels(true);
     slider.setInverted(false);
     JProgressBar progress = new JProgressBar();
     BoundedRangeModel model = new DefaultBoundedRangeModel(10, 1, 0, 100);
