@@ -1,5 +1,9 @@
 2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/DefaultListSelectionModel.java: API doc fixes.
+
+2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/AbstractButton.java: API doc fixes all over.
 
 2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
