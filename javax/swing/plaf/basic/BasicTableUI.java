@@ -237,11 +237,76 @@ public class BasicTableUI
         }
       else if (evt.getKeyCode() == KeyEvent.VK_TAB)
         {
-          // FIXME: Implement
+          // FIXME: Implement select next column
+          // NOTE: TAB doesn't get recognized by this KeyHandler
+          // something must be intercepting it and using it to change
+          // focus
         }
       else if (evt.getKeyCode() == KeyEvent.VK_ENTER)
         {
-          // FIXME: Implement
+          // If nothing is selected, select the first cell in the table
+          if (table.getSelectedRowCount() == 0 && table.getSelectedColumnCount() == 0)
+            {
+              rowModel.setSelectionInterval(0, 0);
+              colModel.setSelectionInterval(0, 0);
+              return;
+            }
+          
+          // If the lead selection index isn't selected (ie a remove operation
+          // happened, then set the lead to the first selected cell in the
+          // table
+          if (!table.isCellSelected(rowLead, colLead))
+            {
+              rowModel.addSelectionInterval(rowModel.getMinSelectionIndex(), rowModel.getMinSelectionIndex());
+              colModel.addSelectionInterval(colModel.getMinSelectionIndex(), colModel.getMinSelectionIndex());
+              return;
+            }
+
+          // If there is just one cell selected, select the next row, and wrap
+          // when you get to the edges of the table.
+          if ((table.getSelectedRowCount() <= 1 && table.getSelectedColumnCount() <= 1)
+              || (table.getRowSelectionAllowed() == false && table.getColumnSelectionAllowed() == false))
+            {
+              rowModel.setSelectionInterval((rowLead + 1)%(rowMax + 1), (rowLead + 1)%(rowMax + 1));
+              if (rowLead == rowMax)
+                colModel.setSelectionInterval((colLead + 1)%(colMax + 1), (colLead + 1)%(colMax + 1));
+              else
+                colModel.setSelectionInterval(colLead, colLead);
+              return;
+            }
+
+          // Otherwise select the next row and wrap when you get to the edges
+          // of the selection.  So you only move the lead indices around
+          // amongst the already selected cells.
+
+          // If the row lead index is at the end of the selection, wrap it around
+          if (rowLead == rowModel.getMaxSelectionIndex())
+            {
+              rowModel.addSelectionInterval(rowModel.getMinSelectionIndex(), rowModel.getMinSelectionIndex());
+              
+              // And select the next column (from within the selection)
+              if (colLead == colModel.getMaxSelectionIndex())
+                colModel.addSelectionInterval(colModel.getMinSelectionIndex(), colModel.getMinSelectionIndex());
+              else
+                {
+                  int[] colsSelected = table.getSelectedColumns();
+                  int colIndex = 0;
+                  while (colsSelected[colIndex] <= colLead)
+                    colIndex++;
+                  colModel.addSelectionInterval(colsSelected[colIndex], colsSelected[colIndex]);
+                }
+            }
+          // If the row lead index isn't at the end, just advance it
+          // and you don't have to update the column index
+          else
+            {
+              int[] rowsSelected = table.getSelectedRows();
+              int rowIndex = 0;
+              while (rowsSelected[rowIndex] <= rowLead)
+                rowIndex++;
+              rowModel.addSelectionInterval(rowsSelected[rowIndex], rowsSelected[rowIndex]);
+              colModel.addSelectionInterval(colLead, colLead);
+            }
         }
       else if (evt.getKeyCode() == KeyEvent.VK_ESCAPE)
         {
@@ -280,35 +345,31 @@ public class BasicTableUI
 
     private void updateSelection(boolean controlPressed)
     {
-      if (table.getRowSelectionAllowed())
+      // Update the rows
+      int lo_row = table.rowAtPoint(begin);
+      int hi_row  = table.rowAtPoint(curr);
+      ListSelectionModel rowModel = table.getSelectionModel();
+      if (lo_row != -1 && hi_row != -1)
         {
-          int lo_row = table.rowAtPoint(begin);
-          int hi_row  = table.rowAtPoint(curr);
-          ListSelectionModel rowModel = table.getSelectionModel();
-          if (lo_row != -1 && hi_row != -1)
-            {
-              if (controlPressed && rowModel.getSelectionMode() 
-                  != ListSelectionModel.SINGLE_SELECTION)
-                rowModel.addSelectionInterval(lo_row, hi_row);
-              else
-                rowModel.setSelectionInterval(lo_row, hi_row);
-            }
+          if (controlPressed && rowModel.getSelectionMode() 
+              != ListSelectionModel.SINGLE_SELECTION)
+            rowModel.addSelectionInterval(lo_row, hi_row);
+          else
+            rowModel.setSelectionInterval(lo_row, hi_row);
         }
-
-      if (table.getColumnSelectionAllowed())
+      
+      // Update the columns
+      int lo_col = table.columnAtPoint(begin);
+      int hi_col = table.columnAtPoint(curr);
+      ListSelectionModel colModel = table.getColumnModel().
+        getSelectionModel();
+      if (lo_col != -1 && hi_col != -1)
         {
-          int lo_col = table.columnAtPoint(begin);
-          int hi_col = table.columnAtPoint(curr);
-          ListSelectionModel colModel = table.getColumnModel().
-            getSelectionModel();
-          if (lo_col != -1 && hi_col != -1)
-            {
-              if (controlPressed && colModel.getSelectionMode() != 
-                  ListSelectionModel.SINGLE_SELECTION)
-                colModel.addSelectionInterval(lo_col, hi_col);
-              else
-                colModel.setSelectionInterval(lo_col, hi_col);
-            }
+          if (controlPressed && colModel.getSelectionMode() != 
+              ListSelectionModel.SINGLE_SELECTION)
+            colModel.addSelectionInterval(lo_col, hi_col);
+          else
+            colModel.setSelectionInterval(lo_col, hi_col);
         }
     }
 

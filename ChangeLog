@@ -1,3 +1,11 @@
+2005-07-21  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(KeyHandler.updateSelection): Update the ListSelectionModels even if
+	rowSelectionAllowed or columnSelectionAllowed is false.  This
+	complies with the JDK.
+	(KeyHandler.keyPressed): Implemented the ENTER key action.
+
 2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/BorderUIResource.java: API doc fixes,
