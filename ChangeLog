@@ -1,5 +1,12 @@
 2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/BorderUIResource.java: API doc fixes,
+	* javax/swing/plaf/FileChooserUI.java: likewise,
+	* javax/swing/plaf/TextUI.java: likewise,
+	* javax/swing/plaf/UIResource.java: likewise.
+	
+2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/event/EventListenerList.java: API doc fixes,
 	* javax/swing/event/MenuKeyEvent.java: likewise,
 	* javax/swing/event/TreeSelectionEvent.java: likewise.
