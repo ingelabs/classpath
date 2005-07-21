@@ -1,3 +1,8 @@
+2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/net/URLClassLoader.java: reordered some API doc comments to 
+	suppress Eclipse warnings, and fixed API doc link.
+	
 2005-07-20  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/BorderLayout.java:
