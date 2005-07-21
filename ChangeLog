@@ -1,5 +1,9 @@
 2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JComponent.java: API doc fixes all over.
+
+2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/net/URLClassLoader.java: reordered some API doc comments to 
 	suppress Eclipse warnings, and fixed API doc link.
 	
