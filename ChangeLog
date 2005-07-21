@@ -1,5 +1,11 @@
 2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/event/EventListenerList.java: API doc fixes,
+	* javax/swing/event/MenuKeyEvent.java: likewise,
+	* javax/swing/event/TreeSelectionEvent.java: likewise.
+	
+2005-07-21  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/border/AbstractBorder.java: API doc fixes,
 	* javax/swing/border/BevelBorder.java: likewise,
 	* javax/swing/border/EtchedBorder.java: likewise,
