@@ -1,5 +1,9 @@
 2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/AbstractButton.java: API doc fixes all over.
+
+2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/UIDefaults.java
 	(getFont(Object, Locale)): matched argument name to API doc comment,
 	(getColor(Object, Locale)): likewise,

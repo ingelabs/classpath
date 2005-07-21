@@ -47,9 +47,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.Serializable;
+import java.awt.image.ImageObserver;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.Serializable;
 
 import javax.accessibility.AccessibleAction;
 import javax.accessibility.AccessibleIcon;
@@ -724,7 +725,7 @@ public abstract class AbstractButton extends JComponent
   }
 
   /**
-   * Calls {@link ItemListener.itemStateChanged} on each ItemListener in
+   * Calls {@link ItemListener#itemStateChanged} on each ItemListener in
    * the button's listener list.
    *
    * @param e The event signifying that the button's model changed state
@@ -739,7 +740,7 @@ public abstract class AbstractButton extends JComponent
   }
 
   /**
-   * Calls {@link ActionListener.actionPerformed} on each {@link
+   * Calls {@link ActionListener#actionPerformed} on each {@link
    * ActionListener} in the button's listener list.
    *
    * @param e The event signifying that the button's model was clicked
@@ -762,7 +763,7 @@ public abstract class AbstractButton extends JComponent
   }
 
   /**
-   * Calls {@link ChangeEvent.stateChanged} on each {@link ChangeListener}
+   * Calls {@link ChangeListener#stateChanged} on each {@link ChangeListener}
    * in the button's listener list.
    */
   protected void fireStateChanged()
@@ -1130,7 +1131,7 @@ public abstract class AbstractButton extends JComponent
    * PropertyChangeListener.</p>
    *
    * <p>This method also configures several of the button's properties from
-   * the Action, by calling {@link configurePropertiesFromAction}, and
+   * the Action, by calling {@link #configurePropertiesFromAction}, and
    * subscribes the button to the Action as a PropertyChangeListener.
    * Subsequent changes to the Action will thus reconfigure the button 
    * automatically.</p>
@@ -1363,7 +1364,7 @@ public abstract class AbstractButton extends JComponent
    * <code>null</code>, in which case an icon is constructed, based on the
    * default icon.
    *
-   * @param disabledIcon The new "disabledIcon" property
+   * @param d The new "disabledIcon" property
    */
   public void setDisabledIcon(Icon d)
   {
@@ -1393,7 +1394,7 @@ public abstract class AbstractButton extends JComponent
    * focused, but no special decoration is painted to indicate the presence
    * of focus.
    *
-   * @param b The new "paintFocus" property
+   * @param p The new "paintFocus" property
    */
   public void setFocusPainted(boolean p)
   {
@@ -1421,8 +1422,8 @@ public abstract class AbstractButton extends JComponent
    *
    * @throws IllegalArgumentException If key is not one of the valid constants
    *
-   * @see setHorizontalTextPosition()
-   * @see setHorizontalAlignment()
+   * @see #setHorizontalTextPosition(int)
+   * @see #setHorizontalAlignment(int)
    */
   protected  int checkHorizontalKey(int key, String exception)
   {
@@ -1453,8 +1454,8 @@ public abstract class AbstractButton extends JComponent
    *
    * @throws IllegalArgumentException If key is not one of the valid constants
    *
-   * @see setVerticalTextPosition()
-   * @see setVerticalAlignment()
+   * @see #setVerticalTextPosition(int)
+   * @see #setVerticalAlignment(int)
    */
   protected  int checkVerticalKey(int key, String exception)
   {
@@ -1527,7 +1528,7 @@ public abstract class AbstractButton extends JComponent
    * <p>A factory method which should return an {@link ActionListener} that
    * propagates events from the button's {@link ButtonModel} to any of the
    * button's ActionListeners. By default, this is an inner class which
-   * calls {@link AbstractButton.fireActionPerformed} with a modified copy
+   * calls {@link AbstractButton#fireActionPerformed} with a modified copy
    * of the incoming model {@link ActionEvent}.</p>
    *
    * <p>The button calls this method during construction, stores the
@@ -1553,10 +1554,10 @@ public abstract class AbstractButton extends JComponent
    * <p>A factory method which should return a {@link PropertyChangeListener}
    * that accepts changes to the specified {@link Action} and reconfigure
    * the {@link AbstractButton}, by default using the {@link
-   * configurePropertiesFromAction} method.</p>
+   * #configurePropertiesFromAction} method.</p>
    *
    * <p>The button calls this method whenever a new Action is assigned to
-   * the button's "action" property, via {@link setAction}, and stores the
+   * the button's "action" property, via {@link #setAction}, and stores the
    * resulting PropertyChangeListener in its
    * <code>actionPropertyChangeListener</code> member field. The button
    * then subscribes the listener to the button's new action. If the
@@ -1600,7 +1601,7 @@ public abstract class AbstractButton extends JComponent
    * AbstractButton may wish to override the listener used to subscribe to
    * such ChangeEvents. By default, the listener just propagates the
    * {@link ChangeEvent} to the button's ChangeListeners, via the {@link
-   * AbstractButton.fireStateChanged} method.</p>
+   * AbstractButton#fireStateChanged} method.</p>
    *
    * <p>The button calls this method during construction, stores the
    * resulting ChangeListener in its <code>changeListener</code> member
@@ -1628,7 +1629,7 @@ public abstract class AbstractButton extends JComponent
    * AbstractButton may wish to override the listener used to subscribe to
    * such ItemEvents. By default, the listener just propagates the
    * {@link ItemEvent} to the button's ItemListeners, via the {@link
-   * AbstractButton.fireItemStateChanged} method.</p>
+   * AbstractButton#fireItemStateChanged} method.</p>
    *
    * <p>The button calls this method during construction, stores the
    * resulting ItemListener in its <code>changeListener</code> member
@@ -1737,7 +1738,7 @@ public abstract class AbstractButton extends JComponent
    * paint this icon when the "rolloverEnabled" property of the button is
    * <code>true</code> and the mouse rolls over the button.
    *
-   * @param rolloverIcon The new rollover icon
+   * @param r The new rollover icon
    */
   public void setRolloverIcon(Icon r)
   {
@@ -1770,7 +1771,7 @@ public abstract class AbstractButton extends JComponent
    * is <code>true</code>, the "selected" property of the button's model is
    * <code>true</code>, and the mouse rolls over the button.
    *
-   * @param rolloverSelectedIcon The new rollover selected icon
+   * @param r The new rollover selected icon
    */
   public void setRolloverSelectedIcon(Icon r)
   {
@@ -1805,7 +1806,7 @@ public abstract class AbstractButton extends JComponent
    * button is <code>false</code> or the mouse is not currently rolled
    * over the button.
    *
-   * @param selectedIcon The new selected icon
+   * @param s The new selected icon
    */
   public void setSelectedIcon(Icon s)
   {
