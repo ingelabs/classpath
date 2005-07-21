@@ -1,5 +1,18 @@
 2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/UIDefaults.java
+	(getFont(Object, Locale)): matched argument name to API doc comment,
+	(getColor(Object, Locale)): likewise,
+	(getIcon(Object, Locale)): likewise,
+	(getBorder(Object, Locale)): likewise,
+	(getString(Object, Locale)): likewise,
+	(getInt(Object, Locale)): likewise,
+	(getBoolean(Object, Locale)): likewise,
+	(getInsets(Object, Locale)): likewise,
+	(getDimension(Object, Locale)): likewise.
+	
+2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JComponent.java: API doc fixes all over.
 
 2005-07-20  David Gilbert  <david.gilbert@object-refinery.com>
