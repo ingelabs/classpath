@@ -572,7 +572,9 @@ public abstract class AbstractButton extends JComponent
     if(text != null)
         this.text = text;
 
-    default_icon = icon;
+    if (icon != null)
+      default_icon = icon;
+
     actionListener = createActionListener();
     changeListener = createChangeListener();
     itemListener = createItemListener();

@@ -286,7 +286,14 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       }),
       "CheckBox.font", new FontUIResource("Dialog", Font.PLAIN, 12),
       "CheckBox.foreground", new ColorUIResource(darkShadow),
-      "CheckBox.icon", BasicIconFactory.getCheckBoxIcon(),
+      "CheckBox.icon",
+      new UIDefaults.LazyValue()
+      {
+        public Object createValue(UIDefaults def)
+        {
+          return BasicIconFactory.getCheckBoxIcon();
+        }
+      },
       "CheckBox.margin",new InsetsUIResource(2, 2, 2, 2),
       "CheckBox.textIconGap", new Integer(4),
       "CheckBox.textShiftOffset", new Integer(0),
@@ -657,7 +664,14 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "RadioButton.font", new FontUIResource("Dialog", Font.PLAIN, 12),
       "RadioButton.foreground", new ColorUIResource(darkShadow),
       "RadioButton.highlight", new ColorUIResource(highLight),
-      "RadioButton.icon", BasicIconFactory.getRadioButtonIcon(),
+      "RadioButton.icon",
+      new UIDefaults.LazyValue()
+      {
+        public Object createValue(UIDefaults def)
+        {
+          return BasicIconFactory.getRadioButtonIcon();
+        }
+      },
       "RadioButton.light", new ColorUIResource(highLight),
       "RadioButton.margin", new InsetsUIResource(2, 2, 2, 2),
       "RadioButton.shadow", new ColorUIResource(shadow),

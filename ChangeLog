@@ -1,5 +1,42 @@
 2005-07-21  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/AbstractButton.java
+	(init): Only set icon if the supplied icon is not null. Otherwise
+	we would override icons that are possibly set by the UI.
+	* javax/swing/plaf/basic/BasicIconFactory.java
+	(CheckBoxIcon): An new Icon implementation used for CheckBoxes
+	in the Basic L&F.
+	(RadioButtonIcon): An new Icon implementation used for
+	RadioButtons in the Basic L&F.
+	(getCheckBoxIcon): Now returns a (cached) instance of CheckBoxIcon
+	instead of the (wrong) inner icon implementation.
+	(getRadioButtonIcon): Now returns a (cached) instance of
+	RadioButtonIcon	instead of the (wrong) inner icon implementation.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Registered new icons for CheckBox and
+	RadioButton, using a LazyValue entry.
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	Added API documentation all over.
+	(installUI): Removed this method.
+	(installDefaults): New method. Installs the default icons if there
+	is no other icon set.
+	(getPropertyPrefix): New method. Returns the prefix that is used
+	to look up UIDefault entries.
+	(getDefaultIcon): Use propertyPrefix instead of hardcoded property.
+	(paint): New method. Override paint for customized painting
+	of RadioButtons.
+	* javax/swing/plaf/metal/MetalCheckBoxIcon.java
+	(drawCheck): Respect the x and y parameter.
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(RadioButtonIcon): An Icon implementation for Metal RadioButtons.
+	(getRadioButtonIcon): New method. Returns a shared instance of
+	RadioButtonIcon.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Register new icons for CheckBox and
+	RadioButton using a LazyValue entry.
+
+2005-07-21  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JOptionPane.java
 	(createInternalFrame): Look for a JDesktopPane first, then
 	look for a JLayeredPane as fallback. Set this JOptionPane as

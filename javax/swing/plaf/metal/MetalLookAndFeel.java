@@ -771,6 +771,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "Button.select", new ColorUIResource(getPrimaryControlShadow()),
       "Button.shadow", new ColorUIResource(getPrimaryControlShadow()),
       "CheckBox.background", new ColorUIResource(getControl()),
+      "CheckBox.icon",
+      new UIDefaults.ProxyLazyValue
+      ("javax.swing.plaf.metal.MetalCheckBoxIcon"),
       "CheckBoxMenuItem.background", new ColorUIResource(getControl()),
       "ToolBar.background", new ColorUIResource(getControl()),
       "Panel.background", new ColorUIResource(getControl()),
@@ -789,6 +792,14 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "MenuBar.font", getControlTextFont(),
       "MenuItem.background", new ColorUIResource(getControl()),
       "MenuItem.font", getControlTextFont(),
+      "RadioButton.icon",
+      new UIDefaults.LazyValue()
+      {
+        public Object createValue(UIDefaults def)
+          {
+            return MetalIconFactory.getRadioButtonIcon();
+          }
+      },
       "ScrollBar.background", new ColorUIResource(getControl()),
       "ScrollBar.shadow", new ColorUIResource(getControlShadow()),
       "ScrollBar.thumb", new ColorUIResource(getPrimaryControlShadow()),
