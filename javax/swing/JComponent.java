@@ -451,7 +451,10 @@ public abstract class JComponent extends Container implements Serializable
    */
   public final void putClientProperty(Object key, Object value)
   {
-    getClientProperties().put(key, value);
+    if (value != null)
+      getClientProperties().put(key, value);
+    else
+      getClientProperties().remove(key);
   }
 
   /**
