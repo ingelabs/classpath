@@ -396,13 +396,13 @@ public class DefaultButtonModel implements ButtonModel, Serializable
     else
       stateMask = stateMask & (~PRESSED);
 
-    // notify interested ChangeListeners
-    fireStateChanged();
-
     // if button is armed and was released, fire action event
     if (!p && isArmed())
       fireActionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
                                           actionCommand));
+
+    // notify interested ChangeListeners
+    fireStateChanged();
   }
 
   /**
