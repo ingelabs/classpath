@@ -1,3 +1,67 @@
+2005-07-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org> 
+        
+        * gnu/CORBA/Poa/gnuPOA.java,
+        gnu/CORBA/Poa/gnuPOAManager.java,
+        gnu/CORBA/Poa/activeObjectMap.java,
+        gnu/CORBA/Poa/gnuAdapterActivator.java,
+        gnu/CORBA/Poa/gnuServantObject.java,
+        gnu/CORBA/Poa/servantDelegate.java,
+        gnu/CORBA/Poa/ORB_1_4.java,
+        gnu/CORBA/Poa/policySets.java,
+        gnu/CORBA/Poa/gnuPoaCurrent.java,
+        gnu/CORBA/Poa/LocalDelegate.java,
+        gnu/CORBA/Poa/dynImpHandler.java,
+        gnu/CORBA/Poa/LocalServerRequest.java,
+        gnu/CORBA/Poa/LocalRequest.java,
+        gnu/CORBA/Poa/ForwardedServant.java,
+        gnu/CORBA/Poa/gnuIdAssignmentPolicy.java,
+        gnu/CORBA/Poa/gnuRequestProcessingPolicy.java,
+        gnu/CORBA/Poa/gnuThreadPolicy.java,
+        gnu/CORBA/Poa/gnuLifespanPolicy.java,
+        gnu/CORBA/Poa/gnuIdUniquenessPolicy.java,
+        gnu/CORBA/Poa/gnuServantRetentionPolicy.java,
+        gnu/CORBA/Poa/gnuImplicitActivationPolicy.java,
+        gnu/CORBA/Poa/gnuForwardRequest.java,
+        gnu/CORBA/ForwardRequestHelper.java,
+        gnu/CORBA/Poa/vPolicy.java,
+        gnu/CORBA/Poa/ForwardRequestHolder.java,
+        org/omg/PortableServer/POA.java,
+        org/omg/PortableServer/POAManagerOperations.java,
+        org/omg/PortableServer/POAOperations.java,        
+        org/omg/PortableServer/Servant.java,
+        org/omg/PortableServer/DynamicImplementation.java,
+        org/omg/PortableServer/ServantActivator.java,        
+        org/omg/PortableServer/ServantActivatorOperations.java,
+        org/omg/PortableServer/ServantLocator.java,
+        org/omg/PortableServer/ServantLocatorOperations.java,        
+        org/omg/PortableServer/ServantManager.java,               
+        org/omg/PortableServer/Current.java,
+        org/omg/PortableServer/CurrentHelper.java,
+        org/omg/PortableServer/CurrentOperations.java,
+        org/omg/PortableServer/_ServantLocatorStub.java,
+        org/omg/PortableServer/portable/Delegate.java,
+        org/omg/PortableServer/ServantActivatorHelper.java,
+        org/omg/PortableServer/_ServantActivatorStub.java,
+        org/omg/PortableServer/ServantLocatorHelper.java,
+        org/omg/PortableServer/ServantActivatorPOA.java,
+        org/omg/PortableServer/ServantLocatorPOA.java,
+        org/omg/PortableServer/AdapterActivatorOperations.java,
+        org/omg/PortableServer/AdapterActivator.java,
+        org/omg/PortableServer/POAHelper.java,
+        org/omg/PortableServer/ServantManagerOperations.java,
+        org/omg/PortableServer/POAManager.java,        
+        org/omg/PortableServer/package.html: New files.
+        * org/omg/CORBA/ORB.java: Documented POA features.
+        gnu/CORBA/gnuRequest.java (_releaseReply, equals): Mind that
+        the delegate can be null.
+        * gnu/CORBA/IOR_Delegate.java,
+        gnu/CORBA/Functional_ORB.java,
+        org/omg/CORBA/portable/ObjectImpl.java,
+        gnu/CORBA/Connected_objects.java: Rewritten.
+        * gnu/CORBA/Simple_delegate.java (is_equivalent): This method 
+        is rewritten.
+        * gnu/CORBA/ServiceRequestAdapter.java: Added return value support.
+
 2005-07-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java:
