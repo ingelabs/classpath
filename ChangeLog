@@ -1,6 +1,14 @@
 2005-07-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTableUI.java:
+	(KeyHandler.keyPressed): If row selection is not allowed in the table,
+	then consider all rows of a particular column selected when you get an
+	ENTER key event.  This matches JDK behaviour and fixes an out of 
+	bounds error.  Also, wrapped lines at 80 chars.
+
+2005-07-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTableUI.java:
 	(paint): Only highlight the border of a table cell if it is the most
 	recently updated cell.
 
