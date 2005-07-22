@@ -1,5 +1,9 @@
 2005-07-22  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/text/html/HTMLEditorKit.java: API doc fixes.
+	
+2005-07-22  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/tree/AbstractLayoutCache.java: API doc fixes,
 	* javax/swing/tree/DefaultTreeCellRenderer.java: likewise,
 	* javax/swing/tree/DefaultTreeModel.java: likewise,
