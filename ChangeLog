@@ -2,11 +2,11 @@
 
 	* java/awt/Component.java
 	(show): Instead of invalidating the component, only invalidate
-	the parent, if there is one. Also, avoid NPEs by creating local
-	references.
+	the parent, if there is one. Also repaint this parent.
+	Also, avoid NPEs by creating local references.
 	(hide): Instead of invalidating the component, only invalidate
-	the parent, if there is one. Also, avoid NPEs by creating local
-	references.
+	the parent, if there is one. Also repaint this parent.
+	Also, avoid NPEs by creating local references.
 
 2005-07-22  David Gilbert  <david.gilbert@object-refinery.com>
 
