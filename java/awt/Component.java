@@ -211,6 +211,12 @@ public abstract class Component
    */
   static final Object treeLock = new String("AWT_TREE_LOCK");
 
+  /**
+   * Preallocated default font returned by getFont() if no font was
+   * set explicitly.
+   */
+  private static final Font DEFAULT_FONT = new Font ("Dialog", Font.PLAIN, 12);
+
   // Serialized fields from the serialization spec.
 
   /**
@@ -988,10 +994,12 @@ public abstract class Component
    */
   public void setForeground(Color c)
   {
-    firePropertyChange("foreground", foreground, c);
     if (peer != null)
       peer.setForeground(c);
+    
+    Color previous = foreground;
     foreground = c;
+    firePropertyChange("foreground", previous, c);
   }
 
   /**
@@ -1017,7 +1025,7 @@ public abstract class Component
   {
     if (background != null)
       return background;
-    return parent == null ? SystemColor.window : parent.getBackground();
+    return parent == null ? null : parent.getBackground();
   }
 
   /**
@@ -1031,16 +1039,18 @@ public abstract class Component
   public void setBackground(Color c)
   {
     // return if the background is already set to that color.
-    if (background != null && c != null)
-      if (background.equals(c))
-	return;
+    if ((c != null) && c.equals(background))
+      return;
+
     // If c is null, inherit from closest ancestor whose bg is set.
     if (c == null && parent != null)
       c = parent.getBackground();
-    firePropertyChange("background", background, c);
     if (peer != null && c != null)
       peer.setBackground(c);
+    
+    Color previous = background;
     background = c;
+    firePropertyChange("background", previous, c);
   }
 
   /**
@@ -1064,13 +1074,15 @@ public abstract class Component
    */
   public Font getFont()
   {
-    if (font != null)
-      return font;
+    Font f = font;
+    if (f != null)
+      return f;
 
-    if (parent != null)
-      return parent.getFont ();
+    Component p = parent;
+    if (p != null)
+      return p.getFont ();
     else
-      return new Font ("Dialog", Font.PLAIN, 12);
+      return DEFAULT_FONT;
   }
 
   /**
@@ -1083,15 +1095,16 @@ public abstract class Component
    */
   public void setFont(Font newFont)
   {
-    if (font == newFont)
-      return;
-    
-    Font oldFont = font;
-    font = newFont;
-    if (peer != null)
-      peer.setFont(font);
-    firePropertyChange("font", oldFont, newFont);
-    invalidate();
+    if((newFont != null && (font == null || !font.equals(newFont)))
+       || newFont == null)
+      {
+        Font oldFont = font;
+        font = newFont;
+        if (peer != null)
+          peer.setFont(font);
+        firePropertyChange("font", oldFont, newFont);
+        invalidate();
+      }
   }
 
   /**
@@ -4208,6 +4221,10 @@ public abstract class Component
       param.append(",translucent");
     if (isDoubleBuffered())
       param.append(",doublebuffered");
+    if (parent == null)
+      param.append(",parent==null");
+    else
+      param.append(",parent==").append(parent.getName());
     return param.toString();
   }
 
