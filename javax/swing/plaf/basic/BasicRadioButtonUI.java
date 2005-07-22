@@ -52,7 +52,7 @@ import javax.swing.plaf.ComponentUI;
 
 /**
  * The BasicLookAndFeel UI implementation for
- * {@link javax.swing.JRadioButtons}.
+ * {@link javax.swing.JRadioButton}s.
  */
 public class BasicRadioButtonUI extends BasicToggleButtonUI
 {

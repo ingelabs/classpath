@@ -1,5 +1,11 @@
 2005-07-22  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicButtonUI.java: API doc fixes,
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java: likewise,
+	* javax/swing/plaf/basic/BasicTreeUI.java: likewise.
+
+2005-07-22  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalCheckBoxIcon.java: API doc fixes,
 	* javax/swing/plaf/metal/MetalIconFactory.java: likewise.
 	

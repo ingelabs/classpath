@@ -60,9 +60,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Hashtable;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -88,19 +88,16 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.TreeUI;
 import javax.swing.tree.AbstractLayoutCache;
-import javax.swing.tree.FixedHeightLayoutCache;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.FixedHeightLayoutCache;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeSelectionModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-
-import java.util.Enumeration;
-import java.util.Hashtable;
+import javax.swing.tree.TreeSelectionModel;
 
 /**
  * A delegate providing the user interface for <code>JTree</code> according to
@@ -288,7 +285,7 @@ public class BasicTreeUI
    /**
     * Sets the Hash color.
     * 
-    * @param the <code>Color</code> to set the Hash to.
+    * @param color the <code>Color</code> to set the Hash to.
     */
    protected void setHashColor(Color color)
    {
@@ -1905,7 +1902,7 @@ public class BasicTreeUI
        * 
        * @param source that events are coming from
        * @param destination that receives all events
-       * @param event is the event received
+       * @param e is the event received
        */
       public MouseInputHandler(Component source, Component destination,
             MouseEvent e)
