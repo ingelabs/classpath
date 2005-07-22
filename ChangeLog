@@ -1,5 +1,11 @@
 2005-07-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(paint): Only highlight the border of a table cell if it is the most
+	recently updated cell.
+
+2005-07-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/plaf/basic/BasicListUI.java:
 	(paintCell): Fixed misnamed variable.
 

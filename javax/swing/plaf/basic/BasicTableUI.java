@@ -559,9 +559,12 @@ public class BasicTableUI
                 gfx.translate(x, y);
                 comp.setBounds(new Rectangle(0, 0, width, height));
                 // Set correct border on cell renderer.
+                // Only the lead selection cell gets a border
                 if (comp instanceof JComponent)
                   {
-                    if (table.isCellSelected(r, c))
+                    if (table.getSelectionModel().getLeadSelectionIndex() == r
+                        && table.getColumnModel().getSelectionModel().
+                        getLeadSelectionIndex() == c)
                       ((JComponent) comp).setBorder(highlightCellBorder);
                     else
                       ((JComponent) comp).setBorder(cellBorder);
