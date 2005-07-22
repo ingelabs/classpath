@@ -224,8 +224,6 @@ public class MetalIconFactory implements Serializable
      *
      * @param c the component to draw on
      * @param g the Graphics context to draw with
-     * @param x the X position
-     * @param y the Y position
      */
     protected void drawCheck(Component c, Graphics g)
     {
@@ -263,7 +261,7 @@ public class MetalIconFactory implements Serializable
      * @param c the Component to draw on (gets casted to JCheckBox)
      * @param g the Graphics context to draw with
      * @param x the X position
-     * @param x the Y position
+     * @param y the Y position
      */
     public void paintIcon(Component c, Graphics g, int x, int y)
     {

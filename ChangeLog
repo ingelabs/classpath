@@ -1,5 +1,10 @@
 2005-07-22  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalCheckBoxIcon.java: API doc fixes,
+	* javax/swing/plaf/metal/MetalIconFactory.java: likewise.
+	
+2005-07-22  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/text/html/HTMLEditorKit.java: API doc fixes.
 	
 2005-07-22  David Gilbert  <david.gilbert@object-refinery.com>
