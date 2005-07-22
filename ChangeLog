@@ -1,3 +1,11 @@
+2005-07-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java:
+	(paintCell): Set hasFocused to true if the cell is the lead selection
+	index and if the list has focus.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	(initComponentDefaults): Added List.focusCellHighlightBorder default.
+
 2005-07-22  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/processor/ArrayTypeCommandSet.java:
