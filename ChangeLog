@@ -1,3 +1,8 @@
+2005-07-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java:
+	(paintCell): Fixed misnamed variable.
+
 2005-07-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org> 
         
         * gnu/CORBA/Poa/gnuPOA.java,

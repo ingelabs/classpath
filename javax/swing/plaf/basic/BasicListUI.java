@@ -850,7 +850,7 @@ public class BasicListUI extends ListUI
     boolean hasFocus = (list.getLeadSelectionIndex() == row) && BasicListUI.this.list.hasFocus();
     Component comp = rend.getListCellRendererComponent(list,
                                                        data.getElementAt(row),
-                                                       0, is_Sel, hasFocus);
+                                                       0, isSel, hasFocus);
     //comp.setBounds(new Rectangle(0, 0, bounds.width, bounds.height));
     //comp.paint(g);
     rendererPane.paintComponent(g, comp, list, bounds);
