@@ -1,5 +1,9 @@
 2005-07-23  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/BoundedRangeModel.java: added/updated API doc comments.
+
+2005-07-23  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/Icon.java: added API doc comments.
 
 2005-07-23  David Gilbert  <david.gilbert@object-refinery.com>
