@@ -45,6 +45,7 @@ package org.omg.PortableServer;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public interface ServantActivatorOperations
+  extends ServantManagerOperations
 {
   /**
    * This method is invoked whenever a servant for an object is deactivated,

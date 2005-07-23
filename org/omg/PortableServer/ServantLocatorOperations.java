@@ -46,6 +46,7 @@ import org.omg.PortableServer.ServantLocatorPackage.CookieHolder;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public interface ServantLocatorOperations
+  extends ServantManagerOperations
 {
   /**
    * If the POA has the USE_SERVANT_MANAGER and NON_RETAIN policies, it

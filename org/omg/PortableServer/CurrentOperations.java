@@ -55,6 +55,7 @@ import org.omg.PortableServer.CurrentPackage.NoContext;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public interface CurrentOperations
+  extends org.omg.CORBA.CurrentOperations
 {
   /**
    * Returns the Id of the object currently being served. The returned

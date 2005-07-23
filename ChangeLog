@@ -1,10 +1,19 @@
+2005-07-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/PortableServer/ServantLocatorOperations.java,
+        org/omg/PortableServer/ServantActivatorOperations.java:
+        Inherit from ServantManagerOperations.
+        * org/omg/PortableServer/CurrentOperations.java:
+        Inherit from org.omg.CORBA.CurrentOperations.
+        org/omg/PortableServer/ForwardRequestHelper.java: New file.
+
 2005-07-23  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/List.java (List): Initialize selected[] to an empty array.
 
 2005-07-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        NEWS: Added entry about POA.
+        * NEWS: Added entry about POA.
 
 2005-07-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
