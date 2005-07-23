@@ -1,3 +1,14 @@
+2005-07-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/ImageIcon.java: API doc fixes,
+	* javax/swing/JLayeredPane.java: likewise,
+	* javax/swing/JSplitPane.java: likewise,
+	* javax/swing/JTree.java: likewise,
+	* javax/swing/JViewport.java: likewise,
+	* javax/swing/RepaintManager.java: likewise,
+	* javax/swing/SizeRequirements.java: likewise,
+	* javax/swing/SortingFocusTraversalPolicy.java.
+	
 2005-07-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/PortableServer/ServantLocatorOperations.java,
