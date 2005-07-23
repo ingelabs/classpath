@@ -215,7 +215,8 @@ public abstract class Component
    * Preallocated default font returned by getFont() if no font was
    * set explicitly.
    */
-  private static final Font DEFAULT_FONT = new Font ("Dialog", Font.PLAIN, 12);
+  //  private static final Font DEFAULT_FONT = new Font ("Dialog", Font.PLAIN, 12);
+  private static final Font DEFAULT_FONT = null;
 
   // Serialized fields from the serialization spec.
 
@@ -3436,7 +3437,7 @@ public abstract class Component
     /* Now that all the children has gotten their peers, we should
        have the event mask needed for this component and its
        lightweight subcomponents. */
-    peer.setEventMask(eventMask);
+    //    peer.setEventMask(eventMask);
     /* We do not invalidate here, but rather leave that job up to
        the peer. For efficiency, the peer can choose not to
        invalidate if it is happy with the current dimensions,
