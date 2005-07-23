@@ -1,5 +1,21 @@
 2005-07-23  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/text/AttributedString.java: API doc fixes,
+	* java/text/ChoiceFormat.java: likewise,
+	* java/text/CollationElementIterator.java: likewise,
+	* java/text/CollationKey.java: likewise,
+	* java/text/Collator.java: likewise,
+	* java/text/DateFormat.java: likewise,
+	* java/text/DateFormatSymbols.java: likewise,
+	* java/text/DecimalFormatSymbols.java: likewise,
+	* java/text/MessageFormat.java: likewise,
+	* java/text/NumberFormat.java: likewise,
+	* java/text/ParseException.java: likewise,
+	* java/text/SimpleDateFormat.java: likewise,
+	* java/text/StringCharacterIterator.java: likewise.
+
+2005-07-23  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/ImageIcon.java: API doc fixes,
 	* javax/swing/JLayeredPane.java: likewise,
 	* javax/swing/JSplitPane.java: likewise,
