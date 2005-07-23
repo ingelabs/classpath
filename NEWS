@@ -1,3 +1,23 @@
+* The Portable Object Adapter should support the output of the
+  recent IDL to java compilers. These compilers now generate servants and 
+  not CORBA objects as before, making the output depended on the existing 
+  POA implementation. Completing POA means that such code can already be 
+  tried to run on Classpath. Our POA is tested for the following usage scenarios:
+  
+      POA converts servant to the CORBA object.
+      Servant provides to the CORBA object.
+      POA activates new CORBA object with the given Object Id (byte array) 
+      that is later accessible for the servant.
+      During the first call, the ServantActivator provides servant for this 
+      and all subsequent calls on the current object.
+      During each call, the ServantLocator provides servant for this call only.
+      ServantLocator or ServantActivator forwards call to another server.
+      POA has a single servant, responsible for all objects.
+      POA has a default servant, but some objects are explicitly connected 
+      to they specific servants.
+
+  The POA is verified using tests from the former cost.omg.org.      
+
 New in release 0.17 (Jul 15, 2005)
 
 * gnu.xml fix for nodes created outside a namespace context.
