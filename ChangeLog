@@ -1,3 +1,14 @@
+2005-07-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/PortableServer/RequestProcessingPolicyOperations.java,
+        org/omg/PortableServer/ServantRetentionPolicyOperations.java,
+        org/omg/PortableServer/ThreadPolicyOperations.java,
+        org/omg/PortableServer/IdAssignmentPolicyOperations.java,
+        org/omg/PortableServer/IdUniquenessPolicyOperations.java,
+        org/omg/PortableServer/ImplicitActivationPolicyOperations.java,
+        org/omg/PortableServer/LifespanPolicyOperations.java:
+        Inherit from PolicyOperations.
+
 2005-07-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTableUI.java:
