@@ -1,3 +1,17 @@
+2005-07-23  Mark Wielaard  <mark@klomp.org>
+
+	* lib/standard.omit: Don't omit gnu/javax/swing/plaf/gtk files.
+	* lib/Makefile.am (dist-hook): Don't remove standard.omit dirs.
+
+	* gnu/javax/swing/plaf/gtk/GtkBorders.java: Removed.
+	* gnu/javax/swing/plaf/gtk/GtkCheckBoxUI.java: Likewise.
+	* gnu/javax/swing/plaf/gtk/GtkIconFactory.java: Likewise.
+	* gnu/javax/swing/plaf/gtk/GtkLookAndFeel.java: Likewise.
+	* gnu/javax/swing/plaf/gtk/GtkRadioButtonUI.java: Likewise.
+	* gnu/javax/swing/plaf/gtk/GtkSliderUI.java: Likewise.
+	* gnu/javax/swing/plaf/gtk/README: Likewise.
+	* gnu/javax/swing/plaf/gtk/SliderTest.java: Likewise.
+
 2003-07-23  Casey Marshall  <csm@gnu.org>
 
 	* configure.ac (AC_CHECK_HEADERS): add 'sys/mman.h'.

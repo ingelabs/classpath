@@ -1,4 +1,2 @@
 ../gnu/test/.*$
-../gnu/javax/swing/plaf/gtk/.*java$
-../gnu/javax/swing/plaf/gtk/README$
 ../gnu/classpath/jdwp/.*$

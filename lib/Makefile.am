@@ -148,5 +148,3 @@ dist-hook:
 	$(FIND) $(top_distdir)/gnu $(top_distdir)/java $(top_distdir)/javax $(top_distdir)/org $(top_distdir)/vm -name class-dependencies.conf -print | xargs rm -f
 	rm -f $(top_distdir)/gnu/classpath/Configuration.java
 	rm -f $(top_distdir)/java/util/LocaleData.java
-# Omit files listed in standard.omit.
-	( cd $(top_distdir)/lib ; cat $(top_builddir)/lib/standard.omit | sed -e 's/\$$//' | sed -e 's/\/\.\*//' | xargs rm -fr )
