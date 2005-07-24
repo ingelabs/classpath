@@ -1,3 +1,32 @@
+2003-07-23  Casey Marshall  <csm@gnu.org>
+
+	* configure.ac (AC_CHECK_HEADERS): add 'sys/mman.h'.
+	(AC_CHECK_FUNCS): add mmap and related functions.
+	* include/java_nio_VMDirectByteBuffer.h: regenerated.
+	* java/nio/DirectByteBufferImpl.java (put): new method.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(ALIGN_DOWN): new macro.
+	(ALIGN_UP): new macro.
+	(Java_gnu_java_nio_channels_FileChannelImpl_mapImpl): implemented.
+	* native/jni/java-nio/java_nio_MappedByteBufferImpl.c: updated
+	copyright years.
+	(ALIGN_DOWN): new macro.
+	(ALIGN_UP): new macro.
+	(get_pagesize): new function.
+	(get_raw_values): new function.
+	(Java_java_nio_MappedByteBufferImpl_unmapImpl): implemented.
+	(Java_java_nio_MappedByteBufferImpl_isLoadedImpl): implemented.
+	(Java_java_nio_MappedByteBufferImpl_loadImpl): implemented.
+	(Java_java_nio_MappedByteBufferImpl_forceImpl): implemented.
+	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c
+	(Java_java_nio_VMDirectByteBuffer_put): renamed to
+	'Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_RawData_2IB.'
+	(Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I_3BII):
+	call 'ReleaseByteArrayElements' on the source byte array elements.
+	(Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_RawData_2I_3BII):
+	new method.
+	* vm/reference/java/nio/VMDirectByteBuffer.java (put): new method.
+
 2005-07-23  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/BoundedRangeModel.java: added/updated API doc comments.

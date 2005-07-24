@@ -175,7 +175,8 @@ if test "x${COMPILE_JNI}" = xyes; then
 		    sys/time.h \
 		    sys/select.h \
 		    crt_externs.h \
-                    fcntl.h])
+                    fcntl.h \
+		    sys/mman.h])
 
   AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(uint32_t, inttypes.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
@@ -189,7 +190,8 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  recvfrom send sendto setsockopt getsockopt time mktime \
 		  localtime_r \
 		  strerror_r \
-                  fcntl])
+                  fcntl \
+		  mmap munmap mincore msync madvise getpagesize sysconf])
 
   AC_HEADER_TIME
   AC_STRUCT_TM

@@ -56,6 +56,10 @@ exception statement from your version. */
 #include <fcntl.h>
 #endif /* HAVE_FCNTL_H */
 
+#ifdef HAVE_SYS_MMAN_H
+#include <sys/mman.h>
+#endif /* HAVE_SYS_MMAN_H */
+
 /* These values must be kept in sync with FileChannelImpl.java.  */
 #define FILECHANNELIMPL_READ   1
 #define FILECHANNELIMPL_WRITE  2
@@ -90,6 +94,10 @@ exception statement from your version. */
 /* FIXME: This can't be right.  Need converter macros. */
 #define CONVERT_SSIZE_T_TO_JINT(x) ((jint)(x & 0xFFFFFFFF))
 #define CONVERT_JINT_TO_SSIZE_T(x) (x)
+
+/* Align a value up or down to a multiple of the pagesize. */
+#define ALIGN_DOWN(p,s) ((p) - ((p) % (s)))
+#define ALIGN_UP(p,s) ((p) + ((s) - ((p) % (s))))
 
 /* cached fieldID of gnu.java.nio.channels.FileChannelImpl.fd */
 static jfieldID native_fd_fieldID;
@@ -503,13 +511,112 @@ Java_gnu_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv * env,
 }
 
 JNIEXPORT jobject JNICALL
-Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv * env,
-						    jobject obj
-						    __attribute__ ((__unused__)), jchar mode __attribute__ ((__unused__)), jlong position __attribute__ ((__unused__)), jint size __attribute__ ((__unused__)))
+Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
+						    jchar mode, jlong position, jint size)
 {
+#ifdef HAVE_MMAP
+  jclass MappedByteBufferImpl_class;
+  jclass RawData_class;
+  jmethodID MappedByteBufferImpl_init;
+  jmethodID RawData_init;
+  jobject RawData_instance;
+  jobject buffer;
+  long pagesize;
+  int prot, flags;
+  int fd;
+  void *p;
+  void *address;
+
+  /* FIXME: should we just assume we're on an OS modern enough to
+     have 'sysconf'? And not check for 'getpagesize'? */
+#if defined(HAVE_GETPAGESIZE)
+  pagesize = getpagesize ();
+#elif defined(HAVE_SYSCONF)
+  pagesize = sysconf (_SC_PAGESIZE);
+#else
   JCL_ThrowException (env, IO_EXCEPTION,
-		      "java.nio.FileChannelImpl.nio_mmap_file(): not implemented");
+		      "can't determine memory page size");
+  return NULL;
+#endif /* HAVE_GETPAGESIZE/HAVE_SYSCONF */
+
+#if (SIZEOF_VOID_P == 4)
+  RawData_class = (*env)->FindClass (env, "gnu/classpath/RawData32");
+  if (RawData_class != NULL)
+    {
+      RawData_init = (*env)->GetMethodID (env, RawData_class,
+					  "<init>", "(I)V");
+    }
+#elif (SIZEOF_VOID_P == 8)
+  RawData_class = (*env)->FindClass (env, "gnu/classpath/RawData64");
+  if (RawData_class != NULL)
+    {
+      RawData_init = (*env)->GetMethodID (env, RawData_class,
+					  "<init>", "(J)V");
+    }
+#else
+  JCL_ThrowException (env, IO_EXCEPTION,
+		      "pointer size not supported");
+  return NULL;
+#endif /* SIZEOF_VOID_P */
+
+  if ((*env)->ExceptionOccurred (env))
+    {
+      return NULL;
+    }
+
+  prot = PROT_READ;
+  if (mode == '+')
+    prot |= PROT_WRITE;
+  flags = (mode == 'c' ? MAP_PRIVATE : MAP_SHARED);
+  fd = get_native_fd (env, obj);
+  p = mmap (NULL, (size_t) ALIGN_UP (size, pagesize), prot, flags,
+	    fd, ALIGN_DOWN (position, pagesize));
+  if (p == MAP_FAILED)
+    {
+      JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
+      return NULL;
+    }
+
+  /* Unalign the mapped value back up, since we aligned offset
+     down to a multiple of the page size. */
+  address = p + (position % pagesize);
+
+#if (SIZEOF_VOID_P == 4)
+  RawData_instance = (*env)->NewObject (env, RawData_class,
+					RawData_init, (jint) address);
+#elif (SIZEOF_VOID_P == 8)
+  RawData_instance = (*env)->NewObject (env, RawData_class,
+					RawData_init, (jlong) address);
+#endif /* SIZEOF_VOID_P */
+
+  MappedByteBufferImpl_class = (*env)->FindClass (env,
+						  "java/nio/MappedByteBufferImpl");
+  if (MappedByteBufferImpl_class != NULL)
+    {
+      MappedByteBufferImpl_init =
+	(*env)->GetMethodID (env, MappedByteBufferImpl_class,
+			     "<init>", "(Lgnu/classpath/RawData;IZ)V");
+    }
+
+  if ((*env)->ExceptionOccurred (env))
+    {
+      munmap (p, ALIGN_UP (size, pagesize));
+      return NULL;
+    }
+
+  buffer = (*env)->NewObject (env, MappedByteBufferImpl_class,
+                              MappedByteBufferImpl_init, RawData_instance,
+                              (jint) size, mode == 'r');
+  return buffer;
+#else
+  (void) obj;
+  (void) mode;
+  (void) position;
+  (void) size;
+  JCL_ThrowException (env, IO_EXCEPTION,
+		      "memory-mapped files not implemented");
   return 0;
+#endif /* HAVE_MMAP */
 }
 
 /*

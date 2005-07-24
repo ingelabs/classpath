@@ -179,7 +179,7 @@ Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_VMDirectByteBuffer_put
+Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_RawData_2IB
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index, jbyte value)
 {
@@ -193,8 +193,20 @@ Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I_3BII
    jobject address, jint index, jbyteArray dst, jint dst_offset, jint dst_len)
 {
   jbyte *src = (jbyte *) NIOGetPointer (env, address) + index;
-  memcpy ((*env)->GetByteArrayElements (env, dst, NULL) + dst_offset, src,
-	  dst_len);
+  jbyte *_dst = (*env)->GetByteArrayElements (env, dst, NULL) + dst_offset;
+  memcpy (_dst, src, dst_len);
+  (*env)->ReleaseByteArrayElements (env, dst, _dst, 0);
+}
+
+JNIEXPORT void JNICALL
+Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_RawData_2I_3BII
+  (JNIEnv *env, jclass clazz __attribute__ ((__unused__)),
+   jobject address, jint index, jbyteArray src, jint src_offset, jint src_len)
+{
+  jbyte *_src = (*env)->GetByteArrayElements (env, src, NULL) + src_offset;
+  jbyte *dst = NIOGetPointer (env, address) + index;
+  (*env)->ReleaseByteArrayElements (env, src, _src, 0);
+  memcpy (dst, _src, src_len);
 }
 
 JNIEXPORT void JNICALL
