@@ -1,3 +1,10 @@
+2005-07-25  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/rmi/server/RMIClassLoader.java
+	(loadClass(String, String)): Use Class.forName() instead of
+	directly calling ClassLoader.loadClass(), to handle array
+	types correctly.
+
 2005-07-25  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTable.java:
