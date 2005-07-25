@@ -282,4 +282,12 @@ final class VMClassLoader
   {
     return ClassLoader.defaultGetSystemClassLoader();
   }
+
+  /**
+   * If the VM wants to keep its own cache, this method can be replaced.
+   */
+  static Class findLoadedClass(ClassLoader cl, String name)
+  {
+    return (Class) cl.loadedClasses.get(name);
+  }
 }

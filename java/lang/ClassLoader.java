@@ -556,9 +556,7 @@ public abstract class ClassLoader
    */
   protected final synchronized Class findLoadedClass(String name)
   {
-    // NOTE: If the VM is keeping its own cache, it may make sense to have
-    // this method be native.
-    return (Class) loadedClasses.get(name);
+    return VMClassLoader.findLoadedClass(this, name);
   }
 
   /**
