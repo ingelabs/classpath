@@ -211,13 +211,6 @@ public abstract class Component
    */
   static final Object treeLock = new String("AWT_TREE_LOCK");
 
-  /**
-   * Preallocated default font returned by getFont() if no font was
-   * set explicitly.
-   */
-  //  private static final Font DEFAULT_FONT = new Font ("Dialog", Font.PLAIN, 12);
-  private static final Font DEFAULT_FONT = null;
-
   // Serialized fields from the serialization spec.
 
   /**
@@ -1081,9 +1074,9 @@ public abstract class Component
 
     Component p = parent;
     if (p != null)
-      return p.getFont ();
+      return p.getFont();
     else
-      return DEFAULT_FONT;
+      return new Font("Dialog", Font.PLAIN, 12);
   }
 
   /**

@@ -1,5 +1,37 @@
 2005-07-25  Roman Kennke  <roman@kennke.org>
 
+	* gnu/java/awt/AWTUtilities.java:
+	Added methods from SwingUtilities so that AWT does not have to
+	depend on Swing.
+	* java/awt/Component.java:
+	Reverted my DEFAULT_FONT patch from yesterday. This does not
+	seem to work with the Gtk peers.
+	* java/awt/Container.java
+	(addImpl): Call addNotify() on the added child. Invalidate not
+	only the container but also the added child. Repaint the container.
+	(remove): Repaint the container.
+	(invalidate): Also invalidate the LayoutManager.
+	(invalidateTree): Call super.invalidate to invalidate the container
+	itself. Also invalidate the LayoutManager.
+	(setFont): Only set the font if the specified argument actually
+	differs from the current font.
+	(preferredSize): Optimized this method so the LayoutManager is only
+	called if the layout is invalid. Otherwise we return the preferred
+	size that has been stored during last validation/layout.
+	(getAlignmentX): Despite common belief, this method does _not_
+	call the LayoutManagers getAlignmentX in the JDK. So we also don't.
+	(getAlignmentY): Despite common belief, this method does _not_
+	call the LayoutManagers getAlignmentX in the JDK. So we also don't.
+	(dispatchEventImpl): Let the dispatcher decide if it is enabled
+	for the incoming event type.
+	(eventTypeEnabled): Enables only container events for containers.
+	(addNotifyContainerChildren): Coalesced two if statements into one.
+	Enable events on the dispatcher for this container.
+	(LightweightDispatcher): Made this class reentrant. Handle
+	events enabling/disabling here.
+
+2005-07-25  Roman Kennke  <roman@kennke.org>
+
 	* gnu/java/nio/channels/FileChannelImpl.java
 	(static initializer): Init out, err and in here.
 	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
