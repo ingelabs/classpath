@@ -1,5 +1,10 @@
 2005-07-25  Tom Tromey  <tromey@redhat.com>
 
+	* java/text/CollationKey.java (equals): Use Arrays.equals.
+	PR classpath/22986.
+
+2005-07-25  Tom Tromey  <tromey@redhat.com>
+
 	* java/util/Properties.java (load): Handle case where backslash
 	appears at EOF when reading the key.  PR classpath/22994.
 
