@@ -1,3 +1,11 @@
+2005-07-25  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/ClassLoader.java
+	(loadedClasses): Set based on VMClassLoader.VM_USE_CACHE.
+	(defineClass): Modified to respect VMClassLoader.VM_USE_CACHE.
+	* vm/reference/java/lang/VMClassLoader.java
+	(VM_USE_CACHE): New field.
+
 2005-07-25  Roman Kennke  <roman@kennke.org>
 
 	* gnu/java/awt/AWTUtilities.java:
