@@ -1,3 +1,11 @@
+2005-07-25  Roman Kennke  <roman@kennke.org>
+
+	* gnu/java/nio/channels/FileChannelImpl.java
+	(static initializer): Init out, err and in here.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(Java_gnu_java_nio_channels_FileChannelImpl_init): Moved init code
+	for in, out and err to Java code.
+
 2005-07-25  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/faq.wml: Expand contribution assign answer.

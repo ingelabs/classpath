@@ -136,28 +136,6 @@ Java_gnu_java_nio_channels_FileChannelImpl_init (JNIEnv * env, jclass clazz)
     }
 
   native_fd_fieldID = field;
-
-  constructor = (*env)->GetMethodID (env, clazz, "<init>", "(II)V");
-  if (!constructor)
-    return;
-
-#define INIT_FIELD(FIELDNAME, FDVALUE, MODE)				\
-  field = (*env)->GetStaticFieldID (env, clazz, FIELDNAME,		\
-				    "Lgnu/java/nio/channels/FileChannelImpl;");	\
-  if (! field)								\
-    return;								\
-  obj = (*env)->NewObject (env, clazz, constructor, FDVALUE, MODE);	\
-  if (! obj)								\
-    return;								\
-  (*env)->SetStaticObjectField (env, clazz, field, obj);		\
-  if ((*env)->ExceptionOccurred (env))					\
-    return;
-
-  INIT_FIELD ("in", 0, FILECHANNELIMPL_READ);
-  INIT_FIELD ("out", 1, FILECHANNELIMPL_WRITE);
-  INIT_FIELD ("err", 2, FILECHANNELIMPL_WRITE);
-
-#undef INIT_FIELD
 }
 
 /*

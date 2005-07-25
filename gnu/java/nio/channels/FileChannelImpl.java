@@ -73,6 +73,10 @@ public final class FileChannelImpl extends FileChannel
   public static final int SYNC   = 16;
   public static final int DSYNC  = 32;
 
+  public static FileChannelImpl in;
+  public static FileChannelImpl out;
+  public static FileChannelImpl err;
+
   private static native void init();
 
   static
@@ -83,6 +87,10 @@ public final class FileChannelImpl extends FileChannel
       }
     
     init();
+
+    in  = new FileChannelImpl(0,READ);
+    out = new FileChannelImpl(1,WRITE);
+    err = new FileChannelImpl(2,WRITE);
   }
 
   /**
@@ -130,16 +138,20 @@ public final class FileChannelImpl extends FileChannel
       }
   }
 
-  /* Used by init() (native code) */
+  /**
+   * Constructor for default channels in, out and err.
+   *
+   * Used by init() (native code).
+   *
+   * @param fd the file descriptor (0, 1, 2 for stdin, stdout, stderr).
+   *
+   * @param mode READ or WRITE
+   */
   FileChannelImpl (int fd, int mode)
   {
     this.fd = fd;
     this.mode = mode;
   }
-
-  public static FileChannelImpl in;
-  public static FileChannelImpl out;
-  public static FileChannelImpl err;
 
   private native int open (String path, int mode) throws FileNotFoundException;
 
