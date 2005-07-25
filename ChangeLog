@@ -1,3 +1,14 @@
+2005-07-25  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(KeyHandler.advanceSingleSelection): New method.  Helper method for 
+	ENTER, SHIFT-ENTER, TAB, and SHIFT-TAB key events.
+	(KeyHandler.advanceMultipleSelection): Likewise, used when the table
+	has multiple selections at the time that ENTER or TAB was pressed.
+	(KeyHandler.keyPressed): Implemented TAB, SHIFT-TAB, and SHIFT-ENTER
+	and merged these with existing code for ENTER event, because of the
+	similarites.
+
 2005-07-25  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/CollationKey.java (equals): Use Arrays.equals.
