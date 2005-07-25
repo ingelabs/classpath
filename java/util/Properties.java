@@ -209,8 +209,12 @@ label   = Name:\\u0020</pre>
               {
                 if (pos == line.length())
                   {
-                    // The line continues on the next line.
+                    // The line continues on the next line.  If there
+                    // is no next line, just treat it as a key with an
+                    // empty value.
                     line = reader.readLine();
+		    if (line == null)
+		      line = "";
                     pos = 0;
                     while (pos < line.length()
                            && Character.isWhitespace(c = line.charAt(pos)))

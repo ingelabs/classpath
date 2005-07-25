@@ -1,3 +1,8 @@
+2005-07-25  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/Properties.java (load): Handle case where backslash
+	appears at EOF when reading the key.  PR classpath/22994.
+
 2005-07-25  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/plaf/basic/BasicTreeUI.java
