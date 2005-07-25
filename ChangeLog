@@ -1,3 +1,10 @@
+2005-07-25  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(paint): moved code to paintNode
+	(getCellBounds): width increased, slightly short before
+	(paintNode): changed to paint node depending if icons exist
+
 2005-07-25  Guilhem Lavaux  <guilhem@kaffe.org>
 
         * native/jni/classpath/jcl.c,

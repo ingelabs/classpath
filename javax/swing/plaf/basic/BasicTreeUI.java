@@ -1240,16 +1240,6 @@ public class BasicTreeUI
       
       if (hasControlIcons())
          paintControlIcons(g, 0, 0, 0, 0, tree, mod, root);
-      
-      TreePath lead = tree.getLeadSelectionPath();
-      if (lead != null && tree.isPathSelected(lead))
-      {
-         Rectangle cell = getPathBounds(tree, lead);  
-         g.setColor(UIManager.getLookAndFeelDefaults().getColor(
-               "Tree.selectionBorderColor"));
-         g.drawRect(cell.x + rightChildIndent - 4, cell.y, 
-               cell.width + 4, cell.height);
-      }
    }
 
    /**
@@ -1928,7 +1918,7 @@ public class BasicTreeUI
             boolean cntlClick = false;
             Rectangle bounds = BasicTreeUI.this.getPathBounds(
                   BasicTreeUI.this.tree, path);
-            // include icon
+            
             bounds.x -= rightChildIndent - 4;
             bounds.width += rightChildIndent + 4;
 
@@ -2517,7 +2507,7 @@ public class BasicTreeUI
          Font f = tree.getFont();
          FontMetrics fm = tree.getToolkit().getFontMetrics(tree.getFont());
 
-         return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s),
+         return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s) + 4,
                fm.getHeight());
       }
       return null;
@@ -2581,7 +2571,8 @@ public class BasicTreeUI
       TreePath curr = new TreePath(((DefaultMutableTreeNode) node).getPath());
       boolean selected = tree.isPathSelected(curr);
       boolean expanded = false;
-
+      boolean hasIcons = false;
+      
       if (tree.isVisible(curr))
       {
          DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) tree
@@ -2589,21 +2580,46 @@ public class BasicTreeUI
 
          if (!isLeaf)
             expanded = tree.isExpanded(curr);
-
+         
+         Icon icon = null;
+         if (!isLeaf && expanded)
+            icon = dtcr.getOpenIcon();
+         else if (!isLeaf && !expanded)
+            icon = dtcr.getClosedIcon();
+         else
+            icon = dtcr.getLeafIcon();
+         
+         if (icon.getIconHeight() > -1 && icon.getIconWidth() > -1)
+            hasIcons = true;
+         
          Component c = dtcr.getTreeCellRendererComponent(tree, node, selected,
                expanded, isLeaf, 0, false);
 
-         if (selected)
+         if (hasIcons)
          {
-            Rectangle cell = getPathBounds(tree, curr);
-            g.setColor(dtcr.getBackgroundSelectionColor());
-            g.fillRect(cell.x + rightChildIndent - 4, cell.y, cell.width + 4,
-                  cell.height);
+            if (selected)
+            {
+               Rectangle cell = getPathBounds(tree, curr);
+               g.setColor(dtcr.getBackgroundSelectionColor());
+               g.fillRect(cell.x + icon.getIconWidth()/2, cell.y, cell.width,
+                     cell.height);
+               
+               if (curr.equals(tree.getLeadSelectionPath()))
+               {
+                  g.setColor(UIManager.getLookAndFeelDefaults().getColor(
+                        "Tree.selectionBorderColor"));
+                  g.drawRect(cell.x + icon.getIconWidth()/2, cell.y, 
+                        cell.width, cell.height);
+               }
+            }
+   
+            g.translate(x, y);
+            c.paint(g);
+            g.translate(-x, -y);
          }
-
-         g.translate(x, y);
-         c.paint(g);
-         g.translate(-x, -y);
+         else 
+            rendererPane.paintComponent(g, c, c.getParent(), 
+                  getCellBounds(x, y, node));
       }
    }
 
