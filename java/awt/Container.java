@@ -1225,7 +1225,7 @@ public class Container extends Component
       }
 
     if (focusTraversalKeys == null)
-      focusTraversalKeys = new Set[3];
+      focusTraversalKeys = new Set[4];
 
     keystrokes = Collections.unmodifiableSet (new HashSet (keystrokes));
     firePropertyChange (name, focusTraversalKeys[id], keystrokes);

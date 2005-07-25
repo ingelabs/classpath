@@ -1,3 +1,9 @@
+2005-07-25  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/awt/Container.java:
+	(setFocusTraversalKeys): Instantiate focusTraversalKeys to an array of
+	size 4, not 3.  This must have been a typo.
+
 2005-07-25  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/rmi/server/RMIClassLoader.java
