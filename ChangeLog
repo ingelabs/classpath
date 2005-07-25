@@ -1,3 +1,8 @@
+2005-07-25  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/ConvolveOp.java:
+	(getKernel): return a clone of the kernel.
+
 2005-07-25  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/ClassLoader.java
