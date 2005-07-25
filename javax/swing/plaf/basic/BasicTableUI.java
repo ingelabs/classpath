@@ -265,12 +265,17 @@ public class BasicTableUI
               return;
             }
 
-          // If there is just one cell selected, select the next row, and wrap
+          // If there is just one selection, select the next row, and wrap
           // when you get to the edges of the table.
-          if ((table.getSelectedRowCount() <= 1 && 
-               table.getSelectedColumnCount() <= 1)
-              || (table.getRowSelectionAllowed() == false && 
-                  table.getColumnSelectionAllowed() == false))
+          boolean multRowsSelected, multColsSelected;
+          multRowsSelected = (table.getSelectedRowCount() > 1) ||
+            (!table.getRowSelectionAllowed() && 
+             table.getSelectedColumnCount() > 0);
+          multColsSelected = (table.getSelectedColumnCount() > 1) ||
+            (!table.getColumnSelectionAllowed() && 
+             table.getSelectedRowCount() > 0);
+                              
+          if (!multColsSelected || !multRowsSelected)
             {
               rowModel.setSelectionInterval((rowLead + 1)%(rowMax + 1), 
                                             (rowLead + 1)%(rowMax + 1));
@@ -350,13 +355,7 @@ public class BasicTableUI
       else if ((evt.getKeyCode() == KeyEvent.VK_A || evt.getKeyCode()
                 == KeyEvent.VK_SLASH) && evt.isControlDown())
         {
-          rowModel.setSelectionInterval(0, rowMax);
-          colModel.setSelectionInterval(0, colMax);
-          // the next two lines are to restore the lead selection indices to 
-          // their previous values, because select-all operations shouldn't 
-          // change them
-          rowModel.addSelectionInterval(rowLead, rowLead);
-          colModel.addSelectionInterval(colLead, colLead);
+          table.selectAll();
         }
       else if (evt.getKeyCode() == KeyEvent.VK_BACK_SLASH
                && evt.isControlDown())

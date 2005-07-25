@@ -1,3 +1,13 @@
+2005-07-25  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JTable.java:
+	(selectAll): Store the lead selection indices and restore them after
+	selecting all cells.
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(KeyHandler.keyPressed): Changed the criteria for "only one selection"
+	when the ENTER key is pressed to match the behavior of the JDK.  Also
+	replaced direct code for CTRL-A with call to JTable.selectAll().
+
 2005-07-25  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/ClassLoader.java

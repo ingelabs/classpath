@@ -2070,8 +2070,17 @@ public class JTable extends JComponent
   
   public void selectAll()
   {
+    // rowLead and colLead store the current lead selection indices
+    int rowLead = selectionModel.getLeadSelectionIndex();
+    int colLead = getColumnModel().getSelectionModel().getLeadSelectionIndex();
+    // the following calls to setSelectionInterval change the lead selection
+    // indices
     setColumnSelectionInterval(0, getColumnCount() - 1);
     setRowSelectionInterval(0, getRowCount() - 1);
+    // the following addSelectionInterval calls restore the lead selection
+    // indices to their previous values
+    addColumnSelectionInterval(colLead,colLead);
+    addRowSelectionInterval(rowLead, rowLead);
   }
 
   public Object getValueAt(int row, int column)
