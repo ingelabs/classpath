@@ -1,3 +1,10 @@
+2005-07-25  Guilhem Lavaux  <guilhem@kaffe.org>
+
+        * native/jni/classpath/jcl.c,
+        native/jni/classpath/jcl.h
+        (JCL_NewRawDataObject): New function.
+        (JCL_GetRawData): New function.
+
 2005-07-25  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/Container.java:
