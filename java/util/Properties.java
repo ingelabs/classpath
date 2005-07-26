@@ -398,6 +398,30 @@ label   = Name:\\u0020</pre>
 
     writer.flush ();
   }
+  
+  /**
+   *  Internal method called by getProperty() methods. This avoids 
+   *  recursive calls if getProperty() methods are overwritten in 
+   *  a subclass.
+   *
+   * @param key the key for the property to fetch
+   * @param defaultValue the defaultValue or <code>null</code> if there
+   *        is no default value
+   */
+  private String getPropertyInternal(String key, String defaultValue)
+  {
+    Properties prop = this;
+    // Eliminate tail recursion.
+    do
+      {
+        String value = (String) prop.get(key);
+        if (value != null)
+          return value;
+        prop = prop.defaults;
+      }
+    while (prop != null);
+    return defaultValue;    
+  }
 
   /**
    * Gets the property with the specified key in this property list.
@@ -414,7 +438,7 @@ label   = Name:\\u0020</pre>
    */
   public String getProperty(String key)
   {
-    return getProperty(key, null);
+    return getPropertyInternal(key, null);
   }
 
   /**
@@ -433,17 +457,7 @@ label   = Name:\\u0020</pre>
    */
   public String getProperty(String key, String defaultValue)
   {
-    Properties prop = this;
-    // Eliminate tail recursion.
-    do
-      {
-        String value = (String) prop.get(key);
-        if (value != null)
-          return value;
-        prop = prop.defaults;
-      }
-    while (prop != null);
-    return defaultValue;
+    return getPropertyInternal(key, defaultValue);
   }
 
   /**

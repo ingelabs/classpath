@@ -1,3 +1,11 @@
+2005-07-26  Roman Kennke  <roman@kennke.org>
+
+	* java/util/Properties.java
+	(getPropertyInternal): New method. Avoids infinite recursion if
+	getProperty() methods are overridden in subclasses.
+	(getProperty(String)): Use getPropertyInternal to avoid recursion.
+	(getProperty(String,String)): Likewise.
+
 2005-07-26  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/plaf/basic/BasicScrollPaneUI.java
