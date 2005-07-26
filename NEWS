@@ -1,3 +1,4 @@
+* Moved native methods from java.lang.reflect.Proxy to VMProxy.
 * Added hook to VMClassLoader to allow VM to do class caching.
 * The Portable Object Adapter should support the output of the
   recent IDL to java compilers. These compilers now generate servants and 

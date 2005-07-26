@@ -1,5 +1,22 @@
 2005-07-26  Jeroen Frijters  <jeroen@frijters.net>
 
+	* NEWS: Added comment about new VMProxy class.
+	* gnu/classpath/Configuration.java.in
+	(HAVE_NATIVE_GET_PROXY_CLASS): Removed.
+	(HAVE_NATIVE_GET_PROXY_DATA): Removed.
+	(HAVE_NATIVE_GENERATE_PROXY_CLASS): Removed.
+	* java/lang/reflect/Proxy.java
+	(getProxyClass): Changed to call VMProxy.
+	(getProxyClass0): Removed.
+	(getProxyData0): Removed.
+	(generateProxyClass0): Removed.
+	(ProxyData): Removed private modifier.
+	(POOL): Removed (was unused).
+	(INVOKESTATIC): Removed (was unused).
+	* vm/reference/java/lang/reflect/VMProxy.java: New file.
+
+2005-07-26  Jeroen Frijters  <jeroen@frijters.net>
+
 	* NEWS: Added comment about new VM hook in VMClassLoader.
 
 2005-07-26  David Gilbert  <david.gilbert@object-refinery.com>
