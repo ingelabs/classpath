@@ -1,3 +1,8 @@
+2005-07-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalBorders.java:
+	(MenuItemBorder): new inner class.
+	
 2005-07-26  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
