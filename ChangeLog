@@ -1,5 +1,8 @@
 2005-07-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (repaintTimer): Make
+	daemon thread.
+
 	* gnu/java/awt/peer/gtk/GdkGraphics.java,
 	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c: Add
 	static initializer.
