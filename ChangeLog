@@ -1,3 +1,12 @@
+2005-07-26  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(getPreferredSize): Removed.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(getPreferredSize): Removed.
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(getPreferredSize): Removed.
+
 2005-07-26  Roman Kennke  <roman@kennke.org>
 
 	* gnu/java/awt/AWTUtilities.java:
