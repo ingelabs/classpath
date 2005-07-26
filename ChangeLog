@@ -1,5 +1,10 @@
 2005-07-26  Tom Tromey  <tromey@redhat.com>
 
+	* java/security/cert/X509CertSelector.java (match): Convert sigId
+	to String before comparison.  PR classpath/22987.
+
+2005-07-26  Tom Tromey  <tromey@redhat.com>
+
 	* gnu/java/security/OID.java: Typo fix.
 
 2005-07-26  Tom Tromey  <tromey@redhat.com>
