@@ -1,3 +1,10 @@
+2005-07-26  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/22992:
+	* javax/security/sasl/Sasl.java (getSaslClientFactories): Fix
+	sense of test.
+	(getSaslServerFactories): Likewise.
+
 2005-07-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (repaintTimer): Make
