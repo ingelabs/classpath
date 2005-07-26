@@ -285,8 +285,10 @@ final class VMClassLoader
 
   /**
    * Set this field to true if the VM wants to keep its own cache.
+   * Note that this field is not final, to allow VMs to have a
+   * different setting without having to recompile ClassLoader.java.
    */
-  static final boolean USE_VM_CACHE = false;
+  static boolean USE_VM_CACHE = false;
 
   /**
    * If the VM wants to keep its own cache, this method can be replaced.
