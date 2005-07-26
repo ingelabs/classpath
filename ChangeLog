@@ -1,3 +1,20 @@
+2005-07-26  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/AbstractAction.java
+	Fixed / Added API doc comments for the class description.
+	* javax/swing/AbstractButton.java: Likewise.
+	* javax/swing/AbstractCellEditor.java: Likewise.
+	* javax/swing/AbstractListModel.java: Likewise.
+	* javax/swing/AbstractSpinnerModel.java: Likewise.
+	* javax/swing/ActionMap.java: Likewise.
+	* javax/swing/BorderFactory.java: Likewise.
+	* javax/swing/Box.java: Likewise.
+	* javax/swing/BoxLayout.java: Likewise.
+	* javax/swing/ButtonGroup.java: Likewise.
+	* javax/swing/CellRendererPane.java: Likewise.
+	* javax/swing/ComponentInputMap.java: Likewise.
+	* javax/swing/DebugGraphics.java: Likewise.
+
 2005-07-26  Mark Wielaard  <mark@klomp.org>
 
 	* java/text/DateFormat.java (equals): Reimplement.
