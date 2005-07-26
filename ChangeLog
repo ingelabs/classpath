@@ -1,3 +1,8 @@
+2005-07-26  Aaron Luchko  <aluchko@redhat.com>
+
+	* gnu/classpath/jdwp/processor/ThreadGroupReferenceCommandSet.java:
+	Implemented the ThreadGroupReference CommandSet.
+
 2005-07-26  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/22989:
