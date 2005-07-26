@@ -47,6 +47,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
@@ -243,6 +244,76 @@ public class MetalBorders
           g.drawLine(x, y + h - 1, x + w, y + h - 1);
         }          
       }
+    }
+    
+    /**
+     * Returns the border insets.
+     * 
+     * @param c  the component (ignored).
+     * 
+     * @return The border insets.
+     */
+    public Insets getBorderInsets(Component c)
+    {
+      return borderInsets;
+    }
+    
+    /**
+     * Populates <code>insets</code> with the border insets, then returns it.
+     * 
+     * @param c  the component (ignored).
+     * @param insets  the object to populate with the border insets.
+     * 
+     * @return The border insets.
+     * 
+     * @throws NullPointerException if <code>insets</code> is <code>null</code>.
+     */
+    public Insets getBorderInsets(Component c, Insets insets)
+    {
+      insets.left = borderInsets.left;
+      insets.top = borderInsets.top;
+      insets.bottom = borderInsets.bottom;
+      insets.right = borderInsets.right;
+      return insets;
+    }
+  }
+
+  /**
+   * A border used for {@link JMenuBar} components.
+   */
+  public static class MenuBarBorder
+      extends AbstractBorder
+      implements UIResource
+  {
+    /** The border insets. */
+    protected static Insets borderInsets = new Insets(1, 0, 1, 0);
+    
+    // TODO: find where this color really comes from
+    private static Color borderColor = new Color(153, 153, 153);
+    
+    /**
+     * Creates a new border instance.
+     */
+    public MenuBarBorder()
+    {
+    }
+    
+    /**
+     * Paints the border for the component.  A border is painted only if the
+     * component is a selected {@link JMenu} or an armed {@link JMenuItem}.
+     * 
+     * @param c  the component.
+     * @param g  the graphics device.
+     * @param x  the x-coordinate of the border area.
+     * @param y  the y-coordinate of the border area.
+     * @param w  the width of the border area.
+     * @param h  the height of the border area.
+     */
+    public void paintBorder(Component c, Graphics g, int x, int y, int w,
+        int h)
+    {
+      g.setColor(borderColor);
+      g.drawLine(x, y + h - 1, x + w, y + h - 1);
     }
     
     /**
