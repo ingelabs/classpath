@@ -1,3 +1,8 @@
+2005-07-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (repaint): Reuse
+	repaint timer across repaint calls.
+
 2005-07-26  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/AbstractAction.java
