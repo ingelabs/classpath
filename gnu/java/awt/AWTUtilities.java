@@ -345,7 +345,7 @@ public class AWTUtilities
    * @see #calculateInnerArea
    */
   public static Rectangle calculateInsetArea(Rectangle base, Insets insets,
-																						 Rectangle ret)
+                                             Rectangle ret)
   {
     if (ret == null)
       ret = new Rectangle();
@@ -570,7 +570,8 @@ public class AWTUtilities
    * @param destination The component which the return value will be
    * expressed in terms of
    *
-   * @return The point <code>(x,y)</code> converted from the coordinate space of the
+   * @return The point <code>(x,y)</code> converted from the coordinate
+   *         space of the
    * source component to the coordinate space of the destination component
    *
    * @see #convertPointToScreen
@@ -579,7 +580,7 @@ public class AWTUtilities
    * @see #getRoot
    */
   public static Point convertPoint(Component source, int x, int y,
-																	 Component destination)
+                                   Component destination)
   {
     Point pt = new Point(x, y);
 
@@ -622,9 +623,8 @@ public class AWTUtilities
    * @see #convertPoint
    * @see #getRoot
    */
-  public static Rectangle convertRectangle(Component source,
-																					 Rectangle rect,
-																					 Component destination)
+  public static Rectangle convertRectangle(Component source, Rectangle rect,
+                                           Component destination)
   {
     Point pt = convertPoint(source, rect.x, rect.y, destination);
     return new Rectangle(pt.x, pt.y, rect.width, rect.height);
@@ -650,16 +650,17 @@ public class AWTUtilities
    * @see #convertPoint
    */
   public static MouseEvent convertMouseEvent(Component source,
-																						 MouseEvent sourceEvent,
-																						 Component destination)
+                                             MouseEvent sourceEvent,
+                                             Component destination)
   {
     Point newpt = convertPoint(source, sourceEvent.getX(), sourceEvent.getY(),
-        destination);
+                               destination);
 
     return new MouseEvent(destination, sourceEvent.getID(),
-        sourceEvent.getWhen(), sourceEvent.getModifiers(),
-				newpt.x, newpt.y, sourceEvent.getClickCount(),
-				sourceEvent.isPopupTrigger(), sourceEvent.getButton());
+                          sourceEvent.getWhen(), sourceEvent.getModifiers(),
+                          newpt.x, newpt.y, sourceEvent.getClickCount(),
+                          sourceEvent.isPopupTrigger(),
+                          sourceEvent.getButton());
   }
 
 
