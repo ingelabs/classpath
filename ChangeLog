@@ -1,5 +1,14 @@
 2005-07-26  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(Java_gnu_java_nio_channels_FileChannelImpl_init): Mark clazz as
+	unused. Remove unused variables constructor and obj.
+	(Java_gnu_java_nio_channels_FileChannelImpl_implCloseChannel): Retry
+	when interrupted.
+	(Java_gnu_java_nio_channels_FileChannelImpl_available): Likewise.
+
+2005-07-26  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/nio/channels/FileChannelImpl.java (lockCheck): New method.
 	(tryLock): Use lockCheck().
 	(lock): Likewise.

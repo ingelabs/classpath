@@ -113,12 +113,12 @@ get_native_fd (JNIEnv * env, jobject obj)
  * static initialization.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_nio_channels_FileChannelImpl_init (JNIEnv * env, jclass clazz)
+Java_gnu_java_nio_channels_FileChannelImpl_init (JNIEnv * env,
+						jclass clazz
+						__attribute__ ((__unused__)))
 {
   jclass clazz_fc;
   jfieldID field;
-  jmethodID constructor;
-  jobject obj;
 
   /* Initialize native_fd_fieldID so we only compute it once! */
   clazz_fc = (*env)->FindClass (env, "gnu/java/nio/channels/FileChannelImpl");
@@ -236,12 +236,19 @@ Java_gnu_java_nio_channels_FileChannelImpl_implCloseChannel (JNIEnv * env,
 
   native_fd = get_native_fd (env, obj);
 
-  TARGET_NATIVE_FILE_CLOSE (native_fd, result);
-  if (result != TARGET_NATIVE_OK)
+  do
     {
-      JCL_ThrowException (env, IO_EXCEPTION,
-			  TARGET_NATIVE_LAST_ERROR_STRING ());
+      TARGET_NATIVE_FILE_CLOSE (native_fd, result);
+      if (result != TARGET_NATIVE_OK
+	  && (TARGET_NATIVE_LAST_ERROR ()
+	      != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL))
+	{
+	  JCL_ThrowException (env, IO_EXCEPTION,
+			      TARGET_NATIVE_LAST_ERROR_STRING ());
+	  return;
+	}
     }
+  while (result != TARGET_NATIVE_OK);
 }
 
 /*
@@ -258,13 +265,19 @@ Java_gnu_java_nio_channels_FileChannelImpl_available (JNIEnv * env,
 
   native_fd = get_native_fd (env, obj);
 
-  TARGET_NATIVE_FILE_AVAILABLE (native_fd, bytes_available, result);
-  if (result != TARGET_NATIVE_OK)
+  do
     {
-      JCL_ThrowException (env, IO_EXCEPTION,
-			  TARGET_NATIVE_LAST_ERROR_STRING ());
-      return 0;
+      TARGET_NATIVE_FILE_AVAILABLE (native_fd, bytes_available, result);
+      if (result != TARGET_NATIVE_OK
+	  && (TARGET_NATIVE_LAST_ERROR ()
+	      != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL))
+	{
+	  JCL_ThrowException (env, IO_EXCEPTION,
+			      TARGET_NATIVE_LAST_ERROR_STRING ());
+	  return 0;
+	}
     }
+  while (result != TARGET_NATIVE_OK);
 
   /* FIXME NYI ??? why only jint and not jlong? */
   return TARGET_NATIVE_MATH_INT_INT64_TO_INT32 (bytes_available);
