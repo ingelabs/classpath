@@ -87,4 +87,4 @@ $(EXAMPLE_ZIP): $(EXAMPLE_JAVA_FILES)
 
 # Zip file be gone! (and make sure the classes are gone too)
 clean-local:
-	rm -f $(EXAMPLE_ZIP) classes
+	rm -rf $(EXAMPLE_ZIP) classes
