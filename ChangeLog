@@ -1,5 +1,11 @@
 2005-07-26  Tom Tromey  <tromey@redhat.com>
 
+	PR classpath/22989:
+	* java/net/Inet4Address.java (isMCNodeLocal): Use super call.
+	(isMCOrgLocal): Likewise.
+
+2005-07-26  Tom Tromey  <tromey@redhat.com>
+
 	* gnu/java/security/provider/PKIXCertPathValidatorImpl.java
 	(engineValidate): Fix sense of test.  PR classpath/22991.
 
