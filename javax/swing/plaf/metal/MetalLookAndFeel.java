@@ -790,8 +790,10 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "Menu.background", new ColorUIResource(getControl()),
       "Menu.font", getControlTextFont(),
       "MenuBar.background", new ColorUIResource(getControl()),
+      "MenuBar.border", new MetalBorders.MenuBarBorder(),
       "MenuBar.font", getControlTextFont(),
       "MenuItem.background", new ColorUIResource(getControl()),
+      "MenuItem.border", new MetalBorders.MenuItemBorder(),
       "MenuItem.font", getControlTextFont(),
       "RadioButton.icon",
       new UIDefaults.LazyValue()
