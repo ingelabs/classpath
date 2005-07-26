@@ -1,6 +1,14 @@
 2005-07-26  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTableUI.java:
+	(KeyHandler.keyPressed): Replaced calls to KeyEvent.isShiftDown() and
+	isControlDown() with mask comparisons of KeyEvent.getModifiers() and
+	InputEvent.SHIFT_MASK and CTRL_MASK.  This makes it easier to ignore
+	invalid modifiers.
+
+2005-07-26  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTableUI.java:
 	(KeyHandler.keyPressed): Implemented CTRL-SPACE key action.
 
 2005-07-26  Tom Tromey  <tromey@redhat.com>
