@@ -1,5 +1,10 @@
 2005-07-26  Tom Tromey  <tromey@redhat.com>
 
+	* gnu/java/security/provider/PKIXCertPathValidatorImpl.java
+	(engineValidate): Fix sense of test.  PR classpath/22991.
+
+2005-07-26  Tom Tromey  <tromey@redhat.com>
+
 	PR classpath/22992:
 	* javax/security/sasl/Sasl.java (getSaslClientFactories): Fix
 	sense of test.
