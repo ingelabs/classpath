@@ -1,3 +1,4 @@
+* Added hook to VMClassLoader to allow VM to do class caching.
 * The Portable Object Adapter should support the output of the
   recent IDL to java compilers. These compilers now generate servants and 
   not CORBA objects as before, making the output depended on the existing 

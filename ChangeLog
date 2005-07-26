@@ -1,3 +1,7 @@
+2005-07-26  Jeroen Frijters  <jeroen@frijters.net>
+
+	* NEWS: Added comment about new VM hook in VMClassLoader.
+
 2005-07-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/DateFormatter.java: API doc fixes,
