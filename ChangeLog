@@ -1,5 +1,9 @@
 2005-07-26  Tom Tromey  <tromey@redhat.com>
 
+	* gnu/java/security/OID.java: Typo fix.
+
+2005-07-26  Tom Tromey  <tromey@redhat.com>
+
 	* javax/security/auth/x500/X500Principal.java (getName): Don't
 	compare oid to String.  PR classpath/22988.
 
