@@ -443,7 +443,8 @@ public final class FileChannelImpl extends FileChannel
     return total;
   }
 
-  public FileLock tryLock (long position, long size, boolean shared)
+  // Shared sanity checks between lock and tryLock methods.
+  private void lockCheck(long position, long size, boolean shared)
     throws IOException
   {
     if (position < 0
@@ -452,16 +453,21 @@ public final class FileChannelImpl extends FileChannel
 					  + ", size: " + size);
 
     if (!isOpen ())
-      throw new ClosedChannelException ();
+      throw new ClosedChannelException();
 
-    if (shared && (mode & READ) == 0)
-      throw new NonReadableChannelException ();
+    if (shared && ((mode & READ) == 0))
+      throw new NonReadableChannelException();
 	
-    if (!shared && (mode & WRITE) == 0)
-      throw new NonWritableChannelException ();
-	
+    if (!shared && ((mode & WRITE) == 0))
+      throw new NonWritableChannelException();
+  }
+
+  public FileLock tryLock (long position, long size, boolean shared)
+    throws IOException
+  {
+    lockCheck(position, size, shared);
+
     boolean completed = false;
-    
     try
       {
 	begin();
@@ -488,16 +494,9 @@ public final class FileChannelImpl extends FileChannel
   public FileLock lock (long position, long size, boolean shared)
     throws IOException
   {
-    if (position < 0
-        || size < 0)
-      throw new IllegalArgumentException ("position: " + position
-					  + ", size: " + size);
-
-    if (!isOpen ())
-      throw new ClosedChannelException ();
+    lockCheck(position, size, shared);
 
     boolean completed = false;
-
     try
       {
 	boolean lockable = lock(position, size, shared, true);

@@ -1,3 +1,9 @@
+2005-07-26  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/nio/channels/FileChannelImpl.java (lockCheck): New method.
+	(tryLock): Use lockCheck().
+	(lock): Likewise.
+
 2005-07-26  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/target/generic/target_generic_network.h
