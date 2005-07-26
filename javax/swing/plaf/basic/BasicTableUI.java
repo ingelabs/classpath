@@ -482,6 +482,11 @@ public class BasicTableUI
         {
           table.clearSelection();
         }
+      else if (evt.getKeyCode() == KeyEvent.VK_SPACE 
+               && evt.isControlDown())
+        {
+          table.changeSelection(rowLead, colLead, true, false);
+        }
     }
 
     public void keyReleased(KeyEvent e) 
