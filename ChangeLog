@@ -1,3 +1,12 @@
+2005-07-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (repaint): Implement
+	timed repaint.
+	(updateCursorImmediately): Implement.
+	(RepaintTimerTask): New class.
+	* gnu/java/awt/peer/gtk/GtkImageConsumer.java (imageComplete):
+	Don't remove consumer if source is a MemoryImageSource.
+
 2005-07-25  Archie Cobbs  <archie@dellroad.org>
 
 	* native/jni/classpath/native_state.c: add assertion for object type
