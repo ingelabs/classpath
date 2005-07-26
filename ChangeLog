@@ -1,3 +1,14 @@
+2005-07-26  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/nio/channels/FileChannelImpl.java (description):
+	New final field.
+	(FileChannelImpl): Set description.
+	(init): Likewise.
+	(toString): New method.
+	All methods add parameters when throwing IllegalArgumentException.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(open): Add filename to FileNotFoundException.
+
 2005-07-26  Jeroen Frijters  <jeroen@frijters.net>
 
 	* NEWS: Added comment about new VMProxy class.

@@ -204,17 +204,22 @@ Java_gnu_java_nio_channels_FileChannelImpl_open (JNIEnv * env,
 #endif
 
   TARGET_NATIVE_FILE_OPEN (filename, native_fd, flags, permissions, result);
-  JCL_free_cstring (env, name, filename);
 
   if (result != TARGET_NATIVE_OK)
     {
-      /* We can only throw FileNotFoundException.  */
+      char message[256]; /* Fixed size we don't need to malloc. */
+      char *error_string = TARGET_NATIVE_LAST_ERROR_STRING ();
+
+      snprintf(message, 256, "%s: %s", error_string, filename);
+      /* We are only allowed to throw FileNotFoundException.  */
       JCL_ThrowException (env,
 			  "java/io/FileNotFoundException",
-			  TARGET_NATIVE_LAST_ERROR_STRING ());
+			  message);
+      JCL_free_cstring (env, name, filename);
       return TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1;
     }
 
+  JCL_free_cstring (env, name, filename);
   return native_fd;
 }
 
