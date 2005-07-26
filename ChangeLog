@@ -1,3 +1,9 @@
+2005-07-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/text/DateFormatter.java: API doc fixes,
+	* javax/swing/text/InternationalFormatter.java: likewise,
+	* javax/swing/text/JTextComponent.java: likewise.
+	
 2005-07-26  Mark Wielaard  <mark@klomp.org>
 
 	* examples/Makefile.am (clean-local): Use rm -rf.
