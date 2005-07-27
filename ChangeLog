@@ -1,3 +1,7 @@
+2005-07-27  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/text/AttributedString.java: reformatted.
+	
 2005-07-27  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/JTextPane.java:
