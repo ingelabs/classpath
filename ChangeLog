@@ -1,3 +1,7 @@
+2005-07-27  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/events/events.wml: Add old and upcomming events.
+
 2005-07-27  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/util/Value.java: Class to read/write JDWP
