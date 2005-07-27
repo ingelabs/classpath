@@ -276,7 +276,9 @@ public class BasicListUI extends ListUI
           BasicListUI.this.list.getSelectionModel().
             setLeadSelectionIndex(Math.min(lead+1,max));
         }
-      
+
+      BasicListUI.this.list.ensureIndexIsVisible
+        (BasicListUI.this.list.getLeadSelectionIndex());
     }
   }
   
@@ -334,6 +336,9 @@ public class BasicListUI extends ListUI
         }
       else
         BasicListUI.this.list.setSelectedIndex(index);
+      
+      BasicListUI.this.list.ensureIndexIsVisible
+        (BasicListUI.this.list.getLeadSelectionIndex());
     }
 
     /**

@@ -1,3 +1,10 @@
+2005-07-27  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java:
+	(KeyHandler.keyPressed): Ensure the new lead selection index is visible
+	after making a change.
+	(MouseInputHandler.mouseClicked): Likewise.
+
 2005-07-27  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/util/PacketProcessor.java: Implement 
