@@ -53,219 +53,251 @@ import javax.swing.text.StyledEditorKit;
 
 /**
  * JTextPane
- * @author	Andrew Selkirk
- * @version	1.0
+ *
+ * @author Andrew Selkirk
  */
-public class JTextPane extends JEditorPane {
+public class JTextPane
+  extends JEditorPane
+{
+  /**
+   * uiClassID
+   */
+  private static final String uiClassID = "TextPaneUI";
 
-	//-------------------------------------------------------------
-	// Variables --------------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * Constructor JTextPane
+   */
+  public JTextPane()
+  {
+    // TODO
+  }
 
-	/**
-	 * uiClassID
-	 */
-	private static final String uiClassID = "TextPaneUI";
+  /**
+   * Constructor JTextPane
+   *
+   * @param document TODO
+   */
+  public JTextPane(StyledDocument document)
+  {
+    // TODO
+  }
 
+  /**
+   * getUIClassID
+   *
+   * @returns String
+   */
+  public String getUIClassID()
+  {
+    return uiClassID;
+  }
 
-	//-------------------------------------------------------------
-	// Initialization ---------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * setDocument
+   *
+   * @param document TODO
+   */
+  public void setDocument(Document document)
+  {
+    super.setDocument(document); // TODO
+  }
 
-	/**
-	 * Constructor JTextPane
-	 */
-	public JTextPane() {
-		// TODO
-	} // JTextPane()
+  /**
+   * getStyledDocument
+   *
+   * @returns StyledDocument
+   */
+  public StyledDocument getStyledDocument()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * Constructor JTextPane
-	 * @param document TODO
-	 */
-	public JTextPane(StyledDocument document) {
-		// TODO
-	} // JTextPane()
+  /**
+   * setStyledDocument
+   *
+   * @param document TODO
+   */
+  public void setStyledDocument(StyledDocument document)
+  {
+    // TODO
+  }
 
+  /**
+   * replaceSelection
+   *
+   * @param content TODO
+   */
+  public void replaceSelection(String content)
+  {
+    super.replaceSelection(content); // TODO
+  }
 
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * insertComponent
+   *
+   * @param component TODO
+   */
+  public void insertComponent(Component component)
+  {
+    // TODO
+  }
 
-	/**
-	 * getUIClassID
-	 * @returns String
-	 */
-	public String getUIClassID() {
-		return uiClassID;
-	} // getUIClassID()
+  /**
+   * insertIcon
+   *
+   * @param icon TODO
+   */
+  public void insertIcon(Icon icon)
+  {
+    // TODO
+  }
 
-	/**
-	 * setDocument
-	 * @param document TODO
-	 */
-	public void setDocument(Document document) {
-		super.setDocument(document); // TODO
-	} // setDocument()
+  /**
+   * addStyle
+   *
+   * @param nm TODO
+   * @param parent TODO
+   *
+   * @returns Style
+   */
+  public Style addStyle(String nm, Style parent)
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * getStyledDocument
-	 * @returns StyledDocument
-	 */
-	public StyledDocument getStyledDocument() {
-		return null; // TODO
-	} // getStyledDocument()
+  /**
+   * removeStyle
+   *
+   * @param nm TODO
+   */
+  public void removeStyle(String nm)
+  {
+    // TODO
+  }
 
-	/**
-	 * setStyledDocument
-	 * @param document TODO
-	 */
-	public void setStyledDocument(StyledDocument document) {
-		// TODO
-	} // setStyledDocument()
+  /**
+   * getStyle
+   *
+   * @param nm TODO
+   *
+   * @returns Style
+   */
+  public Style getStyle(String nm)
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * replaceSelection
-	 * @param content TODO
-	 */
-	public void replaceSelection(String content) {
-		super.replaceSelection(content); // TODO
-	} // replaceSelection()
+  /**
+   * getLogicalStyle
+   *
+   * @returns Style
+   */
+  public Style getLogicalStyle()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * insertComponent
-	 * @param component TODO
-	 */
-	public void insertComponent(Component component) {
-		// TODO
-	} // insertComponent()
+  /**
+   * setLogicalStyle
+   *
+   * @param style TODO
+   */
+  public void setLogicalStyle(Style style)
+  {
+    // TODO
+  }
 
-	/**
-	 * insertIcon
-	 * @param icon TODO
-	 */
-	public void insertIcon(Icon icon) {
-		// TODO
-	} // insertIcon()
+  /**
+   * getCharacterAttributes
+   *
+   * @returns AttributeSet
+   */
+  public AttributeSet getCharacterAttributes()
+  {
+    return SimpleAttributeSet.EMPTY; // TODO
+  }
 
-	/**
-	 * addStyle
-	 * @param nm TODO
-	 * @param parent TODO
-	 * @returns Style
-	 */
-	public Style addStyle(String nm, Style parent) {
-		return null; // TODO
-	} // addStyle()
+  /**
+   * setCharacterAttributes
+   *
+   * @param attribute TODO
+   * @param replace TODO
+   */
+  public void setCharacterAttributes(AttributeSet attribute,
+                                     boolean replace)
+  {
+    // TODO
+  }
 
-	/**
-	 * removeStyle
-	 * @param nm TODO
-	 */
-	public void removeStyle(String nm) {
-		// TODO
-	} // removeStyle()
+  /**
+   * getParagraphAttributes
+   *
+   * @returns AttributeSet
+   */
+  public AttributeSet getParagraphAttributes()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * getStyle
-	 * @param nm TODO
-	 * @returns Style
-	 */
-	public Style getStyle(String nm) {
-		return null; // TODO
-	} // getStyle()
+  /**
+   * setParagraphAttributes
+   *
+   * @param attribute TODO
+   * @param replace TODO
+   */
+  public void setParagraphAttributes(AttributeSet attribute,
+                                     boolean replace)
+  {
+    // TODO
+  }
 
-	/**
-	 * getLogicalStyle
-	 * @returns Style
-	 */
-	public Style getLogicalStyle() {
-		return null; // TODO
-	} // getLogicalStyle()
+  /**
+   * getInputAttributes
+   *
+   * @returns MutableAttributeSet
+   */
+  public MutableAttributeSet getInputAttributes()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * setLogicalStyle
-	 * @param style TODO
-	 */
-	public void setLogicalStyle(Style style) {
-		// TODO
-	} // setLogicalStyle()
+  /**
+   * getStyledEditorKit
+   *
+   * @returns StyledEditorKit
+   */
+  protected final StyledEditorKit getStyledEditorKit()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * getCharacterAttributes
-	 * @returns AttributeSet
-	 */
-	public AttributeSet getCharacterAttributes() {
-          return SimpleAttributeSet.EMPTY; // TODO
-	} // getCharacterAttributes()
+  /**
+   * createDefaultEditorKit
+   *
+   * @returns EditorKit
+   */
+  protected EditorKit createDefaultEditorKit()
+  {
+    return super.createDefaultEditorKit(); // TODO
+  }
 
-	/**
-	 * setCharacterAttributes
-	 * @param attribute TODO
-	 * @param replace TODO
-	 */
-	public void setCharacterAttributes(AttributeSet attribute,
-			boolean replace) {
-		// TODO
-	} // setCharacterAttributes()
+  /**
+   * setEditorKit
+   *
+   * @param editor TODO
+   */
+  public final void setEditorKit(EditorKit editor)
+  {
+    super.setEditorKit(editor); // TODO
+  }
 
-	/**
-	 * getParagraphAttributes
-	 * @returns AttributeSet
-	 */
-	public AttributeSet getParagraphAttributes() {
-		return null; // TODO
-	} // getParagraphAttributes()
-
-	/**
-	 * setParagraphAttributes
-	 * @param attribute TODO
-	 * @param replace TODO
-	 */
-	public void setParagraphAttributes(AttributeSet attribute,
-			boolean replace) {
-		// TODO
-	} // setParagraphAttributes()
-
-	/**
-	 * getInputAttributes
-	 * @returns MutableAttributeSet
-	 */
-	public MutableAttributeSet getInputAttributes() {
-		return null; // TODO
-	} // getInputAttributes()
-
-	/**
-	 * getStyledEditorKit
-	 * @returns StyledEditorKit
-	 */
-	protected final StyledEditorKit getStyledEditorKit() {
-		return null; // TODO
-	} // getStyledEditorKit()
-
-	/**
-	 * createDefaultEditorKit
-	 * @returns EditorKit
-	 */
-	protected EditorKit createDefaultEditorKit() {
-		return super.createDefaultEditorKit(); // TODO
-	} // createDefaultEditorKit()
-
-	/**
-	 * setEditorKit
-	 * @param editor TODO
-	 */
-	public final void setEditorKit(EditorKit editor) {
-		super.setEditorKit(editor); // TODO
-	} // setEditorKit()
-
-	/**
-	 * paramString
-	 * @returns String
-	 */
-	protected String paramString() {
-		return super.paramString(); // TODO
-	} // paramString()
-
-
-} // JTextPane
+  /**
+   * paramString
+   *
+   * @returns String
+   */
+  protected String paramString()
+  {
+    return super.paramString(); // TODO
+  }
+}
