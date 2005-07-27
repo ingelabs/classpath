@@ -167,7 +167,7 @@ public class DocumentParser
    * to get a default DTD; you must either refer to the implementation -
    * specific packages, write your own DTD or obtain the working instance
    * of parser in other way, for example, by calling
-   * <code>javax.swing.text.html.HTMLEditorKit.getParser()</code>.
+   * {@link javax.swing.text.html.HTMLEditorKit#getParser()}.
    * @param a_dtd a DTD to use.
    */
   public DocumentParser(DTD a_dtd)
