@@ -1,3 +1,8 @@
+2005-07-27  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): added menu-related defaults.
+	
 2005-07-26  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/processor/ArrayReferenceCommandSet.java:
