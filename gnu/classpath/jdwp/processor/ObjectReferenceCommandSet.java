@@ -36,6 +36,7 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.IVirtualMachine;
@@ -103,7 +104,7 @@ public class ObjectReferenceCommandSet implements CommandSet
             break;
           default:
             throw new NotImplementedException("Command " + command +
-              " not found in String Reference Command Set.");
+              " not found in ObjectReference Command Set.");
           }
       }
     catch (IOException ex)
@@ -138,7 +139,22 @@ public class ObjectReferenceCommandSet implements CommandSet
     for (int i = 0; i < numFields; i++)
       {
         Field field = (Field) idMan.readId(bb).getObject();
-        Value.writeValueFromField(os, field, obj);
+        try
+          {
+            field.setAccessible(true); // Might be a private field
+            Object value = field.get(obj);
+            Value.writeTaggedValue(os, value);
+          }
+        catch (IllegalArgumentException ex)
+          {
+            // I suppose this would best qualify as an invalid field then
+            throw new InvalidFieldException(ex);
+          }
+        catch (IllegalAccessException ex)
+          {
+            // Since we set it as accessible this really shouldn't happen
+            throw new JdwpInternalErrorException(ex);
+          }
       }
   }
 
@@ -153,9 +169,10 @@ public class ObjectReferenceCommandSet implements CommandSet
     for (int i = 0; i < numFields; i++)
       {
         Field field = (Field) idMan.readId(bb).getObject();
-        Object value = Value.getObj(bb, field);
+        Object value = Value.getUntaggedObj(bb, field.getType());
         try
           {
+            field.setAccessible(true); // Might be a private field
             field.set(obj, value);
           }
         catch (IllegalArgumentException ex)
@@ -165,7 +182,7 @@ public class ObjectReferenceCommandSet implements CommandSet
           }
         catch (IllegalAccessException ex)
           {
-            // We should be able to access any field
+            // Since we set it as accessible this really shouldn't happen
             throw new JdwpInternalErrorException(ex);
           }
       }
@@ -208,7 +225,7 @@ public class ObjectReferenceCommandSet implements CommandSet
 
     if ((invokeOptions & JdwpConstants.InvokeOptions.INVOKE_SINGLE_THREADED) != 0)
       { // We must suspend all other running threads first
-        vm.suspendAllThreads();
+        vm.suspendAllThreadsExcept(Thread.currentThread().getThreadGroup());
       }
     boolean nonVirtual;
     if ((invokeOptions & JdwpConstants.InvokeOptions.INVOKE_NONVIRTUAL) != 0)
@@ -220,8 +237,8 @@ public class ObjectReferenceCommandSet implements CommandSet
     vmi.executeMethod(obj, thread, clazz, method, values, nonVirtual);
     Object value = vmi.getReturnedValue();
     ObjectId exceptionId = vmi.getExceptionId();
-    
-    Value.writeValue(os, value);
+
+    Value.writeTaggedValue(os, value);
     exceptionId.writeTagged(os);
   }
 

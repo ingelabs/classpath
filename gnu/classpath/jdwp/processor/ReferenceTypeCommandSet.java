@@ -1,4 +1,4 @@
-/* ReferenceTypeCommandSet.java -- lass to implement the ReferenceType
+/* ReferenceTypeCommandSet.java -- class to implement the ReferenceType
    Command Set
    Copyright (C) 2005 Free Software Foundation
 
@@ -35,6 +35,7 @@ or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
+
 
 package gnu.classpath.jdwp.processor;
 
@@ -125,7 +126,7 @@ public class ReferenceTypeCommandSet implements CommandSet
             break;
           default:
             throw new NotImplementedException("Command " + command +
-              " not found in String Reference Command Set.");
+              " not found in ReferenceType Command Set.");
           }
       }
     catch (IOException ex)
@@ -218,7 +219,24 @@ public class ReferenceTypeCommandSet implements CommandSet
         // We don't actually need the clazz to get the field but we might as
         // well check that the debugger got it right
         if (fieldClazz.isAssignableFrom(clazz))
-          Value.writeStaticValueFromField(os, field);
+          {
+            try
+              {
+                field.setAccessible(true); // Might be a private field
+                Object value = field.get(null);
+                Value.writeTaggedValue(os, value);
+              }
+            catch (IllegalArgumentException ex)
+              {
+                // I suppose this would best qualify as an invalid field then
+                throw new InvalidFieldException(ex);
+              }
+            catch (IllegalAccessException ex)
+              {
+                // Since we set it as accessible this really shouldn't happen
+                throw new JdwpInternalErrorException(ex);
+              }
+          }
         else
           throw new InvalidFieldException(fieldId.getId());
       }

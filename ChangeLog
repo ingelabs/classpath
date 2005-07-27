@@ -1,3 +1,13 @@
+2005-07-27  Aaron Luchko  <aluchko@redhat.com>
+
+	* gnu/classpath/jdwp/util/Value.java: Class to read/write JDWP
+	untagged values and tagged values.
+	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java:
+	use new api for Values and IVirtualMachine and fix message in
+	exception.
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java:
+	use new api for Values and fix message in exception.
+
 2005-07-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/PortableServer/POAHelper.java (type, insert, extract, 
