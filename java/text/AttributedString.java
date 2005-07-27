@@ -56,9 +56,8 @@ import java.util.Set;
 public class AttributedString
 {
 
-  /**
-   * This class contains the attributes and ranges of text over which
-   * that attributes apply.
+  /** 
+   * The attributes and ranges of text over which those attributes apply. 
    */
   final class AttributeRange
   {
@@ -72,6 +71,13 @@ public class AttributedString
     /** The ending index of the attributes */
     int end_index;
 
+    /**
+     * Creates a new attribute range.
+     * 
+     * @param attribs  the attributes.
+     * @param begin_index  the start index.
+     * @param end_index  the end index.
+     */
     AttributeRange(Map attribs, int begin_index, int end_index) 
     {
       this.attribs = attribs;
@@ -81,17 +87,20 @@ public class AttributedString
 
   } // Inner class AttributeRange
 
-  /** This object holds the string we are representing. */
+  /** The string we are representing. */
   private StringCharacterIterator sci;
 
-  /** This is the attribute information */
+  /** The attribute information */
   private AttributeRange[] attribs;
 
   /**
-   * This method initializes a new instance of <code>AttributedString</code>
+   * Creates a new instance of <code>AttributedString</code>
    * that represents the specified <code>String</code> with no attributes.
    *
-   * @param str The <code>String</code> to be attributed.
+   * @param str The <code>String</code> to be attributed (<code>null</code> not
+   *            permitted).
+   * 
+   * @throws NullPointerException if <code>str</code> is <code>null</code>.
    */
   public AttributedString(String str)
   {
@@ -100,7 +109,7 @@ public class AttributedString
   }
 
   /**
-   * This method initializes a new instance of <code>AttributedString</code>
+   * Creates a new instance of <code>AttributedString</code>
    * that represents that specified <code>String</code> with the specified
    * attributes over the entire length of the <code>String</code>.
    *
@@ -116,12 +125,15 @@ public class AttributedString
   }
 
   /**
-   * This method initializes a new instance of <code>AttributedString</code>
+   * Initializes a new instance of <code>AttributedString</code>
    * that will use the text and attribute information from the specified
    * <code>AttributedCharacterIterator</code>.
    *
    * @param aci The <code>AttributedCharacterIterator</code> containing the 
-   *            text and attribute information.
+   *            text and attribute information (<code>null</code> not 
+   *            permitted).
+   * 
+   * @throws NullPointerException if <code>aci</code> is <code>null</code>.
    */
   public AttributedString(AttributedCharacterIterator aci)
   {
@@ -129,7 +141,7 @@ public class AttributedString
   }
 
   /**
-   * This method initializes a new instance of <code>AttributedString</code>
+   * Initializes a new instance of <code>AttributedString</code>
    * that will use the text and attribute information from the specified
    * subrange of the specified <code>AttributedCharacterIterator</code>.
    *
@@ -145,7 +157,7 @@ public class AttributedString
   }
 
   /**
-   * This method initializes a new instance of <code>AttributedString</code>
+   * Initializes a new instance of <code>AttributedString</code>
    * that will use the text and attribute information from the specified
    * subrange of the specified <code>AttributedCharacterIterator</code>.
    * Only attributes from the source iterator that are present in the
@@ -240,7 +252,7 @@ public class AttributedString
   }
 
   /**
-   * This method adds a new attribute that will cover the entire string.
+   * Adds a new attribute that will cover the entire string.
    *
    * @param attrib The attribute to add.
    * @param value The value of the attribute.
@@ -252,11 +264,11 @@ public class AttributedString
   }
 
   /**
-   * This method adds a new attribute that will cover the specified subrange
+   * Adds a new attribute that will cover the specified subrange
    * of the string.
    *
    * @param attrib The attribute to add.
-   * @param value The value of the attribute, which may be null.
+   * @param value The value of the attribute, which may be <code>null</code>.
    * @param begin_index The beginning index of the subrange.
    * @param end_index The ending index of the subrange.
    *
@@ -276,7 +288,7 @@ public class AttributedString
   }
 
   /**
-   * This method adds all of the attributes in the specified list to the
+   * Adds all of the attributes in the specified list to the
    * specified subrange of the string.
    *
    * @param attributes The list of attributes.
@@ -303,7 +315,7 @@ public class AttributedString
   } 
 
   /**
-   * This method returns an <code>AttributedCharacterIterator</code> that 
+   * Returns an <code>AttributedCharacterIterator</code> that 
    * will iterate over the entire string.
    *
    * @return An <code>AttributedCharacterIterator</code> for the entire string.
@@ -315,7 +327,7 @@ public class AttributedString
   }
 
   /**
-   * This method returns an <code>AttributedCharacterIterator</code> that
+   * Returns an <code>AttributedCharacterIterator</code> that
    * will iterate over the entire string.  This iterator will return information
    * about the list of attributes in the specified array.  Attributes not in
    * the array may or may not be returned by the iterator.  If the specified
@@ -332,7 +344,7 @@ public class AttributedString
   }
 
   /**
-   * This method returns an <code>AttributedCharacterIterator</code> that
+   * Returns an <code>AttributedCharacterIterator</code> that
    * will iterate over the specified subrange.  This iterator will return 
    * information about the list of attributes in the specified array.  
    * Attributes not in the array may or may not be returned by the iterator.  
