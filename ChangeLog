@@ -1,3 +1,8 @@
+2005-07-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/PortableServer/POAHelper.java (type, insert, extract, 
+        id, read, write): New methods.
+
 2005-07-27  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/text/AttributedString.java: reformatted.
