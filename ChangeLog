@@ -1,3 +1,8 @@
+2005-07-27  Aaron Luchko  <aluchko@redhat.com>
+
+	* gnu/classpath/jdwp/util/PacketProcessor.java: Implement 
+	PrivilegedAction to allow privilaged operations.
+
 2005-07-27  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/events/events.wml: Add old and upcomming events.
