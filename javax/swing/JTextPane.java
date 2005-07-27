@@ -46,6 +46,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
@@ -195,7 +196,7 @@ public class JTextPane extends JEditorPane {
 	 * @returns AttributeSet
 	 */
 	public AttributeSet getCharacterAttributes() {
-		return null; // TODO
+          return SimpleAttributeSet.EMPTY; // TODO
 	} // getCharacterAttributes()
 
 	/**
