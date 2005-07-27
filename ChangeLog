@@ -1,5 +1,10 @@
 2005-07-26  Aaron Luchko  <aluchko@redhat.com>
 
+	* gnu/classpath/jdwp/processor/ArrayReferenceCommandSet.java:
+	Implemented the ArrayReference CommandSet.
+
+2005-07-26  Aaron Luchko  <aluchko@redhat.com>
+
 	* gnu/classpath/jdwp/processor/ThreadGroupReferenceCommandSet.java:
 	Implemented the ThreadGroupReference CommandSet.
 
