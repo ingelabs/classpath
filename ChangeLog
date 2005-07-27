@@ -1,5 +1,32 @@
 2005-07-27  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/DefaultBoundedRangeModel.java:
+	Fixed / added API comments for class description.
+	* javax/swing/DefaultButtonModel.java: Likewise.
+	* javax/swing/DefaultCellEditor.java: Likewise.
+	* javax/swing/DefaultComboBoxModel.java: Likewise.
+	* javax/swing/DefaultDesktopManager.java: Likewise.
+	* javax/swing/DefaultButtonModel.java: Likewise.
+	* javax/swing/DefaultFocusManager.java: Likewise.
+	* javax/swing/DefaultListCellRenderer.java: Likewise.
+	* javax/swing/DefaultListModel.java: Likewise.
+	* javax/swing/DefaultListSelectionModel.java: Likewise.
+	* javax/swing/DefaultSingleSelectionModel.java: Likewise.
+	* javax/swing/FocusManager.java: Likewise.
+	* javax/swing/GrayFilter.java: Likewise.
+	* javax/swing/ImageIcon.java: Likewise.
+	* javax/swing/InputMap.java: Likewise.
+	* javax/swing/InputVerifier.java: Likewise.
+	* javax/swing/InternalFrameFocusTraversalPolicy.java: Likewise.
+	* javax/swing/JApplet.java: Likewise.
+	* javax/swing/JCheckBox.java: Likewise.
+	* javax/swing/JCheckBoxMenuItem.java: Likewise.
+	* javax/swing/JColorChooser.java: Likewise.
+	* javax/swing/JComboBox.java: Likewise.
+	* javax/swing/JComponent.java: Likewise.
+
+2005-07-27  Roman Kennke  <roman@kennke.org>
+
 	* java/util/Properties.java
 	(getPropertyInternal): Removed.
 	(getProperty(String)): Search for property here instead of
