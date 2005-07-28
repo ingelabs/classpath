@@ -1,3 +1,8 @@
+2005-07-28  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* native/jni/java-nio/java_nio_MappedByteBufferImpl.c 
+	(get_raw_values): Add env to getObjectClass call for 64-bit case.
+
 2005-07-28  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/text/AttributedStringIterator.java: reformatted.

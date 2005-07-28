@@ -125,7 +125,7 @@ get_raw_values (JNIEnv *env, jobject this, void **address, size_t *size)
 				     RawData_data), pagesize);
 #elif (SIZEOF_VOID_P == 8)
   RawData_data =
-    (*env)->GetFieldID (env, (*env)->GetObjectClass (MappedByteBufferImpl_address_value),
+    (*env)->GetFieldID (env, (*env)->GetObjectClass (env, MappedByteBufferImpl_address_value),
 			"data", "J");
   *address = (void *)
     ALIGN_DOWN ((*env)->GetLongField (env, MappedByteBufferImpl_address_value,
