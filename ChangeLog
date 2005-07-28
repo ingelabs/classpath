@@ -1,3 +1,9 @@
+2005-07-27  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JViewport.java:
+	(scrollRectToVisible): New method, overrides JComponent method as 
+	intended.
+
 2005-07-28  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/jni/java-nio/java_nio_MappedByteBufferImpl.c 
