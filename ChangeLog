@@ -1,3 +1,7 @@
+2005-07-28  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/text/AttributedStringIterator.java: reformatted.
+	
 2005-07-27  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java:
