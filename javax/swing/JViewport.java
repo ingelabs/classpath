@@ -517,7 +517,8 @@ public class JViewport extends JComponent
     else if (contentRect.y + viewBounds.y + contentRect.height > 
              (portBounds.y+portBounds.height))
       setViewPosition (new Point(pos.x, contentRect.y - 
-                                 (portBounds.height - contentRect.height)));
+                                 (portBounds.height - contentRect.height) -
+                                 portBounds.y));
 
     // X-DIRECTION
     pos = getViewPosition();
@@ -526,6 +527,7 @@ public class JViewport extends JComponent
     else if (contentRect.x + viewBounds.x + contentRect.width > 
              (portBounds.x + portBounds.height))
       setViewPosition (new Point(contentRect.x - 
-                                 (portBounds.width - contentRect.width), pos.y));
+                                 (portBounds.width - contentRect.width)
+                                 - portBounds.x, pos.y));
   }
 }

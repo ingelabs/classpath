@@ -236,11 +236,41 @@ public class BasicListUI extends ListUI
         }
       else if (evt.getKeyCode() == KeyEvent.VK_PAGE_UP)
         {
-          // FIXME: implement, need JList.ensureIndexIsVisible to work
+          int target;
+          if (lead == BasicListUI.this.list.getFirstVisibleIndex())
+            {
+              target = Math.max 
+                (0, lead - (BasicListUI.this.list.getLastVisibleIndex() - 
+                             BasicListUI.this.list.getFirstVisibleIndex() + 1));
+            }
+          else
+            {
+              target = BasicListUI.this.list.getFirstVisibleIndex();
+            }
+          if (evt.getModifiers() == 0)
+            BasicListUI.this.list.setSelectedIndex(target);
+          else if (evt.getModifiers() == InputEvent.SHIFT_MASK)
+            BasicListUI.this.list.getSelectionModel().
+              setLeadSelectionIndex(target);
         }
       else if (evt.getKeyCode() == KeyEvent.VK_PAGE_DOWN)
         {
-          // FIXME: implement, need JList.ensureIndexIsVisible to work
+          int target;
+          if (lead == BasicListUI.this.list.getLastVisibleIndex())
+            {
+              target = Math.min
+                (max, lead + (BasicListUI.this.list.getLastVisibleIndex() -
+                              BasicListUI.this.list.getFirstVisibleIndex() + 1));
+            }
+          else
+            {
+              target = BasicListUI.this.list.getLastVisibleIndex();
+            }
+          if (evt.getModifiers() == 0)
+            BasicListUI.this.list.setSelectedIndex(target);
+          else if (evt.getModifiers() == InputEvent.SHIFT_MASK)
+            BasicListUI.this.list.getSelectionModel().
+              setLeadSelectionIndex(target);
         }
       else if (evt.getKeyCode() == KeyEvent.VK_BACK_SLASH
                && (evt.getModifiers() == InputEvent.CTRL_MASK))
