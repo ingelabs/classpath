@@ -1,3 +1,14 @@
+2005-07-28  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java:
+	(KeyHandler.keyPressed): Replaced calls to KeyEvent.isShiftDown() and
+	isControlDown() with comparisons of KeyEvent.getModifiers() and 
+	InputEvent.SHIFT_MASK and CTRL_MASK.
+	(MouseInputHandler.mouseClicked): Reordered SHIFT and CTRL modifier
+	actions to correspond to JDK.  Note the JDK simply ignores other 
+	modifiers so isShiftDown() and isControlDown() are okay for mouse
+	input.
+
 2005-07-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/DynamicAny/DynUnion.java,
@@ -17,7 +28,7 @@
         org/omg/DynamicAny/DynStructOperations.java,
         org/omg/DynamicAny/DynStruct.java: New files. 
 
-2005-07-27  Anthony Balkissoon  <abalkiss@redhat.com>
+2005-07-28  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JViewport.java:
 	(scrollRectToVisible): New method, overrides JComponent method as 
