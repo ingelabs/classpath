@@ -1469,7 +1469,20 @@ public class JTable extends JComponent
     revalidate();
     repaint();
   }
-
+  
+  /**
+   * Sets the value of the rowHeight property for the specified
+   * row.
+   * 
+   * @param rh is the new rowHeight
+   * @param row is the row to change the rowHeight of
+   */
+  public void setRowHeight(int rh, int row)
+  {
+     setRowHeight(rh);
+     // FIXME: not implemented
+  }
+  
   /**
    * Set the value of the {@link #rowMargin} property.
    *

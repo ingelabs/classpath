@@ -1,3 +1,23 @@
+2005-07-28  Lillian Angel  <langel@redhat.com>
+	
+	* java/awt/GridBagLayout.java
+	(distributeSizeAndWeight): added in check, because OutOfBounds exception
+	was being raised.
+	* javax/swing/JTable.java
+	(setRowHeight): Added in, but not implemented. 
+	* javax/swing/plaf/basic/BasicComboBoxEditor.java
+	(setItem): added in check, because NullPointerException was being
+	raised.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getPathBounds): Took out unneeded call.
+	(uninstallListeners): added in check, because NPE was being raised.
+	(installUI): took out unneeded call.
+	(paint): Likewise.
+	(getPreferredSize): Should not assume root is an instance of Default
+	MutableTreeNode. Changed to use TreeNode instead.
+	(getCellBounds): Should never return null
+	(getCellLocation): Took out unneeded call.
+
 2005-07-28  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java:

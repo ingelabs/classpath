@@ -588,8 +588,7 @@ public class BasicTreeUI
          TreeModel mod = tree.getModel();
          DefaultMutableTreeNode root = (DefaultMutableTreeNode) mod.getRoot();
          if (!tree.isRootVisible()
-               && tree.isExpanded(new TreePath(((DefaultMutableTreeNode) root)
-                     .getPath())))
+               && tree.isExpanded(new TreePath(root)))
             root = root.getNextNode();
 
          Point loc = getCellLocation(0, 0, tree, mod, cell, root);
@@ -973,9 +972,14 @@ public class BasicTreeUI
       tree.removeKeyListener(keyListener);
       tree.removePropertyChangeListener(selectionModelPropertyChangeListener);
       tree.removeComponentListener(componentListener);
-      tree.getCellEditor().removeCellEditorListener(cellEditorListener);
       tree.removeTreeExpansionListener(treeExpansionListener);
-      tree.getModel().removeTreeModelListener(treeModelListener);
+      
+      TreeCellEditor tce = tree.getCellEditor();
+      if (tce != null)
+         tce.removeCellEditorListener(cellEditorListener);
+      TreeModel tm = tree.getModel();
+      if (tm != null)
+         tm.removeTreeModelListener(treeModelListener);
    }
 
    /**
@@ -1179,8 +1183,7 @@ public class BasicTreeUI
       tree = (JTree) c;
       setModel(tree.getModel());
       tree.setRootVisible(true);
-      tree.expandPath(new TreePath(((DefaultMutableTreeNode) 
-            (tree.getModel()).getRoot()).getPath()));
+      tree.expandPath(new TreePath(tree.getModel().getRoot()));
       treeSelectionModel = tree.getSelectionModel();
       installListeners();
       installKeyboardActions();
@@ -1233,8 +1236,7 @@ public class BasicTreeUI
       Object root = mod.getRoot();
       
       if (!tree.isRootVisible())
-         tree.expandPath(new TreePath(((DefaultMutableTreeNode) root)
-               .getPath()));
+         tree.expandPath(new TreePath(root));
       
       paintRecursive(g, 0, 0, 0, 0, tree, mod, root);
       
@@ -1299,7 +1301,7 @@ public class BasicTreeUI
    public Dimension getPreferredSize(JComponent c, boolean checkConsistancy)
    {
       // FIXME: checkConsistancy not implemented, c not used
-      DefaultMutableTreeNode node = ((DefaultMutableTreeNode) (tree.getModel())
+      TreeNode node = ((TreeNode) (tree.getModel())
             .getRoot());
       int maxWidth = 0;
       int count = 0;
@@ -1309,14 +1311,14 @@ public class BasicTreeUI
          while (node != null)
          {
             count++;
-            DefaultMutableTreeNode nextNode = getNextVisibleNode(node);
+            DefaultMutableTreeNode nextNode = getNextVisibleNode(
+                  new DefaultMutableTreeNode(node));
             if (nextNode != null)
                maxWidth = Math.max(maxWidth, (int) (getCellBounds(0, 0, nextNode)
                      .getWidth()));
             node = nextNode;
          }
       }
-      
       return new Dimension(maxWidth, (getRowHeight() * count));
    }
 
@@ -2507,10 +2509,11 @@ public class BasicTreeUI
          Font f = tree.getFont();
          FontMetrics fm = tree.getToolkit().getFontMetrics(tree.getFont());
 
-         return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s) + 4,
-               fm.getHeight());
+         if (s != null)
+            return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s) + 4,
+                  fm.getHeight());
       }
-      return null;
+      return new Rectangle(x, y, 0, 0);
    }
    
    /**
@@ -2533,8 +2536,7 @@ public class BasicTreeUI
       int rowHeight = getRowHeight();
       if (startNode == null || startNode.equals(node))
       {
-         if (!tree.isRootVisible() && tree.isExpanded(new TreePath((
-               (DefaultMutableTreeNode) mod.getRoot()).getPath())))
+         if (!tree.isRootVisible() && tree.isExpanded(new TreePath(mod.getRoot())))
             return new Point(x + ((((DefaultMutableTreeNode) node).getLevel())
                   * rightChildIndent), y);
          
