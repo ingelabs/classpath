@@ -25,6 +25,9 @@
 	(shiftEnd): Update the stored positions.
 	(shiftGap): Update the stored positions.
 	* javax/swing/text/LabelView.java: New class.
+	* javax/swing/text/PlainDocument.java
+	(removeUpdate): Don't update the element positions, this should
+	now be handled by the Positions.
 
 2005-07-29  Roman Kennke  <roman@kennke.org>
 
