@@ -1,5 +1,33 @@
 2005-07-29  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/AbstractDocument.java
+	(createPosition): Delegate this call to the actual Content.
+	(LeafElement.constructor): Manage the start and end marks via
+	Position objects.
+	(LeafElement.getEndOffset): Use Position instead of static mark.
+	(LeafElement.getStartOffset): Use Position instead of static mark.
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.change): New method. Performs structural changes
+	in the element tree that are necessary in order to change
+	text attributes.
+	(ElementBuffer.changeUpdate): New method. This is the method for
+	change().
+	(ElementBuffer.split): New package-private method. Splits an
+	element into two elements.
+	(setCharacterAttributes): Implemented this method. This sets
+	character attributes on a piece of content.
+	* javax/swing/text/GapContent.java
+	(GapContentPosition): New inner class. Implements the Position
+	interface for GapContent.
+	(constructor): Initialize the list that stores the Position objects.
+	(createPosition): Reimplemented. Now uses the GapContentPosition
+	class.
+	(shiftEnd): Update the stored positions.
+	(shiftGap): Update the stored positions.
+	* javax/swing/text/LabelView.java: New class.
+
+2005-07-29  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/BoxView.java: New class.
 	* javax/swing/text/CompositeView.java: New class.
 	* javax/swing/text/FlowView.java: New class.
