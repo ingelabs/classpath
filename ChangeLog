@@ -1,3 +1,62 @@
+2005-07-29  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/text/BoxView.java: New class.
+	* javax/swing/text/CompositeView.java: New class.
+	* javax/swing/text/FlowView.java: New class.
+	* javax/swing/text/GlyphView.java: New class.
+	* javax/swing/text/IconView.java: New class.
+	* javax/swing/text/ParagraphView.java: New class.
+	* javax/swing/text/StyledEditorKit.java
+	(UnderLineAction.constructor): Added TODO comment.
+	(UnderLineAction.actionPerformed): Implemented this method. This
+	toggles the underline attribute to a piece of content.
+	(ItalicAction.constructor): Added TODO comment.
+	(ItalicAction.actionPerformed): Implemented this method. This
+	toggles the italic attribute to a piece of content.
+	(BoldAction.constructor): Added TODO comment.
+	(BoldAction.actionPerformed): Implemented this method. This
+	toggles the bold attribute to a piece of content.
+	(AlignmentAction.constructor): Implemented this constructor.
+	(AlignmentAction.actionPerformed): Implemented this method. This
+	sets the alignment attribute for a piece of content.
+	(ForegroundAction.constructor): Implemented this constructor.
+	(ForegroundAction.actionPerformed): Implemented this method. This
+	sets the foreground attribute for a piece of content.
+	(FontSizeAction.constructor): Implemented this constructor.
+	(FontSizeAction.actionPerformed): Implemented this method. This
+	sets the font size attribute for a piece of content.
+	(FontFamilyAction.constructor): Implemented this constructor.
+	(FontFamilyAction.actionPerformed): Implemented this method. This
+	sets the font family attribute for a piece of content.
+	(StyledTextAction.constructor): Removed TODO comment.
+	(StyledTextAction.getEditor): Implemented this method.
+	(StyledTextAction.getStyledDocument): Implemented this method.
+	(StyledTextAction.getStyledEditorKit): Implemented this method.
+	(StyledTextAction.setCharacterAttributes): Implemented this method.
+	(StyledTextAction.setParagraphAttributes): Implemented this method.
+	(StyledViewFactory.constructor): Removed. This is not necessary here.
+	(StyledViewFactory.create): Implemented this method.
+	(AttributeTracker): Removed this inner class.
+	(CaretTracker): New inner class.
+	(CaretTracker.caretUpdate):  Implemented this method. This meeps
+	track of the caret in a text component and updates some fields
+	of the StyledEditorKit.
+	(constructor): Implemented this constructor.
+	The inputAttributes are initialized here.
+	(clone): Implemented this method.
+	(getActions): Implemented this method.
+	(getInputAttributes): Implemented this method.
+	(getCharacterAttributeRun): Implemented this method.
+	(createDefaultDocument): Implemented this method.
+	(install): Implemented this method.
+	(deinstall): Implemented this method.
+	(getViewFactory): Implemented this method.
+	(createInputAttributes): Implemented this method.
+	* javax/swing/text/View.java
+	(modelToView(int, Shape, Position.Bias)): Added new abstract method.
+	(modelToView(int, Position.Bias, int, Position.Bias, Shape):
+	New method.
+	
 2005-07-28  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JViewport.java:

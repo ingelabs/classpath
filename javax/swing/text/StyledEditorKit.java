@@ -46,6 +46,7 @@ import java.io.Serializable;
 
 import javax.swing.Action;
 import javax.swing.JEditorPane;
+import javax.swing.JTextPane;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
@@ -68,8 +69,7 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public UnderlineAction()
     {
-      super("TODO");
-      // TODO
+      super("TODO"); // TODO: Figure out name for this action.
     }
 
     /**
@@ -78,7 +78,13 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // TODO
+      JEditorPane editor = getEditor(event);
+      StyledDocument doc = getStyledDocument(editor);
+      Element el = doc.getCharacterElement(editor.getSelectionStart());
+      boolean isUnderline = StyleConstants.isUnderline(el.getAttributes());
+      SimpleAttributeSet atts = new SimpleAttributeSet();
+      StyleConstants.setUnderline(atts, ! isUnderline);
+      setCharacterAttributes(editor, atts, false);
     }
   }
 
@@ -92,8 +98,7 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public ItalicAction()
     {
-      super("TODO");
-      // TODO
+      super("TODO"); // TODO: Figure out correct name of this Action.
     }
 
     /**
@@ -102,7 +107,13 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // TODO
+      JEditorPane editor = getEditor(event);
+      StyledDocument doc = getStyledDocument(editor);
+      Element el = doc.getCharacterElement(editor.getSelectionStart());
+      boolean isItalic = StyleConstants.isItalic(el.getAttributes());
+      SimpleAttributeSet atts = new SimpleAttributeSet();
+      StyleConstants.setItalic(atts, ! isItalic);
+      setCharacterAttributes(editor, atts, false);
     }
   }
 
@@ -116,8 +127,7 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public BoldAction()
     {
-      super("TODO");
-      // TODO
+      super("TODO"); // TODO: Figure out correct name of this Action.
     }
 
     /**
@@ -126,7 +136,13 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // TODO
+      JEditorPane editor = getEditor(event);
+      StyledDocument doc = getStyledDocument(editor);
+      Element el = doc.getCharacterElement(editor.getSelectionStart());
+      boolean isBold = StyleConstants.isBold(el.getAttributes());
+      SimpleAttributeSet atts = new SimpleAttributeSet();
+      StyleConstants.setItalic(atts, ! isBold);
+      setCharacterAttributes(editor, atts, false);
     }
   }
 
@@ -147,8 +163,8 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public AlignmentAction(String nm, int a)
     {
-      super("TODO");
-      // TODO
+      super(nm);
+      this.a = a;
     }
 
     /**
@@ -157,7 +173,9 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // TODO
+      SimpleAttributeSet atts = new SimpleAttributeSet();
+      StyleConstants.setAlignment(atts, a);
+      setParagraphAttributes(getEditor(event), atts, false);
     }
   }
 
@@ -178,8 +196,8 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public ForegroundAction(String nm, Color fg)
     {
-      super("TODO");
-      // TODO
+      super(nm);
+      this.fg = fg;
     }
 
     /**
@@ -188,7 +206,9 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // TODO
+      SimpleAttributeSet atts = new SimpleAttributeSet();
+      StyleConstants.setForeground(atts, fg);
+      setCharacterAttributes(getEditor(event), atts, false);
     }
   }
 
@@ -209,8 +229,8 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public FontSizeAction(String nm, int size)
     {
-      super("TODO");
-      // TODO
+      super(nm);
+      this.size = size;
     }
 
     /**
@@ -219,7 +239,9 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // TODO
+      SimpleAttributeSet atts = new SimpleAttributeSet();
+      StyleConstants.setFontSize(atts, size);
+      setCharacterAttributes(getEditor(event), atts, false);
     }
   }
 
@@ -240,8 +262,8 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public FontFamilyAction(String nm, String family)
     {
-      super("TODO");
-      // TODO
+      super(nm);
+      this.family = family;
     }
 
     /**
@@ -250,7 +272,9 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // TODO
+      SimpleAttributeSet atts = new SimpleAttributeSet();
+      StyleConstants.setFontFamily(atts, family);
+      setCharacterAttributes(getEditor(event), atts, false);
     }
   }
 
@@ -266,7 +290,6 @@ public class StyledEditorKit extends DefaultEditorKit
     public StyledTextAction(String nm)
     {
       super(nm);
-      // TODO
     }
 
     /**
@@ -276,7 +299,7 @@ public class StyledEditorKit extends DefaultEditorKit
      */
     protected final JEditorPane getEditor(ActionEvent event)
     {
-      return null; // TODO
+      return (JEditorPane) getTextComponent(event);
     }
 
     /**
@@ -285,11 +308,39 @@ public class StyledEditorKit extends DefaultEditorKit
      * @param value1 TODO
      * @param value2 TODO
      */
-    protected final void setCharacterAttributes(JEditorPane value0,
-                                                AttributeSet value1,
-                                                boolean value2)
+    protected final void setCharacterAttributes(JEditorPane editor,
+                                                AttributeSet atts,
+                                                boolean replace)
     {
-      // TODO
+      Document doc = editor.getDocument();
+      if (doc instanceof StyledDocument)
+	{
+	  StyledDocument styleDoc = (StyledDocument) editor.getDocument();
+	  EditorKit kit = editor.getEditorKit();
+	  if (!(kit instanceof StyledEditorKit))
+	    {
+	      StyledEditorKit styleKit = (StyledEditorKit) kit;
+	      int start = editor.getSelectionStart();
+	      int end = editor.getSelectionEnd();
+	      int dot = editor.getCaret().getDot();
+	      if (start == dot && end == dot)
+		{
+		  // If there is no selection, then we only update the
+		  // input attributes.
+		  MutableAttributeSet inputAttributes =
+		    styleKit.getInputAttributes();
+		  inputAttributes.addAttributes(atts);
+		}
+	      else
+		styleDoc.setCharacterAttributes(start, end, atts, replace);
+	    }
+	  else
+	    throw new AssertionError("The EditorKit for StyledTextActions "
+				     + "is expected to be a StyledEditorKit");
+	}
+      else
+	throw new AssertionError("The Document for StyledTextActions is "
+				 + "expected to be a StyledDocument.");
     }
 
     /**
@@ -297,9 +348,14 @@ public class StyledEditorKit extends DefaultEditorKit
      * @param value0 TODO
      * @returns StyledDocument
      */
-    protected final StyledDocument getStyledDocument(JEditorPane value0)
+    protected final StyledDocument getStyledDocument(JEditorPane editor)
     {
-      return null; // TODO
+      Document doc = editor.getDocument();
+      if (!(doc instanceof StyledDocument))
+	throw new AssertionError("The Document for StyledEditorKits is "
+				 + "expected to be a StyledDocument.");
+
+      return (StyledDocument) doc;
     }
 
     /**
@@ -307,9 +363,14 @@ public class StyledEditorKit extends DefaultEditorKit
      * @param value0 TODO
      * @returns StyledEditorKit
      */
-    protected final StyledEditorKit getStyledEditorKit(JEditorPane value0)
+    protected final StyledEditorKit getStyledEditorKit(JEditorPane editor)
     {
-      return null; // TODO
+      EditorKit kit = editor.getEditorKit();
+      if (!(kit instanceof StyledEditorKit))
+	throw new AssertionError("The EditorKit for StyledDocuments is "
+				 + "expected to be a StyledEditorKit.");
+
+      return (StyledEditorKit) kit;
     }
 
     /**
@@ -318,11 +379,39 @@ public class StyledEditorKit extends DefaultEditorKit
      * @param value1 TODO
      * @param value2 TODO
      */
-    protected final void setParagraphAttributes(JEditorPane value0,
-                                                AttributeSet value1,
-                                                boolean value2)
+    protected final void setParagraphAttributes(JEditorPane editor,
+                                                AttributeSet atts,
+                                                boolean replace)
     {
-      // TODO
+      Document doc = editor.getDocument();
+      if (doc instanceof StyledDocument)
+	{
+	  StyledDocument styleDoc = (StyledDocument) editor.getDocument();
+	  EditorKit kit = editor.getEditorKit();
+	  if (!(kit instanceof StyledEditorKit))
+	    {
+	      StyledEditorKit styleKit = (StyledEditorKit) kit;
+	      int start = editor.getSelectionStart();
+	      int end = editor.getSelectionEnd();
+	      int dot = editor.getCaret().getDot();
+	      if (start == dot && end == dot)
+		{
+		  // If there is no selection, then we only update the
+		  // input attributes.
+		  MutableAttributeSet inputAttributes =
+		    styleKit.getInputAttributes();
+		  inputAttributes.addAttributes(atts);
+		}
+	      else
+		styleDoc.setParagraphAttributes(start, end, atts, replace);
+	    }
+	  else
+	    throw new AssertionError("The EditorKit for StyledTextActions "
+				     + "is expected to be a StyledEditorKit");
+	}
+      else
+	throw new AssertionError("The Document for StyledTextActions is "
+				 + "expected to be a StyledDocument.");
     }
   }
 
@@ -333,66 +422,55 @@ public class StyledEditorKit extends DefaultEditorKit
     implements ViewFactory
   {
     /**
-     * Constructor StyledViewFactory
-     */
-    StyledViewFactory()
-    {
-      // TODO
-    }
-
-    /**
      * create
      * @param value0 TODO
      * @returns View
      */
-    public View create(Element value0)
+    public View create(Element element)
     {
-      return null; // TODO
+      String name = element.getName();
+      View view = null;
+      if (name.equals(AbstractDocument.ContentElementName))
+	view = new LabelView(element);
+      else if (name.equals(AbstractDocument.ParagraphElementName))
+	view = new ParagraphView(element);
+      else if (name.equals(AbstractDocument.SectionElementName))
+	view = new BoxView(element);
+      else if (name.equals(StyleConstants.ComponentElementName))
+	view = new ComponentView(element);
+      else if (name.equals(StyleConstants.IconElementName))
+	view = new IconView(element);
+
+      return null;
     }
   }
 
   /**
    * AttributeTracker
    */
-  class AttributeTracker
-    implements CaretListener, PropertyChangeListener, Serializable
+  class CaretTracker
+    implements CaretListener
   {
-    /**
-     * Constructor AttributeTracker
-     * @param value0 TODO
-     */
-    AttributeTracker(StyledEditorKit value0)
-    {
-      // TODO
-    }
-
-    /**
-     * updateInputAttributes
-     * @param value0 TODO
-     * @param value1 TODO
-     * @param value2 TODO
-     */
-    void updateInputAttributes(int value0, int value1, JTextComponent value2)
-    {
-      // TODO
-    }
-
-    /**
-     * propertyChange
-     * @param value0 TODO
-     */
-    public void propertyChange(PropertyChangeEvent value0)
-    {
-      // TODO
-    }
-
     /**
      * caretUpdate
      * @param value0 TODO
      */
-    public void caretUpdate(CaretEvent value0)
+    public void caretUpdate(CaretEvent ev)
     {
-      // TODO
+      Object source = ev.getSource();
+      if (!(source instanceof JTextComponent))
+	throw new AssertionError("CaretEvents are expected to come from a"
+				 + "JTextComponent.");
+
+      JTextComponent text = (JTextComponent) source;
+      Document doc = text.getDocument();
+      if (!(doc instanceof StyledDocument))
+	throw new AssertionError("The Document used by StyledEditorKits is"
+				 + "expected to be a StyledDocument");
+
+      StyledDocument styleDoc = (StyledDocument) doc;
+      currentRun = styleDoc.getCharacterElement(ev.getDot());
+      createInputAttributes(currentRun, inputAttributes);
     }
   }
 
@@ -402,21 +480,27 @@ public class StyledEditorKit extends DefaultEditorKit
   Element currentRun;
 
   /**
-   * currentParagraph
-   */
-  Element currentParagraph;
-
-  /**
    * inputAttributes
    */
   MutableAttributeSet inputAttributes;
+
+  /**
+   * The CaretTracker that keeps track of the current input attributes, and
+   * the current character run Element.
+   */
+  CaretTracker caretTracker;
+
+  /**
+   * The ViewFactory for StyledEditorKits.
+   */
+  StyledViewFactory viewFactory;
 
   /**
    * Constructor StyledEditorKit
    */
   public StyledEditorKit()
   {
-    // TODO
+    inputAttributes = new SimpleAttributeSet();
   }
 
   /**
@@ -425,7 +509,9 @@ public class StyledEditorKit extends DefaultEditorKit
    */
   public Object clone()
   {
-    return null; // TODO
+    StyledEditorKit clone = (StyledEditorKit) super.clone();
+    // FIXME: Investigate which fields must be copied.
+    return clone;
   }
 
   /**
@@ -434,7 +520,10 @@ public class StyledEditorKit extends DefaultEditorKit
    */
   public Action[] getActions()
   {
-    return null; // TODO
+    Action[] actions1 = super.getActions();
+    Action[] myActions = new Action[] { new BoldAction(), new ItalicAction(),
+					new UnderlineAction() };
+    return TextAction.augmentList(actions1, myActions);
   }
 
   /**
@@ -443,7 +532,7 @@ public class StyledEditorKit extends DefaultEditorKit
    */
   public MutableAttributeSet getInputAttributes()
   {
-    return null; // TODO
+    return inputAttributes;
   }
 
   /**
@@ -452,7 +541,7 @@ public class StyledEditorKit extends DefaultEditorKit
    */
   public Element getCharacterAttributeRun()
   {
-    return null; // TODO
+    return currentRun;
   }
 
   /**
@@ -461,7 +550,7 @@ public class StyledEditorKit extends DefaultEditorKit
    */
   public Document createDefaultDocument()
   {
-    return null; // TODO
+    return new DefaultStyledDocument();
   }
 
   /**
@@ -470,7 +559,8 @@ public class StyledEditorKit extends DefaultEditorKit
    */
   public void install(JEditorPane component)
   {
-    // TODO
+    CaretTracker tracker = new CaretTracker();
+    component.addCaretListener(tracker);
   }
 
   /**
@@ -479,7 +569,10 @@ public class StyledEditorKit extends DefaultEditorKit
    */
   public void deinstall(JEditorPane component)
   {
-    // TODO
+    CaretTracker t = caretTracker;
+    if (t != null)
+      component.removeCaretListener(t);
+    caretTracker = null;
   }
 
   /**
@@ -488,7 +581,9 @@ public class StyledEditorKit extends DefaultEditorKit
    */
   public ViewFactory getViewFactory()
   {
-    return null; // TODO
+    if (viewFactory == null)
+      viewFactory = new StyledViewFactory();
+    return viewFactory;
   }
 
   /**
@@ -496,8 +591,12 @@ public class StyledEditorKit extends DefaultEditorKit
    * @param element TODO
    * @param set TODO
    */
-  protected void createInputAttributes(Element element, MutableAttributeSet set)
+  protected void createInputAttributes(Element element,
+				       MutableAttributeSet set)
   {
-    // TODO
+    AttributeSet atts = element.getAttributes();
+    set.removeAttributes(set);
+    // FIXME: Filter out component, icon and element name attributes.
+    set.addAttributes(atts);
   }
 }
