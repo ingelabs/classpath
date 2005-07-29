@@ -1,5 +1,43 @@
 2005-07-29  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JTextPane.java
+	(constructor()): Implemented this constructor. Initialize the
+	EditorKit and set the Document to null.
+	(constructor(StyledDocument)): Implemented this constructor.
+	Initialize the EditorKit and Document.
+	(getUIClassID): Inlined the constant String.
+	(setDocument): Implemented this method.
+	(getStyledDocument): Likewise.
+	(setStyledDocument): Likewise.
+	(replaceSelection): Likewise.
+	(insertComponent): Clarified the TODO comment.
+	(insertIcon): Clarified the TODO comment.
+	(addStyle): Implemented this method.
+	(removeStyle): Likewise.
+	(getStyle): Likewise.
+	(getLogicalStyle): Likewise.
+	(setLogicalStyle): Likewise.
+	(getCharacterAttributes): Likewise.
+	(setCharacterAttributes): Likewise.
+	(getParagraphAttributes): Likewise.
+	(getInputAttributes): Likewise.
+	(getStyledEditorKit): Likewise.
+	(createDefaultEditorKit): Likewise.
+	(setEditorKit): Likewise.
+	* javax/swing/plaf/basic/BasicEditorPaneUI.java
+	(getEditorKit): Implemented this method.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.getViewFactory): Ask the installed EditorKit for its
+	ViewFactory.
+	(RootView.setView): Set this as the parent of the installed real
+	root view.
+	(RootView.modelToView): Don't cast to PlainView here. Use View
+	instead.
+	(setView): Don't set the parent here. This is handled inside the
+	root view.
+
+2005-07-29  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/AbstractDocument.java
 	(createPosition): Delegate this call to the actual Content.
 	(LeafElement.constructor): Manage the start and end marks via

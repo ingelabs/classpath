@@ -39,8 +39,11 @@ exception statement from your version. */
 package javax.swing.plaf.basic;
 
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainView;
 import javax.swing.text.View;
 
@@ -64,5 +67,15 @@ public class BasicEditorPaneUI extends BasicTextUI
   protected String getPropertyPrefix()
   {
     return "EditorPane";
+  }
+
+  /**
+   * Gets the EditorKit for the text component.
+   *
+   * @param textComponent the text component for which to fetch the editor kit
+   */
+  public EditorKit getEditorKit(JTextComponent textComponent)
+  {
+    return ((JEditorPane) textComponent).getEditorKit();
   }
 }

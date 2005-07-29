@@ -43,8 +43,11 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Caret;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
+import javax.swing.text.Element;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
@@ -54,22 +57,19 @@ import javax.swing.text.StyledEditorKit;
 /**
  * JTextPane
  *
+ * @author Roman Kennke (roman@kennke.org)
  * @author Andrew Selkirk
  */
 public class JTextPane
   extends JEditorPane
 {
   /**
-   * uiClassID
-   */
-  private static final String uiClassID = "TextPaneUI";
-
-  /**
    * Constructor JTextPane
    */
   public JTextPane()
   {
-    // TODO
+    setEditorKit(createDefaultEditorKit());
+    setDocument(null);
   }
 
   /**
@@ -79,7 +79,8 @@ public class JTextPane
    */
   public JTextPane(StyledDocument document)
   {
-    // TODO
+    this();
+    setStyledDocument(document);
   }
 
   /**
@@ -89,7 +90,7 @@ public class JTextPane
    */
   public String getUIClassID()
   {
-    return uiClassID;
+    return "TextPaneUI";
   }
 
   /**
@@ -99,7 +100,10 @@ public class JTextPane
    */
   public void setDocument(Document document)
   {
-    super.setDocument(document); // TODO
+    if (document != null && !(document instanceof StyledDocument))
+      throw new IllegalArgumentException("JTextPane can only handle StyledDocuments"); // TODO: Figure out exception message
+
+    setStyledDocument((StyledDocument) document);
   }
 
   /**
@@ -109,7 +113,7 @@ public class JTextPane
    */
   public StyledDocument getStyledDocument()
   {
-    return null; // TODO
+    return (StyledDocument) super.getDocument();
   }
 
   /**
@@ -119,7 +123,7 @@ public class JTextPane
    */
   public void setStyledDocument(StyledDocument document)
   {
-    // TODO
+    super.setDocument(document);
   }
 
   /**
@@ -129,7 +133,43 @@ public class JTextPane
    */
   public void replaceSelection(String content)
   {
-    super.replaceSelection(content); // TODO
+    Caret caret = getCaret();
+    StyledDocument doc = getStyledDocument();
+
+    int dot = caret.getDot();
+    int mark = caret.getMark();
+
+    // If content is empty delete selection.
+    if (content == null)
+      {
+	caret.setDot(dot);
+	return;
+      }
+
+    try
+      {
+	int start = getSelectionStart();
+	int end = getSelectionEnd();
+	int contentLength = content.length();
+
+	// Remove selected text.
+	if (dot != mark)
+	  doc.remove(start, end - start);
+
+	// Insert new text.
+	doc.insertString(start, content, null);
+	// Set attributes for inserted text
+	doc.setCharacterAttributes(start, contentLength, getInputAttributes(),
+				   true);
+
+	// Set dot to new position.
+	setCaretPosition(start + contentLength);
+      }
+    catch (BadLocationException e)
+      {
+	throw new AssertionError
+	  ("No BadLocationException should be thrown here");
+      }
   }
 
   /**
@@ -139,7 +179,9 @@ public class JTextPane
    */
   public void insertComponent(Component component)
   {
-    // TODO
+    // TODO: One space must be inserted here with attributes set to indicate
+    // that the component must be displayed here. Have to figure out the
+    // attributes.
   }
 
   /**
@@ -149,7 +191,9 @@ public class JTextPane
    */
   public void insertIcon(Icon icon)
   {
-    // TODO
+    // TODO: One space must be inserted here with attributes set to indicate
+    // that the icon must be displayed here. Have to figure out the
+    // attributes.
   }
 
   /**
@@ -162,7 +206,7 @@ public class JTextPane
    */
   public Style addStyle(String nm, Style parent)
   {
-    return null; // TODO
+    return getStyledDocument().addStyle(nm, parent);
   }
 
   /**
@@ -172,7 +216,7 @@ public class JTextPane
    */
   public void removeStyle(String nm)
   {
-    // TODO
+    getStyledDocument().removeStyle(nm);
   }
 
   /**
@@ -184,7 +228,7 @@ public class JTextPane
    */
   public Style getStyle(String nm)
   {
-    return null; // TODO
+    return getStyledDocument().getStyle(nm);
   }
 
   /**
@@ -194,7 +238,7 @@ public class JTextPane
    */
   public Style getLogicalStyle()
   {
-    return null; // TODO
+    return getStyledDocument().getLogicalStyle(getCaretPosition());
   }
 
   /**
@@ -204,7 +248,7 @@ public class JTextPane
    */
   public void setLogicalStyle(Style style)
   {
-    // TODO
+    getStyledDocument().setLogicalStyle(getCaretPosition(), style);
   }
 
   /**
@@ -214,7 +258,9 @@ public class JTextPane
    */
   public AttributeSet getCharacterAttributes()
   {
-    return SimpleAttributeSet.EMPTY; // TODO
+    StyledDocument doc = getStyledDocument();
+    Element el = doc.getCharacterElement(getCaretPosition());
+    return el.getAttributes();
   }
 
   /**
@@ -226,7 +272,19 @@ public class JTextPane
   public void setCharacterAttributes(AttributeSet attribute,
                                      boolean replace)
   {
-    // TODO
+    int dot = getCaret().getDot();
+    int start = getSelectionStart();
+    int end = getSelectionEnd();
+    if (start == dot && end == dot)
+      // There is no selection, update insertAttributes instead
+      {
+	MutableAttributeSet inputAttributes =
+	  getStyledEditorKit().getInputAttributes();
+	inputAttributes.addAttributes(attribute);
+      }
+    else
+      getStyledDocument().setCharacterAttributes(start, end - start, attribute,
+						 replace);
   }
 
   /**
@@ -236,7 +294,9 @@ public class JTextPane
    */
   public AttributeSet getParagraphAttributes()
   {
-    return null; // TODO
+    StyledDocument doc = getStyledDocument();
+    Element el = doc.getParagraphElement(getCaretPosition());
+    return el.getAttributes();
   }
 
   /**
@@ -258,7 +318,7 @@ public class JTextPane
    */
   public MutableAttributeSet getInputAttributes()
   {
-    return null; // TODO
+    return getStyledEditorKit().getInputAttributes();
   }
 
   /**
@@ -268,7 +328,7 @@ public class JTextPane
    */
   protected final StyledEditorKit getStyledEditorKit()
   {
-    return null; // TODO
+    return (StyledEditorKit) getEditorKit();
   }
 
   /**
@@ -278,7 +338,7 @@ public class JTextPane
    */
   protected EditorKit createDefaultEditorKit()
   {
-    return super.createDefaultEditorKit(); // TODO
+    return new StyledEditorKit();
   }
 
   /**
@@ -288,7 +348,9 @@ public class JTextPane
    */
   public final void setEditorKit(EditorKit editor)
   {
-    super.setEditorKit(editor); // TODO
+    if (!(editor instanceof StyledEditorKit))
+      throw new IllegalArgumentException("JTextPanes can only handle StyledEditorKits"); // TODO: Figure out exception message
+    super.setEditorKit(editor);
   }
 
   /**

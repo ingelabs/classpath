@@ -111,8 +111,12 @@ public abstract class BasicTextUI extends TextUI
 
     public ViewFactory getViewFactory()
     {
-      // FIXME: Handle EditorKit somehow.
-      return BasicTextUI.this;
+      ViewFactory factory = null;
+      EditorKit editorKit = BasicTextUI.this.getEditorKit(getComponent());
+      factory = editorKit.getViewFactory();
+      if (factory == null)
+	factory = BasicTextUI.this;
+      return factory;
     }
 
     public void setView(View v)
@@ -121,7 +125,7 @@ public abstract class BasicTextUI extends TextUI
 	view.setParent(null);
       
       if (v != null)
-	v.setParent(null);
+	v.setParent(this);
 
       view = v;
     }
@@ -151,7 +155,7 @@ public abstract class BasicTextUI extends TextUI
       if (view == null)
 	return null;
       
-      return ((PlainView) view).modelToView(position, a, bias).getBounds();
+      return ((View) view).modelToView(position, a, bias);
     }
 
     /**
@@ -450,7 +454,7 @@ public abstract class BasicTextUI extends TextUI
       }
     return am;
   }
-  
+
   public void uninstallUI(final JComponent component)
   {
     super.uninstallUI(component);
@@ -613,7 +617,6 @@ public abstract class BasicTextUI extends TextUI
   protected final void setView(View view)
   {
     rootView.setView(view);
-    view.setParent(rootView);
   }
 
   protected void modelChanged()
