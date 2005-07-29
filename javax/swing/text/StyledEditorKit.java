@@ -441,7 +441,7 @@ public class StyledEditorKit extends DefaultEditorKit
       else if (name.equals(StyleConstants.IconElementName))
 	view = new IconView(element);
 
-      return null;
+      return view;
     }
   }
 

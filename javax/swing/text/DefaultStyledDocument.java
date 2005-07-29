@@ -135,11 +135,11 @@ public class DefaultStyledDocument extends AbstractDocument
 		  int index = par.getElementIndex(startOffset);
 		  par.replace(index, 1, new Element[]{ child1, child2 });
 		}
-	    }
-	  else
-	    throw new AssertionError("paragraph elements are expected to be "
-				     + "instances of "
+              else
+                throw new AssertionError("paragraph elements are expected to "
+                                         + "be instances of "
 			  + "javax.swing.text.AbstractDocument.BranchElement");
+	    }
 	}
       else
 	throw new AssertionError("content elements are expected to be "

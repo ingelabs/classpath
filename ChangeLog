@@ -1,5 +1,12 @@
 2005-07-29  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/DefaultStyledDocument.java
+	(split): Moved throw statement into proper else clause.
+	* javax/swing/text/StyledEditorKit.java
+	(StyledViewFactory.create): Return the actual view instead of null.
+
+2005-07-29  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JTextPane.java: Added API comments all over.
 
 2005-07-29  Roman Kennke  <roman@kennke.org>
