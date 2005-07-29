@@ -1,5 +1,9 @@
 2005-07-29  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JTextPane.java: Added API comments all over.
+
+2005-07-29  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JTextPane.java
 	(constructor()): Implemented this constructor. Initialize the
 	EditorKit and set the Document to null.

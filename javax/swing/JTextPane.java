@@ -1,5 +1,5 @@
-/* JTextPane.java --
-   Copyright (C) 2002, 2004 Free Software Foundation, Inc.
+/* JTextPane.java -- A powerful text widget supporting styled text
+   Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -55,7 +55,9 @@ import javax.swing.text.StyledDocument;
 import javax.swing.text.StyledEditorKit;
 
 /**
- * JTextPane
+ * A powerful text component that supports styled content as well as
+ * embedding images and components. It is entirely based on a
+ * {@link StyledDocument} content model and a {@link StyledEditorKit}.
  *
  * @author Roman Kennke (roman@kennke.org)
  * @author Andrew Selkirk
@@ -64,7 +66,7 @@ public class JTextPane
   extends JEditorPane
 {
   /**
-   * Constructor JTextPane
+   * Creates a new <code>JTextPane</code> with a <code>null</code> document.
    */
   public JTextPane()
   {
@@ -73,9 +75,10 @@ public class JTextPane
   }
 
   /**
-   * Constructor JTextPane
+   * Creates a new <code>JTextPane</code> and sets the specified
+   * <code>document</code>.
    *
-   * @param document TODO
+   * @param document the content model to use
    */
   public JTextPane(StyledDocument document)
   {
@@ -84,9 +87,9 @@ public class JTextPane
   }
 
   /**
-   * getUIClassID
+   * Returns the UI class ID. This is <code>TextPaneUI</code>.
    *
-   * @returns String
+   * @return <code>TextPaneUI</code>
    */
   public String getUIClassID()
   {
@@ -94,22 +97,33 @@ public class JTextPane
   }
 
   /**
-   * setDocument
+   * Sets the content model for this <code>JTextPane</code>.
+   * <code>JTextPane</code> can only be used with {@link StyledDocument}s,
+   * if you try to set a different type of <code>Document</code>, an
+   * <code>IllegalArgumentException</code> is thrown.
    *
-   * @param document TODO
+   * @param document the content model to set
+   *
+   * @throws IllegalArgumentException if <code>document</code> is not an
+   *         instance of <code>StyledDocument</code>
+   *
+   * @see {@link #setStyledDocument}
    */
   public void setDocument(Document document)
   {
     if (document != null && !(document instanceof StyledDocument))
-      throw new IllegalArgumentException("JTextPane can only handle StyledDocuments"); // TODO: Figure out exception message
+      throw new IllegalArgumentException
+        ("JTextPane can only handle StyledDocuments");
 
     setStyledDocument((StyledDocument) document);
   }
 
   /**
-   * getStyledDocument
+   * Returns the {@link StyledDocument} that is the content model for
+   * this <code>JTextPane</code>. This is a typed wrapper for
+   * {@link #getDocument}.
    *
-   * @returns StyledDocument
+   * @return the content model of this <code>JTextPane</code>
    */
   public StyledDocument getStyledDocument()
   {
@@ -117,9 +131,9 @@ public class JTextPane
   }
 
   /**
-   * setStyledDocument
+   * Sets the content model for this <code>JTextPane</code>.
    *
-   * @param document TODO
+   * @param document the content model to set
    */
   public void setStyledDocument(StyledDocument document)
   {
@@ -127,9 +141,13 @@ public class JTextPane
   }
 
   /**
-   * replaceSelection
+   * Replaces the currently selected text with the specified
+   * <code>content</code>. If there is no selected text, this results
+   * in a simple insertion at the current caret position. If there is
+   * no <code>content</code> specified, this results in the selection
+   * beeing deleted.
    *
-   * @param content TODO
+   * @param content the text with which the selection is replaced
    */
   public void replaceSelection(String content)
   {
@@ -173,9 +191,10 @@ public class JTextPane
   }
 
   /**
-   * insertComponent
+   * Inserts an AWT or Swing component into the text at the current caret
+   * position.
    *
-   * @param component TODO
+   * @param component the component to be inserted
    */
   public void insertComponent(Component component)
   {
@@ -185,9 +204,9 @@ public class JTextPane
   }
 
   /**
-   * insertIcon
+   * Inserts an <code>Icon</code> into the text at the current caret position.
    *
-   * @param icon TODO
+   * @param icon the <code>Icon</code> to be inserted
    */
   public void insertIcon(Icon icon)
   {
@@ -197,12 +216,20 @@ public class JTextPane
   }
 
   /**
-   * addStyle
+   * Adds a style into the style hierarchy. Unspecified style attributes
+   * can be resolved in the <code>parent</code> style, if one is specified.
    *
-   * @param nm TODO
-   * @param parent TODO
+   * While it is legal to add nameless styles (<code>nm == null</code),
+   * you must be aware that the client application is then responsible
+   * for managing the style hierarchy, since unnamed styles cannot be
+   * looked up by their name.
    *
-   * @returns Style
+   * @param nm the name of the style or <code>null</code> if the style should
+   *           be unnamed
+   * @param parent the parent in which unspecified style attributes are
+   *           resolved, or <code>null</code> if that is not necessary
+   *
+   * @return the newly created <code>Style</code>
    */
   public Style addStyle(String nm, Style parent)
   {
@@ -210,9 +237,9 @@ public class JTextPane
   }
 
   /**
-   * removeStyle
+   * Removes a named <code>Style</code> from the style hierarchy.
    *
-   * @param nm TODO
+   * @param nm the name of the <code>Style</code> to be removed
    */
   public void removeStyle(String nm)
   {
@@ -220,11 +247,12 @@ public class JTextPane
   }
 
   /**
-   * getStyle
+   * Looks up and returns a named <code>Style</code>.
    *
-   * @param nm TODO
+   * @param nm the name of the <code>Style</code>
    *
-   * @returns Style
+   * @return the found <code>Style</code> of <code>null</code> if no such
+   *         <code>Style</code> exists
    */
   public Style getStyle(String nm)
   {
@@ -232,9 +260,9 @@ public class JTextPane
   }
 
   /**
-   * getLogicalStyle
+   * Returns the logical style of the paragraph at the current caret position.
    *
-   * @returns Style
+   * @return the logical style of the paragraph at the current caret position
    */
   public Style getLogicalStyle()
   {
@@ -242,9 +270,9 @@ public class JTextPane
   }
 
   /**
-   * setLogicalStyle
+   * Sets the logical style for the paragraph at the current caret position.
    *
-   * @param style TODO
+   * @param style the style to set for the current paragraph
    */
   public void setLogicalStyle(Style style)
   {
@@ -252,9 +280,11 @@ public class JTextPane
   }
 
   /**
-   * getCharacterAttributes
+   * Returns the text attributes for the character at the current caret
+   * position.
    *
-   * @returns AttributeSet
+   * @return the text attributes for the character at the current caret
+   *         position
    */
   public AttributeSet getCharacterAttributes()
   {
@@ -264,10 +294,14 @@ public class JTextPane
   }
 
   /**
-   * setCharacterAttributes
+   * Sets text attributes for the current selection. If there is no selection
+   * the text attributes are applied to newly inserted text
    *
-   * @param attribute TODO
-   * @param replace TODO
+   * @param attribute the text attributes to set
+   * @param replace if <code>true</code>, the attributes of the current
+   *     selection are overridden, otherwise they are merged
+   *
+   * @see {@link #getInputAttributes}
    */
   public void setCharacterAttributes(AttributeSet attribute,
                                      boolean replace)
@@ -288,9 +322,10 @@ public class JTextPane
   }
 
   /**
-   * getParagraphAttributes
+   * Returns the text attributes of the paragraph at the current caret
+   * position.
    *
-   * @returns AttributeSet
+   * @return the attributes of the paragraph at the current caret position
    */
   public AttributeSet getParagraphAttributes()
   {
@@ -300,10 +335,13 @@ public class JTextPane
   }
 
   /**
-   * setParagraphAttributes
+   * Sets text attributes for the paragraph at the current selection.
+   * If there is no selection the text attributes are applied to
+   * the paragraph at the current caret position.
    *
-   * @param attribute TODO
-   * @param replace TODO
+   * @param attribute the text attributes to set
+   * @param replace if <code>true</code>, the attributes of the current
+   *     selection are overridden, otherwise they are merged
    */
   public void setParagraphAttributes(AttributeSet attribute,
                                      boolean replace)
@@ -312,9 +350,11 @@ public class JTextPane
   }
 
   /**
-   * getInputAttributes
+   * Returns the attributes that are applied to newly inserted text.
+   * This is a {@link MutableAttributeSet}, so you can easily modify these
+   * attributes.
    *
-   * @returns MutableAttributeSet
+   * @return the attributes that are applied to newly inserted text
    */
   public MutableAttributeSet getInputAttributes()
   {
@@ -322,9 +362,11 @@ public class JTextPane
   }
 
   /**
-   * getStyledEditorKit
+   * Returns the {@link StyledEditorKit} that is currently used by this
+   * <code>JTextPane</code>.
    *
-   * @returns StyledEditorKit
+   * @return the current <code>StyledEditorKit</code> of this
+   *         <code>JTextPane</code>
    */
   protected final StyledEditorKit getStyledEditorKit()
   {
@@ -332,9 +374,11 @@ public class JTextPane
   }
 
   /**
-   * createDefaultEditorKit
+   * Creates the default {@link EditorKit} that is used in
+   * <code>JTextPane</code>s. This is an instance of {@link StyledEditorKit}.
    *
-   * @returns EditorKit
+   * @return the default {@link EditorKit} that is used in
+   *         <code>JTextPane</code>s
    */
   protected EditorKit createDefaultEditorKit()
   {
@@ -342,21 +386,28 @@ public class JTextPane
   }
 
   /**
-   * setEditorKit
+   * Sets the {@link EditorKit} to use for this <code>JTextPane</code>.
+   * <code>JTextPane</code>s can only handle {@link StyledEditorKit}s,
+   * if client programs try to set a different type of <code>EditorKit</code>
+   * then an IllegalArgumentException is thrown
    *
-   * @param editor TODO
+   * @param editor the <code>EditorKit</code> to set
+   *
+   * @throws IllegalArgumentException if <code>editor</code> is no
+   *         <code>StyledEditorKit</code>
    */
   public final void setEditorKit(EditorKit editor)
   {
     if (!(editor instanceof StyledEditorKit))
-      throw new IllegalArgumentException("JTextPanes can only handle StyledEditorKits"); // TODO: Figure out exception message
+      throw new IllegalArgumentException
+        ("JTextPanes can only handle StyledEditorKits");
     super.setEditorKit(editor);
   }
 
   /**
-   * paramString
+   * Returns a param string that can be used for debugging.
    *
-   * @returns String
+   * @return a param string that can be used for debugging.
    */
   protected String paramString()
   {
