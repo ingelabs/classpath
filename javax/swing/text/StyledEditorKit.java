@@ -51,21 +51,23 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 /**
- * StyledEditorKit
+ * An {@link EditorKit} that supports editing styled text.
  *
  * @author Andrew Selkirk
+ * @author Roman Kennke (roman@kennke.org)
  */
 public class StyledEditorKit extends DefaultEditorKit
 {
+  /** The serialVersionUID. */
   private static final long serialVersionUID = 7002391892985555948L;
 
   /**
-   * UnderlineAction
+   * Toggles the underline attribute for the selected text.
    */
   public static class UnderlineAction extends StyledEditorKit.StyledTextAction
   {
     /**
-     * Constructor UnderlineAction
+     * Creates an instance of <code>UnderlineAction</code>.
      */
     public UnderlineAction()
     {
@@ -73,8 +75,9 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * actionPerformed
-     * @param event TODO
+     * Performs the action.
+     *
+     * @param event the <code>ActionEvent</code> that describes the action
      */
     public void actionPerformed(ActionEvent event)
     {
@@ -89,12 +92,12 @@ public class StyledEditorKit extends DefaultEditorKit
   }
 
   /**
-   * ItalicAction
+   * Toggles the italic attribute for the selected text.
    */
   public static class ItalicAction extends StyledEditorKit.StyledTextAction
   {
     /**
-     * Constructor ItalicAction
+     * Creates an instance of <code>ItalicAction</code>.
      */
     public ItalicAction()
     {
@@ -102,8 +105,9 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * actionPerformed
-     * @param event TODO
+     * Performs the action.
+     *
+     * @param event the <code>ActionEvent</code> that describes the action
      */
     public void actionPerformed(ActionEvent event)
     {
@@ -118,12 +122,12 @@ public class StyledEditorKit extends DefaultEditorKit
   }
 
   /**
-   * BoldAction
+   * Toggles the bold attribute for the selected text.
    */
   public static class BoldAction extends StyledEditorKit.StyledTextAction
   {
     /**
-     * Constructor BoldAction
+     * Creates an instance of <code>BoldAction</code>.
      */
     public BoldAction()
     {
@@ -131,8 +135,9 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * actionPerformed
-     * @param event TODO
+     * Performs the action.
+     *
+     * @param event the <code>ActionEvent</code> that describes the action
      */
     public void actionPerformed(ActionEvent event)
     {
@@ -147,19 +152,21 @@ public class StyledEditorKit extends DefaultEditorKit
   }
 
   /**
-   * AlignmentAction
+   * Sets the alignment attribute on the selected text.
    */
   public static class AlignmentAction extends StyledEditorKit.StyledTextAction
   {
     /**
-     * a
+     * The aligment to set.
      */
     private int a;
 
     /**
-     * Constructor AlignmentAction
-     * @param nm TODO
-     * @param a TODO
+     * Creates a new instance of <code>AlignmentAction</code> to set the
+     * alignment to <code>a</code>.
+     *
+     * @param nm the name of the Action
+     * @param a the alignment to set
      */
     public AlignmentAction(String nm, int a)
     {
@@ -168,8 +175,9 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * actionPerformed
-     * @param event TODO
+     * Performs the action.
+     *
+     * @param event the <code>ActionEvent</code> that describes the action
      */
     public void actionPerformed(ActionEvent event)
     {
@@ -180,19 +188,21 @@ public class StyledEditorKit extends DefaultEditorKit
   }
 
   /**
-   * ForegroundAction
+   * Sets the foreground color attribute on the selected text.
    */
   public static class ForegroundAction extends StyledEditorKit.StyledTextAction
   {
     /**
-     * fg
+     * The foreground color to set.
      */
     private Color fg;
 
     /**
-     * Constructor ForegroundAction
-     * @param nm TODO
-     * @param fg TODO
+     * Creates a new instance of <code>ForegroundAction</code> to set the
+     * foreground color to <code>fg</code>.
+     *
+     * @param nm the name of the Action
+     * @param fg the foreground color to set
      */
     public ForegroundAction(String nm, Color fg)
     {
@@ -201,8 +211,9 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * actionPerformed
-     * @param event TODO
+     * Performs the action.
+     *
+     * @param event the <code>ActionEvent</code> that describes the action
      */
     public void actionPerformed(ActionEvent event)
     {
@@ -213,19 +224,21 @@ public class StyledEditorKit extends DefaultEditorKit
   }
 
   /**
-   * FontSizeAction
+   * Sets the font size attribute on the selected text.
    */
   public static class FontSizeAction extends StyledEditorKit.StyledTextAction
   {
     /**
-     * size
+     * The font size to set.
      */
     private int size;
 
     /**
-     * Constructor FontSizeAction
-     * @param nm TODO
-     * @param size TODO
+     * Creates a new instance of <code>FontSizeAction</code> to set the
+     * font size to <code>size</code>.
+     *
+     * @param nm the name of the Action
+     * @param size the font size to set
      */
     public FontSizeAction(String nm, int size)
     {
@@ -234,8 +247,9 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * actionPerformed
-     * @param event TODO
+     * Performs the action.
+     *
+     * @param event the <code>ActionEvent</code> that describes the action
      */
     public void actionPerformed(ActionEvent event)
     {
@@ -246,19 +260,21 @@ public class StyledEditorKit extends DefaultEditorKit
   }
 
   /**
-   * FontFamilyAction
+   * Sets the font family attribute on the selected text.
    */
   public static class FontFamilyAction extends StyledEditorKit.StyledTextAction
   {
     /**
-     * family
+     * The font family to set.
      */
     private String family;
 
     /**
-     * Constructor FontFamilyAction
-     * @param nm TODO
-     * @param family TODO
+     * Creates a new instance of <code>FontFamilyAction</code> to set the
+     * font family to <code>family</code>.
+     *
+     * @param nm the name of the Action
+     * @param family the font family to set
      */
     public FontFamilyAction(String nm, String family)
     {
@@ -267,8 +283,9 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * actionPerformed
-     * @param event TODO
+     * Performs the action.
+     *
+     * @param event the <code>ActionEvent</code> that describes the action
      */
     public void actionPerformed(ActionEvent event)
     {
@@ -279,13 +296,15 @@ public class StyledEditorKit extends DefaultEditorKit
   }
 
   /**
-   * StyledTextAction
+   * The abstract superclass of all styled TextActions. This class
+   * provides some useful methods to manipulate the text attributes.
    */
   public abstract static class StyledTextAction extends TextAction
   {
     /**
-     * Constructor StyledTextAction
-     * @param nm TODO
+     * Creates a new instance of <code>StyledTextAction</code>.
+     *
+     * @param nm the name of the <code>StyledTextAction</code>
      */
     public StyledTextAction(String nm)
     {
@@ -293,9 +312,12 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * getEditor
-     * @param event TODO
-     * @returns JEditorPane
+     * Returns the <code>JEditorPane</code> component from which the
+     * <code>ActionEvent</code> originated.
+     *
+     * @param event the <code>ActionEvent</code>
+     * @return the <code>JEditorPane</code> component from which the
+     *         <code>ActionEvent</code> originated
      */
     protected final JEditorPane getEditor(ActionEvent event)
     {
@@ -303,10 +325,15 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * setCharacterAttributes
-     * @param value0 TODO
-     * @param value1 TODO
-     * @param value2 TODO
+     * Sets the specified character attributes on the currently selected
+     * text of <code>editor</code>. If <code>editor</code> does not have
+     * a selection, then the attributes are used as input attributes
+     * for newly inserted content.
+     *
+     * @param editor the <code>JEditorPane</code> component
+     * @param atts the text attributes to set
+     * @param replace if <code>true</code> the current attributes of the
+     *        selection are replaces, otherwise they are merged
      */
     protected final void setCharacterAttributes(JEditorPane editor,
                                                 AttributeSet atts,
@@ -344,9 +371,12 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * getStyledDocument
-     * @param value0 TODO
-     * @returns StyledDocument
+     * Returns the {@link StyledDocument} that is used by <code>editor</code>.
+     *
+     * @param editor the <code>JEditorPane</code> from which to get the
+     *        <code>StyledDocument</code>
+     *
+     * @return the {@link StyledDocument} that is used by <code>editor</code>
      */
     protected final StyledDocument getStyledDocument(JEditorPane editor)
     {
@@ -359,9 +389,12 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * getStyledEditorKit
-     * @param value0 TODO
-     * @returns StyledEditorKit
+     * Returns the {@link StyledEditorKit} that is used by <code>editor</code>.
+     *
+     * @param editor the <code>JEditorPane</code> from which to get the
+     *        <code>StyledEditorKit</code>
+     *
+     * @return the {@link StyledEditorKit} that is used by <code>editor</code>
      */
     protected final StyledEditorKit getStyledEditorKit(JEditorPane editor)
     {
@@ -374,10 +407,16 @@ public class StyledEditorKit extends DefaultEditorKit
     }
 
     /**
-     * setParagraphAttributes
-     * @param value0 TODO
-     * @param value1 TODO
-     * @param value2 TODO
+     * Sets the specified character attributes on the paragraph that
+     * contains the currently selected
+     * text of <code>editor</code>. If <code>editor</code> does not have
+     * a selection, then the attributes are set on the paragraph that
+     * contains the current caret position.
+     *
+     * @param editor the <code>JEditorPane</code> component
+     * @param atts the text attributes to set
+     * @param replace if <code>true</code> the current attributes of the
+     *        selection are replaces, otherwise they are merged
      */
     protected final void setParagraphAttributes(JEditorPane editor,
                                                 AttributeSet atts,
