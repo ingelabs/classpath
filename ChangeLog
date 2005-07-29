@@ -1,3 +1,10 @@
+2005-07-29  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/MenuSelectionManager.java
+	(isComponentPartOfCurrentMenu): Fixed to prevent NPE.
+	* javax/swing/plaf/basic/BasicMenuUI.java
+	(popupVisible): Likewise.
+
 2005-07-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/event/MouseWheelEvent.java: fixed typo in API docs.
