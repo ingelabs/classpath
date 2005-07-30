@@ -513,10 +513,10 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
 #ifdef HAVE_MMAP
   jclass MappedByteBufferImpl_class;
   jclass RawData_class;
-  jmethodID MappedByteBufferImpl_init;
-  jmethodID RawData_init;
+  jmethodID MappedByteBufferImpl_init = NULL;
+  jmethodID RawData_init = NULL;
   jobject RawData_instance;
-  jobject buffer;
+  volatile jobject buffer;
   long pagesize;
   int prot, flags;
   int fd;
@@ -559,6 +559,12 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
     {
       return NULL;
     }
+  if (RawData_init == NULL)
+    {
+      JCL_ThrowException (env, "java/lang/InternalError",
+                          "could not get RawData constructor");
+      return NULL;
+    }
 
   prot = PROT_READ;
   if (mode == '+')
@@ -575,7 +581,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
 
   /* Unalign the mapped value back up, since we aligned offset
      down to a multiple of the page size. */
-  address = p + (position % pagesize);
+  address = (void *) ((char *) p + (position % pagesize));
 
 #if (SIZEOF_VOID_P == 4)
   RawData_instance = (*env)->NewObject (env, RawData_class,
@@ -596,6 +602,13 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
 
   if ((*env)->ExceptionOccurred (env))
     {
+      munmap (p, ALIGN_UP (size, pagesize));
+      return NULL;
+    }
+  if (MappedByteBufferImpl_init == NULL)
+    {
+      JCL_ThrowException (env, "java/lang/InternalError",
+                          "could not get MappedByteBufferImpl constructor");
       munmap (p, ALIGN_UP (size, pagesize));
       return NULL;
     }

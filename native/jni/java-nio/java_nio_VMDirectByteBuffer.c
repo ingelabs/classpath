@@ -204,7 +204,7 @@ Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_RawData_2I_3BII
    jobject address, jint index, jbyteArray src, jint src_offset, jint src_len)
 {
   jbyte *_src = (*env)->GetByteArrayElements (env, src, NULL) + src_offset;
-  jbyte *dst = NIOGetPointer (env, address) + index;
+  jbyte *dst = (jbyte *) NIOGetPointer (env, address) + index;
   (*env)->ReleaseByteArrayElements (env, src, _src, 0);
   memcpy (dst, _src, src_len);
 }

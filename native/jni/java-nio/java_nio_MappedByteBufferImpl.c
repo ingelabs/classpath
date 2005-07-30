@@ -45,6 +45,7 @@ exception statement from your version. */
 
 #include <errno.h>
 #include <string.h>
+#include <stdlib.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
@@ -97,7 +98,7 @@ get_raw_values (JNIEnv *env, jobject this, void **address, size_t *size)
   jfieldID MappedByteBufferImpl_address;
   jfieldID MappedByteBufferImpl_size;
   jfieldID RawData_data;
-  jobject MappedByteBufferImpl_address_value;
+  jobject MappedByteBufferImpl_address_value = NULL;
 
   *address = NULL;
   /* 'address' is declared in java.nio.Buffer */
@@ -115,6 +116,12 @@ get_raw_values (JNIEnv *env, jobject this, void **address, size_t *size)
     }
   if ((*env)->ExceptionOccurred (env))
     return;
+  if (MappedByteBufferImpl_address_value == NULL)
+    {
+      JCL_ThrowException (env, "java/lang/NullPointerException",
+                          "mapped address is NULL");
+      return;
+    }
 
 #if (SIZEOF_VOID_P == 4)
   RawData_data =
@@ -166,20 +173,19 @@ Java_java_nio_MappedByteBufferImpl_isLoadedImpl (JNIEnv * env, jobject this)
 #ifdef HAVE_MINCORE
   void *address;
   size_t size;
-  unsigned char *vec;
-  size_t count;
-  int i;
+  char *vec;
+  size_t count, i;
   const long pagesize = get_pagesize ();
 
   /*
-   * FIXME this does not work if the mapped region is exactly one
-   * page long; i.e., 'mincore' tells us it isn't loaded.
+   * FIXME on Darwin this does not work if the mapped region is
+   * exactly one page long; i.e., 'mincore' tells us it isn't loaded.
    */
   get_raw_values (env, this, &address, &size);
   if (address == NULL)
     return JNI_FALSE;
   count = (size_t) ((size + pagesize - 1) / pagesize);
-  vec = (unsigned char *) malloc (count * sizeof (unsigned char));
+  vec = (char *) malloc (count * sizeof (unsigned char));
   if (mincore (address, size, vec) != 0)
     {
       free (vec);
@@ -206,6 +212,8 @@ Java_java_nio_MappedByteBufferImpl_loadImpl (JNIEnv *env, jobject this)
   size_t size;
 
   get_raw_values (env, this, &address, &size);
+  if (address == NULL)
+    return;
 
   madvise (address, size, MADV_WILLNEED);
 #else

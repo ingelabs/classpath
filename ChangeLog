@@ -1,3 +1,17 @@
+2005-07-30  Casey Marshall  <csm@gnu.org>
+
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(Java_gnu_java_nio_channels_FileChannelImpl_mapImpl):
+	eliminate various compiler warnings; mark 'buffer' as 'volatile;'
+	throw an exception if we can't get a constructor method ID.
+	* native/jni/java-nio/java_nio_MappedByteBufferImpl.c:
+	include 'stdlib.h.'
+	(get_raw_values): eliminate compiler warnings.
+	(Java_java_nio_MappedByteBufferImpl_isLoadedImpl): likewise.
+	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c
+	(Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_RawData_2I_3BII):
+	eliminate compiler warning.
+
 2005-07-29  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/StyledEditorKit.java: Added the remaining API
