@@ -2880,4 +2880,30 @@ public class BasicTreeUI extends TreeUI
           }
       }
   }
+  
+  /**
+   * Draws a vertical line using the given graphic context
+   * 
+   * @param g The graphic context
+   * @param c The component the new line will belong to
+   * @param x Horizonal position
+   * @param top Top of the line
+   * @param bottom Bottom of the line
+   */
+  protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
+    g.drawLine(x, top, x, bottom);
+  }
+  
+  /**
+   * Draws a horizontal line using the given graphic context
+   * 
+   * @param g The graphic context
+   * @param c The component the new line will belong to
+   * @param y Vertical position
+   * @param left Left point of the line
+   * @param right Right point of the line
+   */
+  protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left, int right) {
+    g.drawLine(left, y, right, y);
+  }
 } // BasicTreeUI

@@ -1,3 +1,8 @@
+2005-08-01  Jan Roehrich <jan@roehrich.info>
+
+        * javax.swing.plaf.basic.BasicTreeUI: paintVerticalLine and
+        paintHorizontalLine added.
+
 2005-07-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         org/omg/DynamicAny/DynValueOperations.java,
