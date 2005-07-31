@@ -1,5 +1,16 @@
 2005-07-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        org/omg/DynamicAny/DynValueOperations.java,
+        org/omg/DynamicAny/DynAnyFactory.java,
+        org/omg/DynamicAny/DynAnyFactoryOperations.java,
+        org/omg/DynamicAny/DynValue.java,
+        org/omg/DynamicAny/DynValueBox.java,
+        org/omg/DynamicAny/DynValueBoxOperations.java,
+        org/omg/DynamicAny/DynValueCommon.java,
+        org/omg/DynamicAny/DynValueCommonOperations.java: New files.
+
+2005-07-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
         * org/omg/DynamicAny/DynFixedOperations.java,
         org/omg/DynamicAny/DynEnum.java,
         org/omg/DynamicAny/DynArrayOperations.java: Inherit from
