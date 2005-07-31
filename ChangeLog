@@ -1,11 +1,25 @@
+2005-07-31  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/nio/FileLockImpl.java: Mark class final.
+	(ch): Removed field.
+	(valid): New field.
+	(FileLockImpl): Set valid to true.
+	(isValid): Test and set valid field.
+	(release): Release lock if it is still valid.
+	* java/nio/channels/FileLock.java: Mark all fields private final.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(Java_gnu_java_nio_channels_FileChannelImpl_lock): Translate
+	Long.MAX_VALUE to zero for fcntl.
+	(Java_gnu_java_nio_channels_FileChannelImpl_unlock): Likewise.
+
 2005-07-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * scripts/eclipse-gnu.xml: Drop extends, implements, 
         throws into new line. 
 
-2005-07-31  Jan Roehrich <jan@roehrich.info>
+2005-07-31  Jan Roehrich  <jan@roehrich.info>
 
-    * javax.swing.plaf.basic.BasicTreeUI: fixed indentation.
+	* javax.swing.plaf.basic.BasicTreeUI: fixed indentation.
 
 2005-07-30  Casey Marshall  <csm@gnu.org>
 
