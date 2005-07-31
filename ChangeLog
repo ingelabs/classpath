@@ -1,3 +1,8 @@
+2005-07-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * scripts/eclipse-gnu.xml: Drop extends, implements, 
+        throws into new line. 
+
 2005-07-31  Jan Roehrich <jan@roehrich.info>
 
     * javax.swing.plaf.basic.BasicTreeUI: fixed indentation.
