@@ -1,5 +1,12 @@
 2005-08-01  Jan Roehrich <jan@roehrich.info>
 
+        * javax.swing.plaf.basic.BasicTreeUI: Method drawCentered
+        added / corrected javadoc issues in paintHorizonalLine 
+        and paintVerticalLine / fixed getRightChildIndent signature
+        (problem probably caused by copy/paste)
+
+2005-08-01  Jan Roehrich <jan@roehrich.info>
+
         * javax.swing.plaf.basic.BasicTreeUI: paintVerticalLine and
         paintHorizontalLine added.
 

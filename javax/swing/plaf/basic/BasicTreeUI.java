@@ -326,7 +326,7 @@ public class BasicTreeUI extends TreeUI
    * 
    * @return the indent value for the right child.
    */
-  public int getRightChildIndent(int newAmount)
+  public int getRightChildIndent()
   {
     return rightChildIndent;
   }
@@ -2884,11 +2884,11 @@ public class BasicTreeUI extends TreeUI
   /**
    * Draws a vertical line using the given graphic context
    * 
-   * @param g The graphic context
-   * @param c The component the new line will belong to
-   * @param x Horizonal position
-   * @param top Top of the line
-   * @param bottom Bottom of the line
+   * @param g is the graphic context
+   * @param c is the component the new line will belong to
+   * @param x is the horizonal position
+   * @param top specifies the top of the line
+   * @param bottom specifies the bottom of the line
    */
   protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
     g.drawLine(x, top, x, bottom);
@@ -2897,13 +2897,30 @@ public class BasicTreeUI extends TreeUI
   /**
    * Draws a horizontal line using the given graphic context
    * 
-   * @param g The graphic context
-   * @param c The component the new line will belong to
-   * @param y Vertical position
-   * @param left Left point of the line
-   * @param right Right point of the line
+   * @param g is the graphic context
+   * @param c is the component the new line will belong to
+   * @param y is the vertical position
+   * @param left specifies the left point of the line
+   * @param right specifies the right point of the line
    */
   protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left, int right) {
     g.drawLine(left, y, right, y);
+  }
+  
+  /**
+   * Draws an icon at around a specific position
+   * 
+   * @param c is the component the new line will belong to
+   * @param g is the graphic context
+   * @param icon is the icon which will be drawn
+   * @param x is the center position in x-direction
+   * @param y is the center position in y-direction
+   * 
+   * FIXME what to do if x < (icon.width / 2). Same with y
+   */
+  protected void drawCentered(JComponent c, Graphics g, Icon icon, int x, int y) {
+    int beginPositionX = x - icon.getIconWidth() / 2;
+    int beginPositionY = y - icon.getIconHeight() / 2;
+    icon.paintIcon(c, g, beginPositionX, beginPositionY);
   }
 } // BasicTreeUI
