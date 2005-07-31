@@ -398,7 +398,8 @@ public class GapContent
     buffer = newBuf;
 
     // Update the marks after the gapEnd.
-    int index = Collections.binarySearch(positions, new Integer(gapEnd));
+    int index = Collections.binarySearch(positions,
+					 new GapContentPosition(gapEnd));
     if (index < 0)
       {
 	index = -(index + 1);
@@ -422,8 +423,10 @@ public class GapContent
 
     // Update the positions between newGapEnd and (old) gapEnd. The marks
     // must be shifted by (gapEnd - newGapEnd).
-    int index1 = Collections.binarySearch(positions, new Integer(gapEnd));
-    int index2 = Collections.binarySearch(positions, new Integer(newGapEnd));
+    int index1 = Collections.binarySearch(positions,
+					  new GapContentPosition(gapEnd));
+    int index2 = Collections.binarySearch(positions,
+					  new GapContentPosition(newGapEnd));
     int i1 = Math.min(index1, index2);
     int i2 = Math.max(index1, index2);
     for (ListIterator i = positions.listIterator(i1); i.hasNext();)

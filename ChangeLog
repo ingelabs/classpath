@@ -1,5 +1,12 @@
 2005-08-01  Mark Wielaard  <mark@klomp.org>
 
+	Reported by Wolfgang Baer <WBaer@gmx.de>
+	* javax/swing/text/GapContent.java (shiftGap): Use new
+	CapContentPosition in binarySearch.
+	(shiftEnd): Likewise.
+
+2005-08-01  Mark Wielaard  <mark@klomp.org>
+
 	* doc/www.gnu.org/bugs.wml: New file.
 	* doc/www.gnu.org/newsitems.txt: Add bugzilla entry.
 	* doc/www.gnu.org/events/events.wml: Correct Fosdem 2005 date.
