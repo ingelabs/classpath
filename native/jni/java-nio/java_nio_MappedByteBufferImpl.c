@@ -186,7 +186,18 @@ Java_java_nio_MappedByteBufferImpl_isLoadedImpl (JNIEnv * env, jobject this)
     return JNI_FALSE;
   count = (size_t) ((size + pagesize - 1) / pagesize);
   vec = (char *) malloc (count * sizeof (unsigned char));
+
+  /*
+   * Darwin (and BSD?) define argument 3 of 'mincore' to be 'char *',
+   * while GNU libc defines it to be 'unsigned char *'. Casting the
+   * argument to 'void *' fixes this, but not with C++. So you might
+   * be SOL if you compile this with g++ (!) on GNU with -Werror.
+   */
+#ifdef __cplusplus
   if (mincore (address, size, vec) != 0)
+#else
+  if (mincore (address, size, (void *) vec) != 0)
+#endif /* __cplusplus */
     {
       free (vec);
       JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));

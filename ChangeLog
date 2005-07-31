@@ -1,5 +1,11 @@
 2005-07-30  Casey Marshall  <csm@gnu.org>
 
+	* native/jni/java-nio/java_nio_MappedByteBuffer.c
+	(Java_java_nio_MappedByteBufferImpl_isLoadedImpl): cast argument 3
+	to 'mincore' to 'void *' to avoid warnings on GNU.
+
+2005-07-30  Casey Marshall  <csm@gnu.org>
+
 	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
 	(Java_gnu_java_nio_channels_FileChannelImpl_mapImpl):
 	eliminate various compiler warnings; mark 'buffer' as 'volatile;'
