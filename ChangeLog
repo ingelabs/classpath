@@ -1,3 +1,25 @@
+2005-07-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/DynamicAny/DynFixedOperations.java,
+        org/omg/DynamicAny/DynEnum.java,
+        org/omg/DynamicAny/DynArrayOperations.java: Inherit from
+        DynAnyOperations.
+        * org/omg/DynamicAny/NameDynAnyPair.java: Inherit from
+        org.omg.CORBA.portable.IDLEntity.
+        * org/omg/DynamicAny/DynAnyOperations.java
+        (assign, current_component): Fixes in throws declaration.
+        * org/omg/DynamicAny/DynEnumOperations.java,
+        org/omg/DynamicAny/DynSequenceOperations.java,
+        org/omg/DynamicAny/DynStructOperations.java,
+        org/omg/DynamicAny/DynUnionOperations.java,
+        org/omg/DynamicAny/DynAny.java,
+        org/omg/DynamicAny/DynFixed.java,
+        org/omg/DynamicAny/DynSequence.java,
+        org/omg/DynamicAny/DynStruct.java,
+        org/omg/DynamicAny/DynUnion.java,
+        org/omg/DynamicAny/DynArray.java,
+        org/omg/DynamicAny/NameValuePair.java: Reformatted.
+
 2005-07-31  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/nio/FileLockImpl.java: Mark class final.
