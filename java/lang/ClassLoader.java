@@ -464,10 +464,9 @@ public abstract class ClassLoader
 						 ProtectionDomain domain)
     throws ClassFormatError
   {
+    checkInitialized();
     if (domain == null)
       domain = StaticData.defaultProtectionDomain;
-    if (! initialized)
-      throw new SecurityException("attempt to define class from uninitialized class loader");
     
     return VMClassLoader.defineClass(this, name, data, offset, len, domain);
   }
@@ -482,6 +481,7 @@ public abstract class ClassLoader
    */
   protected final void resolveClass(Class c)
   {
+    checkInitialized();
     VMClassLoader.resolveClass(c);
   }
 
@@ -497,6 +497,7 @@ public abstract class ClassLoader
   protected final Class findSystemClass(String name)
     throws ClassNotFoundException
   {
+    checkInitialized();
     return Class.forName(name, false, StaticData.systemClassLoader);
   }
 
@@ -533,6 +534,7 @@ public abstract class ClassLoader
    */
   protected final void setSigners(Class c, Object[] signers)
   {
+    checkInitialized();
     c.setSigners(signers);
   }
 
@@ -545,6 +547,7 @@ public abstract class ClassLoader
    */
   protected final synchronized Class findLoadedClass(String name)
   {
+    checkInitialized();
     return VMClassLoader.findLoadedClass(this, name);
   }
 
@@ -1099,5 +1102,17 @@ public abstract class ClassLoader
 	    new Error("Requested system classloader " + loader + " failed.")
 		.initCause(e);
       }
+  }
+
+  /**
+   * Before doing anything "dangerous" please call this method to make sure
+   * this class loader instance was properly constructed (and not obtained
+   * by exploiting the finalizer attack)
+   * @see #initialized
+   */
+  private void checkInitialized()
+  {
+    if (! initialized)
+      throw new SecurityException("attempt to use uninitialized class loader");
   }
 }

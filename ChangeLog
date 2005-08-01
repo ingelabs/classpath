@@ -1,5 +1,13 @@
 2005-08-01  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/ClassLoader.java
+	(defineClass(String,byte[],int,int,ProtectionDomain),
+	resolveClass, findSystemClass, setSigners, findLoadedClass):
+	Added call to checkInitialized().
+	(checkInitialized): New method.
+
+2005-08-01  Jeroen Frijters  <jeroen@frijters.net>
+
 	* NEWS: Added info about VM interfaces changes.
 	* java/lang/Class.java
 	(forName(String), forName(String, boolean, ClassLoader)): Simplified
