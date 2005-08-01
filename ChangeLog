@@ -1,3 +1,8 @@
+2005-08-01  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* configure.ac (LIBVERSION): Check against darwin to set module
+	'no' for it. Modules under darwin are not linkable.
+
 2005-08-01  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/AttributeSet.java: Added API comments all over.

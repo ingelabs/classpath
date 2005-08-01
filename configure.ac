@@ -21,7 +21,16 @@ dnl We will not track/change lib version until we reach version 1.0
 dnl at which time we'll have to be more anal about such things
 dnl -----------------------------------------------------------
 AC_SUBST(LIBVERSION, "0:0:0")
-CLASSPATH_MODULE="-module -version-info ${LIBVERSION} -no-undefined"
+case "$host_os" in
+     darwin*)
+	cp_module=""
+	;;
+	*)
+	cp_module="-module"
+	;;
+esac
+
+CLASSPATH_MODULE="${cp_module} -version-info ${LIBVERSION} -no-undefined"
 AC_SUBST(CLASSPATH_MODULE)
 
 AC_PREREQ(2.59)
