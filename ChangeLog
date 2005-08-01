@@ -1,3 +1,22 @@
+2005-08-01  Jeroen Frijters  <jeroen@frijters.net>
+
+	* NEWS: Added info about VM interfaces changes.
+	* java/lang/Class.java
+	(forName(String), forName(String, boolean, ClassLoader)): Simplified
+	VM interface.
+	* java/lang/ClassLoader.java
+	(loadedClasses): Removed field.
+	(defineClass(String,byte[],int,int,ProtectionDomain)): Removed
+	code to add class to loadedClasses.
+	* vm/reference/java/lang/VMClass.java
+	(forName(String)): Removed method.
+	(forName(String,boolean,ClassLoader)): New method.
+	(initialize): Removed method.
+	(loadArrayClass): Removed method.
+	* vm/reference/java/lang/VMClassLoader.java
+	(USE_VM_CACHE): Removed field.
+	(findLoadedClass): Made native.
+
 2005-08-01  Mark Wielaard  <mark@klomp.org>
 
 	Reported by Wolfgang Baer <WBaer@gmx.de>

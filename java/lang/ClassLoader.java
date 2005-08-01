@@ -124,14 +124,6 @@ import java.util.StringTokenizer;
 public abstract class ClassLoader
 {
   /**
-   * All classes loaded by this classloader. If the VM's chooses to implement
-   * this cache natively this field will be null.
-   * It is not private in order to allow VMClassLoader access to this field.
-   */
-  final HashMap loadedClasses =
-                    VMClassLoader.USE_VM_CACHE ? null : new HashMap();
-
-  /**
    * All packages defined by this classloader. It is not private in order to
    * allow native code (and trusted subclasses) access to this field.
    */
@@ -477,11 +469,7 @@ public abstract class ClassLoader
     if (! initialized)
       throw new SecurityException("attempt to define class from uninitialized class loader");
     
-    Class retval = VMClassLoader.defineClass(this, name, data,
-					     offset, len, domain);
-    if (! VMClassLoader.USE_VM_CACHE)
-      loadedClasses.put(retval.getName(), retval);
-    return retval;
+    return VMClassLoader.defineClass(this, name, data, offset, len, domain);
   }
 
   /**

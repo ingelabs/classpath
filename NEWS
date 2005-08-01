@@ -1,3 +1,6 @@
+* Simplified the Class/VMClass interface.
+* Removed loadedClasses map from ClassLoader. It's now the VMs responsibility
+  to manage the list of defined and loaded classes for each class loader.
 * Moved native methods from java.lang.reflect.Proxy to VMProxy.
 * Added hook to VMClassLoader to allow VM to do class caching.
 * The Portable Object Adapter should support the output of the

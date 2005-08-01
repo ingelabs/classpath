@@ -284,17 +284,9 @@ final class VMClassLoader
   }
 
   /**
-   * Set this field to true if the VM wants to keep its own cache.
-   * Note that this field is not final, to allow VMs to have a
-   * different setting without having to recompile ClassLoader.java.
+   * Find the class if this class loader previously defined this class
+   * or if this class loader has been recorded as the initiating class loader
+   * for this class.
    */
-  static boolean USE_VM_CACHE = false;
-
-  /**
-   * If the VM wants to keep its own cache, this method can be replaced.
-   */
-  static Class findLoadedClass(ClassLoader cl, String name)
-  {
-    return (Class) cl.loadedClasses.get(name);
-  }
+  static native Class findLoadedClass(ClassLoader cl, String name);
 }
