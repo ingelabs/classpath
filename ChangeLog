@@ -1,5 +1,19 @@
 2005-08-01  Andreas Tobler  <a.tobler@schweiz.ch>
 
+	* examples/README: Add GNULookAndFeel.java to the compile command.
+
+2005-08-01  Mark Wielaard  <mark@klomp.org>
+
+	* examples/gnu/classpath/examples/swing/Demo.java (mkTreeWorld):
+	Remove double declaration of int i.
+
+2005-08-01  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* examples/gnu/classpath/examples/swing/Demo.java: Exit when
+	pressing 'Close' on the panel.
+
+2005-08-01  Andreas Tobler  <a.tobler@schweiz.ch>
+
 	* configure.ac (LIBVERSION): Check against darwin to set module
 	'no' for it. Modules under darwin are not linkable.
 

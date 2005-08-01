@@ -7,7 +7,8 @@ class Demo which contains a main() method to run that particular example.
 The examples can be compiled and run with gcj as follows:
 
   gcj -o swingdemo --main=gnu.classpath.examples.swing.Demo \
-      gnu/classpath/examples/swing/Demo.java
+      gnu/classpath/examples/swing/Demo.java \
+      gnu/classpath/examples/swing/GNULookAndFeel.java
   ./swingdemo
 
 Or with a traditional byte code interpreter like:

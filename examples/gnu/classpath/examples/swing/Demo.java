@@ -501,7 +501,6 @@ public class Demo
     JButton add = mkButton("add element");
     add.addActionListener(new ActionListener()
       {
-        int i = 0;
         public void actionPerformed(ActionEvent e)
         {
            for (int i = 0; i < tree.getRowCount(); i++)
@@ -1065,7 +1064,13 @@ public class Demo
     
     JButton exitDisposer = mkDisposerButton(frame);
     panel.add(exitDisposer);
-
+    exitDisposer.addActionListener(new ActionListener()
+      {
+	public void actionPerformed(ActionEvent e)
+	{
+	  System.exit(1);
+	}
+      });
     return panel;
   }
 
