@@ -1,3 +1,20 @@
+2005-08-02  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JTable.java:
+	(getCellRect): Height should be the row height, not the entire table
+	height.
+	(getRowHeight): New public method, part of API.
+	* javax/swing/JViewport.java:
+	(scrollRectToVisible): Fixed buggy scrolling conditions.
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(KeyHandler.keyPressed): Implemented PAGE-UP, PAGE-DOWN, CTRL-PAGE-UP,
+	and CTRL-PAGE-DOWN key actions.  Also added line to scroll the table
+	appropriately after changing the selection.
+	(KeyHandler.getFirstVisibleColumnIndex): New implementation method.
+	(KeyHandler.getLastVisibleColumnIndex): Likewise.
+	(KeyHandler.getFirstVisibleRowIndex): Likewise.
+	(KeyHandler.getLastVisibleRowIndex): Likewise.
+
 2005-08-02  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/AbstractDocument.java
