@@ -1,3 +1,14 @@
+2005-08-02  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/GapContent.java:
+	Formatting code.
+
+2005-08-02  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/GapContent.java
+	(shiftGap): Added in if statement to check if indexes are negative.
+	Does not work properly if they are.
+
 2005-08-02  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
