@@ -1,5 +1,13 @@
 2005-08-02  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/AbstractDocument.java
+	(AbstractElement.AbstractElement): Create an empty AttributeSet
+	if the argument s == null.
+	(AbstractElement.getAttribute): Return the element itself instead
+	of the wrapped attributes.
+
+2005-08-02  Roman Kennke  <roman@kennke.org>
+
 	* java/awt/Toolkit.java
 	(createCustomCursor): Added check for headless environment.
 	(getBestCursorSize): Added check for headless environment.

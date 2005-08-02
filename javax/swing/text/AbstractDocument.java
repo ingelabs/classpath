@@ -1002,7 +1002,10 @@ public abstract class AbstractDocument
     public AbstractElement(Element p, AttributeSet s)
     {
       element_parent = p;
-      attributes = s;
+      AttributeContext ctx = getAttributeContext();
+      attributes = ctx.getEmptySet();
+      if (s != null)
+        attributes = ctx.addAttributes(attributes, s);
     }
 
     /**
@@ -1275,7 +1278,7 @@ public abstract class AbstractDocument
      */
     public AttributeSet getAttributes()
     {
-      return attributes;
+      return this;
     }
 
     /**
