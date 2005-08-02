@@ -1337,6 +1337,8 @@ public abstract class Component
    */
   public Rectangle getBounds()
   {
+    System.out.print(getClass().getName() + ".getBounds(): ");
+    System.out.println(bounds().toString());
     return bounds ();
   }
 
