@@ -424,7 +424,7 @@ public class GapContent
             gapEnd));
       int index2 = Collections.binarySearch(positions, new GapContentPosition(
             newGapEnd));
-      if (index1 > 0 || index2 > 0)
+      if (index1 > 0 && index2 > 0)
       {
          int i1 = Math.min(index1, index2);
          int i2 = Math.max(index1, index2);

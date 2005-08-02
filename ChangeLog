@@ -1,5 +1,11 @@
 2005-08-02  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/text/GapContent.java
+	(shiftGap): Changed to used '&&'. both indexes should be 
+	greater than 0.
+
+2005-08-02  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/text/GapContent.java:
 	Formatting code.
 
