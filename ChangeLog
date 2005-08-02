@@ -1,3 +1,60 @@
+2005-08-02  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.viewToModel): New method.
+	* javax/swing/text/BoxView.java
+	(isBefore): New method. This is a stub method to implement the
+	new abstract method from CompositeView.
+	(isAfter): New method. This is a stub method to implement the
+	new abstract method from CompositeView.
+	(getViewAtPoint): New method. This is a stub method to implement the
+	new abstract method from CompositeView.
+	(childAllocation): New method. This is a stub method to implement the
+	new abstract method from CompositeView.
+	* javax/swing/text/ComponentView.java
+	(viewToModel): New method. This is a stub method to implement the
+	new abstract method from View.
+	* javax/swing/text/CompositeView.java
+	(loadChildren): Implemented new method.
+	(setParent): Implemented new method.
+	(getViewCount): Implemented new method.
+	(getView): Implemented new method.
+	(replace): Implemented new method.
+	(getChildAllocation): Implemented new method.
+	(modelToView(int, Shape, Position.Bias)): Implemented this method.
+	(modelToView(int, Position.Bias, int, Position.Bias, Shape):
+	Implemented new method.
+	(viewToModel): Implemented new method.
+	(getNextVisualPositionFrom): Implemented new method.
+	(getViewIndex): Implemented new method.
+	(isBefore): New abstract method.
+	(isAfter): New abstract method.
+	(getViewAtPoint): New abstract method.
+	(childAllocation): New abstract method.
+	(getViewAtPosition): Implemented new method.
+	(getViewIndexAtPosition): Implemented new method.
+	(getInsideAllocation): Implemented new method.
+	(setParagraphInsets): Implemented new method.
+	(setInsets): Implemented new method.
+	(getLeftInset): Implemented new method.
+	(getRightInset): Implemented new method.
+	(getTopInset): Implemented new method.
+	(getBottomInset): Implemented new method.
+	(getNextNorthSouthVisualPositionFrom): New method.
+	(getNextEastWestVisualPositionFrom): New method.
+	(flipEastAndWestAtEnds): Implemented new method.
+	* javax/swing/text/GlyphView.java
+	(viewToModel): New method. This is a stub method to implement the
+	new abstract method from View.
+	* javax/swing/text/IconView.java
+	(viewToModel): New method. This is a stub method to implement the
+	new abstract method from View.
+	* javax/swing/text/PlainView.java
+	(viewToModel): New method. This is a stub method to implement the
+	new abstract method from View.
+	* javax/swing/text/View.java
+	(viewToModel): New abstract method.
+
 2005-08-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/DynamicAny/DynValueCommon.java: Inherit from
