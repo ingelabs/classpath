@@ -38,19 +38,25 @@ exception statement from your version. */
 
 package org.omg.DynamicAny;
 
+import org.omg.CORBA.portable.IDLEntity;
+
+import java.io.Serializable;
+
 /**
  * Defines DynAny that may hold CORBA <code>null</code>. The
  * {@link DynValueCommonOperations} provides methods for setting the value to
  * <code>null</code> or non-<code>null</code> and checking if the value is
  * <code>null</code>.
- *
+ * 
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public interface DynValueCommon
+  extends DynValueOperations, DynAny, IDLEntity, org.omg.CORBA.Object,
+  Serializable
 {
   /**
    * Check if this {@link DynAny} is holding the <code>null</code>.
-   *
+   * 
    * @return true if this {@link DynAny} is holding the <code>null</code>,
    * false otherwise.
    */

@@ -1,3 +1,20 @@
+2005-08-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/DynamicAny/DynValueCommon.java: Inherit from
+        DynValueOperations, DynAny, IDLEntity, org.omg.CORBA.Object,
+        Serializable.
+        * org/omg/DynamicAny/DynValueCommonOperations.java: Inherit from
+        DynAnyOperations.
+        * org/omg/DynamicAny/DynAnyHelper.java,
+        org/omg/DynamicAny/DynStructHelper.java,
+        org/omg/DynamicAny/DynUnionHelper.java,
+        org/omg/DynamicAny/DynValueHelper.java,
+        org/omg/DynamicAny/DynAnyFactoryHelper.java,
+        org/omg/DynamicAny/DynArrayHelper.java,
+        org/omg/DynamicAny/DynEnumHelper.java,
+        org/omg/DynamicAny/DynFixedHelper.java,
+        org/omg/DynamicAny/DynSequenceHelper.java: New files.
+
 2005-08-01  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* examples/README: Add GNULookAndFeel.java to the compile command.
