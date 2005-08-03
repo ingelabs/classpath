@@ -4,6 +4,11 @@
 	(charsWidth): Iterate to len + offset instead to len.
 
 2005-08-03  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/classpath/jcl.c
+	(JCL_NewRawDataObject): Fixed typo.
+
+2005-08-03  Guilhem Lavaux  <guilhem@kaffe.org>
 	
         * gnu/classpath/Pointer.java,
         gnu/classpath/Pointer32.java,

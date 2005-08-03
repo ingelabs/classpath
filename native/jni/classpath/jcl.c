@@ -245,7 +245,7 @@ JCL_NewRawDataObject (JNIEnv * env, void *data)
 #endif
       (*env)->DeleteLocalRef(env, rawDataClass);
       rawDataClass = (*env)->NewGlobalRef (env, rawDataClass);
-      if (rawDataClass = NULL)
+      if (rawDataClass == NULL)
 	{
 	  JCL_ThrowException (env, "java/lang/InternalError",
 			      "unable to create an internal global ref");
