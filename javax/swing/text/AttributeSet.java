@@ -1,5 +1,5 @@
 /* AttributeSet.java -- 
-   Copyright (C) 2002, 2004 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -42,9 +42,14 @@ import java.util.Enumeration;
 /**
  * A set of attributes. An attribute has a key and a value. They typically
  * describe features of a piece of text that make up its graphical
- * representation
+ * representation.
+ *
+ * An <code>AttributeSet</code> may have a resolving parent,
+ * that is another <code>AttributeSet</code> that is searched for attribute
+ * keys that are not stored locally in this <code>AttributeSet</code>.
  *
  * @author original author unknown
+ * @author Roman Kennke (roman@kennke.org)
  */
 public interface AttributeSet
 { 
