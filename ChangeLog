@@ -1,3 +1,13 @@
+2005-08-03  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* include/java_nio_VMDirectByteBuffer.h:
+	Regenerated.
+
+	* native/jni/java-nio/gnu_java_nio_charset_iconv_IconvEncoder.c
+	(getData): Fixed function call.
+
+	Reported by: Andreas Tobler <toa@pop.agri.ch>
+	
 2005-08-03  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/plaf/basic/BasicIconFactory.java:

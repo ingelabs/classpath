@@ -199,5 +199,5 @@ getData (JNIEnv * env, jobject obj)
   assert (data_fid != 0);
   data = (*env)->GetObjectField (env, obj, data_fid);
 
-  return JCL_GetRawDataObject(env, data);
+  return JCL_GetRawData(env, data);
 }
