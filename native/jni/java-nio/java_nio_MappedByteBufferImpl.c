@@ -57,8 +57,8 @@ exception statement from your version. */
 
 /* FIXME these are defined in gnu_java_nio_channels_FileChannelImpl
    too; should be someplace common. */
-#define ALIGN_DOWN(p,s) ((p) - ((p) % (s)))
-#define ALIGN_UP(p,s) ((p) + ((s) - ((p) % (s))))
+#define ALIGN_DOWN(p,s) ((jpointer)(p) - ((jpointer)(p) % (s)))
+#define ALIGN_UP(p,s) ((jpointer)(p) + ((s) - ((jpointer)(p) % (s))))
 
 /**
  * Returns the memory page size of this platform.
@@ -97,7 +97,6 @@ get_raw_values (JNIEnv *env, jobject this, void **address, size_t *size)
   const long pagesize = get_pagesize ();
   jfieldID MappedByteBufferImpl_address;
   jfieldID MappedByteBufferImpl_size;
-  jfieldID RawData_data;
   jobject MappedByteBufferImpl_address_value = NULL;
 
   *address = NULL;
@@ -123,22 +122,8 @@ get_raw_values (JNIEnv *env, jobject this, void **address, size_t *size)
       return;
     }
 
-#if (SIZEOF_VOID_P == 4)
-  RawData_data =
-    (*env)->GetFieldID (env, (*env)->GetObjectClass (env, MappedByteBufferImpl_address_value),
-			"data", "I");
   *address = (void *)
-    ALIGN_DOWN ((*env)->GetIntField (env, MappedByteBufferImpl_address_value,
-				     RawData_data), pagesize);
-#elif (SIZEOF_VOID_P == 8)
-  RawData_data =
-    (*env)->GetFieldID (env, (*env)->GetObjectClass (env, MappedByteBufferImpl_address_value),
-			"data", "J");
-  *address = (void *)
-    ALIGN_DOWN ((*env)->GetLongField (env, MappedByteBufferImpl_address_value,
-				      RawData_data), pagesize);
-#endif /* SIZEOF_VOID_P */
-
+    ALIGN_DOWN (JCL_GetRawData (env, MappedByteBufferImpl_address_value), pagesize);
   *size = (size_t)
     ALIGN_UP ((*env)->GetIntField (env, this, MappedByteBufferImpl_size),
 	      pagesize);

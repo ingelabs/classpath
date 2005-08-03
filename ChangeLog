@@ -1,3 +1,20 @@
+2005-08-03  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* classpath/jcl.c
+	(JCl_NewRawDataObject): Added error handling.
+
+	* classpath/jcl.h
+	(jpointer): New integer type to represent a pointer. 
+
+	* gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c,
+	java-nio/gnu_java_nio_channels_FileChannelImpl.c,
+	java-nio/gnu_java_nio_charset_iconv_IconvDecoder.c,
+	java-nio/gnu_java_nio_charset_iconv_IconvEncoder.c,
+	java-nio/java_nio_MappedByteBufferImpl.c,
+	java-nio/java_nio_VMDirectByteBuffer.c,
+	xmlj/xmlj_util.c: Use JCL functions instead of directly 
+	accessing gnu/classpath/RawData.
+
 2005-08-03  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/AttributeSet.java: Added some API comments

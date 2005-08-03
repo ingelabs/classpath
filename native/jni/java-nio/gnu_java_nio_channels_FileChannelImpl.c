@@ -512,9 +512,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
 {
 #ifdef HAVE_MMAP
   jclass MappedByteBufferImpl_class;
-  jclass RawData_class;
   jmethodID MappedByteBufferImpl_init = NULL;
-  jmethodID RawData_init = NULL;
   jobject RawData_instance;
   volatile jobject buffer;
   long pagesize;
@@ -534,26 +532,6 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
 		      "can't determine memory page size");
   return NULL;
 #endif /* HAVE_GETPAGESIZE/HAVE_SYSCONF */
-
-#if (SIZEOF_VOID_P == 4)
-  RawData_class = (*env)->FindClass (env, "gnu/classpath/RawData32");
-  if (RawData_class != NULL)
-    {
-      RawData_init = (*env)->GetMethodID (env, RawData_class,
-					  "<init>", "(I)V");
-    }
-#elif (SIZEOF_VOID_P == 8)
-  RawData_class = (*env)->FindClass (env, "gnu/classpath/RawData64");
-  if (RawData_class != NULL)
-    {
-      RawData_init = (*env)->GetMethodID (env, RawData_class,
-					  "<init>", "(J)V");
-    }
-#else
-  JCL_ThrowException (env, IO_EXCEPTION,
-		      "pointer size not supported");
-  return NULL;
-#endif /* SIZEOF_VOID_P */
 
   if ((*env)->ExceptionOccurred (env))
     {
@@ -583,13 +561,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
      down to a multiple of the page size. */
   address = (void *) ((char *) p + (position % pagesize));
 
-#if (SIZEOF_VOID_P == 4)
-  RawData_instance = (*env)->NewObject (env, RawData_class,
-					RawData_init, (jint) address);
-#elif (SIZEOF_VOID_P == 8)
-  RawData_instance = (*env)->NewObject (env, RawData_class,
-					RawData_init, (jlong) address);
-#endif /* SIZEOF_VOID_P */
+  RawData_instance = JCL_NewRawDataObject(env, address);
 
   MappedByteBufferImpl_class = (*env)->FindClass (env,
 						  "java/nio/MappedByteBufferImpl");

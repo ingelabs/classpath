@@ -582,15 +582,7 @@ createRawData (JNIEnv * env, jobject obj, void *ptr)
 				 "Lgnu/classpath/RawData;");
   g_assert (data_fid != 0);
 
-#if SIZEOF_VOID_P == 8
-  cls = (*env)->FindClass (env, "gnu/classpath/RawData64");
-  method = (*env)->GetMethodID (env, cls, "<init>", "(J)V");
-  data = (*env)->NewObject (env, cls, method, (jlong) ptr);
-#else
-  cls = (*env)->FindClass (env, "gnu/classpath/RawData32");
-  method = (*env)->GetMethodID (env, cls, "<init>", "(I)V");
-  data = (*env)->NewObject (env, cls, method, (jint) ptr);
-#endif
+  data = JCL_NewRawDataObject (env, ptr);
 
   (*env)->SetObjectField (env, obj, data_fid, data);
 }
@@ -609,13 +601,5 @@ getData (JNIEnv * env, jobject obj)
   g_assert (data_fid != 0);
   data = (*env)->GetObjectField (env, obj, data_fid);
 
-#if SIZEOF_VOID_P == 8
-  cls = (*env)->FindClass (env, "gnu/classpath/RawData64");
-  field = (*env)->GetFieldID (env, cls, "data", "J");
-  return (void *) (*env)->GetLongField (env, data, field);
-#else
-  cls = (*env)->FindClass (env, "gnu/classpath/RawData32");
-  field = (*env)->GetFieldID (env, cls, "data", "I");
-  return (void *) (*env)->GetIntField (env, data, field);
-#endif
+  return JCL_GetRawData (env, data);
 }
