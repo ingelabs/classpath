@@ -532,7 +532,8 @@ public class BasicMenuItemUI extends MenuItemUI
 	SwingUtilities.layoutCompoundLabel(m, fm, null, checkIcon, vertAlign,
 	                                   horAlign, vertTextPos, horTextPos,
 	                                   vr, cr, tr, defaultTextIconGap);
-	checkIcon.paintIcon(m, g, cr.x, cr.y);
+  if (m.isSelected())
+    checkIcon.paintIcon(m, g, cr.x, cr.y);
 
 	// We need to calculate position of the menu text and position of
 	// user menu icon if there exists one relative to the check icon.
