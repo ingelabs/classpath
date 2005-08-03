@@ -1,3 +1,8 @@
+2005-08-03  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	Changed the fonts from Helvetica to Dialog.
+
 2005-08-03  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* include/java_nio_VMDirectByteBuffer.h:

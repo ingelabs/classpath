@@ -305,7 +305,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
           return BasicIconFactory.getCheckBoxIcon();
         }
       },
-      "CheckBoxMenuItem.acceleratorFont", new FontUIResource("Helvetica",
+      "CheckBoxMenuItem.acceleratorFont", new FontUIResource("Dialog",
                                                              Font.PLAIN, 12),
       "CheckBoxMenuItem.acceleratorForeground",
       new ColorUIResource(new Color(16, 16, 16)),
@@ -323,7 +323,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
           return BasicIconFactory.getMenuItemCheckIcon();
         }
       },
-      "CheckBoxMenuItem.font", new FontUIResource("Helvetica", Font.PLAIN, 12),
+      "CheckBoxMenuItem.font", new FontUIResource("Dialog", Font.PLAIN, 12),
       "CheckBoxMenuItem.foreground", new ColorUIResource(darkShadow),
       "CheckBoxMenuItem.margin", new InsetsUIResource(2, 2, 2, 2),
       "CheckBoxMenuItem.selectionBackground", new ColorUIResource(Color.black),
