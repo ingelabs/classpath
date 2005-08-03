@@ -537,12 +537,6 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
     {
       return NULL;
     }
-  if (RawData_init == NULL)
-    {
-      JCL_ThrowException (env, "java/lang/InternalError",
-                          "could not get RawData constructor");
-      return NULL;
-    }
 
   prot = PROT_READ;
   if (mode == '+')

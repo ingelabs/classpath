@@ -1,5 +1,10 @@
 2005-08-03  Guilhem Lavaux  <guilhem@kaffe.org>
 
+	* java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(mapImpl): Fixed typo.
+
+2005-08-03  Guilhem Lavaux  <guilhem@kaffe.org>
+
 	* classpath/jcl.c
 	(JCl_NewRawDataObject): Added error handling.
 
