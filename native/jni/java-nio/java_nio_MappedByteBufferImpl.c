@@ -103,7 +103,7 @@ get_raw_values (JNIEnv *env, jobject this, void **address, size_t *size)
   /* 'address' is declared in java.nio.Buffer */
   MappedByteBufferImpl_address
     = (*env)->GetFieldID (env, (*env)->GetObjectClass (env, this),
-			  "address", "Lgnu/classpath/RawData;");
+			  "address", "Lgnu/classpath/Pointer;");
   /* 'cap' -- likewise, the capacity */
   MappedByteBufferImpl_size
     = (*env)->GetFieldID (env, (*env)->GetObjectClass (env, this),

@@ -181,7 +181,7 @@ JCL_FindClass (JNIEnv * env, const char *className)
 
 
 /*
- * Build a RawData object. The function caches the class type 
+ * Build a Pointer object. The function caches the class type 
  */
 
 static jclass rawDataClass;
@@ -194,7 +194,7 @@ JCL_NewRawDataObject (JNIEnv * env, void *data)
   if (rawDataClass == NULL)
     {
 #ifdef POINTERS_ARE_64BIT
-      rawDataClass = (*env)->FindClass (env, "gnu/classpath/RawData64");
+      rawDataClass = (*env)->FindClass (env, "gnu/classpath/Pointer64");
       if (rawDataClass == NULL)
 	{
 	  JCL_ThrowException (env, "java/lang/InternalError",
@@ -218,7 +218,7 @@ JCL_NewRawDataObject (JNIEnv * env, void *data)
 	  return NULL;
 	}
 #else
-      rawDataClass = (*env)->FindClass (env, "gnu/classpath/RawData32");
+      rawDataClass = (*env)->FindClass (env, "gnu/classpath/Pointer32");
       if (rawDataClass == NULL)
 	{
 	  JCL_ThrowException (env, "java/lang/InternalError",

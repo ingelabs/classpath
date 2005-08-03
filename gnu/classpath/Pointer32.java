@@ -1,4 +1,4 @@
-/* RawData32.java -- 32 bit Pointer
+/* Pointer32.java -- 32 bit Pointer
    Copyright (C) 2004  Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -41,11 +41,11 @@ package gnu.classpath;
  * A type used to indicate special data used by native code that should not 
  * be marked by the garbage collector.
  */
-public final class RawData32 extends RawData
+public final class Pointer32 extends Pointer
 {
    final int data;
    
-   public RawData32(int data)
+   public Pointer32(int data)
    {
      this.data = data;
    }

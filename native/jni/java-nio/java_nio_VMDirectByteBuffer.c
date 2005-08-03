@@ -77,7 +77,7 @@ Java_java_nio_VMDirectByteBuffer_free
 }
 
 JNIEXPORT jbyte JNICALL
-Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I
+Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_Pointer_2I
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index)
 {
@@ -85,7 +85,7 @@ Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_RawData_2IB
+Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_Pointer_2IB
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index, jbyte value)
 {
@@ -94,7 +94,7 @@ Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_RawData_2IB
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I_3BII
+Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_Pointer_2I_3BII
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index, jbyteArray dst, jint dst_offset, jint dst_len)
 {
@@ -105,7 +105,7 @@ Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_RawData_2I_3BII
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_RawData_2I_3BII
+Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_Pointer_2I_3BII
   (JNIEnv *env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index, jbyteArray src, jint src_offset, jint src_len)
 {

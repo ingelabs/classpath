@@ -178,7 +178,7 @@ createRawData (JNIEnv * env, jobject obj, void *ptr)
   jfieldID data_fid;
 
   cls = (*env)->GetObjectClass (env, obj);
-  data_fid = (*env)->GetFieldID (env, cls, "data", "Lgnu/classpath/RawData;");
+  data_fid = (*env)->GetFieldID (env, cls, "data", "Lgnu/classpath/Pointer;");
   assert (data_fid != 0);
   
   data = JCL_NewRawDataObject (env, ptr);
@@ -195,7 +195,7 @@ getData (JNIEnv * env, jobject obj)
   jobject data;
 
   cls = (*env)->GetObjectClass (env, obj);
-  data_fid = (*env)->GetFieldID (env, cls, "data", "Lgnu/classpath/RawData;");
+  data_fid = (*env)->GetFieldID (env, cls, "data", "Lgnu/classpath/Pointer;");
   assert (data_fid != 0);
   data = (*env)->GetObjectField (env, obj, data_fid);
 

@@ -1,4 +1,28 @@
 2005-08-03  Guilhem Lavaux  <guilhem@kaffe.org>
+	
+        * gnu/classpath/Pointer.java,
+        gnu/classpath/Pointer32.java,
+        gnu/classpath/Pointer64.java,
+        gnu/classpath/RawData.java,
+        gnu/classpath/RawData32.java,
+        gnu/classpath/RawData64.java,
+        gnu/java/awt/peer/gtk/GtkImage.java,
+        gnu/java/nio/charset/iconv/IconvDecoder.java,
+        gnu/java/nio/charset/iconv/IconvEncoder.java,
+        java/nio/Buffer.java,
+        java/nio/DirectByteBufferImpl.java,
+        java/nio/MappedByteBufferImpl.java,
+        native/jni/classpath/jcl.c,
+        native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c,
+        native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c,
+        native/jni/java-nio/gnu_java_nio_charset_iconv_IconvDecoder.c,
+        native/jni/java-nio/gnu_java_nio_charset_iconv_IconvEncoder.c,
+        native/jni/java-nio/java_nio_MappedByteBufferImpl.c,
+        native/jni/java-nio/java_nio_VMDirectByteBuffer.c,
+        vm/reference/java/nio/VMDirectByteBuffer.java: Renamed 
+        references to gnu/classpath/RawData to gnu/classpath/Pointer.
+
+2005-08-03  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* java-nio/gnu_java_nio_channels_FileChannelImpl.c
 	(mapImpl): Fixed typo.

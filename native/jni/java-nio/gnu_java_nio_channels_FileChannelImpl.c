@@ -513,7 +513,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
 #ifdef HAVE_MMAP
   jclass MappedByteBufferImpl_class;
   jmethodID MappedByteBufferImpl_init = NULL;
-  jobject RawData_instance;
+  jobject Pointer_instance;
   volatile jobject buffer;
   long pagesize;
   int prot, flags;
@@ -555,7 +555,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
      down to a multiple of the page size. */
   address = (void *) ((char *) p + (position % pagesize));
 
-  RawData_instance = JCL_NewRawDataObject(env, address);
+  Pointer_instance = JCL_NewRawDataObject(env, address);
 
   MappedByteBufferImpl_class = (*env)->FindClass (env,
 						  "java/nio/MappedByteBufferImpl");
@@ -563,7 +563,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
     {
       MappedByteBufferImpl_init =
 	(*env)->GetMethodID (env, MappedByteBufferImpl_class,
-			     "<init>", "(Lgnu/classpath/RawData;IZ)V");
+			     "<init>", "(Lgnu/classpath/Pointer;IZ)V");
     }
 
   if ((*env)->ExceptionOccurred (env))
@@ -580,7 +580,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj,
     }
 
   buffer = (*env)->NewObject (env, MappedByteBufferImpl_class,
-                              MappedByteBufferImpl_init, RawData_instance,
+                              MappedByteBufferImpl_init, Pointer_instance,
                               (jint) size, mode == 'r');
   return buffer;
 #else
