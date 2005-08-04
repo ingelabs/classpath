@@ -567,7 +567,8 @@ layoutContainer(Container target)
       Dimension s = calcCompSize(my_south, PREF);
       Dimension e = calcCompSize(my_east, PREF);
       Dimension w = calcCompSize(my_west, PREF);
-      Dimension t = target.getSize();
+      int targetWidth = target.getWidth();
+      int targetHeight = target.getHeight();
 
       /*
 	<-> hgap     <-> hgap
@@ -593,20 +594,20 @@ layoutContainer(Container target)
       int x1 = i.left;
       int x2 = x1 + w.width + (w.width == 0 ? 0 : hgap);
       int x3;
-      if (t.width <= i.right + e.width)
+      if (targetWidth <= i.right + e.width)
         x3 = x2 + w.width + (w.width == 0 ? 0 : hgap);
       else
-        x3 = t.width - i.right - e.width;
-      int ww = t.width - i.right - i.left;
+        x3 = targetWidth - i.right - e.width;
+      int ww = targetWidth - i.right - i.left;
 
       int y1 = i.top;
       int y2 = y1 + n.height + (n.height == 0 ? 0 : vgap);
       int midh = Math.max(e.height, Math.max(w.height, c.height));
       int y3;
-      if (t.height <= i.bottom + s.height)
+      if (targetHeight <= i.bottom + s.height)
         y3 = y2 + midh + vgap;
       else
-        y3 = t.height - i.bottom - s.height;
+        y3 = targetHeight - i.bottom - s.height;
       int hh = y3-y2-(s.height == 0 ? 0 : vgap);
 
       setBounds(center, x2, y2, x3-x2-(w.width == 0 ? 0 : hgap), hh);
