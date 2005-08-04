@@ -1,3 +1,13 @@
+2005-08-04  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JCheckBox.java
+	(init): Initialized icons. Was not working otherwise.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	Added in checkIcon for the CheckBox.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java:
+	Added in checkIcon for CheckBox and defaults for
+	CheckBoxMenuItem.	
+
 2005-08-03  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/JCheckBoxMenuItem.java
