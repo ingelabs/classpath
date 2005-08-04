@@ -1,4 +1,10 @@
 2005-08-04  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(getPreferredSize): Multiplied defaultTextIconGap by 2, 
+	so there is equal space around the MenuItem
+
+2005-08-04  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/plaf/basic/BasicMenuItemUI.java
 	(paintIcon): Added in border painting code for MenuItem
