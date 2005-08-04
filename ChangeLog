@@ -1,3 +1,13 @@
+2005-08-04  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/JCheckBox.java
+	(init): Moved these to ui
+	* javax/swing/plaf/basic/BasicCheckBoxUI.java
+	(installUI): initalized icons
+	* javax/swing/plaf/metal/MetalLookAndFeel.java:
+	Took out CheckBoxMenuItem defaults because did not
+	work as expected. For now it uses the BasicL&F's defaults.
+
 2005-08-04  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JList.java:

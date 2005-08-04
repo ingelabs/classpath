@@ -67,9 +67,6 @@ public class JCheckBox extends JToggleButton
   {
     borderPainted = false;
     contentAreaFilled = false;
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-    setIcon(defaults.getIcon("CheckBox.icon"));
-    setSelectedIcon(defaults.getIcon("CheckBox.checkIcon"));
   }
   
   public JCheckBox()
