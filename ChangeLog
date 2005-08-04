@@ -1,5 +1,10 @@
 2005-08-04  Roman Kennke  <roman@kennke.org>
 
+	* java/awt/BorderLayout.java: Reformatted this file to meet our
+	coding standards.
+
+2005-08-04  Roman Kennke  <roman@kennke.org>
+
 	* java/awt/BorderLayout.java
 	(layoutContainer): Replaced getSize() call with getWidth() and
 	getHeight(). This avoids heap allocation and fixes a bug in
