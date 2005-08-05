@@ -1,3 +1,10 @@
+2005-08-05  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/GridBagLayout.java
+	(setConstraints): Removed checks in if statements because if the height
+	or width is less than 0, it should be updated to a positive number in
+	all cases.
+
 2005-08-05  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c: Include
