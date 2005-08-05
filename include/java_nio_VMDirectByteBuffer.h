@@ -10,7 +10,6 @@ extern "C"
 {
 #endif
 
-JNIEXPORT void JNICALL Java_java_nio_VMDirectByteBuffer_init (JNIEnv *env, jclass);
 JNIEXPORT jobject JNICALL Java_java_nio_VMDirectByteBuffer_allocate (JNIEnv *env, jclass, jint);
 JNIEXPORT void JNICALL Java_java_nio_VMDirectByteBuffer_free (JNIEnv *env, jclass, jobject);
 JNIEXPORT jbyte JNICALL Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_Pointer_2I (JNIEnv *env, jclass, jobject, jint);

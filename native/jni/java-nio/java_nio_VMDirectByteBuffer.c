@@ -45,12 +45,6 @@ exception statement from your version. */
 
 #include "java_nio_VMDirectByteBuffer.h"
 
-JNIEXPORT void JNICALL
-Java_java_nio_VMDirectByteBuffer_init
-  (JNIEnv * env, jclass clazz __attribute__ ((__unused__)))
-{
-}
-
 JNIEXPORT jobject JNICALL
 Java_java_nio_VMDirectByteBuffer_allocate
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)), jint capacity)

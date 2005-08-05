@@ -50,11 +50,7 @@ final class VMDirectByteBuffer
       {
         System.loadLibrary("javanio");
       }
-
-    init();
   }
-
-  private static native void init();
 
   static native Pointer allocate (int capacity);
   static native void free(Pointer address);

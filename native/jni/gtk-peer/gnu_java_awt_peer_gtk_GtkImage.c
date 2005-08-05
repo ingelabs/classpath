@@ -35,6 +35,7 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+#include "jcl.h"
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkImage.h"
 #include <gdk-pixbuf/gdk-pixbuf.h>
@@ -573,7 +574,6 @@ static void
 createRawData (JNIEnv * env, jobject obj, void *ptr)
 {
   jclass cls;
-  jmethodID method;
   jobject data;
   jfieldID data_fid;
 
@@ -591,7 +591,6 @@ static void *
 getData (JNIEnv * env, jobject obj)
 {
   jclass cls;
-  jfieldID field;
   jfieldID data_fid;
   jobject data;
 

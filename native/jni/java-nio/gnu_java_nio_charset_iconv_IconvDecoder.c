@@ -173,7 +173,6 @@ static void
 createRawData (JNIEnv * env, jobject obj, void *ptr)
 {
   jclass cls;
-  jmethodID method;
   jobject data;
   jfieldID data_fid;
 
@@ -190,7 +189,6 @@ static void *
 getData (JNIEnv * env, jobject obj)
 {
   jclass cls;
-  jfieldID field;
   jfieldID data_fid;
   jobject data;
 
