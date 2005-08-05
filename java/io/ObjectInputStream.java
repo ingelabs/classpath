@@ -957,19 +957,13 @@ public class ObjectInputStream extends InputStream
   {
     if (this.readDataFromBlock)
       {
-	if (this.blockDataPosition + length > this.blockDataBytes)
-	  {
-	    int remain = this.blockDataBytes - this.blockDataPosition;
-	    if (remain != 0)
-	      {
-		System.arraycopy(this.blockData, this.blockDataPosition,
-				 data, offset, remain);
-		offset += remain;
-		length -= remain;
-	      }
-	    readNextBlock ();
-	  }
-
+        int remain = this.blockDataBytes - this.blockDataPosition;
+        if (remain == 0)
+          {
+            readNextBlock();
+            remain = this.blockDataBytes - this.blockDataPosition;
+          }
+        length = Math.min(length, remain);
 	System.arraycopy(this.blockData, this.blockDataPosition,
 			 data, offset, length);
 	this.blockDataPosition += length;

@@ -1,5 +1,11 @@
+2005-08-05  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/io/ObjectInputStream.java
+	(read(byte[],int,int)): Simplified and fixed bug 23236.
+
 2005-08-04  Aaron Luchko  <aluchko@redhat.com>
-	*gnu/classpath/jdwp/processor/MethodCommandSet.java: Implemented
+
+	* gnu/classpath/jdwp/processor/MethodCommandSet.java: Implemented
 	the Method CommandSet.
 
 2005-08-04  Lillian Angel  <langel@redhat.com>
