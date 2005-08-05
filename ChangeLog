@@ -1,3 +1,22 @@
+2005-08-05  Roman Kennke  <roman@kennke.org>
+
+	* java/awt/Container.java:
+	(preferredSize): Call getLayout() instead of directly referencing
+	the private field. This makes components work that override
+	getLayout().
+	(minimumSize): Call getLayout() instead of directly referencing
+	the private field. This makes components work that override
+	getLayout(). Use cached size if component is still valid.
+	(maximumSize): Call getLayout() instead of directly referencing
+	the private field. This makes components work that override
+	getLayout(). Use cached size if component is still valid.
+	(update): If we are a top-level-container, call super.update(),
+	otherwise directly call paint().
+	(visitChildren): Also visit children that are itself Containers.
+	* java/awt/Component.java
+	(update): Clear the background only for lightweight and top-level
+	components.
+
 2005-08-05  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicGraphicsUtils.java
