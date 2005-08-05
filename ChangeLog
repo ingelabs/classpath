@@ -1,3 +1,26 @@
+2005-08-05  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/datatransfer/FlavorEvent.java: New class.
+	* java/awt/datatransfer/FlavorListener.java: Likewise.
+	* java/awt/datatransfer/Clipboard.java (name): Made final.
+	(listeners): New final ArrayList field.
+	(setContents): Reimplemented.
+	(getAvailableDataFlavors): New method.
+	(isDataFlavorAvailable): Likewise.
+	(getData): Likewise.
+	(addFlavorListener): Likewise.
+	(removeFlavorListener): Likewise.
+	(getFlavorListeners): Likewise.
+	* java/awt/datatransfer/DataFlavor.java (javaFileListFlavor):
+	Construct with mime media-type application/x-java-file-list.
+	(DataFlavor(String mimeType, String humanPresentableName)): Call
+	constructor that uses given mimeType.
+	(getSubType): Reimplemented.
+	(getParameter): Handle 'vitual' humanPresentableName parameter.
+	(isMimeTypeEqual): Reimplement.
+	(isRepresentationClassRemote): Implement.
+	(toString): Add formatting.
+
 2005-08-05  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/GridBagLayout.java
