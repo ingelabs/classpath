@@ -1,3 +1,12 @@
+2005-08-05  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicGraphicsUtils.java
+	(getPreferredButtonSize): Added horizontalAdjustment to width
+	to create gap at end of label text.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(getPreferredSize): Removed "*2" since fix was moved to 
+	BasicGraphicsUtils
+
 2005-08-05  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/DefaultCaret.java: Added API comments all

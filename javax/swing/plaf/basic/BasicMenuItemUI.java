@@ -356,7 +356,7 @@ public class BasicMenuItemUI extends MenuItemUI
   public Dimension getPreferredSize(JComponent c)
   {
     return getPreferredMenuItemSize(c, checkIcon, arrowIcon, 
-        defaultTextIconGap*2);
+        defaultTextIconGap);
   }
 
   protected String getPropertyPrefix()
