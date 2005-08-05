@@ -1,3 +1,25 @@
+2005-08-05  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	(getPathBounds): Changed to use TreeNode and not 
+	DefaultMutableTreeNode.
+	(getPathForRow): Likewise.
+	(getRowCount): Likewise.
+	(getPreferredSize): Likewise.
+	(keyPressed): Likewise.
+	(paintNode): Likewise.
+	(getCellLocation): Likewise.
+	(paintRecursive): Likewise.
+	(paintControlIcons): Likewise.
+	(getNextVisibleNode): Likewise.
+	(getPreviousVisibleNode): Likewise.
+	(getNextNode): Implemented because not using DefaultMutableTreeNode.
+	(getPreviousNode): Implemented
+	(getNextSibling): Implemented
+	(getPreviousSibling): Implemented
+	(getPathToRoot): Implemented
+	(getLevel): Implemented
+
 2005-08-05  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/datatransfer/FlavorEvent.java: New class.
