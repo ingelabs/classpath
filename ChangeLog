@@ -1,3 +1,10 @@
+2005-08-05  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/text/DefaultCaret.java: Added API comments all
+	over.
+	* javax/swing/text/DefaultEditorKit.java: Added API comments
+	all over.
+
 2005-08-05  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/ObjectInputStream.java
