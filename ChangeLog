@@ -1,3 +1,15 @@
+2005-08-07  Ito Kazumitsu <kaz@maczuka.gcd.org>
+
+	Fixes bug #22929
+	* libraries/javalib/java/net/NetworkInterface.java
+	(condense): New static private method.
+	(getNetworkInterfaces): Call condense().
+	(getByName, getByInetAddress): Call getNetworkInterfaces()
+	so that condensed result may be returned.
+
+	* vm/reference/java/net/VMNetworkInterface.java (getInterfaces):
+	Clarify return value in documentation.
+
 2005-08-07  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #22920
