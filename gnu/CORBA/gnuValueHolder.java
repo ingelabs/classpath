@@ -1,4 +1,4 @@
-/* ObjectHelper.java --
+/* gnuValueHolder.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,77 +36,100 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package org.omg.CORBA;
+package gnu.CORBA;
 
-import gnu.CORBA.primitiveTypeCode;
+import gnu.CORBA.CDR.Vio;
 
+import org.omg.CORBA.TypeCode;
+import org.omg.CORBA.ValueBaseHolder;
+import org.omg.CORBA.portable.BoxedValueHelper;
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 
+import java.io.Serializable;
+
 /**
- * The helper operations for the binding list.
+ * Boxed value holder that also remembers the value type and the value helper.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class ObjectHelper
+public class gnuValueHolder
+  extends ValueBaseHolder
 {
-  static TypeCode typeCode;
+  /**
+   * The type code of the stored value.
+   */
+  TypeCode type;
 
   /**
-   * Extract the array of object from the given {@link Any}.
+   * The helper that could read and write fields of the boxed value.
    */
-  public static org.omg.CORBA.Object extract(Any a)
+  transient BoxedValueHelper helper;
+
+  /**
+   * If true, the helper not available.
+   */
+  transient boolean helper_NA;
+
+  /**
+   * Create a new instance for the given value and given type.
+   */
+  public gnuValueHolder(Serializable value, TypeCode a_type)
   {
+    super(value);
+    type = a_type;
+  }
+
+  /**
+   * Get the true type, as it was passed in the constructor.
+   */
+  public TypeCode _type()
+  {
+    return type;
+  }
+
+  /**
+   * Write content to the output stream. Tries to locate the
+   * corresponding helper class.
+   */
+  public void _write(OutputStream output)
+  {
+    findHelper();
+    if (helper == null)
+      super._write(output);
+    else
+      Vio.write(output, value, helper);
+  }
+
+  /**
+   * Read, trying to locate helper, if possible.
+   */
+  public void _read(InputStream input)
+  {
+    findHelper();
+    if (helper == null)
+      super._read(input);
+    else
+      value = Vio.read(input, helper);
+  }
+
+  /**
+   * Set the read and write methods.
+   */
+  void findHelper()
+  {
+    if (helper != null || helper_NA)
+      return;
     try
       {
-        return ((ObjectHolder) a.extract_Streamable()).value;
+        Class helperClass =
+          Class.forName(ObjectCreator.toHelperName(type.id()));
+
+        helper = (BoxedValueHelper) helperClass.newInstance();
       }
-    catch (ClassCastException ex)
+    catch (Exception ex)
       {
-        throw new BAD_OPERATION("CORBA object expected");
+        helper_NA = true;
       }
-  }
-
-  /**
-   * Get the object repository id.
-   * @return the empty string.
-   */
-  public static String id()
-  {
-    return "";
-  }
-
-  /**
-   * Insert the object into the given {@link Any}.
-   */
-  public static void insert(Any a, org.omg.CORBA.Object object)
-  {
-    a.insert_Streamable(new ObjectHolder(object));
-  }
-
-  /**
-   * Read the object from the given CDR input stream.
-   */
-  public static org.omg.CORBA.Object read(InputStream istream)
-  {
-    return istream.read_Object();
-  }
-
-  /**
-   * Return the object type code.
-   */
-  public static TypeCode type()
-  {
-    if (typeCode == null)
-      typeCode = ORB.init().get_primitive_tc(TCKind.tk_objref);
-    return typeCode;
-  }
-
-  /**
-   * Write the object into the given CDR output stream.
-   */
-  public static void write(OutputStream ostream, org.omg.CORBA.Object value)
-  {
-    ostream.write_Object(value);
   }
 }

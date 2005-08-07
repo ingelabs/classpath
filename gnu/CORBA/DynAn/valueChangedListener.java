@@ -1,4 +1,4 @@
-/* ObjectHelper.java --
+/* valueChangedListener.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,77 +36,15 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package org.omg.CORBA;
-
-import gnu.CORBA.primitiveTypeCode;
-
-import org.omg.CORBA.portable.InputStream;
-import org.omg.CORBA.portable.OutputStream;
+package gnu.CORBA.DynAn;
 
 /**
- * The helper operations for the binding list.
+ * An interface, able to receive notification about the change of value
+ * of some DynAny.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class ObjectHelper
+public interface valueChangedListener
 {
-  static TypeCode typeCode;
-
-  /**
-   * Extract the array of object from the given {@link Any}.
-   */
-  public static org.omg.CORBA.Object extract(Any a)
-  {
-    try
-      {
-        return ((ObjectHolder) a.extract_Streamable()).value;
-      }
-    catch (ClassCastException ex)
-      {
-        throw new BAD_OPERATION("CORBA object expected");
-      }
-  }
-
-  /**
-   * Get the object repository id.
-   * @return the empty string.
-   */
-  public static String id()
-  {
-    return "";
-  }
-
-  /**
-   * Insert the object into the given {@link Any}.
-   */
-  public static void insert(Any a, org.omg.CORBA.Object object)
-  {
-    a.insert_Streamable(new ObjectHolder(object));
-  }
-
-  /**
-   * Read the object from the given CDR input stream.
-   */
-  public static org.omg.CORBA.Object read(InputStream istream)
-  {
-    return istream.read_Object();
-  }
-
-  /**
-   * Return the object type code.
-   */
-  public static TypeCode type()
-  {
-    if (typeCode == null)
-      typeCode = ORB.init().get_primitive_tc(TCKind.tk_objref);
-    return typeCode;
-  }
-
-  /**
-   * Write the object into the given CDR output stream.
-   */
-  public static void write(OutputStream ostream, org.omg.CORBA.Object value)
-  {
-    ostream.write_Object(value);
-  }
+  void changed();
 }

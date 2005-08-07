@@ -47,16 +47,16 @@ import java.io.Serializable;
  * {@link DynValueCommonOperations} provides methods for setting the value to
  * <code>null</code> or non-<code>null</code> and checking if the value is
  * <code>null</code>.
- * 
+ *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public interface DynValueCommon
-  extends DynValueOperations, DynAny, IDLEntity, org.omg.CORBA.Object,
+  extends DynValueCommonOperations, DynAny, IDLEntity, org.omg.CORBA.Object,
   Serializable
 {
   /**
    * Check if this {@link DynAny} is holding the <code>null</code>.
-   * 
+   *
    * @return true if this {@link DynAny} is holding the <code>null</code>,
    * false otherwise.
    */

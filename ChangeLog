@@ -1,3 +1,47 @@
+2005-08-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * gnu/CORBA/CDR/noHeaderInput.java,
+        gnu/CORBA/gnuValueHolder.java,
+        gnu/CORBA/DynAn/gnuDynAny.java,
+        gnu/CORBA/DynAn/gnuDynArray.java,
+        gnu/CORBA/DynAn/gnuDynSequence.java,
+        gnu/CORBA/DynAn/gnuDynValueBox.java,
+        gnu/CORBA/DynAn/abstractRecord.java,
+        gnu/CORBA/DynAn/gnuDynAnyFactory.java,
+        gnu/CORBA/DynAn/gnuDynValue.java,
+        gnu/CORBA/DynAn/gnuDynStruct.java,
+        gnu/CORBA/DynAn/anyDivideable.java,
+        gnu/CORBA/DynAn/anyUndivideable.java,
+        gnu/CORBA/DynAn/gnuDynEnum.java,
+        gnu/CORBA/DynAn/abstractDynAny.java,
+        gnu/CORBA/DynAn/gnuDynFixed.java,
+        gnu/CORBA/DynAn/valueChangedListener.java,
+        gnu/CORBA/DynAn/gnuDynUnion.java: New files.
+        * org/omg/DynamicAny/DynUnionOperations.java,
+        org/omg/DynamicAny/DynAnyOperations.java,
+        org/omg/DynamicAny/DynAnyFactoryOperations.java,
+        org/omg/DynamicAny/DynValueBox.java,
+        org/omg/DynamicAny/DynValueCommon.java,
+        org/omg/DynamicAny/DynAnyFactoryHelper.java,
+        gnu/CORBA/typeNamer.java,
+        gnu/CORBA/fixedTypeCode.java,
+        gnu/CORBA/CDR/Vio.java,
+        gnu/CORBA/CDR/cdrInput.java,
+        gnu/CORBA/CDR/cdrOutput.java,
+        gnu/CORBA/holderFactory.java,
+        gnu/CORBA/universalHolder.java,
+        gnu/CORBA/Poa/ORB_1_4.java,
+        gnu/CORBA/Restricted_ORB.java,
+        gnu/CORBA/gnuAny.java,
+        org/omg/CORBA/TypeCode.java
+        org/omg/CORBA/Any.java,
+        org/omg/CORBA/ORB.java,
+        org/omg/CORBA/ObjectHelper.java,
+        org/omg/CORBA/ObjectHolder.java,
+        org/omg/CORBA_2_3/portable/InputStream.java,
+        org/omg/CORBA_2_3/portable/OutputStream.java,
+        gnu/CORBA/DynAn/NameValuePairHolder.java: Rewritten.
+
 2005-08-06  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/ObjectInputStream.java

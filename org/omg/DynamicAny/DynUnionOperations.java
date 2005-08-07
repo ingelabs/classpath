@@ -59,24 +59,28 @@ public interface DynUnionOperations
   extends DynAnyOperations
 {
   /**
-   * Get the value of discriminator, defining which content variant (member) is
-   * active.
+   * <p>Get the value of discriminator, defining which content variant
+   * (member) is active.
+   * </p><p>
+   * In the current implementation, the later changes on the returned value
+   * alter the state of the union via implemented internal listener.
+   * </p>
    */
   DynAny get_discriminator();
 
   /**
-   * Set the value of discriminator, activating the member variant that is
+   * <p>Set the value of discriminator, activating the member variant that is
    * consistent with the discriminator value. If the current member variant
    * matches the discriminator being set, it is unchanged. Otherwise, it is
    * replaced by the matching member variant with fields, initialised to default
    * values. The current position is set to 0 if the discriminator value does
    * not match any member variant. Otherwise, the current position is set to 1,
    * index of the member variant.
-   *
+   * </p>
    * @throws TypeMismatch if the discriminator has a wrong type of this union.
    */
   void set_discriminator(DynAny aDiscriminator)
-    throws TypeMismatch;
+                  throws TypeMismatch;
 
   /**
    * Get the kind of the union descriminator.
@@ -94,7 +98,7 @@ public interface DynUnionOperations
    * @throws InvalidValue if the union has no active member.
    */
   DynAny member()
-    throws InvalidValue;
+         throws InvalidValue;
 
   /**
    * Returns the kind of the currently active union member.
@@ -104,7 +108,7 @@ public interface DynUnionOperations
    * @throws InvalidValue if the union has no active member.
    */
   TCKind member_kind()
-    throws InvalidValue;
+              throws InvalidValue;
 
   /**
    * Returns the name of the currently active union member.
@@ -114,7 +118,7 @@ public interface DynUnionOperations
    * @throws InvalidValue if the union has no active member.
    */
   String member_name()
-    throws InvalidValue;
+              throws InvalidValue;
 
   /**
    * Returns true if the union has no active member. This happens if If the
@@ -131,7 +135,7 @@ public interface DynUnionOperations
    * @throws TypeMismatch if the default case is not defined for this union.
    */
   void set_to_default_member()
-    throws TypeMismatch;
+                      throws TypeMismatch;
 
   /**
    * Set the discriminator to value that does not correspond any content variant
@@ -141,5 +145,5 @@ public interface DynUnionOperations
    * @throws TypeMismatch if the union has explicit default case.
    */
   void set_to_no_active_member()
-    throws TypeMismatch;
+                        throws TypeMismatch;
 }

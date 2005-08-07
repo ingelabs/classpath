@@ -59,7 +59,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if the source DynAny is invalid.
    */
   void assign(DynAny from)
-    throws TypeMismatch;
+       throws TypeMismatch;
 
   /**
    * Fully clones the content of this Any, returning a deep copy.
@@ -77,7 +77,7 @@ public interface DynAnyOperations
    * components, like {@link DynEnum}.
    */
   DynAny current_component()
-    throws TypeMismatch;
+                    throws TypeMismatch;
 
   /**
    * Destroys this DynAny, freeing the used resources. In java, resources are
@@ -98,7 +98,7 @@ public interface DynAnyOperations
    * otherwise invalid.
    */
   void from_any(Any an_any)
-    throws TypeMismatch, InvalidValue;
+         throws TypeMismatch, InvalidValue;
 
   /**
    * This method is used when the wrapped Any contains an instance of another
@@ -108,7 +108,7 @@ public interface DynAnyOperations
    * the typecode of this DynAny.
    */
   Any get_any()
-    throws TypeMismatch, InvalidValue;
+       throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the boolean value that is expected to be stored in this DynAny.
@@ -116,7 +116,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   boolean get_boolean()
-    throws TypeMismatch, InvalidValue;
+               throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the char value that is expected to be stored in this DynAny.
@@ -124,7 +124,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   char get_char()
-    throws TypeMismatch, InvalidValue;
+         throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the <code>double</code> value that is expected to be stored in
@@ -133,7 +133,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   double get_double()
-    throws TypeMismatch, InvalidValue;
+             throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the <code>float</code> value that is expected to be stored in
@@ -142,7 +142,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   float get_float()
-    throws TypeMismatch, InvalidValue;
+           throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the int (CORBA long) value that is expected to be stored in this
@@ -151,7 +151,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   int get_long()
-    throws TypeMismatch, InvalidValue;
+        throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the long (CORBA long long) value that is expected to be stored in
@@ -160,7 +160,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   long get_longlong()
-    throws TypeMismatch, InvalidValue;
+             throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the byte (CORBA octet) value that is expected to be stored in this
@@ -169,7 +169,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   byte get_octet()
-    throws TypeMismatch, InvalidValue;
+          throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the CORBA object reference that is expected to be stored in this
@@ -178,7 +178,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   org.omg.CORBA.Object get_reference()
-    throws TypeMismatch, InvalidValue;
+                              throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the <code>short</code> value that is expected to be stored in
@@ -187,7 +187,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   short get_short()
-    throws TypeMismatch, InvalidValue;
+           throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the string value that is expected to be stored in this DynAny.
@@ -195,7 +195,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   String get_string()
-    throws TypeMismatch, InvalidValue;
+             throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the {@link TypeCode} value that is expected to be stored in this
@@ -204,7 +204,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   TypeCode get_typecode()
-    throws TypeMismatch, InvalidValue;
+                 throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the unsigned int (CORBA ulong) value that is expected to be stored
@@ -213,7 +213,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   int get_ulong()
-    throws TypeMismatch, InvalidValue;
+         throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the unsingel long (CORBA unsigned long long )value that is expected
@@ -222,7 +222,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   long get_ulonglong()
-    throws TypeMismatch, InvalidValue;
+              throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the unsigned short value that is expected to be stored in this
@@ -231,7 +231,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   short get_ushort()
-    throws TypeMismatch, InvalidValue;
+            throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the value that is expected to be stored in this DynAny.
@@ -239,7 +239,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   Serializable get_val()
-    throws TypeMismatch, InvalidValue;
+                throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the wide (usually UTF-16) character value that is expected to be
@@ -248,7 +248,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   char get_wchar()
-    throws TypeMismatch, InvalidValue;
+          throws TypeMismatch, InvalidValue;
 
   /**
    * Extract the wide (usually UFT-16) string that is expected to be stored in
@@ -257,7 +257,7 @@ public interface DynAnyOperations
    * @throws TypeMismatch if this DynAny holds the value of the different type.
    */
   String get_wstring()
-    throws TypeMismatch, InvalidValue;
+              throws TypeMismatch, InvalidValue;
 
   /**
    * Insert the {@link Any} value into the enclosed {@link Any} inside this
@@ -268,7 +268,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_any(Any an_any)
-    throws TypeMismatch, InvalidValue;
+           throws TypeMismatch, InvalidValue;
 
   /**
    * Insert the boolean value into the enclosed {@link Any} inside this DynAny
@@ -278,7 +278,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_boolean(boolean a_x)
-    throws InvalidValue, TypeMismatch;
+               throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the char value into the enclosed {@link Any} inside this DynAny
@@ -288,7 +288,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_char(char a_x)
-    throws InvalidValue, TypeMismatch;
+            throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the double value into the enclosed {@link Any} inside this DynAny
@@ -298,7 +298,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_double(double a_x)
-    throws InvalidValue, TypeMismatch;
+              throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the float value into the enclosed {@link Any} inside this DynAny
@@ -308,7 +308,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_float(float a_x)
-    throws InvalidValue, TypeMismatch;
+             throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the int (CORBA long) value into the enclosed {@link Any} inside this
@@ -319,7 +319,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_long(int a_x)
-    throws InvalidValue, TypeMismatch;
+            throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the long (CORBA long long) value into the enclosed {@link Any}
@@ -330,7 +330,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_longlong(long a_x)
-    throws InvalidValue, TypeMismatch;
+                throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the byte (CORBA octet) value into the enclosed {@link Any} inside
@@ -341,7 +341,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_octet(byte a_x)
-    throws InvalidValue, TypeMismatch;
+             throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the object reference into the enclosed {@link Any} inside this
@@ -352,7 +352,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_reference(org.omg.CORBA.Object a_x)
-    throws InvalidValue, TypeMismatch;
+                 throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the <code>short</code> value into the enclosed {@link Any} inside
@@ -363,7 +363,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_short(short a_x)
-    throws InvalidValue, TypeMismatch;
+             throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the string value into the enclosed {@link Any} inside this DynAny
@@ -373,7 +373,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_string(String a_x)
-    throws InvalidValue, TypeMismatch;
+              throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the {@link TypeCode} value into the enclosed {@link Any} inside this
@@ -384,7 +384,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_typecode(TypeCode a_x)
-    throws InvalidValue, TypeMismatch;
+                throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the int (CORBA unsinged long) value into the enclosed {@link Any}
@@ -395,7 +395,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_ulong(int a_x)
-    throws InvalidValue, TypeMismatch;
+             throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the long (CORBA unsigned long long) value into the enclosed
@@ -406,7 +406,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_ulonglong(long a_x)
-    throws InvalidValue, TypeMismatch;
+                 throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the short (CORBA unsigned short) value into the enclosed {@link Any}
@@ -417,7 +417,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_ushort(short a_x)
-    throws InvalidValue, TypeMismatch;
+              throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the value into the enclosed {@link Any} inside this DynAny
@@ -427,7 +427,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_val(Serializable a_x)
-    throws InvalidValue, TypeMismatch;
+           throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the wide char (usually UTF-16) value into the enclosed {@link Any}
@@ -438,7 +438,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_wchar(char a_x)
-    throws InvalidValue, TypeMismatch;
+             throws InvalidValue, TypeMismatch;
 
   /**
    * Insert the wide string (usually UTF-16) into the enclosed {@link Any}
@@ -449,7 +449,7 @@ public interface DynAnyOperations
    * enclosed {@link Any}.
    */
   void insert_wstring(String a_x)
-    throws InvalidValue, TypeMismatch;
+               throws InvalidValue, TypeMismatch;
 
   /**
    * Advances the internal pointer, described in the {@link current_component},
@@ -503,7 +503,7 @@ public interface DynAnyOperations
    * @throws InvalidValue if the current position points nowhere.
    */
   void insert_dyn_any(DynAny insert_it)
-    throws TypeMismatch, InvalidValue;
+               throws TypeMismatch, InvalidValue;
 
   /**
    * Checks for equality with another Dynamic Any.
@@ -536,5 +536,5 @@ public interface DynAnyOperations
    * @throws InvalidValue if the current position points nowhere.
    */
   DynAny get_dyn_any()
-    throws TypeMismatch, InvalidValue;
+              throws TypeMismatch, InvalidValue;
 }

@@ -1,4 +1,4 @@
-/* ObjectHelper.java --
+/* gnuDynStruct.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,77 +36,74 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package org.omg.CORBA;
+package gnu.CORBA.DynAn;
 
-import gnu.CORBA.primitiveTypeCode;
+import java.io.Serializable;
 
-import org.omg.CORBA.portable.InputStream;
-import org.omg.CORBA.portable.OutputStream;
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.TypeCode;
+import org.omg.DynamicAny.DynStruct;
+import org.omg.DynamicAny.NameDynAnyPair;
+import org.omg.DynamicAny.NameValuePair;
+import gnu.CORBA.Unexpected;
+import org.omg.DynamicAny.DynAny;
 
 /**
- * The helper operations for the binding list.
+ * Implementation of the DynStruct.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class ObjectHelper
+public class gnuDynStruct
+  extends abstractRecord
+  implements DynStruct, Serializable
 {
-  static TypeCode typeCode;
+  /**
+   * Use serialVersionUID for interoperability.
+   */
+  private static final long serialVersionUID = 1;
 
   /**
-   * Extract the array of object from the given {@link Any}.
+   * Create an instance.
    */
-  public static org.omg.CORBA.Object extract(Any a)
+  public gnuDynStruct(TypeCode oType, TypeCode aType,
+                      gnuDynAnyFactory aFactory, ORB anOrb)
   {
+    super(oType, aType, aFactory, anOrb);
+
+    // Initialise fields.
     try
       {
-        return ((ObjectHolder) a.extract_Streamable()).value;
+        array = new DynAny[ final_type.member_count() ];
+        fNames = new String[ array.length ];
+        for (int i = 0; i < array.length; i++)
+          {
+            array [ i ] =
+              factory.create_dyn_any_from_type_code(final_type.member_type(i));
+            fNames [ i ] = final_type.member_name(i);
+          }
       }
-    catch (ClassCastException ex)
+    catch (Exception e)
       {
-        throw new BAD_OPERATION("CORBA object expected");
+        throw new Unexpected(e);
       }
   }
 
-  /**
-   * Get the object repository id.
-   * @return the empty string.
-   */
-  public static String id()
+  /** @inheritDoc */
+  protected abstractRecord newInstance(TypeCode oType, TypeCode aType,
+                                       gnuDynAnyFactory aFactory, ORB anOrb)
   {
-    return "";
+    return new gnuDynStruct(oType, aType, aFactory, anOrb);
   }
 
-  /**
-   * Insert the object into the given {@link Any}.
-   */
-  public static void insert(Any a, org.omg.CORBA.Object object)
+  /** @inheritDoc */
+  public NameDynAnyPair[] get_members_as_dyn_any()
   {
-    a.insert_Streamable(new ObjectHolder(object));
+    return super.gnu_get_members_as_dyn_any();
   }
 
-  /**
-   * Read the object from the given CDR input stream.
-   */
-  public static org.omg.CORBA.Object read(InputStream istream)
+  /** @inheritDoc */
+  public NameValuePair[] get_members()
   {
-    return istream.read_Object();
-  }
-
-  /**
-   * Return the object type code.
-   */
-  public static TypeCode type()
-  {
-    if (typeCode == null)
-      typeCode = ORB.init().get_primitive_tc(TCKind.tk_objref);
-    return typeCode;
-  }
-
-  /**
-   * Write the object into the given CDR output stream.
-   */
-  public static void write(OutputStream ostream, org.omg.CORBA.Object value)
-  {
-    ostream.write_Object(value);
+    return super.gnu_get_members();
   }
 }
