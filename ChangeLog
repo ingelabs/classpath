@@ -1,3 +1,17 @@
+2005-08-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/DynamicAny/AnySeqHelper.java,
+        org/omg/DynamicAny/NameDynAnyPairSeqHelper.java,
+        org/omg/DynamicAny/NameValuePairHelper.java,
+        org/omg/DynamicAny/NameDynAnyPairHelper.java,
+        org/omg/DynamicAny/NameValuePairSeqHelper.java,
+        org/omg/DynamicAny/DynAnySeqHelper.java,
+        gnu/CORBA/DynAnySeqHolder.java,
+        gnu/CORBA/NameDynAnyPairSeqHolder.java,
+        gnu/CORBA/NameDynAnyPairHolder.java,
+        gnu/CORBA/NameValuePairSeqHolder.java,
+        gnu/CORBA/NameValuePairHolder.java: New files.
+
 2005-08-07  Ito Kazumitsu <kaz@maczuka.gcd.org>
 
 	Fixes bug #22929
