@@ -1,3 +1,11 @@
+2005-08-06  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/IllegalArgumentException.java,
+	java/lang/IllegalStateException.java,
+	java/lang/SecurityException.java,
+	java/lang/UnsupportedOperationException.java: Merged from generics
+	branch.
+
 2005-08-05  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/plaf/basic/BasicTreeUI.java:
