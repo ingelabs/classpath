@@ -1,5 +1,13 @@
 2005-08-06  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/io/ObjectInputStream.java
+	(readClassDescriptor): Removed bogus handling of primitive types.
+	(readFields.GetField.defaulted): Pass cause to exception.
+	(readFields.GetField.getField): Pass cause to exception.
+	(newObject, callReadMethod): Call initCause on exception.
+
+2005-08-06  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/lang/IllegalArgumentException.java,
 	java/lang/IllegalStateException.java,
 	java/lang/SecurityException.java,
