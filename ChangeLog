@@ -1,3 +1,9 @@
+2005-08-07  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #22920
+	* java/net/DatagramSocket.java (DatagramSocket(SocketAddress)):
+	Use gnu.classpath.SystemProperties to get impl.prefix.
+
 2005-08-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/CDR/noHeaderInput.java,
