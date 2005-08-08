@@ -1,3 +1,15 @@
+2005-08-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org> 
+
+        * org/omg/DynamicAny/_DynAnyFactoryStub.java,
+        org/omg/DynamicAny/_DynAnyStub.java,
+        org/omg/DynamicAny/_DynArrayStub.java,
+        org/omg/DynamicAny/_DynEnumStub.java,
+        org/omg/DynamicAny/_DynFixedStub.java,
+        org/omg/DynamicAny/_DynStructStub.java,
+        org/omg/DynamicAny/_DynUnionStub.java,
+        org/omg/DynamicAny/_DynValueStub.java,
+        org/omg/DynamicAny/_DynSequenceStub.java: New files.
+
 2005-08-08  Lillian Angel  <langel@redhat.com>
 
 	Fixes bug #23252
