@@ -47,6 +47,7 @@ libgtkpeer_la_SOURCES = $(gtk_cairo_c_source_files) \
 			gdkfont.h \
 			gthread-jni.h \
 			gtkcairopeer.h \
+			gtk_jawt.c \
 			gtkpeer.h
 
 libgtkpeer_la_LIBADD = $(top_builddir)/native/jni/classpath/native_state.lo \

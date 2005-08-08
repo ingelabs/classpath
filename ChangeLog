@@ -1,3 +1,16 @@
+2005-08-08  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/23285:
+	* native/jni/classpath/classpath_jawt.h
+	(classpath_jawt_get_awt_version, classpath_jawt_lock,
+	classpath_jawt_unlock, classpath_jawt_create_lock,
+	classpath_jawt_destroy_lock): Use '(void)' in prototype.
+	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_SOURCES): Added
+	gtk_jawt.c.
+	* native/jni/gtk-peer/gtk_jawt.c: New file from libgcj.
+	(classpath_jawt_create_lock, classpath_jawt_destroy_lock): Use
+	cp_gtk_gdk_env.
+
 2005-08-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/DynamicAny/FieldNameHelper.java: New file.
