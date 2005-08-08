@@ -1,3 +1,13 @@
+2005-08-07  Casey Marshall  <csm@gnu.org>
+
+	* javax/security/auth/x500/X500Principal.java
+	(encodeDer): use the right iterator for the inner loop.
+	(parseString): test for end of input.
+	(readAttributeType): provide detail message for exception.
+	(readAttributeValue): return the result on end of input;
+	read the next character while looping.
+	(putComponent): accept 'o' and 'ou' short names.
+
 2005-08-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/DynamicAny/AnySeqHelper.java,
