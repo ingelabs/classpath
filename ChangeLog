@@ -1,3 +1,31 @@
+2005-08-09  Lillian Angel  <langel@redhat.com>
+
+	Fixes Bug #23255
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Fixed entire class to use Objects as opposed to TreeNodes.
+	(getPathBounds): Changed root to Object
+	(getPathForRow): Likewise.
+	(getRowCount): Likewise.
+	(getPreferredSize): Changed root and nextNode to be of type
+	Object.
+	(isLeaf): Took out unnecessary code. 
+	(keyPressed): Changed all TreeNodes to be of type Object.
+	(getCellLocation): Likewise.
+	(paintNode): Likewise.
+	(paintRecursive): Likewise.
+	(getParent): Implemented.
+	(findNode): Helper Implemented.
+	(getNextVisibleNode): Changed return and parameter type to Object.
+	(getPreviousVisibleNode): Likewise.
+	(getNextNode): Likewise.
+	(getPreviousNode): Likewise.
+	(getNextSibling): Likewise.
+	(getPreviousSibling): Likewise.
+	(getPathToRoot): Likewise.
+	(getLevel): Likewise.
+	* javax/swing/tree/DefaultTreeModel.java
+	(getIndexOfChild): Implemented.
+
 2005-08-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/CORBA/package.html: Documentation update.

@@ -168,16 +168,22 @@ public class DefaultTreeModel
 	 * @return int
 	 */
 	public int getIndexOfChild(Object parent, Object child)
-	{
-		return 0; // TODO
-	}
+  {
+    for (int i = 0; i < getChildCount(parent); i++)
+    {
+      if (getChild(parent, i).equals(child))
+        return i;
+    }
+    return -1;
+  }
 
 	/**
-	 * getChild
-	 * @param node TODO
-	 * @param idx TODO
-	 * @return Object
-	 */
+   * getChild
+   * 
+   * @param node TODO
+   * @param idx TODO
+   * @return Object
+   */
 	public Object getChild(Object node, int idx)
 	{
 		if (node instanceof TreeNode)
