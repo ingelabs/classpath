@@ -1,5 +1,11 @@
 2005-08-09  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/JTable.java
+	(setRowHeight): Fixed condition on when to throw exception.
+	(setRowHeight): Parameters were mixed up.
+
+2005-08-09  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicLabelUI.java
 	(paint): Added in painting code for label border.
 	* javax/swing/plaf/basic/BasicTreeUI.java

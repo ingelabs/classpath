@@ -1554,7 +1554,7 @@ public class JTable extends JComponent
    */ 
   public void setRowHeight(int r)
   {
-    if (rowHeight < 1)
+    if (r < 1)
       throw new IllegalArgumentException();
     
     rowHeight = r;
@@ -1569,7 +1569,7 @@ public class JTable extends JComponent
    * @param rh is the new rowHeight
    * @param row is the row to change the rowHeight of
    */
-  public void setRowHeight(int rh, int row)
+  public void setRowHeight(int row, int rh)
   {
      setRowHeight(rh);
      // FIXME: not implemented
