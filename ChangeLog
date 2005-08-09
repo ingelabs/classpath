@@ -1,3 +1,8 @@
+2005-08-09  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/tree/DefaultTreeModel.java: Fix copyright
+	boilerplate formatting.
+
 2005-08-09  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/tree/DefaultTreeModel.java:
