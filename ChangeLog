@@ -1,3 +1,43 @@
+2005-08-09  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/DefaultCellEditor.java:
+	(EditorDelegate.setValue): Implemented.
+	(EditorDelegate.getCellEditorValue): Implemented.
+	(EditorDelegate.isCellEditable): Implemented.
+	(EditorDelegate.shouldSelectCell): Implemented.
+	(EditorDelegate.stopCellEditing): Implemented.
+	(EditorDelegate.cancelCellEditing): Implemented.
+	(EditorDelegate.startCellEditing): Implemented.
+	(EditorDelegate.actionPerformed): Implemented.
+	(EditorDelegate.itemStateChanged): Implemented.
+	(EditorDelegate.fireEditingStopped): New implementation method.
+	(EditorDelegate.fireEditingCancelled): New implementation method.
+	(DefaultCellEditor): Implemented 3 constructors.
+	(getComponent): Implemented.
+	(getClickCountToStart): Implemented.
+	(setClickCountToStart): Implemented.
+	(getCellEditorValue): Implemented.
+	(isCellEditable): Implemented.
+	(shouldSelectCell): Implemented.
+	(cancelCellEditing): Implemented.
+	(getTableCellEditorComponent): Implemented.
+	* javax/swing/JTable.java:
+	(EditorUpdateTimer): New private class.
+	(editingStopped): Implemented.
+	(setValueAt): If the Object value is a Component, add it to the JTable
+	so it can obtain focus.
+	(editCellAt): Implemented.
+	(removeEditor): Implemented.
+	(prepareEditor): Implemented.
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(KeyHandler.keyPressed): Added F2 "start editing" key action.
+	(MouseHandler.mousePressed): Added check to see if a new cell was
+	selected and we need to stop editing.
+	(paint): If the cell is a JTextField, paint its Caret as well.
+	* javax/swing/table/DefaultTableCellRenderer.java:
+	(getTableCellRendererComponent): If a JTextField is passed in, return
+	one.  This is used for editing JTable cells.
+
 2005-08-09  Aaron Luchko <aluchko@redhat.com>
 	* gnu/classpath/jdwp/processor/ClassLoaderReferenceCommandSet.java:	
 	Implemented the ClassLoaderReference CommandSet.
