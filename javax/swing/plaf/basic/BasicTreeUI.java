@@ -424,6 +424,7 @@ public class BasicTreeUI extends TreeUI
   protected void setCellRenderer(TreeCellRenderer tcr)
   {
     currentCellRenderer = tcr;
+    tree.setCellRenderer(tcr);
     updateRenderer();
   }
   
@@ -1201,11 +1202,9 @@ public class BasicTreeUI extends TreeUI
    */
   protected void uninstallDefaults(JTree tree)
   {
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
     tree.setFont(null);
     tree.setForeground(null);
     tree.setBackground(null);
-    tree.setCellRenderer(null);
   }
   
   /**
@@ -2571,61 +2570,27 @@ public class BasicTreeUI extends TreeUI
    * @param node the object to draw
    */
   void paintNode(Graphics g, int x, int y, JTree tree, Object node,
-                 boolean isLeaf)
+      boolean isLeaf)
   {
     TreePath curr = new TreePath(getPathToRoot(node, 0));
     boolean selected = tree.isPathSelected(curr);
     boolean expanded = false;
     boolean hasIcons = false;
-    
+
     if (tree.isVisible(curr))
-      {
-        DefaultTreeCellRenderer dtcr = (DefaultTreeCellRenderer) 
-                createDefaultCellRenderer();
-        
-        if (!isLeaf)
-          expanded = tree.isExpanded(curr);
-        
-        Icon icon = null;
-        if (!isLeaf && expanded)
-          icon = dtcr.getOpenIcon();
-        else if (!isLeaf && !expanded)
-          icon = dtcr.getClosedIcon();
-        else
-          icon = dtcr.getLeafIcon();
-        
-        if (icon.getIconHeight() > -1 && icon.getIconWidth() > -1)
-          hasIcons = true;
-        
-        Component c = dtcr.getTreeCellRendererComponent(tree, node, selected,
-                                                        expanded, isLeaf, 0, false);
-        
-        if (hasIcons)
-          {
-            if (selected)
-              {
-                Rectangle cell = getPathBounds(tree, curr);
-                g.setColor(dtcr.getBackgroundSelectionColor());
-                g.fillRect(cell.x + icon.getIconWidth()/2, cell.y, cell.width,
-                           cell.height);
-                
-                if (curr.equals(tree.getLeadSelectionPath()))
-                  {
-                    g.setColor(UIManager.getLookAndFeelDefaults().getColor(
-                    "Tree.selectionBorderColor"));
-                    g.drawRect(cell.x + icon.getIconWidth()/2, cell.y, 
-                               cell.width, cell.height);
-                  }
-              }
-            
-            g.translate(x, y);
-            c.paint(g);
-            g.translate(-x, -y);
-          }
-        else 
-          rendererPane.paintComponent(g, c, c.getParent(), 
-                                      getCellBounds(x, y, node));
-      }
+    {
+      TreeCellRenderer dtcr = tree.getCellRenderer();
+      if (dtcr == null)
+        dtcr = createDefaultCellRenderer();
+
+      if (!isLeaf)
+        expanded = tree.isExpanded(curr);
+
+      Component c = dtcr.getTreeCellRendererComponent(tree, node, selected,
+          expanded, isLeaf, 0, false);
+      rendererPane.paintComponent(g, c, c.getParent(),
+          getCellBounds(x, y, node));
+    }
   }
   
   /**
@@ -2696,7 +2661,7 @@ public class BasicTreeUI extends TreeUI
       }
     
     if (tree.isExpanded(new TreePath(getPathToRoot(curr, 0))))
-      if (y0 != heightOfLine)
+      if (y0 != heightOfLine && mod.getChildCount(curr) > 0)
         {
           g.setColor(getHashColor());
           g.drawLine(indentation + halfWidth, y0, indentation + halfWidth,

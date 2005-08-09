@@ -1,3 +1,15 @@
+2005-08-09  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicLabelUI.java
+	(paint): Added in code to paint background rect according to
+	API. Also, formatting changes.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(setCellRenderer): Fixed to changed renderer in JTree.
+	(uninstallDefaults): Line taken out because not needed.
+	(paintNode): Took out unneeded code because BasicLabelUI was fixed.
+	(paintRecursive): Fixed so lines are only drawn when parents have
+	children.	
+
 2005-08-09  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/DefaultCellEditor.java:
