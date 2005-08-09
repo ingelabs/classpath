@@ -1,6 +1,20 @@
 2005-08-09  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicLabelUI.java
+	(paint): Added in painting code for label border.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(paintControlIcons): Fixed location for control icons.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java:
+	Added defaults for selection and non-selection border for
+	tree cells.
+	* javax/swing/tree/DefaultTreeCellRenderer.java
+	(getTreeCellRendererComponent): Set borders for node. Also,
+	made node transparent (not opaque), So JLabel draws icon,
+	text and border appropriately.
+
+2005-08-09  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicLabelUI.java
 	(paint): Added in code to paint background rect according to
 	API. Also, formatting changes.
 	* javax/swing/plaf/basic/BasicTreeUI.java

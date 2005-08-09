@@ -2711,7 +2711,7 @@ public class BasicTreeUI extends TreeUI
         if (tree.isExpanded(new TreePath(getPathToRoot(node, 0))))
           {
             if (!node.equals(mod.getRoot()))
-              drawCentered(tree, g, ei, indentation - rightChildIndent - 3, h);
+              ei.paintIcon(tree, g, indentation - rightChildIndent - 3, h);
             
             for (int i = 0; i < max; ++i)
               {
@@ -2725,7 +2725,7 @@ public class BasicTreeUI extends TreeUI
               }
           }
         else if (!node.equals(mod.getRoot()))
-          drawCentered(tree, g, ei, indentation - rightChildIndent - 3, 
+          ci.paintIcon(tree, g, indentation - rightChildIndent - 3, 
                        descent - getRowHeight());
       }
     
