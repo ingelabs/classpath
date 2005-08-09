@@ -1,4 +1,10 @@
+2005-08-04  Aaron Luchko  <aluchko@redhat.com>
+
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java:
+	Implemented the StackFrame CommandSet.
+
 2005-08-09  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/JTable.java:
 	(editingCancelled): Implemented.
 	(editCellAt): Added a KeyListener to our editor to listen for
@@ -77,6 +83,7 @@
 	one.  This is used for editing JTable cells.
 
 2005-08-09  Aaron Luchko <aluchko@redhat.com>
+
 	* gnu/classpath/jdwp/processor/ClassLoaderReferenceCommandSet.java:	
 	Implemented the ClassLoaderReference CommandSet.
 
