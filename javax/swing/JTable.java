@@ -45,6 +45,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.util.Date;
@@ -576,6 +578,12 @@ public class JTable extends JComponent
   Timer editorTimer = new EditorUpdateTimer();
 
   /**
+   * Stores the old value of a cell before it was edited, in case
+   * editing is cancelled
+   */
+  Object oldCellValue;
+
+  /**
    * Creates a new <code>JTable</code> instance.
    */
   public JTable ()
@@ -838,6 +846,20 @@ public class JTable extends JComponent
 
   public void editingCanceled (ChangeEvent event)
   {
+    if (rowBeingEdited > -1 && columnBeingEdited > -1)
+      {
+        if (getValueAt(rowBeingEdited, columnBeingEdited) instanceof JTextField)
+          {
+            remove ((Component)getValueAt(rowBeingEdited, columnBeingEdited));
+            setValueAt(oldCellValue, rowBeingEdited, columnBeingEdited);
+          }
+        rowBeingEdited = -1;
+        columnBeingEdited = -1;
+      }
+    editorTimer.stop();
+    editorComp = null;
+    cellEditor = null;
+    requestFocusInWindow(false);
     repaint();
   }
 
@@ -2297,8 +2319,17 @@ public class JTable extends JComponent
    */
   public boolean editCellAt (int row, int column)
   {
+    oldCellValue = getValueAt(row, column);
     setCellEditor(getCellEditor(row, column));
     editorComp = prepareEditor(cellEditor, row, column);
+    editorComp.addKeyListener(new KeyAdapter() {
+        public void keyPressed(KeyEvent e) {
+          if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            if (JTable.this.cellEditor != null)
+              JTable.this.cellEditor.cancelCellEditing();
+          }
+        }
+      });
     cellEditor.addCellEditorListener(this);
     rowBeingEdited = row;
     columnBeingEdited = column;
