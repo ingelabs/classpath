@@ -1,3 +1,7 @@
+2005-08-09  Aaron Luchko <aluchko@redhat.com>
+	* gnu/classpath/jdwp/processor/ClassLoaderReferenceCommandSet.java:	
+	Implemented the ClassLoaderReference CommandSet.
+
 2005-08-09  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/tree/DefaultTreeModel.java: Fix copyright
