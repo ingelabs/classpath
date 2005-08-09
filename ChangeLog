@@ -1,3 +1,20 @@
+2005-08-08  Casey Marshall  <csm@gnu.org>
+
+	PR classpath/23120
+	* gnu/java/security/provider/DSAKeyPairGenerator.java
+	(<init>): made public; set default values.
+	(initialize): just call 'initialize(int,boolean,SecureRandom).'
+	(initialize): just call 'initialize(DSAParams,SecureRandom).'
+	(initialize): check all values for 'null' before overwriting.
+	(initialize): fill in defaults or generate new parameters here.
+	(generateKeyPair): don't create parameters; fill in 'random' if
+	'null;' use 'random,' not a new Random object, when generating
+	random numbers.
+	(getDefaults): fix keysize check.
+
+	PR classpath/22990
+	* java/security/KeyPairGenerator.java (initialize): do nothing.
+	
 2005-08-08  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/23285:
