@@ -1,5 +1,10 @@
 2005-08-09  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/tree/DefaultTreeModel.java:
+	Fixed formatting of class.
+
+2005-08-09  Lillian Angel  <langel@redhat.com>
+
 	Fixes Bug #23255
 	* javax/swing/plaf/basic/BasicTreeUI.java:
 	Fixed entire class to use Objects as opposed to TreeNodes.
