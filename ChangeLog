@@ -1,10 +1,17 @@
+2005-08-10  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(mouseClicked): Called fireTreeWillExpand and fireTreeWillCollapse when
+	appropriate.
+	(keyPressed): Likewise.
+
 2005-08-10  Roman Kennke  <roman@kennke.org>
 
 	* java/awt/Container.java
 	(paint): Call visitChildren with lightweightOnly == true.
 	(update): Only call paint if we are not in a toplevel container.
 
-2005-08-04  Aaron Luchko  <aluchko@redhat.com>
+2005-08-09  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java:
 	Implemented the StackFrame CommandSet.

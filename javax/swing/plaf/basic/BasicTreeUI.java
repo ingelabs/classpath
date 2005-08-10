@@ -90,6 +90,7 @@ import javax.swing.plaf.TreeUI;
 import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.FixedHeightLayoutCache;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
@@ -1723,6 +1724,13 @@ public class BasicTreeUI extends TreeUI
                   else if (!mod.isLeaf(next) && e.isShiftDown())
                     {
                       BasicTreeUI.this.tree.expandPath(newPath);
+                      try
+                      {
+                        BasicTreeUI.this.tree.fireTreeWillExpand(newPath);
+                      }
+                      catch (ExpandVetoException ev)
+                      {                        
+                      }
                       BasicTreeUI.this.tree.fireTreeExpanded(newPath);
                     }
                 }
@@ -1744,6 +1752,13 @@ public class BasicTreeUI extends TreeUI
                   else if (!mod.isLeaf(prev) && e.isShiftDown())
                     {
                       BasicTreeUI.this.tree.expandPath(newPath);
+                      try
+                      {
+                        BasicTreeUI.this.tree.fireTreeWillExpand(newPath);
+                      }
+                      catch (ExpandVetoException ev)
+                      {                        
+                      }
                       BasicTreeUI.this.tree.fireTreeExpanded(newPath);
                     }
                 }
@@ -1758,6 +1773,13 @@ public class BasicTreeUI extends TreeUI
               if (!mod.isLeaf(last) && BasicTreeUI.this.tree.isExpanded(path))
                 {
                   BasicTreeUI.this.tree.collapsePath(path);
+                  try
+                  {
+                    BasicTreeUI.this.tree.fireTreeWillCollapse(path);
+                  }
+                  catch (ExpandVetoException ev)
+                  {                        
+                  }
                   BasicTreeUI.this.tree.fireTreeCollapsed(path);
                 }
               else if (p != null)
@@ -1773,6 +1795,13 @@ public class BasicTreeUI extends TreeUI
               if (!mod.isLeaf(last) && BasicTreeUI.this.tree.isCollapsed(path))
                 {
                   BasicTreeUI.this.tree.expandPath(path);
+                  try
+                  {
+                    BasicTreeUI.this.tree.fireTreeWillExpand(path);
+                  }
+                  catch (ExpandVetoException ev)
+                  {                        
+                  }
                   BasicTreeUI.this.tree.fireTreeExpanded(path);
                 }
               else
@@ -1794,11 +1823,25 @@ public class BasicTreeUI extends TreeUI
                   if (BasicTreeUI.this.tree.isExpanded(path))
                     {
                       BasicTreeUI.this.tree.collapsePath(path);
+                      try
+                      {
+                        BasicTreeUI.this.tree.fireTreeWillCollapse(path);
+                      }
+                      catch (ExpandVetoException ev)
+                      {                        
+                      }
                       BasicTreeUI.this.tree.fireTreeCollapsed(path);
                     }
                   else
                     {
                       BasicTreeUI.this.tree.expandPath(path);
+                      try
+                      {
+                        BasicTreeUI.this.tree.fireTreeWillExpand(path);
+                      }
+                      catch (ExpandVetoException ev)
+                      {                        
+                      }
                       BasicTreeUI.this.tree.fireTreeExpanded(path);
                     }
                 }
@@ -1958,11 +2001,25 @@ public class BasicTreeUI extends TreeUI
                   if (BasicTreeUI.this.tree.isExpanded(path))
                     {
                       BasicTreeUI.this.tree.collapsePath(path);
+                      try
+                      {
+                        BasicTreeUI.this.tree.fireTreeWillCollapse(path);
+                      }
+                      catch (ExpandVetoException ev)
+                      {                        
+                      }
                       BasicTreeUI.this.tree.fireTreeCollapsed(path);
                     }
                   else
                     {
                       BasicTreeUI.this.tree.expandPath(path);
+                      try
+                      {
+                        BasicTreeUI.this.tree.fireTreeWillExpand(path);
+                      }
+                      catch (ExpandVetoException ev)
+                      {                        
+                      }
                       BasicTreeUI.this.tree.fireTreeExpanded(path);
                     }
                 }
