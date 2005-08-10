@@ -1,3 +1,10 @@
+2005-08-10  Aaron Luchko  <aluchko@redhat.com>
+
+	* gnu/classpath/jdwp/processor/ClassTypeCommandSet.java:
+	Implemented the ClassType CommandSet.
+	* gnu/classpath/jdwp/util/MethodResult.java: Class to wrap
+	around results of method executions.
+
 2005-08-10  Tom Tromey  <tromey@redhat.com>
 
 	For PR classpath/22580:
