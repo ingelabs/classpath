@@ -1,5 +1,12 @@
 2005-08-10  Tom Tromey  <tromey@redhat.com>
 
+	For PR classpath/22580:
+	* lib/Makefile.am (compile-classes): Made conditional on
+	FOUND_GCJ.
+	(JAVAC): Redefined when FOUND_GCJ.
+
+2005-08-10  Tom Tromey  <tromey@redhat.com>
+
 	* lib/Makefile.am (JAVAC): Use $(SHELL) to invoke
 	split-for-gcj.sh.  For PR classpath/23238.
 
