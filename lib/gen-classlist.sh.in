@@ -5,6 +5,9 @@
 LC_ALL=C; export LC_ALL
 LANG=C; export LANG
 
+# We use this to decide whether we need to invoke the split script.
+GCJ="@GCJ@"
+
 echo "Adding java source files from srcdir '@top_srcdir@'."
 @FIND@ @top_srcdir@/java @top_srcdir@/javax @top_srcdir@/gnu \
        @top_srcdir@/org \
@@ -82,6 +85,10 @@ if test "$new" = "true"; then
   for i in `cat ${top_builddir}/lib/classes` ; do
     echo $i "\\" >> ${top_builddir}/lib/java.dep
   done
+
+  if test -n "$GCJ"; then
+     ${top_srcdir}/lib/split-for-gcj.sh
+  fi
 fi
 
 exit 0

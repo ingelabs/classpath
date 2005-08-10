@@ -1,3 +1,10 @@
+2005-08-10  Tom Tromey  <tromey@redhat.com>
+
+	* lib/gen-classlist.sh.in (GCJ): New subst.
+	Invoke split-for-gcj.sh if the results changed.
+	* lib/Makefile.am (CLEANFILES): Removed old entries.
+	(compile-classes): Don't run split-for-gcj.sh.
+
 2005-08-10  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/processor/ThreadReferenceCommandSet.java:      

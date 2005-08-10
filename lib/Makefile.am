@@ -124,7 +124,6 @@ if FOUND_GCJ
 ## will see the recursive make invocation and still allow parallel
 ## builds.
 compile-classes: classes $(JAVA_SRCS) Makefile
-	$(SHELL) $(srcdir)/split-for-gcj.sh
 	$(MAKE) -f $(srcdir)/Makefile.gcj \
 	  GCJ='$(GCJ)' compile_classpath='$(top_builddir):$(compile_classpath)'
 else
@@ -135,7 +134,6 @@ endif
 
 EXTRA_DIST = standard.omit mkcollections.pl.in Makefile.gcj split-for-gcj.sh
 CLEANFILES = compile-classes resources classes \
-	classes.standard classes.awt classes.standardx classes.xml \
 	glibj.zip classes.1 \
 	$(top_builddir)/java/util/LocaleData.java \
 	$(JAVA_DEPEND)
