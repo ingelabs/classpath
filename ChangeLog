@@ -1,3 +1,7 @@
+2005-08-10  Tom Tromey  <tromey@redhat.com>
+
+	* lib/split-for-gcj.sh: Use 'while' loop to avoid length limits.
+
 2005-08-10  Andreas Tobler  <toa@pop.agri.ch>
 
 	* native/jni/java-net/gnu_java_net_PlainSocketImpl.c: Include

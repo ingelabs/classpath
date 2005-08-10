@@ -6,7 +6,7 @@ echo "Splitting for gcj"
 rm -f Makefile.deps > /dev/null 2>&1
 test -d lists || mkdir lists
 for dir in java javax gnu org; do
-   for file in `cat classes | fgrep /$dir/`; do
+   fgrep /$dir/ classes | while read file; do
       pkg=`echo "$file " | sed -n -e "s,^.*/\($dir/.*\)/[^/]*$,\1,p"`
       list=lists/`echo $pkg | sed -e 's,/,-,g'`
       echo "$file" >> ${list}.list.1
