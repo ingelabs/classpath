@@ -1,39 +1,39 @@
 /* BasicTreeUI.java --
-   Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
+ Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
 
 
 package javax.swing.plaf.basic;
@@ -107,128 +107,138 @@ import javax.swing.tree.TreeSelectionModel;
  * @author Sascha Brawer (brawer@dandelis.ch)
  * @author Lillian Angel (langel@redhat.com)
  */
-public class BasicTreeUI extends TreeUI
+public class BasicTreeUI
+  extends TreeUI
 {
   /** Collapse Icon for the tree. */
   protected transient Icon collapsedIcon;
-  
+
   /** Expanded Icon for the tree. */
   protected transient Icon expandedIcon;
-  
+
   /** Distance between left margin and where vertical dashes will be drawn. */
   protected int leftChildIndent;
-  
+
   /**
    * Distance between leftChildIndent and where cell contents will be drawn.
    */
   protected int rightChildIndent;
-  
+
   /**
    * Total fistance that will be indented. The sum of leftChildIndent and
    * rightChildIndent .
    */
   protected int totalChildIndent;
-  
+
   /** Minimum preferred size. */
   protected Dimension preferredMinsize;
-  
+
   /** Index of the row that was last selected. */
   protected int lastSelectedRow;
-  
+
   /** Component that we're going to be drawing onto. */
   protected JTree tree;
-  
+
   /** Renderer that is being used to do the actual cell drawing. */
   protected transient TreeCellRenderer currentCellRenderer;
-  
+
   /**
    * Set to true if the renderer that is currently in the tree was created by
    * this instance.
    */
   protected boolean createdRenderer;
-  
+
   /** Editor for the tree. */
   protected transient TreeCellEditor cellEditor;
-  
+
   /**
    * Set to true if editor that is currently in the tree was created by this
    * instance.
    */
   protected boolean createdCellEditor;
-  
+
   /**
    * Set to false when editing and shouldSelectCall() returns true meaning the
    * node should be selected before editing, used in completeEditing.
    */
   protected boolean stopEditingInCompleteEditing;
-  
+
   /** Used to paint the TreeCellRenderer. */
   protected CellRendererPane rendererPane;
-  
+
   /** Size needed to completely display all the nodes. */
   protected Dimension preferredSize;
-  
+
   /** Is the preferredSize valid? */
   protected boolean validCachedPreferredSize;
-  
+
   /** Object responsible for handling sizing and expanded issues. */
   protected AbstractLayoutCache treeState;
-  
+
   /** Used for minimizing the drawing of vertical lines. */
   protected Hashtable drawingCache;
-  
+
   /**
    * True if doing optimizations for a largeModel. Subclasses that don't
    * support this may wish to override createLayoutCache to not return a
    * FixedHeightLayoutCache instance.
    */
   protected boolean largeModel;
-  
+
   /** Responsible for telling the TreeState the size needed for a node. */
   protected AbstractLayoutCache.NodeDimensions nodeDimensions;
-  
+
   /** Used to determine what to display. */
   protected TreeModel treeModel;
-  
+
   /** Model maintaining the selection. */
   protected TreeSelectionModel treeSelectionModel;
-  
+
   /**
    * How much the depth should be offset to properly calculate x locations.
    * This is based on whether or not the root is visible, and if the root
    * handles are visible.
    */
   protected int depthOffset;
-  
+
   /**
    * When editing, this will be the Component that is doing the actual editing.
    */
   protected Component editingComponent;
-  
+
   /** Path that is being edited. */
   protected TreePath editingPath;
-  
+
   /**
    * Row that is being edited. Should only be referenced if editingComponent is
    * null.
    */
   protected int editingRow;
-  
+
   /** Set to true if the editor has a different size than the renderer. */
   protected boolean editorHasDifferentSize;
-  
+
   /** Listeners */
   private PropertyChangeListener propertyChangeListener;
+
   private FocusListener focusListener;
+
   private TreeSelectionListener treeSelectionListener;
+
   private MouseInputListener mouseInputListener;
+
   private KeyListener keyListener;
+
   private PropertyChangeListener selectionModelPropertyChangeListener;
+
   private ComponentListener componentListener;
+
   private CellEditorListener cellEditorListener;
+
   private TreeExpansionListener treeExpansionListener;
+
   private TreeModelListener treeModelListener;
-  
+
   /**
    * Creates a new BasicTreeUI object.
    */
@@ -240,7 +250,7 @@ public class BasicTreeUI extends TreeUI
     nodeDimensions = createNodeDimensions();
     rendererPane = createCellRendererPane();
     configureLayoutCache();
-    
+
     propertyChangeListener = createPropertyChangeListener();
     focusListener = createFocusListener();
     treeSelectionListener = createTreeSelectionListener();
@@ -251,13 +261,13 @@ public class BasicTreeUI extends TreeUI
     cellEditorListener = createCellEditorListener();
     treeExpansionListener = createTreeExpansionListener();
     treeModelListener = createTreeModelListener();
-    
+
     createdRenderer = true;
     createdCellEditor = true;
     editingRow = -1;
     lastSelectedRow = -1;
   }
-  
+
   /**
    * Returns an instance of the UI delegate for the specified component.
    * 
@@ -269,7 +279,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new BasicTreeUI();
   }
-  
+
   /**
    * Returns the Hash color.
    * 
@@ -279,7 +289,7 @@ public class BasicTreeUI extends TreeUI
   {
     return UIManager.getLookAndFeelDefaults().getColor("Tree.hash");
   }
-  
+
   /**
    * Sets the Hash color.
    * 
@@ -288,9 +298,9 @@ public class BasicTreeUI extends TreeUI
   protected void setHashColor(Color color)
   {
     // FIXME: not implemented
-    
+
   }
-  
+
   /**
    * Sets the left child's indent value.
    * 
@@ -300,7 +310,7 @@ public class BasicTreeUI extends TreeUI
   {
     leftChildIndent = newAmount;
   }
-  
+
   /**
    * Returns the indent value for the left child.
    * 
@@ -310,7 +320,7 @@ public class BasicTreeUI extends TreeUI
   {
     return leftChildIndent;
   }
-  
+
   /**
    * Sets the right child's indent value.
    * 
@@ -320,7 +330,7 @@ public class BasicTreeUI extends TreeUI
   {
     rightChildIndent = newAmount;
   }
-  
+
   /**
    * Returns the indent value for the right child.
    * 
@@ -330,7 +340,7 @@ public class BasicTreeUI extends TreeUI
   {
     return rightChildIndent;
   }
-  
+
   /**
    * Sets the expanded icon.
    * 
@@ -340,7 +350,7 @@ public class BasicTreeUI extends TreeUI
   {
     expandedIcon = newG;
   }
-  
+
   /**
    * Returns the current expanded icon.
    * 
@@ -350,7 +360,7 @@ public class BasicTreeUI extends TreeUI
   {
     return expandedIcon;
   }
-  
+
   /**
    * Sets the collapsed icon.
    * 
@@ -360,7 +370,7 @@ public class BasicTreeUI extends TreeUI
   {
     collapsedIcon = newG;
   }
-  
+
   /**
    * Returns the current collapsed icon.
    * 
@@ -370,7 +380,7 @@ public class BasicTreeUI extends TreeUI
   {
     return collapsedIcon;
   }
-  
+
   /**
    * Updates the componentListener, if necessary.
    * 
@@ -385,7 +395,7 @@ public class BasicTreeUI extends TreeUI
         tree.addComponentListener(componentListener);
       }
   }
-  
+
   /**
    * Returns true if largeModel is set
    * 
@@ -395,7 +405,7 @@ public class BasicTreeUI extends TreeUI
   {
     return largeModel;
   }
-  
+
   /**
    * Sets the row height.
    * 
@@ -405,7 +415,7 @@ public class BasicTreeUI extends TreeUI
   {
     treeState.setRowHeight(rowHeight);
   }
-  
+
   /**
    * Returns the current row height.
    * 
@@ -415,7 +425,7 @@ public class BasicTreeUI extends TreeUI
   {
     return treeState.getRowHeight();
   }
-  
+
   /**
    * Sets the TreeCellRenderer to <code>tcr</code>. This invokes
    * <code>updateRenderer</code>.
@@ -428,7 +438,7 @@ public class BasicTreeUI extends TreeUI
     tree.setCellRenderer(tcr);
     updateRenderer();
   }
-  
+
   /**
    * Return currentCellRenderer, which will either be the trees renderer, or
    * defaultCellRenderer, which ever was not null.
@@ -439,10 +449,10 @@ public class BasicTreeUI extends TreeUI
   {
     if (currentCellRenderer != null)
       return currentCellRenderer;
-    
+
     return createDefaultCellRenderer();
   }
-  
+
   /**
    * Sets the tree's model.
    * 
@@ -453,7 +463,7 @@ public class BasicTreeUI extends TreeUI
     tree.setModel(model);
     treeModel = tree.getModel();
   }
-  
+
   /**
    * Returns the tree's model
    * 
@@ -463,7 +473,7 @@ public class BasicTreeUI extends TreeUI
   {
     return treeModel;
   }
-  
+
   /**
    * Sets the root to being visible.
    * 
@@ -473,7 +483,7 @@ public class BasicTreeUI extends TreeUI
   {
     tree.setRootVisible(newValue);
   }
-  
+
   /**
    * Returns true if the root is visible.
    * 
@@ -483,7 +493,7 @@ public class BasicTreeUI extends TreeUI
   {
     return tree.isRootVisible();
   }
-  
+
   /**
    * Determines whether the node handles are to be displayed.
    * 
@@ -493,7 +503,7 @@ public class BasicTreeUI extends TreeUI
   {
     tree.setShowsRootHandles(newValue);
   }
-  
+
   /**
    * Returns true if the node handles are to be displayed.
    * 
@@ -503,7 +513,7 @@ public class BasicTreeUI extends TreeUI
   {
     return tree.getShowsRootHandles();
   }
-  
+
   /**
    * Sets the cell editor.
    * 
@@ -513,7 +523,7 @@ public class BasicTreeUI extends TreeUI
   {
     cellEditor = editor;
   }
-  
+
   /**
    * Returns the <code>TreeCellEditor</code> for this tree.
    * 
@@ -523,7 +533,7 @@ public class BasicTreeUI extends TreeUI
   {
     return cellEditor;
   }
-  
+
   /**
    * Configures the receiver to allow, or not allow, editing.
    * 
@@ -533,7 +543,7 @@ public class BasicTreeUI extends TreeUI
   {
     tree.setEditable(newValue);
   }
-  
+
   /**
    * Returns true if the receiver allows editing.
    * 
@@ -543,7 +553,7 @@ public class BasicTreeUI extends TreeUI
   {
     return tree.isEditable();
   }
-  
+
   /**
    * Resets the selection model. The appropriate listeners are installed on the
    * model.
@@ -558,7 +568,7 @@ public class BasicTreeUI extends TreeUI
         tree.setSelectionModel(treeSelectionModel);
       }
   }
-  
+
   /**
    * Returns the current selection model.
    * 
@@ -568,7 +578,7 @@ public class BasicTreeUI extends TreeUI
   {
     return treeSelectionModel;
   }
-  
+
   /**
    * Returns the Rectangle enclosing the label portion that the last item in
    * path will be drawn to. Will return null if any component in path is
@@ -586,19 +596,18 @@ public class BasicTreeUI extends TreeUI
         Object cell = path.getLastPathComponent();
         TreeModel mod = tree.getModel();
         if (mod != null)
-        {
-          Object root = mod.getRoot();
-          if (!tree.isRootVisible()
-              && tree.isExpanded(new TreePath(root)))
-            root = getNextNode(root);
-          
-          Point loc = getCellLocation(0, 0, tree, mod, cell, root);
-          return getCellBounds(loc.x, loc.y, cell);
-        }
+          {
+            Object root = mod.getRoot();
+            if (!tree.isRootVisible() && tree.isExpanded(new TreePath(root)))
+              root = getNextNode(root);
+
+            Point loc = getCellLocation(0, 0, tree, mod, cell, root);
+            return getCellBounds(loc.x, loc.y, cell);
+          }
       }
     return null;
   }
-  
+
   /**
    * Returns the path for passed in row. If row is not visible null is
    * returned.
@@ -612,23 +621,23 @@ public class BasicTreeUI extends TreeUI
   {
     TreeModel mod = tree.getModel();
     if (mod != null)
-    {
-      Object node = mod.getRoot();
-      if (!tree.isRootVisible()
-          && tree.isExpanded(new TreePath(getPathToRoot(node, 0))))
-        node = getNextNode(node);
-      
-      for (int i = 0; i < row; i++)
-        node = getNextVisibleNode(node);
-      
-      if (node == null)
-        return null;
-      
-      return new TreePath(getPathToRoot(node, 0));
-    }
+      {
+        Object node = mod.getRoot();
+        if (!tree.isRootVisible()
+            && tree.isExpanded(new TreePath(getPathToRoot(node, 0))))
+          node = getNextNode(node);
+
+        for (int i = 0; i < row; i++)
+          node = getNextVisibleNode(node);
+
+        if (node == null)
+          return null;
+
+        return new TreePath(getPathToRoot(node, 0));
+      }
     return null;
   }
-  
+
   /**
    * Returns the row that the last item identified in path is visible at. Will
    * return -1 if any of the elments in the path are not currently visible.
@@ -646,7 +655,7 @@ public class BasicTreeUI extends TreeUI
     // expand/collapse is not implemented
     return path.getPathCount() - 1;
   }
-  
+
   /**
    * Returns the number of rows that are being displayed.
    * 
@@ -658,21 +667,21 @@ public class BasicTreeUI extends TreeUI
     TreeModel mod = tree.getModel();
     int count = 0;
     if (mod != null)
-    {
-      Object node = mod.getRoot();
-      if (!tree.isRootVisible()
-          && tree.isExpanded(new TreePath((getPathToRoot(node, 0)))))
-        node = getNextNode(node);
-
-      while (node != null)
       {
-        count++;
-        node = getNextVisibleNode(node);
+        Object node = mod.getRoot();
+        if (!tree.isRootVisible()
+            && tree.isExpanded(new TreePath((getPathToRoot(node, 0)))))
+          node = getNextNode(node);
+
+        while (node != null)
+          {
+            count++;
+            node = getNextVisibleNode(node);
+          }
       }
-    }
     return count;
   }
-  
+
   /**
    * Returns the path to the node that is closest to x,y. If there is nothing
    * currently visible this will return null, otherwise it'll always return a
@@ -688,20 +697,20 @@ public class BasicTreeUI extends TreeUI
   {
     //FIXME: what if root is hidden? should not depend on (0,0)
     // should start counting rows from where root is.
-    
+
     int row = Math.round(y / getRowHeight());
     TreePath path = getPathForRow(tree, row);
-    
+
     // no row is visible at this node
     while (row > 0 && path == null)
       {
         --row;
         path = getPathForRow(tree, row);
       }
-    
+
     return path;
   }
-  
+
   /**
    * Returns true if the tree is being edited. The item that is being edited
    * can be returned by getEditingPath().
@@ -714,7 +723,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return false;
   }
-  
+
   /**
    * Stops the current editing session. This has no effect if the tree is not
    * being edited. Returns true if the editor allows the editing session to
@@ -728,7 +737,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return false;
   }
-  
+
   /**
    * Cancels the current editing session.
    * 
@@ -738,7 +747,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Selects the last item in path and tries to edit it. Editing will fail if
    * the CellEditor won't allow it for the selected item.
@@ -750,7 +759,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Returns the path to the element that is being editted.
    * 
@@ -762,7 +771,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return null;
   }
-  
+
   /**
    * Invoked after the tree instance variable has been set, but before any
    * default/listeners have been installed.
@@ -771,7 +780,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Invoked from installUI after all the defaults/listeners have been
    * installed.
@@ -780,7 +789,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Invoked from uninstallUI after all the defaults/listeners have been
    * uninstalled.
@@ -789,7 +798,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Installs the subcomponents of the tree, which is the renderer pane.
    */
@@ -797,7 +806,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Creates an instance of NodeDimensions that is able to determine the size
    * of a given node in the tree.
@@ -809,7 +818,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return null;
   }
-  
+
   /**
    * Creates a listener that is reponsible for the updates the UI based on how
    * the tree changes.
@@ -820,7 +829,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new PropertyChangeHandler();
   }
-  
+
   /**
    * Creates the listener responsible for updating the selection based on mouse
    * events.
@@ -831,7 +840,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new MouseHandler();
   }
-  
+
   /**
    * Creates the listener that is responsible for updating the display when
    * focus is lost/grained.
@@ -842,7 +851,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new FocusHandler();
   }
-  
+
   /**
    * Creates the listener reponsible for getting key events from the tree.
    * 
@@ -852,7 +861,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new KeyHandler();
   }
-  
+
   /**
    * Creates the listener responsible for getting property change events from
    * the selection model.
@@ -864,7 +873,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new SelectionModelPropertyChangeHandler();
   }
-  
+
   /**
    * Creates the listener that updates the display based on selection change
    * methods.
@@ -875,7 +884,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new TreeSelectionHandler();
   }
-  
+
   /**
    * Creates a listener to handle events from the current editor
    * 
@@ -885,7 +894,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new CellEditorHandler();
   }
-  
+
   /**
    * Creates and returns a new ComponentHandler. This is used for the large
    * model to mark the validCachedPreferredSize as invalid when the component
@@ -897,7 +906,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new ComponentHandler();
   }
-  
+
   /**
    * Creates and returns the object responsible for updating the treestate when
    * a nodes expanded state changes.
@@ -908,7 +917,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new TreeExpansionHandler();
   }
-  
+
   /**
    * Creates the object responsible for managing what is expanded, as well as
    * the size of nodes.
@@ -919,7 +928,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new FixedHeightLayoutCache();
   }
-  
+
   /**
    * Returns the renderer pane that renderer components are placed in.
    * 
@@ -929,7 +938,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new CellRendererPane();
   }
-  
+
   /**
    * Creates a default cell editor.
    * 
@@ -937,10 +946,12 @@ public class BasicTreeUI extends TreeUI
    */
   protected TreeCellEditor createDefaultCellEditor()
   {
-    return new DefaultTreeCellEditor(tree,
-                                     (DefaultTreeCellRenderer) createDefaultCellRenderer(), cellEditor);
+    return new DefaultTreeCellEditor(
+                                     tree,
+                                     (DefaultTreeCellRenderer) createDefaultCellRenderer(),
+                                     cellEditor);
   }
-  
+
   /**
    * Returns the default cell renderer that is used to do the stamping of each
    * node.
@@ -952,7 +963,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new DefaultTreeCellRenderer();
   }
-  
+
   /**
    * Returns a listener that can update the tree when the model changes.
    * 
@@ -962,7 +973,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new TreeModelHandler();
   }
-  
+
   /**
    * Uninstall all registered listeners
    */
@@ -976,7 +987,7 @@ public class BasicTreeUI extends TreeUI
     tree.removePropertyChangeListener(selectionModelPropertyChangeListener);
     tree.removeComponentListener(componentListener);
     tree.removeTreeExpansionListener(treeExpansionListener);
-    
+
     TreeCellEditor tce = tree.getCellEditor();
     if (tce != null)
       tce.removeCellEditorListener(cellEditorListener);
@@ -984,14 +995,14 @@ public class BasicTreeUI extends TreeUI
     if (tm != null)
       tm.removeTreeModelListener(treeModelListener);
   }
-  
+
   /**
    * Uninstall all keyboard actions.
    */
   protected void uninstallKeyboardActions()
   {
   }
-  
+
   /**
    * Uninstall the rendererPane.
    */
@@ -999,7 +1010,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * The vertical element of legs between nodes starts at the bottom of the
    * parent node by default. This method makes the leg start below that.
@@ -1011,7 +1022,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return 0;
   }
-  
+
   /**
    * The horizontal element of legs between nodes starts at the right of the
    * left-hand side of the child node by default. This method makes the leg end
@@ -1024,7 +1035,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return 0;
   }
-  
+
   /**
    * Make all the nodes that are expanded in JTree expanded in LayoutCache.
    * This invokes update ExpandedDescendants with the root path.
@@ -1033,7 +1044,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Updates the expanded state of all the descendants of the <code>path</code>
    * by getting the expanded descendants from the tree and forwarding to the
@@ -1045,7 +1056,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Returns a path to the last child of <code>parent</code>
    * 
@@ -1056,7 +1067,7 @@ public class BasicTreeUI extends TreeUI
   {
     return ((TreePath) parent.getLastPathComponent());
   }
-  
+
   /**
    * Updates how much each depth should be offset by.
    */
@@ -1064,7 +1075,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Updates the cellEditor based on editability of the JTree that we're
    * contained in. Ig the tree is editable but doesn't have a cellEditor, a
@@ -1074,7 +1085,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Messaged from the tree we're in when the renderer has changed.
    */
@@ -1082,7 +1093,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Resets the treeState instance based on the tree we're providing the look
    * and feel for.
@@ -1091,7 +1102,7 @@ public class BasicTreeUI extends TreeUI
   {
     treeState = createLayoutCache();
   }
-  
+
   /**
    * Marks the cached size as being invalid, and messages the tree with
    * <code>treeDidChange</code>.
@@ -1100,7 +1111,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Updates the <code>preferredSize</code> instance variable, which is
    * returned from <code>getPreferredSize()</code>. For left to right
@@ -1112,7 +1123,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Messaged from the VisibleTreeNode after it has been expanded.
    * 
@@ -1122,7 +1133,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Messaged from the VisibleTreeNode after it has collapsed
    */
@@ -1130,7 +1141,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Install all defaults for the tree.
    * 
@@ -1139,24 +1150,24 @@ public class BasicTreeUI extends TreeUI
   protected void installDefaults(JTree tree)
   {
     UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-    
+
     tree.setFont(defaults.getFont("Tree.font"));
     tree.setForeground(defaults.getColor("Tree.foreground"));
     tree.setBackground(defaults.getColor("Tree.background"));
     tree.setOpaque(true);
-    
+
     rightChildIndent = defaults.getInt("Tree.rightChildIndent");
     leftChildIndent = defaults.getInt("Tree.leftChildIndent");
     setRowHeight(defaults.getInt("Tree.rowHeight"));
   }
-  
+
   /**
    * Install all keyboard actions for this
    */
   protected void installKeyboardActions()
   {
   }
-  
+
   /**
    * Install all listeners for this
    */
@@ -1174,7 +1185,7 @@ public class BasicTreeUI extends TreeUI
     if (treeModel != null)
       treeModel.addTreeModelListener(treeModelListener);
   }
-  
+
   /**
    * Install the UI for the component
    * 
@@ -1195,7 +1206,7 @@ public class BasicTreeUI extends TreeUI
     installKeyboardActions();
     completeUIInstall();
   }
-  
+
   /**
    * Uninstall the defaults for the tree
    * 
@@ -1207,7 +1218,7 @@ public class BasicTreeUI extends TreeUI
     tree.setForeground(null);
     tree.setBackground(null);
   }
-  
+
   /**
    * Uninstall the UI for the component
    * 
@@ -1221,7 +1232,7 @@ public class BasicTreeUI extends TreeUI
     tree = null;
     completeUIUninstall();
   }
-  
+
   /**
    * Paints the specified component appropriate for the look and feel. This
    * method is invoked from the ComponentUI.update method when the specified
@@ -1238,19 +1249,19 @@ public class BasicTreeUI extends TreeUI
     JTree tree = (JTree) c;
     TreeModel mod = tree.getModel();
     if (mod != null)
-    {
-      Object root = mod.getRoot();
-      
-      if (!tree.isRootVisible())
-        tree.expandPath(new TreePath(root));
-      
-      paintRecursive(g, 0, 0, 0, 0, tree, mod, root);
-      
-      if (hasControlIcons())
-        paintControlIcons(g, 0, 0, 0, 0, tree, mod, root);
-    }
+      {
+        Object root = mod.getRoot();
+
+        if (!tree.isRootVisible())
+          tree.expandPath(new TreePath(root));
+
+        paintRecursive(g, 0, 0, 0, 0, tree, mod, root);
+
+        if (hasControlIcons())
+          paintControlIcons(g, 0, 0, 0, 0, tree, mod, root);
+      }
   }
-  
+
   /**
    * Ensures that the rows identified by beginRow through endRow are visible.
    * 
@@ -1261,7 +1272,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Sets the preferred minimum size.
    * 
@@ -1271,7 +1282,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Gets the preferred minimum size.
    * 
@@ -1282,7 +1293,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return null;
   }
-  
+
   /**
    * Returns the preferred size to properly display the tree, this is a cover
    * method for getPreferredSize(c, false).
@@ -1296,7 +1307,7 @@ public class BasicTreeUI extends TreeUI
   {
     return getPreferredSize(c, false);
   }
-  
+
   /**
    * Returns the preferred size to represent the tree in c. If checkConsistancy
    * is true, checkConsistancy is messaged first.
@@ -1312,25 +1323,26 @@ public class BasicTreeUI extends TreeUI
     int maxWidth = 0;
     int count = 0;
     if (model != null)
-    {
-      Object node = model.getRoot();
-      if (node != null)
       {
-        maxWidth = (int) (getCellBounds(0, 0, node).getWidth());
-        while (node != null)
-        {
-          count++;
-          Object nextNode = getNextVisibleNode(node);
-          if (nextNode != null)
-            maxWidth = Math.max(maxWidth, (int) (getCellBounds(0, 0, nextNode)
-                .getWidth()));
-          node = nextNode;
-        }
+        Object node = model.getRoot();
+        if (node != null)
+          {
+            maxWidth = (int) (getCellBounds(0, 0, node).getWidth());
+            while (node != null)
+              {
+                count++;
+                Object nextNode = getNextVisibleNode(node);
+                if (nextNode != null)
+                  maxWidth = Math.max(
+                                      maxWidth,
+                                      (int) (getCellBounds(0, 0, nextNode).getWidth()));
+                node = nextNode;
+              }
+          }
       }
-    }
     return new Dimension(maxWidth, (getRowHeight() * count));
   }
-  
+
   /**
    * Returns the minimum size for this component. Which will be the min
    * preferred size or (0,0).
@@ -1343,7 +1355,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return getPreferredSize(c);
   }
-  
+
   /**
    * Returns the maximum size for the component, which will be the preferred
    * size if the instance is currently in JTree or (0,0).
@@ -1356,7 +1368,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return getPreferredSize(c);
   }
-  
+
   /**
    * Messages to stop the editing session. If the UI the receiver is providing
    * the look and feel for returns true from
@@ -1368,7 +1380,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Stops the editing session. If messageStop is true, the editor is messaged
    * with stopEditing, if messageCancel is true the editor is messaged with
@@ -1384,7 +1396,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Will start editing for node if there is a cellEditor and shouldSelectCall
    * returns true. This assumes that path is valid and visible.
@@ -1398,7 +1410,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return false;
   }
-  
+
   /**
    * If the <code>mouseX</code> and <code>mouseY</code> are in the expand
    * or collapse region of the row, this will toggle the row.
@@ -1412,7 +1424,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Returns true if the <code>mouseX</code> and <code>mouseY</code> fall
    * in the area of row that is used to expand/collpse the node and the node at
@@ -1431,7 +1443,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return false;
   }
-  
+
   /**
    * Messaged when the user clicks the particular row, this invokes
    * toggleExpandState.
@@ -1444,7 +1456,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Expands path if it is not expanded, or collapses row if it is expanded. If
    * expanding a path and JTree scroll on expand, ensureRowsAreVisible is
@@ -1457,7 +1469,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Returning true signifies a mouse event on the node should toggle the
    * selection of only the row under the mouse.
@@ -1471,7 +1483,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return false;
   }
-  
+
   /**
    * Returning true signifies a mouse event on the node should select from the
    * anchor point.
@@ -1485,7 +1497,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return false;
   }
-  
+
   /**
    * Returning true indicates the row under the mouse should be toggled based
    * on the event. This is invoked after checkForClickInExpandControl, implying
@@ -1500,7 +1512,7 @@ public class BasicTreeUI extends TreeUI
     // FIXME: not implemented
     return false;
   }
-  
+
   /**
    * Messaged to update the selection based on a MouseEvent over a particular
    * row. If the even is a toggle selection event, the row is either selected,
@@ -1516,7 +1528,7 @@ public class BasicTreeUI extends TreeUI
   {
     // FIXME: not implemented
   }
-  
+
   /**
    * Returns true if the node at <code>row</code> is a leaf.
    * 
@@ -1528,33 +1540,33 @@ public class BasicTreeUI extends TreeUI
     TreePath pathForRow = getPathForRow(tree, row);
     if (pathForRow == null)
       return true;
-    
+
     Object node = pathForRow.getLastPathComponent();
     return tree.getModel().isLeaf(node);
   }
-  
+
   /**
    * Updates the preferred size when scrolling, if necessary.
    */
   public class ComponentHandler
-  extends ComponentAdapter
-  implements ActionListener
+    extends ComponentAdapter
+    implements ActionListener
   {
     /**
      * Timer used when inside a scrollpane and the scrollbar is adjusting
      */
     protected Timer timer;
-    
+
     /** ScrollBar that is being adjusted */
     protected JScrollBar scrollBar;
-    
+
     /**
      * Constructor
      */
     public ComponentHandler()
     {
     }
-    
+
     /**
      * Invoked when the component's position changes.
      * 
@@ -1563,7 +1575,7 @@ public class BasicTreeUI extends TreeUI
     public void componentMoved(ComponentEvent e)
     {
     }
-    
+
     /**
      * Creats, if necessary, and starts a Timer to check if needed to resize
      * the bounds
@@ -1571,7 +1583,7 @@ public class BasicTreeUI extends TreeUI
     protected void startTimer()
     {
     }
-    
+
     /**
      * Returns the JScrollPane housing the JTree, or null if one isn't found.
      * 
@@ -1581,7 +1593,7 @@ public class BasicTreeUI extends TreeUI
     {
       return null;
     }
-    
+
     /**
      * Public as a result of Timer. If the scrollBar is null, or not
      * adjusting, this stops the timer and updates the sizing.
@@ -1592,13 +1604,13 @@ public class BasicTreeUI extends TreeUI
     {
     }
   }// ComponentHandler
-  
+
   /**
    * Listener responsible for getting cell editing events and updating the tree
    * accordingly.
    */
   public class CellEditorHandler
-  implements CellEditorListener
+    implements CellEditorListener
   {
     /**
      * Constructor
@@ -1606,7 +1618,7 @@ public class BasicTreeUI extends TreeUI
     public CellEditorHandler()
     {
     }
-    
+
     /**
      * Messaged when editing has stopped in the tree. Tells the listeners
      * editing has stopped.
@@ -1616,7 +1628,7 @@ public class BasicTreeUI extends TreeUI
     public void editingStopped(ChangeEvent e)
     {
     }
-    
+
     /**
      * Messaged when editing has been canceled in the tree. This tells the
      * listeners the editor has canceled editing.
@@ -1627,12 +1639,12 @@ public class BasicTreeUI extends TreeUI
     {
     }
   }// CellEditorHandler
-  
+
   /**
    * Repaints the lead selection row when focus is lost/grained.
    */
   public class FocusHandler
-  implements FocusListener
+    implements FocusListener
   {
     /**
      * Constructor
@@ -1640,7 +1652,7 @@ public class BasicTreeUI extends TreeUI
     public FocusHandler()
     {
     }
-    
+
     /**
      * Invoked when focus is activated on the tree we're in, redraws the lead
      * row. Invoked when a component gains the keyboard focus.
@@ -1650,7 +1662,7 @@ public class BasicTreeUI extends TreeUI
     public void focusGained(FocusEvent e)
     {
     }
-    
+
     /**
      * Invoked when focus is deactivated on the tree we're in, redraws the
      * lead row. Invoked when a component loses the keyboard focus.
@@ -1661,27 +1673,27 @@ public class BasicTreeUI extends TreeUI
     {
     }
   }// FocusHandler
-  
+
   /**
    * This is used to get multiple key down events to appropriately genereate
    * events.
    */
   public class KeyHandler
-  extends KeyAdapter
+    extends KeyAdapter
   {
     /** Key code that is being generated for. */
     protected Action repeatKeyAction;
-    
+
     /** Set to true while keyPressed is active */
     protected boolean isKeyDown;
-    
+
     /**
      * Constructor
      */
     public KeyHandler()
     {
     }
-    
+
     /**
      * Invoked when a key has been typed. Moves the keyboard focus to the
      * first element whose first letter matches the alphanumeric key pressed
@@ -1693,7 +1705,7 @@ public class BasicTreeUI extends TreeUI
     public void keyTyped(KeyEvent e)
     {
     }
-    
+
     /**
      * Invoked when a key has been pressed.
      * 
@@ -1706,15 +1718,14 @@ public class BasicTreeUI extends TreeUI
       Object last = null;
       if (start != null)
         last = start.getLastPathComponent();
-      
+
       if (last != null)
         {
           // DOWN, KP_DOWN
           if (e.getKeyCode() == KeyEvent.VK_DOWN
               || e.getKeyCode() == KeyEvent.VK_KP_DOWN)
             {
-              Object next = BasicTreeUI.this.
-                getNextVisibleNode(last);
+              Object next = BasicTreeUI.this.getNextVisibleNode(last);
               if (next != null)
                 {
                   TreePath newPath = new TreePath(getPathToRoot(next, 0));
@@ -1725,61 +1736,61 @@ public class BasicTreeUI extends TreeUI
                     {
                       BasicTreeUI.this.tree.expandPath(newPath);
                       try
-                      {
-                        BasicTreeUI.this.tree.fireTreeWillExpand(newPath);
-                      }
+                        {
+                          BasicTreeUI.this.tree.fireTreeWillExpand(newPath);
+                        }
                       catch (ExpandVetoException ev)
-                      {                        
-                      }
+                        {
+                        }
                       BasicTreeUI.this.tree.fireTreeExpanded(newPath);
                     }
                 }
             }
           // UP, KP_UP
           else if (e.getKeyCode() == KeyEvent.VK_UP
-              || e.getKeyCode() == KeyEvent.VK_KP_UP)
+                   || e.getKeyCode() == KeyEvent.VK_KP_UP)
             {
-              Object prev = BasicTreeUI.this.
-              getPreviousVisibleNode(last);
-              
+              Object prev = BasicTreeUI.this.getPreviousVisibleNode(last);
+
               if (prev != null)
                 {
                   TreePath newPath = new TreePath(getPathToRoot(prev, 0));
                   BasicTreeUI.this.selectPath(BasicTreeUI.this.tree,
-                                              new TreePath(getPathToRoot(prev, 0)));
+                                              new TreePath(getPathToRoot(prev,
+                                                                         0)));
                   if (e.isControlDown())
                     tree.setLeadSelectionPath(newPath);
                   else if (!mod.isLeaf(prev) && e.isShiftDown())
                     {
                       BasicTreeUI.this.tree.expandPath(newPath);
                       try
-                      {
-                        BasicTreeUI.this.tree.fireTreeWillExpand(newPath);
-                      }
+                        {
+                          BasicTreeUI.this.tree.fireTreeWillExpand(newPath);
+                        }
                       catch (ExpandVetoException ev)
-                      {                        
-                      }
+                        {
+                        }
                       BasicTreeUI.this.tree.fireTreeExpanded(newPath);
                     }
                 }
             }
           // LEFT, KP_LEFT
           else if (e.getKeyCode() == KeyEvent.VK_LEFT
-              || e.getKeyCode() == KeyEvent.VK_KP_LEFT)
+                   || e.getKeyCode() == KeyEvent.VK_KP_LEFT)
             {
               TreePath path = new TreePath(getPathToRoot(last, 0));
               Object p = getParent(mod.getRoot(), last);
-              
+
               if (!mod.isLeaf(last) && BasicTreeUI.this.tree.isExpanded(path))
                 {
                   BasicTreeUI.this.tree.collapsePath(path);
                   try
-                  {
-                    BasicTreeUI.this.tree.fireTreeWillCollapse(path);
-                  }
+                    {
+                      BasicTreeUI.this.tree.fireTreeWillCollapse(path);
+                    }
                   catch (ExpandVetoException ev)
-                  {                        
-                  }
+                    {
+                    }
                   BasicTreeUI.this.tree.fireTreeCollapsed(path);
                 }
               else if (p != null)
@@ -1788,30 +1799,33 @@ public class BasicTreeUI extends TreeUI
             }
           // RIGHT, KP_RIGHT
           else if (e.getKeyCode() == KeyEvent.VK_RIGHT
-              || e.getKeyCode() == KeyEvent.VK_KP_RIGHT)
+                   || e.getKeyCode() == KeyEvent.VK_KP_RIGHT)
             {
               TreePath path = new TreePath(getPathToRoot(last, 0));
-              
+
               if (!mod.isLeaf(last) && BasicTreeUI.this.tree.isCollapsed(path))
                 {
                   BasicTreeUI.this.tree.expandPath(path);
                   try
-                  {
-                    BasicTreeUI.this.tree.fireTreeWillExpand(path);
-                  }
+                    {
+                      BasicTreeUI.this.tree.fireTreeWillExpand(path);
+                    }
                   catch (ExpandVetoException ev)
-                  {                        
-                  }
+                    {
+                    }
                   BasicTreeUI.this.tree.fireTreeExpanded(path);
                 }
               else
                 {
-                  Object next = BasicTreeUI.this.
-                  getNextVisibleNode(last);
-                  
+                  Object next = BasicTreeUI.this.getNextVisibleNode(last);
+
                   if (next != null)
-                    BasicTreeUI.this.selectPath(BasicTreeUI.this.tree,
-                                                new TreePath(getPathToRoot(next, 0)));
+                    BasicTreeUI.this.selectPath(
+                                                BasicTreeUI.this.tree,
+                                                new TreePath(
+                                                             getPathToRoot(
+                                                                           next,
+                                                                           0)));
                 }
             }
           // Enter
@@ -1824,31 +1838,31 @@ public class BasicTreeUI extends TreeUI
                     {
                       BasicTreeUI.this.tree.collapsePath(path);
                       try
-                      {
-                        BasicTreeUI.this.tree.fireTreeWillCollapse(path);
-                      }
+                        {
+                          BasicTreeUI.this.tree.fireTreeWillCollapse(path);
+                        }
                       catch (ExpandVetoException ev)
-                      {                        
-                      }
+                        {
+                        }
                       BasicTreeUI.this.tree.fireTreeCollapsed(path);
                     }
                   else
                     {
                       BasicTreeUI.this.tree.expandPath(path);
                       try
-                      {
-                        BasicTreeUI.this.tree.fireTreeWillExpand(path);
-                      }
+                        {
+                          BasicTreeUI.this.tree.fireTreeWillExpand(path);
+                        }
                       catch (ExpandVetoException ev)
-                      {                        
-                      }
+                        {
+                        }
                       BasicTreeUI.this.tree.fireTreeExpanded(path);
                     }
                 }
             }
         }
     }
-    
+
     /**
      * Invoked when a key has been released
      * 
@@ -1858,14 +1872,14 @@ public class BasicTreeUI extends TreeUI
     {
     }
   }// KeyHandler
-  
+
   /**
    * MouseListener is responsible for updating the selevtion based on mouse
    * events.
    */
   public class MouseHandler
-  extends MouseAdapter
-  implements MouseMotionListener
+    extends MouseAdapter
+    implements MouseMotionListener
   {
     /**
      * Constructor
@@ -1873,7 +1887,7 @@ public class BasicTreeUI extends TreeUI
     public MouseHandler()
     {
     }
-    
+
     /**
      * Invoked when a mouse button has been pressed on a component.
      * 
@@ -1882,7 +1896,7 @@ public class BasicTreeUI extends TreeUI
     public void mousePressed(MouseEvent e)
     {
     }
-    
+
     /**
      * Invoked when a mouse button is pressed on a component and then dragged.
      * MOUSE_DRAGGED events will continue to be delivered to the component
@@ -1895,7 +1909,7 @@ public class BasicTreeUI extends TreeUI
     public void mouseDragged(MouseEvent e)
     {
     }
-    
+
     /**
      * Invoked when the mouse button has been moved on a component (with no
      * buttons no down).
@@ -1905,7 +1919,7 @@ public class BasicTreeUI extends TreeUI
     public void mouseMoved(MouseEvent e)
     {
     }
-    
+
     /**
      * Invoked when a mouse button has been released on a component.
      * 
@@ -1915,27 +1929,27 @@ public class BasicTreeUI extends TreeUI
     {
     }
   }// MouseHandler
-  
+
   /**
    * MouseInputHandler handles passing all mouse events, including mouse motion
    * events, until the mouse is released to the destination it is constructed
    * with.
    */
   public class MouseInputHandler
-  implements MouseInputListener
+    implements MouseInputListener
   {
     /** Source that events are coming from */
     protected Component source;
-    
+
     /** Destination that receives all events. */
     protected Component destination;
-    
+
     /** Number of mouse clicks on a non-leaf */
     private int clickCount = 0;
-    
+
     /** The last non-leaf cell that was clicked */
     private Object lastClicked = null;
-    
+
     /**
      * Constructor
      * 
@@ -1947,7 +1961,7 @@ public class BasicTreeUI extends TreeUI
                              MouseEvent e)
     {
     }
-    
+
     /**
      * Invoked when the mouse button has been clicked (pressed and released)
      * on a component.
@@ -1958,28 +1972,28 @@ public class BasicTreeUI extends TreeUI
     {
       Point click = e.getPoint();
       int row = Math.round(click.y / BasicTreeUI.this.getRowHeight());
-      TreePath path = BasicTreeUI.this.getClosestPathForLocation(tree,
-                                                                 click.x, click.y);
-      
+      TreePath path = BasicTreeUI.this.getClosestPathForLocation(tree, click.x,
+                                                                 click.y);
+
       if (path != null)
         {
           boolean inBounds = false;
           boolean cntlClick = false;
           Rectangle bounds = BasicTreeUI.this.getPathBounds(
-                                                            BasicTreeUI.this.tree, path);
-          
+                                                            BasicTreeUI.this.tree,
+                                                            path);
+
           bounds.x -= rightChildIndent - 4;
           bounds.width += rightChildIndent + 4;
-          
+
           if (bounds.contains(click.x, click.y))
             inBounds = true;
           else if (BasicTreeUI.this.hasControlIcons()
-              && (click.x < (bounds.x - rightChildIndent + 5) && 
-                  click.x > (bounds.x - rightChildIndent - 5)))
+                   && (click.x < (bounds.x - rightChildIndent + 5) && click.x > (bounds.x
+                                                                                 - rightChildIndent - 5)))
             cntlClick = true;
-          
-          if ((inBounds || cntlClick)
-              && BasicTreeUI.this.tree.isVisible(path))
+
+          if ((inBounds || cntlClick) && BasicTreeUI.this.tree.isVisible(path))
             {
               if (!cntlClick && !BasicTreeUI.this.isLeaf(row))
                 {
@@ -1992,7 +2006,7 @@ public class BasicTreeUI extends TreeUI
                       clickCount = 1;
                     }
                 }
-              
+
               if (clickCount == 2 || cntlClick == true)
                 {
                   clickCount = 0;
@@ -2002,33 +2016,33 @@ public class BasicTreeUI extends TreeUI
                     {
                       BasicTreeUI.this.tree.collapsePath(path);
                       try
-                      {
-                        BasicTreeUI.this.tree.fireTreeWillCollapse(path);
-                      }
+                        {
+                          BasicTreeUI.this.tree.fireTreeWillCollapse(path);
+                        }
                       catch (ExpandVetoException ev)
-                      {                        
-                      }
+                        {
+                        }
                       BasicTreeUI.this.tree.fireTreeCollapsed(path);
                     }
                   else
                     {
                       BasicTreeUI.this.tree.expandPath(path);
                       try
-                      {
-                        BasicTreeUI.this.tree.fireTreeWillExpand(path);
-                      }
+                        {
+                          BasicTreeUI.this.tree.fireTreeWillExpand(path);
+                        }
                       catch (ExpandVetoException ev)
-                      {                        
-                      }
+                        {
+                        }
                       BasicTreeUI.this.tree.fireTreeExpanded(path);
                     }
                 }
-              
+
               BasicTreeUI.this.selectPath(BasicTreeUI.this.tree, path);
             }
         }
     }
-    
+
     /**
      * Invoked when a mouse button has been pressed on a component.
      * 
@@ -2037,7 +2051,7 @@ public class BasicTreeUI extends TreeUI
     public void mousePressed(MouseEvent e)
     {
     }
-    
+
     /**
      * Invoked when a mouse button has been released on a component.
      * 
@@ -2046,7 +2060,7 @@ public class BasicTreeUI extends TreeUI
     public void mouseReleased(MouseEvent e)
     {
     }
-    
+
     /**
      * Invoked when the mouse enters a component.
      * 
@@ -2055,7 +2069,7 @@ public class BasicTreeUI extends TreeUI
     public void mouseEntered(MouseEvent e)
     {
     }
-    
+
     /**
      * Invoked when the mouse exits a component.
      * 
@@ -2064,7 +2078,7 @@ public class BasicTreeUI extends TreeUI
     public void mouseExited(MouseEvent e)
     {
     }
-    
+
     /**
      * Invoked when a mouse button is pressed on a component and then dragged.
      * MOUSE_DRAGGED events will continue to be delivered to the component
@@ -2077,7 +2091,7 @@ public class BasicTreeUI extends TreeUI
     public void mouseDragged(MouseEvent e)
     {
     }
-    
+
     /**
      * Invoked when the mouse cursor has been moved onto a component but no
      * buttons have been pushed.
@@ -2087,7 +2101,7 @@ public class BasicTreeUI extends TreeUI
     public void mouseMoved(MouseEvent e)
     {
     }
-    
+
     /**
      * Removes event from the source
      */
@@ -2095,14 +2109,14 @@ public class BasicTreeUI extends TreeUI
     {
     }
   }// MouseInputHandler
-  
+
   /**
    * Class responsible for getting size of node, method is forwarded to
    * BasicTreeUI method. X location does not include insets, that is handled in
    * getPathBounds.
    */
   public class NodeDimensionsHandler
-  extends AbstractLayoutCache.NodeDimensions
+    extends AbstractLayoutCache.NodeDimensions
   {
     /**
      * Constructor
@@ -2110,7 +2124,7 @@ public class BasicTreeUI extends TreeUI
     public NodeDimensionsHandler()
     {
     }
-    
+
     /**
      * Responsible for getting the size of a particular node.
      * 
@@ -2127,7 +2141,7 @@ public class BasicTreeUI extends TreeUI
     {
       return null;
     }
-    
+
     /**
      * Returns the amount to indent the given row
      * 
@@ -2138,22 +2152,22 @@ public class BasicTreeUI extends TreeUI
       return 0;
     }
   }// NodeDimensionsHandler
-  
+
   /**
    * PropertyChangeListener for the tree. Updates the appropriate varaible, or
    * TreeState, based on what changes.
    */
   public class PropertyChangeHandler
-  implements PropertyChangeListener
+    implements PropertyChangeListener
   {
-    
+
     /**
      * Constructor
      */
     public PropertyChangeHandler()
     {
     }
-    
+
     /**
      * This method gets called when a bound property is changed.
      * 
@@ -2164,22 +2178,22 @@ public class BasicTreeUI extends TreeUI
     {
     }
   }// PropertyChangeHandler
-  
+
   /**
    * Listener on the TreeSelectionModel, resets the row selection if any of the
    * properties of the model change.
    */
   public class SelectionModelPropertyChangeHandler
-  implements PropertyChangeListener
+    implements PropertyChangeListener
   {
-    
+
     /**
      * Constructor
      */
     public SelectionModelPropertyChangeHandler()
     {
     }
-    
+
     /**
      * This method gets called when a bound property is changed.
      * 
@@ -2190,21 +2204,21 @@ public class BasicTreeUI extends TreeUI
     {
     }
   }// SelectionModelPropertyChangeHandler
-  
+
   /**
    * ActionListener that invokes cancelEditing when action performed.
    */
   public class TreeCancelEditingAction
-  extends AbstractAction
+    extends AbstractAction
   {
-    
+
     /**
      * Constructor
      */
     public TreeCancelEditingAction()
     {
     }
-    
+
     /**
      * Invoked when an action occurs.
      * 
@@ -2213,7 +2227,7 @@ public class BasicTreeUI extends TreeUI
     public void actionPerformed(ActionEvent e)
     {
     }
-    
+
     /**
      * Returns true if the action is enabled.
      * 
@@ -2224,21 +2238,21 @@ public class BasicTreeUI extends TreeUI
       return false;
     }
   }// TreeCancelEditingAction
-  
+
   /**
    * Updates the TreeState in response to nodes expanding/collapsing.
    */
   public class TreeExpansionHandler
-  implements TreeExpansionListener
+    implements TreeExpansionListener
   {
-    
+
     /**
      * Constructor
      */
     public TreeExpansionHandler()
     {
     }
-    
+
     /**
      * Called whenever an item in the tree has been expanded.
      * 
@@ -2248,7 +2262,7 @@ public class BasicTreeUI extends TreeUI
     {
       BasicTreeUI.this.tree.repaint();
     }
-    
+
     /**
      * Called whenever an item in the tree has been collapsed.
      * 
@@ -2259,18 +2273,18 @@ public class BasicTreeUI extends TreeUI
       BasicTreeUI.this.tree.repaint();
     }
   }// TreeExpansionHandler
-  
+
   /**
    * TreeHomeAction is used to handle end/home actions. Scrolls either the
    * first or last cell to be visible based on direction.
    */
   public class TreeHomeAction
-  extends AbstractAction
+    extends AbstractAction
   {
-    
+
     /** direction is either home or end */
     protected int direction;
-    
+
     /**
      * Constructor
      * 
@@ -2280,7 +2294,7 @@ public class BasicTreeUI extends TreeUI
     public TreeHomeAction(int direction, String name)
     {
     }
-    
+
     /**
      * Invoked when an action occurs.
      * 
@@ -2289,7 +2303,7 @@ public class BasicTreeUI extends TreeUI
     public void actionPerformed(ActionEvent e)
     {
     }
-    
+
     /**
      * Returns true if the action is enabled.
      * 
@@ -2300,18 +2314,18 @@ public class BasicTreeUI extends TreeUI
       return false;
     }
   }// TreeHomeAction
-  
+
   /**
    * TreeIncrementAction is used to handle up/down actions. Selection is moved
    * up or down based on direction.
    */
   public class TreeIncrementAction
-  extends AbstractAction
+    extends AbstractAction
   {
-    
+
     /** Specifies the direction to adjust the selection by. */
     protected int direction;
-    
+
     /**
      * Constructor
      * 
@@ -2321,7 +2335,7 @@ public class BasicTreeUI extends TreeUI
     public TreeIncrementAction(int direction, String name)
     {
     }
-    
+
     /**
      * Invoked when an action occurs.
      * 
@@ -2330,7 +2344,7 @@ public class BasicTreeUI extends TreeUI
     public void actionPerformed(ActionEvent e)
     {
     }
-    
+
     /**
      * Returns true if the action is enabled.
      * 
@@ -2341,12 +2355,12 @@ public class BasicTreeUI extends TreeUI
       return false;
     }
   }// TreeIncrementAction
-  
+
   /**
    * Forwards all TreeModel events to the TreeState.
    */
   public class TreeModelHandler
-  implements TreeModelListener
+    implements TreeModelListener
   {
     /**
      * Constructor
@@ -2354,7 +2368,7 @@ public class BasicTreeUI extends TreeUI
     public TreeModelHandler()
     {
     }
-    
+
     /**
      * Invoked after a node (or a set of siblings) has changed in some way.
      * The node(s) have not changed locations in the tree or altered their
@@ -2370,7 +2384,7 @@ public class BasicTreeUI extends TreeUI
     public void treeNodesChanged(TreeModelEvent e)
     {
     }
-    
+
     /**
      * Invoked after nodes have been inserted into the tree. Use e.getPath()
      * to get the parent of the new node(s). e.getChildIndices() returns the
@@ -2381,7 +2395,7 @@ public class BasicTreeUI extends TreeUI
     public void treeNodesInserted(TreeModelEvent e)
     {
     }
-    
+
     /**
      * Invoked after nodes have been removed from the tree. Note that if a
      * subtree is removed from the tree, this method may only be invoked once
@@ -2395,7 +2409,7 @@ public class BasicTreeUI extends TreeUI
     public void treeNodesRemoved(TreeModelEvent e)
     {
     }
-    
+
     /**
      * Invoked after the tree has drastically changed structure from a given
      * node down. If the path returned by e.getPath() is of length one and the
@@ -2409,16 +2423,16 @@ public class BasicTreeUI extends TreeUI
     {
     }
   }// TreeModelHandler
-  
+
   /**
    * TreePageAction handles page up and page down events.
    */
   public class TreePageAction
-  extends AbstractAction
+    extends AbstractAction
   {
     /** Specifies the direction to adjust the selection by. */
     protected int direction;
-    
+
     /**
      * Constructor
      * 
@@ -2428,7 +2442,7 @@ public class BasicTreeUI extends TreeUI
     public TreePageAction(int direction, String name)
     {
     }
-    
+
     /**
      * Invoked when an action occurs.
      * 
@@ -2437,7 +2451,7 @@ public class BasicTreeUI extends TreeUI
     public void actionPerformed(ActionEvent e)
     {
     }
-    
+
     /**
      * Returns true if the action is enabled.
      * 
@@ -2448,13 +2462,13 @@ public class BasicTreeUI extends TreeUI
       return false;
     }
   }// TreePageAction
-  
+
   /**
    * Listens for changes in the selection model and updates the display
    * accordingly.
    */
   public class TreeSelectionHandler
-  implements TreeSelectionListener
+    implements TreeSelectionListener
   {
     /**
      * Constructor
@@ -2462,7 +2476,7 @@ public class BasicTreeUI extends TreeUI
     public TreeSelectionHandler()
     {
     }
-    
+
     /**
      * Messaged when the selection changes in the tree we're displaying for.
      * Stops editing, messages super and displays the changed paths.
@@ -2473,12 +2487,12 @@ public class BasicTreeUI extends TreeUI
     {
     }
   }// TreeSelectionHandler
-  
+
   /**
    * For the first selected row expandedness will be toggled.
    */
   public class TreeToggleAction
-  extends AbstractAction
+    extends AbstractAction
   {
     /**
      * Constructor
@@ -2488,7 +2502,7 @@ public class BasicTreeUI extends TreeUI
     public TreeToggleAction(String name)
     {
     }
-    
+
     /**
      * Invoked when an action occurs.
      * 
@@ -2497,7 +2511,7 @@ public class BasicTreeUI extends TreeUI
     public void actionPerformed(ActionEvent e)
     {
     }
-    
+
     /**
      * Returns true if the action is enabled.
      * 
@@ -2508,20 +2522,20 @@ public class BasicTreeUI extends TreeUI
       return false;
     }
   } // TreeToggleAction
-  
+
   /**
    * TreeTraverseAction is the action used for left/right keys. Will toggle
    * the expandedness of a node, as well as potentially incrementing the
    * selection.
    */
   public class TreeTraverseAction
-  extends AbstractAction
+    extends AbstractAction
   {
     /**
      * Determines direction to traverse, 1 means expand, -1 means collapse.
      */
     protected int direction;
-    
+
     /**
      * Constructor
      * 
@@ -2531,7 +2545,7 @@ public class BasicTreeUI extends TreeUI
     public TreeTraverseAction(int direction, String name)
     {
     }
-    
+
     /**
      * Invoked when an action occurs.
      * 
@@ -2540,7 +2554,7 @@ public class BasicTreeUI extends TreeUI
     public void actionPerformed(ActionEvent e)
     {
     }
-    
+
     /**
      * Returns true if the action is enabled.
      * 
@@ -2551,7 +2565,7 @@ public class BasicTreeUI extends TreeUI
       return false;
     }
   } // TreeTraverseAction
-  
+
   /**
    * Returns the cell bounds for painting selected cells
    * Package private for use in inner classes.
@@ -2569,14 +2583,15 @@ public class BasicTreeUI extends TreeUI
         String s = cell.toString();
         Font f = tree.getFont();
         FontMetrics fm = tree.getToolkit().getFontMetrics(tree.getFont());
-        
+
         if (s != null)
-          return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s) + 4,
+          return new Rectangle(x, y,
+                               SwingUtilities.computeStringWidth(fm, s) + 4,
                                fm.getHeight());
       }
     return new Rectangle(x, y, 0, 0);
   }
-  
+
   /**
    * Retrieves the location of some node, recursively starting at from
    * some node.
@@ -2591,32 +2606,31 @@ public class BasicTreeUI extends TreeUI
    * 
    * @return Point - the location of node
    */
-  Point getCellLocation(int x, int y, JTree tree, TreeModel mod,
-                        Object node, Object startNode)
+  Point getCellLocation(int x, int y, JTree tree, TreeModel mod, Object node,
+                        Object startNode)
   {
     int rowHeight = getRowHeight();
     if (startNode == null || startNode.equals(node))
       {
-        if (!tree.isRootVisible() && tree.isExpanded(new TreePath(mod.getRoot())))
+        if (!tree.isRootVisible()
+            && tree.isExpanded(new TreePath(mod.getRoot())))
           return new Point(x + ((getLevel(node)) * rightChildIndent), y);
-        
-        return new Point(x + ((getLevel(node) + 1)
-            * rightChildIndent), y);
+
+        return new Point(x + ((getLevel(node) + 1) * rightChildIndent), y);
       }
-    
+
     if (!mod.isLeaf(startNode)
         && tree.isExpanded(new TreePath(getPathToRoot(startNode, 0))))
       {
         Object child = mod.getChild(startNode, 0);
         if (child != null)
-          return getCellLocation(x, y + rowHeight, tree, mod,
-                                 node, child);
+          return getCellLocation(x, y + rowHeight, tree, mod, node, child);
       }
-    
+
     return getCellLocation(x, y + rowHeight, tree, mod, node,
                            getNextVisibleNode(startNode));
   }
-  
+
   /**
    * Paints a node in the tree Package private for use in inner classes.
    * 
@@ -2627,7 +2641,7 @@ public class BasicTreeUI extends TreeUI
    * @param node the object to draw
    */
   void paintNode(Graphics g, int x, int y, JTree tree, Object node,
-      boolean isLeaf)
+                 boolean isLeaf)
   {
     TreePath curr = new TreePath(getPathToRoot(node, 0));
     boolean selected = tree.isPathSelected(curr);
@@ -2635,21 +2649,22 @@ public class BasicTreeUI extends TreeUI
     boolean hasIcons = false;
 
     if (tree.isVisible(curr))
-    {
-      TreeCellRenderer dtcr = tree.getCellRenderer();
-      if (dtcr == null)
-        dtcr = createDefaultCellRenderer();
+      {
+        TreeCellRenderer dtcr = tree.getCellRenderer();
+        if (dtcr == null)
+          dtcr = createDefaultCellRenderer();
 
-      if (!isLeaf)
-        expanded = tree.isExpanded(curr);
+        if (!isLeaf)
+          expanded = tree.isExpanded(curr);
 
-      Component c = dtcr.getTreeCellRendererComponent(tree, node, selected,
-          expanded, isLeaf, 0, false);
-      rendererPane.paintComponent(g, c, c.getParent(),
-          getCellBounds(x, y, node));
-    }
+        Component c = dtcr.getTreeCellRendererComponent(tree, node, selected,
+                                                        expanded, isLeaf, 0,
+                                                        false);
+        rendererPane.paintComponent(g, c, c.getParent(), getCellBounds(x, y,
+                                                                       node));
+      }
   }
-  
+
   /**
    * Recursively paints all elements of the tree Package private for use in
    * inner classes.
@@ -2665,20 +2680,20 @@ public class BasicTreeUI extends TreeUI
    * 
    * @return int - current descent of the tree
    */
-  int paintRecursive(Graphics g, int indentation, int descent,
-                     int childNumber, int depth, JTree tree, TreeModel mod, Object curr)
+  int paintRecursive(Graphics g, int indentation, int descent, int childNumber,
+                     int depth, JTree tree, TreeModel mod, Object curr)
   {
     Rectangle clip = g.getClipBounds();
     if (indentation > clip.x + clip.width + rightChildIndent
         || descent > clip.y + clip.height + getRowHeight())
       return descent;
-    
+
     int halfHeight = getRowHeight() / 2;
     int halfWidth = rightChildIndent / 2;
     int y0 = descent + halfHeight;
     int heightOfLine = descent + halfHeight;
     boolean isRootVisible = tree.isRootVisible();
-    
+
     if (mod.isLeaf(curr))
       {
         paintNode(g, indentation + 4, descent, tree, curr, true);
@@ -2692,7 +2707,7 @@ public class BasicTreeUI extends TreeUI
             descent += getRowHeight();
             y0 += halfHeight;
           }
-        
+
         int max = mod.getChildCount(curr);
         if (tree.isExpanded(new TreePath(getPathToRoot(curr, 0))))
           {
@@ -2701,22 +2716,21 @@ public class BasicTreeUI extends TreeUI
                 int indent = indentation + rightChildIndent;
                 if (!isRootVisible && depth == 0)
                   indent = 0;
-                else if ((!isRootVisible && !curr.equals(mod.getRoot())) || 
-                    isRootVisible)
+                else if ((!isRootVisible && !curr.equals(mod.getRoot()))
+                         || isRootVisible)
                   {
                     g.setColor(getHashColor());
                     heightOfLine = descent + halfHeight;
-                    g.drawLine(indentation + halfWidth, heightOfLine, indentation
-                               + rightChildIndent, heightOfLine);
+                    g.drawLine(indentation + halfWidth, heightOfLine,
+                               indentation + rightChildIndent, heightOfLine);
                   }
-                
-                descent = paintRecursive(g, indent,
-                                         descent, i, depth + 1, tree, mod, 
-                                         mod.getChild(curr, i));
+
+                descent = paintRecursive(g, indent, descent, i, depth + 1,
+                                         tree, mod, mod.getChild(curr, i));
               }
           }
       }
-    
+
     if (tree.isExpanded(new TreePath(getPathToRoot(curr, 0))))
       if (y0 != heightOfLine && mod.getChildCount(curr) > 0)
         {
@@ -2724,10 +2738,10 @@ public class BasicTreeUI extends TreeUI
           g.drawLine(indentation + halfWidth, y0, indentation + halfWidth,
                      heightOfLine);
         }
-    
+
     return descent;
   }
-  
+
   /**
    * Recursively paints all the control icons on the tree.
    * Package private for use in inner classes.
@@ -2744,51 +2758,49 @@ public class BasicTreeUI extends TreeUI
    * @return int - current descent of the tree
    */
   int paintControlIcons(Graphics g, int indentation, int descent,
-                        int childNumber, int depth, JTree tree, TreeModel mod, Object node)
+                        int childNumber, int depth, JTree tree, TreeModel mod,
+                        Object node)
   {
     int h = descent;
     int rowHeight = getRowHeight();
-    Icon ei = UIManager.getLookAndFeelDefaults()
-    .getIcon("Tree.expandedIcon");
-    Icon ci = UIManager.getLookAndFeelDefaults()
-    .getIcon("Tree.collapsedIcon");
+    Icon ei = UIManager.getLookAndFeelDefaults().getIcon("Tree.expandedIcon");
+    Icon ci = UIManager.getLookAndFeelDefaults().getIcon("Tree.collapsedIcon");
     Rectangle clip = g.getClipBounds();
     if (indentation > clip.x + clip.width + rightChildIndent
         || descent > clip.y + clip.height + getRowHeight())
       return descent;
-    
+
     if (mod.isLeaf(node))
       descent += rowHeight;
-    else 
+    else
       {
         if (depth > 0 || tree.isRootVisible())
           descent += rowHeight;
-        
+
         int max = mod.getChildCount(node);
         if (tree.isExpanded(new TreePath(getPathToRoot(node, 0))))
           {
             if (!node.equals(mod.getRoot()))
               ei.paintIcon(tree, g, indentation - rightChildIndent - 3, h);
-            
+
             for (int i = 0; i < max; ++i)
               {
                 int indent = indentation + rightChildIndent;
                 if (depth == 0 && !tree.isRootVisible())
                   indent = -1;
-                
-                descent = paintControlIcons(g, indent,
-                                            descent, i, depth + 1, tree, mod, 
-                                            mod.getChild(node, i));
+
+                descent = paintControlIcons(g, indent, descent, i, depth + 1,
+                                            tree, mod, mod.getChild(node, i));
               }
           }
         else if (!node.equals(mod.getRoot()))
-          ci.paintIcon(tree, g, indentation - rightChildIndent - 3, 
+          ci.paintIcon(tree, g, indentation - rightChildIndent - 3,
                        descent - getRowHeight());
       }
-    
+
     return descent;
   }
-  
+
   /**
    * Returns true if the LookAndFeel implements the control icons
    * Package private for use in inner classes.
@@ -2797,14 +2809,12 @@ public class BasicTreeUI extends TreeUI
    */
   boolean hasControlIcons()
   {
-    if (UIManager.getLookAndFeelDefaults().
-        getIcon("Tree.expandedIcon") == null ||
-        UIManager.getLookAndFeelDefaults().
-        getIcon("Tree.collapsedIcon") == null)
+    if (UIManager.getLookAndFeelDefaults().getIcon("Tree.expandedIcon") == null
+        || UIManager.getLookAndFeelDefaults().getIcon("Tree.collapsedIcon") == null)
       return false;
     return true;
   }
-  
+
   /**
    * Returns the parent of the current node
    * 
@@ -2820,7 +2830,7 @@ public class BasicTreeUI extends TreeUI
       return ((TreeNode) node).getParent();
     return findNode(root, node);
   }
-  
+
   /**
    * Recursively checks the tree for the specified node, starting
    * at the root.
@@ -2833,17 +2843,17 @@ public class BasicTreeUI extends TreeUI
   {
     TreeModel mod = tree.getModel();
     for (int i = 0; i < mod.getChildCount(root); i++)
-    {
-      if (mod.getIndexOfChild(root, node) != -1)
-        return root;
-      
-      Object n = findNode(mod.getChild(root, i), node);
-      if (n != null)
-        return  n;
-    }
+      {
+        if (mod.getIndexOfChild(root, node) != -1)
+          return root;
+
+        Object n = findNode(mod.getChild(root, i), node);
+        if (n != null)
+          return n;
+      }
     return null;
   }
-  
+
   /**
    * Get next visible node in the tree. Package private for use in inner
    * classes.
@@ -2856,27 +2866,27 @@ public class BasicTreeUI extends TreeUI
   {
     Object next = null;
     TreePath current = null;
-    
+
     if (node != null)
       next = getNextNode(node);
-    
+
     if (next != null)
       {
         current = new TreePath(getPathToRoot(next, 0));
         if (tree.isVisible(current))
           return next;
-        
+
         while (next != null && !tree.isVisible(current))
           {
             next = getNextNode(next);
-            
+
             if (next != null)
               current = new TreePath(getPathToRoot(next, 0));
           }
       }
     return next;
   }
-  
+
   /**
    * Get previous visible node in the tree.
    * Package private for use in inner classes.
@@ -2889,27 +2899,27 @@ public class BasicTreeUI extends TreeUI
   {
     Object prev = null;
     TreePath current = null;
-    
+
     if (node != null)
       prev = getPreviousNode(node);
-    
+
     if (prev != null)
       {
         current = new TreePath(getPathToRoot(prev, 0));
         if (tree.isVisible(current))
           return prev;
-        
+
         while (prev != null && !tree.isVisible(current))
           {
             prev = getPreviousNode(prev);
-            
+
             if (prev != null)
               current = new TreePath(getPathToRoot(prev, 0));
           }
       }
     return prev;
   }
-  
+
   /**
    * Returns the next node in the tree
    * Package private for use in inner classes.
@@ -2925,15 +2935,14 @@ public class BasicTreeUI extends TreeUI
 
     Object node = curr;
     Object sibling = null;
-    
+
     do
       {
         sibling = getNextSibling(node);
         node = getParent(mod.getRoot(), node);
       }
-    while (sibling == null &&
-           node != null);
-    
+    while (sibling == null && node != null);
+
     return sibling;
   }
 
@@ -2950,7 +2959,7 @@ public class BasicTreeUI extends TreeUI
     Object parent = getParent(mod.getRoot(), node);
     if (parent == null)
       return null;
-    
+
     Object sibling = getPreviousSibling(node);
 
     if (sibling == null)
@@ -2958,14 +2967,14 @@ public class BasicTreeUI extends TreeUI
 
     int size = mod.getChildCount(sibling);
     while (size > 0)
-    {
-      sibling = mod.getChild(sibling, size - 1);
-      size = mod.getChildCount(sibling);
-    }
-      
+      {
+        sibling = mod.getChild(sibling, size - 1);
+        size = mod.getChildCount(sibling);
+      }
+
     return sibling;
   }
-  
+
   /**
    * Returns the next sibling in the tree
    * Package private for use in inner classes.
@@ -2981,7 +2990,7 @@ public class BasicTreeUI extends TreeUI
       return null;
 
     int index = mod.getIndexOfChild(parent, node) + 1;
-    
+
     if (index == 0 || index >= mod.getChildCount(parent))
       return null;
 
@@ -3009,7 +3018,7 @@ public class BasicTreeUI extends TreeUI
 
     return mod.getChild(parent, index);
   }
-  
+
   /**
    * Selects the specified path in the tree depending on modes.
    * Package private for use in inner classes.
@@ -3023,15 +3032,13 @@ public class BasicTreeUI extends TreeUI
       {
         if (tree.isPathSelected(path))
           tree.removeSelectionPath(path);
-        else if (tree.getSelectionModel().getSelectionMode() 
-            == TreeSelectionModel.SINGLE_TREE_SELECTION)
+        else if (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.SINGLE_TREE_SELECTION)
           {
             tree.getSelectionModel().clearSelection();
             tree.addSelectionPath(path);
             tree.setLeadSelectionPath(path);
           }
-        else if (tree.getSelectionModel().getSelectionMode() 
-            == TreeSelectionModel.CONTIGUOUS_TREE_SELECTION)
+        else if (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.CONTIGUOUS_TREE_SELECTION)
           {
             // TODO
           }
@@ -3044,7 +3051,7 @@ public class BasicTreeUI extends TreeUI
           }
       }
   }
-  
+
   /**
    * Returns the path from node to the root.
    * Package private for use in inner classes.
@@ -3061,16 +3068,15 @@ public class BasicTreeUI extends TreeUI
       {
         if (depth == 0)
           return null;
-        
+
         return new Object[depth];
       }
 
-    Object[] path = getPathToRoot(getParent(mod.getRoot(),
-        node), depth + 1);
+    Object[] path = getPathToRoot(getParent(mod.getRoot(), node), depth + 1);
     path[path.length - depth - 1] = node;
     return path;
   }
-  
+
   /**
    * Returns the level of the node in the tree.
    *
@@ -3091,7 +3097,7 @@ public class BasicTreeUI extends TreeUI
 
     return count;
   }
-  
+
   /**
    * Draws a vertical line using the given graphic context
    * 
@@ -3101,10 +3107,12 @@ public class BasicTreeUI extends TreeUI
    * @param top specifies the top of the line
    * @param bottom specifies the bottom of the line
    */
-  protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
+  protected void paintVerticalLine(Graphics g, JComponent c, int x, int top,
+                                   int bottom)
+  {
     g.drawLine(x, top, x, bottom);
   }
-  
+
   /**
    * Draws a horizontal line using the given graphic context
    * 
@@ -3114,10 +3122,12 @@ public class BasicTreeUI extends TreeUI
    * @param left specifies the left point of the line
    * @param right specifies the right point of the line
    */
-  protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left, int right) {
+  protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left,
+                                     int right)
+  {
     g.drawLine(left, y, right, y);
   }
-  
+
   /**
    * Draws an icon at around a specific position
    * 
@@ -3129,9 +3139,10 @@ public class BasicTreeUI extends TreeUI
    * 
    * FIXME what to do if x < (icon.width / 2). Same with y
    */
-  protected void drawCentered(JComponent c, Graphics g, Icon icon, int x, int y) {
+  protected void drawCentered(JComponent c, Graphics g, Icon icon, int x, int y)
+  {
     int beginPositionX = x - icon.getIconWidth() / 2;
     int beginPositionY = y - icon.getIconHeight() / 2;
     icon.paintIcon(c, g, beginPositionX, beginPositionY);
-  }  
+  }
 } // BasicTreeUI

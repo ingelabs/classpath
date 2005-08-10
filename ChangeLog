@@ -1,4 +1,9 @@
 2005-08-10  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Formatted entire class.
+
+2005-08-10  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	(mouseClicked): Called fireTreeWillExpand and fireTreeWillCollapse when
