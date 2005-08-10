@@ -1,3 +1,17 @@
+2005-08-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/PortableInterceptor/Interceptor.java,
+        org/omg/PortableInterceptor/InterceptorOperations.java: New files.
+        * org/omg/DynamicAny/_DynAnyFactoryStub.java,
+        org/omg/DynamicAny/_DynAnyStub.java,
+        org/omg/DynamicAny/_DynArrayStub.java,
+        org/omg/DynamicAny/_DynEnumStub.java,
+        org/omg/DynamicAny/_DynFixedStub.java,
+        org/omg/DynamicAny/_DynStructStub.java,
+        org/omg/DynamicAny/_DynUnionStub.java,
+        org/omg/DynamicAny/_DynValueStub.java,
+        org/omg/DynamicAny/_DynSequenceStub.java: Added _opsClass field.
+
 2005-08-10  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java:
