@@ -16,8 +16,9 @@ compile_classpath = $(vm_classes):$(top_srcdir):$(top_srcdir)/external/w3c_dom:$
 if FOUND_GCJ
 # Since we don't feed all classes at once gcj needs to know where to find
 # the generated classes (in top_builddir).
-JAVAC = $(srcdir)/split-for-gcj.sh && $(MAKE) -f $(srcdir)/Makefile.gcj \
-    GCJ='$(GCJ)' compile_classpath='$(top_builddir):$(compile_classpath)'
+JAVAC = $(SHELL) $(srcdir)/split-for-gcj.sh \
+    && $(MAKE) -f $(srcdir)/Makefile.gcj \
+         GCJ='$(GCJ)' compile_classpath='$(top_builddir):$(compile_classpath)'
 else
 if FOUND_JIKES
 JAVAC = $(JIKES) +Pno-shadow +Pno-switchcheck +F $(JIKESENCODING) -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes

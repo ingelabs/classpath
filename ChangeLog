@@ -1,5 +1,10 @@
 2005-08-10  Tom Tromey  <tromey@redhat.com>
 
+	* lib/Makefile.am (JAVAC): Use $(SHELL) to invoke
+	split-for-gcj.sh.  For PR classpath/23238.
+
+2005-08-10  Tom Tromey  <tromey@redhat.com>
+
 	* lib/split-for-gcj.sh: Use 'while' loop to avoid length limits.
 
 2005-08-10  Andreas Tobler  <toa@pop.agri.ch>
