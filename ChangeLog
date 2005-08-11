@@ -1,3 +1,10 @@
+2005-08-11  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicViewportUI.java
+	(paintSimple): This line was causing problems with the JTable viewport.
+	However, the scrollpane still needs to be fixed. It is still not painting
+	beyond the view's bounds.
+
 2005-08-10  Rainer Orth  <ro@TechFak.Uni-Bielefeld.DE>
 
 	* lib/split-for-gcj.sh: Don't use unportable %{parameter%word}.
