@@ -1,3 +1,10 @@
+2005-08-11  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+        * org/omg/PortableInterceptor/IORInfoOperations.java,
+        org/omg/PortableInterceptor/IORInterceptor.java,
+        org/omg/PortableInterceptor/IORInterceptorOperations.java,
+        org/omg/PortableInterceptor/IORInfo.java: New files.
+
 2005-08-11  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTable
