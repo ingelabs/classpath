@@ -1,3 +1,8 @@
+2005-08-11  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/classpath/Makefile.am (EXTRA_DIST): Add classpath_jawt.h.
+	* include/gnu_java_awt_peer_qt_*: Removed.
+
 2005-08-11  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
         * org/omg/PortableInterceptor/IORInfoOperations.java,
