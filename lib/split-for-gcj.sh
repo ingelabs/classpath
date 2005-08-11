@@ -1,7 +1,30 @@
 #! /bin/sh
 
-# Split in multiple parts for gcj.  This uses a somewhat hacky
-# procedure for finding the package of a given file.
+# This script is used when compiling Classpath with gcj.  The idea is
+# to compile one package at a time, and only recompile packages when
+# actually required.
+
+# We build java->class by package so we need to know what .java files
+# correspond to what package.
+
+# We have a .stamp file for each package; this is the makefile target.
+# We also have a .list file for each package, which lists all the
+# input files in that package.
+
+# gen-classlist.sh makes a list of all the .java files we are going to compile.
+
+# This script generates Makefile.deps, which looks like this:
+# 
+# java/awt/AWTUtilities.class: lists/java-awt.stamp
+# lists/java-awt.list: /home/aph/gcc/gcc/libjava/classpath/gnu/java/awt/AWTUtilities.java
+# java/awt/BitMaskExtent.class: lists/java-awt.stamp
+# lists/java-awt.list: /home/aph/gcc/gcc/libjava/classpath/gnu/java/awt/BitMaskExtent.java
+# java/awt/BitwiseXORComposite.class: lists/java-awt.stamp
+# lists/java-awt.list: /home/aph/gcc/gcc/libjava/classpath/gnu/java/awt/BitwiseXORComposite.java
+
+# This uses a somewhat hacky procedure for finding the package of a
+# given file.
+
 echo "Splitting for gcj"
 rm -f Makefile.deps > /dev/null 2>&1
 test -d lists || mkdir lists

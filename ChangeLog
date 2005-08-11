@@ -1,3 +1,7 @@
+2005-08-11  Andrew Haley  <aph@redhat.com>
+
+	* lib/split-for-gcj.sh: Comment.
+
 2005-08-11  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicViewportUI.java
