@@ -1,3 +1,8 @@
+2005-08-11  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/Observable.java (addObserver): Throw
+	NullPointerException if necessary.  PR classpath/23279.
+
 2005-08-11  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/qt/QtMenuComponentPeer.java,
