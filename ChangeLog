@@ -1,3 +1,9 @@
+2005-08-11  Tom Tromey  <tromey@redhat.com>
+
+	For PR classpath/23008:
+	* gnu/java/nio/charset/UTF_16Decoder.java (decodeLoop): Correctly
+	mask bytes when constructing characters.
+
 2005-08-11  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/classpath/Makefile.am (EXTRA_DIST): Add classpath_jawt.h.
