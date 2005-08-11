@@ -1,3 +1,10 @@
+2005-08-11  Tom Tromey  <tromey@redhat.com>
+
+	For PR classpath/23238:
+	* lib/gen-classlist.sh.in: Use @SHELL@; invoke split-for-gcj.sh
+	with it.
+	* configure.ac (SH): Removed subst.
+
 2005-08-11  Andrew Haley  <aph@redhat.com>
 
 	* lib/split-for-gcj.sh: Comment.

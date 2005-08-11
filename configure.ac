@@ -391,7 +391,6 @@ AC_SUBST(REMOVE)
 dnl -----------------------------------------------------------
 dnl This is probably useless.
 dnl -----------------------------------------------------------
-AC_PATH_PROG(SH, sh)
 AC_PATH_PROG(MKDIR, mkdir)
 AC_PATH_PROG(CP, cp)
 AC_PATH_PROG(DATE, date)

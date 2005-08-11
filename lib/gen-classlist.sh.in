@@ -1,4 +1,4 @@
-#! @SH@
+#! @SHELL@
 # @configure_input@
 
 # Make sure sorting is done the same on all configurations
@@ -87,7 +87,7 @@ if test "$new" = "true"; then
   done
 
   if test -n "$GCJ"; then
-     ${top_srcdir}/lib/split-for-gcj.sh
+     @SHELL@ ${top_srcdir}/lib/split-for-gcj.sh
   fi
 fi
 
