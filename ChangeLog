@@ -1,5 +1,10 @@
 2005-08-11  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/image/ConvolveOp.java (filter): Defer numBands check
+	until after null check.  PR classpath/22999.
+
+2005-08-11  Tom Tromey  <tromey@redhat.com>
+
 	* java/util/Observable.java (addObserver): Throw
 	NullPointerException if necessary.  PR classpath/23279.
 
