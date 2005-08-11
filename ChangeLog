@@ -1,3 +1,8 @@
+2005-08-11  Lillian Angel <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicViewportUI.java
+	(paintSimple): Changed to paint the portBounds from (0,0).
+
 2005-08-11  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/image/ConvolveOp.java (filter): Defer numBands check
