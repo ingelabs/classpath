@@ -1,3 +1,8 @@
+2005-08-12  Aaron Luchko  <aluchko@redhat.com>
+
+	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java: Implemented the
+	EventRequest CommandSet.
+
 2005-08-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTable.java:
