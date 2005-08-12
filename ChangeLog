@@ -1,3 +1,8 @@
+2005-08-11  Mark Wielaard  <mark@klomp.org>
+
+	* examples/gnu/classpath/examples/datatransfer/Demo.java:
+	New example.
+
 2005-08-11  Tom Tromey  <tromey@redhat.com>
 
 	For PR classpath/23008:
