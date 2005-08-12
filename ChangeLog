@@ -1,3 +1,14 @@
+2005-08-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(gtkWidgetGetPreferredDimensions): New method.
+	* gnu/java/awt/peer/gtk/GtkLabelPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkLabelPeer.c
+	(gtkWidgetGetPreferredDimensions): New method.
+	* include/gnu_java_awt_peer_gtk_GtkLabelPeer.h: Regenerate.
+	* include/gnu_java_awt_peer_gtk_GtkButtonPeer.h: Likewise.
+
 2005-08-12  aluchko  <aluchko@tomaluk.toronto.redhat.com>
 
 	* gnu/classpath/jdwp/exception/JdwpInternalErrorException.java
