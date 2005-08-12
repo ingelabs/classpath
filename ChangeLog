@@ -1,3 +1,11 @@
+2005-08-12  Roman Kennke  <roman@kennke.org>
+
+	Reported by: Ingo Proetel  <proetel@aicas.com>
+	* java/util/logging/Logger.java
+	This applies to a couple of log() methods:
+	(log): Added check if the specified level is actually enabled,
+	otherwise ignore logging request.
+
 2005-08-12  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicSplitPaneUI.java
@@ -223,8 +231,8 @@
 
 	* javax/swing/plaf/basic/BasicViewportUI.java
 	(paintSimple): This line was causing problems with the JTable viewport.
-	However, the scrollpane still needs to be fixed. It is still not painting
-	beyond the view's bounds.
+	However, the scrollpane still needs to be fixed. It is still not
+	painting beyond the view's bounds.
 
 2005-08-10  Rainer Orth  <ro@TechFak.Uni-Bielefeld.DE>
 
@@ -276,8 +284,8 @@
 	* javax/swing/JTree.java
 	(doExpandParents): Took out call to checkExpandParents.
 	(checkExpandParents): Helper method not needed. Caused problems since
-	fireTreeWillExpand was being called too many times. fireTreeWillExpand is
-	called from BasicTreeUI whenever a node is expanded.
+	fireTreeWillExpand was being called too many times. fireTreeWillExpand
+	is called from BasicTreeUI whenever a node is expanded.
 
 2005-08-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
@@ -546,12 +554,11 @@
 2005-08-07  Ito Kazumitsu <kaz@maczuka.gcd.org>
 
 	Fixes bug #22929
-	* libraries/javalib/java/net/NetworkInterface.java
+	* java/net/NetworkInterface.java
 	(condense): New static private method.
 	(getNetworkInterfaces): Call condense().
 	(getByName, getByInetAddress): Call getNetworkInterfaces()
 	so that condensed result may be returned.
-
 	* vm/reference/java/net/VMNetworkInterface.java (getInterfaces):
 	Clarify return value in documentation.
 
