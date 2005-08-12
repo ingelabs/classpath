@@ -2222,6 +2222,9 @@ public class JTable extends JComponent
 
   public void setValueAt(Object value, int row, int column)
   {
+    if (!isCellEditable(row, column))
+      return;
+
     if (value instanceof Component)
       add((Component)value);
     dataModel.setValueAt(value, row, convertColumnIndexToModel(column));
@@ -2327,14 +2330,6 @@ public class JTable extends JComponent
     oldCellValue = getValueAt(row, column);
     setCellEditor(getCellEditor(row, column));
     editorComp = prepareEditor(cellEditor, row, column);
-    editorComp.addKeyListener(new KeyAdapter() {
-        public void keyPressed(KeyEvent e) {
-          if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            if (JTable.this.cellEditor != null)
-              JTable.this.cellEditor.cancelCellEditing();
-          }
-        }
-      });
     cellEditor.addCellEditorListener(this);
     rowBeingEdited = row;
     columnBeingEdited = column;

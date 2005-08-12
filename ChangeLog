@@ -1,3 +1,25 @@
+2005-08-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JTable.java:
+	(setValueAt): Do nothing if isCellEditable returns false.
+	(editCelLAt): Removed the Key Listener for the JTextField.  Listening
+	for ESCAPE should be handled by the JTable itself.  Note, this is not
+	implemented yet.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	(initComponentDefaults): Added several keybindings to JTable's
+	ancestorInputMap.  These are all implemented.
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(KeyHandler): Removed this class.  Note that most of the code from the
+	keyPressed method now resides in the actionPerformed method of the
+	BasicTableUI.TableAction class.
+	(convertModifiers): New private method to convert from new InputEvent
+	modifier masks to the old style.
+	(installKeyboardActions): Implemented.  Gets the key bindings from
+	the UIManager and registers them for the JTable.
+	(TableAction): New class.  This is where the actions corresponding to
+	key presses resides.
+	(installListeners): Removed installation of KeyListener.
+
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
 
 	* vm/reference/standard.omit: New file to omit jdwp reference classes
