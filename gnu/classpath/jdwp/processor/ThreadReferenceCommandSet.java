@@ -39,6 +39,7 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
+import gnu.classpath.jdwp.VMFrame;
 import gnu.classpath.jdwp.IVirtualMachine;
 import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
@@ -49,7 +50,6 @@ import gnu.classpath.jdwp.exception.NotImplementedException;
 import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ThreadId;
-import gnu.classpath.jdwp.util.Frame;
 import gnu.classpath.jdwp.util.JdwpString;
 import gnu.classpath.jdwp.util.Location;
 
@@ -183,13 +183,13 @@ public class ThreadReferenceCommandSet implements CommandSet
     int startFrame = bb.getInt();
     int length = bb.getInt();
 
-    ArrayList frames = vm.getFrames(thread, startFrame, length);
+    ArrayList frames = vm.getVMFrames(thread, startFrame, length);
     os.writeInt(frames.size());
     for (int i = 0; i < frames.size(); i++)
       {
-        Frame frame = (Frame) frames.get(i);
+        VMFrame frame = (VMFrame) frames.get(i);
         os.writeLong(frame.getId());
-        Location loc = frame.getLoc();
+        Location loc = frame.getLocation();
         loc.write(os);
       }
   }

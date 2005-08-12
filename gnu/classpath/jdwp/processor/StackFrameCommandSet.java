@@ -39,6 +39,7 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
+import gnu.classpath.jdwp.VMFrame;
 import gnu.classpath.jdwp.IVirtualMachine;
 import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
@@ -47,7 +48,6 @@ import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
 import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
-import gnu.classpath.jdwp.util.Frame;
 import gnu.classpath.jdwp.util.Value;
 
 import java.io.DataOutputStream;
@@ -113,7 +113,7 @@ public class StackFrameCommandSet implements CommandSet
     // has a reference to them. Furthermore they are not ReferenceTypeIds since
     // these are held permanently and we want these to be held only as long as
     // the Thread is suspended.
-    Frame frame = vm.getFrame(thread, bb);
+    VMFrame frame = vm.getVMFrame(thread, bb);
     int slots = bb.getInt();
     os.writeInt(slots); // Looks pointless but this is the protocol
     for (int i = 0; i < slots; i++)
@@ -131,7 +131,7 @@ public class StackFrameCommandSet implements CommandSet
     ObjectId tId = idMan.readId(bb);
     Thread thread = (Thread) tId.getObject();
 
-    Frame frame = vm.getFrame(thread, bb);
+    VMFrame frame = vm.getVMFrame(thread, bb);
 
     int slots = bb.getInt();
     for (int i = 0; i < slots; i++)
@@ -148,7 +148,7 @@ public class StackFrameCommandSet implements CommandSet
     ObjectId tId = idMan.readId(bb);
     Thread thread = (Thread) tId.getObject();
 
-    Frame frame = vm.getFrame(thread, bb);
+    VMFrame frame = vm.getVMFrame(thread, bb);
 
     Object thisObject = frame.getObject();
     Value.writeTaggedValue(os, thisObject);

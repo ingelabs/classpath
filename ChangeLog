@@ -1,3 +1,16 @@
+2005-08-12  Aaron Luchko  <aluchko@redhat.com>
+
+	* vm/reference/gnu/classpath/jdwp/VMFrame.java: Implemented	reference
+	implementation of interface to VM for JDWP frame management.
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java: Updated import.
+	(executeGetValues): Use VMFrame instead of Frame.
+	(executeSetValues): Use VMFrame instead of Frame.
+	(executeThisObject): Use VMFrame instead of Frame.
+	* gnu/classpath/jdwp/processor/ThreadReferenceCommandSet.java:
+	Updated import.
+	(executeFrames): Changed getLoc() to getLocation() and use
+	VMFrame instead of Frame.
+
 2005-08-12  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
