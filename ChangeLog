@@ -1,3 +1,9 @@
+2005-08-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* examples/gnu/classpath/examples/jawt/DemoJAWT.c: New file.
+	* examples/gnu/classpath/examples/jawt/DemoJAWT.java: Likewise.
+	* examples/gnu/classpath/examples/jawt/Makefile: Likewise.
+
 2005-08-11  Mark Wielaard  <mark@klomp.org>
 
 	* examples/gnu/classpath/examples/datatransfer/Demo.java:
