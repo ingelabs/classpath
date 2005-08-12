@@ -43,6 +43,7 @@ import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.InvalidFieldException;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
+import gnu.classpath.jdwp.exception.NotImplementedException;
 import gnu.classpath.jdwp.id.ObjectId;
 
 import java.io.DataOutputStream;
@@ -65,7 +66,7 @@ public class Value
    * @throws InvalidFieldException
    */  
   public static void writeUntaggedValue(DataOutputStream os, Object obj)
-    throws InvalidFieldException, IOException
+    throws JdwpException, IOException
   {
     writeValue(os, obj, false);
   }
@@ -79,7 +80,7 @@ public class Value
    * @throws InvalidFieldException
    */
   public static void writeTaggedValue(DataOutputStream os, Object obj)
-    throws InvalidFieldException, IOException
+    throws JdwpException, IOException
   {
     writeValue(os, obj, true);
   }
@@ -96,7 +97,7 @@ public class Value
    */
   private static void writeValue(DataOutputStream os, Object obj,
                                 boolean tagged)
-    throws IOException, InvalidFieldException
+    throws IOException, JdwpException
   {
     Class clazz = obj.getClass();
     if (clazz.isPrimitive())
@@ -156,7 +157,8 @@ public class Value
           }
         else
           { // This shouldn't be possible
-            throw new InvalidFieldException("Field has invalid primitive!");
+            throw new JdwpInternalErrorException(
+              "Field has invalid primitive!");
           }
       }
     else
@@ -235,7 +237,8 @@ public class Value
           return new byte[0];
         else
           { // This shouldn't be possible
-            throw new InvalidFieldException("Field has invalid primitive!");
+            throw new JdwpInternalErrorException(
+              "Field has invalid primitive!");
           }
       }
     else
@@ -291,7 +294,8 @@ public class Value
         ObjectId oid = Jdwp.getIdManager().readId(bb);
         return oid.getObject();
       default:
-        throw new JdwpInternalErrorException("Could not find TAG:" + tag);
+        throw new NotImplementedException("Tag " + tag
+                                          + " is not implemented.");
       }
   }
 }

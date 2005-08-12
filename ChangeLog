@@ -1,3 +1,14 @@
+2005-08-12  aluchko  <aluchko@tomaluk.toronto.redhat.com>
+
+	* gnu/classpath/jdwp/exception/JdwpInternalErrorException.java
+	(JdwpInternalErrorException): Added new constructor.
+	* gnu/classpath/jdwp/util/Value.java
+	(getUntaggedObj):
+	Changed InvalidFieldException to JdwpInternalErrorException.
+	(writeUntaggedValue): Likewise.
+	(writeTaggedValue): Likewise.
+	(writeValue): Likewise.
+
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java: Implemented the
