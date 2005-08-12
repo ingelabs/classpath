@@ -1,6 +1,11 @@
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
 
-	* vm/reference/gnu/classpath/jdwp/VMFrame.java: Implemented	reference
+	* vm/reference/standard.omit: New file to omit jdwp reference classes
+	from build.
+
+2005-08-12  Aaron Luchko  <aluchko@redhat.com>
+
+	* vm/reference/gnu/classpath/jdwp/VMFrame.java: Implemented reference
 	implementation of interface to VM for JDWP frame management.
 	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java: Updated import.
 	(executeGetValues): Use VMFrame instead of Frame.
