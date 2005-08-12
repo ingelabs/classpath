@@ -1,3 +1,17 @@
+2005-08-12  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/qt/QtButtonPeer.java: Replace uses of
+	toolkit.eventQueue.postEvent() with QtToolkit.eventQueue.postEvent().
+	* gnu/java/awt/peer/qt/QtCheckboxPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtChoicePeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtComponentPeer.java: Likewise and for
+	guiThread.QApplicationPointer and graphicsEnv.getScreenDevices().
+	* gnu/java/awt/peer/qt/QtMenuItemPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtMenuPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtScrollbarPeer.java: Likewise.
+	* gnu/java/security/PolicyFile.javai (refresh): Assign only outside
+	if statement.
+
 2005-08-12  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/GapContent.java

@@ -76,7 +76,7 @@ public class QtMenuItemPeer extends QtMenuComponentPeer
     ActionEvent e = new ActionEvent(owner,
 				    ActionEvent.ACTION_PERFORMED,
 				    ((MenuItem)owner).getActionCommand());
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   // ************ Public methods *********************

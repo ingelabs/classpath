@@ -123,7 +123,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
   {
     this.owner = owner;
     this.toolkit = kit;
-    qtApp = toolkit.guiThread.QApplicationPointer;
+    qtApp = QtToolkit.guiThread.QApplicationPointer;
     nativeObject = 0;
     callInit(); // Calls the init method FROM THE MAIN THREAD.
     setup();
@@ -204,7 +204,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
       {
 	WindowEvent e = new WindowEvent((Window)owner, 
 					WindowEvent.WINDOW_CLOSING);
-	toolkit.eventQueue.postEvent(e);
+	QtToolkit.eventQueue.postEvent(e);
       }
   }
 
@@ -214,19 +214,19 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
 				  MouseEvent.MOUSE_ENTERED,
 				  System.currentTimeMillis(),
 				  (modifiers & 0x2FF), x, y, 0, false);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   protected void focusInEvent()
   {
     FocusEvent e = new FocusEvent(owner, FocusEvent.FOCUS_GAINED);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
    }
 
   protected void focusOutEvent()
   {
     FocusEvent e = new FocusEvent(owner, FocusEvent.FOCUS_LOST);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   protected void keyPressEvent(int modifiers, int code, int unicode, int dummy)
@@ -238,7 +238,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
 			      modifiers, code, (char)(unicode & 0xFFFF),
 			      KeyEvent.KEY_LOCATION_UNKNOWN);
     if (!manager.dispatchEvent (e))
-      toolkit.eventQueue.postEvent(e);
+      QtToolkit.eventQueue.postEvent(e);
   }
 
   protected void keyReleaseEvent(int modifiers, int code, int unicode, int dummy)
@@ -248,7 +248,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
 			      System.currentTimeMillis(),
 			      modifiers, code, (char)(unicode & 0xFFFF),
 			      KeyEvent.KEY_LOCATION_UNKNOWN);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   protected void leaveEvent(int modifiers, int x, int y, int dummy)
@@ -257,7 +257,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
 				  MouseEvent.MOUSE_EXITED,
 				  System.currentTimeMillis(),
 				  (modifiers & 0x2FF), x, y, 0, false);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   // FIXME: Coalesce press-release events into clicks.
@@ -277,7 +277,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
 				  System.currentTimeMillis(),
 				  (modifiers & 0x2FF), x, y, clickCount, 
 				  false, button);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   protected void mouseMoveEvent( int modifiers, int x, int y, int clickCount)
@@ -303,7 +303,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
 				      timeStamp,
 				      (modifiers & 0x2FF), x, y, clickCount, 
 				      false, button);
-	toolkit.eventQueue.postEvent(e);
+	QtToolkit.eventQueue.postEvent(e);
       }
     lastMME = timeStamp;
   }
@@ -325,7 +325,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
 				  (modifiers & 0x2FF), x, y, clickCount, 
 				  ( button == POPUP_TRIGGER ), 
 				   button);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   protected void mouseReleaseEvent( int modifiers, int x, int y, int clickCount)
@@ -345,14 +345,14 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
 				  System.currentTimeMillis(),
 				  (modifiers & 0x2FF), x, y, clickCount, 
 				  false, button);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   protected void moveEvent()
   {
     ComponentEvent e = new ComponentEvent(owner, 
 					  ComponentEvent.COMPONENT_MOVED);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   protected void paintEvent(QtGraphics g)
@@ -380,7 +380,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
     owner.setSize(width, height);
     ComponentEvent e = new ComponentEvent(owner, 
 					  ComponentEvent.COMPONENT_RESIZED);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   protected void showEvent()
@@ -389,13 +389,13 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
       {
 	WindowEvent e = new WindowEvent((Window)owner, 
 					WindowEvent.WINDOW_OPENED);
-	toolkit.eventQueue.postEvent(e);
+	QtToolkit.eventQueue.postEvent(e);
       }
     else 
       {
 	ComponentEvent e = new ComponentEvent(owner, 
 					      ComponentEvent.COMPONENT_SHOWN);
-	toolkit.eventQueue.postEvent(e);
+	QtToolkit.eventQueue.postEvent(e);
       }
   }
 
@@ -403,7 +403,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
   {
     ComponentEvent e = new ComponentEvent(owner, 
 					  ComponentEvent.COMPONENT_HIDDEN);
-    toolkit.eventQueue.postEvent(e);
+    QtToolkit.eventQueue.postEvent(e);
   }
 
   private native Dimension getMinimumSizeNative();
@@ -517,7 +517,7 @@ public class QtComponentPeer extends NativeWrapper implements ComponentPeer
   public GraphicsConfiguration getGraphicsConfiguration()
   {
     int id = whichScreen(); // get the ID of the screen the widget is on.
-    GraphicsDevice[] devs = toolkit.graphicsEnv.getScreenDevices();
+    GraphicsDevice[] devs = QtToolkit.graphicsEnv.getScreenDevices();
     return devs[id].getDefaultConfiguration();
   }
 
