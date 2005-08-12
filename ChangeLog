@@ -1,3 +1,23 @@
+2005-08-12  Roman Kennke  <roman@kennke.org>
+
+	* java/awt/Component.java
+	(reshape): Simplified repainting of parent.
+	(paint): Don't call peer.paint() here. The paint method is
+	exclusivly meant to be overridden by subclasses that wish to
+	perform custom painting and should do nothing by default.
+	(repaint): Use local variable in null pointer checks to avoid
+	NullPointerExceptions.
+	(imageUpdate): Slight formatting adjustments.
+	(dispatchEvent): Don't call peer.handleEvent() here, this must
+	be done in dispatchEventImpl().
+	(dispatchEventImpl): Dispatch PAINT and UPDATE events to the
+	peer.
+	* java/awt/Container.java
+	(paint): Don't call super.paint() here, this method does nothing
+	anyway. Visit only lightweight children.
+	(update): Instead of clearing the background only for top-level
+	containers, clear the background for all heavyweight containers.
+
 2005-08-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* examples/gnu/classpath/examples/jawt/DemoJAWT.c: New file.
