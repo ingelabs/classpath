@@ -1,3 +1,14 @@
+2005-08-12  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getCellLocation): Added in a check to make sure the node has children.
+	Fixed loop to use post-increment.
+	(paintRecursive): Fixed loop to use post-increment.
+	(paintControlIcons): Likewise.
+	(getNextNode): Fixed check to make sure that node has children.
+	(getPreviousSibling): Added in check to make sure index is in correct
+	range.
+
 2005-08-12  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/qt/QtButtonPeer.java: Replace uses of
