@@ -1,3 +1,10 @@
+2005-08-13  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/io/ObjectInputStream.java
+	(readClassDescriptor): Don't cache caller's class loader.
+	(resolveClass): Don't cache caller's class loader and support
+	primitive types. Fixes bug #23377.
+
 2005-08-13  Mark Wielaard  <mark@klomp.org>
 
 	* scripts/check_jni_methods.sh: Set and check for PROBLEM.
