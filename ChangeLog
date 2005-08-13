@@ -1,4 +1,10 @@
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
+	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
+	(executeAllThreads): Use enumerate(Thread[]) instead of 
+	enumerate(Thread[], true).
+	(runCommand): Throw NotImplementedException when command is not found.
+
+2005-08-12  Aaron Luchko  <aluchko@redhat.com>
 	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java
 	(executeInvokeMethod): Change MethodInvoker to MethodResult.
 

@@ -144,9 +144,9 @@ public class VirtualMachineCommandSet implements CommandSet
           case JdwpConstants.CommandSet.VirtualMachine.ALL_CLASSES_WITH_GENERIC:
             executeAllClassesWithGeneric(bb, os);
             break;
-
           default:
-            break;
+            throw new NotImplementedException("Command " + command +
+            " not found in VirtualMachine Command Set.");
           }
       }
     catch (IOException ex)
@@ -246,7 +246,7 @@ public class VirtualMachineCommandSet implements CommandSet
 
     int numThreads = root.activeCount();
     Thread allThreads[] = new Thread[numThreads];
-    root.enumerate(allThreads, true);
+    root.enumerate(allThreads);
 
     // We need to loop through for the true count since some threads may have
     // been destroyed since we got
