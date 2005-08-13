@@ -1,5 +1,15 @@
 2005-08-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkMenuBarPeer.java (addMenu(Menu)): New
+	method.
+	* gnu/java/awt/peer/gtk/GtkMenuPeer.java (addSeparator): Likewise.
+	* java/awt/peer/MenuBarPeer.java (addMenu): New method
+	declaration.
+	* java/awt/peer/MenuPeer.java (addSeparator): New method
+	declaration.
+
+2005-08-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (setBounds): Get
 	frame insets directly from peer rather than from Window.getInsets.
 	(toString): New method.
