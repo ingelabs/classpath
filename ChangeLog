@@ -1,14 +1,22 @@
+2005-08-13  Mark Wielaard  <mark@klomp.org>
+
+	* scripts/check_jni_methods.sh: Don't create temp files in source dir.
+	Don't override existing files. Fast fail on errors.
+
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
+
 	* vm/reference/gnu/classpath/jdwp/VMFrame.java(getValue):
 	Fix typo in comment.
 
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
+
 	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
 	(executeAllThreads): Use enumerate(Thread[]) instead of 
 	enumerate(Thread[], true).
 	(runCommand): Throw NotImplementedException when command is not found.
 
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
+
 	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java
 	(executeInvokeMethod): Change MethodInvoker to MethodResult.
 
@@ -16,8 +24,8 @@
 
 	* gnu/classpath/jdwp/util/VariableTable.java: A class representing a
 	Variable Table for a method.
-	* gnu/classpath/jdwp/util/LineTable.java: A class representing a Line Table
-	for a method.
+	* gnu/classpath/jdwp/util/LineTable.java: A class representing a Line
+	Table for a method.
 
 2005-08-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
@@ -37,7 +45,8 @@
 
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
 
-	* gnu/classpath/jdwp/util/Location.java: New file to handle JDWP locations.
+	* gnu/classpath/jdwp/util/Location.java: New file to handle JDWP
+	locations.
 
 2005-08-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
@@ -63,8 +72,8 @@
 
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
 
-	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java: Implemented the
-	EventRequest CommandSet.
+	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java:
+	Implemented the EventRequest CommandSet.
 
 2005-08-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
@@ -97,7 +106,8 @@
 
 	* vm/reference/gnu/classpath/jdwp/VMFrame.java: Implemented reference
 	implementation of interface to VM for JDWP frame management.
-	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java: Updated import.
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java: Updated
+	import.
 	(executeGetValues): Use VMFrame instead of Frame.
 	(executeSetValues): Use VMFrame instead of Frame.
 	(executeThisObject): Use VMFrame instead of Frame.

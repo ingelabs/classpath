@@ -1,8 +1,13 @@
 #!/bin/sh
 
-TMPFILE=check-jni-methods.$$.1
-TMPFILE2=check-jni-methods.$$.2
-TMPFILE3=check-jni-methods.$$.3
+# Fail if any command fails
+set -e
+# Don't override existing files
+set -C
+
+TMPFILE=/tmp/check-jni-methods.$$.1
+TMPFILE2=/tmp/check-jni-methods.$$.2
+TMPFILE3=/tmp/check-jni-methods.$$.3
 
 # Find all methods defined in the header files generated
 # from the java source files.
@@ -24,10 +29,8 @@ cat > $TMPFILE3 << EOF
 EOF
 
 # Compare again silently.
-diff -ub -0 $TMPFILE $TMPFILE2  | grep '^[+-]Java' | grep -q -v -f $TMPFILE3
-RESULT=$?
-
-if test "$RESULT" = "0" ; then
+if diff -ub -0 $TMPFILE $TMPFILE2 | grep '^[+-]Java' | grep -q -v -f $TMPFILE3;
+then
   echo "Found a problem with the JNI methods declared and implemented."
   echo "(-) missing in implementation, (+) missing in header files"
 
