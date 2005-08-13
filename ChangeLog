@@ -1,4 +1,8 @@
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
+	* vm/reference/gnu/classpath/jdwp/VMFrame.java(getValue):
+	Fix typo in comment.
+
+2005-08-12  Aaron Luchko  <aluchko@redhat.com>
 	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
 	(executeAllThreads): Use enumerate(Thread[]) instead of 
 	enumerate(Thread[], true).

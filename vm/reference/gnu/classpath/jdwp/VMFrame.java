@@ -69,7 +69,7 @@ public class VMFrame
   /**
    * Returns the value of the variable in the given slot.
    * 
-   * @param slot the slot containing the varialbe
+   * @param slot the slot containing the variable
    */
   public native Object getValue(int slot);
 
