@@ -1,3 +1,10 @@
+2005-08-12  Aaron Luchko  <aluchko@redhat.com>
+
+	* gnu/classpath/jdwp/util/VariableTable.java: A class representing a
+	Variable Table for a method.
+	* gnu/classpath/jdwp/util/LineTable.java: A class representing a Line Table
+	for a method.
+
 2005-08-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkMenuBarPeer.java (addMenu(Menu)): New
