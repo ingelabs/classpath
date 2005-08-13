@@ -1,3 +1,9 @@
+2005-08-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (setBounds): Get
+	frame insets directly from peer rather than from Window.getInsets.
+	(toString): New method.
+
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/util/Location.java: New file to handle JDWP locations.
