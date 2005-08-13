@@ -1,4 +1,8 @@
 2005-08-12  Aaron Luchko  <aluchko@redhat.com>
+	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java
+	(executeInvokeMethod): Change MethodInvoker to MethodResult.
+
+2005-08-12  Aaron Luchko  <aluchko@redhat.com>
 
 	* gnu/classpath/jdwp/util/VariableTable.java: A class representing a
 	Variable Table for a method.

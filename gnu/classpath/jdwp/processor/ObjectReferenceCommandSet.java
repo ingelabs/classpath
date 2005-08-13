@@ -1,4 +1,4 @@
-/* ObjectReferenceCommandSet.java -- lass to implement the ObjectReference
+/* ObjectReferenceCommandSet.java -- class to implement the ObjectReference
    Command Set
    Copyright (C) 2005 Free Software Foundation
 
@@ -50,7 +50,7 @@ import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
 import gnu.classpath.jdwp.util.Value;
-import gnu.classpath.jdwp.util.MethodInvoker;
+import gnu.classpath.jdwp.util.MethodResult;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -232,14 +232,14 @@ public class ObjectReferenceCommandSet implements CommandSet
       nonVirtual = true;
     else
       nonVirtual = false;
-    MethodInvoker vmi = new MethodInvoker(vm);
 
-    vmi.executeMethod(obj, thread, clazz, method, values, nonVirtual);
-    Object value = vmi.getReturnedValue();
-    ObjectId exceptionId = vmi.getExceptionId();
+    MethodResult mr = vm.executeMethod(obj, thread, clazz, method, values, nonVirtual);
+    Object value = mr.getReturnedValue();
+    Exception exception = mr.getThrownException();
 
+    ObjectId eId = idMan.getId(exception);
     Value.writeTaggedValue(os, value);
-    exceptionId.writeTagged(os);
+    eId.writeTagged(os);
   }
 
   private void executeDisableCollection(ByteBuffer bb, DataOutputStream os)
