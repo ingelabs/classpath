@@ -31,6 +31,7 @@ EOF
 # Compare again silently.
 if diff -ub -0 $TMPFILE $TMPFILE2 | grep '^[+-]Java' | grep -q -v -f $TMPFILE3;
 then
+  PROBLEM=1
   echo "Found a problem with the JNI methods declared and implemented."
   echo "(-) missing in implementation, (+) missing in header files"
 
@@ -41,7 +42,7 @@ fi
 # Cleanup.
 rm -f $TMPFILE $TMPFILE2 $TMPFILE3
 
-if test "$RESULT" = "0" ; then
+if test "$PROBLEM" = "1" ; then
   exit 1
 fi
 

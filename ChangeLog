@@ -1,5 +1,9 @@
 2005-08-13  Mark Wielaard  <mark@klomp.org>
 
+	* scripts/check_jni_methods.sh: Set and check for PROBLEM.
+
+2005-08-13  Mark Wielaard  <mark@klomp.org>
+
 	* scripts/check_jni_methods.sh: Don't create temp files in source dir.
 	Don't override existing files. Fast fail on errors.
 
