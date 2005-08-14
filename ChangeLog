@@ -1,3 +1,14 @@
+2005-08-14  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/ClasspathToolkit.java
+	(getScreenSize, getColorModel, getFontMetrics, getImage, createImage,
+	 createImageProducer, registerImageIOSpis):
+	Remove redundant (overloaded) methods.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(registerImageIOSpis): Move registration to static initializer.
+	* javax/imageio/spi/IIORegistry.java:
+	Remove call to Toolkit registration method.
+	
 2005-08-13  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (repaintTimer): Make
