@@ -1,3 +1,8 @@
+2005-08-15  Sven de Marothy  <sven@physto.se>
+
+	* java/awt/TextComponent.java
+	(select): Fix typo.
+	
 2005-08-15  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JComponent.java:
