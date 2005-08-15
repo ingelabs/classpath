@@ -279,12 +279,12 @@ public class BasicTableUI
         table.registerKeyboardAction(action,(String)ancestorMap.get((KeyStroke)keys[i]), 
                                      KeyStroke.getKeyStroke
                                      (((KeyStroke)keys[i]).getKeyCode(), convertModifiers(((KeyStroke)keys[i]).getModifiers())), 
-                                     JComponent.WHEN_FOCUSED);
+                                     JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         table.registerKeyboardAction(action,(String)ancestorMap.get((KeyStroke)keys[i]), 
                                      KeyStroke.getKeyStroke
                                      (((KeyStroke)keys[i]).getKeyCode(), ((KeyStroke)keys[i]).getModifiers()), 
-                                     JComponent.WHEN_FOCUSED);
+                                     JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
       }
   }
 
@@ -519,8 +519,6 @@ public class BasicTableUI
                                      colModel, colMinSelected, colMaxSelected, 
                                      (e.getActionCommand().equals 
                                       ("selectPreviousRowCell")), false);
-          
-          table.repaint();
         }
       else if (e.getActionCommand().equals("selectNextColumn"))
         {
@@ -608,6 +606,10 @@ public class BasicTableUI
           // to a keyboard input but we either want to ignore that input
           // or we just haven't implemented its action yet.
         }
+
+      if (table.isEditing() && e.getActionCommand() != "startEditing")
+        table.editingCanceled(new ChangeEvent("update"));
+      table.repaint();
       
       table.scrollRectToVisible
         (table.getCellRect(rowModel.getLeadSelectionIndex(), 

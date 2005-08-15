@@ -1,3 +1,16 @@
+2005-08-15  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JComponent.java:
+	(processKeyEvent): Added functionality for processing key events in
+	non-focused components using the WHEN_ANCESTOR_OF_FOCUSED_COMPONENT
+	field.
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(installKeyboardActions): Changed key bindings to be registered as
+	WHEN_ANCESTOR_OF_FOCUSED_COMPONENT rather than as WHEN_FOCUSED.
+	(TableAction.actionPerformed): If the key action is anything besides
+	"start editing" then we stop editing if we are doing so.  Repaint the
+	table at the end of this method.
+
 2005-08-15  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JPasswordField.java
