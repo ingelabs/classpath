@@ -1,3 +1,8 @@
+2005-08-15  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JPasswordField.java
+	(getText): Fixed the length of the string to retrieve.
+
 2005-08-15  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/TextComponent.java

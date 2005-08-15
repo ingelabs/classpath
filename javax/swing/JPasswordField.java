@@ -220,7 +220,7 @@ public class JPasswordField extends JTextField
   {
     try
       {
-        return getDocument().getText(0, getColumns());
+        return getDocument().getText(0, getDocument().getLength());
       }
     catch (BadLocationException ble)
       {
