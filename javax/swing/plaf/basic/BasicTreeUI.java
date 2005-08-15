@@ -1733,17 +1733,7 @@ public class BasicTreeUI
                   if (e.isControlDown())
                     tree.setLeadSelectionPath(newPath);
                   else if (!mod.isLeaf(next) && e.isShiftDown())
-                    {
-                      BasicTreeUI.this.tree.expandPath(newPath);
-                      try
-                        {
-                          BasicTreeUI.this.tree.fireTreeWillExpand(newPath);
-                        }
-                      catch (ExpandVetoException ev)
-                        {
-                        }
-                      BasicTreeUI.this.tree.fireTreeExpanded(newPath);
-                    }
+                    BasicTreeUI.this.tree.expandPath(newPath);
                 }
             }
           // UP, KP_UP
@@ -1761,17 +1751,7 @@ public class BasicTreeUI
                   if (e.isControlDown())
                     tree.setLeadSelectionPath(newPath);
                   else if (!mod.isLeaf(prev) && e.isShiftDown())
-                    {
-                      BasicTreeUI.this.tree.expandPath(newPath);
-                      try
-                        {
-                          BasicTreeUI.this.tree.fireTreeWillExpand(newPath);
-                        }
-                      catch (ExpandVetoException ev)
-                        {
-                        }
-                      BasicTreeUI.this.tree.fireTreeExpanded(newPath);
-                    }
+                    BasicTreeUI.this.tree.expandPath(newPath);
                 }
             }
           // LEFT, KP_LEFT
@@ -1782,17 +1762,7 @@ public class BasicTreeUI
               Object p = getParent(mod.getRoot(), last);
 
               if (!mod.isLeaf(last) && BasicTreeUI.this.tree.isExpanded(path))
-                {
-                  BasicTreeUI.this.tree.collapsePath(path);
-                  try
-                    {
-                      BasicTreeUI.this.tree.fireTreeWillCollapse(path);
-                    }
-                  catch (ExpandVetoException ev)
-                    {
-                    }
-                  BasicTreeUI.this.tree.fireTreeCollapsed(path);
-                }
+                BasicTreeUI.this.tree.collapsePath(path);
               else if (p != null)
                 BasicTreeUI.this.selectPath(BasicTreeUI.this.tree,
                                             new TreePath(getPathToRoot(p, 0)));
@@ -1804,17 +1774,7 @@ public class BasicTreeUI
               TreePath path = new TreePath(getPathToRoot(last, 0));
 
               if (!mod.isLeaf(last) && BasicTreeUI.this.tree.isCollapsed(path))
-                {
-                  BasicTreeUI.this.tree.expandPath(path);
-                  try
-                    {
-                      BasicTreeUI.this.tree.fireTreeWillExpand(path);
-                    }
-                  catch (ExpandVetoException ev)
-                    {
-                    }
-                  BasicTreeUI.this.tree.fireTreeExpanded(path);
-                }
+                BasicTreeUI.this.tree.expandPath(path);
               else
                 {
                   Object next = BasicTreeUI.this.getNextVisibleNode(last);
@@ -1835,29 +1795,9 @@ public class BasicTreeUI
               if (!mod.isLeaf(last))
                 {
                   if (BasicTreeUI.this.tree.isExpanded(path))
-                    {
-                      BasicTreeUI.this.tree.collapsePath(path);
-                      try
-                        {
-                          BasicTreeUI.this.tree.fireTreeWillCollapse(path);
-                        }
-                      catch (ExpandVetoException ev)
-                        {
-                        }
-                      BasicTreeUI.this.tree.fireTreeCollapsed(path);
-                    }
+                    BasicTreeUI.this.tree.collapsePath(path);
                   else
-                    {
-                      BasicTreeUI.this.tree.expandPath(path);
-                      try
-                        {
-                          BasicTreeUI.this.tree.fireTreeWillExpand(path);
-                        }
-                      catch (ExpandVetoException ev)
-                        {
-                        }
-                      BasicTreeUI.this.tree.fireTreeExpanded(path);
-                    }
+                    BasicTreeUI.this.tree.expandPath(path);
                 }
             }
         }
@@ -2013,29 +1953,9 @@ public class BasicTreeUI
                   lastClicked = null;
                   BasicTreeUI.this.tree.getSelectionModel().clearSelection();
                   if (BasicTreeUI.this.tree.isExpanded(path))
-                    {
-                      BasicTreeUI.this.tree.collapsePath(path);
-                      try
-                        {
-                          BasicTreeUI.this.tree.fireTreeWillCollapse(path);
-                        }
-                      catch (ExpandVetoException ev)
-                        {
-                        }
-                      BasicTreeUI.this.tree.fireTreeCollapsed(path);
-                    }
+                    BasicTreeUI.this.tree.collapsePath(path);
                   else
-                    {
-                      BasicTreeUI.this.tree.expandPath(path);
-                      try
-                        {
-                          BasicTreeUI.this.tree.fireTreeWillExpand(path);
-                        }
-                      catch (ExpandVetoException ev)
-                        {
-                        }
-                      BasicTreeUI.this.tree.fireTreeExpanded(path);
-                    }
+                    BasicTreeUI.this.tree.expandPath(path);
                 }
 
               BasicTreeUI.this.selectPath(BasicTreeUI.this.tree, path);
@@ -2620,7 +2540,7 @@ public class BasicTreeUI
       }
 
     if (!mod.isLeaf(startNode)
-        && tree.isExpanded(new TreePath(getPathToRoot(startNode, 0))) 
+        && tree.isExpanded(new TreePath(getPathToRoot(startNode, 0)))
         && mod.getChildCount(startNode) > 0)
       {
         Object child = mod.getChild(startNode, 0);
