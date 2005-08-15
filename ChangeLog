@@ -1,3 +1,15 @@
+2005-08-15  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java (handleEvent): Remove
+	method.
+	(postActionEvent): New method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c:
+	Rename state_to_awt_mods cp_gtk_state_to_awt_mods.
+	* native/jni/gtk-peer/gtkpeer.h: Declare cp_gtk_state_to_awt_mods.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(clicked_cb): New function.
+	(connectSignals): Connect clicked_cb callback to "clicked" signal.
+
 2005-08-14  Casey Marshall  <csm@gnu.org>
 
 	* gnu/java/security/provider/DSAKeyPairGenerator.java
