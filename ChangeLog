@@ -1,3 +1,24 @@
+2005-08-15  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/ClasspathToolkit.java (nativeQueueEmpty): Remove
+	method.
+	(wakeNativeQueue): Likewise.
+	(iterateNativeQueue): Likewise.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (static): Start GTK main
+	thread.
+	(nativeQueueEmpty): Remove method.
+	(wakeNativeQueue): Likewise.
+	(iterateNativeQueue): Likewise.
+	(gtkMain): New method.
+	* include/gnu_java_awt_peer_gtk_GtkToolkit.h: Regenerate.
+	* java/awt/EventQueue.java: Remove references to ClasspathToolkit.
+	* java/awt/Frame.java (fireDummyEvent): Remove method.
+	Remove calls to fireDummyEvent.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkGenericPeer.c
+	(dispose): Don't wake up main thread.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c: Remove
+	single-thread code.
+
 2005-08-15  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTree.java

@@ -124,6 +124,14 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 
     // Register ImageIO SPIs
     GdkPixbufDecoder.registerSpis( IIORegistry.getDefaultInstance() );
+
+    new Thread ("GTK main thread")
+    {
+      public void run ()
+      {
+	gtkMain ();
+      }
+    }.start ();
   }
 
   public GtkToolkit ()
@@ -644,8 +652,5 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     return new GdkRobotPeer (screen);
   }
 
-  public native boolean nativeQueueEmpty();
-  public native void wakeNativeQueue();  
-  public native void iterateNativeQueue(EventQueue locked, boolean block);
-
+  public static native void gtkMain();
 } // class GtkToolkit
