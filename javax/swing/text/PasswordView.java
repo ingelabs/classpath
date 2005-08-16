@@ -152,22 +152,28 @@ public class PasswordView
 
     // Get echo character.
     char ch = getEchoChar();
+    Segment segment = new Segment();
 
     // Set color for unselected text.
     g.setColor(unselectedColor);
     g.setColor(Color.BLACK);
 
     // Initialize buffer for faster drawing of all characters.
-    int len = p1 - p0;
+    p1--;
+    getDocument().getText(p0, p1 - p0, segment);
+    int len = segment.toString().length();
+    
     char[] buffer = new char[len];
     for (int index = 0; index < len; ++index)
       buffer[index] = ch;
-
+    
+    y += getPreferredSpan(Y_AXIS)/2;
+    
     // Draw echo charaters.
     g.drawChars(buffer, 0, len, x, y);
-
+    
     // Return new x position right of all drawn characters.
-    return x + len * metrics.charWidth(ch);
+    return x + (len * metrics.charWidth(ch));
   }
 
   /**

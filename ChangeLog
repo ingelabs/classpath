@@ -1,3 +1,10 @@
+2005-08-16  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/PasswordView.java
+	(drawUnselectedText): Fixed so the password is drawn correctly 
+	in the text box and no * characters are drawn before anything
+	was typed.
+
 2005-08-16  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GtkClipboard.java: Reimplemented.
