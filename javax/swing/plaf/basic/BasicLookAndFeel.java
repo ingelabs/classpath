@@ -887,7 +887,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
         "shift KP_LEFT", "selectPreviousColumnExtendSelection",
         "ESCAPE",  "cancel",
         "ctrl shift PAGE_UP", "scrollLeftExtendSelection",
-        "shift KP_RIGHT", " selectNextColumnExtendSelection",
+        "shift KP_RIGHT", "selectNextColumnExtendSelection",
         "ctrl PAGE_UP",  "scrollLeftChangeSelection",
         "shift PAGE_UP", "scrollUpExtendSelection",
         "ctrl shift PAGE_DOWN", "scrollRightExtendSelection",

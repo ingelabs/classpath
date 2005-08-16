@@ -1,3 +1,14 @@
+2005-08-16  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	(initComponentDefaults): Fixed typo.
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(installKeyboardActions): Replaced calls to registerKeyboardAction with
+	additions to an explicit InputMap-ActionMap pair and then set this
+	pair as the parent pair to the JTable's.  This matches the JDK where
+	the UI Input-Action pairs are the parents of the component's.
+	(ActionListenerProxy): New class.
+
 2005-08-16  Mark Wielaard  <mark@klomp.org>
 
 	* examples/gnu/classpath/examples/datatransfer/Demo.java:
