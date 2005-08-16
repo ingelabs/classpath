@@ -88,7 +88,6 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 {
   Hashtable containers = new Hashtable();
   static EventQueue q;
-  static Clipboard systemClipboard;
   static boolean useGraphics2dSet;
   static boolean useGraphics2d;
 
@@ -136,7 +135,6 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 
   public GtkToolkit ()
   {
-    systemClipboard = new GtkClipboard ();
   }
 
   public native void beep();
@@ -406,7 +404,11 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 
   public Clipboard getSystemClipboard() 
   {
-    return systemClipboard;
+    SecurityManager secman = System.getSecurityManager();
+    if (secman != null)
+      secman.checkSystemClipboardAccess();
+
+    return GtkClipboard.getInstance();
   }
 
   /**

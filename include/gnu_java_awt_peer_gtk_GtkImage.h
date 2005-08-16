@@ -18,6 +18,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_freePixmap (JNIEnv *e
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_createScaledPixmap (JNIEnv *env, jobject, jobject, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaled (JNIEnv *env, jobject, jobject, jint, jint, jint, jint, jint, jint, jint, jboolean);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaledFlipped (JNIEnv *env, jobject, jobject, jint, jint, jint, jboolean, jboolean, jint, jint, jint, jint, jint, jint, jint, jint, jboolean);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_createFromPixbuf (JNIEnv *env, jobject);
 
 #ifdef __cplusplus
 }

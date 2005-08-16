@@ -57,6 +57,7 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkPanelPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkScrollPanePeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkScrollbarPeer.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkSelection.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextAreaPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkToolkit.h \

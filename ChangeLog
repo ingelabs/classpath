@@ -1,3 +1,23 @@
+2005-08-16  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GtkClipboard.java: Reimplemented.
+	* gnu/java/awt/peer/gtk/GtkClipboardNotifier.java: New class.
+	* gnu/java/awt/peer/gtk/GtkSelection.java: New class.
+	* gnu/java/awt/peer/gtk/GtkImage.java (GtkImage(Pointer)): New
+	constructor.
+	(createFromPixbuf): New private native method.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (systemClipboard): Removed.
+	(getSystemClipboard): Do security check and return
+	GtkClipboard.getInstance().
+	* include/Makefile.am: Add gnu_java_awt_peer_gtk_GtkSelection.h.
+	* include/gnu_java_awt_peer_gtk_GtkClipboard.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_GtkImage.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_GtkSelection.h: New header file.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c:
+	Reimplemented.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(Java_gnu_java_awt_peer_gtk_GtkImage_createFromPixbuf): New
+
 2005-08-16  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTableUI.java:
