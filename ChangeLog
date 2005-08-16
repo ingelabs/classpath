@@ -1,5 +1,11 @@
 2005-08-16  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(ActionListenerProxy): Replaced type TableAction with parent type
+	ActionListener to avoid Semantic errors.
+
+2005-08-16  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/plaf/basic/BasicLookAndFeel.java:
 	(initComponentDefaults): Fixed typo.
 	* javax/swing/plaf/basic/BasicTableUI.java:
