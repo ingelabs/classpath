@@ -1,3 +1,59 @@
+2005-08-16  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/qt/QtButtonPeer.java
+	* gnu/java/awt/peer/qt/QtCheckboxPeer.java
+	* gnu/java/awt/peer/qt/QtChoicePeer.java
+	* gnu/java/awt/peer/qt/QtComponentGraphics.java
+	* gnu/java/awt/peer/qt/QtComponentPeer.java
+	* gnu/java/awt/peer/qt/QtContainerPeer.java
+	* gnu/java/awt/peer/qt/QtDialogPeer.java
+	* gnu/java/awt/peer/qt/QtFontPeer.java
+	* gnu/java/awt/peer/qt/QtFramePeer.java
+	* gnu/java/awt/peer/qt/QtGraphics.java
+	* gnu/java/awt/peer/qt/QtImage.java
+	* gnu/java/awt/peer/qt/QtImageGraphics.java
+	* gnu/java/awt/peer/qt/QtListPeer.java
+	* gnu/java/awt/peer/qt/QtMenuBarPeer.java
+	* gnu/java/awt/peer/qt/QtMenuItemPeer.java
+	* gnu/java/awt/peer/qt/QtMenuPeer.java
+	* gnu/java/awt/peer/qt/QtScrollbarPeer.java
+	* gnu/java/awt/peer/qt/QtTextAreaPeer.java
+	* gnu/java/awt/peer/qt/QtTextFieldPeer.java
+	* gnu/java/awt/peer/qt/QtToolkit.java
+	* gnu/java/awt/peer/qt/QtWindowPeer.java
+	* native/jni/qt-peer/keybindings.cpp
+	* native/jni/qt-peer/keybindings.h 
+	* native/jni/qt-peer/qtbuttonpeer.cpp
+	* native/jni/qt-peer/qtcanvaspeer.cpp
+	* native/jni/qt-peer/qtcheckboxpeer.cpp
+	* native/jni/qt-peer/qtchoicepeer.cpp
+	* native/jni/qt-peer/qtcomponent.cpp
+	* native/jni/qt-peer/qtcomponentpeer.cpp
+	* native/jni/qt-peer/qtdialogpeer.cpp
+	* native/jni/qt-peer/qtframepeer.cpp
+	* native/jni/qt-peer/qtgraphics.cpp 
+	* native/jni/qt-peer/qtimage.cpp
+	* native/jni/qt-peer/qtlabelpeer.cpp
+	* native/jni/qt-peer/qtlistpeer.cpp
+	* native/jni/qt-peer/qtmenupeer.cpp
+	* native/jni/qt-peer/qtpanelpeer.cpp
+	* native/jni/qt-peer/qtscrollbarpeer.cpp
+	* native/jni/qt-peer/qtscrollpanepeer.cpp
+	* native/jni/qt-peer/qttextareapeer.cpp
+	* native/jni/qt-peer/qttextfieldpeer.cpp
+	* native/jni/qt-peer/qtwindowpeer.cpp
+	* native/jni/qt-peer/slotcallbacks.cpp
+	* native/jni/qt-peer/slotcallbacks.h
+	Reindented, Transmogrified and Wielaardituded.
+	* gnu/java/awt/peer/qt/QtEmbeddedWindowPeer.java
+	* native/jni/qt-peer/eventmethods.h
+	* native/jni/qt-peer/qtembeddedwindowpeer.cpp
+	* native/jni/qt-peer/slotcallbacks.moc.h
+	New files
+	* native/jni/qt-peer/eventmethods.cpp
+	* native/jni/qt-peer/slotcallbacks.moc
+	Removed.
+	
 2005-08-16  Tom Tromey  <tromey@redhat.com>
 
 	* .project: Fixed typo.  Added builder for native code.
@@ -593,7 +649,6 @@
 	native/jni/qt-peer/qtcomponent.cpp,
 	native/jni/qt-peer/qtmenupeer.cpp,
 	native/jni/qt-peer/qtlabelpeer.cpp,
-	native/jni/qt-peer/slotcallbacks.moc
 	native/jni/qt-peer/qtcanvaspeer.cpp,
 	native/jni/qt-peer/qtgraphics.h,
 	* include/gnu_java_awt_peer_qt_QtCheckboxPeer.h,
