@@ -1,3 +1,10 @@
+2005-08-16  Tom Tromey  <tromey@redhat.com>
+
+	* .classpath: Ignore jdwp.
+	* .project: Added builder to create LocaleData.java.
+	* .externalToolBuilders/CreateLocaleData.launch: New file.
+	* examples/gnu/classpath/examples/jawt/DemoJAWT.java: Added package.
+
 2005-08-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/PasswordView.java

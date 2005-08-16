@@ -18,6 +18,8 @@ along with GNU Classpath; see the file COPYING.  If not, write to the
 Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 02110-1301 USA. */
 
+package gnu.classpath.examples.jawt;
+
 import java.awt.*;
 import java.awt.event.*;
 
