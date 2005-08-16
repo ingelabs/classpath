@@ -1,3 +1,13 @@
+2005-08-16  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	Changed font for PasswordField because textbox was 
+	being drawn at an awkward height.
+	* javax/swing/text/PasswordView.java
+	(getPreferredSpan): Implemented
+	(modelToView): likewise.
+	(viewToModel): partially implemented.
+
 2005-08-16  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/awt/Component.java

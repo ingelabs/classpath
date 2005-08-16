@@ -654,7 +654,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
                                                            null, null),
       "PasswordField.caretBlinkRate", new Integer(500),
       "PasswordField.caretForeground", new ColorUIResource(Color.black),
-      "PasswordField.font", new FontUIResource("MonoSpaced", Font.PLAIN, 12),
+      "PasswordField.font", new FontUIResource("Dialog", Font.PLAIN, 12),
       "PasswordField.foreground", new ColorUIResource(Color.black),
       "PasswordField.inactiveBackground", new ColorUIResource(light),
       "PasswordField.inactiveForeground", new ColorUIResource(Color.gray),
