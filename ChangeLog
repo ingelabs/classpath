@@ -1,5 +1,10 @@
 2005-08-16  Tom Tromey  <tromey@redhat.com>
 
+	* .project: Fixed typo.  Added builder for native code.
+	* .externalToolBuilders/CompileNative.launch: New file.
+
+2005-08-16  Tom Tromey  <tromey@redhat.com>
+
 	* .classpath: Ignore jdwp.
 	* .project: Added builder to create LocaleData.java.
 	* .externalToolBuilders/CreateLocaleData.launch: New file.
