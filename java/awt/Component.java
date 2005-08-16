@@ -4816,11 +4816,12 @@ p   * <li>the set of backward traversal keys
                 break;
               }
           }
-        if (e.id == PaintEvent.PAINT || e.id == PaintEvent.UPDATE)
-          peer.handleEvent(e);
-        else
+        if (e.id != PaintEvent.PAINT && e.id != PaintEvent.UPDATE)
           processEvent(e);
       }
+
+    if (peer != null)
+      peer.handleEvent(e);
   }
 
   /**

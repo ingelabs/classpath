@@ -1,5 +1,10 @@
 2005-08-16  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/awt/Component.java
+	(dispatchEventImpl): Always call peer.handleEvent().
+
+2005-08-16  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/awt/Container.java
 	(addImpl, remove): Only repaint if the container is showing.
 
