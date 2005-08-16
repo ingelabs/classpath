@@ -327,21 +327,6 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_gtkMain
   gdk_threads_leave ();
 }
 
-JNIEXPORT jboolean JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkToolkit_nativeQueueEmpty
-  (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)))
-{
-  jboolean empty = FALSE;
-
-  gdk_threads_enter ();
-
-  empty = ! gtk_events_pending();
-
-  gdk_threads_leave ();
-
-  return empty;
-}
-
 
 static jint gdk_color_to_java_color (GdkColor color);
 
