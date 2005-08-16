@@ -30,9 +30,13 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
 
+/**
+ * An example how datatransfer works for copying and pasting data to
+ * and from other programs.
+ */
 class Demo
   extends Frame
-  implements ActionListener
+  implements ActionListener, ItemListener, FlavorListener
 {
   public static void main(String args[])
   {
@@ -55,14 +59,23 @@ class Demo
   private Button copyFiles;
   private Button pasteFiles;
 
+  private FlavorsComponent flavors;
+  private FlavorDetailsComponent details;
+
   private Demo()
   {
     super("GNU Classpath datatransfer");
-    setLayout(new GridLayout(4, 1, 5, 5));
+
+    /* Add all the different panel to the main window in one row. */
+    setLayout(new GridLayout(5, 1, 10, 10));
     add(createTextPanel());
     add(createImagePanel());
     add(createObjectPanel());
     add(createFilesPanel());
+    add(createFlavorsPanel());
+
+    /* Add listeners for the various buttons and events we are
+       interested in. */
     addWindowListener(new WindowAdapter ()
       {
 	public void windowClosing (WindowEvent e)
@@ -70,16 +83,25 @@ class Demo
 	  dispose();
 	}
       });
+    flavors.addItemListener(this);
+    Toolkit t = Toolkit.getDefaultToolkit();
+    Clipboard c = t.getSystemClipboard();
+    c.addFlavorListener(this);
+
+    /* Show time! */
     pack();
     show();
   }
 
+  /**
+   * The Text Panel will show simple text that can be copied and pasted.
+   */
   private Panel createTextPanel()
   {
     Panel textPanel = new Panel();
     textPanel.setLayout(new BorderLayout());
     text = new TextArea("GNU Everywhere!",
-			4, 40,
+			2, 80,
 			TextArea.SCROLLBARS_VERTICAL_ONLY);
     text.setEditable(false);
     text.setEnabled(true);
@@ -96,6 +118,11 @@ class Demo
     return textPanel;
   }
 
+  /**
+   * The Image Panel shows an image that can be copied to another
+   * program or be replaced by pasting in an image from another
+   * application.
+   */
   private Panel createImagePanel()
   {
     Panel imagePanel = new Panel();
@@ -116,6 +143,11 @@ class Demo
     return imagePanel;
   }
 
+  /**
+   * The Object Panel holds a simple (Point) object that can be copied
+   * and pasted to another program that supports exchanging serialized
+   * objects.
+   */
   private Panel createObjectPanel()
   {
     Panel objectPanel = new Panel();
@@ -136,6 +168,11 @@ class Demo
     return objectPanel;
   }
   
+  /**
+   * The Files Panel shows the files from the current working
+   * directory. They can be copied and pasted between other
+   * applications that support the exchange of file lists.
+   */
   private Panel createFilesPanel()
   {
     Panel filesPanel = new Panel();
@@ -153,6 +190,68 @@ class Demo
     return filesPanel;
   }
   
+  /**
+   * The Flavors Panel shows the different formats (mime-types) that
+   * data on the clipboard is available in. By clicking on a flavor
+   * details about the representation class and object is given.
+   */
+  private Panel createFlavorsPanel()
+  {
+    Panel flavorsPanel = new Panel();
+    flavorsPanel.setLayout(new BorderLayout());
+    Label flavorsHeader = new Label("Flavors on clipboard:");
+    Toolkit t = Toolkit.getDefaultToolkit();
+    Clipboard c = t.getSystemClipboard();
+    DataFlavor[] dataflavors = c.getAvailableDataFlavors();
+    flavors = new FlavorsComponent(dataflavors);
+    details = new FlavorDetailsComponent(null);
+    flavorsPanel.add(flavorsHeader, BorderLayout.NORTH);
+    flavorsPanel.add(flavors, BorderLayout.CENTER);
+    flavorsPanel.add(details, BorderLayout.SOUTH);
+    return flavorsPanel;
+  }
+
+  /**
+   * FlavorListener implementation that updates the Flavors Panel
+   * whenever a change in the mime-types available has been detected.
+   */
+  public void flavorsChanged(FlavorEvent event)
+  {
+    Toolkit t = Toolkit.getDefaultToolkit();
+    Clipboard c = t.getSystemClipboard();
+    DataFlavor[] dataflavors = c.getAvailableDataFlavors();
+    flavors.setFlavors(dataflavors);
+    details.setDataFlavor(null);
+  }
+
+  /**
+   * ItemChangeListener implementation that updates the flavor details
+   * whenever the user selects a different representation of the data
+   * available on the clipboard.
+   */
+  public void itemStateChanged(ItemEvent evt)
+  {
+    DataFlavor df = null;
+    String s = flavors.getSelectedItem();
+    if (s != null)
+      {
+	try
+	  {
+	    df = new DataFlavor(s);
+	  }
+	catch (ClassNotFoundException cnfe)
+	  {
+	    cnfe.printStackTrace();
+	  }
+      }
+    details.setDataFlavor(df);
+  }
+  
+  /**
+   * ActionListener implementations that will copy or past data
+   * to/from the clipboard when the user requests that for the text,
+   * image, object of file component.
+   */
   public void actionPerformed (ActionEvent evt)
   {
     Button b = (Button) evt.getSource();
@@ -216,8 +315,7 @@ class Demo
 	Serializable o = null;
 	try
 	  {
-	    o = (Serializable) c.getData
-	      (new DataFlavor(DataFlavor.javaSerializedObjectMimeType));
+	    o = (Serializable) c.getData(ObjectSelection.objFlavor);
 	  }
 	catch (UnsupportedFlavorException dfnse)
 	  {
@@ -226,9 +324,6 @@ class Demo
 	  {
 	  }
 	catch (ClassCastException cce)
-	  {
-	  }
-	catch (ClassNotFoundException cnfe)
 	  {
 	  }
 	if (o == null)
@@ -263,13 +358,16 @@ class Demo
       }
   }
 
+  /**
+   * Simple awt component that shows an settable image.
+   */
   static class ImageComponent extends Component
   {
     private Image image;
 
     ImageComponent(Image image)
     {
-      setSize(120, 120);
+      setSize(20, 20);
       setImage(image);
     }
 
@@ -290,13 +388,16 @@ class Demo
     }
   }
 
+  /**
+   * Simple awt component that shows a settable Serializable object.
+   */
   static class ObjectComponent extends TextArea
   {
     private Serializable object;
 
     ObjectComponent(Serializable object)
     {
-      super("", 2, 40, TextArea.SCROLLBARS_NONE);
+      super("", 2, 80, TextArea.SCROLLBARS_NONE);
       setEditable(false);
       setEnabled(false);
       setObject(object);
@@ -317,39 +418,42 @@ class Demo
     }
   }
 
+  /**
+   * Simple awt component that shows a settable list of Files.
+   */
   static class FilesComponent extends List
   {
     private File[] files;
-
+    
     FilesComponent(File[] files)
     {
       super(4, true);
       setFiles(files);
     }
-
+    
     File[] getFiles()
     {
       String[] strings = getSelectedItems();
       if (strings == null || strings.length == 0)
 	return (File[]) files.clone();
-
+      
       File[] fs = new File[strings.length];
       for (int i = 0; i < strings.length; i++)
 	fs[i] = new File(strings[i]);
       return fs;
     }
-
+    
     void setFiles(File[] files)
     {
       this.files = files;
       removeAll();
       for (int i = 0; i < files.length; i++)
-	{
+        {
 	  addItem(files[i].toString());
 	  select(i);
-	}
+        }
     }
-
+    
     void setFiles(java.util.List list)
     {
       File[] fs = new File[list.size()];
@@ -357,11 +461,94 @@ class Demo
       Iterator it = list.iterator();
       while (it.hasNext())
 	fs[i++] = (File) it.next();
-
+      
       setFiles(fs);
     }
   }
-    
+
+  /**
+   * Simple awt component that shows a settable list of DataFlavors.
+   */
+  static class FlavorsComponent extends List
+  {
+    FlavorsComponent(DataFlavor[] flavors)
+    {
+      super(4);
+      setFlavors(flavors);
+    }
+
+    void setFlavors(DataFlavor[] flavors)
+    {
+      removeAll();
+      for (int i = 0; i < flavors.length; i++)
+	{
+	  addItem(flavors[i].getMimeType());
+	}
+    }
+  }
+
+  /**
+   * Simple awt component that shows the details for and an object as
+   * found on the system clipboard as represented by a given
+   * DataFlavor.
+   */
+  static class FlavorDetailsComponent extends TextArea
+  {
+    private DataFlavor df;
+
+    FlavorDetailsComponent(DataFlavor df)
+    {
+      super("", 2, 80, TextArea.SCROLLBARS_NONE);
+      setEditable(false);
+      setEnabled(false);
+      setDataFlavor(df);
+    }
+
+    void setDataFlavor(DataFlavor df)
+    {
+      if (df == this.df
+	  || (df != null && df.equals(this.df)))
+	return;
+
+      this.df = df;
+
+      if (df == null)
+	setText("No flavor selected");
+      else
+	{
+	  Object o = null;
+	  Throwable exception = null;
+	  try
+	    {
+	      Toolkit t = Toolkit.getDefaultToolkit();
+	      Clipboard c = t.getSystemClipboard();
+	      o = c.getData(df);
+	    }
+	  catch (Throwable t)
+	    {
+	      exception = t;
+	    }
+	  if (o != null)
+	    {
+	      setText("Data: " + o.getClass().getName()
+		      + "\n"
+		      + o);
+	    }
+	  else
+	    {
+	      setText("Error retrieving: " + df
+		      + "\n"
+		      + exception != null ? exception.toString() : "");
+	    }
+	}
+      repaint();
+    }
+  }
+
+  /**
+   * Helper class to put an Image on a clipboard as
+   * DataFlavor.imageFlavor.
+   */
   static class ImageSelection implements Transferable
   {
     private final Image img;
@@ -392,6 +579,10 @@ class Demo
     }
   }
 
+  /**
+   * Helper class to put an Object on a clipboard as Serializable
+   * object.
+   */
   static class ObjectSelection implements Transferable
   {
     private final Serializable obj;
@@ -424,6 +615,10 @@ class Demo
     }
   }
 
+  /**
+   * Helper class to put a List of Files on the clipboard as
+   * DataFlavor.javaFileListFlavor.
+   */
   static class FilesSelection implements Transferable
   {
     private final File[] files;

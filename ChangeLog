@@ -1,3 +1,19 @@
+2005-08-16  Mark Wielaard  <mark@klomp.org>
+
+	* examples/gnu/classpath/examples/datatransfer/Demo.java:
+	Document and implement ItemListener and FlavorListener.
+	(flavors): New field.
+	(details): New field.
+	(Demo): Add more space, add the flavors panel and flavor listener.
+	(createTextPanel): Smaller and wider.
+	(createFlavorsPanel): New private method.
+	(flavorsChanged): New public method.
+	(itemStateChanged): Likewise.
+	(ImageComponent.ImageComponent): Smaller default.
+	(ObjectComponent.ObjectComponent): Make wider.
+	(FlavorsComponent): New static class.
+	(FlavorDetailsComponent): Likewise.
+
 2005-08-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicLookAndFeel.java:
