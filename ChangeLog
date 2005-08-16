@@ -1,3 +1,8 @@
+2005-08-16  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/awt/Container.java
+	(addImpl, remove): Only repaint if the container is showing.
+
 2005-08-16  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
