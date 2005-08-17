@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="compat/|examples/|external/|gnu/classpath/jdwp/|gnu/javax/swing/plaf/|test/|testsuite/|vm/reference/|vm/reference/gnu/classpath/jdwp/" kind="src" path=""/>
-	<classpathentry kind="src" path="vm/reference"/>
+	<classpathentry excluding="compat/|examples/|external/|gnu/classpath/jdwp/|gnu/javax/swing/plaf/|test/|testsuite/|vm/reference/" kind="src" path=""/>
+	<classpathentry excluding="gnu/classpath/jdwp/" kind="src" path="vm/reference"/>
 	<classpathentry kind="src" path="external/sax"/>
 	<classpathentry kind="src" path="external/w3c_dom"/>
 	<classpathentry kind="src" path="examples"/>
