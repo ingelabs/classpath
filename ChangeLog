@@ -1,5 +1,11 @@
 2005-08-17  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/basic/BasicLabelUI.java
+	(paint): Don't paint the border here. If there is a border to
+	be painted, this is usually performed in JComponent.paint().
+
+2005-08-17  Roman Kennke  <roman@kennke.org>
+
 	* java/awt/FontMetrics.java
 	(charWidth(int)): Correctly map Unicode indices to char[] here.
 

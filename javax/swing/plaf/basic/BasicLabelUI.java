@@ -178,9 +178,6 @@ public class BasicLabelUI
     if (icon != null)
       icon.paintIcon(b, g, ir.x, ir.y);        
 
-    if (b.getBorder() != null)
-      b.getBorder().paintBorder(b, g, tr.x, tr.y, tr.width, tr.height);
-
     if (text != null && !text.equals(""))
     {
       if (b.isEnabled())
