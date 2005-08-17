@@ -1,3 +1,53 @@
+2005-08-15  Dalibor Topic  <robilad@kaffe.org>
+
+	* configure.ac: Added option to enable building qt peers.
+
+	* include/Makefile.am: Added qt peer headers.
+
+	* include/gnu_java_awt_peer_qt_MainQtThread.h,
+	include/gnu_java_awt_peer_qt_QMatrix.h,
+        include/gnu_java_awt_peer_qt_QPainterPath.h,
+        include/gnu_java_awt_peer_qt_QPen.h,
+        include/gnu_java_awt_peer_qt_QtAudioClip.h,
+        include/gnu_java_awt_peer_qt_QtButtonPeer.h,
+        include/gnu_java_awt_peer_qt_QtCanvasPeer.h,
+        include/gnu_java_awt_peer_qt_QtCheckboxPeer.h,
+        include/gnu_java_awt_peer_qt_QtChoicePeer.h,
+        include/gnu_java_awt_peer_qt_QtComponentPeer.h,
+        include/gnu_java_awt_peer_qt_QtContainerPeer.h,
+        include/gnu_java_awt_peer_qt_QtDialogPeer.h,
+        include/gnu_java_awt_peer_qt_QtEmbeddedWindowPeer.h,
+        include/gnu_java_awt_peer_qt_QtFileDialogPeer.h,
+        include/gnu_java_awt_peer_qt_QtFontMetrics.h,
+        include/gnu_java_awt_peer_qt_QtFontPeer.h,
+        include/gnu_java_awt_peer_qt_QtFramePeer.h,
+        include/gnu_java_awt_peer_qt_QtGraphics.h,
+        include/gnu_java_awt_peer_qt_QtGraphicsEnvironment.h,
+        include/gnu_java_awt_peer_qt_QtImage.h,
+        include/gnu_java_awt_peer_qt_QtLabelPeer.h,
+        include/gnu_java_awt_peer_qt_QtListPeer.h,
+        include/gnu_java_awt_peer_qt_QtMenuBarPeer.h,
+        include/gnu_java_awt_peer_qt_QtMenuComponentPeer.h,
+        include/gnu_java_awt_peer_qt_QtMenuItemPeer.h,
+        include/gnu_java_awt_peer_qt_QtMenuPeer.h,
+        include/gnu_java_awt_peer_qt_QtPanelPeer.h,
+        include/gnu_java_awt_peer_qt_QtPopupMenuPeer.h,
+        include/gnu_java_awt_peer_qt_QtScreenDevice.h,
+        include/gnu_java_awt_peer_qt_QtScrollPanePeer.h,
+        include/gnu_java_awt_peer_qt_QtScrollbarPeer.h,
+        include/gnu_java_awt_peer_qt_QtTextAreaPeer.h,
+        include/gnu_java_awt_peer_qt_QtTextFieldPeer.h,
+        include/gnu_java_awt_peer_qt_QtToolkit.h,
+        include/gnu_java_awt_peer_qt_QtVolatileImage.h,
+        include/gnu_java_awt_peer_qt_QtWindowPeer.h,
+        native/jni/qt-peer/Makefile.am:
+	New files.
+
+	* native/jni/Makefile.am: Handle qt peers.
+
+	* native/jni/qt-peer/slotcallbacks.moc.h: Removed. Now generated
+	on demand by moc.
+
 2005-08-16  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/qt/QtButtonPeer.java
@@ -151,7 +201,7 @@
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
 	(Java_gnu_java_awt_peer_gtk_GtkToolkit_nativeQueueEmpty): Removed.
 
-2005-08-15  Dalibor Topic  <robilad@kafe.org>
+2005-08-15  Dalibor Topic  <robilad@kaffe.org>
 
         * native/jni/qt-peer/mainqtthread.cpp,
         native/jni/qt-peer/qmatrix.cpp,

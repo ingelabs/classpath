@@ -138,6 +138,19 @@ fi
 AM_CONDITIONAL(GTK_CAIRO, test "x${GTK_CAIRO_ENABLED}" = xtrue)
 
 dnl -----------------------------------------------------------
+dnl Qt native peer (disabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([qt-peer],
+              [AS_HELP_STRING(--enable-qt-peer,compile Qt4 native peers (disabled by --disable-jni) [default=no])],
+              [case "${enableval}" in
+                yes) COMPILE_QT_PEER=yes ;;
+                no) COMPILE_QT_PEER=no ;;
+                *) COMPILE_QT_PEER=yes ;;
+              esac],
+              [COMPILE_QT_PEER=no])
+AM_CONDITIONAL(CREATE_QT_PEER_LIBRARIES, test "x${COMPILE_QT_PEER}" = xyes)
+
+dnl -----------------------------------------------------------
 dnl Regenerate headers at build time (disabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([regen-headers],
@@ -280,6 +293,14 @@ if test "x${COMPILE_JNI}" = xyes; then
      PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.4 gthread-2.0 >= 2.2 gdk-pixbuf-2.0)
      AC_SUBST(GTK_CFLAGS)
      AC_SUBST(GTK_LIBS)
+  fi
+
+  dnl Check for AWT related Qt4
+  if test "x${COMPILE_QT_PEER}" = xyes; then
+    PKG_CHECK_MODULES(QT, QtGui >= 4.0)
+    AC_CHECK_PROG(MOC, [moc], [moc])
+    AC_SUBST(QT_CFLAGS)
+    AC_SUBST(QT_LIBS)
   fi
 
   if test "x${enable_gtk_cairo}" = xyes; then
@@ -455,6 +476,7 @@ native/jni/java-net/Makefile
 native/jni/java-nio/Makefile
 native/jni/java-util/Makefile
 native/jni/gtk-peer/Makefile
+native/jni/qt-peer/Makefile
 native/jni/xmlj/Makefile
 native/target/Makefile
 native/target/Linux/Makefile
