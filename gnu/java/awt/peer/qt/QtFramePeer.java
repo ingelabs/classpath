@@ -65,9 +65,15 @@ public class QtFramePeer extends QtWindowPeer implements FramePeer
       setMenuBar( ((Frame)owner).getMenuBar() );
   }
 
-  private native void setIcon(QtImage image);
+  private void setIcon(QtImage image)
+  {
+    // FIXME - Implement!
+  }
 
-  private native void setMaximizedBounds(int w, int h);
+  private void setMaximizedBounds(int w, int h)
+  {
+    // FIXME - Implement.
+  }
 
   private native void setMenu(QtMenuBarPeer mb);
 

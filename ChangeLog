@@ -1,5 +1,15 @@
 2005-08-17  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/peer/qt/QtFramePeer.java (setIcon): Mark non-native
+	and add FIXME.
+	(setMaximizedBounds): Likewise.
+	* include/gnu_java_awt_peer_qt_QtFramePeer.h: Regenerated.
+	* native/jni/qt-peer/.cvsignore: New file.
+	* native/jni/qt-peer/Makefile.am (libqtpeer_la_SOURCES):
+	Remove eventmethods.h.
+	
+2005-08-17  Mark Wielaard  <mark@klomp.org>
+
 	* scripts/check_jni_methods.sh: Find JNI method declarations in
 	.cpp files. Check both GNU style functions (start of line) and
 	one-line like declarations. Use diff -U 0, not -0.

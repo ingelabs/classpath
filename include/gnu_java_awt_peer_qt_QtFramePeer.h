@@ -11,8 +11,6 @@ extern "C"
 #endif
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtFramePeer_init (JNIEnv *env, jobject);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtFramePeer_setIcon (JNIEnv *env, jobject, jobject);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtFramePeer_setMaximizedBounds (JNIEnv *env, jobject, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtFramePeer_setMenu (JNIEnv *env, jobject, jobject);
 JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_qt_QtFramePeer_menuBarHeight (JNIEnv *env, jobject);
 
