@@ -391,7 +391,7 @@ public class DefaultTreeCellRenderer
       this.selected = selected;
       this.hasFocus = hasFocus;
       setHorizontalAlignment(LEFT);
-      setOpaque(false);
+      setOpaque(true);
       setVerticalAlignment(TOP);
       setEnabled(true);
       super.setFont(UIManager.getLookAndFeelDefaults().getFont("Tree.font"));
@@ -400,13 +400,13 @@ public class DefaultTreeCellRenderer
 		{
 			super.setBackground(getBackgroundSelectionColor());
 			setForeground(getTextSelectionColor());
-      setBorder(UIManager.getLookAndFeelDefaults().getBorder("Tree.selectionBorder"));
+            setBorder(UIManager.getLookAndFeelDefaults().getBorder("Tree.selectionBorder"));
 		}
 		else
 		{
 			super.setBackground(getBackgroundNonSelectionColor());
 			setForeground(getTextNonSelectionColor());
-      setBorder(UIManager.getLookAndFeelDefaults().getBorder("Tree.nonSelectionBorder"));
+            setBorder(UIManager.getLookAndFeelDefaults().getBorder("Tree.nonSelectionBorder"));
 		}
 
 		return this;

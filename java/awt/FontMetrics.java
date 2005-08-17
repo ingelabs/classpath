@@ -193,8 +193,7 @@ public abstract class FontMetrics implements java.io.Serializable
    */
   public int charWidth(int ch)
   {
-    char[] chars = Character.toChars(ch);
-    return charsWidth(chars, 0, chars.length);
+    return charWidth((char) ch);
   }
 
   /**
