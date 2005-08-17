@@ -1,3 +1,10 @@
+2005-08-17  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JList.java:
+	(indexToLocation): Implemented.
+	(getLastVisibleIndex): If the last index in the list is showing and
+	there is extra room at the bottom, return the last index, not -1.
+
 2005-08-17  Lillian Angel <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
