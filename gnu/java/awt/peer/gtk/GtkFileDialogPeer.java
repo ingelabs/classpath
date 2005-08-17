@@ -91,12 +91,7 @@ public class GtkFileDialogPeer extends GtkDialogPeer implements FileDialogPeer
 
         if (dims[0] != awtComponent.getWidth()
             || dims[1] != awtComponent.getHeight())
-          {
-            awtComponent.setSize(dims[0], dims[1]);
-            ComponentEvent e = new ComponentEvent(awtComponent, 
-                                                  ComponentEvent.COMPONENT_RESIZED);
-            q().postEvent(e);
-          }
+          awtComponent.setSize(dims[0], dims[1]);
       }
     super.setComponentBounds ();
   }

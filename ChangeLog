@@ -1,5 +1,8 @@
 2005-08-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
+	(setComponentBounds): Don't post COMPONENT_RESIZED event.
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
 	(setBoundsCallbackID): Remove variable.
 	(cp_gtk_window_init_jni): Don't initialize setBoundsCallbackID.
@@ -16,8 +19,7 @@
 	(postConfigureEvent): Separate handling of resizes and moves.
 	Call setSize and post COMPONENT_RESIZED event.
 	* gnu/java/awt/peer/gtk/GtkFramePeer.java (postConfigureEvent):
-	Separate handling of resizes and moves.  Call setSize and post
-	COMPONENT_RESIZED event.
+	Separate handling of resizes and moves.  Call setSize.
 	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
 	(setComponentBounds): Call setSize and post COMPONENT_RESIZED
 	event.
