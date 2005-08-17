@@ -1,3 +1,29 @@
+2005-08-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(setBoundsCallbackID): Remove variable.
+	(cp_gtk_window_init_jni): Don't initialize setBoundsCallbackID.
+	(setBoundsCallback): Remove method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFramePeer.c
+	(setMenuBarPeer): Check if menubar is NULL.
+	(setMenuBarWidth): Likewise.
+	* java/awt/Window.java (dispatchEventImpl): Validate upon
+	receiving a COMPONENT_RESIZED event.
+	(setBoundsCallback): Remove method.
+	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h: Regenerate.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java (setBoundsCallback):
+	Remove method declaration.
+	(postConfigureEvent): Separate handling of resizes and moves.
+	Call setSize and post COMPONENT_RESIZED event.
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (postConfigureEvent):
+	Separate handling of resizes and moves.  Call setSize and post
+	COMPONENT_RESIZED event.
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
+	(setComponentBounds): Call setSize and post COMPONENT_RESIZED
+	event.
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java (isValidating):
+	Remove field.
+
 2005-08-15  Dalibor Topic  <robilad@kaffe.org>
 
 	* configure.ac: Added option to enable building qt peers.
