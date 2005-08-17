@@ -2541,7 +2541,7 @@ public class BasicTreeUI
 
     if (!mod.isLeaf(startNode)
         && tree.isExpanded(new TreePath(getPathToRoot(startNode, 0)))
-        && mod.getChildCount(startNode) > 0)
+        && !mod.isLeaf(startNode) && mod.getChildCount(startNode) > 0)
       {
         Object child = mod.getChild(startNode, 0);
         if (child != null)
@@ -2629,7 +2629,9 @@ public class BasicTreeUI
             y0 += halfHeight;
           }
 
-        int max = mod.getChildCount(curr);
+        int max = 0;
+        if (!mod.isLeaf(curr))
+          max = mod.getChildCount(curr);
         if (tree.isExpanded(new TreePath(getPathToRoot(curr, 0))))
           {
             for (int i = 0; i < max; i++)
@@ -2653,7 +2655,7 @@ public class BasicTreeUI
       }
 
     if (tree.isExpanded(new TreePath(getPathToRoot(curr, 0))))
-      if (y0 != heightOfLine && mod.getChildCount(curr) > 0)
+      if (y0 != heightOfLine && !mod.isLeaf(curr) && mod.getChildCount(curr) > 0)
         {
           g.setColor(getHashColor());
           g.drawLine(indentation + halfWidth, y0, indentation + halfWidth,
@@ -2698,7 +2700,9 @@ public class BasicTreeUI
         if (depth > 0 || tree.isRootVisible())
           descent += rowHeight;
 
-        int max = mod.getChildCount(node);
+        int max = 0;
+        if (!mod.isLeaf(node))
+          max = mod.getChildCount(node);
         if (tree.isExpanded(new TreePath(getPathToRoot(node, 0))))
           {
             if (!node.equals(mod.getRoot()))
@@ -2763,7 +2767,10 @@ public class BasicTreeUI
   private Object findNode(Object root, Object node)
   {
     TreeModel mod = tree.getModel();
-    for (int i = 0; i < mod.getChildCount(root); i++)
+    int size = 0;
+    if (!mod.isLeaf(root))
+      size = mod.getChildCount(root);
+    for (int i = 0; i < size; i++)
       {
         if (mod.getIndexOfChild(root, node) != -1)
           return root;
@@ -2851,7 +2858,7 @@ public class BasicTreeUI
   Object getNextNode(Object curr)
   {
     TreeModel mod = tree.getModel();
-    if (mod.getChildCount(curr) > 0)
+    if (!mod.isLeaf(curr) && mod.getChildCount(curr) > 0)
       return mod.getChild(curr, 0);
 
     Object node = curr;
@@ -2885,12 +2892,17 @@ public class BasicTreeUI
 
     if (sibling == null)
       return parent;
-
-    int size = mod.getChildCount(sibling);
+    
+    int size = 0;
+    if (!mod.isLeaf(sibling))
+      size = mod.getChildCount(sibling);
     while (size > 0)
       {
         sibling = mod.getChild(sibling, size - 1);
-        size = mod.getChildCount(sibling);
+        if (!mod.isLeaf(sibling))
+          size = mod.getChildCount(sibling);
+        else
+          size = 0;
       }
 
     return sibling;
@@ -2911,8 +2923,11 @@ public class BasicTreeUI
       return null;
 
     int index = mod.getIndexOfChild(parent, node) + 1;
-
-    if (index == 0 || index >= mod.getChildCount(parent))
+    
+    int size = 0;
+    if (!mod.isLeaf(parent))
+      size = mod.getChildCount(parent);
+    if (index == 0 || index >= size)
       return null;
 
     return mod.getChild(parent, index);
@@ -2933,8 +2948,11 @@ public class BasicTreeUI
       return null;
 
     int index = mod.getIndexOfChild(parent, node) - 1;
-
-    if (index < 0 || index >= mod.getChildCount(parent))
+    
+    int size = 0;
+    if (!mod.isLeaf(parent))
+      size = mod.getChildCount(parent);
+    if (index < 0 || index >= size)
       return null;
 
     return mod.getChild(parent, index);
