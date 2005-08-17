@@ -1,5 +1,11 @@
 2005-08-17  Roman Kennke  <roman@kennke.org>
 
+	Reported by Ingo Proetel  <proetel@aicas.com>
+	* java/awt/image/DirectColorModel.java
+	(createCompatibleWritableRaster): Added argument check.
+
+2005-08-17  Roman Kennke  <roman@kennke.org>
+
 	* java/awt/FontMetrics.java
 	(charWidth(int)): Correctly map Unicode indices to char[] here.
 

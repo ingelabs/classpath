@@ -351,6 +351,11 @@ public class DirectColorModel extends PackedColorModel
   
   public final WritableRaster createCompatibleWritableRaster(int w, int h)
   {
+    // Sun also makes this check here.
+    if(w <= 0 || h <= 0)
+      throw new IllegalArgumentException("width (=" + w + ") and height (="
+                                         + h + ") must be > 0");
+
     SampleModel sm = createCompatibleSampleModel(w, h);
     Point origin = new Point(0, 0);
     return Raster.createWritableRaster(sm, origin);	
@@ -418,3 +423,4 @@ public class DirectColorModel extends PackedColorModel
     return super.toString();
   }
 }
+
