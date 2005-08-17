@@ -1888,7 +1888,14 @@ public abstract class Component
    */
   public void repaint()
   {
-    repaint(0, 0, 0, width, height);
+    if(!isShowing())
+      {
+        Component p = parent;
+        if (p != null)
+          p.repaint(0, getX(), getY(), width, height);
+      }
+    else
+      repaint(0, 0, 0, width, height);
   }
 
   /**
@@ -1902,7 +1909,14 @@ public abstract class Component
    */
   public void repaint(long tm)
   {
-    repaint(tm, 0, 0, width, height);
+    if(!isShowing())
+      {
+        Component p = parent;
+        if (p != null)
+          p.repaint(tm, getX(), getY(), width, height);
+      }
+    else
+      repaint(tm, 0, 0, width, height);
   }
 
   /**
@@ -1919,7 +1933,14 @@ public abstract class Component
    */
   public void repaint(int x, int y, int w, int h)
   {
-    repaint(0, x, y, w, h);
+    if(!isShowing())
+      {
+        Component p = parent;
+        if (p != null)
+          p.repaint(0, x + getX(), y + getY(), width, height);
+      }
+    else
+      repaint(0, x, y, w, h);
   }
 
   /**
