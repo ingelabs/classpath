@@ -1,5 +1,10 @@
 2005-08-17  Roman Kennke  <roman@kennke.org>
 
+	* java/awt/FontMetrics.java
+	(charWidth(int)): Correctly map Unicode indices to char[] here.
+
+2005-08-17  Roman Kennke  <roman@kennke.org>
+
 	* java/lang/Character.java
 	(toChars(int)): New JDK1.5 method.
 	(toChars(int, char[], int)): New JDK1.5 method.
