@@ -1,3 +1,99 @@
+2005-08-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java,
+	gnu_java_awt_peer_gtk_GtkFramePeer.c (postConfigureEvent): Prevent
+	callback calling back into peers.
+	(setBounds): Likewise.
+	(setMenuBarWidthUnlocked): New method.
+	* native/jni/gtk-peer/gtkpeer.h (cp_gtk_filedialog_init_jni):
+	Declare function.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
+	(gtkInit): Call cp_gtk_filedialog_init_jni.
+	(loadSystemColors): Work around deadlock.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextFieldPeer.c
+	(textcomponent_changed_cb): Don't release GDK lock.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuItemPeer.c
+	(item_activate_cb): Don't release GDK lock.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkListPeer.c
+	(item_highlighted_cb): Don't release GDK lock.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(component_button_press_cb): Don't release GDK lock.
+	(component_button_release_cb): Likewise.
+	(component_motion_notify_cb): Likewise.
+	(component_enter_notify_cb): Likewise.
+	(component_leave_notify_cb): Likewise.
+	(component_expose_cb): Likewise.
+	(component_focus_in_cb): Likewise.
+	(component_focus_out_cb): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(block_expose_event_cb): Remove callback.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java,
+	gnu_java_awt_peer_gtk_GtkWindowPeer.c (postConfigureEvent):
+	Prevent callback calling back into peers.
+	(setBounds): Likewise.
+	(nativeSetBoundsUnlocked): New method.
+	(setBoundsUnlocked): Likewise.
+	(nativeSetVisibleUnlocked): Likewise.
+	(setVisibleUnlocked): Likewise.
+	(window_delete_cb): Don't release GDK lock.
+	(window_destroy_cb): Likewise.
+	(window_show_cb): Likewise.
+	(window_active_state_change_cb): Likewise.
+	(window_focus_state_change_cb): Likewise.
+	(window_focus_in_cb): Likewise.
+	(window_focus_out_cb): Likewise.
+	(window_window_state_cb): Likewise.
+	(window_property_changed_cb): Likewise.
+	(realize_cb): Likewise.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (mainThread): New
+	variable.
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java,
+	gnu_java_awt_peer_gtk_GtkFileDialogPeer.c (setVisible): Prevent
+	callback calling back into peers.
+	(filename_filter_cb): Don't release GDK lock.
+	(handle_response_cb): Likewise.
+	(cp_gtk_filedialog_init_jni): New function.
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java (setState): Prevent
+	callback from calling back into peers.
+	(item_toggled_cb): Don't release GDK lock.
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java,
+	gnu_java_awt_peer_gtk_GdkPixbufDecoder.c (area_prepared_cb): Don't
+	release GDK lock.
+	(area_updated_cb): Likewise.
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java,
+	gnu_java_awt_peer_gtk_GdkGraphics2D.c (initStateUnlocked): New
+	method.
+	(cairoSurfaceSetFilterUnlocked): Likewise.
+	(initComponentGraphics2DUnlocked): Likewise.
+	(setTexturePixelsUnlocked): Likewise.
+	(setGradientUnlocked): Likewise.
+	(cairoSetMatrixUnlocked): Likewise.
+	(cairoSetRGBAColorUnlocked): Likewise.
+	(cairoSetLineWidthUnlocked): Likewise.
+	(cairoSetLineCapUnlocked): Likewise.
+	(cairoSetLineJoinUnlocked): Likewise.
+	(cairoSetDashUnlocked): Likewise.
+	(cairoSetMiterLimitUnlocked): Likewise.
+	(setPaintUnlocked): Likewise.
+	(setTransformUnlocked): Likewise.
+	(setStrokeUnlocked): Likewise.
+	(setColorUnlocked): Likewise.
+	(setBackgroundUnlocked): Likewise.
+	(setRenderingHintsUnlocked): Likewise.
+	(setFontUnlocked): Likewise.
+	(realize_cb): Don't release GDK lock.  Call
+	initComponentGraphics2DUnlocked.
+	* gnu/java/awt/peer/gtk/GdkGraphics.java,
+	gnu_java_awt_peer_gtk_GdkGraphics.c (initStateUnlocked): New
+	method.
+	(initComponentGraphicsUnlocked): New method.
+	(realize_cb): Don't release GDK lock.  Call
+	initComponentGraphicsUnlocked.
+	* include/gnu_java_awt_peer_gtk_GdkGraphics.h: Regenerate.
+	* include/gnu_java_awt_peer_gtk_GdkGraphics2D.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkFramePeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h: Likewise.
+
 2005-08-17  Tom Tromey  <tromey@redhat.com>
 
 	* .project: Correctly omit jdwp from vm/reference.
