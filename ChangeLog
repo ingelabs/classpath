@@ -1,5 +1,11 @@
 2005-08-18  Roman Kennke  <roman@kennke.org>
 
+	* java/awt/FlowLayout.java
+	(setAlignment): Added comment explaining why we don't check
+	for illegal values here.
+
+2005-08-18  Roman Kennke  <roman@kennke.org>
+
 	* java/awt/image/PixelGrabber.java
 	(startGrabbing): Replaced ImageConsumer.ABORTED with
 	ImageConsumer.IMAGEABORTED.
