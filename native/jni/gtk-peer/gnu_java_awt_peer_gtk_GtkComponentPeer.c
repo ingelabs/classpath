@@ -602,11 +602,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetBackground
 
   bg = GTK_WIDGET (ptr)->style->bg[GTK_STATE_NORMAL];
 
-  gdk_threads_leave ();
-
   array = (*env)->NewIntArray (env, 3);
-
-  gdk_threads_enter ();
 
   rgb = (*env)->GetIntArrayElements (env, array, NULL);
   /* convert color data from 16 bit values down to 8 bit values */
@@ -635,11 +631,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetForeground
 
   fg = GTK_WIDGET (ptr)->style->fg[GTK_STATE_NORMAL];
 
-  gdk_threads_leave ();
-
   array = (*env)->NewIntArray (env, 3);
-
-  gdk_threads_enter ();
 
   rgb = (*env)->GetIntArrayElements (env, array, NULL);
   /* convert color data from 16 bit values down to 8 bit values */
