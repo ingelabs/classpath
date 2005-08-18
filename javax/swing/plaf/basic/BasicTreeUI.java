@@ -728,8 +728,7 @@ public class BasicTreeUI
    */
   public boolean isEditing(JTree tree)
   {
-    // FIXME: not implemented
-    return false;
+    return getCellEditor() != null;
   }
 
   /**
@@ -1919,6 +1918,15 @@ public class BasicTreeUI
      */
     public void mouseClicked(MouseEvent e)
     {
+    }
+
+    /**
+     * Invoked when a mouse button has been pressed on a component.
+     * 
+     * @param e mouse event that occured
+     */
+    public void mousePressed(MouseEvent e)
+    {
       Point click = e.getPoint();
       int row = Math.round(click.y / BasicTreeUI.this.getRowHeight());
       TreePath path = BasicTreeUI.this.getClosestPathForLocation(tree, click.x,
@@ -1938,8 +1946,8 @@ public class BasicTreeUI
           if (bounds.contains(click.x, click.y))
             inBounds = true;
           else if (BasicTreeUI.this.hasControlIcons()
-                   && (click.x < (bounds.x - rightChildIndent + 5) && click.x > (bounds.x
-                                                                                 - rightChildIndent - 5)))
+                   && (click.x < (bounds.x - rightChildIndent + 5) 
+                       && click.x > (bounds.x - rightChildIndent - 5)))
             cntlClick = true;
 
           if ((inBounds || cntlClick) && BasicTreeUI.this.tree.isVisible(path))
@@ -1968,17 +1976,13 @@ public class BasicTreeUI
                 }
 
               BasicTreeUI.this.selectPath(BasicTreeUI.this.tree, path);
+              
+              // If editing, but the moved to another cell then stop editing
+              if (!path.equals(BasicTreeUI.this.tree.getLeadSelectionPath()))
+                if (BasicTreeUI.this.tree.isEditing())
+                  BasicTreeUI.this.tree.stopEditing();
             }
         }
-    }
-
-    /**
-     * Invoked when a mouse button has been pressed on a component.
-     * 
-     * @param e mouse event that occured
-     */
-    public void mousePressed(MouseEvent e)
-    {
     }
 
     /**
@@ -2980,22 +2984,24 @@ public class BasicTreeUI
       {
         if (tree.isPathSelected(path))
           tree.removeSelectionPath(path);
-        else if (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.SINGLE_TREE_SELECTION)
+        else if (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.
+            DISCONTIGUOUS_TREE_SELECTION)
           {
-            tree.getSelectionModel().clearSelection();
             tree.addSelectionPath(path);
             tree.setLeadSelectionPath(path);
           }
-        else if (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.CONTIGUOUS_TREE_SELECTION)
+        else if (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.
+            CONTIGUOUS_TREE_SELECTION)
           {
             // TODO
           }
         else
           {
-            tree.getSelectionModel().setSelectionMode(
-                                                      TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
-            tree.addSelectionPath(path);
-            tree.setLeadSelectionPath(path);
+            tree.getSelectionModel().setSelectionMode(TreeSelectionModel.
+                                                      SINGLE_TREE_SELECTION);
+              tree.getSelectionModel().clearSelection();
+              tree.addSelectionPath(path);
+              tree.setLeadSelectionPath(path);
           }
       }
   }
