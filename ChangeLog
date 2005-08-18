@@ -1,6 +1,12 @@
 2005-08-18  Roman Kennke  <roman@kennke.org>
 
 	* java/awt/image/PixelGrabber.java
+	(startGrabbing): Replaced ImageConsumer.ABORTED with
+	ImageConsumer.IMAGEABORTED.
+
+2005-08-18  Roman Kennke  <roman@kennke.org>
+
+	* java/awt/image/PixelGrabber.java
 	(constructors): Check if the ImageProducer is null and throw
 	a NPE if that is the case.
 	(startGrabbing): When an exception is thrown in the grabber thread,

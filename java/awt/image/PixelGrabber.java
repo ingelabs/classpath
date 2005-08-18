@@ -223,7 +223,7 @@ public class PixelGrabber implements ImageConsumer
               catch (Exception ex)
                 {
                   ex.printStackTrace();
-                  imageComplete(ImageConsumer.ABORTED);
+                  imageComplete(ImageConsumer.IMAGEABORTED);
                 }
 	    }
 	  };
