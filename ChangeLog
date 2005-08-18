@@ -1,5 +1,11 @@
 2005-08-18  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(setHashColor): Implemented.
+	(getRowForPath): Implemented.
+
+2005-08-18  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/tree/DefaultTreeCellRenderer.java
 	(paint): Added check for null border.
 

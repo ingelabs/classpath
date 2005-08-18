@@ -297,8 +297,8 @@ public class BasicTreeUI
    */
   protected void setHashColor(Color color)
   {
-    // FIXME: not implemented
-
+    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+    defaults.put("Tree.hash", color);
   }
 
   /**
@@ -650,16 +650,24 @@ public class BasicTreeUI
    */
   public int getRowForPath(JTree tree, TreePath path)
   {
-    // FIXME: check visibility
-    // right now, just returns last element because
-    // expand/collapse is not implemented
-    return path.getPathCount() - 1;
+    int row = path.getPathCount();
+    if (tree.isVisible(path))
+      return row;
+    
+    path = path.getParentPath();
+    while (row > 0 && !tree.isVisible(path))
+      {
+        path = path.getParentPath();
+        row--;
+      }
+    return row;
   }
 
   /**
    * Returns the number of rows that are being displayed.
    * 
-   * @param tree is the current tree to return the number of rows for.
+   * @param tree
+   *          is the current tree to return the number of rows for.
    * @return the number of rows being displayed.
    */
   public int getRowCount(JTree tree)
@@ -1270,13 +1278,14 @@ public class BasicTreeUI
    */
   protected void ensureRowsAreVisible(int beginRow, int endRow)
   {
-    // FIXME: not implemented
+    //FIXME: not implemented
   }
 
   /**
    * Sets the preferred minimum size.
    * 
-   * @param newSize is the new preferred minimum size.
+   * @param newSize
+   *          is the new preferred minimum size.
    */
   public void setPreferredMinSize(Dimension newSize)
   {
