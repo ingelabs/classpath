@@ -1,5 +1,10 @@
 2005-08-18  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/text/StringCharacterIterator.java
+	(StringCharacterIterator(String)): documented NullPointerException.
+	
+2005-08-18  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/multi/MultiButtonUI.java: new file,
 	* javax/swing/plaf/multi/MultiColorChooserUI.java: new file,
 	* javax/swing/plaf/multi/MultiComboBoxUI.java: new file,
