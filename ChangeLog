@@ -1,3 +1,12 @@
+2005-08-18  Roman Kennke  <roman@kennke.org>
+
+	* java/awt/image/PixelGrabber.java
+	(constructors): Check if the ImageProducer is null and throw
+	a NPE if that is the case.
+	(startGrabbing): When an exception is thrown in the grabber thread,
+	exit gracefully and notify the waiting threads.
+	(imageComplete): Only call ip.removeConsumer() if ip is not null.
+
 2005-08-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/text/StringCharacterIterator.java
