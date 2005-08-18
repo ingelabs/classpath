@@ -1,5 +1,40 @@
 2005-08-18  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/multi/MultiButtonUI.java: new file,
+	* javax/swing/plaf/multi/MultiColorChooserUI.java: new file,
+	* javax/swing/plaf/multi/MultiComboBoxUI.java: new file,
+	* javax/swing/plaf/multi/MultiDesktopIconUI.java: new file,
+	* javax/swing/plaf/multi/MultiDesktopPaneUI.java: new file,
+	* javax/swing/plaf/multi/MultiFileChooserUI.java: new file,
+	* javax/swing/plaf/multi/MultiInternalFrameUI.java: new file,
+	* javax/swing/plaf/multi/MultiLabelUI.java: new file,
+	* javax/swing/plaf/multi/MultiListUI.java: new file,
+	* javax/swing/plaf/multi/MultiLookAndFeel.java: new file,
+	* javax/swing/plaf/multi/MultiMenuBarUI.java: new file,
+	* javax/swing/plaf/multi/MultiMenuItemUI.java: new file,
+	* javax/swing/plaf/multi/MultiOptionPaneUI.java: new file,
+	* javax/swing/plaf/multi/MultiPanelUI.java: new file,
+	* javax/swing/plaf/multi/MultiPopupMenuUI.java: new file,
+	* javax/swing/plaf/multi/MultiProgressBarUI.java: new file,
+	* javax/swing/plaf/multi/MultiRootPaneUI.java: new file,
+	* javax/swing/plaf/multi/MultiScrollBarUI.java: new file,
+	* javax/swing/plaf/multi/MultiScrollPaneUI.java: new file,
+	* javax/swing/plaf/multi/MultiSeparatorUI.java: new file,
+	* javax/swing/plaf/multi/MultiSliderUI.java: new file,
+	* javax/swing/plaf/multi/MultiSpinnerUI.java: new file,
+	* javax/swing/plaf/multi/MultiSplitPaneUI.java: new file,
+	* javax/swing/plaf/multi/MultiTabbedPaneUI.java: new file,
+	* javax/swing/plaf/multi/MultiTableHeaderUI.java: new file,
+	* javax/swing/plaf/multi/MultiTableUI.java: new file,
+	* javax/swing/plaf/multi/MultiTextUI.java: new file,
+	* javax/swing/plaf/multi/MultiToolBarUI.java: new file,
+	* javax/swing/plaf/multi/MultiToolTipUI.java: new file,
+	* javax/swing/plaf/multi/MultiTreeUI.java: new file,
+	* javax/swing/plaf/multi/MultiViewportUI.java: new file,
+	* javax/swing/plaf/multi/package.html: new file.
+	
+2005-08-18  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/util/Vector.java
 	(copyInto) fixed incorrect API description.
 	
