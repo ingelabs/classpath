@@ -1,3 +1,10 @@
+2005-08-18  Keith Seitz  <keiths@redhat.com>
+
+	* vm/reference/gnu/classpath/jdwp/VMIdManager.java: New file
+	with example implementation of ID-management for JDWP back-end.
+	* gnu/classpath/jdwp/id/JdwpIdFactory.java: Removed. Now part of
+	VMIdManager.
+  
 2005-08-18  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
