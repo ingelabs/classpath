@@ -1,3 +1,8 @@
+2005-08-19  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/text/AbstractWriter.java: New file.
+	* javax/swing/text/ElementIterator.java: New file.
+
 2005-08-19  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
