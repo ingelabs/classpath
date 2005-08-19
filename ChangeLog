@@ -1,5 +1,12 @@
 2005-08-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* java/awt/Font.java (Font(String,Map)): Make package private.
+	* gnu/java/awt/ClasspathToolkit.java (getFont): Access
+	package-private Font.Font(String,Map) constructor using
+	reflection.
+
+2005-08-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* gnu/java/awt/peer/GLightweightPeer.java,
 	gnu/java/awt/peer/gtk/GtkComponentPeer.java,
 	gnu/java/awt/peer/gtk/GtkContainerPeer.java,
