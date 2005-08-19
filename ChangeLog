@@ -1,3 +1,39 @@
+2005-08-19  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getCellBounds): No need to call getFont twice. This 
+	is fixed.
+	* javax/swing/tree/DefaultTreeCellEditor.java:
+	Added API documentation for all fields.
+	(getPreferredSize): Implemented.
+	(paint): Implemented.
+	(doLayout): Implemented.
+	(getFont): Implemented.
+	(getPreferredSize): Implemented.
+	(DefaultTreeCellEditor): Partially implemented.
+	(DefaultTreeCellEditor): Partially implemented.
+	(setBorderSelectionColor): Implemented.
+	(getBorderSelectionColor): Implemented.
+	(setFont): Implemented.
+	(getFont): Implemented.
+	(getTreeCellEditorComponent): Added API documentation.	
+	(getCellEditorValue): Added API documentation.
+	(isCellEditable): Added API documentation.
+	(shouldSelectCell): Added API documentation.
+	(stopCellEditing): Added API documentation.
+	(cancelCellEditing): Added API documentation.
+	(valueChanged): Added API documentation.
+	(actionPerformed): Added API documentation.
+	(setTree): Implemented.
+	(shouldStartEditingTimer): Added API documentation.
+	(startEditingTimer): Added API documentation.
+	(canEditImmediately): Added API documentation.
+	(inHitRegion): Added API documentation.
+	(determineOffset): Added API documentation.
+	(prepareForEditing): Added API documentation.
+	(createContainer): Added API documentation.
+	(createTreeCellEditor): Added API documentation.
+
 2005-08-19  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* lib/.cvsignore: Add META-INF, Makefile.deps and lists.
