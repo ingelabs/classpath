@@ -468,6 +468,7 @@ gnu/classpath/Configuration.java
 include/Makefile
 native/Makefile
 native/fdlibm/Makefile
+native/jawt/Makefile
 native/jni/Makefile
 native/jni/classpath/Makefile
 native/jni/java-io/Makefile

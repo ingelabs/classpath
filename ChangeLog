@@ -1,3 +1,14 @@
+2005-08-19  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* configure.ac: Generate native/jawt/Makefile.
+	* include/jawt.h: Import from libgcj.
+	* include/jawt_md.h: Likewise.
+	* native/Makefile.am (JAWTDIR): New variable.
+	* native/jawt: New directory.
+	* native/jawt/.cvsignore: New file.
+	* native/jawt/Makefile.am: Likewise.
+	* native/jawt/jawt.c: Import from libgcj.
+
 2005-08-19  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/tree/DefaultTreeModel.java
