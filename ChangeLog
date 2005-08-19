@@ -1,5 +1,9 @@
 2005-08-19  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* lib/.cvsignore: Add META-INF, Makefile.deps and lists.
+
+2005-08-19  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* configure.ac: Generate native/jawt/Makefile.
 	* include/jawt.h: Import from libgcj.
 	* include/jawt_md.h: Likewise.

@@ -28,3 +28,6 @@ gen_nio.sh
 classes.1
 resources
 org
+META-INF
+Makefile.deps
+lists
