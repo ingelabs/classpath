@@ -1,5 +1,10 @@
 2005-08-19  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/tree/DefaultTreeCellEditor.java: Removed erroneous
+	import.
+
+2005-08-19  Tom Tromey  <tromey@redhat.com>
+
 	* javax/swing/text/AbstractWriter.java: New file.
 	* javax/swing/text/ElementIterator.java: New file.
 
