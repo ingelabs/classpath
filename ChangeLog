@@ -1,3 +1,45 @@
+2005-08-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/GLightweightPeer.java,
+	gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	gnu/java/awt/peer/gtk/GtkContainerPeer.java,
+	gnu/java/awt/peer/gtk/GtkFramePeer.java,
+	gnu/java/awt/peer/gtk/GtkMenuComponentPeer.java,
+	gnu/java/awt/peer/gtk/GtkTextAreaPeer.java,
+	gnu/java/awt/peer/gtk/GtkTextFieldPeer.java,
+	gnu/java/awt/peer/gtk/GtkToolkit.java,
+	gnu/java/awt/peer/gtk/GtkWindowPeer.java,
+	gnu/java/awt/peer/qt/QtComponentPeer.java,
+	gnu/java/awt/peer/qt/QtContainerPeer.java,
+	gnu/java/awt/peer/qt/QtFramePeer.java,
+	gnu/java/awt/peer/qt/QtMenuComponentPeer.java,
+	gnu/java/awt/peer/qt/QtScreenDeviceConfiguration.java,
+	gnu/java/awt/peer/qt/QtTextAreaPeer.java,
+	gnu/java/awt/peer/qt/QtTextFieldPeer.java,
+	gnu/java/awt/peer/qt/QtWindowPeer.java,
+	java/awt/peer/ComponentPeer.java,
+	java/awt/peer/ContainerPeer.java, java/awt/peer/FramePeer.java,
+	java/awt/peer/MenuComponentPeer.java,
+	java/awt/peer/TextComponentPeer.java,
+	java/awt/peer/WindowPeer.java: Add new 1.5 methods.
+	* java/awt/Window.java (Window()): Initialize
+	graphicsConfiguration.
+	* java/awt/GraphicsConfiguration.java
+	(createCompatibleVolatileImage(int,int,int)): New method.
+	* java/awt/Font.java (Font(String,Map)): Add FIXME.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java
+	(getLocalGraphicsEnvironment): Call new constructor.
+	* gnu/java/awt/peer/gtk/GdkScreenGraphicsDevice.java (getToolkit):
+	Remove method.
+	* gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java
+	(GdkGraphicsEnvironment(GtkToolkit)): Remove method.
+	(GdkGraphicsEnvironment()): New constructor.
+	(getToolkit): Remove method.
+	* gnu/java/awt/peer/gtk/GdkGraphicsConfiguration.java
+	(getToolkit): Remove method.
+	(createCompatibleVolatileImage): New method.
+	* gnu/java/awt/ClasspathToolkit.java (getFont): Add FIXME.
+
 2005-08-18  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/DefaultCellEditor.java

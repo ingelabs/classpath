@@ -129,6 +129,7 @@ public abstract class ClasspathToolkit
    */
   public Font getFont (String name, Map attrs) 
   {
+    // FIXME: use reflection to get at this non-standard constructor.
     return new Font (name, attrs);
   }
 

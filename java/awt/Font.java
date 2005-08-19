@@ -355,6 +355,8 @@ private static final long serialVersionUID = -4206021311591459213L;
 
   /* This extra constructor is here to permit ClasspathToolkit and to build
      a font with a "logical name" as well as attrs.  */
+  // FIXME: make this package-private and use reflection in
+  // ClasspathToolkit to get at it.
   public Font (String name, Map attrs)
   {
     // If attrs is null, setting it to an empty HashMap will give this
