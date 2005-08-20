@@ -1,4 +1,4 @@
-/* InvalidThreadGroupException.java -- an invalid thread group exception
+/* InvalidFieldException.java -- an invalid field id exception
    Copyright (C) 2005 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -42,22 +42,22 @@ package gnu.classpath.jdwp.exception;
 import gnu.classpath.jdwp.JdwpConstants;
 
 /**
- * An exception thrown when an invalid thread group is used
- * by the debugger
+ * An exception thrown when an invalid field id is used by the
+ * debugger
  *
  * @author Keith Seitz  (keiths@redhat.com)
  */
-public class InvalidThreadGroupException
+public class InvalidFieldException
   extends JdwpException
 {
-  public InvalidThreadGroupException (long id)
+  public InvalidFieldException (long id)
   {
-    super (JdwpConstants.Error.INVALID_THREAD_GROUP,
-	   "invalid thread group id (" + id + ")");
+    super (JdwpConstants.Error.INVALID_FIELDID,
+	   "invalid field id (" + id + ")");
   }
 
-  public InvalidThreadGroupException (Throwable t)
+  public InvalidFieldException (Throwable t)
   {
-    super (JdwpConstants.Error.INVALID_THREAD_GROUP, t);
+    super (JdwpConstants.Error.INVALID_FIELDID, t);
   }
 }

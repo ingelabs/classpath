@@ -1,3 +1,19 @@
+2005-08-20  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/exception/InvalidThreadGroupException.java
+	(InvalidThreadGroupException): Fix misleading string error message.
+	(InvalidThreadGroupException): Fix typo -- should be
+	JdwpConstants.Error.INVALID_THREAD_GROUP.
+
+	* gnu/classpath/jdwp/exception/InvalidClassLoaderException.java: New
+	exception.
+	* gnu/classpath/jdwp/exception/InvalidFieldException.java: New
+	exception.
+	* gnu/classpath/jdwp/exception/InvalidLocationException.java: New
+	exception.
+	* gnu/classpath/jdwp/exception/InvalidMethodException.java: New
+	exception.
+
 2005-08-19  Audrius Meskauskas <AudriusA@Bioinformatics.org>
 
         * NEWS: Added note about DynamicAny package.
@@ -169,7 +185,7 @@
 	with example implementation of ID-management for JDWP back-end.
 	* gnu/classpath/jdwp/id/JdwpIdFactory.java: Removed. Now part of
 	VMIdManager.
-  
+
 2005-08-18  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java

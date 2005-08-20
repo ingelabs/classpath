@@ -1,4 +1,4 @@
-/* InvalidThreadGroupException.java -- an invalid thread group exception
+/* InvalidClassLoaderException.java -- an invalid class loader exception
    Copyright (C) 2005 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -42,22 +42,21 @@ package gnu.classpath.jdwp.exception;
 import gnu.classpath.jdwp.JdwpConstants;
 
 /**
- * An exception thrown when an invalid thread group is used
- * by the debugger
+ * An exception thrown when the debugger uses an invalid class loader
  *
  * @author Keith Seitz  (keiths@redhat.com)
  */
-public class InvalidThreadGroupException
+public class InvalidClassLoaderException
   extends JdwpException
 {
-  public InvalidThreadGroupException (long id)
+  public InvalidClassLoaderException (long id)
   {
-    super (JdwpConstants.Error.INVALID_THREAD_GROUP,
-	   "invalid thread group id (" + id + ")");
+    super (JdwpConstants.Error.INVALID_CLASS_LOADER,
+	   "invalid class loader (" + id + ")");
   }
 
-  public InvalidThreadGroupException (Throwable t)
+  public InvalidClassLoaderException (Throwable t)
   {
-    super (JdwpConstants.Error.INVALID_THREAD_GROUP, t);
+    super (JdwpConstants.Error.INVALID_CLASS_LOADER, t);
   }
 }

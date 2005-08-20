@@ -1,4 +1,4 @@
-/* InvalidThreadGroupException.java -- an invalid thread group exception
+/* InvalidLocationException.java -- an invalid location exception
    Copyright (C) 2005 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -42,22 +42,21 @@ package gnu.classpath.jdwp.exception;
 import gnu.classpath.jdwp.JdwpConstants;
 
 /**
- * An exception thrown when an invalid thread group is used
- * by the debugger
+ * An exception thrown when the debugger specifies an invalid location
  *
  * @author Keith Seitz  (keiths@redhat.com)
  */
-public class InvalidThreadGroupException
+public class InvalidLocationException
   extends JdwpException
 {
-  public InvalidThreadGroupException (long id)
+  public InvalidLocationException (/*something*/)
   {
-    super (JdwpConstants.Error.INVALID_THREAD_GROUP,
-	   "invalid thread group id (" + id + ")");
+    super (JdwpConstants.Error.INVALID_LOCATION,
+	   "invalid location (" + "something" + ")");
   }
 
-  public InvalidThreadGroupException (Throwable t)
+  public InvalidLocationException (Throwable t)
   {
-    super (JdwpConstants.Error.INVALID_THREAD_GROUP, t);
+    super (JdwpConstants.Error.INVALID_LOCATION, t);
   }
 }

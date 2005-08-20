@@ -1,4 +1,4 @@
-/* InvalidThreadGroupException.java -- an invalid thread group exception
+/* InvalidMethodException.java -- an invalid method id exception
    Copyright (C) 2005 Free Software Foundation
 
 This file is part of GNU Classpath.
@@ -42,22 +42,22 @@ package gnu.classpath.jdwp.exception;
 import gnu.classpath.jdwp.JdwpConstants;
 
 /**
- * An exception thrown when an invalid thread group is used
+ * An exception thrown when an invalid method id is used
  * by the debugger
  *
  * @author Keith Seitz  (keiths@redhat.com)
  */
-public class InvalidThreadGroupException
+public class InvalidMethodException
   extends JdwpException
 {
-  public InvalidThreadGroupException (long id)
+  public InvalidMethodException (long id)
   {
-    super (JdwpConstants.Error.INVALID_THREAD_GROUP,
-	   "invalid thread group id (" + id + ")");
+    super (JdwpConstants.Error.INVALID_METHODID,
+	   "invalid method id (" + id + ")");
   }
 
-  public InvalidThreadGroupException (Throwable t)
+  public InvalidMethodException (Throwable t)
   {
-    super (JdwpConstants.Error.INVALID_THREAD_GROUP, t);
+    super (JdwpConstants.Error.INVALID_METHODID, t);
   }
 }
