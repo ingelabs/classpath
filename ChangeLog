@@ -1,3 +1,8 @@
+2005-08-19  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/qt-peer/Makefile.am (libqtpeer_la_SOURCES):
+	Added eventmethods.h.
+
 2005-08-19  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/tree/DefaultTreeCellEditor.java: Removed erroneous

@@ -31,6 +31,7 @@ libqtpeer_la_SOURCES = \
         componentevent.cpp \
         componentevent.h \
         containers.h \
+        eventmethods.h \
         keybindings.cpp \
         keybindings.h \
         mainqtthread.cpp \
