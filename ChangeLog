@@ -1,3 +1,7 @@
+2005-08-19  Audrius Meskauskas <AudriusA@Bioinformatics.org>
+
+        * NEWS: Added note about DynamicAny package.
+
 2005-08-19  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/qt-peer/Makefile.am (libqtpeer_la_SOURCES):
