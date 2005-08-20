@@ -1,5 +1,25 @@
 2005-08-20  Keith Seitz  <keiths@redhat.com>
 
+	* gnu/classpath/jdwp/id/ClassLoaderId.java (getClassLoader): New method.
+	* gnu/classpath/jdwp/id/ClassObjectId.java (getClassObject): New method.
+	* gnu/classpath/jdwp/id/JdwpId.java 
+	(getReference): New method.
+	(setReference): New method.
+	* gnu/classpath/jdwp/id/ObjectId.java (getObject): New method.
+	* gnu/classpath/jdwp/id/ReferenceTypeId.java (getType): New method.
+	* gnu/classpath/jdwp/id/StringId.java (getString): New method.
+	* gnu/classpath/jdwp/id/ThreadGroupId.java (getThreadGroup): New method.
+	* gnu/classpath/jdwp/id/ThreadId.java (getThread): New method.
+
+	* gnu/classpath/jdwp/id/ObjectId.java (setId): New method.
+	(disableCollection): New method.
+	(enableCollection): New method.
+
+	* gnu/classpath/jdwp/id/JdwpId.java (equals): Remove test for class equality.
+	(setId): Make public.
+
+2005-08-20  Keith Seitz  <keiths@redhat.com>
+
 	* gnu/classpath/jdwp/exception/InvalidThreadGroupException.java
 	(InvalidThreadGroupException): Fix misleading string error message.
 	(InvalidThreadGroupException): Fix typo -- should be
