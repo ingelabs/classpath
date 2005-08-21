@@ -1,3 +1,7 @@
+2005-08-21  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/text/AbstractWriter.java (NEWLINE): Now 'final'.
+
 2005-08-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/Label.java (setText): Refine text inequality test.

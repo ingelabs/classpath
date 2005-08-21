@@ -53,7 +53,7 @@ public abstract class AbstractWriter
    * The default line separator character.
    * @specnote although this is a constant, it is not static in the JDK
    */
-  protected static char NEWLINE = '\n';
+  protected static final char NEWLINE = '\n';
 
   // Where we write.
   private Writer writer;
