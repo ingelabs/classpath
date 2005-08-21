@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-JNIEXPORT jlong JNICALL Java_gnu_java_awt_peer_qt_MainQtThread_init (JNIEnv *env, jobject, jstring);
+JNIEXPORT jlong JNICALL Java_gnu_java_awt_peer_qt_MainQtThread_init (JNIEnv *env, jobject, jstring, jboolean);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_MainQtThread_exec (JNIEnv *env, jobject, jlong);
 
 #ifdef __cplusplus
