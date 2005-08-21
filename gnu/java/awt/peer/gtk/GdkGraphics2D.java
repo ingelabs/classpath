@@ -867,6 +867,8 @@ public class GdkGraphics2D extends Graphics2D
 	    cairoSetDash(double_dashes, double_dashes.length,
 	                 (double) bs.getDashPhase());
 	  }
+	else
+	  cairoSetDash(new double[0], 0, 0.0);
       }
   }
 
@@ -889,6 +891,8 @@ public class GdkGraphics2D extends Graphics2D
 	    cairoSetDashUnlocked(double_dashes, double_dashes.length,
                                  (double) bs.getDashPhase());
 	  }
+	else
+	  cairoSetDashUnlocked(new double[0], 0, 0.0);
       }
   }
 
