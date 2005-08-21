@@ -1,5 +1,9 @@
 2005-08-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* java/awt/Label.java (setText): Refine text inequality test.
+
+2005-08-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GdkGraphics.java (setClip(Shape)): Clear
 	clip when clip == null.
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (setClip(Shape)):
