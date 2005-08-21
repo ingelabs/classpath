@@ -1,5 +1,10 @@
 2005-08-20  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java (findFormatName):
+	Just return null when ext == null.
+
+2005-08-20  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* java/awt/AWTKeyStroke.java (getAWTKeyStroke): Include old-style
 	modifiers in returned AWTKeyStroke's modifier mask.
 
