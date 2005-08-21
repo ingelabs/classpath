@@ -1,3 +1,9 @@
+2005-08-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(window_get_frame_extents): If window is not decorated, guess 0,
+	0, 0, 0 inset values.
+
 2005-08-21  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/text/AbstractWriter.java (NEWLINE): Now 'final'.
