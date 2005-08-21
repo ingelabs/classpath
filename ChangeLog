@@ -1,5 +1,10 @@
 2005-08-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkSelection.java: Update for new FSF
+	address.
+
+2005-08-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* javax/swing/plaf/basic/BasicSplitPaneUI.java
 	(KEYBOARD_DIVIDER_MOVE_OFFSET): Initialize with 3.
 
