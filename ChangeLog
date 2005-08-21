@@ -1,5 +1,10 @@
 2005-08-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(KEYBOARD_DIVIDER_MOVE_OFFSET): Initialize with 3.
+
+2005-08-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* javax/swing/ImageIcon.java (getIconHeight): Return -1 if image
 	is null.
 	(getIconWidth): Likewise.
