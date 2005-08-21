@@ -1,3 +1,10 @@
+2005-08-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics.java (setClip(Shape)): Clear
+	clip when clip == null.
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (setClip(Shape)):
+	Likewise.
+
 2005-08-20  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/Label.java (setText): Invalidate label.
