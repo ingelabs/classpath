@@ -1,5 +1,14 @@
 2005-08-20  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* java/awt/image/AreaAveragingScaleFilter.java: Add checks for
+	consumer != null.
+	* java/awt/image/CropImageFilter.java: Likewise.
+	* java/awt/image/ImageFilter.java: Likewise.
+	* java/awt/image/RGBImageFilter.java: Likewise.
+	* java/awt/image/ReplicateScaleFilter.java: Likewise.
+
+2005-08-20  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java (findFormatName):
 	Just return null when ext == null.
 
