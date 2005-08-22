@@ -1,5 +1,9 @@
 2005-08-22  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/SwingUtilities.java: fixed some minor API doc problems.
+	
+2005-08-22  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* NEWS: added item regarding javax.swing.plaf.multi.* package 
 	implementation.
 	
