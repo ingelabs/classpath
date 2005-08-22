@@ -1,3 +1,7 @@
+2005-08-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/event/SwingPropertyChangeSupport.java: reformatted.
+	
 2005-08-22  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/ImageIcon.java: Add documentation.
