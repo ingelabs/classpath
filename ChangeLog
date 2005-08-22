@@ -1,3 +1,19 @@
+2005-08-22  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gtkpeer.h (cp_gtk_clipboard,
+	cp_gtk_stringTarget, cp_gtk_imageTarget, cp_gtk_filesTarget): New
+	extern variables.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkSelection.c: New file.
+	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_SOURCES): Add
+	gnu_java_awt_peer_gtk_GtkSelection.c.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c: Renames
+	clipboard to cp_gtk_clipboard, stringTarget to cp_gtk_stringTarget,
+	imageTarget to cp_gtk_imageTarget, filesTarget to cp_gtk_filesTarget,
+	cp_gtk_clipboard_owner_change_cb to clipboard_owner_change_cb,
+	cp_gtk_clipboard_get_func to clipboard_get_func,
+	cp_gtk_clipboard_clear_func to clipboard_clear_func, moved
+	GtkSelection native methods to new file.
+
 2005-08-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkSelection.java: Update for new FSF
