@@ -1,5 +1,10 @@
 2005-08-22  Tom Tromey  <tromey@redhat.com>
 
+	* java/net/JarURLConnection.java (getJarEntry): Return null if no
+	entry specified.
+
+2005-08-22  Tom Tromey  <tromey@redhat.com>
+
 	* lib/split-for-gcj.sh: Create Makefile.deps atomically.
 	* lib/gen-classlist.sh.in: Don't run split-for-gcj.sh.
 	* lib/Makefile.gcj (Makefile.deps): New target.
