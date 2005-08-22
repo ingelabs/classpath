@@ -1,3 +1,11 @@
+2005-08-22  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	Added in default border for Tree.
+	* javax/swing/tree/DefaultTreeCellRenderer.java:
+	Formatting entire class.
+	(getPreferredSize): Implemented.
+
 2005-08-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/event/SwingPropertyChangeSupport.java: reformatted.
