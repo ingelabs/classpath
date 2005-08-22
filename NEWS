@@ -25,6 +25,8 @@
 
   The POA is verified using tests from the former cost.omg.org.      
 
+* javax.swing.plaf.multi.* package is now implemented.
+
 New in release 0.17 (Jul 15, 2005)
 
 * gnu.xml fix for nodes created outside a namespace context.
