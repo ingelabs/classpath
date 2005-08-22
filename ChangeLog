@@ -1,5 +1,18 @@
 2005-08-22  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/text/AbstractDocument.java: fixed minor API doc problems,
+	* javax/swing/text/Caret.java: likewise,
+	* javax/swing/text/CompositeView.java: likewise,
+	* javax/swing/text/DefaultCaret.java: likewise,
+	* javax/swing/text/DefaultEditorKit.java: likewise,
+	* javax/swing/text/DefaultStyledDocument.java: likewise,
+	* javax/swing/text/ElementIterator.java: likewise,
+	* javax/swing/text/GlyphView.java: likewise,
+	* javax/swing/text/IconView.java: likewise,
+	* javax/swing/text/View.java: likewise.
+
+2005-08-22  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/SwingUtilities.java: fixed some minor API doc problems.
 	
 2005-08-22  David Gilbert  <david.gilbert@object-refinery.com>
