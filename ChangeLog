@@ -1,5 +1,9 @@
 2005-08-22  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/text/LayoutQueue.java: New file.
+
+2005-08-22  Tom Tromey  <tromey@redhat.com>
+
 	PR libgcj/23499:
 	* doc/api/Makefile.am (install-data-local): Now conditional on
 	CREATE_API_DOCS.
