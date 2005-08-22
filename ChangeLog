@@ -1,3 +1,10 @@
+2005-08-22  Tom Tromey  <tromey@redhat.com>
+
+	PR libgcj/23499:
+	* doc/api/Makefile.am (install-data-local): Now conditional on
+	CREATE_API_DOCS.
+	(uninstall-local): Likewise.
+
 2005-08-22  Kelley Cook  <kcook@gcc.gnu.org>
 
 	* Makefile.am (ACLOCAL_AMFLAGS): New.

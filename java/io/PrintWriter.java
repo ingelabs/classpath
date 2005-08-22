@@ -1,5 +1,5 @@
 /* PrintWriter.java -- prints primitive values and objects to a stream as text
-   Copyright (C) 1998, 1999, 2000, 2001  Free Software Foundation
+   Copyright (C) 1998, 1999, 2000, 2001, 2005  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -70,6 +70,11 @@ public class PrintWriter extends Writer
    * on this stream.
    */
   private boolean error;
+
+  /**
+   * Set to true if close() has been called on this PrintWriter.
+   */
+  private boolean closed;
 
   /**
    * This is the underlying <code>Writer</code> we are sending output
@@ -148,17 +153,19 @@ public class PrintWriter extends Writer
   }
 
   /**
-   * This method checks to see if an error has occurred on this stream.  Note
-   * that once an error has occurred, this method will continue to report
-   * <code>true</code> forever for this stream.  Before checking for an
-   * error condition, this method flushes the stream.
+   * This method checks to see if an error has occurred on this
+   * stream.  Note that once an error has occurred, this method will
+   * continue to report <code>true</code> forever for this stream.  If
+   * the stream has not been closed, then before checking for an error
+   * condition, this method flushes the stream.
    *
    * @return <code>true</code> if an error has occurred, 
    * <code>false</code> otherwise
    */
   public boolean checkError()
   {
-    flush();
+    if (! closed)
+      flush();
     return error;
   }
 
@@ -191,6 +198,7 @@ public class PrintWriter extends Writer
       {
 	error = true;
       }
+    closed = true;
   }
 
   /**
