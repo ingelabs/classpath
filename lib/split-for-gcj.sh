@@ -26,7 +26,7 @@
 # given file.
 
 echo "Splitting for gcj"
-rm -f Makefile.deps > /dev/null 2>&1
+rm -f Makefile.dtmp > /dev/null 2>&1
 test -d lists || mkdir lists
 for dir in java javax gnu org; do
    fgrep /$dir/ classes | while read file; do
@@ -35,8 +35,8 @@ for dir in java javax gnu org; do
       echo "$file" >> ${list}.list.1
       f2=`echo "$file" | sed -n -e "s,^.*/\($dir/.*\)$,\1,p"`
       f2=`echo "$f2" | sed -e 's/.java$//'`.class
-      echo "$f2: ${list}.stamp" >> Makefile.deps
-      echo "${list}.list: $file" >> Makefile.deps
+      echo "$f2: ${list}.stamp" >> Makefile.dtmp
+      echo "${list}.list: $file" >> Makefile.dtmp
    done
 done
 
@@ -49,3 +49,6 @@ for file in lists/*.list.1; do
       mv $file $real
    fi
 done
+
+# If we were run we must update Makefile.deps.
+mv Makefile.dtmp Makefile.deps

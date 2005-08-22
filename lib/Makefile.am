@@ -125,7 +125,9 @@ if FOUND_GCJ
 ## builds.
 compile-classes: classes $(JAVA_SRCS) Makefile
 	$(MAKE) -f $(srcdir)/Makefile.gcj \
-	  GCJ='$(GCJ)' compile_classpath='$(top_builddir):$(compile_classpath)'
+	  GCJ='$(GCJ)' \
+	  compile_classpath='$(top_builddir):$(compile_classpath)' \
+	  top_srcdir=$(top_srcdir)
 else
 compile-classes: classes $(JAVA_SRCS) Makefile
 	$(JAVAC)

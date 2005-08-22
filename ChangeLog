@@ -1,3 +1,11 @@
+2005-08-22  Tom Tromey  <tromey@redhat.com>
+
+	* lib/split-for-gcj.sh: Create Makefile.deps atomically.
+	* lib/gen-classlist.sh.in: Don't run split-for-gcj.sh.
+	* lib/Makefile.gcj (Makefile.deps): New target.
+	* lib/Makefile.am (compile-classes): Pass top_srcdir to
+	Makefile.gcj.
+
 2005-08-22  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/plaf/basic/BasicLookAndFeel.java:

@@ -85,10 +85,6 @@ if test "$new" = "true"; then
   for i in `cat ${top_builddir}/lib/classes` ; do
     echo $i "\\" >> ${top_builddir}/lib/java.dep
   done
-
-  if test -n "$GCJ"; then
-     @SHELL@ ${top_srcdir}/lib/split-for-gcj.sh
-  fi
 fi
 
 exit 0

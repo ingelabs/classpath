@@ -17,6 +17,11 @@ all_deps_files := $(all_list_files:.list=.deps)
 
 all: $(all_stamp_files)
 
+# Ensure this is rebuilt whenever the list of classes changes.
+# The list will always exist when this Makefile is used.
+Makefile.deps: classes
+	$(SHELL) $(top_srcdir)/lib/split-for-gcj.sh
+
 -include Makefile.deps $(all_deps_files)
 
 ## Like GCJ but include some common flags.
