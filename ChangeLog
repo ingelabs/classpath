@@ -1,5 +1,10 @@
 2005-08-22  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/UIManager.java: fixed error message typo in static
+	initialization code.
+	
+2005-08-22  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/text/AbstractDocument.java: fixed minor API doc problems,
 	* javax/swing/text/Caret.java: likewise,
 	* javax/swing/text/CompositeView.java: likewise,
