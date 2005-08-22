@@ -1,3 +1,7 @@
+2005-08-22  Kelley Cook  <kcook@gcc.gnu.org>
+
+	* Makefile.am (ACLOCAL_AMFLAGS): New.
+
 2005-08-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/UIManager.java: fixed error message typo in static
