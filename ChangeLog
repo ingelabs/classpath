@@ -1,3 +1,13 @@
+2005-08-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/event/SwingPropertyChangeSupport.java
+	(writeObject): removed empty method,
+	(readObject): likewise,
+	(getPropertyChangeListeners()): implemented,
+	(getPropertyChangeListeners(String)): likewise,
+	(hasListeners): return true if there are any general listeners,
+	added API docs all over.
+	
 2005-08-23  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/qt-peer/qttextfieldpeer.cpp
