@@ -538,6 +538,7 @@ public class DefaultTreeCellEditor
   {
     if (realEditor.stopCellEditing())
       {
+        timer.stop();
         realEditor = null;
         return true;
       }
@@ -550,6 +551,7 @@ public class DefaultTreeCellEditor
    */
   public void cancelCellEditing()
   {
+    timer.stop();
     realEditor.cancelCellEditing();
     realEditor = null;
   }

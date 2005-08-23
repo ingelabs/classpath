@@ -1,5 +1,23 @@
 2005-08-23  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(stopEditing): Implemented.
+	(cancelEditing): Implemented.
+	(startEditingAtPath): Implemented.
+	(getEditingPath): Implemented.
+	(createDefaultCellEditor): Implemented.
+	(updateCellEditor): Implemented.
+	(completeEditing): Implemented.
+	(completeEditing): Implemented.
+	(startEditing): Implemented.
+	(editingStopped): Implemented.
+	(editingCanceled): Implemented.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(stopCellEditing): Stopped the timer.
+	(cancelCellEditing): Likewise.
+	
+2005-08-23  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/DefaultCellEditor.java
 	(getTreeCellEditorComponent): Implemented cases for JCheckBox
 	and JComboBox.
