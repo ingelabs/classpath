@@ -1,5 +1,40 @@
 2005-08-23  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/UIManager.java: 
+	(look_and_feel): renamed currentLookAndFeel,
+	(currentUIDefaults): new field,
+	(get(Object)): access cached UIDefaults,
+	(get(Object, Locale)): likewise,
+	(getBoolean(Object)): likewise,
+	(getBoolean(Object, Locale)): likewise,
+	(getBorder(Object)): likewise,
+	(getBorder(Object, Locale)): likewise,
+	(getColor(Object)): likewise,
+	(getColor(Object, Locale)): likewise,
+        (getDefaults): return reference to UIDefaults from current look and 
+	feel rather than recreating them every time,
+	(getDimension(Object)): access local defaults,
+	(getDimension(Object, Locale)): likewise,
+	(getFont(Object)): likewise,
+	(getFont(Object, Locale)): likewise,
+	(getIcon(Object)): likewise,
+	(getIcon(Object, Locale)): likewise,
+	(getInsets(Object)): likewise,
+	(getInsets(Object, Locale)): likewise,
+	(getInt(Object)): likewise,
+	(getInt(Object, Locale)): likewise,
+        (getLookAndFeel): renamed attribute,
+	(getLookAndFeelDefaults): return reference to UIDefaults from current
+	look and feel rather than recreating them every time,
+	(getString(Object)): access local defaults,
+	(getString(Object, Locale)): likewise,
+	(getUI(JComponent)): likewise,
+	(installLookAndFeel(String, String)): implemented by delegation,
+	(put(Object, Object)): update local defaults,
+	(setLookAndFeel): create and retain reference to UIDefaults.
+
+2005-08-23  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/UIManager.java:
 	(addPropertyChangeListener): implemented,
 	(removePropertyChangeListener): likewise,
