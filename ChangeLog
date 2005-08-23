@@ -1,5 +1,14 @@
 2005-08-23  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/UIManager.java:  
+	(addAuxiliaryLookAndFeel): renamed field, added check for null 
+	argument,
+	(removeAuxiliaryLookAndFeel): reimplemented,
+	(getAuxiliaryLookAndFeels): renamed field,
+	(installLookAndFeel): implemented by delegation.
+
+2005-08-23  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/UIManager.java: added API docs all over.
 	
 2005-08-23  David Gilbert  <david.gilbert@object-refinery.com>

@@ -125,7 +125,7 @@ public class UIManager implements Serializable
   };
 
   /** The installed auxiliary look and feels. */
-  static LookAndFeel[] aux_installed;
+  static LookAndFeel[] auxLookAndFeels;
   
   /** The current look and feel. */
   static LookAndFeel currentLookAndFeel;
@@ -210,19 +210,21 @@ public class UIManager implements Serializable
    * 
    * @see #getAuxiliaryLookAndFeels()
    */
-  public static void addAuxiliaryLookAndFeel (LookAndFeel l)
+  public static void addAuxiliaryLookAndFeel(LookAndFeel laf)
   {
-    if (aux_installed == null)
+    if (laf == null)
+      throw new NullPointerException("Null 'laf' argument.");
+    if (auxLookAndFeels == null)
       {
-        aux_installed = new LookAndFeel[1];
-        aux_installed[0] = l;
+        auxLookAndFeels = new LookAndFeel[1];
+        auxLookAndFeels[0] = laf;
         return;
       }
 	
-    LookAndFeel[] T = new LookAndFeel[ aux_installed.length+1 ];
-    System.arraycopy(aux_installed, 0, T, 0, aux_installed.length);			 
-    aux_installed = T;
-    aux_installed[aux_installed.length-1] = l;
+    LookAndFeel[] temp = new LookAndFeel[auxLookAndFeels.length + 1];
+    System.arraycopy(auxLookAndFeels, 0, temp, 0, auxLookAndFeels.length);			 
+    auxLookAndFeels = temp;
+    auxLookAndFeels[auxLookAndFeels.length - 1] = laf;
   }
     
   /**
@@ -235,17 +237,34 @@ public class UIManager implements Serializable
    */
   public static boolean removeAuxiliaryLookAndFeel(LookAndFeel laf)
   {
-    if (aux_installed == null)
+    if (auxLookAndFeels == null)
       return false;
-
-    for (int i=0;i<aux_installed.length;i++)
+    int count = auxLookAndFeels.length;
+    if (count == 1 && auxLookAndFeels[0] == laf)
       {
-        if (aux_installed[i] == laf)
+        auxLookAndFeels = null;
+        return true;
+      }
+    for (int i = 0; i < count; i++)
+      {
+        if (auxLookAndFeels[i] == laf)
           {
-            aux_installed[ i ] = aux_installed[aux_installed.length-1];
-            LookAndFeel[] T = new LookAndFeel[ aux_installed.length-1 ];
-            System.arraycopy (aux_installed, 0, T, 0, aux_installed.length-1);
-            aux_installed = T;
+            LookAndFeel[] temp = new LookAndFeel[auxLookAndFeels.length - 1];
+            if (i == 0)
+              {
+                System.arraycopy(auxLookAndFeels, 1, temp, 0, count - 1);  
+              }
+            else if (i == count - 1)
+              {
+                System.arraycopy(auxLookAndFeels, 0, temp, 0, count - 1);
+              }
+            else 
+              {
+                System.arraycopy(auxLookAndFeels, 0, temp, 0, i);
+                System.arraycopy(auxLookAndFeels, i + 1, temp, i, 
+                        count - i - 1);
+              }
+            auxLookAndFeels = temp;
             return true;
           }		
       }
@@ -261,9 +280,9 @@ public class UIManager implements Serializable
    * 
    * @see #addAuxiliaryLookAndFeel(LookAndFeel)
    */
-  public static  LookAndFeel[] getAuxiliaryLookAndFeels()
+  public static LookAndFeel[] getAuxiliaryLookAndFeels()
   {
-    return aux_installed;
+    return auxLookAndFeels;
   }
 
   /**
@@ -545,6 +564,7 @@ public class UIManager implements Serializable
    */
   public static void installLookAndFeel(String name, String className)
   {
+    installLookAndFeel(new LookAndFeelInfo(name, className));
   }
 
   /**
