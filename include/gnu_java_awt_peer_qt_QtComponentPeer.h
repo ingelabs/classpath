@@ -18,15 +18,18 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_setCursor (JNIE
 JNIEXPORT jobject JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_getNativeBackground (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_setFontNative (JNIEnv *env, jobject, jobject);
 JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_whichScreen (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_reparentNative (JNIEnv *env, jobject, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_getLocationOnScreenNative (JNIEnv *env, jobject, jobject);
 JNIEXPORT jobject JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_getMinimumSizeNative (JNIEnv *env, jobject);
 JNIEXPORT jobject JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_getPreferredSizeNative (JNIEnv *env, jobject);
-JNIEXPORT jobject JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_getLocationOnScreen (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_getSizeNative (JNIEnv *env, jobject, jobject, jboolean);
 JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_handlesWheelScrolling (JNIEnv *env, jobject);
 JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_isFocusable (JNIEnv *env, jobject);
 JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_isObscured (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_requestFocus (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_setEnabled (JNIEnv *env, jobject, jboolean);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_setVisible (JNIEnv *env, jobject, jboolean);
+JNIEXPORT jobject JNICALL Java_gnu_java_awt_peer_qt_QtComponentPeer_getBounds (JNIEnv *env, jobject);
 #undef gnu_java_awt_peer_qt_QtComponentPeer_POPUP_TRIGGER
 #define gnu_java_awt_peer_qt_QtComponentPeer_POPUP_TRIGGER 3L
 

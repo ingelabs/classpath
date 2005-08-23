@@ -10,6 +10,7 @@ extern "C"
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtGraphics_delete (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtGraphics_initImage (JNIEnv *env, jobject, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtGraphics_initVolatileImage (JNIEnv *env, jobject, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtGraphics_cloneNativeContext (JNIEnv *env, jobject, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtGraphics_setColor (JNIEnv *env, jobject, jint, jint, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtGraphics_drawNative (JNIEnv *env, jobject, jobject);

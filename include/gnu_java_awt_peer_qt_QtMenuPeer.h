@@ -10,9 +10,9 @@ extern "C"
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_init (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_allowTearOff (JNIEnv *env, jobject);
-JNIEXPORT jlong JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_insertSeperator (JNIEnv *env, jobject);
-JNIEXPORT jlong JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_insertItem (JNIEnv *env, jobject, jobject);
-JNIEXPORT jlong JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_insertMenu (JNIEnv *env, jobject, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_insertSeperator (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_insertItem (JNIEnv *env, jobject, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_insertMenu (JNIEnv *env, jobject, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_delItem (JNIEnv *env, jobject, jlong);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_setEnabled (JNIEnv *env, jobject, jboolean);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_qt_QtMenuPeer_setLabel (JNIEnv *env, jobject, jstring);

@@ -56,7 +56,6 @@ public class QtDialogPeer extends QtWindowPeer implements DialogPeer
     super.setup();
     setTitle( ((Dialog)owner).getTitle() );
     setResizable( ((Dialog)owner).isResizable() );
-    System.out.println("New dialog, modal:"+((Dialog)owner).isModal() );
     setModal( ((Dialog)owner).isModal() );
   }
 

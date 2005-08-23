@@ -1,3 +1,47 @@
+2005-08-23  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/qt/QtAudioClip.java
+	* gnu/java/awt/peer/qt/QtComponentGraphics.java
+	* gnu/java/awt/peer/qt/QtComponentPeer.java
+	* gnu/java/awt/peer/qt/QtDialogPeer.java
+	* gnu/java/awt/peer/qt/QtFontPeer.java
+	* gnu/java/awt/peer/qt/QtFramePeer.java
+	* gnu/java/awt/peer/qt/QtGraphics.java
+	* gnu/java/awt/peer/qt/QtImage.java
+	* gnu/java/awt/peer/qt/QtImageGraphics.java
+	* gnu/java/awt/peer/qt/QtLabelPeer.java
+	* gnu/java/awt/peer/qt/QtMenuBarPeer.java
+	* gnu/java/awt/peer/qt/QtMenuComponentPeer.java
+	* gnu/java/awt/peer/qt/QtMenuPeer.java
+	* gnu/java/awt/peer/qt/QtPanelPeer.java
+	* gnu/java/awt/peer/qt/QtRepaintThread.java
+	* gnu/java/awt/peer/qt/QtToolkit.java
+	* gnu/java/awt/peer/qt/QtVolatileImage.java
+	* include/gnu_java_awt_peer_qt_QtComponentPeer.h
+	* include/gnu_java_awt_peer_qt_QtEmbeddedWindowPeer.h
+	* include/gnu_java_awt_peer_qt_QtGraphics.h
+	* include/gnu_java_awt_peer_qt_QtMenuPeer.h
+	* include/gnu_java_awt_peer_qt_QtVolatileImage.h
+	* native/jni/qt-peer/componentevent.cpp
+	* native/jni/qt-peer/componentevent.h
+	* native/jni/qt-peer/eventmethods.h
+	* native/jni/qt-peer/keybindings.cpp
+	* native/jni/qt-peer/keybindings.h
+	* native/jni/qt-peer/qtcomponentpeer.cpp
+	* native/jni/qt-peer/qtframepeer.cpp
+	* native/jni/qt-peer/qtgraphics.cpp
+	* native/jni/qt-peer/qtimage.h
+	* native/jni/qt-peer/qtlabelpeer.cpp
+	* native/jni/qt-peer/qtmenucomponentpeer.cpp
+	* native/jni/qt-peer/qtmenupeer.cpp
+	* native/jni/qt-peer/qtscrollpanepeer.cpp
+	* native/jni/qt-peer/qttextfieldpeer.cpp
+	* native/jni/qt-peer/qtvolatileimage.cpp
+	* native/jni/qt-peer/qtwindowpeer.cpp:
+	Reindented, minor fixes.
+	* gnu/java/awt/peer/qt/QtImageDirectGraphics.java
+	New file.
+	
 2005-08-22  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/JarURLConnection.java (getJarEntry): Return null if no
