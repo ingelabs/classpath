@@ -51,12 +51,27 @@ import javax.swing.event.SwingPropertyChangeSupport;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+/**
+ * Manages the current {@link LookAndFeel} and any auxiliary {@link LookAndFeel}
+ * instances.
+ */
 public class UIManager implements Serializable
 {
+  /**
+   * Represents the basic information about a {@link LookAndFeel} (LAF), so 
+   * that a list of installed LAFs can be presented without actually loading 
+   * the LAF class(es).
+   */
   public static class LookAndFeelInfo
   {
     String name, clazz;
 	
+    /**
+     * Creates a new instance.
+     * 
+     * @param name  the look and feel name.
+     * @param clazz  the look and feel class name.
+     */
     public LookAndFeelInfo(String name, 
 			   String clazz)
     {
@@ -64,11 +79,21 @@ public class UIManager implements Serializable
       this.clazz = clazz;
     }
 
+    /**
+     * Returns the name of the look and feel.
+     * 
+     * @return The name of the look and feel.
+     */
     public String getName()
     {
       return name;
     }
     
+    /**
+     * Returns the fully qualified class name for the {@link LookAndFeel}.
+     * 
+     * @return The fully qualified class name for the {@link LookAndFeel}.
+     */
     public String getClassName()
     {
       return clazz;
@@ -94,12 +119,15 @@ public class UIManager implements Serializable
 
   private static final long serialVersionUID = -5547433830339189365L;
 
+  /** The installed look and feel(s). */
   static LookAndFeelInfo [] installed = {
-    new LookAndFeelInfo ("Metal", "javax.swing.plaf.metal.MetalLookAndFeel")
+    new LookAndFeelInfo("Metal", "javax.swing.plaf.metal.MetalLookAndFeel")
   };
 
+  /** The installed auxiliary look and feels. */
   static LookAndFeel[] aux_installed;
   
+  /** The current look and feel. */
   static LookAndFeel currentLookAndFeel;
   
   static UIDefaults currentUIDefaults;
@@ -131,6 +159,10 @@ public class UIManager implements Serializable
 
   }
   
+  /**
+   * Creates a new instance of the <code>UIManager</code>.  There is no need
+   * to construct an instance of this class, since all methods are static.
+   */
   public UIManager()
   {
     // Do nothing here.
@@ -170,7 +202,13 @@ public class UIManager implements Serializable
   }
 
   /**
-   * Add a LookAndFeel to the list of auxiliary look and feels.
+   * Add a {@link LookAndFeel} to the list of auxiliary look and feels.
+   * 
+   * @param laf  the auxiliary look and feel (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if <code>laf</code> is <code>null</code>.
+   * 
+   * @see #getAuxiliaryLookAndFeels()
    */
   public static void addAuxiliaryLookAndFeel (LookAndFeel l)
   {
@@ -187,6 +225,14 @@ public class UIManager implements Serializable
     aux_installed[aux_installed.length-1] = l;
   }
     
+  /**
+   * Removes a {@link LookAndFeel} (LAF) from the list of auxiliary LAFs.
+   * 
+   * @param laf  the LAF to remove.
+   * 
+   * @return <code>true</code> if the LAF was removed, and <code>false</code>
+   *         otherwise.
+   */
   public static boolean removeAuxiliaryLookAndFeel(LookAndFeel laf)
   {
     if (aux_installed == null)
@@ -206,16 +252,41 @@ public class UIManager implements Serializable
     return false;
   }
 
+  /**
+   * Returns an array (possibly <code>null</code>) containing the auxiliary
+   * {@link LookAndFeel}s that are in use.  These are used by the 
+   * {@link javax.swing.plaf.multi.MultiLookAndFeel} class.
+   * 
+   * @return The auxiliary look and feels (possibly <code>null</code>).
+   * 
+   * @see #addAuxiliaryLookAndFeel(LookAndFeel)
+   */
   public static  LookAndFeel[] getAuxiliaryLookAndFeels()
   {
     return aux_installed;
   }
 
+  /**
+   * Returns an object from the {@link UIDefaults} table for the current
+   * {@link LookAndFeel}.
+   * 
+   * @param key  the key.
+   * 
+   * @return The object.
+   */
   public static Object get(Object key)
   {
     return getLookAndFeelDefaults().get(key);
   }
 
+  /**
+   * Returns an object from the {@link UIDefaults} table for the current
+   * {@link LookAndFeel}.
+   * 
+   * @param key  the key.
+   * 
+   * @return The object.
+   */
   public static Object get(Object key, Locale locale)
   {
     return getLookAndFeelDefaults().get(key ,locale);
@@ -280,7 +351,10 @@ public class UIManager implements Serializable
   }
 
   /**
-   * this string can be passed to Class.forName()
+   * The fully qualified class name of the cross platform (Metal) look and feel.
+   * This string can be passed to Class.forName()
+   * 
+   * @return <code>"javax.swing.plaf.metal.MetalLookAndFeel"</code>
    */
   public static String getCrossPlatformLookAndFeelClassName()
   {	
@@ -289,6 +363,8 @@ public class UIManager implements Serializable
 
   /**
    * Returns the default values for this look and feel. 
+   * 
+   * @return The {@link UIDefaults} for the current {@link LookAndFeel}.
    */
   public static UIDefaults getDefaults()
   {
@@ -369,6 +445,12 @@ public class UIManager implements Serializable
     return getLookAndFeelDefaults().getInsets(key, locale);
   }
 
+  /**
+   * Returns an array containing information about the {@link LookAndFeel}s
+   * that are installed.
+   * 
+   * @return A list of the look and feels that are available (installed).
+   */
   public static LookAndFeelInfo[] getInstalledLookAndFeels()
   {
     return installed;
@@ -390,6 +472,13 @@ public class UIManager implements Serializable
     return x.intValue();
   }
 
+  /**
+   * Returns the current look and feel (which may be <code>null</code>).
+   * 
+   * @return The current look and feel.
+   * 
+   * @see #setLookAndFeel(LookAndFeel)
+   */
   public static LookAndFeel getLookAndFeel()
   {
     return currentLookAndFeel;
@@ -398,6 +487,8 @@ public class UIManager implements Serializable
   /**
    * Returns the <code>UIDefaults</code> table of the currently active
    * look and feel.
+   * 
+   * @return The {@link UIDefaults} for the current {@link LookAndFeel}.
    */
   public static UIDefaults getLookAndFeelDefaults()
   {
@@ -421,9 +512,13 @@ public class UIManager implements Serializable
   }
   
   /**
-   * Returns the name of the LookAndFeel class that implements the
+   * Returns the name of the {@link LookAndFeel} class that implements the
    * native systems look and feel if there is one, otherwise the name
    * of the default cross platform LookAndFeel class.
+   * 
+   * @return The fully qualified class name for the system look and feel.
+   * 
+   * @see #getCrossPlatformLookAndFeelClassName()
    */
   public static String getSystemLookAndFeelClassName()
   {
@@ -431,7 +526,10 @@ public class UIManager implements Serializable
   }
 
   /**
-   * Returns the Look and Feel object that renders the target component.
+   * Returns UI delegate from the current {@link LookAndFeel} that renders the 
+   * target component.
+   * 
+   * @param target  the target component.
    */
   public static ComponentUI getUI(JComponent target)
   {
@@ -440,6 +538,10 @@ public class UIManager implements Serializable
 
   /**
    * Creates a new look and feel and adds it to the current array.
+   * 
+   * @param name  the look and feel name.
+   * @param className  the fully qualified name of the class that implements the
+   *                   look and feel.
    */
   public static void installLookAndFeel(String name, String className)
   {
@@ -451,6 +553,7 @@ public class UIManager implements Serializable
    */
   public static void installLookAndFeel(LookAndFeelInfo info)
   {
+    // FIXME: not yet implemented
   }
 
   /**
@@ -466,10 +569,18 @@ public class UIManager implements Serializable
    */
   public static void setInstalledLookAndFeels(UIManager.LookAndFeelInfo[] infos)
   {
+    // FIXME: not yet implemented.
   }
   
   /**
-   * Set the current default look.
+   * Sets the current {@link LookAndFeel}.
+   * 
+   * @param newLookAndFeel  the new look and feel (<code>null</code> permitted).
+   * 
+   * @throws UnsupportedLookAndFeelException if the look and feel is not 
+   *         supported on the current platform.
+   * 
+   * @see LookAndFeel#isSupportedLookAndFeel()
    */
   public static void setLookAndFeel(LookAndFeel newLookAndFeel)
     throws UnsupportedLookAndFeelException
@@ -499,8 +610,15 @@ public class UIManager implements Serializable
 
   /**
    * Set the current default look and feel using a class name.
+   * 
+   * @param className  the look and feel class name.
+   * 
+   * @throws UnsupportedLookAndFeelException if the look and feel is not 
+   *         supported on the current platform.
+   * 
+   * @see LookAndFeel#isSupportedLookAndFeel()
    */
-  public static void setLookAndFeel (String className)
+  public static void setLookAndFeel(String className)
     throws ClassNotFoundException, InstantiationException, IllegalAccessException,
     UnsupportedLookAndFeelException
   {
