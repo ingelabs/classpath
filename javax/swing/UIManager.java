@@ -47,6 +47,7 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import javax.swing.border.Border;
+import javax.swing.event.SwingPropertyChangeSupport;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
@@ -101,6 +102,10 @@ public class UIManager implements Serializable
   
   static LookAndFeel look_and_feel = new MetalLookAndFeel();
 
+  /** Property change listener mechanism. */
+  static SwingPropertyChangeSupport listeners 
+      = new SwingPropertyChangeSupport(UIManager.class);
+
   static
   {
     String defaultlaf = System.getProperty("swing.defaultlaf");
@@ -132,7 +137,7 @@ public class UIManager implements Serializable
    */
   public static void addPropertyChangeListener(PropertyChangeListener listener)
   {
-    // FIXME
+    listeners.addPropertyChangeListener(listener);
   }
 
   /**
@@ -140,9 +145,10 @@ public class UIManager implements Serializable
    *
    * @param listener the listener to remove
    */
-  public static void removePropertyChangeListener(PropertyChangeListener listener)
+  public static void removePropertyChangeListener(PropertyChangeListener 
+          listener)
   {
-    // FIXME
+    listeners.removePropertyChangeListener(listener);
   }
 
   /**
@@ -154,8 +160,7 @@ public class UIManager implements Serializable
    */
   public static PropertyChangeListener[] getPropertyChangeListeners()
   {
-    // FIXME
-    throw new Error ("Not implemented");
+    return listeners.getPropertyChangeListeners();
   }
 
   /**
@@ -463,16 +468,18 @@ public class UIManager implements Serializable
   public static void setLookAndFeel(LookAndFeel newLookAndFeel)
     throws UnsupportedLookAndFeelException
   {
-    if (! newLookAndFeel.isSupportedLookAndFeel())
+    if (newLookAndFeel != null && ! newLookAndFeel.isSupportedLookAndFeel())
       throw new UnsupportedLookAndFeelException(newLookAndFeel.getName());
     
-    if (look_and_feel != null)
-      look_and_feel.uninitialize();
+    LookAndFeel oldLookAndFeel = look_and_feel;
+    if (oldLookAndFeel != null)
+      oldLookAndFeel.uninitialize();
 
     // Set the current default look and feel using a LookAndFeel object. 
     look_and_feel = newLookAndFeel;
     look_and_feel.initialize();
 	
+    listeners.firePropertyChange("lookAndFeel", oldLookAndFeel, newLookAndFeel);
     //revalidate();
     //repaint();
   }
