@@ -1,3 +1,50 @@
+2005-08-23  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/qt-peer/qttextfieldpeer.cpp
+	(Java_gnu_java_awt_peer_qt_QtTextFieldPeer_getCaretPosition): Renamed
+	from Java_gnu_java_awt_peer_qt_QtTextFieldPeer_getCaretPositionNative.
+
+	* gnu/java/awt/peer/qt/QtComponentPeer.java (getMinimumSizeNative):
+	Removed unused native method.
+	(getPreferredSizeNative): Likewise.
+
+	* include/gnu_java_awt_peer_qt_QMatrix.h: Regenerated.
+	* include/gnu_java_awt_peer_qt_QPainterPath.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QPen.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtAudioClip.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtButtonPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtCanvasPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtCheckboxPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtChoicePeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtComponentPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtContainerPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtDialogPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtEmbeddedWindowPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtFileDialogPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtFontMetrics.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtFontPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtFramePeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtGraphics.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtGraphicsEnvironment.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtImage.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtLabelPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtListPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtMenuBarPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtMenuComponentPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtMenuItemPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtMenuPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtPanelPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtPopupMenuPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtScreenDevice.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtScrollPanePeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtScrollbarPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtTextAreaPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtTextFieldPeer.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtToolkit.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtVolatileImage.h: Likewise.
+	* include/gnu_java_awt_peer_qt_QtWindowPeer.h: Likewise.
+
+
 2005-08-23  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/EventQueue.java (getNextEvent): Don't check if this is
