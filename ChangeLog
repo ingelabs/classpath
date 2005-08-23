@@ -1,5 +1,9 @@
 2005-08-23  Tom Tromey  <tromey@redhat.com>
 
+	* java/text/SimpleDateFormat.java (compileFormat): Reformatted.
+
+2005-08-23  Tom Tromey  <tromey@redhat.com>
+
 	PR classpath/23531
 	* java/sql/Date.java (toString): Not deprecated.
 	(valueOf): Likewise.
