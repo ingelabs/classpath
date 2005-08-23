@@ -1,3 +1,11 @@
+2005-08-23  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/23531
+	* java/sql/Date.java (toString): Not deprecated.
+	(valueOf): Likewise.
+	* java/sql/Time.java (toString): Not deprecated.
+	(valueOf): Likewise.
+
 2005-08-23  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/UIManager.java:  
