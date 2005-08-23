@@ -245,10 +245,7 @@ public class BasicTreeUI
   public BasicTreeUI()
   {
     drawingCache = new Hashtable();
-    cellEditor = createDefaultCellEditor();
-    currentCellRenderer = createDefaultCellRenderer();
     nodeDimensions = createNodeDimensions();
-    rendererPane = createCellRendererPane();
     configureLayoutCache();
 
     propertyChangeListener = createPropertyChangeListener();
@@ -1203,6 +1200,11 @@ public class BasicTreeUI
     super.installUI(c);
     installDefaults((JTree) c);
     tree = (JTree) c;
+    
+    cellEditor = createDefaultCellEditor();
+    currentCellRenderer = createDefaultCellRenderer();
+    rendererPane = createCellRendererPane();
+    
     TreeModel mod = tree.getModel();
     setModel(mod);
     tree.setRootVisible(true);

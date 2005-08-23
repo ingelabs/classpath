@@ -1,3 +1,12 @@
+2005-08-23  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(BasicTreeUI): Moved these lines to installUI 
+	because they were causing NullPointerExceptions.
+	(installUI): Added code from constructor.
+	* javax/swing/plaf/metal/MetalTreeUI.java
+	(createUI): Formatted code.
+
 2005-08-23  Tom Tromey  <tromey@redhat.com>
 
 	* configure.ac: Fixed typo.
