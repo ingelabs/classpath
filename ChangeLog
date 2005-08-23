@@ -1,3 +1,33 @@
+2005-08-23  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/DefaultCellEditor.java
+	(getTreeCellEditorComponent): Implemented cases for JCheckBox
+	and JComboBox.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(BasicTreeUI): Moved lines to installUI where the renderer
+	and editor are created.
+	(installUI): Likewise.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(getPreferredSize): Implemented.
+	(DefaultTreeCellEditor): Implemented.
+	(DefaultTreeCellEditor): Implemented.
+	(getTreeCellEditorComponent): Implemented.
+	(getCellEditorValue): Implemented.
+	(isCellEditable): Implemented.
+	(shouldSelectCell): Implemented.
+	(stopCellEditing): Implemented.
+	(cancelCellEditing): Implemented.
+	(valueChanged): Implemented.
+	(actionPerformed): Implemented.
+	(shouldStartEditingTimer): Implemented.
+	(startEditingTimer): Implemented.
+	(canEditImmediately): Implemented.
+	(inHitRegion): Implemented.
+	(determineOffset): Implemented.
+	(prepareForEditing): Implemented.
+	(createContainer): Implemented.
+	(createTreeCellEditor): Implemented.
+
 2005-08-23  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/SimpleDateFormat.java (compileFormat): Reformatted.

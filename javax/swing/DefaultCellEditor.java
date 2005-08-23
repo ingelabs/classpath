@@ -369,9 +369,17 @@ public class DefaultCellEditor
         delegate = new EditorDelegate();
         ((JTextField)editorComponent).addActionListener(delegate);
       }
-    else
+    else if (editorComponent instanceof JCheckBox)
       {
-        // TODO
+        ((JCheckBox)editorComponent).setText(value.toString());
+        delegate = new EditorDelegate();
+        ((JCheckBox)editorComponent).addActionListener(delegate);
+      }
+    else if (editorComponent instanceof JComboBox)
+      {
+        ((JComboBox)editorComponent).setSelectedItem(value.toString());
+        delegate = new EditorDelegate();
+        ((JComboBox)editorComponent).addActionListener(delegate);
       }
     
     return editorComponent;

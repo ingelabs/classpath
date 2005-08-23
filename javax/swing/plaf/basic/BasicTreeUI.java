@@ -259,8 +259,6 @@ public class BasicTreeUI
     treeExpansionListener = createTreeExpansionListener();
     treeModelListener = createTreeModelListener();
 
-    createdRenderer = true;
-    createdCellEditor = true;
     editingRow = -1;
     lastSelectedRow = -1;
   }
@@ -1204,6 +1202,9 @@ public class BasicTreeUI
     cellEditor = createDefaultCellEditor();
     currentCellRenderer = createDefaultCellRenderer();
     rendererPane = createCellRendererPane();
+    
+    createdRenderer = true;
+    createdCellEditor = true;
     
     TreeModel mod = tree.getModel();
     setModel(mod);
@@ -2420,6 +2421,7 @@ public class BasicTreeUI
      */
     public void valueChanged(TreeSelectionEvent event)
     {
+      // FIXME: not implemented
     }
   }// TreeSelectionHandler
 
