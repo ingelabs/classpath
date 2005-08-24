@@ -1,6 +1,11 @@
 2005-08-24  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/DefaultCellEditor.java
+	(isCellEditable): Reversed last changes.
+
+2005-08-24  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/DefaultCellEditor.java
 	(isCellEditable): If the event is null, the cell is still 
 	editable.
 	* javax/swing/plaf/basic/BasicTextUI.java
