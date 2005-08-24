@@ -959,8 +959,9 @@ public abstract class BasicTextUI extends TextUI
    */
   protected Rectangle getVisibleEditorRect()
   {
-    int width = textComponent.getWidth();
-    int height = textComponent.getHeight();
+    Dimension d = textComponent.getPreferredSize();
+    int width = d.width;
+    int height = d.height;
 
     if (width <= 0 || height <= 0)
       return null;

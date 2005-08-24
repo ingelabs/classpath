@@ -121,7 +121,7 @@ public class DefaultCellEditor
      */
     public boolean isCellEditable(EventObject event)
     {
-      if (!(event instanceof MouseEvent))
+      if (event == null || !(event instanceof MouseEvent))
         return true;
 
       //Todo: if the right number of clicks has occured, return true;
@@ -381,7 +381,7 @@ public class DefaultCellEditor
         delegate = new EditorDelegate();
         ((JComboBox)editorComponent).addActionListener(delegate);
       }
-    
+
     return editorComponent;
   } // getTreeCellEditorComponent()
 

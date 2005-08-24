@@ -1,3 +1,23 @@
+2005-08-24  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/DefaultCellEditor.java
+	(isCellEditable): If the event is null, the cell is still 
+	editable.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(getVisibleEditorRect): Use getPreferredSize to get the width
+	and height.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(paint): Fixed to paint the JTextField with the background
+	and border at the correct location.
+	(DefaultTreeCellEditor): Changed to initialize realEditor.
+	(configureEditingComponent): Helper function implemented.
+	(getTreeCellEditorComponent): Fixed to use realEditor to get component.
+	(isCellEditable): Fixed to configure editing component.
+	(shouldSelectCell): Always returns true.
+	(stopCellEditing): Fixed to configure editing component if needed.
+	(cancelCellEditing): Fixed to configure editing component if needed.
+	(createTreeCellEditor): Fixed to initialize fields.
+
 2005-08-24  Mark Wielaard  <mark@klomp.org>
 
 	* resource/japhar-0.09.patch.1: Removed.
