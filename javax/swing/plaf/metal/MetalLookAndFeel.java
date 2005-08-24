@@ -789,6 +789,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "ProgressBar.background", new ColorUIResource(getControl()),
       "ScrollPane.border", new MetalBorders.ScrollPaneBorder(),
       "TabbedPane.background", new ColorUIResource(getControl()),
+      "InternalFrame.border", new MetalBorders.InternalFrameBorder(),
+      "InternalFrame.icon", MetalIconFactory.getInternalFrameDefaultMenuIcon(),
       "Label.background", new ColorUIResource(getControl()),
       "Label.font", getControlTextFont(),
       "Label.disabledForeground", new ColorUIResource(getControlDisabled()),

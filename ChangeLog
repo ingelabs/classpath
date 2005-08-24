@@ -11,6 +11,17 @@
 
 2005-08-24  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(installDefaults): just fetch border from UIDefaults,
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(InternalFrameDefaultMenuIcon): implemented,
+	(getInternalFrameDefaultMenuIcon): implemented,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): add values for "InternalFrame.border" and
+	"InternalFrame.icon".
+
+2005-08-24  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalBorders.java
 	(InternalFrameBorder): implemented.
 	

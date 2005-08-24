@@ -44,6 +44,7 @@ import java.awt.Graphics;
 import java.io.Serializable;
 
 import javax.swing.Icon;
+import javax.swing.JInternalFrame;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.plaf.UIResource;
@@ -408,6 +409,75 @@ public class MetalIconFactory implements Serializable
   }
   
   /**
+   * The icon displayed at the top-left corner of a {@link JInternalFrame}.
+   */
+  private static class InternalFrameDefaultMenuIcon 
+      implements Icon, Serializable 
+  {
+       
+    /**
+     * Creates a new instance.
+     */
+    public InternalFrameDefaultMenuIcon() 
+    {
+    }
+    
+    /**
+     * Returns the width of the icon, in pixels.
+     * 
+     * @return The width of the icon.
+     */
+    public int getIconWidth() 
+    {
+      return 16;
+    }
+    
+    /**
+     * Returns the height of the icon, in pixels.
+     * 
+     * @return The height of the icon.
+     */
+    public int getIconHeight() 
+    {
+      return 16;
+    }
+    
+    /**
+     * Paints the icon at the specified location.
+     * 
+     * @param c  the component.
+     * @param g  the graphics device.
+     * @param x  the x coordinate.
+     * @param y  the y coordinate.
+     */
+    public void paintIcon(Component c, Graphics g, int x, int y) 
+    {
+      g.setColor(new Color(102, 102, 153));
+      g.fillRect(x + 1, y, 14, 2);
+      g.fillRect(x, y + 1, 2, 14);
+      g.fillRect(x + 1, y + 14, 14, 2);
+      g.fillRect(x + 14, y + 1, 2, 14);
+      g.drawLine(x + 2, y + 5, x + 14, y + 5);
+      
+      g.setColor(new Color(204, 204, 255));
+      g.fillRect(x + 2, y + 2, 12, 3);
+      
+      g.setColor(new Color(102, 102, 153));
+      g.drawLine(x + 3, y + 3, x + 3, y + 3);
+      g.drawLine(x + 6, y + 3, x + 6, y + 3);
+      g.drawLine(x + 9, y + 3, x + 9, y + 3);
+      g.drawLine(x + 12, y + 3, x + 12, y + 3);
+
+      g.setColor(Color.white);
+      g.fillRect(x + 2, y + 6, 12, 8);
+      g.drawLine(x + 2, y + 2, x + 2, y + 2);
+      g.drawLine(x + 5, y + 2, x + 5, y + 2);
+      g.drawLine(x + 8, y + 2, x + 8, y + 2);
+      g.drawLine(x + 11, y + 2, x + 11, y + 2);
+    }        
+  }
+
+  /**
    * The icon used to display the thumb control on a horizontally oriented
    * {@link JSlider} component.
    */
@@ -739,6 +809,17 @@ public class MetalIconFactory implements Serializable
     return new HorizontalSliderThumbIcon();
   }
     
+  /**
+   * Creates a new icon for the menu in a {@link JInternalFrame}.  This is the
+   * icon displayed at the top left of the frame.
+   * 
+   * @return A menu icon.
+   */
+  public static Icon getInternalFrameDefaultMenuIcon() 
+  {
+    return new InternalFrameDefaultMenuIcon();
+  }
+
   /**
    * Returns the icon used to display the thumb for a vertically oriented
    * {@link JSlider}.
