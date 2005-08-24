@@ -1,3 +1,12 @@
+2005-08-24  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicDesktopPaneUI.java
+	(installDefaults): set background color using "desktop" color,
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initSystemColorDefaults): removed "Desktop.background" color,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initSystemColorDefaults): added "desktop" color.
+
 2005-08-23  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java

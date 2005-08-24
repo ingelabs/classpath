@@ -895,7 +895,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
     super.initSystemColorDefaults(defaults);
     Object[] uiDefaults;
     uiDefaults = new Object[] {
-      "control", new ColorUIResource(getControl())
+      "control", new ColorUIResource(getControl()),
+      "desktop", new ColorUIResource(getDesktopColor())
     };
     defaults.putDefaults(uiDefaults);
   }
