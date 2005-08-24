@@ -1,5 +1,12 @@
 2005-08-24  Mark Wielaard  <mark@klomp.org>
 
+	* resource/japhar-0.09.patch.1: Removed.
+	* resource/orp-1.0.8.patch: Removed.
+	* resource/orp-1.0.9.patch: Removed.
+	* resource/Makefile.am (EXTRA_DIST): Removed.
+
+2005-08-24  Mark Wielaard  <mark@klomp.org>
+
 	* NEWS: Split in general changes and vm interface changes. Add RawData
 	to Pointer conversion.
 
