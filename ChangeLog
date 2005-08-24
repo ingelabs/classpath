@@ -1,3 +1,8 @@
+2005-08-24  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/newsitems.txt: Add Generics Branch Merge
+	Announcement.
+
 2005-08-24  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/DefaultCellEditor.java
