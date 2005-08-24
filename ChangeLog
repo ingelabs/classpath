@@ -1,5 +1,10 @@
 2005-08-24  Mark Wielaard  <mark@klomp.org>
 
+	* NEWS: Split in general changes and vm interface changes. Add RawData
+	to Pointer conversion.
+
+2005-08-24  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/java-lang/java_lang_VMDouble.c
 	(Java_java_lang_VMDouble_parseDouble): Remove KISSME_LINUX_USER hack.
 

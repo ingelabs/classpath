@@ -1,15 +1,12 @@
-* Simplified the Class/VMClass interface.
-* Removed loadedClasses map from ClassLoader. It's now the VMs responsibility
-  to manage the list of defined and loaded classes for each class loader.
-* Moved native methods from java.lang.reflect.Proxy to VMProxy.
-* Added hook to VMClassLoader to allow VM to do class caching.
+New in release 0.18 (not yet released)
 
 * The DynamicAny package is completed and passes the prepared tests.
 * The Portable Object Adapter should now support the output of the
   recent IDL to java compilers. These compilers now generate servants and 
   not CORBA objects as before, making the output depended on the existing 
   POA implementation. Completing POA means that such code can already be 
-  tried to run on Classpath. Our POA is tested for the following usage scenarios:
+  tried to run on Classpath. Our POA is tested for the following usager
+  scenarios:
   
       POA converts servant to the CORBA object.
       Servant provides to the CORBA object.
@@ -26,6 +23,20 @@
   The POA is verified using tests from the former cost.omg.org.      
 
 * javax.swing.plaf.multi.* package is now implemented.
+
+Runtime interface changes:
+
+* All native resource "pointers" in the VM interface classes are now exposed
+  as gnu.classpath.Pointer objects. This might impact runtimes that
+  optimize and support java.nio.DirectByteBuffers. Creating these classes
+  and accessing the contents as void * pointers for the native reference JNI
+  implementation is done through the JCL_NewRawDataObject and JCL_GetRawData
+  functions.
+* Simplified the Class/VMClass interface.
+* Removed loadedClasses map from ClassLoader. It's now the VMs responsibility
+  to manage the list of defined and loaded classes for each class loader.
+* Moved native methods from java.lang.reflect.Proxy to VMProxy.
+* Added hook to VMClassLoader to allow VM to do class caching.
 
 New in release 0.17 (Jul 15, 2005)
 
