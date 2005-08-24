@@ -1,3 +1,15 @@
+2005-08-24  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(InternalFrameCloseIcon): new private class,
+	(InternalFrameAltMaximizeIcon): likewise,
+	(InternalFrameMaximizeIcon): likewise,
+	(InternalFrameMinimizeIcon): likewise,
+	(getInternalFrameCloseIcon): implemented,
+	(getInternalFrameMaximizeIcon): implemented,
+	(getInternalFrameMinimizeIcon): implemented,
+	(getInternalFrameAltMaximizeIcon): implemented.
+
 2005-08-24  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/CORBA/ForwardRequestHelper.java: Update copyright boilerplate
