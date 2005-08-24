@@ -1,5 +1,10 @@
 2005-08-24  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/java-lang/java_lang_VMDouble.c
+	(Java_java_lang_VMDouble_parseDouble): Remove KISSME_LINUX_USER hack.
+
+2005-08-24  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac: Check for QtGui >= 4.0.1. Check for and
 	add extra include dirs ($includedir/Qt) to QT_CFLAGS.
 	* native/jni/qt-peer/.cvsignore: Add slotcallbacks.moc.h.
