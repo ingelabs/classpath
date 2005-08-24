@@ -1,5 +1,39 @@
 2005-08-24  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/CORBA/ForwardRequestHelper.java: Update copyright boilerplate
+	address.
+	* gnu/classpath/jdwp/processor/CommandSet.java: Likewise.
+	* gnu/classpath/jdwp/processor/StringReferenceCommandSet.java:
+	Likewise.
+	* gnu/classpath/jdwp/processor/ClassLoaderReferenceCommandSet.java:
+	Likewise.
+	* gnu/classpath/jdwp/processor/ClassTypeCommandSet.java: Likewise.
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java: Likewise.
+	* gnu/classpath/jdwp/processor/ThreadReferenceCommandSet.java:
+	Likewise.
+	* gnu/classpath/jdwp/util/LineTable.java: Likewise.
+	* gnu/classpath/jdwp/util/MethodResult.java: Likewise.
+	* gnu/classpath/jdwp/util/VariableTable.java: Likewise.
+	* javax/xml/namespace/QName.java: Likewise.
+	* org/omg/DynamicAny/_DynAnyFactoryStub.java: Likewise.
+	* org/omg/DynamicAny/_DynAnyStub.java: Likewise.
+	* org/omg/DynamicAny/_DynArrayStub.java: Likewise.
+	* org/omg/DynamicAny/_DynEnumStub.java: Likewise.
+	* org/omg/DynamicAny/_DynFixedStub.java: Likewise.
+	* org/omg/DynamicAny/_DynSequenceStub.java: Likewise.
+	* org/omg/DynamicAny/_DynStructStub.java: Likewise.
+	* org/omg/DynamicAny/_DynUnionStub.java: Likewise.
+	* org/omg/DynamicAny/_DynValueStub.java: Likewise.
+	* org/omg/PortableServer/ForwardRequest.java: Likewise.
+	* org/omg/PortableServer/CurrentHelper.java: Likewise.
+	* org/omg/PortableServer/ForwardRequestHelper.java: Likewise.
+	* org/omg/PortableServer/ServantActivatorHelper.java: Likewise.
+	* org/omg/PortableServer/ServantLocatorHelper.java: Likewise.
+	* org/omg/PortableServer/_ServantActivatorStub.java: Likewise.
+	* org/omg/PortableServer/_ServantLocatorStub.java: Likewise.
+
+2005-08-24  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac: Set version to 0.18-pre.
 
 2005-08-24  Mark Wielaard  <mark@klomp.org>
