@@ -1,3 +1,14 @@
+2005-08-24  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Check for QtGui >= 4.0.1. Check for and
+	add extra include dirs ($includedir/Qt) to QT_CFLAGS.
+	* native/jni/qt-peer/.cvsignore: Add slotcallbacks.moc.h.
+	* native/jni/qt-peer/Makefile.am (QT_CXXFLAGS): Removed.
+	(libqtpeer_la_CXXFLAGS): Removed.
+	(libqtpeer_la_LDFLAGS): Removed.
+	(AM_LDFLAGS): Set to @CLASSPATH_MODULE@ @QT_LIBS@.
+	(AM_CXXFLAGS): Set to @QT_CFLAGS@.
+
 2005-08-24  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java

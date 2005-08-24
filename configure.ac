@@ -297,7 +297,17 @@ if test "x${COMPILE_JNI}" = xyes; then
 
   dnl Check for AWT related Qt4
   if test "x${COMPILE_QT_PEER}" = xyes; then
-    PKG_CHECK_MODULES(QT, QtGui >= 4.0)
+    PKG_CHECK_MODULES(QT, QtGui >= 4.0.1)
+    dnl Check needed because in some cases the QtGui includedir
+    dnl doesn't contain the subsystem dir.
+    QT_INCLUDE_DIR=$($PKG_CONFIG --variable=includedir QtGui)
+    EXTRA_QT_INCLUDE_DIR="$QT_INCLUDE_DIR/Qt"
+    AC_CHECK_FILE([$QT_INCLUDE_DIR/QWidget],
+		  AC_MSG_NOTICE([No extra QT_INCLUDE_DIR needed]),
+		  AC_CHECK_FILE([$EXTRA_QT_INCLUDE_DIR/QWidget],
+		  	QT_CFLAGS="$QT_CFLAGS -I$EXTRA_QT_INCLUDE_DIR",
+			AC_MSG_WARN([QWidget not found])))
+    AC_MSG_NOTICE([Set QT_CFLAGS... $QT_CFLAGS])
     AC_CHECK_PROG(MOC, [moc], [moc])
     AC_SUBST(QT_CFLAGS)
     AC_SUBST(QT_LIBS)

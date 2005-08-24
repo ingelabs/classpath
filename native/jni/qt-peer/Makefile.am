@@ -3,19 +3,10 @@
 
 pkglib_LTLIBRARIES = libqtpeer.la
 
-QT_CXXFLAGS=`echo $(QT_CFLAGS) | sed 's/include/include\/Qt/'`
-
+AM_LDFLAGS = @CLASSPATH_MODULE@ @QT_LIBS@
 AM_CPPFLAGS = @CLASSPATH_INCLUDES@
 
-libqtpeer_la_CXXFLAGS = \
-	$(QT_CFLAGS) \
-	$(QT_CXXFLAGS)
-
-libqtpeer_la_LDFLAGS = \
-	$(QT_LIBS) \
-	-no-undefined \
-	-module \
-	-release $(PACKAGE_VERSION)
+AM_CXXFLAGS = @QT_CFLAGS@
 
 libqtpeer_la_MOC = \
 	slotcallbacks.moc.h
