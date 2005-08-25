@@ -1,5 +1,11 @@
 2005-08-25  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/GapContent.java
+	(getString): Throw BadLocationException instead of letting
+	a StringIndexOutOfBoundsException bubble up.
+
+2005-08-25  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/ParagraphView.java
 	(Row): Implemented inner class.
 	(ParagraphView(Element)): Implemented constructor.
