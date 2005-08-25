@@ -1,5 +1,12 @@
 2005-08-25  Keith Seitz  <keiths@redhat.com>
 
+	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java
+	(executeSet): Use constants for case values.
+	Fix "typo": It is really ThreadOnlyFilter.
+	Correct arguments to InstanceOnlyFilter.
+
+2005-08-25  Keith Seitz  <keiths@redhat.com>
+
 	* gnu/classpath/jdwp/processor/CommandSet.java (CommandSet): Make
 	an abstract class.
 	Add protected variables for VMIdManager and VMVirtualMachine.

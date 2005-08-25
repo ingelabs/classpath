@@ -53,7 +53,7 @@ import gnu.classpath.jdwp.event.filters.IEventFilter;
 import gnu.classpath.jdwp.event.filters.InstanceOnlyFilter;
 import gnu.classpath.jdwp.event.filters.LocationOnlyFilter;
 import gnu.classpath.jdwp.event.filters.StepFilter;
-import gnu.classpath.jdwp.event.filters.ThreadFilter;
+import gnu.classpath.jdwp.event.filters.ThreadOnlyFilter;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
@@ -66,7 +66,6 @@ import gnu.classpath.jdwp.util.Location;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.Iterator;
 
 /**
  * A class representing the EventRequest Command Set.
@@ -121,28 +120,28 @@ public class EventRequestCommandSet
         byte modKind = bb.get();
         switch (modKind)
           {
-          case 1:
+          case JdwpConstants.ModKind.COUNT:
             filter = new CountFilter(bb.getInt());
             break;
-          case 2:
+          case JdwpConstants.ModKind.CONDITIONAL:
             filter = new ConditionalFilter(idMan.readObjectId(bb));
             break;
-          case 3:
-            filter = new ThreadFilter((ThreadId) idMan.readObjectId(bb));
+          case JdwpConstants.ModKind.THREAD_ONLY:
+            filter = new ThreadOnlyFilter((ThreadId) idMan.readObjectId(bb));
             break;
-          case 4:
+          case JdwpConstants.ModKind.CLASS_ONLY:
             filter = new ClassOnlyFilter(idMan.readReferenceTypeId(bb));
             break;
-          case 5:
+          case JdwpConstants.ModKind.CLASS_MATCH:
             filter = new ClassMatchFilter(JdwpString.readString(bb));
             break;
-          case 6:
+          case JdwpConstants.ModKind.CLASS_EXCLUDE:
             filter = new ClassExcludeFilter(JdwpString.readString(bb));
             break;
-          case 7:
+          case JdwpConstants.ModKind.LOCATION_ONLY:
             filter = new LocationOnlyFilter(new Location(bb));
             break;
-          case 8:
+          case JdwpConstants.ModKind.EXCEPTION_ONLY:
             long id = bb.getLong();
             if (id == 0)
               refId = null;
@@ -152,20 +151,20 @@ public class EventRequestCommandSet
             boolean unCaught = (bb.get() == 0) ? false : true;
             filter = new ExceptionOnlyFilter(refId, caught, unCaught);
             break;
-          case 9:
+          case JdwpConstants.ModKind.FIELD_ONLY:
             refId = idMan.readReferenceTypeId(bb);
             ReferenceTypeId fieldId = idMan.readReferenceTypeId(bb);
             filter = new FieldOnlyFilter(refId, fieldId);
             break;
-          case 10:
-            ObjectId tid = idMan.readObjectId(bb);
+          case JdwpConstants.ModKind.STEP:
+            ThreadId tid = (ThreadId) idMan.readObjectId(bb);
             int size = bb.getInt();
             int depth = bb.getInt();
             filter = new StepFilter(tid, size, depth);
             break;
-          case 11:
+          case JdwpConstants.ModKind.INSTANCE_ONLY:
             ObjectId oid = idMan.readObjectId(bb);
-            filter = new InstanceOnlyFilter(oid.getObject());
+            filter = new InstanceOnlyFilter(oid);
             break;
           default:
             throw new NotImplementedException("modKind " + modKind
