@@ -1,3 +1,9 @@
+2005-08-25  Mark Wielaard  <mark@klomp.org>
+
+	* javax/xml/namespace/QName.java: Updated boilerplate address.
+	* gnu/xml/xpath/XPathParser.y: Likewise.
+	* gnu/xml/xpath/XPathParser.java: Regenerated.
+
 2005-08-25  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/xml/datatype/DatatypeFactory.java: minor API doc fixes,
