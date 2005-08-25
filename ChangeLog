@@ -1,5 +1,22 @@
 2005-08-25  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/FlowView.java
+	(FlowStrategy): Implemented inner class.
+	(LogicalView): Likewise.
+	(FlowView(Element, int)): Implemented constructor.
+	(getFlowAxis): Implemented new method.
+	(getFlowSpan): Likewise.
+	(getFlowStart): Likewise.
+	(createRow): Added new abstract method.
+	(loadChildren): Implemented new method.
+	(layout): Implemented new method.
+	(insertUpdate): Implemented new method.
+	(removeUpdate): Implemented new method.
+	(changedUpdate): Implemented new method.
+	(getViewIndexAtPosition): Implemented new method.
+
+2005-08-25  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/CompositeView.java
 	(loadChildren): Call replace to actually change the child
 	elements. This way subclasses can modify the child
