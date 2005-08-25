@@ -1,3 +1,36 @@
+2005-08-24  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(beginNativeRepaintID): Remove variable.
+	(endNativeRepaintID): Likewise.
+	(cp_gtk_button_init_jni): Don't look up beginNativeRepaint and
+	endNativeRepaint methods.
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (resizing): Remove
+	field.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(resizing): Remove field.
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java (hiding): Remove
+	field.
+	(setVisible): Don't override.
+	* gnu/java/awt/peer/gtk/GtkChoicePeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c
+	(selectNative): New method.
+	(selectNativeUnlocked): Likewise.
+	(select): Call setNativeUnlocked if in the GTK main thread,
+	selectNative otherwise.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(gtkWidgetSetCursorUnlocked): New method.
+	(setCursor(Cursor)): Call gtkWidgetSetCursorUnlocked if in the GTK
+	main thread, gtkWidgetSetCursor otherwise.
+	(setVisibleNative): New method.
+	(setVisibleNativeUnlocked): Likewise.
+	(setVisible): Call setVisibleNativeUnlocked if in the GTK main
+	thread, setVisibleNative otherwise.
+	(hide): Call setVisible(false).
+	(show): Call setVisible(true).
+
 2005-08-24  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/SimpleDateFormat.java (compileFormat): Correctly
@@ -330,7 +363,6 @@
 	* include/gnu_java_awt_peer_qt_QtToolkit.h: Likewise.
 	* include/gnu_java_awt_peer_qt_QtVolatileImage.h: Likewise.
 	* include/gnu_java_awt_peer_qt_QtWindowPeer.h: Likewise.
-
 
 2005-08-23  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
