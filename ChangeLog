@@ -1,5 +1,26 @@
 2005-08-25  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/GlyphView.java
+	(GlyphPainter): Implemented abstract inner class.
+	(DefaultGlyphPainter): Implemented concrete impl of
+	GlyphPainter.
+	(getGlyphPainter): Implemented new method.
+	(setGlyphPainter): Likewise.
+	(checkPainter): Likewise.
+	(paint): Likewise.
+	(getPreferredSpan): Likewise.
+	(modelToView): Likewise.
+	(getTabExpander): Likewise.
+	(getTabbedSpan): Likewise.
+	(getPartialSpan): Likewise.
+	(getBeginIndex): Likewise.
+	(getEndIndex): Likewise.
+	(getText): Likewise.
+	(getFont): Likewise.
+	(getForeground): Likewise.
+
+2005-08-25  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/GapContent.java
 	(getString): Throw BadLocationException instead of letting
 	a StringIndexOutOfBoundsException bubble up.
