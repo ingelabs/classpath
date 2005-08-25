@@ -1,3 +1,7 @@
+2005-08-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * scripts/eclipse-gnu.xml: Reverted my patch 2005-07-31.
+        
 2005-08-25  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/JTextPane.java
