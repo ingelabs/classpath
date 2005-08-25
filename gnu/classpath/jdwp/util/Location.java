@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.util;
 
-import gnu.classpath.jdwp.Jdwp;
+import gnu.classpath.jdwp.VMIdManager;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.id.ClassReferenceTypeId;
 import gnu.classpath.jdwp.id.ObjectId;
@@ -78,8 +78,8 @@ public class Location
   {
     this.tag = tag;
     this.crti = 
-      (ClassReferenceTypeId) Jdwp.getIdManager().getReferenceTypeId(clazz);
-    this.mid = Jdwp.getIdManager().getId(meth);
+      (ClassReferenceTypeId) VMIdManager.getDefault().getReferenceTypeId(clazz);
+    this.mid = VMIdManager.getDefault().getObjectId(meth);
     this.index = index;
   }
 
@@ -95,8 +95,8 @@ public class Location
   {
     this.tag = bb.get();
     this.crti = 
-      (ClassReferenceTypeId) Jdwp.getIdManager().readReferenceTypeId(bb);
-    this.mid = Jdwp.getIdManager().readId(bb);
+      (ClassReferenceTypeId) VMIdManager.getDefault().readReferenceTypeId(bb);
+    this.mid = VMIdManager.getDefault().readObjectId(bb);
     this.index = bb.getInt();
   }
 

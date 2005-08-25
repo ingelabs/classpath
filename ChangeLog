@@ -1,5 +1,11 @@
 2005-08-25  Keith Seitz  <keiths@redhat.com>
 
+	* gnu/classpath/jdwp/util/Value.java (Value): Update for
+	real VMIdManager API.
+	* gnu/classpath/jdwp/util/Location.java (Location): Likewise.
+
+2005-08-25  Keith Seitz  <keiths@redhat.com>
+
 	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java
 	(executeSet): Use constants for case values.
 	Fix "typo": It is really ThreadOnlyFilter.

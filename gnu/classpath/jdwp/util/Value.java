@@ -38,8 +38,8 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.util;
 
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
+import gnu.classpath.jdwp.VMIdManager;
 import gnu.classpath.jdwp.exception.InvalidFieldException;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
@@ -182,7 +182,7 @@ public class Value
             else
               os.writeByte(JdwpConstants.Tag.OBJECT);
           }
-        ObjectId oid = Jdwp.getIdManager().getId(obj);
+        ObjectId oid = VMIdManager.getDefault().getObjectId(obj);
         oid.write(os);
       }
   }
@@ -244,7 +244,7 @@ public class Value
     else
       {
         // Field is an object
-        ObjectId oid = Jdwp.getIdManager().readId(bb);
+        ObjectId oid = VMIdManager.getDefault().readObjectId(bb);
         return oid.getObject();
       }
   }
@@ -291,7 +291,7 @@ public class Value
       case JdwpConstants.Tag.CLASS_LOADER:
       case JdwpConstants.Tag.CLASS_OBJECT:
         // All these cases are ObjectIds
-        ObjectId oid = Jdwp.getIdManager().readId(bb);
+        ObjectId oid = VMIdManager.getDefault().readObjectId(bb);
         return oid.getObject();
       default:
         throw new NotImplementedException("Tag " + tag
