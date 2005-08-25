@@ -139,28 +139,32 @@ public abstract class ClasspathToolkit
     // Circumvent the package-privateness of the
     // java.awt.Font.Font(String,Map) constructor.
     try
-    {
-      Constructor fontConstructor = Component.class.getConstructor
-      (new Class[] { String.class, Map.class });
-      AccessController.doPrivileged
-      (new SetAccessibleAction(fontConstructor));
-      f = (Font) fontConstructor.newInstance(new Object[] { name, attrs });
-    }
+      {
+        Constructor fontConstructor = Component.class.getConstructor
+          (new Class[] { String.class, Map.class });
+        AccessController.doPrivileged
+          (new SetAccessibleAction(fontConstructor));
+        f = (Font) fontConstructor.newInstance(new Object[] { name, attrs });
+      }
     catch (IllegalAccessException e)
-    {
-      // This should never happen.
-    }
+      {
+        throw new RuntimeException
+          ("couldn't call java.awt.Font.Font(String,Map) constructor");
+      }
     catch (NoSuchMethodException e)
-    {
-      // This should never happen.
-    }
+      {
+        throw new RuntimeException
+          ("couldn't call java.awt.Font.Font(String,Map) constructor");
+      }
     catch (InstantiationException e)
       {
-        // This should never happen.
+        throw new RuntimeException
+          ("couldn't call java.awt.Font.Font(String,Map) constructor");
       }
     catch (InvocationTargetException e)
       {
-        // This should never happen.
+        throw new RuntimeException
+          ("couldn't call java.awt.Font.Font(String,Map) constructor");
       }
     return f;
   }

@@ -1,3 +1,9 @@
+2005-08-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/ClasspathToolkit.java (getFont): Throw
+	RuntimeException in case of error.
+	* gnu/java/awt/EmbeddedWindow.java (addNotify): Likewise.
+
 2005-08-24  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
