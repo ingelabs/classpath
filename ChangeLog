@@ -1,5 +1,10 @@
 2005-08-25  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/tree/DefaultTreeModel.java
+	(nodesWereRemoved): minor API doc fix.
+	
+2005-08-25  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
 	(activeBGColor): removed,
 	(activeFGColor): removed,
