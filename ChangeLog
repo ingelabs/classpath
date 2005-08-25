@@ -1,3 +1,8 @@
+2005-08-25  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/event/EventManager.java: New file concerning
+	JDWP event request management and notification infrastructure.
+
 2005-08-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * scripts/eclipse-gnu.xml: Reverted my patch 2005-07-31.
