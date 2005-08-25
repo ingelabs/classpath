@@ -1,3 +1,9 @@
+2005-08-25  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JPasswordField.java
+	(setText): Changed to raise an AssertionError when a 
+	BadLocationException is caught.
+
 2005-08-25  Tom Tromey  <tromey@redhat.com>
 
 	* configure.ac: Call AC_PROG_CXX.
