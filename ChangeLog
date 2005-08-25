@@ -1,3 +1,12 @@
+2005-08-25  Mark Wielaard  <mark@klomp.org>
+
+	Reported by Bastiaan Huisman <huisman@science.uva.nl>
+	* scripts/tzabbrevs: Change America/Buenos_Aires to
+	America/Argentina/Buenos_Aires for AGT link.
+	* timezones.pl (parseTime): Assume and return wall time.
+	Reindent output.
+	* java/util/TimeZone.java (timezones): Regenerate using tzdata2005l.
+
 2005-08-25  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/event/EventManager.java: New file concerning
