@@ -1,3 +1,20 @@
+2005-08-25  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+	(activeBGColor): removed,
+	(activeFGColor): removed,
+	(inactiveBGColor): removed,
+	(inactiveFGColor): removed,
+	(installDefaults): replaced removed fields above with correct ones,
+	(uninstallDefaults): likewise,
+	(setButtonIcons): implemented,
+	(paintComponent): replaced removed fields above with correct ones;
+	* javax/swing/plaf/metal/MetalInternalFrameTitlePane.java: implemented,
+	* javax/swing/plaf/metal/MetalInternalFrameUI.java
+	(createNorthPane): implemented,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): added internal frame icons.
+
 2005-08-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/ClasspathToolkit.java (getFont): Throw
