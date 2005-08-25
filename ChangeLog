@@ -1,5 +1,10 @@
 2005-08-25  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JTextPane.java
+	(JTextPane()): Don't set the document to null here.
+
+2005-08-25  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(RootView.preferenceChanged): Revalidate the text component.
 	(RootView.setParent): Set parent of views to null. The parent
