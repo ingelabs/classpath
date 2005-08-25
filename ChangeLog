@@ -1,5 +1,12 @@
 2005-08-25  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/StyledEditorKit.java
+	(StyledViewFactory.create): Use new BoxView constructor. Throw
+	AssertionError if an unknown element type is encountered,
+	since this should not happen.
+
+2005-08-25  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/GlyphView.java
 	(GlyphPainter): Implemented abstract inner class.
 	(DefaultGlyphPainter): Implemented concrete impl of
