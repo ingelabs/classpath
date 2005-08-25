@@ -1,5 +1,12 @@
 2005-08-25  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/xml/datatype/DatatypeFactory.java: minor API doc fixes,
+	* javax/xml/parsers/DocumentBuilder.java: likewise,
+	* javax/xml/parsers/SAXParser.java: likewise,
+	* javax/xml/transform/Source.java: likewise.
+
+2005-08-25  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/tree/DefaultTreeModel.java
 	(nodesWereRemoved): minor API doc fix.
 	
