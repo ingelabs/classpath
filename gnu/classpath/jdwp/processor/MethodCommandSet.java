@@ -38,13 +38,10 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.IVirtualMachine;
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
 import gnu.classpath.jdwp.util.LineTable;
@@ -60,14 +57,9 @@ import java.nio.ByteBuffer;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class MethodCommandSet implements CommandSet
+public class MethodCommandSet
+  extends CommandSet
 {
-  // Our hook into the jvm
-  private final IVirtualMachine vm = Jdwp.getIVirtualMachine();
-
-  // Manages all the different ids that are assigned by jdwp
-  private final IdManager idMan = Jdwp.getIdManager();
-
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
       throws JdwpException
   {
@@ -110,7 +102,7 @@ public class MethodCommandSet implements CommandSet
     ReferenceTypeId refId = idMan.readReferenceTypeId(bb);
     Class clazz = refId.getType();
 
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     Method method = (Method) oid.getObject();
 
     LineTable lt = vm.getLineTable(clazz, method);
@@ -123,7 +115,7 @@ public class MethodCommandSet implements CommandSet
     ReferenceTypeId refId = idMan.readReferenceTypeId(bb);
     Class clazz = refId.getType();
 
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     Method method = (Method) oid.getObject();
 
     VariableTable vt = vm.getVarTable(clazz, method);

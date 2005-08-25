@@ -40,7 +40,6 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
@@ -57,7 +56,8 @@ import java.nio.ByteBuffer;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class StringReferenceCommandSet implements CommandSet
+public class StringReferenceCommandSet
+  extends CommandSet
 {
 
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
@@ -90,7 +90,7 @@ public class StringReferenceCommandSet implements CommandSet
   private void executeValue(ByteBuffer bb, DataOutputStream os)
       throws JdwpException, IOException
   {
-    ObjectId oid = Jdwp.getIdManager().readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
 
     String str = (String) oid.getObject();
     JdwpString.writeString(os, str);

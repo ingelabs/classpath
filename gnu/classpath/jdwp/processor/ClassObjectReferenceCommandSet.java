@@ -39,12 +39,10 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
 
@@ -57,11 +55,9 @@ import java.nio.ByteBuffer;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class ClassObjectReferenceCommandSet implements CommandSet
+public class ClassObjectReferenceCommandSet
+  extends CommandSet
 {
-  // Manages all the different ids that are assigned by jdwp
-  private final IdManager idMan = Jdwp.getIdManager();
-
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
     throws JdwpException
   {
@@ -89,7 +85,7 @@ public class ClassObjectReferenceCommandSet implements CommandSet
   public void executeReflectedType(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     Class clazz = (Class) oid.getObject();
 
     // The difference between a ClassObjectId and a ReferenceTypeId is one is

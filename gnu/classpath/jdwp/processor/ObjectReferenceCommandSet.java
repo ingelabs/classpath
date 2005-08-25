@@ -39,14 +39,11 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.IVirtualMachine;
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.InvalidFieldException;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
 import gnu.classpath.jdwp.util.Value;
@@ -63,14 +60,9 @@ import java.nio.ByteBuffer;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class ObjectReferenceCommandSet implements CommandSet
+public class ObjectReferenceCommandSet
+  extends CommandSet
 {
-  // Our hook into the jvm
-  private final IVirtualMachine vm = Jdwp.getIVirtualMachine();
-
-  // Manages all the different ids that are assigned by jdwp
-  private final IdManager idMan = Jdwp.getIdManager();
-
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
     throws JdwpException
   {
@@ -119,7 +111,7 @@ public class ObjectReferenceCommandSet implements CommandSet
   private void executeReferenceType(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     Object obj = oid.getObject();
     Class clazz = obj.getClass();
     ReferenceTypeId refId = idMan.getReferenceTypeId(clazz);
@@ -129,7 +121,7 @@ public class ObjectReferenceCommandSet implements CommandSet
   private void executeGetValues(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     Object obj = oid.getObject();
 
     int numFields = bb.getInt();
@@ -138,7 +130,7 @@ public class ObjectReferenceCommandSet implements CommandSet
 
     for (int i = 0; i < numFields; i++)
       {
-        Field field = (Field) idMan.readId(bb).getObject();
+        Field field = (Field) idMan.readObjectId(bb).getObject();
         try
           {
             field.setAccessible(true); // Might be a private field
@@ -161,14 +153,14 @@ public class ObjectReferenceCommandSet implements CommandSet
   private void executeSetValues(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     Object obj = oid.getObject();
 
     int numFields = bb.getInt();
 
     for (int i = 0; i < numFields; i++)
       {
-        Field field = (Field) idMan.readId(bb).getObject();
+        Field field = (Field) idMan.readObjectId(bb).getObject();
         Object value = Value.getUntaggedObj(bb, field.getType());
         try
           {
@@ -201,16 +193,16 @@ public class ObjectReferenceCommandSet implements CommandSet
   private void executeInvokeMethod(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     Object obj = oid.getObject();
 
-    ObjectId tid = idMan.readId(bb);
+    ObjectId tid = idMan.readObjectId(bb);
     Thread thread = (Thread) tid.getObject();
 
     ReferenceTypeId rid = idMan.readReferenceTypeId(bb);
     Class clazz = rid.getType();
 
-    ObjectId mid = idMan.readId(bb);
+    ObjectId mid = idMan.readObjectId(bb);
     Method method = (Method) mid.getObject();
 
     int args = bb.getInt();
@@ -237,7 +229,7 @@ public class ObjectReferenceCommandSet implements CommandSet
     Object value = mr.getReturnedValue();
     Exception exception = mr.getThrownException();
 
-    ObjectId eId = idMan.getId(exception);
+    ObjectId eId = idMan.getObjectId(exception);
     Value.writeTaggedValue(os, value);
     eId.writeTagged(os);
   }
@@ -245,22 +237,22 @@ public class ObjectReferenceCommandSet implements CommandSet
   private void executeDisableCollection(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     oid.disableCollection();
   }
 
   private void executeEnableCollection(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     oid.enableCollection();
   }
 
   private void executeIsCollected(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
-    boolean collected = oid.isCollected();
+    ObjectId oid = idMan.readObjectId(bb);
+    boolean collected = (oid.getReference().get () == null);
     os.writeBoolean(collected);
   }
 }

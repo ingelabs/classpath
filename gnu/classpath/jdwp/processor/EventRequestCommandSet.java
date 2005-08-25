@@ -39,7 +39,6 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.event.EventManager;
 import gnu.classpath.jdwp.event.EventRequest;
@@ -58,7 +57,6 @@ import gnu.classpath.jdwp.event.filters.ThreadFilter;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
 import gnu.classpath.jdwp.id.ThreadId;
@@ -75,14 +73,9 @@ import java.util.Iterator;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class EventRequestCommandSet implements CommandSet
+public class EventRequestCommandSet
+  extends CommandSet
 {
-  // Manages all the different ids that are assigned by jdwp
-  private final IdManager idMan = Jdwp.getIdManager();
-
-  // The Event Manager
-  private final EventManager evMan = Jdwp.getDefault().getEventManager();
-
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
       throws JdwpException
   {
@@ -132,10 +125,10 @@ public class EventRequestCommandSet implements CommandSet
             filter = new CountFilter(bb.getInt());
             break;
           case 2:
-            filter = new ConditionalFilter(idMan.readId(bb));
+            filter = new ConditionalFilter(idMan.readObjectId(bb));
             break;
           case 3:
-            filter = new ThreadFilter((ThreadId) idMan.readId(bb));
+            filter = new ThreadFilter((ThreadId) idMan.readObjectId(bb));
             break;
           case 4:
             filter = new ClassOnlyFilter(idMan.readReferenceTypeId(bb));
@@ -165,13 +158,13 @@ public class EventRequestCommandSet implements CommandSet
             filter = new FieldOnlyFilter(refId, fieldId);
             break;
           case 10:
-            ObjectId tid = idMan.readId(bb);
+            ObjectId tid = idMan.readObjectId(bb);
             int size = bb.getInt();
             int depth = bb.getInt();
             filter = new StepFilter(tid, size, depth);
             break;
           case 11:
-            ObjectId oid = idMan.readId(bb);
+            ObjectId oid = idMan.readObjectId(bb);
             filter = new InstanceOnlyFilter(oid.getObject());
             break;
           default:
@@ -180,7 +173,8 @@ public class EventRequestCommandSet implements CommandSet
           }
         eventReq.addFilter(filter);
       }
-    evMan.requestEvent(eventReq);
+
+    EventManager.getDefault().requestEvent(eventReq);
     os.writeInt(eventReq.getId());
 
   }
@@ -190,19 +184,14 @@ public class EventRequestCommandSet implements CommandSet
   {
     byte eventKind = bb.get();
     int requestId = bb.getInt();
-    EventRequest request = evMan.getRequest(eventKind, requestId);
-    evMan.deleteRequest(request);
+    EventManager.getDefault().deleteRequest(eventKind, requestId);
   }
 
   private void executeClearAllBreakpoints(ByteBuffer bb, DataOutputStream os)
       throws JdwpException, IOException
   {
-    Iterator evReqIter = evMan.getAllRequests(EventRequest.EVENT_BREAKPOINT);
-    while (evReqIter.hasNext())
-      {
-        EventRequest evReq = (EventRequest) evReqIter.next();
-        evMan.deleteRequest(evReq);
-      }
+    byte eventKind = bb.get ();
+    EventManager.getDefault().clearRequests (eventKind);
   }
 
 }

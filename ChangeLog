@@ -1,3 +1,50 @@
+2005-08-25  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/processor/CommandSet.java (CommandSet): Make
+	an abstract class.
+	Add protected variables for VMIdManager and VMVirtualMachine.
+	(runCommand): Make abstract.
+	* gnu/classpath/jdwp/processor/ArrayReferenceCommandSet.java
+	(ArrayReferenceCommandSet): Derive from CommandSet instead of
+	implementing it. Remove private hooks to ID manager and VM.
+	Update all VMIdManager and EventManager API calls.
+	* gnu/classpath/jdwp/processor/ArrayTypeCommandSet.java
+	(ArrayTypeCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/ClassLoaderReferenceCommandSet.java
+	(ClassLoaderReferenceCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/ClassObjectReferenceCommandSet.java
+	(ClassObjectReferenceCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/ClassTypeCommandSet.java
+	(ClassTypeCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java
+	(EventRequestCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/FieldCommandSet.java
+	(FieldCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/InterfaceTypeCommandSet.java
+	(InterfaceTypeCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/MethodCommandSet.java
+	(MethodCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java
+	(ObjectReferenceCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java
+	(ReferenceTypeCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java
+	(StackFrameCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/StringReferenceCommandSet.java
+	(StringReferenceCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/ThreadGroupReferenceCommandSet.java
+	(ThreadGroupReferenceCommandSet.java): Likewise.
+	* gnu/classpath/jdwp/processor/ThreadReferenceCommandSet.java
+	(ThreadReferenceCommandSet): Likewise.
+	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
+	(VirtualMachineCommandSet): Likewise.
+
+	* gnu/classpath/jdwp/processor/ThreadReferenceCommandSet.java
+	(executeStatus): Fix constant name.
+	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
+	(executeDisposeObjects): Don't do anything yet -- this
+	is unimplemented.
+	
 2005-08-25  Mark Wielaard  <mark@klomp.org>
 
 	Reported by Bastiaan Huisman <huisman@science.uva.nl>

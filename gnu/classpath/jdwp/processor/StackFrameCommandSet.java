@@ -40,13 +40,10 @@ exception statement from your version. */
 package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.VMFrame;
-import gnu.classpath.jdwp.IVirtualMachine;
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.util.Value;
 
@@ -59,14 +56,9 @@ import java.nio.ByteBuffer;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class StackFrameCommandSet implements CommandSet
+public class StackFrameCommandSet
+  extends CommandSet
 {
-  // Our hook into the jvm
-  private final IVirtualMachine vm = Jdwp.getIVirtualMachine();
-
-  // Manages all the different ids that are assigned by jdwp
-  private final IdManager idMan = Jdwp.getIdManager();
-
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
       throws JdwpException
   {
@@ -104,7 +96,7 @@ public class StackFrameCommandSet implements CommandSet
   private void executeGetValues(ByteBuffer bb, DataOutputStream os)
       throws JdwpException, IOException
   {
-    ObjectId tId = idMan.readId(bb);
+    ObjectId tId = idMan.readObjectId(bb);
     Thread thread = (Thread) tId.getObject();
 
     // Although Frames look like other ids they are not. First they are not
@@ -128,7 +120,7 @@ public class StackFrameCommandSet implements CommandSet
   private void executeSetValues(ByteBuffer bb, DataOutputStream os)
       throws JdwpException, IOException
   {
-    ObjectId tId = idMan.readId(bb);
+    ObjectId tId = idMan.readObjectId(bb);
     Thread thread = (Thread) tId.getObject();
 
     VMFrame frame = vm.getVMFrame(thread, bb);
@@ -145,7 +137,7 @@ public class StackFrameCommandSet implements CommandSet
   private void executeThisObject(ByteBuffer bb, DataOutputStream os)
       throws JdwpException, IOException
   {
-    ObjectId tId = idMan.readId(bb);
+    ObjectId tId = idMan.readObjectId(bb);
     Thread thread = (Thread) tId.getObject();
 
     VMFrame frame = vm.getVMFrame(thread, bb);

@@ -40,13 +40,10 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.IVirtualMachine;
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
 
@@ -61,14 +58,9 @@ import java.util.Iterator;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class ClassLoaderReferenceCommandSet implements CommandSet
+public class ClassLoaderReferenceCommandSet
+  extends CommandSet
 {
-  // Our hook into the jvm
-  private final IVirtualMachine vm = Jdwp.getIVirtualMachine();
-
-  // Manages all the different ids that are assigned by jdwp
-  private final IdManager idMan = Jdwp.getIdManager();
-
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
       throws JdwpException
   {
@@ -99,7 +91,7 @@ public class ClassLoaderReferenceCommandSet implements CommandSet
   public void executeVisibleClasses(ByteBuffer bb, DataOutputStream os)
       throws JdwpException, IOException
   {
-    ObjectId oId = idMan.readId(bb);
+    ObjectId oId = idMan.readObjectId(bb);
     ClassLoader cl = (ClassLoader) oId.getObject();
     ArrayList loadRequests = vm.getLoadRequests(cl);
     os.writeInt(loadRequests.size());

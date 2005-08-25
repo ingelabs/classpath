@@ -40,13 +40,11 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.InvalidObjectException;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.util.Value;
 
@@ -60,11 +58,9 @@ import java.nio.ByteBuffer;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class ArrayReferenceCommandSet implements CommandSet
+public class ArrayReferenceCommandSet
+  extends CommandSet
 {
-  // Manages all the different ids that are assigned by jdwp
-  private final IdManager idMan = Jdwp.getIdManager();
-
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
     throws JdwpException
   {
@@ -98,7 +94,7 @@ public class ArrayReferenceCommandSet implements CommandSet
   private void executeLength(ByteBuffer bb, DataOutputStream os)
     throws InvalidObjectException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     Object array = oid.getObject();
     os.writeInt(Array.getLength(array));
   }
@@ -106,7 +102,7 @@ public class ArrayReferenceCommandSet implements CommandSet
   private void executeGetValues(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     Object array = oid.getObject();
     int first = bb.getInt();
     int length = bb.getInt();
@@ -164,7 +160,7 @@ public class ArrayReferenceCommandSet implements CommandSet
   private void executeSetValues(ByteBuffer bb, DataOutputStream os)
     throws IOException, JdwpException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     Object array = oid.getObject();
     int first = bb.getInt();
     int length = bb.getInt();

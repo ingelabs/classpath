@@ -39,12 +39,10 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.util.JdwpString;
 
@@ -57,11 +55,9 @@ import java.nio.ByteBuffer;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class ThreadGroupReferenceCommandSet implements CommandSet
+public class ThreadGroupReferenceCommandSet
+  extends CommandSet
 {
-  // Manages all the different ids that are assigned by jdwp
-  private final IdManager idMan = Jdwp.getIdManager();
-
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
     throws JdwpException
   {
@@ -95,7 +91,7 @@ public class ThreadGroupReferenceCommandSet implements CommandSet
   private void executeName(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     ThreadGroup group = (ThreadGroup) oid.getObject();
     JdwpString.writeString(os, group.getName());
   }
@@ -103,17 +99,17 @@ public class ThreadGroupReferenceCommandSet implements CommandSet
   private void executeParent(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     ThreadGroup group = (ThreadGroup) oid.getObject();
     ThreadGroup parent = group.getParent();
-    ObjectId parentId = idMan.getId(parent);
+    ObjectId parentId = idMan.getObjectId(parent);
     parentId.write(os);
   }
 
   private void executeChildren(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ObjectId oid = idMan.readId(bb);
+    ObjectId oid = idMan.readObjectId(bb);
     ThreadGroup group = (ThreadGroup) oid.getObject();
 
     ThreadGroup jdwpGroup = Thread.currentThread().getThreadGroup();
@@ -143,7 +139,7 @@ public class ThreadGroupReferenceCommandSet implements CommandSet
         if (thread == null)
           break; // No threads after this point
         if (!thread.getThreadGroup().equals(jdwpGroup))
-          idMan.getId(thread).write(os);
+          idMan.getObjectId(thread).write(os);
       }
 
     int numGroups = group.activeCount();
@@ -172,7 +168,7 @@ public class ThreadGroupReferenceCommandSet implements CommandSet
         if (tgroup == null)
           break; // No ThreadGroups after this point
         if (!tgroup.equals(jdwpGroup))
-          idMan.getId(tgroup).write(os);
+          idMan.getObjectId(tgroup).write(os);
       }
   }
 }

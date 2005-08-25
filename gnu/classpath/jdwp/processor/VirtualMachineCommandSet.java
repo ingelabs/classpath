@@ -39,13 +39,11 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.IVirtualMachine;
 import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
 import gnu.classpath.jdwp.util.JdwpString;
@@ -63,14 +61,9 @@ import java.util.Properties;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class VirtualMachineCommandSet implements CommandSet
+public class VirtualMachineCommandSet
+  extends CommandSet
 {
-  // Our hook into the jvm
-  private final IVirtualMachine vm = Jdwp.getIVirtualMachine();
-
-  // Manages all the different ids that are assigned by jdwp
-  private final IdManager idMan = Jdwp.getIdManager();
-
   // The Jdwp object
   private final Jdwp jdwp = Jdwp.getDefault();
 
@@ -270,7 +263,7 @@ public class VirtualMachineCommandSet implements CommandSet
         if (thread == null)
           break; // No threads after this point
         if (!thread.getThreadGroup().equals(jdwpGroup))
-          idMan.getId(thread).write(os);
+          idMan.getObjectId(thread).write(os);
       }
   }
 
@@ -281,7 +274,7 @@ public class VirtualMachineCommandSet implements CommandSet
     ThreadGroup root = getRootThreadGroup(jdwpGroup);
 
     os.writeInt(1); // Just one top level group allowed?
-    idMan.getId(root);
+    idMan.getObjectId(root);
   }
 
   private void executeDispose(ByteBuffer bb, DataOutputStream os)
@@ -338,7 +331,7 @@ public class VirtualMachineCommandSet implements CommandSet
     throws JdwpException, IOException
   {
     String string = JdwpString.readString(bb);
-    ObjectId stringId = Jdwp.getIdManager().getId(string);
+    ObjectId stringId = idMan.getObjectId(string);
     
     // Since this string isn't referenced anywhere we'll disable garbage
     // collection on it so it's still around when the debugger gets back to it.
@@ -386,7 +379,7 @@ public class VirtualMachineCommandSet implements CommandSet
   {
     // Instead of going through the list of objects they give us it's probably
     // better just to find the garbage collected objects ourselves
-    idMan.update();
+    //idMan.update();
   }
 
   private void executeHoldEvents(ByteBuffer bb, DataOutputStream os)

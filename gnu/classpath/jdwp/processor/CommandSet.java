@@ -40,6 +40,8 @@ exception statement from your version. */
 package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.exception.JdwpException;
+import gnu.classpath.jdwp.VMIdManager;
+import gnu.classpath.jdwp.VMVirtualMachine;
 
 import java.io.DataOutputStream;
 import java.nio.ByteBuffer;
@@ -50,8 +52,18 @@ import java.nio.ByteBuffer;
  *
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public interface CommandSet
+public abstract class CommandSet
 {
+  /**
+   * The VM's ID manager
+   */
+  protected final VMIdManager idMan = VMIdManager.getDefault ();
+
+  /**
+   * The virtual machine description
+   */
+  protected final VMVirtualMachine vm = VMVirtualMachine.getDefault ();
+
   /**
    * Runs the given command with the data in distr and writes the data for the
    * reply packet to ostr.
@@ -62,7 +74,7 @@ public interface CommandSet
    * @return true if the JDWP layer should shut down in response to this packet
    * @throws JdwpException command wasn't carried out successfully
    */
-  public boolean runCommand(ByteBuffer bb, DataOutputStream os,
-                            byte command) 
+  public abstract boolean runCommand(ByteBuffer bb, DataOutputStream os,
+				     byte command) 
     throws JdwpException;
 }

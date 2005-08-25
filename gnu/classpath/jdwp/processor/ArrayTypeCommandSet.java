@@ -38,12 +38,10 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
-import gnu.classpath.jdwp.id.IdManager;
 import gnu.classpath.jdwp.id.ObjectId;
 import gnu.classpath.jdwp.id.ReferenceTypeId;
 
@@ -57,11 +55,9 @@ import java.nio.ByteBuffer;
  * 
  * @author Aaron Luchko <aluchko@redhat.com>
  */
-public class ArrayTypeCommandSet implements CommandSet
+public class ArrayTypeCommandSet
+  extends CommandSet
 {
-  // Manages all the different ids that are assigned by jdwp
-  private final IdManager idMan = Jdwp.getIdManager();
-
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
     throws JdwpException
   {
@@ -98,7 +94,7 @@ public class ArrayTypeCommandSet implements CommandSet
 
     int length = bb.getInt();
     Object newArray = Array.newInstance(componentType, length);
-    ObjectId oid = idMan.getId(newArray);
+    ObjectId oid = idMan.getObjectId(newArray);
 
     // Since this array isn't referenced anywhere we'll disable garbage
     // collection on it so it's still around when the debugger gets back to it.
