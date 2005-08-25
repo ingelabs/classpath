@@ -1,3 +1,9 @@
+2005-08-25  Mark Wielaard  <mark@klomp.org>
+
+	* timezones.pl (parseRule): Add dayoffset when $time represents
+	more then a day.
+	* java/util/TimeZone.java (timezones): Regenerate.
+
 2005-08-25  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/util/Value.java (Value): Update for

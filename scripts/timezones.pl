@@ -155,7 +155,7 @@ sub parseRule($$$) {
 	$time += 24*3600*1000;
 	$dayoffset--;
     }
-    while ($time >= 24*3600*1000) {
+    while ($time > 24*3600*1000) {
 	$time -= 24*3600*1000;
 	$dayoffset++;
     }

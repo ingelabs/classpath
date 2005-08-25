@@ -506,7 +506,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable
 	tz = new SimpleTimeZone
 	  (2000 * 3600, "ART",
 	   Calendar.APRIL, -1, Calendar.FRIDAY, 1000 * 3600,
-	   Calendar.SEPTEMBER, 31, -Calendar.FRIDAY, 0 * 3600);
+	   Calendar.SEPTEMBER, -1, Calendar.THURSDAY, 24000 * 3600);
 	timezones0.put("ART", tz);
 	timezones0.put("Africa/Cairo", tz);
 	tz = new SimpleTimeZone(2000 * 3600, "CAT");
