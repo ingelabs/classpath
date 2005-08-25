@@ -1,5 +1,18 @@
 2005-08-25  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/text/CompositeView.java
+	(loadChildren): Call replace to actually change the child
+	elements. This way subclasses can modify the child
+	management behaviour by simply overriding replace.
+	(setParent): Only call loadChildren if the parent to be set
+	is actually not null.
+	(replace): Check for null children. Set the parent of removed
+	children to null. Set the parent of the added children to
+	this.
+	(modelToView): Added some sanity checks.
+
+2005-08-25  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/BoxView.java
 	(BoxView(Element, int)): Implemented.
 	(getAxis): Likewise.
@@ -26,7 +39,7 @@
 	(getHeight): Likewise.
 	(setSize): Likewise.
 	(validateLayout): Likewise.
-	
+
 2005-08-25  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/text/AbstractDocument.java
