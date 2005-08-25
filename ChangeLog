@@ -1,5 +1,19 @@
 2005-08-25  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.preferenceChanged): Revalidate the text component.
+	(RootView.setParent): Set parent of views to null. The parent
+	of the added child view is set to the root view in the
+	BasicTextUI class.
+	(RootView.getView): Implemented new method.
+	(RootView.getViewCount): Implemented new method.
+	(RootView.changedUpdate): Use the correct ViewFactory here.
+	(RootView.insertUpdate): Use the correct ViewFactory here.
+	(RootView.removeUpdate): Use the correct ViewFactory here.
+	(setView): Set the view's parent to the root view.
+
+2005-08-25  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/text/View.java
 	(View): Don't manage child views here.
 	(getContainer): Throw AssertionError if we have no parent. This
