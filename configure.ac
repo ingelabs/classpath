@@ -169,7 +169,7 @@ AC_PROG_INSTALL
 dnl -----------------------------------------------------------
 dnl Checks for programs.
 dnl -----------------------------------------------------------
-dnl AC_PROG_CXX
+AC_PROG_CXX
 dnl Initialize libtool
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
