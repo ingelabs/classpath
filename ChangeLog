@@ -1,3 +1,8 @@
+2005-08-24  Tom Tromey  <tromey@redhat.com>
+
+	* java/text/SimpleDateFormat.java (compileFormat): Correctly
+	handle quoted single quotes.  PR classspath/23183.
+
 2005-08-24  Mark Wielaard  <mark@klomp.org>
 
 	* vm/reference/gnu/classpath/jdwp/VMFrame.java: Update copyright

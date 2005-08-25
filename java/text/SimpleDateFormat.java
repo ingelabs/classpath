@@ -314,16 +314,33 @@ public class SimpleDateFormat extends DateFormat
 	      {
 		// Quoted text section; skip to next single quote
 		pos = pattern.indexOf('\'', i + 1);
-		if (pos == -1)
-		  {
-		    throw new IllegalArgumentException("Quotes starting at character "
-						       + i + " not closed.");
-		  }
-		if ((pos + 1 < pattern.length())
-		    && (pattern.charAt(pos + 1) == '\''))
-		  tokens.add(pattern.substring(i + 1, pos + 1));
+		// First look for '' -- meaning a single quote.
+		if (pos == i + 1)
+		  tokens.add("'");
 		else
-		  tokens.add(pattern.substring(i + 1, pos));
+		  {
+		    // Look for the terminating quote.  However, if we
+		    // see a '', that represents a literal quote and
+		    // we must iterate.
+		    StringBuffer buf = new StringBuffer();
+		    int oldPos = i + 1;
+		    do
+		      {
+			if (pos == -1)
+			  throw new IllegalArgumentException("Quotes starting at character "
+							     + i +
+							     " not closed.");
+			buf.append(pattern.substring(oldPos, pos));
+			if (pos + 1 >= pattern.length()
+			    || pattern.charAt(pos + 1) != '\'')
+			  break;
+			buf.append('\'');
+			oldPos = pos + 2;
+			pos = pattern.indexOf('\'', pos + 2);
+		      }
+		    while (true);
+		    tokens.add(buf.toString());
+		  }
 		i = pos;
 	      }
 	    else
