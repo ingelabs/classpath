@@ -1,3 +1,7 @@
+2005-08-24  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/newsitems.txt: Fix announcement url.
+
 2005-08-24  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java
