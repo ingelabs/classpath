@@ -1,3 +1,22 @@
+2005-08-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicCheckBoxUI.java
+	(installUI): removed,
+	* javax/swing/plaf/basic/BasicIconFactory.java
+	(CheckBoxMenuItemIcon): new support class,
+	(getCheckBoxMenuItemIcon): return instance of CheckBoxMenuItemIcon,
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): changed value for 'CheckBoxMenuItem.checkIcon'
+	and removed entry for 'CheckBoxMenuItem.icon',
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(paintMenuItem): let icon handle selection status,
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(CheckBoxMenuItemIcon): new support class,
+	(getCheckBoxIcon): implemented,
+	(getCheckBoxMenuItemIcon): implemented,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): added entry for 'CheckBoxMenuItem.checkIcon'.
+
 2005-08-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c

@@ -42,13 +42,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
 
-import javax.swing.ImageIcon;
 import javax.swing.UIDefaults;
-import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
@@ -782,6 +779,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       new UIDefaults.ProxyLazyValue
       ("javax.swing.plaf.metal.MetalCheckBoxIcon"),
       "CheckBoxMenuItem.background", new ColorUIResource(getControl()),
+      "CheckBoxMenuItem.checkIcon", MetalIconFactory.getCheckBoxMenuItemIcon(),
       "ToolBar.background", new ColorUIResource(getControl()),
       "Panel.background", new ColorUIResource(getControl()),
       "Slider.background", new ColorUIResource(getControl()),
