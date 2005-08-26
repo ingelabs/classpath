@@ -119,8 +119,10 @@ Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_create
          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
          GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
          NULL);
+#if GTK_MINOR_VERSION >= 8
       gtk_file_chooser_set_do_overwrite_confirmation
         (GTK_FILE_CHOOSER (widget), TRUE);
+#endif
     }
 
 

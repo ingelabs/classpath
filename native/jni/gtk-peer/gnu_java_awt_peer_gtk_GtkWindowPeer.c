@@ -1206,6 +1206,8 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setVisibleNative
   Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setVisibleNativeUnlocked
     (env, obj, visible);
 
+  gdk_flush ();
+
   gdk_threads_leave ();
 }
 
@@ -1221,8 +1223,6 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setVisibleNativeUnlocked
     gtk_widget_show (GTK_WIDGET (ptr));
   else
     gtk_widget_hide (GTK_WIDGET (ptr));
-
-  gdk_flush ();
 }
 
 JNIEXPORT void JNICALL

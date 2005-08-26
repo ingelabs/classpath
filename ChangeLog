@@ -1,5 +1,14 @@
 2005-08-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c
+	(create): Only set overwrite confirmation if using GTK >= 2.8.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(setVisibleNative): Call gdk_flush before releasing GDK lock.
+	(setVisibleNativeUnlocked): Don't call gdk_flush.
+
+2005-08-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	PR classpath/21660:
 	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java,
 	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c
