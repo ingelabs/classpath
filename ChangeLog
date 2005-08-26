@@ -1,3 +1,20 @@
+2005-08-26  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/event/filters/IEventFilter.java: New file.
+	Describes the interface used for event filtering managed by
+	the event manager.
+	* gnu/classpath/jdwp/event/filters/ClassExcludeFilter.java: New file.
+	* gnu/classpath/jdwp/event/filters/ClassMatchFilter.java: New file.
+	* gnu/classpath/jdwp/event/filters/ClassOnlyFilter.java: New file.
+	* gnu/classpath/jdwp/event/filters/ConditionalFilter.java: New file.
+	* gnu/classpath/jdwp/event/filters/CountFilter.java: New file.
+	* gnu/classpath/jdwp/event/filters/ExceptionOnlyFilter.java: New file.
+	* gnu/classpath/jdwp/event/filters/FieldOnlyFilter.java: New file.
+	* gnu/classpath/jdwp/event/filters/InstanceOnlyFilter.java: New file.
+	* gnu/classpath/jdwp/event/filters/LocationOnlyFilter.java: New file.
+	* gnu/classpath/jdwp/event/filters/StepFilter.java: New file.
+	* gnu/classpath/jdwp/event/filters/ThreadOnlyFilter.java: New file.
+
 2005-08-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicCheckBoxUI.java
