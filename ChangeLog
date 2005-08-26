@@ -1,5 +1,11 @@
 2005-08-26  Keith Seitz  <keiths@redhat.com>
 
+	* gnu/classpath/jdwp/event/EventRequest.java: New file.
+	* gnu/classpath/jdwp/exception/JdwpIllegalArgumentException.java:
+	New file.
+
+2005-08-26  Keith Seitz  <keiths@redhat.com>
+
 	* gnu/classpath/jdwp/event/filters/IEventFilter.java: New file.
 	Describes the interface used for event filtering managed by
 	the event manager.
