@@ -1,3 +1,22 @@
+2005-08-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR classpath/21660:
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c
+	(AWT_FILEDIALOG_LOAD): New macro.
+	(AWT_FILEDIALOG_SAVE): Likewise.
+	(create(GtkContainerPeer,int)): Add mode parameter.  Create Save
+	dialog if mode is AWT_FILEDIALOG_SAVE.  Remove workaround for
+	http://bugzilla.gnome.org/show_bug.cgi?id=166852.
+	(create()): Add mode argument to create call.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(setVisibleNative): Override method.
+	(setVisibleNativeUnlocked): Override method.  Call gdk_flush after
+	showing or hiding window.
+	* include/gnu_java_awt_peer_gtk_GtkFileDialogPeer.h: Regenerate.
+	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h: Regenerate.
+
 2005-08-25  Mark Wielaard  <mark@klomp.org>
 
 	* timezones.pl (parseRule): Add dayoffset when $time represents
