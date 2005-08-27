@@ -1,3 +1,8 @@
+2005-08-27  Tom Tromey  <tromey@redhat.com>
+
+	* m4/acinclude.m4 (CLASSPATH_WITH_GLIBJ): Always check for 'zip'
+	program.  Changed zip install handling.
+
 2005-08-26  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/event/EventRequest.java: New file.
