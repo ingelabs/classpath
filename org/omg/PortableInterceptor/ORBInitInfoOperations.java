@@ -107,7 +107,7 @@ public interface ORBInitInfoOperations
 
   /**
    * Get the CodecFactory that may be needed during the interceptor
-   * initialization. The method ORB.resolve_initial_references (“CodecFactory")
+   * initialization. The method ORB.resolve_initial_references ("CodecFactory")
    * cannot be used during ORB initialization.
    *
    * @return the CodecFactory.
