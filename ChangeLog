@@ -1,3 +1,8 @@
+2005-08-28  Chris Burdess  <dog@gnu.org>
+
+        * javax/swing/text/AbstractDocument.java: Fully qualify references to
+        ElementChange class.
+
 2005-08-28  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/Interceptor/ForwardRequestHolder.java,        gnu/CORBA/Interceptor/gnuClientRequestInfo.java,        gnu/CORBA/Interceptor/gnuIcCurrent.java,        gnu/CORBA/Interceptor/gnuIorInfo.java,        gnu/CORBA/Interceptor/gnuServerRequestInfo.java,        gnu/CORBA/Interceptor/IORInterceptors.java,        gnu/CORBA/Interceptor/ClientRequestInterceptors.java,        gnu/CORBA/Interceptor/Registrator.java,        gnu/CORBA/Interceptor/ServerRequestInterceptors.java,        gnu/CORBA/GIOP/contextSupportingHeader.java,
