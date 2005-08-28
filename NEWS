@@ -1,5 +1,11 @@
 New in release 0.18 (not yet released)
 
+* The PortableInterceptor and related functionality in other packages
+  is now implemented:
+  
+      The sever and client interceptors work as required since jdk 1.4.
+      The IOR interceptor works as needed for jdk 1.5. 
+      
 * The DynamicAny package is completed and passes the prepared tests.
 * The Portable Object Adapter should now support the output of the
   recent IDL to java compilers. These compilers now generate servants and 

@@ -479,16 +479,26 @@ public abstract class ORB
   }
 
   /**
-   * This should create the new policy with the specified type and initial
-   * state. The policies and methods for getting them are not implemented till
-   * v1.4 inclusive.
+   * <p>Creates the new policy of the specified type, having the given value.
+   * This method looks for the policy factory that was previously registered
+   * during ORB initialization by
+   * {@link org.omg.PortableInterceptor.ORBInitialiser}.
    *
+   * If the suitable factory is found, this factory creates the requested policy,
+   * otherwise the PolicyError is thrown.
+   * </p><p>
+   * The POA policies should be created by POA, not by this method.
+   * </p>
    * @param type the policy type.
-   * @param value the policy value.
+   * @param value the policy value, wrapped into Any.
    *
-   * @return never
+   * @throws PolicyError if the ORB fails to instantiate the policy object.
    *
-   * @throws NO_IMPLEMENT, always.
+   * @throws NO_IMPLEMENT always (in this class). Overridden in derived classes
+   * returned by ORB.init(..).
+   *
+   * @see org.omg.PortableInterceptor.ORBInitInfoOperations#register_policy_factory
+   * @see org.omg.PortableInterceptor.PolicyFactoryOperations
    */
   public Policy create_policy(int type, Any value)
                        throws PolicyError
@@ -883,6 +893,12 @@ public abstract class ORB
    *
    * <tr><td>DynAnyFactory</td><td>{@link org.omg.DynamicAny.DynAnyFactory}</td>
    * <td>Creates DynAny's.</td>
+   * </tr>
+   *
+   * <tr><td>PICurrent</td><td>{@link org.omg.PortableInterceptor.Current}</td>
+   * Contains multiple slots where an interceptor can rememeber the
+   * request - specific values between subsequent
+   * calls of the interceptor methods.</td>
    * </tr>
    *
    * </table>
