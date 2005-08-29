@@ -1,3 +1,11 @@
+2005-08-29  Tom Tromey  <tromey@redhat.com>
+
+	* .externalToolBuilders/Configure.launch: Changed --prefix.
+	* .externalToolBuilders/CompileNative.launch: Invoke install target.
+	* .cdtproject: New file.
+	* .classpath: Changed output directory.
+	* .cvsignore: Added 'install'.
+
 2005-08-29  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JPasswordField.java

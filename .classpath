@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="compat/|examples/|external/|gnu/classpath/jdwp/|gnu/javax/swing/plaf/|test/|testsuite/|vm/reference/" kind="src" path=""/>
+	<classpathentry excluding="compat/|examples/|external/|gnu/classpath/jdwp/|gnu/javax/swing/plaf/|test/|testsuite/|vm/reference/|resource/" kind="src" path=""/>
+	<classpathentry kind="src" path="resource"/>
 	<classpathentry excluding="gnu/classpath/jdwp/" kind="src" path="vm/reference"/>
 	<classpathentry kind="src" path="external/sax"/>
 	<classpathentry kind="src" path="external/w3c_dom"/>
 	<classpathentry kind="src" path="examples"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="install/share/classpath"/>
 </classpath>
