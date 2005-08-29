@@ -115,39 +115,49 @@ public class DefaultTreeCellEditor
     }
 
     /**
-     * Overrides Container.paint to paint the node's icon and use 
-     * the selection color for the background.
+     * Overrides Container.paint to paint the node's icon and use the selection
+     * color for the background.
      * 
-     * @param g - the specified Graphics window
+     * @param g -
+     *          the specified Graphics window
      */
     public void paint(Graphics g)
     {
-      int textIconGap = 4; // default value
-      Rectangle vr = new Rectangle();
-      Rectangle ir = new Rectangle();
-      Rectangle tr = new Rectangle();
+      lastPath = tree.getSelectionPath();
+      Rectangle tr = tree.getPathBounds(lastPath);
       
-      FontMetrics fm = editingComponent.getToolkit().getFontMetrics(getFont());
-      SwingUtilities.layoutCompoundLabel(((JComponent) editingComponent), fm,
-           ((JTextField) editingComponent).getText(), editingIcon,
-           JTextField.LEFT, JTextField.LEFT, JTextField.LEFT, JTextField.LEFT, 
-           vr, ir, tr, 4);
-            
-      Rectangle cr = tr.union(ir);
-      cr.width += offset;
-      
-      // paint icon
-      if (DefaultTreeCellEditor.this.editingIcon != null)
-        DefaultTreeCellEditor.this.editingIcon.paintIcon(DefaultTreeCellEditor.
-                                        this.editingComponent, g, cr.x, cr.y);
-
+      if (tr != null)
+        {
+          Insets i = ((DefaultTextField) editingComponent).getBorder()
+                                                  .getBorderInsets(this);
+          int textIconGap = 3;
+          tr.height -= i.top;
+          tr.x -= i.left;
+          
+          // paints icon
+          if (editingIcon == null)
+            editingIcon = renderer.getIcon();
+          if (editingIcon != null)
+            {
+              editingIcon.paintIcon(this, g, tr.x - editingIcon.
+                                              getIconWidth()/2, tr.y + i.top + i.bottom);
+              tr.x += editingIcon.getIconWidth()/2 + textIconGap;
+            }
+          
+          tr.width += offset;
+          
+          // paint background
+          g.translate(tr.x, tr.y);
+          editingComponent.setSize(new Dimension(tr.width, tr.height));
+          editingComponent.paint(g);
+          g.translate(-tr.x, -tr.y);
+        }
       super.paint(g);
-      (new CellRendererPane()).paintComponent(g, editingComponent, this, cr);
     }
 
     /**
-     * Lays out this Container. If editing, the editor will be placed 
-     * at offset in the x direction and 0 for y.
+     * Lays out this Container. If editing, the editor will be placed at offset
+     * in the x direction and 0 for y.
      */
     public void doLayout()
     {
@@ -330,8 +340,6 @@ public class DefaultTreeCellEditor
       editor = createTreeCellEditor();
     realEditor = editor;
     
-    configureEditingComponent(tree, renderer, realEditor);
-    
     editingContainer = createContainer();
     UIDefaults defaults = UIManager.getLookAndFeelDefaults();
     setFont(defaults.getFont("Tree.font"));
@@ -361,7 +369,18 @@ public class DefaultTreeCellEditor
             boolean isLeaf = tree.getModel().isLeaf(val);
             boolean expanded = tree.isExpanded(lastPath);
             determineOffset(tree, val, true, expanded, isLeaf, lastRow);
-            editingComponent = editor.getTreeCellEditorComponent(tree, val,
+            
+            // set up icon
+            if (isLeaf)
+              renderer.setIcon(renderer.getLeafIcon());
+            else if (expanded)
+              renderer.setIcon(renderer.getOpenIcon());
+            else
+              renderer.setIcon(renderer.getClosedIcon());
+            
+            editingIcon = renderer.getIcon();
+            
+            editingComponent = getTreeCellEditorComponent(tree, val,
                                                                  true,
                                                                  expanded,
                                                                  isLeaf,
@@ -461,14 +480,9 @@ public class DefaultTreeCellEditor
   {
     if (realEditor == null)
       createTreeCellEditor();
-    
-    Component c = realEditor.getTreeCellEditorComponent(tree, value, isSelected,
-                                                             expanded, leaf, row);
-    if (tree != null && editingComponent != null)
-        if (tree.isEditing())
-          tree.stopEditing();
-    
-    return c;
+
+    return realEditor.getTreeCellEditorComponent(tree, value, isSelected,
+                                                        expanded, leaf, row);
   }
 
   /**
@@ -556,7 +570,7 @@ public class DefaultTreeCellEditor
    */
   public void addCellEditorListener(CellEditorListener listener)
   {
-    listenerList.add(CellEditorListener.class, listener);
+    realEditor.addCellEditorListener(listener);
   }
 
   /**
@@ -566,7 +580,7 @@ public class DefaultTreeCellEditor
    */
   public void removeCellEditorListener(CellEditorListener listener)
   {
-    listenerList.remove(CellEditorListener.class, listener);
+    realEditor.removeCellEditorListener(listener);
   }
 
   /**

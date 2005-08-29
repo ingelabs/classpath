@@ -1,3 +1,35 @@
+2005-08-29  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JPasswordField.java
+	(getText): Changed to pass error to AssertionError.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(setCellEditor): Updated boolean when appropriate.
+	(stopEditing): Took out redundant code.
+	(updateCellEditor): Updated boolean when appropriate.
+	(installListeners): Took out CellEditorListener. It is added
+	when the cellEditor is set.
+	(installUI): Similar.
+	(ensureRowsAreVisible): Fixed API documentation 
+	(startEditing): Fixed to add editing container to the tree.
+	(checkForClickInExpandControl): Fixed API documentation.
+	(editingStopped): Added code to remove listeners and container.
+	(editingCanceled): Similar.
+	(mousePressed): Updated to stop editing when a different cell is clicked.
+	(treeNodesChanged): Called repaint.
+	(treeNodesRemoved): Likewise.
+	(treeStructureChanged): Likewise.
+	(paintNode): Updated to paint a node that is being edited.
+	(paintRecursive): Fixed API documentation.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(paint): Fixed to paint icon and text box in correct location with
+	correct spacing.
+	(doLayout): Fixed API documentation.
+	(DefaultTreeCellEditor): Took out call to configure editing component.
+	(configureEditingComponent): Initialized editing icon.
+	(getTreeCellEditorComponent): Took out code to stop editing. Not needed.
+	(addCellEditorListener): Passed on to realEditor.
+	(removeCellEditorListener): Likewise.
+
 2005-08-29  <AudriusA@Bioinformatics.org>
 
         * org/omg/CORBA/ORB.java (string_to_object): Documentation update.
