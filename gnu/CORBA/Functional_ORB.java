@@ -45,15 +45,18 @@ import gnu.CORBA.GIOP.ErrorMessage;
 import gnu.CORBA.GIOP.MessageHeader;
 import gnu.CORBA.GIOP.ReplyHeader;
 import gnu.CORBA.GIOP.RequestHeader;
+import gnu.CORBA.NamingService.NameParser;
 import gnu.CORBA.NamingService.NamingServiceTransient;
 import gnu.CORBA.Poa.gnuForwardRequest;
 
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.BAD_PARAM;
 import org.omg.CORBA.CompletionStatus;
+import org.omg.CORBA.DATA_CONVERSION;
 import org.omg.CORBA.MARSHAL;
 import org.omg.CORBA.NO_RESOURCES;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
+import org.omg.CORBA.Object;
 import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CORBA.Request;
 import org.omg.CORBA.SystemException;
@@ -934,15 +937,41 @@ public class Functional_ORB extends Restricted_ORB
    * representation. The object can (an usually is) located on a remote
    * computer, possibly running a different (not necessary java) CORBA
    * implementation.
-   *
+   * 
    * @param ior the object IOR representation string.
-   *
+   * 
    * @return the found CORBA object.
    * @see object_to_string(org.omg.CORBA.Object)
    */
   public org.omg.CORBA.Object string_to_object(String an_ior)
   {
-    IOR ior = IOR.parse(an_ior);
+    int p = an_ior.indexOf(':');
+    if (p < 0)
+      throw new BAD_PARAM("IOR: or CORBALOC: prefix expected");
+
+    String prefix = an_ior.substring(0, p).toLowerCase();
+
+    if (prefix.equals("ior"))
+      {
+        IOR ior = IOR.parse(an_ior);
+        return ior_to_object(ior);
+      }
+    else if (prefix.equals("corbaloc"))
+      {
+        java.lang.Object r = NameParser.corbaloc(an_ior, this);
+        if (r instanceof IOR)
+          return ior_to_object((IOR) r);
+        else
+          return (org.omg.CORBA.Object) r;
+      }
+    else throw new DATA_CONVERSION("Unsupported prefix '"+prefix+"'");
+  }
+  
+  /**
+   * Convert ior reference to CORBA object.
+   */
+  private org.omg.CORBA.Object ior_to_object(IOR ior)
+  {
     org.omg.CORBA.Object object = find_local_object(ior);
     if (object == null)
       {

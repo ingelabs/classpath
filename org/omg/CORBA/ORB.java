@@ -896,7 +896,7 @@ public abstract class ORB
    * </tr>
    *
    * <tr><td>PICurrent</td><td>{@link org.omg.PortableInterceptor.Current}</td>
-   * Contains multiple slots where an interceptor can rememeber the
+   * <td>Contains multiple slots where an interceptor can rememeber the
    * request - specific values between subsequent
    * calls of the interceptor methods.</td>
    * </tr>
@@ -962,16 +962,32 @@ public abstract class ORB
   }
 
   /**
-   * Find and return the CORBA object, addressed by the given
-   * IOR string representation. The object can (an usually is)
+   * <p>Find and return the CORBA object, addressed by the given
+   * string representation. The object can be (an usually is)
    * located on a remote computer, possibly running a different
    * (not necessary java) CORBA implementation. The returned
    * object is typically casted to the more specific reference
    * using the <code>narrow(Object)</code> method of its helper.
+   * </p><p>
+   * This function supports the following input formats:<br>
+   * 1. IOR reference (<b>ior:</b>nnnnn ..), usually computer generated.<br> 
+   * 2. <b>corbaloc:</b>[<b>iiop</b>][version.subversion<b>@</b>]<b>:</b>host[<b>:</b>port]<b>/</b><i>key</i>
+   * defines similar information as IOR reference, but is more human readable.
+   * This type of reference may also contain multiple addresses (see
+   * OMG documentation for complete format).<br>
+   * 3. <b>corbaloc:rir:/</b><i>name</i> defines internal reference on this
+   * ORB that is resolved using {@link #resolve_initial_references}, using 
+   * the given <i>name</i>.
+   * <br>
    *
    * @param IOR the object IOR representation string.
    *
    * @return the found CORBA object.
+   * 
+   * @throws BAD_PARAM if the string being parsed is invalid.
+   * @throws DATA_CONVERSION if the string being parsed contains unsupported
+   * prefix or protocol.
+   * 
    * @see object_to_string(org.omg.CORBA.Object)
    */
   public abstract Object string_to_object(String IOR);

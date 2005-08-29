@@ -1,3 +1,10 @@
+2005-08-29  <AudriusA@Bioinformatics.org>
+
+        * org/omg/CORBA/ORB.java (string_to_object): Documentation update.
+        * gnu/CORBA/Functional_ORB.java (string_to_object): Rewritten.
+        (ior_to_object): New method.
+        * gnu/CORBA/NamingService/NameParser.java: New file.
+
 2005-08-28  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/text/AbstractDocument.java (addEdit): Document gcj bug
