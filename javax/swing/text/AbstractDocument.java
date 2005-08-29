@@ -1684,6 +1684,7 @@ public abstract class AbstractDocument
      */
     public boolean addEdit(UndoableEdit edit)
     {
+      // XXX - Fully qualify ElementChange to work around gcj bug #2499.
       if (edit instanceof DocumentEvent.ElementChange)
         {
           DocumentEvent.ElementChange elEdit =
@@ -1743,6 +1744,7 @@ public abstract class AbstractDocument
      */
     public DocumentEvent.ElementChange getChange(Element elem)
     {
+      // XXX - Fully qualify ElementChange to work around gcj bug #2499.
       return (DocumentEvent.ElementChange) changes.get(elem);
     }
   }
