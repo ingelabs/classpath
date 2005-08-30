@@ -1,3 +1,21 @@
+2005-08-30  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): added some defaults for TabbedPane,
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	(TabbedPaneLayout): implemented new class,
+	(createLayoutManager): implemented,
+	(paintTabBorder): implemented,
+	(paintTopTabBorder): implemented,
+	(paintLeftTabBorder): implemented,
+	(paintBottomTabBorder): implemented,
+	(paintRightTabBorder): implemented,
+	(paintTabBackground): implemented,
+	(shouldPadTabRun): implemented,
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	(mkTabWorld): new method,
+	(mkTabbedPane): added tab for 'Tab World'.
+	
 2005-08-30  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/beans/Statement.java:

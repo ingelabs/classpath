@@ -843,6 +843,11 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "Slider.trackWidth", new Integer(7),
       "Slider.majorTickLength", new Integer(6),
       
+      "TabbedPane.font", new FontUIResource("Dialog", Font.BOLD, 12),
+      "TabbedPane.tabInsets", new InsetsUIResource(0, 9, 1, 9),
+      "TabbedPane.selectedTabPadInsets", new InsetsUIResource(2, 2, 2, 1),
+      "TabbedPane.tabAreaInsets", new InsetsUIResource(4, 2, 0, 6),
+
       "ToggleButton.background", new ColorUIResource(getControl()),
       "ToggleButton.border", MetalBorders.getButtonBorder(),
       "ToggleButton.darkShadow", new ColorUIResource(getControlDarkShadow()),

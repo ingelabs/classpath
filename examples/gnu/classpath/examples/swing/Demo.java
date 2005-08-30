@@ -640,6 +640,29 @@ public class Demo
     return panel;
   }
 
+  static JPanel mkTabWorld() 
+  {
+    JPanel panel = new JPanel(new GridLayout(2, 2));
+    panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+    JTabbedPane tabs1 = new JTabbedPane(SwingConstants.TOP);
+    tabs1.add("Top Item 1", new JButton("Button"));
+    tabs1.add("Top Item 2", new JButton("Button"));
+    JTabbedPane tabs2 = new JTabbedPane(SwingConstants.LEFT);
+    tabs2.add("Left Item 1", new JButton("Button"));
+    tabs2.add("Left Item 2", new JButton("Button"));
+    JTabbedPane tabs3 = new JTabbedPane(SwingConstants.BOTTOM);
+    tabs3.add("Bottom Item 1", new JButton("Button"));
+    tabs3.add("Bottom Item 2", new JButton("Button"));
+    JTabbedPane tabs4 = new JTabbedPane(SwingConstants.RIGHT);
+    tabs4.add("Right Item 1", new JButton("Button"));
+    tabs4.add("Right Item 2", new JButton("Button"));
+    panel.add(tabs1);
+    panel.add(tabs2);
+    panel.add(tabs3);
+    panel.add(tabs4);
+    return panel;        
+  }
+
   static JTabbedPane mkTabbedPane()
   {
     JTabbedPane tabs = new JTabbedPane();
@@ -648,6 +671,7 @@ public class Demo
     tabs.add("List world!", mkListWorld());
     tabs.add("Desktop world!", mkDesktopWorld());
     tabs.add("Tree world!", mkTreeWorld());
+    tabs.add("Tab world!", mkTabWorld());
     return tabs;
   }
 
