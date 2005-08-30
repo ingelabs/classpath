@@ -1,3 +1,15 @@
+2005-08-30  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/beans/Statement.java:
+	(Statement): Use zero length array if argument array is null.
+	(toString): Use StringBuffer for efficiency reasons, make use of internal
+    name.    
+    (generateInternalName): New method, generates instance names like the JDK
+	has.
+	(doExecute): Removed debugging output that could lead to an exception
+	because wrong loop variable usage.
+	* java/beans/Expression.java: Static constant 'unset' renamed to 'UNSET´.
+
 2005-08-29  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/event/Event.java: New file describing JDWP
