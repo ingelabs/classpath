@@ -1,3 +1,7 @@
+2005-08-30  Christian Schlichtherle <christian@schlichtherle.de>
+
+	* java/util/zip/DeflaterHuffman.java (bit4Reverse): Mark final.
+
 2005-08-30  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalLabelUI.java
