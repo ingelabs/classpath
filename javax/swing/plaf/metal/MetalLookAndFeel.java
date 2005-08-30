@@ -49,6 +49,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.InsetsUIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
+
 /**
  * A custom look and feel that is designed to look similar across different
  * operating systems.
@@ -822,6 +823,18 @@ public class MetalLookAndFeel extends BasicLookAndFeel
             return MetalIconFactory.getRadioButtonIcon();
           }
       },
+
+      "RadioButtonMenuItem.border", new MetalBorders.MenuItemBorder(),
+      "RadioButtonMenuItem.borderPainted", Boolean.TRUE,
+      "RadioButtonMenuItem.checkIcon", 
+        MetalIconFactory.getRadioButtonMenuItemIcon(),
+      "RadioButtonMenuItem.font", MetalLookAndFeel.getControlTextFont(),
+      "RadioButtonMenuItem.margin", new InsetsUIResource(2, 2, 2, 2),
+      "RadioButtonMenuItem.selectionBackground", 
+        MetalLookAndFeel.getMenuSelectedBackground(),
+      "RadioButtonMenuItem.selectionForeground", 
+        MetalLookAndFeel.getMenuSelectedForeground(),
+
       "ScrollBar.background", new ColorUIResource(getControl()),
       "ScrollBar.shadow", new ColorUIResource(getControlShadow()),
       "ScrollBar.thumb", new ColorUIResource(getPrimaryControlShadow()),

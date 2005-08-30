@@ -141,6 +141,8 @@ public class Demo
     preferences.add(new JCheckBoxMenuItem("Check Spelling",
 		    stockIcon("spell-check")));
     preferences.add(new JCheckBoxMenuItem("World Peace"));
+    preferences.add(new JSeparator());
+    preferences.add(new JRadioButtonMenuItem("Radio Button"));
     edit.add(preferences);
 
     JMenu examples = new JMenu("Examples");

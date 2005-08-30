@@ -1,3 +1,13 @@
+2005-08-30  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkMenuBar): added a JRadioButtonMenuItem,
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(RadioButtonMenuItemIcon): new inner class,
+	(getRadioButtonMenuItemIcon): implemented,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): added RadioButtonMenuItem defaults.
+
 2005-08-30  Lillian Angel <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java:
