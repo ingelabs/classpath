@@ -1,3 +1,21 @@
+2005-08-30  Mark Wielaard  <mark@klomp.org>
+	    Christian Schlichtherle  <christian@schlichtherle.de>
+
+	* java/util/zip/ZipEntry.java (setTime): Use
+	Calendar.setTimeInMillis().
+	(getTime): First parse extra bytes. Use Calendar.getTimeInMillis().
+	(parseExtra): Don't return early to make sure that KNOWN_EXTRA is
+	always set.
+	* java/util/zip/ZipFile.java (readEntries): Parse name and comment
+	as UTF-8 string.
+	(close): Check that raf is not null.
+	* java/util/zip/ZipInputStream.java (getNextEntry): Set name as
+	UTF-8 bytes.
+	* java/util/zip/ZipOutputStream.java (setComment): Set comment as
+	UTF-8 bytes.
+	(putNextEntry): Likewise for name.
+	(finish): Likewise for both.
+
 2005-08-30  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java
@@ -56,13 +74,13 @@
 	(inHitRegion): Changed region to be text area only (not icon).
 	(createTreeCellEditor): No need to use canEdit here, removed.
 
-2005-08-30  Christian Schlichtherle <christian@schlichtherle.de>
+2005-08-30  Christian Schlichtherle  <christian@schlichtherle.de>
 
 	* java/util/zip/DeflaterOutputStream.java
 	(DeflaterOutputStream(OutputStream)): Increase buffer size to 4096.
 	(DeflaterOutputStream(OutputStream,Deflater)): Likewise.
 
-2005-08-30  Christian Schlichtherle <christian@schlichtherle.de>
+2005-08-30  Christian Schlichtherle  <christian@schlichtherle.de>
 
 	* java/util/zip/DeflaterHuffman.java (bit4Reverse): Mark final.
 
@@ -98,13 +116,14 @@
 
 	* java/beans/Statement.java:
 	(Statement): Use zero length array if argument array is null.
-	(toString): Use StringBuffer for efficiency reasons, make use of internal
-    name.    
-    (generateInternalName): New method, generates instance names like the JDK
-	has.
+	(toString): Use StringBuffer for efficiency reasons, make use of
+	internal name.    
+	(generateInternalName): New method, generates instance names like
+	the JDK has.
 	(doExecute): Removed debugging output that could lead to an exception
 	because wrong loop variable usage.
-	* java/beans/Expression.java: Static constant 'unset' renamed to 'UNSET´.
+	* java/beans/Expression.java: Static constant 'unset' renamed to 
+	'UNSET'.
 
 2005-08-29  Keith Seitz  <keiths@redhat.com>
 
