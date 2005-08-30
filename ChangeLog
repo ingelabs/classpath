@@ -1,5 +1,11 @@
 2005-08-30  Christian Schlichtherle <christian@schlichtherle.de>
 
+	* java/util/zip/DeflaterOutputStream.java
+	(DeflaterOutputStream(OutputStream)): Increase buffer size to 4096.
+	(DeflaterOutputStream(OutputStream,Deflater)): Likewise.
+
+2005-08-30  Christian Schlichtherle <christian@schlichtherle.de>
+
 	* java/util/zip/DeflaterHuffman.java (bit4Reverse): Mark final.
 
 2005-08-30  David Gilbert  <david.gilbert@object-refinery.com>
