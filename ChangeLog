@@ -1,3 +1,12 @@
+2005-08-29  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/event/Event.java: New file describing JDWP
+	events.
+	* gnu/classpath/jdwp/event/ClassPrepareEvent.java: New file.
+	* gnu/classpath/jdwp/event/ThreadEndEvent.java: New file.
+	* gnu/classpath/jdwp/event/ThreadStartEvent.java: New file.
+	* gnu/classpath/jdwp/event/VmInitEvent.java (VmInitEvent): New file.
+
 2005-08-29  Tom Tromey  <tromey@redhat.com>
 
 	* .externalToolBuilders/Configure.launch: Changed --prefix.
