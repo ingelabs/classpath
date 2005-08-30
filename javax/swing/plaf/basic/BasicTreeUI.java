@@ -88,6 +88,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.TreeUI;
+import javax.swing.text.Caret;
 import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -218,6 +219,9 @@ public class BasicTreeUI
 
   /** Set to true if the editor has a different size than the renderer. */
   protected boolean editorHasDifferentSize;
+  
+  /** The action listener for the editor's Timer. */
+  Timer editorTimer = new EditorUpdateTimer();
 
   /** Listeners */
   private PropertyChangeListener propertyChangeListener;
@@ -1477,6 +1481,7 @@ public class BasicTreeUI
         tree.add(editingComponent.getParent());
         editingComponent.getParent().validate();
         ((JTextField) editingComponent).requestFocusInWindow(false);
+        editorTimer.start();
         return true;
       }
     return false;
@@ -1618,7 +1623,53 @@ public class BasicTreeUI
     Object node = pathForRow.getLastPathComponent();
     return tree.getModel().isLeaf(node);
   }
+  
+  /**
+   * The timer that updates the editor component.
+   */
+  private class EditorUpdateTimer
+    extends Timer
+    implements ActionListener
+  {
+    /**
+     * Creates a new EditorUpdateTimer object with a default delay of 0.5
+     * seconds.
+     */
+    public EditorUpdateTimer()
+    {
+      super(500, null);
+      addActionListener(this);
+    }
 
+    /**
+     * Lets the caret blink and repaints the table.
+     */
+    public void actionPerformed(ActionEvent ev)
+    {
+      Caret c = ((JTextField) BasicTreeUI.this.editingComponent).getCaret();
+      if (c != null)
+        c.setVisible(!c.isVisible());
+      BasicTreeUI.this.tree.repaint();
+    }
+
+    /**
+     * Updates the blink delay according to the current caret.
+     */
+    public void update()
+    {
+      stop();
+      Caret c = ((JTextField) BasicTreeUI.this.editingComponent).getCaret();
+      if (c != null)
+        {
+          setDelay(c.getBlinkRate());
+          if (((JTextField) BasicTreeUI.this.editingComponent).isEditable())
+            start();
+          else
+            c.setVisible(false);
+        }
+    }
+  }
+  
   /**
    * Updates the preferred size when scrolling, if necessary.
    */
@@ -1712,6 +1763,8 @@ public class BasicTreeUI
           BasicTreeUI.this.cellEditor = null;
           BasicTreeUI.this.createdCellEditor = false;
         }
+      editorTimer.stop();
+      tree.repaint();
     }
 
     /**
@@ -1733,6 +1786,8 @@ public class BasicTreeUI
           BasicTreeUI.this.cellEditor = null;
           BasicTreeUI.this.createdCellEditor = false;
         }
+      editorTimer.stop();
+      tree.repaint();
     }
   }// CellEditorHandler
 

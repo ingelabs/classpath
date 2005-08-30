@@ -1,3 +1,13 @@
+2005-08-30  Lillian Angel <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Added a timer field for repainting the editing component.
+	(EditorUpdateTimer): Inner class added and implemented. Updates
+	the caret and text box. Still need to fix typing in text box.
+	(startEditing): Started the timer.
+	(editingCanceled): Stopped the timer.
+	(editingStopped): Likewise.
+
 2005-08-30  Lillian Angel  <langel@redhat.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java
