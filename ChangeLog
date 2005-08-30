@@ -1,5 +1,15 @@
 2005-08-30  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalLabelUI.java
+	(instance): renamed 'metalLabelUI' and changed from private to 
+	protected,
+	(createUI): modified for renamed field,
+        (paintDisabledText): implemented,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): modified Label defaults.
+
+2005-08-30  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
 	(initComponentDefaults): added some defaults for TabbedPane,
 	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
