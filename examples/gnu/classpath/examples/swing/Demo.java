@@ -493,6 +493,7 @@ public class Demo
 
     final JTree tree = new JTree(root);
     tree.setLargeModel(true);
+    tree.setEditable(true);
     DefaultTreeSelectionModel dtsm = new DefaultTreeSelectionModel();
     dtsm.setSelectionMode(DefaultTreeSelectionModel.SINGLE_TREE_SELECTION);
     tree.setSelectionModel(dtsm);

@@ -1,3 +1,41 @@
+2005-08-30  Lillian Angel  <langel@redhat.com>
+
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkTreeWorld): Made tree editable.
+	* javax/swing/DefaultCellEditor.java
+	(isCellEditable): Added in check for number of mouse clicks.
+	(DefaultCellEditor): To start editing a textfield, number of clicks
+	is 3.
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Took out unneeded fields
+	(isEditing): Fixed to check boolean.
+	(updateCellEditor): Made more efficent.
+	(installUI): Created cell editor for initialization.
+	(editingStopped): Added in check to prevent a NPE.
+	(editingCanceled): Likewise.
+	(keyPressed): Added in check for pressing Enter. Enter should stop
+	editing and complete it, when in the process of editing. 
+	(mousePressed): Optimized by using MouseEvent's getClickCount. The
+	clicking on nodes works better. Also, added in code to start the
+	editing.
+	(valueChanged): Implemented.
+	(selectPath): Took out code to remove an already selected path. A node
+	should remain selected if clicked on more than once. Works like JDK.
+	* javax/swing/tree/DefaultTreeCellEditor.java:
+	Added a helper field.
+	(paint): Took out redundant code.
+	(DefaultTreeCellEditor): Added class to listener list.
+	(configureEditingComponent): Updated since listener was added to list.
+	(isCellEditable): Finished implementation.
+	(stopCellEditing): Added a check for editingComponent to prevent a NPE.
+	(cancelCellEditing): Likewise.
+	(valueChanged): Took out redundant code.
+	(actionPerformed): Added code in to implement click-pause-click editing.
+	(shouldStartTimer): Fixed check.
+	(canEditImmediately): Took out redunant code.
+	(inHitRegion): Changed region to be text area only (not icon).
+	(createTreeCellEditor): No need to use canEdit here, removed.
+
 2005-08-30  Christian Schlichtherle <christian@schlichtherle.de>
 
 	* java/util/zip/DeflaterOutputStream.java
