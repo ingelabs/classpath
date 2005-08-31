@@ -1,3 +1,27 @@
+2005-08-31  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(getPropertyPrefix): include dot in prefix,
+	(installDefaults): remove dot which is included in prefix now,
+	* javax/swing/plaf/basic/BasicCheckBoxMenuItemUI.java
+	(getPropertyPrefix): return correct prefix,
+	* javax/swing/plaf/basic/BasicCheckBoxUI.java
+	(getPropertyPrefix): return correct prefix,
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(getPropertyPrefix): return correct prefix,
+	* javax/swing/plaf/basic/BasicMenuUI.java
+	(getPropertyPrefix): return correct prefix,
+	* javax/swing/plaf/basic/BasicRadioButtonMenuItemUI.java
+	(getPropertyPrefix): return correct prefix,
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	(getPropertyPrefix): include dot in prefix,
+	(getDefaultIcon): removed dot which is part of the prefix,
+	* javax/swing/plaf/basic/BasicToggleButtonUI.java
+	(getPropertyPrefix): include dot in prefix,
+	* javax/swing/plaf/metal/MetalCheckBoxUI.java: now extends 
+	MetalRadioButtonUI,
+	(getPropertyPrefix): implemented.
+
 2005-08-30  Mark Wielaard  <mark@klomp.org>
 	    Christian Schlichtherle  <christian@schlichtherle.de>
 
