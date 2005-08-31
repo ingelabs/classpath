@@ -1,3 +1,12 @@
+2005-08-31  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JTable.java:
+	(initializeLocalVars): Changed default autoResizeMode to 
+	AUTO_RESIZE_SUBSEQUENT_COLUMNS to match the JDK.
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(getMaximumSize): Implemented.
+	(getMinimumSize): Implemented.
+
 2005-08-31  Mark Wielaard  <mark@klomp.org>
 
 	* java/nio/charset/Charset.java (charsetForName): Try default provider
