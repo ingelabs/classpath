@@ -1,5 +1,11 @@
 2005-08-31  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	PR swing/23037
+	* javax/swing/JFileChooser.java
+	(changeToParentDirectory): If parent directory is null, do nothing.
+
+2005-08-31  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/JTable.java:
 	(initializeLocalVars): Changed default autoResizeMode to 
 	AUTO_RESIZE_SUBSEQUENT_COLUMNS to match the JDK.

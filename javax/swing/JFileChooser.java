@@ -415,7 +415,8 @@ public class JFileChooser extends JComponent implements Accessible
    */
   public void changeToParentDirectory()
   {
-    setCurrentDirectory(fsv.getParentDirectory(currentDir));
+    if (fsv.getParentDirectory(currentDir) != null)
+      setCurrentDirectory(fsv.getParentDirectory(currentDir));
   }
 
   /**
