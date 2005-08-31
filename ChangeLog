@@ -1,5 +1,13 @@
 2005-08-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* native/jni/gtk-peer/gtk_jawt.c
+	(classpath_jawt_get_default_display): Check if widget is realized
+	and return NULL if it is not.
+	(classpath_jawt_get_visualID): Likewise.
+	(classpath_jawt_get_drawable): Likewise.
+
+2005-08-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (setBounds): Only
 	add parent's x and y co-ordinates to translation if parent's
 	parent is not a window.
