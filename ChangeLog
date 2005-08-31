@@ -1,5 +1,13 @@
 2005-08-31  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalBorders.java
+	(textFieldBorder): new field,
+	(Flush3DBorder): new class,
+	(TextFieldBorder): new class,
+	(getTextFieldBorder): implemented.
+
+2005-08-31  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicButtonUI.java
 	(getPropertyPrefix): include dot in prefix,
 	(installDefaults): remove dot which is included in prefix now,
