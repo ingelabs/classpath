@@ -1,3 +1,10 @@
+2005-08-31  Mark Wielaard  <mark@klomp.org>
+
+	* java/nio/charset/Charset.java (charsetForName): Try default provider
+	before trying to load extra providers.
+	(availableCharsets): Explicitly add default provider Charsets.
+	(providers2): Don't include default provider.
+
 2005-08-31  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java
