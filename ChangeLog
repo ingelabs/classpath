@@ -1,5 +1,6 @@
 2005-08-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	PR awt/20782
 	* native/jni/gtk-peer/gtk_jawt.c
 	(classpath_jawt_get_default_display): Check if widget is realized
 	and return NULL if it is not.
