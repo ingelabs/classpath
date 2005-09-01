@@ -1,3 +1,9 @@
+2005-09-01  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/jar/JarFile.java (JarEnumeration.nextElement): Only
+	readSignature when verifying jar.
+	(getEntry): Likewise.
+
 2005-09-01  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	Fixes bug #23204
