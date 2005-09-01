@@ -1,3 +1,34 @@
+2005-09-01  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Added new field to keep track of contents in newly edited cell.
+	(isEditing): Made more intuitive.
+	(stopEditing): Changed because it was causing an infinite loop.
+	(installUI): Should be set to true when set.
+	(completeEditing): Passed newVal to valueForPathChanged instead.
+	(EditorTimerUpdate): Made timer faster because was not working well.
+	(actionPerformed): No need for 'BasicTreeUI.this.'
+	(update): Likewise.
+	(editingStopped): Likewise. Also, set newVal to appropriate value.
+	(editingCanceled): Likewise.
+	(keyPressed): Likewise.
+	(mousePressed): Likewise.
+	(treeExpanded): Likewise.
+	(treeCollapsed): Likewise.
+	(treeNodesChanged): Likewise.
+	(TreeNodesInserted): Likewise.
+	(treeNodesRemoved): Likewise.
+	(treeStructureChanged): Likewise.
+	(valueChanged): Editing is canceled when a new cell is clicked.
+	(getCellBounds): Initialized row for path.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(startEditingTimer): No need to start timer if it is already set.
+	* javax/swing/tree/DefaultTreeModel.java
+	(valueForPathChanged): Fixed so value of node is changed only if it
+	is a MutableTreeNode. Otherwise, it cannot be changed. Also, 
+	implemented with check if root node is the node being changed.
+	(nodeChanged): Should get the path of the node, not the parent.
+
 2005-08-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	PR awt/20782

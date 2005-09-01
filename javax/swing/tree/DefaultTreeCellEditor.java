@@ -654,7 +654,8 @@ public class DefaultTreeCellEditor
   {
     if (timer == null)
       timer = new javax.swing.Timer(1200, this);
-    timer.start();
+    if (!timer.isRunning())
+      timer.start();
   }
 
   /**
