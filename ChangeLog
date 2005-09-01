@@ -1,3 +1,13 @@
+2005-09-01  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	Fixes bug #23204
+	* javax/swing/ViewportLayout.java:
+	(preferredLayoutSize): If the view is scrollable, call its
+	getPreferredScrollableViewportSize method.
+	(layoutContainer): If the view is scrollable, check its 
+	getScrollableTracksViewportWidth and getScrollableTracksViewportHeight
+	methods before resizing the view to match the viewport.
+
 2005-09-01  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gtk_jawt.c
