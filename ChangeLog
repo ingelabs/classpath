@@ -1,5 +1,11 @@
 2005-09-01  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/ClasspathToolkit.java (getFont): Get non-public
+	constructor from Font. Chain "cannot happen" exceptions in
+	AssertionError.
+
+2005-09-01  Mark Wielaard  <mark@klomp.org>
+
 	* java/util/jar/JarFile.java (JarEnumeration.nextElement): Only
 	readSignature when verifying jar.
 	(getEntry): Likewise.

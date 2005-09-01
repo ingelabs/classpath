@@ -140,7 +140,7 @@ public abstract class ClasspathToolkit
     // java.awt.Font.Font(String,Map) constructor.
     try
       {
-        Constructor fontConstructor = Component.class.getConstructor
+        Constructor fontConstructor = Font.class.getDeclaredConstructor
           (new Class[] { String.class, Map.class });
         AccessController.doPrivileged
           (new SetAccessibleAction(fontConstructor));
@@ -148,23 +148,19 @@ public abstract class ClasspathToolkit
       }
     catch (IllegalAccessException e)
       {
-        throw new RuntimeException
-          ("couldn't call java.awt.Font.Font(String,Map) constructor");
+        throw new AssertionError(e);
       }
     catch (NoSuchMethodException e)
       {
-        throw new RuntimeException
-          ("couldn't call java.awt.Font.Font(String,Map) constructor");
+        throw new AssertionError(e);
       }
     catch (InstantiationException e)
       {
-        throw new RuntimeException
-          ("couldn't call java.awt.Font.Font(String,Map) constructor");
+        throw new AssertionError(e);
       }
     catch (InvocationTargetException e)
       {
-        throw new RuntimeException
-          ("couldn't call java.awt.Font.Font(String,Map) constructor");
+        throw new AssertionError(e);
       }
     return f;
   }
