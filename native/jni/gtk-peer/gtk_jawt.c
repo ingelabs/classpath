@@ -117,7 +117,7 @@ classpath_jawt_get_visualID (JNIEnv* env, jobject canvas)
       return visual->visualid;
     }
   else
-    return NULL;
+    return (VisualID) NULL;
 }
 
 /* Does not require locking: meant to be called after the drawing
@@ -151,7 +151,7 @@ classpath_jawt_get_drawable (JNIEnv* env, jobject canvas)
       return drawable;
     }
   else
-    return NULL;
+    return (Drawable) NULL;
 }
 
 jint

@@ -1,3 +1,9 @@
+2005-09-01  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gtk_jawt.c
+	(classpath_jawt_get_visualID): Cast returned NULL to VisualID.
+	(classpath_jawt_get_drawable): Cast returned NULL to Drawable.
+
 2005-09-01  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java:
