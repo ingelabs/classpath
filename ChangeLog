@@ -1,3 +1,14 @@
+2005-09-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/CosNaming/NamingContextOperations.java:
+        Do not inherit from CORBA object.
+        * org/omg/CosNaming/_NamingContextExtImplBase.java (_methods),
+        omg/CosNaming/_NamingContextImplBase.java (methods):
+        Made package private.
+        * omg/CosNaming/NamingContextPOA.java,
+        omg/CosNaming/NamingContextExtPOA.java,
+        org/omg/CosNaming/BindingIteratorPOA.java: New files.
+
 2005-09-02  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/image/CropImageFilter.java
@@ -56,12 +67,12 @@
 	(getTreeCellRendererComponent): Only set border color if val is lead
 	selection path.
 
-2005-09-02  <AudriusA@Bioinformatics.org>
+2005-09-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/Interceptor/ClientRequestInterceptors.java(send_poll): 
         remove ForwardRequest from declaration.
 
-2005-09-02  <AudriusA@Bioinformatics.org>
+2005-09-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/PortableInterceptor/CurrentOperations.java: 
         Inherit from org.omg.CORBA.CurrentOperations.
@@ -73,7 +84,7 @@
 	* javax/swing/JList.java:
 	(getPreferredScrollableViewportSize): Implemented.
 
-2005-09-02  <AudriusA@Bioinformatics.org>
+2005-09-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/IOR_Delegate.java (request),
         gnu/CORBA/SocketRepository.java (get_socket),

@@ -1,4 +1,4 @@
-/* _NamingContextImplBase.java --
+/* NamingContextPOA.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -40,15 +40,11 @@ package org.omg.CosNaming;
 
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.CompletionStatus;
-import org.omg.CORBA.DynamicImplementation;
 import org.omg.CORBA.ObjectHelper;
-import org.omg.CORBA.ObjectHolder;
-import org.omg.CORBA.ServerRequest;
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.InvokeHandler;
 import org.omg.CORBA.portable.OutputStream;
 import org.omg.CORBA.portable.ResponseHandler;
-import org.omg.CORBA.portable.Streamable;
 import org.omg.CosNaming.NamingContextPackage.AlreadyBound;
 import org.omg.CosNaming.NamingContextPackage.AlreadyBoundHelper;
 import org.omg.CosNaming.NamingContextPackage.CannotProceed;
@@ -59,58 +55,31 @@ import org.omg.CosNaming.NamingContextPackage.NotEmpty;
 import org.omg.CosNaming.NamingContextPackage.NotEmptyHelper;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import org.omg.CosNaming.NamingContextPackage.NotFoundHelper;
-
-import java.util.Hashtable;
+import org.omg.PortableServer.POA;
+import org.omg.PortableServer.Servant;
 
 /**
- * The naming context implementation base.
+ * The naming service servant. After implementing the abstract methods the
+ * instance of this class can be connected to an ORB using POA.
+ * 
+ * @since 1.4 
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class _NamingContextImplBase
-  extends DynamicImplementation
-  implements NamingContext, InvokeHandler
+public abstract class NamingContextPOA
+  extends Servant
+  implements NamingContextOperations, InvokeHandler
 {
-  /**
-   * Use serialVersionUID (v1.4) for interoperability.
-   */
-  private static final long serialVersionUID = -114280294134561035L;
-
-  /**
-   * As there are quite many methods, it may be sensible to use the hashtable.
-   * This field is also reused in NamingContextPOA.
-   */
-  static Hashtable methods = new Hashtable();
-
-  /**
-   * Put all methods into the table.
-   */
-  static
-  {
-    methods.put("bind", new Integer(0));
-    methods.put("rebind", new Integer(1));
-    methods.put("bind_context", new Integer(2));
-    methods.put("rebind_context", new Integer(3));
-    methods.put("resolve", new Integer(4));
-    methods.put("unbind", new Integer(5));
-    methods.put("new_context", new Integer(6));
-    methods.put("bind_new_context", new Integer(7));
-    methods.put("destroy", new Integer(8));
-    methods.put("list", new Integer(9));
-  }
-
-  /**
-   * Return the array of repository ids.
-   */
-  public String[] _ids()
+  /** @inheritDoc */
+  public String[] _all_interfaces(POA poa, byte[] object_ID)
   {
     return new String[] { NamingContextHelper.id() };
   }
 
   /**
-   * The server calls this method after receiving the request message
-   * from client. The implementation base calls one of its abstract
-   * methods to perform the requested operation.
+   * The server calls this method after receiving the request message from
+   * client. The implementation base calls one of its abstract methods to
+   * perform the requested operation.
    *
    * @param method the method being invoked.
    * @param in the stream to read parameters from.
@@ -121,13 +90,13 @@ public abstract class _NamingContextImplBase
   public OutputStream _invoke(String method, InputStream in, ResponseHandler rh)
   {
     OutputStream out = null;
-    Integer call_method = (Integer) methods.get(method);
+    Integer call_method = (Integer) _NamingContextImplBase.methods.get(method);
     if (call_method == null)
       throw new BAD_OPERATION(0, CompletionStatus.COMPLETED_MAYBE);
 
     switch (call_method.intValue())
       {
-        case 0 : // bind
+        case 0: // bind
         {
           try
             {
@@ -159,7 +128,7 @@ public abstract class _NamingContextImplBase
           break;
         }
 
-        case 1 : // rebind
+        case 1: // rebind
         {
           try
             {
@@ -186,7 +155,7 @@ public abstract class _NamingContextImplBase
           break;
         }
 
-        case 2 : // bind_context
+        case 2: // bind_context
         {
           try
             {
@@ -218,7 +187,7 @@ public abstract class _NamingContextImplBase
           break;
         }
 
-        case 3 : // rebind_context
+        case 3: // rebind_context
         {
           try
             {
@@ -245,7 +214,7 @@ public abstract class _NamingContextImplBase
           break;
         }
 
-        case 4 : // resolve
+        case 4: // resolve
         {
           try
             {
@@ -273,7 +242,7 @@ public abstract class _NamingContextImplBase
           break;
         }
 
-        case 5 : // unbind
+        case 5: // unbind
         {
           try
             {
@@ -299,7 +268,7 @@ public abstract class _NamingContextImplBase
           break;
         }
 
-        case 6 : // new_context
+        case 6: // new_context
         {
           NamingContext __result = null;
           __result = new_context();
@@ -308,7 +277,7 @@ public abstract class _NamingContextImplBase
           break;
         }
 
-        case 7 : // bind_new_context
+        case 7: // bind_new_context
         {
           try
             {
@@ -341,7 +310,7 @@ public abstract class _NamingContextImplBase
           break;
         }
 
-        case 8 : // destroy
+        case 8: // destroy
         {
           try
             {
@@ -356,7 +325,7 @@ public abstract class _NamingContextImplBase
           break;
         }
 
-        case 9 : // list
+        case 9: // list
         {
           int amount = in.read_ulong();
           BindingListHolder a_list = new BindingListHolder();
@@ -368,7 +337,7 @@ public abstract class _NamingContextImplBase
           break;
         }
 
-        default :
+        default:
           throw new BAD_OPERATION(0, CompletionStatus.COMPLETED_MAYBE);
       }
 
@@ -376,38 +345,21 @@ public abstract class _NamingContextImplBase
   }
 
   /**
-   * The obsolete invocation using server request. Implemented for
-   * compatibility reasons, but is it more effectinve to use
-   * {@link #_invoke}.
-   *
-   * @param request a server request.
+   * Get the CORBA object that delegates calls to this servant. The servant must
+   * be already connected to an ORB.
    */
-  public void invoke(ServerRequest request)
+  public NamingContext _this()
   {
-    Streamable result = null;
-
-    // The server request contains no required result type.
-    Integer call_method = (Integer) methods.get(request.operation());
-    if (call_method == null)
-      throw new BAD_OPERATION(0, CompletionStatus.COMPLETED_MAYBE);
-
-    switch (call_method.intValue())
-      {
-        case 4 : // resolve, object
-          result = new ObjectHolder();
-          break;
-
-        case 6 : // new_context, NamingContext
-        case 7 : // bind_new_context, NamingContext
-        {
-          result = new NamingContextHolder();
-          break;
-        }
-
-        default : // void for others.
-          result = null;
-      }
-
-    gnu.CORBA.ServiceRequestAdapter.invoke(request, this, result);
+    return NamingContextHelper.narrow(super._this_object());
   }
+
+  /**
+   * Get the CORBA object that delegates calls to this servant. Connect to the
+   * given ORB, if needed.
+   */
+  public NamingContext _this(org.omg.CORBA.ORB orb)
+  {
+    return NamingContextHelper.narrow(super._this_object(orb));
+  }
+
 }
