@@ -1,3 +1,10 @@
+2005-09-02  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/image/CropImageFilter.java
+	(setPixels(int,int,int,int,ColorModel,byte[],int,int)): Set
+	consumer pixels at 0, 0 location.
+	(setPixels(int,int,int,int,ColorModel,int[],int,int)): Likewise.
+
 2005-09-02  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
