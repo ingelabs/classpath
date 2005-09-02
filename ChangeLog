@@ -1,3 +1,11 @@
+2005-09-02  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JTree.java:
+	(getScrollableTracksViewportHeight): Return true if parent is a 
+	JViewport and parent's height is smaller than ours.
+	(getScrollableTracksViewportWidth): Return true if parent is a
+	JViewport and parent's width is smaller than ours.
+
 2005-09-02  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTree.java

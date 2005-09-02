@@ -584,15 +584,19 @@ public class JTree
 		return 1;
 	}
 
-	public boolean getScrollableTracksViewportWidth()
-	{
-		return false;
-	}
-
-	public boolean getScrollableTracksViewportHeight()
-	{
-		return false;
-	}
+  public boolean getScrollableTracksViewportWidth()
+  {
+    if (getParent() instanceof JViewport)
+      return ((JViewport) getParent()).getHeight() > getPreferredSize().height;
+    return false;
+  }
+  
+  public boolean getScrollableTracksViewportHeight()
+  {
+    if (getParent() instanceof JViewport)
+      return ((JViewport) getParent()).getWidth() > getPreferredSize().width;
+    return false;
+  }
 
 	/**
 	 * Adds a <code>TreeExpansionListener</code> object to the tree.
