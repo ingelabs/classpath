@@ -1,3 +1,30 @@
+2005-09-02  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/processor/CommandSet.java [vm]: Remove.
+	VMVirtualMachine is entirely static.
+	* gnu/classpath/jdwp/event/EventManager.java (requestEvent)
+	(deleteRequest, clearRequests): Change all VMVirtualMachine calls
+	to reflect new API.
+	* gnu/classpath/jdwp/processor/ClassLoaderReferenceCommandSet.java
+	(executeVisibleClasses): Likewise.
+	* gnu/classpath/jdwp/processor/ClassTypeCommandSet.java
+	(invokeMethod): Likewise.
+	* gnu/classpath/jdwp/processor/MethodCommandSet.java
+	(executeLineTable, executeVariableTable): Likewise.
+	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java
+	(executeInvokeMethod): Likewise.
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java
+	(executeSourceFile, executeStatus): Likewise.
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java
+	(executeGetValues, ,executeSetValues, executeThisObject): Likewise.
+	* gnu/classpath/jdwp/processor/ThreadReferenceCommandSet.java
+	(executeSuspend, executeResume, executeStatus, executeFrames)
+	(executeFrameCount, executeSuspendCount): Likewise.	
+	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
+	(executeClassesBySignature, executeClassesBySignature)
+	(executeAllClasses, executeDispose, executeSuspend)
+	(executeResume): Likewise.
+
 2005-09-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/CosNaming/NamingContextOperations.java:

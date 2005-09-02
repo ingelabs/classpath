@@ -41,6 +41,7 @@ exception statement from your version. */
 package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.JdwpConstants;
+import gnu.classpath.jdwp.VMVirtualMachine;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
@@ -93,7 +94,7 @@ public class ClassLoaderReferenceCommandSet
   {
     ObjectId oId = idMan.readObjectId(bb);
     ClassLoader cl = (ClassLoader) oId.getObject();
-    ArrayList loadRequests = vm.getLoadRequests(cl);
+    ArrayList loadRequests = VMVirtualMachine.getLoadRequests(cl);
     os.writeInt(loadRequests.size());
     for (Iterator iter = loadRequests.iterator(); iter.hasNext();)
       {

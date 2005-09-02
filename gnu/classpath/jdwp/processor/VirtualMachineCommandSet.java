@@ -39,8 +39,8 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.Jdwp;
 import gnu.classpath.jdwp.JdwpConstants;
+import gnu.classpath.jdwp.VMVirtualMachine;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
@@ -64,9 +64,6 @@ import java.util.Properties;
 public class VirtualMachineCommandSet
   extends CommandSet
 {
-  // The Jdwp object
-  private final Jdwp jdwp = Jdwp.getDefault();
-
   public boolean runCommand(ByteBuffer bb, DataOutputStream os, byte command)
     throws JdwpException
   {
@@ -180,7 +177,7 @@ public class VirtualMachineCommandSet
     ArrayList allMatchingClasses = new ArrayList();
 
     // This will be an Iterator over all loaded Classes
-    Iterator iter = vm.getAllLoadedClasses();
+    Iterator iter = VMVirtualMachine.getAllLoadedClasses();
 
     while (iter.hasNext())
       {
@@ -196,7 +193,7 @@ public class VirtualMachineCommandSet
         Class clazz = (Class) allMatchingClasses.get(i);
         ReferenceTypeId id = idMan.getReferenceTypeId(clazz);
         id.writeTagged(os);
-        int status = vm.getStatus(clazz);
+        int status = VMVirtualMachine.getClassStatus(clazz);
         os.writeInt(status);
       }
   }
@@ -207,14 +204,14 @@ public class VirtualMachineCommandSet
     // Disable garbage collection while we're collecting the info on loaded
     // classes so we some classes don't get collected between the time we get
     // the count and the time we get the list
-    vm.disableGarbageCollection();
+    //VMVirtualMachine.disableGarbageCollection();
 
-    int classCount = vm.getAllLoadedClassesCount();
+    int classCount = VMVirtualMachine.getAllLoadedClassesCount();
     os.writeInt(classCount);
 
     // This will be an Iterator over all loaded Classes
-    Iterator iter = vm.getAllLoadedClasses();
-    vm.enableGarbageCollection();
+    Iterator iter = VMVirtualMachine.getAllLoadedClasses();
+    //VMVirtualMachine.enableGarbageCollection();
     int count = 0;
 
     // Note it's possible classes were created since out classCount so make
@@ -226,7 +223,7 @@ public class VirtualMachineCommandSet
         id.writeTagged(os);
         String sig = Signature.computeClassSignature(clazz);
         JdwpString.writeString(os, sig);
-        int status = vm.getStatus(clazz);
+        int status = VMVirtualMachine.getClassStatus(clazz);
         os.writeInt(status);
       }
   }
@@ -270,7 +267,7 @@ public class VirtualMachineCommandSet
   private void executeTopLevelThreadGroups(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    ThreadGroup jdwpGroup = jdwp.getJdwpThreadGroup();
+    ThreadGroup jdwpGroup = Thread.currentThread().getThreadGroup ();
     ThreadGroup root = getRootThreadGroup(jdwpGroup);
 
     os.writeInt(1); // Just one top level group allowed?
@@ -284,11 +281,11 @@ public class VirtualMachineCommandSet
     // suspended multiple times, we likely need a way to keep track of how many
     // times a thread has been suspended or else a stronger resume method for
     // this purpose
-    // vm.resumeAllThreadsExcept(jdwp.getJdwpThreadGroup());
+    // VMVirtualMachine.resumeAllThreads ();
 
     // Simply shutting down the jdwp layer will take care of the rest of the
     // shutdown other than disabling debugging in the VM
-    // vm.disableDebugging();
+    // VMVirtualMachine.disableDebugging();
 
     // Don't implement this until we're sure how to remove all the debugging
     // effects from the VM.
@@ -311,20 +308,20 @@ public class VirtualMachineCommandSet
   private void executeSuspend(ByteBuffer bb, DataOutputStream os)
     throws JdwpException
   {
-    vm.suspendAllThreadsExcept(jdwp.getJdwpThreadGroup());
+    VMVirtualMachine.suspendAllThreads ();
   }
 
   private void executeResume(ByteBuffer bb, DataOutputStream os)
     throws JdwpException
   {
-    vm.resumeAllThreadsExcept(jdwp.getJdwpThreadGroup());
+    VMVirtualMachine.resumeAllThreads ();
   }
 
   private void executeExit(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
     int exitCode = bb.getInt();
-    jdwp.setExit(exitCode);
+    System.exit (exitCode);
   }
 
   private void executeCreateString(ByteBuffer bb, DataOutputStream os)

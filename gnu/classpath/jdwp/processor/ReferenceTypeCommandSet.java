@@ -40,6 +40,7 @@ exception statement from your version. */
 package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.JdwpConstants;
+import gnu.classpath.jdwp.VMVirtualMachine;
 import gnu.classpath.jdwp.exception.InvalidFieldException;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
@@ -241,7 +242,7 @@ public class ReferenceTypeCommandSet
     Class clazz = refId.getType();
 
     // We'll need to go into the jvm for this unless there's an easier way
-    String sourceFileName = vm.getSourceFile(clazz);
+    String sourceFileName = VMVirtualMachine.getSourceFile(clazz);
     JdwpString.writeString(os, sourceFileName);
     // clazz.getProtectionDomain().getCodeSource().getLocation();
   }
@@ -268,7 +269,7 @@ public class ReferenceTypeCommandSet
     Class clazz = refId.getType();
 
     // I don't think there's any other way to get this
-    int status = vm.getStatus(clazz);
+    int status = VMVirtualMachine.getClassStatus(clazz);
     os.writeInt(status);
   }
 

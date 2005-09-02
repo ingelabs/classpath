@@ -202,7 +202,7 @@ public class EventManager
       }
 
     // Register the event with the VM
-    VMVirtualMachine.getDefault().registerEvent (request);
+    VMVirtualMachine.registerEvent (request);
     requests.put (new Integer (request.getId ()), request);
   }
 
@@ -227,7 +227,7 @@ public class EventManager
     EventRequest request = (EventRequest) requests.get (iid);
     if (request != null)
       {
-	VMVirtualMachine.getDefault().unregisterEvent (request);
+	VMVirtualMachine.unregisterEvent (request);
 	requests.remove (iid);
       }
   }
@@ -247,7 +247,7 @@ public class EventManager
 	throw new IllegalArgumentException ("invalid event kind: " + kind);
       }
 
-    VMVirtualMachine.getDefault().clearEvents (kind);
+    VMVirtualMachine.clearEvents (kind);
     requests.clear ();
   }
 

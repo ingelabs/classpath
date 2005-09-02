@@ -40,6 +40,7 @@ exception statement from your version. */
 package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.JdwpConstants;
+import gnu.classpath.jdwp.VMVirtualMachine;
 import gnu.classpath.jdwp.exception.InvalidFieldException;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
@@ -214,18 +215,22 @@ public class ObjectReferenceCommandSet
       }
 
     int invokeOptions = bb.getInt();
-
-    if ((invokeOptions & JdwpConstants.InvokeOptions.INVOKE_SINGLE_THREADED) != 0)
-      { // We must suspend all other running threads first
-        vm.suspendAllThreadsExcept(Thread.currentThread().getThreadGroup());
+    boolean suspend = ((invokeOptions
+			& JdwpConstants.InvokeOptions.INVOKE_SINGLE_THREADED)
+		       != 0);
+    if (suspend)
+      {
+	// We must suspend all other running threads first
+        VMVirtualMachine.suspendAllThreads ();
       }
-    boolean nonVirtual;
-    if ((invokeOptions & JdwpConstants.InvokeOptions.INVOKE_NONVIRTUAL) != 0)
-      nonVirtual = true;
-    else
-      nonVirtual = false;
 
-    MethodResult mr = vm.executeMethod(obj, thread, clazz, method, values, nonVirtual);
+    boolean nonVirtual = ((invokeOptions
+			   & JdwpConstants.InvokeOptions.INVOKE_NONVIRTUAL)
+			  != 0);
+
+    MethodResult mr = VMVirtualMachine.executeMethod(obj, thread,
+						     clazz, method,
+						     values, nonVirtual);
     Object value = mr.getReturnedValue();
     Exception exception = mr.getThrownException();
 

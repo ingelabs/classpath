@@ -39,8 +39,9 @@ exception statement from your version. */
 
 package gnu.classpath.jdwp.processor;
 
-import gnu.classpath.jdwp.VMFrame;
 import gnu.classpath.jdwp.JdwpConstants;
+import gnu.classpath.jdwp.VMFrame;
+import gnu.classpath.jdwp.VMVirtualMachine;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
@@ -105,7 +106,7 @@ public class StackFrameCommandSet
     // has a reference to them. Furthermore they are not ReferenceTypeIds since
     // these are held permanently and we want these to be held only as long as
     // the Thread is suspended.
-    VMFrame frame = vm.getVMFrame(thread, bb);
+    VMFrame frame = VMVirtualMachine.getFrame(thread, bb);
     int slots = bb.getInt();
     os.writeInt(slots); // Looks pointless but this is the protocol
     for (int i = 0; i < slots; i++)
@@ -123,7 +124,7 @@ public class StackFrameCommandSet
     ObjectId tId = idMan.readObjectId(bb);
     Thread thread = (Thread) tId.getObject();
 
-    VMFrame frame = vm.getVMFrame(thread, bb);
+    VMFrame frame = VMVirtualMachine.getFrame(thread, bb);
 
     int slots = bb.getInt();
     for (int i = 0; i < slots; i++)
@@ -140,7 +141,7 @@ public class StackFrameCommandSet
     ObjectId tId = idMan.readObjectId(bb);
     Thread thread = (Thread) tId.getObject();
 
-    VMFrame frame = vm.getVMFrame(thread, bb);
+    VMFrame frame = VMVirtualMachine.getFrame(thread, bb);
 
     Object thisObject = frame.getObject();
     Value.writeTaggedValue(os, thisObject);

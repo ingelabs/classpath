@@ -39,6 +39,7 @@ exception statement from your version. */
 package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.JdwpConstants;
+import gnu.classpath.jdwp.VMVirtualMachine;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
 import gnu.classpath.jdwp.exception.NotImplementedException;
@@ -105,7 +106,7 @@ public class MethodCommandSet
     ObjectId oid = idMan.readObjectId(bb);
     Method method = (Method) oid.getObject();
 
-    LineTable lt = vm.getLineTable(clazz, method);
+    LineTable lt = VMVirtualMachine.getLineTable(clazz, method);
     lt.write(os);
   }
 
@@ -118,7 +119,7 @@ public class MethodCommandSet
     ObjectId oid = idMan.readObjectId(bb);
     Method method = (Method) oid.getObject();
 
-    VariableTable vt = vm.getVarTable(clazz, method);
+    VariableTable vt = VMVirtualMachine.getVarTable(clazz, method);
     vt.write(os);
   }
 

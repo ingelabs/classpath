@@ -41,6 +41,7 @@ exception statement from your version. */
 package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.JdwpConstants;
+import gnu.classpath.jdwp.VMVirtualMachine;
 import gnu.classpath.jdwp.exception.InvalidFieldException;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
@@ -188,32 +189,29 @@ public class ClassTypeCommandSet
       {
         values[i] = Value.getObj(bb);
       }
-    boolean suspendSuccess = false;
+
     int invokeOpts = bb.getInt();
+    boolean suspend = ((invokeOpts
+			& JdwpConstants.InvokeOptions.INVOKE_SINGLE_THREADED)
+		       != 0);
     try
       {
-        if ((invokeOpts & JdwpConstants.InvokeOptions.INVOKE_SINGLE_THREADED) 
-            != 0)
-          {
-            // We must suspend all running threads first
-            suspendSuccess = vm.suspendAllThreadsExcept(Thread.currentThread().
-                                                          getThreadGroup());
-          }
-        MethodResult mr = vm.executeMethod(null, thread, clazz, method, values,
-                                           false);
-        if (suspendSuccess)
-          { // We must call resume if we suspended threads
-            suspendSuccess = false;
-            vm.resumeAllThreadsExcept(Thread.currentThread().getThreadGroup());
-          }
+        if (suspend)
+	  VMVirtualMachine.suspendAllThreads ();
+
+        MethodResult mr = VMVirtualMachine.executeMethod(null, thread,
+							 clazz, method,
+							 values, false);
+        if (suspend)
+	  VMVirtualMachine.resumeAllThreads ();
+
         return mr;
       }
     catch (Exception ex)
       {
-        if (suspendSuccess)
-          { // We must call resume if we suspended threads
-            vm.resumeAllThreadsExcept(Thread.currentThread().getThreadGroup());
-          }
+        if (suspend)
+	  VMVirtualMachine.resumeAllThreads ();
+
         throw new JdwpInternalErrorException(ex);
       }
   }

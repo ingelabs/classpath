@@ -41,7 +41,6 @@ package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.VMIdManager;
-import gnu.classpath.jdwp.VMVirtualMachine;
 
 import java.io.DataOutputStream;
 import java.nio.ByteBuffer;
@@ -58,11 +57,6 @@ public abstract class CommandSet
    * The VM's ID manager
    */
   protected final VMIdManager idMan = VMIdManager.getDefault ();
-
-  /**
-   * The virtual machine description
-   */
-  protected final VMVirtualMachine vm = VMVirtualMachine.getDefault ();
 
   /**
    * Runs the given command with the data in distr and writes the data for the
