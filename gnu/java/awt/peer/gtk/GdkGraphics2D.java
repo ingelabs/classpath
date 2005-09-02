@@ -107,8 +107,7 @@ public class GdkGraphics2D extends Graphics2D
     if (Configuration.INIT_LOAD_LIBRARY)
       System.loadLibrary("gtkpeer");
 
-    if (GtkToolkit.useGraphics2D())
-      initStaticState();
+    initStaticState();
   }
   
   static native void initStaticState();
