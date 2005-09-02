@@ -54,13 +54,14 @@ import org.omg.CORBA.BAD_INV_ORDER;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public interface CurrentOperations
+  extends org.omg.CORBA.CurrentOperations
 {
   /**
    * Get data from the slot with the given slot_id.
    *
    * @param slot_id the slot slot_id.
    *
-       * @return the Any that was stored in the slot. If the given slot has not been
+   * @return the Any that was stored in the slot. If the given slot has not been
    * set, the returned Any contains a type code with a TCKind value of tk_null
    * and has no value.
    *

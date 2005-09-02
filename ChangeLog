@@ -1,3 +1,10 @@
+2005-09-02  <AudriusA@Bioinformatics.org>
+
+        * org/omg/PortableInterceptor/CurrentOperations.java: 
+        Inherit from org.omg.CORBA.CurrentOperations.
+        * org/omg/PortableInterceptor/ClientRequestInterceptorOperations.java
+        (send_poll): Remove ForwardRequest from declaration.
+
 2005-09-02  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JList.java:

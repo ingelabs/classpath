@@ -123,10 +123,6 @@ public interface ClientRequestInterceptorOperations
    * @throws SystemException if it does, the send_poll is not called for the
    * subsequent interceptors, calling receive_exception instead. The completion
    * status of this exception must be COMPLETED_NO.
-   *
-   * @throws ForwardRequest to forward the invocation to another target. The
-   * send_request is not called for the subsequent interceptors, calling
-   * receive_other instead.
    */
-  void send_poll(ClientRequestInfo info) throws ForwardRequest;
+  void send_poll(ClientRequestInfo info);
 }
