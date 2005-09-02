@@ -1487,8 +1487,7 @@ public class BasicTreeUI
                 count++;
                 Object nextNode = getNextVisibleNode(node);
                 if (nextNode != null)
-                  maxWidth = Math.max(
-                                      maxWidth,
+                  maxWidth = Math.max(maxWidth,
                                       (int) (getCellBounds(0, 0, nextNode).getWidth()));
                 node = nextNode;
               }
@@ -2270,8 +2269,8 @@ public class BasicTreeUI
           if (bounds.contains(click.x, click.y))
             inBounds = true;
           else if (hasControlIcons()
-                   && (click.x < (bounds.x - rightChildIndent + 5) && click.x > (bounds.x
-                                                                                 - rightChildIndent - 5)))
+                   && (click.x < (bounds.x - rightChildIndent + 5) && 
+                       click.x > (bounds.x - rightChildIndent - 5)))
             cntlClick = true;
 
           if ((inBounds || cntlClick) && tree.isVisible(path))
@@ -2286,7 +2285,7 @@ public class BasicTreeUI
                     tree.expandPath(path);
                 }
 
-              if (tree.isEditable())
+              if (!cntlClick && tree.isEditable())
                 startEditing(path, e);
             }
         }
