@@ -570,7 +570,7 @@ public class JTree
 	 */
 	public Dimension getPreferredScrollableViewportSize()
 	{
-		return null;
+	  return new Dimension (getPreferredSize().width, getVisibleRowCount()*getRowHeight());
 	}
 
 	public int getScrollableUnitIncrement(Rectangle visibleRect,
