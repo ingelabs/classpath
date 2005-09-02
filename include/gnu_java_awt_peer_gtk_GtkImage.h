@@ -13,6 +13,7 @@ extern "C"
 JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_getPixels (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_setPixels (JNIEnv *env, jobject, jintArray);
 JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_loadPixbuf (JNIEnv *env, jobject, jstring);
+JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_loadImageFromData (JNIEnv *env, jobject, jbyteArray);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_createPixmap (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_freePixmap (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImage_createScaledPixmap (JNIEnv *env, jobject, jobject, jint);

@@ -1,3 +1,15 @@
+2005-09-01  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR awt/23536
+	* gnu/java/awt/peer/gtk/GtkImage.java,
+	gnu_java_awt_peer_gtk_GtkImage.c (GtkImage(URL)): New constructor.
+	(GtkImage(byte[])) New constructor.
+	(loadImageFromData): New method.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (createImage(URL)): Call
+	GtkImage(URL) constructor.
+	(createImage(byte[],int,int)): Call GtkImage(byte[]) constructor.
+	* include/gnu_java_awt_peer_gtk_GtkImage.h: Regenerate.
+
 2005-09-01  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/ClasspathToolkit.java (getFont): Get non-public

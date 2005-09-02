@@ -266,11 +266,7 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
     if (useGraphics2D())
       return bufferedImageOrError(GdkPixbufDecoder.createBufferedImage (url));
     else
-      {
-        GdkPixbufDecoder d = new GdkPixbufDecoder (url);
-        GtkImage image = new GtkImage (d);
-        return image;        
-      }
+      return new GtkImage (url);
   }
 
   public Image createImage (ImageProducer producer) 
@@ -290,11 +286,9 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
                                                                         imagelength));
     else
       {
-        GdkPixbufDecoder d = new GdkPixbufDecoder (imagedata,
-                                                   imageoffset, 
-                                                   imagelength);
-        GtkImage image = new GtkImage (d);
-        return image;        
+        byte[] datacopy = new byte[imagelength];
+        System.arraycopy (imagedata, imageoffset, datacopy, 0, imagelength);
+        return new GtkImage (datacopy);
       }
   }
   

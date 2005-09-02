@@ -51,6 +51,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
+import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
+import java.net.URL;
 import gnu.classpath.Pointer;
 
 /**
@@ -129,9 +132,14 @@ public class GtkImage extends Image
   private native void setPixels(int[] pixels);
 
   /**
-   * Loads an image using gdk-pixbuf.
+   * Loads an image using gdk-pixbuf from a file.
    */
   private native boolean loadPixbuf(String name);
+
+  /**
+   * Loads an image using gdk-pixbuf from data.
+   */
+  private native boolean loadImageFromData(byte[] data);
 
   /**
    * Allocates a Gtk Pixbuf or pixmap
@@ -207,6 +215,58 @@ public class GtkImage extends Image
     isLoaded = true;
     observers = null;
     offScreen = false;
+    props = new Hashtable();
+  }
+
+  /**
+   * Constructs a GtkImage from a byte array of an image file.
+   *
+   * @throws IllegalArgumentException if the image could not be
+   * loaded.
+   */
+  public GtkImage (byte[] data)
+  {
+    if (loadImageFromData (data) != true)
+      throw new IllegalArgumentException ("Couldn't load image.");
+
+    isLoaded = true;
+    observers = null;
+    offScreen = false;
+    props = new Hashtable();
+    errorLoading = false;
+  }
+
+  /**
+   * Constructs a GtkImage from a URL. May result in an error image.
+   */
+  public GtkImage (URL url)
+  {
+    isLoaded = false;
+    observers = new Vector();
+    errorLoading = false;
+    if( url == null)
+      return;
+    ByteArrayOutputStream baos = new ByteArrayOutputStream (5000);
+    try
+      {
+        BufferedInputStream bis = new BufferedInputStream (url.openStream());
+
+        byte[] buf = new byte[5000];
+        int n = 0;
+
+        while ((n = bis.read(buf)) != -1)
+	  baos.write(buf, 0, n); 
+        bis.close();
+      }
+    catch(IOException e)
+      {
+	throw new IllegalArgumentException ("Couldn't load image.");
+      }
+    if (loadImageFromData (baos.toByteArray()) != true)
+      throw new IllegalArgumentException ("Couldn't load image.");
+
+    isLoaded = true;
+    observers = null;
     props = new Hashtable();
   }
 

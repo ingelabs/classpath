@@ -97,6 +97,54 @@ Java_gnu_java_awt_peer_gtk_GtkImage_loadPixbuf
   return JNI_TRUE;
 }
 
+/*
+ * Creates the image from an array of java bytes.
+ */
+JNIEXPORT jboolean JNICALL
+Java_gnu_java_awt_peer_gtk_GtkImage_loadImageFromData
+  (JNIEnv *env, jobject obj, jbyteArray data)
+{
+  jbyte *src;
+  GdkPixbuf* pixbuf;
+  GdkPixbufLoader* loader;
+  int len;
+  int width;
+  int height;
+
+  gdk_threads_enter ();
+
+  src = (*env)->GetByteArrayElements (env, data, NULL);
+  len = (*env)->GetArrayLength (env, data);
+
+  loader = gdk_pixbuf_loader_new ();
+
+  gdk_pixbuf_loader_write (loader, (guchar *)src, len, NULL);
+  gdk_pixbuf_loader_close (loader, NULL);
+
+  (*env)->ReleaseByteArrayElements (env, data, src, 0);
+
+  pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
+
+  if (pixbuf == NULL)
+    {
+      createRawData (env, obj, NULL);
+
+      gdk_threads_leave ();
+
+      return JNI_FALSE;
+    }
+
+  width =  gdk_pixbuf_get_width (pixbuf);
+  height = gdk_pixbuf_get_height (pixbuf);
+
+  createRawData (env, obj, pixbuf);
+  setWidthHeight(env, obj, width, height);
+
+  gdk_threads_leave ();
+
+  return JNI_TRUE;
+}
+
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkImage_createFromPixbuf
 (JNIEnv *env, jobject obj)
