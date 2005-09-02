@@ -517,7 +517,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       new ColorUIResource(Color.lightGray),
       "InternalFrame.maximizeIcon", BasicIconFactory.createEmptyFrameIcon(),
       "InternalFrame.minimizeIcon", BasicIconFactory.createEmptyFrameIcon(),
-      "InternalFrame.titleFont", new FontUIResource("Dialog", Font.PLAIN, 12),
+      "InternalFrame.titleFont", new FontUIResource("Dialog", Font.BOLD, 12),
       "InternalFrame.windowBindings", new Object[] {
         "shift ESCAPE", "showSystemMenu",
         "ctrl SPACE",  "showSystemMenu",

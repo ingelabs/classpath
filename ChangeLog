@@ -1,3 +1,9 @@
+2005-09-02  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): set correct value for 
+	'InternalFrame.titleFont'.
+
 2005-09-02  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/ClasspathToolkit.java (registerImageIOSpis):
