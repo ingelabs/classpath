@@ -1,3 +1,13 @@
+2005-09-02  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/ClasspathToolkit.java (registerImageIOSpis):
+	Reintroduced (empty) method.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (static): Moved initialization
+	of imageIOSpis to new registerImageIOSpis() method.
+	(registerImageIOSpis): New (overloaded) method.
+	* javax/imageio/spi/IIORegistry.java (IIORegistry): Call to Toolkit
+	registration method if instanceof ClasspathToolkit.
+
 2005-09-02  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	PR awt/22979

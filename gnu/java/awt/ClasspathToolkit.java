@@ -1,5 +1,5 @@
 /* ClasspathToolkit.java -- Abstract superclass for Classpath toolkits.
-   Copyright (C) 2003, 2004  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -203,4 +203,11 @@ public abstract class ClasspathToolkit
    * @param w The embedded window with which to associate a peer.
    */
   public abstract EmbeddedWindowPeer createEmbeddedWindow (EmbeddedWindow w);
+
+  /**
+   * Used to register ImageIO SPIs provided by the toolkit.
+   */
+   public void registerImageIOSpis(IIORegistry reg)
+   {
+   }
 }

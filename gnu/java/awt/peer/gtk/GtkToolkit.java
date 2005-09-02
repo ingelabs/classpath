@@ -122,9 +122,6 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 
     gtkInit(portableNativeSync);
 
-    // Register ImageIO SPIs
-    GdkPixbufDecoder.registerSpis( IIORegistry.getDefaultInstance() );
-
     mainThread = new Thread ("GTK main thread")
       {
         public void run ()
@@ -651,6 +648,11 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
   public RobotPeer createRobot (GraphicsDevice screen) throws AWTException
   {
     return new GdkRobotPeer (screen);
+  }
+
+  public void registerImageIOSpis(IIORegistry reg)
+  {
+    GdkPixbufDecoder.registerSpis(reg);
   }
 
   public static native void gtkMain();
