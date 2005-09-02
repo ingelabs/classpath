@@ -1,3 +1,40 @@
+2005-09-02  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTree.java
+	(installUI): TreeSelectionListener removed because added too many times.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	Fixed names for some tree defaults.
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Added new fields for editing and keyboard actions.
+	(setCellEditor): Took out unneeded if statement.
+	(isEditing): Returned boolean instead.
+	(updateCellEditor): Used set method.
+	(installDefaults): Set focus to tree.
+	(installKeyBoardActions): Implemented.
+	(convertModifiers): New function implemented.
+	(installUI): Used set method and initialized isEditing.
+	(startEditing): set isEditing.
+	(TreeAction): New class implemented to perform keyboard actions.
+	(ActionListenerProxy): New private class used to distribute the key
+	board actions to the true receiver.
+	(editingStopped): Added code to prevent NPEs. set isEditing and focus 
+	to tree. Also, removed TreeSelectionListeners for cellEditor.
+	(editingCanceled): Likewise.
+	(keyPressed): Removed code, not needed anymore.
+	(actionPerformed): Implemented for up/down keyboard actions.
+	(actionPerformed): Implemented for left/right keyboard actions.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(DefaultTreeCellEditor): Set lastPath.
+	(isCellEditable): editingComponent should be configured if has not been.
+	(stopCellEditing): No need to set cell editor to null here.
+	(cancelCellEditing): Likewise.
+	(valueChanged): Set tPath to the path that was last selected. Used for
+	the click-pause-click implementation.
+	(actionPerformed): Re-implemented in a simplier fashion.
+	* javax/swing/tree/DefaultTreeCellRenderer.java
+	(getTreeCellRendererComponent): Only set border color if val is lead
+	selection path.
+
 2005-09-02  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/Interceptor/ClientRequestInterceptors.java(send_poll): 

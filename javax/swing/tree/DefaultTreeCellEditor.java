@@ -340,7 +340,8 @@ public class DefaultTreeCellEditor
     if (editor == null)
       editor = createTreeCellEditor();
     realEditor = editor;
-
+    
+    lastPath = tree.getLeadSelectionPath();
     tree.addTreeSelectionListener(this);
     editingContainer = createContainer();
     UIDefaults defaults = UIManager.getLookAndFeelDefaults();
@@ -360,7 +361,7 @@ public class DefaultTreeCellEditor
   private void configureEditingComponent(JTree tree,
                                          DefaultTreeCellRenderer renderer,
                                          TreeCellEditor editor)
-  {
+  {    
     if (tree != null && lastPath != null)
       {
         Object val = lastPath.getLastPathComponent();
@@ -499,7 +500,10 @@ public class DefaultTreeCellEditor
    * @return true if editing can be started
    */
   public boolean isCellEditable(EventObject event)
-  {     
+  { 
+    if (editingComponent == null)
+        configureEditingComponent(tree, renderer, realEditor);
+    
     if (editingComponent != null && realEditor.isCellEditable(event))
       {
         prepareForEditing();
@@ -509,7 +513,6 @@ public class DefaultTreeCellEditor
     // Cell may not be currently editable, but may need to start timer.
     if (shouldStartEditingTimer(event))
       startEditingTimer();
-      
     return false;
   }
 
@@ -536,7 +539,6 @@ public class DefaultTreeCellEditor
     if (editingComponent != null && realEditor.stopCellEditing())
       {
         timer.stop();
-        tree.setCellEditor(null);
         return true;
       }
     return false;
@@ -547,12 +549,11 @@ public class DefaultTreeCellEditor
    * from this instance.
    */
   public void cancelCellEditing()
-  {      
+  {
     if (editingComponent != null)
       {
         timer.stop();
         realEditor.cancelCellEditing();
-        tree.setCellEditor(null);
       }
   }
 
@@ -595,9 +596,9 @@ public class DefaultTreeCellEditor
    */
   public void valueChanged(TreeSelectionEvent e)
   {
+    tPath = lastPath;
     lastPath = e.getNewLeadSelectionPath();
     lastRow = tree.getRowForPath(lastPath);
-    
     configureEditingComponent(tree, renderer, realEditor);
   }
   
@@ -608,17 +609,11 @@ public class DefaultTreeCellEditor
    */
   public void actionPerformed(ActionEvent e)
   {
-    lastPath = tree.getSelectionPath();
-
     if (lastPath != null && tPath != null && tPath.equals(lastPath))
       {
         tree.startEditingAtPath(lastPath);
-        tPath = null;
+        timer.stop();
       }
-    else if (tPath == null)
-      tPath = lastPath;
-    else
-      tPath = null;
   }
 
   /**

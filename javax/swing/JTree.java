@@ -339,7 +339,6 @@ public class JTree
 	{
 		setModel(model);
 		setSelectionModel(EmptySelectionModel.sharedInstance());
-		selectionModel.addTreeSelectionListener(selectionRedirector);
 		setCellRenderer(new DefaultTreeCellRenderer());
 		updateUI();
 	}
@@ -564,7 +563,7 @@ public class JTree
 	}
 
 	/**
-	 * Returns the preferred viewport size..
+	 * Returns the preferred viewport size.
 	 * 
 	 * @return the preferred size
 	 */
@@ -660,7 +659,7 @@ public class JTree
 	 */
 	public void addTreeSelectionListener(TreeSelectionListener listener)
 	{
-		listenerList.add(TreeSelectionListener.class, listener);
+      listenerList.add(TreeSelectionListener.class, listener);
 	}
 
 	/**
@@ -692,7 +691,7 @@ public class JTree
 	protected void fireValueChanged(TreeSelectionEvent event)
 	{
 		TreeSelectionListener[] listeners = getTreeSelectionListeners();
-
+ 
 		for (int index = 0; index < listeners.length; ++index)
 			listeners[index].valueChanged(event);
 	}
