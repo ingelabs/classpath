@@ -386,6 +386,11 @@ public class Functional_ORB extends Restricted_ORB
    * The port, on that the name service is expected to be running.
    */
   private int ns_port = 900;
+  
+  /**
+   * The name parser.
+   */
+  NameParser nameParser = new NameParser();
 
   /**
    * The instance, stored in this field, handles the asynchronous dynamic
@@ -945,32 +950,13 @@ public class Functional_ORB extends Restricted_ORB
    */
   public org.omg.CORBA.Object string_to_object(String an_ior)
   {
-    int p = an_ior.indexOf(':');
-    if (p < 0)
-      throw new BAD_PARAM("IOR: or CORBALOC: prefix expected");
-
-    String prefix = an_ior.substring(0, p).toLowerCase();
-
-    if (prefix.equals("ior"))
-      {
-        IOR ior = IOR.parse(an_ior);
-        return ior_to_object(ior);
-      }
-    else if (prefix.equals("corbaloc"))
-      {
-        java.lang.Object r = NameParser.corbaloc(an_ior, this);
-        if (r instanceof IOR)
-          return ior_to_object((IOR) r);
-        else
-          return (org.omg.CORBA.Object) r;
-      }
-    else throw new DATA_CONVERSION("Unsupported prefix '"+prefix+"'");
+    return nameParser.corbaloc(an_ior, this);
   }
   
   /**
    * Convert ior reference to CORBA object.
    */
-  private org.omg.CORBA.Object ior_to_object(IOR ior)
+  public org.omg.CORBA.Object ior_to_object(IOR ior)
   {
     org.omg.CORBA.Object object = find_local_object(ior);
     if (object == null)

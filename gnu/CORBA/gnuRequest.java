@@ -340,6 +340,21 @@ public class gnuRequest extends Request implements Cloneable
     m_parameter_buffer.setCodeSet(cxCodeSet.negotiate(ior.Internet.CodeSets));
     m_parameter_buffer.setOrb(orb);
     m_parameter_buffer.setBigEndian(Big_endian);
+
+    // For the old iiop versions, it is important to set the size
+    // correctly.
+    if (ior.Internet.version.until_inclusive(1, 1))
+      {
+        cdrBufOutput measure = new cdrBufOutput();
+        measure.setOffset(12);
+        if (m_rqh == null)
+          m_rqh = new gnu.CORBA.GIOP.v1_0.RequestHeader();
+        m_rqh.operation = m_operation;
+        m_rqh.object_key = ior.key;
+        m_rqh.write(measure);
+        m_parameter_buffer.setOffset(12 + measure.buffer.size());
+      }
+
     return m_parameter_buffer;
   }
 
@@ -738,7 +753,7 @@ public class gnuRequest extends Request implements Cloneable
     // This also sets the stream encoding to the encoding, specified
     // in the header.
     rh.write(request_part);
-
+    
     if (m_args != null && m_args.count() > 0)
       {
         write_parameters(header, request_part);

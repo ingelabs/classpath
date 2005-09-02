@@ -38,6 +38,7 @@
 
 package gnu.CORBA.NamingService;
 
+import gnu.CORBA.Functional_ORB;
 import gnu.CORBA.IOR;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.Version;
@@ -47,6 +48,12 @@ import org.omg.CORBA.DATA_CONVERSION;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.Object;
 import org.omg.CORBA.ORBPackage.InvalidName;
+import org.omg.CORBA.portable.Delegate;
+import org.omg.CORBA.portable.ObjectImpl;
+import org.omg.CosNaming.NamingContext;
+import org.omg.CosNaming.NamingContextExtHelper;
+import org.omg.CosNaming.NamingContextHelper;
+import org.omg.CosNaming._NamingContextStub;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -67,11 +74,22 @@ import java.util.StringTokenizer;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public class NameParser
+  extends snConverter
 {
   /**
-   * The mandatory prefix.
+   * The corbaloc prefix.
    */
-  public static final String CORBALOC = "corbaloc";
+  public static final String pxCORBALOC = "corbaloc";
+
+  /**
+   * The corbaname prefix.
+   */
+  public static final String pxCORBANAME = "corbaname";
+
+  /**
+   * The IOR prefix.
+   */
+  public static final String pxIOR = "ior";
 
   /**
    * Marks iiop protocol.
@@ -89,22 +107,46 @@ public class NameParser
   public static final int DEFAULT_PORT = 2809;
 
   /**
+   * The default name.
+   */
+  public static final String DEFAULT_NAME = "NameService";
+
+  /**
+   * The string to name converter, initialized on demand.
+   */
+  static snConverter converter;
+
+  /**
+   * The current position.
+   */
+  int p;
+
+  /**
+   * The address being parsed, splitted into tokens.
+   */
+  String[] t;
+
+  /**
    * Parse CORBALOC.
    * 
    * The expected format is: <br>
    * 1. corbaloc:[iiop][version.subversion@]:host[:port]/key <br>
-   * 2. corbaloc:rir:/key <br>
+   * 2. corbaloc:rir:[/key] <br>
+   * 3. corbaname:[iiop][version.subversion@]:host[:port]/key <br>
+   * 4. corbaname:rir:[/key] <br>
    * 
-   * protocol defaults to IOP.
+   * Protocol defaults to IOP, the object key defaults to the NameService.
    * 
    * @param corbaloc the string to parse.
    * @param orb the ORB, needed to create IORs and resolve rir references.
    * 
-   * @return the constructed IOR.
+   * @return the resolved object.
    */
-  public static java.lang.Object corbaloc(String corbaloc, ORB orb)
+  public synchronized org.omg.CORBA.Object corbaloc(String corbaloc,
+    Functional_ORB orb)
     throws BAD_PARAM
   {
+    boolean corbaname;
 
     // The alternative addresses, if given.
     ArrayList alt_addr = new ArrayList();
@@ -122,22 +164,33 @@ public class NameParser
     // The object key as string.
     String key;
 
-    StringTokenizer st = new StringTokenizer(corbaloc, ":@/.,", true);
+    StringTokenizer st = new StringTokenizer(corbaloc, ":@/.,#", true);
 
-    String[] t = new String[st.countTokens()];
+    t = new String[st.countTokens()];
 
     for (int i = 0; i < t.length; i++)
       {
         t[i] = st.nextToken();
       }
 
-    int p = 0;
+    p = 0;
 
-    if (!t[p++].equalsIgnoreCase(CORBALOC))
-      throw new BAD_PARAM("Must start with corbaloc:");
+    if (t[p].startsWith(pxCORBANAME))
+      corbaname = true;
+    else if (t[p].equalsIgnoreCase(pxCORBALOC))
+      corbaname = false;
+    else if (t[p].equalsIgnoreCase(pxIOR))
+      {
+        IOR ior = IOR.parse(corbaloc);
+        return orb.ior_to_object(ior);
+      }
+    else
+      throw new DATA_CONVERSION("Unsupported protocol: '" + t[p] + "'");
+
+    p++;
 
     if (!t[p++].equals(":"))
-      throw new BAD_PARAM("Must start with corbaloc:");
+      throw new BAD_PARAM("Syntax (':' expected after name prefix)");
 
     // Check for rir:
     if (t[p].equals(RIR))
@@ -146,25 +199,25 @@ public class NameParser
         if (!t[p++].equals(":"))
           throw new BAD_PARAM("':' expected after 'rir'");
 
-        key = readKey(p, t);
-        
+        key = readKey("/");
+
         Object object;
         try
           {
             object = orb.resolve_initial_references(key);
+            return corbaname ? resolve(object) : object;
           }
         catch (InvalidName e)
           {
-            throw new BAD_PARAM("Unknown initial reference '"+key+"'");
+            throw new BAD_PARAM("Unknown initial reference '" + key + "'");
           }
-        return object;
       }
     else
     // Check for iiop.
     if (t[p].equals(IIOP) || t[p].equals(":"))
       {
         IOR ior = new IOR();
-        
+
         Addresses: do
           { // Read addresses.
             if (t[p].equals(":"))
@@ -203,9 +256,9 @@ public class NameParser
                       p++; // '@' at this point.
                     }
               }
-            
+
             ior.Internet.version = new Version(major, minor);
-            
+
             // Then host data goes till '/' or ':'.
             StringBuffer bhost = new StringBuffer(corbaloc.length());
             while (!t[p].equals(":") && !t[p].equals("/") && !t[p].equals(","))
@@ -228,12 +281,12 @@ public class NameParser
                     throw new BAD_PARAM("Invalid port '" + t[p - 1] + "'");
                   }
               }
-            
+
             ior.Internet.port = port;
-            
+
             // Id is not listed.
             ior.Id = "";
-            
+
             if (t[p].equals(","))
               p++;
             else
@@ -241,27 +294,79 @@ public class NameParser
           }
         while (true);
 
-        key = readKey(p, t);
+        key = readKey("/");
         ior.key = key.getBytes();
-        
-        return ior;
+
+        org.omg.CORBA.Object object = orb.ior_to_object(ior);
+        return corbaname ? resolve(object) : object;
       }
+
     else
       throw new DATA_CONVERSION("Unsupported protocol '" + t[p] + "'");
-
   }
 
-  private static String readKey(int p, String[] t)
+  private org.omg.CORBA.Object resolve(org.omg.CORBA.Object object)
+  {
+    NamingContext ns;
+    String key = "?";
+    try
+      {
+        if (object instanceof NamingContext)
+          ns = (NamingContext) object;
+        else
+          {
+            Delegate delegate = ((ObjectImpl) object)._get_delegate();
+            ns = new _NamingContextStub(delegate);
+          }
+      }
+    catch (Exception ex)
+      {
+        BAD_PARAM bad = new BAD_PARAM("The CORBANAME target " + object
+          + " is not a NamingContext");
+        bad.minor = 10;
+        bad.initCause(ex);
+        throw bad;
+      }
+
+    if (converter == null)
+      converter = new snConverter();
+
+    try
+      {
+        key = readKey("#");
+        object = ns.resolve(converter.toName(key));
+        return object;
+      }
+    catch (Exception ex)
+      {
+        BAD_PARAM bad = new BAD_PARAM("Wrong CORBANAME '" + key + "'");
+        bad.minor = 10;
+        bad.initCause(ex);
+        throw bad;
+      }
+  }
+
+  private String readKey(String delimiter)
     throws BAD_PARAM
   {
-    if (!t[p].equals("/"))
-      throw new BAD_PARAM("'/keyString' expected '" + t[p] + "' found");
+    if (p < t.length)
+      if (!t[p].equals(delimiter))
+        {
+          if (t[p].equals("#"))
+            return DEFAULT_NAME;
+          else
+            throw new BAD_PARAM("'" + delimiter + "String' expected '" + t[p]
+              + "' found");
+        }
 
     StringBuffer bKey = new StringBuffer();
     p++;
 
-    while (p < t.length)
+    while (p < t.length && !t[p].equals("#"))
       bKey.append(t[p++]);
+
+    if (bKey.length() == 0)
+      return DEFAULT_NAME;
 
     try
       {
@@ -272,11 +377,13 @@ public class NameParser
         throw new Unexpected("URLDecoder does not support UTF-8", e);
       }
   }
-  
-  static void corbalocT(String ior, ORB orb)
+
+  static NameParser n = new NameParser();
+
+  static void corbalocT(String ior, Functional_ORB orb)
   {
     System.out.println(ior);
-    System.out.println(corbaloc(ior, orb));
+    System.out.println(n.corbaloc(ior, orb));
     System.out.println();
   }
 
@@ -284,7 +391,7 @@ public class NameParser
   {
     try
       {
-        ORB orb = ORB.init(args, null);
+        Functional_ORB orb = (Functional_ORB) ORB.init(args, null);
         corbalocT("corbaloc:iiop:1.3@155axyz.com/Prod/aTradingService", orb);
         corbalocT("corbaloc:iiop:2.7@255bxyz.com/Prod/bTradingService", orb);
         corbalocT("corbaloc:iiop:355cxyz.com/Prod/cTradingService", orb);
@@ -295,6 +402,12 @@ public class NameParser
         corbalocT("corbaloc:iiop:1.2@host1:3076/0", orb);
 
         corbalocT("corbaloc:rir:/NameService", orb);
+        corbalocT("corbaloc:rir:/", orb);
+        corbalocT("corbaloc:rir:", orb);
+
+        corbalocT("corbaloc:rir:/NameService", orb);
+        corbalocT("corbaloc:rir:/", orb);
+        corbalocT("corbaloc:rir:", orb);
 
         corbalocT("corbaloc::555xyz.com,:556xyz.com:80/Dev/NameService", orb);
       }

@@ -408,10 +408,11 @@ public class IOR_Delegate extends Simple_delegate
     request.set_target(target);
     request.setOperation(operation);
 
-    request.getParameterStream().response_expected = response_expected;
+    streamRequest out = request.getParameterStream();
+    out.response_expected = response_expected;
     request.setORB(orb);
 
-    return request.getParameterStream();
+    return out;
   }
 
   /**

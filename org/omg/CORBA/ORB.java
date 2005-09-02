@@ -976,9 +976,37 @@ public abstract class ORB
    * This type of reference may also contain multiple addresses (see
    * OMG documentation for complete format).<br>
    * 3. <b>corbaloc:rir:/</b><i>name</i> defines internal reference on this
-   * ORB that is resolved using {@link #resolve_initial_references}, using 
-   * the given <i>name</i>.
-   * <br>
+   * ORB that is resolved using {@link #resolve_initial_references}, passing 
+   * the given <i>name</i> as parameter.<br>
+   * 4. <b>corbaname:rir:#</b><i>name</i> states that the given <i>name</i>
+   * must be resolved using the naming service, default for this ORB.<br>
+   * 5. <b>corbaname:</b>[<b>iiop</b>][version.subversion<b>@</b>]<b>:</b>host[<b>:</b>port]<b>#</b><i>name</i>
+   * states that the <i>name</i> must be resolved using the naming service
+   * that runs on the given host at the given port. The ORB expects to find 
+   * there the {@link org.omg.CosNaming.NamingContext} under the key 
+   * "NameService.<br>
+   * 
+   * <p>The default port is always 2809. The default iiop version is 1.0
+   * that now may not always be supported, so we would recommend to specify
+   * the version explicitly.</p>
+   * <p>
+   * The examples of the corbaloc and corbaname addresses:<br>
+   * corbaname:rir:#xobj - ask local naming service for "xobj".<br>
+   * corbaname:rir:/NameService#xobj - same (long form).<br>
+   * corbaname:iiop:1.2@localhost:900#xobj - same, assuming that the naming 
+   * service runs at port 900 on the local host and supports iiop 1.2.<br>
+   * corbaname:iiop:localhost#xobj - same, assuming that the naming 
+   * service runs at port 2809 on the local host and supports iiop 1.0.<br>
+   * corbaloc::gnu.xxx.yy/Prod/TradingService - the object exists on the
+   * host gnu.xxx.yy, port 2809 having the key "Prod/TradingService". Its ORB 
+   * supports iiop 1.0.<br>
+   * corbaloc::gnu.xxx.yy/Prod/TradingService:801 - the object exists on the
+   * host gnu.xxx.yy, port 801 having the key "Prod/TradingService". Its ORB 
+   * supports iiop 1.0 (iiop keyword ommitted).<br>
+   * corbaloc:iiop:1.1@gnu.xxx.yy/Prod/TradingService - the object exists on the
+   * host gnu.xxx.yy, port 801 having the key "Prod/TradingService". Its ORB 
+   * supports iiop 1.1.<br>
+   * corbaloc:rir:/NameService - the default naming service.
    *
    * @param IOR the object IOR representation string.
    *
