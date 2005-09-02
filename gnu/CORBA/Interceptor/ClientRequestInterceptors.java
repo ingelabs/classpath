@@ -94,7 +94,7 @@ public class ClientRequestInterceptors
   }
 
   /** @inheritDoc */
-  public void send_poll(ClientRequestInfo info) throws ForwardRequest
+  public void send_poll(ClientRequestInfo info)
   {
     for (int i = 0; i < interceptors.length; i++)
       {

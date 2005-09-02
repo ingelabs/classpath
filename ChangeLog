@@ -1,5 +1,10 @@
 2005-09-02  <AudriusA@Bioinformatics.org>
 
+        * gnu/CORBA/Interceptor/ClientRequestInterceptors.java(send_poll): 
+        remove ForwardRequest from declaration.
+
+2005-09-02  <AudriusA@Bioinformatics.org>
+
         * org/omg/PortableInterceptor/CurrentOperations.java: 
         Inherit from org.omg.CORBA.CurrentOperations.
         * org/omg/PortableInterceptor/ClientRequestInterceptorOperations.java
