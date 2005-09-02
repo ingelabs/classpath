@@ -1510,6 +1510,9 @@ public class GdkGraphics2D extends Graphics2D
 
   public void drawString(String str, float x, float y)
   {
+    if (str == null || str.length() == 0)
+      return;
+
     drawGlyphVector(getFont().createGlyphVector(null, str), x, y);
     updateBufferedImage ();
   }

@@ -1,5 +1,12 @@
 2005-09-02  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	PR awt/23557
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (drawString(String,
+	float, float)): Return immediately if string is null or
+	zero-length.
+
+2005-09-02  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	PR awt/20014
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (static): Always call
 	initStaticState.
