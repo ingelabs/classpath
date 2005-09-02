@@ -1,3 +1,16 @@
+2005-09-02  <AudriusA@Bioinformatics.org>
+
+        * gnu/CORBA/IOR_Delegate.java (request),
+        gnu/CORBA/SocketRepository.java (get_socket),
+        gnu/CORBA/gnuRequest (getParameterStream),
+        gnu/CORBA/NamingService/NameParser.java,
+        gnu/CORBA/NamingService/NamingServiceTransient.java: Rewritten.
+        * gnu/CORBA/Functional_ORB.java (nameParser): New field.
+        (string_to_object): Rewritten.
+        (ior_to_object): Made public.
+        * org/omg/CORBA/ORB.java (string_to_object): 
+        Documentation update.
+
 2005-09-02  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTree.java:
