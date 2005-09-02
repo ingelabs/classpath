@@ -195,6 +195,21 @@ public class GtkImage extends Image
   }
 
   /**
+   * Constructs a blank GtkImage.  This is called when
+   * GtkToolkit.createImage (String) is called with an empty string
+   * argument ("").  A blank image is loaded immediately upon
+   * construction and has width -1 and height -1.
+   */
+  public GtkImage ()
+  {
+    isLoaded = true;
+    observers = null;
+    offScreen = false;
+    props = new Hashtable();
+    errorLoading = false;
+  }
+
+  /**
    * Constructs a GtkImage by loading a given file.
    *
    * @throws IllegalArgumentException if the image could not be loaded.

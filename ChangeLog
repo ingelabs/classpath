@@ -1,5 +1,20 @@
 2005-09-02  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	PR awt/22979
+	* gnu/java/awt/peer/gtk/GtkImage.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c (GtkImage()):
+	New constructor.
+	(drawPixelsScaled): Return immediately if width or height is <= 0.
+	(drawPixelsScaledFlipped): Likewise for srcwidth, srcheight,
+	dstwidth, dstheight.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (createImage(String)):
+	Create a blank image when filename is "".
+	* javax/swing/ImageIcon.java (ImageIcon(String)): Mention blank
+	icons in documentation.
+	(ImageIcon(String,String)): Likewise.
+
+2005-09-02  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	PR awt/23557
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (drawString(String,
 	float, float)): Return immediately if string is null or

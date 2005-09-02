@@ -362,6 +362,12 @@ Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaled
 
   gdk_threads_enter ();
   
+  if (width <= 0 || height <= 0)
+    {
+      gdk_threads_leave ();
+      return;
+    }
+
   bgColor = ((bg_red & 0xFF) << 16) |
     ((bg_green & 0xFF) << 8) | (bg_blue & 0xFF);
     
@@ -435,6 +441,13 @@ Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaledFlipped
 
   gdk_threads_enter ();
   
+  if (srcwidth <= 0 || srcheight <= 0
+      || dstwidth <= 0 || dstheight <= 0)
+    {
+      gdk_threads_leave ();
+      return;
+    }
+
   bgColor = ((bg_red & 0xFF) << 16) |
     ((bg_green & 0xFF) << 8) | (bg_blue & 0xFF);
     

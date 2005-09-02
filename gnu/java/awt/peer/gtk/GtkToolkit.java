@@ -255,6 +255,9 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
 
   public Image createImage (String filename)
   {
+    if (filename.length() == 0)
+      return new GtkImage ();
+
     if (useGraphics2D())
       return bufferedImageOrError(GdkPixbufDecoder.createBufferedImage (filename));
     else
