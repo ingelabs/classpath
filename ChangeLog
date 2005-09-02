@@ -1,3 +1,8 @@
+2005-09-02  Robert Schuster  <robertschuster@fsfe.org>
+
+	* README: Added MysaifuVM to list of VMs
+	* INSTALL: Added info about Qt4 and ecj.
+
 2005-09-01  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	PR awt/23536
