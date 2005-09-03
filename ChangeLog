@@ -1,3 +1,8 @@
+2005-09-03  Chris Burdess  <dog@gnu.org>
+
+	* javax/xml/stream,javax/xml/stream/events,javax/xml/stream/util:
+	New StAX API classes.
+
 2005-09-02  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/transport/ITransport.java (shutdown): New method.
