@@ -1,5 +1,12 @@
 2005-09-02  Keith Seitz  <keiths@redhat.com>
 
+	* gnu/classpath/jdwp/transport/ITransport.java (shutdown): New method.
+	* gnu/classpath/jdwp/transport/JdwpConnection.java (JdwpConnection): Add
+	ThreadGroup argument.
+	* gnu/classpath/jdwp/transport/SocketTransport.java (shutdown): New method.
+
+2005-09-02  Keith Seitz  <keiths@redhat.com>
+
 	* gnu/classpath/jdwp/Jdwp.java: New file.
 	* gnu/classpath/jdwp/JdwpConstants.java: New file.
 	* vm/reference/gnu/classpath/jdwp/VMVirtualMachine.java: New file.
