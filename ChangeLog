@@ -1,3 +1,8 @@
+2005-09-03  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* autogen.sh: Document libtool version needed for Darwin.
+	(LIBTOOLIZE): Don't special case Darwin, always use libtoolize.
+
 2005-09-03  Chris Burdess  <dog@gnu.org>
 
 	* javax/xml/stream,javax/xml/stream/events,javax/xml/stream/util:
