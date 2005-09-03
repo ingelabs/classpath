@@ -1,3 +1,25 @@
+2005-09-03  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #23701
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c
+	(clipboard_owner_change_cb): Only used when GTK_MINOR_VERSION > 4.
+	(Java_gnu_java_awt_peer_gtk_GtkClipboard_initNativeState):
+	Only request owner-change events for GTK_MINOR_VERSION > 4.
+	(clipboard_get_func): Only handle pixbuf and uri when
+	GTK_MINOR_VERSION > 4.
+	(Java_gnu_java_awt_peer_gtk_GtkClipboard_advertiseContent): Only call
+	gtk_target_list_add_* functions when GTK_MINOR_VERSION > 4. Similar
+	for gtk_clipboard_set_can_store.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaledFlipped): Mark
+	flipx and flipy unused for GTK_MINOR_VERSION <= 4.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkSelection.c
+	(clipboard_targets_received): Don't handle images for
+	GTK_MINOR_VERSION <= 4.
+	(Java_gnu_java_awt_peer_gtk_GtkSelection_requestImage): Likewise.
+	(clipboard_uris_received): Likewise for text/uri-list.
+	(Java_gnu_java_awt_peer_gtk_GtkSelection_requestURIs): Likewise.
+
 2005-09-03  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* autogen.sh: Document libtool version needed for Darwin.
