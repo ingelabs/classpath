@@ -1,5 +1,10 @@
 2005-09-04  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/CORBA/NamingService/NamingServiceTransient.java: Re-un-indent
+	boilerplate.
+
+2005-09-04  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/CORBA/Interceptor/Registrator.java (m_prefix): Mark static.
 	* gnu/java/awt/peer/qt/QtButtonPeer.java: Replace uses of
 	toolkit.eventQueue.postEvent() with QtToolkit.eventQueue.postEvent().
