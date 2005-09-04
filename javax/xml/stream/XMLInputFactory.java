@@ -444,6 +444,16 @@ public abstract class XMLInputFactory
    * Returns the event allocator.
    */
   public abstract XMLEventAllocator getEventAllocator();
+
+  /**
+   * Sets whether text will be coalesced.
+   */
+  public abstract void setCoalescing(boolean coalescing);
+
+  /**
+   * Indicates whether text will be coalesced.
+   */
+  public abstract boolean isCoalescing();
   
 }
 

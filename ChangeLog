@@ -1,3 +1,20 @@
+2005-09-04  Chris Burdess  <dog@gnu.org>
+
+	* javax/xml/stream/XMLEventFactory.java,
+	javax/xml/stream/XMLEventWriter.java,
+	javax/xml/stream/XMLInputFactory.java,
+	javax/xml/stream/XMLOutputFactory.java,
+	javax/xml/stream/XMLResolver.java,
+	javax/xml/stream/XMLStreamConstants.java,
+	javax/xml/stream/events/Attribute.java,
+	javax/xml/stream/events/EndEntity.java,
+	javax/xml/stream/events/EntityDeclaration.java,
+	javax/xml/stream/events/EntityReference.java,
+	javax/xml/stream/events/StartEntity.java,
+	javax/xml/stream/events/XMLEvent.java,
+	javax/xml/stream/util/EventReaderDelegate.java:
+	StAX API changes to conform to JWSDP 1.5.
+
 2005-09-03  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #23701

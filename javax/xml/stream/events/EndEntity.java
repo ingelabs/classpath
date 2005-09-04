@@ -1,4 +1,4 @@
-/* XMLResolver.java -- 
+/* EndEntity.java -- 
    Copyright (C) 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,52 +35,19 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package javax.xml.stream;
-
-import java.io.InputStream;
+package javax.xml.stream.events;
 
 /**
- * Interface used to resolve XML external entities during parsing.
+ * An end-entity event.
  */
-public interface XMLResolver
+public interface EndEntity
+  extends XMLEvent
 {
 
   /**
-   * Returns an input source from which the specified external entity can be
-   * read. The following return types are possible:
-   * <ol>
-   * <li><code>java.io.InputStream</code></li>
-   * <li><code>javax.xml.stream.XMLStreamReader</code></li>
-   * <li><code>java.xml.stream.XMLEventReader</code></li>
-   * </ol>
-   * If <code>null</code> is returned, the processor will attempt to resolve
-   * the entity itself.
-   * @param publicID the public ID of the external entity
-   * @param systemID the system ID of the external entity
-   * @param baseURI the absolute base URI of the referring entity
-   * @param namespace the namespace of the external entity
-   *
-  Object resolveEntity(String publicID, String systemID,
-                       String baseURI, String namespace)
-    throws XMLStreamException;*/
-
-  /**
-   * Retrieves a resource from the specified URI.
+   * Returns the entity name.
    */
-  XMLEventReader resolveAsXMLEventReader(String uri)
-    throws XMLStreamException;
-
-  /**
-   * Retrieves a resource from the specified URI.
-   */
-  XMLStreamReader resolveAsXMLStreamReader(String uri)
-    throws XMLStreamException;
-  
-  /**
-   * Retrieves a resource from the specified URI.
-   */
-  InputStream resolve(String uri)
-    throws XMLStreamException;
+  String getName();
   
 }
 

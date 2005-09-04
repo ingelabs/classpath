@@ -67,6 +67,10 @@ import javax.xml.stream.events.StartElement;
 public abstract class XMLEventFactory
 {
 
+  protected XMLEventFactory()
+  {
+  }
+
   /**
    * Create a new factory instance.
    * @see #newInstance(String,ClassLoader)
@@ -317,8 +321,10 @@ public abstract class XMLEventFactory
   /**
    * Create an entity reference event.
    */
+  //public abstract EntityReference createEntityReference(String name,
+  //                                                      EntityDeclaration declaration);
   public abstract EntityReference createEntityReference(String name,
-                                                        EntityDeclaration declaration);
+                                                        String replacementText);
 
   /**
    * Create a comment event.
