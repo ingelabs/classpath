@@ -429,7 +429,12 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkImage_drawPixelsScaledFlipped 
 (JNIEnv *env, jobject obj, jobject gc_obj,
  jint bg_red, jint bg_green, jint bg_blue, 
+#if GTK_MINOR_VERSION > 4
  jboolean flipx, jboolean flipy,
+#else
+ jboolean flipx __attribute__((unused)),
+ jboolean flipy __attribute__((unused)),
+#endif
  jint srcx, jint srcy, jint srcwidth, jint srcheight, 
  jint dstx, jint dsty, jint dstwidth, jint dstheight, 
  jboolean composite)
