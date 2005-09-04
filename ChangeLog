@@ -1,3 +1,19 @@
+2005-09-04  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/CORBA/Interceptor/Registrator.java (m_prefix): Mark static.
+	* gnu/java/awt/peer/qt/QtButtonPeer.java: Replace uses of
+	toolkit.eventQueue.postEvent() with QtToolkit.eventQueue.postEvent().
+	* gnu/java/awt/peer/qt/QtCheckboxPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtChoicePeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtComponentPeer.java: Likewise and similar
+	for guiThread and graphicsEnv.
+	* gnu/java/awt/peer/qt/QtListPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtMenuItemPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtMenuPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtScrollbarPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtTextAreaPeer.java: Likewise.
+	* gnu/java/awt/peer/qt/QtTextFieldPeer.java: Likewise.
+
 2005-09-04  Chris Burdess  <dog@gnu.org>
 
 	* doc/README.jaxp: Updated JAXP documentation for StAX.
