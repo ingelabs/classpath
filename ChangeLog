@@ -1,3 +1,8 @@
+2005-09-04  Mark Wielaard  <mark@klomp.org>
+
+	* (LeafElement.LeafElement): Set startPos and endPos through
+	createPosition() if parent is null.
+
 2005-09-04  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream: StAX implementation.
