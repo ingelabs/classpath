@@ -1,5 +1,14 @@
 2005-09-04  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/classpath/jdwp/event/filters/ClassMatchFilter.java
+	(matches): Remove InvalidClassException since it is never thrown.
+	* vm/reference/gnu/classpath/jdwp/VMIdManager.java
+	(newReferenceTypeId): Only return null when SoftReference is cleared,
+	don't catch InstantiationException or IllegalAccessException since
+	they are never thrown.
+
+2005-09-04  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/CORBA/NamingService/NamingServiceTransient.java: Re-un-indent
 	boilerplate.
 

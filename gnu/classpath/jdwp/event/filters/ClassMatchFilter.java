@@ -95,26 +95,18 @@ public class ClassMatchFilter
     Object type = event.getParameter (ReferenceTypeId.class);
     if (type != null)
       {
-	try
+	Class eventClass = (Class) type;
+	String name = eventClass.getName ();
+	
+	if (_pattern.startsWith ("*"))
+	  return name.endsWith (_pattern.substring (1));
+	else if (_pattern.endsWith ("*"))
 	  {
-	    Class eventClass = (Class) type;
-	    String name = eventClass.getName ();
-
-	    if (_pattern.startsWith ("*"))
-	      return name.endsWith (_pattern.substring (1));
-	    else if (_pattern.endsWith ("*"))
-	      {
-		int end = _pattern.length () - 1;
-		return name.startsWith (_pattern.substring (0, end));
-	      }
-	    else
-	      return name.matches (_pattern);
+	    int end = _pattern.length () - 1;
+	    return name.startsWith (_pattern.substring (0, end));
 	  }
-	catch (InvalidClassException ice)
-	  {
-	    // the class is no longer valid
-	    return false;
-	  }
+	else
+	  return name.matches (_pattern);
       }
 
     return false;

@@ -170,35 +170,27 @@ public class VMIdManager
      * Returns a new reference type id for the given class
      *
      * @param clazz  the <code>Class</code> for which an id is desired
-     * @returns a suitable reference type id or <code>null</code>
+     * @returns a suitable reference type id or null when the
+     * reference is cleared.
      */
     public static ReferenceTypeId newReferenceTypeId (SoftReference ref)
     {
-      ReferenceTypeId id = null;
+      ReferenceTypeId id;
       Class clazz = (Class) ref.get ();
+      if (clazz == null)
+	return null;
 
-      try
+      if (clazz.isArray ())
+	id = new ArrayReferenceTypeId ();
+      else if (clazz.isInterface ())
+	id = new InterfaceReferenceTypeId ();
+      else
+	id = new ClassReferenceTypeId ();
+      synchronized (_ridLock)
 	{
-	  if (clazz.isArray ())
-	    id = new ArrayReferenceTypeId ();
-	  else if (clazz.isInterface ())
-	    id = new InterfaceReferenceTypeId ();
-	  else
-	    id = new ClassReferenceTypeId ();
-	  synchronized (_ridLock)
-	    {
-	      id.setId (++_lastRid);
-	    }
-	  return id;
+	  id.setId (++_lastRid);
 	}
-      catch (InstantiationException ie)
-	{
-	  return null;
-	}
-      catch (IllegalAccessException iae)
-	{
-	  return null;
-	}
+      return id;
     }
   }
 
