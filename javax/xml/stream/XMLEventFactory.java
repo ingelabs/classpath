@@ -133,8 +133,7 @@ public abstract class XMLEventFactory
           }
       }
     while (className == null && count < 3);
-    //return new gnu.xml.stream.XMLEventFactoryImpl();
-    throw new FactoryConfigurationError();
+    return new gnu.xml.stream.XMLEventFactoryImpl();
   }
 
   private static String getFactoryClassName(ClassLoader loader, int attempt)

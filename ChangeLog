@@ -1,3 +1,11 @@
+2005-09-04  Chris Burdess  <dog@gnu.org>
+
+	* doc/README.jaxp: Updated JAXP documentation for StAX.
+	* javax/xml/stream/XMLEventFactory.java,
+	javax/xml/stream/XMLInputFactory.java,
+	javax/xml/stream/XMLOutputFactory.java: Use GNU implementation by
+	default.
+
 2005-09-04  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	Fix for bug #23653

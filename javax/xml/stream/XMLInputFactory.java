@@ -246,8 +246,7 @@ public abstract class XMLInputFactory
           }
       }
     while (className == null && count < 3);
-    //return new gnu.xml.stream.XMLInputFactoryImpl();
-    throw new FactoryConfigurationError();
+    return new gnu.xml.stream.XMLInputFactoryImpl();
   }
 
   private static String getFactoryClassName(ClassLoader loader, int attempt)

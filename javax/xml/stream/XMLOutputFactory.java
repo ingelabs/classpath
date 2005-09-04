@@ -132,8 +132,7 @@ public abstract class XMLOutputFactory
           }
       }
     while (className == null && count < 3);
-    //return new gnu.xml.stream.XMLOutputFactoryImpl();
-    throw new FactoryConfigurationError();
+    return new gnu.xml.stream.XMLOutputFactoryImpl();
   }
 
   private static String getFactoryClassName(ClassLoader loader, int attempt)
