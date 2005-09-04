@@ -1,3 +1,9 @@
+2005-09-04  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* java/lang/Integer.java
+	(parseInt): Added some messages to the exception thrown by this
+	method.
+
 2005-09-04  Chris Burdess  <dog@gnu.org>
 
 	* javax/xml/stream/XMLEventFactory.java,
