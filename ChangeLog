@@ -1,3 +1,8 @@
+2005-09-04  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	Fix for bug #23653
+	* lib/Makefile.am (metafiles): Use find -name -prune not -path.
+
 2005-09-04  Mark Wielaard  <mark@klomp.org>
 
 	* NEWS: Add description of new awt.datatransfer functionality.
