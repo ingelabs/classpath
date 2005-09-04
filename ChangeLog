@@ -1,5 +1,9 @@
 2005-09-04  Mark Wielaard  <mark@klomp.org>
 
+	* NEWS: Add description of new awt.datatransfer functionality.
+
+2005-09-04  Mark Wielaard  <mark@klomp.org>
+
 	* (LeafElement.LeafElement): Set startPos and endPos through
 	createPosition() if parent is null.
 

@@ -1,5 +1,12 @@
 New in release 0.18 (not yet released)
 
+* awt.datatransfer updated to 1.5 with supports for FlavorEvents.
+  The gtk+ awt peers now allow copy/paste of text, images, uris/files
+  and serialized objects with other applications and tracking
+  clipboard change events with gtk+ 2.6 (for gtk+ 2.4 only text and
+  serialized objects are supported). A GNU Classpath Examples
+  datatransfer Demo was added to show the new functionality.
+
 * The PortableInterceptor and related functionality in other packages
   is now implemented:
   
