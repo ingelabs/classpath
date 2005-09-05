@@ -51,6 +51,23 @@ Runtime interface changes:
 * Moved native methods from java.lang.reflect.Proxy to VMProxy.
 * Added hook to VMClassLoader to allow VM to do class caching.
 
+New Untested/Disabled Features:
+
+The following new features are included, but not ready for production
+yet. They are explicitly disabled and not supported. But if you want
+to help with the development of these new features we are interested
+in feedback. You will have to explicitly enable them to try them out
+(and they will most likely contain bugs). If you are interested in any
+of these then please join the mailing-list and follow development in
+CVS.
+
+* QT4 AWT peers, enable by giving configure --enable-qt-peer.
+* JDWP framework, enable by deleting the jdwp references from
+  lib/standard.omit and vm/reference/standard.omit. No default
+  implementation is provided. Work is being done on gcj/gij integration.
+* StAX java.xml.stream, enable by deleting the gnu.xml.stream and
+  java.xml.stream references in lib/standard.omit.
+
 New in release 0.17 (Jul 15, 2005)
 
 * gnu.xml fix for nodes created outside a namespace context.

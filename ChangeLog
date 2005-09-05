@@ -1,3 +1,8 @@
+2005-09-05  Mark Wielaard  <mark@klomp.org>
+
+	* lib/standard.omit: Add gnu/xml/stream and javax/xml/stream.
+	* NEWS: Describe Untested/Disabled new features.
+
 2005-09-04  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac (AC_CONFIG_FILES): Add examples/Makefile.jawt.
