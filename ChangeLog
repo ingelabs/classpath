@@ -1,3 +1,8 @@
+2005-09-05  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jni/Makefile.am (all-local): Invoke $(SHELL) to execute
+	the script.
+
 2005-09-05  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/event/DocumentEvent.java:

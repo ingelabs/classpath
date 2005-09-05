@@ -21,4 +21,4 @@ DIST_SUBDIRS = classpath java-io java-lang java-net java-nio java-util \
                gtk-peer qt-peer xmlj
 
 all-local:
-	cd $(top_srcdir) && scripts/check_jni_methods.sh
+	cd $(top_srcdir) && $(SHELL) ./scripts/check_jni_methods.sh
