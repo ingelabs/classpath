@@ -72,11 +72,11 @@ public class XMLInputFactoryImpl
   protected XMLEventAllocator allocator;
 
   protected boolean validating;
-  protected boolean namespaceAware;
+  protected boolean namespaceAware = true;
   protected boolean coalescing;
-  protected boolean replacingEntityReferences;
-  protected boolean externalEntities;
-  protected boolean supportDTD;
+  protected boolean replacingEntityReferences = true;
+  protected boolean externalEntities = true;
+  protected boolean supportDTD = true;
 
   public XMLInputFactoryImpl()
   {

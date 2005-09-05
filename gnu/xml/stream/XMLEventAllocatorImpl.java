@@ -92,7 +92,7 @@ public class XMLEventAllocatorImpl
         // TODO ignorableWhitespace
         ignorableWhitespace = whitespace && false;
         return new CharactersImpl(location, text,
-                                  whitespace, true, ignorableWhitespace);
+                                  whitespace, false, ignorableWhitespace);
       case XMLStreamConstants.COMMENT:
         text = reader.getText();
         return new CommentImpl(location, text);
@@ -130,7 +130,7 @@ public class XMLEventAllocatorImpl
         // TODO ignorableWhitespace
         ignorableWhitespace = whitespace && false;
         return new CharactersImpl(location, text,
-                                  whitespace, true, ignorableWhitespace);
+                                  whitespace, false, ignorableWhitespace);
       case XMLStreamConstants.START_DOCUMENT:
         String systemId = location.getLocationURI();
         String encoding = reader.getCharacterEncodingScheme();

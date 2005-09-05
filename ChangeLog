@@ -1,3 +1,10 @@
+2005-09-05  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/XMLEventAllocatorImpl.java,
+	gnu/xml/stream/XMLInputFactoryImpl.java,
+	gnu/xml/stream/XMLStreamReaderImpl.java: Various fixes from system testing.
+	* javax/xml/namespace/QName.java: Avoid unnecessary test.
+
 2005-09-05  Mark Wielaard  <mark@klomp.org>
 
 	* lib/standard.omit: Add gnu/xml/stream and javax/xml/stream.

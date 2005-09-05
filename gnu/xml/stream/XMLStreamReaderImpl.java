@@ -87,6 +87,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.ext.Attributes2;
 import org.xml.sax.ext.DeclHandler;
 import org.xml.sax.ext.LexicalHandler;
+import org.xml.sax.ext.Locator2;
 import org.xml.sax.helpers.NamespaceSupport;
 
 /**
@@ -156,14 +157,16 @@ public class XMLStreamReaderImpl
     // Configure the SAX parser and perform the parse
     try
       {
-        CallbackHandler ch = this.new CallbackHandler();
         SAXParserFactory f = SAXParserFactory.newInstance();
         f.setNamespaceAware(namespaceAware);
         f.setValidating(validating);
         SAXParser p = f.newSAXParser();
         XMLReader r = p.getXMLReader();
+        CallbackHandler ch = this.new CallbackHandler(r);
         r.setFeature("http://xml.org/sax/features/external-general-entities", 
                      externalEntities);
+        r.setFeature("http://xml.org/sax/features/namespaces", 
+                     namespaceAware);
         r.setContentHandler(ch);
         r.setDTDHandler(ch);
         r.setEntityResolver(ch);
@@ -220,14 +223,16 @@ public class XMLStreamReaderImpl
     // Configure the SAX parser and perform the parse
     try
       {
-        CallbackHandler ch = this.new CallbackHandler();
         SAXParserFactory f = SAXParserFactory.newInstance();
         f.setNamespaceAware(namespaceAware);
         f.setValidating(validating);
         SAXParser p = f.newSAXParser();
         XMLReader r = p.getXMLReader();
+        CallbackHandler ch = this.new CallbackHandler(r);
         r.setFeature("http://xml.org/sax/features/external-general-entities", 
                      externalEntities);
+        r.setFeature("http://xml.org/sax/features/namespaces", 
+                     namespaceAware);
         r.setContentHandler(ch);
         r.setDTDHandler(ch);
         r.setEntityResolver(ch);
@@ -265,7 +270,7 @@ public class XMLStreamReaderImpl
   {
     if (events.isEmpty())
       throw new XMLStreamException("EOF");
-    Object event = events.removeLast();
+    Object event = events.removeFirst();
     if (event instanceof Exception)
       {
         Exception e = (Exception) event;
@@ -378,6 +383,7 @@ public class XMLStreamReaderImpl
     int count = 0;
     for (Iterator i = se.getAttributes(); i.hasNext(); )
       {
+        i.next();
         count++;
       }
     return count;
@@ -462,10 +468,22 @@ public class XMLStreamReaderImpl
 
   public int getNamespaceCount()
   {
-    StartElement se = (StartElement) currentEvent;
-    int count = 0;
-    for (Iterator i = se.getNamespaces(); i.hasNext(); )
+    Iterator i = null;
+    switch (eventType)
       {
+      case XMLStreamConstants.START_ELEMENT:
+        i = ((StartElement) currentEvent).getNamespaces();
+        break;
+      case XMLStreamConstants.END_ELEMENT:
+        i = ((EndElement) currentEvent).getNamespaces();
+        break;
+      default:
+        throw new IllegalStateException();
+      }
+    int count = 0;
+    while (i.hasNext())
+      {
+        i.next();
         count++;
       }
     return count;
@@ -473,9 +491,20 @@ public class XMLStreamReaderImpl
 
   public String getNamespacePrefix(int index)
   {
-    StartElement se = (StartElement) currentEvent;
+    Iterator i = null;
+    switch (eventType)
+      {
+      case XMLStreamConstants.START_ELEMENT:
+        i = ((StartElement) currentEvent).getNamespaces();
+        break;
+      case XMLStreamConstants.END_ELEMENT:
+        i = ((EndElement) currentEvent).getNamespaces();
+        break;
+      default:
+        throw new IllegalStateException();
+      }
     int count = 0;
-    for (Iterator i = se.getNamespaces(); i.hasNext(); )
+    while (i.hasNext())
       {
         Namespace ns = (Namespace) i.next();
         if (index == count)
@@ -487,9 +516,20 @@ public class XMLStreamReaderImpl
 
   public String getNamespaceURI(int index)
   {
-    StartElement se = (StartElement) currentEvent;
+    Iterator i = null;
+    switch (eventType)
+      {
+      case XMLStreamConstants.START_ELEMENT:
+        i = ((StartElement) currentEvent).getNamespaces();
+        break;
+      case XMLStreamConstants.END_ELEMENT:
+        i = ((EndElement) currentEvent).getNamespaces();
+        break;
+      default:
+        throw new IllegalStateException();
+      }
     int count = 0;
-    for (Iterator i = se.getNamespaces(); i.hasNext(); )
+    while (i.hasNext())
       {
         Namespace ns = (Namespace) i.next();
         if (index == count)
@@ -653,14 +693,22 @@ public class XMLStreamReaderImpl
                DeclHandler, EntityResolver, ErrorHandler
   {
 
+    XMLReader reader;
+    Locator locator;
     Location location;
     private boolean inCDATA;
     private LinkedList namespaces = new LinkedList();
     private LinkedList notations;
     private LinkedList entities;
 
+    CallbackHandler(XMLReader reader)
+    {
+      this.reader = reader;
+    }
+
     public void setDocumentLocator(Locator locator)
     {
+      this.locator = locator;
       location = new LocationImpl(-1,
                                   locator.getColumnNumber(),
                                   locator.getLineNumber(),
@@ -670,12 +718,14 @@ public class XMLStreamReaderImpl
     public void startDocument()
       throws SAXException
     {
-      String version = null;
-      String encoding = null;
-      boolean standalone = false;
-      boolean standaloneDeclared = false;
-      boolean encodingDeclared = false;
-      // XXX can't get these values from SAX
+      String version = (locator instanceof Locator2) ?
+        ((Locator2) locator).getXMLVersion() : null;
+      String encoding = (locator instanceof Locator2) ? 
+        ((Locator2) locator).getEncoding() : null;
+      boolean standalone =
+        reader.getFeature("http://xml.org/sax/features/is-standalone");
+      boolean standaloneDeclared = standalone;
+      boolean encodingDeclared = (encoding != null);
       events.add(new StartDocumentImpl(location,
                                        location.getLocationURI(),
                                        encoding,
@@ -722,10 +772,8 @@ public class XMLStreamReaderImpl
                                                  attrs, ns, null);
       events.add(se);
       // Add namespaces
-      for (Iterator i = ns.iterator(); i.hasNext(); )
-        {
-          events.add(i.next());
-        }
+      //for (Iterator i = ns.iterator(); i.hasNext(); )
+      //  events.add(i.next());
       // Add attributes
       int len = atts.getLength();
       for (int i = 0; i < len; i++)
@@ -750,7 +798,7 @@ public class XMLStreamReaderImpl
           AttributeImpl attr = new AttributeImpl(location, attrName,
                                                  value, type, specified);
           attrs.add(attr);
-          events.add(attr);
+          //events.add(attr);
         }
     }
 
@@ -859,7 +907,7 @@ public class XMLStreamReaderImpl
       Object n = new NotationDeclarationImpl(location, name, publicId,
                                              systemId);
       notations.add(n);
-      events.add(n);
+      //events.add(n);
     }
 
     public void unparsedEntityDecl(String name, String publicId,
@@ -870,7 +918,7 @@ public class XMLStreamReaderImpl
                                            name, notationName,
                                            null, null);
       entities.add(e);
-      events.add(e);
+      //events.add(e);
     }
 
     public void elementDecl(String name, String model)
@@ -890,7 +938,7 @@ public class XMLStreamReaderImpl
       Object e = new EntityDeclarationImpl(location, null, null,
                                            name, null, value, null);
       entities.add(e);
-      events.add(e);
+      //events.add(e);
     }
 
     public void externalEntityDecl(String name, String publicId,
@@ -900,7 +948,7 @@ public class XMLStreamReaderImpl
       Object e = new EntityDeclarationImpl(location, publicId, systemId,
                                            name, null, null, null);
       entities.add(e);
-      events.add(e);
+      //events.add(e);
     }
 
     public void warning(SAXParseException e)
