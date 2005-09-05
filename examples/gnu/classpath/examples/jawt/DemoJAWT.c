@@ -23,7 +23,10 @@ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #include <string.h>
 
 JNIEXPORT void JNICALL
-Java_DemoJAWT_paint (JNIEnv* env, jobject canvas, jobject graphics)
+Java_gnu_classpath_examples_jawt_DemoJAWT_paintIt (JNIEnv* env,
+						   jobject canvas,
+						   jobject graphics,
+						   jboolean on)
 {
   JAWT awt;
   JAWT_DrawingSurface* surface;
@@ -124,7 +127,7 @@ Java_DemoJAWT_paint (JNIEnv* env, jobject canvas, jobject graphics)
 
   for (c = 5; c >= 0; c--)
     {
-      if (c % 2)
+      if (c % 2 == on)
 	XSetForeground (display, gc, yellow.pixel);
       else
 	XSetForeground (display, gc, orange.pixel);

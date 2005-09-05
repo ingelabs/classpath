@@ -1,3 +1,29 @@
+2005-09-04  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac (AC_CONFIG_FILES): Add examples/Makefile.jawt.
+	* examples/.cvsignore: Add Makefile.jawt.
+	* examples/Makefile.am (EXAMPLE_C_FILES): New variable.
+	(ALL_EXAMPLE_FILES): Likewise.
+	(install-data-local): Use ALL_EXAMPLE_FILES and add Makefile.jawt.
+	(uninstall-local): Likewise.
+	(EXTRA_DIST): Add Makefile.awt.in.
+	* examples/Makefile.jawt.in: New file.
+	* examples/README: Add jawt instructions.
+	* examples/gnu/classpath/examples/jawt/DemoJAWT.c
+	(Java_DemoJAWT_paint): Rename to
+	Java_gnu_classpath_examples_jawt_DemoJAWT_paintIt.
+	(Java_gnu_classpath_examples_jawt_DemoJAWT_paintIt): Flip foreground
+	color based on on parameter.
+	* examples/gnu/classpath/examples/jawt/DemoJAWT.java (paint): Renamed
+	paintIt.
+	(paint): Call paintIt.
+	(on): New boolean field.
+	(main): Add Frame name, switch on variable every 0.5 seconds and call
+	Frame.repaint().
+	* examples/gnu/classpath/examples/jawt/Makefile: Removed.
+	* include/Makefile.am (include_HEADERS): New for jni.h, jni_md.h,
+	jawt.h and jawt_md.h.
+
 2005-09-05  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/reflect/Proxy.java
