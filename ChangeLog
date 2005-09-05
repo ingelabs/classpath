@@ -1,8 +1,14 @@
+2005-09-05  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/event/DocumentEvent.java:
+	Reindented file to conform to our coding standards.
+
 2005-09-05  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/XMLEventAllocatorImpl.java,
 	gnu/xml/stream/XMLInputFactoryImpl.java,
-	gnu/xml/stream/XMLStreamReaderImpl.java: Various fixes from system testing.
+	gnu/xml/stream/XMLStreamReaderImpl.java: Various fixes from system
+	testing.
 	* javax/xml/namespace/QName.java: Avoid unnecessary test.
 
 2005-09-05  Mark Wielaard  <mark@klomp.org>
@@ -76,8 +82,8 @@
 
 	* doc/README.jaxp: Updated JAXP documentation for StAX.
 	* javax/xml/stream/XMLEventFactory.java,
-	javax/xml/stream/XMLInputFactory.java,
-	javax/xml/stream/XMLOutputFactory.java: Use GNU implementation by
+	* javax/xml/stream/XMLInputFactory.java,
+	* javax/xml/stream/XMLOutputFactory.java: Use GNU implementation by
 	default.
 
 2005-09-04  Andreas Tobler  <a.tobler@schweiz.ch>
@@ -91,7 +97,8 @@
 
 2005-09-04  Mark Wielaard  <mark@klomp.org>
 
-	* (LeafElement.LeafElement): Set startPos and endPos through
+	* javax/swing/text/AbstractDocument.java
+	(LeafElement.LeafElement): Set startPos and endPos through
 	createPosition() if parent is null.
 
 2005-09-04  Chris Burdess  <dog@gnu.org>
@@ -107,18 +114,18 @@
 2005-09-04  Chris Burdess  <dog@gnu.org>
 
 	* javax/xml/stream/XMLEventFactory.java,
-	javax/xml/stream/XMLEventWriter.java,
-	javax/xml/stream/XMLInputFactory.java,
-	javax/xml/stream/XMLOutputFactory.java,
-	javax/xml/stream/XMLResolver.java,
-	javax/xml/stream/XMLStreamConstants.java,
-	javax/xml/stream/events/Attribute.java,
-	javax/xml/stream/events/EndEntity.java,
-	javax/xml/stream/events/EntityDeclaration.java,
-	javax/xml/stream/events/EntityReference.java,
-	javax/xml/stream/events/StartEntity.java,
-	javax/xml/stream/events/XMLEvent.java,
-	javax/xml/stream/util/EventReaderDelegate.java:
+	* javax/xml/stream/XMLEventWriter.java,
+	* javax/xml/stream/XMLInputFactory.java,
+	* javax/xml/stream/XMLOutputFactory.java,
+	* javax/xml/stream/XMLResolver.java,
+	* javax/xml/stream/XMLStreamConstants.java,
+	* javax/xml/stream/events/Attribute.java,
+	* javax/xml/stream/events/EndEntity.java,
+	* javax/xml/stream/events/EntityDeclaration.java,
+	* javax/xml/stream/events/EntityReference.java,
+	* javax/xml/stream/events/StartEntity.java,
+	* javax/xml/stream/events/XMLEvent.java,
+	* javax/xml/stream/util/EventReaderDelegate.java:
 	StAX API changes to conform to JWSDP 1.5.
 
 2005-09-03  Mark Wielaard  <mark@klomp.org>
@@ -150,15 +157,18 @@
 
 2005-09-03  Chris Burdess  <dog@gnu.org>
 
-	* javax/xml/stream,javax/xml/stream/events,javax/xml/stream/util:
+	* javax/xml/stream,
+	* javax/xml/stream/events,
+	* javax/xml/stream/util:
 	New StAX API classes.
 
 2005-09-02  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/transport/ITransport.java (shutdown): New method.
-	* gnu/classpath/jdwp/transport/JdwpConnection.java (JdwpConnection): Add
-	ThreadGroup argument.
-	* gnu/classpath/jdwp/transport/SocketTransport.java (shutdown): New method.
+	* gnu/classpath/jdwp/transport/JdwpConnection.java (JdwpConnection):
+	Add ThreadGroup argument.
+	* gnu/classpath/jdwp/transport/SocketTransport.java (shutdown):
+	New method.
 
 2005-09-02  Keith Seitz  <keiths@redhat.com>
 
@@ -195,14 +205,14 @@
 
 2005-09-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/CosNaming/NamingContextOperations.java:
-        Do not inherit from CORBA object.
-        * org/omg/CosNaming/_NamingContextExtImplBase.java (_methods),
-        omg/CosNaming/_NamingContextImplBase.java (methods):
-        Made package private.
-        * omg/CosNaming/NamingContextPOA.java,
-        omg/CosNaming/NamingContextExtPOA.java,
-        org/omg/CosNaming/BindingIteratorPOA.java: New files.
+	* org/omg/CosNaming/NamingContextOperations.java:
+	Do not inherit from CORBA object.
+	* org/omg/CosNaming/_NamingContextExtImplBase.java (_methods),
+	* omg/CosNaming/_NamingContextImplBase.java (methods):
+	Made package private.
+	* omg/CosNaming/NamingContextPOA.java,
+	* omg/CosNaming/NamingContextExtPOA.java,
+	* org/omg/CosNaming/BindingIteratorPOA.java: New files.
 
 2005-09-02  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
@@ -228,7 +238,8 @@
 2005-09-02  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTree.java
-	(installUI): TreeSelectionListener removed because added too many times.
+	(installUI): TreeSelectionListener removed because added too many
+	times.
 	* javax/swing/plaf/basic/BasicLookAndFeel.java:
 	Fixed names for some tree defaults.
 	* javax/swing/plaf/basic/BasicTreeUI.java:
@@ -252,7 +263,8 @@
 	(actionPerformed): Implemented for left/right keyboard actions.
 	* javax/swing/tree/DefaultTreeCellEditor.java
 	(DefaultTreeCellEditor): Set lastPath.
-	(isCellEditable): editingComponent should be configured if has not been.
+	(isCellEditable): editingComponent should be configured if has not
+	been.
 	(stopCellEditing): No need to set cell editor to null here.
 	(cancelCellEditing): Likewise.
 	(valueChanged): Set tPath to the path that was last selected. Used for
@@ -264,15 +276,15 @@
 
 2005-09-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * gnu/CORBA/Interceptor/ClientRequestInterceptors.java(send_poll): 
-        remove ForwardRequest from declaration.
+	* gnu/CORBA/Interceptor/ClientRequestInterceptors.java (send_poll):
+	remove ForwardRequest from declaration.
 
 2005-09-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/PortableInterceptor/CurrentOperations.java: 
-        Inherit from org.omg.CORBA.CurrentOperations.
-        * org/omg/PortableInterceptor/ClientRequestInterceptorOperations.java
-        (send_poll): Remove ForwardRequest from declaration.
+	* org/omg/PortableInterceptor/CurrentOperations.java:
+	Inherit from org.omg.CORBA.CurrentOperations.
+	* org/omg/PortableInterceptor/ClientRequestInterceptorOperations.java
+	(send_poll): Remove ForwardRequest from declaration.
 
 2005-09-02  Anthony Balkissoon  <abalkiss@redhat.com>
 
@@ -281,15 +293,15 @@
 
 2005-09-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * gnu/CORBA/IOR_Delegate.java (request),
-        gnu/CORBA/SocketRepository.java (get_socket),
-        gnu/CORBA/gnuRequest (getParameterStream),
-        gnu/CORBA/NamingService/NameParser.java,
-        gnu/CORBA/NamingService/NamingServiceTransient.java: Rewritten.
-        * gnu/CORBA/Functional_ORB.java (nameParser): New field.
-        (string_to_object): Rewritten.
-        (ior_to_object): Made public.
-        * org/omg/CORBA/ORB.java (string_to_object): 
+	* gnu/CORBA/IOR_Delegate.java (request),
+	* gnu/CORBA/SocketRepository.java (get_socket),
+	* gnu/CORBA/gnuRequest (getParameterStream),
+	* gnu/CORBA/NamingService/NameParser.java,
+	* gnu/CORBA/NamingService/NamingServiceTransient.java: Rewritten.
+	* gnu/CORBA/Functional_ORB.java (nameParser): New field.
+	(string_to_object): Rewritten.
+	(ior_to_object): Made public.
+	* org/omg/CORBA/ORB.java (string_to_object): 
         Documentation update.
 
 2005-09-02  Anthony Balkissoon  <abalkiss@redhat.com>
@@ -317,7 +329,7 @@
 
 	PR awt/22979
 	* gnu/java/awt/peer/gtk/GtkImage.java,
-	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c (GtkImage()):
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c (GtkImage()):
 	New constructor.
 	(drawPixelsScaled): Return immediately if width or height is <= 0.
 	(drawPixelsScaledFlipped): Likewise for srcwidth, srcheight,
@@ -566,7 +578,8 @@
 	(stopCellEditing): Added a check for editingComponent to prevent a NPE.
 	(cancelCellEditing): Likewise.
 	(valueChanged): Took out redundant code.
-	(actionPerformed): Added code in to implement click-pause-click editing.
+	(actionPerformed): Added code in to implement click-pause-click
+	editing.
 	(shouldStartTimer): Fixed check.
 	(canEditImmediately): Took out redunant code.
 	(inHitRegion): Changed region to be text area only (not icon).
@@ -656,7 +669,8 @@
 	(checkForClickInExpandControl): Fixed API documentation.
 	(editingStopped): Added code to remove listeners and container.
 	(editingCanceled): Similar.
-	(mousePressed): Updated to stop editing when a different cell is clicked.
+	(mousePressed): Updated to stop editing when a different cell is
+	clicked.
 	(treeNodesChanged): Called repaint.
 	(treeNodesRemoved): Likewise.
 	(treeStructureChanged): Likewise.
@@ -668,16 +682,17 @@
 	(doLayout): Fixed API documentation.
 	(DefaultTreeCellEditor): Took out call to configure editing component.
 	(configureEditingComponent): Initialized editing icon.
-	(getTreeCellEditorComponent): Took out code to stop editing. Not needed.
+	(getTreeCellEditorComponent): Took out code to stop editing.
+	Not needed.
 	(addCellEditorListener): Passed on to realEditor.
 	(removeCellEditorListener): Likewise.
 
-2005-08-29  <AudriusA@Bioinformatics.org>
+2005-08-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/CORBA/ORB.java (string_to_object): Documentation update.
-        * gnu/CORBA/Functional_ORB.java (string_to_object): Rewritten.
-        (ior_to_object): New method.
-        * gnu/CORBA/NamingService/NameParser.java: New file.
+	* org/omg/CORBA/ORB.java (string_to_object): Documentation update.
+	* gnu/CORBA/Functional_ORB.java (string_to_object): Rewritten.
+	(ior_to_object): New method.
+	* gnu/CORBA/NamingService/NameParser.java: New file.
 
 2005-08-28  Mark Wielaard  <mark@klomp.org>
 
@@ -695,104 +710,107 @@
         * javax/swing/text/AbstractDocument.java: Fully qualify references to
         ElementChange class.
 
-2005-08-28  <AudriusA@Bioinformatics.org>
+2005-08-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/Interceptor/ForwardRequestHolder.java,
-	gnu/CORBA/Interceptor/gnuClientRequestInfo.java,
-	gnu/CORBA/Interceptor/gnuIcCurrent.java,
-	gnu/CORBA/Interceptor/gnuIorInfo.java,
-	gnu/CORBA/Interceptor/gnuServerRequestInfo.java,
-	gnu/CORBA/Interceptor/IORInterceptors.java,
-	gnu/CORBA/Interceptor/ClientRequestInterceptors.java,
-	gnu/CORBA/Interceptor/Registrator.java,
-	gnu/CORBA/Interceptor/ServerRequestInterceptors.java,
-	gnu/CORBA/GIOP/contextSupportingHeader.java,
-	org/omg/PortableInterceptor/ClientRequestInfo.java,
-	org/omg/PortableInterceptor/ClientRequestInfoOperations.java,
-	org/omg/PortableInterceptor/ClientRequestInterceptor.java,
-	org/omg/PortableInterceptor/ClientRequestInterceptorOperations.java,
-	org/omg/PortableInterceptor/Current.java,
-	org/omg/PortableInterceptor/CurrentHelper.java,
-	org/omg/PortableInterceptor/CurrentOperations.java,
-	org/omg/PortableInterceptor/ForwardRequest.java,
-	org/omg/PortableInterceptor/ForwardRequestHelper.java,
-	org/omg/PortableInterceptor/InvalidSlot.java,
-	org/omg/PortableInterceptor/InvalidSlotHelper.java,
-	org/omg/PortableInterceptor/ORBInitInfo.java,
-	org/omg/PortableInterceptor/ORBInitInfoOperations.java,
-	org/omg/PortableInterceptor/ORBInitializer.java,
-	org/omg/PortableInterceptor/ORBInitializerOperations.java,
-	org/omg/PortableInterceptor/PolicyFactory.java,
-	org/omg/PortableInterceptor/PolicyFactoryOperations.java,
-	org/omg/PortableInterceptor/RequestInfo.java,
-	org/omg/PortableInterceptor/RequestInfoOperations.java,
-	org/omg/PortableInterceptor/ServerRequestInfo.java,
-	org/omg/PortableInterceptor/ServerRequestInfoOperations.java,
-	org/omg/PortableInterceptor/ServerRequestInterceptor.java,
-	org/omg/PortableInterceptor/ServerRequestInterceptorOperations.java,
-	org/omg/PortableInterceptor/package.html: New files.
+	* gnu/CORBA/Interceptor/gnuClientRequestInfo.java,
+	* gnu/CORBA/Interceptor/gnuIcCurrent.java,
+	* gnu/CORBA/Interceptor/gnuIorInfo.java,
+	* gnu/CORBA/Interceptor/gnuServerRequestInfo.java,
+	* gnu/CORBA/Interceptor/IORInterceptors.java,
+	* gnu/CORBA/Interceptor/ClientRequestInterceptors.java,
+	* gnu/CORBA/Interceptor/Registrator.java,
+	* gnu/CORBA/Interceptor/ServerRequestInterceptors.java,
+	* gnu/CORBA/GIOP/contextSupportingHeader.java,
+	* org/omg/PortableInterceptor/ClientRequestInfo.java,
+	* org/omg/PortableInterceptor/ClientRequestInfoOperations.java,
+	* org/omg/PortableInterceptor/ClientRequestInterceptor.java,
+	* org/omg/PortableInterceptor/ClientRequestInterceptorOperations.java,
+	* org/omg/PortableInterceptor/Current.java,
+	* org/omg/PortableInterceptor/CurrentHelper.java,
+	* org/omg/PortableInterceptor/CurrentOperations.java,
+	* org/omg/PortableInterceptor/ForwardRequest.java,
+	* org/omg/PortableInterceptor/ForwardRequestHelper.java,
+	* org/omg/PortableInterceptor/InvalidSlot.java,
+	* org/omg/PortableInterceptor/InvalidSlotHelper.java,
+	* org/omg/PortableInterceptor/ORBInitInfo.java,
+	* org/omg/PortableInterceptor/ORBInitInfoOperations.java,
+	* org/omg/PortableInterceptor/ORBInitializer.java,
+	* org/omg/PortableInterceptor/ORBInitializerOperations.java,
+	* org/omg/PortableInterceptor/PolicyFactory.java,
+	* org/omg/PortableInterceptor/PolicyFactoryOperations.java,
+	* org/omg/PortableInterceptor/RequestInfo.java,
+	* org/omg/PortableInterceptor/RequestInfoOperations.java,
+	* org/omg/PortableInterceptor/ServerRequestInfo.java,
+	* org/omg/PortableInterceptor/ServerRequestInfoOperations.java,
+	* org/omg/PortableInterceptor/ServerRequestInterceptor.java,
+	* org/omg/PortableInterceptor/ServerRequestInterceptorOperations.java,
+	* org/omg/PortableInterceptor/package.html:
+	New files.
 	* gnu/CORBA/ExceptionCreator.java,
-	gnu/CORBA/Functional_ORB.java,
-	gnu/CORBA/IOR.java,
-	gnu/CORBA/IOR_Delegate.java,
-	gnu/CORBA/ObjectCreator.java,
-	gnu/CORBA/Restricted_ORB.java,
-	gnu/CORBA/bufferedResponseHandler.java,
-	gnu/CORBA/gnuCodecFactory.java,
-	gnu/CORBA/gnuRequest.java,
-	gnu/CORBA/primitiveArrayTypeCode.java,
-	gnu/CORBA/primitiveTypeCode.java,
-	gnu/CORBA/CDR/Vio.java,
-	gnu/CORBA/CDR/cdrOutput.java,
-	gnu/CORBA/DynAn/gnuDynAny.java,
-	gnu/CORBA/DynAn/gnuDynEnum.java,
-	gnu/CORBA/DynAn/gnuDynFixed.java,
-	gnu/CORBA/DynAn/gnuDynValue.java,
-	gnu/CORBA/GIOP/ReplyHeader.java,
-	gnu/CORBA/GIOP/RequestHeader.java,
-	gnu/CORBA/GIOP/ServiceContext.java,
-	gnu/CORBA/GIOP/v1_0/RequestHeader.java,
-	gnu/CORBA/Poa/LocalDelegate.java,
-	gnu/CORBA/Poa/LocalRequest.java,
-	gnu/CORBA/Poa/ORB_1_4.java,
-	gnu/CORBA/Poa/gnuServantObject.java,
-	gnu/CORBA/Poa/servantDelegate.java,
-	org/omg/CORBA/ServiceDetailHelper.java,
-	org/omg/CORBA/DynAnyPackage/Invalid.java,
-	org/omg/CORBA/DynAnyPackage/InvalidSeq.java,
-	org/omg/CORBA/DynAnyPackage/InvalidValue.java,
-	org/omg/CORBA/DynAnyPackage/TypeMismatch.java,
-	org/omg/DynamicAny/NameDynAnyPairSeqHelper.java,
-	org/omg/DynamicAny/_DynAnyFactoryStub.java,
-	org/omg/DynamicAny/_DynAnyStub.java,
-	org/omg/DynamicAny/_DynArrayStub.java,
-	org/omg/DynamicAny/_DynEnumStub.java,
-	org/omg/DynamicAny/_DynFixedStub.java,
-	org/omg/DynamicAny/_DynSequenceStub.java,
-	org/omg/DynamicAny/_DynStructStub.java,
-	org/omg/DynamicAny/_DynUnionStub.java,
-	org/omg/DynamicAny/_DynValueStub.java,
-	org/omg/IOP/ServiceContext.java,
-	org/omg/IOP/TaggedComponentHelper.java,
-	org/omg/IOP/TaggedProfileHelper.java,
-	org/omg/PortableInterceptor/IORInfo.java,
-	org/omg/PortableInterceptor/IORInfoOperations.java,
-	org/omg/PortableInterceptor/IORInterceptor.java,
-	org/omg/PortableInterceptor/IORInterceptorOperations.java,
-	org/omg/PortableInterceptor/Interceptor.java,
-	org/omg/PortableInterceptor/LOCATION_FORWARD.java,
-	org/omg/PortableInterceptor/SUCCESSFUL.java,
-	org/omg/PortableInterceptor/SYSTEM_EXCEPTION.java,
-	org/omg/PortableInterceptor/TRANSPORT_RETRY.java,
-	org/omg/PortableInterceptor/USER_EXCEPTION.java,
-	org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateName.java,
-	org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateNameHelper.java,
-	org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidName.java,
-	org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidNameHelper.java,
-	org/omg/PortableInterceptor/ORBInitInfoPackage/ObjectIdHelper.java: Rewritten.
+	* gnu/CORBA/Functional_ORB.java,
+	* gnu/CORBA/IOR.java,
+	* gnu/CORBA/IOR_Delegate.java,
+	* gnu/CORBA/ObjectCreator.java,
+	* gnu/CORBA/Restricted_ORB.java,
+	* gnu/CORBA/bufferedResponseHandler.java,
+	* gnu/CORBA/gnuCodecFactory.java,
+	* gnu/CORBA/gnuRequest.java,
+	* gnu/CORBA/primitiveArrayTypeCode.java,
+	* gnu/CORBA/primitiveTypeCode.java,
+	* gnu/CORBA/CDR/Vio.java,
+	* gnu/CORBA/CDR/cdrOutput.java,
+	* gnu/CORBA/DynAn/gnuDynAny.java,
+	* gnu/CORBA/DynAn/gnuDynEnum.java,
+	* gnu/CORBA/DynAn/gnuDynFixed.java,
+	* gnu/CORBA/DynAn/gnuDynValue.java,
+	* gnu/CORBA/GIOP/ReplyHeader.java,
+	* gnu/CORBA/GIOP/RequestHeader.java,
+	* gnu/CORBA/GIOP/ServiceContext.java,
+	* gnu/CORBA/GIOP/v1_0/RequestHeader.java,
+	* gnu/CORBA/Poa/LocalDelegate.java,
+	* gnu/CORBA/Poa/LocalRequest.java,
+	* gnu/CORBA/Poa/ORB_1_4.java,
+	* gnu/CORBA/Poa/gnuServantObject.java,
+	* gnu/CORBA/Poa/servantDelegate.java,
+	* org/omg/CORBA/ServiceDetailHelper.java,
+	* org/omg/CORBA/DynAnyPackage/Invalid.java,
+	* org/omg/CORBA/DynAnyPackage/InvalidSeq.java,
+	* org/omg/CORBA/DynAnyPackage/InvalidValue.java,
+	* org/omg/CORBA/DynAnyPackage/TypeMismatch.java,
+	* org/omg/DynamicAny/NameDynAnyPairSeqHelper.java,
+	* org/omg/DynamicAny/_DynAnyFactoryStub.java,
+	* org/omg/DynamicAny/_DynAnyStub.java,
+	* org/omg/DynamicAny/_DynArrayStub.java,
+	* org/omg/DynamicAny/_DynEnumStub.java,
+	* org/omg/DynamicAny/_DynFixedStub.java,
+	* org/omg/DynamicAny/_DynSequenceStub.java,
+	* org/omg/DynamicAny/_DynStructStub.java,
+	* org/omg/DynamicAny/_DynUnionStub.java,
+	* org/omg/DynamicAny/_DynValueStub.java,
+	* org/omg/IOP/ServiceContext.java,
+	* org/omg/IOP/TaggedComponentHelper.java,
+	* org/omg/IOP/TaggedProfileHelper.java,
+	* org/omg/PortableInterceptor/IORInfo.java,
+	* org/omg/PortableInterceptor/IORInfoOperations.java,
+	* org/omg/PortableInterceptor/IORInterceptor.java,
+	* org/omg/PortableInterceptor/IORInterceptorOperations.java,
+	* org/omg/PortableInterceptor/Interceptor.java,
+	* org/omg/PortableInterceptor/LOCATION_FORWARD.java,
+	* org/omg/PortableInterceptor/SUCCESSFUL.java,
+	* org/omg/PortableInterceptor/SYSTEM_EXCEPTION.java,
+	* org/omg/PortableInterceptor/TRANSPORT_RETRY.java,
+	* org/omg/PortableInterceptor/USER_EXCEPTION.java,
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateName.java,
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateNameHelper.java,
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidName.java,
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidNameHelper.java,
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/ObjectIdHelper.java:
+	Rewritten.
 	* org/omg/CORBA/ORB.java,
-	org/omg/CORBA/package.html,
-	NEWS: Documentation update.
+	* org/omg/CORBA/package.html,
+	* NEWS:
+	Documentation update.
 
 2005-08-28  Chris Burdess  <dog@gnu.org>
 
@@ -945,7 +963,7 @@
 	Reported by Bastiaan Huisman <huisman@science.uva.nl>
 	* scripts/tzabbrevs: Change America/Buenos_Aires to
 	America/Argentina/Buenos_Aires for AGT link.
-	* timezones.pl (parseTime): Assume and return wall time.
+	* scripts/timezones.pl (parseTime): Assume and return wall time.
 	Reindent output.
 	* java/util/TimeZone.java (timezones): Regenerate using tzdata2005l.
 
