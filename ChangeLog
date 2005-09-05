@@ -1,6 +1,23 @@
 2005-09-05  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/event/DocumentEvent.java:
+	(ElementChange) Made inner interface static to conform to the specs.
+
+2005-09-05  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/JDesktopPane.java: Fixed typo in class description.
+	* javax/swing/JEditorPane.java: Removed unneeded import.
+	Added class description.
+	* javax/swing/JDialog.java: Made class description more useful.
+	* javax/swing/JFileChooser.java: Added class description.
+	* javax/swing/JFormattedTextField.java: Added class description.
+	(AbstractFormatter): Likewise.
+	(AbstractFormatterFactory): Likewise.
+	* javax/swing/JFrame.java: Made class description more useful.
+
+2005-09-05  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/event/DocumentEvent.java:
 	Reindented file to conform to our coding standards.
 
 2005-09-05  Chris Burdess  <dog@gnu.org>

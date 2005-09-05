@@ -50,7 +50,7 @@ public interface DocumentEvent
   /**
    * ElementChange public interface
    */
-  public interface ElementChange
+  public static interface ElementChange
   {
     /**
      * getIndex
