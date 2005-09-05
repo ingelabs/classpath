@@ -1,3 +1,9 @@
+2005-09-05  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/reflect/Proxy.java
+	(sameTypes): Removed.
+	(equals): Fixed bug #23727.
+
 2005-09-04  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/classpath/jdwp/event/filters/ClassMatchFilter.java
