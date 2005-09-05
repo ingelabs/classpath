@@ -3,6 +3,9 @@
 	* native/jni/Makefile.am (all-local): Invoke $(SHELL) to execute
 	the script.
 
+	* scripts/check_jni_methods.sh: Make script working with non GNU
+	grep versions.
+
 2005-09-05  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/event/DocumentEvent.java:

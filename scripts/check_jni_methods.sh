@@ -40,14 +40,17 @@ cat > $TMPFILE3 << EOF
 EOF
 
 # Compare again silently.
-if diff -b -U 0 $TMPFILE $TMPFILE2 | grep '^[+-]Java' | grep -q -v -f $TMPFILE3;
+# Use fgrep and direct the output to /dev/null for compatibility with older
+# grep instead of using the non portable -q.
+if diff -b -U 0 $TMPFILE $TMPFILE2 | grep '^[+-]Java' | \
+    fgrep -v -f $TMPFILE3 > /dev/null;
 then
   PROBLEM=1
   echo "Found a problem with the JNI methods declared and implemented."
   echo "(-) missing in implementation, (+) missing in header files"
 
   # Compare the found method lists.
-  diff -b -U 0 $TMPFILE $TMPFILE2  | grep '^[+-]Java' | grep -v -f $TMPFILE3
+  diff -b -U 0 $TMPFILE $TMPFILE2  | grep '^[+-]Java' | fgrep -v -f $TMPFILE3
 fi
 
 # Cleanup.
@@ -58,4 +61,3 @@ if test "$PROBLEM" = "1" ; then
 fi
 
 exit 0
-
