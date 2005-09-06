@@ -1,3 +1,7 @@
+2005-09-07  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/Box.java: Added java.awt.Container import statement.
+
 2005-09-06  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
