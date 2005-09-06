@@ -46,6 +46,7 @@ import java.awt.LayoutManager;
 import java.awt.LayoutManager2;
 import java.io.Serializable;
 
+import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleRole;
 import javax.swing.plaf.RootPaneUI;
 
@@ -59,10 +60,10 @@ import javax.swing.plaf.RootPaneUI;
  *
  * @author Ronald Veldema (rveldema@cs.vu.nl)
  */
-public class JRootPane extends JComponent
+public class JRootPane extends JComponent implements Accessible
 {
   //  The class used to obtain the accessible role for this object.
-  protected static class AccessibleJRootPane
+  protected class AccessibleJRootPane extends AccessibleJComponent
   {
     /**
      * For compatability with Sun's JDK

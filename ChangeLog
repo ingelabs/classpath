@@ -1,3 +1,14 @@
+2005-09-06  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/Box.java
+	(AccessibleBox): Extend Container.AccessibleAWTContainer.
+	(Filler.AccessibleBoxFiller): Extend Component.AccessibleAWTComponent.
+	(Filler.getAccessibleContext): Uncomment disabled code.
+	(getAccessibleContext): Uncomment disabled code.
+	* javax/swing/JRootPane.java:
+	JRootPane implements Accessible.
+	(AccessibleJRootPane): Extend AccessibleJComponent.
+
 2005-09-06  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java
