@@ -1,3 +1,13 @@
+2005-09-06  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicScrollBarUI:
+	Fixes Bug PR23529.
+	(installUI): Changed delay for Timer. Was set too
+	long and actionPerformed was not being called fast
+	enough when the user clicks on the scroll bar. This
+	is because the timer is stopped after the mouse is
+	released.
+
 2005-09-06  Mark Wielaard  <mark@klomp.org>
 
 	* NEWS: Add new features for 0.18.
