@@ -1,4 +1,14 @@
 2005-09-06  Lillian Angel  <langel@redhat.com>
+	
+	Fixes Bug #PR23023 
+	* javax/swing/plaf/basic/BasicFileChooserUI.java:
+	Added 2 fields and reformatted copyright.
+	(actionPerformed): Should be able to open directories.
+	(mouseClicked): Set text in text field.
+	(installUI): Initialized the current parent path.
+	(installComponents): Fixed initialization for text field.	
+
+2005-09-06  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicFileChooserUI.java:
 	Formatted entire class.
