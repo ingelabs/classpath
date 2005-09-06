@@ -1,5 +1,19 @@
 2005-09-06  Lillian Angel  <langel@redhat.com>
 
+	Fixes Bug #PR20015
+	* javax/swing/JMenuBar.java
+	(getUIClassID): Fixed API documentation.
+	* javax/swing/plaf/basic/BasicMenuBarUI.java:
+	Added a private field for the mouse listener.
+	(BasicMenuBarUI): Initialized mouseListener.
+	(installListeners): Added mouseListener.
+	(uninstallListeners): Removed mouseListener.
+	(MouseInputHandler): New class added.
+	(mouseClicked): Added code to deselect menu items
+	when menu bar is clicked.	
+
+2005-09-06  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicMenuItemUI.java:
 	Fixes Bug #PR23527 
 	(paintMenuItem): Moved view rectangle over to the 
