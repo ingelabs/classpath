@@ -1,5 +1,10 @@
 2005-09-07  Robert Schuster  <robertschuster@fsfe.org>
 
+	* native/jni/qt-peer/componentevent.cpp: Added inclusion
+	of assert.h
+
+2005-09-07  Robert Schuster  <robertschuster@fsfe.org>
+
 	* INSTALL: Mention that GCJ4 is now mandatory.
 
 2005-09-07  Robert Schuster  <robertschuster@fsfe.org>
