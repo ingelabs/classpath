@@ -823,7 +823,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
             return MetalIconFactory.getRadioButtonIcon();
           }
       },
-
+      "RadioButton.focus", MetalLookAndFeel.getFocusColor(),
+      "RadioButton.font", MetalLookAndFeel.getControlTextFont(),
       "RadioButtonMenuItem.border", new MetalBorders.MenuItemBorder(),
       "RadioButtonMenuItem.borderPainted", Boolean.TRUE,
       "RadioButtonMenuItem.checkIcon", 

@@ -295,19 +295,6 @@ public class MetalIconFactory implements Serializable
   static class RadioButtonIcon
     implements Icon, UIResource, Serializable
   {
-    /**
-     * Draws the check in the RadioButton.
-     *
-     * @param c the component to draw on
-     * @param g the Graphics context to draw with
-     */
-    protected void drawCheck(Component c, Graphics g)
-    {
-      g.setColor(MetalLookAndFeel.getBlack());
-      g.fillRect(4, 3, 4, 6);
-      g.drawLine(3, 4, 3, 7);
-      g.drawLine(8, 4, 8, 7);
-    }
 
     /**
      * Returns the width of the icon in pixels.
@@ -330,57 +317,88 @@ public class MetalIconFactory implements Serializable
     }
 
     /**
-     * Paints the icon. This first paints the border of the RadioButton and
-     * if the CheckBox is selected it calls {@link #drawCheck} to draw
-     * the check.
+     * Paints the icon, taking into account whether or not the component is
+     * enabled, selected and/or armed.
      *
-     * @param c the Component to draw on (gets casted to JCheckBox)
+     * @param c the Component to draw on (must be an instance of 
+     *          {@link JRadioButton})
      * @param g the Graphics context to draw with
      * @param x the X position
      * @param y the Y position
      */
-    public void paintIcon(Component c, Graphics g, int x, int y)
+    public void paintIcon(Component c, Graphics g, int x, int y) 
     {
-      Color dark = MetalLookAndFeel.getControlDarkShadow();
-      Color light = MetalLookAndFeel.getWhite();
-      g.translate(x, y);
+      Color savedColor = g.getColor();
+      JRadioButton b = (JRadioButton) c;
+      
+      // draw outer circle
+      if (b.isEnabled())
+        g.setColor(MetalLookAndFeel.getControlDarkShadow());
+      else
+        g.setColor(MetalLookAndFeel.getControlDisabled());
+      g.drawLine(x + 2, y + 1, x + 3, y + 1);
+      g.drawLine(x + 4, y, x + 7, y);
+      g.drawLine(x + 8, y + 1, x + 9, y + 1);
+      g.drawLine(x + 10, y + 2, x + 10, y + 3);
+      g.drawLine(x + 11, y + 4, x + 11, y + 7);
+      g.drawLine(x + 10, y + 8, x + 10, y + 9);
+      g.drawLine(x + 8, y + 10, x + 9, y + 10);
+      g.drawLine(x + 4, y + 11, x + 7, y + 11);
+      g.drawLine(x + 2, y + 10, x + 3, y + 10);
+      g.drawLine(x + 1, y + 9, x + 1, y + 8);
+      g.drawLine(x, y + 7, x, y + 4);
+      g.drawLine(x + 1, y + 2, x + 1, y + 3);
 
-      // The light 'circle'
-      g.setColor(light);
-      g.drawLine(4, 1, 10, 1);
-      g.drawLine(2, 2, 3, 2);
-      g.drawLine(8, 2, 11, 2);
-      g.drawLine(2, 3, 2, 3);
-      g.drawLine(11, 2, 11, 9);
-      g.drawLine(1, 4, 1, 7);
-      g.drawLine(12, 4, 12, 7);
-      g.drawLine(2, 8, 2, 11);
-      g.drawLine(11, 8, 11, 9);
-      g.drawLine(10, 10, 10, 10);
-      g.drawLine(2, 11, 9, 11);
-      g.drawLine(4, 12, 7, 12);
+      if (b.getModel().isArmed())
+        {
+          g.setColor(MetalLookAndFeel.getControlShadow());
+          g.drawLine(x + 4, y + 1, x + 7, y + 1);
+          g.drawLine(x + 4, y + 10, x + 7, y + 10);
+          g.drawLine(x + 1, y + 4, x + 1, y + 7);
+          g.drawLine(x + 10, y + 4, x + 10, y + 7);
+          g.fillRect(x + 2, y + 2, 8, 8);
+        }
+      else 
+        {
+          // only draw inner highlight if not filled
+          if (b.isEnabled())
+            {
+              g.setColor(MetalLookAndFeel.getWhite());
+          
+              g.drawLine(x + 2, y + 8, x + 2, y + 9);
+              g.drawLine(x + 1, y + 4, x + 1, y + 7);
+              g.drawLine(x + 2, y + 2, x + 2, y + 3);
+              g.drawLine(x + 3, y + 2, x + 3, y + 2);
+              g.drawLine(x + 4, y + 1, x + 7, y + 1);
+              g.drawLine(x + 8, y + 2, x + 9, y + 2);
+            }
+        }
 
-      // The dark 'circle'
-      g.setColor(dark);
-      g.drawLine(4, 0, 7, 0);
-      g.drawLine(2, 1, 3, 1);
-      g.drawLine(8, 1, 9, 1);
-      g.drawLine(1, 2, 1, 3);
-      g.drawLine(10, 2, 10, 3);
-      g.drawLine(0, 4, 0, 7);
-      g.drawLine(11, 4, 11, 7);
-      g.drawLine(1, 8, 1, 9);
-      g.drawLine(10, 8, 10, 9);
-      g.drawLine(2, 10, 3, 10);
-      g.drawLine(8, 10, 9, 10);
-      g.drawLine(4, 11, 7, 11);
-
-      JRadioButton rb = (JRadioButton) c;
-      if (rb.isSelected())
-        drawCheck(c, g);
-
-      g.translate(-x, -y);
-    }
+      // draw outer highlight
+      if (b.isEnabled())
+        {
+          g.setColor(MetalLookAndFeel.getWhite());
+          
+          // outer
+          g.drawLine(x + 10, y + 1, x + 10, y + 1);
+          g.drawLine(x + 11, y + 2, x + 11, y + 3);
+          g.drawLine(x + 12, y + 4, x + 12, y + 7);
+          g.drawLine(x + 11, y + 8, x + 11, y + 9);
+          g.drawLine(x + 10, y + 10, x + 10, y + 10);
+          g.drawLine(x + 8, y + 11, x + 9, y + 11);
+          g.drawLine(x + 4, y + 12, x + 7, y + 12);
+          g.drawLine(x + 2, y + 11, x + 3, y + 11);
+        }
+      
+      if (b.isSelected())
+        {
+          g.setColor(MetalLookAndFeel.getBlack());
+          g.drawLine(x + 4, y + 3, x + 7, y + 3);
+          g.fillRect(x + 3, y + 4, 6, 4);
+          g.drawLine(x + 4, y + 8, x + 7, y + 8);
+        }
+      g.setColor(savedColor);
+    }        
   }
 
   /**
