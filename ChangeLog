@@ -1,3 +1,11 @@
+2005-09-06  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Set version to 0.19-pre.
+
+	* doc/www.gnu.org/announce/20050906.wml: New file.
+	* doc/www.gnu.org/newsitems.txt: Add 0.18 release announcement.
+	* doc/www.gnu.org/downloads/downloads.wml: Add 0.18.
+
 2005-09-06  Roman Kennke  <roman@kennke.org>
 
 	* javax/swing/Box.java
