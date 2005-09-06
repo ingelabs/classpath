@@ -1,5 +1,18 @@
 2005-09-06  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	Fixes Bug #PR23527 
+	(paintMenuItem): Moved view rectangle over to the 
+	left the same amount as defaultTextIconGap so the
+	accelerator is painted with some space on the right.
+
+2005-09-06  Lillian Angel <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	Formatted class.
+
+2005-09-06  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicScrollBarUI:
 	Fixes Bug PR23529.
 	(installUI): Changed delay for Timer. Was set too

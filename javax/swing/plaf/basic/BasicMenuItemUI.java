@@ -596,7 +596,7 @@ public class BasicMenuItemUI extends MenuItemUI
         fm = g.getFontMetrics(acceleratorFont);
         ar.width = fm.stringWidth(acceleratorText);
         ar.x = br.width - ar.width;
-        vr.x = br.width - ar.width;
+        vr.x = br.width - ar.width - defaultTextIconGap;
 
         SwingUtilities.layoutCompoundLabel(m, fm, acceleratorText, null,
                                            vertAlign, horAlign, vertTextPos,
