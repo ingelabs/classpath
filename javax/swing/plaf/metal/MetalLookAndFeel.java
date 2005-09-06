@@ -815,6 +815,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "MenuItem.selectionBackground", getMenuSelectedBackground(),
       "MenuItem.selectionForeground", getMenuSelectedForeground(),
       "Panel.background", new ColorUIResource(getControl()),
+      "RadioButton.disabledText", 
+      MetalLookAndFeel.getInactiveControlTextColor(),
       "RadioButton.icon",
       new UIDefaults.LazyValue()
       {
@@ -825,6 +827,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       },
       "RadioButton.focus", MetalLookAndFeel.getFocusColor(),
       "RadioButton.font", MetalLookAndFeel.getControlTextFont(),
+      "RadioButton.select", MetalLookAndFeel.getControlShadow(),
       "RadioButtonMenuItem.border", new MetalBorders.MenuItemBorder(),
       "RadioButtonMenuItem.borderPainted", Boolean.TRUE,
       "RadioButtonMenuItem.checkIcon", 

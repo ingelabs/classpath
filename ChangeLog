@@ -1,3 +1,21 @@
+2005-09-06  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): added some RadioButton defaults,
+	* javax/swing/plaf/metal/MetalRadioButtonUI.java
+	(instance): removed,
+	(focusColor): added,
+	(selectColor): added,
+	(disabledTextColor): added,
+	(createUI): return a new instance for every component,
+	(installDefaults): implemented,
+	(uninstallDefaults): implemented,
+	(getSelectColor): implemented,
+	(getDisabledTextColor): implemented,
+	(getFocusColor): implemented,
+	(paint): added FIXME note,
+	(paintFocus): implemented.
+
 2005-09-06  Lillian Angel  <langel@redhat.com>
 	
 	Fixes Bug #PR23023 
