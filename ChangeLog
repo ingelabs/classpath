@@ -1,3 +1,9 @@
+2005-09-06  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/jni/gtk-peer/gtkpeer.h (SYNCHRONIZE_GDK): Define.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c (gtkInit)
+	[SYNCHRONIZE_GDK]: Make GDK synchronous.
+
 2005-09-05  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	PR awt/20720
