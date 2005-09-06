@@ -1,3 +1,8 @@
+2005-09-06  Mark Wielaard  <mark@klomp.org>
+
+	* NEWS: Add new features for 0.18.
+	* configure.ac: Set version to 0.18.
+
 2005-09-06  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gtkpeer.h (SYNCHRONIZE_GDK): Define.
