@@ -294,9 +294,10 @@ cp_gtk_window_init_jni (void)
 }
 
 /* Get the first keyval in the keymap for this event's keycode.  The
-   first keyval corresponds roughly to Java's notion of a virtual
-   key.  Returns the uppercase version of the first keyval. */
-static guint
+   first keyval corresponds roughly to Java's notion of a virtual key.
+   Returns the uppercase version of the first keyval or -1 if no
+   keyval was found for the given hardware keycode. */
+static gint
 get_first_keyval_from_keymap (GdkEventKey *event)
 {
   guint keyval;
@@ -309,10 +310,8 @@ get_first_keyval_from_keymap (GdkEventKey *event)
                                            &keyvals,
                                            &n_entries))
     {
-      g_warning ("No keyval found for hardware keycode %d\n",
-                 event->hardware_keycode);
-      /* Try to recover by using the keyval in the event structure. */
-      keyvals = &(event->keyval);
+      /* No keyval found for hardware keycode */
+      return -1;
     }
   keyval = keyvals[0];
   g_free (keyvals);
@@ -320,16 +319,22 @@ get_first_keyval_from_keymap (GdkEventKey *event)
   return gdk_keyval_to_upper (keyval);
 }
 
+/* Return the AWT key code for the given keysym or -1 if no keyval was
+   found for the given hardware keycode. */
 #ifdef __GNUC__
 __inline
 #endif
 static jint
 keysym_to_awt_keycode (GdkEventKey *event)
 {
-  guint ukeyval;
+  gint ukeyval;
   guint state;
 
   ukeyval = get_first_keyval_from_keymap (event);
+
+  if (ukeyval < 0)
+    return -1;
+
   state = event->state;
 
   /* VK_A through VK_Z */
@@ -728,12 +733,17 @@ keysym_to_awt_keycode (GdkEventKey *event)
     }
 }
 
+/* Return the AWT key location code for the given keysym or -1 if no
+   keyval was found for the given hardware keycode. */
 static jint
 keysym_to_awt_keylocation (GdkEventKey *event)
 {
-  guint ukeyval;
+  gint ukeyval;
 
   ukeyval = get_first_keyval_from_keymap (event);
+
+  if (ukeyval < 0)
+    return -1;
 
   /* VK_A through VK_Z */
   if (ukeyval >= GDK_A && ukeyval <= GDK_Z)
@@ -1059,14 +1069,25 @@ key_press_cb (GtkWidget *widget __attribute__((unused)),
               GdkEventKey *event,
               jobject peer)
 {
+  jint keycode;
+  jint keylocation;
+
+  keycode = keysym_to_awt_keycode (event);
+  keylocation = keysym_to_awt_keylocation (event);
+
+  /* Return immediately if an error occurs translating a hardware
+     keycode to a keyval. */
+  if (keycode < 0 || keylocation < 0)
+    return TRUE;
+
   (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
                                 postKeyEventID,
                                 (jint) AWT_KEY_PRESSED,
                                 (jlong) event->time,
                                 keyevent_state_to_awt_mods (event),
-                                keysym_to_awt_keycode (event),
+                                keycode,
                                 keyevent_to_awt_keychar (event),
-                                keysym_to_awt_keylocation (event));
+                                keylocation);
 
   /* FIXME: generation of key typed events needs to be moved
      to GtkComponentPeer.postKeyEvent.  If the key in a key
@@ -1082,14 +1103,25 @@ key_release_cb (GtkWidget *widget __attribute__((unused)),
                 GdkEventKey *event,
                 jobject peer)
 {
+  jint keycode;
+  jint keylocation;
+
+  keycode = keysym_to_awt_keycode (event);
+  keylocation = keysym_to_awt_keylocation (event);
+
+  /* Return immediately if an error occurs translating a hardware
+     keycode to a keyval. */
+  if (keycode < 0 || keylocation < 0)
+    return TRUE;
+
   (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
                                 postKeyEventID,
                                 (jint) AWT_KEY_RELEASED,
                                 (jlong) event->time,
                                 keyevent_state_to_awt_mods (event),
-                                keysym_to_awt_keycode (event),
+                                keycode,
                                 keyevent_to_awt_keychar (event),
-                                keysym_to_awt_keylocation (event));
+                                keylocation);
 
   return TRUE;
 }

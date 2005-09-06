@@ -1,3 +1,15 @@
+2005-09-05  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR awt/20720
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(get_first_keyval_from_keymap): Return -1 if no keyval was found
+	for given hardware keycode.
+	(keysym_to_awt_keycode): Likewise.
+	(keysym_to_awt_keylocation): Likewise.
+	(key_press_cb): Return immediately if no keyval was found for
+	given hardware keycode.
+	(key_release_cb): Likewise.
+
 2005-09-05  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/Makefile.am (all-local): Invoke $(SHELL) to execute
