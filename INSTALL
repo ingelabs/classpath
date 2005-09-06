@@ -1,4 +1,4 @@
-Installing GNU Classpath - Last updated: August 31, 2005
+Installing GNU Classpath - Last updated: September 7, 2005
 
 First, this is a development release only! Unless you are interested in
 active development and debugging, or just like running random alpha code,
@@ -31,11 +31,16 @@ Suggested Software
 	--with-jikes, --with-gcj, --with-ecj or --with-kjc as argument to
 	configure; the present default is gcj.
 
-        - GCJ 3.3+ (part of the GNU GCC package).
+        - GCJ 4.0+ (part of the GNU GCC package).
         - IBM jikes 1.19+.  
         - Eclipse Compiler for Java 3.1+
         - The kjc compiler is supported with configure but we have
           been unable to successfully compile with it.
+
+	IMPORTANT: Versions of GCJ which are earlier than 4.0 contain
+	bugs which make it impossible to compile the class library and
+	are *not* supported any more. If you are stuck on a system where
+	GCC 3.x is the system compiler we recommend using Jikes.
 
 	For building the gtk+ AWT peer JNI native libraries, the following
 	are required unless --disable-gtk-peer is used as an argument to
