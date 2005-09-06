@@ -1,39 +1,40 @@
 /* BasicFileChooserUI.java --
-   Copyright (C) 2005  Free Software Foundation, Inc.
+ Copyright (C) 2005  Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+ This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
+ GNU Classpath is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2, or (at your option)
+ any later version.
 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+ GNU Classpath is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA.
+ You should have received a copy of the GNU General Public License
+ along with GNU Classpath; see the file COPYING.  If not, write to the
+ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ 02110-1301 USA.
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+ Linking this library statically or dynamically with other modules is
+ making a combined work based on this library.  Thus, the terms and
+ conditions of the GNU General Public License cover the whole
+ combination.
 
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+ As a special exception, the copyright holders of this library give you
+ permission to link this library with independent modules to produce an
+ executable, regardless of the license terms of these independent
+ modules, and to copy and distribute the resulting executable under
+ terms of your choice, provided that you also meet, for each linked
+ independent module, the terms and conditions of the license of that
+ module.  An independent module is a module which is not derived from
+ or based on this library.  If you modify this library, you may extend
+ this exception to your version of the library, but you are not
+ obligated to do so.  If you do not wish to do so, delete this
+ exception statement from your version. */
+
 
 package javax.swing.plaf.basic;
 
@@ -48,7 +49,6 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
@@ -62,7 +62,6 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -90,7 +89,6 @@ import javax.swing.filechooser.FileView;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.FileChooserUI;
 
-
 /**
  * DOCUMENT ME!
  */
@@ -104,12 +102,12 @@ public class BasicFileChooserUI extends FileChooserUI
     public AcceptAllFileFilter()
     {
     }
-    
+
     /**
      * DOCUMENT ME!
-     *
-     * @param f DOCUMENT ME!
-     *
+     * 
+     * @param f
+     *          DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     public boolean accept(File f)
@@ -119,7 +117,7 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
+     * 
      * @return DOCUMENT ME!
      */
     public String getDescription()
@@ -142,25 +140,26 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param e DOCUMENT ME!
+     * 
+     * @param e
+     *          DOCUMENT ME!
      */
     public void actionPerformed(ActionEvent e)
     {
       Object obj = filelist.getSelectedValue();
       if (obj != null)
         {
-	  File f = filechooser.getFileSystemView().createFileObject(obj
-	                                                            .toString());
-	  if (filechooser.isTraversable(f) && 
-              filechooser.getFileSelectionMode() == JFileChooser.FILES_ONLY)
+          File f = filechooser.getFileSystemView().createFileObject(
+                                                                    obj.toString());
+          if (filechooser.isTraversable(f)
+              && filechooser.getFileSelectionMode() == JFileChooser.FILES_ONLY)
             filechooser.setCurrentDirectory(f);
-	  else
-	    {
-	      filechooser.setSelectedFile(f);
-	      filechooser.approveSelection();
-	      closeDialog();
-	    }
+          else
+            {
+              filechooser.setSelectedFile(f);
+              filechooser.approveSelection();
+              closeDialog();
+            }
         }
     }
   }
@@ -179,9 +178,11 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param f DOCUMENT ME!
-     * @param i DOCUMENT ME!
+     * 
+     * @param f
+     *          DOCUMENT ME!
+     * @param i
+     *          DOCUMENT ME!
      */
     public void cacheIcon(File f, Icon i)
     {
@@ -198,9 +199,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param f DOCUMENT ME!
-     *
+     * 
+     * @param f
+     *          DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     public Icon getCachedIcon(File f)
@@ -210,9 +211,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param f DOCUMENT ME!
-     *
+     * 
+     * @param f
+     *          DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     public String getDescription(File f)
@@ -222,29 +223,29 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param f DOCUMENT ME!
-     *
+     * 
+     * @param f
+     *          DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     public Icon getIcon(File f)
     {
       Icon val = getCachedIcon(f);
       if (val != null)
-	return val;
+        return val;
       if (filechooser.isTraversable(f))
-	val = directoryIcon;
+        val = directoryIcon;
       else
-	val = fileIcon;
+        val = fileIcon;
       cacheIcon(f, val);
       return val;
     }
 
     /**
      * DOCUMENT ME!
-     *
-     * @param f DOCUMENT ME!
-     *
+     * 
+     * @param f
+     *          DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     public String getName(File f)
@@ -254,24 +255,24 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param f DOCUMENT ME!
-     *
+     * 
+     * @param f
+     *          DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     public String getTypeDescription(File f)
     {
       if (filechooser.isTraversable(f))
-	return dirDescText;
+        return dirDescText;
       else
-	return fileDescText;
+        return fileDescText;
     }
 
     /**
      * DOCUMENT ME!
-     *
-     * @param f DOCUMENT ME!
-     *
+     * 
+     * @param f
+     *          DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     public Boolean isHidden(File f)
@@ -294,8 +295,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param e DOCUMENT ME!
+     * 
+     * @param e
+     *          DOCUMENT ME!
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -318,8 +320,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param e DOCUMENT ME!
+     * 
+     * @param e
+     *          DOCUMENT ME!
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -345,8 +348,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * Creates a new DoubleClickListener object.
-     *
-     * @param list DOCUMENT ME!
+     * 
+     * @param list
+     *          DOCUMENT ME!
      */
     public DoubleClickListener(JList list)
     {
@@ -359,53 +363,55 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param e DOCUMENT ME!
+     * 
+     * @param e
+     *          DOCUMENT ME!
      */
     public void mouseClicked(MouseEvent e)
     {
       if (list.getSelectedValue() == null)
-	return;
+        return;
       FileSystemView fsv = filechooser.getFileSystemView();
       if (timer.isRunning()
           && list.getSelectedValue().toString().equals(lastSelected.toString()))
         {
-	  File f = fsv.createFileObject(lastSelected.toString());
-	  timer.stop();
-	  if (filechooser.isTraversable(f))
-	    {
-	      filechooser.setCurrentDirectory(f);
-	      filechooser.rescanCurrentDirectory();
-	    }
-	  else
-	    {
-	      filechooser.setSelectedFile(f);
-	      filechooser.approveSelection();
-	      closeDialog();
-	    }
+          File f = fsv.createFileObject(lastSelected.toString());
+          timer.stop();
+          if (filechooser.isTraversable(f))
+            {
+              filechooser.setCurrentDirectory(f);
+              filechooser.rescanCurrentDirectory();
+            }
+          else
+            {
+              filechooser.setSelectedFile(f);
+              filechooser.approveSelection();
+              closeDialog();
+            }
         }
       else
         {
-	  File f = fsv.createFileObject(list.getSelectedValue().toString());
-	  if (filechooser.isTraversable(f))
-	    {
-	      setDirectorySelected(true);
-	      setDirectory(f);
-	    }
-	  else
-	    {
-	      setDirectorySelected(false);
-	      setDirectory(null);
-	    }
-	  lastSelected = list.getSelectedValue().toString();
-	  timer.restart();
+          File f = fsv.createFileObject(list.getSelectedValue().toString());
+          if (filechooser.isTraversable(f))
+            {
+              setDirectorySelected(true);
+              setDirectory(f);
+            }
+          else
+            {
+              setDirectorySelected(false);
+              setDirectory(null);
+            }
+          lastSelected = list.getSelectedValue().toString();
+          timer.restart();
         }
     }
 
     /**
      * DOCUMENT ME!
-     *
-     * @param e DOCUMENT ME!
+     * 
+     * @param e
+     *          DOCUMENT ME!
      */
     public void mouseEntered(MouseEvent e)
     {
@@ -427,13 +433,13 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param e DOCUMENT ME!
+     * 
+     * @param e
+     *          DOCUMENT ME!
      */
     public void actionPerformed(ActionEvent e)
     {
-      filechooser.setCurrentDirectory(filechooser.getFileSystemView()
-                                                 .getHomeDirectory());
+      filechooser.setCurrentDirectory(filechooser.getFileSystemView().getHomeDirectory());
       filechooser.revalidate();
       filechooser.repaint();
     }
@@ -453,19 +459,20 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param e DOCUMENT ME!
+     * 
+     * @param e
+     *          DOCUMENT ME!
      */
     public void actionPerformed(ActionEvent e)
     {
       try
         {
-	  filechooser.getFileSystemView().createNewFolder(filechooser
-	                                                  .getCurrentDirectory());
+          filechooser.getFileSystemView().createNewFolder(
+                                                          filechooser.getCurrentDirectory());
         }
       catch (IOException ioe)
         {
-	  return;
+          return;
         }
       filechooser.rescanCurrentDirectory();
       filechooser.repaint();
@@ -486,19 +493,20 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param e DOCUMENT ME!
+     * 
+     * @param e
+     *          DOCUMENT ME!
      */
     public void valueChanged(ListSelectionEvent e)
     {
       Object f = filelist.getSelectedValue();
       if (f == null)
-	return;
+        return;
       File file = filechooser.getFileSystemView().createFileObject(f.toString());
-      if (! filechooser.isTraversable(file))
-	filechooser.setSelectedFile(file);
+      if (!filechooser.isTraversable(file))
+        filechooser.setSelectedFile(file);
       else
-	filechooser.setSelectedFile(null);
+        filechooser.setSelectedFile(null);
     }
   }
 
@@ -516,8 +524,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param e DOCUMENT ME!
+     * 
+     * @param e
+     *          DOCUMENT ME!
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -535,89 +544,90 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /** DOCUMENT ME! */
   protected Icon computerIcon = new Icon()
+  {
+    public int getIconHeight()
     {
-      public int getIconHeight()
-      {
-	return ICON_SIZE;
-      }
+      return ICON_SIZE;
+    }
 
-      public int getIconWidth()
-      {
-	return ICON_SIZE;
-      }
+    public int getIconWidth()
+    {
+      return ICON_SIZE;
+    }
 
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-      }
-    };
+    public void paintIcon(Component c, Graphics g, int x, int y)
+    {
+    }
+  };
 
   /** DOCUMENT ME! */
   protected Icon detailsViewIcon = new Icon()
+  {
+    public int getIconHeight()
     {
-      public int getIconHeight()
-      {
-	return ICON_SIZE;
-      }
+      return ICON_SIZE;
+    }
 
-      public int getIconWidth()
-      {
-	return ICON_SIZE;
-      }
+    public int getIconWidth()
+    {
+      return ICON_SIZE;
+    }
 
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-	Color saved = g.getColor();
-	g.translate(x, y);
+    public void paintIcon(Component c, Graphics g, int x, int y)
+    {
+      Color saved = g.getColor();
+      g.translate(x, y);
 
-	g.setColor(Color.GRAY);
-	g.drawRect(1, 1, 15, 20);
-	g.drawLine(17, 6, 23, 6);
-	g.drawLine(17, 12, 23, 12);
-	g.drawLine(17, 18, 23, 18);
+      g.setColor(Color.GRAY);
+      g.drawRect(1, 1, 15, 20);
+      g.drawLine(17, 6, 23, 6);
+      g.drawLine(17, 12, 23, 12);
+      g.drawLine(17, 18, 23, 18);
 
-	g.setColor(saved);
-	g.translate(-x, -y);
-      }
-    };
+      g.setColor(saved);
+      g.translate(-x, -y);
+    }
+  };
 
   /** DOCUMENT ME! */
   protected Icon directoryIcon = new Icon()
+  {
+    public int getIconHeight()
     {
-      public int getIconHeight()
-      {
-	return ICON_SIZE;
-      }
+      return ICON_SIZE;
+    }
 
-      public int getIconWidth()
-      {
-	return ICON_SIZE;
-      }
+    public int getIconWidth()
+    {
+      return ICON_SIZE;
+    }
 
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-	Color saved = g.getColor();
-	g.translate(x, y);
+    public void paintIcon(Component c, Graphics g, int x, int y)
+    {
+      Color saved = g.getColor();
+      g.translate(x, y);
 
-	Point ap = new Point(3, 7);
-	Point bp = new Point(3, 21);
-	Point cp = new Point(21, 21);
-	Point dp = new Point(21, 12);
-	Point ep = new Point(16, 12);
-	Point fp = new Point(13, 7);
+      Point ap = new Point(3, 7);
+      Point bp = new Point(3, 21);
+      Point cp = new Point(21, 21);
+      Point dp = new Point(21, 12);
+      Point ep = new Point(16, 12);
+      Point fp = new Point(13, 7);
 
-	Polygon dir = new Polygon(new int[] { ap.x, bp.x, cp.x, dp.x, ep.x, fp.x },
-	                          new int[] { ap.y, bp.y, cp.y, dp.y, ep.y, fp.y },
-	                          6);
+      Polygon dir = new Polygon(
+                                new int[] { ap.x, bp.x, cp.x, dp.x, ep.x, fp.x },
+                                new int[] { ap.y, bp.y, cp.y, dp.y, ep.y, fp.y },
+                                6);
 
-	g.setColor(new Color(153, 204, 255));
-	g.fillPolygon(dir);
-	g.setColor(Color.BLACK);
-	g.drawPolygon(dir);
+      g.setColor(new Color(153, 204, 255));
+      g.fillPolygon(dir);
+      g.setColor(Color.BLACK);
+      g.drawPolygon(dir);
 
-	g.translate(-x, -y);
-	g.setColor(saved);
-      }
-    };
+      g.translate(-x, -y);
+      g.setColor(saved);
+    }
+  };
 
   /** DOCUMENT ME! */
   protected int directoryOpenButtonMnemonic;
@@ -630,79 +640,79 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /** DOCUMENT ME! */
   protected Icon fileIcon = new Icon()
+  {
+    public int getIconHeight()
     {
-      public int getIconHeight()
-      {
-	return ICON_SIZE;
-      }
+      return ICON_SIZE;
+    }
 
-      public int getIconWidth()
-      {
-	return ICON_SIZE;
-      }
+    public int getIconWidth()
+    {
+      return ICON_SIZE;
+    }
 
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-	Color saved = g.getColor();
-	g.translate(x, y);
+    public void paintIcon(Component c, Graphics g, int x, int y)
+    {
+      Color saved = g.getColor();
+      g.translate(x, y);
 
-	Point a = new Point(5, 4);
-	Point b = new Point(5, 20);
-	Point d = new Point(19, 20);
-	Point e = new Point(19, 7);
-	Point f = new Point(16, 4);
+      Point a = new Point(5, 4);
+      Point b = new Point(5, 20);
+      Point d = new Point(19, 20);
+      Point e = new Point(19, 7);
+      Point f = new Point(16, 4);
 
-	Polygon p = new Polygon(new int[] { a.x, b.x, d.x, e.x, f.x, },
-	                        new int[] { a.y, b.y, d.y, e.y, f.y }, 5);
+      Polygon p = new Polygon(new int[] { a.x, b.x, d.x, e.x, f.x, },
+                              new int[] { a.y, b.y, d.y, e.y, f.y }, 5);
 
-	g.setColor(Color.WHITE);
-	g.fillPolygon(p);
-	g.setColor(Color.BLACK);
-	g.drawPolygon(p);
+      g.setColor(Color.WHITE);
+      g.fillPolygon(p);
+      g.setColor(Color.BLACK);
+      g.drawPolygon(p);
 
-	g.drawLine(16, 4, 14, 6);
-	g.drawLine(14, 6, 19, 7);
+      g.drawLine(16, 4, 14, 6);
+      g.drawLine(14, 6, 19, 7);
 
-	g.setColor(saved);
-	g.translate(-x, -y);
-      }
-    };
+      g.setColor(saved);
+      g.translate(-x, -y);
+    }
+  };
 
   /** DOCUMENT ME! */
   protected Icon floppyDriveIcon = new Icon()
+  {
+    public int getIconHeight()
     {
-      public int getIconHeight()
-      {
-	return ICON_SIZE;
-      }
+      return ICON_SIZE;
+    }
 
-      public int getIconWidth()
-      {
-	return ICON_SIZE;
-      }
+    public int getIconWidth()
+    {
+      return ICON_SIZE;
+    }
 
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-      }
-    };
+    public void paintIcon(Component c, Graphics g, int x, int y)
+    {
+    }
+  };
 
   /** DOCUMENT ME! */
   protected Icon hardDriveIcon = new Icon()
+  {
+    public int getIconHeight()
     {
-      public int getIconHeight()
-      {
-	return ICON_SIZE;
-      }
+      return ICON_SIZE;
+    }
 
-      public int getIconWidth()
-      {
-	return ICON_SIZE;
-      }
+    public int getIconWidth()
+    {
+      return ICON_SIZE;
+    }
 
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-      }
-    };
+    public void paintIcon(Component c, Graphics g, int x, int y)
+    {
+    }
+  };
 
   /** DOCUMENT ME! */
   protected int helpButtonMnemonic;
@@ -715,85 +725,85 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /** DOCUMENT ME! */
   protected Icon homeFolderIcon = new Icon()
+  {
+    public int getIconHeight()
     {
-      public int getIconHeight()
-      {
-	return ICON_SIZE;
-      }
+      return ICON_SIZE;
+    }
 
-      public int getIconWidth()
-      {
-	return ICON_SIZE;
-      }
+    public int getIconWidth()
+    {
+      return ICON_SIZE;
+    }
 
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-	Color saved = g.getColor();
-	g.translate(x, y);
+    public void paintIcon(Component c, Graphics g, int x, int y)
+    {
+      Color saved = g.getColor();
+      g.translate(x, y);
 
-	Point a = new Point(12, 3);
-	Point b = new Point(4, 10);
-	Point d = new Point(20, 10);
+      Point a = new Point(12, 3);
+      Point b = new Point(4, 10);
+      Point d = new Point(20, 10);
 
-	Polygon p = new Polygon(new int[] { a.x, b.x, d.x },
-	                        new int[] { a.y, b.y, d.y }, 3);
+      Polygon p = new Polygon(new int[] { a.x, b.x, d.x },
+                              new int[] { a.y, b.y, d.y }, 3);
 
-	g.setColor(new Color(104, 51, 0));
-	g.fillPolygon(p);
-	g.setColor(Color.BLACK);
-	g.drawPolygon(p);
+      g.setColor(new Color(104, 51, 0));
+      g.fillPolygon(p);
+      g.setColor(Color.BLACK);
+      g.drawPolygon(p);
 
-	g.setColor(Color.WHITE);
-	g.fillRect(8, 10, 8, 10);
-	g.setColor(Color.BLACK);
-	g.drawRect(8, 10, 8, 10);
+      g.setColor(Color.WHITE);
+      g.fillRect(8, 10, 8, 10);
+      g.setColor(Color.BLACK);
+      g.drawRect(8, 10, 8, 10);
 
-	g.setColor(saved);
-	g.translate(-x, -y);
-      }
-    };
+      g.setColor(saved);
+      g.translate(-x, -y);
+    }
+  };
 
   /** DOCUMENT ME! */
   protected Icon listViewIcon = new Icon()
+  {
+    public int getIconHeight()
     {
-      public int getIconHeight()
-      {
-	return ICON_SIZE;
-      }
+      return ICON_SIZE;
+    }
 
-      public int getIconWidth()
-      {
-	return ICON_SIZE;
-      }
+    public int getIconWidth()
+    {
+      return ICON_SIZE;
+    }
 
-      // Not needed. Only simplifies things until we get real icons.
-      private void paintPartial(Graphics g, int x, int y)
-      {
-	Color saved = g.getColor();
-	g.translate(x, y);
+    // Not needed. Only simplifies things until we get real icons.
+    private void paintPartial(Graphics g, int x, int y)
+    {
+      Color saved = g.getColor();
+      g.translate(x, y);
 
-	g.setColor(Color.GRAY);
-	g.drawRect(1, 1, 7, 10);
-	g.drawLine(8, 6, 11, 6);
+      g.setColor(Color.GRAY);
+      g.drawRect(1, 1, 7, 10);
+      g.drawLine(8, 6, 11, 6);
 
-	g.setColor(saved);
-	g.translate(-x, -y);
-      }
+      g.setColor(saved);
+      g.translate(-x, -y);
+    }
 
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-	Color saved = g.getColor();
-	g.translate(x, y);
+    public void paintIcon(Component c, Graphics g, int x, int y)
+    {
+      Color saved = g.getColor();
+      g.translate(x, y);
 
-	paintPartial(g, 0, 0);
-	paintPartial(g, 12, 0);
-	paintPartial(g, 0, 12);
-	paintPartial(g, 12, 12);
+      paintPartial(g, 0, 0);
+      paintPartial(g, 12, 0);
+      paintPartial(g, 0, 12);
+      paintPartial(g, 12, 12);
 
-	g.setColor(saved);
-	g.translate(-x, -y);
-      }
-    };
+      g.setColor(saved);
+      g.translate(-x, -y);
+    }
+  };
 
   /** DOCUMENT ME! */
   protected Icon newFolderIcon = directoryIcon;
@@ -827,52 +837,52 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /** DOCUMENT ME! */
   protected Icon upFolderIcon = new Icon()
+  {
+    public int getIconHeight()
     {
-      public int getIconHeight()
-      {
-	return ICON_SIZE;
-      }
+      return ICON_SIZE;
+    }
 
-      public int getIconWidth()
-      {
-	return ICON_SIZE;
-      }
+    public int getIconWidth()
+    {
+      return ICON_SIZE;
+    }
 
-      public void paintIcon(Component comp, Graphics g, int x, int y)
-      {
-	Color saved = g.getColor();
-	g.translate(x, y);
+    public void paintIcon(Component comp, Graphics g, int x, int y)
+    {
+      Color saved = g.getColor();
+      g.translate(x, y);
 
-	Point a = new Point(3, 7);
-	Point b = new Point(3, 21);
-	Point c = new Point(21, 21);
-	Point d = new Point(21, 12);
-	Point e = new Point(16, 12);
-	Point f = new Point(13, 7);
+      Point a = new Point(3, 7);
+      Point b = new Point(3, 21);
+      Point c = new Point(21, 21);
+      Point d = new Point(21, 12);
+      Point e = new Point(16, 12);
+      Point f = new Point(13, 7);
 
-	Polygon dir = new Polygon(new int[] { a.x, b.x, c.x, d.x, e.x, f.x },
-	                          new int[] { a.y, b.y, c.y, d.y, e.y, f.y }, 6);
+      Polygon dir = new Polygon(new int[] { a.x, b.x, c.x, d.x, e.x, f.x },
+                                new int[] { a.y, b.y, c.y, d.y, e.y, f.y }, 6);
 
-	g.setColor(new Color(153, 204, 255));
-	g.fillPolygon(dir);
-	g.setColor(Color.BLACK);
-	g.drawPolygon(dir);
+      g.setColor(new Color(153, 204, 255));
+      g.fillPolygon(dir);
+      g.setColor(Color.BLACK);
+      g.drawPolygon(dir);
 
-	a = new Point(12, 15);
-	b = new Point(9, 18);
-	c = new Point(15, 18);
+      a = new Point(12, 15);
+      b = new Point(9, 18);
+      c = new Point(15, 18);
 
-	Polygon arrow = new Polygon(new int[] { a.x, b.x, c.x },
-	                            new int[] { a.y, b.y, c.y }, 3);
+      Polygon arrow = new Polygon(new int[] { a.x, b.x, c.x },
+                                  new int[] { a.y, b.y, c.y }, 3);
 
-	g.fillPolygon(arrow);
+      g.fillPolygon(arrow);
 
-	g.drawLine(12, 15, 12, 22);
+      g.drawLine(12, 15, 12, 22);
 
-	g.translate(-x, -y);
-	g.setColor(saved);
-      }
-    };
+      g.translate(-x, -y);
+      g.setColor(saved);
+    }
+  };
 
   // -- begin private, but package local since used in inner classes --
 
@@ -944,9 +954,7 @@ public class BasicFileChooserUI extends FileChooserUI
   JPanel closePanel;
 
   // -- end private --
-  private class ListLabelRenderer
-    extends JLabel
-    implements ListCellRenderer
+  private class ListLabelRenderer extends JLabel implements ListCellRenderer
   {
     /** DOCUMENT ME! */
     final Color selected = new Color(153, 204, 255);
@@ -962,13 +970,17 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param list DOCUMENT ME!
-     * @param value DOCUMENT ME!
-     * @param index DOCUMENT ME!
-     * @param isSelected DOCUMENT ME!
-     * @param cellHasFocus DOCUMENT ME!
-     *
+     * 
+     * @param list
+     *          DOCUMENT ME!
+     * @param value
+     *          DOCUMENT ME!
+     * @param index
+     *          DOCUMENT ME!
+     * @param isSelected
+     *          DOCUMENT ME!
+     * @param cellHasFocus
+     *          DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     public Component getListCellRendererComponent(JList list, Object value,
@@ -1003,13 +1015,17 @@ public class BasicFileChooserUI extends FileChooserUI
 
     /**
      * DOCUMENT ME!
-     *
-     * @param list DOCUMENT ME!
-     * @param value DOCUMENT ME!
-     * @param index DOCUMENT ME!
-     * @param isSelected DOCUMENT ME!
-     * @param cellHasFocus DOCUMENT ME!
-     *
+     * 
+     * @param list
+     *          DOCUMENT ME!
+     * @param value
+     *          DOCUMENT ME!
+     * @param index
+     *          DOCUMENT ME!
+     * @param isSelected
+     *          DOCUMENT ME!
+     * @param cellHasFocus
+     *          DOCUMENT ME!
      * @return DOCUMENT ME!
      */
     public Component getListCellRendererComponent(JList list, Object value,
@@ -1036,8 +1052,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * Creates a new BasicFileChooserUI object.
-   *
-   * @param b DOCUMENT ME!
+   * 
+   * @param b
+   *          DOCUMENT ME!
    */
   public BasicFileChooserUI(JFileChooser b)
   {
@@ -1046,9 +1063,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param c DOCUMENT ME!
-   *
+   * 
+   * @param c
+   *          DOCUMENT ME!
    * @return DOCUMENT ME!
    */
   public static ComponentUI createUI(JComponent c)
@@ -1058,27 +1075,29 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param c DOCUMENT ME!
+   * 
+   * @param c
+   *          DOCUMENT ME!
    */
   public void installUI(JComponent c)
   {
     if (c instanceof JFileChooser)
       {
-	JFileChooser fc = (JFileChooser) c;
-	fc.resetChoosableFileFilters();
-	createModel();
-	clearIconCache();
-	installDefaults(fc);
-	installComponents(fc);
-	installListeners(fc);
+        JFileChooser fc = (JFileChooser) c;
+        fc.resetChoosableFileFilters();
+        createModel();
+        clearIconCache();
+        installDefaults(fc);
+        installComponents(fc);
+        installListeners(fc);
       }
   }
 
   /**
    * DOCUMENT ME!
-   *
-   * @param c DOCUMENT ME!
+   * 
+   * @param c
+   *          DOCUMENT ME!
    */
   public void uninstallUI(JComponent c)
   {
@@ -1122,47 +1141,46 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
+   * 
    * @return DOCUMENT ME!
    */
   private ItemListener createBoxListener()
   {
     return new ItemListener()
+    {
+      public void itemStateChanged(ItemEvent e)
       {
-	public void itemStateChanged(ItemEvent e)
-	{
-	  if (parents.getItemCount() - 1 == parents.getSelectedIndex())
-	    return;
-	  StringBuffer dir = new StringBuffer();
-	  for (int i = 0; i <= parents.getSelectedIndex(); i++)
-	    {
-	      dir.append(parents.getItemAt(i));
-	      dir.append(File.separatorChar);
-	    }
-	  filechooser.setCurrentDirectory(filechooser.getFileSystemView()
-	                                             .createFileObject(dir
-	                                                               .toString()));
-	}
-      };
+        if (parents.getItemCount() - 1 == parents.getSelectedIndex())
+          return;
+        StringBuffer dir = new StringBuffer();
+        for (int i = 0; i <= parents.getSelectedIndex(); i++)
+          {
+            dir.append(parents.getItemAt(i));
+            dir.append(File.separatorChar);
+          }
+        filechooser.setCurrentDirectory(filechooser.getFileSystemView().createFileObject(
+                                                                                         dir.toString()));
+      }
+    };
   }
 
   /**
    * DOCUMENT ME!
-   *
+   * 
    * @return DOCUMENT ME!
    */
   private ItemListener createFilterListener()
   {
     return new ItemListener()
+    {
+      public void itemStateChanged(ItemEvent e)
       {
-	public void itemStateChanged(ItemEvent e)
-	{
-	  int index = filters.getSelectedIndex();
-	  if (index == -1)
-	    return;
-	  filechooser.setFileFilter(filechooser.getChoosableFileFilters()[index]);
-	}
-      };
+        int index = filters.getSelectedIndex();
+        if (index == -1)
+          return;
+        filechooser.setFileFilter(filechooser.getChoosableFileFilters()[index]);
+      }
+    };
   }
 
   void filterEntries()
@@ -1175,9 +1193,9 @@ public class BasicFileChooserUI extends FileChooserUI
     String selected = filechooser.getFileFilter().getDescription();
     for (int i = 0; i < list.length; i++)
       {
-	if (selected.equals(list[i].getDescription()))
-	  index = i;
-	filters.addItem(list[i].getDescription());
+        if (selected.equals(list[i].getDescription()))
+          index = i;
+        filters.addItem(list[i].getDescription());
       }
     filters.setSelectedIndex(index);
     filters.revalidate();
@@ -1186,8 +1204,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   public void installComponents(JFileChooser fc)
   {
@@ -1310,8 +1329,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   public void uninstallComponents(JFileChooser fc)
   {
@@ -1328,15 +1348,16 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   protected void installListeners(JFileChooser fc)
   {
     propertyChangeListener = createPropertyChangeListener(filechooser);
     filechooser.addPropertyChangeListener(propertyChangeListener);
 
-    //parents.addItemListener(createBoxListener());
+    // parents.addItemListener(createBoxListener());
     accept.addActionListener(getApproveSelectionAction());
     cancel.addActionListener(getCancelSelectionAction());
     upFolderButton.addActionListener(getChangeToParentDirectoryAction());
@@ -1350,8 +1371,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   protected void uninstallListeners(JFileChooser fc)
   {
@@ -1361,8 +1383,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   protected void installDefaults(JFileChooser fc)
   {
@@ -1372,8 +1395,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   protected void uninstallDefaults(JFileChooser fc)
   {
@@ -1383,8 +1407,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   protected void installIcons(JFileChooser fc)
   {
@@ -1393,8 +1418,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   protected void uninstallIcons(JFileChooser fc)
   {
@@ -1403,8 +1429,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   protected void installStrings(JFileChooser fc)
   {
@@ -1433,8 +1460,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   protected void uninstallStrings(JFileChooser fc)
   {
@@ -1469,7 +1497,7 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
+   * 
    * @return DOCUMENT ME!
    */
   public BasicDirectoryModel getModel()
@@ -1479,113 +1507,128 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
-   *
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    * @return DOCUMENT ME!
    */
   public PropertyChangeListener createPropertyChangeListener(JFileChooser fc)
   {
     return new PropertyChangeListener()
+    {
+      public void propertyChange(PropertyChangeEvent e)
       {
-	public void propertyChange(PropertyChangeEvent e)
-	{
-	  // FIXME: Multiple file selection waiting on JList multiple selection bug.
-	  if (e.getPropertyName().equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY))
-	    {
-	      if (filechooser.getSelectedFile() == null)
-		setFileName(null);
-	      else
-		setFileName(filechooser.getSelectedFile().toString());
-	      int index = -1;
-	      File file = filechooser.getSelectedFile();
-	      for (index = 0; index < model.getSize(); index++)
-		if (((File) model.getElementAt(index)).equals(file))
-		  break;
-	      if (index == -1)
-		return;
-	      filelist.setSelectedIndex(index);
-	      filelist.ensureIndexIsVisible(index);
-	      filelist.revalidate();
-	      filelist.repaint();
-	    }
-	  else if (e.getPropertyName().equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY))
-	    {
-	      filelist.clearSelection();
-	      filelist.revalidate();
-	      filelist.repaint();
-	      setDirectorySelected(false);
-	      setDirectory(filechooser.getCurrentDirectory());
-	      boxEntries();
-	    }
-	  else if (e.getPropertyName().equals(JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY)
-	           || e.getPropertyName().equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY))
-	    filterEntries();
-	  else if (e.getPropertyName().equals(JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY)
-	           || e.getPropertyName().equals(JFileChooser.DIALOG_TITLE_CHANGED_PROPERTY))
-	    {
-	      Window owner = SwingUtilities.windowForComponent(filechooser);
-	      if (owner instanceof JDialog)
-		((JDialog) owner).setTitle(getDialogTitle(filechooser));
-	      accept.setText(getApproveButtonText(filechooser));
-	      accept.setToolTipText(getApproveButtonToolTipText(filechooser));
-	      accept.setMnemonic(getApproveButtonMnemonic(filechooser));
-	    }
-	  else if (e.getPropertyName().equals(JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY))
-	    accept.setText(getApproveButtonText(filechooser));
-	  else if (e.getPropertyName().equals(JFileChooser.APPROVE_BUTTON_TOOL_TIP_TEXT_CHANGED_PROPERTY))
-	    accept.setToolTipText(getApproveButtonToolTipText(filechooser));
-	  else if (e.getPropertyName().equals(JFileChooser.APPROVE_BUTTON_MNEMONIC_CHANGED_PROPERTY))
-	    accept.setMnemonic(getApproveButtonMnemonic(filechooser));
-	  else if (e.getPropertyName().equals(JFileChooser.CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY))
-	    {
-	      if (filechooser.getControlButtonsAreShown())
-	        {
-		  GridBagConstraints c = new GridBagConstraints();
-		  c.gridy = 1;
-		  bottomPanel.add(filters, c);
+        // FIXME: Multiple file selection waiting on JList multiple selection
+        // bug.
+        if (e.getPropertyName().equals(
+                                       JFileChooser.SELECTED_FILE_CHANGED_PROPERTY))
+          {
+            if (filechooser.getSelectedFile() == null)
+              setFileName(null);
+            else
+              setFileName(filechooser.getSelectedFile().toString());
+            int index = -1;
+            File file = filechooser.getSelectedFile();
+            for (index = 0; index < model.getSize(); index++)
+              if (((File) model.getElementAt(index)).equals(file))
+                break;
+            if (index == -1)
+              return;
+            filelist.setSelectedIndex(index);
+            filelist.ensureIndexIsVisible(index);
+            filelist.revalidate();
+            filelist.repaint();
+          }
+        else if (e.getPropertyName().equals(
+                                            JFileChooser.DIRECTORY_CHANGED_PROPERTY))
+          {
+            filelist.clearSelection();
+            filelist.revalidate();
+            filelist.repaint();
+            setDirectorySelected(false);
+            setDirectory(filechooser.getCurrentDirectory());
+            boxEntries();
+          }
+        else if (e.getPropertyName().equals(
+                                            JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY)
+                 || e.getPropertyName().equals(
+                                               JFileChooser.FILE_FILTER_CHANGED_PROPERTY))
+          filterEntries();
+        else if (e.getPropertyName().equals(
+                                            JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY)
+                 || e.getPropertyName().equals(
+                                               JFileChooser.DIALOG_TITLE_CHANGED_PROPERTY))
+          {
+            Window owner = SwingUtilities.windowForComponent(filechooser);
+            if (owner instanceof JDialog)
+              ((JDialog) owner).setTitle(getDialogTitle(filechooser));
+            accept.setText(getApproveButtonText(filechooser));
+            accept.setToolTipText(getApproveButtonToolTipText(filechooser));
+            accept.setMnemonic(getApproveButtonMnemonic(filechooser));
+          }
+        else if (e.getPropertyName().equals(
+                                            JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY))
+          accept.setText(getApproveButtonText(filechooser));
+        else if (e.getPropertyName().equals(
+                                            JFileChooser.APPROVE_BUTTON_TOOL_TIP_TEXT_CHANGED_PROPERTY))
+          accept.setToolTipText(getApproveButtonToolTipText(filechooser));
+        else if (e.getPropertyName().equals(
+                                            JFileChooser.APPROVE_BUTTON_MNEMONIC_CHANGED_PROPERTY))
+          accept.setMnemonic(getApproveButtonMnemonic(filechooser));
+        else if (e.getPropertyName().equals(
+                                            JFileChooser.CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY))
+          {
+            if (filechooser.getControlButtonsAreShown())
+              {
+                GridBagConstraints c = new GridBagConstraints();
+                c.gridy = 1;
+                bottomPanel.add(filters, c);
 
-		  c.fill = GridBagConstraints.BOTH;
-		  c.gridy = 2;
-		  c.anchor = GridBagConstraints.EAST;
-		  bottomPanel.add(closePanel, c);
-		  bottomPanel.revalidate();
-		  bottomPanel.repaint();
-		  bottomPanel.doLayout();
-	        }
-	      else
-		bottomPanel.remove(closePanel);
-	    }
-	  else if (e.getPropertyName().equals(JFileChooser.ACCEPT_ALL_FILE_FILTER_USED_CHANGED_PROPERTY))
-	    {
-	      if (filechooser.isAcceptAllFileFilterUsed())
-		filechooser.addChoosableFileFilter(getAcceptAllFileFilter(filechooser));
-	      else
-		filechooser.removeChoosableFileFilter(getAcceptAllFileFilter(filechooser));
-	    }
-	  else if (e.getPropertyName().equals(JFileChooser.ACCESSORY_CHANGED_PROPERTY))
-	    {
-	      JComponent old = (JComponent) e.getOldValue();
-	      if (old != null)
-		getAccessoryPanel().remove(old);
-	      JComponent newval = (JComponent) e.getNewValue();
-	      if (newval != null)
-		getAccessoryPanel().add(newval);
-	    }
-	  if (e.getPropertyName().equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)
-	      || e.getPropertyName().equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)
-	      || e.getPropertyName().equals(JFileChooser.FILE_HIDING_CHANGED_PROPERTY))
-	    rescanCurrentDirectory(filechooser);
+                c.fill = GridBagConstraints.BOTH;
+                c.gridy = 2;
+                c.anchor = GridBagConstraints.EAST;
+                bottomPanel.add(closePanel, c);
+                bottomPanel.revalidate();
+                bottomPanel.repaint();
+                bottomPanel.doLayout();
+              }
+            else
+              bottomPanel.remove(closePanel);
+          }
+        else if (e.getPropertyName().equals(
+                                            JFileChooser.ACCEPT_ALL_FILE_FILTER_USED_CHANGED_PROPERTY))
+          {
+            if (filechooser.isAcceptAllFileFilterUsed())
+              filechooser.addChoosableFileFilter(getAcceptAllFileFilter(filechooser));
+            else
+              filechooser.removeChoosableFileFilter(getAcceptAllFileFilter(filechooser));
+          }
+        else if (e.getPropertyName().equals(
+                                            JFileChooser.ACCESSORY_CHANGED_PROPERTY))
+          {
+            JComponent old = (JComponent) e.getOldValue();
+            if (old != null)
+              getAccessoryPanel().remove(old);
+            JComponent newval = (JComponent) e.getNewValue();
+            if (newval != null)
+              getAccessoryPanel().add(newval);
+          }
+        if (e.getPropertyName().equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)
+            || e.getPropertyName().equals(
+                                          JFileChooser.FILE_FILTER_CHANGED_PROPERTY)
+            || e.getPropertyName().equals(
+                                          JFileChooser.FILE_HIDING_CHANGED_PROPERTY))
+          rescanCurrentDirectory(filechooser);
 
-	  filechooser.revalidate();
-	  filechooser.repaint();
-	}
-      };
+        filechooser.revalidate();
+        filechooser.repaint();
+      }
+    };
   }
 
   /**
    * DOCUMENT ME!
-   *
+   * 
    * @return DOCUMENT ME!
    */
   public String getFileName()
@@ -1595,7 +1638,7 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
+   * 
    * @return DOCUMENT ME!
    */
   public String getDirectoryName()
@@ -1606,8 +1649,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param filename DOCUMENT ME!
+   * 
+   * @param filename
+   *          DOCUMENT ME!
    */
   public void setFileName(String filename)
   {
@@ -1616,8 +1660,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param dirname DOCUMENT ME!
+   * 
+   * @param dirname
+   *          DOCUMENT ME!
    */
   public void setDirectoryName(String dirname)
   {
@@ -1626,8 +1671,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    */
   public void rescanCurrentDirectory(JFileChooser fc)
   {
@@ -1637,9 +1683,11 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
-   * @param f DOCUMENT ME!
+   * 
+   * @param fc
+   *          DOCUMENT ME!
+   * @param f
+   *          DOCUMENT ME!
    */
   public void ensureFileIsVisible(JFileChooser fc, File f)
   {
@@ -1648,7 +1696,7 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
+   * 
    * @return DOCUMENT ME!
    */
   public JFileChooser getFileChooser()
@@ -1658,7 +1706,7 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
+   * 
    * @return DOCUMENT ME!
    */
   public JPanel getAccessoryPanel()
@@ -1668,9 +1716,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
-   *
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    * @return DOCUMENT ME!
    */
   public JButton getApproveButton(JFileChooser fc)
@@ -1683,9 +1731,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
-   *
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    * @return DOCUMENT ME!
    */
   public String getApproveButtonToolTipText(JFileChooser fc)
@@ -1709,9 +1757,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
-   *
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    * @return DOCUMENT ME!
    */
   public ListSelectionListener createListSelectionListener(JFileChooser fc)
@@ -1721,10 +1769,11 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
-   * @param list DOCUMENT ME!
-   *
+   * 
+   * @param fc
+   *          DOCUMENT ME!
+   * @param list
+   *          DOCUMENT ME!
    * @return DOCUMENT ME!
    */
   protected MouseListener createDoubleClickListener(JFileChooser fc, JList list)
@@ -1734,7 +1783,7 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
+   * 
    * @return DOCUMENT ME!
    */
   protected boolean isDirectorySelected()
@@ -1744,8 +1793,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param selected DOCUMENT ME!
+   * 
+   * @param selected
+   *          DOCUMENT ME!
    */
   protected void setDirectorySelected(boolean selected)
   {
@@ -1754,7 +1804,7 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
+   * 
    * @return DOCUMENT ME!
    */
   protected File getDirectory()
@@ -1764,8 +1814,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param f DOCUMENT ME!
+   * 
+   * @param f
+   *          DOCUMENT ME!
    */
   protected void setDirectory(File f)
   {
@@ -1774,9 +1825,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
-   *
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    * @return DOCUMENT ME!
    */
   public FileFilter getAcceptAllFileFilter(JFileChooser fc)
@@ -1786,9 +1837,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
-   *
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    * @return DOCUMENT ME!
    */
   public FileView getFileView(JFileChooser fc)
@@ -1800,9 +1851,9 @@ public class BasicFileChooserUI extends FileChooserUI
 
   /**
    * DOCUMENT ME!
-   *
-   * @param fc DOCUMENT ME!
-   *
+   * 
+   * @param fc
+   *          DOCUMENT ME!
    * @return DOCUMENT ME!
    */
   public String getDialogTitle(JFileChooser fc)
@@ -1813,14 +1864,14 @@ public class BasicFileChooserUI extends FileChooserUI
     switch (fc.getDialogType())
       {
       case JFileChooser.OPEN_DIALOG:
-	ret = openButtonText;
-	break;
+        ret = openButtonText;
+        break;
       case JFileChooser.SAVE_DIALOG:
-	ret = saveButtonText;
-	break;
+        ret = saveButtonText;
+        break;
       default:
-	ret = fc.getApproveButtonText();
-	break;
+        ret = fc.getApproveButtonText();
+        break;
       }
     if (ret == null)
       ret = openButtonText;

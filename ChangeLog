@@ -1,3 +1,8 @@
+2005-09-06  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicFileChooserUI.java:
+	Formatted entire class.
+
 2005-09-06  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Set version to 0.19-pre.
