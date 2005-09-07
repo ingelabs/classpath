@@ -43,6 +43,7 @@ import java.awt.LayoutManager;
 
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
 import javax.swing.plaf.PanelUI;
 
 /**
@@ -52,6 +53,38 @@ import javax.swing.plaf.PanelUI;
  */
 public class JPanel extends JComponent implements Accessible
 {
+  /**
+   * Provides accessibility support for <code>JPanel</code>.
+   *
+   * @author Roman Kennke (roman@kennke.org)
+   */
+  protected class AccessibleJPanel extends AccessibleJComponent
+  {
+    /**
+     * Creates a new instance of <code>AccessibleJPanel</code>.
+     */
+    public AccessibleJPanel()
+    {
+      // Nothing to do here.
+    }
+
+    /**
+     * Returns the accessible role for <code>JPanel</code>, which is
+     * {@link AccessibleRole#PANEL}.
+     *
+     * @return the accessible role for <code>JPanel</code>
+     */
+    public AccessibleRole getAccessibleRole()
+    {
+      return AccessibleRole.PANEL;
+    }
+  }
+
+  /**
+   * The accessible context for this <code>JPanel</code>.
+   */
+  AccessibleContext accessibleContext;
+
   public JPanel()
   {
     this(new FlowLayout(), true);
@@ -102,7 +135,9 @@ public class JPanel extends JComponent implements Accessible
 
   public AccessibleContext getAccessibleContext()
   {
-    return null;
+    if (accessibleContext == null)
+      accessibleContext = new AccessibleJPanel();
+    return accessibleContext;
   }
     
   protected  String paramString()

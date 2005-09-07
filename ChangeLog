@@ -1,5 +1,11 @@
 2005-09-07  Roman Kennke  <roman@kennke.org>
 
+	* javax/swing/JPanel.java
+	(AccessibleJPanel): New inner class.
+	(getAccessibleContext): Implemented this method.
+
+2005-09-07  Roman Kennke  <roman@kennke.org>
+
 	* javax/swing/JPanel.java: Reformatted to match our coding
 	standards.
 
