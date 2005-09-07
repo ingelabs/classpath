@@ -114,7 +114,7 @@ public class GapContent
      */
     public int getOffset()
     {
-      if (mark <= gapStart || mark <= gapEnd)
+      if (mark <= gapEnd)
         return mark;
       else
         return mark - (gapEnd - gapStart);
