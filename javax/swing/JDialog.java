@@ -66,6 +66,21 @@ import javax.accessibility.AccessibleContext;
 public class JDialog extends Dialog implements Accessible, WindowConstants,
                                                RootPaneContainer
 {
+  /**
+   * Provides accessibility support for <code>JDialog</code>s.
+   */
+  protected class AccessibleJDialog extends Dialog.AccessibleAWTDialog
+  {
+    /**
+     * Creates a new instance of <code>AccessibleJDialog</code>.
+     */
+    public AccessibleJDialog()
+    {
+      super();
+      // Nothing to do here.
+    }
+  }
+
   private static final long serialVersionUID = -864070866424508218L;
 
   /** DOCUMENT ME! */
@@ -588,6 +603,8 @@ public class JDialog extends Dialog implements Accessible, WindowConstants,
    */
   public AccessibleContext getAccessibleContext()
   {
-    return null;
+    if (accessibleContext == null)
+      accessibleContext = new AccessibleJDialog();
+    return accessibleContext;
   }
 }

@@ -50,6 +50,7 @@ import java.awt.LayoutManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 
+import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 
 /**
@@ -65,8 +66,23 @@ import javax.accessibility.AccessibleContext;
  * @author Ronald Veldema (rveldema@cs.vu.nl)
  */
 public class JFrame extends Frame
-  implements WindowConstants, RootPaneContainer
+  implements WindowConstants, RootPaneContainer, Accessible
 {
+  /**
+   * Provides accessibility support for <code>JFrame</code>s.
+   */
+  protected class AccessibleJFrame extends Frame.AccessibleAWTFrame
+  {
+    /**
+     * Creates a new instance of <code>AccessibleJFrame</code>.
+     */
+    public AccessibleJFrame()
+    {
+      super();
+      // Nothing to do here.
+    }
+  }
+
   private static final long serialVersionUID = -3362141868504252139L;
   private static boolean defaultLookAndFeelDecorated;
   private int close_action = HIDE_ON_CLOSE;
@@ -275,6 +291,8 @@ public class JFrame extends Frame
 
   public AccessibleContext getAccessibleContext()
   {
+    if (accessibleContext == null)
+      accessibleContext = new AccessibleJFrame();
     return accessibleContext;
   }
 
