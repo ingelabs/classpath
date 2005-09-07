@@ -1,5 +1,13 @@
 2005-09-07  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/SpringLayout.java:
+	Fixes Bug #PR23003
+	(getConstraints): Width and height should always
+	be reset, even if constraints is not null. Constraints
+	deal with the location of the component.
+
+2005-09-07  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/text/GapContent.java:
 	Fixes Bug #PR22966
 	(getOffset): Fixed check, was redundant.
