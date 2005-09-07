@@ -52,63 +52,61 @@ import javax.swing.plaf.PanelUI;
  */
 public class JPanel extends JComponent implements Accessible
 {
-    public JPanel()
-    {
-	this(new FlowLayout(),
-	     true);
-    }
-    
-    public JPanel(boolean double_buffered)
-    {
-	this(new FlowLayout(),
-	     double_buffered);
-    }
-    
-    public JPanel(LayoutManager layout)
-    {
-	this(layout,
-	     true);
-    }
-    
-    
-    public JPanel(LayoutManager layout,
-	   boolean isDoubleBuffered)
-    {
-	if (layout == null)
-	    {
-		System.err.println("NO LAYOUT SET !!!");
-		layout = new FlowLayout();
-	    }
-	setLayout(layout); 
-	setOpaque(true); 
+  public JPanel()
+  {
+    this(new FlowLayout(), true);
+  }
 
-	updateUI();	
-    } 
+  public JPanel(boolean double_buffered)
+  {
+    this(new FlowLayout(), double_buffered);
+  }
 
-    public String getUIClassID()
-    {	return "PanelUI";    }
+  public JPanel(LayoutManager layout)
+  {
+    this(layout, true);
+  }
 
+  public JPanel(LayoutManager layout, boolean isDoubleBuffered)
+  {
+    if (layout == null)
+      {
+        // TODO: Is this correct? Or should we throw a NPE?
+        layout = new FlowLayout();
+      }
+    setLayout(layout); 
+    setOpaque(true); 
 
-    public void setUI(PanelUI ui) {
-        super.setUI(ui);
-    }
+    updateUI();	
+  } 
+
+  public String getUIClassID()
+  {
+    return "PanelUI";
+  }
+
+  public void setUI(PanelUI ui)
+  {
+    super.setUI(ui);
+  }
+
+  public PanelUI getUI()
+  {
+    return (PanelUI) ui;
+  }
+
+  public void updateUI()
+  {
+    setUI((PanelUI) UIManager.getUI(this));
+  }
+
+  public AccessibleContext getAccessibleContext()
+  {
+    return null;
+  }
     
-    public PanelUI getUI() {
-        return (PanelUI)ui;
-    }
-    
-    public void updateUI() {
-        setUI((PanelUI)UIManager.getUI(this));
-    }
-
-
-    public AccessibleContext getAccessibleContext()
-    {
-	return null;
-    }
-    
-   protected  String paramString()
-    {
+  protected  String paramString()
+  {
 	return "JPanel";
-    }
+  }
 }
