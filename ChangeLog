@@ -1,3 +1,22 @@
+2005-09-07  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(HorizontalSliderThumbIcon.paintIcon): handle disabled component state,
+	and fetch colors from the look and feel,
+	(VerticalSliderThumbIcon.paintIcon): likewise,
+	* javax/swing/plaf/metal/MetalSliderUI.java
+	(MetalPropertyListener): implemented,
+	(constructor): added color initialisation,
+	(createUI): reimplemented to return a new instance every time,
+	(createPropertyChangeListener): return a new instance of 
+	MetalPropertyListener,
+	(paintTrack): reimplemented to handle track fill option, and the 
+	disabled component state,
+	(paintMinorTickForHorizSlider): fetch colors from look and feel,
+	(paintMajorTickForHorizSlider): likewise,
+	(paintMinorTickForVertSlider): likewise,
+	(paintMajorTickForVertSlider): likewise.
+	
 2005-09-07  Robert Schuster  <robertschuster@fsfe.org>
 
 	* native/jni/qt-peer/componentevent.cpp: Added inclusion

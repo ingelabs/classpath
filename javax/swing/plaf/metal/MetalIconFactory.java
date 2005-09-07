@@ -523,13 +523,19 @@ public class MetalIconFactory implements Serializable
      */
     public void paintIcon(Component c, Graphics g, int x, int y) 
     {
+      boolean enabled = false;
       boolean focus = false;
-      if (c != null) 
-        focus = c.hasFocus();    
-      // TODO: pick up the colors from the look and feel
+      if (c != null)
+        {
+          enabled = c.isEnabled();
+          focus = c.hasFocus();    
+        }
       
       // draw the outline
-      g.setColor(Color.black);
+      if (enabled) 
+        g.setColor(MetalLookAndFeel.getBlack());
+      else
+        g.setColor(MetalLookAndFeel.getControlDarkShadow());
       g.drawLine(x + 1, y, x + 13, y);
       g.drawLine(x + 14, y + 1, x + 14, y + 7);
       g.drawLine(x + 14, y + 8, x + 7, y + 15);
@@ -537,8 +543,11 @@ public class MetalIconFactory implements Serializable
       g.drawLine(x, y + 7, x, y + 1);
       
       // fill the icon
-      g.setColor(focus ? new Color(153, 153, 204) : new Color(204, 204, 204));  // medium
-      g.fillRect(x + 2, y + 2, 12, 7);
+      if (focus)
+        g.setColor(MetalLookAndFeel.getPrimaryControlShadow());
+      else
+        g.setColor(MetalLookAndFeel.getControl());
+      g.fillRect(x + 1, y + 2, 13, 7);
       g.drawLine(x + 2, y + 9, x + 12, y + 9);
       g.drawLine(x + 3, y + 10, x + 11, y + 10);
       g.drawLine(x + 4, y + 11, x + 10, y + 11);
@@ -546,33 +555,42 @@ public class MetalIconFactory implements Serializable
       g.drawLine(x + 6, y + 13, x + 8, y + 13);
       g.drawLine(x + 7, y + 14, x + 7, y + 14);
       
-      // draw highlights
-      g.setColor(focus ? new Color(204, 204, 255) : new Color(255, 255, 255));  // light
-      g.drawLine(x + 1, y + 1, x + 13, y + 1);
-      g.drawLine(x + 1, y + 2, x + 1, y + 8);
-      g.drawLine(x + 2, y + 2, x + 2, y + 2);
-      g.drawLine(x + 6, y + 2, x + 6, y + 2);
-      g.drawLine(x + 10, y + 2, x + 10, y + 2);
+      // if the slider is enabled, draw dots and highlights
+      if (c.isEnabled())
+        {
+          if (focus)
+            g.setColor(MetalLookAndFeel.getPrimaryControlDarkShadow());
+          else
+            g.setColor(MetalLookAndFeel.getBlack());
+          g.drawLine(x + 3, y + 3, x + 3, y + 3);
+          g.drawLine(x + 7, y + 3, x + 7, y + 3);
+          g.drawLine(x + 11, y + 3, x + 11, y + 3);
 
-      g.drawLine(x + 4, y + 4, x + 4, y + 4);
-      g.drawLine(x + 8, y + 4, x + 8, y + 4);
+          g.drawLine(x + 5, y + 5, x + 5, y + 5);
+          g.drawLine(x + 9, y + 5, x + 9, y + 5);
 
-      g.drawLine(x + 2, y + 6, x + 2, y + 6);
-      g.drawLine(x + 6, y + 6, x + 6, y + 6);
-      g.drawLine(x + 10, y + 6, x + 10, y + 6);
+          g.drawLine(x + 3, y + 7, x + 3, y + 7);
+          g.drawLine(x + 7, y + 7, x + 7, y + 7);
+          g.drawLine(x + 11, y + 7, x + 11, y + 7);
 
-      // draw dots
-      g.setColor(focus ? new Color(102, 102, 153) : Color.black);                 // dark
-      g.drawLine(x + 3, y + 3, x + 3, y + 3);
-      g.drawLine(x + 7, y + 3, x + 7, y + 3);
-      g.drawLine(x + 11, y + 3, x + 11, y + 3);
+          // draw highlights
+          if (focus)
+            g.setColor(MetalLookAndFeel.getPrimaryControl());
+          else
+            g.setColor(MetalLookAndFeel.getWhite());
+          g.drawLine(x + 1, y + 1, x + 13, y + 1);
+          g.drawLine(x + 1, y + 2, x + 1, y + 8);
+          g.drawLine(x + 2, y + 2, x + 2, y + 2);
+          g.drawLine(x + 6, y + 2, x + 6, y + 2);
+          g.drawLine(x + 10, y + 2, x + 10, y + 2);
+          
+          g.drawLine(x + 4, y + 4, x + 4, y + 4);
+          g.drawLine(x + 8, y + 4, x + 8, y + 4);
 
-      g.drawLine(x + 5, y + 5, x + 5, y + 5);
-      g.drawLine(x + 9, y + 5, x + 9, y + 5);
-
-      g.drawLine(x + 3, y + 7, x + 3, y + 7);
-      g.drawLine(x + 7, y + 7, x + 7, y + 7);
-      g.drawLine(x + 11, y + 7, x + 11, y + 7);
+          g.drawLine(x + 2, y + 6, x + 2, y + 6);
+          g.drawLine(x + 6, y + 6, x + 6, y + 6);
+          g.drawLine(x + 10, y + 6, x + 10, y + 6);
+        }
 
     }        
   }
@@ -1063,13 +1081,19 @@ public class MetalIconFactory implements Serializable
      */
     public void paintIcon(Component c, Graphics g, int x, int y) 
     {
+      boolean enabled = false;
       boolean focus = false;
-      if (c != null) 
-        focus = c.hasFocus();    
-      // TODO: pick up the colors from the look and feel
+      if (c != null)
+        {
+          enabled = c.isEnabled();
+          focus = c.hasFocus();    
+        }
       
       // draw the outline
-      g.setColor(Color.black);
+      if (enabled) 
+        g.setColor(MetalLookAndFeel.getBlack());
+      else
+        g.setColor(MetalLookAndFeel.getControlDarkShadow());
       g.drawLine(x + 1, y, x + 7, y);
       g.drawLine(x + 8, y, x + 15, y + 7);
       g.drawLine(x + 14, y + 8, x + 8, y + 14);
@@ -1077,8 +1101,11 @@ public class MetalIconFactory implements Serializable
       g.drawLine(x, y + 13, x, y + 1);
       
       // fill the icon
-      g.setColor(focus ? new Color(153, 153, 204) : new Color(204, 204, 204));  // medium
-      g.fillRect(x + 2, y + 2, 7, 12);
+      if (focus)
+        g.setColor(MetalLookAndFeel.getPrimaryControlShadow());
+      else
+        g.setColor(MetalLookAndFeel.getControl());
+      g.fillRect(x + 2, y + 1, 7, 13);
       g.drawLine(x + 9, y + 2, x + 9, y + 12);
       g.drawLine(x + 10, y + 3, x + 10, y + 11);
       g.drawLine(x + 11, y + 4, x + 11, y + 10);
@@ -1086,36 +1113,46 @@ public class MetalIconFactory implements Serializable
       g.drawLine(x + 13, y + 6, x + 13, y + 8);
       g.drawLine(x + 14, y + 7, x + 14, y + 7);
       
-      // draw highlights
-      g.setColor(focus ? new Color(204, 204, 255) : new Color(255, 255, 255));  // light
-      g.drawLine(x + 1, y + 1, x + 8, y + 1);
-      g.drawLine(x + 1, y + 2, x + 1, y + 13);
-      g.drawLine(x + 2, y + 2, x + 2, y + 2);
-      g.drawLine(x + 2, y + 6, x + 2, y + 6);
-      g.drawLine(x + 2, y + 10, x + 2, y + 10);
+      // if the slider is enabled, draw dots and highlights
+      if (enabled)
+        {
+          if (focus)
+            g.setColor(MetalLookAndFeel.getPrimaryControlDarkShadow());
+          else
+            g.setColor(MetalLookAndFeel.getBlack());
+          g.drawLine(x + 3, y + 3, x + 3, y + 3);
+          g.drawLine(x + 3, y + 7, x + 3, y + 7);
+          g.drawLine(x + 3, y + 11, x + 3, y + 11);
 
-      g.drawLine(x + 4, y + 4, x + 4, y + 4);
-      g.drawLine(x + 4, y + 8, x + 4, y + 8);
+          g.drawLine(x + 5, y + 5, x + 5, y + 5);
+          g.drawLine(x + 5, y + 9, x + 5, y + 9);
 
-      g.drawLine(x + 6, y + 2, x + 6, y + 2);
-      g.drawLine(x + 6, y + 6, x + 6, y + 6);
-      g.drawLine(x + 6, y + 10, x + 6, y + 10);
+          g.drawLine(x + 7, y + 3, x + 7, y + 3);
+          g.drawLine(x + 7, y + 7, x + 7, y + 7);
+          g.drawLine(x + 7, y + 11, x + 7, y + 11);
 
-      // draw dots
-      g.setColor(focus ? new Color(102, 102, 153) : Color.black);                 // dark
-      g.drawLine(x + 3, y + 3, x + 3, y + 3);
-      g.drawLine(x + 3, y + 7, x + 3, y + 7);
-      g.drawLine(x + 3, y + 11, x + 3, y + 11);
+          // draw highlights
+          if (focus)
+            g.setColor(MetalLookAndFeel.getPrimaryControl());
+          else
+            g.setColor(MetalLookAndFeel.getWhite());
+          g.drawLine(x + 1, y + 1, x + 8, y + 1);
+          g.drawLine(x + 1, y + 2, x + 1, y + 13);
+          g.drawLine(x + 2, y + 2, x + 2, y + 2);
+          g.drawLine(x + 2, y + 6, x + 2, y + 6);
+          g.drawLine(x + 2, y + 10, x + 2, y + 10);
 
-      g.drawLine(x + 5, y + 5, x + 5, y + 5);
-      g.drawLine(x + 5, y + 9, x + 5, y + 9);
+          g.drawLine(x + 4, y + 4, x + 4, y + 4);
+          g.drawLine(x + 4, y + 8, x + 4, y + 8);
 
-      g.drawLine(x + 7, y + 3, x + 7, y + 3);
-      g.drawLine(x + 7, y + 7, x + 7, y + 7);
-      g.drawLine(x + 7, y + 11, x + 7, y + 11);
+          g.drawLine(x + 6, y + 2, x + 6, y + 2);
+          g.drawLine(x + 6, y + 6, x + 6, y + 6);
+          g.drawLine(x + 6, y + 10, x + 6, y + 10);
+        
+        }
     }        
   }
-  
+    
   /**
    * A tree control icon.  This icon can be in one of two states: expanded and
    * collapsed.
