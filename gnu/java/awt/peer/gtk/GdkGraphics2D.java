@@ -101,7 +101,7 @@ public class GdkGraphics2D extends Graphics2D
   static 
   {
     if (! Configuration.GTK_CAIRO_ENABLED)
-      throw new Error("Grahics2D not implemented. "
+      throw new Error("Graphics2D not implemented. "
 		      + "Cairo was not found or disabled at configure time");
 
     if (Configuration.INIT_LOAD_LIBRARY)

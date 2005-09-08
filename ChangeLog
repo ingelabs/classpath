@@ -1,3 +1,8 @@
+2005-09-08  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (static): Fix typo
+	(Grahics -> Graphics).
+
 2005-09-08  Tom Tromey  <tromey@redhat.com>
 
 	* examples/gnu/classpath/examples/swing/ClasspathSwingActivityBoard.launch:
