@@ -1,6 +1,24 @@
 2005-09-08  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
+	(foreground): Removed this field. This is better stored
+	in the text component itself.
+	(inactiveForeground): Removed this field. This is stored
+	in the disabledTextColor property of the text component.
+	(installDefaults): Load foreground and disabledTextColor
+	properties from UIDefaults.
+	(updateComponentColor): Removed check for the enabled property.
+	This is now done in javax.swing.text.PlainView.
+	* javax/swing/text/PlainView.java
+	(disabledColor): New field. Stores the text color for disabled
+	text fields.
+	(drawUnselectedText): Respect the 'enabled' property of
+	the text component.
+	(paint): Fetch the disabled color of the text component.
+
+2005-09-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
 	(UpdateHandler.propertyChanged): Also update colors if the
 	'editable' property is changed.
 	(updateComponentColors): Correctly handle editable vs. enabled

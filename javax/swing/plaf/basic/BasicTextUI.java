@@ -347,11 +347,6 @@ public abstract class BasicTextUI extends TextUI
           // Document changed.
 	      modelChanged();
         }
-      else if (event.getPropertyName().equals("enabled")
-               || event.getPropertyName().equals("editable"))
-        {
-          updateComponentColors();
-        }
     }
   }
 
@@ -431,22 +426,10 @@ public abstract class BasicTextUI extends TextUI
   DocumentHandler documentHandler = new DocumentHandler();
 
   /**
-   * The standard foreground color. This is the color which is used to paint
-   * text in enabled text components.
-   */
-  Color foreground;
-
-  /**
    * The standard background color. This is the color which is used to paint
    * text in enabled text components.
    */
   Color background;
-
-  /**
-   * The inactive foreground color. This is the color which is used to paint
-   * text in disabled text components.
-   */
-  Color inactiveForeground;
 
   /**
    * The inactive background color. This is the color which is used to paint
@@ -544,10 +527,11 @@ public abstract class BasicTextUI extends TextUI
     caret.setBlinkRate(defaults.getInt(prefix + ".caretBlinkRate"));
 
     // Fetch the colors for enabled/disabled text components.
-    foreground = defaults.getColor(prefix + ".foreground");
     background = defaults.getColor(prefix + ".background");
-    inactiveForeground = defaults.getColor(prefix + ".inactiveForeground");
     inactiveBackground = defaults.getColor(prefix + ".inactiveBackground");
+    textComponent.setForeground(defaults.getColor(prefix + ".foreground"));
+    textComponent.setDisabledTextColor
+                         (defaults.getColor(prefix + ".inactiveForeground"));
     updateComponentColors();
   }
 
@@ -832,6 +816,11 @@ public abstract class BasicTextUI extends TextUI
    */
   protected void paintBackground(Graphics g)
   {
+    if (textComponent.isEditable())
+      textComponent.setBackground(background);
+    else
+      textComponent.setBackground(inactiveBackground);
+
     g.setColor(textComponent.getBackground());
     g.fillRect(0, 0, textComponent.getWidth(), textComponent.getHeight());
   }
@@ -1085,14 +1074,5 @@ public abstract class BasicTextUI extends TextUI
    */
   void updateComponentColors()
   {
-    if (textComponent.isEditable())
-      textComponent.setBackground(background);
-    else
-      textComponent.setBackground(inactiveBackground);
-
-    if (textComponent.isEnabled())
-      textComponent.setForeground(foreground);
-    else
-      textComponent.setForeground(inactiveForeground);
   }
 }
