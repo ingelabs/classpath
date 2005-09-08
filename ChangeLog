@@ -1,3 +1,13 @@
+2005-09-08  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/awt/Container.java:
+	(findComponentForMouseEventAt): New implementation method.
+	(getDeepestComponentForMouseEventAt): New implementation method.
+	(acquireComponentForMouseEvent): Replaced call to
+	AWTUtilities.getDeepestComponentAt with call to new implementation
+	method getDeepestComponentAt to appropriately handle transparent
+	components with no MouseListeners attached.
+	
 2005-09-08  Tom Tromey  <tromey@redhat.com>
 
 	* .classpath: Enable compilation of jdwp.
