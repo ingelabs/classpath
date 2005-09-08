@@ -1,3 +1,10 @@
+2005-09-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/OceanTheme.java
+	New class. Implements the ocean theme for Metal.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(createDefaultTheme): Made Ocean the default theme as in JDK1.5.
+
 2005-09-08  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java
