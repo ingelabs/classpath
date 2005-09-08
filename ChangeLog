@@ -1,3 +1,9 @@
+2005-09-07  Tom Tromey  <tromey@redhat.com>
+
+	* .classpath: Omit more directories and files.
+	* .settings/org.eclipse.jdt.core.prefs: Compile to 1.4 platform.
+	* .settings/org.eclipse.jdt.ui.prefs: Likewise.
+
 2005-09-08  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/OceanTheme.java

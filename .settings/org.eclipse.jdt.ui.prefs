@@ -1,4 +1,5 @@
-#Mon Apr 25 21:37:39 MDT 2005
+#Wed Sep 07 21:05:21 MDT 2005
 eclipse.preferences.version=1
 formatter_settings_version=8
+internal.default.compliance=user
 org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8"?>\n<templates/>
