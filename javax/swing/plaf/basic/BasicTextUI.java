@@ -532,7 +532,6 @@ public abstract class BasicTextUI extends TextUI
     textComponent.setForeground(defaults.getColor(prefix + ".foreground"));
     textComponent.setDisabledTextColor
                          (defaults.getColor(prefix + ".inactiveForeground"));
-    updateComponentColors();
   }
 
   /**
@@ -1066,13 +1065,5 @@ public abstract class BasicTextUI extends TextUI
       return;
     View view = factory.create(elem);
     setView(view);
-  }
-
-  /**
-   * Updates the colors of the text component according to its enabled
-   * state.
-   */
-  void updateComponentColors()
-  {
   }
 }
