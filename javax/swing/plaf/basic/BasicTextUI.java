@@ -347,7 +347,8 @@ public abstract class BasicTextUI extends TextUI
           // Document changed.
 	      modelChanged();
         }
-      else if (event.getPropertyName().equals("enabled"))
+      else if (event.getPropertyName().equals("enabled")
+               || event.getPropertyName().equals("editable"))
         {
           updateComponentColors();
         }
@@ -1084,15 +1085,14 @@ public abstract class BasicTextUI extends TextUI
    */
   void updateComponentColors()
   {
-    if (textComponent.isEnabled())
-      {
-        textComponent.setForeground(foreground);
-        textComponent.setBackground(background);
-      }
+    if (textComponent.isEditable())
+      textComponent.setBackground(background);
     else
-      {
-        textComponent.setForeground(inactiveForeground);
-        textComponent.setBackground(inactiveBackground);
-      }
+      textComponent.setBackground(inactiveBackground);
+
+    if (textComponent.isEnabled())
+      textComponent.setForeground(foreground);
+    else
+      textComponent.setForeground(inactiveForeground);
   }
 }

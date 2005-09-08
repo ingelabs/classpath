@@ -1,6 +1,17 @@
 2005-09-08  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
+	(UpdateHandler.propertyChanged): Also update colors if the
+	'editable' property is changed.
+	(updateComponentColors): Correctly handle editable vs. enabled
+	changes.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Fixed color defaults for TextFields
+	to use the current theme.
+
+2005-09-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
 	(UpdateHandler.propertyChanged): Update the components colors
 	when the state of the 'enabled' property changes.
 	(foreground): New field that stores the foreground color.

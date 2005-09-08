@@ -866,10 +866,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "TabbedPane.tabAreaInsets", new InsetsUIResource(4, 2, 0, 6),
 
       "TextField.border", MetalBorders.getTextFieldBorder(),
-      // These color values match the JDK1.5. However, this differs from
-      // previous JDKs.
-      "TextField.inactiveBackground", new ColorUIResource(238, 238, 238),
-      "TextField.inactiveForeground", new ColorUIResource(184, 207, 229),
+      "TextField.inactiveBackground", getControl(),
+      "TextField.inactiveForeground", getControlShadow(),
 
       "ToggleButton.background", new ColorUIResource(getControl()),
       "ToggleButton.border", MetalBorders.getButtonBorder(),
