@@ -1,3 +1,8 @@
+2005-09-08  Jeroen Frijters  <jeroen@frijters.net>
+
+	* javax/naming/CompoundName.java
+	(readObject, writeObject): New methods.
+
 2005-09-07  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/SpringLayout.java:
