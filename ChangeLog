@@ -1,3 +1,8 @@
+2005-09-08  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
+	(executeVersion): Major and minor version are integers, not bytes.
+
 2005-09-08  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/Container.java:

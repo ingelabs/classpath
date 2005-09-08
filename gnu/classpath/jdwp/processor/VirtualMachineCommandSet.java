@@ -165,8 +165,8 @@ public class VirtualMachineCommandSet
     String vmVersion = props.getProperty("java.version");
     String vmName = props.getProperty("java.vm.name");
     JdwpString.writeString(os, description);
-    os.write(jdwpMajor);
-    os.write(jdwpMinor);
+    os.writeInt(jdwpMajor);
+    os.writeInt(jdwpMinor);
     JdwpString.writeString(os, vmName);
     JdwpString.writeString(os, vmVersion);
   }
