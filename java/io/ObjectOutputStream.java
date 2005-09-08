@@ -412,37 +412,53 @@ public class ObjectOutputStream extends OutputStream
 
   protected void writeClassDescriptor(ObjectStreamClass osc) throws IOException
   {
-    realOutput.writeByte(TC_CLASSDESC);
-    realOutput.writeUTF(osc.getName());
-    realOutput.writeLong(osc.getSerialVersionUID());
-    assignNewHandle(osc);
-
-    int flags = osc.getFlags();
-
-    if (protocolVersion == PROTOCOL_VERSION_2
-	&& osc.isExternalizable())
-      flags |= SC_BLOCK_DATA;
-
-    realOutput.writeByte(flags);
-
-    ObjectStreamField[] fields = osc.fields;
-    realOutput.writeShort(fields.length);
-
-    ObjectStreamField field;
-    for (int i = 0; i < fields.length; i++)
+    if (osc.isProxyClass)
       {
-	field = fields[i];
-	realOutput.writeByte(field.getTypeCode ());
-	realOutput.writeUTF(field.getName ());
+        realOutput.writeByte(TC_PROXYCLASSDESC);
+	Class[] intfs = osc.forClass().getInterfaces();
+	realOutput.writeInt(intfs.length);
+	for (int i = 0; i < intfs.length; i++)
+	  realOutput.writeUTF(intfs[i].getName());
 
-	if (! field.isPrimitive())
-	  writeObject(field.getTypeString());
+        boolean oldmode = setBlockDataMode(true);
+        annotateProxyClass(osc.forClass());
+        setBlockDataMode(oldmode);
+        realOutput.writeByte(TC_ENDBLOCKDATA);
       }
+    else
+      {
+        realOutput.writeByte(TC_CLASSDESC);
+        realOutput.writeUTF(osc.getName());
+        realOutput.writeLong(osc.getSerialVersionUID());
+        assignNewHandle(osc);
 
-    boolean oldmode = setBlockDataMode(true);
-    annotateClass(osc.forClass());
-    setBlockDataMode(oldmode);
-    realOutput.writeByte(TC_ENDBLOCKDATA);
+        int flags = osc.getFlags();
+
+        if (protocolVersion == PROTOCOL_VERSION_2
+	    && osc.isExternalizable())
+        flags |= SC_BLOCK_DATA;
+
+        realOutput.writeByte(flags);
+
+        ObjectStreamField[] fields = osc.fields;
+        realOutput.writeShort(fields.length);
+
+        ObjectStreamField field;
+        for (int i = 0; i < fields.length; i++)
+          {
+	    field = fields[i];
+	    realOutput.writeByte(field.getTypeCode ());
+	    realOutput.writeUTF(field.getName ());
+
+	    if (! field.isPrimitive())
+	      writeObject(field.getTypeString());
+          }
+
+        boolean oldmode = setBlockDataMode(true);
+        annotateClass(osc.forClass());
+        setBlockDataMode(oldmode);
+        realOutput.writeByte(TC_ENDBLOCKDATA);
+      }
 
     if (osc.isSerializable() || osc.isExternalizable())
       writeObject(osc.getSuper());

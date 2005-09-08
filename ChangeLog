@@ -1,5 +1,16 @@
 2005-09-08  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/io/ObjectInputStream.java
+	(readObject): Removed println and fixed Proxy class descriptor
+	deserialization.
+	(resolveProxyClass): Use Class.forName() instead of calling
+	ClassLoader.loadClass() directly.
+	* java/io/ObjectOutputStream.java
+	(writeClassDescriptor): Added support for serializing Proxy
+	class descriptor.
+
+2005-09-08  Jeroen Frijters  <jeroen@frijters.net>
+
 	* javax/naming/CompoundName.java
 	(readObject, writeObject): New methods.
 
