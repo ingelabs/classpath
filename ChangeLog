@@ -1,3 +1,12 @@
+2005-09-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/GapContent.java
+	Fixes Bug #22966.
+	(GapContentPosition.getOffset): Added assertion to check for
+	consistent state of the Position. Fixed condition in if-statement.
+	(serialVersionUID): Updated serialVersionUID to match JDK1.5.
+	(shiftGap): If gapStart == newGapStart, then return immediatly.
+
 2005-09-08  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
