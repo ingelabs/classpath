@@ -1,3 +1,28 @@
+2005-09-08  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): added 'ScrollBar.width' default,
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	(MetalScrollBarPropertyChangeHandler): new class,
+	(FREE_STANDING_PROP): added,
+	(MIN_THUMB_SIZE): modified dimensions,
+	(increaseButton): new field,
+	(decreaseButton): new field,
+	(scrollBarWidth): new field,
+	(isFreeStanding): new field,
+	(createUI): just return a new instance,
+	(installDefaults): implemented,
+	(createPropertyChangeListener): implemented,
+	(createDecreaseButton): implemented,
+	(createIncreaseButton): implemented,
+	(paintTrack): implemented,
+	(paintTrackHorizontal): new private method,
+	(paintTrackVertical): new private method,
+	(paintThumb): updated,
+	* javax/swing/plaf/metal/MetalScrollButton.java: implemented,
+	* javax/swing/plaf/metal/MetalUtils.java
+        (fillMetalPattern): modified alternating color calculation.
+
 2005-09-08  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/ObjectInputStream.java
