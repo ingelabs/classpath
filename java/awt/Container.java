@@ -1089,7 +1089,7 @@ public class Container extends Component
           }
 
         //don't return transparent components with no MouseListeners
-        if (!this.isOpaque() && this.getMouseListeners().length == 0)
+        if (this.getMouseListeners().length == 0)
           return null;
         return this;
       }
