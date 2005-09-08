@@ -1,3 +1,33 @@
+2005-09-08  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/processor/ArrayReferenceCommandSet.java
+	(runCommand): Return value is true to indicate that the back-end
+	should shutdown; not whether it should stay alive.
+	* gnu/classpath/jdwp/processor/ArrayTypeCommandSet.java
+	(runCommand): Likewise.
+	* gnu/classpath/jdwp/processor/ClassLoaderReferenceCommandSet.java
+	(runCommand): Likewise.
+	* gnu/classpath/jdwp/processor/ClassTypeCommandSet.java
+	(runCommand): Likewise.
+	* gnu/classpath/jdwp/processor/EventRequestCommandSet.java
+	(runCommand): Likewise.
+	* gnu/classpath/jdwp/processor/MethodCommandSet.java (runCommand):
+	Likewise
+	* gnu/classpath/jdwp/processor/ObjectReferenceCommandSet.java
+	(runCommand): Likewise.
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java
+	(runCommand): Likewise.
+	* gnu/classpath/jdwp/processor/StackFrameCommandSet.java
+	(runCommand): Likewise.
+	* gnu/classpath/jdwp/processor/StringReferenceCommandSet.java
+	(runCommand): Likewise.
+	* gnu/classpath/jdwp/processor/ThreadGroupReferenceCommandSet.java
+	(runCommand): Likewise.
+	* gnu/classpath/jdwp/processor/ThreadReferenceCommandSet.java
+	(runCommand): Likewise.
+	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
+	(runCommand): Likewise.
+
 2005-09-08  Lillian Angel  <langel@gmail.com>
 	
 	* javax/swing/JPopupMenu.java:
