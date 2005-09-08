@@ -69,7 +69,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public MetalLookAndFeel()
   {
-    createDefaultTheme();
+    if (theme == null)
+      createDefaultTheme();
   }
 
   /**
@@ -765,41 +766,110 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "Button.disabledText", new ColorUIResource(getControlDisabled()),
       "Button.focus", new ColorUIResource(getFocusColor()),
       "Button.font", getControlTextFont(),
-      "Button.foreground", new ColorUIResource(getSystemTextColor()),
+      "Button.foreground", new ColorUIResource(getControlTextColor()),
       "Button.highlight", new ColorUIResource(getControlHighlight()),
       "Button.light", new ColorUIResource(getControlHighlight()),
       "Button.margin", new Insets(2, 14, 2, 14),
-      "Button.select", new ColorUIResource(getPrimaryControlShadow()),
-      "Button.shadow", new ColorUIResource(getPrimaryControlShadow()),
+      "Button.select", new ColorUIResource(getControlShadow()),
+      "Button.shadow", new ColorUIResource(getControlShadow()),
+
       "CheckBox.background", new ColorUIResource(getControl()),
       "CheckBox.border", MetalBorders.getButtonBorder(),
+      "CheckBox.disabledText", getControlDisabled(),
+      "CheckBox.focus", getFocusColor(),
+      "CheckBox.font", new FontUIResource("Dialog", Font.BOLD, 12),
       "CheckBox.icon",
       new UIDefaults.ProxyLazyValue
           ("javax.swing.plaf.metal.MetalCheckBoxIcon"),
       "CheckBox.checkIcon",
       new UIDefaults.ProxyLazyValue
       ("javax.swing.plaf.metal.MetalCheckBoxIcon"),
-      "CheckBoxMenuItem.background", new ColorUIResource(getControl()),
+      "Checkbox.select", getControlShadow(),
+
+      "CheckBoxMenuItem.acceleratorFont", new FontUIResource("Dialog", Font.PLAIN, 10),
+      "CheckBoxMenuItem.acceleratorForeground", getAcceleratorForeground(),
+      "CheckBoxMenuItem.acceleratorSelectionForeground", getAcceleratorSelectedForeground(),
+      "CheckBoxMenuItem.background", getMenuBackground(),
+      "CheckBoxMenuItem.borderPainted", new Boolean(true),
+      "CheckBoxMenuItem.commandSound", "sounds/MenuItemCommand.wav",
       "CheckBoxMenuItem.checkIcon", MetalIconFactory.getCheckBoxMenuItemIcon(),
-      "ToolBar.background", new ColorUIResource(getControl()),
+      "CheckBoxMenuItem.disabledForeground", getMenuDisabledForeground(),
+      "CheckBoxMenuItem.font", new FontUIResource("Dialog", Font.BOLD, 12),
+      "CheckBoxMenuItem.foreground", getMenuForeground(),
+      "CheckBoxMenuItem.selectionBackground", getMenuSelectedBackground(),
+      "CheckBoxMenuItem.selectionForeground", getMenuSelectedForeground(),
+
+      "ColorChooser.background", getControl(),
+      "ColorChooser.foreground", getControlTextColor(),
+      "ColorChooser.swatchesDefaultRecentColor", getControlHighlight(),
+
+      "ComboBox.background", getControl(),
+      "ComboBox.buttonBackground", getControl(),
+      "ComboBox.buttonDarkShadow", getControlDarkShadow(),
+      "ComboBox.buttonHighlight", getControlHighlight(),
+      "ComboBox.buttonShadow", getControlShadow(),
+      "ComboBox.disabledBackground", getControl(),
+      "ComboBox.disabledForeground", getInactiveSystemTextColor(),
+      "ComboBox.font", new FontUIResource("Dialog", Font.BOLD, 12),
+      "ComboBox.foreground", getControlTextColor(),
+      "ComboBox.selectionBackground", getPrimaryControlShadow(),
+      "ComboBox.selectionForeground", getControlTextColor(),
+
+      "Desktop.background", getDesktopColor(),
+
+      "DesktopIcon.background", getControl(),
+      "DesktopIcon.foreground", getControlTextColor(),
+
+      "EditorPane.background", getWindowBackground(),
+      "EditorPane.caretForeground", getUserTextColor(),
+      "EditorPane.font", new FontUIResource("Dialog", Font.PLAIN, 12),
+      "EditorPane.foreground",  getUserTextColor(),
+      "EditorPane.inactiveForeground",  getInactiveSystemTextColor(),
+      "EditorPane.selectionBackground", getTextHighlightColor(),
+      "EditorPane.selectionForeground", getHighlightedTextColor(),
+      
+      "FormattedTextField.background", getWindowBackground(),
+      "FormattedTextField.caretForeground", getUserTextColor(),
+      "FormattedTextField.font", new FontUIResource("Dialog", Font.PLAIN, 12),
+      "FormattedTextField.foreground",  getUserTextColor(),
+      "FormattedTextField.inactiveBackground",  getControl(),
+      "FormattedTextField.inactiveForeground",  getInactiveSystemTextColor(),
+      "FormattedTextField.selectionBackground", getTextHighlightColor(),
+      "FormattedTextField.selectionForeground", getHighlightedTextColor(),
+
+
+      "InternalFrame.activeTitleBackground", getWindowTitleBackground(),
+      "InternalFrame.activeTitleForeground", getWindowTitleForeground(),
+      "InternalFrame.border", new MetalBorders.InternalFrameBorder(),
+      "InternalFrame.borderColor", getControl(),
+      "InternalFrame.borderDarkShadow", getControlDarkShadow(),
+      "InternalFrame.borderHighlight", getControlHighlight(),
+      "InternalFrame.borderLight", getControlHighlight(),
+      "InternalFrame.borderShadow", getControlShadow(),
+      "InternalFrame.icon", MetalIconFactory.getInternalFrameDefaultMenuIcon(),
+      "InternalFrame.closeIcon", 
+        MetalIconFactory.getInternalFrameCloseIcon(16),
+      "InternalFrame.inactiveTitleBackground", getWindowTitleInactiveBackground(),
+      "InternalFrame.inactiveTitleForeground", getWindowTitleInactiveForeground(),
+      "InternalFrame.maximizeIcon", 
+        MetalIconFactory.getInternalFrameMaximizeIcon(16),
+      "InternalFrame.iconifyIcon", 
+        MetalIconFactory.getInternalFrameMinimizeIcon(16),
+
+      "Label.background", getControl(),
+      "Label.disabledForeground", getInactiveSystemTextColor(),
+      "Label.disabledShadow", getControlShadow(),
+      "Label.font", getControlTextFont(),
+      "Label.foreground", getSystemTextColor(),
+
+      "ToolBar.background", getControl(),
+
       "Panel.background", new ColorUIResource(getControl()),
       "Slider.background", new ColorUIResource(getControl()),
       "OptionPane.background", new ColorUIResource(getControl()),
       "ProgressBar.background", new ColorUIResource(getControl()),
       "ScrollPane.border", new MetalBorders.ScrollPaneBorder(),
       "TabbedPane.background", new ColorUIResource(getControl()),
-      "InternalFrame.border", new MetalBorders.InternalFrameBorder(),
-      "InternalFrame.icon", MetalIconFactory.getInternalFrameDefaultMenuIcon(),
-      "InternalFrame.closeIcon", 
-        MetalIconFactory.getInternalFrameCloseIcon(16),
-      "InternalFrame.maximizeIcon", 
-        MetalIconFactory.getInternalFrameMaximizeIcon(16),
-      "InternalFrame.iconifyIcon", 
-        MetalIconFactory.getInternalFrameMinimizeIcon(16),
-      "Label.background", new ColorUIResource(getControl()),
-      "Label.font", getControlTextFont(),
-      "Label.disabledForeground", new ColorUIResource(getInactiveControlTextColor()),
-      "Label.foreground", new ColorUIResource(getControlTextColor()),
       "Menu.background", new ColorUIResource(getControl()),
       "Menu.border", new MetalBorders.MenuItemBorder(),
       "Menu.borderPainted", Boolean.TRUE,
@@ -866,8 +936,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "TabbedPane.tabAreaInsets", new InsetsUIResource(4, 2, 0, 6),
 
       "TextField.border", MetalBorders.getTextFieldBorder(),
-      "TextField.inactiveBackground", getControl(),
-      "TextField.inactiveForeground", getControlShadow(),
+      "TextField.inactiveBackground", getControlTextColor(),
+      "TextField.inactiveForeground", getInactiveControlTextColor(),
 
       "ToggleButton.background", new ColorUIResource(getControl()),
       "ToggleButton.border", MetalBorders.getButtonBorder(),

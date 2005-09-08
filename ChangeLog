@@ -1,3 +1,11 @@
+2005-09-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(MetalLookAndFeel): Only load default theme if no theme has been
+	set before.
+	(initComponentDefaults): Fixed and added color default values
+	for various components.
+
 2005-09-08  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/Container.java:
