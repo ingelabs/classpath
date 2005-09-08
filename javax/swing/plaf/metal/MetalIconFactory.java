@@ -46,6 +46,7 @@ import java.io.Serializable;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
@@ -133,6 +134,382 @@ public class MetalIconFactory implements Serializable
           g.drawLine(x + 8 - i, y + i, x + 9 - i, y + i);
       }
 
+    }        
+  }
+
+  /**
+   * An icon used for the "detail view" button on a {@link JFileChooser} under
+   * the {@link MetalLookAndFeel}.
+   * 
+   * @see MetalIconFactory#getFileChooserDetailViewIcon()
+   */
+  private static class FileChooserDetailViewIcon 
+      implements Icon, Serializable {
+    
+    /**
+     * Creates a new icon.
+     */
+    public FileChooserDetailViewIcon() 
+    {
+    }
+      
+    /**
+     * Returns the width of the icon, in pixels.
+     * 
+     * @return The width of the icon.
+     */
+    public int getIconWidth() 
+    {
+      return 18;
+    }
+    
+    /**
+     * Returns the height of the icon, in pixels.
+     * 
+     * @return The height of the icon.
+     */
+    public int getIconHeight() 
+    {
+      return 18;
+    }
+    
+    /**
+     * Paints the icon using colors from the {@link MetalLookAndFeel}.
+     * 
+     * @param c  the component (ignored).
+     * @param g  the graphics device.
+     * @param x  the x-coordinate for the top-left of the icon.
+     * @param y  the y-coordinate for the top-left of the icon.
+     */
+    public void paintIcon(Component c, Graphics g, int x, int y) 
+    {
+      Color savedColor = g.getColor();
+      g.setColor(MetalLookAndFeel.getBlack());
+
+      // file 1 outline
+      g.drawLine(x + 2, y + 2, x + 5, y + 2);
+      g.drawLine(x + 6, y + 3, x + 6, y + 7);
+      g.drawLine(x + 2, y + 7, x + 6, y + 7);
+      g.drawLine(x + 2, y + 2, x + 2, y + 7);
+      
+      // file 2 outline
+      g.drawLine(x + 2, y + 10, x + 5, y + 10);
+      g.drawLine(x + 6, y + 11, x + 6, y + 15);
+      g.drawLine(x + 2, y + 15, x + 6, y + 15);
+      g.drawLine(x + 2, y + 10, x + 2, y + 15);
+
+      // detail lines
+      g.drawLine(x + 8, y + 5, x + 15, y + 5);
+      g.drawLine(x + 8, y + 13, x + 15, y + 13);
+      
+      // fill files
+      g.setColor(MetalLookAndFeel.getPrimaryControl());
+      g.fillRect(x + 3, y + 3, 3, 4);
+      g.fillRect(x + 3, y + 11, 3, 4);
+      
+      // highlight files
+      g.setColor(MetalLookAndFeel.getPrimaryControlHighlight());
+      g.drawLine(x + 4, y + 4, x + 4, y + 5);
+      g.drawLine(x + 4, y + 12, x + 4, y + 13);
+      
+      g.setColor(savedColor);
+    }        
+  }
+
+  /**
+   * An icon used for the "home folder" button on a {@link JFileChooser} under
+   * the {@link MetalLookAndFeel}.
+   * 
+   * @see MetalIconFactory#getFileChooserHomeFolderIcon()
+   */
+  private static class FileChooserHomeFolderIcon 
+      implements Icon, Serializable {
+        
+    /**
+     * Creates a new icon.
+     */
+    public FileChooserHomeFolderIcon() 
+    {
+    }
+
+    /**
+     * Returns the width of the icon, in pixels.
+     * 
+     * @return The width of the icon.
+     */
+    public int getIconWidth() 
+    {
+      return 18;
+    }
+    
+    /**
+     * Returns the height of the icon, in pixels.
+     * 
+     * @return The height of the icon.
+     */
+    public int getIconHeight() 
+    {
+      return 18;
+    }
+    
+    /**
+     * Paints the icon using colors from the {@link MetalLookAndFeel}.
+     * 
+     * @param c  the component (ignored).
+     * @param g  the graphics device.
+     * @param x  the x-coordinate for the top-left of the icon.
+     * @param y  the y-coordinate for the top-left of the icon.
+     */
+    public void paintIcon(Component c, Graphics g, int x, int y) 
+    {   
+      Color savedColor = g.getColor();
+      g.setColor(MetalLookAndFeel.getBlack());
+      
+      // roof
+      g.drawLine(x + 1, y + 8, x + 8, y + 1);
+      g.drawLine(x + 8, y + 1, x + 15, y + 8);
+      
+      // base of house
+      g.drawLine(x + 3, y + 6, x + 3, y + 15);
+      g.drawLine(x + 3, y + 15, x + 13, y + 15);
+      g.drawLine(x + 13, y + 6, x + 13, y + 15);
+      
+      // door frame
+      g.drawLine(x + 6, y + 9, x + 6, y + 15);
+      g.drawLine(x + 6, y + 9, x + 10, y + 9);
+      g.drawLine(x + 10, y + 9, x + 10, y + 15);
+      
+      // chimney
+      g.drawLine(x + 11, y + 2, x + 11, y + 4);
+      g.drawLine(x + 12, y + 2, x + 12, y + 5);
+      
+      g.setColor(MetalLookAndFeel.getControlDarkShadow());
+      
+      // roof paint
+      int xx = x + 8;
+      for (int i = 0; i < 4; i++)
+        g.drawLine(xx - i, y + 2 + i, xx + i, y + 2 + i);
+      g.fillRect(x + 4, y + 6, 9, 2);
+      
+      // door knob
+      g.drawLine(x + 9, y + 12, x + 9, y + 12);
+      
+      // house paint
+      g.setColor(MetalLookAndFeel.getPrimaryControl());
+      g.drawLine(x + 4, y + 8, x + 12, y + 8);
+      g.fillRect(x + 4, y + 9, 2, 6);
+      g.fillRect(x + 11, y + 9, 2, 6);
+      
+      g.setColor(savedColor);
+    }        
+  }
+    
+  /**
+   * An icon used for the "list view" button on a {@link JFileChooser} under
+   * the {@link MetalLookAndFeel}.
+   * 
+   * @see MetalIconFactory#getFileChooserListViewIcon()
+   */
+  private static class FileChooserListViewIcon implements Icon, Serializable 
+  {
+    /**
+     * Creates a new icon.
+     */
+    public FileChooserListViewIcon() 
+    {
+    }
+    
+    /**
+     * Returns the width of the icon, in pixels.
+     * 
+     * @return The width of the icon.
+     */
+    public int getIconWidth() 
+    {
+      return 18;
+    }
+    
+    /**
+     * Returns the height of the icon, in pixels.
+     * 
+     * @return The height of the icon.
+     */
+    public int getIconHeight() 
+    {
+      return 18;
+    }
+    
+    /**
+     * Paints the icon using colors from the {@link MetalLookAndFeel}.
+     * 
+     * @param c  the component (ignored).
+     * @param g  the graphics device.
+     * @param x  the x-coordinate for the top-left of the icon.
+     * @param y  the y-coordinate for the top-left of the icon.
+     */
+    public void paintIcon(Component c, Graphics g, int x, int y) 
+    {
+      Color savedColor = g.getColor();
+      g.setColor(MetalLookAndFeel.getBlack());
+
+      // file 1 outline
+      g.drawLine(x + 2, y + 2, x + 5, y + 2);
+      g.drawLine(x + 6, y + 3, x + 6, y + 7);
+      g.drawLine(x + 2, y + 7, x + 6, y + 7);
+      g.drawLine(x + 2, y + 2, x + 2, y + 7);
+      
+      // file 2 outline
+      g.drawLine(x + 2, y + 10, x + 5, y + 10);
+      g.drawLine(x + 6, y + 11, x + 6, y + 15);
+      g.drawLine(x + 2, y + 15, x + 6, y + 15);
+      g.drawLine(x + 2, y + 10, x + 2, y + 15);
+      
+      // file 3 outline
+      g.drawLine(x + 10, y + 2, x + 13, y + 2);
+      g.drawLine(x + 14, y + 3, x + 14, y + 7);
+      g.drawLine(x + 10, y + 7, x + 14, y + 7);
+      g.drawLine(x + 10, y + 2, x + 10, y + 7);
+      
+      // file 4 outline
+      g.drawLine(x + 10, y + 10, x + 13, y + 10);
+      g.drawLine(x + 14, y + 11, x + 14, y + 15);
+      g.drawLine(x + 10, y + 15, x + 14, y + 15);
+      g.drawLine(x + 10, y + 10, x + 10, y + 15);
+      
+      g.drawLine(x + 8, y + 5, x + 8, y + 5);
+      g.drawLine(x + 8, y + 13, x + 8, y + 13);
+      g.drawLine(x + 16, y + 5, x + 16, y + 5);
+      g.drawLine(x + 16, y + 13, x + 16, y + 13);
+      
+      // fill files
+      g.setColor(MetalLookAndFeel.getPrimaryControl());
+      g.fillRect(x + 3, y + 3, 3, 4);
+      g.fillRect(x + 3, y + 11, 3, 4);
+      g.fillRect(x + 11, y + 3, 3, 4);
+      g.fillRect(x + 11, y + 11, 3, 4);
+      
+      // highlight files
+      g.setColor(MetalLookAndFeel.getPrimaryControlHighlight());
+      g.drawLine(x + 4, y + 4, x + 4, y + 5);
+      g.drawLine(x + 4, y + 12, x + 4, y + 13);
+      g.drawLine(x + 12, y + 4, x + 12, y + 5);
+      g.drawLine(x + 12, y + 12, x + 12, y + 13);
+
+      g.setColor(savedColor);
+    }        
+  }
+    
+  /**
+   * An icon used for the "new folder" button on a {@link JFileChooser} under
+   * the {@link MetalLookAndFeel}.
+   * 
+   * @see MetalIconFactory#getFileChooserNewFolderIcon()
+   */
+  private static class FileChooserNewFolderIcon 
+      implements Icon, Serializable 
+  {
+    /** 
+     * Creates a new icon.
+     */
+    public FileChooserNewFolderIcon() 
+    {
+    }
+    
+    /**
+     * Returns the width of the icon, in pixels.
+     * 
+     * @return The width of the icon.
+     */
+    public int getIconWidth() 
+    {
+      return 18;
+    }
+    
+    /**
+     * Returns the height of the icon, in pixels.
+     * 
+     * @return The height of the icon.
+     */
+    public int getIconHeight() 
+    {
+      return 18;
+    }
+    
+    /**
+     * Paints the icon using colors from the {@link MetalLookAndFeel}.
+     * 
+     * @param c  the component (ignored).
+     * @param g  the graphics device.
+     * @param x  the x-coordinate for the top-left of the icon.
+     * @param y  the y-coordinate for the top-left of the icon.
+     */
+    public void paintIcon(Component c, Graphics g, int x, int y) 
+    {      
+      Color savedColor = g.getColor();
+      g.setColor(MetalLookAndFeel.getBlack());
+      
+      g.drawLine(x + 2, y + 5, x + 9, y + 5);
+      g.drawLine(x + 10, y + 6, x + 15, y + 6);
+      g.drawLine(x + 15, y + 5, x + 15, y + 14);
+      g.drawLine(x + 2, y + 14, x + 15, y + 14);
+      g.drawLine(x + 1, y + 6, x + 1, y + 14);
+      
+      g.setColor(MetalLookAndFeel.getPrimaryControlDarkShadow());
+      g.drawLine(x + 11, y + 3, x + 15, y + 3);
+      g.drawLine(x + 10, y + 4, x + 15, y + 4);
+      
+      g.setColor(MetalLookAndFeel.getPrimaryControl());
+      g.fillRect(x + 3, y + 7, 7, 7);
+      g.fillRect(x + 10, y + 8, 5, 6);
+      g.drawLine(x + 10, y + 5, x + 14, y + 5);
+      
+      g.setColor(MetalLookAndFeel.getPrimaryControlHighlight());
+      g.drawLine(x + 10, y + 7, x + 14, y + 7);
+      g.drawLine(x + 2, y + 6, x + 9, y + 6);
+      g.drawLine(x + 2, y + 6, x + 2, y + 13);
+      g.setColor(savedColor);
+    }        
+  }
+
+  /**
+   * An icon used for the "up folder" button on a {@link JFileChooser} under
+   * the {@link MetalLookAndFeel}.
+   * 
+   * @see MetalIconFactory#getFileChooserNewFolderIcon()
+   */
+  private static class FileChooserUpFolderIcon 
+    extends FileChooserNewFolderIcon
+    implements Icon, Serializable 
+  {
+    /**
+     * Creates a new icon.
+     */
+    public FileChooserUpFolderIcon() 
+    {
+    }
+    
+    /**
+     * Paints the icon using colors from the {@link MetalLookAndFeel}.
+     * 
+     * @param c  the component (ignored).
+     * @param g  the graphics device.
+     * @param x  the x-coordinate for the top-left of the icon.
+     * @param y  the y-coordinate for the top-left of the icon.
+     */
+    public void paintIcon(Component c, Graphics g, int x, int y) 
+    {
+      Color savedColor = g.getColor();
+
+      // draw the folder
+      super.paintIcon(c, g, x, y);
+      
+      // now draw the up arrow
+      g.setColor(MetalLookAndFeel.getBlack());
+      g.drawLine(x + 8, y + 9, x + 8, y + 16);
+      int xx = x + 8;
+      for (int i = 0; i < 4; i++)
+        g.drawLine(xx - i, y + 9 + i, xx + i, y + 9 + i);
+      g.setColor(savedColor);
     }        
   }
 
@@ -1387,6 +1764,55 @@ public class MetalIconFactory implements Serializable
     return new CheckBoxMenuItemIcon();
   }
 
+  /**
+   * Returns an icon for use by the {@link JFileChooser} component.
+   * 
+   * @return An icon.
+   */
+  public static Icon getFileChooserDetailViewIcon() 
+  {
+    return new FileChooserDetailViewIcon();
+  }
+    
+  /**
+   * Returns an icon for use by the {@link JFileChooser} component.
+   * 
+   * @return An icon.
+   */
+  public static Icon getFileChooserHomeFolderIcon() 
+  {
+    return new FileChooserHomeFolderIcon();        
+  }
+    
+  /**
+   * Returns an icon for use by the {@link JFileChooser} component.
+   * 
+   * @return An icon.
+   */
+  public static Icon getFileChooserListViewIcon() 
+  {
+    return new FileChooserListViewIcon();
+  }
+    
+  /**
+   * Returns an icon for use by the {@link JFileChooser} component.
+   * 
+   * @return An icon.
+   */
+  public static Icon getFileChooserNewFolderIcon() 
+  {
+    return new FileChooserNewFolderIcon();
+  }
+    
+  /**
+   * Returns an icon for use by the {@link JFileChooser} component.
+   * 
+   * @return An icon.
+   */
+  public static Icon getFileChooserUpFolderIcon() 
+  {
+    return new FileChooserUpFolderIcon();
+  }
   /**
    * Returns an icon for RadioButtons in the Metal L&amp;F.
    *

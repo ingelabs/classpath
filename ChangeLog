@@ -1,3 +1,17 @@
+2005-09-08  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(FileChooserDetailViewIcon): new private class,
+	(FileChooserHomeFolderIcon): likewise,
+	(FileChooserListViewIcon): likewise,
+	(FileChooserNewFolderIcon): likewise,
+	(FileChooserUpFolderIcon): likewise,
+	(getFileChooserDetailViewIcon): implemented,
+	(getFileChooserHomeFolderIcon): implemented,
+	(getFileChooserListViewIcon): implemented,
+	(getFileChooserNewFolderIcon): implemented,
+	(getFileChooserUpFolderIcon): implemented.
+
 2005-09-08  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
