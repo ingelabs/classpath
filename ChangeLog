@@ -1,11 +1,18 @@
-2005-09-07  Mark Wielaard  <mark@klomp.org>
+2005-09-08  Lillian Angel  <langel@gmail.com>
+	
+	* javax/swing/JPopupMenu.java:
+	Fixes Bug #PR23533
+	(setVisible): Adjusted popup menu's location
+	depending on the size of the screen.
+
+2005-09-08  Mark Wielaard  <mark@klomp.org>
 
 	* Makefile.am (EXTRA_DIST): Add autogen.sh
 	* lib/standard.omit: Remove gnu/classpath/jdwp, gnu/xml/stream and
 	javax/xml/stream.
 	* vm/reference/standard.omit: Removed.
 
-2005-09-07  Tom Tromey  <tromey@redhat.com>
+2005-09-08  Tom Tromey  <tromey@redhat.com>
 
 	* .classpath: Omit more directories and files.
 	* .settings/org.eclipse.jdt.core.prefs: Compile to 1.4 platform.
