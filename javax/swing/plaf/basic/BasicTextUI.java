@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing.plaf.basic;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -342,10 +343,14 @@ public abstract class BasicTextUI extends TextUI
     public void propertyChange(PropertyChangeEvent event)
     {
       if (event.getPropertyName().equals("document"))
-	{
+        {
           // Document changed.
-	  modelChanged();
-	}
+	      modelChanged();
+        }
+      else if (event.getPropertyName().equals("enabled"))
+        {
+          updateComponentColors();
+        }
     }
   }
 
@@ -423,6 +428,30 @@ public abstract class BasicTextUI extends TextUI
 
   /** The DocumentEvent handler. */
   DocumentHandler documentHandler = new DocumentHandler();
+
+  /**
+   * The standard foreground color. This is the color which is used to paint
+   * text in enabled text components.
+   */
+  Color foreground;
+
+  /**
+   * The standard background color. This is the color which is used to paint
+   * text in enabled text components.
+   */
+  Color background;
+
+  /**
+   * The inactive foreground color. This is the color which is used to paint
+   * text in disabled text components.
+   */
+  Color inactiveForeground;
+
+  /**
+   * The inactive background color. This is the color which is used to paint
+   * text in disabled text components.
+   */
+  Color inactiveBackground;
 
   /**
    * Creates a new <code>BasicTextUI</code> instance.
@@ -507,13 +536,18 @@ public abstract class BasicTextUI extends TextUI
 
     String prefix = getPropertyPrefix();
     UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-    textComponent.setBackground(defaults.getColor(prefix + ".background"));
-    textComponent.setForeground(defaults.getColor(prefix + ".foreground"));
     textComponent.setMargin(defaults.getInsets(prefix + ".margin"));
     textComponent.setBorder(defaults.getBorder(prefix + ".border"));
     textComponent.setFont(defaults.getFont(prefix + ".font"));
 
     caret.setBlinkRate(defaults.getInt(prefix + ".caretBlinkRate"));
+
+    // Fetch the colors for enabled/disabled text components.
+    foreground = defaults.getColor(prefix + ".foreground");
+    background = defaults.getColor(prefix + ".background");
+    inactiveForeground = defaults.getColor(prefix + ".inactiveForeground");
+    inactiveBackground = defaults.getColor(prefix + ".inactiveBackground");
+    updateComponentColors();
   }
 
   /**
@@ -1042,5 +1076,23 @@ public abstract class BasicTextUI extends TextUI
       return;
     View view = factory.create(elem);
     setView(view);
+  }
+
+  /**
+   * Updates the colors of the text component according to its enabled
+   * state.
+   */
+  void updateComponentColors()
+  {
+    if (textComponent.isEnabled())
+      {
+        textComponent.setForeground(foreground);
+        textComponent.setBackground(background);
+      }
+    else
+      {
+        textComponent.setForeground(inactiveForeground);
+        textComponent.setBackground(inactiveBackground);
+      }
   }
 }

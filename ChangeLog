@@ -1,5 +1,24 @@
 2005-09-08  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(UpdateHandler.propertyChanged): Update the components colors
+	when the state of the 'enabled' property changes.
+	(foreground): New field that stores the foreground color.
+	(background): New field that stores the background color.
+	(inactiveForeground): New field that stores the inactive
+	foreground color.
+	(inactiveBackground): New field that stores the inactive
+	background color.
+	(updateComponentColors): New method. Updates the text
+	components' colors according to the state of the 'enabled'
+	property.
+	(installDefaults): Load the defaults for the component colors.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Added defaults for TextField colors
+	and border.
+
+2005-09-08  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/GapContent.java
 	Fixes Bug #22966.
 	(GapContentPosition.getOffset): Added assertion to check for
