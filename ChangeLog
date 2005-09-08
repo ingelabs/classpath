@@ -1,3 +1,10 @@
+2005-09-07  Mark Wielaard  <mark@klomp.org>
+
+	* Makefile.am (EXTRA_DIST): Add autogen.sh
+	* lib/standard.omit: Remove gnu/classpath/jdwp, gnu/xml/stream and
+	javax/xml/stream.
+	* vm/reference/standard.omit: Removed.
+
 2005-09-07  Tom Tromey  <tromey@redhat.com>
 
 	* .classpath: Omit more directories and files.
