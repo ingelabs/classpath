@@ -1,3 +1,9 @@
+2005-09-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR swing/23796
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (create): Respect
+	frame's decorated flag.
+
 2005-09-09  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
