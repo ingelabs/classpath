@@ -1,3 +1,9 @@
+2005-09-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR swing/23558
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(FocusHandler.focusLost): Do not call popup.hide.
+
 2005-09-08  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (static): Fix typo
