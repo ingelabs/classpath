@@ -39,7 +39,6 @@ exception statement from your version. */
 
 package java.io;
 
-import gnu.classpath.Configuration;
 import gnu.java.io.ObjectIdentityWrapper;
 
 import java.lang.reflect.Array;
@@ -1909,14 +1908,6 @@ public class ObjectInputStream extends InputStream
     for (int i = 0; i < depth; i++)
       System.out.print (" ");
     System.out.print (Thread.currentThread() + ": ");
-  }
-
-  static
-  {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-	System.loadLibrary ("javaio");
-      }
   }
 
   // used to keep a prioritized list of object validators

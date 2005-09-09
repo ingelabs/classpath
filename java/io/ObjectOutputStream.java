@@ -39,7 +39,6 @@ exception statement from your version. */
 
 package java.io;
 
-import gnu.classpath.Configuration;
 import gnu.java.io.ObjectIdentityWrapper;
 import gnu.java.lang.reflect.TypeSignature;
 import gnu.java.security.action.SetAccessibleAction;
@@ -1583,12 +1582,4 @@ public class ObjectOutputStream extends OutputStream
   private boolean dump = false;
 
   private static final boolean DEBUG = false;
-
-  static
-  {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-        System.loadLibrary("javaio");
-      }
-  }
 }
