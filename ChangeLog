@@ -1,5 +1,10 @@
 2005-09-09  Keith Seitz  <keiths@redhat.com>
 
+	* vm/reference/gnu/classpath/jdwp/VMIdManager.java (newObjectId): 
+	Set the reference for the ID.
+
+2005-09-09  Keith Seitz  <keiths@redhat.com>
+
 	* gnu/classpath/jdwp/event/VmDeathEvent.java: New file.
 
 2005-09-09  Tom Tromey  <tromey@redhat.com>
