@@ -1,3 +1,7 @@
+2005-09-09  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/event/VmDeathEvent.java: New file.
+
 2005-09-09  Tom Tromey  <tromey@redhat.com>
 
 	For PR libgcj/23288:
