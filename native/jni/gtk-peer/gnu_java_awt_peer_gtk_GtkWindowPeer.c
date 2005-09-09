@@ -1028,9 +1028,6 @@ static gboolean window_delete_cb (GtkWidget *widget, GdkEvent *event,
 static void window_destroy_cb (GtkWidget *widget, GdkEvent *event,
 			       jobject peer);
 static void window_show_cb (GtkWidget *widget, jobject peer);
-static void window_active_state_change_cb (GtkWidget *widget,
-                                           GParamSpec *pspec,
-                                           jobject peer);
 static void window_focus_state_change_cb (GtkWidget *widget,
                                           GParamSpec *pspec,
                                           jobject peer);
@@ -1043,7 +1040,6 @@ static gboolean window_focus_out_cb (GtkWidget * widget,
 static gboolean window_window_state_cb (GtkWidget *widget,
 					GdkEvent *event,
 					jobject peer);
-static jint window_get_new_state (GtkWidget *widget);
 static gboolean window_property_changed_cb (GtkWidget *widget,
 					    GdkEventProperty *event,
 					    jobject peer);
@@ -1277,9 +1273,6 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectSignals
 
   g_signal_connect (G_OBJECT (ptr), "show",
 		    G_CALLBACK (window_show_cb), *gref);
-
-  g_signal_connect (G_OBJECT (ptr), "notify::is-active",
-  		    G_CALLBACK (window_active_state_change_cb), *gref);
 
   g_signal_connect (G_OBJECT (ptr), "notify::has-toplevel-focus",
   		    G_CALLBACK (window_focus_state_change_cb), *gref);
@@ -1592,31 +1585,6 @@ window_show_cb (GtkWidget *widget __attribute__((unused)),
 }
 
 static void
-window_active_state_change_cb (GtkWidget *widget __attribute__((unused)),
-			       GParamSpec *pspec __attribute__((unused)),
-			       jobject peer __attribute__((unused)))
-{
-  /* FIXME: not sure if this is needed or not. */
-  /* Remove the unused attributes if you fix the below.  */
-#if 0
-  gdk_threads_leave ();
-
-  if (GTK_WINDOW (widget)->is_active)
-    (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
-                                postWindowEventID,
-                                (jint) AWT_WINDOW_GAINED_FOCUS,
-                                (jobject) NULL, (jint) 0);
-  else
-    (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
-                                postWindowEventID,
-                                (jint) AWT_WINDOW_DEACTIVATED,
-                                (jobject) NULL, (jint) 0);
-
-  gdk_threads_enter ();
-#endif
-}
-
-static void
 window_focus_state_change_cb (GtkWidget *widget,
 			      GParamSpec *pspec __attribute__((unused)),
 			      jobject peer)
@@ -1660,7 +1628,7 @@ window_focus_out_cb (GtkWidget * widget __attribute__((unused)),
 }
 
 static gboolean
-window_window_state_cb (GtkWidget *widget,
+window_window_state_cb (GtkWidget *widget __attribute__((unused)),
 			GdkEvent *event,
 			jobject peer)
 {
@@ -1695,55 +1663,12 @@ window_window_state_cb (GtkWidget *widget,
   if (event->window_state.new_window_state & GDK_WINDOW_STATE_ICONIFIED)
     new_state |= AWT_FRAME_STATE_ICONIFIED;
 
-  new_state |= window_get_new_state (widget);
-
   (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
 			      postWindowEventID,
 			      (jint) AWT_WINDOW_STATE_CHANGED,
 			      (jobject) NULL, new_state);
 
   return TRUE;
-}
-
-static jint
-window_get_new_state (GtkWidget *widget)
-{
-  GdkDisplay *display = gtk_widget_get_display(widget);
-  jint new_state = AWT_FRAME_STATE_NORMAL;
-  Atom type;
-  gint format;
-  gulong atom_count;
-  gulong bytes_after;
-  Atom *atom_list = NULL;
-  union atom_list_union alu;
-  gulong i;
-
-  alu.atom_list = &atom_list;
-  XGetWindowProperty (GDK_DISPLAY_XDISPLAY (display), 
-		      GDK_WINDOW_XID (widget->window),
-		      gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_STATE"),
-		      0, G_MAXLONG, False, XA_ATOM, &type, &format, &atom_count,
-		      &bytes_after, alu.gu_extents);
-
-  if (type != None)
-    {
-      Atom maxvert = gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_STATE_MAXIMIZED_VERT");
-      Atom maxhorz	= gdk_x11_get_xatom_by_name_for_display (display, "_NET_WM_STATE_MAXIMIZED_HORZ");
-
-      i = 0;
-      while (i < atom_count)
-        {
-	  if (atom_list[i] == maxhorz)
-	    new_state |= AWT_FRAME_STATE_MAXIMIZED_HORIZ;
-          else if (atom_list[i] == maxvert)
-	    new_state |= AWT_FRAME_STATE_MAXIMIZED_VERT;
-
-          ++i;
-        }
-
-      XFree (atom_list);
-    }
-  return new_state;
 }
 
 static gboolean
