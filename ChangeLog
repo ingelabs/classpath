@@ -1,5 +1,10 @@
 2005-09-09  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): re-added 'ScrollBar.width' default.
+	
+2005-09-09  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicArrowButton.java
 	(buttonBorder.paintBorder): fixed drawing issues,
 	(getMaximumSize): return constant value,

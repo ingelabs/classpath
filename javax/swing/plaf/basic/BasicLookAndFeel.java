@@ -742,6 +742,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "ScrollBar.thumbShadow", new ColorUIResource(shadow),
       "ScrollBar.track", new ColorUIResource(light),
       "ScrollBar.trackHighlight", new ColorUIResource(shadow),
+      "ScrollBar.width", new Integer(16),
       "ScrollPane.ancestorInputMap", new UIDefaults.LazyInputMap(new Object[] {
         "PAGE_UP", "scrollUp",
         "KP_LEFT", "unitScrollLeft",
