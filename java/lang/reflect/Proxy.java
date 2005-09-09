@@ -617,7 +617,7 @@ public class Proxy implements Serializable
      * The package this class is in <b>including the trailing dot</b>
      * or an empty string for the unnamed (aka default) package.
      */
-    String pack;
+    String pack = "";
 
     /**
      * The interfaces this class implements.  Non-null, but possibly empty.

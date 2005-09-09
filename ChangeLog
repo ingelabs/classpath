@@ -1,5 +1,10 @@
 2005-09-09  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/reflect/Proxy.java
+	(pack): Initialize field.
+
+2005-09-09  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/io/ObjectInputStream.java: Removed static initializer.
 	* java/io/ObjectOutputStream.java: Removed static initializer.
 	* vm/reference/java/io/VMObjectInputStream.java: Added static
