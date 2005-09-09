@@ -616,7 +616,8 @@ public class JRootPane extends JComponent implements Accessible
         && style != COLOR_CHOOSER_DIALOG
         && style != FILE_CHOOSER_DIALOG
         && style != QUESTION_DIALOG
-        && style != WARNING_DIALOG)
+        && style != WARNING_DIALOG
+        && style != PLAIN_DIALOG)
       throw new IllegalArgumentException("invalid style");
     
     int oldStyle = windowDecorationStyle;

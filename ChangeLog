@@ -1,3 +1,22 @@
+2005-09-09  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(installDefaults): Fixed method signature.
+	(uninstallDefaults): Likewise.
+	(uninstallUI): Fixed call to uninstallDefaults.
+	(installUI): Fixed call to installDefaults.
+	* javax/swing/JPopupMenu.java
+	(HeavyWeightPopup): Fixed to extend JDialog, since
+	nothing is added to the taskbar with JDialog. Also, 
+	fixed so the popup menu is undecorated. Frames and
+	title bars should not be drawn, when popup is a 
+	HeavyWeightPopup. A new bug was filed since the
+	decorated and undecorated frames are all drawn 
+	alike.
+	* javax/swing/JRootPane.java
+	(setWindowDecorationStyle): Added check for
+	PLAIN_DIALOG.
+
 2005-09-09  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel.java

@@ -1016,7 +1016,7 @@ public class JPopupMenu extends JComponent implements Accessible, MenuElement
    * HeavyWeightPopup is JWindow that is used to display JPopupMenu menu item's
    * on the screen
    */
-  private class HeavyWeightPopup extends JWindow implements Popup
+  private class HeavyWeightPopup extends JDialog implements Popup
   {
     /**
      * Creates a new HeavyWeightPopup object.
@@ -1026,6 +1026,8 @@ public class JPopupMenu extends JComponent implements Accessible, MenuElement
     public HeavyWeightPopup(Container c)
     {
       this.setContentPane(c);
+      this.setUndecorated(true);
+      this.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
     }
 
     /**
