@@ -1,5 +1,11 @@
 2005-09-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	PR swing/23796
+	* gnu/java/awt/peer/gtk/GtkDialogPeer.java
+	(create): Respect dialog's decorated flag.
+
+2005-09-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	PR swing/23558
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
 	(window_get_new_state): Remove function.
