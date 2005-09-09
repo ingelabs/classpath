@@ -1326,8 +1326,8 @@ public class BasicTreeUI
   public void installUI(JComponent c)
   {
     super.installUI(c);
-    installDefaults();
     tree = (JTree) c;
+    installDefaults();
 
     currentCellRenderer = createDefaultCellRenderer();
     rendererPane = createCellRendererPane();
