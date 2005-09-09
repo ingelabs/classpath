@@ -1,5 +1,11 @@
 2005-09-09  Jeroen Frijters  <jeroen@frijters.net>
 
+	* javax/security/auth/login/Configuration.java
+	(getConfiguration): Call getConfig() instead of doing the work.
+	(getConfig): Instantiate the configuration provider.
+
+2005-09-09  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/lang/reflect/Proxy.java
 	(pack): Initialize field.
 
