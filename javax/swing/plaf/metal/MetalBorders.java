@@ -262,6 +262,88 @@ public class MetalBorders
   }
     
   /**
+   * A border used for a {@link JInternalFrame} when it is being used as a 
+   * palette.
+   * 
+   * @since 1.3
+   */
+  public static class PaletteBorder
+    extends AbstractBorder
+    implements UIResource
+  {
+    /**
+     * Creates a new <code>PaletteBorder</code>.
+     */
+    public PaletteBorder()
+    {
+    }
+    
+    /**
+     * Returns the border insets.
+     * 
+     * @param c  the component (ignored).
+     * 
+     * @return The border insets.
+     */
+    public Insets getBorderInsets(Component c)
+    {
+      return getBorderInsets(c, null);
+    }
+
+    /**
+     * Returns the border insets.
+     * 
+     * @param c  the component (ignored).
+     * @param newInsets  the insets object that, if non-<code>null</code>, will 
+     *                   be populated with the result from this method.
+     * 
+     * @return The border insets.
+     */
+    public Insets getBorderInsets(Component c, Insets newInsets)
+    {        
+      if (newInsets == null)
+        newInsets = new Insets(1, 1, 1, 1);
+      else
+        {
+          newInsets.top = 1;
+          newInsets.left = 1;
+          newInsets.bottom = 1;
+          newInsets.right = 1;
+        }
+      return newInsets;  
+    }
+    
+    /**
+     * Paints the border for the specified component.
+     * 
+     * @param c  the component (ignored).
+     * @param g  the graphics device.
+     * @param x  the x-coordinate.
+     * @param y  the y-coordinate.
+     * @param w  the width.
+     * @param h  the height.
+     */
+    public void paintBorder(Component c, Graphics g, int x, int y, int w, 
+            int h)
+    {
+      Color savedColor = g.getColor();
+      
+      // draw the outline
+      g.setColor(MetalLookAndFeel.getPrimaryControlDarkShadow());
+      g.drawRect(x, y, w - 1, h - 1);
+      
+      // put a dot in each corner
+      g.setColor(MetalLookAndFeel.getControl());
+      g.fillRect(x, y, 1, 1);
+      g.fillRect(x + w - 1, y, 1, 1);
+      g.fillRect(x + w - 1, y + h - 1, 1, 1);
+      g.fillRect(x, y + h - 1, 1, 1);      
+      g.setColor(savedColor);
+    }
+
+  }
+    
+  /**
    * A border used for the {@link JTextField} component.
    */
   public static class TextFieldBorder extends Flush3DBorder

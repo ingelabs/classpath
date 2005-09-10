@@ -1,5 +1,10 @@
 2005-09-10  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalBorders.java
+	(PaletteBorder): new class.
+	
+2005-09-10  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalIconFactory.java
 	(PaletteCloseIcon): new class.
 
