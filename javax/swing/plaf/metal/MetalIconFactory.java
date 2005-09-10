@@ -43,6 +43,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.io.Serializable;
 
+import javax.swing.AbstractButton;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
@@ -662,7 +663,68 @@ public class MetalIconFactory implements Serializable
     }
         
   }
-   
+
+  /**
+   * An icon used by the {@link MetalInternalFrameUI} class when the frame
+   * is displayed as a palette.
+   * 
+   * @since 1.3
+   */
+  public static class PaletteCloseIcon implements Icon, Serializable 
+  {
+    /**
+     * Returns the width of the icon, in pixels.
+     * 
+     * @return The width of the icon.
+     */
+    public int getIconWidth() 
+    {
+      return 7;
+    }
+    
+    /**
+     * Returns the height of the icon, in pixels.
+     * 
+     * @return The height of the icon.
+     */
+    public int getIconHeight() 
+    {
+      return 7;
+    }
+    
+    /**
+     * Paints the icon using colors from the {@link MetalLookAndFeel}.
+     * 
+     * @param c  the component (ignored).
+     * @param g  the graphics device.
+     * @param x  the x-coordinate for the top-left of the icon.
+     * @param y  the y-coordinate for the top-left of the icon.
+     */
+    public void paintIcon(Component c, Graphics g, int x, int y) 
+    {
+      Color savedColor = g.getColor();
+      AbstractButton button = (AbstractButton) c;
+      if (button.getModel().isPressed())
+        g.setColor(MetalLookAndFeel.getBlack());
+      else
+        g.setColor(MetalLookAndFeel.getControlDarkShadow());
+      g.fillRect(x + 2, y + 2, 3, 3);
+      g.drawLine(x + 1, y, x + 1, y + 2);
+      g.drawLine(x, y + 1, x + 2, y + 1);
+      g.drawLine(x + 5, y, x + 5, y + 2);
+      g.drawLine(x + 4, y + 1, x + 6, y + 1);
+      g.drawLine(x + 1, y + 4, x + 1, y + 6);
+      g.drawLine(x, y + 5, x + 2, y + 5);
+      g.drawLine(x + 5, y + 4, x + 5, y + 6);
+      g.drawLine(x + 4, y + 5, x + 6, y + 5);
+      g.setColor(MetalLookAndFeel.getControlHighlight());
+      g.drawLine(x + 2, y + 6, x + 3, y + 5);
+      g.drawLine(x + 5, y + 3, x + 6, y + 2);
+      g.drawLine(x + 6, y + 6, x + 6, y + 6);
+      g.setColor(savedColor);
+    }        
+  }
+  
   /**
    * An {@link Icon} implementation for {@link JCheckBox}es in the
    * Metal Look &amp; Feel.

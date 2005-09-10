@@ -1,5 +1,10 @@
 2005-09-10  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(PaletteCloseIcon): new class.
+
+2005-09-10  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalInternalFrameUI.java:
 	(instances): removed,
 	(createUI): just return new instance,
