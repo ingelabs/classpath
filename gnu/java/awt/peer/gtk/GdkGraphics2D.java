@@ -111,7 +111,9 @@ public class GdkGraphics2D extends Graphics2D
       initStaticState();
     else
       {
-        System.err.println ("Attempted to instantiate GdkGraphics2D but Graphics2D not enabled.  Try again with -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D");
+        System.err.println ("Attempted to instantiate GdkGraphics2D"
+                            + " but Graphics2D not enabled.  Try again with"
+                            + " -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D");
         System.exit (1);
       }
   }
