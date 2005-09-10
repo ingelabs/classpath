@@ -1,5 +1,13 @@
 2005-09-10  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (fail_g2d): New method.
+	(GdkGraphics2D(GdkGraphics2D)): Call fail_g2d if Graphics2D not
+	specified.
+	(GdkGraphics2D(int,height)): Likewise.
+	(GdkGraphics2D(GtkComponentPeer)): Likewise.
+
+2005-09-10  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* gnu/java/awt/EmbeddedWindow.java (addNotify): Throw
 	AssertionError if field access fails.
 

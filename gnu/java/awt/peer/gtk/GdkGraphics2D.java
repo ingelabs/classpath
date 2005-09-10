@@ -107,15 +107,7 @@ public class GdkGraphics2D extends Graphics2D
     if (Configuration.INIT_LOAD_LIBRARY)
       System.loadLibrary("gtkpeer");
 
-    if (GtkToolkit.useGraphics2D ())
-      initStaticState();
-    else
-      {
-        System.err.println ("Attempted to instantiate GdkGraphics2D"
-                            + " but Graphics2D not enabled.  Try again with"
-                            + " -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D");
-        System.exit (1);
-      }
+    initStaticState();
   }
   
   static native void initStaticState();
@@ -165,8 +157,19 @@ public class GdkGraphics2D extends Graphics2D
     return new GdkGraphics2D(width, height);
   }
 
+  private void fail_g2d ()
+  {
+    System.err.println ("Attempted to instantiate GdkGraphics2D"
+			+ " but Graphics2D not enabled.  Try again with"
+			+ " -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D");
+    System.exit (1);
+  }
+
   GdkGraphics2D(GdkGraphics2D g)
   {
+    if (!GtkToolkit.useGraphics2D ())
+      fail_g2d ();
+
     paint = g.paint;
     stroke = g.stroke;
     setRenderingHints(g.hints);
@@ -208,6 +211,9 @@ public class GdkGraphics2D extends Graphics2D
 
   GdkGraphics2D(int width, int height)
   {
+    if (!GtkToolkit.useGraphics2D ())
+      fail_g2d ();
+
     initState(width, height);
 
     setColor(Color.black);
@@ -223,6 +229,9 @@ public class GdkGraphics2D extends Graphics2D
 
   GdkGraphics2D(GtkComponentPeer component)
   {
+    if (!GtkToolkit.useGraphics2D ())
+      fail_g2d ();
+
     this.component = component;
     
     if (component.isRealized())
