@@ -1,5 +1,14 @@
 2005-09-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	PR awt/23692
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (static): Only call
+	initStaticState if using Graphics2D.  Otherwise print error and
+	exit.
+	(setClip(Shape)): If clip == null and component == null, do
+	nothing.
+
+2005-09-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GdkGraphics.java
 	(GdkGraphics(GtkComponentPeer)): Set font field to a sensible
 	default if component font is null.

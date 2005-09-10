@@ -107,7 +107,13 @@ public class GdkGraphics2D extends Graphics2D
     if (Configuration.INIT_LOAD_LIBRARY)
       System.loadLibrary("gtkpeer");
 
-    initStaticState();
+    if (GtkToolkit.useGraphics2D ())
+      initStaticState();
+    else
+      {
+        System.err.println ("Attempted to instantiate GdkGraphics2D but Graphics2D not enabled.  Try again with -Dgnu.java.awt.peer.gtk.Graphics=Graphics2D");
+        System.exit (1);
+      }
   }
   
   static native void initStaticState();
@@ -992,8 +998,11 @@ public class GdkGraphics2D extends Graphics2D
     if (clip == null)
       {
 	// Reset clipping.
-	Dimension d = component.awtComponent.getSize();
-	setClip(0, 0, d.width, d.height);
+        if (component != null)
+          {
+            Dimension d = component.awtComponent.getSize();
+            setClip(0, 0, d.width, d.height);
+          }
       }
     else
       {
