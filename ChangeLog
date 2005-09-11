@@ -1,5 +1,9 @@
 2005-09-11  Mark Wielaard  <mark@klomp.org>
 
+	* lib/gen-classlist.sh.in: Use sort -r to work around bug #21418.
+
+2005-09-11  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/nio/channels/FileChannelImpl.java (finalize): Check whether
 	fd != -1 before calling close().
 
