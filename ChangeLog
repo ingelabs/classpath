@@ -1,3 +1,8 @@
+2005-09-12  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JComponent.java
+	(putClientProperty): fire property change event.
+
 2005-09-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JScrollPane.java:
