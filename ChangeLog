@@ -1,3 +1,8 @@
+2005-09-12  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/dom/DomDocument.java: Implementation of xml:id W3C
+	Recommendation.
+
 2005-09-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTable.java
