@@ -1,3 +1,10 @@
+2005-09-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/awt/Container.java:
+	(findComponentForMouseEventAt): Reduced visibility to package-private.
+	(getDeepestComponentForMouseEventAt): Reduced visibility to 
+	package-private and removed static modifier.
+
 2005-09-12  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java
