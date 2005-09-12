@@ -1,3 +1,27 @@
+2005-09-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JScrollPane.java:
+	(addNonNull): Changed from adding to container with no constraints to
+	adding to container with the appropriate ScrollPaneConstant as a 
+	constraint.  This avoids IllegalArgumentExceptions in ScrollPaneLayout.
+	(setColumnHeader): Added constraint to addNonNull call.
+	(setCorner): Likewise.
+	(setHorizontalScrollBar): Likewise.
+	(setRowHeader): Likewise.
+	(setVerticalScrollBar): Likewise.
+	(setViewport): Likewise.
+	* javax/swing/JViewport.java:
+	(setViewSize): Don't set the size or fireStateChanged unless the new 
+	size is different from the old size.
+	(setView): Reset isViewSizeSet to false.
+	* javax/swing/ScrollPaneLayout:
+	(addSingletonComponent): Implemented and documented.
+	(addLayoutComponent): Throw an IllegalArgumentException if key is 
+	not one of the appropriate ScrollPaneConstants constants.  Added docs.
+	(setVerticalScrollBarPolicy): Likewise.
+	(setHorizontalScrollBarPolicy): Likewise.
+	(getCorner): Added docs.
+
 2005-09-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JCheckBox.java
