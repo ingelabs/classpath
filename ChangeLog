@@ -1,5 +1,14 @@
 2005-09-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JCheckBox.java
+	(AccessibleJCheckBox): New inner class.
+	(getAccessibleContext): Implemented this method.
+	* javax/swing/JLayeredPane.java
+	(AccessibleJLayeredPane): New inner class.
+	(getAccessibleContext): Implemented this method.
+
+2005-09-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTable.java
 	(getCellRect): Don't include cell gap in cell rectangle
 	calculation. It's already included in TableColumnModel.getWidth().
