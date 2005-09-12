@@ -1,5 +1,12 @@
 2005-09-12  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(isCellEditable): Stopped the timer if it is started and
+	should not be restarted. This is a fix for the 'click-pause-
+	click' method to start editing.
+
+2005-09-12  Lillian Angel  <langel@redhat.com>
+
 	* gnu/java/awt/AWTUtilities.java
 	(convertPoint): Added a check to determine if source and
 	destination components are showing.
