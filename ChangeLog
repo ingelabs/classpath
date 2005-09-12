@@ -1,3 +1,12 @@
+2005-09-12  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(InternalFrameCloseIcon.paintIcon): change colors according to button
+	state,
+	(InternalFrameAltMaximizeIcon.paintIcon): likewise,
+	(InternalFrameMaximizeIcon.paintIcon): likewise,
+	(InternalFrameMinimizeIcon.paintIcon): likewise.
+
 2005-09-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java
