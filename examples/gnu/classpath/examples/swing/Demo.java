@@ -640,6 +640,14 @@ public class Demo
     panel.add(but, BorderLayout.NORTH);
     but.doClick();
     but.doClick();
+    JInternalFrame palette = new JInternalFrame("Palette", true, true, true, 
+        true);
+    palette.putClientProperty("JInternalFrame.isPalette", Boolean.TRUE);
+    desk.add(palette, JDesktopPane.PALETTE_LAYER);
+    JLabel label = new JLabel("This is a floating palette!");
+    palette.getContentPane().add(label);
+    palette.pack();
+    palette.setVisible(true);
     return panel;
   }
 

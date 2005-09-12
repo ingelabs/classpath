@@ -1,5 +1,48 @@
 2005-09-12  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkDesktopWorld): add palette style frame,
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+	(closeIcon): new field,
+	(installListeners): call createPropertyChangeListener() to create the 
+	new listener to allow for overriding,
+	(installDefaults): set the font in the title, read closeIcon from 
+	defaults,
+	(uninstallDefaults): clear closeIcon,
+	(setButtonIcons): set icon for closeButton,
+	(paintComponent): set font for title,
+	* javax/swing/plaf/metal/MetalInternalFrameTitlePane.java
+	(MetalInternalFrameTitlePanePropertyChangeHandler): new support class,
+	(MetalTitlePaneLayout): likewise,
+	(paletteTitleHeight): initialise from defaults elsewhere,
+	(title): new private field,
+	(installDefaults): initialise various defaults,
+	(uninstallDefaults): clear defaults,
+	(addSubComponents): add sub-components used in this look and feel,
+	(createLayout): return new instance of MetalTitlePaneLayout,
+	(paintPalette): renders the title pane using the palette style,
+	(paintComponent): call paintPalette() if the internal frame uses the
+	palette style, otherwise handle painting without calling superclass 
+	anymore,
+	(setPalette): update the icon visibility,
+	(createPropertyChangeListener): return a new change handler,
+	* javax/swing/plaf/metal/MetalInternalFrameUI.java
+	(IS_PALETTE): new static field,
+	(installUI): check IS_PALETTE property,
+	(createNorthPane): removed empty border,
+	(setPalette): update border as appropriate,
+	(paletteListener): new private field,
+	(installListeners): install a listener to handle changes in the 
+	IS_PALETTE property,
+	(uninstallListeners): clear the listener from installListeners(),
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): added defaults for 'DesktopIcon.border',
+	'InternalFrame.paletteBorder', 'InternalFrame.paletteCloseIcon', and
+	'InternalFrame.paletteTitleHeight'.
+	
+
+2005-09-12  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JComponent.java
 	(putClientProperty): fire property change event.
 
