@@ -1,3 +1,10 @@
+2005-09-12  Tom Tromey  <tromey@redhat.com>
+
+	* org/ietf/jgss/GSSException.java (BAD_BINDINGS, BAD_MECH,
+	BAD_NAME, BAD_NAMETYPE, CONTEXT_EXPIRED, CREDENTIALS_EXPIRED,
+	DEFECTIVE_CREDENTIAL, DEFECTIVE_TOKEN, DUPLICATE_TOKEN, FAILURE,
+	NO_CONTEXT, NO_CRED, OLD_TOKEN): Use values from JDK, not RFC.
+
 2005-09-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* lib/Makefile.am (JAVAC): Specify -source 1.4 to ecj.
