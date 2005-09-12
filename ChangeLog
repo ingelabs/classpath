@@ -1,3 +1,13 @@
+2005-09-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalBorders.java
+	(TableHeaderBorder): New inner class.
+	(TextFieldBorder.paintBorder): Only paint the active border
+	if the text field is enabled _and_ editable.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Added default to use the new
+	TableHeaderBorder for table headers.
+
 2005-09-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/Container.java:

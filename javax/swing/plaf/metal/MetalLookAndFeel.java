@@ -1047,6 +1047,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "Table.gridColor", getControlShadow(),
 
       "TableHeader.background", getControl(),
+      "TableHeader.cellBorder", new MetalBorders.TableHeaderBorder(),
       "TableHeader.foreground", getControlTextColor(),
 
       "TextArea.background", getWindowBackground(),

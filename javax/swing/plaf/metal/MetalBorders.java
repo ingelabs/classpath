@@ -55,6 +55,7 @@ import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicBorders;
+import javax.swing.text.JTextComponent;
 
 
 /**
@@ -435,8 +436,9 @@ public class MetalBorders
      */
     public void paintBorder(Component c, Graphics g, int x, int y, int w, 
         int h)
-    {        
-      if (c.isEnabled())
+    {
+      JTextComponent tc = (JTextComponent) c;
+      if (tc.isEnabled() && tc.isEditable())
         super.paintBorder(c, g, x, y, w, h);
       else
         {
@@ -919,6 +921,64 @@ public class MetalBorders
       g.drawLine(x + 1, y + 1, x + w - 2, y + 1);
     }
     
+  }
+
+  /**
+   * A border for table header cells.
+   *
+   * @since 1.3
+   */
+  public static class TableHeaderBorder extends AbstractBorder
+  {
+    /**
+     * The insets of this border.
+     */
+    // TODO: According to tests that I have done, this is really the border
+    // that should be returned by getBorderInsets(). However, the name
+    // is very distracting. Is there any deeper meaning in it?
+    protected Insets editorBorderInsets;
+
+    /**
+     * Creates a new instance of <code>TableHeaderBorder</code>.
+     */
+    public TableHeaderBorder()
+    {
+      editorBorderInsets = new Insets(1, 1, 1, 1);
+    }
+
+    /**
+     * Return the insets of this border.
+     *
+     * @return the insets of this border
+     */
+    public Insets getBorderInsets(Component c)
+    {
+      return editorBorderInsets;
+    }
+
+    /**
+     * Paints the border.
+     *
+     * @param c the component for which to paint the border
+     * @param g the graphics context to use
+     * @param x the x cooridinate of the border rectangle
+     * @param y the y cooridinate of the border rectangle
+     * @param w the width of the border rectangle
+     * @param h the height of the border rectangle
+     */
+    public void paintBorder(Component c, Graphics g, int x, int y, int w, int h)
+    {
+      Color dark = MetalLookAndFeel.getControlDarkShadow();
+      Color light = MetalLookAndFeel.getWhite();
+      Color old = g.getColor();
+      g.setColor(light);
+      g.drawLine(x, y, x + w - 2, y);
+      g.drawLine(x, y, x, y + h - 2);
+      g.setColor(dark);
+      g.drawLine(x + w - 1, y, x + w - 1, y + h - 1);
+      g.drawLine(x + 1, y + h - 1, x + w - 1, y + h - 1);
+      g.setColor(old);
+    }
   }
 
   /**
