@@ -1,3 +1,13 @@
+2005-09-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(getCellRect): Don't include cell gap in cell rectangle
+	calculation. It's already included in TableColumnModel.getWidth().
+	(createDefaultColumnsFromModel): Initialize table header values.
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(paint): Don't include cell gap in cell rectangle
+	calculation. It's already included in TableColumnModel.getWidth().
+
 2005-09-12  Tom Tromey  <tromey@redhat.com>
 
 	* org/ietf/jgss/GSSException.java (BAD_BINDINGS, BAD_MECH,

@@ -1017,10 +1017,7 @@ public class JTable extends JComponent
     int y = (height + y_gap) * row;
 
     for (int i = 0; i < column; ++i)
-      {        
-        x += columnModel.getColumn(i).getWidth();
-        x += x_gap;
-      }
+      x += columnModel.getColumn(i).getWidth();
 
     if (includeSpacing)
       return new Rectangle(x, y, width, height);
@@ -2303,6 +2300,7 @@ public class JTable extends JComponent
     {
       TableColumn column = new TableColumn(c);
       column.setIdentifier(dataModel.getColumnName(c));
+      column.setHeaderValue(dataModel.getColumnName(c));
       columnModel.addColumn(column);
       column.addPropertyChangeListener(tableColumnPropertyChangeHandler);
     }
