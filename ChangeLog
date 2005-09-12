@@ -1,3 +1,7 @@
+2005-09-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* lib/Makefile.am (JAVAC): Specify -source 1.4 to ecj.
+
 2005-09-12  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/tree/DefaultTreeCellEditor.java
