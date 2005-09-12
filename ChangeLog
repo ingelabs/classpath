@@ -1,3 +1,35 @@
+2005-09-11  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR swing/22922
+	* java/awt/event/InputEvent.java (modifiersEx): New field.
+	(InputEvent): Assume modifiers parameter contains both new- and
+	old-style masks.
+	(isShiftDown): Check modifiers for old-style shift mask and
+	modifiersEx for new-style shift mask.
+	(isControlDown): Likewise for control mask.
+	(isMetaDown): Likewise for meta mask.
+	(isAltDown): Likewise for alt mask.
+	(isAltGraphDown): Likewise for alt-graph mask.
+	(getModifiers): Return value of modifiers field.
+	(getModifiersEx): Return value of modifiersEx field.
+	* java/awt/event/MouseEvent.java
+	(MouseEvent(Component,int,long,int,int,int,int,boolean,int)):
+	Clear button new-style mask for mouse released events.
+	(paramString): Remove old-style modifier handling.
+	(readObject): Extend modifiers and assign to modifiersEx.
+	* java/awt/event/KeyEvent.java (readObject): Extend modifiers and
+	assign to modifiersEx.
+	* native/jni/gtk-peer/gtkpeer.h: Define macros for new-style mouse
+	masks.  Define macros for old-style key masks.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c:
+	Remove macros for old-style key masks.
+	(button_to_awt_mods): Always return bitwise OR of new- and
+	old-style modifiers.
+	(cp_gtk_state_to_awt_mods): Likewise.
+	(state_to_awt_mods_with_button_states): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(keyevent_state_to_awt_mods): Likewise.
+
 2005-09-11  Mark Wielaard  <mark@klomp.org>
 
 	* m4/acinclude.m4 (CLASSPATH_CHECK_GCJ): Check for gcj 4 with
