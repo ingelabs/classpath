@@ -69,6 +69,9 @@ public class MetalBorders
   /** The shared instance for getButtonBorder(). */
   private static Border buttonBorder;
 
+  /** The shared instance for getDesktopIconBorder(). */
+  private static Border desktopIconBorder;
+
   /** The shared instance for getRolloverButtonBorder(). */
   private static Border toolbarButtonBorder;
 
@@ -188,6 +191,70 @@ public class MetalBorders
       newInsets.top = borderInsets.top;
       return newInsets;
     }
+  }
+
+  /**
+   * A border used when painting {@link JInternalFrame} instances.
+   */
+  static class DesktopIconBorder extends AbstractBorder
+    implements UIResource
+  {
+    /**
+     * Creates a new border instance.
+     */
+    public DesktopIconBorder()
+    {
+    }
+    
+    /**
+     * Returns the border insets.
+     * 
+     * @param c  the component (ignored).
+     * 
+     * @return The border insets.
+     */
+    public Insets getBorderInsets(Component c)
+    {
+      return getBorderInsets(c, null);
+    }
+    
+    /**
+     * Returns the border insets.
+     * 
+     * @param c  the component (ignored).
+     * @return The border insets.
+     */
+    public Insets getBorderInsets(Component c, Insets newInsets)
+    {
+      if (newInsets == null)
+        newInsets = new Insets(3, 3, 2, 3);
+      else
+        {
+          newInsets.top = 3;
+          newInsets.left = 3;
+          newInsets.bottom = 2;
+          newInsets.right = 3;
+        }
+      return newInsets;  
+    }
+    
+    /**
+     * Paints the border for the specified component.
+     * 
+     * @param c  the component.
+     * @param g  the graphics device.
+     * @param x  the x-coordinate.
+     * @param y  the y-coordinate.
+     * @param w  the width.
+     * @param h  the height.
+     */
+    public void paintBorder(Component c, Graphics g, int x, int y, int w, 
+        int h)
+    {
+      g.setColor(MetalLookAndFeel.getControlDarkShadow());      
+      g.drawRect(x, y, w - 1, h - 1); 
+    }
+    
   }
 
   /**
@@ -468,7 +535,10 @@ public class MetalBorders
       g.drawLine(x + w - 3, y + 14, x + w - 3, y + h - 15);
       
       // draw the line highlights
-      g.setColor(MetalLookAndFeel.getControl());
+      if (f.isSelected())
+        g.setColor(MetalLookAndFeel.getPrimaryControlShadow());
+      else 
+        g.setColor(MetalLookAndFeel.getControlShadow());
       g.drawLine(x + 15, y + 3, x + w - 14, y + 3);
       g.drawLine(x + 15, y + h - 2, x + w - 14, y + h - 2);
       g.drawLine(x + 3, y + 15, x + 3, y + h - 14);
@@ -866,6 +936,21 @@ public class MetalBorders
             (outer, inner);
       }
     return buttonBorder;
+  }
+  
+  /**
+   * Returns a border instance that is used with a {@link JInternalFrame} when
+   * it is in the iconified state.
+   * 
+   * @return A border.
+   * 
+   * @since 1.3
+   */
+  public static Border getDesktopIconBorder()
+  {
+    if (desktopIconBorder == null)
+      desktopIconBorder = new DesktopIconBorder();
+    return desktopIconBorder;      
   }
 
   /**

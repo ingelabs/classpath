@@ -1,3 +1,12 @@
+2005-09-12  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalBorders.java
+	(desktopIconBorder): new private field,
+	(DesktopIconBorder): new support class,
+	(getDesktopIconBorder): implemented,
+	(InternalFrameBorder.paintBorder): change color of line highlights if
+	the internal frame is selected.
+	
 2005-09-12  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/dom/DomDocument.java: Implementation of xml:id W3C
