@@ -1,3 +1,29 @@
+2005-09-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(TableColumnPropertyChangeHandler): New inner class. Handles
+	changes of column widths.
+	(JTable(TableModel, TableColumnModel, ListSelectionModel)):
+	Check if column model == null and if so, create a default model.
+	(initializeLocalVars): Changed to use createDefaultColumnsFromModel
+	instead of createColumnsFromModel.
+	(addColumn): Add property change handler to new column.
+	(createColumnsFromModel): Removed redundant private method.
+	Use the public createDefaultColumnsFromModel instead.
+	(tableChanged): Use createDefaultColumnsFromModel instead of
+	createColumnsFromModel.
+	(setModel): Use createDefaultColumnsFromModel instead of
+	createColumnsFromModel.
+	(doLayout): When handling AUTO_RESIZE_OFF, then adjust the
+	size of the resizing column to it's (new) preferred size.
+	(createDefaultColumnsFromModel): Added assertion to make sure
+	that the column model is not null. Add property change handler
+	to new columns.
+	* javax/swing/table/TableColumn.java
+	(setWidth): Fire property change with name 'width' instead
+	of using the (obsolete) constant field COLUMN_WIDTH_PROPERTY.
+	(setPreferredWidth): Make this property a bound property.
+
 2005-09-11  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	PR swing/22922
