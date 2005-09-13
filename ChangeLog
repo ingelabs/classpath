@@ -1,3 +1,15 @@
+2005-09-12  Casey Marshall  <csm@gnu.org>
+
+	PR 23819
+	* javax/security/auth/Subject.java (SecureSet.<init>): rename
+	input paremeter to 'inElements.'
+	(SecureSet.contains): return 'elements.contains,' not
+	'elements.remove.'
+
+	PR 23822
+	* javax/security/auth/SubjectDomainCombiner.java
+	(combine): don't access 'subject' if null.
+
 2005-09-12  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java
