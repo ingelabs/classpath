@@ -1,3 +1,23 @@
+2005-09-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTree.java: Reformatted file.
+	* javax/swing/ListCellRenderer.java: Likewise.
+	* javax/swing/ListSelectionModel.java: Likewise.
+	* javax/swing/MenuElement.java: Likewise.
+	* javax/swing/OverlayLayout.java: Likewise.
+	* javax/swing/ProgressMonitor.java: Likewise.
+	* javax/swing/ProgressMonitorInputStream.java: Likewise.
+	* javax/swing/Renderer.java: Likewise.
+	* javax/swing/RepaintManager.java: Likewise.
+	* javax/swing/RootPaneContainer.java: Likewise.
+	* javax/swing/Scrollable.java: Likewise.
+	* javax/swing/SingleSelectionModel.java: Likewise.
+	* javax/swing/SizeSequence.java: Likewise.
+	* javax/swing/SpinnerListModel.java: Likewise.
+	* javax/swing/UnsupportedLookAndFeelException.java: Likewise.
+	* javax/swing/ViewportLayout.java: Likewise.
+	* javax/swing/WindowConstants.java: Likewise.
+
 2005-09-12  Tom Tromey  <tromey@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Enable javadoc warnings.
