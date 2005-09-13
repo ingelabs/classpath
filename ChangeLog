@@ -1,3 +1,8 @@
+2005-09-12  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/ThreadLocal.java: Organized imports.
+	* java/lang/Double.java: Organized imports.
+
 2005-09-12  Casey Marshall  <csm@gnu.org>
 
 	PR 23819
