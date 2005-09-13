@@ -807,7 +807,7 @@ public class ObjectInputStream extends InputStream
 
   /**
    * Reconstruct class hierarchy the same way
-   * {@link java.io.ObjectStreamClass.getObjectStreamClasses(java.lang.Class)} does
+   * {@link java.io.ObjectStreamClass#getObjectStreamClasses(Class)} does
    * but using lookupClass instead of ObjectStreamClass.lookup. This
    * dup is necessary localize the lookup table. Hopefully some future
    * rewritings will be able to prevent this.

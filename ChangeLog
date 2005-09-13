@@ -1,3 +1,45 @@
+2005-09-13  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/regex/Matcher.java (matches): Javadoc fix.
+	(start): Likewise.
+	* java/lang/reflect/Proxy.java (equals): Javadoc fix.
+	* java/io/ObjectInputStream.java (inputGetObjectStreamClasses): Javadoc
+	fix.
+	* java/util/zip/ZipFile.java (getEntry): Javadoc fix.
+	* java/util/logging/XMLFormatter.java (getHead): Javadoc fix.
+	* java/util/logging/LogManager.java (getLevelProperty): Javadoc fix.
+	* java/util/logging/Handler.java (getEncoding): Javadoc fix.
+	(setFilter): Likewise.
+	* java/util/logging/FileHandler.java: Organized imports.
+	* java/util/jar/Manifest.java (Manifest): Javadoc fix.
+	* java/util/TreeMap.java (putFromObjStream): Javadoc fix.
+	* java/util/SimpleTimeZone.java (isBefore): Javadoc fix.
+	* java/util/ResourceBundle.java (tryBundle): Javadoc fix.
+	* java/util/Random.java (seed): Javadoc fix.
+	* java/util/Collections.java (SynchronizedSortedSet): Javadoc fix.
+	(SingletonMap): Likewise.
+	(addAll): Javadoc fix.
+	* java/lang/reflect/UndeclaredThrowableException.java: Javadoc fix.
+	* java/lang/reflect/Member.java (DECLARED, PUBLIC): Javadoc fix.
+	* java/lang/ref/WeakReference.java: Javadoc fix.
+	* java/lang/ref/Reference.java: Javadoc fix.
+	(Reference): Likewise.
+	* java/lang/Thread.java (setContextClassLoader): Javadoc fix.
+	(getContextClassLoader): Likewise.
+	(stop): Likewise.
+	* java/lang/System.java (runFinalizersOnExit): Javadoc fix.
+	* java/lang/String.java (upperExpand): Javadoc fix.
+	* java/lang/StrictMath.java: Javadoc fixes.
+	* java/lang/SecurityManager.java: Added imports for javadoc.
+	(currentClassLoader): Javadoc fix.
+	(classLoaderDepth): Likewise.
+	(currentLoadedClass): Likewise.
+	(checkRead): Likewise.
+	(checkWrite): Likewise.
+	(checkAccess): Likewise.
+	* java/lang/RuntimePermission.java: Added import for javadoc.
+	* java/lang/Readable.java (read): Added import for javadoc.
+
 2005-09-13  Casey Marshall  <csm@gnu.org>
 
 	* gnu/classpath/ByteArray.java: new file.

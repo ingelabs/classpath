@@ -98,7 +98,7 @@ public final class String implements Serializable, Comparable, CharSequence
 
   /**
    * Stores unicode multi-character uppercase expansion table.
-   * @see #toUpperCase(char)
+   * @see #toUpperCase(Locale)
    * @see CharData#UPPER_EXPAND
    */
   private static final char[] upperExpand

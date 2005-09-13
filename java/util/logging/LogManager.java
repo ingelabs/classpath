@@ -682,7 +682,7 @@ public class LogManager
    *
    * @param defaultValue the value that will be returned if the
    *        property is not defined, or if
-   *        {@link Level.parse(java.lang.String)} does not like
+   *        {@link Level#parse(java.lang.String)} does not like
    *        the property value.
    */
   static Level getLevelProperty(String propertyName, Level defaultValue)
