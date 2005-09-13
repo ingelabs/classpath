@@ -1,3 +1,8 @@
+2005-09-13  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/jawt/jawt.c (_Jv_AWTLock): Do nothing.
+	(_Jv_AWTUnlock): Likewise.
+
 2005-09-13  David Daney  <ddaney@avtrex.com>
 
 	* java/io/ByteArrayOutputStream.java: Reformated copyright notice.
