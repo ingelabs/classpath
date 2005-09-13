@@ -37,16 +37,31 @@ exception statement from your version. */
 
 package javax.swing;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.FocusListener;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Vector;
 
 import javax.accessibility.Accessible;
+import javax.accessibility.AccessibleAction;
+import javax.accessibility.AccessibleComponent;
 import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleSelection;
+import javax.accessibility.AccessibleStateSet;
+import javax.accessibility.AccessibleText;
+import javax.accessibility.AccessibleValue;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeModelEvent;
@@ -73,6 +88,656 @@ public class JTree
 			implements Scrollable, Accessible
 {
 
+  /**
+   * This class implements accessibility support for the JTree class. It 
+   * provides an implementation of the Java Accessibility API appropriate 
+   * to tree user-interface elements.
+   */
+  protected class AccessibleJTree extends JComponent.AccessibleJComponent
+      implements AccessibleSelection, TreeSelectionListener, TreeModelListener,
+      TreeExpansionListener
+  {
+    
+    /**
+     * This class implements accessibility support for the JTree child. It provides 
+     * an implementation of the Java Accessibility API appropriate to tree nodes.
+     */
+    protected class AccessibleJTreeNode extends AccessibleContext 
+       implements Accessible, AccessibleComponent, AccessibleSelection, 
+       AccessibleAction
+    {
+      
+      private JTree tree;
+      private TreePath tp;
+      private Accessible acc;
+      
+      /**
+       * Constructs an AccessibleJTreeNode
+       */
+      public AccessibleJTreeNode(JTree t, TreePath p, Accessible ap)
+      {
+        tree = t;
+        tp = p;
+        acc = ap;
+      }      
+      
+      /**
+       * Adds the specified selected item in the object to the object's
+       * selection.
+       */
+      public void addAccessibleSelection(int i)
+      {
+      }
+      
+      /**
+       * Adds the specified focus listener to receive focus events 
+       * from this component.
+       */
+      public void addFocusListener(FocusListener l)
+      {
+        AccessibleJTree.this.addFocusListener(l);
+      }
+      
+      /**
+       * Add a PropertyChangeListener to the listener list.
+       */
+      public void addPropertyChangeListener(PropertyChangeListener l)
+      {
+        AccessibleJTree.this.addPropertyChangeListener(l);
+      }
+      
+      /**
+       * Clears the selection in the object, so that nothing in the 
+       * object is selected.
+       */
+      public void clearAccessibleSelection()
+      {
+      }
+      
+      /**
+       * Checks whether the specified point is within this object's 
+       * bounds, where the point's x and y coordinates are defined to be 
+       * relative to the coordinate system of the object. 
+       */
+      public boolean contains(Point p)
+      {
+        return false;
+      }
+      
+      /**
+       * Perform the specified Action on the tree node.
+       */
+      public boolean doAccessibleAction(int i)
+      {
+        return false;
+      }
+      
+      /**
+       * Get the AccessibleAction associated with this object.
+       */
+      public AccessibleAction getAccessibleAction()
+      {
+        return super.getAccessibleAction();
+      }
+      
+      /**
+       * Returns the number of accessible actions available in this tree node.
+       */
+      public int getAccessibleActionCount()
+      {
+        return 0;
+      }
+      
+      /**
+       * Return a description of the specified action of the tree node.
+       */
+      public String getAccessibleActionDescription(int i)
+      {
+        return null;
+      }
+      
+      /**
+       * Returns the Accessible child, if one exists, contained at the 
+       * local coordinate Point.
+       */
+      public Accessible getAccessibleAt(Point p)
+      {
+        return null;
+      }
+      
+      /**
+       * Return the specified Accessible child of the object.
+       */
+      public Accessible getAccessibleChild(int i)
+      {
+        return AccessibleJTree.this.getAccessibleChild(i);
+      }
+      
+      /**
+       * Returns the number of accessible children in the object.
+       */
+      public int getAccessibleChildrenCount()
+      {
+        return AccessibleJTree.this.getAccessibleChildrenCount();
+      }
+      
+      /**
+       * Get the AccessibleComponent associated with this object.
+       */
+      public AccessibleComponent getAccessibleComponent()
+      {
+        return super.getAccessibleComponent();
+      }
+      
+      /**
+       * Get the AccessibleContext associated with this tree node.
+       */
+      public AccessibleContext getAccessibleContext()
+      {
+        return acc.getAccessibleContext();
+      }
+      
+      /**
+       * Get the accessible description of this object.
+       */
+      public String getAccessibleDescription()
+      {
+        return AccessibleJTree.this.getAccessibleDescription();
+      }
+      
+      /**
+       * Get the index of this object in its accessible parent.
+       */
+      public int getAccessibleIndexInParent()
+      {
+        return 0;
+      }
+      
+      /**
+       * Get the accessible name of this object.
+       */
+      public String getAccessibleName()
+      {
+        return AccessibleJTree.this.getAccessibleName();
+      }
+      
+      /**
+       * Get the Accessible parent of this object.
+       */
+      public Accessible getAccessibleParent()
+      {
+        return super.getAccessibleParent();
+      }
+      
+      /**
+       * Get the role of this object.
+       */
+      public AccessibleRole getAccessibleRole()
+      {
+        return AccessibleJTree.this.getAccessibleRole();
+      }
+      
+      /**
+       * Get the AccessibleSelection associated with this object if one exists.
+       */
+      public AccessibleSelection getAccessibleSelection()
+      {
+        return super.getAccessibleSelection();
+      }
+      
+      /**
+       * Returns an Accessible representing the specified selected item 
+       * in the object.
+       */
+      public Accessible getAccessibleSelection(int i)
+      {
+        return null;
+      }
+      
+      /**
+       * Returns the number of items currently selected.
+       */
+      public int getAccessibleSelectionCount()
+      {
+        return 0;
+      }
+      
+      /**
+       * Get the state set of this object.
+       */
+      public AccessibleStateSet getAccessibleStateSet()
+      {
+        return AccessibleJTree.this.getAccessibleStateSet();
+      }
+      
+      /**
+       * Get the AccessibleText associated with this object if one exists.
+       */
+      public AccessibleText getAccessibleText()
+      {
+        return super.getAccessibleText();
+      }
+      
+      /**
+       * Get the AccessibleValue associated with this object if one exists.
+       */
+      public AccessibleValue getAccessibleValue()
+      {
+        return super.getAccessibleValue();
+      }
+      
+      /**
+       * Get the background color of this object.
+       */
+      public Color getBackground()
+      {
+        return null;
+      }
+      
+      /**
+       * Gets the bounds of this object in the form of a Rectangle object.
+       */
+      public Rectangle getBounds()
+      {
+        return null;
+      }
+      
+      /**
+       * Gets the Cursor of this object.
+       */
+      public Cursor getCursor()
+      {
+        return null;
+      }
+      
+      /**
+       * Gets the Font of this object.
+       */
+      public Font getFont()
+      {
+        return null;
+      }
+      
+      /**
+       * Gets the FontMetrics of this object.
+       */
+      public FontMetrics getFontMetrics(Font f)
+      {
+        return null;
+      }
+      
+      /**
+       * Get the foreground color of this object.
+       */
+      public Color getForeground()
+      {
+        return null;
+      }
+      
+      /**
+       * Gets the locale of the component.
+       */
+      public Locale getLocale()
+      {
+        return null;
+      }
+      
+      /**
+       * Gets the location of the object relative to the 
+       * parent in the form of a point specifying the object's 
+       * top-left corner in the screen's coordinate space. 
+       */
+      public Point getLocation()
+      {
+        return null;
+      }
+      
+      /**
+       * Returns the location in the tree.
+       */
+      protected  Point getLocationInJTree()
+      {
+        return null;
+      }
+      
+      /**
+       * Returns the location of the object on the screen.
+       */
+      public Point getLocationOnScreen()
+      {
+        return null;
+      }
+      
+      /**
+       * Returns the size of this object in the form of a Dimension object.
+       */
+      public Dimension getSize()
+      {
+        return null;
+      }
+      
+      /**
+       * Returns true if the current child of this object is selected.
+       */
+      public boolean isAccessibleChildSelected(int i)
+      {
+        return false;
+      }
+      
+      /**
+       * Determines if the object is enabled.
+       */
+      public boolean isEnabled()
+      {
+        return false;
+      }
+      
+      /**
+       * Returns whether this object can accept focus or not.
+       */
+      public boolean isFocusTraversable()
+      {
+        return false;
+      }
+      
+      /**
+       * Determines if the object is showing.
+       */
+      public boolean isShowing()
+      {
+        return false;
+      }
+      
+      /**
+       * Determines if the object is visible.
+       */
+      public boolean isVisible()
+      {
+        return false;
+      }
+      
+      /**
+       * Removes the specified selected item in the object from the
+       * object's selection.
+       */
+      public void removeAccessibleSelection(int i)
+      {
+      }
+      
+      /**
+       * Removes the specified focus listener so it no longer receives focus 
+       * events from this component.
+       */
+      public void removeFocusListener(FocusListener l)
+      {
+        AccessibleJTree.this.removeFocusListener(l);
+      }
+      
+      /**
+       * Remove a PropertyChangeListener from the listener list.
+       */
+      public void removePropertyChangeListener(PropertyChangeListener l)
+      {
+        AccessibleJTree.this.removePropertyChangeListener(l);
+      }
+      
+      /**
+       * Requests focus for this object.
+       */
+      public void requestFocus()
+      {
+      }
+      
+      /**
+       * Causes every selected item in the object to be selected if the object 
+       * supports multiple selections.
+       */
+      public void selectAllAccessibleSelection()
+      {
+      }
+      
+      /**
+       * Set the accessible description of this object.
+       */
+      public void setAccessibleDescription(String s)
+      {
+      }
+      
+      /**
+       * Set the localized accessible name of this object.
+       */
+      public void setAccessibleName(String s)
+      {
+      }
+      
+      /**
+       * Set the background color of this object.
+       */
+      public void setBackground(Color c)
+      {
+      }
+      
+      /**
+       * Sets the bounds of this object in the form of a Rectangle object.
+       */
+      public void setBounds(Rectangle r)
+      {
+      }
+      
+      /**
+       * Sets the Cursor of this object.
+       */
+      public void setCursor(Cursor c)
+      {
+      }
+      
+      /**
+       * Sets the enabled state of the object.
+       */
+      public void setEnabled(boolean b)
+      {
+      }
+      
+      /**
+       * Sets the Font of this object.
+       */
+      public void setFont(Font f)
+      {
+      }
+      
+      /**
+       * Sets the foreground color of this object.
+       */
+      public void setForeground(Color c)
+      {
+      }
+      
+      /**
+       * Sets the location of the object relative to the parent.
+       */
+      public void setLocation(Point p)
+      {
+      }
+      
+      /**
+       * Resizes this object so that it has width and height.
+       */
+      public void setSize(Dimension d)
+      {
+      }
+      
+      /**
+       * Sets the visible state of the object.
+       */
+      public void setVisible(boolean b)
+      {
+      }
+    }
+    
+    public AccessibleJTree()
+    {
+    }
+    
+    /**
+     * Adds the specified selected item in the object to the object's selection.
+     */
+    public void addAccessibleSelection(int i)
+    {
+    }
+    
+    /**
+     * Clears the selection in the object, so that nothing in the object is selected.
+     */
+    public void clearAccessibleSelection()
+    {
+    }
+    
+    /**
+     * Fire a visible data property change notification.
+     */
+    public void fireVisibleDataPropertyChange()
+    {
+    }
+    
+    /**
+     * Returns the Accessible child, if one exists, contained at the local 
+     * coordinate Point.
+     */
+    public Accessible getAccessibleAt(Point p)
+    {
+      return null;
+    }
+    
+    /**
+     * Return the nth Accessible child of the object.
+     */
+    public Accessible getAccessibleChild(int i)
+    {
+      return super.getAccessibleChild(i);
+    }
+    
+    /**
+     * Returns the number of top-level children nodes of this JTree.
+     */
+    public int getAccessibleChildrenCount()
+    {
+      return super.getAccessibleChildrenCount();
+    }
+    
+    /**
+     * Get the index of this object in its accessible parent.
+     */
+    public int getAccessibleIndexInParent()
+    {
+      return 0;
+    }
+    
+    /**
+     * Get the role of this object.
+     */
+    public AccessibleRole getAccessibleRole()
+    {
+      return AccessibleRole.TREE;
+    }
+    
+    /**
+     * Get the AccessibleSelection associated with this object.
+     */
+    public AccessibleSelection getAccessibleSelection()
+    {
+      return null;
+    }
+    
+    /**
+     * Returns an Accessible representing the specified selected item in the object.
+     */
+    public Accessible getAccessibleSelection(int i)
+    {
+      return null;
+    }
+    
+    /**
+     * Returns the number of items currently selected.
+     */
+    public int getAccessibleSelectionCount()
+    {
+      return 0;
+    }
+    
+    /**
+     * Returns true if the current child of this object is selected.
+     */
+    public boolean isAccessibleChildSelected(int i)
+    {
+      return false;
+    }
+    
+    /**
+     * Removes the specified selected item in the object from the object's
+     * selection.
+     */
+    public void removeAccessibleSelection(int i)
+    {
+    }
+    
+    /**
+     * Causes every selected item in the object to be selected if the object
+     * supports multiple selections.
+     */
+    public void selectAllAccessibleSelection()
+    {
+    }
+    
+    /**
+     * Tree Collapsed notification
+     */
+    public void treeCollapsed(TreeExpansionEvent e)
+    {
+    }
+   
+    /**
+     * Tree Model Expansion notification.
+     */
+    public void treeExpanded(TreeExpansionEvent e)
+    {
+    }
+    
+    /**
+     * Tree Model Node change notification.
+     */
+    public void treeNodesChanged(TreeModelEvent e)
+    {
+    }
+    
+    /**
+     * Tree Model Node change notification.
+     */
+    public void treeNodesInserted(TreeModelEvent e)
+    {
+    }
+    
+    /**
+     * Tree Model Node change notification.
+     */
+    public void treeNodesRemoved(TreeModelEvent e)
+    {
+    }
+    
+    /**
+     * Tree Model structure change change notification.
+     */
+    public void treeStructureChanged(TreeModelEvent e)
+    {
+    }
+    
+    /**
+     * Tree Selection Listener value change method.
+     */
+    public void valueChanged(TreeSelectionEvent e)
+    {
+    }
+  }
+  
   public static class DynamicUtilTreeNode extends DefaultMutableTreeNode
   {
     protected Object childValue;
@@ -1844,5 +2509,39 @@ public class JTree
           }
       }
     return removedSomething;
+  }
+  
+  /**
+   * Removes any descendants of the TreePaths in toRemove that have been 
+   * expanded.
+   * 
+   * @param toRemove - Enumeration of TreePaths that need to be removed from
+   * cache of toggled tree paths.
+   */
+  protected void removeDescendantToggledPaths(Enumeration toRemove)
+  {
+    while (toRemove.hasMoreElements())
+      {
+        TreePath current = (TreePath) toRemove.nextElement();
+        Enumeration descendants = getDescendantToggledPaths(current);
+        
+        while (descendants.hasMoreElements())
+          {
+            TreePath currentDes = (TreePath) descendants.nextElement();
+            if (isExpanded(currentDes))
+                nodeStates.remove(currentDes);
+          }
+      }
+  }
+  
+  /**
+   * Sent when the tree has changed enough that we need to resize the bounds, 
+   * but not enough that we need to remove the expanded node set (e.g nodes
+   * were expanded or collapsed, or nodes were inserted into the tree). You 
+   * should never have to invoke this, the UI will invoke this as it needs to. 
+   */
+  public void treeDidChange()
+  {
+    repaint();
   }
 }

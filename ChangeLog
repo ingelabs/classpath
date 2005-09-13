@@ -1,3 +1,85 @@
+2005-09-13  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTree.java
+	(AccessibleJTree): Added new Inner class.
+	(AccessibleJTree.addAccessibleSelection): New method.
+	(AccessibleJTree.clearAccessibleSelection): New method.
+	(AccessibleJTree.fireVisibleDataPropertyChange): New method.
+	(AccessibleJTree.getAccessibleAt): New method.
+	(AccessibleJTree.getAccessibleChild): New method.
+	(AccessibleJTree.getAccessibleChildrenCount): New method.
+	(AccessibleJTree.getAccessibleIndexInParent): New method.
+	(AccessibleJTree.getAccessibleRole): New method.
+	(AccessibleJTree.getAccessibleSelection): New method.
+	(AccessibleJTree.getAccessibleSelection): New method.
+	(AccessibleJTree.getAccessibleSelectionCount): New method.
+	(AccessibleJTree.isAccessibleChildSelected): New method.
+	(AccessibleJTree.removeAccessibleSelection): New method.
+	(AccessibleJTree.selectAllAccessibleSelection): New method.
+	(AccessibleJTree.treeCollapsed): New method.
+	(AccessibleJTree.treeExpanded): New method.
+	(AccessibleJTree.treeNodesChanged): New method.
+	(AccessibleJTree.treeNodesInserted): New method.
+	(AccessibleJTree.treeNodesRemoved): New method.
+	(AccessibleJTree.treeStructureChanged): New method.
+	(AccessibleJTree.valueChanged): New method.
+	(AccessibleJTreeNode): Likewise.
+	(AccessibleJTreeNode.addAccessibleSelection): New method.
+	(AccessibleJTreeNode.addFocusListener): New method.
+	(AccessibleJTreeNode.addPropertyChangeListener): New method.
+	(AccessibleJTreeNode.clearAccessibleSelection): New method.
+	(AccessibleJTreeNode.contains): New method.
+	(AccessibleJTreeNode.doAccessibleAction): New method.
+	(AccessibleJTreeNode.getAccessibleAction): New method.
+	(AccessibleJTreeNode.getAccessibleActionCount): New method.
+	(AccessibleJTreeNode.getAccessibleActionDescription): New method.
+	(AccessibleJTreeNode.getAccessibleAt): New method.
+	(AccessibleJTreeNode.getAccessibleChild): New method.
+	(AccessibleJTreeNode.getAccessibleChildrenCount): New method.
+	(AccessibleJTreeNode.getAccessibleComponent): New method.
+	(AccessibleJTreeNode.getAccessibleContext): New method.
+	(AccessibleJTreeNode.getAccessibleDescription): New method.
+	(AccessibleJTreeNode.getAccessibleIndexInParent): New method.
+	(AccessibleJTreeNode.getAccessibleName): New method.
+	(AccessibleJTreeNode.getAccessibleParent): New method.
+	(AccessibleJTreeNode.getAccessibleRole): New method.
+	(AccessibleJTreeNode.getAccessibleSelection): New method.
+	(AccessibleJTreeNode.getAccessibleSelectionCount): New method.
+	(AccessibleJTreeNode.getAccessibleStateSet): New method.
+	(AccessibleJTreeNode.getAccessibleText): New method.
+	(AccessibleJTreeNode.getAccessibleValue): New method.
+	(AccessibleJTreeNode.getBackground): New method.
+	(AccessibleJTreeNode.getBounds): New method.
+	(AccessibleJTreeNode.getCursor): New method.
+	(AccessibleJTreeNode.getFont): New method.
+	(AccessibleJTreeNode.getFontMetrics): New method.
+	(AccessibleJTreeNode.getForeground): New method.
+	(AccessibleJTreeNode.getLocale): New method.
+	(AccessibleJTreeNode.getLocation): New method.
+	(AccessibleJTreeNode.getLocationInJTree): New method.
+	(AccessibleJTreeNode.getLocationOnScreen): New method.
+	(AccessibleJTreeNode.getSize): New method.
+	(AccessibleJTreeNode.isAccessibleChildSelected): New method.
+	(AccessibleJTreeNode.isEnabled): New method.
+	(AccessibleJTreeNode.isVisible): New method.
+	(AccessibleJTreeNode.removeAccessibleSelection): New method.
+	(AccessibleJTreeNode.removeFocusListener): New method.
+	(AccessibleJTreeNode.removePropertyChangeListener): New method.
+	(AccessibleJTreeNode.requestFocus): New method.
+	(AccessibleJTreeNode.selectAllAccessibleSelection): New method.
+	(AccessibleJTreeNode.setAccessibleDescription): New method.
+	(AccessibleJTreeNode.setAccessibleName): New method.
+	(AccessibleJTreeNode.setBackground): New method.
+	(AccessibleJTreeNode.setBounds): New method.
+	(AccessibleJTreeNode.setCursor): New method.
+	(AccessibleJTreeNode.setEnabled): New method.
+	(AccessibleJTreeNode.setFont): New method.
+	(AccessibleJTreeNode.setForeground): New method.
+	(AccessibleJTreeNode.setLocation): New method.
+	(AccessibleJTreeNode.setVisible): New method.
+	(removeDescendantToggledPaths): Implemented.
+	(treeDidChange): Implemented.
+
 2005-09-13  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jawt/jawt.c (_Jv_AWTLock): Do nothing.
