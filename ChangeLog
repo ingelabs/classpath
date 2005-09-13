@@ -1,3 +1,39 @@
+2005-09-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/GlyphView.java
+	(AbstractGlyphPainter.getAscent): New abstract method.
+	(AbstractGlyphPainter.getDescent): New abstract method.
+	(AbstractGlyphPainter.getBoundedPosition): New abstract method.
+	(AbstractGlyphPainter.viewToModel): New abstract method.
+	(AbstractGlyphPainter.getNextVisualPositionFrom): New method.
+	(AbstractGlyphPainter.getPainter): New method.
+	(DefaultGlyphPainter.paint): Add support for more text attributes.
+	(DefaultGlyphPainter.getAscent): New method.
+	(DefaultGlyphPainter.getDescent): New method.
+	(DefaultGlyphPainter.getBoundedPosition): New method.
+	(DefaultGlyphPainter.viewToModel): New method.
+	(GlyphView): Store start and end offset in the GlyphView.
+	(getPreferredSpan): Differentiate the axis parameter.
+	(viewToModel): Implemented this method.
+	(getStartOffset): Return value of private field instead of the
+	element value.
+	(getEndOffset): Return value of private field instead of the
+	element value.
+	(getBackground): New method.
+	(isStrikeThrough): New method.
+	(isSubscript): New method.
+	(isSuperscript): New method.
+	(isUnderline): New method.
+	(clone): New method.
+	(breakView): New method.
+	(getBreakWeight): New method.
+	(changedUpdate): New method.
+	(insertUpdate): New method.
+	(removeUpdate): New method.
+	(createFragment): New method.
+	(getAlignment): New method.
+	(getNextVisualPositionFrom): New method.
+
 2005-09-13  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/regex/Matcher.java (matches): Javadoc fix.
@@ -189,6 +225,7 @@
 	* java/io/ByteArrayOutputStream.java: Reformated copyright notice.
 	(toString(int)): Pass correct parameters to String constructor.
 
+>>>>>>> 1.4759
 2005-09-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComboBox.java
