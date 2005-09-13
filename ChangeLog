@@ -1,5 +1,22 @@
 2005-09-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementSpec): New inner class.
+	(ElementBuffer.change): Also store the DefaultDocumentEvent.
+	(ElementBuffer.split): Also update the document event.
+	(ElementBuffer.insert): New method.
+	(ElementBuffer.insertUpdate): New method.
+	(ElementBuffer.insertStartTag): New method.
+	(ElementBuffer.insertEndTag): New method.
+	(ElementBuffer.insertContentTag): New method.
+	(SectionElement): New inner class.
+	(createDefaultRoot): Return SectionElement instead of BranchElement.
+	(getParagraphElement): Optimized access to paragraph element.
+	(setCharacterAttributes): Fire changedUpdate after modification.
+	(insertUpdate): New method.
+
+2005-09-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SizeRequirements.java
 	(toString): Implemented this method.
 	(calculateAlignedPositions): Partly implemented this method.
