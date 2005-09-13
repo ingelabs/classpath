@@ -1,3 +1,58 @@
+2005-09-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AbstractDocument.java
+	Bumped up serialVersionUIDs to JDK 1.5 compatibility.
+	(getContent): Made method final.
+	(AbstractElement.dumpElement): Removed superfluous private method.
+	(AbstractElement.dump): Made diagnostic output more speaking.
+	* javax/swing/text/BoxView.java
+	(paintChild): Don't allocate the child region here.
+	(paint): Allocate the child region here instead.
+	* javax/swing/text/ComponentView.java:
+	Added API doc comments.
+	* javax/swing/text/CompositeView.java
+	(getNextVisualPositionFrom): Declared to throw BadLocationException.
+	(getNextNorthSouthVisualPositionFrom): Likewise.
+	(getNextEastWestVisualPositionFrom): Likewise.
+	* javax/swing/text/DefaultCaret.java
+	Bumped up serialVersionUIDs to JDK 1.5 compatibility.
+	* javax/swing/text/DefaultEditorKit.java
+	Slight reformatting.
+	* javax/swing/text/DefaultFormatter.java
+	Bumped up serialVersionUIDs to JDK 1.5 compatibility.
+	* javax/swing/text/DefaultStyledEditorKit.java
+	(ElementBuffer.insertUpdate): Removed unneeded statement.
+	(ElementBuffer.insertStartTag): Attach a resolve parent to new
+	paragraph elements.
+	(createDefaultRoot): Attach a resolve parent to new paragraph
+	elements.
+	* javax/swing/text/InternationalFormatter.java
+	Bumped up serialVersionUIDs to JDK 1.5 compatibility.
+	* javax/swing/text/JTextComponent.java
+	Slight reformatting.
+	(paramString): Added TODO comment.
+	* javax/swing/text/SimpleAttributeSet.java
+	Bumped up serialVersionUIDs to JDK 1.5 compatibility.
+	(equals): Don't require object to be SimpleAttributeSet. Allows
+	comparing to all kinds of AttributeSets.
+	(isEqual): Likewise.
+	* javax/swing/text/StringContent.java
+	Bumped up serialVersionUIDs to JDK 1.5 compatibility.
+	* javax/swing/text/StyleConstants.java
+	(getBackground): Return white as default background instead of black.
+	* javax/swing/text/StyleConstext.java
+	Bumped up serialVersionUIDs to JDK 1.5 compatibility.
+	(SmallAttributeSet.equals):  Don't require object to be
+	SmallAttributeSet. Allows comparing to all kinds of AttributeSets.
+	* javax/swing/text/StyledEditorKit.java
+	Fixed some comments.
+	* javax/swing/text/TabSet.java
+	Bumped up serialVersionUIDs to JDK 1.5 compatibility.
+	* javax/swing/text/TabStop.java
+	Bumped up serialVersionUIDs to JDK 1.5 compatibility.
+	* javax/swing/text/View.java
+	Removed unneeded import.
+	
 2005-09-14  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/JOptionPane.java:

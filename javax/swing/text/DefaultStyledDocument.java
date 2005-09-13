@@ -504,7 +504,6 @@ public class DefaultStyledDocument extends AbstractDocument
               insertContentTag(data[i]);
               break;
             }
-          BranchElement root = (BranchElement) getDefaultRootElement();
         }
     }
 
@@ -522,6 +521,7 @@ public class DefaultStyledDocument extends AbstractDocument
 
       BranchElement newParagraph =
         (BranchElement) createBranchElement(root, tag.getAttributes());
+      newParagraph.setResolveParent(getStyle(StyleContext.DEFAULT_STYLE));
 
       // Add new paragraph into document structure.
       Element[] added = new Element[]{newParagraph};
@@ -796,7 +796,9 @@ public class DefaultStyledDocument extends AbstractDocument
     // Use createBranchElement() and createLeafElement instead.
     SectionElement section = new SectionElement();
 
-    BranchElement paragraph = new BranchElement(section, null);
+    BranchElement paragraph =
+      (BranchElement) createBranchElement(section, null);
+    paragraph.setResolveParent(getStyle(StyleContext.DEFAULT_STYLE));
     tmp = new Element[1];
     tmp[0] = paragraph;
     section.replace(0, 0, tmp);
