@@ -1,5 +1,11 @@
 2005-09-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/SizeRequirements.java
+	(toString): Implemented this method.
+	(calculateAlignedPositions): Partly implemented this method.
+
+2005-09-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTabbedPane.java: Added API comments all over.
 
 2005-09-13  Roman Kennke  <kennke@aicas.com>
