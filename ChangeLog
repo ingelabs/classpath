@@ -1,5 +1,21 @@
 2005-09-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/GapContent.java
+	(GapContentPosition.getOffset): Made assertion more speaking.
+	(GapContent): Modified initialization for compatibility with JDK.
+	(shiftEnd): Update marks prior to modification of the content.
+	Use new getPositionsInRange method.
+	(shiftGap): Use new getPositionsInRange method. Tweaked to corectly
+	update the marks.
+	(shiftGapStartDown): New method.
+	(shiftGapEndUp): New method.
+	(replace): Use shiftGapEndUp. Modified resizing offset.
+	(getGapStart): New method.
+	(getGapEnd): New method.
+	(getPositionsInRange): New method.
+
+2005-09-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/GlyphView.java
 	(AbstractGlyphPainter.getAscent): New abstract method.
 	(AbstractGlyphPainter.getDescent): New abstract method.
