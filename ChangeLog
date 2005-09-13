@@ -1,3 +1,12 @@
+2005-09-13  Casey Marshall  <csm@gnu.org>
+
+	* gnu/classpath/ByteArray.java: new file.
+	* gnu/java/security/provider/Gnu.java
+	(<init>): add Diffie Hellman and RSA algorithms.
+	* gnu/javax/crypto/DiffieHellmanImpl.java: new file.
+	* gnu/javax/crypto/GnuDHPrivateKey.java: new file.
+	* gnu/javax/crypto/RSACipherImpl.java: new file.
+
 2005-09-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalComboBoxButton.java: new file,
