@@ -1,3 +1,8 @@
+2005-09-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalComboBoxButton.java: new file,
+	* javax/swing/plaf/metal/MetalComboBoxEditor.java: likewise.
+
 2005-09-13  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/Process.java: Added import for javadoc.
