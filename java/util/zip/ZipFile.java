@@ -377,7 +377,7 @@ public class ZipFile implements ZipConstants
    * Checks that the ZipFile is still open and reads entries when necessary.
    *
    * @exception IllegalStateException when the ZipFile has already been closed.
-   * @exception IOEexception when the entries could not be read.
+   * @exception IOException when the entries could not be read.
    */
   private HashMap getEntries() throws IOException
   {

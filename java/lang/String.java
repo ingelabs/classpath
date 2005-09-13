@@ -139,7 +139,7 @@ public final class String implements Serializable, Comparable, CharSequence
   final int offset;
 
   /**
-   * An implementation for {@link CASE_INSENSITIVE_ORDER}.
+   * An implementation for {@link #CASE_INSENSITIVE_ORDER}.
    * This must be {@link Serializable}. The class name is dictated by
    * compatibility with Sun's JDK.
    */

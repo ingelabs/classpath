@@ -1,3 +1,37 @@
+2005-09-13  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Process.java: Added import for javadoc.
+	* java/lang/Object.java (notify): Javadoc fix.
+	(notifyAll): Likewise.
+	* java/io/PipedInputStream.java (connect): Javadoc fix.
+	* java/io/OutputStreamWriter.java: Organized imports.
+	* java/io/ObjectStreamField.java (setOffset): Javadoc fix.
+	* java/io/ObjectInputStream.java (readFields): Javadoc fix.
+	* java/io/DataOutputStream.java (writeChars): Javadoc fix.
+	(writeFloat): Likewise.
+	(writeDouble): Likewise.
+	* java/util/Locale.java (readObject): Javadoc fix.
+	(writeObject): Likewise.
+	* java/io/LineNumberReader.java (read): Javadoc fix.
+	(setLineNumber): Likewise.
+	(mark): Likewise.
+	* java/io/InputStreamReader.java: Updated imports.
+	* java/lang/Integer.java (parseInt): Javadoc fix.
+	* java/io/FilterReader.java (skip): Javadoc fix.
+	* java/util/HashMap.java (containsValue): Javadoc fix.
+	* java/lang/ClassLoader.java (findLibrary): Javadoc fix.
+	(setPackageAssertionStatus): Likewise.
+	(setClassAssertionStatus): Likewise.
+	* java/lang/Class.java: Added imports for javadoc.
+	(matchMethod): Javadoc fix.
+	* java/util/ArrayList.java (readObject): Javadoc fix.
+	(writeObject): Likewise.
+	* java/lang/String.java (CaseInsensitiveComparator): Javadoc fix.
+	* java/util/zip/PendingBuffer.java (toByteArray): Javadoc fix.
+	* javax/swing/plaf/metal/OceanTheme.java: Mark as 1.5.
+	* java/util/logging/SimpleFormatter.java (format): Javadoc fix.
+	* java/util/zip/ZipFile.java (getEntries): Javadoc fix.
+
 2005-09-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java

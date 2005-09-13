@@ -1197,7 +1197,7 @@ public class ObjectInputStream extends InputStream
    * This method should be called by a method called 'readObject' in the
    * deserializing class (if present). It cannot (and should not)be called
    * outside of it. Its goal is to read all fields in the real input stream
-   * and keep them accessible through the {@link #GetField} class. Calling
+   * and keep them accessible through the {@link GetField} class. Calling
    * this method will not alter the deserializing object.
    *
    * @return A valid freshly created 'GetField' instance to get access to
