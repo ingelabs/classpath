@@ -1,3 +1,12 @@
+2005-09-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(lightHighlight): removed,
+	(installDefaults): only update component attributes if they are tagged
+	with UIResource, initialise button colors from correct defaults,
+	(uninstallDefaults): only clear attributes that are tagged with
+	UIResource.
+
 2005-09-13  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTree.java
