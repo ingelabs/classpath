@@ -56,8 +56,9 @@ import javax.swing.plaf.TabbedPaneUI;
 import javax.swing.plaf.UIResource;
 
 /**
- * This is a container for components. One component is displayed at a time.
- * Users can switch between components by clicking on tabs.
+ * This is a container for components where only one component is displayed at
+ * a given time and the displayed component can be switched by clicking on
+ * tabs.
  * 
  * <p>
  * Tabs can be oriented in several ways. They can be above, below, left and
@@ -72,12 +73,14 @@ public class JTabbedPane extends JComponent implements Serializable,
                                                        SwingConstants
 {
   /**
-   * DOCUMENT ME!
+   * Accessibility support for <code>JTabbedPane</code>.
    */
   protected class AccessibleJTabbedPane extends JComponent.AccessibleJComponent
     implements AccessibleSelection, ChangeListener
   {
-    /** DOCUMENT ME! */
+    /**
+     * The serialization UID.
+     */
     private static final long serialVersionUID = 7610530885966830483L;
 
     /**
@@ -89,18 +92,20 @@ public class JTabbedPane extends JComponent implements Serializable,
     }
 
     /**
-     * DOCUMENT ME!
+     * Receives notification when the selection state of the
+     * <code>JTabbedPane</code> changes.
      *
-     * @param e DOCUMENT ME!
+     * @param e the change event describing the change
      */
     public void stateChanged(ChangeEvent e)
     {
     }
 
     /**
-     * DOCUMENT ME!
+     * Returns the accessible role of the <code>JTabbedPane</code>, which is
+     * {@link AccessibleRole#PAGE_TAB_LIST}.
      *
-     * @return DOCUMENT ME!
+     * @return the accessible role of the <code>JTabbedPane</code>
      */
     public AccessibleRole getAccessibleRole()
     {
@@ -108,9 +113,11 @@ public class JTabbedPane extends JComponent implements Serializable,
     }
 
     /**
-     * DOCUMENT ME!
+     * Returns the number of accessible child components of the
+     * <code>JTabbedPane</code>.
      *
-     * @return DOCUMENT ME!
+     * @return the number of accessible child components of the
+     *         <code>JTabbedPane</code>
      */
     public int getAccessibleChildrenCount()
     {
@@ -118,11 +125,11 @@ public class JTabbedPane extends JComponent implements Serializable,
     }
 
     /**
-     * DOCUMENT ME!
+     * Returns the accessible child component at the specified index.
      *
-     * @param i DOCUMENT ME!
+     * @param i the index of the child component to fetch
      *
-     * @return DOCUMENT ME!
+     * @return the accessible child component at the specified index
      */
     public Accessible getAccessibleChild(int i)
     {
@@ -130,9 +137,10 @@ public class JTabbedPane extends JComponent implements Serializable,
     }
 
     /**
-     * DOCUMENT ME!
+     * Returns the current selection state of the <code>JTabbedPane</code>
+     * as AccessibleSelection object.
      *
-     * @return DOCUMENT ME!
+     * @return the current selection state of the <code>JTabbedPane</code>
      */
     public AccessibleSelection getAccessibleSelection()
     {
@@ -140,11 +148,15 @@ public class JTabbedPane extends JComponent implements Serializable,
     }
 
     /**
-     * DOCUMENT ME!
+     * Returns the accessible child component at the specified coordinates.
+     * If there is no child component at this location, then return the
+     * currently selected tab.
      *
-     * @param p DOCUMENT ME!
+     * @param p the coordinates at which to look up the child component
      *
-     * @return DOCUMENT ME!
+     * @return the accessible child component at the specified coordinates or
+     *         the currently selected tab if there is no child component at
+     *         this location
      */
     public Accessible getAccessibleAt(Point p)
     {
@@ -152,9 +164,13 @@ public class JTabbedPane extends JComponent implements Serializable,
     }
 
     /**
-     * DOCUMENT ME!
+     * The number of selected child components of the
+     * <code>JTabbedPane</code>. This will be <code>0</code> if the
+     * <code>JTabbedPane</code> has no children, or <code>1</code> otherwise,
+     * since there is always exactly one tab selected. 
      *
-     * @return DOCUMENT ME!
+     * @return number of selected child components of the
+     *         <code>JTabbedPane</code>
      */
     public int getAccessibleSelectionCount()
     {

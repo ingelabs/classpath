@@ -1,5 +1,9 @@
 2005-09-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTabbedPane.java: Added API comments all over.
+
+2005-09-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTree.java: Reformatted file.
 	* javax/swing/ListCellRenderer.java: Likewise.
 	* javax/swing/ListSelectionModel.java: Likewise.
