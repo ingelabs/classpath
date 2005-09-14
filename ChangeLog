@@ -1,5 +1,16 @@
 2005-09-13  Tom Tromey  <tromey@redhat.com>
 
+	* java/lang/StringBuffer.java (StringBuffer): New constructor.
+	(trimToSize): New method.
+	(codePointAt): Likewise.
+	(codePointBefore): Likewise.
+	(codePointCount): Likewise.
+	(appendCodePoint): Likewise.
+	(append): New overloads.
+	(insert): Likewise.
+
+2005-09-13  Tom Tromey  <tromey@redhat.com>
+
 	* java/lang/Character.java: Typo fixes in javadoc.
 
 2005-09-14  Roman Kennke  <kennke@aicas.com>
