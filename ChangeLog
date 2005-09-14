@@ -1,5 +1,18 @@
 2005-09-14  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicFormattedTextFieldUI.java:
+	(getPropertyPrefix): added API docs,
+	* javax/swing/plaf/basic/BasicPasswordFieldUI.java:
+	(getPropertyPrefix): added API docs,
+	* javax/swing/plaf/basic/BasicTextAreaUI.java:
+	(getPropertyPrefix): added API docs,
+	* javax/swing/plaf/basic/BasicTextFieldUI.java:
+	(getPropertyPrefix): added API docs,
+	* javax/swing/plaf/basic/BasicTextPaneUI.java:
+	(getPropertyPrefix): added API docs.
+
+2005-09-14  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* org/omg/CORBA/ORB.java: minor API doc fixes,
 	* org/omg/CORBA/PERSIST_STORE.java: likewise,
 	* org/omg/CORBA/PolicyError.java: likewise,
