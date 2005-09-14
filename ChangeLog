@@ -1,3 +1,70 @@
+2005-09-14  Lillian Angel  <langel@redhat.com>
+	
+	Fixes Bug #23795
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Made private fields package private.
+	(setCellRenderer): Took out code that updateRenderer takes
+	care of.
+	(getPathBounds): Fixed to use treeModel field.
+	(getPathForRow): Likewise.
+	(getRowCount): Likewise.
+	(installComponents): Implemented.
+	(createNodeDimensions): Implemented.
+	(uninstallComponents): Implemented.
+	(getVerticalLegBuffer): Implemented.
+	(getHorizontalLegBuffer): Implemented.
+	(updateLayoutCacheExpandedNodes): Implemented.
+	(updateExpandedDescendants): Implemented.
+	(updateDepthOffset): Implemented.
+	(updateRenderer): Implemented.
+	(updateSize): Implemented.
+	(installDefaults): Added some more defaults.
+	(installUI): Moved code to installComponents.
+	(paint): Fixed to use treeModel field.
+	(ensureRowsAreVisible): Implemented.
+	(getMinimumSize): Implemented.
+	(getMaximumSize): Implemented.
+	(checkForClickInExpandControl): Implemented.
+	(isLocationInExpandControl): Implemented.
+	(handleExpandControlClick): Implemented.
+	(toggleExpandState): Implemented.
+	(isToggleSelectionEvent): Implemented.
+	(isMultiSelectEvent): Implemented.
+	(isToggleEvent): Implemented.
+	(selectPathForEvent): Implemented.
+	(actionPerformed): Changed to use toggleExpandState.
+	(mousePressed): Fixed code to use helper methods. Made
+	more efficent.
+	(TreeCancelEditingAction): Fixed Constructor signature.
+	(actionPerformed): Fixed to use treeModel field.
+	(paintRecursive): Fixed to use line drawing helper methods.
+	(paintControlIcons): Fixed to use control icons helper methods.
+	(getCurrentControlIcon): New method.
+	(findNode): Changed to use treeModel field.
+	(getNextNode): Likewise.
+	(getPreviousNode): Likewise.
+	(getNextSibling): Likewise.
+	(getPreviousSibling): Likewise.
+	(getPathToRoot): Likewise.
+	(drawDashedHorizontalLine): Implemented.
+	(drawDashedVerticalLine): Implemented.
+	(paintExpandControl): Implemented.
+	(paintHorizontalPartOfLeg): New method.
+	(paintVerticalPartOfLeg): New method.
+	(paintRow): New method.
+	(shouldPaintExpandControl): New Method.
+	* javax/swing/plaf/metal/MetalTreeUI.java:
+	Added private fields for listeners.
+	(getHorizontalLegBuffer): Implemented.
+	(installUI): Implemented.
+	(uninstallUI): Implemented.
+	(decodeLineStyle): New method.
+	(isLocationInExpandControl): Implemented.
+	(paint): Implemented.
+	(paintHorizontalSeparators): New method.
+	(paintVerticalPartOfLeg): Implemented.
+	(paintHorizontalPartOfLeg): Implemented.
+
 2005-09-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTextArea.java:
