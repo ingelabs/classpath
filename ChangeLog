@@ -1,5 +1,7 @@
 2005-09-14  Anthony Green  <green@redhat.com>
 
+	* gnu/java/security/der/DERReader.java: Remove stray semicolon.
+
 	* gnu/xml/pipeline/ValidationConsumer.java: Fix flags test (was
 	constant expression).
 
