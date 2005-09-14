@@ -1,3 +1,10 @@
+2005-09-14    Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * gnu/CORBA/Connected_objects.java (equals),
+        * gnu/CORBA/Poa/activeObjectMap.java (equals): Removed.
+        * gnu/CORBA/Version.java (hashCode),
+        * gnu/CORBA/gnuAny.java (hashCode): New method.
+
 2005-09-14  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JProgressBar.java
