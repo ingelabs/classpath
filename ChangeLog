@@ -2,6 +2,11 @@
 
 	* javax/swing/text/DefaultStyledDocument.java
 	(insertUpdate): Tweaked attribute comparison to avoid NPE.
+
+2005-09-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insertUpdate): Tweaked attribute comparison to avoid NPE.
 	* javax/swing/text/GlyphView.java
 	(DefaultGlyphPainter.getBoundedPosition): Implemented.
 	(DefaultGlyphPainter.viewToModel): Implemented.

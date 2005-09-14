@@ -1074,7 +1074,7 @@ public class DefaultStyledDocument extends AbstractDocument
             // joined with the next element.
             if (i == endOffset - 1)
               {
-                if (attr.isEqual(next.getAttributes()))
+                if (next.getAttributes().isEqual(attr))
                   spec.setDirection(ElementSpec.JoinNextDirection);
               }
             // If we are at the first new element, then check if it could be
