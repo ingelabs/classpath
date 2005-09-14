@@ -498,7 +498,6 @@
 	* javax/swing/JComponent.java
 	(putClientProperty): fire property change event.
 
->>>>>>> 1.4772
 2005-09-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JScrollPane.java:
