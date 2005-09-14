@@ -879,11 +879,11 @@ public class JTabbedPane extends JComponent implements Serializable,
    * This method inserts tabs into JTabbedPane. This includes adding the
    * component to the JTabbedPane and hiding it.
    *
-   * @param title The title of the tab.
-   * @param icon The tab's icon.
-   * @param component The component associated with the tab.
-   * @param tip The tooltip for the tab.
-   * @param index The index to insert the tab at.
+   * @param title the title of the tab; may be <code>null</code>
+   * @param icon the tab's icon; may be <code>null</code>
+   * @param component the component associated with the tab
+   * @param tip the tooltip for the tab
+   * @param index the index to insert the tab at
    */
   public void insertTab(String title, Icon icon, Component component,
                         String tip, int index)
@@ -911,10 +911,10 @@ public class JTabbedPane extends JComponent implements Serializable,
   /**
    * This method adds a tab to the JTabbedPane.
    *
-   * @param title The title of the tab.
-   * @param icon The icon for the tab.
-   * @param component The associated component.
-   * @param tip The associated tooltip.
+   * @param title the title of the tab; may be <code>null</code>
+   * @param icon the icon for the tab; may be <code>null</code>
+   * @param component the associated component
+   * @param tip the associated tooltip
    */
   public void addTab(String title, Icon icon, Component component, String tip)
   {
@@ -924,9 +924,9 @@ public class JTabbedPane extends JComponent implements Serializable,
   /**
    * This method adds a tab to the JTabbedPane.
    *
-   * @param title The title of the tab.
-   * @param icon The icon for the tab.
-   * @param component The associated component.
+   * @param title the title of the tab; may be <code>null</code>
+   * @param icon the icon for the tab; may be <code>null</code>
+   * @param component the associated component
    */
   public void addTab(String title, Icon icon, Component component)
   {
@@ -936,8 +936,8 @@ public class JTabbedPane extends JComponent implements Serializable,
   /**
    * This method adds a tab to the JTabbedPane.
    *
-   * @param title The title of the tab.
-   * @param component The associated component.
+   * @param title the title of the tab; may be <code>null</code>
+   * @param component the associated component
    */
   public void addTab(String title, Component component)
   {
@@ -968,8 +968,8 @@ public class JTabbedPane extends JComponent implements Serializable,
    * instance of UIResource, it doesn't add the tab and instead add the
    * component directly to the JTabbedPane.
    *
-   * @param title The title of the tab.
-   * @param component The associated component.
+   * @param title the title of the tab; may be <code>null</code>
+   * @param component the associated component
    *
    * @return The Component that was added.
    */
