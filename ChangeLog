@@ -1,5 +1,13 @@
 2005-09-14  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* org/omg/CORBA/ORB.java: minor API doc fixes,
+	* org/omg/CORBA/PERSIST_STORE.java: likewise,
+	* org/omg/CORBA/PolicyError.java: likewise,
+	* org/omg/CORBA/ValueBaseHolder.java: likewise,
+	* org/omg/CORBA/VisibilityHelper.java: likewise.
+
+2005-09-14  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalComboBoxIcon.java: fixed header,
 	(paintIcon): change color to reflect component state.
 
