@@ -664,7 +664,7 @@ public class LogManager
   {
     try
       {
-	return (new Boolean(getLogManager().getProperty(name))).booleanValue();
+	return (Boolean.valueOf(getLogManager().getProperty(name))).booleanValue();
       }
     catch (Exception ex)
       {

@@ -1,3 +1,17 @@
+2005-09-14  Anthony Green  <green@redhat.com>
+
+	* javax/swing/plaf/basic/BasicFileChooserUI.java,
+	javax/swing/filechooser/FileSystemView.java,
+	java/util/logging/LogManager.java,
+	gnu/xml/libxmlj/dom/GnomeDocument.java,
+	gnu/xml/aelfred2/JAXPFactory.java,
+	gnu/java/security/x509/ext/Extension.java,
+	gnu/java/security/x509/ext/BasicConstraints.java,
+	gnu/java/rmi/server/RMIObjectInputStream.java,
+	gnu/java/rmi/dgc/DGCImpl_Stub.java,
+	gnu/java/beans/decoder/BooleanHandler.java: Use
+	Boolean.valueOf() instead of new Boolean.
+
 2005-09-13  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/StringBuffer.java (StringBuffer): New constructor.
