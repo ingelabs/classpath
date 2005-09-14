@@ -1,5 +1,9 @@
 2005-09-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/ButtonModel.java: Added API docs all over.
+
+2005-09-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTabbedPane.java: Added API comments to make clear
 	that null values for tab titles are allowed.
 
