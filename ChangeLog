@@ -1,3 +1,12 @@
+2005-09-14  Roman Kennke  <kennke@aicas.com>
+
+	Fixes Bug#23859.
+	* javax/swing/JTabbedPane.java
+	(insertTab): Check if title == null and if so, then set it
+	to "". Otherwise the null string would cause a segfault or
+	an assertion failure in font metrics calculation as reported
+	in bug#23859.
+
 2005-09-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* gnu/CORBA/ExceptionCreator.java: minor API doc fixes,

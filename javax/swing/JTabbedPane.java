@@ -888,6 +888,8 @@ public class JTabbedPane extends JComponent implements Serializable,
   public void insertTab(String title, Icon icon, Component component,
                         String tip, int index)
   {
+    if (title == null)
+      title = "";
     Page p = new Page(title, icon, component, tip);
     tabs.insertElementAt(p, index);
 
