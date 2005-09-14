@@ -1,3 +1,10 @@
+2005-09-14  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/io/ObjectInputStream.java:
+	(readObject()): Moved marker parsing to its own method.
+	(parseContent(byte)): Fixed TC_OBJECT handling to loop on
+	blockdata written manually by the class.
+	
 2005-09-14  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/jni/classpath/jcl.c: Replaced undefined 	
@@ -491,6 +498,7 @@
 	* javax/swing/JComponent.java
 	(putClientProperty): fire property change event.
 
+>>>>>>> 1.4772
 2005-09-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JScrollPane.java:
