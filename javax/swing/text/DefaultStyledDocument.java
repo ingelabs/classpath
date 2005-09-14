@@ -1108,11 +1108,11 @@ public class DefaultStyledDocument extends AbstractDocument
         // joined with the previous element.
         if (specs.size() == 0)
           {
-            if (attr.isEqual(prev.getAttributes()))
+            if (prev.getAttributes().isEqual(attr))
               spec.setDirection(ElementSpec.JoinPreviousDirection);
           }
         // Check if we could probably be joined with the next element.
-        else if (attr.isEqual(next.getAttributes()))
+        else if (next.getAttributes().isEqual(attr))
           spec.setDirection(ElementSpec.JoinNextDirection);
 
         specs.add(spec);

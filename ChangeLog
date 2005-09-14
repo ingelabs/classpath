@@ -1,3 +1,23 @@
+2005-09-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insertUpdate): Tweaked attribute comparison to avoid NPE.
+	* javax/swing/text/GlyphView.java
+	(DefaultGlyphPainter.getBoundedPosition): Implemented.
+	(DefaultGlyphPainter.viewToModel): Implemented.
+	(getTabExpander): Don't be specific to ParagraphView here. All
+	parents that implement TabExpander can be accepted.
+	(getBeginIndex): Removed. This method is not documented in the
+	specs.
+	(getBreakWeight): Implemented.
+	(changedUpdate): Implemented.
+	(insertUpdate): Implemented.
+	(removeUpdate): Implemented.
+	(createFragment): Implemented.
+	(breakView): Use createFragment.
+	* javax/swing/text/Utilities.java
+	(getTabbedTextOffset): Implemented both variants of this method.
+
 2005-09-14    Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/Connected_objects.java (equals),

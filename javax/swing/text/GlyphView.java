@@ -431,8 +431,13 @@ public class GlyphView extends View implements TabableView, Cloneable
      */
     public int getBoundedPosition(GlyphView v, int p0, float x, float len)
     {
-      // TODO: Implement this properly.
-      throw new AssertionError("Not yet implemented.");
+      TabExpander te = v.getTabExpander();
+      Segment txt = v.getText(p0, v.getEndOffset());
+      Font font = v.getFont();
+      FontMetrics fm = v.getContainer().getFontMetrics(font);
+      int pos = Utilities.getTabbedTextOffset(txt, fm, (int) x,
+                                              (int) (x + len), te, p0, false);
+      return pos;
     }
 
     /**
@@ -446,10 +451,15 @@ public class GlyphView extends View implements TabableView, Cloneable
      *
      * @return the model location that represents the specified view location
      */
-    public int viewToModel(GlyphView v, float x, float y, Shape a, Bias[] biasRet)
+    public int viewToModel(GlyphView v, float x, float y, Shape a,
+                           Bias[] biasRet)
     {
-      // TODO: Implement this properly.
-      throw new AssertionError("Not yet implemented.");
+      Rectangle b = a.getBounds();
+      assert b.contains(x, y) : "The coordinates are expected to be within the "
+                                + "view's bounds: x=" + x + ", y=" + y
+                                + "a=" + a;
+      int pos = getBoundedPosition(v, v.getStartOffset(), b.x, x - b.x);
+      return pos;
     }
   }
 
@@ -550,7 +560,6 @@ public class GlyphView extends View implements TabableView, Cloneable
         View parent = getParent();
         if (parent instanceof TabExpander)
           tabEx = (TabExpander) parent;
-        // TODO: Figure out how to determine the x parameter.
         span = painter.getSpan(this, getStartOffset(), getEndOffset(),
                                tabEx, 0.F);
       }
@@ -611,12 +620,11 @@ public class GlyphView extends View implements TabableView, Cloneable
    */
   public TabExpander getTabExpander()
   {
-    // TODO: Figure out if this is correct.
     TabExpander te = null;
     View parent = getParent();
 
-    if (parent instanceof ParagraphView)
-      te = (ParagraphView) parent;
+    if (parent instanceof TabExpander)
+      te = (TabExpander) parent;
     
     return te;
   }
@@ -661,18 +669,6 @@ public class GlyphView extends View implements TabableView, Cloneable
       }
     FontMetrics fm = null; // Fetch font metrics somewhere.
     return Utilities.getTabbedTextWidth(seg, fm, 0, null, p0);
-  }
-
-  /**
-   * Returns the starting offset in the document model of the portion
-   * of text that this view is responsible for.
-   *
-   * @return the starting offset in the document model of the portion
-   *         of text that this view is responsible for
-   */
-  public int getBeginIndex()
-  {
-    return getElement().getStartOffset();
   }
 
   /**
@@ -895,40 +891,113 @@ public class GlyphView extends View implements TabableView, Cloneable
     if (goodBreakLocation != BreakIterator.DONE)
       breakLocation = goodBreakLocation;
 
-    GlyphView brokenView = (GlyphView) clone();
-    brokenView.startOffset = p0;
-    brokenView.endOffset = breakLocation;
+    View brokenView = createFragment(p0, breakLocation);
     return brokenView;
   }
 
+  /**
+   * Determines how well the specified view location is suitable for inserting
+   * a line break. If <code>axis</code> is <code>View.Y_AXIS</code>, then
+   * this method forwards to the superclass, if <code>axis</code> is
+   * <code>View.X_AXIS</code> then this method returns
+   * {@link View#ExcellentBreakWeight} if there is a suitable break location
+   * (usually whitespace) within the specified view span, or
+   * {@link View#GoodBreakWeight} if not.
+   *
+   * @param axis the axis along which the break weight is requested
+   * @param pos the starting view location
+   * @param len the length of the span at which the view should be broken
+   *
+   * @return the break weight
+   */
   public int getBreakWeight(int axis, float pos, float len)
   {
-    // FIXME: Implement me.
-    throw new AssertionError("Not yet implemented.");
+    int weight;
+    if (axis == Y_AXIS)
+      weight = super.getBreakWeight(axis, pos, len);
+    else
+      {
+        // Determine the model locations at pos and pos + len.
+        int spanX = (int) getPreferredSpan(X_AXIS);
+        int spanY = (int) getPreferredSpan(Y_AXIS);
+        Rectangle dummyAlloc = new Rectangle(0, 0, spanX, spanY);
+        Position.Bias[] biasRet = new Position.Bias[1];
+        int offset1 = viewToModel(pos, spanY / 2, dummyAlloc, biasRet);
+        int offset2 = viewToModel(pos, spanY / 2, dummyAlloc, biasRet);
+        Segment txt = getText(offset1, offset2);
+        BreakIterator lineBreaker = BreakIterator.getLineInstance();
+        lineBreaker.setText(txt);
+        int breakLoc = lineBreaker.previous();
+        if (breakLoc == offset1)
+          weight = View.BadBreakWeight;
+        else if(breakLoc ==  BreakIterator.DONE)
+          weight = View.GoodBreakWeight;
+        else
+          weight = View.ExcellentBreakWeight;
+      }
+    return weight;
   }
 
+  /**
+   * Receives notification that some text attributes have changed within the
+   * text fragment that this view is responsible for. This calls
+   * {@link View#preferenceChanged(View, boolean, boolean)} on the parent for
+   * both width and height.
+   *
+   * @param e the document event describing the change; not used here
+   * @param a the view allocation on screen; not used here
+   * @param vf the view factory; not used here
+   */
   public void changedUpdate(DocumentEvent e, Shape a, ViewFactory vf)
   {
-    // FIXME: Implement me.
-    throw new AssertionError("Not yet implemented.");
+    getParent().preferenceChanged(this, true, true);
   }
 
+  /**
+   * Receives notification that some text has been inserted within the
+   * text fragment that this view is responsible for. This calls
+   * {@link View#preferenceChanged(View, boolean, boolean)} on the parent for
+   * width.
+   *
+   * @param e the document event describing the change; not used here
+   * @param a the view allocation on screen; not used here
+   * @param vf the view factory; not used here
+   */
   public void insertUpdate(DocumentEvent e, Shape a, ViewFactory vf)
   {
-    // FIXME: Implement me.
-    throw new AssertionError("Not yet implemented.");
+    getParent().preferenceChanged(this, true, false);
   }
 
+  /**
+   * Receives notification that some text has been removed within the
+   * text fragment that this view is responsible for. This calls
+   * {@link View#preferenceChanged(View, boolean, boolean)} on the parent for
+   * width.
+   *
+   * @param e the document event describing the change; not used here
+   * @param a the view allocation on screen; not used here
+   * @param vf the view factory; not used here
+   */
   public void removeUpdate(DocumentEvent e, Shape a, ViewFactory vf)
   {
-    // FIXME: Implement me.
-    throw new AssertionError("Not yet implemented.");
+    getParent().preferenceChanged(this, true, false);
   }
 
+  /**
+   * Creates a fragment view of this view that starts at <code>p0</code> and
+   * ends at <code>p1</code>.
+   *
+   * @param p0 the start location for the fragment view
+   * @param p1 the end location for the fragment view
+   *
+   * @return the fragment view
+   */
   public View createFragment(int p0, int p1)
   {
-    // FIXME: Implement me.
-    throw new AssertionError("Not yet implemented.");
+    GlyphView fragment = (GlyphView) clone();
+    fragment.startOffset = p0;
+    fragment.endOffset = p1;
+    return fragment;
   }
 
   /**
