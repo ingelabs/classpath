@@ -76,7 +76,7 @@ public class ComponentView extends View
    */
   protected  Component createComponent()
   {
-    return null;
+    return StyleConstants.getComponent(getElement().getAttributes());
   }
 
   /**

@@ -1,3 +1,8 @@
+2005-09-14  Anthony Balkisoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/ComponentView.java:
+	(createComponent): Implemented.
+
 2005-09-14    Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/CosNaming/NameComponent (hashCode): New method. 
