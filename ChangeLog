@@ -1,5 +1,8 @@
 2005-09-14  Anthony Green  <green@redhat.com>
 
+	* gnu/xml/pipeline/ValidationConsumer.java: Fix flags test (was
+	constant expression).
+
 	* javax/swing/plaf/basic/BasicFileChooserUI.java,
 	javax/swing/filechooser/FileSystemView.java,
 	java/util/logging/LogManager.java,
