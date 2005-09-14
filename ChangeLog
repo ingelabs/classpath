@@ -1,5 +1,10 @@
 2005-09-14  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* gnu/CORBA/ExceptionCreator.java: minor API doc fixes,
+	* gnu/CORBA/Version.java: likewise.
+
+2005-09-14  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicFormattedTextFieldUI.java:
 	(getPropertyPrefix): added API docs,
 	* javax/swing/plaf/basic/BasicPasswordFieldUI.java:
