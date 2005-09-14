@@ -1,3 +1,8 @@
+2005-09-14  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalComboBoxIcon.java: fixed header,
+	(paintIcon): change color to reflect component state.
+
 2005-09-13  Tom Tromey  <tromey@redhat.com>
 
 	* .settings/org.eclipse.jdt.core.prefs: Ignore javadoc warnings
