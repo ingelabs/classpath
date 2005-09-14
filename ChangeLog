@@ -1,3 +1,14 @@
+2005-09-14  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JProgressBar.java
+	(JProgressBar): Fixed to use setOrientation function.
+	* javax/swing/plaf/metal/MetalProgressBarUI.java
+	(createUI): Was using the same instance of the UI for 
+	each new JProgressBar. Fixed this.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(installUI): Added call to prepareForUIInstall.
+	(uninstallUI): Added call to prepareForUIUninstall.
+
 2005-09-14  Anthony Balkisoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/ComponentView.java:

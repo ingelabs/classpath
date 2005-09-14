@@ -1328,6 +1328,7 @@ public class BasicTreeUI
    */
   public void installUI(JComponent c)
   {
+    prepareForUIInstall();
     super.installUI(c);
     tree = (JTree) c;
     installDefaults();
@@ -1371,6 +1372,7 @@ public class BasicTreeUI
    */
   public void uninstallUI(JComponent c)
   {
+    prepareForUIUninstall();
     uninstallDefaults();
     uninstallKeyboardActions();
     uninstallListeners();
