@@ -1,5 +1,15 @@
 2005-09-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(calculateTabWidth): Don't use the calcRect here. This lead to an
+	inconsistent state when this method is called from another method
+	that also uses calcRect.
+	(calculateTabHeight): Don't use the calcRect here. This lead to an
+	inconsistent state when this method is called from another method
+	that also uses calcRect.
+
+2005-09-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
 	Reformatted file.
 
