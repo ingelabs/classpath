@@ -1,3 +1,8 @@
+2005-09-13  Tom Tromey  <tromey@redhat.com>
+
+	* .settings/org.eclipse.jdt.core.prefs: Ignore javadoc warnings
+	for hidden or deprecated members.
+
 2005-09-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/AbstractDocument.java
