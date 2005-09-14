@@ -1,3 +1,8 @@
+2005-09-14  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* native/jni/classpath/jcl.c: Replaced undefined 	
+	POINTERS_ARE_64BIT with SIZEOF_VOID_P == 8.
+
 2005-09-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java
@@ -364,7 +369,6 @@
 	* java/io/ByteArrayOutputStream.java: Reformated copyright notice.
 	(toString(int)): Pass correct parameters to String constructor.
 
->>>>>>> 1.4759
 2005-09-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComboBox.java
