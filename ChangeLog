@@ -1,3 +1,7 @@
+2005-09-15  Tom Tromey  <tromey@redhat.com>
+
+	* javax/naming/Name.java: Extends Comparable.
+
 2005-09-15  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/Component.java:
