@@ -1,3 +1,10 @@
+2005-09-15  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/awt/Component.java:
+	(isDisplayable): Return true if peer != null.
+	* java/awt/Window.java:
+	(isDisplayable): Removed this method. Now inherits from Component.
+
 2005-09-15  Anthony Green  <green@redhat.com>
 
 	* java/io/PushbackInputStream.java (available, read, skip): Handle

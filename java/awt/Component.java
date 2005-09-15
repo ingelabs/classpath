@@ -735,7 +735,7 @@ public abstract class Component
   {
     if (parent != null)
       return parent.isDisplayable();
-    return false;
+    return peer != null;
   }
 
   /**
