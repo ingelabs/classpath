@@ -1,5 +1,24 @@
 2005-09-15  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(installDefaults): set font,
+	(uninstallDefaults): clear font,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): update ToggleButton defaults,
+	* javax/swing/plaf/metal/MetalToggleButtonUI.java
+	(instance): removed field,
+	(createUI): just return new instance every time,
+	(MetalToggleButtonUI): look up defaults directly,
+	(getFocusColor): return value from field initialised in constructor,
+	(getSelectColor): likewise,
+	(getDisabledTextColor): likewise,
+	(installDefaults): override to make public,
+	(paintButtonPressed): implemented,
+	(paintText): implemented,
+	(paintFocus): implemented.
+
+2005-09-15  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalBorders.java
 	(toggleButtonBorder): new private field,
 	(ToggleButtonBorder): new class,
