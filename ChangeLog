@@ -1,3 +1,13 @@
+2005-09-15  Anthony Green  <green@redhat.com>
+ 
+ 	* java/nio/charset/Charset.java: close() each stream we open.
+	* java/net/URLStreamHandler.java: Remove redundant null pointer
+	check.
+ 	* java/security/Identity.java (equals, identityEquals): Don't use
+ 	`==' to compare uninterned Strings.  Use String.equals().
+ 	* java/lang/Class.java (pd): Mark this field as transient for
+	FindBugs won't complain (although not strictly necessary).
+
 2005-09-15  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTextArea.java:
@@ -164,6 +174,7 @@
 	(paintVerticalPartOfLeg): Implemented.
 	(paintHorizontalPartOfLeg): Implemented.
 
+>>>>>>> 1.4795
 2005-09-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTextArea.java:

@@ -281,6 +281,7 @@ public abstract class Charset implements Comparable
 		      (CharsetProvider) ((Class.forName(s)).newInstance());
                     set.add(p);
                   }
+		rdr.close();
                }
 
             providers = new CharsetProvider[set.size()];
