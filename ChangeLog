@@ -1,3 +1,9 @@
+2005-09-15  Anthony Balkissoon  <abalkiss@redhac.com>
+
+	* javax/swing/JRootPane.java:
+	(setContentPane): Remove the old content pane first.  Throw 
+	IllegalComponentStateException if the parameter is null.  Added docs.
+
 2005-09-15  Tom Tromey  <tromey@redhat.com>
 
 	Workaround for PR classpath/23863:
