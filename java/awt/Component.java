@@ -720,8 +720,9 @@ public abstract class Component
 
   /**
    * Tests if the component is displayable. It must be connected to a native
-   * screen resource, and all its ancestors must be displayable. A containment
-   * hierarchy is made displayable when a window is packed or made visible.
+   * screen resource.  This reduces to checking that peer is not null.  A 
+   * containment  hierarchy is made displayable when a window is packed or 
+   * made visible.
    *
    * @return true if the component is displayable
    * @see Container#add(Component)
@@ -733,8 +734,6 @@ public abstract class Component
    */
   public boolean isDisplayable()
   {
-    if (parent != null)
-      return parent.isDisplayable();
     return peer != null;
   }
 
