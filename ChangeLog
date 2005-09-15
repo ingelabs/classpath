@@ -1,3 +1,10 @@
+2005-09-15  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalBorders.java
+	(toggleButtonBorder): new private field,
+	(ToggleButtonBorder): new class,
+	(getToggleButtonBorder): new method.
+
 2005-09-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
