@@ -1,3 +1,16 @@
+2005-09-15  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxRenderer.java
+	(getListCellRendererComponent): Added code in to check if string
+	is larger than comboBox. If it is, the string is truncated and 
+	'...' is drawn at the end of it.
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(getDefaultSize): Initially too small, still not fully implemented.
+	(getLargestItemSize): Made private, not in API.
+	(minimumLayoutSize): Implemented properly.
+	(intervalAdded): ComboBox should not be resized with every new
+	component. This is fixed.
+
 2005-09-15  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/EnumConstantNotPresentException.java: New file.
