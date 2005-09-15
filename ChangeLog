@@ -1,4 +1,9 @@
 2005-09-15  Anthony Green  <green@redhat.com>
+
+	* java/io/PushbackInputStream.java (available, read, skip): Handle
+	closed stream operations gracefully.
+
+2005-09-15  Anthony Green  <green@redhat.com>
  
  	* java/nio/charset/Charset.java: close() each stream we open.
 	* java/net/URLStreamHandler.java: Remove redundant null pointer
