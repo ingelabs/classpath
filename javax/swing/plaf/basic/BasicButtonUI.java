@@ -268,7 +268,10 @@ public class BasicButtonUI extends ButtonUI
 
     g.setFont(f);
 
-    SwingUtilities.calculateInnerArea(b, vr);
+    if (b.isBorderPainted())
+      SwingUtilities.calculateInnerArea(b, vr);
+    else
+      vr = SwingUtilities.getLocalBounds(b);
     String text = SwingUtilities.layoutCompoundLabel(c, g.getFontMetrics(f), 
                                                      b.getText(),
                                                      currentIcon(b),

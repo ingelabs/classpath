@@ -1,3 +1,23 @@
+2005-09-15  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/SwingUtilities.java
+	(layoutCompoundLabel): check for empty text string,
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(paint): check isBorderPainted() when calculating view rect,
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+	(CloseAction): new constructor,
+	(IconifyAction): new constructor,
+	(MaximizeAction): new constructor,
+	(MoveAction): new constructor,
+	(RestoreAction): new constructor,
+	(SizeAction): new constructor,
+	(TitlePaneLayout.layoutContainer): calculate button widths from icon 
+	widths,
+	(installDefaults): initialise icon fields,
+	(uninstallDefaults): clear icon fields,
+	(createButtons): set button text to null,
+	(setButtonIcons): use icon fields.
+
 2005-09-15  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxRenderer.java
