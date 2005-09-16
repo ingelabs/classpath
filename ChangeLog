@@ -321,7 +321,6 @@
 	(paintVerticalPartOfLeg): Implemented.
 	(paintHorizontalPartOfLeg): Implemented.
 
->>>>>>> 1.4810
 2005-09-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTextArea.java:
