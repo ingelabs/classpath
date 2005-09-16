@@ -1,5 +1,10 @@
 2005-09-16  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalComboBoxEditor.java
+	(MetalComboBoxEditorBorder.paintBorder): modified border appearance.
+
+2005-09-16  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicComboBoxRenderer.java: updated API docs
 	and minor reformatting.
 

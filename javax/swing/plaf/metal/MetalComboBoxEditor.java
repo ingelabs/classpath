@@ -79,16 +79,19 @@ public class MetalComboBoxEditor
     public void paintBorder(Component c, Graphics g, int x, int y, int w, 
         int h)
     {   
+      Color savedColor = g.getColor();
       if (c.isEnabled())
-        // TODO: draw the enabled border here
-        super.paintBorder(c, g, x, y, w, h);
+        g.setColor(MetalLookAndFeel.getControlDarkShadow());  
       else
-        {
-          Color savedColor = g.getColor();
-          g.setColor(MetalLookAndFeel.getControlShadow());
-          g.drawRect(x, y, w - 1, h - 1);
-          g.setColor(savedColor);
-        }
+        g.setColor(MetalLookAndFeel.getControlShadow());
+      g.drawLine(x, y, x + w - 1, y);
+      g.drawLine(x, y, x, y + h - 2);
+      g.drawLine(x + 2, y + h - 2, x + w - 1, y + h - 2);
+      g.setColor(MetalLookAndFeel.getControl());
+      g.drawLine(x + 1, y + h - 2, x + 1, y + h - 2);
+      g.setColor(MetalLookAndFeel.getWhite());
+      g.drawLine(x, y + h - 1, x + w - 1, y + h - 1);
+      g.setColor(savedColor);
     }
 
     /**
