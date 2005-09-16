@@ -1,3 +1,8 @@
+2005-09-14  Anthony Green  <green@redhat.com>
+
+	* java/util/zip/ZipFile.java (checkZipFile): Make sure we read the
+	4 byte magic number.
+
 2005-09-15  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/text/html/parser/DTD.java (FILE_VERSION): Now
@@ -266,6 +271,7 @@
 	(paintVerticalPartOfLeg): Implemented.
 	(paintHorizontalPartOfLeg): Implemented.
 
+>>>>>>> 1.4810
 2005-09-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTextArea.java:

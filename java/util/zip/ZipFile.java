@@ -144,9 +144,18 @@ public class ZipFile implements ZipConstants
   private void checkZipFile() throws IOException, ZipException
   {
     byte[] magicBuf = new byte[4];
-    raf.read(magicBuf);
+    boolean validRead = true;
 
-    if (readLeInt(magicBuf, 0) != LOCSIG)
+    try 
+      {
+	raf.readFully(magicBuf);
+      } 
+    catch (EOFException eof) 
+      {
+	validRead = false;
+      } 
+
+    if (validRead == false || readLeInt(magicBuf, 0) != LOCSIG)
       {
 	raf.close();
 	throw new ZipException("Not a valid zip file");
