@@ -52,7 +52,7 @@
 2005-09-16    Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * javax/swing/Timer.java (Waker.run): Do not enter loop on 
-        repeats = false.
+        repeats = false (fixes #23918).
 
 2005-09-16  Andrew Haley  <aph@redhat.com>
 
@@ -300,9 +300,10 @@
 2005-09-14    Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/Connected_objects.java (equals),
-        * gnu/CORBA/Poa/activeObjectMap.java (equals): Removed.
+        * gnu/CORBA/Poa/activeObjectMap.java (equals): Removed, fixes
+        #23879.
         * gnu/CORBA/Version.java (hashCode),
-        * gnu/CORBA/gnuAny.java (hashCode): New method.
+        * gnu/CORBA/gnuAny.java (hashCode): New method, fixes #23879.
 
 2005-09-14  Lillian Angel  <langel@redhat.com>
 
@@ -322,7 +323,8 @@
 
 2005-09-14    Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/CosNaming/NameComponent (hashCode): New method. 
+        * org/omg/CosNaming/NameComponent (hashCode): New method,
+        fixes #23883). 
 
 2005-09-14  Lillian Angel  <langel@redhat.com>
 	
