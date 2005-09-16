@@ -144,6 +144,68 @@ public class PrintWriter extends Writer
   }
 
   /**
+   * This initializes a new PrintWriter object to write to the specified
+   * file.  It creates a FileOutputStream object and wraps it in an
+   * OutputStreamWriter using the default encoding.
+   * @param file name of the file to write to
+   * @throws FileNotFoundException if the file cannot be written or created
+   * 
+   * @since 1.5
+   */
+  public PrintWriter(String file) throws FileNotFoundException
+  {
+    this(new FileOutputStream(file));
+  }
+
+  /**
+   * This initializes a new PrintWriter object to write to the specified
+   * file.  It creates a FileOutputStream object and wraps it in an
+   * OutputStreamWriter using the specified encoding.
+   * @param file name of the file to write to
+   * @param enc the encoding to use
+   * @throws FileNotFoundException if the file cannot be written or created
+   * @throws UnsupportedEncodingException if the encoding is not supported
+   * 
+   * @since 1.5
+   */
+  public PrintWriter(String file, String enc) 
+    throws FileNotFoundException, UnsupportedEncodingException
+  {
+    this(new OutputStreamWriter(new FileOutputStream(file), enc));
+  }
+
+  /**
+   * This initializes a new PrintWriter object to write to the specified
+   * file.  It creates a FileOutputStream object and wraps it in an
+   * OutputStreamWriter using the default encoding.
+   * @param file the file to write to
+   * @throws FileNotFoundException if the file cannot be written or created
+   * 
+   * @since 1.5
+   */
+  public PrintWriter(File file) throws FileNotFoundException
+  {
+    this(new FileOutputStream(file));
+  }
+
+  /**
+   * This initializes a new PrintWriter object to write to the specified
+   * file.  It creates a FileOutputStream object and wraps it in an
+   * OutputStreamWriter using the specified encoding.
+   * @param file the file to write to
+   * @param enc the encoding to use
+   * @throws FileNotFoundException if the file cannot be written or created
+   * @throws UnsupportedEncodingException if the encoding is not supported
+   * 
+   * @since 1.5
+   */
+  public PrintWriter(File file, String enc) 
+    throws FileNotFoundException, UnsupportedEncodingException
+  {
+    this(new OutputStreamWriter(new FileOutputStream(file), enc));
+  }
+
+  /**
    * This method can be called by subclasses to indicate that an error
    * has occurred and should be reported by <code>checkError</code>.
    */

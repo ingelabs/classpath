@@ -1,5 +1,9 @@
 2005-09-16  Tom Tromey  <tromey@redhat.com>
 
+	* java/io/PrintWriter.java (PrintWriter): New constructors.
+
+2005-09-16  Tom Tromey  <tromey@redhat.com>
+
 	PR classpath/22689:
 	* java/io/PrintWriter.java (closed): New field.
 	(checkError): Only flush if stream not closed.
