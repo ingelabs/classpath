@@ -1,3 +1,9 @@
+2005-09-16  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalBorders.java
+	(ButtonBorder.paintBorder): draw a different border for a disabled 
+	button.
+
 2005-09-15  Anthony Green  <green@redhat.com>
 
 	* java/awt/Color.java (RGBtoHSB): Don't use integer division when

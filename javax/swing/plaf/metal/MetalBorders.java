@@ -130,38 +130,47 @@ public class MetalBorders
       Color light = MetalLookAndFeel.getWhite();
       Color middle = MetalLookAndFeel.getControl();
 
-      // draw dark border
-      g.setColor(darkShadow);
-      g.drawRect(x, y, w - 2, h - 2);
+      if (c.isEnabled())
+      {
+        // draw dark border
+        g.setColor(darkShadow);
+        g.drawRect(x, y, w - 2, h - 2);
 
-      if (!bmodel.isPressed())
-        {
-          // draw light border
-          g.setColor(light);
-          g.drawRect(x + 1, y + 1, w - 2, h - 2);
+        if (!bmodel.isPressed())
+          {
+            // draw light border
+            g.setColor(light);
+            g.drawRect(x + 1, y + 1, w - 2, h - 2);
 
-          // draw crossing pixels of both borders
-          g.setColor(middle);
-          g.drawRect(x + 1, y + h - 2, 0, 0);
-          g.drawRect(x + w - 2, y + 1, 0, 0);
-        }
-      else
-        {
-          // draw light border
-          g.setColor(light);
-          g.drawLine(x + w - 1, y + 1, x + w - 1, y + h - 1);
-          g.drawLine(x + 1, y + h - 1, x + w - 1, y + h - 1);
+            // draw crossing pixels of both borders
+            g.setColor(middle);
+            g.drawRect(x + 1, y + h - 2, 0, 0);
+            g.drawRect(x + w - 2, y + 1, 0, 0);
+          }
+        else
+          {
+            // draw light border
+            g.setColor(light);
+            g.drawLine(x + w - 1, y + 1, x + w - 1, y + h - 1);
+            g.drawLine(x + 1, y + h - 1, x + w - 1, y + h - 1);
 
-          // draw shadow border
-          g.setColor(middle);
-          g.drawLine(x + 1, y + 1, x + w - 2, y + 1);
-          g.drawLine(x + 1, y + 1, x + 1, y + h - 2);
-
-          // draw crossing pixels of both borders
-          g.setColor(shadow);
-          g.drawRect(x + 1, y + h - 2, 0, 0);
-          g.drawRect(x + w - 2, y + 1, 0, 0);
-        }
+            // draw shadow border
+            g.setColor(middle);
+            g.drawLine(x + 1, y + 1, x + w - 2, y + 1);
+            g.drawLine(x + 1, y + 1, x + 1, y + h - 2);
+ 
+            // draw crossing pixels of both borders
+            g.setColor(shadow);
+            g.drawRect(x + 1, y + h - 2, 0, 0);
+            g.drawRect(x + w - 2, y + 1, 0, 0);
+          }
+      }
+      else 
+      {
+        // draw disabled border
+        g.setColor(MetalLookAndFeel.getControlDisabled());
+        g.drawRect(x, y, w - 2, h - 2);          
+      }
     }
 
     /**
