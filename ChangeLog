@@ -1,3 +1,21 @@
+2005-09-16  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Character.java (MIN_SURROGATE, MAX_SURROGATE): New
+	constants.
+	(isHighSurrogate): New method.
+	(isLowSurrogate): Likewise.
+	(isSurrogatePair): Likewise.
+	(toCodePoint): Likewise.
+	(codePointAt): Likewise.
+	(codePointBefore): Likewise.
+	* java/lang/StringBuffer.java (codePointCount): Check bounds.
+	(codePointAt): Rewrote.
+	(codePointBefore): Likewise.
+	* java/lang/String.java (codePointAt): New method.
+	(codePointBefore): Likewise.
+	(codePointCount): Likewise.
+	(contentEquals): New overload.
+
 2005-09-16  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/ProgressMonitor: Implemented the former stubbed
