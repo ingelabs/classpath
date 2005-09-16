@@ -1,5 +1,5 @@
 /* BasicComboBoxRenderer.java --
-   Copyright (C) 2004  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -43,6 +43,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.io.Serializable;
 
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -54,20 +55,21 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 /**
- * This class is renderer for the combo box. 
+ * A renderer for a {@link JComboBox}. 
  *
  * @author Olga Rodimina
  */
-public class BasicComboBoxRenderer extends JLabel implements ListCellRenderer,
-                                                             Serializable
+public class BasicComboBoxRenderer 
+  extends JLabel 
+  implements ListCellRenderer, Serializable
 {
   /**
-   * This border is used whenever renderer doesn't have a focus.
+   * A shared border instance for all renderers.
    */
   protected static Border noFocusBorder = new EmptyBorder(0, 0, 0, 0);
 
   /**
-   * Creates a new BasicComboBoxRenderer object.
+   * Creates a new <code>BasicComboBoxRenderer</code> object.
    */
   public BasicComboBoxRenderer()
   {
@@ -85,7 +87,8 @@ public class BasicComboBoxRenderer extends JLabel implements ListCellRenderer,
   }
 
   /**
-   * getListCellRendererComponent
+   * Returns a component that has been configured to display the given
+   * <code>value</code>.
    *
    * @param list List of items for which to the background and foreground
    *        colors
@@ -126,17 +129,15 @@ public class BasicComboBoxRenderer extends JLabel implements ListCellRenderer,
     
     setOpaque(true);
 
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-
     if (isSelected)
       {
-	setBackground(list.getSelectionBackground());
-	setForeground(list.getSelectionForeground());
+        setBackground(list.getSelectionBackground());
+        setForeground(list.getSelectionForeground());
       }
     else
       {
-	setBackground(list.getBackground());
-	setForeground(list.getForeground());
+        setBackground(list.getBackground());
+        setForeground(list.getForeground());
       }
 
     setEnabled(list.isEnabled());
@@ -152,11 +153,15 @@ public class BasicComboBoxRenderer extends JLabel implements ListCellRenderer,
     return this;
   }
 
+  /**
+   * A subclass of {@link BasicComboBoxRenderer} that implements the
+   * {@link javax.swing.plaf.UIResource} interface.
+   */
   public static class UIResource extends BasicComboBoxRenderer
     implements javax.swing.plaf.UIResource
   {
     /**
-     * Creates a new UIResource object.
+     * Creates a new <code>UIResource</code> object.
      */
     public UIResource()
     {
