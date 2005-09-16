@@ -1,3 +1,8 @@
+2005-09-16  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JList.java
+	(AccessibleJList): New inner class.
+
 2005-09-16  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* examples/gnu/classpath/examples/swing/ButtonDemo.java: new file.
@@ -310,22 +315,19 @@
 
 	* java/net/InetSocketAddress.java (toString): Adjust to match Sun
 	JRE output, which is [HOSTNAME]/[IPADDRESS]:[PORT].
-
 	* gnu/java/security/der/DERReader.java: Remove stray semicolon.
-
 	* gnu/xml/pipeline/ValidationConsumer.java: Fix flags test (was
 	constant expression).
-
 	* javax/swing/plaf/basic/BasicFileChooserUI.java,
-	javax/swing/filechooser/FileSystemView.java,
-	java/util/logging/LogManager.java,
-	gnu/xml/libxmlj/dom/GnomeDocument.java,
-	gnu/xml/aelfred2/JAXPFactory.java,
-	gnu/java/security/x509/ext/Extension.java,
-	gnu/java/security/x509/ext/BasicConstraints.java,
-	gnu/java/rmi/server/RMIObjectInputStream.java,
-	gnu/java/rmi/dgc/DGCImpl_Stub.java,
-	gnu/java/beans/decoder/BooleanHandler.java: Use
+	* javax/swing/filechooser/FileSystemView.java,
+	* java/util/logging/LogManager.java,
+	* gnu/xml/libxmlj/dom/GnomeDocument.java,
+	* gnu/xml/aelfred2/JAXPFactory.java,
+	* gnu/java/security/x509/ext/Extension.java,
+	* gnu/java/security/x509/ext/BasicConstraints.java,
+	* gnu/java/rmi/server/RMIObjectInputStream.java,
+	* gnu/java/rmi/dgc/DGCImpl_Stub.java,
+	* gnu/java/beans/decoder/BooleanHandler.java: Use
 	Boolean.valueOf() instead of new Boolean.
 
 2005-09-13  Tom Tromey  <tromey@redhat.com>
@@ -852,7 +854,6 @@
 	'InternalFrame.paletteBorder', 'InternalFrame.paletteCloseIcon', and
 	'InternalFrame.paletteTitleHeight'.
 	
-
 2005-09-12  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java
