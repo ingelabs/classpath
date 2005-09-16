@@ -1,4 +1,4 @@
-2005-09-15  Anthony Green  <green@redhat.com>
+2005-09-16  Anthony Green  <green@redhat.com>
 
 	PR libgcj/20198
 	* java/net/URLClassLoader.java (FileURLLoader.getResource): File
