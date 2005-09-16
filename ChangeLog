@@ -1,6 +1,6 @@
 2005-09-16    Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * javax.swing.Timer.java (Waker.run): Do not enter loop on 
+        * javax/swing/Timer.java (Waker.run): Do not enter loop on 
         repeats = false.
 
 2005-09-16  Andrew Haley  <aph@redhat.com>
