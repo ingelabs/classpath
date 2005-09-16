@@ -1,3 +1,28 @@
+2005-09-16  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/ProgressMonitor: Implemented the former stubbed
+	class and added documentation.
+	(close): Implemented and added documentation.
+	(setProgress): Dito.
+	(isCanceled): Dito.
+	(setMinimum): Added documentation.
+	(getMinimum): Dito.
+	(setMaximum): Dito.
+	(getMaximum): Dito.
+	(setNote): Dito.
+	(getMillisToDecideToPopup): Dito.
+	(setMillisToDecideToPopup): Dito.
+	(getMillisToPopup): Dito.
+	(setMillisToPopup): Dito.
+	(getNote): Dito.
+	* javax/swing/ProgressMonitorInputStream: Implemented stub
+	methods.
+	(close): Implemented.
+	(read): Dito.
+	(reset): Dito.
+	(skip): Dito.
+	(getProgressMonitor): Dito.
+	
 2005-09-16  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/23882:
