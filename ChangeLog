@@ -1,4 +1,10 @@
-2005-09-14  Anthony Green  <green@redhat.com>
+2005-09-15  Anthony Green  <green@redhat.com>
+
+	* java/awt/Color.java (RGBtoHSB): Don't use integer division when
+	calculating saturation.
+	* java/awt/Rectangle.java (equals): Explain why hashCode() isn't
+	required.
+	* java/awt/Point.java (equals): Ditto.
 
 	* java/util/zip/ZipFile.java (checkZipFile): Make sure we read the
 	4 byte magic number.
@@ -90,6 +96,7 @@
 	* java/awt/Window.java:
 	(isDisplayable): Removed this method. Now inherits from Component.
 
+>>>>>>> 1.4810
 2005-09-15  Anthony Green  <green@redhat.com>
 
 	* java/io/PushbackInputStream.java (available, read, skip): Handle
