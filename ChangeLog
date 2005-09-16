@@ -1,3 +1,8 @@
+2005-09-16  Anthony Green  <green@redhat.com>
+
+	* java/lang/String.java (getBytes): Throw an InternalError instead
+	of silently returning null.
+
 2005-09-16  Lillian Angel  <langel@redhat.com>
 
 	Fixes Bug #22610
