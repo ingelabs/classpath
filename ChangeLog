@@ -1,5 +1,9 @@
 2005-09-16  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* examples/gnu/classpath/examples/swing/ButtonDemo.java: new file.
+
+2005-09-16  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalIconFactory.java
 	(RadioButtonIcon.paintIcon): change color of selection indicator 
 	according to component state.
