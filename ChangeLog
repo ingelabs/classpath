@@ -96,7 +96,6 @@
 	* java/awt/Window.java:
 	(isDisplayable): Removed this method. Now inherits from Component.
 
->>>>>>> 1.4810
 2005-09-15  Anthony Green  <green@redhat.com>
 
 	* java/io/PushbackInputStream.java (available, read, skip): Handle
