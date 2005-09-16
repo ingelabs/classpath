@@ -1,3 +1,11 @@
+2005-09-16  Lillian Angel  <langel@redhat.com>
+
+	Fixes Bug #22610
+	* java/awt/Container.java
+	(remove): Removed component listeners from the component
+	being removed. This was a problem if that same component
+	that was removed was added to a new component.
+
 2005-09-16  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalComboBoxEditor.java
