@@ -70,6 +70,11 @@ public class PrintWriter extends Writer
    * on this stream.
    */
   private boolean error;
+  
+  /**
+   * Indicates whether or not the stream has been closed.
+   */
+  private boolean closed;
 
   /**
    * This is the underlying <code>Writer</code> we are sending output
@@ -158,7 +163,8 @@ public class PrintWriter extends Writer
    */
   public boolean checkError()
   {
-    flush();
+    if (! closed)
+      flush();
     return error;
   }
 
@@ -185,7 +191,8 @@ public class PrintWriter extends Writer
   {
     try
       {
-	out.close();
+        out.close();
+        closed = true;
       }
     catch (IOException ex)
       {
