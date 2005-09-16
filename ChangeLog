@@ -1,3 +1,9 @@
+2005-09-15  Anthony Green  <green@redhat.com>
+
+	PR libgcj/20198
+	* java/net/URLClassLoader.java (FileURLLoader.getResource): File
+	resources should all have canonicalized names.
+
 2005-09-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTree.java
