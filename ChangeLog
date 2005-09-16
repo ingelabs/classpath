@@ -1,5 +1,10 @@
 2005-09-16  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalCheckBoxIcon.java
+	(drawCheck): change color according to component state.
+
+2005-09-16  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalBorders.java
 	(ButtonBorder.paintBorder): draw a different border for a disabled 
 	button.
