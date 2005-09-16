@@ -1,3 +1,94 @@
+2005-09-16  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTree.java
+	(AccessibleJTreeNode): Fixed documentation.
+	(addAccessibleSelection): Likewise, still needs to 
+	be implemented.
+	(addFocusListener): Implemented.
+	(addPropertyChangeListener): Implemented.
+	(clearAccessibleSelection): Implemented.
+	(contains): Implemented.
+	(doAccessibleAction): Fixed documentation, still
+	needs to be implemented.
+	(getAccessibleAction): Likewise.
+	(getAccessibleActionCount): Likewise.
+	(getAccessibleActionDescription): Implemented.
+	(getAccessibleAt): Implemented.
+	(getAccessibleChild): Implemented.
+	(getAccessibleChildrenCount): Implemented.
+	(getAccessibleComponent): Fixed documentation.
+	(getAccessibleContext): Implemented.
+	(getAccessibleDescription): Implemented.
+	(getAccessibleIndexInParent): Implemented.
+	(getAccessibleName): Implemented.
+	(getAccessibleParent): Fixed documentation.
+	(getAccessibleRole): Likewise.
+	(getAccessibleSelection): Likewise, still needs to 
+	be implemented.
+	(getAccessibleSelection): Likewise.
+	(getAccessibleSelectionCount): Implemented.
+	(getAccessibleStateSet): Implemented.
+	(getAccessibleText): Fixed documentation.
+	(getAccessibleValue): Likewise.
+	(getBackground): Implemented.
+	(getBounds): Implemented.
+	(getCursor): Fixed documentation, still needs to be 
+	implemented.
+	(getFont): Implemented.
+	(getFontMetrics): Implemented.
+	(getForeground): Implemented.
+	(getLocale): Implemented.
+	(getLocation): Implemented.
+	(getLocationInJTree): Implemented.
+	(getLocationOnScreen): Implemented.
+	(getSize): Implemented.
+	(isAccessibleChildSelected): Implemented.
+	(isEnabled): Implemented.
+	(isFocusTraversable): Implemented.
+	(isShowing): Implemented.
+	(isVisible): Implemented.
+	(removeAccessibleSelection): Fixed documentation, need to 
+	fix current implementation.
+	(removeFocusListener): Implemented.
+	(removePropertyChangeListener): Implemented.
+	(requestFocus): Implemented.
+	(selectAllAccessibleSelection): Need to implement. Added FIXME.
+	(setAccessibleDescription): Implemented.
+	(setAccessibleName): Implemented.
+	(setBackground): Implemented.
+	(setBounds): Implemented.
+	(setCursor): Fixed documentation, still need to implement.
+	(setEnabled): Implemented.
+	(setFont): Implemented.
+	(setForeground): Implemented.
+	(setLocation): Implemented.
+	(setSize): Implemented.
+	(setVisible): Implemented.
+	(AccessibleJTree): Fixed documentation, still need
+	to implement.
+	(addAccessibleSelection): Implemented.
+	(clearAccessibleSelection): Implemented.
+	(fireVisibleDataPropertyChange): Implemented.
+	(getAccessibleAt): Fixed documentation, need to implement.
+	(getAccessibleChild): Implemented.
+	(getAccessibleChildrenCount): Implemented.
+	(getAccessibleIndexInParent): Fixed documentation.
+	(getAccessibleRole): Likewise.
+	(getAccessibleSelection): Likewise, still need to implement.
+	(getAccessibleSelection): Likewise.
+	(getAccessibleSelectionCount): Implemented.
+	(isAccessibleChildSelected): Implemented.
+	(removeAccessibleSelection): Implemented.
+	(selectAllAccessibleSelection): Implemented.
+	(treeCollapsed): Implemented.
+	(treeExpanded): Implemented.
+	(treeNodesChanged): Implemented.
+	(treeNodesInserted): Implemented.
+	(treeNodesRemoved): Implemented.
+	(treeStructureChanged): Implemented.
+	(valueChanged): Implemented.
+	(TreeModelListener): Fixed documentation.
+
 2005-09-16  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/PrintWriter.java (PrintWriter): New constructors.
