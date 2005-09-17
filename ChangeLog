@@ -1,3 +1,7 @@
+2005-09-17  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/plaf/basic/BasicMenuItemUI.java: Reindent boilerplate.
+
 2005-09-17  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/prefs/Preferences.java (systemNodeForPackage):
