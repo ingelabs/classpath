@@ -1,3 +1,10 @@
+2005-09-17  Mark Wielaard  <mark@klomp.org>
+
+	* org/ietf/jgss/GSSException.java (BAD_BINDINGS, BAD_MECH,
+	BAD_NAME, BAD_NAMETYPE, CONTEXT_EXPIRED, CREDENTIALS_EXPIRED,
+	DEFECTIVE_CREDENTIAL, DEFECTIVE_TOKEN, DUPLICATE_TOKEN, FAILURE,
+	NO_CONTEXT, NO_CRED, OLD_TOKEN): Document official RFC values.
+
 2005-09-17  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/Short.java (SIZE): New constant.
