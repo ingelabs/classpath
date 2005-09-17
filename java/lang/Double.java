@@ -88,6 +88,12 @@ public final class Double extends Number implements Comparable
   public static final double NaN = 0.0 / 0.0;
 
   /**
+   * The number of bits needed to represent a <code>double</code>.
+   * @since 1.5
+   */
+  public static final int SIZE = 64;
+
+ /**
    * The primitive type <code>double</code> is represented by this
    * <code>Class</code> object.
    * @since 1.1

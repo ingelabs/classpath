@@ -1,3 +1,33 @@
+2005-09-17  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Short.java (SIZE): New constant.
+	(MIN_CACHE, MAX_CACHE): Likewise.
+	(shortCache): New field.
+	(reverseBytes): New method.
+	* java/lang/Long.java (SIZE): New constant.
+	(valueOf): New method.
+	(bitCount): New method.
+	(rotateLeft): New method.
+	(rotateRight): New method.
+	(highestOneBit): New method.
+	(numberOfLeadingZeros): New method.
+	(lowestOneBit): New method.
+	(numberOfTrailingZeros): New method.
+	(signum): New method.
+	(reverseBytes): New method.
+	(reverse): New method.
+	* java/lang/Float.java (SIZE): New constant.
+	* java/lang/Double.java (SIZE): New constant.
+	* java/lang/Character.java (SIZE): New constant.
+	(MAX_CACHE): Likewise.
+	(charCache): New field.
+	(valueOf): New method.
+	(reverseBytes): Likewise.
+	* java/lang/Byte.java (SIZE): New constant.
+	(byteCache): New field.
+	(valueOf): New method.
+	* java/lang/Boolean.java (parseBoolean): New method.
+
 2005-09-17  Mark Wielaard  <mark@klomp.org>
 
 	Reported by David Lichteblau <david@lichteblau.com>

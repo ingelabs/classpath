@@ -94,6 +94,12 @@ public final class Float extends Number implements Comparable
   public static final Class TYPE = VMClassLoader.getPrimitiveClass('F');
 
   /**
+   * The number of bits needed to represent a <code>float</code>.
+   * @since 1.5
+   */
+  public static final int SIZE = 32;
+
+  /**
    * The immutable value of this Float.
    *
    * @serial the wrapped float

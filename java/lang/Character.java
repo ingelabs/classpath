@@ -1034,6 +1034,18 @@ public final class Character implements Serializable, Comparable
   public static final Class TYPE = VMClassLoader.getPrimitiveClass('C');
 
   /**
+   * The number of bits needed to represent a <code>char</code>.
+   * @since 1.5
+   */
+  public static final int SIZE = 16;
+
+  // This caches some Character values, and is used by boxing
+  // conversions via valueOf().  We must cache at least 0..127;
+  // this constant controls how much we actually cache.
+  private static final int MAX_CACHE = 127;
+  private static Character[] charCache = new Character[MAX_CACHE + 1];
+
+  /**
    * Lu = Letter, Uppercase (Informative).
    *
    * @since 1.1
@@ -2314,6 +2326,37 @@ public final class Character implements Serializable, Comparable
   public int compareTo(Object o)
   {
     return compareTo((Character) o);
+  }
+
+  /**
+   * Returns an <code>Character</code> object wrapping the value.
+   * In contrast to the <code>Character</code> constructor, this method
+   * will cache some values.  It is used by boxing conversion.
+   *
+   * @param val the value to wrap
+   * @return the <code>Character</code>
+   * 
+   * @since 1.5
+   */
+  public static Character valueOf(char val)
+  {
+    if (val > MAX_CACHE)
+      return new Character(val);
+    synchronized (charCache)
+      {
+    if (charCache[val - MIN_VALUE] == null)
+      charCache[val - MIN_VALUE] = new Character(val);
+    return charCache[val - MIN_VALUE];
+      }
+  }
+
+  /**
+   * Reverse the bytes in val.
+   * @since 1.5
+   */
+  public static char reverseBytes(char val)
+  {
+    return (char) (((val >> 8) & 0xff) | ((val << 8) & 0xff00));
   }
 
   /**
