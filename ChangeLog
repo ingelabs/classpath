@@ -1,3 +1,8 @@
+2005-09-17  Paul Jenner  <psj@harker.dyndns.org>
+
+	* configure.ac: Clarify that Werror configure option is
+	disabled by default.
+
 2005-09-17  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/plaf/basic/BasicMenuItemUI.java: Reindent boilerplate.
