@@ -1,3 +1,9 @@
+2005-09-17  Mark Wielaard  <mark@klomp.org>
+
+	Reported by David Lichteblau <david@lichteblau.com>
+	* native/jni/classpath/jcl.c (JCL_NewRawDataObject): Create
+	NewGlobalRef before calling DeleteLocalRef.
+
 2005-09-17  Paul Jenner  <psj@harker.dyndns.org>
 
 	* configure.ac: Clarify that Werror configure option is
