@@ -459,14 +459,6 @@ public class BasicComboBoxUI extends ComboBoxUI
     // in order to determine the right colors when rendering
     listBox = new JList();
 
-    Color background = arrowButton.getBackground();
-    listBox.setBackground(background);
-    listBox.setSelectionBackground(background.darker());
-
-    Color foreground = arrowButton.getForeground();
-    listBox.setForeground(foreground);
-    listBox.setSelectionForeground(foreground);
-
     // set editor and renderer for the combo box. Editor is used
     // only if combo box becomes editable, otherwise renderer is used
     // to paint the selected item; combobox is not editable by default. 

@@ -1,5 +1,12 @@
 2005-09-18  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installComponents): remove listBox color settings,
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): corrected ComboBox and ListBox defaults.
+
+2005-09-18  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicComboBoxRenderer.java
 	(BasicComboBoxRenderer): set no focus border,
 	(getListCellRendererComponent): set background color if cell has focus,
