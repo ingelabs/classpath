@@ -202,6 +202,28 @@ public final class Short extends Number implements Comparable
   }
 
   /**
+   * Returns a <code>Short</code> object wrapping the value.
+   * In contrast to the <code>Short</code> constructor, this method
+   * will cache some values.  It is used by boxing conversion.
+   *
+   * @param val the value to wrap
+   * @return the <code>Short</code>
+   *
+   * @since 1.5
+   */
+  public static Short valueOf(short val)
+  {
+    if (val < MIN_CACHE || val > MAX_CACHE)
+      return new Short(val);
+    synchronized (shortCache)
+      {
+    if (shortCache[val - MIN_CACHE] == null)
+      shortCache[val - MIN_CACHE] = new Short(val);
+    return shortCache[val - MIN_CACHE];
+      }
+  }
+
+  /**
    * Convert the specified <code>String</code> into a <code>Short</code>.
    * The <code>String</code> may represent decimal, hexadecimal, or
    * octal numbers.

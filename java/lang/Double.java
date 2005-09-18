@@ -173,6 +173,22 @@ public final class Double extends Number implements Comparable
   }
 
   /**
+   * Returns a <code>Double</code> object wrapping the value.
+   * In contrast to the <code>Double</code> constructor, this method
+   * may cache some values.  It is used by boxing conversion.
+   *
+   * @param val the value to wrap
+   * @return the <code>Double</code>
+   * 
+   * @since 1.5
+   */
+  public static Double valueOf(double val)
+  {
+    // We don't actually cache, but we could.
+    return new Double(val);
+  }
+
+ /**
    * Create a new <code>Double</code> object using the <code>String</code>.
    *
    * @param s the <code>String</code> to convert

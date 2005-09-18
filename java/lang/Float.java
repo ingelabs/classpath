@@ -198,6 +198,22 @@ public final class Float extends Number implements Comparable
   }
 
   /**
+   * Returns a <code>Float</code> object wrapping the value.
+   * In contrast to the <code>Float</code> constructor, this method
+   * may cache some values.  It is used by boxing conversion.
+   *
+   * @param val the value to wrap
+   * @return the <code>Float</code>
+   * 
+   * @since 1.5
+   */
+  public static Float valueOf(float val)
+  {
+    // We don't actually cache, but we could.
+    return new Float(val);
+  }
+
+  /**
    * Parse the specified <code>String</code> as a <code>float</code>. The
    * extended BNF grammar is as follows:<br>
    * <pre>
