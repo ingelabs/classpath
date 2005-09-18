@@ -1,3 +1,7 @@
+2005-09-18  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Long.java (reverse): Correctly handle sign extension.
+
 2005-09-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java
