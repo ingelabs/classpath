@@ -49,8 +49,6 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -74,6 +72,7 @@ public class BasicComboBoxRenderer
   public BasicComboBoxRenderer()
   {
     setHorizontalAlignment(SwingConstants.LEFT);
+    setBorder(noFocusBorder);
   }
 
   /**
@@ -129,7 +128,7 @@ public class BasicComboBoxRenderer
     
     setOpaque(true);
 
-    if (isSelected)
+    if (isSelected || cellHasFocus)
       {
         setBackground(list.getSelectionBackground());
         setForeground(list.getSelectionForeground());
@@ -142,14 +141,6 @@ public class BasicComboBoxRenderer
 
     setEnabled(list.isEnabled());
     setFont(list.getFont());
-
-    // Use focusCellHighlightBorder when renderer has focus and 
-    // noFocusBorder otherwise
-    if (cellHasFocus)
-      setBorder(UIManager.getBorder("List.focusCellHighlightBorder"));
-    else
-      setBorder(noFocusBorder);
-
     return this;
   }
 
