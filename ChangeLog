@@ -1,6 +1,29 @@
 2005-09-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(borderInsets): deleted,
+	(arrowButtonWidth): deleted,
+	(configureEditor): set font,
+	(isFocusTraversable): set to true for non-editable combobox,
+	(paint): deleted border painting code,
+	(paintBorder): deleted,
+	(getPreferredSize): returns a value, not null,
+	(getMinimumSize): likewise,
+	(getMaximumSize): likewise,
+	(rectangleForCurrentValue): reimplemented,
+	(paintCurrentValue): no longer adjusts for border insets,
+	(getDisplaySize): update maximum width and height independently,
+	(ComboBoxLayoutManager): removed redundant 'extends Object',
+	(ComboBoxLayoutManager.preferredLayoutSize): call getPreferredSize(),
+	(ComboBoxLayoutManager.minimumLayoutSize): delegate to 
+	preferredLayoutSize(),
+	(ComboBoxLayoutManager.layoutContainer): use arrow button preferred 
+	size in layout,
+	(PropertyChangeHandler.propertyChange): added 'font' handling.
+
+2005-09-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
 	(installListeners): add listener to arrowButton instead of comboBox,
 	deleted call to configureArrowButton(),
 	(uninstallListeners): remove listener from arrowButton instead of 

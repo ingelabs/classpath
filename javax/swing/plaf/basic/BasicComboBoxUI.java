@@ -42,6 +42,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.LayoutManager;
@@ -69,6 +70,7 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.event.ListDataEvent;
@@ -166,18 +168,6 @@ public class BasicComboBoxUI extends ComboBoxUI
    * This is package-private to avoid an accessor method.
    */
   Dimension displaySize;
-
-  // It seems that JComboBox doesn't have a border set explicitely. So we just
-  // paint the border everytime combo box is displayed. 
-
-  /* border insets for this JComboBox
-   * This is package-private to avoid an accessor method. */
-  static final Insets borderInsets = new Insets(2, 2, 2, 2);
-
-  // Width of the arrow button  
-  // This is package-private to avoid an accessor method.
-  // FIXME: has wrong name for a constant.
-  static final int arrowButtonWidth = 15;
 
   // FIXME: This fields aren't used anywhere at this moment.
   protected Dimension cachedMinimumSize;
@@ -533,6 +523,7 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   protected void configureEditor()
   {
+    editor.setFont(comboBox.getFont());
     // FIXME: Need to implement. Set font and add listeners.
   }
 
@@ -614,7 +605,7 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   public boolean isFocusTraversable(JComboBox c)
   {
-    if (comboBox.isEditable())
+    if (!comboBox.isEditable())
       return true;
 
     return false;
@@ -628,38 +619,9 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   public void paint(Graphics g, JComponent c)
   {
-    if (c instanceof JComboBox)
-      {
-	JComboBox cb = (JComboBox) c;
-
-	paintBorder(g, comboBox.getBounds(), hasFocus);
-
-	Rectangle rect = rectangleForCurrentValue();
-	paintCurrentValueBackground(g, rect, hasFocus);
-	paintCurrentValue(g, rect, hasFocus);
-      }
-  }
-
-  private void paintBorder(Graphics g, Rectangle bounds, boolean hasFocus)
-  {
-    int x = 0;
-    int y = 0;
-    int width = bounds.width;
-    int height = bounds.height;
-
-    Color oldColor = g.getColor();
-
-    if (! arrowButton.getModel().isPressed())
-      BasicGraphicsUtils.drawEtchedRect(g, x, y, width, height, Color.gray,
-                                        Color.white, Color.gray, Color.white);
-    else
-      {
-	g.setColor(darkShadow);
-	g.drawRect(x, y, width, height);
-	g.setColor(shadow);
-	g.drawRect(x + 1, y + 1, width - 3, height - 3);
-      }
-    g.setColor(oldColor);
+    Rectangle rect = rectangleForCurrentValue();
+    paintCurrentValueBackground(g, rect, hasFocus);
+    paintCurrentValue(g, rect, hasFocus);
   }
 
   /**
@@ -671,9 +633,11 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   public Dimension getPreferredSize(JComponent c)
   {
-    // return null to indicate that combo box's layout will determin its
-    // preferred size
-    return null;
+    Dimension d = getDisplaySize();
+    Dimension arrowDim = arrowButton.getPreferredSize();
+    Dimension result = new Dimension(d.width + arrowDim.width, 
+            Math.max(d.height, arrowDim.height));
+    return result;
   }
 
   /**
@@ -686,9 +650,12 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   public Dimension getMinimumSize(JComponent c)
   {
-    return null;
+    return getPreferredSize(c);
   }
 
+  /** The value returned by the getMaximumSize() method. */
+  private static final Dimension MAXIMUM_SIZE = new Dimension(32767, 32767);
+  
   /**
    * Returns the maximum size for this {@link JComboBox} for this
    * look and feel.
@@ -699,7 +666,7 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   public Dimension getMaximumSize(JComponent c)
   {
-    return null;
+    return MAXIMUM_SIZE;
   }
 
   public int getAccessibleChildrenCount(JComponent c)
@@ -767,21 +734,10 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   protected Rectangle rectangleForCurrentValue()
   {
-    Rectangle cbBounds = comboBox.getBounds();
-
-    // Subtract width or the arrow button and border insets	    
-    Rectangle rectForCurrentValue = new Rectangle(cbBounds.x
-                                                  + borderInsets.left,
-                                                  cbBounds.y
-                                                  + borderInsets.top,
-                                                  cbBounds.width
-                                                  - arrowButtonWidth
-                                                  - borderInsets.left
-                                                  - borderInsets.right,
-                                                  cbBounds.height
-                                                  - borderInsets.top
-                                                  - borderInsets.bottom);
-
+    Rectangle cbBounds = SwingUtilities.getLocalBounds(comboBox);
+    Rectangle abBounds = arrowButton.getBounds();   
+    Rectangle rectForCurrentValue = new Rectangle(cbBounds.x, cbBounds.y,
+      cbBounds.width - abBounds.width, cbBounds.height);
     return rectForCurrentValue;
   }
 
@@ -815,21 +771,22 @@ public class BasicComboBoxUI extends ComboBoxUI
 	 * If there is currently no selected item we will take an empty
 	 * String as replacement.
 	 */
-	Component comp = comboBox.getRenderer()
-	                             .getListCellRendererComponent(listBox,
-	                                                           (currentValue != null ? currentValue : ""),
-	                                                           -1,
-	                                                           isPressed,
-	                                                           hasFocus);
-	if (! comboBox.isEnabled())
-	      comp.setEnabled(false);
-
-	g.translate(borderInsets.left, borderInsets.top);
-	    comp.setBounds(0, 0, bounds.width, bounds.height);
-	    comp.paint(g);
-	    g.translate(-borderInsets.left, -borderInsets.top);
-	    
-	comboBox.revalidate();
+        Component comp = comboBox.getRenderer().getListCellRendererComponent(
+                listBox, (currentValue != null ? currentValue : ""), -1,
+                isPressed, hasFocus);
+        if (! comboBox.isEnabled())
+          {
+            comp.setBackground(UIManager.getLookAndFeelDefaults().getColor(
+                "ComboBox.disabledBackground"));
+            comp.setForeground(UIManager.getLookAndFeelDefaults().getColor(
+                "ComboBox.disabledForeground"));
+            comp.setEnabled(false);
+          }
+        comp.setBounds(0, 0, bounds.width, bounds.height);
+        comp.setFont(comboBox.getFont());
+        comp.paint(g);
+        
+        comboBox.revalidate();
       }
     else
       comboBox.getEditor().setItem(comboBox.getSelectedItem());
@@ -893,13 +850,17 @@ public class BasicComboBoxUI extends ComboBoxUI
     // one
     for (int i = 0; i < numItems; i++)
       {
-	Object item = model.getElementAt(i);
-	String s = item.toString();
-	Component comp = renderer.getListCellRendererComponent(listBox, item,
-	                                                       -1, false, false);
+        Object item = model.getElementAt(i);
+        String s = item.toString();
+        Component comp = renderer.getListCellRendererComponent(listBox, item,
+            -1, false, false);
 
-	if (comp.getPreferredSize().getWidth() > size.getWidth())
-	  size = comp.getPreferredSize();
+        Dimension compSize = comp.getPreferredSize();
+        if (compSize.width > size.width)
+          size.width = compSize.width;
+        if (compSize.height > size.height)
+          size.height = compSize.height;
+        
       }
 
     displaySize = size;
@@ -930,7 +891,7 @@ public class BasicComboBoxUI extends ComboBoxUI
    * 
    * @see BasicComboBoxUI#createLayoutManager()
    */
-  public class ComboBoxLayoutManager extends Object implements LayoutManager
+  public class ComboBoxLayoutManager implements LayoutManager
   {
     /**
      * Creates a new ComboBoxLayoutManager object.
@@ -972,28 +933,7 @@ public class BasicComboBoxUI extends ComboBoxUI
      */
     public Dimension preferredLayoutSize(Container parent)
     {
-      Dimension d = new Dimension(0, 0);
-
-      if (displaySize == null)
-        displaySize = getDisplaySize();
-
-      // add size for the area that will display selected item
-      d.width += displaySize.getWidth();
-      d.height += displaySize.getHeight();
-
-      // add size of the arrow button
-      d.width += arrowButtonWidth;
-
-      // add width and height of the border
-      d.width += borderInsets.left + borderInsets.right;
-      d.height += borderInsets.left + borderInsets.right;
-
-      // Add combo box's insets 	
-      Insets insets = parent.getInsets();
-      d.width += insets.left + insets.right;
-      d.width += insets.left + insets.right;
-
-      return d;
+      return getPreferredSize((JComponent) parent);
     }
 
     /**
@@ -1005,26 +945,7 @@ public class BasicComboBoxUI extends ComboBoxUI
      */
     public Dimension minimumLayoutSize(Container parent)
     {
-      Dimension minSize = getDefaultSize();
-      ComboBoxModel model = comboBox.getModel();
-      int numItems = model.getSize();
-
-      if (numItems == 0)
-          return minSize;
-
-      ListCellRenderer renderer = comboBox.getRenderer();
-
-      for (int i = 0; i < numItems; i++)
-        {
-      Object item = model.getElementAt(i);
-      String s = item.toString();
-      Component comp = renderer.getListCellRendererComponent(listBox, item,
-                                                             -1, false, false);
-
-      if (comp.getPreferredSize().width < minSize.width)
-        minSize =  comp.getMinimumSize();
-        }
-      return minSize;
+      return preferredLayoutSize(parent);
     }
 
     /**
@@ -1039,15 +960,14 @@ public class BasicComboBoxUI extends ComboBoxUI
     {
       // Position editor component to the left of arrow button if combo box is 
       // editable
-      int editorWidth = comboBox.getBounds().width - arrowButtonWidth - 2;
+      Dimension arrowPrefSize = arrowButton.getPreferredSize();
+      int editorWidth = comboBox.getBounds().width - arrowPrefSize.width;
 
       if (comboBox.isEditable())
-	editor.setBounds(borderInsets.left, borderInsets.top, editorWidth,
-	                 comboBox.getBounds().height - borderInsets.left
-	                 - borderInsets.top);
-
-      arrowButton.setBounds(editorWidth, 2, arrowButtonWidth,
-                            comboBox.getBounds().height - 4);
+        editor.setBounds(0, 0, editorWidth, comboBox.getBounds().height);
+      
+      arrowButton.setBounds(editorWidth, 0, arrowPrefSize.width,
+                            comboBox.getBounds().height);
       comboBox.revalidate();
     }
   }
@@ -1245,6 +1165,14 @@ public class BasicComboBoxUI extends ComboBoxUI
 
 	  if ((ComboBoxModel) e.getNewValue() != null)
 	    comboBox.getModel().addListDataListener(listDataListener);
+        }
+      else if (e.getPropertyName().equals("font"))
+        {
+          Font font = (Font) e.getNewValue();
+          editor.setFont(font);
+          listBox.setFont(font);
+          comboBox.revalidate();
+          comboBox.repaint();
         }
 
       // FIXME: Need to handle changes in other bound properties.	
