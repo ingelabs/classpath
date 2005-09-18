@@ -1,3 +1,8 @@
+2005-09-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/text/RuleBasedCollator.java:
+	Fixed spelling error in comment.
+
 2005-09-17  Tom Tromey  <tromey@redhat.com>
 
 	* .settings/org.eclipse.jdt.ui.prefs: Add file template.
