@@ -289,13 +289,11 @@ public class BasicComboBoxUI extends ComboBoxUI
     comboBox.addKeyListener(keyListener);
 
     mouseListener = createMouseListener();
-    comboBox.addMouseListener(mouseListener);
+    arrowButton.addMouseListener(mouseListener);
 
     // install listeners that listen to combo box model
     listDataListener = createListDataListener();
     comboBox.getModel().addListDataListener(listDataListener);
-
-    configureArrowButton();
   }
 
   /**
@@ -339,13 +337,11 @@ public class BasicComboBoxUI extends ComboBoxUI
     comboBox.removeKeyListener(keyListener);
     keyListener = null;
 
-    comboBox.removeMouseListener(mouseListener);
+    arrowButton.removeMouseListener(mouseListener);
     mouseListener = null;
 
     comboBox.getModel().removeListDataListener(listDataListener);
     listDataListener = null;
-
-    unconfigureArrowButton();
   }
 
   /**
@@ -555,7 +551,8 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   public void configureArrowButton()
   {
-    arrowButton.addMouseListener(mouseListener);
+    arrowButton.setEnabled(comboBox.isEnabled());
+    arrowButton.setFont(comboBox.getFont());
   }
 
   /**
@@ -565,7 +562,6 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   public void unconfigureArrowButton()
   {
-    arrowButton.removeMouseListener(mouseListener);
   }
 
   /**
@@ -1270,38 +1266,7 @@ public class BasicComboBoxUI extends ComboBoxUI
     public void mousePressed(MouseEvent e)
     {
       if (comboBox.isEnabled())
-        {
-	  if (e.getSource() instanceof JComboBox)
-	    {
-	      arrowButton.getModel().setPressed(true);
-	      arrowButton.getModel().setArmed(true);
-	    }
-
-	  comboBox.repaint();
-
-	  if (e.getSource() instanceof BasicArrowButton)
-	    toggleOpenClose();
-        }
-    }
-
-    /**
-     * This method is invoked when mouse is released over the combo box. It
-     * repaints the combo box accordinglly
-     *
-     * @param e the MouseEvent
-     */
-    public void mouseReleased(MouseEvent e)
-    {
-      if (comboBox.isEnabled())
-        {
-	  if (e.getSource() instanceof JComboBox)
-	    {
-	      arrowButton.getModel().setPressed(false);
-	      arrowButton.getModel().setArmed(false);
-	    }
-
-	  comboBox.repaint();
-        }
+        toggleOpenClose();
     }
   }
 }

@@ -1,6 +1,19 @@
 2005-09-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installListeners): add listener to arrowButton instead of comboBox,
+	deleted call to configureArrowButton(),
+	(uninstallListeners): remove listener from arrowButton instead of 
+	comboBox, and deleted call to unconfigureArrowButton(),
+	(configureArrowButton): set font and enabled state, deleted 
+	addMouseListener() call,
+	(unconfigureArrowButton): deleted removeMouseListener() call,
+	(MouseHandler.mousePressed): just toggle display status of popup,
+	(MouseHandler.mouseReleased): deleted.
+
+2005-09-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
 	(largestItemSize): renamed displaySize,
 	(getLargestItemSize): renamed getDisplaySize and changed to protected,
 	(ComboBoxLayoutManager.preferredLayoutSize): updated for renamed field 
