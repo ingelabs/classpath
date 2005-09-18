@@ -1,3 +1,9 @@
+2005-09-17  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/22963:
+	* java/nio/charset/Charset.java (forName): Javadoc fix.
+	(providers2): Use ServiceFactory.
+
 2005-09-17  Mark Wielaard  <mark@klomp.org>
 
 	* org/ietf/jgss/GSSException.java (BAD_BINDINGS, BAD_MECH,
