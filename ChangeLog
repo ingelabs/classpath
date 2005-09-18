@@ -1,3 +1,11 @@
+2005-09-17  Anthony Green  <green@redhat.com>
+
+	* java/security/Security.java (getProviders): Pre-allocate the
+	target array for Collection.toArray call.
+	* gnu/java/security/PolicyFile.java (parse): Ditto.
+	* javax/swing/filechooser/FileSystemView.java: Ditto.
+	* javax/swing/JFileChooser.java (getChoosableFileFilters): Ditto.
+
 2005-09-17  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/22963:
