@@ -1,5 +1,10 @@
 2005-09-18  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicComboBoxUI.java:
+	Updated API docs all over.
+
+2005-09-18  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/text/RuleBasedCollator.java:
 	Fixed spelling error in comment.
 
