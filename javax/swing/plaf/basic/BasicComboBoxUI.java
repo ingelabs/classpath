@@ -165,7 +165,7 @@ public class BasicComboBoxUI extends ComboBoxUI
   /* Size of the largest item in the comboBox
    * This is package-private to avoid an accessor method.
    */
-  Dimension largestItemSize;
+  Dimension displaySize;
 
   // It seems that JComboBox doesn't have a border set explicitely. So we just
   // paint the border everytime combo box is displayed. 
@@ -874,7 +874,7 @@ public class BasicComboBoxUI extends ComboBoxUI
    *
    * @return dimensions of the largest item in the combo box.
    */
-  private Dimension getLargestItemSize()
+  protected Dimension getDisplaySize()
   {
     ComboBoxModel model = comboBox.getModel();
     int numItems = model.getSize();
@@ -883,8 +883,8 @@ public class BasicComboBoxUI extends ComboBoxUI
     // return its default size
     if (numItems == 0)
       {
-	largestItemSize = getDefaultSize();
-	return largestItemSize;
+	displaySize = getDefaultSize();
+	return displaySize;
       }
 
     Dimension size = new Dimension(0, 0);
@@ -893,6 +893,8 @@ public class BasicComboBoxUI extends ComboBoxUI
     // size of the largest item in the combo box. 
     ListCellRenderer renderer = comboBox.getRenderer();
 
+    // FIXME: use the JComboBox.getPrototypeDisplayValue() if there is
+    // one
     for (int i = 0; i < numItems; i++)
       {
 	Object item = model.getElementAt(i);
@@ -904,8 +906,8 @@ public class BasicComboBoxUI extends ComboBoxUI
 	  size = comp.getPreferredSize();
       }
 
-    largestItemSize = size;
-    return largestItemSize;
+    displaySize = size;
+    return displaySize;
   }
 
   /**
@@ -976,12 +978,12 @@ public class BasicComboBoxUI extends ComboBoxUI
     {
       Dimension d = new Dimension(0, 0);
 
-      if (largestItemSize == null)
-        largestItemSize = getLargestItemSize();
+      if (displaySize == null)
+        displaySize = getDisplaySize();
 
       // add size for the area that will display selected item
-      d.width += largestItemSize.getWidth();
-      d.height += largestItemSize.getHeight();
+      d.width += displaySize.getWidth();
+      d.height += displaySize.getHeight();
 
       // add size of the arrow button
       d.width += arrowButtonWidth;
@@ -1170,12 +1172,12 @@ public class BasicComboBoxUI extends ComboBoxUI
       ComboBoxModel model = comboBox.getModel();
       ListCellRenderer renderer = comboBox.getRenderer();
 
-      if (largestItemSize == null)
-        largestItemSize = getLargestItemSize();
-      if (largestItemSize.width < getDefaultSize().width)
-        largestItemSize.width = getDefaultSize().width;
-      if (largestItemSize.height < getDefaultSize().height)
-        largestItemSize.height = getDefaultSize().height;
+      if (displaySize == null)
+        displaySize = getDisplaySize();
+      if (displaySize.width < getDefaultSize().width)
+        displaySize.width = getDefaultSize().width;
+      if (displaySize.height < getDefaultSize().height)
+        displaySize.height = getDefaultSize().height;
 
       comboBox.repaint();
     }
@@ -1189,7 +1191,7 @@ public class BasicComboBoxUI extends ComboBoxUI
     public void intervalRemoved(ListDataEvent e)
     {
       // recalculate display size of the JComboBox.
-      largestItemSize = getLargestItemSize();
+      displaySize = getDisplaySize();
       comboBox.repaint();
     }
   }
