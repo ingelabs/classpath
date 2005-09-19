@@ -1,3 +1,8 @@
+2005-09-19  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/filechooser/FileView.java:
+	Reformatted and added API doc comments.
+
 2005-09-19  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JRootPane.java:
