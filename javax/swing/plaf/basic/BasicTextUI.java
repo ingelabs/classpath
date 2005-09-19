@@ -242,7 +242,7 @@ public abstract class BasicTextUI extends TextUI
     public void paint(Graphics g, Shape s)
     {
       if (view != null)
-	view.paint(g, s);
+        view.paint(g, s);
     }
 
 
@@ -346,6 +346,13 @@ public abstract class BasicTextUI extends TextUI
         {
           // Document changed.
 	      modelChanged();
+        }
+      else if (event.getPropertyName().equals("editable"))
+        {
+          if (textComponent.isEditable())
+            textComponent.setBackground(background);
+          else 
+            textComponent.setBackground(inactiveBackground);
         }
     }
   }
@@ -815,13 +822,10 @@ public abstract class BasicTextUI extends TextUI
    */
   protected void paintBackground(Graphics g)
   {
-    if (textComponent.isEditable())
-      textComponent.setBackground(background);
-    else
-      textComponent.setBackground(inactiveBackground);
-
-    g.setColor(textComponent.getBackground());
-    g.fillRect(0, 0, textComponent.getWidth(), textComponent.getHeight());
+    // This method does nothing. All the background filling is done by the
+    // ComponentUI update method. However, the method is called by paint
+    // to provide a way for subclasses to draw something different (e.g. background
+    // images etc) on the background.
   }
 
   /**
