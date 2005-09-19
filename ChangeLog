@@ -1,3 +1,12 @@
+2005-09-19  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java:
+	(GlassPaneDispatcher.handleEvent): Replaced call to SwingUtilities' 
+	convertMouseEvent (with identical source and desination) with a simple 
+	cast.  If acquireComponentForMouseEvent reveals we're going to 
+	re-dispatch this event to ourselves (and loop infinitely), return. Also
+	replaced contentPane by glassPane as the source argument to 
+	SwingUtilities.convertMouseEvent since the glassPane is the real source.
 2005-09-19  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicArrowButton.java

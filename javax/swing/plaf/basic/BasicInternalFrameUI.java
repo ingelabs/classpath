@@ -846,12 +846,12 @@ public class BasicInternalFrameUI extends InternalFrameUI
     {
       if (e instanceof MouseEvent)
         {
-          MouseEvent me = SwingUtilities.convertMouseEvent(
-                                                           frame.getRootPane().getGlassPane(),
-                                                           (MouseEvent) e,
-                                                           frame.getRootPane().getGlassPane());
-
+          MouseEvent me = (MouseEvent) e;
           acquireComponentForMouseEvent(me);
+
+          //Avoid re-dispatching to ourselves and causing an infinite loop
+          if (mouseEventTarget.equals(frame.getGlassPane()))
+            return;
 
           // Avoid dispatching ENTERED and EXITED events twice.
           if (mouseEventTarget != null && mouseEventTarget.isShowing()
@@ -859,7 +859,7 @@ public class BasicInternalFrameUI extends InternalFrameUI
               && e.getID() != MouseEvent.MOUSE_EXITED)
             {
               MouseEvent newEvt = SwingUtilities.convertMouseEvent(
-                                                                   frame.getContentPane(),
+                                                                   frame.getGlassPane(),
                                                                    me,
                                                                    mouseEventTarget);
               mouseEventTarget.dispatchEvent(newEvt);
