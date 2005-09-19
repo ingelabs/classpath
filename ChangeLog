@@ -1,3 +1,31 @@
+2005-09-19  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installComponents): call configureArrowButton after creating button,
+	(configureEditor): set the selected item,
+	(configureArrowButton): set a zero margin,
+	(getPreferredSize): delegate to getMinimumSize(),
+	(getMinimumSize): now uses code that was in getPreferredSize(),
+	(getDefaultSize): reduce default height,
+	(ComboBoxLayoutManager.layoutComponent): use comboBox height as button
+	width,
+	(PropertyChangeHandler.propertyChange): set font on arrow button,
+	* javax/swing/plaf/metal/MetalComboBoxUI.java
+	(instances): deleted field,
+	(MetalComboBoxLayoutManager): new class,
+	(MetalPropertyChangeListener): new class,
+	(MetalComboPopup): new class,
+	(createUI): just return new instance,
+	(createEditor): implemented,
+	(createPopup): implemented,
+	(createArrowButton): implemented,
+	(createPropertyChangeListener): implemented,
+	(paint): implemented,
+	(editablePropertyChanged): implemented,
+	(createLayoutManager): implemented,
+	(removeListeners): implemented,
+	(getMinimumSize): implemented.
+
 2005-09-19  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
