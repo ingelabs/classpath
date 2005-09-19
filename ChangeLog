@@ -1,3 +1,22 @@
+2005-09-19  Tom Tromey  <tromey@redhat.com>
+
+	* javax/xml/xpath/XPathFunctionException.java (serialVersionUID): New
+	field.
+	* javax/xml/xpath/XPathFactoryConfigurationException.java
+	(serialVersionUID): New field.
+	* javax/xml/xpath/XPathExpressionException.java (serialVersionUID): New
+	field.
+	* javax/xml/xpath/XPathException.java (serialVersionUID): New field.
+	* javax/xml/transform/TransformerConfigurationException.java (locator):
+	Removed.
+	(TransformerConfigurationException): Pass locator to super constructor.
+	(serialVersionUID): New field.
+	* javax/xml/transform/TransformerFactoryConfigurationError.java
+	(serialVersionUID): New field.
+	* javax/xml/transform/TransformerException.java (containedException):
+	Renamed field.
+	(serialVersionUID): New field.
+
 2005-09-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
