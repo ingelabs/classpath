@@ -849,12 +849,16 @@ public class BasicInternalFrameUI extends InternalFrameUI
           MouseEvent me = (MouseEvent) e;
           acquireComponentForMouseEvent(me);
 
+          //If there is no target, return
+          if (mouseEventTarget == null)
+            return;
+          
           //Avoid re-dispatching to ourselves and causing an infinite loop
           if (mouseEventTarget.equals(frame.getGlassPane()))
             return;
 
           // Avoid dispatching ENTERED and EXITED events twice.
-          if (mouseEventTarget != null && mouseEventTarget.isShowing()
+          if (mouseEventTarget.isShowing()
               && e.getID() != MouseEvent.MOUSE_ENTERED
               && e.getID() != MouseEvent.MOUSE_EXITED)
             {

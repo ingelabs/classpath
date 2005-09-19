@@ -1,5 +1,11 @@
 2005-09-19  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java:
+	(GlassPaneDispatcher.handleEvent): Added check for mouseEventTarget
+	being null to avoid NPE.
+
+2005-09-19  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/JRootPane.java:
 	(RootPaneLayout.layoutContainer): Added comment about how the 
 	components should be sized.  Fixed size of glassPane which fills the 
