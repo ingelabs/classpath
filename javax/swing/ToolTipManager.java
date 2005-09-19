@@ -129,8 +129,6 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
     public void actionPerformed(ActionEvent event)
     {
       showTip();
-      if (insideTimer != null)
-	insideTimer.start();
     }
   }
 
@@ -183,7 +181,7 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
    * The window used when the tooltip doesn't fit inside the current
    * container.
    */
-  private static JWindow tooltipWindow;
+  private static JDialog tooltipWindow;
 
   /**
    * Creates a new ToolTipManager and sets up the timers.
@@ -373,7 +371,6 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
     if (exitTimer.isRunning())
       {
 	exitTimer.stop();
-	showTip();
 	insideTimer.start();
 	return;
       }
@@ -474,13 +471,15 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
    */
   void showTip()
   {
-    if (! enabled || currentComponent == null)
+    if (! enabled || currentComponent == null ||
+        (currentTip != null && currentTip.isVisible()))
       return;
 
     if (currentTip == null
         || currentTip.getComponent() != currentComponent
         && currentComponent instanceof JComponent)
       currentTip = ((JComponent) currentComponent).createToolTip();
+   
     Point p = currentPoint;
     Dimension dims = currentTip.getPreferredSize();
     if (canToolTipFit(currentTip))
@@ -527,13 +526,18 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
     else
       {
         if (currentComponent.isShowing())
-          SwingUtilities.convertPointToScreen(p, currentComponent);
-    	tooltipWindow = new JWindow();
-    	tooltipWindow.getContentPane().add(currentTip);
-    	tooltipWindow.setFocusable(false);
-    	tooltipWindow.pack();
-    	tooltipWindow.setBounds(p.x, p.y, dims.width, dims.height);
-    	tooltipWindow.show();
+          {
+            SwingUtilities.convertPointToScreen(p, currentComponent);
+            tooltipWindow = new JDialog();
+            tooltipWindow.getContentPane().add(currentTip);
+            tooltipWindow.setUndecorated(true);
+            tooltipWindow.getRootPane().
+                      setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
+            tooltipWindow.setFocusable(false);
+            tooltipWindow.pack();
+            tooltipWindow.setBounds(p.x, p.y, dims.width, dims.height);
+            tooltipWindow.show();
+          }
       }
     currentTip.setVisible(true);
   }
