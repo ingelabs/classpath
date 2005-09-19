@@ -540,7 +540,6 @@ public class JRootPane extends JComponent implements Accessible
   {
     JPanel p = new JPanel();
     p.setName(this.getName() + ".glassPane");
-    p.setLayout(new BorderLayout());
     p.setVisible(false);
     p.setOpaque(false);
     return p;
