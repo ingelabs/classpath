@@ -1,5 +1,12 @@
 2005-09-18  Tom Tromey  <tromey@redhat.com>
 
+	* java/util/Timer.java (TaskQueue.purge): New method.
+	(Timer(String)): New constructor.
+	(Timer(String,boolean)): Likewise.
+	(purge): New method.
+
+2005-09-18  Tom Tromey  <tromey@redhat.com>
+
 	* java/lang/Short.java (valueOf): New method.
 	* java/lang/Double.java (valueOf): New method.
 	* java/lang/Float.java (valueOf): New method.
