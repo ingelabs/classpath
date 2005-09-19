@@ -1,3 +1,33 @@
+2005-19-19  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(selectPath): Changed so DISCONTIGUOUS_TREE_SELECTION is the
+	default.
+	* javax/swing/JTree.java
+	(AccessibleJTreeNode): Initialized all fields.
+	(addAccessibleSelection): Implemented.
+	(clearAccessibleSelection): Implemented.
+	(doAccessibleAction): Implemented.
+	(getAccessibleAction): Implemented.
+	(getAccessibleActionCount): Implemented.
+	(getAccessibleActionDescription): Implemented.
+	(getAccesssibleChild): Remove mod variable, made global.
+	(getAccessibleComponent): Changed to return this, since this
+	class implements AccessibleComponent.
+	(getAccessibleSelection): Likewise.
+	(getAccessibleSelection): Implemented.
+	(getAccessibleSelectionCount): Implemented.
+	(getAccessibleStateSet): Remove mod variable, made global.
+	(getCursor): Implemented.
+	(isAccessibleChildSelected): Remove mod variable, made global.
+	(removeAccessibleSelection): Implemented.
+	(selectAllAccessibleSelection): Implemented.
+	(setCursor): Implemented.
+	(AccessibleJTree): Nothing to do.
+	(getAccessibleAt): Implemented.
+	(getAccessibleSelection): Implemented.
+	(getAccessibleSelection): Implemented.	
+
 2005-09-19  Tom Tromey  <tromey@redhat.com>
 
 	* javax/xml/xpath/XPathFunctionException.java (serialVersionUID): New

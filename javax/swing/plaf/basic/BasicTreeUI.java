@@ -3519,22 +3519,24 @@ public class BasicTreeUI
   {
     if (path != null)
       {
-        if (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION)
+        if (tree.getSelectionModel().getSelectionMode() == 
+                          TreeSelectionModel.SINGLE_TREE_SELECTION)
           {
+            tree.getSelectionModel().clearSelection();
             tree.addSelectionPath(path);
             tree.setLeadSelectionPath(path);
           }
-        else if (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.CONTIGUOUS_TREE_SELECTION)
+        else if (tree.getSelectionModel().getSelectionMode() == 
+                  TreeSelectionModel.CONTIGUOUS_TREE_SELECTION)
           {
             // TODO
           }
         else
           {
-            tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-
-            tree.getSelectionModel().clearSelection();
             tree.addSelectionPath(path);
             tree.setLeadSelectionPath(path);
+            tree.getSelectionModel().setSelectionMode
+                      (TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
           }
       }
   }
