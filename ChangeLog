@@ -1,3 +1,12 @@
+2005-09-19  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-net/java_net_VMInetAddress.c
+	(Java_java_net_VMInetAddress_getHostByAddr): Add error string as
+	exception message.
+	* native/jni/java-net/javanet.c (_javanet_accept): Likewise.
+	(_javanet_shutdownInput): Likewise.
+	(_javanet_shutdownOutput): Likewise.
+
 2005-09-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/border/TitledBorder.java
