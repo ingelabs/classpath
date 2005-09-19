@@ -1,3 +1,9 @@
+2005-09-19  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicArrowButton.java
+	(paintTriangle): minor correction to highlight on triangle for disabled
+	buttons.
+	
 2005-09-19  Tom Tromey  <tromey@redhat.com>
 
 	* javax/print/DocFlavor.java (BYTE_ARRAY.serialVersionUID): New field.
