@@ -161,6 +161,7 @@ public class JLayeredPane extends JComponent implements Accessible
   {
     layers = new TreeMap ();
     componentToLayer = new Hashtable ();
+    setLayout(null);
   }
 
 

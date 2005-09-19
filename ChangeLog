@@ -1,5 +1,10 @@
 2005-09-19  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/JLayeredPane.java:
+	(<init>): Set layout manager to null.
+
+2005-09-19  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java:
 	(GlassPaneDispatcher.handleEvent): Added check for mouseEventTarget
 	being null to avoid NPE.
