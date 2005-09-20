@@ -1,3 +1,17 @@
+2005-09-20  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/ToolTipManager.java
+	(mouseMoved): Removed unneeded code. If the mouse
+	moves into another component, then mouseEntered would
+	do the same thing. Otherwise, it is not needed.
+	(showTip): Fixed so that the containerPanel is an 
+	instance of Panel. Made code more efficent.
+	Tooltips were causing weird problems with the
+	JMenus.
+	(getGoodPoint): Fixed to return a better location.
+	* javax/swing/plaf/basic/BasicMenuBarUI.java
+	(mouseClicked): Fixed to prevent a NPE.
+
 2005-09-20  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/22906:

@@ -452,16 +452,8 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
   public void mouseMoved(MouseEvent event)
   {
     currentPoint = event.getPoint();
-    if (currentTip != null)
-      {
-	if (currentComponent == null)
-	  currentComponent = (Component) event.getSource();
-	
-	String text = ((JComponent) currentComponent).getToolTipText(event);
-	currentTip.setTipText(text);
-      }
     if (enterTimer.isRunning())
-      enterTimer.restart();
+      enterTimer.restart(); 
   }
 
   /**
@@ -471,73 +463,63 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
    */
   void showTip()
   {
-    if (! enabled || currentComponent == null ||
-        (currentTip != null && currentTip.isVisible()))
+    if (!enabled || currentComponent == null
+        || (currentTip != null && currentTip.isVisible()))
       return;
 
-    if (currentTip == null
-        || currentTip.getComponent() != currentComponent
+    if (currentTip == null || currentTip.getComponent() != currentComponent
         && currentComponent instanceof JComponent)
       currentTip = ((JComponent) currentComponent).createToolTip();
-   
+
     Point p = currentPoint;
     Dimension dims = currentTip.getPreferredSize();
     if (canToolTipFit(currentTip))
       {
-	JLayeredPane pane = ((JRootPane) SwingUtilities.getAncestorOfClass(JRootPane.class,
-	                                                                   currentComponent))
-	                    .getLayeredPane();
+    JLayeredPane pane = ((JRootPane) SwingUtilities.
+        getAncestorOfClass(JRootPane.class, currentComponent)).getLayeredPane();
 
-	// This should never happen, but just in case.
-	if (pane == null)
-	  return;
+    // This should never happen, but just in case.
+    if (pane == null)
+      return;
 
-	if (containerPanel != null)
-	  hideTip();
-	if (isLightWeightPopupEnabled())
-	  {
-	    containerPanel = new Panel();
-	    JRootPane root = new JRootPane();
-	    root.getContentPane().add(currentTip);
-	    containerPanel.add(root);
-	  }
-	else
-	  {
-	    containerPanel = new JPanel();
-	    containerPanel.add(currentTip);
-	  }
-	LayoutManager lm = containerPanel.getLayout();
-	if (lm instanceof FlowLayout)
-	  {
-	    FlowLayout fm = (FlowLayout) lm;
-	    fm.setVgap(0);
-	    fm.setHgap(0);
-	  }
-
-	p = getGoodPoint(p, pane, currentTip, dims);
-
-	pane.add(containerPanel);
-	containerPanel.setBounds(p.x, p.y, dims.width, dims.height);
-	currentTip.setBounds(0, 0, dims.width, dims.height);
-
-	pane.revalidate();
-	pane.repaint();
+    if (containerPanel != null)
+      hideTip();
+    containerPanel = new Panel();
+    if (isLightWeightPopupEnabled())
+      {
+        JRootPane root = new JRootPane();
+        root.getContentPane().add(currentTip);
+        containerPanel.add(root);
       }
     else
+        containerPanel.add(currentTip);
+
+    LayoutManager lm = containerPanel.getLayout();
+    if (lm instanceof FlowLayout)
       {
-        if (currentComponent.isShowing())
-          {
-            SwingUtilities.convertPointToScreen(p, currentComponent);
-            tooltipWindow = new JDialog();
-            tooltipWindow.getContentPane().add(currentTip);
-            tooltipWindow.setUndecorated(true);
-            tooltipWindow.getRootPane().
-                      setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
-            tooltipWindow.setFocusable(false);
-            tooltipWindow.pack();
-            tooltipWindow.setBounds(p.x, p.y, dims.width, dims.height);
-            tooltipWindow.show();
-          }
+        FlowLayout fm = (FlowLayout) lm;
+        fm.setVgap(0);
+        fm.setHgap(0);
+      }
+    p = getGoodPoint(p, pane, currentTip, dims);
+    pane.add(containerPanel);
+    containerPanel.setBounds(p.x, p.y, dims.width, dims.height);
+    currentTip.setBounds(0, 0, dims.width, dims.height);
+
+    pane.revalidate();
+    pane.repaint();
+      }
+    else if (currentComponent.isShowing())
+      {
+        SwingUtilities.convertPointToScreen(p, currentComponent);
+        tooltipWindow = new JDialog();
+        tooltipWindow.setContentPane(currentTip);
+        tooltipWindow.setUndecorated(true);
+        tooltipWindow.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
+        tooltipWindow.setFocusable(false);
+        tooltipWindow.pack();
+        tooltipWindow.setBounds(p.x, p.y, dims.width, dims.height);
+        tooltipWindow.show();
       }
     currentTip.setVisible(true);
   }
@@ -597,9 +579,9 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
       dims = tip.getPreferredSize();
     Rectangle bounds = currentComponent.getBounds();
     if (p.x + dims.width > bounds.width)
-      p.x = bounds.width - dims.width;
+      p.x += bounds.width - dims.width;
     if (p.y + dims.height > bounds.height)
-      p.y = bounds.height - dims.height;
+      p.y += bounds.height;
 
     p = SwingUtilities.convertPoint(currentComponent, p, c);
     return p;
