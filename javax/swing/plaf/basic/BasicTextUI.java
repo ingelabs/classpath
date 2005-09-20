@@ -346,8 +346,8 @@ public abstract class BasicTextUI extends TextUI
           // Document changed.
 	      modelChanged();
         }
-      else
-        BasicTextUI.this.propertyChange(event);
+
+      BasicTextUI.this.propertyChange(event);
     }
   }
 
