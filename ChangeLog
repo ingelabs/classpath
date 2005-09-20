@@ -1,5 +1,16 @@
 2005-09-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(installDefaults): Handle the rollover UIDefaults property.
+	(paintText): Correctly paint disabled button label text.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Fix some text component border defaults.
+	* javax/swing/plaf/basic/BasicTextPaneUI.java
+	(installUI): New method. This sets up some style attributes
+	for the JTextPane.
+
+2005-09-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
 	(initComponentDefault): Added and fixed some UI defaults.
 
