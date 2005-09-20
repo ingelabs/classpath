@@ -1,5 +1,18 @@
 2005-09-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(UpdateHandler): Renamed to PropertyChangeHandler. This name is
+	closer to the purpose of this class.
+	(PropertyChangeHandler.propertyChange): Delegate property change
+	to propertyChange hook method in the enclosing BasicTextUI.
+	(propertyChange): New protected method. This serves as a hook
+	for subclasses to handle property changes in the text component.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(properyChange): Handle editable property here and adjust background
+	accordingly.
+
+2005-09-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/DefaultStyledDocument.java
 	(getParagraphElement): If the position argument is out of the
 	document's bounds, then the closest paragraph element must be
