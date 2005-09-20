@@ -1,3 +1,33 @@
+2005-09-19  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/PopupMenu.java (AccessibleAWTPopupMenu.serialVersionUID):
+	New field.
+	* java/awt/TextField.java (AccessibleAWTTextField.serialVersionUID):
+	New field.
+	* java/awt/TextArea.java (AccessibleAWTTextArea.serialVersionUID): 
+	New field.
+	* java/awt/Menu.java (AccessibleAWTMenu.serialVersionUID): New field.
+	* java/awt/CheckboxMenuItem.java (AccessibleAWTCheckboxMenuItem.serialVersionUID):
+	New field.
+	* java/awt/TextComponent.java (AccessibleAWTTextComponent.serialVersionUID):
+	New field.
+	* java/awt/MenuItem.java (AccessibleAWTMenuItem.serialVersionUID):
+	New field.
+	* java/awt/Frame.java (AccessibleAWTFrame.serialVersionUID): New 
+	field.
+	* java/awt/Dialog.java (AccessibleAWTDialog.serialVersionUID): New
+	field.
+	* java/awt/Button.java (AccessibleAWTButton.serialVersionUID): New
+	field.
+	* java/awt/Window.java (AccessibleAWTWindow.serialVersionUID): New
+	field.
+	* java/awt/ScrollPane.java (AccessibleAWTScrollPane.serialVersionUID):
+	New field.
+	* java/awt/List.java (AccessibleAWTList.serialVersionUID): New field.
+	(AccessibleAWTListChild.serialVersionUID): Likewise.
+	(AccessibleAWTListChild.parent): Moved earlier.
+	(AccessibleAWTListChild.indexInParent): Renamed.
+
 2005-09-19  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/filechooser/FileView.java:
