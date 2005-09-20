@@ -1,3 +1,9 @@
+2005-09-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(setParagraphAttributes): Implemented this method.
+	(insertUpdate): Fixed attribute comparison to avoid NPE.
+
 2005-09-20  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	PR awt/23951
@@ -553,8 +559,8 @@
 
 2005-09-16    Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * javax/swing/Timer.java (Waker.run): Do not enter loop on 
-        repeats = false (fixes #23918).
+	* javax/swing/Timer.java (Waker.run): Do not enter loop on 
+	repeats = false (fixes #23918).
 
 2005-09-16  Andrew Haley  <aph@redhat.com>
 

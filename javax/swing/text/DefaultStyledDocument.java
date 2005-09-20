@@ -1025,11 +1025,19 @@ public class DefaultStyledDocument extends AbstractDocument
    *     selection are overridden, otherwise they are merged
    */
   public void setParagraphAttributes(int offset, int length,
-				     AttributeSet attributes,
-				     boolean replace)
+                                     AttributeSet attributes,
+                                     boolean replace)
   {
-    // FIXME: Implement me.
-    throw new Error("not implemented");
+    int index = offset;
+    while (index < offset + length)
+      {
+        AbstractElement par = (AbstractElement) getParagraphElement(index);
+        AttributeContext ctx = getAttributeContext();
+        if (replace)
+          par.removeAttributes(par);
+        par.addAttributes(attributes);
+        index = par.getElementCount();
+      }
   }
 
   /**
@@ -1081,7 +1089,7 @@ public class DefaultStyledDocument extends AbstractDocument
             // joined with the previous element.
             else if (specs.size() == 0)
               {
-                if (attr.isEqual(prev.getAttributes()))
+                if (prev.getAttributes().isEqual(attr))
                     spec.setDirection(ElementSpec.JoinPreviousDirection);
               }
 
