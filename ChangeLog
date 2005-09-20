@@ -1,5 +1,12 @@
 2005-09-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultStyledDocument.java
+	(getParagraphElement): If the position argument is out of the
+	document's bounds, then the closest paragraph element must be
+	returned. This is fixed.
+
+2005-09-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTable.java
 	(resizeAndRepaint): New protected method.
 
