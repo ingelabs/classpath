@@ -471,43 +471,43 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         && currentComponent instanceof JComponent)
       currentTip = ((JComponent) currentComponent).createToolTip();
 
+    Container parent = currentComponent.getParent();
+    if (parent instanceof JPopupMenu)
+      setLightWeightPopupEnabled(((JPopupMenu) parent).isLightWeightPopupEnabled());
+    
     Point p = currentPoint;
     Dimension dims = currentTip.getPreferredSize();
-    if (canToolTipFit(currentTip))
-      {
-    JLayeredPane pane = ((JRootPane) SwingUtilities.
-        getAncestorOfClass(JRootPane.class, currentComponent)).getLayeredPane();
-
-    // This should never happen, but just in case.
-    if (pane == null)
-      return;
-
-    if (containerPanel != null)
-      hideTip();
-    containerPanel = new Panel();
     if (isLightWeightPopupEnabled())
       {
+        JLayeredPane pane = ((JRootPane) SwingUtilities.
+            getAncestorOfClass(JRootPane.class, currentComponent)).
+            getLayeredPane();
+
+        // This should never happen, but just in case.
+        if (pane == null)
+          return;
+
+        if (containerPanel != null)
+          hideTip();
+        containerPanel = new Panel();
         JRootPane root = new JRootPane();
         root.getContentPane().add(currentTip);
         containerPanel.add(root);
-      }
-    else
-        containerPanel.add(currentTip);
 
-    LayoutManager lm = containerPanel.getLayout();
-    if (lm instanceof FlowLayout)
-      {
-        FlowLayout fm = (FlowLayout) lm;
-        fm.setVgap(0);
-        fm.setHgap(0);
-      }
-    p = getGoodPoint(p, pane, currentTip, dims);
-    pane.add(containerPanel);
-    containerPanel.setBounds(p.x, p.y, dims.width, dims.height);
-    currentTip.setBounds(0, 0, dims.width, dims.height);
+        LayoutManager lm = containerPanel.getLayout();
+        if (lm instanceof FlowLayout)
+          {
+            FlowLayout fm = (FlowLayout) lm;
+            fm.setVgap(0);
+            fm.setHgap(0);
+          }
 
-    pane.revalidate();
-    pane.repaint();
+        p = getGoodPoint(currentPoint, pane, currentTip, dims);
+        pane.add(containerPanel);
+        containerPanel.setBounds(p.x, p.y, dims.width, dims.height);
+        currentTip.setBounds(0, 0, dims.width, dims.height);
+        pane.revalidate();
+        pane.repaint();
       }
     else if (currentComponent.isShowing())
       {
@@ -515,13 +515,15 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         tooltipWindow = new JDialog();
         tooltipWindow.setContentPane(currentTip);
         tooltipWindow.setUndecorated(true);
-        tooltipWindow.getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
-        tooltipWindow.setFocusable(false);
+        tooltipWindow.getRootPane().
+                setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
         tooltipWindow.pack();
         tooltipWindow.setBounds(p.x, p.y, dims.width, dims.height);
         tooltipWindow.show();
       }
     currentTip.setVisible(true);
+    currentTip.revalidate();
+    currentTip.repaint();
   }
 
   /**
@@ -608,26 +610,5 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
     p = SwingUtilities.convertPoint(source, p, parent);
     Component target = SwingUtilities.getDeepestComponentAt(parent, p.x, p.y);
     return target;
-  }
-
-  /**
-   * This method returns whether the ToolTip can fit in the first
-   * RootPaneContainer up from the currentComponent.
-   *
-   * @param tip The ToolTip.
-   *
-   * @return Whether the ToolTip can fit.
-   */
-  private boolean canToolTipFit(JToolTip tip)
-  {
-    JRootPane root = (JRootPane) SwingUtilities.getAncestorOfClass(JRootPane.class,
-                                                                   currentComponent);
-    if (root == null)
-      return false;
-    Dimension pref = tip.getPreferredSize();
-    Dimension rootSize = root.getSize();
-    if (rootSize.width > pref.width && rootSize.height > pref.height)
-      return true;
-    return false;
   }
 }

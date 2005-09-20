@@ -1,5 +1,15 @@
 2005-09-20  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/JPopupMenu.java
+	(setVisible): If HeavyWeightPopup, setLightWeightPopupEnabled
+	is false.
+	* javax/swing/ToolTipManager.java
+	(showTip): Change so toolTips on lightWeightPopups are 
+	added different than those on heavyWeightPopups.
+	(canToolTipFit): Removed. This is not needed/used.
+
+2005-09-20  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/ToolTipManager.java
 	(mouseMoved): Removed unneeded code. If the mouse
 	moves into another component, then mouseEntered would
