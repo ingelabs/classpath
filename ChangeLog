@@ -1,3 +1,9 @@
+2005-09-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalBorders.java
+	(getTextFieldBorder): This method must return an BorderUIResource
+	instance. Fixed.
+
 2005-09-20  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/java-net/javanet.c (_javanet_accept): Throw

@@ -1156,7 +1156,8 @@ public class MetalBorders
       {
         Border inner = getMarginBorder();
         Border outer = new TextFieldBorder();
-        textFieldBorder = BorderFactory.createCompoundBorder(outer, inner);
+        textFieldBorder =
+          new BorderUIResource.CompoundBorderUIResource(outer, inner);
       }
     return textFieldBorder;
   }
