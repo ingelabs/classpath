@@ -1,5 +1,10 @@
 2005-09-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefault): Added and fixed some UI defaults.
+
+2005-09-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalBorders.java
 	(ButtonBorder.paintBorder): Fetch correct color for disabled
 	button border.
