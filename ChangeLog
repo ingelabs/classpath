@@ -1,5 +1,15 @@
 2005-09-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalBorders.java
+	(ButtonBorder.paintBorder): Fetch correct color for disabled
+	button border.
+	(getTextFieldBorder): Correctly initialize text field border. This
+	should be a compound border with a MarginBorder and TextFieldBorder
+	instead of a plain TextFieldBorder.
+	(getTextBorder): New method.
+
+2005-09-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/DefaultStyledDocument.java
 	(setParagraphAttributes): Implemented this method.
 	(insertUpdate): Fixed attribute comparison to avoid NPE.
