@@ -85,6 +85,7 @@
 
 2005-09-20  Mark Wielaard  <mark@klomp.org>
 
+	Reported by Martin Cordova <martin.cordova@gmail.com>
 	* native/jni/java-net/javanet.c (_javanet_accept): Throw
 	SocketTimeoutException on EAGAIN timeout.
 
