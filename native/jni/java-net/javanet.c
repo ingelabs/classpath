@@ -856,8 +856,12 @@ _javanet_accept (JNIEnv * env, jobject this, jobject impl)
 	  && (TARGET_NATIVE_LAST_ERROR ()
 	      != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL))
 	{
-	  JCL_ThrowException (env, IO_EXCEPTION,
-			      TARGET_NATIVE_LAST_ERROR_STRING ());
+	  if (TARGET_NATIVE_LAST_ERROR () == EAGAIN)
+	    JCL_ThrowException (env, "java/net/SocketTimeoutException",
+				"Timeout");
+	  else
+	    JCL_ThrowException (env, IO_EXCEPTION,
+				TARGET_NATIVE_LAST_ERROR_STRING ());
 	  return;
 	}
     }
