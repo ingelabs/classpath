@@ -1,3 +1,13 @@
+2005-09-20  Tom Tromey  <tromey@redhat.com>
+
+	* javax/xml/namespace/QName.java: Now Serializable.
+	(serialVersionUID): New field.
+	(qName, hashCode): Now transient.
+	(QName): Don't compute qName here.
+	(equals): Now final.
+	(hashCode): Simplified.
+	(toString): Compute qName here.
+
 2005-09-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java
