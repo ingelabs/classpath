@@ -1,5 +1,6 @@
 2005-09-20  Roman Kennke  <kennke@aicas.com>
 
+	Fixes PR #23900.
 	* javax/swing/JLayeredPane.java
 	(remove(int)): Removed repaint() call. This is unnecessary because
 	already triggered by Container.remove().
