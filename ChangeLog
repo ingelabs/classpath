@@ -1,3 +1,8 @@
+2005-09-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(resizeAndRepaint): New protected method.
+
 2005-09-20  Tom Tromey  <tromey@redhat.com>
 
 	* javax/xml/namespace/QName.java: Now Serializable.
