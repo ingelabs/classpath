@@ -1,3 +1,11 @@
+2005-09-19  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultEditorKit.java:
+	(write): Partially Implemented and made slight correction to API docs.
+	* javax/swing/text/html/HTMLEditorKit.java:
+	(createDefaultDocument): Override parent method because we need to 
+	return an HTMLDocument not a DefaultStyledDocument.
+	
 2005-09-20  Roman Kennke  <kennke@aicas.com>
 
 	Fixes PR #23900.
