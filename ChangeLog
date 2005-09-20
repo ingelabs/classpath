@@ -1,5 +1,12 @@
 2005-09-20  Tom Tromey  <tromey@redhat.com>
 
+	PR classpath/22906:
+	* gnu/java/net/protocol/jar/Connection.java (get): Added useCaches
+	argument.
+	(connect): Updated.
+
+2005-09-20  Tom Tromey  <tromey@redhat.com>
+
 	* javax/print/DocFlavor.java (serialVersionUID): Fixed typo.
 
 2005-09-19  Anthony Balkissoon  <abalkiss@redhat.com>
