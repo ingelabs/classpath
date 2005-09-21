@@ -421,13 +421,6 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
 	insideTimer.stop();
 	hideTip();
       }
-    
-    if (currentComponent == null)
-  	  currentComponent = (Component) event.getSource();
-    
-    currentComponent.invalidate();
-    currentComponent.validate();
-    currentComponent.repaint();
   }
 
   /**
@@ -511,8 +504,6 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         pane.add(containerPanel);
         containerPanel.setBounds(p.x, p.y, dims.width, dims.height);
         currentTip.setBounds(0, 0, dims.width, dims.height);
-        pane.revalidate();
-        pane.repaint();
       }
     else if (currentComponent.isShowing())
       {
@@ -546,9 +537,6 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
 	if (parent == null)
 	  return;
 	parent.remove(containerPanel);
-	parent.invalidate();
-	parent.validate();
-	parent.repaint();
 
 	parent = currentTip.getParent();
 	if (parent == null)

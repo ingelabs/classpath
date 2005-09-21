@@ -1983,7 +1983,8 @@ public class JTable extends JComponent
     int average = spill / cols.length;
     for (int i = 0; i < cols.length; i++)
       {
-        cols[i].setWidth(cols[i].getWidth() + average);
+        if (cols[i] != null)
+          cols[i].setWidth(cols[i].getWidth() + average);
       }
   }
 

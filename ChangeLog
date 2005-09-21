@@ -1,3 +1,12 @@
+2005-09-21  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTable.java
+	(distributeSpill): Fixed a NPE.
+	* javax/swing/ToolTipManager.java
+	(mouseExited): No need to do this stuff, removed code.
+	(showTip): Revalidating and repainting too much, removed.
+	(hideTip): Likewise.
+
 2005-09-21  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/BorderLayout.java (invalidateLayout): Updated comment.
