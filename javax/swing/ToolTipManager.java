@@ -456,7 +456,7 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
    */
   void showTip()
   {
-    if (!enabled || currentComponent == null
+    if (!enabled || currentComponent == null || !currentComponent.isEnabled()
         || (currentTip != null && currentTip.isVisible()))
       return;
 
@@ -465,18 +465,20 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
       currentTip = ((JComponent) currentComponent).createToolTip();
 
     Container parent = currentComponent.getParent();
-    if (parent instanceof JPopupMenu)
-      setLightWeightPopupEnabled(((JPopupMenu) parent).isLightWeightPopupEnabled());
-    
-    // Moves currentPoint to an appropriate place
     Point p = currentPoint;
     Dimension dims = currentTip.getPreferredSize();
     Rectangle bounds = currentComponent.getBounds();
-    p.x = bounds.width - dims.width;
+    p.x += bounds.width - dims.width;
     p.y = bounds.height;
-        
+    
+    if (parent instanceof JPopupMenu)
+        setLightWeightPopupEnabled(((JPopupMenu) parent).isLightWeightPopupEnabled());
+       
     if (isLightWeightPopupEnabled())
       {
+        if (p.x < parent.getBounds().x)
+          p.x = 0;
+        
         JLayeredPane pane = ((JRootPane) SwingUtilities.
             getAncestorOfClass(JRootPane.class, currentComponent)).
             getLayeredPane();
@@ -507,6 +509,10 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
       }
     else if (currentComponent.isShowing())
       {
+        Rectangle b = parent.getBounds();
+        if (p.x + dims.width > b.x + b.width)
+          p.x = b.x - dims.width;
+        
         SwingUtilities.convertPointToScreen(p, currentComponent);
         tooltipWindow = new JDialog();
         tooltipWindow.setContentPane(currentTip);
