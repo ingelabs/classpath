@@ -1,3 +1,7 @@
+2005-09-21  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/BorderLayout.java: Reverted field reordering.
+
 2005-09-21  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTable.java

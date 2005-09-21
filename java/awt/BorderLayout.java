@@ -175,16 +175,6 @@ public class BorderLayout implements LayoutManager2, java.io.Serializable
 
 
   /**
-   * @serial The horizontal gap between components
-   */
-  private int hgap;
-
-  /**
-   * @serial The vertical gap between components
-   */
-  private int vgap;
-
-  /**
    * @serial
    */
   private Component north;
@@ -192,7 +182,7 @@ public class BorderLayout implements LayoutManager2, java.io.Serializable
   /**
    * @serial
    */
-  private Component west;
+  private Component south;
 
   /**
    * @serial
@@ -202,7 +192,7 @@ public class BorderLayout implements LayoutManager2, java.io.Serializable
   /**
    * @serial
    */
-  private Component south;
+  private Component west;
 
   /**
    * @serial
@@ -228,6 +218,16 @@ public class BorderLayout implements LayoutManager2, java.io.Serializable
    * @serial
    */
   private Component lastItem;
+
+  /**
+   * @serial The horizontal gap between components
+   */
+  private int hgap;
+
+  /**
+   * @serial The vertical gap between components
+   */
+  private int vgap;
 
 
   // Some constants for use with calcSize().
