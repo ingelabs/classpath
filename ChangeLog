@@ -1,3 +1,8 @@
+2005-09-21  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalFileChooserUI.java: new file (partial 
+	implementation).
+
 2005-09-20  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JPopupMenu.java
