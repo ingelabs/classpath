@@ -1,3 +1,12 @@
+2005-09-21  Tom Tromey  <tromey@redhat.com>
+
+	* java/math/BigDecimal.java (ZERO, ONE): Now public.  Updated
+	javadoc.
+	(TEN): New constant.
+	* java/math/BigInteger.java (ZERO): Updated javadoc.
+	(ONE): Likewise.
+	(TEN): New constant.
+
 2005-09-21  Lillian Angel  <langel@redhat.com>
 
 	Fixes Bug #23937
