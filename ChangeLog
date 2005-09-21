@@ -1,3 +1,11 @@
+2005-09-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/classpath/ByteArray.java,
+	* gnu/javax/crypto/DiffieHellmanImpl.java,
+	* gnu/javax/crypto/GnuDHPrivateKey.java,
+	* gnu/javax/crypto/RSACipherImpl.java:
+	Fixed address within GPL license.
+
 2005-09-21  Mark Wielaard  <mark@klomp.org>
 
 	* lib/split-for-gcj.sh: Cut list to 3 package levels deep.
