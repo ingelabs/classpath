@@ -960,7 +960,7 @@ public class HTML
      * a paragraph is manufactured.
      * toString() returns 'implied'. HTML reader synthesizes this tag.
      */
-    public static final Tag IMPLIED = new Tag("implied", SYNTETIC);
+    public static final Tag IMPLIED = new Tag("p-implied", SYNTETIC);
     final String name;
     final int flags;
 

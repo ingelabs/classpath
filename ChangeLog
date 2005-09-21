@@ -1,5 +1,13 @@
 2005-09-21  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/text/html/HTML.java:
+	(Tag): Changed name of IMPLIED Tag from "implied" to "p-implied" to 
+	match the JDK.
+	* javax/swing/text/html/HTMLDocument.java:
+	(AdditionalComments): New field.
+
+2005-09-21  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/text/html/HTMLDocument.java:
 	(getBase): Implemented.
 	(setBase): Implemented.

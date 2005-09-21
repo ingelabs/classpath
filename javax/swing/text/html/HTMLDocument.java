@@ -55,6 +55,10 @@ import javax.swing.text.html.HTML.Tag;
  */
 public class HTMLDocument extends DefaultStyledDocument
 {
+  /** A key for document properies.  The value for the key is
+   * a Vector of Strings of comments not found in the body.
+   */  
+  public static final String AdditionalComments = "AdditionalComments";
   URL baseURL = null;
   boolean preservesUnknownTags = true;
   
