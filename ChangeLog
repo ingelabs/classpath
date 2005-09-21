@@ -1,5 +1,14 @@
 2005-09-21  Lillian Angel  <langel@redhat.com>
 
+	Fixes Bug #23937
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java
+	(propertyChange): When WANTS_INPUT_PROPERTY is changed,
+	the buttons should be updated.
+	(getButtons): Applied patch in bug report. Sets default
+	buttons.
+
+2005-09-21  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/ToolTipManager.java
 	(showTip): Added code to move currentPoint to a new place.
 	(getGoodPoint): Removed, not needed.

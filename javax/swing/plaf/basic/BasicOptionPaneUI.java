@@ -405,10 +405,14 @@ public class BasicOptionPaneUI extends OptionPaneUI
                || e.getPropertyName().equals(JOptionPane.WANTS_INPUT_PROPERTY)
                || e.getPropertyName().equals(JOptionPane.SELECTION_VALUES_PROPERTY))
         {
-	  optionPane.removeAll();
-	  messageAreaContainer = createMessageArea();
-	  optionPane.add(messageAreaContainer);
-	  optionPane.add(buttonContainer);
+          optionPane.remove(messageAreaContainer);
+          messageAreaContainer = createMessageArea();
+          optionPane.add(messageAreaContainer);
+          Container newButtons = createButtonArea();
+          optionPane.remove(buttonContainer);
+          optionPane.add(newButtons);
+          buttonContainer = newButtons;
+          optionPane.add(buttonContainer);
         }
       optionPane.invalidate();
       optionPane.repaint();
@@ -941,11 +945,17 @@ public class BasicOptionPaneUI extends OptionPaneUI
       {
       case JOptionPane.YES_NO_OPTION:
 	return new Object[] { YES_STRING, NO_STRING };
-      case JOptionPane.DEFAULT_OPTION:
       case JOptionPane.YES_NO_CANCEL_OPTION:
 	return new Object[] { YES_STRING, NO_STRING, CANCEL_STRING };
       case JOptionPane.OK_CANCEL_OPTION:
 	return new Object[] { OK_STRING, CANCEL_STRING };
+      case JOptionPane.DEFAULT_OPTION:
+        return (optionPane.getWantsInput() ) ?
+               new Object[] { OK_STRING, CANCEL_STRING } :
+               ( optionPane.getMessageType() == JOptionPane.QUESTION_MESSAGE ) ?
+               new Object[] { YES_STRING, NO_STRING, CANCEL_STRING } :
+               // ERROR_MESSAGE, INFORMATION_MESSAGE, WARNING_MESSAGE, PLAIN_MESSAGE
+               new Object[] { OK_STRING };
       }
     return null;
   }
