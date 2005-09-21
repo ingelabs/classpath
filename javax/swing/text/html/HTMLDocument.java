@@ -38,9 +38,14 @@ exception statement from your version. */
 
 package javax.swing.text.html;
 
+import java.net.URL;
+
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
+import javax.swing.text.AbstractDocument.BranchElement;
 import javax.swing.text.html.HTML.Tag;
 
 /**
@@ -50,7 +55,48 @@ import javax.swing.text.html.HTML.Tag;
  */
 public class HTMLDocument extends DefaultStyledDocument
 {
-
+  URL baseURL = null;
+  boolean preservesUnknownTags = true;
+  
+  /**
+   * Returns the location against which to resolve relative URLs.
+   * This is the document's URL if the document was loaded from a URL.
+   * If a <code>base</code> tag is found, it will be used.
+   * @return the base URL
+   */
+  public URL getBase()
+  {
+    return baseURL;
+  }
+  
+  /**
+   * Sets the location against which to resolve relative URLs.
+   * @param u the new base URL
+   */
+  public void setBase(URL u)
+  {
+    baseURL = u;
+    //TODO: also set the base of the StyleSheet
+  }
+  
+  /**
+   * Returns whether or not the parser preserves unknown HTML tags.
+   * @return true if the parser preserves unknown tags
+   */
+  public boolean getPreservesUnknownTags()
+  {
+    return preservesUnknownTags;
+  }
+  
+  /**
+   * Sets the behaviour of the parser when it encounters unknown HTML tags.
+   * @param preservesTags true if the parser should preserve unknown tags.
+   */
+  public void setPreservesUnknownTags(boolean preservesTags)
+  {
+    preservesUnknownTags = preservesTags;
+  }
+  
   /**
    * An iterator to iterate through LeafElements in the document.
    */
@@ -191,5 +237,28 @@ public class HTMLDocument extends DefaultStyledDocument
      * @return the tag.
      */
     public abstract HTML.Tag getTag();
+  }
+  
+  public class BlockElement extends AbstractDocument.BranchElement
+  {
+    public BlockElement (Element parent, AttributeSet a)
+    {
+      super (parent, a);
+    }
+    
+    /**
+     * Gets the resolving parent.  Since HTML attributes are not 
+     * inherited at the model level, this returns null.
+     */
+    public AttributeSet getResolveParent()
+    {
+      return null;
+    }
+    
+    public String getName()
+    {
+      //FIXME: this is supposed to do something different from the super class
+      return super.getName();
+    }
   }
 }
