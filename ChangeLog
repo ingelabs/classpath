@@ -1,3 +1,9 @@
+2005-09-21  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/ToolTipManager.java
+	(showTip): Added code to move currentPoint to a new place.
+	(getGoodPoint): Removed, not needed.
+
 2005-09-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalFileChooserUI.java: new file (partial 

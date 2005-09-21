@@ -475,8 +475,13 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
     if (parent instanceof JPopupMenu)
       setLightWeightPopupEnabled(((JPopupMenu) parent).isLightWeightPopupEnabled());
     
+    // Moves currentPoint to an appropriate place
     Point p = currentPoint;
     Dimension dims = currentTip.getPreferredSize();
+    Rectangle bounds = currentComponent.getBounds();
+    p.x = bounds.width - dims.width;
+    p.y = bounds.height;
+        
     if (isLightWeightPopupEnabled())
       {
         JLayeredPane pane = ((JRootPane) SwingUtilities.
@@ -486,9 +491,9 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         // This should never happen, but just in case.
         if (pane == null)
           return;
-
         if (containerPanel != null)
           hideTip();
+        
         containerPanel = new Panel();
         JRootPane root = new JRootPane();
         root.getContentPane().add(currentTip);
@@ -502,7 +507,7 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
             fm.setHgap(0);
           }
 
-        p = getGoodPoint(currentPoint, pane, currentTip, dims);
+        p = SwingUtilities.convertPoint(currentComponent, p, pane);
         pane.add(containerPanel);
         containerPanel.setBounds(p.x, p.y, dims.width, dims.height);
         currentTip.setBounds(0, 0, dims.width, dims.height);
@@ -558,35 +563,6 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
 	tooltipWindow.dispose();
 	tooltipWindow = null;
       }
-  }
-
-  /**
-   * This method returns a point in the LayeredPane where the ToolTip can be
-   * shown. The point returned (if the ToolTip is to be displayed at the
-   * preferred dimensions) will always place the ToolTip inside the
-   * currentComponent if possible.
-   *
-   * @param p The last known good point for the mouse.
-   * @param c The JLayeredPane in the first RootPaneContainer up from the
-   *        currentComponent.
-   * @param tip The ToolTip to display.
-   * @param dims The ToolTip preferred dimensions (can be null).
-   *
-   * @return A good point to place the ToolTip.
-   */
-  private Point getGoodPoint(Point p, JLayeredPane c, JToolTip tip,
-                             Dimension dims)
-  {
-    if (dims == null)
-      dims = tip.getPreferredSize();
-    Rectangle bounds = currentComponent.getBounds();
-    if (p.x + dims.width > bounds.width)
-      p.x += bounds.width - dims.width;
-    if (p.y + dims.height > bounds.height)
-      p.y += bounds.height;
-
-    p = SwingUtilities.convertPoint(currentComponent, p, c);
-    return p;
   }
 
   /**
