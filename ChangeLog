@@ -5,6 +5,12 @@
 	(getPreviousWord): Implemented.
 
 2005-09-22  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/MetalLookAndFeel.java
+	(initComponentDefaults): Changed back to original 
+	values.
+
+2005-09-22  Lillian Angel  <langel@redhat.com>
 	* javax/swing/ToolTipManager.java
 	(showTip): Moved tooltip location adjustments to a
 	helper method.
