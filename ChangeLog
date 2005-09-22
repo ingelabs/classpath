@@ -1,3 +1,7 @@
+2005-09-22  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/FileWriter.java (FileWriter): Typo fix.
+
 2005-09-22  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JApplet.java
