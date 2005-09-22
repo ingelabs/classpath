@@ -1,3 +1,12 @@
+2005-09-22  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JPopupMenu.java
+	(setVisible): Size of menu should always be the preferred
+	size. It was sometimes cutting of the accelerator.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	Increased defaultAcceleratorLabelGap field to 10, to
+	make menuItem more readable.
+
 2005-09-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/Utilities.java:
