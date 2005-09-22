@@ -40,6 +40,7 @@ package javax.swing.text;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.text.BreakIterator;
 
 /**
  * A set of utilities to deal with text. This is used by several other classes
@@ -279,5 +280,77 @@ public class Utilities
                                               int x, TabExpander te, int p0)
   {
     return getTabbedTextOffset(s, fm, x0, x, te, p0, true);
+  }
+  
+  /**
+   * Finds the start of the next word for the given offset.
+   * 
+   * @param c
+   *          the text component
+   * @param offs
+   *          the offset in the document
+   * @return the location in the model of the start of the next word.
+   * @throws BadLocationException
+   *           if the offset is invalid.
+   */
+  public static final int getNextWord(JTextComponent c, int offs)
+      throws BadLocationException
+  {
+    if (offs < 0 || offs > (c.getText().length() - 1))
+      throw new BadLocationException("invalid offset specified", offs);
+    String text = c.getText();
+    BreakIterator wb = BreakIterator.getWordInstance();
+    wb.setText(text);
+    int last = wb.following(offs);
+    int current = wb.next();
+    while (current != BreakIterator.DONE)
+      {
+        for (int i = last; i < current; i++)
+          {
+            // FIXME: Should use isLetter(int) and text.codePointAt(int)
+            // instead, but isLetter(int) isn't implemented yet
+            if (Character.isLetter(text.charAt(i)))
+              return last;
+          }
+        last = current;
+        current = wb.next();
+      }
+    return BreakIterator.DONE;
+  }
+
+  /**
+   * Finds the start of the previous word for the given offset.
+   * 
+   * @param c
+   *          the text component
+   * @param offs
+   *          the offset in the document
+   * @return the location in the model of the start of the previous word.
+   * @throws BadLocationException
+   *           if the offset is invalid.
+   */
+  public static final int getPreviousWord(JTextComponent c, int offs)
+      throws BadLocationException
+  {
+    if (offs < 0 || offs > (c.getText().length() - 1))
+      throw new BadLocationException("invalid offset specified", offs);
+    String text = c.getText();
+    BreakIterator wb = BreakIterator.getWordInstance();
+    wb.setText(text);
+    int last = wb.following(offs);
+    int current = wb.previous();
+    while (current != BreakIterator.DONE)
+      {
+        for (int i = last; i < current; i++)
+          {
+            // FIXME: Should use isLetter(int) and text.codePointAt(int)
+            // instead, but isLetter(int) isn't implemented yet
+            if (Character.isLetter(text.charAt(i)))
+              return last;
+          }
+        last = current;
+        current = wb.next();
+      }
+    return BreakIterator.DONE;
   }
 }
