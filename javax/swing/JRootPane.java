@@ -504,7 +504,6 @@ public class JRootPane extends JComponent implements Accessible
     getGlassPane();
     getLayeredPane();
     getContentPane();
-    setDoubleBuffered(true);
     updateUI();
   }
 

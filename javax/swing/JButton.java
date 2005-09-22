@@ -75,9 +75,6 @@ public class JButton extends AbstractButton
   boolean def;
   boolean is_def;
 
-  /** The AccessibleContext for this JButton. */
-  AccessibleJButton accessibleContext;
-
   public JButton()
   {
     this(null, null);

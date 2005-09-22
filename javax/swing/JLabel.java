@@ -331,9 +331,6 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
   /** The gap between the icon and the text. */
   private transient int iconTextGap = 4;
 
-  /** The accessible context for this JLabel. */
-  private AccessibleJLabel accessibleContext;
-
   /**
    * Creates a new vertically centered, horizontally on the leading edge
    * JLabel object with text and no icon.

@@ -73,6 +73,11 @@ public class JApplet extends Applet
     }
   }
 
+  /**
+   * The accessible context for this <code>JApplet</code>.
+   */
+  protected AccessibleContext accessibleContext;
+
   private static final long serialVersionUID = 7269359214497372587L;
   
   protected JRootPane rootPane;
@@ -88,11 +93,6 @@ public class JApplet extends Applet
    * to the content pane for this container
    */
   private boolean initStageDone = false;
-
-  /**
-   * The accessible context for this <code>JApplet</code>.
-   */
-  AccessibleContext accessibleContext;
 
   public JApplet()
   {

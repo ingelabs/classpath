@@ -1,3 +1,16 @@
+2005-09-22  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JApplet.java
+	(accessibleContext): Made field protected as specified.
+	* javax/swing/JButton.java
+	(accessibleContext): Removed field. The inherited JComponents
+	accessibleContext field should be used instead.
+	* javax/swing/JLabel.java
+	(accessibleContext): Removed field. The inherited JComponents
+	accessibleContext field should be used instead.
+	* javax/swing/JRootPane.java
+	(JRootPane): Removed unnecessary setDoubleBuffered() call.
+
 2005-09-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/html/HTML.java:
