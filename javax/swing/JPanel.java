@@ -80,11 +80,6 @@ public class JPanel extends JComponent implements Accessible
     }
   }
 
-  /**
-   * The accessible context for this <code>JPanel</code>.
-   */
-  AccessibleContext accessibleContext;
-
   public JPanel()
   {
     this(new FlowLayout(), true);

@@ -1,5 +1,11 @@
 2005-09-22  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JPanel.java
+	(accessibleContext): Removed this unnecessary field. Use the
+	inherited field of the same name from JComponent instead.
+
+2005-09-22  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/UIManager.java
 	(static_initializer): Load MetalLookAndFeel only as fallback, if
 	the system property 'swing.defaultlaf' is not defined. Before
