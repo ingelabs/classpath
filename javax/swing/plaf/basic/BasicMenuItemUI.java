@@ -163,7 +163,7 @@ public class BasicMenuItemUI extends MenuItemUI
   /**
    * Number of spaces between accelerator and menu item's label.
    */
-  private int defaultAcceleratorLabelGap = 4;
+  private int defaultAcceleratorLabelGap = 10;
 
   /**
    * Creates a new BasicMenuItemUI object.
@@ -325,7 +325,7 @@ public class BasicMenuItemUI extends MenuItemUI
                                   m.getToolkit().getFontMetrics(acceleratorFont));
 
         // add width of accelerator's text
-        d.width = d.width + rect.width + defaultAcceleratorLabelGap;
+        d.width += rect.width + defaultAcceleratorLabelGap;
 
         // adjust the heigth of the preferred size if necessary
         if (d.height < rect.height)
