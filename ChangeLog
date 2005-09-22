@@ -1,5 +1,32 @@
 2005-09-22  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JViewport.java
+	(JViewport): Initialize cached fields for blitting.
+	(setViewPosition): Repaint viewport.
+	(revalidate): Set damaged flag. Used for blitting.
+	(reshape): Likewise.
+	(paint): New method. Decide which paint method to use.
+	(computeBlit): New method. Computes the parameters for blitting.
+	(paintSimple): New method. Performs painting in simple mode.
+	(paintBackingStore): New method. Performs painting in backingstore
+	mode.
+	(paintBlit): New method. Performs painting in blit mode. For
+	now this falls back to backing store mode.
+	* javax/swing/plaf/basic/BasicViewportUI.java
+	(ChangeListener): Removed inner class.
+	(installDefaults): Load default for background color. Changed
+	signature to protected.
+	(installListeners): Removed method.
+	(uninstallDefaults): Changed signature to protected.
+	(installUI): Call installDefaults().
+	(uninstallUI): Call uninstallDefaults().
+	(getPreferredSize): Removed.
+	(paint): Removed.
+	(paintSimple): Removed.
+	(paintBackingStore): Removed.
+
+2005-09-22  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(AccessibleJComponent.addPropertyChangeListener): Partly omplemented.
 	(AccessibleJComponent.getAccessibleStateSet): Partly implemented.
