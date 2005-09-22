@@ -1,3 +1,10 @@
+2005-09-22  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/event/filters/StepFilter.java (StepFilter): Do not test
+	for null thread ID -- just test if it has not been garbage collected.
+	* gnu/classpath/jdwp/event/filters/ThreadOnlyFilter.java (ThreadOnlyFilter):
+	Likewise.
+
 2005-09-22  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JPopupMenu.java
