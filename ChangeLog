@@ -1,3 +1,9 @@
+2005-09-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/html/HTML.java:
+	(SYNTHETIC): Renamed variable SYNTETIC to SYNTHETIC.
+	(Tag): Changed comment for static Tag IMPLIED.
+
 2005-09-22  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JViewport.java
