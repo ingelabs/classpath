@@ -1,5 +1,9 @@
 2005-09-22  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/JList.java (AccessibleJList): New constructor.
+
+2005-09-22  Tom Tromey  <tromey@redhat.com>
+
 	* java/net/ServerSocket.java (accept): Use correct security manager
 	call.
 

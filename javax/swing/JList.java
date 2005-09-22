@@ -614,6 +614,13 @@ public class JList extends JComponent implements Accessible, Scrollable
       
       // TODO: Implement the remaining methods of this class.
     }
+    
+    /**
+     * Create a new AccessibleJList.
+     */
+    public AccessibleJList()
+    {
+    }
 
     /**
      * Returns the number of selected accessible children.
