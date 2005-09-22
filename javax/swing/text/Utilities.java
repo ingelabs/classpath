@@ -337,11 +337,12 @@ public class Utilities
     String text = c.getText();
     BreakIterator wb = BreakIterator.getWordInstance();
     wb.setText(text);
-    int last = wb.following(offs);
+    int last = wb.preceding(offs);
     int current = wb.previous();
+
     while (current != BreakIterator.DONE)
       {
-        for (int i = last; i < current; i++)
+        for (int i = last; i < offs; i++)
           {
             // FIXME: Should use isLetter(int) and text.codePointAt(int)
             // instead, but isLetter(int) isn't implemented yet
@@ -349,8 +350,8 @@ public class Utilities
               return last;
           }
         last = current;
-        current = wb.next();
+        current = wb.previous();
       }
-    return BreakIterator.DONE;
+    return 0;
   }
 }

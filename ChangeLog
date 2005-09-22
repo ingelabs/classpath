@@ -1,5 +1,11 @@
 2005-09-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/text/Utilities.java:
+	(getPreviousWord): Fixed incorrect logic.  Use preceding() instead of 
+	following(), previous() instead of next().
+
+2005-09-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* gnu/java/text/BaseBreakIterator.java:
 	(following): Don't restore old CharacterIterator index.
 
