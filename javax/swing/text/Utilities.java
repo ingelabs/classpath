@@ -354,4 +354,44 @@ public class Utilities
       }
     return 0;
   }
+  
+  /**
+   * Finds the start of a word for the given location.
+   * @param c the text component
+   * @param offs the offset location
+   * @return the location of the word beginning
+   * @throws BadLocationException if the offset location is invalid
+   */
+  public static final int getWordStart(JTextComponent c, int offs)
+      throws BadLocationException
+  {
+    if (offs < 0 || offs >= c.getText().length())
+      throw new BadLocationException("invalid offset specified", offs);
+    
+    String text = c.getText();
+    BreakIterator wb = BreakIterator.getWordInstance();
+    wb.setText(text);
+    if (wb.isBoundary(offs))
+      return offs;
+    return wb.preceding(offs);
+  }
+  
+  /**
+   * Finds the end of a word for the given location.
+   * @param c the text component
+   * @param offs the offset location
+   * @return the location of the word end
+   * @throws BadLocationException if the offset location is invalid
+   */
+  public static final int getWordEnd(JTextComponent c, int offs)
+      throws BadLocationException
+  {
+    if (offs < 0 || offs >= c.getText().length())
+      throw new BadLocationException("invalid offset specified", offs);
+    
+    String text = c.getText();
+    BreakIterator wb = BreakIterator.getWordInstance();
+    wb.setText(text);
+    return wb.following(offs);
+  }
 }
