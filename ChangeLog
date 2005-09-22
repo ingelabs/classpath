@@ -1,3 +1,8 @@
+2005-09-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/filechooser/FileFilter.java: reformatted and added API
+	docs.
+
 2004-10-09  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/ClassLoader.java 
