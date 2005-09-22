@@ -1,3 +1,8 @@
+2005-09-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* gnu/java/text/BaseBreakIterator.java:
+	(following): Don't restore old CharacterIterator index.
+
 2005-09-22  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/JList.java (AccessibleJList): New constructor.
