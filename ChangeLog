@@ -1,3 +1,59 @@
+2005-09-22  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetResizable):
+	Replace deprecated gtk_window_set_policy with gtk_window_set_resizable.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkMenuPeer_delItem): Replace deprecated
+	gtk_container_children with gtk_container_get_children.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuBarPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkMenuBarPeer_nativeSetHelpMenu): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkMenuBarPeer_delMenu): Likewise.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(Java_gnu_java_awt_peer_gtk_GtkImage_freePixmap): Replace deprecated
+	gdk_pixmap_unref with g_object_unref.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursorUnlocked):
+	Replace deprecated gdk_cursor_destroy with gdk_cursor_unref.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetParent):
+	Replace deprecated gtk_container_children with
+	gtk_container_get_children.
+	(find_fg_color_widget): Replace deprecated macro GTK_IS_OPTION_MENU with
+	GTK_IS_COMBO_BOX.
+	(component_button_release_cb): Replace deprecated gdk_window_get_size
+	with gdk_drawable_get_size.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup):
+	Replace deprecated gtk_radio_button_group with
+	gtk_radio_button_get_group.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_remove): Likewise.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCanvasPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkCanvasPeer_create): Replace deprecated
+	gtk_type_new with gtk_drawing_area_new.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_copyState): Replace deprecated
+	gdk_*_ref with g_object_ref.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__II): Likewise.
+	Replace deprecated gdk_rgb_get_cmap with gdk_rgb_get_colormap.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_initFromImage): Replace
+	deprecated gdk_*_ref with g_object_ref.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_initStateUnlocked): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_dispose): Replace deprecated
+	gdk_*_unref with g_object_unref.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_copyArea): Replace deprecated
+	gdk_window_copy_area with gdk_draw_drawable.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_setFGColor): Replace deprecated
+	gdk_color_alloc with gdk_colormap_alloc_color.
+
 2005-09-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/Utilities.java:

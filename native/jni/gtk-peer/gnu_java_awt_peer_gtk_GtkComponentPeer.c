@@ -249,7 +249,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursorUnlocked
 
   gdk_cursor = gdk_cursor_new (gdk_cursor_type);
   gdk_window_set_cursor (widget->window, gdk_cursor);
-  gdk_cursor_destroy (gdk_cursor);
+  gdk_cursor_unref (gdk_cursor);
 }
 
 JNIEXPORT void JNICALL
@@ -272,9 +272,9 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetParent
   if (widget->parent == NULL)
     {
       if (GTK_IS_WINDOW (parent_widget))
-        {
-          GList *children = gtk_container_children 
-            (GTK_CONTAINER (parent_widget));
+	{
+	  GList *children = gtk_container_get_children
+	    (GTK_CONTAINER (parent_widget));
 
           if (GTK_IS_MENU_BAR (children->data))
             gtk_fixed_put (GTK_FIXED (children->next->data), widget, 0, 0);
@@ -843,7 +843,7 @@ find_fg_color_widget (GtkWidget *widget)
 
   if (GTK_IS_EVENT_BOX (widget)
       || (GTK_IS_BUTTON (widget)
-          && !GTK_IS_OPTION_MENU (widget)))
+	  && !GTK_IS_COMBO_BOX (widget)))
     fg_color_widget = gtk_bin_get_child (GTK_BIN(widget));
   else
     fg_color_widget = widget;
@@ -973,7 +973,7 @@ component_button_release_cb (GtkWidget *widget __attribute__((unused)),
   /* Generate an AWT click event only if the release occured in the
      window it was pressed in, and the mouse has not been dragged since
      the last time it was pressed. */
-  gdk_window_get_size (event->window, &width, &height);
+  gdk_drawable_get_size (event->window, &width, &height);
   if (! hasBeenDragged
       && event->x >= 0
       && event->y >= 0
