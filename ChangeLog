@@ -1,3 +1,11 @@
+2005-09-22  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(paintChildren): If a child component is invisible, skip it.
+	Handle the (rare) case when no clip is set as if it's set to the
+	child component's bounds. These fixes should make Swing working
+	again as before.
+
 2005-09-22  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c

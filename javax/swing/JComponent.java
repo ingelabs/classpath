@@ -1492,8 +1492,14 @@ public abstract class JComponent extends Container implements Serializable
     Component[] children = getComponents();
     for (int i = children.length - 1; i >= 0; --i)
       {
+        if (!children[i].isVisible())
+          continue;
+
         Rectangle bounds = children[i].getBounds();
         Rectangle oldClip = g.getClipBounds();
+        if (oldClip == null)
+          oldClip = bounds;
+
         Rectangle clip = oldClip.intersection(bounds);
         if (clip.isEmpty())
           continue;
