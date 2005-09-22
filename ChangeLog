@@ -1,3 +1,8 @@
+2005-09-22  Tom Tromey  <tromey@redhat.com>
+
+	* java/net/ServerSocket.java (accept): Use correct security manager
+	call.
+
 2005-09-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/Utilities.java:
