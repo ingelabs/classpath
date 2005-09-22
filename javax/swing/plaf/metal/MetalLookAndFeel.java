@@ -1045,18 +1045,19 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "TabbedPane.tabAreaBackground", getControl(),
       "TabbedPane.tabAreaInsets", new InsetsUIResource(4, 2, 0, 6),
       "TabbedPane.tabInsets", new InsetsUIResource(0, 9, 1, 9),
-
-      "Table.background", getWindowBackground(),
-      "Table.focusCellBackground", getWindowBackground(),
-      "Table.focusCellForeground", getControlTextColor(),
-      "Table.foreground", getControlTextColor(),
-      "Table.focusCellHighlightBorder", getControlShadow(),
-      "Table.focusCellBackground", getWindowBackground(),
-      "Table.gridColor", getControlDarkShadow(),
+      
+      "Table.background", new ColorUIResource(204, 204, 204),
+      "Table.focusCellBackground", new ColorUIResource(255, 255, 255),
+      "Table.focusCellForeground", new ColorUIResource(0, 0, 0),
+      "Table.foreground", new ColorUIResource(0, 0, 0),
+      "Table.focusCellHighlightBorder", new ColorUIResource(153, 153, 204),
+      "Table.gridColor", new ColorUIResource(153, 153, 153),
+      "Table.selectionBackground", new ColorUIResource(204, 204, 255),
+      "Table.selectionForeground", new ColorUIResource(0, 0, 0),
 
       "TableHeader.background", getControl(),
       "TableHeader.cellBorder", new MetalBorders.TableHeaderBorder(),
-      "TableHeader.foreground", getControlTextColor(),
+      "TableHeader.foreground", new ColorUIResource(0, 0, 0),
 
       "TextArea.background", getWindowBackground(),
       "TextArea.caretForeground", getUserTextColor(),

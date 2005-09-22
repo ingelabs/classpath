@@ -1,3 +1,19 @@
+2005-09-22  Lillian Angel  <langel@redhat.com>
+	* javax/swing/ToolTipManager.java
+	(showTip): Moved tooltip location adjustments to a
+	helper method.
+	(adjustLocation): New helper method.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Fixed defaults for Table, 
+	TableHeader, Tree to match JDK.
+	* javax/swing/plaf/MetalLookAndFeel.java
+	(initComponentDefaults): Fixed defaults for Table and
+	TableHeader to match JDK.	
+	* javax/swing/plaf/basic/BasicToolTipUI.java
+	(defaultBorder): Removed, along with inner class. Not needed.
+	(installDefaults): Changed border to be the default border in
+	L&F.
+
 2005-09-22  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JSpinner.java

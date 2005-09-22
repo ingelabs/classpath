@@ -467,18 +467,12 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
     Container parent = currentComponent.getParent();
     Point p = currentPoint;
     Dimension dims = currentTip.getPreferredSize();
-    Rectangle bounds = currentComponent.getBounds();
-    p.x += bounds.width - dims.width;
-    p.y = bounds.height;
     
     if (parent instanceof JPopupMenu)
         setLightWeightPopupEnabled(((JPopupMenu) parent).isLightWeightPopupEnabled());
-       
+           
     if (isLightWeightPopupEnabled())
       {
-        if (p.x < parent.getBounds().x)
-          p.x = 0;
-        
         JLayeredPane pane = ((JRootPane) SwingUtilities.
             getAncestorOfClass(JRootPane.class, currentComponent)).
             getLayeredPane();
@@ -503,17 +497,18 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
           }
 
         p = SwingUtilities.convertPoint(currentComponent, p, pane);
+        p = adjustLocation(p, pane, dims);
+        
         pane.add(containerPanel);
         containerPanel.setBounds(p.x, p.y, dims.width, dims.height);
         currentTip.setBounds(0, 0, dims.width, dims.height);
       }
     else if (currentComponent.isShowing())
-      {
-        Rectangle b = parent.getBounds();
-        if (p.x + dims.width > b.x + b.width)
-          p.x = b.x - dims.width;
-        
+      {        
         SwingUtilities.convertPointToScreen(p, currentComponent);
+        p = adjustLocation(p, SwingUtilities.getWindowAncestor(currentComponent), 
+                           dims);
+        
         tooltipWindow = new JDialog();
         tooltipWindow.setContentPane(currentTip);
         tooltipWindow.setUndecorated(true);
@@ -524,10 +519,30 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         tooltipWindow.show();
       }
     currentTip.setVisible(true);
-    currentTip.revalidate();
-    currentTip.repaint();
   }
 
+  /**
+   * Adjusts the point to a new location on the component,
+   * using the currentTip's dimensions.
+   * 
+   * @param p - the point to convert.
+   * @param c - the component the point is on.
+   * @param d - the dimensions of the currentTip.
+   */
+  private Point adjustLocation(Point p, Component c, Dimension d)
+  {
+    if (p.x + d.width > c.getWidth())
+      p.x -= d.width;
+    if (p.x < 0)
+      p.x = 0;
+    if (p.y + d.height < c.getHeight())
+      p.y += d.height;
+    else if (p.y + d.height > c.getHeight())
+      p.y -= d.height*2;
+    
+    return p;
+  }
+  
   /**
    * This method hides the ToolTip.
    * This is package-private to avoid an accessor method.
