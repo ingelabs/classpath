@@ -143,11 +143,34 @@ public abstract class JComponent extends Container implements Serializable
     protected FocusListener accessibleFocusHandler;
 
     protected AccessibleJComponent() {}
-    public void addPropertyChangeListener(PropertyChangeListener listener) {}
+
+    /**
+     * Adds a property change listener to the list of registered listeners.
+     *
+     * @param listener the listener to add
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+      // TODO: Why is this overridden?
+      super.addPropertyChangeListener(listener);
+    }
+
     public void removePropertyChangeListener(PropertyChangeListener listener) {}
     public int getAccessibleChildrenCount() { return 0; }
     public Accessible getAccessibleChild(int value0) { return null; }
-    public AccessibleStateSet getAccessibleStateSet() { return null; } 
+
+    /**
+     * Returns the accessible state set of this component.
+     *
+     * @return the accessible state set of this component
+     */
+    public AccessibleStateSet getAccessibleStateSet()
+    {
+      // FIXME: Figure out which states should be set here, and which are
+      // inherited from the super class.
+      return super.getAccessibleStateSet();
+    }
+
     public String getAccessibleName() { return null; }
     public String getAccessibleDescription() { return null; }
     public AccessibleRole getAccessibleRole() { return null; }
@@ -225,8 +248,8 @@ public abstract class JComponent extends Container implements Serializable
 
   /** 
    * <p>Whether to double buffer this component when painting. This flag
-   * should generally be <code>false</code>, except for top level
-   * components such as {@link JFrame} or {@link JApplet}.</p>
+   * should generally be <code>true</code>, to ensure good painting
+   * performance.</p>
    *
    * <p>All children of a double buffered component are painted into the
    * double buffer automatically, so only the top widget in a window needs
@@ -237,7 +260,7 @@ public abstract class JComponent extends Container implements Serializable
    * @see #paintLock
    * @see #paint
    */
-  boolean doubleBuffered = false;
+  boolean doubleBuffered = true;
 
   /**
    * A set of flags indicating which debugging graphics facilities should
@@ -1411,16 +1434,6 @@ public abstract class JComponent extends Container implements Serializable
    * RepaintManager}. Client code should usually call {@link #repaint()} to
    * trigger painting.</p>
    *
-   * <p>This method will acquire a double buffer from the {@link
-   * RepaintManager} if the component's {@link #doubleBuffered} property is
-   * <code>true</code> and the <code>paint</code> call is the
-   * <em>first</em> recursive <code>paint</code> call inside swing.</p>
-   *
-   * <p>The method will also modify the provided {@link Graphics} context
-   * via the {@link #getComponentGraphics} method. If you want to customize
-   * the graphics object used for painting, you should override that method
-   * rather than <code>paint</code>.</p>
-   *
    * <p>The body of the <code>paint</code> call involves calling {@link
    * #paintComponent}, {@link #paintBorder}, and {@link #paintChildren} in
    * order. If you want to customize painting behavior, you should override
@@ -1436,33 +1449,9 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void paint(Graphics g)
   {
-    Graphics g2 = g;
-    Image doubleBuffer = null;
-    RepaintManager rm = RepaintManager.currentManager(this);
-
-    if (isDoubleBuffered()
-        && (rm.isDoubleBufferingEnabled())
-        && (! Thread.holdsLock(paintLock)))
-      {
-        doubleBuffer = rm.getOffscreenBuffer(this, getWidth(), getHeight());
-      }
-
-    synchronized (paintLock)
-      {
-        if (doubleBuffer != null)
-          {
-            g2 = doubleBuffer.getGraphics();
-            g2.setClip(g.getClipBounds());
-          }
-          
-        g2 = getComponentGraphics(g2);
-        paintComponent(g2);
-        paintBorder(g2);
-        paintChildren(g2);
-        
-        if (doubleBuffer != null)
-          g.drawImage(doubleBuffer, 0, 0, (ImageObserver) null);
-      }
+    paintComponent(g);
+    paintBorder(g);
+    paintChildren(g);
   }
 
   /**
@@ -1500,7 +1489,29 @@ public abstract class JComponent extends Container implements Serializable
    */
   protected void paintChildren(Graphics g)
   {
-    super.paint(g);
+    Component[] children = getComponents();
+    for (int i = children.length - 1; i >= 0; --i)
+      {
+        Rectangle bounds = children[i].getBounds();
+        Rectangle oldClip = g.getClipBounds();
+        Rectangle clip = oldClip.intersection(bounds);
+        if (clip.isEmpty())
+          continue;
+        boolean translated = false;
+        try
+          {
+            g.setClip(clip.x, clip.y, clip.width, clip.height);
+            g.translate(bounds.x, bounds.y);
+            translated = true;
+            children[i].paint(g);
+          }
+        finally
+          {
+            if (translated)
+              g.translate(-bounds.x, -bounds.y);
+            g.setClip(oldClip);
+          }
+      }
   }
 
   /**
@@ -1549,21 +1560,87 @@ public abstract class JComponent extends Container implements Serializable
    * that root pane. This method is called from the {@link RepaintManager}
    * and should always be called within the painting thread.
    *
+   * <p>This method will acquire a double buffer from the {@link
+   * RepaintManager} if the component's {@link #doubleBuffered} property is
+   * <code>true</code> and the <code>paint</code> call is the
+   * <em>first</em> recursive <code>paint</code> call inside swing.</p>
+   *
+   * <p>The method will also modify the provided {@link Graphics} context
+   * via the {@link #getComponentGraphics} method. If you want to customize
+   * the graphics object used for painting, you should override that method
+   * rather than <code>paint</code>.</p>
+   *
    * @param r The dirty rectangle to paint
    */
   public void paintImmediately(Rectangle r)
   {
-    Component root = SwingUtilities.getRoot(this);
-    if (root == null || ! root.isShowing())
-      return;
-    Graphics g = root.getGraphics();
-    if (g == null)
+    // Try to find a root pane for this component.
+    Component root = SwingUtilities.getRootPane(this);
+    // If no root pane can be found, then try to find the Window that contains
+    // this component.
+    if (root == null)
+      root = SwingUtilities.getRoot(this);
+    if (root == null || !root.isShowing())
       return;
 
-    Rectangle clip = SwingUtilities.convertRectangle(this, r, root);
-    g.setClip(clip);
-    root.paint(g);
+    Rectangle rootClip = SwingUtilities.convertRectangle(this, r, root);
+    if (root instanceof JComponent)
+      ((JComponent) root).paintImmediately2(rootClip);
+    else
+      root.repaint(rootClip.x, rootClip.y, rootClip.width, rootClip.height);
+  }
+
+  /**
+   * Performs the actual work of paintImmediatly on the repaint root.
+   *
+   * @param r the area to be repainted
+   */
+  void paintImmediately2(Rectangle r)
+  {
+    RepaintManager rm = RepaintManager.currentManager(this);
+    if (rm.isDoubleBufferingEnabled() && isDoubleBuffered())
+      paintDoubleBuffered(r);
+    else
+      paintSimple(r);
+  }
+
+  /**
+   * Performs double buffered repainting.
+   *
+   * @param r the area to be repainted
+   */
+  void paintDoubleBuffered(Rectangle r)
+  {
+    RepaintManager rm = RepaintManager.currentManager(this);
+
+    // Paint on the offscreen buffer.
+    Image buffer = rm.getOffscreenBuffer(this, getWidth(), getHeight());
+    Graphics g = buffer.getGraphics();
+    Graphics g2 = getComponentGraphics(g);
+    g2.setClip(r.x, r.y, r.width, r.height);
+    paint(g2);
+    g2.dispose();
     g.dispose();
+
+    // Paint the buffer contents on screen.
+    Graphics g3 = getGraphics();
+    g3.setClip(r.x, r.y, r.width, r.height);
+    g3.drawImage(buffer, 0, 0, this);
+    g3.dispose();
+  }
+
+  /**
+   * Performs normal painting without double buffering.
+   *
+   * @param r the area to be repainted
+   */
+  void paintSimple(Rectangle r)
+  {
+    Graphics g = getGraphics();
+    Graphics g2 = getComponentGraphics(g);
+    paint(g2);
+    g2.dispose();
+    g2.dispose();
   }
 
   /**

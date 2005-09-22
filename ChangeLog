@@ -1,3 +1,20 @@
+2005-09-22  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(AccessibleJComponent.addPropertyChangeListener): Partly omplemented.
+	(AccessibleJComponent.getAccessibleStateSet): Partly implemented.
+	(doubleBuffered): Default value of this field is true.
+	(paint): Moved double buffer painting stuff to separate method.
+	(paintChildren): Don't call into AWT painting code here. This allows
+	for a small optimization.
+	(paintImmediately): Don't go up to the parent window, try to start
+	painting on the nearest JRootPane if possible.
+	(paintImmediately2): New method. Actually performs repainting
+	on the repaint root.
+	(paintDoubleBuffered): New method. Performs painting using
+	a double buffer.
+	(paintSimple): New method. Performs painting without buffer.
+
 2005-09-22  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/filechooser/FileFilter.java: reformatted and added API
