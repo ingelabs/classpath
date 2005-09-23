@@ -950,7 +950,7 @@ public class BasicInternalFrameUI extends InternalFrameUI
           if (frame.isSelected())
             activateFrame(frame);
           else
-            getDesktopManager().deactivateFrame(frame);
+            deactivateFrame(frame);
         }
       else if (evt.getPropertyName().equals(JInternalFrame.ROOT_PANE_PROPERTY)
                || evt.getPropertyName().equals(
@@ -1702,6 +1702,16 @@ public class BasicInternalFrameUI extends InternalFrameUI
   protected void activateFrame(JInternalFrame f)
   {
     getDesktopManager().activateFrame(f);
+  }
+
+  /**
+   * This is a convenience method that deactivates the JInternalFrame.
+   *
+   * @param f the JInternalFrame to deactivate
+   */
+  protected void deactivateFrame(JInternalFrame f)
+  {
+    getDesktopManager().deactivateFrame(f);
   }
 
   /**

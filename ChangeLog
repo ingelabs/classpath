@@ -1,3 +1,10 @@
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(deactivateFrame): New method.
+	(InternalFramePropertyChangeListener.propertyChange): Call
+	new deactivate() method instead of getDesktopManager.deactivate()
+
 2005-09-23  Lillian Angel  <langel@redhat.com>
 
 	Fixes Bug #24022
