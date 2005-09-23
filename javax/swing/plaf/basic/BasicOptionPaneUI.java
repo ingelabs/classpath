@@ -419,6 +419,16 @@ public class BasicOptionPaneUI extends OptionPaneUI
     }
   }
 
+  /**
+   * The minimum width for JOptionPanes.
+   */
+  public static final int MinimumWidth = 262;
+
+  /**
+   * The minimum height for JOptionPanes.
+   */
+  public static final int MinimumHeight = 90;
+
   /** Whether the JOptionPane contains custom components. */
   protected boolean hasCustomComponents = false;
 
@@ -436,12 +446,6 @@ public class BasicOptionPaneUI extends OptionPaneUI
 
   /** The component that receives input when the JOptionPane needs it. */
   protected JComponent inputComponent;
-
-  /** The minimum height of the JOptionPane. */
-  public static int minimumHeight;
-
-  /** The minimum width of the JOptionPane. */
-  public static int minimumWidth;
 
   /** The minimum dimensions of the JOptionPane. */
   protected Dimension minimumSize;
@@ -1165,8 +1169,6 @@ public class BasicOptionPaneUI extends OptionPaneUI
     buttonBorder = defaults.getBorder("OptionPane.buttonAreaBorder");
 
     minimumSize = defaults.getDimension("OptionPane.minimumSize");
-    minimumWidth = minimumSize.width;
-    minimumHeight = minimumSize.height;
 
     // FIXME: Image icons don't seem to work properly right now.
     // Once they do, replace the synthetic icons with these ones.

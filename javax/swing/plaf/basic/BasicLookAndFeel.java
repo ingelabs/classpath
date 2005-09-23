@@ -625,7 +625,9 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "OptionPane.messageAreaBorder",
       new BorderUIResource.EmptyBorderUIResource(0, 0, 0, 0),
       "OptionPane.messageForeground", new ColorUIResource(darkShadow),
-      "OptionPane.minimumSize", new DimensionUIResource(262, 90),
+      "OptionPane.minimumSize",
+      new DimensionUIResource(BasicOptionPaneUI.MinimumWidth,
+                              BasicOptionPaneUI.MinimumHeight),
       "OptionPane.noButtonText", "No",
       "OptionPane.okButtonText", "OK",
       // XXX Don't use gif
