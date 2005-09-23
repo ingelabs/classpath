@@ -1,5 +1,11 @@
 2005-09-23  Lillian Angel  <langel@redhat.com>
 
+	Fixes Bug #24022
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(paint): Took out unneeded code.
+
+2005-09-23  Lillian Angel  <langel@redhat.com>
+
 	Fixes Bug #23529
 	* javax/swing/plaf/basic/BasicScrollBarUI.java
 	(mousepressed): Made delay shorted while pressing the arrow

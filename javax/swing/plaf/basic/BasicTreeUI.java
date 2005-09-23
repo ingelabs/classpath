@@ -1400,9 +1400,6 @@ public class BasicTreeUI
       {
         Object root = treeModel.getRoot();
 
-        if (!tree.isRootVisible())
-          tree.expandPath(new TreePath(root));
-
         paintRecursive(g, 0, 0, 0, 0, tree, treeModel, root);
 
         if (hasControlIcons())
