@@ -890,7 +890,9 @@ public class SwingUtilities
         iconR.y = 0;
         textR.y = (horizontalTextPosition == CENTER
                    ? iconR.height + textIconGap 
-                   : iconR.height - textR.height);
+                   : Math.max(iconR.height - textR.height, 0));
+        System.err.println("iconR.height: " + iconR.height);
+        System.err.println("textR.height: " + textR.height);
         break;
       case CENTER:
         int centerLine = Math.max(textR.height, iconR.height) / 2;

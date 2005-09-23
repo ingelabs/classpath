@@ -1,3 +1,10 @@
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/SwingUtilities.java
+	(layoutCompoundLabel): Fix the case when verticalTextPosition=BOTTOM
+	and without icon. The label text slipped out of the view rectangle
+	in this case.
+
 2005-09-23  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
