@@ -1,3 +1,7 @@
+2005-09-23  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JTextField.java: Reformatted and added API docs.
+
 2005-09-23  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/ToolTipManager.java
