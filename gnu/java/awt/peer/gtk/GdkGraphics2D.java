@@ -1624,6 +1624,11 @@ public class GdkGraphics2D extends Graphics2D
 
   public void setFont(Font f)
   {
+    // Sun's JDK does not throw NPEs, instead it leaves the current setting
+    // unchanged. So do we.
+    if (f == null)
+      return;
+
     if (f.getPeer() instanceof GdkFontPeer)
       font = f;
     else

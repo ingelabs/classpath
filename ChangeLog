@@ -1,3 +1,8 @@
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
+	(setFont): If font == null, simply return. Avoids a NPE.
+
 2005-09-23  Sven de Marothy  <sven@physto.se>
 
 	* java/io/OutputStreamWriter.java:
