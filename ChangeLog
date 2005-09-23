@@ -1,5 +1,11 @@
 2005-09-23  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicPanelUI.java
+	(uninstallUI): New method.
+	(uninstallDefaults): New method.
+
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicOptionPaneUI.java
 	(MinimumHeight): New constant field.
 	(MinimumWidth): New constant field.

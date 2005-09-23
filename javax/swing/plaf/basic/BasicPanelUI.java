@@ -68,4 +68,25 @@ public class BasicPanelUI extends PanelUI
     p.setBackground(defaults.getColor("Panel.background"));
     p.setOpaque(true);
   }
+
+  /**
+   * Uninstalls this UI from the JPanel.
+   *
+   * @param c the JPanel from which to uninstall this UI
+   */
+  public void uninstallUI(JComponent c)
+  {
+    uninstallDefaults((JPanel) c);
+  }
+
+  /**
+   * Uninstalls the UI defaults that have been install through
+   * {@link #installDefaults}.
+   *
+   * @param p the panel from which to uninstall the UI defaults
+   */
+  protected void uninstallDefaults(JPanel p)
+  {
+    // Nothing to do here.
+  }
 }
