@@ -42,7 +42,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
 
+import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
@@ -602,12 +604,21 @@ public class MetalLookAndFeel extends BasicLookAndFeel
   }
 
   /**
-   * Sets the current theme for the look and feel.
+   * Sets the current theme for the look and feel.  Note that the theme must be 
+   * set <em>before</em> the look and feel is installed.  To change the theme 
+   * for an already running application that is using the 
+   * {@link MetalLookAndFeel}, first set the theme with this method, then 
+   * create a new instance of {@link MetalLookAndFeel} and install it in the 
+   * usual way (see {@link UIManager#setLookAndFeel(LookAndFeel)}).
    * 
-   * @param theme  the theme.
+   * @param theme  the theme (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if <code>theme</code> is <code>null</code>.
    */
   public static void setCurrentTheme(MetalTheme theme)
   {
+    if (theme == null)
+      throw new NullPointerException("Null 'theme' not permitted.");
     MetalLookAndFeel.theme = theme;
   }
 
