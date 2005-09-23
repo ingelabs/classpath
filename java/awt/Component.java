@@ -1074,8 +1074,7 @@ public abstract class Component
     Component p = parent;
     if (p != null)
       return p.getFont();
-    else
-      return new Font("Dialog", Font.PLAIN, 12);
+    return null;
   }
 
   /**
@@ -1886,7 +1885,7 @@ public abstract class Component
    * @see #repaint(long, int, int, int, int)
    */
   public void repaint()
-  {
+  {    
     if(!isShowing())
       {
         Component p = parent;

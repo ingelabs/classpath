@@ -1,3 +1,11 @@
+2005-09-23  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Component.java
+	(getFont): Should return null, not a default font.
+	* javax/swing/ToolTipManager.java
+	(showTip): Called revalidate currentTip before painted, and
+	called validate on JDialog toolTip.
+
 2005-09-23  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/SwingUtilities.java
