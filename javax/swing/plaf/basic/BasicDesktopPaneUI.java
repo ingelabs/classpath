@@ -381,7 +381,7 @@ public class BasicDesktopPaneUI extends DesktopPaneUI
   protected void installKeyboardActions()
   {
     // FIXME: create actions and keystrokes.
-    registerKeyboardAction();
+    registerKeyboardActions();
   }
 
   /**
