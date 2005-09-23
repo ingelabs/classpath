@@ -1,3 +1,16 @@
+2005-09-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/DefaultComboBoxModel.java
+	(DefaultComboBoxModel(Object[])): set selected item,
+	(DefaultComboBoxModel(Vector): likewise,
+	(addElement): reimplemented,
+	(removeElementAt): update selected item,
+	(removeAllElements): clear selected item and fire correct event,
+	(setSelectedItem): update item always,
+	(getElementAt): return null for index out of bounds,
+	* javax/swing/plaf/metal/MetalComboBoxButton.java
+	(paintComponent): check for null selection.
+
 2005-09-23  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicPanelUI.java

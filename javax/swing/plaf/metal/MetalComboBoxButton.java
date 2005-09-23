@@ -209,7 +209,10 @@ public class MetalComboBoxButton extends JButton {
       }
     else
       {
-        String text = comboBox.getModel().getSelectedItem().toString();
+        String text = "";
+        Object selected = comboBox.getModel().getSelectedItem();
+        if (selected != null) 
+          text = selected.toString();
         Rectangle bounds = comboBox.getBounds();
         Rectangle innerArea = SwingUtilities.calculateInnerArea(this, null);
         if (comboBox.hasFocus())
