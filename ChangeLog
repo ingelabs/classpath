@@ -1,5 +1,11 @@
 2005-09-23  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicColorChooserUI.java
+	(uninstallDefaultChoosers): New method.
+	(uninstallUI): Call uninstallDefaultChoosers.
+
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SwingUtilities.java
 	(layoutCompoundLabel): Fix the case when verticalTextPosition=BOTTOM
 	and without icon. The label text slipped out of the view rectangle
@@ -144,6 +150,7 @@
 	values.
 
 2005-09-22  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/ToolTipManager.java
 	(showTip): Moved tooltip location adjustments to a
 	helper method.
@@ -403,7 +410,7 @@
 	to propertyChange hook method in the enclosing BasicTextUI.
 	(propertyChange): New protected method. This serves as a hook
 	for subclasses to handle property changes in the text component.
-	* javax/swing/plaf/basic/BasicTextUI.java
+	* javax/swing/plaf/basic/BasicTextFieldUI.java
 	(properyChange): Handle editable property here and adjust background
 	accordingly.
 
@@ -564,7 +571,9 @@
 	cast.  If acquireComponentForMouseEvent reveals we're going to 
 	re-dispatch this event to ourselves (and loop infinitely), return. Also
 	replaced contentPane by glassPane as the source argument to 
-	SwingUtilities.convertMouseEvent since the glassPane is the real source.
+	SwingUtilities.convertMouseEvent since the glassPane is the real
+	source.
+
 2005-09-19  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicArrowButton.java
