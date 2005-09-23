@@ -1,3 +1,27 @@
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java
+	(FocusHandler.repaintCellFocus): Marked protected instead of
+	package private as specified.
+	(KeyHandler.keyPressed): Call new methods selectNextIndex and
+	selectPreviousIndex instead of doing the work here.
+	(PropertyChangeHandler.propertyChange): Update the
+	updateLayoutStateNeeded field correctly.
+	(BasicListUI): Removed listener initialization. Moved this
+	to installListeners.
+	(installListeners): Initialize listeners here instead in the
+	constructor. Use the createXXXListener hooks instead of creating
+	the listeners directly.
+	(createFocusListener): New hook method for creating a focus listener.
+	(createListDataListener): New hook method for creating a list
+	data listener.
+	(createListSelectionListener): New hook method for creating a list
+	selection listener.
+	(createMouseInputListener): New hook method for creating a mouse
+	input listener.
+	(createPropertyChangeListener): New hook method for creating a
+	property change listener.
+
 2005-09-23  David Gilbert <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java
