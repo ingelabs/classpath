@@ -1,3 +1,9 @@
+2005-09-23  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(paintRecursive): Changed clip to be the visible
+	rectangle of the view.
+
 2005-09-23  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/DefaultComboBoxModel.java

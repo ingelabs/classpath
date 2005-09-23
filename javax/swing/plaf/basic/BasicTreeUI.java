@@ -3127,7 +3127,7 @@ public class BasicTreeUI
   int paintRecursive(Graphics g, int indentation, int descent, int childNumber,
                      int depth, JTree tree, TreeModel mod, Object curr)
   {
-    Rectangle clip = g.getClipBounds();
+    Rectangle clip = tree.getVisibleRect();
     if (indentation > clip.x + clip.width + rightChildIndent
         || descent > clip.y + clip.height + getRowHeight())
       return descent;
