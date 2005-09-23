@@ -1,5 +1,10 @@
 2005-09-23  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/SwingUtilities.java
+	(layoutCompoundLabel): Removed debug code.
+
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JScrollPane.java
 	(setHorizontalScrollBar): Removed handling of listeners on the model.
 	This is now done in the BasicScrollPaneUI.
