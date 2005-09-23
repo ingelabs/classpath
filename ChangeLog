@@ -1,5 +1,13 @@
 2005-09-23  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/ToolTipManager.java
+	(showTip): Set lightWeightPopupEnabled to default.
+	Validated and repainted new containerPanel and
+	repainted toolTipWindow and repainted currentTip. The 
+	toolTips paint well now.
+
+2005-09-23  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	(paintRecursive): Changed clip to be the visible
 	rectangle of the view.

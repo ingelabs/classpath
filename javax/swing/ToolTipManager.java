@@ -470,6 +470,8 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
     
     if (parent instanceof JPopupMenu)
         setLightWeightPopupEnabled(((JPopupMenu) parent).isLightWeightPopupEnabled());
+    else
+      setLightWeightPopupEnabled(true);
            
     if (isLightWeightPopupEnabled())
       {
@@ -502,6 +504,8 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         pane.add(containerPanel);
         containerPanel.setBounds(p.x, p.y, dims.width, dims.height);
         currentTip.setBounds(0, 0, dims.width, dims.height);
+        containerPanel.validate();
+        containerPanel.repaint();
       }
     else if (currentComponent.isShowing())
       {        
@@ -517,8 +521,10 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         tooltipWindow.pack();
         tooltipWindow.setBounds(p.x, p.y, dims.width, dims.height);
         tooltipWindow.show();
+        tooltipWindow.repaint();
       }
     currentTip.setVisible(true);
+    currentTip.repaint();
   }
 
   /**
