@@ -1,5 +1,11 @@
 2005-09-23  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicMenuUI.java
+	(ChangeHandler): Added some deprecated and unused fields for
+	binary compatibility.
+
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java
 	(deactivateFrame): New method.
 	(InternalFramePropertyChangeListener.propertyChange): Call

@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing.plaf.basic;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -92,7 +93,7 @@ public class BasicMenuUI extends BasicMenuItemUI
    */
   protected ChangeListener createChangeListener(JComponent c)
   {
-    return new ChangeHandler();
+    return new ChangeHandler((JMenu) c, this);
   }
 
   /**
@@ -464,9 +465,40 @@ public class BasicMenuUI extends BasicMenuItemUI
    */
   public class ChangeHandler implements ChangeListener
   {
+    /**
+     * Not used.
+     */
+    public boolean isSelected;
+
+    /**
+     * Not used.
+     */
+    public JMenu menu;
+
+    /**
+     * Not used.
+     */
+    public BasicMenuUI ui;
+
+    /**
+     * Not used.
+     */
+    public Component wasFocused;
+
+    /**
+     * Not used.
+     */
+    public ChangeHandler(JMenu m, BasicMenuUI ui)
+    {
+      // Not used.
+    }
+
+    /**
+     * Not used.
+     */
     public void stateChanged(ChangeEvent e)
     {
-      // FIXME: It seems that this class is not used anywhere
+      // Not used.
     }
   }
 
