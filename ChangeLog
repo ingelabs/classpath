@@ -1,3 +1,8 @@
+2005-09-23  Sven de Marothy  <sven@physto.se>
+
+	* java/io/OutputStreamWriter.java:
+	(OutputStreamWriter): Added missing constructors.
+
 2005-09-23  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Component.java

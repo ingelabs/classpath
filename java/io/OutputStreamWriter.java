@@ -122,52 +122,58 @@ public class OutputStreamWriter extends Writer
   {
     this.out = out;
     try 
-    {
-      // Don't use NIO if avoidable
-      if(EncodingHelper.isISOLatin1(encoding_scheme))
       {
+	// Don't use NIO if avoidable
+	if(EncodingHelper.isISOLatin1(encoding_scheme))
+	  {
+	    encodingName = "ISO8859_1";
+	    encoder = null;
+	    return;
+	  }
+
+	/*
+	 * Workraround for encodings with a byte-order-mark.
+	 * We only want to write it once per stream.
+	 */
+	try 
+	  {
+	    if(encoding_scheme.equalsIgnoreCase("UnicodeBig") || 
+	       encoding_scheme.equalsIgnoreCase("UTF-16") ||
+	       encoding_scheme.equalsIgnoreCase("UTF16"))
+	      {
+		encoding_scheme = "UTF-16BE";	  
+		out.write((byte)0xFE);
+		out.write((byte)0xFF);
+	      } 
+	    else if(encoding_scheme.equalsIgnoreCase("UnicodeLittle")){
+	      encoding_scheme = "UTF-16LE";
+	      out.write((byte)0xFF);
+	      out.write((byte)0xFE);
+	    }
+	  }
+	catch(IOException ioe)
+	  {
+	  }
+      
+	outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
+
+	Charset cs = EncodingHelper.getCharset(encoding_scheme);
+	if(cs == null)
+	  throw new UnsupportedEncodingException("Encoding "+encoding_scheme+
+						 " unknown");
+	encoder = cs.newEncoder();
+	encodingName = EncodingHelper.getOldCanonical(cs.name());
+
+	encoder.onMalformedInput(CodingErrorAction.REPLACE);
+	encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+      } 
+    catch(RuntimeException e) 
+      {
+	// Default to ISO Latin-1, will happen if this is called, for instance,
+	//  before the NIO provider is loadable.
+	encoder = null; 
 	encodingName = "ISO8859_1";
-	encoder = null;
-	return;
       }
-
-      /*
-       * Workraround for encodings with a byte-order-mark.
-       * We only want to write it once per stream.
-       */
-      try {
-	if(encoding_scheme.equalsIgnoreCase("UnicodeBig") || 
-	   encoding_scheme.equalsIgnoreCase("UTF-16") ||
-	   encoding_scheme.equalsIgnoreCase("UTF16"))
-	{
-	  encoding_scheme = "UTF-16BE";	  
-	  out.write((byte)0xFE);
-	  out.write((byte)0xFF);
-	} else if(encoding_scheme.equalsIgnoreCase("UnicodeLittle")){
-	  encoding_scheme = "UTF-16LE";
-	  out.write((byte)0xFF);
-	  out.write((byte)0xFE);
-	}
-      } catch(IOException ioe){
-      }
-
-      outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
-
-      Charset cs = EncodingHelper.getCharset(encoding_scheme);
-      if(cs == null)
-	throw new UnsupportedEncodingException("Encoding "+encoding_scheme+
- 					       " unknown");
-      encoder = cs.newEncoder();
-      encodingName = EncodingHelper.getOldCanonical(cs.name());
-
-      encoder.onMalformedInput(CodingErrorAction.REPLACE);
-      encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
-    } catch(RuntimeException e) {
-      // Default to ISO Latin-1, will happen if this is called, for instance,
-      //  before the NIO provider is loadable.
-      encoder = null; 
-      encodingName = "ISO8859_1";
-    }
   }
 
   /**
@@ -181,21 +187,55 @@ public class OutputStreamWriter extends Writer
     this.out = out;
     outputBuffer = null;
     try 
-    {
-      String encoding = System.getProperty("file.encoding");
-      Charset cs = Charset.forName(encoding);
-      encoder = cs.newEncoder();
-      encodingName =  EncodingHelper.getOldCanonical(cs.name());
-    } catch(RuntimeException e) {
-      encoder = null; 
-      encodingName = "ISO8859_1";
-    }
+      {
+	String encoding = System.getProperty("file.encoding");
+	Charset cs = Charset.forName(encoding);
+	encoder = cs.newEncoder();
+	encodingName =  EncodingHelper.getOldCanonical(cs.name());
+      } 
+    catch(RuntimeException e) 
+      {
+	encoder = null; 
+	encodingName = "ISO8859_1";
+      }
+
     if(encoder != null)
-    {
-      encoder.onMalformedInput(CodingErrorAction.REPLACE);
-      encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
-      outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
-    }
+      {
+	encoder.onMalformedInput(CodingErrorAction.REPLACE);
+	encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+	outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
+      }
+  }
+
+  /**
+   * This method initializes a new instance of <code>OutputStreamWriter</code>
+   * to write to the specified stream using a given <code>Charset</code>.
+   *
+   * @param out The <code>OutputStream</code> to write to
+   * @param cs The <code>Charset</code> of the encoding to use
+   */
+  public OutputStreamWriter(OutputStream out, Charset cs)
+  {
+    this.out = out;
+    encoder = cs.newEncoder();
+    encoder.onMalformedInput(CodingErrorAction.REPLACE);
+    encoder.onUnmappableCharacter(CodingErrorAction.REPLACE);
+    outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
+  }
+  
+  /**
+   * This method initializes a new instance of <code>OutputStreamWriter</code>
+   * to write to the specified stream using a given
+   * <code>CharsetEncoder</code>.
+   *
+   * @param out The <code>OutputStream</code> to write to
+   * @param cs The <code>CharsetEncoder</code> to encode the output with
+   */
+  public OutputStreamWriter(OutputStream out, CharsetEncoder enc)
+  {
+    this.out = out;
+    encoder = enc;
+    outputBuffer = CharBuffer.allocate(BUFFER_SIZE);
   }
 
   /**
