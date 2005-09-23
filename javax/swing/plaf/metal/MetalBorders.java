@@ -44,14 +44,16 @@ import java.awt.Graphics;
 import java.awt.Insets;
 
 import javax.swing.AbstractButton;
-import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.plaf.BorderUIResource;
@@ -564,6 +566,114 @@ public class MetalBorders
       g.drawLine(x + 15, y + h - 2, x + w - 14, y + h - 2);
       g.drawLine(x + 3, y + 15, x + 3, y + h - 14);
       g.drawLine(x + w - 2, y + 15, x + w - 2, y + h - 14);
+    }
+    
+  }
+
+  /**
+   * A border used when painting {@link JInternalFrame} instances that are
+   * presented as dialogs (by the {@link JOptionPane} class).
+   */
+  public static class OptionDialogBorder extends AbstractBorder
+    implements UIResource
+  {
+      
+    /**
+     * Creates a new border instance.
+     */
+    public OptionDialogBorder()
+    {
+    }
+    
+    /**
+     * Returns the border insets.
+     * 
+     * @param c  the component (ignored).
+     * 
+     * @return The border insets.
+     */
+    public Insets getBorderInsets(Component c)
+    {
+      return getBorderInsets(c, null);
+    }
+    
+    /**
+     * Returns the border insets.
+     * 
+     * @param c  the component (ignored).
+     * @return The border insets.
+     */
+    public Insets getBorderInsets(Component c, Insets newInsets)
+    {
+      if (newInsets == null)
+        newInsets = new Insets(3, 3, 3, 3);
+      else
+        {
+          newInsets.top = 3;
+          newInsets.left = 3;
+          newInsets.bottom = 3;
+          newInsets.right = 3;
+        }
+      return newInsets;  
+    }
+        
+    /**
+     * Paints the border for the specified component.
+     * 
+     * @param c  the component.
+     * @param g  the graphics device.
+     * @param x  the x-coordinate.
+     * @param y  the y-coordinate.
+     * @param w  the width.
+     * @param h  the height.
+     */
+    public void paintBorder(Component c, Graphics g, int x, int y, int w, 
+        int h)
+    {
+        
+      JInternalFrame f = (JInternalFrame) c;
+      g.setColor(MetalLookAndFeel.getPrimaryControlDarkShadow());
+      if (f.getContentPane() instanceof JOptionPane)
+        {
+          JOptionPane pane = (JOptionPane) f.getContentPane();
+          int type = pane.getMessageType();
+          UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+          if (type == JOptionPane.QUESTION_MESSAGE)
+            {
+              Color bc = defaults.getColor(
+                  "OptionPane.questionDialog.border.background");
+              if (bc != null)
+                g.setColor(bc);
+            }
+          if (type == JOptionPane.WARNING_MESSAGE)
+            {
+              Color bc = defaults.getColor(
+                  "OptionPane.warningDialog.border.background");
+              if (bc != null)
+                g.setColor(bc);              
+            }
+          else if (type == JOptionPane.ERROR_MESSAGE)
+            {
+              Color bc = defaults.getColor(
+                  "OptionPane.errorDialog.border.background");
+              if (bc != null)
+                g.setColor(bc);              
+            }
+        }
+      
+      // fill the border background
+      g.fillRect(x, y, w, 3);
+      g.fillRect(x, y, 3, h);
+      g.fillRect(x + w - 3, y, 3, h);
+      g.fillRect(x, y + h - 3, w, 3);
+      
+      // draw a dot in each corner
+      g.setColor(MetalLookAndFeel.getControl());
+      g.fillRect(x, y, 1, 1);
+      g.fillRect(x + w - 1, y, 1, 1);
+      g.fillRect(x + w - 1, y + h - 1, 1, 1);
+      g.fillRect(x, y + h - 1, 1, 1);
+      
     }
     
   }
