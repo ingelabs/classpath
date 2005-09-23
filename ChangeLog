@@ -1,5 +1,11 @@
 2005-09-23  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicDesktopPaneUI.java
+	(registerKeyboardAction): Renamed this method to
+	registerKeyboardActions as specifie.
+
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicListUI.java
 	(FocusHandler.repaintCellFocus): Marked protected instead of
 	package private as specified.
