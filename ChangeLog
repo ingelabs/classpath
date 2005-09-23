@@ -1,3 +1,39 @@
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JScrollPane.java
+	(setHorizontalScrollBar): Removed handling of listeners on the model.
+	This is now done in the BasicScrollPaneUI.
+	(setHorizontalScrollBarPolicy): Added revalidate call.
+	(setVerticalScrollBar): Removed handling of listeners on the model.
+	This is now done in the BasicScrollPaneUI.
+	(setVerticalScrollBarPolicy): Added revalidate call.
+	(setViewport): Removed handling of listeners on the viewport.
+	This is now done in the BasicScrollPaneUI.
+	(createScrollListener): Removed unnecessary and undocumented method.
+	The functionality of this method is moved to BasicScrollPaneUI
+	as specified.
+	(JScrollPane): Removed initialization of removed listener.
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(HSBChangeListener): New inner class.
+	(VSBChangeListener): New inner class.
+	(ViewportChangeHandler): New inner class.
+	(PropertyChangeHandler): New inner class.
+	(MouseWheelHandler): New inner class.
+	(installUI): Also call installListeners.
+	(installListeners): New method. Initializes the listeners on the
+	scrollpane.
+	(createHSBChangeListener): New method.
+	(createVSBChangeListener): New method.
+	(createViewport): New method.
+	(createPropertyChangeListener): New method.
+	(uninstallUI): Also call uninstallListeners.
+	(uninstallListeners): New method.
+	(syncScrollPaneWithViewport): New method.
+	(updateColumnHeader): New method.
+	(updateRowHeader): New method.
+	(updateScrollBarDisplayPolicy): New method.
+	(updateViewport): New method.
+
 2005-09-23  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTextField.java: Reformatted and added API docs.
@@ -28,6 +64,13 @@
 	(getElementAt): return null for index out of bounds,
 	* javax/swing/plaf/metal/MetalComboBoxButton.java
 	(paintComponent): check for null selection.
+
+2005-09-23  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	Added some deprecated and unused fields for binary compatibility.
+	(installListeners): Fixed method parameters.
+	(installUI): Call installListeners with fixed method parameters.
 
 2005-09-23  Roman Kennke  <kennke@aicas.com>
 
