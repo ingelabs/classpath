@@ -80,6 +80,7 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
    */
   protected class ArrowButtonListener extends MouseAdapter
   {
+   
     /**
      * Move the thumb in the direction specified by the  button's arrow. If
      * this button is held down, then it should keep moving the thumb.
@@ -91,9 +92,10 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
       scrollTimer.stop();
       scrollListener.setScrollByBlock(false);
       if (e.getSource() == incrButton)
-	scrollListener.setDirection(POSITIVE_SCROLL);
-      else
-	scrollListener.setDirection(NEGATIVE_SCROLL);
+          scrollListener.setDirection(POSITIVE_SCROLL);
+      else if (e.getSource() == decrButton)
+          scrollListener.setDirection(NEGATIVE_SCROLL);
+      scrollTimer.setDelay(100);
       scrollTimer.start();
     }
 
@@ -105,6 +107,11 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
     public void mouseReleased(MouseEvent e)
     {
       scrollTimer.stop();
+      scrollTimer.setDelay(300);
+      if (e.getSource() == incrButton)
+          scrollByUnit(POSITIVE_SCROLL);
+      else if (e.getSource() == decrButton)
+        scrollByUnit(NEGATIVE_SCROLL);
     }
   }
 
@@ -242,7 +249,7 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
               scrollbar.repaint();
               return;
             }
-          scrollByBlock(direction);
+            scrollByBlock(direction);
         }
       else
         scrollByUnit(direction);
@@ -316,9 +323,6 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
       else
 	value = valueForYPosition(currentMouseY);
 
-      if (value == scrollbar.getValue())
-	return;
-
       if (! thumbRect.contains(e.getPoint()))
         {
 	  scrollTimer.stop();
@@ -333,6 +337,7 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
 	      trackHighlight = DECREASE_HIGHLIGHT;
 	      scrollListener.setDirection(NEGATIVE_SCROLL);
 	    }
+      scrollTimer.setDelay(100);
 	  scrollTimer.start();
         }
       else
@@ -343,8 +348,10 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
 	  // "lower" edge of the thumb. The value at which
 	  // the cursor is at must be greater or equal
 	  // to that value.
+
+      scrollListener.setScrollByBlock(false);
 	  scrollbar.setValueIsAdjusting(true);
-	  offset = value - scrollbar.getValue();
+      offset = value - scrollbar.getValue();
         }
       scrollbar.repaint();
     }
@@ -357,11 +364,24 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
      */
     public void mouseReleased(MouseEvent e)
     {
-      trackHighlight = NO_HIGHLIGHT;
       scrollTimer.stop();
-
-      if (scrollbar.getValueIsAdjusting())
-	scrollbar.setValueIsAdjusting(false);
+      scrollTimer.setDelay(300);
+      currentMouseX = e.getX();
+      currentMouseY = e.getY();
+      
+      int value;
+      if (scrollbar.getOrientation() == SwingConstants.HORIZONTAL)
+        value = valueForXPosition(currentMouseX);
+      else
+        value = valueForYPosition(currentMouseY);
+      if (shouldScroll(POSITIVE_SCROLL))
+        scrollByBlock(POSITIVE_SCROLL);
+      else if (shouldScroll(NEGATIVE_SCROLL))
+        scrollByBlock(NEGATIVE_SCROLL);
+      
+      trackHighlight = NO_HIGHLIGHT;
+      scrollListener.setScrollByBlock(false);
+      scrollbar.setValueIsAdjusting(true);
       scrollbar.repaint();
     }
 
@@ -381,6 +401,9 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
       else
 	value = valueForYPosition(currentMouseY);
 
+      if (thumbRect.contains(currentMouseX, currentMouseY))
+        return false;
+      
       if (direction == POSITIVE_SCROLL)
 	return (value > scrollbar.getValue());
       else
@@ -873,8 +896,7 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
 	trackRect = new Rectangle();
 	thumbRect = new Rectangle();
 
-	scrollTimer = new Timer(50, null);
-	scrollTimer.setRepeats(true);
+	scrollTimer = new Timer(300, null);
 
 	installComponents();
 	installDefaults();

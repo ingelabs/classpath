@@ -1,3 +1,19 @@
+2005-09-23  Lillian Angel  <langel@redhat.com>
+
+	Fixes Bug #23529
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(mousepressed): Made delay shorted while pressing the arrow
+	button. This makes the scrollbar move more smoothly.
+	(mouseReleased): Reset the delay to the default, so single
+	clicks only move the scrollbar 1 unit. Also, when the
+	mouse is released, the scrollbar should move 1 unit.
+	(shouldScroll): Should not be able to scroll by block
+	when the mouse is in the thumbRect.
+	(mousePressed): Made delay shorted while pressing in the
+	scroll area. This makes the scrollbar move more smoothly.
+	(mouseReleased): Should move the scrollbar 1 block when the
+	mouse is released. Also, reset the timer to default delay.
+
 2005-09-23  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicDesktopPaneUI.java
