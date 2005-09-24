@@ -1,5 +1,10 @@
 2005-09-24  Sven de Marothy  <sven@physto.se>
 
+	* java/awt/FontMetrics.java
+	(getMaxCharBounds, hasUniformLineMetrics): New methods.
+	
+2005-09-24  Sven de Marothy  <sven@physto.se>
+
 	* gnu/javax/imageio/bmp/BMPDecoder.java,
 	* gnu/javax/imageio/bmp/BMPImageReaderSpi.java,
 	* gnu/javax/imageio/bmp/DecodeBF32.java,
