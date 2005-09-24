@@ -1,5 +1,10 @@
 2005-09-24  Sven de Marothy  <sven@physto.se>
 
+	* gnu/javax/imageio/bmp/BMPDecoder.java
+	(BMPDecoder): Fix static field references.
+
+2005-09-24  Sven de Marothy  <sven@physto.se>
+
 	* java/awt/Font.java
 	Fixed comments.
 	(pointSize): New field.
