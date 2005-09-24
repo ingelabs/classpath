@@ -1,5 +1,14 @@
 2005-09-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(paint): Activate double buffering if it is not already activated.
+	(paintImmediately2): Prepare a component graphics object here and
+	call paintDoubleBuffered with this.
+	(paintDoubleBuffered): Changed to work nicely with the new paint()
+	and paintImmediately2() methods.
+
+2005-09-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
 	(initComponentDefaults): Added font default for
 	FormattedTextField.font. Solves an NPE that was caused by a null
