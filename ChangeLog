@@ -1,3 +1,21 @@
+2005-09-24  Sven de Marothy  <sven@physto.se>
+
+	* gnu/javax/imageio/bmp/BMPDecoder.java,
+	* gnu/javax/imageio/bmp/BMPImageReaderSpi.java,
+	* gnu/javax/imageio/bmp/DecodeBF32.java,
+	* gnu/javax/imageio/bmp/DecodeRGB8.java,
+	* gnu/javax/imageio/bmp/BMPException.java,
+	* gnu/javax/imageio/bmp/BMPInfoHeader.java,
+	* gnu/javax/imageio/bmp/DecodeRGB1.java,
+	* gnu/javax/imageio/bmp/DecodeRLE4.java,
+	* gnu/javax/imageio/bmp/BMPFileHeader.java,
+	* gnu/javax/imageio/bmp/DecodeRGB24.java,
+	* gnu/javax/imageio/bmp/DecodeRLE8.java,
+	* gnu/javax/imageio/bmp/BMPImageReader.java,
+	* gnu/javax/imageio/bmp/DecodeBF16.java,
+	* gnu/javax/imageio/bmp/DecodeRGB4.java:
+	New files.
+
 2005-09-23  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
