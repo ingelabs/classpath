@@ -1,3 +1,11 @@
+2005-09-24  Sven de Marothy  <sven@physto.se>
+
+	* java/awt/Font.java
+	Fixed comments.
+	(pointSize): New field.
+	(Font): Set size fields.
+	(getSize, getSize2D): Return size fields.
+
 2005-09-24  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java

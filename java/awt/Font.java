@@ -170,11 +170,18 @@ public static final int HANGING_BASELINE = 2;
   protected String name;
 
   /**
-   * The size of this font in pixels.
+   * The size of this font in points, rounded.
    *
    * @since 1.0
    */
   protected int size;
+
+  /**
+   * The size of this font in points.
+   *
+   * @since 1.0
+   */
+  protected float pointSize;
 
   /**
    * The style of this font -- PLAIN, BOLD, ITALIC or BOLD+ITALIC.
@@ -346,6 +353,8 @@ private static final long serialVersionUID = -4206021311591459213L;
     ClasspathFontPeer.copyStyleToAttrs (style, attrs);
     ClasspathFontPeer.copySizeToAttrs (size, attrs);
     this.peer = getPeerFromToolkit (name, attrs);
+    this.size = size;
+    this.pointSize = (float)size;
   }
 
   public Font (Map attrs)
@@ -363,7 +372,9 @@ private static final long serialVersionUID = -4206021311591459213L;
     // Font default attributes.
     if (attrs == null)
       attrs = new HashMap();
-    this.peer = getPeerFromToolkit (name, attrs);
+    peer = getPeerFromToolkit (name, attrs);
+    size = (int)peer.getSize( this );
+    pointSize = peer.getSize( this );
   }
 
 /*************************************************************************/
@@ -391,18 +402,24 @@ private static final long serialVersionUID = -4206021311591459213L;
 /*************************************************************************/
 
 /**
-  * Returns the style of the font.
+  * Returns the size of the font, in typographics points (1/72 of an inch),
+  * rounded to an integer.
   * 
-  * @return The font style.
+  * @return The font size
   */
   public int getSize ()
 {
-    return (int) peer.getSize (this);
+  return size;
 }
 
+/**
+  * Returns the size of the font, in typographics points (1/72 of an inch).
+  * 
+  * @return The font size
+  */
   public float getSize2D ()
 {
-    return peer.getSize (this);
+  return pointSize;
 }
 
 /*************************************************************************/
