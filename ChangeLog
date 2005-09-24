@@ -1,3 +1,7 @@
+2005-09-24  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/DefaultComboBoxModel.java: updated API docs all over.
+
 2005-09-24  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/FontMetrics.java
