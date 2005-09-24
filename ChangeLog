@@ -1,3 +1,10 @@
+2005-09-24  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added font default for
+	FormattedTextField.font. Solves an NPE that was caused by a null
+	font on a JFormattedTextField.
+
 2005-09-24  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/DefaultComboBoxModel.java
