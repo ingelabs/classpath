@@ -113,24 +113,17 @@ public class DefaultComboBoxModel extends AbstractListModel
 
   /**
    * Adds an element to the model's item list and sends a {@link ListDataEvent}
-   * to all registered listeners.  If the item list is empty, the new element
-   * also becomes the model's selected item.
+   * to all registered listeners.  If the new element is the first item added
+   * to the list, it is set as the selected item.
    *
    * @param object item to add to the model's item list.
    */
   public void addElement(Object object)
   {
-    if (list.size() == 0)
-      {
-        list.add(object);
-        selectedItem = object;
-        fireContentsChanged(this, -1, -1);
-      }
-    else
-      {
-        list.add(object);
-        fireIntervalAdded(this, list.size() - 1, list.size() - 1);
-      }
+    list.add(object);
+    fireIntervalAdded(this, list.size() - 1, list.size() - 1);
+    if (list.size() == 1)
+      setSelectedItem(object);
   }
 
   /**

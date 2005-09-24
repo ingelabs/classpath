@@ -1,5 +1,11 @@
 2005-09-24  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/DefaultComboBoxModel.java
+	(addElement): always fire event for interval added, and call 
+	setSelectedItem() if this is the first item.
+
+2005-09-24  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/DefaultComboBoxModel.java: updated API docs all over.
 
 2005-09-24  Sven de Marothy  <sven@physto.se>
