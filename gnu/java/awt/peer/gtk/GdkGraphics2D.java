@@ -966,7 +966,10 @@ public class GdkGraphics2D extends Graphics2D
 
   public Shape getClip()
   {
-    return clip.getBounds2D(); //getClipInDevSpace();
+    if (clip == null)
+      return null;
+    else
+      return clip.getBounds2D(); //getClipInDevSpace();
   }
 
   public Rectangle getClipBounds()
