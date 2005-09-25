@@ -1,5 +1,10 @@
 2005-09-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/BoxLayout.java
+	(layoutContainer): Respect the insets of the container.
+
+2005-09-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	Fixed some API comments.
 	(paintChildren): Set clip to exclude the border area.

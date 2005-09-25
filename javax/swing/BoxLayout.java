@@ -42,7 +42,9 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.LayoutManager2;
+import java.awt.Rectangle;
 import java.io.Serializable;
 
 /**
@@ -219,18 +221,21 @@ public class BoxLayout implements LayoutManager2, Serializable
     int[] vSpans = new int[children.length];
     int[] vOffsets = new int[children.length];
 
+    Insets insets = container.getInsets();
+    int width = container.getWidth() - insets.left - insets.right - 1;
+    int height = container.getHeight() - insets.top - insets.bottom - 1;
     if (isHorizontalIn(container))
       {
-        SizeRequirements.calculateTiledPositions(container.getWidth(), null,
+        SizeRequirements.calculateTiledPositions(width, null,
                                                  hSizeReqs, hOffsets, hSpans);
-        SizeRequirements.calculateAlignedPositions(container.getHeight(), null,
+        SizeRequirements.calculateAlignedPositions(height, null,
                                                  vSizeReqs, vOffsets, vSpans);
       }
     else
       {
-        SizeRequirements.calculateTiledPositions(container.getHeight(), null,
+        SizeRequirements.calculateTiledPositions(height, null,
                                                  vSizeReqs, vOffsets, vSpans);
-        SizeRequirements.calculateAlignedPositions(container.getWidth(), null,
+        SizeRequirements.calculateAlignedPositions(width, null,
                                                  hSizeReqs, hOffsets, hSpans);
       }
 
@@ -238,10 +243,11 @@ public class BoxLayout implements LayoutManager2, Serializable
     for (int i = 0; i < children.length; i++)
       {
         Component child = children[i];
-        child.setBounds(hOffsets[i], vOffsets[i], hSpans[i], vSpans[i]);
+        child.setBounds(hOffsets[i] + insets.left, vOffsets[i] + insets.top,
+                        hSpans[i], vSpans[i]);
       }
   }
-  
+
   /**
    * Adds a component to the layout. Not used in BoxLayout
    *
