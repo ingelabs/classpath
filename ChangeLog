@@ -1,5 +1,11 @@
 2005-09-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(paint): Paint border after the children are painted. Otherwise the
+	children could draw over the border.
+
+2005-09-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SizeRequirements.java
 	(getAlignedRequirements): Implemented this method.
 	(calculateAlignedPositions): Implemented this method.

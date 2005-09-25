@@ -1472,8 +1472,8 @@ public abstract class JComponent extends Container implements Serializable
         if (g.getClip() == null)
           g.setClip(0, 0, getWidth(), getHeight());
         paintComponent(g);
-        paintBorder(g);
         paintChildren(g);
+        paintBorder(g);
       }
   }
 
