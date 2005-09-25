@@ -1,3 +1,11 @@
+2005-09-25  Casey Marshall  <csm@gnu.org>
+
+	* gnu/java/security/provider/Gnu.java
+	(<init>): add Diffie-Hellman key factory and key pair generator.
+	* gnu/java/security/provdier/DiffieHellmanKeyFactoryImpl.java,
+	gnu/java/security/provider/DiffieHellmanKeyPairGeneratorImpl.java:
+	new files.
+
 2005-09-24  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/SizeRequirements.java
