@@ -166,7 +166,31 @@ public class SizeRequirements implements Serializable
   public static SizeRequirements
   getAlignedSizeRequirements(SizeRequirements[] children)
   {
-    return null; // TODO
+    float minLeft = 0;
+    float minRight = 0;
+    float prefLeft = 0;
+    float prefRight = 0;
+    float maxLeft = 0;
+    float maxRight = 0;
+    for (int i = 0; i < children.length; i++)
+      {
+        float myMinLeft = children[i].minimum * children[i].alignment;
+        float myMinRight = children[i].minimum - myMinLeft;
+        minLeft = Math.max(myMinLeft, minLeft);
+        minRight = Math.max(myMinRight, minRight);
+        float myPrefLeft = children[i].preferred * children[i].alignment;
+        float myPrefRight = children[i].preferred - myMinLeft;
+        prefLeft = Math.max(myPrefLeft, prefLeft);
+        prefRight = Math.max(myPrefRight, prefRight);
+        float myMaxLeft = children[i].maximum * children[i].alignment;
+        float myMaxRight = children[i].maximum - myMinLeft;
+        maxLeft = Math.max(myMaxLeft, maxLeft);
+        maxRight = Math.max(myMaxRight, maxRight);
+      }
+    int minSize = (int) (minLeft + minRight);
+    int prefSize = (int) (prefLeft + prefRight);
+    int maxSize = (int) (maxLeft + maxRight);
+    return new SizeRequirements(minSize, prefSize, maxSize, 0.5F);
   }
 
   /**
@@ -317,11 +341,24 @@ public class SizeRequirements implements Serializable
                                                int[] offset, int[] spans,
                                                boolean forward)
   {
-    // TODO: Implement this correctly.
-    for (int i = 0; i < children.length; ++i)
+    // First we compute the position of the baseline.
+    float left = 0;
+    float right = 0;
+    for (int i = 0; i < children.length; i++)
       {
-        // This is only a hack to make things work a little.
-        spans[i] = Math.min(allocated, children[i].maximum);
+        float myLeft = children[i].preferred * children[i].alignment;
+        float myRight = children[i].preferred - myLeft;
+        left = Math.max(myLeft, left);
+        right = Math.max(myRight, right);
+      }
+    int baseline = (int) ((left / (left + right)) * allocated);
+    // Now we can layout the components along the baseline.
+    for (int i = 0; i < children.length; i++)
+      {
+        // FIXME: Handle the case when span[i] results in exceeding
+        // the available space.
+        spans[i] = children[i].preferred;
+        offset[i] = baseline - (int) (children[i].alignment * ((float) spans[i]));
       }
   }
 

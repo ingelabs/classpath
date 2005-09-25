@@ -1,3 +1,21 @@
+2005-09-24  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/SizeRequirements.java
+	(getAlignedRequirements): Implemented this method.
+	(calculateAlignedPositions): Implemented this method.
+	* javax/swing/BoxLayout.java
+	(Direction): Removed unneeded inner interface.
+	(Horizontal): Removed unneeded inner class.
+	(Vertical): Removed unneeded inner class.
+	(SizeReq): Removed unneeded inner class.
+	(preferredLayoutSize): Reimplemented to use SizeRequirements.
+	(minimumLayoutSize): Reimplemented to use SizeRequirements.
+	(maximumLayoutSize): Reimplemented to use SizeRequirements.
+	(layoutContainer): Reimplemented to use SizeRequirements.
+	(layoutAlgorithm): Removed unneeded package private method.
+	(distributeSpace): Removed unneeded package private method.
+	(getSizeRequirements): New private helper method.
+
 2005-09-24  Sven de Marothy  <sven@physto.se>
 
 	* gnu/javax/imageio/bmp/BMPDecoder.java
