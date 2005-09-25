@@ -1,6 +1,12 @@
 2005-09-24  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java
+	Fixed some API comments.
+	(paintChildren): Set clip to exclude the border area.
+
+2005-09-24  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
 	(paint): Paint border after the children are painted. Otherwise the
 	children could draw over the border.
 
