@@ -355,11 +355,79 @@ public class SizeRequirements implements Serializable
     // Now we can layout the components along the baseline.
     for (int i = 0; i < children.length; i++)
       {
-        // FIXME: Handle the case when span[i] results in exceeding
-        // the available space.
-        spans[i] = children[i].preferred;
-        offset[i] = baseline - (int) (children[i].alignment * ((float) spans[i]));
+        float align = children[i].alignment;
+        // Try to fit the component into the available space.
+        int[] spanAndOffset = new int[2];
+        if (align < .5F)
+          adjustFromRight(children[i], baseline, allocated, spanAndOffset);
+        else
+          adjustFromLeft(children[i], baseline, allocated, spanAndOffset);
+        spans[i] = spanAndOffset[0];
+        offset[i] = spanAndOffset[1];
       }
+  }
+
+  /**
+   * Adjusts the span and offset of a component for the aligned layout.
+   *
+   * @param reqs
+   * @param baseline
+   * @param allocated
+   * @param spanAndOffset
+   */
+  private static void adjustFromRight(SizeRequirements reqs, int baseline,
+                                      int allocated, int[] spanAndOffset)
+  {
+    float right = allocated - baseline;
+    // If the resulting span exceeds the maximum of the component, then adjust
+    // accordingly.
+    float maxRight = ((float) reqs.maximum) * (1.F - reqs.alignment);
+    if (right / (1.F - reqs.alignment) > reqs.maximum)
+      right = maxRight;
+    // If we have not enough space on the left side, then adjust accordingly.
+    if (right / (1.F - reqs.alignment) * reqs.alignment > allocated - baseline)
+      right = ((float) (allocated - baseline))
+             / reqs.alignment * (1.F - reqs.alignment);
+    // If we are below the minimum, then adjust upwards.
+      float minRight = ((float) reqs.minimum) * (1.F - reqs.alignment);
+    if (right / (1.F - reqs.alignment) < reqs.minimum)
+      right = Math.max(minRight, maxRight);
+
+    spanAndOffset[0] = (int) (right / (1.F - reqs.alignment));
+    spanAndOffset[1] = baseline -
+                       (int) (((float) spanAndOffset[0]) * reqs.alignment);
+  }
+
+  /**
+   * Adjusts the span and offset of a component for the aligned layout.
+   *
+   * @param reqs
+   * @param baseline
+   * @param allocated
+   * @param spanAndOffset
+   */
+  private static void adjustFromLeft(SizeRequirements reqs, int baseline,
+                                     int allocated, int[] spanAndOffset)
+  {
+    float left = baseline;
+    // If the resulting span exceeds the maximum of the component, then adjust
+    // accordingly.
+    float maxLeft = ((float) reqs.maximum) * reqs.alignment;
+    if (left / reqs.alignment > reqs.maximum)
+      left = maxLeft;
+    // If we have not enough space on the right side, then adjust accordingly.
+    if (left / reqs.alignment * (1.F - reqs.alignment) > allocated - baseline)
+      left = ((float) (allocated - baseline))
+             / (1.F - reqs.alignment) * reqs.alignment;
+
+    // If we are below the minimum, then adjust upwards.
+    float minLeft = ((float) reqs.minimum) * reqs.alignment;
+    if (left / reqs.alignment < reqs.minimum)
+      left = Math.max(minLeft, maxLeft);
+
+    spanAndOffset[0] = (int) (left / reqs.alignment);
+    spanAndOffset[1] = baseline -
+                       (int) (((float) spanAndOffset[0]) * reqs.alignment);
   }
 
   /**

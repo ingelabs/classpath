@@ -1,5 +1,13 @@
 2005-09-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/SizeRequirements.java
+	(calculateAlignedPositions): Improved algorithm to better respect
+	the minimum and maximum size and to better use the available space.
+	(adjustFromRight): New helper method.
+	(adjustFromLeft): New helper method.
+
+2005-09-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/BoxLayout.java
 	(layoutContainer): Respect the insets of the container.
 
