@@ -1,3 +1,8 @@
+2005-09-26  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/reflect/Proxy.java: Javadoc fix.
+	* java/io/OutputStreamWriter.java (OutputStreamWriter): Javadoc fix.
+
 2005-09-26  Anthony Green  <green@redhat.com>
 
 	* javax/sound/midi/Synthesizer.java (loadInstrument,

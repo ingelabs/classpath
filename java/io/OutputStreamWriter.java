@@ -229,7 +229,7 @@ public class OutputStreamWriter extends Writer
    * <code>CharsetEncoder</code>.
    *
    * @param out The <code>OutputStream</code> to write to
-   * @param cs The <code>CharsetEncoder</code> to encode the output with
+   * @param enc The <code>CharsetEncoder</code> to encode the output with
    */
   public OutputStreamWriter(OutputStream out, CharsetEncoder enc)
   {
