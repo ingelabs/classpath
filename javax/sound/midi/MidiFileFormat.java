@@ -95,7 +95,8 @@ public class MidiFileFormat
    * @param bytes the MIDI file size in bytes
    * @param microseconds the MIDI file length in microseconds
    */
-  public MidiFileFormat(int type, float divisionType, int resolution, int bytes, long microseconds)
+  public MidiFileFormat(int type, float divisionType, 
+			int resolution, int bytes, long microseconds)
   {
     this.type = type;
     this.divisionType = divisionType;

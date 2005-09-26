@@ -1,5 +1,20 @@
 2005-09-26  Anthony Green  <green@redhat.com>
 
+	* javax/sound/midi/Synthesizer.java (loadInstrument,
+	unloadInstrument, remapInstrument, loadAllInstruments,
+	unloadAllInstruments, unloadInstrument, loadInstrument): Don't
+	declare the unchecked IllegalArgumentException.
+	* javax/sound/midi/MidiSystem.java (getMidiDevice, write): Ditto.
+	
+	* javax/sound/midi/ShortMessage.java: Fix 80-column formatting
+	problem.
+	* javax/sound/midi/Sequence.java: Ditto.
+	* javax/sound/midi/MidiMessage.java: Ditto.
+	* javax/sound/midi/MidiSystem.java: Ditto.
+	* javax/sound/midi/MidiFileFormat.java: Ditto.
+
+2005-09-26  Anthony Green  <green@redhat.com>
+
 	* javax/sound/midi/InvalidMidiDataException.java
 	javax/sound/midi/MidiFileFormat.java
 	javax/sound/midi/ControllerEventListener.java
