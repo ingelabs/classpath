@@ -524,7 +524,8 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         tooltipWindow.repaint();
       }
     currentTip.setVisible(true);
-    currentTip.revalidate();
+   if (!currentTip.isValid())
+      currentTip.revalidate();
     currentTip.repaint();
   }
 
@@ -570,7 +571,6 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
 	if (parent == null)
 	  return;
 	parent.remove(currentTip);
-
 	containerPanel = null;
       }
     if (tooltipWindow != null)
@@ -579,6 +579,7 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
 	tooltipWindow.dispose();
 	tooltipWindow = null;
       }
+    currentTip = null;
   }
 
   /**

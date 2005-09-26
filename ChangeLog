@@ -1,3 +1,14 @@
+2005-09-26  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTree.java
+	(JTree): Root should be visible by default.
+	* javax/swing/ToolTipManager.java
+	(showTip): Added check for validity of currentTip. Prevents
+	over-validating.
+	(hideTip): currentTip should be reset.
+	* javax/swing/JMenuItem.java
+	(setAccelerator): Registered accelerator as a keyboard action.
+
 2005-09-26  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/reflect/Proxy.java: Javadoc fix.

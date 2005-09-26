@@ -255,8 +255,11 @@ public class JMenuItem extends AbstractButton implements Accessible,
   }
 
   /**
-   * Sets accelerator for this menu item.
-   *
+   * Sets the key combination which invokes the menu item's action 
+   * listeners without navigating the menu hierarchy. Note that when the 
+   * keyboard accelerator is typed, it will work whether or not the 
+   * menu is currently displayed.
+   * 
    * @param keystroke accelerator for this menu item.
    */
   public void setAccelerator(KeyStroke keystroke)
@@ -276,7 +279,11 @@ public class JMenuItem extends AbstractButton implements Accessible,
     super.configurePropertiesFromAction(action);
 
     if (! (this instanceof JMenu) && action != null)
-      setAccelerator((KeyStroke) (action.getValue(Action.ACCELERATOR_KEY)));
+      {
+        setAccelerator((KeyStroke) (action.getValue(Action.ACCELERATOR_KEY)));
+        super.registerKeyboardAction(action, accelerator, 
+                                     JComponent.WHEN_IN_FOCUSED_WINDOW);
+      }
   }
 
   /**
