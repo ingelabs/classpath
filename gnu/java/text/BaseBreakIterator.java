@@ -75,7 +75,6 @@ public abstract class BaseBreakIterator extends BreakIterator
    */
   public int following (int pos)
   {
-    int save = iter.getIndex();
     iter.setIndex(pos);
     int r = next ();
     return r;

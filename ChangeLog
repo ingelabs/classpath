@@ -1,3 +1,8 @@
+2005-09-26  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* gnu/java/text/BaseBreakIterator.java:
+	(following): Removed unused local variable.
+
 2005-09-26  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/SizeRequirements.java
