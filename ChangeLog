@@ -1,3 +1,19 @@
+2005-09-26  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkDialogPeer.java
+	(create): If the dialog is a toolTip or a
+	PopupMenu, its type should be set to:
+	GDK_WINDOW_TYPE_HINT_MENU, so the parent
+	window does not lose focus.
+	* javax/swing/JTree.java
+	(setModel): Should update the UI everytime the
+	model is changed.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(installUI): Should not set the root to be visible.
+	(paintControlIcons): changed to use getVisibleRect.
+	* javax/swing/plaf/metal/MetalTreeUI.java
+	(installUI): Should not set the root to be visible.
+
 2005-09-26  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* gnu/java/text/BaseBreakIterator.java:
