@@ -1,3 +1,11 @@
+2005-09-26  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/SizeRequirements.java
+	(calculateTiledPositions): Improved to also take minimum and maximum
+	sizes into account and better use the allocated space.
+	(adjustGreater): New helper function.
+	(adjustSmaller): New helper function.
+
 2005-09-25  Casey Marshall  <csm@gnu.org>
 
 	Fixes PR classpath/23916. Fix suggested by Santiago Gala

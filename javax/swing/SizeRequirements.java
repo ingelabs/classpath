@@ -256,6 +256,7 @@ public class SizeRequirements implements Serializable
                                              int[] offsets, int[] spans,
                                              boolean forward)
   {
+    int span = 0;
     if (forward)
       {
         int offset = 0;
@@ -263,6 +264,7 @@ public class SizeRequirements implements Serializable
           {
             offsets[i] = offset;
             spans[i] = children[i].preferred;
+            span += spans[i];
             offset += children[i].preferred;
           }
       }
@@ -273,8 +275,71 @@ public class SizeRequirements implements Serializable
           {
             offset -= children[i].preferred;
             offsets[i] = offset;
+            span += spans[i];
             spans[i] = children[i].preferred;
           }
+      }
+    // Adjust spans so that we exactly fill the allocated region. If
+    if (span > allocated)
+      adjustSmaller(allocated, children, spans, span);
+    else
+      adjustGreater(allocated, children, spans, span);
+
+    // Adjust offsets.
+    if (forward)
+      {
+        int offset = 0;
+        for (int i = 0; i < children.length; i++)
+          {
+            offsets[i] = offset;
+            offset += spans[i];
+          }
+      }
+    else
+      {
+        int offset = allocated;
+        for (int i = 0; i < children.length; i++)
+          {
+            offset -= spans[i];
+            offsets[i] = offset;
+          }
+      }
+  }
+
+  private static void adjustSmaller(int allocated, SizeRequirements[] children,
+                                    int[] spans, int span)
+  {
+    // Sum up (prefSize - minSize) over all children
+    int sumDelta = 0;
+    for (int i = 0; i < children.length; i++)
+      sumDelta += children[i].preferred - children[i].minimum;
+
+    // Adjust all sizes according to their preferred and minimum sizes.
+    for (int i = 0; i < children.length; i++)
+      {
+        double factor = ((double) (children[i].preferred - children[i].minimum))
+                        / ((double) sumDelta);
+        // In case we have a sumDelta of 0, the factor should also be 0.
+        if (Double.isNaN(factor))
+          factor = 0;
+        spans[i] -= factor * (span - allocated);
+      }
+  }
+
+  private static void adjustGreater(int allocated, SizeRequirements[] children,
+                                    int[] spans, int span)
+  {
+    // Sum up (maxSize - prefSize) over all children
+    int sumDelta = 0;
+    for (int i = 0; i < children.length; i++)
+      sumDelta += children[i].maximum - children[i].preferred;
+
+    // Adjust all sizes according to their preferred and minimum sizes.
+    for (int i = 0; i < children.length; i++)
+      {
+        double factor = ((double) (children[i].maximum - children[i].preferred))
+                        / ((double) sumDelta);
+        spans[i] -= factor * (span - allocated);
       }
   }
 
