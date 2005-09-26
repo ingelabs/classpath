@@ -77,14 +77,23 @@ public final class AccessControlContext
 
   /**
    * Construct a new AccessControlContext with the specified
-   * ProtectionDomains and DomainCombiner
+   * {@link ProtectionDomain}s and {@link DomainCombiner}.
    *
+   * <p>Code calling this constructor must have a {@link
+   * SecurityPermission} of <i>createAccessControlContext</i>.</p>
+   *
+   * @throws SecurityException If the caller does not have permission
+   * to create an access control context.
    * @since 1.3
    */
   public AccessControlContext(AccessControlContext acc,
 			      DomainCombiner combiner)
   {
-    // XXX check permission to call this.
+    SecurityManager sm = System.getSecurityManager ();
+    if (sm != null)
+      {
+        sm.checkPermission (new SecurityPermission ("createAccessControlContext"));
+      }
     AccessControlContext acc2 = AccessController.getContext();
     protectionDomains = combiner.combine (acc2.protectionDomains,
                                           acc.protectionDomains);
@@ -172,5 +181,10 @@ public final class AccessControlContext
       h ^= protectionDomains[i].hashCode();
 
     return h;
+  }
+
+  ProtectionDomain[] getProtectionDomains ()
+  {
+    return protectionDomains;
   }
 }

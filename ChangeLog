@@ -1,3 +1,17 @@
+2005-09-25  Casey Marshall  <csm@gnu.org>
+
+	Fixes PR classpath/23916. Fix suggested by Santiago Gala
+	<sgala@apache.org>.
+	* java/security/AccessControlContext.java
+	(<init>): update javadoc; check SecurityPermission
+	"createAccessControlContext" if a security manager is set.
+	(getProtectionDomains): new method.
+	* vm/reference/java/security/VMAccessController.java
+	(DEBUG): set to 'gnu.classpath.Configuration.DEBUG.'
+	(pushContext, popContext): add debug statement.
+	(getContext): debug output changes; include the DomainCombiner
+	specified in the AccessControlContext, if any.
+
 2005-09-25  Tom Tromey  <tromey@redhat.com>
 
 	* javax/security/sasl/SaslServerFactory.java: Updated javadoc.
