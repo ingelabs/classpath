@@ -1,5 +1,12 @@
 2005-09-27  Sven de Marothy  <sven@physto.se>
 
+	* javax/swing/JComboBox.java
+	(firePopupMenuCanceled): Implement
+	(firePopupMenuWillBecomeInvisible): Implement
+	(firePopupMenuWillBecomeVisible): Implement
+
+2005-09-27  Sven de Marothy  <sven@physto.se>
+
 	* javax/swing/text/html/CSS.java
 	(getAttribute,getAllAttributeKeys): Implement
 
