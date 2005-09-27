@@ -282,7 +282,7 @@ public class SizeRequirements implements Serializable
     // Adjust spans so that we exactly fill the allocated region. If
     if (span > allocated)
       adjustSmaller(allocated, children, spans, span);
-    else
+    else if (span < allocated)
       adjustGreater(allocated, children, spans, span);
 
     // Adjust offsets.
@@ -433,7 +433,7 @@ public class SizeRequirements implements Serializable
         float align = children[i].alignment;
         // Try to fit the component into the available space.
         int[] spanAndOffset = new int[2];
-        if (align < .5F)
+        if (align < .5F || baseline == 0)
           adjustFromRight(children[i], baseline, allocated, spanAndOffset);
         else
           adjustFromLeft(children[i], baseline, allocated, spanAndOffset);
