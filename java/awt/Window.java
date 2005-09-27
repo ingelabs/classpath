@@ -933,8 +933,8 @@ public class Window extends Container implements Accessible
    *
    * @since 1.4
    */
-  public void createBufferStrategy(int numBuffers,
-				   BufferCapabilities caps)
+  public void createBufferStrategy(int numBuffers, BufferCapabilities caps)
+    throws AWTException
   {
     if (numBuffers < 1)
       throw new IllegalArgumentException("Window.createBufferStrategy: number"
@@ -946,15 +946,7 @@ public class Window extends Container implements Accessible
 
     // a flipping strategy was requested
     if (caps.isPageFlipping())
-      {
-	try
-	  {
-	    bufferStrategy = new WindowFlipBufferStrategy(numBuffers);
-	  }
-	catch (AWTException e)
-	  {
-	  }
-      }
+      bufferStrategy = new WindowFlipBufferStrategy(numBuffers);
     else
       bufferStrategy = new WindowBltBufferStrategy(numBuffers, true);
   }
