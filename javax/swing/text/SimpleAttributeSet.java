@@ -173,9 +173,21 @@ public class SimpleAttributeSet
     tab.remove(name);
   }
 
+  /**
+   * Removes attributes from this set if they are found in the 
+   * given set.  Only attributes whose key AND value are removed.
+   * Removes attributes only from this set, not from the resolving parent.
+   */
   public void removeAttributes(AttributeSet attributes)
   {
-    removeAttributes(attributes.getAttributeNames());
+    Enumeration e = attributes.getAttributeNames();
+    while (e.hasMoreElements())
+      {
+        Object name = e.nextElement();
+        Object val = attributes.getAttribute(name);
+        if (containsAttribute(name, val))
+          removeAttribute(name);     
+      }
   }
 
   public void removeAttributes(Enumeration names)

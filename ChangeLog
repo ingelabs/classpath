@@ -1,3 +1,9 @@
+2005-09-27  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/SimpleAttributeSet.java:
+	(removeAttributes(AttributeSet)): Only remove attributes from the 
+	current set if their keys AND values are found in the given set
+
 2005-09-27  Lillian Angel  <langel@redhat.com>
 
 	Fixes Bug #24067
