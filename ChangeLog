@@ -1,5 +1,11 @@
 2005-09-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/BoxLayout.java
+	(preferredLayoutSize): Fixed to respect the containers insets.
+	(layoutComponent): Likewise.
+
+2005-09-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SizeRequirements.java
 	(calculateTiledPositions): Only adjust sizes if the allocated
 	span is actually different from the used span.
