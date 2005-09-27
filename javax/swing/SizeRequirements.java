@@ -314,6 +314,11 @@ public class SizeRequirements implements Serializable
     for (int i = 0; i < children.length; i++)
       sumDelta += children[i].preferred - children[i].minimum;
 
+    // If we have sumDelta == 0, then all components have prefSize == maxSize
+    // and we can't do anything about it.
+    if (sumDelta == 0)
+      return;
+
     // Adjust all sizes according to their preferred and minimum sizes.
     for (int i = 0; i < children.length; i++)
       {
@@ -333,6 +338,11 @@ public class SizeRequirements implements Serializable
     int sumDelta = 0;
     for (int i = 0; i < children.length; i++)
       sumDelta += children[i].maximum - children[i].preferred;
+
+    // If we have sumDelta == 0, then all components have prefSize == maxSize
+    // and we can't do anything about it.
+    if (sumDelta == 0)
+      return;
 
     // Adjust all sizes according to their preferred and minimum sizes.
     for (int i = 0; i < children.length; i++)

@@ -1,5 +1,13 @@
 2005-09-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/SizeRequirements.java
+	(adjustGreater): Special handle the case when the components have
+	no spare room for adjustment.
+	(adjustSmaller): Special handle the case when the components have
+	no spare room for adjustment.
+
+2005-09-27  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(hide): Repaint component before invalidating the parent.
 	(show): Repaint component before invalidating the parent.
