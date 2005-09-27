@@ -1,3 +1,22 @@
+2005-09-27  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(instalDefaults): get border from UI defaults,
+	* javax/swing/plaf/metal/MetalBorders.java:
+	(ToolBarBorder): new class,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): added tool bar border default,
+	* javax/swing/plaf/metal/MetalToolBarUI.java
+	(MetalContainerListener): new class,
+	(instance): removed field,
+	(MetalRolloverListener): new class,
+	(contListener): new field,
+	(rolloverListener): new field,
+	(createUI): return a new instance every time,
+	(createRolloverListener): implemented,
+	(createContainerListener): implemented,
+	(createNonRolloverBorder): implemented.
+
 2005-09-27  Anthony Green  <green@redhat.com>
 
 	* javax/sound/midi/MidiFileFormat.java (bytes, microseconds):
