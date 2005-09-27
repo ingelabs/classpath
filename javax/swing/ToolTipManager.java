@@ -463,6 +463,7 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         && currentComponent instanceof JComponent)
       currentTip = ((JComponent) currentComponent).createToolTip();
 
+    currentTip.setVisible(true);
     Container parent = currentComponent.getParent();
     Point p = currentPoint;
     Dimension dims = currentTip.getPreferredSize();
@@ -520,13 +521,7 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         tooltipWindow.pack();
         tooltipWindow.setBounds(p.x, p.y, dims.width, dims.height);
         tooltipWindow.show();
-        tooltipWindow.validate();
-        tooltipWindow.repaint();
       }
-    currentTip.setVisible(true);
-   if (!currentTip.isValid())
-      currentTip.revalidate();
-    currentTip.repaint();
   }
 
   /**
