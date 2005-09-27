@@ -1,3 +1,24 @@
+2005-09-27  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalBorders.java
+	(rolloverBorder): new field,
+	(getRolloverBorder): new method,
+	* javax/swing/plaf/metal/MetalButtonListener.java: new class,
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(instance): removed field,
+	(constructor): initialise fields from UI defaults,
+	(getFocusColor): just return field value,
+	(getSelectColor): just return field value,
+	(getDisabledTextColor): just return field value,
+	(createUI): return a new instance every time,
+	(installDefaults): check for isRolloverEnabled and install rollover
+	border if necessary,
+	(uninstallDefaults): implemented,
+	(createButtonListener): implemented,
+	(paintButtonPressed): implemented,
+	(paintFocus): implemented,
+	(paintText): implemented.
+
 2005-09-27  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/SimpleAttributeSet.java:
@@ -87,7 +108,7 @@
 2005-09-27  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicToolBarUI.java
-	(instalDefaults): get border from UI defaults,
+	(installDefaults): get border from UI defaults,
 	* javax/swing/plaf/metal/MetalBorders.java:
 	(ToolBarBorder): new class,
 	* javax/swing/plaf/metal/MetalLookAndFeel.java

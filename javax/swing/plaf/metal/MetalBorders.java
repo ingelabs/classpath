@@ -92,6 +92,9 @@ public class MetalBorders
    */
   private static Border textBorder;
 
+  /** The shared instance for getRolloverBorder(). */
+  private static Border rolloverBorder;
+
   /**
    * A MarginBorder that gets shared by multiple components.
    * Created on demand by the private helper function {@link
@@ -1453,4 +1456,22 @@ public class MetalBorders
       marginBorder = new BasicBorders.MarginBorder();
     return marginBorder;
   }
+
+  /**
+   * Returns a shared instance of a compound border for rollover buttons.
+   * 
+   * @return A shared border instance.
+   */
+  static Border getRolloverBorder()
+  {
+    if (rolloverBorder == null)
+      {
+        Border outer = new MetalBorders.RolloverButtonBorder();
+        Border inner = MetalBorders.getMarginBorder();
+        rolloverBorder = new BorderUIResource.CompoundBorderUIResource(outer, 
+            inner);
+      }
+    return rolloverBorder;
+  }
+
 }
