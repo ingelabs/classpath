@@ -74,12 +74,12 @@ public class MidiFileFormat
   /**
    * The size of the MIDI file in bytes. 
    */
-  protected int bytes = UNKNOWN_LENGTH;
+  protected int byteLength = UNKNOWN_LENGTH;
   
   /**
    * The length of the MIDI file in microseconds. 
    */
-  protected long microseconds = UNKNOWN_LENGTH;
+  protected long microsecondLength = UNKNOWN_LENGTH;
   
   /**
    * A special value indicating an unknown quantity.
@@ -101,8 +101,8 @@ public class MidiFileFormat
     this.type = type;
     this.divisionType = divisionType;
     this.resolution = resolution;
-    this.bytes = bytes;
-    this.microseconds = microseconds;
+    this.byteLength = bytes;
+    this.microsecondLength = microseconds;
   }
   
   /**
@@ -143,7 +143,7 @@ public class MidiFileFormat
    */
   public int getByteLength()
   {
-    return bytes;
+    return byteLength;
   }
 
   /**
@@ -153,6 +153,6 @@ public class MidiFileFormat
    */
   public long getMicrosecondLength()
   {
-    return microseconds;
+    return microsecondLength;
   }
 }

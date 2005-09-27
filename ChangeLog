@@ -1,3 +1,8 @@
+2005-09-27  Anthony Green  <green@redhat.com>
+
+	* javax/sound/midi/MidiFileFormat.java (bytes, microseconds):
+	Rename to byteLength and microsecondLength respectively.
+
 2005-09-26  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/ToolTipManager.java
