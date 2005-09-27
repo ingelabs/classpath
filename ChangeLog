@@ -1,3 +1,12 @@
+2005-09-27  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/SimpleAttributeSet.java:
+	(containsAttribute): Check the resolve parent if the attribute is not
+	found locally.
+	(containsAttributeLocally): New package-private method.
+	(isEqual): Re-implemented.  Return true if the two sets have the same
+	size and this set contains the given set.
+
 2005-09-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JSeparator.java
