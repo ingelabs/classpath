@@ -1,3 +1,14 @@
+2005-09-27  Lillian Angel  <langel@redhat.com>
+	
+	Fixes Bug #24044
+	* javax/swing/ToolTipManager.java
+	(showTip): currentTip needs to be revalidated on HeavyWeightPopups
+	* javax/swing/plaf/basic/BasicToolTipUI.java
+	(getPreferredSize): Fixed to get the preferred size of the 
+	tooltip including the accelerator, if it has one.
+	(paint): Fixed to paint the accelerator in its font
+	and color, if it has one.
+
 2005-09-27  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/Utilities.java:

@@ -523,6 +523,8 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         tooltipWindow.show();
         tooltipWindow.validate();
         tooltipWindow.repaint();
+        currentTip.revalidate();
+        currentTip.repaint();
       }
   }
 
