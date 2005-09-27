@@ -1,3 +1,13 @@
+2005-09-27  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(hide): Repaint component before invalidating the parent.
+	(show): Repaint component before invalidating the parent.
+	* javax/swing/JComponent.java
+	(revalidate): Check if we are in the event thread, and if not,
+	then queue a self-request in the event thread.
+	(setVisible): Repaint the parent and queue a revalidate.
+
 2005-09-27  Sven de Marothy  <sven@physto.se>
 
 	* javax/swing/JComboBox.java
@@ -131,8 +141,8 @@
 
 	* gnu/java/security/provider/Gnu.java
 	(<init>): add Diffie-Hellman key factory and key pair generator.
-	* gnu/java/security/provdier/DiffieHellmanKeyFactoryImpl.java,
-	gnu/java/security/provider/DiffieHellmanKeyPairGeneratorImpl.java:
+	* gnu/java/security/provider/DiffieHellmanKeyFactoryImpl.java,
+	* gnu/java/security/provider/DiffieHellmanKeyPairGeneratorImpl.java:
 	new files.
 
 2005-09-24  Roman Kennke  <kennke@aicas.com>

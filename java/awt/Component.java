@@ -901,15 +901,15 @@ public abstract class Component
         if (currentPeer != null)
             currentPeer.setVisible(true);
 
+        // The JDK repaints the component before invalidating the parent.
+        // So do we.
+        repaint();
         // Invalidate the parent if we have one. The component itself must
         // not be invalidated. We also avoid NullPointerException with
         // a local reference here.
         Container currentParent = parent;
         if (currentParent != null)
-          {
-            currentParent.invalidate();
-            currentParent.repaint();
-          }
+          currentParent.invalidate();
 
         ComponentEvent ce =
           new ComponentEvent(this,ComponentEvent.COMPONENT_SHOWN);
@@ -947,16 +947,16 @@ public abstract class Component
             currentPeer.setVisible(false);
         
         this.visible = false;
-        
+
+        // The JDK repaints the component before invalidating the parent.
+        // So do we.
+        repaint();
         // Invalidate the parent if we have one. The component itself must
         // not be invalidated. We also avoid NullPointerException with
         // a local reference here.
         Container currentParent = parent;
         if (currentParent != null)
-          {
-            currentParent.invalidate();
-            currentParent.repaint();
-          }
+          currentParent.invalidate();
 
         ComponentEvent ce =
           new ComponentEvent(this,ComponentEvent.COMPONENT_HIDDEN);
