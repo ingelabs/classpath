@@ -918,6 +918,44 @@ public class MetalBorders
   }
   
   /**
+   * A button border that is only visible when the mouse pointer is within 
+   * the button's bounds.
+   */
+  public static class RolloverButtonBorder
+    extends MetalBorders.ButtonBorder
+  {
+    /**
+     * Creates a new border instance.
+     */
+    public RolloverButtonBorder()
+    {
+    }
+    
+    /**
+     * Paints the border.
+     * 
+     * @param c  the component.
+     * @param g  the graphics device.
+     * @param x  the x-coordinate.
+     * @param y  the y-coordinate.
+     * @param w  the width.
+     * @param h  the height.
+     */
+    public void paintBorder(Component c, Graphics g, int x, int y, int w, 
+            int h)
+    {
+      boolean mouseIsOver = false;
+      if (c instanceof AbstractButton)
+        {
+          ButtonModel bmodel = ((AbstractButton) c).getModel();
+          mouseIsOver = bmodel.isRollover();
+        }
+      if (mouseIsOver)
+        super.paintBorder(c, g, x, y, w, h);
+    }
+  }
+  
+  /**
    * This border is used in Toolbar buttons as inner border.
    */
   static class RolloverMarginBorder extends AbstractBorder
