@@ -47,6 +47,7 @@ import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.event.InputEvent;
 
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
@@ -152,6 +153,11 @@ public class BasicToolTipUI extends ToolTipUI
         JMenuItem item = (JMenuItem) component;
         KeyStroke acc = item.getAccelerator();
         String tipText = item.getToolTipText();
+        int mne = item.getMnemonic();
+
+        if (acc == null && mne > 0)
+          acc = KeyStroke.getKeyStroke(Character.toUpperCase((char) mne), 
+                                       InputEvent.ALT_MASK, false);
         if (tipText != null && acc != null)
           {
             UIDefaults defaults = UIManager.getLookAndFeelDefaults();

@@ -1885,7 +1885,7 @@ public abstract class Component
    * @see #repaint(long, int, int, int, int)
    */
   public void repaint()
-  {    
+  {   
     if(!isShowing())
       {
         Component p = parent;
@@ -3479,7 +3479,10 @@ public abstract class Component
     ComponentPeer tmp = peer;
     peer = null;
     if (tmp != null)
-      tmp.dispose();
+      {
+        tmp.hide();
+        tmp.dispose();
+      }
   }
 
   /**

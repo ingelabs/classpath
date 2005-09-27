@@ -1,3 +1,14 @@
+2005-09-27  Lillian Angel  <langel@redhat.com>
+
+	Fixes Bug #24067
+	* java/awt/Component.java
+	(removeNotify): Should call hide on the peer before
+	disposing of it. This stops the flashing when the 
+	tooltips are removed from the component.
+	* javax/swing/plaf/basic/BasicToolTipUI.java
+	(getPreferredSize): If the accelerator is null, we should
+	paint the mnenomic if it is available.
+
 2005-09-27  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/Window.java (createBufferStrategy): Can throw AWTException.
