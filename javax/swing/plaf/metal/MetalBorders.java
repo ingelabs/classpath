@@ -53,6 +53,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
@@ -1190,7 +1191,7 @@ public class MetalBorders
    * A border used when painting {@link JToolBar} instances.
    */
   public static class ToolBarBorder extends AbstractBorder
-    implements UIResource
+    implements UIResource, SwingConstants
   {
     /**
      * Creates a new border instance.
