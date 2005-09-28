@@ -1,5 +1,11 @@
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(createDefaultTheme): Change default back to DefaultMetalTheme.
+	The Ocean theme is too inconsistent.
+
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Font.java
 	(tk): Made method package private. Must not be protected.
 	(getFontFromToolkit): Made method package private. Must not
