@@ -1,5 +1,15 @@
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(ActionScroller): Added unused class for binary compatibility.
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java
+	(MouseInputHandler): Made inner class public as specified.
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(FocusHandler):  Made inner class public as specified.
+	(MouseInputHandler):  Made inner class public as specified.
+
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicButtonUI.java
 	(currentIcon): Made method package private, so that other button
 	UIs can access it.

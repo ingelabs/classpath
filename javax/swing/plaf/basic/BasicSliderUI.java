@@ -60,6 +60,7 @@ import java.beans.PropertyChangeListener;
 import java.util.Dictionary;
 import java.util.Enumeration;
 
+import javax.swing.AbstractAction;
 import javax.swing.BoundedRangeModel;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -467,6 +468,22 @@ public class BasicSliderUI extends SliderUI
 	return (value > slider.getValue());
       else
 	return (value < slider.getValue());
+    }
+  }
+
+  /**
+   * This class is no longer used as of JDK1.3.
+   */
+  public class ActionScroller extends AbstractAction
+  {
+    /**
+     * Not used.
+     *
+     * @param event not used
+     */
+    public void actionPerformed(ActionEvent event)
+    {
+      // Not used.
     }
   }
 
