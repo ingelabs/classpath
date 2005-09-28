@@ -1,5 +1,11 @@
 2005-09-28  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installDefaults): Fixed checks for setting defaults.
+	Should check if default is null also.
+
+2005-09-28  Lillian Angel  <langel@redhat.com>
+
 	Fixes Bug #24077
 	* gnu/java/awt/peer/gtk/GdkFontMetrics.java
 	(GdkFontMetrics): Added a check for the font
