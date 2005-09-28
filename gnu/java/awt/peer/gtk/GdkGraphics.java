@@ -88,6 +88,8 @@ public class GdkGraphics extends Graphics
     color = g.color;
     xorColor = g.xorColor;
     font = g.font;
+    if (font == null)
+      font = new Font ("Dialog", Font.PLAIN, 12);
     clip = new Rectangle (g.clip);
     component = g.component;
 
@@ -380,7 +382,8 @@ public class GdkGraphics extends Graphics
   
   public void setFont (Font font)
   {
-    this.font = font;
+    if (font != null)
+      this.font = font;
   }
 
   native void setFunction (int gdk_func);

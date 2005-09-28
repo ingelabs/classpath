@@ -1,3 +1,18 @@
+2005-09-28  Lillian Angel  <langel@redhat.com>
+
+	Fixes Bug #24077
+	* gnu/java/awt/peer/gtk/GdkFontMetrics.java
+	(GdkFontMetrics): Added a check for the font
+	being null. Fixed a NPE. 
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(GdkGraphics): Added check if the font is null.
+	If it is, the font should be set to the default.
+	(setFont): If font parameter is null, this.font should not
+	be changed.
+	* javax/swing/JPopupMenu.java:
+	Fixed API documentation to say 'JDialog' rather than
+	'JWindow'.
+
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel.java

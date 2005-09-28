@@ -62,14 +62,15 @@ public class GdkFontMetrics extends FontMetrics
   static final int TEXT_METRICS_HEIGHT = 3;
   static final int TEXT_METRICS_X_ADVANCE = 4;
   static final int TEXT_METRICS_Y_ADVANCE = 5;
-
-
+  
   public GdkFontMetrics (Font font)
   {    
-    super (font.getPeer() instanceof GdkFontPeer 
+    super ((font == null) 
+           ? new Font("Dialog", Font.PLAIN, 12) 
+           : font.getPeer() instanceof GdkFontPeer 
            ? font 
            : ((ClasspathToolkit)(Toolkit.getDefaultToolkit ()))
-           .getFont (font.getName(), font.getAttributes ()));
+             .getFont (font.getName(), font.getAttributes ()));
     
     peer = (GdkFontPeer) this.font.getPeer();
 
