@@ -1483,6 +1483,7 @@ public class BasicSliderUI extends SliderUI
     leftToRightCache = slider.getComponentOrientation() != ComponentOrientation.RIGHT_TO_LEFT;
     // FIXME: This next line is only here because the above line is here.
     calculateThumbLocation();
+    calculateGeometry();
 
     if (slider.getPaintTrack())
       paintTrack(g);
@@ -1975,7 +1976,7 @@ public class BasicSliderUI extends SliderUI
   public void paintThumb(Graphics g)
   {
     Color saved_color = g.getColor();
-
+    
     Point a = new Point(thumbRect.x, thumbRect.y);
     Point b = new Point(a);
     Point c = new Point(a);

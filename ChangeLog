@@ -1,4 +1,11 @@
 2005-09-28  Lillian Angel  <langel@redhat.com>
+
+	Fixes Bug #23934
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(paint): Called calculateGeometry, so the slider is 
+	initially set up.
+
+2005-09-28  Lillian Angel  <langel@redhat.com>
 	
 	Fixes Bug #24080
 	* java/awt/Window.java
