@@ -1,8 +1,32 @@
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
+	* java/rmi/server/RMIClassLoader.java:
+	Moved all implementation code to
+	gnu.java.rmi.server.RMIClassLoaderImpl.
+	(getProviderInstance): New helper method to find a provider.
+	(getDefaultProviderInstance): New helper method to find a provider.
+	(loadClass(String, String, Class)): New method.
+	* gnu/java/rmi/server/RMIClassLoaderImpl.java:
+	New class. The implementation is moved from
+	java.rmi.server.RMIClassLoader.
+
 2005-09-28  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/AbstractDocument.java:
 	(AbstractElement.getResolveParent): If the AttributeSet's 
 	getResolveParent returns null, use the Element's parent's AttributeSet.
+
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
+	* java/rmi/server/RMIClassLoader.java:
+	Moved all implementation code to
+	gnu.java.rmi.server.RMIClassLoaderImpl.
+	(getProviderInstance): New helper method to find a provider.
+	(getDefaultProviderInstance): New helper method to find a provider.
+	(loadClass(String, String, Class)): New method.
+	* gnu/java/rmi/server/RMIClassLoaderImpl.java:
+	New class. The implementation is moved from
+	java.rmi.server.RMIClassLoader.
 
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
