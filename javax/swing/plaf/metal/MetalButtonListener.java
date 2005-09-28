@@ -72,10 +72,15 @@ class MetalButtonListener extends BasicButtonListener
     super.propertyChange(e);
     if (e.getPropertyName().equals(
             AbstractButton.ROLLOVER_ENABLED_CHANGED_PROPERTY))
-    {
-      AbstractButton b = (AbstractButton) e.getSource();
-      if (b.getBorder() instanceof UIResource)
-        b.setBorder(MetalBorders.getRolloverBorder());
-    }
+      {
+        AbstractButton b = (AbstractButton) e.getSource();
+        if (b.getBorder() instanceof UIResource)
+          {
+            if (Boolean.TRUE.equals(e.getNewValue()))
+              b.setBorder(MetalBorders.getRolloverBorder());
+            else if (Boolean.FALSE.equals(e.getNewValue()))
+              b.setBorder(MetalBorders.getButtonBorder());
+          }
+      }
   }
 }
