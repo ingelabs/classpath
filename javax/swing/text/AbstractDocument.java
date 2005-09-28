@@ -1230,6 +1230,9 @@ public abstract class AbstractDocument implements Document, Serializable
 
     /**
      * Returns the resolve parent of this element.
+     * This is taken from the AttributeSet, but if this is null,
+     * this method instead returns the Element's parent's 
+     * AttributeSet
      *
      * @return the resolve parent of this element
      *
@@ -1237,7 +1240,9 @@ public abstract class AbstractDocument implements Document, Serializable
      */
     public AttributeSet getResolveParent()
     {
-      return attributes.getResolveParent();
+      if (attributes.getResolveParent() != null)
+        return attributes.getResolveParent();
+      return element_parent.getAttributes();
     }
 
     /**

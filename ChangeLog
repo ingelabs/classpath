@@ -1,3 +1,9 @@
+2005-09-28  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/AbstractDocument.java:
+	(AbstractElement.getResolveParent): If the AttributeSet's 
+	getResolveParent returns null, use the Element's parent's AttributeSet.
+
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
 	* java/rmi/activation/ActivationGroup_Stub.java:
