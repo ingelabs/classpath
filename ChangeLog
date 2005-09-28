@@ -1,5 +1,14 @@
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalUtils.java
+	(fillMetalPattern): If we have a Graphics2D, then go into
+	optimized drawing mode.
+	(fillMetalPattern2D): New method. Implements pattern drawing using
+	textures.
+	(initializePattern): New method. Initializes the texture.
+
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Font.java: Reformatted file.
 
 2005-09-28  David Gilbert  <david.gilbert@object-refinery.com>
