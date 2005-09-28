@@ -1,5 +1,16 @@
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalBorders.java
+	(MenuItemBorder.paintBorder): Fixed painting so that a thin white
+	line is drawn on the left of unarmed items. Fixed color handling.
+	(PopupMenuBorder.borderInsets): Fixed insets. 
+	(PopupMenuBorder.paintBorder): Removed left white line. This is
+	drawn now in the MenuItemBorder.
+	(ToolBarBorder.paintBorder): Use correct call to new MetalUtils
+	fillMetalPattern method signature.
+
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalUtils.java
 	(fillMetalPattern): If we have a Graphics2D, then go into
 	optimized drawing mode.
