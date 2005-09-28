@@ -1,5 +1,15 @@
 2005-09-28  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(TreeHardDriveIcon): new private class,
+	(TreeFloppyDriveIcon): new private class,
+	(TreeComputerIcon): new private class,
+	(getTreeControlIcon): implemented,
+	(getTreeComputerIcon): implemented,
+	(getTreeHardDriveIcon): implemented.
+
+2005-09-28  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalBorders.java
 	(ToolBarBorder): now implements SwingConstants.
 	
