@@ -1,3 +1,11 @@
+2005-09-28  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/ToolTipManager.java
+	(showTip): Added check to prevent NPE.
+	(adjustLocation): Changed else if to if, to
+	check final y position of tooltip incase
+	it is still cut off.
+
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
 	* java/rmi/server/RMIClassLoader.java:
