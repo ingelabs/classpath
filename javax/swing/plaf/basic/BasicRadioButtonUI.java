@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing.plaf.basic;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -157,6 +159,24 @@ public class BasicRadioButtonUI extends BasicToggleButtonUI
       }
     if (text != null)
       paintText(g, b, tr, text);
-    paintFocus(g, b, vr, tr, ir);
+    // TODO: Figure out what is the size parameter?
+    paintFocus(g, tr, null);
+  }
+
+  /**
+   * Paints the focus indicator for JRadioButtons.
+   *
+   * @param g the graphics context
+   * @param tr the rectangle for the text label
+   * @param size the size (??)
+   */
+  // TODO: Figure out what for is the size parameter.
+  protected void paintFocus(Graphics g, Rectangle tr, Dimension size)
+  {
+    Color focusColor = UIManager.getColor(getPropertyPrefix() + ".focus");
+    Color saved = g.getColor();
+    g.setColor(focusColor);
+    g.drawRect(tr.x, tr.y, tr.width, tr.height);
+    g.setColor(saved);
   }
 }
