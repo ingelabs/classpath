@@ -1,3 +1,10 @@
+2005-09-28  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/AbstractDocument.java:
+	(BranchElement.getElementIndex): If there are no children, don't return
+	-1, instead getStartOffset() will throw NPE.  Also, if no child Element
+	contains the specified offset, return the closest one.
+
 2005-09-28  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/ToolTipManager.java
