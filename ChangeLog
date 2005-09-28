@@ -1,5 +1,23 @@
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalProgressBarUI.java
+	(createUI): Removed Hashtable lookup.
+	* javax/swing/plaf/metal/MetalSeparatorUI.java
+	(paint): New method. Uses the metal colors for drawing separators.
+	* javax/swing/plaf/metal/MetalSplitPaneUI.java
+	(createUI): Removed Hashtable lookup.
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	(createUI): Removed Hashtable lookup.
+	* javax/swing/plaf/metal/MetalTextFieldUI.java
+	(createUI): Removed Hashtable lookup.
+	* javax/swing/plaf/metal/MetalTreeUI.java
+	(createUI): Removed Hashtable lookup.
+	* javax/swing/plaf/metal/Ocean.java
+	(addCustomEntriesToTable): New method. Adds some custom UI defaults
+	for the Ocean theme.
+
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalScrollBarUI.java
 	(paintThumb): Use new MetalUtils.fillMetalPattern signature.
 	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
