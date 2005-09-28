@@ -311,7 +311,9 @@ public class Window extends Container implements Accessible
 
     KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager ();
     manager.setGlobalFocusedWindow (this);
-
+    
+    synchronized (getTreeLock())
+    {
     if (!shown)
       {
         FocusTraversalPolicy policy = getFocusTraversalPolicy ();
@@ -325,6 +327,7 @@ public class Window extends Container implements Accessible
 
         shown = true;
       }
+    }
   }
 
   public void hide()
