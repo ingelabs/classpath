@@ -1,5 +1,14 @@
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Font.java
+	(tk): Made method package private. Must not be protected.
+	(getFontFromToolkit): Made method package private. Must not
+	be protected.
+	(getPeerFromToolkit): Made method package private. Must not
+	be protected.
+
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicScrollPaneUI.java
 	(createMouseWheelListener): New hook method for creating
 	mouse wheel listeners.

@@ -271,19 +271,19 @@ public class Font implements Serializable
 
   /* These methods delegate to the toolkit. */
 
-  protected static ClasspathToolkit tk()
+  static ClasspathToolkit tk()
   {
     return (ClasspathToolkit) Toolkit.getDefaultToolkit();
   }
 
   /* Every factory method in Font should eventually call this. */
-  protected static Font getFontFromToolkit(String name, Map attribs)
+  static Font getFontFromToolkit(String name, Map attribs)
   {
     return tk().getFont(name, attribs);
   }
 
   /* Every Font constructor should eventually call this. */
-  protected static ClasspathFontPeer getPeerFromToolkit(String name, Map attrs)
+  static ClasspathFontPeer getPeerFromToolkit(String name, Map attrs)
   {
     return tk().getClasspathFontPeer(name, attrs);
   }
