@@ -1,3 +1,7 @@
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Font.java: Reformatted file.
+
 2005-09-28  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java
@@ -56,7 +60,7 @@
 2005-09-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JSeparator.java
-	(updateUI): Removed invalidate call. This is unnecessary.
+w	(updateUI): Removed invalidate call. This is unnecessary.
 	* javax/swing/plaf/basic/BasicSeparatorUI.java
 	(paint): Reworked painting so that it paints the separator
 	correctly.
