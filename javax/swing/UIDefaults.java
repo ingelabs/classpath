@@ -577,8 +577,8 @@ public class UIDefaults extends Hashtable
    *
    * @param key the key to the requested entry
    *
-   * @return the boolean entry for <code>key</code> or null if no such entry
-   *     exists
+   * @return The boolean entry for <code>key</code> or <code>false</code> if no 
+   *         such entry exists.
    */
   public boolean getBoolean(Object key)
   {

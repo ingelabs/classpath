@@ -1,5 +1,10 @@
 2005-09-28  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/UIDefaults.java
+	(getBoolean(Object)): API doc correction.
+
+2005-09-28  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalButtonListener.java
 	(propertyChange): check new value of property to determine which
 	border to set.
