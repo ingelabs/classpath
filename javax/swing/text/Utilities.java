@@ -408,10 +408,7 @@ public class Utilities
   public static final int getRowEnd(JTextComponent c, int offs)
       throws BadLocationException
   {
-    Element root = c.getDocument().getDefaultRootElement();
-    Element rowElement = root.getElement(root.getElementIndex(offs));
-    String text = c.getText(rowElement.getStartOffset(),
-                            rowElement.getEndOffset());
+    String text = c.getText();
     if (text == null)
       return -1;
 
@@ -420,7 +417,7 @@ public class Utilities
     // line as the character at position offs
     int high = offs + ((text.length() - 1 - offs) / 2);
     int low = offs;
-    int oldHigh = text.length();
+    int oldHigh = text.length() + 1;
     while (true)
       {
         if (c.modelToView(high).y != c.modelToView(offs).y)
@@ -454,10 +451,7 @@ public class Utilities
   public static final int getRowStart(JTextComponent c, int offs)
       throws BadLocationException
   {
-    Element root = c.getDocument().getDefaultRootElement();
-    Element rowElement = root.getElement(root.getElementIndex(offs));
-    String text = c.getText(rowElement.getStartOffset(),
-                            rowElement.getEndOffset());
+    String text = c.getText();
     if (text == null)
       return -1;
 
