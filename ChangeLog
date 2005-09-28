@@ -1,5 +1,13 @@
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(createMouseWheelListener): New hook method for creating
+	mouse wheel listeners.
+	(installListeners): Use new hook method to create mouse wheel
+	listeners.
+
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalProgressBarUI.java
 	(createUI): Removed Hashtable lookup.
 	* javax/swing/plaf/metal/MetalSeparatorUI.java
