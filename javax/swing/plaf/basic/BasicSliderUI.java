@@ -1482,7 +1482,6 @@ public class BasicSliderUI extends SliderUI
     // FIXME: Move this to propertyChangeEvent handler, when we get those.
     leftToRightCache = slider.getComponentOrientation() != ComponentOrientation.RIGHT_TO_LEFT;
     // FIXME: This next line is only here because the above line is here.
-    calculateThumbLocation();
     calculateGeometry();
 
     if (slider.getPaintTrack())
