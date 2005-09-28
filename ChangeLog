@@ -1,3 +1,8 @@
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
+	* java/rmi/activation/ActivationGroup_Stub.java:
+	New class.
+
 2005-09-28  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicSliderUI.java
