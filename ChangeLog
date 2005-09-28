@@ -1,5 +1,12 @@
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	(paintThumb): Use new MetalUtils.fillMetalPattern signature.
+	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
+	(paint): Use new MetalUtils.fillMetalPattern signature.
+
+2005-09-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalInternalFrameTitlePane.java
 	(paintPalette): Use new MetalUtils.fillMetalPattern signature.
 	(paintComponent): Use new MetalUtils.fillMetalPattern signature.

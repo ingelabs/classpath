@@ -345,7 +345,7 @@ public class MetalScrollBarUI
                thumbBounds.y + thumbBounds.height);
 
     // draw the pattern
-    MetalUtils.fillMetalPattern(g, thumbBounds.x + 3, thumbBounds.y + 3,
+    MetalUtils.fillMetalPattern(c, g, thumbBounds.x + 3, thumbBounds.y + 3,
                                 thumbBounds.width - 6, thumbBounds.height - 6,
                                 thumbHighlightColor, new Color(102, 102, 153));
   }
