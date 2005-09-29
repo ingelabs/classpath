@@ -1,3 +1,11 @@
+2005-09-29  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicIconFactory.java
+	(getMenuArrowIcon): adjusted the size and painting of the returned
+	icon,
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(paintMenuItem): adjusted arrow icon position.
+
 2005-09-28  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/AbstractDocument.java:
