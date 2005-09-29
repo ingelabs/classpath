@@ -1,3 +1,15 @@
+2005-09-29  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JPopupMenu.java
+	(setVisible): use current size, not preferred size, when checking for
+	screen edge,
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(show): include top and bottom insets in preferred size,
+	* javax/swing/plaf/metal/MetalComboBoxButton.java
+	(MetalComboBoxButton): don't pass icon to super class,
+	(paintComponent): call super.paintComponent() and reworked label 
+	drawing.
+
 2005-09-29  Roman Kennke  <kennke@aicas.com>
 
 	Fixes Bug #24105
