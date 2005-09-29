@@ -282,6 +282,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
     super.installUI(c);
     installDefaults((JScrollPane) c);
     installListeners((JScrollPane) c);
+    installKeyboardActions((JScrollPane) c);
   }
 
   /**
@@ -310,6 +311,19 @@ public class BasicScrollPaneUI extends ScrollPaneUI
     if (mouseWheelListener == null)
       mouseWheelListener = createMouseWheelListener();
     sp.addMouseWheelListener(mouseWheelListener);
+  }
+
+  /**
+   * Installs additional keyboard actions on the scrollpane. This is a hook
+   * method provided to subclasses in order to install their own keyboard
+   * actions.
+   *
+   * @param sp the scrollpane to install keyboard actions on
+   */
+  protected void installKeyboardActions(JScrollPane sp)
+  {
+    // TODO: Is this only a hook method or should we actually do something
+    // here? If the latter, than figure out what and implement this.
   }
 
   /**
@@ -367,6 +381,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
     super.uninstallUI(c);
     this.uninstallDefaults((JScrollPane)c);
     uninstallListeners((JScrollPane) c);
+    installKeyboardActions((JScrollPane) c);
   }
 
   /**
@@ -385,6 +400,19 @@ public class BasicScrollPaneUI extends ScrollPaneUI
                              .removeChangeListener(vsbChangeListener);
     sp.getViewport().removeChangeListener(viewportChangeListener);
     sp.removeMouseWheelListener(mouseWheelListener);
+  }
+
+  /**
+   * Uninstalls all keyboard actions from the JScrollPane that have been
+   * installed by {@link #installKeyboardActions}. This is a hook method
+   * provided to subclasses to add their own keyboard actions.
+   *
+   * @param sp the scrollpane to uninstall keyboard actions from
+   */
+  protected void uninstallKeyboardActions(JScrollPane sp)
+  {
+    // TODO: Is this only a hook method or should we actually do something
+    // here? If the latter, than figure out what and implement this.
   }
 
   public Dimension getMinimumSize(JComponent c) 

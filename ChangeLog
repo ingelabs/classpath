@@ -1,5 +1,13 @@
 2005-09-29  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(installUI): Call the new installKeyboardActions hook.
+	(uninstallUI): Call the new uninstallKeyboardActions hook.
+	(installKeyboardActions): New hook method.
+	(uninstallKeyboardActions): New hook method.
+
+2005-09-29  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicSliderUI.java
 	(ActionScroller.ActionScroller): Added constructor.
 
