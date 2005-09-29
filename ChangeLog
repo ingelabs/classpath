@@ -1,3 +1,9 @@
+2005-09-29  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getLeftChildIndent): Fixed method signature.
+	(drawCentered): Fixed method signature.
+
 2005-09-29  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/23381:
