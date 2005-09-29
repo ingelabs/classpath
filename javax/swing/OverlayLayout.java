@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package javax.swing;
 
+import java.awt.AWTError;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -78,12 +79,32 @@ public class OverlayLayout implements LayoutManager2, Serializable
   private SizeRequirements yTotal;
 
   /**
+   * The offsets of the child components in the X direction.
+   */
+  private int[] offsetsX;
+
+  /**
+   * The offsets of the child components in the Y direction.
+   */
+  private int[] offsetsY;
+
+  /**
+   * The spans of the child components in the X direction.
+   */
+  private int[] spansX;
+
+  /**
+   * The spans of the child components in the Y direction.
+   */
+  private int[] spansY;
+
+  /**
    * Constructor OverlayLayout
    * @param target TODO
    */
   public OverlayLayout(Container target)
   {
-    // TODO
+    this.target = target;
   }
 
   /**
@@ -92,7 +113,14 @@ public class OverlayLayout implements LayoutManager2, Serializable
    */
   public void invalidateLayout(Container target)
   {
-    // TODO
+    xChildren = null;
+    yChildren = null;
+    xTotal = null;
+    yTotal = null;
+    offsetsX = null;
+    offsetsY = null;
+    spansX = null;
+    spansY = null;
   }
 
   /**
@@ -102,7 +130,7 @@ public class OverlayLayout implements LayoutManager2, Serializable
    */
   public void addLayoutComponent(String string, Component component)
   {
-    // TODO
+    // Nothing to do here.
   }
 
   /**
@@ -112,7 +140,7 @@ public class OverlayLayout implements LayoutManager2, Serializable
    */
   public void addLayoutComponent(Component component, Object constraints)
   {
-    // TODO
+    // Nothing to do here.
   }
 
   /**
@@ -121,7 +149,7 @@ public class OverlayLayout implements LayoutManager2, Serializable
    */
   public void removeLayoutComponent(Component component)
   {
-    // TODO
+    // Nothing to do here.
   }
 
   /**
@@ -131,7 +159,11 @@ public class OverlayLayout implements LayoutManager2, Serializable
    */
   public Dimension preferredLayoutSize(Container target)
   {
-    return null; // TODO
+    if (target != this.target)
+      throw new AWTError("OverlayLayout can't be shared");
+
+    checkTotalRequirements();
+    return new Dimension(xTotal.preferred, yTotal.preferred);
   }
 
   /**
@@ -141,7 +173,11 @@ public class OverlayLayout implements LayoutManager2, Serializable
    */
   public Dimension minimumLayoutSize(Container target)
   {
-    return null; // TODO
+    if (target != this.target)
+      throw new AWTError("OverlayLayout can't be shared");
+
+    checkTotalRequirements();
+    return new Dimension(xTotal.minimum, yTotal.minimum);
   }
 
   /**
@@ -151,7 +187,11 @@ public class OverlayLayout implements LayoutManager2, Serializable
    */
   public Dimension maximumLayoutSize(Container target)
   {
-    return null; // TODO
+    if (target != this.target)
+      throw new AWTError("OverlayLayout can't be shared");
+
+    checkTotalRequirements();
+    return new Dimension(xTotal.maximum, yTotal.maximum);
   }
 
   /**
@@ -161,7 +201,11 @@ public class OverlayLayout implements LayoutManager2, Serializable
    */
   public float getLayoutAlignmentX(Container target)
   {
-    return (float) 0.0; // TODO
+    if (target != this.target)
+      throw new AWTError("OverlayLayout can't be shared");
+
+    checkTotalRequirements();
+    return xTotal.alignment;
   }
 
   /**
@@ -171,7 +215,11 @@ public class OverlayLayout implements LayoutManager2, Serializable
    */
   public float getLayoutAlignmentY(Container target)
   {
-    return (float) 0.0; // TODO
+    if (target != this.target)
+      throw new AWTError("OverlayLayout can't be shared");
+
+    checkTotalRequirements();
+    return yTotal.alignment;
   }
 
   /**
@@ -180,7 +228,87 @@ public class OverlayLayout implements LayoutManager2, Serializable
    */
   public void layoutContainer(Container target)
   {
-    // TODO
+    if (target != this.target)
+      throw new AWTError("OverlayLayout can't be shared");
+
+    checkLayout();
+    Component[] children = target.getComponents();
+    for (int i = 0; i < children.length; i++)
+      children[i].setBounds(offsetsX[i], offsetsY[i], spansX[i], spansY[i]);
   }
 
+  /**
+   * Makes sure that the xChildren and yChildren fields are correctly set up.
+   * A call to {@link #invalidateLayout(Container)} sets these fields to null,
+   * so they have to be set up again.
+   */
+  private void checkRequirements()
+  {
+    if (xChildren == null || yChildren == null)
+      {
+        Component[] children = target.getComponents();
+        xChildren = new SizeRequirements[children.length];
+        yChildren = new SizeRequirements[children.length];
+        for (int i = 0; i < children.length; i++)
+          {
+            if (! children[i].isVisible())
+              {
+                xChildren[i] = new SizeRequirements();
+                yChildren[i] = new SizeRequirements();
+              }
+            else
+              {
+                xChildren[i] =
+                  new SizeRequirements(children[i].getMinimumSize().width,
+                                       children[i].getPreferredSize().width,
+                                       children[i].getMaximumSize().width,
+                                       children[i].getAlignmentX());
+                yChildren[i] =
+                  new SizeRequirements(children[i].getMinimumSize().height,
+                                       children[i].getPreferredSize().height,
+                                       children[i].getMaximumSize().height,
+                                       children[i].getAlignmentY());
+              }
+          }
+      }
+  }
+
+  /**
+   * Makes sure that the xTotal and yTotal fields are set up correctly. A call
+   * to {@link #invalidateLayout} sets these fields to null and they have to be
+   * recomputed.
+   */
+  private void checkTotalRequirements()
+  {
+    if (xTotal == null || yTotal == null)
+      {
+        checkRequirements();
+        xTotal = SizeRequirements.getAlignedSizeRequirements(xChildren);
+        yTotal = SizeRequirements.getAlignedSizeRequirements(yChildren);
+      }
+  }
+
+  /**
+   * Makes sure that the offsetsX, offsetsY, spansX and spansY fields are set
+   * up correctly. A call to {@link #invalidateLayout} sets these fields
+   * to null and they have to be recomputed.
+   */
+  private void checkLayout()
+  {
+    if (offsetsX == null || offsetsY == null || spansX == null
+        || spansY == null)
+      {
+        checkRequirements();
+        checkTotalRequirements();
+        int len = target.getComponents().length;
+        offsetsX = new int[len];
+        offsetsY = new int[len];
+        spansX = new int[len];
+        spansY = new int[len];
+        SizeRequirements.calculateAlignedPositions(target.getWidth(), xTotal,
+                                                   xChildren, offsetsX, spansX);
+        SizeRequirements.calculateAlignedPositions(target.getHeight(), yTotal,
+                                                   yChildren, offsetsY, spansY);
+      }
+  }
 }

@@ -1,3 +1,22 @@
+2005-09-29  Roman Kennke  <kennke@aicas.com>
+
+	Fixes Bug #23851
+	* javax/swing/OverlayLayout.java
+	(OverlayLayout): Implemented.
+	(invalidateLayout): Implemented.
+	(addLayoutComponent(Component, Object)): Implemented.
+	(addLayoutComponent(String, Component)): Implemented.
+	(removeLayoutComponent): Implemented.
+	(preferredLayoutSize): Implemented.
+	(minimumLayoutSize): Implemented.
+	(maximumLayoutSize): Implemented.
+	(getLayoutAlignmentX): Implemented.
+	(getLayoutAlignmentY): Implemented.
+	(layoutContainer): Implemented.
+	(checkRequirements): New private helper method.
+	(checkTotalRequirements): New private helper method.
+	(checkLayout): New private helper method.
+
 2005-09-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* examples/gnu/classpath/examples/swing/ComboBoxDemo.java: new demo.
