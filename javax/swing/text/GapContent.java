@@ -116,7 +116,7 @@ public class GapContent
     public int getOffset()
     {
       // Check precondition.
-      assert mark <= gapStart || mark > gapEnd : "mark: " + mark
+      assert mark <= gapStart || mark >= gapEnd : "mark: " + mark
                                                + ", gapStart: " + gapStart
                                                + ", gapEnd: " + gapEnd;
 
@@ -379,7 +379,7 @@ public class GapContent
     if (index < 0)
       index = -(index + 1);
     positions.add(index, pos);
-    
+
     return pos;
   }
 
@@ -426,13 +426,12 @@ public class GapContent
       return;
 
     int newGapEnd = newGapStart + gapEnd - gapStart;
-
     if (newGapStart < gapStart)
       {
         // Update the positions between newGapStart and (old) gapStart. The marks
         // must be shifted by (gapEnd - gapStart).
-        Vector v = getPositionsInRange(null, newGapStart + 1,
-                                       gapStart - newGapStart + 1);
+        Vector v = getPositionsInRange(null, newGapStart,
+                                       gapStart - newGapStart);
         for (Iterator i = v.iterator(); i.hasNext();)
           {
             GapContentPosition p = (GapContentPosition) i.next();
@@ -459,6 +458,8 @@ public class GapContent
         gapStart = newGapStart;
         gapEnd = newGapEnd;
       }
+    if (gapStart == 0)
+      resetMarksAtZero();
   }
 
   /**
@@ -530,9 +531,11 @@ public class GapContent
   protected void replace(int position, int rmSize, Object addItems,
                          int addSize)
   {
+    if (gapStart != position)
+      shiftGap(position);
     // Remove content
-    shiftGap(position);
-    shiftGapEndUp(gapEnd + rmSize);
+    if (rmSize > 0)
+      shiftGapEndUp(gapEnd + rmSize);
 
     // If gap is too small, enlarge the gap.
     if ((gapEnd - gapStart) <= addSize)
@@ -604,5 +607,24 @@ public class GapContent
           res.add(p);
       }
     return res;
+  }
+
+  /**
+   * Resets all <code>Position</code> that have an offset of <code>0</code>,
+   * to also have an array index of <code>0</code>. This might be necessary
+   * after a call to <code>shiftGap(0)</code>, since then the marks at offset
+   * <code>0</code> get shifted to <code>gapEnd</code>.
+   */
+  protected void resetMarksAtZero()
+  {
+    if (gapStart != 0)
+      return;
+
+    Vector zeroMarks = getPositionsInRange(null, gapEnd, 0);
+    for (Iterator i = zeroMarks.iterator(); i.hasNext();)
+      {
+        GapContentPosition pos = (GapContentPosition) i.next();
+        pos.mark = 0;
+      }
   }
 }
