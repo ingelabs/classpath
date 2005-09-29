@@ -1,3 +1,9 @@
+2005-09-29  Roman Kennke  <kennke@aicas.com>
+
+	Fixes Bug #24114
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installDefaults): Set the background color correctly.
+
 2005-09-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicIconFactory.java
