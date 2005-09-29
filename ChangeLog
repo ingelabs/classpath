@@ -1,3 +1,7 @@
+2005-09-29  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* examples/gnu/classpath/examples/swing/ComboBoxDemo.java: new demo.
+
 2005-09-29  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/print/PrinterJob.java
