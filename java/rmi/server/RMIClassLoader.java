@@ -41,6 +41,7 @@ package java.rmi.server;
 import gnu.java.rmi.server.RMIClassLoaderImpl;
 
 import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * This class provides a set of public static utility methods for supporting
@@ -81,6 +82,32 @@ public class RMIClassLoader
     if (spi == null)
       spi = getDefaultProviderInstance(); 
     return spi.loadClass(codebase, name, defaultLoader);
+  }
+
+  /**
+   * Loads a class from <code>codeBase</code>.
+   *
+   * This method delegates to
+   * {@link RMIClassLoaderSpi#loadClass(String, String, ClassLoader)} and
+   * passes <code>codeBase.toString()</code> as first argument,
+   * <code>name</code> as second argument and <code>null</code> as third
+   * argument.
+   *
+   * @param codeBase the code base from which to load the class
+   * @param name the name of the class
+   *
+   * @return the loaded class
+   *
+   * @throws MalformedURLException if the URL is not well formed
+   * @throws ClassNotFoundException if the requested class cannot be found
+   */
+  public static Class loadClass(URL codeBase, String name)
+    throws MalformedURLException, ClassNotFoundException
+  {
+    RMIClassLoaderSpi spi = getProviderInstance();
+    if (spi == null)
+      spi = getDefaultProviderInstance(); 
+    return spi.loadClass(codeBase.toString(), name, null);
   }
 
   /**

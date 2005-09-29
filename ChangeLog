@@ -1,5 +1,10 @@
 2005-09-29  Roman Kennke  <kennke@aicas.com>
 
+	* java/rmi/server/RMIClassLoader.java
+	(loadClass(URL, String)): New method.
+
+2005-09-29  Roman Kennke  <kennke@aicas.com>
+
 	Fixes Bug #24114
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(installDefaults): Set the background color correctly.
