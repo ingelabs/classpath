@@ -109,7 +109,7 @@ public class BasicMenuItemUI extends MenuItemUI
    * Number of spaces between icon and text.
    */
   protected int defaultTextIconGap = 4;
-
+  
   /**
    * Color of the text when menu item is disabled
    */
@@ -165,6 +165,11 @@ public class BasicMenuItemUI extends MenuItemUI
    */
   private int defaultAcceleratorLabelGap = 10;
 
+  /**
+   * Number of spaces between the text and the arrow icon.
+   */
+  private int defaultTextArrowIconGap = 10;
+  
   /**
    * Creates a new BasicMenuItemUI object.
    */
@@ -342,7 +347,7 @@ public class BasicMenuItemUI extends MenuItemUI
 
     if (arrowIcon != null && (c instanceof JMenu))
       {
-        d.width = d.width + arrowIcon.getIconWidth() + defaultTextIconGap;
+        d.width = d.width + arrowIcon.getIconWidth() + defaultTextArrowIconGap;
 
         if (arrowIcon.getIconHeight() > d.height)
           d.height = arrowIcon.getIconHeight();
