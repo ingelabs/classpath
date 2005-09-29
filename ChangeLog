@@ -1,3 +1,9 @@
+2005-09-29  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/print/PrinterJob.java
+	(print(PrintRequestAttributeSet)): Remove abstract modifier and
+	implement.
+
 2005-09-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JPopupMenu.java
