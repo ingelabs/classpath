@@ -81,12 +81,20 @@ public class ButtonDemo
        
   private JPanel createContent() 
   {
+    JPanel content = new JPanel(new BorderLayout());
     JPanel panel = new JPanel(new GridLayout(4, 1));
     panel.add(createButtonPanel());
     panel.add(createTogglePanel());
     panel.add(createCheckBoxPanel());
     panel.add(createRadioPanel());
-    return panel;        
+    content.add(panel);
+    JPanel closePanel = new JPanel();
+    JButton closeButton = new JButton("Close");
+    closeButton.setActionCommand("CLOSE");
+    closeButton.addActionListener(this);
+    closePanel.add(closeButton);
+    content.add(closePanel, BorderLayout.SOUTH);
+    return content;        
   }
     
   private JPanel createButtonPanel() 
@@ -251,6 +259,10 @@ public class ButtonDemo
       radio1.setEnabled(radioState.isSelected());
       radio2.setEnabled(radioState.isSelected());
       radio3.setEnabled(radioState.isSelected());
+    }
+    else if (e.getActionCommand().equals("CLOSE"))
+    {
+      System.exit(0);
     }
   }
 

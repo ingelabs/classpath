@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -78,13 +79,21 @@ public class ComboBoxDemo
        
   private JPanel createContent() 
   {
+    JPanel content = new JPanel(new BorderLayout());
     JPanel panel = new JPanel(new GridLayout(5, 1));
     panel.add(createPanel1());
     panel.add(createPanel2());
     panel.add(createPanel3());
     panel.add(createPanel4());
     panel.add(createPanel5());
-    return panel;        
+    content.add(panel);
+    JPanel closePanel = new JPanel();
+    JButton closeButton = new JButton("Close");
+    closeButton.setActionCommand("CLOSE");
+    closeButton.addActionListener(this);
+    closePanel.add(closeButton);
+    content.add(closePanel, BorderLayout.SOUTH);
+    return content;        
   }
     
   private JPanel createPanel1() 
@@ -251,6 +260,10 @@ public class ComboBoxDemo
     {
       combo9.setEnabled(comboState5.isSelected());
       combo10.setEnabled(comboState5.isSelected());
+    }
+    else if (e.getActionCommand().equals("CLOSE"))
+    {
+      System.exit(0);
     }
   }
 
