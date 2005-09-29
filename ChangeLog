@@ -1,3 +1,12 @@
+2005-09-29  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/GdkTextLayout.java
+	(getOutline): Implement as native
+	* include/gnu_java_awt_peer_gtk_GdkTextLayout.h
+	Add declaration
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c
+	(getOutline): Implement.
+	
 2005-09-29  Roman Kennke  <kennke@aicas.com>
 
 	* java/rmi/server/RMIClassLoader.java
