@@ -54,6 +54,7 @@ import java.rmi.server.RemoteStub;
 public class ActivationGroup_Stub extends RemoteStub
   implements ActivationInstantiator, Remote
 {
+  private static final long serialVersionUID = 2L;
 
   /**
    * Creates a new instance of ActivationGroup_Stub.
