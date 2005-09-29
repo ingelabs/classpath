@@ -1,3 +1,7 @@
+2005-09-29  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/OverlayLayout.java: Added API docs all over.
+
 2005-09-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* examples/gnu/classpath/examples/swing/ButtonDemo.java

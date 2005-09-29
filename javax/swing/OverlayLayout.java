@@ -1,5 +1,5 @@
-/* OverlayLayout.java --
-   Copyright (C) 2002, 2004 Free Software Foundation, Inc.
+/* OverlayLayout.java -- A layout manager
+   Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -45,36 +45,67 @@ import java.awt.LayoutManager2;
 import java.io.Serializable;
 
 /**
- * OverlayLayout
- * @author	Andrew Selkirk
- * @version	1.0
+ * A layout manager that lays out the components of a container one over
+ * another.
+ *
+ * The components take as much space as is available in the container, but not
+ * more than specified by their maximum size.
+ *
+ * The overall layout is mainly affected by the components
+ * <code>alignmentX</code> and <code>alignmentY</code> properties. All
+ * components are aligned, so that their alignment points (for either
+ * direction) are placed in one line (the baseline for this direction).
+ *
+ * For example: An X alignment of 0.0 means that the component's alignment
+ * point is at it's left edge, an X alignment of 0.5 means that the alignment
+ * point is in the middle, an X alignment of 1.0 means, the aligment point is
+ * at the right edge. So if you have three components, the first with 0.0, the
+ * second with 0.5 and the third with 1.0, then they are laid out like this:
+ * 
+ * <pre>
+ *          +-------+
+ *          |   1   |
+ *          +-------+
+ *      +-------+
+ *      |   2   |
+ *      +-------+
+ * +---------+
+ * |    3    +
+ * +---------+
+ * </pre>
+ * The above picture shows the X alignment between the components. An Y
+ * alignment like shown above cannot be achieved with this layout manager. The
+ * components are place on top of each other, with the X alignment shown above.
+ *
+ * @author Roman Kennke (kennke@aicas.com)
+ * @author Andrew Selkirk
  */
 public class OverlayLayout implements LayoutManager2, Serializable
 {
   private static final long serialVersionUID = 18082829169631543L;
 
   /**
-   * target
+   * The container to be laid out.
    */
   private Container target;
 
   /**
-   * xChildren
+   * The size requirements of the containers children for the X direction.
    */
   private SizeRequirements[] xChildren;
 
   /**
-   * yChildren
+   * The size requirements of the containers children for the Y direction.
    */
   private SizeRequirements[] yChildren;
 
   /**
-   * xTotal
+   * The size requirements of the container to be laid out for the X direction.
    */
   private SizeRequirements xTotal;
 
   /**
-   * yTotal
+   * The size requirements of the container to be laid out for the Y direction.
    */
   private SizeRequirements yTotal;
 
@@ -99,8 +130,9 @@ public class OverlayLayout implements LayoutManager2, Serializable
   private int[] spansY;
 
   /**
-   * Constructor OverlayLayout
-   * @param target TODO
+   * Creates a new OverlayLayout for the specified container.
+   *
+   * @param target the container to be laid out
    */
   public OverlayLayout(Container target)
   {
@@ -108,8 +140,11 @@ public class OverlayLayout implements LayoutManager2, Serializable
   }
 
   /**
-   * invalidateLayout
-   * @param target TODO
+   * Notifies the layout manager that the layout has become invalid. It throws
+   * away cached layout information and recomputes it the next time it is
+   * requested.
+   *
+   * @param target not used here
    */
   public void invalidateLayout(Container target)
   {
@@ -124,9 +159,10 @@ public class OverlayLayout implements LayoutManager2, Serializable
   }
 
   /**
-   * addLayoutComponent
-   * @param string TODO
-   * @param component TODO
+   * This method is not used in this layout manager.
+   *
+   * @param string not used here
+   * @param component not used here
    */
   public void addLayoutComponent(String string, Component component)
   {
@@ -134,9 +170,10 @@ public class OverlayLayout implements LayoutManager2, Serializable
   }
 
   /**
-   * addLayoutComponent
-   * @param component TODO
-   * @param constraints TODO
+   * This method is not used in this layout manager.
+   *
+   * @param component not used here
+   * @param constraints not used here
    */
   public void addLayoutComponent(Component component, Object constraints)
   {
@@ -144,8 +181,9 @@ public class OverlayLayout implements LayoutManager2, Serializable
   }
 
   /**
-   * removeLayoutComponent
-   * @param component TODO
+   * This method is not used in this layout manager.
+   *
+   * @param component not used here
    */
   public void removeLayoutComponent(Component component)
   {
@@ -153,9 +191,13 @@ public class OverlayLayout implements LayoutManager2, Serializable
   }
 
   /**
-   * preferredLayoutSize
-   * @param target TODO
-   * @returns Dimension
+   * Returns the preferred size of the container that is laid out. This is
+   * computed by the children's preferred sizes, taking their alignments into
+   * account.
+   *
+   * @param target not used here
+   *
+   * @returns the preferred size of the container that is laid out
    */
   public Dimension preferredLayoutSize(Container target)
   {
@@ -167,9 +209,13 @@ public class OverlayLayout implements LayoutManager2, Serializable
   }
 
   /**
-   * minimumLayoutSize
-   * @param target TODO
-   * @returns Dimension
+   * Returns the minimum size of the container that is laid out. This is
+   * computed by the children's minimum sizes, taking their alignments into
+   * account.
+   *
+   * @param target not used here
+   *
+   * @returns the minimum size of the container that is laid out
    */
   public Dimension minimumLayoutSize(Container target)
   {
@@ -181,9 +227,13 @@ public class OverlayLayout implements LayoutManager2, Serializable
   }
 
   /**
-   * maximumLayoutSize
-   * @param target TODO
-   * @returns Dimension
+   * Returns the maximum size of the container that is laid out. This is
+   * computed by the children's maximum sizes, taking their alignments into
+   * account.
+   *
+   * @param target not used here
+   *
+   * @returns the maximum size of the container that is laid out
    */
   public Dimension maximumLayoutSize(Container target)
   {
@@ -195,9 +245,13 @@ public class OverlayLayout implements LayoutManager2, Serializable
   }
 
   /**
-   * getLayoutAlignmentX
-   * @param target TODO
-   * @returns float
+   * Returns the X alignment of the container that is laid out. This is
+   * computed by the children's preferred sizes, taking their alignments into
+   * account.
+   *
+   * @param target not used here
+   *
+   * @returns the X alignment of the container that is laid out
    */
   public float getLayoutAlignmentX(Container target)
   {
@@ -209,9 +263,13 @@ public class OverlayLayout implements LayoutManager2, Serializable
   }
 
   /**
-   * getLayoutAlignmentY
-   * @param target TODO
-   * @returns float
+   * Returns the Y alignment of the container that is laid out. This is
+   * computed by the children's preferred sizes, taking their alignments into
+   * account.
+   *
+   * @param target not used here
+   *
+   * @returns the X alignment of the container that is laid out
    */
   public float getLayoutAlignmentY(Container target)
   {
@@ -223,8 +281,42 @@ public class OverlayLayout implements LayoutManager2, Serializable
   }
 
   /**
-   * layoutContainer
-   * @param target TODO
+   * Lays out the container and it's children.
+   *
+   * The children are laid out one over another.
+   *
+   * The components take as much space as is available in the container, but
+   * not more than specified by their maximum size.
+   *
+   * The overall layout is mainly affected by the components
+   * <code>alignmentX</code> and <code>alignmentY</code> properties. All
+   * components are aligned, so that their alignment points (for either
+   * direction) are placed in one line (the baseline for this direction).
+   *
+   * For example: An X alignment of 0.0 means that the component's alignment
+   * point is at it's left edge, an X alignment of 0.5 means that the alignment
+   * point is in the middle, an X alignment of 1.0 means, the aligment point is
+   * at the right edge. So if you have three components, the first with 0.0,
+   * the second with 0.5 and the third with 1.0, then they are laid out like
+   * this:
+   * 
+   * <pre>
+   *          +-------+
+   *          |   1   |
+   *          +-------+
+   *      +-------+
+   *      |   2   |
+   *      +-------+
+   * +---------+
+   * |    3    +
+   * +---------+
+   * </pre>
+   * The above picture shows the X alignment between the components. An Y
+   * alignment like shown above cannot be achieved with this layout manager.
+   * The components are place on top of each other, with the X alignment shown
+   * above.
+   *
+   * @param target not used here
    */
   public void layoutContainer(Container target)
   {
