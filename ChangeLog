@@ -1,5 +1,10 @@
 2005-09-29  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(ActionScroller.ActionScroller): Added constructor.
+
+2005-09-29  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTableUI.java
 	(KeyHandler): New inner class.
 	(createKeyListener): New method.
