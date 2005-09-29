@@ -1,3 +1,10 @@
+2005-09-28  Lillian Angel  <langel@redhat.com>
+
+	Fixes Bug #24080
+	* java/awt/Window.java
+	(show): Fixed the synchronized block to fix deadlock
+	problem.
+
 2005-09-29  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GdkTextLayout.java

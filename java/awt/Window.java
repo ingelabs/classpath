@@ -280,14 +280,14 @@ public class Window extends Container implements Accessible
    */
   public void show()
   {
+    synchronized (getTreeLock())
+    {
     if (parent != null && !parent.isDisplayable())
       parent.addNotify();
     if (peer == null)
       addNotify();
 
     // Show visible owned windows.
-    synchronized (getTreeLock())
-      {
 	Iterator e = ownedWindows.iterator();
 	while(e.hasNext())
 	  {
@@ -304,7 +304,6 @@ public class Window extends Container implements Accessible
 	      // synchronous access to ownedWindows there.
 	      e.remove();
 	  }
-      }
     validate();
     super.show();
     toFront();
@@ -312,8 +311,6 @@ public class Window extends Container implements Accessible
     KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager ();
     manager.setGlobalFocusedWindow (this);
     
-    synchronized (getTreeLock())
-    {
     if (!shown)
       {
         FocusTraversalPolicy policy = getFocusTraversalPolicy ();
