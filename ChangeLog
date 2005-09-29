@@ -1,5 +1,11 @@
 2005-09-29  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/SizeRequirements.java
+	(getAlignedSizeRequirements): Fixed calculation of preferred and
+	maximum size as well as the alignment.
+
+2005-09-29  Roman Kennke  <kennke@aicas.com>
+
 	Fixes Bug #23851
 	* javax/swing/OverlayLayout.java
 	(OverlayLayout): Implemented.
