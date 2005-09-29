@@ -25,6 +25,13 @@
 
 2005-09-29  Tom Tromey  <tromey@redhat.com>
 
+	* java/net/URLConnection.java (setDoInput): Javadoc fix.
+	(setDoOutput): Likewise.
+	(setContentHandlerFactory): Likewise.
+	(setFileNameMap): Likewise.
+
+2005-09-29  Tom Tromey  <tromey@redhat.com>
+
 	PR classpath/23381:
 	* java/beans/PropertyDescriptor.java (hashCode): New method.
 
