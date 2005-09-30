@@ -1,5 +1,11 @@
 2005-09-30  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/peer/gtk/GdkFontMetrics.java (initFont): New static
+	method.
+	(GdkFontMetrics): Use initFont() in super() call.
+
+2005-09-30  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c
 	(Java_gnu_java_awt_peer_gtk_GdkTextLayout_getOutline): Initialize all
 	fields of the FT_Outline_Funcs ftCallbacks struct.
