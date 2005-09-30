@@ -58,9 +58,12 @@ void
 cp_gtk_graphics2d_init_jni (void)
 {
   jclass gdkgraphics2d;
+  JNIEnv *env = cp_gtk_gdk_env();
 
-  gdkgraphics2d = (*cp_gtk_gdk_env())->FindClass (cp_gtk_gdk_env(),
-                                           "gnu/java/awt/peer/gtk/GdkGraphics2D");
+  gdkgraphics2d = (*env)->FindClass (env,
+				     "gnu/java/awt/peer/gtk/GdkGraphics2D");
+  if ((*env)->ExceptionOccurred(env))
+    return;
 
   initComponentGraphics2DUnlockedID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), gdkgraphics2d,
                                                          "initComponentGraphics2DUnlocked",

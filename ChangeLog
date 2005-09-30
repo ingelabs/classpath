@@ -1,5 +1,11 @@
 2005-09-30  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(cp_gtk_graphics2d_init_jni): Check ExceptionOccured after running
+	class initializer.
+
+2005-09-30  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/awt/peer/gtk/GdkFontMetrics.java (initFont): New static
 	method.
 	(GdkFontMetrics): Use initFont() in super() call.
