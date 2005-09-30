@@ -103,8 +103,6 @@ public class Box extends JComponent implements Accessible
       }
     }
     
-    protected AccessibleContext accessibleContext;
-    
     private transient Dimension min, pref, max;
     
     /**

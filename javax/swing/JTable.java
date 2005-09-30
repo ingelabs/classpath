@@ -509,11 +509,6 @@ public class JTable extends JComponent
   protected ListSelectionModel selectionModel;
 
   /**
-   * The accessibleContext property.
-   */
-  protected AccessibleContext accessibleContext;
-
-  /**
    * The current cell editor. 
    */
   protected TableCellEditor cellEditor;

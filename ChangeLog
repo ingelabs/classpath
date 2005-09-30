@@ -1,3 +1,14 @@
+2005-09-30  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(accessibleContext): Removed unneeded field. This is already
+	declared in JComponent.
+	* javax/swing/Box.java
+	(accessibleContext): Removed unneeded field. This is already
+	declared in JComponent.
+	*javax/swing/JFrame.java
+	(EXIT_ON_CLOSE): New constant field.
+
 2005-09-30  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/GapContent.java:
@@ -290,18 +301,6 @@
 
 2005-09-28  Roman Kennke  <kennke@aicas.com>
 
-	* java/rmi/server/RMIClassLoader.java:
-	Moved all implementation code to
-	gnu.java.rmi.server.RMIClassLoaderImpl.
-	(getProviderInstance): New helper method to find a provider.
-	(getDefaultProviderInstance): New helper method to find a provider.
-	(loadClass(String, String, Class)): New method.
-	* gnu/java/rmi/server/RMIClassLoaderImpl.java:
-	New class. The implementation is moved from
-	java.rmi.server.RMIClassLoader.
-
-2005-09-28  Roman Kennke  <kennke@aicas.com>
-
 	* java/rmi/activation/ActivationGroup_Stub.java:
 	New class.
 
@@ -555,7 +554,7 @@
 2005-09-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JSeparator.java
-w	(updateUI): Removed invalidate call. This is unnecessary.
+	(updateUI): Removed invalidate call. This is unnecessary.
 	* javax/swing/plaf/basic/BasicSeparatorUI.java
 	(paint): Reworked painting so that it paints the separator
 	correctly.
@@ -719,7 +718,6 @@ w	(updateUI): Removed invalidate call. This is unnecessary.
 	unloadAllInstruments, unloadInstrument, loadInstrument): Don't
 	declare the unchecked IllegalArgumentException.
 	* javax/sound/midi/MidiSystem.java (getMidiDevice, write): Ditto.
-	
 	* javax/sound/midi/ShortMessage.java: Fix 80-column formatting
 	problem.
 	* javax/sound/midi/Sequence.java: Ditto.
@@ -730,26 +728,26 @@ w	(updateUI): Removed invalidate call. This is unnecessary.
 2005-09-26  Anthony Green  <green@redhat.com>
 
 	* javax/sound/midi/InvalidMidiDataException.java
-	javax/sound/midi/MidiFileFormat.java
-	javax/sound/midi/ControllerEventListener.java
-	javax/sound/midi/Patch.java javax/sound/midi/Sequence.java
-	javax/sound/midi/SysexMessage.java javax/sound/midi/Sequencer.java
-	javax/sound/midi/spi/MidiFileReader.java
-	javax/sound/midi/spi/MidiFileWriter.java
-	javax/sound/midi/spi/SoundbankReader.java
-	javax/sound/midi/spi/MidiDeviceProvider.java
-	javax/sound/midi/Track.java javax/sound/midi/MidiChannel.java
-	javax/sound/midi/MetaMessage.java javax/sound/midi/Instrument.java
-	javax/sound/midi/MidiMessage.java
-	javax/sound/midi/MidiUnavailableException.java
-	javax/sound/midi/Transmitter.java javax/sound/midi/MidiEvent.java
-	javax/sound/midi/VoiceStatus.java javax/sound/midi/MidiDevice.java
-	javax/sound/midi/SoundbankResource.java
-	javax/sound/midi/Soundbank.java javax/sound/midi/Receiver.java
-	javax/sound/midi/MetaEventListener.java
-	javax/sound/midi/ShortMessage.java
-	javax/sound/midi/Synthesizer.java
-	javax/sound/midi/MidiSystem.java: New files.
+	* javax/sound/midi/MidiFileFormat.java
+	* javax/sound/midi/ControllerEventListener.java
+	* javax/sound/midi/Patch.java javax/sound/midi/Sequence.java
+	* javax/sound/midi/SysexMessage.java javax/sound/midi/Sequencer.java
+	* javax/sound/midi/spi/MidiFileReader.java
+	* javax/sound/midi/spi/MidiFileWriter.java
+	* javax/sound/midi/spi/SoundbankReader.java
+	* javax/sound/midi/spi/MidiDeviceProvider.java
+	* javax/sound/midi/Track.java javax/sound/midi/MidiChannel.java
+	* javax/sound/midi/MetaMessage.java javax/sound/midi/Instrument.java
+	* javax/sound/midi/MidiMessage.java
+	* javax/sound/midi/MidiUnavailableException.java
+	* javax/sound/midi/Transmitter.java javax/sound/midi/MidiEvent.java
+	* javax/sound/midi/VoiceStatus.java javax/sound/midi/MidiDevice.java
+	* javax/sound/midi/SoundbankResource.java
+	* javax/sound/midi/Soundbank.java javax/sound/midi/Receiver.java
+	* javax/sound/midi/MetaEventListener.java
+	* javax/sound/midi/ShortMessage.java
+	* javax/sound/midi/Synthesizer.java
+	* javax/sound/midi/MidiSystem.java: New files.
 
 2005-09-26  Lillian Angel  <langel@redhat.com>
 
