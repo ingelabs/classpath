@@ -121,8 +121,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
       JViewport vp = scrollpane.getViewport();
       Point viewPosition = vp.getViewPosition();
       int ypos = vsb.getValue();
-
-      if (ypos != viewPosition.x)
+      if (ypos != viewPosition.y)
         {
           viewPosition.y = ypos;
           vp.setViewPosition(viewPosition);
@@ -159,10 +158,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
       JViewport vp = scrollpane.getViewport();
       JScrollBar hsb = scrollpane.getHorizontalScrollBar();
       JScrollBar vsb = scrollpane.getVerticalScrollBar();
-      Dimension extents = vp.getExtentSize();
-      if (extents.width != hsb.getModel().getExtent()
-          || extents.height != vsb.getModel().getExtent())
-        syncScrollPaneWithViewport();
+      syncScrollPaneWithViewport();
     }
 
   }
@@ -434,10 +430,18 @@ public class BasicScrollPaneUI extends ScrollPaneUI
   protected void syncScrollPaneWithViewport()
   {
     JViewport vp = scrollpane.getViewport();
-    JScrollBar vsb = scrollpane.getVerticalScrollBar();
+
+    // Update the horizontal scrollbar.
     JScrollBar hsb = scrollpane.getHorizontalScrollBar();
-    hsb.getModel().setExtent(vp.getExtentSize().width);
-    vsb.getModel().setExtent(vp.getExtentSize().height);
+    hsb.setMaximum(vp.getViewSize().width);
+    hsb.setValue(vp.getViewPosition().x);
+    hsb.setVisibleAmount(vp.getExtentSize().width);
+    
+    // Update the vertical scrollbar.
+    JScrollBar vsb = scrollpane.getVerticalScrollBar();
+    vsb.setMaximum(vp.getViewSize().height);
+    vsb.setValue(vp.getViewPosition().y);
+    vsb.setVisibleAmount(vp.getExtentSize().height);
   }
 
   /**

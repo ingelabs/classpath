@@ -1,5 +1,18 @@
 2005-09-30  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTable.java
+	(getScrollableUnitIncrement): Respect the direction argument.
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(VSBChangeListener.stateChanged): Compare ypos with viewPosition.y
+	instead of viewPosition.x.
+	(ViewportChangeHandler.stateChanged): Call
+	syncScrollPaneWithViewport in all cases, not only when the
+	extents have changed.
+	(syncScrollPaneWithViewport): Also sync the maximum and value
+	properties of the scrollbar models with the viewport.
+
+2005-09-30  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicRadioButtonUI.java
 	(paint): Only call paintFocus if button is actually focused.
 
