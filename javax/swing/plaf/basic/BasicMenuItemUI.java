@@ -52,6 +52,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
+import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
@@ -538,7 +539,9 @@ public class BasicMenuItemUI extends MenuItemUI
 
     // Menu item is considered to be highlighted when it is selected.
     // But we don't want to paint the background of JCheckBoxMenuItems
-    if ((m.isSelected() && checkIcon == null) || m.getModel().isArmed()
+    ButtonModel mod = m.getModel();
+    if ((m.isSelected() && checkIcon == null) || (mod != null && 
+        mod.isArmed())
         && (m.getParent() instanceof MenuElement))
       {
         if (m.isContentAreaFilled())
@@ -637,8 +640,9 @@ public class BasicMenuItemUI extends MenuItemUI
           {
             // Menu item is considered to be highlighted when it is selected.
             // But not if it's a JCheckBoxMenuItem
+            ButtonModel mod = menuItem.getModel();
             if ((menuItem.isSelected() && checkIcon == null)
-                || menuItem.getModel().isArmed()
+                || (mod != null && mod.isArmed())
                 && (menuItem.getParent() instanceof MenuElement))
               g.setColor(selectionForeground);
             else

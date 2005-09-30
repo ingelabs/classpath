@@ -549,7 +549,7 @@ public abstract class AbstractButton extends JComponent
    */
   public ButtonModel getModel()
   {
-    return model;
+      return model;
   }
 
   /**
@@ -621,7 +621,8 @@ public abstract class AbstractButton extends JComponent
    */
   public void setActionCommand(String actionCommand)
   {
-    model.setActionCommand(actionCommand);
+    if (model != null)
+      model.setActionCommand(actionCommand);
   }
 
   /**
@@ -788,7 +789,10 @@ public abstract class AbstractButton extends JComponent
    */
   public int getMnemonic()
   {
-    return getModel().getMnemonic();
+    ButtonModel mod = getModel();
+    if (mod != null)
+      return mod.getMnemonic();
+    return -1;
   }
 
   /**
@@ -816,11 +820,15 @@ public abstract class AbstractButton extends JComponent
    */
   public void setMnemonic(int mne)
   {
-    int old = getModel().getMnemonic();
+    ButtonModel mod = getModel();
+    int old = -1;
+    if (mod != null)
+      old = mod.getMnemonic();
 
     if (old != mne)
       {
-        getModel().setMnemonic(mne);
+        if (mod != null)
+          mod.setMnemonic(mne);
 
         if (text != null && !text.equals(""))
           {
@@ -913,7 +921,9 @@ public abstract class AbstractButton extends JComponent
    */
   public void setSelected(boolean s)
   {
-    getModel().setSelected(s);
+    ButtonModel mod = getModel();
+    if (mod != null)
+      mod.setSelected(s);
   }
 
   /**
@@ -924,7 +934,10 @@ public abstract class AbstractButton extends JComponent
    */
   public boolean isSelected()
   {
-    return getModel().isSelected();
+    ButtonModel mod = getModel();
+    if (mod != null)
+      return mod.isSelected();
+    return false;
   }
 
   /**
@@ -936,7 +949,9 @@ public abstract class AbstractButton extends JComponent
   public void setEnabled(boolean b)
   {
     super.setEnabled(b);
-    getModel().setEnabled(b);
+    ButtonModel mod = getModel();
+    if (mod != null)
+      mod.setEnabled(b);
   }
 
   /** 
@@ -1675,18 +1690,22 @@ public abstract class AbstractButton extends JComponent
    */
   public void doClick(int pressTime)
   {
-    getModel().setArmed(true);
-    getModel().setPressed(true);
-    try
+    ButtonModel mod = getModel();
+    if (mod != null)
       {
-        java.lang.Thread.sleep(pressTime);
+        mod.setArmed(true);
+        mod.setPressed(true);
+        try
+          {
+            java.lang.Thread.sleep(pressTime);
+          }
+        catch (java.lang.InterruptedException e)
+          {
+            // probably harmless
+          }
+        mod.setPressed(false);
+        mod.setArmed(false);
       }
-    catch (java.lang.InterruptedException e)
-      {
-        // probably harmless
-      }
-    getModel().setPressed(false);
-    getModel().setArmed(false);
   }
 
   /**

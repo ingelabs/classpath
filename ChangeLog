@@ -5,6 +5,20 @@
 
 2005-09-30  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/AbstractButton.java
+	(setActionCommand): Added check to prevent NPE.
+	(getMnemonic): Likewise.
+	(setMnemonic): Likewise.
+	(setSelected): Likewise.
+	(isSelected): Likewise.
+	(setEnabled): Likewise.
+	(doClick): Likewise.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(paintMenuItem): Added check to prevent NPE.
+	(paintText): Likewise.
+
+2005-09-30  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicSplitPaneUI.java
 	(propertyChange): Added call to reset the layout manager
 	whenever the size of the divider is changed.
