@@ -1196,6 +1196,22 @@ public class JFileChooser extends JComponent implements Accessible
    */
   public AccessibleContext getAccessibleContext()
   {
-    return null;
+    return new AccessibleJFileChooser();
+  }
+
+  /**
+   * Accessibility support for JFileChooser
+   */
+  protected class AccessibleJFileChooser 
+    extends JComponent.AccessibleJComponent
+  {
+    protected AccessibleJFileChooser()
+    {
+    }
+    
+    public AccessibleRole getAccessibleRole()
+    {
+      return AccessibleRole.FILE_CHOOSER;
+    }
   }
 }
