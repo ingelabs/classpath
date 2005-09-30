@@ -1,3 +1,9 @@
+2005-09-30  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/PlainDocument.java:
+	(removeUpdate): Fixed length of new LeafElement and off-by-one error
+	in call to rootElement.replace().
+
 2005-09-30  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicSplitPaneUI.java
