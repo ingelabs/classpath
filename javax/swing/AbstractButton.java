@@ -509,12 +509,37 @@ public abstract class AbstractButton extends JComponent
   }
 
   /**
-   * Creates a new AbstractButton object.
+   * Creates a new AbstractButton object. Subclasses should call the following
+   * sequence in their constructor in order to initialize the button correctly:
+   * <pre>
+   * super();
+   * init(text, icon);
+   * </pre>
+   *
+   * The {@link #init(String, Icon)} method is not called automatically by this
+   * constructor.
+   *
+   * @see {@link #init(String, Icon)}
    */
   public AbstractButton()
   {
-    init("", null);
     updateUI();
+
+    actionListener = createActionListener();
+    changeListener = createChangeListener();
+    itemListener = createItemListener();
+
+    horizontalAlignment = CENTER;
+    horizontalTextPosition = TRAILING;
+    verticalAlignment = CENTER;
+    verticalTextPosition = CENTER;
+    borderPainted = true;
+    contentAreaFilled = true;
+    focusPainted = true;
+    setFocusable(true);
+    setAlignmentX(CENTER_ALIGNMENT);
+    setAlignmentY(CENTER_ALIGNMENT);
+    setDisplayedMnemonicIndex(-1);
   }
 
   /**
@@ -569,25 +594,6 @@ public abstract class AbstractButton extends JComponent
 
     if (icon != null)
       default_icon = icon;
-
-    actionListener = createActionListener();
-    changeListener = createChangeListener();
-    itemListener = createItemListener();
-
-    horizontalAlignment = CENTER;
-    horizontalTextPosition = TRAILING;
-    verticalAlignment = CENTER;
-    verticalTextPosition = CENTER;
-    borderPainted = true;
-    contentAreaFilled = true;
-
-    focusPainted = true;
-    setFocusable(true);
-
-    setAlignmentX(LEFT_ALIGNMENT);
-    setAlignmentY(CENTER_ALIGNMENT);
-
-    setDisplayedMnemonicIndex(-1);    
  }
  
   /**

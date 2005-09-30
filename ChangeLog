@@ -1,3 +1,33 @@
+2005-09-29  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/AbstractButton.java
+	(AbstractButton): Don't call init() from here. Moved some
+	initialization code from init() to the constructor.
+	(init): Moved most of the initialization code to the constructor.
+	* javax/swing/JCheckBox.java
+	(JCheckBox()): call this(..) instead of super(..). Don't call init()
+	here, this is already performed by the JToggleButton constructor.
+	(JCheckBox(Action)): Don't call init() here, this is already
+	performed by the JToggleButton constructor.
+	(JCheckBox(Icon)): call this(..) instead of super(..). Don't call
+	init() here, this is already performed by the JToggleButton
+	constructor.
+	(JCheckBox(Icon, boolean)): Likewise.
+	(JCheckBox(String)): Likewise.
+	(JCheckBox(String, boolean)): Likewise.
+	(JCheckBox(String, Icon)): Likewise.
+	(JCheckBox(String, Icon, boolean)): Don' call init here. This is
+	already performed by the JToggleButton constructor. Set the
+	correct defaults for horizontalAlignment and borderPainted
+	properties here.
+	* javax/swing/JRadioButton.java
+	(JRadioButton(String, Icon, boolean)): Use acccessor methods
+	instead of directly manipulating package private fields of
+	AbstractButton.
+	* javax/swing/JToggleButton.java
+	(JToggleButton(String, Icon, boolean)): Set correct value for the
+	alignmentX property.
+
 2005-09-30  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JFileChooser.java: Import AccessibleRole.
