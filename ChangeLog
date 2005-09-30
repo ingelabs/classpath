@@ -1,3 +1,19 @@
+2005-09-30  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/GapContent.java:
+	(shiftEnd): Call adjustPositionsInRange rather than getPositionsInRange
+	and then iterating over the set and adjusting them.
+	(shiftGap): Likewise.
+	(shiftGapStartDown): Call setPositionsInRange rather than
+	getPositionsInRange and then iterating over the set to set each
+	Position.
+	(shiftGapEndUp): Likewise.
+	(setPositionsInRange): New implementation method.
+	(adjustPositionsInRange): New implementation method.
+	(resetMarksAtZero): Call setPositionsInRange rather than 
+	getPositionsInRange and then iterating over the set to set each
+	Position.
+
 2005-09-30  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTable.java

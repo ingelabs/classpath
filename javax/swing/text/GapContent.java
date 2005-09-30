@@ -41,7 +41,6 @@ package javax.swing.text;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Vector;
 
@@ -398,12 +397,7 @@ public class GapContent
 
     int delta = newSize - gapEnd + gapStart;
     // Update the marks after the gapEnd.
-    Vector v = getPositionsInRange(null, gapEnd, buffer.length - gapEnd);
-    for (Iterator i = v.iterator(); i.hasNext();)
-    {
-      GapContentPosition p = (GapContentPosition) i.next();
-      p.mark += delta;
-    }
+    adjustPositionsInRange(gapEnd, buffer.length - gapEnd, delta);
 
     // Copy the data around.
     char[] newBuf = (char[]) allocateArray(length() + newSize);
@@ -430,13 +424,7 @@ public class GapContent
       {
         // Update the positions between newGapStart and (old) gapStart. The marks
         // must be shifted by (gapEnd - gapStart).
-        Vector v = getPositionsInRange(null, newGapStart,
-                                       gapStart - newGapStart);
-        for (Iterator i = v.iterator(); i.hasNext();)
-          {
-            GapContentPosition p = (GapContentPosition) i.next();
-            p.mark += gapEnd - gapStart;
-          }
+        adjustPositionsInRange(newGapStart, gapStart - newGapStart, gapEnd - gapStart);
         System.arraycopy(buffer, newGapStart, buffer, newGapEnd, gapStart
                          - newGapStart);
         gapStart = newGapStart;
@@ -446,13 +434,7 @@ public class GapContent
       {
         // Update the positions between newGapEnd and (old) gapEnd. The marks
         // must be shifted by (gapEnd - gapStart).
-        Vector v = getPositionsInRange(null, gapEnd,
-                                       newGapEnd - gapEnd);
-        for (Iterator i = v.iterator(); i.hasNext();)
-          {
-            GapContentPosition p = (GapContentPosition) i.next();
-            p.mark -= gapEnd - gapStart;
-          }
+        adjustPositionsInRange(gapEnd, newGapEnd - gapEnd, -(gapEnd - gapStart));
         System.arraycopy(buffer, gapEnd, buffer, gapStart, newGapStart
                          - gapStart);
         gapStart = newGapStart;
@@ -477,12 +459,7 @@ public class GapContent
 
     assert newGapStart < gapStart : "The new gap start must be less than the "
                                     + "old gap start.";
-    Vector v = getPositionsInRange(null, newGapStart, gapStart - newGapStart);
-    for (Iterator i = v.iterator(); i.hasNext();)
-      {
-        GapContentPosition p = (GapContentPosition) i.next();
-        p.mark = gapStart;
-      }
+    setPositionsInRange(newGapStart, gapStart - newGapStart, gapStart);
     gapStart = newGapStart;
   }
 
@@ -501,12 +478,7 @@ public class GapContent
 
     assert newGapEnd > gapEnd : "The new gap end must be greater than the "
                                 + "old gap end.";
-    Vector v = getPositionsInRange(null, gapEnd, newGapEnd - gapEnd);
-    for (Iterator i = v.iterator(); i.hasNext();)
-      {
-        GapContentPosition p = (GapContentPosition) i.next();
-        p.mark = newGapEnd + 1;
-      }
+    setPositionsInRange(gapEnd, newGapEnd - gapEnd, newGapEnd + 1);
     gapEnd = newGapEnd;
   }
 
@@ -608,6 +580,70 @@ public class GapContent
       }
     return res;
   }
+  
+  /**
+   * Sets the mark of all <code>Position</code>s that are in the range 
+   * specified by <code>offset</code> and </code>length</code> within 
+   * the buffer array to <code>value</code>
+   *
+   * @param offset the start offset of the range to search
+   * @param length the length of the range to search
+   * @param value the new value for each mark
+   */
+  void setPositionsInRange(int offset, int length, int value)
+  {
+    int endOffset = offset + length;
+
+    int index1 = Collections.binarySearch(positions,
+                                          new GapContentPosition(offset));
+    int index2 = Collections.binarySearch(positions,
+                                          new GapContentPosition(endOffset));
+    if (index1 < 0)
+      index1 = -(index1 + 1);
+    if (index2 < 0)
+      index2 = -(index2 + 1);
+    for (ListIterator i = positions.listIterator(index1); i.hasNext();)
+      {
+        if (i.nextIndex() > index2)
+          break;
+        
+        GapContentPosition p = (GapContentPosition) i.next();
+        if (p.mark >= offset && p.mark <= endOffset)
+          p.mark = value;
+      }
+  }
+  
+  /**
+   * Adjusts the mark of all <code>Position</code>s that are in the range 
+   * specified by <code>offset</code> and </code>length</code> within 
+   * the buffer array by <code>increment</code>
+   *
+   * @param offset the start offset of the range to search
+   * @param length the length of the range to search
+   * @param incr the increment
+   */
+  void adjustPositionsInRange(int offset, int length, int incr)
+  {
+    int endOffset = offset + length;
+
+    int index1 = Collections.binarySearch(positions,
+                                          new GapContentPosition(offset));
+    int index2 = Collections.binarySearch(positions,
+                                          new GapContentPosition(endOffset));
+    if (index1 < 0)
+      index1 = -(index1 + 1);
+    if (index2 < 0)
+      index2 = -(index2 + 1);
+    for (ListIterator i = positions.listIterator(index1); i.hasNext();)
+      {
+        if (i.nextIndex() > index2)
+          break;
+        
+        GapContentPosition p = (GapContentPosition) i.next();
+        if (p.mark >= offset && p.mark <= endOffset)
+          p.mark += incr;
+      }
+  }
 
   /**
    * Resets all <code>Position</code> that have an offset of <code>0</code>,
@@ -620,11 +656,6 @@ public class GapContent
     if (gapStart != 0)
       return;
 
-    Vector zeroMarks = getPositionsInRange(null, gapEnd, 0);
-    for (Iterator i = zeroMarks.iterator(); i.hasNext();)
-      {
-        GapContentPosition pos = (GapContentPosition) i.next();
-        pos.mark = 0;
-      }
+    setPositionsInRange(gapEnd, 0, 0);
   }
 }
