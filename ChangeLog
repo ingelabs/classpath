@@ -1,3 +1,13 @@
+2005-09-30  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(propertyChange): Added call to reset the layout manager
+	whenever the size of the divider is changed.
+	(setDividerLocation): Added adjustment to container
+	sizes if the divider goes over the bottom/right side.
+	Also, fixed the size of the right/top component.
+	(validLocation): Added check for min/max location returned.
+
 2005-09-30  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/StyleContext.java:
