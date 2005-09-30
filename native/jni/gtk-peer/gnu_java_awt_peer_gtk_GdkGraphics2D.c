@@ -934,9 +934,9 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics2D_setTexturePixelsUnlocked
 							CAIRO_FORMAT_ARGB32, 
 							w, h, stride * 4);
   g_assert (gr->pattern_surface != NULL);
-  cairo_pattern_set_extend (gr->pattern, 1);
   gr->pattern = cairo_pattern_create_for_surface (gr->pattern_surface);
   g_assert (gr->pattern != NULL);
+  cairo_pattern_set_extend (gr->pattern, CAIRO_EXTEND_REPEAT);
   cairo_set_source (gr->cr, gr->pattern);
 }
 

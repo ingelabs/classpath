@@ -1,3 +1,10 @@
+2005-10-01  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_setTexturePixelsUnlocked):
+	Call cairo_pattern_set_extend after gr->pattern has been set and checked
+	versus NULL.
+
 2005-09-30  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTextPane.java
@@ -198,6 +205,7 @@
 	* gnu/xml/transform/TransformerImpl.java
 	(writeStreamResult): Added call to connection.setDoInput(false).
 
+>>>>>>> 1.5052
 2005-09-29  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/URLConnection.java (setDoInput): Javadoc fix.
