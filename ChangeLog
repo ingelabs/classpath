@@ -1,3 +1,9 @@
+2005-09-30  Jeroen Frijters  <jeroen@frijters.net>
+
+	Fixes Bug 24122
+	* gnu/xml/transform/TransformerImpl.java
+	(writeStreamResult): Added call to connection.setDoInput(false).
+
 2005-09-29  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/URLConnection.java (setDoInput): Javadoc fix.
