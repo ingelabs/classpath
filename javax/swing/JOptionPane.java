@@ -64,7 +64,7 @@ public class JOptionPane extends JComponent implements Accessible
   {
     /** DOCUMENT ME! */
     private static final long serialVersionUID = 686071432213084821L;
-
+    
     /**
      * Creates a new AccessibleJOptionPane object.
      */
@@ -343,8 +343,6 @@ public class JOptionPane extends JComponent implements Accessible
     setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
     updateUI();
-    invalidate();
-    repaint();
   }
 
   /**
@@ -377,8 +375,6 @@ public class JOptionPane extends JComponent implements Accessible
     dialog.getContentPane().add(this);
     dialog.setModal(true);
     dialog.setResizable(false);
-    dialog.invalidate();
-    dialog.repaint();
 
     return dialog;
   }

@@ -564,7 +564,7 @@ public class JPopupMenu extends JComponent implements Accessible, MenuElement
             Dimension screenSize = getToolkit().getScreenSize();
             
             boolean fit = true;
-            Dimension size = this.getSize();
+            Dimension size = this.getPreferredSize();
             if ((size.width > (rootContainer.getWidth() - popupLocation.x))
                 || (size.height > (rootContainer.getHeight() - popupLocation.y)))
               fit = false;

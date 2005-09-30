@@ -84,6 +84,7 @@ public class JMenuItem extends AbstractButton implements Accessible,
   public JMenuItem()
   {
     super();
+    init(null, null);
   }
 
   /**
@@ -118,6 +119,7 @@ public class JMenuItem extends AbstractButton implements Accessible,
   {
     super();
     super.setAction(action);
+    init(null, null);
   }
 
   /**
@@ -189,7 +191,7 @@ public class JMenuItem extends AbstractButton implements Accessible,
   {
     super.setUI(ui);
   }
-
+  
   /**
    * This method sets this menuItem's UI to the UIManager's default for the
    * current look and feel.

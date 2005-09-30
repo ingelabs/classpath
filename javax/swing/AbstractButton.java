@@ -523,8 +523,6 @@ public abstract class AbstractButton extends JComponent
    */
   public AbstractButton()
   {
-    updateUI();
-
     actionListener = createActionListener();
     changeListener = createChangeListener();
     itemListener = createItemListener();
@@ -540,6 +538,7 @@ public abstract class AbstractButton extends JComponent
     setAlignmentX(CENTER_ALIGNMENT);
     setAlignmentY(CENTER_ALIGNMENT);
     setDisplayedMnemonicIndex(-1);
+    updateUI();
   }
 
   /**

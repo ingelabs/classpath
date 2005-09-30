@@ -1,5 +1,19 @@
 2005-09-30  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/AbstractButton.java
+	(AbstractButton): updateUI should be called after
+	everything is initialized, so everything is revalidated.
+	* javax/swing/JMenuItem.java
+	(JMenuItem): Added call to init so model is set.
+	(JMenuItem): Likewise.
+	* javax/swing/JOptionPane.java
+	(createDialog): Removed invalidate and repaint calls.
+	(JOptionPane): Likewise.
+	* javax/swing/JPopupMenu.java
+	(setVisible): Changed size to be the preferred size.
+
+2005-09-30  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(paintTabArea): Added check to adjust runCount if
 	it is less that tabCount.
