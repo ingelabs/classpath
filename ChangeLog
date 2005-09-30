@@ -205,7 +205,6 @@
 	* gnu/xml/transform/TransformerImpl.java
 	(writeStreamResult): Added call to connection.setDoInput(false).
 
->>>>>>> 1.5052
 2005-09-29  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/URLConnection.java (setDoInput): Javadoc fix.
