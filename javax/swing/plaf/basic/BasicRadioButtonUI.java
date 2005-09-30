@@ -160,7 +160,8 @@ public class BasicRadioButtonUI extends BasicToggleButtonUI
     if (text != null)
       paintText(g, b, tr, text);
     // TODO: Figure out what is the size parameter?
-    paintFocus(g, tr, null);
+    if (b.hasFocus())
+      paintFocus(g, tr, null);
   }
 
   /**

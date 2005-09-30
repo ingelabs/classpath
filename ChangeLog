@@ -1,5 +1,11 @@
-2005-09-29  Roman Kennke  <kennke@aicas.com>
+2005-09-30  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	(paint): Only call paintFocus if button is actually focused.
+
+2005-09-30  Roman Kennke  <kennke@aicas.com>
+
+	Fixes Bug #24115
 	* javax/swing/AbstractButton.java
 	(AbstractButton): Don't call init() from here. Moved some
 	initialization code from init() to the constructor.
