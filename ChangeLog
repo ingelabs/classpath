@@ -1,3 +1,13 @@
+2005-09-30  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c
+	(Java_gnu_java_awt_peer_gtk_GdkTextLayout_getOutline): Initialize all
+	fields of the FT_Outline_Funcs ftCallbacks struct.
+	(_moveTo): Takes an void * as argument.
+	(_lineTo): Likewise.
+	(_quadTo): Likewise.
+	(_curveTo): Likewise.
+
 2005-09-30  Sven de Marothy  <sven@physto.se>
 
 	* javax/swing/JFileChooser.java:

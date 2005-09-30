@@ -1,5 +1,5 @@
 /* gnu_java_awt_GdkTextLayout.c
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005 Free Software Foundation, Inc.
    
    This file is part of GNU Classpath.
    
@@ -211,13 +211,14 @@ Java_gnu_java_awt_peer_gtk_GdkTextLayout_dispose
 /********* Freetype callback functions *****************************/
 
 static int _moveTo( FT_Vector* to,
-		    generalpath *path)
+		    void *p)
 {
   JNIEnv *env;
   jobject obj;
   jclass cls;
   jmethodID method;
   jvalue values[2];
+  generalpath *path = (generalpath *) p;
 
   env = path->env;
   obj = path->obj;
@@ -233,13 +234,14 @@ static int _moveTo( FT_Vector* to,
 }
 
 static int _lineTo( FT_Vector*  to,
-		    generalpath *path)
+		    void *p)
 {
   JNIEnv *env;
   jobject obj;
   jclass cls;
   jmethodID method;
   jvalue values[2];
+  generalpath *path = (generalpath *) p;
 
   env = path->env;
   obj = path->obj; 
@@ -255,13 +257,14 @@ static int _lineTo( FT_Vector*  to,
 
 static int _quadTo( FT_Vector*  cp,
 		    FT_Vector*  to,
-		    generalpath *path)
+		    void *p)
 {
   JNIEnv *env;
   jobject obj;
   jclass cls;
   jmethodID method;
   jvalue values[4];
+  generalpath *path = (generalpath *) p;
 
   env = path->env;
   obj = path->obj;
@@ -280,13 +283,14 @@ static int _quadTo( FT_Vector*  cp,
 static int _curveTo( FT_Vector*  cp1,
 		     FT_Vector*  cp2,
 		     FT_Vector*  to,
-		     generalpath *path)
+		     void *p)
 {
   JNIEnv *env;
   jobject obj;
   jclass cls;
   jmethodID method;
   jvalue values[6];
+  generalpath *path = (generalpath *) p;
 
   env = path->env;
   obj = path->obj;
@@ -319,7 +323,9 @@ Java_gnu_java_awt_peer_gtk_GdkTextLayout_getOutline
       _moveTo,
       _lineTo,
       _quadTo,
-      _curveTo
+      _curveTo,
+      0,
+      0
     };
   PangoLayoutIter* layoutIterator;
 
