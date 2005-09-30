@@ -1,3 +1,9 @@
+2005-09-30  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(paintTabArea): Added check to adjust runCount if
+	it is less that tabCount.
+
 2005-09-30  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/PlainDocument.java:

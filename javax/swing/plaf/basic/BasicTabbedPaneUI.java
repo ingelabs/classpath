@@ -354,7 +354,6 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
           for (int i = 0; i < tabCount; i++)
             {
               width = calculateTabWidth(tabPlacement, i, fm);
-
               if (runWidth + width > max)
                 {
                   runWidth = tabAreaInsets.left + insets.left
@@ -1737,11 +1736,15 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     // we WANT to paint the outermost run first and then work our way in.
     int tabCount = tabPane.getTabCount();
     int currRun = 1;
+    
+    if (tabCount > runCount)
+      runCount = tabCount;
+    
     if (tabCount < 1)
       return;
-
+    
     if (runCount > 1)
-      currRun = 0;
+      currRun = 0;    
     for (int i = 0; i < runCount; i++)
       {
         int first = lastTabInRun(tabCount, getPreviousTabRun(currRun)) + 1;
