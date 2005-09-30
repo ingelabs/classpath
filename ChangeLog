@@ -1,3 +1,20 @@
+2005-09-30  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTextPane.java
+	(replaceSelection): Don't update the caret position here.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(DocumentHandler.insertUpdate): Likewise.
+	(DocumentHandler.removeUpdate): Likewise.
+	* javax/swing/text/DefaultCaret.java
+	(DocumentHandler): New inner class. Handles caret position updates.
+	(PropertyChangeHandler): New inner class. (Un)installs document
+	listener when the text component's document changes.
+	(install): Install the new listeners on the text component.
+	(deinstall): Deinstall the new listeners on the text component.
+	* javax/swing/text/DefaultEditorKit.java
+	(DefaultKeyTypedAction.actionPerformed): Don't update the caret
+	position here.
+
 2005-09-30  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/AbstractButton.java
