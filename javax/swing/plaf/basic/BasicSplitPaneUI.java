@@ -823,7 +823,6 @@ public class BasicSplitPaneUI extends SplitPaneUI
 	  tmpSizes[1] += newSpace / 2;
       
 	  layoutManager.setSizes(tmpSizes);
-      resetLayoutManager();
         }
       else if (e.getPropertyName().equals(JSplitPane.ORIENTATION_PROPERTY))
         {
@@ -1300,19 +1299,19 @@ public class BasicSplitPaneUI extends SplitPaneUI
   {
     location = validLocation(location);
     Container p = jc.getParent();
+    Dimension rightPrefSize = jc.getRightComponent().getPreferredSize();
     if (getOrientation() == 0 && location > jc.getSize().height)
       {
-        Dimension leftPrefSize = jc.getLeftComponent().getPreferredSize();
+        location = jc.getSize().height;
         while (p != null)
           {
-            p.setSize(p.getWidth(), p.getHeight() + leftPrefSize.height);
+            p.setSize(p.getWidth(), p.getHeight() + rightPrefSize.height);
             p = p.getParent();
           }
       }
     else if (location > jc.getSize().width)
       {
-
-        Dimension rightPrefSize = jc.getRightComponent().getPreferredSize();
+        location = jc.getSize().width;
         while (p != null)
           {
             p.setSize(p.getWidth() + rightPrefSize.width, p.getHeight());

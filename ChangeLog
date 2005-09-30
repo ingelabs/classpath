@@ -1,3 +1,10 @@
+2005-09-30  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(propertyChange): No reason to reset the layout manager here.
+	(setDividerLocation): Changed to check right component, not left.
+	Also, updated the location to a valid spot.
+
 2005-09-30  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* examples/gnu/classpath/examples/swing/SliderDemo.java:
