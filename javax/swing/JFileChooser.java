@@ -46,6 +46,7 @@ import java.io.File;
 import java.util.ArrayList;
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
 import javax.swing.JDialog;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
