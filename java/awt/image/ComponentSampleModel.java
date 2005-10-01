@@ -63,8 +63,9 @@ public class ComponentSampleModel extends SampleModel
   protected int[] bandOffsets;
   protected int[] bankIndices;
   
-  // FIXME: Should we really shadow the numBands in the superclass?
-  //protected int numBands;
+  /** Number of bands in the image described. */
+  // This field shadows the package-private numBands in SampleModel.
+  protected int numBands;
   
   /** Used when creating data buffers. */
   protected int numBanks;
