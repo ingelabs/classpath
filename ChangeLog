@@ -1,3 +1,9 @@
+2005-10-01  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/include/layout.wml: Point Tasks menu item to
+	mediation wiki.
+	* doc/www.gnu.org/tasks.wml: Redirect to mediation wiki.
+
 2005-10-01  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
