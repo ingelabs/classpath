@@ -1,3 +1,12 @@
+2005-10-01  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/23890:
+	* java/util/Calendar.java (equals): Include other calendar 
+	attributes.
+	(hashCode): Updated.
+	* java/util/GregorianCalendar.java (hashCode): New method.
+	(equals): Use super.equals().
+
 2005-10-01  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/image/ComponentSampleModel.java (numBands): Shadow
