@@ -411,8 +411,6 @@ public abstract class URLStreamHandler
    * @param url2 The second URL.
    *
    * @return True if both URLs contain the same host.
-   *
-   * @exception UnknownHostException If an unknown host is found
    */
   protected boolean hostsEqual(URL url1, URL url2)
   {

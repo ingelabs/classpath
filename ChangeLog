@@ -1,3 +1,11 @@
+2005-10-02  Tom Tromey  <tromey@redhat.com>
+
+	* java/net/URLStreamHandler.java (hostsEqual): Javadoc fix.
+	* java/net/URLClassLoader.java (definePackage): Javadoc fixes.
+	* java/net/Inet4Address.java (Inet4Address): Javadoc fix.
+	* java/net/Socket.java (getLocalAddress): Javadoc fix.
+	* java/net/DatagramSocket.java (connect): Javadoc fix.
+
 2005-10-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * gnu/javax/rmi/PortableServer.java,

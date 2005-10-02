@@ -785,13 +785,13 @@ public class URLClassLoader extends SecureClassLoader
    * package is sealed. If the Manifest indicates that the package is sealed
    * then the Package will be sealed with respect to the supplied URL.
    *
-   * @exception IllegalArgumentException If this package name already exists
-   * in this class loader
    * @param name The name of the package
    * @param manifest The manifest describing the specification,
    * implementation and sealing details of the package
    * @param url the code source url to seal the package
    * @return the defined Package
+   * @throws IllegalArgumentException If this package name already exists
+   * in this class loader
    */
   protected Package definePackage(String name, Manifest manifest, URL url)
     throws IllegalArgumentException
