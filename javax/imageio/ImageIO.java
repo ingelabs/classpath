@@ -141,21 +141,45 @@ public final class ImageIO
         {
           ImageReaderSpi spi = (ImageReaderSpi) provider;
 
-	  try
-	    {
-	      if (spi.canDecodeInput(object))
-		return true;
-	    }
-	  catch (IOException ioe)
-	    {
-	      // Apparently it couldn't...
-	    }
+          try
+            {
+              if (spi.canDecodeInput(object))
+                return true;
+            }
+          catch (IOException e)
+            {
+              // Return false in this case
+            }
+        }
+      return false;
+    }
+  }
+
+  private static final class ReaderSuffixFilter implements ServiceRegistry.Filter
+  {
+    private String fileSuffix;
+
+    public ReaderSuffixFilter(String fileSuffix)
+    {
+      this.fileSuffix = fileSuffix;
+    }
+
+    public boolean filter(Object provider)
+    {
+      if (provider instanceof ImageReaderSpi)
+        {
+          ImageReaderSpi spi = (ImageReaderSpi) provider;
+          String[] suffixes = spi.getFileSuffixes();
+
+          for (int i = suffixes.length - 1; i >= 0; --i)
+            if (fileSuffix.equals(suffixes[i]))
+              return true;
         }
 
       return false;
     }
   }
-
+  
   private static final class WriterFormatFilter implements ServiceRegistry.Filter
   {
     private String formatName;
@@ -268,7 +292,7 @@ public final class ImageIO
     private ImageWriter writer;
 
     public TranscoderFilter(ImageReader reader,
-			    ImageWriter writer)
+                            ImageWriter writer)
     {
       this.reader = reader;
       this.writer = writer;
@@ -457,10 +481,9 @@ public final class ImageIO
   {
     if (fileSuffix == null)
       throw new IllegalArgumentException("formatName may not be null");
-   
-    // XXX We use ReaderObjectFiler, should there be a ReaderSuffixFilter?
+    
     return getReadersByFilter(ImageReaderSpi.class,
-                              new ReaderObjectFilter(fileSuffix),
+                              new ReaderSuffixFilter(fileSuffix),
                               fileSuffix);
   }
 
@@ -970,19 +993,17 @@ public final class ImageIO
       {
 	ImageInputStreamSpi spi = (ImageInputStreamSpi) spis.next();
 
-	if (spi.getInputClass().isAssignableFrom(input.getClass()))
+	if (input.getClass().equals(spi.getInputClass()))
 	  {
 	    foundSpi = spi;
 	    break;
 	  }
       }
 
-    if (foundSpi == null)
-      return null;
-    else
-      return foundSpi.createInputStreamInstance (input,
-						 getUseCache(),
-						 getCacheDirectory());
+    return foundSpi == null ? null :
+      foundSpi.createInputStreamInstance (input,
+                                          getUseCache(),
+                                          getCacheDirectory());
   }
 
   /**
@@ -1018,19 +1039,17 @@ public final class ImageIO
       {
 	ImageOutputStreamSpi spi = (ImageOutputStreamSpi) spis.next();
 
-	if (spi.getOutputClass().isAssignableFrom(output.getClass()))
+	if (output.getClass().equals(spi.getOutputClass()))
 	  {
 	    foundSpi = spi;
 	    break;
 	  }
       }
 
-    if (foundSpi == null)
-      return null;
-    else
-      return foundSpi.createOutputStreamInstance (output,
-						  getUseCache(),
-						  getCacheDirectory());
+    return foundSpi == null ? null :
+      foundSpi.createOutputStreamInstance (output,
+                                           getUseCache(),
+                                           getCacheDirectory());
   }
 
   /**
@@ -1054,9 +1073,21 @@ public final class ImageIO
 
     String[] readerSpiNames = spi.getImageReaderSpiNames();
 
-    // XXX - Check this - How to map String to actual class instance?
-    return null;
-    // return readerSpiNames == null ? null : readerSpiNames[0];
+    ImageReader r = null;
+
+    if (readerSpiNames != null)
+      {
+        try
+          {
+            Class readerClass = Class.forName (readerSpiNames[0]);
+            r = (ImageReader) readerClass.newInstance ();
+          }
+        catch (Exception e)
+          {
+            return null;
+          }
+      }
+    return r;
   }
 
   /**
@@ -1083,20 +1114,20 @@ public final class ImageIO
    * given format.
    *
    * @param type the output image's colour and sample models
-   * @param format the output image format
+   * @param formatName the output image format
    *
    * @return an iterator over a collection of image writers
    */
   public static Iterator getImageWriters (ImageTypeSpecifier type,
-					  String format)
+					  String formatName)
   {
-    if (type == null || format == null)
+    if (type == null || formatName == null)
       throw new IllegalArgumentException ("null argument");
 
-    return getRegistry().getServiceProviders(ImageWriterSpi.class,
-					     new WriterObjectFilter(type,
-								    format),
-					     true);
+    return getRegistry().getServiceProviders (ImageWriterSpi.class,
+					      new WriterObjectFilter(type,
+                                                                     formatName),
+					      true);
   }
 
   /**
@@ -1123,9 +1154,21 @@ public final class ImageIO
 
     String[] writerSpiNames = spi.getImageWriterSpiNames();
 
-    // XXX - Check this - How to map String to actual class instance?
-    return null;
-    // return writerSpiNames == null ? null : writerSpiNames[0];
+    ImageWriter w = null;
+
+    if (writerSpiNames != null)
+      {
+        try
+          {
+            Class writerClass = Class.forName (writerSpiNames[0]);
+            w = (ImageWriter) writerClass.newInstance ();
+          }
+        catch (Exception e)
+          {
+            return null;
+          }
+      }
+    return w;
   }
 
   /**
@@ -1149,7 +1192,7 @@ public final class ImageIO
 
     return getRegistry().getServiceProviders (ImageTranscoderSpi.class,
 					      new TranscoderFilter (reader,
-								    writer),
+                                                                    writer),
 					      true);
   }
 }
