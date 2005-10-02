@@ -1,3 +1,12 @@
+2005-10-02  Casey Marshall  <csm@gnu.org>
+
+	* gnu/javax/crypto/DiffieHellmanImpl.java (random): removed.
+	(<init>): removed 'random' initialization.
+	(engineDoPhase): use params from the incoming key; generate the
+	intermediate result from the incoming key, not a random one; only
+	support one-phase DH, for now.
+	(engineInit): removed 'random' initialization.
+
 2005-10-02  Robert Schuster  <robertschuster@fsfe.org>
 
 	* gnu/xml/stream/XMLOutputFactoryImpl.java:

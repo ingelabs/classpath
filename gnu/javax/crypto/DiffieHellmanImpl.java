@@ -67,9 +67,6 @@ public final class DiffieHellmanImpl extends KeyAgreementSpi
   /** The private key being used for this agreement. */
   private DHPrivateKey key;
 
-  /** The random-number generator used to generate secrets. */
-  private SecureRandom random;
-
   /** The current result. */
   private BigInteger result;
 
@@ -80,7 +77,6 @@ public final class DiffieHellmanImpl extends KeyAgreementSpi
   public DiffieHellmanImpl ()
   {
     key = null;
-    random = null;
     result = null;
     last_phase_done = false;
   }
@@ -99,23 +95,20 @@ public final class DiffieHellmanImpl extends KeyAgreementSpi
       throw new InvalidKeyException ("expecting javax.crypto.interfaces.DHPublicKey");
     DHPublicKey pub = (DHPublicKey) incoming;
     DHParameterSpec s1 = key.getParams();
-    DHParameterSpec s2 = key.getParams();
+    DHParameterSpec s2 = pub.getParams();
     if (!s1.getG().equals (s2.getG())
         || !s1.getP().equals (s2.getP())
         || s1.getL() != s2.getL())
       throw new InvalidKeyException ("supplied key is not compatible");
 
-    BigInteger randval = new BigInteger (s1.getL(), random);
-    BigInteger out = s1.getG().modPow (key.getX(), s1.getP());
-    if (result == null)
-      result = s1.getG();
-    result = result.modPow (pub.getY(), s1.getP());
+    result = pub.getY().modPow (key.getX(), s1.getP());
     if (lastPhase)
       {
 	last_phase_done = true;
 	return null;
       }
-    return new GnuDHPublicKey (s1, out, null);
+
+    throw new IllegalArgumentException ("only supports two-party Diffie Hellman");
   }
 
   protected byte[] engineGenerateSecret ()
@@ -153,10 +146,6 @@ public final class DiffieHellmanImpl extends KeyAgreementSpi
     if (!(key instanceof DHPrivateKey))
       throw new InvalidKeyException ("not a javax.crypto.interfaces.DHPrivateKey");
     this.key = (DHPrivateKey) key;
-    if (random != null)
-      this.random = random;
-    else if (this.random == null)
-      this.random = new SecureRandom();
     result = null;
     last_phase_done = false;
   }
