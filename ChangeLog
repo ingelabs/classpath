@@ -1,3 +1,10 @@
+2005-10-01  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	(MetalScrollBarPropertyChangeHandler.propertyChange):
+	Only set free standing when increase or decrease button isn't null.
+	If not FREE_STANDING_PROP pass up event to super class.
+
 2005-10-02  Mark Wielaard  <mark@klomp.org>
 
 	Workarounds for bug #24166
