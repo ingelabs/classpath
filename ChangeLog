@@ -1,3 +1,16 @@
+2005-10-02  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/IIOException.java: Document.
+	* javax/imageio/IIOImage.java: Document.
+	* javax/imageio/IIOParam.java: Complete and document.
+	* javax/imageio/IIOParamController.java: Document.
+	* javax/imageio/ImageIO.java: Complete and document.
+	* javax/imageio/ImageReader.java: Complete and document.
+	* javax/imageio/ImageTranscoder.java: Document.
+	* javax/imageio/ImageTypeSpecifier.java: Complete and document.
+	* javax/imageio/ImageWriter.java: Complete and document.
+	* javax/imageio/package.html: Write.
+
 2005-10-01  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/23890:
