@@ -40,7 +40,6 @@ package gnu.CORBA;
 
 import gnu.CORBA.CDR.cdrBufInput;
 import gnu.CORBA.GIOP.ReplyHeader;
-import gnu.CORBA.Poa.activeObjectMap;
 
 import org.omg.CORBA.CompletionStatus;
 import org.omg.CORBA.Context;
@@ -72,17 +71,6 @@ import java.net.Socket;
  */
 public class IOR_Delegate extends Simple_delegate
 {
-  /**
-   * True if the current IOR does not map into the local servant. If false, the
-   * IOR is either local or should be checked.
-   */
-  boolean remote_ior;
-
-  /**
-   * If not null, this field contains data about the local servant.
-   */
-  activeObjectMap.Obj local_ior;
-
   /**
    * Contructs an instance of object using the given IOR.
    */
@@ -168,18 +156,18 @@ public class IOR_Delegate extends Simple_delegate
    * request to the new direction. The ReplyHeader.LOCATION_FORWARD_PERM will
    * cause additionally to remember the new location by this delegate, so
    * subsequent calls will be immediately delivered to the new target.
-   *
+   * 
    * @param target the target object.
    * @param output the output stream, previously returned by
    * {@link #request(org.omg.CORBA.Object, String, boolean)}.
-   *
+   * 
    * @return the input stream, to read the response from or null for a one-way
    * request.
-   *
+   * 
    * @throws SystemException if the SystemException has been thrown on the
    * remote side (the exact type and the minor code matches the data of the
    * remote exception that has been thrown).
-   *
+   * 
    * @throws org.omg.CORBA.portable.ApplicationException as specified.
    * @throws org.omg.CORBA.portable.RemarshalException as specified.
    */
@@ -187,8 +175,7 @@ public class IOR_Delegate extends Simple_delegate
     throws ApplicationException, RemarshalException
   {
     streamRequest request = (streamRequest) output;
-    Forwardings:
-    while (true)
+    Forwardings: while (true)
       {
         try
           {
@@ -207,34 +194,33 @@ public class IOR_Delegate extends Simple_delegate
 
                 switch (rh.reply_status)
                   {
-                    case ReplyHeader.NO_EXCEPTION :
+                    case ReplyHeader.NO_EXCEPTION:
                       if (request.request.m_interceptor != null)
-                        request.request.m_interceptor.
-                          receive_reply(request.request.m_info);
+                        request.request.m_interceptor.receive_reply(request.request.m_info);
                       if (response.header.version.since_inclusive(1, 2))
                         input.align(8);
                       return input;
 
-                    case ReplyHeader.SYSTEM_EXCEPTION :
+                    case ReplyHeader.SYSTEM_EXCEPTION:
                       if (response.header.version.since_inclusive(1, 2))
                         input.align(8);
                       showException(request, input);
 
-                      throw ObjectCreator.readSystemException(input);
+                      throw ObjectCreator.readSystemException(input,
+                        rh.service_context);
 
-                    case ReplyHeader.USER_EXCEPTION :
+                    case ReplyHeader.USER_EXCEPTION:
                       if (response.header.version.since_inclusive(1, 2))
                         input.align(8);
                       showException(request, input);
 
-                      throw new ApplicationException(request.
-                        request.m_exception_id, input
-                      );
+                      throw new ApplicationException(
+                        request.request.m_exception_id, input);
 
-                    case ReplyHeader.LOCATION_FORWARD_PERM :
+                    case ReplyHeader.LOCATION_FORWARD_PERM:
                       moved_permanently = true;
 
-                    case ReplyHeader.LOCATION_FORWARD :
+                    case ReplyHeader.LOCATION_FORWARD:
                       if (response.header.version.since_inclusive(1, 2))
                         input.align(8);
 
@@ -245,10 +231,8 @@ public class IOR_Delegate extends Simple_delegate
                         }
                       catch (IOException ex)
                         {
-                          MARSHAL t =
-                            new MARSHAL("Cant read forwarding info", 5102,
-                              CompletionStatus.COMPLETED_NO
-                            );
+                          MARSHAL t = new MARSHAL("Cant read forwarding info",
+                            5102, CompletionStatus.COMPLETED_NO);
                           t.initCause(ex);
                           throw t;
                         }
@@ -277,8 +261,8 @@ public class IOR_Delegate extends Simple_delegate
 
                       r.setIor(forwarded);
 
-                      IOR_contructed_object it =
-                        new IOR_contructed_object(orb, forwarded);
+                      IOR_contructed_object it = new IOR_contructed_object(orb,
+                        forwarded);
 
                       r.m_target = it;
 
@@ -298,11 +282,10 @@ public class IOR_Delegate extends Simple_delegate
                             setIor(prev_ior);
                         }
 
-                    default :
-                      throw new MARSHAL("Unknow reply status: " +
-                        rh.reply_status, 8000 + rh.reply_status,
-                        CompletionStatus.COMPLETED_NO
-                      );
+                    default:
+                      throw new MARSHAL("Unknow reply status: "
+                        + rh.reply_status, 8000 + rh.reply_status,
+                        CompletionStatus.COMPLETED_NO);
                   }
               }
             else
@@ -314,8 +297,7 @@ public class IOR_Delegate extends Simple_delegate
         catch (ForwardRequest forwarded)
           {
             ForwardRequest fw = forwarded;
-            Forwarding2:
-            while (true)
+            Forwarding2: while (true)
               {
                 try
                   {
@@ -411,6 +393,7 @@ public class IOR_Delegate extends Simple_delegate
     streamRequest out = request.getParameterStream();
     out.response_expected = response_expected;
     request.setORB(orb);
+    out.setOrb(orb);
 
     return out;
   }
@@ -447,8 +430,6 @@ public class IOR_Delegate extends Simple_delegate
   public void setIor(IOR an_ior)
   {
     super.setIor(an_ior);
-    remote_ior = false;
-    local_ior = null;
   }
 
   /**
@@ -456,11 +437,6 @@ public class IOR_Delegate extends Simple_delegate
    */
   public boolean is_local(org.omg.CORBA.Object self)
   {
-    if (remote_ior)
-      return false;
-    else if (local_ior != null)
-      return true;
-    else
-      return super.is_local(self);
+    return false;
   }
 }

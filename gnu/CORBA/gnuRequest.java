@@ -54,6 +54,7 @@ import org.omg.CORBA.Any;
 import org.omg.CORBA.BAD_INV_ORDER;
 import org.omg.CORBA.BAD_PARAM;
 import org.omg.CORBA.Bounds;
+import org.omg.CORBA.COMM_FAILURE;
 import org.omg.CORBA.CompletionStatus;
 import org.omg.CORBA.Context;
 import org.omg.CORBA.ContextList;
@@ -714,14 +715,14 @@ public class gnuRequest extends Request implements Cloneable
   /**
    * Do the actual invocation. This implementation requires to set the IOR
    * property ({@link #setIOR(IOR)} before calling this method.
-   *
+   * 
    * @throws BAD_INV_ORDER, minor code 0, if the IOR has not been previously set
    * or if the direct argument addition is mixed with the direct argument
    * writing into the output stream.
-   *
+   * 
    * @return the server response in binary form.
    */
-  public synchronized binaryReply submit() throws ForwardRequest
+public synchronized binaryReply submit() throws ForwardRequest
   {
     gnu.CORBA.GIOP.MessageHeader header = new gnu.CORBA.GIOP.MessageHeader();
 
@@ -835,14 +836,17 @@ public class gnuRequest extends Request implements Cloneable
             MessageHeader response_header = new MessageHeader();
             InputStream socketInput = socket.getInputStream();
             response_header.read(socketInput);
-
-            byte[] r = new byte[ response_header.message_size ];
-            int n = 0;
-            reading:
-            while (n < r.length)
+            
+            byte [] r;
+            if (orb instanceof Functional_ORB)
               {
-                n += socketInput.read(r, n, r.length - n);
+                Functional_ORB fo = (Functional_ORB) orb;
+                r =response_header.readMessage(socketInput, socket, 
+                  fo.TOUT_WHILE_READING, fo.TOUT_AFTER_RECEIVING);
               }
+            else
+              r = response_header.readMessage(socketInput, null, 0, 0);
+              
             return new binaryReply(orb, response_header, r);
           }
         else
@@ -850,9 +854,9 @@ public class gnuRequest extends Request implements Cloneable
       }
     catch (IOException io_ex)
       {
-        MARSHAL m =
-          new MARSHAL("Unable to open a socket at " + ior.Internet.host + ":" +
-            ior.Internet.port, 10000 + ior.Internet.port,
+        COMM_FAILURE m =
+          new COMM_FAILURE("Unable to open a socket at " + ior.Internet.host + ":" +
+            ior.Internet.port, 0xC9,
             CompletionStatus.COMPLETED_NO
           );
         m.initCause(io_ex);
@@ -929,7 +933,8 @@ public class gnuRequest extends Request implements Cloneable
    * Do actual invocation. This method recursively calls itself if the
    * redirection is detected.
    */
-  private void p_invoke() throws SystemException, ForwardRequest
+  private void p_invoke()
+    throws SystemException, ForwardRequest
   {
     binaryReply response = submit();
 
@@ -946,7 +951,7 @@ public class gnuRequest extends Request implements Cloneable
 
     switch (m_rph.reply_status)
       {
-        case ReplyHeader.NO_EXCEPTION :
+        case ReplyHeader.NO_EXCEPTION:
 
           NamedValue arg;
 
@@ -992,7 +997,7 @@ public class gnuRequest extends Request implements Cloneable
 
           break;
 
-        case ReplyHeader.SYSTEM_EXCEPTION :
+        case ReplyHeader.SYSTEM_EXCEPTION:
           if (align)
             {
               input.align(8);
@@ -1000,7 +1005,8 @@ public class gnuRequest extends Request implements Cloneable
             }
           readExceptionId(input);
 
-          m_sys_ex = ObjectCreator.readSystemException(input);
+          m_sys_ex = ObjectCreator.readSystemException(input,
+            m_rph.service_context);
           m_environment.exception(m_sys_ex);
 
           if (m_interceptor != null)
@@ -1008,7 +1014,7 @@ public class gnuRequest extends Request implements Cloneable
 
           throw m_sys_ex;
 
-        case ReplyHeader.USER_EXCEPTION :
+        case ReplyHeader.USER_EXCEPTION:
           if (align)
             {
               input.align(8);
@@ -1030,8 +1036,8 @@ public class gnuRequest extends Request implements Cloneable
 
           break;
 
-        case ReplyHeader.LOCATION_FORWARD_PERM :
-        case ReplyHeader.LOCATION_FORWARD :
+        case ReplyHeader.LOCATION_FORWARD_PERM:
+        case ReplyHeader.LOCATION_FORWARD:
           if (response.header.version.since_inclusive(1, 2))
             input.align(8);
 
@@ -1043,8 +1049,7 @@ public class gnuRequest extends Request implements Cloneable
           catch (IOException ex)
             {
               new MARSHAL("Cant read forwarding info", 5103,
-                CompletionStatus.COMPLETED_NO
-              );
+                CompletionStatus.COMPLETED_NO);
             }
 
           setIor(forwarded);
@@ -1058,10 +1063,9 @@ public class gnuRequest extends Request implements Cloneable
           p_invoke();
           return;
 
-        default :
+        default:
           throw new MARSHAL("Unknow reply status", 8100 + m_rph.reply_status,
-            CompletionStatus.COMPLETED_NO
-          );
+            CompletionStatus.COMPLETED_NO);
       }
   }
 

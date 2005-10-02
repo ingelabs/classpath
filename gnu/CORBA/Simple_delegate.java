@@ -59,6 +59,7 @@ import org.omg.CORBA.portable.ObjectImpl;
  */
 public class Simple_delegate
   extends Delegate
+  implements IorProvider
 {
   /**
    * The orb.

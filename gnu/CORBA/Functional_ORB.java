@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
+import gnu.CORBA.CDR.UnknownExceptionCtxHandler;
 import gnu.CORBA.CDR.cdrBufInput;
 import gnu.CORBA.CDR.cdrBufOutput;
 import gnu.CORBA.GIOP.CloseMessage;
@@ -52,34 +53,30 @@ import gnu.CORBA.Poa.gnuForwardRequest;
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.BAD_PARAM;
 import org.omg.CORBA.CompletionStatus;
-import org.omg.CORBA.DATA_CONVERSION;
 import org.omg.CORBA.MARSHAL;
 import org.omg.CORBA.NO_RESOURCES;
 import org.omg.CORBA.OBJECT_NOT_EXIST;
-import org.omg.CORBA.Object;
-import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CORBA.Request;
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA.UNKNOWN;
 import org.omg.CORBA.WrongTransaction;
+import org.omg.CORBA.ORBPackage.InvalidName;
 import org.omg.CORBA.portable.Delegate;
 import org.omg.CORBA.portable.InvokeHandler;
 import org.omg.CORBA.portable.ObjectImpl;
+import org.omg.CORBA.portable.UnknownException;
 import org.omg.CosNaming.NamingContextExt;
 import org.omg.CosNaming.NamingContextExtHelper;
 
 import java.applet.Applet;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -87,6 +84,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
@@ -110,7 +108,7 @@ public class Functional_ORB extends Restricted_ORB
     /**
      * The number of the currently running parallel threads.
      */
-    int running_threads;
+    int running_threads; 
 
     /**
      * The port on that this portServer is listening for requests.
@@ -133,6 +131,7 @@ public class Functional_ORB extends Restricted_ORB
     portServer(int _port)
     {
       s_port = _port;
+      setDaemon(true);
     }
 
     /**
@@ -148,7 +147,7 @@ public class Functional_ORB extends Restricted_ORB
       catch (IOException ex)
         {
           BAD_OPERATION bad =
-            new BAD_OPERATION("Unable to open the server socket.");
+            new BAD_OPERATION("Unable to open the server socket at "+s_port);
           bad.initCause(ex);
           throw bad;
         }
@@ -168,11 +167,11 @@ public class Functional_ORB extends Restricted_ORB
             }
           catch (Exception iex)
             {
-              // Wait 5 seconds. Do not terminate the
+              // Wait. Do not terminate the
               // service due potentially transient error.
               try
                 {
-                  Thread.sleep(5000);
+                  Thread.sleep(TWAIT_SERVER_ERROR_PAUSE);
                 }
               catch (InterruptedException ex)
                 {
@@ -249,6 +248,23 @@ public class Functional_ORB extends Restricted_ORB
    * for a free port.
    */
   public static int DEFAULT_INITIAL_PORT = 1126;
+  
+  /**
+   * When trying to open the socket on a random port, start of the interval to
+   * try.
+   */
+  public static int RANDOM_PORT_FROM = 1024;
+  
+  /**
+   * When trying to open the socket on a random port, end of the interval to
+   * try.
+   */
+  public static int RANDOM_PORT_TO = 4024;
+  
+  /**
+   * The number of attempts to try when opening random port.
+   */
+  public static int RANDOM_PORT_ATTEMPTS = 64;
 
   /**
    * The property of port, on that this ORB is listening for requests from
@@ -277,7 +293,7 @@ public class Functional_ORB extends Restricted_ORB
    * The string, defining the naming service initial reference.
    */
   public static final String NAME_SERVICE = "NameService";
-
+  
   /**
    * The if the client has once opened a socket, it should start sending the
    * message header in a given time. Otherwise the server will close the socket.
@@ -301,6 +317,13 @@ public class Functional_ORB extends Restricted_ORB
    */
   public static String AFTER_RECEIVING =
     "gnu.classpath.CORBA.TOUT_AFTER_RECEIVING";
+  
+  /**
+   * The server waits for this duration after the potentially transient error
+   * during its servicing cycle.
+   */
+  public static String SERVER_ERROR_PAUSE =
+    "gnu.classpath.CORBA.SERVER_ERROR_PAUSE";
 
   /**
    * The address of the local host.
@@ -313,7 +336,7 @@ public class Functional_ORB extends Restricted_ORB
    * This prevents server hang when the client opens the socket, but does not
    * send any message, usually due crash on the client side.
    */
-  private int TOUT_START_READING_MESSAGE = 20 * 1000;
+  public int TOUT_START_READING_MESSAGE = 20 * 1000;
 
   // (Here and below, we use * to make the meaning of the constant clearler).
 
@@ -321,14 +344,20 @@ public class Functional_ORB extends Restricted_ORB
    * If the client has started to send the request message, the socket time out
    * changes to the specified value.
    */
-  private int TOUT_WHILE_READING = 2 * 60 * 1000;
+  public int TOUT_WHILE_READING = 2 * 60 * 1000;
 
   /**
    * If the message body is received, the time out changes to the specifice
    * value. This must be longer, as includes time, required to process the
    * received task. We make it 40 minutes.
    */
-  private int TOUT_AFTER_RECEIVING = 40 * 60 * 1000;
+  public int TOUT_AFTER_RECEIVING = 40 * 60 * 1000;
+  
+  /**
+   * The server waits for this duration after the potentially transient error
+   * during its servicing cycle.
+   */
+  public int TWAIT_SERVER_ERROR_PAUSE = 5000;
 
   /**
    * Some clients tend to submit multiple requests over the same socket. The
@@ -457,13 +486,14 @@ public class Functional_ORB extends Restricted_ORB
   /**
    * Get the currently free port, starting from the initially set port and going
    * up max 20 steps, then trying to bind into any free address.
-   *
+   * 
    * @return the currently available free port.
-   *
+   * 
    * @throws NO_RESOURCES if the server socked cannot be opened on the local
    * host.
    */
-  public int getFreePort() throws BAD_OPERATION
+  public int getFreePort()
+    throws BAD_OPERATION
   {
     ServerSocket s;
     int a_port;
@@ -502,9 +532,28 @@ public class Functional_ORB extends Restricted_ORB
           }
       }
 
+    Random rand = new Random();
+    // Try any random port in the interval RANDOM_PORT_FROM.RANDOM_PORT_TO.
+    int range = RANDOM_PORT_TO - RANDOM_PORT_FROM;
+    for (int i = 0; i < RANDOM_PORT_ATTEMPTS; i++)
+      {
+        try
+          {
+            a_port = RANDOM_PORT_FROM
+              + rand.nextInt(range);
+            s = new ServerSocket(a_port);
+            s.close();
+            return a_port;
+          }
+        catch (IOException ex)
+          {
+            // Repeat the loop if this exception has been thrown.
+          }
+      }
+
     try
       {
-        // Try any port.
+        // Try the parameterless constructor.
         s = new ServerSocket();
         a_port = s.getLocalPort();
         s.close();
@@ -512,8 +561,7 @@ public class Functional_ORB extends Restricted_ORB
       }
     catch (IOException ex)
       {
-        NO_RESOURCES bad =
-          new NO_RESOURCES("Unable to open the server socket.");
+        NO_RESOURCES bad = new NO_RESOURCES("Unable to open the server socket.");
         bad.initCause(ex);
         throw bad;
       }
@@ -756,11 +804,7 @@ public class Functional_ORB extends Restricted_ORB
     if (!ior.Internet.host.equals(LOCAL_HOST))
       return null;
 
-    // Must be the same port.
-    if (ior.Internet.port != Port)
-      return null;
-
-    return find_connected_object(ior.key);
+    return find_connected_object(ior.key, ior.Internet.port);
   }
 
   /**
@@ -899,7 +943,7 @@ public class Functional_ORB extends Restricted_ORB
           }
         else
           subserver = (portServer) identities.get(obj.identity);
-
+        
         if (!subserver.isAlive())
           {
             // Reuse the current thread for the last portServer.
@@ -913,6 +957,30 @@ public class Functional_ORB extends Restricted_ORB
             else
               subserver.start();
           }
+      }
+  }
+  
+  /**
+   * Start the server in a new thread, if not already running. This method is
+   * used to ensure that the objects being transfered will be served fro the 
+   * remote side, if required. If the ORB is started using this method, it
+   * starts as a daemon thread.
+   */
+  public void ensureRunning()
+  {
+    final Functional_ORB THIS = this;
+    
+    if (!running)
+      {
+        Thread t = new Thread()
+        {
+          public void run()
+          {
+            THIS.run();
+          }
+        };
+        t.setDaemon(true);
+        t.start();
       }
   }
 
@@ -975,7 +1043,8 @@ public class Functional_ORB extends Restricted_ORB
           }
 
         object = impl;
-        connected_objects.add(ior.key, impl, ior.Internet.port, null);
+        // TODO remove commented out code below.
+        // connected_objects.add(ior.key, impl, ior.Internet.port, null);
       }
     return object;
   }
@@ -1004,15 +1073,21 @@ public class Functional_ORB extends Restricted_ORB
   /**
    * Find and return the object, that must be previously connected to this ORB.
    * Return null if no such object is available.
-   *
+   * 
    * @param key the object key.
-   *
+   * @param port the port where the object is connected.
+   * 
    * @return the connected object, null if none.
    */
-  protected org.omg.CORBA.Object find_connected_object(byte[] key)
+  protected org.omg.CORBA.Object find_connected_object(byte[] key, int port)
   {
     Connected_objects.cObject ref = connected_objects.get(key);
-    return ref == null ? null : ref.object;
+    if (ref == null)
+      return null;
+    if (port >= 0 && ref.port != port)
+      return null;
+    else
+      return ref.object;
   }
 
   /**
@@ -1324,11 +1399,11 @@ public class Functional_ORB extends Restricted_ORB
 
   /**
    * A single servicing step, when the client socket is alrady open.
-   *
+   * 
    * Normally, each task matches a single remote invocation. However under
    * frequent tandem submissions the same task may span over several
    * invocations.
-   *
+   * 
    * @param service the opened client socket.
    * @param no_resources if true, the "NO RESOURCES" exception is thrown to the
    * client.
@@ -1337,8 +1412,7 @@ public class Functional_ORB extends Restricted_ORB
   {
     try
       {
-        Serving:
-        while (true)
+        Serving: while (true)
           {
             InputStream in = service.getInputStream();
             service.setSoTimeout(TOUT_START_READING_MESSAGE);
@@ -1358,9 +1432,7 @@ public class Functional_ORB extends Restricted_ORB
             if (max_version != null)
               {
                 if (!msh_request.version.until_inclusive(max_version.major,
-                    max_version.minor
-                  )
-                )
+                  max_version.minor))
                   {
                     OutputStream out = service.getOutputStream();
                     new ErrorMessage(max_version).write(out);
@@ -1368,19 +1440,8 @@ public class Functional_ORB extends Restricted_ORB
                   }
               }
 
-            byte[] r = new byte[ msh_request.message_size ];
-
-            int n = 0;
-
-            service.setSoTimeout(TOUT_WHILE_READING);
-
-            reading:
-            while (n < r.length)
-              {
-                n += in.read(r, n, r.length - n);
-              }
-
-            service.setSoTimeout(TOUT_AFTER_RECEIVING);
+            byte[] r = msh_request.readMessage(in, service, TOUT_WHILE_READING,
+              TOUT_AFTER_RECEIVING);
 
             if (msh_request.message_type == MessageHeader.REQUEST)
               {
@@ -1406,8 +1467,8 @@ public class Functional_ORB extends Restricted_ORB
                     // find the target object.
                   }
 
-                InvokeHandler target =
-                  (InvokeHandler) find_connected_object(rh_request.object_key);
+                InvokeHandler target = (InvokeHandler) find_connected_object(
+                  rh_request.object_key, -1);
 
                 // Prepare the reply header. This must be done in advance,
                 // as the size must be known for handler to set alignments
@@ -1415,10 +1476,8 @@ public class Functional_ORB extends Restricted_ORB
                 ReplyHeader rh_reply = msh_request.create_reply_header();
 
                 // TODO log errors about not existing objects and methods.
-                bufferedResponseHandler handler =
-                  new bufferedResponseHandler(this, msh_request, rh_reply,
-                    rh_request
-                  );
+                bufferedResponseHandler handler = new bufferedResponseHandler(
+                  this, msh_request, rh_reply, rh_request);
 
                 SystemException sysEx = null;
 
@@ -1442,24 +1501,45 @@ public class Functional_ORB extends Restricted_ORB
                         continue Serving;
                       }
                   }
+                catch (UnknownException uex)
+                  {
+                    sysEx = new UNKNOWN("Unknown", 2,
+                      CompletionStatus.COMPLETED_MAYBE);
+                    sysEx.initCause(uex.originalEx);
+
+                    org.omg.CORBA.portable.OutputStream ech = handler.createExceptionReply();
+
+                    rh_reply.service_context = UnknownExceptionCtxHandler.addExceptionContext(
+                      rh_reply.service_context, uex.originalEx, ech);
+
+                    ObjectCreator.writeSystemException(ech, sysEx);
+                  }
                 catch (SystemException ex)
                   {
                     sysEx = ex;
-
-                    org.omg.CORBA.portable.OutputStream ech =
-                      handler.createExceptionReply();
+                    
+                    org.omg.CORBA.portable.OutputStream ech = handler.createExceptionReply();
+                    
+                    rh_reply.service_context = UnknownExceptionCtxHandler.addExceptionContext(
+                      rh_reply.service_context, ex, ech);
+                    
                     ObjectCreator.writeSystemException(ech, ex);
                   }
                 catch (Exception except)
                   {
+                    // This should never happen under normal operation and
+                    // can only indicate errors in user object implementation.
+                    // We inform the user.
                     except.printStackTrace();
-                    sysEx =
-                      new UNKNOWN("Unknown", 2,
-                        CompletionStatus.COMPLETED_MAYBE
-                      );
 
-                    org.omg.CORBA.portable.OutputStream ech =
-                      handler.createExceptionReply();
+                    sysEx = new UNKNOWN("Unknown", 2,
+                      CompletionStatus.COMPLETED_MAYBE);
+                    sysEx.initCause(except);
+
+                    org.omg.CORBA.portable.OutputStream ech = handler.createExceptionReply();
+
+                    rh_reply.service_context = UnknownExceptionCtxHandler.addExceptionContext(
+                      rh_reply.service_context, except, ech);
 
                     ObjectCreator.writeSystemException(ech, sysEx);
                   }
@@ -1469,21 +1549,17 @@ public class Functional_ORB extends Restricted_ORB
                   {
                     OutputStream sou = service.getOutputStream();
                     respond_to_client(sou, msh_request, rh_request, handler,
-                      sysEx
-                    );
+                      sysEx);
                   }
               }
-            else if (msh_request.message_type == MessageHeader.CLOSE_CONNECTION ||
-              msh_request.message_type == MessageHeader.MESSAGE_ERROR
-            )
+            else if (msh_request.message_type == MessageHeader.CLOSE_CONNECTION
+              || msh_request.message_type == MessageHeader.MESSAGE_ERROR)
               {
                 CloseMessage.close(service.getOutputStream());
                 service.close();
                 return;
               }
-            ;
 
-            // TODO log error: "Not a request message."
             if (service != null && !service.isClosed())
 
               // Wait for the subsequent invocations on the
@@ -1527,6 +1603,9 @@ public class Functional_ORB extends Restricted_ORB
             if (props.containsKey(AFTER_RECEIVING))
               TOUT_AFTER_RECEIVING =
                 Integer.parseInt(props.getProperty(AFTER_RECEIVING));
+            if (props.containsKey(SERVER_ERROR_PAUSE))
+              TWAIT_SERVER_ERROR_PAUSE = 
+                Integer.parseInt(props.getProperty(SERVER_ERROR_PAUSE));
           }
         catch (NumberFormatException ex)
           {

@@ -67,18 +67,6 @@ public class aligningInputStream
   }
 
   /**
-   * Create a stream, reading from the given buffer region.
-   *
-   * @param a_buffer a buffer to read from.
-   * @param offset the offset of the region.
-   * @param length thr length of the region.
-   */
-  public aligningInputStream(byte[] a_buffer, int offset, int length)
-  {
-    super(a_buffer, offset, length);
-  }
-
-  /**
    * Set the alignment offset, if the index of the first byte in the
    * stream is different from 0.
    */
@@ -119,4 +107,25 @@ public class aligningInputStream
   {
     return buf;
   }
+  
+  /**
+   * Get the current position in the buffer.
+   * 
+   * @return The position in the buffer, taking offset into consideration.
+   */
+  public int getPosition()
+  {
+    return pos + offset;
+  }  
+  
+  /**
+   * Jump to the given position, taking offset into consideration.
+   */
+  public void seek(int position)
+  {
+    if (position < offset || position > (count+offset))
+      throw new ArrayIndexOutOfBoundsException(position
+        + " is out of valid ["+offset+".." + (count+offset) + "[ range");
+    pos = position - offset;
+  }  
 }

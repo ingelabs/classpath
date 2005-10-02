@@ -71,10 +71,6 @@ public class PortableServer
     
   public static final void unexportObject(Remote obj)
   {
-    if (Util.getTie(obj) != null)
-      Util.unexportObject(obj);
-    if (tieCache.get(obj) != null) //??
-      tieCache.remove(obj);
   }
   
   public static final Remote toStub(Remote obj)

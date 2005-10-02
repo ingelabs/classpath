@@ -1,3 +1,70 @@
+2005-10-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/CDR/ArrayValueHelper.java,
+	gnu/CORBA/CDR/IDLTypeHelper.java,
+	gnu/CORBA/CDR/UnknownExceptionCtxHandler.java,
+	gnu/CORBA/CDR/gnuRuntime.java,
+	gnu/CORBA/CDR/gnuValueStream.java,
+	gnu/CORBA/CDR/VMVio.java,
+	gnu/CORBA/IorProvider.java,
+	gnu/javax/rmi/CORBA/TieTargetRecord.java,
+	gnu/javax/rmi/CORBA/ValueHandlerDelegateImpl.java,
+	gnu/javax/rmi/CORBA/corbaObjectInput.java,
+	gnu/javax/rmi/CORBA/corbaObjectOutput.java,
+	gnu/javax/rmi/CORBA/dwoTester.java,
+	gnu/javax/rmi/CORBA/gnuRmiUtil.java: New files.
+	* gnu/CORBA/CDR/aligningInputStream.java,
+	gnu/CORBA/CDR/aligningOutputStream.java:
+	gnu/CORBA/CDR/Vio.java,
+	gnu/CORBA/CDR/cdrBufInput.java,
+	gnu/CORBA/CDR/cdrBufOutput.java,
+	gnu/CORBA/CDR/cdrInput.java,
+	gnu/CORBA/CDR/cdrOutput.java,
+	gnu/CORBA/CDR/noHeaderInput.java,
+	gnu/CORBA/Functional_ORB.java,
+	gnu/CORBA/GIOP/MessageHeader.java,
+	gnu/CORBA/GIOP/ServiceContext.java,
+	gnu/CORBA/IOR_Delegate.java,
+	gnu/CORBA/IOR_contructed_object.java,
+	gnu/CORBA/Interceptor/Registrator.java,
+	gnu/CORBA/NamingService/NameParser.java,
+	gnu/CORBA/NamingService/NamingServiceTransient.java,
+	gnu/CORBA/ObjectCreator.java,
+	gnu/CORBA/Poa/LocalDelegate.java,
+	gnu/CORBA/Poa/ORB_1_4.java,
+	gnu/CORBA/Poa/gnuPOA.java,
+	gnu/CORBA/Poa/gnuServantObject.java,
+	gnu/CORBA/Simple_delegate.java,
+	gnu/CORBA/gnuAny.java,
+	gnu/CORBA/gnuRequest.java,
+	org/omg/CORBA/OMGVMCID.java,
+	org/omg/CORBA/StringValueHelper.java,
+	org/omg/CORBA/SystemException.java,
+	org/omg/CORBA/WStringValueHelper.java,
+	org/omg/CORBA/portable/ObjectImpl.java,
+	org/omg/CORBA_2_3/ORB.java,
+	org/omg/CORBA_2_3/portable/InputStream.java,
+	org/omg/CORBA_2_3/portable/OutputStream.java: Modified to support
+	RMI over CORBA mechanism.
+	* gnu/javax/rmi/CORBA/DelegateFactory.java,
+	gnu/javax/rmi/CORBA/PortableRemoteObjectDelegateImpl.java,
+	gnu/javax/rmi/CORBA/StubDelegateImpl.java,
+	gnu/javax/rmi/CORBA/UtilDelegateImpl.java,
+	javax/rmi/CORBA/ClassDesc.java,
+	javax/rmi/CORBA/PortableRemoteObjectDelegate.java,
+	javax/rmi/CORBA/Stub.java,
+	javax/rmi/CORBA/StubDelegate.java,
+	javax/rmi/CORBA/Tie.java,
+	javax/rmi/CORBA/Util.java,
+	javax/rmi/CORBA/UtilDelegate.java,
+	javax/rmi/CORBA/ValueHandler.java,
+	javax/rmi/CORBA/package.html,
+	javax/rmi/PortableRemoteObject.java,
+	javax/rmi/package.html: New files (replacing).
+	* gnu/javax/rmi/CORBA/ValueHandlerImpl.java,
+	gnu/javax/rmi/PortableServer.java: Modified to keep the code
+	compileable between subsequent patches. 
+
 2005-10-02  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/ImageIO.java: Fix compilation problems.

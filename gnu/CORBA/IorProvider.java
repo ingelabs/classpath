@@ -1,4 +1,4 @@
-/* IOR_contructed_object.java --
+/* IorProvider.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,84 +35,18 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package gnu.CORBA;
 
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.portable.ObjectImpl;
-
 /**
- * Implements an object, constructed from an IOR reference.
+ * Marks the possibility of the implementing object to return the associated
+ * IOR.
  *
- * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+ * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class IOR_contructed_object
-  extends ObjectImpl
-  implements IorProvider
+public interface IorProvider
 {
   /**
-   * The IOR, from which the object was constructed.
+   * Get the IOR of the associated object.
    */
-  protected final IOR ior;
-
-  /**
-   * The object id, as defined in IOR.
-   */
-  protected final String[] id;
-
-  /**
-   * Create the object from the given IOR.
-   *
-   * @param an_ior the IOR.
-   */
-  public IOR_contructed_object(ORB orb, IOR an_ior)
-  {
-    ior = an_ior;
-    _set_delegate(new IOR_Delegate(orb, ior));
-    id = new String[] { ior.Id };
-  }
-
-  /**
-   * Create the object from the given string IOR representation.
-   *
-   * @param an_ior the IOR in the string form.
-   */
-  public IOR_contructed_object(Functional_ORB orb, String an_ior)
-  {
-    ior = IOR.parse(an_ior);
-    _set_delegate(new IOR_Delegate(orb, ior));
-    id = new String[] { ior.Id };
-  }
-  
-  /**
-   * Get the IOR of this object.
-   */
-  public IOR getIor()
-  {
-    return ior;
-  }
-
-  public String[] _ids()
-  {
-    return id;
-  }
-
-  /**
-   * Get a string reference for this object.
-   *
-   * @return the class name:IOR profile
-   */
-  public String toString()
-  {
-    return getClass().getName() + ":IOR:" + ior;
-  }
-
-  /**
-   * Calls realease on the delegate.
-   */
-  protected void finalize()
-                   throws java.lang.Throwable
-  {
-    _get_delegate().release(this);
-  }
+  IOR getIor();
 }

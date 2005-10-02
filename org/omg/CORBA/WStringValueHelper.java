@@ -39,9 +39,7 @@ exception statement from your version. */
 package org.omg.CORBA;
 
 import gnu.CORBA.Restricted_ORB;
-import gnu.CORBA.gnuAny;
 
-import org.omg.CORBA.TypeCodePackage.BadKind;
 import org.omg.CORBA.portable.BoxedValueHelper;
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;

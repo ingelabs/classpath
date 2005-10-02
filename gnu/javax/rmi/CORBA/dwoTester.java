@@ -1,4 +1,4 @@
-/* OMGVMCID.java -- 
+/* dwoTester.java --
  Copyright (C) 2005 Free Software Foundation, Inc.
 
  This file is part of GNU Classpath.
@@ -17,6 +17,7 @@
  along with GNU Classpath; see the file COPYING.  If not, write to the
  Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
  02110-1301 USA.
+
  Linking this library statically or dynamically with other modules is
  making a combined work based on this library.  Thus, the terms and
  conditions of the GNU General Public License cover the whole
@@ -34,39 +35,50 @@
  obligated to do so.  If you do not wish to do so, delete this
  exception statement from your version. */
 
+package gnu.javax.rmi.CORBA;
 
-package org.omg.CORBA;
+import gnu.CORBA.CDR.cdrBufOutput;
+
+import java.io.IOException;
 
 /**
- * </p>
- * The higher 20 bits of any CORBA exception hold "Vendor Minor Codeset ID"
- * (VMCID), for instance 0x4F4D0000 (OMG standard), 0x54410000 (TAO), 0x4A430000
- * (JacORB), 0x49540000 (IONA), 0x53550000 (Sun).
- * </p>
- * <p>
- * GNU Classpath official vendor minor code set id is 0x47430000 ("GC\x00\x00"),
- * and the reserved space spans till 0x47430FFF, allowing to use up to 4096
- * Classpath specific exceptions. It was assigned 30/09/2005 by OMG Vice President
- * Andrew Watson.
- * </p>
- * <p>
- * The standard minor codes for the standard system exceptions are prefaced by
- * the VMCID assigned to OMG, defined as 0x4F4D0000 (the code of the minor field
- * for the standard exception with minor code 1 is 0x4F4D0001). Within a vendor
- * assigned space, the assignment of values to minor codes is left to the
- * vendor.
- * </p>
- * 
- * <p>
- * The VMCID 0 and 0xFFFFF0000 are reserved for experimental use.
- * </p>
- * 
- * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+ * Tests if the defaultWriteObject method has been called. 
+ * This information is required by RMI-IIOP header.
+ *
+ * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public interface OMGVMCID
+public class dwoTester
+  extends corbaObjectOutput
 {
   /**
-   * The OMG vendor minor code ID.
+   * The flag, indicating, that the defaultWriteObject method was called.
    */
-  int value = 0x4F4D0000;
+  public boolean dwo_called;
+  
+  /**
+   * Create an instance, delegating calls to the given CORBA stream.
+   */
+  public dwoTester(Object firstObject)
+    throws Exception
+  {
+    super(new cdrBufOutput(), firstObject, null);
+  }
+
+  /**
+   * Set the flag that defaultWriteObject was called.
+   */
+  public void defaultWriteObject()
+    throws IOException
+  {
+    dwo_called = true;
+  }
+
+  /**
+   * Do not write other objects.
+   */
+  protected void writeObjectOverride(Object obj)
+    throws IOException
+  {
+  }
+
 }

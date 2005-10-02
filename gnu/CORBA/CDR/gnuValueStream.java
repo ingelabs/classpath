@@ -1,4 +1,4 @@
-/* cdrBufInput.java --
+/* gnuValueStream.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,116 +38,34 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
-
 /**
- * The CDR input stream that reads data from the byte buffer.
+ * A stream, implementing this interface, provides methods to get/set a position
+ * and get the RunTime.
  *
- * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+ * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class cdrBufInput
-  extends cdrInput 
-  implements gnuValueStream
+public interface gnuValueStream
 {
-  /** 
-   * Use serialVersionUID for interoperability. 
-   */
-  private static final long serialVersionUID = 1;
-  
-  /**
-   * The byte array input stream to read data from.
-   */
-  public final aligningInputStream buffer;
-
-  /**
-   * Creates the CDR input stream that reads from the given buffer
-   * array.
-   *
-   * @param a_buffer an array to read from.
-   */
-  public cdrBufInput(byte[] a_buffer)
-  {
-    buffer = new aligningInputStream(a_buffer);
-    setInputStream(buffer);
-  }
-
-  /**
-   * Set the alignment offset, if the index of the first byte in the
-   * stream is different from 0.
-   */
-  public void setOffset(int offset)
-  {
-    buffer.setOffset(offset);
-  }
-
-  /**
-   * Skip several bytes, aligning the internal pointer on the
-   * selected boundary.
-   */
-  public void align(int alignment)
-  {
-    buffer.align(alignment);
-  }
-
-  /**
-   * Mark the current position.
-   * @param ahead
-   */
-  public synchronized void mark(int ahead)
-  {
-    buffer.mark(ahead);
-  }
-
-  /**
-   * Checks if marking is supported.
-   * @return
-   */
-  public boolean markSupported()
-  {
-    return buffer.markSupported();
-  }
-
-  /**
-   * Resets the stream to the previously marked position.
-   */
-  public void reset()
-  {
-    buffer.reset();
-    setInputStream(buffer);
-  }
-  
   /**
    * Get the current position in the buffer.
    * 
    * @return The position in the buffer, taking offset into consideration.
    */
-  public int getPosition()
-  {
-    return buffer.getPosition();
-  }
+  public int getPosition();
   
   /**
    * Jump to the given position, taking offset into consideration.
    */
-  public void seek(int position)
-  {
-    buffer.seek(position);
-    setInputStream(buffer);
-  }
+  public void seek(int position);
   
   /**
-   * Get the associated RunTime.
+   * Get the RunTime information. 
    */
-  public gnuRuntime getRunTime()
-  {
-    return runtime;
-  }  
+  public gnuRuntime getRunTime();
   
   /**
-   * Replace the instance of RunTime.
+   * Replace the instance of RunTime. 
    */
-  public void setRunTime(gnuRuntime a_runtime)
-  {
-    runtime = a_runtime;
-  }
+  public void setRunTime(gnuRuntime a_runtime);
   
 }

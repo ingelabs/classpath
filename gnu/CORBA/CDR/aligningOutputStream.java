@@ -38,7 +38,6 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 import org.omg.CORBA.BAD_PARAM;
@@ -118,4 +117,32 @@ public class aligningOutputStream
         write(0);
       }
   }
+  
+  /**
+   * Get the current position in the buffer.
+   * 
+   * @return The position in the buffer, taking offset into consideration.
+   */
+  public int getPosition()
+  {
+    return size()+offset;
+  }
+  
+  /**
+   * Seek to the given position (not in use).
+   */
+  public void seek(int position)
+  {
+    count = position - offset;
+  }
+  
+  /**
+   * Get the buffer without copying it. Use with care.
+   */
+  public byte[] getBuffer()
+  {
+    return buf;
+  }
+  
+
 }

@@ -35,48 +35,12 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
+/**
+ * TODO Delete with the next patch. Not in use.
+ */
 package gnu.javax.rmi.CORBA;
 
-import java.io.*;
-//import org.omg.CORBA.portable.InputStream;
-//import org.omg.CORBA.portable.OutputStream;
-//import org.omg.SendingContext.RunTime;
-import javax.rmi.CORBA.ValueHandler;
-
 public class ValueHandlerImpl
-  implements ValueHandler
 {
-
-  public String getRMIRepositoryID(Class clz)
-  {
-    throw new Error("Not implemented for ValueHandler");
-  }
-
-  // XXX - Runtime -> RunTime
-  public Runtime getRunTimeCodeBase()
-  {
-    throw new Error("Not implemented for ValueHandler");
-  }
-    
-  public boolean isCustomMarshaled(Class clz)
-  {
-    throw new Error("Not implemented for ValueHandler");
-  }   
-    
-  // XXX - Runtime -> RunTime
-  public Serializable readValue(InputStream in, int offset, Class clz, String repositoryID, Runtime sender)
-  {
-    throw new Error("Not implemented for ValueHandler");
-  }
-    
-  public Serializable writeReplace(Serializable value)
-  {
-    throw new Error("Not implemented for ValueHandler");
-  }
-    
-  public void writeValue(OutputStream out, Serializable value)
-  {
-    throw new Error("Not implemented for ValueHandler");
-  }
+  // Contents removed to keep code compileable between patches.
 }

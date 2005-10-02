@@ -89,6 +89,9 @@ import java.math.BigDecimal;
  *
  * The same class also implements {@link org.omg.CORBA.DataInputStream} to
  * read the object content in a user defined way.
+ * 
+ * TODO This class uses 16 bits per Unicode character only, as it was until
+ * jdk 1.4 inclusive.
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
@@ -96,6 +99,12 @@ public abstract class cdrInput
   extends org.omg.CORBA_2_3.portable.InputStream
   implements org.omg.CORBA.DataInputStream
 {
+  /**
+   * The runtime, associated with this stream. This field is only used when 
+   * reading and writing value types and filled-in in gnu.CORBA.CDR.Vio.
+   */
+  public transient gnuRuntime runtime;  
+  
   /**
    * The message, explaining that the exception has been thrown due
    * unexpected end of the input stream. This usually happens the
@@ -199,6 +208,27 @@ public abstract class cdrInput
   {
     little_endian = !use_big_endian;
     setInputStream(actual_stream);
+  }
+
+  /**
+   * Get the used encoding.
+   *
+   * @param true for Big Endian, false for Little Endian.
+   */
+  public boolean isBigEndian()
+  {
+    return !little_endian;
+  }
+  
+  /**
+   * Clone all important settings to another stream.
+   */
+  public void cloneSettings(cdrInput stream)
+  {
+    stream.setBigEndian(isBigEndian());
+    stream.setCodeSet(getCodeSet());
+    stream.setVersion(giop);
+    stream.setOrb(orb);
   }
 
   /**
@@ -871,12 +901,12 @@ public abstract class cdrInput
     try
       {
         int l = read_long();
-        byte[] b = new byte[ l ];
+        byte[] buf = new byte[ l ];
         if (l > 0)
           {
-            read(b);
+            b.readFully(buf);
           }
-        return b;
+        return buf;
       }
     catch (EOFException ex)
       {
@@ -941,21 +971,21 @@ public abstract class cdrInput
   }
 
   /**
-   * Read a singe byte string. The method firs reads the
-   * byte array and then calls a constructor to create a
-   * string from this array. The character encoding, if
-   * previously set, is taken into consideration.
-   *
+   * Read a singe byte string. The method firs reads the byte array and then
+   * calls a constructor to create a string from this array. The character
+   * encoding, if previously set, is taken into consideration.
+   * 
    * @return a loaded string.
    */
   public String read_string()
   {
+    int n = 0;
     try
       {
         align(4);
 
-        int n = b.readInt();
-        byte[] s = new byte[ n ];
+        n = b.readInt();
+        byte[] s = new byte[n];
         b.read(s);
 
         // Discard the null terminator.
@@ -970,10 +1000,14 @@ public abstract class cdrInput
         t.initCause(ex);
         throw t;
       }
-
     catch (IOException ex)
       {
         throw new Unexpected();
+      }
+    catch (NegativeArraySizeException nex)
+      {
+        throw new MARSHAL("Input stream broken, got " + n + "(0x"
+          + Integer.toHexString(n) + ") as a string size");
       }
   }
 
@@ -1039,20 +1073,57 @@ public abstract class cdrInput
   }
 
   /**
-   * Reads the wide character using the encoding, specified in the
-   * wide_charset.
+   * Reads the wide character using the encoding, specified in the wide_charset.
    */
   public char read_wchar()
   {
     try
       {
         if (giop.until_inclusive(1, 1))
-          align(2);
+          {
+            align(2);
 
-        if (wide_native)
-          return (char) b.readShort();
+            if (wide_native)
+              return (char) b.readShort();
+            else
+              return (char) new InputStreamReader((InputStream) b, wide_charset).read();
+          }
         else
-          return (char) new InputStreamReader((InputStream) b, wide_charset).read();
+          {
+            int l = b.read();
+            if (l == 2 && wide_native)
+              return b.readChar();
+            else if (l <= 0)
+              throw new MARSHAL("wchar size " + l);
+            else
+              {
+                byte[] bytes = new byte[l];
+                b.readFully(bytes);
+                String cs;
+
+                if (bytes.length > 2 && bytes[0] == 0xFE && bytes[1] == 0xFF)
+                  cs = new String(bytes, 2, bytes.length - 2, wide_charset);
+                else if (bytes.length > 2 && bytes[0] == 0xFF
+                  && bytes[1] == 0xFE)
+                  {
+                    // Litle endian detected - swap bytes.
+                    byte t;
+                    for (int i = 3; i < bytes.length; i = i + 2)
+                      {
+                        t = bytes[i];
+                        bytes[i - 1] = bytes[i];
+                        bytes[i] = t;
+                      }
+                    cs = new String(bytes, 2, bytes.length - 2, wide_charset);
+                  }
+                else
+                  cs = new String(bytes, wide_charset);
+
+                if (cs.length() != 1)
+                  throw new MARSHAL("Wide char decoded as '" + cs + "'");
+                return cs.charAt(0);
+              }
+          }
       }
     catch (EOFException ex)
       {
@@ -1067,8 +1138,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array of "wide chars", each representing a two byte
-   * Unicode character, high byte first.
+   * Read an array of "wide chars", each representing a two byte Unicode
+   * character, high byte first.
    */
   public void read_wchar_array(char[] x, int offset, int length)
   {
@@ -1157,6 +1228,9 @@ public abstract class cdrInput
         // Convert bytes to shorts.
         n = n / 2;
 
+        // Empty string.
+        if (n==0) return "";
+        
         char[] s = new char[ n ];
 
         for (int i = 0; i < s.length; i++)

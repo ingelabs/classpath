@@ -1,5 +1,5 @@
-/* DelegateFactory.java -- 
-   Copyright (C) 2002, 2004, 2005  Free Software Foundation, Inc.
+/* TieTargetRecord.java --
+   Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,69 +38,56 @@ exception statement from your version. */
 
 package gnu.javax.rmi.CORBA;
 
+import java.util.HashSet;
+
+import javax.rmi.CORBA.Tie;
 
 /**
- * This class produces delegates, using the system properties. If not
- * corresponding property is specified, returns default implementations.
+ * Represents a Tie, connected to possibly multiple invocation targets.
  * 
- * @author Wu Gansha (gansha.wu@intel.com)
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class DelegateFactory
+public class TieTargetRecord
 {
   /**
-   * The name to get a stub delegate.
+   * The associated Tie.
    */
-  public static final String STUB = "Stub";
+  public final Tie tie;
 
   /**
-   * The name to get the util delegate.
+   * The objects, exposing the tie.
    */
-  public static final String UTIL = "Util";
+  public HashSet targets = new HashSet();
 
   /**
-   * The name to get the ValueHandler delegate.
+   * Create a new record.
    */
-  public static final String VALUEHANDLER = "ValueHandler";
-
-  /**
-   * The name to get the PortableRemoteObject delegate.
-   */
-  public static final String PORTABLE_REMOTE_OBJECT = "PortableRemoteObject";
-
-  /**
-   * Get an instance of the given delegate. As in all cases the singleton
-   * instance is used, the caching here would be redundant.
-   * 
-   * @param type a delegate type.
-   * 
-   * @return the associated delegate.
-   * 
-   * @throws InternalError if the delegate class, indicated in the system
-   * properties, cannot be instantiated.
-   */
-  public static Object getInstance(String type)
-    throws InternalError
+  public TieTargetRecord(Tie a_tie)
   {
-    String propertyName = "javax.rmi.CORBA." + type + "Class";
-    String dcname = System.getProperty(propertyName);
-    if (dcname == null)
-      {
-        // // No javax.rmi.CORBA.XXXClass property sepcified.
-        dcname = "gnu.javax.rmi.CORBA." + type + "DelegateImpl";
-      }
-    try
-      {
-        Class dclass = Class.forName(dcname, true,
-          Thread.currentThread().getContextClassLoader());
-        return dclass.newInstance();
-      }
-    catch (Exception e)
-      {
-        InternalError ierr = new InternalError("Exception when trying to get "
-          + type + "delegate instance:" + dcname);
-        ierr.initCause(e);
-        throw ierr;
-      }
+    tie = a_tie;
+  }
+
+  /**
+   * Add a target.
+   */
+  public void add(Object target)
+  {
+    targets.add(target);
+  }
+
+  /**
+   * Remove target.
+   */
+  public void remove(Object target)
+  {
+    targets.remove(target);
+  }
+
+  /**
+   * Return true if the tie has no associated invocation targets.
+   */
+  public boolean unused()
+  {
+    return targets.size() == 0;
   }
 }

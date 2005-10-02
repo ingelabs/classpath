@@ -789,20 +789,7 @@ public class gnuAny
             // reading the value, not the value header.
             Field vField = has.getClass().getField("value");
 
-            BoxedValueHelper helper;
-
-            try
-              {
-                Class helperClass =
-                  Class.forName(ObjectCreator.toHelperName(a_type.id()));
-                helper = (BoxedValueHelper) helperClass.newInstance();
-              }
-            catch (Exception ex)
-              {
-                helper = null;
-              }
-
-            Object content = Vio.read(input, helper);
+            Object content = Vio.read(input, a_type.id());
             vField.set(has, content);
           }
         else

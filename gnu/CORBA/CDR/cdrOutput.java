@@ -39,27 +39,27 @@ exception statement from your version. */
 package gnu.CORBA.CDR;
 
 import gnu.CORBA.BigDecimalHelper;
-import gnu.CORBA.GIOP.CharSets_OSF;
-import gnu.CORBA.GIOP.cxCodeSet;
-import gnu.CORBA.Poa.gnuServantObject;
 import gnu.CORBA.IOR;
-import gnu.CORBA.Simple_delegate;
+import gnu.CORBA.IorProvider;
 import gnu.CORBA.TypeCodeHelper;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.Version;
 import gnu.CORBA.primitiveTypeCode;
+import gnu.CORBA.GIOP.CharSets_OSF;
+import gnu.CORBA.GIOP.cxCodeSet;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.Context;
 import org.omg.CORBA.ContextList;
+import org.omg.CORBA.DataInputStream;
 import org.omg.CORBA.MARSHAL;
 import org.omg.CORBA.NO_IMPLEMENT;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.TCKind;
 import org.omg.CORBA.TypeCode;
-import org.omg.CORBA.TypeCodePackage.BadKind;
 import org.omg.CORBA.UserException;
+import org.omg.CORBA.TypeCodePackage.BadKind;
 import org.omg.CORBA.portable.Delegate;
 import org.omg.CORBA.portable.ObjectImpl;
 import org.omg.CORBA.portable.OutputStream;
@@ -68,7 +68,6 @@ import org.omg.CORBA.portable.Streamable;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
-
 import java.math.BigDecimal;
 
 /**
@@ -79,6 +78,9 @@ import java.math.BigDecimal;
  * The same class also implements the {@link DataInputStream},
  * providing support for writing the value type objects
  * in a user defined way.
+ * 
+ * TODO This class uses 16 bits per Unicode character only, as it was until
+ * jdk 1.4 inclusive.
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
@@ -86,6 +88,12 @@ public abstract class cdrOutput
   extends org.omg.CORBA_2_3.portable.OutputStream
   implements org.omg.CORBA.DataOutputStream
 {
+  /**
+   * The runtime, associated with this stream. This field is only used when 
+   * reading and writing value types and filled-in in gnu.CORBA.CDR.Vio.
+   */
+  public transient gnuRuntime runtime;  
+  
   /**
    * This instance is used to convert primitive data types into the
    * byte sequences.
@@ -168,6 +176,17 @@ public abstract class cdrOutput
    * stream is different from 0.
    */
   public abstract void setOffset(int an_offset);
+  
+  /**
+   * Clone all important settings to another stream.
+   */
+  public void cloneSettings(cdrOutput stream)
+  {
+    stream.setBigEndian(!little_endian);
+    stream.setCodeSet(getCodeSet());
+    stream.setVersion(giop);
+    stream.setOrb(orb);
+  }  
 
   /**
    * Set the current code set context.
@@ -313,53 +332,56 @@ public abstract class cdrOutput
   }
 
   /**
-  * Read the CORBA object. The object is written
-  * form of the plain (not a string-encoded) IOR profile without the
-  * heading endian indicator. The responsible method for reading such
-  * data is {@link IOR.write_no_endian}.
-  *
-  * The null value is written as defined in OMG specification
-  * (zero length string, followed by an empty set of profiles).
-  */
+   * Read the CORBA object. The object is written form of the plain (not a
+   * string-encoded) IOR profile without the heading endian indicator. The
+   * responsible method for reading such data is {@link IOR.write_no_endian}.
+   * 
+   * The null value is written as defined in OMG specification (zero length
+   * string, followed by an empty set of profiles).
+   */
   public void write_Object(org.omg.CORBA.Object x)
   {
-    if (x == null)
+    ORB w_orb = orb;
+    if (x instanceof IorProvider)
       {
-        IOR.write_null(this);
+        ((IorProvider) x).getIor()._write_no_endian(this);
         return;
       }
-    else if (x instanceof gnuServantObject)
+    else if (x == null)
       {
-        // The ORB may be different if several ORBs coexist
-        // in the same machine.
-        gnuServantObject g = (gnuServantObject) x;
-        IOR ior = g.orb.getLocalIor(x);
-        ior._write_no_endian(this);
+        IOR.write_null(this);
         return;
       }
     else if (x instanceof ObjectImpl)
       {
         Delegate d = ((ObjectImpl) x)._get_delegate();
 
-        if (d instanceof Simple_delegate)
+        if (d instanceof IorProvider)
           {
-            Simple_delegate ido = (Simple_delegate) d;
-            ido.getIor()._write_no_endian(this);
+            ((IorProvider) d).getIor()._write_no_endian(this);
             return;
+          }
+        else
+          {
+            ORB d_orb = d.orb(x);
+            if (d_orb != null)
+              w_orb = d_orb;
           }
       }
 
     // Either this is not an ObjectImpl or it has the
     // unexpected delegate. Try to convert via ORBs
     // object_to_string().
-    if (orb != null)
+    if (w_orb != null)
       {
-        IOR ior = IOR.parse(orb.object_to_string(x));
+        IOR ior = IOR.parse(w_orb.object_to_string(x));
         ior._write_no_endian(this);
         return;
       }
     else
-      throw new BAD_OPERATION("Please set the ORB for this stream.");
+      throw new BAD_OPERATION(
+        "Please set the ORB for this stream, cannot write "
+          + x.getClass().getName());
   }
 
   /**
@@ -874,28 +896,41 @@ public abstract class cdrOutput
   }
 
   /**
-   * Writes the character as two byte short integer (Unicode value),
-   * high byte first. Writes in Big Endian, but never writes the
-   * endian indicator.
-   *
-   * The character is always written using the native UTF-16BE charset
-   * because its size under arbitrary encoding is not evident.
+   * Writes the character as two byte short integer (Unicode value), high byte
+   * first. Writes in Big Endian, but never writes the endian indicator.
+   * 
+   * The character is always written using the native UTF-16BE charset because
+   * its size under arbitrary encoding is not evident.
    */
   public void write_wchar(char x)
   {
     try
       {
         if (giop.until_inclusive(1, 1))
-          align(2);
+          {
+            align(2);
 
-        if (wide_native)
-          b.writeShort(x);
+            if (wide_native)
+              b.writeShort(x);
+            else
+              {
+                OutputStreamWriter ow = new OutputStreamWriter(
+                  (OutputStream) b, wide_charset);
+                ow.write(x);
+                ow.flush();
+              }
+          }
+        else if (wide_native)
+          {
+            b.writeByte(2);
+            b.writeChar(x);
+          }
         else
           {
-            OutputStreamWriter ow =
-              new OutputStreamWriter((OutputStream) b, wide_charset);
-            ow.write(x);
-            ow.flush();
+            String encoded = new String(new char[] { x });
+            byte[] bytes = encoded.getBytes(wide_charset);
+            b.write(bytes.length + 2);
+            b.write(bytes);
           }
       }
     catch (IOException ex)
@@ -906,13 +941,13 @@ public abstract class cdrOutput
 
   /**
    * Write the array of wide chars.
-   *
+   * 
    * @param chars the array of wide chars
    * @param offset offset
    * @param length length
-   *
-   * The char array is always written using the native UTF-16BE charset
-   * because the character size under arbitrary encoding is not evident.
+   * 
+   * The char array is always written using the native UTF-16BE charset because
+   * the character size under arbitrary encoding is not evident.
    */
   public void write_wchar_array(char[] chars, int offset, int length)
   {
@@ -998,12 +1033,12 @@ public abstract class cdrOutput
   /** {@inheritDoc} */
   public void write_Abstract(java.lang.Object value)
   {
-    write_Abstract(value);
+    write_abstract_interface(value);
   }
 
   /** {@inheritDoc} */
   public void write_Value(Serializable value)
   {
-    write_Value(value);
+    write_value(value);
   }
 }
