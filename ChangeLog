@@ -1,3 +1,22 @@
+2005-10-02  Mark Wielaard  <mark@klomp.org>
+
+	Workarounds for bug #24166
+	* javax/imageio/ImageIO.java (filter): Catch IOException in
+	canDecodeInput().
+	(TranscoderFilter.WriterObjectFilter): Renamed to TranscoderFilter.
+	(getImageReadersBySuffix): Use ReaderObjectFilter, not the nonexisting
+	ReaderSuffixFilter.
+	(createImageInputStream): Test with Class.isAssignableFrom() and for
+	foundSpi == null.
+	(createImageOutputStream): Likewise and use output, not input.
+	(getImageReader): Always return null for now.
+	(getImageReaders): Use input, not object.
+	(getImageWriters): Rename formatName to format and create a
+	WriterObjectFilter with type and format not just object.
+	(getImageWriter): Always return null for now.
+	(getImageTranscoders): Create TranscoderFilter not ImageTranscoderSpi
+	instance.
+
 2005-10-02  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicButtonUI.java: API doc updates.
