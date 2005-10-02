@@ -1,3 +1,8 @@
+2005-10-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * gnu/javax/rmi/CORBA/corbaObjectOutput.java (main): 
+        Removed method.
+
 2005-10-02  Casey Marshall  <csm@gnu.org>
 
 	* gnu/javax/crypto/DiffieHellmanImpl.java (random): removed.

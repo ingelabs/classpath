@@ -38,21 +38,12 @@
 
 package gnu.javax.rmi.CORBA;
 
-import gnu.CORBA.CDR.cdrBufOutput;
-
-import org.omg.CORBA.Any;
-import org.omg.CORBA.ORB;
-import org.omg.CORBA_2_3.portable.InputStream;
 import org.omg.CORBA_2_3.portable.OutputStream;
 
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-
-import debugging.CORBA_stream;
 
 /**
  * A class to substitute as an ObjectOutputStream for objects using writeObject
@@ -214,61 +205,6 @@ public class corbaObjectOutput
     throws IOException
   {
     stream.write_wstring(str);
-  }
-
-  public static void main(String[] args)
-  {
-    /**
-     * The arguments for writeObject.
-     */
-    Class[] WRITE_OBJECT_ARGS = new Class[] { ObjectOutputStream.class };
-
-    try
-      {
-        ArrayList ara = new ArrayList(123);
-        ara.add("one");
-        ara.add("two");
-        ara.add("Three");
-
-        ORB orb = ORB.init(new String[0], null);
-        Any a = orb.create_any();
-        OutputStream out = (OutputStream) a.create_output_stream();
-        out.write_value(ara);
-
-        InputStream in = (InputStream) out.create_input_stream();
-
-        int p = 0;
-        try
-          {
-            while (true)
-              {
-                System.out.println(p + " " + in.read_octet());
-                p++;
-              }
-          }
-        catch (Exception ex)
-          {
-          }
-
-        new cdrBufOutput().write_Value(ara);
-
-        Method m = ara.getClass().getDeclaredMethod("writeObject",
-          WRITE_OBJECT_ARGS);
-
-        CORBA_stream c;
-        ObjectOutputStream stream = new corbaObjectOutput(
-          c = new CORBA_stream(), ara, new gnuRmiUtil());
-
-        m.setAccessible(true); // May be private.
-        m.invoke(ara, new Object[] { stream });
-
-        System.out.println(c.b);
-
-      }
-    catch (Exception ex)
-      {
-        ex.printStackTrace();
-      }
   }
 
   /**
