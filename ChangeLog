@@ -1,5 +1,14 @@
 2005-10-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        * gnu/javax/rmi/PortableServer.java,
+        gnu/javax/rmi/CORBA/ValueHandlerImpl.java,
+        javax/rmi/BAD_OPERATION.java,
+        javax/rmi/ORB.java,
+        javax/rmi/CORBA/ObjectImpl.java,
+        javax/rmi/CORBA/SystemException.java: Deleted. 
+
+2005-10-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
         * gnu/javax/rmi/CORBA/corbaObjectOutput.java (main): 
         Removed method.
 
