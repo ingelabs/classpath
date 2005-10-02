@@ -1,3 +1,8 @@
+2005-10-02  Mark Wielaard  <mark@klomp.org>
+
+	* java/io/ObjectOutputStream.java (writeObject): Add defining class
+	to NotSerializableException.
+
 2005-10-02  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/URLStreamHandler.java (hostsEqual): Javadoc fix.
