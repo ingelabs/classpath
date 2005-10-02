@@ -5,6 +5,16 @@
 
 2005-10-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        * gnu/CORBA/CDR/Vio.java,
+        gnu/CORBA/CDR/cdrBufOutput.java,
+        gnu/CORBA/CDR/gnuRuntime.java,
+        gnu/javax/rmi/CORBA/corbaObjectInput.java,
+        gnu/javax/rmi/CORBA/dwoTester.java,
+        gnu/javax/rmi/CORBA/gnuRmiUtil.java: Corrected copyright 
+        header identation.
+
+2005-10-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/CDR/ArrayValueHelper.java,
 	gnu/CORBA/CDR/IDLTypeHelper.java,
 	gnu/CORBA/CDR/UnknownExceptionCtxHandler.java,
