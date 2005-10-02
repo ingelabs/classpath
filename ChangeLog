@@ -1,3 +1,8 @@
+2005-10-02  Robert Schuster  <robertschuster@fsfe.org>
+
+	* gnu/xml/stream/XMLOutputFactoryImpl.java:
+	(setProperty): Added 'else'.
+
 2005-10-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/CDR/ArrayValueHelper.java,
