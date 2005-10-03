@@ -1,5 +1,10 @@
 2005-10-03  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(layoutLabel): place text to the right of the icon, if there is one.
+
+2005-10-03  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalComboBoxButton.java
 	(paintComponent): reposition text and truncate if necessary,
 	(truncateText): private utility method.

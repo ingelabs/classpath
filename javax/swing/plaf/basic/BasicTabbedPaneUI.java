@@ -1859,7 +1859,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
                                        SwingConstants.CENTER,
                                        SwingConstants.CENTER,
                                        SwingConstants.CENTER,
-                                       SwingConstants.CENTER, tabRect,
+                                       SwingConstants.RIGHT, tabRect,
                                        iconRect, textRect, textIconGap);
 
     int shiftX = getTabLabelShiftX(tabPlacement, tabIndex, isSelected);
