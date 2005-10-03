@@ -1,3 +1,11 @@
+2005-10-03  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/PlainView.java:
+	(maxLineLength): New variable to cache the length of the longest line.
+	(determineMaxLength): New implementation method.
+	(getPreferredSpan): Call determine max length instead of calculating
+	it here.
+
 2005-10-03  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/image/ComponentSampleModel.java (numBands): Updated

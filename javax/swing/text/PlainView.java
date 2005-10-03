@@ -59,6 +59,9 @@ public class PlainView extends View
 
   Font font;
   
+  /** The length of the longest line in the Document **/
+  float maxLineLength = -1;
+  
   protected FontMetrics metrics;
 
   public PlainView(Element elem)
@@ -207,6 +210,39 @@ public class PlainView extends View
     return (float) (Math.floor(x / tabSizePixels) + 1) * tabSizePixels;
   }
 
+  /**
+   * Returns the length of the longest line, used for getting the span
+   * @return the length of the longest line
+   */
+  float determineMaxLineLength()
+  {
+    // if the longest line is cached, return the cached value
+    if (maxLineLength != -1)
+      return maxLineLength;
+    
+    // otherwise we have to go through all the lines and find it
+    Element el = getElement();
+    Segment seg = new Segment();
+    float span = 0;
+    for (int i = 0; i < el.getElementCount(); i++)
+      {
+        Element child = el.getElement(i);
+        int start = child.getStartOffset();
+        int end = child.getEndOffset();
+        try
+          {
+            el.getDocument().getText(start, start + end, seg);
+          }
+        catch (BadLocationException ex)
+          {
+          }
+        int width = metrics.charsWidth(seg.array, seg.offset, seg.count);
+        span = Math.max(span, width);
+      }
+    maxLineLength = span;
+    return maxLineLength;
+  }
+  
   public float getPreferredSpan(int axis)
   {
     if (axis != X_AXIS && axis != Y_AXIS)
@@ -217,36 +253,16 @@ public class PlainView extends View
 
     float span = 0;
     Element el = getElement();
-    Document doc = el.getDocument();
-    Segment seg = new Segment();
 
     switch (axis)
       {
       case X_AXIS:
-        // calculate the maximum of the line's widths
-        for (int i = 0; i < el.getElementCount(); i++)
-          {
-            Element child = el.getElement(i);
-            int start = child.getStartOffset();
-            int end = child.getEndOffset();
-            try {
-              doc.getText(start, start + end, seg);
-            }
-            catch (BadLocationException ex)
-              {
-                // throw new ClasspathAssertionError
-                // ("no BadLocationException should be thrown here");
-              }
-            int width = metrics.charsWidth(seg.array, seg.offset, seg.count);
-            span = Math.max(span, width);
-          }
-        break;
+        span = determineMaxLineLength();
       case Y_AXIS:
       default:
         span = metrics.getHeight() * el.getElementCount();
         break;
       }
-
     return span;
   }
 
