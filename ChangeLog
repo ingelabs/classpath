@@ -1,3 +1,15 @@
+2005-10-03  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JOptionPane.java
+	(getInputValue): If the option selected is 'Cancel', then
+	the input value is set to null.
+	(showInternalConfirmDialog): Added check to prevent NPE.
+	(showInternalConfirmDialog): Likewise.
+	(showInternalConfirmDialog): Likewise.
+	(showInternalConfirmDialog): Likewise.
+	(showInternalOptionDialog): Likewise.
+	(showOptionDialog): Likewise.
+
 2005-10-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * javax/rmi/CORBA/ValueHandler.java (getRunTimeCodeBase): 

@@ -509,6 +509,8 @@ public class JOptionPane extends JComponent implements Accessible
    */
   public Object getInputValue()
   {
+    if (getValue().equals(new Integer(CANCEL_OPTION)))
+      setInputValue(null);
     return inputValue;
   }
 
@@ -970,7 +972,7 @@ public class JOptionPane extends JComponent implements Accessible
     JDialog dialog = pane.createDialog(parentComponent, null);
     dialog.pack();
     dialog.show();
-
+    
     return (String) pane.getInputValue();
   }
 
@@ -997,7 +999,7 @@ public class JOptionPane extends JComponent implements Accessible
     JDialog dialog = pane.createDialog(parentComponent, null);
     dialog.pack();
     dialog.show();
-
+    
     return (String) pane.getInputValue();
   }
 
@@ -1023,7 +1025,7 @@ public class JOptionPane extends JComponent implements Accessible
     JDialog dialog = pane.createDialog(parentComponent, title);
     dialog.pack();
     dialog.show();
-
+    
     return (String) pane.getInputValue();
   }
 
@@ -1056,7 +1058,7 @@ public class JOptionPane extends JComponent implements Accessible
     JDialog dialog = pane.createDialog(parentComponent, title);
     dialog.pack();
     dialog.show();
-
+    
     return (String) pane.getInputValue();
   }
 
@@ -1077,7 +1079,7 @@ public class JOptionPane extends JComponent implements Accessible
     JDialog dialog = pane.createDialog(null, null);
     dialog.pack();
     dialog.show();
-
+    
     return (String) pane.getInputValue();
   }
 
@@ -1102,7 +1104,7 @@ public class JOptionPane extends JComponent implements Accessible
     JDialog dialog = pane.createDialog(null, null);
     dialog.pack();
     dialog.show();
-
+    
     return (String) pane.getInputValue();
   }
 
@@ -1124,8 +1126,10 @@ public class JOptionPane extends JComponent implements Accessible
     JInternalFrame frame = pane.createInternalFrame(parentComponent, null);
 
     startModal(frame);
-
-    return ((Integer) pane.getValue()).intValue();
+    
+    if (pane.getValue() instanceof Integer)
+      return ((Integer) pane.getValue()).intValue();
+    return -1;
   }
 
   /**
@@ -1150,7 +1154,9 @@ public class JOptionPane extends JComponent implements Accessible
 
     startModal(frame);
 
-    return ((Integer) pane.getValue()).intValue();
+    if (pane.getValue() instanceof Integer)
+      return ((Integer) pane.getValue()).intValue();
+    return -1;
   }
 
   /**
@@ -1176,7 +1182,9 @@ public class JOptionPane extends JComponent implements Accessible
 
     startModal(frame);
 
-    return ((Integer) pane.getValue()).intValue();
+    if (pane.getValue() instanceof Integer)
+      return ((Integer) pane.getValue()).intValue();
+    return -1;
   }
 
   /**
@@ -1204,7 +1212,9 @@ public class JOptionPane extends JComponent implements Accessible
 
     startModal(frame);
 
-    return ((Integer) pane.getValue()).intValue();
+    if (pane.getValue() instanceof Integer)
+      return ((Integer) pane.getValue()).intValue();
+    return -1;
   }
 
   /**
@@ -1226,7 +1236,7 @@ public class JOptionPane extends JComponent implements Accessible
     JInternalFrame frame = pane.createInternalFrame(parentComponent, null);
 
     startModal(frame);
-
+    
     return (String) pane.getInputValue();
   }
 
@@ -1252,7 +1262,7 @@ public class JOptionPane extends JComponent implements Accessible
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
     startModal(frame);
-
+    
     return (String) pane.getInputValue();
   }
 
@@ -1287,7 +1297,7 @@ public class JOptionPane extends JComponent implements Accessible
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
     startModal(frame);
-
+    
     return (String) pane.getInputValue();
   }
 
@@ -1380,8 +1390,10 @@ public class JOptionPane extends JComponent implements Accessible
     JInternalFrame frame = pane.createInternalFrame(parentComponent, title);
 
     startModal(frame);
-
-    return ((Integer) pane.getValue()).intValue();
+ 
+    if (pane.getValue() instanceof Integer)
+      return ((Integer) pane.getValue()).intValue();
+    return -1;
   }
 
   /**
@@ -1396,7 +1408,7 @@ public class JOptionPane extends JComponent implements Accessible
     JOptionPane pane = new JOptionPane(message, INFORMATION_MESSAGE);
     JDialog dialog = pane.createDialog(parentComponent, null);
     dialog.pack();
-    dialog.show();
+    dialog.show();   
   }
 
   /**
@@ -1468,7 +1480,9 @@ public class JOptionPane extends JComponent implements Accessible
     dialog.pack();
     dialog.show();
 
-    return ((Integer) pane.getValue()).intValue();
+    if (pane.getValue() instanceof Integer)
+      return ((Integer) pane.getValue()).intValue();
+    return -1;
   }
 
   /**
