@@ -1,3 +1,10 @@
+2005-10-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * javax/rmi/CORBA/ValueHandler.java (getRunTimeCodeBase): 
+        Fixed return type.
+        * gnu/javax/rmi/CORBA/ValueHandlerDelegateImpl.java 
+        (getRunTimeCodeBase): Implemented.
+
 2005-10-03  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JMenuItem.java

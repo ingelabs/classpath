@@ -79,7 +79,7 @@ public interface ValueHandler
    * 
    * @return the codebase.
    */
-  Runtime getRunTimeCodeBase();
+  RunTime getRunTimeCodeBase();
 
   /**
    * Indicates that the given class is responsible itself for writing its

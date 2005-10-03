@@ -38,8 +38,11 @@ exception statement from your version. */
 
 package gnu.javax.rmi.CORBA;
 
+import gnu.CORBA.CDR.gnuRuntime;
+
 import org.omg.CORBA.CustomMarshal;
 import org.omg.CORBA.portable.Streamable;
+import org.omg.SendingContext.RunTime;
 
 import java.io.Externalizable;
 import java.io.ObjectStreamClass;
@@ -57,9 +60,14 @@ public class ValueHandlerDelegateImpl
   extends gnuRmiUtil
   implements ValueHandler
 {
-  public Runtime getRunTimeCodeBase()
+  /**
+   * This implementation associates RunTime with stream rather than with the
+   * value handler and this method is not used in the implementation. It is
+   * implemented just for the sake of compatibility. 
+   */
+  public RunTime getRunTimeCodeBase()
   {
-    throw new Error("Not implemented for ValueHandler");
+    return new gnuRuntime(null, null);
   }
 
   /**
