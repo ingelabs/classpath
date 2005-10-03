@@ -63,8 +63,10 @@ public class ComponentSampleModel extends SampleModel
   protected int[] bandOffsets;
   protected int[] bankIndices;
   
-  /** Number of bands in the image described. */
-  // This field shadows the package-private numBands in SampleModel.
+  /** 
+   * Number of bands in the image described.
+   * @specnote This field shadows the protected numBands in SampleModel.
+   */
   protected int numBands;
   
   /** Used when creating data buffers. */
@@ -101,6 +103,7 @@ public class ComponentSampleModel extends SampleModel
     
     this.bandOffsets = bandOffsets;
     this.bankIndices = bankIndices;
+    this.numBands = bandOffsets.length;
 
     this.numBanks = 0;
     for (int b=0; b<bankIndices.length; b++)

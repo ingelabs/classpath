@@ -49,7 +49,7 @@ public abstract class SampleModel
   
   /** Number of bands in the image described.  Package-private here,
       shadowed by ComponentSampleModel. */
-  int numBands;
+  protected int numBands;
 
   /** 
    * The DataBuffer type that is used to store the data of the image

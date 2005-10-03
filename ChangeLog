@@ -1,5 +1,12 @@
 2005-10-03  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/image/ComponentSampleModel.java (numBands): Updated
+	javadoc.
+	(ComponentSampleModel): Set numBands.
+	* java/awt/image/SampleModel.java (numBands): Now protected.
+
+2005-10-03  Tom Tromey  <tromey@redhat.com>
+
 	* java/awt/Polygon.java (evaluateCrossings): Removed @see.
 	* java/awt/image/ImageConsumer.java (SINGLEPASS): Javadoc fix.
 	* java/awt/Image.java (getGraphics): Removed @see.
