@@ -1,3 +1,9 @@
+2005-10-03  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JMenuItem.java
+	(init): Set horizontalTextPosition to TRAILING, instead of 
+	LEFT. Icons are drawn in the correct spot now.
+
 2005-10-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * doc/www.gnu.org/corba.wml: New file. 
