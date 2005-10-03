@@ -1,3 +1,7 @@
+2005-10-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * doc/www.gnu.org/corba.wml: New file. 
+
 2005-10-03  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
