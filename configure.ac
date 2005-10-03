@@ -103,6 +103,32 @@ AC_ARG_ENABLE([xmlj],
 AM_CONDITIONAL(CREATE_XMLJ_LIBRARY, test "x${COMPILE_XMLJ}" = xyes)
 
 dnl -----------------------------------------------------------
+dnl ALSA code (enabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([alsa],
+              [AS_HELP_STRING(--disable-alsa,compile ALSA providers (enable by --enable-alsa) [default=yes])],
+              [case "${enableval}" in
+                yes) COMPILE_ALSA=yes ;;
+                no) COMPILE_ALSA=no ;;
+                *) COMPILE_ALSA=yes ;;
+              esac],
+	      [AC_CHECK_HEADERS([alsa/asoundlib.h],COMPILE_ALSA=yes,COMPILE_ALSA=no)])
+AM_CONDITIONAL(CREATE_ALSA_LIBRARIES, test "x${COMPILE_ALSA}" = xyes)
+
+dnl -----------------------------------------------------------
+dnl DSSI code (enabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([alsa],
+              [AS_HELP_STRING(--disable-dssi,compile DSSI providers (enable by --enable-dssi) [default=yes])],
+              [case "${enableval}" in
+                yes) COMPILE_DSSI=yes ;;
+                no) COMPILE_DSSI=no ;;
+                *) COMPILE_DSSI=yes ;;
+              esac],
+              [AC_CHECK_HEADERS([dssi.h],COMPILE_DSSI=yes,COMPILE_DSSI=no)])
+AM_CONDITIONAL(CREATE_DSSI_LIBRARIES, test "x${COMPILE_DSSI}" = xyes)
+
+dnl -----------------------------------------------------------
 dnl GTK native peer (enabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([gtk-peer],
@@ -489,6 +515,8 @@ native/jni/java-util/Makefile
 native/jni/gtk-peer/Makefile
 native/jni/qt-peer/Makefile
 native/jni/xmlj/Makefile
+native/jni/midi-alsa/Makefile
+native/jni/midi-dssi/Makefile
 native/target/Makefile
 native/target/Linux/Makefile
 native/target/generic/Makefile

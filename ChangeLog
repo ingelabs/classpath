@@ -1,3 +1,32 @@
+2005-10-02  Anthony Green  <green@redhat.com>
+
+	* native/jni/Makefile.am: Maybe build ALSA code.
+	Maybe build DSSI code.
+
+	* gnu/javax/sound/midi/alsa/AlsaPortDevice.java,
+	gnu/javax/sound/midi/alsa/AlsaOutputPortDevice.java
+	gnu/javax/sound/midi/alsa/AlsaInputPortDevice.java
+	gnu/javax/sound/midi/alsa/AlsaMidiDeviceProvider.java
+	gnu/javax/sound/midi/alsa/AlsaMidiSequencerDevice.java: Rebuilt.
+	native/jni/midi-alsa/gnu_javax_sound_midi_alsa_AlsaPortDevice.c,
+	native/jni/midi-alsa/gnu_javax_sound_midi_alsa_AlsaMidiDeviceProvider.c,
+	native/jni/midi-alsa/gnu_javax_sound_midi_alsa_AlsaSequencerDevice.c,
+	native/jni/midi-dssi/dssi_data.h, native/jni/midi-dssi/Makefile.am, 
+	native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider.c
+	native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c,
+	native/jni/midi-alsa/Makefile.am: New files.
+
+	* include/Makefile.am: Add sound header files.
+	* include/gnu_javax_sound_midi_alsa_AlsaPortDevice.h,
+	include/gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider.h
+	include/gnu_javax_sound_midi_dssi_DSSISynthesizer.h
+	include/gnu_javax_sound_midi_alsa_AlsaMidiDeviceProvider.h,
+	include/gnu_javax_sound_midi_alsa_AlsaSequencerDevice.h: New
+	files.
+	
+	* configure.ac (AC_CONFIG_FILES): Add
+	native/jni/midi-alsa/Makefile, native/jni/midi-dssi/Makefile.
+
 2005-10-02  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/Font.java (peer): Make field transient.
