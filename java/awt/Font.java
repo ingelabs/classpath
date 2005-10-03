@@ -50,6 +50,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.peer.FontPeer;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.text.AttributedCharacterIterator;
 import java.text.CharacterIterator;
@@ -191,7 +192,7 @@ public class Font implements Serializable
 
 
   // The ClasspathToolkit-provided peer which implements this font
-  private ClasspathFontPeer peer;
+  private transient ClasspathFontPeer peer;
 
 
   /**
@@ -335,6 +336,10 @@ public class Font implements Serializable
     this.peer = getPeerFromToolkit(name, attrs);
     this.size = size;
     this.pointSize = (float) size;
+    if (name != null)
+      this.name = name;
+    else
+      this.name = peer.getName(this);
   }
 
   public Font(Map attrs)
@@ -355,6 +360,10 @@ public class Font implements Serializable
     peer = getPeerFromToolkit(name, attrs);
     size = (int) peer.getSize(this);
     pointSize = peer.getSize(this);
+    if (name != null)
+      this.name = name;
+    else
+      this.name = peer.getName(this);
   }
 
   /**
@@ -1315,4 +1324,19 @@ public class Font implements Serializable
     return getLineMetrics(str, 0, str.length() - 1, frc);
   }
 
+  /**
+   * Reads the normal fields from the stream and then constructs the
+   * peer from the style and size through getPeerFromToolkit().
+   */
+  private void readObject(ObjectInputStream ois)
+    throws IOException, ClassNotFoundException
+  {
+    ois.defaultReadObject();
+
+    HashMap attrs = new HashMap();
+    ClasspathFontPeer.copyStyleToAttrs(style, attrs);
+    ClasspathFontPeer.copySizeToAttrs(size, attrs);
+    peer = getPeerFromToolkit(name, attrs);
+
+  }
 }

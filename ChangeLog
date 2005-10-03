@@ -1,5 +1,12 @@
 2005-10-02  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/Font.java (peer): Make field transient.
+	(Font(String,int,int)): Explicitly set name field.
+	(Font(String,Map)): Likewise.
+	(readObject): New private method.
+
+2005-10-02  Mark Wielaard  <mark@klomp.org>
+
 	* java/io/ObjectOutputStream.java (writeObject): Add defining class
 	to NotSerializableException.
 
