@@ -1,3 +1,41 @@
+2005-10-03  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/Polygon.java (evaluateCrossings): Removed @see.
+	* java/awt/image/ImageConsumer.java (SINGLEPASS): Javadoc fix.
+	* java/awt/Image.java (getGraphics): Removed @see.
+	* java/awt/MenuComponent.java (setEnabled): Javadoc fix.
+	(setBackground): Likewise.
+	* java/awt/event/MouseEvent.java: Added import for javadoc.
+	* java/awt/im/spi/InputMethodDescriptor.java: Added import for javadoc.
+	(getAvailableLocales): Javadoc fix.
+	* java/awt/KeyboardFocusManager.java: Added import for javadoc.
+	(defaultPolicy): Javadoc fix.
+	(setGlobalObject): Javadoc fixes.
+	(getObject): Likewise.
+	(getGlobalObject): Likewise.
+	* java/awt/im/InputMethodRequests.java: Added imports for javadoc.
+	* java/awt/im/spi/InputMethodContext.java: Added imports for javadoc.
+	(enableClientWindowNotification): Javadoc fix.
+	* java/awt/im/spi/InputMethod.java: Added imports for javadoc.
+	(removeNotify): Javadoc fix.
+	(notifyClientWindowChange): Likewise.
+	* java/awt/im/InputContext.java: Added import for javadoc.
+	* java/awt/image/ColorModel.java (getDataElements): Javadoc fix.
+	* java/awt/geom/Area.java (recursiveSubdivide): Javadoc fix.
+	* java/awt/geom/GeneralPath.java (GeneralPathIterator): Javadoc fix.
+	* java/awt/im/InputMethodHighlight.java: Javadoc fixes.  Added
+	imports.
+	* java/awt/color/ICC_Profile.java (getInstance): Javadoc fix.
+	(getInstance): Likewise.
+	* java/awt/EventQueue.java: Organized imports.
+	* java/awt/image/BufferedImage.java: Organized imports.
+	* java/awt/image/PackedColorModel.java (initMasks): Javadoc fix.
+	* java/awt/GraphicsConfiguration.java (createCompatibleVolatileImage):
+	Javadoc fixes.
+	* java/awt/DefaultKeyboardFocusManager.java (delayRequests): Javadoc
+	fix.
+	* java/awt/ColorPaintContext.java (ColorPaintContext): Javadoc fix.
+
 2005-10-03  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JOptionPane.java
