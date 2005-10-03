@@ -1,3 +1,9 @@
+2005-10-03  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalComboBoxButton.java
+	(paintComponent): reposition text and truncate if necessary,
+	(truncateText): private utility method.
+
 2005-10-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
          
         * NEWS: Added entry about Classpath VMCID and IIOP. 
