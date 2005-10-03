@@ -1,3 +1,16 @@
+New for the subsequent release:
+* The Andrew Watson, Vice President and Technical Director of the Object
+  Management Group, has officially assigned us 20 bit Vendor Minor Code Id: 
+  0x47430 ("GC") that will mark remote Classpath - specific system exceptions.
+  Obtaining the VMCID means that GNU Classpath now is a recogniseable type of
+  node in a highly interoperable CORBA world. 
+
+* Classpath now includes the first working draft to support the RMI over
+  IIOP protocol. The current implementation is capable for remote invocations,
+  transferring various Serializables and Externalizables via RMI-IIOP protocol.
+  It can flatten graphs and, at least for the simple cases, is interoperable
+  with Sun's jdk 1.5. 
+
 New in release 0.18 (Sep 6, 2005)
 
 * GNU JAWT implementation, the AWT Native Interface, which allows direct

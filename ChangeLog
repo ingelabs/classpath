@@ -1,3 +1,7 @@
+2005-10-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+         
+        * NEWS: Added entry about Classpath VMCID and IIOP. 
+         
 2005-10-02  Anthony Green  <green@redhat.com>
 
 	* native/jni/Makefile.am: Maybe build ALSA code.
