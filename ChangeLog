@@ -1,3 +1,8 @@
+2005-10-03  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/awt/peer/qt/QtToolkit.java (initToolkit): Use Configuration
+	to see if library should be loaded.
+
 2005-10-03  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/PlainView.java:
