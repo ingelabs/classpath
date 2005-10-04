@@ -5,6 +5,7 @@
 	* javax/imageio/ImageTypeSpecifier.java
 	(createGrayscale(int,int,boolean)): Rename from createGrayScale.
 	(createGrayscale(int,int,boolean,boolean)): Likewise.
+	(createIndexed): Rename from createIndex.
 
 2005-10-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
