@@ -1,3 +1,51 @@
+2005-10-04  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* javax/imageio/ImageWriter.java (availableLocales, locale,
+	originatingProvider, output, progressListeners, warningListeners,
+	warningLocales): Initialize.
+	(addIIOWriteProgressListener): Check progressListeners against null
+	to avoid NPE. Create new ArrayList if progressListeners is null.
+	(addIIOWriteWarningListener): Likewise for warningListeners.
+	(processImageComplete): Check progressListeners against null to
+	avoid NPE. 
+	(processImageProgress): Likewise.
+	(processImageStarted): Likewise.
+	(processThumbnailComplete): Likewise.
+	(processThumbnailProgress): Likewise.
+	(processThumbnailStarted): Likewise.
+	(processWarningOccurred): Likewise for warningListeners.
+	(processWriteAborted): Likewise for progressListeners.
+	(removeAllIIOWriteProgressListeners): Likewise.
+	(removeAllIIOWriteWarningListeners): Likewise.
+	(removeIIOWriteProgressListener): Likewise.
+	(removeIIOWriteWarningListener): Likewise for warningListeners.
+
+	* javax/imageio/ImageReader.java (addIIOReadProgressListener): Check
+	progressListeners against null to avoid NPE. Create new ArrayList
+	if progressListeners is null.
+	(addIIOReadUpdateListener): Likewise for updateListeners.
+	(addIIOReadWarningListener): Likewise for warningListeners.
+	(processImageComplete):  Check progressListeners against null to
+	avoid NPE.
+	(processImageProgress): Likewise.
+	(processImageStarted): Likewise.
+	(processImageUpdate): Likewise for updateListeners.
+	(processPassComplete): Likewise.
+	(processPassStarted): Likewise.
+	(processReadAborted): Likewise for progressListeners.
+	(processSequenceComplete): Likewise.
+	(processSequenceStarted): Likewise.
+	(processThumbnailComplete): Likewise.
+	(processThumbnailPassComplete): Likewise for updateListeners.
+	(processThumbnailPassStarted): Likewise.
+	(processThumbnailProgress): Likewise for progressListeners.
+	(processThumbnailStarted): Likewise.
+	(processThumbnailUpdate): Likewise for updateListeners.
+	(processWarningOccurred): Likewise for warningListeners.
+	(removeIIOReadProgressListener): Likewise for progressListeners.
+	(removeIIOReadUpdateListener): Likewise for updateListeners.
+	(removeIIOReadWarningListener): Likewise for warningListeners.
+
 2005-10-04  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalToolTipUI.java

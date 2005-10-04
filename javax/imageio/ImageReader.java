@@ -1,5 +1,5 @@
 /* ImageReader.java -- Decodes raster images.
-   Copyright (C) 2004  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -185,8 +185,9 @@ public abstract class ImageReader
   {
     if (listener == null)
       return;
-
-    progressListeners.add(listener);    
+    if (progressListeners == null)
+      progressListeners = new ArrayList ();
+    progressListeners.add(listener);
   }
 
   /**
@@ -199,10 +200,11 @@ public abstract class ImageReader
   {
     if (listener == null)
       return;
-    
-    updateListeners.add(listener);    
+    if (updateListeners == null)
+      updateListeners = new ArrayList ();
+    updateListeners.add(listener);
   }
-  
+
   /**
    * Install a read warning listener.  This method will return
    * immediately if listener is null.  Warning messages sent to this
@@ -216,8 +218,9 @@ public abstract class ImageReader
   {
     if (listener == null)
       return;
-    
-    warningListeners.add(listener);    
+    if (warningListeners == null)
+      warningListeners = new ArrayList ();
+    warningListeners.add(listener);
   }
 
   /**
@@ -763,12 +766,16 @@ public abstract class ImageReader
    */
   protected void processImageComplete()
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOReadProgressListener listener = (IIOReadProgressListener) it.next();
-	listener.imageComplete (this);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadProgressListener listener =
+	      (IIOReadProgressListener) it.next();
+	    listener.imageComplete (this);
+	  }
       }
   }
 
@@ -782,15 +789,18 @@ public abstract class ImageReader
    */
   protected void processImageProgress(float percentageDone)
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+     if (progressListeners != null)
       {
-	IIOReadProgressListener listener = (IIOReadProgressListener) it.next();
-	listener.imageProgress(this, percentageDone);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadProgressListener listener =
+	      (IIOReadProgressListener) it.next();
+	    listener.imageProgress(this, percentageDone);
+	  }
       }
   }
-
   /**
    * Notifies all installed read progress listeners, by calling their
    * imageStarted methods, that image loading has started on the given
@@ -801,12 +811,16 @@ public abstract class ImageReader
    */
   protected void processImageStarted(int imageIndex)
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+     if (progressListeners != null)
       {
-	IIOReadProgressListener listener = (IIOReadProgressListener) it.next();
-	listener.imageStarted(this, imageIndex);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadProgressListener listener =
+	      (IIOReadProgressListener) it.next();
+	    listener.imageStarted(this, imageIndex);
+	  }
       }
   }
 
@@ -829,13 +843,16 @@ public abstract class ImageReader
 				    int width, int height, int periodX,
 				    int periodY, int[] bands)
   {
-    Iterator it = updateListeners.iterator();
-
-    while (it.hasNext())
+    if (updateListeners != null)
       {
-	IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
-	listener.imageUpdate(this, image, minX, minY, width, height, periodX,
-			     periodY, bands);
+	Iterator it = updateListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
+	    listener.imageUpdate(this, image, minX, minY, width, height,
+				 periodX, periodY, bands);
+	  }
       }
   }
 
@@ -848,12 +865,15 @@ public abstract class ImageReader
    */
   protected void processPassComplete(BufferedImage image)
   {
-    Iterator it = updateListeners.iterator();
-
-    while (it.hasNext())
+    if (updateListeners != null)
       {
-	IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
-	listener.passComplete(this, image);
+	Iterator it = updateListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
+	    listener.passComplete(this, image);
+	  }
       }
   }
 
@@ -879,13 +899,16 @@ public abstract class ImageReader
 				    int maxPass, int minX, int minY,
 				    int periodX, int periodY, int[] bands)
   {
-    Iterator it = updateListeners.iterator();
-
-    while (it.hasNext())
+    if (updateListeners != null)
       {
-	IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
-	listener.passStarted(this, image, pass, minPass, maxPass, minX, minY,
-			     periodX, periodY, bands);
+	Iterator it = updateListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
+	    listener.passStarted(this, image, pass, minPass, maxPass, minX,
+				 minY, periodX, periodY, bands);
+	  }
       }
   }
 
@@ -895,15 +918,18 @@ public abstract class ImageReader
    */
   protected void processReadAborted()
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+     if (progressListeners != null)
       {
-	IIOReadProgressListener listener = (IIOReadProgressListener) it.next();
-	listener.readAborted(this);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadProgressListener listener =
+	      (IIOReadProgressListener) it.next();
+	    listener.readAborted(this);
+	  }
       }
   }
-
   /**
    * Notifies all installed read progress listeners, by calling their
    * sequenceComplete methods, that a sequence of images has completed
@@ -911,12 +937,16 @@ public abstract class ImageReader
    */
   protected void processSequenceComplete()
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+     if (progressListeners != null)
       {
-	IIOReadProgressListener listener = (IIOReadProgressListener) it.next();
-	listener.sequenceComplete(this);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadProgressListener listener =
+	      (IIOReadProgressListener) it.next();
+	    listener.sequenceComplete(this);
+	  }
       }
   }
 
@@ -929,12 +959,17 @@ public abstract class ImageReader
    */
   protected void processSequenceStarted(int minIndex)
   {
-    Iterator it = progressListeners.iterator();
 
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOReadProgressListener listener = (IIOReadProgressListener) it.next();
-	listener.sequenceStarted(this, minIndex);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadProgressListener listener =
+	      (IIOReadProgressListener) it.next();
+	    listener.sequenceStarted(this, minIndex);
+	  }
       }
   }
 
@@ -945,12 +980,16 @@ public abstract class ImageReader
    */
   protected void processThumbnailComplete()
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOReadProgressListener listener = (IIOReadProgressListener) it.next();
-	listener.thumbnailComplete(this);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadProgressListener listener =
+	      (IIOReadProgressListener) it.next();
+	    listener.thumbnailComplete(this);
+	  }
       }
   }
 
@@ -963,12 +1002,15 @@ public abstract class ImageReader
    */
   protected void processThumbnailPassComplete(BufferedImage thumbnail)
   {
-    Iterator it = updateListeners.iterator();
-
-    while (it.hasNext())
+    if (updateListeners != null)
       {
-	IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
-	listener.thumbnailPassComplete(this, thumbnail);
+	Iterator it = updateListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
+	    listener.thumbnailPassComplete(this, thumbnail);
+	  }
       }
   }
 
@@ -995,16 +1037,20 @@ public abstract class ImageReader
 					     int minY, int periodX, int periodY,
 					     int[] bands)
   {
-    Iterator it = updateListeners.iterator();
-
-    while (it.hasNext())
+    if (updateListeners != null)
       {
-	IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
-	listener.thumbnailPassStarted(this, thumbnail, pass, minPass, maxPass,
-				      minX, minY, periodX, periodY, bands);
+	Iterator it = updateListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
+	    listener.thumbnailPassStarted(this, thumbnail, pass, minPass,
+					  maxPass, minX, minY, periodX,
+					  periodY, bands);
+	  }
       }
   }
-  
+
   /**
    * Notifies all installed read progress listeners that a certain
    * percentage of a thumbnail has been loaded, by calling their
@@ -1015,12 +1061,16 @@ public abstract class ImageReader
    */
   protected void processThumbnailProgress(float percentageDone)
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOReadProgressListener listener = (IIOReadProgressListener) it.next();
-	listener.thumbnailProgress(this, percentageDone);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadProgressListener listener =
+	      (IIOReadProgressListener) it.next();
+	    listener.thumbnailProgress(this, percentageDone);
+	  }
       }
   }
 
@@ -1036,12 +1086,16 @@ public abstract class ImageReader
    */
   protected void processThumbnailStarted(int imageIndex, int thumbnailIndex)
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOReadProgressListener listener = (IIOReadProgressListener) it.next();
-	listener.thumbnailStarted(this, imageIndex, thumbnailIndex);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadProgressListener listener =
+	      (IIOReadProgressListener) it.next();
+	    listener.thumbnailStarted(this, imageIndex, thumbnailIndex);
+	  }
       }
   }
 
@@ -1064,13 +1118,16 @@ public abstract class ImageReader
 					int width, int height, int periodX,
 					int periodY, int[] bands)
   {
-    Iterator it = updateListeners.iterator();
-
-    while (it.hasNext())
+    if (updateListeners != null)
       {
-	IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
-	listener.thumbnailUpdate(this, image, minX, minY, width, height,
-				 periodX, periodY, bands);
+	Iterator it = updateListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadUpdateListener listener = (IIOReadUpdateListener) it.next();
+	    listener.thumbnailUpdate(this, image, minX, minY, width, height,
+				     periodX, periodY, bands);
+	  }
       }
   }
 
@@ -1086,13 +1143,16 @@ public abstract class ImageReader
   {
     if (warning == null)
       throw new IllegalArgumentException ("null argument");
-
-    Iterator it = warningListeners.iterator();
-
-    while (it.hasNext())
+    if (warningListeners != null)
       {
-	IIOReadWarningListener listener = (IIOReadWarningListener) it.next();
-	listener.warningOccurred(this, warning);
+	Iterator it = warningListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadWarningListener listener =
+	      (IIOReadWarningListener) it.next();
+	    listener.warningOccurred(this, warning);
+	  }
       }
   }
 
@@ -1205,10 +1265,12 @@ public abstract class ImageReader
   {
     if (listener == null)
       return;
- 
-    progressListeners.remove(listener);
+    if (progressListeners != null)
+      {
+	progressListeners.remove(listener);
+      }
   }
-  
+
   /**
    * Uninstall the given read update listener.
    *
@@ -1218,10 +1280,13 @@ public abstract class ImageReader
   {
     if (listener == null)
       return;
-    
-    updateListeners.remove(listener);
+
+    if (updateListeners != null)
+      {
+	updateListeners.remove(listener);
+      }
   }
-  
+
   /**
    * Uninstall the given read warning listener.
    *
@@ -1231,8 +1296,10 @@ public abstract class ImageReader
   {
     if (listener == null)
       return;
-    
-    warningListeners.remove(listener);
+    if (warningListeners != null)
+      {
+	warningListeners.remove(listener);
+      }
   }
 
   /**

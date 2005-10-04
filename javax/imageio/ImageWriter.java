@@ -1,5 +1,5 @@
 /* ImageWriter.java -- Encodes raster images.
-   Copyright (C) 2004  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -78,41 +78,41 @@ public abstract class ImageWriter
    * All locales available for localization of warning messages, or
    * null if localization is not supported.
    */
-  protected Locale[] availableLocales;
+  protected Locale[] availableLocales = null;
 
   /**
    * The current locale used to localize warning messages, or null if
    * no locale has been set.
    */
-  protected Locale locale;
+  protected Locale locale = null;
 
   /**
    * The image writer SPI that instantiated this writer.
    */
-  protected ImageWriterSpi originatingProvider;
+  protected ImageWriterSpi originatingProvider = null;
 
   /**
    * An ImageInputStream to which image data is written.
    */
-  protected Object output;
+  protected Object output = null;
 
   /**
    * A list of installed progress listeners.  Initially null, meaning
    * no installed listeners.
    */
-  protected List progressListeners = new ArrayList();
+  protected List progressListeners = null;
 
   /**
    * A list of installed warning listeners.  Initially null, meaning
    * no installed listeners.
    */
-  protected List warningListeners = new ArrayList();
+  protected List warningListeners = null;
 
   /**
    * A list of warning locales corresponding with the list of
    * installed warning listeners.  Initially null, meaning no locales.
    */
-  protected List warningLocales = new ArrayList();
+  protected List warningLocales = null;
 
   /**
    * Construct an image writer.
@@ -169,10 +169,11 @@ public abstract class ImageWriter
   {
     if (listener == null)
       return;
-    
+    if (progressListeners == null)
+      progressListeners = new ArrayList ();
     progressListeners.add(listener);
   }
-  
+
   /**
    * Install a write warning listener.  This method will return
    * immediately if listener is null.  Warning messages sent to this
@@ -186,7 +187,8 @@ public abstract class ImageWriter
   {
     if (listener == null)
       return;
-    
+    if (warningListeners == null)
+      warningListeners = new ArrayList ();
     warningListeners.add(listener);
   }
 
@@ -561,12 +563,16 @@ public abstract class ImageWriter
    */
   protected void processImageComplete()
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOWriteProgressListener listener = (IIOWriteProgressListener) it.next();
-	listener.imageComplete(this);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOWriteProgressListener listener =
+	      (IIOWriteProgressListener) it.next();
+	    listener.imageComplete(this);
+	  }
       }
   }
 
@@ -580,12 +586,16 @@ public abstract class ImageWriter
    */
   protected void processImageProgress(float percentageDone)
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOWriteProgressListener listener = (IIOWriteProgressListener) it.next();
-	listener.imageProgress(this, percentageDone);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOWriteProgressListener listener =
+	      (IIOWriteProgressListener) it.next();
+	    listener.imageProgress(this, percentageDone);
+	  }
       }
   }
 
@@ -599,12 +609,16 @@ public abstract class ImageWriter
    */
   protected void processImageStarted(int imageIndex)
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOWriteProgressListener listener = (IIOWriteProgressListener) it.next();
-	listener.imageStarted(this, imageIndex);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOWriteProgressListener listener =
+	      (IIOWriteProgressListener) it.next();
+	    listener.imageStarted(this, imageIndex);
+	  }
       }
   }
 
@@ -615,12 +629,16 @@ public abstract class ImageWriter
    */
   protected void processThumbnailComplete()
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOWriteProgressListener listener = (IIOWriteProgressListener) it.next();
-	listener.thumbnailComplete(this);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOWriteProgressListener listener =
+	      (IIOWriteProgressListener) it.next();
+	    listener.thumbnailComplete(this);
+	  }
       }
   }
 
@@ -634,12 +652,16 @@ public abstract class ImageWriter
    */
   protected void processThumbnailProgress(float percentageDone)
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOWriteProgressListener listener = (IIOWriteProgressListener) it.next();
-	listener.thumbnailProgress(this, percentageDone);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOWriteProgressListener listener =
+	      (IIOWriteProgressListener) it.next();
+	    listener.thumbnailProgress(this, percentageDone);
+	  }
       }
   }
 
@@ -655,12 +677,16 @@ public abstract class ImageWriter
    */
   protected void processThumbnailStarted(int imageIndex, int thumbnailIndex)
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOWriteProgressListener listener = (IIOWriteProgressListener) it.next();
-	listener.thumbnailStarted(this, imageIndex, thumbnailIndex);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOWriteProgressListener listener =
+	      (IIOWriteProgressListener) it.next();
+	    listener.thumbnailStarted(this, imageIndex, thumbnailIndex);
+	  }
       }
   }
 
@@ -676,12 +702,16 @@ public abstract class ImageWriter
    */
   protected void processWarningOccurred(int imageIndex, String warning)
   {
-    Iterator it = warningListeners.iterator();
-
-    while (it.hasNext())
+     if (warningListeners != null)
       {
-	IIOWriteWarningListener listener = (IIOWriteWarningListener) it.next();
-	listener.warningOccurred(this, imageIndex, warning);
+	Iterator it = warningListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOWriteWarningListener listener =
+	      (IIOWriteWarningListener) it.next();
+	    listener.warningOccurred(this, imageIndex, warning);
+	  }
       }
   }
 
@@ -691,12 +721,16 @@ public abstract class ImageWriter
    */
   protected void processWriteAborted() 
   {
-    Iterator it = progressListeners.iterator();
-
-    while (it.hasNext())
+    if (progressListeners != null)
       {
-	IIOWriteProgressListener listener = (IIOWriteProgressListener) it.next();
-	listener.writeAborted(this);
+	Iterator it = progressListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOWriteProgressListener listener =
+	      (IIOWriteProgressListener) it.next();
+	    listener.writeAborted(this);
+	  }
       }
   }
 
@@ -705,7 +739,10 @@ public abstract class ImageWriter
    */
   public void removeAllIIOWriteProgressListeners()
   {
-    progressListeners.clear();
+    if (progressListeners != null)
+      {
+	progressListeners.clear();
+      }
   }
 
   /**
@@ -713,22 +750,26 @@ public abstract class ImageWriter
    */
   public void removeAllIIOWriteWarningListeners()
   {
-    progressListeners.clear();
+    if (progressListeners != null)
+      {
+	progressListeners.clear();
+      }
   }
-  
+
   /**
    * Uninstall the given write progress listener.
    *
    * @param listener the listener to remove
    */
-  public void removeIIOWriteProgressListener (IIOWriteProgressListener listener) 
+  public void removeIIOWriteProgressListener (IIOWriteProgressListener listener)
   {
     if (listener == null)
       return;
-    
-    progressListeners.remove(listener);
+    if (progressListeners != null)
+      {
+	progressListeners.remove(listener);
+      }
   }
-  
   /**
    * Uninstall the given write warning listener.
    *
@@ -738,10 +779,11 @@ public abstract class ImageWriter
   {
     if (listener == null)
       return;
-    
-    warningListeners.remove(listener);
+    if (warningListeners != null)
+      {
+	warningListeners.remove(listener);
+      }
   }
-  
   /**
    * Reset this writer's internal state.
    */
