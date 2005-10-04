@@ -1,3 +1,8 @@
+2005-10-04  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/AbstractButton.java
+	(AbstractButton): Set text to "" here.
+
 2005-10-04  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (clearRect): Check bg
