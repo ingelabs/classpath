@@ -1,3 +1,9 @@
+2005-10-04  Roman Kennke  <kennke@aicas.com>
+
+	Fixes Bug #24080
+	* javax/swing/SizeRequirements.java
+	(adjustGreater): Added check to prevent overflow.
+
 2005-10-04  David Gilbert  <david.gilbert@object-refinery.com>
 	
 	* javax/swing/plaf/basic/BasicToolTipUI.java

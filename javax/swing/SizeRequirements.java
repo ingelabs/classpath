@@ -340,7 +340,11 @@ public class SizeRequirements implements Serializable
     // Sum up (maxSize - prefSize) over all children
     int sumDelta = 0;
     for (int i = 0; i < children.length; i++)
-      sumDelta += children[i].maximum - children[i].preferred;
+      {
+        sumDelta += children[i].maximum - children[i].preferred;
+        if (sumDelta < 0)
+          sumDelta = Integer.MAX_VALUE;
+      }
 
     // If we have sumDelta == 0, then all components have prefSize == maxSize
     // and we can't do anything about it.
