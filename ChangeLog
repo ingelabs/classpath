@@ -1,3 +1,27 @@
+2005-10-04  David Gilbert  <david.gilbert@object-refinery.com>
+	
+	* javax/swing/plaf/basic/BasicToolTipUI.java
+	(accText): removed,
+	(accDeliminator): removed,
+	(accFont): removed,
+	(accFore): removed,
+	(getPreferredSize): removed accelerator code (now in MetalToolTipUI),
+	(getAcceleratorText): removed (equivalent is now in MetalToolTipUI),
+	(paint): removed accelerator painting,
+	* javax/swing/plaf/metal/MetalToolTipUI.java
+	(padSpaceBetweenStrings): new field,
+	(MetalToolTipUI): initialise defaults,
+	(getAcceleratorString): new method,
+	(installUI): new method,
+	(uninstallUI): new method,
+	(isAcceleratorHidden): new method,
+	(getPreferredSize): new method,
+	(paint): new method,
+	(fetchAcceleratorString): new private method,
+	(acceleratorToString): new private method,
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkButton): set tool tip.
+
 2005-10-04  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java

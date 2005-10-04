@@ -317,6 +317,7 @@ public class Demo
     else
       b = new JButton(title, icon);
     
+    b.setToolTipText(title);
     if (hAlign != -1) b.setHorizontalAlignment(hAlign);
     if (vAlign != -1) b.setVerticalAlignment(vAlign);
     if (hPos != -1) b.setHorizontalTextPosition(hPos);
