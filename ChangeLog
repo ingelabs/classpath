@@ -9,6 +9,11 @@
 
 2005-10-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        *  doc/www.gnu.org/corba.wml: 
+        Link to  http://doc.omg.org/vendor-tags. 
+
+2005-10-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
         * gnu/CORBA/Minor.java: New file.
         * gnu/CORBA/CDR/IDLTypeHelper.java,
         gnu/CORBA/CDR/UnknownExceptionCtxHandler.java,

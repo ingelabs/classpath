@@ -6,7 +6,8 @@
 
 <boxtitle>GNU Classpath::Object management group</boxtitle>
 <boxitem>
-This page is referenced from the official OMG Vendor tag list,
+This page is referenced from the official
+<a href="http://doc.omg.org/vendor-tags">OMG Vendor tag list</a>,
 maintained by the <a href = "http://www.corba.org/">OMG</a>. 
 It is is designed to help programmers debugging interoperation
 with our ORB. 
