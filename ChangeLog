@@ -1,3 +1,8 @@
+2005-10-04  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/plaf/metal/MetalBorders.java (paintBorder): Check
+	whether Component is JTextComponent.
+
 2005-10-04  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* javax/imageio/ImageWriter.java (availableLocales, locale,
