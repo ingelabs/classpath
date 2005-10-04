@@ -48,6 +48,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.MissingResourceException;
 import java.util.Set;
 
 import javax.imageio.event.IIOReadProgressListener;
@@ -1137,12 +1139,78 @@ public abstract class ImageReader
    *
    * @param warning the warning message
    *
-   * @throw IllegalArgumentException if warning is null
+   * @exception IllegalArgumentException if warning is null
    */
   protected void processWarningOccurred(String warning)
   {
     if (warning == null)
       throw new IllegalArgumentException ("null argument");
+    if (warningListeners != null)
+      {
+	Iterator it = warningListeners.iterator();
+
+	while (it.hasNext())
+	  {
+	    IIOReadWarningListener listener =
+	      (IIOReadWarningListener) it.next();
+	    listener.warningOccurred(this, warning);
+	  }
+      }
+  }
+
+  /**
+   * Notify all installed warning listeners, by calling their
+   * warningOccurred methods, that a warning message has been raised.
+   * The warning message is retrieved from a resource bundle, using
+   * the given basename and keyword.
+   *
+   * @param baseName the basename of the resource from which to
+   * retrieve the warning message
+   * @param keyword the keyword used to retrieve the warning from the
+   * resource bundle
+   *
+   * @exception IllegalArgumentException if either baseName or keyword
+   * is null
+   * @exception IllegalArgumentException if no resource bundle is
+   * found using baseName
+   * @exception IllegalArgumentException if the given keyword produces
+   * no results from the resource bundle
+   * @exception IllegalArgumentException if the retrieved object is
+   * not a String
+   */
+  protected void processWarningOccurred(String baseName,
+					String keyword)
+  {
+    if (baseName == null || keyword == null)
+      throw new IllegalArgumentException ("null argument");
+
+    ResourceBundle b = null;
+
+    try
+      {
+	b = ResourceBundle.getBundle(baseName, getLocale());
+      }
+    catch (MissingResourceException e)
+      {
+	throw new IllegalArgumentException ("no resource bundle found");
+      }
+
+    Object str = null;
+
+    try
+      {
+	str = b.getObject(keyword);
+      }
+    catch (MissingResourceException e)
+      {
+	throw new IllegalArgumentException ("no results found for keyword");
+      }
+
+    if (! (str instanceof String))
+      throw new IllegalArgumentException ("retrieved object not a String");
+
+    String warning = (String) str;
+
     if (warningListeners != null)
       {
 	Iterator it = warningListeners.iterator();

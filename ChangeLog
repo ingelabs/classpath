@@ -1,5 +1,12 @@
 2005-10-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* javax/imageio/ImageWriter.java
+	(processWarningOccurred(int,String,String)): New method.
+	* javax/imageio/ImageReader.java
+	(processWarningOccurred(String,String)): New method.
+
+2005-10-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* javax/imageio/ImageReader.java (getDestination): Throw
 	IIOException, not IOException.
 	* javax/imageio/ImageTypeSpecifier.java
