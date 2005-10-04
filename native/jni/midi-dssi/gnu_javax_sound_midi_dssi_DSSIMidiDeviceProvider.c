@@ -41,7 +41,8 @@ exception statement from your version. */
 #include "dssi_data.h"
 
 void
-Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_dlclose_1 (JNIEnv *env, jclass clazz __attribute__((unused)), jlong sohandle)
+Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_dlclose_1 
+  (JNIEnv *env, jclass clazz __attribute__((unused)), jlong sohandle)
 {
   dssi_data *data = (dssi_data *) (long) sohandle;
   dlclose (data->dlhandle);
@@ -49,7 +50,8 @@ Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_dlclose_1 (JNIEnv *env, jc
 }
 
 jlong
-Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_dlopen_1 (JNIEnv *env, jclass clazz __attribute__((unused)), jstring name)
+Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_dlopen_1 
+  (JNIEnv *env, jclass clazz __attribute__((unused)), jstring name)
 {
   const char *filename;
   void *handle;
@@ -58,9 +60,7 @@ Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_dlopen_1 (JNIEnv *env, jcl
   
   filename = JCL_jstring_to_cstring (env, name);
   if (filename == NULL)
-    {
-      return (0);
-    }
+    return (0);
   
   handle = dlopen(filename, RTLD_NOW);
   
@@ -87,7 +87,9 @@ Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_dlopen_1 (JNIEnv *env, jcl
 }
 
 jlong
-Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSIHandle_1 (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), jlong handle, jlong index)
+Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSIHandle_1 
+  (JNIEnv *env __attribute__((unused)), 
+   jclass clazz __attribute__((unused)), jlong handle, jlong index)
 { 
   dssi_data *data = JLONG_TO_PTR(dssi_data,handle);
   data->desc = (data->fn)(index);
@@ -95,7 +97,8 @@ Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSIHandle_1 (JNIEnv *e
 }
 
 jstring
-Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSIName_1 (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
+Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSIName_1 
+  (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
 {
   DSSI_Descriptor *desc = JLONG_TO_PTR(DSSI_Descriptor,handle);
   const char *str = desc->LADSPA_Plugin->Name;
@@ -104,7 +107,8 @@ Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSIName_1 (JNIEnv *env
 } 
 
 jstring
-Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSICopyright_1 (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
+Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSICopyright_1 
+  (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
 {
   DSSI_Descriptor *desc = JLONG_TO_PTR(DSSI_Descriptor,handle);
   const char *str = desc->LADSPA_Plugin->Copyright;
@@ -113,7 +117,8 @@ Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSICopyright_1 (JNIEnv
 } 
 
 jstring
-Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSIVendor_1 (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
+Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSIVendor_1 
+  (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
 {
   DSSI_Descriptor *desc = JLONG_TO_PTR(DSSI_Descriptor,handle);
   const char *str = desc->LADSPA_Plugin->Maker;
@@ -122,7 +127,8 @@ Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSIVendor_1 (JNIEnv *e
 }
 
 jstring
-Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSILabel_1 (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
+Java_gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider_getDSSILabel_1 
+  (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
 {
   DSSI_Descriptor *desc = JLONG_TO_PTR(DSSI_Descriptor,handle);
   const char *str = desc->LADSPA_Plugin->Label;

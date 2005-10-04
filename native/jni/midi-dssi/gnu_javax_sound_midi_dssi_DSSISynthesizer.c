@@ -40,6 +40,13 @@ exception statement from your version. */
 
 #include "dssi_data.h"
 
+/**
+ * The jack callback routine.
+ *
+ * This function is called by the jack audio system in its own thread
+ * whenever it needs new audio data.
+ *
+ */
 static int
 process (jack_nframes_t nframes, void *arg)
 {    
@@ -48,20 +55,27 @@ process (jack_nframes_t nframes, void *arg)
   int index;
   jack_default_audio_sample_t *buffer;
 
-  gettimeofday(&tv, NULL);
-
   /* Look through the event buffer to see if anything needs doing.  */
   for ( index = data->midiEventReadIndex; 
 	index != data->midiEventWriteIndex;
 	index = (index + 1) % EVENT_BUFFER_SIZE);
 
+  /* Call the synth audio processing routine.  */
   data->desc->run_synth(data->plugin_handle,
 			nframes,
 			&data->midiEventBuffer[data->midiEventReadIndex],
 			data->midiEventWriteIndex - data->midiEventReadIndex);
 
+  /* Update the read index on our circular buffer.  */
   data->midiEventReadIndex = data->midiEventWriteIndex;
 
+  /* Copy output from the synth to jack.  
+
+     FIXME: This is hack that only gets one channel from the synth and
+     send that to both jack ports (until we handle stero synths
+     properly).
+
+     FIXME: Can we avoid this copying?  */
   buffer = jack_port_get_buffer(data->jack_left_output_port, nframes);
   memcpy (buffer, data->left_buffer, nframes * sizeof(LADSPA_Data));
   buffer = jack_port_get_buffer(data->jack_right_output_port, nframes);
@@ -73,8 +87,15 @@ process (jack_nframes_t nframes, void *arg)
 /* FIXME: Temporary hack.  */
 float mctrl = 0.9f;
 
+/**
+ * Open a new synthesizer.  This currently involves instantiating a
+ * new synth, creating a new jack client connection, and activating
+ * both.
+ *
+ */
 JNIEXPORT void JNICALL
-Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1 (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1 
+  (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
 {
   unsigned int port_count, j;
   dssi_data *data = (dssi_data *) (long) handle;
@@ -89,8 +110,6 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1 (JNIEnv *env, jclass clazz
   data->plugin_handle = (data->desc->LADSPA_Plugin->instantiate)(data->desc->LADSPA_Plugin, 
 								 jack_get_sample_rate (data->jack_client));
   
-  printf ("open() plugin_handle = 0x%x\n", data->plugin_handle);
-
   if (jack_set_process_callback (data->jack_client, process, data) != 0)
     {
       JCL_ThrowException (env, "java/io/IOException", 
@@ -122,11 +141,13 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1 (JNIEnv *env, jclass clazz
     {  
       LADSPA_PortDescriptor pod =
 	data->desc->LADSPA_Plugin->PortDescriptors[j];
-      
       if (LADSPA_IS_PORT_AUDIO(pod) && LADSPA_IS_PORT_OUTPUT(pod))
   	{
-	  data->left_buffer = (float *) calloc(jack_get_buffer_size(data->jack_client), sizeof(float));
-	  (data->desc->LADSPA_Plugin->connect_port)(data->plugin_handle, j, data->left_buffer);
+	  data->left_buffer = 
+	    (float *) calloc(jack_get_buffer_size(data->jack_client), 
+			     sizeof(float));
+	  (data->desc->LADSPA_Plugin->connect_port)(data->plugin_handle, j, 
+						    data->left_buffer);
   	}
       else 
 	if (LADSPA_IS_PORT_CONTROL(pod) && LADSPA_IS_PORT_INPUT(pod))
@@ -143,8 +164,15 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1 (JNIEnv *env, jclass clazz
 			"can't activate jack client"); 
 }
 
+/**
+ * This is called when we receive a new MIDI NOTE ON message.  Simply
+ * stick an appropriate event in the event buffer.  This will get
+ * processed in the jack callback function.
+ */
 JNIEXPORT void JNICALL 
-Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOn_1 (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), jlong handle __attribute__((unused)), jint channel __attribute__((unused)), jint note __attribute__((unused)), jint velocity __attribute__((unused)))
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOn_1 
+  (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), 
+   jlong handle, jint channel, jint note, jint velocity)
 {
   dssi_data *data = (dssi_data *) (long) handle;
 
@@ -155,12 +183,21 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOn_1 (JNIEnv *env __attribute
   ev->data.control.channel = channel;
   ev->data.note.note = note;
   ev->data.note.velocity = velocity;
-  
-  data->midiEventWriteIndex = (data->midiEventWriteIndex + 1) % EVENT_BUFFER_SIZE;
+
+  data->midiEventWriteIndex = 
+    (data->midiEventWriteIndex + 1) % EVENT_BUFFER_SIZE;
 }
 
+/**
+ * This is called when we receive a new MIDI NOTE OFF message.  Simply
+ * stick an appropriate event in the event buffer.  This will get
+ * processed in the jack callback function.
+ */
 JNIEXPORT void JNICALL 
-Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOff_1 (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), jlong handle __attribute__((unused)), jint channel __attribute__((unused)), jint note __attribute__((unused)), jint velocity __attribute__((unused)))
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOff_1 
+  (JNIEnv *env __attribute__((unused)), 
+   jclass clazz __attribute__((unused)), 
+   jlong handle, jint channel, jint note, jint velocity)
 {
   dssi_data *data = (dssi_data *) (long) handle;
 
@@ -171,23 +208,32 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOff_1 (JNIEnv *env __attribut
   ev->data.control.channel = channel;
   ev->data.note.note = note;
   ev->data.note.velocity = velocity;
-  
-  data->midiEventWriteIndex = (data->midiEventWriteIndex + 1) % EVENT_BUFFER_SIZE;
+
+  data->midiEventWriteIndex = 
+    (data->midiEventWriteIndex + 1) % EVENT_BUFFER_SIZE;
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_setPolyPressure_1 (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), jlong handle __attribute__((unused)), jint channel __attribute__((unused)), jint note __attribute__((unused)), jint velocity __attribute__((unused)))
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_setPolyPressure_1 
+  (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), 
+   jlong handle __attribute__((unused)), jint channel __attribute__((unused)), 
+   jint note __attribute__((unused)), jint velocity __attribute__((unused)))
 {
 }
 
 JNIEXPORT jint JNICALL 
-Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getPolyPressure_1 (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), jlong handle __attribute__((unused)), jint channel __attribute__((unused)), jint note __attribute__((unused)))
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getPolyPressure_1 
+  (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), 
+   jlong handle __attribute__((unused)), jint channel __attribute__((unused)), 
+   jint note __attribute__((unused)))
 {
   return 0;
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_close_1 (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), jlong handle __attribute__((unused)))
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_close_1 
+  (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), 
+   jlong handle __attribute__((unused)))
 {
 }
 

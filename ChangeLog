@@ -1,3 +1,21 @@
+2005-10-04  Anthony Green  <green@redhat.com>
+
+	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c 
+	(process): Add comments.  Remove unused gettimeofday call.
+	(Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1): Remove
+	debug output.  Add comments.
+	(Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOn_1,
+	Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOff_1): Add
+	comments.  Remove bogus __attribute__((unused)).
+	* native/jni/midi-dssi/dssi_data.h (JLONG_TO_PTR, PTR_TO_JLONG): 
+	Document helper macros.
+	(dssi_data): Document.
+	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider.c:
+	Formatting fixes.
+	* native/jni/midi-alsa/gnu_javax_sound_midi_alsa_AlsaPortDevice.c
+	(Java_gnu_javax_sound_midi_alsa_AlsaPortDevice_run_1receiver_1thread_1):
+	Remove debugging output.
+
 2005-10-04  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/AbstractButton.java

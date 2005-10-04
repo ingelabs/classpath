@@ -50,24 +50,55 @@ exception statement from your version. */
 #include "target_native_misc.h"
 #include "../classpath/jcl.h"
 
+/* Specify the size of the circular buffer.  It only needs to be big
+   enough to hold the events that happen between jack callbacks (~
+   1/40th of a second).  */
 #define EVENT_BUFFER_SIZE 1024
 
+/* Helper macros for going between pointers and jlongs.  */
 #define JLONG_TO_PTR(T,P) ((T *)(long)P)
 #define PTR_TO_JLONG(P) ((jlong)(long)P)
 
+
+/* Every DSSI Synthesizer has one of these associated with it.  The
+   Java class sees it as a "long" handle.  */
+
 typedef struct
 {
+  /* This is a handle to the dlopen'ed .so file containing the DSSI
+     synthesizer.  */
   void *dlhandle;
+
+  /* The function to call to get the DSS_Descriptor.  */
   DSSI_Descriptor_Function fn;
+
+  /* The descriptor for this synthesizer.  See the dssi.h system
+     header.  */
   const DSSI_Descriptor *desc;
+
+  /* We currently open a jack client connection for every
+     synthesizer.  */
   jack_client_t *jack_client;
+
+  /* We currently only handle stereo jack connections.  Output from
+     mono synthesizers is sent to both left and right ports.  */
   jack_port_t *jack_left_output_port;
   jack_port_t *jack_right_output_port;
+
+  /* We use a circular buffer to hold MIDI events before processing
+     them in the jack audio processing callback function.  */
   snd_seq_event_t midiEventBuffer[EVENT_BUFFER_SIZE];
   int midiEventReadIndex; 
   int midiEventWriteIndex;
+
+  /* This is a handle the synthesizers underlying LADSPA structure.
+     See the ladspa.h system header for details.  */
   LADSPA_Handle plugin_handle;
+
+  /* These are buffers we pass to the DSSI Synthesizer for
+     filling.  */
   float *left_buffer;
   float *right_buffer;
+
 } dssi_data;
 

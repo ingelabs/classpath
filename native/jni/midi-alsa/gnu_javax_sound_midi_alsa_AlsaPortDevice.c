@@ -59,7 +59,6 @@ Java_gnu_javax_sound_midi_alsa_AlsaPortDevice_run_1receiver_1thread_1
   snd_seq_port_subscribe_alloca (&subs);
 
   rc = snd_seq_open (&seq, "default", SND_SEQ_OPEN_DUPLEX, SND_SEQ_NONBLOCK);
-  puts (snd_strerror(rc));
 
   snd_seq_port_info_set_capability (pinfo, SND_SEQ_PORT_CAP_WRITE);
   snd_seq_port_info_set_type (pinfo, SND_SEQ_PORT_TYPE_MIDI_GENERIC);
