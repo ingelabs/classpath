@@ -470,10 +470,7 @@ public class DefaultCaret extends Rectangle
    */
   protected final void repaint()
   {
-    // FIXME: Is this good? This possibly causes alot of the component
-    // hierarchy to be repainted on every caret blink.
-    if (textComponent != null)
-      textComponent.repaint();
+    textComponent.repaint(this);
   }
 
   /**
@@ -668,8 +665,11 @@ public class DefaultCaret extends Rectangle
    */  
   public void setVisible(boolean v)
   {
-    visible = v;
-    repaint();
+    if (v != visible)
+      {
+        visible = v;
+        repaint();
+      }
   }
 
   /**
