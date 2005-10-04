@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package org.omg.IOP;
 
+import gnu.CORBA.Minor;
+
 import org.omg.CORBA.Any;
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.MARSHAL;
@@ -149,6 +151,7 @@ public abstract class TaggedComponentHelper
     catch (IOException e)
       {
         MARSHAL m = new MARSHAL();
+        m.minor = Minor.Encapsulation;
         m.initCause(e);
         throw m;
       }
@@ -175,6 +178,7 @@ public abstract class TaggedComponentHelper
     catch (IOException e)
       {
         MARSHAL m = new MARSHAL();
+        m.minor = Minor.Encapsulation;
         m.initCause(e);
         throw m;
       }

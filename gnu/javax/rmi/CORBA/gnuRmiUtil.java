@@ -39,6 +39,7 @@ exception statement from your version. */
 package gnu.javax.rmi.CORBA;
 
 import gnu.CORBA.Functional_ORB;
+import gnu.CORBA.Minor;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.CDR.Vio;
 import gnu.CORBA.CDR.gnuRuntime;
@@ -209,6 +210,7 @@ public class gnuRmiUtil
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL("Cannot write " + object);
+        m.minor = Minor.ValueFields;
         m.initCause(ex);
         throw m;
       }
@@ -246,7 +248,11 @@ public class gnuRmiUtil
           output.write_value((Serializable) object, xClass);
       }
     else
-      throw new MARSHAL(xClass + " is not Serializable");
+      {
+        MARSHAL m = new MARSHAL(xClass + " is not Serializable");
+        m.minor = Minor.NonSerializable;
+        throw m;
+      }
   }
 
   /**
@@ -275,13 +281,21 @@ public class gnuRmiUtil
               if (fc == null)
                 fc = interfaces[i];
               else
-                throw new MARSHAL("Both " + fc + " and " + interfaces[i]
+                {
+                  MARSHAL m = new MARSHAL("Both " + fc + " and " + interfaces[i]
                   + " extends Remote");
+                  m.minor = Minor.TargetConversion;
+                  throw m;
+                }
             }
       }
     if (fc == null)
-      throw new MARSHAL(object.getClass()
+      {
+        MARSHAL m = new MARSHAL(object.getClass()
         + " does not implement any interface, derived from Remote");
+        m.minor = Minor.TargetConversion;
+        throw m;
+      }
     return fc;
   }
 
@@ -500,6 +514,7 @@ public class gnuRmiUtil
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL("Unable to export " + implementation);
+        m.minor = Minor.TargetConversion;
         m.initCause(ex);
         throw m;
       }
@@ -583,6 +598,7 @@ public class gnuRmiUtil
         catch (Exception ex)
           {
             MARSHAL m = new MARSHAL("writeExternal failed");
+            m.minor = Minor.Value;
             m.initCause(ex);
             throw m;
           }
@@ -715,6 +731,7 @@ public class gnuRmiUtil
             {
               MARSHAL m = new MARSHAL("Cannot get stub from interface "
                 + clz.getClass().getName());
+              m.minor = Minor.TargetConversion;
               m.initCause(e);
               throw m;
             }
@@ -841,6 +858,7 @@ public class gnuRmiUtil
     catch (Exception e)
       {
         MARSHAL m = new MARSHAL("Unable to instantiate " + clz);
+        m.minor = Minor.Instantiation;
         m.initCause(e);
         throw m;
       }
@@ -913,7 +931,7 @@ public class gnuRmiUtil
         MARSHAL m = new MARSHAL("Cannot read " + o_class.getName() + " field "
           + f);
         m.initCause(ex);
-        m.printStackTrace();
+        m.minor = Minor.ValueFields;
         throw m;
       }
   }

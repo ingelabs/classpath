@@ -110,6 +110,7 @@ public class universalHolder
     catch (IOException ex)
       {
         MARSHAL t = new MARSHAL();
+        t.minor = Minor.Any;
         t.initCause(ex);
         throw t;
       }
@@ -142,6 +143,7 @@ public class universalHolder
     catch (IOException ex)
       {
         MARSHAL t = new MARSHAL();
+        t.minor = Minor.Any;
         t.initCause(ex);
         throw t;
       }

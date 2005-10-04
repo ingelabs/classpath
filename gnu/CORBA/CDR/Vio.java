@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
+import gnu.CORBA.Minor;
 import gnu.CORBA.ObjectCreator;
 
 import org.omg.CORBA.CustomMarshal;
@@ -238,6 +239,7 @@ public abstract class Vio
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL();
+        m.minor = Minor.Value;        
         m.initCause(ex);
         throw m;
       }
@@ -313,8 +315,12 @@ public abstract class Vio
               {
                 if (value_class != null
                   && !value_class.isAssignableFrom(ox.getClass()))
-                  throw new MARSHAL(ox.getClass() + " is not a "
+                  {
+                    MARSHAL m = new MARSHAL(ox.getClass() + " is not a "
                     + value_class.getName());
+                    m.minor = Minor.ClassCast;
+                    throw m;
+                  }
               }
           }
         else
@@ -331,12 +337,12 @@ public abstract class Vio
     catch (SystemException sysEx)
       {
         // OK.
-        sysEx.printStackTrace();
         throw sysEx;
       }
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL("Cant read " + value_class);
+        m.minor = Minor.Value;
         m.initCause(ex);
         throw m;
       }
@@ -414,6 +420,7 @@ public abstract class Vio
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL();
+        m.minor = Minor.Value;
         m.initCause(ex);
         throw m;
       }
@@ -499,10 +506,10 @@ public abstract class Vio
               }
           }
       }
-    catch (Throwable ex)
+    catch (IOException ex)
       {
-        ex.printStackTrace();
         MARSHAL m = new MARSHAL("Unable to read chunks");
+        m.minor = Minor.Value;
         m.initCause(ex);
         throw m;
       }
@@ -555,11 +562,23 @@ public abstract class Vio
 
         // The nested value should be aways chunked.
         if ((value_tag & vf_CHUNKING) == 0)
-          throw new MARSHAL("readNestedValue: must be chunked");
+          {
+            MARSHAL m = new MARSHAL("readNestedValue: must be chunked");
+            m.minor = Minor.Chunks;
+            throw m;
+          }
         else if (value_tag == vt_NULL)
-          throw new MARSHAL("readNestedValue: null");
+          {
+            MARSHAL m = new MARSHAL("readNestedValue: nul");
+            m.minor = Minor.Chunks;
+            throw m;
+          }
         else if (value_tag == vt_INDIRECTION)
-          throw new MARSHAL("readNestedValue: indirection");
+          {
+            MARSHAL m = new MARSHAL("readNestedValue: indirection");
+            m.minor = Minor.Chunks;
+            throw m;
+          }
         else
           {
             // Read the value.
@@ -709,11 +728,19 @@ public abstract class Vio
     if (!ok)
       {
         if (value != null)
-          throw new MARSHAL(value.getClass().getName()
+          {
+            MARSHAL m = new MARSHAL(value.getClass().getName()
             + " must be Streamable, CustomMarshal or Serializable");
+            m.minor = Minor.UnsupportedValue;
+            throw m;
+          }
         else
-          throw new MARSHAL("Unable to instantiate " + id + ":" + list(ids)
+          {
+            MARSHAL m = new MARSHAL("Unable to instantiate " + id + ":" + list(ids)
             + " helper " + helper);
+            m.minor = Minor.UnsupportedValue;
+            throw m;
+          }
       }
     else
       return (Serializable) value;
@@ -906,7 +933,7 @@ public abstract class Vio
             else if (runtime.target == value)
               {
                 if (!writeSelf(output, value))
-                  throw new MARSHAL("Recursive helper call for "
+                  throw new InternalError("Recursive helper call for "
                     + value.getClass().getName());
                 return;
               }
@@ -1057,13 +1084,21 @@ public abstract class Vio
 
     int offset = an_input.read_long();
     if (offset > -INT_SIZE)
-      throw new MARSHAL("Indirection tag refers to " + offset
+      {
+        MARSHAL m = new MARSHAL("Indirection tag refers to " + offset
         + " (must be less than -" + INT_SIZE + ")");
+        m.minor = Minor.Offset;
+        throw m;
+      }
 
     int stored_at = current_pos + offset;
 
     if (in.getRunTime() == null)
-      throw new MARSHAL(stored_at + " offset " + offset + ": not written");
+      {
+        MARSHAL m = new MARSHAL(stored_at + " offset " + offset + ": not written");
+        m.minor = Minor.Value;
+        throw m;
+      }
 
     return (Serializable) in.getRunTime().isObjectWrittenAt(stored_at, offset);
   }
@@ -1079,12 +1114,20 @@ public abstract class Vio
   {
     if ((value_tag < 0x7fffff00 || value_tag > 0x7fffffff)
       && value_tag != vt_NULL && value_tag != vt_INDIRECTION)
-      throw new MARSHAL("Invalid value record, unsupported header tag: "
+      {
+        MARSHAL m = new MARSHAL("Invalid value record, unsupported header tag: "
         + value_tag + " (0x" + Integer.toHexString(value_tag) + ")");
+        m.minor = Minor.ValueHeaderTag;
+        throw m;
+      }
 
     if ((value_tag & vf_MULTIPLE_IDS) != 0 && (value_tag & vf_ID) == 0)
-      throw new MARSHAL("Invalid value record header flag combination (0x"
+      {
+        MARSHAL m = new MARSHAL("Invalid value record header flag combination (0x"
         + Integer.toHexString(value_tag) + ")");
+        m.minor = Minor.ValueHeaderFlags;
+        throw m;
+      }
   }
 
   /**
@@ -1096,6 +1139,7 @@ public abstract class Vio
     MARSHAL m = new MARSHAL(msg + ":'" + id1 + "' versus '" + id2 + "'");
     if (e != null)
       m.initCause(e);
+    m.minor = Minor.Value;
     throw m;
   }
 
@@ -1177,6 +1221,7 @@ public abstract class Vio
         catch (Exception ex)
           {
             MARSHAL m = new MARSHAL("Unable to instantiate " + id);
+            m.minor = Minor.Instantiation;
             m.initCause(ex);
             throw m;
           }

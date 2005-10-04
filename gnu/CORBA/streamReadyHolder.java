@@ -98,7 +98,10 @@ public class streamReadyHolder
       }
     catch (IOException ex)
       {
-        throw new MARSHAL(ex + ":" + ex.getMessage());
+        MARSHAL m = new MARSHAL();
+        m.initCause(ex);
+        m.minor = Minor.CDR;
+        throw m;
       }
   }
 

@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.javax.rmi.CORBA;
 
+import gnu.CORBA.Minor;
 import gnu.CORBA.ObjectCreator;
 import gnu.CORBA.generalTypeCode;
 import gnu.CORBA.Poa.ORB_1_4;
@@ -217,6 +218,7 @@ public class UtilDelegateImpl
                   {
                     MARSHAL m = new MARSHAL("Unable to instantiate "
                       + tieClassName);
+                    m.minor = Minor.TargetConversion;
                     m.initCause(e);
                     throw m;
                   }
@@ -681,8 +683,12 @@ public class UtilDelegateImpl
         output.write_any(any);
       }
     else
-      throw new MARSHAL(object.getClass().getName()
-        + " must be CORBA Object, Remote or Serializable");
+      {
+        MARSHAL m = new MARSHAL(object.getClass().getName()
+          + " must be CORBA Object, Remote or Serializable");
+        m.minor = Minor.NonSerializable;
+        throw m;
+      }
   }
 
   /**

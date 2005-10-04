@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.GIOP;
 
+import gnu.CORBA.Minor;
 import gnu.CORBA.Version;
 import gnu.CORBA.CDR.BigEndianInputStream;
 import gnu.CORBA.CDR.BigEndianOutputStream;
@@ -283,7 +284,11 @@ public class MessageHeader
         byte[] xMagic = new byte[MAGIC.length];
         istream.read(xMagic);
         if (!Arrays.equals(xMagic, MAGIC))
-          throw new MARSHAL("Not a GIOP message");
+          {
+            MARSHAL m = new MARSHAL("Not a GIOP message");
+            m.minor = Minor.Giop;
+            throw m;
+          }
 
         version = Version.read_version(istream);
 
@@ -304,6 +309,7 @@ public class MessageHeader
     catch (IOException ex)
       {
         MARSHAL t = new MARSHAL();
+        t.minor = Minor.Header;
         t.initCause(ex);
         throw t;
       }
@@ -349,6 +355,7 @@ public class MessageHeader
     catch (IOException ex)
       {
         MARSHAL t = new MARSHAL();
+        t.minor = Minor.Header;
         t.initCause(ex);
         throw t;
       }
@@ -431,6 +438,7 @@ public class MessageHeader
     catch (IOException ioex)
       {
         MARSHAL m = new MARSHAL("Unable to read the message continuation.");
+        m.minor = Minor.Header;
         m.initCause(ioex);
         throw m;
       }

@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package org.omg.CORBA;
 
+import gnu.CORBA.Minor;
 import gnu.CORBA.Restricted_ORB;
 
 import org.omg.CORBA.portable.BoxedValueHelper;
@@ -119,7 +120,9 @@ public class StringValueHelper
       }
     catch (ClassCastException ex)
       {
-        throw new MARSHAL("String expected");
+        MARSHAL m = new MARSHAL("String expected");
+        m.minor = Minor.ClassCast;
+        throw m;
       }
   }
 

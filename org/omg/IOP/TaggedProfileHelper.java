@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package org.omg.IOP;
 
+import gnu.CORBA.Minor;
 import gnu.CORBA.CDR.cdrBufInput;
 import gnu.CORBA.CDR.cdrBufOutput;
 
@@ -178,6 +179,7 @@ public abstract class TaggedProfileHelper
         catch (IOException e)
           {
             MARSHAL m = new MARSHAL();
+            m.minor = Minor.Encapsulation;
             m.initCause(e);
             throw m;
           }

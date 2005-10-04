@@ -38,7 +38,8 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
-import org.omg.CORBA.CompletionStatus;
+import gnu.CORBA.Minor;
+
 import org.omg.CORBA.LocalObject;
 import org.omg.CORBA.MARSHAL;
 
@@ -234,8 +235,12 @@ public class gnuRuntime
     else if (e != null)
       return e.object;
     else
-      throw new MARSHAL("No object was written at " + x + " (offset " + offset
-        + ") r " + this + dump());
+      {
+        MARSHAL m = new MARSHAL("No object was written at " + x + 
+          " (offset " + offset + ") r " + this + dump());
+        m.minor = Minor.Graph;
+        throw m;
+      }
   }
 
   /**
@@ -244,7 +249,8 @@ public class gnuRuntime
   public void singleIdWritten(String id, int at)
   {
     if (sh_ids.containsKey(id))
-      throw new Error("Repetetive writing of the same string " + id + dump());
+      throw new InternalError("Repetetive writing of the same string " +
+        id + dump());
 
     Entry e = new Entry();
     e.at = at;
@@ -260,7 +266,8 @@ public class gnuRuntime
   public void multipleIdsWritten(String[] ids, int at)
   {
     if (sh_ids.containsKey(ids))
-      throw new Error("Repetetive writing of the same string " + ids + dump());
+      throw new InternalError("Repetetive writing of the same string " + 
+        ids + dump());
 
     Entry e = new Entry();
     e.at = at;

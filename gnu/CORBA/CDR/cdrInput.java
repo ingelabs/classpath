@@ -44,6 +44,7 @@ import gnu.CORBA.GIOP.CharSets_OSF;
 import gnu.CORBA.GIOP.cxCodeSet;
 import gnu.CORBA.IOR;
 import gnu.CORBA.IOR_Delegate;
+import gnu.CORBA.Minor;
 import gnu.CORBA.TypeCodeHelper;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.Version;
@@ -81,18 +82,17 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * A simple CORBA CDR (common data representation)
- * input stream, reading data from the
- * given {@link java.io.InputStream}. The primitive types
- * are aligned on they natural boundaries by implementing the
- * abstract method {@link #align(int boundary)}.
- *
- * The same class also implements {@link org.omg.CORBA.DataInputStream} to
- * read the object content in a user defined way.
+ * A simple CORBA CDR (common data representation) input stream, reading data
+ * from the given {@link java.io.InputStream}. The primitive types are aligned
+ * on they natural boundaries by implementing the abstract method
+ * {@link #align(int boundary)}.
  * 
- * TODO This class uses 16 bits per Unicode character only, as it was until
- * jdk 1.4 inclusive.
- *
+ * The same class also implements {@link org.omg.CORBA.DataInputStream} to read
+ * the object content in a user defined way.
+ * 
+ * TODO This class uses 16 bits per Unicode character only, as it was until jdk
+ * 1.4 inclusive.
+ * 
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
 public abstract class cdrInput
@@ -100,28 +100,26 @@ public abstract class cdrInput
   implements org.omg.CORBA.DataInputStream
 {
   /**
-   * The runtime, associated with this stream. This field is only used when 
+   * The runtime, associated with this stream. This field is only used when
    * reading and writing value types and filled-in in gnu.CORBA.CDR.Vio.
    */
-  public transient gnuRuntime runtime;  
-  
+  public transient gnuRuntime runtime;
+
   /**
-   * The message, explaining that the exception has been thrown due
-   * unexpected end of the input stream. This usually happens the
-   * server and client disagree on communication or data representation
-   * rules.
+   * The message, explaining that the exception has been thrown due unexpected
+   * end of the input stream. This usually happens the server and client
+   * disagree on communication or data representation rules.
    */
   protected static final String UNEXP_EOF = "Unexpected end of stream";
 
   /**
-   * This instance is used to convert primitive data types into the
-   * byte sequences.
+   * This instance is used to convert primitive data types into the byte
+   * sequences.
    */
   protected abstractDataInputStream b;
 
   /**
-   * The input stream, from where the data are actually
-   * being read.
+   * The input stream, from where the data are actually being read.
    */
   protected java.io.InputStream actual_stream;
 
@@ -141,43 +139,41 @@ public abstract class cdrInput
   protected cxCodeSet codeset = cxCodeSet.STANDARD;
 
   /**
-   * The name of the currently used narrow charset, null if
-   * the native narrow charset is used.
+   * The name of the currently used narrow charset, null if the native narrow
+   * charset is used.
    */
   private String narrow_charset = null;
 
   /**
-   * The name of the currently used wide charset, null if
-   * the native wide charset is used.
+   * The name of the currently used wide charset, null if the native wide
+   * charset is used.
    */
   private String wide_charset = null;
 
   /**
-   * True if the native code set is used for narrow characters.
-   * If the set is native, no the intermediate Reader object
-   * is instantiated when writing characters.
+   * True if the native code set is used for narrow characters. If the set is
+   * native, no the intermediate Reader object is instantiated when writing
+   * characters.
    */
   private boolean narrow_native;
 
   /**
-   * True if the native code set is used for wide characters.
-   * If the set is native, no the intermediate Reader object
-   * is instantiated when writing characters.
+   * True if the native code set is used for wide characters. If the set is
+   * native, no the intermediate Reader object is instantiated when writing
+   * characters.
    */
   private boolean wide_native;
 
   /**
-   * If true, the stream expect
-   * the multi-byte data in the form "less significant byte
-   * first" (Little Endian). This is the opposite to the
-   * java standard (Big Endian).
+   * If true, the stream expect the multi-byte data in the form "less
+   * significant byte first" (Little Endian). This is the opposite to the java
+   * standard (Big Endian).
    */
   private boolean little_endian;
 
   /**
-   * Creates the stream. The stream reads Big Endian by
-   * default.
-   *
+   * Creates the stream. The stream reads Big Endian by default.
+   * 
    * @param readFrom a stream to read CORBA input from.
    */
   public cdrInput(java.io.InputStream readFrom)
@@ -187,8 +183,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Creates the stream, requiring the subsequent call
-   * of {@link #setInputStream(java.io.InputStream)}.
+   * Creates the stream, requiring the subsequent call of
+   * {@link #setInputStream(java.io.InputStream)}.
    */
   public cdrInput()
   {
@@ -196,13 +192,12 @@ public abstract class cdrInput
   }
 
   /**
-   * Set the Big Endian or Little Endian encoding.
-   * The stream reads Big Endian by default.
-   *
-   * @param use_little_endian if true, the stream expect
-   * the multi-byte data in the form "less significant byte
-   * first" (Little Endian). This is the opposite to the
-   * java standard (Big Endian).
+   * Set the Big Endian or Little Endian encoding. The stream reads Big Endian
+   * by default.
+   * 
+   * @param use_little_endian if true, the stream expect the multi-byte data in
+   * the form "less significant byte first" (Little Endian). This is the
+   * opposite to the java standard (Big Endian).
    */
   public void setBigEndian(boolean use_big_endian)
   {
@@ -212,14 +207,14 @@ public abstract class cdrInput
 
   /**
    * Get the used encoding.
-   *
+   * 
    * @param true for Big Endian, false for Little Endian.
    */
   public boolean isBigEndian()
   {
     return !little_endian;
   }
-  
+
   /**
    * Clone all important settings to another stream.
    */
@@ -233,7 +228,7 @@ public abstract class cdrInput
 
   /**
    * Set the input stream that receives the CORBA input.
-   *
+   * 
    * @param readFrom the stream.
    */
   public void setInputStream(java.io.InputStream readFrom)
@@ -247,13 +242,14 @@ public abstract class cdrInput
   }
 
   /**
-   * Set the alignment offset, if the index of the first byte in the
-   * stream is different from 0.
+   * Set the alignment offset, if the index of the first byte in the stream is
+   * different from 0.
    */
   public abstract void setOffset(int offset);
 
   /**
    * Set the orb, associated with this stream.
+   * 
    * @param an_orb
    */
   public void setOrb(ORB an_orb)
@@ -262,8 +258,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Set the GIOP version. Some data types are written differently
-   * for the different versions. The default version is 1.0 .
+   * Set the GIOP version. Some data types are written differently for the
+   * different versions. The default version is 1.0 .
    */
   public void setVersion(Version giop_version)
   {
@@ -276,8 +272,8 @@ public abstract class cdrInput
   public abstract void align(int boundary);
 
   /**
-   * Reads the CORBA unsigned long (java int), returning the
-   * value in the sufficiently large java long.
+   * Reads the CORBA unsigned long (java int), returning the value in the
+   * sufficiently large java long.
    */
   public long gnu_read_ulong()
   {
@@ -290,6 +286,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -300,8 +297,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the unsigned short integer value and return it as java
-   * int, sufficiently large to hold all values.
+   * Read the unsigned short integer value and return it as java int,
+   * sufficiently large to hold all values.
    */
   public int gnu_read_ushort()
   {
@@ -313,6 +310,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -325,6 +323,7 @@ public abstract class cdrInput
 
   /**
    * Return the associated {@link ORB}.
+   * 
    * @return the associated {@link ORB} or null is no such is set.
    */
   public ORB orb()
@@ -336,7 +335,7 @@ public abstract class cdrInput
    * Read a single byte directly from the buffer.
    */
   public int read()
-           throws java.io.IOException
+    throws java.io.IOException
   {
     try
       {
@@ -345,6 +344,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -354,7 +354,7 @@ public abstract class cdrInput
    * Read bytes directly from the buffer.
    */
   public int read(byte[] x, int ofs, int len)
-           throws java.io.IOException
+    throws java.io.IOException
   {
     try
       {
@@ -363,6 +363,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -372,7 +373,7 @@ public abstract class cdrInput
    * Read bytes directly from the buffer.
    */
   public int read(byte[] x)
-           throws java.io.IOException
+    throws java.io.IOException
   {
     try
       {
@@ -381,24 +382,25 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
   }
 
   /**
-   * Read the CORBA object. The object to read is represented in the
-   * form of the plain (not a string-encoded) IOR profile without the
-   * heading endian indicator. The responsible method for reading such
-   * data is {@link IOR.read_no_endian}.
-   *
-   * The returned object is usually casted into the given type using
-   * the .narrow method of its helper, despite in some cases the direct
-   * cast would also work.
-   *
-   * The null objects are recognised from the empty profile set.
-   * For such objects, null is returned.
-   *
+   * Read the CORBA object. The object to read is represented in the form of the
+   * plain (not a string-encoded) IOR profile without the heading endian
+   * indicator. The responsible method for reading such data is
+   * {@link IOR.read_no_endian}.
+   * 
+   * The returned object is usually casted into the given type using the .narrow
+   * method of its helper, despite in some cases the direct cast would also
+   * work.
+   * 
+   * The null objects are recognised from the empty profile set. For such
+   * objects, null is returned.
+   * 
    * @return the loaded and constructed object.
    */
   public org.omg.CORBA.Object read_Object()
@@ -447,8 +449,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the type code. The type code format is defined in the
-   * CORBA documenation.
+   * Read the type code. The type code format is defined in the CORBA
+   * documenation.
    */
   public TypeCode read_TypeCode()
   {
@@ -468,9 +470,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the CORBA {@link Any}. This method first reads the
-   * type code, then delegates the functionality
-   * to {@link Any#read_value}.
+   * Read the CORBA {@link Any}. This method first reads the type code, then
+   * delegates the functionality to {@link Any#read_value}.
    */
   public Any read_any()
   {
@@ -481,8 +482,7 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the boolean, treating any non zero byte as true,
-   * zero byte as false.
+   * Read the boolean, treating any non zero byte as true, zero byte as false.
    */
   public boolean read_boolean()
   {
@@ -493,6 +493,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -511,12 +512,13 @@ public abstract class cdrInput
       {
         for (int i = offs; i < offs + len; i++)
           {
-            x [ i ] = b.read() == 0 ? false : true;
+            x[i] = b.read() == 0 ? false : true;
           }
       }
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -528,8 +530,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Read a character using narrow charset encoding. Depending form
-   * which encoding is set, this still can be Unicode or ever wider.
+   * Read a character using narrow charset encoding. Depending form which
+   * encoding is set, this still can be Unicode or ever wider.
    */
   public char read_char()
   {
@@ -543,6 +545,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -563,18 +566,19 @@ public abstract class cdrInput
         if (narrow_native)
           {
             for (int i = offset; i < offset + length; i++)
-              x [ i ] = (char) b.read();
+              x[i] = (char) b.read();
           }
         else
           {
-            InputStreamReader reader =
-              new InputStreamReader((InputStream) b, narrow_charset);
+            InputStreamReader reader = new InputStreamReader((InputStream) b,
+              narrow_charset);
             reader.read(x, offset, length);
           }
       }
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -598,6 +602,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -618,12 +623,13 @@ public abstract class cdrInput
         align(8);
         for (int i = offs; i < offs + len; i++)
           {
-            x [ i ] = b.readDouble();
+            x[i] = b.readDouble();
           }
       }
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -635,10 +641,9 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the encapsulated stream.
-   * If the encapsulated sequence appears to be in the
-   * Little endian format, the flag of the returned stream
-   * is set to read Little endian.
+   * Read the encapsulated stream. If the encapsulated sequence appears to be in
+   * the Little endian format, the flag of the returned stream is set to read
+   * Little endian.
    */
   public cdrBufInput read_encapsulation()
   {
@@ -646,10 +651,9 @@ public abstract class cdrInput
       {
         int l = read_long();
 
-        byte[] r = new byte[ l ];
+        byte[] r = new byte[l];
         int n = 0;
-        reading:
-        while (n < r.length)
+        reading: while (n < r.length)
           {
             n += read(r, n, r.length - n);
           }
@@ -669,6 +673,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -680,9 +685,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the CORBA fixed (the end of the <code>fixed</code>
-   * can be determined by its last byte). The scale is always
-   * assumed to be zero.
+   * Read the CORBA fixed (the end of the <code>fixed</code> can be determined
+   * by its last byte). The scale is always assumed to be zero.
    */
   public BigDecimal read_fixed()
   {
@@ -693,6 +697,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -716,6 +721,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -736,12 +742,13 @@ public abstract class cdrInput
         align(4);
         for (int i = offs; i < offs + len; i++)
           {
-            x [ i ] = b.readFloat();
+            x[i] = b.readFloat();
           }
       }
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -765,6 +772,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -785,12 +793,13 @@ public abstract class cdrInput
         align(4);
         for (int i = offs; i < offs + len; i++)
           {
-            x [ i ] = b.readInt();
+            x[i] = b.readInt();
           }
       }
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -813,7 +822,9 @@ public abstract class cdrInput
       }
     catch (EOFException ex)
       {
-        throw new MARSHAL(UNEXP_EOF);
+        MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
+        throw t;
       }
 
     catch (IOException ex)
@@ -832,12 +843,13 @@ public abstract class cdrInput
         align(8);
         for (int i = offs; i < offs + len; i++)
           {
-            x [ i ] = b.readLong();
+            x[i] = b.readLong();
           }
       }
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -860,6 +872,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -882,6 +895,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -893,15 +907,14 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the length of the byte array as CORBA long and then
-   * the array itseld.
+   * Read the length of the byte array as CORBA long and then the array itseld.
    */
   public byte[] read_sequence()
   {
     try
       {
         int l = read_long();
-        byte[] buf = new byte[ l ];
+        byte[] buf = new byte[l];
         if (l > 0)
           {
             b.readFully(buf);
@@ -911,6 +924,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -934,6 +948,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -954,12 +969,13 @@ public abstract class cdrInput
         align(2);
         for (int i = offs; i < offs + len; i++)
           {
-            x [ i ] = b.readShort();
+            x[i] = b.readShort();
           }
       }
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -997,6 +1013,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -1006,14 +1023,16 @@ public abstract class cdrInput
       }
     catch (NegativeArraySizeException nex)
       {
-        throw new MARSHAL("Input stream broken, got " + n + "(0x"
+        MARSHAL m = new MARSHAL("Input stream broken, got " + n + "(0x"
           + Integer.toHexString(n) + ") as a string size");
+        m.minor = Minor.Negative;
+        throw m;
       }
   }
 
   /**
-   * Reads the CORBA unsigned long (java int), delegating
-   * functionality to {@link #read_long}.
+   * Reads the CORBA unsigned long (java int), delegating functionality to
+   * {@link #read_long}.
    */
   public int read_ulong()
   {
@@ -1021,9 +1040,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Reads the array of CORBA unsigned long (java integer) values,
-   * delegating functionality to
-   * {@link #real_long_array}.
+   * Reads the array of CORBA unsigned long (java integer) values, delegating
+   * functionality to {@link #real_long_array}.
    */
   public void read_ulong_array(int[] x, int offs, int len)
   {
@@ -1031,11 +1049,9 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the CORBA unsigned long long value,
-   * delegating functionality to {@link #read_longlong}.
-   * There is no way to return values over the limit of
-   * the java signed long in other way than returning
-   * the negative value.
+   * Read the CORBA unsigned long long value, delegating functionality to
+   * {@link #read_longlong}. There is no way to return values over the limit of
+   * the java signed long in other way than returning the negative value.
    */
   public long read_ulonglong()
   {
@@ -1043,9 +1059,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Reads the array of CORBA long long (java long) values,
-   * delegating functionality to
-   * {@link #real_longlong_array}.
+   * Reads the array of CORBA long long (java long) values, delegating
+   * functionality to {@link #real_longlong_array}.
    */
   public void read_ulonglong_array(long[] x, int offs, int len)
   {
@@ -1053,10 +1068,9 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the unsigned short integer value. Due strange specification,
-   * the returned value must be the short type as well, so the
-   * the best solution seems just to delegete functionality to
-   * read_short.
+   * Read the unsigned short integer value. Due strange specification, the
+   * returned value must be the short type as well, so the the best solution
+   * seems just to delegete functionality to read_short.
    */
   public short read_ushort()
   {
@@ -1064,8 +1078,8 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array of unsigned short values, delegating the
-   * functionality to {@link read_short_array}.
+   * Read an array of unsigned short values, delegating the functionality to
+   * {@link read_short_array}.
    */
   public void read_ushort_array(short[] x, int offs, int len)
   {
@@ -1094,7 +1108,11 @@ public abstract class cdrInput
             if (l == 2 && wide_native)
               return b.readChar();
             else if (l <= 0)
-              throw new MARSHAL("wchar size " + l);
+              {
+                 MARSHAL m = new MARSHAL("wchar size " + l);
+                 m.minor = Minor.Negative;
+                 throw m;
+              }
             else
               {
                 byte[] bytes = new byte[l];
@@ -1119,8 +1137,6 @@ public abstract class cdrInput
                 else
                   cs = new String(bytes, wide_charset);
 
-                if (cs.length() != 1)
-                  throw new MARSHAL("Wide char decoded as '" + cs + "'");
                 return cs.charAt(0);
               }
           }
@@ -1128,6 +1144,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -1151,18 +1168,19 @@ public abstract class cdrInput
         if (wide_native)
           {
             for (int i = offset; i < offset + length; i++)
-              x [ i ] = (char) b.readShort();
+              x[i] = (char) b.readShort();
           }
         else
           {
-            InputStreamReader reader =
-              new InputStreamReader((InputStream) b, wide_charset);
+            InputStreamReader reader = new InputStreamReader((InputStream) b,
+              wide_charset);
             reader.read(x, offset, length);
           }
       }
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -1174,13 +1192,11 @@ public abstract class cdrInput
   }
 
   /**
-   * Reads the string in wide character format
-   * (ussually UTF-16, Unicode). Takes the currently set charset
-   * into consideration.
-   *
-   * If the native (UTF-16) encoding is used
-   * of the GIOP protocol is before 1.2, delegates functionality
-   * to "plain" {@link #read_wstring_UTF_16}.
+   * Reads the string in wide character format (ussually UTF-16, Unicode). Takes
+   * the currently set charset into consideration.
+   * 
+   * If the native (UTF-16) encoding is used of the GIOP protocol is before 1.2,
+   * delegates functionality to "plain" {@link #read_wstring_UTF_16}.
    */
   public String read_wstring()
   {
@@ -1192,7 +1208,7 @@ public abstract class cdrInput
         align(4);
 
         int n = b.readInt();
-        byte[] s = new byte[ n ];
+        byte[] s = new byte[n];
         b.read(s);
 
         return new String(s, 0, n, wide_charset);
@@ -1200,6 +1216,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -1211,9 +1228,9 @@ public abstract class cdrInput
   }
 
   /**
-   * Reads first length of the string and the all characters as an
-   * Unicode (UTF-16) characters. Mind that GIOP 1.1 has the extra
-   * null character at the end that must be discarded.
+   * Reads first length of the string and the all characters as an Unicode
+   * (UTF-16) characters. Mind that GIOP 1.1 has the extra null character at the
+   * end that must be discarded.
    */
   public String read_wstring_UTF_16()
   {
@@ -1221,6 +1238,13 @@ public abstract class cdrInput
       {
         int p = 0;
         int n = read_long();
+        
+        if (n<0)
+          {
+            MARSHAL m = new MARSHAL("Negative string size");
+            m.minor = Minor.Negative;
+            throw m;
+          }
 
         // The null terminator that is no longer present since 1.2 .
         int nt = giop.since_inclusive(1, 2) ? 0 : 1;
@@ -1229,28 +1253,29 @@ public abstract class cdrInput
         n = n / 2;
 
         // Empty string.
-        if (n==0) return "";
-        
-        char[] s = new char[ n ];
+        if (n == 0)
+          return "";
+
+        char[] s = new char[n];
 
         for (int i = 0; i < s.length; i++)
-          s [ i ] = (char) b.readShort();
+          s[i] = (char) b.readShort();
 
         // Check for the byte order marker here.
-        if (s [ 0 ] == 0xFEFF)
+        if (s[0] == 0xFEFF)
           {
             // Big endian encoding - do nothing, but move the pointer
             // one position forward.
             p = 1;
           }
-        else if (s [ 0 ] == 0xFFFE)
+        else if (s[0] == 0xFFFE)
           {
             // Little endian encoding, swap the bytes and move one
             // position forward.
             p = 1;
 
             for (int i = p; i < s.length; i++)
-              s [ i ] = swap(s [ i ]);
+              s[i] = swap(s[i]);
           }
 
         // Discard the null terminator and, if needed, the endian marker.
@@ -1260,6 +1285,7 @@ public abstract class cdrInput
     catch (EOFException ex)
       {
         MARSHAL t = new MARSHAL(UNEXP_EOF);
+        t.minor = Minor.EOF;
         t.initCause(ex);
         throw t;
       }
@@ -1309,9 +1335,9 @@ public abstract class cdrInput
    * Read the object that is an instance of the given class. The current
    * implementation delegates functionality to the parameterless
    * {@link readObject()}.
-   *
+   * 
    * @param klass a class of that this object the instance is.
-   *
+   * 
    * @return the returned object.
    */
   public org.omg.CORBA.Object read_Object(Class klass)
@@ -1321,11 +1347,11 @@ public abstract class cdrInput
 
   /**
    * Read a value type structure from the stream.
-   *
-   * OMG specification states the writing format is outside the scope
-   * of GIOP definition. This implementation uses java serialization
-   * mechanism, calling {@link ObjectInputStream#readObject}
-   *
+   * 
+   * OMG specification states the writing format is outside the scope of GIOP
+   * definition. This implementation uses java serialization mechanism, calling
+   * {@link ObjectInputStream#readObject}
+   * 
    * @return an value type structure, unmarshaled from the stream
    */
   public Serializable read_Value()
@@ -1334,14 +1360,13 @@ public abstract class cdrInput
   }
 
   /**
-   * Read the abstract interface. An abstract interface can be either
-   * CORBA value type or CORBA object and is returned as an abstract
-   * java.lang.Object.
-   *
-   * As specified in OMG specification, this reads a single
-   * boolean and then delegates either to {@link #read_Object()} (for false)
-   * or to {@link #read_Value()} (for true).
-   *
+   * Read the abstract interface. An abstract interface can be either CORBA
+   * value type or CORBA object and is returned as an abstract java.lang.Object.
+   * 
+   * As specified in OMG specification, this reads a single boolean and then
+   * delegates either to {@link #read_Object()} (for false) or to
+   * {@link #read_Value()} (for true).
+   * 
    * @return an abstract interface, unmarshaled from the stream
    */
   public java.lang.Object read_Abstract()
@@ -1350,10 +1375,10 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_char_array(CharSeqHolder holder, int offset, int length)
   {
@@ -1362,10 +1387,10 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_wchar_array(WCharSeqHolder holder, int offset, int length)
   {
@@ -1374,23 +1399,23 @@ public abstract class cdrInput
   }
 
   /**
-   * If required, allocate or resize the char array to fit the newly
-   * read values.
-   *
+   * If required, allocate or resize the char array to fit the newly read
+   * values.
+   * 
    * @param holder_value the existing char array, may be null.
    * @param offset the required offset to read.
    * @param length the length of the new sequence.
-   *
+   * 
    * @return the allocated or resized array, same array if no such operations
    * are required.
    */
   private char[] ensureArray(char[] holder_value, int offset, int length)
   {
     if (holder_value == null)
-      return new char[ offset + length ];
+      return new char[offset + length];
     else if (holder_value.length < offset + length)
       {
-        char[] value = new char[ offset + length ];
+        char[] value = new char[offset + length];
         System.arraycopy(holder_value, 0, value, 0, holder_value.length);
         return value;
       }
@@ -1399,10 +1424,10 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_ulong_array(ULongSeqHolder holder, int offset, int length)
   {
@@ -1411,10 +1436,10 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_long_array(LongSeqHolder holder, int offset, int length)
   {
@@ -1423,23 +1448,22 @@ public abstract class cdrInput
   }
 
   /**
-   * If required, allocate or resize the int array to fit the newly
-   * read values.
-   *
+   * If required, allocate or resize the int array to fit the newly read values.
+   * 
    * @param holder_value the existing int array, may be null.
    * @param offset the required offset to read.
    * @param length the length of the new sequence.
-   *
+   * 
    * @return the allocated or resized array, same array if no such operations
    * are required.
    */
   private int[] ensureArray(int[] holder_value, int offset, int length)
   {
     if (holder_value == null)
-      return new int[ offset + length ];
+      return new int[offset + length];
     else if (holder_value.length < offset + length)
       {
-        int[] value = new int[ offset + length ];
+        int[] value = new int[offset + length];
         System.arraycopy(holder_value, 0, value, 0, holder_value.length);
         return value;
       }
@@ -1448,10 +1472,10 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_float_array(FloatSeqHolder holder, int offset, int length)
   {
@@ -1460,23 +1484,23 @@ public abstract class cdrInput
   }
 
   /**
-   * If required, allocate or resize the float array to fit the newly
-   * read values.
-   *
+   * If required, allocate or resize the float array to fit the newly read
+   * values.
+   * 
    * @param holder_value the existing float array, may be null.
    * @param offset the required offset to read.
    * @param length the length of the new sequence.
-   *
+   * 
    * @return the allocated or resized array, same array if no such operations
    * are required.
    */
   private float[] ensureArray(float[] holder_value, int offset, int length)
   {
     if (holder_value == null)
-      return new float[ offset + length ];
+      return new float[offset + length];
     else if (holder_value.length < offset + length)
       {
-        float[] value = new float[ offset + length ];
+        float[] value = new float[offset + length];
         System.arraycopy(holder_value, 0, value, 0, holder_value.length);
         return value;
       }
@@ -1485,10 +1509,10 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_double_array(DoubleSeqHolder holder, int offset, int length)
   {
@@ -1497,23 +1521,23 @@ public abstract class cdrInput
   }
 
   /**
-   * If required, allocate or resize the double array to fit the newly
-   * read values.
-   *
+   * If required, allocate or resize the double array to fit the newly read
+   * values.
+   * 
    * @param holder_value the existing double array, may be null.
    * @param offset the required offset to read.
    * @param length the length of the new sequence.
-   *
+   * 
    * @return the allocated or resized array, same array if no such operations
    * are required.
    */
   private double[] ensureArray(double[] holder_value, int offset, int length)
   {
     if (holder_value == null)
-      return new double[ offset + length ];
+      return new double[offset + length];
     else if (holder_value.length < offset + length)
       {
-        double[] value = new double[ offset + length ];
+        double[] value = new double[offset + length];
         System.arraycopy(holder_value, 0, value, 0, holder_value.length);
         return value;
       }
@@ -1522,10 +1546,10 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_short_array(ShortSeqHolder holder, int offset, int length)
   {
@@ -1541,23 +1565,23 @@ public abstract class cdrInput
   }
 
   /**
-   * If required, allocate or resize the short array to fit the newly
-   * read values.
-   *
+   * If required, allocate or resize the short array to fit the newly read
+   * values.
+   * 
    * @param holder_value the existing short array, may be null.
    * @param offset the required offset to read.
    * @param length the length of the new sequence.
-   *
+   * 
    * @return the allocated or resized array, same array if no such operations
    * are required.
    */
   private short[] ensureArray(short[] holder_value, int offset, int length)
   {
     if (holder_value == null)
-      return new short[ offset + length ];
+      return new short[offset + length];
     else if (holder_value.length < offset + length)
       {
-        short[] value = new short[ offset + length ];
+        short[] value = new short[offset + length];
         System.arraycopy(holder_value, 0, value, 0, holder_value.length);
         return value;
       }
@@ -1566,10 +1590,10 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_octet_array(OctetSeqHolder holder, int offset, int length)
   {
@@ -1578,23 +1602,23 @@ public abstract class cdrInput
   }
 
   /**
-   * If required, allocate or resize the byte array to fit the newly
-   * read values.
-   *
+   * If required, allocate or resize the byte array to fit the newly read
+   * values.
+   * 
    * @param holder_value the existing byte array, may be null.
    * @param offset the required offset to read.
    * @param length the length of the new sequence.
-   *
+   * 
    * @return the allocated or resized array, same array if no such operations
    * are required.
    */
   private byte[] ensureArray(byte[] holder_value, int offset, int length)
   {
     if (holder_value == null)
-      return new byte[ offset + length ];
+      return new byte[offset + length];
     else if (holder_value.length < offset + length)
       {
-        byte[] value = new byte[ offset + length ];
+        byte[] value = new byte[offset + length];
         System.arraycopy(holder_value, 0, value, 0, holder_value.length);
         return value;
       }
@@ -1603,51 +1627,49 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_longlong_array(LongLongSeqHolder holder, int offset,
-                                  int length
-                                 )
+    int length)
   {
     holder.value = ensureArray(holder.value, offset, length);
     read_longlong_array(holder.value, offset, length);
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_ulonglong_array(ULongLongSeqHolder holder, int offset,
-                                   int length
-                                  )
+    int length)
   {
     holder.value = ensureArray(holder.value, offset, length);
     read_ulonglong_array(holder.value, offset, length);
   }
 
   /**
-   * If required, allocate or resize the array of longs to fit the newly
-   * read values.
-   *
+   * If required, allocate or resize the array of longs to fit the newly read
+   * values.
+   * 
    * @param holder_value the existing array, may be null.
    * @param offset the required offset to read.
    * @param length the length of the new sequence.
-   *
+   * 
    * @return the allocated or resized array, same array if no such operations
    * are required.
    */
   private long[] ensureArray(long[] holder_value, int offset, int length)
   {
     if (holder_value == null)
-      return new long[ offset + length ];
+      return new long[offset + length];
     else if (holder_value.length < offset + length)
       {
-        long[] value = new long[ offset + length ];
+        long[] value = new long[offset + length];
         System.arraycopy(holder_value, 0, value, 0, holder_value.length);
         return value;
       }
@@ -1656,10 +1678,10 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_boolean_array(BooleanSeqHolder holder, int offset, int length)
   {
@@ -1668,23 +1690,23 @@ public abstract class cdrInput
   }
 
   /**
-   * If required, allocate or resize the array of booleans to fit the newly
-   * read values.
-   *
+   * If required, allocate or resize the array of booleans to fit the newly read
+   * values.
+   * 
    * @param holder_value the existing array of booleans, may be null.
    * @param offset the required offset to read.
    * @param length the length of the new sequence.
-   *
+   * 
    * @return the allocated or resized array, same array if no such operations
    * are required.
    */
   private boolean[] ensureArray(boolean[] holder_value, int offset, int length)
   {
     if (holder_value == null)
-      return new boolean[ offset + length ];
+      return new boolean[offset + length];
     else if (holder_value.length < offset + length)
       {
-        boolean[] value = new boolean[ offset + length ];
+        boolean[] value = new boolean[offset + length];
         System.arraycopy(holder_value, 0, value, 0, holder_value.length);
         return value;
       }
@@ -1693,38 +1715,38 @@ public abstract class cdrInput
   }
 
   /**
-   * Read an array. In OMG specification is written that if the data does
-   * not fit into the holder value field, that array must be resized.
-   * The implementation follows this rule. If the holder value field
-   * contains null, it is newly instantiated.
+   * Read an array. In OMG specification is written that if the data does not
+   * fit into the holder value field, that array must be resized. The
+   * implementation follows this rule. If the holder value field contains null,
+   * it is newly instantiated.
    */
   public void read_any_array(AnySeqHolder holder, int offset, int length)
   {
     holder.value = ensureArray(holder.value, offset, length);
     for (int i = offset; i < offset + length; i++)
       {
-        holder.value [ i ] = read_any();
+        holder.value[i] = read_any();
       }
   }
 
   /**
-   * If required, allocate or resize the array of Anys to fit the newly
-   * read values.
-   *
+   * If required, allocate or resize the array of Anys to fit the newly read
+   * values.
+   * 
    * @param holder_value the existing array of Anys, may be null.
    * @param offset the required offset to read.
    * @param length the length of the new sequence.
-   *
+   * 
    * @return the allocated or resized array, same array if no such operations
    * are required.
    */
   private Any[] ensureArray(Any[] holder_value, int offset, int length)
   {
     if (holder_value == null)
-      return new Any[ offset + length ];
+      return new Any[offset + length];
     else if (holder_value.length < offset + length)
       {
-        Any[] value = new Any[ offset + length ];
+        Any[] value = new Any[offset + length];
         System.arraycopy(holder_value, 0, value, 0, holder_value.length);
         return value;
       }
@@ -1733,11 +1755,10 @@ public abstract class cdrInput
   }
 
   /**
-   * This method is required to represent the DataInputStream as a value
-   * type object.
-   *
-   * @return a single entity "IDL:omg.org/CORBA/DataInputStream:1.0",
-   * always.
+   * This method is required to represent the DataInputStream as a value type
+   * object.
+   * 
+   * @return a single entity "IDL:omg.org/CORBA/DataInputStream:1.0", always.
    */
   public String[] _truncatable_ids()
   {

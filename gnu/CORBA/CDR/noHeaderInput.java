@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
+import gnu.CORBA.Minor;
+
 import org.omg.CORBA.Any;
 import org.omg.CORBA.AnySeqHolder;
 import org.omg.CORBA.BooleanSeqHolder;
@@ -192,6 +194,7 @@ public class noHeaderInput
           {
             MARSHAL m = new MARSHAL("Can't read an instance of "
               + clz.getName());
+            m.minor = Minor.Value;
             m.initCause(ex);
             throw m;
           }

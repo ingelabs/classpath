@@ -63,20 +63,16 @@ public class SystemException
    * <p>
    * Contains more details about the exception. The lower 12 bits contain a
    * code, defining the reason why exception has been thrown. The higher 20 bits
-   * hold "Vendor Minor Codeset ID" (VMCID), for instance 0x4F4D0000 (OMG
-   * standard), 0x54410000 (TAO), 0x4A430000 (JacORB), 0x49540000 (IONA) or
-   * 0x53550000 (Sun).
+   * hold "Vendor Minor Codeset ID" (VMCID).
    * </p>
-   * 
    * <p>
-   * The standard minor codes for the standard system exceptions are prefaced by
-   * the VMCID assigned to OMG, defined as 0x4F4D0000 (the code of
-   * the minor field for the standard exception with minor code 1 is
-   * 0x4F4D0001). Within a vendor assigned space, the assignment of values to
-   * minor codes is left to the vendor.
+   * The Classpath specifice minor exception codes are documented in the headers
+   * of the corresponding exceptions (for instance, {@link MARSHAL}).
    * </p>
    * 
    * The VMCID 0 and 0xfffff are reserved for experimental use. 
+   * 
+   * @see OMGVMCID
    */
   public int minor;
 
@@ -91,7 +87,8 @@ public class SystemException
   protected SystemException(String a_reason, int a_minor,
                             CompletionStatus a_completed)
   {
-    super(a_reason);
+    super(a_reason + " Minor: " + Integer.toHexString(a_minor) + " ("
+      + (a_minor & 0xFFF) + "). Completed: "+a_completed);
     minor = a_minor;
     completed = a_completed;
   }

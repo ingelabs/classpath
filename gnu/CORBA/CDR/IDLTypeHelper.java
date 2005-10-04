@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
+import gnu.CORBA.Minor;
+
 import org.omg.CORBA.MARSHAL;
 import org.omg.CORBA.portable.BoxedValueHelper;
 import org.omg.CORBA.portable.InputStream;
@@ -97,6 +99,7 @@ public class IDLTypeHelper
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL(msg() + " id()");
+        m.minor = Minor.Boxed;
         m.initCause(ex);
         throw m;
       }
@@ -115,6 +118,7 @@ public class IDLTypeHelper
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL(msg() + " read(..)");
+        m.minor = Minor.Boxed;        
         m.initCause(ex);
         throw m;
       }
@@ -148,6 +152,7 @@ public class IDLTypeHelper
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL(msg() + " write(..)");
+        m.minor = Minor.Boxed;        
         m.initCause(ex);
         throw m;
       }

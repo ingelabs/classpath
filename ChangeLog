@@ -1,3 +1,48 @@
+2005-10-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * gnu/CORBA/Minor.java: New file.
+        * gnu/CORBA/CDR/IDLTypeHelper.java,
+        gnu/CORBA/CDR/UnknownExceptionCtxHandler.java,
+        gnu/CORBA/CDR/Vio.java,
+        gnu/CORBA/CDR/cdrInput.java,
+        gnu/CORBA/CDR/cdrOutput.java,
+        gnu/CORBA/CDR/gnuRuntime.java,
+        gnu/CORBA/CDR/noHeaderInput.java,
+        gnu/CORBA/DynAn/gnuDynValue.java,
+        gnu/CORBA/GIOP/CloseMessage.java,
+        gnu/CORBA/GIOP/ErrorMessage.java,
+        gnu/CORBA/GIOP/MessageHeader.java,
+        gnu/CORBA/GIOP/v1_2/RequestHeader.java,
+        gnu/CORBA/IOR.java,
+        gnu/CORBA/Poa/ForwardedServant.java,
+        gnu/CORBA/Version.java,
+        gnu/CORBA/cdrEncapsCodec.java,
+        gnu/CORBA/gnuAny.java,
+        gnu/CORBA/gnuRequest.java,
+        gnu/CORBA/streamReadyHolder.java,
+        gnu/CORBA/universalHolder.java,
+        gnu/javax/rmi/CORBA/UtilDelegateImpl.java,
+        gnu/javax/rmi/CORBA/corbaObjectOutput.java,
+        gnu/javax/rmi/CORBA/gnuRmiUtil.java,
+        org/omg/CORBA/StringValueHelper.java,
+        org/omg/CORBA/StructMemberHelper.java,
+        org/omg/CORBA/UnionMemberHelper.java,
+        org/omg/CORBA/ValueMemberHelper.java,
+        org/omg/CORBA/WStringValueHelper.java,
+        org/omg/CORBA/_IDLTypeStub.java,
+        org/omg/DynamicAny/DynAnyFactoryHelper.java,
+        org/omg/DynamicAny/_DynAnyFactoryStub.java,
+        org/omg/IOP/TaggedComponentHelper.java,
+        org/omg/IOP/TaggedProfileHelper.java,
+        org/omg/PortableInterceptor/CurrentHelper.java,
+        org/omg/PortableServer/POAHelper.java,
+        org/omg/PortableServer/ServantActivatorHelper.java,
+        org/omg/PortableServer/ServantLocatorHelper.java:
+        Initialising minor codes for MARSHAL.
+        * org/omg/CORBA/SystemException.java: Documentation update and
+        add minor code to the exception message.
+        * org/omg/CORBA/MARSHAL.java: Documentation update.
+
 2005-10-04  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/plaf/metal/MetalBorders.java (paintBorder): Check

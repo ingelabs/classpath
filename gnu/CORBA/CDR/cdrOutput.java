@@ -41,6 +41,7 @@ package gnu.CORBA.CDR;
 import gnu.CORBA.BigDecimalHelper;
 import gnu.CORBA.IOR;
 import gnu.CORBA.IorProvider;
+import gnu.CORBA.Minor;
 import gnu.CORBA.TypeCodeHelper;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.Version;
@@ -748,6 +749,7 @@ public abstract class cdrOutput
     catch (IOException ex)
       {
         MARSHAL t = new MARSHAL();
+        t.minor = Minor.CDR;
         t.initCause(ex);
         throw t;
       }
@@ -769,6 +771,7 @@ public abstract class cdrOutput
     catch (IOException ex)
       {
         MARSHAL t = new MARSHAL();
+        t.minor = Minor.CDR;
         t.initCause(ex);
         throw t;
       }

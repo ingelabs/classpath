@@ -63,7 +63,6 @@ import org.omg.CORBA.TCKind;
 import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.TypeCodeHolder;
 import org.omg.CORBA.ValueBaseHolder;
-import org.omg.CORBA.portable.BoxedValueHelper;
 import org.omg.CORBA.portable.Streamable;
 
 import java.io.Serializable;
@@ -89,6 +88,11 @@ import java.util.zip.Adler32;
 public class gnuAny
   extends Any
 {
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID = 1;
+  
   /**
    * The value, returned by {@link #type()} if the value has been
    * not intialized.
@@ -798,6 +802,7 @@ public class gnuAny
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL();
+        m.minor = Minor.Any;
         m.initCause(ex);
         throw m;
       }

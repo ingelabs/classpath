@@ -1101,7 +1101,9 @@ public synchronized binaryReply submit() throws ForwardRequest
       }
     catch (IOException ex)
       {
-        throw new MARSHAL("Unable to write method arguments to CDR output.");
+        MARSHAL m = new MARSHAL("Unable to write method arguments to CDR output.");
+        m.minor = Minor.CDR;
+        throw m;
       }
   }
 

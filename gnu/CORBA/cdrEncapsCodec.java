@@ -57,7 +57,7 @@ import org.omg.IOP.CodecPackage.TypeMismatch;
 /**
  * The local {@link Codec} implementation for ENCODING_CDR_ENCAPS
  * encoding. This is a local implementation; the remote side should
- * have its own Codec of this kind.
+ * have its own Codec of this kind. 
  *
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
@@ -66,10 +66,10 @@ public class cdrEncapsCodec
   extends LocalObject
   implements Codec
 {
-  /**
-   * The default version of encoding, used in parameterless constructor.
+  /** 
+   * Use serialVersionUID for interoperability. 
    */
-  private static final Version DEFAULT_VERSION = new Version(1, 2);
+  private static final long serialVersionUID = 1;
 
   /**
    * If set to true, no wide string or wide character is allowed (GIOP 1.0).
@@ -179,6 +179,7 @@ public class cdrEncapsCodec
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL();
+        m.minor = Minor.Encapsulation;
         m.initCause(ex);
         throw m;
       }
@@ -248,6 +249,7 @@ public class cdrEncapsCodec
     catch (Exception ex)
       {
         MARSHAL m = new MARSHAL();
+        m.minor = Minor.Encapsulation;
         m.initCause(ex);
         throw m;
       }

@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
+import gnu.CORBA.Minor;
 import gnu.CORBA.ObjectCreator;
 import gnu.CORBA.GIOP.ServiceContext;
 
@@ -274,11 +275,13 @@ public class UnknownExceptionCtxHandler
           }
         catch (MARSHAL m)
           {
+            m.minor = Minor.Instantiation;
             throw m;
           }
         catch (Exception ex)
           {
             MARSHAL m = new MARSHAL("Unable to instantiate " + id);
+            m.minor = Minor.Instantiation;
             m.initCause(ex);
             throw m;
           }
