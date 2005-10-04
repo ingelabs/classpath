@@ -258,7 +258,7 @@ public class MetalToolTipUI
         g.setColor(acceleratorForeground);
         fm = t.getFontMetrics(acceleratorFont);
         int width = fm.stringWidth(acceleratorString);
-        g.drawString(acceleratorString, vr.x + vr.width - width, 
+        g.drawString(acceleratorString, vr.x + vr.width - width - padSpaceBetweenStrings/2, 
                 vr.y + vr.height - fm.getDescent());
       }
 
@@ -282,19 +282,22 @@ public class MetalToolTipUI
         JToolTip toolTip = (JToolTip) c;
         JComponent component = toolTip.getComponent();
         KeyStroke ks = null;
+        int mne = 0;
         if (component instanceof JMenuItem)
           {
             JMenuItem item = (JMenuItem) component;
             ks = item.getAccelerator();
+            if (ks == null)
+                mne = item.getMnemonic();
           }
         else if (component instanceof AbstractButton)
           {
             AbstractButton button = (AbstractButton) component;
-            int mne = button.getMnemonic();
-            if (mne > 0)
-              ks = KeyStroke.getKeyStroke(Character.toUpperCase((char) mne), 
-                    InputEvent.ALT_MASK, false);
+            mne = button.getMnemonic();
           }
+        if (mne > 0)
+          ks = KeyStroke.getKeyStroke(Character.toUpperCase((char) mne), 
+                InputEvent.ALT_MASK, false);
         if (ks != null)
           result = acceleratorToString(ks);
       }

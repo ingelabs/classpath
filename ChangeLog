@@ -1,3 +1,10 @@
+2005-10-04  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalToolTipUI.java
+	(paint): Added space around the toolTip's accelerator.
+	(fetchAcceleratorString): Added code to get mnemonic for
+	JMenuItem if it does not have an accelerator.
+
 2005-10-04  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/DefaultCaret.java
