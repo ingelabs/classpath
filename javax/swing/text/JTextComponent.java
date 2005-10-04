@@ -321,7 +321,7 @@ public abstract class JTextComponent extends JComponent
     {
       Caret c = caret;
       if (c != null)
-	c.setVisible(!c.isVisible());
+        c.setVisible(!c.isVisible());
     }
 
     /**
@@ -332,13 +332,13 @@ public abstract class JTextComponent extends JComponent
       stop();
       Caret c = caret;
       if (c != null)
-	{
-	  setDelay(c.getBlinkRate());
-	  if (editable)
-	    start();
-	  else
-	    c.setVisible(false);
-	}
+        {
+          setDelay(c.getBlinkRate());
+          if (editable)
+            start();
+          else
+            c.setVisible(false);
+        }
     }
   }
 
@@ -628,23 +628,23 @@ public abstract class JTextComponent extends JComponent
       int end = textComponent.getSelectionEnd();
 
       if (start == end)
-	return;
+        return;
 
       try
-	{
-	  // Copy text to clipboard.
-	  String data = textComponent.getDocument().getText(start, end);
-	  StringSelection selection = new StringSelection(data);
-	  clipboard.setContents(selection, null);
+        {
+          // Copy text to clipboard.
+          String data = textComponent.getDocument().getText(start, end);
+          StringSelection selection = new StringSelection(data);
+          clipboard.setContents(selection, null);
 
-	  // Delete selected text on cut action.
-	  if (action == MOVE)
-	    doc.remove(start, end - start);
-	}
+          // Delete selected text on cut action.
+          if (action == MOVE)
+            doc.remove(start, end - start);
+        }
       catch (BadLocationException e)
-	{
-	  // Ignore this and do nothing.
-	}
+        {
+          // Ignore this and do nothing.
+        }
     }
     
     public int getSourceActions()
@@ -658,30 +658,30 @@ public abstract class JTextComponent extends JComponent
       DataFlavor[] flavors = transferable.getTransferDataFlavors();
 
       if (flavors == null)
-	return false;
+        return false;
 
       for (int i = 0; i < flavors.length; ++i)
-	if (flavors[i].equals(DataFlavor.stringFlavor))
-	   flavor = flavors[i];
+        if (flavors[i].equals(DataFlavor.stringFlavor))
+          flavor = flavors[i];
       
       if (flavor == null)
-	return false;
+        return false;
 
       try
-	{
-	  JTextComponent textComponent = (JTextComponent) component;
-	  String data = (String) transferable.getTransferData(flavor);
-	  textComponent.replaceSelection(data);
-	  return true;
-	}
+        {
+          JTextComponent textComponent = (JTextComponent) component;
+          String data = (String) transferable.getTransferData(flavor);
+          textComponent.replaceSelection(data);
+          return true;
+        }
       catch (IOException e)
-	{
-	  // Ignored.
-	}
+        {
+          // Ignored.
+        }
       catch (UnsupportedFlavorException e)
-	{
-	  // Ignored.
-	}
+        {
+          // Ignored.
+        }
 
       return false;
     }
@@ -1018,12 +1018,12 @@ public abstract class JTextComponent extends JComponent
   {
     try
       {
-	doc.remove(0, doc.getLength());
-	doc.insertString(0, text, null);
+        doc.remove(0, doc.getLength());
+        doc.insertString(0, text, null);
       }
     catch (BadLocationException e)
       {
-	// This can never happen.
+        // This can never happen.
       }
   }
 
@@ -1041,12 +1041,12 @@ public abstract class JTextComponent extends JComponent
 
     try
       {
-	return doc.getText(0, doc.getLength());
+        return doc.getText(0, doc.getLength());
       }
     catch (BadLocationException e)
       {
-	// This should never happen.
-	return "";
+        // This should never happen.
+        return "";
       }
   }
 
@@ -1077,12 +1077,12 @@ public abstract class JTextComponent extends JComponent
   {
     try
       {
-	return doc.getText(getSelectionStart(), getSelectionEnd());
+        return doc.getText(getSelectionStart(), getSelectionEnd());
       }
     catch (BadLocationException e)
       {
-	// This should never happen.
-	return null;
+        // This should never happen.
+        return null;
       }
   }
 
@@ -1421,28 +1421,28 @@ public abstract class JTextComponent extends JComponent
     // If content is empty delete selection.
     if (content == null)
       {
-	caret.setDot(dot);
-	return;
+        caret.setDot(dot);
+        return;
       }
 
     try
       {
-	int start = getSelectionStart();
-	int end = getSelectionEnd();
-	
-	// Remove selected text.
-	if (dot != mark)
-	  doc.remove(start, end - start);
+        int start = getSelectionStart();
+        int end = getSelectionEnd();
 
-	// Insert new text.
-	doc.insertString(start, content, null);
+        // Remove selected text.
+        if (dot != mark)
+          doc.remove(start, end - start);
 
-	// Set dot to new position.
-	setCaretPosition(start + content.length());
+        // Insert new text.
+        doc.insertString(start, content, null);
+
+        // Set dot to new position.
+        setCaretPosition(start + content.length());
       }
     catch (BadLocationException e)
       {
-	// This should never happen.
+        // This should never happen.
       }
   }
 
@@ -1576,15 +1576,15 @@ public abstract class JTextComponent extends JComponent
     // Install default TransferHandler if none set.
     if (getTransferHandler() == null)
       {
-	if (defaultTransferHandler == null)
-	  defaultTransferHandler = new DefaultTransferHandler();
-	
-	setTransferHandler(defaultTransferHandler);
+        if (defaultTransferHandler == null)
+          defaultTransferHandler = new DefaultTransferHandler();
+
+        setTransferHandler(defaultTransferHandler);
       }
 
     // Perform action.
     ActionEvent event = new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
-					action.getValue(Action.NAME).toString());
+                                        action.getValue(Action.NAME).toString());
     action.actionPerformed(event);
   }
 
