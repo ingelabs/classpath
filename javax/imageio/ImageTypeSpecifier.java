@@ -253,9 +253,9 @@ public class ImageTypeSpecifier
    * @exception if bits is larger than the number of bits in the given
    * data type
    */
-  public static ImageTypeSpecifier createGrayScale (int bits, int dataType, boolean isSigned)
+  public static ImageTypeSpecifier createGrayscale (int bits, int dataType, boolean isSigned)
   {
-    return createGrayScale (bits, dataType, isSigned, false);
+    return createGrayscale (bits, dataType, isSigned, false);
   }
 
   /**
@@ -277,7 +277,7 @@ public class ImageTypeSpecifier
    * @exception if bits is larger than the number of bits in the given
    * data type
    */
-  public static ImageTypeSpecifier createGrayScale (int bits, int dataType,
+  public static ImageTypeSpecifier createGrayscale (int bits, int dataType,
                                                     boolean isSigned,
                                                     boolean isAlphaPremultiplied)
   {
@@ -323,12 +323,12 @@ public class ImageTypeSpecifier
    * @exception if bits is larger than the number of bits in the given
    * data type
    */
-  public static ImageTypeSpecifier createIndex (byte[] redLUT,
-                                                byte[] greenLUT,
-                                                byte[] blueLUT,
-                                                byte[] alphaLUT,
-                                                int bits,
-                                                int dataType)
+  public static ImageTypeSpecifier createIndexed (byte[] redLUT,
+						  byte[] greenLUT,
+						  byte[] blueLUT,
+						  byte[] alphaLUT,
+						  int bits,
+						  int dataType)
   {
     if (redLUT == null || greenLUT == null || blueLUT == null)
       throw new IllegalArgumentException ("null colour table");

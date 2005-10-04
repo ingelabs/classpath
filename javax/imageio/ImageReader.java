@@ -1529,7 +1529,7 @@ public abstract class ImageReader
 						 Iterator imageTypes,
 						 int width,
 						 int height)
-    throws IOException
+    throws IIOException
   {
     if (imageTypes == null || !imageTypes.hasNext())
       throw new IllegalArgumentException ("imageTypes null or empty");

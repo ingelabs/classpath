@@ -1,3 +1,11 @@
+2005-10-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/ImageReader.java (getDestination): Throw
+	IIOException, not IOException.
+	* javax/imageio/ImageTypeSpecifier.java
+	(createGrayscale(int,int,boolean)): Rename from createGrayScale.
+	(createGrayscale(int,int,boolean,boolean)): Likewise.
+
 2005-10-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/Minor.java: New file.
