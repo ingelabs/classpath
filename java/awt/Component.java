@@ -1074,6 +1074,8 @@ public abstract class Component
     Component p = parent;
     if (p != null)
       return p.getFont();
+    if (peer != null)
+      return peer.getGraphics().getFont();
     return null;
   }
 
@@ -1734,11 +1736,8 @@ public abstract class Component
     if (peer != null)
       {
         Graphics gfx = peer.getGraphics();
-        if (gfx != null)
-          return gfx;
-        // create graphics for lightweight:
-        Container parent = getParent();
-        if (parent != null)
+        // Create peer for lightweights.
+        if (gfx == null && parent != null)
           {
             gfx = parent.getGraphics();
             Rectangle bounds = getBounds();
@@ -1746,6 +1745,8 @@ public abstract class Component
             gfx.translate(bounds.x, bounds.y);
             return gfx;
           }
+        gfx.setFont(font);
+        return gfx;
       }
     return null;
   }

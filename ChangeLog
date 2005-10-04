@@ -1,3 +1,14 @@
+2005-10-04  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(getFont): Fall back to peer.getGraphics().getFont() if no font
+	is found.
+	(getGraphics): Set font here. This avoids a loop in the above
+	fallback.
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(GdkGraphics): Don't initialize font here. This would cause a
+	loop in the above fallback.
+
 2005-10-04  Anthony Green  <green@redhat.com>
 
 	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c 

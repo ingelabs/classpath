@@ -68,7 +68,7 @@ public class GdkGraphics extends Graphics
 
   Color color, xorColor;
   GtkComponentPeer component;
-  Font font;
+  Font font = new Font ("Dialog", Font.PLAIN, 12);
   Rectangle clip;
   GtkImage image; 
 
@@ -117,9 +117,6 @@ public class GdkGraphics extends Graphics
   GdkGraphics (GtkComponentPeer component)
   {
     this.component = component;
-    font = component.awtComponent.getFont ();
-    if (font == null)
-      font = new Font ("Dialog", Font.PLAIN, 12);
     color = Color.black;
 
     if (component.isRealized ())
