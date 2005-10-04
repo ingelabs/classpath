@@ -1,3 +1,8 @@
+2005-10-04  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (clearRect): Check bg
+	against null to avoid NPE.
+
 2005-10-03  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/awt/peer/qt/QtToolkit.java (initToolkit): Use Configuration

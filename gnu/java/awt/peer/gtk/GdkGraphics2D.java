@@ -1068,8 +1068,9 @@ public class GdkGraphics2D extends Graphics2D
 
   public void clearRect(int x, int y, int width, int height)
   {
-    cairoSetRGBAColor(bg.getRed() / 255.0, bg.getGreen() / 255.0,
-                      bg.getBlue() / 255.0, 1.0);
+    if (bg != null)
+      cairoSetRGBAColor(bg.getRed() / 255.0, bg.getGreen() / 255.0,
+			bg.getBlue() / 255.0, 1.0);
     cairoNewPath();
     cairoRectangle(x, y, width, height);
     cairoFill();
