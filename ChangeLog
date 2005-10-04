@@ -1,3 +1,8 @@
+2005-10-04  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicFileChooserUI.java: Added API docs all
+	over.
+
 2005-10-04  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/AbstractDocument.java:
