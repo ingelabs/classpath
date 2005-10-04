@@ -519,8 +519,30 @@ public abstract class AbstractDocument implements Document, Serializable
     DefaultDocumentEvent event =
       new DefaultDocumentEvent(offset, text.length(),
 			       DocumentEvent.EventType.INSERT);
-    content.insertString(offset, text);
+    
+    UndoableEdit temp = content.insertString(offset, text);
+    GapContent.UndoInsertString changes = null;
+    if (content instanceof GapContent)
+      changes = (GapContent.UndoInsertString) temp;
     insertUpdate(event, attributes);
+
+    if (changes != null)
+      {
+        // We need to add an ElementChange to our DocumentEvent
+        // so let's set up the parameters
+        Element root = getDefaultRootElement();
+        int start = root.getElementIndex(changes.where);
+        int end = root.getElementIndex(changes.where+changes.length);
+
+        Element[] removed = new Element[1];
+        removed[0] = root;
+        Element[] added = new Element[end - start + 1];
+        for (int i = start; i <= end; i++)
+          added[i - start] = root.getElement(i);
+    
+        ElementEdit edit = new ElementEdit(root, root.getElementIndex(changes.where), removed, added);    
+        event.addEdit(edit);
+      }
     fireInsertUpdate(event);
   }
 
@@ -595,9 +617,11 @@ public abstract class AbstractDocument implements Document, Serializable
       new DefaultDocumentEvent(offset, length,
 			       DocumentEvent.EventType.REMOVE);
     removeUpdate(event);
+    boolean shouldFire = content.getString(offset, length).length() != 0;
     content.remove(offset, length);
     postRemoveUpdate(event);
-    fireRemoveUpdate(event);
+    if (shouldFire)
+      fireRemoveUpdate(event);
   }
 
   /**
@@ -1775,7 +1799,7 @@ public abstract class AbstractDocument implements Document, Serializable
       return (DocumentEvent.ElementChange) changes.get(elem);
     }
   }
-
+  
   /**
    * An implementation of {@link DocumentEvent.ElementChange} to be added
    * to {@link DefaultDocumentEvent}s.

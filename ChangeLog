@@ -1,3 +1,23 @@
+2005-10-04  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/AbstractDocument.java:
+	(insertString): If inserting a string into the Content returns an 
+	UndoableEdit, then add an ElementEdit to the DocumentEvent before 
+	firing.
+	(remove): Don't fire a removeUpdate unless some content was actually
+	removed.
+	* javax/swing/text/GapContent.java:
+	(UndoInsertString): New class to implement UndoableEdit functions.
+	(insertString): Return an UndoableEdit instead of null.  Also use 
+	locally calculated length of String rather than calculating again.
+	* javax/swing/text/JTextComponent.java:
+	(setText): If the Document is an AbstractDocument this should pass 
+	through AbstractDocument.replace rather than calling remove and insert.
+	* javax/swing/text/PlainView.java:
+	(determineMaxLength): Keep track of which line was the longest as well
+	as the length of it.  We'll need this to know when the longest line is
+	removed and we need to redetermine the longest line.
+
 2005-10-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/ImageWriter.java

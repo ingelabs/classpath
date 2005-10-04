@@ -44,6 +44,9 @@ import java.util.Collections;
 import java.util.ListIterator;
 import java.util.Vector;
 
+import javax.swing.undo.AbstractUndoableEdit;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
 /**
@@ -126,6 +129,45 @@ public class GapContent
     }
   }
 
+  class UndoInsertString extends AbstractUndoableEdit
+  {
+    public int where, length;
+    String text;
+    public UndoInsertString(int start, int len)
+    {
+      where = start;
+      length = len;
+    }
+
+    public void undo () throws CannotUndoException
+    {
+      super.undo();
+      try
+      {
+        text = getString(where, length);
+        remove(where, length);
+      }
+      catch (BadLocationException ble)
+      {
+        throw new CannotUndoException();
+      }
+    }
+    
+    public void redo () throws CannotUndoException
+    {
+      super.redo();
+      try
+      {
+        insertString(where, text);
+      }
+      catch (BadLocationException ble)
+      {
+        throw new CannotRedoException();
+      }
+    }
+    
+  }
+  
   /** The serialization UID (compatible with JDK1.5). */
   private static final long serialVersionUID = -6226052713477823730L;
 
@@ -234,9 +276,9 @@ public class GapContent
       throw new BadLocationException("the where argument cannot be greater"
           + " than the content length", where);
 
-    replace(where, 0, str.toCharArray(), str.length());
+    replace(where, 0, str.toCharArray(), strLen);
 
-    return null;
+    return new UndoInsertString(where, strLen);
   }
 
   /**

@@ -62,6 +62,9 @@ public class PlainView extends View
   /** The length of the longest line in the Document **/
   float maxLineLength = -1;
   
+  /** The longest line in the Document **/
+  Element longestLine = null;
+  
   protected FontMetrics metrics;
 
   public PlainView(Element elem)
@@ -237,7 +240,11 @@ public class PlainView extends View
           {
           }
         int width = metrics.charsWidth(seg.array, seg.offset, seg.count);
-        span = Math.max(span, width);
+        if (width > span)
+          {
+            longestLine = child;
+            span = width;
+          }
       }
     maxLineLength = span;
     return maxLineLength;

@@ -1018,8 +1018,13 @@ public abstract class JTextComponent extends JComponent
   {
     try
       {
-        doc.remove(0, doc.getLength());
-        doc.insertString(0, text, null);
+        if (doc instanceof AbstractDocument)
+          ((AbstractDocument) doc).replace(0, doc.getLength(), text, null);
+        else
+          {
+            doc.remove(0, doc.getLength());
+            doc.insertString(0, text, null);
+          }
       }
     catch (BadLocationException e)
       {
