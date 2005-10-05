@@ -1,3 +1,12 @@
+2005-10-05  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* m4/acattribute.m4: Added.
+	* configure.ac: Added AC_C_ATTRIBUTE.
+	* native/fdlibm/java-assert.h: Added missing config.h include, 
+	changed comments to C comments.
+	* native/jni/java-lang/java_lang_reflect_Array.c: Added missing 
+	config.h include.
+
 2005-10-05  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/PlainView.java:
