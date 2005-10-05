@@ -1,3 +1,10 @@
+2005-10-05  Stuart Ballard  <stuart.a.ballard@gmail.com>
+
+	* java/rmi/LoaderHandler.java (packagePrefix): Match Sun's value.
+	* java/rmi/RemoteRef.java (packagePrefix): Likewise.
+	* java/rmi/RemoteObject.java (readObject): Hardcode the GNU package
+	prefix.
+
 2005-10-05  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/AbstractDocument.java:
