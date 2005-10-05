@@ -41,6 +41,7 @@ package javax.swing.text;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Vector;
 
@@ -457,7 +458,6 @@ public class GapContent
     if (index < 0)
       index = -(index + 1);
     positions.add(index, pos);
-
     return pos;
   }
 
@@ -675,18 +675,14 @@ public class GapContent
 
     int index1 = Collections.binarySearch(positions,
                                           new GapContentPosition(offset));
-    int index2 = Collections.binarySearch(positions,
-                                          new GapContentPosition(endOffset));
     if (index1 < 0)
       index1 = -(index1 + 1);
-    if (index2 < 0)
-      index2 = -(index2 + 1);
     for (ListIterator i = positions.listIterator(index1); i.hasNext();)
       {
-        if (i.nextIndex() > index2)
+        GapContentPosition p = (GapContentPosition) i.next();
+        if (p.mark > endOffset)
           break;
         
-        GapContentPosition p = (GapContentPosition) i.next();
         if (p.mark >= offset && p.mark <= endOffset)
           p.mark = value;
       }
@@ -707,18 +703,14 @@ public class GapContent
 
     int index1 = Collections.binarySearch(positions,
                                           new GapContentPosition(offset));
-    int index2 = Collections.binarySearch(positions,
-                                          new GapContentPosition(endOffset));
     if (index1 < 0)
       index1 = -(index1 + 1);
-    if (index2 < 0)
-      index2 = -(index2 + 1);
     for (ListIterator i = positions.listIterator(index1); i.hasNext();)
       {
-        if (i.nextIndex() > index2)
-          break;
-        
         GapContentPosition p = (GapContentPosition) i.next();
+        if (p.mark > endOffset)
+          break;
+
         if (p.mark >= offset && p.mark <= endOffset)
           p.mark += incr;
       }
@@ -736,5 +728,40 @@ public class GapContent
       return;
 
     setPositionsInRange(gapEnd, 0, 0);
+  }
+
+  /**
+   * Outputs debugging info to System.err. It prints out the buffer array,
+   * the gapStart is marked by a &lt; sign, the gapEnd is marked by a &gt;
+   * sign and each position is marked by a # sign.
+   */
+  private void dump()
+  {
+    System.err.println("GapContent debug information");
+    System.err.println("buffer length: " + buffer.length);
+    System.err.println("gap start: " + gapStart);
+    System.err.println("gap end: " + gapEnd);
+    for (int i = 0; i < buffer.length; i++)
+      {
+        if (i == gapStart)
+          System.err.print('<');
+        if (i == gapEnd)
+          System.err.print('>');
+
+        if (!Character.isISOControl(buffer[i]))
+          System.err.print(buffer[i]);
+        else
+          System.err.print('.');
+      }
+    System.err.println();
+  }
+
+  private void dumpPositions()
+  {
+    for (Iterator i = positions.iterator(); i.hasNext();)
+      {
+        GapContentPosition pos = (GapContentPosition) i.next();
+        System.err.println("position at: " + pos.mark);
+      }
   }
 }

@@ -1,3 +1,13 @@
+2005-10-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/GapContent.java
+	(setPositionsInRange): Changed check for interval end to actually
+	check for the position offsets.
+	(adjustPositionsInRange): Changed check for interval end to actually
+	check for the position offsets.
+	(dump): New method for debugging.
+	(dumpPositions): New method for debugging.
+
 2005-10-05  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* m4/acattribute.m4: Added.
