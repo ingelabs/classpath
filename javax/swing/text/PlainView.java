@@ -46,6 +46,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Shape;
 
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentEvent.ElementChange;
+
 public class PlainView extends View
   implements TabExpander
 {
@@ -289,6 +292,101 @@ public class PlainView extends View
   {
     // FIXME: not implemented
     return 0;
+  }
+  
+  /**
+   * Since insertUpdate and removeUpdate each deal with children
+   * Elements being both added and removed, they both have to perform
+   * the same checks.  So they both simply call this method.
+   * @param changes the DocumentEvent for the changes to the Document.
+   * @param a the allocation of the View.
+   * @param f the ViewFactory to use for rebuilding.
+   */
+  void insertOrRemoveUpdate(DocumentEvent changes, Shape a, ViewFactory f)
+  {
+    Element el = getElement();
+    ElementChange ec = changes.getChange(el);
+    if (ec == null)
+      return;
+    
+    // Check to see if we removed the longest line, if so we have to
+    // search through all lines and find the longest one again
+    Element[] removed = ec.getChildrenRemoved();
+    if (removed != null)
+      {
+        for (int i = 0; i < removed.length; i++)
+          if (removed[i].equals(longestLine))
+            {
+              // reset maxLineLength and search through all lines for longest one
+              maxLineLength = -1;
+              determineMaxLineLength();
+              return;
+            }
+      }
+    
+    //  Make sure we have the metrics
+    updateMetrics();
+        
+    // Since we didn't remove the longest line, we can just compare it to 
+    // the new lines to see if any of them are longer
+    Element[] newElements = ec.getChildrenAdded();    
+    Segment seg = new Segment();
+    float longestNewLength = 0;
+    Element longestNewLine = null;
+    
+    if (newElements == null)
+      return;
+    for (int i = 0; i < newElements.length; i++)
+      {
+        Element child = newElements[i];
+        int start = child.getStartOffset();
+        int end = child.getEndOffset();
+        try
+          {
+            el.getDocument().getText(start, start + end, seg);
+          }
+        catch (BadLocationException ex)
+          {
+          }
+        
+        int width = metrics.charsWidth(seg.array, seg.offset, seg.count);
+        if (width > longestNewLength)
+          {
+            longestNewLine = child;
+            longestNewLength = width;
+          }
+      }
+    if (longestNewLength > maxLineLength)
+      {
+        maxLineLength = longestNewLength;
+        longestLine = longestNewLine;
+      }      
+  }
+
+  /**
+   * This method is called when something is inserted into the Document
+   * that this View is displaying.
+   * 
+   * @param changes the DocumentEvent for the changes.
+   * @param a the allocation of the View
+   * @param f the ViewFactory used to rebuild
+   */
+  public void insertUpdate(DocumentEvent changes, Shape a, ViewFactory f)
+  {
+    insertOrRemoveUpdate(changes, a, f);
+  }
+
+  /**
+   * This method is called when something is removed from the Document
+   * that this View is displaying.
+   * 
+   * @param changes the DocumentEvent for the changes.
+   * @param a the allocation of the View
+   * @param f the ViewFactory used to rebuild
+   */
+  public void removeUpdate(DocumentEvent changes, Shape a, ViewFactory f)
+  {
+    insertOrRemoveUpdate(changes, a, f);
   }
 }
 

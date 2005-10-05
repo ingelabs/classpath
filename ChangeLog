@@ -1,3 +1,10 @@
+2005-10-05  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/PlainView.java:
+	(insertOrRemoveUpdate): New method.
+	(insertUpdate): New method.
+	(removeUpdate): New method.
+
 2005-10-05  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JOptionPane.java
