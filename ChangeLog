@@ -1,3 +1,26 @@
+2005-10-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/BoxView.java
+	(baselineLayout): New method.
+	(calculateMajorAxisRequirements): Reimplemented to use the
+	SizeRequirements utility methods.
+	(calculateMinorAxisRequirements): Reimplemented to use the
+	SizeRequirements utility methods.
+	(layout): Use the new baselineLayout method.
+	(layoutMajorAxis): Reimplemented to use the new
+	getChildRequirements method.
+	(layoutMinorAxis): Reimplemented to use the new
+	getChildRequirements method.
+	(getChildRequirements): New method.
+	(getSpan): New method.
+	(getOffset): New method.
+	(getAlignment): New method.
+	* javax/swing/text/ParagraphView.java
+	(Row.getAlignment): New method.	
+	(getAlignment): New method.	
+	* javax/swing/text/View.java
+	(getContainer): Improved error message in assertion a little.
+
 2005-10-05  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalTreeUI.java

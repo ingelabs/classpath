@@ -86,7 +86,8 @@ public abstract class View implements SwingConstants
   {
     View parent = getParent();
     if (parent == null)
-      throw new AssertionError("The parent of a View must not be null.");
+      throw new AssertionError(getClass().getName()
+                               + ": the parent of a View must not be null.");
 
     return parent.getContainer();
   }

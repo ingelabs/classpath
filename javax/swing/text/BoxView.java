@@ -295,7 +295,6 @@ public class BoxView
   {
     // Adjust size if the size is changed.
     Rectangle bounds = a.getBounds();
-
     if (bounds.width != getWidth() || bounds.height != getHeight())
       setSize(bounds.width, bounds.height);
 
@@ -357,6 +356,24 @@ public class BoxView
   }
 
   /**
+   * Calculates the layout of the children of this <code>BoxView</code> along
+   * the specified axis.
+   *
+   * @param span the target span
+   * @param axis the axis that is examined
+   * @param offsets an empty array, filled with the offsets of the children
+   * @param spans an empty array, filled with the spans of the children
+   */
+  protected void baselineLayout(int span, int axis, int[] offsets,
+                                int[] spans)
+  {
+    if (axis == myAxis)
+      layoutMajorAxis(span, axis, offsets, spans);
+    else
+      layoutMinorAxis(span, axis, offsets, spans);
+  }
+
+  /**
    * Calculates the size requirements of this <code>BoxView</code> along
    * its major axis, that is the axis specified in the constructor.
    *
@@ -370,27 +387,8 @@ public class BoxView
   protected SizeRequirements calculateMajorAxisRequirements(int axis,
                                                            SizeRequirements sr)
   {
-    if (sr == null)
-      sr = new SizeRequirements();
-    else
-      {
-        sr.maximum = 0;
-        sr.minimum = 0;
-        sr.preferred = 0;
-        sr.alignment = 0.5F;
-      }
-
-    int count = getViewCount();
-
-    // Sum up the sizes of the children along the specified axis.
-    for (int i = 0; i < count; ++i)
-      {
-        View child = getView(i);
-        sr.minimum += child.getMinimumSpan(axis);
-        sr.preferred += child.getPreferredSpan(axis);
-        sr.maximum += child.getMaximumSpan(axis);
-      }
-    return sr;
+    SizeRequirements[] childReqs = getChildRequirements(axis);
+    return SizeRequirements.getTiledSizeRequirements(childReqs);
   }
 
   /**
@@ -408,48 +406,8 @@ public class BoxView
   protected SizeRequirements calculateMinorAxisRequirements(int axis,
                                                            SizeRequirements sr)
   {
-    if (sr == null)
-      sr = new SizeRequirements();
-    else
-      {
-        sr.maximum = 0;
-        sr.minimum = 0;
-        sr.preferred = 0;
-        sr.alignment = 0.5F;
-      }
-
-    int count = getViewCount();
-
-    int aboveBaseline = 0;
-    int belowBaseline = 0;
-    int aboveBaselineMin = 0;
-    int belowBaselineMin = 0;
-    int aboveBaselineMax = 0;
-    int belowBaselineMax = 0;
-    
-    for (int i = 0; i < count; ++i)
-      {
-        View child = getView(i);
-        float align = child.getAlignment(axis);
-        int pref = (int) child.getPreferredSpan(axis);
-        int min = (int) child.getMinimumSpan(axis);
-        int max = (int) child.getMaximumSpan(axis);
-        aboveBaseline += (int) (align * pref);
-        belowBaseline += (int) ((1.F - align) * pref);
-        aboveBaselineMin += (int) (align * min);
-        belowBaselineMin += (int) ((1.F - align) * min);
-        aboveBaselineMax += (int) (align * max);
-        belowBaselineMax += (int) ((1.F - align) * max);
-      }
-    sr.minimum = aboveBaselineMin + belowBaselineMin;
-    sr.maximum = aboveBaselineMax + belowBaselineMax;
-    sr.preferred = aboveBaseline + belowBaseline;
-    if (aboveBaseline == 0)
-      sr.alignment = 1.0F;
-    else
-      sr.alignment = (float) (sr.preferred / aboveBaseline);
-
-    return sr;
+    SizeRequirements[] childReqs = getChildRequirements(axis);
+    return SizeRequirements.getAlignedSizeRequirements(childReqs);
   }
 
   /**
@@ -567,16 +525,8 @@ public class BoxView
     this.width = width;
     this.height = height;
 
-    if (myAxis == X_AXIS)
-      {
-        layoutMajorAxis(width, X_AXIS, offsetsX, spansX);
-        layoutMinorAxis(height, Y_AXIS, offsetsY, spansY);
-      }
-    else
-      {
-        layoutMajorAxis(height, Y_AXIS, offsetsY, spansY);
-        layoutMinorAxis(width, X_AXIS, offsetsX, spansX);
-      }
+    baselineLayout(width, X_AXIS, offsetsX, spansX);
+    baselineLayout(height, Y_AXIS, offsetsY, spansY);
   }
 
   /**
@@ -591,23 +541,11 @@ public class BoxView
   protected void layoutMajorAxis(int targetSpan, int axis, int[] offsets,
                                  int[] spans)
   {
-    // Allocate SizeRequirements for each child view.
-    int count = getViewCount();
-    SizeRequirements[] childReqs = new SizeRequirements[count];
-    for (int i = 0; i < count; ++i)
-      {
-        View view = getView(i);
-        childReqs[i] = new SizeRequirements((int) view.getMinimumSpan(axis),
-                                            (int) view.getPreferredSpan(axis),
-                                            (int) view.getMaximumSpan(axis),
-                                            view.getAlignment(axis));
-      }
-
+    SizeRequirements[] childReqs = getChildRequirements(axis);
     // Calculate the spans and offsets using the SizeRequirements uility
     // methods.
     SizeRequirements.calculateTiledPositions(targetSpan, null, childReqs,
                                              offsets, spans);
-
     validateLayout(axis);
   }
 
@@ -623,18 +561,7 @@ public class BoxView
   protected void layoutMinorAxis(int targetSpan, int axis, int[] offsets,
                                  int[] spans)
   {
-    // Allocate SizeRequirements for each child view.
-    int count = getViewCount();
-    SizeRequirements[] childReqs = new SizeRequirements[count];
-    for (int i = 0; i < count; ++i)
-      {
-        View view = getView(i);
-        childReqs[i] = new SizeRequirements((int) view.getMinimumSpan(axis),
-                                            (int) view.getPreferredSpan(axis),
-                                            (int) view.getMaximumSpan(axis),
-                                            view.getAlignment(axis));
-      }
-
+    SizeRequirements[] childReqs = getChildRequirements(axis);
     // Calculate the spans and offsets using the SizeRequirements uility
     // methods.
     SizeRequirements.calculateAlignedPositions(targetSpan, null, childReqs,
@@ -705,5 +632,84 @@ public class BoxView
       xLayoutValid = true;
     if (axis == Y_AXIS)
       yLayoutValid = true;
+  }
+
+  /**
+   * Returns the size requirements of this view's children for the major
+   * axis.
+   *
+   * @return the size requirements of this view's children for the major
+   *         axis
+   */
+  SizeRequirements[] getChildRequirements(int axis)
+  {
+    // Allocate SizeRequirements for each child view.
+    int count = getViewCount();
+    SizeRequirements[] childReqs = new SizeRequirements[count];
+    for (int i = 0; i < count; ++i)
+      {
+        View view = getView(i);
+        childReqs[i] = new SizeRequirements((int) view.getMinimumSpan(axis),
+                                            (int) view.getPreferredSpan(axis),
+                                            (int) view.getMaximumSpan(axis),
+                                            view.getAlignment(axis));
+      }
+    return childReqs;
+  }
+
+  /**
+   * Returns the span for the child view with the given index for the specified
+   * axis.
+   *
+   * @param axis the axis to examine, either <code>X_AXIS</code> or
+   *        <code>Y_AXIS</code>
+   * @param index the index of the child for for which to return the span
+   *
+   * @return the span for the child view with the given index for the specified
+   *         axis
+   */
+  protected int getSpan(int axis, int childIndex)
+  {
+    if (axis == X_AXIS)
+      return spansX[childIndex];
+    else
+      return spansY[childIndex];
+  }
+
+  /**
+   * Returns the offset for the child view with the given index for the
+   * specified axis.
+   *
+   * @param axis the axis to examine, either <code>X_AXIS</code> or
+   *        <code>Y_AXIS</code>
+   * @param index the index of the child for for which to return the span
+   *
+   * @return the offset for the child view with the given index for the
+   *         specified axis
+   */
+  protected int getOffset(int axis, int childIndex)
+  {
+    if (axis == X_AXIS)
+      return offsetsX[childIndex];
+    else
+      return offsetsY[childIndex];
+  }
+
+  /**
+   * Returns the alignment for this box view for the specified axis. The
+   * axis that is tiled (the major axis) will be requested to be aligned
+   * centered (0.5F). The minor axis alignment depends on the child view's
+   * total alignment.
+   *
+   * @param axis the axis which is examined
+   *
+   * @return the alignment for this box view for the specified axis
+   */
+  public float getAlignment(int axis)
+  {
+    if (axis == myAxis)
+      return 0.5F;
+    else
+      return baselineRequirements(axis, null).alignment;
   }
 }
