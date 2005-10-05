@@ -1,3 +1,13 @@
+2005-10-05  Mark Wielaard  <mark@klomp.org>
+
+	Reported by Nicolas Geoffray  <nicolas.geoffray@lip6.fr>
+	* java/security/AccessController.java
+	(doPrivileged(PrivilegedExceptionAction)): If the Exception is a
+	Runtime exception, then throw the exception directly, otherwise
+	wrap it.
+	(doPrivileged(PrivilegedExceptionAction,AccessControlContext)):
+	Likewise.
+
 2005-10-05  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/GapContent.java
