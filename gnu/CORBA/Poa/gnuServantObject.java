@@ -44,6 +44,7 @@ import gnu.CORBA.IOR_contructed_object;
 import gnu.CORBA.Interceptor.gnuServerRequestInfo;
 import gnu.CORBA.IOR;
 import gnu.CORBA.IorProvider;
+import gnu.CORBA.Minor;
 import gnu.CORBA.ObjectCreator;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.bufferedResponseHandler;
@@ -268,10 +269,8 @@ public class gnuServantObject extends ObjectImpl
               }
             catch (Exception ex)
               {
-                ex.printStackTrace();
-
                 BAD_OPERATION bad =
-                  new BAD_OPERATION("Unable to activate", 0x5004,
+                  new BAD_OPERATION("Unable to activate", Minor.Activation,
                     CompletionStatus.COMPLETED_NO
                   );
                 bad.initCause(ex);
@@ -287,7 +286,7 @@ public class gnuServantObject extends ObjectImpl
         // No servant and no servant manager - throw exception.
         else
           {
-            throw new BAD_OPERATION("Unable to activate", 0x5002,
+            throw new BAD_OPERATION("Unable to activate", Minor.Activation,
               CompletionStatus.COMPLETED_NO
             );
           }

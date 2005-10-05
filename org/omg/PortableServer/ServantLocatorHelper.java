@@ -110,6 +110,7 @@ public abstract class ServantLocatorHelper
     catch (ClassCastException ex)
       {
         BAD_OPERATION bad = new BAD_OPERATION();
+        bad.minor = Minor.ClassCast;
         bad.initCause(ex);
         throw bad;
       }

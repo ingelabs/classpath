@@ -119,6 +119,7 @@ public abstract class TaggedProfileHelper
     catch (ClassCastException cex)
       {
         BAD_OPERATION bad = new BAD_OPERATION("TaggedProfile expected");
+        bad.minor = Minor.Any;        
         bad.initCause(cex);
         throw bad;
       }

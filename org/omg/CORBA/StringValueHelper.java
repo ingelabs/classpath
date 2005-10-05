@@ -142,7 +142,11 @@ public class StringValueHelper
         return an_any.extract_string();
       }
     else
-      throw new BAD_OPERATION("Contains not a string value type");
+      {
+        BAD_OPERATION bad = new BAD_OPERATION("String value type expected");
+        bad.minor = Minor.Any;
+        throw bad;
+      }
   }
 
   /**

@@ -123,7 +123,9 @@ public class universalHolder
    */
   public TypeCode _type()
   {
-    throw new BAD_OPERATION();
+    BAD_OPERATION bad = new BAD_OPERATION();
+    bad.minor = Minor.Inappropriate;
+    throw bad;
   }
 
   /**

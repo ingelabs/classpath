@@ -254,7 +254,10 @@ public class gnuAny
       }
     catch (ClassCastException ex)
       {
-        throw new BAD_OPERATION();
+        BAD_OPERATION bad = new BAD_OPERATION();
+        bad.initCause(ex);
+        bad.minor = Minor.Any;
+        throw bad;
       }
   }
 
@@ -319,7 +322,10 @@ public class gnuAny
       }
     catch (Exception ex)
       {
-        return new BAD_OPERATION("Value type expected");
+        BAD_OPERATION bad = new BAD_OPERATION("Value type expected");
+        bad.minor = Minor.Any;
+        bad.initCause(ex);
+        throw bad;
       }
   }
 
@@ -848,38 +854,43 @@ public class gnuAny
 
   /**
    * Check if the current value if the value of the given kind.
+   * 
    * @param kind a kind to check.
    * @throws BAD_OPERATION if the value is not set of is different kind.
    */
   protected void check(int kind)
-                throws BAD_OPERATION
+    throws BAD_OPERATION
   {
     if (has == null)
-      throw new BAD_OPERATION("value not set");
+      {
+        BAD_OPERATION bad = new BAD_OPERATION("value not set");
+        bad.minor = Minor.Any;
+        throw bad;
+      }
 
     if (xKind >= 0)
       {
         if (xKind != kind)
-          if (!(
-                xKind == TCKind._tk_alias &&
-                has._type().kind().value() == kind
-              )
-             )
-            throw new BAD_OPERATION("Extracting " + typeNamer.nameIt(kind) +
-                                    " when stored " + typeNamer.nameIt(xKind)
-                                   );
+          if (!(xKind == TCKind._tk_alias && has._type().kind().value() == kind))
+            {
+              BAD_OPERATION bad = new BAD_OPERATION("Extracting "
+                + typeNamer.nameIt(kind) + " when stored "
+                + typeNamer.nameIt(xKind));
+              bad.minor = Minor.Any;
+              throw bad;
+            }
       }
     else
       {
         if (type().kind().value() != kind)
-          if (!(
-                type().kind().value() == TCKind._tk_alias &&
-                has._type().kind().value() == kind
-              )
-             )
-            throw new BAD_OPERATION("Extracting " + typeNamer.nameIt(kind) +
-                                    " stored " + typeNamer.nameIt(type())
-                                   );
+          if (!(type().kind().value() == TCKind._tk_alias && has._type().kind().value() == kind))
+            {
+              BAD_OPERATION bad = new BAD_OPERATION("Extracting "
+                + typeNamer.nameIt(kind) + " stored "
+                + typeNamer.nameIt(type()));
+              bad.minor = Minor.Any;
+              throw bad;
+            }
       }
   }
 

@@ -148,6 +148,7 @@ public class Functional_ORB extends Restricted_ORB
         {
           BAD_OPERATION bad =
             new BAD_OPERATION("Unable to open the server socket at "+s_port);
+          bad.minor = Minor.Socket;
           bad.initCause(ex);
           throw bad;
         }
@@ -562,6 +563,7 @@ public class Functional_ORB extends Restricted_ORB
     catch (IOException ex)
       {
         NO_RESOURCES bad = new NO_RESOURCES("Unable to open the server socket.");
+        bad.minor = Minor.Ports;
         bad.initCause(ex);
         throw bad;
       }
@@ -1484,7 +1486,11 @@ public class Functional_ORB extends Restricted_ORB
                 try
                   {
                     if (no_resources)
-                      throw new NO_RESOURCES();
+                      {
+                        NO_RESOURCES no = new NO_RESOURCES("Too many parallel calls");
+                        no.minor = Minor.Threads;
+                        throw no;
+                      }
                     if (target == null)
                       throw new OBJECT_NOT_EXIST();
                     target._invoke(rh_request.operation, cin, handler);

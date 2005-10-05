@@ -142,7 +142,11 @@ public class WStringValueHelper
         return an_any.extract_wstring();
       }
     else
-      throw new BAD_OPERATION("Contains not a wide string value type");
+      {
+        BAD_OPERATION bad = new BAD_OPERATION("WString value type expected");
+        bad.minor = Minor.Any;
+        throw bad;        
+      }
   }
 
   /**

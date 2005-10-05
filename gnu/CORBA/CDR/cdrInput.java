@@ -442,7 +442,8 @@ public abstract class cdrInput
       }
     catch (IOException ex)
       {
-        BAD_OPERATION bad = new BAD_OPERATION();
+        MARSHAL bad = new MARSHAL();
+        bad.minor = Minor.IOR;
         bad.initCause(ex);
         throw bad;
       }

@@ -117,6 +117,7 @@ public abstract class TaggedComponentHelper
     catch (ClassCastException cex)
       {
         BAD_OPERATION bad = new BAD_OPERATION("TaggedComponent expected");
+        bad.minor = Minor.Any;        
         bad.initCause(cex);
         throw bad;
       }

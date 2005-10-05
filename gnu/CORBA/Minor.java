@@ -38,7 +38,6 @@
 
 package gnu.CORBA;
 
-import java.lang.reflect.Field;
 
 /**
  * Provides information and operations, related to about the 20 bit vendor minor
@@ -50,6 +49,8 @@ import java.lang.reflect.Field;
 public interface Minor
 {
   // Note: MARSHAL done.
+
+  /* MARSHAL */
 
   /**
    * The GNU Classpath VMCID. The last 12 bits can be used to mark up to 4096
@@ -105,7 +106,7 @@ public interface Minor
 
   /**
    * The unexpected IOException while inserting or extracting data to/from the
-   * Any.
+   * Any or DynamicAny.
    */
   int Any = 9 | vendor;
 
@@ -213,4 +214,63 @@ public interface Minor
    * The instance of the value type is not serializable.
    */
   int NonSerializable = 28 | vendor;
+
+  /* BAD_OPERATION */
+
+  /**
+   * The remote side requested to invoke the method that is not available on
+   * that target (client and server probably disagree in the object definition).
+   */
+  int Method = 0 | vendor;
+
+  /**
+   * Failed to activate the inactive object.
+   */
+  int Activation = 10 | vendor;
+
+  /*
+   * Any - Attempt to extract from the Any value of the different type that was
+   * stored into that Any.
+   */
+
+  /* ClassCast - Unable to narrow the object into stub. */
+
+  /**
+   * The policies, applying to ORB or POA prevent the requested operation.
+   */
+  int Policy = 11 | vendor;
+
+  /**
+   * Socket related errors like failure to open socket on the expected port,
+   * failure to get a free port when required and so on.
+   */
+  int Socket = 12 | vendor;
+
+  /**
+   * The passed value for enumeration is outside the valid range for that
+   * enumeration.
+   */
+  int Enumeration = 14 | vendor;
+
+  /**
+   * The passed policy code is outside the valid range of the possible policies
+   * for the given policy type.
+   */
+  int PolicyType = 15 | vendor;
+  
+  /* NO_RESOURCES */
+  
+  /**
+   * Unable to get a free port for a new socket. Proably too many objects under
+   * unsuitable POA policy.
+   */
+  int Ports = 20 | vendor;
+  
+  /**
+   * Too many parallel calls (too many parallel threads). The thread control
+   * prevents malicios client from knocking the server out by suddenly
+   * submitting large number of requests.
+   */
+  int Threads = 21 | vendor;
+
 }
