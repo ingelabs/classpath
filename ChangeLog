@@ -1,5 +1,25 @@
 2005-10-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/LabelView.java
+	(LabelView): Implemented the constructor.
+	(setPropertiesFromAttributes): New method.
+	(changedUpdate): New method.
+	(getBackground): New method.
+	(setBackground): New method.
+	(getForeground): New method.
+	(getFont): New method.
+	(getFontMetrics): New method.
+	(isUnderline): New method.
+	(setUnderline): New method.
+	(isSubscript): New method.
+	(setSubscript): New method.
+	(isSuperscript): New method.
+	(setSuperscript): New method.
+	(isStrikeThrough): New method.
+	(setStrikeThrough): New method.
+
+2005-10-05  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/table/JTableHeader.java
 	(accessibleContext): Removed unneeded field. The protected
 	field with the same name should be used instead.
