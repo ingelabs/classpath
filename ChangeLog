@@ -1,3 +1,19 @@
+2005-10-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/table/JTableHeader.java
+	(accessibleContext): Removed unneeded field. The protected
+	field with the same name should be used instead.
+	(JTableHeader): Moved field initialization to new method
+	initializeLocalVars().
+	(setColumnModel): Add and remove this to the old and new model.
+	(columnAdded): New listener method.
+	(columnMarginChanged): New listener method.
+	(columnMoved): New listener method.
+	(columnRemoved): New listener method.
+	(columnSelectionChanged): New listener method.
+	(resizeAndRepaint): New method.
+	(initializeLocalVars): New method.
+
 2005-10-04  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicFileChooserUI.java: Added API docs all
