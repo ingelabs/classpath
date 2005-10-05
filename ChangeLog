@@ -1,3 +1,11 @@
+2005-10-05  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JOptionPane.java
+	(showInputDialog(Component,Object,String,int,Icon,Object[],Object)):
+	Don't cast return value.
+	(internalShowInputDialog(Component,Object,String,int,Icon,Object[],
+	Object)): Likewise.
+
 2005-10-05  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/CDR/cdrInput.java,

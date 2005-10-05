@@ -1059,7 +1059,7 @@ public class JOptionPane extends JComponent implements Accessible
     dialog.pack();
     dialog.show();
     
-    return (String) pane.getInputValue();
+    return pane.getInputValue();
   }
 
   /**
@@ -1298,7 +1298,7 @@ public class JOptionPane extends JComponent implements Accessible
 
     startModal(frame);
     
-    return (String) pane.getInputValue();
+    return pane.getInputValue();
   }
 
   /**
