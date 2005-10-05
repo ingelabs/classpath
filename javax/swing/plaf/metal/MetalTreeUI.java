@@ -153,7 +153,11 @@ public class MetalTreeUI
     TreeModel mod = tree.getModel();
     setModel(mod);
     if (mod != null)
-      tree.expandPath(new TreePath(mod.getRoot()));
+      {
+        TreePath path = new TreePath(mod.getRoot());
+        if (!tree.isExpanded(path))
+          toggleExpandState(path);
+      }
     treeSelectionModel = tree.getSelectionModel();
     drawingCache = new Hashtable();
     nodeDimensions = createNodeDimensions();

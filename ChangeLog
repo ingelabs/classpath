@@ -1,3 +1,25 @@
+2005-10-05  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalTreeUI.java
+	(installUI): Fixed to call toggleExpandState instead.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getPathForRow): Used currentVisiblePath to get Path.
+	(getRowForPath): Used currentVisiblePath to get row.
+	(getRowCount): Returned currentVisiblePath length.
+	(updateLayoutCacheExpandedNodes): Took out unneeded code.
+	(installUI): Fixed to call toggleExpandState instead.
+	(getPreferredSize): Made more efficent by using currentVisiblePath.
+	(toggleExpandState): Called updateCurrentVisiblePath.
+	(getCellLocation): Made more efficent.
+	(paintNode): Removed.
+	(paintRecursive): Made more efficent, changed paintNode calls to 
+	paintRow.
+	(getNextVisibleNode): Reimplemented to use currentVisiblePath.
+	(getPreviousVisibleNode): Likewise.
+	(paintRow): Implemented.
+	(updateCurrentVisiblePath): New helper used to cache the current
+	visible path.
+
 2005-10-05  Mark Wielaard  <mark@klomp.org>
 
 	Reported by Nicolas Geoffray  <nicolas.geoffray@lip6.fr>
