@@ -168,6 +168,44 @@ public class GapContent
     
   }
   
+  class UndoRemove extends AbstractUndoableEdit
+  {
+    public int where;
+    String text;
+    public UndoRemove(int start, String removedText)
+    {
+      where = start;
+      text = removedText;
+    }
+
+    public void undo () throws CannotUndoException
+    {
+      super.undo();
+      try
+      {
+        insertString(where, text);
+      }
+      catch (BadLocationException ble)
+      {
+        throw new CannotUndoException();
+      }
+    }
+    
+    public void redo () throws CannotUndoException
+    {
+      super.redo();
+      try
+      {
+        remove(where, text.length());
+      }
+      catch (BadLocationException ble)
+      {
+        throw new CannotRedoException();
+      }
+    }
+    
+  }
+  
   /** The serialization UID (compatible with JDK1.5). */
   private static final long serialVersionUID = -6226052713477823730L;
 
@@ -259,8 +297,7 @@ public class GapContent
    * @param where the position where the string is inserted
    * @param str the string that is to be inserted
    * 
-   * @return an UndoableEdit object (currently not supported, so
-   *         <code>null</code> is returned)
+   * @return an UndoableEdit object
    * 
    * @throws BadLocationException if <code>where</code> is not a valid
    *         location in the buffer
@@ -287,8 +324,7 @@ public class GapContent
    * @param where the position where the content is to be removed
    * @param nitems number of characters to be removed
    * 
-   * @return an UndoableEdit object (currently not supported, so
-   *         <code>null</code> is returned)
+   * @return an UndoableEdit object
    * 
    * @throws BadLocationException if <code>where</code> is not a valid
    *         location in the buffer
@@ -305,9 +341,10 @@ public class GapContent
       throw new BadLocationException("where + nitems cannot be greater"
           + " than the content length", where + nitems);
 
+    String removedText = getString(where, nitems);
     replace(where, nitems, null, 0);
 
-    return null;
+    return new UndoRemove(where, removedText);
   }
 
   /**

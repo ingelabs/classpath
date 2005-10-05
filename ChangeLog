@@ -1,3 +1,12 @@
+2005-10-05  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/AbstractDocument.java:
+	(remove): If removing content returns an UndoableEdit, then add an 
+	ElementEdit to the DocumentEvent before firing.
+	* javax/swing/text/GapContent.java:
+	(UndoRemove): New class to implement UndoableEdit for remove operation.
+	(remove): Return an UndoableEdit instead of null.
+
 2005-10-05  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/LabelView.java
