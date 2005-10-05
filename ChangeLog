@@ -1,3 +1,10 @@
+2005-10-05  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(paintRow): Fixed indentation.
+	(updateCurrentVisiblePath): Added FIXME
+	comment.
+
 2005-10-05  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/BoxView.java

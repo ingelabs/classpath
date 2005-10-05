@@ -3144,7 +3144,8 @@ public class BasicTreeUI
            if (!mod.isLeaf(node))
              max = mod.getChildCount(node);
    
-           if (!node.equals(mod.getRoot()))
+           if (!node.equals(mod.getRoot()) && 
+               (tree.isRootVisible() || getLevel(node) != 1))
              icon.paintIcon(tree, g, indentation  - rightChildIndent -  3, h);
            
            if (tree.isExpanded(path))
@@ -3691,7 +3692,9 @@ public class BasicTreeUI
           current = current.pathByAddingChild(next);
         else
           current = new TreePath(next);
-
+        
+        // FIXME: Inefficent to have 2 loops when the 
+        // tree is very large. Find a better way.
         do
           next = getNextNode(next);
         while (next != null
