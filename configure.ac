@@ -324,21 +324,52 @@ if test "x${COMPILE_JNI}" = xyes; then
 
   dnl Check for AWT related Qt4
   if test "x${COMPILE_QT_PEER}" = xyes; then
-    PKG_CHECK_MODULES(QT, QtGui >= 4.0.1)
-    dnl Check needed because in some cases the QtGui includedir
-    dnl doesn't contain the subsystem dir.
-    QT_INCLUDE_DIR=$($PKG_CONFIG --variable=includedir QtGui)
-    EXTRA_QT_INCLUDE_DIR="$QT_INCLUDE_DIR/Qt"
-    AC_CHECK_FILE([$QT_INCLUDE_DIR/QWidget],
-		  AC_MSG_NOTICE([No extra QT_INCLUDE_DIR needed]),
-		  AC_CHECK_FILE([$EXTRA_QT_INCLUDE_DIR/QWidget],
-		  	QT_CFLAGS="$QT_CFLAGS -I$EXTRA_QT_INCLUDE_DIR",
-			AC_MSG_WARN([QWidget not found])))
-    AC_MSG_NOTICE([Set QT_CFLAGS... $QT_CFLAGS])
-    AC_CHECK_PROG(MOC, [moc], [moc])
-    AC_SUBST(QT_CFLAGS)
-    AC_SUBST(QT_LIBS)
+    PKG_CHECK_MODULES(QT, QtGui >= 4.0.1, HAVE_QT4="yes", HAVE_QT4="no")
+    if test "x$HAVE_QT4" = "xyes"; then
+      dnl Check needed because in some cases the QtGui includedir
+      dnl doesn't contain the subsystem dir.
+      QT_INCLUDE_DIR=$($PKG_CONFIG --variable=includedir QtGui)
+      EXTRA_QT_INCLUDE_DIR="$QT_INCLUDE_DIR/Qt"
+      AC_CHECK_FILE([$QT_INCLUDE_DIR/QWidget],
+      AC_MSG_NOTICE([No extra QT_INCLUDE_DIR needed]),
+      AC_CHECK_FILE([$EXTRA_QT_INCLUDE_DIR/QWidget],
+	QT_CFLAGS="$QT_CFLAGS -I$EXTRA_QT_INCLUDE_DIR",
+	AC_MSG_WARN([QWidget not found])))
+	AC_CHECK_PROG(MOC, [moc], [moc])
+    fi
+  if test "x$HAVE_QT4" = "xno"; then
+    AC_MSG_NOTICE([Looking for QT_CFLAGS and QT_LIBS without pkg-config])
+    case "$host_os" in
+      darwin*)
+	AC_ARG_WITH([qtdir],
+	  [AS_HELP_STRING([--with-qtdir=DIR],
+	  [Qt4 installation directory used for OS-X.
+	  For other systems use pkg-config.])],
+	  [QT4DIR=$withval]
+	  )
+	if test x"$QT4DIR" = x ; then
+	  AC_MSG_ERROR([*** No path for Qt4 --with-qtdir option given])
+	fi
+	AC_MSG_RESULT([QT4DIR... $QT4DIR])
+	AC_CHECK_PROG(MOC, [moc], [$QT4DIR/bin/moc], [], $QT4DIR/bin)
+	if test x"$MOC" = x; then
+	  AC_MSG_ERROR([*** This is not the right Qt installation])
+	fi
+	QT_CFLAGS="-F$QT4DIR/lib -I$QT4DIR/lib/QtCore.framework/Headers"
+	QT_CFLAGS="$QT_CFLAGS -I$QT4DIR/lib/QtGui.framework/Headers"
+	QT_LIBS="-Xlinker -F$QT4DIR/lib -Xlinker -framework -Xlinker QtCore"
+	QT_LIBS="$QT_LIBS -Xlinker -framework -Xlinker QtGui"
+	;;
+      *)
+	AC_MSG_ERROR([*** Please check PKG_CONFIG_PATH or the version
+	of your installed Qt4 installation.])
+	;;
+    esac
   fi
+  AC_MSG_NOTICE([Set QT_CFLAGS... $QT_CFLAGS])
+  AC_SUBST(QT_CFLAGS)
+  AC_SUBST(QT_LIBS)
+fi
 
   if test "x${enable_gtk_cairo}" = xyes; then
     PKG_CHECK_MODULES(CAIRO, cairo >= 0.5.0)
