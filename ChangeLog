@@ -1,3 +1,17 @@
+2005-10-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicRootPaneUI.java
+	(installUI): Call new hook methods.
+	(installDefaults): New hook method.
+	(installComponents): New hook method.
+	(installListeners): New hook method.
+	(installKeyboardActions): New hook method.
+	(uninstallUI): New method.
+	(uninstallDefaults): New hook method.
+	(uninstallComponents): New hook method.
+	(uninstallListeners): New hook method.
+	(uninstallKeyboardActions): New hook method.
+
 2005-10-06  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
