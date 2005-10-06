@@ -1,3 +1,17 @@
+2005-10-06  Tom Tromey  <tromey@redhat.com>
+
+	* javax/print/attribute/SetOfIntegerSyntax.java (toString): Wrote.
+	(hashCode): Likewise.
+	(equals): Likewise.
+	(getMembers): Likewise.
+	(contains): Fixed boundary condition check.
+	(next): Wrote.
+	(normalize): Rewrote.
+	(SetOfIntegerSyntax): Updated.
+	(SetOfIntegerSyntax(String)): New constructor.
+	(skipNumber): New method.
+	(skipWhitespace): Likewise.
+
 2005-10-06  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicRootPaneUI.java
