@@ -1318,7 +1318,7 @@ public class BasicTreeUI
     setCellEditor(createDefaultCellEditor());
     createdCellEditor = true;
     isEditing = false;
-    
+
     TreeModel mod = tree.getModel();
     setModel(mod);
     if (mod != null)
@@ -1564,8 +1564,7 @@ public class BasicTreeUI
     int y;
     if (event == null)
       {
-	if (bounds == null)
-           bounds = getPathBounds(tree, path);
+        bounds = getPathBounds(tree, path);
         x = bounds.x;
         y = bounds.y;
       }
@@ -3628,7 +3627,9 @@ public class BasicTreeUI
             && node.equals(editingPath.getLastPathComponent()))
           {
             rendererPane.paintComponent(g, editingComponent.getParent(), null,
-                                        new Rectangle(0, 0, bounds.width, bounds.height));
+                                        new Rectangle(getCurrentControlIcon(path).
+                                                      getIconWidth() - 5, 0, bounds.width, 
+                                                      bounds.height));
           }
         else
           {

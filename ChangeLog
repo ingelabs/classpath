@@ -1,3 +1,15 @@
+2005-10-06  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(startEditing): Should always change the bounds, whenever
+	we start editing.
+	(paintRow): Fixed location where editing component should
+	be drawn. The constant takes care of the space around the 
+	icon.
+	* javax/swing/JTree.java
+	(JTree): Called updateUI first so currentVisiblePath is 
+	cached right away. Prevents NPEs. 
+
 2005-10-06  Tom Tromey  <tromey@redhat.com>
 
 	* javax/print/attribute/SetOfIntegerSyntax.java (toString): Wrote.

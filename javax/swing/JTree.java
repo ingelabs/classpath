@@ -1477,11 +1477,11 @@ public class JTree
    */
   public JTree(TreeModel model)
   {
+    updateUI();
     setRootVisible(true);
-    setModel(model);
     setSelectionModel(EmptySelectionModel.sharedInstance());
     setCellRenderer(new DefaultTreeCellRenderer());
-    updateUI();
+    setModel(model);
   }
 
   /**
