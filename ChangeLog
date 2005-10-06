@@ -1,3 +1,15 @@
+2005-10-06  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/AbstractDocument.java: Implemeted locking.
+	(insertString): Obtain write lock before altering document.
+	(readLock): Implemented.
+	(readUnlock): Implemented.
+	(remove): Obtain write lock before altering document.
+	(render): Implemented.
+	(writeLock): Implemented.
+	(writeUnlock): Implemented.
+	(getCurrentWriter): Implemented.
+
 2005-10-06  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JLabel.java
