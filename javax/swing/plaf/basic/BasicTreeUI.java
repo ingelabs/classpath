@@ -2278,10 +2278,7 @@ public class BasicTreeUI
           boolean cntlClick = isLocationInExpandControl(path, click.x, click.y);
           
           if (isLeaf(row))
-            {
-              bounds.x -= rightChildIndent - 4;
               bounds.width += rightChildIndent + 4;
-            }
           else if (tree.isExpanded(path) && expandedIcon != null)
               bounds.width += expandedIcon.getIconWidth() + 4;
           else if (collapsedIcon != null)

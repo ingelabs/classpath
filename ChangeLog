@@ -1,3 +1,8 @@
+2005-10-06  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(mousePressed): Shouldn't change x location for leaf.
+
 2005-10-06  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* configure.ac: Add Qt4 configury bits for OS-X.
