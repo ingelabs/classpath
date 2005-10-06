@@ -1,3 +1,7 @@
+2005-10-06  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/metadata/IIOMetadata.java: Complete.
+
 2005-10-06  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/BoxView.java
