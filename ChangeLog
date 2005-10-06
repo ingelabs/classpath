@@ -1,3 +1,10 @@
+2005-10-06  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/PlainView.java:
+	(determineMaxLength): If maxLineLength is -1 we should return 0.
+	(insertOrRemoveUpdate): Avoid NPE by checking the Segment that 
+	getText returns.
+
 2005-10-06  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/metadata/IIOMetadata.java: Complete.
