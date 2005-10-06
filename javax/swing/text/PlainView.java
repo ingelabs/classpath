@@ -242,6 +242,10 @@ public class PlainView extends View
         catch (BadLocationException ex)
           {
           }
+        
+        if (seg == null || seg.array == null || seg.count == 0)
+          continue;
+        
         int width = metrics.charsWidth(seg.array, seg.offset, seg.count);
         if (width > span)
           {
@@ -250,7 +254,7 @@ public class PlainView extends View
           }
       }
     maxLineLength = span;
-    return Math.max(maxLineLength, 0);
+    return maxLineLength;
   }
   
   public float getPreferredSpan(int axis)

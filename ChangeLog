@@ -1,6 +1,13 @@
 2005-10-06  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/PlainView.java:
+	(determineMaxLength): Avoid NPE by checking the Segment that getText
+	returns.  No need to return Math.max (0, maxLineLength) because
+	maxLineLength is guaranteed to be 0 or greater.
+
+2005-10-06  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/PlainView.java:
 	(determineMaxLength): If maxLineLength is -1 we should return 0.
 	(insertOrRemoveUpdate): Avoid NPE by checking the Segment that 
 	getText returns.
