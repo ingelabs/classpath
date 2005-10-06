@@ -295,18 +295,19 @@ public class BoxView
   {
     // Adjust size if the size is changed.
     Rectangle bounds = a.getBounds();
+
     if (bounds.width != getWidth() || bounds.height != getHeight())
       setSize(bounds.width, bounds.height);
 
     Rectangle inside = getInsideAllocation(a);
-
     Rectangle copy = new Rectangle(inside);
     int count = getViewCount();
     for (int i = 0; i < count; ++i)
       {
         copy.setBounds(inside);
         childAllocation(i, copy);
-        paintChild(g, copy, i);
+        if (!copy.isEmpty())
+          paintChild(g, copy, i);
       }
   }
 
@@ -522,9 +523,6 @@ public class BoxView
    */
   protected void layout(int width, int height)
   {
-    this.width = width;
-    this.height = height;
-
     baselineLayout(width, X_AXIS, offsetsX, spansX);
     baselineLayout(height, Y_AXIS, offsetsY, spansY);
   }
@@ -614,6 +612,9 @@ public class BoxView
       layoutChanged(X_AXIS);
     if (this.height != (int) height)
       layoutChanged(Y_AXIS);
+    
+    this.width = (int) width;
+    this.height = (int) height;
 
     Rectangle outside = new Rectangle(0, 0, this.width, this.height);
     Rectangle inside = getInsideAllocation(outside);

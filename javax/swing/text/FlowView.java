@@ -42,6 +42,7 @@ import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.event.DocumentEvent;
@@ -183,11 +184,17 @@ public abstract class FlowView extends BoxView
         {
           View child = createView(fv, offset, spanLeft, rowIndex);
           if (child == null)
-            break;
+            {
+              offset = -1;
+              break;
+            }
 
           int span = (int) child.getPreferredSpan(flowAxis);
           if (span > spanLeft)
-            break;
+            {
+              offset = -1;
+              break;
+            }
 
           row.append(child);
           spanLeft -= span;
@@ -218,13 +225,15 @@ public abstract class FlowView extends BoxView
       View logicalView = getLogicalView(fv);
 
       int viewIndex = logicalView.getViewIndex(offset, Position.Bias.Forward);
+      if (viewIndex == -1)
+        return null;
+
       View child = logicalView.getView(viewIndex);
       int flowAxis = fv.getFlowAxis();
       int span = (int) child.getPreferredSpan(flowAxis);
 
       if (span <= spanLeft)
         return child;
-
       else if (child.getBreakWeight(flowAxis, offset, spanLeft)
                > BadBreakWeight)
         // FIXME: What to do with the pos parameter here?
@@ -326,7 +335,19 @@ public abstract class FlowView extends BoxView
      */
     public int getViewIndex(int pos, Position.Bias b)
     {
-      return getElement().getElementIndex(pos);
+      int index = -1;
+      int i = 0;
+      for (Iterator it = children.iterator(); it.hasNext(); i++)
+        {
+          View child = (View) it.next();
+          if (child.getStartOffset() >= pos
+              && child.getEndOffset() < pos)
+            {
+              index = i;
+              break;
+            }
+        }
+      return index;
     }
 
     /**

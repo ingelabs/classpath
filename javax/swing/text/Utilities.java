@@ -232,9 +232,16 @@ public class Utilities
     // At the end of the for loop, this holds the requested model location
     int pos;
     int currentX = x0;
+
     for (pos = p0; pos < s.getEndIndex(); pos++)
       {
         char nextChar = s.array[pos];
+        if (nextChar == 0)
+          {
+            if (! round)
+              pos--;
+            break;
+          }
         if (nextChar != '\n')
           currentX += fm.charWidth(nextChar);
         else

@@ -1,3 +1,31 @@
+2005-10-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/BoxView.java
+	(paint): Only call paintChild if child allocation is not empty.
+	(layout): Don't store the width and height fields here.
+	(setSize): Store the width and height fields here.
+	* javax/swing/text/CompositeView.java
+	(getViewIndexAtPosition): Reworked child view searching.
+	(getInsideAllocation): Fixed insets calculation.
+	* javax/swing/text/FlowView.java
+	(FlowStrategy.layoutRow): Return an offset of -1 if no more child
+	views are in the logical view.
+	(FlowStrategy.createView): If there are no more child views,
+	then return null.
+	(LogicalView.getViewIndex): New method. Implements child view
+	searching for the LogicalView.
+	* javax/swing/text/GlyphView.java
+	(DefaultGlyphPainter.getHeight): Use Toolkit FontMetrics instead
+	of parent containers FontMetrics.
+	(DefaultGlyphPainter.getSpan): Use Toolkit FontMetrics instead
+	of parent containers FontMetrics.
+	* javax/swing/text/Utilities.java
+	(getTabbedTextOffset): Check for 0 in the char array and stop
+	there.
+	* javax/swing/text/View.java
+	(getContainer): If there's no parent, don't throw an Error, instead
+	return null as specified.
+
 2005-10-06  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/AbstractDocument.java: Implemeted locking.
