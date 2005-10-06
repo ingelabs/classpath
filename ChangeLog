@@ -1,3 +1,8 @@
+2005-10-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JLabel.java
+	(JLabel): Set alignmentX value to 0.0F.
+
 2005-10-06  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
