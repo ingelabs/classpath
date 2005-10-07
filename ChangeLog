@@ -1,5 +1,20 @@
 2005-10-07  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(currentIcon): Fix icon for disabled selected buttons.
+	(paint): Only paint focus indicator if button is actually
+	focusPainted.
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	(installDefaults): Install icons for disabledIcon and
+	disabledSelectedIcon.
+	(paint): Paint the correct icon. Only paint focus indicator
+	if button is actually focusPainted.
+	* javax/swing/plaf/basic/BasicToggleButtonUI.java
+	(paint): Only paint focus indicator if button is actually
+	focusPainted.
+
+2005-10-07  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(paint): Call paintBorder before paintChildren.
 	(reshape): Fire AncestorEvent if position has changed.

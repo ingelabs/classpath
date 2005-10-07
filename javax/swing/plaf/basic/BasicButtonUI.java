@@ -283,7 +283,7 @@ public class BasicButtonUI extends ButtonUI
     Icon i = b.getIcon();
     ButtonModel model = b.getModel();
 
-    if (model.isPressed() && b.getPressedIcon() != null)
+    if (model.isPressed() && b.getPressedIcon() != null && b.isEnabled())
       i = b.getPressedIcon();
 
     else if (model.isRollover())
@@ -294,7 +294,7 @@ public class BasicButtonUI extends ButtonUI
           i = b.getRolloverIcon();
       }    
 
-    else if (b.isSelected())
+    else if (b.isSelected() && b.isEnabled())
       {
         if (b.isEnabled() && b.getSelectedIcon() != null)
           i = b.getSelectedIcon();
@@ -349,7 +349,7 @@ public class BasicButtonUI extends ButtonUI
     paintIcon(g, c, ir);
     if (text != null)
       paintText(g, b, tr, text);
-    if (b.isFocusOwner())
+    if (b.isFocusOwner() && b.isFocusPainted())
       paintFocus(g, b, vr, tr, ir);
   }
 
