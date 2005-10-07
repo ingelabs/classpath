@@ -1,8 +1,13 @@
+2005-10-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(tableChanged): Revalidate table if its structure changes.
+
 2005-10-07  Jan Roehrich  <jan@roehrich.info>
 
-    * javax/swing/JTree.java: (JTree):
-    * javax/swing/plaf/basic/BasicTreeUI.java: (updateRenderer):
-    moved setting of TreeCellRenderer from JTree to BasicTreeUI.
+	* javax/swing/JTree.java: (JTree):
+	* javax/swing/plaf/basic/BasicTreeUI.java: (updateRenderer):
+	moved setting of TreeCellRenderer from JTree to BasicTreeUI.
 
 2005-10-07  Roman Kennke  <kennke@aicas.com>
 

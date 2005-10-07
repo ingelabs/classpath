@@ -914,6 +914,12 @@ public class JTable extends JComponent
 
         createDefaultColumnsFromModel();
 
+    // If the structure changes, we need to revalidate, since that might
+    // affect the size parameters of the JTable. Otherwise we only need
+    // to perform a repaint to update the view.
+    if (event.getType() == TableModelEvent.INSERT
+        || event.getType() == TableModelEvent.DELETE)
+      revalidate();
     repaint();
   }
 
