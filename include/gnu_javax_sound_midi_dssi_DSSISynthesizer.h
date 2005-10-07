@@ -17,6 +17,9 @@ JNIEXPORT jint JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getPolyPre
 JNIEXPORT void JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_controlChange_1 (JNIEnv *env, jclass, jlong, jint, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1 (JNIEnv *env, jclass, jlong);
 JNIEXPORT void JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_close_1 (JNIEnv *env, jclass, jlong);
+JNIEXPORT jstring JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramName_1 (JNIEnv *env, jclass, jlong, jint);
+JNIEXPORT jint JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramBank_1 (JNIEnv *env, jclass, jlong, jint);
+JNIEXPORT jint JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramProgram_1 (JNIEnv *env, jclass, jlong, jint);
 
 #ifdef __cplusplus
 }

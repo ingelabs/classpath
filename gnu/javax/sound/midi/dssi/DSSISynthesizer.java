@@ -38,6 +38,10 @@ exception statement from your version. */
 
 package gnu.javax.sound.midi.dssi;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.sound.midi.Instrument;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiMessage;
@@ -46,6 +50,7 @@ import javax.sound.midi.Patch;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Soundbank;
+import javax.sound.midi.SoundbankResource;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
 import javax.sound.midi.VoiceStatus;
@@ -54,13 +59,131 @@ import javax.sound.midi.VoiceStatus;
 import javax.sound.midi.MidiDevice.Info;
 
 /**
- * @author green
+ * DSSI soft-synth support.
+ * 
+ * All DSSI soft-synths are expected to be installed in /usr/lib/dssi.
+ * 
+ * @author Anthony Green (green@redhat.com)
  *
  */
 public class DSSISynthesizer implements Synthesizer
 {
   /**
-   * @author green
+   * The DSSI Instrument class.
+   * 
+   * @author Anthony Green (green@redhat.com)
+   *
+   */
+  class DSSIInstrument extends Instrument
+  {
+    DSSIInstrument (Soundbank soundbank, Patch patch, String name)
+    {
+      super (soundbank, patch, name, null);
+    }
+    
+    /* @see javax.sound.midi.SoundbankResource#getData()
+     */
+    public Object getData()
+    {
+      return null;
+    }
+
+  }
+
+/**
+   * DSSISoundbank holds all instruments.
+   * 
+   * @author Anthony Green (green@redhat.com)
+   *
+   */
+  class DSSISoundbank implements Soundbank
+  {
+    private String name;
+    private String description;
+    private List instruments = new ArrayList();
+    private List resources = new ArrayList();
+    private String vendor;
+    private String version;
+    
+    public DSSISoundbank(String name, String description, String vendor, String version)
+    {
+      this.name = name;
+      this.description = description;
+      this.vendor = vendor;
+      this.version = version;
+    }
+    
+    void add(Instrument instrument)
+    {
+      instruments.add(instrument);
+    }
+    
+    /* @see javax.sound.midi.Soundbank#getName()
+     */
+    public String getName()
+    {
+      return name;
+    }
+
+    /* @see javax.sound.midi.Soundbank#getVersion()
+     */
+    public String getVersion()
+    {
+      return version;
+    }
+
+    /* @see javax.sound.midi.Soundbank#getVendor()
+     */
+    public String getVendor()
+    {
+      return vendor;
+    }
+
+    /* @see javax.sound.midi.Soundbank#getDescription()
+     */
+    public String getDescription()
+    {
+      return description;
+    }
+
+    /* @see javax.sound.midi.Soundbank#getResources()
+     */
+    public SoundbankResource[] getResources()
+    {
+      return (SoundbankResource[])
+        resources.toArray(new SoundbankResource[resources.size()]);
+    }
+
+    /* @see javax.sound.midi.Soundbank#getInstruments()
+     */
+    public Instrument[] getInstruments()
+    {
+      return (Instrument[])
+        instruments.toArray(new Instrument[instruments.size()]);
+    }
+
+    /* @see javax.sound.midi.Soundbank#getInstrument(javax.sound.midi.Patch)
+     */
+    public Instrument getInstrument(Patch patch)
+    {
+      Iterator itr = instruments.iterator();
+      
+      while (itr.hasNext())
+      {
+        Instrument i = (Instrument) itr.next();
+        if (i.getPatch().equals(patch))
+          return i;
+      }
+      
+      return null;
+    }
+  }
+
+/**
+   * The Receiver class receives all MIDI messages from a connected
+   * Transmitter.
+   * 
+   * @author Anthony Green (green@redhat.com)
    *
    */
   class DSSIReceiver implements Receiver
@@ -113,6 +236,9 @@ public class DSSISynthesizer implements Synthesizer
   static native void controlChange_(long handle, int channel, int control, int value);
   static native void open_(long handle);
   static native void close_(long handle);
+  static native String getProgramName_(long handle, int index);
+  static native int getProgramBank_(long handle, int index);
+  static native int getProgramProgram_(long handle, int index);
       
   /**
    * @author Anthony Green (green@redhat.com)
@@ -365,8 +491,16 @@ public class DSSISynthesizer implements Synthesizer
   
   MidiChannel channels[] = new MidiChannel[16];
   
+  // The list of known soundbanks, and the default one.
+  List soundbanks = new ArrayList();
+  DSSISoundbank defaultSoundbank;
+  
   /**
+   * Create a DSSI Synthesizer.
    * 
+   * @param info the DSSIInfo for this soft-synth
+   * @param soname the name of the .so file for this DSSI synth
+   * @param index the DSSI index for this soft-synth
    */
   public DSSISynthesizer(Info info, String soname, long index)
   {
@@ -375,6 +509,25 @@ public class DSSISynthesizer implements Synthesizer
     sohandle = DSSIMidiDeviceProvider.dlopen_(soname);
     handle = DSSIMidiDeviceProvider.getDSSIHandle_(sohandle, index);
     channels[0] = new DSSIMidiChannel(0);
+    defaultSoundbank = new DSSISoundbank("name", "description", 
+                                         "vendor", "version");
+    soundbanks.add(defaultSoundbank);
+    
+    int i = 0;
+    String name;
+    do
+    {
+      name = getProgramName_(sohandle, i);
+      if (name != null)
+      {
+        defaultSoundbank.
+          add(new DSSIInstrument(defaultSoundbank, 
+                                 new Patch(getProgramBank_(sohandle, i),
+                                           getProgramProgram_(sohandle, i)),
+                                 name));
+        i++;
+      }
+    } while (name != null);
   }
 
   /* (non-Javadoc)
@@ -449,22 +602,28 @@ public class DSSISynthesizer implements Synthesizer
     return false;
   }
 
-  /* (non-Javadoc)
-   * @see javax.sound.midi.Synthesizer#getDefaultSoundbank()
+  /* @see javax.sound.midi.Synthesizer#getDefaultSoundbank()
    */
   public Soundbank getDefaultSoundbank()
   {
-    // TODO Auto-generated method stub
-    return null;
+    return defaultSoundbank;
   }
 
-  /* (non-Javadoc)
-   * @see javax.sound.midi.Synthesizer#getAvailableInstruments()
+  /* @see javax.sound.midi.Synthesizer#getAvailableInstruments()
    */
   public Instrument[] getAvailableInstruments()
   {
-    // TODO Auto-generated method stub
-    return null;
+    List instruments = new ArrayList();
+    Iterator itr = soundbanks.iterator();
+    while (itr.hasNext())
+    {
+      Soundbank sb = (Soundbank) itr.next();
+      Instrument ins[] = sb.getInstruments();
+      for (int i = 0; i < ins.length; i++)
+        instruments.add(ins[i]);
+    }
+    return (Instrument[])
+      instruments.toArray(new Instrument[instruments.size()]);
   }
 
   /* (non-Javadoc)
@@ -511,24 +670,21 @@ public class DSSISynthesizer implements Synthesizer
 
   }
 
-  /* (non-Javadoc)
-   * @see javax.sound.midi.MidiDevice#getDeviceInfo()
+  /* @see javax.sound.midi.MidiDevice#getDeviceInfo()
    */
   public Info getDeviceInfo()
   {
     return info;
   }
 
-  /* (non-Javadoc)
-   * @see javax.sound.midi.MidiDevice#open()
+  /* @see javax.sound.midi.MidiDevice#open()
    */
   public void open() throws MidiUnavailableException
   {
     open_(sohandle);
   }
 
-  /* (non-Javadoc)
-   * @see javax.sound.midi.MidiDevice#close()
+  /* @see javax.sound.midi.MidiDevice#close()
    */
   public void close()
   {
@@ -553,32 +709,28 @@ public class DSSISynthesizer implements Synthesizer
     return 0;
   }
 
-  /* (non-Javadoc)
-   * @see javax.sound.midi.MidiDevice#getMaxReceivers()
+  /* @see javax.sound.midi.MidiDevice#getMaxReceivers()
    */
   public int getMaxReceivers()
   {
     return 1;
   }
 
-  /* (non-Javadoc)
-   * @see javax.sound.midi.MidiDevice#getMaxTransmitters()
+  /* @see javax.sound.midi.MidiDevice#getMaxTransmitters()
    */
   public int getMaxTransmitters()
   {
     return 0;
   }
 
-  /* (non-Javadoc)
-   * @see javax.sound.midi.MidiDevice#getReceiver()
+  /* @see javax.sound.midi.MidiDevice#getReceiver()
    */
   public Receiver getReceiver() throws MidiUnavailableException
   {
     return new DSSIReceiver();
   }
 
-  /* (non-Javadoc)
-   * @see javax.sound.midi.MidiDevice#getTransmitter()
+  /* @see javax.sound.midi.MidiDevice#getTransmitter()
    */
   public Transmitter getTransmitter() throws MidiUnavailableException
   {

@@ -1,3 +1,22 @@
+2005-10-07  Anthony Green  <green@redhat.com>
+
+	* gnu/javax/sound/midi/dssi/DSSISynthesizer.java
+	Doc cleanups.
+	(DSSISynthesizer.DSSISoundbank): New class.
+	(DSSISynthesizer.DSSIInstrument): New class.
+	(soundbanks, defaultSoundbank): New fields.
+	(getDefaultSoundbank): Implemented.
+	(getAvailableInstruments): Implemented.
+	(getProgramName_, getProgramBank_, getProgramProgram_): New native
+	methods.
+	(DSSISynthesizer): Create default soundbank.
+	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c
+	(Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramName_1,
+	Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramBank_1,
+	Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramProgram_1):
+	New functions.
+	* include/gnu_javax_sound_midi_dssi_DSSISynthesizer.h: Rebuilt.
+
 2005-10-07  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTable.java

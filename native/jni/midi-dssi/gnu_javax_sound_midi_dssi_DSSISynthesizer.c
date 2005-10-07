@@ -468,3 +468,68 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_close_1
 {
 }
 
+/* FIXME: These next three functions are really inefficient because
+   we're instantiating and cleaning up plugin instances just to query
+   values.  */
+
+JNIEXPORT jstring JNICALL 
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramName_1 
+  (JNIEnv *env, jclass clazz __attribute__((unused)), 
+   jlong handle, jint index)
+{
+  LADSPA_Handle lhandle;
+  jstring name = (jstring) NULL;
+  dssi_data *data = JLONG_TO_PTR(dssi_data, handle);
+  if (data->desc->get_program == NULL)
+    return NULL;
+  lhandle =
+    (data->desc->LADSPA_Plugin->instantiate)(data->desc->LADSPA_Plugin, 
+					     48000);
+  const DSSI_Program_Descriptor *program = 
+    (data->desc->get_program)(lhandle, (unsigned long) index);
+  if (program)
+    name = (*env)->NewStringUTF (env, program->Name);
+  (data->desc->LADSPA_Plugin->cleanup)(lhandle);
+
+  return name;
+}
+
+JNIEXPORT jint JNICALL
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramBank_1 
+  (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)),
+   jlong handle, jint index)
+{
+  LADSPA_Handle lhandle;
+  jint result = -1;
+  dssi_data *data = JLONG_TO_PTR(dssi_data, handle);
+  lhandle =
+    (data->desc->LADSPA_Plugin->instantiate)(data->desc->LADSPA_Plugin, 
+					     48000);
+  const DSSI_Program_Descriptor *program = 
+    (data->desc->get_program)(lhandle, (unsigned long) index);
+  if (program)
+    result = (jint) program->Bank;
+  (data->desc->LADSPA_Plugin->cleanup)(lhandle);
+  return result;
+}
+
+JNIEXPORT jint JNICALL 
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramProgram_1 
+  (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), 
+   jlong handle, jint index)
+{
+  LADSPA_Handle lhandle;
+  jint result = -1;
+  dssi_data *data = JLONG_TO_PTR(dssi_data, handle);
+  lhandle =
+    (data->desc->LADSPA_Plugin->instantiate)(data->desc->LADSPA_Plugin, 
+					     48000);
+  const DSSI_Program_Descriptor *program = 
+    (data->desc->get_program)(lhandle, (unsigned long) index);
+  if (program)
+    result = (jint) program->Program;
+  (data->desc->LADSPA_Plugin->cleanup)(lhandle);
+  return result;
+}
+
+
