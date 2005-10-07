@@ -1,5 +1,13 @@
 2005-10-07  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(paint): Call paintBorder before paintChildren.
+	(reshape): Fire AncestorEvent if position has changed.
+	(fireAncestorMoved): New method. Fires AncestorEvents to this
+	component and all of it's children.
+
+2005-10-07  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/BorderFactory.java
 	(createLineBorder(Color)): Forward call to
 	createLineBorder(Color, int) with thickness of 1.

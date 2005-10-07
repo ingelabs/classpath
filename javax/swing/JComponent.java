@@ -1473,8 +1473,8 @@ public abstract class JComponent extends Container implements Serializable
         if (g.getClip() == null)
           g.setClip(0, 0, getWidth(), getHeight());
         paintComponent(g);
-        paintChildren(g);
         paintBorder(g);
+        paintChildren(g);
       }
   }
 
@@ -2869,6 +2869,53 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void reshape(int x, int y, int w, int h)
   {
+    int oldX = getX();
+    int oldY = getY();
     super.reshape(x, y, w, h);
+    // Notify AncestorListeners.
+    if (oldX != getX() || oldY != getY())
+      fireAncestorEvent(this, AncestorEvent.ANCESTOR_MOVED);
+  }
+
+  /**
+   * Fires an AncestorEvent to this component's and all of its child
+   * component's AncestorListeners.
+   *
+   * @param ancestor the component that triggered the event
+   * @param id the kind of ancestor event that should be fired
+   */
+  void fireAncestorEvent(JComponent ancestor, int id)
+  {
+    // Fire event for registered ancestor listeners of this component.
+    AncestorListener[] listeners = getAncestorListeners();
+    if (listeners.length > 0)
+      {
+        AncestorEvent ev = new AncestorEvent(this, id,
+                                             ancestor, ancestor.getParent());
+        for (int i = 0; i < listeners.length; i++)
+          {
+            switch (id)
+              {
+              case AncestorEvent.ANCESTOR_MOVED:
+                listeners[i].ancestorMoved(ev);
+                break;
+              case AncestorEvent.ANCESTOR_ADDED:
+                listeners[i].ancestorAdded(ev);
+                break;
+              case AncestorEvent.ANCESTOR_REMOVED:
+                listeners[i].ancestorRemoved(ev);
+                break;
+              }
+          }
+      }
+    // Dispatch event to all children.
+    Component[] children = getComponents();
+    for (int i = 0; i < children.length; i++)
+      {
+        if (!(children[i] instanceof JComponent))
+          continue;
+        JComponent jc = (JComponent) children[i];
+        jc.fireAncestorEvent(ancestor, id);
+      }
   }
 }
