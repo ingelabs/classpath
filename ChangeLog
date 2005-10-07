@@ -1,5 +1,11 @@
 2005-10-06  Anthony Green  <green@redhat.com>
 
+	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c
+	(Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1): Ignore
+	controllers that aren't mapped to MIDI controls.
+
+2005-10-06  Anthony Green  <green@redhat.com>
+
 	* INSTALL: Describe midi provider dependencies.
 
 	* native/jni/midi-dssi/README: New file.

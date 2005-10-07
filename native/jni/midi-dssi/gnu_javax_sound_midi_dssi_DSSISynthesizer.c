@@ -263,7 +263,8 @@ JNIEXPORT void JNICALL
 Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1 
   (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
 {
-  unsigned int port_count, j, cindex, controller = 0;
+  unsigned int port_count, j, cindex;
+  int controller = 0;
   dssi_data *data = (dssi_data *) (long) handle;
   if ((data->jack_client = jack_client_new (data->desc->LADSPA_Plugin->Label)) == 0)
     {
@@ -347,19 +348,19 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1
 		controller = data->desc->
 		  get_midi_controller_for_port(data->plugin_handle, j);
 
-		if (DSSI_IS_CC(controller))
+		if ((controller != DSSI_NONE) && DSSI_IS_CC(controller))
 		  {
 		    data->control_value_map[DSSI_CC_NUMBER(controller)] = cindex;
 		    data->control_port_map[DSSI_CC_NUMBER(controller)] = j;
-		  }
-	      }
 
 #ifdef DEBUG_DSSI_PROVIDER
-	    printf ("MIDI Controller 0x%x [%s] = %g\n", 
-		    DSSI_CC_NUMBER(controller),
-		    data->desc->LADSPA_Plugin->PortNames[j],
-		    data->control_values[cindex]);
+		    printf ("MIDI Controller 0x%x [%s] = %g\n", 
+			    DSSI_CC_NUMBER(controller),
+			    data->desc->LADSPA_Plugin->PortNames[j],
+			    data->control_values[cindex]);
 #endif
+		  }
+	      }
 
 	    cindex++;
 	  }
