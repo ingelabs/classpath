@@ -1,3 +1,10 @@
+2005-10-07  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkChoicePeer.java (postChoiceItemEvent):
+	Don't call select on the AWT Choice component.
+	* java/awt/Choice.java (processItemEvent): Set the selected index
+	without calling into the peers.
+
 2005-10-07  Anthony Green  <green@redhat.com>
 
 	* gnu/javax/sound/midi/dssi/DSSISynthesizer.java
