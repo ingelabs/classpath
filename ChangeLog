@@ -1,5 +1,9 @@
 2005-10-07  Roman Kennke  <kennke@aicas.com>
 
+	* java/beans/IndexedPropertyDescriptor.java: Reformatted.
+
+2005-10-07  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicButtonUI.java
 	(currentIcon): Fix icon for disabled selected buttons.
 	(paint): Only paint focus indicator if button is actually
@@ -802,8 +806,8 @@
 
 2005-10-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * gnu/javax/rmi/CORBA/corbaObjectOutput.java (main): 
-        Removed method.
+	* gnu/javax/rmi/CORBA/corbaObjectOutput.java (main):
+	Removed method.
 
 2005-10-02  Casey Marshall  <csm@gnu.org>
 
@@ -1082,7 +1086,7 @@
 	* javax/swing/Box.java
 	(accessibleContext): Removed unneeded field. This is already
 	declared in JComponent.
-	*javax/swing/JFrame.java
+	* javax/swing/JFrame.java
 	(EXIT_ON_CLOSE): New constant field.
 
 2005-09-30  Anthony Balkissoon  <abalkiss@redhat.com>
