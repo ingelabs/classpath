@@ -1,3 +1,34 @@
+2005-10-06  Anthony Green  <green@redhat.com>
+
+	* INSTALL: Describe midi provider dependencies.
+
+	* native/jni/midi-dssi/README: New file.
+	* LICENSE (terms): Add notice about code copied from the DSSI
+	distribution.
+
+	* examples/gnu/classpath/examples/midi/Demo.java: New file.
+
+	* native/jni/midi-dssi/dssi_data.h (dssi_data): Add control_count,
+	control_port_map, control_value_map, sample_rate, and
+	control_values fields.
+	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c
+	(DEBUG_DSSI_PROVIDER): New macro.
+	(get_port_default): New function.
+	(set_control): New function.
+	(Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1): Remove
+	debug output.  Reformat.  Allocate the control ports and assign
+	proper default values.
+	(Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOn_1): Use
+	JLONG_TO_PTR.
+	(Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOff_1): Ditto.
+	* gnu/javax/sound/midi/dssi/DSSISynthesizer.java
+	(Channel.controlChange): Implement.
+	(controlChange_): New native method.
+	* include/gnu_javax_sound_midi_dssi_DSSISynthesizer.h: Rebuilt.
+	
+	* gnu/javax/sound/midi/alsa/AlsaMidiSequencerDevice.java: Make
+	instance final.
+
 2005-10-06  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/PlainView.java:
