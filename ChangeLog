@@ -1,3 +1,9 @@
+2005-10-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/BorderFactory.java
+	(createLineBorder(Color)): Forward call to
+	createLineBorder(Color, int) with thickness of 1.
+
 2005-10-06  Anthony Green  <green@redhat.com>
 
 	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c
