@@ -1126,7 +1126,14 @@ public class BasicTreeUI
   protected void updateRenderer()
   {
     if (tree != null)
-      tree.setCellRenderer(currentCellRenderer);
+      {
+        if(tree.getCellRenderer() == null)
+          {  
+            if(currentCellRenderer == null) 
+              currentCellRenderer = createDefaultCellRenderer();                
+            tree.setCellRenderer(currentCellRenderer);
+          }
+      }
   }
 
   /**
