@@ -35,10 +35,29 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+/* The original get_port_default() and set_control() routines were
+ * copied from the DSSI source distribution and are covered by the
+ * following copyright and license...
+ *
+ * Copyright 2004 Chris Cannam, Steve Harris and Sean Bolton.
+ * 
+ * Permission to use, copy, modify, distribute, and sell this software
+ * for any purpose is hereby granted without fee, provided that the
+ * above copyright notice and this permission notice are included in
+ * all copies or substantial portions of the software.
+ */
+
 #include <config.h>
 #include <gnu_javax_sound_midi_dssi_DSSISynthesizer.h> 
+#include <math.h>
 
 #include "dssi_data.h"
+
+/* Define this for debug output.  */
+#undef DEBUG_DSSI_PROVIDER
+
+static void set_control (dssi_data *data, snd_seq_event_t *event);
+
 
 /**
  * The jack callback routine.
@@ -50,15 +69,19 @@ exception statement from your version. */
 static int
 process (jack_nframes_t nframes, void *arg)
 {    
-  struct timeval tv;
   dssi_data *data = (dssi_data *) arg;
   int index;
   jack_default_audio_sample_t *buffer;
 
-  /* Look through the event buffer to see if anything needs doing.  */
+  /* Look through the event buffer to see if any control values
+     need changing.  */
   for ( index = data->midiEventReadIndex; 
 	index != data->midiEventWriteIndex;
-	index = (index + 1) % EVENT_BUFFER_SIZE);
+	index = (index + 1) % EVENT_BUFFER_SIZE)
+    {
+      if (data->midiEventBuffer[index].type == SND_SEQ_EVENT_CONTROLLER)
+	set_control (data, & data->midiEventBuffer[index]);
+    }
 
   /* Call the synth audio processing routine.  */
   data->desc->run_synth(data->plugin_handle,
@@ -84,8 +107,151 @@ process (jack_nframes_t nframes, void *arg)
   return 0;   
 }
 
-/* FIXME: Temporary hack.  */
-float mctrl = 0.9f;
+
+/**
+ * Calculate a reasonable default value for a specific control port.
+ * This is mostly copied from the DSSI example code.  Copyright info
+ * is found at the top of this file.
+ *
+ */
+static LADSPA_Data 
+get_port_default (const LADSPA_Descriptor *plugin, 
+		  int port, jack_nframes_t sample_rate)
+{
+  LADSPA_PortRangeHint hint = plugin->PortRangeHints[port];
+  float lower = hint.LowerBound *
+    (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor) ? sample_rate : 1.0f);
+  float upper = hint.UpperBound *
+    (LADSPA_IS_HINT_SAMPLE_RATE(hint.HintDescriptor) ? sample_rate : 1.0f);
+  
+  if (!LADSPA_IS_HINT_HAS_DEFAULT(hint.HintDescriptor)) 
+    {
+      if (!LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor) ||
+	  !LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor)) 
+	{
+	  /* No hint, its not bounded, wild guess */
+	  return 0.0f;
+	}
+    
+      if (lower <= 0.0f && upper >= 0.0f) 
+	{
+	  /* It spans 0.0, 0.0 is often a good guess */
+	  return 0.0f;
+	}
+    
+      /* No clues, return minimum */
+      return lower;
+    }
+  
+  /* Try all the easy ones */
+  
+  if (LADSPA_IS_HINT_DEFAULT_0(hint.HintDescriptor))
+    return 0.0f;
+  else if (LADSPA_IS_HINT_DEFAULT_1(hint.HintDescriptor)) 
+    return 1.0f;
+  else if (LADSPA_IS_HINT_DEFAULT_100(hint.HintDescriptor)) 
+    return 100.0f;
+  else if (LADSPA_IS_HINT_DEFAULT_440(hint.HintDescriptor)) 
+    return 440.0f;
+   
+  /* All the others require some bounds */
+  
+  if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor)
+      && (LADSPA_IS_HINT_DEFAULT_MINIMUM(hint.HintDescriptor)))
+    return lower;
+
+  if (LADSPA_IS_HINT_BOUNDED_ABOVE(hint.HintDescriptor))
+    {
+      if (LADSPA_IS_HINT_DEFAULT_MAXIMUM(hint.HintDescriptor))
+	return upper;
+
+      if (LADSPA_IS_HINT_BOUNDED_BELOW(hint.HintDescriptor)) 
+	{
+	  if (LADSPA_IS_HINT_DEFAULT_LOW(hint.HintDescriptor)) 
+	    return lower * 0.75f + upper * 0.25f;
+	  else if (LADSPA_IS_HINT_DEFAULT_MIDDLE(hint.HintDescriptor)) 
+	    return lower * 0.5f + upper * 0.5f;
+	  else if (LADSPA_IS_HINT_DEFAULT_HIGH(hint.HintDescriptor)) 
+	    return lower * 0.25f + upper * 0.75f;
+	}
+    }
+  
+  /* fallback */
+  return 0.0f;
+}
+
+/**
+ * Set a control value by mapping the MIDI event to a suitable value
+ * for this control.
+ * This is mostly copied from the DSSI example code.  Copyright info
+ * is found at the top of this file.
+ *
+ */
+static void
+set_control(dssi_data *data, snd_seq_event_t *event)
+{
+  unsigned control = event->data.control.param;
+  unsigned port = data->control_port_map[control];
+
+  const LADSPA_Descriptor *p = data->desc->LADSPA_Plugin;
+
+  LADSPA_PortRangeHintDescriptor d = p->PortRangeHints[port].HintDescriptor;
+
+  LADSPA_Data lb = p->PortRangeHints[port].LowerBound *
+    (LADSPA_IS_HINT_SAMPLE_RATE(p->PortRangeHints[port].HintDescriptor) ?
+     data->sample_rate : 1.0f);
+  
+  LADSPA_Data ub = p->PortRangeHints[port].UpperBound *
+    (LADSPA_IS_HINT_SAMPLE_RATE(p->PortRangeHints[port].HintDescriptor) ?
+     data->sample_rate : 1.0f);
+  
+  float value = (float)event->data.control.value;
+  
+  if (!LADSPA_IS_HINT_BOUNDED_BELOW(d)) 
+    {
+      if (!LADSPA_IS_HINT_BOUNDED_ABOVE(d)) 
+	{
+	  /* unbounded: might as well leave the value alone. */
+	} 
+      else 
+	{
+	  /* bounded above only. just shift the range. */
+	  value = ub - 127.0f + value;
+	}
+    } 
+  else 
+    {
+      if (!LADSPA_IS_HINT_BOUNDED_ABOVE(d)) 
+	{
+	  /* bounded below only. just shift the range. */
+	  value = lb + value;
+	} 
+      else 
+	{
+	  /* bounded both ends.  more interesting. */
+	  if (LADSPA_IS_HINT_LOGARITHMIC(d)) 
+	    {
+	      const float llb = logf(lb);
+	      const float lub = logf(ub);
+	      
+	      value = expf(llb + ((lub - llb) * value / 127.0f));
+	    } 
+	  else 
+	    {
+	      value = lb + ((ub - lb) * value / 127.0f);
+	    }
+	}
+    }
+  
+#ifdef DEBUG_DSSI_PROVIDER
+  printf("MIDI controller %d=%d -> control in %u=%f\n", 
+	 event->data.control.param,
+	 event->data.control.value, 
+	 data->control_value_map[control], value);
+#endif
+  
+  data->control_values[data->control_value_map[control]] = value;
+}
 
 /**
  * Open a new synthesizer.  This currently involves instantiating a
@@ -97,7 +263,7 @@ JNIEXPORT void JNICALL
 Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1 
   (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
 {
-  unsigned int port_count, j;
+  unsigned int port_count, j, cindex, controller = 0;
   dssi_data *data = (dssi_data *) (long) handle;
   if ((data->jack_client = jack_client_new (data->desc->LADSPA_Plugin->Label)) == 0)
     {
@@ -106,9 +272,14 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1
 			  "can't create jack client");
       return;
     } 
+
+  /* Get the jack sample rate, which may be used in default control port
+     value calculations.  */
+  data->sample_rate = jack_get_sample_rate (data->jack_client);
   
-  data->plugin_handle = (data->desc->LADSPA_Plugin->instantiate)(data->desc->LADSPA_Plugin, 
-								 jack_get_sample_rate (data->jack_client));
+  data->plugin_handle = 
+    (data->desc->LADSPA_Plugin->instantiate)(data->desc->LADSPA_Plugin, 
+					     data->sample_rate);
   
   if (jack_set_process_callback (data->jack_client, process, data) != 0)
     {
@@ -123,9 +294,9 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1
   data->jack_right_output_port =
     jack_port_register (data->jack_client, "output_right",
                         JACK_DEFAULT_AUDIO_TYPE, JackPortIsOutput, 0);
-  
-  /* Count the number of output audio ports.  */
-  port_count = 0;
+
+  /* Count the number of controls and audio ouput ports.  */
+  port_count = data->control_count = 0;
   for (j = 0; j < data->desc->LADSPA_Plugin->PortCount; j++) 
     {
       LADSPA_PortDescriptor pod =
@@ -133,11 +304,20 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1
       
       if (LADSPA_IS_PORT_AUDIO(pod) && LADSPA_IS_PORT_OUTPUT(pod))
 	port_count++;
+      else if (LADSPA_IS_PORT_CONTROL(pod) && LADSPA_IS_PORT_INPUT(pod))
+	data->control_count++;
     }
-  printf ("LADSPA output ports = %d\n", port_count);
+
+  /* Allocate the array of control values.  */
+  data->control_values = 
+    (LADSPA_Data *) JCL_malloc (env, 
+				data->control_count * sizeof (LADSPA_Data));
+
+  /* Initialize the MIDI control map.  */
+  memset (data->control_value_map, 0, data->control_count * sizeof(unsigned));
   
   /* Create buffers for each port.  */
-  for (j = 0; j < data->desc->LADSPA_Plugin->PortCount; j++) 
+  for (cindex = 0, j = 0; j < data->desc->LADSPA_Plugin->PortCount; j++) 
     {  
       LADSPA_PortDescriptor pod =
 	data->desc->LADSPA_Plugin->PortDescriptors[j];
@@ -152,16 +332,66 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1
       else 
 	if (LADSPA_IS_PORT_CONTROL(pod) && LADSPA_IS_PORT_INPUT(pod))
 	  {
+	    /* This is an input control port.  Connect it to a properly
+	       initialized value in our controller value array.  */
 	    (data->desc->LADSPA_Plugin->connect_port)
-	      (data->plugin_handle, j, &mctrl);
+	      (data->plugin_handle, j, &(data->control_values[cindex]));
+	    data->control_values[cindex] = 
+	      get_port_default (data->desc->LADSPA_Plugin,
+				j, data->sample_rate);
+
+	    /* Set up the mapping between MIDI controllers and this
+	       contoller value.  */
+	    if (data->desc->get_midi_controller_for_port)
+	      {
+		controller = data->desc->
+		  get_midi_controller_for_port(data->plugin_handle, j);
+
+		if (DSSI_IS_CC(controller))
+		  {
+		    data->control_value_map[DSSI_CC_NUMBER(controller)] = cindex;
+		    data->control_port_map[DSSI_CC_NUMBER(controller)] = j;
+		  }
+	      }
+
+#ifdef DEBUG_DSSI_PROVIDER
+	    printf ("MIDI Controller 0x%x [%s] = %g\n", 
+		    DSSI_CC_NUMBER(controller),
+		    data->desc->LADSPA_Plugin->PortNames[j],
+		    data->control_values[cindex]);
+#endif
+
+	    cindex++;
 	  }
     }
-
+  
   (data->desc->LADSPA_Plugin->activate)(data->plugin_handle);
 
   if (jack_activate (data->jack_client))
     JCL_ThrowException (env, "java/io/IOException", 
 			"can't activate jack client"); 
+}
+
+/**
+ * This is called when we receive a new MIDI CONTROL CHANGE message.
+ * Simply stick an appropriate event in the event buffer.  This will
+ * get processed in the jack callback function.
+ */
+JNIEXPORT void JNICALL 
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_controlChange_1 
+  (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), 
+   jlong handle, jint channel, jint control, jint value)
+{
+  dssi_data *data = JLONG_TO_PTR(dssi_data,handle);
+
+  /* Insert this event in the event buffer.  */
+  snd_seq_event_t *ev = & data->midiEventBuffer[data->midiEventWriteIndex];
+
+  /* Set the event value.  */
+  snd_seq_ev_set_controller (ev, channel, control, value);
+
+  data->midiEventWriteIndex = 
+    (data->midiEventWriteIndex + 1) % EVENT_BUFFER_SIZE;
 }
 
 /**
@@ -174,7 +404,7 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOn_1
   (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), 
    jlong handle, jint channel, jint note, jint velocity)
 {
-  dssi_data *data = (dssi_data *) (long) handle;
+  dssi_data *data = JLONG_TO_PTR(dssi_data,handle);
 
   /* Insert this event in the event buffer.  */
   snd_seq_event_t *ev = & data->midiEventBuffer[data->midiEventWriteIndex];
@@ -199,7 +429,7 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_noteOff_1
    jclass clazz __attribute__((unused)), 
    jlong handle, jint channel, jint note, jint velocity)
 {
-  dssi_data *data = (dssi_data *) (long) handle;
+  dssi_data *data = JLONG_TO_PTR(dssi_data,handle);
 
   /* Insert this event in the event buffer.  */
   snd_seq_event_t *ev = & data->midiEventBuffer[data->midiEventWriteIndex];

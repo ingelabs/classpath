@@ -85,6 +85,10 @@ public class DSSISynthesizer implements Synthesizer
           else
             channels[smessage.getChannel()].noteOff(smessage.getData1());
           break;
+        case ShortMessage.CONTROL_CHANGE:
+          channels[smessage.getChannel()].controlChange(smessage.getData1(),
+                                                        smessage.getData2());
+          break;
         default:
           System.out.println ("Unhandled message: " + message.getStatus());
           break;
@@ -106,6 +110,7 @@ public class DSSISynthesizer implements Synthesizer
   static native void noteOff_(long handle, int channel, int noteNumber, int velocity);  
   static native void setPolyPressure_(long handle, int channel, int noteNumber, int pressure);
   static native int getPolyPressure_(long handle, int channel, int noteNumber);
+  static native void controlChange_(long handle, int channel, int control, int value);
   static native void open_(long handle);
   static native void close_(long handle);
       
@@ -184,13 +189,10 @@ public class DSSISynthesizer implements Synthesizer
       return 0;
     }
 
-    /* (non-Javadoc)
-     * @see javax.sound.midi.MidiChannel#controlChange(int, int)
-     */
+    /* @see javax.sound.midi.MidiChannel#controlChange(int, int)  */
     public void controlChange(int controller, int value)
     {
-      // TODO Auto-generated method stub
-
+      controlChange_(sohandle, channel, controller, value);
     }
 
     /* (non-Javadoc)

@@ -79,6 +79,29 @@ Suggested Software
 
 	- texinfo 4.2 or higher.
 
+	For building the ALSA midi provider code you will need
+	ALSA.  http://www.alsa-project.org. 
+
+	For building the DSSI midi synthesizer provider code you will
+	need DSSI from http://dssi.sourceforge.net.  This, in turn, 
+	introduces many dependencies, including:
+
+	  - liblo: the Lightweight OSC implementation
+	    http://plugin.org.uk/liblo/
+
+	  - LADSPA: Linux Audio Developer's Simple Plugin API
+	    http://www.ladspa.org
+
+	  - the JACK Audio Connection Kit: A low latency audio server
+	    http://jackit.sourceforge.net
+
+	  - libsndfile: an audio file I/O library
+	    http://www.mega-nerd.com/libsndfile/
+
+	  - fluidsynth: a real-time SoundFont 2 based soft-synth
+	    http://www.fluidsynth.org/
+
+
 This package was designed to use the GNU standard for configuration
 and makefiles.  To build and install do the following:
 

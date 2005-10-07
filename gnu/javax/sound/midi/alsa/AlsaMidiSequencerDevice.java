@@ -64,7 +64,7 @@ import javax.sound.midi.Sequencer.SyncMode;
 public class AlsaMidiSequencerDevice implements Sequencer
 {
   // The singleton instance.
-  public static AlsaMidiSequencerDevice instance = new AlsaMidiSequencerDevice();
+  public final static AlsaMidiSequencerDevice instance = new AlsaMidiSequencerDevice();
   
   // A pointer to a native chunk of memory
   private long nativeState;

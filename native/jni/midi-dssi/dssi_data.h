@@ -100,5 +100,22 @@ typedef struct
   float *left_buffer;
   float *right_buffer;
 
+  /* The number of input controls for this synth.  */
+  unsigned control_count;
+  
+  /* An array of control values, control_count in length.  */
+  LADSPA_Data *control_values;
+
+  /* A mapping of MIDI controllers to control values.  There are a
+     maximum of 128 MIDI controllers.  */
+  unsigned control_value_map[128];
+
+  /* A mapping of MIDI controllers to LADSPA ports.  There are a
+     maximum of 128 MIDI controllers.  */
+  unsigned control_port_map[128];
+
+  /* The sample rate.  */
+  jack_nframes_t sample_rate;
+
 } dssi_data;
 
