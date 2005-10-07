@@ -1,5 +1,11 @@
 2005-10-07  Roman Kennke  <kennke@aicas.com>
 
+	* java/beans/IndexedPropertyDescriptor.java
+	(setIndexedReadMethod): New method.
+	(setIndexedWriteMethod): New method.
+
+2005-10-07  Roman Kennke  <kennke@aicas.com>
+
 	* java/beans/IndexedPropertyDescriptor.java: Reformatted.
 
 2005-10-07  Roman Kennke  <kennke@aicas.com>

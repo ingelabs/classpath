@@ -240,7 +240,7 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor
            (getIndex.getDeclaringClass()))
           {
             throw new IntrospectionException("get and set index methods are "
-                                             "not in the same class.");
+                                             + "not in the same class.");
           }
       }
 
@@ -258,7 +258,7 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor
         .getClass().equals(getMethod.getReturnType()))
       {
         throw new IntrospectionException("array methods do not match index "
-                                         "methods.");
+                                         + "methods.");
       }
 
     this.getMethod = getMethod;
@@ -282,9 +282,29 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor
     return getIndex;
   }
 
+  /**
+   * Sets the method that is used to read an indexed property.
+   *
+   * @param m the method to set
+   */
+  public void setIndexedReadMethod(Method m)
+  {
+    getIndex = m;
+  }
+
   public Method getIndexedWriteMethod()
   {
     return setIndex;
+  }
+
+  /**
+   * Sets the method that is used to write an indexed property.
+   *
+   * @param m the method to set
+   */
+  public void setIndexedWriteMethod(Method m)
+  {
+    setIndex = m;
   }
 
   private void findMethods(Class beanClass, String getMethodName,
