@@ -1,5 +1,11 @@
 2005-10-07  Anthony Green  <green@redhat.com>
 
+	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c
+	(Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1): Attempt
+	to connect to the jack server automatically.  Fail gracefully.
+
+2005-10-07  Anthony Green  <green@redhat.com>
+
 	* gnu/javax/sound/midi/dssi/DSSISynthesizer.java (loadInstrument):
 	Implement.
 	(selectProgram_): New native method.

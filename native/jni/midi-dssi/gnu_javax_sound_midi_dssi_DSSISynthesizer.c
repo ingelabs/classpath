@@ -264,6 +264,7 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1
   (JNIEnv *env, jclass clazz __attribute__((unused)), jlong handle)
 {
   unsigned int port_count, j, cindex;
+  const char **ports;
   int controller = 0;
   dssi_data *data = (dssi_data *) (long) handle;
   if ((data->jack_client = jack_client_new (data->desc->LADSPA_Plugin->Label)) == 0)
@@ -371,6 +372,24 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_open_1
   if (jack_activate (data->jack_client))
     JCL_ThrowException (env, "java/io/IOException", 
 			"can't activate jack client"); 
+
+  /* Try to connect the synth output to hardware audio ports.  */
+  ports = jack_get_ports (data->jack_client, NULL, NULL, 
+			  JackPortIsPhysical | JackPortIsInput);
+  if (ports)
+    {
+      if (ports[0] && ports[1]) 
+	{
+	  /* Don't bother checking return values.  Failing is OK.  */
+	  jack_connect (data->jack_client, 
+			jack_port_name (data->jack_left_output_port),
+			ports[0]);
+	  jack_connect (data->jack_client, 
+			jack_port_name (data->jack_right_output_port),
+			ports[1]);
+	}
+      free(ports);
+    }
 }
 
 /**
