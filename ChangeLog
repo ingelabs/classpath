@@ -1,3 +1,12 @@
+2005-10-07  Anthony Green  <green@redhat.com>
+
+	* gnu/javax/sound/midi/dssi/DSSISynthesizer.java (loadInstrument):
+	Implement.
+	(selectProgram_): New native method.
+	* include/gnu_javax_sound_midi_dssi_DSSISynthesizer.h: Rebuilt.
+	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c
+	(selectProgram_): New function.
+
 2005-10-07  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkChoicePeer.java (postChoiceItemEvent):

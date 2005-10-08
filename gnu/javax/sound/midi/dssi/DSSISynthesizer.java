@@ -239,6 +239,7 @@ public class DSSISynthesizer implements Synthesizer
   static native String getProgramName_(long handle, int index);
   static native int getProgramBank_(long handle, int index);
   static native int getProgramProgram_(long handle, int index);
+  static native void selectProgram_(long handle, int bank, int program);
       
   /**
    * @author Anthony Green (green@redhat.com)
@@ -575,13 +576,18 @@ public class DSSISynthesizer implements Synthesizer
     return false;
   }
 
-  /* (non-Javadoc)
-   * @see javax.sound.midi.Synthesizer#loadInstrument(javax.sound.midi.Instrument)
+  /* @see javax.sound.midi.Synthesizer#loadInstrument(javax.sound.midi.Instrument)
    */
   public boolean loadInstrument(Instrument instrument)
   {
-    // TODO Auto-generated method stub
-    return false;
+    // FIXME: perhaps this isn't quite right.  It can probably
+    // be in any soundbank.
+    if (instrument.getSoundbank() != defaultSoundbank)
+      throw new IllegalArgumentException ("Synthesizer doesn't support this instrument's soundbank");
+      
+    Patch patch = instrument.getPatch();
+    selectProgram_(sohandle, patch.getBank(), patch.getProgram());
+    return true;
   }
 
   /* (non-Javadoc)

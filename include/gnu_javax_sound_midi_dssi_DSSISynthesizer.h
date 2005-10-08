@@ -20,6 +20,7 @@ JNIEXPORT void JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_close_1 (J
 JNIEXPORT jstring JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramName_1 (JNIEnv *env, jclass, jlong, jint);
 JNIEXPORT jint JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramBank_1 (JNIEnv *env, jclass, jlong, jint);
 JNIEXPORT jint JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramProgram_1 (JNIEnv *env, jclass, jlong, jint);
+JNIEXPORT void JNICALL Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_selectProgram_1 (JNIEnv *env, jclass, jlong, jint, jint);
 
 #ifdef __cplusplus
 }

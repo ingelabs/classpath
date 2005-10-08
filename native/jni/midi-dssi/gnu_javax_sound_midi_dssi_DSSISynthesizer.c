@@ -103,7 +103,7 @@ process (jack_nframes_t nframes, void *arg)
   memcpy (buffer, data->left_buffer, nframes * sizeof(LADSPA_Data));
   buffer = jack_port_get_buffer(data->jack_right_output_port, nframes);
   memcpy (buffer, data->left_buffer, nframes * sizeof(LADSPA_Data));
-  
+
   return 0;   
 }
 
@@ -533,3 +533,13 @@ Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_getProgramProgram_1
 }
 
 
+JNIEXPORT void JNICALL 
+Java_gnu_javax_sound_midi_dssi_DSSISynthesizer_selectProgram_1 
+  (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)), 
+   jlong handle, jint bank, jint program)
+{
+  dssi_data *data = JLONG_TO_PTR(dssi_data, handle);
+
+  (data->desc->select_program)(data->plugin_handle, 
+			       (unsigned) bank, (unsigned) program);
+}
