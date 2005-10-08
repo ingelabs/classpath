@@ -83,11 +83,31 @@ process (jack_nframes_t nframes, void *arg)
 	set_control (data, & data->midiEventBuffer[index]);
     }
 
-  /* Call the synth audio processing routine.  */
-  data->desc->run_synth(data->plugin_handle,
-			nframes,
-			&data->midiEventBuffer[data->midiEventReadIndex],
-			data->midiEventWriteIndex - data->midiEventReadIndex);
+  if (data->desc->run_synth)
+    {
+      /* Call the synth audio processing routine.  */
+      data->desc->run_synth
+	(data->plugin_handle,
+	 nframes,
+	 &data->midiEventBuffer[data->midiEventReadIndex],
+	 data->midiEventWriteIndex - data->midiEventReadIndex);
+    }
+  else 
+    if (data->desc->run_multiple_synths)
+      {
+	snd_seq_event_t *events = 
+	  &data->midiEventBuffer[data->midiEventReadIndex];
+	unsigned long event_count = 
+	  data->midiEventWriteIndex - data->midiEventReadIndex;
+
+	/* Call the synth audio processing routine.  */
+	data->desc->run_multiple_synths
+	  (1,
+	   & (data->plugin_handle),
+	   nframes,
+	   &events,
+	   &event_count);
+      }
 
   /* Update the read index on our circular buffer.  */
   data->midiEventReadIndex = data->midiEventWriteIndex;
