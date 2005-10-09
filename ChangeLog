@@ -1,3 +1,9 @@
+2005-10-09  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #24006
+	* java/net/Socket.java (bound): Make package private.
+	* java/net/ServerSocket.java (implAccept): Set Socket.bound to true.
+
 2005-10-07  Anthony Green  <green@redhat.com>
 
 	* native/jni/midi-dssi/gnu_javax_sound_midi_dssi_DSSISynthesizer.c

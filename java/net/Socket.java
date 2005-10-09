@@ -91,8 +91,9 @@ public class Socket
 
   /**
    * True if the socket is bound.
+   * Package private so it can be set from ServerSocket when accept is called.
    */
-  private boolean bound;
+  boolean bound;
 
   /**
    * True if input is shutdown.
