@@ -604,9 +604,20 @@ public abstract class Graphics
            + getColor () + "]";
   }
 
+  /**
+   * Returns <code>true</code> if the specified rectangle intersects with the
+   * current clip, <code>false</code> otherwise.
+   *
+   * @param x the X coordinate of the upper left corner of the test rectangle
+   * @param y the Y coordinate of the upper left corner of the test rectangle
+   * @param width the width of the upper left corner of the test rectangle
+   * @param height the height of the upper left corner of the test rectangle
+   * @return <code>true</code> if the specified rectangle intersects with the
+   *         current clip, <code>false</code> otherwise
+   */
   public boolean hitClip(int x, int y, int width, int height)
   {
-    throw new UnsupportedOperationException("not implemented yet");
+    return getClip().intersects(x, y, width, height);
   }
 
   public Rectangle getClipBounds(Rectangle r)

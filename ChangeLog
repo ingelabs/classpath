@@ -1,5 +1,10 @@
 2005-10-10  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Graphics.java
+	(hitClip): Implemented this method.
+
+2005-10-10  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Graphics.java: Reformatted file.
 
 2005-10-10  Roman Kennke  <kennke@aicas.com>
