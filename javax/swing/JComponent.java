@@ -1534,8 +1534,9 @@ public abstract class JComponent extends Container implements Serializable
         if (oldClip == null)
           oldClip = bounds;
 
-        if (g.hitClip(bounds.x, bounds.y, bounds.width, bounds.height))
+        if (!g.hitClip(bounds.x, bounds.y, bounds.width, bounds.height))
           continue;
+
         boolean translated = false;
         try
           {
@@ -2333,6 +2334,10 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setVisible(boolean v)
   {
+    // No need to do anything if the actual value doesn't change.
+    if (isVisible() == v)
+      return;
+
     super.setVisible(v);
     Container parent = getParent();
     if (parent != null)
