@@ -1,5 +1,11 @@
 2005-10-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/View.java
+	(modelToView(pos, Shape)): New method.
+	(viewToModel(float, float, Shape)): New method.
+
+2005-10-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JEditorPane.java
 	(AccessibleJEditorPane): New inner class.
 	(getAccessibleContext): Implemented to return an instance of
