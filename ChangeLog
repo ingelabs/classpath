@@ -1,5 +1,12 @@
 2005-10-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JMenuBar.java
+	(AccessibleJMenuBar): New inner class.
+	(getAccessibleContext): Implemented to return an instance of
+	AccessibleJMenuBar.
+
+2005-10-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(paintChildren): Skip children if their clip _doesn't_ hit the
 	current	clip.
