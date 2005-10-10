@@ -380,6 +380,13 @@ public abstract class JComponent extends Container implements Serializable
 
   private TransferHandler transferHandler;
 
+  /**
+   * A cached Rectangle object to be reused. Be careful when you use that,
+   * so that it doesn't get modified in another context within the same
+   * method call chain.
+   */
+  private static transient Rectangle rectCache;
+
   /** 
    * A lock held during recursive painting; this is used to serialize
    * access to the double buffer, and also to select the "top level" 
@@ -1514,7 +1521,7 @@ public abstract class JComponent extends Container implements Serializable
   protected void paintChildren(Graphics g)
   {
     Shape originalClip = g.getClip();
-    Rectangle inner = SwingUtilities.calculateInnerArea(this, new Rectangle());
+    Rectangle inner = SwingUtilities.calculateInnerArea(this, rectCache);
     g.clipRect(inner.x, inner.y, inner.width, inner.height);
     Component[] children = getComponents();
     for (int i = children.length - 1; i >= 0; --i)
@@ -1522,18 +1529,17 @@ public abstract class JComponent extends Container implements Serializable
         if (!children[i].isVisible())
           continue;
 
-        Rectangle bounds = children[i].getBounds();
+        Rectangle bounds = children[i].getBounds(rectCache);
         Rectangle oldClip = g.getClipBounds();
         if (oldClip == null)
           oldClip = bounds;
 
-        Rectangle clip = oldClip.intersection(bounds);
-        if (clip.isEmpty())
+        if (g.hitClip(bounds.x, bounds.y, bounds.width, bounds.height))
           continue;
         boolean translated = false;
         try
           {
-            g.setClip(clip.x, clip.y, clip.width, clip.height);
+            g.clipRect(bounds.x, bounds.y, bounds.width, bounds.height);
             g.translate(bounds.x, bounds.y);
             translated = true;
             children[i].paint(g);

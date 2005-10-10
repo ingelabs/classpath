@@ -1,5 +1,11 @@
 2005-10-10  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JComponent.java
+	(rectCache): New field. Caches Rectangle objects for reuse.
+	(paintChildren): Changed to reuse cached Rectangle object.
+
+2005-10-10  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/border/TitledBorder.java
 	(TitledBorder(String)): Changed default justification and position,
 	(TitledBorder(Border)): Likewise,
