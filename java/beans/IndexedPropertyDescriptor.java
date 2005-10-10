@@ -287,7 +287,7 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor
    *
    * @param m the method to set
    */
-  public void setIndexedReadMethod(Method m)
+  public void setIndexedReadMethod(Method m) throws IntrospectionException
   {
     getIndex = m;
   }
@@ -302,7 +302,7 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor
    *
    * @param m the method to set
    */
-  public void setIndexedWriteMethod(Method m)
+  public void setIndexedWriteMethod(Method m) throws IntrospectionException
   {
     setIndex = m;
   }
