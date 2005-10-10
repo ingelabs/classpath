@@ -1,5 +1,10 @@
 2005-10-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        * examples/gnu/classpath/examples/CORBA/SimpleCommunication/Demo.java
+        (main): 3 sec pause replaced by while(..) loop. 
+
+2005-10-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
         * gnu/CORBA/Interceptor/Registrator.java,
         gnu/CORBA/ObjectCreator.java,
         gnu/CORBA/gnuValueHolder.java,
