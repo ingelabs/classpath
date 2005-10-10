@@ -47,6 +47,7 @@ import gnu.CORBA.Poa.activeObjectMap;
 import java.rmi.NoSuchObjectException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.RMIClassLoader;
 
 import javax.rmi.CORBA.PortableRemoteObjectDelegate;
 import javax.rmi.CORBA.Stub;
@@ -315,7 +316,7 @@ public class PortableRemoteObjectDelegateImpl
 
     try
       {
-        stubClass = Class.forName(sn);
+        stubClass = RMIClassLoader.loadClass(sn);
         o_stub = stubClass.newInstance();
       }
     catch (Exception e)

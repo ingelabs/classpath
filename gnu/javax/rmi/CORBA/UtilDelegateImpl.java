@@ -373,17 +373,8 @@ public class UtilDelegateImpl
     ClassLoader loader)
     throws ClassNotFoundException
   {
-    ClassLoader tt = Thread.currentThread().getContextClassLoader();
-
-    try
-      {
-        if (tt != null)
-          return tt.loadClass(className);
-      }
-    catch (Exception e)
-      {
-        // This failed but try others.
-      }
+    if (loader == null)
+      loader = Thread.currentThread().getContextClassLoader();
 
     String p_useCodebaseOnly = System.getProperty("java.rmi.server.useCodebaseOnly");
 

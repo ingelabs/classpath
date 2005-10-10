@@ -182,7 +182,8 @@ public class Registrator extends LocalObject implements ORBInitInfo
                 try
                   {
                     String cn = sk.substring(m_prefix.length());
-                    Class iClass = Class.forName(cn);
+                    Class iClass = Class.forName(cn, true,
+                      Thread.currentThread().getContextClassLoader());
                     ORBInitializer initializer =
                       (ORBInitializer) iClass.newInstance();
                     m_initializers.add(initializer);

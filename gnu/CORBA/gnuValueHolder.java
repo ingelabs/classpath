@@ -123,7 +123,8 @@ public class gnuValueHolder
     try
       {
         Class helperClass =
-          Class.forName(ObjectCreator.toHelperName(type.id()));
+          Class.forName(ObjectCreator.toHelperName(type.id()),
+            true, Thread.currentThread().getContextClassLoader());
 
         helper = (BoxedValueHelper) helperClass.newInstance();
       }

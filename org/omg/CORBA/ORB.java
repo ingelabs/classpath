@@ -1167,7 +1167,8 @@ public abstract class ORB
 
     try
       {
-        orb = (ORB) Class.forName(orbClassName).newInstance();
+        orb = (ORB) Class.forName(orbClassName, true,
+          Thread.currentThread().getContextClassLoader()).newInstance();
       }
     catch (ClassNotFoundException ex)
       {

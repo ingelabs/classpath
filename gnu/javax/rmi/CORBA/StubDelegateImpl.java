@@ -193,7 +193,8 @@ public class StubDelegateImpl
 
     try
       {
-        tieClass = Class.forName(tn);
+        tieClass = Class.forName(tn, true, 
+          Thread.currentThread().getContextClassLoader());
         t = (Tie) tieClass.newInstance();
         if (self instanceof Remote)
           Util.registerTarget(t, (Remote) self);

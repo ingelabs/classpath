@@ -139,14 +139,14 @@ public class ObjectCreator
               suffix = "";
             try
               {
-                known = Class.forName(toClassName(JAVA_PREFIX, idl) + suffix);
+                known = forName(toClassName(JAVA_PREFIX, idl) + suffix);
                 object = known.newInstance();
               }
             catch (Exception ex)
               {
                 try
                   {
-                    known = Class.forName(toClassName(CLASSPATH_PREFIX, idl)
+                    known = forName(toClassName(CLASSPATH_PREFIX, idl)
                       + suffix);
                     object = known.newInstance();
                   }
@@ -343,7 +343,7 @@ public class ObjectCreator
 
             try
               {
-                c = Class.forName(cn);
+                c = forName(cn);
                 m_classes.put(IDL, c);
                 return c;
               }
@@ -438,7 +438,7 @@ public class ObjectCreator
     try
       {
         String helperClassName = object.getClass().getName() + "Helper";
-        Class helperClass = Class.forName(helperClassName);
+        Class helperClass = forName(helperClassName);
 
         Method insert = helperClass.getMethod("insert", new Class[] {
           Any.class, object.getClass() });
@@ -534,7 +534,7 @@ public class ObjectCreator
         try
           {
             String helper = toHelperName(idl);
-            c = Class.forName(helper);
+            c = forName(helper);
 
             m_helpers.put(idl, c);
             return c;
@@ -544,6 +544,15 @@ public class ObjectCreator
             return null;
           }
       }
-
   }
+  
+  /**
+   * Load the class with the given name.
+   */
+  public static Class forName(String className)
+    throws ClassNotFoundException
+    {
+      return Class.forName(className, true, 
+        Thread.currentThread().getContextClassLoader());
+    }
 }

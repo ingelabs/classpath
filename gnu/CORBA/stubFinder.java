@@ -83,7 +83,8 @@ public class stubFinder
 
         String stub = "_" + s.substring(b + 1) + "Stub";
 
-        Class stubClass = Class.forName(path + stub);
+        Class stubClass = Class.forName(path + stub, true, 
+          Thread.currentThread().getContextClassLoader());
 
         return (ObjectImpl) stubClass.newInstance();
       }

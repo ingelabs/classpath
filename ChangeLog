@@ -1,3 +1,14 @@
+2005-10-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * gnu/CORBA/Interceptor/Registrator.java,
+        gnu/CORBA/ObjectCreator.java,
+        gnu/CORBA/gnuValueHolder.java,
+        gnu/CORBA/stubFinder.java,
+        gnu/javax/rmi/CORBA/PortableRemoteObjectDelegateImpl.java,
+        gnu/javax/rmi/CORBA/StubDelegateImpl.java,
+        gnu/javax/rmi/CORBA/UtilDelegateImpl.java,
+        org/omg/CORBA/ORB.java: Use context class loader. 
+
 2005-10-10  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/View.java
