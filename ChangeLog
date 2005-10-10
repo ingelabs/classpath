@@ -1,5 +1,28 @@
 2005-10-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JEditorPane.java
+	(AccessibleJEditorPane): New inner class.
+	(getAccessibleContext): Implemented to return an instance of
+	AccessibleJEditorPane.
+	* javax/swing/JScrollPane.java
+	(AccessibleJScrollPane): New inner class.
+	(getAccessibleContext): Implemented to return an instance of
+	AccessibleJScrollPane.
+	(setViewport): Call accessibleContext's resetViewPort() method.
+	* javax/swing/JTextArea.java
+	(AccessibleJTextArea): New inner class.
+	(getAccessibleContext): Implemented to return an instance of
+	AccessibleJTextArea.
+	* javax/swing/JTextField.java
+	(AccessibleJTextField): New inner class.
+	(getAccessibleContext): Implemented to return an instance of
+	AccessibleJTextField.
+	* javax/swing/JRootPane.java
+	(defaultPressAction): New field.
+	(defaultReleaseAction): New field.
+
+2005-10-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JMenuBar.java
 	(AccessibleJMenuBar): New inner class.
 	(getAccessibleContext): Implemented to return an instance of

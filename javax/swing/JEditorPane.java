@@ -44,10 +44,12 @@ import java.io.InputStream;
 import java.net.URL;
 
 import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleStateSet;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
 import javax.swing.text.JTextComponent;
 
@@ -76,6 +78,51 @@ import javax.swing.text.JTextComponent;
  */
 public class JEditorPane extends JTextComponent
 {
+  /**
+   * Provides accessibility support for <code>JEditorPane</code>.
+   *
+   * @author Roman Kennke (kennke@aicas.com)
+   */
+  protected class AccessibleJEditorPane extends AccessibleJTextComponent
+  {
+
+    /**
+     * Creates a new <code>AccessibleJEditorPane</code> object.
+     */
+    protected AccessibleJEditorPane()
+    {
+      super();
+    }
+
+    /**
+     * Returns a description of this <code>AccessibleJEditorPane</code>. If
+     * this property is not set, then this returns the content-type of the
+     * editor pane.
+     *
+     * @return a description of this AccessibleJEditorPane
+     */
+    public String getAccessibleDescription()
+    {
+      String descr = super.getAccessibleDescription(); 
+      if (descr == null)
+        return getContentType();
+      else
+        return descr;
+    }
+
+    /**
+     * Returns the accessible state of this <code>AccessibleJEditorPane</code>.
+     *
+     * @return  the accessible state of this <code>AccessibleJEditorPane</code>
+     */
+    public AccessibleStateSet getAccessibleStateSet()
+    {
+      AccessibleStateSet state = super.getAccessibleStateSet();
+      // TODO: Figure out what state must be added here to the super's state.
+      return state;
+    }
+  }
+
   private static final long serialVersionUID = 3140472492599046285L;
   
   private URL page;
@@ -128,9 +175,18 @@ public class JEditorPane extends JTextComponent
        listeners[index].hyperlinkUpdate(event);
   }
 
+  /**
+   * Returns the accessible context associated with this editor pane.
+   *
+   * @return the accessible context associated with this editor pane
+   */
   public AccessibleContext getAccessibleContext()
   {
-    return null;
+    if (accessibleContext == null)
+      // FIXME: Implement and use AccessibleJEditorPaneHTML when the editorKit
+      // is an instance of HTMLEditorKit.
+      accessibleContext = new AccessibleJEditorPane();
+    return accessibleContext;
   }
 
   public final String getContentType()
