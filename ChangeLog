@@ -1,3 +1,22 @@
+2005-10-10  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/border/TitledBorder.java
+	(TitledBorder(String)): Changed default justification and position,
+	(TitledBorder(Border)): Likewise,
+	(TitledBorder(Border, String)): Likewise,
+	(BorderPainter.paint(Graphics)): Use full width and height,
+	(BorderPainter.paintExcept): Fixed bounds for region 3,
+	(paintBorder): indented left justified title further, adjusted 
+	ABOVE_TOP text position, adjusted bounds for call to paintExcept(),
+	updated for renamed fields in Measurements class,
+	(getMeasurements): added special handling for null text, increased 
+	outer spacing, adjusted spacing for TOP, BOTTOM and BELOW_BOTTOM title
+	positions,
+	(Measurements.borderSpacing): renamed outerSpacing,
+	(Measurements.edgeSpacing): renamed innerSpacing,
+	(Measurements.getContentInsets): updated for renamed fields,
+	(Measurements.getMinimumSize): wrap at 80 columns.
+
 2005-10-09  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #24006
