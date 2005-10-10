@@ -1,3 +1,8 @@
+2005-10-11  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * examples/gnu/classpath/examples/CORBA/SimpleCommunication/Demo.java
+        (main): Message removed from the loop.
+
 2005-10-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * examples/gnu/classpath/examples/CORBA/SimpleCommunication/Demo.java

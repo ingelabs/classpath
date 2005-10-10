@@ -76,9 +76,9 @@ public class Demo
       }
     }.start();
 
+    System.out.print("Waiting for the server to start ");
     while (!ior.exists())
       {
-        System.out.print("Waiting for for the server to start ");
         // Pause some time for the server to start.
         try
           {
@@ -90,6 +90,7 @@ public class Demo
         System.out.print(".");
       }
     System.out.println("ok.");
+    System.out.println();    
 
     // Test the stream oriented communication.
     DirectTest.main(args);
