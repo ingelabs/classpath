@@ -1,4 +1,4 @@
-2005-10-10  David Gilbert  <david.gilbert@object-refinery.com>
+2005-10-10  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java
 	(rectCache): New field. Caches Rectangle objects for reuse.
