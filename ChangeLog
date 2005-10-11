@@ -1,3 +1,12 @@
+2005-10-11  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JEditorPane.java
+	(AccessibleJEditorPaneHTML): New inner class.
+	(JEditorPaneAccessibleHypertextSupport): New inner class.
+	(getAccessibleContext): Handle special case when we have
+	a HTMLEditorKit.
+	(setEditorKit): Reset the accessibleContext.
+
 2005-10-11  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/filechooser/FileSystemView.java
