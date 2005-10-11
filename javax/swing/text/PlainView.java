@@ -382,6 +382,7 @@ public class PlainView extends View
   public void insertUpdate(DocumentEvent changes, Shape a, ViewFactory f)
   {
     insertOrRemoveUpdate(changes, a, f);
+    ((JTextComponent)getContainer()).repaint();
   }
 
   /**
@@ -395,6 +396,7 @@ public class PlainView extends View
   public void removeUpdate(DocumentEvent changes, Shape a, ViewFactory f)
   {
     insertOrRemoveUpdate(changes, a, f);
+    ((JTextComponent)getContainer()).repaint();
   }
 }
 
