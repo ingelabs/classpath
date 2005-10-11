@@ -294,8 +294,32 @@ public class PlainView extends View
    */
   public int viewToModel(float x, float y, Shape a, Position.Bias[] b)
   {
-    // FIXME: not implemented
-    return 0;
+    Rectangle rec = a.getBounds();
+    Document doc = getDocument();
+    Element root = doc.getDefaultRootElement();
+    
+    // PlainView doesn't support line-wrapping so we can find out which
+    // Element was clicked on just by the y-position    
+    int lineClicked = (int) (y - rec.y) / metrics.getHeight();
+    if (lineClicked >= root.getElementCount())
+      return getEndOffset() - 1;
+    
+    Element line = root.getElement(lineClicked);
+    Segment s = new Segment();
+
+    int start = line.getStartOffset();
+    int end = line.getEndOffset();
+    try
+    {
+      doc.getText(start, end - start, s);
+    }
+    catch (BadLocationException ble)
+    {
+      //this should never happen
+    }
+    
+    int pos = Utilities.getTabbedTextOffset(s, metrics, rec.x, (int)x, this, start);
+    return Math.max (0, pos);
   }
   
   /**

@@ -274,6 +274,9 @@ public class DefaultCaret extends Rectangle
   public void mousePressed(MouseEvent event)
   {
     // FIXME: Implement this properly.
+    if (!(event.getButton() == MouseEvent.BUTTON1))
+      return;
+    setDot(textComponent.viewToModel(event.getPoint()));
   }
 
   /**

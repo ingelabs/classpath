@@ -1,5 +1,14 @@
 2005-10-11  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java:
+	(viewToModel): Implemented.
+	* javax/swing/text/DefaultCaret.java:
+	(mousePressed): Implemented.
+	* javax/swing/text/PlainView.java:
+	(viewToModel): Implemented.
+
+2005-10-11  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/text/PlainView.java:
 	(insertUpdate): Repaint the JTextComponent after the update.
 	(removeUpdate): Likewise.

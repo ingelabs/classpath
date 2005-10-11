@@ -973,7 +973,7 @@ public abstract class BasicTextUI extends TextUI
    */
   public int viewToModel(JTextComponent t, Point pt, Position.Bias[] biasReturn)
   {
-    return 0; // FIXME: Implement me.
+    return rootView.viewToModel(pt.x, pt.y, getVisibleEditorRect(), biasReturn);
   }
 
   /**
