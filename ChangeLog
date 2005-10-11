@@ -1,5 +1,12 @@
 2005-10-11  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/text/GapContent.java:
+	(getPositionsInRange): Corrected interval check.  This mirrors Roman's
+	change in GapContent from 2005-10-05 for adjustPositionsInRange and
+	setPositionsInRange.
+
+2005-10-11  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java:
 	(viewToModel): Implemented.
 	* javax/swing/text/DefaultCaret.java:

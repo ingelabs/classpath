@@ -642,18 +642,13 @@ public class GapContent
 
     int index1 = Collections.binarySearch(positions,
                                           new GapContentPosition(offset));
-    int index2 = Collections.binarySearch(positions,
-                                          new GapContentPosition(endOffset));
     if (index1 < 0)
       index1 = -(index1 + 1);
-    if (index2 < 0)
-      index2 = -(index2 + 1);
     for (ListIterator i = positions.listIterator(index1); i.hasNext();)
       {
-        if (i.nextIndex() > index2)
-          break;
-        
         GapContentPosition p = (GapContentPosition) i.next();
+        if (p.mark > endOffset)
+          break;
         if (p.mark >= offset && p.mark <= endOffset)
           res.add(p);
       }
