@@ -1,3 +1,10 @@
+2005-10-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/filechooser/FileSystemView.java
+	(defaultFileSystemView): new private field,
+	(getFileSystemView): initialise (if necessary) and return 
+	defaultFileSystemView.
+
 2005-10-11  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * examples/gnu/classpath/examples/CORBA/SimpleCommunication/Demo.java
