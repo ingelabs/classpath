@@ -1,3 +1,9 @@
+2005-10-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/DefaultComboBoxModel.java
+	(setSelectedItem): allow values not in list, and don't fire an event 
+	if the value is unchanged.
+
 2005-10-11  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/GapContent.java:
