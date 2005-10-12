@@ -1,5 +1,12 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JList.java
+	(locationToIndex): Put opening brace on next line.
+	(indexToLocation): Call UI's indexToLocation.
+	(getCellBounds): Replaced cast with getUI() call.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JFileChooser.java
 	(getDialogTitle): If no dialog title has been set, forward this
 	call to the UI.
