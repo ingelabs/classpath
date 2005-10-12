@@ -1,5 +1,11 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Fixed value for
+	Table.focusCellHighlightBorder.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicButtonUI.java
 	(installDefaults): Use new LookAndFeel install* methods. Use
 	UIManager.get* methods instead of UIManager.getDefaults().get*
