@@ -828,7 +828,10 @@ public class JFileChooser extends JComponent implements Accessible
    */
   public String getDialogTitle()
   {
-    return dialogTitle;
+    if (dialogTitle == null)
+      return getUI().getDialogTitle(this);
+    else
+      return dialogTitle;
   }
 
   /**
@@ -939,7 +942,10 @@ public class JFileChooser extends JComponent implements Accessible
    */
   public String getApproveButtonText()
   {
-    return approveButtonText;
+    if (approveButtonText == null)
+      return getUI().getApproveButtonText(this);
+    else
+      return approveButtonText;
   }
 
   /**
@@ -1258,20 +1264,10 @@ public class JFileChooser extends JComponent implements Accessible
    */
   public FileView getFileView()
   {
-    return fv;
-  }
-
-  /**
-   * Returns the current file view or, if it is <code>null</code>, a default
-   * file view provided by the UI delegate.
-   *
-   * @return A file view.
-   */
-  private FileView getInternalFileView()
-  {
     if (fv == null)
       return getUI().getFileView(this);
-    return fv;
+    else
+      return fv;
   }
 
   /**
@@ -1284,7 +1280,7 @@ public class JFileChooser extends JComponent implements Accessible
    */
   public String getName(File f)
   {
-    return getInternalFileView().getName(f);
+    return getFileView().getName(f);
   }
 
   /**
@@ -1297,7 +1293,7 @@ public class JFileChooser extends JComponent implements Accessible
    */
   public String getDescription(File f)
   {
-    return getInternalFileView().getDescription(f);
+    return getFileView().getDescription(f);
   }
 
   /**
@@ -1310,7 +1306,7 @@ public class JFileChooser extends JComponent implements Accessible
    */
   public String getTypeDescription(File f)
   {
-    return getInternalFileView().getTypeDescription(f);
+    return getFileView().getTypeDescription(f);
   }
 
   /**
@@ -1322,7 +1318,7 @@ public class JFileChooser extends JComponent implements Accessible
    */
   public Icon getIcon(File f)
   {
-    return getInternalFileView().getIcon(f);
+    return getFileView().getIcon(f);
   }
 
   /**

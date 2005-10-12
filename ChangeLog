@@ -1,5 +1,21 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JFileChooser.java
+	(getDialogTitle): If no dialog title has been set, forward this
+	call to the UI.
+	(getApproveButtonText): If no text has been set, forward this
+	call to the UI.
+	(getFileView): If no file view has been set, forward this call
+	to the UI.
+	(getInternalFileView): Removed unneeded method.
+	(getName): Call getFileView instead of getInternalFileView.
+	(getDescription): Call getFileView instead of getInternalFileView.
+	(getTypeDescription): Call getFileView instead of
+	getInternalFileView.
+	(getIcon): Call getFileView instead of getInternalFileView.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(setFont): Only get active if the new font differs from the old one.
 	Call revalidate when font changes.
