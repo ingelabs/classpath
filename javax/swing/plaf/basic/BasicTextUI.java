@@ -55,6 +55,7 @@ import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -514,20 +515,17 @@ public abstract class BasicTextUI extends TextUI
       textComponent.setHighlighter(createHighlighter());
 
     String prefix = getPropertyPrefix();
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-    textComponent.setMargin(defaults.getInsets(prefix + ".margin"));
-    textComponent.setBorder(defaults.getBorder(prefix + ".border"));
-    textComponent.setFont(defaults.getFont(prefix + ".font"));
+    LookAndFeel.installColorsAndFont(textComponent, prefix + ".background",
+                                     prefix + ".foreground", prefix + ".font");
+    LookAndFeel.installBorder(textComponent, prefix + ".border");
+    textComponent.setMargin(UIManager.getInsets(prefix + ".margin"));
 
-    caret.setBlinkRate(defaults.getInt(prefix + ".caretBlinkRate"));
+    caret.setBlinkRate(UIManager.getInt(prefix + ".caretBlinkRate"));
 
     // Fetch the colors for enabled/disabled text components.
-    background = defaults.getColor(prefix + ".background");
-    textComponent.setBackground(background);
-    inactiveBackground = defaults.getColor(prefix + ".inactiveBackground");
-    textComponent.setForeground(defaults.getColor(prefix + ".foreground"));
+    inactiveBackground = UIManager.getColor(prefix + ".inactiveBackground");
     textComponent.setDisabledTextColor
-                         (defaults.getColor(prefix + ".inactiveForeground"));
+                         (UIManager.getColor(prefix + ".inactiveForeground"));
   }
 
   /**

@@ -49,7 +49,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -64,6 +63,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -309,16 +309,14 @@ public class BasicTableUI extends TableUI
 
   protected void installDefaults() 
   {
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-    table.setFont(defaults.getFont("Table.font"));
-    table.setGridColor(defaults.getColor("Table.gridColor"));
-    table.setForeground(defaults.getColor("Table.foreground"));
-    table.setBackground(defaults.getColor("Table.background"));
-    table.setSelectionForeground(defaults.getColor("Table.selectionForeground"));
-    table.setSelectionBackground(defaults.getColor("Table.selectionBackground"));
+    LookAndFeel.installColorsAndFont(table, "Table.background",
+                                     "Table.foreground", "Table.font");
+    table.setGridColor(UIManager.getColor("Table.gridColor"));
+    table.setSelectionForeground(UIManager.getColor("Table.selectionForeground"));
+    table.setSelectionBackground(UIManager.getColor("Table.selectionBackground"));
     table.setOpaque(true);
 
-    highlightCellBorder = defaults.getBorder("Table.focusCellHighlightBorder");
+    highlightCellBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
     cellBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
   }
 

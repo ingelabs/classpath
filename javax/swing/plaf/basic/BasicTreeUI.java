@@ -78,6 +78,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIDefaults;
@@ -1195,20 +1196,17 @@ public class BasicTreeUI
    */
   protected void installDefaults()
   {
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-
-    tree.setFont(defaults.getFont("Tree.font"));
-    tree.setForeground(defaults.getColor("Tree.foreground"));
-    tree.setBackground(defaults.getColor("Tree.background"));
+    LookAndFeel.installColorsAndFont(tree, "Tree.background",
+                                     "Tree.foreground", "Tree.font");
     tree.setOpaque(true);
 
-    rightChildIndent = defaults.getInt("Tree.rightChildIndent");
-    leftChildIndent = defaults.getInt("Tree.leftChildIndent");
-    setRowHeight(defaults.getInt("Tree.rowHeight"));
+    rightChildIndent = UIManager.getInt("Tree.rightChildIndent");
+    leftChildIndent = UIManager.getInt("Tree.leftChildIndent");
+    setRowHeight(UIManager.getInt("Tree.rowHeight"));
     tree.requestFocusInWindow(false);
-    tree.setScrollsOnExpand(defaults.getBoolean("Tree.scrollsOnExpand"));
-    setExpandedIcon(defaults.getIcon("Tree.expandedIcon"));
-    setCollapsedIcon(defaults.getIcon("Tree.collapsedIcon"));
+    tree.setScrollsOnExpand(UIManager.getBoolean("Tree.scrollsOnExpand"));
+    setExpandedIcon(UIManager.getIcon("Tree.expandedIcon"));
+    setCollapsedIcon(UIManager.getIcon("Tree.collapsedIcon"));
   }
 
   /**

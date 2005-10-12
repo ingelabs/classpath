@@ -51,6 +51,7 @@ import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -155,19 +156,16 @@ public class BasicButtonUI extends ButtonUI
    */
   protected void installDefaults(AbstractButton b)
   {
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
     String prefix = getPropertyPrefix();
-    b.setFont(defaults.getFont(prefix + "font"));
-    focusColor = defaults.getColor(prefix + "focus");
-    b.setForeground(defaults.getColor(prefix + "foreground"));
-    b.setBackground(defaults.getColor(prefix + "background"));
-    b.setMargin(defaults.getInsets(prefix + "margin"));
-    b.setBorder(defaults.getBorder(prefix + "border"));
-    b.setIconTextGap(defaults.getInt(prefix + "textIconGap"));
+    LookAndFeel.installColorsAndFont(b, prefix + "background",
+                                     prefix + "foreground", prefix + "font");
+    LookAndFeel.installBorder(b, prefix + "border");
+    focusColor = UIManager.getColor(prefix + "focus");
+    b.setMargin(UIManager.getInsets(prefix + "margin"));
+    b.setIconTextGap(UIManager.getInt(prefix + "textIconGap"));
     b.setInputMap(JComponent.WHEN_FOCUSED, 
-                  (InputMap) defaults.get(prefix + "focusInputMap"));
-    b.setRolloverEnabled(defaults.getBoolean(prefix + "rollover"));
-    b.setOpaque(true);
+                  (InputMap) UIManager.get(prefix + "focusInputMap"));
+    b.setRolloverEnabled(UIManager.getBoolean(prefix + "rollover"));
   }
 
   /**

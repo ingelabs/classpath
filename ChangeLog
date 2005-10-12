@@ -1,5 +1,106 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicCheckBoxMenuItemUI.java
+	(installDefaults): Use UIManager.get* methods instead of
+	UIManager.getDefaults().get* methods.
+	* javax/swing/plaf/basic/BasicColorChooserUI.java
+	(installDefaults): Use new LookAndFeel install* methods.
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicDesktopPaneUI.java
+	(installDefaults): Only install background color, if installed
+	color is null or an UIResource instance.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(installDefaults): Use new LookAndFeel install* methods.
+	* javax/swing/plaf/basic/BasicLabelUI.java
+	(installDefaults): Use new LookAndFeel install* methods.
+	* javax/swing/plaf/basic/BasicListUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added default for List.font.
+	* javax/swing/plaf/basic/BasicMenuBarUI.java
+	(installDefaults): Use new LookAndFeel install* methods.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicMenuUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicPanelUI.java
+	(installDefaults): Use new LookAndFeel install* methods.
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java
+	(installDefaults): Use new LookAndFeel install* methods.
+	* javax/swing/plaf/basic/BasicProgressBarUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(installDefaults): Use new LookAndFeel install* methods.
+	* javax/swing/plaf/basic/BasicSeparatorUI.java
+	(installDefaults): Use UIManager.get* methods instead of
+	UIManager.getDefaults().get* methods.
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicSpinnerUI.java
+	(installDefaults): Use new LookAndFeel install* methods.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicToolBarSeparatorUI.java
+	(installDefaults): Use UIManager.get* methods instead of
+	UIManager.getDefaults().get* methods.
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicToolTipUI.java
+	(installDefaults): Use new LookAndFeel install* methods.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(installDefaults): Use new LookAndFeel install* methods. Use
+	UIManager.get* methods instead of UIManager.getDefaults().get*
+	methods.
+	* javax/swing/plaf/basic/BasicViewportUI.java
+	(installDefaults): Use new LookAndFeel install* methods.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/LookAndFeel.java
 	(installBorder): Implemented.
 	(installColors): Implemented.
