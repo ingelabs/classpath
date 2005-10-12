@@ -557,14 +557,20 @@ public abstract class AbstractDocument implements Document, Serializable
         int start = root.getElementIndex(changes.where);
         int end = root.getElementIndex(changes.where+changes.length);
 
-        Element[] removed = new Element[1];
-        removed[0] = root;
-        Element[] added = new Element[end - start + 1];
-        for (int i = start; i <= end; i++)
-          added[i - start] = root.getElement(i);
-    
-        ElementEdit edit = new ElementEdit(root, root.getElementIndex(changes.where), removed, added);    
-        event.addEdit(edit);
+        if (!(start == 0 && end == 0))
+          {
+            Element[] removed = new Element[1];
+            removed[0] = root;
+            Element[] added = new Element[end - start + 1];
+            for (int i = start; i <= end; i++)
+              added[i - start] = root.getElement(i);
+
+            ElementEdit edit = new ElementEdit(
+                                               root,
+                                               root.getElementIndex(changes.where),
+                                               removed, added);
+            event.addEdit(edit);
+          }
       }
     fireInsertUpdate(event);
   }
@@ -718,7 +724,7 @@ public abstract class AbstractDocument implements Document, Serializable
     if (content instanceof GapContent)
       changes = (GapContent.UndoRemove) temp;
 
-    if (changes != null)
+    if (changes != null && !(start == end))
       {
         // We need to add an ElementChange to our DocumentEvent
         ElementEdit edit = new ElementEdit (root, start, removed, added);

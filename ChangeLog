@@ -1,5 +1,12 @@
 2005-10-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/text/AbstractDocument.java:
+	(insertString): Don't include an ElementChange if no children were
+	added.
+	(remove): Don't include an ElementChange if no children were removed.
+
+2005-10-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/text/PlainView.java:
 	(insertOrRemoveUpdate): Renamed this method to udpateDamage because
 	changedUpdate calls it as well.
