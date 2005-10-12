@@ -1836,8 +1836,6 @@ public class BasicFileChooserUI extends FileChooserUI
    */
   public FileView getFileView(JFileChooser fc)
   {
-    if (fc.getFileView() != null)
-      return fc.getFileView();
     return fv;
   }
 
@@ -1902,9 +1900,7 @@ public class BasicFileChooserUI extends FileChooserUI
    */
   public String getApproveButtonText(JFileChooser fc)
   {
-    if (fc.getApproveButtonText() != null)
-      return fc.getApproveButtonText();
-    else if (fc.getDialogType() == JFileChooser.SAVE_DIALOG)
+    if (fc.getDialogType() == JFileChooser.SAVE_DIALOG)
       return saveButtonText;
     else
       return openButtonText;

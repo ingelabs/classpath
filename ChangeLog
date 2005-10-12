@@ -1,3 +1,10 @@
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicFileChooserUI.java
+	(getFileView): Don't call back into the JFileChooser, avoids
+	a StackOverflow.
+	(getApproveButtonText): Likewise.
+
 2005-10-12  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #22841
