@@ -287,9 +287,9 @@ public class ScrollPaneLayout
           height += hsb.getMinimumSize().height;
         if (vsb.isVisible())
           width += vsb.getMinimumSize().width;
-        if (rowHead.isVisible())
+        if (rowHead != null && rowHead.isVisible())
           width += rowHead.getMinimumSize().width;
-        if (colHead.isVisible())
+        if (colHead != null && colHead.isVisible())
           height += colHead.getMinimumSize().height;
         return new Dimension(width, height);
       }

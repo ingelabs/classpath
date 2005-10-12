@@ -1,3 +1,8 @@
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/ScrollPaneLayout.java
+	(minimumLayoutSize): Added checks to avoid NPEs.
+
 2005-10-12  David Daney  <ddaney@avtrex.com>
 
 	PR classpath/24086, PR classpath/24091, PR classpath/24104
