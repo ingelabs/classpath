@@ -1,3 +1,89 @@
+2005-10-12  David Daney  <ddaney@avtrex.com>
+
+	PR classpath/24086, PR classpath/24091, PR classpath/24104
+	* gnu/java/net/protocol/http/ByteArrayResponseBodyReader.java: Removed.
+	* gnu/java/net/protocol/http/ResponseBodyReader.java: Removed.
+	* gnu/java/net/protocol/http/event/ConnectionEvent.java: Removed.
+	* gnu/java/net/protocol/http/event/ConnectionListener.java: Removed.
+	* gnu/java/net/protocol/http/event/RequestEvent.java: Removed.
+	* gnu/java/net/protocol/http/event/RequestListener.java: Removed.
+	* gnu/java/net/protocol/http/event/package.html: Removed.
+	* gnu/java/net/protocol/http/HTTPConnection.java: Cleaned up imports.
+	(connectionListeners): Removed.
+	(requestListeners): Removed.
+	(pool): New field.
+	(Constructor): Don't initialize connectionListeners or
+	requestListeners.
+	(useCount): New field.
+	(getPoolKey): New method.
+	(setPool): New method.
+	(release): New method.
+	(newRequest): Don't call fireRequestEvent. Use StringBuilder instead
+	of StringBuffer.
+	(close): Don't call fireConnectionEvent.
+	(getURI):Use StringBuilder instead of StringBuffer.
+	(addConnectionListener): Removed.
+	(removeConnectionListener): Removed.
+	(fireConnectionEvent): Removed.
+	(addRequestListener): Removed.
+	(removeRequestListener): Removed.
+	(fireRequestEvent): Removed.
+	* gnu/java/net/protocol/http/HTTPURLConnection.java:Cleaned up imports.
+	(connectionPool): Changed type to LinkedHashMap.
+	(maxConnections): Made static.
+	(responseSink): Changed type to InputStream.
+	(errorSink): Likewise.
+	(connect): Eliminate reader.  Get responseSink from response.
+	(getConnection): Rewrote.
+	(getHeaderFields): Use null as key for status line.  Return
+	unmodifiable Map.
+	* gnu/java/net/protocol/http/Headers.java: Extend LinkedHashMap,
+	instead of implement Map.
+	(headers): Removed.
+	(Constructor): Do not initialize headers.
+	(size): Removed.
+	(isEmpth): Removed.
+	(containsKey): Rewrote.
+	(containsValue): Removed.
+	(get): Call super.get().
+	(getValue): Likewise.
+	(getLongValue): New method.
+	(put): Call super.put().
+	(remove): Call super.remove().
+	(putAll): Rewrote.
+	(clear): Removed.
+	(keySet): Call super.keySet().
+	(values): Removed.
+	(entrySet): Call super.entrySet().
+	(equals): Removed.
+	(hashCode): Removed.
+	(parse): Use StringBuilder instead of StringBuffer.
+	(addValue): Call super.* instead of headers.*.
+	* gnu/java/net/protocol/http/LimitedLengthInputStream.java: New class.
+	* gnu/java/net/protocol/http/Request.java: Cleaned up imports.
+	(responseBodyReader): Removed.
+	(setResponseBodyReader): Removed.
+	(dispatch): Don't create LineInputStream.  Don't call fireRequestEvent.
+	Don't append CRLF to Request body.  Handle unsolicited 100 Continue
+	response.
+	(readResponse): Rewrote.
+	(readResponseBody): Renamed to ...
+	(createResponseBodyStream): ... And rewritten.
+	(parseAuthParams): Use StringBuilder instead of StringBuffer.
+	(getNonceCount): Likewise.
+	(handleSetCookie): Likewise.
+	* gnu/java/net/protocol/http/Response.java: Cleaned up imports.
+	(codeClass): Removed.
+	(body): New field.
+	(Constructor): Don't initialize codeClass.  Initialize body.
+	(getCodeClass): Rewrote.
+	(getLongHeader): New method.
+	(getBody): New method.
+	* gnu/java/net/protocol/http/ChunkedInputStream.java (read): Use
+	StringBuilder instead of StringBuffer.
+	* gnu/java/net/protocol/http/Cookie.java (toString): Use StringBuilder
+	instead of StringBuffer.
+
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicFileChooserUI.java
