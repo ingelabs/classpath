@@ -856,6 +856,11 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "FormattedTextField.selectionBackground", getTextHighlightColor(),
       "FormattedTextField.selectionForeground", getHighlightedTextColor(),
 
+      "FileView.computerIcon", MetalIconFactory.getTreeComputerIcon(),
+      "FileView.directoryIcon", MetalIconFactory.getTreeFolderIcon(),
+      "FileView.fileIcon", MetalIconFactory.getTreeLeafIcon(),
+      "FileView.floppyDriveIcon", MetalIconFactory.getTreeFloppyDriveIcon(),
+      "FileView.hardDriveIcon", MetalIconFactory.getTreeHardDriveIcon(),
 
       "InternalFrame.activeTitleBackground", getWindowTitleBackground(),
       "InternalFrame.activeTitleForeground", getWindowTitleForeground(),

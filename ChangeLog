@@ -1,3 +1,8 @@
+2005-10-12  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): added defaults for FileView.
+
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JViewport.java
