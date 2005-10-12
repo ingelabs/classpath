@@ -1402,17 +1402,14 @@ public abstract class Component
       peer.setBounds (x, y, width, height);
 
     // Erase old bounds and repaint new bounds for lightweights.
-    if (isLightweight() && isShowing ())
+    if (isLightweight() && isShowing())
       {
         if (parent != null)
           {
             Rectangle parentBounds = parent.getBounds();
-            Rectangle oldBounds = new Rectangle(parent.getX() + oldx,
-                                                parent.getY() + oldy,
-                                                oldwidth, oldheight);
-            Rectangle newBounds = new Rectangle(parent.getX() + x,
-                                                parent.getY() + y,
-                                                width, height);
+            Rectangle oldBounds = new Rectangle(oldx, oldy, oldwidth,
+                                                oldheight);
+            Rectangle newBounds = new Rectangle(x, y, width, height);
             Rectangle destroyed = oldBounds.union(newBounds);
             if (!destroyed.isEmpty())
               parent.repaint(0, destroyed.x, destroyed.y, destroyed.width,

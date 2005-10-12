@@ -1,5 +1,12 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Component.java
+	(reshape): Fixed calculation of newBounds and oldBounds to create
+	rectangles relative to the parent, and not to the parent's parent.
+	Solves a painting problem in an app here.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/ComponentUI.java
 	(update): Only fill the current clip. This solves a problem with
 	components in JViewport and should also optimize drawing a little.
