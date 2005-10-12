@@ -1,5 +1,11 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/ComponentUI.java
+	(update): Only fill the current clip. This solves a problem with
+	components in JViewport and should also optimize drawing a little.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/ScrollPaneLayout.java
 	(preferredLayoutSize): Reworked. The old impl used to actually
 	modify the layout, which is not allowed.
