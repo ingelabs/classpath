@@ -2200,7 +2200,14 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setFont(Font f)
   {
-    super.setFont(f);
+    if (f == null && getFont() == null)
+      return;
+
+    if (f == null || !f.equals(getFont()))
+      {
+        super.setFont(f);
+        revalidate();
+      }
   }
 
   /**
@@ -2395,7 +2402,7 @@ public abstract class JComponent extends Container implements Serializable
       ui.installUI(this);
 
     firePropertyChange("UI", oldUI, newUI);
-    
+    revalidate();
   }
 
   /**

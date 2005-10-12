@@ -1,5 +1,12 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(setFont): Only get active if the new font differs from the old one.
+	Call revalidate when font changes.
+	(setUI): Call revalidate when UI changes.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComboBox.java
 	(isFocusTraversable): Removed unneeded and unspecified method.
 
