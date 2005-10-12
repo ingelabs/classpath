@@ -45,8 +45,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
@@ -86,7 +84,7 @@ public class JTable extends JComponent
    * Handles property changes from the <code>TableColumn</code>s of this
    * <code>JTable</code>.
    *
-   * More specifically, this triggers a {@link #revalidate} call if the
+   * More specifically, this triggers a {@link #revalidate()} call if the
    * preferredWidth of one of the observed columns changes.
    */
   class TableColumnPropertyChangeHandler implements PropertyChangeListener
@@ -393,7 +391,7 @@ public class JTable extends JComponent
    * property when the {@link #dataModel} property is changed. 
    *
    * @see #setModel(TableModel)
-   * @see #createColumnsFromModel()
+   * @see #createDefaultColumnsFromModel()
    * @see #setColumnModel(TableColumnModel)
    * @see #setAutoCreateColumnsFromModel(boolean)
    * @see #getAutoCreateColumnsFromModel()
@@ -516,7 +514,7 @@ public class JTable extends JComponent
   /**
    * Whether or not drag-and-drop is enabled on this table.
    *
-   * @see #setDragEnabled()
+   * @see #setDragEnabled(boolean)
    * @see #getDragEnabled()
    */
   private boolean dragEnabled;

@@ -1,3 +1,7 @@
+2005-10-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JTable.java: Fixed some API docs and unused imports.
+	
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/ScrollPaneLayout.java
