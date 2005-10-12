@@ -1,5 +1,10 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComboBox.java
+	(isFocusTraversable): Removed unneeded and unspecified method.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JViewport.java
 	(ViewListener.componentResized): Only call revalidate instead of
 	going through weird reverting code.
