@@ -1,3 +1,10 @@
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/LookAndFeel.java
+	(installBorder): Implemented.
+	(installColors): Implemented.
+	(installColorsAndFont): Implemented.
+
 2005-10-12  Mark Wielaard  <mark@klomp.org>
 
 	Reported by Christian Thalinger  <twisti@complang.tuwien.ac.at>
