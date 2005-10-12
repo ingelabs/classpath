@@ -1,5 +1,19 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JViewport.java
+	(ViewListener.componentResized): Only call revalidate instead of
+	going through weird reverting code.
+	(JViewport): First call updateUI, then set layout.
+	(setViewPosition): Don't do anything if there is no real
+	change.
+	(setView): Don't remove the old component. This is handled by
+	addImpl. Call revalidate().
+	* javax/swing/ViewportLayout.java
+	(layoutContainer): Preferably set view size to it's preferredSize
+	instead of its minimumSize.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/JTextComponent.java
 	(getToolTipText): New method.
 

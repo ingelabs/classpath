@@ -130,12 +130,10 @@ public class JViewport extends JComponent implements Accessible
 
   /**
    * A {@link java.awt.event.ComponentListener} that listens for
-   * changes of the view's size. This class forbids changes of the view
-   * component's size that would exceed the viewport's size.
+   * changes of the view's size. This triggers a revalidate() call on the
+   * viewport.
    */
-  protected class ViewListener
-    extends ComponentAdapter
-    implements Serializable
+  protected class ViewListener extends ComponentAdapter implements Serializable
   {
     private static final long serialVersionUID = -2812489404285958070L;
 
@@ -148,37 +146,14 @@ public class JViewport extends JComponent implements Accessible
 
     /**
      * Receives notification when a component (in this case: the view
-     * component) changes it's size.
+     * component) changes it's size. This simply triggers a revalidate() on the
+     * viewport.
      *
      * @param ev the ComponentEvent describing the change
      */
     public void componentResized(ComponentEvent ev)
     {
-      // According to some tests that I did with Sun's implementation
-      // this class is supposed to make sure that the view component
-      // is not resized to a larger size than the viewport.
-      // This is not documented anywhere. What I did is: I subclassed JViewport
-      // and ViewListener and 'disabled' the componentResized method by
-      // overriding it and not calling super.componentResized().
-      // When this method is disabled I can set the size on the view component
-      // normally, when it is enabled, it gets immediatly resized back,
-      // after a resize attempt that would exceed the Viewport's size.
-      Component comp = ev.getComponent();
-      Dimension newSize = comp.getSize();
-      Dimension viewportSize = getSize();
-      boolean revert = false;
-      if (newSize.width > viewportSize.width)
-        {
-          newSize.width = viewportSize.width;
-          revert = true;
-        }
-      if (newSize.height > viewportSize.height)
-        {
-          newSize.height = viewportSize.height;
-          revert = true;
-        }
-      if (revert == true)
-        comp.setSize(newSize);
+      revalidate();
     }
   }
 
@@ -264,8 +239,8 @@ public class JViewport extends JComponent implements Accessible
   {
     setOpaque(true);
     setScrollMode(BLIT_SCROLL_MODE);
-    setLayout(createLayoutManager());
     updateUI();
+    setLayout(createLayoutManager());
     lastPaintPosition = new Point();
     cachedBlitFrom = new Point();
     cachedBlitTo = new Point();
@@ -356,6 +331,8 @@ public class JViewport extends JComponent implements Accessible
 
   public void setViewPosition(Point p)
   {
+    if (getViewPosition().equals(p))
+      return;
     Component view = getView();
     if (view != null)
       {
@@ -418,7 +395,7 @@ public class JViewport extends JComponent implements Accessible
       {
         if (viewListener != null)
           getView().removeComponentListener(viewListener);
-        remove(0);
+        //remove(0);
       }
 
     if (v != null)
@@ -429,6 +406,7 @@ public class JViewport extends JComponent implements Accessible
         add(v);
         fireStateChanged();
       }
+    revalidate();
   }
 
   public void revalidate()
