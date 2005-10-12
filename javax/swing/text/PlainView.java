@@ -320,7 +320,7 @@ public class PlainView extends View
     
     int pos = Utilities.getTabbedTextOffset(s, metrics, rec.x, (int)x, this, start);
     return Math.max (0, pos);
-  }
+  }     
   
   /**
    * Since insertUpdate and removeUpdate each deal with children
@@ -330,16 +330,34 @@ public class PlainView extends View
    * @param a the allocation of the View.
    * @param f the ViewFactory to use for rebuilding.
    */
-  void insertOrRemoveUpdate(DocumentEvent changes, Shape a, ViewFactory f)
+  void updateDamage(DocumentEvent changes, Shape a, ViewFactory f)
   {
     Element el = getElement();
     ElementChange ec = changes.getChange(el);
-    if (ec == null)
-      return;
     
+    // If ec is null then no lines were added or removed, just 
+    // repaint the changed line
+    if (ec == null)
+      {
+        int line = getElement().getElementIndex(changes.getOffset());
+        damageLineRange(line, line, a, getContainer());
+        return;
+      }
+    
+    Element[] removed = ec.getChildrenRemoved();
+    Element[] newElements = ec.getChildrenAdded();
+    
+    // If no Elements were added or removed, we just want to repaint
+    // the area containing the line that was modified
+    if (removed == null && newElements == null)
+      {
+        int line = getElement().getElementIndex(changes.getOffset());
+        damageLineRange(line, line, a, getContainer());
+        return;
+      }
+
     // Check to see if we removed the longest line, if so we have to
     // search through all lines and find the longest one again
-    Element[] removed = ec.getChildrenRemoved();
     if (removed != null)
       {
         for (int i = 0; i < removed.length; i++)
@@ -348,22 +366,30 @@ public class PlainView extends View
               // reset maxLineLength and search through all lines for longest one
               maxLineLength = -1;
               determineMaxLineLength();
+              ((JTextComponent)getContainer()).repaint();
               return;
             }
       }
     
+    // If we've reached here, that means we haven't removed the longest line
+    if (newElements == null)
+      {
+        // No lines were added, just repaint the container and exit
+        ((JTextComponent)getContainer()).repaint();
+        return;
+      }
+
     //  Make sure we have the metrics
     updateMetrics();
-        
-    // Since we didn't remove the longest line, we can just compare it to 
-    // the new lines to see if any of them are longer
-    Element[] newElements = ec.getChildrenAdded();    
+       
+    // If we've reached here, that means we haven't removed the longest line
+    // and we have added at least one line, so we have to check if added lines
+    // are longer than the previous longest line        
     Segment seg = new Segment();
     float longestNewLength = 0;
-    Element longestNewLine = null;
-    
-    if (newElements == null)
-      return;
+    Element longestNewLine = null;    
+
+    // Loop through the added lines to check their length
     for (int i = 0; i < newElements.length; i++)
       {
         Element child = newElements[i];
@@ -371,13 +397,12 @@ public class PlainView extends View
         int end = child.getEndOffset();
         try
           {
-            el.getDocument().getText(start, start + end, seg);
+            el.getDocument().getText(start, end - start, seg);
           }
         catch (BadLocationException ex)
           {
           }
-        
-        
+                
         if (seg == null || seg.array == null || seg.count == 0)
           continue;
         
@@ -388,11 +413,16 @@ public class PlainView extends View
             longestNewLength = width;
           }
       }
+    
+    // Check if the longest of the new lines is longer than our previous
+    // longest line, and if so update our values
     if (longestNewLength > maxLineLength)
       {
         maxLineLength = longestNewLength;
         longestLine = longestNewLine;
-      }      
+      }
+    // Repaint the container
+    ((JTextComponent)getContainer()).repaint();
   }
 
   /**
@@ -405,8 +435,7 @@ public class PlainView extends View
    */
   public void insertUpdate(DocumentEvent changes, Shape a, ViewFactory f)
   {
-    insertOrRemoveUpdate(changes, a, f);
-    ((JTextComponent)getContainer()).repaint();
+    updateDamage(changes, a, f);        
   }
 
   /**
@@ -419,8 +448,49 @@ public class PlainView extends View
    */
   public void removeUpdate(DocumentEvent changes, Shape a, ViewFactory f)
   {
-    insertOrRemoveUpdate(changes, a, f);
-    ((JTextComponent)getContainer()).repaint();
+    updateDamage(changes, a, f);    
+  }
+  
+  /**
+   * This method is called when attributes were changed in the 
+   * Document in a location that this view is responsible for.
+   */
+  public void changedUpdate (DocumentEvent changes, Shape a, ViewFactory f)
+  {
+    updateDamage(changes, a, f);
+  }
+  
+  /**
+   * Repaint the given line range.  This is called from insertUpdate,
+   * changedUpdate, and removeUpdate when no new lines were added 
+   * and no lines were removed, to repaint the line that was 
+   * modified.
+   * 
+   * @param line0 the start of the range
+   * @param line1 the end of the range
+   * @param a the rendering region of the host
+   * @param host the Component that uses this View (used to call repaint
+   * on that Component)
+   * 
+   * @since 1.4
+   */
+  protected void damageLineRange (int line0, int line1, Shape a, Component host)
+  {
+    if (a == null)
+      return;
+    
+    Rectangle rec0 = lineToRect(a, line0);
+    Rectangle rec1 = lineToRect(a, line1);
+    
+    if (rec0 == null || rec1 == null)
+      // something went wrong, repaint the entire host to be safe
+      host.repaint();
+    else
+      {
+        Rectangle repaintRec = rec0.union(rec1);
+        host.repaint(repaintRec.x, repaintRec.y, repaintRec.width,
+                     repaintRec.height);
+      }    
   }
 }
 

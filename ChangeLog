@@ -1,3 +1,19 @@
+2005-10-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/PlainView.java:
+	(insertOrRemoveUpdate): Renamed this method to udpateDamage because
+	changedUpdate calls it as well.
+	(updateDamage): This method used to be named insertOrRemoveDamage.
+	Changes are: If no children were added or removed, repaint only the 
+	area containing the line that was changed.  Also, if children were
+	added or removed, call repaint on the entire container. Also fixed a 
+	serious logic error in the bounds for Document.getText().
+	(insertUpdate): Changed call from insertOrRemoveUpdate to updateDamage
+	and removed repaint call (this is done in updateDamage).
+	(removeUpdate): Likewise.
+	(changedUpdate): Implemented.
+	(damageLineRange): Implemented.
+
 2005-10-12  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
