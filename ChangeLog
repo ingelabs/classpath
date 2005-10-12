@@ -1,3 +1,10 @@
+2005-10-12  Mark Wielaard  <mark@klomp.org>
+
+	Reported by Christian Thalinger  <twisti@complang.tuwien.ac.at>
+	* native/jni/java-lang/java_lang_VMProcess.c
+	(Java_java_lang_VMProcess_nativeSpawn): Don't delete clazz local
+	reference twice.
+	
 2005-10-12  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/event/SwingPropertyChangeSupport.java
