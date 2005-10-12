@@ -1,3 +1,33 @@
+2005-10-12  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(FileIcon16.getIconHeight): add result of getAdditionalHeight(),
+	(FolderIcon16.getIconHeight): add result of getAdditionalHeight(),
+	(checkBoxIcon): new private field,
+	(checkBoxMenuItemIcon): likewise,
+	(fileChooserDetailViewIcon): likewise,
+	(fileChooserHomeFolderIcon): likewise,
+	(fileChooserListViewIcon): likewise,
+	(fileChooserNewFolderIcon): likewise,
+	(fileChooserUpFolderIcon): likewise,
+	(radioButtonMenuItemIcon): likewise,
+	(internalFrameDefaultMenuIcon): likewise,
+	(treeComputerIcon): likewise,
+	(treeFloppyDriveIcon): likewise,
+	(treeHardDriveIcon): likewise,
+	(getCheckBoxIcon): return single instance,
+	(getCheckBoxMenuItemIcon): likewise,
+	(getFileChooserDetailViewIcon): likewise,
+	(getFileChooserHomeFolderIcon): likewise,
+	(getFileChooserListViewIcon): likewise,
+	(getFileChooserNewFolderIcon): likewise,
+	(getFileChooserUpFolderIcon): likewise,
+	(getRadioButtonMenuItemIcon): likewise,
+	(getInternalFrameDefaultMenuIcon): likewise,
+	(getTreeComputerIcon): likewise,
+	(getTreeFloppyDriveIcon): likewise,
+	(getTreeHardDriveIcon): likewise.
+
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/AbstractButton.java
