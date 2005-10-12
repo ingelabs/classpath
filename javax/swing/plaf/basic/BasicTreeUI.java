@@ -2527,6 +2527,7 @@ public class BasicTreeUI
      */
     public void treeExpanded(TreeExpansionEvent event)
     {
+      tree.revalidate();
       tree.repaint();
     }
 
@@ -2538,6 +2539,7 @@ public class BasicTreeUI
      */
     public void treeCollapsed(TreeExpansionEvent event)
     {
+      tree.revalidate();
       tree.repaint();
     }
   }// TreeExpansionHandler
@@ -2732,6 +2734,7 @@ public class BasicTreeUI
      */
     public void treeNodesInserted(TreeModelEvent e)
     {
+      tree.revalidate();
       tree.repaint();
     }
 
@@ -2748,6 +2751,7 @@ public class BasicTreeUI
      */
     public void treeNodesRemoved(TreeModelEvent e)
     {
+      tree.revalidate();
       tree.repaint();
     }
 
@@ -2763,6 +2767,7 @@ public class BasicTreeUI
      */
     public void treeStructureChanged(TreeModelEvent e)
     {
+      tree.revalidate();
       tree.repaint();
     }
   }// TreeModelHandler
