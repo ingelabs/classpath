@@ -235,6 +235,13 @@ public class JViewport extends JComponent implements Accessible
 
   boolean damaged = true;
 
+  /**
+   * A flag indicating if the size of the viewport has changed since the
+   * last repaint. This is used in double buffered painting to check if we
+   * need a new double buffer, or can reuse the old one.
+   */
+  boolean sizeChanged = true;
+
   public JViewport()
   {
     setOpaque(true);
@@ -418,15 +425,19 @@ public class JViewport extends JComponent implements Accessible
 
   public void reshape(int x, int y, int w, int h)
   {
-    damaged = true;
     boolean changed = 
       (x != getX()) 
       || (y != getY()) 
       || (w != getWidth())
       || (h != getHeight());
+    if (w != getWidth() || h != getHeight())
+      sizeChanged = true;
     super.reshape(x, y, w, h);
     if (changed)
-      fireStateChanged();
+      {
+        damaged = true;
+        fireStateChanged();
+      }
   }
     
   public final Insets getInsets() 
@@ -750,7 +761,7 @@ public class JViewport extends JComponent implements Accessible
         translated = true;
         view.paint(g);
       } 
-    finally 
+    finally
       {
         if (translated)
           g.translate (pos.x, pos.y);
@@ -771,9 +782,10 @@ public class JViewport extends JComponent implements Accessible
   {
     // If we have no backing store image yet or the size of the component has
     // changed, we need to rebuild the backing store.
-    if (backingStoreImage == null || damaged)
+    if (backingStoreImage == null || sizeChanged)
       {
         backingStoreImage = createImage(getWidth(), getHeight());
+        sizeChanged = false;
         Graphics g2 = backingStoreImage.getGraphics();
         paintSimple(g2);
         g2.dispose();

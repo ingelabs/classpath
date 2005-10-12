@@ -1,5 +1,14 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JViewport.java
+	(sizeChanged): A new flag, indicating when the size of the
+	viewport has changed relative to the last painting operation.
+	(reshape): Set sizeChanged flag if size has changed.
+	(paintBackingStore): Only create new backingstore image when
+	the size has changed.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(reshape): Fixed calculation of newBounds and oldBounds to create
 	rectangles relative to the parent, and not to the parent's parent.
