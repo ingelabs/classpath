@@ -1,3 +1,10 @@
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/CellRendererPane.java
+	(paintComponent): Fix clipping of cells.
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(paint): Fix clipping of cells.
+
 2005-10-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/AbstractDocument.java:

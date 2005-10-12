@@ -1065,9 +1065,12 @@ public class BasicTableUI extends TableUI
             Rectangle bounds = new Rectangle(x, y, width, height);
               if (bounds.intersects(clip))
               {
+                // FIXME: Handle cell painting via CellRendererPane!
                 TableCellRenderer rend = table.getCellRenderer(r, c);
                 Component comp = table.prepareRenderer(rend, r, c);
+                Rectangle oldClip = gfx.getClipBounds();
                 gfx.translate(x, y);
+                gfx.setClip(0, 0, width, height);
                 comp.setBounds(new Rectangle(0, 0, width, height));
                 // Set correct border on cell renderer.
                 // Only the lead selection cell gets a border
@@ -1084,6 +1087,7 @@ public class BasicTableUI extends TableUI
                 if (comp instanceof JTextField)
                   ((JTextField)comp).getCaret().paint(gfx);
                 gfx.translate(-x, -y);
+                gfx.setClip(oldClip);
               }
               y += height;
           }
