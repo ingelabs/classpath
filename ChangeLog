@@ -1,3 +1,11 @@
+2005-10-12  David Daney  <ddaney@avtrex.com>
+
+	PR classpath/24259
+	* gnu/java/net/LineInputStream.java: Import BufferedInputStream.
+	(Constructor): Don't do blockReads on BufferedInputStreams.
+	(readLine): Rename MIN_LENGTH to MAX_LENGTH.  Limit buffer size to
+	MAX_LENGTH.
+
 2005-10-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTable.java: Fixed some API docs and unused imports.
