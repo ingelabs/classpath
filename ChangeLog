@@ -1,5 +1,10 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/JTextComponent.java
+	(getToolTipText): New method.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
 	(initComponentDefaults): Fixed value for
 	Table.focusCellHighlightBorder.
