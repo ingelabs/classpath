@@ -1,3 +1,13 @@
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/ScrollPaneLayout.java
+	(preferredLayoutSize): Reworked. The old impl used to actually
+	modify the layout, which is not allowed.
+	(minimumLayoutSize): Reworked. The old impl used to actually
+	modify the layout, which is not allowed.
+	(layoutContainer): Reworked. The old impl did not properly determine
+	when the scrollbars should be visible and when not.
+
 2005-10-12  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java
