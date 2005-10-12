@@ -1,3 +1,17 @@
+2005-10-12  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #22841
+	* java/io/ObjectInputStream (validators): Removed field.
+	(isDeserializing): Removed field.
+	(currentObjectValidators): New field.
+	(ObjectInputStream): Remove validators and isDeserializing
+	initialization.
+	(readObject): Remove isDeserializing logic. Don't call
+	invokeValidators() here.
+	(parseContent): Call invokeValidators() after TC_OBJECT done.
+	(registerValidation): Create currentObjectValidators if needed.
+	(invokeValidators): Rewritten.
+
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/CellRendererPane.java
