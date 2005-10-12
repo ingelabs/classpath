@@ -1,5 +1,10 @@
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/AbstractButton.java
+	(AbstractButton): Set button to be opaque.
+
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JList.java
 	(locationToIndex): Put opening brace on next line.
 	(indexToLocation): Call UI's indexToLocation.
@@ -209,7 +214,7 @@
 
 2005-10-11  David Gilbert  <david.gilbert@object-refinery.com>
 
-	* javx/swing/JFileChooser.java: Added API docs all over.
+	* javax/swing/JFileChooser.java: Added API docs all over.
 
 2005-10-11  Roman Kennke  <kennke@aicas.com>
 

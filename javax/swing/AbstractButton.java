@@ -538,6 +538,7 @@ public abstract class AbstractButton extends JComponent
     setAlignmentX(CENTER_ALIGNMENT);
     setAlignmentY(CENTER_ALIGNMENT);
     setDisplayedMnemonicIndex(-1);
+    setOpaque(true);
     text = "";
     updateUI();
   }
