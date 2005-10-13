@@ -142,8 +142,8 @@ public class MetalTreeUI
     setRowHeight(defaults.getInt("Tree.rowHeight"));
     tree.requestFocusInWindow(false);
     
-    setExpandedIcon(defaults.getIcon("Tree.expandedIcon"));
-    setCollapsedIcon(defaults.getIcon("Tree.collapsedIcon"));
+    setExpandedIcon(defaults.getIcon("Tree.openIcon"));
+    setCollapsedIcon(defaults.getIcon("Tree.closedIcon"));
     
     currentCellRenderer = createDefaultCellRenderer();
     rendererPane = createCellRendererPane();

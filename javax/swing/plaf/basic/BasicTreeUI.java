@@ -229,6 +229,9 @@ public class BasicTreeUI
   /** Set to true if the editor has a different size than the renderer. */
   protected boolean editorHasDifferentSize;
 
+  /** Leaf icon for the tree. */
+  Icon leafIcon;
+  
   /** The action listener for the editor's Timer. */
   Timer editorTimer = new EditorUpdateTimer();
 
@@ -281,6 +284,7 @@ public class BasicTreeUI
 
     editingRow = -1;
     lastSelectedRow = -1;
+    leafIcon = UIManager.getIcon("Tree.leafIcon");
   }
 
   /**
@@ -1209,8 +1213,8 @@ public class BasicTreeUI
     setRowHeight(UIManager.getInt("Tree.rowHeight"));
     tree.requestFocusInWindow(false);
     tree.setScrollsOnExpand(UIManager.getBoolean("Tree.scrollsOnExpand"));
-    setExpandedIcon(UIManager.getIcon("Tree.expandedIcon"));
-    setCollapsedIcon(UIManager.getIcon("Tree.collapsedIcon"));
+    setExpandedIcon(UIManager.getIcon("Tree.openIcon"));
+    setCollapsedIcon(UIManager.getIcon("Tree.closedIcon"));
   }
 
   /**
@@ -1320,8 +1324,8 @@ public class BasicTreeUI
     tree = (JTree) c;
     prepareForUIInstall();
     super.installUI(c);
-
     installDefaults();
+
     installComponents();
 
     setCellEditor(createDefaultCellEditor());
@@ -1475,7 +1479,7 @@ public class BasicTreeUI
   {
     // FIXME: checkConsistancy not implemented, c not used
     int maxWidth = 0;
-    int iconWidth = 0;
+    boolean isLeaf = false;
     if (currentVisiblePath != null)
       {
         Object[] path = currentVisiblePath.getPath();
@@ -1483,12 +1487,12 @@ public class BasicTreeUI
           {
             TreePath curr = new TreePath(getPathToRoot(path[i], 0));
             Rectangle bounds = getPathBounds(tree, 
-                        curr);
-            iconWidth = 0;
+                        curr);  
+            if (treeModel != null)
+              isLeaf = treeModel.isLeaf(curr);
             if (hasControlIcons())
-              iconWidth = getCurrentControlIcon(curr).getIconWidth();
-            maxWidth = Math.max(maxWidth, bounds.x + bounds.width
-                                + iconWidth);
+              bounds.width += getCurrentControlIcon(curr).getIconWidth();
+            maxWidth = Math.max(maxWidth, bounds.x + bounds.width);
           }
         return new Dimension(maxWidth, (getRowHeight() * path.length));
       }
@@ -1616,6 +1620,7 @@ public class BasicTreeUI
         editingComponent.getParent().validate();
         tree.add(editingComponent.getParent());
         editingComponent.getParent().validate();
+        tree.revalidate();
         ((JTextField) editingComponent).requestFocusInWindow(false);
         editorTimer.start();
         return true;
@@ -2058,6 +2063,8 @@ public class BasicTreeUI
       isEditing = false;
       tree.requestFocusInWindow(false);
       editorTimer.stop();
+      tree.revalidate();
+      tree.repaint();
     }
 
     /**
@@ -2086,6 +2093,7 @@ public class BasicTreeUI
       tree.requestFocusInWindow(false);
       editorTimer.stop();
       isEditing = false;
+      tree.revalidate();
       tree.repaint();
     }
   }// CellEditorHandler
@@ -2299,10 +2307,8 @@ public class BasicTreeUI
           
           if (isLeaf(row))
               bounds.width += rightChildIndent + 4;
-          else if (tree.isExpanded(path) && expandedIcon != null)
-              bounds.width += expandedIcon.getIconWidth() + 4;
-          else if (collapsedIcon != null)
-              bounds.width += collapsedIcon.getIconWidth() + 4;
+          else if (hasControlIcons())
+            bounds.width += getCurrentControlIcon(path).getIconWidth() + 4;
 
           boolean inBounds = bounds.contains(click.x, click.y);
           if ((inBounds || cntlClick) && tree.isVisible(path))
@@ -3070,18 +3076,17 @@ public class BasicTreeUI
     Rectangle bounds = getPathBounds(tree, path);
     Object root = mod.getRoot();
     int iconWidth = 0;
-    if (hasControlIcons())
-      iconWidth = getCurrentControlIcon(path).getIconWidth();      
+    if (!isLeaf && hasControlIcons())
+      iconWidth += getCurrentControlIcon(path).getIconWidth();
+    bounds.width += bounds.x + iconWidth;
     
     if (isLeaf)
       {
-        bounds.width += bounds.x;
         paintRow(g, clip, null, bounds, path, row, true, false, true);
         descent += getRowHeight();
       }
     else
       {
-        bounds.width += bounds.x + iconWidth;
         if (depth > 0 || isRootVisible)
           {
             paintRow(g, clip, null, bounds, path, row, isExpanded, false, false);
@@ -3659,10 +3664,7 @@ public class BasicTreeUI
       {
         if (editingComponent != null && editingPath != null && isEditing(tree)
             && node.equals(editingPath.getLastPathComponent()))
-          {
-            if (hasControlIcons())
-              bounds.x += getCurrentControlIcon(path).getIconWidth() - 5;
-            bounds.width = editingComponent.getSize().width + bounds.x;
+          {    
             rendererPane.paintComponent(g, editingComponent.getParent(), null,
                                         bounds);
           }
@@ -3671,11 +3673,8 @@ public class BasicTreeUI
             TreeCellRenderer dtcr = tree.getCellRenderer();
             if (dtcr == null)
               dtcr = createDefaultCellRenderer();
-
             Component c = dtcr.getTreeCellRendererComponent(tree, node,
-                                                            selected, isExpanded,
-                                                            isLeaf, row, false);
-            // add padding between line and node
+                                     selected, isExpanded, isLeaf, row, false);
             bounds.x += 4;
             rendererPane.paintComponent(g, c, c.getParent(), bounds);
           }
