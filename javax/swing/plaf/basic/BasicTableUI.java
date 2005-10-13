@@ -75,6 +75,7 @@ import javax.swing.plaf.TableUI;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 public class BasicTableUI extends TableUI
 {
@@ -318,6 +319,7 @@ public class BasicTableUI extends TableUI
 
     highlightCellBorder = UIManager.getBorder("Table.focusCellHighlightBorder");
     cellBorder = BorderFactory.createEmptyBorder(1, 1, 1, 1);
+    rendererPane = new CellRendererPane();
   }
 
   private int convertModifiers(int mod)
@@ -1033,6 +1035,53 @@ public class BasicTableUI extends TableUI
     uninstallDefaults();    
   }
 
+  /**
+   * Paints a single cell in the table.
+   *
+   * @param g The graphics context to paint in
+   * @param row The row number to paint
+   * @param col The column number to paint
+   * @param bounds The bounds of the cell to paint, assuming a coordinate
+   * system beginning at <code>(0,0)</code> in the upper left corner of the
+   * table
+   * @param rend A cell renderer to paint with
+   * @param data The data to provide to the cell renderer
+   * @param rowLead The lead selection for the rows of the table.
+   * @param colLead The lead selection for the columns of the table.
+   */
+  void paintCell(Graphics g, int row, int col, Rectangle bounds,
+                 TableCellRenderer rend, TableModel data,
+                 int rowLead, int colLead)
+  {
+    boolean isSel = table.isCellSelected(row, col);
+    boolean hasFocus = (table.getSelectionModel().getLeadSelectionIndex() == row) && table.hasFocus();
+    Component comp = rend.getTableCellRendererComponent(table,
+                                                       data.getValueAt(row, col),
+                                                       isSel, hasFocus, row, col);
+    
+    // If the cell is the lead selection then highlight its border
+    if (table.getSelectionModel().getLeadSelectionIndex() == row
+        && table.getColumnModel().getSelectionModel().
+        getLeadSelectionIndex() == col)
+      ((JComponent) comp).setBorder(highlightCellBorder);
+    else
+      ((JComponent) comp).setBorder(cellBorder);   
+      
+    rendererPane.paintComponent(g, comp, table, bounds);
+    
+    // FIXME: this is manual painting of the Caret, why doesn't the 
+    // JTextField take care of this itself?
+    if (comp instanceof JTextField)
+      {
+        Rectangle oldClip = g.getClipBounds();
+        g.translate(bounds.x, bounds.y);
+        g.clipRect(0, 0, bounds.width, bounds.height);
+        ((JTextField)comp).getCaret().paint(g);
+        g.translate(-bounds.x, -bounds.y);
+        g.setClip(oldClip);
+      }
+  }
+  
   public void paint(Graphics gfx, JComponent ignored) 
   {
     int ncols = table.getColumnCount();
@@ -1058,36 +1107,21 @@ public class BasicTableUI extends TableUI
         y = y0;
         TableColumn col = cols.getColumn(c);
         int width = col.getWidth();
-        int modelCol = col.getModelIndex();
 
         for (int r = 0; r < nrows && y < ymax; ++r)
           {
             Rectangle bounds = new Rectangle(x, y, width, height);
               if (bounds.intersects(clip))
-              {
-                // FIXME: Handle cell painting via CellRendererPane!
-                TableCellRenderer rend = table.getCellRenderer(r, c);
-                Component comp = table.prepareRenderer(rend, r, c);
-                Rectangle oldClip = gfx.getClipBounds();
-                gfx.translate(x, y);
-                gfx.setClip(0, 0, width, height);
-                comp.setBounds(new Rectangle(0, 0, width, height));
-                // Set correct border on cell renderer.
-                // Only the lead selection cell gets a border
-                if (comp instanceof JComponent)
-                  {
-                    if (table.getSelectionModel().getLeadSelectionIndex() == r
-                        && table.getColumnModel().getSelectionModel().
-                        getLeadSelectionIndex() == c)
-                      ((JComponent) comp).setBorder(highlightCellBorder);
-                    else
-                      ((JComponent) comp).setBorder(cellBorder);
-                  }
-                comp.paint(gfx);
-                if (comp instanceof JTextField)
-                  ((JTextField)comp).getCaret().paint(gfx);
-                gfx.translate(-x, -y);
-                gfx.setClip(oldClip);
+              {                                                     
+                paintCell(
+                          gfx,
+                          r,
+                          c,
+                          bounds,
+                          table.getCellRenderer(r, c),
+                          table.getModel(),
+                          table.getSelectionModel().getLeadSelectionIndex(),
+                          table.getColumnModel().getSelectionModel().getLeadSelectionIndex());
               }
               y += height;
           }
