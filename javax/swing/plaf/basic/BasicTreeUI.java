@@ -1317,11 +1317,11 @@ public class BasicTreeUI
    */
   public void installUI(JComponent c)
   {
+    tree = (JTree) c;
     prepareForUIInstall();
     super.installUI(c);
-    tree = (JTree) c;
-    installDefaults();
 
+    installDefaults();
     installComponents();
 
     setCellEditor(createDefaultCellEditor());
