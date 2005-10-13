@@ -426,6 +426,8 @@ public class PlainView extends View
         maxLineLength = longestNewLength;
         longestLine = longestNewLine;
       }
+    // Repaint the container
+    ((JTextComponent)getContainer()).repaint();
   }
 
   /**
