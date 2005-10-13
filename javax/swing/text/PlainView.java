@@ -335,7 +335,7 @@ public class PlainView extends View
    * @param a the allocation of the View.
    * @param f the ViewFactory to use for rebuilding.
    */
-  void updateDamage(DocumentEvent changes, Shape a, ViewFactory f)
+  protected void updateDamage(DocumentEvent changes, Shape a, ViewFactory f)
   {
     Element el = getElement();
     ElementChange ec = changes.getChange(el);
