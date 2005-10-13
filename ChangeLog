@@ -1,8 +1,13 @@
+2005-10-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/ScrollPaneLayout.java
+	(preferredLayoutSize): Added some more null checks to avoid NPEs.
+	(minimumLayoutSize): Added some more null checks to avoid NPEs.
+
 2005-10-13  Jan Roehrich  <jan@roehrich.info>
 
-    * javax/swing/plaf/basic/BasicTreeUI.java
-    (installUI): Fixed setting of local JTree reference
-
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(installUI): Fixed setting of local JTree reference
 
 2005-10-13  Lillian Angel  <langel@redhat.com>
 

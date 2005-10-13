@@ -261,9 +261,9 @@ public class ScrollPaneLayout
         Dimension viewportSize = viewport.getPreferredSize();
         int width = viewportSize.width;
         int height = viewportSize.height;
-        if (hsb.isVisible())
+        if (hsb != null && hsb.isVisible())
           height += hsb.getPreferredSize().height;
-        if (vsb.isVisible())
+        if (vsb != null && vsb.isVisible())
           width += vsb.getPreferredSize().width;
         if (rowHead != null && rowHead.isVisible())
           width += rowHead.getPreferredSize().width;
@@ -283,9 +283,9 @@ public class ScrollPaneLayout
         Dimension viewportSize = viewport.getMinimumSize();
         int width = viewportSize.width;
         int height = viewportSize.height;
-        if (hsb.isVisible())
+        if (hsb != null && hsb.isVisible())
           height += hsb.getMinimumSize().height;
-        if (vsb.isVisible())
+        if (vsb != null && vsb.isVisible())
           width += vsb.getMinimumSize().width;
         if (rowHead != null && rowHead.isVisible())
           width += rowHead.getMinimumSize().width;
