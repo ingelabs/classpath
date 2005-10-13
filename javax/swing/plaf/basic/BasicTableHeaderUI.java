@@ -155,6 +155,7 @@ public class BasicTableHeaderUI
         Rectangle bounds = header.getHeaderRect(i);
         if (bounds.intersects(clip))
           {
+            Rectangle oldClip = gfx.getClipBounds();
             TableColumn col = cmod.getColumn(i);
             TableCellRenderer rend = col.getHeaderRenderer();
             if (rend == null)
@@ -171,10 +172,12 @@ public class BasicTableHeaderUI
             if (comp instanceof JComponent)
               ((JComponent)comp).setBorder(cellBorder);
             gfx.translate(bounds.x, bounds.y);
+            gfx.setClip(0, 0, bounds.width, bounds.height);
             comp.setSize(bounds.width, bounds.height);
             comp.setLocation(0,0);
             comp.paint(gfx);
             gfx.translate(-bounds.x, -bounds.y);
+            gfx.setClip(oldClip);
           }
       }
 
