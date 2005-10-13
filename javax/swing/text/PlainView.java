@@ -70,6 +70,11 @@ public class PlainView extends View
   
   protected FontMetrics metrics;
 
+  /**
+   * The instance returned by {@link #getLineBuffer()}.
+   */
+  private transient Segment lineBuffer;
+
   public PlainView(Element elem)
   {
     super(elem);
@@ -119,7 +124,7 @@ public class PlainView extends View
     // Get the rectangle for position.
     Element line = getElement().getElement(lineIndex);
     int lineStart = line.getStartOffset();
-    Segment segment = new Segment();
+    Segment segment = getLineBuffer();
     document.getText(lineStart, position - lineStart, segment);
     int xoffset = Utilities.getTabbedTextWidth(segment, metrics, rect.x,
 					       this, lineStart);
@@ -152,7 +157,7 @@ public class PlainView extends View
     throws BadLocationException
   {
     g.setColor(selectedColor);
-    Segment segment = new Segment();
+    Segment segment = getLineBuffer();
     getDocument().getText(p0, p1 - p0, segment);
     return Utilities.drawTabbedText(segment, x, y, g, this, 0);
   }
@@ -166,7 +171,7 @@ public class PlainView extends View
     else
       g.setColor(disabledColor);
 
-    Segment segment = new Segment();
+    Segment segment = getLineBuffer();
     getDocument().getText(p0, p1 - p0, segment);
     return Utilities.drawTabbedText(segment, x, y, g, this, segment.offset);
   }
@@ -228,7 +233,7 @@ public class PlainView extends View
     
     // otherwise we have to go through all the lines and find it
     Element el = getElement();
-    Segment seg = new Segment();
+    Segment seg = getLineBuffer();
     float span = 0;
     for (int i = 0; i < el.getElementCount(); i++)
       {
@@ -305,7 +310,7 @@ public class PlainView extends View
       return getEndOffset() - 1;
     
     Element line = root.getElement(lineClicked);
-    Segment s = new Segment();
+    Segment s = getLineBuffer();
 
     int start = line.getStartOffset();
     int end = line.getEndOffset();
@@ -385,7 +390,7 @@ public class PlainView extends View
     // If we've reached here, that means we haven't removed the longest line
     // and we have added at least one line, so we have to check if added lines
     // are longer than the previous longest line        
-    Segment seg = new Segment();
+    Segment seg = getLineBuffer();
     float longestNewLength = 0;
     Element longestNewLine = null;    
 
@@ -489,6 +494,20 @@ public class PlainView extends View
         host.repaint(0, repaintRec.y, host.getWidth(),
                      repaintRec.height);
       }    
+  }
+
+  /**
+   * Provides a {@link Segment} object, that can be used to fetch text from
+   * the document.
+   *
+   * @returna {@link Segment} object, that can be used to fetch text from
+   *          the document
+   */
+  protected Segment getLineBuffer()
+  {
+    if (lineBuffer == null)
+      lineBuffer = new Segment();
+    return lineBuffer;
   }
 }
 

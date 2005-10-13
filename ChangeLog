@@ -1,5 +1,19 @@
 2005-10-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/PlainView.java
+	(lineBuffer): New field used as buffer to fetch text from a
+	document.
+	(getLineBuffer): New method, provides access to the new field
+	above.
+	(modelToView): Use new lineBuffer.
+	(drawSelectedText): Likewise.
+	(drawUnselectedText): Likewise.
+	(determineMaxLineLength): Likewise.
+	(viewToModel): Likewise.
+	(updateDamage): Likewise.
+
+2005-10-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/JTextComponent.java
 	(replaceSelection): Removed debug statement.
 	* javax/swing/text/PlainView.java
