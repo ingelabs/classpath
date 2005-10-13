@@ -1475,6 +1475,7 @@ public class BasicTreeUI
   {
     // FIXME: checkConsistancy not implemented, c not used
     int maxWidth = 0;
+    int iconWidth = 0;
     if (currentVisiblePath != null)
       {
         Object[] path = currentVisiblePath.getPath();
@@ -1483,8 +1484,11 @@ public class BasicTreeUI
             TreePath curr = new TreePath(getPathToRoot(path[i], 0));
             Rectangle bounds = getPathBounds(tree, 
                         curr);
+            iconWidth = 0;
+            if (hasControlIcons())
+              iconWidth = getCurrentControlIcon(curr).getIconWidth();
             maxWidth = Math.max(maxWidth, bounds.x + bounds.width
-                                + getCurrentControlIcon(curr).getIconWidth());
+                                + iconWidth);
           }
         return new Dimension(maxWidth, (getRowHeight() * path.length));
       }
@@ -1663,9 +1667,8 @@ public class BasicTreeUI
         if (bounds == null)
           bounds = getPathBounds(tree, path);
 
-        Icon controlIcon = getCurrentControlIcon(path);
-        if (controlIcon != null && (mouseX < bounds.x) 
-            && (mouseX > (bounds.x - controlIcon.getIconWidth())))
+        if (hasControlIcons() && (mouseX < bounds.x) 
+            && (mouseX > (bounds.x - getCurrentControlIcon(path).getIconWidth())))
           cntlClick = true;
       }
     return cntlClick;
@@ -3066,6 +3069,9 @@ public class BasicTreeUI
     boolean isLeaf = mod.isLeaf(curr);
     Rectangle bounds = getPathBounds(tree, path);
     Object root = mod.getRoot();
+    int iconWidth = 0;
+    if (hasControlIcons())
+      iconWidth = getCurrentControlIcon(path).getIconWidth();      
     
     if (isLeaf)
       {
@@ -3075,7 +3081,7 @@ public class BasicTreeUI
       }
     else
       {
-        bounds.width += bounds.x + getCurrentControlIcon(path).getIconWidth();
+        bounds.width += bounds.x + iconWidth;
         if (depth > 0 || isRootVisible)
           {
             paintRow(g, clip, null, bounds, path, row, isExpanded, false, false);
@@ -3582,7 +3588,7 @@ public class BasicTreeUI
                                     boolean isExpanded, boolean hasBeenExpanded,
                                     boolean isLeaf)
   {
-    if (treeModel != null)
+    if (treeModel != null && hasControlIcons())
       paintControlIcons(g, 0, 0, 0, 0, tree, treeModel, path.getLastPathComponent());
   }
 
@@ -3648,16 +3654,17 @@ public class BasicTreeUI
     boolean selected = tree.isPathSelected(path);
     boolean hasIcons = false;
     Object node = path.getLastPathComponent();
-
+    
     if (tree.isVisible(path))
       {
         if (editingComponent != null && editingPath != null && isEditing(tree)
             && node.equals(editingPath.getLastPathComponent()))
           {
+            if (hasControlIcons())
+              bounds.x += getCurrentControlIcon(path).getIconWidth() - 5;
+            bounds.width = editingComponent.getSize().width + bounds.x;
             rendererPane.paintComponent(g, editingComponent.getParent(), null,
-                                        new Rectangle(getCurrentControlIcon(path).
-                                                      getIconWidth() - 5, 0, bounds.width, 
-                                                      bounds.height));
+                                        bounds);
           }
         else
           {
