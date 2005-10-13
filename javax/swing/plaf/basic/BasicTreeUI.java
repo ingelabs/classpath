@@ -650,7 +650,7 @@ public class BasicTreeUI
    */
   public TreePath getPathForRow(JTree tree, int row)
   {
-    if (treeModel != null)
+    if (treeModel != null && currentVisiblePath != null)
       {
         Object[] nodes = currentVisiblePath.getPath();
         if (row < nodes.length)
@@ -676,14 +676,16 @@ public class BasicTreeUI
     int row = 0;
     Object dest = path.getLastPathComponent();
     int rowCount = getRowCount(tree);
-    Object[] nodes = currentVisiblePath.getPath();
-    while (row < rowCount)
+    if (currentVisiblePath != null)
       {
-        if (dest.equals(nodes[row]))
-          return row;
-        row++;          
+        Object[] nodes = currentVisiblePath.getPath();
+        while (row < rowCount)
+          {
+            if (dest.equals(nodes[row]))
+              return row;
+            row++;          
+          }
       }
-      
     return -1;
   }
 
@@ -696,7 +698,9 @@ public class BasicTreeUI
    */
   public int getRowCount(JTree tree)
   {
-    return currentVisiblePath.getPathCount();
+    if (currentVisiblePath != null)
+      return currentVisiblePath.getPathCount();
+    return 0;
   }
 
   /**
@@ -1471,11 +1475,20 @@ public class BasicTreeUI
   {
     // FIXME: checkConsistancy not implemented, c not used
     int maxWidth = 0;
-    Object[] path = currentVisiblePath.getPath();
-    for (int i = 0; i < path.length; i++)
-      maxWidth = Math.max(maxWidth,
-                          (int) (getCellBounds(0, 0, path[i]).getWidth()));
-    return new Dimension(maxWidth, (getRowHeight() * path.length));
+    if (currentVisiblePath != null)
+      {
+        Object[] path = currentVisiblePath.getPath();
+        for (int i = 0; i < path.length; i++)
+          {
+            TreePath curr = new TreePath(getPathToRoot(path[i], 0));
+            Rectangle bounds = getPathBounds(tree, 
+                        curr);
+            maxWidth = Math.max(maxWidth, bounds.x + bounds.width
+                                + getCurrentControlIcon(curr).getIconWidth());
+          }
+        return new Dimension(maxWidth, (getRowHeight() * path.length));
+      }
+    return new Dimension(0, 0);
   }
 
   /**
@@ -2969,7 +2982,7 @@ public class BasicTreeUI
         String s = cell.toString();
         Font f = tree.getFont();
         FontMetrics fm = tree.getToolkit().getFontMetrics(f);
-
+        
         if (s != null)
           return new Rectangle(x, y,
                                SwingUtilities.computeStringWidth(fm, s) + 4,
@@ -3056,11 +3069,13 @@ public class BasicTreeUI
     
     if (isLeaf)
       {
+        bounds.width += bounds.x;
         paintRow(g, clip, null, bounds, path, row, true, false, true);
         descent += getRowHeight();
       }
     else
-      {        
+      {
+        bounds.width += bounds.x + getCurrentControlIcon(path).getIconWidth();
         if (depth > 0 || isRootVisible)
           {
             paintRow(g, clip, null, bounds, path, row, isExpanded, false, false);
@@ -3253,13 +3268,16 @@ public class BasicTreeUI
    */
   Object getPreviousVisibleNode(Object node)
   {
-    Object[] nodes = currentVisiblePath.getPath();
-    int i = 0;
-    while (i < nodes.length && !node.equals(nodes[i]))
-      i++;
-    // return the next node
-    if (i-1 > 0)
-      return nodes[i-1];
+    if (currentVisiblePath != null)
+      {
+        Object[] nodes = currentVisiblePath.getPath();
+        int i = 0;
+        while (i < nodes.length && !node.equals(nodes[i]))
+          i++;
+        // return the next node
+        if (i-1 > 0)
+          return nodes[i-1];
+      }
     return null;
   }
 
@@ -3722,13 +3740,16 @@ public class BasicTreeUI
    */
   Object getNextVisibleNode(Object node)
   {
-    Object[] nodes = currentVisiblePath.getPath();
-    int i = 0;
-    while (i < nodes.length && !node.equals(nodes[i]))
-      i++;
-    // return the next node
-    if (i+1 < nodes.length)
-      return nodes[i+1];
+    if (currentVisiblePath != null)
+      {
+        Object[] nodes = currentVisiblePath.getPath();
+        int i = 0;
+        while (i < nodes.length && !node.equals(nodes[i]))
+          i++;
+        // return the next node
+        if (i+1 < nodes.length)
+          return nodes[i+1];
+      }
     return null;
   }
 } // BasicTreeUI
