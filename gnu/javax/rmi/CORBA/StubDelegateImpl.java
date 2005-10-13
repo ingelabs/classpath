@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.javax.rmi.CORBA;
 
+import gnu.CORBA.ObjectCreator;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.CDR.cdrBufInput;
 import gnu.CORBA.CDR.cdrBufOutput;
@@ -193,8 +194,7 @@ public class StubDelegateImpl
 
     try
       {
-        tieClass = Class.forName(tn, true, 
-          Thread.currentThread().getContextClassLoader());
+        tieClass = ObjectCreator.forName(tn);
         t = (Tie) tieClass.newInstance();
         if (self instanceof Remote)
           Util.registerTarget(t, (Remote) self);

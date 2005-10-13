@@ -43,6 +43,7 @@ import gnu.CORBA.CDR.cdrBufInput;
 import gnu.CORBA.CDR.cdrBufOutput;
 import gnu.CORBA.CDR.cdrInput;
 import gnu.CORBA.GIOP.ServiceContext;
+import gnu.classpath.VMStackWalker;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.CompletionStatus;
@@ -547,12 +548,42 @@ public class ObjectCreator
   }
   
   /**
-   * Load the class with the given name.
+   * Load the class with the given name. This method tries to use the context
+   * class loader first. If this fails, it searches for the suitable class
+   * loader in the caller stack trace. This method is a central point where all
+   * requests to find a class by name are delegated.
    */
-  public static Class forName(String className)
-    throws ClassNotFoundException
-    {
-      return Class.forName(className, true, 
-        Thread.currentThread().getContextClassLoader());
-    }
+  public static Class forName(String className) throws ClassNotFoundException
+  {
+    try
+      {
+        return Class.forName(className, true,
+                             Thread.currentThread().getContextClassLoader());
+      }
+    catch (ClassNotFoundException nex)
+      {
+        /**
+         * Returns the first user defined class loader on the call stack, or
+         * null when no non-null class loader was found.
+         */
+        Class[] ctx = VMStackWalker.getClassContext();
+        for (int i = 0; i < ctx.length; i++)
+          {
+            // Since we live in a class loaded by the bootstrap
+            // class loader, getClassLoader is safe to call without
+            // needing to be wrapped in a privileged action.
+            ClassLoader cl = ctx[i].getClassLoader();
+            try
+              {
+                if (cl != null)
+                  return Class.forName(className, true, cl);
+              }
+            catch (ClassNotFoundException nex2)
+              {
+                // Try next.
+              }
+          }
+      }
+    throw new ClassNotFoundException(className);
+  }
 }
