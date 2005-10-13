@@ -20,6 +20,13 @@
 
 2005-10-13  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(DirectoryComboBoxAction): new inner class,
+	(FileRenderer): new inner class,
+	(directoryModel): new private field.
+
+2005-10-13  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
 	(initComponentDefaults): added default value for 
 	'List.focusCellHighlightBorder'.
