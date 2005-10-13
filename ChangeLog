@@ -1,5 +1,29 @@
 2005-10-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/BoxLayout.java
+	(xChildren): New field.
+	(yChildren): New field.
+	(xTotal): New field.
+	(yTotal): New field.
+	(offsetsX): New field.
+	(offsetsY): New field.
+	(spansX): New field.
+	(spansY): New field.
+	(preferredLayoutSize): Rewritted to use cached values if available.
+	(minimumLayoutSize): Rewritted to use cached values if available.
+	(maximumLayoutSize): Rewritted to use cached values if available.
+	(layoutContainer): Rewritted to use cached values if available.
+	(getAlignmentX): Implemented.
+	(getAlignmentY): Implemented.
+	(invalidateLayout): Clear the cache.
+	(getSizeRequirements): Removed unneeded method. Replaced by
+	checkRequirements().
+	(checkTotalRequirements): New helper method.
+	(checkRequirements): New helper method.
+	(checkLayout): New helper method.
+
+2005-10-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SizeRequirements.java
 	(calculateAlignedPositions): Determine baseline using the total
 	requirements argument.
