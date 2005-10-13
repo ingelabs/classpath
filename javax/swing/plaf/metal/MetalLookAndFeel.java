@@ -49,6 +49,7 @@ import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.InsetsUIResource;
+import javax.swing.plaf.BorderUIResource.LineBorderUIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
 
@@ -893,6 +894,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "List.foreground", getUserTextColor(),
       "List.selectionBackground", getTextHighlightColor(),
       "List.selectionForeground", getHighlightedTextColor(),
+      "List.focusCellHighlightBorder", 
+        new LineBorderUIResource(MetalLookAndFeel.getFocusColor()),
 
       "Menu.acceleratorFont", new FontUIResource("Dialog", Font.PLAIN, 10),
       "Menu.acceleratorForeground", getAcceleratorForeground(),
