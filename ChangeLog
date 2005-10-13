@@ -1,3 +1,23 @@
+2005-10-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/JTextComponent.java
+	(replaceSelection): Removed debug statement.
+	* javax/swing/text/PlainView.java
+	(updateDamage): Removed unnecessary repaint call.
+	(damageLineRange): Trigger repaint over the whole width of the
+	text component at the requested line range. Otherwise we might
+	not clear deleted text.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(DocumentHandler.changedUpdate): Use visibleEditorRect as
+	initial allocation.
+	(DocumentHandler.removeUpdate): Use visibleEditorRect as
+	initial allocation.
+	(DocumentHandler.insertUpdate): Use visibleEditorRect as
+	initial allocation.
+	(getVisibleEditorRect): If component width and height values are
+	invalid (==uninitialized), return a Rectangle of (0,0,0,0) instead
+	of null.
+
 2005-10-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
@@ -22,6 +42,21 @@
 
 	* javax/swing/JTable.java: Fixed some API docs and unused imports.
 	
+2005-10-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(paintImmediately): Find the paint root more cleverly, instead of
+	going up to the root.
+	(findPaintRoot): New helper method.
+	(findOverlapFreeParent): New helper method.
+	(findOpaqueParent): New helper method.
+	* javax/swing/RepaintManager.java
+	(addDirtyRegion): Collapse overlapping dirty regions into single
+	regions.
+	(paintDirtyRegions): Simple iterator over dirty regions and
+	paint them. The optimizations are done in JComponent and
+	addDirtyRegion.
+
 2005-10-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/ScrollPaneLayout.java

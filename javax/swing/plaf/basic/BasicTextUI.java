@@ -367,8 +367,7 @@ public abstract class BasicTextUI extends TextUI
      */
     public void changedUpdate(DocumentEvent ev)
     {
-      Dimension size = textComponent.getSize();
-      rootView.changedUpdate(ev, new Rectangle(0, 0, size.width, size.height),
+      rootView.changedUpdate(ev, getVisibleEditorRect(),
                              rootView.getViewFactory());
     }
 
@@ -379,8 +378,7 @@ public abstract class BasicTextUI extends TextUI
      */
     public void insertUpdate(DocumentEvent ev)
     {
-      Dimension size = textComponent.getSize();
-      rootView.insertUpdate(ev, new Rectangle(0, 0, size.width, size.height),
+      rootView.insertUpdate(ev, getVisibleEditorRect(),
                             rootView.getViewFactory());
     }
 
@@ -391,8 +389,7 @@ public abstract class BasicTextUI extends TextUI
      */
     public void removeUpdate(DocumentEvent ev)
     {
-      Dimension size = textComponent.getSize();
-      rootView.removeUpdate(ev, new Rectangle(0, 0, size.width, size.height),
+      rootView.removeUpdate(ev, getVisibleEditorRect(),
                             rootView.getViewFactory());
     }
   }
@@ -1017,7 +1014,7 @@ public abstract class BasicTextUI extends TextUI
     int height = textComponent.getHeight();
 
     if (width <= 0 || height <= 0)
-      return null;
+      return new Rectangle(0, 0, 0, 0);
 	
     Insets insets = textComponent.getInsets();
     return new Rectangle(insets.left, insets.top,

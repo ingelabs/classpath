@@ -1420,7 +1420,6 @@ public abstract class JTextComponent extends JComponent
 
   public synchronized void replaceSelection(String content)
   {
-    System.err.println("replaceSelection");
     int dot = caret.getDot();
     int mark = caret.getMark();
 

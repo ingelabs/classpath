@@ -421,8 +421,6 @@ public class PlainView extends View
         maxLineLength = longestNewLength;
         longestLine = longestNewLine;
       }
-    // Repaint the container
-    ((JTextComponent)getContainer()).repaint();
   }
 
   /**
@@ -435,7 +433,7 @@ public class PlainView extends View
    */
   public void insertUpdate(DocumentEvent changes, Shape a, ViewFactory f)
   {
-    updateDamage(changes, a, f);        
+    updateDamage(changes, a, f);
   }
 
   /**
@@ -448,7 +446,7 @@ public class PlainView extends View
    */
   public void removeUpdate(DocumentEvent changes, Shape a, ViewFactory f)
   {
-    updateDamage(changes, a, f);    
+    updateDamage(changes, a, f);
   }
   
   /**
@@ -478,17 +476,17 @@ public class PlainView extends View
   {
     if (a == null)
       return;
-    
+
     Rectangle rec0 = lineToRect(a, line0);
     Rectangle rec1 = lineToRect(a, line1);
-    
+
     if (rec0 == null || rec1 == null)
       // something went wrong, repaint the entire host to be safe
       host.repaint();
     else
       {
         Rectangle repaintRec = rec0.union(rec1);
-        host.repaint(repaintRec.x, repaintRec.y, repaintRec.width,
+        host.repaint(0, repaintRec.y, host.getWidth(),
                      repaintRec.height);
       }    
   }
