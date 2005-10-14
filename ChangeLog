@@ -1,6 +1,12 @@
 2005-10-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/PlainView.java:
+	(nextTabStop): Tab size should be multiplied by the width of 'm', not
+	added to it.
+
+2005-10-14  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/PlainView.java:
 	(getTabSize): Check the Document's properties for
 	PlainDocument.tabSizeAttribute before defaulting to 8.
 

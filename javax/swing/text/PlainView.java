@@ -227,7 +227,7 @@ public class PlainView extends View
    */
   public float nextTabStop(float x, int tabStop)
   {
-    float tabSizePixels = getTabSize() + metrics.charWidth('m');
+    float tabSizePixels = getTabSize() * metrics.charWidth('m');
     return (float) (Math.floor(x / tabSizePixels) + 1) * tabSizePixels;
   }
 
