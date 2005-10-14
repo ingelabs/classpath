@@ -138,9 +138,6 @@ public class BasicTreeUI
    */
   protected int totalChildIndent;
 
-  /** Minimum preferred size. */
-  protected Dimension preferredMinsize;
-
   /** Index of the row that was last selected. */
   protected int lastSelectedRow;
 
@@ -267,6 +264,7 @@ public class BasicTreeUI
    */
   public BasicTreeUI()
   {
+    validCachedPreferredSize = false;
     drawingCache = new Hashtable();
     nodeDimensions = createNodeDimensions();
     configureLayoutCache();
@@ -1167,14 +1165,30 @@ public class BasicTreeUI
 
   /**
    * Updates the <code>preferredSize</code> instance variable, which is
-   * returned from <code>getPreferredSize()</code>. For left to right
-   * orientations, the size is determined from the current AbstractLayoutCache.
-   * For RTL orientations, the preferred size becomes the width minus the
-   * minimum x position.
+   * returned from <code>getPreferredSize()</code>.
    */
   protected void updateCachedPreferredSize()
   {
-    // FIXME: not implemented
+    int maxWidth = 0;
+    boolean isLeaf = false;
+    if (currentVisiblePath != null)
+      {
+        Object[] path = currentVisiblePath.getPath();
+        for (int i = 0; i < path.length; i++)
+          {
+            TreePath curr = new TreePath(getPathToRoot(path[i], 0));
+            Rectangle bounds = getPathBounds(tree, 
+                        curr);  
+            if (treeModel != null)
+              isLeaf = treeModel.isLeaf(curr);
+            if (hasControlIcons())
+              bounds.width += getCurrentControlIcon(curr).getIconWidth();
+            maxWidth = Math.max(maxWidth, bounds.x + bounds.width);
+          }
+        preferredSize = new Dimension(maxWidth, (getRowHeight() * path.length));
+      }
+    else preferredSize = new Dimension(0, 0);
+    validCachedPreferredSize = true;
   }
 
   /**
@@ -1185,7 +1199,9 @@ public class BasicTreeUI
    */
   protected void pathWasExpanded(TreePath path)
   {
-    // FIXME: not implemented
+    validCachedPreferredSize = false;
+    tree.revalidate();
+    tree.repaint();
   }
 
   /**
@@ -1193,14 +1209,13 @@ public class BasicTreeUI
    */
   protected void pathWasCollapsed(TreePath path)
   {
-    // FIXME: not implemented
+    validCachedPreferredSize = false;
+    tree.revalidate();
+    tree.repaint();
   }
 
   /**
    * Install all defaults for the tree.
-   * 
-   * @param tree
-   *          is the JTree to install defaults for
    */
   protected void installDefaults()
   {
@@ -1349,9 +1364,6 @@ public class BasicTreeUI
 
   /**
    * Uninstall the defaults for the tree
-   * 
-   * @param tree
-   *          to uninstall defaults for
    */
   protected void uninstallDefaults()
   {
@@ -1436,7 +1448,7 @@ public class BasicTreeUI
    */
   public void setPreferredMinSize(Dimension newSize)
   {
-    // FIXME: not implemented
+    preferredMinSize = newSize;
   }
 
   /**
@@ -1446,8 +1458,7 @@ public class BasicTreeUI
    */
   public Dimension getPreferredMinSize()
   {
-    // FIXME: not implemented
-    return null;
+    return preferredMinSize;
   }
 
   /**
@@ -1477,26 +1488,10 @@ public class BasicTreeUI
    */
   public Dimension getPreferredSize(JComponent c, boolean checkConsistancy)
   {
-    // FIXME: checkConsistancy not implemented, c not used
-    int maxWidth = 0;
-    boolean isLeaf = false;
-    if (currentVisiblePath != null)
-      {
-        Object[] path = currentVisiblePath.getPath();
-        for (int i = 0; i < path.length; i++)
-          {
-            TreePath curr = new TreePath(getPathToRoot(path[i], 0));
-            Rectangle bounds = getPathBounds(tree, 
-                        curr);  
-            if (treeModel != null)
-              isLeaf = treeModel.isLeaf(curr);
-            if (hasControlIcons())
-              bounds.width += getCurrentControlIcon(curr).getIconWidth();
-            maxWidth = Math.max(maxWidth, bounds.x + bounds.width);
-          }
-        return new Dimension(maxWidth, (getRowHeight() * path.length));
-      }
-    return new Dimension(0, 0);
+    // FIXME: checkConsistancy not implemented, c not used 
+    if(!validCachedPreferredSize) 
+      updateCachedPreferredSize();
+    return preferredSize;
   }
 
   /**
@@ -1620,6 +1615,7 @@ public class BasicTreeUI
         editingComponent.getParent().validate();
         tree.add(editingComponent.getParent());
         editingComponent.getParent().validate();
+        validCachedPreferredSize = false;
         tree.revalidate();
         ((JTextField) editingComponent).requestFocusInWindow(false);
         editorTimer.start();
@@ -2063,6 +2059,7 @@ public class BasicTreeUI
       isEditing = false;
       tree.requestFocusInWindow(false);
       editorTimer.stop();
+      validCachedPreferredSize = false;
       tree.revalidate();
       tree.repaint();
     }
@@ -2093,6 +2090,7 @@ public class BasicTreeUI
       tree.requestFocusInWindow(false);
       editorTimer.stop();
       isEditing = false;
+      validCachedPreferredSize = false;
       tree.revalidate();
       tree.repaint();
     }
@@ -2549,6 +2547,7 @@ public class BasicTreeUI
      */
     public void treeExpanded(TreeExpansionEvent event)
     {
+      validCachedPreferredSize = false;
       tree.revalidate();
       tree.repaint();
     }
@@ -2561,6 +2560,7 @@ public class BasicTreeUI
      */
     public void treeCollapsed(TreeExpansionEvent event)
     {
+      validCachedPreferredSize = false;
       tree.revalidate();
       tree.repaint();
     }
@@ -2756,6 +2756,7 @@ public class BasicTreeUI
      */
     public void treeNodesInserted(TreeModelEvent e)
     {
+      validCachedPreferredSize = false;
       tree.revalidate();
       tree.repaint();
     }
@@ -2773,6 +2774,7 @@ public class BasicTreeUI
      */
     public void treeNodesRemoved(TreeModelEvent e)
     {
+      validCachedPreferredSize = false;
       tree.revalidate();
       tree.repaint();
     }
@@ -2789,6 +2791,7 @@ public class BasicTreeUI
      */
     public void treeStructureChanged(TreeModelEvent e)
     {
+      validCachedPreferredSize = false;
       tree.revalidate();
       tree.repaint();
     }
@@ -3272,7 +3275,7 @@ public class BasicTreeUI
    * Get previous visible node in the tree. Package private for use in inner
    * classes.
    * 
-   * @param the
+   * @param node -
    *          current node
    * @return the next visible node in the JTree. Return null if there are no
    *         more.
@@ -3295,7 +3298,7 @@ public class BasicTreeUI
   /**
    * Returns the next node in the tree Package private for use in inner classes.
    * 
-   * @param the
+   * @param curr - 
    *          current node
    * @return the next node in the tree
    */
@@ -3355,7 +3358,7 @@ public class BasicTreeUI
    * Returns the next sibling in the tree Package private for use in inner
    * classes.
    * 
-   * @param the
+   * @param node - 
    *          current node
    * @return the next sibling in the tree
    */
@@ -3380,7 +3383,7 @@ public class BasicTreeUI
    * Returns the previous sibling in the tree Package private for use in inner
    * classes.
    * 
-   * @param the
+   * @param node -
    *          current node
    * @return the previous sibling in the tree
    */
@@ -3464,7 +3467,7 @@ public class BasicTreeUI
   /**
    * Returns the level of the node in the tree.
    * 
-   * @param the
+   * @param node -
    *          current node
    * @return the number of the level
    */
@@ -3626,7 +3629,7 @@ public class BasicTreeUI
    * clipBounds, insets.
    * 
    * @param g - the graphics configuration.
-   * @param clipbounds - 
+   * @param clipBounds - 
    * @param insets - 
    * @param path - the path to draw the vertical part for.
    */
@@ -3703,7 +3706,10 @@ public class BasicTreeUI
                                              boolean hasBeenExpanded,
                                              boolean isLeaf)
   {
-    // FIXME: not implemented.
+    Object node = path.getLastPathComponent();
+    if (treeModel != null && (!isLeaf && !node.equals(treeModel.getRoot())) && 
+        (tree.isRootVisible() || getLevel(node) != 1))
+      return true;
     return false;
   }
   

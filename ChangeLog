@@ -1,3 +1,35 @@
+2005-10-14  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTree.java
+	(getAccessibleSelectionCount): Fixed API documentation.
+	(getScrollableTracksViewportWidth): Was using height instead of
+	width, fixed this.
+	(getScrollableTracksViewportHeight): Likewise.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(BasicTreeUI): Initialized validCachedPreferredSize.
+	(updateCachedPreferredSize): Implemented.
+	(pathWasExpanded): Implemented.
+	(pathWasCollapsed): Implemented.
+	(installDefaults): Fixed API documentation.
+	(uninstallDefaults): Likewise.
+	(setPreferredMinSize): Likewise.
+	(getPreferredMinSize): Likewise.
+	(getPreferredSize): Reimplemented to use updateCachedPreferredSize.
+	(startEditing): set validCachedPreferredSize.
+	(editingStopped): Likewise.
+	(editingCanceled): Likewise.
+	(treeExpanded): Likewise.
+	(treeCollaped): Likewise.
+	(treeNodesInserted): Likewise.
+	(treeNodesRemoved): Likewise.
+	(treeStructureChanged): Likewise.
+	(getNextVisibleNode): Fixed API documentation.
+	(getNextNode): Likewise.
+	(getNextSibling): Likewise.
+	(getPreviousSibling): Likewise.
+	(getLevel): Likewise.
+	(paintVerticalPartOfLeg): Likewise.
+
 2005-10-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/CORBA/PolicyErrorCodeHelper.java: New class. 

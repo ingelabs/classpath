@@ -976,8 +976,6 @@ public class JTree
     
     /**
      * Returns the number of items currently selected.
-     * 
-     * @param the number of selected accessibles.
      */
     public int getAccessibleSelectionCount()
     {
@@ -1632,14 +1630,14 @@ public class JTree
     return 1;
   }
 
-  public boolean getScrollableTracksViewportWidth()
+  public boolean getScrollableTracksViewportHeight()
   {
     if (getParent() instanceof JViewport)
       return ((JViewport) getParent()).getHeight() > getPreferredSize().height;
     return false;
   }
 
-  public boolean getScrollableTracksViewportHeight()
+  public boolean getScrollableTracksViewportWidth()
   {
     if (getParent() instanceof JViewport)
       return ((JViewport) getParent()).getWidth() > getPreferredSize().width;
