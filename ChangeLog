@@ -1,3 +1,10 @@
+2005-10-14  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(treeNodesChanged): Added call to revalidate and resize tree.
+	* javax/swing/tree/DefaultTreeModel.java
+	(insertNodeInto): Needed to set parent for new node.
+
 2005-10-14  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/net/URLStreamHandler.java:

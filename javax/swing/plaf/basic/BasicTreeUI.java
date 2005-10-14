@@ -2749,6 +2749,8 @@ public class BasicTreeUI
      */
     public void treeNodesChanged(TreeModelEvent e)
     {
+      validCachedPreferredSize = false;
+      tree.revalidate();
       tree.repaint();
     }
 
