@@ -714,4 +714,20 @@ public class BoxView
     else
       return baselineRequirements(axis, null).alignment;
   }
+  
+  /**
+   * Called by a child View when its preferred span has changed.
+   * 
+   * @param width indicates that the preferred width of the child changed.
+   * @param height indicates that the preferred height of the child changed.
+   * @param child the child View. 
+   */
+  public void preferenceChanged (View child, boolean width, boolean height)
+  {
+    if (width)
+      xLayoutValid = false;
+    if (height)
+      yLayoutValid = false;
+    super.preferenceChanged(child, width, height);
+  }
 }

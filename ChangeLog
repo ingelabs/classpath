@@ -1,5 +1,12 @@
 2005-10-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/text/BoxView.java:
+	(preferenceChanged): New method (overrides method in View).  Set flag 
+	indicating that cached layout information is invalid, then call super
+	implementation.
+
+2005-10-14  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/text/CompositeView.java: Minor doc fixes.
 	* javax/swing/text/BoxView.java: Minor doc fixes.
 
