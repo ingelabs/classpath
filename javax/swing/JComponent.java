@@ -258,7 +258,6 @@ public abstract class JComponent extends Container implements Serializable
    *
    * @see #setDoubleBuffered
    * @see #isDoubleBuffered
-   * @see #paintLock
    * @see #paint
    */
   boolean doubleBuffered = true;
@@ -387,17 +386,6 @@ public abstract class JComponent extends Container implements Serializable
    */
   private static transient Rectangle rectCache;
 
-  /** 
-   * A lock held during recursive painting; this is used to serialize
-   * access to the double buffer, and also to select the "top level" 
-   * object which should acquire the double buffer in a given widget
-   * tree (which may have multiple double buffered children).
-   *
-   * @see #doubleBuffered
-   * @see #paint
-   */
-  private static final Object paintLock = new Object();
-
   /**
    * The default locale of the component.
    * 
@@ -439,6 +427,13 @@ public abstract class JComponent extends Container implements Serializable
    * @see #registerKeyboardAction(ActionListener, KeyStroke, int)
    */
   public static final int WHEN_IN_FOCUSED_WINDOW = 2;
+
+  /**
+   * Indicates if this component is completely dirty or not. This is used
+   * by the RepaintManager's
+   * {@link RepaintManager#isCompletelyDirty(JComponent)} method.
+   */
+  boolean isCompletelyDirty = false;
 
   /**
    * Creates a new <code>JComponent</code> instance.
@@ -874,9 +869,13 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setBorder(Border newBorder)
   {
-    Border oldBorder = border;
+    Border oldBorder = getBorder();
+    if (oldBorder == newBorder)
+      return;
+
     border = newBorder;
     firePropertyChange("border", oldBorder, newBorder);
+    repaint();
   }
 
   /**
@@ -1482,6 +1481,10 @@ public abstract class JComponent extends Container implements Serializable
         paintComponent(g);
         paintBorder(g);
         paintChildren(g);
+        Rectangle clip = g.getClipBounds();
+        if (clip.x == 0 && clip.y == 0 && clip.width == getWidth()
+            && clip.height == getHeight())
+          RepaintManager.currentManager(this).markCompletelyClean(this);
       }
   }
 
@@ -1616,11 +1619,12 @@ public abstract class JComponent extends Container implements Serializable
   public void paintImmediately(Rectangle r)
   {
     // Try to find a root pane for this component.
-    Component root = SwingUtilities.getRootPane(this);
-    // If no root pane can be found, then try to find the Window that contains
-    // this component.
+    //Component root = findPaintRoot(r);
+    Component root = findPaintRoot(r);
+    // If no paint root is found, then this component is completely overlapped
+    // by another component and we don't need repainting.
     if (root == null)
-      root = SwingUtilities.getRoot(this);
+      return;
     if (root == null || !root.isShowing())
       return;
 
@@ -1662,20 +1666,17 @@ public abstract class JComponent extends Container implements Serializable
     RepaintManager rm = RepaintManager.currentManager(this);
 
     // Paint on the offscreen buffer.
-    synchronized (paintLock)
-      {
-        Image buffer = rm.getOffscreenBuffer(this, getWidth(), getHeight());
-        Graphics g2 = buffer.getGraphics();
-        g2 = getComponentGraphics(g2);
-        g2.setClip(r.x, r.y, r.width, r.height);
-        isPaintingDoubleBuffered = true;
-        paint(g2);
-        isPaintingDoubleBuffered = false;
-        g2.dispose();
-
-        // Paint the buffer contents on screen.
-        g.drawImage(buffer, 0, 0, this);
-      }
+    Image buffer = rm.getOffscreenBuffer(this, getWidth(), getHeight());
+    Graphics g2 = buffer.getGraphics();
+    g2 = getComponentGraphics(g2);
+    g2.setClip(r.x, r.y, r.width, r.height);
+    isPaintingDoubleBuffered = true;
+    paint(g2);
+    isPaintingDoubleBuffered = false;
+    g2.dispose();
+    
+    // Paint the buffer contents on screen.
+    g.drawImage(buffer, 0, 0, this);
   }
 
   /**
@@ -2188,9 +2189,11 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setEnabled(boolean enable)
   {
-    boolean oldEnabled = isEnabled();
+    if (enable == isEnabled())
+      return;
     super.setEnabled(enable);
-    firePropertyChange("enabled", oldEnabled, enable);
+    firePropertyChange("enabled", !enable, enable);
+    repaint();
   }
 
   /**
@@ -2200,14 +2203,11 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setFont(Font f)
   {
-    if (f == null && getFont() == null)
+    if (f == getFont())
       return;
-
-    if (f == null || !f.equals(getFont()))
-      {
-        super.setFont(f);
-        revalidate();
-      }
+    super.setFont(f);
+    revalidate();
+    repaint();
   }
 
   /**
@@ -2217,7 +2217,10 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setBackground(Color bg)
   {
+    if (bg == getBackground())
+      return;
     super.setBackground(bg);
+    repaint();
   }
 
   /**
@@ -2227,7 +2230,10 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setForeground(Color fg)
   {
+    if (fg == getForeground())
+      return;
     super.setForeground(fg);
+    repaint();
   }
 
   /**
@@ -2403,6 +2409,7 @@ public abstract class JComponent extends Container implements Serializable
 
     firePropertyChange("UI", oldUI, newUI);
     revalidate();
+    repaint();
   }
 
   /**
@@ -2935,5 +2942,136 @@ public abstract class JComponent extends Container implements Serializable
         JComponent jc = (JComponent) children[i];
         jc.fireAncestorEvent(ancestor, id);
       }
+  }
+
+  /**
+   * Finds a suitable paint root for painting this component. This method first
+   * checks if this component is overlapped using
+   * {@link #findOverlapFreeParent(Rectangle)}. The returned paint root is then
+   * feeded to {@link #findOpaqueParent(Component)} to find the nearest opaque
+   * component for this paint root. If no paint is necessary, then we return
+   * <code>null</code>.
+   *
+   * @param c the clip of this component
+   *
+   * @return the paint root or <code>null</code> if no painting is necessary
+   */
+  private Component findPaintRoot(Rectangle c)
+  {
+    Component p = findOverlapFreeParent(c);
+    if (p == null)
+      return null;
+    Component root = findOpaqueParent(p);
+    return root;
+  }
+
+  /**
+   * Scans the containment hierarchy upwards for components that overlap the
+   * this component in the specified clip. This method returns
+   * <code>this</code>, if no component overlaps this component. It returns
+   * <code>null</code> if another component completely covers this component
+   * in the specified clip (no repaint necessary). If another component partly
+   * overlaps this component in the specified clip, then the parent of this
+   * component is returned (this is the component that must be used as repaint
+   * root). For efficient lookup, the method
+   * {@link #isOptimizedDrawingEnabled()} is used.
+   *
+   * @param clip the clip of this component
+   *
+   * @return the paint root, or <code>null</code> if no paint is necessary
+   */
+  private Component findOverlapFreeParent(Rectangle clip)
+  {
+    Rectangle currentClip = clip;
+    Component found = this;
+    Container parent = this; 
+    while (parent != null)
+      {
+        Container newParent = parent.getParent();
+        if (newParent == null)
+          break;
+        // If the parent is optimizedDrawingEnabled, then its children are
+        // tiled and cannot have an overlapping child. Go directly to next
+        // parent.
+        if (newParent instanceof JComponent
+            && ((JComponent) newParent).isOptimizedDrawingEnabled())
+          {
+            parent = newParent;
+            continue;
+          }
+
+        // First we must check if the new parent itself somehow clips the
+        // target rectangle. This can happen in JViewports.
+        Rectangle parRect = new Rectangle(0, 0, newParent.getWidth(),
+                                          newParent.getHeight());
+        Rectangle target = SwingUtilities.convertRectangle(found,
+                                                           currentClip,
+                                                           newParent);
+        if (target.contains(parRect) || target.intersects(parRect))
+          {
+            found = newParent;
+            currentClip = target;
+            parent = newParent;
+            continue;
+          }
+
+        // Otherwise we must check if one of the children of this parent
+        // overlaps with the current component.
+        Component[] children = newParent.getComponents();
+        // This flag is used to skip components that are 'below' the component
+        // in question.
+        boolean skip = true;
+        for (int i = children.length - 1; i >= 0; i--)
+          {
+            if (children[i] == parent)
+              skip = false;
+            if (skip)
+              continue;
+            Component c = children[i];
+            Rectangle compBounds = c.getBounds();
+            // If the component completely overlaps the clip in question, we
+            // don't need to repaint. Return null.
+            if (compBounds.contains(target))
+              return null;
+            if (compBounds.intersects(target))
+              {
+                // We found a parent whose children overlap with our current
+                // component. Make this the current component.
+                found = newParent;
+                currentClip = target;
+                break;
+              }
+          }
+        parent = newParent;
+      }
+    return found;
+  }
+
+  /**
+   * Finds the nearest component to <code>c</code> (upwards in the containment
+   * hierarchy), that is opaque. If <code>c</code> itself is opaque,
+   * this returns <code>c</code> itself.
+   *
+   * @param c the start component for the search
+   * @return the nearest component to <code>c</code> (upwards in the containment
+   *         hierarchy), that is opaque; If <code>c</code> itself is opaque,
+   *         this returns <code>c</code> itself
+   */
+  private Component findOpaqueParent(Component c)
+  {
+    Component found = c;
+    while (true)
+      {
+        if ((found instanceof JComponent) && ((JComponent) found).isOpaque())
+          break;
+        else if (!(found instanceof JComponent))
+          break;
+        Container p = found.getParent();
+        if (p == null)
+          break;
+        else
+          found = p;
+      }
+    return found;
   }
 }

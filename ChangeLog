@@ -1,3 +1,55 @@
+2005-10-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(paintLock): Removed unneeded field.
+	(isCompletelyDirty): New field.
+	(setBorder): Don't get active if actual value didn't change.
+	Otherwise trigger a repaint.
+	(paint): Mark this component as clean after painting when the clip
+	covered the whole component.
+	(paintImmediately): Find more sensible paint root via new helper
+	methods.
+	(paintDoubleBuffered): Don't synchronize here.
+	(setFont): Don't get active if actual value didn't change.
+	Otherwise trigger a repaint and revalidate.
+	(setBackground): Don't get active if actual value didn't change.
+	Otherwise trigger a repaint.
+	(setForeground): Don't get active if actual value didn't change.
+	Otherwise trigger a repaint.
+	(setUI): Trigger a repaint.
+	(findPaintRoot): New helper method.
+	(findOverlapFreeParent): New helper method.
+	(findOpaqueParent): New helper method.
+	* javax/swing/RepaintManager.java
+	(ComponentComparator): New inner class. Used to sort components
+	according to their depth in the containment hierarchy.
+	(dirtyComponents): Use HashMap instead of Hashtable.
+	(workDirtyComponents): New field.
+	(repaintOrder): New field.
+	(workRepaintOrder): New field.
+	(comparator): New field.
+	(invalidComponents): Use ArrayList instead of Vector.
+	(workInvalidComponents): New field.
+	(RepaintManager): Initialize new fields.
+	(removeInvalidComponent): Adjusted for ArrayList.
+	(addDirtyRegion): Return if component in question is not showing.
+	Insert the new component in the repaintOrder list.
+	(insertRepaintOrder): New method. Maintains a sorted list of
+	components.
+	(getDirtyRegion): Return empty Rectangle instead of null when
+	component is not dirty, as specified.
+	(markCompletelyDirty): Set flag in JComponent.
+	(markCompletelyClean): Synchronize access to fields.
+	(isCompletelyDirty): Use flag in JComponent to determine this
+	property.
+	(validateInvalidComponents): Use workInvalidComponents when
+	revalidating. This avoids blocking of application threads
+	in revalidate() calls.
+	(paintDirtyRegion): Use work* fields when
+	repainting. This avoids blocking of application threads
+	in repaint() calls. Simplify actual work, now we simply call
+	paintImmediatly() on the dirty components.
+
 2005-10-14  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/LookAndFeel.java
