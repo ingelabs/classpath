@@ -1180,7 +1180,7 @@ public class BasicTreeUI
             Rectangle bounds = getPathBounds(tree, 
                         curr);  
             if (treeModel != null)
-              isLeaf = treeModel.isLeaf(curr);
+              isLeaf = treeModel.isLeaf(path[i]);
             if (hasControlIcons())
               bounds.width += getCurrentControlIcon(curr).getIconWidth();
             maxWidth = Math.max(maxWidth, bounds.x + bounds.width);

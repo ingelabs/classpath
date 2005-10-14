@@ -1599,13 +1599,13 @@ public class JTree
 
   /**
    * Gets the AccessibleContext associated with this
-   * <code>JToggleButton</code>.
+   * <code>JTree</code>.
    * 
    * @return the associated context
    */
   public AccessibleContext getAccessibleContext()
   {
-    return null;
+    return new AccessibleJTree();
   }
 
   /**

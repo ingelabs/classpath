@@ -1,3 +1,11 @@
+2005-10-14  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTree.java
+	(getAccessibleContext): Fixed API docs, and returned the correct value.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(updateCachedPreferredSize): Fixed parameter passed to isLeaf, node should
+	be passed in and not a path.
+
 2005-10-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultCaret.java:
