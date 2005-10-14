@@ -1,3 +1,19 @@
+2005-10-14  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultCaret.java:
+	(ALWAYS_UPDATE): New field.
+	(NEVER_UPDATE): New field.
+	(UPDATE_WHEN_ON_EDIT): New field.
+	(insertUpdate): Fixed docs.  Only update the dot if the policy is
+	ALWAYS_UPDATE or if the policy is UPDATE_WHEN_ON_EDT and the event
+	was generated on the Event Dispatch thread.
+	(removeUpdate): Fixed docs.  Only update the dot if the policy is
+	ALWAYS_UPDATE, if the policy is UPDATE_WHEN_ON_EDT and the event was 
+	generated on the Event Dispatch thread, or if the document length 
+	has become less than the current dot position.
+	(setUpdatePolicy): New method.
+	(getUpdatePolicy): New method.
+	
 2005-10-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/BoxLayout.java
