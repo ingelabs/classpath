@@ -202,9 +202,19 @@ public class PlainView extends View
       }
   }
 
+  /**
+   * Returns the tab size of a tab.  Checks the Document's
+   * properties for PlainDocument.tabSizeAttribute and returns it if it is
+   * defined, otherwise returns 8.
+   * 
+   * @return the tab size.
+   */
   protected int getTabSize()
   {
-    return 8;
+    Object tabSize = getDocument().getProperty(PlainDocument.tabSizeAttribute);
+    if (tabSize == null)
+      return 8;
+    return ((Integer)tabSize).intValue();
   }
 
   /**
