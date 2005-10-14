@@ -62,7 +62,7 @@ public abstract class CompositeView
   /**
    * The allocation of this <code>View</code> minus its insets. This is
    * initialized in {@link #getInsideAllocation} and reused and modified in
-   * {@link childAllocation}.
+   * {@link #childAllocation(int, Rectangle)}.
    */
   Rectangle insideAllocation;
 

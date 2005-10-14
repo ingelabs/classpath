@@ -1,3 +1,8 @@
+2005-10-14  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/CompositeView.java: Minor doc fixes.
+	* javax/swing/text/BoxView.java: Minor doc fixes.
+
 2005-10-14  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTree.java

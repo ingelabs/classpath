@@ -155,8 +155,9 @@ public class BoxView
    * automatically when any of the child view changes its preferences
    * via {@link #preferenceChanged(View, boolean, boolean)}.
    *
-   * The layout will be updated the next time when {@link #setSize()} is
-   * called, typically from within the {@link #paint()} method.
+   * The layout will be updated the next time when 
+   * {@link #setSize(float, float)} is called, typically from within the 
+   * {@link #paint(Graphics, Shape)} method.
    *
    * Valid values for the axis are {@link View#X_AXIS} and
    * {@link View#Y_AXIS}.
@@ -216,7 +217,7 @@ public class BoxView
    * @param alloc the allocated region for the child to paint into
    * @param index the index of the child to be painted
    *
-   * @see {@link #childAllocation}
+   * @see #childAllocation(int, Rectangle)
    */
   protected void paintChild(Graphics g, Rectangle alloc, int index)
   {
@@ -534,7 +535,7 @@ public class BoxView
    *        to layout the children
    * @param axis the axis along which the layout is performed
    * @param offsets the array that holds the offsets of the children on exit
-   * @param offsets the array that holds the spans of the children on exit
+   * @param spans the array that holds the spans of the children on exit
    */
   protected void layoutMajorAxis(int targetSpan, int axis, int[] offsets,
                                  int[] spans)
@@ -554,7 +555,7 @@ public class BoxView
    *        to layout the children
    * @param axis the axis along which the layout is performed
    * @param offsets the array that holds the offsets of the children on exit
-   * @param offsets the array that holds the spans of the children on exit
+   * @param spans the array that holds the spans of the children on exit
    */
   protected void layoutMinorAxis(int targetSpan, int axis, int[] offsets,
                                  int[] spans)
@@ -664,7 +665,7 @@ public class BoxView
    *
    * @param axis the axis to examine, either <code>X_AXIS</code> or
    *        <code>Y_AXIS</code>
-   * @param index the index of the child for for which to return the span
+   * @param childIndex the index of the child for for which to return the span
    *
    * @return the span for the child view with the given index for the specified
    *         axis
@@ -683,7 +684,7 @@ public class BoxView
    *
    * @param axis the axis to examine, either <code>X_AXIS</code> or
    *        <code>Y_AXIS</code>
-   * @param index the index of the child for for which to return the span
+   * @param childIndex the index of the child for for which to return the span
    *
    * @return the offset for the child view with the given index for the
    *         specified axis
