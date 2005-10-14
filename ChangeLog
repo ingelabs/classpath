@@ -313,7 +313,6 @@
 	(viewToModel): Likewise.
 	(updateDamage): Likewise.
 
->>>>>>> 1.5238
 2005-10-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/JTextComponent.java
