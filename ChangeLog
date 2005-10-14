@@ -1,3 +1,8 @@
+2005-10-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JLayeredPane.java
+	(isOptimizedDrawingEnabled): New method.
+
 2005-10-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/CORBA/PolicyErrorHelper.java,
