@@ -219,13 +219,17 @@ public class BoxLayout implements LayoutManager2, Serializable
    */
   public void layoutContainer(Container parent)
   {
-    if (container != parent)
-      throw new AWTError("BoxLayout can't be shared");
-
-    checkLayout();
-    Component[] children = container.getComponents();
-    for (int i = 0; i < children.length; i++)
-      children[i].setBounds(offsetsX[i], offsetsY[i], spansX[i], spansY[i]);
+    synchronized(container.getTreeLock())
+    {
+      if (container != parent)
+        throw new AWTError("BoxLayout can't be shared");
+      
+      checkLayout();
+      Component[] children = container.getComponents();
+      Insets in = container.getInsets();
+      for (int i = 0; i < children.length; i++)
+        children[i].setBounds(offsetsX[i] + in.left, offsetsY[i] + in.top, spansX[i], spansY[i]);
+    }
   }
 
   /**

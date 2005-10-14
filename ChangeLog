@@ -1,3 +1,9 @@
+2005-10-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/BoxLayout.java
+	(layoutContainer): Perform layout inside the container's treeLock.
+	Respect the insets of the container.
+
 2005-10-14  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTree.java
