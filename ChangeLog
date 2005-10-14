@@ -1,13 +1,18 @@
+2005-10-14  Michael Koch  <konqueror@gmx.de>
+
+	* native/jni/midi-alsa/.cvsignore,
+	native/jni/midi-dssi/.cvsignore: New files
+
 2005-10-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * gnu/CORBA/ObjectCreator.java (forName):
-        Use gnu.classpath.VMStackWalker.
-        * gnu/CORBA/Interceptor/Registrator.java,
-        gnu/CORBA/gnuValueHolder.java,
-        gnu/CORBA/stubFinder.java,
-        gnu/javax/rmi/CORBA/DelegateFactory.java,
-        gnu/javax/rmi/CORBA/StubDelegateImpl.java,
-        org/omg/CORBA/ORB.java: Load class via ObjectCreator. 
+	* gnu/CORBA/ObjectCreator.java (forName):
+	Use gnu.classpath.VMStackWalker.
+	* gnu/CORBA/Interceptor/Registrator.java,
+	gnu/CORBA/gnuValueHolder.java,
+	gnu/CORBA/stubFinder.java,
+	gnu/javax/rmi/CORBA/DelegateFactory.java,
+	gnu/javax/rmi/CORBA/StubDelegateImpl.java,
+	org/omg/CORBA/ORB.java: Load class via ObjectCreator. 
 
 2005-10-13  Anthony Balkissoon  <abalkiss@redhat.com>
 
