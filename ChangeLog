@@ -1,3 +1,12 @@
+2005-10-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/CORBA/PolicyErrorHelper.java,
+        org/omg/CORBA/PolicyErrorHolder.java,
+        org/omg/CORBA/UnknownUserExceptionHelper.java,
+        org/omg/CORBA/UnknownUserExceptionHolder.java,
+        org/omg/CORBA/WrongTransactionHelper.java,
+        org/omg/CORBA/WrongTransactionHolder.java: New files.
+
 2005-10-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/PlainView.java:
