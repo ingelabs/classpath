@@ -1,3 +1,16 @@
+2005-10-14  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/LookAndFeel.java
+	(makeIcon): Implemented.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(updateCachedPreferredSize): Should only add with of control icon if
+	not a leaf.
+	(mousePressed): Fixed to use new gap field.
+	(paintRecursive): Likewise.
+	(paintRow): Likewise.
+	(updateCurrentVisiblePath): Shouldn't include root if it is
+	not of a valid size to be painted.
+
 2005-10-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JLayeredPane.java

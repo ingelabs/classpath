@@ -42,8 +42,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.net.URL;
 
 import javax.swing.border.Border;
+import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 
@@ -200,7 +202,14 @@ public abstract class LookAndFeel
    */
   public static Object makeIcon(Class baseClass, String gifFile)
   {
-    return null;
+    final URL file = baseClass.getResource(gifFile);
+    return new UIDefaults.LazyValue() 
+      {
+        public Object createValue(UIDefaults table)
+        {
+          return new IconUIResource(new ImageIcon(file));
+        }
+      };
   }
 
   /**

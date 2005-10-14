@@ -246,6 +246,9 @@ public class BasicTreeUI
   
   /** The current path of the visible nodes in the tree. */
   TreePath currentVisiblePath;
+  
+  /** The gap between the icon and text. */
+  int gap = 4;
 
   /** Listeners */
   private PropertyChangeListener propertyChangeListener;
@@ -631,6 +634,7 @@ public class BasicTreeUI
         if (treeModel != null)
           {
             Object root = treeModel.getRoot();
+
             if (!tree.isRootVisible() && tree.isExpanded(new TreePath(root)))
               root = getNextNode(root);
 
@@ -723,7 +727,7 @@ public class BasicTreeUI
   {
     // FIXME: what if root is hidden? should not depend on (0,0)
     // should start counting rows from where root is.
-
+    
     int row = Math.round(y / getRowHeight());
     TreePath path = getPathForRow(tree, row);
 
@@ -1177,12 +1181,13 @@ public class BasicTreeUI
         for (int i = 0; i < path.length; i++)
           {
             TreePath curr = new TreePath(getPathToRoot(path[i], 0));
-            Rectangle bounds = getPathBounds(tree, 
-                        curr);  
+            Rectangle bounds = getPathBounds(tree, curr);  
+            
             if (treeModel != null)
               isLeaf = treeModel.isLeaf(path[i]);
-            if (hasControlIcons())
+            if (!isLeaf && hasControlIcons())
               bounds.width += getCurrentControlIcon(curr).getIconWidth();
+
             maxWidth = Math.max(maxWidth, bounds.x + bounds.width);
           }
         preferredSize = new Dimension(maxWidth, (getRowHeight() * path.length));
@@ -2303,11 +2308,12 @@ public class BasicTreeUI
           int row = getRowForPath(tree, path);
           boolean cntlClick = isLocationInExpandControl(path, click.x, click.y);
           
-          if (isLeaf(row))
-              bounds.width += rightChildIndent + 4;
+          boolean isLeaf = isLeaf(row);
+          if (isLeaf)
+            bounds.width += rightChildIndent + gap;
           else if (hasControlIcons())
-            bounds.width += getCurrentControlIcon(path).getIconWidth() + 4;
-
+            bounds.width += getCurrentControlIcon(path).getIconWidth() + gap;
+          
           boolean inBounds = bounds.contains(click.x, click.y);
           if ((inBounds || cntlClick) && tree.isVisible(path))
             {
@@ -2996,8 +3002,7 @@ public class BasicTreeUI
         FontMetrics fm = tree.getToolkit().getFontMetrics(f);
         
         if (s != null)
-          return new Rectangle(x, y,
-                               SwingUtilities.computeStringWidth(fm, s) + 4,
+          return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s) + gap,
                                fm.getHeight());
       }
     return new Rectangle(x, y, 0, 0);
@@ -3081,7 +3086,7 @@ public class BasicTreeUI
     int iconWidth = 0;
     if (!isLeaf && hasControlIcons())
       iconWidth += getCurrentControlIcon(path).getIconWidth();
-    bounds.width += bounds.x + iconWidth;
+    bounds.width += bounds.x + iconWidth + gap;
     
     if (isLeaf)
       {
@@ -3678,7 +3683,7 @@ public class BasicTreeUI
               dtcr = createDefaultCellRenderer();
             Component c = dtcr.getTreeCellRendererComponent(tree, node,
                                      selected, isExpanded, isLeaf, row, false);
-            bounds.x += 4;
+            bounds.x += gap;
             rendererPane.paintComponent(g, c, c.getParent(), bounds);
           }
       }
@@ -3720,7 +3725,13 @@ public class BasicTreeUI
   void updateCurrentVisiblePath()
   {
     Object next = treeModel.getRoot();
-    if (!isRootVisible() && tree.isExpanded(new TreePath(next)))
+    Rectangle bounds = getCellBounds(0, 0, next);
+    
+    // If root is not a valid size to be visible, or is
+    // not visible and the tree is expanded, then the next node acts
+    // as the root
+    if ((bounds.width == 0 && bounds.height == 0) || (!isRootVisible() 
+        && tree.isExpanded(new TreePath(next))))
       next = getNextNode(next);
     TreePath current = null;
 
