@@ -1,3 +1,9 @@
+2005-10-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/omg/CORBA/LocalObject.java (_get_interface, _invoke, _is_local,
+        _orb, _releaseReply, _request, _servant_postinvoke, _servant_preinvoke,
+        validate_connection: New methods.
+
 2005-10-14  Michael Koch  <konqueror@gmx.de>
 
 	* native/jni/midi-alsa/.cvsignore,
