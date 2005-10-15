@@ -266,12 +266,19 @@ public class Simple_delegate
   }
 
   /**
-   * This should never be called this type delegate.
-   *
-   * @throws InternalError, always.
+   * This method assumes that the target is local and connected to the ORB.
    */
   public Request request(org.omg.CORBA.Object target, String operation)
   {
-    throw new InternalError();
+    if (orb instanceof Functional_ORB)
+      {
+        ((Functional_ORB) orb).ensureRunning();
+      }
+    gnuRequest g = new gnuRequest();
+    g.setORB(orb);
+    g.setOperation(operation);
+    g.setIor(ior);
+    g.m_target = target;
+    return g;
   }
 }
