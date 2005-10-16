@@ -1,3 +1,10 @@
+2005-10-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * gnu/CORBA/Focused_ORB.java: New file.
+        * gnu/CORBA/Functional_ORB.java,
+        org/omg/CORBA/ORB.java: Adapted to support the 
+        gnu.CORBA.ListenerPort property.
+
 2005-10-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/omg/CORBA/DynamicImplementation.java: Made concrete.

@@ -103,12 +103,13 @@ public class Functional_ORB extends Restricted_ORB
    * may listen on multiple ports and process the requests in separate threads.
    * Normally the server takes one port per object being served.
    */
-  class portServer extends Thread
+  protected class portServer
+    extends Thread
   {
     /**
      * The number of the currently running parallel threads.
      */
-    int running_threads; 
+    int running_threads;
 
     /**
      * The port on that this portServer is listening for requests.
@@ -132,6 +133,18 @@ public class Functional_ORB extends Restricted_ORB
     {
       s_port = _port;
       setDaemon(true);
+      try
+        {
+          service = new ServerSocket(s_port);
+        }
+      catch (IOException ex)
+        {
+          BAD_OPERATION bad = new BAD_OPERATION(
+            "Unable to open the server socket at " + s_port);
+          bad.minor = Minor.Socket;
+          bad.initCause(ex);
+          throw bad;
+        }
     }
 
     /**
@@ -140,19 +153,6 @@ public class Functional_ORB extends Restricted_ORB
      */
     public void run()
     {
-      try
-        {
-          service = new ServerSocket(s_port);
-        }
-      catch (IOException ex)
-        {
-          BAD_OPERATION bad =
-            new BAD_OPERATION("Unable to open the server socket at "+s_port);
-          bad.minor = Minor.Socket;
-          bad.initCause(ex);
-          throw bad;
-        }
-
       while (running)
         {
           try
@@ -183,10 +183,11 @@ public class Functional_ORB extends Restricted_ORB
 
     /**
      * Perform a single serving step.
-     *
+     * 
      * @throws java.lang.Exception
      */
-    void tick() throws Exception
+    void tick()
+      throws Exception
     {
       serve(this, service);
     }
@@ -222,7 +223,7 @@ public class Functional_ORB extends Restricted_ORB
    * serving multiple requests (probably to the different objects) on the same
    * thread.
    */
-  class sharedPortServer extends portServer
+  protected class sharedPortServer extends portServer
   {
     /**
      * Create a new portServer, serving on specific port.
@@ -395,7 +396,7 @@ public class Functional_ORB extends Restricted_ORB
   /**
    * The currently active portServers.
    */
-  private ArrayList portServers = new ArrayList();
+  protected ArrayList portServers = new ArrayList();
 
   /**
    * The host, on that the name service is expected to be running.
@@ -964,7 +965,7 @@ public class Functional_ORB extends Restricted_ORB
   
   /**
    * Start the server in a new thread, if not already running. This method is
-   * used to ensure that the objects being transfered will be served fro the 
+   * used to ensure that the objects being transfered will be served from the 
    * remote side, if required. If the ORB is started using this method, it
    * starts as a daemon thread.
    */
@@ -1233,7 +1234,7 @@ public class Functional_ORB extends Restricted_ORB
    * @throws BAD_PARAM if the object does not implement the
    * {@link InvokeHandler}).
    */
-  private void prepareObject(org.omg.CORBA.Object object, IOR ior)
+  protected void prepareObject(org.omg.CORBA.Object object, IOR ior)
     throws BAD_PARAM
   {
     /*
@@ -1587,8 +1588,12 @@ public class Functional_ORB extends Restricted_ORB
         return;
       }
   }
-
-  private void useProperties(Properties props)
+  
+  /**
+   * Set the ORB parameters from the properties that were accumulated
+   * from several locations.
+   */
+  protected void useProperties(Properties props)
   {
     if (props != null)
       {
