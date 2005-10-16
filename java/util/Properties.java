@@ -47,6 +47,15 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Element;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
+import org.w3c.dom.ls.LSSerializer;
+
 /**
  * A set of persistent properties, which can be saved or loaded from a stream.
  * A property list may also contain defaults, searched if the main list
@@ -578,4 +587,99 @@ label   = Name:\\u0020</pre>
           head = key;
       }
   }
+
+  /**
+   * <p>
+   * Encodes the properties as an XML file using the UTF-8 encoding.
+   * The format of the XML file matches the DTD
+   * <a href="http://java.sun.com/dtd/properties.dtd">
+   * http://java.sun.com/dtd/properties.dtd</a>.
+   * </p>
+   * <p>
+   * Invoking this method provides the same behaviour as invoking
+   * <code>storeToXML(os, comment, "UTF-8")</code>.
+   * </p>
+   * 
+   * @param os the stream to output to.
+   * @param comment a comment to include at the top of the XML file, or
+   *                <code>null</code> if one is not required.
+   * @throws IOException if the serialization fails.
+   * @since 1.5
+   */
+  public void storeToXML(OutputStream os, String comment)
+    throws IOException
+  {
+    storeToXML(os, comment, "UTF-8");
+  }
+
+  /**
+   * <p>
+   * Encodes the properties as an XML file using the supplied encoding.
+   * The format of the XML file matches the DTD
+   * <a href="http://java.sun.com/dtd/properties.dtd">
+   * http://java.sun.com/dtd/properties.dtd</a>.
+   * </p>
+   * 
+   * @param os the stream to output to.
+   * @param comment a comment to include at the top of the XML file, or
+   *                <code>null</code> if one is not required.
+   * @param encoding the encoding to use for the XML output.
+   * @throws IOException if the serialization fails.
+   * @since 1.5
+   */
+  public void storeToXML(OutputStream os, String comment, String encoding)
+    throws IOException
+  {
+    try
+      {
+	DOMImplementationRegistry registry = 
+	  DOMImplementationRegistry.newInstance();
+	DOMImplementation domImpl = registry.getDOMImplementation("LS 3.0");
+	DocumentType doctype =
+	  domImpl.createDocumentType("properties", null,
+				     "http://java.sun.com/dtd/properties.dtd");
+	Document doc = domImpl.createDocument(null, "properties", doctype);
+	Element root = doc.getDocumentElement();
+	if (comment != null)
+	  {
+	    Element commentElement = doc.createElement("comment");
+	    commentElement.appendChild(doc.createTextNode(comment));
+	    root.appendChild(commentElement);
+	  }
+	Iterator iterator = entrySet().iterator();
+	while (iterator.hasNext())
+	  {
+	    Map.Entry entry = (Map.Entry) iterator.next();
+	    Element entryElement = doc.createElement("entry");
+	    entryElement.setAttribute("key", (String) entry.getKey());
+	    entryElement.appendChild(doc.createTextNode((String)
+							entry.getValue()));
+	    root.appendChild(entryElement);
+	  }
+	DOMImplementationLS loadAndSave = (DOMImplementationLS) domImpl;
+	LSSerializer serializer = loadAndSave.createLSSerializer();
+	LSOutput output = loadAndSave.createLSOutput();
+	output.setByteStream(os);
+	output.setEncoding(encoding);
+	serializer.write(doc, output);
+      }
+    catch (ClassNotFoundException e)
+      {
+	throw (IOException) 
+	  new IOException("The XML classes could not be found.").initCause(e);
+      }
+    catch (InstantiationException e)
+      {
+	throw (IOException)
+	  new IOException("The XML classes could not be instantiated.")
+	  .initCause(e);
+      }
+    catch (IllegalAccessException e)
+      {
+	throw (IOException)
+	  new IOException("The XML classes could not be accessed.")
+	  .initCause(e);
+      }
+  }
+
 } // class Properties
