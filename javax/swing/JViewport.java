@@ -142,6 +142,7 @@ public class JViewport extends JComponent implements Accessible
      */
     protected ViewListener()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -398,12 +399,8 @@ public class JViewport extends JComponent implements Accessible
 
   public void setView(Component v)
   {
-    while (getComponentCount() > 0)
-      {
-        if (viewListener != null)
-          getView().removeComponentListener(viewListener);
-        //remove(0);
-      }
+    if (viewListener != null)
+      getView().removeComponentListener(viewListener);
 
     if (v != null)
       {
@@ -456,6 +453,14 @@ public class JViewport extends JComponent implements Accessible
     return insets;
   }
     
+
+  /**
+   * Overridden to return <code>false</code>, so the JViewport's paint method
+   * gets called instead of directly calling the children. This is necessary
+   * in order to get a useful clipping and translation on the children.
+   *
+   * @return <code>false</code>
+   */
   public boolean isOptimizedDrawingEnabled()
   {
     return false;

@@ -1,5 +1,12 @@
 2005-10-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JViewport.java
+	(setView): Removed unnecessary loop. We only have on component.
+	(isOptimizedDrawingEnabled): Added comment explaining why this
+	method is necessary.
+
+2005-10-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicComboBoxUI.java
 	Filled empty blocks with comments.
 	(FocusHandler.focusLost): Close popup when the combobox loses focus.
