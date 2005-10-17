@@ -1,3 +1,10 @@
+2005-10-17  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(setDividerLocation): Added a check for the size
+	of the splitpane, in some cases the divider's
+	initial location was being set to 0.
+
 2005-10-17  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JViewport.java:
