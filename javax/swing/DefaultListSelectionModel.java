@@ -388,6 +388,9 @@ public class DefaultListSelectionModel implements Cloneable,
    */
   public boolean isSelectedIndex(int a)
   {
+    // TODO: Probably throw an exception here?
+    if (a >= sel.length() || a < 0)
+      return false;
     return sel.get(a);
   }
 

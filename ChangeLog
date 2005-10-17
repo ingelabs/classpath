@@ -1,5 +1,12 @@
 2005-10-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/DefaultTableCellRenderer.java
+	(getTableCellRendererComponent): Setup colors (more) correctly.
+	* javax/swing/DefaultListSelectionModel.java
+	(isSelectedIndex): Check for an illegal index argument.
+
+2005-10-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	Filled empty blocks with comments.
 	(setVisible): Notify AncestorListeners when visibility state is
@@ -187,8 +194,8 @@
 	* javax/swing/JTree.java
 	(getAccessibleContext): Fixed API docs, and returned the correct value.
 	* javax/swing/plaf/basic/BasicTreeUI.java
-	(updateCachedPreferredSize): Fixed parameter passed to isLeaf, node should
-	be passed in and not a path.
+	(updateCachedPreferredSize): Fixed parameter passed to isLeaf, node
+	should be passed in and not a path.
 
 2005-10-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
