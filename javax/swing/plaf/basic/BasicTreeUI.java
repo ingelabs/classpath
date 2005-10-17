@@ -1187,7 +1187,6 @@ public class BasicTreeUI
               isLeaf = treeModel.isLeaf(path[i]);
             if (!isLeaf && hasControlIcons())
               bounds.width += getCurrentControlIcon(curr).getIconWidth();
-
             maxWidth = Math.max(maxWidth, bounds.x + bounds.width);
           }
         preferredSize = new Dimension(maxWidth, (getRowHeight() * path.length));
@@ -1347,7 +1346,9 @@ public class BasicTreeUI
     installDefaults();
 
     installComponents();
-
+    installKeyboardActions();
+    installListeners();
+    
     setCellEditor(createDefaultCellEditor());
     createdCellEditor = true;
     isEditing = false;
@@ -1362,8 +1363,6 @@ public class BasicTreeUI
       }
     treeSelectionModel = tree.getSelectionModel();
 
-    installKeyboardActions();
-    installListeners();
     completeUIInstall();
   }
 
@@ -1410,13 +1409,16 @@ public class BasicTreeUI
   public void paint(Graphics g, JComponent c)
   {
     JTree tree = (JTree) c;
+    if (currentVisiblePath == null)
+      updateCurrentVisiblePath();
+    
     if (treeModel != null)
       {
         Object root = treeModel.getRoot();
         paintRecursive(g, 0, 0, 0, tree, treeModel, root);
         
         if (hasControlIcons())
-          paintControlIcons(g, 0, 0, 0, 0, tree, treeModel, root);
+          paintControlIcons(g, 0, 0, 0, tree, treeModel, root);
       }
   }
 
@@ -2554,6 +2556,7 @@ public class BasicTreeUI
     public void treeExpanded(TreeExpansionEvent event)
     {
       validCachedPreferredSize = false;
+      updateCurrentVisiblePath();
       tree.revalidate();
       tree.repaint();
     }
@@ -2567,6 +2570,7 @@ public class BasicTreeUI
     public void treeCollapsed(TreeExpansionEvent event)
     {
       validCachedPreferredSize = false;
+      updateCurrentVisiblePath();
       tree.revalidate();
       tree.repaint();
     }
@@ -2750,6 +2754,7 @@ public class BasicTreeUI
     public void treeNodesChanged(TreeModelEvent e)
     {
       validCachedPreferredSize = false;
+      updateCurrentVisiblePath();
       tree.revalidate();
       tree.repaint();
     }
@@ -2765,6 +2770,7 @@ public class BasicTreeUI
     public void treeNodesInserted(TreeModelEvent e)
     {
       validCachedPreferredSize = false;
+      updateCurrentVisiblePath();
       tree.revalidate();
       tree.repaint();
     }
@@ -2783,6 +2789,7 @@ public class BasicTreeUI
     public void treeNodesRemoved(TreeModelEvent e)
     {
       validCachedPreferredSize = false;
+      updateCurrentVisiblePath();
       tree.revalidate();
       tree.repaint();
     }
@@ -2800,6 +2807,7 @@ public class BasicTreeUI
     public void treeStructureChanged(TreeModelEvent e)
     {
       validCachedPreferredSize = false;
+      updateCurrentVisiblePath();
       tree.revalidate();
       tree.repaint();
     }
@@ -3002,9 +3010,9 @@ public class BasicTreeUI
         String s = cell.toString();
         Font f = tree.getFont();
         FontMetrics fm = tree.getToolkit().getFontMetrics(f);
-        
+
         if (s != null)
-          return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s) + gap,
+            return new Rectangle(x, y, SwingUtilities.computeStringWidth(fm, s) + gap,
                                fm.getHeight());
       }
     return new Rectangle(x, y, 0, 0);
@@ -3085,11 +3093,7 @@ public class BasicTreeUI
     boolean isLeaf = mod.isLeaf(curr);
     Rectangle bounds = getPathBounds(tree, path);
     Object root = mod.getRoot();
-    int iconWidth = 0;
-    if (!isLeaf && hasControlIcons())
-      iconWidth += getCurrentControlIcon(path).getIconWidth();
-    bounds.width += bounds.x + iconWidth + gap;
-    
+
     if (isLeaf)
       {
         paintRow(g, clip, null, bounds, path, row, true, false, true);
@@ -3162,10 +3166,9 @@ public class BasicTreeUI
    * @return int current descent of the tree
    */
   int paintControlIcons(Graphics g, int indentation, int descent,
-                           int childNumber, int depth, JTree tree, TreeModel mod,
+                           int depth, JTree tree, TreeModel mod,
                            Object node)
      {
-       int h = descent;
        int rowHeight = getRowHeight();
        TreePath path = new TreePath(getPathToRoot(node, 0));
        Icon icon = getCurrentControlIcon(path);
@@ -3178,27 +3181,40 @@ public class BasicTreeUI
        if (mod.isLeaf(node))
          descent += rowHeight;
        else
-         {
-           if (depth > 0 || tree.isRootVisible())
-             descent += rowHeight;
-   
-           int max = 0;
-           if (!mod.isLeaf(node))
-             max = mod.getChildCount(node);
-   
+         {   
            if (!node.equals(mod.getRoot()) && 
                (tree.isRootVisible() || getLevel(node) != 1))
-             icon.paintIcon(tree, g, indentation  - rightChildIndent -  3, h);
+             {
+               int width = icon.getIconWidth();
+               int height = icon.getIconHeight() + 2;
+               int posX = indentation - rightChildIndent;
+               int posY = descent;
+               if (width > rightChildIndent)
+                 posX -= gap;
+               else posX += width/2;
+               
+               if (height < rowHeight)
+                 posY += height/2;
+               
+               icon.paintIcon(tree, g, posX, posY);
+             }
+
+           if (depth > 0 || tree.isRootVisible())
+             descent += rowHeight;
            
            if (tree.isExpanded(path))
              {
+               int max = 0;
+               if (!mod.isLeaf(node))
+                 max = mod.getChildCount(node);
+               
                for (int i = 0; i < max; i++)
                  {
                    int indent = indentation + rightChildIndent;
                    if (depth == 0 && !tree.isRootVisible())
                      indent =  1;
    
-                   descent = paintControlIcons(g, indent, descent, i, depth + 1,
+                   descent = paintControlIcons(g, indent, descent, depth + 1,
                                                tree, mod, mod.getChild(node, i));
                  }
              }
@@ -3604,7 +3620,7 @@ public class BasicTreeUI
                                     boolean isLeaf)
   {
     if (treeModel != null && hasControlIcons())
-      paintControlIcons(g, 0, 0, 0, 0, tree, treeModel, path.getLastPathComponent());
+      paintControlIcons(g, 0, 0, 0, tree, treeModel, path.getLastPathComponent());
   }
 
   /**
@@ -3672,6 +3688,18 @@ public class BasicTreeUI
     
     if (tree.isVisible(path))
       {
+        // need to set exact width of entire row
+        int iconWidth = 0;
+        if (!isLeaf && hasControlIcons())
+          iconWidth = getCurrentControlIcon(path).getIconWidth();
+        if (isLeaf && leafIcon != null)
+          iconWidth += leafIcon.getIconWidth();
+        else if (isExpanded && expandedIcon != null)
+          iconWidth += expandedIcon.getIconWidth();
+        else if (collapsedIcon != null)
+          iconWidth += collapsedIcon.getIconWidth();
+        bounds.width += bounds.x + iconWidth + gap;
+        
         if (editingComponent != null && editingPath != null && isEditing(tree)
             && node.equals(editingPath.getLastPathComponent()))
           {    
@@ -3683,6 +3711,7 @@ public class BasicTreeUI
             TreeCellRenderer dtcr = tree.getCellRenderer();
             if (dtcr == null)
               dtcr = createDefaultCellRenderer();
+            
             Component c = dtcr.getTreeCellRendererComponent(tree, node,
                                      selected, isExpanded, isLeaf, row, false);
             bounds.x += gap;
@@ -3739,17 +3768,14 @@ public class BasicTreeUI
 
     while (next != null)
       {
-        if (current != null)
-          current = current.pathByAddingChild(next);
-        else
+        if (current == null)
           current = new TreePath(next);
-        
-        // FIXME: Inefficent to have 2 loops when the 
-        // tree is very large. Find a better way.
+        else 
+            current = current.pathByAddingChild(next);
         do
           next = getNextNode(next);
-        while (next != null
-               && !tree.isVisible(new TreePath(getPathToRoot(next, 0))));
+        while (next != null && 
+            !tree.isVisible(new TreePath(getPathToRoot(next, 0))));
       }
     currentVisiblePath = current;
   }

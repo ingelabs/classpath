@@ -1,3 +1,23 @@
+2005-10-17  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(installUI): Moved call to installKeyboardActions and Listeners
+	to before expansion of root.
+	(paint): Added check to make sure the cached visible path is updated.
+	(treeExpanded): Added call to update visible path.
+	(treeCollapsed): Likewise.
+	(treeNodesChanged): Likewise.
+	(treeNodesInserted): Likewise.
+	(treeNodesRemoved): Likewise.
+	(treeStructureChanged): Likewise.
+	(paintRecursive): Moved code to paintRow.
+	(paintControlIcons): Fixed to paint custom control icons properly.
+	(paintExpandControl): Removed unneeded parameter.
+	(paintRow): Added code to paint the row with the correct width.
+	* javax/swing/plaf/metal/MetalTreeUI.java
+	(installUI): Moved code to expand the root after all the listeners
+	have been initialized.
+
 2005-10-17  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java
