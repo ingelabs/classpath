@@ -1,3 +1,26 @@
+2005-10-17  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JViewport.java:
+	(scrollRectToVisible): Return immediately if the View is null.  Check 
+	for contentRect being bigger than the port bounds separately in each 
+	direction, rather than together.
+	* javax/swing/plaf/basic/BasicListUI.java:
+	(KeyHandler): Removed this private class that listened directly for 
+	key presses.  This is now handled through InputMap-ActionMap pairs.
+	(ActionListenerProxy): New class to wrap the Actions for this lists
+	ActionMap.
+	(ListAction): New class, the actions for keypresses on this list.
+	(convertModifiers): New private method converts key press modifiers to 
+	the old style (CTRL_MASK instead of CTRL_DOWN_MASK, etc.).
+	(installKeyboardActions): Get the InputMap from the UIManager and 
+	register new InputMap-ActionMap pairs, then set these as the parents
+	of the list's InputMap and ActionMap.
+	(selectNextIndex): Avoid NPE by checking if we're already at the last
+	index.
+	(selectPreviousIndex): Check if we're already at the first index.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	(initComponentDefaults): Added bindings for List.focusInputMap.
+
 2005-10-17  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java

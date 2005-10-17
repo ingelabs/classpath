@@ -566,32 +566,38 @@ public class JViewport extends JComponent implements Accessible
    */
   public void scrollRectToVisible(Rectangle contentRect)
   {
+    Component view = getView();
+    if (view == null)
+      return;    
+      
     Point pos = getViewPosition();
     Rectangle viewBounds = getView().getBounds();
     Rectangle portBounds = getBounds();
     
     // FIXME: should validate the view if it is not valid, however
     // this may cause excessive validation when the containment
-    // hierarchy is being created.
-    
-    // if contentRect is larger than the portBounds, center the view
-    if (contentRect.height > portBounds.height || 
-        contentRect.width > portBounds.width)
-      {
-        setViewPosition(new Point(contentRect.x, contentRect.y));
-        return;
-      }
+    // hierarchy is being created.    
     
     // Y-DIRECTION
+    
+    // if contentRect is larger than the portBounds, center the view
+    if (contentRect.height > portBounds.height)
+      setViewPosition(new Point(pos.x, contentRect.y));
+    
     if (contentRect.y < -viewBounds.y)
       setViewPosition(new Point(pos.x, contentRect.y));
     else if (contentRect.y + contentRect.height > 
-             -viewBounds.y + portBounds.height)
+             -viewBounds.y + portBounds.height)     
       setViewPosition (new Point(pos.x, contentRect.y - 
                                  (portBounds.height - contentRect.height)));
     
     // X-DIRECTION
     pos = getViewPosition();
+    
+    //  if contentRect is larger than the portBounds, center the view
+    if (contentRect.width> portBounds.width)
+        setViewPosition(new Point(contentRect.x, pos.y));
+
     if (contentRect.x < -viewBounds.x)
       setViewPosition(new Point(contentRect.x, pos.y));
     else if (contentRect.x + contentRect.width > 
