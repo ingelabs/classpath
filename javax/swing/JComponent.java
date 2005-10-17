@@ -122,9 +122,18 @@ public abstract class JComponent extends Container implements Serializable
     protected class AccessibleFocusHandler 
       implements FocusListener
     {
-      protected AccessibleFocusHandler(){}
-      public void focusGained(FocusEvent event){}
-      public void focusLost(FocusEvent valevent){}
+      protected AccessibleFocusHandler()
+      {
+        // TODO: Implement this properly.
+      }
+      public void focusGained(FocusEvent event)
+      {
+        // TODO: Implement this properly.
+      }
+      public void focusLost(FocusEvent valevent)
+      {
+        // TODO: Implement this properly.
+      }
     }
 
     /**
@@ -133,9 +142,18 @@ public abstract class JComponent extends Container implements Serializable
     protected class AccessibleContainerHandler 
       implements ContainerListener
     {
-      protected AccessibleContainerHandler() {}
-      public void componentAdded(ContainerEvent event) {}
-      public void componentRemoved(ContainerEvent valevent) {}
+      protected AccessibleContainerHandler()
+      {
+        // TODO: Implement this properly.
+      }
+      public void componentAdded(ContainerEvent event)
+      {
+        // TODO: Implement this properly.
+      }
+      public void componentRemoved(ContainerEvent valevent)
+      {
+        // TODO: Implement this properly.
+      }
     }
 
     private static final long serialVersionUID = -7047089700479897799L;
@@ -143,7 +161,10 @@ public abstract class JComponent extends Container implements Serializable
     protected ContainerListener accessibleContainerHandler;
     protected FocusListener accessibleFocusHandler;
 
-    protected AccessibleJComponent() {}
+    protected AccessibleJComponent()
+    {
+      // TODO: Implement this properly.
+    }
 
     /**
      * Adds a property change listener to the list of registered listeners.
@@ -156,7 +177,10 @@ public abstract class JComponent extends Container implements Serializable
       super.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener listener) {}
+    public void removePropertyChangeListener(PropertyChangeListener listener)
+    {
+      // TODO: Implement this properly.
+    }
     public int getAccessibleChildrenCount() { return 0; }
     public Accessible getAccessibleChild(int value0) { return null; }
 
@@ -1339,6 +1363,7 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void grabFocus()
   {
+    // TODO: Implement this properly.
   }
 
   /**
@@ -1926,6 +1951,7 @@ public abstract class JComponent extends Container implements Serializable
    */
   protected void processComponentKeyEvent(KeyEvent e)
   {
+    // This method does nothing, it is meant to be overridden by subclasses.
   }
 
   /**
@@ -2283,6 +2309,7 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setNextFocusableComponent(Component aComponent)
   {
+    // TODO: Implement this properly.
   }
 
   /**
@@ -2343,6 +2370,9 @@ public abstract class JComponent extends Container implements Serializable
   /**
    * Set the value of the visible property.
    *
+   * If the value is changed, then the AncestorListeners of this component
+   * and all its children (recursivly) are notified.
+   *
    * @param v The new value of the property
    */
   public void setVisible(boolean v)
@@ -2352,6 +2382,13 @@ public abstract class JComponent extends Container implements Serializable
       return;
 
     super.setVisible(v);
+
+    // Notify AncestorListeners.
+    if (v == true)
+      fireAncestorEvent(this, AncestorEvent.ANCESTOR_ADDED);
+    else
+      fireAncestorEvent(this, AncestorEvent.ANCESTOR_REMOVED);
+
     Container parent = getParent();
     if (parent != null)
       parent.repaint(getX(), getY(), getWidth(), getHeight());
@@ -2617,15 +2654,9 @@ public abstract class JComponent extends Container implements Serializable
 
         parent = jParent.getParent();
       }
-
-    // notify ancestor listeners
-    AncestorListener[] ls = getAncestorListeners();
-    AncestorEvent ev = new AncestorEvent(this, AncestorEvent.ANCESTOR_ADDED,
-                                         this, parent);
-    for (int i = 0; i < ls.length; i++)
-      {
-        ls[i].ancestorAdded(ev);
-      }
+    
+    // Notify AncestorListeners.
+    fireAncestorEvent(this, AncestorEvent.ANCESTOR_ADDED);
 
     // fire property change event for 'ancestor'
     firePropertyChange("ancestor", null, parent);
@@ -2677,14 +2708,8 @@ public abstract class JComponent extends Container implements Serializable
         parent = jParent.getParent();
       }
 
-    // notify ancestor listeners
-    AncestorListener[] ls = getAncestorListeners();
-    AncestorEvent ev = new AncestorEvent(this, AncestorEvent.ANCESTOR_ADDED,
-                                         this, parent);
-    for (int i = 0; i < ls.length; i++)
-      {
-        ls[i].ancestorAdded(ev);
-      }
+    // Notify ancestor listeners.
+    fireAncestorEvent(this, AncestorEvent.ANCESTOR_REMOVED);
 
     // fire property change event for 'ancestor'
     firePropertyChange("ancestor", parent, null);

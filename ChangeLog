@@ -1,5 +1,16 @@
 2005-10-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	Filled empty blocks with comments.
+	(setVisible): Notify AncestorListeners when visibility state is
+	changed.
+	(removeNotifiy): Notify AncestorListeners via fireAncestorEvent
+	method.
+	(addNotifiy): Notify AncestorListeners via fireAncestorEvent
+	method.
+
+2005-10-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JViewport.java
 	(setView): Removed unnecessary loop. We only have on component.
 	(isOptimizedDrawingEnabled): Added comment explaining why this
