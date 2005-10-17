@@ -1,3 +1,8 @@
+2005-10-17  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/event/ListDataListener: 
+	reformatted and added API docs.
+
 2005-10-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/DefaultTableCellRenderer.java
