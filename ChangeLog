@@ -1,5 +1,11 @@
 2005-10-17  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(ItemHandler.itemStateChanged): if combo box is editable, update edit 
+	text field with new selection.
+	
+2005-10-17  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/event/ListDataListener: 
 	reformatted and added API docs.
 

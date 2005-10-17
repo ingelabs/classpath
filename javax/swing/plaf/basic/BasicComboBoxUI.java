@@ -1021,6 +1021,8 @@ public class BasicComboBoxUI extends ComboBoxUI
      */
     public void itemStateChanged(ItemEvent e)
     {
+      if (e.getStateChange() == ItemEvent.SELECTED && comboBox.isEditable())
+        comboBox.getEditor().setItem(e.getItem());
       comboBox.repaint();
     }
   }
