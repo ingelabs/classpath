@@ -890,6 +890,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "Label.font", getControlTextFont(),
       "Label.foreground", getSystemTextColor(),
 
+      "List.font", getControlTextFont(),
       "List.background", getWindowBackground(),
       "List.foreground", getUserTextColor(),
       "List.selectionBackground", getTextHighlightColor(),

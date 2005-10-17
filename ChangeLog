@@ -1,3 +1,23 @@
+2005-10-17  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* examples/gnu/classpath/examples/swing/ComboBoxDemo.java:
+	(CustomCellRenderer): new inner class,
+	(comboState6): new field,
+	(combo11): new field,
+	(combo12): new field,
+	(createContent): add panel from createPanel6(),
+	(createPanel6): new method,
+	(actionPerformed): update state for new JComboBoxes,
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installComponents): don't create arrowButton until after listBox is 
+	created, set listBox to the JList created by the popup,
+	* javax/swing/plaf/metal/MetalComboBoxButton.java:
+	(MetalComboBoxButton(JComboBox, Icon, boolean, CellRendererPane, 
+	JList)): set margins to zero,
+	(paintComponent): use list cell renderer to paint button content,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): add 'List.font' default.
+
 2005-10-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/util/Properties.java:

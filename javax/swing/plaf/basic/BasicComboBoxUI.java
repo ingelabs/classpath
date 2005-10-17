@@ -441,25 +441,22 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   protected void installComponents()
   {
-    // create and install arrow button
-    arrowButton = createArrowButton();
-    configureArrowButton();
-    comboBox.add(arrowButton);
-
-    // Set list that will be used by BasicComboBoxRender 
-    // in order to determine the right colors when rendering
-    listBox = new JList();
+    // create drop down list of items
+    popup = createPopup();
+    listBox = popup.getList();
 
     // set editor and renderer for the combo box. Editor is used
     // only if combo box becomes editable, otherwise renderer is used
     // to paint the selected item; combobox is not editable by default. 
     comboBox.setRenderer(createRenderer());
 
+    // create and install arrow button
+    arrowButton = createArrowButton();
+    configureArrowButton();
+    comboBox.add(arrowButton);
+
     comboBox.setEditor(createEditor());
     editor = comboBox.getEditor().getEditorComponent();
-
-    // create drop down list of items
-    popup = createPopup();
 
     comboBox.revalidate();
   }
