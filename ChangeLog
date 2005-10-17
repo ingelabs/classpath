@@ -1,3 +1,14 @@
+2005-10-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	Filled empty blocks with comments.
+	(FocusHandler.focusLost): Close popup when the combobox loses focus.
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	Filled empty blocks with comments.
+	(updateListBoxSelectionForEvent): Implemented partly.
+	(ListMouseHandler.mouseReleased): Call updateListBoxSelectionForEvent.
+	(ListMouseMotionHandler.mouseReleased): Likewise.
+
 2005-10-17  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* examples/gnu/classpath/examples/swing/ComboBoxDemo.java:

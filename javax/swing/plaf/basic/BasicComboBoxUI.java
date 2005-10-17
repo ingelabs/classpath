@@ -179,6 +179,7 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   public BasicComboBoxUI()
   {
+    // Nothing to do here.
   }
 
   /**
@@ -207,13 +208,13 @@ public class BasicComboBoxUI extends ComboBoxUI
 
     if (c instanceof JComboBox)
       {
-	comboBox = (JComboBox) c;
-	comboBox.setOpaque(true);
-	comboBox.setLayout(createLayoutManager());
-	installDefaults();
-	installComponents();
-	installListeners();
-	installKeyboardActions();
+        comboBox = (JComboBox) c;
+        comboBox.setOpaque(true);
+        comboBox.setLayout(createLayoutManager());
+        installDefaults();
+        installComponents();
+        installListeners();
+        installKeyboardActions();
       }
   }
 
@@ -532,9 +533,13 @@ public class BasicComboBoxUI extends ComboBoxUI
    * Unconfigures the arrow button.
    * 
    * @see #configureArrowButton()
+   *
+   * @specnote The specification says this method is implementation specific
+   *           and should not be used or overridden.
    */
   public void unconfigureArrowButton()
   {
+    // Nothing to do here yet.
   }
 
   /**
@@ -878,6 +883,7 @@ public class BasicComboBoxUI extends ComboBoxUI
      */
     public ComboBoxLayoutManager()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -964,6 +970,7 @@ public class BasicComboBoxUI extends ComboBoxUI
      */
     public FocusHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -987,6 +994,7 @@ public class BasicComboBoxUI extends ComboBoxUI
     public void focusLost(FocusEvent e)
     {
       hasFocus = false;
+      setPopupVisible(comboBox, false);
       comboBox.repaint();
     }
   }
@@ -1002,6 +1010,7 @@ public class BasicComboBoxUI extends ComboBoxUI
      */
     public ItemHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -1023,6 +1032,7 @@ public class BasicComboBoxUI extends ComboBoxUI
   {
     public KeyHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -1045,6 +1055,7 @@ public class BasicComboBoxUI extends ComboBoxUI
      */
     public ListDataHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -1102,6 +1113,7 @@ public class BasicComboBoxUI extends ComboBoxUI
      */
     public PropertyChangeHandler()
     {
+      // Nothing to do here.
     }
 
     /**

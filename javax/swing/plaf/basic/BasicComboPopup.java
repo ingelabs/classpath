@@ -718,7 +718,11 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
   protected void updateListBoxSelectionForEvent(MouseEvent anEvent,
                                                 boolean shouldScroll)
   {
-    // FIXME: Need to implement
+    // TODO: We need to handle the shouldScroll parameter somehow.
+    int index = list.locationToIndex(anEvent.getPoint());
+    // Check for valid index.
+    if (index >= 0)
+      list.setSelectedIndex(index);
   }
 
   /**
@@ -736,6 +740,7 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
      */
     protected InvocationMouseHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -748,7 +753,7 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
     public void mousePressed(MouseEvent e)
     {
       if (comboBox.isEnabled())
-	togglePopup();
+        togglePopup();
     }
 
     /**
@@ -772,15 +777,15 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
       // then change selection and close popup
       if (! (releasedComponent instanceof JComboBox))
         {
-	  // List model contains the item over which mouse is released,
-	  // since it is updated every time the mouse is moved over a different
-	  // item in the list. Now that the mouse is released we need to
-	  // update model of the combo box as well. 	  
-	  comboBox.setSelectedIndex(list.getSelectedIndex());
+          // List model contains the item over which mouse is released,
+          // since it is updated every time the mouse is moved over a different
+          // item in the list. Now that the mouse is released we need to
+          // update model of the combo box as well. 	  
+          comboBox.setSelectedIndex(list.getSelectedIndex());
 
-	  if (isAutoScrolling)
-	    stopAutoScrolling();
-	  hide();
+          if (isAutoScrolling)
+            stopAutoScrolling();
+          hide();
         }
     }
   }
@@ -796,6 +801,7 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
      */
     protected InvocationMouseMotionHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -872,6 +878,7 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
      */
     protected ItemHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -881,6 +888,7 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
      */
     public void itemStateChanged(ItemEvent e)
     {
+      // TODO: What should be done here?
     }
   }
 
@@ -894,16 +902,17 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
   {
     protected ListMouseHandler()
     {
+      // Nothing to do here.
     }
 
     public void mousePressed(MouseEvent e)
     {
+      // TODO: What should be do here?
     }
 
     public void mouseReleased(MouseEvent anEvent)
     {
-      int index = list.locationToIndex(anEvent.getPoint());
-      comboBox.setSelectedIndex(index);
+      updateListBoxSelectionForEvent(anEvent, false);
       hide();
     }
   }
@@ -917,15 +926,12 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
   {
     protected ListMouseMotionHandler()
     {
+      // Nothing to do here.
     }
 
     public void mouseMoved(MouseEvent anEvent)
     {
-      // Highlight list cells over which the mouse is located. 
-      // This changes list model, but has no effect on combo box's data model
-      int index = list.locationToIndex(anEvent.getPoint());
-      list.setSelectedIndex(index);
-      list.repaint();
+      updateListBoxSelectionForEvent(anEvent, false);
     }
   }
 
@@ -938,6 +944,7 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
   {
     protected PropertyChangeHandler()
     {
+      // Nothing to do here.
     }
 
     public void propertyChange(PropertyChangeEvent e)
@@ -1013,18 +1020,22 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
   {
     public ListDataHandler()
     {
+      // Nothing to do here.
     }
 
     public void contentsChanged(ListDataEvent e)
     {
+      // Nothing to do here.
     }
 
     public void intervalAdded(ListDataEvent e)
     {
+      // Nothing to do here.
     }
 
     public void intervalRemoved(ListDataEvent e)
     {
+      // Nothing to do here.
     }
   }
 
@@ -1036,10 +1047,12 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
   {
     protected ListSelectionHandler()
     {
+      // Nothing to do here.
     }
 
     public void valueChanged(ListSelectionEvent e)
     {
+      // Nothing to do here.
     }
   }
 
@@ -1050,10 +1063,12 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
   {
     public InvocationKeyHandler()
     {
+      // Nothing to do here.
     }
 
     public void keyReleased(KeyEvent e)
     {
+      // Nothing to do here.
     }
   }
 }
