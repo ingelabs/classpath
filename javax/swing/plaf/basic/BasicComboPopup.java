@@ -912,7 +912,10 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
 
     public void mouseReleased(MouseEvent anEvent)
     {
-      updateListBoxSelectionForEvent(anEvent, false);
+      int index = list.locationToIndex(anEvent.getPoint());
+      // Check for valid index.
+      if (index >= 0)
+        comboBox.setSelectedIndex(index);
       hide();
     }
   }
