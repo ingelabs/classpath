@@ -1,3 +1,11 @@
+2005-10-18  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/ScrollPaneLayout.java
+	(preferredLayoutSize): Removed check for JScrollPane argument.
+	Added code to respect the insets of the JScrollPane.
+	(minimumLayoutSize): Likewise.
+	(layoutContainer): Removed check for JScrollPane argument.
+
 2005-10-18  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/ObjectInputStream.java
@@ -66,7 +74,16 @@
 
 2005-10-17  Roman Kennke  <kennke@aicas.com>
 
-	* javax/swing/DefaultTableCellRenderer.java
+	* javax/swing/JPopupMenu.java
+	(setVisible): Set size according to the size property instead of
+	the preferredSize property.
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(ListMouseHandler.mouseReleased): Set comboBox selected index before
+	closing the popup.
+
+2005-10-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/table/DefaultTableCellRenderer.java
 	(getTableCellRendererComponent): Setup colors (more) correctly.
 	* javax/swing/DefaultListSelectionModel.java
 	(isSelectedIndex): Check for an illegal index argument.

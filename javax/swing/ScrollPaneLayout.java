@@ -43,11 +43,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.Serializable;
-
-import javax.swing.border.Border;
 
 /**
  * ScrollPaneLayout
@@ -64,6 +61,7 @@ public class ScrollPaneLayout
   {
     public UIResource()
     {
+      super();
     }
   }
 
@@ -79,8 +77,9 @@ public class ScrollPaneLayout
   protected int vsbPolicy;
   protected int hsbPolicy;
 
-  public ScrollPaneLayout() {
-		
+  public ScrollPaneLayout()
+  {
+	// Nothing to do here.
   }
 
   public void syncWithScrollPane(JScrollPane scrollPane) {
@@ -255,46 +254,44 @@ public class ScrollPaneLayout
 
   public Dimension preferredLayoutSize(Container parent) 
   {
-    if (parent != null && parent instanceof JScrollPane)
-      {
-        JScrollPane sc = (JScrollPane) parent;
-        Dimension viewportSize = viewport.getPreferredSize();
-        int width = viewportSize.width;
-        int height = viewportSize.height;
-        if (hsb != null && hsb.isVisible())
-          height += hsb.getPreferredSize().height;
-        if (vsb != null && vsb.isVisible())
-          width += vsb.getPreferredSize().width;
-        if (rowHead != null && rowHead.isVisible())
-          width += rowHead.getPreferredSize().width;
-        if (colHead != null && colHead.isVisible())
-          height += colHead.getPreferredSize().height;
-        return new Dimension(width, height);
-      }
-    // TODO: Probably throw an exception here. Check this.
-    return new Dimension(0, 0);
+    // Sun's implementation simply throws a ClassCastException if
+    // parent is no JScrollPane, so do we.
+    JScrollPane sc = (JScrollPane) parent;
+    Dimension viewportSize = viewport.getPreferredSize();
+    int width = viewportSize.width;
+    int height = viewportSize.height;
+    if (hsb != null && hsb.isVisible())
+      height += hsb.getPreferredSize().height;
+    if (vsb != null && vsb.isVisible())
+      width += vsb.getPreferredSize().width;
+    if (rowHead != null && rowHead.isVisible())
+      width += rowHead.getPreferredSize().width;
+    if (colHead != null && colHead.isVisible())
+      height += colHead.getPreferredSize().height;
+    Insets i = sc.getInsets();
+    return new Dimension(width + i.left + i.right,
+                         height + i.left + i.right);
   }
 
   public Dimension minimumLayoutSize(Container parent)
   {
-    if (parent != null && parent instanceof JScrollPane)
-      {
-        JScrollPane sc = (JScrollPane) parent;
-        Dimension viewportSize = viewport.getMinimumSize();
-        int width = viewportSize.width;
-        int height = viewportSize.height;
-        if (hsb != null && hsb.isVisible())
-          height += hsb.getMinimumSize().height;
-        if (vsb != null && vsb.isVisible())
-          width += vsb.getMinimumSize().width;
-        if (rowHead != null && rowHead.isVisible())
-          width += rowHead.getMinimumSize().width;
-        if (colHead != null && colHead.isVisible())
-          height += colHead.getMinimumSize().height;
-        return new Dimension(width, height);
-      }
-    // TODO: Probably throw an exception here. Check this.
-    return new Dimension(0, 0);
+    // Sun's implementation simply throws a ClassCastException if
+    // parent is no JScrollPane, so do we.
+    JScrollPane sc = (JScrollPane) parent;
+    Dimension viewportSize = viewport.getMinimumSize();
+    int width = viewportSize.width;
+    int height = viewportSize.height;
+    if (hsb != null && hsb.isVisible())
+      height += hsb.getMinimumSize().height;
+    if (vsb != null && vsb.isVisible())
+      width += vsb.getMinimumSize().width;
+    if (rowHead != null && rowHead.isVisible())
+      width += rowHead.getMinimumSize().width;
+    if (colHead != null && colHead.isVisible())
+      height += colHead.getMinimumSize().height;
+    Insets i = sc.getInsets();
+    return new Dimension(width + i.left + i.right,
+                         height + i.top + i.bottom);
   }
 
   /**
@@ -320,94 +317,91 @@ public class ScrollPaneLayout
    */
   public void layoutContainer(Container parent)
   {
-    if (parent instanceof JScrollPane)
+    // Sun's implementation simply throws a ClassCastException if
+    // parent is no JScrollPane, so do we.
+    JScrollPane sc = (JScrollPane) parent;
+    JViewport viewport = sc.getViewport();
+    Dimension viewSize = viewport.getViewSize();
+
+    int x1 = 0, x2 = 0, x3 = 0, x4 = 0;
+    int y1 = 0, y2 = 0, y3 = 0, y4 = 0;
+    Rectangle scrollPaneBounds = SwingUtilities.calculateInnerArea(sc, null);
+
+    x1 = scrollPaneBounds.x;
+    y1 = scrollPaneBounds.y;
+    x4 = scrollPaneBounds.x + scrollPaneBounds.width;
+    y4 = scrollPaneBounds.y + scrollPaneBounds.height;
+    if (colHead != null)
+      y2 = y1 + colHead.getPreferredSize().height;
+    else
+      y2 = y1;
+
+    if (rowHead != null)
+      x2 = x1 + rowHead.getPreferredSize().width;
+    else
+      x2 = x1;
+
+    int vsbPolicy = sc.getVerticalScrollBarPolicy();
+    int hsbPolicy = sc.getHorizontalScrollBarPolicy();
+
+    boolean showVsb = 
+      (vsb != null)
+      && ((vsbPolicy == VERTICAL_SCROLLBAR_ALWAYS)
+          || (vsbPolicy == VERTICAL_SCROLLBAR_AS_NEEDED 
+              && viewSize.height > (y4 - y2)));
+    boolean showHsb = 
+      (hsb != null)
+      && ((hsbPolicy == HORIZONTAL_SCROLLBAR_ALWAYS)
+          || (hsbPolicy == HORIZONTAL_SCROLLBAR_AS_NEEDED 
+              && viewSize.width > (x4 - x2)));
+
+    if (!showVsb)
+      x3 = x4;
+    else
+      x3 = x4 - vsb.getPreferredSize().width;
+
+    if (!showHsb)
+      y3 = y4;
+    else
+      y3 = y4 - hsb.getPreferredSize().height;
+
+    // now set the layout
+    if (viewport != null)
+      viewport.setBounds(new Rectangle(x2, y2, x3 - x2, y3 - y2));
+
+    if (colHead != null)
+      colHead.setBounds(new Rectangle(x2, y1, x3 - x2, y2 - y1));
+
+    if (rowHead != null)
+      rowHead.setBounds(new Rectangle(x1, y2, x2 - x1, y3 - y2));
+
+    if (showVsb)
       {
-        JScrollPane sc = (JScrollPane) parent;
-        JViewport viewport = sc.getViewport();
-        Dimension viewSize = viewport.getViewSize();
-
-        int x1 = 0, x2 = 0, x3 = 0, x4 = 0;
-        int y1 = 0, y2 = 0, y3 = 0, y4 = 0;
-
-        Rectangle scrollPaneBounds = SwingUtilities.calculateInnerArea(sc, null);
-
-        x1 = scrollPaneBounds.x;
-        y1 = scrollPaneBounds.y;
-        x4 = scrollPaneBounds.x + scrollPaneBounds.width;
-        y4 = scrollPaneBounds.y + scrollPaneBounds.height;
-
-        if (colHead != null)
-          y2 = y1 + colHead.getPreferredSize().height;
-        else
-          y2 = y1;
-
-        if (rowHead != null)
-          x2 = x1 + rowHead.getPreferredSize().width;
-        else
-          x2 = x1;
-
-        int vsbPolicy = sc.getVerticalScrollBarPolicy();
-        int hsbPolicy = sc.getHorizontalScrollBarPolicy();
-
-        boolean showVsb = 
-          (vsb != null)
-          && ((vsbPolicy == VERTICAL_SCROLLBAR_ALWAYS)
-              || (vsbPolicy == VERTICAL_SCROLLBAR_AS_NEEDED 
-                  && viewSize.height > (y4 - y2)));
-        boolean showHsb = 
-          (hsb != null)
-          && ((hsbPolicy == HORIZONTAL_SCROLLBAR_ALWAYS)
-              || (hsbPolicy == HORIZONTAL_SCROLLBAR_AS_NEEDED 
-                  && viewSize.width > (x4 - x2)));
-
-        if (!showVsb)
-          x3 = x4;
-        else
-          x3 = x4 - vsb.getPreferredSize().width;
-
-        if (!showHsb)
-          y3 = y4;
-        else
-          y3 = y4 - hsb.getPreferredSize().height;
-
-        // now set the layout
-        if (viewport != null)
-          viewport.setBounds(new Rectangle(x2, y2, x3 - x2, y3 - y2));
-
-        if (colHead != null)
-          colHead.setBounds(new Rectangle(x2, y1, x3 - x2, y2 - y1));
-
-        if (rowHead != null)
-          rowHead.setBounds(new Rectangle(x1, y2, x2 - x1, y3 - y2));
-
-        if (showVsb)
-          {
-            vsb.setVisible(true);
-            vsb.setBounds(new Rectangle(x3, y2, x4 - x3, y3 - y2));
-          }
-        else if (vsb != null)
-          vsb.setVisible(false);
-
-        if (showHsb)
-          {
-            hsb.setVisible(true);
-            hsb.setBounds(new Rectangle(x2, y3, x3 - x2, y4 - y3));
-          }
-        else if (hsb != null)
-          hsb.setVisible(false);
-
-        if (upperLeft != null)
-          upperLeft.setBounds(new Rectangle(x1, y1, x2 - x1, y2 - y1));
-        
-        if (upperRight != null)
-          upperRight.setBounds(new Rectangle(x3, y1, x4 - x3, y2 - y1));
-
-        if (lowerLeft != null)
-          lowerLeft.setBounds(new Rectangle(x1, y3, x2 - x1, y4 - y3));
-
-        if (lowerRight != null)
-          lowerRight.setBounds(new Rectangle(x3, y3, x4 - x3, y4 - y3));
+        vsb.setVisible(true);
+        vsb.setBounds(new Rectangle(x3, y2, x4 - x3, y3 - y2));
       }
+    else if (vsb != null)
+      vsb.setVisible(false);
+
+    if (showHsb)
+      {
+        hsb.setVisible(true);
+        hsb.setBounds(new Rectangle(x2, y3, x3 - x2, y4 - y3));
+      }
+    else if (hsb != null)
+      hsb.setVisible(false);
+
+    if (upperLeft != null)
+      upperLeft.setBounds(new Rectangle(x1, y1, x2 - x1, y2 - y1));
+
+    if (upperRight != null)
+      upperRight.setBounds(new Rectangle(x3, y1, x4 - x3, y2 - y1));
+
+    if (lowerLeft != null)
+      lowerLeft.setBounds(new Rectangle(x1, y3, x2 - x1, y4 - y3));
+
+    if (lowerRight != null)
+      lowerRight.setBounds(new Rectangle(x3, y3, x4 - x3, y4 - y3));
   }
 
   /**
