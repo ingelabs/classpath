@@ -1,5 +1,11 @@
 2005-10-18  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/filechooser/FileFilter.java:
+	* javax/swing/filechooser/FileView.java:
+	Filled empty blocks with comments.
+
+2005-10-18  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/event/EventListenerList.java:
 	* javax/swing/event/InternalFrameAdapter.java:
 	* javax/swing/event/MouseInputListener.java:
