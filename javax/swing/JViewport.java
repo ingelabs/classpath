@@ -411,35 +411,24 @@ public class JViewport extends JComponent implements Accessible
         fireStateChanged();
       }
     revalidate();
-  }
-
-  public void revalidate()
-  {
-    damaged = true;
-    fireStateChanged();
-    super.revalidate();
+    repaint();
   }
 
   public void reshape(int x, int y, int w, int h)
   {
-    boolean changed = 
-      (x != getX()) 
-      || (y != getY()) 
-      || (w != getWidth())
-      || (h != getHeight());
     if (w != getWidth() || h != getHeight())
       sizeChanged = true;
     super.reshape(x, y, w, h);
-    if (changed)
+    if (sizeChanged)
       {
         damaged = true;
         fireStateChanged();
       }
   }
-    
-  public final Insets getInsets() 
+
+  public final Insets getInsets()
   {
-    return new Insets(0,0,0,0);
+    return new Insets(0, 0, 0, 0);
   }
 
   public final Insets getInsets(Insets insets)
@@ -574,36 +563,26 @@ public class JViewport extends JComponent implements Accessible
     Rectangle viewBounds = getView().getBounds();
     Rectangle portBounds = getBounds();
     
-    // FIXME: should validate the view if it is not valid, however
-    // this may cause excessive validation when the containment
-    // hierarchy is being created.    
-    
-    // Y-DIRECTION
-    
-    // if contentRect is larger than the portBounds, center the view
-    if (contentRect.height > portBounds.height)
-      setViewPosition(new Point(pos.x, contentRect.y));
-    
-    if (contentRect.y < -viewBounds.y)
-      setViewPosition(new Point(pos.x, contentRect.y));
-    else if (contentRect.y + contentRect.height > 
-             -viewBounds.y + portBounds.height)     
-      setViewPosition (new Point(pos.x, contentRect.y - 
-                                 (portBounds.height - contentRect.height)));
-    
-    // X-DIRECTION
-    pos = getViewPosition();
-    
-    //  if contentRect is larger than the portBounds, center the view
-    if (contentRect.width> portBounds.width)
-        setViewPosition(new Point(contentRect.x, pos.y));
+    if (isShowing())
+      getView().validate();
 
-    if (contentRect.x < -viewBounds.x)
-      setViewPosition(new Point(contentRect.x, pos.y));
-    else if (contentRect.x + contentRect.width > 
-             -viewBounds.x + portBounds.width)
-      setViewPosition (new Point(contentRect.x - 
-                                 (portBounds.width - contentRect.width), pos.y));
+    // If the bottom boundary of contentRect is below the port
+    // boundaries, scroll up as necessary.
+    if (contentRect.y + contentRect.height + viewBounds.y > portBounds.height)
+      pos.y = contentRect.y + contentRect.height - viewBounds.height;
+    // If contentRect.y is above the port boundaries, scroll down to
+    // contentRect.y.
+    if (contentRect.y + viewBounds.y < 0)
+      pos.y = contentRect.y;
+    // If the right boundary of contentRect is right from the port
+    // boundaries, scroll left as necessary.
+    if (contentRect.x + contentRect.width + viewBounds.x > portBounds.width)
+      pos.x = contentRect.x + contentRect.width - viewBounds.width;
+    // If contentRect.x is left from the port boundaries, scroll right to
+    // contentRect.x.
+    if (contentRect.x + viewBounds.x < 0)
+      pos.x = contentRect.x;
+    setViewPosition(pos);
   }
 
   /**
@@ -617,6 +596,25 @@ public class JViewport extends JComponent implements Accessible
     if (accessibleContext == null)
       accessibleContext = new AccessibleJViewport();
     return accessibleContext;
+  }
+
+  /**
+   * Forward repaint to parent to make sure only one paint is performed by the
+   * RepaintManager.
+   *
+   * @param tm number of milliseconds to defer the repaint request
+   * @param x the X coordinate of the upper left corner of the dirty area
+   * @param y the Y coordinate of the upper left corner of the dirty area
+   * @param w the width of the dirty area
+   * @param h the height of the dirty area
+   */
+  public void repaint(long tm, int x, int y, int w, int h)
+  {
+    Component parent = getParent();
+    if (parent != null)
+      {
+        parent.repaint(tm, x + getX(), y + getY(), w, h);
+      }
   }
 
   protected void addImpl(Component comp, Object constraints, int index)

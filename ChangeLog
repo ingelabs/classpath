@@ -1,5 +1,15 @@
 2005-10-18  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JViewport.java
+	(setView): Added repaint() call.
+	(revalidate): Removed unnecessary and unspecified method.
+	(reshape): Fire stateChanged if only the size changes. Do not fire
+	stateChanged if only the location changes.
+	(scrollRectToVisible): Reworked most of this method to correctly
+	determine the scroll offsets. Added validation of view as specified.
+
+2005-10-18  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/ScrollPaneLayout.java
 	(preferredLayoutSize): Removed check for JScrollPane argument.
 	Added code to respect the insets of the JScrollPane.
