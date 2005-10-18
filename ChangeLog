@@ -1,5 +1,12 @@
 2005-10-18  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/colorchooser/AbstractColorChooserPanel.java:
+	* javax/swing/colorchooser/ColorChooserComponentFactory.java:
+	* javax/swing/colorchooser/DefaultSwatchChooserPanel.java:
+	Filled empty blocks with comments.
+
+2005-10-18  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/border/AbstractBorder.java:
 	* javax/swing/border/BevelBorder.java:
 	* javax/swing/border/Border.java:
