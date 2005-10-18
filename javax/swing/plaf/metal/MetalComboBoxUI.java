@@ -251,7 +251,11 @@ public class MetalComboBoxUI
       }
     else
       {
-        arrowButton.setText(comboBox.getSelectedItem().toString());
+        String text = "";
+        Object selected = comboBox.getSelectedItem();
+        if (selected != null)
+          text = selected.toString();
+        arrowButton.setText(text);
         if (editor != null)
           editor.setVisible(true);
       }
