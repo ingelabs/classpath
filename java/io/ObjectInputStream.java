@@ -221,7 +221,6 @@ public class ObjectInputStream extends InputStream
  	  for (int i = 0; i < n_intf; i++)
  	    {
  	      intfs[i] = this.realInputStream.readUTF();
- 	      System.out.println(intfs[i]);
  	    }
  	  
  	  boolean oldmode = setBlockDataMode(true);
@@ -229,6 +228,21 @@ public class ObjectInputStream extends InputStream
  	  setBlockDataMode(oldmode);
  	  
  	  ObjectStreamClass osc = lookupClass(cl);
+          if (osc.firstNonSerializableParentConstructor == null)
+            {
+              osc.realClassIsSerializable = true;
+              osc.fields = osc.fieldMapping = new ObjectStreamField[0];
+              try
+                {
+                  osc.firstNonSerializableParentConstructor =
+                    Object.class.getConstructor(new Class[0]);
+                }
+              catch (NoSuchMethodException x)
+                {
+                  throw (InternalError)
+                    new InternalError("Object ctor missing").initCause(x);
+                }
+            }
  	  assignNewHandle(osc);
  	  
  	  if (!is_consumed)

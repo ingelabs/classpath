@@ -1,3 +1,8 @@
+2005-10-18  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/io/ObjectInputStream.java
+	(parseContent): Removed bogus println and fixed bug #24422.
+
 2005-10-17  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicSplitPaneUI.java
