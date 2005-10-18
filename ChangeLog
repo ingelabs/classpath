@@ -1,3 +1,21 @@
+2005-10-18  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Removed leafIcon field.
+	(BasicTreeUI): Removed leafIcon initialization.
+	(installDefaults): Icon defaults were wrong, fixed.
+	(isLocationInExpandControl): Fixed to incorporated gap.
+	(mousePressed): Fixed to include correct icon widths. Sometimes
+	the labels icon is different from what the tree's default icon is
+	set to. Added a check for this.
+	(getCellBounds): No need to include gap here.
+	(getCurrentControlIcon): Fixed to use expandedIcon and collapsedIcon.
+	(paintRow): No need paint beyond preferred width of tree here.
+	(updateCurrentVisiblePath): If nothing is selected, the root should
+	be selected without focus.
+	* javax/swing/plaf/metal/MetalTreeUI.java
+	(installDefaults): Fixed defaults for the expanded/collapsed icons.
+
 2005-10-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComboBox.java
