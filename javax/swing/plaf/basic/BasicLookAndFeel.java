@@ -364,7 +364,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       }),
       "ComboBox.background", new ColorUIResource(Color.white),
       "ComboBox.buttonBackground", new ColorUIResource(light),
-      "ComboBox.buttonDarkShadow", new ColorUIResource(shadow),
+      "ComboBox.buttonDarkShadow", new ColorUIResource(darkShadow),
       "ComboBox.buttonHighlight", new ColorUIResource(highLight),
       "ComboBox.buttonShadow", new ColorUIResource(shadow),
       "ComboBox.disabledBackground", new ColorUIResource(light),

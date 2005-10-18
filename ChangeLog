@@ -1,3 +1,20 @@
+2005-10-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(buttonBackground): new field,
+	(shadow): renamed buttonShadow,
+	(darkShadow): renamed buttonDarkShadow,
+	(highlight): renamed buttonHighlight,
+	(installDefaults): initialise buttonBackground, plus updates for 
+	renamed fields,
+	(uninstallDefaults): clear buttonBackground, plus updates for renamed
+	fields,
+	(createEditor): return subclass that implements UIResource,
+	(createArrowButton): use constructor that accepts colors,
+	(getMaximumSize): fix API doc error,
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): correct 'ComboBox.buttonDarkShadow' default.
+
 2005-10-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JViewport.java

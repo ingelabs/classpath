@@ -157,12 +157,29 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   protected PropertyChangeListener propertyChangeListener;
 
-  /**
-   * Colors that are used to render selected item in the combo box.
+  /** 
+   * The button background. 
+   * @see #installDefaults()
    */
-  private Color shadow;
-  private Color darkShadow;
-  private Color highlight;
+  private Color buttonBackground;
+  
+  /** 
+   * The button shadow. 
+   * @see #installDefaults()
+   */
+  private Color buttonShadow;
+  
+  /**
+   * The button dark shadow.
+   * @see #installDefaults()
+   */
+  private Color buttonDarkShadow;
+
+  /**
+   * The button highlight.
+   * @see #installDefaults()
+   */
+  private Color buttonHighlight;
 
   /* Size of the largest item in the comboBox
    * This is package-private to avoid an accessor method.
@@ -244,10 +261,12 @@ public class BasicComboBoxUI extends ComboBoxUI
   {
     LookAndFeel.installColorsAndFont(comboBox, "ComboBox.background",
                                      "ComboBox.foreground", "ComboBox.font");
+    
     // fetch the button color scheme
-    shadow = UIManager.getColor("ComboBox.buttonShadow");
-    darkShadow = UIManager.getColor("ComboBox.buttonDarkShadow");
-    highlight = UIManager.getColor("ComboBox.buttonHighlight");
+    buttonBackground = UIManager.getColor("ComboBox.buttonBackground");
+    buttonShadow = UIManager.getColor("ComboBox.buttonShadow");
+    buttonDarkShadow = UIManager.getColor("ComboBox.buttonDarkShadow");
+    buttonHighlight = UIManager.getColor("ComboBox.buttonHighlight");
   }
 
   /**
@@ -295,9 +314,10 @@ public class BasicComboBoxUI extends ComboBoxUI
     if (comboBox.getBackground() instanceof UIResource)
       comboBox.setBackground(null);
 
-    shadow = null;
-    darkShadow = null;
-    highlight = null;
+    buttonBackground = null;
+    buttonShadow = null;
+    buttonDarkShadow = null;
+    buttonHighlight = null;
   }
 
   /**
@@ -432,7 +452,7 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   protected ComboBoxEditor createEditor()
   {
-    return new BasicComboBoxEditor();
+    return new BasicComboBoxEditor.UIResource();
   }
 
   /**
@@ -551,7 +571,8 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   protected JButton createArrowButton()
   {
-    return new BasicArrowButton(BasicArrowButton.SOUTH);
+    return new BasicArrowButton(BasicArrowButton.SOUTH, buttonBackground, 
+            buttonShadow, buttonDarkShadow, buttonHighlight);
   }
 
   /**
@@ -649,7 +670,7 @@ public class BasicComboBoxUI extends ComboBoxUI
    *
    * @param c The {@link JComponent} to find the maximum size for
    *
-   * @return The dimensions of the minimum size.
+   * @return The maximum size (<code>Dimension(32767, 32767)</code>).
    */
   public Dimension getMaximumSize(JComponent c)
   {
