@@ -1230,6 +1230,7 @@ public class BasicTreeUI
     rightChildIndent = UIManager.getInt("Tree.rightChildIndent");
     leftChildIndent = UIManager.getInt("Tree.leftChildIndent");
     setRowHeight(UIManager.getInt("Tree.rowHeight"));
+    tree.setRowHeight(UIManager.getInt("Tree.rowHeight"));
     tree.requestFocusInWindow(false);
     tree.setScrollsOnExpand(UIManager.getBoolean("Tree.scrollsOnExpand"));
     setExpandedIcon(UIManager.getIcon("Tree.openIcon"));
@@ -3778,6 +3779,7 @@ public class BasicTreeUI
             !tree.isVisible(new TreePath(getPathToRoot(next, 0))));
       }
     currentVisiblePath = current;
+    tree.setVisibleRowCount(getRowCount(tree));
   }
   
   /**

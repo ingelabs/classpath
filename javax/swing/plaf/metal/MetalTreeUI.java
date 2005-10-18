@@ -140,6 +140,7 @@ public class MetalTreeUI
     rightChildIndent = defaults.getInt("Tree.rightChildIndent");
     leftChildIndent = defaults.getInt("Tree.leftChildIndent");
     setRowHeight(defaults.getInt("Tree.rowHeight"));
+    tree.setRowHeight(defaults.getInt("Tree.rowHeight"));
     tree.requestFocusInWindow(false);
     
     setExpandedIcon(defaults.getIcon("Tree.openIcon"));
