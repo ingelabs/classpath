@@ -311,7 +311,8 @@ public class JComboBox extends JComponent implements ItemSelectable,
     // Stores old data model for event notification.
     ComboBoxModel oldDataModel = dataModel;
     dataModel = newDataModel;
-
+    selectedItemReminder = newDataModel.getSelectedItem();
+    
     // Notifies the listeners of the model change.
     firePropertyChange("model", oldDataModel, dataModel);
   }
@@ -901,8 +902,9 @@ public class JComboBox extends JComponent implements ItemSelectable,
 
     // Fire ItemEvent to indicate that new item is selected    
     Object newSelection = getSelectedItem();
-    fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED,
-                                       newSelection, ItemEvent.SELECTED));
+    if (newSelection != null)
+      fireItemStateChanged(new ItemEvent(this, ItemEvent.ITEM_STATE_CHANGED,
+                                         newSelection, ItemEvent.SELECTED));
 
     // Fire Action Event to JComboBox's registered listeners					 				 
     fireActionEvent();

@@ -1,5 +1,12 @@
 2005-10-18  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JComboBox.java
+	(setModel): update the selectedItemReminder field,
+	(selectedItemChanged): only send ItemEvent.SELECTED event if the new
+	selection is non-null.
+
+2005-10-18  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicComboBoxUI.java
 	(installComponents): only set default editor if the current editor is
 	null or implements UIResource,
