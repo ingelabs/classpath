@@ -1,5 +1,13 @@
 2005-10-18  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/event/EventListenerList.java:
+	* javax/swing/event/InternalFrameAdapter.java:
+	* javax/swing/event/MouseInputListener.java:
+	Reformatted slightly. Filled emtpy blocks with comments. Fixed some
+	slight API doc errors
+
+2005-10-18  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/colorchooser/AbstractColorChooserPanel.java:
 	* javax/swing/colorchooser/ColorChooserComponentFactory.java:
 	* javax/swing/colorchooser/DefaultSwatchChooserPanel.java:
