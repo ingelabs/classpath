@@ -59,6 +59,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.CellRendererPane;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -228,34 +229,40 @@ public class BasicListUI extends ListUI
     {
       int lead = list.getLeadSelectionIndex();
       int max = list.getModel().getSize() - 1;
+      DefaultListSelectionModel selModel = (DefaultListSelectionModel)list.getSelectionModel();
+      String command = e.getActionCommand();
       // Do nothing if list is empty
       if (max == -1)
         return;
       
-      if (e.getActionCommand().equals("selectNextRow"))
+      if (command.equals("selectNextRow"))
         {
           selectNextIndex();
         }
-      else if (e.getActionCommand().equals("selectPreviousRow"))
+      else if (command.equals("selectPreviousRow"))
         {
           selectPreviousIndex();
         }
-      else if (e.getActionCommand().equals("clearSelection"))
+      else if (command.equals("clearSelection"))
         {
           list.clearSelection();
         }
-      else if (e.getActionCommand().equals("selectAll"))
+      else if (command.equals("selectAll"))
         {
           list.setSelectionInterval(0, max);
           // this next line is to restore the lead selection index to the old
           // position, because select-all should not change the lead index
           list.addSelectionInterval(lead, lead);
         }
-      else if (e.getActionCommand().equals("selectLastRow"))
+      else if (command.equals("selectLastRow"))
         {
           list.setSelectedIndex(list.getModel().getSize() - 1); 
         }
-      else if (e.getActionCommand().equals("scrollDownExtendSelection"))
+      else if (command.equals("selectLastRowChangeLead"))
+        {
+          selModel.moveLeadSelectionIndex(list.getModel().getSize() - 1);
+        }
+      else if (command.equals("scrollDownExtendSelection"))
         {
           int target;
           if (lead == list.getLastVisibleIndex())
@@ -266,9 +273,22 @@ public class BasicListUI extends ListUI
             }
           else
             target = list.getLastVisibleIndex();
-          list.getSelectionModel().setLeadSelectionIndex(target);
+          selModel.setLeadSelectionIndex(target);
         }
-      else if (e.getActionCommand().equals("scrollUpExtendSelection"))
+      else if (command.equals("scrollDownChangeLead"))
+        {
+          int target;
+          if (lead == list.getLastVisibleIndex())
+            {
+              target = Math.min
+                (max, lead + (list.getLastVisibleIndex() -
+                    list.getFirstVisibleIndex() + 1));
+            }
+          else
+            target = list.getLastVisibleIndex();
+          selModel.moveLeadSelectionIndex(target);
+        }
+      else if (command.equals("scrollUpExtendSelection"))
         {
           int target;
           if (lead == list.getFirstVisibleIndex())
@@ -279,26 +299,42 @@ public class BasicListUI extends ListUI
             }
           else
             target = list.getFirstVisibleIndex();
-          list.getSelectionModel().setLeadSelectionIndex(target);
+          selModel.setLeadSelectionIndex(target);
         }
-      else if (e.getActionCommand().equals("selectNextRowExtendSelection"))
+      else if (command.equals("scrollUpChangeLead"))
         {
-          list.getSelectionModel().
-            setLeadSelectionIndex(Math.min(lead + 1,max));
+          int target;
+          if (lead == list.getFirstVisibleIndex())
+            {
+              target = Math.max 
+                (0, lead - (list.getLastVisibleIndex() - 
+                    list.getFirstVisibleIndex() + 1));
+            }
+          else
+            target = list.getFirstVisibleIndex();
+          selModel.moveLeadSelectionIndex(target);
         }
-      else if (e.getActionCommand().equals("selectFirstRow"))
+      else if (command.equals("selectNextRowExtendSelection"))
+        {
+          selModel.setLeadSelectionIndex(Math.min(lead + 1,max));
+        }
+      else if (command.equals("selectFirstRow"))
         {
           list.setSelectedIndex(0);
         }
-      else if (e.getActionCommand().equals("selectFirstRowExtendSelection"))
+      else if (command.equals("selectFirstRowChangeLead"))
+          {
+            selModel.moveLeadSelectionIndex(0);
+          }
+      else if (command.equals("selectFirstRowExtendSelection"))
         {
-          list.getSelectionModel().setLeadSelectionIndex(0);
+          selModel.setLeadSelectionIndex(0);
         }
-      else if (e.getActionCommand().equals("selectPreviousRowExtendSelection"))
+      else if (command.equals("selectPreviousRowExtendSelection"))
         {
-          list.getSelectionModel().setLeadSelectionIndex(Math.max(0,lead - 1));
+          selModel.setLeadSelectionIndex(Math.max(0,lead - 1));
         }
-      else if (e.getActionCommand().equals("scrollUp"))
+      else if (command.equals("scrollUp"))
         {
           int target;
           if (lead == list.getFirstVisibleIndex())
@@ -311,12 +347,11 @@ public class BasicListUI extends ListUI
             target = list.getFirstVisibleIndex();
           list.setSelectedIndex(target);          
         }
-      else if (e.getActionCommand().equals("selectLastRowExtendSelection"))
+      else if (command.equals("selectLastRowExtendSelection"))
         {
-          list.getSelectionModel().
-            setLeadSelectionIndex(list.getModel().getSize() - 1);
+          selModel.setLeadSelectionIndex(list.getModel().getSize() - 1);
         }
-      else if (e.getActionCommand().equals("scrollDown"))
+      else if (command.equals("scrollDown"))
         {
           int target;
           if (lead == list.getLastVisibleIndex())
@@ -328,6 +363,41 @@ public class BasicListUI extends ListUI
           else
             target = list.getLastVisibleIndex();
           list.setSelectedIndex(target);
+        }
+      else if (command.equals("selectNextRowChangeLead"))
+          {
+            if (selModel.getSelectionMode() != ListSelectionModel.MULTIPLE_INTERVAL_SELECTION)
+              selectNextIndex();
+            else
+              {
+                selModel.moveLeadSelectionIndex(Math.min(max, lead + 1));
+              }
+          }
+      else if (command.equals("selectPreviousRowChangeLead"))
+        {
+          if (selModel.getSelectionMode() != ListSelectionModel.MULTIPLE_INTERVAL_SELECTION)
+            selectPreviousIndex();
+          else
+            {
+              selModel.moveLeadSelectionIndex(Math.max(0, lead - 1));
+            }
+        }      
+      else if (command.equals("addToSelection"))
+        {
+          list.addSelectionInterval(lead, lead);
+        }
+      else if (command.equals("extendTo"))
+        {
+          selModel.setSelectionInterval(selModel.getAnchorSelectionIndex(),
+                                        lead);
+        }
+      else if (command.equals("toggleAndAnchor"))
+        {
+          if (!list.isSelectedIndex(lead))
+            list.addSelectionInterval(lead, lead);
+          else
+            list.removeSelectionInterval(lead, lead);
+          selModel.setAnchorSelectionIndex(lead);
         }
       else 
         {
@@ -356,48 +426,46 @@ public class BasicListUI extends ListUI
     public void mouseClicked(MouseEvent event)
     {
       Point click = event.getPoint();
-      int index = BasicListUI.this.locationToIndex(list, click);
+      int index = locationToIndex(list, click);
       if (index == -1)
         return;
       if (event.isShiftDown())
         {
-          if (BasicListUI.this.list.getSelectionMode() == 
-              ListSelectionModel.SINGLE_SELECTION)
-            BasicListUI.this.list.setSelectedIndex(index);
-          else if (BasicListUI.this.list.getSelectionMode() == 
+          if (list.getSelectionMode() == ListSelectionModel.SINGLE_SELECTION)
+            list.setSelectedIndex(index);
+          else if (list.getSelectionMode() == 
                    ListSelectionModel.SINGLE_INTERVAL_SELECTION)
             // COMPAT: the IBM VM is compatible with the following line of code.
             // However, compliance with Sun's VM would correspond to replacing 
             // getAnchorSelectionIndex() with getLeadSelectionIndex().This is 
             // both unnatural and contradictory to the way they handle other 
             // similar UI interactions.
-            BasicListUI.this.list.setSelectionInterval
-              (BasicListUI.this.list.getAnchorSelectionIndex(), index);
+            list.setSelectionInterval(list.getAnchorSelectionIndex(), index);
           else
             // COMPAT: both Sun and IBM are compatible instead with:
-            // BasicListUI.this.list.setSelectionInterval
-            //     (BasicListUI.this.list.getLeadSelectionIndex(),index);
+            // list.setSelectionInterval
+            //     (list.getLeadSelectionIndex(),index);
             // Note that for IBM this is contradictory to what they did in 
             // the above situation for SINGLE_INTERVAL_SELECTION.  
             // The most natural thing to do is the following:
-            BasicListUI.this.list.getSelectionModel().
-              setLeadSelectionIndex(index);
+            if (list.isSelectedIndex(list.getAnchorSelectionIndex()))
+              list.getSelectionModel().setLeadSelectionIndex(index);
+            else
+              list.addSelectionInterval(list.getAnchorSelectionIndex(), index);
         }
       else if (event.isControlDown())
         {
-          if (BasicListUI.this.list.getSelectionMode() == 
-              ListSelectionModel.SINGLE_SELECTION)
-            BasicListUI.this.list.setSelectedIndex(index);
-          else if (BasicListUI.this.list.isSelectedIndex(index))
-            BasicListUI.this.list.removeSelectionInterval(index,index);
+          if (list.getSelectionMode() == ListSelectionModel.SINGLE_SELECTION)
+            list.setSelectedIndex(index);
+          else if (list.isSelectedIndex(index))
+            list.removeSelectionInterval(index,index);
           else
-            BasicListUI.this.list.addSelectionInterval(index,index);
+            list.addSelectionInterval(index,index);
         }
       else
-        BasicListUI.this.list.setSelectedIndex(index);
+        list.setSelectedIndex(index);
       
-      BasicListUI.this.list.ensureIndexIsVisible
-        (BasicListUI.this.list.getLeadSelectionIndex());
+      list.ensureIndexIsVisible(list.getLeadSelectionIndex());
     }
 
     /**

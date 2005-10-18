@@ -1,3 +1,36 @@
+2005-10-18  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/DefaultListSelectionModel.java:
+	(setLeadSelectionIndex): Avoid index out of bounds error on initial
+	call of this method by checking explicitly for oldLeadIndex being -1.
+	Also remove unused BitSet newRange and oldRange.
+	(moveLeadSelectionIndex): New API method implemented (@since 1.5).
+	* javax/swing/plaf/basic/BasicListUI.java:
+	(ListAction.actionPerformed): Make code more readable by declaring
+	local variables for the actionCommand and for the list's
+	selectionModel.  Implemented the following bindings: 
+	selectLastRowChangeLead, scrollDownChangeLead, scrollUpChangeLead, 
+	selectFirstRowChangeLead, selectNextRowChangeLead, 
+	selectPreviousRowChangeLead, addToSelection, toggleAndAnchor, 
+	extendTo.
+	(MouseInputHandler.mousePressed): Made code more readable by removing
+	unnecessary full qualification from variable 'list'.  Change 
+	behaviour of shift-click based on whether or not the anchor index is 
+	selected.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	(initComponentDefaults): Added remaining bindings for
+	Table.ancestorMap.
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(TableAction.actionPerformed): Made type of variables rowModel and 
+	colModel more specific to avoid many casts later on (makes code more
+	readable).  Also declare local variable to store the action command to 
+	make the code more readable. Implemented the following bindings: 
+	selectNextRowChangeLead, selectPreviousRowChangeLead, 
+	selectNextColumnChangeLead, selectPreviousColumnChangeLead,
+	addToSelection, extendTo, toggleAndAnchor.  Added commented-out debug 
+	statement to print unimplemented bindings when used.  Added check for 
+	the SPACE character to make sure it doesn't stop editing.
+
 2005-10-18  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java:
