@@ -476,8 +476,12 @@ public class BasicComboBoxUI extends ComboBoxUI
     configureArrowButton();
     comboBox.add(arrowButton);
 
-    comboBox.setEditor(createEditor());
-    editor = comboBox.getEditor().getEditorComponent();
+    ComboBoxEditor currentEditor = comboBox.getEditor();
+    if (currentEditor == null || currentEditor instanceof UIResource)
+      {
+        comboBox.setEditor(createEditor());
+        editor = comboBox.getEditor().getEditorComponent();
+      }
 
     comboBox.revalidate();
   }
@@ -499,8 +503,14 @@ public class BasicComboBoxUI extends ComboBoxUI
 
     comboBox.setRenderer(null);
 
-    comboBox.setEditor(null);
-    editor = null;
+    // if the editor is not an instanceof UIResource, it was not set by the
+    // UI delegate, so don't clear it...
+    ComboBoxEditor currentEditor = comboBox.getEditor();
+    if (currentEditor instanceof UIResource)
+      {
+        comboBox.setEditor(null);
+        editor = null;
+      }
   }
 
   /**

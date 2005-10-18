@@ -1,3 +1,10 @@
+2005-10-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installComponents): only set default editor if the current editor is
+	null or implements UIResource,
+	(uninstallComponents): only clear editor if it implements UIResource.
+
 2005-10-18  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
