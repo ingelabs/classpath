@@ -1,5 +1,11 @@
 2005-10-18  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installDefaults): Set the selected text color for the
+	text component.
+
+2005-10-18  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/JTree.java
 	(scrollPathToVisible): Reimplemented to make the path visible if its
 	parent is not expanded.

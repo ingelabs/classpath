@@ -523,6 +523,7 @@ public abstract class BasicTextUI extends TextUI
     inactiveBackground = UIManager.getColor(prefix + ".inactiveBackground");
     textComponent.setDisabledTextColor
                          (UIManager.getColor(prefix + ".inactiveForeground"));
+    textComponent.setSelectedTextColor(UIManager.getColor(prefix + ".selectionForeground"));
   }
 
   /**
