@@ -671,19 +671,17 @@ public class JTable extends JComponent
    */
   public JTable (TableModel dm, TableColumnModel cm, ListSelectionModel sm)
   {
-    setModel(dm == null ? createDefaultDataModel() : dm);
-    setSelectionModel(sm == null ? createDefaultSelectionModel() : sm);
-
+    boolean autoCreate = false;
     if (cm != null)
-      {
         setColumnModel(cm);
-        setAutoCreateColumnsFromModel(false);
-      }
     else 
       {
         setColumnModel(createDefaultColumnModel());
-        setAutoCreateColumnsFromModel(true);
+        autoCreate = true;
       }
+    setModel(dm == null ? createDefaultDataModel() : dm);
+    setSelectionModel(sm == null ? createDefaultSelectionModel() : sm);
+    setAutoCreateColumnsFromModel(autoCreate);
     initializeLocalVars();
     // The next two lines are for compliance with the JDK which starts
     // the JLists associated with a JTable  with both lead selection 

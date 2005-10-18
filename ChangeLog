@@ -1,3 +1,10 @@
+2005-10-18  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTable.java
+	(JTable): Moved code around so all models are set before
+	any other function is called. Prevents all NPEs with
+	models.
+
 2005-10-18  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/DefaultListSelectionModel.java:
