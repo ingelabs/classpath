@@ -100,13 +100,14 @@ public class BasicInternalFrameTitlePane extends JComponent
     {
       if (frame.isClosable())
         {
-	  try
-	    {
-	      frame.setClosed(true);
-	    }
-	  catch (PropertyVetoException pve)
-	    {
-	    }
+          try
+            {
+              frame.setClosed(true);
+            }
+          catch (PropertyVetoException pve)
+            {
+              // We do nothing if the attempt has been vetoed.
+            }
         }
     }
   }
@@ -138,13 +139,14 @@ public class BasicInternalFrameTitlePane extends JComponent
     {
       if (frame.isIconifiable() && ! frame.isIcon())
         {
-	  try
-	    {
-	      frame.setIcon(true);
-	    }
-	  catch (PropertyVetoException pve)
-	    {
-	    }
+          try
+            {
+              frame.setIcon(true);
+            }
+          catch (PropertyVetoException pve)
+            {
+              // We do nothing if the attempt has been vetoed.
+            }
         }
     }
   }
@@ -175,13 +177,14 @@ public class BasicInternalFrameTitlePane extends JComponent
     {
       try
         {
-	  if (frame.isMaximizable() && ! frame.isMaximum())
-	    frame.setMaximum(true);
-	  else if (frame.isMaximum())
-	    frame.setMaximum(false);
+          if (frame.isMaximizable() && ! frame.isMaximum())
+            frame.setMaximum(true);
+          else if (frame.isMaximum())
+            frame.setMaximum(false);
         }
       catch (PropertyVetoException pve)
         {
+          // We do nothing if the attempt has been vetoed.
         }
     }
   }
@@ -240,13 +243,14 @@ public class BasicInternalFrameTitlePane extends JComponent
     {
       if (frame.isMaximum())
         {
-	  try
-	    {
-	      frame.setMaximum(false);
-	    }
-	  catch (PropertyVetoException pve)
-	    {
-	    }
+          try
+            {
+              frame.setMaximum(false);
+            }
+          catch (PropertyVetoException pve)
+            {
+              // We do nothing if the attempt has been vetoed.
+            }
         }
     }
   }
@@ -481,6 +485,7 @@ public class BasicInternalFrameTitlePane extends JComponent
      */
     public void removeLayoutComponent(Component c)
     {
+      // Nothing to do here.
     }
   }
 

@@ -112,11 +112,11 @@ import javax.swing.tree.TreeSelectionModel;
  * the Basic look and feel.
  * 
  * @see javax.swing.JTree
- * @author Sascha Brawer (brawer@dandelis.ch)
+ *
  * @author Lillian Angel (langel@redhat.com)
+ * @author Sascha Brawer (brawer@dandelis.ch)
  */
-public class BasicTreeUI
-  extends TreeUI
+public class BasicTreeUI extends TreeUI
 {
   /** Collapse Icon for the tree. */
   protected transient Icon collapsedIcon;
@@ -255,7 +255,7 @@ public class BasicTreeUI
   private KeyListener keyListener;
   private PropertyChangeListener selectionModelPropertyChangeListener;
   private ComponentListener componentListener;
-  private CellEditorListener cellEditorListener;
+  CellEditorListener cellEditorListener;
   private TreeExpansionListener treeExpansionListener;
   private TreeModelListener treeModelListener;
 
@@ -810,6 +810,7 @@ public class BasicTreeUI
    */
   protected void prepareForUIInstall()
   {
+    // TODO: Implement this properly.
   }
 
   /**
@@ -818,6 +819,7 @@ public class BasicTreeUI
    */
   protected void completeUIInstall()
   {
+    // TODO: Implement this properly.
   }
 
   /**
@@ -826,6 +828,7 @@ public class BasicTreeUI
    */
   protected void completeUIUninstall()
   {
+    // TODO: Implement this properly.
   }
 
   /**
@@ -1034,6 +1037,7 @@ public class BasicTreeUI
    */
   protected void uninstallKeyboardActions()
   {
+    // TODO: Implement this properly.
   }
 
   /**
@@ -1959,8 +1963,7 @@ public class BasicTreeUI
   /**
    * Updates the preferred size when scrolling, if necessary.
    */
-  public class ComponentHandler
-    extends ComponentAdapter
+  public class ComponentHandler extends ComponentAdapter
     implements ActionListener
   {
     /**
@@ -1976,6 +1979,7 @@ public class BasicTreeUI
      */
     public ComponentHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -1986,6 +1990,7 @@ public class BasicTreeUI
      */
     public void componentMoved(ComponentEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -1994,6 +1999,7 @@ public class BasicTreeUI
      */
     protected void startTimer()
     {
+      // TODO: Implement this properly.
     }
 
     /**
@@ -2015,21 +2021,22 @@ public class BasicTreeUI
      */
     public void actionPerformed(ActionEvent ae)
     {
+      // TODO: Implement this properly.
     }
-  }// ComponentHandler
+  }
 
   /**
    * Listener responsible for getting cell editing events and updating the tree
    * accordingly.
    */
-  public class CellEditorHandler
-    implements CellEditorListener
+  public class CellEditorHandler implements CellEditorListener
   {
     /**
      * Constructor
      */
     public CellEditorHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2110,6 +2117,7 @@ public class BasicTreeUI
      */
     public FocusHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2121,6 +2129,7 @@ public class BasicTreeUI
      */
     public void focusGained(FocusEvent e)
     {
+      // TODO: Implement this properly.
     }
 
     /**
@@ -2132,8 +2141,9 @@ public class BasicTreeUI
      */
     public void focusLost(FocusEvent e)
     {
+      // TODO: Implement this properly.
     }
-  }// FocusHandler
+  }
 
   /**
    * This is used to get multiple key down events to appropriately genereate
@@ -2153,6 +2163,7 @@ public class BasicTreeUI
      */
     public KeyHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2166,6 +2177,7 @@ public class BasicTreeUI
      */
     public void keyTyped(KeyEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2176,6 +2188,7 @@ public class BasicTreeUI
      */
     public void keyPressed(KeyEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2186,22 +2199,22 @@ public class BasicTreeUI
      */
     public void keyReleased(KeyEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
-  }// KeyHandler
+  }
 
   /**
    * MouseListener is responsible for updating the selection based on mouse
    * events.
    */
-  public class MouseHandler
-    extends MouseAdapter
-    implements MouseMotionListener
+  public class MouseHandler extends MouseAdapter implements MouseMotionListener
   {
     /**
      * Constructor
      */
     public MouseHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2212,6 +2225,7 @@ public class BasicTreeUI
      */
     public void mousePressed(MouseEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2225,6 +2239,7 @@ public class BasicTreeUI
      */
     public void mouseDragged(MouseEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2236,6 +2251,7 @@ public class BasicTreeUI
      */
     public void mouseMoved(MouseEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2246,16 +2262,16 @@ public class BasicTreeUI
      */
     public void mouseReleased(MouseEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
-  }// MouseHandler
+  }
 
   /**
    * MouseInputHandler handles passing all mouse events, including mouse motion
    * events, until the mouse is released to the destination it is constructed
    * with.
    */
-  public class MouseInputHandler
-    implements MouseInputListener
+  public class MouseInputHandler implements MouseInputListener
   {
     /** Source that events are coming from */
     protected Component source;
@@ -2276,6 +2292,8 @@ public class BasicTreeUI
     public MouseInputHandler(Component source, Component destination,
                              MouseEvent e)
     {
+      this.source = source;
+      this.destination = destination;
     }
 
     /**
@@ -2287,6 +2305,7 @@ public class BasicTreeUI
      */
     public void mouseClicked(MouseEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2355,6 +2374,7 @@ public class BasicTreeUI
      */
     public void mouseReleased(MouseEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2365,6 +2385,7 @@ public class BasicTreeUI
      */
     public void mouseEntered(MouseEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2375,6 +2396,7 @@ public class BasicTreeUI
      */
     public void mouseExited(MouseEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2388,6 +2410,7 @@ public class BasicTreeUI
      */
     public void mouseDragged(MouseEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2399,6 +2422,7 @@ public class BasicTreeUI
      */
     public void mouseMoved(MouseEvent e)
     {
+      // TODO: What should be done here, if anything?
     }
 
     /**
@@ -2406,8 +2430,9 @@ public class BasicTreeUI
      */
     protected void removeFromSource()
     {
+      // TODO: Implement this properly.
     }
-  }// MouseInputHandler
+  }
 
   /**
    * Class responsible for getting size of node, method is forwarded to
@@ -2422,6 +2447,7 @@ public class BasicTreeUI
      */
     public NodeDimensionsHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2469,6 +2495,7 @@ public class BasicTreeUI
      */
     public PropertyChangeHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2480,8 +2507,9 @@ public class BasicTreeUI
      */
     public void propertyChange(PropertyChangeEvent event)
     {
+      // TODO: What should be done here, if anything?
     }
-  }// PropertyChangeHandler
+  }
 
   /**
    * Listener on the TreeSelectionModel, resets the row selection if any of the
@@ -2496,6 +2524,7 @@ public class BasicTreeUI
      */
     public SelectionModelPropertyChangeHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2507,8 +2536,9 @@ public class BasicTreeUI
      */
     public void propertyChange(PropertyChangeEvent event)
     {
+      // TODO: What should be done here, if anything?
     }
-  }// SelectionModelPropertyChangeHandler
+  }
 
   /**
    * ActionListener that invokes cancelEditing when action performed.
@@ -2522,6 +2552,7 @@ public class BasicTreeUI
      */
     public TreeCancelEditingAction(String name)
     {
+      // TODO: Implement this properly.
     }
 
     /**
@@ -2532,6 +2563,7 @@ public class BasicTreeUI
      */
     public void actionPerformed(ActionEvent e)
     {
+      // TODO: Implement this properly.
     }
 
     /**
@@ -2541,9 +2573,10 @@ public class BasicTreeUI
      */
     public boolean isEnabled()
     {
+      // TODO: Implement this properly.
       return false;
     }
-  }// TreeCancelEditingAction
+  }
 
   /**
    * Updates the TreeState in response to nodes expanding/collapsing.
@@ -2557,6 +2590,7 @@ public class BasicTreeUI
      */
     public TreeExpansionHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2609,6 +2643,7 @@ public class BasicTreeUI
      */
     public TreeHomeAction(int direction, String name)
     {
+      // TODO: Implement this properly
     }
 
     /**
@@ -2619,6 +2654,7 @@ public class BasicTreeUI
      */
     public void actionPerformed(ActionEvent e)
     {
+      // TODO: Implement this properly
     }
 
     /**
@@ -2628,9 +2664,10 @@ public class BasicTreeUI
      */
     public boolean isEnabled()
     {
+      // TODO: Implement this properly
       return false;
     }
-  }// TreeHomeAction
+  }
 
   /**
    * TreeIncrementAction is used to handle up/down actions. Selection is moved
@@ -2653,6 +2690,7 @@ public class BasicTreeUI
      */
     public TreeIncrementAction(int direction, String name)
     {
+      // TODO: Implement this properly
     }
 
     /**
@@ -2733,21 +2771,22 @@ public class BasicTreeUI
      */
     public boolean isEnabled()
     {
+      // TODO: Implement this properly
       return false;
     }
-  }// TreeIncrementAction
+  }
 
   /**
    * Forwards all TreeModel events to the TreeState.
    */
-  public class TreeModelHandler
-    implements TreeModelListener
+  public class TreeModelHandler implements TreeModelListener
   {
     /**
      * Constructor
      */
     public TreeModelHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2828,8 +2867,7 @@ public class BasicTreeUI
   /**
    * TreePageAction handles page up and page down events.
    */
-  public class TreePageAction
-    extends AbstractAction
+  public class TreePageAction extends AbstractAction
   {
     /** Specifies the direction to adjust the selection by. */
     protected int direction;
@@ -2844,6 +2882,7 @@ public class BasicTreeUI
      */
     public TreePageAction(int direction, String name)
     {
+      this.direction = direction;
     }
 
     /**
@@ -2854,6 +2893,7 @@ public class BasicTreeUI
      */
     public void actionPerformed(ActionEvent e)
     {
+      // TODO: Implement this properly.
     }
 
     /**
@@ -2871,14 +2911,14 @@ public class BasicTreeUI
    * Listens for changes in the selection model and updates the display
    * accordingly.
    */
-  public class TreeSelectionHandler
-    implements TreeSelectionListener
+  public class TreeSelectionHandler implements TreeSelectionListener
   {
     /**
      * Constructor
      */
     public TreeSelectionHandler()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2898,8 +2938,7 @@ public class BasicTreeUI
   /**
    * For the first selected row expandedness will be toggled.
    */
-  public class TreeToggleAction
-    extends AbstractAction
+  public class TreeToggleAction extends AbstractAction
   {
     /**
      * Constructor
@@ -2909,6 +2948,7 @@ public class BasicTreeUI
      */
     public TreeToggleAction(String name)
     {
+      // Nothing to do here.
     }
 
     /**
@@ -2919,6 +2959,7 @@ public class BasicTreeUI
      */
     public void actionPerformed(ActionEvent e)
     {
+      // TODO: Implement this properly.
     }
 
     /**
@@ -2936,8 +2977,7 @@ public class BasicTreeUI
    * TreeTraverseAction is the action used for left/right keys. Will toggle the
    * expandedness of a node, as well as potentially incrementing the selection.
    */
-  public class TreeTraverseAction
-    extends AbstractAction
+  public class TreeTraverseAction extends AbstractAction
   {
     /**
      * Determines direction to traverse, 1 means expand, -1 means collapse.
@@ -2954,6 +2994,7 @@ public class BasicTreeUI
      */
     public TreeTraverseAction(int direction, String name)
     {
+      this.direction = direction;
     }
 
     /**
@@ -2999,9 +3040,10 @@ public class BasicTreeUI
      */
     public boolean isEnabled()
     {
+      // TODO: Implement this properly
       return false;
     }
-  } // TreeTraverseAction
+  }
 
   /**
    * Returns the cell bounds for painting selected cells Package private for use
@@ -3165,8 +3207,6 @@ public class BasicTreeUI
    *          of the current object
    * @param descent
    *          is the number of elements drawn
-   * @param childNumber
-   *          is the index of the current child in the tree
    * @param depth
    *          is the depth of the current object in the tree
    * @param tree
@@ -3178,62 +3218,62 @@ public class BasicTreeUI
    * @return int current descent of the tree
    */
   int paintControlIcons(Graphics g, int indentation, int descent,
-                           int depth, JTree tree, TreeModel mod,
-                           Object node)
-     {
-       int rowHeight = getRowHeight();
-       TreePath path = new TreePath(getPathToRoot(node, 0));
-       Icon icon = getCurrentControlIcon(path);
+                        int depth, JTree tree, TreeModel mod,
+                        Object node)
+  {
+    int rowHeight = getRowHeight();
+    TreePath path = new TreePath(getPathToRoot(node, 0));
+    Icon icon = getCurrentControlIcon(path);
        
-       Rectangle clip = tree.getVisibleRect();
-       if (indentation > clip.x + clip.width + rightChildIndent
-           || descent > clip.y + clip.height + getRowHeight())
-         return descent;
+    Rectangle clip = tree.getVisibleRect();
+    if (indentation > clip.x + clip.width + rightChildIndent
+        || descent > clip.y + clip.height + getRowHeight())
+      return descent;
    
-       if (mod.isLeaf(node))
-         descent += rowHeight;
-       else
-         {   
-           if (!node.equals(mod.getRoot()) && 
-               (tree.isRootVisible() || getLevel(node) != 1))
-             {
-               int width = icon.getIconWidth();
-               int height = icon.getIconHeight() + 2;
-               int posX = indentation - rightChildIndent;
-               int posY = descent;
-               if (width > rightChildIndent)
-                 posX -= gap;
-               else posX += width/2;
+    if (mod.isLeaf(node))
+      descent += rowHeight;
+    else
+      {   
+        if (!node.equals(mod.getRoot()) && 
+            (tree.isRootVisible() || getLevel(node) != 1))
+          {
+            int width = icon.getIconWidth();
+            int height = icon.getIconHeight() + 2;
+            int posX = indentation - rightChildIndent;
+            int posY = descent;
+            if (width > rightChildIndent)
+              posX -= gap;
+            else posX += width/2;
                
-               if (height < rowHeight)
-                 posY += height/2;
+            if (height < rowHeight)
+              posY += height/2;
                
-               icon.paintIcon(tree, g, posX, posY);
-             }
+            icon.paintIcon(tree, g, posX, posY);
+          }
 
-           if (depth > 0 || tree.isRootVisible())
-             descent += rowHeight;
+        if (depth > 0 || tree.isRootVisible())
+          descent += rowHeight;
            
-           if (tree.isExpanded(path))
-             {
-               int max = 0;
-               if (!mod.isLeaf(node))
-                 max = mod.getChildCount(node);
+        if (tree.isExpanded(path))
+          {
+            int max = 0;
+            if (!mod.isLeaf(node))
+              max = mod.getChildCount(node);
                
-               for (int i = 0; i < max; i++)
-                 {
-                   int indent = indentation + rightChildIndent;
-                   if (depth == 0 && !tree.isRootVisible())
-                     indent =  1;
+            for (int i = 0; i < max; i++)
+              {
+                int indent = indentation + rightChildIndent;
+                if (depth == 0 && !tree.isRootVisible())
+                  indent =  1;
    
-                   descent = paintControlIcons(g, indent, descent, depth + 1,
-                                               tree, mod, mod.getChild(node, i));
-                 }
-             }
-         }
+                descent = paintControlIcons(g, indent, descent, depth + 1,
+                                            tree, mod, mod.getChild(node, i));
+              }
+          }
+      }
    
-       return descent;
-     }
+    return descent;
+  }
 
   /**
    * Returns true if the LookAndFeel implements the control icons. Package
@@ -3726,6 +3766,7 @@ public class BasicTreeUI
    */
   protected void prepareForUIUninstall()
   {
+    // TODO: Implement this properly.
   }
   
   /**

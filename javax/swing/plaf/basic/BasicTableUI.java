@@ -148,9 +148,12 @@ public class BasicTableUI extends TableUI
   {
     public void focusGained(FocusEvent e) 
     {
+      // TODO: Implement this properly.
     }
+
     public void focusLost(FocusEvent e) 
     {
+      // TODO: Implement this properly.
     }
   }
 
@@ -190,21 +193,30 @@ public class BasicTableUI extends TableUI
 
     public void mouseClicked(MouseEvent e) 
     {
+      // TODO: What should be done here, if anything?
     }
+
     public void mouseDragged(MouseEvent e) 
     {
       curr = new Point(e.getX(), e.getY());
       updateSelection(e.isControlDown());      
     }
+
     public void mouseEntered(MouseEvent e) 
     {
+      // TODO: What should be done here, if anything?
     }
+
     public void mouseExited(MouseEvent e) 
     {
+      // TODO: What should be done here, if anything?
     }
+
     public void mouseMoved(MouseEvent e) 
     {
+      // TODO: What should be done here, if anything?
     }
+
     public void mousePressed(MouseEvent e) 
     {
       ListSelectionModel rowModel = table.getSelectionModel();
@@ -1109,6 +1121,7 @@ public class BasicTableUI extends TableUI
 
   protected void uninstallKeyboardActions() 
   {
+    // TODO: Implement this properly.
   }
 
   protected void uninstallListeners() 

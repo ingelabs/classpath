@@ -1,3 +1,41 @@
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicBorders.java
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	* javax/swing/plaf/basic/BasicCheckBoxMenuItemUI.java
+	* javax/swing/plaf/basic/BasicComboBoxEditor.java
+	* javax/swing/plaf/basic/BasicComboBoxRenderer.java
+	* javax/swing/plaf/basic/BasicDesktopIconUI.java
+	* javax/swing/plaf/basic/BasicDesktopPaneUI.java
+	* javax/swing/plaf/basic/BasicFileChooserUI.java
+	* javax/swing/plaf/basic/BasicFormattedTextFieldUI.java
+	* javax/swing/plaf/basic/BasicGraphicsUtils.java
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	* javax/swing/plaf/basic/BasicLabelUI.java
+	* javax/swing/plaf/basic/BasicListUI.java
+	* javax/swing/plaf/basic/BasicMenuBarUI.java
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	* javax/swing/plaf/basic/BasicMenuUI.java
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java
+	* javax/swing/plaf/basic/BasicPasswordFieldUI.java
+	* javax/swing/plaf/basic/BasicRadioButtonMenuItemUI.java
+	* javax/swing/plaf/basic/BasicRootPaneUI.java
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	* javax/swing/plaf/basic/BasicSplitPaneDivider.java
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java
+	* javax/swing/plaf/basic/BasicTableUI.java
+	* javax/swing/plaf/basic/BasicTextAreaUI.java
+	* javax/swing/plaf/basic/BasicTextUI.java
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	* javax/swing/plaf/basic/BasicToolTipUI.java
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	* javax/swing/plaf/basic/BasicViewportUI.java:
+	Reformatted slightly. Filled emtpy blocks with comments. Fixed some
+	slight API doc errors
+
 2005-10-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/filechooser/FileFilter.java:

@@ -938,6 +938,7 @@ public class BasicSplitPaneUI extends SplitPaneUI
    */
   public BasicSplitPaneUI()
   {
+    // Nothing to do here.
   }
 
   /**
@@ -1410,6 +1411,7 @@ public class BasicSplitPaneUI extends SplitPaneUI
    */
   public void paint(Graphics g, JComponent jc)
   {
+    // TODO: What should be done here?
   }
 
   /**

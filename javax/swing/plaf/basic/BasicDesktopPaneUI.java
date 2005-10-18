@@ -75,13 +75,14 @@ public class BasicDesktopPaneUI extends DesktopPaneUI
     {
       if (desktop.getSelectedFrame() != null)
         {
-	  try
-	    {
-	      desktop.getSelectedFrame().setClosed(true);
-	    }
-	  catch (PropertyVetoException pve)
-	    {
-	    }
+          try
+            {
+              desktop.getSelectedFrame().setClosed(true);
+            }
+          catch (PropertyVetoException pve)
+            {
+              // We do nothing if the attempts has been vetoed.
+            }
         }
     }
 
@@ -113,13 +114,14 @@ public class BasicDesktopPaneUI extends DesktopPaneUI
     {
       if (desktop.getSelectedFrame() != null)
         {
-	  try
-	    {
-	      desktop.getSelectedFrame().setMaximum(true);
-	    }
-	  catch (PropertyVetoException pve)
-	    {
-	    }
+          try
+            {
+              desktop.getSelectedFrame().setMaximum(true);
+            }
+          catch (PropertyVetoException pve)
+            {
+              // We do nothing if the attempts has been vetoed.
+            }
         }
     }
 
@@ -151,13 +153,14 @@ public class BasicDesktopPaneUI extends DesktopPaneUI
     {
       if (desktop.getSelectedFrame() != null)
         {
-	  try
-	    {
-	      desktop.getSelectedFrame().setIcon(true);
-	    }
-	  catch (PropertyVetoException pve)
-	    {
-	    }
+          try
+            {
+              desktop.getSelectedFrame().setIcon(true);
+            }
+          catch (PropertyVetoException pve)
+            {
+              // We do nothing if the attempt has been vetoed.
+            }
         }
     }
 
@@ -237,16 +240,17 @@ public class BasicDesktopPaneUI extends DesktopPaneUI
       JInternalFrame frame = desktop.getSelectedFrame();
       if (frame != null)
         {
-	  try
-	    {
-	      if (frame.isIcon())
-		frame.setIcon(false);
-	      else if (frame.isMaximum())
-		frame.setMaximum(false);
-	    }
-	  catch (PropertyVetoException pve)
-	    {
-	    }
+          try
+            {
+              if (frame.isIcon())
+                frame.setIcon(false);
+              else if (frame.isMaximum())
+                frame.setMaximum(false);
+            }
+          catch (PropertyVetoException pve)
+            {
+              // We do nothing if the attempt has been vetoed.
+            }
         }
     }
 
@@ -305,6 +309,7 @@ public class BasicDesktopPaneUI extends DesktopPaneUI
    */
   public BasicDesktopPaneUI()
   {
+    // Nothing to do here.
   }
 
   /**

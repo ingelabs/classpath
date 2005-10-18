@@ -141,13 +141,14 @@ public class BasicOptionPaneUI extends OptionPaneUI
                                                                               optionPane);
       if (inf != null)
         {
-	  try
-	    {
-	      inf.setClosed(true);
-	    }
-	  catch (PropertyVetoException pve)
-	    {
-	    }
+          try
+            {
+              inf.setClosed(true);
+            }
+          catch (PropertyVetoException pve)
+            {
+              // We do nothing if attempt has been vetoed.
+            }
         }
     }
   }
@@ -526,6 +527,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
      */
     public void paintIcon(Component c, Graphics g, int x, int y)
     {
+      // Nothing to do here.
     }
   }
 
@@ -645,6 +647,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
    */
   public BasicOptionPaneUI()
   {
+    // Nothing to do here.
   }
 
   /**
