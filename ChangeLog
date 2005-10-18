@@ -1,3 +1,13 @@
+2005-10-18  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/AbstractButton.java
+	Filled empty blocks with comments.
+	(ButtonChangeListener.stateChanged): Moved implementation from
+	inner class in createChangeListener to this protected class.
+	(setEnabled): Do nothing if actual state does not change.
+	(createChangeListener): Return instance of ButtonChangeListener
+	here.
+
 2005-10-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java
