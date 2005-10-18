@@ -149,31 +149,30 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
     {
       if (e.getPropertyName().equals("model"))
         {
-	  ((BoundedRangeModel) e.getOldValue()).removeChangeListener(modelListener);
-	  scrollbar.getModel().addChangeListener(modelListener);
-	  getThumbBounds();
+          ((BoundedRangeModel) e.getOldValue()).removeChangeListener(modelListener);
+          scrollbar.getModel().addChangeListener(modelListener);
+          getThumbBounds();
         }
       else if (e.getPropertyName().equals("orientation"))
         {
-	  incrButton.removeMouseListener(buttonListener);
-	  decrButton.removeMouseListener(buttonListener);
+          incrButton.removeMouseListener(buttonListener);
+          decrButton.removeMouseListener(buttonListener);
           int orientation = scrollbar.getOrientation();
           switch (orientation)
-            {
-            case (JScrollBar.HORIZONTAL):
-              incrButton = createIncreaseButton(EAST);
-              decrButton = createDecreaseButton(WEST);
-              break;
-            default:
-              incrButton = createIncreaseButton(SOUTH);
-              decrButton = createDecreaseButton(NORTH);
-              break;
-            }
-	  incrButton.addMouseListener(buttonListener);
-	  decrButton.addMouseListener(buttonListener);
-	  calculatePreferredSize();
+          {
+          case (JScrollBar.HORIZONTAL):
+            incrButton = createIncreaseButton(EAST);
+          decrButton = createDecreaseButton(WEST);
+          break;
+          default:
+            incrButton = createIncreaseButton(SOUTH);
+          decrButton = createDecreaseButton(NORTH);
+          break;
+          }
+          incrButton.addMouseListener(buttonListener);
+          decrButton.addMouseListener(buttonListener);
+          calculatePreferredSize();
         }
-      scrollbar.repaint();
     }
   }
 

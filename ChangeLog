@@ -1,5 +1,10 @@
 2005-10-18  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(PropertyChangeHandler.propertyChange): Removed repaint call.
+
+2005-10-18  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/AbstractButton.java
 	Filled empty blocks with comments.
 	(ButtonChangeListener.stateChanged): Moved implementation from
