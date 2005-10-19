@@ -43,7 +43,7 @@ import java.awt.Shape;
 
 /**
  * A {@link View} implementation that is able to render arbitrary
- * {@link Components}. This uses the attribute
+ * {@link Component}s. This uses the attribute
  * {@link StyleConstants#ComponentAttribute} to determine the
  * <code>Component</code> that should be rendered. This <code>Component</code>
  * becomes a direct child of the <code>JTextComponent</code> that contains
@@ -53,6 +53,7 @@ import java.awt.Shape;
  * @author original author unknown
  * @author Roman Kennke (roman@kennke.org)
  */
+// FIXME: This class is a complete stub and needs to be implemented properly.
 public class ComponentView extends View
 {
   /**
@@ -118,38 +119,45 @@ public class ComponentView extends View
     return 0;
   }
 
-    public float getMinimumSpan(int axis)
-    {
-	return 0;
-    }
+  public float getMinimumSpan(int axis)
+  {
+    // TODO: Implement this properly.
+    return 0;
+  }
 
-    public float getPreferredSpan(int axis)
-    {
-	return 0;
-    }
+  public float getPreferredSpan(int axis)
+  {
+    // TODO: Implement this properly.
+    return 0;
+  }
 
-    public Shape modelToView(int pos, Shape a, Position.Bias b)
-      throws BadLocationException
-    {
-	return null;
-    }
+  public Shape modelToView(int pos, Shape a, Position.Bias b)
+    throws BadLocationException
+  {
+    // TODO: Implement this properly.
+    return null;
+  }
     
-    public void paint(Graphics g, Shape a)
-    {
-    }
+  public void paint(Graphics g, Shape a)
+  {
+    // TODO: Implement this properly.
+  }
+  
+  public void setParent(View p)
+  {
+    // TODO: Implement this properly.
+  }
     
-    public void setParent(View p)
-    {
-    }
+  public void setSize(float width, float height)
+  {
+    // TODO: Implement this properly.
+  }
     
-    public void setSize(float width, float height)
-    {
-    }
-    
-    public int viewToModel(float x, float y, Shape a, Position.Bias[] bias)
-    {
-	return 0;
-    }
+  public int viewToModel(float x, float y, Shape a, Position.Bias[] bias)
+  {
+    // TODO: Implement this properly.
+    return 0;
+  }
 
   /**
    * Maps coordinates from the <code>View</code>'s space into a position

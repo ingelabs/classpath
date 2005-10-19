@@ -97,9 +97,9 @@ public class HTMLEditorKit
     /**
      * The parser calls this method after it finishes parsing the document.
      */
-    public void flush()
-               throws BadLocationException
+    public void flush() throws BadLocationException
     {
+      // TODO: What to do here, if anything?
     }
 
     /**
@@ -109,6 +109,7 @@ public class HTMLEditorKit
      */
     public void handleComment(char[] comment, int position)
     {
+      // TODO: What to do here, if anything?
     }
 
     /**
@@ -119,6 +120,7 @@ public class HTMLEditorKit
      */
     public void handleEndOfLineString(String end_of_line)
     {
+      // TODO: What to do here, if anything?
     }
 
     /**
@@ -130,6 +132,7 @@ public class HTMLEditorKit
      */
     public void handleEndTag(HTML.Tag tag, int position)
     {
+      // TODO: What to do here, if anything?
     }
 
     /**
@@ -140,6 +143,7 @@ public class HTMLEditorKit
      */
     public void handleError(String message, int position)
     {
+      // TODO: What to do here, if anything?
     }
 
     /**
@@ -150,9 +154,9 @@ public class HTMLEditorKit
      * @param position The tag position in the text being parsed.
      */
     public void handleSimpleTag(HTML.Tag tag, MutableAttributeSet attributes,
-                                int position
-                               )
+                                int position)
     {
+      // TODO: What to do here, if anything?
     }
 
     /**
@@ -166,6 +170,7 @@ public class HTMLEditorKit
                                int position
                               )
     {
+      // TODO: What to do here, if anything?
     }
 
     /**
@@ -175,6 +180,7 @@ public class HTMLEditorKit
      */
     public void handleText(char[] text, int position)
     {
+      // TODO: What to do here, if anything?
     }
   }
 

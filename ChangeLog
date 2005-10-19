@@ -1,3 +1,26 @@
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AbstractDocument.java
+	* javax/swing/text/AttributeSet.java
+	* javax/swing/text/ComponentView.java
+	* javax/swing/text/DefaultCaret.java
+	* javax/swing/text/DefaultEditorKit.java
+	* javax/swing/text/DefaultHighlighter.java
+	* javax/swing/text/EditorKit.java
+	* javax/swing/text/FieldView.java
+	* javax/swing/text/FlowView.java
+	* javax/swing/text/GlyphView.java
+	* javax/swing/text/JTextComponent.java
+	* javax/swing/text/LayoutQueue.java
+	* javax/swing/text/PlainView.java
+	* javax/swing/text/Segment.java
+	* javax/swing/text/StyledDocument.java
+	* javax/swing/text/html/HTMLEditorKit.java
+	* javax/swing/text/html/HTMLFrameHyperlinkEvent.java
+	* javax/swing/text/html/parser/DocumentParser.java
+	Reformatted slightly. Filled emtpy blocks with comments. Fixed some
+	slight API doc errors. Removed some unneeded imports.
+
 2005-10-19  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicArrowButton.java
