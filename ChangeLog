@@ -1,3 +1,53 @@
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/DebugGraphics.java
+	(counter): New field.
+	(color): Removed unneeded field.
+	(DebugGraphics()): Count up.
+	(DebugGraphics(Graphics,JComponent)): Call this(Graphics).
+	(DebugGraphics(Graphics)): Call this().
+	(setColor): Implemented logging facility.
+	(create): Copy debugOptions over to new DebugGraphics instance.
+	(create(int,int,int,int)): Likewise.
+	(setFont): Implemented logging facility.
+	(getColor): Return graphics.getColor().
+	(translate): Implemented logging facility.
+	(setPaintMode): Likewise.
+	(setXORMode): Likewise.
+	(clipRect): Likewise.
+	(setClip(int,int,int,int)): Likewise.
+	(setClip(Shape)): Likewise.
+	(drawRect): Likewise. Only flash when FLASH_OPTION is set.
+	(fillRect): Likewise.
+	(clearRect): Implemented logging facility.
+	(drawRoundRect): Likewise.
+	(fillRoundRect): Likewise.
+	(drawLine): Likewise.
+	(draw3DRect): Likewise.
+	(fill3DRect): Likewise.
+	(drawOval): Likewise.
+	(fillOval): Likewise.
+	(drawArc): Likewise.
+	(fillArc): Likewise.
+	(drawPolyline): Likewise.
+	(drawPolygon): Likewise.
+	(fillPolygon): Likewise.
+	(drawString(String,int,int)): Likewise.
+	(drawString(AttributedCharacterIterator,int,int)): Likewise.
+	(drawByted): Likewise.
+	(drawChars): Likewise. Only flash if FLASH_OPTION is set.
+	(drawImage): Implemented logging facility. (Also applies to all
+	overloaded versions of this method).
+	(copyArea): Likewise.
+	(setDebugOptions): Likewise.
+	(prefix): New helper method.
+	* javax/swing/JComponent.java
+	(getComponentGraphics): Implemented to return DebugGraphics when
+	needed.
+	(getDebugGraphicsOptions): Implemented to return the correct options.
+	Also, this loads a system property gnu.javax.swing.DebugGraphics
+	if present and evaluates it.
+
 2005-10-19  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JList.java

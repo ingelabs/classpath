@@ -950,10 +950,19 @@ public abstract class JComponent extends Container implements Serializable
    * @see #paint
    */
   protected Graphics getComponentGraphics(Graphics g)
-  {    
-    g.setFont (this.getFont());
-    g.setColor (this.getForeground());
-    return g;
+  {
+    Graphics g2 = g;
+    int options = getDebugGraphicsOptions();
+    if (options != DebugGraphics.NONE_OPTION)
+      {
+        if (!(g2 instanceof DebugGraphics))
+          g2 = new DebugGraphics(g);
+        DebugGraphics dg = (DebugGraphics) g2;
+        dg.setDebugOptions(dg.getDebugOptions() | options);
+      }
+    g2.setFont(this.getFont());
+    g2.setColor(this.getForeground());
+    return g2;
   }
 
   /**
@@ -966,7 +975,16 @@ public abstract class JComponent extends Container implements Serializable
    */
   public int getDebugGraphicsOptions()
   {
-    return 0;
+    String option = System.getProperty("gnu.javax.swing.DebugGraphics");
+    int options = debugGraphicsOptions;
+    if (option != null && option.length() == 0)
+      {
+        if (option.equals("LOG"))
+          options |= DebugGraphics.LOG_OPTION;
+        else if (option.equals("FLASH"))
+          options |= DebugGraphics.FLASH_OPTION;
+      }
+    return options;
   }
 
   /**
