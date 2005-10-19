@@ -1,5 +1,10 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/multi/MultiLookAndFeel.java
+	Filled empty block with comment.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalBorders.java
 	* javax/swing/plaf/metal/MetalButtonListener.java
 	* javax/swing/plaf/metal/MetalComboBoxEditor.java
