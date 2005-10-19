@@ -1762,7 +1762,7 @@ public class JList extends JComponent implements Accessible, Scrollable
 
   public AccessibleContext getAccessibleContext()
   {
-    return null;
+    return new AccessibleJList();
   }
 
   /**

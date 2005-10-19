@@ -1,5 +1,11 @@
 2005-10-19  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/JList.java
+	(getAccessibleContext): Returned an instance of 
+	AccessibleJList. Should never return null.
+
+2005-10-19  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicTreeUI.java:
 	Added MouseListener and removed MouseInputListener.
 	(BasicTreeUI): Initialized mouseListener and removed
