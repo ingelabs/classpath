@@ -1,5 +1,11 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/HTML.java
+	* javax/swing/text/html/HTMLDocument.java
+	Filled emtpy blocks with comments.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/html/parser/ContentModel.java
 	* javax/swing/text/html/parser/DTD.java
 	* javax/swing/text/html/parser/DocumentParser.java
