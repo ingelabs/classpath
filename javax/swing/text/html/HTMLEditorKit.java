@@ -79,7 +79,7 @@ public class HTMLEditorKit
                               )
                         throws IOException;
   }
-  
+
   /**
    * The "hook" that receives all information about the HTML document
    * structure while parsing it. The methods are invoked by parser
@@ -254,15 +254,26 @@ public class HTMLEditorKit
    * The "ident paragraph right" action.
    */
   public static final String PARA_INDENT_RIGHT = "html-para-indent-right";
-  
+
   /**
    * Create a text storage model for this type of editor.
-   * 
+   *
    * @return the model
    */
   public Document createDefaultDocument()
   {
     HTMLDocument document = new HTMLDocument();
     return document;
+  }
+
+  /**
+   * Get the parser that this editor kit uses for reading HTML streams. This
+   * method can be overridden to use the alternative parser.
+   *
+   * @return the HTML parser (by default, {@link ParserDelegator}).
+   */
+  protected Parser getParser()
+  {
+    return new ParserDelegator();
   }
 }

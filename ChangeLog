@@ -1,5 +1,9 @@
 2005-10-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        * javax/swing/text/html/HTMLEditorKit.java (getParser): New method.
+
+2005-10-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
         * javax/swing/text/html/parser/ContentModel.java: Fixed comments for
         parameterless constructor.
 
