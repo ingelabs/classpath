@@ -1,5 +1,10 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/table/TableColumnModel.java:
+	Fixed some minor API doc errors.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/ActionMapUIResource.java
 	* javax/swing/plaf/BorderUIResource.java
 	* javax/swing/plaf/ButtonUI.java
