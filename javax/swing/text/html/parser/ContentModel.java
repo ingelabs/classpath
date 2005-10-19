@@ -98,6 +98,7 @@ public final class ContentModel
   /** Create a content model initializing all fields to default values. */
   public ContentModel()
   {
+    // FIXME: Implement this.
   }
 
   /**
