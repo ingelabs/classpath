@@ -1,5 +1,12 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/ComponentUI.java
+	Filled empty blocks with comments.
+	(update): Reverted my patch from 2005-10-12. This is wrong. If there
+	are still clipping problems, then certainly in another area.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/multi/MultiLookAndFeel.java
 	Filled empty block with comment.
 
