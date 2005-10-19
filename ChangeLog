@@ -1,5 +1,10 @@
 2005-10-19  Mark Wielaard  <mark@klomp.org>
 
+	* javax/security/auth/login/LoginContext.java (lookupModule):
+	Load LoginModule through Thread context class loader.
+
+2005-10-19  Mark Wielaard  <mark@klomp.org>
+
 	* java/net/Socket.java (getImpl): Chain exception before throwing.
 
 2005-10-19  Roman Kennke  <kennke@aicas.com>
