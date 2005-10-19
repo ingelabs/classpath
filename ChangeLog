@@ -1,5 +1,26 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalBorders.java
+	* javax/swing/plaf/metal/MetalButtonListener.java
+	* javax/swing/plaf/metal/MetalComboBoxEditor.java
+	* javax/swing/plaf/metal/MetalComboBoxUI.java
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	* javax/swing/plaf/metal/MetalInternalFrameTitlePane.java
+	* javax/swing/plaf/metal/MetalProgressBarUI.java
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	* javax/swing/plaf/metal/MetalSliderUI.java
+	* javax/swing/plaf/metal/MetalSplitPaneUI.java
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	* javax/swing/plaf/metal/MetalTextFieldUI.java
+	* javax/swing/plaf/metal/MetalToolBarUI.java
+	* javax/swing/plaf/metal/MetalTreeUI.java
+	* javax/swing/plaf/metal/MetalUtils.java:
+	Reformatted slightly. Filled emtpy blocks with comments. Fixed some
+	slight API doc errors. Removed some unneeded imports.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(getDebugGraphicsOptions): Fixed to load system property if present.
 
@@ -113,7 +134,7 @@
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	* javax/swing/plaf/basic/BasicViewportUI.java:
 	Reformatted slightly. Filled emtpy blocks with comments. Fixed some
-	slight API doc errors
+	slight API doc errors.
 
 2005-10-18  Roman Kennke  <kennke@aicas.com>
 

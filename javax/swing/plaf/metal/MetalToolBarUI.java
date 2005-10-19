@@ -50,8 +50,7 @@ import javax.swing.plaf.basic.BasicToolBarUI;
 /**
  * A UI delegate for the {@link JToolBar} component.
  */
-public class MetalToolBarUI
-  extends BasicToolBarUI
+public class MetalToolBarUI extends BasicToolBarUI
 {
   
   /**
@@ -68,7 +67,8 @@ public class MetalToolBarUI
      * Creates a new instance.
      */
     protected MetalContainerListener()
-    {     
+    {
+      // Nothing to do here.
     }
   }
 
@@ -86,6 +86,7 @@ public class MetalToolBarUI
      */
     protected MetalRolloverListener()
     {
+      // Nothing to do here.
     }
   }
   

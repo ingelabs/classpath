@@ -40,7 +40,6 @@ package javax.swing.plaf.metal;
 
 import java.awt.Graphics;
 import java.awt.LayoutManager;
-import java.util.HashMap;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
@@ -51,8 +50,7 @@ import javax.swing.plaf.basic.BasicTabbedPaneUI;
  * A UI delegate used for the {@link JTabbedPane} component in the 
  * {@link MetalLookAndFeel}.
  */
-public class MetalTabbedPaneUI
-  extends BasicTabbedPaneUI
+public class MetalTabbedPaneUI extends BasicTabbedPaneUI
 {
 
   /**
@@ -65,13 +63,14 @@ public class MetalTabbedPaneUI
    *           public for compatibility.
    */
   public class TabbedPaneLayout 
-      extends BasicTabbedPaneUI.TabbedPaneLayout
+    extends BasicTabbedPaneUI.TabbedPaneLayout
   {
     /**
      * Creates a new instance of the layout manager.
      */
     public TabbedPaneLayout()
     {
+      // Nothing to do here.
     }
     
     /**

@@ -62,8 +62,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTreeUI;
 
-public class MetalTreeUI
-  extends BasicTreeUI
+public class MetalTreeUI extends BasicTreeUI
 {
 
   /** Listeners */

@@ -61,8 +61,7 @@ import javax.swing.plaf.basic.ComboPopup;
 /**
  * A UI delegate for the {@link JComboBox} component.
  */
-public class MetalComboBoxUI
-  extends BasicComboBoxUI
+public class MetalComboBoxUI extends BasicComboBoxUI
 {
   /**
    * A layout manager that arranges the editor component (if active) and the
@@ -75,7 +74,8 @@ public class MetalComboBoxUI
      * Creates a new instance of the layout manager.
      */
     public MetalComboBoxLayoutManager()
-    {      
+    {
+      // Nothing to do here.
     }
     
     /**
@@ -121,6 +121,7 @@ public class MetalComboBoxUI
      */
     public MetalPropertyChangeListener()
     {
+      // Nothing to do here.
     }
     
     /**
