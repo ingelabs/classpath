@@ -1,5 +1,64 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/AbstractSpinnerModel.java
+	* javax/swing/ActionMap.java
+	* javax/swing/BoundedRangeModel.java
+	* javax/swing/Box.java
+	* javax/swing/BoxLayout.java
+	* javax/swing/ButtonGroup.java
+	* javax/swing/CellEditor.java
+	* javax/swing/CellRendererPane.java
+	* javax/swing/ComboBoxEditor.java
+	* javax/swing/DefaultButtonModel.java
+	* javax/swing/DefaultCellEditor.java
+	* javax/swing/DefaultDesktopManager.java
+	* javax/swing/DefaultListCellRenderer.java
+	* javax/swing/DesktopManager.java
+	* javax/swing/ImageIcon.java
+	* javax/swing/InputVerifier.java
+	* javax/swing/JCheckBoxMenuItem.java
+	* javax/swing/JColorChooser.java
+	* javax/swing/JDesktopPane.java
+	* javax/swing/JFileChooser.java
+	* javax/swing/JLayeredPane.java
+	* javax/swing/JList.java
+	* javax/swing/JMenu.java
+	* javax/swing/JMenuBar.java
+	* javax/swing/JMenuItem.java
+	* javax/swing/JOptionPane.java
+	* javax/swing/JPasswordField.java
+	* javax/swing/JPopupMenu.java
+	* javax/swing/JProgressBar.java
+	* javax/swing/JRadioButtonMenuItem.java
+	* javax/swing/JRootPane.java
+	* javax/swing/JSeparator.java
+	* javax/swing/JSlider.java
+	* javax/swing/JSpinner.java
+	* javax/swing/JSplitPane.java
+	* javax/swing/JTabbedPane.java
+	* javax/swing/JTable.java
+	* javax/swing/JTextPane.java
+	* javax/swing/JToolBar.java
+	* javax/swing/JToolTip.java
+	* javax/swing/JTree.java
+	* javax/swing/KeyStroke.java
+	* javax/swing/LookAndFeel.java
+	* javax/swing/MutableComboBoxModel.java
+	* javax/swing/Popup.java
+	* javax/swing/PopupFactory.java
+	* javax/swing/RepaintManager.java
+	* javax/swing/SortingFocusTraversalPolicy.java
+	* javax/swing/Spring.java
+	* javax/swing/SwingUtilities.java
+	* javax/swing/ToolTipManager.java
+	* javax/swing/TransferHandler.java
+	* javax/swing/ViewportLayout.java
+	Reformatted slightly. Filled emtpy blocks with comments. Fixed some
+	slight API doc errors. Removed some unneeded imports. Removed
+	unneeded serialization methods.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/OverlayLayout.java
 	(checkLayout): Respect the container's insets correctly.
 

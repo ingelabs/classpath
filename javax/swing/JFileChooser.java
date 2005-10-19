@@ -1506,6 +1506,7 @@ public class JFileChooser extends JComponent implements Accessible
   {
     protected AccessibleJFileChooser()
     {
+      // Nothing to do here.
     }
     
     public AccessibleRole getAccessibleRole()

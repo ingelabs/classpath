@@ -39,7 +39,6 @@ exception statement from your version. */
 package javax.swing;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Frame;
 
 import javax.accessibility.Accessible;
@@ -60,6 +59,8 @@ public class JOptionPane extends JComponent implements Accessible
   /**
    * DOCUMENT ME!
    */
+  // FIXME: This inner class is a complete stub and needs to be implemented
+  // properly.
   protected class AccessibleJOptionPane extends JComponent.AccessibleJComponent
   {
     /** DOCUMENT ME! */
@@ -70,6 +71,7 @@ public class JOptionPane extends JComponent implements Accessible
      */
     protected AccessibleJOptionPane()
     {
+      // Nothing to do here.
     }
 
     /**
@@ -1542,34 +1544,34 @@ public class JOptionPane extends JComponent implements Accessible
    * JInternalFrame's preferred size.
    *
    * @param f The JInternalFrame to make modal.
-   * @param pane The JOptionPane to add to the JInternalFrame.
    */
   private static void startModal(JInternalFrame f)
   {
     synchronized (f)
-      {
-	final JInternalFrame tmp = f;
-	tmp.toFront();
+    {
+      final JInternalFrame tmp = f;
+      tmp.toFront();
 
-	f.addInternalFrameListener(new InternalFrameAdapter()
-	    {
-	      public void internalFrameClosed(InternalFrameEvent e)
-	      {
-		synchronized (tmp)
-		  {
-		    tmp.removeInternalFrameListener(this);
-		    tmp.notifyAll();
-		  }
-	      }
-	    });
-	try
-	  {
-	    while (! f.isClosed())
-	      f.wait();
-	  }
-	catch (InterruptedException ignored)
-	  {
-	  }
-      }
+      f.addInternalFrameListener(new InternalFrameAdapter()
+                                 {
+                                   public void internalFrameClosed(InternalFrameEvent e)
+                                   {
+                                     synchronized (tmp)
+                                     {
+                                       tmp.removeInternalFrameListener(this);
+                                       tmp.notifyAll();
+                                     }
+                                   }
+                                 });
+      try
+        {
+          while (! f.isClosed())
+            f.wait();
+        }
+      catch (InterruptedException ignored)
+        {
+          // Ignore this Exception.
+        }
+    }
   }
 }
