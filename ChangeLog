@@ -1,5 +1,21 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/OverlayLayout.java
+	(checkLayout): Respect the container's insets correctly.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JLabel.java
+	(setText): Call revalidate() and repaint().
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JEditorPane.java
+	Added comments to empty blocks.
+	(read): Implemented this previously stubbed method.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComboBox.java
 	Added comments to empty blocks.
 	(writeObject): Removed unnecessary serialization method.
