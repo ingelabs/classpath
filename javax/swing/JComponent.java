@@ -987,7 +987,6 @@ public abstract class JComponent extends Container implements Serializable
         else if (option.equals("FLASH"))
           options |= DebugGraphics.FLASH_OPTION;
       }
-    System.err.println("options: " +  options);
     return options;
   }
 

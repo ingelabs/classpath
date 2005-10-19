@@ -1,5 +1,10 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(getDebugGraphicsOptions): Removed debug output.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(isShowing): Fixed condition.
 	(show): Only repaint if component is showing.
