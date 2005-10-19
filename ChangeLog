@@ -1,5 +1,11 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/undo/CannotRedoException.java
+	* javax/swing/undo/CannotUndoException.java
+	Put super() call in empty constructors.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/tree/DefaultMutableTreeNode.java
 	* javax/swing/tree/DefaultTreeCellEditor.java
 	* javax/swing/tree/TreeCellRenderer.java
