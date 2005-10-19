@@ -251,7 +251,7 @@ public class BasicTreeUI extends TreeUI
   private PropertyChangeListener propertyChangeListener;
   private FocusListener focusListener;
   private TreeSelectionListener treeSelectionListener;
-  private MouseInputListener mouseInputListener;
+  private MouseListener mouseListener;
   private KeyListener keyListener;
   private PropertyChangeListener selectionModelPropertyChangeListener;
   private ComponentListener componentListener;
@@ -272,7 +272,7 @@ public class BasicTreeUI extends TreeUI
     propertyChangeListener = createPropertyChangeListener();
     focusListener = createFocusListener();
     treeSelectionListener = createTreeSelectionListener();
-    mouseInputListener = new MouseInputHandler(null, null, null);
+    mouseListener = createMouseListener();
     keyListener = createKeyListener();
     selectionModelPropertyChangeListener = createSelectionModelPropertyChangeListener();
     componentListener = createComponentListener();
@@ -1019,7 +1019,7 @@ public class BasicTreeUI extends TreeUI
     tree.removePropertyChangeListener(propertyChangeListener);
     tree.removeFocusListener(focusListener);
     tree.removeTreeSelectionListener(treeSelectionListener);
-    tree.removeMouseListener(mouseInputListener);
+    tree.removeMouseListener(mouseListener);
     tree.removeKeyListener(keyListener);
     tree.removePropertyChangeListener(selectionModelPropertyChangeListener);
     tree.removeComponentListener(componentListener);
@@ -1324,7 +1324,7 @@ public class BasicTreeUI extends TreeUI
     tree.addPropertyChangeListener(propertyChangeListener);
     tree.addFocusListener(focusListener);
     tree.addTreeSelectionListener(treeSelectionListener);
-    tree.addMouseListener(mouseInputListener);
+    tree.addMouseListener(mouseListener);
     tree.addKeyListener(keyListener);
     tree.addPropertyChangeListener(selectionModelPropertyChangeListener);
     tree.addComponentListener(componentListener);
@@ -2225,7 +2225,54 @@ public class BasicTreeUI extends TreeUI
      */
     public void mousePressed(MouseEvent e)
     {
-      // TODO: What should be done here, if anything?
+      Point click = e.getPoint();
+      TreePath path = getClosestPathForLocation(tree, click.x, click.y);
+
+      if (path != null)
+        {
+          bounds = getPathBounds(tree, path);
+          int row = getRowForPath(tree, path);
+          boolean cntlClick = isLocationInExpandControl(path, click.x, click.y);
+
+          boolean isLeaf = isLeaf(row);
+          
+          TreeCellRenderer tcr = getCellRenderer();
+          Icon icon;
+          if (isLeaf)
+            icon = UIManager.getIcon("Tree.leafIcon");
+          else if (tree.isExpanded(path))
+            icon = UIManager.getIcon("Tree.openIcon");
+          else
+            icon = UIManager.getIcon("Tree.closedIcon");
+          
+          if (tcr instanceof DefaultTreeCellRenderer)
+            {
+             Icon tmp = ((DefaultTreeCellRenderer) tcr).getIcon();
+             if (tmp != null)
+               icon = tmp;
+            }
+          
+          // add gap*2 for the space before and after the text
+          if (icon != null)
+            bounds.width += icon.getIconWidth() + gap*2;
+
+          boolean inBounds = bounds.contains(click.x, click.y);
+          if ((inBounds || cntlClick) && tree.isVisible(path))
+            {
+              selectPath(tree, path);
+              if (inBounds && e.getClickCount() == 2 && !isLeaf(row))
+                  toggleExpandState(path);
+              
+              if (cntlClick)
+                {
+                  handleExpandControlClick(path, click.x, click.y);
+                  if (cellEditor != null)
+                    cellEditor.cancelCellEditing();
+                }
+              else if (tree.isEditable())
+                startEditing(path, e);
+            }
+        }
     }
 
     /**
@@ -2316,54 +2363,7 @@ public class BasicTreeUI extends TreeUI
      */
     public void mousePressed(MouseEvent e)
     {
-      Point click = e.getPoint();
-      TreePath path = getClosestPathForLocation(tree, click.x, click.y);
-
-      if (path != null)
-        {
-          bounds = getPathBounds(tree, path);
-          int row = getRowForPath(tree, path);
-          boolean cntlClick = isLocationInExpandControl(path, click.x, click.y);
-
-          boolean isLeaf = isLeaf(row);
-          
-          TreeCellRenderer tcr = getCellRenderer();
-          Icon icon;
-          if (isLeaf)
-            icon = UIManager.getIcon("Tree.leafIcon");
-          else if (tree.isExpanded(path))
-            icon = UIManager.getIcon("Tree.openIcon");
-          else
-            icon = UIManager.getIcon("Tree.closedIcon");
-          
-          if (tcr instanceof DefaultTreeCellRenderer)
-            {
-             Icon tmp = ((DefaultTreeCellRenderer) tcr).getIcon();
-             if (tmp != null)
-               icon = tmp;
-            }
-          
-          // add gap*2 for the space before and after the text
-          if (icon != null)
-            bounds.width += icon.getIconWidth() + gap*2;
-
-          boolean inBounds = bounds.contains(click.x, click.y);
-          if ((inBounds || cntlClick) && tree.isVisible(path))
-            {
-              selectPath(tree, path);
-              if (inBounds && e.getClickCount() == 2 && !isLeaf(row))
-                  toggleExpandState(path);
-              
-              if (cntlClick)
-                {
-                  handleExpandControlClick(path, click.x, click.y);
-                  if (cellEditor != null)
-                    cellEditor.cancelCellEditing();
-                }
-              else if (tree.isEditable())
-                startEditing(path, e);
-            }
-        }
+      // TODO: What should be done here, if anything?
     }
 
     /**

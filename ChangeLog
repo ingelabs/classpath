@@ -1,3 +1,21 @@
+2005-10-19  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Added MouseListener and removed MouseInputListener.
+	(BasicTreeUI): Initialized mouseListener and removed
+	mouseInputListener.
+	(removeListeners): Removed mouseListener and removed
+	mouseInputListener code.
+	(installListeners): Likewise.
+	(MouseInputHandler.mousePressed): Moved code to MouseHandler.
+	(MouseHandler.mousePressed): Likewise.
+	* javax/swing/plaf/metal/MetalTreeUI.java:
+	Added MouseListener and removed MouseInputListener.
+	(installUI): Initialized mouseListener and removed
+	mouseInputListener.	
+	(uninstallUI): Removed mouseListener and removed
+	mouseInputListener code.
+
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicBorders.java
