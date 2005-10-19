@@ -754,13 +754,20 @@ public class URLClassLoader extends SecureClassLoader
   }
 
   /**
-   * Adds an array of new locations to the end of the internal URL store.
+   * Adds an array of new locations to the end of the internal URL
+   * store.  Called from the the constructors. Should not call to the
+   * protected addURL() method since that can be overridden and
+   * subclasses are not yet in a good state at this point.
+   *
    * @param newUrls the locations to add
    */
   private void addURLs(URL[] newUrls)
   {
     for (int i = 0; i < newUrls.length; i++)
-      addURL(newUrls[i]);
+      {
+	urls.add(newUrls[i]);
+	addURLImpl(newUrls[i]);
+      }
   }
 
   /**

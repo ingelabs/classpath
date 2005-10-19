@@ -1,3 +1,8 @@
+2005-10-19  Mark Wielaard  <mark@klomp.org>
+
+	* java/net/URLClassLoader.java (addURLs): Don't call addURL(), but
+	call urls.add() and addURLImpl() directly on each URL.
+
 2005-10-19  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* javax/swing/text/html/HTMLEditorKit.java: Add missing import.
