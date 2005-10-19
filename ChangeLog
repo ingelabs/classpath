@@ -1,3 +1,10 @@
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(isShowing): Fixed condition.
+	(show): Only repaint if component is showing.
+	(hide): Only repaint if component was showing.
+
 2005-10-19  Mark Wielaard  <mark@klomp.org>
 
 	* javax/security/auth/login/LoginContext.java (lookupModule):

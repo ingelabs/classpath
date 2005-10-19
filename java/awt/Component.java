@@ -762,7 +762,7 @@ public abstract class Component
     if (! visible || peer == null)
       return false;
 
-    return parent == null ? true : parent.isShowing();
+    return parent == null ? false : parent.isShowing();
   }
 
   /**
@@ -903,7 +903,8 @@ public abstract class Component
 
         // The JDK repaints the component before invalidating the parent.
         // So do we.
-        repaint();
+        if (isShowing())
+          repaint();
         // Invalidate the parent if we have one. The component itself must
         // not be invalidated. We also avoid NullPointerException with
         // a local reference here.
@@ -945,12 +946,13 @@ public abstract class Component
         ComponentPeer currentPeer=peer;
         if (currentPeer != null)
             currentPeer.setVisible(false);
-        
+        boolean wasShowing = isShowing();
         this.visible = false;
 
         // The JDK repaints the component before invalidating the parent.
         // So do we.
-        repaint();
+        if (wasShowing)
+          repaint();
         // Invalidate the parent if we have one. The component itself must
         // not be invalidated. We also avoid NullPointerException with
         // a local reference here.
