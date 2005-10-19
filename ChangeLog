@@ -1,5 +1,10 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(getDebugGraphicsOptions): Fixed to load system property if present.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/DebugGraphics.java
 	(counter): New field.
 	(color): Removed unneeded field.

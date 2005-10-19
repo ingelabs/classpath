@@ -977,13 +977,17 @@ public abstract class JComponent extends Container implements Serializable
   {
     String option = System.getProperty("gnu.javax.swing.DebugGraphics");
     int options = debugGraphicsOptions;
-    if (option != null && option.length() == 0)
+    if (option != null && option.length() != 0)
       {
+        if (options < 0)
+          options = 0;
+
         if (option.equals("LOG"))
           options |= DebugGraphics.LOG_OPTION;
         else if (option.equals("FLASH"))
           options |= DebugGraphics.FLASH_OPTION;
       }
+    System.err.println("options: " +  options);
     return options;
   }
 
