@@ -1,3 +1,7 @@
+2005-10-19  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* javax/swing/text/html/HTMLEditorKit.java: Add missing import.
+
 2005-10-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * javax/swing/text/html/HTMLEditorKit.java (getParser): New method.

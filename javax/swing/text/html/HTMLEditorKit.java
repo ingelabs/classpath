@@ -46,6 +46,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.StyledEditorKit;
+import javax.swing.text.html.parser.ParserDelegator;
 
 /**
  * This class is NOT implemented. This file currently holds only
