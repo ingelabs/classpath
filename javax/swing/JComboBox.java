@@ -46,8 +46,6 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.Vector;
 
 import javax.accessibility.Accessible;
@@ -211,10 +209,6 @@ public class JComboBox extends JComponent implements ItemSelectable,
   public JComboBox()
   {
     this(new DefaultComboBoxModel());
-  }
-
-  private void writeObject(ObjectOutputStream stream) throws IOException
-  {
   }
 
   /**
@@ -1028,6 +1022,19 @@ public class JComboBox extends JComponent implements ItemSelectable,
    */
   public void processKeyEvent(KeyEvent e)
   {
+    if (e.getKeyCode() == KeyEvent.VK_TAB)
+      setPopupVisible(false);
+    else if (keySelectionManager != null)
+      {
+        int i = keySelectionManager.selectionForKey(e.getKeyChar(),
+                                                    getModel());
+        if (i >= 0)
+          setSelectedIndex(i);
+        else
+          super.processKeyEvent(e);
+      }
+    else
+      super.processKeyEvent(e);
   }
 
   /**
@@ -1037,6 +1044,7 @@ public class JComboBox extends JComponent implements ItemSelectable,
    */
   public void setKeySelectionManager(KeySelectionManager aManager)
   {
+    keySelectionManager = aManager;
   }
 
   /**
@@ -1201,6 +1209,7 @@ public class JComboBox extends JComponent implements ItemSelectable,
 
     protected AccessibleJComboBox()
     {
+      // Nothing to do here.
     }
 
     public int getAccessibleChildrenCount()
@@ -1260,18 +1269,22 @@ public class JComboBox extends JComponent implements ItemSelectable,
 
     public void addAccessibleSelection(int value0)
     {
+      // TODO: Implement this properly.
     }
 
     public void removeAccessibleSelection(int value0)
     {
+      // TODO: Implement this properly.
     }
 
     public void clearAccessibleSelection()
     {
+      // TODO: Implement this properly.
     }
 
     public void selectAllAccessibleSelection()
     {
+      // TODO: Implement this properly.
     }
   }
 }

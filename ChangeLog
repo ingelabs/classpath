@@ -1,5 +1,17 @@
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComboBox.java
+	Added comments to empty blocks.
+	(writeObject): Removed unnecessary serialization method.
+	(processKeyEvent): Implemented this previously stubbed method.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JButton.java
+	(removeNotify): Implemented this previously stubbed method.
+
+2005-10-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/undo/CannotRedoException.java
 	* javax/swing/undo/CannotUndoException.java
 	Put super() call in empty constructors.
