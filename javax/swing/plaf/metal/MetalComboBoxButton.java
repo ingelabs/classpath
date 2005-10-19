@@ -100,12 +100,13 @@ public class MetalComboBoxButton extends JButton {
       CellRendererPane pane, JList list)
   {
     super();
+    if (cb == null)
+      throw new NullPointerException("Null 'cb' argument");
     comboBox = cb;
     comboIcon = i;
     iconOnly = onlyIcon;
     listBox = list;
     rendererPane = pane;
-    setMargin(new Insets(0, 0, 0, 0));
   }
   
   /**

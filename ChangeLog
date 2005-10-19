@@ -1,3 +1,27 @@
+2005-10-19  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicArrowButton.java
+	(buttonBorder): removed,
+	(BasicArrowButton): don't set border, use default border,
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(configureArrowButton): don't set margin here,
+	(getPreferredSize): added comment,
+	(getMinimumSize): icon width is the same as the display area height,
+	(getDefaultSize): return size of space char plus 1 pixel margin,
+	(getDisplaySize): take into account the prototype display value, if 
+	there is one,
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): updated 'Button.margin' default,
+	* javax/swing/plaf/metal/MetalComboBoxButton.java
+	(MetalComboBoxButton(JComboBox, Icon, boolean, CellRendererPane, 
+	JList)): check for null JComboBox, don't set margin here,
+	* javax/swing/plaf/metal/MetalComboBoxUI.java
+	(createArrowButton): set margin,
+	(getMinimumSize): reimplemented,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): changed 'Button.margin' default to from Insets
+	to InsetsUIResource.
+
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/HTML.java

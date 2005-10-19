@@ -43,6 +43,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.LayoutManager;
@@ -556,7 +557,6 @@ public class BasicComboBoxUI extends ComboBoxUI
   {
     arrowButton.setEnabled(comboBox.isEnabled());
     arrowButton.setFont(comboBox.getFont());
-    arrowButton.setMargin(new Insets(0, 0, 0, 0));
   }
 
   /**
@@ -651,6 +651,9 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   public Dimension getPreferredSize(JComponent c)
   {
+    // note:  overriding getMinimumSize() (for example in the MetalComboBoxUI 
+    // class) affects the getPreferredSize() result, so it seems logical that
+    // this method is implemented by delegating to the getMinimumSize() method
     return getMinimumSize(c);
   }
 
@@ -665,9 +668,8 @@ public class BasicComboBoxUI extends ComboBoxUI
   public Dimension getMinimumSize(JComponent c)
   {
     Dimension d = getDisplaySize();
-    Dimension arrowDim = arrowButton.getPreferredSize();
-    Dimension result = new Dimension(d.width + arrowDim.width, 
-            Math.max(d.height, arrowDim.height));
+    int arrowButtonWidth = d.height;
+    Dimension result = new Dimension(d.width + arrowButtonWidth, d.height);
     return result;
   }
 
@@ -828,15 +830,24 @@ public class BasicComboBoxUI extends ComboBoxUI
   }
 
   /**
-   * Returns default size for the combo box that doesn't contain any elements
-   * in it
+   * Returns the default size for the display area of a combo box that does 
+   * not contain any elements.  This method returns the width and height of
+   * a single space in the current font, plus a margin of 1 pixel. 
    *
-   * @return Default size of the combo box with no elements in it.
+   * @return The default display size.
+   * 
+   * @see #getDisplaySize()
    */
   protected Dimension getDefaultSize()
   {
-    // FIXME: Not implemented properly.
-    return new Dimension(100, 5);
+    // There is nothing in the spec to say how this method should be
+    // implemented...so I've done some guessing, written some Mauve tests,
+    // and written something that gives dimensions that are close to the 
+    // reference implementation.
+    FontMetrics fm = comboBox.getFontMetrics(comboBox.getFont());
+    int w = fm.charWidth(' ') + 2;
+    int h = fm.getHeight() + 2;
+    return new Dimension(w, h);
   }
 
   /**
@@ -847,40 +858,52 @@ public class BasicComboBoxUI extends ComboBoxUI
    */
   protected Dimension getDisplaySize()
   {
-    ComboBoxModel model = comboBox.getModel();
-    int numItems = model.getSize();
-
-    // if combo box doesn't have any items then simply
-    // return its default size
-    if (numItems == 0)
+    Object prototype = comboBox.getPrototypeDisplayValue();
+    if (prototype != null)
       {
-	displaySize = getDefaultSize();
-	return displaySize;
-      }
-
-    Dimension size = new Dimension(0, 0);
-
-    // ComboBox's display size should be equal to the 
-    // size of the largest item in the combo box. 
-    ListCellRenderer renderer = comboBox.getRenderer();
-
-    // FIXME: use the JComboBox.getPrototypeDisplayValue() if there is
-    // one
-    for (int i = 0; i < numItems; i++)
-      {
-        Object item = model.getElementAt(i);
-        String s = item.toString();
-        Component comp = renderer.getListCellRendererComponent(listBox, item,
-            -1, false, false);
-
+        // calculate result based on prototype
+        ListCellRenderer renderer = comboBox.getRenderer();
+        Component comp = renderer.getListCellRendererComponent(listBox, 
+                prototype, -1, false, false);
         Dimension compSize = comp.getPreferredSize();
-        if (compSize.width > size.width)
-          size.width = compSize.width;
-        if (compSize.height > size.height)
-          size.height = compSize.height;
+        compSize.width += 2;  // add 1 pixel margin around area
+        compSize.height += 2;
+        return compSize;
       }
-    displaySize = size;
-    return displaySize;
+    else
+      {
+        ComboBoxModel model = comboBox.getModel();
+        int numItems = model.getSize();
+
+        // if combo box doesn't have any items then simply
+        // return its default size
+        if (numItems == 0)
+          {
+            displaySize = getDefaultSize();
+            return displaySize;
+          }
+
+        Dimension size = new Dimension(0, 0);
+
+        // ComboBox's display size should be equal to the 
+        // size of the largest item in the combo box. 
+        ListCellRenderer renderer = comboBox.getRenderer();
+
+        for (int i = 0; i < numItems; i++)
+          {
+            Object item = model.getElementAt(i);
+            Component comp = renderer.getListCellRendererComponent(listBox, 
+                    item, -1, false, false);
+
+            Dimension compSize = comp.getPreferredSize();
+            if (compSize.width + 2 > size.width)
+              size.width = compSize.width + 2;
+            if (compSize.height + 2 > size.height)
+              size.height = compSize.height + 2;
+          }
+        displaySize = size;
+        return displaySize;
+      }
   }
 
   /**

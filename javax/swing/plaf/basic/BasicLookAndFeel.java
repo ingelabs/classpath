@@ -273,7 +273,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "Button.foreground", new ColorUIResource(Color.BLACK),
       "Button.highlight", new ColorUIResource(Color.WHITE),
       "Button.light", new ColorUIResource(Color.LIGHT_GRAY),
-      "Button.margin", new InsetsUIResource(2, 2, 2, 2),
+      "Button.margin", new InsetsUIResource(2, 14, 2, 14),
       "Button.shadow", new ColorUIResource(Color.GRAY),
       "Button.textIconGap", new Integer(4),
       "Button.textShiftOffset", new Integer(0),
