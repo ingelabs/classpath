@@ -1,3 +1,17 @@
+2005-10-20  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	Added new ItemListener field.
+	(BasicMenuItemUI): Initialized new field.
+	(installListeners): Installed new listener.
+	(removeListeners): Removed new listener.
+	(MenuDragMouseHandler): Class should be private, not
+	in API.
+	(MenuKeyHandler): Likewise.
+	(PropertyChangeHandler): Likewise.
+	(ItemHandler): New class implemented to change the
+	state of the menu item if it is a checkbox menu item.	
+
 2005-10-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/BoxView.java
