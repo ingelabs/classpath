@@ -1,3 +1,22 @@
+2005-10-20  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicArrowButton.java: Updated API docs all 
+	over, plus:
+	(defaultSize): removed field,
+	(upIcon): removed field,
+	(downIcon): removed field,
+	(leftIcon): removed field,
+	(rightIcon): removed field,
+	(darkShadow): changed color value,
+	(paint): ignore insets for triangle positioning, but check 'armed'
+	state,
+	(paintTriangle): delegate to new private methods depending on 
+	direction,
+	(paintTriangleNorth): new private method,
+	(paintTriangleSouth): new private method,
+	(paintTriangleEast): new private method,
+	(paintTriangleWest): new private method.
+
 2005-10-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * org/ietf/jgss/GSSCredential.java (hashCode),
