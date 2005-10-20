@@ -744,11 +744,17 @@ public class Demo
     return c;
   }
 
-  public static JRadioButton mkRadio(String label)
+  public static JPanel mkRadio(String label)
   {
+    JPanel p = new JPanel();
     JRadioButton c = new JRadioButton(label);
-    c.setFont(new Font("Luxi", Font.PLAIN, 14));
-    return c;
+    JRadioButton d = new JRadioButton("not " + label);
+    ButtonGroup bg = new ButtonGroup();
+    bg.add(c);
+    bg.add(d);
+    p.add(c);
+    p.add(d);
+    return p;
   }
 
   public static JList mkList(Object[] elts)
