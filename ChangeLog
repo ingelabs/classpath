@@ -1,3 +1,8 @@
+2005-10-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * org/ietf/jgss/GSSCredential.java (hashCode),
+        org/ietf/jgss/GSSName.java (hashCode): New declarations.
+
 2005-10-19  Mark Wielaard  <mark@klomp.org>
 
 	* java/net/URLClassLoader.java (addURLs): Don't call addURL(), but
