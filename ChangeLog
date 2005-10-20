@@ -1,3 +1,9 @@
+2005-10-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/BoxView.java
+	(layoutMinorAxis): Calculate total requirements before calling
+	the SizeRequirements utility method. Avoids an NPE.
+
 2005-10-20  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicArrowButton.java: Updated API docs all 
