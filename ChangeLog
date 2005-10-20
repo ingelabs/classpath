@@ -1,3 +1,15 @@
+2005-10-20  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/DefaultListSelectionModel.java:
+	(setLeadSelectionIndex): If the selection mode is SINGLE_SELECTION then
+	pass this call to setSelectionInterval.
+	(addSelectionInterval): If the selection mode is SINGLE_SELECTION then 
+	pass the call to setSelectionInterval and avoid the lengthy checks
+	that don't apply to this mode.
+	* javax/swing/JList.java:
+	(getSelectedIndices): Changed bounds of for loop to include the 
+	maxSelectionIndex.
+
 2005-10-20  Lillian Angel  <langel@redhat.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java

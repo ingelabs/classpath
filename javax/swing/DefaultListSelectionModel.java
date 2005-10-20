@@ -238,6 +238,9 @@ public class DefaultListSelectionModel implements Cloneable,
    */
   public void setLeadSelectionIndex(int leadIndex)
   {
+    if (selectionMode == SINGLE_SELECTION)
+      setSelectionInterval (leadIndex, leadIndex);
+    
     int oldLeadIndex = leadSelectionIndex;
     if (oldLeadIndex == -1)
       oldLeadIndex = leadIndex;
@@ -436,7 +439,7 @@ public class DefaultListSelectionModel implements Cloneable,
     oldSel = sel.clone();
 
     if (selectionMode == SINGLE_SELECTION)
-      sel.clear();
+      setSelectionInterval(index0, index1);
 
     // COMPAT: Like Sun (but not like IBM), we allow calls to 
     // addSelectionInterval when selectionMode is
@@ -447,10 +450,7 @@ public class DefaultListSelectionModel implements Cloneable,
             isSelectedIndex(index1) || 
             isSelectedIndex(Math.max(lo-1,0)) || 
             isSelectedIndex(Math.min(hi+1,sel.size()))))
-        sel.clear();
-    
-    if (selectionMode == SINGLE_SELECTION)
-      index0 = index1;
+        sel.clear();    
 
     // We have to update the anchorSelectionIndex and leadSelectionIndex
     // variables
