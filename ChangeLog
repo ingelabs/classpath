@@ -1,3 +1,10 @@
+2005-10-21  Nicolas Geoffray  <nicolas.geoffray@menlina.com>
+
+	* vm/reference/java/lang/VMClassLoader.java
+	(getRessources): In case the property java.boot.class.path
+	contains directories, tests if the ressource exists before adding
+	it to the vector result.
+
 2005-10-21  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicRadioButtonUI.java
