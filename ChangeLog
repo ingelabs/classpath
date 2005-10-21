@@ -1,3 +1,12 @@
+2005-10-21  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicCheckBoxMenuItemUI.java
+	(BasicCheckBoxMenuItem): Implemented.
+	(installDefaults): Removed method, not in API.
+	(processMouseEvent): Implemented.
+	* javax/swing/plaf/basic/BasicRadioButtonMenuItemUI.java
+	(processMouseEvent): Implemented.
+
 2005-10-21  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* configure.ac: Also check for pangoft2 without cairo and
