@@ -1,3 +1,10 @@
+2005-10-21  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* configure.ac: Also check for pangoft2 without cairo and
+	additionally check for freetype2.
+	* native/jni/gtk-peer/Makefile.am: Added X, pangoft2 and
+	freetype2 CFLAGS and LDFLAGS.
+
 2005-10-21  Nicolas Geoffray  <nicolas.geoffray@menlina.com>
 
 	* vm/reference/java/lang/VMClassLoader.java
@@ -4218,7 +4225,7 @@
 	(getWordEnd): Implemented.
 	(getWordStart): Implemented.
 
-2005-09-22  Keith Seitz  <keiths@redhat.com>
+2005-09-22  Keith SEitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/event/filters/StepFilter.java (StepFilter): Do not test
 	for null thread ID -- just test if it has not been garbage collected.
@@ -8713,7 +8720,7 @@
 	(setReference): New method.
 	* gnu/classpath/jdwp/id/ObjectId.java (getObject): New method.
 	* gnu/classpath/jdwp/id/ReferenceTypeId.java (getType): New method.
-	* gnu/classpath/jdwp/id/StringId.java (getString): New method.
+	* gnu/classpath/jdwp/id/StriNgId.java (getString): New method.
 	* gnu/classpath/jdwp/id/ThreadGroupId.java (getThreadGroup): New method.
 	* gnu/classpath/jdwp/id/ThreadId.java (getThread): New method.
 
@@ -20274,7 +20281,7 @@
 	gnu/java/locale/LocaleInformation_gu_IN.java,
 	gnu/java/locale/LocaleInformation_gv.java,
 	gnu/java/locale/LocaleInformation_gv_GB.java,
-	gnu/java/locale/LocaleInformation_he.java,
+	gnujava/locale/LocaleInformation_he.java,
 	gnu/java/locale/LocaleInformation_he_IL.java,
 	gnu/java/locale/LocaleInformation_hi.java,
 	gnu/java/locale/LocaleInformation_hi_IN.java,
@@ -21428,7 +21435,7 @@
 	* java/util/logging/LogManager.java: Reformatted.
 	(readConfiguration): If a logger for a key is not found, create one.
 
-2005-02-16  Michael Koch  <konqueror@gmx.de>
+2005-02-16  Michael Koch  <konqueror@gmx.de>
 
 	* scripts/checkstyle-config.xml: Activate JavadocStyle and
 	IllegalInstantiation tests.
