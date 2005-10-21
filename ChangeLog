@@ -1,3 +1,9 @@
+2005-10-21  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/reflect/Proxy.java
+	(ProxyType.ProxyType): Don't replace null with system class loader.
+	(ProxyType.hashCode): Handle null loader.
+
 2005-10-20  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/DefaultListSelectionModel.java:
