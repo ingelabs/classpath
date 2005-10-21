@@ -106,6 +106,16 @@ import java.util.Properties;
  * should not overlap with the values, specified for other ORB's.
  * </td>
  * </tr>
+ * <tr>
+ * <td>gnu.Corba.SocketFactory</td>
+ * <td>Sets the user-defined server and client socket factory for the ORB being
+ * currently instantiated. Serves as a replacement of the proprietary
+ * property com.sun.CORBA.connection.ORBSocketFactoryClass. To have multiple
+ * types of sockets, instantiate several ORB's with this property each time
+ * set to the different value. 
+ * The factory must implement gnu.CORBA.interfaces.gnuSocketFactory.
+ * </td>
+ * </tr>
  * </table> 
  * <p>The command line accepts the same properties as a keys. When
  * specifying in the command line, the prefix org.omg.CORBA can be omitted, for

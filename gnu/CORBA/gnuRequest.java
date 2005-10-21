@@ -722,7 +722,8 @@ public class gnuRequest extends Request implements Cloneable
    * 
    * @return the server response in binary form.
    */
-public synchronized binaryReply submit() throws ForwardRequest
+  public synchronized binaryReply submit()
+    throws ForwardRequest
   {
     gnu.CORBA.GIOP.MessageHeader header = new gnu.CORBA.GIOP.MessageHeader();
 
@@ -754,15 +755,14 @@ public synchronized binaryReply submit() throws ForwardRequest
     // This also sets the stream encoding to the encoding, specified
     // in the header.
     rh.write(request_part);
-    
+
     if (m_args != null && m_args.count() > 0)
       {
         write_parameters(header, request_part);
 
         if (m_parameter_buffer != null)
-          throw new BAD_INV_ORDER("Please either add parameters or " +
-            "write them into stream, but not both " + "at once."
-          );
+          throw new BAD_INV_ORDER("Please either add parameters or "
+            + "write them into stream, but not both " + "at once.");
       }
 
     if (m_parameter_buffer != null)
@@ -790,12 +790,15 @@ public synchronized binaryReply submit() throws ForwardRequest
           {
             // The BindException may be thrown under very heavy parallel
             // load. For some time, just wait, exceptiong the socket to free.
-            Open:
-            for (int i = 0; i < PAUSE_STEPS; i++)
+            Open: for (int i = 0; i < PAUSE_STEPS; i++)
               {
                 try
                   {
-                    socket = new Socket(ior.Internet.host, ior.Internet.port);
+                    if (orb instanceof Functional_ORB)
+                      socket = ((Functional_ORB) orb).socketFactory.createClientSocket(
+                        ior.Internet.host, ior.Internet.port);
+                    else
+                      socket = new Socket(ior.Internet.host, ior.Internet.port);
                     break Open;
                   }
                 catch (BindException ex)
@@ -817,9 +820,8 @@ public synchronized binaryReply submit() throws ForwardRequest
           }
 
         if (socket == null)
-          throw new NO_RESOURCES(ior.Internet.host + ":" + ior.Internet.port +
-            " in use"
-          );
+          throw new NO_RESOURCES(ior.Internet.host + ":" + ior.Internet.port
+            + " in use");
         socket.setKeepAlive(true);
 
         OutputStream socketOutput = socket.getOutputStream();
@@ -836,17 +838,17 @@ public synchronized binaryReply submit() throws ForwardRequest
             MessageHeader response_header = new MessageHeader();
             InputStream socketInput = socket.getInputStream();
             response_header.read(socketInput);
-            
-            byte [] r;
+
+            byte[] r;
             if (orb instanceof Functional_ORB)
               {
                 Functional_ORB fo = (Functional_ORB) orb;
-                r =response_header.readMessage(socketInput, socket, 
+                r = response_header.readMessage(socketInput, socket,
                   fo.TOUT_WHILE_READING, fo.TOUT_AFTER_RECEIVING);
               }
             else
               r = response_header.readMessage(socketInput, null, 0, 0);
-              
+
             return new binaryReply(orb, response_header, r);
           }
         else
@@ -854,11 +856,9 @@ public synchronized binaryReply submit() throws ForwardRequest
       }
     catch (IOException io_ex)
       {
-        COMM_FAILURE m =
-          new COMM_FAILURE("Unable to open a socket at " + ior.Internet.host + ":" +
-            ior.Internet.port, 0xC9,
-            CompletionStatus.COMPLETED_NO
-          );
+        COMM_FAILURE m = new COMM_FAILURE("Unable to open a socket at "
+          + ior.Internet.host + ":" + ior.Internet.port, 0xC9,
+          CompletionStatus.COMPLETED_NO);
         m.initCause(io_ex);
         throw m;
       }

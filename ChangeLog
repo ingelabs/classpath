@@ -1,3 +1,15 @@
+2005-10-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * gnu/CORBA/DefaultSocketFactory.java,
+        gnu/CORBA/interfaces/gnuSocketFactory.java,
+        gnu/CORBA/interfaces/package.html: New files.
+        * gnu/CORBA/Functional_ORB.java,
+        gnu/CORBA/Focused_ORB.java (getPortServer),
+        gnu/CORBA/GIOP/ErrorMessage.java (send),
+        gnu/CORBA/gnuRequest.java (submit): Rewritten to support
+        gnu.Corba.SocketFactory property.
+        * org/omg/CORBA/ORB.java: Documentation update. 
+
 2005-10-21  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JPopupMenu.java

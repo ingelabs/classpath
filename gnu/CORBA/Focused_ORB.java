@@ -192,7 +192,7 @@ public class Focused_ORB
         try
           {
             // Check if the port is ok:
-            ServerSocket s = new ServerSocket(port);
+            ServerSocket s = socketFactory.createServerSocket(port);
             s.close();
 
             portServer shared;

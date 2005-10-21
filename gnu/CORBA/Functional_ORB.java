@@ -49,6 +49,7 @@ import gnu.CORBA.GIOP.RequestHeader;
 import gnu.CORBA.NamingService.NameParser;
 import gnu.CORBA.NamingService.NamingServiceTransient;
 import gnu.CORBA.Poa.gnuForwardRequest;
+import gnu.CORBA.interfaces.gnuSocketFactory;
 
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.BAD_PARAM;
@@ -135,7 +136,7 @@ public class Functional_ORB extends Restricted_ORB
       setDaemon(true);
       try
         {
-          service = new ServerSocket(s_port);
+          service = socketFactory.createServerSocket(s_port);
         }
       catch (IOException ex)
         {
@@ -445,6 +446,11 @@ public class Functional_ORB extends Restricted_ORB
    * exceeding this limit, the NO_RESOURCES is thrown back to the client.
    */
   private int MAX_RUNNING_THREADS = 256;
+  
+  /**
+   * The producer of the client and server sockets for this ORB.
+   */
+  public gnuSocketFactory socketFactory = DefaultSocketFactory.Singleton;
 
   /**
    * Create the instance of the Functional ORB.
@@ -507,7 +513,7 @@ public class Functional_ORB extends Restricted_ORB
           {
             Integer free = (Integer) freed_ports.getLast();
             freed_ports.removeLast();
-            s = new ServerSocket(free.intValue());
+            s = socketFactory.createServerSocket(free.intValue());
             s.close();
             return free.intValue();
           }
@@ -523,7 +529,7 @@ public class Functional_ORB extends Restricted_ORB
       {
         try
           {
-            s = new ServerSocket(a_port);
+            s = socketFactory.createServerSocket(a_port);
             s.close();
             Port = a_port + 1;
             return a_port;
@@ -537,37 +543,28 @@ public class Functional_ORB extends Restricted_ORB
     Random rand = new Random();
     // Try any random port in the interval RANDOM_PORT_FROM.RANDOM_PORT_TO.
     int range = RANDOM_PORT_TO - RANDOM_PORT_FROM;
+    IOException ioex = null;
     for (int i = 0; i < RANDOM_PORT_ATTEMPTS; i++)
       {
         try
           {
-            a_port = RANDOM_PORT_FROM
-              + rand.nextInt(range);
-            s = new ServerSocket(a_port);
+            a_port = RANDOM_PORT_FROM + rand.nextInt(range);
+            s = socketFactory.createServerSocket(a_port);
             s.close();
             return a_port;
           }
         catch (IOException ex)
           {
             // Repeat the loop if this exception has been thrown.
+            ioex = ex;
           }
       }
 
-    try
-      {
-        // Try the parameterless constructor.
-        s = new ServerSocket();
-        a_port = s.getLocalPort();
-        s.close();
-        return a_port;
-      }
-    catch (IOException ex)
-      {
-        NO_RESOURCES bad = new NO_RESOURCES("Unable to open the server socket.");
-        bad.minor = Minor.Ports;
-        bad.initCause(ex);
-        throw bad;
-      }
+    NO_RESOURCES bad = new NO_RESOURCES("Unable to open the server socket.");
+    bad.minor = Minor.Ports;
+    if (ioex != null)
+      bad.initCause(ioex);
+    throw bad;
   }
 
   /**
@@ -576,7 +573,7 @@ public class Functional_ORB extends Restricted_ORB
    * on this port first. It the port is busy, or if more objects are connected,
    * the subsequent object will receive a larger port values, skipping
    * unavailable ports, if required. The change applies globally.
-   *
+   * 
    * @param a_Port a port, on that the server is listening for requests.
    */
   public static void setPort(int a_Port)
@@ -1625,7 +1622,25 @@ public class Functional_ORB extends Restricted_ORB
               "'"
             );
           }
-
+        
+        if (props.containsKey(gnuSocketFactory.PROPERTY))
+          {
+            String factory = null;
+            try
+              {
+                factory = props.getProperty(gnuSocketFactory.PROPERTY);
+                if (factory!=null)
+                  socketFactory = (gnuSocketFactory) 
+                    ObjectCreator.forName(factory).newInstance();
+              }
+            catch (Exception ex)
+              {
+                BAD_PARAM p = new BAD_PARAM("Bad socket factory "+factory);
+                p.initCause(ex);
+                throw p;
+              }
+          }
+        
         Enumeration en = props.elements();
         while (en.hasMoreElements())
           {
