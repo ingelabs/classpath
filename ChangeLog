@@ -1,3 +1,7 @@
+2005-10-21  David Daney  <ddaney@avtrex.com>
+
+	* NEWS: Added entry about HttpURLConnection improvements.
+
 2005-10-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/DefaultSocketFactory.java,
