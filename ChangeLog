@@ -1,6 +1,12 @@
 2005-10-21  Nicolas Geoffray  <nicolas.geoffray@menlina.com>
 
 	* vm/reference/java/lang/VMClassLoader.java
+	(getResources): uses a new static field HashMap to
+	store opened zip files from property java.boot.class.path.
+
+2005-10-21  Nicolas Geoffray  <nicolas.geoffray@menlina.com>
+
+	* vm/reference/java/lang/VMClassLoader.java
 	(getRessources): In case the property java.boot.class.path
 	contains directories, tests if the ressource exists before adding
 	it to the vector result.
