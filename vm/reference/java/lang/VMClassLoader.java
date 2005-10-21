@@ -119,6 +119,9 @@ final class VMClassLoader
     return null;
   }
 
+  /** jars from property java.boot.class.path */
+  static final HashMap bootjars = new HashMap();
+  
   /**
    * Helper to get a list of resources from the bootstrap class loader.
    *
@@ -141,7 +144,7 @@ final class VMClassLoader
 	      {
                 File f = new File(file, name);
                 if (!f.exists()) continue;
-		v.add(new URL("file://" + f.getAbsolutePath()));
+                v.add(new URL("file://" + f.getAbsolutePath()));
 	      }
 	    catch (MalformedURLException e)
 	      {
@@ -151,30 +154,28 @@ final class VMClassLoader
 	else if (file.isFile())
 	  {
 	    ZipFile zip;
-	    try
-	      {
-		zip = new ZipFile(file);
-	      }
-	    catch (IOException e)
-	      {
-		continue;
-	      }
-	    String zname = name.startsWith("/") ? name.substring(1) : name;
-	    try
-	      {
-		if (zip.getEntry(zname) == null)
+            synchronized(bootjars)
+              {
+                zip = (ZipFile) bootjars.get(file.getName());
+              }
+            if(zip == null)
+              {
+                try
+	          {
+                    zip = new ZipFile(file);
+                    synchronized(bootjars)
+                      {
+                        bootjars.put(file.getName(), zip);
+                      }
+	          }
+	        catch (IOException e)
+	          {
 		    continue;
-	      }
-	    finally
-	      {
-		try
-		  {
-		    zip.close();
-		  }
-		catch (IOException e)
-		  {
-		  }
-	      }
+	          }
+              }
+	    String zname = name.startsWith("/") ? name.substring(1) : name;
+	    if (zip.getEntry(zname) == null)
+	      continue;
 	    try
 	      {
 		v.add(new URL("jar:file://"
