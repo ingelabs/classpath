@@ -1,3 +1,8 @@
+2005-10-21  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	(paint): Only paint focus if enabled.
+
 2005-10-21  David Daney  <ddaney@avtrex.com>
 
 	* NEWS: Added entry about HttpURLConnection improvements.
