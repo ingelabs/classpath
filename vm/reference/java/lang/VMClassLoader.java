@@ -139,8 +139,9 @@ final class VMClassLoader
 	  {
 	    try
 	      {
-		v.add(new URL("file://"
-		  + new File(file, name).getAbsolutePath()));
+                File f = new File(file, name);
+                if (!f.exists()) continue;
+		v.add(new URL("file://" + f.getAbsolutePath()));
 	      }
 	    catch (MalformedURLException e)
 	      {
