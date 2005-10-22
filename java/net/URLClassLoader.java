@@ -758,6 +758,7 @@ public class URLClassLoader extends SecureClassLoader
    * store.  Called from the the constructors. Should not call to the
    * protected addURL() method since that can be overridden and
    * subclasses are not yet in a good state at this point.
+   * jboss 4.0.3 for example depends on this.
    *
    * @param newUrls the locations to add
    */
