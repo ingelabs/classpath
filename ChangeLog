@@ -1,5 +1,17 @@
 2005-10-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        * org/omg/CORBA/ACTIVITY_COMPLETED.java, 
+        org/omg/CORBA/ACTIVITY_REQUIRED.java, 
+        org/omg/CORBA/BAD_QOS.java, 
+        org/omg/CORBA/CODESET_INCOMPATIBLE.java, 
+        org/omg/CORBA/INVALID_ACTIVITY.java, 
+        org/omg/CORBA/REBIND.java, 
+        org/omg/CORBA/TIMEOUT.java, 
+        org/omg/CORBA/TRANSACTION_MODE.java, 
+        org/omg/CORBA/TRANSACTION_UNAVAILABLE.java: New exceptions.
+
+2005-10-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
         * javax/rmi/CORBA/ValueHandlerMultiFormat.java: New interface.
         * gnu/javax/rmi/CORBA/ValueHandlerDelegateImpl.java
         (getMaximumStreamFormatVersion, writeValue): New methods.
