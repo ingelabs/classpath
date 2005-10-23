@@ -757,6 +757,13 @@ public class gnuRmiUtil
 
     if (object == null)
       object = instantiate(offset, clz, g);
+    
+    // The sentence below prevents attempt to read the internal fields of the
+    // ObjectImpl (or RMI Stub) that might follow the object definition.
+    // Sun's jre 1.5 does not write this information. The stubs, generated
+    // by rmic, does not contain such fields.
+    if (object instanceof ObjectImpl)
+      return object;
 
     if (object instanceof Externalizable)
       {

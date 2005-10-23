@@ -1,5 +1,10 @@
 2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        * gnu/javax/rmi/CORBA/gnuRmiUtil.java (readValue):
+        Do not read fields of the ObjectImpl.
+
+2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
         * org/omg/IOP/TAG_RMI_CUSTOM_MAX_STREAM_FORMAT,
         org/omg/PortableInterceptor/ACTIVE.java, 
         org/omg/PortableInterceptor/DISCARDING.java, 
