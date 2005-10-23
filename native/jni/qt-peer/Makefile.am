@@ -1,7 +1,7 @@
 # Qt AWT backend for Classpath
 #
 
-pkglib_LTLIBRARIES = libqtpeer.la
+nativelib_LTLIBRARIES = libqtpeer.la
 
 AM_LDFLAGS = @CLASSPATH_MODULE@ @QT_LIBS@
 AM_CPPFLAGS = @CLASSPATH_INCLUDES@

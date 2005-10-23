@@ -1,3 +1,29 @@
+2005-10-23  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* configure.ac: Added support for "--with-native-libdir" and
+	"--with-glibj-dir". Generate copy-vmresources.sh
+
+	* lib/Makefile.am: Call copy-vmresources.sh to fetch possible vm
+	resources from the vmdirs.
+
+	* lib/copy-vmresources.sh.in: New script file.
+
+	* lib/gen-classlist.sh.in: Include com/ as base package for the
+	vm directories.
+
+	* native/jawt/Makefile.am,
+	native/jni/gtk-peer/Makefile.am,
+	native/jni/java-io/Makefile.am,
+	native/jni/java-lang/Makefile.am,
+	native/jni/java-net/Makefile.am,
+	native/jni/java-nio/Makefile.am,
+	native/jni/java-util/Makefile.am,
+	native/jni/midi-alsa/Makefile.am,
+	native/jni/midi-dssi/Makefile.am,
+	native/jni/qt-peer/Makefile.am,
+	native/jni/xmlj/Makefile.am: Install libraries in nativelibdir
+	and not pkglib.
+
 2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
        * org/omg/IOP/RMICustomMaxStreamFormat.java,

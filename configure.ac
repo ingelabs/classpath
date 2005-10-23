@@ -176,6 +176,35 @@ AC_ARG_ENABLE([qt-peer],
               [COMPILE_QT_PEER=no])
 AM_CONDITIONAL(CREATE_QT_PEER_LIBRARIES, test "x${COMPILE_QT_PEER}" = xyes)
 
+
+dnl -----------------------------------------------------------
+dnl Sets the native libraries installation dir
+dnl -----------------------------------------------------------
+AC_ARG_WITH([native-libdir],
+	    [AS_HELP_STRING(--with-native-libdir,sets the installation directore for native libraries [default='${libdir}/${PACKAGE}'])],
+	    [
+	     nativelibdir=${withval}
+	    ],
+	    [
+	     nativelibdir='${libdir}/${PACKAGE}'
+	    ])
+
+AC_SUBST(nativelibdir)
+
+dnl -----------------------------------------------------------
+dnl Sets the Java library installation dir.
+dnl -----------------------------------------------------------
+AC_ARG_WITH([glibj-dir],
+	    [AS_HELP_STRING(--with-glibj-dir,sets the installation directory for glibj.zip [default='${libdir}/${PACKAGE}'])],
+	    [
+	     glibjdir=${withval}
+	    ],
+	    [
+	     glibjdir='${datadir}/${PACKAGE}'
+	    ])
+
+AC_SUBST(glibjdir)
+
 dnl -----------------------------------------------------------
 dnl Regenerate headers at build time (disabled by default)
 dnl -----------------------------------------------------------
@@ -562,7 +591,9 @@ scripts/Makefile
 scripts/classpath.spec
 lib/Makefile
 lib/gen-classlist.sh
+lib/copy-vmresources.sh
 examples/Makefile
 examples/Makefile.jawt])
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])
+AC_CONFIG_COMMANDS([copy-vmresources],[chmod 755 lib/copy-vmresources.sh])
 AC_OUTPUT

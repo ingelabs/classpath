@@ -24,7 +24,7 @@ vm_dirlist=`echo "@vm_classes@" | sed -e 's/:/ /g'`
 echo "Adding java source files from VM directory $vm_dirlist"
 for dir in $vm_dirlist; do
    (cd $dir
-   for subdir in java javax gnu org; do
+   for subdir in java javax gnu org com; do
       if test -d $subdir; then
 	 @FIND@ $subdir -name '*.java' -print
       fi
