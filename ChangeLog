@@ -1,3 +1,16 @@
+2005-10-23  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/util/Properties.java
+	(storeToXML(OutputStream,String,String)): Added null pointer checks.
+	(loadFromXML(InputStream)): Implemented.
+	(PropertiesHandler): New class to handle parsing events.
+	(PropertiesHandler()): New constructor.
+	(startDTD(String,String,String)): Implemented.
+	(startElement(String,String,String,Attributes)): Implemented.
+	(characters(char[],int,int)): Implemented.
+	(endElement(String,String,String)): Implemented.
+	(endDocument()): Implemented.
+
 2005-10-23  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* java/lang/Thread.java
