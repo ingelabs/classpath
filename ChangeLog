@@ -1,5 +1,19 @@
 2005-10-23  Guilhem Lavaux  <guilhem@kaffe.org>
 
+	* java/lang/Thread.java
+	(sleep): Better exception message.
+
+	* java/security/AccessControlContext.java
+	(checkPermission): Likewise.
+
+	* java/util/ResourceBundle.java
+	(getBundle): Likewise.
+
+	* java/util/SimpleTimeZone.java
+	(setStartRule): Added some documentation.
+
+2005-10-23  Guilhem Lavaux  <guilhem@kaffe.org>
+
 	* configure.ac: Added support for "--with-native-libdir" and
 	"--with-glibj-dir". Generate copy-vmresources.sh
 
