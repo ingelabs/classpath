@@ -1,5 +1,9 @@
 2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        * gnu/CORBA/Interceptor/Registrator.java (m_prefix): Made static.
+
+2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
         * gnu/javax/rmi/CORBA/gnuRmiUtil.java (readValue):
         Do not read fields of the ObjectImpl.
 
