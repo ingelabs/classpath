@@ -1,5 +1,12 @@
 2005-10-24  Dalibor Topic  <robilad@kaffe.org>
 
+	* test/native/lib/PrimlibInterface.c,
+	test/native/lib/PrimlibInterface.h,
+	test/native/lib/PrimlibTest.java:
+	Removed unused test.
+
+2005-10-24  Dalibor Topic  <robilad@kaffe.org>
+
 	* native/jni/classpath/primlib.c,
 	native/jni/classpath/primlib.h: Removed since unused.
 
