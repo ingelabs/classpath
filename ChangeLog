@@ -1,3 +1,25 @@
+2005-10-24  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/text/AttributedString.java
+	(AttributedString(AttributedCharacterIterator, int, int, 
+	AttributedCharacterIterator.Attribute[])): renamed arguments, and 
+	updated IllegalArgumentException check,
+	(addAttribute(AttrubytedCharacterIterator.Attribute, Object, int, 
+	int)): likewise,
+	(addAttributes(Map, int, int)): changed IllegalArgumentException to
+	NullPointerException, and modified check for illegal range,
+	* java/text/AttributedStringIterator.java
+	(getRunLimit(Set)): reimplemented,
+	(getRunStart): added API docs,
+	(getRunStart(AttributedCharacterIterator.Attribute)): handle null
+	argument as a special case,
+	(getRunStart(Set)): reimplemented,
+	(getAttribute(AttributedCharacterIterator.Attribute, int)): new 
+	private method,
+	(getAttribute(AttributedCharacterIterator.Attribute)): reimplemented
+	using new private method.
+	* java/text/CharacterIterator.java: minor API doc fix.
+
 2005-10-24  Roman Kennke  <kennke@aicas.com>
 
 	Fixes Bug #24359
