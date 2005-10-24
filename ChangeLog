@@ -1,3 +1,11 @@
+2005-10-24  Dalibor Topic  <robilad@kaffe.org>
+
+	* native/jni/classpath/primlib.c,
+	native/jni/classpath/primlib.h: Removed since unused.
+
+	* native/jni/classpath/Makefile.am: (libclasspath_la_SOURCES)
+	Removed primlib.c and primlib.h.
+
 2005-10-24  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* examples/gnu/classpath/examples/swing/ScrollBarDemo.java: New file.
