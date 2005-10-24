@@ -57,6 +57,11 @@
 
 2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        PR classpath/22972 
+        * java/io/File (createTempFile): Rewritten.
+
+2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
        * org/omg/IOP/RMICustomMaxStreamFormat.java,
        org/omg/IOP/ExceptionDetailMessage.java: New files. 
 
