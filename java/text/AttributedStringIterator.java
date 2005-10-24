@@ -204,7 +204,9 @@ class AttributedStringIterator implements AttributedCharacterIterator
       Iterator iterator = attributeSet.iterator();
       while (iterator.hasNext()) 
       {
-        Attribute attributeKey = (Attribute) iterator.next();
+	// Qualified name is a workaround for a gcj 4.0 bug.
+        AttributedCharacterIterator.Attribute attributeKey
+	  = (AttributedCharacterIterator.Attribute) iterator.next();
         Object v1 = runValues.get(attributeKey);
         Object v2 = getAttribute(attributeKey, limit + 1);
         boolean changed = false;
@@ -287,7 +289,9 @@ class AttributedStringIterator implements AttributedCharacterIterator
       Iterator iterator = attributeSet.iterator();
       while (iterator.hasNext()) 
       {
-        Attribute attributeKey = (Attribute) iterator.next();
+	// Qualified name is a workaround for a gcj 4.0 bug.
+        AttributedCharacterIterator.Attribute attributeKey
+	  = (AttributedCharacterIterator.Attribute) iterator.next();
         Object v1 = runValues.get(attributeKey);
         Object v2 = getAttribute(attributeKey, prev);
         boolean changed = false;

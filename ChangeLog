@@ -1,3 +1,9 @@
+2005-10-24  Tom Tromey  <tromey@redhat.com>
+
+	* java/text/AttributedStringIterator.java (getRunLimit): Add
+	explicit qualification.
+	(getRunStart): Likewise.
+
 2005-10-24  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/text/AttributedString.java
