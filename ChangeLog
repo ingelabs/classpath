@@ -1,5 +1,9 @@
 2005-10-24  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* examples/gnu/classpath/examples/swing/ScrollBarDemo.java: New file.
+
+2005-10-24  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicScrollBarUI.java
 	(ModelListener.stateChanged): changed call to getThumbBounds() to
 	updateThumbRect(),
