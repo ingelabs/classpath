@@ -128,9 +128,8 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
      */
     public void stateChanged(ChangeEvent e)
     {
-      //       System.err.println(this + ".stateChanged()");
       calculatePreferredSize();
-      getThumbBounds();
+      updateThumbRect();
       scrollbar.repaint();
     }
   }
@@ -151,7 +150,7 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
         {
           ((BoundedRangeModel) e.getOldValue()).removeChangeListener(modelListener);
           scrollbar.getModel().addChangeListener(modelListener);
-          getThumbBounds();
+          updateThumbRect();
         }
       else if (e.getPropertyName().equals("orientation"))
         {
@@ -172,6 +171,14 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
           incrButton.addMouseListener(buttonListener);
           decrButton.addMouseListener(buttonListener);
           calculatePreferredSize();
+        }
+      else if (e.getPropertyName().equals("enabled"))
+        {
+          Boolean b = (Boolean) e.getNewValue();
+          if (incrButton != null)
+            incrButton.setEnabled(b.booleanValue());
+          if (decrButton != null)
+            decrButton.setEnabled(b.booleanValue());
         }
     }
   }
@@ -625,7 +632,7 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
    */
   public Dimension getMaximumSize(JComponent c)
   {
-    return getPreferredSize(c);
+    return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
   }
 
   /**
@@ -667,7 +674,6 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
    */
   void calculatePreferredSize()
   {
-    // System.err.println(this + ".calculatePreferredSize()");
     int height;
     int width;
     height = width = 0;
@@ -730,48 +736,6 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
    */
   protected Rectangle getThumbBounds()
   {
-    int max = scrollbar.getMaximum();
-    int min = scrollbar.getMinimum();
-    int value = scrollbar.getValue();
-    int extent = scrollbar.getVisibleAmount();
-
-    // System.err.println(this + ".getThumbBounds()");
-    if (max == min)
-      {
-	thumbRect.x = trackRect.x;
-	thumbRect.y = trackRect.y;
-	if (scrollbar.getOrientation() == HORIZONTAL)
-	  {
-	    thumbRect.width = getMinimumThumbSize().width;
-	    thumbRect.height = trackRect.height;
-	  }
-	else
-	  {
-	    thumbRect.width = trackRect.width;
-	    thumbRect.height = getMinimumThumbSize().height;
-	  }
-	return thumbRect;
-      }
-
-    if (scrollbar.getOrientation() == HORIZONTAL)
-      {
-	thumbRect.x = trackRect.x;
-	thumbRect.x += (value - min) * trackRect.width / (max - min);
-	thumbRect.y = trackRect.y;
-
-	thumbRect.width = Math.max(extent * trackRect.width / (max - min),
-                                   getMinimumThumbSize().width);
-	thumbRect.height = trackRect.height;
-      }
-    else
-      {
-	thumbRect.x = trackRect.x;
-	thumbRect.y = trackRect.y + value * trackRect.height / (max - min);
-
-	thumbRect.width = trackRect.width;
-	thumbRect.height = Math.max(extent * trackRect.height / (max - min),
-                                    getMinimumThumbSize().height);
-      }
     return thumbRect;
   }
 
@@ -783,22 +747,6 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
    */
   protected Rectangle getTrackBounds()
   {
-    SwingUtilities.calculateInnerArea(scrollbar, trackRect);
-
-    if (scrollbar.getOrientation() == SwingConstants.HORIZONTAL)
-      {
-	trackRect.width -= incrButton.getPreferredSize().getWidth();
-	trackRect.width -= decrButton.getPreferredSize().getWidth();
-
-	trackRect.x += decrButton.getPreferredSize().getWidth();
-      }
-    else
-      {
-	trackRect.height -= incrButton.getPreferredSize().getHeight();
-	trackRect.height -= decrButton.getPreferredSize().getHeight();
-
-	trackRect.y += incrButton.getPreferredSize().getHeight();
-      }
     return trackRect;
   }
 
@@ -896,8 +844,8 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
 
 	scrollTimer = new Timer(300, null);
 
+        installDefaults();
 	installComponents();
-	installDefaults();
 	configureScrollBarColors();
 	installListeners();
 
@@ -928,17 +876,20 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
    */
   protected void layoutHScrollbar(JScrollBar sb)
   {
-    // All we have to do is layout the 2 buttons?
     Rectangle vr = new Rectangle();
     SwingUtilities.calculateInnerArea(scrollbar, vr);
 
-    // Update the rectangles.
-    getTrackBounds();
-    getThumbBounds();
-
     Dimension incrDims = incrButton.getPreferredSize();
     Dimension decrDims = decrButton.getPreferredSize();
+    
+    // calculate and update the track bounds
+    SwingUtilities.calculateInnerArea(scrollbar, trackRect);
+    trackRect.width -= incrDims.getWidth();
+    trackRect.width -= decrDims.getWidth();
+    trackRect.x += decrDims.getWidth();
 
+    updateThumbRect();
+    
     decrButton.setBounds(vr.x, vr.y, decrDims.width, trackRect.height);
     incrButton.setBounds(trackRect.x + trackRect.width, vr.y, incrDims.width,
                          trackRect.height);
@@ -954,18 +905,74 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
     Rectangle vr = new Rectangle();
     SwingUtilities.calculateInnerArea(scrollbar, vr);
 
-    // Update rectangles
-    getTrackBounds();
-    getThumbBounds();
-
     Dimension incrDims = incrButton.getPreferredSize();
     Dimension decrDims = decrButton.getPreferredSize();
+    
+    // Update rectangles
+    SwingUtilities.calculateInnerArea(scrollbar, trackRect);
+    trackRect.height -= incrDims.getHeight();
+    trackRect.height -= decrDims.getHeight();
+    trackRect.y += decrDims.getHeight();
+    
+    updateThumbRect();
 
     decrButton.setBounds(vr.x, vr.y, trackRect.width, decrDims.height);
     incrButton.setBounds(vr.x, trackRect.y + trackRect.height,
                          trackRect.width, incrDims.height);
   }
 
+  /**
+   * Updates the thumb rect.
+   */
+  void updateThumbRect()
+  {
+    int max = scrollbar.getMaximum();
+    int min = scrollbar.getMinimum();
+    int value = scrollbar.getValue();
+    int extent = scrollbar.getVisibleAmount();
+    if (max - extent <= min)
+      {
+        if (scrollbar.getOrientation() == JScrollBar.HORIZONTAL)
+          {
+            thumbRect.x = trackRect.x;
+            thumbRect.y = trackRect.y;
+            thumbRect.width = getMinimumThumbSize().width;
+            thumbRect.height = trackRect.height;
+          }
+        else
+          {
+            thumbRect.x = trackRect.x;
+            thumbRect.y = trackRect.y;
+            thumbRect.width = trackRect.width;
+            thumbRect.height = getMinimumThumbSize().height;
+          }
+      }
+    else
+      {
+        if (scrollbar.getOrientation() == JScrollBar.HORIZONTAL)
+          {
+            thumbRect.x = trackRect.x;
+            thumbRect.width = Math.max(extent * trackRect.width / (max - min),
+                getMinimumThumbSize().width);
+            int availableWidth = trackRect.width - thumbRect.width;
+            thumbRect.x += (value - min) * availableWidth / (max - min - extent);
+            thumbRect.y = trackRect.y;
+            thumbRect.height = trackRect.height;
+          }
+        else
+          {
+            thumbRect.x = trackRect.x;
+            thumbRect.height = Math.max(extent * trackRect.height / (max - min),
+                    getMinimumThumbSize().height);
+            int availableHeight = trackRect.height - thumbRect.height;
+            thumbRect.y = trackRect.y 
+              + (value - min) * availableHeight / (max - min - extent);
+            thumbRect.width = trackRect.width;
+          }
+      }
+
+  }
+  
   /**
    * This method returns the minimum size required for the layout.
    *

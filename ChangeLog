@@ -1,3 +1,39 @@
+2005-10-24  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(ModelListener.stateChanged): changed call to getThumbBounds() to
+	updateThumbRect(),
+	(PropertyChangeHandler.propertyChange): likewise, plus added handling
+	for 'enabled' property,
+	(getMaximumSize): return maximum dimension,
+	(getThumbBounds): just return field value,
+	(getTrackBounds): just return field value,
+	(installUI): switch order of calls to installDefaults() and 
+	installComponents(),
+	(layoutHScrollBar): reimplemented using new updateThumbRect() method,
+	(layoutVScrollBar): likewise,
+	(updateThumbRect): new method,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): added 'ScrollBar.width' default,
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	(MIN_THUMB_SIZE): changed value,
+	(MIN_THUMB_SIZE_FREE_STANDING): new field,
+	(isFreeStanding): set default to true,
+	(scrollBarShadowColor): new field,
+	(installDefaults): initialise scrollBarShadowColor,
+	(createDecreaseButton): retain reference in decreaseButton field,
+	(createIncreaseButton): retain reference in increaseButton field,
+	(paintTrackHorizontal): use scrollBarShadowColor, add special handling
+	for free standing scroll bar in disabled state,
+	(paintTrackVertical): likewise,
+	(paintThumb): separate horizontal and vertical cases,
+	(paintThumbHorizontal): new method,
+	(paintThumbVertical): new method,
+	(getMinimumThumbSize): return different size depending on whether or 
+	not the scroll bar is free standing,
+	* javax/swing/plaf/metal/MetalScrollButton.java
+	(paintNorthBorderFreeStanding): modified drawing.
+
 2005-10-24  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/metadata/IIOMetadataFormatImpl.java: Complete.
@@ -21,7 +57,7 @@
 	(AttributedString(AttributedCharacterIterator, int, int, 
 	AttributedCharacterIterator.Attribute[])): renamed arguments, and 
 	updated IllegalArgumentException check,
-	(addAttribute(AttrubytedCharacterIterator.Attribute, Object, int, 
+	(addAttribute(AttributedCharacterIterator.Attribute, Object, int, 
 	int)): likewise,
 	(addAttributes(Map, int, int)): changed IllegalArgumentException to
 	NullPointerException, and modified check for illegal range,
