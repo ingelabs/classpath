@@ -1,3 +1,14 @@
+2005-10-24  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/metadata/IIOMetadataFormatImpl.java: Complete.
+	* javax/imageio/metadata/IIOMetadataNode.java: Complete stubs.
+	* javax/imageio/metadata/IIOAttr.java: Replace with
+	IIOMetadataFormatImpl.IIOMetadataNodeAttr.  Remove file.
+	* javax/imageio/metadata/IIONamedNodeMap.java: Replace with
+	IIOMetadataNode.IIONamedNodeMap.  Remove file.
+	* javax/imageio/metadata/IIONodeList.java: Replace with
+	IIOMetadataNode.IIONodeList.  Remove file.
+
 2005-10-24  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/AttributedStringIterator.java (getRunLimit): Add
