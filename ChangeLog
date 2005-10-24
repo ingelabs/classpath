@@ -1,4 +1,10 @@
-2005-08-13  Tom Tromey  <tromey@redhat.com>
+2005-10-24  Roman Kennke  <kennke@aicas.com>
+
+	Fixes Bug #24359
+	* javax/swing/BoxLayout.java:
+	Made class thread safe.
+
+2005-10-23  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/InvalidPropertiesFormatException.java: New file.
 
