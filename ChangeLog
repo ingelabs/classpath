@@ -1,5 +1,11 @@
 2005-10-24  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/gtk/GtkDialogPeer.java
+	(create): Changed classname for the heavyweight testclass to match
+	the new classes introduced by my popup patch earlier this day.
+
+2005-10-24  Roman Kennke  <kennke@aicas.com>
+
 	* examples/gnu/classpath/examples/swing/Demo.java
 	(mkMenuBar): Replaced some demos with new external demo programs,
 	namely the button demo, the scrollbar demo, the combobox demo and

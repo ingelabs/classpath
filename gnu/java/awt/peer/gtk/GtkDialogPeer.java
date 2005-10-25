@@ -94,8 +94,7 @@ public class GtkDialogPeer extends GtkWindowPeer
         Class heavyWeightClass;
         try
           {
-            heavyWeightClass = JPopupMenu.class.
-                    forName("javax.swing.JPopupMenu$HeavyWeightPopup");
+            heavyWeightClass = Class.forName("javax.swing.Popup$JWindowPopup");
           }
         catch (ClassNotFoundException e)
           {
