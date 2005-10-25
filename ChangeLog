@@ -1,5 +1,11 @@
 2005-10-25  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/text/CompositeView.java:
+	(getViewIndexAtPosition): Fixed boundary conditions (less than and 
+	greater than signs were backward).
+
+2005-10-25  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/text/Utilities.java:
 	(getBreakLocation): New API method.
 
