@@ -1,3 +1,7 @@
+2005-10-25  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/WrappedPlainView: New class.
+
 2005-10-25  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicButtonUI.java
