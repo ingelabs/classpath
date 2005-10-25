@@ -1,3 +1,13 @@
+2005-10-25  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(installDefaults): Removed initialization of unnecessary focusColor
+	field.
+	(paintButtonPressed): Only paint if button is opaque.
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(paintButtonPressed): Only paint if button is opaque and
+	contentAreaFilled.
+
 2005-10-25  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/CompositeView.java:
@@ -13,13 +23,13 @@
 
 	* java/io/ObjectOutputStream.java (useProtocolVersion): Typo fix.
 
-2005-10-24  Roman Kennke  <kennke@aicas.com>
+2005-10-25  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/GtkDialogPeer.java
 	(create): Changed classname for the heavyweight testclass to match
 	the new classes introduced by my popup patch earlier this day.
 
-2005-10-24  Roman Kennke  <kennke@aicas.com>
+2005-10-25  Roman Kennke  <kennke@aicas.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java
 	(mkMenuBar): Replaced some demos with new external demo programs,
@@ -39,7 +49,7 @@
 	(createContent): Made package private so that the Demo.java can
 	access it.
 
-2005-10-24  Roman Kennke  <kennke@aicas.com>
+2005-10-25  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JLayeredPane.java
 	(addImpl): Removed unnecessary repaint() and revalidate() calls.
@@ -114,7 +124,7 @@
 	org/omg/PortableServer/ServantLocatorHelper.java: Added
 	unchecked_narrow method.
 
-2005-10-24  Roman Kennke  <kennke@aicas.com>
+2005-10-25  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
 	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen):

@@ -144,11 +144,14 @@ public class MetalToggleButtonUI
    */
   protected void paintButtonPressed(Graphics g, AbstractButton b)
   {
-    Color saved = g.getColor();
-    Rectangle bounds = SwingUtilities.getLocalBounds(b);
-    g.setColor(selectColor);
-    g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
-    g.setColor(saved);
+    if (b.isContentAreaFilled() && b.isOpaque())
+      {
+        Color saved = g.getColor();
+        Rectangle bounds = SwingUtilities.getLocalBounds(b);
+        g.setColor(selectColor);
+        g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        g.setColor(saved);
+      }
   }
   
   /**
