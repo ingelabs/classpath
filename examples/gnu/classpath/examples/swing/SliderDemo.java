@@ -62,7 +62,7 @@ public class SliderDemo extends JFrame implements ActionListener
     getContentPane().add(createContent());
   }
        
-  private JPanel createContent() 
+  JPanel createContent() 
   {
     JPanel content = new JPanel(new BorderLayout());
     JPanel panel = new JPanel(new GridLayout(1, 2));

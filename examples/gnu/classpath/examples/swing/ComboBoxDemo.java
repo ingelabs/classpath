@@ -104,7 +104,7 @@ public class ComboBoxDemo
     getContentPane().add(createContent());
   }
        
-  private JPanel createContent() 
+  JPanel createContent() 
   {
     JPanel content = new JPanel(new BorderLayout());
     JPanel panel = new JPanel(new GridLayout(6, 1));

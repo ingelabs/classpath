@@ -23,7 +23,6 @@ Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 package gnu.classpath.examples.swing;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +31,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.UIManager;
 
 /**
  * A simple scroll bar demo showing various scroll bars in different states.
@@ -53,7 +51,7 @@ public class ScrollBarDemo
     getContentPane().add(createContent());
   }
        
-  private JPanel createContent() 
+  JPanel createContent() 
   {
     JPanel content = new JPanel(new BorderLayout());
     JPanel panel = createScrollBarPanel();

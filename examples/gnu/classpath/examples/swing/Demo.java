@@ -24,20 +24,12 @@ package gnu.classpath.examples.swing;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.*;
-import java.awt.geom.*;
-import java.awt.image.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.tree.*;
 import javax.swing.border.*;
 
 import java.net.URL;
-import java.util.*;
 
 public class Demo
 {
@@ -147,10 +139,7 @@ public class Demo
 
     JMenu examples = new JMenu("Examples");
     new PopUpAction("Buttons",
-		    mkPanel(new JComponent[]
-			{mkBigButton("mango"), 
-			 mkBigButton("guava"),
-			 mkBigButton("lemon")}),
+		    (new ButtonDemo("Button Demo")).createContent(),
 		    examples);
     
     new PopUpAction("Toggles",
@@ -181,7 +170,7 @@ public class Demo
 		    examples);
 
     new PopUpAction("Scrollbar",
-		    mkScrollBar(),
+		    (new ScrollBarDemo("ScrollBarDemo")).createContent(),
 		    examples);
 
     new PopUpAction("Viewport",
@@ -189,8 +178,8 @@ public class Demo
 		    examples);
 
     new PopUpAction("ScrollPane",
-		    mkScrollPane(mkBigButton("Scroll Me!")),
-		    examples);
+                    mkScrollPane(mkBigButton("Scroll Me!")),
+                    examples);
 
     new PopUpAction("TabPane",
 		    mkTabs(new String[] {"happy",
@@ -211,11 +200,7 @@ public class Demo
 		    examples);
 
     new PopUpAction("ComboBox",
-		    mkComboBox(new String[] {"Stop",
-					     "Software",
-					     "Hoarders",
-					     "Support",
-					     "GNU!"}),
+		    (new ComboBoxDemo("ComboBox Demo")).createContent(),
 		    examples);
 
     new PopUpAction("Editor",
@@ -1021,10 +1006,7 @@ public class Demo
     panel.setLayout(new FlowLayout());
 
     new PopUpAction("Buttons",
-		    mkPanel(new JComponent[]
-			{mkBigButton("mango"), 
-			 mkBigButton("guava"),
-			 mkBigButton("lemon")}),
+		    (new ButtonDemo("Button Demo")).createContent(),
 		    panel);
     
     new PopUpAction("Toggles",
@@ -1040,7 +1022,7 @@ public class Demo
 		    panel);
 
     new PopUpAction("Slider",
-		    mkSliders(),
+		    (new SliderDemo("Slider Demo")).createContent(),
 		    panel);
 
     new PopUpAction("List",
@@ -1055,7 +1037,7 @@ public class Demo
 		    panel);
 
     new PopUpAction("Scrollbar",
-		    mkScrollBar(),
+		    (new ScrollBarDemo("ScrollBar Demo")).createContent(),
 		    panel);
 
     new PopUpAction("Viewport",
@@ -1085,11 +1067,7 @@ public class Demo
 		    panel);
 
     new PopUpAction("ComboBox",
-		    mkComboBox(new String[] {"Stop",
-					     "Software",
-					     "Hoarders",
-					     "Support",
-					     "GNU!"}),
+		    (new ComboBoxDemo("ComboBox Demo")).createContent(),
 		    panel);
 
     new PopUpAction("Editor",

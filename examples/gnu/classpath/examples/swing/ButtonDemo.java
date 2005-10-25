@@ -79,7 +79,7 @@ public class ButtonDemo
     getContentPane().add(createContent());
   }
        
-  private JPanel createContent() 
+  JPanel createContent() 
   {
     JPanel content = new JPanel(new BorderLayout());
     JPanel panel = new JPanel(new GridLayout(4, 1));

@@ -1,5 +1,25 @@
 2005-10-24  Roman Kennke  <kennke@aicas.com>
 
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkMenuBar): Replaced some demos with new external demo programs,
+	namely the button demo, the scrollbar demo, the combobox demo and
+	the slider demo.
+	(mkButtonBar): Likewise.
+	* examples/gnu/classpath/examples/swing/ButtonDemo.java
+	(createContent): Made package private so that the Demo.java can
+	access it.
+	* examples/gnu/classpath/examples/swing/ComboBoxDemo.java
+	(createContent): Made package private so that the Demo.java can
+	access it.
+	* examples/gnu/classpath/examples/swing/ScrollBarDemo.java
+	(createContent): Made package private so that the Demo.java can
+	access it.
+	* examples/gnu/classpath/examples/swing/SliderDemo.java
+	(createContent): Made package private so that the Demo.java can
+	access it.
+
+2005-10-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JLayeredPane.java
 	(addImpl): Removed unnecessary repaint() and revalidate() calls.
 	* javax/swing/JPopupMenu.java
@@ -94,8 +114,8 @@
 2005-10-24  Dalibor Topic  <robilad@kaffe.org>
 
 	* test/native/lib/PrimlibInterface.c,
-	test/native/lib/PrimlibInterface.h,
-	test/native/lib/PrimlibTest.java:
+	* test/native/lib/PrimlibInterface.h,
+	* test/native/lib/PrimlibTest.java:
 	Removed unused test.
 
 2005-10-24  Dalibor Topic  <robilad@kaffe.org>
