@@ -1,3 +1,7 @@
+2005-10-25  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/ObjectOutputStream.java (useProtocolVersion): Typo fix.
+
 2005-10-24  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/GtkDialogPeer.java
