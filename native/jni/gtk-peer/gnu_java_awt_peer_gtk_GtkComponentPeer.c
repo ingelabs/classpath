@@ -465,7 +465,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen
   ptr = NSA_GET_PTR (env, obj);
   point = (*env)->GetIntArrayElements (env, jpoint, 0);
 
-  gdk_window_get_origin (GTK_WIDGET (ptr)->window, point, point+1);
+  gdk_window_get_root_origin (GTK_WIDGET (ptr)->window, point, point+1);
 
   if (!GTK_IS_CONTAINER (ptr))
     {

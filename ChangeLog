@@ -1,3 +1,10 @@
+2005-10-24  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen):
+	Call gdk_window_get_root_origin instead of gdk_window_get_origin
+	so that the window decorations are correctly respected.
+
 2005-10-24  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/ObjectOutputStream.java (useProtocolVersion): Fixed typo
@@ -173,26 +180,26 @@
 
 2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-       * org/omg/IOP/RMICustomMaxStreamFormat.java,
-       org/omg/IOP/ExceptionDetailMessage.java: New files. 
+	* org/omg/IOP/RMICustomMaxStreamFormat.java,
+	* org/omg/IOP/ExceptionDetailMessage.java: New files. 
 
 2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * gnu/CORBA/Interceptor/Registrator.java (m_prefix): Made static.
+	* gnu/CORBA/Interceptor/Registrator.java (m_prefix): Made static.
 
 2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * gnu/javax/rmi/CORBA/gnuRmiUtil.java (readValue):
-        Do not read fields of the ObjectImpl.
+	* gnu/javax/rmi/CORBA/gnuRmiUtil.java (readValue):
+	Do not read fields of the ObjectImpl.
 
 2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/IOP/TAG_RMI_CUSTOM_MAX_STREAM_FORMAT,
-        org/omg/PortableInterceptor/ACTIVE.java, 
-        org/omg/PortableInterceptor/DISCARDING.java, 
-        org/omg/PortableInterceptor/HOLDING.java, 
-        org/omg/PortableInterceptor/INACTIVE.java, 
-        org/omg/PortableInterceptor/NON_EXISTENT.java: New files.
+	* org/omg/IOP/TAG_RMI_CUSTOM_MAX_STREAM_FORMAT,
+	* org/omg/PortableInterceptor/ACTIVE.java,
+	* org/omg/PortableInterceptor/DISCARDING.java,
+	* org/omg/PortableInterceptor/HOLDING.java,
+	* org/omg/PortableInterceptor/INACTIVE.java,
+	* org/omg/PortableInterceptor/NON_EXISTENT.java: New files.
 
 2005-10-22  Julian Scheid  <julian@sektor37.de>
 
@@ -201,21 +208,21 @@
 
 2005-10-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/CORBA/ACTIVITY_COMPLETED.java, 
-        org/omg/CORBA/ACTIVITY_REQUIRED.java, 
-        org/omg/CORBA/BAD_QOS.java, 
-        org/omg/CORBA/CODESET_INCOMPATIBLE.java, 
-        org/omg/CORBA/INVALID_ACTIVITY.java, 
-        org/omg/CORBA/REBIND.java, 
-        org/omg/CORBA/TIMEOUT.java, 
-        org/omg/CORBA/TRANSACTION_MODE.java, 
-        org/omg/CORBA/TRANSACTION_UNAVAILABLE.java: New exceptions.
+	* org/omg/CORBA/ACTIVITY_COMPLETED.java,
+	* org/omg/CORBA/ACTIVITY_REQUIRED.java,
+	* org/omg/CORBA/BAD_QOS.java,
+	* org/omg/CORBA/CODESET_INCOMPATIBLE.java,
+	* org/omg/CORBA/INVALID_ACTIVITY.java,
+	* org/omg/CORBA/REBIND.java,
+	* org/omg/CORBA/TIMEOUT.java,
+	* org/omg/CORBA/TRANSACTION_MODE.java,
+	* org/omg/CORBA/TRANSACTION_UNAVAILABLE.java: New exceptions.
 
 2005-10-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * javax/rmi/CORBA/ValueHandlerMultiFormat.java: New interface.
-        * gnu/javax/rmi/CORBA/ValueHandlerDelegateImpl.java
-        (getMaximumStreamFormatVersion, writeValue): New methods.
+	* javax/rmi/CORBA/ValueHandlerMultiFormat.java: New interface.
+	* gnu/javax/rmi/CORBA/ValueHandlerDelegateImpl.java
+	(getMaximumStreamFormatVersion, writeValue): New methods.
 
 2005-10-22  Mark Wielaard  <mark@klomp.org>
 
@@ -261,15 +268,15 @@
 
 2005-10-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * gnu/CORBA/DefaultSocketFactory.java,
-        gnu/CORBA/interfaces/gnuSocketFactory.java,
-        gnu/CORBA/interfaces/package.html: New files.
-        * gnu/CORBA/Functional_ORB.java,
-        gnu/CORBA/Focused_ORB.java (getPortServer),
-        gnu/CORBA/GIOP/ErrorMessage.java (send),
-        gnu/CORBA/gnuRequest.java (submit): Rewritten to support
-        gnu.Corba.SocketFactory property.
-        * org/omg/CORBA/ORB.java: Documentation update. 
+	* gnu/CORBA/DefaultSocketFactory.java,
+	* gnu/CORBA/interfaces/gnuSocketFactory.java,
+	* gnu/CORBA/interfaces/package.html: New files.
+	* gnu/CORBA/Functional_ORB.java,
+	* gnu/CORBA/Focused_ORB.java (getPortServer),
+	* gnu/CORBA/GIOP/ErrorMessage.java (send),
+	* gnu/CORBA/gnuRequest.java (submit): Rewritten to support
+	gnu.Corba.SocketFactory property.
+	* org/omg/CORBA/ORB.java: Documentation update. 
 
 2005-10-21  Lillian Angel  <langel@redhat.com>
 
@@ -386,8 +393,8 @@
 
 2005-10-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/ietf/jgss/GSSCredential.java (hashCode),
-        org/ietf/jgss/GSSName.java (hashCode): New declarations.
+	* org/ietf/jgss/GSSCredential.java (hashCode),
+	* org/ietf/jgss/GSSName.java (hashCode): New declarations.
 
 2005-10-19  Mark Wielaard  <mark@klomp.org>
 
@@ -400,12 +407,12 @@
 
 2005-10-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * javax/swing/text/html/HTMLEditorKit.java (getParser): New method.
+	* javax/swing/text/html/HTMLEditorKit.java (getParser): New method.
 
 2005-10-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * javax/swing/text/html/parser/ContentModel.java: Fixed comments for
-        parameterless constructor.
+	* javax/swing/text/html/parser/ContentModel.java: Fixed comments for
+	parameterless constructor.
 
 2005-10-19  Roman Kennke  <kennke@aicas.com>
 
