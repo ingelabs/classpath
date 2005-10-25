@@ -1,4 +1,13 @@
 2005-10-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+           
+	* org/omg/CORBA/IDLEntity.java: Deleted.   
+	* gnu/CORBA/primitiveTypeCode.java,
+	org/omg/CORBA/PolicyError.java,
+	org/omg/CORBA/TypeCodePackage/BadKind.java,
+	org/omg/CORBA/TypeCodePackage/Bounds.java: 
+	Use org.omg.CORBA.portable.IDLEntity.
+
+2005-10-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/interfaces/SocketFactory.java: New file.
 	* gnu/CORBA/interfaces/gnuSocketFactory.java: Deleted.

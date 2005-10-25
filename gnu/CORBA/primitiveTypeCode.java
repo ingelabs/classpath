@@ -42,12 +42,12 @@ package gnu.CORBA;
 import java.io.Serializable;
 
 import org.omg.CORBA.Any;
-import org.omg.CORBA.IDLEntity;
 import org.omg.CORBA.NO_IMPLEMENT;
 import org.omg.CORBA.TCKind;
 import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.TypeCodePackage.BadKind;
 import org.omg.CORBA.TypeCodePackage.Bounds;
+import org.omg.CORBA.portable.IDLEntity;
 
 /**
  * An information about a primitive CORBA data type
