@@ -1,5 +1,10 @@
 2005-10-24  Tom Tromey  <tromey@redhat.com>
 
+	* java/io/ObjectOutputStream.java (useProtocolVersion): Fixed typo
+	in javadoc.
+
+2005-10-24  Tom Tromey  <tromey@redhat.com>
+
 	* java/lang/StringBuffer.java (appendCodePoint): Added @since.
 	* java/lang/StringBuilder.java (insert): New overloads.
 	(appendCodePoint): New method.
