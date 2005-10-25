@@ -1,4 +1,9 @@
 2005-10-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/classpath/examples/CORBA/NamingService/Demo.java (main):
+	Make arguments not final.
+
+2005-10-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
            
 	* org/omg/CORBA/IDLEntity.java: Deleted.   
 	* gnu/CORBA/primitiveTypeCode.java,
