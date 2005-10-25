@@ -1,4 +1,12 @@
-	2005-10-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+2005-10-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/interfaces/SocketFactory.java: New file.
+	* gnu/CORBA/interfaces/gnuSocketFactory.java: Deleted.
+	* gnu/CORBA/DefaultSocketFactory.java,
+	gnu/CORBA/Functional_ORB.java,
+	org/omg/CORBA/ORB.java: Replacing gnuSocketFactory into SocketFactory.
+
+2005-10-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/CosNaming/BindingIteratorHelper.java,
 	org/omg/CosNaming/NamingContextExtHelper.java,
@@ -17,7 +25,6 @@
 	org/omg/PortableServer/ServantActivatorHelper.java,
 	org/omg/PortableServer/ServantLocatorHelper.java: Added
 	unchecked_narrow method.
-
 
 2005-10-24  Roman Kennke  <kennke@aicas.com>
 

@@ -49,7 +49,7 @@ import gnu.CORBA.GIOP.RequestHeader;
 import gnu.CORBA.NamingService.NameParser;
 import gnu.CORBA.NamingService.NamingServiceTransient;
 import gnu.CORBA.Poa.gnuForwardRequest;
-import gnu.CORBA.interfaces.gnuSocketFactory;
+import gnu.CORBA.interfaces.SocketFactory;
 
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.BAD_PARAM;
@@ -450,7 +450,7 @@ public class Functional_ORB extends Restricted_ORB
   /**
    * The producer of the client and server sockets for this ORB.
    */
-  public gnuSocketFactory socketFactory = DefaultSocketFactory.Singleton;
+  public SocketFactory socketFactory = DefaultSocketFactory.Singleton;
 
   /**
    * Create the instance of the Functional ORB.
@@ -1623,14 +1623,14 @@ public class Functional_ORB extends Restricted_ORB
             );
           }
         
-        if (props.containsKey(gnuSocketFactory.PROPERTY))
+        if (props.containsKey(SocketFactory.PROPERTY))
           {
             String factory = null;
             try
               {
-                factory = props.getProperty(gnuSocketFactory.PROPERTY);
+                factory = props.getProperty(SocketFactory.PROPERTY);
                 if (factory!=null)
-                  socketFactory = (gnuSocketFactory) 
+                  socketFactory = (SocketFactory) 
                     ObjectCreator.forName(factory).newInstance();
               }
             catch (Exception ex)

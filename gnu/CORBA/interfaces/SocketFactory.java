@@ -1,4 +1,4 @@
-/* gnuSocketFactory.java --
+/* SocketFactory.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -56,7 +56,7 @@ import java.net.Socket;
  * 
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public interface gnuSocketFactory
+public interface SocketFactory
 {
   /**
    * The name of the ORB property that forces the ORB to use the socket

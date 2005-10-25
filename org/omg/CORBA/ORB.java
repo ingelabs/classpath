@@ -113,7 +113,7 @@ import java.util.Properties;
  * property com.sun.CORBA.connection.ORBSocketFactoryClass. To have multiple
  * types of sockets, instantiate several ORB's with this property each time
  * set to the different value. 
- * The factory must implement gnu.CORBA.interfaces.gnuSocketFactory.
+ * The factory must implement gnu.CORBA.interfaces.SocketFactory.
  * </td>
  * </tr>
  * </table> 

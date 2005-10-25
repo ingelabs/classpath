@@ -38,7 +38,7 @@
 
 package gnu.CORBA;
 
-import gnu.CORBA.interfaces.gnuSocketFactory;
+import gnu.CORBA.interfaces.SocketFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -51,7 +51,7 @@ import java.net.Socket;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public class DefaultSocketFactory
-  implements gnuSocketFactory
+  implements SocketFactory
 {
   /**
    * It is enough to have one instance of this class for all ORBs.
