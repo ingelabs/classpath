@@ -1,3 +1,24 @@
+	2005-10-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/CosNaming/BindingIteratorHelper.java,
+	org/omg/CosNaming/NamingContextExtHelper.java,
+	org/omg/CosNaming/NamingContextHelper.java,
+	org/omg/DynamicAny/DynAnyFactoryHelper.java,
+	org/omg/DynamicAny/DynAnyHelper.java,
+	org/omg/DynamicAny/DynArrayHelper.java,
+	org/omg/DynamicAny/DynEnumHelper.java,
+	org/omg/DynamicAny/DynFixedHelper.java,
+	org/omg/DynamicAny/DynSequenceHelper.java,
+	org/omg/DynamicAny/DynStructHelper.java,
+	org/omg/DynamicAny/DynUnionHelper.java,
+	org/omg/DynamicAny/DynValueHelper.java,
+	org/omg/IOP/CodecFactoryHelper.java,
+	org/omg/PortableInterceptor/CurrentHelper.java,
+	org/omg/PortableServer/ServantActivatorHelper.java,
+	org/omg/PortableServer/ServantLocatorHelper.java: Added
+	unchecked_narrow method.
+
+
 2005-10-24  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
@@ -175,8 +196,8 @@
 
 2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        PR classpath/22972 
-        * java/io/File (createTempFile): Rewritten.
+	PR classpath/22972 
+	* java/io/File (createTempFile): Rewritten.
 
 2005-10-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
@@ -1122,16 +1143,16 @@
 
 2005-10-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * gnu/CORBA/Focused_ORB.java: New file.
-        * gnu/CORBA/Functional_ORB.java,
-        org/omg/CORBA/ORB.java: Adapted to support the 
-        gnu.CORBA.ListenerPort property.
+	* gnu/CORBA/Focused_ORB.java: New file.
+	* gnu/CORBA/Functional_ORB.java,
+	org/omg/CORBA/ORB.java: Adapted to support the 
+	gnu.CORBA.ListenerPort property.
 
 2005-10-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/CORBA/DynamicImplementation.java: Made concrete.
-        (invoke): Implemented.
-        gnu/CORBA/Simple_delegate.java (request): Implemented. 
+	* org/omg/CORBA/DynamicImplementation.java: Made concrete.
+	(invoke): Implemented.
+	gnu/CORBA/Simple_delegate.java (request): Implemented. 
 
 2005-10-14  Lillian Angel  <langel@redhat.com>
 
@@ -1218,12 +1239,12 @@
 
 2005-10-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/CORBA/PolicyErrorHelper.java,
-        org/omg/CORBA/PolicyErrorHolder.java,
-        org/omg/CORBA/UnknownUserExceptionHelper.java,
-        org/omg/CORBA/UnknownUserExceptionHolder.java,
-        org/omg/CORBA/WrongTransactionHelper.java,
-        org/omg/CORBA/WrongTransactionHolder.java: New files.
+	* org/omg/CORBA/PolicyErrorHelper.java,
+	org/omg/CORBA/PolicyErrorHolder.java,
+	org/omg/CORBA/UnknownUserExceptionHelper.java,
+	org/omg/CORBA/UnknownUserExceptionHolder.java,
+	org/omg/CORBA/WrongTransactionHelper.java,
+	org/omg/CORBA/WrongTransactionHolder.java: New files.
 
 2005-10-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
@@ -1313,13 +1334,13 @@
 
 2005-10-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/CORBA/PolicyErrorCodeHelper.java: New class. 
+	* org/omg/CORBA/PolicyErrorCodeHelper.java: New class. 
 
 2005-10-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * org/omg/CORBA/LocalObject.java (_get_interface, _invoke, _is_local,
-        _orb, _releaseReply, _request, _servant_postinvoke, _servant_preinvoke,
-        validate_connection): New methods.
+	* org/omg/CORBA/LocalObject.java (_get_interface, _invoke, _is_local,
+	_orb, _releaseReply, _request, _servant_postinvoke, _servant_preinvoke,
+	validate_connection): New methods.
 
 2005-10-14  Michael Koch  <konqueror@gmx.de>
 
@@ -1975,24 +1996,24 @@
 
 2005-10-11  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * examples/gnu/classpath/examples/CORBA/SimpleCommunication/Demo.java
-        (main): Message removed from the loop.
+	* examples/gnu/classpath/examples/CORBA/SimpleCommunication/Demo.java
+	(main): Message removed from the loop.
 
 2005-10-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * examples/gnu/classpath/examples/CORBA/SimpleCommunication/Demo.java
-        (main): 3 sec pause replaced by while(..) loop. 
+	* examples/gnu/classpath/examples/CORBA/SimpleCommunication/Demo.java
+	(main): 3 sec pause replaced by while(..) loop. 
 
 2005-10-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * gnu/CORBA/Interceptor/Registrator.java,
-        gnu/CORBA/ObjectCreator.java,
-        gnu/CORBA/gnuValueHolder.java,
-        gnu/CORBA/stubFinder.java,
-        gnu/javax/rmi/CORBA/PortableRemoteObjectDelegateImpl.java,
-        gnu/javax/rmi/CORBA/StubDelegateImpl.java,
-        gnu/javax/rmi/CORBA/UtilDelegateImpl.java,
-        org/omg/CORBA/ORB.java: Use context class loader. 
+	* gnu/CORBA/Interceptor/Registrator.java,
+	gnu/CORBA/ObjectCreator.java,
+	gnu/CORBA/gnuValueHolder.java,
+	gnu/CORBA/stubFinder.java,
+	gnu/javax/rmi/CORBA/PortableRemoteObjectDelegateImpl.java,
+	gnu/javax/rmi/CORBA/StubDelegateImpl.java,
+	gnu/javax/rmi/CORBA/UtilDelegateImpl.java,
+	org/omg/CORBA/ORB.java: Use context class loader. 
 
 2005-10-10  Roman Kennke  <kennke@aicas.com>
 
