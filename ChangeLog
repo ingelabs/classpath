@@ -1,3 +1,36 @@
+2005-10-24  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JLayeredPane.java
+	(addImpl): Removed unnecessary repaint() and revalidate() calls.
+	* javax/swing/JPopupMenu.java
+	(remove): Removed unnecessary revalidate() call.
+	(insert): Removed code that installs GridBagConstraints. JPopupMenu
+	uses a BoxLayout and this is not needed anymore.
+	(pack): Send this method call to the event queue to avoid
+	synchronization problems. Set size to preferredSize of this menu.
+	(setVisible): Send this method call to the event queue to avoid
+	synchronization problems. Use PopupFactory for creating a popup.
+	(setLocation): Use int fields instead of a Point field.
+	(Popup): Removed inner interface. We use javax.swing.Popup now.
+	(LightweightPopup): Likewise.
+	(MediumWeightPopup): Likewise.
+	(HeavyWeightPopup): Likewise.
+	* javax/swing/Popup.java
+	(JWindowPopup.JWindowPopup): Add contents to contentPane of window.
+	Set focusableWindowState to false.
+	(JWindowPopup.show): Set size of window here.
+	(LightweightPopup): New inner class.
+	* javax/swing/PopupFactory.java
+	(getPopup): Return heavyweight or lightweight popup depending on
+	the parameters.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(PropertyChangeHandler): Removed unneeded inner class.
+	(BasicMenuItemUI): Removed instantiation of PropertyChangeHandler.
+	(installListeners): Removed handling of the PropertyChangeHandler.
+	(uninstallListeners): Removed handling of the PropertyChangeHandler.
+	* javax/swing/plaf/basic/BasicMenuUI.java
+	(getMaximumSize): Don't treat popup menus different.
+
 2005-10-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/classpath/examples/CORBA/NamingService/Demo.java (main):
