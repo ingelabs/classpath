@@ -1,4 +1,4 @@
-/* ObjectIdHelper.java --
+/* AdapterStateHelper.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,82 +36,84 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package org.omg.PortableInterceptor.ORBInitInfoPackage;
-
-import gnu.CORBA.Restricted_ORB;
+package org.omg.PortableInterceptor;
 
 import org.omg.CORBA.Any;
+import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.ORB;
+import org.omg.CORBA.TCKind;
 import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 
 /**
- * The Object Id is defined in OMG specification just as a narrow (not wide)
- * string. As such, the Object Id needs no helper, but one is included in
- * the API anyway.
+ * A helper operations for the adapter state. An adapter state is an
+ * short integer constant and needs no helper, but the one is included anyway.
+ *
+ * @since 1.5
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class ObjectIdHelper
+public abstract class AdapterStateHelper
 {
   /**
-   * Insert the Object Id into Any (uses {@link Any.insert_string}).
-   *
-   * @param a the Any to insert into.
-   * @param that the string to insert.
-   */
-  public static void insert(Any a, String that)
-  {
-    a.insert_string(that);
-  }
-
-  /**
-   * Extract the Object Id from Any ((uses {@link Any.extract_string}).
-   *
-   * @param a the Any to extract from.
-   */
-  public static String extract(Any a)
-  {
-    return a.extract_string();
-  }
-
-  /**
-   * Return an alias typecode.
+   * Create the AdapterState typecode (alias of <code>short</code>,
+   * named "AdapterState").
    */
   public static TypeCode type()
   {
-    ORB orb = Restricted_ORB.Singleton;
-    return orb.create_alias_tc(id(), "ObjectId", orb.create_string_tc(0));
+    ORB orb = ORB.init();
+    return orb.create_alias_tc(id(), "AdapterState",
+                               orb.get_primitive_tc(TCKind.tk_short)
+                              );
   }
 
   /**
-   * Return the Object Id repository id.
-   * @return "IDL:omg.org/PortableInterceptor/ORBInitInfo/ObjectId:1.0", always.
+   * Insert the <code>short</code> into the given Any.
+   */
+  public static void insert(Any any, short that)
+  {
+    any.insert_short(that);
+  }
+
+  /**
+   * Extract the <code>short</code> from given Any.
+   *
+   * @throws BAD_OPERATION if the passed Any does not contain int.
+   */
+  public static short extract(Any any)
+  {
+    return any.extract_short();
+  }
+
+  /**
+   * Get the adapter state repository id.
+   *
+   * @return "IDL:omg.org/PortableInterceptor/AdapterState:1.0", always.
    */
   public static String id()
   {
-    return "IDL:omg.org/PortableInterceptor/ORBInitInfo/ObjectId:1.0";
+    return "IDL:omg.org/PortableInterceptor/AdapterState:1.0";
   }
 
   /**
-   * Calls {@link InputStream#read_string()}.
+   * Read the <code>short</code> (adapter state) from the CDR intput stream.
    *
-   * @param input the stream to read from.
+   * @param input a org.omg.CORBA.portable stream to read from.
    */
-  public static String read(InputStream input)
+  public static short read(InputStream input)
   {
-    return input.read_string();
+    return input.read_short();
   }
 
   /**
-   * Calls {@link OutputStream#write_string()}.
+   * Write the <code>short</code> (adapter state) to the CDR output stream.
    *
-   * @param output the stream to write into.
-   * @param value the string (Object Id) value to write.
+   * @param output a org.omg.CORBA.portable stream stream to write into.
+   * @param value a value to write.
    */
-  public static void write(OutputStream output, String value)
+  public static void write(OutputStream output, short value)
   {
-    output.write_string(value);
+    output.write_short(value);
   }
 }

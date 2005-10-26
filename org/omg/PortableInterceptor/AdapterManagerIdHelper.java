@@ -1,4 +1,4 @@
-/* ObjectIdHelper.java --
+/* AdapterManagerIdHelper.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,82 +36,84 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package org.omg.PortableInterceptor.ORBInitInfoPackage;
-
-import gnu.CORBA.Restricted_ORB;
+package org.omg.PortableInterceptor;
 
 import org.omg.CORBA.Any;
+import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.ORB;
+import org.omg.CORBA.TCKind;
 import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 
 /**
- * The Object Id is defined in OMG specification just as a narrow (not wide)
- * string. As such, the Object Id needs no helper, but one is included in
- * the API anyway.
+ * A helper operations for the adapter manager id. An adapter manager id is an
+ * integer constant and needs no helper, but the one is included anyway.
+ *
+ * @since 1.5
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class ObjectIdHelper
+public abstract class AdapterManagerIdHelper
 {
   /**
-   * Insert the Object Id into Any (uses {@link Any.insert_string}).
-   *
-   * @param a the Any to insert into.
-   * @param that the string to insert.
-   */
-  public static void insert(Any a, String that)
-  {
-    a.insert_string(that);
-  }
-
-  /**
-   * Extract the Object Id from Any ((uses {@link Any.extract_string}).
-   *
-   * @param a the Any to extract from.
-   */
-  public static String extract(Any a)
-  {
-    return a.extract_string();
-  }
-
-  /**
-   * Return an alias typecode.
+   * Create the AdapterManagerId typecode (alias of CORBA long (java int),
+   * named "AdapterManagerId").
    */
   public static TypeCode type()
   {
-    ORB orb = Restricted_ORB.Singleton;
-    return orb.create_alias_tc(id(), "ObjectId", orb.create_string_tc(0));
+    ORB orb = ORB.init();
+    return orb.create_alias_tc(id(), "AdapterManagerId",
+                               orb.get_primitive_tc(TCKind.tk_long)
+                              );
   }
 
   /**
-   * Return the Object Id repository id.
-   * @return "IDL:omg.org/PortableInterceptor/ORBInitInfo/ObjectId:1.0", always.
+   * Insert the int into the given Any.
+   */
+  public static void insert(Any any, int that)
+  {
+    any.insert_long(that);
+  }
+
+  /**
+   * Extract the int from given Any.
+   *
+   * @throws BAD_OPERATION if the passed Any does not contain int.
+   */
+  public static int extract(Any any)
+  {
+    return any.extract_long();
+  }
+
+  /**
+   * Get the adapter manager id repository id.
+   *
+   * @return "IDL:omg.org/PortableInterceptor/AdapterManagerId:1.0", always.
    */
   public static String id()
   {
-    return "IDL:omg.org/PortableInterceptor/ORBInitInfo/ObjectId:1.0";
+    return "IDL:omg.org/PortableInterceptor/AdapterManagerId:1.0";
   }
 
   /**
-   * Calls {@link InputStream#read_string()}.
+   * Read the int (adapter manager id) from the CDR intput stream.
    *
-   * @param input the stream to read from.
+   * @param input a org.omg.CORBA.portable stream to read from.
    */
-  public static String read(InputStream input)
+  public static int read(InputStream input)
   {
-    return input.read_string();
+    return input.read_long();
   }
 
   /**
-   * Calls {@link OutputStream#write_string()}.
+   * Write the int (adapter manager id) to the CDR output stream.
    *
-   * @param output the stream to write into.
-   * @param value the string (Object Id) value to write.
+   * @param output a org.omg.CORBA.portable stream stream to write into.
+   * @param value a value to write.
    */
-  public static void write(OutputStream output, String value)
+  public static void write(OutputStream output, int value)
   {
-    output.write_string(value);
+    output.write_long(value);
   }
 }

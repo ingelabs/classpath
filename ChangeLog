@@ -1,3 +1,14 @@
+2005-10-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/PortableInterceptor/AdapterManagerIdHelper.java,
+	org/omg/PortableInterceptor/AdapterNameHelper.java,
+	org/omg/PortableInterceptor/AdapterStateHelper.java,
+	org/omg/PortableInterceptor/ORBIdHelper.java,
+	org/omg/PortableInterceptor/ObjectIdHelper.java,
+	org/omg/PortableInterceptor/ServerIdHelper.java: New files.
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/ObjectIdHelper.java
+	(type): Fixed typo in typecode name.
+
 2005-10-25  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/WrappedPlainView: New class.

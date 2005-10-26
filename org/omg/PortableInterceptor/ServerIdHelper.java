@@ -1,4 +1,4 @@
-/* ObjectIdHelper.java --
+/* ServerIdHelper.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,7 +36,7 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package org.omg.PortableInterceptor.ORBInitInfoPackage;
+package org.omg.PortableInterceptor;
 
 import gnu.CORBA.Restricted_ORB;
 
@@ -47,16 +47,18 @@ import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 
 /**
- * The Object Id is defined in OMG specification just as a narrow (not wide)
- * string. As such, the Object Id needs no helper, but one is included in
+ * The Server Id is defined in OMG specification just as a narrow (not wide)
+ * string. As such, the Server Id needs no helper, but one is included in
  * the API anyway.
+ * 
+ * @since 1.5
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class ObjectIdHelper
+public abstract class ServerIdHelper
 {
   /**
-   * Insert the Object Id into Any (uses {@link Any.insert_string}).
+   * Insert the Server Id into Any (uses {@link Any.insert_string}).
    *
    * @param a the Any to insert into.
    * @param that the string to insert.
@@ -67,7 +69,7 @@ public class ObjectIdHelper
   }
 
   /**
-   * Extract the Object Id from Any ((uses {@link Any.extract_string}).
+   * Extract the Server Id from Any ((uses {@link Any.extract_string}).
    *
    * @param a the Any to extract from.
    */
@@ -82,16 +84,16 @@ public class ObjectIdHelper
   public static TypeCode type()
   {
     ORB orb = Restricted_ORB.Singleton;
-    return orb.create_alias_tc(id(), "ObjectId", orb.create_string_tc(0));
+    return orb.create_alias_tc(id(), "ServerId", orb.create_string_tc(0));
   }
 
   /**
-   * Return the Object Id repository id.
-   * @return "IDL:omg.org/PortableInterceptor/ORBInitInfo/ObjectId:1.0", always.
+   * Return the Server Id repository id.
+   * @return "IDL:omg.org/PortableInterceptor/ServerId:1.0", always.
    */
   public static String id()
   {
-    return "IDL:omg.org/PortableInterceptor/ORBInitInfo/ObjectId:1.0";
+    return "IDL:omg.org/PortableInterceptor/ServerId:1.0";
   }
 
   /**
@@ -108,7 +110,7 @@ public class ObjectIdHelper
    * Calls {@link OutputStream#write_string()}.
    *
    * @param output the stream to write into.
-   * @param value the string (Object Id) value to write.
+   * @param value the string (Server Id) value to write.
    */
   public static void write(OutputStream output, String value)
   {

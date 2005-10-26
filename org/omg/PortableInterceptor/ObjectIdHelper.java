@@ -36,7 +36,7 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package org.omg.PortableInterceptor.ORBInitInfoPackage;
+package org.omg.PortableInterceptor;
 
 import gnu.CORBA.Restricted_ORB;
 
@@ -50,10 +50,12 @@ import org.omg.CORBA.portable.OutputStream;
  * The Object Id is defined in OMG specification just as a narrow (not wide)
  * string. As such, the Object Id needs no helper, but one is included in
  * the API anyway.
+ * 
+ * @since 1.5 
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class ObjectIdHelper
+public abstract class ObjectIdHelper
 {
   /**
    * Insert the Object Id into Any (uses {@link Any.insert_string}).
@@ -87,11 +89,11 @@ public class ObjectIdHelper
 
   /**
    * Return the Object Id repository id.
-   * @return "IDL:omg.org/PortableInterceptor/ORBInitInfo/ObjectId:1.0", always.
+   * @return "IDL:omg.org/PortableInterceptor/ObjectId:1.0", always.
    */
   public static String id()
   {
-    return "IDL:omg.org/PortableInterceptor/ORBInitInfo/ObjectId:1.0";
+    return "IDL:omg.org/PortableInterceptor/ObjectId:1.0";
   }
 
   /**
