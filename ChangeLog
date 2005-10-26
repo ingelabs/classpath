@@ -1,3 +1,10 @@
+2005-10-26  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/ViewportLayout.java:
+	(layoutContainer): Fixed incorrect boundary checks, should have been 
+	checking for viewport being  smaller than minimum size, not smaller 
+	than preferred size.
+
 2005-10-26  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* configure.ac: Rename --with-qtdir to --with-qt4dir to make clear
