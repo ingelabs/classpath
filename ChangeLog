@@ -1,3 +1,9 @@
+2005-10-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/spi/ImageReaderWriterSpi.java
+	(getStreamMetadataFormat): Implement.
+	(getImageMetadataFormat): Likewise.
+
 2005-10-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/colorchooser/AbstractColorChooserPanel.java
