@@ -1,3 +1,9 @@
+2005-10-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/colorchooser/AbstractColorChooserPanel.java
+	(getMnemonic): implemented,
+	(getDisplayedMnemonicIndex): implemented.
+
 2005-10-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/PortableInterceptor/AdapterManagerIdHelper.java,
