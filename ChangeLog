@@ -1,4 +1,4 @@
-2005-10-25  Anthony Balkissoon  <abalkiss@redhat.com>
+2005-10-26  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JList.java:
 	(getPreferredScrollableViewportSize): Use the preferred width instead 
