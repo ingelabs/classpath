@@ -1,3 +1,8 @@
+2005-10-26  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* configure.ac: Rename --with-qtdir to --with-qt4dir to make clear
+	which Qt version is meant.
+
 2005-10-26  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JList.java:
@@ -198,6 +203,7 @@
 
 	* examples/gnu/classpath/examples/swing/ScrollBarDemo.java: New file.
 
+>>>>>>> 1.5358
 2005-10-24  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicScrollBarUI.java

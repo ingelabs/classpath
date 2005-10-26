@@ -370,14 +370,14 @@ if test "x${COMPILE_JNI}" = xyes; then
     AC_MSG_NOTICE([Looking for QT_CFLAGS and QT_LIBS without pkg-config])
     case "$host_os" in
       darwin*)
-	AC_ARG_WITH([qtdir],
-	  [AS_HELP_STRING([--with-qtdir=DIR],
+	AC_ARG_WITH([qt4dir],
+	  [AS_HELP_STRING([--with-qt4dir=DIR],
 	  [Qt4 installation directory used for OS-X.
 	  For other systems use pkg-config.])],
 	  [QT4DIR=$withval]
 	  )
 	if test x"$QT4DIR" = x ; then
-	  AC_MSG_ERROR([*** No path for Qt4 --with-qtdir option given])
+	  AC_MSG_ERROR([*** No path for Qt4 --with-qt4dir option given])
 	fi
 	AC_MSG_RESULT([QT4DIR... $QT4DIR])
 	AC_CHECK_PROG(MOC, [moc], [$QT4DIR/bin/moc], [], $QT4DIR/bin)
