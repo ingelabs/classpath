@@ -1,3 +1,11 @@
+2005-10-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/PortableInterceptor/ObjectReferenceFactory.java, 
+	org/omg/PortableInterceptor/ObjectReferenceFactoryHelper.java, 
+	org/omg/PortableInterceptor/ObjectReferenceFactoryHolder.java, 
+	org/omg/PortableInterceptor/ObjectReferenceFactoryOperations.java:
+	New files.
+	
 2005-10-26  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/ViewportLayout.java:
