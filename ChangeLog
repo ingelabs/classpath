@@ -1,3 +1,13 @@
+2005-10-25  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JList.java:
+	(getPreferredScrollableViewportSize): Use the preferred width instead 
+	of the width of the widest element.  This allows us to use the 
+	user-specified preferred width if setPreferredSize was called.  Use 
+	the height of the first row, not the first visible row, when 
+	calculating the preferred height.  Added comments and made code cleaner
+	and more readable.
+
 2005-10-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/spi/ImageReaderWriterSpi.java

@@ -1780,36 +1780,43 @@ public class JList extends JComponent implements Accessible, Scrollable
     //return the value from getPreferredSize. The current ListUI is 
     //expected to override getPreferredSize to return an appropriate value.
     if (getLayoutOrientation() != VERTICAL)
-      return getPreferredSize();
+      return getPreferredSize();        
 
+    int size = getModel().getSize();
+    
+    // Trivial case: if fixedCellWidth and fixedCellHeight were set 
+    // just use them
     if (fixedCellHeight != -1 && fixedCellWidth != -1)
-      return new Dimension(fixedCellWidth, getModel().getSize() * 
-                           fixedCellHeight);
+      return new Dimension(fixedCellWidth, size * fixedCellHeight);
+        
+    // If the model is empty we use 16 * the number of visible rows
+    // for the height and either fixedCellWidth (if set) or 256
+    // for the width
+    if (size == 0)
+      {
+        if (fixedCellWidth == -1)
+          return new Dimension(256, 16 * getVisibleRowCount());
+        else
+          return new Dimension(fixedCellWidth, 16 * getVisibleRowCount());
+      }
 
-    int prefWidth, prefHeight;
+    // Calculate the width: if fixedCellWidth was set use that, otherwise
+    // use the preferredWidth
+    int prefWidth;
     if (fixedCellWidth != -1)
       prefWidth = fixedCellWidth;
     else
-      {
-        prefWidth = 0;
-        int size = getModel().getSize();
-        for (int i = 0; i < size; i++)
-          if (getCellBounds(i, i).width > prefWidth)
-            prefWidth = getCellBounds(i, i).width;
-      }
+      prefWidth = getPreferredSize().width;
 
-    if (getModel().getSize() == 0 && fixedCellWidth == -1)
-      return new Dimension(256, 16 * getVisibleRowCount());
-    else if (getModel().getSize() == 0)
-      return new Dimension (fixedCellWidth, 16 * getVisibleRowCount());
-
+    // Calculate the height: if fixedCellHeight was set use that, otherwise
+    // use the height of the first row multiplied by the number of visible
+    // rows
+    int prefHeight;
     if (fixedCellHeight != -1)
       prefHeight = fixedCellHeight;
     else
-      {
-        prefHeight = getVisibleRowCount() * getCellBounds
-          (getFirstVisibleIndex(), getFirstVisibleIndex()).height;
-      }
+      prefHeight = getVisibleRowCount() * getCellBounds(0, 0).height;
+
     return new Dimension (prefWidth, prefHeight);
   }
 
