@@ -1,7 +1,26 @@
+2005-10-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/FieldView.java
+	(getPreferredSpan): For the Y_AXIS call the superclass behaviour as
+	described in the Swing book by OReilly.
+
 2005-10-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/PortableInterceptor/ObjectIdHelper.java:
 	Assuming ObjectId as alias of byte[], not alias  of String.
+
+2005-10-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTextField.java
+	(createDefaultModel): Return a normal PlainDocument here.
+	* javax/swing/text/AbstractDocument.java
+	(insertString): Correctly placed locking so that insertUpdate() is
+	called within a lock as specified. Do not setup any ElementChanges
+	here, this must be done in subclasses in insertUpdate() method.
+	Fire an UndoableEditEvent.
+	* javax/swing/text/PlainDocument.java
+	(insertString): New method. Replaces newlines with whitespace
+	when document property 'filterNewlines' is set.
 
 2005-10-27  Roman Kennke  <kennke@aicas.com>
 
