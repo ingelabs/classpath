@@ -1,5 +1,12 @@
 2005-10-27  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/JEditorPane.java:
+	(getScrollableTracksViewportWidth): Return true if the component is 
+	valid.
+	(getScrollableTracksViewportHeight): Likewise.
+
+2005-10-27  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/ScrollPaneLayout.java:
 	(preferredLayoutSize): Fixed the conditions for allocating space for 
 	the scrollbars.  Should allocate space if the View's dimension is 
