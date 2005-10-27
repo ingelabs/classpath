@@ -1,3 +1,9 @@
+2005-10-27  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JViewport.java:
+	(scrollRectToVisible): Use the viewport bounds instead of the view 
+	bounds when scrolling up and scrolling left.
+
 2005-10-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/FieldView.java
