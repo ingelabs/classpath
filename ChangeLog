@@ -1,5 +1,12 @@
 2005-10-27  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalToggleButtonUI.java:
+	(MetalToggleButtonUI): removed color field initialisation,
+	(installDefaults): added color field initialisation formerly in 
+	the constructor.
+
+2005-10-27  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/RepaintManager.java
 	(paintDirtyRegions): replaced characters in comment that caused 
 	warnings in gjdoc and Eclipse.
@@ -232,7 +239,6 @@
 
 	* examples/gnu/classpath/examples/swing/ScrollBarDemo.java: New file.
 
->>>>>>> 1.5358
 2005-10-24  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicScrollBarUI.java
