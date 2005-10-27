@@ -1,3 +1,25 @@
+2005-10-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(PropertyChangeHandler.propertyChange): If orientation property
+	changes, re-setup the UI.
+	(TrackListener.mouseReleased): Removed unused code.
+	(createIncreaseButton): Simply return a new instance without any
+	hacks.
+	(createDecreaseButton): Likewise.
+	(installComponents): Do not create the incrButton and decrButton
+	here, only install them on the ScrollBar.
+	(installDefaults): Also initialize the incrButton and decrButton
+	fields here.
+	(uninstallComponents): Added some null checks.
+	(uninstallDefaults): Uninstall border using the LookAndFeel utility
+	method. Set incrButton and decrButton to null here.
+	(uninstallListeners): Added null checks.
+	(uninstallUI): Changed order of method calls. First uninstall
+	listeners then uninstallDefaults, because uninstallDefaults sets
+	the incrButton and decrButton fields to null, and uninstallListeners
+	removes a listener from them. Avoids NPE.
+
 2005-10-27  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java: API doc updates,
