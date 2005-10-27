@@ -42,14 +42,15 @@ import gnu.CORBA.Restricted_ORB;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
+import org.omg.CORBA.OctetSeqHelper;
+import org.omg.CORBA.OctetSeqHolder;
 import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 
 /**
- * The Object Id is defined in OMG specification just as a narrow (not wide)
- * string. As such, the Object Id needs no helper, but one is included in
- * the API anyway.
+ * The Object Id of this package is defined in OMG specification as a byte array.
+ * As such, the Object Id needs no helper, but one is included in the API anyway.
  * 
  * @since 1.5 
  *
@@ -58,33 +59,34 @@ import org.omg.CORBA.portable.OutputStream;
 public abstract class ObjectIdHelper
 {
   /**
-   * Insert the Object Id into Any (uses {@link Any.insert_string}).
+   * Insert the Object Id into Any.
    *
    * @param a the Any to insert into.
    * @param that the string to insert.
    */
-  public static void insert(Any a, String that)
+  public static void insert(Any a, byte[] that)
   {
-    a.insert_string(that);
+    a.insert_Streamable(new OctetSeqHolder(that));
+    a.type(type());
   }
 
   /**
-   * Extract the Object Id from Any ((uses {@link Any.extract_string}).
-   *
+   * Extract the Object Id from Any.
+   * 
    * @param a the Any to extract from.
    */
-  public static String extract(Any a)
+  public static byte[] extract(Any a)
   {
-    return a.extract_string();
+    return ((OctetSeqHolder) a.extract_Streamable()).value;
   }
 
   /**
-   * Return an alias typecode.
+   * Return an alias typecode (an alias of the octet sequence).
    */
   public static TypeCode type()
   {
     ORB orb = Restricted_ORB.Singleton;
-    return orb.create_alias_tc(id(), "ObjectId", orb.create_string_tc(0));
+    return orb.create_alias_tc(id(), "ObjectId", OctetSeqHelper.type());
   }
 
   /**
@@ -97,23 +99,23 @@ public abstract class ObjectIdHelper
   }
 
   /**
-   * Calls {@link InputStream#read_string()}.
+   * Read the Object Id as a byte array.
    *
    * @param input the stream to read from.
    */
-  public static String read(InputStream input)
+  public static byte[] read(InputStream input)
   {
-    return input.read_string();
+    return OctetSeqHelper.read(input);
   }
 
   /**
-   * Calls {@link OutputStream#write_string()}.
+   * Write the Object Id as a byte array.
    *
    * @param output the stream to write into.
-   * @param value the string (Object Id) value to write.
+   * @param value the Object Id value to write.
    */
-  public static void write(OutputStream output, String value)
+  public static void write(OutputStream output, byte[] value)
   {
-    output.write_string(value);
+    OctetSeqHelper.write(output, value);
   }
 }

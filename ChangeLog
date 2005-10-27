@@ -1,3 +1,8 @@
+2005-10-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/PortableInterceptor/ObjectIdHelper.java:
+	Assuming ObjectId as alias of byte[], not alias  of String.
+
 2005-10-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicScrollBarUI.java
