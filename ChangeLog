@@ -1,5 +1,32 @@
 2005-10-27  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalBorders.java: API doc updates,
+	* javax/swing/plaf/metal/MetalButtonUI.java: likewise,
+	* javax/swing/plaf/metal/MetalCheckBoxIcon.java: likewise,
+	* javax/swing/plaf/metal/MetalCheckBoxUI.java: likewise,
+	* javax/swing/plaf/metal/MetalDesktopIconUI.java: likewise,
+	* javax/swing/plaf/metal/MetalIconFactory.java: likewise,
+	* javax/swing/plaf/metal/MetalInternalFrameTitlePane.java: likewise,
+	* javax/swing/plaf/metal/MetalInternalFrameUI.java: likewise,
+	* javax/swing/plaf/metal/MetalLabelUI.java: likewise,
+	* javax/swing/plaf/metal/MetalPopupMenuSeparatorUI.java: likewise,
+	* javax/swing/plaf/metal/MetalProgressBarUI.java: likewise,
+	* javax/swing/plaf/metal/MetalRadioButtonUI.java: likewise,
+	* javax/swing/plaf/metal/MetalRootPaneUI.java: likewise,
+	* javax/swing/plaf/metal/MetalScrollBarUI.java: likewise,
+	* javax/swing/plaf/metal/MetalScrollPaneUI.java: likewise,
+	* javax/swing/plaf/metal/MetalSeparatorUI.java: likewise,
+	* javax/swing/plaf/metal/MetalSliderUI.java: likewise,
+	* javax/swing/plaf/metal/MetalSplitPaneUI.java: likewise,
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java: likewise,
+	* javax/swing/plaf/metal/MetalTextFieldUI.java: likewise,
+	* javax/swing/plaf/metal/MetalToolBarUI.java: likewise,
+	* javax/swing/plaf/metal/MetalToolTipUI.java: likewise,
+	* javax/swing/plaf/metal/MetalTreeUI.java: likewise,
+	* javax/swing/plaf/metal/package.html: likewise.
+
+2005-10-27  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/metal/MetalToggleButtonUI.java:
 	(MetalToggleButtonUI): removed color field initialisation,
 	(installDefaults): added color field initialisation formerly in 

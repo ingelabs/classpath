@@ -116,7 +116,9 @@ public class MetalScrollBarUI extends BasicScrollBarUI
   /** The button that decreases the value in the scroll bar. */
   protected MetalScrollButton decreaseButton;
   
-  /** The scroll bar width. */
+  /** 
+   * The scroll bar width. 
+   */
   protected int scrollBarWidth;
   
   /** 
@@ -127,11 +129,15 @@ public class MetalScrollBarUI extends BasicScrollBarUI
    * to look right visually. */
   protected boolean isFreeStanding = true;
   
-  /** The color for the scroll bar shadow. */
+  /** 
+   * The color for the scroll bar shadow (this is read from the UIDefaults in 
+   * the installDefaults() method).
+   */
   Color scrollBarShadowColor;
   
   /**
-   * Constructs a new instance of MetalScrollBarUI.
+   * Constructs a new instance of <code>MetalScrollBarUI</code>, with no
+   * specific initialisation.
    */
   public MetalScrollBarUI()
   {
@@ -139,11 +145,11 @@ public class MetalScrollBarUI extends BasicScrollBarUI
   }
 
   /**
-   * Returns an instance of MetalScrollBarUI.
+   * Returns a new instance of <code>MetalScrollBarUI</code>.
    *
    * @param component the component for which we return an UI instance
    *
-   * @return an instance of MetalScrollBarUI
+   * @return An instance of MetalScrollBarUI
    */
   public static ComponentUI createUI(JComponent component)
   {
@@ -350,6 +356,13 @@ public class MetalScrollBarUI extends BasicScrollBarUI
             thumbHighlightColor, thumbLightShadowColor);
   }
 
+  /**
+   * Paints the thumb for a horizontal scroll bar.
+   * 
+   * @param g  the graphics device.
+   * @param c  the scroll bar component.
+   * @param thumbBounds  the thumb bounds.
+   */
   private void paintThumbHorizontal(Graphics g, JComponent c, 
           Rectangle thumbBounds) 
   {
@@ -396,6 +409,13 @@ public class MetalScrollBarUI extends BasicScrollBarUI
 
   }
   
+  /**
+   * Paints the thumb for a vertical scroll bar.
+   * 
+   * @param g  the graphics device.
+   * @param c  the scroll bar component.
+   * @param thumbBounds  the thumb bounds.
+   */
   private void paintThumbVertical(Graphics g, JComponent c, 
           Rectangle thumbBounds)
   {
@@ -442,7 +462,9 @@ public class MetalScrollBarUI extends BasicScrollBarUI
   }
   
   /**
-   * This method returns the minimum thumb size.
+   * Returns the minimum thumb size.  For a free standing scroll bar the 
+   * minimum size is <code>17 x 17</code> pixels, whereas for a non free 
+   * standing scroll bar the minimum size is <code>15 x 15</code> pixels.
    *
    * @return The minimum thumb size.
    */
