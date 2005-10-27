@@ -1,5 +1,9 @@
 2005-10-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+        * BUGS: URL refreshed.
+
+2005-10-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/ExceptionCreator.java: Deleted.
 
 2005-10-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
