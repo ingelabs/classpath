@@ -1,3 +1,9 @@
+2005-10-28  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/DefaultListSelectionModel.java
+	(setLeadSelectionIndex): Forbit some changes to leadSelectionIndex
+	when the anchorSelectionIndex is not set properly.
+
 2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/Poa/AOM.java,
