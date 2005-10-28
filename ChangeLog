@@ -1,3 +1,12 @@
+2005-10-28  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(JTable): Changed order of initialization (UI first, then the model
+	etc), so that the UI gets notified of the initial model change.
+	(rowAtPoint): Don't add the intercellSpacing in the calculation
+	of the row-at-Point.
+	(setModel): Throw a PropertyChangeEvent here if the model changes.
+
 2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/DynAn/ValueChangeListener.java
