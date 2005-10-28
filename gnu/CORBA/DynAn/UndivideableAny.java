@@ -55,8 +55,8 @@ import org.omg.DynamicAny.DynAnyPackage.TypeMismatch;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class anyUndivideable
-  extends abstractDynAny
+public abstract class UndivideableAny
+  extends AbstractAny
   implements Serializable
 {
   /**
@@ -67,7 +67,7 @@ public abstract class anyUndivideable
   /**
    * Create a new instance with the given typecode.
    */
-  public anyUndivideable(TypeCode oType, TypeCode aType,
+  public UndivideableAny(TypeCode oType, TypeCode aType,
                          gnuDynAnyFactory aFactory, ORB anOrb)
   {
     super(oType, aType, aFactory, anOrb);

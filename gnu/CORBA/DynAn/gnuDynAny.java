@@ -84,7 +84,7 @@ import java.util.Arrays;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class gnuDynAny extends abstractDynAny implements DynAny, Serializable
+public class gnuDynAny extends AbstractAny implements DynAny, Serializable
 {
   /**
    * Use serialVersionUID for interoperability.
@@ -890,7 +890,7 @@ public class gnuDynAny extends abstractDynAny implements DynAny, Serializable
    */
   public boolean equal(DynAny other)
   {
-    if (other instanceof abstractDynAny)
+    if (other instanceof AbstractAny)
       {
         if (other instanceof gnuDynAny)
           {

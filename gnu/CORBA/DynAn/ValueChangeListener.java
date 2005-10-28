@@ -1,4 +1,4 @@
-/* valueChangedListener.java --
+/* ValueChangeListener.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -44,7 +44,7 @@ package gnu.CORBA.DynAn;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public interface valueChangedListener
+public interface ValueChangeListener
 {
   void changed();
 }

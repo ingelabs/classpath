@@ -1,5 +1,27 @@
 2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/DynAn/ValueChangeListener.java
+	gnu/CORBA/DynAn/AbstractAny.java
+	gnu/CORBA/DynAn/RecordAny.java
+	gnu/CORBA/DynAn/DivideableAny.java
+	gnu/CORBA/DynAn/UndivideableAny.java: New files.
+	* gnu/CORBA/DynAn/abstractDynAny.java,
+	gnu/CORBA/DynAn/recordAny.java,
+	gnu/CORBA/DynAn/anyDivideable.java,
+	gnu/CORBA/DynAn/anyUndivideable.java,
+	gnu/CORBA/DynAn/valueChangedListener.java: Removed.
+	* gnu/CORBA/DynAn/gnuDynAny.java,
+	gnu/CORBA/DynAn/gnuDynArray.java,
+	gnu/CORBA/DynAn/gnuDynEnum.java,
+	gnu/CORBA/DynAn/gnuDynFixed.java,
+	gnu/CORBA/DynAn/gnuDynStruct.java,
+	gnu/CORBA/DynAn/gnuDynUnion.java,
+	gnu/CORBA/DynAn/gnuDynValue.java,
+	gnu/CORBA/DynAn/gnuDynValueBox.java:
+	References updated.
+
+2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/CDR/abstractDataInputStream.java,
 	gnu/CORBA/CDR/abstractDataOutputStream.java,
 	gnu/CORBA/CDR/aligningInputStream.java,

@@ -66,7 +66,7 @@ import java.lang.reflect.Field;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public class gnuDynArray
-  extends anyDivideable
+  extends DivideableAny
   implements DynArray, Serializable
 {
   /**

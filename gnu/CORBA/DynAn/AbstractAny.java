@@ -1,4 +1,4 @@
-/* abstractDynAny.java --
+/* AbstractAny.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -54,7 +54,7 @@ import java.io.Serializable;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class abstractDynAny
+public abstract class AbstractAny
   extends LocalObject
   implements Serializable
 {
@@ -108,12 +108,12 @@ public abstract class abstractDynAny
   /**
    * The change value listener.
    */
-  valueChangedListener listener;
+  ValueChangeListener listener;
 
   /**
    * Create the abstract dyn any.
    */
-  public abstractDynAny(TypeCode oType, TypeCode aType,
+  public AbstractAny(TypeCode oType, TypeCode aType,
                         gnuDynAnyFactory aFactory, ORB anOrb
                        )
   {

@@ -1,4 +1,4 @@
-/* anyDivideable.java --
+/* DivideableAny.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -58,8 +58,8 @@ import java.io.Serializable;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class anyDivideable
-  extends abstractDynAny
+public abstract class DivideableAny
+  extends AbstractAny
   implements Serializable
 {
   /**
@@ -78,7 +78,7 @@ public abstract class anyDivideable
    */
   protected int pos = 0;
 
-  public anyDivideable(TypeCode oType, TypeCode aType,
+  public DivideableAny(TypeCode oType, TypeCode aType,
                        gnuDynAnyFactory aFactory, ORB anOrb
                       )
   {
@@ -486,9 +486,9 @@ public abstract class anyDivideable
       {
         if (!official_type.equal(other.type()))
           return false;
-        else if (other instanceof anyDivideable)
+        else if (other instanceof DivideableAny)
           {
-            anyDivideable x = (anyDivideable) other;
+            DivideableAny x = (DivideableAny) other;
             if (x.array.length != array.length)
               return false;
 
@@ -499,7 +499,7 @@ public abstract class anyDivideable
               }
             return true;
           }
-        else if (other == null || other instanceof abstractDynAny)
+        else if (other == null || other instanceof AbstractAny)
           return false;
         else
           return other.to_any().equal(to_any());

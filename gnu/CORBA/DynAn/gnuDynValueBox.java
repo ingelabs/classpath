@@ -65,7 +65,7 @@ import java.lang.reflect.Field;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public class gnuDynValueBox
-  extends anyDivideable
+  extends DivideableAny
   implements DynValueBox, Serializable
 {
   /**

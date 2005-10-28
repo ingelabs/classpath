@@ -1,4 +1,4 @@
-/* abstractRecord.java --
+/* RecordAny.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -65,8 +65,8 @@ import java.lang.reflect.Field;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class abstractRecord
-  extends anyDivideable
+public abstract class RecordAny
+  extends DivideableAny
   implements DynAny, Serializable
 {
   /**
@@ -80,7 +80,7 @@ public abstract class abstractRecord
    *
    * @param fields The DynAny's, representing the fields of the structure.
    */
-  public abstractRecord(TypeCode oType, TypeCode aType,
+  public RecordAny(TypeCode oType, TypeCode aType,
                         gnuDynAnyFactory aFactory, ORB anOrb
                        )
   {
@@ -277,7 +277,7 @@ public abstract class abstractRecord
         c [ i ] = array [ i ].copy();
       }
 
-    abstractRecord d = newInstance(official_type, final_type, factory, orb);
+    RecordAny d = newInstance(official_type, final_type, factory, orb);
     d.array = c;
     return d;
   }
@@ -285,7 +285,7 @@ public abstract class abstractRecord
   /**
    * Create a new instance when copying.
    */
-  protected abstract abstractRecord newInstance(TypeCode oType, TypeCode aType,
+  protected abstract RecordAny newInstance(TypeCode oType, TypeCode aType,
                                                 gnuDynAnyFactory aFactory,
                                                 ORB anOrb
                                                );
