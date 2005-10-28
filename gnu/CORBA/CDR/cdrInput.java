@@ -49,7 +49,7 @@ import gnu.CORBA.TypeCodeHelper;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.Version;
 import gnu.CORBA.gnuAny;
-import gnu.CORBA.stubFinder;
+import gnu.CORBA.StubLocator;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.AnySeqHolder;
@@ -425,7 +425,7 @@ public abstract class cdrInput
           }
 
         // Search for the available stubs.
-        ObjectImpl impl = stubFinder.search(orb, ior);
+        ObjectImpl impl = StubLocator.search(orb, ior);
         try
           {
             if (impl._get_delegate() == null)

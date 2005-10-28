@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.DynAn;
 
-import gnu.CORBA.typeNamer;
+import gnu.CORBA.TypeKindNamer;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.CompletionStatus;

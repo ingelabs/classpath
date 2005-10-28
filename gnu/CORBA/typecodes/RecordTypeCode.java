@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.typecodes;
 
-import gnu.CORBA.corbaArrayList;
+import gnu.CORBA.CorbaList;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.StructMember;
@@ -92,7 +92,7 @@ public class RecordTypeCode
   /**
    * The members of this data structure.
    */
-  protected corbaArrayList members = new corbaArrayList();
+  protected CorbaList members = new CorbaList();
   private TypeCode discriminator_type;
   private int default_index = UNSET;
 

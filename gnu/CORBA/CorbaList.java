@@ -1,4 +1,4 @@
-/* binaryReply.java --
+/* CorbaList.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,61 +35,81 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufInput;
-import gnu.CORBA.GIOP.MessageHeader;
+import java.io.Serializable;
 
-import org.omg.CORBA.ORB;
+import java.util.ArrayList;
+
+import org.omg.CORBA.Bounds;
 
 /**
- * The remote object reply in the binary form, holding
- * the message header and the following binary data.
+ * This class is used to store array lists. Differently from
+ * the java.util lists,
+ * it throws {@link org.omg.CORBA.Bounds} rather than
+ * {@link IndexOutOfBoundsException}.
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-class binaryReply
+public class CorbaList
+  extends ArrayList
+  implements Serializable
 {
   /**
-   * The message header.
+   * Use serialVersionUID for interoperability.
    */
-  final MessageHeader header;
+  private static final long serialVersionUID = 1;
 
   /**
-   * The associated orb.
+   * Creates the list with the given initial size.
    */
-  final ORB orb;
-
-  /**
-   * The message data.
-   */
-  final byte[] data;
-
-  /**
-   * Create the binary reply.
-   *
-   * @param an_header the message header
-   * @param a_data the message data.
-   */
-  binaryReply(ORB an_orb, MessageHeader an_header, byte[] a_data)
+  public CorbaList(int initial_size)
   {
-    orb = an_orb;
-    header = an_header;
-    data = a_data;
+    super(initial_size);
   }
 
   /**
-   * Get the CDR input stream with the correctly set alignment.
-   *
-   * @return the CDR stream to read the message data.
+   * Creates the list with the default size.
    */
-  cdrBufInput getStream()
+  public CorbaList()
   {
-    cdrBufInput in = new cdrBufInput(data);
-    in.setOffset(header.getHeaderSize());
-    in.setVersion(header.version);
-    in.setOrb(orb);
-    in.setBigEndian(header.isBigEndian());
-    return in;
+  }
+
+  /**
+   * Remove the item at the given index.
+   * @param at the index
+   * @throws org.omg.CORBA.Bounds if the index is out of bounds.
+   */
+  public void drop(int at)
+            throws Bounds
+  {
+    try
+      {
+        super.remove(at);
+      }
+    catch (IndexOutOfBoundsException ex)
+      {
+        throw new Bounds("[" + at + "], valid [0.." + size() + "]");
+      }
+  }
+
+  /**
+   * Get the item at the given index.
+   * @param at the index
+   * @return the item at the index
+   * @throws org.omg.CORBA.Bounds if the index is out of bounds.
+   */
+  public Object item(int at)
+              throws Bounds
+  {
+    try
+      {
+        return super.get(at);
+      }
+    catch (IndexOutOfBoundsException ex)
+      {
+        throw new Bounds("[" + at + "], valid [0.." + size() + "]");
+      }
   }
 }

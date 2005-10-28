@@ -472,7 +472,7 @@ public class ObjectCreator
 
         String name = getDefaultName(m_exception_id);
 
-        universalHolder h = new universalHolder(output);
+        GeneralHolder h = new GeneralHolder(output);
 
         into.insert_Streamable(h);
 

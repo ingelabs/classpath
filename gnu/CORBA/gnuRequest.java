@@ -135,8 +135,8 @@ public class gnuRequest extends Request implements Cloneable
   /**
    * The empty byte array.
    */
-  private static final binaryReply EMPTY =
-    new binaryReply(null, new MessageHeader(), new byte[ 0 ]);
+  private static final RawReply EMPTY =
+    new RawReply(null, new MessageHeader(), new byte[ 0 ]);
 
   /**
    * The context holder for methods ctx(Context) and ctx().
@@ -223,7 +223,7 @@ public class gnuRequest extends Request implements Cloneable
    * The request arguments in the case when they are directly written into the
    * parameter buffer.
    */
-  protected streamRequest m_parameter_buffer;
+  protected StreamBasedRequest m_parameter_buffer;
 
   /**
    * The array of slots.
@@ -333,9 +333,9 @@ public class gnuRequest extends Request implements Cloneable
    * Get the parameter stream, where the invocation arguments should be written
    * if they are written into the stream directly.
    */
-  public streamRequest getParameterStream()
+  public StreamBasedRequest getParameterStream()
   {
-    m_parameter_buffer = new streamRequest();
+    m_parameter_buffer = new StreamBasedRequest();
     m_parameter_buffer.request = this;
     m_parameter_buffer.setVersion(ior.Internet.version);
     m_parameter_buffer.setCodeSet(cxCodeSet.negotiate(ior.Internet.CodeSets));
@@ -722,7 +722,7 @@ public class gnuRequest extends Request implements Cloneable
    * 
    * @return the server response in binary form.
    */
-  public synchronized binaryReply submit()
+  public synchronized RawReply submit()
     throws ForwardRequest
   {
     gnu.CORBA.GIOP.MessageHeader header = new gnu.CORBA.GIOP.MessageHeader();
@@ -849,7 +849,7 @@ public class gnuRequest extends Request implements Cloneable
             else
               r = response_header.readMessage(socketInput, null, 0, 0);
 
-            return new binaryReply(orb, response_header, r);
+            return new RawReply(orb, response_header, r);
           }
         else
           return EMPTY;
@@ -936,7 +936,7 @@ public class gnuRequest extends Request implements Cloneable
   private void p_invoke()
     throws SystemException, ForwardRequest
   {
-    binaryReply response = submit();
+    RawReply response = submit();
 
     if (m_rph == null)
       m_rph = response.header.create_reply_header();
@@ -1026,7 +1026,7 @@ public class gnuRequest extends Request implements Cloneable
           gnuAny exc = new gnuAny();
           exc.setOrb(orb);
 
-          exc.insert_Streamable(new streamReadyHolder(input));
+          exc.insert_Streamable(new StreamHolder(input));
 
           UnknownUserException unuex = new UnknownUserException(exc);
           m_environment.exception(unuex);

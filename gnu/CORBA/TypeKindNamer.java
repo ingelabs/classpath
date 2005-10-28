@@ -51,7 +51,7 @@ import org.omg.CORBA.TypeCodePackage.BadKind;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class typeNamer
+public class TypeKindNamer
 {
   /**
    * Names of the primitve types.

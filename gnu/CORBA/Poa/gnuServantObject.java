@@ -48,8 +48,8 @@ import gnu.CORBA.IorProvider;
 import gnu.CORBA.Minor;
 import gnu.CORBA.ObjectCreator;
 import gnu.CORBA.Unexpected;
-import gnu.CORBA.bufferedResponseHandler;
-import gnu.CORBA.streamReadyHolder;
+import gnu.CORBA.ResponseHandlerImpl;
+import gnu.CORBA.StreamHolder;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.BAD_OPERATION;
@@ -412,17 +412,17 @@ public class gnuServantObject extends ObjectImpl
     boolean intercept = false;
     ServerRequestInterceptorOperations interceptor = null;
     gnuServerRequestInfo info = null;
-    bufferedResponseHandler i_handler = null;
+    ResponseHandlerImpl i_handler = null;
 
     try
       {
         if (orb.iServer != null &&
-          r_handler instanceof bufferedResponseHandler
+          r_handler instanceof ResponseHandlerImpl
         )
           {
             interceptor = orb.iServer;
 
-            i_handler = (bufferedResponseHandler) r_handler;
+            i_handler = (ResponseHandlerImpl) r_handler;
 
             info =
               new gnuServerRequestInfo(this, i_handler.request_header,
@@ -546,7 +546,7 @@ public class gnuServantObject extends ObjectImpl
                                     {
                                       // Failed due any reason, insert without
                                       // helper.
-                                      a.insert_Streamable(new streamReadyHolder(
+                                      a.insert_Streamable(new StreamHolder(
                                           buf.create_input_stream()
                                         )
                                       );

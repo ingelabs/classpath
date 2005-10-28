@@ -154,9 +154,9 @@ public class gnuAny
    */
   public org.omg.CORBA.portable.InputStream create_input_stream()
   {
-    if (has instanceof universalHolder)
+    if (has instanceof GeneralHolder)
       {
-        universalHolder u = (universalHolder) has;
+        GeneralHolder u = (GeneralHolder) has;
         return u.getInputStream();
       }
     else
@@ -789,12 +789,12 @@ public class gnuAny
                 // Helper.
                 cdrBufOutput buffer = new cdrBufOutput();
                 buffer.setOrb(orb);
-                has = new universalHolder(buffer);
+                has = new GeneralHolder(buffer);
               }
           }
         type(a_type);
 
-        if (!(has instanceof universalHolder) &&
+        if (!(has instanceof GeneralHolder) &&
             (kind == TCKind._tk_value_box))
           {
             // The streamable only contains operations for
@@ -876,8 +876,8 @@ public class gnuAny
           if (!(xKind == TCKind._tk_alias && has._type().kind().value() == kind))
             {
               BAD_OPERATION bad = new BAD_OPERATION("Extracting "
-                + typeNamer.nameIt(kind) + " when stored "
-                + typeNamer.nameIt(xKind));
+                + TypeKindNamer.nameIt(kind) + " when stored "
+                + TypeKindNamer.nameIt(xKind));
               bad.minor = Minor.Any;
               throw bad;
             }
@@ -888,8 +888,8 @@ public class gnuAny
           if (!(type().kind().value() == TCKind._tk_alias && has._type().kind().value() == kind))
             {
               BAD_OPERATION bad = new BAD_OPERATION("Extracting "
-                + typeNamer.nameIt(kind) + " stored "
-                + typeNamer.nameIt(type()));
+                + TypeKindNamer.nameIt(kind) + " stored "
+                + TypeKindNamer.nameIt(type()));
               bad.minor = Minor.Any;
               throw bad;
             }

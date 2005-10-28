@@ -60,7 +60,7 @@ import java.io.IOException;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class universalHolder
+public class GeneralHolder
   implements Streamable
 {
   /**
@@ -71,7 +71,7 @@ public class universalHolder
   /**
    * Create the universal holder that uses the given buffer to store the data.
    */
-  public universalHolder(cdrBufOutput buffer)
+  public GeneralHolder(cdrBufOutput buffer)
   {
     value = buffer;
   }
@@ -162,13 +162,13 @@ public class universalHolder
   /**
    * Clone.
    */
-  public universalHolder Clone()
+  public GeneralHolder Clone()
   {
     try
       {
         cdrBufOutput nb = new cdrBufOutput(value.buffer.size());
         value.buffer.writeTo(nb);
-        return new universalHolder(nb);
+        return new GeneralHolder(nb);
       }
     catch (IOException ex)
       {

@@ -1,4 +1,4 @@
-/* cdrEncapsCodec.java --
+/* CdrEncapsCodecImpl.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -62,7 +62,7 @@ import org.omg.IOP.CodecPackage.TypeMismatch;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class cdrEncapsCodec
+public class CdrEncapsCodecImpl
   extends LocalObject
   implements Codec
 {
@@ -99,7 +99,7 @@ public class cdrEncapsCodec
   /**
    * Create an instance of this Codec, encoding following the given version.
    */
-  public cdrEncapsCodec(ORB _orb, Version _version)
+  public CdrEncapsCodecImpl(ORB _orb, Version _version)
   {
     orb = _orb;
     version = _version;

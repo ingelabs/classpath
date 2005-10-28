@@ -1,4 +1,4 @@
-/* corbaArrayList.java --
+/* gnuStreamRequest.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,78 +38,23 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import java.io.Serializable;
-
-import java.util.ArrayList;
-
-import org.omg.CORBA.Bounds;
+import gnu.CORBA.CDR.cdrBufOutput;
 
 /**
- * This class is used to store array lists. Differently from
- * the java.util lists,
- * it throws {@link org.omg.CORBA.Bounds} rather than
- * {@link IndexOutOfBoundsException}.
+ * A stream, additionally holding the gnu request.
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class corbaArrayList
-  extends ArrayList
-  implements Serializable
+public class StreamBasedRequest
+  extends cdrBufOutput
 {
   /**
-   * Use serialVersionUID for interoperability.
+   * The enclosed request.
    */
-  private static final long serialVersionUID = 1;
+  public gnuRequest request;
 
   /**
-   * Creates the list with the given initial size.
+   * True if the response is expected.
    */
-  public corbaArrayList(int initial_size)
-  {
-    super(initial_size);
-  }
-
-  /**
-   * Creates the list with the default size.
-   */
-  public corbaArrayList()
-  {
-  }
-
-  /**
-   * Remove the item at the given index.
-   * @param at the index
-   * @throws org.omg.CORBA.Bounds if the index is out of bounds.
-   */
-  public void drop(int at)
-            throws Bounds
-  {
-    try
-      {
-        super.remove(at);
-      }
-    catch (IndexOutOfBoundsException ex)
-      {
-        throw new Bounds("[" + at + "], valid [0.." + size() + "]");
-      }
-  }
-
-  /**
-   * Get the item at the given index.
-   * @param at the index
-   * @return the item at the index
-   * @throws org.omg.CORBA.Bounds if the index is out of bounds.
-   */
-  public Object item(int at)
-              throws Bounds
-  {
-    try
-      {
-        return super.get(at);
-      }
-    catch (IndexOutOfBoundsException ex)
-      {
-        throw new Bounds("[" + at + "], valid [0.." + size() + "]");
-      }
-  }
+  public boolean response_expected = true;
 }

@@ -1,4 +1,4 @@
-/* streamReadyHolder.java --
+/* StreamHolder.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -52,7 +52,7 @@ import java.io.IOException;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class streamReadyHolder
+public class StreamHolder
   implements Streamable
 {
   /**
@@ -65,7 +65,7 @@ public class streamReadyHolder
    *
    * @param a_stream a stream.
    */
-  public streamReadyHolder(InputStream a_stream)
+  public StreamHolder(InputStream a_stream)
   {
     stream = a_stream;
   }

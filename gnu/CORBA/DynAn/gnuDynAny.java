@@ -44,8 +44,8 @@ import gnu.CORBA.Unexpected;
 import gnu.CORBA.WCharHolder;
 import gnu.CORBA.WStringHolder;
 import gnu.CORBA.holderFactory;
-import gnu.CORBA.typeNamer;
-import gnu.CORBA.universalHolder;
+import gnu.CORBA.TypeKindNamer;
+import gnu.CORBA.GeneralHolder;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.AnyHolder;
@@ -165,7 +165,7 @@ public class gnuDynAny extends abstractDynAny implements DynAny, Serializable
   public DynAny current_component() throws TypeMismatch
   {
     throw new TypeMismatch("Not applicable for " +
-      typeNamer.nameIt(final_type)
+      TypeKindNamer.nameIt(final_type)
     );
   }
 
@@ -193,14 +193,14 @@ public class gnuDynAny extends abstractDynAny implements DynAny, Serializable
       {
         throw new InvalidValue(ISNULL);
       }
-    else if (a_holder instanceof universalHolder)
+    else if (a_holder instanceof GeneralHolder)
       {
         holder = holderFactory.createHolder(official_type);
         if (holder == null)
           holder = holderFactory.createHolder(final_type);
 
         if (holder == null)
-          holder = ((universalHolder) a_holder).Clone();
+          holder = ((GeneralHolder) a_holder).Clone();
         else
           {
             InputStream in = an_any.create_input_stream();

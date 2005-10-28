@@ -1,4 +1,4 @@
-/* gnuStreamRequest.java --
+/* RawReply.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,26 +35,61 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.cdrBufInput;
+import gnu.CORBA.GIOP.MessageHeader;
+
+import org.omg.CORBA.ORB;
 
 /**
- * A stream, additionally holding the gnu request.
+ * The remote object reply in the binary form, holding
+ * the message header and the following binary data.
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class streamRequest
-  extends cdrBufOutput
+class RawReply
 {
   /**
-   * The enclosed request.
+   * The message header.
    */
-  public gnuRequest request;
+  final MessageHeader header;
 
   /**
-   * True if the response is expected.
+   * The associated orb.
    */
-  public boolean response_expected = true;
+  final ORB orb;
+
+  /**
+   * The message data.
+   */
+  final byte[] data;
+
+  /**
+   * Create the binary reply.
+   *
+   * @param an_header the message header
+   * @param a_data the message data.
+   */
+  RawReply(ORB an_orb, MessageHeader an_header, byte[] a_data)
+  {
+    orb = an_orb;
+    header = an_header;
+    data = a_data;
+  }
+
+  /**
+   * Get the CDR input stream with the correctly set alignment.
+   *
+   * @return the CDR stream to read the message data.
+   */
+  cdrBufInput getStream()
+  {
+    cdrBufInput in = new cdrBufInput(data);
+    in.setOffset(header.getHeaderSize());
+    in.setVersion(header.version);
+    in.setOrb(orb);
+    in.setBigEndian(header.isBigEndian());
+    return in;
+  }
 }

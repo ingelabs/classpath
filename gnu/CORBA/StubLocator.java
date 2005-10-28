@@ -1,4 +1,4 @@
-/* stubFinder.java --
+/* StubLocator.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -52,7 +52,7 @@ import org.omg.CORBA.portable.ObjectImpl;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class stubFinder
+public class StubLocator
 {
   /**
    * Search for the possibly available default stub.

@@ -174,14 +174,14 @@ public class IOR_Delegate extends Simple_delegate
   public InputStream invoke(org.omg.CORBA.Object target, OutputStream output)
     throws ApplicationException, RemarshalException
   {
-    streamRequest request = (streamRequest) output;
+    StreamBasedRequest request = (StreamBasedRequest) output;
     Forwardings: while (true)
       {
         try
           {
             if (request.response_expected)
               {
-                binaryReply response = request.request.submit();
+                RawReply response = request.request.submit();
 
                 // Read reply header.
                 ReplyHeader rh = response.header.create_reply_header();
@@ -338,7 +338,7 @@ public class IOR_Delegate extends Simple_delegate
   /**
    * Show exception to interceptor.
    */
-  void showException(streamRequest request, cdrBufInput input)
+  void showException(StreamBasedRequest request, cdrBufInput input)
     throws ForwardRequest
   {
     input.mark(2048);
@@ -390,7 +390,7 @@ public class IOR_Delegate extends Simple_delegate
     request.set_target(target);
     request.setOperation(operation);
 
-    streamRequest out = request.getParameterStream();
+    StreamBasedRequest out = request.getParameterStream();
     out.response_expected = response_expected;
     request.setORB(orb);
     out.setOrb(orb);

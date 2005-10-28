@@ -1,4 +1,4 @@
-/* bufferedResponseHandler.java --
+/* ResponseHandlerImpl.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -53,7 +53,7 @@ import org.omg.CORBA.portable.ResponseHandler;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class bufferedResponseHandler
+public class ResponseHandlerImpl
   implements ResponseHandler
 {
   /**
@@ -96,7 +96,7 @@ public class bufferedResponseHandler
    * @param m_header a message header.
    * @param r_header a reply header.
    */
-  bufferedResponseHandler(ORB an_orb, MessageHeader m_header,
+  ResponseHandlerImpl(ORB an_orb, MessageHeader m_header,
                           ReplyHeader r_header, RequestHeader rq_header)
   {
     message_header = m_header;

@@ -127,7 +127,7 @@ public class ServiceRequestAdapter
           {
             // Write the exception information
             gnuAny exc = new gnuAny();
-            universalHolder uku = new universalHolder(h.reply);
+            GeneralHolder uku = new GeneralHolder(h.reply);
             exc.insert_Streamable(uku);
             request.set_exception(exc);
           }
@@ -146,7 +146,7 @@ public class ServiceRequestAdapter
               {
                 // Use the universal holder otherwise.
                 gnuAny r = new gnuAny();
-                r.insert_Streamable(new streamReadyHolder(in));
+                r.insert_Streamable(new StreamHolder(in));
               }
 
             // Unpack the arguments

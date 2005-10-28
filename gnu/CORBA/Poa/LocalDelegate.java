@@ -41,7 +41,7 @@ package gnu.CORBA.Poa;
 import gnu.CORBA.CDR.cdrOutput;
 import gnu.CORBA.IOR;
 import gnu.CORBA.IorProvider;
-import gnu.CORBA.streamRequest;
+import gnu.CORBA.StreamBasedRequest;
 
 import org.omg.CORBA.ARG_INOUT;
 import org.omg.CORBA.Bounds;
@@ -301,7 +301,7 @@ public class LocalDelegate
   {
     try
       {
-        streamRequest sr = (streamRequest) output;
+        StreamBasedRequest sr = (StreamBasedRequest) output;
 
         LocalRequest lr = (LocalRequest) sr.request;
         InvokeHandler handler = lr.object.getHandler(lr.operation(), lr.cookie,

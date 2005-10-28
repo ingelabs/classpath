@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.DynAn;
 
-import gnu.CORBA.typeNamer;
+import gnu.CORBA.TypeKindNamer;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.LocalObject;
@@ -163,8 +163,8 @@ public abstract class abstractDynAny
    */
   String typeMismatch(TypeCode expected, TypeCode actual)
   {
-    return typeNamer.nameIt(expected) + " expected " +
-           typeNamer.nameIt(actual);
+    return TypeKindNamer.nameIt(expected) + " expected " +
+           TypeKindNamer.nameIt(actual);
   }
 
   /**

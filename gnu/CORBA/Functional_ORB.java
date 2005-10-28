@@ -1029,7 +1029,7 @@ public class Functional_ORB extends Restricted_ORB
     org.omg.CORBA.Object object = find_local_object(ior);
     if (object == null)
       {
-        ObjectImpl impl = stubFinder.search(this, ior);
+        ObjectImpl impl = StubLocator.search(this, ior);
         try
           {
             if (impl._get_delegate() == null)
@@ -1272,7 +1272,7 @@ public class Functional_ORB extends Restricted_ORB
    */
   private void respond_to_client(OutputStream net_out,
     MessageHeader msh_request, RequestHeader rh_request,
-    bufferedResponseHandler handler, SystemException sysEx
+    ResponseHandlerImpl handler, SystemException sysEx
   ) throws IOException
   {
     // Set the reply header properties.
@@ -1476,7 +1476,7 @@ public class Functional_ORB extends Restricted_ORB
                 ReplyHeader rh_reply = msh_request.create_reply_header();
 
                 // TODO log errors about not existing objects and methods.
-                bufferedResponseHandler handler = new bufferedResponseHandler(
+                ResponseHandlerImpl handler = new ResponseHandlerImpl(
                   this, msh_request, rh_reply, rh_request);
 
                 SystemException sysEx = null;

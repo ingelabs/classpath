@@ -1,5 +1,47 @@
 2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/universalHolder.java
+	gnu/CORBA/stubFinder.java
+	gnu/CORBA/typeNamer.java
+	gnu/CORBA/streamRequest.java
+	gnu/CORBA/streamReadyHolder.java
+	gnu/CORBA/binaryReply.java
+	gnu/CORBA/bufferedResponseHandler.java
+	gnu/CORBA/cdrEncapsCodec.java
+	gnu/CORBA/corbaArrayList.java: Removed.
+	* gnu/CORBA/CdrEncapsCodecImpl.java,
+	gnu/CORBA/CorbaList.java,
+	gnu/CORBA/GeneralHolder.java,
+	gnu/CORBA/RawReply.java,
+	gnu/CORBA/ResponseHandlerImpl.java,
+	gnu/CORBA/StreamBasedRequest.java,
+	gnu/CORBA/StreamHolder.java,
+	gnu/CORBA/StubLocator.java,
+	gnu/CORBA/TypeKindNamer.java: New files.
+	* gnu/CORBA/CDR/cdrInput.java,
+	gnu/CORBA/DynAn/abstractDynAny.java,
+	gnu/CORBA/DynAn/anyDivideable.java,
+	gnu/CORBA/DynAn/gnuDynAny.java,
+	gnu/CORBA/DynAn/gnuDynAnyFactory.java,
+	gnu/CORBA/Functional_ORB.java,
+	gnu/CORBA/IOR_Delegate.java,
+	gnu/CORBA/ObjectCreator.java,
+	gnu/CORBA/Poa/LocalDelegate.java,
+	gnu/CORBA/Poa/LocalRequest.java,
+	gnu/CORBA/Poa/gnuServantObject.java,
+	gnu/CORBA/Restricted_ORB.java,
+	gnu/CORBA/ServiceRequestAdapter.java,
+	gnu/CORBA/gnuAny.java,
+	gnu/CORBA/gnuCodecFactory.java,
+	gnu/CORBA/gnuContextList.java,
+	gnu/CORBA/gnuExceptionList.java,
+	gnu/CORBA/gnuNVList.java,
+	gnu/CORBA/gnuRequest.java,
+	gnu/CORBA/typecodes/RecordTypeCode.java: 
+	References updated.
+
+2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/typecodes/AliasTypeCode.java,
 	gnu/CORBA/typecodes/ArrayTypeCode.java,
 	gnu/CORBA/typecodes/FixedTypeCode.java,

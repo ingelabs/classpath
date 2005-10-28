@@ -304,7 +304,7 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
   {
     try
       {
-        return typeNamer.getPrimitveTC(tcKind);
+        return TypeKindNamer.getPrimitveTC(tcKind);
       }
     catch (BadKind ex)
       {

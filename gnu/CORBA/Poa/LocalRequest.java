@@ -49,8 +49,8 @@ import gnu.CORBA.ObjectCreator;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.gnuAny;
 import gnu.CORBA.gnuRequest;
-import gnu.CORBA.streamReadyHolder;
-import gnu.CORBA.streamRequest;
+import gnu.CORBA.StreamHolder;
+import gnu.CORBA.StreamBasedRequest;
 
 import org.omg.CORBA.ARG_OUT;
 import org.omg.CORBA.Any;
@@ -368,7 +368,7 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
                       {
                         // Failed due any reason, insert without
                         // helper.
-                        a.insert_Streamable(new streamReadyHolder(
+                        a.insert_Streamable(new StreamHolder(
                             buf.create_input_stream()
                           )
                         );
@@ -589,7 +589,7 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
             // Prepare an Any that will hold the exception.
             gnuAny exc = new gnuAny();
 
-            exc.insert_Streamable(new streamReadyHolder(input));
+            exc.insert_Streamable(new StreamHolder(input));
 
             UnknownUserException unuex = new UnknownUserException(exc);
             m_environment.exception(unuex);
@@ -664,9 +664,9 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
    * Get the parameter stream, where the invocation arguments should be written
    * if they are written into the stream directly.
    */
-  public streamRequest getParameterStream()
+  public StreamBasedRequest getParameterStream()
   {
-    m_parameter_buffer = new streamRequest();
+    m_parameter_buffer = new StreamBasedRequest();
     m_parameter_buffer.request = this;
     m_parameter_buffer.setOrb(poa.orb());
     return m_parameter_buffer;
