@@ -44,11 +44,11 @@ import gnu.CORBA.GIOP.v1_2.ReplyHeader;
 import gnu.CORBA.GIOP.v1_2.RequestHeader;
 import gnu.CORBA.Interceptor.gnuClientRequestInfo;
 import gnu.CORBA.Interceptor.gnuServerRequestInfo;
+import gnu.CORBA.typecodes.RecordTypeCode;
 import gnu.CORBA.ObjectCreator;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.gnuAny;
 import gnu.CORBA.gnuRequest;
-import gnu.CORBA.recordTypeCode;
 import gnu.CORBA.streamReadyHolder;
 import gnu.CORBA.streamRequest;
 
@@ -373,8 +373,8 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
                           )
                         );
 
-                        recordTypeCode r =
-                          new recordTypeCode(TCKind.tk_except);
+                        RecordTypeCode r =
+                          new RecordTypeCode(TCKind.tk_except);
                         r.setId(uex_idl);
                         r.setName(ObjectCreator.getDefaultName(uex_idl));
                       }

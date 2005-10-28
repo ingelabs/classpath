@@ -45,9 +45,9 @@ import gnu.CORBA.Minor;
 import gnu.CORBA.TypeCodeHelper;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.Version;
-import gnu.CORBA.primitiveTypeCode;
 import gnu.CORBA.GIOP.CharSets_OSF;
 import gnu.CORBA.GIOP.cxCodeSet;
+import gnu.CORBA.typecodes.PrimitiveTypeCode;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.BAD_OPERATION;
@@ -422,7 +422,7 @@ public abstract class cdrOutput
       }
     else
       {
-        primitiveTypeCode p = new primitiveTypeCode(TCKind.tk_null);
+        PrimitiveTypeCode p = new PrimitiveTypeCode(TCKind.tk_null);
         write_TypeCode(p);
       }
   }

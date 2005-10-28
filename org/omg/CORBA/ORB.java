@@ -41,12 +41,12 @@ package org.omg.CORBA;
 import gnu.CORBA.Focused_ORB;
 import gnu.CORBA.ObjectCreator;
 import gnu.CORBA.Restricted_ORB;
-import gnu.CORBA.fixedTypeCode;
-import gnu.CORBA.generalTypeCode;
 import gnu.CORBA.gnuContext;
-import gnu.CORBA.primitiveTypeCode;
-import gnu.CORBA.recordTypeCode;
-import gnu.CORBA.recursiveTypeCode;
+import gnu.CORBA.typecodes.FixedTypeCode;
+import gnu.CORBA.typecodes.GeneralTypeCode;
+import gnu.CORBA.typecodes.PrimitiveTypeCode;
+import gnu.CORBA.typecodes.RecordTypeCode;
+import gnu.CORBA.typecodes.RecursiveTypeCode;
 
 import org.omg.CORBA.ORBPackage.InconsistentTypeCode;
 
@@ -389,7 +389,7 @@ public abstract class ORB
    */
   public TypeCode create_fixed_tc(short digits, short scale)
   {
-    fixedTypeCode r = new fixedTypeCode();
+    FixedTypeCode r = new FixedTypeCode();
     r.setDigits(digits);
     r.setScale(scale);
     return r;
@@ -609,7 +609,7 @@ public abstract class ORB
    */
   public TypeCode create_abstract_interface_tc(String id, String name)
   {
-    generalTypeCode t = new generalTypeCode(TCKind.tk_abstract_interface);
+    GeneralTypeCode t = new GeneralTypeCode(TCKind.tk_abstract_interface);
     t.setName(name);
     t.setId(id);
     return t;
@@ -625,7 +625,7 @@ public abstract class ORB
    */
   public TypeCode create_native_tc(String id, String name)
   {
-    generalTypeCode t = new generalTypeCode(TCKind.tk_native);
+    GeneralTypeCode t = new GeneralTypeCode(TCKind.tk_native);
     t.setName(name);
     t.setId(id);
     return t;
@@ -659,11 +659,11 @@ public abstract class ORB
    */
   public TypeCode create_recursive_sequence_tc(int bound, int offset)
   {
-    recordTypeCode r = new recordTypeCode(TCKind.tk_struct);
+    RecordTypeCode r = new RecordTypeCode(TCKind.tk_struct);
     for (int i = 0; i < offset; i++)
       r.add(new StructMember());
 
-    TypeCode recurs = new primitiveTypeCode(TCKind.tk_sequence);
+    TypeCode recurs = new PrimitiveTypeCode(TCKind.tk_sequence);
 
     r.add(new StructMember("", recurs, null));
     return r;
@@ -678,7 +678,7 @@ public abstract class ORB
    */
   public TypeCode create_recursive_tc(String id)
   {
-    return new recursiveTypeCode(id);
+    return new RecursiveTypeCode(id);
   }
 
   /**
@@ -688,7 +688,7 @@ public abstract class ORB
                                       TypeCode boxed_type
                                      )
   {
-    generalTypeCode t = new generalTypeCode(TCKind.tk_value_box);
+    GeneralTypeCode t = new GeneralTypeCode(TCKind.tk_value_box);
     t.setName(name);
     t.setId(id);
     t.setContentType(boxed_type);
@@ -702,7 +702,7 @@ public abstract class ORB
                                   TypeCode concrete_base, ValueMember[] members
                                  )
   {
-    recordTypeCode r = new recordTypeCode(TCKind.tk_value);
+    RecordTypeCode r = new RecordTypeCode(TCKind.tk_value);
     r.setId(id);
     r.setName(name);
     r.setTypeModifier(type_modifier);

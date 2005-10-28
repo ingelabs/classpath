@@ -1,4 +1,4 @@
-/* primitiveArrayTypeCode.java --
+/* ArrayTypeCode.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,7 +36,8 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.CORBA;
+package gnu.CORBA.typecodes;
+
 
 import org.omg.CORBA.TCKind;
 import org.omg.CORBA.TypeCode;
@@ -46,9 +47,15 @@ import org.omg.CORBA.TypeCodePackage.BadKind;
  * A TypeCode for arrays.
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class primitiveArrayTypeCode
-  extends primitiveTypeCode
+public class ArrayTypeCode
+  extends PrimitiveTypeCode
 {
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID = 1;
+  
+  
   /**
    * The array components.
    */
@@ -67,10 +74,10 @@ public class primitiveArrayTypeCode
    *
    * @param array_of the sequence member type.
    */
-  public primitiveArrayTypeCode(TCKind array_of)
+  public ArrayTypeCode(TCKind array_of)
   {
     super(TCKind.tk_sequence);
-    of = new primitiveTypeCode(array_of);
+    of = new PrimitiveTypeCode(array_of);
   }
 
   /**
@@ -81,7 +88,7 @@ public class primitiveArrayTypeCode
    * sequence of array).
    * @param array_of the sequence member type.
    */
-  public primitiveArrayTypeCode(TCKind this_type, TypeCode array_of)
+  public ArrayTypeCode(TCKind this_type, TypeCode array_of)
   {
     super(this_type);
     of = array_of;

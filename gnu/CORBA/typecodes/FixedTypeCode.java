@@ -1,4 +1,4 @@
-/* fixedTypeCode.java --
+/* FixedTypeCode.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,7 +36,8 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.CORBA;
+package gnu.CORBA.typecodes;
+
 
 import java.math.BigDecimal;
 
@@ -48,9 +49,15 @@ import org.omg.CORBA.TypeCodePackage.BadKind;
  * A typecode for CORBA <code>fixed</code>
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class fixedTypeCode
-  extends primitiveTypeCode
+public class FixedTypeCode
+  extends PrimitiveTypeCode
 {
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID = 1;
+  
+  
   /**
    * The number of the used digits.
    */
@@ -64,7 +71,7 @@ public class fixedTypeCode
   /**
    * Creates the instance of the fixed type code.
    */
-  public fixedTypeCode()
+  public FixedTypeCode()
   {
     super(TCKind.tk_fixed);
   }
@@ -73,7 +80,7 @@ public class fixedTypeCode
    * Creates the instance of the fixed type code,
    * setting the digits and scale by example.
    */
-  public fixedTypeCode(BigDecimal example)
+  public FixedTypeCode(BigDecimal example)
   {
     super(TCKind.tk_fixed);
     if (example != null)

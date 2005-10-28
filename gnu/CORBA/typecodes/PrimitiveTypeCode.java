@@ -1,4 +1,4 @@
-/* primitiveTypeCode.java --
+/* PrimitiveTypeCode.java --
     Copyright (C) 2005 Free Software Foundation, Inc.
 
    Copyright (C) 2005 Free Software Foundation, Inc.
@@ -37,7 +37,7 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package gnu.CORBA;
+package gnu.CORBA.typecodes;
 
 import java.io.Serializable;
 
@@ -60,16 +60,21 @@ import org.omg.CORBA.portable.IDLEntity;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class primitiveTypeCode
+public class PrimitiveTypeCode
   extends TypeCode
   implements IDLEntity, Serializable
 {
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID = 1;
+  
   /**
    * The kind of this TypeCode.
    */
   protected final TCKind kind;
 
-  public primitiveTypeCode(TCKind a_kind)
+  public PrimitiveTypeCode(TCKind a_kind)
   {
     kind = a_kind;
   }

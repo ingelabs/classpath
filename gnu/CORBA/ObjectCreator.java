@@ -43,6 +43,7 @@ import gnu.CORBA.CDR.cdrBufInput;
 import gnu.CORBA.CDR.cdrBufOutput;
 import gnu.CORBA.CDR.cdrInput;
 import gnu.CORBA.GIOP.ServiceContext;
+import gnu.CORBA.typecodes.RecordTypeCode;
 import gnu.classpath.VMStackWalker;
 
 import org.omg.CORBA.Any;
@@ -475,7 +476,7 @@ public class ObjectCreator
 
         into.insert_Streamable(h);
 
-        recordTypeCode r = new recordTypeCode(TCKind.tk_except);
+        RecordTypeCode r = new RecordTypeCode(TCKind.tk_except);
         r.setId(m_exception_id);
         r.setName(name);
         into.type(r);

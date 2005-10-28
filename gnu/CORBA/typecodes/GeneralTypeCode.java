@@ -1,4 +1,4 @@
-/* generalTypeCode.java --
+/* GeneralTypeCode.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,7 +36,7 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.CORBA;
+package gnu.CORBA.typecodes;
 
 import gnu.CORBA.CDR.cdrBufOutput;
 
@@ -56,9 +56,15 @@ import org.omg.CORBA.TypeCodePackage.BadKind;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class generalTypeCode
-  extends primitiveTypeCode
+public class GeneralTypeCode
+  extends PrimitiveTypeCode
 {
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID = 1;
+  
+  
   /**
    * Indicates that the field value has not been previously set.
    */
@@ -87,21 +93,21 @@ public class generalTypeCode
 
   /**
    * Create a new instance, setting kind to the given kind.
-   * @param kind
+   * @param a_kind the kind of the typecode being created.
    */
-  public generalTypeCode(TCKind kind)
+  public GeneralTypeCode(TCKind a_kind)
   {
-    super(kind);
-    if (!lengthAllowed.get(kind.value()))
+    super(a_kind);
+    if (!lengthAllowed.get(a_kind.value()))
       len = UNSET;
   }
 
   /**
    * Set this property.
    */
-  public void setConcreteBase_type(TypeCode concrete_base_type)
+  public void setConcreteBase_type(TypeCode a_concrete_base_type)
   {
-    this.concrete_base_type = concrete_base_type;
+    this.concrete_base_type = a_concrete_base_type;
   }
 
   /**
@@ -115,9 +121,9 @@ public class generalTypeCode
   /**
    * Set this property.
    */
-  public void setId(String id)
+  public void setId(String an_id)
   {
-    this.id = id;
+    this.id = an_id;
   }
 
   /**
@@ -132,9 +138,9 @@ public class generalTypeCode
   /**
    * Set this property.
    */
-  public void setName(String name)
+  public void setName(String a_name)
   {
-    this.name = name;
+    this.name = a_name;
   }
 
   /**

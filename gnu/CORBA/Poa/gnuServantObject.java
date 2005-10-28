@@ -42,13 +42,13 @@ import gnu.CORBA.GIOP.ReplyHeader;
 import gnu.CORBA.IOR_Delegate;
 import gnu.CORBA.IOR_contructed_object;
 import gnu.CORBA.Interceptor.gnuServerRequestInfo;
+import gnu.CORBA.typecodes.RecordTypeCode;
 import gnu.CORBA.IOR;
 import gnu.CORBA.IorProvider;
 import gnu.CORBA.Minor;
 import gnu.CORBA.ObjectCreator;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.bufferedResponseHandler;
-import gnu.CORBA.recordTypeCode;
 import gnu.CORBA.streamReadyHolder;
 
 import org.omg.CORBA.Any;
@@ -551,8 +551,8 @@ public class gnuServantObject extends ObjectImpl
                                         )
                                       );
 
-                                      recordTypeCode r =
-                                        new recordTypeCode(TCKind.tk_except);
+                                      RecordTypeCode r =
+                                        new RecordTypeCode(TCKind.tk_except);
                                       r.setId(uex_idl);
                                       r.setName(ObjectCreator.getDefaultName(
                                           uex_idl

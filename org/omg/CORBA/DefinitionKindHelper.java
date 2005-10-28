@@ -41,7 +41,7 @@ package org.omg.CORBA;
 import gnu.CORBA.DefinitionKindHolder;
 import gnu.CORBA.Restricted_ORB;
 import gnu.CORBA.gnuAny;
-import gnu.CORBA.primitiveTypeCode;
+import gnu.CORBA.typecodes.PrimitiveTypeCode;
 
 import org.omg.CORBA.TypeCodePackage.BadKind;
 import org.omg.CORBA.portable.InputStream;

@@ -1,4 +1,4 @@
-/* recursiveTypeCode.java --
+/* StringTypeCode.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,43 +36,54 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.CORBA;
+package gnu.CORBA.typecodes;
+
 
 import org.omg.CORBA.TCKind;
 
 /**
- * The typecode, serving as a placeholder in defining
- * typecodes, containing recursion.
+ * The typecode for string and wide string.
+ * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class recursiveTypeCode
-  extends primitiveTypeCode
+public class StringTypeCode
+  extends PrimitiveTypeCode
 {
-  /**
-   * The id of the type for that this type serves as a
-   * placeholder.
+  /** 
+   * Use serialVersionUID for interoperability. 
    */
-  private final String the_id;
+  private static final long serialVersionUID = 1;
+  
+  private int len = 0;
 
   /**
-   * Create a typecode that serves as a placeholder for
-   * the typecode with the given id.
+   * Create a new instance of the string type code.
    *
-   * @param id the Id of the type for that this type serves as a
-   * placeholder.
+   * @param a_kind a kind of this typecode, normally
+   * either tk_string or tk_wstring.
    */
-  public recursiveTypeCode(String an_id)
+  public StringTypeCode(TCKind a_kind)
   {
-    super(TCKind.tk_null);
-    the_id = an_id;
+    super(a_kind);
   }
 
   /**
-   * Get the id of the type for that this type serves as a
-   * placeholder.
+   * Set the length property.
+   *
+   * @param a_length a length.
    */
-  public String id()
-            throws org.omg.CORBA.TypeCodePackage.BadKind
+  public void setLength(int a_length)
   {
-    return the_id;
+    len = a_length;
+  }
+
+  /**
+   * Get the length of the string. This method returns 0
+   * (unbounded) if the property has not been set.
+   *
+   * @return the length (bound) of the string.
+   */
+  public int length()
+  {
+    return len;
   }
 }

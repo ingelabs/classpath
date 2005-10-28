@@ -41,6 +41,8 @@ package gnu.CORBA;
 import gnu.CORBA.CDR.Vio;
 import gnu.CORBA.CDR.cdrBufInput;
 import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.typecodes.PrimitiveTypeCode;
+import gnu.CORBA.typecodes.StringTypeCode;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.AnyHolder;
@@ -98,7 +100,7 @@ public class gnuAny
    * not intialized.
    */
   protected static final TypeCode nullType =
-    new primitiveTypeCode(TCKind.tk_null);
+    new PrimitiveTypeCode(TCKind.tk_null);
 
   /**
    * The Streamable, representing the value, held by this gnuAny.
@@ -692,7 +694,7 @@ public class gnuAny
     else
       has = new StringHolder(x);
 
-    typecode = new stringTypeCode(TCKind.tk_string);
+    typecode = new StringTypeCode(TCKind.tk_string);
   }
 
   /** {@inheritDoc} */
@@ -821,7 +823,7 @@ public class gnuAny
       return typecode;
     else if (xKind >= 0)
       {
-        typecode = new primitiveTypeCode(TCKind.from_int(xKind));
+        typecode = new PrimitiveTypeCode(TCKind.from_int(xKind));
         return typecode;
       }
     else

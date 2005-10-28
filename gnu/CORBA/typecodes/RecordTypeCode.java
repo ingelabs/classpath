@@ -1,4 +1,4 @@
-/* recordTypeCode.java --
+/* RecordTypeCode.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,7 +36,9 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.CORBA;
+package gnu.CORBA.typecodes;
+
+import gnu.CORBA.corbaArrayList;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.StructMember;
@@ -53,9 +55,14 @@ import org.omg.CORBA.ValueMember;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class recordTypeCode
-  extends generalTypeCode
+public class RecordTypeCode
+  extends GeneralTypeCode
 {
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID = 1;
+  
   /**
    * The individual field of the record.
    */
@@ -92,9 +99,9 @@ public class recordTypeCode
   /**
    * Creates the type code of the given kind.
    */
-  public recordTypeCode(TCKind kind)
+  public RecordTypeCode(TCKind a_kind)
   {
-    super(kind);
+    super(a_kind);
   }
 
   /**

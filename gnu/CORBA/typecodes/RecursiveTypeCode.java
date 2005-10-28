@@ -1,4 +1,4 @@
-/* stringTypeCode.java --
+/* RecursiveTypeCode.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,48 +36,49 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.CORBA;
+package gnu.CORBA.typecodes;
+
 
 import org.omg.CORBA.TCKind;
 
 /**
- * The typecode for string and wide string.
- * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+ * The typecode, serving as a placeholder in defining
+ * typecodes, containing recursion.
  */
-public class stringTypeCode
-  extends primitiveTypeCode
+public class RecursiveTypeCode
+  extends PrimitiveTypeCode
 {
-  private int len = 0;
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID = 1;
+  
+  /**
+   * The id of the type for that this type serves as a
+   * placeholder.
+   */
+  private final String the_id;
 
   /**
-   * Create a new instance of the string type code.
+   * Create a typecode that serves as a placeholder for
+   * the typecode with the given id.
    *
-   * @param a_kind a kind of this typecode, normally
-   * either tk_string or tk_wstring.
+   * @param id the Id of the type for that this type serves as a
+   * placeholder.
    */
-  public stringTypeCode(TCKind a_kind)
+  public RecursiveTypeCode(String an_id)
   {
-    super(a_kind);
+    super(TCKind.tk_null);
+    the_id = an_id;
   }
 
   /**
-   * Set the length property.
-   *
-   * @param a_length a length.
+   * Get the id of the type for that this type serves as a
+   * placeholder.
    */
-  public void setLength(int a_length)
+  public String id()
+            throws org.omg.CORBA.TypeCodePackage.BadKind
   {
-    len = a_length;
-  }
-
-  /**
-   * Get the length of the string. This method returns 0
-   * (unbounded) if the property has not been set.
-   *
-   * @return the length (bound) of the string.
-   */
-  public int length()
-  {
-    return len;
+    return the_id;
   }
 }

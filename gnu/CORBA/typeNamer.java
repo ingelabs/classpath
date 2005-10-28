@@ -38,6 +38,9 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
+import gnu.CORBA.typecodes.PrimitiveTypeCode;
+import gnu.CORBA.typecodes.RecordTypeCode;
+
 import org.omg.CORBA.TCKind;
 import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.TypeCodePackage.BadKind;
@@ -69,46 +72,46 @@ public class typeNamer
   protected static final TypeCode[] primitveCodes =
     new TypeCode[]
     {
-      new primitiveTypeCode(TCKind.tk_null),
-      new primitiveTypeCode(TCKind.tk_void),
-      new primitiveTypeCode(TCKind.tk_short),
-      new primitiveTypeCode(TCKind.tk_long),
-      new primitiveTypeCode(TCKind.tk_ushort),
-      new primitiveTypeCode(TCKind.tk_ulong),
-      new primitiveTypeCode(TCKind.tk_float),
-      new primitiveTypeCode(TCKind.tk_double),
-      new primitiveTypeCode(TCKind.tk_boolean),
-      new primitiveTypeCode(TCKind.tk_char),
-      new primitiveTypeCode(TCKind.tk_octet),
-      new primitiveTypeCode(TCKind.tk_any),
-      new primitiveTypeCode(TCKind.tk_TypeCode),
-      new primitiveTypeCode(TCKind.tk_Principal),
-      new recordTypeCode(TCKind.tk_objref),
-      new primitiveTypeCode(TCKind.tk_struct),
-      new primitiveTypeCode(TCKind.tk_union),
-      new primitiveTypeCode(TCKind.tk_enum),
-      new primitiveTypeCode(TCKind.tk_string),
-      new primitiveTypeCode(TCKind.tk_sequence),
-      new primitiveTypeCode(TCKind.tk_array),
-      new primitiveTypeCode(TCKind.tk_alias),
-      new primitiveTypeCode(TCKind.tk_except),
-      new primitiveTypeCode(TCKind.tk_longlong),
-      new primitiveTypeCode(TCKind.tk_ulonglong),
-      new primitiveTypeCode(TCKind.tk_longdouble),
-      new primitiveTypeCode(TCKind.tk_wchar),
-      new primitiveTypeCode(TCKind.tk_wstring),
-      new primitiveTypeCode(TCKind.tk_fixed),
-      new primitiveTypeCode(TCKind.tk_value),
-      new primitiveTypeCode(TCKind.tk_value_box),
-      new primitiveTypeCode(TCKind.tk_native),
-      new primitiveTypeCode(TCKind.tk_abstract_interface)
+      new PrimitiveTypeCode(TCKind.tk_null),
+      new PrimitiveTypeCode(TCKind.tk_void),
+      new PrimitiveTypeCode(TCKind.tk_short),
+      new PrimitiveTypeCode(TCKind.tk_long),
+      new PrimitiveTypeCode(TCKind.tk_ushort),
+      new PrimitiveTypeCode(TCKind.tk_ulong),
+      new PrimitiveTypeCode(TCKind.tk_float),
+      new PrimitiveTypeCode(TCKind.tk_double),
+      new PrimitiveTypeCode(TCKind.tk_boolean),
+      new PrimitiveTypeCode(TCKind.tk_char),
+      new PrimitiveTypeCode(TCKind.tk_octet),
+      new PrimitiveTypeCode(TCKind.tk_any),
+      new PrimitiveTypeCode(TCKind.tk_TypeCode),
+      new PrimitiveTypeCode(TCKind.tk_Principal),
+      new RecordTypeCode(TCKind.tk_objref),
+      new PrimitiveTypeCode(TCKind.tk_struct),
+      new PrimitiveTypeCode(TCKind.tk_union),
+      new PrimitiveTypeCode(TCKind.tk_enum),
+      new PrimitiveTypeCode(TCKind.tk_string),
+      new PrimitiveTypeCode(TCKind.tk_sequence),
+      new PrimitiveTypeCode(TCKind.tk_array),
+      new PrimitiveTypeCode(TCKind.tk_alias),
+      new PrimitiveTypeCode(TCKind.tk_except),
+      new PrimitiveTypeCode(TCKind.tk_longlong),
+      new PrimitiveTypeCode(TCKind.tk_ulonglong),
+      new PrimitiveTypeCode(TCKind.tk_longdouble),
+      new PrimitiveTypeCode(TCKind.tk_wchar),
+      new PrimitiveTypeCode(TCKind.tk_wstring),
+      new PrimitiveTypeCode(TCKind.tk_fixed),
+      new PrimitiveTypeCode(TCKind.tk_value),
+      new PrimitiveTypeCode(TCKind.tk_value_box),
+      new PrimitiveTypeCode(TCKind.tk_native),
+      new PrimitiveTypeCode(TCKind.tk_abstract_interface)
     };
 
   static
   {
     // The Id of the "abstract object" is defined as empty string.
-    recordTypeCode object =
-      (recordTypeCode) primitveCodes [ TCKind._tk_objref ];
+    RecordTypeCode object =
+      (RecordTypeCode) primitveCodes [ TCKind._tk_objref ];
     object.setId("");
     object.setName("Object");
   }

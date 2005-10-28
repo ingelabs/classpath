@@ -39,6 +39,10 @@ exception statement from your version. */
 package gnu.CORBA;
 
 import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.typecodes.AliasTypeCode;
+import gnu.CORBA.typecodes.ArrayTypeCode;
+import gnu.CORBA.typecodes.RecordTypeCode;
+import gnu.CORBA.typecodes.StringTypeCode;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.BAD_PARAM;
@@ -133,7 +137,7 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
   /** {@inheritDoc} */
   public TypeCode create_alias_tc(String id, String name, TypeCode typecode)
   {
-    return new aliasTypeCode(typecode, id, name);
+    return new AliasTypeCode(typecode, id, name);
   }
 
   /** {@inheritDoc} */
@@ -147,8 +151,8 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
   /** {@inheritDoc} */
   public TypeCode create_array_tc(int length, TypeCode element_type)
   {
-    primitiveArrayTypeCode p =
-      new primitiveArrayTypeCode(TCKind.tk_array, element_type);
+    ArrayTypeCode p =
+      new ArrayTypeCode(TCKind.tk_array, element_type);
     p.setLength(length);
     return p;
   }
@@ -162,7 +166,7 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
   /** {@inheritDoc} */
   public TypeCode create_enum_tc(String id, String name, String[] values)
   {
-    recordTypeCode r = new recordTypeCode(TCKind.tk_enum);
+    RecordTypeCode r = new RecordTypeCode(TCKind.tk_enum);
     for (int i = 0; i < values.length; i++)
       {
         r.field().name = values [ i ];
@@ -191,7 +195,7 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
     StructMember[] members
   )
   {
-    recordTypeCode r = new recordTypeCode(TCKind.tk_except);
+    RecordTypeCode r = new RecordTypeCode(TCKind.tk_except);
     r.setId(id);
     r.setName(name);
 
@@ -237,8 +241,8 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
   /** {@inheritDoc} */
   public TypeCode create_sequence_tc(int bound, TypeCode element_type)
   {
-    primitiveArrayTypeCode p =
-      new primitiveArrayTypeCode(TCKind.tk_sequence, element_type);
+    ArrayTypeCode p =
+      new ArrayTypeCode(TCKind.tk_sequence, element_type);
     p.setLength(bound);
     return p;
   }
@@ -246,7 +250,7 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
   /** {@inheritDoc} */
   public TypeCode create_string_tc(int bound)
   {
-    stringTypeCode p = new stringTypeCode(TCKind.tk_string);
+    StringTypeCode p = new StringTypeCode(TCKind.tk_string);
     p.setLength(bound);
     return p;
   }
@@ -256,7 +260,7 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
     StructMember[] members
   )
   {
-    recordTypeCode r = new recordTypeCode(TCKind.tk_struct);
+    RecordTypeCode r = new RecordTypeCode(TCKind.tk_struct);
     r.setId(id);
     r.setName(name);
 
@@ -273,7 +277,7 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
     TypeCode discriminator_type, UnionMember[] members
   )
   {
-    recordTypeCode r = new recordTypeCode(TCKind.tk_union);
+    RecordTypeCode r = new RecordTypeCode(TCKind.tk_union);
     r.setId(id);
     r.setName(name);
     r.setDiscriminator_type(discriminator_type);
@@ -290,7 +294,7 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
   /** {@inheritDoc} */
   public TypeCode create_wstring_tc(int bound)
   {
-    stringTypeCode p = new stringTypeCode(TCKind.tk_wstring);
+    StringTypeCode p = new StringTypeCode(TCKind.tk_wstring);
     p.setLength(bound);
     return p;
   }

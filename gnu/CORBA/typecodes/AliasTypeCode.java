@@ -1,4 +1,4 @@
-/* aliasTypeCode.java --
+/* AliasTypeCode.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,7 +36,8 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.CORBA;
+package gnu.CORBA.typecodes;
+
 
 import org.omg.CORBA.TCKind;
 import org.omg.CORBA.TypeCode;
@@ -47,9 +48,14 @@ import org.omg.CORBA.TypeCodePackage.BadKind;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class aliasTypeCode
-  extends primitiveTypeCode
+public class AliasTypeCode
+  extends PrimitiveTypeCode
 {
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID = 1;
+  
   /**
    * The typecode repository id.
    */
@@ -76,7 +82,7 @@ public class aliasTypeCode
    *
    * @param a_name the name of the newly created typecode.
    */
-  public aliasTypeCode(TypeCode an_aliasFor, String an_id, String a_name)
+  public AliasTypeCode(TypeCode an_aliasFor, String an_id, String a_name)
   {
     super(TCKind.tk_alias);
     aliasFor = an_aliasFor;
