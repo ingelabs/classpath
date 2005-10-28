@@ -105,6 +105,6 @@ public class StubLocator
    */
   protected static ObjectImpl createDefaultStub(ORB orb, IOR ior)
   {
-    return new IOR_contructed_object(orb, ior);
+    return new IorObject(orb, ior);
   }
 }

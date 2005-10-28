@@ -1,4 +1,4 @@
-/* holderFactory.java --
+/* HolderLocator.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -75,7 +75,7 @@ import org.omg.CORBA.ObjectHolder;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class holderFactory
+public class HolderLocator
 {
   /**
    * The array, sufficiently large to use any {@link TCKind}._tk* constant as

@@ -39,8 +39,8 @@ exception statement from your version. */
 package gnu.CORBA.Poa;
 
 import gnu.CORBA.GIOP.ReplyHeader;
-import gnu.CORBA.IOR_Delegate;
-import gnu.CORBA.IOR_contructed_object;
+import gnu.CORBA.IorDelegate;
+import gnu.CORBA.IorObject;
 import gnu.CORBA.Interceptor.gnuServerRequestInfo;
 import gnu.CORBA.typecodes.RecordTypeCode;
 import gnu.CORBA.IOR;
@@ -784,12 +784,12 @@ public class gnuServantObject extends ObjectImpl
         gnuServantObject g = (gnuServantObject) other;
         return orb == g.orb && poa == g.poa && Arrays.equals(Id, g.Id);
       }
-    else if (other instanceof IOR_contructed_object)
+    else if (other instanceof IorObject)
       {
-        IOR_contructed_object ir = ((IOR_contructed_object) other);
+        IorObject ir = ((IorObject) other);
         try
           {
-            IOR_Delegate ird = (IOR_Delegate) ir._get_delegate();
+            IorDelegate ird = (IorDelegate) ir._get_delegate();
             byte[] ior_id = poa.idFormIor(ird.getIor().key);
             if (ior_id != null && Arrays.equals(ior_id, Id))
               {

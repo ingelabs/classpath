@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.javax.rmi.CORBA;
 
-import gnu.CORBA.Simple_delegate;
+import gnu.CORBA.SimpleDelegate;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.Poa.LocalDelegate;
 import gnu.CORBA.Poa.ORB_1_4;
@@ -124,9 +124,9 @@ public class PortableRemoteObjectDelegateImpl
                         LocalDelegate l = (LocalDelegate) d;
                         poa = l.poa;
                       }
-                    else if (d instanceof Simple_delegate)
+                    else if (d instanceof SimpleDelegate)
                       {
-                        byte[] ior_key = ((Simple_delegate) d).getIor().key;
+                        byte[] ior_key = ((SimpleDelegate) d).getIor().key;
                         activeObjectMap.Obj ref = xorb.rootPOA.findIorKey(ior_key);
                         if (ref != null)
                           poa = ref.poa;

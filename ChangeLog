@@ -1,5 +1,64 @@
 2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/holderFactory.java,
+	gnu/CORBA/IOR_contructed_object.java,
+	gnu/CORBA/IOR_Delegate.java,
+	gnu/CORBA/Simple_delegate.java,
+	gnu/CORBA/Restricted_ORB.java,
+	gnu/CORBA/Functional_ORB.java,
+	gnu/CORBA/Focused_ORB.java: Removed.
+	* gnu/CORBA/HolderLocator.java
+	gnu/CORBA/IorDelegate.java
+	gnu/CORBA/IorObject.java
+	gnu/CORBA/OrbFocused.java
+	gnu/CORBA/OrbFunctional.java
+	gnu/CORBA/OrbRestricted.java
+	gnu/CORBA/SimpleDelegate.java: New files.
+	* gnu/CORBA/CDR/cdrInput.java,
+	gnu/CORBA/DynAn/abstractRecord.java,
+	gnu/CORBA/DynAn/gnuDynAny.java,
+	gnu/CORBA/DynAn/gnuDynAnyFactory.java,
+	gnu/CORBA/DynAn/gnuDynArray.java,
+	gnu/CORBA/DynAn/gnuDynValueBox.java,
+	gnu/CORBA/GIOP/ErrorMessage.java,
+	gnu/CORBA/NamingService/NameParser.java,
+	gnu/CORBA/NamingService/NamingServiceTransient.java,
+	gnu/CORBA/Poa/ForwardedServant.java,
+	gnu/CORBA/Poa/ORB_1_4.java,
+	gnu/CORBA/Poa/gnuServantObject.java,
+	gnu/CORBA/StubLocator.java,
+	gnu/CORBA/gnuAny.java,
+	gnu/CORBA/gnuRequest.java,
+	gnu/javax/rmi/CORBA/PortableRemoteObjectDelegateImpl.java,
+	gnu/javax/rmi/CORBA/gnuRmiUtil.java,
+	org/omg/CORBA/CompletionStatusHelper.java,
+	org/omg/CORBA/DefinitionKindHelper.java,
+	org/omg/CORBA/FieldNameHelper.java,
+	org/omg/CORBA/IDLTypeHelper.java,
+	org/omg/CORBA/IdentifierHelper.java,
+	org/omg/CORBA/ORB.java,
+	org/omg/CORBA/ParameterModeHelper.java,
+	org/omg/CORBA/RepositoryIdHelper.java,
+	org/omg/CORBA/SetOverrideTypeHelper.java,
+	org/omg/CORBA/StringValueHelper.java,
+	org/omg/CORBA/StructMemberHelper.java,
+	org/omg/CORBA/UnionMemberHelper.java,
+	org/omg/CORBA/ValueMemberHelper.java,
+	org/omg/CORBA/VersionSpecHelper.java,
+	org/omg/CORBA/VisibilityHelper.java,
+	org/omg/CORBA/WStringValueHelper.java,
+	org/omg/CORBA/_IDLTypeStub.java,
+	org/omg/CosNaming/IstringHelper.java,
+	org/omg/DynamicAny/FieldNameHelper.java,
+	org/omg/PortableInterceptor/AdapterNameHelper.java,
+	org/omg/PortableInterceptor/ORBIdHelper.java,
+	org/omg/PortableInterceptor/ORBInitInfoPackage/ObjectIdHelper.java,
+	org/omg/PortableInterceptor/ObjectIdHelper.java,
+	org/omg/PortableInterceptor/ServerIdHelper.java:
+	References updated. 
+
+2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/universalHolder.java
 	gnu/CORBA/stubFinder.java
 	gnu/CORBA/typeNamer.java

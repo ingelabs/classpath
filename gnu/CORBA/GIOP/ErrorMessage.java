@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.GIOP;
 
-import gnu.CORBA.Functional_ORB;
+import gnu.CORBA.OrbFunctional;
 import gnu.CORBA.IOR;
 import gnu.CORBA.Minor;
 
@@ -92,8 +92,8 @@ public class ErrorMessage
       {
         Socket socket;
         
-        if (orb instanceof Functional_ORB)
-          socket = ((Functional_ORB) orb).socketFactory.createClientSocket(
+        if (orb instanceof OrbFunctional)
+          socket = ((OrbFunctional) orb).socketFactory.createClientSocket(
             ior.Internet.host, ior.Internet.port);
         else
           socket = new Socket(ior.Internet.host, ior.Internet.port);

@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package org.omg.PortableInterceptor;
 
-import gnu.CORBA.Restricted_ORB;
+import gnu.CORBA.OrbRestricted;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
@@ -85,7 +85,7 @@ public abstract class ObjectIdHelper
    */
   public static TypeCode type()
   {
-    ORB orb = Restricted_ORB.Singleton;
+    ORB orb = OrbRestricted.Singleton;
     return orb.create_alias_tc(id(), "ObjectId", OctetSeqHelper.type());
   }
 

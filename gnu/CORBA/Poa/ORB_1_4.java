@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.Poa;
 
-import gnu.CORBA.Functional_ORB;
+import gnu.CORBA.OrbFunctional;
 import gnu.CORBA.IOR;
 import gnu.CORBA.Connected_objects.cObject;
 import gnu.CORBA.DynAn.gnuDynAnyFactory;
@@ -72,7 +72,7 @@ import java.util.Properties;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public class ORB_1_4
-  extends Functional_ORB
+  extends OrbFunctional
 {
   /**
    * The root POA.

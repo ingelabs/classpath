@@ -43,7 +43,7 @@ import gnu.CORBA.OctetHolder;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.WCharHolder;
 import gnu.CORBA.WStringHolder;
-import gnu.CORBA.holderFactory;
+import gnu.CORBA.HolderLocator;
 import gnu.CORBA.TypeKindNamer;
 import gnu.CORBA.GeneralHolder;
 
@@ -195,9 +195,9 @@ public class gnuDynAny extends abstractDynAny implements DynAny, Serializable
       }
     else if (a_holder instanceof GeneralHolder)
       {
-        holder = holderFactory.createHolder(official_type);
+        holder = HolderLocator.createHolder(official_type);
         if (holder == null)
-          holder = holderFactory.createHolder(final_type);
+          holder = HolderLocator.createHolder(final_type);
 
         if (holder == null)
           holder = ((GeneralHolder) a_holder).Clone();

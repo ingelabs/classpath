@@ -39,7 +39,7 @@ exception statement from your version. */
 package gnu.CORBA.DynAn;
 
 import gnu.CORBA.Unexpected;
-import gnu.CORBA.holderFactory;
+import gnu.CORBA.HolderLocator;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
@@ -297,7 +297,7 @@ public abstract class abstractRecord
   {
     try
       {
-        Streamable sHolder = holderFactory.createHolder(official_type);
+        Streamable sHolder = HolderLocator.createHolder(official_type);
 
         Class sHolderClass = sHolder.getClass();
         Field sHolderValue = sHolderClass.getField("value");
@@ -371,7 +371,7 @@ public abstract class abstractRecord
             fField = structure.getClass().getField(fNames [ i ]);
             field = fField.get(structure);
             fType = array [ i ].type();
-            holder = holderFactory.createHolder(fType);
+            holder = HolderLocator.createHolder(fType);
 
             member = createAny();
             holder.getClass().getField("value").set(holder, field);

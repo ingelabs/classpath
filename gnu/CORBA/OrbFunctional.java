@@ -1,4 +1,4 @@
-/* Functional_ORB.java --
+/* OrbFunctional.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -97,7 +97,7 @@ import java.util.TreeMap;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class Functional_ORB extends Restricted_ORB
+public class OrbFunctional extends OrbRestricted
 {
   /**
    * A server, responsible for listening on requests on some local port. The ORB
@@ -150,7 +150,7 @@ public class Functional_ORB extends Restricted_ORB
 
     /**
      * Enter the serving loop (get request/process it). All portServer normally
-     * terminate thy threads when the Functional_ORB.running is set to false.
+     * terminate thy threads when the OrbFunctional.running is set to false.
      */
     public void run()
     {
@@ -455,7 +455,7 @@ public class Functional_ORB extends Restricted_ORB
   /**
    * Create the instance of the Functional ORB.
    */
-  public Functional_ORB()
+  public OrbFunctional()
   {
     try
       {
@@ -725,9 +725,9 @@ public class Functional_ORB extends Restricted_ORB
     if (object instanceof ObjectImpl)
       {
         Delegate delegate = ((ObjectImpl) object)._get_delegate();
-        if (delegate instanceof Simple_delegate)
+        if (delegate instanceof SimpleDelegate)
           {
-            byte[] key = ((Simple_delegate) delegate).getIor().key;
+            byte[] key = ((SimpleDelegate) delegate).getIor().key;
             rmKey = connected_objects.get(key);
           }
       }
@@ -850,8 +850,8 @@ public class Functional_ORB extends Restricted_ORB
     if (forObject instanceof ObjectImpl)
       {
         Delegate delegate = ((ObjectImpl) forObject)._get_delegate();
-        if (delegate instanceof Simple_delegate)
-          return ((Simple_delegate) delegate).getIor().toStringifiedReference();
+        if (delegate instanceof SimpleDelegate)
+          return ((SimpleDelegate) delegate).getIor().toStringifiedReference();
       }
 
     // Handle the case when the object is local.
@@ -968,7 +968,7 @@ public class Functional_ORB extends Restricted_ORB
    */
   public void ensureRunning()
   {
-    final Functional_ORB THIS = this;
+    final OrbFunctional THIS = this;
     
     if (!running)
       {
@@ -1033,13 +1033,13 @@ public class Functional_ORB extends Restricted_ORB
         try
           {
             if (impl._get_delegate() == null)
-              impl._set_delegate(new IOR_Delegate(this, ior));
+              impl._set_delegate(new IorDelegate(this, ior));
           }
         catch (BAD_OPERATION ex)
           {
             // Some colaborants may throw this exception
             // in response to the attempt to get the unset delegate.
-            impl._set_delegate(new IOR_Delegate(this, ior));
+            impl._set_delegate(new IorDelegate(this, ior));
           }
 
         object = impl;
@@ -1064,7 +1064,7 @@ public class Functional_ORB extends Restricted_ORB
     ior.Internet.port = ns_port;
     ior.key = NamingServiceTransient.getDefaultKey();
 
-    IOR_contructed_object iorc = new IOR_contructed_object(this, ior);
+    IorObject iorc = new IorObject(this, ior);
     NamingContextExt namer = NamingContextExtHelper.narrow(iorc);
     initial_references.put(NAME_SERVICE, namer);
     return namer;
@@ -1247,12 +1247,12 @@ public class Functional_ORB extends Restricted_ORB
         try
           {
             if (impl._get_delegate() == null)
-              impl._set_delegate(new Simple_delegate(this, ior));
+              impl._set_delegate(new SimpleDelegate(this, ior));
           }
         catch (BAD_OPERATION ex)
           {
             // Some colaborants may throw this exception.
-            impl._set_delegate(new Simple_delegate(this, ior));
+            impl._set_delegate(new SimpleDelegate(this, ior));
           }
       }
   }

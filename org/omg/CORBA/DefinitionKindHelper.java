@@ -39,7 +39,7 @@ exception statement from your version. */
 package org.omg.CORBA;
 
 import gnu.CORBA.DefinitionKindHolder;
-import gnu.CORBA.Restricted_ORB;
+import gnu.CORBA.OrbRestricted;
 import gnu.CORBA.gnuAny;
 import gnu.CORBA.typecodes.PrimitiveTypeCode;
 
@@ -97,7 +97,7 @@ public abstract class DefinitionKindHelper
           };
 
         typeCode =
-          Restricted_ORB.Singleton.create_enum_tc(id(), "DefinitionKind",
+          OrbRestricted.Singleton.create_enum_tc(id(), "DefinitionKind",
                                                   members
                                                  );
       }

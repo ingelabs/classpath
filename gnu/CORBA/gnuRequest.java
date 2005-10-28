@@ -295,8 +295,8 @@ public class gnuRequest extends Request implements Cloneable
     orb = an_orb;
 
     // Take the interceptor from the ORB.
-    if (orb instanceof Restricted_ORB)
-      m_interceptor = ((Restricted_ORB) orb).iClient;
+    if (orb instanceof OrbRestricted)
+      m_interceptor = ((OrbRestricted) orb).iClient;
 
     if (m_interceptor != null && orb instanceof ORB_1_4)
       {
@@ -514,8 +514,8 @@ public class gnuRequest extends Request implements Cloneable
                 try
                   {
                     ObjectImpl impl = (ObjectImpl) e.forward;
-                    Simple_delegate delegate =
-                      (Simple_delegate) impl._get_delegate();
+                    SimpleDelegate delegate =
+                      (SimpleDelegate) impl._get_delegate();
                     ior = delegate.getIor();
                   }
                 catch (Exception ex)
@@ -794,8 +794,8 @@ public class gnuRequest extends Request implements Cloneable
               {
                 try
                   {
-                    if (orb instanceof Functional_ORB)
-                      socket = ((Functional_ORB) orb).socketFactory.createClientSocket(
+                    if (orb instanceof OrbFunctional)
+                      socket = ((OrbFunctional) orb).socketFactory.createClientSocket(
                         ior.Internet.host, ior.Internet.port);
                     else
                       socket = new Socket(ior.Internet.host, ior.Internet.port);
@@ -840,9 +840,9 @@ public class gnuRequest extends Request implements Cloneable
             response_header.read(socketInput);
 
             byte[] r;
-            if (orb instanceof Functional_ORB)
+            if (orb instanceof OrbFunctional)
               {
-                Functional_ORB fo = (Functional_ORB) orb;
+                OrbFunctional fo = (OrbFunctional) orb;
                 r = response_header.readMessage(socketInput, socket,
                   fo.TOUT_WHILE_READING, fo.TOUT_AFTER_RECEIVING);
               }
@@ -868,7 +868,7 @@ public class gnuRequest extends Request implements Cloneable
           {
             if (socket != null && !socket.isClosed())
               {
-                socket.setSoTimeout(Functional_ORB.TANDEM_REQUESTS);
+                socket.setSoTimeout(OrbFunctional.TANDEM_REQUESTS);
                 SocketRepository.put_socket(key, socket);
               }
           }
@@ -1182,7 +1182,7 @@ public class gnuRequest extends Request implements Cloneable
    */
   public org.omg.CORBA.Object effective_target()
   {
-    return new IOR_contructed_object(orb, ior);
+    return new IorObject(orb, ior);
   }
 
   /**
@@ -1295,7 +1295,7 @@ public class gnuRequest extends Request implements Cloneable
       return m_forwarding_target;
 
     if (m_forward_ior != null)
-      return new IOR_contructed_object(orb, m_forward_ior);
+      return new IorObject(orb, m_forward_ior);
     else
       return null;
   }

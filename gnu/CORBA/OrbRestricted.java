@@ -86,12 +86,12 @@ import java.util.Properties;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
+public class OrbRestricted extends org.omg.CORBA_2_3.ORB
 {
   /**
    * The singleton instance of this ORB.
    */
-  public static final ORB Singleton = new Restricted_ORB();
+  public static final ORB Singleton = new OrbRestricted();
 
   /**
    * The cumulated listener for all IOR interceptors. Interceptors are used by
@@ -130,7 +130,7 @@ public class Restricted_ORB extends org.omg.CORBA_2_3.ORB
        * Create a new instance of the RestrictedORB. This is used in derived classes
    * only.
    */
-  protected Restricted_ORB()
+  protected OrbRestricted()
   {
   }
 

@@ -1,4 +1,4 @@
-/* IOR_contructed_object.java --
+/* IorObject.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -46,7 +46,7 @@ import org.omg.CORBA.portable.ObjectImpl;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class IOR_contructed_object
+public class IorObject
   extends ObjectImpl
   implements IorProvider
 {
@@ -65,10 +65,10 @@ public class IOR_contructed_object
    *
    * @param an_ior the IOR.
    */
-  public IOR_contructed_object(ORB orb, IOR an_ior)
+  public IorObject(ORB orb, IOR an_ior)
   {
     ior = an_ior;
-    _set_delegate(new IOR_Delegate(orb, ior));
+    _set_delegate(new IorDelegate(orb, ior));
     id = new String[] { ior.Id };
   }
 
@@ -77,10 +77,10 @@ public class IOR_contructed_object
    *
    * @param an_ior the IOR in the string form.
    */
-  public IOR_contructed_object(Functional_ORB orb, String an_ior)
+  public IorObject(OrbFunctional orb, String an_ior)
   {
     ior = IOR.parse(an_ior);
-    _set_delegate(new IOR_Delegate(orb, ior));
+    _set_delegate(new IorDelegate(orb, ior));
     id = new String[] { ior.Id };
   }
   

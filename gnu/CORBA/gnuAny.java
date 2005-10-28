@@ -781,7 +781,7 @@ public class gnuAny
           }
         else
           {
-            has = holderFactory.createHolder(a_type);
+            has = HolderLocator.createHolder(a_type);
             if (has == null)
               {
                 // Use the Universal Holder that reads till the end of stream.

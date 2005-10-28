@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package org.omg.PortableInterceptor;
 
-import gnu.CORBA.Restricted_ORB;
+import gnu.CORBA.OrbRestricted;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
@@ -123,7 +123,7 @@ public abstract class AdapterNameHelper
   {
     if (typecode == null)
       {
-        ORB orb = Restricted_ORB.Singleton;
+        ORB orb = OrbRestricted.Singleton;
         
         TypeCode component = orb.create_string_tc(0);
         typecode = orb.create_alias_tc(id(), "AdapterName", component);

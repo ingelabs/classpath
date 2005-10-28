@@ -1,4 +1,4 @@
-/* Focused_ORB.java --
+/* OrbFocused.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -74,7 +74,7 @@ import java.util.StringTokenizer;
  * 
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class Focused_ORB
+public class OrbFocused
   extends ORB_1_4
 {
   /**

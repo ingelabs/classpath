@@ -38,9 +38,9 @@ exception statement from your version. */
 
 package org.omg.CORBA;
 
-import gnu.CORBA.Focused_ORB;
+import gnu.CORBA.OrbFocused;
 import gnu.CORBA.ObjectCreator;
-import gnu.CORBA.Restricted_ORB;
+import gnu.CORBA.OrbRestricted;
 import gnu.CORBA.gnuContext;
 import gnu.CORBA.typecodes.FixedTypeCode;
 import gnu.CORBA.typecodes.GeneralTypeCode;
@@ -143,7 +143,7 @@ public abstract class ORB
     "org.omg.CORBA.ORBSingletonClass";
   
   private static final String LISTENER_PORT =
-    Focused_ORB.LISTENER_PORT;
+    OrbFocused.LISTENER_PORT;
   
   /**
    * The class, implementing the default fully functional ORB.
@@ -152,7 +152,7 @@ public abstract class ORB
     gnu.CORBA.Poa.ORB_1_4.class.getName();
   
   private static final String DEFAULT_FOCUSED_ORB =
-    gnu.CORBA.Focused_ORB.class.getName();
+    gnu.CORBA.OrbFocused.class.getName();
   
   // There is no need for name of the default restricted ORB as it is 
   // singleton and it is more effectively referred directly.
@@ -811,7 +811,7 @@ public abstract class ORB
   {
     String orb_cn = getCumulatedProperty(null, RESTRICTED_ORB);
     if (orb_cn == null)
-      return Restricted_ORB.Singleton;
+      return OrbRestricted.Singleton;
     else
       return createORB(null, orb_cn);
   }

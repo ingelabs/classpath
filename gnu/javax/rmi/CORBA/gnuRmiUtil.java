@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.javax.rmi.CORBA;
 
-import gnu.CORBA.Functional_ORB;
+import gnu.CORBA.OrbFunctional;
 import gnu.CORBA.Minor;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.CDR.Vio;
@@ -526,9 +526,9 @@ public class gnuRmiUtil
   void ensureOrbRunning(org.omg.CORBA_2_3.portable.OutputStream output)
   {
     // Ensure ORB is running.
-    if (output.orb() instanceof Functional_ORB)
+    if (output.orb() instanceof OrbFunctional)
       {
-        ((Functional_ORB) output.orb()).ensureRunning();
+        ((OrbFunctional) output.orb()).ensureRunning();
       }
   }
 

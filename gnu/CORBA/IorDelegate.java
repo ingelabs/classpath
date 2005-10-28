@@ -69,12 +69,12 @@ import java.net.Socket;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class IOR_Delegate extends Simple_delegate
+public class IorDelegate extends SimpleDelegate
 {
   /**
    * Contructs an instance of object using the given IOR.
    */
-  public IOR_Delegate(ORB an_orb, IOR an_ior)
+  public IorDelegate(ORB an_orb, IOR an_ior)
   {
     super(an_orb, an_ior);
   }
@@ -261,7 +261,7 @@ public class IOR_Delegate extends Simple_delegate
 
                       r.setIor(forwarded);
 
-                      IOR_contructed_object it = new IOR_contructed_object(orb,
+                      IorObject it = new IorObject(orb,
                         forwarded);
 
                       r.m_target = it;

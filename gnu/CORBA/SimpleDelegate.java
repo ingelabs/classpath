@@ -57,7 +57,7 @@ import org.omg.CORBA.portable.ObjectImpl;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class Simple_delegate
+public class SimpleDelegate
   extends Delegate
   implements IorProvider
 {
@@ -71,7 +71,7 @@ public class Simple_delegate
    */
   protected IOR ior;
 
-  public Simple_delegate(ORB an_orb, IOR an_ior)
+  public SimpleDelegate(ORB an_orb, IOR an_ior)
   {
     orb = an_orb;
     ior = an_ior;
@@ -270,9 +270,9 @@ public class Simple_delegate
    */
   public Request request(org.omg.CORBA.Object target, String operation)
   {
-    if (orb instanceof Functional_ORB)
+    if (orb instanceof OrbFunctional)
       {
-        ((Functional_ORB) orb).ensureRunning();
+        ((OrbFunctional) orb).ensureRunning();
       }
     gnuRequest g = new gnuRequest();
     g.setORB(orb);

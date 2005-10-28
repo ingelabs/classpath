@@ -39,11 +39,11 @@ exception statement from your version. */
 package gnu.CORBA.CDR;
 
 import gnu.CORBA.BigDecimalHelper;
-import gnu.CORBA.Functional_ORB;
+import gnu.CORBA.OrbFunctional;
 import gnu.CORBA.GIOP.CharSets_OSF;
 import gnu.CORBA.GIOP.cxCodeSet;
 import gnu.CORBA.IOR;
-import gnu.CORBA.IOR_Delegate;
+import gnu.CORBA.IorDelegate;
 import gnu.CORBA.Minor;
 import gnu.CORBA.TypeCodeHelper;
 import gnu.CORBA.Unexpected;
@@ -416,9 +416,9 @@ public abstract class cdrInput
         // Check maybe this is a remote reference to the local object.
         // This is only possible if we access the repository of the
         // connected object.
-        if (orb instanceof Functional_ORB)
+        if (orb instanceof OrbFunctional)
           {
-            Functional_ORB forb = (Functional_ORB) orb;
+            OrbFunctional forb = (OrbFunctional) orb;
             org.omg.CORBA.Object local = forb.find_local_object(ior);
             if (local != null)
               return local;
@@ -429,13 +429,13 @@ public abstract class cdrInput
         try
           {
             if (impl._get_delegate() == null)
-              impl._set_delegate(new IOR_Delegate(orb, ior));
+              impl._set_delegate(new IorDelegate(orb, ior));
           }
         catch (BAD_OPERATION ex)
           {
             // Some colaborants may throw this exception
             // in response to the attempt to get the unset delegate.
-            impl._set_delegate(new IOR_Delegate(orb, ior));
+            impl._set_delegate(new IorDelegate(orb, ior));
           }
 
         return impl;
