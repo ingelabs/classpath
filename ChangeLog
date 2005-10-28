@@ -1,3 +1,15 @@
+2005-10-28  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/KeyboardFocusManager.java
+	(setCurrentKeyboardFocusManager): Create a DefaultKeyboardFocusManager
+	directly.
+	(createFocusManager): Removed.
+	* gnu/java/awt/FocusManager.java: Removed.
+	* javax/swing/FocusManager.java
+	(DisabledFocusManager): Removed inner class.
+	(WrappingFocusManager): New inner class.
+	(getCurrentManager): Return WrappingKeyboardFocusManager instance.
+
 2005-10-28  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/Component.java:
