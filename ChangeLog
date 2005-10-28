@@ -1,5 +1,14 @@
 2005-10-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/table/DefaulTableCellRenderer.java
+	(getTableCellRenderer): Correctly configure the cell renderer for
+	selected and / or focused cells.
+	* javax/swing/table/JTableHeader.java
+	(getHeaderRect): Don't include the intercellSpacing in the
+	header rectangle.
+
+2005-10-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTableUI.java
 	(MouseInputHandler.mouseDragged): Only react if table is enabled.
 	(MouseInputHandler.mousePressed): Only react if table is enabled.
