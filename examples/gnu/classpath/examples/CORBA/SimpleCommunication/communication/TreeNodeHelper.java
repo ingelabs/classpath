@@ -1,4 +1,4 @@
-/* nodeHelper.java --
+/* TreeNodeHelper.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -51,13 +51,13 @@ import org.omg.CORBA.portable.OutputStream;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class nodeHelper
+public abstract class TreeNodeHelper
 {
   /**
-   * The node repository id, used to identify the structure.
+   * The TreeNode repository id, used to identify the structure.
    */
   private static String _id =
-    "IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/node:1.0";
+    "IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/TreeNode:1.0";
 
   /**
    * Caches the typecode, allowing to compute it only once.
@@ -66,21 +66,21 @@ public abstract class nodeHelper
 
   /**
    * This is used to handle the recursive object references in
-   * CORBA - supported way. The tree node definition is recursive,
-   * as the node contains the sequence of the nodes as its field.
+   * CORBA - supported way. The tree TreeNode definition is recursive,
+   * as the TreeNode contains the sequence of the nodes as its field.
    */
   private static boolean active;
 
   /**
-   * Extract the tree node from the unversal CORBA wrapper, Any.
+   * Extract the tree TreeNode from the unversal CORBA wrapper, Any.
    */
-  public static node extract(Any a)
+  public static TreeNode extract(Any a)
   {
     return read(a.create_input_stream());
   }
 
   /**
-   * Get the node string identifer.
+   * Get the TreeNode string identifer.
    */
   public static String id()
   {
@@ -88,9 +88,9 @@ public abstract class nodeHelper
   }
 
   /**
-   * Insert the node into the universal CORBA wrapper, Any.
+   * Insert the TreeNode into the universal CORBA wrapper, Any.
    */
-  public static void insert(Any a, node that)
+  public static void insert(Any a, TreeNode that)
   {
     OutputStream out = a.create_output_stream();
     a.type(type());
@@ -99,22 +99,22 @@ public abstract class nodeHelper
   }
 
   /**
-   * Read the node from the common data reprentation (CDR) stream.
+   * Read the TreeNode from the common data reprentation (CDR) stream.
    */
-  public static node read(InputStream istream)
+  public static TreeNode read(InputStream istream)
   {
-    node value = new node();
+    TreeNode value = new TreeNode();
     value.name = istream.read_string();
 
     int _len0 = istream.read_long();
-    value.children = new node[ _len0 ];
+    value.children = new TreeNode[ _len0 ];
     for (int i = 0; i < value.children.length; ++i)
-      value.children [ i ] = nodeHelper.read(istream);
+      value.children [ i ] = TreeNodeHelper.read(istream);
     return value;
   }
 
   /**
-   * Get the node type code definition.
+   * Get the TreeNode type code definition.
    */
   public static synchronized TypeCode type()
   {
@@ -131,7 +131,7 @@ public abstract class nodeHelper
                   return ORB.init().create_recursive_tc(_id);
                 active = true;
 
-                // List all memebers of the node structure.
+                // List all memebers of the TreeNode structure.
                 StructMember[] members = new StructMember[ 2 ];
                 TypeCode memberType;
                 memberType = ORB.init().create_string_tc(0);
@@ -139,7 +139,7 @@ public abstract class nodeHelper
                 memberType = ORB.init().create_recursive_tc("");
                 members [ 1 ] = new StructMember("children", memberType, null);
                 typeCode =
-                  ORB.init().create_struct_tc(nodeHelper.id(), "node", members);
+                  ORB.init().create_struct_tc(TreeNodeHelper.id(), "TreeNode", members);
                 active = false;
               }
           }
@@ -148,13 +148,13 @@ public abstract class nodeHelper
   }
 
   /**
-   * Write the node into the common data reprentation (CDR) stream.
+   * Write the TreeNode into the common data reprentation (CDR) stream.
    */
-  public static void write(OutputStream ostream, node value)
+  public static void write(OutputStream ostream, TreeNode value)
   {
     ostream.write_string(value.name);
     ostream.write_long(value.children.length);
     for (int i = 0; i < value.children.length; ++i)
-      nodeHelper.write(ostream, value.children [ i ]);
+      TreeNodeHelper.write(ostream, value.children [ i ]);
   }
 }

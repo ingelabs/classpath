@@ -1,4 +1,4 @@
-/* comServer.java --
+/* DemoServer.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.classpath.examples.CORBA.SimpleCommunication;
 
-import gnu.classpath.examples.CORBA.SimpleCommunication.communication.comServant;
+import gnu.classpath.examples.CORBA.SimpleCommunication.communication.DemoServant;
 
 import org.omg.CORBA.ORB;
 
@@ -47,7 +47,7 @@ import java.io.PrintStream;
 
 /**
  * This is the server class that handles the client requests,
- * delegating the functionality to the {@link comServant}.
+ * delegating the functionality to the {@link DemoServant}.
  *
  * When starting, the server writes the IOR.txt file into the current
  * folder. With the information, stored in this file, the server
@@ -62,7 +62,7 @@ import java.io.PrintStream;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class comServer
+public class DemoServer
 {
 
   public static void main(String[] args)
@@ -78,7 +78,7 @@ public class comServer
         final ORB orb = org.omg.CORBA.ORB.init(args, null);
 
         // Create the servant and register it with the ORB.
-        comServant tester = new comServant();
+        DemoServant tester = new DemoServant();
         orb.connect(tester);
 
         // Storing the IOR reference.

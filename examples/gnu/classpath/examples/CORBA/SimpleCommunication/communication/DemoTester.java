@@ -1,4 +1,4 @@
-/* returnThis.java --
+/* DemoTester.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,32 +35,77 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package gnu.classpath.examples.CORBA.SimpleCommunication.communication;
 
-import org.omg.CORBA.portable.IDLEntity;
+import org.omg.CORBA.ByteHolder;
+import org.omg.CORBA.DoubleHolder;
+import org.omg.CORBA.ShortHolder;
+import org.omg.CORBA.StringHolder;
 
 /**
- * This data structure is returned from the server to client in our tests.
+ * The interface of our remote object. Some IDL compiles split it
+ * into "DemoTester" and "comTesterOperations", but we do not see
+ * much sense in doing this here.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class returnThis
-  implements IDLEntity
+public interface DemoTester
 {
   /**
-   * The string field.
+   * Passes wide (UTF-16) string and narrow (ISO8859_1) string.
+   * Both types are mapped into java String.
+   *
+   * @see gnu.CORBA.GIOP.CharSets_OSF for supported and default
+   * encodings.
    */
-  public String c;
+  String passCharacters(String wide, String narrow);
 
   /**
-   * The CORBA array field. This field is handled as the fixed
-   * size CORBA array, but structures can also have the variable
-   * size CORBA sequences.
+   * Passes various parameters in both directions.
+   * The parameters that must return the value are wrapped in holders.
    */
-  public int[] arra = new int[3];
+  int passSimple(ByteHolder an_octet, int a_long, ShortHolder a_short,
+                 StringHolder a_string, DoubleHolder a_double
+                );
 
   /**
-   * The int (CORBA long) field.
+   * Passes and returns the string sequence (flexible length).
    */
-  public int n;
+  String[] passStrings(String[] arg);
+
+  /**
+   * Passes and returns the structures.
+   */
+  StructureToReturn passStructure(StructureToPass in_structure);
+
+  /**
+   * Pass and return the tree structure
+   *
+   * @param tree the root TreeNode of the tree.
+   */
+  void passTree(TreeNodeHolder tree);
+
+  /**
+   * Just prints the "Hello" message.
+   */
+  void sayHello();
+
+  /**
+   * Gets the value of the field in our object.
+   */
+  int theField();
+
+  /**
+   * Sets the value for the field in our object.
+   */
+  void theField(int newTheField);
+
+  /**
+   *  Throws either 'WeThrowThisException' with the 'ourField' field
+   *  initialised to the passed positive value
+   *  or system exception (if the parameter is zero or negative).
+   */
+  void throwException(int parameter)
+               throws WeThrowThisException;
 }

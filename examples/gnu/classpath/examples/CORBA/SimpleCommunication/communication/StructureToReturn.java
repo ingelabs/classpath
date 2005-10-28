@@ -1,4 +1,4 @@
-/* passThis.java --
+/* StructureToReturn.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,27 +35,37 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package gnu.classpath.examples.CORBA.SimpleCommunication.communication;
 
+import org.omg.CORBA.portable.IDLEntity;
 
 /**
- * The data structure, passed from to the server from client in our tests.
+ * This data structure is returned from the server to client in our tests.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class passThis
-  implements org.omg.CORBA.portable.IDLEntity
+public class StructureToReturn
+  implements IDLEntity
 {
-  /**
-   * The first string, stored in this structure (defined as
-   * "narrow string").
+  /** 
+   * Use serialVersionUID for interoperability. 
    */
-  public String a;
+  private static final long serialVersionUID = 1;
+  
+  /**
+   * The string field.
+   */
+  public String c;
 
   /**
-   * The second string, stored in this structure (define as
-   * "wide" (usually Unicode) string.
+   * The CORBA array field. This field is handled as the fixed
+   * size CORBA array, but structures can also have the variable
+   * size CORBA sequences.
    */
-  public String b;
+  public int[] arra = new int[3];
+
+  /**
+   * The int (CORBA long) field.
+   */
+  public int n;
 }

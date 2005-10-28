@@ -1,4 +1,4 @@
-/* node.java --
+/* StructureToPassHelper.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,18 +38,64 @@ exception statement from your version. */
 
 package gnu.classpath.examples.CORBA.SimpleCommunication.communication;
 
-/**
- * The support for the tree structure, used in the test of
- * ability to pass and return the tree structure.
- *
- * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
- */
-public class node
-  implements org.omg.CORBA.portable.IDLEntity
-{
-  /** The node name */
-  public String name = null;
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.StructMember;
+import org.omg.CORBA.TypeCode;
+import org.omg.CORBA.portable.InputStream;
+import org.omg.CORBA.portable.OutputStream;
 
-  /** The node children. */
-  public node[] children = null;
+/**
+ * The helper operations for the {@link StructureToPass}.
+ *
+ * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
+ */
+public abstract class StructureToPassHelper
+{
+  /**
+   * The repository ID of the {@link StructureToPass}.
+   */
+  private static String id =
+    "IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/StructureToPass:1.0";
+
+  /**
+   * Get the repository id.
+   */
+  public static String id()
+  {
+    return id;
+  }
+
+  /**
+   * Read the structure from the CDR stram.
+   */
+  public static StructureToPass read(InputStream istream)
+  {
+    StructureToPass value = new StructureToPass();
+    value.a = istream.read_string();
+    value.b = istream.read_wstring();
+    return value;
+  }
+
+  /**
+   * Get the type code of this structure.
+   */
+  public static synchronized TypeCode type()
+  {
+    StructMember[] members = new StructMember[ 2 ];
+    TypeCode member = null;
+    member = ORB.init().create_string_tc(0);
+    members [ 0 ] = new StructMember("a", member, null);
+    member = ORB.init().create_string_tc(0);
+    members [ 1 ] = new StructMember("b", member, null);
+    return ORB.init().create_struct_tc(StructureToPassHelper.id(), "StructureToPass", members);
+  }
+
+  /**
+   * Write the structure into the CDR stream.
+   */
+  public static void write(OutputStream ostream, StructureToPass value)
+  {
+    ostream.write_string(value.a);
+    ostream.write_wstring(value.b);
+  }
 }

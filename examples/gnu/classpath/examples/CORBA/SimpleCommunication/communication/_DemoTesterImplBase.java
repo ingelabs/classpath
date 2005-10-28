@@ -1,4 +1,4 @@
-/* _comTesterImplBase.java --
+/* _DemoTesterImplBase.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -53,13 +53,16 @@ import org.omg.CORBA.portable.ResponseHandler;
 
 /**
  * The base for the class that is actually implementing the functionality
- * of the object on the server side ({@link comServant} of our case).
+ * of the object on the server side ({@link DemoServant} of our case).
+ * 
+ * Following CORBA standards, the name of this class must start from
+ * underscore and end by the "ImplBase".
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class _comTesterImplBase
+public abstract class _DemoTesterImplBase
   extends ObjectImpl
-  implements comTester, InvokeHandler
+  implements DemoTester, InvokeHandler
 {
 /**
  * When the server receives the request message from client, it
@@ -138,7 +141,7 @@ public abstract class _comTesterImplBase
       }
     else
     /*
-      Throws either 'ourUserException' with the 'ourField' field
+      Throws either 'WeThrowThisException' with the 'ourField' field
       initialised to the passed positive value
       or system exception (if the parameter is zero or negative).
      */
@@ -150,21 +153,21 @@ public abstract class _comTesterImplBase
             throwException(parameter);
             out = rh.createReply();
           }
-        catch (ourUserException exception)
+        catch (WeThrowThisException exception)
           {
             out = rh.createExceptionReply();
-            ourUserExceptionHelper.write(out, exception);
+            WeThrowThisExceptionHelper.write(out, exception);
           }
       }
     else
     /* Passes and returns the structures. */
     if (a_method.equals("passStructure"))
       {
-        passThis in_structure = passThisHelper.read(in);
-        returnThis result = null;
+        StructureToPass in_structure = StructureToPassHelper.read(in);
+        StructureToReturn result = null;
         result = passStructure(in_structure);
         out = rh.createReply();
-        returnThisHelper.write(out, result);
+        StructureToReturnHelper.write(out, result);
       }
     else
     /* Passes and returns the string sequence. */
@@ -180,11 +183,11 @@ public abstract class _comTesterImplBase
     /** Pass and return the tree structure */
     if (a_method.equals("passTree"))
       {
-        nodeHolder tree = new nodeHolder();
-        tree.value = nodeHelper.read(in);
+        TreeNodeHolder tree = new TreeNodeHolder();
+        tree.value = TreeNodeHelper.read(in);
         passTree(tree);
         out = rh.createReply();
-        nodeHelper.write(out, tree.value);
+        TreeNodeHelper.write(out, tree.value);
       }
 
     else
@@ -201,6 +204,6 @@ public abstract class _comTesterImplBase
   public String[] _ids()
   {
     // They are the same as for the stub.
-    return _comTesterStub._ids;
+    return _DemoTesterStub._ids;
   }
 }

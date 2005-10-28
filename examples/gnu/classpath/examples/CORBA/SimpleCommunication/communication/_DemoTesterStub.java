@@ -1,4 +1,4 @@
-/* _comTesterStub.java --
+/* _DemoTesterStub.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -55,23 +55,26 @@ import org.omg.CORBA.portable.RemarshalException;
  * side. It has all the same methods as the actual implementation
  * on the server side. These methods contain the code for remote
  * invocation.
+ * 
+ * Following CORBA standards, the name of this class must start from
+ * underscore and end by the "Stub".
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class _comTesterStub
+public class _DemoTesterStub
   extends ObjectImpl
-  implements comTester
+  implements DemoTester
 {
   /**
-   * A string array of comTester repository ids.
+   * A string array of DemoTester repository ids.
    */
   public static String[] _ids =
     {
-      "IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/comTester:1.0"
+      "IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/DemoTester:1.0"
     };
 
   /**
-   * Return an array of comTester repository ids.
+   * Return an array of DemoTester repository ids.
    */
   public String[] _ids()
   {
@@ -217,7 +220,7 @@ public class _comTesterStub
   /**
     Passes and returns the structures.
     */
-  public returnThis passStructure(passThis in_structure)
+  public StructureToReturn passStructure(StructureToPass in_structure)
   {
     InputStream in = null;
     try
@@ -226,13 +229,13 @@ public class _comTesterStub
         OutputStream out = _request("passStructure", true);
 
         // Write the structure, using its helper.
-        passThisHelper.write(out, in_structure);
+        StructureToPassHelper.write(out, in_structure);
 
         // Invoke the method.
         in = _invoke(out);
 
         // Read the returned structer, using another helper.
-        returnThis result = returnThisHelper.read(in);
+        StructureToReturn result = StructureToReturnHelper.read(in);
         return result;
       }
     catch (ApplicationException ex)
@@ -253,7 +256,7 @@ public class _comTesterStub
   /**
    * Pass and return the tree structure
    */
-  public void passTree(nodeHolder tree)
+  public void passTree(TreeNodeHolder tree)
   {
     InputStream in = null;
     try
@@ -261,15 +264,15 @@ public class _comTesterStub
         // Get the stream where the parameters must be written.
         OutputStream out = _request("passTree", true);
 
-        // Write the tree (node with its chilred, grandchildren and so on),
+        // Write the tree (TreeNode with its chilred, grandchildren and so on),
         // using the appropriate helper.
-        nodeHelper.write(out, tree.value);
+        TreeNodeHelper.write(out, tree.value);
 
         // Call the method.
         in = _invoke(out);
 
         // Read the returned tree.
-        tree.value = nodeHelper.read(in);
+        tree.value = TreeNodeHelper.read(in);
       }
     catch (ApplicationException ex)
       {
@@ -382,10 +385,10 @@ public class _comTesterStub
    * of the positive value of this argument, and system
    * exception otherwise.
    *
-   * @throws ourUserException
+   * @throws WeThrowThisException
    */
   public void throwException(int parameter)
-                      throws ourUserException
+                      throws WeThrowThisException
   {
     InputStream in = null;
     try
@@ -408,9 +411,9 @@ public class _comTesterStub
 
         // If this is the user exception we expect to catch, read and throw
         // it here. The system exception, if thrown, is handled by _invoke.
-        if (id.equals("IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/ourUserException:1.0")
+        if (id.equals("IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/WeThrowThisException:1.0")
            )
-          throw ourUserExceptionHelper.read(in);
+          throw WeThrowThisExceptionHelper.read(in);
         else
           throw new MARSHAL(id);
       }

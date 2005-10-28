@@ -1,4 +1,4 @@
-/* returnThisHelper.java --
+/* TreeNodeHolder.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,81 +35,66 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package gnu.classpath.examples.CORBA.SimpleCommunication.communication;
 
-import org.omg.CORBA.Any;
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.StructMember;
-import org.omg.CORBA.TCKind;
 import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
+import org.omg.CORBA.portable.Streamable;
 
 /**
- * This class defines the helper operations for {@link returnThis}.
+ * The TreeNode holder is a wrapper about the TreeNode data structure. It
+ * can be used where the TreeNode must be passed both to and from
+ * the method being called. The same structure holds the tree,
+ * as it can be represented as a root TreeNode with children.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class returnThisHelper
+public class TreeNodeHolder
+  implements Streamable
 {
   /**
-   * The repository id.
+   * Stores the TreeNode value.
    */
-  private static String _id =
-    "IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/returnThis:1.0";
+  public TreeNode value;
 
   /**
-   * Return the repository id.
+   * Creates the TreeNode holder with the null initial value.
    */
-  public static String id()
+  public TreeNodeHolder()
   {
-    return _id;
   }
 
   /**
-   * Read the structure from the CDR stream.
+   * Creates the TreeNode holder with the given initial value.
    */
-  public static returnThis read(InputStream istream)
+  public TreeNodeHolder(TreeNode initialValue)
   {
-    returnThis value = new returnThis();
-    value.n = istream.read_long();
-    value.c = istream.read_wstring();
-    value.arra = new int[ 3 ];
-
-    // Read the fixed size array.
-    for (int i = 0; i < 3; i++)
-      value.arra [ i ] = istream.read_long();
-    return value;
+    value = initialValue;
   }
 
   /**
-   * Create the typecode.
+   * Reads the TreeNode value from the common data representation (CDR)
+   * stream.
    */
-  public static synchronized TypeCode type()
+  public void _read(InputStream in)
   {
-    StructMember[] members = new StructMember[ 3 ];
-    TypeCode member = ORB.init().get_primitive_tc(TCKind.tk_long);
-    members [ 0 ] = new StructMember("n", member, null);
-    member = ORB.init().create_string_tc(0);
-    members [ 1 ] = new StructMember("c", member, null);
-    member = ORB.init().get_primitive_tc(TCKind.tk_long);
-    member = ORB.init().create_array_tc(3, member);
-    members [ 2 ] = new StructMember("arra", member, null);
-    return ORB.init().create_struct_tc(returnThisHelper.id(), "returnThis",
-                                       members
-                                      );
+    value = TreeNodeHelper.read(in);
   }
 
   /**
-   * Write the structure to the CDR stream.
+   * Writes the TreeNode value into common data representation (CDR)
+   * stream.
+   * @return
    */
-  public static void write(OutputStream ostream, returnThis value)
+  public TypeCode _type()
   {
-    ostream.write_long(value.n);
-    ostream.write_wstring(value.c);
+    return TreeNodeHelper.type();
+  }
 
-    // Write the fixed size array.
-    for (int i = 0; i < 3; i++)
-      ostream.write_long(value.arra [ i ]);
+  public void _write(OutputStream out)
+  {
+    TreeNodeHelper.write(out, value);
   }
 }

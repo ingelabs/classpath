@@ -72,7 +72,7 @@ public class Demo
     {
       public void run()
       {
-        comServer.start_server(args);
+        DemoServer.start_server(args);
       }
     }.start();
 

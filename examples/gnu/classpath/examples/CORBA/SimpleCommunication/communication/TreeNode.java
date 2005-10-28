@@ -1,4 +1,4 @@
-/* ourUserException.java --
+/* TreeNode.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,33 +38,23 @@ exception statement from your version. */
 
 package gnu.classpath.examples.CORBA.SimpleCommunication.communication;
 
-import org.omg.CORBA.UserException;
-import org.omg.CORBA.portable.IDLEntity;
-
 /**
- * Our user exception, thrown in the tests of handling the exceptions,
- * thrown on remote side. The exception contains the user - defined
- * data field that is transferred from client to the server when the
- * exception is thrown.
+ * The support for the tree structure, used in the test of
+ * ability to pass and return the tree structure.
  *
- * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
+ * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class ourUserException
-  extends UserException
-  implements IDLEntity
+public class TreeNode
+  implements org.omg.CORBA.portable.IDLEntity
 {
-  /**
-   * Our specific field, transferred to client.
+  /** 
+   * Use serialVersionUID for interoperability. 
    */
-  public int ourField;
+  private static final long serialVersionUID = 1;
+  
+  /** The TreeNode name */
+  public String name = null;
 
-  /**
-   * Create the exception.
-   *
-   * @param _ourField the value of our specific field.
-   */
-  public ourUserException(int _ourField)
-  {
-    ourField = _ourField;
-  }
+  /** The TreeNode children. */
+  public TreeNode[] children = null;
 }

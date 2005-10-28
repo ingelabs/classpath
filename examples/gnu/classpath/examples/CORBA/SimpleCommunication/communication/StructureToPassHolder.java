@@ -6,32 +6,32 @@ import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 import org.omg.CORBA.portable.Streamable;
 
-public final class passThisHolder
+public final class StructureToPassHolder
   implements Streamable
 {
-  public passThis value;
+  public StructureToPass value;
 
-  public passThisHolder()
+  public StructureToPassHolder()
   {
   }
 
-  public passThisHolder(passThis initialValue)
+  public StructureToPassHolder(StructureToPass initialValue)
   {
     value = initialValue;
   }
 
   public void _read(InputStream i)
   {
-    value = passThisHelper.read(i);
+    value = StructureToPassHelper.read(i);
   }
 
   public org.omg.CORBA.TypeCode _type()
   {
-    return passThisHelper.type();
+    return StructureToPassHelper.type();
   }
 
   public void _write(OutputStream o)
   {
-    passThisHelper.write(o, value);
+    StructureToPassHelper.write(o, value);
   }
 }

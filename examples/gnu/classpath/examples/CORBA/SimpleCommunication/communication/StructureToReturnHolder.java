@@ -10,25 +10,25 @@ import org.omg.CORBA.portable.Streamable;
 /**
  * The holder for the structure, returned from the server.
  */
-public final class returnThisHolder
+public final class StructureToReturnHolder
   implements Streamable
 {
   /**
    * The enclosed structure.
    */
-  public returnThis value = null;
+  public StructureToReturn value = null;
 
   /**
    * Create the empty holder.
    */
-  public returnThisHolder()
+  public StructureToReturnHolder()
   {
   }
 
   /**
    * Crate the holder with the defined initial value.
    */
-  public returnThisHolder(returnThis initialValue)
+  public StructureToReturnHolder(StructureToReturn initialValue)
   {
     value = initialValue;
   }
@@ -38,7 +38,7 @@ public final class returnThisHolder
    */
   public void _read(InputStream in)
   {
-    value = returnThisHelper.read(in);
+    value = StructureToReturnHelper.read(in);
   }
 
   /**
@@ -46,7 +46,7 @@ public final class returnThisHolder
    */
   public TypeCode _type()
   {
-    return returnThisHelper.type();
+    return StructureToReturnHelper.type();
   }
 
   /**
@@ -55,6 +55,6 @@ public final class returnThisHolder
    */
   public void _write(OutputStream out)
   {
-    returnThisHelper.write(out, value);
+    StructureToReturnHelper.write(out, value);
   }
 }

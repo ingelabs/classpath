@@ -1,4 +1,4 @@
-/* passThisHelper.java --
+/* StructureToReturnHelper.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,68 +35,80 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package gnu.classpath.examples.CORBA.SimpleCommunication.communication;
 
-import org.omg.CORBA.Any;
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.StructMember;
+import org.omg.CORBA.TCKind;
 import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 
 /**
- * The helper operations for the {@link passThis}.
+ * This class defines the helper operations for {@link StructureToReturn}.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class passThisHelper
+public abstract class StructureToReturnHelper
 {
   /**
-   * The repository ID of the {@link passThis}.
+   * The repository id.
    */
-  private static String id =
-    "IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/passThis:1.0";
+  private static String _id =
+    "IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/StructureToReturn:1.0";
 
   /**
-   * Get the repository id.
+   * Return the repository id.
    */
   public static String id()
   {
-    return id;
+    return _id;
   }
 
   /**
-   * Read the structure from the CDR stram.
+   * Read the structure from the CDR stream.
    */
-  public static passThis read(InputStream istream)
+  public static StructureToReturn read(InputStream istream)
   {
-    passThis value = new passThis();
-    value.a = istream.read_string();
-    value.b = istream.read_wstring();
+    StructureToReturn value = new StructureToReturn();
+    value.n = istream.read_long();
+    value.c = istream.read_wstring();
+    value.arra = new int[ 3 ];
+
+    // Read the fixed size array.
+    for (int i = 0; i < 3; i++)
+      value.arra [ i ] = istream.read_long();
     return value;
   }
 
   /**
-   * Get the type code of this structure.
+   * Create the typecode.
    */
   public static synchronized TypeCode type()
   {
-    StructMember[] members = new StructMember[ 2 ];
-    TypeCode member = null;
+    StructMember[] members = new StructMember[ 3 ];
+    TypeCode member = ORB.init().get_primitive_tc(TCKind.tk_long);
+    members [ 0 ] = new StructMember("n", member, null);
     member = ORB.init().create_string_tc(0);
-    members [ 0 ] = new StructMember("a", member, null);
-    member = ORB.init().create_string_tc(0);
-    members [ 1 ] = new StructMember("b", member, null);
-    return ORB.init().create_struct_tc(passThisHelper.id(), "passThis", members);
+    members [ 1 ] = new StructMember("c", member, null);
+    member = ORB.init().get_primitive_tc(TCKind.tk_long);
+    member = ORB.init().create_array_tc(3, member);
+    members [ 2 ] = new StructMember("arra", member, null);
+    return ORB.init().create_struct_tc(StructureToReturnHelper.id(), "StructureToReturn",
+                                       members
+                                      );
   }
 
   /**
-   * Write the structure into the CDR stream.
+   * Write the structure to the CDR stream.
    */
-  public static void write(OutputStream ostream, passThis value)
+  public static void write(OutputStream ostream, StructureToReturn value)
   {
-    ostream.write_string(value.a);
-    ostream.write_wstring(value.b);
+    ostream.write_long(value.n);
+    ostream.write_wstring(value.c);
+
+    // Write the fixed size array.
+    for (int i = 0; i < 3; i++)
+      ostream.write_long(value.arra [ i ]);
   }
 }

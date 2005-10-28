@@ -1,4 +1,4 @@
-/* comTester.java --
+/* WeThrowThisExceptionHelper.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,74 +38,79 @@ exception statement from your version. */
 
 package gnu.classpath.examples.CORBA.SimpleCommunication.communication;
 
-import org.omg.CORBA.ByteHolder;
-import org.omg.CORBA.DoubleHolder;
-import org.omg.CORBA.ShortHolder;
-import org.omg.CORBA.StringHolder;
+import org.omg.CORBA.Any;
+import org.omg.CORBA.ORB;
+import org.omg.CORBA.StructMember;
+import org.omg.CORBA.TCKind;
+import org.omg.CORBA.TypeCode;
 
 /**
- * The interface of our remote object. Some IDL compiles split it
- * into "comTester" and "comTesterOperations", but we do not see
- * much sense in doing this here.
+ * The class, providing various helper operations with our user
+ * exception.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public interface comTester
+public abstract class WeThrowThisExceptionHelper
 {
   /**
-   * Passes wide (UTF-16) string and narrow (ISO8859_1) string.
-   * Both types are mapped into java String.
-   *
-   * @see gnu.CORBA.GIOP.CharSets_OSF for supported and default
-   * encodings.
+   * The exception repository id. This name is also used to find the
+   * mapping local CORBA class.
    */
-  String passCharacters(String wide, String narrow);
+  private static String _id =
+    "IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/WeThrowThisException:1.0";
 
   /**
-   * Passes various parameters in both directions.
-   * The parameters that must return the value are wrapped in holders.
+   * Get the exception repository id.
    */
-  int passSimple(ByteHolder an_octet, int a_long, ShortHolder a_short,
-                 StringHolder a_string, DoubleHolder a_double
-                );
+  public static String id()
+  {
+    return _id;
+  }
 
   /**
-   * Passes and returns the string sequence (flexible length).
+   * Extract the exception from the given Any where it might be
+   * wrapped.
    */
-  String[] passStrings(String[] arg);
+  public static WeThrowThisException extract(Any a)
+  {
+    return read(a.create_input_stream());
+  }
 
   /**
-   * Passes and returns the structures.
+   * Read the exception from the CDR stream.
    */
-  returnThis passStructure(passThis in_structure);
+  public static WeThrowThisException read(org.omg.CORBA.portable.InputStream istream)
+  {
+    WeThrowThisException value = new WeThrowThisException(0);
+
+    // The repository ID is not used
+    istream.read_string();
+    value.ourField = istream.read_long();
+    return value;
+  }
 
   /**
-   * Pass and return the tree structure
-   *
-   * @param tree the root node of the tree.
+   * Create the type code of this exception.
    */
-  void passTree(nodeHolder tree);
+  public static synchronized TypeCode type()
+  {
+    StructMember[] members = new StructMember[ 1 ];
+    TypeCode member = null;
+    member = ORB.init().get_primitive_tc(TCKind.tk_long);
+    members [ 0 ] = new StructMember("ourField", member, null);
+    return ORB.init().create_struct_tc(WeThrowThisExceptionHelper.id(),
+                                       "WeThrowThisException", members
+                                      );
+  }
 
   /**
-   * Just prints the "Hello" message.
+   * Write the exception into the CDR stream.
    */
-  void sayHello();
-
-  /**
-   * Gets the value of the field in our object.
-   */
-  int theField();
-
-  /**
-   * Sets the value for the field in our object.
-   */
-  void theField(int newTheField);
-
-  /**
-   *  Throws either 'ourUserException' with the 'ourField' field
-   *  initialised to the passed positive value
-   *  or system exception (if the parameter is zero or negative).
-   */
-  void throwException(int parameter)
-               throws ourUserException;
+  public static void write(org.omg.CORBA.portable.OutputStream ostream,
+                           WeThrowThisException value
+                          )
+  {
+    ostream.write_string(id());
+    ostream.write_long(value.ourField);
+  }
 }

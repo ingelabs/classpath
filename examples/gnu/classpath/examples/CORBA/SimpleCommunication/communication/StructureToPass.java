@@ -1,4 +1,4 @@
-/* nodeHolder.java --
+/* StructureToPass.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,63 +38,29 @@ exception statement from your version. */
 
 package gnu.classpath.examples.CORBA.SimpleCommunication.communication;
 
-import org.omg.CORBA.TypeCode;
-import org.omg.CORBA.portable.InputStream;
-import org.omg.CORBA.portable.OutputStream;
-import org.omg.CORBA.portable.Streamable;
 
 /**
- * The node holder is a wrapper about the node data structure. It
- * can be used where the node must be passed both to and from
- * the method being called. The same structure holds the tree,
- * as it can be represented as a root node with children.
+ * The data structure, passed from to the server from client in our tests.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class nodeHolder
-  implements Streamable
+public class StructureToPass
+  implements org.omg.CORBA.portable.IDLEntity
 {
-  /**
-   * Stores the node value.
+  /** 
+   * Use serialVersionUID for interoperability. 
    */
-  public node value;
+  private static final long serialVersionUID = 1;
+  
+  /**
+   * The first string, stored in this structure (defined as
+   * "narrow string").
+   */
+  public String a;
 
   /**
-   * Creates the node holder with the null initial value.
+   * The second string, stored in this structure (define as
+   * "wide" (usually Unicode) string.
    */
-  public nodeHolder()
-  {
-  }
-
-  /**
-   * Creates the node holder with the given initial value.
-   */
-  public nodeHolder(node initialValue)
-  {
-    value = initialValue;
-  }
-
-  /**
-   * Reads the node value from the common data representation (CDR)
-   * stream.
-   */
-  public void _read(InputStream in)
-  {
-    value = nodeHelper.read(in);
-  }
-
-  /**
-   * Writes the node value into common data representation (CDR)
-   * stream.
-   * @return
-   */
-  public TypeCode _type()
-  {
-    return nodeHelper.type();
-  }
-
-  public void _write(OutputStream out)
-  {
-    nodeHelper.write(out, value);
-  }
+  public String b;
 }

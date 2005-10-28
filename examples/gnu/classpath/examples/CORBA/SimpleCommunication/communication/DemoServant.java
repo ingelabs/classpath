@@ -1,4 +1,4 @@
-/* comServant.java --
+/* DemoServant.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -45,12 +45,6 @@ import org.omg.CORBA.DoubleHolder;
 import org.omg.CORBA.ShortHolder;
 import org.omg.CORBA.StringHolder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.PrintStream;
-
 /**
  * This class handles the actual server functionality in this test
  * application. When the client calls the remote method, this
@@ -62,8 +56,8 @@ import java.io.PrintStream;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class comServant
-  extends _comTesterImplBase
+public class DemoServant
+  extends _DemoTesterImplBase
 {
   /**
    * The field, that can be set and checked by remote client.
@@ -129,7 +123,7 @@ public class comServant
   /**
    * Accept and return the structures.
    */
-  public returnThis passStructure(passThis in_structure)
+  public StructureToReturn passStructure(StructureToPass in_structure)
   {
     System.out.println("SERVER: ***** Transferring structures");
     System.out.println("SERVER:   Received " + in_structure.a + ":" +
@@ -137,7 +131,7 @@ public class comServant
                       );
 
     // Create and send back the returned structure.
-    returnThis r = new returnThis();
+    StructureToReturn r = new StructureToReturn();
     r.c = in_structure.a + in_structure.b;
     r.n = 555;
     r.arra = new int[] { 11, 22, 33 };
@@ -147,14 +141,14 @@ public class comServant
   /**
    * Pass and return the tree structure
    */
-  public void passTree(nodeHolder tree)
+  public void passTree(TreeNodeHolder tree)
   {
     System.out.println("SERVER: ***** Transferring tree");
 
     StringBuffer b = new StringBuffer();
 
     // This both creates the tree string representation
-    // and changes the node names.
+    // and changes the TreeNode names.
     getImage(b, tree.value);
     System.out.println("SERVER:   The tree was: " + b + ", returning changed.");
   }
@@ -190,11 +184,11 @@ public class comServant
    *
    * @param parameter specifies which exception will be thrown.
    *
-   * @throws ourUserException for the non negative parameter.
+   * @throws WeThrowThisException for the non negative parameter.
    * @throws BAD_OPERATION for the negative parameter.
    */
   public void throwException(int parameter)
-                      throws ourUserException
+                      throws WeThrowThisException
   {
     System.out.println("SERVER: ***** Testing exceptions");
     if (parameter > 0)
@@ -202,7 +196,7 @@ public class comServant
         System.out.println("SERVER:   Throwing the user exception, " +
                            "specific field = "+parameter
                           );
-        throw new ourUserException(parameter);
+        throw new WeThrowThisException(parameter);
       }
     else
       {
@@ -215,12 +209,12 @@ public class comServant
 
   /**
    * Visit all tree nodes, getting the string representation
-   * and adding '++' to the node names.
+   * and adding '++' to the TreeNode names.
    *
    * @param b the buffer to collect the string representation.
-   * @param n the rott tree node.
+   * @param n the rott tree TreeNode.
    */
-  private void getImage(StringBuffer b, node n)
+  private void getImage(StringBuffer b, TreeNode n)
   {
     b.append(n.name);
     n.name = n.name + "++";

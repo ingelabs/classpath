@@ -1,4 +1,4 @@
-/* ourUserExceptionHelper.java --
+/* WeThrowThisException.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,79 +38,38 @@ exception statement from your version. */
 
 package gnu.classpath.examples.CORBA.SimpleCommunication.communication;
 
-import org.omg.CORBA.Any;
-import org.omg.CORBA.ORB;
-import org.omg.CORBA.StructMember;
-import org.omg.CORBA.TCKind;
-import org.omg.CORBA.TypeCode;
+import org.omg.CORBA.UserException;
+import org.omg.CORBA.portable.IDLEntity;
 
 /**
- * The class, providing various helper operations with our user
- * exception.
+ * Our user exception, thrown in the tests of handling the exceptions,
+ * thrown on remote side. The exception contains the user - defined
+ * data field that is transferred from client to the server when the
+ * exception is thrown.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class ourUserExceptionHelper
+public class WeThrowThisException
+  extends UserException
+  implements IDLEntity
 {
-  /**
-   * The exception repository id. This name is also used to find the
-   * mapping local CORBA class.
+  /** 
+   * Use serialVersionUID for interoperability. 
    */
-  private static String _id =
-    "IDL:gnu/classpath/examples/CORBA/SimpleCommunication/communication/ourUserException:1.0";
+  private static final long serialVersionUID = 1;
+  
+  /**
+   * Our specific field, transferred to client.
+   */
+  public int ourField;
 
   /**
-   * Get the exception repository id.
+   * Create the exception.
+   *
+   * @param _ourField the value of our specific field.
    */
-  public static String id()
+  public WeThrowThisException(int _ourField)
   {
-    return _id;
-  }
-
-  /**
-   * Extract the exception from the given Any where it might be
-   * wrapped.
-   */
-  public static ourUserException extract(Any a)
-  {
-    return read(a.create_input_stream());
-  }
-
-  /**
-   * Read the exception from the CDR stream.
-   */
-  public static ourUserException read(org.omg.CORBA.portable.InputStream istream)
-  {
-    ourUserException value = new ourUserException(0);
-
-    // The repository ID is not used
-    istream.read_string();
-    value.ourField = istream.read_long();
-    return value;
-  }
-
-  /**
-   * Create the type code of this exception.
-   */
-  public static synchronized TypeCode type()
-  {
-    StructMember[] members = new StructMember[ 1 ];
-    TypeCode member = null;
-    member = ORB.init().get_primitive_tc(TCKind.tk_long);
-    members [ 0 ] = new StructMember("ourField", member, null);
-    return ORB.init().create_struct_tc(ourUserExceptionHelper.id(),
-                                       "ourUserException", members
-                                      );
-  }
-
-  /**
-   * Write the exception into the CDR stream.
-   */
-  public static void write(org.omg.CORBA.portable.OutputStream ostream,
-                           ourUserException value
-                          )
-  {
-    ostream.write_string(id());
-    ostream.write_long(value.ourField);
+    ourField = _ourField;
   }
 }
