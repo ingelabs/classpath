@@ -1,3 +1,22 @@
+2005-10-28  Nicolas Geoffray  <nicolas.geoffray@menlina.com>
+
+	Reported by: Gael Thomas <gael.thomas@imag.fr>
+	* NEWS : added entry about new implementation of
+	VMClassLoader.getPackage(s), and new method
+	VMClassLoader.getBootPackages
+	* vm/reference/java/lang/VMClassLoader.java:
+	Added new definedPackages field to store packages
+	loaded by the bootstrap classloader.
+	Added new static initializer to create all packages
+	which names are returned by getBootPackages
+	(getBootPackages): new private method. Helper
+	to get as a String[] the native package names
+	(getPackage): uses the new definedPackages field
+	(getPackages): uses the new definedPackages field
+	* java/lang/Class.java:
+	(getPackage): if the classloader of the class is null
+	then call VMClassLoader.getPackage
+
 2005-10-27  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JEditorPane.java:

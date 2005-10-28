@@ -16,6 +16,14 @@ New for the subsequent release:
   It can flatten graphs and, at least for the simple cases, is interoperable
   with Sun's jdk 1.5. 
 
+Runtime interface changes:
+
+* Changed implementation of VMClassLoader.getPackage(s) : new method
+  VMClassLoader.getBootPackages should be implemented by the vm, and sould
+  return a string array of boot package names ("java.lang", "java.net", ...).
+  Feedback from vm implementors for usability and relevance of the
+  getBootPackages method would be greatly appreciated.
+  
 New in release 0.18 (Sep 6, 2005)
 
 * GNU JAWT implementation, the AWT Native Interface, which allows direct
