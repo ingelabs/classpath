@@ -1,4 +1,4 @@
-/* vPolicy.java --
+/* ContextHandler.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,27 +36,41 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.CORBA.Poa;
+package gnu.CORBA.GIOP;
 
-import org.omg.CORBA.Policy;
+import org.omg.CORBA.BAD_INV_ORDER;
 
 /**
- * The Classpath implementation of the policy, providing the policy
- * value and the code of the policy type.
+ * A header, supporting the service contexts. Such header has a context field
+ * and methods for adding the new contexts.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public interface vPolicy
-  extends Policy
+public abstract class ContextHandler
 {
-  /**
-   * Get the value of this policy
-   */
-  java.lang.Object getValue();
 
   /**
-   * Get the integer code of this policy value.
+   * Empty array, indicating that no service context is available.
    */
-  int getCode();
+  protected static final ServiceContext[] NO_CONTEXT = new ServiceContext[0];
 
+  /**
+   * The context data.
+   */
+  public ServiceContext[] service_context = NO_CONTEXT;
+
+  /**
+   * Add service context to this header.
+   *
+   * @param context_to_add context to add.
+   * @param replace if true, the existing context with this ID is replaced.
+   * Otherwise, BAD_INV_ORDER is throwsn.
+   */
+  public void addContext(org.omg.IOP.ServiceContext context_to_add,
+    boolean replace)
+    throws BAD_INV_ORDER
+  {
+    service_context = ServiceContext.add(service_context, context_to_add,
+      replace);
+  }
 }

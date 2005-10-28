@@ -143,9 +143,9 @@ public class ServiceContext
 
     switch (id)
       {
-        case cxCodeSet.ID:
+        case CodeSetServiceContext.ID:
 
-          cxCodeSet codeset = new cxCodeSet();
+          CodeSetServiceContext codeset = new CodeSetServiceContext();
           codeset.readContext(istream);
           return codeset;
 

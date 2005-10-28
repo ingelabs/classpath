@@ -42,7 +42,7 @@ import gnu.CORBA.Minor;
 import gnu.CORBA.CDR.AbstractCdrInput;
 import gnu.CORBA.CDR.AbstractCdrOutput;
 import gnu.CORBA.GIOP.ServiceContext;
-import gnu.CORBA.GIOP.cxCodeSet;
+import gnu.CORBA.GIOP.CodeSetServiceContext;
 
 import java.io.IOException;
 
@@ -95,7 +95,7 @@ public class RequestHeader
    */
   public RequestHeader()
   {
-    service_context = new ServiceContext[] { cxCodeSet.STANDARD };
+    service_context = new ServiceContext[] { CodeSetServiceContext.STANDARD };
   }
 
   /**
@@ -167,7 +167,7 @@ public class RequestHeader
         service_context = gnu.CORBA.GIOP.ServiceContext.readSequence(in);
 
         // No requesting principal in this new format.
-        in.setCodeSet(cxCodeSet.find(service_context));
+        in.setCodeSet(CodeSetServiceContext.find(service_context));
       }
     catch (IOException ex)
       {
@@ -217,6 +217,6 @@ public class RequestHeader
     ServiceContext.writeSequence(out, service_context);
 
     // No requesting principal in this new format.
-    out.setCodeSet(cxCodeSet.find(service_context));
+    out.setCodeSet(CodeSetServiceContext.find(service_context));
   }
 }

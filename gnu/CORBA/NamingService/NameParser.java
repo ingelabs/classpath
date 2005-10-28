@@ -72,7 +72,7 @@ import java.util.StringTokenizer;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public class NameParser
-  extends snConverter
+  extends NameTransformer
 {
   /**
    * The corbaloc prefix.
@@ -112,7 +112,7 @@ public class NameParser
   /**
    * The string to name converter, initialized on demand.
    */
-  static snConverter converter;
+  static NameTransformer converter;
 
   /**
    * The current position.
@@ -327,7 +327,7 @@ public class NameParser
       }
 
     if (converter == null)
-      converter = new snConverter();
+      converter = new NameTransformer();
 
     try
       {

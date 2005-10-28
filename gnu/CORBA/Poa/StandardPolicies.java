@@ -1,4 +1,4 @@
-/* policySets.java --
+/* StandardPolicies.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -56,14 +56,14 @@ import java.util.ArrayList;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class policySets
+public class StandardPolicies
 {
   /**
    * The default policy set, as defined in OMG specs. This is also
    * the policy set for the root POA.
    */
-  private static final vPolicy[] rootPOASet =
-    new vPolicy[]
+  private static final AccessiblePolicy[] rootPOASet =
+    new AccessiblePolicy[]
     {
       new gnuThreadPolicy(ThreadPolicyValue.ORB_CTRL_MODEL),
       new gnuLifespanPolicy(LifespanPolicyValue.TRANSIENT),

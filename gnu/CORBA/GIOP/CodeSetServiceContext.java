@@ -51,7 +51,7 @@ import java.io.IOException;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class cxCodeSet
+public class CodeSetServiceContext
   extends ServiceContext
 {
   /**
@@ -62,7 +62,7 @@ public class cxCodeSet
   /**
    * The standard component to include in the messages.
    */
-  public static final cxCodeSet STANDARD = new cxCodeSet();
+  public static final CodeSetServiceContext STANDARD = new CodeSetServiceContext();
 
   /**
    * The encoding, used to transfer the narrow (1 byte) character data.
@@ -84,13 +84,13 @@ public class cxCodeSet
    *
    * @param contexts the array of contexts, can be null.
    */
-  public static cxCodeSet find(ServiceContext[] contexts)
+  public static CodeSetServiceContext find(ServiceContext[] contexts)
   {
     if (contexts != null)
       for (int i = 0; i < contexts.length; i++)
         {
-          if (contexts [ i ] instanceof cxCodeSet)
-            return (cxCodeSet) contexts [ i ];
+          if (contexts [ i ] instanceof CodeSetServiceContext)
+            return (CodeSetServiceContext) contexts [ i ];
         }
     return STANDARD;
   }
@@ -102,12 +102,12 @@ public class cxCodeSet
    * If you take this task, scan 'TODO character encoding' for
    * relevant places.
    */
-  public static cxCodeSet negotiate(IOR.CodeSets_profile profile)
+  public static CodeSetServiceContext negotiate(IOR.CodeSets_profile profile)
   {
     if (profile.negotiated != null)
       return profile.negotiated;
 
-    cxCodeSet use = new cxCodeSet();
+    CodeSetServiceContext use = new CodeSetServiceContext();
 
     use.char_data =
       negotiate(profile.narrow, STANDARD.char_data, CharSets_OSF.ISO8859_1);

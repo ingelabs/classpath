@@ -47,7 +47,7 @@ import gnu.CORBA.CDR.AbstractCdrOutput;
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
 public abstract class ReplyHeader
-  extends contextSupportingHeader
+  extends ContextHandler
 {
   /**
    * Reply status, if no exception occured.

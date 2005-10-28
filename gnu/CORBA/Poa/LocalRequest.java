@@ -288,7 +288,7 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
           request_part.create_input_stream();
 
         // Ensure the servant (handler) has a delegate set.
-        servantDelegate sd = null;
+        ServantDelegateImpl sd = null;
 
         Delegate d = null;
 
@@ -300,19 +300,19 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
           {
             // In some cases exception is thrown if the delegate is not set.
           }
-        if (d instanceof servantDelegate)
+        if (d instanceof ServantDelegateImpl)
           {
             // If the delegate is already set, try to reuse the existing
             // instance.
-            sd = (servantDelegate) d;
+            sd = (ServantDelegateImpl) d;
             if (sd.object != object)
               {
-                sd = new servantDelegate(servant, poa, Id);
+                sd = new ServantDelegateImpl(servant, poa, Id);
               }
           }
         else
           {
-            sd = new servantDelegate(servant, poa, Id);
+            sd = new ServantDelegateImpl(servant, poa, Id);
           }
         servant._set_delegate(sd);
 
@@ -531,9 +531,9 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
   {
     InvokeHandler handler = object.getHandler(operation(), cookie, false);
 
-    if (handler instanceof dynImpHandler)
+    if (handler instanceof DynamicImpHandler)
       {
-        DynamicImplementation dyn = ((dynImpHandler) handler).servant;
+        DynamicImplementation dyn = ((DynamicImpHandler) handler).servant;
         if (serverRequest == null)
           {
             serverRequest = new LocalServerRequest(this);

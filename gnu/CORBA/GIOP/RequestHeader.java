@@ -49,7 +49,7 @@ import org.omg.CORBA.portable.IDLEntity;
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
 public abstract class RequestHeader
-  extends contextSupportingHeader
+  extends ContextHandler
   implements IDLEntity
 {
   /**

@@ -1,3 +1,60 @@
+2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/Poa/AOM.java,
+	gnu/CORBA/Poa/AccessiblePolicy.java,
+	gnu/CORBA/Poa/DynamicImpHandler.java,
+	gnu/CORBA/Poa/StandardPolicies.java,
+	gnu/CORBA/Poa/ServantDelegateImpl.java,
+	gnu/CORBA/Poa/NamingService/NameComponentComparator.java
+	gnu/CORBA/Poa/NamingService/NameTransformer.java
+	gnu/CORBA/GIOP/ContextHandler.java,
+	gnu/CORBA/GIOP/CodeSetServiceContext.java: New files.
+	* gnu/CORBA/GIOP/contextSupportingHeader.java,
+	gnu/CORBA/GIOP/cxCodeSet.java,
+	gnu/CORBA/NamingService/cmpNameComponent.java,
+	gnu/CORBA/NamingService/snConverter.java,
+	gnu/CORBA/Poa/activeObjectMap.java,
+	gnu/CORBA/Poa/dynImpHandler.java,
+	gnu/CORBA/Poa/policySets.java,
+	gnu/CORBA/Poa/servantDelegate.java,
+	gnu/CORBA/Poa/vPolicy.java: Removed.
+	* gnu/CORBA/GIOP/CharSets_OSF:
+	Explaining the reason of setting "_OSF" apart.
+	* gnu/CORBA/CDR/AbstractCdrInput.java,
+	gnu/CORBA/CDR/AbstractCdrOutput.java,
+	gnu/CORBA/GIOP/CharSets_OSF.java,
+	gnu/CORBA/GIOP/ReplyHeader.java,
+	gnu/CORBA/GIOP/RequestHeader.java,
+	gnu/CORBA/GIOP/ServiceContext.java,
+	gnu/CORBA/GIOP/v1_0/ReplyHeader.java,
+	gnu/CORBA/GIOP/v1_0/RequestHeader.java,
+	gnu/CORBA/GIOP/v1_2/ReplyHeader.java,
+	gnu/CORBA/GIOP/v1_2/RequestHeader.java,
+	gnu/CORBA/IOR.java,
+	gnu/CORBA/NamingService/Ext.java,
+	gnu/CORBA/NamingService/NameParser.java,
+	gnu/CORBA/NamingService/NamingMap.java,
+	gnu/CORBA/Poa/ForwardedServant.java,
+	gnu/CORBA/Poa/LocalDelegate.java,
+	gnu/CORBA/Poa/LocalRequest.java,
+	gnu/CORBA/Poa/ORB_1_4.java,
+	gnu/CORBA/Poa/gnuAdapterActivator.java,
+	gnu/CORBA/Poa/gnuIdAssignmentPolicy.java,
+	gnu/CORBA/Poa/gnuIdUniquenessPolicy.java,
+	gnu/CORBA/Poa/gnuImplicitActivationPolicy.java,
+	gnu/CORBA/Poa/gnuLifespanPolicy.java,
+	gnu/CORBA/Poa/gnuPOA.java,
+	gnu/CORBA/Poa/gnuRequestProcessingPolicy.java,
+	gnu/CORBA/Poa/gnuServantObject.java,
+	gnu/CORBA/Poa/gnuServantRetentionPolicy.java,
+	gnu/CORBA/Poa/gnuThreadPolicy.java,
+	gnu/CORBA/ResponseHandlerImpl.java,
+	gnu/CORBA/gnuRequest.java,
+	gnu/javax/rmi/CORBA/PortableRemoteObjectDelegateImpl.java,
+	gnu/javax/rmi/CORBA/UtilDelegateImpl.java,
+	org/omg/CosNaming/_NamingContextExtStub.java:
+	References updated.
+
 2005-10-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTable.java

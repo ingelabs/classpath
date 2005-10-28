@@ -41,7 +41,7 @@ package gnu.javax.rmi.CORBA;
 import gnu.CORBA.Minor;
 import gnu.CORBA.ObjectCreator;
 import gnu.CORBA.Poa.ORB_1_4;
-import gnu.CORBA.Poa.activeObjectMap;
+import gnu.CORBA.Poa.AOM;
 import gnu.CORBA.Poa.gnuPOA;
 import gnu.CORBA.typecodes.GeneralTypeCode;
 
@@ -309,7 +309,7 @@ public class UtilDelegateImpl
 
                         if (target instanceof org.omg.CORBA.Object)
                           {
-                            activeObjectMap.Obj record = orb.rootPOA.findObject((org.omg.CORBA.Object) target);
+                            AOM.Obj record = orb.rootPOA.findObject((org.omg.CORBA.Object) target);
 
                             if (record != null && record.servant == r.tie
                               && record.poa instanceof gnuPOA)

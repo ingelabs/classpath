@@ -42,7 +42,7 @@ import gnu.CORBA.SimpleDelegate;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.Poa.LocalDelegate;
 import gnu.CORBA.Poa.ORB_1_4;
-import gnu.CORBA.Poa.activeObjectMap;
+import gnu.CORBA.Poa.AOM;
 
 import java.rmi.NoSuchObjectException;
 import java.rmi.Remote;
@@ -127,7 +127,7 @@ public class PortableRemoteObjectDelegateImpl
                     else if (d instanceof SimpleDelegate)
                       {
                         byte[] ior_key = ((SimpleDelegate) d).getIor().key;
-                        activeObjectMap.Obj ref = xorb.rootPOA.findIorKey(ior_key);
+                        AOM.Obj ref = xorb.rootPOA.findIorKey(ior_key);
                         if (ref != null)
                           poa = ref.poa;
                       }

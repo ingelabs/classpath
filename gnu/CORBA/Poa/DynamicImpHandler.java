@@ -1,4 +1,4 @@
-/* contextSupportingHeader.java --
+/* DynamicImpHandler.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,41 +36,50 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.CORBA.GIOP;
+package gnu.CORBA.Poa;
 
-import org.omg.CORBA.BAD_INV_ORDER;
+import org.omg.CORBA.BAD_OPERATION;
+import org.omg.CORBA.portable.InputStream;
+import org.omg.CORBA.portable.InvokeHandler;
+import org.omg.CORBA.portable.OutputStream;
+import org.omg.CORBA.portable.ResponseHandler;
+import org.omg.PortableServer.DynamicImplementation;
 
 /**
- * A header, supporting the service contexts. Such header has a context field
- * and methods for adding the new contexts.
+ * The InvokeHandler, indicating, that the target is a dynamic
+ * implementation rather than an invoke handler. These two
+ * types are not substitutable, but in some methods have possibility
+ * just to handle them differently.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public abstract class contextSupportingHeader
+public class DynamicImpHandler
+  implements InvokeHandler
 {
+  /**
+   * The servant that is a dynamic implementation rather than
+   * invoke handler.
+   */
+  public final DynamicImplementation servant;
 
   /**
-   * Empty array, indicating that no service context is available.
+   * Create a new instance, wrapping some dyn implementation.
+   * @param _servant
    */
-  protected static final ServiceContext[] NO_CONTEXT = new ServiceContext[0];
-
-  /**
-   * The context data.
-   */
-  public ServiceContext[] service_context = NO_CONTEXT;
-
-  /**
-   * Add service context to this header.
-   *
-   * @param context_to_add context to add.
-   * @param replace if true, the existing context with this ID is replaced.
-   * Otherwise, BAD_INV_ORDER is throwsn.
-   */
-  public void addContext(org.omg.IOP.ServiceContext context_to_add,
-    boolean replace)
-    throws BAD_INV_ORDER
+  public DynamicImpHandler(DynamicImplementation _servant)
   {
-    service_context = ServiceContext.add(service_context, context_to_add,
-      replace);
+    servant = _servant;
+  }
+
+  /**
+   * We cannot invoke properly without having parameter info.
+   *
+   * @throws BAD_OPERATION, always.
+   */
+  public OutputStream _invoke(String method, InputStream input,
+                              ResponseHandler handler
+                             )
+  {
+    throw new BAD_OPERATION(servant + " is not an InvokeHandler.");
   }
 }

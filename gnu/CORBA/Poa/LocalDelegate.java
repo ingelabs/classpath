@@ -251,7 +251,7 @@ public class LocalDelegate
     operation = method;
 
     // Check if the object is not explicitly deactivated.
-    activeObjectMap.Obj e = poa.aom.get(Id);
+    AOM.Obj e = poa.aom.get(Id);
     if (e != null && e.isDeactiveted())
       {
         if (poa.servant_activator != null || poa.servant_locator != null)
@@ -307,7 +307,7 @@ public class LocalDelegate
         InvokeHandler handler = lr.object.getHandler(lr.operation(), lr.cookie,
           false);
 
-        if (handler instanceof dynImpHandler)
+        if (handler instanceof DynamicImpHandler)
           {
             // The local request known how to handle it, but the different
             // method must be called.

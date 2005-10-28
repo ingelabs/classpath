@@ -1,4 +1,4 @@
-/* servantDelegate.java --
+/* ServantDelegateImpl.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -60,7 +60,7 @@ import org.omg.PortableServer.portable.Delegate;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class servantDelegate
+public class ServantDelegateImpl
   implements Delegate
 {
   /**
@@ -93,7 +93,7 @@ public class servantDelegate
    * @param a_servant the servant.
    * @param a_servant_id the servant id.
    */
-  public servantDelegate(Servant a_servant, gnuPOA a_poa, byte[] a_servant_id)
+  public ServantDelegateImpl(Servant a_servant, gnuPOA a_poa, byte[] a_servant_id)
   {
     poa = a_poa;
     servant = a_servant;

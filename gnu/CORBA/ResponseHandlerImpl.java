@@ -42,7 +42,7 @@ import gnu.CORBA.CDR.BufferedCdrOutput;
 import gnu.CORBA.GIOP.MessageHeader;
 import gnu.CORBA.GIOP.ReplyHeader;
 import gnu.CORBA.GIOP.RequestHeader;
-import gnu.CORBA.GIOP.cxCodeSet;
+import gnu.CORBA.GIOP.CodeSetServiceContext;
 
 import org.omg.CORBA.ORB;
 import org.omg.CORBA.portable.OutputStream;
@@ -169,7 +169,7 @@ public class ResponseHandlerImpl
     buffer = new BufferedCdrOutput();
     buffer.setOrb(orb);
     buffer.setVersion(message_header.version);
-    buffer.setCodeSet(cxCodeSet.find(reply_header.service_context));
+    buffer.setCodeSet(CodeSetServiceContext.find(reply_header.service_context));
 
     // Since 1.2, the data section is always aligned on the 8 byte boundary.
     // In older versions, it is necessary to set the offset correctly.

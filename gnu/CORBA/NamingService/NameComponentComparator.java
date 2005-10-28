@@ -1,4 +1,4 @@
-/* cmpNameComponent.java --
+/* NameComponentComparator.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -49,18 +49,18 @@ import java.util.Comparator;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public final class cmpNameComponent
+public final class NameComponentComparator
   implements Comparator
 {
   /**
    * The singleton instance of the name comparator.
    */
-  public static final cmpNameComponent singleton = new cmpNameComponent();
+  public static final NameComponentComparator singleton = new NameComponentComparator();
 
   /**
    * It is enough to have a singleton.
    */
-  private cmpNameComponent()
+  private NameComponentComparator()
   {
   }
 
@@ -93,6 +93,6 @@ public final class cmpNameComponent
    */
   public boolean equals(Object x)
   {
-    return x instanceof cmpNameComponent;
+    return x instanceof NameComponentComparator;
   }
 }

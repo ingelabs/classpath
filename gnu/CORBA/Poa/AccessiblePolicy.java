@@ -1,4 +1,4 @@
-/* dynImpHandler.java --
+/* AccessiblePolicy.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,48 +38,25 @@ exception statement from your version. */
 
 package gnu.CORBA.Poa;
 
-import org.omg.CORBA.BAD_OPERATION;
-import org.omg.CORBA.portable.InputStream;
-import org.omg.CORBA.portable.InvokeHandler;
-import org.omg.CORBA.portable.OutputStream;
-import org.omg.CORBA.portable.ResponseHandler;
-import org.omg.PortableServer.DynamicImplementation;
+import org.omg.CORBA.Policy;
 
 /**
- * The InvokeHandler, indicating, that the target is a dynamic
- * implementation rather than an invoke handler. These two
- * types are not substitutable, but in some methods have possibility
- * just to handle them differently.
+ * The Classpath implementation of the policy, providing the policy
+ * value and the code of the policy type.
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class dynImpHandler
-  implements InvokeHandler
+public interface AccessiblePolicy
+  extends Policy
 {
   /**
-   * The servant that is a dynamic implementation rather than
-   * invoke handler.
+   * Get the value of this policy
    */
-  public final DynamicImplementation servant;
+  java.lang.Object getValue();
 
   /**
-   * Create a new instance, wrapping some dyn implementation.
-   * @param _servant
+   * Get the integer code of this policy value.
    */
-  public dynImpHandler(DynamicImplementation _servant)
-  {
-    servant = _servant;
-  }
+  int getCode();
 
-  /**
-   * We cannot invoke properly without having parameter info.
-   *
-   * @throws BAD_OPERATION, always.
-   */
-  public OutputStream _invoke(String method, InputStream input,
-                              ResponseHandler handler
-                             )
-  {
-    throw new BAD_OPERATION(servant + " is not an InvokeHandler.");
-  }
 }

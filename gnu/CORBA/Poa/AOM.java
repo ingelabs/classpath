@@ -1,4 +1,4 @@
-/* activeObjectMap.java --
+/* AOM.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -57,7 +57,7 @@ import java.util.TreeMap;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class activeObjectMap
+public class AOM
 {
   /**
    * The reference data about the object, placed on the AOM.
@@ -287,7 +287,7 @@ public class activeObjectMap
    * and object.
    * @param port the port that this object would take.
    */
-  public Obj add(servantDelegate delegate)
+  public Obj add(ServantDelegateImpl delegate)
   {
     Obj rec =
       new Obj(delegate.object, delegate.servant_id, delegate.servant,

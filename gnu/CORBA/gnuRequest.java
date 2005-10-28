@@ -43,7 +43,7 @@ import gnu.CORBA.CDR.BufferedCdrOutput;
 import gnu.CORBA.GIOP.MessageHeader;
 import gnu.CORBA.GIOP.ReplyHeader;
 import gnu.CORBA.GIOP.RequestHeader;
-import gnu.CORBA.GIOP.cxCodeSet;
+import gnu.CORBA.GIOP.CodeSetServiceContext;
 import gnu.CORBA.Interceptor.gnuClientRequestInfo;
 import gnu.CORBA.Poa.ORB_1_4;
 
@@ -338,7 +338,7 @@ public class gnuRequest extends Request implements Cloneable
     m_parameter_buffer = new StreamBasedRequest();
     m_parameter_buffer.request = this;
     m_parameter_buffer.setVersion(ior.Internet.version);
-    m_parameter_buffer.setCodeSet(cxCodeSet.negotiate(ior.Internet.CodeSets));
+    m_parameter_buffer.setCodeSet(CodeSetServiceContext.negotiate(ior.Internet.CodeSets));
     m_parameter_buffer.setOrb(orb);
     m_parameter_buffer.setBigEndian(Big_endian);
 
@@ -748,7 +748,7 @@ public class gnuRequest extends Request implements Cloneable
 
     request_part.setOffset(header.getHeaderSize());
     request_part.setVersion(header.version);
-    request_part.setCodeSet(cxCodeSet.negotiate(ior.Internet.CodeSets));
+    request_part.setCodeSet(CodeSetServiceContext.negotiate(ior.Internet.CodeSets));
     request_part.setOrb(orb);
     request_part.setBigEndian(header.isBigEndian());
 

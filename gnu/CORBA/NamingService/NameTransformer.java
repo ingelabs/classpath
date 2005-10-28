@@ -1,4 +1,4 @@
-/* snConverter.java --
+/* NameTransformer.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -51,7 +51,7 @@ import java.util.StringTokenizer;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class snConverter
+public class NameTransformer
 {
   /**
    * A string, indicating the escape character.
@@ -301,7 +301,7 @@ public class snConverter
     NameComponent b = new NameComponent("b/z", "b.k");
     NameComponent c = new NameComponent("c", "");
 
-    snConverter sn = new snConverter();
+    NameTransformer sn = new NameTransformer();
 
     try
       {

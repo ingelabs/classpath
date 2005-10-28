@@ -43,7 +43,7 @@ import gnu.CORBA.CDR.BufferedCdrOutput;
 import gnu.CORBA.CDR.AbstractCdrInput;
 import gnu.CORBA.CDR.AbstractCdrOutput;
 import gnu.CORBA.GIOP.CharSets_OSF;
-import gnu.CORBA.GIOP.cxCodeSet;
+import gnu.CORBA.GIOP.CodeSetServiceContext;
 
 import org.omg.CORBA.BAD_PARAM;
 import org.omg.CORBA.CompletionStatus;
@@ -174,7 +174,7 @@ public class IOR
      * The negotiated coding result for this IOR. Saves time, requred for
      * negotiation computations.
      */
-    public cxCodeSet negotiated;
+    public CodeSetServiceContext negotiated;
 
     /**
      * Read the code set profile information from the given input stream.

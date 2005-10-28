@@ -46,7 +46,7 @@ import gnu.CORBA.TypeCodeHelper;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.Version;
 import gnu.CORBA.GIOP.CharSets_OSF;
-import gnu.CORBA.GIOP.cxCodeSet;
+import gnu.CORBA.GIOP.CodeSetServiceContext;
 import gnu.CORBA.typecodes.PrimitiveTypeCode;
 
 import org.omg.CORBA.Any;
@@ -114,7 +114,7 @@ public abstract class AbstractCdrOutput
   /**
    * The code set information.
    */
-  protected cxCodeSet codeset;
+  protected CodeSetServiceContext codeset;
 
   /**
    * The name of the currently used narrow charset.
@@ -160,7 +160,7 @@ public abstract class AbstractCdrOutput
   public AbstractCdrOutput(java.io.OutputStream writeTo)
   {
     setOutputStream(writeTo);
-    setCodeSet(cxCodeSet.STANDARD);
+    setCodeSet(CodeSetServiceContext.STANDARD);
   }
 
   /**
@@ -169,7 +169,7 @@ public abstract class AbstractCdrOutput
    */
   public AbstractCdrOutput()
   {
-    setCodeSet(cxCodeSet.STANDARD);
+    setCodeSet(CodeSetServiceContext.STANDARD);
   }
 
   /**
@@ -192,7 +192,7 @@ public abstract class AbstractCdrOutput
   /**
    * Set the current code set context.
    */
-  public void setCodeSet(cxCodeSet a_codeset)
+  public void setCodeSet(CodeSetServiceContext a_codeset)
   {
     this.codeset = a_codeset;
     narrow_charset = CharSets_OSF.getName(codeset.char_data);
@@ -205,7 +205,7 @@ public abstract class AbstractCdrOutput
   /**
    * Get the current code set context.
    */
-  public cxCodeSet getCodeSet()
+  public CodeSetServiceContext getCodeSet()
   {
     return codeset;
   }

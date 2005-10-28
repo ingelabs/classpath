@@ -304,7 +304,7 @@ public class gnuServantObject extends ObjectImpl
       }
     else if (a_servant instanceof DynamicImplementation)
       {
-        return new dynImpHandler((DynamicImplementation) a_servant);
+        return new DynamicImpHandler((DynamicImplementation) a_servant);
       }
     else
       {
@@ -436,7 +436,7 @@ public class gnuServantObject extends ObjectImpl
         try
           {
             CookieHolder cookie = null;
-            activeObjectMap.Obj self = poa.aom.get(Id);
+            AOM.Obj self = poa.aom.get(Id);
 
             if (poa.servant_locator != null)
               {
@@ -477,18 +477,18 @@ public class gnuServantObject extends ObjectImpl
               {
                 // In some cases exception is thrown if the delegate is not set.
               }
-            if (d instanceof servantDelegate)
+            if (d instanceof ServantDelegateImpl)
               {
                 // If the delegate is already set, check maybe we can
                 // reuse the existing instance.
-                if (((servantDelegate) d).object != this)
+                if (((ServantDelegateImpl) d).object != this)
                   {
-                    servant._set_delegate(new servantDelegate(servant, poa, Id));
+                    servant._set_delegate(new ServantDelegateImpl(servant, poa, Id));
                   }
               }
             else
               {
-                servant._set_delegate(new servantDelegate(servant, poa, Id));
+                servant._set_delegate(new ServantDelegateImpl(servant, poa, Id));
               }
 
             try

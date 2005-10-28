@@ -118,7 +118,7 @@ public class ForwardedServant
                     IOR ior = ird.getIor();
                     if (orb.LOCAL_HOST.equalsIgnoreCase(ior.Internet.host))
                       {
-                        activeObjectMap.Obj rx = orb.rootPOA.findIorKey(ior.key);
+                        AOM.Obj rx = orb.rootPOA.findIorKey(ior.key);
                         if (rx != null)
                           {
                             if (rx.object == fto ||

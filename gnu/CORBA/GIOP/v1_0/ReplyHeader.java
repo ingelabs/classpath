@@ -41,7 +41,7 @@ package gnu.CORBA.GIOP.v1_0;
 import gnu.CORBA.CDR.AbstractCdrInput;
 import gnu.CORBA.CDR.AbstractCdrOutput;
 import gnu.CORBA.GIOP.ServiceContext;
-import gnu.CORBA.GIOP.cxCodeSet;
+import gnu.CORBA.GIOP.CodeSetServiceContext;
 
 /**
  * The header of the standard reply.
@@ -104,7 +104,7 @@ public class ReplyHeader
     request_id = in.read_ulong();
     reply_status = in.read_ulong();
 
-    in.setCodeSet(cxCodeSet.find(service_context));
+    in.setCodeSet(CodeSetServiceContext.find(service_context));
   }
 
   /**
@@ -134,6 +134,6 @@ public class ReplyHeader
     out.write_ulong(request_id);
     out.write_ulong(reply_status);
 
-    out.setCodeSet(cxCodeSet.find(service_context));
+    out.setCodeSet(CodeSetServiceContext.find(service_context));
   }
 }

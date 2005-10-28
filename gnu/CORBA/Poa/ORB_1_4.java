@@ -103,7 +103,7 @@ public class ORB_1_4
     super();
     try
       {
-        rootPOA = new gnuPOA(null, "RootPOA", null, policySets.rootPoa(), this);
+        rootPOA = new gnuPOA(null, "RootPOA", null, StandardPolicies.rootPoa(), this);
       }
     catch (InvalidPolicy ex)
       {
@@ -133,7 +133,7 @@ public class ORB_1_4
       {
         try
           {
-            activeObjectMap.Obj exists = rootPOA.findObject(forObject);
+            AOM.Obj exists = rootPOA.findObject(forObject);
             if (exists == null)
               throw new OBJECT_NOT_EXIST(forObject == null ? "null"
                 : forObject.toString());
@@ -204,7 +204,7 @@ public class ORB_1_4
     IOR ior = super.createIOR(ref);
     if (iIor != null)
       {
-        activeObjectMap.Obj obj = rootPOA.findIorKey(ior.key);
+        AOM.Obj obj = rootPOA.findIorKey(ior.key);
 
         POA poa;
 
