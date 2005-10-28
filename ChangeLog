@@ -1,5 +1,23 @@
 2005-10-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(MouseInputHandler.mouseDragged): Only react if table is enabled.
+	(MouseInputHandler.mousePressed): Only react if table is enabled.
+	(MouseInputHandler.mouseReleased): Only react if table is enabled.
+	(PropertyChangeHandler): New inner class. Updates the state of
+	the table if the model property changes.
+	(installDefaults): Don't load the highlightCellBorder here. This
+	is done in the cell renderer now.
+	(installListeners): Install the new PropertyChangeListener.
+	(uninstallListeners): Uninstall the new PropertyChangeListener.
+	(paintCell): Fixed determination of the selected and focused state
+	of the cell. Removed handling of the border (this is moved into
+	the cell renderer).
+	(paint): Fixed the rectangle calculation of the cell. Fixed painting
+	of the grid.
+
+2005-10-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/DefaultListSelectionModel.java
 	(setLeadSelectionIndex): Forbit some changes to leadSelectionIndex
 	when the anchorSelectionIndex is not set properly.
