@@ -3808,13 +3808,16 @@ public abstract class Component
       {
         synchronized (getTreeLock ())
           {
-            // Find this Component's top-level ancestor.
-            Container parent = getParent ();
-
+            // Find this Component's top-level ancestor.            
+            Container parent = (this instanceof Container) ? (Container) this
+                                                          : getParent();            
             while (parent != null
                    && !(parent instanceof Window))
               parent = parent.getParent ();
 
+            if (parent == null)
+              return;
+            
             Window toplevel = (Window) parent;
             if (toplevel.isFocusableWindow ())
               {

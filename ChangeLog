@@ -1,3 +1,10 @@
+2005-10-28  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/awt/Component.java:
+	(requestFocus): If this component is a Container, start here, not at
+	its parent when	looking for the top-level ancestor.  If no top-level
+	ancestor is found (parent == null), return.
+
 2005-10-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/table/DefaulTableCellRenderer.java
