@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.Poa;
 
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 import gnu.CORBA.GIOP.MessageHeader;
 import gnu.CORBA.GIOP.v1_2.ReplyHeader;
 import gnu.CORBA.GIOP.v1_2.RequestHeader;
@@ -115,7 +115,7 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
   /**
    * The buffer to write into.
    */
-  cdrBufOutput buffer;
+  BufferedCdrOutput buffer;
 
   /**
    * The responsible POA.
@@ -252,7 +252,7 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
             handler = object.getHandler(operation(), cookie, false);
           }
 
-        cdrBufOutput request_part = new cdrBufOutput();
+        BufferedCdrOutput request_part = new BufferedCdrOutput();
 
         request_part.setOrb(orb());
 
@@ -637,7 +637,7 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
    *
    * @return the CDR output stream, containing the written output.
    */
-  cdrBufOutput getBuffer()
+  BufferedCdrOutput getBuffer()
   {
     return buffer;
   }
@@ -656,7 +656,7 @@ public class LocalRequest extends gnuRequest implements ResponseHandler,
    */
   private void prepareStream()
   {
-    buffer = new cdrBufOutput();
+    buffer = new BufferedCdrOutput();
     buffer.setOrb(orb());
   }
 

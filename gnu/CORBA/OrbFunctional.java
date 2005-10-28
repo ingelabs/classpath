@@ -39,8 +39,8 @@ exception statement from your version. */
 package gnu.CORBA;
 
 import gnu.CORBA.CDR.UnknownExceptionCtxHandler;
-import gnu.CORBA.CDR.cdrBufInput;
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferredCdrInput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 import gnu.CORBA.GIOP.CloseMessage;
 import gnu.CORBA.GIOP.ErrorMessage;
 import gnu.CORBA.GIOP.MessageHeader;
@@ -1286,8 +1286,8 @@ public class OrbFunctional extends OrbRestricted
       reply.reply_status = ReplyHeader.NO_EXCEPTION;
     reply.request_id = rh_request.request_id;
 
-    cdrBufOutput out =
-      new cdrBufOutput(50 + handler.getBuffer().buffer.size());
+    BufferedCdrOutput out =
+      new BufferedCdrOutput(50 + handler.getBuffer().buffer.size());
     out.setOrb(this);
 
     out.setOffset(msh_request.getHeaderSize());
@@ -1331,7 +1331,7 @@ public class OrbFunctional extends OrbRestricted
     rh_forward.request_id = rh_request.request_id;
 
     // The forwarding code is either LOCATION_FORWARD or LOCATION_FORWARD_PERM.
-    cdrBufOutput out = new cdrBufOutput();
+    BufferedCdrOutput out = new BufferedCdrOutput();
     out.setOrb(this);
     out.setOffset(msh_forward.getHeaderSize());
 
@@ -1447,7 +1447,7 @@ public class OrbFunctional extends OrbRestricted
               {
                 RequestHeader rh_request;
 
-                cdrBufInput cin = new cdrBufInput(r);
+                BufferredCdrInput cin = new BufferredCdrInput(r);
                 cin.setOrb(this);
                 cin.setVersion(msh_request.version);
                 cin.setOffset(msh_request.getHeaderSize());

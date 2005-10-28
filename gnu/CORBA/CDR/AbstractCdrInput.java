@@ -1,4 +1,4 @@
-/* cdrInput.java --
+/* AbstractCdrInput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -95,7 +95,7 @@ import java.math.BigDecimal;
  * 
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public abstract class cdrInput
+public abstract class AbstractCdrInput
   extends org.omg.CORBA_2_3.portable.InputStream
   implements org.omg.CORBA.DataInputStream
 {
@@ -116,7 +116,7 @@ public abstract class cdrInput
    * This instance is used to convert primitive data types into the byte
    * sequences.
    */
-  protected abstractDataInputStream b;
+  protected AbstractDataInput b;
 
   /**
    * The input stream, from where the data are actually being read.
@@ -176,7 +176,7 @@ public abstract class cdrInput
    * 
    * @param readFrom a stream to read CORBA input from.
    */
-  public cdrInput(java.io.InputStream readFrom)
+  public AbstractCdrInput(java.io.InputStream readFrom)
   {
     setInputStream(readFrom);
     setCodeSet(cxCodeSet.STANDARD);
@@ -186,7 +186,7 @@ public abstract class cdrInput
    * Creates the stream, requiring the subsequent call of
    * {@link #setInputStream(java.io.InputStream)}.
    */
-  public cdrInput()
+  public AbstractCdrInput()
   {
     setCodeSet(cxCodeSet.STANDARD);
   }
@@ -218,7 +218,7 @@ public abstract class cdrInput
   /**
    * Clone all important settings to another stream.
    */
-  public void cloneSettings(cdrInput stream)
+  public void cloneSettings(AbstractCdrInput stream)
   {
     stream.setBigEndian(isBigEndian());
     stream.setCodeSet(getCodeSet());
@@ -646,7 +646,7 @@ public abstract class cdrInput
    * the Little endian format, the flag of the returned stream is set to read
    * Little endian.
    */
-  public cdrBufInput read_encapsulation()
+  public BufferredCdrInput read_encapsulation()
   {
     try
       {
@@ -659,7 +659,7 @@ public abstract class cdrInput
             n += read(r, n, r.length - n);
           }
 
-        cdrBufInput capsule = new cdrBufInput(r);
+        BufferredCdrInput capsule = new BufferredCdrInput(r);
         capsule.setOrb(orb);
 
         int endian = capsule.read_octet();

@@ -87,8 +87,8 @@ import org.omg.PortableServer.POAPackage.ServantAlreadyActive;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
 import org.omg.PortableServer.POAPackage.WrongAdapter;
 import org.omg.PortableServer.POAPackage.WrongPolicy;
-import gnu.CORBA.CDR.cdrBufInput;
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferredCdrInput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 
 /**
  * Our POA implementation.
@@ -847,7 +847,7 @@ public class gnuPOA
       return m_poa_id;
     else
       {
-        cdrBufOutput buffer = new cdrBufOutput();
+        BufferedCdrOutput buffer = new BufferedCdrOutput();
         POA p = this;
         while (p != null)
           {
@@ -1565,7 +1565,7 @@ public class gnuPOA
    */
   public activeObjectMap.Obj findIorKey(byte[] ior_key)
   {
-    cdrBufInput in = new cdrBufInput(ior_key);
+    BufferredCdrInput in = new BufferredCdrInput(ior_key);
     int signature = in.read_long();
     if (signature != SIGNATURE)
       return null;
@@ -1582,7 +1582,7 @@ public class gnuPOA
    */
   public byte[] toIORKey(byte[] object_id)
   {
-    cdrBufOutput buffer = new cdrBufOutput();
+    BufferedCdrOutput buffer = new BufferedCdrOutput();
     buffer.write_long(SIGNATURE);
     buffer.write_sequence(object_id);
     buffer.write_sequence(id());
@@ -1600,7 +1600,7 @@ public class gnuPOA
    */
   public byte[] idFormIor(byte[] ior_key)
   {
-    cdrBufInput in = new cdrBufInput(ior_key);
+    BufferredCdrInput in = new BufferredCdrInput(ior_key);
     int signature = in.read_long();
     if (signature != SIGNATURE)
       return null;

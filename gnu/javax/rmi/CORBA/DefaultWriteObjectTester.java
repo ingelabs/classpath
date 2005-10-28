@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.javax.rmi.CORBA;
 
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 
 import java.io.IOException;
 
@@ -62,7 +62,7 @@ public class DefaultWriteObjectTester
   public DefaultWriteObjectTester(Object firstObject)
     throws Exception
   {
-    super(new cdrBufOutput(), firstObject, null);
+    super(new BufferedCdrOutput(), firstObject, null);
   }
 
   /**

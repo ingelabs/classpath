@@ -1,4 +1,4 @@
-/* EncapsulationOutput.java --
+/* AligningOutput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,51 +38,37 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+
+import org.omg.CORBA.BAD_PARAM;
 
 /**
- * The encapsulated data, as they are defined by CORBA specification.
- * This includes the extra 0 byte (Big endian) in the beginning.
- * When written to the parent steam, the encapsulated data are preceeded
- * by the data length in bytes.
+ * The input stream with the possibility to align on the
+ * word (arbitrary size) boundary.
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class encapsulatedOutput
-  extends cdrOutput
+public class AligningOutput
+  extends ByteArrayOutputStream
 {
   /**
-   * The Big Endian (most siginificant byte first flag).
+   * The alignment offset.
    */
-  public static final byte BIG_ENDIAN = 0;
+  private int offset = 0;
 
   /**
-   * The Little Endian (least siginificant byte first flag).
+   * Create a stream with the default intial buffer size.
    */
-  public static final byte LITTLE_ENDIAN = 1;
-
-  /**
-   * The byte buffer.
-   */
-  public final aligningOutputStream buffer;
-
-  /**
-   * The stream, where the data are being encapsulated.
-   */
-  public final org.omg.CORBA.portable.OutputStream parent;
-
-  /**
-   * Create the EncapsulationOutput with the given parent stream
-   * and the specified encoding.
-   */
-  public encapsulatedOutput(org.omg.CORBA.portable.OutputStream _parent,
-                            boolean use_big_endian)
+  public AligningOutput()
   {
-    super();
-    buffer = new aligningOutputStream();
-    setOutputStream(buffer);
-    parent = _parent;
-    write(use_big_endian?BIG_ENDIAN:LITTLE_ENDIAN);
+  }
+
+  /**
+   * Create a stream with the given intial buffer size.
+   */
+  public AligningOutput(int initial_size)
+  {
+    super(initial_size);
   }
 
   /**
@@ -91,56 +77,72 @@ public class encapsulatedOutput
    */
   public void setOffset(int an_offset)
   {
-    buffer.setOffset(an_offset);
+    offset = an_offset;
   }
 
   /**
-   * Align the curretn position at the given natural boundary.
+   * Skip several bytes, aligning the internal pointer on the
+   * selected boundary.
+   *
+   * @throws BAD_PARAM, minor code 0, the alignment is not possible,
+   * usually due the wrong parameter value.
    */
-  public void align(int boundary)
-  {
-    buffer.align(boundary);
-  }
-
-  /**
-   * Writes the content of the encapsulated output into the parent
-   * buffer.
-   */
-  public void close()
+  public void align(int alignment)
   {
     try
       {
-        parent.write_long(buffer.size());
-        buffer.writeTo(parent);
+        int d = (count + offset) % alignment;
+        if (d > 0)
+          {
+            skip(alignment - d);
+          }
       }
-    catch (IOException ex)
+    catch (Exception ex)
       {
-        InternalError err = new InternalError();
-        err.initCause(ex);
-        throw err;
+        BAD_PARAM p = new BAD_PARAM("Unable to align at " + alignment);
+        p.initCause(ex);
+        throw p;
       }
   }
 
   /**
-   * Return the input stream that reads the previously written values.
+   * Write the specified number of zero bytes.
+   *
+   * @param bytes the number of zero bytes to write.
    */
-  public org.omg.CORBA.portable.InputStream create_input_stream()
+  public void skip(int bytes)
   {
-    cdrBufInput in = new cdrBufInput(buffer.toByteArray());
-    in.setOrb(orb);
-
-    in.setVersion(giop);
-    in.setCodeSet(getCodeSet());
-
-    return in;
+    for (int i = 0; i < bytes; i++)
+      {
+        write(0);
+      }
   }
-
+  
   /**
-   * Resets (clears) the buffer.
+   * Get the current position in the buffer.
+   * 
+   * @return The position in the buffer, taking offset into consideration.
    */
-  public void reset()
+  public int getPosition()
   {
-    buffer.reset();
-    setOutputStream(buffer);
+    return size()+offset;
   }
+  
+  /**
+   * Seek to the given position (not in use).
+   */
+  public void seek(int position)
+  {
+    count = position - offset;
+  }
+  
+  /**
+   * Get the buffer without copying it. Use with care.
+   */
+  public byte[] getBuffer()
+  {
+    return buf;
+  }
+  
+
 }

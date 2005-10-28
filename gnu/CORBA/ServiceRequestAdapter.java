@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 
 import org.omg.CORBA.ARG_IN;
 import org.omg.CORBA.ARG_INOUT;
@@ -67,7 +67,7 @@ public class ServiceRequestAdapter
   /**
    * A buffer for writing the response.
    */
-  cdrBufOutput reply = new cdrBufOutput();
+  BufferedCdrOutput reply = new BufferedCdrOutput();
 
   /**
    * If set to true, an exception has been thrown during the invocation.
@@ -105,7 +105,7 @@ public class ServiceRequestAdapter
         int OUT = ARG_OUT.value;
 
         // Write all arguments to the buffer output stream.
-        cdrBufOutput buffer = new cdrBufOutput();
+        BufferedCdrOutput buffer = new BufferedCdrOutput();
         gnuNVList args = new gnuNVList();
         request.arguments(args);
 

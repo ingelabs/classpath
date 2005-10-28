@@ -1,4 +1,4 @@
-/* cdrOutput.java --
+/* AbstractCdrOutput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -85,7 +85,7 @@ import java.math.BigDecimal;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public abstract class cdrOutput
+public abstract class AbstractCdrOutput
   extends org.omg.CORBA_2_3.portable.OutputStream
   implements org.omg.CORBA.DataOutputStream
 {
@@ -99,7 +99,7 @@ public abstract class cdrOutput
    * This instance is used to convert primitive data types into the
    * byte sequences.
    */
-  protected abstractDataOutputStream b;
+  protected AbstractDataOutput b;
 
   /**
    * The associated orb, if any.
@@ -157,7 +157,7 @@ public abstract class cdrOutput
    *
    * @param writeTo a stream to write CORBA output to.
    */
-  public cdrOutput(java.io.OutputStream writeTo)
+  public AbstractCdrOutput(java.io.OutputStream writeTo)
   {
     setOutputStream(writeTo);
     setCodeSet(cxCodeSet.STANDARD);
@@ -167,7 +167,7 @@ public abstract class cdrOutput
    * Creates the stream, requiring the subsequent call
    * of {@link #setOutputStream(java.io.OutputStream)}.
    */
-  public cdrOutput()
+  public AbstractCdrOutput()
   {
     setCodeSet(cxCodeSet.STANDARD);
   }
@@ -181,7 +181,7 @@ public abstract class cdrOutput
   /**
    * Clone all important settings to another stream.
    */
-  public void cloneSettings(cdrOutput stream)
+  public void cloneSettings(AbstractCdrOutput stream)
   {
     stream.setBigEndian(!little_endian);
     stream.setCodeSet(getCodeSet());
@@ -275,9 +275,9 @@ public abstract class cdrOutput
    *
    * @return the encapsulated stream.
    */
-  public cdrOutput createEncapsulation()
+  public AbstractCdrOutput createEncapsulation()
   {
-    return new encapsulatedOutput(this, !little_endian);
+    return new EncapsulationStream(this, !little_endian);
   }
 
   /**
@@ -761,7 +761,7 @@ public abstract class cdrOutput
    * representing the stream buffer length (the number of
    * bytes being subsequently written).
    */
-  public void write_sequence(cdrBufOutput from)
+  public void write_sequence(BufferedCdrOutput from)
   {
     try
       {

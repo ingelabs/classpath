@@ -1,4 +1,4 @@
-/* aligningOutputStream.java --
+/* AligningInput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
-import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
 
 import org.omg.CORBA.BAD_PARAM;
 
@@ -48,8 +48,8 @@ import org.omg.CORBA.BAD_PARAM;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class aligningOutputStream
-  extends ByteArrayOutputStream
+public class AligningInput
+  extends ByteArrayInputStream
 {
   /**
    * The alignment offset.
@@ -57,18 +57,13 @@ public class aligningOutputStream
   private int offset = 0;
 
   /**
-   * Create a stream with the default intial buffer size.
+   * Create a stream, reading form the given buffer.
+   *
+   * @param a_buffer a buffer to read from.
    */
-  public aligningOutputStream()
+  public AligningInput(byte[] a_buffer)
   {
-  }
-
-  /**
-   * Create a stream with the given intial buffer size.
-   */
-  public aligningOutputStream(int initial_size)
-  {
-    super(initial_size);
+    super(a_buffer);
   }
 
   /**
@@ -91,7 +86,7 @@ public class aligningOutputStream
   {
     try
       {
-        int d = (count + offset) % alignment;
+        int d = (pos + offset) % alignment;
         if (d > 0)
           {
             skip(alignment - d);
@@ -106,16 +101,11 @@ public class aligningOutputStream
   }
 
   /**
-   * Write the specified number of zero bytes.
-   *
-   * @param bytes the number of zero bytes to write.
+   * Get the byte buffer, from where the data are read.
    */
-  public void skip(int bytes)
+  public byte[] getBuffer()
   {
-    for (int i = 0; i < bytes; i++)
-      {
-        write(0);
-      }
+    return buf;
   }
   
   /**
@@ -125,24 +115,17 @@ public class aligningOutputStream
    */
   public int getPosition()
   {
-    return size()+offset;
-  }
+    return pos + offset;
+  }  
   
   /**
-   * Seek to the given position (not in use).
+   * Jump to the given position, taking offset into consideration.
    */
   public void seek(int position)
   {
-    count = position - offset;
-  }
-  
-  /**
-   * Get the buffer without copying it. Use with care.
-   */
-  public byte[] getBuffer()
-  {
-    return buf;
-  }
-  
-
+    if (position < offset || position > (count+offset))
+      throw new ArrayIndexOutOfBoundsException(position
+        + " is out of valid ["+offset+".." + (count+offset) + "[ range");
+    pos = position - offset;
+  }  
 }

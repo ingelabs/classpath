@@ -1,5 +1,68 @@
 2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/CDR/abstractDataInputStream.java,
+	gnu/CORBA/CDR/abstractDataOutputStream.java,
+	gnu/CORBA/CDR/aligningInputStream.java,
+	gnu/CORBA/CDR/aligningOutputStream.java,
+	gnu/CORBA/CDR/cdrBufInput.java.java,
+	gnu/CORBA/CDR/cdrBufOutput.java
+	gnu/CORBA/CDR/cdrInput.java,
+	gnu/CORBA/CDR/cdrOutput.java,
+	gnu/CORBA/CDR/encapsulatedOutput.java,
+	gnu/CORBA/CDR/noHeaderInput.java: Removed.
+	* gnu/CORBA/CDR/HeadlessInput.java
+	gnu/CORBA/CDR/AbstractCdrInput.java
+	gnu/CORBA/CDR/AbstractCdrOutput.java
+	gnu/CORBA/CDR/AbstractDataInput.java
+	gnu/CORBA/CDR/AbstractDataOutput.java
+	gnu/CORBA/CDR/AligningInput.java
+	gnu/CORBA/CDR/AligningOutput.java
+	gnu/CORBA/CDR/BufferedCdrOutput.java
+	gnu/CORBA/CDR/BufferredCdrInput.java
+	gnu/CORBA/CDR/EncapsulationStream.java: New files.
+	* gnu/CORBA/CDR/ArrayValueHelper.java,
+	gnu/CORBA/CDR/BigEndianInputStream.java,
+	gnu/CORBA/CDR/BigEndianOutputStream.java,
+	gnu/CORBA/CDR/LittleEndianInputStream.java,
+	gnu/CORBA/CDR/LittleEndianOutputStream.java,
+	gnu/CORBA/CDR/UnknownExceptionCtxHandler.java,
+	gnu/CORBA/CDR/Vio.java,
+	gnu/CORBA/CdrEncapsCodecImpl.java,
+	gnu/CORBA/DynAn/gnuDynAny.java,
+	gnu/CORBA/GIOP/MessageHeader.java,
+	gnu/CORBA/GIOP/ReplyHeader.java,
+	gnu/CORBA/GIOP/RequestHeader.java,
+	gnu/CORBA/GIOP/ServiceContext.java,
+	gnu/CORBA/GIOP/cxCodeSet.java,
+	gnu/CORBA/GIOP/v1_0/ReplyHeader.java,
+	gnu/CORBA/GIOP/v1_0/RequestHeader.java,
+	gnu/CORBA/GIOP/v1_2/ReplyHeader.java,
+	gnu/CORBA/GIOP/v1_2/RequestHeader.java,
+	gnu/CORBA/GeneralHolder.java,
+	gnu/CORBA/IOR.java,
+	gnu/CORBA/Interceptor/gnuIcCurrent.java,
+	gnu/CORBA/IorDelegate.java,
+	gnu/CORBA/ObjectCreator.java,
+	gnu/CORBA/OrbFunctional.java,
+	gnu/CORBA/OrbRestricted.java,
+	gnu/CORBA/Poa/LocalDelegate.java,
+	gnu/CORBA/Poa/LocalRequest.java,
+	gnu/CORBA/Poa/gnuPOA.java,
+	gnu/CORBA/RawReply.java,
+	gnu/CORBA/ResponseHandlerImpl.java,
+	gnu/CORBA/ServiceRequestAdapter.java,
+	gnu/CORBA/StreamBasedRequest.java,
+	gnu/CORBA/gnuAny.java,
+	gnu/CORBA/gnuRequest.java,
+	gnu/CORBA/typecodes/GeneralTypeCode.java,
+	gnu/javax/rmi/CORBA/DefaultWriteObjectTester.java,
+	gnu/javax/rmi/CORBA/RmiUtilities.java,
+	gnu/javax/rmi/CORBA/StubDelegateImpl.java,
+	org/omg/IOP/TaggedProfileHelper.java:
+	References updated.
+
+2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/javax/rmi/CORBA/corbaObjectInput.java,
 	gnu/javax/rmi/CORBA/corbaObjectOutput.java,
 	gnu/javax/rmi/CORBA/dwoTester.java,

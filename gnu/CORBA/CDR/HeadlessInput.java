@@ -1,4 +1,4 @@
-/* noHeaderInput.java --
+/* HeadlessInput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -77,7 +77,7 @@ import java.math.BigDecimal;
  * 
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class noHeaderInput
+public class HeadlessInput
   extends org.omg.CORBA_2_3.portable.InputStream
   implements DataInputStream, gnuValueStream
 {
@@ -99,7 +99,7 @@ public class noHeaderInput
   /**
    * The enclosed stream.
    */
-  final cdrBufInput stream;
+  final BufferredCdrInput stream;
 
   /**
    * Create an instance, reading from the given buffer.
@@ -108,13 +108,13 @@ public class noHeaderInput
    * @param inheritSettings a stream from that endian and other settings are
    * inherited.
    */
-  public noHeaderInput(cdrBufInput a_stream, InputStream inheritSettings)
+  public HeadlessInput(BufferredCdrInput a_stream, InputStream inheritSettings)
   {
     stream = a_stream;
 
-    if (inheritSettings instanceof cdrInput)
+    if (inheritSettings instanceof AbstractCdrInput)
       {
-        cdrInput t = (cdrInput) inheritSettings;
+        AbstractCdrInput t = (AbstractCdrInput) inheritSettings;
         t.cloneSettings(stream);
       }
     else if (stream.orb() == null)
@@ -581,7 +581,7 @@ public class noHeaderInput
    */
   public String toString()
   {
-    return "noHeaderInput+" + stream.toString();
+    return "HeadlessInput+" + stream.toString();
   }
 
   /**

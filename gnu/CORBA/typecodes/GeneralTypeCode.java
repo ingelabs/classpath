@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.typecodes;
 
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 
 import java.util.Arrays;
 import java.util.BitSet;
@@ -185,8 +185,8 @@ public class GeneralTypeCode
     if (kind() != other.kind())
       return false;
 
-    cdrBufOutput a = new cdrBufOutput(16);
-    cdrBufOutput b = new cdrBufOutput(16);
+    BufferedCdrOutput a = new BufferedCdrOutput(16);
+    BufferedCdrOutput b = new BufferedCdrOutput(16);
 
     a.write_TypeCode(this);
     b.write_TypeCode(other);

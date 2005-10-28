@@ -1,4 +1,4 @@
-/* cdrBufOutput.java --
+/* BufferredCdrInput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,87 +38,83 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
-import java.io.ByteArrayOutputStream;
 
 /**
- * A CORBA output stream, writing data into the internal buffer ({@link ByteArrayOutputStream}).
- * 
+ * The CDR input stream that reads data from the byte buffer.
+ *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class cdrBufOutput
-  extends cdrOutput
+public class BufferredCdrInput
+  extends AbstractCdrInput 
   implements gnuValueStream
 {
-  /**
-   * Use serialVersionUID for interoperability.
+  /** 
+   * Use serialVersionUID for interoperability. 
    */
   private static final long serialVersionUID = 1;
+  
+  /**
+   * The byte array input stream to read data from.
+   */
+  public final AligningInput buffer;
 
   /**
-   * The byte buffer.
+   * Creates the CDR input stream that reads from the given buffer
+   * array.
+   *
+   * @param a_buffer an array to read from.
    */
-  public final aligningOutputStream buffer;
-
-  /**
-   * Creates the instance with the given initial buffer size.
-   * 
-   * @param bufSize the buffer size.
-   */
-  public cdrBufOutput(int bufSize)
+  public BufferredCdrInput(byte[] a_buffer)
   {
-    buffer = new aligningOutputStream(bufSize);
-    setOutputStream(buffer);
+    buffer = new AligningInput(a_buffer);
+    setInputStream(buffer);
   }
 
   /**
-   * Creates the instance with the default buffer size.
+   * Set the alignment offset, if the index of the first byte in the
+   * stream is different from 0.
    */
-  public cdrBufOutput()
+  public void setOffset(int offset)
   {
-    buffer = new aligningOutputStream();
-    setOutputStream(buffer);
+    buffer.setOffset(offset);
   }
 
   /**
-   * Set the alignment offset, if the index of the first byte in the stream is
-   * different from 0.
+   * Skip several bytes, aligning the internal pointer on the
+   * selected boundary.
    */
-  public void setOffset(int an_offset)
+  public void align(int alignment)
   {
-    buffer.setOffset(an_offset);
+    buffer.align(alignment);
   }
 
   /**
-   * Align the curretn position at the given natural boundary.
+   * Mark the current position.
+   * @param ahead
    */
-  public void align(int boundary)
+  public synchronized void mark(int ahead)
   {
-    buffer.align(boundary);
+    buffer.mark(ahead);
   }
 
   /**
-   * Return the input stream that reads the previously written values.
+   * Checks if marking is supported.
+   * @return
    */
-  public org.omg.CORBA.portable.InputStream create_input_stream()
+  public boolean markSupported()
   {
-    cdrBufInput in = new cdrBufInput(buffer.toByteArray());
-    in.setOrb(orb);
-
-    in.setVersion(giop);
-    in.setCodeSet(getCodeSet());
-
-    return in;
+    return buffer.markSupported();
   }
 
   /**
-   * Resets (clears) the buffer.
+   * Resets the stream to the previously marked position.
    */
   public void reset()
   {
     buffer.reset();
-    setOutputStream(buffer);
+    setInputStream(buffer);
   }
-
+  
   /**
    * Get the current position in the buffer.
    * 
@@ -128,15 +124,24 @@ public class cdrBufOutput
   {
     return buffer.getPosition();
   }
-
+  
+  /**
+   * Jump to the given position, taking offset into consideration.
+   */
+  public void seek(int position)
+  {
+    buffer.seek(position);
+    setInputStream(buffer);
+  }
+  
   /**
    * Get the associated RunTime.
    */
   public gnuRuntime getRunTime()
   {
     return runtime;
-  }
-
+  }  
+  
   /**
    * Replace the instance of RunTime.
    */
@@ -144,13 +149,5 @@ public class cdrBufOutput
   {
     runtime = a_runtime;
   }
-
-  /**
-   * Seek to the given position.
-   */
-  public void seek(int position)
-  {
-    buffer.seek(position);
-  }
-
+  
 }

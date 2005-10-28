@@ -38,8 +38,8 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufInput;
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferredCdrInput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 
 import org.omg.CORBA.BAD_OPERATION;
 import org.omg.CORBA.MARSHAL;
@@ -66,12 +66,12 @@ public class GeneralHolder
   /**
    * The binary data, stored inside this holder.
    */
-  private cdrBufOutput value = new cdrBufOutput();
+  private BufferedCdrOutput value = new BufferedCdrOutput();
 
   /**
    * Create the universal holder that uses the given buffer to store the data.
    */
-  public GeneralHolder(cdrBufOutput buffer)
+  public GeneralHolder(BufferedCdrOutput buffer)
   {
     value = buffer;
   }
@@ -89,9 +89,9 @@ public class GeneralHolder
   {
     try
       {
-        if (input instanceof cdrBufInput)
+        if (input instanceof BufferredCdrInput)
           {
-            cdrBufInput b = (cdrBufInput) input;
+            BufferredCdrInput b = (BufferredCdrInput) input;
             value.write(b.buffer.getBuffer());
           }
         else
@@ -166,7 +166,7 @@ public class GeneralHolder
   {
     try
       {
-        cdrBufOutput nb = new cdrBufOutput(value.buffer.size());
+        BufferedCdrOutput nb = new BufferedCdrOutput(value.buffer.size());
         value.buffer.writeTo(nb);
         return new GeneralHolder(nb);
       }

@@ -37,7 +37,7 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufInput;
+import gnu.CORBA.CDR.BufferredCdrInput;
 import gnu.CORBA.GIOP.MessageHeader;
 
 import org.omg.CORBA.ORB;
@@ -83,9 +83,9 @@ class RawReply
    *
    * @return the CDR stream to read the message data.
    */
-  cdrBufInput getStream()
+  BufferredCdrInput getStream()
   {
-    cdrBufInput in = new cdrBufInput(data);
+    BufferredCdrInput in = new BufferredCdrInput(data);
     in.setOffset(header.getHeaderSize());
     in.setVersion(header.version);
     in.setOrb(orb);

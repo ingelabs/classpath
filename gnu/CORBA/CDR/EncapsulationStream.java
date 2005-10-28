@@ -1,4 +1,4 @@
-/* aligningInputStream.java --
+/* EncapsulationOutput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,32 +38,51 @@ exception statement from your version. */
 
 package gnu.CORBA.CDR;
 
-import java.io.ByteArrayInputStream;
-
-import org.omg.CORBA.BAD_PARAM;
+import java.io.IOException;
 
 /**
- * The input stream with the possibility to align on the
- * word (arbitrary size) boundary.
+ * The encapsulated data, as they are defined by CORBA specification.
+ * This includes the extra 0 byte (Big endian) in the beginning.
+ * When written to the parent steam, the encapsulated data are preceeded
+ * by the data length in bytes.
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-public class aligningInputStream
-  extends ByteArrayInputStream
+public class EncapsulationStream
+  extends AbstractCdrOutput
 {
   /**
-   * The alignment offset.
+   * The Big Endian (most siginificant byte first flag).
    */
-  private int offset = 0;
+  public static final byte BIG_ENDIAN = 0;
 
   /**
-   * Create a stream, reading form the given buffer.
-   *
-   * @param a_buffer a buffer to read from.
+   * The Little Endian (least siginificant byte first flag).
    */
-  public aligningInputStream(byte[] a_buffer)
+  public static final byte LITTLE_ENDIAN = 1;
+
+  /**
+   * The byte buffer.
+   */
+  public final AligningOutput buffer;
+
+  /**
+   * The stream, where the data are being encapsulated.
+   */
+  public final org.omg.CORBA.portable.OutputStream parent;
+
+  /**
+   * Create the EncapsulationOutput with the given parent stream
+   * and the specified encoding.
+   */
+  public EncapsulationStream(org.omg.CORBA.portable.OutputStream _parent,
+                            boolean use_big_endian)
   {
-    super(a_buffer);
+    super();
+    buffer = new AligningOutput();
+    setOutputStream(buffer);
+    parent = _parent;
+    write(use_big_endian?BIG_ENDIAN:LITTLE_ENDIAN);
   }
 
   /**
@@ -72,60 +91,56 @@ public class aligningInputStream
    */
   public void setOffset(int an_offset)
   {
-    offset = an_offset;
+    buffer.setOffset(an_offset);
   }
 
   /**
-   * Skip several bytes, aligning the internal pointer on the
-   * selected boundary.
-   *
-   * @throws BAD_PARAM, minor code 0, the alignment is not possible,
-   * usually due the wrong parameter value.
+   * Align the curretn position at the given natural boundary.
    */
-  public void align(int alignment)
+  public void align(int boundary)
+  {
+    buffer.align(boundary);
+  }
+
+  /**
+   * Writes the content of the encapsulated output into the parent
+   * buffer.
+   */
+  public void close()
   {
     try
       {
-        int d = (pos + offset) % alignment;
-        if (d > 0)
-          {
-            skip(alignment - d);
-          }
+        parent.write_long(buffer.size());
+        buffer.writeTo(parent);
       }
-    catch (Exception ex)
+    catch (IOException ex)
       {
-        BAD_PARAM p = new BAD_PARAM("Unable to align at " + alignment);
-        p.initCause(ex);
-        throw p;
+        InternalError err = new InternalError();
+        err.initCause(ex);
+        throw err;
       }
   }
 
   /**
-   * Get the byte buffer, from where the data are read.
+   * Return the input stream that reads the previously written values.
    */
-  public byte[] getBuffer()
+  public org.omg.CORBA.portable.InputStream create_input_stream()
   {
-    return buf;
+    BufferredCdrInput in = new BufferredCdrInput(buffer.toByteArray());
+    in.setOrb(orb);
+
+    in.setVersion(giop);
+    in.setCodeSet(getCodeSet());
+
+    return in;
   }
-  
+
   /**
-   * Get the current position in the buffer.
-   * 
-   * @return The position in the buffer, taking offset into consideration.
+   * Resets (clears) the buffer.
    */
-  public int getPosition()
+  public void reset()
   {
-    return pos + offset;
-  }  
-  
-  /**
-   * Jump to the given position, taking offset into consideration.
-   */
-  public void seek(int position)
-  {
-    if (position < offset || position > (count+offset))
-      throw new ArrayIndexOutOfBoundsException(position
-        + " is out of valid ["+offset+".." + (count+offset) + "[ range");
-    pos = position - offset;
-  }  
+    buffer.reset();
+    setOutputStream(buffer);
+  }
 }

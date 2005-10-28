@@ -38,8 +38,8 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufInput;
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferredCdrInput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 import gnu.CORBA.GIOP.MessageHeader;
 import gnu.CORBA.GIOP.ReplyHeader;
 import gnu.CORBA.GIOP.RequestHeader;
@@ -346,7 +346,7 @@ public class gnuRequest extends Request implements Cloneable
     // correctly.
     if (ior.Internet.version.until_inclusive(1, 1))
       {
-        cdrBufOutput measure = new cdrBufOutput();
+        BufferedCdrOutput measure = new BufferedCdrOutput();
         measure.setOffset(12);
         if (m_rqh == null)
           m_rqh = new gnu.CORBA.GIOP.v1_0.RequestHeader();
@@ -744,7 +744,7 @@ public class gnuRequest extends Request implements Cloneable
       m_interceptor.send_request(m_info);
 
     // Prepare the submission.
-    cdrBufOutput request_part = new cdrBufOutput();
+    BufferedCdrOutput request_part = new BufferedCdrOutput();
 
     request_part.setOffset(header.getHeaderSize());
     request_part.setVersion(header.version);
@@ -941,7 +941,7 @@ public class gnuRequest extends Request implements Cloneable
     if (m_rph == null)
       m_rph = response.header.create_reply_header();
 
-    cdrBufInput input = response.getStream();
+    BufferredCdrInput input = response.getStream();
     input.setOrb(orb);
 
     m_rph.read(input);
@@ -1072,7 +1072,7 @@ public class gnuRequest extends Request implements Cloneable
   /**
    * Read exception id without changing the stream pointer position.
    */
-  void readExceptionId(cdrBufInput input)
+  void readExceptionId(BufferredCdrInput input)
   {
     input.mark(2048);
     m_exception_id = input.read_string();
@@ -1088,7 +1088,7 @@ public class gnuRequest extends Request implements Cloneable
    * @throws MARSHAL if the attempt to write the parameters has failde.
    */
   protected void write_parameter_buffer(MessageHeader header,
-    cdrBufOutput request_part
+    BufferedCdrOutput request_part
   ) throws MARSHAL
   {
     try
@@ -1116,7 +1116,7 @@ public class gnuRequest extends Request implements Cloneable
    * @throws MARSHAL if the attempt to write the parameters has failde.
    */
   protected void write_parameters(MessageHeader header,
-    cdrBufOutput request_part
+    BufferedCdrOutput request_part
   ) throws MARSHAL
   {
     // Align after 1.2, but only once.
@@ -1167,7 +1167,7 @@ public class gnuRequest extends Request implements Cloneable
    */
   public TaggedProfile effective_profile()
   {
-    cdrBufOutput buf = new cdrBufOutput(512);
+    BufferedCdrOutput buf = new BufferedCdrOutput(512);
     buf.setOrb(orb);
     ior.Internet.write(buf);
 
@@ -1194,7 +1194,7 @@ public class gnuRequest extends Request implements Cloneable
     if (id == TAG_CODE_SETS.value)
       {
         // Codesets are encoded separately.
-        cdrBufOutput buf = new cdrBufOutput(512);
+        BufferedCdrOutput buf = new BufferedCdrOutput(512);
         buf.setOrb(orb);
         ior.Internet.CodeSets.write(buf);
 

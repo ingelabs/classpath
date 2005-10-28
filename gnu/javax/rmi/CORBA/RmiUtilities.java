@@ -44,7 +44,7 @@ import gnu.CORBA.Unexpected;
 import gnu.CORBA.CDR.Vio;
 import gnu.CORBA.CDR.gnuRuntime;
 import gnu.CORBA.CDR.gnuValueStream;
-import gnu.CORBA.CDR.noHeaderInput;
+import gnu.CORBA.CDR.HeadlessInput;
 
 import org.omg.CORBA.MARSHAL;
 import org.omg.CORBA.StringValueHelper;
@@ -697,8 +697,8 @@ public class RmiUtilities
   public Serializable readValue(InputStream in, int offset, Class clz,
     String repositoryID, RunTime sender)
   {
-    if (in instanceof noHeaderInput)
-      ((noHeaderInput) in).subsequentCalls = true;
+    if (in instanceof HeadlessInput)
+      ((HeadlessInput) in).subsequentCalls = true;
 
     gnuRuntime g;
     Serializable object = null;
@@ -892,8 +892,8 @@ public class RmiUtilities
         for (int i = 0; i < fields.length; i++)
           {
             // Full value type header expected ahead.
-            if (input instanceof noHeaderInput)
-              ((noHeaderInput) input).subsequentCalls = true;
+            if (input instanceof HeadlessInput)
+              ((HeadlessInput) input).subsequentCalls = true;
 
             f = fields[i];
             fc = f.getType();

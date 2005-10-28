@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 import gnu.CORBA.typecodes.AliasTypeCode;
 import gnu.CORBA.typecodes.ArrayTypeCode;
 import gnu.CORBA.typecodes.RecordTypeCode;
@@ -233,7 +233,7 @@ public class OrbRestricted extends org.omg.CORBA_2_3.ORB
   /** {@inheritDoc} */
   public OutputStream create_output_stream()
   {
-    cdrBufOutput stream = new cdrBufOutput();
+    BufferedCdrOutput stream = new BufferedCdrOutput();
     stream.setOrb(this);
     return stream;
   }

@@ -38,9 +38,9 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufInput;
-import gnu.CORBA.CDR.cdrBufOutput;
-import gnu.CORBA.CDR.cdrOutput;
+import gnu.CORBA.CDR.BufferredCdrInput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
+import gnu.CORBA.CDR.AbstractCdrOutput;
 
 import org.omg.CORBA.Any;
 import org.omg.CORBA.LocalObject;
@@ -125,8 +125,8 @@ public class CdrEncapsCodecImpl
   public Any decode(byte[] them)
              throws FormatMismatch
   {
-    cdrBufInput input = createInput(them);
-    cdrBufInput encapsulation = createEncapsulation(them, input);
+    BufferredCdrInput input = createInput(them);
+    BufferredCdrInput encapsulation = createEncapsulation(them, input);
 
     TypeCode type = encapsulation.read_TypeCode();
 
@@ -142,9 +142,9 @@ public class CdrEncapsCodecImpl
     return readAny(type, encapsulation);
   }
 
-  private cdrBufInput createEncapsulation(byte[] them, cdrBufInput input)
+  private BufferredCdrInput createEncapsulation(byte[] them, BufferredCdrInput input)
   {
-    cdrBufInput encapsulation;
+    BufferredCdrInput encapsulation;
 
     if ((them [ 0 ] | them [ 1 ] | them [ 2 ] | them [ 3 ]) == 0)
       {
@@ -163,10 +163,10 @@ public class CdrEncapsCodecImpl
   {
     checkTypePossibility("", that.type());
 
-    cdrBufOutput output = createOutput(that);
+    BufferedCdrOutput output = createOutput(that);
 
-    // cdrBufOutput has internal support for this encoding.
-    cdrOutput encapsulation = output.createEncapsulation();
+    // BufferedCdrOutput has internal support for this encoding.
+    AbstractCdrOutput encapsulation = output.createEncapsulation();
 
     try
       {
@@ -207,8 +207,8 @@ public class CdrEncapsCodecImpl
         throw new TypeMismatch(ex.getMessage());
       }
 
-    cdrBufInput input = createInput(them);
-    cdrBufInput encapsulation = createEncapsulation(them, input);
+    BufferredCdrInput input = createInput(them);
+    BufferredCdrInput encapsulation = createEncapsulation(them, input);
     return readAny(type, encapsulation);
   }
 
@@ -218,13 +218,13 @@ public class CdrEncapsCodecImpl
    * @param type a type of the Any to read.
    * @param input the encapsulation stream.
    */
-  private Any readAny(TypeCode type, cdrBufInput encapsulation)
+  private Any readAny(TypeCode type, BufferredCdrInput encapsulation)
                throws MARSHAL
   {
     gnuAny a = new gnuAny();
     a.setOrb(orb);
 
-    // cdrBufInput has internal support for this encoding.
+    // BufferredCdrInput has internal support for this encoding.
     a.read_value(encapsulation, type);
     return a;
   }
@@ -235,9 +235,9 @@ public class CdrEncapsCodecImpl
   {
     checkTypePossibility("", that.type());
 
-    cdrBufOutput output = createOutput(that);
+    BufferedCdrOutput output = createOutput(that);
 
-    cdrOutput encapsulation = output.createEncapsulation();
+    AbstractCdrOutput encapsulation = output.createEncapsulation();
 
     try
       {
@@ -258,7 +258,7 @@ public class CdrEncapsCodecImpl
 
   /**
    * Create the CDR output stream for writing the given Any.
-   * The cdrBufOutput has internal support for encapsulation encodings.
+   * The BufferedCdrOutput has internal support for encapsulation encodings.
    *
    * @param that the Any that will be written.
    *
@@ -267,10 +267,10 @@ public class CdrEncapsCodecImpl
    * @throws InvalidTypeForEncoding if that Any cannot be written under the
    * given version.
    */
-  private cdrBufOutput createOutput(Any that)
+  private BufferedCdrOutput createOutput(Any that)
                              throws InvalidTypeForEncoding
   {
-    cdrBufOutput output = new cdrBufOutput();
+    BufferedCdrOutput output = new BufferedCdrOutput();
     output.setOrb(orb);
     output.setVersion(version);
     return output;
@@ -327,9 +327,9 @@ public class CdrEncapsCodecImpl
    *
    * @return the stream.
    */
-  private cdrBufInput createInput(byte[] them)
+  private BufferredCdrInput createInput(byte[] them)
   {
-    cdrBufInput input = new cdrBufInput(them);
+    BufferredCdrInput input = new BufferredCdrInput(them);
     input.setOrb(orb);
     input.setVersion(version);
     return input;

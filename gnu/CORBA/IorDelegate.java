@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufInput;
+import gnu.CORBA.CDR.BufferredCdrInput;
 import gnu.CORBA.GIOP.ReplyHeader;
 
 import org.omg.CORBA.CompletionStatus;
@@ -185,7 +185,7 @@ public class IorDelegate extends SimpleDelegate
 
                 // Read reply header.
                 ReplyHeader rh = response.header.create_reply_header();
-                cdrBufInput input = response.getStream();
+                BufferredCdrInput input = response.getStream();
                 input.setOrb(orb);
                 rh.read(input);
                 request.request.m_rph = rh;
@@ -338,7 +338,7 @@ public class IorDelegate extends SimpleDelegate
   /**
    * Show exception to interceptor.
    */
-  void showException(StreamBasedRequest request, cdrBufInput input)
+  void showException(StreamBasedRequest request, BufferredCdrInput input)
     throws ForwardRequest
   {
     input.mark(2048);

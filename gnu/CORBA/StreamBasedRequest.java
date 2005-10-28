@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 
 /**
  * A stream, additionally holding the gnu request.
@@ -46,7 +46,7 @@ import gnu.CORBA.CDR.cdrBufOutput;
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
 public class StreamBasedRequest
-  extends cdrBufOutput
+  extends BufferedCdrOutput
 {
   /**
    * The enclosed request.

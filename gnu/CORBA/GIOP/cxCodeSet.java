@@ -38,8 +38,8 @@ exception statement from your version. */
 
 package gnu.CORBA.GIOP;
 
-import gnu.CORBA.CDR.cdrInput;
-import gnu.CORBA.CDR.cdrOutput;
+import gnu.CORBA.CDR.AbstractCdrInput;
+import gnu.CORBA.CDR.AbstractCdrOutput;
 import gnu.CORBA.IOR;
 import gnu.CORBA.IOR.CodeSets_profile;
 
@@ -124,9 +124,9 @@ public class cxCodeSet
    * Read the context from the given stream. Does not read the
    * code sets id.
    */
-  public void readContext(cdrInput input)
+  public void readContext(AbstractCdrInput input)
   {
-    cdrInput encap = input.read_encapsulation();
+    AbstractCdrInput encap = input.read_encapsulation();
 
     char_data = encap.read_ulong();
     wide_char_data = encap.read_ulong();
@@ -145,11 +145,11 @@ public class cxCodeSet
    * Write the context to the given stream, including the code
    * sets id.
    */
-  public void write(cdrOutput output)
+  public void write(AbstractCdrOutput output)
   {
     output.write_ulong(ID);
 
-    cdrOutput enout = output.createEncapsulation();
+    AbstractCdrOutput enout = output.createEncapsulation();
 
     enout.write_long(char_data);
     enout.write_ulong(wide_char_data);

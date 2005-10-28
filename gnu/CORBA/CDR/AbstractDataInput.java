@@ -1,4 +1,4 @@
-/* abstractDataInputStream.java --
+/* AbstractDataInput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -50,7 +50,7 @@ import java.io.IOException;
  * @author Warren Levy (warrenl@cygnus.com)
  * @author Aaron M. Renn (arenn@urbanophile.com)
  */
-public interface abstractDataInputStream
+public interface AbstractDataInput
 {
   /**
    * This method reads bytes from the underlying stream into the specified

@@ -39,8 +39,8 @@ exception statement from your version. */
 package gnu.CORBA.GIOP.v1_2;
 
 import gnu.CORBA.Minor;
-import gnu.CORBA.CDR.cdrInput;
-import gnu.CORBA.CDR.cdrOutput;
+import gnu.CORBA.CDR.AbstractCdrInput;
+import gnu.CORBA.CDR.AbstractCdrOutput;
 import gnu.CORBA.GIOP.ServiceContext;
 import gnu.CORBA.GIOP.cxCodeSet;
 
@@ -129,7 +129,7 @@ public class RequestHeader
    *
    * @param in a stream to read from.
    */
-  public void read(cdrInput in)
+  public void read(AbstractCdrInput in)
   {
     try
       {
@@ -195,7 +195,7 @@ public class RequestHeader
    *
    * @param out a stream to write into.
    */
-  public void write(cdrOutput out)
+  public void write(AbstractCdrOutput out)
   {
     out.write_ulong(request_id);
 

@@ -1,4 +1,4 @@
-/* abstractDataOutputStream.java --
+/* AbstractDataOutput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -50,7 +50,7 @@ import java.io.IOException;
  * @author Warren Levy (warrenl@cygnus.com)
  * @author Aaron M. Renn (arenn@urbanophile.com)
  */
-public interface abstractDataOutputStream
+public interface AbstractDataOutput
 {
   /**
    * This method flushes any unwritten bytes to the underlying stream.

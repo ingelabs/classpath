@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.Poa;
 
-import gnu.CORBA.CDR.cdrOutput;
+import gnu.CORBA.CDR.AbstractCdrOutput;
 import gnu.CORBA.IOR;
 import gnu.CORBA.IorProvider;
 import gnu.CORBA.StreamBasedRequest;
@@ -314,7 +314,7 @@ public class LocalDelegate
             lr.invoke();
 
             // The encapsulation will inherit orb, endian, charsets, etc.
-            cdrOutput buf = sr.createEncapsulation();
+            AbstractCdrOutput buf = sr.createEncapsulation();
 
             // Write all request parameters to the buffer stream.
             if (lr.env().exception() != null)

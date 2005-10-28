@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.DynAn;
 
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 import gnu.CORBA.OctetHolder;
 import gnu.CORBA.Unexpected;
 import gnu.CORBA.WCharHolder;
@@ -132,7 +132,7 @@ public class gnuDynAny extends abstractDynAny implements DynAny, Serializable
   {
     if (holder != null)
       {
-        cdrBufOutput buffer = new cdrBufOutput();
+        BufferedCdrOutput buffer = new BufferedCdrOutput();
         holder._write(buffer);
 
         gnuDynAny other;
@@ -899,10 +899,10 @@ public class gnuDynAny extends abstractDynAny implements DynAny, Serializable
             if (!x.holder.getClass().equals(holder.getClass()))
               return false;
 
-            cdrBufOutput b1 = new cdrBufOutput();
+            BufferedCdrOutput b1 = new BufferedCdrOutput();
             x.holder._write(b1);
 
-            cdrBufOutput b2 = new cdrBufOutput(b1.buffer.size() + 10);
+            BufferedCdrOutput b2 = new BufferedCdrOutput(b1.buffer.size() + 10);
             holder._write(b2);
 
             return Arrays.equals(b1.buffer.toByteArray(),

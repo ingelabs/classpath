@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA;
 
-import gnu.CORBA.CDR.cdrBufOutput;
+import gnu.CORBA.CDR.BufferedCdrOutput;
 import gnu.CORBA.GIOP.MessageHeader;
 import gnu.CORBA.GIOP.ReplyHeader;
 import gnu.CORBA.GIOP.RequestHeader;
@@ -86,7 +86,7 @@ public class ResponseHandlerImpl
   /**
    * The buffer to write into.
    */
-  private cdrBufOutput buffer;
+  private BufferedCdrOutput buffer;
 
   /**
    * Create a new buffered response handler that uses the given message headers.
@@ -147,7 +147,7 @@ public class ResponseHandlerImpl
    *
    * @return the CDR output stream, containing the written output.
    */
-  public cdrBufOutput getBuffer()
+  public BufferedCdrOutput getBuffer()
   {
     return buffer;
   }
@@ -166,7 +166,7 @@ public class ResponseHandlerImpl
    */
   private void prepareStream()
   {
-    buffer = new cdrBufOutput();
+    buffer = new BufferedCdrOutput();
     buffer.setOrb(orb);
     buffer.setVersion(message_header.version);
     buffer.setCodeSet(cxCodeSet.find(reply_header.service_context));
