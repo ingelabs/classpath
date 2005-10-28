@@ -1,4 +1,4 @@
-/* corbaObjectOutput.java --
+/* CorbaOutput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -51,7 +51,7 @@ import java.io.Serializable;
  * 
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class corbaObjectOutput
+public class CorbaOutput
   extends ObjectOutputStream
   implements ObjectOutput
 {
@@ -63,7 +63,7 @@ public class corbaObjectOutput
   /**
    * The utility class to write the object fields in default way.
    */
-  final gnuRmiUtil util;
+  final RmiUtilities util;
 
   /**
    * The object currently being written.
@@ -73,8 +73,8 @@ public class corbaObjectOutput
   /**
    * Create an instance, delegating calls to the given CORBA stream.
    */
-  public corbaObjectOutput(OutputStream an_output, Object firstObject,
-                           gnuRmiUtil an_util)
+  public CorbaOutput(OutputStream an_output, Object firstObject,
+                           RmiUtilities an_util)
     throws Exception
   {
     stream = an_output;

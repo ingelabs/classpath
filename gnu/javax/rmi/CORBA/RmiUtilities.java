@@ -1,4 +1,4 @@
-/* gnuRmiUtil.java --
+/* RmiUtilities.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
    
 This file is part of GNU Classpath.
@@ -88,7 +88,7 @@ import javax.rmi.CORBA.Util;
  * 
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class gnuRmiUtil
+public class RmiUtilities
 {
   /**
    * The currently used RMI-IIOP version format.
@@ -590,7 +590,7 @@ public class gnuRmiUtil
       {
         try
           {
-            ObjectOutputStream stream = new corbaObjectOutput(output, object,
+            ObjectOutputStream stream = new CorbaOutput(output, object,
               this);
             stream.write(VERSION);
             ((Externalizable) object).writeExternal(stream);
@@ -623,7 +623,7 @@ public class gnuRmiUtil
 
             try
               {
-                ObjectOutputStream stream = new corbaObjectOutput(output,
+                ObjectOutputStream stream = new CorbaOutput(output,
                   object, this);
 
                 // Write version.
@@ -639,7 +639,7 @@ public class gnuRmiUtil
                 else
                   {
                     // Measure.
-                    dwoTester tester = new dwoTester(object);
+                    DefaultWriteObjectTester tester = new DefaultWriteObjectTester(object);
                     m.invoke(object, new Object[] { tester });
 
                     synchronized (io_format)
@@ -769,7 +769,7 @@ public class gnuRmiUtil
       {
         try
           {
-            corbaObjectInput stream = new corbaObjectInput(input, object, this,
+            CorbaInput stream = new CorbaInput(input, object, this,
               offset, repositoryID, g);
 
             byte version = stream.readByte();
@@ -807,7 +807,7 @@ public class gnuRmiUtil
                   {
                     m.setAccessible(true); // May be private.
 
-                    corbaObjectInput stream = new corbaObjectInput(input,
+                    CorbaInput stream = new CorbaInput(input,
                       object, this, offset, repositoryID, g);
 
                     byte version = stream.readByte();

@@ -1,5 +1,19 @@
 2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/javax/rmi/CORBA/corbaObjectInput.java,
+	gnu/javax/rmi/CORBA/corbaObjectOutput.java,
+	gnu/javax/rmi/CORBA/dwoTester.java,
+	gnu/javax/rmi/CORBA/gnuRmiUtil: Deleted.
+	* gnu/javax/rmi/CORBA/CorbaInput.java,
+	gnu/javax/rmi/CORBA/CorbaOutput.java,
+	gnu/javax/rmi/CORBA/DefaultWriteObjectTester.java,
+	gnu/javax/rmi/CORBA/RmiUtilities.java: New files.
+	* gnu/javax/rmi/CORBA/UtilDelegateImpl.java,
+	gnu/javax/rmi/CORBA/ValueHandlerDelegateImpl.java:
+	References updated.
+
+2005-10-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/holderFactory.java,
 	gnu/CORBA/IOR_contructed_object.java,
 	gnu/CORBA/IOR_Delegate.java,

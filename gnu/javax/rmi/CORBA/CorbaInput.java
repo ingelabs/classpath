@@ -1,4 +1,4 @@
-/* corbaObjectInput.java --
+/* CorbaInput.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -54,7 +54,7 @@ import java.io.Serializable;
  * 
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class corbaObjectInput
+public class CorbaInput
   extends ObjectInputStream
   implements ObjectInput
 {
@@ -67,7 +67,7 @@ public class corbaObjectInput
   /**
    * The utility class to write the object fields in default way.
    */
-  final gnuRmiUtil util;
+  final RmiUtilities util;
 
   /**
    * The object currently being read.
@@ -92,8 +92,8 @@ public class corbaObjectInput
   /**
    * Create an instance, delegating calls to the given CORBA stream.
    */
-  public corbaObjectInput(InputStream an_input, Object firstObject,
-                          gnuRmiUtil an_util, int an_offset, String a_rid,
+  public CorbaInput(InputStream an_input, Object firstObject,
+                          RmiUtilities an_util, int an_offset, String a_rid,
                           gnuRuntime a_runtime)
     throws Exception
   {

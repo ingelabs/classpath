@@ -1,4 +1,4 @@
-/* dwoTester.java --
+/* DefaultWriteObjectTester.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -48,8 +48,8 @@ import java.io.IOException;
  *
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
-public class dwoTester
-  extends corbaObjectOutput
+public class DefaultWriteObjectTester
+  extends CorbaOutput
 {
   /**
    * The flag, indicating, that the defaultWriteObject method was called.
@@ -59,7 +59,7 @@ public class dwoTester
   /**
    * Create an instance, delegating calls to the given CORBA stream.
    */
-  public dwoTester(Object firstObject)
+  public DefaultWriteObjectTester(Object firstObject)
     throws Exception
   {
     super(new cdrBufOutput(), firstObject, null);

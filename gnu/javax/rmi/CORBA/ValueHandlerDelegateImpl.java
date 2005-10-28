@@ -60,7 +60,7 @@ import javax.rmi.CORBA.ValueHandlerMultiFormat;
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org) (implementation)
  */
 public class ValueHandlerDelegateImpl
-  extends gnuRmiUtil
+  extends RmiUtilities
   implements ValueHandler, ValueHandlerMultiFormat
 {
   /** 

@@ -97,7 +97,7 @@ import javax.transaction.TransactionRolledbackException;
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org) (implementation)
  */
 public class UtilDelegateImpl
-  extends gnuRmiUtil
+  extends RmiUtilities
   implements UtilDelegate
 {
   /**
