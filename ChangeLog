@@ -1,3 +1,19 @@
+2005-10-29  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* examples/gnu/classpath/examples/swing/ButtonDemo.java
+	(ButtonDemo): add closePanel after content is created,
+	(createContent): don't add closePanel here,
+	* examples/gnu/classpath/examples/swing/ComboBoxDemo.java
+	(ButtonDemo): add closePanel after content is created,
+	(createContent): don't add closePanel here,
+	* examples/gnu/classpath/examples/swing/ScrollBarDemo.java
+	(ButtonDemo): add closePanel after content is created,
+	(createContent): don't add closePanel here,
+	* examples/gnu/classpath/examples/swing/SliderDemo.java
+	(ButtonDemo): add closePanel after content is created,
+	(createContent): add separate checkBoxPanel but don't add closePanel 
+	here.
+
 2005-10-28  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/KeyboardFocusManager.java

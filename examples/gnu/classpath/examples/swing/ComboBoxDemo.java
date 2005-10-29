@@ -101,9 +101,23 @@ public class ComboBoxDemo
   public ComboBoxDemo(String title) 
   {
     super(title);
-    getContentPane().add(createContent());
+    JPanel content = createContent();
+    JPanel closePanel = new JPanel();
+    JButton closeButton = new JButton("Close");
+    closeButton.setActionCommand("CLOSE");
+    closeButton.addActionListener(this);
+    closePanel.add(closeButton);
+    content.add(closePanel, BorderLayout.SOUTH);
+    getContentPane().add(content);
   }
        
+  /**
+   * Returns a panel with the demo content.  The panel
+   * uses a BorderLayout(), and the BorderLayout.SOUTH area
+   * is empty, to allow callers to add controls to the 
+   * bottom of the panel if they want to (a close button is
+   * added if this demo is being run as a standalone demo).
+   */       
   JPanel createContent() 
   {
     JPanel content = new JPanel(new BorderLayout());
@@ -115,12 +129,6 @@ public class ComboBoxDemo
     panel.add(createPanel5());
     panel.add(createPanel6());
     content.add(panel);
-    JPanel closePanel = new JPanel();
-    JButton closeButton = new JButton("Close");
-    closeButton.setActionCommand("CLOSE");
-    closeButton.addActionListener(this);
-    closePanel.add(closeButton);
-    content.add(closePanel, BorderLayout.SOUTH);
     return content;        
   }
     
