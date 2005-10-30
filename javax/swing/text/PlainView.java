@@ -148,7 +148,9 @@ public class PlainView extends View implements TabExpander
       }
     catch (BadLocationException e)
       {
-	// This should never happen.
+	AssertionError ae = new AssertionError("Unexpected bad location");
+	ae.initCause(e);
+	throw ae;
       }
   }
 
@@ -251,7 +253,7 @@ public class PlainView extends View implements TabExpander
         int end = child.getEndOffset();
         try
           {
-            el.getDocument().getText(start, start + end, seg);
+            el.getDocument().getText(start, end - start, seg);
           }
         catch (BadLocationException ex)
           {
@@ -332,7 +334,9 @@ public class PlainView extends View implements TabExpander
     }
     catch (BadLocationException ble)
     {
-      //this should never happen
+      AssertionError ae = new AssertionError("Unexpected bad location");
+      ae.initCause(ble);
+      throw ae;
     }
     
     int pos = Utilities.getTabbedTextOffset(s, metrics, rec.x, (int)x, this, start);

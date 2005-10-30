@@ -1,5 +1,12 @@
 2005-10-30  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/text/PlainView.java (determineMaxLineLength): Get
+	correct lenght of text.
+	(drawLine): Throw AssertionError on unexpected bad location.
+	(viewToModel): Likewise.
+
+2005-10-30  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/text/AbstractDocument.java (dump): Actually throw
 	AssertionError when constructed.
 	* javax/swing/text/DefaultFormatter.java (checkValidInput): Add cause
