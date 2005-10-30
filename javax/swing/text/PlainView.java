@@ -255,7 +255,9 @@ public class PlainView extends View implements TabExpander
           }
         catch (BadLocationException ex)
           {
-            assert false : "BadLocationException should not be thrown here.";
+            AssertionError ae = new AssertionError("Unexpected bad location");
+	    ae.initCause(ex);
+	    throw ae;
           }
         
         if (seg == null || seg.array == null || seg.count == 0)
@@ -416,7 +418,9 @@ public class PlainView extends View implements TabExpander
           }
         catch (BadLocationException ex)
           {
-            assert false : "BadLocationException should not be thrown here.";
+            AssertionError ae = new AssertionError("Unexpected bad location");
+	    ae.initCause(ex);
+	    throw ae;
           }
                 
         if (seg == null || seg.array == null || seg.count == 0)

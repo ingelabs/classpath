@@ -1,5 +1,18 @@
 2005-10-30  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/text/AbstractDocument.java (dump): Actually throw
+	AssertionError when constructed.
+	* javax/swing/text/DefaultFormatter.java (checkValidInput): Add cause
+	to AssertionError.
+	* javax/swing/text/DefaultStyledDocument.java (insertUpdate):
+	Likewise.
+	* javax/swing/text/GlyphView.java (getPartialSpan): Likewise.
+	(getText): Likewise.
+	* javax/swing/text/PlainView.java (determineMaxLineLength): Likewise.
+	(updateDamage): Likewise.
+
+2005-10-30  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/rmi/server/UnicastServer.java (refcache): Make it a
 	synchronized IdentityHashMap.
 

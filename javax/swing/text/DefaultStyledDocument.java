@@ -1073,8 +1073,9 @@ public class DefaultStyledDocument extends AbstractDocument
       }
     catch (BadLocationException ex)
       {
-        throw new AssertionError("BadLocationException must not be thrown "
-                                 + "here.");
+        AssertionError ae = new AssertionError("Unexpected bad location");
+	ae.initCause(ex);
+	throw ae;
       }
 
     int len = 0;

@@ -1556,6 +1556,7 @@ public abstract class AbstractDocument implements Document, Serializable
                                                       + "must not be thrown "
                                                       + "here.");
               err.initCause(ex);
+	      throw err;
             }
           b.append("]\n");
         }
