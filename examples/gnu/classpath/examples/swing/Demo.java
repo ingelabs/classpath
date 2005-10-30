@@ -42,17 +42,23 @@ public class Demo
       {
         if (System.getProperty("swing.defaultlaf") == null)
           {
+            UIManager.setLookAndFeel(new GNULookAndFeel());
+
             StringBuffer text = new StringBuffer();
-            text.append("\tYou may change the Look and Feel of this\n");
-            text.append("\tDemo by setting the system property\n");
-            text.append("\t-Dswing.defaultlaf=<LAFClassName>\n\n");
-            text.append("\tPossible values for <LAFClassName> are:\n");
-            text.append("\t  * javax.swing.plaf.metal.MetalLookAndFeel\n");
-            text.append("\t\tthe default Java L&F\n");
-            text.append("\t  * gnu.classpath.examples.swing.GNULookAndFeel\n");
-            text.append("\tthe GNU Look and Feel\n");
-            text.append("\t(derived from javax.swing.plaf.basic.BasicLookAndFeel\n\n");
-            text.append("\tthe default is gnu.classpath.examples.swing.GNULookAndFeel\n");
+            text.append("You may change the Look and Feel of this\n");
+            text.append("Demo by setting the system property\n");
+            text.append("-Dswing.defaultlaf=<LAFClassName>\n");
+	    text.append("\n");
+            text.append("Possible values for <LAFClassName> are:\n");
+	    text.append("\n");
+            text.append("* javax.swing.plaf.metal.MetalLookAndFeel\n");
+            text.append("  the default GNU Classpath L&F\n");
+	    text.append("\n");
+            text.append("* gnu.classpath.examples.swing.GNULookAndFeel\n");
+            text.append("  the GNU Look and Feel\n");
+            text.append("  (derived from javax.swing.plaf.basic.BasicLookAndFeel)\n");
+	    text.append("\n");
+            text.append("the default is gnu.classpath.examples.swing.GNULookAndFeel\n");
             JEditorPane textPane = new JEditorPane();
             // temporary hack, preferred size should be computed by the
             // component
@@ -61,8 +67,6 @@ public class Demo
             JOptionPane.showMessageDialog(null, textPane,
                                           "Look and Feel notice",
                                           JOptionPane.INFORMATION_MESSAGE);
-            
-            UIManager.setLookAndFeel(new GNULookAndFeel());
           }
       }
     catch (UnsupportedLookAndFeelException e)
