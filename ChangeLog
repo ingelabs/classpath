@@ -1,3 +1,10 @@
+2005-10-30  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
+	(GdkGraphics2D(GdkGraphics2D,int, int, int,int)): New constructor.
+	(create(int,int,int,int)): Use new constructor.
+	(copyArea): Implement through create() and gdkDrawDrawable().
+
 2005-10-29  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* java/nio/channels/spi/AbstractSelectableChannel.java
