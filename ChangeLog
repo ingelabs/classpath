@@ -1,5 +1,10 @@
 2005-10-30  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(updateCurrentVisiblePath): Check whether treeModel is null.
+
+2005-10-30  Mark Wielaard  <mark@klomp.org>
+
 	* examples/gnu/classpath/examples/swing/Demo.java (static): Set look
 	and feel before showing dialog. Clean up message text.
 

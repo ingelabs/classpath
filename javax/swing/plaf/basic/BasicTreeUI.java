@@ -3797,6 +3797,9 @@ public class BasicTreeUI extends TreeUI
    */
   void updateCurrentVisiblePath()
   {
+    if (treeModel == null)
+      return;
+
     Object next = treeModel.getRoot();
     Rectangle bounds = getCellBounds(0, 0, next);
     
