@@ -1,3 +1,11 @@
+2005-10-31  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/Utilities.java:
+	(getTabbedTextOffset): Adjusted for loop bound down by s.offset and
+	adjusted array index up by s.offset.  This fixes the second part of 
+	PR 24316.  Expand tabs, not newlines.  Allow the x-position to reach
+	the end specified position (use < instead of <=).
+
 2005-10-31  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTextField.java

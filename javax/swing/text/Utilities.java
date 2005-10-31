@@ -233,16 +233,16 @@ public class Utilities
     int pos;
     int currentX = x0;
 
-    for (pos = p0; pos < s.getEndIndex(); pos++)
+    for (pos = p0; pos < s.count; pos++)
       {
-        char nextChar = s.array[pos];
+        char nextChar = s.array[s.offset+pos];
         if (nextChar == 0)
           {
             if (! round)
               pos--;
             break;
           }
-        if (nextChar != '\n')
+        if (nextChar != '\t')
           currentX += fm.charWidth(nextChar);
         else
           {
@@ -251,7 +251,7 @@ public class Utilities
             else
               currentX = (int) te.nextTabStop(currentX, pos);
           }
-        if (currentX >= x)
+        if (currentX > x)
           {
             if (! round)
               pos--;
