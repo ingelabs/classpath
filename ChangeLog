@@ -1,3 +1,8 @@
+2005-10-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/SocketRepository.java (not_reusable, gc): New methods.
+	(sockets): Use hashtable. (get_socket): Rewritten.
+
 2005-10-31  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTable.java

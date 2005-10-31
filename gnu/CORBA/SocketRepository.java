@@ -40,8 +40,9 @@ package gnu.CORBA;
 
 import java.net.Socket;
 import java.net.SocketException;
-
-import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This class caches the opened sockets that are reused during the
@@ -55,10 +56,11 @@ public class SocketRepository
   /**
    * The socket map.
    */
-  private static HashMap sockets = new HashMap();
-
+  private static Hashtable sockets = new Hashtable();
+  
   /**
-   * Put a socket.
+   * Put a socket. This method also discards all not reusable sockets from
+   * the map.
    *
    * @param key as socket key.
    *
@@ -67,6 +69,36 @@ public class SocketRepository
   public static void put_socket(Object key, Socket s)
   {
     sockets.put(key, s);
+    gc();
+  }
+  
+  /**
+   * Removes all non reusable sockets.
+   */
+  public static void gc()
+  {
+    Iterator iter = sockets.entrySet().iterator();
+    
+    Map.Entry e;
+    Socket sx;
+    
+    while (iter.hasNext())
+      {
+        e = (Map.Entry) iter.next();
+        sx = (Socket) e.getValue();
+        
+        if (not_reusable(sx))
+          iter.remove();
+      }
+  }
+  
+  /**
+   * Return true if the socket is no longer reusable.
+   */
+  static boolean not_reusable(Socket s)
+  {
+    return (s.isClosed() || !s.isBound() || !s.isConnected() ||
+        s.isInputShutdown() || s.isOutputShutdown());
   }
 
   /**
@@ -75,21 +107,26 @@ public class SocketRepository
    * @param key a socket key.
    * 
    * @return an opened socket for reuse, null if no such available or it is
-   * closed.
+   * closed, its input or output has been shutown or otherwise the socket
+   * is not reuseable.
    */
   public static Socket get_socket(Object key)
   {
+    if (true)
+      return null;
+    
     Socket s = (Socket) sockets.get(key);
     if (s == null)
       return null;
-    else if (s.isClosed())
+    
+    // Ensure that the socket is fully reusable.
+    else if (not_reusable(s))
       {
         sockets.remove(key);
         return null;
       }
     else
       {
-        sockets.remove(key);
         try
           {
             // Set one minute time out that will be changed later.
@@ -99,6 +136,8 @@ public class SocketRepository
           {
             s = null;
           }
+        
+        sockets.remove(key);
         return s;
       }
   }
