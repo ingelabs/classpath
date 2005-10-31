@@ -1,5 +1,20 @@
 2005-10-31  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/plaf/basic/BasicTextAreaUI.java:
+	(create): Added docs.  Create WrappedPlainView instead of PlainView if
+	the text area has line wrapping turned on.
+	(propertyChange): New API method.  If line wrapping is turned on or off
+	or if the style of wrapping (character or word) is changed, call 
+	modelChanged().
+	* javax/swing/plaf/basic/BasicTextUI.java:
+	(setView): Call revalidate and repaint after setting the View.
+	* javax/swing/text/WrappedPlainView.java:
+	(insertUpdate): Repaint the container.
+	(removeUpdate): Likewise.
+	(changedUpdate): Likewise.
+
+2005-10-31  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/text/WrappedPlainView.java:
 	(viewFactory): New field.
 	(drawLine): New API method.

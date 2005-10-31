@@ -46,7 +46,6 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentEvent.ElementChange;
 import javax.swing.text.Position.Bias;
 
 /**
@@ -273,6 +272,8 @@ public class WrappedPlainView extends BoxView implements TabExpander
   public void insertUpdate (DocumentEvent e, Shape a, ViewFactory f)
   {
     super.insertUpdate(e, a, viewFactory);
+    // FIXME: could improve performance by repainting only the necessary area
+    getContainer().repaint();
   }
   
   /**
@@ -282,6 +283,8 @@ public class WrappedPlainView extends BoxView implements TabExpander
   public void removeUpdate (DocumentEvent e, Shape a, ViewFactory f)
   {
     super.removeUpdate(e, a, viewFactory);
+    // FIXME: could improve performance by repainting only the necessary area
+    getContainer().repaint();
   }
   
   /**
@@ -292,6 +295,8 @@ public class WrappedPlainView extends BoxView implements TabExpander
   public void changedUpdate (DocumentEvent e, Shape a, ViewFactory f)
   {
     super.changedUpdate(e, a, viewFactory);
+    // FIXME: could improve performance by repainting only the necessary area
+    getContainer().repaint();
   }
     
   class WrappedLineCreator implements ViewFactory

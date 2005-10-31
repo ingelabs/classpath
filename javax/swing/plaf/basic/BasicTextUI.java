@@ -1034,6 +1034,8 @@ public abstract class BasicTextUI extends TextUI
   {
     rootView.setView(view);
     view.setParent(rootView);
+    textComponent.revalidate();
+    textComponent.repaint();
   }
 
   /**
