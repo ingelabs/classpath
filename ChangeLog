@@ -1,3 +1,10 @@
+2005-10-31  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(AccessibleJTable.tableChanged): Implemented.
+	(AccessibleJTable.tableRowsInserted): Implemented.
+	(AccessibleJTable.tableRowsDeleted): Implemented.
+
 2005-10-30  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java

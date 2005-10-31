@@ -206,10 +206,48 @@ public class JTable
       
     }
 
+    /**
+     * Receives notification when the table model changes. Depending on the
+     * type of change, this method calls {@link #tableRowsInserted} or
+     * {@link #tableRowsDeleted}.
+     *
+     * @param event the table model event
+     */
     public void tableChanged(TableModelEvent event)
     {
-      // TODO Auto-generated method stub
-      
+      switch (event.getType())
+        {
+        case TableModelEvent.INSERT:
+          tableRowsInserted(event);
+          break;
+        case TableModelEvent.DELETE:
+          tableRowsDeleted(event);
+          break;
+        }
+    }
+
+    /**
+     * Receives notification when one or more rows have been inserted into the
+     * table.
+     *
+     * @param event the table model event
+     */
+    public void tableRowsInserted(TableModelEvent event)
+    {
+      // TODO: What to do here, if anything? This might be a hook method for
+      // subclasses...
+    }
+
+    /**
+     * Receives notification when one or more rows have been deleted from the
+     * table.
+     *
+     * @param event the table model event
+     */
+    public void tableRowsDeleted(TableModelEvent event)
+    {
+      // TODO: What to do here, if anything? This might be a hook method for
+      // subclasses...
     }
 
     public void columnAdded(TableColumnModelEvent event)
