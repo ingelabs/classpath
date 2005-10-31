@@ -45,6 +45,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Shape;
 
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentEvent.ElementChange;
 import javax.swing.text.Position.Bias;
 
 /**
@@ -67,6 +69,9 @@ public class WrappedPlainView extends BoxView implements TabExpander
   
   /** Whether or not to wrap on word boundaries **/
   boolean wordWrap;
+  
+  /** A ViewFactory that creates WrappedLines **/
+  ViewFactory viewFactory = new WrappedLineCreator();
   
   /**
    * The instance returned by {@link #getLineBuffer()}.
@@ -124,6 +129,27 @@ public class WrappedPlainView extends BoxView implements TabExpander
     if (tabSize == null)
       return 8;
     return ((Integer)tabSize).intValue();
+  }
+  
+  /**
+   * Draws a line of text, suppressing white space at the end and expanding
+   * tabs.  Calls drawSelectedText and drawUnselectedText.
+   * @param p0 starting document position to use
+   * @param p1 ending document position to use
+   * @param g graphics context
+   * @param x starting x position
+   * @param y starting y position
+   */
+  protected void drawLine(int p0, int p1, Graphics g, int x, int y)
+  {
+    try
+    {
+      drawUnselectedText(g, x, y, p0, p1);
+    }
+    catch (BadLocationException ble)
+    {
+      // shouldn't happen
+    }
   }
 
   /**
@@ -202,6 +228,7 @@ public class WrappedPlainView extends BoxView implements TabExpander
   {
     Container c = getContainer();
     Rectangle alloc = c.getBounds();
+    updateMetrics();
     try
       {
         getDocument().getText(p0, p1 - p0, getLineBuffer());
@@ -214,11 +241,90 @@ public class WrappedPlainView extends BoxView implements TabExpander
     if (wordWrap)
       return p0
              + Utilities.getBreakLocation(lineBuffer, metrics, alloc.x,
-                                          alloc.x + alloc.width, this, p0);
+                                          alloc.x + alloc.width, this, 0);
     else
+      {
       return p0
              + Utilities.getTabbedTextOffset(lineBuffer, metrics, alloc.x,
-                                             alloc.x + alloc.width, this, p0);
+                                             alloc.x + alloc.width, this, 0);
+      }
+  }
+  
+  void updateMetrics()
+  {
+    Container component = getContainer();
+    metrics = component.getFontMetrics(component.getFont());
+  }
+  
+  /**
+   * Determines the preferred span along the given axis.  Implemented to 
+   * cache the font metrics and then call the super classes method.
+   */
+  public float getPreferredSpan (int axis)
+  {
+    updateMetrics();
+    return super.getPreferredSpan(axis);
+  }
+  
+  /**
+   * Called when something was inserted.  Overridden so that
+   * the view factory creates WrappedLine views.
+   */
+  public void insertUpdate (DocumentEvent e, Shape a, ViewFactory f)
+  {
+    super.insertUpdate(e, a, viewFactory);
+  }
+  
+  /**
+   * Called when something is removed.  Overridden so that
+   * the view factory creates WrappedLine views.
+   */
+  public void removeUpdate (DocumentEvent e, Shape a, ViewFactory f)
+  {
+    super.removeUpdate(e, a, viewFactory);
+  }
+  
+  /**
+   * Called when the portion of the Document that this View is responsible
+   * for changes.  Overridden so that the view factory creates
+   * WrappedLine views.
+   */
+  public void changedUpdate (DocumentEvent e, Shape a, ViewFactory f)
+  {
+    super.changedUpdate(e, a, viewFactory);
+  }
+    
+  class WrappedLineCreator implements ViewFactory
+  {
+    // Creates a new WrappedLine
+    public View create(Element elem)
+    {
+      return new WrappedLine(elem);
+    }    
+  }
+  
+  /**
+   * Renders the <code>Element</code> that is associated with this
+   * <code>View</code>.  Caches the metrics and then calls
+   * super.paint to paint all the child views.
+   *
+   * @param g the <code>Graphics</code> context to render to
+   * @param a the allocated region for the <code>Element</code>
+   */
+  public void paint(Graphics g, Shape a)
+  {
+    updateMetrics();
+    super.paint(g, a);
+  }
+  
+  /**
+   * Sets the size of the View.  Implemented to update the metrics
+   * and then call super method.
+   */
+  public void setSize (float width, float height)
+  {
+    updateMetrics();
+    super.setSize(width, height);
   }
   
   class WrappedLine extends View
@@ -238,9 +344,33 @@ public class WrappedPlainView extends BoxView implements TabExpander
      */
     public void paint(Graphics g, Shape s)
     {
-      // TODO Auto-generated method stub      
-    }
+      // Ensure metrics are up-to-date.
+      updateMetrics();
+      JTextComponent textComponent = (JTextComponent) getContainer();
 
+      g.setFont(textComponent.getFont());
+      selectedColor = textComponent.getSelectedTextColor();
+      unselectedColor = textComponent.getForeground();
+      disabledColor = textComponent.getDisabledTextColor();
+
+      Rectangle rect = s.getBounds();
+      int lineHeight = metrics.getHeight();
+
+      int end = getEndOffset();
+      int currStart = getStartOffset();
+      int currEnd;      
+      while (currStart < end)
+        {
+          currEnd = calculateBreakPosition(currStart, end);
+          drawLine(currStart, currEnd, g, rect.x, rect.y);
+          rect.y += lineHeight;          
+          if (currEnd == currStart)
+            currStart ++;
+          else
+            currStart = currEnd;          
+        }
+    }
+    
     /**
      * Determines the number of logical lines that the Element
      * needs to be displayed
@@ -281,15 +411,12 @@ public class WrappedPlainView extends BoxView implements TabExpander
       if (axis == X_AXIS)
         return getWidth();
       else if (axis == Y_AXIS)
-        {
-          metrics = getContainer().getFontMetrics(getContainer().getFont());
-          return numLines * metrics.getHeight(); 
-        }
+        return numLines * metrics.getHeight(); 
       
       throw new IllegalArgumentException("Invalid axis for getPreferredSpan: "
                                          + axis);
     }
-
+    
     /**
      * Provides a mapping from model space to view space.
      * 
@@ -304,7 +431,6 @@ public class WrappedPlainView extends BoxView implements TabExpander
     public Shape modelToView(int pos, Shape a, Bias b) throws BadLocationException
     {
       Segment s = getLineBuffer();
-      metrics = getContainer().getFontMetrics(getContainer().getFont());
       int lineHeight = metrics.getHeight();
       Rectangle rect = a.getBounds();
       
@@ -368,7 +494,6 @@ public class WrappedPlainView extends BoxView implements TabExpander
       Rectangle rect = a.getBounds();
       int currLineStart = getStartOffset();
       int end = getEndOffset();
-      metrics = getContainer().getFontMetrics(getContainer().getFont());
       int lineHeight = metrics.getHeight();
       if (y < rect.y)
         return currLineStart;

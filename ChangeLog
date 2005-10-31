@@ -1,5 +1,27 @@
 2005-10-31  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/text/WrappedPlainView.java:
+	(viewFactory): New field.
+	(drawLine): New API method.
+	(calculateBreakPosition): Update the metrics before calling Utilities
+	methods. Fixed error in offset argument passed to the Utilities 
+	methods.
+	(updateMetrics): New implementation method.
+	(getPreferredSpan): New API method.
+	(insertUpdate): Likewise.
+	(removeUpdate): Likewise.
+	(changedUpdate): Likewise.
+	(WrappedLineCreator): New class.
+	(paint): New API method.
+	(setSize): New API method.
+	(WrappedLine.paint): Implemented.
+	(WrappedLine.getPreferredSpan): Don't update the metrics, this is now
+	done in WrappedPlainView.paint.
+	(WrappedLine.modelToView): Likewise.
+	(WrappedLine.viewToModel): Likewise.
+	
+2005-10-31  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/text/Utilities.java:
 	(getTabbedTextOffset): Adjusted for loop bound down by s.offset and
 	adjusted array index up by s.offset.  This fixes the second part of 
