@@ -1,5 +1,17 @@
 2005-11-01  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/JFileChooser.java:
+	(getDialogTitle): Allow return of null.
+	(getApproveButtonText): Likewise.
+	(getFileView): Likewise.
+	(getName): First try using the JFileChooser's FileView, if null, then
+	pass call to UI.
+	(getDescription): Likewise.
+	(getTypeDescription): Likewise.
+	(getIcon): Likewise.
+
+2005-11-01  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/JTable.java:
 	(JTable(TableModel, TableColumnModel, ListSelectionModel)): Set the 
 	model before calling initializeLocalVars.
