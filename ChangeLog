@@ -1,5 +1,12 @@
 2005-11-01  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/JTable.java:
+	(JTable(TableModel, TableColumnModel, ListSelectionModel)): Call 
+	updateUI after initializeLocalVars.  Manually set the lead selection
+	indices.
+
+2005-11-01  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/plaf/basic/BasicFileChooserUI.java:
 	(getApproveButtonText): First use the JFileChooser's approve button 
 	text, but if it is null, then try otherwise.

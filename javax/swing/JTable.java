@@ -1081,12 +1081,23 @@ public class JTable
       {
         setColumnModel(createDefaultColumnModel());
         autoCreate = true;
-      }    
-    updateUI();
+      }        
     setSelectionModel(sm == null ? createDefaultSelectionModel() : sm);
     setModel(dm == null ? createDefaultDataModel() : dm);
     setAutoCreateColumnsFromModel(autoCreate);
     initializeLocalVars();
+    // The following four lines properly set the lead selection indices.
+    // After this, the UI will handle the lead selection indices.
+    // FIXME: this should probably not be necessary, if the UI is installed
+    // before the TableModel is set then the UI will handle things on its
+    // own, but certain variables need to be set before the UI can be installed
+    // so we must get the correct order for all the method calls in this
+    // constructor.
+    selectionModel.setAnchorSelectionIndex(0);    
+    selectionModel.setLeadSelectionIndex(0);
+    columnModel.getSelectionModel().setAnchorSelectionIndex(0);
+    columnModel.getSelectionModel().setLeadSelectionIndex(0);
+    updateUI();
   }    
 
   protected void initializeLocalVars()
