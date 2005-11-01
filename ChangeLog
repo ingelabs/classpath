@@ -1,3 +1,10 @@
+2005-11-01  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JPopupMenu.java
+	(setVisible): Pack the JPopupMenu before fetching the Popup
+	instance. Otherwise the PopupFactory has the wrong size for
+	its size check.
+
 2005-11-01  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTable.java:
