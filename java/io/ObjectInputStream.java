@@ -183,7 +183,6 @@ public class ObjectInputStream extends InputStream
  	  else
  	    { if(dump) dumpElementln("BLOCKDATA"); }
  	  readNextBlock(marker);
- 	  throw new StreamCorruptedException("Unexpected blockData");
  	}
  	
        case TC_NULL:

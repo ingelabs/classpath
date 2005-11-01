@@ -1,3 +1,9 @@
+2005-11-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/io/ObjectInputStream.java:
+	(parseContent(byte)): Remove weird exception
+	throwing.
+	
 2005-11-01  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Window.java
