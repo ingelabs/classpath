@@ -286,7 +286,11 @@ public class Window extends Container implements Accessible
       parent.addNotify();
     if (peer == null)
       addNotify();
-
+    
+    Dimension size = getSize();
+    if (size.width == 0 && size.height == 0)
+      setSize(getPreferredSize());
+    
     // Show visible owned windows.
 	Iterator e = ownedWindows.iterator();
 	while(e.hasNext())

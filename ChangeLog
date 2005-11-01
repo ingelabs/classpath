@@ -1,3 +1,9 @@
+2005-11-01  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Window.java
+	(show): If pack is not called before show, the size of the
+	window is often set to 0. This is now fixed.
+
 2005-11-01  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JPopupMenu.java
