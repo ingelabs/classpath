@@ -29,6 +29,9 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import javax.swing.border.*;
 
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.OceanTheme;
+
 import java.net.URL;
 
 public class Demo
@@ -42,8 +45,6 @@ public class Demo
       {
         if (System.getProperty("swing.defaultlaf") == null)
           {
-            UIManager.setLookAndFeel(new GNULookAndFeel());
-
             StringBuffer text = new StringBuffer();
             text.append("You may change the Look and Feel of this\n");
             text.append("Demo by setting the system property\n");
@@ -58,15 +59,26 @@ public class Demo
             text.append("  the GNU Look and Feel\n");
             text.append("  (derived from javax.swing.plaf.basic.BasicLookAndFeel)\n");
 	    text.append("\n");
-            text.append("the default is gnu.classpath.examples.swing.GNULookAndFeel\n");
-            JEditorPane textPane = new JEditorPane();
-            // temporary hack, preferred size should be computed by the
-            // component
-            textPane.setPreferredSize(new Dimension(400, 300));
-            textPane.setText(text.toString());
-            JOptionPane.showMessageDialog(null, textPane,
-                                          "Look and Feel notice",
-                                          JOptionPane.INFORMATION_MESSAGE);
+            text.append("MetalLookAndFeel supports different Themes.\n");
+	    text.append("DefaultMetalTheme (the default) and OceanTheme (in development)\n");
+
+	    final String DEFAULT = "MetalLookAndFeel (default)";
+	    final String OCEAN = "MetalLookAndFeel (Ocean)";
+	    final String GNU = "GNULookAndFeel";
+	    final String[] lafs = new String[] { DEFAULT, OCEAN, GNU };
+
+	    int laf = JOptionPane.showOptionDialog(null, text /* textPane */,
+						   "Look and Feel choice",
+						   JOptionPane.OK_OPTION,
+						   JOptionPane.QUESTION_MESSAGE,
+						   null, lafs, DEFAULT);
+	    if (laf == 1)
+	      {
+		MetalLookAndFeel.setCurrentTheme(new OceanTheme());
+	      UIManager.setLookAndFeel(new MetalLookAndFeel());
+	      }
+	    else if (laf == 2)
+	      UIManager.setLookAndFeel(new GNULookAndFeel());
           }
       }
     catch (UnsupportedLookAndFeelException e)

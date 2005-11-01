@@ -1,3 +1,8 @@
+2005-11-01  Mark Wielaard  <mark@klomp.org>
+
+	* examples/gnu/classpath/examples/swing/Demo.java (init): Use
+	JOptionPane to select the laf if not explicitly set.
+
 2005-11-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/io/ObjectInputStream.java:
