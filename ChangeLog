@@ -1,3 +1,10 @@
+2005-11-01  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalScrollPaneUI.java
+	(instance): Removed unnecessary field.
+	(createUI): Always return a new instance instead of returning a
+	shared instance.
+
 2005-11-01  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Window.java
