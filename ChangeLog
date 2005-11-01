@@ -1,5 +1,10 @@
 2005-11-01  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Window.java
+	(show): Don't set size of the window here.
+
+2005-11-01  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalScrollPaneUI.java
 	(instance): Removed unnecessary field.
 	(createUI): Always return a new instance instead of returning a
