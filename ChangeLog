@@ -1,3 +1,9 @@
+2005-11-01  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JTable.java:
+	(JTable(TableModel, TableColumnModel, ListSelectionModel)): Set the 
+	model before calling initializeLocalVars.
+
 2005-11-01  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicCheckBoxMenuItemUI.java

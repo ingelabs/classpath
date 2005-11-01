@@ -1081,12 +1081,12 @@ public class JTable
       {
         setColumnModel(createDefaultColumnModel());
         autoCreate = true;
-      }
-    initializeLocalVars();
+      }    
     updateUI();
     setSelectionModel(sm == null ? createDefaultSelectionModel() : sm);
     setModel(dm == null ? createDefaultDataModel() : dm);
     setAutoCreateColumnsFromModel(autoCreate);
+    initializeLocalVars();
   }    
 
   protected void initializeLocalVars()
