@@ -1,3 +1,17 @@
+2005-11-01  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicCheckBoxMenuItemUI.java
+	(BasicCheckBoxMenuItem): Moved code to BasicMenuItemUI.installDefaults
+	(processMouseEvent): Added TODO comment. Not sure about the 
+	correct implementation yet.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Removed MenuItem.checkIcon default. Only
+	RadioButtonMenuItem's and CheckBoxMenuItem's have checkIcons.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(installDefaults): Fixed to initialized checkIcon. If the menuItem is
+	not a RadioButtonMenuItem or CheckBoxMenuItem, then checkIcon is null.
+	Also, fixed defaults to use prefix.
+
 2005-11-01  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/ObjectOutputStream.java

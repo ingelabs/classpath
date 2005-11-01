@@ -648,7 +648,6 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "MenuItem.background", new ColorUIResource(light),
       "MenuItem.border", new BasicBorders.MarginBorder(),
       "MenuItem.borderPainted", Boolean.FALSE,
-      "MenuItem.checkIcon", BasicIconFactory.getMenuItemCheckIcon(),
       "MenuItem.font", new FontUIResource("Dialog", Font.PLAIN, 12),
       "MenuItem.foreground", new ColorUIResource(darkShadow),
       "MenuItem.margin", new InsetsUIResource(2, 2, 2, 2),
