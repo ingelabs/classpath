@@ -363,7 +363,7 @@ public class ObjectOutputStream extends OutputStream
 
 	    throw new NotSerializableException(clazz.getName()
 					       + " in "
-					       + currentObject.getClass());
+					       + obj.getClass());
 	  } // end pseudo-loop
       }
     catch (ObjectStreamException ose)
