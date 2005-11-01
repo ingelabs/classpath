@@ -1,3 +1,8 @@
+2005-11-01  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* vm/reference/java/lang/VMThread.java (sleep): Don't round     
+	ms and pass ns to Object.wait, fixes mauve test.
+		
 2005-11-01  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JFileChooser.java:
