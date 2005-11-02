@@ -1,3 +1,9 @@
+2005-11-02  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Dialog.java
+	(show): pack should always be called before show, so Dialog is
+	set to the correct size and validated.
+
 2005-11-02  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* configure.ac: Check for cairo, pangoft2 and freetype2 only 
