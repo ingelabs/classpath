@@ -1,3 +1,9 @@
+2005-11-02  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* java/lang/String.java (String): Added 
+	StringIndexOutOfBoundsException check (overflow) and a message 
+	to the exceptions.
+			
 2005-11-02  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* NEWS: added entries for javax.swing.plaf.metal.* package and updates
