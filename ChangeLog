@@ -1,3 +1,8 @@
+2005-11-02  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/filechooser/FileSystemView.java: Added API docs all over,
+	* javax/swing/filechooser/UnixFileSystemView.java: Likewise.
+
 2005-11-02  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* java/lang/String.java (String): Added 
