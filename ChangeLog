@@ -1,3 +1,27 @@
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(AccessibleJComponent.changeSupport): New field.
+	(AccessibleJComponent.AccessibleJComponent): Initialize changeSupport.
+	(AccessibleJComponent.addPropertyChangeListener): Implemented this
+	method.
+	(AccessibleJComponent.removePropertyChangeListener): Implemented this
+	method.
+	(AccessibleJComponent.getAccessibleChildrenCount): Implemented this
+	method.
+	(AccessibleJComponent.getAccessibleChild): Implemented this
+	method.
+	(AccessibleJComponent.getAccessibleName): Added API comment and
+	TODO tag.
+	(AccessibleJComponent.getAccessibleDescription): Added API comment
+	and TODO tag.
+	(AccessibleJComponent.getAccessibleRole): Implemented this method.
+	(AccessibleJComponent.getBorderTitle): Implemented this method.
+	(AccessibleJComponent.getToolTipText): Implemented this method.
+	(AccessibleJComponent.getTitledBorderText): Implemented this method.
+	(AccessibleJComponent.getAccessibleKeyBinding): Added API comment
+	and TODO tag.
+
 2005-11-01  Mark Wielaard  <mark@klomp.org>
 
 	* examples/gnu/classpath/examples/swing/Demo.java (init): Use
