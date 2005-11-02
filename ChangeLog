@@ -1,5 +1,9 @@
 2005-11-02  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/UIManager.java (static): Print complete exception.
+
+2005-11-02  Mark Wielaard  <mark@klomp.org>
+
 	* lib/Makefile.am: Add typeHiding, unchecked, unused and varargsCast
 	to ECJ compile warning rule.
 
