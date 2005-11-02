@@ -1,4 +1,4 @@
-New for the subsequent release:
+New in release 0.19 (Nov 2, 2005)
 
 * The Swing RepaintManager has been reworked for more efficient painting,
   especially for large GUIs.
@@ -35,7 +35,8 @@ New for the subsequent release:
   will help us to improve this package.
 
 * The GUI demo (gnu.classpath.examples.swing.Demo) has been extended to 
-  highlight various features in our free-swing implementation.
+  highlight various features in our free-swing implementation. And includes
+  a look and feel switcher (Metal default, Ocean or GNU).
 
 Runtime interface changes:
 
