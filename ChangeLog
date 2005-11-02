@@ -1,3 +1,7 @@
+2005-11-02  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* NEWS: Mention Qt4 configury for OS-X.
+
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
 	* NEWS: Added some news items regarding my Swing work.

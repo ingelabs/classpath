@@ -23,7 +23,11 @@ New for the subsequent release:
   IIOP protocol. The current implementation is capable for remote invocations,
   transferring various Serializables and Externalizables via RMI-IIOP protocol.
   It can flatten graphs and, at least for the simple cases, is interoperable
-  with Sun's jdk 1.5. 
+  with Sun's jdk 1.5.
+
+* Qt4 configury switches for OS-X. Additional to the --enable-qt-peer, OS-X
+  users with a Qt4 installation can build the qt-peers with the argument
+  --with-qt4dir=<Qt4-installation-dir>.
 
 * Significant progress has been made in the implementation of the 
   javax.swing.plaf.metal.* package, with most UI delegates in a working state
