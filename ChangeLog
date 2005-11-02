@@ -1,3 +1,8 @@
+2005-11-02  Mark Wielaard  <mark@klomp.org>
+
+	* lib/Makefile.am: Add typeHiding, unchecked, unused and varargsCast
+	to ECJ compile warning rule.
+
 2005-11-02  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* lib/copy-vmresources.sh.in: Added definition for top_srcdir.
