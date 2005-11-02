@@ -3182,7 +3182,7 @@ public abstract class JComponent extends Container implements Serializable
     Rectangle currentClip = clip;
     Component found = this;
     Container parent = this; 
-    while (parent != null)
+    while (parent != null && !(parent instanceof Window))
       {
         Container newParent = parent.getParent();
         if (newParent == null)

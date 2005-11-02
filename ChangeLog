@@ -1,3 +1,9 @@
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(findOverlapFreeParent): Don't search beyond the components
+	containing window (important when in a Dialog).
+
 2005-11-02  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* AUTHORS: Added myself to the cool gang.
