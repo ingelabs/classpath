@@ -1,3 +1,8 @@
+2005-11-02  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* configure.ac: Check for cairo, pangoft2 and freetype2 only 
+	when gtk peers are enabled.
+
 2005-11-02    Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* AUTHORS (Stuart Ballard): Address update.
