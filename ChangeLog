@@ -1,5 +1,11 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Component.java
+	(getForeground): Return null as default color, instead of some
+	system color.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/BoxLayout.java
 	(BoxLayout): Throw AWTError when the axis is invalid.
 	(minimumLayoutSize): Respect the insets of the container.
