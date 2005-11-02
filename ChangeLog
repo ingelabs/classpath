@@ -1,5 +1,13 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JToolBar.java
+	(addImpl): Don't call updateUI here. This is really not necessary.
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(installDefaults): Call setRolloverBorders() here in order to
+	initialize the button borders.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicScrollPaneUI.java
 	(PropertyChangeHandler.propertyChange): Re-setup listeners on
 	the scrollbars if the scrollbars change.
