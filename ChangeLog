@@ -1,5 +1,12 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Container.java
+	(addImpl): Notify registered ContainerListeners even when the
+	Container is not showing. Notify the listeners directly, not
+	via the event queue.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
 	(initComponentDefaults): Fixed the defaults for EditorPane.border,
 	TextArea.font and TextPane.border.

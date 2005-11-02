@@ -395,17 +395,20 @@ public class Container extends Component
               layoutMgr.addLayoutComponent(null, comp);
           }
 
-        if (isShowing ())
-          {
-            // Post event to notify of adding the component.
-            ContainerEvent ce = new ContainerEvent(this,
-                                                   ContainerEvent.COMPONENT_ADDED,
-                                                   comp);
-            getToolkit().getSystemEventQueue().postEvent(ce);
+        // We previously only sent an event when this container is showing.
+        // Also, the event was posted to the event queue. A Mauve test shows
+        // that this event is not delivered using the event queue and it is
+        // also sent when the container is not showing. 
+        ContainerEvent ce = new ContainerEvent(this,
+                                               ContainerEvent.COMPONENT_ADDED,
+                                               comp);
+        ContainerListener[] listeners = getContainerListeners();
+        for (int i = 0; i < listeners.length; i++)
+          listeners[i].componentAdded(ce);
 
-            // Repaint this container.
-            repaint();
-          }
+        // Repaint this container.
+        repaint(comp.getX(), comp.getY(), comp.getWidth(),
+                comp.getHeight());
       }
   }
 
