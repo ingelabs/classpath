@@ -1,5 +1,12 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Component.java
+	(getMaximumSize): Return (Short.MAX_VALUE, Short.MAX_VALUE) instead
+	of (Integer.MAX_VALUE, Integer.MAX_VALUE) as shown by the
+	Mauve test.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTable.java
 	(AccessibleJTable.AccessibleJTableCell): New inner class.
 

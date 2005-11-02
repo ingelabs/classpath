@@ -1645,7 +1645,7 @@ public abstract class Component
    */
   public Dimension getMaximumSize()
   {
-    return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
+    return new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
   }
 
   /**
