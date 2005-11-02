@@ -16,6 +16,14 @@ New for the subsequent release:
   It can flatten graphs and, at least for the simple cases, is interoperable
   with Sun's jdk 1.5. 
 
+* Significant progress has been made in the implementation of the 
+  javax.swing.plaf.metal.* package, with most UI delegates in a working state
+  now.  Please test this with your own applications and provide feedback that 
+  will help us to improve this package.
+
+* The GUI demo (gnu.classpath.examples.swing.Demo) has been extended to 
+  highlight various features in our free-swing implementation.
+
 Runtime interface changes:
 
 * Changed implementation of VMClassLoader.getPackage(s) : new method

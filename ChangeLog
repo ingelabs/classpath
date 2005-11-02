@@ -1,3 +1,10 @@
+2005-11-02  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* NEWS: added entries for javax.swing.plaf.metal.* package and updates
+	to the gnu.classpath.examples.swing.Demo application,
+	* AUTHORS:  added my name to bring honour and glory to myself and all 
+	my descendants.
+
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java
