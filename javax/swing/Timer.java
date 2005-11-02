@@ -68,7 +68,15 @@ public class Timer
       running = true;
       try
         {
-          sleep(initialDelay);
+          try
+            {
+              sleep(initialDelay);
+            }
+          catch (InterruptedException e)
+            {
+              if (!running)
+                return;
+            }
 
           queueEvent();
 
@@ -81,7 +89,8 @@ public class Timer
                   }
                 catch (InterruptedException e)
                   {
-                    return;
+                    if (!running)
+                      break;
                   }
                 queueEvent();
 
@@ -93,7 +102,7 @@ public class Timer
               }
           running = false;
         }
-      catch (Exception e)
+      finally
         {
           // The timer is no longer running.
           running = false;

@@ -1,5 +1,9 @@
 2005-11-02  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/Timer.java (Waker.run): Only break out when !running.
+
+2005-11-02  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/UIManager.java (static): Print complete exception.
 
 2005-11-02  Mark Wielaard  <mark@klomp.org>
