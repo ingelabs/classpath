@@ -1,5 +1,14 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/BoxLayout.java
+	(BoxLayout): Throw AWTError when the axis is invalid.
+	(minimumLayoutSize): Respect the insets of the container.
+	(maximumLayoutSize): Likewise.
+	(invalidateLayout): Throw AWTError if the managed container is
+	not the same as the parent parameter.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(getMaximumSize): Return (Short.MAX_VALUE, Short.MAX_VALUE) instead
 	of (Integer.MAX_VALUE, Integer.MAX_VALUE) as shown by the
