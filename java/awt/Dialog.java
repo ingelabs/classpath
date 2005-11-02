@@ -404,7 +404,6 @@ addNotify()
 public synchronized void
 show()
 {
-  pack();
   super.show();
   
   if (isModal())
