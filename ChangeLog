@@ -1,5 +1,9 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* NEWS: Added some news items regarding my Swing work.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(findOverlapFreeParent): Don't search beyond the components
 	containing window (important when in a Dialog).

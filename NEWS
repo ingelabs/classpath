@@ -1,5 +1,14 @@
 New for the subsequent release:
 
+* The Swing RepaintManager has been reworked for more efficient painting,
+  especially for large GUIs.
+
+* The Swing layout manager OverlayLayout has been implemented, the BoxLayout
+  has been rewritten to make use of the SizeRequirements utility class and
+  caching for more efficient layout.
+
+* Improved accessibility support for Swing.
+
 * The java.net.HttpURLConnection implementation no longer buffers the
   entire response body in memory.  This means that response bodies
   larger than available memory can now be handled.
