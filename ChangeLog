@@ -1,5 +1,11 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Fixed the defaults for EditorPane.border,
+	TextArea.font and TextPane.border.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(getForeground): Return null as default color, instead of some
 	system color.
