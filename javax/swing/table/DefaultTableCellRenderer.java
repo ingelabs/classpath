@@ -72,6 +72,16 @@ public class DefaultTableCellRenderer extends JLabel
   }
 
   /**
+   * Stores the color set by setForeground().
+   */
+  Color foreground;
+
+  /**
+   * Stores the color set by setBackground().
+   */
+  Color background;
+
+  /**
    * Creates a default table cell renderer with an empty border.
    */
   public DefaultTableCellRenderer()
@@ -87,6 +97,7 @@ public class DefaultTableCellRenderer extends JLabel
   public void setForeground(Color c)
   {
     super.setForeground(c);
+    foreground = c;
   }
 
   /**
@@ -97,6 +108,7 @@ public class DefaultTableCellRenderer extends JLabel
   public void setBackground(Color c)
   {
     super.setBackground(c);
+    background = c;
   }
 
   /**
@@ -146,16 +158,18 @@ public class DefaultTableCellRenderer extends JLabel
       }
     else
       {
-        setBackground(table.getBackground());
-        setForeground(table.getForeground());
+        if (background != null)
+          setBackground(background);
+        else
+          setBackground(table.getBackground());
+        if (foreground != null)
+          setForeground(foreground);
+        else
+          setForeground(table.getForeground());
       }
 
     if (hasFocus)
-      {
-        if (!(getBackground() instanceof ColorUIResource)) 
-          setBackground(table.getBackground());
-        setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-      }
+      setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
     else
       setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 

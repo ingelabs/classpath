@@ -1,3 +1,15 @@
+2005-11-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/table/DefaultTableCellRenderer.java
+	(background): New field.
+	(foreground): New field.
+	(setBackground): Store the color that is set here.
+	(setForeground): Store the color that is set here.
+	(getTableCellRendererComponent): For the unselected color, set the
+	value of the foreground or background fields if not null, otherwise
+	the value of the according table properties. Don't change
+	the color in the focused clause.
+
 2005-11-03  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
@@ -78,12 +90,12 @@
 	(paintFocus): Height of focus border should not be 
 	adjusted. It was being cutoff.
 
-2005-11-02  Roman Kennke  <kennke@aicas.com>
+2005-11-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(RootView.getNextVisualPositionFrom): New method.
 
-2005-11-02  Roman Kennke  <kennke@aicas.com>
+2005-11-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
 	(AttributeUndoableEdit): New inner class.
@@ -95,11 +107,11 @@
 	(insert): New method.
 	(create): New method.
 
-2005-11-02  Roman Kennke  <kennke@aicas.com>
+2005-11-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/DefaultTextUI.java: New file.
 
-2005-11-02  Roman Kennke  <kennke@aicas.com>
+2005-11-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/DefaultCaret.java
 	(mouseDragged): Call moveCaret.
@@ -112,7 +124,7 @@
 	(setDot): Call adjustVisibility.
 	(adjustVisibility): New method.
 
-2005-11-02  Roman Kennke  <kennke@aicas.com>
+2005-11-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/Utilities.java
 	(getPositionAbove): New utility method.
@@ -135,7 +147,7 @@
 	* javax/swing/text/WrappedPlainView.java
 	(WrappedLine.getNextVisualPositionFrom): New method.
 
-2005-11-02  Roman Kennke  <kennke@aicas.com>
+2005-11-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/DefaultCaret.java
 	(BlinkTimerListener): New inner class. Listens for when the
