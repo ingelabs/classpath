@@ -213,7 +213,7 @@ public class WrappedPlainView extends BoxView implements TabExpander
     g.setColor(selectedColor);
     Segment segment = getLineBuffer();
     getDocument().getText(p0, p1 - p0, segment);
-    return Utilities.drawTabbedText(segment, x, y, g, this, 0);
+    return Utilities.drawTabbedText(segment, x, y, g, this, p0);
   }
 
   /**
@@ -237,7 +237,7 @@ public class WrappedPlainView extends BoxView implements TabExpander
 
     Segment segment = getLineBuffer();
     getDocument().getText(p0, p1 - p0, segment);
-    return Utilities.drawTabbedText(segment, x, y, g, this, segment.offset);
+    return Utilities.drawTabbedText(segment, x, y, g, this, p0);
   }  
   
   /**
@@ -311,6 +311,26 @@ public class WrappedPlainView extends BoxView implements TabExpander
   }
   
   /**
+   * Determines the minimum span along the given axis.  Implemented to 
+   * cache the font metrics and then call the super classes method.
+   */
+  public float getMinimumSpan (int axis)
+  {
+    updateMetrics();
+    return super.getMinimumSpan(axis);
+  }
+  
+  /**
+   * Determines the maximum span along the given axis.  Implemented to 
+   * cache the font metrics and then call the super classes method.
+   */
+  public float getMaximumSpan (int axis)
+  {
+    updateMetrics();
+    return super.getMaximumSpan(axis);
+  }
+  
+  /**
    * Called when something was inserted.  Overridden so that
    * the view factory creates WrappedLine views.
    */
@@ -377,6 +397,8 @@ public class WrappedPlainView extends BoxView implements TabExpander
   public void setSize (float width, float height)
   {
     updateMetrics();
+    if (width != getWidth())
+      preferenceChanged(null, true, true);
     super.setSize(width, height);
   }
   
@@ -435,11 +457,11 @@ public class WrappedPlainView extends BoxView implements TabExpander
      */
     int determineNumLines()
     {      
+      numLines = 0;
       int end = getEndOffset();
       if (end == 0)
         return 0;
-      
-      numLines = 0;
+            
       int breakPoint;
       for (int i = getStartOffset(); i < end;)
         {
@@ -485,7 +507,8 @@ public class WrappedPlainView extends BoxView implements TabExpander
      * in model space
      * @throws BadLocationException if the given model position is invalid
      */
-    public Shape modelToView(int pos, Shape a, Bias b) throws BadLocationException
+    public Shape modelToView(int pos, Shape a, Bias b)
+        throws BadLocationException
     {
       Segment s = getLineBuffer();
       int lineHeight = metrics.getHeight();
@@ -518,7 +541,9 @@ public class WrappedPlainView extends BoxView implements TabExpander
                 {
                   // Shouldn't happen
                 }
-              rect.x += Utilities.getTabbedTextWidth(s, metrics, rect.x, WrappedPlainView.this, currLineStart);
+              rect.x += Utilities.getTabbedTextWidth(s, metrics, rect.x,
+                                                     WrappedPlainView.this,
+                                                     currLineStart);
               return rect;
             }
           // Increment rect.y so we're checking the next logical line
@@ -614,8 +639,8 @@ public class WrappedPlainView extends BoxView implements TabExpander
      *         document position <code>pos</code> in the given direction
      *         <code>d</code>
      *
-     * @throws BadLocationException if <code>pos</code> is not a valid offset in
-     *         the document model
+     * @throws BadLocationException if <code>pos</code> is not a valid offset 
+     *         in the document model
      */
     public int getNextVisualPositionFrom(JTextComponent c, int pos,
                                          Position.Bias b, int d,
@@ -624,6 +649,52 @@ public class WrappedPlainView extends BoxView implements TabExpander
     {
       // TODO: Implement this properly.
       throw new AssertionError("Not implemented yet.");
+    }
+    
+    /**
+     * This method is called from insertUpdate and removeUpdate.
+     * If the number of lines in the document has changed, just repaint
+     * the whole thing (note, could improve performance by not repainting 
+     * anything above the changes).  If the number of lines hasn't changed, 
+     * just repaint the given Rectangle.
+     * @param a the Rectangle to repaint if the number of lines hasn't changed
+     */
+    void updateDamage (Rectangle a)
+    {
+      int newNumLines = determineNumLines();
+      if (numLines != newNumLines)
+        {
+          numLines = newNumLines;
+          getContainer().repaint();
+        }
+      else
+        getContainer().repaint(a.x, a.y, a.width, a.height);
+    }
+    
+    /**
+     * This method is called when something is inserted into the Document
+     * that this View is displaying.
+     * 
+     * @param changes the DocumentEvent for the changes.
+     * @param a the allocation of the View
+     * @param f the ViewFactory used to rebuild
+     */
+    public void insertUpdate (DocumentEvent changes, Shape a, ViewFactory f)
+    {
+      updateDamage((Rectangle)a); 
+    }
+    
+    /**
+     * This method is called when something is removed from the Document
+     * that this View is displaying.
+     * 
+     * @param changes the DocumentEvent for the changes.
+     * @param a the allocation of the View
+     * @param f the ViewFactory used to rebuild
+     */
+    public void removeUpdate (DocumentEvent changes, Shape a, ViewFactory f)
+    {
+      updateDamage((Rectangle)a); 
     }
   }
 }

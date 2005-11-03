@@ -1,3 +1,20 @@
+2005-11-03  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/WrappedPlainView.java: Fixed some > 80 chars lines.
+	(drawSelectedText): Fixed startOffset for call to 
+	Utilities.drawTabbedText to make sure tabs are properly expanded.
+	(drawUnselectedText): Likewise.
+	(getMinimumSpan): New API method.
+	(getMaximumSpan): New API method.
+	(setSize): Call preferenceChanged if the width has changed.
+	(WrappedLine.determineNumLines): Move numLines=0 to the top in case 
+	the early return happens, numLines will still be correct.
+	(WrappedLine.updateDamage): New implementation method called by 
+	insertUpdate and removeUpdate to repaint the appropriate part of the 
+	JTextArea.
+	(WrappedLine.insertUpdate): New method.
+	(WrappedLine.removeUpdate): New method.
+
 2005-11-03  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/table/DefaultTableCellRenderer.java
