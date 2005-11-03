@@ -40,7 +40,11 @@ package javax.swing.text;
 
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.text.BreakIterator;
+
+import javax.swing.SwingConstants;
 
 /**
  * A set of utilities to deal with text. This is used by several other classes
@@ -532,10 +536,73 @@ public class Utilities
    *
    * @return the paragraph element at <code>offset</code>
    */
-  public static Element getParagraphElement(JTextComponent c, int offset)
+  public static final Element getParagraphElement(JTextComponent c, int offset)
   {
-    Element root = c.getDocument().getDefaultRootElement();
-    int parIndex = root.getElementIndex(offset);
-    return root.getElement(parIndex);
+    Document doc = c.getDocument();
+    Element par = null;
+    if (doc instanceof StyledDocument)
+      {
+        StyledDocument styledDoc = (StyledDocument) doc;
+        par = styledDoc.getParagraphElement(offset);
+      }
+    else
+      {
+        Element root = c.getDocument().getDefaultRootElement();
+        int parIndex = root.getElementIndex(offset);
+        par = root.getElement(parIndex);
+      }
+    return par;
+  }
+
+  /**
+   * Returns the document position that is closest above to the specified x
+   * coordinate in the row containing <code>offset</code>.
+   *
+   * @param c the text component
+   * @param offset the offset
+   * @param x the x coordinate
+   *
+   * @return  the document position that is closest above to the specified x
+   *          coordinate in the row containing <code>offset</code>
+   *
+   * @throws BadLocationException if <code>offset</code> is not a valid offset
+   */
+  public static final int getPositionAbove(JTextComponent c, int offset, int x)
+    throws BadLocationException
+  {
+    View rootView = c.getUI().getRootView(c);
+    Rectangle r = c.modelToView(offset);
+    int offs = c.viewToModel(new Point(x, r.y));
+    int pos = rootView.getNextVisualPositionFrom(c, offs,
+                                                 Position.Bias.Forward,
+                                                 SwingConstants.NORTH,
+                                                 new Position.Bias[1]);
+    return pos;
+  }
+
+  /**
+   * Returns the document position that is closest below to the specified x
+   * coordinate in the row containing <code>offset</code>.
+   *
+   * @param c the text component
+   * @param offset the offset
+   * @param x the x coordinate
+   *
+   * @return  the document position that is closest above to the specified x
+   *          coordinate in the row containing <code>offset</code>
+   *
+   * @throws BadLocationException if <code>offset</code> is not a valid offset
+   */
+  public static final int getPositionBelow(JTextComponent c, int offset, int x)
+    throws BadLocationException
+  {
+    View rootView = c.getUI().getRootView(c);
+    Rectangle r = c.modelToView(offset);
+    int offs = c.viewToModel(new Point(x, r.y));
+    int pos = rootView.getNextVisualPositionFrom(c, offs,
+                                                 Position.Bias.Forward,
+                                                 SwingConstants.SOUTH,
+                                                 new Position.Bias[1]);
+    return pos;
   }
 }

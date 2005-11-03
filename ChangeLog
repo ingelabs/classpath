@@ -1,5 +1,28 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/Utilities.java
+	(getPositionAbove): New utility method.
+	(getPositionBelow): New utility method.
+	(getParagraphElement): Special case for StyledDocuments.
+	* javax/swing/text/View.java
+	(getNextVisualPositionFrom): New abstract method.
+	* javax/swing/text/ComponentView.java
+	(getNextVisualPositionFrom): New method.
+	* javax/swing/text/CompositeView.java
+	(getNextVisualPositionFrom): New method.
+	* javax/swing/text/FlowView.java
+	(LogicalView.getNextVisualPositionFrom): New method.
+	* javax/swing/text/GlyphView.java
+	(getNextVisualPositionFrom): New method.
+	* javax/swing/text/IconView.java
+	(getNextVisualPositionFrom): New method.
+	* javax/swing/text/PlainView.java
+	(getNextVisualPositionFrom): New method.
+	* javax/swing/text/WrappedPlainView.java
+	(WrappedLine.getNextVisualPositionFrom): New method.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/DefaultCaret.java
 	(BlinkTimerListener): New inner class. Listens for when the
 	blink timer fires and updates the visible flag accordingly.
