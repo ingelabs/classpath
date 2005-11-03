@@ -1,3 +1,10 @@
+2005-11-03  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/table/DefaultTableCellRenderer.java
+	(getTableCellRendererComponent): Fixed so that the label is 
+	painted with the correct background color. Does not depend on 
+	type of border. Removed this code.
+
 2005-11-03  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/JTextComponent.java:

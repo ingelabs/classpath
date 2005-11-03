@@ -148,18 +148,14 @@ public class DefaultTableCellRenderer extends JLabel
         setBackground(table.getBackground());
         setForeground(table.getForeground());
       }
-    
-    Border b = UIManager.getBorder("Table.focusCellHighlightBorder");
-    if (!(b instanceof EmptyBorder))
-    {
+
       if (hasFocus)
         {
-          setBackground(table.getBackground());
-          setBorder(b);
+          setBackground(getBackground());
+          setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
         }
       else
         setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-    }
 
     setEnabled(table.isEnabled());
     setFont(table.getFont());
