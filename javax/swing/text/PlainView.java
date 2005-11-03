@@ -326,17 +326,12 @@ public class PlainView extends View implements TabExpander
     
     Element line = root.getElement(lineClicked);
     Segment s = getLineBuffer();
-
     int start = line.getStartOffset();
-    int end = line.getEndOffset();
+    // We don't want the \n at the end of the line.
+    int end = line.getEndOffset() - 1;
     try
       {
         doc.getText(start, end - start, s);
-        
-        // The end of line symbol (0xA), if being the last member in the
-        // obtained text, should not be counted.
-        if (s.last()==0xA && end>start)
-          s.count--;
       }
     catch (BadLocationException ble)
       {

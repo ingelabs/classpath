@@ -449,7 +449,7 @@ public class DefaultCaret extends Rectangle
   protected void positionCaret(MouseEvent event)
   {
     int newDot = getComponent().viewToModel(event.getPoint());
-    moveDot(newDot);
+    setDot(newDot);
   }
 
   /**

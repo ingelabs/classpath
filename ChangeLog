@@ -1,3 +1,10 @@
+2005-11-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/DefaultCaret.java
+	(positionCaret): Call setDot instead of moveDot.
+	* javax/swing/text/PlainView.java
+	(viewToModel): Exclude the final newline character from calculation.
+
 2005-11-03  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/announce/20051102.wml: New file.
