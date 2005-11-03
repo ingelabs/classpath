@@ -51,6 +51,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventListener;
 
+import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
@@ -327,7 +328,7 @@ public class DefaultCaret extends Rectangle
    */
   public void mouseDragged(MouseEvent event)
   {
-    // FIXME: Implement this properly.
+    moveCaret(event);
   }
 
   /**
@@ -357,7 +358,7 @@ public class DefaultCaret extends Rectangle
    */
   public void mouseClicked(MouseEvent event)
   {
-    // FIXME: Implement this properly.
+    // TODO: Implement double- and triple-click behaviour here.
   }
 
   /**
@@ -379,7 +380,7 @@ public class DefaultCaret extends Rectangle
    */
   public void mouseExited(MouseEvent event)
   {
-    // TODO: What to do here, if anything?
+    // Nothing to do here.
   }
 
   /**
@@ -392,10 +393,7 @@ public class DefaultCaret extends Rectangle
    */
   public void mousePressed(MouseEvent event)
   {
-    // FIXME: Implement this properly.
-    if (!(event.getButton() == MouseEvent.BUTTON1))
-      return;
-    setDot(textComponent.viewToModel(event.getPoint()));
+    positionCaret(event);
   }
 
   /**
@@ -438,7 +436,8 @@ public class DefaultCaret extends Rectangle
    */
   protected void moveCaret(MouseEvent event)
   {
-    // FIXME: Implement this properly.
+    int newDot = getComponent().viewToModel(event.getPoint());
+    moveDot(newDot);
   }
 
   /**
@@ -449,7 +448,8 @@ public class DefaultCaret extends Rectangle
    */
   protected void positionCaret(MouseEvent event)
   {
-    // FIXME: Implement this properly.
+    int newDot = getComponent().viewToModel(event.getPoint());
+    moveDot(newDot);
   }
 
   /**
@@ -767,6 +767,7 @@ public class DefaultCaret extends Rectangle
   {
     this.dot = dot;
     handleHighlight();
+    adjustVisibility(this);
     repaint();
   }
 
@@ -784,6 +785,7 @@ public class DefaultCaret extends Rectangle
     this.dot = dot;
     this.mark = dot;
     handleHighlight();
+    adjustVisibility(this);
     repaint();
   }
 
@@ -867,6 +869,17 @@ public class DefaultCaret extends Rectangle
     if (height <= 0)
       height = getComponent().getHeight();
     repaint();
+  }
+
+  /**
+   * Adjusts the text component so that the caret is visible. This default
+   * implementation simply calls
+   * {@link JComponent#scrollRectToVisible(Rectangle)} on the text component.
+   * Subclasses may wish to change this.
+   */
+  protected void adjustVisibility(Rectangle rect)
+  {
+    getComponent().scrollRectToVisible(rect);
   }
 
   /**

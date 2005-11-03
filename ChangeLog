@@ -1,5 +1,18 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultCaret.java
+	(mouseDragged): Call moveCaret.
+	(mouseClicked): Made TODO comment more precise.
+	(mouseExited): Replaced TODO comment with Nothing to do comment.
+	(mousePressed): Call positionCaret.
+	(moveCaret): Implemented.
+	(positionCaret): Implemented.
+	(moveDot): Call adjustVisibility.
+	(setDot): Call adjustVisibility.
+	(adjustVisibility): New method.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/Utilities.java
 	(getPositionAbove): New utility method.
 	(getPositionBelow): New utility method.
