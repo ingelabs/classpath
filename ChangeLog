@@ -1,5 +1,10 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.getNextVisualPositionFrom): New method.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/DefaultStyledDocument.java
 	(AttributeUndoableEdit): New inner class.
 	(StyleChangeListener): New inner class.
