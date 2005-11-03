@@ -129,6 +129,8 @@ public class GdkGraphics extends Graphics
   {
     initState (component);
     color = component.awtComponent.getForeground ();
+    if (color == null)
+      color = Color.BLACK;
     Dimension d = component.awtComponent.getSize ();
     clip = new Rectangle (0, 0, d.width, d.height);
   }
@@ -138,6 +140,8 @@ public class GdkGraphics extends Graphics
   {
     initStateUnlocked (component);
     color = component.awtComponent.getForeground ();
+    if (color == null)
+      color = Color.BLACK;
     Dimension d = component.awtComponent.getSize ();
     clip = new Rectangle (0, 0, d.width, d.height);
   }

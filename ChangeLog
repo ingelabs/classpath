@@ -1,5 +1,11 @@
 2005-11-02  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/peer/gtk/GdkGraphics.java (initComponentGraphics): Set
+	color to BLACK when getForeground() returns null.
+	(initComponentGraphicsUnlocked): Likewise.
+
+2005-11-02  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/Timer.java (Waker.run): Synchronize on queueLock and use
 	queueLock.wait(), not Thread.sleep().
 	(start): Synchronize on queueLock and check whether waker is null.
