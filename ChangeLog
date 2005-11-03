@@ -1,5 +1,17 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultStyledDocument.java
+	(AttributeUndoableEdit): New inner class.
+	(StyleChangeListener): New inner class.
+	(styleChangeListener): New field.
+	(addStyle): Add styleChangeListener to new style.
+	(getStyleNames): New method.
+	(styleChanged): New method.
+	(insert): New method.
+	(create): New method.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/DefaultTextUI.java: New file.
 
 2005-11-02  Roman Kennke  <kennke@aicas.com>
