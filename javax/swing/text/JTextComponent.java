@@ -1347,7 +1347,7 @@ public abstract class JTextComponent extends JComponent
     start = Math.max(start, 0);
     start = Math.min(start, length);
 
-    end = Math.max(end, 0);
+    end = Math.max(end, start);
     end = Math.min(end, length);
 
     setCaretPosition(start);

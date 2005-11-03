@@ -73,6 +73,12 @@ public class WrappedPlainView extends BoxView implements TabExpander
   /** A ViewFactory that creates WrappedLines **/
   ViewFactory viewFactory = new WrappedLineCreator();
   
+  /** The start of the selected text **/
+  int selectionStart;
+  
+  /** The end of the selected text **/
+  int selectionEnd;
+  
   /**
    * The instance returned by {@link #getLineBuffer()}.
    */
@@ -144,7 +150,44 @@ public class WrappedPlainView extends BoxView implements TabExpander
   {
     try
     {
-      drawUnselectedText(g, x, y, p0, p1);
+      // We have to draw both selected and unselected text.  There are
+      // several cases:
+      //  - entire range is unselected
+      //  - entire range is selected
+      //  - start of range is selected, end of range is unselected
+      //  - start of range is unselected, end of range is selected
+      //  - middle of range is selected, start and end of range is unselected
+      
+      // entire range unselected:      
+      if ((selectionStart == selectionEnd) || 
+          (p0 > selectionEnd || p1 < selectionStart))
+        drawUnselectedText(g, x, y, p0, p1);
+      
+      // entire range selected
+      else if (p0 >= selectionStart && p1 <= selectionEnd)
+        drawSelectedText(g, x, y, p0, p1);
+      
+      // start of range selected, end of range unselected
+      else if (p0 >= selectionStart)
+        {
+          x = drawSelectedText(g, x, y, p0, selectionEnd);
+          drawUnselectedText(g, x, y, selectionEnd, p1);
+        }
+      
+      // start of range unselected, end of range selected
+      else if (selectionStart > p0 && selectionEnd > p1)
+        {
+          x = drawUnselectedText(g, x, y, p0, selectionStart);
+          drawSelectedText(g, x, y, selectionStart, p1);
+        }
+      
+      // middle of range selected
+      else if (selectionStart > p0)
+        {
+          x = drawUnselectedText(g, x, y, p0, selectionStart);
+          x = drawSelectedText(g, x, y, selectionStart, selectionEnd);
+          drawUnselectedText(g, x, y, selectionEnd, p1);
+        }        
     }
     catch (BadLocationException ble)
     {
@@ -185,7 +228,7 @@ public class WrappedPlainView extends BoxView implements TabExpander
    */
   protected int drawUnselectedText(Graphics g, int x, int y, int p0, int p1)
       throws BadLocationException
-  {
+  {    
     JTextComponent textComponent = (JTextComponent) getContainer();
     if (textComponent.isEnabled())
       g.setColor(unselectedColor);
@@ -320,6 +363,9 @@ public class WrappedPlainView extends BoxView implements TabExpander
    */
   public void paint(Graphics g, Shape a)
   {
+    JTextComponent comp = (JTextComponent)getContainer();
+    selectionStart = comp.getSelectionStart();
+    selectionEnd = comp.getSelectionEnd();
     updateMetrics();
     super.paint(g, a);
   }
@@ -360,6 +406,10 @@ public class WrappedPlainView extends BoxView implements TabExpander
       unselectedColor = textComponent.getForeground();
       disabledColor = textComponent.getDisabledTextColor();
 
+      // FIXME: this is a hack, for some reason textComponent.getSelectedColor
+      // was returning black, which is not visible against a black background
+      selectedColor = Color.WHITE;
+      
       Rectangle rect = s.getBounds();
       int lineHeight = metrics.getHeight();
 

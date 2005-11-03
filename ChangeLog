@@ -1,3 +1,17 @@
+2005-11-03  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/JTextComponent.java:
+	(select): The end index cannot be smaller than the start index, changed
+	Math.max(end, 0) to Math.max(end, start).
+	* javax/swing/text/WrappedPlainView.java:
+	(selectionStart): New package private field.
+	(selectionEnd): Likewise.
+	(drawLine): Implemented to call drawUnselectedText and drawSelectedText
+	on the appropriate parts of the line.  Before it just drew the whole
+	line with drawUnselectedText.
+	(paint): Store the start and end of the selection.
+	(WrappedLine.paint): Set the selected color to Color.WHITE.
+
 2005-11-03  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/table/DefaultTableCellRenderer.java
