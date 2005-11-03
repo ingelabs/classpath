@@ -1,3 +1,10 @@
+2005-11-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR swing/24650
+	* javax/swing/text/PlainView.java (viewToModel)):
+	The end of line symbol (0xA), if being the last member in the 
+	obtained text, should not be counted. 
+
 2005-11-03  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicMenuItemUI.java:

@@ -330,15 +330,20 @@ public class PlainView extends View implements TabExpander
     int start = line.getStartOffset();
     int end = line.getEndOffset();
     try
-    {
-      doc.getText(start, end - start, s);
-    }
+      {
+        doc.getText(start, end - start, s);
+        
+        // The end of line symbol (0xA), if being the last member in the
+        // obtained text, should not be counted.
+        if (s.last()==0xA && end>start)
+          s.count--;
+      }
     catch (BadLocationException ble)
-    {
-      AssertionError ae = new AssertionError("Unexpected bad location");
-      ae.initCause(ble);
-      throw ae;
-    }
+      {
+        AssertionError ae = new AssertionError("Unexpected bad location");
+        ae.initCause(ble);
+        throw ae;
+      }
     
     int pos = Utilities.getTabbedTextOffset(s, metrics, rec.x, (int)x, this, start);
     return Math.max (0, pos);
