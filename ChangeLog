@@ -1,5 +1,12 @@
 2005-11-02  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/Timer.java (Waker.run): Synchronize on queueLock and use
+	queueLock.wait(), not Thread.sleep().
+	(start): Synchronize on queueLock and check whether waker is null.
+	(stop): Synchronize on queueLock and notifyAll().
+
+2005-11-02  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac: Set version to 0.19.
 	* NEWS: Add date of release.
 
