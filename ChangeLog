@@ -1,3 +1,9 @@
+2005-11-03  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/announce/20051102.wml: New file.
+	* doc/www.gnu.org/newsitems.txt: Add 0.19 release announcement.
+	* doc/www.gnu.org/downloads/downloads.wml: Add 0.19.
+
 2005-11-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/table/DefaultTableCellRenderer.java
