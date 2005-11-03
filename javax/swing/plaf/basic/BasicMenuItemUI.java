@@ -169,9 +169,9 @@ public class BasicMenuItemUI extends MenuItemUI
   private int defaultAcceleratorLabelGap = 10;
 
   /**
-   * Number of spaces between the text and the arrow icon.
+   * The gap between different menus on the MenuBar.
    */
-  private int defaultTextArrowIconGap = 10;
+  private int MenuGap = 10;
   
   /**
    * Creates a new BasicMenuItemUI object.
@@ -350,7 +350,13 @@ public class BasicMenuItemUI extends MenuItemUI
 
     if (arrowIcon != null && (c instanceof JMenu))
       {
-        d.width = d.width + arrowIcon.getIconWidth() + defaultTextArrowIconGap;
+        Component parent = m.getParent();
+        if (parent instanceof JPopupMenu)
+          // It is a MenuItem
+          d.width += arrowIcon.getIconWidth() + parent.getWidth();
+        else
+          // It is a Menu, no arrowIcon painted.
+          d.width += MenuGap;
 
         if (arrowIcon.getIconHeight() > d.height)
           d.height = arrowIcon.getIconHeight();
@@ -520,7 +526,7 @@ public class BasicMenuItemUI extends MenuItemUI
     int horAlign = m.getHorizontalAlignment();
     int vertTextPos = m.getVerticalTextPosition();
     int horTextPos = m.getHorizontalTextPosition();
-
+    
     Font f = m.getFont();
     g.setFont(f);
     FontMetrics fm = g.getFontMetrics(f);

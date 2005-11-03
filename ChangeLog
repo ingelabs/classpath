@@ -1,3 +1,16 @@
+2005-11-03  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	Changed field to be the gap between the different
+	menu's instead. defaultTextArrowGap is not needed.
+	(getPreferredMenuItemSize): Adjusted preferred size of
+	Menu Item with an arrowIcon to be the size of the
+	popupMenu. If its parent is not a popupMenu, then
+	it is a new Menu on a MenuBar.
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(paintFocus): Height of focus border should not be 
+	adjusted. It was being cutoff.
+
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
