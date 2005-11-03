@@ -522,4 +522,20 @@ public class Utilities
       // just break it on the character boundary
       return mark;
   }
+
+  /**
+   * Returns the paragraph element in the text component <code>c</code> at
+   * the specified location <code>offset</code>.
+   *
+   * @param c the text component
+   * @param offset the offset of the paragraph element to return
+   *
+   * @return the paragraph element at <code>offset</code>
+   */
+  public static Element getParagraphElement(JTextComponent c, int offset)
+  {
+    Element root = c.getDocument().getDefaultRootElement();
+    int parIndex = root.getElementIndex(offset);
+    return root.getElement(parIndex);
+  }
 }

@@ -1,3 +1,34 @@
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/DefaultCaret.java
+	(BlinkTimerListener): New inner class. Listens for when the
+	blink timer fires and updates the visible flag accordingly.
+	(visible): Default value for visible should be false.
+	(blinkTimer): New field.
+	(Caret): New constructor.
+	(focusGained): Make the caret visible.
+	(focusLost): Make caret invisible if the focus lost is permanent.
+	(deinstall): Deinstall the blink timer.
+	(repaint): Call getComponent() instead of directly accessing the
+	textComponent field.
+	(paint): Call getComponent() instead of directly accessing the
+	textComponent field. Added an assert for the 'this should never
+	happen' comment. Update the caret rectangle if damage hasn't been
+	called before.
+	(setBlinkRate): Set the blink rate in the timer if there is already
+	a timer present.
+	(setVisible): Call damage on the caret's location. Start/Stop blink
+	timer.
+	(damage): New method. Updates the caret's bounds.
+	* javax/swing/text/JTextComponent.java
+	(CaretBlinkTimer): Removed unneeded inner class.
+	(caretBlinkTimer): Removed unneeded field.
+	(JTextComponent): Removed initialization of blink timer.
+	(setEditable): Removed starting of blink timer.
+	(setCaret): Likewise.
+	* javax/swing/text/Utilities.java
+	(getParagraphElement): New utility method.
+
 2005-11-02  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java (initComponentGraphics): Set
