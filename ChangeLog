@@ -1,5 +1,9 @@
 2005-11-02  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultTextUI.java: New file.
+
+2005-11-02  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/DefaultCaret.java
 	(mouseDragged): Call moveCaret.
 	(mouseClicked): Made TODO comment more precise.
