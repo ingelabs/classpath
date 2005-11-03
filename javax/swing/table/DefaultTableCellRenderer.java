@@ -50,6 +50,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
+import javax.swing.plaf.ColorUIResource;
 
 /**
  * Class to display every cells.
@@ -149,13 +150,14 @@ public class DefaultTableCellRenderer extends JLabel
         setForeground(table.getForeground());
       }
 
-      if (hasFocus)
-        {
-          setBackground(getBackground());
-          setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-        }
-      else
-        setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+    if (hasFocus)
+      {
+        if (!(getBackground() instanceof ColorUIResource)) 
+          setBackground(table.getBackground());
+        setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
+      }
+    else
+      setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
     setEnabled(table.isEnabled());
     setFont(table.getFont());

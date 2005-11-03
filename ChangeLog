@@ -1,3 +1,19 @@
+2005-11-03  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(mousePressed): If the control icon is clicked, the
+	path selected should not be changed.
+	(paintRecursively): Moved call to getChildCount before
+	loop.
+	(paintRow): Added a check to prevent NPE.
+	(updateCurrentVisiblePath): Made this slightly more efficent. 
+	Instead of checking each path, we can check the siblings if the
+	current node is not expanded.
+	* javax/swing/table/DefaultTableCellRenderer.java
+	(getTableCellRendererComponent): Fixed indentation, and changed
+	to set the background color if it is not an instance of ColorUIResource.
+	Prevents overriding a user-set color.
+
 2005-11-03  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/WrappedPlainView.java: Fixed some > 80 chars lines.
