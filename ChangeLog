@@ -1,5 +1,13 @@
 2005-11-04  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(getMinimumSize): New method.
+	* javax/swing/text/FieldView.java
+	(getPreferredSpan): Added assert that replaces a 'should never happen'
+	comment.
+
+2005-11-04  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SizeRequirements.java
 	(getTiledSizeRequirements): Added check for overflows.
 	(adjustGreater): Fixed overflow handling through usage of long

@@ -799,6 +799,18 @@ public abstract class BasicTextUI extends TextUI
   }
 
   /**
+   * Returns the minimum size for text components. This returns the size
+   * of the component's insets.
+   *
+   * @return the minimum size for text components
+   */
+  public Dimension getMinimumSize(JComponent c)
+  {
+    Insets i = c.getInsets();
+    return new Dimension(i.left + i.right, i.top + i.bottom);
+  }
+
+  /**
    * Paints the text component.
    *
    * @param g the <code>Graphics</code> context to paint to

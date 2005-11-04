@@ -125,16 +125,16 @@ public class FieldView extends PlainView
 
     try
       {
-	text = elem.getDocument().getText(elem.getStartOffset(),
-					  elem.getEndOffset());
+        text = elem.getDocument().getText(elem.getStartOffset(),
+                                          elem.getEndOffset());
       }
     catch (BadLocationException e)
       {
-	// This should never happen.
-	text = "";
+        assert false : e.toString();
+        text = "";
       }
-    
-    return fm.stringWidth(text) + 30;
+
+    return fm.stringWidth(text);
   }
 
   public int getResizeWeight(int axis)
