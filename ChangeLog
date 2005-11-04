@@ -1,3 +1,16 @@
+2005-11-04  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(paintMenuItem): Changed to use isTopLevelMenu rather than checking
+	instance of parent.
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java
+	(popupMenuWillBecomeInvisible): Added check to prevent NPE.
+	* javax/swing/Popup.java:
+	Added new private field.
+	(LightweightPopup): Initialized layeredPane.
+	(show): Removed unneeded code.
+	(hide): Likewise.
+
 2005-11-04  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/table/DefaultTableCellRenderer.java

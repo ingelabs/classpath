@@ -350,10 +350,9 @@ public class BasicMenuItemUI extends MenuItemUI
 
     if (arrowIcon != null && (c instanceof JMenu))
       {
-        Component parent = m.getParent();
-        if (parent instanceof JPopupMenu)
+        if (!((JMenu) c).isTopLevelMenu())
           // It is a MenuItem
-          d.width += arrowIcon.getIconWidth() + parent.getWidth();
+          d.width += arrowIcon.getIconWidth() + m.getParent().getWidth();
         else
           // It is a Menu, no arrowIcon painted.
           d.width += MenuGap;

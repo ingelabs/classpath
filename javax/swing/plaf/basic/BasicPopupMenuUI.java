@@ -273,23 +273,26 @@ public class BasicPopupMenuUI extends PopupMenuUI
 
       RootPaneContainer rootContainer = (RootPaneContainer) SwingUtilities
                                         .getRoot(invoker);
-      ((Container) rootContainer).removeComponentListener(topWindowListener);
-
-      // If this popup menu is the last popup menu visible on the screen, then
-      // stop interrupting mouse events in the glass pane before hiding this 
-      // last popup menu.
-      boolean topLevelMenu = (popupMenu.getInvoker() instanceof JMenu)
-                             && ((JMenu) popupMenu.getInvoker())
-                                .isTopLevelMenu();
-
-      if (topLevelMenu || ! (popupMenu.getInvoker() instanceof MenuElement))
+      if (rootContainer != null)
         {
-          // set glass pane not to interrupt mouse events and remove
-	  // mouseInputListener
-	  Container glassPane = (Container) rootContainer.getGlassPane();
-	  glassPane.setVisible(false);
-	  glassPane.removeMouseListener(mouseInputListener);
-	  mouseInputListener = null;
+          ((Container) rootContainer).removeComponentListener(topWindowListener);
+
+          // If this popup menu is the last popup menu visible on the screen,
+          // then
+          // stop interrupting mouse events in the glass pane before hiding this
+          // last popup menu.
+          boolean topLevelMenu = (popupMenu.getInvoker() instanceof JMenu)
+                                 && ((JMenu) popupMenu.getInvoker()).isTopLevelMenu();
+
+          if (topLevelMenu || !(popupMenu.getInvoker() instanceof MenuElement))
+            {
+              // set glass pane not to interrupt mouse events and remove
+              // mouseInputListener
+              Container glassPane = (Container) rootContainer.getGlassPane();
+              glassPane.setVisible(false);
+              glassPane.removeMouseListener(mouseInputListener);
+              mouseInputListener = null;
+            }
         }
     }
 
