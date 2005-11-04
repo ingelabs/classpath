@@ -1,5 +1,12 @@
 2005-11-04  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/table/DefaultTableCellRenderer.java
+	(getTableCellRendererComponent): Call super.setBackground() or
+	super.setForeground() to avoid overriding custom set background or
+	foreground colors. Set the UI focus colors when focused.
+
+2005-11-04  Roman Kennke  <kennke@aicas.com>
+
 	* examples/gnu/classpath/examples/swing/TextFieldDemo.java: New file.
 	Demonstrates the JTextFields in various states.
 	* examples/gnu/classpath/examples/swing/Demo.java: Replaced the

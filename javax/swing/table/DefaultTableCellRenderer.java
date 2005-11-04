@@ -153,23 +153,27 @@ public class DefaultTableCellRenderer extends JLabel
 
     if (isSelected)
       {
-        setBackground(table.getSelectionBackground());
-        setForeground(table.getSelectionForeground());
+        super.setBackground(table.getSelectionBackground());
+        super.setForeground(table.getSelectionForeground());
       }
     else
       {
         if (background != null)
-          setBackground(background);
+          super.setBackground(background);
         else
-          setBackground(table.getBackground());
+          super.setBackground(table.getBackground());
         if (foreground != null)
-          setForeground(foreground);
+          super.setForeground(foreground);
         else
-          setForeground(table.getForeground());
+          super.setForeground(table.getForeground());
       }
 
     if (hasFocus)
-      setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
+      {
+        setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
+        super.setBackground(UIManager.getColor("Table.focusCellBackground"));
+        super.setForeground(UIManager.getColor("Table.focusCellForeground"));
+      }
     else
       setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
