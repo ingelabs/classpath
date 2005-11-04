@@ -1,3 +1,7 @@
+2005-11-04  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java: Reformatted.
+
 2005-11-04  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Window.java

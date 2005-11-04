@@ -509,37 +509,37 @@ public class DefaultStyledDocument extends AbstractDocument
     void split(Element el, int offset)
     {
       if (el instanceof AbstractElement)
-	{
-	  AbstractElement ael = (AbstractElement) el;
-	  int startOffset = ael.getStartOffset();
-	  int endOffset = ael.getEndOffset();
-	  int len = endOffset - startOffset;
-	  if (startOffset != offset && endOffset != offset)
-	    {
-	      Element paragraph = ael.getParentElement();
-	      if (paragraph instanceof BranchElement)
-		{
-		  BranchElement par = (BranchElement) paragraph;
-		  Element child1 = createLeafElement(par, ael, startOffset,
-						     offset);
-		  Element child2 = createLeafElement(par, ael, offset,
-						     endOffset);
-		  int index = par.getElementIndex(startOffset);
-          Element[] add = new Element[]{ child1, child2 };
-		  par.replace(index, 1, add);
-          documentEvent.addEdit(new ElementEdit(par, index,
-                                                new Element[]{ el },
-                                                add));
-		}
+        {
+          AbstractElement ael = (AbstractElement) el;
+          int startOffset = ael.getStartOffset();
+          int endOffset = ael.getEndOffset();
+          int len = endOffset - startOffset;
+          if (startOffset != offset && endOffset != offset)
+            {
+              Element paragraph = ael.getParentElement();
+              if (paragraph instanceof BranchElement)
+                {
+                  BranchElement par = (BranchElement) paragraph;
+                  Element child1 = createLeafElement(par, ael, startOffset,
+                                                     offset);
+                  Element child2 = createLeafElement(par, ael, offset,
+                                                     endOffset);
+                  int index = par.getElementIndex(startOffset);
+                  Element[] add = new Element[]{ child1, child2 };
+                  par.replace(index, 1, add);
+                  documentEvent.addEdit(new ElementEdit(par, index,
+                                                        new Element[]{ el },
+                                                        add));
+                }
               else
                 throw new AssertionError("paragraph elements are expected to "
                                          + "be instances of "
 			  + "javax.swing.text.AbstractDocument.BranchElement");
-	    }
-	}
+            }
+        }
       else
-	throw new AssertionError("content elements are expected to be "
-				 + "instances of "
+        throw new AssertionError("content elements are expected to be "
+                                 + "instances of "
 			+ "javax.swing.text.AbstractDocument.AbstractElement");
     }
 
@@ -946,10 +946,10 @@ public class DefaultStyledDocument extends AbstractDocument
   {
     Element element = getDefaultRootElement();
 
-    while (! element.isLeaf())
+    while (!element.isLeaf())
       {
-	int index = element.getElementIndex(position);
-	element = element.getElement(index);
+        int index = element.getElementIndex(position);
+        element = element.getElement(index);
       }
     
     return element;
@@ -1097,34 +1097,34 @@ public class DefaultStyledDocument extends AbstractDocument
     int paragraphCount =  root.getElementCount();
     for (int pindex = 0; pindex < paragraphCount; pindex++)
       {
-	Element paragraph = root.getElement(pindex);
-	// Skip paragraphs that lie outside the interval.
-	if ((paragraph.getStartOffset() > offset + length)
-	    || (paragraph.getEndOffset() < offset))
-	  continue;
+        Element paragraph = root.getElement(pindex);
+        // Skip paragraphs that lie outside the interval.
+        if ((paragraph.getStartOffset() > offset + length)
+            || (paragraph.getEndOffset() < offset))
+          continue;
 
-	// Visit content elements within this paragraph
-	int contentCount = paragraph.getElementCount();
-	for (int cindex = 0; cindex < contentCount; cindex++)
-	  {
-	    Element content = paragraph.getElement(cindex);
-	    // Skip content that lies outside the interval.
-	    if ((content.getStartOffset() > offset + length)
-		|| (content.getEndOffset() < offset))
-	      continue;
+        // Visit content elements within this paragraph
+        int contentCount = paragraph.getElementCount();
+        for (int cindex = 0; cindex < contentCount; cindex++)
+          {
+            Element content = paragraph.getElement(cindex);
+            // Skip content that lies outside the interval.
+            if ((content.getStartOffset() > offset + length)
+                || (content.getEndOffset() < offset))
+              continue;
 
-	    if (content instanceof AbstractElement)
-	      {
-		AbstractElement el = (AbstractElement) content;
-		if (replace)
-		  el.removeAttributes(el);
-		el.addAttributes(attributes);
-	      }
-	    else
-	      throw new AssertionError("content elements are expected to be"
-				       + "instances of "
+            if (content instanceof AbstractElement)
+              {
+                AbstractElement el = (AbstractElement) content;
+                if (replace)
+                  el.removeAttributes(el);
+                el.addAttributes(attributes);
+              }
+            else
+              throw new AssertionError("content elements are expected to be"
+                                       + "instances of "
 		       + "javax.swing.text.AbstractDocument.AbstractElement");
-	  }
+          }
       }
 
     fireChangedUpdate(ev);
@@ -1195,8 +1195,8 @@ public class DefaultStyledDocument extends AbstractDocument
     catch (BadLocationException ex)
       {
         AssertionError ae = new AssertionError("Unexpected bad location");
-	ae.initCause(ex);
-	throw ae;
+        ae.initCause(ex);
+        throw ae;
       }
 
     int len = 0;
