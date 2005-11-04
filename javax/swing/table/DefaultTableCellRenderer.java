@@ -50,7 +50,6 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
-import javax.swing.plaf.ColorUIResource;
 
 /**
  * Class to display every cells.
@@ -120,6 +119,8 @@ public class DefaultTableCellRenderer extends JLabel
   public void updateUI()
   {
     super.updateUI();
+    background = null;
+    foreground = null;
   }
 
   /**
@@ -171,8 +172,11 @@ public class DefaultTableCellRenderer extends JLabel
     if (hasFocus)
       {
         setBorder(UIManager.getBorder("Table.focusCellHighlightBorder"));
-        super.setBackground(UIManager.getColor("Table.focusCellBackground"));
-        super.setForeground(UIManager.getColor("Table.focusCellForeground"));
+        if (table.isCellEditable(row, column))
+          {
+            super.setBackground(UIManager.getColor("Table.focusCellBackground"));
+            super.setForeground(UIManager.getColor("Table.focusCellForeground"));
+          }
       }
     else
       setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -180,6 +184,11 @@ public class DefaultTableCellRenderer extends JLabel
     setEnabled(table.isEnabled());
     setFont(table.getFont());
 
+    // If the current background is equal to the table's background, then we
+    // can avoid filling the background by setting the renderer opaque.
+    Color back = getBackground();
+    setOpaque(back != null && back.equals(table.getBackground()));
+    
     return this;    
   }
 

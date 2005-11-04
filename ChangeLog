@@ -1,6 +1,16 @@
 2005-11-04  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/table/DefaultTableCellRenderer.java
+	(updateUI): Set the background and foreground color fields to null
+	here so that installing the LabelUI does not interfere with our
+	custom set colors.
+	(getTableCellRendererComponent): Only set UI focus colors when
+	cell is actually editable. Added optimization for the case
+	when background is equal to table background.
+
+2005-11-04  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/table/DefaultTableCellRenderer.java
 	(getTableCellRendererComponent): Call super.setBackground() or
 	super.setForeground() to avoid overriding custom set background or
 	foreground colors. Set the UI focus colors when focused.
