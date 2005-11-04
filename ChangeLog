@@ -1,3 +1,9 @@
+2005-11-04  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/image/BufferedImage.java (BufferedImage): Implement
+	Transparency.
+	(getTransparency): New method.
+
 2005-11-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
         * gnu/CORBA/SocketRepository.java (sockets): Changed type to
