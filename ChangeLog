@@ -1,5 +1,12 @@
 2005-11-04  Roman Kennke  <kennke@aicas.com>
 
+	* examples/gnu/classpath/examples/swing/TextFieldDemo.java: New file.
+	Demonstrates the JTextFields in various states.
+	* examples/gnu/classpath/examples/swing/Demo.java: Replaced the
+	old textfield demo with the new one.
+
+2005-11-04  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(getMinimumSize): New method.
 	* javax/swing/text/FieldView.java
@@ -51,8 +58,8 @@
 	current node is not expanded.
 	* javax/swing/table/DefaultTableCellRenderer.java
 	(getTableCellRendererComponent): Fixed indentation, and changed
-	to set the background color if it is not an instance of ColorUIResource.
-	Prevents overriding a user-set color.
+	to set the background color if it is not an instance of
+	ColorUIResource. Prevents overriding a user-set color.
 
 2005-11-03  Anthony Balkissoon  <abalkiss@redhat.com>
 

@@ -208,7 +208,7 @@ public class Demo
 		    examples);
 
     new PopUpAction("TextField",
-		    mkTextField("Hello, World!"),
+		    (new TextFieldDemo("TextField Demo")).createContent(),
 		    examples);
 
     new PopUpAction("ColorChooser",
@@ -1075,7 +1075,7 @@ public class Demo
 		    panel);
 
     new PopUpAction("TextField",
-		    mkTextField("Hello, World!"),
+		    (new TextFieldDemo("TextField Demo")).createContent(),
 		    panel);
 
     new PopUpAction("ColorChooser",
@@ -1108,10 +1108,5 @@ public class Demo
 	}
       });
     return panel;
-  }
-
-  public static JTextField mkTextField(String sometext)
-  {
-    return new JTextField(sometext, 40);
   }
 }
