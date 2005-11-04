@@ -1,3 +1,9 @@
+2005-11-04  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Window.java
+	(setLocationRelativeTo): Implemented case when
+	component is not null.
+
 2005-11-04  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/image/BufferedImage.java (BufferedImage): Implement
