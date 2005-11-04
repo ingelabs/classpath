@@ -40,7 +40,7 @@ package gnu.CORBA;
 
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -56,7 +56,7 @@ public class SocketRepository
   /**
    * The socket map.
    */
-  private static Hashtable sockets = new Hashtable();
+  private static HashMap sockets = new HashMap();
   
   /**
    * Put a socket. This method also discards all not reusable sockets from
@@ -68,14 +68,18 @@ public class SocketRepository
    */
   public static void put_socket(Object key, Socket s)
   {
-    sockets.put(key, s);
-    gc();
+    synchronized (sockets)
+      {
+        sockets.put(key, s);
+        gc();
+      }
   }
   
   /**
-   * Removes all non reusable sockets.
+   * Removes all non reusable sockets. As it is private,
+   * we know we call from the synchronized code already. 
    */
-  public static void gc()
+  private static void gc()
   {
     Iterator iter = sockets.entrySet().iterator();
     
@@ -107,38 +111,41 @@ public class SocketRepository
    * @param key a socket key.
    * 
    * @return an opened socket for reuse, null if no such available or it is
-   * closed, its input or output has been shutown or otherwise the socket
-   * is not reuseable.
+   * closed, its input or output has been shutown or otherwise the socket is not
+   * reuseable.
    */
   public static Socket get_socket(Object key)
   {
     if (true)
       return null;
-    
-    Socket s = (Socket) sockets.get(key);
-    if (s == null)
-      return null;
-    
-    // Ensure that the socket is fully reusable.
-    else if (not_reusable(s))
+
+    synchronized (sockets)
       {
-        sockets.remove(key);
-        return null;
-      }
-    else
-      {
-        try
+        Socket s = (Socket) sockets.get(key);
+        if (s == null)
+          return null;
+
+        // Ensure that the socket is fully reusable.
+        else if (not_reusable(s))
           {
-            // Set one minute time out that will be changed later.
-            s.setSoTimeout(60*1000);
+            sockets.remove(key);
+            return null;
           }
-        catch (SocketException e)
+        else
           {
-            s = null;
+            try
+              {
+                // Set one minute time out that will be changed later.
+                s.setSoTimeout(60 * 1000);
+              }
+            catch (SocketException e)
+              {
+                s = null;
+              }
+
+            sockets.remove(key);
+            return s;
           }
-        
-        sockets.remove(key);
-        return s;
       }
   }
 }
