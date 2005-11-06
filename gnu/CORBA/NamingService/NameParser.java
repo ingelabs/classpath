@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.CORBA.NamingService;
 
+import gnu.CORBA.Minor;
 import gnu.CORBA.OrbFunctional;
 import gnu.CORBA.IOR;
 import gnu.CORBA.Unexpected;
@@ -53,7 +54,13 @@ import org.omg.CORBA.portable.ObjectImpl;
 import org.omg.CosNaming.NamingContext;
 import org.omg.CosNaming._NamingContextStub;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -88,6 +95,21 @@ public class NameParser
    * The IOR prefix.
    */
   public static final String pxIOR = "ior";
+  
+  /**
+   * The file:// prefix.
+   */
+  public static final String pxFILE = "file://";
+  
+  /**
+   * The ftp:// prefix.
+   */
+  public static final String pxFTP = "ftp://";
+  
+  /**
+   * The http:// prefix.
+   */
+  public static final String pxHTTP = "http://";
 
   /**
    * Marks iiop protocol.
@@ -132,6 +154,9 @@ public class NameParser
    * 2. corbaloc:rir:[/key] <br>
    * 3. corbaname:[iiop][version.subversion@]:host[:port]/key <br>
    * 4. corbaname:rir:[/key] <br>
+   * 5. file://[file name]<br>
+   * 6. http://[url]<br>
+   * 7. ftp://[url]<br>
    * 
    * Protocol defaults to IOP, the object key defaults to the NameService.
    * 
@@ -144,6 +169,28 @@ public class NameParser
     OrbFunctional orb)
     throws BAD_PARAM
   {
+    return corbaloc(corbaloc, orb, 0);
+  }
+  
+  /**
+   * Parse controlling against the infinite recursion loop.
+   */
+  private org.omg.CORBA.Object corbaloc(String corbaloc,
+    OrbFunctional orb, int recursion)
+  {
+    // The used CORBA specification does not state how many times we should to
+    //redirect, but the infinite loop may be used to knock out the system.
+    // by malicious attempt.
+    if (recursion > 10)
+      throw new DATA_CONVERSION("More than 10 redirections");
+    
+    if (corbaloc.startsWith(pxFILE))
+      return corbaloc(readFile(corbaloc.substring(pxFILE.length())), orb, recursion+1);
+    else if (corbaloc.startsWith(pxHTTP))
+      return corbaloc(readUrl(corbaloc), orb, recursion+1);
+    else if (corbaloc.startsWith(pxFTP))
+      return corbaloc(readUrl(corbaloc), orb, recursion+1);
+
     boolean corbaname;
 
     // The alternative addresses, if given.
@@ -301,6 +348,70 @@ public class NameParser
 
     else
       throw new DATA_CONVERSION("Unsupported protocol '" + t[p] + "'");
+  }
+  
+  /**
+   * Read IOR from the file in the local file system.
+   */
+  String readFile(String file)
+  {
+    File f = new File(file);
+    if (!f.exists())
+      {
+        DATA_CONVERSION err = new DATA_CONVERSION(f.getAbsolutePath()
+          + " does not exist.");
+        err.minor = Minor.Missing_IOR;
+      }
+    try
+      {
+        char[] c = new char[(int) f.length()];
+        FileReader fr = new FileReader(f);
+        fr.read(c);
+        fr.close();
+        return new String(c).trim();
+      }
+    catch (IOException ex)
+      {
+        DATA_CONVERSION d = new DATA_CONVERSION();
+        d.initCause(ex);
+        d.minor = Minor.Missing_IOR;
+        throw (d);
+      }
+  }
+  
+  /**
+   * Read IOR from the remote URL.
+   */
+  String readUrl(String url)
+  {
+    URL u;
+    try
+      {
+        u = new URL(url);
+      }
+    catch (MalformedURLException mex)
+      {
+        throw new BAD_PARAM("Malformed URL: '" + url + "'");
+      }
+
+    try
+      {
+        InputStreamReader r = new InputStreamReader(u.openStream());
+
+        StringBuffer b = new StringBuffer();
+        int c;
+
+        while ((c = r.read()) > 0)
+          b.append((char) c);
+
+        return b.toString().trim();
+      }
+    catch (Exception exc)
+      {
+        DATA_CONVERSION d = new DATA_CONVERSION("Reading " + url + " failed.");
+        d.minor = Minor.Missing_IOR;
+        throw d;
+      }
   }
 
   private org.omg.CORBA.Object resolve(org.omg.CORBA.Object object)

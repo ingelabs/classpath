@@ -1,3 +1,13 @@
+2005-11-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/Minor.java (IOR_missing): New minor code.
+	* gnu/CORBA/NamingService/NameParser.java (corbaloc): Implemented
+	file//, ftp:// and http:// support.
+	* gnu/javax/rmi/CORBA/UtilDelegateImpl.java (mapSystemException): 
+	Set the cause directly.
+	* org/omg/CORBA/DATA_CONVERSION.java,
+	org/omg/CORBA/ORB.java (string_to_object): Documentation update.
+
 2005-11-06  Chris Burdess  <dog@gnu.org>
 
 	* javax/xml/stream/XMLStreamWriterImpl.java: Fixed handling of

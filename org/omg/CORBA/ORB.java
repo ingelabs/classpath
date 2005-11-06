@@ -1024,6 +1024,12 @@ public abstract class ORB
    * that runs on the given host at the given port. The ORB expects to find 
    * there the {@link org.omg.CosNaming.NamingContext} under the key 
    * "NameService.<br>
+   * 7. file://[file name] Read the object definition string from the 
+   * file system<br>
+   * 8. http://[url] Read the object definition string from the provided
+   * url.<br>
+   * 9. ftp://[url] Read the object definition string from the provided
+   * url.<br>
    * 
    * <p>The default port is always 2809. The default iiop version is 1.0
    * that now may not always be supported, so we would recommend to specify
