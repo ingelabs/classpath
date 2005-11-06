@@ -1,3 +1,11 @@
+2005-11-06  Wolfgang Baer  <WBaer@gmx.de>
+
+	* java/io/File.java
+	(getParent): If pathname is "" return null.
+	(toURI): Also append separatorChar if path equals "".
+	(getAbsolutePath): If path equals "" only return the value
+	of the user.dir system property.
+
 2005-11-06  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/XMLStreamWriterImpl.java: Ensure that generated

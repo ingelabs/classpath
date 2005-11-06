@@ -457,6 +457,8 @@ public class File implements Serializable, Comparable
         else
           return drvDir;
       }
+    else if (path.equals(""))
+      return System.getProperty ("user.dir");
     else
       return System.getProperty ("user.dir") + separatorChar + path;
   }
@@ -543,6 +545,9 @@ public class File implements Serializable, Comparable
   {
     String prefix = null;
     int nameSeqIndex = 0;
+    
+    if (path.equals(""))
+      return null;
 
     // The "prefix", if present, is the leading "/" on UNIX and 
     // either the drive specifier (e.g. "C:") or the leading "\\"
@@ -954,8 +959,8 @@ public class File implements Serializable, Comparable
   public URI toURI()
   {
     String abspath = getAbsolutePath();
-
-    if (isDirectory())
+       
+    if (isDirectory() || path.equals(""))
       abspath = abspath + separatorChar;
 
     if (separatorChar == '\\')
