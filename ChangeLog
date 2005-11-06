@@ -1,3 +1,8 @@
+2005-11-06  Chris Burdess  <dog@gnu.org>
+
+	* javax/xml/stream/XMLStreamWriterImpl.java: Fixed handling of
+	namespaces when isPrefixDefaulting is set.
+
 2005-11-04  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java: Reformatted.

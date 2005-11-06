@@ -66,6 +66,7 @@ public class XMLStreamWriterImpl
   private boolean inStartElement;
   private boolean emptyElement;
   private NamespaceSupport namespaces;
+  private int count = 0;
 
   protected XMLStreamWriterImpl(Writer writer, String encoding,
                                 boolean prefixDefaulting)
@@ -128,7 +129,7 @@ public class XMLStreamWriterImpl
         if (!isDeclared)
           {
             if (prefixDefaulting)
-              prefix = XMLConstants.DEFAULT_NS_PREFIX;
+              prefix = createPrefix();
             else
               throw new XMLStreamException("namespace " + namespaceURI +
                                            " has not been declared");
@@ -140,13 +141,13 @@ public class XMLStreamWriterImpl
             writer.write(':');
           }
         writer.write(localName);
-        if (prefixDefaulting && !isDeclared)
+        inStartElement = true;
+        if (!isDeclared)
           {
             writeNamespace(prefix, namespaceURI);
           }
         
         elements.addLast(new String[] { prefix, localName });
-        inStartElement = true;
       }
     catch (IOException e)
       {
@@ -154,6 +155,11 @@ public class XMLStreamWriterImpl
         e2.initCause(e);
         throw e2;
       }
+  }
+
+  protected String createPrefix()
+  {
+    return "ns" + (count++);
   }
 
   public void writeStartElement(String prefix, String localName,
