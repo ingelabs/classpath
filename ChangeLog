@@ -1,3 +1,23 @@
+2005-11-06  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_setGradientUnlocked): Update
+	debug output to reflect actual situation.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_setTexturePixelsUnlocked):
+	Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_drawPixels): Adjust
+	formatting.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetMatrixUnlocked):
+	Update debug output to reflect actual situation.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetRGBAColorUnlocked):
+	Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoCurveTo): Adjust
+	formatting.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoRelCurveTo): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoRectangle): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSurfaceSetFilterUnlocked):
+	Update debug output to reflect actual situation.
+
 2005-11-06  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/image/AreaAveragingScaleFilter.java: Add FIXME
