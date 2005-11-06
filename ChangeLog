@@ -1,3 +1,8 @@
+2005-11-06  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/transform/StreamSerializer.java: Avoid undeclared apos
+	entity when output mode is HTML.
+
 2005-11-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/IOR.java (equals, hashCode): New metods.
