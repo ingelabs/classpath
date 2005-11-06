@@ -1,5 +1,12 @@
 2005-11-06  Chris Burdess  <dog@gnu.org>
 
+	* gnu/xml/stream/XMLStreamWriterImpl.java: Ensure that generated
+	prefixes do not accidentally clash, and provide documentation for
+	new virtual methods. createPrefix (new method) signature changed to
+	provide namespace URI for the benefit of subclasses.
+
+2005-11-06  Chris Burdess  <dog@gnu.org>
+
 	* gnu/xml/transform/StreamSerializer.java: Avoid undeclared apos
 	entity when output mode is HTML.
 
@@ -20,7 +27,7 @@
 
 2005-11-06  Chris Burdess  <dog@gnu.org>
 
-	* javax/xml/stream/XMLStreamWriterImpl.java: Fixed handling of
+	* gnu/xml/stream/XMLStreamWriterImpl.java: Fixed handling of
 	namespaces when isPrefixDefaulting is set.
 
 2005-11-04  Anthony Balkissoon  <abalkiss@redhat.com>
