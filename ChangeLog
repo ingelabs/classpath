@@ -1,5 +1,10 @@
 2005-11-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/IOR.java (equals, hashCode): New metods.
+	* gnu/CORBA/SimpleDelegate.java (is_equivalent): Compare IORs when applicable.
+
+2005-11-06  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/Minor.java (IOR_missing): New minor code.
 	* gnu/CORBA/NamingService/NameParser.java (corbaloc): Implemented
 	file//, ftp:// and http:// support.
