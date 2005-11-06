@@ -1,5 +1,9 @@
 2005-11-06  Wolfgang Baer  <WBaer@gmx.de>
 
+	* javax/print/event/*: Added API docs all over.
+
+2005-11-06  Wolfgang Baer  <WBaer@gmx.de>
+
 	* java/io/File.java
 	(getParent): If pathname is "" return null.
 	(toURI): Also append separatorChar if path equals "".
