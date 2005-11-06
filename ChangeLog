@@ -1,3 +1,9 @@
+2005-11-06  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/image/AreaAveragingScaleFilter.java: Add FIXME
+	* java/awt/Image.java (getScaledInstance): In case of
+	SCALE_AREA_AVERAGING use AreaAveragingScaleFilter.
+
 2005-11-06  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/event/PrintEvent.java,
