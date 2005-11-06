@@ -1,6 +1,14 @@
 2005-11-06  Wolfgang Baer  <WBaer@gmx.de>
 
-	* javax/print/event/*: Added API docs all over.
+	* javax/print/event/PrintEvent.java,
+	javax/print/event/PrintJobAdapter.java,
+	javax/print/event/PrintJobAttributeEvent.java,
+	javax/print/event/PrintJobAttributeListener.java,
+	javax/print/event/PrintJobEvent.java,
+	javax/print/event/PrintJobListener.java,
+	javax/print/event/PrintServiceAttributeEvent.java,
+	javax/print/event/PrintServiceAttributeListener.java,
+	javax/print/event/package.html: Added API docs all over.
 
 2005-11-06  Wolfgang Baer  <WBaer@gmx.de>
 
