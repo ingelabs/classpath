@@ -1,3 +1,28 @@
+2005-11-07  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTable.java
+	(tableChanged): Cleared selection if there are no more rows. Prevents a
+	NPE.
+	* javax/swing/JTree.java
+	(scrollRectToVisible): No need to set the selection path here.
+	(expandPath): Sometimes it is required to set the state of a leaf, 
+	especially if the leaf is the root node.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getRowCount): Added call to updateCurrentVisiblePath, so the
+	correct value is always returned.
+	(paint): No need to paint if the visible path is null.
+	(propertyChange): Implemented.
+	(paintRecursive): Added check for visibility of child. If it is
+	not visible because it was explicitly set to be hidden, no lines
+	should be drawn.
+	(paintControlIcons): Likewise.
+	(getPreviousNode): Fixed check to include root.
+	(paintRow): Set focus to be true (this will change in the future).
+	(updateCurrentVisiblePath): Fixed check to call getNextNode if
+	the current node is a leaf (more efficent than calling getNextSibling).
+	* javax/swing/tree/DefaultTreeCellRenderer.java
+	(getTreeCellRendererComponent): Changed to draw border if node has focus.
+
 2005-11-07  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #24467
