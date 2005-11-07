@@ -2,7 +2,7 @@
 
 	* java/lang/String.java:
 	(contains): New API method.
-	(repalce): New API method.
+	(replace): New API method.
 
 2005-11-07  Anthony Balkissoon  <abalkiss@redhat.com>
 
