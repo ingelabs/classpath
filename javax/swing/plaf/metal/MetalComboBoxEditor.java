@@ -137,7 +137,6 @@ public class MetalComboBoxEditor extends BasicComboBoxEditor
   public MetalComboBoxEditor()
   {
     super();
-    editor = new JTextField();
     editor.setBorder(new MetalComboBoxEditorBorder());
   }
   

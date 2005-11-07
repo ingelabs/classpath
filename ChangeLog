@@ -1,5 +1,10 @@
 2005-11-07  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalComboBoxEditor.java
+	(MetalComboBoxEditor): don't create new editor.
+
+2005-11-07  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicComboBoxEditor.java: API docs plus
 	(BasicComboBoxEditor): set border to null and columns to 9,
 	(addActionListener): implemented,
