@@ -1,3 +1,8 @@
+2005-11-07  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c: 
+	Use long for 64-bit architectures.
+
 2005-11-07  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/util/Arrays.java:
