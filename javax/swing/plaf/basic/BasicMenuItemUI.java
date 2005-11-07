@@ -320,7 +320,7 @@ public class BasicMenuItemUI extends MenuItemUI
     JMenuItem m = (JMenuItem) c;
     Dimension d = BasicGraphicsUtils.getPreferredButtonSize(m,
                                                             defaultTextIconGap);
-
+    
     // if menu item has accelerator then take accelerator's size into account
     // when calculating preferred size.
     KeyStroke accelerator = m.getAccelerator();
@@ -349,19 +349,18 @@ public class BasicMenuItemUI extends MenuItemUI
       }
 
     if (arrowIcon != null && (c instanceof JMenu))
-      {        
+      {
         int pWidth = m.getParent().getWidth();
-        // Check if MenuItem fits in PopupMenu, otherwise
-        // increase the width of the MenuItem
         if (!((JMenu)c).isTopLevelMenu() && d.width < pWidth)
-          d.width = pWidth;
+          d.width = pWidth
+          - m.getInsets().left - m.getInsets().right;
         else
           d.width += arrowIcon.getIconWidth() + MenuGap;
         
         if (arrowIcon.getIconHeight() > d.height)
           d.height = arrowIcon.getIconHeight();
       }
-
+    
     return d;
   }
 
