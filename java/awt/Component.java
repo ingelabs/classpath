@@ -1720,7 +1720,7 @@ public abstract class Component
     valid = false;
     prefSize = null;
     minSize = null;
-    if (parent != null && parent.valid)
+    if (parent != null)
       parent.invalidate();
   }
 

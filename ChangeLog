@@ -1,3 +1,10 @@
+2005-11-07  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(invalidate): Invalidate up the whole tree, regardless if some
+	parent is already marked invalid. This is needed in some situations
+	for layout managers to throw away their cache.
+
 2005-11-07  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTable.java
@@ -30,6 +37,7 @@
 	(Java_gnu_java_nio_charset_iconv_IconvDecoder_decode):
 	Do not check errno == EINVAL, which is a normal case.
 
+>>>>>>> 1.5502
 2005-11-07  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #22968
