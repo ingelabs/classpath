@@ -1895,14 +1895,21 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public String replace (CharSequence target, CharSequence replacement)
   {
-    String result = this;
-    int pos = result.indexOf(target.toString());
-    while (pos != -1)
+    String targetString = target.toString();
+    String replaceString = replacement.toString();
+    int targetLength = target.length();
+    int replaceLength = replacement.length();
+    
+    int startPos = this.indexOf(targetString);
+    StringBuffer result = new StringBuffer(this);    
+    while (startPos != -1)
       {
-        result = result.substring(0, pos) + replacement.toString()
-                 + result.substring(pos + target.length(), result.length());
-        pos = result.indexOf(target.toString());
+        // Replace the target with the replacement
+        result.replace(startPos, startPos + targetLength, replaceString);
+
+        // Search for a new occurrence of the target
+        startPos = result.indexOf(targetString, startPos + replaceLength);
       }
-    return result;
+    return result.toString();
   }
 }

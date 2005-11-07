@@ -1,3 +1,12 @@
+2005-11-07  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/lang/String.java:
+	(replace): Use a StringBuffer instead of String.  Only search for new 
+	occurrences of the target that occur AFTER the text just inserted, so 
+	if the replacement string contains the target string we won't go into 
+	an infinite loop.  Use local variables instead of repeated calls to 
+	length() and toString().
+
 2005-11-07  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c: 
