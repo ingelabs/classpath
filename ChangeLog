@@ -1,3 +1,9 @@
+2005-11-07  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Don't check or replace FREETYPE2.
+	* native/jni/gtk-peer/Makefile.am: Remove FREETYPE2_LIBS and
+	FREETYPE2_CFLAGS.
+
 2005-11-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalComboBoxEditor.java

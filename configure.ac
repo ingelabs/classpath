@@ -353,7 +353,6 @@ if test "x${COMPILE_JNI}" = xyes; then
     fi
 
     PKG_CHECK_MODULES(PANGOFT2, pangoft2)
-    PKG_CHECK_MODULES(FREETYPE2, freetype2)
   
     AC_SUBST(GTK_CFLAGS)
     AC_SUBST(GTK_LIBS)
@@ -361,8 +360,6 @@ if test "x${COMPILE_JNI}" = xyes; then
     AC_SUBST(CAIRO_CFLAGS)
     AC_SUBST(PANGOFT2_LIBS)
     AC_SUBST(PANGOFT2_CFLAGS)
-    AC_SUBST(FREETYPE2_LIBS)
-    AC_SUBST(FREETYPE2_CFLAGS)
   fi
 
   dnl Check for AWT related Qt4
