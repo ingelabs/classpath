@@ -1,3 +1,13 @@
+2005-11-07  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(getPreferredMenuItemSize): Adjusted width of menu item with
+	arrow icon. If the menu item can fit in the current width of
+	the top level menu, then the width of the menu item is set to
+	the width of the popup menu. Otherwise, the width of the
+	menu item is adjusted so that the width of the popup menu
+	is increased.
+
 2005-11-07  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Don't check or replace FREETYPE2.

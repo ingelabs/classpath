@@ -342,21 +342,22 @@ public class BasicMenuItemUI extends MenuItemUI
 
     if (checkIcon != null)
       {
-        d.width = d.width + checkIcon.getIconWidth() + defaultTextIconGap;
+        d.width += checkIcon.getIconWidth() + defaultTextIconGap;
 
         if (checkIcon.getIconHeight() > d.height)
           d.height = checkIcon.getIconHeight();
       }
 
     if (arrowIcon != null && (c instanceof JMenu))
-      {
-        if (!((JMenu) c).isTopLevelMenu())
-          // It is a MenuItem
-          d.width += arrowIcon.getIconWidth() + m.getParent().getWidth();
+      {        
+        int pWidth = m.getParent().getWidth();
+        // Check if MenuItem fits in PopupMenu, otherwise
+        // increase the width of the MenuItem
+        if (!((JMenu)c).isTopLevelMenu() && d.width < pWidth)
+          d.width = pWidth;
         else
-          // It is a Menu, no arrowIcon painted.
-          d.width += MenuGap;
-
+          d.width += arrowIcon.getIconWidth() + MenuGap;
+        
         if (arrowIcon.getIconHeight() > d.height)
           d.height = arrowIcon.getIconHeight();
       }
