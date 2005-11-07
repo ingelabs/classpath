@@ -1,5 +1,22 @@
 2005-11-07  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/JOptionPane.java
+	(showConfirmDialog): Added call to set the location of the
+	dialog relative to its parent.
+	(showConfirmDialog): Likewise.
+	(showConfirmDialog): Likewise.
+	(showConfirmDialog): Likewise.
+	(showInputDialog): Likewise.
+	(showInputDialog): Likewise.
+	(showInputDialog): Likewise.
+	(showInputDialog): Likewise.
+	(showMessageDialog): Likewise.
+	(showMessageDialog): Likewise.
+	(showMessageDialog): Likewise.
+	(showOptionDialog): Likewise.
+
+2005-11-07  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicMenuItemUI.java
 	(getPreferredMenuItemSize): Adjusted width of menu item with
 	arrow icon. If the menu item can fit in the current width of
