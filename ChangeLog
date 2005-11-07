@@ -1,3 +1,8 @@
+2005-11-07  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/lang/Boolean.java:
+	(compareTo(Boolean)): New API method.
+
 2005-11-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java
