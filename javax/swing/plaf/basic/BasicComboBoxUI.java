@@ -149,8 +149,11 @@ public class BasicComboBoxUI extends ComboBoxUI
    * Popup list containing the combo box's menu items.
    */
   protected ComboPopup popup;
+  
   protected KeyListener popupKeyListener;
+  
   protected MouseListener popupMouseListener;
+  
   protected MouseMotionListener popupMouseMotionListener;
 
   /**
@@ -480,9 +483,10 @@ public class BasicComboBoxUI extends ComboBoxUI
     ComboBoxEditor currentEditor = comboBox.getEditor();
     if (currentEditor == null || currentEditor instanceof UIResource)
       {
-        comboBox.setEditor(createEditor());
-        editor = comboBox.getEditor().getEditorComponent();
-      }
+        currentEditor = createEditor();
+        comboBox.setEditor(currentEditor);
+      } 
+    editor = currentEditor.getEditorComponent();
 
     comboBox.revalidate();
   }
@@ -851,57 +855,75 @@ public class BasicComboBoxUI extends ComboBoxUI
   }
 
   /**
-   * Returns size of the largest item in the combo box. This size will be the
-   * size of the combo box, not including the arrowButton.
+   * Returns the size of the display area for the combo box. This size will be 
+   * the size of the combo box, not including the arrowButton.
    *
-   * @return dimensions of the largest item in the combo box.
+   * @return The size of the display area for the combo box.
    */
   protected Dimension getDisplaySize()
   {
-    Object prototype = comboBox.getPrototypeDisplayValue();
-    if (prototype != null)
+    if (!comboBox.isEditable()) 
       {
-        // calculate result based on prototype
-        ListCellRenderer renderer = comboBox.getRenderer();
-        Component comp = renderer.getListCellRendererComponent(listBox, 
-                prototype, -1, false, false);
-        Dimension compSize = comp.getPreferredSize();
-        compSize.width += 2;  // add 1 pixel margin around area
-        compSize.height += 2;
-        return compSize;
-      }
-    else
-      {
-        ComboBoxModel model = comboBox.getModel();
-        int numItems = model.getSize();
-
-        // if combo box doesn't have any items then simply
-        // return its default size
-        if (numItems == 0)
+        Object prototype = comboBox.getPrototypeDisplayValue();
+        if (prototype != null)
           {
-            displaySize = getDefaultSize();
-            return displaySize;
-          }
-
-        Dimension size = new Dimension(0, 0);
-
-        // ComboBox's display size should be equal to the 
-        // size of the largest item in the combo box. 
-        ListCellRenderer renderer = comboBox.getRenderer();
-
-        for (int i = 0; i < numItems; i++)
-          {
-            Object item = model.getElementAt(i);
+            // calculate result based on prototype
+            ListCellRenderer renderer = comboBox.getRenderer();
             Component comp = renderer.getListCellRendererComponent(listBox, 
+                prototype, -1, false, false);
+            Dimension compSize = comp.getPreferredSize();
+            compSize.width += 2;  // add 1 pixel margin around area
+            compSize.height += 2;
+            return compSize;
+          }
+        else
+          {
+            ComboBoxModel model = comboBox.getModel();
+            int numItems = model.getSize();
+
+            // if combo box doesn't have any items then simply
+            // return its default size
+            if (numItems == 0)
+              {
+                displaySize = getDefaultSize();
+                return displaySize;
+              }
+
+            Dimension size = new Dimension(0, 0);
+
+            // ComboBox's display size should be equal to the 
+            // size of the largest item in the combo box. 
+            ListCellRenderer renderer = comboBox.getRenderer();
+
+            for (int i = 0; i < numItems; i++)
+              {
+                Object item = model.getElementAt(i);
+                Component comp = renderer.getListCellRendererComponent(listBox, 
                     item, -1, false, false);
 
-            Dimension compSize = comp.getPreferredSize();
-            if (compSize.width + 2 > size.width)
-              size.width = compSize.width + 2;
-            if (compSize.height + 2 > size.height)
-              size.height = compSize.height + 2;
+                Dimension compSize = comp.getPreferredSize();
+                if (compSize.width + 2 > size.width)
+                  size.width = compSize.width + 2;
+                if (compSize.height + 2 > size.height)
+                  size.height = compSize.height + 2;
+              }
+            displaySize = size;
+            return displaySize;
           }
-        displaySize = size;
+      }
+    else // an editable combo,  
+      {
+        Component comp = comboBox.getEditor().getEditorComponent();
+        Dimension prefSize = comp.getPreferredSize();
+        int width = prefSize.width;
+        int height = prefSize.height + 2;
+        Object prototype = comboBox.getPrototypeDisplayValue();
+        if (prototype != null)
+          {
+            FontMetrics fm = comboBox.getFontMetrics(comboBox.getFont());
+            width = Math.max(width, fm.stringWidth(prototype.toString()) + 2);
+          }
+        displaySize = new Dimension(width, height);
         return displaySize;
       }
   }

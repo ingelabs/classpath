@@ -1,3 +1,14 @@
+2005-11-07  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installComponents): update local reference to editor component always,
+	(getDisplaySize): implement new calculation for editable combo boxes,
+	* javax/swing/plaf/metal/MetalComboBoxEditor.java
+	(editorBorderInsets): initialise with correct value,
+	* javax/swing/plaf/metal/MetalComboBoxUI.java
+	(getMinimumSize): implemented different calculation for editable combo 
+	boxes.
+
 2005-11-07  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JOptionPane.java
