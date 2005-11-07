@@ -107,6 +107,11 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent
   private Exception exception;
 
   /**
+   * This is the caught Throwable thrown in the <code>run()</code> method.
+   */
+  private Throwable throwable;
+  
+  /**
    * The timestamp when this event was created.
    *
    * @see #getWhen()
@@ -183,9 +188,11 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent
         {
           runnable.run();
         }
-      catch (Exception e)
+      catch (Throwable t)
         {
-          exception = e;
+          throwable = t;
+          if (t instanceof Exception)
+            exception = (Exception)t;
         }
     else
       runnable.run();
@@ -210,6 +217,17 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent
     return exception;
   }
 
+  /**
+   * Returns a throwable caught while executing the Runnable's run() method.
+   * Null if none was thrown or if this InvocationEvent doesn't catch
+   * throwables.
+   * @return the caught Throwable
+   */
+  public Throwable getThrowable()
+  {
+    return throwable;
+  }
+  
   /**
    * Gets the timestamp of when this event was created.
    *

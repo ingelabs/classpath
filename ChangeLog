@@ -1,3 +1,11 @@
+2005-11-07  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/awt/event/InvocationEvent.java:
+	(throwable): New field.
+	(getThrowable): New API method.
+	(dispatch()): Catch Throwable, not Exception.  Save the Throwable.  If
+	it is an Exception, save the Exception.
+
 2005-11-07  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/Popup.java
