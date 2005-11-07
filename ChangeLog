@@ -1,3 +1,9 @@
+2005-11-07  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #22968
+	* gnu/java/nio/charset/iconv/IconvProvider.java
+	(IconvProvider): Declare the constructor public.
+
 2005-11-07  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JApplet.java
@@ -36,6 +42,7 @@
 	manipulate the frame directly.
 	(updateUI): Likewise.
 
+>>>>>>> 1.5498
 2005-11-07  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/lang/String.java:
