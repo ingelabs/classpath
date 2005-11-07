@@ -1,3 +1,8 @@
+2005-11-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/IOR.java (equals, hasCode): Compare port number as well
+	and do not crash on IOR.Internet==null.
+
 2005-11-06  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/Timer.java (Waker.run): Test and set running while
