@@ -42,7 +42,6 @@
 	manipulate the frame directly.
 	(updateUI): Likewise.
 
->>>>>>> 1.5498
 2005-11-07  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/lang/String.java:
