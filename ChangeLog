@@ -1,3 +1,41 @@
+2005-11-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JApplet.java
+	(initStageDone): Removed unnecessary field.
+	(JApplet): Use rootPaneCheckingEnabled property instead of
+	initStageDone field.
+	(setLayout): Likewise.
+	(addImpl): Likewise.
+	* javax/swing/JDialog.java
+	(initStageDone): Removed unnecessary field.
+	(dialogInit): Use rootPaneCheckingEnabled property instead of
+	initStageDone field.
+	(setLayout): Likewise.
+	(addImpl): Likewise.
+	* javax/swing/JFrame.java
+	(initStageDone): Removed unnecessary field.
+	(frameInit): Use rootPaneCheckingEnabled property instead of
+	initStageDone field.
+	(setLayout): Likewise.
+	(addImpl): Likewise.
+	* javax/swing/JWindow.java
+	(initStageDone): Removed unnecessary field.
+	(windowInit): Use rootPaneCheckingEnabled property instead of
+	initStageDone field.
+	(setLayout): Likewise.
+	(addImpl): Likewise.
+	* javax/swing/JInternalFrame.java
+	(initStageDone): Removed unnecessary field.
+	(JInternalFrame): Use rootPaneCheckingEnabled property instead of
+	initStageDone field.
+	(setLayout): Likewise.
+	(addImpl): Likewise.
+	(paramString): Return superclass paramstring.
+	(reshape): Call revalidate() instead of invalidate() and doLayout().
+	(setUI): Temporarily go into init mode, so that the UI can
+	manipulate the frame directly.
+	(updateUI): Likewise.
+
 2005-11-07  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/lang/String.java:
