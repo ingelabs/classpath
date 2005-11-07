@@ -1,5 +1,12 @@
 2005-11-07  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
+	Fixes bug #24467
+	* native/jni/java-nio/gnu_java_nio_charset_iconv_IconvDecoder.c
+	(Java_gnu_java_nio_charset_iconv_IconvDecoder_decode):
+	Do not check errno == EINVAL, which is a normal case.
+
+2005-11-07  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
 	Fixes bug #22968
 	* gnu/java/nio/charset/iconv/IconvProvider.java
 	(IconvProvider): Declare the constructor public.
