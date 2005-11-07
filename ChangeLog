@@ -1,5 +1,18 @@
 2005-11-07  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* java/util/Arrays.java:
+	(toString(long[])): New API method.
+	(toString(int[])): Likewise.
+	(toString(short[])): Likewise.
+	(toString(char[])): Likewise.
+	(toString(byte[])): Likewise.
+	(toString(boolean[])): Likewise.
+	(toString(float[])): Likewise.
+	(toString(double[])): Likewise.
+	(toString(Object[])): Likewise.
+
+2005-11-07  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* java/awt/event/InvocationEvent.java:
 	(throwable): New field.
 	(getThrowable): New API method.
