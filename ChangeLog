@@ -1,5 +1,19 @@
 2005-11-08  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(alignmentX): Changed default value to -1.0.
+	(alignmentY): Changed default value to -1.0.
+	(getAlignmentX): If no value has been set, refer to the superclass
+	behaviour.
+	(getAlignmentY): If no value has been set, refer to the superclass
+	behaviour.
+	(setAlignmentX): Catch invalid values and adjust them to the nearest
+	valid value.
+	(setAlignmentY): Catch invalid values and adjust them to the nearest
+	valid value.
+
+2005-11-08  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Container.java
 	(getAlignmentX): Refer to the layout managers layoutAlignmentX
 	property if layout manager is a LayoutManager2.

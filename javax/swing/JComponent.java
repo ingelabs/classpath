@@ -390,7 +390,7 @@ public abstract class JComponent extends Container implements Serializable
    * @see javax.swing.OverlayLayout
    * @see javax.swing.BoxLayout
    */
-  float alignmentX = 0.5f;
+  float alignmentX = -1.0F;
 
   /**
    * A value between 0.0 and 1.0 indicating the preferred vertical
@@ -405,7 +405,7 @@ public abstract class JComponent extends Container implements Serializable
    * @see javax.swing.OverlayLayout
    * @see javax.swing.BoxLayout
    */
-  float alignmentY = 0.5f;
+  float alignmentY = -1.0F;
 
   /** 
    * The border painted around this component.
@@ -1009,7 +1009,12 @@ public abstract class JComponent extends Container implements Serializable
    */
   public float getAlignmentX()
   {
-    return alignmentX;
+    float ret = alignmentX;
+    if (alignmentX < 0)
+      // alignment has not been set explicitly.
+      ret = super.getAlignmentX();
+
+    return ret;
   }
 
   /**
@@ -1022,7 +1027,12 @@ public abstract class JComponent extends Container implements Serializable
    */
   public float getAlignmentY()
   {
-    return alignmentY;
+    float ret = alignmentY;
+    if (alignmentY < 0)
+      // alignment has not been set explicitly.
+      ret = super.getAlignmentY();
+
+    return ret;
   }
 
   /**
@@ -2337,7 +2347,12 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setAlignmentX(float a)
   {
-    alignmentX = a;
+    if (a < 0.0F)
+      alignmentX = 0.0F;
+    else if (a > 1.0)
+      alignmentX = 1.0F;
+    else
+      alignmentX = a;
   }
 
   /**
@@ -2347,7 +2362,12 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setAlignmentY(float a)
   {
-    alignmentY = a;
+    if (a < 0.0F)
+      alignmentY = 0.0F;
+    else if (a > 1.0)
+      alignmentY = 1.0F;
+    else
+      alignmentY = a;
   }
 
   /**
