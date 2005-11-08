@@ -1,5 +1,19 @@
 2005-11-08  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/SwingUtilities.java:
+	(replaceUIActionMap): Stop climbing hierarchy once we've found an 
+	ActionMapUIResource, don't keep looking until parent is null.  No need
+	to check if child is null.
+	(replaceUIInputMap): Use a local variable for the parent rather than 
+	3 calls to get parent.  No need to check if child is null.
+	* javax/swing/plaf/basic/BasicListUI.java:
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	(installKeyboardActions): UI ActionMap should be of type 
+	ActionMapUIResource, not just ActionMap.
+
+2005-11-08  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/text/DefaultStyledDocument.java:
 	(ElementBuffer.clone): New API method.
 

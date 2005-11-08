@@ -71,6 +71,7 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.MouseInputListener;
+import javax.swing.plaf.ActionMapUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.TableUI;
@@ -401,7 +402,7 @@ public class BasicTableUI extends TableUI
     InputMap ancestorMap = (InputMap)defaults.get("Table.ancestorInputMap");
     InputMapUIResource parentInputMap = new InputMapUIResource();
     // FIXME: The JDK uses a LazyActionMap for parentActionMap
-    ActionMap parentActionMap = new ActionMap();
+    ActionMap parentActionMap = new ActionMapUIResource();
     action = new TableAction();
     Object keys[] = ancestorMap.allKeys();
     // Register key bindings in the UI InputMap-ActionMap pair

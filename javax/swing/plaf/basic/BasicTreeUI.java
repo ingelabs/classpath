@@ -92,6 +92,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.plaf.ActionMapUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.TreeUI;
@@ -1246,7 +1247,7 @@ public class BasicTreeUI extends TreeUI
     UIDefaults defaults = UIManager.getLookAndFeelDefaults();
     InputMap focusInputMap = (InputMap) defaults.get("Tree.focusInputMap");
     InputMapUIResource parentInputMap = new InputMapUIResource();
-    ActionMap parentActionMap = new ActionMap();
+    ActionMap parentActionMap = new ActionMapUIResource();
     action = new TreeAction();
     Object keys[] = focusInputMap.allKeys();
 
