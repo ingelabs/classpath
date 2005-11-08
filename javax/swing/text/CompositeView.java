@@ -221,20 +221,17 @@ public abstract class CompositeView
     if (childIndex != -1)
       {
         View child = getView(childIndex);
-        Shape result = child.modelToView(pos, a, bias);
+        Rectangle r = a.getBounds();
+        childAllocation(childIndex, r);
+        Shape result = child.modelToView(pos, r, bias);
         if (result == null)
           throw new AssertionError("" + child.getClass().getName()
                                    + ".modelToView() must not return null");
         return result;
       }
     else
-      {
-        // FIXME: Handle the case when we have no child view for the given
-        // position.
-        throw new AssertionError("No child views found where child views are "
-                                 + "expected. pos = " + pos + ", bias = "
-                                 + bias);
-      }
+      throw new BadLocationException("No child view for the specified location",
+                                     pos);
   }
 
   /**

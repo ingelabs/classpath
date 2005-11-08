@@ -1,5 +1,12 @@
 2005-11-08  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/CompositeView.java
+	(modelToView): Adjust the allocation to the child allocation before
+	forwarding to the child's modelToView. Replaced AssertionError by
+	BadLocationException, because that is the right thing to do here.
+
+2005-11-08  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java
 	(GlassPaneDispatcher.acquireComponentForMouseEvent): Use the
 	frame's layeredPane as parent instead of the content pane
