@@ -1,5 +1,14 @@
 2005-11-08  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* java/awt/event/InvocationEvent.java:
+	(exception): Removed unnecessary field.
+	(dispatch): Removed reference to field exception.
+	(getException): If throwable is an Exception, return a casted version, 
+	otherwise return null.
+	(getThrowable): Improved docs.
+
+2005-11-08  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/SwingUtilities.java:
 	(replaceUIActionMap): Stop climbing hierarchy once we've found an 
 	ActionMapUIResource, don't keep looking until parent is null.  No need
