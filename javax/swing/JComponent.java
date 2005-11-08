@@ -2435,38 +2435,44 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
-   * Set the value of the {@link #maximumSize} property.
+   * Set the value of the {@link #maximumSize} property. The passed value is
+   * copied, the later direct changes on the argument have no effect on the
+   * property value.
    *
    * @param max The new value of the property
    */
   public void setMaximumSize(Dimension max)
   {
     Dimension oldMaximumSize = maximumSize;
-    maximumSize = max;
+    maximumSize = new Dimension(max);
     firePropertyChange("maximumSize", oldMaximumSize, maximumSize);
   }
 
   /**
-   * Set the value of the {@link #minimumSize} property.
+   * Set the value of the {@link #minimumSize} property. The passed value is
+   * copied, the later direct changes on the argument have no effect on the
+   * property value.
    *
    * @param min The new value of the property
    */
   public void setMinimumSize(Dimension min)
   {
     Dimension oldMinimumSize = minimumSize;
-    minimumSize = min;
+    minimumSize = new Dimension(min);
     firePropertyChange("minimumSize", oldMinimumSize, minimumSize);
   }
 
   /**
-   * Set the value of the {@link #preferredSize} property.
+   * Set the value of the {@link #preferredSize} property. The passed value is
+   * copied, the later direct changes on the argument have no effect on the
+   * property value.
    *
    * @param pref The new value of the property
    */
   public void setPreferredSize(Dimension pref)
   {
     Dimension oldPreferredSize = preferredSize;
-    preferredSize = pref;
+    preferredSize = new Dimension(pref);
     firePropertyChange("preferredSize", oldPreferredSize, preferredSize);
   }
 
