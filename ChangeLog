@@ -1,5 +1,21 @@
 2005-11-08  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JRootPane.java
+	(RootLayout.glassPaneBounds): New field.
+	(RootLayout.layeredPaneBounds): New field.
+	(RootLayout.contentPaneBounds): New field.
+	(RootLayout.menuBarBounds): New field.
+	(RootLayout.prefSize): New field.
+	(getLayoutAlignmentX): Return 0.0F here.
+	(getLayoutAlignmentY): Return 0.0F here.
+	(invalidateLayout): Throw away cached layout information.
+	(layoutContainer): Simplified and fixed the layout. Use cache if
+	possible.
+	(preferredLayoutSize): Simplified and fixed the layout. Use cache if
+	possible.
+
+2005-11-08  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(alignmentX): Changed default value to -1.0.
 	(alignmentY): Changed default value to -1.0.
