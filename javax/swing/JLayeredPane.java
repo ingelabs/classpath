@@ -250,22 +250,30 @@ public class JLayeredPane extends JComponent implements Accessible
     ret[1] = getComponents ().length;
     Iterator i = layers.entrySet ().iterator ();
     while (i.hasNext())
-	    {
+      {
         Map.Entry pair = (Map.Entry) i.next();
         Integer layerNum = (Integer) pair.getKey ();
         Integer layerSz = (Integer) pair.getValue ();
-        if (layerNum.intValue() == layer.intValue())
+        int layerInt = layerNum.intValue();
+        if (layerInt == layer.intValue())
           {
             ret[0] = ret[1] - layerSz.intValue ();
-            return ret;
+            break;
+          }
+        // In the following case there exists no layer with the specified
+        // number, so we return an empty interval here with the index at which
+        // such a layer would be inserted
+        else if (layerInt > layer.intValue())
+          {
+            ret[1] = ret[0];
+            break;
           }
         else
           {
             ret[1] -= layerSz.intValue ();
           }
-	    }
-    // should have found the layer during iteration
-    throw new IllegalArgumentException ();
+      }
+    return ret;
   }
 
   /**
@@ -629,7 +637,7 @@ public class JLayeredPane extends JComponent implements Accessible
    * @param index an ignored parameter, for compatibility.
    */
   protected void addImpl(Component comp, Object layerConstraint, int index) 
-  {        	
+  {
     Integer layer;
     if (layerConstraint != null && layerConstraint instanceof Integer)
       layer = (Integer) layerConstraint;
@@ -643,8 +651,8 @@ public class JLayeredPane extends JComponent implements Accessible
     componentToLayer.put (comp, layer);
     incrLayer (layer);
 	
-    super.addImpl(comp, null, newIdx);	
-  }     
+    super.addImpl(comp, null, newIdx);
+  }
 
   /**
    * Sets the layer property for a JComponent.
