@@ -1,5 +1,11 @@
 2005-11-08  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/BorderLayout.java
+	(getAlignmentX): Return 0.5F here.
+	(getAlignmentY): Return 0.5F here.
+
+2005-11-08  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JRootPane.java
 	(RootLayout.glassPaneBounds): New field.
 	(RootLayout.layeredPaneBounds): New field.
