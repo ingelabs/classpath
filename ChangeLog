@@ -1,3 +1,8 @@
+2005-11-08  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(invalidate): Don't invalidate invalid parents.
+
 2005-11-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JComponent.java (setMaximumSize, 
