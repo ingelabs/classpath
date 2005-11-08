@@ -805,26 +805,25 @@ public class Window extends Container implements Accessible
 
   public void setLocationRelativeTo(Component c)
   {
+    int x = 0;
+    int y = 0;
+    
     if (c == null || !c.isShowing())
       {
-        int x = 0;
-        int y = 0;
-
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         Point center = ge.getCenterPoint();
         x = center.x - (width / 2);
         y = center.y - (height / 2);
-        setLocation(x, y);
       }
     else
       {
-        int x = c.getX();
-        int y = c.getY();
-
         int cWidth = c.getWidth();
         int cHeight = c.getHeight();
         Dimension screenSize = getToolkit().getScreenSize();
 
+        x = c.getLocationOnScreen().x;
+        y = c.getLocationOnScreen().y;
+        
         // If bottom of component is cut off, window placed
         // on the left or the right side of component
         if ((y + cHeight) > screenSize.height)
@@ -866,16 +865,19 @@ public class Window extends Container implements Accessible
             if ((x + width) > screenSize.width)
               x = screenSize.width - width;
             // If left side of component is cut off
-            else if (x < 0)
+            else if (x < 0 || (x - (width - cWidth) / 2) < 0)
               x = 0;
             else
               x -= (width - cWidth) / 2;
-            
-            y -= (height - cHeight) / 2;
-          }
 
-        setLocation(x, y);
+            if ((y - (height - cHeight) / 2) > 0)
+              y -= (height - cHeight) / 2;
+            else
+              y = 0;
+          }
       }
+
+    setLocation(x, y);
   }
 
   /**

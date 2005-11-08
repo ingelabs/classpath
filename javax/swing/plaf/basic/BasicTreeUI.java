@@ -3776,7 +3776,7 @@ public class BasicTreeUI extends TreeUI
               dtcr = createDefaultCellRenderer();
             
             Component c = dtcr.getTreeCellRendererComponent(tree, node,
-                                     selected, isExpanded, isLeaf, row, true);
+                                     selected, isExpanded, isLeaf, row, tree.hasFocus());
             rendererPane.paintComponent(g, c, c.getParent(), bounds);
           }
       }
@@ -3850,15 +3850,16 @@ public class BasicTreeUI extends TreeUI
           }
         while (next != null && !tree.isVisible(new TreePath(getPathToRoot(next, 0))));
       }
+
     currentVisiblePath = current;
     if (currentVisiblePath != null)
       tree.setVisibleRowCount(currentVisiblePath.getPathCount());
-    else 
-      tree.setVisibleRowCount(0);
-    
+    else tree.setVisibleRowCount(0);
+
     if (tree.getSelectionModel() != null && tree.getSelectionCount() == 0 &&
         currentVisiblePath != null)
-        selectPath(tree, new TreePath(currentVisiblePath.getPathComponent(0)));
+      selectPath(tree, new TreePath(getPathToRoot(currentVisiblePath.
+                                                  getPathComponent(0), 0)));
   }
   
   /**
