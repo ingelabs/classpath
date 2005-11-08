@@ -1,5 +1,10 @@
 2005-11-08  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/text/DefaultStyledDocument.java:
+	(ElementBuffer.clone): New API method.
+
+2005-11-08  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* java/lang/String.java:
 	(replace): Use a StringBuilder instead of a StringBuffer because this 
 	is faster and we don't need thread-safety.
