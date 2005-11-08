@@ -751,7 +751,7 @@ public class BasicInternalFrameUI extends InternalFrameUI
       int y = me.getY();
 
       // Find the candidate which should receive this event.
-      Component parent = frame.getContentPane();
+      Component parent = frame.getLayeredPane();
       if (parent == null)
         return;
       Component candidate = null;
