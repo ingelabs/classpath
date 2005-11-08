@@ -1,5 +1,13 @@
 2005-11-08  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Container.java
+	(getAlignmentX): Refer to the layout managers layoutAlignmentX
+	property if layout manager is a LayoutManager2.
+	(getAlignmentY): Refer to the layout managers layoutAlignmentY
+	property if layout manager is a LayoutManager2.
+
+2005-11-08  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JLayeredPane.java
 	(layerToRange): Return empty array for unknown layer instead of
 	throwing an exception.

@@ -738,7 +738,16 @@ public class Container extends Component
    */
   public float getAlignmentX()
   {
-    return super.getAlignmentX();
+    LayoutManager layout = getLayout();
+    float alignmentX = 0.0F;
+    if (layout != null && layout instanceof LayoutManager2)
+      {
+        LayoutManager2 lm2 = (LayoutManager2) layout;
+        alignmentX = lm2.getLayoutAlignmentX(this);
+      }
+    else
+      alignmentX = super.getAlignmentX();
+    return alignmentX;
   }
 
   /**
@@ -750,7 +759,16 @@ public class Container extends Component
    */
   public float getAlignmentY()
   {
-    return super.getAlignmentY();
+    LayoutManager layout = getLayout();
+    float alignmentY = 0.0F;
+    if (layout != null && layout instanceof LayoutManager2)
+      {
+        LayoutManager2 lm2 = (LayoutManager2) layout;
+        alignmentY = lm2.getLayoutAlignmentY(this);
+      }
+    else
+      alignmentY = super.getAlignmentY();
+    return alignmentY;
   }
 
   /**
