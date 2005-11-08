@@ -1901,7 +1901,7 @@ public final class String implements Serializable, Comparable, CharSequence
     int replaceLength = replacement.length();
     
     int startPos = this.indexOf(targetString);
-    StringBuffer result = new StringBuffer(this);    
+    StringBuilder result = new StringBuilder(this);    
     while (startPos != -1)
       {
         // Replace the target with the replacement
