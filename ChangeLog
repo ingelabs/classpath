@@ -1,3 +1,10 @@
+2005-11-08  Lillian Angel  <langel@redhat.com>
+
+	* examples/gnu/classpath/examples/swing/GNULookAndFeel.java
+	(getDefaults): Added icons for checkboxes and radiobutton.
+	(CheckBoxIcon): New class, implemented.
+	(RadioButtonIcon): New class, implemented.
+
 2005-11-08  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/classpath/SystemProperties.java: Don't mention
