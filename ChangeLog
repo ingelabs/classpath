@@ -1,3 +1,12 @@
+2005-11-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/DefaultCaret.java (BlinkTimerListener):  
+	added ignoreNextEvent flag and its handling.
+	(blinkListener): New field. (initBlinkTimer): 
+	Initialise blinkListener field.
+	(setDot, moveDot): Call appear() instead of repaint(). 
+	(appear): new method.
+
 2005-11-08  Lillian Angel  <langel@redhat.com>
 
 	* examples/gnu/classpath/examples/swing/GNULookAndFeel.java

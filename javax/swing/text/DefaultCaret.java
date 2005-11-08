@@ -74,19 +74,33 @@ public class DefaultCaret extends Rectangle
    * Controls the blinking of the caret.
    *
    * @author Roman Kennke (kennke@aicas.com)
+   * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
    */
   private class BlinkTimerListener implements ActionListener
   {
     /**
+     * Forces the next event to be ignored. The next event should be ignored
+     * if we force the caret to appear. We do not know how long will it take
+     * to fire the comming event; this may be near immediately. Better to leave
+     * the caret visible one iteration longer.
+     */
+    boolean ignoreNextEvent;
+    
+    /**
      * Receives notification when the blink timer fires and updates the visible
      * state of the caret.
-     *
+     * 
      * @param event the action event
      */
     public void actionPerformed(ActionEvent event)
     {
-      visible = !visible;
-      repaint();
+      if (ignoreNextEvent)
+        ignoreNextEvent = false;
+      else
+        {
+          visible = !visible;
+          repaint();
+        }
     }
   }
 
@@ -274,6 +288,8 @@ public class DefaultCaret extends Rectangle
   private Object highlightEntry;
 
   private Timer blinkTimer;
+  
+  private BlinkTimerListener blinkListener;
 
   /**
    * Creates a new <code>DefaultCaret</code> instance.
@@ -768,7 +784,7 @@ public class DefaultCaret extends Rectangle
     this.dot = dot;
     handleHighlight();
     adjustVisibility(this);
-    repaint();
+    appear();
   }
 
   /**
@@ -786,8 +802,44 @@ public class DefaultCaret extends Rectangle
     this.mark = dot;
     handleHighlight();
     adjustVisibility(this);
-    repaint();
+    appear();
   }
+  
+  /**
+   * Show the caret (may be hidden due blinking) and adjust the timer not to
+   * hide it (possibly immediately).
+   * 
+   * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+   */
+  void appear()
+  {
+    // All machinery is only required if the carret is blinking.
+    if (blinkListener != null)
+      {
+        blinkListener.ignoreNextEvent = true;
+
+        // If the caret is visible, erase the current position by repainting
+        // over.
+        if (visible)
+          repaint();
+
+        // Draw the caret in the new position.
+        visible = true;
+
+        Rectangle area = null;
+        try
+          {
+            area = getComponent().modelToView(getDot());
+          }
+        catch (BadLocationException ex)
+          {
+            assert false : "Unexpected bad caret location: " + getDot();
+          }
+        if (area != null)
+          damage(area);
+      }
+    repaint();
+  }  
 
   /**
    * Returns <code>true</code> if this <code>Caret</code> is currently visible,
@@ -888,7 +940,8 @@ public class DefaultCaret extends Rectangle
   private void initBlinkTimer()
   {
     // Setup the blink timer.
-    blinkTimer = new Timer(getBlinkRate(), new BlinkTimerListener());
+    blinkListener = new BlinkTimerListener();
+    blinkTimer = new Timer(getBlinkRate(), blinkListener);
     blinkTimer.setRepeats(true);
   }
 }
