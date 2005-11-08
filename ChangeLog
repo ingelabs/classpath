@@ -42,7 +42,6 @@
 	(Java_gnu_java_nio_charset_iconv_IconvDecoder_decode):
 	Do not check errno == EINVAL, which is a normal case.
 
->>>>>>> 1.5502
 2005-11-07  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #22968
