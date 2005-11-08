@@ -1,5 +1,10 @@
 2005-11-08  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installDefaults): Initialize background field correctly.
+
+2005-11-08  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/BorderLayout.java
 	(getAlignmentX): Return 0.5F here.
 	(getAlignmentY): Return 0.5F here.
