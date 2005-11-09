@@ -1,3 +1,9 @@
+2005-11-09  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c 
+	(initStaticState): Register global variable glyphVector_class 
+	as global reference.
+
 2005-11-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/DefaultCaret.java (BlinkTimerListener):  

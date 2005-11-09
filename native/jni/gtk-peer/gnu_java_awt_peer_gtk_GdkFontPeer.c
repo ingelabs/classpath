@@ -65,6 +65,9 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_initStaticState
   glyphVector_class = (*env)->FindClass 
     (env, "gnu/java/awt/peer/gtk/GdkGlyphVector");
 
+  glyphVector_class = (*env)->NewGlobalRef
+    (env, glyphVector_class);
+
   glyphVector_ctor = (*env)->GetMethodID 
     (env, glyphVector_class, "<init>", 
      "([D[ILjava/awt/Font;Ljava/awt/font/FontRenderContext;)V");
