@@ -1620,10 +1620,15 @@ public class JList extends JComponent implements Accessible, Scrollable
    * #listListener} is unsubscribed from the existing model, if it exists,
    * and re-subscribed to the new model.
    *
-   * @param model The new property value
+   * @param model  the new model (<code>null</code> not permitted).
+   * 
+   * @throws IllegalArgumentException if <code>model</code> is 
+   *         <code>null</code>.
    */
   public void setModel(ListModel model)
   {
+    if (model == null) 
+      throw new IllegalArgumentException("Null 'model' argument.");
     if (this.model == model)
       return;
     
