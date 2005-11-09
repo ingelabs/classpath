@@ -1,5 +1,10 @@
 2005-11-09  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/ComponentUI.java
+	(update): Restore the foreground color after filling the background.
+
+2005-11-09  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(paint): Fetch a new componentGraphics here instead of
 	paintComponent.
