@@ -1,3 +1,8 @@
+2005-11-09  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/aelfred2/SAXDriver.java: Ensure that absolutize does not
+	throw exception when custom entity resolver is set.
+
 2005-11-09  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/event/InvocationEvent.java:
