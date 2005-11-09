@@ -337,7 +337,10 @@ public class JTabbedPane extends JComponent implements Serializable,
      */
     public void setComponent(Component c)
     {
+      int i = indexOfComponent(component);
+      insertTab(title, icon, c, tip, i);
       component = c;
+      removeTabAt(i);
     }
 
     /**
@@ -1059,10 +1062,8 @@ public class JTabbedPane extends JComponent implements Serializable,
   public void removeTabAt(int index)
   {
     checkIndex(index, 0, tabs.size());
-    Component c = getComponentAt(index);
-    super.remove(index);
-    c.show();
     tabs.remove(index);
+    getComponentAt(index).show();
   }
 
   /**
@@ -1082,6 +1083,7 @@ public class JTabbedPane extends JComponent implements Serializable,
    */
   public void remove(int index)
   {
+    remove(getComponentAt(index));
     removeTabAt(index);
   }
 

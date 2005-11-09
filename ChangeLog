@@ -10,6 +10,16 @@
 2005-11-09  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTabbedPane.java
+	(setComponent): Tab should be inserted with a title, and removed from
+	the vector once set.
+	(removeTabAt): Tab should only be removed from vector. remove(Component) is
+	called to remove the tab from the JTabbedPane.
+	(remove): Added call to the component. This function should remove the component
+	as well as the tab.
+
+2005-11-09  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTabbedPane.java
 	(setComponent): No need to remove and add tab.
 	(remove): Fixed API documentation.
 	(remove): Fixed API documentation. Re-implemented according to API.
