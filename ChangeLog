@@ -1,3 +1,10 @@
+2005-11-09  Roman Kennke  <kennke@aicas.com>
+
+	* java/io/InputStreamReader.java
+	(InputStreamReader(InputStream, CharsetDecoder)): Catch the case
+	when the CharsetDecoder returns a null charset and handle it like
+	US-ASCII.
+
 2005-11-09  Mark Wielaard  <mark@klomp.org>
 
 	Reported by Petteri Räty <betelgeuse@gentoo.org>
