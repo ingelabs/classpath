@@ -831,10 +831,10 @@ public abstract class BasicTextUI extends TextUI
   {
     Caret caret = textComponent.getCaret();
     Highlighter highlighter = textComponent.getHighlighter();
-    
+
     if (textComponent.isOpaque())
       paintBackground(g);
-    
+
     if (highlighter != null
 	&& textComponent.getSelectionStart() != textComponent.getSelectionEnd())
       highlighter.paint(g);
@@ -1064,8 +1064,8 @@ public abstract class BasicTextUI extends TextUI
 	
     Insets insets = textComponent.getInsets();
     return new Rectangle(insets.left, insets.top,
-			 width - insets.left + insets.right,
-			 height - insets.top + insets.bottom);
+			 width - insets.left - insets.right,
+			 height - insets.top - insets.bottom);
   }
 
   /**

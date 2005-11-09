@@ -1,3 +1,8 @@
+2005-11-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(getVisibleEditorRect): Correctly calculate the inner rectangle.
+
 2005-11-09  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c 
