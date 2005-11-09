@@ -546,7 +546,7 @@ public abstract class JComponent extends Container implements Serializable
   
   private InputMap inputMap_whenFocused;
   private InputMap inputMap_whenAncestorOfFocused;
-  private InputMap inputMap_whenInFocusedWindow;
+  private ComponentInputMap inputMap_whenInFocusedWindow;
   private ActionMap actionMap;
   /** @since 1.3 */
   private boolean verifyInputWhenFocusTarget;
@@ -2022,7 +2022,11 @@ public abstract class JComponent extends Container implements Serializable
         break;
 
       case WHEN_IN_FOCUSED_WINDOW:
-        inputMap_whenInFocusedWindow = map;
+        if (map != null && !(map instanceof ComponentInputMap))
+            throw new 
+              IllegalArgumentException("WHEN_IN_FOCUSED_WINDOW " + 
+                                       "InputMap must be a ComponentInputMap");
+        inputMap_whenInFocusedWindow = (ComponentInputMap)map;
         break;
         
       case UNDEFINED_CONDITION:
@@ -2048,7 +2052,7 @@ public abstract class JComponent extends Container implements Serializable
 
       case WHEN_IN_FOCUSED_WINDOW:
         if (inputMap_whenInFocusedWindow == null)
-          inputMap_whenInFocusedWindow = new InputMap();
+          inputMap_whenInFocusedWindow = new ComponentInputMap(this);
         return inputMap_whenInFocusedWindow;
 
       case UNDEFINED_CONDITION:
@@ -3297,5 +3301,27 @@ public abstract class JComponent extends Container implements Serializable
           found = p;
       }
     return found;
+  }
+  
+  /**
+   * This is the method that gets called when the WHEN_IN_FOCUSED_WINDOW map
+   * is changed.
+   * @param c the JComponent associated with the WHEN_IN_FOCUSED_WINDOW map
+   */
+  void updateComponentInputMap(ComponentInputMap changed)
+  {
+    // Since you can change a component's input map via
+    // setInputMap, we have to check if <code>changed</code>
+    // is still in our WHEN_IN_FOCUSED_WINDOW map hierarchy
+    InputMap curr = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+    while (curr != null && curr != changed)
+      curr = curr.getParent();
+    
+    // If curr is null then changed is not in the hierarchy
+    if (curr == null)
+      return;
+    
+    // Now we have to update the keyboard manager's hashtable
+    // FIXME: not yet implemented
   }
 }

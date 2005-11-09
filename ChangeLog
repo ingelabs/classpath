@@ -1,3 +1,22 @@
+2005-11-09  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/ComponentInputMap.java:
+	(put): Notify the component.
+	(clear): Likewise.
+	(remove): Likewise.
+	(setParent): Notify the parent.  Improved the exception messages.
+	* javax/swing/JComponent.java:
+	(inputMap_whenInFocusedWindow): Changed type from InputMap to 
+	ComponentInputMap.
+	(setInputMap): If we're setting the WHEN_IN_FOCUSED_WINDOW map and 
+	the parameter is not a ComponentInputMap or is not associated with 
+	the same Component, throw an IllegalArgumentException.
+	(getInputMap): Create a new ComponentInputMap instead of a new 
+	InputMap when the WHEN_IN_FOCUSED_WINDOW map doesn't yet exist.
+	(udpateComponentInputMap): New method.  This is the method that 
+	ComponentInputMap calls when it is updated.  Not yet completely 
+	implemented.
+
 2005-11-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/PortableInterceptor/ObjectReferenceTemplateSeqHelper.java,
