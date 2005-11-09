@@ -1,3 +1,12 @@
+2005-11-09  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JComponent.java:
+	(processKeyEvent): Use local variables for boolean pressed and for 
+	the KeyStroke.  Implemented the code for WHEN_IN_FOCUSED_WINDOW
+	bindings.
+	(updateComponentInputMap): Implemented and fixed typo in docs.
+	* javax/swing/KeyboardManager.java: New class.
+
 2005-11-09  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTabbedPane.java

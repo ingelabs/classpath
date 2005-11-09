@@ -2167,13 +2167,14 @@ public abstract class JComponent extends Container implements Serializable
     // 4. The WHEN_IN_FOCUSED_WINDOW maps of all the enabled components in
     //    the focused window are searched.
     
-    if (processKeyBinding(KeyStroke.getKeyStrokeForEvent(e), 
-                          e, WHEN_FOCUSED, e.getID() == KeyEvent.KEY_PRESSED))
+    KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+    boolean pressed = e.getID() == KeyEvent.KEY_PRESSED;
+    
+    if (processKeyBinding(keyStroke, e, WHEN_FOCUSED, pressed))
       // This is step 1 from above comment.
       e.consume();
-    else if (processKeyBinding(KeyStroke.getKeyStrokeForEvent(e),
-                               e, WHEN_ANCESTOR_OF_FOCUSED_COMPONENT,
-                               e.getID() == KeyEvent.KEY_PRESSED))
+    else if (processKeyBinding
+             (keyStroke, e, WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, pressed))
       // This is step 2 from above comment.
       e.consume();
     else
@@ -2183,9 +2184,8 @@ public abstract class JComponent extends Container implements Serializable
         while ((current = current.getParent()) instanceof JComponent)
           {
             if (((JComponent)current).processKeyBinding
-                (KeyStroke.getKeyStrokeForEvent(e), e, 
-                 WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, 
-                 e.getID() == KeyEvent.KEY_PRESSED))
+                (keyStroke, e,WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, 
+                 pressed))
               {
                 e.consume();
                 break;
@@ -2196,10 +2196,10 @@ public abstract class JComponent extends Container implements Serializable
           }
         if (e.isConsumed())
           return;
-        
+                
         // This is step 4 from above comment.
-        // FIXME: Implement.  Note, should use ComponentInputMaps rather
-        // than walking the entire containment hierarchy.
+        if (KeyboardManager.getManager().processKeyStroke(this, keyStroke, e))
+          e.consume();
       }
   }
 
@@ -3306,7 +3306,7 @@ public abstract class JComponent extends Container implements Serializable
   /**
    * This is the method that gets called when the WHEN_IN_FOCUSED_WINDOW map
    * is changed.
-   * @param c the JComponent associated with the WHEN_IN_FOCUSED_WINDOW map
+   * @param changed the JComponent associated with the WHEN_IN_FOCUSED_WINDOW map
    */
   void updateComponentInputMap(ComponentInputMap changed)
   {
@@ -3322,6 +3322,12 @@ public abstract class JComponent extends Container implements Serializable
       return;
     
     // Now we have to update the keyboard manager's hashtable
-    // FIXME: not yet implemented
+    KeyboardManager km = KeyboardManager.getManager();
+    
+    // This is a poor strategy, should be improved.  We currently 
+    // delete all the old bindings for the component and then register
+    // the current bindings.
+    km.clearBindingsForComp(changed.getComponent());
+    km.registerEntireMap((ComponentInputMap) getInputMap(WHEN_IN_FOCUSED_WINDOW));
   }
 }
