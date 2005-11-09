@@ -1,3 +1,10 @@
+2005-11-09  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkMenuBar): added file chooser item,
+	(mkButtonBar): split buttons into two rows, added 'FileChooser' button,
+	* examples/gnu/classpath/examples/swing/FileChooserDemo.java: New file.
+
 2005-11-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/PortableInterceptor/ObjectReferenceFactory.java: Do not
