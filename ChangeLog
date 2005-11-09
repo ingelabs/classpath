@@ -1,5 +1,13 @@
 2005-11-09  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* java/awt/event/InvocationEvent.java:
+	(exception): Replaced this field (removed yesterday) because it is 
+	needed for serialization.
+	(dispatch): Save thrown exception.
+	(getException): Directly return exception, no need to cast throwable.
+
+2005-11-09  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/ComponentInputMap.java:
 	(put): Notify the component.
 	(clear): Likewise.

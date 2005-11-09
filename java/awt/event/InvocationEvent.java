@@ -98,6 +98,15 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent
   protected boolean catchExceptions;
 
   /**
+   * This is the caught exception thrown in the <code>run()</code> method. It
+   * is null if exceptions are ignored, the run method hasn't completed, or
+   * there were no exceptions.
+   *
+   * @serial the caught exception, if any
+   */
+  private Exception exception;
+
+  /**
    * This is the caught Throwable thrown in the <code>run()</code> method.
    * It is null if throwables are ignored, the run method hasn't completed, 
    * or there were no throwables thrown.
@@ -184,6 +193,8 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent
       catch (Throwable t)
         {
           throwable = t;
+          if (t instanceof Exception)
+            exception = (Exception)t;
         }
     else
       runnable.run();
@@ -205,9 +216,7 @@ public class InvocationEvent extends AWTEvent implements ActiveEvent
    */
   public Exception getException()
   {
-    if (throwable == null || !(throwable instanceof Exception))
-      return null;
-    return (Exception) throwable;
+    return exception;
   }
 
   /**
