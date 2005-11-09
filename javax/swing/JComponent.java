@@ -2828,41 +2828,22 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void addNotify()
   {
+    // Register the WHEN_IN_FOCUSED_WINDOW keyboard bindings
+    // Note that here we unregister all bindings associated with
+    // this component and then re-register them.  This may be more than
+    // necessary if the top-level ancestor hasn't changed.  Should
+    // maybe improve this.
+    KeyboardManager km = KeyboardManager.getManager();
+    km.clearBindingsForComp(this);
+    km.registerEntireMap((ComponentInputMap)
+                         this.getInputMap(WHEN_IN_FOCUSED_WINDOW));
     super.addNotify();
 
-    // let parents inherit the keybord mapping
-    InputMap input = getInputMap();
-    ActionMap actions = getActionMap();
-
-    Container parent = getParent();
-    while ((parent != null) && (parent instanceof JComponent))
-      {
-        JComponent jParent = (JComponent) parent;
-        InputMap parentInput = jParent.getInputMap();
-        ActionMap parentAction = jParent.getActionMap();
-
-        KeyStroke[] ikeys = input.keys();
-        for (int i = 0; i < ikeys.length; i++)
-          {
-            Object o = input.get(ikeys[i]);
-            parentInput.put(ikeys[i], o);
-          }
-
-        Object[] akeys = actions.keys();
-        for (int i = 0; i < akeys.length; i++)
-          {
-            Action a = actions.get(akeys[i]);
-            parentAction.put(akeys[i], a);
-          }
-
-        parent = jParent.getParent();
-      }
-    
     // Notify AncestorListeners.
     fireAncestorEvent(this, AncestorEvent.ANCESTOR_ADDED);
 
     // fire property change event for 'ancestor'
-    firePropertyChange("ancestor", null, parent);
+    firePropertyChange("ancestor", null, getParent());
   }
 
   /**

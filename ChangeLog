@@ -1,3 +1,11 @@
+2005-11-09  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JComponent.java:
+	(addNotify): Unregister all WHEN_IN_FOCUSED_WINDOW bindings for this 
+	JComponent and then register them with its (potentially) new top level
+	ancestor.  Removed unncessary code that copied regular (WHEN_FOCUSED)
+	key bindings up the parent hierarchy.  
+
 2005-10-26  Roman Kennke  <kennke@aicas.com>
 
 	Reported by Friedjof Siebert  <siebert@aicas.com>
