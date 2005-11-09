@@ -1,3 +1,8 @@
+2005-11-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/PortableInterceptor/ObjectReferenceFactory.java: Do not
+	inherit	from org.omg.CORBA.Object.
+
 2005-11-09  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/ComponentUI.java

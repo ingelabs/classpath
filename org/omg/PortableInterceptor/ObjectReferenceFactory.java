@@ -52,6 +52,6 @@ import org.omg.CORBA.portable.IDLEntity;
  * @author Audrius Meskauskas, Lithuania (AudriusA@Bioinformatics.org)
  */
 public interface ObjectReferenceFactory
-  extends ObjectReferenceFactoryOperations, IDLEntity, org.omg.CORBA.Object
+  extends ObjectReferenceFactoryOperations, IDLEntity
 {
 }
