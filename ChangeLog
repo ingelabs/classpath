@@ -1,3 +1,7 @@
+2005-11-09  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/cp-tools/cp-tools.wml: Add gjdoc download link.
+
 2005-11-09  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/aelfred2/SAXDriver.java: Ensure that absolutize does not
