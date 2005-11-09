@@ -1,3 +1,11 @@
+2005-11-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(paint): Fetch a new componentGraphics here instead of
+	paintComponent.
+	(paintComponent): Don't fetch the componentGraphics here. This
+	must be done in paint.
+
 2005-11-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JList.java
@@ -16,8 +24,8 @@
 
 2005-11-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-	* javax/swing/DefaultCaret.java (BlinkTimerListener):  
-	added ignoreNextEvent flag and its handling.
+	* javax/swing/text/DefaultCaret.java (BlinkTimerListener):  
+	Added ignoreNextEvent flag and its handling.
 	(blinkListener): New field. (initBlinkTimer): 
 	Initialise blinkListener field.
 	(setDot, moveDot): Call appear() instead of repaint(). 

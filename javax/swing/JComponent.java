@@ -1685,10 +1685,11 @@ public abstract class JComponent extends Container implements Serializable
       {
         if (g.getClip() == null)
           g.setClip(0, 0, getWidth(), getHeight());
-        paintComponent(g);
-        paintBorder(g);
-        paintChildren(g);
-        Rectangle clip = g.getClipBounds();
+        Graphics g2 = getComponentGraphics(g);
+        paintComponent(g2);
+        paintBorder(g2);
+        paintChildren(g2);
+        Rectangle clip = g2.getClipBounds();
         if (clip.x == 0 && clip.y == 0 && clip.width == getWidth()
             && clip.height == getHeight())
           RepaintManager.currentManager(this).markCompletelyClean(this);
@@ -1785,7 +1786,7 @@ public abstract class JComponent extends Container implements Serializable
         Graphics g2 = g;
         if (!(g instanceof Graphics2D))
           g2 = g.create();
-        ui.update(getComponentGraphics(g2), this);
+        ui.update(g2, this);
         if (!(g instanceof Graphics2D))
           g2.dispose();
       }
