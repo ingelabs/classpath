@@ -1,3 +1,10 @@
+2005-11-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/PortableInterceptor/ObjectReferenceTemplate.java,
+	org/omg/PortableInterceptor/ObjectReferenceTemplateHelper.java,
+	org/omg/PortableInterceptor/ObjectReferenceTemplateHolder.java:
+	New files.
+
 2005-11-09  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTabbedPane.java
