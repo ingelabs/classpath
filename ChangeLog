@@ -1,5 +1,20 @@
 2005-11-09  Roman Kennke  <kennke@aicas.com>
 
+	Reported by Friedjof Siebert  <siebert@aicas.com>
+	* java/io/PrintWriter.java
+	(line_separator):  Added default value for property to ensure
+	absence of null pointer exception even if property is not set.
+
+2005-11-09  Roman Kennke  <kennke@aicas.com>
+
+	Reported by Ingo Proetel  <proetel@aicas.com>
+	* gnu/java/io/PlatformHelper.java
+	(toCanonicalForm): Remove lowercasing of paths in Windows. This
+	breaks working with URLs, like when accessing files withing JAR
+	files.
+
+2005-11-09  Roman Kennke  <kennke@aicas.com>
+
 	* java/io/InputStreamReader.java
 	(InputStreamReader(InputStream, CharsetDecoder)): Catch the case
 	when the CharsetDecoder returns a null charset and handle it like
