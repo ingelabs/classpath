@@ -337,12 +337,7 @@ public class JTabbedPane extends JComponent implements Serializable,
      */
     public void setComponent(Component c)
     {
-      if (c != null)
-        {
-          remove(component);
-          add(c);
-          this.component = c;
-        }
+      component = c;
     }
 
     /**
@@ -971,6 +966,7 @@ public class JTabbedPane extends JComponent implements Serializable,
       super.add(component);
     else
       insertTab(component.getName(), null, component, null, tabs.size());
+    
     return component;
   }
 
@@ -1054,9 +1050,9 @@ public class JTabbedPane extends JComponent implements Serializable,
   }
 
   /**
-   * The tab and it's associated component are removed. After the component
-   * has been removed from the JTabbedPane, it's set visible to ensure that
-   * it can be seen.
+   * Removes the tab at index. After the component associated with 
+   * index is removed, its visibility is reset to true to ensure it 
+   * will be visible if added to other containers.
    *
    * @param index The index of the tab to remove.
    */
@@ -1070,24 +1066,17 @@ public class JTabbedPane extends JComponent implements Serializable,
   }
 
   /**
-   * This method removes the component from the JTabbedPane. After the
-   * component has been removed from the JTabbedPane, it's  set visible to
-   * ensure that it can be seen.
+   * Removes the specified Component from the JTabbedPane.
    *
    * @param component The Component to remove.
    */
   public void remove(Component component)
   {
-    // This simply removes the component.
-    int index = indexOfComponent(component);
     super.remove(component);
-    component.show();
-    setComponentAt(index, null);
   }
 
   /**
-   * This method removes the tab and component from the JTabbedPane. It simply
-   * calls removeTabAt(int index).
+   * Removes the tab and component which corresponds to the specified index.
    *
    * @param index The index of the tab to remove.
    */
