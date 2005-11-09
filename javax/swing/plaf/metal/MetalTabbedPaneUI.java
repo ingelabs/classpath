@@ -127,7 +127,7 @@ public class MetalTabbedPaneUI extends BasicTabbedPaneUI
    */
   protected LayoutManager createLayoutManager()
   {
-    return new TabbedPaneLayout();
+    return super.createLayoutManager();
   }
   
   /**

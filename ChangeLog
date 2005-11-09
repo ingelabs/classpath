@@ -1,3 +1,11 @@
+2005-11-09  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTabbedPane.java
+	(setComponent): Added check to prevent infinite loops.
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	(createLayoutManager): Should call super here, so the layout
+	is set properly depending on the layout mode.
+
 2005-11-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java

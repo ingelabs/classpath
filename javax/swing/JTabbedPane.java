@@ -337,9 +337,12 @@ public class JTabbedPane extends JComponent implements Serializable,
      */
     public void setComponent(Component c)
     {
-      remove(component);
-      this.component = c;
-      add(c);
+      if (c != null)
+        {
+          remove(component);
+          add(c);
+          this.component = c;
+        }
     }
 
     /**
@@ -620,7 +623,7 @@ public class JTabbedPane extends JComponent implements Serializable,
       throw new IllegalArgumentException("tabLayoutPolicy is not valid.");
     this.tabPlacement = tabPlacement;
     layoutPolicy = tabLayoutPolicy;
-
+    
     changeEvent = new ChangeEvent(this);
     changeListener = createChangeListener();
 
