@@ -1,3 +1,9 @@
+2005-11-10  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalRadioButtonUI.java
+	(paintFocus): Centered border around rectangle. It seemed
+	a bit offset and too small at times.
+
 2005-11-10  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java
