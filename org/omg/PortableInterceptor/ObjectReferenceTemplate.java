@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package org.omg.PortableInterceptor;
 
-import org.omg.CORBA.portable.IDLEntity;
+import org.omg.PortableServer.POA;
 
 /**
  * Defines the identity of the portable object adapter ({@link POA}}. The
@@ -51,7 +51,10 @@ public interface ObjectReferenceTemplate
   extends ObjectReferenceFactory
 {
   /**
-   * Get the name of this adapter.
+   * Get the name of this adapter. This name can be set by specifying
+   * the org.omg.CORBA.ORBid property in the ORB.Init(.., Properties).
+   * The default value includes the hashcode of the ORB instance and hence
+   * should normally differ for each ORB.
    *
    * @return the name of adapter, represented in the form of the string array.
    */
@@ -65,7 +68,9 @@ public interface ObjectReferenceTemplate
   String orb_id();
 
   /**
-   * Get the server id of of this adapter.
+   * Get the server id of of this adapter. This name can be set by specifying
+   * the org.omg.CORBA.ServerId property in the ORB.Init(.., Properties) or
+   * in the system property. All ORB's on the same jre share the same value.
    *
    * @return the server id, represented in the form of string.
    */

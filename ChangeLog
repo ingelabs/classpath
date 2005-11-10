@@ -1,3 +1,11 @@
+2005-11-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/OrbFunctional.java (use_properties, set_parameters):
+	Rewritten to support orb and server ids.
+	* org/omg/CORBA/ORB.java,
+	org/omg/PortableInterceptor/ObjectReferenceTemplate.java: 
+	Documentation update.
+
 2005-11-09  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JComponent.java:
