@@ -988,7 +988,8 @@ public abstract class JComponent extends Container implements Serializable
   {
     VetoableChangeListener[] listeners = getVetoableChangeListeners();
 
-    PropertyChangeEvent evt = new PropertyChangeEvent(this, propertyName, oldValue, newValue);
+    PropertyChangeEvent evt = 
+      new PropertyChangeEvent(this, propertyName, oldValue, newValue);
 
     for (int i = 0; i < listeners.length; i++)
       listeners[i].vetoableChange(evt);
@@ -2209,36 +2210,52 @@ public abstract class JComponent extends Container implements Serializable
     boolean pressed = e.getID() == KeyEvent.KEY_PRESSED;
     
     if (processKeyBinding(keyStroke, e, WHEN_FOCUSED, pressed))
-      // This is step 1 from above comment.
-      e.consume();
+      {
+        // This is step 1 from above comment.
+        e.consume();
+        return;
+      }
     else if (processKeyBinding
              (keyStroke, e, WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, pressed))
-      // This is step 2 from above comment.
-      e.consume();
-    else
       {
-        // This is step 3 from above comment.
-        Container current = this;
-        while ((current = current.getParent()) instanceof JComponent)
-          {
-            if (((JComponent)current).processKeyBinding
-                (keyStroke, e,WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, 
-                 pressed))
-              {
-                e.consume();
-                break;
-              }
-            if (current instanceof Window || current instanceof Applet
-                || current instanceof JInternalFrame)
-              break;
-          }
-        if (e.isConsumed())
-          return;
-                
-        // This is step 4 from above comment.
-        if (KeyboardManager.getManager().processKeyStroke(this, keyStroke, e))
-          e.consume();
+        // This is step 2 from above comment.
+        e.consume();
+        return;
       }
+    
+    // This is step 3 from above comment.
+    Container current = getParent();    
+    while (current != null)
+      { 
+        // If current is a JComponent, see if it handles the event in its
+        // WHEN_ANCESTOR_OF_FOCUSED_COMPONENT maps.
+        if ((current instanceof JComponent) && 
+            ((JComponent)current).processKeyBinding 
+            (keyStroke, e,WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, pressed))
+          {
+            e.consume();
+            return;
+          }     
+        
+        // Stop when we've tried a top-level container and it didn't handle it
+        if (current instanceof Window || current instanceof Applet)
+          break;        
+        
+        // Move up the hierarchy
+        current = current.getParent();
+      }
+    
+    // Current being null means the JComponent does not currently have a
+    // top-level ancestor, in which case we don't need to check 
+    // WHEN_IN_FOCUSED_WINDOW bindings.
+    if (current == null || e.isConsumed())
+      return;
+    
+    // This is step 4 from above comment.  KeyboardManager maintains mappings
+    // related to WHEN_IN_FOCUSED_WINDOW bindings so that we don't have to 
+    // traverse the containment hierarchy each time.
+    if (KeyboardManager.getManager().processKeyStroke(current, keyStroke, e))
+      e.consume();
   }
 
   protected boolean processKeyBinding(KeyStroke ks,
@@ -3349,6 +3366,7 @@ public abstract class JComponent extends Container implements Serializable
     // delete all the old bindings for the component and then register
     // the current bindings.
     km.clearBindingsForComp(changed.getComponent());
-    km.registerEntireMap((ComponentInputMap) getInputMap(WHEN_IN_FOCUSED_WINDOW));
+    km.registerEntireMap((ComponentInputMap) 
+                         getInputMap(WHEN_IN_FOCUSED_WINDOW));
   }
 }

@@ -39,6 +39,7 @@ exception statement from your version. */
 package javax.swing;
 
 import java.applet.Applet;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
@@ -78,9 +79,10 @@ class KeyboardManager
    * @param c the JComponent whose top-level ancestor we want
    * @return the top-level ancestor for the given JComponent.
    */
-  static Container findTopLevel (JComponent c)
+  static Container findTopLevel (Component c)
   {
-    Container topLevel = (c instanceof Container) ? c : c.getParent();
+    Container topLevel = (c instanceof Container) ? (Container) c
+                                                 : c.getParent();
     while (topLevel != null && 
            !(topLevel instanceof Window) && 
            !(topLevel instanceof Applet) && 
@@ -197,7 +199,7 @@ class KeyboardManager
       keyToComponent.put(keys[i], comp);
   }
   
-  public boolean processKeyStroke (JComponent comp, KeyStroke key, KeyEvent e)
+  public boolean processKeyStroke (Component comp, KeyStroke key, KeyEvent e)
   {
     // Look for the top-level ancestor
     Container topLevel = findTopLevel(comp);

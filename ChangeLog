@@ -1,3 +1,20 @@
+2005-11-10  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JComponent.java:
+	(processKeyEvent): Reworked this method to improve performance.  Return
+	early if the event has already been handled. Don't stop climbing when
+	we hit a JInternalFrame, only stop at Applets or Windows (this fixes
+	PR 24781). Don't check WHEN_IN_FOCUSED_WINDOW bindings if there is no
+	top-level container present.  If there is a top-level container,  pass 
+	it to KeyboardManager.processKeyStroke rather than the JComponent that
+	actually received the event, to save time in finding the top-level 
+	container within KeyboardManager.
+	* javax/swing/KeyboardManager.java:
+	(findTopLevel): Changed parameter from JComponent to Component to allow
+	generality and to allow passing in of already-determined top-level 
+	containers to save time.
+	(processKeyStroke): Likewise.
+
 2005-10-10  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #24731 reported by freebeans@xqb.biglobe.ne.jp.
