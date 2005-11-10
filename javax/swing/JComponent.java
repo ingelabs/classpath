@@ -555,6 +555,11 @@ public abstract class JComponent extends Container implements Serializable
   private TransferHandler transferHandler;
 
   /**
+   * Indicates if this component is currently painting a tile or not.
+   */
+  private boolean paintingTile;
+
+  /**
    * A cached Rectangle object to be reused. Be careful when you use that,
    * so that it doesn't get modified in another context within the same
    * method call chain.
@@ -1614,13 +1619,16 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
-   * Return <code>true</code> if this component is currently painting a tile.
+   * Return <code>true</code> if this component is currently painting a tile,
+   * this means that paint() is called again on another child component. This
+   * method returns <code>false</code> if this component does not paint a tile
+   * or if the last tile is currently painted.
    *
-   * @return Whether the component is painting a tile
+   * @return whether the component is painting a tile
    */
   public boolean isPaintingTile()
   {
-    return false;
+    return paintingTile;
   }
 
   /**
@@ -1735,8 +1743,38 @@ public abstract class JComponent extends Container implements Serializable
     Rectangle inner = SwingUtilities.calculateInnerArea(this, rectCache);
     g.clipRect(inner.x, inner.y, inner.width, inner.height);
     Component[] children = getComponents();
-    for (int i = children.length - 1; i >= 0; --i)
+
+    // Find the bottommost component that needs to be painted. This is a
+    // component that completely covers the current clip and is opaque. In
+    // this case we don't need to paint the components below it.
+    int startIndex = children.length - 1;
+    // No need to check for overlapping components when this component is
+    // optimizedDrawingEnabled (== it tiles its children).
+    if (! isOptimizedDrawingEnabled())
       {
+        Rectangle clip = g.getClipBounds();
+        for (int i = 0; i < children.length; i++)
+          {
+            Rectangle childBounds = children[i].getBounds();
+            if (children[i].isOpaque()
+                && SwingUtilities.isRectangleContainingRectangle(childBounds,
+                                                            g.getClipBounds()))
+              {
+                startIndex = i;
+                break;
+              }
+          }
+      }
+    // paintingTile becomes true just before we start painting the component's
+    // children.
+    paintingTile = true;
+    for (int i = startIndex; i >= 0; --i)
+      {
+        // paintingTile must be set to false before we begin to start painting
+        // the last tile.
+        if (i == 0)
+          paintingTile = false;
+
         if (!children[i].isVisible())
           continue;
 
@@ -3287,7 +3325,9 @@ public abstract class JComponent extends Container implements Serializable
   /**
    * This is the method that gets called when the WHEN_IN_FOCUSED_WINDOW map
    * is changed.
-   * @param changed the JComponent associated with the WHEN_IN_FOCUSED_WINDOW map
+   *
+   * @param changed the JComponent associated with the WHEN_IN_FOCUSED_WINDOW
+   *        map
    */
   void updateComponentInputMap(ComponentInputMap changed)
   {
