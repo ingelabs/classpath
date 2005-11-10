@@ -1,3 +1,10 @@
+2005-11-10  Mark Wielaard  <mark@klomp.org>
+
+	Reported by Petteri <betelgeuse@gentoo.org> bug #24768 and bug #24769.
+	* configure.ac (dssi): Change accidental alsa reference to dssi.
+	* native/jni/midi-dssi/Makefile.am (libgjsmdssi_la_SOURCES): Add
+	dssi_data.h.
+
 2005-11-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/OrbFunctional.java (use_properties, set_parameters):

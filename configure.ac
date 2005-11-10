@@ -118,7 +118,7 @@ AM_CONDITIONAL(CREATE_ALSA_LIBRARIES, test "x${COMPILE_ALSA}" = xyes)
 dnl -----------------------------------------------------------
 dnl DSSI code (enabled by default)
 dnl -----------------------------------------------------------
-AC_ARG_ENABLE([alsa],
+AC_ARG_ENABLE([dssi],
               [AS_HELP_STRING(--disable-dssi,compile DSSI providers (enable by --enable-dssi) [default=yes])],
               [case "${enableval}" in
                 yes) COMPILE_DSSI=yes ;;
