@@ -1,3 +1,11 @@
+2005-11-10  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java
+	(valueChanged): Repaint list when selection changed.
+	(updateLayoutState): Reworked to correctly respect fixed cell sizes.
+	(installListeners): Create component listener before adding it.
+	(paint): Optimized to only draw the cells in the clip.
+
 2005-11-10  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JComponent.java:
@@ -15,13 +23,21 @@
 	containers to save time.
 	(processKeyStroke): Likewise.
 
-2005-10-10  Mark Wielaard  <mark@klomp.org>
+2005-11-10  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #24731 reported by freebeans@xqb.biglobe.ne.jp.
 	* java/awt/ScrollPane.java (addNotify): Return immediately when peer
 	already set.
 
-2005-10-10  Roman Kennke  <kennke@aicas.com>
+2005-11-10  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installListeners): Also install focusListener on the listBox.
+	(uninstallListeners): Also uninstall focusListener from the listBox.
+	(setPopupVisible): Request focus on the listbox when making the
+	popup visible.
+
+2005-11-10  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java
 	(paintingTile): New field.

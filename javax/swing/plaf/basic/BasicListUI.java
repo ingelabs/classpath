@@ -191,7 +191,10 @@ public class BasicListUI extends ListUI
      */
     public void valueChanged(ListSelectionEvent e)
     {
-      // TODO: Implement this properly.
+      int index1 = e.getFirstIndex();
+      int index2 = e.getLastIndex();
+      Rectangle damaged = getCellBounds(list, index1, index2);
+      list.repaint(damaged);
     }
   }
 
@@ -573,7 +576,6 @@ public class BasicListUI extends ListUI
         updateLayoutStateNeeded += prototypeCellValueChanged;
       else if (e.getPropertyName().equals("cellRenderer"))
         updateLayoutStateNeeded += cellRendererChanged;
-
       BasicListUI.this.damageLayout();
     }
   }
@@ -797,29 +799,49 @@ public class BasicListUI extends ListUI
     cellWidth = -1;
     if (cellHeights == null || cellHeights.length != nrows)
       cellHeights = new int[nrows];
-    if (list.getFixedCellHeight() == -1 || list.getFixedCellWidth() == -1)
+    ListCellRenderer rend = list.getCellRenderer();
+    // Update the cellHeight(s) fields.
+    int fixedCellHeight = list.getFixedCellHeight();
+    if (fixedCellHeight >= 0)
       {
-        ListCellRenderer rend = list.getCellRenderer();
-        for (int i = 0; i < nrows; ++i)
-          {
-            Component flyweight = rend.getListCellRendererComponent(list,
-                                                                    list.getModel()
-                                                                        .getElementAt(i),
-                                                                    0, false,
-                                                                    false);
-            Dimension dim = flyweight.getPreferredSize();
-            cellHeights[i] = dim.height;
-            // compute average cell height (little hack here)
-            cellHeight = (cellHeight * i + cellHeights[i]) / (i + 1);
-            cellWidth = Math.max(cellWidth, dim.width);
-            if (list.getLayoutOrientation() == JList.VERTICAL)
-                cellWidth = Math.max(cellWidth, list.getSize().width);
-          }
+        cellHeight = fixedCellHeight;
+        for (int i = 0; i < cellHeights.length; ++i)
+          cellHeights[i] = cellHeight;
       }
     else
       {
-        cellHeight = list.getFixedCellHeight();
-        cellWidth = list.getFixedCellWidth();
+        for (int i = 0; i < nrows; ++i)
+          {
+            Component flyweight =
+              rend.getListCellRendererComponent(list,
+                      list.getModel().getElementAt(i),
+                      i, list.isSelectedIndex(i),
+                      list.getSelectionModel().getAnchorSelectionIndex() == i);
+            Dimension dim = flyweight.getPreferredSize();
+            cellHeights[i] = dim.height;
+            // Compute average cell height (little hack here).
+            cellHeight = (cellHeight * i + cellHeights[i]) / (i + 1);
+          }
+      }
+
+    // Update the cellWidth field.
+    int fixedCellWidth = list.getFixedCellWidth();
+    if (fixedCellWidth >= 0)
+      cellWidth = fixedCellWidth;
+    else
+      {
+        for (int i = 0; i < nrows; ++i)
+          {
+            Component flyweight =
+              rend.getListCellRendererComponent(list,
+                                                list.getModel().getElementAt(i),
+                                                i, list.isSelectedIndex(i),
+                                                list.getSelectionModel().getAnchorSelectionIndex() == i);
+            Dimension dim = flyweight.getPreferredSize();
+            cellWidth = Math.max(cellWidth, dim.width);
+          }
+        if (list.getLayoutOrientation() == JList.VERTICAL)
+          cellWidth = Math.max(cellWidth, list.getSize().width);
       }
   }
 
@@ -912,8 +934,8 @@ public class BasicListUI extends ListUI
 
     // FIXME: Are these two really needed? At least they are not documented.
     //keyListener = new KeyHandler();
-    list.addComponentListener(componentListener);
     componentListener = new ComponentHandler();
+    list.addComponentListener(componentListener);
     //list.addKeyListener(keyListener);
   }
 
@@ -1109,7 +1131,10 @@ public class BasicListUI extends ListUI
     Rectangle clip = g.getClipBounds();
     paintBackground(g, list);
 
-    for (int row = 0; row < nrows; ++row)
+    int startIndex = list.locationToIndex(new Point(clip.x, clip.y));
+    int endIndex = list.locationToIndex(new Point(clip.x + clip.width,
+                                                  clip.y + clip.height));
+    for (int row = startIndex; row <= endIndex; ++row)
       {
         Rectangle bounds = getCellBounds(list, row, row);
         if (bounds.intersects(clip))
