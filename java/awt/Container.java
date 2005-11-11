@@ -2166,7 +2166,10 @@ class LightweightDispatcher implements Serializable
         // Don't dispatch CLICKED events whose target is not the same as the
         // target for the original PRESSED event.
         if (candidate != pressedComponent)
-          mouseEventTarget = null;
+          {
+            mouseEventTarget = null;
+            pressCount = 0;
+          }
         else if (pressCount == 0)
           pressedComponent = null;
       }
@@ -2204,7 +2207,7 @@ class LightweightDispatcher implements Serializable
                   pressedComponent = null;
                 break;
               }
-
+            
             MouseEvent newEvt =
               AWTUtilities.convertMouseEvent(nativeContainer, me,
                                              mouseEventTarget);

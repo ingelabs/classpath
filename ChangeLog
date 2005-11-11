@@ -1,3 +1,9 @@
+2005-11-11  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Container.java
+	(LightweightDispatcher.acquireComponentForMouseEvent): If the 
+	event is not being dispatched, the pressCount should be reset.
+
 2005-11-11  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/text/FieldView.java (getPreferredSpan): Chain
