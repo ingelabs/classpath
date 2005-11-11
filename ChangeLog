@@ -1,3 +1,7 @@
+2005-11-11  Archie Cobbs  <archie@dellroad.org>
+
+	* autogen.sh: Fix broken libtool version detection on FreeBSD.
+
 2005-11-11  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Container.java
