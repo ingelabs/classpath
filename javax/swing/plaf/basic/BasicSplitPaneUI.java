@@ -1361,11 +1361,9 @@ public class BasicSplitPaneUI extends SplitPaneUI
    */
   public int getMinimumDividerLocation(JSplitPane jc)
   {
-    int value = layoutManager.getInitialLocation(jc.getInsets())
-                - layoutManager.getAvailableSize(jc.getSize(), jc.getInsets())
-                + splitPane.getDividerSize();
-    if (layoutManager.components[1] != null)
-      value += layoutManager.minimumSizeOfComponent(1);
+    int value = layoutManager.getInitialLocation(jc.getInsets());
+    if (layoutManager.components[0] != null)
+      value -= layoutManager.minimumSizeOfComponent(0);
     return value;
   }
 

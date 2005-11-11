@@ -1,3 +1,10 @@
+2005-11-11  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(getMinimumDividerLocation): Fixed to use the  minimum size
+	of the correct component. Also, removed call to getAvailableSize,
+	this is not needed for the minimum location.
+
 2005-11-11  Archie Cobbs  <archie@dellroad.org>
 
 	* autogen.sh: Fix broken libtool version detection on FreeBSD.
