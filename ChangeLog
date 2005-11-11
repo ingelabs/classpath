@@ -1,3 +1,23 @@
+2005-11-11  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* org/omg/PortableInterceptor/IORInterceptor_3_0.java,
+	org/omg/PortableInterceptor/IORInterceptor_3_0Helper.java,
+	org/omg/PortableInterceptor/IORInterceptor_3_0Holder.java,
+	org/omg/PortableInterceptor/IORInterceptor_3_0Operations.java,
+	org/omg/PortableInterceptor/_IORInterceptor_3_0Stub.java: New files.
+	* gnu/CORBA/Interceptor/IORInterceptors.java,
+	gnu/CORBA/Interceptor/gnuIorInfo.java,
+	gnu/CORBA/OrbRestricted.java,
+	gnu/CORBA/Poa/AOM.java,
+	gnu/CORBA/Poa/ORB_1_4.java,
+	gnu/CORBA/Poa/gnuPOA.java,
+	gnu/CORBA/Poa/gnuPOAManager.java,
+	org/omg/PortableInterceptor/IORInfoOperations.java,
+	org/omg/PortableInterceptor/IORInterceptorOperations.java,
+	org/omg/PortableInterceptor/ORBInitInfoOperations.java,
+	org/omg/PortableInterceptor/ObjectReferenceFactoryOperations.java:
+	Rewritten to support the IORInterceptor_3_0.
+
 2005-11-10  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalRadioButtonUI.java
