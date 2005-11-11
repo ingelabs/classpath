@@ -1,5 +1,10 @@
 2005-11-11  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/text/FieldView.java (getPreferredSpan): Chain
+	BadLocationException when throwing assertion.
+
+2005-11-11  Mark Wielaard  <mark@klomp.org>
+
 	Reported by john.zigman@anu.edu.au as bug #24608.
 	* gnu/java/nio/SocketChannelImpl.java (read): Put readBytes in
 	destination ByteBuffer when it doesn't have an array instead of len
