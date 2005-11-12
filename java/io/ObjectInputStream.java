@@ -112,7 +112,10 @@ public class ObjectInputStream extends InputStream
    * <code>private void readObject (ObjectInputStream)</code>.
    *
    * If an exception is thrown from this method, the stream is left in
-   * an undefined state.
+   * an undefined state. This method can also throw Errors and 
+   * RuntimeExceptions if caused by existing readResolve() user code.
+   * 
+   * @return The object read from the underlying stream.
    *
    * @exception ClassNotFoundException The class that an object being
    * read in belongs to cannot be found.
@@ -1565,8 +1568,15 @@ public class ObjectInputStream extends InputStream
 	catch (IllegalAccessException ignore)
 	  {
 	  }
-	catch (InvocationTargetException ignore)
+	catch (InvocationTargetException exception)
 	  {
+	    Throwable cause = exception.getCause();
+	    if (cause instanceof ObjectStreamException)
+	      throw (ObjectStreamException) cause;
+	    else if (cause instanceof RuntimeException)
+	      throw (RuntimeException) cause;
+	    else if (cause instanceof Error)
+	      throw (Error) cause;
 	  }
       }
 
