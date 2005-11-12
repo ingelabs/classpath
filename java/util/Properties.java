@@ -219,12 +219,15 @@ label   = Name:\\u0020</pre>
 
         // The characters up to the next Whitespace, ':', or '='
         // describe the key.  But look for escape sequences.
-        StringBuffer key = new StringBuffer();
+	// Try to short-circuit when there is no escape char.
+	int start = pos;
+	boolean needsEscape = line.indexOf('\\', pos) != -1;
+        StringBuilder key = needsEscape ? new StringBuilder() : null;
         while (pos < line.length()
                && ! Character.isWhitespace(c = line.charAt(pos++))
                && c != '=' && c != ':')
           {
-            if (c == '\\')
+            if (needsEscape && c == '\\')
               {
                 if (pos == line.length())
                   {
@@ -268,11 +271,20 @@ label   = Name:\\u0020</pre>
                       }
                   }
               }
-            else
+            else if (needsEscape)
               key.append(c);
           }
 
         boolean isDelim = (c == ':' || c == '=');
+
+	String keyString;
+	if (needsEscape)
+	  keyString = key.toString();
+	else if (isDelim || Character.isWhitespace(c))
+	  keyString = line.substring(start, pos - 1);
+	else
+	  keyString = line.substring(start, pos);
+
         while (pos < line.length()
                && Character.isWhitespace(c = line.charAt(pos)))
           pos++;
@@ -285,7 +297,15 @@ label   = Name:\\u0020</pre>
               pos++;
           }
 
-        StringBuffer element = new StringBuffer(line.length() - pos);
+	// Short-circuit if no escape chars found.
+	if (!needsEscape)
+	  {
+	    put(keyString, line.substring(pos));
+	    continue;
+	  }
+
+	// Escape char found so iterate through the rest of the line.
+        StringBuilder element = new StringBuilder(line.length() - pos);
         while (pos < line.length())
           {
             c = line.charAt(pos++);
@@ -341,7 +361,7 @@ label   = Name:\\u0020</pre>
             else
               element.append(c);
           }
-        put(key.toString(), element.toString());
+        put(keyString, element.toString());
       }
   }
 
@@ -405,7 +425,7 @@ label   = Name:\\u0020</pre>
     
     Iterator iter = entrySet ().iterator ();
     int i = size ();
-    StringBuffer s = new StringBuffer (); // Reuse the same buffer.
+    StringBuilder s = new StringBuilder (); // Reuse the same buffer.
     while (--i >= 0)
       {
         Map.Entry entry = (Map.Entry) iter.next ();
@@ -548,7 +568,7 @@ label   = Name:\\u0020</pre>
    *        leading spaces must be escaped for the value
    * @see #store(OutputStream, String)
    */
-  private void formatForOutput(String str, StringBuffer buffer, boolean key)
+  private void formatForOutput(String str, StringBuilder buffer, boolean key)
   {
     if (key)
       {

@@ -1,3 +1,12 @@
+2005-11-11  Mark Wielaard  <mark@klomp.org>
+	    Anthony Green  <green@redhat.com>
+
+	* java/util/Properties.java (load): Short-circuit parsing when key or
+	value doesn't contain escape character. Use StringBuilder instead of
+	StringBuffer.
+	(store): Use StringBuilder instead of StringBuffer.
+	(formatForOutput): Likewise.
+
 2005-11-11  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicSplitPaneUI.java
