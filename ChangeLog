@@ -1,3 +1,9 @@
+2005-11-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 24749
+	* javax/swing/plaf/basic/BasicTextUI.java (installDefaults):  
+	Call setSelectionColor. 
+
 2005-11-12  Wolfgang Baer  <WBaer@gmx.de>
 
 	* java/io/ObjectInputStream.java
