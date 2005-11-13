@@ -1,3 +1,9 @@
+2005-11-13  Archie Cobbs  <archie@dellroad.org>
+
+	* vm/reference/gnu/classpath/VMStackWalker.java (getClassLoader()):
+	added to fix an infinite loop bug.
+	* NEWS: note VM interface change.
+
 2005-11-13  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #23008
