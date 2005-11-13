@@ -1,5 +1,11 @@
 2005-11-13  Wolfgang Baer  <WBaer@gmx.de>
 
+	* javax/print/attribute/EnumSyntax.java:
+	API docs added and enhanced for class and methods.
+	(readResolve): New method.
+		
+2005-11-13  Wolfgang Baer  <WBaer@gmx.de>
+
 	* javax/print/attribute/Attribute.java,
 	javax/print/attribute/AttributeSet.java,
 	javax/print/attribute/DocAttribute.java,
