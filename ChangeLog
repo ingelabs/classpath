@@ -1,3 +1,11 @@
+2005-11-13  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/HashDocAttributeSet.java,
+	* javax/print/attribute/HashPrintJobAttributeSet.java,
+	* javax/print/attribute/HashPrintRequestAttributeSet.java,
+	* javax/print/attribute/HashPrintServiceAttributeSet.java,
+	Added class api docs and enhanced method api docs.
+
 2005-11-13  Tom Tromey  <tromey@redhat.com>
 
 	* native/jni/midi-dssi/.cvsignore: Updated.
