@@ -1,3 +1,32 @@
+2005-11-13  Tom Tromey  <tromey@redhat.com>
+
+	* javax/sound/sampled/AudioFileFormat.java: New file.
+	* javax/sound/sampled/AudioFormat.java: New file.
+	* javax/sound/sampled/AudioInputStream.java: New file.
+	* javax/sound/sampled/AudioPermission.java: New file.
+	* javax/sound/sampled/AudioSystem.java: New file.
+	* javax/sound/sampled/BooleanControl.java: New file.
+	* javax/sound/sampled/Clip.java: New file.
+	* javax/sound/sampled/CompoundControl.java: New file.
+	* javax/sound/sampled/Control.java: New file.
+	* javax/sound/sampled/DataLine.java: New file.
+	* javax/sound/sampled/EnumControl.java: New file.
+	* javax/sound/sampled/FloatControl.java: New file.
+	* javax/sound/sampled/LineEvent.java: New file.
+	* javax/sound/sampled/Line.java: New file.
+	* javax/sound/sampled/LineListener.java: New file.
+	* javax/sound/sampled/LineUnavailableException.java: New file.
+	* javax/sound/sampled/Mixer.java: New file.
+	* javax/sound/sampled/Port.java: New file.
+	* javax/sound/sampled/ReverbType.java: New file.
+	* javax/sound/sampled/SourceDataLine.java: New file.
+	* javax/sound/sampled/spi/AudioFileReader.java: New file.
+	* javax/sound/sampled/spi/AudioFileWriter.java: New file.
+	* javax/sound/sampled/spi/FormatConversionProvider.java: New file.
+	* javax/sound/sampled/spi/MixerProvider.java: New file.
+	* javax/sound/sampled/TargetDataLine.java: New file.
+	* javax/sound/sampled/UnsupportedAudioFileException.java: New file.
+
 2005-11-13  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/EnumSyntax.java:
