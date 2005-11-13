@@ -1,5 +1,11 @@
 2005-11-13  Tom Tromey  <tromey@redhat.com>
 
+	* native/jni/midi-dssi/.cvsignore: Updated.
+	* native/jni/midi-alsa/.cvsignore: New file.
+	* lib/.cvsignore: Updated.
+
+2005-11-13  Tom Tromey  <tromey@redhat.com>
+
 	* javax/sound/sampled/AudioFileFormat.java: New file.
 	* javax/sound/sampled/AudioFormat.java: New file.
 	* javax/sound/sampled/AudioInputStream.java: New file.

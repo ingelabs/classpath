@@ -5,3 +5,5 @@
 .libs
 .depsMakefile
 Makefile.in
+.deps
+Makefile
