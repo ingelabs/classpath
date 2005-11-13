@@ -124,4 +124,15 @@ public interface IORInfoOperations
    * @see IORInterceptor_3_0Operations#adapter_manager_state_changed
    */
   public int manager_id();
+  
+  /**
+   * Get the state of the adapter manager.
+   * 
+   * @since 1.5
+   * 
+   * @return the state of the adapters to that the IOR being created belongs.
+   * One of the {@link HOLDING#value}, {@link DISCARDING#value},
+   * {@link INACTIVE#value} or {@link NON_EXISTENT#value}.
+   */
+  short state(); 
 }

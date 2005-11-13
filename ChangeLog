@@ -17,6 +17,16 @@
 
 2005-11-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/Interceptor/gnuIorInfo.java (state): Made public.
+	* gnu/CORBA/Interceptor/gnuServerRequestInfo.java 
+	(adapter_name, orb_id, server_id): New methods.
+	* org/omg/PortableInterceptor/IORInfoOperations.java
+	(state): New method.
+	* org/omg/PortableInterceptor/ServerRequestInfoOperations.java
+	(adapter_name, orb_id, server_id): New methods.	
+
+2005-11-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	PR 24749
 	* javax/swing/plaf/basic/BasicTextUI.java (installDefaults):  
 	Call setSelectionColor. 

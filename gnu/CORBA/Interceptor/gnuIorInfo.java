@@ -115,7 +115,7 @@ public class gnuIorInfo extends LocalObject implements IORInfo
   /**
    * Return the state of the object POA.
    */
-  short state()
+  public short state()
   {
     return (short) poa.the_POAManager().get_state().value();
   }
