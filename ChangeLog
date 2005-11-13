@@ -1,3 +1,8 @@
+2005-11-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 24733
+	* javax/swing/TransferHandler.java (getClipboard): Rewritten. 
+
 2005-11-13  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/HashDocAttributeSet.java,
