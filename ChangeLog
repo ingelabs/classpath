@@ -1,3 +1,17 @@
+2005-11-14  Mark Wielaard  <mark@klomp.org>
+
+	As suggested by Joao Victor <jvital@gmail.com>:
+	* javax/swing/Timer.java (Waker): Removed class.
+	(Task): New class.
+	(timer): New field.
+	(running): Removed field.
+	(waker): Likewise.
+	(task): New field.
+	(isRunning): Check whether task is null.
+	(start): Create task and schedule it with timer.
+	(stop): Cancel task and clear field.
+	(queueEvent): Synchronized on queueLock.
+
 2005-11-14  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JTree.java
