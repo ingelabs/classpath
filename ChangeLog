@@ -1,5 +1,17 @@
 2005-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(globalManager): Removed obsolete field.
+	(currentRepaintManagers): New field.
+	(RepaintWorker.run): Fetch current RepaintManager for the current
+	thread group.
+	(currentManager): Return the current manager for the current thread
+	group.
+	(setCurrentManager): Set the repaint manager for the current thread
+	group.
+
+2005-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicComboPopup.java
 	(show): Instead of fiddling with the list size, set the preferredSize
 	of the scroller.
