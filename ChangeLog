@@ -1,3 +1,10 @@
+2005-11-14  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/AttributeSetUtilities.java:
+	Added api docs and enhanced api docs all over the place.
+	(verifyCategoryForValue): Throw exception when arguments
+	are _not_ equal and throw NPE also if attribute is null.
+
 2005-11-14  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
