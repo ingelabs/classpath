@@ -1,5 +1,10 @@
 2005-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+	(setButtonIcons): Only set icons if buttons are != null.
+
+2005-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
 	(initComponentDefaults): Fixed some UI defaults used by ProgressBar.
 
