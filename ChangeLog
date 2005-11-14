@@ -1,3 +1,9 @@
+2005-11-14  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(getLocationOnScreen): The insets should be taken into account
+	when returning the location of an object on the screen.
+
 2005-11-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JMenuBar.java:

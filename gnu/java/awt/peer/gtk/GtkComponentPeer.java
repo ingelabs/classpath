@@ -271,7 +271,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   { 
     int point[] = new int[2];
     gtkWidgetGetLocationOnScreen (point);
-    return new Point (point[0], point[1]);
+    return new Point (point[0] - insets.left, point[1] - insets.top);
   }
 
   public Dimension getMinimumSize () 
