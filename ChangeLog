@@ -1,3 +1,41 @@
+2005-11-14  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/ActionMap.java: 
+	(keys): Return null if the map is empty.
+	(allKeys): Likewise.
+	* javax/swing/InputMap.java:
+	(keys): Return null if the map is empty.
+	(allKeys): Likewise.
+	* javax/swing/JMenuBar:
+	(addNotify): Register the menu with the KeyboardManager.
+	(processKeyBinding): New API method.
+	(processKeyBindingHelper): New implementation method.
+	* javax/swing/JMenuItem.java:
+	(setAccelerator): Fire a PropertyChangeEvent after changing the 
+	accelerator.
+	* javax/swing/KeyboardManager.java:
+	(menuBarLookup): New field, Hashtable mapping between top-level 
+	containers and a Vector of the JMenuBars contained in them.
+	(getHashtableForTopLevel): Changed this public method to package
+	private.
+	(registerEntireMap): Avoid NPE by returning early if the parameter
+	is null or contains no mappings.
+	(processKeyStroke): If the mapped component doesn't consume the event,
+	let all JMenuBars in the top-level container have a chance at it.
+	(getVectorForTopLevel): New implementation method.
+	(registerJMenuBar): Likewise.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	(propertyChangeListener): New field.
+	(PropertyChangeHandler): New class to handle PropertyChangeEvents on 
+	the JMenuItem.
+	(ClickAction): New class to implement accelerator key handling.
+	(BasicMenuItemUI<init>): Instantiate the propertyChangeListener field.
+	(installKeyboardActions): Implemented.
+	(installListeners): Install the propertyChangeListener.
+	(installUI): Call installKeyboardAcions after installing the listeners.
+	(uninstallKeyboardActions): Implemented.
+	(uninstallListeners): Remove the propertyChangeListener.
+
 2005-11-14  Tom Tromey  <tromey@redhat.com>
 
 	* java/applet/Applet.java (URLAudioClip): New class.

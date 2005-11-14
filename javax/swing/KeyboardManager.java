@@ -45,6 +45,7 @@ import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  * This class maintains a mapping from top-level containers to a 
@@ -66,6 +67,12 @@ class KeyboardManager
    */
   Hashtable topLevelLookup = new Hashtable();  
   
+  /**
+   * A mapping between top level containers and Vectors of JMenuBars
+   * used to allow all the JMenuBars within a top level container
+   * a chance to consume key events.
+   */
+  Hashtable menuBarLookup = new Hashtable();
   /**
    * Returns the shared instance of KeyboardManager.
    * @return the shared instance of KeybaordManager.
@@ -101,7 +108,7 @@ class KeyboardManager
    * @return the Hashtable mapping KeyStrokes to Components for the 
    * specified top-level container
    */
-  public Hashtable getHashtableForTopLevel (Container c)
+  Hashtable getHashtableForTopLevel (Container c)
   {
     Hashtable keyToComponent = (Hashtable)topLevelLookup.get(c);
     if (keyToComponent == null)
@@ -185,9 +192,12 @@ class KeyboardManager
    */
   public void registerEntireMap (ComponentInputMap map)
   {
+    if (map == null)
+      return;    
     JComponent comp = map.getComponent();
     KeyStroke[] keys = map.keys();
-    
+    if (keys == null)
+      return;
     // Find the top-level container associated with this ComponentInputMap
     Container topLevel = findTopLevel(comp);
     if (topLevel == null)
@@ -201,18 +211,56 @@ class KeyboardManager
   
   public boolean processKeyStroke (Component comp, KeyStroke key, KeyEvent e)
   {
+    boolean pressed = e.getID() == KeyEvent.KEY_PRESSED;
+
     // Look for the top-level ancestor
     Container topLevel = findTopLevel(comp);
     if (topLevel == null)
-      return false;
+      return false;    
     // Now get the Hashtable for that top-level container
     Hashtable keyToComponent = getHashtableForTopLevel(topLevel);
     Enumeration keys = keyToComponent.keys();
-    JComponent target = (JComponent)keyToComponent.get(key);
-    if (target == null)
-      return false;
-    return target.processKeyBinding
-      (key, e, JComponent.WHEN_IN_FOCUSED_WINDOW, 
-       e.getID() == KeyEvent.KEY_PRESSED);
+    JComponent target = (JComponent)keyToComponent.get(key);    
+    if (target != null && target.processKeyBinding
+        (key, e, JComponent.WHEN_IN_FOCUSED_WINDOW, pressed))
+      return true;
+    
+    // Have to give all the JMenuBars a chance to consume the event
+    Vector menuBars = getVectorForTopLevel(topLevel);
+    for (int i = 0; i < menuBars.size(); i++)
+      if (((JMenuBar)menuBars.elementAt(i)).processKeyBinding(key, e, JComponent.WHEN_IN_FOCUSED_WINDOW, pressed))
+        return true;
+    return false;
+  }
+  
+  /**
+   * Returns the Vector of JMenuBars associated with the top-level
+   * @param c the top-level container whose JMenuBar Vector we want
+   * @return the Vector of JMenuBars for this top level container
+   */
+  Vector getVectorForTopLevel(Container c)
+  {
+    Vector result = (Vector) menuBarLookup.get(c);
+    if (result == null)
+      {
+        result = new Vector();
+        menuBarLookup.put (c, result);
+      }
+    return result;
+  }
+  
+  /**
+   * In processKeyStroke, KeyManager must give all JMenuBars in the 
+   * focused top-level container a chance to process the event.  So, 
+   * JMenuBars must be registered in KeyManager and associated with a 
+   * top-level container.  That's what this method is for.
+   * @param menuBar the JMenuBar to register
+   */
+  public void registerJMenuBar (JMenuBar menuBar)
+  {
+    Container topLevel = findTopLevel(menuBar);
+    Vector menuBars = getVectorForTopLevel(topLevel);
+    if (!menuBars.contains(menuBar))
+      menuBars.add(menuBar);
   }
 }
