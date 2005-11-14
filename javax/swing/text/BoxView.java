@@ -307,7 +307,8 @@ public class BoxView
       {
         copy.setBounds(inside);
         childAllocation(i, copy);
-        if (!copy.isEmpty())
+        if (!copy.isEmpty()
+            && g.hitClip(copy.x, copy.y, copy.width, copy.height))
           paintChild(g, copy, i);
       }
   }

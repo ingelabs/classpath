@@ -1,5 +1,10 @@
 2005-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/BoxView.java
+	(paint): Only paint child if it is inside the current clip.
+
+2005-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/AbstractButton.java
 	(setEnabled): Also set focusable flag on the button when the enabled
 	property changes.
