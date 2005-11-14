@@ -1,3 +1,13 @@
+2005-11-14  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/HashAttributeSet.java:
+	Added api docs to class and clarified method documentation.
+	(toArray): Get iterator from values instead of entries.
+	(hashCode): Compute hashcode according to specification.
+	(get): Throw NullPointerException if category is null.
+	(HashAttributeSet(Attribute[],Class)): Changed to allow
+	Attribute[] to be null.
+							
 2005-11-14  Mark Wielaard  <mark@klomp.org>
 
 	As suggested by Joao Victor <jvital@gmail.com>:
