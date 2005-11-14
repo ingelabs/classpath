@@ -1,5 +1,10 @@
 2005-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JLayeredPane.java
+	(paint): Only clear the background if the layeredPane is opaque.
+
+2005-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/RepaintManager.java
 	(globalManager): Removed obsolete field.
 	(currentRepaintManagers): New field.
