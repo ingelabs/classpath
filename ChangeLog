@@ -1,3 +1,13 @@
+2005-11-14  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JComponent.java:
+	(removeNotify): Removed unncessary InputMap and ActionMap inheritance
+	code. Added FIXME to remove the WHEN_IN_FOCUSED_WINDOW bindings from 
+	the KeyboardManager.
+	* javax/swing/JMenuBar.java:
+	(removeNotify): Added FIXME to unregister this JMenuBar from the 
+	KeyboardManager.
+
 2005-11-14  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/HashAttributeSet.java:

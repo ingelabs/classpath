@@ -2921,37 +2921,14 @@ public abstract class JComponent extends Container implements Serializable
   {
     super.removeNotify();
 
-    // let parents inherit the keybord mapping
-    InputMap input = getInputMap();
-    ActionMap actions = getActionMap();
-
-    Container parent = getParent();
-    while ((parent != null) && (parent instanceof JComponent))
-      {
-        JComponent jParent = (JComponent) parent;
-        InputMap parentInput = jParent.getInputMap();
-        ActionMap parentAction = jParent.getActionMap();
-
-        KeyStroke[] ikeys = input.allKeys();
-        for (int i = 0; i < ikeys.length; i++)
-          {
-            parentInput.remove(ikeys[i]);
-          }
-
-        Object[] akeys = actions.allKeys();
-        for (int i = 0; i < akeys.length; i++)
-          {
-            parentAction.remove(akeys[i]);
-          }
-
-        parent = jParent.getParent();
-      }
-
+    // FIXME: remove the WHEN_IN_FOCUSED_WINDOW bindings from the 
+    // KeyboardManager
+    
     // Notify ancestor listeners.
     fireAncestorEvent(this, AncestorEvent.ANCESTOR_REMOVED);
 
     // fire property change event for 'ancestor'
-    firePropertyChange("ancestor", parent, null);
+    firePropertyChange("ancestor", getParent(), null);
   }
 
   /**
