@@ -1,5 +1,11 @@
 2005-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(uninstallListeners): Uninstall the document listener here.
+	(getVisibleEditorRect): Fetch the textComponent via getComponent().
+
+2005-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/BoxView.java
 	(paint): Only paint child if it is inside the current clip.
 
