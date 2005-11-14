@@ -1,5 +1,12 @@
 2005-11-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/JMenuBar.java:
+	(removeNotify): Unregister this JMenuBar from the KeyboardManager.
+	* javax/swing/KeyboardManager.java:
+	(unregisterJMenuBar): New implementation method.
+
+2005-11-14  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/JComponent.java:
 	(removeNotify): Removed unncessary InputMap and ActionMap inheritance
 	code. Added FIXME to remove the WHEN_IN_FOCUSED_WINDOW bindings from 

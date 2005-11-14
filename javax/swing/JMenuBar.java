@@ -551,7 +551,7 @@ public class JMenuBar extends JComponent implements Accessible, MenuElement
    */
   public void removeNotify()
   {
-    // FIXME: Must unregister this menu bar with the current keyboard manager.
+    KeyboardManager.getManager().unregisterJMenuBar(this);
     super.removeNotify();
   }
 

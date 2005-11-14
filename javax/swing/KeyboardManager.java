@@ -263,4 +263,18 @@ class KeyboardManager
     if (!menuBars.contains(menuBar))
       menuBars.add(menuBar);
   }
+  
+  /**
+   * Unregisters a JMenuBar from its top-level container.  This is 
+   * called before the JMenuBar is actually removed from the container
+   * so findTopLevel will still find us the correct top-level container.
+   * @param menuBar the JMenuBar to unregister.
+   */
+  public void unregisterJMenuBar (JMenuBar menuBar)
+  {
+    Container topLevel = findTopLevel(menuBar);
+    Vector menuBars = getVectorForTopLevel(topLevel);
+    if (menuBars.contains(menuBar))
+      menuBars.remove(menuBar);
+  }
 }
