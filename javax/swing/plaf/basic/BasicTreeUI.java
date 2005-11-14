@@ -634,7 +634,6 @@ public class BasicTreeUI extends TreeUI
 
             if (!tree.isRootVisible() && tree.isExpanded(new TreePath(root)))
               root = getNextNode(root);
-
             Point loc = getCellLocation(0, 0, tree, treeModel, cell, root);
             return getCellBounds(loc.x, loc.y, cell);
           }
@@ -723,9 +722,6 @@ public class BasicTreeUI extends TreeUI
    */
   public TreePath getClosestPathForLocation(JTree tree, int x, int y)
   {
-    // FIXME: what if root is hidden? should not depend on (0,0)
-    // should start counting rows from where root is.
-    
     int row = Math.round(y / getRowHeight());
     TreePath path = getPathForRow(tree, row);
 
@@ -1183,8 +1179,7 @@ public class BasicTreeUI extends TreeUI
         for (int i = 0; i < path.length; i++)
           {
             TreePath curr = new TreePath(getPathToRoot(path[i], 0));
-            Rectangle bounds = getPathBounds(tree, curr);  
-            
+            Rectangle bounds = getPathBounds(tree, curr);
             if (treeModel != null)
               isLeaf = treeModel.isLeaf(path[i]);
             if (!isLeaf && hasControlIcons())
@@ -2870,8 +2865,11 @@ public class BasicTreeUI extends TreeUI
      */
     public void treeStructureChanged(TreeModelEvent e)
     {
-      validCachedPreferredSize = false;
+      if (e.getPath().length == 1
+          && !e.getPath()[0].equals(treeModel.getRoot()))
+        tree.expandPath(new TreePath(treeModel.getRoot()));
       updateCurrentVisiblePath();
+      validCachedPreferredSize = false;
       tree.revalidate();
       tree.repaint();
     }
@@ -3330,8 +3328,10 @@ public class BasicTreeUI extends TreeUI
    */
   Object getParent(Object root, Object node)
   {
-    if (root == null || node == null)
+    if (root == null || node == null ||
+        root.equals(node))
       return null;
+    
     if (node instanceof TreeNode)
       return ((TreeNode) node).getParent();
     return findNode(root, node);
@@ -3348,21 +3348,23 @@ public class BasicTreeUI extends TreeUI
    */
   private Object findNode(Object root, Object node)
   {
-    int size = 0;
-    if (!treeModel.isLeaf(root))
-      size = treeModel.getChildCount(root);
-    for (int i = 0; i < size; i++)
+    if (!treeModel.isLeaf(root) && !root.equals(node))
       {
-        if (treeModel.getIndexOfChild(root, node) != -1)
-          return root;
+        int size = treeModel.getChildCount(root);
+        for (int j = 0; j < size; j++)
+          {
+            Object child = treeModel.getChild(root, j);
+            if (node.equals(child))
+              return root;
 
-        Object n = findNode(treeModel.getChild(root, i), node);
-        if (n != null)
-          return n;
+            Object n = findNode(child, node);
+            if (n != null)
+              return n;
+          }
       }
     return null;
   }
-
+  
   /**
    * Get previous visible node in the tree. Package private for use in inner
    * classes.
@@ -3402,14 +3404,13 @@ public class BasicTreeUI extends TreeUI
 
     Object node = curr;
     Object sibling = null;
-
     do
       {
         sibling = getNextSibling(node);
         node = getParent(treeModel.getRoot(), node);
       }
     while (sibling == null && node != null);
-
+    
     return sibling;
   }
 
@@ -3471,7 +3472,7 @@ public class BasicTreeUI extends TreeUI
 
     return treeModel.getChild(parent, index);
   }
-
+  
   /**
    * Returns the previous sibling in the tree Package private for use in inner
    * classes.
@@ -3567,6 +3568,7 @@ public class BasicTreeUI extends TreeUI
   int getLevel(Object node)
   {
     int count = -1;
+    
     Object current = node;
 
     do
@@ -3575,7 +3577,7 @@ public class BasicTreeUI extends TreeUI
         count++;
       }
     while (current != null);
-
+    
     return count;
   }
 
@@ -3832,6 +3834,7 @@ public class BasicTreeUI extends TreeUI
         && tree.isExpanded(new TreePath(next))))
         next = getNextNode(next);
     
+    Object root = next;
     TreePath current = null;
     while (next != null)
       {
@@ -3842,13 +3845,28 @@ public class BasicTreeUI extends TreeUI
         do
           {
             TreePath path = new TreePath(getPathToRoot(next, 0));
-            if ((tree.isVisible(path) && tree.isExpanded(path)) ||
-                treeModel.isLeaf(next))
+            if ((tree.isVisible(path) && tree.isExpanded(path))
+                || treeModel.isLeaf(next))
               next = getNextNode(next);
             else
-              next = getNextSibling(next);
+              {
+                Object pNext = next;
+                next = getNextSibling(pNext);
+                // if no next sibling, check parent's next sibling.
+                if (next == null)
+                  {
+                    Object parent = getParent(root, pNext);
+                    while (next == null && parent != null)
+                      {
+                        next = getNextSibling(parent);
+                        if (next == null)
+                          parent = getParent(treeModel.getRoot(), next);
+                      }
+                  }
+              }
           }
-        while (next != null && !tree.isVisible(new TreePath(getPathToRoot(next, 0))));
+        while (next != null && 
+            !tree.isVisible(new TreePath(getPathToRoot(next, 0))));
       }
 
     currentVisiblePath = current;

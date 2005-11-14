@@ -2589,7 +2589,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
 
     if (!isExpanded(parent) && parent != null)
       doExpandParents(parent, false);
-
+    
     nodeStates.put(path, state ? EXPANDED : COLLAPSED);
   }
 
@@ -2597,7 +2597,6 @@ public class JTree extends JComponent implements Scrollable, Accessible
   {
     if (path == null)
       return;
-    TreePath parent = path.getParentPath();
 
     doExpandParents(path, state);
   }
@@ -2651,7 +2650,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
   {
     if (path == null)
       return;
-
+    
     expandPath(path.getParentPath());
   }
 

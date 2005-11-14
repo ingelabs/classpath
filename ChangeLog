@@ -1,3 +1,19 @@
+2005-11-14  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JTree.java
+	(expandPath): No need to get the parent path.
+	* javax/swing/event/TreeModelEvent.java:
+	Variables should be initialized to null.
+	(toString): Implemented.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(treeStructureChanged): Implemented.
+	(getParent): Added check to avoid infinite loop.
+	(findNode): Fixed check to use getChild, instead of
+	getIndexOfChild.
+	(updateCurrentVisiblePath): Added a loop to check
+	the parent's sibling, if the current node has no
+	other siblings.
+
 2005-11-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/ActionMap.java: 
