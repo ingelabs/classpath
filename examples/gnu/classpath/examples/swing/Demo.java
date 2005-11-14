@@ -29,6 +29,7 @@ import javax.swing.*;
 import javax.swing.tree.*;
 import javax.swing.border.*;
 
+import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.OceanTheme;
 
@@ -72,10 +73,15 @@ public class Demo
 						   JOptionPane.OK_OPTION,
 						   JOptionPane.QUESTION_MESSAGE,
 						   null, lafs, DEFAULT);
+        if (laf == 0)
+          {
+            MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
+            UIManager.setLookAndFeel(new MetalLookAndFeel());
+          }
 	    if (laf == 1)
 	      {
-		MetalLookAndFeel.setCurrentTheme(new OceanTheme());
-	      UIManager.setLookAndFeel(new MetalLookAndFeel());
+	        MetalLookAndFeel.setCurrentTheme(new OceanTheme());
+	        UIManager.setLookAndFeel(new MetalLookAndFeel());
 	      }
 	    else if (laf == 2)
 	      UIManager.setLookAndFeel(new GNULookAndFeel());
@@ -171,8 +177,12 @@ public class Demo
 		    examples);
 
     new PopUpAction("Slider",
-		    mkSliders(),
+		    (new SliderDemo("Slider Demo")).createContent(),
 		    examples);
+
+    new PopUpAction("ProgressBar",
+                    ProgressBarDemo.createContent(),
+                    examples);
 
     new PopUpAction("List",
 		    mkListPanel(new String[] { "hello",
@@ -692,26 +702,6 @@ public class Demo
     return tabs;
   }
 
-  static JComponent mkSliders()
-  {
-    JSlider slider = new JSlider();
-    slider.setPaintTrack(true);
-    slider.setPaintTicks(true);
-    slider.setMajorTickSpacing(30);
-    slider.setMinorTickSpacing(5);
-    slider.setPaintLabels(true);
-    slider.setInverted(false);
-    JProgressBar progress = new JProgressBar();
-    BoundedRangeModel model = new DefaultBoundedRangeModel(10, 1, 0, 100);
-    progress.setModel(model);
-    slider.setModel(model);
-    JPanel panel = new JPanel();
-    panel.setLayout(new GridLayout(1, 2));
-    panel.add(slider);
-    panel.add(progress);
-    return panel;
-  }
-
   public Demo()
   {
     frame = new JFrame("Swing Activity Board");
@@ -1045,6 +1035,11 @@ public class Demo
     new PopUpAction("Slider",
 		    (new SliderDemo("Slider Demo")).createContent(),
 		    panelA);
+
+    new PopUpAction("ProgressBar",
+            ProgressBarDemo.createContent(),
+             panelA);
+
 
     new PopUpAction("List",
 		    mkListPanel(new String[] { "hello",

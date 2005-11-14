@@ -1,3 +1,15 @@
+2005-11-14  Roman Kennke  <kennke@aicas.com>
+
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(static_initializer): Set the L&F and theme explicitly for the
+	default option, because JDK1.4 and JDK1.5 have different defaults.
+	(mkMenuBar): For the slider demo, trigger the new SliderDemo
+	class. Added ProgressBarDemo to menu.
+	(mkSliders): Removed obsolete slider demo.
+	(mkButtonBar): Added ProgressBar demo.
+	* examples/gnu/classpath/examples/swing/ProgressBarDemo.java:
+	New file. Demonstrates the JProgressBar.
+
 2005-11-13  Archie Cobbs  <archie@dellroad.org>
 
 	* vm/reference/gnu/classpath/VMStackWalker.java (getClassLoader()):
