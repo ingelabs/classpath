@@ -1,5 +1,40 @@
 2005-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicProgressBarUI.java
+	(boxRect): New protected field.
+	(PropertyChangeHandler.propertyChange): Fixed typo in 'indeterminate'.
+	Only start animation when progressBar is actually showing. Removed
+	repaint call.
+	(AncestorHandler): New inner class. Helps starting/stopping the
+	animation when progressBar becomes showing/hidden.
+	(ComponentHandler): New inner class. Recalculates box sizes for
+	indeterminate progress bars when the size of the progress bar
+	changes.
+	(boxRect): New protected field.
+	(boxDependent): New transient field.
+	(boxIndependent): New transient field.
+	(incr): New transient field.
+	(ancestorListener): New private field.
+	(componentListener): New private field.
+	(getBox): Fixed calculation of the indeterminate progress bar box
+	to match the JDK behaviour.
+	(getMaximumSize): Implemented the maximumSize for progressBars.
+	(getMinimumSize): Implemented the minimumSize for progressBars.
+	(getPreferredInnerHorizontal): Implemented correctly.
+	(getPreferredInnerVertical): Implemented correctly.
+	(getPreferredSize): Implemented correctly using the getPreferredXXX()
+	helper methods.
+	(paintDeterminate): Fixed painting to better match the JDK behaviour.
+	(paintIndeterminate): Fixed painting to better match the JDK behaviour.
+	(paintString): Implemented 'half-dark-half-light' painted text.
+	(installListeners): Install new listeners.
+	(uninstallListeners): Uninstall new listeners.
+	* javax/swing/plaf/basic/MetalProgressBarUI.java
+	(paintDeterminate): New method.
+	(paintIndeterminate): New method.
+
+2005-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* examples/gnu/classpath/examples/swing/Demo.java
 	(static_initializer): Set the L&F and theme explicitly for the
 	default option, because JDK1.4 and JDK1.5 have different defaults.
