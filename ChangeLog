@@ -1,5 +1,13 @@
 2005-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(show): Instead of fiddling with the list size, set the preferredSize
+	of the scroller.
+	(configureScroller): Set border to null.
+	(configurePopup): Set border correctly.
+
+2005-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
 	(setButtonIcons): Only set icons if buttons are != null.
 
