@@ -1,5 +1,10 @@
 2005-11-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Fixed some UI defaults used by ProgressBar.
+
+2005-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextFieldUI.java
 	(propertyChange): Get new value from the PropertyChangeEvent and
 	not from the component itself (since when it receives the event,
