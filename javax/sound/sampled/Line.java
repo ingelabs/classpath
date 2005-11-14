@@ -136,8 +136,10 @@ public interface Line
 
   /**
    * Open this line.
+   * @throws LineUnavailableException if the line is unavailable for some
+   * reason
    */
-  void open();
+  void open() throws LineUnavailableException;
 
   /**
    * Remove the listener from this Line; after this call the listener will

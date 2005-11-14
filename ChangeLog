@@ -1,3 +1,8 @@
+2005-11-14  Tom Tromey  <tromey@redhat.com>
+
+	* javax/sound/sampled/Line.java (open): Throws
+	LineUnavailableException.
+
 2005-11-14  Roman Kennke  <kennke@aicas.com>
 
 	Reported by Ingo Proetel  <proetel@aicas.com>
