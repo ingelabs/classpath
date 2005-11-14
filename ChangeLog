@@ -1,5 +1,13 @@
 2005-11-14  Roman Kennke  <kennke@aicas.com>
 
+	Reported by Ingo Proetel  <proetel@aicas.com>
+	* gnu/java/io/PlatformHelper.java
+	(toCanonicalForm): Remove lowercasing of paths in Windows. This
+	breaks working with URLs, like when accessing files withing JAR
+	files.
+
+2005-11-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JLayeredPane.java
 	(paint): Only clear the background if the layeredPane is opaque.
 
@@ -363,14 +371,6 @@
 	* java/io/PrintWriter.java
 	(line_separator):  Added default value for property to ensure
 	absence of null pointer exception even if property is not set.
-
-2005-11-09  Roman Kennke  <kennke@aicas.com>
-
-	Reported by Ingo Proetel  <proetel@aicas.com>
-	* gnu/java/io/PlatformHelper.java
-	(toCanonicalForm): Remove lowercasing of paths in Windows. This
-	breaks working with URLs, like when accessing files withing JAR
-	files.
 
 2005-11-09  Roman Kennke  <kennke@aicas.com>
 
