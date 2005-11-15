@@ -1,3 +1,33 @@
+2005-11-15  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Removed unneeded field.
+	(getPathBounds): Reimplemented to use getNodeDimensions.
+	(getRowCount): Removed call to updateCurrentVisiblePath.
+	(uninstallKeyboardActions): Implemented.
+	(paint): Reimplemented to only paint rows contained in clip.
+	No longer uses recursion.
+	(mousePressed): If control icon is clicked, should scroll to that
+	path.
+	(getNodeDimensions): Implemented.
+	(getRowX): Implemented.
+	(getCellBounds): Removed.
+	(getCellLocation): Removed.
+	(paintRecursive): Removed.
+	(paintControlIcons): Removed.
+	(getPreviousVisibleNode): Removed call to updateCurrentVisiblePath.
+	(getLevel): Added check for invisible root.
+	(paintVerticalLine): Set graphics color.
+	(paintHorizontalLine): Likewise.
+	(drawCentered): Added negative check.
+	(drawDashedHorizontalLine): Set graphics color.
+	(drawDashedVerticalLine): Likewise.
+	(paintExpandControl): Implemented.
+	(paintHorizontalPartOfLeg): Likewise.
+	(paintVerticalPartOfLeg): Likewise.
+	(paintRow): Added call to paint the control icons.
+	(updateCurrentVisiblePath): Cleaned up function.	
+
 2005-11-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/AbstractDocument.java:
