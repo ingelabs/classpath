@@ -52,7 +52,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.ComponentUI;
@@ -444,9 +443,8 @@ public class BasicButtonUI extends ButtonUI
       }
     else
       {
-        UIDefaults defaults = UIManager.getLookAndFeelDefaults();
         String prefix = getPropertyPrefix();
-        g.setColor(defaults.getColor(prefix + "disabledText"));
+        g.setColor(UIManager.getColor(prefix + "disabledText"));
         g.drawString(text, textRect.x, textRect.y + fm.getAscent());
       }
   } 

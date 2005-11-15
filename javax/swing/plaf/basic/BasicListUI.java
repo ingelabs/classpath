@@ -992,8 +992,7 @@ public class BasicListUI extends ListUI
    */
   protected void installKeyboardActions()
   {
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-    InputMap focusInputMap = (InputMap)defaults.get("List.focusInputMap");
+    InputMap focusInputMap = (InputMap) UIManager.get("List.focusInputMap");
     InputMapUIResource parentInputMap = new InputMapUIResource();
     // FIXME: The JDK uses a LazyActionMap for parentActionMap
     ActionMap parentActionMap = new ActionMapUIResource();

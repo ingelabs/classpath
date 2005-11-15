@@ -81,7 +81,6 @@ import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
@@ -301,7 +300,7 @@ public class BasicTreeUI extends TreeUI
    */
   protected Color getHashColor()
   {
-    return UIManager.getLookAndFeelDefaults().getColor("Tree.hash");
+    return UIManager.getColor("Tree.hash");
   }
 
   /**
@@ -312,8 +311,8 @@ public class BasicTreeUI extends TreeUI
    */
   protected void setHashColor(Color color)
   {
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-    defaults.put("Tree.hash", color);
+    // FIXME: Putting something in the UIDefaults map is certainly wrong.
+    UIManager.put("Tree.hash", color);
   }
 
   /**
@@ -1235,8 +1234,7 @@ public class BasicTreeUI extends TreeUI
    */
   protected void installKeyboardActions()
   {
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-    InputMap focusInputMap = (InputMap) defaults.get("Tree.focusInputMap");
+    InputMap focusInputMap = (InputMap) UIManager.get("Tree.focusInputMap");
     InputMapUIResource parentInputMap = new InputMapUIResource();
     ActionMap parentActionMap = new ActionMapUIResource();
     action = new TreeAction();

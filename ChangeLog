@@ -1,3 +1,72 @@
+2005-11-15  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicBorders.java
+	(getButtonBorder): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	(getRadioButtonBorder): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(getToggleButtonBorder): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(getMenuBarBorder): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(getSplitPaneBorder): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(getSplitPaneDividerBorder): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(getTextFieldBorder): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(getInternalFrameBorder): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(paintText): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/basic/BasicCheckBoxUI.java
+	(getDefaultIcon): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(paintCurrentValue): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/basic/BasicFileChooserUI.java
+	(installStrings): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+	(installDefaults): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/basic/BasicListUI.java
+	(installKeyboardActions): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	* javax/swing/plaf/basic/BasicProgressBarUI.java
+	(boxRect): Added @since tag to the API comment.
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	(getDefaultIcon): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(configureScrollBarColors): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(calculatePreferredSize): Fetch preferred width or height from
+	UI defaults.
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(installKeyboardActions): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(createKeymap): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(getInputMap): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(getActionMap): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(dragTo): Don't use cached* fields.
+	(installComponents): Don't use cached* fields.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(getHashColor): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(setHashColor): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	Added FIXME comment.
+	(installKeyboardActions): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+
 2005-11-15  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/jni/java-lang/java_lang_VMDouble.c (initIDs): Register 
