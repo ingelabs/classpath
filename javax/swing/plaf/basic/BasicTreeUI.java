@@ -1412,7 +1412,7 @@ public class BasicTreeUI extends TreeUI
     Rectangle clip = g.getClipBounds();
     Insets insets = tree.getInsets();
 
-    if (clip != null && treeModel != null)
+    if (clip != null && treeModel != null && currentVisiblePath != null)
       {
         int startIndex = tree.getClosestRowForLocation(clip.x, clip.y);
         int endIndex = tree.getClosestRowForLocation(clip.x + clip.width,
