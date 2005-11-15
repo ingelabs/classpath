@@ -42,8 +42,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * EnumSyntax is the abstract base class of all enumeration classes in 
- * the Java Print Service API. 
+ * <code>EnumSyntax</code> is the abstract base class of all enumeration
+ * classes in the Java Print Service API. 
  * <p>
  * Every enumeration class which extends from EnumSyntax provides several 
  * enumeration objects as singletons of its class.
