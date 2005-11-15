@@ -1,5 +1,11 @@
 2005-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTextField.java
+	(createDefaultModel): Set the filterNewlines property on the created
+	model.
+
+2005-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicListUI.java
 	Fixed API docs all over to better explain the changed (but correct)
 	behaviour.
