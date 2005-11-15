@@ -1,3 +1,25 @@
+2005-11-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* examples/gnu/classpath/examples/CORBA/swing/README.html,
+	examples/gnu/classpath/examples/CORBA/swing/x5/CanvasWorld.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/ChatConstants.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/ClientFrame.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/Demo.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/GameManager.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/GameManagerImpl.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/IorReader.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/OrbStarter.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/Player.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/PlayerImpl.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/PlayingDesk.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/State.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/X5Server.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/_GameManagerImpl_Tie.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/_GameManager_Stub.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/_PlayerImpl_Tie.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/_Player_Stub.java: 
+	New files.
+
 2005-11-15  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/UIManager.java
