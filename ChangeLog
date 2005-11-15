@@ -1,3 +1,19 @@
+2005-11-14  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/AbstractDocument.java:
+	(remove): Do not set up an ElementEdit here, this is done in the 
+	Document implementation's removeUpdate method.
+	* javax/swing/text/PlainDocument.java:
+	(insertUpdate): Do not call reindex, instead, reindex the lines here
+	directly but only starting from the offset of the newly inserted text.
+	Also, if entire lines have been added or removed, set up an ElementEdit
+	and add it to the DocumentEvent.  Chain BadLocationException to an 
+	AssertionError and throw it in the unexpected case.
+	(removeUpdate): If entire lines have been added or removed, set up an 
+	ElementEdit and add it to the DocumentEvent.  Chain 
+	BadLocationException to an AssertionError and throw it in the 
+	unexpected case.
+
 2005-11-15  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/DateTimeSyntax.java,
