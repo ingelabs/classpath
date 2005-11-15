@@ -1,5 +1,11 @@
 2005-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JViewport.java
+	(JViewport): Recognize setting of a system property
+	gnu.javax.swing.JViewport for the scrollMode.
+
+2005-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalUtils.java
 	(fillMetalPattern2D): Fixed the texture width.
 	(initializePattern): Made texture transparent.
