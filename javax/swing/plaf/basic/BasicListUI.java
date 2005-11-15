@@ -38,7 +38,6 @@ exception statement from your version. */
 
 package javax.swing.plaf.basic;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -650,7 +649,11 @@ public class BasicListUI extends ListUI
   /** Saved reference to the list this UI was created for. */
   protected JList list;
 
-  /** The height of a single cell in the list. */
+  /**
+   * The height of a single cell in the list. This field is used when the
+   * fixedCellHeight property of the list is set. Otherwise this field is
+   * set to <code>-1</code> and {@link #cellHeights} is used instead.
+   */
   protected int cellHeight;
 
   /** The width of a single cell in the list. */
@@ -658,7 +661,9 @@ public class BasicListUI extends ListUI
 
   /** 
    * An array of varying heights of cells in the list, in cases where each
-   * cell might have a different height.
+   * cell might have a different height. This field is used when the
+   * <code>fixedCellHeight</code> property of the list is not set. Otherwise
+   * this field is <code>null</code> and {@link #cellHeight} is used.
    */
   protected int[] cellHeights;
 
@@ -772,19 +777,51 @@ public class BasicListUI extends ListUI
    * @param y0 The Y coordinate to calculate the row number for
    *
    * @return The row number containing the specified Y value, or <code>-1</code>
-   * if the specified Y coordinate is invalid
+   *         if the list model is empty
+   *
+   * @specnote This method is specified to return -1 for an invalid Y
+   *           coordinate. However, some simple tests show that the behaviour
+   *           is to return the index of the last list element for an Y
+   *           coordinate that lies outside of the list bounds (even for
+   *           negative indices). <code>-1</code>
+   *           is only returned if the list model is empty.
    */
   protected int convertYToRow(int y0)
   {
-    for (int row = 0; row < cellHeights.length; ++row)
-      {
-        int h = getRowHeight(row);
+    if (list.getModel().getSize() == 0)
+      return -1;
 
-        if (y0 < h)
-          return row;
-        y0 -= h;
+    // When y0 < 0, then the JDK returns the maximum row index of the list. So
+    // do we.
+    if (y0 < 0)
+      return list.getModel().getSize() - 1;
+
+    // Update the layout if necessary.
+    maybeUpdateLayoutState();
+
+    int index = list.getModel().getSize() - 1;;
+
+    // If a fixed cell height is set, then we can work more efficient.
+    if (cellHeight > 0)
+      {
+        index = Math.max(y0 / cellHeight, index);
       }
-    return -1;
+    // If we have no fixed cell height, we must add up each cell height up
+    // to y0.
+    else
+      {
+        int h = 0;
+        for (int row = 0; row < cellHeights.length; ++row)
+          {
+            h += cellHeights[row];
+            if (y0 < h)
+              {
+                index = row;
+                break;
+              }
+          }
+      }
+    return index;
   }
 
   /**
@@ -802,14 +839,14 @@ public class BasicListUI extends ListUI
     ListCellRenderer rend = list.getCellRenderer();
     // Update the cellHeight(s) fields.
     int fixedCellHeight = list.getFixedCellHeight();
-    if (fixedCellHeight >= 0)
+    if (fixedCellHeight > 0)
       {
         cellHeight = fixedCellHeight;
-        for (int i = 0; i < cellHeights.length; ++i)
-          cellHeights[i] = cellHeight;
+        cellHeights = null;
       }
     else
       {
+        cellHeight = -1;
         for (int i = 0; i < nrows; ++i)
           {
             Component flyweight =
@@ -819,14 +856,12 @@ public class BasicListUI extends ListUI
                       list.getSelectionModel().getAnchorSelectionIndex() == i);
             Dimension dim = flyweight.getPreferredSize();
             cellHeights[i] = dim.height;
-            // Compute average cell height (little hack here).
-            cellHeight = (cellHeight * i + cellHeights[i]) / (i + 1);
           }
       }
 
     // Update the cellWidth field.
     int fixedCellWidth = list.getFixedCellWidth();
-    if (fixedCellWidth >= 0)
+    if (fixedCellWidth > 0)
       cellWidth = fixedCellWidth;
     else
       {
@@ -900,7 +935,6 @@ public class BasicListUI extends ListUI
    */
   protected void uninstallDefaults()
   {
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
     list.setForeground(null);
     list.setBackground(null);
     list.setSelectionForeground(null);
@@ -1068,22 +1102,6 @@ public class BasicListUI extends ListUI
   }
 
   /**
-   * Paints the packground of the list using the background color
-   * of the specified component.
-   *
-   * @param g The graphics context to paint in
-   * @param c The component to paint the background of
-   */
-  private void paintBackground(Graphics g, JComponent c)
-  {
-    Dimension size = getPreferredSize(c);
-    Color save = g.getColor();
-    g.setColor(c.getBackground());
-    g.fillRect(0, 0, size.width, size.height);
-    g.setColor(save);
-  }
-
-  /**
    * Paints a single cell in the list.
    *
    * @param g The graphics context to paint in
@@ -1105,14 +1123,12 @@ public class BasicListUI extends ListUI
     Component comp = rend.getListCellRendererComponent(list,
                                                        data.getElementAt(row),
                                                        0, isSel, hasFocus);
-    //comp.setBounds(new Rectangle(0, 0, bounds.width, bounds.height));
-    //comp.paint(g);
     rendererPane.paintComponent(g, comp, list, bounds);
   }
 
   /**
-   * Paints the list by calling {@link #paintBackground} and then repeatedly
-   * calling {@link #paintCell} for each visible cell in the list.
+   * Paints the list by repeatedly calling {@link #paintCell} for each visible
+   * cell in the list.
    *
    * @param g The graphics context to paint with
    * @param c Ignored; uses the saved {@link JList} reference 
@@ -1129,11 +1145,11 @@ public class BasicListUI extends ListUI
     ListSelectionModel sel = list.getSelectionModel();
     int lead = sel.getLeadSelectionIndex();
     Rectangle clip = g.getClipBounds();
-    paintBackground(g, list);
 
     int startIndex = list.locationToIndex(new Point(clip.x, clip.y));
     int endIndex = list.locationToIndex(new Point(clip.x + clip.width,
                                                   clip.y + clip.height));
+    
     for (int row = startIndex; row <= endIndex; ++row)
       {
         Rectangle bounds = getCellBounds(list, row, row);
@@ -1143,13 +1159,15 @@ public class BasicListUI extends ListUI
   }
 
   /**
-   * Computes the index of a list cell given a point within the list.
+   * Computes the index of a list cell given a point within the list. If the
+   * location lies outside the bounds of the list, the greatest index in the
+   * list model is returned.
    *
    * @param list the list which on which the computation is based on
    * @param location the coordinates
    *
    * @return the index of the list item that is located at the given
-   *         coordinates or <code>null</code> if the location is invalid
+   *         coordinates or <code>-1</code> if the list model is empty
    */
   public int locationToIndex(JList list, Point location)
   {
@@ -1199,7 +1217,6 @@ public class BasicListUI extends ListUI
         int numberOfItems2 = list.getModel().getSize();
         int cellsPerRow2 = numberOfItems2 / visibleRows2 + 1;
 
-        Dimension listDim2 = list.getSize();
         int gridX2 = Math.min(location.x / cellWidth, cellsPerRow2 - 1);
         int gridY2 = Math.min(location.y / cellHeight, visibleRows2);
         index = gridY2 + gridX2 * visibleRows2;

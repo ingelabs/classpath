@@ -1,3 +1,19 @@
+2005-11-15  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java
+	Fixed API docs all over to better explain the changed (but correct)
+	behaviour.
+	(convertYToRow): Added some short-circuits for special cases. Update
+	the layout state if necessary. Fixed to match the JDK behaviour.
+	Added API docs to better explain the behaviour.
+	(updateLayoutState): When a fixedCellHeight is set, then use the
+	cellHeight field, otherwise use the cellHeights array.
+	(uninstallDefaults): Removed unnecessary statement.
+	(paintBackground): Removed unnecessary method.
+	(paintCell): Removed some commented-out code.
+	(paint): Removed call to paintBackground().
+	(locationToIndex): Removed unused statement.
+
 2005-11-14  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/AttributeSetUtilities.java:
@@ -478,7 +494,7 @@
 	ancestor.  Removed unncessary code that copied regular (WHEN_FOCUSED)
 	key bindings up the parent hierarchy.  
 
-2005-10-09  Roman Kennke  <kennke@aicas.com>
+2005-11-09  Roman Kennke  <kennke@aicas.com>
 
 	Reported by Friedjof Siebert  <siebert@aicas.com>
 	* java/util/WeakHashMap.java
