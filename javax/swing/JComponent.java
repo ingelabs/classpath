@@ -1918,9 +1918,15 @@ public abstract class JComponent extends Container implements Serializable
     g2 = getComponentGraphics(g2);
     g2.setClip(r.x, r.y, r.width, r.height);
     isPaintingDoubleBuffered = true;
-    paint(g2);
-    isPaintingDoubleBuffered = false;
-    g2.dispose();
+    try
+      {
+        paint(g2);
+      }
+    finally
+      {
+        isPaintingDoubleBuffered = false;
+        g2.dispose();
+      }
     
     // Paint the buffer contents on screen.
     g.drawImage(buffer, 0, 0, this);
