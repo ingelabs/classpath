@@ -13,6 +13,7 @@
 	ElementEdit and add it to the DocumentEvent.  Chain 
 	BadLocationException to an AssertionError and throw it in the 
 	unexpected case.
+	(reindex): Removed unnecessary method.
 
 2005-11-15  Wolfgang Baer  <WBaer@gmx.de>
 
