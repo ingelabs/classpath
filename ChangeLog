@@ -1,3 +1,8 @@
+2005-11-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/OrbFunctional.java (serveStep):
+	Returning ensure that the socket is closed.
+
 2005-11-15  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicBorders.java
