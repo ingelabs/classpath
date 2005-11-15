@@ -1,5 +1,68 @@
 2005-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/UIManager.java
+	(userUIDefaults): New field.
+	(get(Object)): Respect the user UI settings.
+	(get(Object,Locale)): Respect the user UI settings.
+	(getBoolean(Object)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getBoolean(Object,Locale)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getBorder(Object)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getBorder(Object,Locale)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getColor(Object)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getColor(Object,Locale)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getDimension(Object)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getDimension(Object,Locale)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getFont(Object)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getFont(Object,Locale)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getIcon(Object)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getIcon(Object,Locale)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getInsets(Object)): Call get() instead of
+	getLookAndFeelDefaults().getInsets() in order to respect the user UI
+	settings.
+	(getInsets(Object,Locale)): Call get() instead of
+	getLookAndFeelDefaults().getInsets() in order to respect the user UI
+	settings.
+	(getInt(Object)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getInt(Object,Locale)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getString(Object)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getString(Object,Locale)): Call get() instead of
+	getLookAndFeelDefaults().get() in order to respect the user UI
+	settings.
+	(getUI(JComponent)): Respect the user UI settings.
+	(put): Put key/value into user UI settings.
+
+2005-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalBorders.java
 	(OptionDialogBorder.paintBorder): Replaced
 	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
