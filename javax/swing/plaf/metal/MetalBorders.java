@@ -56,7 +56,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
@@ -654,24 +653,23 @@ public class MetalBorders
         {
           JOptionPane pane = (JOptionPane) f.getContentPane();
           int type = pane.getMessageType();
-          UIDefaults defaults = UIManager.getLookAndFeelDefaults();
           if (type == JOptionPane.QUESTION_MESSAGE)
             {
-              Color bc = defaults.getColor(
+              Color bc = UIManager.getColor(
                   "OptionPane.questionDialog.border.background");
               if (bc != null)
                 g.setColor(bc);
             }
           if (type == JOptionPane.WARNING_MESSAGE)
             {
-              Color bc = defaults.getColor(
+              Color bc = UIManager.getColor(
                   "OptionPane.warningDialog.border.background");
               if (bc != null)
                 g.setColor(bc);              
             }
           else if (type == JOptionPane.ERROR_MESSAGE)
             {
-              Color bc = defaults.getColor(
+              Color bc = UIManager.getColor(
                   "OptionPane.errorDialog.border.background");
               if (bc != null)
                 g.setColor(bc);              

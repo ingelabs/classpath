@@ -47,7 +47,6 @@ import java.awt.Rectangle;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
@@ -78,10 +77,9 @@ public class MetalButtonUI
   public MetalButtonUI()
   {
     super();
-    UIDefaults def = UIManager.getLookAndFeelDefaults();
-    focusColor = def.getColor(getPropertyPrefix() + "focus");
-    selectColor = def.getColor(getPropertyPrefix() + "select");
-    disabledTextColor = def.getColor(getPropertyPrefix() + "disabledText");
+    focusColor = UIManager.getColor(getPropertyPrefix() + "focus");
+    selectColor = UIManager.getColor(getPropertyPrefix() + "select");
+    disabledTextColor = UIManager.getColor(getPropertyPrefix() + "disabledText");
   }
 
   /**

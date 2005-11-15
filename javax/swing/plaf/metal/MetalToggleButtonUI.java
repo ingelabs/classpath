@@ -48,7 +48,6 @@ import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicButtonUI;
@@ -131,10 +130,9 @@ public class MetalToggleButtonUI
   public void installDefaults(AbstractButton b)
   {
     super.installDefaults(b);
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-    focusColor = defaults.getColor(getPropertyPrefix() + "focus");
-    selectColor = defaults.getColor(getPropertyPrefix() + "select");
-    disabledTextColor = defaults.getColor(getPropertyPrefix() + "disabledText");
+    focusColor = UIManager.getColor(getPropertyPrefix() + "focus");
+    selectColor = UIManager.getColor(getPropertyPrefix() + "select");
+    disabledTextColor = UIManager.getColor(getPropertyPrefix() + "disabledText");
   }
   
   /**

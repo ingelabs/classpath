@@ -1,3 +1,45 @@
+2005-11-15  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalBorders.java
+	(OptionDialogBorder.paintBorder): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(MetalButtonUI): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/metal/MetalInternalFrameTitlePane.java
+	(installDefaults): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/metal/MetalLabelUI.java
+	(paintDisabledText): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/metal/MetalRadioButtonUI.java
+	(installDefaults): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	(createDecreaseButton): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(createIncreaseButton): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(paintThumbHorizontal): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	(paintThumbVertical): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	* javax/swing/plaf/metal/MetalSplitPaneUI.java
+	(createDefaultDivider): Replaced
+	UIManager.getLookAndFeelDefaults().get() with UIManager.get().
+	* javax/swing/plaf/metal/MetalToggleButtonUI.java
+	(installDefaults): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/metal/MetalToolTipUI.java
+	(MetalToolTipUI): Replaced UIManager.getLookAndFeelDefaults().get()
+	with UIManager.get().
+	* javax/swing/plaf/metal/MetalTreeUI.java
+	Removed all listener fields.
+	(installUI): Removed initialization and call super.installUI()
+	instead.
+	(uninstallUI): Removed initialization and call super.uninstallUI()
+	instead.
+
 2005-11-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/OrbFunctional.java (serveStep):

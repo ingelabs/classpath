@@ -55,7 +55,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
@@ -260,9 +259,8 @@ public class MetalInternalFrameTitlePane extends BasicInternalFrameTitlePane
     notSelectedTextColor = MetalLookAndFeel.getInactiveControlTextColor();
     notSelectedTitleColor = MetalLookAndFeel.getWindowTitleInactiveBackground();
     
-    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
-    paletteTitleHeight = defaults.getInt("InternalFrame.paletteTitleHeight");
-    paletteCloseIcon = defaults.getIcon("InternalFrame.paletteCloseIcon");
+    paletteTitleHeight = UIManager.getInt("InternalFrame.paletteTitleHeight");
+    paletteCloseIcon = UIManager.getIcon("InternalFrame.paletteCloseIcon");
     minIcon = MetalIconFactory.getInternalFrameAltMaximizeIcon(16);
     
     title = new JLabel(frame.getTitle(), 
