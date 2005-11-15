@@ -1162,7 +1162,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "Tree.line", getPrimaryControl(),
       "Tree.openIcon", MetalIconFactory.getTreeFolderIcon(),
       "Tree.rightChildIndent", new Integer(13),
-      "Tree.rowHeight", new Integer(20),
+      "Tree.rowHeight", new Integer(0),
       "Tree.scrollsOnExpand", Boolean.TRUE,
       "Tree.selectionBackground", getTextHighlightColor(),
       "Tree.selectionBorder", new BorderUIResource.LineBorderUIResource(new Color(102, 102, 153)),

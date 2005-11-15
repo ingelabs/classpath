@@ -243,6 +243,9 @@ public class BasicTreeUI extends TreeUI
   
   /** The gap between the icon and text. */
   int gap = 4;
+  
+  /** Default row height, if none was set. */
+  int rowHeight = 20;
 
   /** Listeners */
   private PropertyChangeListener propertyChangeListener;
@@ -433,6 +436,8 @@ public class BasicTreeUI extends TreeUI
    */
   protected void setRowHeight(int rowHeight)
   {
+    if (rowHeight == 0)
+      rowHeight = this.rowHeight;
     treeState.setRowHeight(rowHeight);
   }
 
@@ -1222,7 +1227,7 @@ public class BasicTreeUI extends TreeUI
     rightChildIndent = UIManager.getInt("Tree.rightChildIndent");
     leftChildIndent = UIManager.getInt("Tree.leftChildIndent");
     setRowHeight(UIManager.getInt("Tree.rowHeight"));
-    tree.setRowHeight(UIManager.getInt("Tree.rowHeight"));
+    tree.setRowHeight(getRowHeight());
     tree.requestFocusInWindow(false);
     tree.setScrollsOnExpand(UIManager.getBoolean("Tree.scrollsOnExpand"));
     setExpandedIcon(UIManager.getIcon("Tree.expandedIcon"));
@@ -3649,7 +3654,7 @@ public class BasicTreeUI extends TreeUI
                                              boolean isLeaf)
   {
     Object node = path.getLastPathComponent();
-    return (!isLeaf && getLevel(node) != 0);
+    return (!isLeaf && getLevel(node) != 0 && hasControlIcons());
   }
   
   /**
