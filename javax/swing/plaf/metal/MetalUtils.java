@@ -129,7 +129,7 @@ class MetalUtils
 
     // Prepare the texture.
     TexturePaint texture =
-      new TexturePaint(pattern2D, new Rectangle2D.Double(0., 0., 4., 2.));
+      new TexturePaint(pattern2D, new Rectangle2D.Double(0., 0., 4., 4.));
     g2d.setPaint(texture);
     g2d.fillRect(x, y, w, h);
   }
@@ -139,7 +139,7 @@ class MetalUtils
    */
   static void initializePattern(Color light, Color dark)
   {
-    pattern2D = new BufferedImage(4, 4, BufferedImage.TYPE_INT_RGB);
+    pattern2D = new BufferedImage(4, 4, BufferedImage.TYPE_INT_ARGB);
     lightColor = light;
     darkColor = dark;
     Graphics g = pattern2D.getGraphics();
