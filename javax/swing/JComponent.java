@@ -2921,8 +2921,7 @@ public abstract class JComponent extends Container implements Serializable
   {
     super.removeNotify();
 
-    // FIXME: remove the WHEN_IN_FOCUSED_WINDOW bindings from the 
-    // KeyboardManager
+    KeyboardManager.getManager().clearBindingsForComp(this);
     
     // Notify ancestor listeners.
     fireAncestorEvent(this, AncestorEvent.ANCESTOR_REMOVED);

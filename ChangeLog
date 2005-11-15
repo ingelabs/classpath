@@ -1,3 +1,9 @@
+2005-11-15  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JComponent.java:
+	(removeNotify): Unregister WHEN_IN_FOCUSED_WINDOW bindings from the 
+	KeyboardManager.
+
 2005-11-15  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
@@ -251,7 +257,7 @@
 	(paintRow): Added call to paint the control icons.
 	(updateCurrentVisiblePath): Cleaned up function.	
 
-2005-11-14  Anthony Balkissoon  <abalkiss@redhat.com>
+2005-11-15  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/AbstractDocument.java:
 	(remove): Do not set up an ElementEdit here, this is done in the 
