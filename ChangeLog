@@ -1,3 +1,8 @@
+2005-11-16  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/PlainDocument.java:
+	(insertString): Null check fixes PR 24890.
+
 2005-11-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java

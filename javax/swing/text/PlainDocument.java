@@ -235,7 +235,7 @@ public class PlainDocument extends AbstractDocument
     throws BadLocationException
   {
     String string = str;
-    if (Boolean.TRUE.equals(getProperty("filterNewlines")))
+    if (str != null && Boolean.TRUE.equals(getProperty("filterNewlines")))
       string = str.replaceAll("\n", " ");
     super.insertString(offs, string, atts);
   }
