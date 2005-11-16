@@ -1,3 +1,8 @@
+2005-11-16  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JSplitPane.java: Reformatted file.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java: Reformatted file.
+
 2005-11-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/ToolTipManager.java
