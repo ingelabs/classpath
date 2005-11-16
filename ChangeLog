@@ -1,3 +1,9 @@
+2005-11-16  Gary Benson  <gbenson@redhat.com>
+ 
+	* java/security/ProtectionDomain.java (toString): Use
+	gnu.classpath.SystemProperties to read line.separator
+	without security manager check.
+
 2005-11-16  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/image/MemoryImageSource.java
