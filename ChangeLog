@@ -1,3 +1,11 @@
+2005-11-16  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/ToolTipManager.java:
+	Removed unneeded fields.
+	(showTip): Re-implemented to use PopupFactory.
+	(hideTip): Likewise.
+	(adjustLocation): Fixed location.
+
 2005-11-16  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/PlainDocument.java:
