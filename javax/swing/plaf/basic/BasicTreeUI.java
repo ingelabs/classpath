@@ -3560,13 +3560,13 @@ public class BasicTreeUI extends TreeUI
       {
         Object curr = path.getPathComponent(i);
         TreePath currPath = new TreePath(getPathToRoot(curr, 0));
-        if (!treeModel.isLeaf(curr) && tree.isExpanded(currPath))
+        int numChild = treeModel.getChildCount(curr);
+        if (numChild > 0 && tree.isExpanded(currPath))
           {
             Rectangle bounds = getPathBounds(tree, currPath);
             Rectangle lastChildBounds = getPathBounds(tree, 
                                         new TreePath(getPathToRoot(
-                                        treeModel.getChild(curr, 
-                                        treeModel.getChildCount(curr) - 1), 
+                                        treeModel.getChild(curr, numChild - 1), 
                                         0)));
             paintVerticalLine(g, tree, bounds.x + gap + 2, bounds.y + 
                               bounds.height - 2, lastChildBounds.y + 
