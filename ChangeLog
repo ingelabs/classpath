@@ -1,5 +1,11 @@
 2005-11-16  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/ToolTipManager.java
+	(mouseEntered): No need to start the insideTimer here,
+	already called showTip.
+
+2005-11-16  Lillian Angel  <langel@redhat.com>
+
 	Fixes PR classpath/<PR24763>
 	* javax/swing/ToolTipManager.java
 	(mouseEntered): showTip should be called if exitTimer is running.

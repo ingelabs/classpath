@@ -366,7 +366,6 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
     if (exitTimer.isRunning())
       {
         exitTimer.stop();
-        insideTimer.start();
         showTip();
         return;
       }
