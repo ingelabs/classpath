@@ -1,3 +1,10 @@
+2005-11-16  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* AUTHORS: Added myself.
+	* javax/swing/KeyboardManager.java: Changed @author tag to match the 
+	other ones I have.
+	* javax/swing/text/WrappedPlainView.java: Likewise.
+
 2005-11-16  Gary Benson  <gbenson@redhat.com>
  
 	* java/security/ProtectionDomain.java (toString): Use
