@@ -111,6 +111,7 @@ public class PlainDocument extends AbstractDocument
     int offset = event.getOffset();
     int end = offset + event.getLength();
     int elementIndex = rootElement.getElementIndex(offset);
+    Element firstElement = rootElement.getElement(elementIndex);
     
     // added and removed are Element arrays used to add an ElementEdit
     // to the DocumentEvent if there were entire lines added or removed.
@@ -123,8 +124,8 @@ public class PlainDocument extends AbstractDocument
 
         // Determine how many NEW lines were added by finding the newline
         // characters within the newly inserted text
-        int j = offset;
-        int i = str.indexOf('\n', j);
+        int j = firstElement.getStartOffset();
+        int i = str.indexOf('\n', offset);
         while (i != -1 && i <= end)
           {            
             // For each new line, create a new element
@@ -145,7 +146,7 @@ public class PlainDocument extends AbstractDocument
             added = new Element[elts.size()];
             for (int k = 0; k < elts.size(); ++k)
               added[k] = (Element) elts.get(k);
-            removed[0] = rootElement.getElement(elementIndex);
+            removed[0] = firstElement;
             
             // Now create and add the ElementEdit
             ElementEdit e = new ElementEdit(rootElement, elementIndex, removed,

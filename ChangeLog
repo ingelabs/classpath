@@ -1,3 +1,10 @@
+2005-11-16  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/PlainDocument.java:
+	(insertUpdate): The very first new element added doesn't start at the 
+	start of the event, it starts at the start offset of the Element that
+	contains the start of the event.
+
 2005-11-15  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicMenuItemUI.java
