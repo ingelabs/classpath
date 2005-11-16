@@ -286,7 +286,8 @@ public class JSplitPane extends JComponent implements Accessible
    */
   public JSplitPane()
   {
-    this(HORIZONTAL_SPLIT, false, null, null);
+    this(HORIZONTAL_SPLIT, false, new JButton("left button"),
+         new JButton("right button"));
   }
 
   /**
@@ -696,11 +697,11 @@ public class JSplitPane extends JComponent implements Accessible
    * @param comp The left component.
    */
   public void setLeftComponent(Component comp)
-  {
+  {    
     if (comp != null)
       add(comp, LEFT);
     else
-      add(new JButton("left button"), LEFT);
+      remove (leftComponent);
   }
 
   /**
@@ -766,7 +767,7 @@ public class JSplitPane extends JComponent implements Accessible
     if (comp != null)
       add(comp, RIGHT);
     else
-	add(new JButton("right button"), RIGHT);
+      remove (rightComponent);
   }
 
   /**
