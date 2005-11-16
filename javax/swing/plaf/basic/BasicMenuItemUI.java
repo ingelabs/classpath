@@ -608,8 +608,7 @@ public class BasicMenuItemUI extends MenuItemUI
     FontMetrics fm = g.getFontMetrics(f);
     SwingUtilities.calculateInnerArea(m, br);
     SwingUtilities.calculateInsetArea(br, m.getInsets(), vr);
-    if (m.isOpaque())
-      paintBackground(g, m, m.getBackground());
+    paintBackground(g, m, m.getBackground());
 
     /*
      * MenuItems insets are equal to menuItems margin, space between text and
