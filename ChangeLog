@@ -1,5 +1,6 @@
 2005-11-16  Lillian Angel  <langel@redhat.com>
-
+	
+	Fixes PR classpath/<PR23557> and PR classpath/<PR24099>
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
 	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_gdkDrawDrawable):
 	Added check to determine if dst->drawable or src->drawable
