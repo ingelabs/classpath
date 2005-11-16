@@ -1,5 +1,12 @@
 2005-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JMenu.java
+	(JMenu()): Set opaque flag to false.
+	(JMenu(String)): Likewise.
+	(JMenu(Action)): Likewise.
+
+2005-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicListUI.java
 	(getRowHeight): Adjusted to deal correctly with fixed cell heights.
 	(convertYRoRow): Likewise.
