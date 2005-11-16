@@ -1,5 +1,12 @@
 2005-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalUtils.java
+	(paintGradient): New utility method(s).
+	(paintHorizontalGradient): New utility method.
+	(paintVerticalGradient): New utility method.
+
+2005-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(paintDoubleBuffered): Put paint() call inside a try-finally
 	block to correctly recover the double-buffering flag when
