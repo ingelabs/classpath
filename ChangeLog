@@ -1,3 +1,10 @@
+2005-11-16  Lillian Angel  <langel@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_gdkDrawDrawable):
+	Added check to determine if dst->drawable or src->drawable
+	are actually drawable. If not, return.
+
 2005-11-16  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java
