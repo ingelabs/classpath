@@ -1,5 +1,17 @@
 2005-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicListUI.java
+	(getRowHeight): Adjusted to deal correctly with fixed cell heights.
+	(convertYRoRow): Likewise.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(installDefaults): Don't make the menu item opaque here.
+	(paintBackground): Moved background painting code from
+	paintMenuItem() to this method.
+	(paintMenuItem): Moved background painting to paintBackground().
+	(installDefaults): Don't set opaque flag here.
+
+2005-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalUtils.java
 	(paintGradient): New utility method(s).
 	(paintHorizontalGradient): New utility method.
