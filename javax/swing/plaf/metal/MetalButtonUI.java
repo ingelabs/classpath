@@ -134,11 +134,8 @@ public class MetalButtonUI
   public void installDefaults(AbstractButton button)
   {
     super.installDefaults(button);
-    if (button.isRolloverEnabled())
-      {
-        if (button.getBorder() instanceof UIResource)
-          button.setBorder(MetalBorders.getRolloverBorder());
-      }
+    button.setRolloverEnabled(UIManager.getBoolean(
+                                            getPropertyPrefix() + "rollover"));
   }
     
   /**
@@ -147,8 +144,7 @@ public class MetalButtonUI
   public void uninstallDefaults(AbstractButton button) 
   {
     super.uninstallDefaults(button);
-    if (button.getBorder() instanceof UIResource)
-      button.setBorder(null);
+    button.setRolloverEnabled(false);
   }
 
   /**
@@ -237,7 +233,9 @@ public class MetalButtonUI
    */
   public void update(Graphics g, JComponent c)
   {
-    if (c.isOpaque() && UIManager.get(getPropertyPrefix() + "gradient") != null)
+    AbstractButton b = (AbstractButton) c;
+    if (b.isOpaque() && UIManager.get(getPropertyPrefix() + "gradient") != null
+        && !b.getModel().isPressed() && b.isEnabled())
       {
         MetalUtils.paintGradient(g, 0, 0, c.getWidth(), c.getHeight(),
                                  SwingConstants.VERTICAL,

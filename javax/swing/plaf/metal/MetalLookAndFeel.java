@@ -1202,4 +1202,13 @@ public class MetalLookAndFeel extends BasicLookAndFeel
     defaults.putDefaults(uiDefaults);
   }
 
+  /**
+   * Returns the current theme setting for the Metal L&amp;F.
+   *
+   * @return the current theme setting for the Metal L&amp;F
+   */
+  public static MetalTheme getCurrentTheme()
+  {
+    return theme;
+  }
 }
