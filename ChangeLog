@@ -1,4 +1,16 @@
 2005-11-16  Lillian Angel  <langel@redhat.com>
+
+	Fixes PR classpath/<PR24763>
+	* javax/swing/ToolTipManager.java
+	(mouseEntered): showTip should be called if exitTimer is running.
+	This means that the mouse has exited and re-entered a component
+	in less than 500ms.
+	(mouseExited): If enterTimer is not running, the exitTimer should
+	be started no matter what.
+	(showTip): Should not show tool tip if the currentComponent is
+	not showing.
+
+2005-11-16  Lillian Angel  <langel@redhat.com>
 	
 	Fixes PR classpath/<PR23557> and PR classpath/<PR24099>
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c

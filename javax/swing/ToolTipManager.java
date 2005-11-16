@@ -360,26 +360,28 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
         && getContentPaneDeepestComponent(event) == currentComponent)
       return;
     currentPoint = event.getPoint();
+
     currentComponent = (Component) event.getSource();
 
     if (exitTimer.isRunning())
       {
-	exitTimer.stop();
-	insideTimer.start();
-	return;
+        exitTimer.stop();
+        insideTimer.start();
+        showTip();
+        return;
       }
-
     // This should always be stopped unless we have just fake-exited.
-    if (! enterTimer.isRunning())
+    if (!enterTimer.isRunning())
       enterTimer.start();
   }
 
   /**
-   * This method is called when the mouse exits a JComponent registered with
-   * the ToolTipManager. When the mouse exits, the tooltip should be hidden
+   * This method is called when the mouse exits a JComponent registered with the
+   * ToolTipManager. When the mouse exits, the tooltip should be hidden
    * immediately.
-   *
-   * @param event The MouseEvent.
+   * 
+   * @param event
+   *          The MouseEvent.
    */
   public void mouseExited(MouseEvent event)
   {
@@ -390,7 +392,7 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
     currentComponent = null;
     hideTip();
 
-    if (! enterTimer.isRunning() && insideTimer.isRunning())
+    if (! enterTimer.isRunning())
       exitTimer.start();
     if (enterTimer.isRunning())
       enterTimer.stop();
@@ -450,7 +452,8 @@ public class ToolTipManager extends MouseAdapter implements MouseMotionListener
    */
   void showTip()
   {
-    if (!enabled || currentComponent == null || !currentComponent.isEnabled())
+    if (!enabled || currentComponent == null || !currentComponent.isEnabled()
+        || !currentComponent.isShowing())
       {
         popup = null;
         return;
