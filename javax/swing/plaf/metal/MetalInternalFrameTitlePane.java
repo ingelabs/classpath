@@ -349,8 +349,14 @@ public class MetalInternalFrameTitlePane extends BasicInternalFrameTitlePane
   {
     Color savedColor = g.getColor();
     Rectangle b = SwingUtilities.getLocalBounds(this);
-    g.setColor(MetalLookAndFeel.getPrimaryControlShadow());
-    g.fillRect(b.x, b.y, b.width, b.height);
+
+    if (UIManager.get("InternalFrame.activeTitleGradient") != null
+        && frame.isSelected())
+      {
+        MetalUtils.paintGradient(g, b.x, b.y, b.width, b.height,
+                                 SwingConstants.VERTICAL,
+                                 "InternalFrame.activeTitleGradient");
+      }
     MetalUtils.fillMetalPattern(this, g, b.x + 4, b.y + 2, b.width 
             - paletteCloseIcon.getIconWidth() - 13, b.height - 5,
             MetalLookAndFeel.getPrimaryControlHighlight(), 
@@ -391,6 +397,14 @@ public class MetalInternalFrameTitlePane extends BasicInternalFrameTitlePane
         g.drawLine(0, d.height - 1, d.width - 1, d.height - 1);
         
         // draw the metal pattern
+        if (UIManager.get("InternalFrame.activeTitleGradient") != null
+            && frame.isSelected())
+          {
+            MetalUtils.paintGradient(g, 0, 0, getWidth(), getHeight(),
+                                     SwingConstants.VERTICAL,
+                                     "InternalFrame.activeTitleGradient");
+          }
+
         Rectangle b = title.getBounds();
         int startX = b.x + b.width + 5;
         int endX = startX;

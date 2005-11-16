@@ -898,6 +898,9 @@ public class BasicInternalFrameTitlePane extends JComponent
    */
   protected void paintTitleBackground(Graphics g)
   {
+    if (!isOpaque())
+      return;
+
     Color saved = g.getColor();
     Dimension dims = getSize();
 

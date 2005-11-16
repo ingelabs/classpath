@@ -234,6 +234,9 @@ public class OceanTheme extends DefaultMetalTheme
     defaults.put("ToggleButton.gradient", Arrays.asList(new Object[]
       {new Double(0.3), new Double(0.0), new ColorUIResource(221, 232, 243),
        new ColorUIResource(Color.WHITE), new ColorUIResource(184, 207, 229)}));
+    defaults.put("InternalFrame.activeTitleGradient", Arrays.asList(new Object[]
+      {new Double(0.3), new Double(0.0), new ColorUIResource(221, 232, 243),
+       new ColorUIResource(Color.WHITE), new ColorUIResource(184, 207, 229)}));
 
     defaults.put("Button.rollover", Boolean.TRUE);
   }
