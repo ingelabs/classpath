@@ -1,3 +1,11 @@
+2005-11-16  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/image/MemoryImageSource.java
+	(startProduction): If animated, imageComplete should
+	be called with the SINGLEFRAMEDONE flag, meaning the
+	single frame is complete, but there are more frames 
+	to follow.
+
 2005-11-16  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/PlainDocument.java:
