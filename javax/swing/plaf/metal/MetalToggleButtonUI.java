@@ -47,6 +47,7 @@ import java.awt.Rectangle;
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
 import javax.swing.JToggleButton;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
@@ -197,6 +198,24 @@ public class MetalToggleButtonUI
     Rectangle fr = iconRect.union(textRect);
     g.drawRect(fr.x - 1, fr.y - 1, fr.width + 1, fr.height + 1);
     g.setColor(saved);    
+  }
+
+  /**
+   * If the property <code>ToggleButton.gradient</code> is set, then a gradient
+   * is painted as background, otherwise the normal superclass behaviour is
+   * called.
+   */
+  public void update(Graphics g, JComponent c)
+  {
+    if (c.isOpaque() && UIManager.get(getPropertyPrefix() + "gradient") != null)
+      {
+        MetalUtils.paintGradient(g, 0, 0, c.getWidth(), c.getHeight(),
+                                 SwingConstants.VERTICAL,
+                                 getPropertyPrefix() + "gradient");
+        paint(g, c);
+      }
+    else
+      super.update(g, c);
   }
   
 }

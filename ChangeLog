@@ -1,5 +1,21 @@
 2005-11-15  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(update): New method. Paints the gradient.
+	* javax/swing/plaf/metal/MetalCheckBoxIcon.java
+	(paintIcon): Paint gradient.
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(RadioButtonIcon.paintIcon): Paint gradient.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initClassDefaults): Added MetalMenuBarUI.
+	* javax/swing/plaf/metal/MetalMenuBarUI.java: New file.
+	* javax/swing/plaf/metal/MetalToggleButtonUI.java
+	(update): New method. Paints the gradient.
+	* javax/swing/plaf/metal/OceanTheme.java
+	(addCustomEntriesToTable): Added all the gradients.
+
+2005-11-15  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JMenu.java
 	(JMenu()): Set opaque flag to false.
 	(JMenu(String)): Likewise.

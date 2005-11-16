@@ -693,6 +693,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "DesktopIconUI", "javax.swing.plaf.metal.MetalDesktopIconUI",
       "InternalFrameUI", "javax.swing.plaf.metal.MetalInternalFrameUI",
       "LabelUI", "javax.swing.plaf.metal.MetalLabelUI",
+      "MenuBarUI", "javax.swing.plaf.metal.MetalMenuBarUI",
       "PopupMenuSeparatorUI",
       "javax.swing.plaf.metal.MetalPopupMenuSeparatorUI",
       "ProgressBarUI", "javax.swing.plaf.metal.MetalProgressBarUI",

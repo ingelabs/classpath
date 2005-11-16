@@ -47,6 +47,7 @@ import java.awt.Rectangle;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.UIResource;
@@ -227,5 +228,23 @@ public class MetalButtonUI
         g.setColor(getDisabledTextColor());
         g.drawString(text, textRect.x, textRect.y + fm.getAscent());
       }  
+  }
+
+  /**
+   * If the property <code>Button.gradient</code> is set, then a gradient is
+   * painted as background, otherwise the normal superclass behaviour is
+   * called.
+   */
+  public void update(Graphics g, JComponent c)
+  {
+    if (c.isOpaque() && UIManager.get(getPropertyPrefix() + "gradient") != null)
+      {
+        MetalUtils.paintGradient(g, 0, 0, c.getWidth(), c.getHeight(),
+                                 SwingConstants.VERTICAL,
+                                 getPropertyPrefix() + "gradient");
+        paint(g, c);
+      }
+    else
+      super.update(g, c);
   }
 }
