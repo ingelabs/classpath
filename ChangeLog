@@ -1,3 +1,41 @@
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AbstractDocument.java
+	(LeafElement.getName): If super.getName() returns something
+	non-null, then return that instead of ContentElementName.
+	* javax/swing/text/ComponentView.java
+	(comp): New field.
+	(getAlignment): Implemented previously stubbed method.
+	(getComponent): Implemented previously stubbed method.
+	(getMaximumSpan): Implemented previously stubbed method.
+	(getMinimumSpan): Implemented previously stubbed method.
+	(getPreferredSpan): Implemented previously stubbed method.
+	(modelToView): Implemented previously stubbed method.
+	(paint): Implemented previously stubbed method.
+	(setParent): Implemented previously stubbed method.
+	(setSize): Removed unneeded method.
+	(viewToModel): Implemented previously stubbed method.
+	* javax/swing/text/FlowView.java
+	(insertUpdate): Forward this event to the logical view.
+	* javax/swing/text/IconView.java
+	(paint): Implemented previously stubbed method.
+	(getPreferredSpan): Implemented previously stubbed method.
+	(modelToView): Implemented previously stubbed method.
+	(viewToModel): Implemented previously stubbed method.
+	* javax/swing/text/ParagraphView.java
+	(firstLineIndent): New field.
+	(justification): New field.
+	(lineSpacing): New field.
+	(tabSet): New field.
+	(changedUpdate): New method.
+	(setPropertiesFromAttributes): New method.
+	(setFirstLineIndent): New method.
+	(setJustification): New method.
+	(setLineSpacing): New method.
+	(getLayoutView): New method.
+	(getLayoutViewCount): New method.
+	(getTabSet): New method.
+
 2005-11-17  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/plaf/basic/BasicEditorPaneUI.java:

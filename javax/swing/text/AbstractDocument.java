@@ -2120,7 +2120,10 @@ public abstract class AbstractDocument implements Document, Serializable
      */
     public String getName()
     {
-      return ContentElementName;
+      String name = super.getName();
+      if (name == null)
+        name = ContentElementName;
+      return name;
     }
 
     /**
