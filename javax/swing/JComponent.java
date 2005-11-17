@@ -2530,7 +2530,10 @@ public abstract class JComponent extends Container implements Serializable
   public void setMaximumSize(Dimension max)
   {
     Dimension oldMaximumSize = maximumSize;
-    maximumSize = new Dimension(max);
+    if (max != null) 
+      maximumSize = new Dimension(max);
+    else
+      maximumSize = null;
     firePropertyChange("maximumSize", oldMaximumSize, maximumSize);
   }
 
