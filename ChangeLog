@@ -1,3 +1,7 @@
+2005-11-17  Mark Wielaard  <mark@klomp.org>
+
+	* java/net/URLClassLoader.java: Reindented.
+
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JApplet.java
