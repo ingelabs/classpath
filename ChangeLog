@@ -1,3 +1,18 @@
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Container.java
+	(Container): Added comment.
+	(remove): Only call removeNotify if removed component is still
+	showing.
+	(paintComponents): Call paint() instead of super.paint().
+	(AccessibleContainerHandler.AccessibleContainerHandler): Added
+	comment.
+	(LightweightDispatcher.acquireComponentForMouseEvent):
+	Don't special case MOUSE_RELEASED events. They should be
+	dispatched unmodified just as MOUSE_PRESSED.
+	(LightweightDispatcher.handleEvent): Also clean up the pressCount
+	after a MOUSE_RELEASE.
+
 2005-11-17  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/BoxView.java:
