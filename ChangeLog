@@ -1,5 +1,16 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
+	Reported by Roman Schnider <schnider@aicas.com>:
+	* java/awt/Component.java
+	(reshape): Removed unused statement.
+	(repaint()): Don't forward to parent when not showing.
+	(repaint(int)): Don't forward to parent when not showing.
+	(repaint(int,int,int,int)): Don't forward to parent when not showing.
+	(repaint(float,int,int,int,int)): Don't forward to parent when not
+	showing.
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/AbstractDocument.java
 	(LeafElement.getName): If super.getName() returns something
 	non-null, then return that instead of ContentElementName.
