@@ -1,3 +1,24 @@
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(DefaultTreeCellEditor): Replaced
+	UIManager.getLookAndFeelDefaults().getXXX() with UIManager.getXXX().
+	(createTreeCellEditor): Replaced
+	UIManager.getLookAndFeelDefaults().getXXX() with UIManager.getXXX().
+	* javax/swing/tree/DefaultTreeCellRenderer.java
+	(DefaultTreeCellRenderer): Replaced
+	UIManager.getLookAndFeelDefaults().getXXX() with UIManager.getXXX().
+	(getDefaultOpenIcon): Replaced
+	UIManager.getLookAndFeelDefaults().getXXX() with UIManager.getXXX().
+	(getDefaultClosedIcon): Replaced
+	UIManager.getLookAndFeelDefaults().getXXX() with UIManager.getXXX().
+	(getDefaultLeafIcon): Replaced
+	UIManager.getLookAndFeelDefaults().getXXX() with UIManager.getXXX().
+	(getTreeCellRendererComponent): Replaced
+	UIManager.getLookAndFeelDefaults().getXXX() with UIManager.getXXX().w
+	(paint): Replaced UIManager.getLookAndFeelDefaults().getXXX()
+	with UIManager.getXXX().
+
 2005-11-17  Andrew Haley  <aph@redhat.com>
 
 	* gnu/java/net/protocol/file/Connection.java (unquote): New
