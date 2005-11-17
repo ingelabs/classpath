@@ -1,3 +1,11 @@
+2005-11-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+        
+	PR 24911
+	* classpath/examples/Makefile.am
+	(EXAMPLE_JAVA_FILES): Extended by /*/*/*.java and /*/*/*/*.java.
+	(READMES): New category.
+	(ALL_EXAMPLE_FILES): Extended by READMES category. 
+
 2004-11-17  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* gnu/java/net/protocol/jar/Connection.java (getHeaderField):
