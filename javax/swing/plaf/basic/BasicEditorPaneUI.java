@@ -44,8 +44,8 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
-import javax.swing.text.PlainView;
 import javax.swing.text.View;
+import javax.swing.text.WrappedPlainView;
 
 /**
  * The UI class for  {@link JEditorPane}s.
@@ -81,7 +81,7 @@ public class BasicEditorPaneUI extends BasicTextUI
   // place this doesn't make much sense.
   public View create(Element elem)
   {
-    return new PlainView(elem);
+    return new WrappedPlainView(elem);
   }
 
   /**
