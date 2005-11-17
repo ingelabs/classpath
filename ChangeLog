@@ -1,3 +1,13 @@
+2005-11-17  Andrew Haley  <aph@redhat.com>
+
+	* gnu/java/net/protocol/file/Connection.java (unquote): New
+	method.
+	(connect): Unquote filename.
+	* gnu/java/net/protocol/jar/Connection.java (get): Likewise.
+
+	* java/net/URL.java (URL): If the file part of a spec is absolute,
+	ignore the file part of its context.
+
 2005-11-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* examples/gnu/classpath/examples/CORBA/swing/README.html:

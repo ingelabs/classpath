@@ -82,7 +82,9 @@ public final class Connection extends JarURLConnection
 
       if ("file".equals (url.getProtocol()))
 	{
-	  File f = new File (url.getFile());
+	  String fn = url.getFile();
+	  fn = gnu.java.net.protocol.file.Connection.unquote(fn);
+	  File f = new File (fn);
 	  jf = new JarFile (f, true, ZipFile.OPEN_READ);
 	}
       else
