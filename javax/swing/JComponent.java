@@ -2547,7 +2547,10 @@ public abstract class JComponent extends Container implements Serializable
   public void setMinimumSize(Dimension min)
   {
     Dimension oldMinimumSize = minimumSize;
-    minimumSize = new Dimension(min);
+    if (min != null)
+      minimumSize = new Dimension(min);
+    else
+      minimumSize = null;
     firePropertyChange("minimumSize", oldMinimumSize, minimumSize);
   }
 
