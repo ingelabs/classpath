@@ -1,3 +1,19 @@
+2005-11-17  Lillian Angel  <langel@redhat.com>
+
+	Fixes PR classpath/PR24721
+	* javax/swing/text/BoxView.java
+	(getViewAtPoint): Added check in to return the last view, if one exists and
+	the point was not contained in the rectangle. This is what the JDK does.
+	* javax/swing/text/CompositeView.java
+	(viewToModel): Fixed API documentation. Added check to make sure
+	x and y are greater than 0. Otherwise, 0 is returned.
+	* javax/swing/text/DefaultCaret.java
+	(moveDot): Added check to match API specs.
+	(setDot): Likewise.
+	* javax/swing/text/GlyphView.java
+	(viewToModel): Removed assert. This is not needed here. The point does not
+	need to be in the rectangle.
+
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
 	Reported by Roman Schnider <schnider@aicas.com>:
