@@ -740,4 +740,22 @@ public class BoxView
       yLayoutValid = false;
     super.preferenceChanged(child, width, height);
   }
+  
+  /**
+   * Maps the document model position <code>pos</code> to a Shape
+   * in the view coordinate space.  This method overrides CompositeView's
+   * method to make sure the children are allocated properly before
+   * calling the super's behaviour.
+   */
+  public Shape modelToView(int pos, Shape a, Position.Bias bias)
+      throws BadLocationException
+  {
+    // Make sure everything is allocated properly and then call super
+    if (!isAllocationValid())
+      {
+        Rectangle bounds = a.getBounds();
+        setSize(bounds.width, bounds.height);
+      }
+    return super.modelToView(pos, a, bias);
+  }
 }
