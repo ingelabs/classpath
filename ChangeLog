@@ -1,5 +1,12 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/BasicEditorPaneUI.java
+	(create): Removed unneeded method.
+	* javax/swing/BasicTextPaneUI.java
+	(create): Removed unneeded method.
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Container.java
 	(Container): Added comment.
 	(remove): Only call removeNotify if removed component is still
