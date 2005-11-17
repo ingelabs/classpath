@@ -1,3 +1,8 @@
+2005-11-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* examples/gnu/classpath/examples/CORBA/swing/README.html:
+	Added note about the build.
+	
 2005-11-16  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JSplitPane.java: Reformatted file.
