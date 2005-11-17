@@ -1,5 +1,10 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JList.java
+	(locationToIndex): Clarified API comment.
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/tree/DefaultTreeCellEditor.java
 	(DefaultTreeCellEditor): Replaced
 	UIManager.getLookAndFeelDefaults().getXXX() with UIManager.getXXX().
