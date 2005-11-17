@@ -1,5 +1,11 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(installDefaults): Don't handle the Button.rollover property here,
+	this is Metal specific and is handled in MetalButtonUI.
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JList.java
 	(locationToIndex): Clarified API comment.
 

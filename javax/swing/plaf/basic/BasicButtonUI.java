@@ -160,7 +160,6 @@ public class BasicButtonUI extends ButtonUI
     b.setIconTextGap(UIManager.getInt(prefix + "textIconGap"));
     b.setInputMap(JComponent.WHEN_FOCUSED, 
                   (InputMap) UIManager.get(prefix + "focusInputMap"));
-    b.setRolloverEnabled(UIManager.getBoolean(prefix + "rollover"));
   }
 
   /**
