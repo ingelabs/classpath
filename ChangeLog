@@ -1,8 +1,17 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
-	* javax/swing/BasicEditorPaneUI.java
+	* javax/swing/JEditorPane.java
+	(PlainEditorKit): New inner class.
+	(createDefaultEditorKit): Return an instance of PlainEditorKit.
+	* javax/swing/JTextPane.java
+	(insertComponent): Implemented previously stubbed method.
+	(insertIcon): Implemented previously stubbed method.
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicEditorPaneUI.java
 	(create): Removed unneeded method.
-	* javax/swing/BasicTextPaneUI.java
+	* javax/swing/plaf/basic/BasicTextPaneUI.java
 	(create): Removed unneeded method.
 
 2005-11-17  Roman Kennke  <kennke@aicas.com>
