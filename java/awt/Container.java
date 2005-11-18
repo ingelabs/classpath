@@ -1094,7 +1094,7 @@ public class Container extends Component
       {
         if (!contains(x, y))
           return null;
-
+          
         for (int i = 0; i < ncomponents; ++i)
           {
             // Ignore invisible children...
@@ -1117,7 +1117,8 @@ public class Container extends Component
           }
 
         //don't return transparent components with no MouseListeners
-        if (this.getMouseListeners().length == 0)
+        if (getMouseListeners().length == 0
+            && getMouseMotionListeners().length == 0)
           return null;
         return this;
       }

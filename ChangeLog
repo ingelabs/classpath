@@ -1,3 +1,10 @@
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Container.java
+	(findComponentForMouseEventAt): Also check for mouseMotionListeners,
+	otherwise we wouldn't dispatch mouse motion events on components
+	that have no mouse listener installed.
+
 2005-11-17  Lillian Angel  <langel@redhat.com>
 	
 	PR classpath/PR24754
