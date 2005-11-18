@@ -1,3 +1,13 @@
+2005-11-17  Lillian Angel  <langel@redhat.com>
+	
+	Fixes PR classpath/PR24754
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_getTextMetrics): Fixed width
+	for the case where there is more than one line in the layout's text.
+	Otherwise, the width of the layout would be returned, which is the
+	max width of all the lines in the text. A loop was added to get the
+	extent of all the lines and add them together.
+
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
