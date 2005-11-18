@@ -1,6 +1,6 @@
 2005-11-17  Lillian Angel  <langel@redhat.com>
 	
-	Fixes PR classpath/PR24754
+	PR classpath/PR24754
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
 	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_getTextMetrics): Fixed width
 	for the case where there is more than one line in the layout's text.
@@ -96,7 +96,7 @@
 
 2005-11-17  Lillian Angel  <langel@redhat.com>
 
-	Fixes PR classpath/PR24721
+	PR classpath/PR24721
 	* javax/swing/text/BoxView.java
 	(getViewAtPoint): Added check in to return the last view, if one exists and
 	the point was not contained in the rectangle. This is what the JDK does.
@@ -251,7 +251,7 @@
 
 2005-11-16  Lillian Angel  <langel@redhat.com>
 
-	Fixes PR classpath/PR24763
+	PR classpath/PR24763
 	* javax/swing/ToolTipManager.java
 	(mouseEntered): showTip should be called if exitTimer is running.
 	This means that the mouse has exited and re-entered a component
@@ -263,7 +263,7 @@
 
 2005-11-16  Lillian Angel  <langel@redhat.com>
 	
-	Fixes PR classpath/PR23557 and PR classpath/PR24099
+	PR classpath/PR23557 and PR classpath/PR24099
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
 	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_gdkDrawDrawable):
 	Added check to determine if dst->drawable or src->drawable
