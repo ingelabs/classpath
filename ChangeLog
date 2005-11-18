@@ -1,5 +1,11 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTabbedPane.java
+	(insertTab): Don't call layout() directly, instead call
+	revalidate().
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Container.java
 	(findComponentForMouseEventAt): Also check for mouseMotionListeners,
 	otherwise we wouldn't dispatch mouse motion events on components
