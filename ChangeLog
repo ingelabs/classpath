@@ -1,5 +1,13 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTable.java
+	(getCellRenderer): Replaced dataModel.getColumnClass() with
+	the shorter getColumnClass().
+	(getColumnClass): Call getModel() instead of accessing dataModel
+	directly. Important for correct operation of subclasses.
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTabbedPane.java
 	(insertTab): Don't call layout() directly, instead call
 	revalidate().
