@@ -1,5 +1,14 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Component.java
+	(setBackground): Don't inherit background from parent.
+	(addMouseMotionListener): Enable MOUSE_MOTION_EVENT_MASK instead
+	of MOUSE_EVENT_MASK.
+	(eventTypeEnabled): Handle mouse events and mouse motion events
+	separately.
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
 	(installDefaults): Added super.installDefaults().
 

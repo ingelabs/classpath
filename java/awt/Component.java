@@ -1038,14 +1038,10 @@ public abstract class Component
     if ((c != null) && c.equals(background))
       return;
 
-    // If c is null, inherit from closest ancestor whose bg is set.
-    if (c == null && parent != null)
-      c = parent.getBackground();
-    if (peer != null && c != null)
-      peer.setBackground(c);
-    
     Color previous = background;
     background = c;
+    if (peer != null && c != null)
+      peer.setBackground(c);
     firePropertyChange("background", previous, c);
   }
 
@@ -2642,7 +2638,7 @@ public abstract class Component
   {
     mouseMotionListener = AWTEventMulticaster.add(mouseMotionListener, listener);
     if (mouseMotionListener != null)
-      enableEvents(AWTEvent.MOUSE_EVENT_MASK);
+      enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK);
   }
 
   /**
@@ -4853,11 +4849,12 @@ p   * <li>the set of backward traversal keys
       case MouseEvent.MOUSE_EXITED:
       case MouseEvent.MOUSE_PRESSED:
       case MouseEvent.MOUSE_RELEASED:
+        return (mouseListener != null
+                || (eventMask & AWTEvent.MOUSE_EVENT_MASK) != 0);
       case MouseEvent.MOUSE_MOVED:
       case MouseEvent.MOUSE_DRAGGED:
-        return (mouseListener != null
-                || mouseMotionListener != null
-                || (eventMask & AWTEvent.MOUSE_EVENT_MASK) != 0);
+        return (mouseMotionListener != null
+                || (eventMask & AWTEvent.MOUSE_MOTION_EVENT_MASK) != 0);
         
       case FocusEvent.FOCUS_GAINED:
       case FocusEvent.FOCUS_LOST:
