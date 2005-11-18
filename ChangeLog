@@ -1,5 +1,29 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(PropertyChangeHandler.propertyChange): Replaced layout() call
+	with revalidate() call.
+	(TabbedPaneLayout.calculateLayoutInfo): Added assureRectsCreated()
+	call to make sure we have the rectangles in place. Also initialize
+	the contentRect here so it can be used later.
+	(TabbedPaneLayout.calculateSize): Removed unused statement.
+	(TabbedPaneLayout.calculateTabRects): Moved assureRectsCreated call
+	to calculateLayoutInfo().
+	(TabbedPaneScrollLayout.calculateTabRects): Moved
+	assureRectsCreated call	to calculateLayoutInfo(). Removed unused
+	statements.
+	(TabbedPaneScrollLayout.layoutContainer): Replaced hide() and show()
+	calls with calls to setVisible(). Especially important since
+	setVisible is handled special in Swing.
+	(BasicTabbedPaneUI): Initialize rects and tabRuns fields.
+	(installUI): Removed layout() call.
+	(paintContentBorder): Removed unused statement.
+	(assureRectsCreated): Reworked to match the JDK behaviour.
+	(getFontMetrics): Use the component getFontMetrics() instead of
+	the deprecated toolkit method.
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTable.java
 	(getCellRenderer): Replaced dataModel.getColumnClass() with
 	the shorter getColumnClass().
