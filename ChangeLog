@@ -1,3 +1,8 @@
+2005-11-17  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JComponent.java
+	(setPreferredSize): Check for null argument before making a copy.
+
 2005-11-17  Gary Benson  <gbenson@redhat.com>
 
 	* java/lang/SecurityManager.java (checkAccess): Correctly

@@ -2564,7 +2564,10 @@ public abstract class JComponent extends Container implements Serializable
   public void setPreferredSize(Dimension pref)
   {
     Dimension oldPreferredSize = preferredSize;
-    preferredSize = new Dimension(pref);
+    if (pref != null)
+      preferredSize = new Dimension(pref);
+    else
+      preferredSize = null;
     firePropertyChange("preferredSize", oldPreferredSize, preferredSize);
   }
 
