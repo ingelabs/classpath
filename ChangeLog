@@ -1,5 +1,10 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	(installDefaults): Added super.installDefaults().
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTableHeaderUI.java
 	(installUI): Install a CellRendererPane.
 	(paint): Paint the renderer component using the rendererPane, not

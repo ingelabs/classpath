@@ -371,6 +371,7 @@ public class MetalTabbedPaneUI extends BasicTabbedPaneUI
    */
   protected void installDefaults()
   {
+    super.installDefaults();
     selectColor = UIManager.getColor("TabbedPane.selected");
     selectHighlight = UIManager.getColor("TabbedPane.selectHighlight");
     tabAreaBackground = UIManager.getColor("TabbedPane.tabAreaBackground");
