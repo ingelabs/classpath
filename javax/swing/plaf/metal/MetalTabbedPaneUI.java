@@ -319,9 +319,16 @@ public class MetalTabbedPaneUI extends BasicTabbedPaneUI
       int tabIndex, int x, int y, int w, int h, boolean isSelected)
   {
     if (isSelected)
-      g.setColor(MetalLookAndFeel.getControl());
+      g.setColor(UIManager.getColor("TabbedPane.selected"));
     else
-      g.setColor(MetalLookAndFeel.getControlShadow());
+      {
+        // This is only present in the OceanTheme, so we must check if it
+        // is actually there
+        Color background = UIManager.getColor("TabbedPane.unselectedBackground");
+        if (background == null)
+          background = UIManager.getColor("TabbedPane.background");
+        g.setColor(background);
+      }
     int[] px, py;
     if (tabPlacement == TOP) 
       {

@@ -1,8 +1,16 @@
+2005-11-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	(paintTabBackground): Fixed colors for the tab background.
+	* javax/swing/plaf/metal/OceanTheme.java
+	(addCustomEntriesToTable): Added color modifications for
+	TabbedPane.
+
 2005-11-18  David Daney  <ddaney@avtrex.com>
 
 	* AUTHORS (David Daney): New entry. 
 
-2005-11-17  Roman Kennke  <kennke@aicas.com>
+2005-11-18  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java
 	(setBackground): Don't inherit background from parent.
@@ -11,19 +19,19 @@
 	(eventTypeEnabled): Handle mouse events and mouse motion events
 	separately.
 
-2005-11-17  Roman Kennke  <kennke@aicas.com>
+2005-11-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
 	(installDefaults): Added super.installDefaults().
 
-2005-11-17  Roman Kennke  <kennke@aicas.com>
+2005-11-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTableHeaderUI.java
 	(installUI): Install a CellRendererPane.
 	(paint): Paint the renderer component using the rendererPane, not
 	directly.
 
-2005-11-17  Roman Kennke  <kennke@aicas.com>
+2005-11-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(PropertyChangeHandler.propertyChange): Replaced layout() call
@@ -47,7 +55,7 @@
 	(getFontMetrics): Use the component getFontMetrics() instead of
 	the deprecated toolkit method.
 
-2005-11-17  Roman Kennke  <kennke@aicas.com>
+2005-11-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTable.java
 	(getCellRenderer): Replaced dataModel.getColumnClass() with
@@ -55,20 +63,20 @@
 	(getColumnClass): Call getModel() instead of accessing dataModel
 	directly. Important for correct operation of subclasses.
 
-2005-11-17  Roman Kennke  <kennke@aicas.com>
+2005-11-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTabbedPane.java
 	(insertTab): Don't call layout() directly, instead call
 	revalidate().
 
-2005-11-17  Roman Kennke  <kennke@aicas.com>
+2005-11-18  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Container.java
 	(findComponentForMouseEventAt): Also check for mouseMotionListeners,
 	otherwise we wouldn't dispatch mouse motion events on components
 	that have no mouse listener installed.
 
-2005-11-17  Lillian Angel  <langel@redhat.com>
+2005-11-18  Lillian Angel  <langel@redhat.com>
 	
 	PR classpath/PR24754
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
@@ -78,7 +86,7 @@
 	max width of all the lines in the text. A loop was added to get the
 	extent of all the lines and add them together.
 
-2005-11-17  Roman Kennke  <kennke@aicas.com>
+2005-11-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
 	(minTabWidth): New field.
@@ -87,7 +95,7 @@
 	(tabAreaBackground): New field.
 	(installDefaults): Initialize new fields with values for UIManager.
 
-2005-11-17  Roman Kennke  <kennke@aicas.com>
+2005-11-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java
 	(installUI): Don't install layout here.
@@ -100,30 +108,30 @@
 	(getMinimumSize): Likewise.
 	(getMaximumSize): Likewise.
 
-2005-11-17  Gary Benson  <gbenson@redhat.com>
+2005-11-18  Gary Benson  <gbenson@redhat.com>
 
 	* AUTHORS: Added myself.
 
-2005-11-17  David Gilbert  <david.gilbert@object-refinery.com>
+2005-11-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java
 	(setPreferredSize): Check for null argument before making a copy.
 
-2005-11-17  Gary Benson  <gbenson@redhat.com>
+2005-11-18  Gary Benson  <gbenson@redhat.com>
 
 	* java/lang/SecurityManager.java (checkAccess): Correctly
 	identify system threads (and thus check permissions for them).
 
-2005-11-17  David Gilbert  <david.gilbert@object-refinery.com>
+2005-11-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java
 	(setMinimumSize): Check for null argument before making a copy.
 
-2005-11-17  Paul Jenner  <psj@harker.dyndns.org>
+2005-11-18  Paul Jenner  <psj@harker.dyndns.org>
 
 	* native/jni/xmlj/xmlj_util.h (XMLJ_64BIT_POINTER): Removed.
 
-2005-11-17  David Gilbert  <david.gilbert@object-refinery.com>
+2005-11-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java
 	(setMaximumSize): Check for null argument before making a copy.
