@@ -38,11 +38,13 @@ exception statement from your version. */
 
 package javax.swing.plaf.metal;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
+import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
@@ -99,6 +101,26 @@ public class MetalTabbedPaneUI extends BasicTabbedPaneUI
       // the MetalLookAndFeel
     }
   }
+
+  /**
+   * The minimum tab width.
+   */
+  protected int minTabWidth;
+
+  /**
+   * The color for the selected tab.
+   */
+  protected Color selectColor;
+
+  /**
+   * The color for a highlighted selected tab.
+   */
+  protected Color selectHighlight;
+
+  /**
+   * The background color used for the tab area.
+   */
+  protected Color tabAreaBackground;
 
   /**
    * Constructs a new instance of MetalTabbedPaneUI.
@@ -342,5 +364,16 @@ public class MetalTabbedPaneUI extends BasicTabbedPaneUI
     // (which is drawn at the very top for tabPlacement == TOP)
     return run < this.runCount - 1;
   }
-  
+
+  /**
+   * Installs the defaults for this UI. This method calls super.installDefaults
+   * and then loads the Metal specific defaults for TabbedPane.
+   */
+  protected void installDefaults()
+  {
+    selectColor = UIManager.getColor("TabbedPane.selected");
+    selectHighlight = UIManager.getColor("TabbedPane.selectHighlight");
+    tabAreaBackground = UIManager.getColor("TabbedPane.tabAreaBackground");
+    minTabWidth = 0;
+  }
 }
