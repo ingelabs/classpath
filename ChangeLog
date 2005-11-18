@@ -1,3 +1,8 @@
+2005-11-17  Gary Benson  <gbenson@redhat.com>
+
+	* java/lang/SecurityManager.java (checkAccess): Correctly
+	identify system threads (and thus check permissions for them).
+
 2005-11-17  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java
