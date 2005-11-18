@@ -1,5 +1,12 @@
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java
+	(installUI): Install a CellRendererPane.
+	(paint): Paint the renderer component using the rendererPane, not
+	directly.
+
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(PropertyChangeHandler.propertyChange): Replaced layout() call
 	with revalidate() call.
