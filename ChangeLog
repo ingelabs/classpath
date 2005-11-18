@@ -1,3 +1,16 @@
+2005-11-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(installUI): Don't install layout here.
+	(uninstallUI): Don't uninstall layout here.
+	(installDefaults): Install layout here.
+	(uninstallDefaults): Uninstall layout here.
+	(getPreferredSize): Use getLayout() to fetch the layout of the frame
+	instead of directly accessing the corresponding field. This
+	is necessary to make subclasses work that don't use this field.
+	(getMinimumSize): Likewise.
+	(getMaximumSize): Likewise.
+
 2005-11-17  Gary Benson  <gbenson@redhat.com>
 
 	* AUTHORS: Added myself.
