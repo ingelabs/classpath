@@ -1,5 +1,11 @@
 2005-11-19  Wolfgang Baer  <WBaer@gmx.de>
 
+	* javax/print/attribute/TextSyntax.java:
+	Added and enhanced api docs for this class.
+	(TextSyntax): If locale is null use the default locale.
+
+2005-11-19  Wolfgang Baer  <WBaer@gmx.de>
+
 	* javax/print/attribute/SetOfIntegerSyntax.java: 
 	Added and enhanced api docs for this class.	
 	(SetOfIntegerSyntax(String)): Create empty set if given string is null.
