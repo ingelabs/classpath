@@ -1,3 +1,11 @@
+2005-11-19  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/ResolutionSyntax.java:
+	Added and enhanced api docs for this class.
+	(getFeedResolution): Use correct feedresolution variable
+	and do not add an additional unit to the resolution.
+	(getCrossFeedResolution): Do not add additional unit to resolution.
+
 2005-11-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
