@@ -1,5 +1,12 @@
 2005-11-19  Wolfgang Baer  <WBaer@gmx.de>
 
+	* javax/print/attribute/Size2DSyntax.java: 
+	Added and enhanced api docs for this class.
+	(toString()): Changed to return values as ints.
+	(toString(int,String)): Changed to not append the unitsName if null.
+
+2005-11-19  Wolfgang Baer  <WBaer@gmx.de>
+
 	* javax/print/attribute/ResolutionSyntax.java (toString):
 	Changed to not append the unitsName if null. Clarified api docs.
 
