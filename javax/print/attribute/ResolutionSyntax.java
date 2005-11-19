@@ -254,12 +254,16 @@ public abstract class ResolutionSyntax
    * </p>
    * 
    * @param units the units to use
-   * @param unitsName the name of the units
+   * @param unitsName the name of the units. If <code>null</code>
+   * it is ommitted from the string representation.
    *
    * @return The string representation.
    */
   public String toString(int units, String unitsName)
   {
+    if (unitsName == null)
+      return getCrossFeedResolution(units) + "x" + getFeedResolution(units);
+    
     return ("" + getCrossFeedResolution(units)
             + "x" + getFeedResolution(units)
             + " " + unitsName);

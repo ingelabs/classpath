@@ -1,5 +1,10 @@
 2005-11-19  Wolfgang Baer  <WBaer@gmx.de>
 
+	* javax/print/attribute/ResolutionSyntax.java (toString):
+	Changed to not append the unitsName if null. Clarified api docs.
+
+2005-11-19  Wolfgang Baer  <WBaer@gmx.de>
+
 	* javax/print/attribute/TextSyntax.java:
 	Added and enhanced api docs for this class.
 	(TextSyntax): If locale is null use the default locale.
