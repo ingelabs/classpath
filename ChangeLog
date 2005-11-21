@@ -1,3 +1,17 @@
+2005-11-21  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java (cachedMinimumSize):
+	Document.
+	(isMinimumSizeDirty): Likewise. And initialize to true.
+	(getMinimumSize): Use and set cachedMinimumSize.
+	(FocusHandler.focusGained): Set isMinimumSizeDirty to true.
+	(FocusHandler.focusLost): Likewise.
+	(ItemHandler.itemStateChanged): Likewise.
+	(ListDataHandler.contentsChanged): Likewise.
+	(ListDataHandler.intervalAdded): Likewise.
+	(ListDataHandler.intervalRemoved): Likewise.
+	(PropertyChangeHandler.propertyChange): Likewise.
+
 2005-11-21  Jan Roehrich  <jan@roehrich.info>
 
 	* java/awt/datatransfer/DataFlavor.java: more code style
