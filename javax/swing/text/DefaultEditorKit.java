@@ -112,8 +112,7 @@ public class DefaultEditorKit extends EditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // FIXME: Implement me. Tookit.getSystemClipboard should be used
-      // for that.
+      getTextComponent(event).copy();
     }
   }
 
@@ -144,8 +143,7 @@ public class DefaultEditorKit extends EditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // FIXME: Implement me. Tookit.getSystemClipboard should be used
-      // for that.
+      getTextComponent(event).cut();
     }
   }
 
@@ -174,8 +172,7 @@ public class DefaultEditorKit extends EditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // FIXME: Implement me. Tookit.getSystemClipboard should be used
-      // for that.
+      getTextComponent(event).paste();
     }
   }
 
@@ -299,7 +296,8 @@ public class DefaultEditorKit extends EditorKit
      */
     public void actionPerformed(ActionEvent event)
     {
-      // FIXME: Implement this.
+      JTextComponent t = getTextComponent(event);
+      t.replaceSelection("\t");
     }
   }
 

@@ -1,3 +1,15 @@
+2005-11-21  Lillian Angel  <langel@redhat.com>
+
+	PR classpath/PR24872
+	* javax/swing/text/DefaultEditorKit.java
+	(actionPerformed): Implemented.
+	(actionPerformed): Implemented.
+	(actionPerformed): Implemented.
+	(actionPerformed): Implemented.
+	* javax/swing/text/JTextComponent.java
+	(JTextComponent): Added key bindings for cut, copy,
+	paste, selectionBackwardAction, selectionForwardAction.
+
 2005-11-21  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	Fixes bug #24925
