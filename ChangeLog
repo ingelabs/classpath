@@ -1,5 +1,16 @@
 2005-11-21  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/image/ImageDecoder.java (datainput): New field.
+	(ImageDecoder(DataInput)): New constructor.
+	(startProduction): Create DataInputStreamWrapper when datainput set.
+	(DataInputStreamWrapper): New private static helper class.
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java
+	(GdkPixbufDecoder(DataInput)): New constructor.
+	(setInput): Check whether getInput() results in an InputStream or
+	DataInput.
+
+2005-11-21  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/plaf/basic/BasicComboBoxUI.java (cachedMinimumSize):
 	Document.
 	(isMinimumSizeDirty): Likewise. And initialize to true.
