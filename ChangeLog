@@ -1,3 +1,11 @@
+2005-11-21  Lillian Angel  <langel@redhat.com>
+
+	PR classpath/PR24937
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(drawString): Removed most non-printable characters
+	from the string that will be drawn. Added a FIXME comment
+	because may not have filtered out all characters.
+
 2005-11-21  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JTable.java (propertyChange): Only resize header when
