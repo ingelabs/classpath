@@ -1,5 +1,13 @@
 2005-11-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(currentRepaintManagers): Use a WeakHashMap to avoid potential
+	memory leak.
+	(currentManager): Instantiate WeakHashMap instead of HashMap.
+	(setCurrentManager): Instantiate WeakHashMap instead of HashMap.
+
+2005-11-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JViewport.java
 	(static_initializer): Initialize the defaultScrollMode here.
 	(JViewport): Set the defaultScrollMode that was initialized in
