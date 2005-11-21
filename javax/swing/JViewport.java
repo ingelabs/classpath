@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing;
 
+import gnu.classpath.SystemProperties;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -163,7 +165,13 @@ public class JViewport extends JComponent implements Accessible
   public static final int BACKINGSTORE_SCROLL_MODE = 2;
 
   private static final long serialVersionUID = -6925142919680527970L;
-  
+
+  /**
+   * The default scrollmode to be used by all JViewports as determined by
+   * the system property gnu.javax.swing.JViewport.scrollMode.
+   */
+  private static final int defaultScrollMode;
+
   protected boolean scrollUnderway;
   protected boolean isViewSizeSet;
 
@@ -243,21 +251,27 @@ public class JViewport extends JComponent implements Accessible
    */
   boolean sizeChanged = true;
 
-  public JViewport()
+  /**
+   * Initializes the default setting for the scrollMode property.
+   */
+  static
   {
-    setOpaque(true);
     String scrollModeProp =
-      System.getProperty("gnu.javax.swing.JViewport.scrollMode",
+      SystemProperties.getProperty("gnu.javax.swing.JViewport.scrollMode",
                          "BLIT");
     int myScrollMode;
     if (scrollModeProp.equalsIgnoreCase("simple"))
-      myScrollMode = SIMPLE_SCROLL_MODE;
+      defaultScrollMode = SIMPLE_SCROLL_MODE;
     else if (scrollModeProp.equalsIgnoreCase("backingstore"))
-      myScrollMode = BACKINGSTORE_SCROLL_MODE;
+      defaultScrollMode = BACKINGSTORE_SCROLL_MODE;
     else
-      myScrollMode = BLIT_SCROLL_MODE;
-    setScrollMode(myScrollMode);
+      defaultScrollMode = BLIT_SCROLL_MODE;
+  }
 
+  public JViewport()
+  {
+    setOpaque(true);
+    setScrollMode(defaultScrollMode);
     updateUI();
     setLayout(createLayoutManager());
     lastPaintPosition = new Point();

@@ -1,5 +1,12 @@
 2005-11-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JViewport.java
+	(static_initializer): Initialize the defaultScrollMode here.
+	(JViewport): Set the defaultScrollMode that was initialized in
+	the static initializer.
+
+2005-11-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTable.java
 	(columnAtPoint): Removed unused code.
 	(rowAtPoint): Removed unused code.
