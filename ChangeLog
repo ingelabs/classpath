@@ -1,3 +1,8 @@
+2005-11-21  Jan Roehrich  <jan@roehrich.info>
+
+	* java/awt/datatransfer/DataFlavor.java: fixed code 
+	formatting issues
+
 2005-11-20  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/transform/TransformerImpl.java: Ensure that output stream
