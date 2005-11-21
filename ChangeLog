@@ -1,3 +1,8 @@
+2005-11-21  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JTable.java (propertyChange): Only resize header when
+	not null.
+
 2005-11-21  Lillian Angel  <langel@redhat.com>
 
 	PR classpath/PR24872

@@ -949,10 +949,13 @@ public class JTable
       if (ev.getPropertyName().equals("preferredWidth"))
         {
           JTableHeader header = getTableHeader();
-          TableColumn col = (TableColumn) ev.getSource();
-          header.setResizingColumn(col);
-          doLayout();
-          header.setResizingColumn(null);
+	  if (header != null)
+	    {
+	      TableColumn col = (TableColumn) ev.getSource();
+	      header.setResizingColumn(col);
+	      doLayout();
+	      header.setResizingColumn(null);
+	    }
         }
     }
   }
