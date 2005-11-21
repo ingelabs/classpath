@@ -71,27 +71,35 @@ public class DataFlavor implements java.io.Externalizable, Cloneable
    * @deprecated The charset unicode is platform specific and InputStream
    * deals with bytes not chars. Use <code>getRederForText()</code>.
    */
-  public static final DataFlavor plainTextFlavor;
+  public static final DataFlavor plainTextFlavor = 
+    new DataFlavor(java.io.InputStream.class,
+                   "text/plain; charset=unicode",
+                   "plain unicode text");
 
   /**
    * This is the data flavor used for transferring Java strings.  The
    * MIME type is "application/x-java-serialized-object" and the 
    * representation class is <code>java.lang.String</code>.
    */
-  public static final DataFlavor stringFlavor;
+  public static final DataFlavor stringFlavor = 
+    new DataFlavor(java.lang.String.class, "Java Unicode String");
 
   /**
    * This is a data flavor used for transferring lists of files.  The
    * representation type is a <code>java.util.List</code>, with each 
    * element of the list being a <code>java.io.File</code>.
    */
-  public static final DataFlavor javaFileListFlavor;
+  public static final DataFlavor javaFileListFlavor = 
+    new DataFlavor(java.util.List.class,
+                   "application/x-java-file-list; class=java.util.List",
+                   "Java File List");
 
   /**
    * This is an image flavor used for transferring images.  The
    * representation type is a <code>java.awt.Image</code>.
    */
-  public static final DataFlavor imageFlavor;
+  public static final DataFlavor imageFlavor = 
+    new DataFlavor(java.awt.Image.class, "Java Image");
 
   /**
    * This is the MIME type used for transferring a serialized object.
@@ -114,27 +122,6 @@ public class DataFlavor implements java.io.Externalizable, Cloneable
    */
   public static final String javaRemoteObjectMimeType =
     "application/x-java-remote-object";
-
-  static
-  {
-    plainTextFlavor
-        = new DataFlavor(java.io.InputStream.class,
-                        "text/plain; charset=unicode",
-                        "plain unicode text");
-  
-    stringFlavor
-        = new DataFlavor(java.lang.String.class,
-                        "Java Unicode String");
-  
-    javaFileListFlavor
-        = new DataFlavor(java.util.List.class,
-                        "application/x-java-file-list; class=java.util.List",
-                        "Java File List");
-  
-    imageFlavor
-        = new DataFlavor(java.awt.Image.class,
-                         "Java Image");
-  }
 
   /*
    * Instance Variables
@@ -202,6 +189,107 @@ public class DataFlavor implements java.io.Externalizable, Cloneable
     else
       throw new ClassNotFoundException(className);
   }
+  
+  private static Class getRepresentationClassFromMime(String mimeString,
+                                                      ClassLoader classLoader)
+    {
+      String classname = getParameter("class", mimeString);
+      if (classname != null)
+        {
+          try
+            {
+              return tryToLoadClass(classname, classLoader);
+            }
+          catch(Exception e)
+            {
+              throw new IllegalArgumentException("classname: " + e.getMessage());
+            }
+        }
+      else
+        return java.io.InputStream.class;
+    }
+  
+  /**
+   * Returns the value of the named MIME type parameter, or <code>null</code>
+   * if the parameter does not exist. Given the parameter name and the mime
+   * string.
+   *
+   * @param paramName The name of the parameter.
+   * @param mimeString The mime string from where the name should be found.
+   *
+   * @return The value of the parameter or null.
+   */
+  private static String getParameter(String paramName, String mimeString)
+  {
+    int idx = mimeString.indexOf(paramName + "=");
+    if (idx == -1)
+      return(null);
+  
+    String value = mimeString.substring(idx + paramName.length() + 1);
+  
+    idx = value.indexOf(" ");
+    if (idx == -1)
+      return(value);
+    else
+      return(value.substring(0, idx));
+  }
+  
+  /**
+   * XXX - Currently returns <code>plainTextFlavor</code>.
+   */
+  public static final DataFlavor getTextPlainUnicodeFlavor()
+  {
+    return plainTextFlavor;
+  }
+  
+  /**
+   * Selects the best supported text flavor on this implementation.
+   * Returns <code>null</code> when none of the given flavors is liked.
+   *
+   * The <code>DataFlavor</code> returned the first data flavor in the
+   * array that has either a representation class which is (a subclass of)
+   * <code>Reader</code> or <code>String</code>, or has a representation
+   * class which is (a subclass of) <code>InputStream</code> and has a
+   * primary MIME type of "text" and has an supported encoding.
+   */
+  public static final DataFlavor 
+    selectBestTextFlavor(DataFlavor[] availableFlavors)
+  {
+    for(int i = 0; i < availableFlavors.length; i++)
+      {
+        DataFlavor df = availableFlavors[i];
+        Class c = df.representationClass;
+  
+        // A Reader or String is good.
+        if ((Reader.class.isAssignableFrom(c))
+           || (String.class.isAssignableFrom(c)))
+      return df;
+  
+        // A InputStream is good if the mime primary type is "text"
+        if ((InputStream.class.isAssignableFrom(c))
+           && ("text".equals(df.getPrimaryType())))
+          {
+            String encoding = availableFlavors[i].getParameter("charset");
+            if (encoding == null)
+              encoding = "us-ascii";
+            Reader r = null;
+            try
+              {
+                // Try to construct a dummy reader with the found encoding
+                r = new InputStreamReader
+                      (new ByteArrayInputStream(new byte[0]), encoding);
+              }
+            catch(UnsupportedEncodingException uee) { /* ignore */ }
+
+            if (r != null)
+              return df;
+          }
+      }
+  
+    // Nothing found
+    return null;
+  }
+
 
   /*
    * Constructors
@@ -276,25 +364,6 @@ public class DataFlavor implements java.io.Externalizable, Cloneable
   {
     this(getRepresentationClassFromMime(mimeType, classLoader),
          mimeType, humanPresentableName);
-  }
-
-  private static Class getRepresentationClassFromMime(String mimeString,
-                                                     ClassLoader classLoader)
-  {
-    String classname = getParameter("class", mimeString);
-    if (classname != null)
-      {
-        try
-          {
-            return tryToLoadClass(classname, classLoader);
-          }
-        catch(Exception e)
-          {
-            throw new IllegalArgumentException("classname: " + e.getMessage());
-          }
-      }
-    else
-      return java.io.InputStream.class;
   }
 
   /**
@@ -398,31 +467,6 @@ public class DataFlavor implements java.io.Externalizable, Cloneable
       return mimeType.substring(start + 1);
     else
       return mimeType.substring(start + 1, end);
-  }
-
-  /**
-   * Returns the value of the named MIME type parameter, or <code>null</code>
-   * if the parameter does not exist. Given the parameter name and the mime
-   * string.
-   *
-   * @param paramName The name of the parameter.
-   * @param mimeString The mime string from where the name should be found.
-   *
-   * @return The value of the parameter or null.
-   */
-  private static String getParameter(String paramName, String mimeString)
-  {
-    int idx = mimeString.indexOf(paramName + "=");
-    if (idx == -1)
-      return(null);
-  
-    String value = mimeString.substring(idx + paramName.length() + 1);
-  
-    idx = value.indexOf(" ");
-    if (idx == -1)
-      return(value);
-    else
-      return(value.substring(0, idx));
   }
 
   /**
@@ -765,14 +809,6 @@ public class DataFlavor implements java.io.Externalizable, Cloneable
   }
 
   /**
-   * XXX - Currently returns <code>plainTextFlavor</code>.
-   */
-  public static final DataFlavor getTextPlainUnicodeFlavor()
-  {
-    return plainTextFlavor;
-  }
-
-  /**
    * XXX - Currently returns <code>java.io.InputStream</code>.
    *
    * @since 1.3
@@ -788,54 +824,6 @@ public class DataFlavor implements java.io.Externalizable, Cloneable
   public final String getDefaultRepresentationClassAsString()
   {
     return getDefaultRepresentationClass().getName();
-  }
-
-  /**
-   * Selects the best supported text flavor on this implementation.
-   * Returns <code>null</code> when none of the given flavors is liked.
-   *
-   * The <code>DataFlavor</code> returned the first data flavor in the
-   * array that has either a representation class which is (a subclass of)
-   * <code>Reader</code> or <code>String</code>, or has a representation
-   * class which is (a subclass of) <code>InputStream</code> and has a
-   * primary MIME type of "text" and has an supported encoding.
-   */
-  public static final DataFlavor 
-    selectBestTextFlavor(DataFlavor[] availableFlavors)
-  {
-    for(int i = 0; i < availableFlavors.length; i++)
-      {
-        DataFlavor df = availableFlavors[i];
-        Class c = df.representationClass;
-  
-        // A Reader or String is good.
-        if ((Reader.class.isAssignableFrom(c))
-           || (String.class.isAssignableFrom(c)))
-  	  return df;
-  
-        // A InputStream is good if the mime primary type is "text"
-        if ((InputStream.class.isAssignableFrom(c))
-           && ("text".equals(df.getPrimaryType())))
-          {
-            String encoding = availableFlavors[i].getParameter("charset");
-            if (encoding == null)
-              encoding = "us-ascii";
-            Reader r = null;
-            try
-              {
-                // Try to construct a dummy reader with the found encoding
-                r = new InputStreamReader
-                      (new ByteArrayInputStream(new byte[0]), encoding);
-              }
-            catch(UnsupportedEncodingException uee) { /* ignore */ }
-
-            if (r != null)
-              return df;
-          }
-      }
-  
-    // Nothing found
-    return null;
   }
 
   /**

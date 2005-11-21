@@ -1,3 +1,10 @@
+2005-11-21  Jan Roehrich  <jan@roehrich.info>
+
+	* java/awt/datatransfer/DataFlavor.java: more code style
+	fixes. Changed order to static attributes, attributes, static
+	methods, constructors, methods. Moved static part into static 
+	attribute declaration.
+
 2005-11-21  Lillian Angel  <langel@redhat.com>
 
 	PR classpath/PR24937
