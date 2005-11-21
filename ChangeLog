@@ -1,3 +1,11 @@
+2005-11-21  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	Fixes bug #24925
+	* javax/swing/text/DefaultEditorKit.java:
+	(DefaultKeyTypedAction.actionPeformed): Call replaceSelection here
+	instead of insertString and only do so if the text component is both 
+	enabled and editable.
+
 2005-11-21  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/RepaintManager.java

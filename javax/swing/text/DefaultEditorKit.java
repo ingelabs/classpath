@@ -216,19 +216,9 @@ public class DefaultEditorKit extends EditorKit
         return;
 
       JTextComponent t = getTextComponent(event);
-      if (t != null)
-        {
-          try
-            {
-              t.getDocument().insertString(t.getCaret().getDot(),
-                                           event.getActionCommand(), null);
-            }
-          catch (BadLocationException be)
-            {
-              // FIXME: we're not authorized to throw this.. swallow it?
-            }
-        }
-    }
+      if (t != null && t.isEnabled() && t.isEditable())
+        t.replaceSelection(event.getActionCommand());
+    }    
   }
 
   /**
