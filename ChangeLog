@@ -1,3 +1,16 @@
+2005-11-21  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(columnAtPoint): Removed unused code.
+	(rowAtPoint): Removed unused code.
+	(prepareRenderer): Moved renderer prepare code from the UI to this
+	method.
+	(getSelections): Removed unused code.
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(paintCell): Call JTable.prepareRenderer instead of preparing
+	the renderer in the UI.
+	(paint): Removed some unused code.
+
 2005-11-21  Jan Roehrich  <jan@roehrich.info>
 
 	* java/awt/datatransfer/DataFlavor.java: fixed code 
