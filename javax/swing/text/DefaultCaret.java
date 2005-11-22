@@ -457,7 +457,7 @@ public class DefaultCaret extends Rectangle
    */
   private void updateTimerStatus()
   {
-    if (visible && textComponent.isEnabled() && textComponent.isEditable())
+    if (textComponent.isEnabled() && textComponent.isEditable())
       {
         if (blinkTimer == null)
           initBlinkTimer();
