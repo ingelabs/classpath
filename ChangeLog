@@ -1,3 +1,11 @@
+2005-11-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/MaskFormatter.java:
+	(convertValue): If character is a literal don't throw a ParseException
+	unless literals aren't allowd in values and this method is being 
+	called from valueToString rather than stringToValue.  The convert flag
+	is used to distinguish these two cases.
+
 2005-11-22  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalComboBoxUI.java

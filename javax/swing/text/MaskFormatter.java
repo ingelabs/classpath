@@ -454,7 +454,7 @@ public class MaskFormatter extends DefaultFormatter
               throw new ParseException ("Invalid character: "+resultChar, i);
             break;
           default:
-            if (!getValueContainsLiteralCharacters())
+            if (!getValueContainsLiteralCharacters() && convert)
               throw new ParseException ("Invalid character: "+resultChar, i);
             else if (resultChar != mask.charAt(j))
               throw new ParseException ("Invalid character: "+resultChar, i);
