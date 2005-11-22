@@ -1,3 +1,9 @@
+2005-11-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/TransferHandler
+	(getClipboard): Aways check for the possibility to 
+	access the system clipboard.
+
 2005-11-22  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicOptionPaneUI.java
@@ -17,11 +23,12 @@
 
 2005-11-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-        * javax/swing/text/DefaultCaret.java (focusGained):
-        Update timer status. (focusLost): Stop the timer
-        (unless the event is temporary).
-        (updateTimerStatus): New method.
-        (setVisible): Delegate timer management to the updateTimerStatus.
+	PR 24942
+	* javax/swing/text/DefaultCaret.java (focusGained):
+	Update timer status. (focusLost): Stop the timer
+	(unless the event is temporary).
+	(updateTimerStatus): New method.
+	(setVisible): Delegate timer management to the updateTimerStatus.
 
 2005-11-21  Mark Wielaard  <mark@klomp.org>
 
