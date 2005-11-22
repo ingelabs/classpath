@@ -1,3 +1,26 @@
+2005-11-22  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	(getColorForGap): Implemented. Background color is
+	always returned in this case.
+	(paintHighlightBelowTab): Added. Nothing to do in 
+	this function as far as i can tell.
+	(shouldFillGap): Implemented. Gap should always be filled.
+	(shouldRotateTabRuns): Implemented. Tabs are not rotated
+	in Metal. False is always returned.
+	(calculateMaxTabHeight): Implemented to call super.
+	(getTabLabelShiftX): Implemented.
+	(getTabLabelShiftY): Implemented.
+	(getTabRunOverlay): Implemented.
+	(paint): Implemented to call super.
+	(paintContentBorderBottomEdge): Likewise.
+	(paintContentBorderLeftEdge): Likewise.
+	(paintContentBorderRightEdge): Likewise.
+	(paintContentBorderTopEdge): Likewise.
+	(paintFocusIndicator): Likewise.
+	(update): Likewise. Should not work any differently from
+	default implementation.
+
 2005-11-22  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c
