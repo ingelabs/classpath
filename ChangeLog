@@ -1,3 +1,10 @@
+2005-11-22  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java
+	(addMessageComponents): Also burst the string if there are newlines
+	in it.
+	(burstStringInto): Improved algorithm to also handle newlines.
+
 2005-11-22  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java
