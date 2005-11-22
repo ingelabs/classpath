@@ -1,3 +1,15 @@
+2005-11-22  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c
+	(nativeGetFontFamilies): Added missing DeleteLocalRef calls.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c
+	(query_formats): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c 
+	(append): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkListPeer.c 
+	(append): Likewise.
+	* native/jni/qt-peer/qtmenupeer.cpp (runEvent): Likewise.
+
 2005-11-22  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java

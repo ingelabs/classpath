@@ -270,6 +270,8 @@ query_formats (JNIEnv *env, jclass clazz)
 	  (*env)->DeleteLocalRef(env, string);
 	  ++ch;
 	}
+
+      (*env)->DeleteLocalRef(env, jformat);
     }
   
   g_slist_free(formats);  
