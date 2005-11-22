@@ -1,3 +1,15 @@
+2005-11-22  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(getMenuArrowIcon): Implemented.
+	(getMenuItemArrowIcon): Implemented to call getMenuArrowIcon,
+	because both icons look the same.
+	(getMenuItemCheckIcon): Implemented.
+	* javax/swing/plaf/metal/MetalTextFieldUI.java
+	(propertyChange): Implemented to call super only, because it
+	is a hook method. It doesn't have a different purpose from
+	BasicLookAndFeel, other than allowing a subclass to override it.
+
 2005-11-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/MaskFormatter.java:
