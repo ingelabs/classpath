@@ -1,3 +1,13 @@
+2005-11-22  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalScrollPaneUI.java
+	(installUI): Implemented.
+	(uninstallUI): Implemented.
+	(installListeners): Implemented.
+	(uninstallListeners): Implemented.
+	(createScrollBarSwapListener): Partially implemented, not sure
+	what else to do here.
+
 2005-11-22  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/MaskFormatter.java:
