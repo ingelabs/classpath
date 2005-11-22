@@ -399,6 +399,7 @@ public class MaskFormatter extends DefaultFormatter
     StringBuffer result = new StringBuffer(value);
     char markChar;
     char resultChar;
+    boolean literal;
 
     // this boolean is specifically to avoid calling the isCharValid method
     // when neither invalidChars or validChars has been set
@@ -406,11 +407,8 @@ public class MaskFormatter extends DefaultFormatter
 
     for (int i = 0, j = 0; i < value.length(); i++, j++)
       {
+        literal = false;
         resultChar = result.charAt(i);
-        // If necessary, check if the character is valid.
-        if (checkCharSets && !isCharValid(resultChar))
-          throw new ParseException("invalid character: "+resultChar, i);
-
         // This switch block on the mask character checks that the character 
         // within <code>value</code> at that point is valid according to the
         // mask and also converts to upper/lowercase as needed.
@@ -450,15 +448,21 @@ public class MaskFormatter extends DefaultFormatter
             // Escape character, check the next character to make sure that 
             // the literals match
             j++;
+            literal = true;
             if (resultChar != mask.charAt(j))
               throw new ParseException ("Invalid character: "+resultChar, i);
             break;
           default:
+            literal = true;
             if (!getValueContainsLiteralCharacters() && convert)
               throw new ParseException ("Invalid character: "+resultChar, i);
             else if (resultChar != mask.charAt(j))
               throw new ParseException ("Invalid character: "+resultChar, i);
           }
+        // If necessary, check if the character is valid.
+        if (!literal && checkCharSets && !isCharValid(resultChar))
+          throw new ParseException("invalid character: "+resultChar, i);
+
       }
     return result.toString();
   }

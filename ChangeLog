@@ -1,3 +1,9 @@
+2005-11-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/MaskFormatter.java:
+	(convertValue): Don't check the valid/invalid character sets if we're 
+	matching a literal.
+
 2005-11-22  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalScrollPaneUI.java
