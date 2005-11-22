@@ -1,3 +1,13 @@
+2005-11-22  Lillian Angel  <langel@redhat.com>
+
+	PR 24937
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(drawString): Removed pattern matching code. This is now
+	done in native.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_drawString): Added
+	a loop to filter out all non-printing characters.
+
 2005-11-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/text/DefaultCaret.java (updateTimerStatus): 

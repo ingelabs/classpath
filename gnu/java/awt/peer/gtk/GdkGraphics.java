@@ -247,10 +247,6 @@ public class GdkGraphics extends Graphics
   native void drawString (GdkFontPeer f, String str, int x, int y);
   public void drawString (String str, int x, int y)
   {
-    // FIXME: Possibly more characters we need to ignore/
-    // Also, implementation may be inefficent because allocating
-    // new Strings.
-    str = Pattern.compile("[\b|\t|\n|\f|\r|\"|\']").matcher(str).replaceAll("");
     drawString(getFontPeer(), str, x, y);
   }  
   
