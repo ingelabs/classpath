@@ -250,7 +250,7 @@ public class GdkGraphics extends Graphics
     // FIXME: Possibly more characters we need to ignore/
     // Also, implementation may be inefficent because allocating
     // new Strings.
-    str = Pattern.compile("[\b | \t | \n | \f | \r | \" | \']").matcher(str).replaceAll("");
+    str = Pattern.compile("[\b|\t|\n|\f|\r|\"|\']").matcher(str).replaceAll("");
     drawString(getFontPeer(), str, x, y);
   }  
   

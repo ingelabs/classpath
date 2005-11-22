@@ -1,3 +1,8 @@
+2005-11-22  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(drawString): Fixed regex.
+
 2005-11-22  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #22691
