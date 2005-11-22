@@ -1,3 +1,11 @@
+2005-11-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+        * javax/swing/text/DefaultCaret.java (focusGained):
+        Update timer status. (focusLost): Stop the timer
+        (unless the event is temporary).
+        (updateTimerStatus): New method.
+        (setVisible): Delegate timer management to the updateTimerStatus.
+
 2005-11-21  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/image/ImageDecoder.java (datainput): New field.
