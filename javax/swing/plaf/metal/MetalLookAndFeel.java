@@ -40,7 +40,6 @@ package javax.swing.plaf.metal;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Insets;
 
 import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
@@ -902,9 +901,11 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "Menu.acceleratorFont", new FontUIResource("Dialog", Font.PLAIN, 10),
       "Menu.acceleratorForeground", getAcceleratorForeground(),
       "Menu.acceleratorSelectionForeground", getAcceleratorSelectedForeground(),
+      "Menu.arrowIcon", MetalIconFactory.getMenuArrowIcon(),
       "Menu.background", getMenuBackground(),
       "Menu.border", new MetalBorders.MenuItemBorder(),
       "Menu.borderPainted", Boolean.TRUE,
+      "Menu.checkIcon", MetalIconFactory.getMenuItemCheckIcon(),
       "Menu.disabledForeground", getMenuDisabledForeground(),
       "Menu.font", getControlTextFont(),
       "Menu.foreground", getMenuForeground(),
@@ -921,6 +922,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "MenuItem.acceleratorFont", new FontUIResource("Dialog", Font.PLAIN, 10),
       "MenuItem.acceleratorForeground", getAcceleratorForeground(),
       "MenuItem.acceleratorSelectionForeground", getAcceleratorSelectedForeground(),
+      "MenuItem.arrowIcon", MetalIconFactory.getMenuItemArrowIcon(),
       "MenuItem.background", getMenuBackground(),
       "MenuItem.border", new MetalBorders.MenuItemBorder(),
       "MenuItem.disabledForeground", getMenuDisabledForeground(),

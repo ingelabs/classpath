@@ -1,3 +1,30 @@
+2005-11-23  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Added defaults for menu arrow icon,
+	menu item arrow icon and menu item check icon.
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java:
+	Added new field to store graphics when painting highlight.
+	(paintTopTabBorder): Added code to fill gap if it should be
+	filled.
+	(paintBottomTabBorder): Likewise.
+	(paintTabBackground): Added call to paint the highlight below the tab.
+	(getColorForGap): Added code to return selected color, if selected.
+	(shouldFillGap): Changed to return false. With JDK, gap is never filled in
+	MetalL&F.
+	(paintHighlightBelowTab): Implemented to paint the highlight on selected tabs.
+	(calculateMaxTabHeight): Removed.
+	(getTabLabelShiftX): Removed.
+	(getTabLabelShiftY): Removed.
+	(getTabRunOverlay): Removed.
+	(paint): Removed.
+	(paintContentBorderBottomEdge): Removed.
+	(paintContentBorderLeftEdge): Removed.
+	(paintContentBorderRightEdge): Removed.
+	(paintContentBorderTopEdge): Removed.
+	(paintFocusIndicator): Removed.
+	(update): Removed.
+
 2005-11-23  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java
