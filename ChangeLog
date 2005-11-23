@@ -1,5 +1,10 @@
 2005-11-23  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JComponent.java
+	(getListeners): Updated API docs.
+
+2005-11-23  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/Container.java
 	(getListeners): Updated API docs.
 
