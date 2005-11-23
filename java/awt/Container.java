@@ -896,13 +896,21 @@ public class Container extends Component
   }
 
   /**
-   * Returns an array of all the objects currently registered as FooListeners
-   * upon this Container. FooListeners are registered using the addFooListener
-   * method.
+   * Returns all registered {@link EventListener}s of the given 
+   * <code>listenerType</code>.
    *
-   * @exception ClassCastException If listenerType doesn't specify a class or
-   * interface that implements @see java.util.EventListener.
-   *
+   * @param listenerType the class of listeners to filter (<code>null</code> 
+   *                     not permitted).
+   *                     
+   * @return An array of registered listeners.
+   * 
+   * @throws ClassCastException if <code>listenerType</code> does not implement
+   *                            the {@link EventListener} interface.
+   * @throws NullPointerException if <code>listenerType</code> is 
+   *                              <code>null</code>.
+   *                            
+   * @see #getContainerListeners()
+   * 
    * @since 1.3
    */
   public EventListener[] getListeners(Class listenerType)
