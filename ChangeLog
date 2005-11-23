@@ -1,4 +1,38 @@
-2005-11-12  Lillian Angel  <langel@redhat.com>
+2005-11-23  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/View.java
+	(getNextVisualPositionFrom): Fixed signature and (partly)
+	implemented this method.
+	* javax/swing/text/Utilities.java
+	(getPositionAbove): Fixed to use the correct signature for the call
+	to above method.
+	(getPositionBelow): Fixed to use the correct signature for the call
+	to above method.
+	* javax/swing/text/ComponentView.java
+	(getNextVisualPositionFrom): Removed method. This is not specified
+	to be implemented.
+	* javax/swing/text/CompositeView.java
+	(getNextVisualPositionFrom): Removed method with wrong signature.
+	A method with the correct signature is already in place.
+	* javax/swing/text/FlowView.java
+	(LogicalView.getNextVisualPositionFrom): Removed method with wrong
+	signature.
+	* javax/swing/text/GlyphView.java
+	(getNextVisualPositionFrom): Removed method with wrong signature.
+	A method with the correct signature is already in place.
+	* javax/swing/text/IconView.java
+	(getNextVisualPositionFrom): Removed method. This is not specified
+	to be implemented.
+	* javax/swing/text/PlainView.java
+	(getNextVisualPositionFrom): Removed method. This is not specified
+	to be implemented.
+	* javax/swing/text/WrappedPlainView.java
+	(WrappedLine.getNextVisualPositionFrom): Removed method with wrong
+	signature.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.getNextVisualPositionFrom): Fixed signature.
+
+2005-11-22  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JEditorPane.java
 	(JEditorPaneAccessibleHypertextSupport): Implemented.
