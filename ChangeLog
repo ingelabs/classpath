@@ -1,5 +1,36 @@
 2005-11-23  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.numEndTags): New field.
+	(ElementBuffer.numStartTags): New field.
+	(ElementBuffer.elementStack): New field.
+	(ElementBuffer.ElementBuffer): Initialize element stack here.
+	(ElementBuffer.changeUpdate): Correctly perform splitting of
+	elements.
+	(ElementBuffer.split): Change to make recursive splits possible.
+	(ElementBuffer.insert): Clear and initialize elementStack and num*
+	fields.
+	(ElementBuffer.inserUpdate): Inlined the functionality for start
+	and end tags. Call endEdit on finish.
+	(ElementBuffer.endEdit): New method. Finishes off an edit run.
+	(ElementBuffer.prepareContentInsertion): New method. Prepares
+	the insertion of content.
+	(ElementBuffer.insertParagraph): New method. Inserts a new
+	paragraph at a given offset.
+	(ElementBuffer.insertContentTag): Call prepareContentInsertion first.
+	Fixed behaviour for all the different possible directions.
+	(ElementBuffer.addEdit): New method. Adds an element edit to the
+	document event and possible merges with previous edits.
+	(insert): Only fire event when something has really changed.
+	* javax/swing/text/AbstractDocument.java
+	(insertString): Only fire event when something has really changed.
+	(DefaultDocumentEvent.modified): New field.
+	(DefaultDocumentEvent.DefaultDocumentEvent): Inititialize modified
+	field.
+	(DefaultDocumentEvent.addEdit): Set modified flag to true.
+
+2005-11-23  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/GapContent.java
 	(getPostionsInRange): Fixed binarySearch to really find the first
 	position in this range.
