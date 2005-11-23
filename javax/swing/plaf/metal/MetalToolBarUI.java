@@ -38,7 +38,9 @@ exception statement from your version. */
 
 package javax.swing.plaf.metal;
 
+import java.awt.Point;
 import java.awt.event.ContainerListener;
+
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
@@ -158,5 +160,14 @@ public class MetalToolBarUI extends BasicToolBarUI
   {
     return MetalBorders.getToolbarButtonBorder();   
   }
-
+  
+  /**
+   * Sets the offset for the window used for dragging the toolbar.
+   * It is set as long as the window is not null (it has been installed).
+   */
+  protected void setDragOffset(Point p)
+  {
+    if (dragWindow != null)
+      dragWindow.setOffset(p);
+  }
 }

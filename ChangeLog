@@ -1,5 +1,10 @@
 2005-11-23  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/metal/MetalToolBarUI.java
+	(setDragOffset): Implemented.
+
+2005-11-23  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
 	(initComponentDefaults): Added defaults for menu arrow icon,
 	menu item arrow icon and menu item check icon.
