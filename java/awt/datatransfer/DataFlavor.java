@@ -49,6 +49,7 @@ import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.rmi.Remote;
 
 /**
@@ -907,6 +908,64 @@ public class DataFlavor implements java.io.Externalizable, Cloneable
   public boolean isRepresentationClassReader()
   {
     return Reader.class.isAssignableFrom(representationClass);
+  }
+  
+  /**
+   * Returns whether this <code>DataFlavor</code> is a valid text flavor for
+   * this implementation of the Java platform. Only flavors equivalent to
+   * <code>DataFlavor.stringFlavor</code> and <code>DataFlavor</code>s with
+   * a primary MIME type of "text" can be valid text flavors.
+   * <p>
+   * If this flavor supports the charset parameter, it must be equivalent to
+   * <code>DataFlavor.stringFlavor</code>, or its representation must be
+   * <code>java.io.Reader</code>, <code>java.lang.String</code>,
+   * <code>java.nio.CharBuffer</code>, <code>java.io.InputStream</code> or 
+   * <code>java.nio.ByteBuffer</code>,
+   * If the representation is <code>java.io.InputStream</code> or 
+   * <code>java.nio.ByteBuffer</code>, then this flavor's <code>charset</code> 
+   * parameter must be supported by this implementation of the Java platform. 
+   * If a charset is not specified, then the platform default charset, which 
+   * is always supported, is assumed.
+   * <p>
+   * If this flavor does not support the charset parameter, its
+   * representation must be <code>java.io.InputStream</code>,
+   * <code>java.nio.ByteBuffer</code>.
+   * <p>
+   * See <code>selectBestTextFlavor</code> for a list of text flavors which
+   * support the charset parameter.
+   *
+   * @return <code>true</code> if this <code>DataFlavor</code> is a valid
+   *         text flavor as described above; <code>false</code> otherwise
+   * @see #selectBestTextFlavor
+   * @since 1.4
+   */
+  public boolean isFlavorTextType() {
+    // FIXME: I'm not 100% sure if this implementation does the same like sun's does    
+    if(equals(DataFlavor.stringFlavor) || getPrimaryType().equals("text"))
+      {
+        String charset = getParameter("charset");
+        Class c = getRepresentationClass();
+        if(charset != null) 
+          {            
+            if(Reader.class.isAssignableFrom(c) 
+                || CharBuffer.class.isAssignableFrom(c) 
+                || String.class.isAssignableFrom(c)) 
+              {
+                return true;
+              }
+            else if(InputStream.class.isAssignableFrom(c)
+                    || ByteBuffer.class.isAssignableFrom(c))
+              {
+                return Charset.isSupported(charset);
+              }
+          }
+        else if(InputStream.class.isAssignableFrom(c)
+            || ByteBuffer.class.isAssignableFrom(c))
+          {
+            return true;
+          }
+      }
+    return false;
   }
 } // class DataFlavor
 

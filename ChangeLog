@@ -1,3 +1,8 @@
+2005-11-23  Jan Roehrich  <jan@roehrich.info>
+
+	* java/awt/datatransfer/DataFlavor.java
+	(isFlavorTextType): added method.
+
 2005-11-23  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalToolBarUI.java
