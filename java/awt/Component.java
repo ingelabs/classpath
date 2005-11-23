@@ -2771,10 +2771,19 @@ public abstract class Component
   }
 
   /**
-   * Returns all registered EventListers of the given listenerType.
+   * Returns all registered {@link EventListener}s of the given 
+   * <code>listenerType</code>.
    *
-   * @param listenerType the class of listeners to filter
-   * @return an array of registered listeners
+   * @param listenerType the class of listeners to filter (<code>null</code> 
+   *                     not permitted).
+   *                     
+   * @return An array of registered listeners.
+   * 
+   * @throws ClassCastException if <code>listenerType</code> does not implement
+   *                            the {@link EventListener} interface.
+   * @throws NullPointerException if <code>listenerType</code> is 
+   *                              <code>null</code>.
+   *                            
    * @see #getComponentListeners()
    * @see #getFocusListeners()
    * @see #getHierarchyListeners()

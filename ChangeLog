@@ -1,3 +1,8 @@
+2005-11-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/Component.java
+	(getListeners): Added some details to the API docs.
+
 2005-11-23  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
