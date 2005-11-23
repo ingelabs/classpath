@@ -68,6 +68,12 @@ public class MetalIconFactory implements Serializable
     
   /** A constant representing "light". */
   public static final boolean LIGHT = true;
+  
+  /** A shared instance of the MenuArrowIcon. */
+  private static Icon menuArrow;
+  
+  /** A shared instance of the MenuItemArrowIcon. */
+  private static Icon menuItemArrow;
     
   /**
    * An icon displayed for {@link JCheckBoxMenuItem} components.
@@ -2476,39 +2482,62 @@ public class MetalIconFactory implements Serializable
    */
   public static Icon getMenuArrowIcon()
   {
-    return new Icon()
-    {
-      public int getIconHeight()
+    if (menuArrow == null)
+      menuArrow = new Icon()
       {
-        return 8;
-      }
+        public int getIconHeight()
+        {
+          return 8;
+        }
 
-      public int getIconWidth()
-      {
-        return 4;
-      }
+        public int getIconWidth()
+        {
+          return 4;
+        }
 
-      public void paintIcon(Component c, Graphics g, int x, int y)
-      {
-        Color saved = g.getColor();
-        g.setColor(Color.BLACK);
-        for (int i = 0; i < 4; i++)
-          g.drawLine(x + i, y + i, x + i, y + 7 - i);
-        g.setColor(saved);
-      }
-    };
+        public void paintIcon(Component c, Graphics g, int x, int y)
+        {
+          Color saved = g.getColor();
+          g.setColor(Color.BLACK);
+          for (int i = 0; i < 4; i++)
+            g.drawLine(x + i, y + i, x + i, y + 7 - i);
+          g.setColor(saved);
+        }
+      };
+    return menuArrow;
   }
   
   /**
    * Returns a new instance of a 4 x 8 icon showing a small black triangle that
-   * points to the right.  This is displayed in menu items that have a 
-   * sub menu.
+   * points to the right. This is displayed in menu items that have a sub menu.
    * 
    * @return The icon.
    */
   public static Icon getMenuItemArrowIcon()
   {
-    return getMenuArrowIcon();
+    if (menuItemArrow == null)
+      menuItemArrow = new Icon()
+      {
+        public int getIconHeight()
+        {
+          return 8;
+        }
+
+        public int getIconWidth()
+        {
+          return 4;
+        }
+
+        public void paintIcon(Component c, Graphics g, int x, int y)
+        {
+          Color saved = g.getColor();
+          g.setColor(Color.BLACK);
+          for (int i = 0; i < 4; i++)
+            g.drawLine(x + i, y + i, x + i, y + 7 - i);
+          g.setColor(saved);
+        }
+      };
+    return menuItemArrow;
   }
   
   /**

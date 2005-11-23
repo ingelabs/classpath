@@ -1,3 +1,12 @@
+2005-11-23  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java:
+	Added new fields to store an instance of the icons.
+	(getMenuArrowIcon): Fixed to make use of the new field.
+	(getMenuItemArrowIcon): Fixed implementation to return
+	an instance of the icon, instead of calling getMenuArrowIcon. 
+	Even though, these two look identical.
+
 2005-11-23  Jan Roehrich  <jan@roehrich.info>
 
 	* java/awt/datatransfer/DataFlavor.java
