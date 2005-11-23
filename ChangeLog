@@ -1,3 +1,9 @@
+2005-11-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalScrollPaneUI.java
+	(installUI): Set free-standing client property on scrollbars to false,
+	(uninstallUI): Set free-standing client property on scrollbars to null.
+
 2005-11-23  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalIconFactory.java:
