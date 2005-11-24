@@ -1,3 +1,10 @@
+2005-11-24  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/table/DefaultTableCellRenderer.java
+	(getTableCellRendererComponent): Don't set enabled flag on the
+	renderer. The cells are rendered normally even when the table
+	is disabled.
+
 2005-11-24  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicToolBarUI.java
