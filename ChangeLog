@@ -1,3 +1,10 @@
+2005-11-24  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/InternationalFormatter: 
+	(InternationalFormatter<init>): Override superclass defaults for 
+	commitsOnValidEdit and overwriteMode.
+	* javax/swing/text/NumberFormatter.java: New class.
+
 2005-11-23  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalScrollPaneUI.java
