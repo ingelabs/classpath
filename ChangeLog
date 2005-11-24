@@ -1,5 +1,14 @@
 2005-11-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicLabelUI.java
+	(getPreferredSize): Don't use deprecated method to acquire
+	FontMetrics object. This can be done more elegantly using
+	Component.getFontMetrics().
+	(paint): Removed unnecessary font setting code. This is already
+	performed in JComponent.getComponentGraphics().
+
+2005-11-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/table/DefaultTableCellRenderer.java
 	(getTableCellRendererComponent): Don't set enabled flag on the
 	renderer. The cells are rendered normally even when the table
