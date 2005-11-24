@@ -1,5 +1,19 @@
 2005-11-24  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(mousePressed): When using the BasicLookAndFeel, the mouse
+	should be in the center of the dragWindow while dragging.
+	* javax/swing/plaf/metal/MetalToolBarUI.java
+	(createDockingListener): Implemented.
+	(MetalDockingListener): New class.
+	(MetalDockingListener.init): Implemented.
+	(MetalDockingListener.mousePressed): Implemented. When using the
+	MetalLookAndFeel, the mouse should not be offset while dragging.
+	(MetalDockingListener.mouseDragged): Implemented. Does not do 
+	anything different than dragging in the BasicLookAndFeel.
+
+2005-11-24  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicArrowButton.java
 	(paint): Fixed locations, so button is drawn in proper place.
 	* javax/swing/plaf/basic/BasicSplitPaneDivider.java
