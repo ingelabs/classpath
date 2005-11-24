@@ -1,3 +1,13 @@
+2005-11-24  Sven de Marothy  <sven@physto.se>
+
+	* javax/print/attribute/standard/MediaName.java,
+	* javax/print/attribute/standard/MediaTray.java:
+	New files.
+	* javax/print/attribute/standard/MediaSize.java:
+	Added "ISO", "NA", "JIS" and "Other" enumerations of standard sizes.
+	* javax/print/attribute/standard/MediaSizeName.java:
+	(getEnumValueTable, getStringTable): Add stubs.
+
 2005-11-24  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/PasswordView.java
