@@ -185,7 +185,6 @@ public class PlainView extends View implements TabExpander
     
     JTextComponent textComponent = (JTextComponent) getContainer();
 
-    g.setFont(textComponent.getFont());
     selectedColor = textComponent.getSelectedTextColor();
     unselectedColor = textComponent.getForeground();
     disabledColor = textComponent.getDisabledTextColor();
@@ -513,7 +512,8 @@ public class PlainView extends View implements TabExpander
     else
       {
         Rectangle repaintRec = rec0.union(rec1);
-        host.repaint();
+        host.repaint(repaintRec.x, repaintRec.y, repaintRec.width,
+                     repaintRec.height);
       }    
   }
 

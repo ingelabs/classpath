@@ -1,5 +1,17 @@
 2005-11-24  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/PasswordView.java
+	(modelToView): Overridden to correctly map between model and view
+	respecting the echo character.
+	(viewToModel): Added FIXME to show that this method also needs
+	to be adjusted like the above method.
+	* javax/swing/text/PlainView.java
+	(paint): Don't set the font here. This is already done in the
+	text component's JComponent.getComponentGraphics() method.
+	(damageLineRange): Only repaint the damaged rectangle.
+
+2005-11-24  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicLabelUI.java
 	(getPreferredSize): Don't use deprecated method to acquire
 	FontMetrics object. This can be done more elegantly using
