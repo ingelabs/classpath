@@ -1,3 +1,22 @@
+2005-11-24  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicArrowButton.java
+	(paint): Fixed locations, so button is drawn in proper place.
+	* javax/swing/plaf/basic/BasicSplitPaneDivider.java
+	(paint): Added code to paint buttons.
+	* javax/swing/plaf/metal/MetalSplitPaneDivider.java:
+	Added new fields.
+	(MetalSplitPaneDivider): Initialized new fields, and set layout
+	to new inner class.
+	(paint): Added code to paint buttons.
+	(DividerLayout): New class implemented.
+	(DividerLayout.init): Implemented.
+	(DividerLayout.addLayoutComponent): Implemented.
+	(DividerLayout.layoutContainer): Implemented.
+	(DividerLayout.minimumLayoutSize): Implemented.
+	(DividerLayout.preferredLayoutSize): Implemented.
+	(DividerLayout.removeLayoutComponent): Implemented.	
+
 2005-11-24  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/InternationalFormatter: 
