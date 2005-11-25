@@ -54,7 +54,17 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
 
 /**
  * A custom look and feel that is designed to look similar across different
- * operating systems.
+ * operating systems.  To install this look and feel, add the following code 
+ * (or something similar) near the start of your application:</p>
+ * <pre>
+ * try
+ * {
+ * &nbsp;&nbsp;UIManager.setLookAndFeel(new MetalLookAndFeel());
+ * }
+ * catch (UnsupportedLookAndFeelException e)
+ * {
+ * &nbsp;&nbsp;e.printStackTrace();
+ * }</pre>
  */
 public class MetalLookAndFeel extends BasicLookAndFeel
 {	   
@@ -690,6 +700,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "CheckBoxUI", "javax.swing.plaf.metal.MetalCheckBoxUI",
       "ComboBoxUI", "javax.swing.plaf.metal.MetalComboBoxUI",
       "DesktopIconUI", "javax.swing.plaf.metal.MetalDesktopIconUI",
+      "FileChooserUI", "javax.swing.plaf.metal.MetalFileChooserUI",
       "InternalFrameUI", "javax.swing.plaf.metal.MetalInternalFrameUI",
       "LabelUI", "javax.swing.plaf.metal.MetalLabelUI",
       "MenuBarUI", "javax.swing.plaf.metal.MetalMenuBarUI",
@@ -856,6 +867,17 @@ public class MetalLookAndFeel extends BasicLookAndFeel
       "FormattedTextField.inactiveForeground",  getInactiveSystemTextColor(),
       "FormattedTextField.selectionBackground", getTextHighlightColor(),
       "FormattedTextField.selectionForeground", getHighlightedTextColor(),
+
+      "FileChooser.upFolderIcon", 
+          MetalIconFactory.getFileChooserUpFolderIcon(),
+      "FileChooser.listViewIcon", 
+          MetalIconFactory.getFileChooserListViewIcon(),
+      "FileChooser.newFolderIcon", 
+          MetalIconFactory.getFileChooserNewFolderIcon(),
+      "FileChooser.homeFolderIcon", 
+          MetalIconFactory.getFileChooserHomeFolderIcon(),
+      "FileChooser.detailsViewIcon", 
+          MetalIconFactory.getFileChooserDetailViewIcon(),
 
       "FileView.computerIcon", MetalIconFactory.getTreeComputerIcon(),
       "FileView.directoryIcon", MetalIconFactory.getTreeFolderIcon(),
