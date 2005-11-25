@@ -1,5 +1,24 @@
 2005-11-25  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/JFileChooser.java:
+	selectedFiles field should not be initialized.
+	(getSelectedFiles): Should return empty array, not null.
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(MetalFileChooserSelectionListener): Added comment.
+	(valueChanged): Fixed API documentation.
+	(SingleClickListener): Likewise.
+	(SingleClickListener.init): Added field initializations.
+	(mouseClicked): Implemented.
+	(editFile): Partially implemented.
+	(completeEditing): Implemented.
+	(installUI): Added call to create the action map.
+	(uninstallUI): Set actionMap to null.
+	(getActionMap): Implemented.
+	(createList): Uncommented code.
+	(removeControlButtons): Implemented.	
+
+2005-11-25  Lillian Angel  <langel@redhat.com>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c:
 	Fixed typo.
 

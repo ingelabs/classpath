@@ -381,7 +381,7 @@ public class JFileChooser extends JComponent implements Accessible
    * An array of selected files.
    * @see #setSelectedFiles(File[]) 
    */
-  private File[] selectedFiles = new File[0];
+  private File[] selectedFiles;
 
   /** 
    * The selected file. 
@@ -547,7 +547,7 @@ public class JFileChooser extends JComponent implements Accessible
       return selectedFiles;
     if (selectedFile != null)
       return new File[] { selectedFile };
-    return null;
+    return new File[0];
   }
 
   /**

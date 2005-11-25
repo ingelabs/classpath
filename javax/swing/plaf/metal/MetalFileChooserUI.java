@@ -45,14 +45,16 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
+import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import java.io.File;
-import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.AbstractListModel;
@@ -82,6 +84,8 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileView;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicFileChooserUI;
+
+import java.util.List;
 
 
 /**
@@ -601,12 +605,14 @@ public class MetalFileChooserUI
      */
     protected MetalFileChooserSelectionListener()
     {
+      // Do nothing here.
     }
 
     /**
-     * DOCUMENT ME!
+     * Makes changes to different properties when
+     * a value has changed in the filechooser's selection.
      *
-     * @param e DOCUMENT ME!
+     * @param e - the list selection event that occured.
      */
     public void valueChanged(ListSelectionEvent e)
     {
@@ -623,6 +629,7 @@ public class MetalFileChooserUI
 
   /**
    * A mouse listener for the {@link JFileChooser}.
+   * This listener is used for editing filenames.
    */
   protected class SingleClickListener
     extends MouseAdapter
@@ -630,6 +637,21 @@ public class MetalFileChooserUI
     
     /** Stores instance of the list */
     JList list;
+    
+    /** 
+     * Stores the current file that is being edited.
+     * It is null if nothing is currently being edited.
+     */
+    File editFile;
+    
+    /** The current file chooser. */
+    JFileChooser fc;
+    
+    /** The index of the last file selected. */
+    int lastSelected;
+    
+    /** The textfield used for editing. */
+    JTextField editField;
     
     /**
      * Creates a new listener.
@@ -639,6 +661,9 @@ public class MetalFileChooserUI
     public SingleClickListener(JList list)
     {
       this.list = list;
+      editFile = null;
+      fc = getFileChooser();
+      lastSelected = -1;
     }
     
     /**
@@ -648,7 +673,69 @@ public class MetalFileChooserUI
      */
     public void mouseClicked(MouseEvent e)
     {
-      // FIXME: implement
+      if (e.getClickCount() == 1)
+        {
+          int index = list.locationToIndex(e.getPoint());
+          File[] sf = fc.getSelectedFiles();
+          if ((!fc.isMultiSelectionEnabled() || (sf != null && sf.length <= 1))
+              && index >= 0 && editFile == null && list.isSelectedIndex(index))
+            {
+              if (lastSelected == index)
+                editFile(index);
+              lastSelected = index;
+            }
+          else if (editFile != null)
+            {
+              completeEditing();
+              editFile = null;
+              lastSelected = -1;
+            }
+        }
+    }
+    
+    /**
+     * Sets up the text editor for the current file.
+     * 
+     * @param index -
+     *          the current index of the item in the list to be edited.
+     */
+    private void editFile(int index)
+    {
+      list.ensureIndexIsVisible(index);
+      editFile = (File) list.getModel().getElementAt(index);
+      if (editFile.canWrite())
+        {
+          Point p = list.indexToLocation(index);
+          editField = new JTextField(editFile.getName());
+          // FIXME: add action listener
+          list.add(editField);
+          editField.requestFocus();
+          editField.selectAll();          
+          list.revalidate();
+          list.repaint();
+        }
+      else
+        {
+          editField = null;
+          editFile = null;
+          lastSelected = -1;
+        }
+    }
+    
+    /** 
+     * Completes the editing.
+     */
+    private void completeEditing()
+    {
+      if (editField != null)
+        {
+          String text = editField.getText();
+          if (text != null && !text.equals(""))
+            editFile.renameTo(new File(text));
+          list.remove(editField);
+          list.revalidate();
+          list.repaint();
+        }
     }
   }
 
@@ -697,6 +784,9 @@ public class MetalFileChooserUI
   
   /** The filter combo box model. */
   private FilterComboBoxModel filterModel;
+
+  /** The action map. */
+  private ActionMap actionMap;
   
   /**
    * A factory method that returns a UI delegate for the specified
@@ -724,14 +814,14 @@ public class MetalFileChooserUI
 
   public void installUI(JComponent c)
   {
-    // FIXME: do something here
     super.installUI(c);
+    actionMap = createActionMap();
   }
   
   public void uninstallUI(JComponent c)
   {
-    // FIXME: do something here
     super.uninstallUI(c);
+    actionMap = null;
   }
   
   /**
@@ -848,9 +938,9 @@ public class MetalFileChooserUI
   protected void installStrings(JFileChooser fc)
   { 
      super.installStrings(fc);
-     directoryLabel = "Look In: ";  // FIXME: localise
-     fileLabel = "File Name: ";  // FIXME: localise
-     filterLabel = "Files of Type: ";  // FIXME: localise
+     directoryLabel = "Look In: ";
+     fileLabel = "File Name: ";
+     filterLabel = "Files of Type: ";
      
      this.cancelButtonMnemonic = 0;
      this.cancelButtonText = "Cancel";
@@ -900,8 +990,9 @@ public class MetalFileChooserUI
   
   protected ActionMap getActionMap()
   {
-    // FIXME: implement this
-    return null;
+    if (actionMap == null)
+      actionMap = createActionMap();
+    return actionMap;
   }
   
   /**
@@ -929,10 +1020,7 @@ public class MetalFileChooserUI
   {
     JPanel panel = new JPanel(new BorderLayout());
     fileList = new JList(getModel());
-         
-    // a bug is preventing the vertical wrap from working right now,
-    // uncomment the next line once that is fixed...
-    //fileList.setLayoutOrientation(JList.VERTICAL_WRAP);
+    fileList.setLayoutOrientation(JList.VERTICAL_WRAP);
     fileList.setVisibleRowCount(0);
     fileList.setCellRenderer(new FileRenderer());
     panel.add(new JScrollPane(fileList));
@@ -1103,7 +1191,7 @@ public class MetalFileChooserUI
   
   protected void removeControlButtons()
   {
-    // FIXME: implement this
+    controls.removeAll();
   }
   
   public void ensureFileIsVisible(JFileChooser fc, File f)
