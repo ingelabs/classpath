@@ -1,3 +1,11 @@
+2005-11-25  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #24981
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkSelection.c
+	(clipboard_targets_received): DeleteLocalRef of NewStringUTF.
+	(clipboard_text_received): Likewise.
+	(clipboard_uris_received): Likewise.
+
 2005-11-25  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JList.java
