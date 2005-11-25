@@ -1,3 +1,10 @@
+2005-11-25  Lillian Angel  <langel@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
+	(drawString): Changed pointer to be const, and fixed check to
+	draw characters only if they are >= ' '. Handles all control
+	characters.
+
 2005-11-25  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #24981

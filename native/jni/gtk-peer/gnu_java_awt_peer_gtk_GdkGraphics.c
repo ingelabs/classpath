@@ -1,4 +1,4 @@
-/* gdkgraphics.c
+d/* gdkgraphics.c
    Copyright (C) 1999 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -291,9 +291,9 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics_drawString
   struct peerfont *pfont = NULL;
   struct graphics *g = NULL;
   const char *cstr = NULL;
-  char *p = NULL;
+  const char *sTmp = NULL;
   char *tmp = NULL;
-  char *sTmp = NULL;
+  char *p = NULL;
   int count = 0;
   int charSize = 0;
   int baseline_y = 0;
@@ -317,7 +317,7 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics_drawString
   tmp = p;
   sTmp = cstr;
   for (; *sTmp != '\0'; sTmp++)
-    if (isprint(*sTmp))
+    if (((unsigned char) *sTmp) >= ' ')
       {
         *p = *sTmp;
         count++;
