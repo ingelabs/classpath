@@ -1,5 +1,13 @@
 2005-11-25  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c
+	(current_selection): Define as gint.
+	(clipboard_clear_func): Extract user_data with GPOINTER_TO_INT.
+	(Java_gnu_java_awt_peer_gtk_GtkClipboard_advertiseContent):
+	Convert current_selection with GINT_TO_POINTER.
+
+2005-11-25  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java (paintIcon): Only
 	paint icon when not null.
 
