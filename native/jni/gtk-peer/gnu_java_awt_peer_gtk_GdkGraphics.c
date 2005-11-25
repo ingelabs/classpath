@@ -1,4 +1,4 @@
-d/* gdkgraphics.c
+/* gdkgraphics.c
    Copyright (C) 1999 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
