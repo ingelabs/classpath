@@ -1,3 +1,8 @@
+2005-11-25  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+        * native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c 
+        (save_to_stream): Added missing DeleteLocalRef call.
+
 2005-11-24  Sven de Marothy  <sven@physto.se>
 
 	* javax/print/attribute/standard/MediaName.java,
