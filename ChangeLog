@@ -1,3 +1,10 @@
+2005-11-26  Jan Roehrich  <jan@roehrich.info>
+
+	* java/awt/datatransfer/SystemFlavorMap.java
+	(defaultFlavorMap): removed.
+	(systemFlavorMaps): added static field.
+	(getDefaultFlavorMap): reimplemented using systemFlavorMaps.
+	
 2005-11-25  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JFileChooser.java:
