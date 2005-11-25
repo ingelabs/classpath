@@ -45,7 +45,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.LayoutManager;
-import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -63,6 +63,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -647,8 +648,8 @@ public class MetalFileChooserUI
     /** The current file chooser. */
     JFileChooser fc;
     
-    /** The index of the last file selected. */
-    int lastSelected;
+    /** The last file selected. */
+    Object lastSelected;
     
     /** The textfield used for editing. */
     JTextField editField;
@@ -663,7 +664,7 @@ public class MetalFileChooserUI
       this.list = list;
       editFile = null;
       fc = getFileChooser();
-      lastSelected = -1;
+      lastSelected = null;
     }
     
     /**
@@ -680,15 +681,16 @@ public class MetalFileChooserUI
           if ((!fc.isMultiSelectionEnabled() || (sf != null && sf.length <= 1))
               && index >= 0 && editFile == null && list.isSelectedIndex(index))
             {
-              if (lastSelected == index)
+              Object tmp = list.getModel().getElementAt(index);
+              if (lastSelected != null && lastSelected.equals(tmp))
                 editFile(index);
-              lastSelected = index;
+              lastSelected = tmp;
             }
           else if (editFile != null)
             {
               completeEditing();
               editFile = null;
-              lastSelected = -1;
+              lastSelected = null;
             }
         }
     }
@@ -705,20 +707,24 @@ public class MetalFileChooserUI
       editFile = (File) list.getModel().getElementAt(index);
       if (editFile.canWrite())
         {
-          Point p = list.indexToLocation(index);
+          Rectangle bounds = list.getCellBounds(index, index);
+          Icon icon = getFileView(fc).getIcon(editFile);
           editField = new JTextField(editFile.getName());
-          // FIXME: add action listener
+          // FIXME: add action listener for typing
+          // FIXME: painting for textfield is messed up when typing    
           list.add(editField);
           editField.requestFocus();
-          editField.selectAll();          
-          list.revalidate();
-          list.repaint();
+          editField.selectAll();
+          
+          if (icon != null)
+            bounds.x += icon.getIconWidth() + 4;
+          editField.setBounds(bounds);
         }
       else
         {
           editField = null;
           editFile = null;
-          lastSelected = -1;
+          lastSelected = null;
         }
     }
     

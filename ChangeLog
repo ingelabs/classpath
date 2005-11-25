@@ -1,3 +1,12 @@
+2005-11-25  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(mouseClicked): Fixed to keep track of last object clicked,
+	instead of index. Problems arise when lists change for different
+	directories and using the index.
+	(editFile): Fixed size and location for text field. Painting is still
+	a little messed up when typing because there is no action listener yet.
+
 2005-11-26  Jan Roehrich  <jan@roehrich.info>
 
 	* java/awt/datatransfer/SystemFlavorMap.java
