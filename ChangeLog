@@ -1,3 +1,21 @@
+2005-11-25  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JList.java
+	(JList): Set default selection mode.
+	* javax/swing/plaf/basic/BasicFileChooserUI.java
+	(DoubleClickListener): No need for timer here.
+	(mouseClicked): Removed timer code, and added check for double click.
+	Problems with opening wrong directory is now fixed.
+	* javax/swing/plaf/basic/BasicListUI.java
+	(mouseDragged): Implemented.
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(propertyChange): Implemented MULTI_SELECTION_ENABLED_CHANGED_PROPERTY
+	property change.
+	(getListCellRendererComponent): Set opaque property, so background color
+	on cell is painted.
+	(SingleClickListener.init): Implemented.
+	(installStrings): Fixed tooltip text strings.
+
 2005-11-25  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JFileChooser.java

@@ -72,6 +72,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
@@ -112,11 +113,16 @@ public class MetalFileChooserUI
     public void propertyChange(PropertyChangeEvent e)
     {
       JFileChooser filechooser = getFileChooser();
-      // FIXME: Multiple file selection waiting on JList multiple selection
-      // bug.
+      
       String n = e.getPropertyName();
-
-      if (n.equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY))
+      if (n.equals(JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY))
+        {
+          if (filechooser.isMultiSelectionEnabled())
+            fileList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+          else
+            fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        }
+      else if (n.equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY))
         {
           File file = filechooser.getSelectedFile();
           if (file == null)
@@ -144,7 +150,6 @@ public class MetalFileChooserUI
           setDirectory(currentDirectory);
           boolean hasParent = (currentDirectory.getParentFile() != null);
           getChangeToParentDirectoryAction().setEnabled(hasParent);
-          //boxEntries();
         }
       
       else if (n.equals(JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY))
@@ -374,8 +379,6 @@ public class MetalFileChooserUI
       setIcon(fileView.getIcon(file));
       setText(fileView.getName(file));
       
-      // FIXME: we can't go creating a new border here every time...
-      //setBorder(BorderFactory.createEmptyBorder(0, index * 8, 0, 0));
       if (isSelected)
         {
           setBackground(list.getSelectionBackground());
@@ -426,6 +429,7 @@ public class MetalFileChooserUI
       File f = (File) value;
       setText(v.getName(f));
       setIcon(v.getIcon(f));
+      setOpaque(true);
       if (isSelected)
         {
           setBackground(list.getSelectionBackground());
@@ -618,12 +622,15 @@ public class MetalFileChooserUI
   }
 
   /**
-   * A mouse listener for the {@link JFileChooser}.  This class is not yet
-   * implemented.
+   * A mouse listener for the {@link JFileChooser}.
    */
   protected class SingleClickListener
     extends MouseAdapter
   {
+    
+    /** Stores instance of the list */
+    JList list;
+    
     /**
      * Creates a new listener.
      * 
@@ -631,7 +638,7 @@ public class MetalFileChooserUI
      */
     public SingleClickListener(JList list)
     {
-      // FIXME: implement
+      this.list = list;
     }
     
     /**
@@ -847,27 +854,27 @@ public class MetalFileChooserUI
      
      this.cancelButtonMnemonic = 0;
      this.cancelButtonText = "Cancel";
-     this.cancelButtonToolTipText = "Cancel ToolTip Text";
+     this.cancelButtonToolTipText = "Abort file chooser dialog";
      
      this.directoryOpenButtonMnemonic = 0;
      this.directoryOpenButtonText = "Open";
-     this.directoryOpenButtonToolTipText = "Open ToolTip Text";
+     this.directoryOpenButtonToolTipText = "Open selected directory";
      
      this.helpButtonMnemonic = 0;
      this.helpButtonText = "Help";
-     this.helpButtonToolTipText = "Help";
+     this.helpButtonToolTipText = "Filechooser help";
      
      this.openButtonMnemonic = 0;
      this.openButtonText = "Open";
-     this.openButtonToolTipText = "Open ToolTip Text";
+     this.openButtonToolTipText = "Open selected file";
      
      this.saveButtonMnemonic = 0;
      this.saveButtonText = "Save";
-     this.saveButtonToolTipText = "Save ToolTip Text";
+     this.saveButtonToolTipText = "Save selected file";
      
      this.updateButtonMnemonic = 0;
      this.updateButtonText = "Update";
-     this.updateButtonToolTipText = "Update ToolTip Text";   
+     this.updateButtonToolTipText = "Update directory listing";   
   }
   
   /**
@@ -922,6 +929,7 @@ public class MetalFileChooserUI
   {
     JPanel panel = new JPanel(new BorderLayout());
     fileList = new JList(getModel());
+         
     // a bug is preventing the vertical wrap from working right now,
     // uncomment the next line once that is fixed...
     //fileList.setLayoutOrientation(JList.VERTICAL_WRAP);

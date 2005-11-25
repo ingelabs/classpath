@@ -347,8 +347,6 @@ public class BasicFileChooserUI extends FileChooserUI
    */
   protected class DoubleClickListener extends MouseAdapter
   {
-    /** A timer. */
-    private Timer timer = null;
 
     /** DOCUMENT ME! */
     private Object lastSelected = null;
@@ -364,8 +362,6 @@ public class BasicFileChooserUI extends FileChooserUI
     public DoubleClickListener(JList list)
     {
       this.list = list;
-      timer = new Timer(1000, null);
-      timer.setRepeats(false);
       lastSelected = list.getSelectedValue();
       setDirectorySelected(false);
     }
@@ -380,11 +376,10 @@ public class BasicFileChooserUI extends FileChooserUI
       if (list.getSelectedValue() == null)
         return;
       FileSystemView fsv = filechooser.getFileSystemView();
-      if (timer.isRunning()
-          && list.getSelectedValue().toString().equals(lastSelected.toString()))
+      if (e.getClickCount() >= 2 &&
+          list.getSelectedValue().toString().equals(lastSelected.toString()))
         {
           File f = fsv.createFileObject(lastSelected.toString());
-          timer.stop();
           if (filechooser.isTraversable(f))
             {
               filechooser.setCurrentDirectory(f);
@@ -414,7 +409,6 @@ public class BasicFileChooserUI extends FileChooserUI
           lastSelected = path;
           parentPath = path.substring(0, path.lastIndexOf("/") + 1);
           setFileName(path.substring(path.lastIndexOf("/") + 1));
-          timer.restart();
         }
     }
 
