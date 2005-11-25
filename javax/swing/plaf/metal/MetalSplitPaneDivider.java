@@ -78,7 +78,7 @@ class MetalSplitPaneDivider extends BasicSplitPaneDivider
   public MetalSplitPaneDivider(MetalSplitPaneUI ui, Color light, Color dark)
   {
     super(ui);
-    setLayout(new DividerLayout());
+    setLayout(new MetalDividerLayout());
     this.splitPane = super.splitPane;
     this.orientation = super.orientation;
     this.light = light;
@@ -105,7 +105,7 @@ class MetalSplitPaneDivider extends BasicSplitPaneDivider
   /**
    * This helper class acts as the Layout Manager for the divider.
    */
-  protected class DividerLayout implements LayoutManager
+  protected class MetalDividerLayout implements LayoutManager
   {
     /** The right button. */
     BasicArrowButton rb;
@@ -116,7 +116,7 @@ class MetalSplitPaneDivider extends BasicSplitPaneDivider
     /**
      * Creates a new DividerLayout object.
      */
-    protected DividerLayout()
+    protected MetalDividerLayout()
     {
       // Nothing to do here
     }

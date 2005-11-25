@@ -1,5 +1,12 @@
 2005-11-25  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
+	(MetalDividerLayout): Fixed class name to MetalDividerLayout 
+	instead of DividerLayout.
+	(MetalSplitPaneDivider): Fixed setLayout call.
+
+2005-11-25  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
 	(mouseClicked): Fixed to keep track of last object clicked,
 	instead of index. Problems arise when lists change for different
