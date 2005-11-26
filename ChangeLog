@@ -1,3 +1,14 @@
+2005-11-25  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/java-io/javaio.c, native/jni/java-io/javaio.h:
+	Removed.
+
+	* native/jni/java-io/java_io_VMFile.c: Removed dependency on
+	javaio.h
+
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
+	Likewise.
+	
 2005-11-25  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
