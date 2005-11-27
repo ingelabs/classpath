@@ -1,3 +1,9 @@
+2005-11-27  Tom Tromey  <tromey@redhat.com>
+
+	* java/beans/PropertyChangeSupport.java (fireIndexedPropertyChange):
+	New methods.
+	* java/beans/IndexedPropertyChangeEvent.java: New file.
+
 2005-11-26  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/StackTraceElement.java (StackTraceElement): New
