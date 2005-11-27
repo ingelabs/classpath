@@ -1,3 +1,8 @@
+2005-11-27  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* java/util/logging/XMLFormatter.java (format): Don't call 
+	getMillis() twice.
+
 2005-11-27  Tom Tromey  <tromey@redhat.com>
 
 	* java/beans/PropertyChangeSupport.java (fireIndexedPropertyChange):
