@@ -51,6 +51,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.NumberFormat;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -74,8 +75,10 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -86,7 +89,11 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileView;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicFileChooserUI;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
+import java.sql.Date;
+import java.text.DateFormat;
 import java.util.List;
 
 
@@ -97,6 +104,91 @@ import java.util.List;
 public class MetalFileChooserUI 
   extends BasicFileChooserUI
 {
+  /**
+   * Table model for the details table. 
+   */
+  class DetailTableModel extends DefaultTableModel implements TableModel
+  {
+    
+    /** 
+     * Constructs a DetailTableModel and initializes the table by passing
+     * data and columnNames  to the setDataVector  method. The first index 
+     * in the Object[][] array is the row index and the second is the column index.
+     * 
+     * @param data - the data in the rows
+     * @param columnNames - the name of the columns
+     */
+    public DetailTableModel(Object[][] data, Object[] columnNames)
+    {
+      super(data, columnNames);
+    }
+    
+    /**
+     * Returns true if cell is in the first column.
+     * 
+     * @param row - the row of the cell
+     * @param column - the column of the cell
+     * @return true if the column is 0.
+     */
+    public boolean isCellEditable(int row, int column)
+    {
+      return startEditing;
+    }
+  }
+  
+  /**
+   * ActionListener for the list view.
+   */
+  class ListViewActionListener implements ActionListener
+  {
+    
+    /**
+     * This method is invoked when an action occurs.
+     * 
+     * @param e -
+     *          the <code>ActionEvent</code> that occurred
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+      if (!listView)
+        {
+          listView = true;
+          JFileChooser fc = getFileChooser();
+          fc.remove(fileListPanel);
+          fileListPanel = createList(fc);
+          fc.add(fileListPanel, BorderLayout.CENTER);
+          fc.revalidate();
+          fc.repaint();
+        }
+    }
+  }
+  
+  /**
+   * ActionListener for the details view.
+   */
+  class DetailViewActionListener implements ActionListener
+  {
+    
+    /**
+     * This method is invoked when an action occurs.
+     * 
+     * @param e -
+     *          the <code>ActionEvent</code> that occurred
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+      if (listView)
+        {
+          JFileChooser fc = getFileChooser();
+          listView = false;
+          fc.remove(fileListPanel);
+          fileListPanel = createDetailsView(fc);
+          fc.add(fileListPanel, BorderLayout.CENTER);
+          fc.revalidate();
+          fc.repaint();
+        }
+    }
+  }
   
   /**
    * A property change listener.
@@ -227,7 +319,7 @@ public class MetalFileChooserUI
           || n.equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)
           || n.equals(JFileChooser.FILE_HIDING_CHANGED_PROPERTY))
         rescanCurrentDirectory(filechooser);
-      
+
       filechooser.revalidate();
       filechooser.repaint();
     }
@@ -666,6 +758,7 @@ public class MetalFileChooserUI
       editFile = null;
       fc = getFileChooser();
       lastSelected = null;
+      startEditing = false;
     }
     
     /**
@@ -675,7 +768,7 @@ public class MetalFileChooserUI
      */
     public void mouseClicked(MouseEvent e)
     {
-      if (e.getClickCount() == 1)
+      if (e.getClickCount() == 1 && e.getButton() == MouseEvent.BUTTON1)
         {
           int index = list.locationToIndex(e.getPoint());
           File[] sf = fc.getSelectedFiles();
@@ -706,6 +799,7 @@ public class MetalFileChooserUI
       editFile = (File) list.getModel().getElementAt(index);
       if (editFile.canWrite())
         {
+          startEditing = true;
           editField = new JTextField(editFile.getName());
           editField.addActionListener(new EditingActionListener());
           
@@ -740,6 +834,7 @@ public class MetalFileChooserUI
                   rescanCurrentDirectory(fc);
           list.remove(editField);
         }
+      startEditing = false;
       editFile = null;
       lastSelected = null;
       editField = null;
@@ -765,6 +860,7 @@ public class MetalFileChooserUI
         else if (editField != null)
           {
             list.remove(editField);
+            startEditing = false;
             editFile = null;
             lastSelected = null;
             editField = null;
@@ -812,16 +908,25 @@ public class MetalFileChooserUI
   private JButton approveButton;
   
   /** The file list. */
-  private JList fileList;
+  JList fileList;
+  
+  /** The file table. */
+  JTable fileTable;
   
   /** The panel containing the file list. */
-  private JPanel fileListPanel;
+  JPanel fileListPanel;
   
   /** The filter combo box model. */
   private FilterComboBoxModel filterModel;
 
   /** The action map. */
   private ActionMap actionMap;
+  
+  /** True if currently in list view. */
+  boolean listView;
+  
+  /** True if we can or have started editing a cell. */
+  boolean startEditing;
   
   /**
    * A factory method that returns a UI delegate for the specified
@@ -882,7 +987,7 @@ public class MetalFileChooserUI
     topPanel.add(controls, BorderLayout.EAST);
     fc.add(topPanel, BorderLayout.NORTH);
     fileListPanel = createList(fc);
-    fc.add(fileListPanel);
+    fc.add(fileListPanel, BorderLayout.CENTER);
     JPanel bottomPanel = getBottomPanel();
     filterModel = createFilterComboBoxModel();
     JComboBox fileFilterCombo = new JComboBox(filterModel);
@@ -1039,7 +1144,7 @@ public class MetalFileChooserUI
   {
     ActionMap map = new ActionMap();
     map.put("approveSelection", getApproveSelectionAction());
-    map.put("cancelSelection", null);  // FIXME: implement this one
+    map.put("cancelSelection", getCancelSelectionAction());
     map.put("Go Up", getChangeToParentDirectoryAction());
     return map;
   }
@@ -1055,8 +1160,7 @@ public class MetalFileChooserUI
   {
     JPanel panel = new JPanel(new BorderLayout());
     fileList = new JList(getModel());
-    fileList.setLayoutOrientation(JList.VERTICAL_WRAP);
-    fileList.setVisibleRowCount(0);
+    // FIXME: fileList.setLayoutOrientation(JList.VERTICAL_WRAP);
     fileList.setCellRenderer(new FileRenderer());
     panel.add(new JScrollPane(fileList));
     return panel;    
@@ -1071,12 +1175,68 @@ public class MetalFileChooserUI
    */
   protected JPanel createDetailsView(JFileChooser fc)
   {
-    // FIXME: implement this.  The details view is a panel containing a table
-    // inside a JScrollPane - it gets displayed when the user clicks on the
-    // "details" button.
-    return new JPanel();
+    fileListPanel = new JPanel(new BorderLayout());    
+    ListModel lm = fileList.getModel();
+    int size = lm.getSize();
+    Object[] cols = new Object[] {"Name", "Size", "Modified"};
+    
+    Object[][] rows = new Object[size][3];
+    for (int i = 0; i < size; i++)
+      {
+        File curr = (File) lm.getElementAt(i);
+        rows[i][0] = curr.getName();
+        rows[i][1] = formatSize(curr.length());
+        DateFormat dt = DateFormat.getDateTimeInstance(DateFormat.SHORT,
+                                                       DateFormat.SHORT);
+        rows[i][2] = dt.format(new Date(curr.lastModified()));
+      }
+    
+    fileTable = new JTable(new DetailTableModel(rows, cols), null, 
+                           fileList.getSelectionModel());
+    fileTable.setShowHorizontalLines(false);
+    fileTable.setShowVerticalLines(false);
+    fileListPanel.add(new JScrollPane(fileTable));
+    return fileListPanel;  
   }
   
+  /**
+   * Formats bytes into the appropriate size.
+   *  
+   * @param bytes - the number of bytes to convert
+   * @return a string representation of the size
+   */
+  private String formatSize(long bytes)
+  {
+    NumberFormat nf = NumberFormat.getNumberInstance();
+    long mb = (long) Math.pow(2, 20);
+    long kb = (long) Math.pow(2, 10);
+    long gb = (long) Math.pow(2, 30);
+    double size = 0;
+    String id = "";
+    
+    if ((bytes / gb) >= 1)
+      {
+        size = (double) bytes / (double) gb;
+        id = "GB";
+      }
+    else if ((bytes / mb) >= 1)
+      {
+        size = (double) bytes / (double) mb;
+        id = "MB";
+      }
+    else if ((bytes / kb) >= 1)
+      {
+        size = (double) bytes / (double) kb;
+        id = "KB";
+      }
+    else
+      {
+        size = bytes;
+        id = "Bytes";
+      }
+    
+    return nf.format(size) + " " + id;
+  }
   /**
    * Creates a listener that monitors selections in the directory/file list
    * and keeps the {@link JFileChooser} component up to date.
@@ -1099,8 +1259,14 @@ public class MetalFileChooserUI
    */
   public Dimension getPreferredSize(JComponent c)
   {
-    // FIXME: not likely to be a fixed value
-    return new Dimension(500, 326);
+    Dimension tp = topPanel.getPreferredSize();
+    Dimension bp = bottomPanel.getPreferredSize();
+    Dimension bup = buttonPanel.getPreferredSize();
+    Dimension fl = fileList.getPreferredSize();
+    return new Dimension((tp.width +
+        bp.width + bup.width + fl.width), 
+        (tp.height + bp.height +
+         bup.height + fl.height));
   }
   
   /**
@@ -1110,8 +1276,14 @@ public class MetalFileChooserUI
    */
   public Dimension getMinimumSize(JComponent c)
   {
-    // FIXME: not likely to be a fixed value
-    return new Dimension(506, 326);      
+    Dimension tp = topPanel.getMinimumSize();
+    Dimension bp = bottomPanel.getMinimumSize();
+    Dimension bup = buttonPanel.getMinimumSize();
+    Dimension fl = fileList.getMinimumSize();
+    return new Dimension((tp.width +
+        bp.width + bup.width + fl.width), 
+        (tp.height + bp.height +
+         bup.height + fl.height));   
   }
   
   /**
@@ -1208,15 +1380,17 @@ public class MetalFileChooserUI
     newFolderButton.setMargin(new Insets(0, 0, 0, 0));
     controls.add(newFolderButton);
     
-    JToggleButton listButton = new JToggleButton();
-    listButton.setIcon(this.listViewIcon);
+    JToggleButton listButton = new JToggleButton(this.listViewIcon);
     listButton.setMargin(new Insets(0, 0, 0, 0));
-    // FIXME: this button needs an action that handles a click
+    listButton.addActionListener(new ListViewActionListener());
+    listButton.setSelected(true);
+    listView = true; 
     controls.add(listButton);
     
     JToggleButton detailButton = new JToggleButton(this.detailsViewIcon);
     detailButton.setMargin(new Insets(0, 0, 0, 0));
-    // FIXME: this button needs an action that handles a click
+    detailButton.addActionListener(new DetailViewActionListener());
+    detailButton.setSelected(false);
     controls.add(detailButton);
 
     ButtonGroup buttonGroup = new ButtonGroup();
@@ -1269,24 +1443,44 @@ public class MetalFileChooserUI
     fileTextField.setText(filename);
   }
 
+  /**
+   * Sets the flag that indicates whether the current directory is selected.
+   * 
+   * @param directorySelected - the new flag value.
+   */
   protected void setDirectorySelected(boolean directorySelected)
   {
     // FIXME: do something here
     super.setDirectorySelected(directorySelected);
   }
   
+  /**
+   * Returns the current directory name. 
+   * 
+   * @return the directory name
+   */
   public String getDirectoryName()
   {
     // FIXME: do something here
     return super.getDirectoryName();      
   }
 
+  /**
+   * Sets the directory name.
+   * 
+   * @param dirname - the name of the directory
+   */
   public void setDirectoryName(String dirname)
   {
     // FIXME: do something here
     super.setDirectoryName(dirname);    
   }
   
+  /**
+   * DOCUMENT ME!!
+   * 
+   * @param e - DOCUMENT ME!
+   */
   public void valueChanged(ListSelectionEvent e)
   {
     // FIXME: implement

@@ -1,5 +1,31 @@
 2005-11-28  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(DetailTableModel): New Class implemented to override selected
+	methods in DefaultTableModel. More methods will be added later.
+	(ListViewActionListener): New class implemented. 
+	(DetailViewActionListener): New class implemented.
+	(completeEditing): Set boolean to false.
+	(mouseClicked): Added check to make sure editing only starts when
+	left mouse button is clicked.
+	(editFile): Set boolean to true.
+	(actionPerformed): Set boolean to false.
+	(createList): Commented out wrap code until JList bug is fixed.
+	(createActionMap): Added action for cancelSelection.
+	(createDetailsView): Partially implemented to display details view
+	table. 
+	(formatSize): Private function added to convert bytes to an
+	appropriate size String for the table.
+	(getPreferredSize): Implemented.
+	(getMinimumSize): Implemented.
+	(addControlButtons): Added action listeners for detailButton and listButton.
+	(setDirectorySelected): Added API documentation.
+	(getDirectoryName): Likewise.
+	(setDirectoryName): Likewise.
+	(valueChanged): Likewise.
+
+2005-11-28  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/JList.java
 	(init): Layout should not be set to FlowLayout. JDK sets it to null.
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
