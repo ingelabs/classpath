@@ -1,3 +1,19 @@
+2005-11-28  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JList.java
+	(init): Layout should not be set to FlowLayout. JDK sets it to null.
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(mouseClicked): Changed to call completeEditing when double-clicked.
+	(editFile): Fixed to add an action listener to the editing field. Editing
+	for filechooser now works.
+	(completeEditing): Fixed renaming to create a new file object and rescan the
+	directory if renaming was successful. Added code to cancel editing as well.
+	(EditingActionListener): New class to listen for notify action and to complete
+	editing when enter is pressed. Otherwise, editing is cancelled.
+	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
+	(MetalDividerLayout): Changed to public.
+	(MetalDividerLayout.init): Likewise.
+
 2005-11-27  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* java/util/logging/XMLFormatter.java (format): Don't call 

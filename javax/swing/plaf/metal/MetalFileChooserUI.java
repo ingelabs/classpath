@@ -48,6 +48,7 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -686,13 +687,11 @@ public class MetalFileChooserUI
                 editFile(index);
               lastSelected = tmp;
             }
-          else if (editFile != null)
-            {
+          else
               completeEditing();
-              editFile = null;
-              lastSelected = null;
-            }
         }
+      else
+        completeEditing();
     }
     
     /**
@@ -701,47 +700,77 @@ public class MetalFileChooserUI
      * @param index -
      *          the current index of the item in the list to be edited.
      */
-    private void editFile(int index)
+    void editFile(int index)
     {
       list.ensureIndexIsVisible(index);
       editFile = (File) list.getModel().getElementAt(index);
       if (editFile.canWrite())
         {
+          editField = new JTextField(editFile.getName());
+          editField.addActionListener(new EditingActionListener());
+          
           Rectangle bounds = list.getCellBounds(index, index);
           Icon icon = getFileView(fc).getIcon(editFile);
-          editField = new JTextField(editFile.getName());
-          // FIXME: add action listener for typing
-          // FIXME: painting for textfield is messed up when typing    
-          list.add(editField);
-          editField.requestFocus();
-          editField.selectAll();
-          
           if (icon != null)
             bounds.x += icon.getIconWidth() + 4;
           editField.setBounds(bounds);
+          
+          list.add(editField);
+          
+          editField.requestFocus();
+          editField.selectAll();
         }
       else
-        {
-          editField = null;
-          editFile = null;
-          lastSelected = null;
-        }
+        completeEditing();
+      list.repaint();
     }
     
     /** 
      * Completes the editing.
      */
-    private void completeEditing()
+    void completeEditing()
     {
-      if (editField != null)
+      if (editField != null && editFile != null)
         {
           String text = editField.getText();
-          if (text != null && !text.equals(""))
-            editFile.renameTo(new File(text));
+          if (text != null && text != "" && !text.equals(fc.getName(editFile)))
+              if (editFile.renameTo
+                  (fc.getFileSystemView().createFileObject
+                   (fc.getCurrentDirectory(), text)))
+                  rescanCurrentDirectory(fc);
           list.remove(editField);
-          list.revalidate();
-          list.repaint();
         }
+      editFile = null;
+      lastSelected = null;
+      editField = null;
+      list.repaint();
+    }
+    
+    /**
+     * ActionListener for the editing text field.
+     */
+    class EditingActionListener implements ActionListener
+    {
+      
+      /**
+       * This method is invoked when an action occurs.
+       * 
+       * @param e -
+       *          the <code>ActionEvent</code> that occurred
+       */
+      public void actionPerformed(ActionEvent e)
+      {
+        if (e.getActionCommand().equals("notify-field-accept"))
+          completeEditing();
+        else if (editField != null)
+          {
+            list.remove(editField);
+            editFile = null;
+            lastSelected = null;
+            editField = null;
+            list.repaint();
+          }
+      }
     }
   }
 
