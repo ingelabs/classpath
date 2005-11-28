@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package java.awt.datatransfer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,18 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
    * <code>SystemFlavorMaps</code>.
    */
   private static final Map systemFlavorMaps = new WeakHashMap();
+  
+  /**
+   * This map maps native <code>String</code>s to lists of 
+   * <code>DataFlavor</code>s
+   */
+  private Map nativeToFlavorMap = new HashMap();
+  
+  /**
+   * This map maps <code>DataFlavor</code>s to lists of native 
+   * <code>String</code>s
+   */
+  private Map flavorToNativeMap = new HashMap();
 
   /**
    * Private constructor.
@@ -183,6 +196,161 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
   public List getNativesForFlavor (DataFlavor flav)
   {
     throw new Error ("Not implemented");
+  }
+  
+  /**
+   * Adds a mapping from a single <code>String</code> native to a single
+   * <code>DataFlavor</code>. Unlike <code>getFlavorsForNative</code>, the
+   * mapping will only be established in one direction, and the native will
+   * not be encoded. To establish a two-way mapping, call
+   * <code>addUnencodedNativeForFlavor</code> as well. The new mapping will
+   * be of lower priority than any existing mapping.
+   * This method has no effect if a mapping from the specified
+   * <code>String</code> native to the specified or equal
+   * <code>DataFlavor</code> already exists.
+   *
+   * @param nativeStr the <code>String</code> native key for the mapping
+   * @param flavor the <code>DataFlavor</code> value for the mapping
+   * @throws NullPointerException if nat or flav is <code>null</code>
+   *
+   * @see #addUnencodedNativeForFlavor
+   * @since 1.4
+   */
+  public synchronized void addFlavorForUnencodedNative(String nativeStr, 
+                                                       DataFlavor flavor)
+  {
+    if((nativeStr == null) || (flavor == null))
+      throw new NullPointerException();
+    List flavors = (List) nativeToFlavorMap.get(nativeStr);
+    if(flavors == null) 
+      {
+        flavors = new ArrayList();
+        nativeToFlavorMap.put(nativeStr, flavors);
+      }
+    else
+      {
+        if(!flavors.contains(flavor))
+          flavors.add(flavor);
+      }
+  }
+  
+  /**
+   * Adds a mapping from the specified <code>DataFlavor</code> (and all
+   * <code>DataFlavor</code>s equal to the specified <code>DataFlavor</code>)
+   * to the specified <code>String</code> native.
+   * Unlike <code>getNativesForFlavor</code>, the mapping will only be
+   * established in one direction, and the native will not be encoded. To
+   * establish a two-way mapping, call
+   * <code>addFlavorForUnencodedNative</code> as well. The new mapping will 
+   * be of lower priority than any existing mapping.
+   * This method has no effect if a mapping from the specified or equal
+   * <code>DataFlavor</code> to the specified <code>String</code> native
+   * already exists.
+   *
+   * @param flavor the <code>DataFlavor</code> key for the mapping
+   * @param nativeStr the <code>String</code> native value for the mapping
+   * @throws NullPointerException if flav or nat is <code>null</code>
+   *
+   * @see #addFlavorForUnencodedNative
+   * @since 1.4
+   */
+  public synchronized void addUnencodedNativeForFlavor(DataFlavor flavor,
+                                                       String nativeStr) 
+  {
+    if((nativeStr == null) || (flavor == null))
+      throw new NullPointerException();
+    List natives = (List) flavorToNativeMap.get(flavor);
+    if(natives == null) 
+      {
+        natives = new ArrayList();
+        flavorToNativeMap.put(flavor, natives);
+      }
+    else
+      {
+        if(!natives.contains(nativeStr))
+          natives.add(nativeStr);
+      }
+  }
+  
+  /**
+   * Discards the current mappings for the specified <code>DataFlavor</code>
+   * and all <code>DataFlavor</code>s equal to the specified
+   * <code>DataFlavor</code>, and creates new mappings to the 
+   * specified <code>String</code> natives.
+   * Unlike <code>getNativesForFlavor</code>, the mappings will only be
+   * established in one direction, and the natives will not be encoded. To
+   * establish two-way mappings, call <code>setFlavorsForNative</code>
+   * as well. The first native in the array will represent the highest
+   * priority mapping. Subsequent natives will represent mappings of
+   * decreasing priority.
+   * <p>
+   * If the array contains several elements that reference equal
+   * <code>String</code> natives, this method will establish new mappings
+   * for the first of those elements and ignore the rest of them.
+   * <p> 
+   * It is recommended that client code not reset mappings established by the
+   * data transfer subsystem. This method should only be used for
+   * application-level mappings.
+   *
+   * @param flavor the <code>DataFlavor</code> key for the mappings
+   * @param natives the <code>String</code> native values for the mappings
+   * @throws NullPointerException if flav or natives is <code>null</code>
+   *         or if natives contains <code>null</code> elements
+   *
+   * @see #setFlavorsForNative
+   * @since 1.4
+   */
+  public synchronized void setNativesForFlavor(DataFlavor flavor,
+                                               String[] natives) 
+  {
+    if((natives == null) || (flavor == null))
+      throw new NullPointerException();
+    
+    flavorToNativeMap.remove(flavor);
+    for(int i = 0; i < natives.length; i++) 
+      {
+        addUnencodedNativeForFlavor(flavor, natives[i]);
+      }
+  }
+  
+  /**
+   * Discards the current mappings for the specified <code>String</code>
+   * native, and creates new mappings to the specified
+   * <code>DataFlavor</code>s. Unlike <code>getFlavorsForNative</code>, the
+   * mappings will only be established in one direction, and the natives need
+   * not be encoded. To establish two-way mappings, call
+   * <code>setNativesForFlavor</code> as well. The first
+   * <code>DataFlavor</code> in the array will represent the highest priority
+   * mapping. Subsequent <code>DataFlavor</code>s will represent mappings of
+   * decreasing priority.
+   * <p>
+   * If the array contains several elements that reference equal
+   * <code>DataFlavor</code>s, this method will establish new mappings
+   * for the first of those elements and ignore the rest of them.
+   * <p>
+   * It is recommended that client code not reset mappings established by the
+   * data transfer subsystem. This method should only be used for
+   * application-level mappings.
+   *
+   * @param nativeStr the <code>String</code> native key for the mappings
+   * @param flavors the <code>DataFlavor</code> values for the mappings
+   * @throws NullPointerException if nat or flavors is <code>null</code>
+   *         or if flavors contains <code>null</code> elements
+   *
+   * @see #setNativesForFlavor
+   * @since 1.4
+   */
+  public synchronized void setFlavorsForNative(String nativeStr,
+                                               DataFlavor[] flavors) 
+  {
+    if((nativeStr == null) || (flavors == null))
+      throw new NullPointerException();
+    
+    nativeToFlavorMap.remove(nativeStr);
+    for(int i = 0; i < flavors.length; i++) 
+      {
+        addFlavorForUnencodedNative(nativeStr, flavors[i]);
+      }
   }
 
 } // class SystemFlavorMap

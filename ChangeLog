@@ -1,3 +1,13 @@
+2005-11-29  Jan Roehrich  <jan@roehrich.info>
+
+	* java/awt/datatransfer/SystemFlavorMap.java
+	(nativeToFlavorMap): added field.
+	(flavorToNativeMap): added field.
+	(addFlavorForUnencodedNative): added method.
+	(setNativesForFlavor): added method.
+	(addUnencodedNativeForFlavor): added method.
+	(setFlavorsForNative): added method.
+
 2005-11-28  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
