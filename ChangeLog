@@ -1,5 +1,10 @@
 2005-11-29  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(mouseClicked): Fixed checks to prevent NPE.
+
+2005-11-29  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/JViewport.java
 	(setView): Added check to prevent NPE.
 	* javax/swing/plaf/basic/BasicFileChooserUI.java

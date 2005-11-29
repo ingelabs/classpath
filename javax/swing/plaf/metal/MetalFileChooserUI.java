@@ -1005,7 +1005,7 @@ public class MetalFileChooserUI
         return;
       FileSystemView fsv = fc.getFileSystemView();
       if (e.getClickCount() == 1 &&
-          selVal.toString().equals(lastSelected.toString()) &&
+          selVal.equals(lastSelected) &&
           e.getButton() == MouseEvent.BUTTON1)
         {
           File[] sf = fc.getSelectedFiles();
@@ -1017,7 +1017,7 @@ public class MetalFileChooserUI
             }
         }
       else if (e.getClickCount() >= 2 &&
-          selVal.toString().equals(lastSelected.toString()))
+          selVal.equals(lastSelected))
         {
           if (startEditing)
             completeEditing();
