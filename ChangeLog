@@ -1,3 +1,44 @@
+2005-11-29  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JViewport.java
+	(setView): Added check to prevent NPE.
+	* javax/swing/plaf/basic/BasicFileChooserUI.java
+	(ListLabelRenderer): Removed class, never used.
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(DetailTableModel): Removed, not needed.
+	(TableFileRenderer): Implemented to override some color
+	and icon defaults in the default table renderer.
+	(actionPerformed): Set selection in list, if something was
+	selected in the table.
+	(actionPerformed): Set selection in table, if something was
+	selected in the list.
+	(propertyChange): Added code to set the selection for the table, 
+	as well as the list. This depends on what view we are in.
+	(editFile): Fixed to call scrollRectToVisible instead.
+	(TableClickListener): Implemented new private class to take
+	care of double clicking (changing/opening directories/files)
+	and single clicking (editing).
+	(TableClickListener.mouseClicked): Implemented
+	(TableClickListener.editFile): Implemented
+	(TableClickListener.completeEditing): Implemented
+	(TableClickListener.EditingActionListener): Implemented
+	(TableClickListener.closeDialog): Implemented
+	(installListeners): Added code to initialize listener fields.
+	(uninstallListeners): Added code to uninstall all listeners.
+	(createList): Changed to use scrollPane field.
+	(createDetailsView): Changed to use updateTable function. Set
+	some characteristics for the table: column selection, renderer,
+	listener etc.
+	(updateTable): Implemented to changed/add/remove rows from the
+	table, as needed.
+	(removeControlButtons): Added repaint, revalidate calls.
+	(ensureFileIsVisible): Removed. Does the same thing as super.
+	(rescanCurrentDirectory): Added check for different views.
+	(setDirectorySelected): Removed. Does the same thing as super.
+	(getDirectoryName): Removed. Does the same thing as super.
+	(setDirectoryName): Removed. Does the same thing as super.
+	(valueChanged): Changed comment.
+
 2005-11-29  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultFormatterFactory.java: New class.

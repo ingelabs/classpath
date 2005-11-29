@@ -58,14 +58,10 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
@@ -722,46 +718,6 @@ public class BasicFileChooserUI extends FileChooserUI
   private UpdateAction updateAction;
   
   // -- end private --
-  private class ListLabelRenderer extends JLabel implements ListCellRenderer
-  {
-    /** DOCUMENT ME! */
-    final Color selected = new Color(153, 204, 255);
-
-    /**
-     * Creates a new ListLabelRenderer object.
-     */
-    public ListLabelRenderer()
-    {
-      super();
-      setOpaque(true);
-    }
-
-    /**
-     * DOCUMENT ME!
-     *
-     * @param list DOCUMENT ME!
-     * @param value DOCUMENT ME!
-     * @param index DOCUMENT ME!
-     * @param isSelected DOCUMENT ME!
-     * @param cellHasFocus DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public Component getListCellRendererComponent(JList list, Object value,
-                                                  int index,
-                                                  boolean isSelected,
-                                                  boolean cellHasFocus)
-    {
-      setHorizontalAlignment(SwingConstants.LEFT);
-      File file = (File) value;
-      setText(filechooser.getName(file));
-      setIcon(filechooser.getIcon(file));
-      setBackground(isSelected ? selected : Color.WHITE);
-      setForeground(Color.BLACK);
-
-      return this;
-    }
-  }
 
   /**
    * Closes the dialog.
