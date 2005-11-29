@@ -1,3 +1,8 @@
+2005-11-29  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/25141:
+	* java/net/URL.java (URL): Use context's stream handler.
+
 2005-11-29  Jan Roehrich  <jan@roehrich.info>
 
 	* java/awt/datatransfer/SystemFlavorMap.java
