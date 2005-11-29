@@ -1,6 +1,22 @@
 2005-11-29  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(actionPerformed): Changed to update list with all 
+	selected intervals, and to use fileTablePanel instead.
+	(actionPerformed): Likewise.
+	(propertyChange): Changed to use addSelectionInterval
+	instead of setSelectionInterval.
+	(uninstallComponents): Uninstalled fileTablePanel.
+	(installListeners): Moved code to createList, so listeners
+	are installed for every list that may be created.
+	(createList): Added code to remove and install listeners on
+	list.
+	(createDetailsView): Changed to use own panel. Also, added
+	code to set the selection mode.
+
+2005-11-29  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
 	(mouseClicked): Fixed checks to prevent NPE.
 
 2005-11-29  Lillian Angel  <langel@redhat.com>

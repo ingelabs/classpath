@@ -190,16 +190,19 @@ public class MetalFileChooserUI
     {
       if (!listView)
         {
-          int index = fileTable.getSelectedRow();
+          int[] index = fileTable.getSelectedRows();
           listView = true;
           JFileChooser fc = getFileChooser();
-          fc.remove(fileListPanel);
+          fc.remove(fileTablePanel);
           fileListPanel = createList(fc);
-          
-          if (index >= 0)
-            fileList.getSelectionModel().setSelectionInterval(index, index);
-          else
-            fileList.getSelectionModel().clearSelection();
+
+          fileList.getSelectionModel().clearSelection();
+          if (index.length > 0)
+            {
+              
+              for (int i = 0; i < index.length; i++)
+                fileList.getSelectionModel().addSelectionInterval(index[i], index[i]);
+            }
           
           fc.add(fileListPanel, BorderLayout.CENTER);
           fc.revalidate();
@@ -224,18 +227,24 @@ public class MetalFileChooserUI
     {
       if (listView)
         {
-          int index = fileList.getSelectedIndex();
+          int[] index = fileList.getSelectedIndices();
           JFileChooser fc = getFileChooser();
           listView = false;
           fc.remove(fileListPanel);
-          fileListPanel = createDetailsView(fc);
           
-          if (index >= 0)
-            fileTable.getSelectionModel().setSelectionInterval(index, index);
+          if (fileTable == null)
+            fileTablePanel = createDetailsView(fc);
           else
-            fileTable.getSelectionModel().clearSelection();
+            updateTable();
+
+          fileTable.getSelectionModel().clearSelection();
+          if (index.length > 0)
+            {
+              for (int i = 0; i < index.length; i++)
+                fileTable.getSelectionModel().addSelectionInterval(index[i], index[i]);
+            }
           
-          fc.add(fileListPanel, BorderLayout.CENTER);
+          fc.add(fileTablePanel, BorderLayout.CENTER);
           fc.revalidate();
           fc.repaint();
         }
@@ -298,7 +307,7 @@ public class MetalFileChooserUI
                 }
               else
                 {
-                  fileTable.getSelectionModel().setSelectionInterval(index, index);
+                  fileTable.getSelectionModel().addSelectionInterval(index, index);
                   fileTable.scrollRectToVisible(fileTable.getCellRect(index, 0, true));
                   fileTable.revalidate();
                   fileTable.repaint();
@@ -1188,6 +1197,9 @@ public class MetalFileChooserUI
   /** The panel containing the file list. */
   JPanel fileListPanel;
   
+  /** The panel containing the file table. */
+  JPanel fileTablePanel;
+  
   /** The filter combo box model. */
   private FilterComboBoxModel filterModel;
 
@@ -1317,6 +1329,8 @@ public class MetalFileChooserUI
     fc.remove(bottomPanel);
     bottomPanel = null;
     fc.remove(fileListPanel);
+    fc.remove(fileTablePanel);
+    fileTablePanel = null;
     fileListPanel = null;
     fc.remove(topPanel);
     topPanel = null;
@@ -1399,9 +1413,6 @@ public class MetalFileChooserUI
     doubleClickList = this.createDoubleClickListener(fc, fileList);
     singleClickList = new SingleClickListener(fileList);
     directoryComboBox.setAction(new DirectoryComboBoxAction());
-    fileList.addListSelectionListener(listSelList);
-    fileList.addMouseListener(doubleClickList);
-    fileList.addMouseListener(singleClickList);
     fc.addPropertyChangeListener(filterModel);
     super.installListeners(fc);
   }
@@ -1450,11 +1461,29 @@ public class MetalFileChooserUI
   protected JPanel createList(JFileChooser fc)
   {
     JPanel panel = new JPanel(new BorderLayout());
-    fileList = new JList(getModel());
+    if (fileList == null)
+      fileList = new JList();
+    fileList.setModel(getModel());
+    
+    fileList.removeListSelectionListener(listSelList);
+    fileList.removeMouseListener(doubleClickList);
+    fileList.removeMouseListener(singleClickList);
+    
+    fileList.setModel(getModel());
     // FIXME: fileList.setLayoutOrientation(JList.VERTICAL_WRAP);
+    
+    if (fc.isMultiSelectionEnabled())
+      fileList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    else
+      fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
+    fileList.addListSelectionListener(listSelList);
+    fileList.addMouseListener(doubleClickList);
+    fileList.addMouseListener(singleClickList);
+    
     fileList.setCellRenderer(new FileRenderer());
     scrollPane = new JScrollPane(fileList);
-    panel.add(scrollPane);
+    panel.add(scrollPane);    
     return panel;    
   }
   
@@ -1467,11 +1496,18 @@ public class MetalFileChooserUI
    */
   protected JPanel createDetailsView(JFileChooser fc)
   {
+    fileTablePanel = new JPanel(new BorderLayout());
+    
     Object[] cols = new Object[] {"Name", "Size", "Modified"};
     Object[][] rows = new Object[fileList.getModel().getSize()][3];
     
-    fileTable = new JTable(new DefaultTableModel(rows, cols), null, 
-                           fileList.getSelectionModel());
+    fileTable = new JTable(new DefaultTableModel(rows, cols));
+    
+    if (fc.isMultiSelectionEnabled())
+      fileTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    else
+      fileTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
     fileTable.setShowGrid(false);
     fileTable.setIntercellSpacing(new Dimension(0, 0));
     fileTable.setColumnSelectionAllowed(false);
@@ -1519,10 +1555,10 @@ public class MetalFileChooserUI
         scrollPane.setColumnHeaderView(fileTable.getTableHeader());
         scrollPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
         
-        fileListPanel.removeAll();
-        fileListPanel.add(scrollPane);
+        fileTablePanel.removeAll();
+        fileTablePanel.add(scrollPane);
       }
-    return fileListPanel;
+    return fileTablePanel;
   }
   
   /**
