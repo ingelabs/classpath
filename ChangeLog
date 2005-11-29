@@ -1,3 +1,7 @@
+2005-11-29  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultFormatterFactory.java: New class.
+
 2005-11-29  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/25141:
