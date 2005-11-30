@@ -1,3 +1,24 @@
+2005-11-30  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/standard/Compression.java: 
+	Added java docs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	* javax/print/attribute/standard/ColorSupported.java: 
+	Added java docs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	* javax/print/attribute/standard/Chromaticity.java: 
+	Added java docs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+
 2005-11-30  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/awt/Component.java:
