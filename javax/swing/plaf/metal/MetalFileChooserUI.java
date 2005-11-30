@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing.plaf.metal;
 
+import gnu.java.security.action.SetAccessibleAction;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -194,15 +196,12 @@ public class MetalFileChooserUI
           listView = true;
           JFileChooser fc = getFileChooser();
           fc.remove(fileTablePanel);
-          fileListPanel = createList(fc);
+          createList(fc);
 
           fileList.getSelectionModel().clearSelection();
           if (index.length > 0)
-            {
-              
               for (int i = 0; i < index.length; i++)
                 fileList.getSelectionModel().addSelectionInterval(index[i], index[i]);
-            }
           
           fc.add(fileListPanel, BorderLayout.CENTER);
           fc.revalidate();
@@ -233,7 +232,7 @@ public class MetalFileChooserUI
           fc.remove(fileListPanel);
           
           if (fileTable == null)
-            fileTablePanel = createDetailsView(fc);
+            createDetailsView(fc);
           else
             updateTable();
 
@@ -290,7 +289,23 @@ public class MetalFileChooserUI
       else if (n.equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY))
         {
           File file = filechooser.getSelectedFile();
-          if (file == null)
+          
+          if (file != null
+              && filechooser.getDialogType() == JFileChooser.SAVE_DIALOG)
+            {
+              if (file.isDirectory() && filechooser.isTraversable(file))
+                {
+                  filechooser.setApproveButtonText(openButtonText);
+                  filechooser.setApproveButtonToolTipText(openButtonToolTipText);
+                }
+              else if (file.isFile())
+                {
+                  filechooser.setApproveButtonText(saveButtonText);
+                  filechooser.setApproveButtonToolTipText(saveButtonToolTipText);
+                }
+            }
+            
+          if (file == null || !file.isFile())
             setFileName(null);
           else
             setFileName(file.getName());
@@ -329,6 +344,7 @@ public class MetalFileChooserUI
               fileTable.revalidate();
               fileTable.repaint();
             }
+
           setDirectorySelected(false);
           File currentDirectory = filechooser.getCurrentDirectory();
           setDirectory(currentDirectory);
@@ -404,7 +420,23 @@ public class MetalFileChooserUI
       if (n.equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)
           || n.equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)
           || n.equals(JFileChooser.FILE_HIDING_CHANGED_PROPERTY))
-        rescanCurrentDirectory(filechooser);
+        {
+          // Remove editing component
+          if (fileTable != null)
+            fileTable.removeAll();
+          if (fileList != null)
+            fileList.removeAll();
+          startEditing = false;
+          
+          // Set text on button back to original.
+          if (filechooser.getDialogType() == JFileChooser.SAVE_DIALOG)
+            {
+              filechooser.setApproveButtonText(saveButtonText);
+              filechooser.setApproveButtonToolTipText(saveButtonToolTipText);
+            }
+          
+          rescanCurrentDirectory(filechooser);
+        }
       
       filechooser.revalidate();
       filechooser.repaint();
@@ -859,7 +891,7 @@ public class MetalFileChooserUI
           int index = list.locationToIndex(e.getPoint());
           File[] sf = fc.getSelectedFiles();
           if ((!fc.isMultiSelectionEnabled() || (sf != null && sf.length <= 1))
-              && index >= 0 && editFile == null && list.isSelectedIndex(index))
+              && index >= 0 && !startEditing && list.isSelectedIndex(index))
             {
               Object tmp = list.getModel().getElementAt(index);
               if (lastSelected != null && lastSelected.equals(tmp))
@@ -1019,7 +1051,7 @@ public class MetalFileChooserUI
         {
           File[] sf = fc.getSelectedFiles();
           if ((!fc.isMultiSelectionEnabled() || (sf != null && sf.length <= 1))
-              && editFile == null)
+              && !startEditing)
             {
               editFile = (File) selVal;
               editFile(row);
@@ -1049,6 +1081,7 @@ public class MetalFileChooserUI
             completeEditing();
           String path = selVal.toString();
           File f = fsv.createFileObject(path);
+          fc.setSelectedFile(f);
           if (fc.isTraversable(f))
             {
               setDirectorySelected(true);
@@ -1060,7 +1093,10 @@ public class MetalFileChooserUI
               setDirectory(null);
             }
           lastSelected = selVal;
-          setFileName(path.substring(path.lastIndexOf("/") + 1));
+          if (f.isFile())
+            setFileName(path.substring(path.lastIndexOf("/") + 1));
+          else if (fc.getFileSelectionMode() == JFileChooser.DIRECTORIES_ONLY)
+            setFileName(path);
         }
       fileTable.repaint();
     }
@@ -1080,6 +1116,9 @@ public class MetalFileChooserUI
           startEditing = true;
           editField = new JTextField(editFile.getName());
           editField.addActionListener(new EditingActionListener());
+
+          // Need to adjust y pos
+          bounds.y = row * table.getRowHeight();
           editField.setBounds(bounds);
           
           table.add(editField);
@@ -1279,8 +1318,7 @@ public class MetalFileChooserUI
     topPanel.add(dirPanel);
     topPanel.add(controls, BorderLayout.EAST);
     fc.add(topPanel, BorderLayout.NORTH);
-    fileListPanel = createList(fc);
-    fc.add(fileListPanel, BorderLayout.CENTER);
+    fc.add(createList(fc), BorderLayout.CENTER);
     JPanel bottomPanel = getBottomPanel();
     filterModel = createFilterComboBoxModel();
     JComboBox fileFilterCombo = new JComboBox(filterModel);
@@ -1409,11 +1447,14 @@ public class MetalFileChooserUI
    */
   protected void installListeners(JFileChooser fc)
   {
+    directoryComboBox.setAction(new DirectoryComboBoxAction());
+    fc.addPropertyChangeListener(filterModel);
     listSelList = createListSelectionListener(fc);
     doubleClickList = this.createDoubleClickListener(fc, fileList);
     singleClickList = new SingleClickListener(fileList);
-    directoryComboBox.setAction(new DirectoryComboBoxAction());
-    fc.addPropertyChangeListener(filterModel);
+    fileList.addListSelectionListener(listSelList);
+    fileList.addMouseListener(doubleClickList);
+    fileList.addMouseListener(singleClickList);
     super.installListeners(fc);
   }
   
@@ -1460,31 +1501,24 @@ public class MetalFileChooserUI
    */
   protected JPanel createList(JFileChooser fc)
   {
-    JPanel panel = new JPanel(new BorderLayout());
     if (fileList == null)
-      fileList = new JList();
-    fileList.setModel(getModel());
-    
-    fileList.removeListSelectionListener(listSelList);
-    fileList.removeMouseListener(doubleClickList);
-    fileList.removeMouseListener(singleClickList);
-    
-    fileList.setModel(getModel());
-    // FIXME: fileList.setLayoutOrientation(JList.VERTICAL_WRAP);
-    
-    if (fc.isMultiSelectionEnabled())
-      fileList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+      {
+        fileListPanel = new JPanel(new BorderLayout());
+        fileList = new JList(getModel());
+        scrollPane = new JScrollPane(fileList);
+        // FIXME: fileList.setLayoutOrientation(JList.VERTICAL_WRAP);
+        fileList.setCellRenderer(new FileRenderer());
+      }
     else
-      fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    
-    fileList.addListSelectionListener(listSelList);
-    fileList.addMouseListener(doubleClickList);
-    fileList.addMouseListener(singleClickList);
-    
-    fileList.setCellRenderer(new FileRenderer());
-    scrollPane = new JScrollPane(fileList);
-    panel.add(scrollPane);    
-    return panel;    
+      {
+        fileList.setModel(getModel());
+        fileListPanel.removeAll();
+        scrollPane.setViewport(new JViewport());
+        scrollPane.getViewport().setView(fileList);
+      }
+    fileListPanel.add(scrollPane);
+
+    return fileListPanel;
   }
   
   /**
@@ -1509,12 +1543,12 @@ public class MetalFileChooserUI
       fileTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
     fileTable.setShowGrid(false);
-    fileTable.setIntercellSpacing(new Dimension(0, 0));
     fileTable.setColumnSelectionAllowed(false);
     fileTable.setDefaultRenderer(Object.class, new TableFileRenderer());
 
     tableClickList = new TableClickListener(fileTable, fc);
     fileTable.addMouseListener(tableClickList);
+    
     return updateTable();  
   }
   
@@ -1525,46 +1559,46 @@ public class MetalFileChooserUI
    */
   JPanel updateTable()
   {
-    if (!listView)
-      {
-        DefaultTableModel mod = (DefaultTableModel) fileTable.getModel();
-        ListModel lm = fileList.getModel();
-        int size = lm.getSize();
-        int rc = mod.getRowCount();  
-        
-        // If there are not enough rows
-        for (int x = rc; x < size; x++)
-          mod.addRow(new Object[3]);
-        
-        for (int i = 0; i < size; i++)
-          {
-            File curr = (File) lm.getElementAt(i);
-            fileTable.setValueAt(curr.getName(), i, 0);
-            fileTable.setValueAt(formatSize(curr.length()), i, 1);
-            DateFormat dt = DateFormat.getDateTimeInstance(DateFormat.SHORT,
-                                                           DateFormat.SHORT);
-            fileTable.setValueAt(dt.format(new Date(curr.lastModified())), i, 2);
-          }
+    DefaultTableModel mod = (DefaultTableModel) fileTable.getModel();
+    ListModel lm = fileList.getModel();
+    DateFormat dt = DateFormat.getDateTimeInstance(DateFormat.SHORT,
+                                                   DateFormat.SHORT);
+    File curr = null;
+    int size = lm.getSize();
+    int rc = mod.getRowCount();
 
-        // If there are too many rows
-        while (rc > size)
-          mod.removeRow(--rc);
-        
-        scrollPane.setViewport(new JViewport());
-        scrollPane.getViewport().setView(fileTable);
-        scrollPane.setColumnHeaderView(fileTable.getTableHeader());
-        scrollPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
-        
-        fileTablePanel.removeAll();
-        fileTablePanel.add(scrollPane);
+    // If there are not enough rows
+    for (int x = rc; x < size; x++)
+      mod.addRow(new Object[3]);
+
+    for (int i = 0; i < size; i++)
+      {
+        curr = (File) lm.getElementAt(i);
+        fileTable.setValueAt(curr.getName(), i, 0);
+        fileTable.setValueAt(formatSize(curr.length()), i, 1);
+        fileTable.setValueAt(dt.format(new Date(curr.lastModified())), i, 2);
       }
+
+    // If there are too many rows
+    while (rc > size)
+      mod.removeRow(--rc);
+
+    scrollPane.setViewport(new JViewport());
+    scrollPane.getViewport().setView(fileTable);
+    scrollPane.setColumnHeaderView(fileTable.getTableHeader());
+    scrollPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
+
+    fileTablePanel.removeAll();
+    fileTablePanel.add(scrollPane);
+
     return fileTablePanel;
   }
   
   /**
    * Formats bytes into the appropriate size.
-   *  
-   * @param bytes - the number of bytes to convert
+   * 
+   * @param bytes -
+   *          the number of bytes to convert
    * @return a string representation of the size
    */
   private String formatSize(long bytes)
@@ -1780,9 +1814,9 @@ public class MetalFileChooserUI
     directoryModel.setSelectedItem(fc.getCurrentDirectory());
     getModel().validateFileCache();
     if (!listView)
-      updateTable();
+        updateTable();
     else
-      fileList.revalidate();
+      createList(fc);
   }
   
   /**

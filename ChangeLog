@@ -1,3 +1,33 @@
+2005-11-30  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicFileChooserUI.java
+	(actionPerformed): Added check to determine if 
+	parentPath is null.
+	(actionPerformed): Set selected file and files to null
+	if 'cancel' was clicked.
+	(mouseClicked): Cleaned up code a bit and set the selected
+	files if multi-selection is enabled. Also, added code to 
+	set the file name in the text field if the selection mode
+	is DIRECTORIES_ONLY.
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(actionPerformed): No need to set fileListPanel, it is
+	set in createList.
+	(actionPerformed): Likewise.
+	(propertyChange): If the dialog type is SAVE, then the
+	approve button text should change depending on what
+	is currently selected. It should say 'Open', if a 
+	directory is currently selected.
+	(actionPerformed): Fixed check.
+	(mouseClicked): Added code to set the file name in 
+	the text field if the selection mode
+	is DIRECTORIES_ONLY.
+	(editFile): Adjusted y position of editing text field in table.
+	(installListeners): Added code to initially install listeners 
+	to the list.
+	(createList): Cleaned up and made more efficent.
+	(createDetailsView): No need to set intercellSpacing.
+	(updateTable): Cleaned up and made more efficent.
+	
 2005-11-30  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	Fixes bug #25165

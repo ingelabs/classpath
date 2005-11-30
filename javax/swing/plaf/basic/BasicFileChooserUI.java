@@ -37,8 +37,6 @@ exception statement from your version. */
 
 package javax.swing.plaf.basic;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -139,17 +137,22 @@ public class BasicFileChooserUI extends FileChooserUI
      */
     public void actionPerformed(ActionEvent e)
     {
-      Object obj = new String(parentPath + getFileName());
+      Object obj = null;
+      if (parentPath != null)
+        obj = new String(parentPath + getFileName());
+      else
+        obj = filechooser.getSelectedFile();
       if (obj != null)
         {
-          File f = filechooser.getFileSystemView().createFileObject(
-                                                                    obj.toString());
-          if (filechooser.isTraversable(f)
-              && filechooser.isDirectorySelectionEnabled())
-            filechooser.setCurrentDirectory(f);
+          File f = filechooser.getFileSystemView().createFileObject(obj.toString());
+          File currSelected = filechooser.getSelectedFile();
+          if (filechooser.isTraversable(f))
+            {
+              filechooser.setCurrentDirectory(currSelected);
+              filechooser.rescanCurrentDirectory();
+            }
           else
             {
-              filechooser.setSelectedFile(f);
               filechooser.approveSelection();
               closeDialog();
             }
@@ -302,6 +305,8 @@ public class BasicFileChooserUI extends FileChooserUI
      */
     public void actionPerformed(ActionEvent e)
     {
+      filechooser.setSelectedFile(null);
+      filechooser.setSelectedFiles(null);
       filechooser.cancelSelection();
       closeDialog();
     }
@@ -369,11 +374,12 @@ public class BasicFileChooserUI extends FileChooserUI
      */
     public void mouseClicked(MouseEvent e)
     {
-      if (list.getSelectedValue() == null)
+      Object p = list.getSelectedValue();
+      if (p == null)
         return;
       FileSystemView fsv = filechooser.getFileSystemView();
-      if (e.getClickCount() >= 2 &&
-          list.getSelectedValue().toString().equals(lastSelected.toString()))
+      if (e.getClickCount() >= 2 && lastSelected != null &&
+          p.toString().equals(lastSelected.toString()))
         {
           File f = fsv.createFileObject(lastSelected.toString());
           if (filechooser.isTraversable(f))
@@ -390,8 +396,19 @@ public class BasicFileChooserUI extends FileChooserUI
         }
       else
         {
-          String path = list.getSelectedValue().toString();
+          String path = p.toString();
           File f = fsv.createFileObject(path);
+          filechooser.setSelectedFile(f);
+          
+          if (filechooser.isMultiSelectionEnabled())
+            {
+              int[] inds = list.getSelectedIndices();
+              File[] allFiles = new File[inds.length];
+              for (int i = 0; i < inds.length; i++)
+                allFiles[i] = (File) list.getModel().getElementAt(inds[i]);
+              filechooser.setSelectedFiles(allFiles);
+            }
+          
           if (filechooser.isTraversable(f))
             {
               setDirectorySelected(true);
@@ -404,7 +421,11 @@ public class BasicFileChooserUI extends FileChooserUI
             }
           lastSelected = path;
           parentPath = path.substring(0, path.lastIndexOf("/") + 1);
-          setFileName(path.substring(path.lastIndexOf("/") + 1));
+          if (f.isFile())
+            setFileName(path.substring(path.lastIndexOf("/") + 1));
+          else if (filechooser.getFileSelectionMode() == 
+            JFileChooser.DIRECTORIES_ONLY)
+            setFileName(path);
         }
     }
 
