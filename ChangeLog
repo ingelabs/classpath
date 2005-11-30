@@ -1,3 +1,9 @@
+2005-11-30  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/awt/Component.java:
+	(processFocusEvent): Don't dispatch events if the focus opposite is the
+	same as the receiving Component.
+
 2005-11-30  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/beans/PropertyChangeSupport.java:

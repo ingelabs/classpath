@@ -3019,6 +3019,11 @@ public abstract class Component
     if (focusListener == null)
       return;
 
+    // Don't dispatch FOCUS_GAINED or FOCUS_LOST events if the opposite
+    // Component is the same as the receiving Component.
+    if (e.getOppositeComponent() == this)
+      return;
+    
     switch (e.id)
       {
         case FocusEvent.FOCUS_GAINED:
