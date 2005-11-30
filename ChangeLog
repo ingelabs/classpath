@@ -1,3 +1,8 @@
+2005-11-30  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/beans/PropertyChangeSupport.java:
+	(fireIndexedPropertyChange): Removed argument checking.
+
 2005-11-30  Jan Roehrich  <jan@roehrich.info>
 
 	* java/awt/datatransfer/SystemFlavorMap.java
