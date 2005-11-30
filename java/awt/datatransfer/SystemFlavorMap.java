@@ -62,6 +62,11 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
   private static final Map systemFlavorMaps = new WeakHashMap();
   
   /**
+   * Constant which is used to prefix encode Java MIME types.
+   */
+  private static final String GNU_JAVA_MIME_PREFIX = "gnu.java:";
+  
+  /**
    * This map maps native <code>String</code>s to lists of 
    * <code>DataFlavor</code>s
    */
@@ -72,7 +77,7 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
    * <code>String</code>s
    */
   private HashMap flavorToNativeMap = new HashMap();
-
+  
   /**
    * Private constructor.
    */
@@ -141,36 +146,90 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
   }
 
   /**
-   * Returns the native type name for the given java mime type.
+   * Encodes a MIME type for use as a <code>String</code> native. The format
+   * of an encoded representation of a MIME type is implementation-dependent.
+   * The only restrictions are:
+   * <ul>
+   * <li>The encoded representation is <code>null</code> if and only if the
+   * MIME type <code>String</code> is <code>null</code>.</li>
+   * <li>The encoded representations for two non-<code>null</code> MIME type
+   * <code>String</code>s are equal if and only if these <code>String</code>s
+   * are equal according to <code>String.equals(Object)</code>.</li>
+   * </ul>
+   * <p>
+   * The present implementation of this method returns the specified MIME
+   * type <code>String</code> prefixed with <code>gnu.java:</code>.
+   *
+   * @param mime the MIME type to encode
+   * @return the encoded <code>String</code>, or <code>null</code> if
+   *         mimeType is <code>null</code>
    */
   public static String encodeJavaMIMEType (String mime)
   {
-    return null;
+    if (mime != null)
+      return GNU_JAVA_MIME_PREFIX + mime;
+    else
+      return null;
   }
 
   /**
-   * Returns the native type name for the given data flavor.
+   * Encodes a <code>DataFlavor</code> for use as a <code>String</code>
+   * native. The format of an encoded <code>DataFlavor</code> is 
+   * implementation-dependent. The only restrictions are:
+   * <ul>
+   * <li>The encoded representation is <code>null</code> if and only if the
+   * specified <code>DataFlavor</code> is <code>null</code> or its MIME type
+   * <code>String</code> is <code>null</code>.</li>
+   * <li>The encoded representations for two non-<code>null</code>
+   * <code>DataFlavor</code>s with non-<code>null</code> MIME type
+   * <code>String</code>s are equal if and only if the MIME type
+   * <code>String</code>s of these <code>DataFlavor</code>s are equal
+   * according to <code>String.equals(Object)</code>.</li>
+   * </ul>
+   * <p>
+   * The present implementation of this method returns the MIME type
+   * <code>String</code> of the specified <code>DataFlavor</code> prefixed
+   * with <code>gnu.java:</code>.
+   *
+   * @param df the <code>DataFlavor</code> to encode
+   * @return the encoded <code>String</code>, or <code>null</code> if
+   *         flav is <code>null</code> or has a <code>null</code> MIME type
    */
   public static String encodeDataFlavor (DataFlavor df)
   {
-    return null;
+    if (df != null)
+      {
+        return encodeJavaMIMEType(df.getMimeType());
+      }
+    else
+      return null;
   }
 
   /**
    * Returns true if the native type name can be represented as
-   * a java mime type.
+   * a java mime type. Returns <code>false</code> if parameter is
+   * <code>null</code>.
    */
   public static boolean isJavaMIMEType (String name)
   {
-    return false;
+    return (name != null && name.startsWith(GNU_JAVA_MIME_PREFIX));
   }
 
   /**
-   * Returns the java mime type for the given the native type name.
+   * Decodes a <code>String</code> native for use as a Java MIME type.
+   *
+   * @param name the <code>String</code> to decode
+   * @return the decoded Java MIME type, or <code>null</code> if nat 
+   *         is not an encoded <code>String</code> native
    */
   public static String decodeJavaMIMEType (String name)
   {
-    return null;
+    if (isJavaMIMEType(name))
+      {
+        return name.substring(GNU_JAVA_MIME_PREFIX.length());
+      }
+    else 
+      return null;
   }
 
   /**
@@ -188,6 +247,20 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
       return null;
   }
 
+  /** 
+   * Returns a List of <code>DataFlavors</code> to which the specified 
+   * <code>String</code> native can be translated by the data transfer 
+   * subsystem. The <code>List</code> will be sorted from best 
+   * <code>DataFlavor</code> to worst. That is, the first <code>DataFlavor 
+   * </code> will best reflect data in the specified native to a Java 
+   * application. 
+   * <p>
+   * If the specified native is previously unknown to the data transfer 
+   * subsystem, and that native has been properly encoded, then invoking 
+   * this method will establish a mapping in both directions between the 
+   * specified native and a DataFlavor whose MIME type is a decoded 
+   * version of the native.
+   */ 
   public List getFlavorsForNative (String nat)
   {
     throw new Error ("Not implemented");

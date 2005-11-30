@@ -1,6 +1,15 @@
 2005-11-30  Jan Roehrich  <jan@roehrich.info>
 
 	* java/awt/datatransfer/SystemFlavorMap.java
+	(isJavaMIMEType): implemented.
+	(GNU_JAVA_MIME_PREFIX): added constant.
+	(decodeJavaMIMEType): implemented.
+	(encodeJavaMIMEType): implemented.
+	(encodeDataFlavor): implemented.
+
+2005-11-30  Jan Roehrich  <jan@roehrich.info>
+
+	* java/awt/datatransfer/SystemFlavorMap.java
 	Some minor codestyle fixes.
 	(nativeToFlavorMap): removed generalization.
 	(flavorToNativeMap): likewise.
