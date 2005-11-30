@@ -1,6 +1,11 @@
 2005-11-30  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/beans/PropertyChangeSupport.java:
+	(fireIndexedPropertyChange): Completed statement.
+
+2005-11-30  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/beans/PropertyChangeSupport.java:
 	(fireIndexedPropertyChange): Removed argument checking.
 
 2005-11-30  Jan Roehrich  <jan@roehrich.info>
