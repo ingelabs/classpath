@@ -1,3 +1,10 @@
+2005-11-30  Jan Roehrich  <jan@roehrich.info>
+
+	* java/awt/datatransfer/SystemFlavorMap.java
+	Some minor codestyle fixes.
+	(nativeToFlavorMap): removed generalization.
+	(flavorToNativeMap): likewise.
+
 2005-11-29  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalFileChooserUI.java

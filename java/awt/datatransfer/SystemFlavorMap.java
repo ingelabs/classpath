@@ -65,13 +65,13 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
    * This map maps native <code>String</code>s to lists of 
    * <code>DataFlavor</code>s
    */
-  private Map nativeToFlavorMap = new HashMap();
+  private HashMap nativeToFlavorMap = new HashMap();
   
   /**
    * This map maps <code>DataFlavor</code>s to lists of native 
    * <code>String</code>s
    */
-  private Map flavorToNativeMap = new HashMap();
+  private HashMap flavorToNativeMap = new HashMap();
 
   /**
    * Private constructor.
@@ -122,7 +122,7 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
         .getContextClassLoader();
     
     //if ContextClassLoader not set, use system default 
-    if(classLoader == null)
+    if (classLoader == null)
       {
         classLoader = ClassLoader.getSystemClassLoader();
       }
@@ -131,7 +131,7 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
       {
         FlavorMap map = (FlavorMap) 
             systemFlavorMaps.get(classLoader);
-        if(map == null) 
+        if (map == null) 
           {
             map = new SystemFlavorMap();
             systemFlavorMaps.put(classLoader, map);
@@ -219,17 +219,17 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
   public synchronized void addFlavorForUnencodedNative(String nativeStr, 
                                                        DataFlavor flavor)
   {
-    if((nativeStr == null) || (flavor == null))
+    if ((nativeStr == null) || (flavor == null))
       throw new NullPointerException();
     List flavors = (List) nativeToFlavorMap.get(nativeStr);
-    if(flavors == null) 
+    if (flavors == null) 
       {
         flavors = new ArrayList();
         nativeToFlavorMap.put(nativeStr, flavors);
       }
     else
       {
-        if(!flavors.contains(flavor))
+        if (! flavors.contains(flavor))
           flavors.add(flavor);
       }
   }
@@ -257,17 +257,17 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
   public synchronized void addUnencodedNativeForFlavor(DataFlavor flavor,
                                                        String nativeStr) 
   {
-    if((nativeStr == null) || (flavor == null))
+    if ((nativeStr == null) || (flavor == null))
       throw new NullPointerException();
     List natives = (List) flavorToNativeMap.get(flavor);
-    if(natives == null) 
+    if (natives == null) 
       {
         natives = new ArrayList();
         flavorToNativeMap.put(flavor, natives);
       }
     else
       {
-        if(!natives.contains(nativeStr))
+        if (! natives.contains(nativeStr))
           natives.add(nativeStr);
       }
   }
@@ -303,11 +303,11 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
   public synchronized void setNativesForFlavor(DataFlavor flavor,
                                                String[] natives) 
   {
-    if((natives == null) || (flavor == null))
+    if ((natives == null) || (flavor == null))
       throw new NullPointerException();
     
     flavorToNativeMap.remove(flavor);
-    for(int i = 0; i < natives.length; i++) 
+    for (int i = 0; i < natives.length; i++) 
       {
         addUnencodedNativeForFlavor(flavor, natives[i]);
       }
@@ -343,11 +343,11 @@ public final class SystemFlavorMap implements FlavorMap, FlavorTable
   public synchronized void setFlavorsForNative(String nativeStr,
                                                DataFlavor[] flavors) 
   {
-    if((nativeStr == null) || (flavors == null))
+    if ((nativeStr == null) || (flavors == null))
       throw new NullPointerException();
     
     nativeToFlavorMap.remove(nativeStr);
-    for(int i = 0; i < flavors.length; i++) 
+    for (int i = 0; i < flavors.length; i++) 
       {
         addFlavorForUnencodedNative(nativeStr, flavors[i]);
       }
