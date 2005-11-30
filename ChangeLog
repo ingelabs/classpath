@@ -1,3 +1,37 @@
+2005-11-30  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JFormattedTextField.java:
+	(AbstractFormatter.install): Try to set the text of the formatted text
+	field using this formatter.
+	(FormatterFactoryWrapper): Removed this unneeded class, this is handled
+	by DefaultFormatterFactory now.
+	(formatter): New field.
+	(JFormattedTextField(Format)): Implemented.
+	(JFormattedTextField(AbstractFormatter)): Instantiate a 
+	DefaultFormatterFactory instead of a FormatterFactoryWrapper.
+	(JFormattedTextField(AbstractFormatterFactory, Object)): Call setValue
+	and setFormatterFactory instead of setting variables directly because
+	more needs to be done than just setting the value of the variables.
+	(JFormattedTextField(Object value)): Call setValue instead of setting 
+	the variable directly.
+	(getAppropriateFormatterFactory): New implementation method.
+	(getFormatter): Don't use the formatter factory here, just return 
+	the cached formatter.
+	(processFocusEvent): Set the formatter to the appropriate one as 
+	determined by the formatter factory.
+	(setFormatter): Don't get the old formatter from the factory, just use
+	the cached formatter.  Uninstall the old formatter. Install the new
+	formatter. Cache the new formatter.  Don't create a new formatter
+	factory.
+	(setFormatterFactory): Set the formatter according to the new formatter
+	factory.
+	(setValue): Moved the setting of the value variable to above the call
+	to createFormatter so that an appropriate formatter is created.  Cache
+	the formatter that is created.
+	(createFormatter): If argument is a Number, use a NumberFormatter.
+	* javax/swing/text/DefaultFormatter.java:
+	(valueToString): If argument is null return empty String.
+
 2005-11-30  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicFileChooserUI.java

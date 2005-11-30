@@ -40,15 +40,20 @@ package javax.swing;
 
 import java.awt.event.FocusEvent;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.Format;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Date;
 
 import javax.swing.text.DateFormatter;
 import javax.swing.text.DefaultFormatter;
+import javax.swing.text.DefaultFormatterFactory;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
+import javax.swing.text.InternationalFormatter;
 import javax.swing.text.NavigationFilter;
+import javax.swing.text.NumberFormatter;
 
 /**
  * A text field that makes use of a formatter to display and edit a specific
@@ -114,9 +119,21 @@ public class JFormattedTextField extends JTextField
     public void install(JFormattedTextField textField)
     {
       if (this.textField != null)
-	uninstall();
+        uninstall();
       
       this.textField = textField;
+      
+      if (textField != null)
+        {
+          try
+          {
+            textField.setText(valueToString(textField.getValue()));
+          }
+          catch (ParseException pe)
+          {
+            // FIXME: Not sure what to do here.
+          }
+        }
     }
 
     public void uninstall ()
@@ -155,21 +172,6 @@ public class JFormattedTextField extends JTextField
     public abstract AbstractFormatter getFormatter (JFormattedTextField tf);
   }
 
-  static class FormatterFactoryWrapper extends AbstractFormatterFactory
-  {
-    AbstractFormatter formatter;
-
-    public FormatterFactoryWrapper(AbstractFormatter formatter)
-    {
-      this.formatter = formatter;
-    }
-
-    public AbstractFormatter getFormatter(JFormattedTextField tf)
-    {
-      return formatter;
-    }
-  }
-
   public static final int COMMIT = 0;
   public static final int COMMIT_OR_REVERT = 1;
   public static final int REVERT = 2;
@@ -178,6 +180,7 @@ public class JFormattedTextField extends JTextField
   private Object value;
   private int focusLostBehavior = COMMIT_OR_REVERT;
   private AbstractFormatterFactory formatterFactory;
+  private AbstractFormatter formatter;
   // Package-private to avoid an accessor method.
   boolean editValid = true;
   
@@ -188,12 +191,13 @@ public class JFormattedTextField extends JTextField
 
   public JFormattedTextField (Format format)
   {
-    throw new InternalError ("not implemented");
+    this ();
+    setFormatterFactory(getAppropriateFormatterFactory(format));
   }
 
   public JFormattedTextField (AbstractFormatter formatter)
   {
-    this(new FormatterFactoryWrapper(formatter), null);
+    this(new DefaultFormatterFactory (formatter), null);
   }
 
   public JFormattedTextField (AbstractFormatterFactory factory)
@@ -203,13 +207,33 @@ public class JFormattedTextField extends JTextField
 
   public JFormattedTextField (AbstractFormatterFactory factory, Object value)
   {
-    this.formatterFactory = factory;
-    this.value = value;
+    setValue(value);
+    setFormatterFactory(factory);    
   }
 
   public JFormattedTextField (Object value)
   {
-    this.value = value;
+    setValue(value);
+  }
+  
+  /**
+   * Returns an AbstractFormatterFactory that will give an appropriate
+   * AbstractFormatter for the given Format.
+   * @param format the Format to match with an AbstractFormatter.
+   * @return a DefaultFormatterFactory whose defaultFormatter is appropriate
+   * for the given Format.
+   */
+  private AbstractFormatterFactory getAppropriateFormatterFactory (Format format)
+  {
+    AbstractFormatter newFormatter;
+    if (format instanceof DateFormat)
+      newFormatter = new DateFormatter((DateFormat)format);
+    else if (format instanceof NumberFormat)
+      newFormatter = new NumberFormatter ((NumberFormat)format);
+    else
+      newFormatter = new InternationalFormatter(format);
+    
+    return new DefaultFormatterFactory(newFormatter);
   }
 
   public void commitEdit ()
@@ -231,10 +255,7 @@ public class JFormattedTextField extends JTextField
 
   public AbstractFormatter getFormatter ()
   {
-    if (formatterFactory == null)
-      return null;
-    
-    return formatterFactory.getFormatter(this);
+    return formatter;
   }
 
   public AbstractFormatterFactory getFormatterFactory ()
@@ -264,10 +285,10 @@ public class JFormattedTextField extends JTextField
 
   protected void processFocusEvent (FocusEvent evt)
   {
-    // it's safe to simply call super for now, until it gets clear
-    // what this method is supposed to do
-    // throw new InternalError ("not implemented");
     super.processFocusEvent(evt);
+    // Let the formatterFactory change the formatter for this text field
+    // based on whether or not it has focus.
+    setFormatter (formatterFactory.getFormatter(this));
   }
 
   public void setDocument(Document newDocument)
@@ -295,13 +316,19 @@ public class JFormattedTextField extends JTextField
   {
     AbstractFormatter oldFormatter = null;
     
-    if (formatterFactory != null)
-      oldFormatter = formatterFactory.getFormatter(this);
+    oldFormatter = this.formatter;
 
     if (oldFormatter == formatter)
       return;
+    
+    if (oldFormatter != null)
+      oldFormatter.uninstall();
+    
+    this.formatter = formatter;
+    
+    if (formatter != null)
+      formatter.install(this);
 
-    setFormatterFactory(new FormatterFactoryWrapper(formatter));
     firePropertyChange("formatter", oldFormatter, formatter);
   }
 
@@ -313,6 +340,7 @@ public class JFormattedTextField extends JTextField
     AbstractFormatterFactory oldFactory = formatterFactory;
     formatterFactory = factory;
     firePropertyChange("formatterFactory", oldFactory, factory);
+    setFormatter(formatterFactory.getFormatter(this));
   }
 
   public void setValue (Object newValue)
@@ -320,8 +348,11 @@ public class JFormattedTextField extends JTextField
     if (value == newValue)
       return;
 
+    Object oldValue = value;
+    value = newValue;
+    
     // format value
-    AbstractFormatter formatter = createFormatter(newValue);
+    formatter = createFormatter(newValue);
     try
       {
         setText(formatter.valueToString(newValue));
@@ -330,9 +361,6 @@ public class JFormattedTextField extends JTextField
       {
         // TODO: what should we do with this?
       }
-
-    Object oldValue = value;
-    value = newValue;
     firePropertyChange("value", oldValue, newValue);
   }
 
@@ -352,16 +380,18 @@ public class JFormattedTextField extends JTextField
   AbstractFormatter createFormatter(Object value)
   {
     AbstractFormatter formatter = null;
-    if (formatterFactory != null
-        && formatterFactory.getFormatter(this) != null)
-     formatter = formatterFactory.getFormatter(this);
-   else
-     {
-       if (value instanceof Date)
-         formatter = new DateFormatter();
-       else
-         formatter = new DefaultFormatter();
-     }
+    if (formatterFactory != null && formatterFactory.getFormatter(this) != null)
+      formatter = formatterFactory.getFormatter(this);
+    else
+      {
+        if (value instanceof Date)
+          formatter = new DateFormatter();
+        else if (value instanceof Number)
+          formatter = new NumberFormatter();
+        else
+          formatter = new DefaultFormatter();
+        formatterFactory = new DefaultFormatterFactory (formatter);
+      }
     return formatter;
   }
 }
