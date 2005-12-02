@@ -1,3 +1,38 @@
+2005-12-02  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JFormattedTextField.java: Added docs all over.
+	(AbstractFormatter.clone): Implemented.
+	(AbstractFormatter.getActions): Implemented.
+	(AbstractFormatter.getDocumentFilter): Implemented.
+	(AbstractFormatter.getNavigationFilter): Implemented.
+	(AbstractFormatter.install): Install the DocumentFilter and 
+	NavigationFilter.  Properly catch ParseException.  Added FIXME to add
+	custom Actions to the JFormattedTextField.
+	(AbstractFormatter.uninstall): Remove the DocumentFilter and 
+	NavigationFilter.  Added FIXME to remove the custom Actions.
+	(JFormattedTextField(AbstractFormatter)): Call the single argument
+	constructor that takes in an AbstractFormatterFactory.  This avoids a 
+	call to setValue that shouldn't occur.
+	(JFormattedTextField(AbstractFormatterFactory): Call 
+	setFormatterFactory instead of calling the 2-argument constructor which
+	would also make an unwanted call to setValue.
+	(JFormattedTextField(AbstractFormatterFactory, Object)): Switch the 
+	order of the calls to setValue and setFormatterFactory.  This ensures
+	that the passed in factory is actually the one used, not one generated
+	by setValue.
+	(commitEdit): Implemented.
+	(setFormatter): Removed incorrect early escape if the parameter is the 
+	same as the current formatter.  
+	(setFormatterFactory): If formatterFactory is null set the formatter to
+	null as	well.
+	(setValue): Don't set the text here, this is done when we call 
+	setFormatter and it calls AbstractFormatter.install.  Create a 
+	formatter factory if one doesn't exist already. Call setFormatter to
+	get an appropriate formatter from the factory.
+	(createFormatter): Changed this to createFormatterFactory because we
+	should return a factory, not just a formatter.
+	(createFormatterFactory): New method adapted from createFormatter.
+
 2005-12-01  Anthony Green  <green@redhat.com>
 
         PR bootstrap/25207
