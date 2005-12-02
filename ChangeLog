@@ -1,5 +1,10 @@
 2005-12-02  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	* javax/swing/text/InternationalFormatter.java:
+	(valueToString): If argument is null return empty String.
+
+2005-12-02  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/JFormattedTextField.java: Added docs all over.
 	(AbstractFormatter.clone): Implemented.
 	(AbstractFormatter.getActions): Implemented.
@@ -29484,3 +29489,7 @@
 Local Variables:
 coding: iso-latin-1-unix	
 End:
+2005-12-02  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/InternationalFormatter.java:
+	(valueToString): If argument is null return empty String.
