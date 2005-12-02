@@ -112,7 +112,9 @@ AC_ARG_ENABLE([alsa],
                 no) COMPILE_ALSA=no ;;
                 *) COMPILE_ALSA=yes ;;
               esac],
-	      [AC_CHECK_HEADERS([alsa/asoundlib.h],COMPILE_ALSA=yes,COMPILE_ALSA=no)])
+	      [AC_CHECK_HEADERS([alsa/asoundlib.h],
+				[AC_CHECK_LIB([asound], [snd_seq_open], COMPILE_ALSA=yes,COMPILE_ALSA=no)],
+				COMPILE_ALSA=no)])
 AM_CONDITIONAL(CREATE_ALSA_LIBRARIES, test "x${COMPILE_ALSA}" = xyes)
 
 dnl -----------------------------------------------------------
@@ -127,6 +129,19 @@ AC_ARG_ENABLE([dssi],
               esac],
               [AC_CHECK_HEADERS([dssi.h],COMPILE_DSSI=yes,COMPILE_DSSI=no)])
 AM_CONDITIONAL(CREATE_DSSI_LIBRARIES, test "x${COMPILE_DSSI}" = xyes)
+
+dnl -----------------------------------------------------------
+dnl JACK code (enabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([jack],
+              [AS_HELP_STRING(--disable-jack,compile JACK providers (enable by --enable-jack) [default=yes])],
+              [case "${enableval}" in
+                yes) COMPILE_JACK=yes ;;
+                no) COMPILE_JACK=no ;;
+                *) COMPILE_JACK=yes ;;
+              esac],
+              [AC_CHECK_HEADERS([jack/jack.h],COMPILE_JACK=yes,COMPILE_JACK=no)])
+AM_CONDITIONAL(CREATE_JACK_LIBRARIES, test "x${COMPILE_JACK}" = xyes)
 
 dnl -----------------------------------------------------------
 dnl GTK native peer (enabled by default)
@@ -580,6 +595,7 @@ native/jni/qt-peer/Makefile
 native/jni/xmlj/Makefile
 native/jni/midi-alsa/Makefile
 native/jni/midi-dssi/Makefile
+native/jni/sampled-jack/Makefile
 native/target/Makefile
 native/target/Linux/Makefile
 native/target/generic/Makefile
