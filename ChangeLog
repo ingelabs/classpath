@@ -1,3 +1,9 @@
+2005-12-03  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac (AC_CONFIG_FILES): Removed
+	native/jni/sampled-jack/Makefile.
+	(AC_ARG_ENABLE [jack]): Removed.
+
 2005-12-02  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/InternationalFormatter.java:
