@@ -1,3 +1,8 @@
+2005-12-04  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* java/net/URL.java (URL): Check whether context is null before
+	accessing ph.
+
 2005-12-04  Nicolas Geoffray  <nicolas.geoffray@menlina.com>
 
 	* doc/vmintegration.texinfo: Added subsection in the classpath
