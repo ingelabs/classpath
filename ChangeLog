@@ -1,3 +1,11 @@
+2005-12-04  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/TransferHandler
+	(TransferAction.actionPerformed): Beep and return when clipboard
+	is null.
+	(getClipboard): Return null when access denied.
+	(clipboard): Removed static field.
+
 2005-12-03  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac (AC_CONFIG_FILES): Removed
