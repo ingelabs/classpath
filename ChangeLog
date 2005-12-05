@@ -1,3 +1,9 @@
+2005-12-05  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug classpath/25257
+	* lib/Makefile.am (FOUND_ECJ): Remove -warn typeHiding, unchecked and
+	varargsCast flags for non-generic code.
+
 2005-12-04  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* java/net/URL.java (URL): Check whether context is null before
