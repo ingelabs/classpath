@@ -2157,8 +2157,8 @@ class LightweightDispatcher implements Serializable
         break;
       }
 
-    if (me.getID() == MouseEvent.MOUSE_PRESSED
-        && me.getID() == MouseEvent.MOUSE_PRESSED && modifiers > 0
+    if (me.getID() == MouseEvent.MOUSE_RELEASED
+        || me.getID() == MouseEvent.MOUSE_PRESSED && modifiers > 0
         || me.getID() == MouseEvent.MOUSE_DRAGGED)
       {
         // If any of the following events occur while a button is held down,

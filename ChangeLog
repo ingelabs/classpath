@@ -1,3 +1,10 @@
+2005-12-06  Roman Kennke  <kennke@aicas.com>
+
+	PR classpath/25256
+	* java/awt/Container.java
+	(LightweightDispatcher.acquireComponentForMouseEvent): Fixed
+	the MOUSE_RELEASED flag and || conditional.
+
 2005-12-06  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* java/lang/String.java (String): Better out-of-bounds and 
