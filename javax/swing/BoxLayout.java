@@ -334,9 +334,8 @@ public class BoxLayout implements LayoutManager2, Serializable
           throw new AWTError("BoxLayout can't be shared");
 
         checkTotalRequirements();
-        Insets i = container.getInsets();
-        return new Dimension(xTotal.maximum + i.left + i.right,
-                             yTotal.maximum + i.top + i.bottom);
+        return new Dimension(xTotal.maximum,
+                             yTotal.maximum);
       }
   }
 
