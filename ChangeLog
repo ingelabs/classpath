@@ -1,3 +1,8 @@
+2005-12-06  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* java/lang/String.java (String): Better out-of-bounds and 
+	overflow checks.
+
 2005-12-06  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/LookAndFeel.java (toString): Include description and
