@@ -1,5 +1,14 @@
 2005-12-06  Roman Kennke  <kennke@aicas.com>
 
+	PR classpath/25256
+	* java/awt/Container.java
+	(LightweightDispatcher.acquireComponentForMouseEvent): When we
+	receive a MOUSE_RELEASED then dispatch it to the same component
+	that received the original MOUSE_PRESSED. This is needed for
+	correct dragging behaviour.
+
+2005-12-06  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/ViewportLayout.java
 	(layoutContainer): Don't set the view to it's minimumSize when the
 	port is larger than the view. Rather it should left at it's
