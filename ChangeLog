@@ -1,5 +1,10 @@
 2005-12-06  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(updateUI): Removed unneeded warning.
+
+2005-12-06  Roman Kennke  <kennke@aicas.com>
+
 	PR classpath/25256
 	* java/awt/Container.java
 	(LightweightDispatcher.acquireComponentForMouseEvent): When we
