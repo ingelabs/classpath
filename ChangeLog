@@ -1,3 +1,9 @@
+2005-12-06  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/GridBagLayout.java (ArrangeGrid): Use info rather than
+	layoutInfo in the component for loop.  Cache layout information
+	after resizing components.
+
 2005-12-06  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	Fixes bug #25233
