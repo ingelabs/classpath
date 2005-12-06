@@ -1,3 +1,11 @@
+2005-12-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/ViewportLayout.java
+	(layoutContainer): Don't set the view to it's minimumSize when the
+	port is larger than the view. Rather it should left at it's
+	preferred size. Also, I added a comment explaining a possible bug
+	in this method.
+
 2005-12-05  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug classpath/25257
@@ -1264,8 +1272,9 @@
 
 	PR classpath/PR24721
 	* javax/swing/text/BoxView.java
-	(getViewAtPoint): Added check in to return the last view, if one exists and
-	the point was not contained in the rectangle. This is what the JDK does.
+	(getViewAtPoint): Added check in to return the last view, if one
+	exists and the point was not contained in the rectangle. This is
+	what the JDK does.
 	* javax/swing/text/CompositeView.java
 	(viewToModel): Fixed API documentation. Added check to make sure
 	x and y are greater than 0. Otherwise, 0 is returned.
@@ -1273,8 +1282,8 @@
 	(moveDot): Added check to match API specs.
 	(setDot): Likewise.
 	* javax/swing/text/GlyphView.java
-	(viewToModel): Removed assert. This is not needed here. The point does not
-	need to be in the rectangle.
+	(viewToModel): Removed assert. This is not needed here. The point
+	does not need to be in the rectangle.
 
 2005-11-17  Roman Kennke  <kennke@aicas.com>
 
@@ -1333,12 +1342,12 @@
 2005-11-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
         
 	PR 24911
-	* classpath/examples/Makefile.am
+	* examples/Makefile.am
 	(EXAMPLE_JAVA_FILES): Extended by /*/*/*.java and /*/*/*/*.java.
 	(READMES): New category.
 	(ALL_EXAMPLE_FILES): Extended by READMES category. 
 
-2004-11-17  Bryce McKinlay  <mckinlay@redhat.com>
+2005-11-17  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* gnu/java/net/protocol/jar/Connection.java (getHeaderField):
 	Implemented.
