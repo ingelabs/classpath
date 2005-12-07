@@ -1,3 +1,9 @@
+2005-12-07  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #25273
+	* java/text/DecimalFormat.java(scanFormat): Don't set
+	minimumIntegerDigits to 0. 
+
 2005-12-06  Anthony Balkissoon  <abalkiss@redhat.com> 
 
 	* javax/swing/BoxLayout.java:
