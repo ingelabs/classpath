@@ -1,3 +1,8 @@
+2005-12-07  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Float.java (toHexString): New method.
+	* java/lang/Double.java (toHexString): New method.
+
 2005-12-07  Gary Benson  <gbenson@redhat.com>
 
 	* java/io/RandomAccessFile.java (RandomAccessFile): Don't create
