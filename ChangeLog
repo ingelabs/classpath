@@ -1,3 +1,9 @@
+2005-12-07  Gary Benson  <gbenson@redhat.com>
+
+	* java/io/RandomAccessFile.java (RandomAccessFile): Don't create
+	DataOutputStream for read-only files to avoid unnecessary security
+	manager check.
+
 2005-12-07  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #25273
