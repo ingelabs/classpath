@@ -1,3 +1,8 @@
+2005-12-08  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/StyledEditorKit.java
+	(create): Changed to use BlockView here instead of BoxView.
+
 2005-12-08  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JEditorPane.java:

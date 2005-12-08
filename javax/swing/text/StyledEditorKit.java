@@ -45,6 +45,7 @@ import javax.swing.Action;
 import javax.swing.JEditorPane;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.text.html.BlockView;
 
 /**
  * An {@link EditorKit} that supports editing styled text.
@@ -484,7 +485,7 @@ public class StyledEditorKit extends DefaultEditorKit
       else if (name.equals(AbstractDocument.ParagraphElementName))
 	view = new ParagraphView(element);
       else if (name.equals(AbstractDocument.SectionElementName))
-	view = new BoxView(element, View.Y_AXIS);
+	view = new BlockView(element, View.Y_AXIS);
       else if (name.equals(StyleConstants.ComponentElementName))
 	view = new ComponentView(element);
       else if (name.equals(StyleConstants.IconElementName))
