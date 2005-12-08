@@ -1,5 +1,15 @@
 2005-12-08  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/text/html/HTMLEditorKit.java
+	(insertHTML): Added method, not implemented yet.
+	(read): Likewise.
+	(write): Likewise.
+	(getContentType): Implemented.
+	(getViewFactory): Implemented.
+	(HTMLViewFactory): New package-private inner class, implemented.
+
+2005-12-08  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/text/StyledEditorKit.java
 	(create): Reverted to use BoxView. I need to write
 	a mauve test to be sure about this.

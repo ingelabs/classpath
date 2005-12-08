@@ -41,11 +41,22 @@ package javax.swing.text.html;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
+import java.io.Writer;
 
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.BoxView;
+import javax.swing.text.ComponentView;
 import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.IconView;
+import javax.swing.text.LabelView;
 import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.ParagraphView;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
+import javax.swing.text.View;
+import javax.swing.text.ViewFactory;
 import javax.swing.text.html.parser.ParserDelegator;
 
 /**
@@ -257,6 +268,11 @@ public class HTMLEditorKit
   public static final String PARA_INDENT_RIGHT = "html-para-indent-right";
 
   /**
+   * The ViewFactory for HTMLViewFactory.
+   */
+  HTMLViewFactory viewFactory;
+  
+  /**
    * Create a text storage model for this type of editor.
    *
    * @return the model
@@ -276,5 +292,171 @@ public class HTMLEditorKit
   protected Parser getParser()
   {
     return new ParserDelegator();
+  }
+  
+  /**
+   * Inserts HTML into an existing document.
+   * 
+   * @param doc - the Document to insert the HTML into.
+   * @param offset - where to begin inserting the HTML.
+   * @param html - the String to insert
+   * @param popDepth - the number of ElementSpec.EndTagTypes 
+   * to generate before inserting
+   * @param pushDepth - the number of ElementSpec.StartTagTypes 
+   * with a direction of ElementSpec.JoinNextDirection that 
+   * should be generated before
+   * @param insertTag - the first tag to start inserting into document
+   * @throws IOException - on any I/O error
+   * @throws BadLocationException - if pos represents an invalid location
+   * within the document
+   */
+  public void insertHTML(HTMLDocument doc, int offset, String html,
+                         int popDepth, int pushDepth, HTML.Tag insertTag)
+      throws BadLocationException, IOException
+  {
+    // FIXME: Not implemented.
+  }
+  
+  /**
+   * Inserts content from the given stream. Inserting HTML into a non-empty 
+   * document must be inside the body Element, if you do not insert into 
+   * the body an exception will be thrown. When inserting into a non-empty 
+   * document all tags outside of the body (head, title) will be dropped.
+   * 
+   * @param in - the stream to read from
+   * @param doc - the destination for the insertion
+   * @param pos - the location in the document to place the content
+   * @throws IOException - on any I/O error
+   * @throws BadLocationException - if pos represents an invalid location
+   * within the document
+   */
+  public void read(Reader in, Document doc, int pos) throws IOException,
+      BadLocationException
+  {
+    // FIXME: Not implemented.
+  }
+  
+  /**
+   * Writes content from a document to the given stream in 
+   * an appropriate format.
+   * 
+   * @param out - the stream to write to
+   * @param doc - the source for the write
+   * @param pos - the location in the document to get the content.
+   * @param len - the amount to write out
+   * @throws IOException - on any I/O error
+   * @throws BadLocationException - if pos represents an invalid location
+   * within the document
+   */
+  public void write(Writer out, Document doc, int pos, int len)
+      throws IOException, BadLocationException
+  {
+    // FIXME: Not implemented.
+  }
+  
+  /**
+   * Gets the content type that the kit supports.
+   * This kit supports the type text/html.
+   * 
+   * @returns the content type supported.
+   */
+  public String getContentType()
+  {
+    return "text/html";
+  }
+  
+  /**
+   * Gets a factory suitable for producing views of any 
+   * models that are produced by this kit.
+   * 
+   * @return the view factory suitable for producing views.
+   */
+  public ViewFactory getViewFactory()
+  {
+    if (viewFactory == null)
+      viewFactory = new HTMLViewFactory();
+    return viewFactory;
+  }
+  
+  /**
+   * A {@link ViewFactory} that is able to create {@link View}s for
+   * the <code>Element</code>s that are supported.
+   */
+  static class HTMLViewFactory
+    implements ViewFactory
+  {
+    /**
+     * Creates a {@link View} for the specified <code>Element</code>.
+     *
+     * @param element the <code>Element</code> to create a <code>View</code>
+     *        for
+     * @return the <code>View</code> for the specified <code>Element</code>
+     *         or <code>null</code> if the type of <code>element</code> is
+     *         not supported
+     */
+    public View create(Element element)
+    {
+      View view = null;
+      Object attr = element.getAttributes().getAttribute(
+                                StyleConstants.NameAttribute);
+      if (attr instanceof HTML.Tag)
+        {
+          HTML.Tag tag = (HTML.Tag) attr;
+
+          if (tag.equals(HTML.Tag.IMPLIED) || tag.equals(HTML.Tag.P)
+              || tag.equals(HTML.Tag.H1) || tag.equals(HTML.Tag.H2)
+              || tag.equals(HTML.Tag.H3) || tag.equals(HTML.Tag.H4)
+              || tag.equals(HTML.Tag.H5) || tag.equals(HTML.Tag.H6)
+              || tag.equals(HTML.Tag.DT))
+            view = new ParagraphView(element);
+          else if (tag.equals(HTML.Tag.LI) || tag.equals(HTML.Tag.DL)
+                   || tag.equals(HTML.Tag.DD) || tag.equals(HTML.Tag.BODY)
+                   || tag.equals(HTML.Tag.HTML) || tag.equals(HTML.Tag.CENTER)
+                   || tag.equals(HTML.Tag.DIV)
+                   || tag.equals(HTML.Tag.BLOCKQUOTE)
+                   || tag.equals(HTML.Tag.PRE))
+            view = new BlockView(element, View.Y_AXIS);
+          
+          // FIXME: Uncomment when the views have been implemented
+         /* else if (tag.equals(HTML.Tag.CONTENT))
+            view = new InlineView(element); 
+          else if (tag.equals(HTML.Tag.MENU) || tag.equals(HTML.Tag.DIR)
+                   || tag.equals(HTML.Tag.UL) || tag.equals(HTML.Tag.OL))
+            view = new ListView(element);
+          else if (tag.equals(HTML.Tag.IMG))
+            view = new ImageView(element);
+          else if (tag.equals(HTML.Tag.HR))
+            view = new HRuleView(element);
+          else if (tag.equals(HTML.Tag.BR))
+            view = new BRView(element);
+          else if (tag.equals(HTML.Tag.TABLE))
+            view = new TableView(element);
+          else if (tag.equals(HTML.Tag.INPUT) || tag.equals(HTML.Tag.SELECT)
+                   || tag.equals(HTML.Tag.TEXTAREA))
+            view = new FormView(element);
+          else if (tag.equals(HTML.Tag.OBJECT))
+            view = new ObjectView(element);
+          else if (tag.equals(HTML.Tag.FRAMESET))
+            view = new FrameSetView(element);
+          else if (tag.equals(HTML.Tag.FRAME))
+            view = new FrameView(element); */
+        }      
+      
+      if (view == null)
+        {
+          String name = element.getName();
+          if (name.equals(AbstractDocument.ContentElementName))
+            view = new LabelView(element);
+          else if (name.equals(AbstractDocument.ParagraphElementName))
+            view = new ParagraphView(element);
+          else if (name.equals(AbstractDocument.SectionElementName))
+            view = new BoxView(element, View.Y_AXIS);
+          else if (name.equals(StyleConstants.ComponentElementName))
+            view = new ComponentView(element);
+          else if (name.equals(StyleConstants.IconElementName))
+            view = new IconView(element);
+        }
+      return view;
+    }
   }
 }
