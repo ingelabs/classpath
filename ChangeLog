@@ -1,3 +1,9 @@
+2005-12-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(JComponent): Don't set a layout here. The default setting should be
+	null.
+
 2005-12-07  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/Float.java (toHexString): New method.
