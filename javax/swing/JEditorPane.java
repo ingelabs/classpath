@@ -45,6 +45,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleHyperlink;
@@ -88,6 +89,7 @@ import javax.swing.text.html.HTMLEditorKit;
  *
  * @author original author unknown
  * @author Roman Kennke (roman@kennke.org)
+ * @author Anthony Balkissoon abalkiss at redhat dot com
  */
 public class JEditorPane extends JTextComponent
 {
@@ -507,10 +509,16 @@ public class JEditorPane extends JTextComponent
   private EditorKit editorKit;
   
   boolean focus_root;
+  
+  // A mapping between content types and registered EditorKit types
+  static HashMap registerMap;
+  
+  // A mapping between content types and used EditorKits
+  HashMap editorMap;  
 
   public JEditorPane()
   {
-    setEditorKit(createDefaultEditorKit());
+    init(createDefaultEditorKit());
   }
 
   public JEditorPane(String url) throws IOException
@@ -520,7 +528,7 @@ public class JEditorPane extends JTextComponent
 
   public JEditorPane(String type, String text)
   {
-    setEditorKit(createEditorKitForContentType(type));
+    init(createEditorKitForContentType(type));
     setText(text);
   }
 
@@ -529,15 +537,61 @@ public class JEditorPane extends JTextComponent
     this();
     setPage(url);
   }
+  
+  /**
+   * Called by the constructors to set the EditorKit and set up the 
+   * default bindings for content types and EditorKits.
+   * 
+   * @param kit the initial EditorKit
+   */
+  void init(EditorKit kit)
+  {
+    setEditorKit(kit);
+    editorMap = new HashMap();
+    registerMap = new HashMap();
+    registerEditorKitForContentType("application/rtf",
+                                    "javax.swing.text.rtf.RTFEditorKit");
+    registerEditorKitForContentType("text/plain",
+                                    "javax.swing.JEditorPane$PlainEditorKit");
+    registerEditorKitForContentType("text/html",
+                                    "javax.swing.text.html.HTMLEditorKit");
+    registerEditorKitForContentType("text/rtf",
+                                    "javax.swing.text.rtf.RTFEditorKit");
+  }
 
   protected EditorKit createDefaultEditorKit()
   {
     return new PlainEditorKit();
   }
 
+  /**
+   * Creates and returns an EditorKit that is appropriate for the given 
+   * content type.  This is created using the default recognized types
+   * plus any EditorKit types that have been registered.
+   * 
+   * @see #registerEditorKitForContentType(String, String)
+   * @see #registerEditorKitForContentType(String, String, ClassLoader)
+   * @param type the content type
+   * @return an EditorKit for use with the given content type
+   */
   public static EditorKit createEditorKitForContentType(String type)
   {
-    return new PlainEditorKit();
+    // TODO: Have to handle the case where a ClassLoader was specified
+    // when the EditorKit was registered
+    EditorKit e = null;
+    String className = (String)registerMap.get(type);
+    if (className != null)
+      {
+        try
+        {
+          e = (EditorKit) Class.forName(className).newInstance();
+        }
+        catch (Exception e2)
+        {    
+          // TODO: Not sure what to do here.
+        }
+      }
+    return e;
   }
 
   /**
@@ -586,14 +640,44 @@ public class JEditorPane extends JTextComponent
     return editorKit;
   }
 
+  /**
+   * Returns the class name of the EditorKit associated with the given
+   * content type.
+   * 
+   * @since 1.3
+   * @param type the content type
+   * @return the class name of the EditorKit associated with this content type
+   */
   public static String getEditorKitClassNameForContentType(String type)
   {
-    return "text/plain";
+    return (String) registerMap.get(type);
   }
 
+  /**
+   * Returns the EditorKit to use for the given content type.  If an
+   * EditorKit has been explicitly set via 
+   * <code>setEditorKitForContentType</code>
+   * then it will be returned.  Otherwise an attempt will be made to create
+   * an EditorKit from the default recognzied content types or any
+   * EditorKits that have been registered.  If none can be created, a
+   * PlainEditorKit is created.
+   * 
+   * @see #registerEditorKitForContentType(String, String)
+   * @see #registerEditorKitForContentType(String, String, ClassLoader)
+   * @param type the content type
+   * @return an appropriate EditorKit for the given content type
+   */
   public EditorKit getEditorKitForContentType(String type)
   {
-    return editorKit;
+    // First check if an EditorKit has been explicitly set.
+    EditorKit e = (EditorKit) editorMap.get(type);
+    // Then check to see if we can create one.
+    if (e == null)
+      e = createEditorKitForContentType(type);
+    // Otherwise default to PlainEditorKit.
+    if (e == null)
+      e = new PlainEditorKit();
+    return e;
   }
 
   /**
@@ -677,12 +761,17 @@ public class JEditorPane extends JTextComponent
   }
 
   /**
-   * Establishes the default bindings of type to classname. 
+   * Establishes a binding between type and classname.  This enables
+   * us to create an EditorKit later for the given content type.
+   * 
+   * @param type the content type
+   * @param classname the name of the class that is associated with this 
+   * content type
    */
   public static void registerEditorKitForContentType(String type,
                                                      String classname)
   {
-    // TODO: Implement this properly.
+    registerMap.put(type, classname);
   }
 
   /**
@@ -702,6 +791,7 @@ public class JEditorPane extends JTextComponent
   public void replaceSelection(String content)
   {
     // TODO: Implement this properly.
+    super.replaceSelection(content);
   }
 
   /**
@@ -749,9 +839,14 @@ public class JEditorPane extends JTextComponent
     accessibleContext = null;
   }
 
+  /**
+   * Explicitly sets an EditorKit to be used for the given content type.
+   * @param type the content type
+   * @param k the EditorKit to use for the given content type
+   */
   public void setEditorKitForContentType(String type, EditorKit k)
   {
-    // FIXME: editorKitCache.put(type, kit);
+    editorMap.put(type, k);
   }
 
   /**
