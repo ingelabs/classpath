@@ -1,3 +1,18 @@
+2005-12-08  Tom Tromey  <tromey@redhat.com>
+
+	* javax/security/auth/login/LoginContext.java (LoginContext): New
+	constructor.
+	* javax/security/auth/login/CredentialNotFoundException.java: New
+	file.
+	* javax/security/auth/login/CredentialExpiredException.java: Extends
+	CredentialException.
+	* javax/security/auth/login/CredentialException.java: New file.
+	* javax/security/auth/login/AccountNotFoundException.java: New file.
+	* javax/security/auth/login/AccountLockedException.java: New file.
+	* javax/security/auth/login/AccountExpiredException.java: Extends
+	AccountException.
+	* javax/security/auth/login/AccountException.java: New file.
+
 2005-12-08  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java
