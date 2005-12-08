@@ -1,6 +1,18 @@
 2005-12-08  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JEditorPane.java:
+	(init): Changed to no-argument instead of taking in an EditorKit and
+	passing it to setEditorKit.  Callers will have to call setEditorKit
+	themselves.
+	(JEditorPane()): Changed call to init to have no arguments, call
+	setEditorKit after init.
+	(JEditorPane(String, String)): Likewise.
+	(JEditorPane(URL)): Don't call default constructor, call init and then
+	setEditorKit using the appropriate EditorKit for text/html.
+
+2005-12-08  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JEditorPane.java:
 	(registerMap): New field.
 	(editorMap): New field.
 	(JEditorPane()): Call init instead of setEditorKit.

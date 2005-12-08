@@ -518,7 +518,8 @@ public class JEditorPane extends JTextComponent
 
   public JEditorPane()
   {
-    init(createDefaultEditorKit());
+    init();
+    setEditorKit(createDefaultEditorKit());
   }
 
   public JEditorPane(String url) throws IOException
@@ -528,25 +529,24 @@ public class JEditorPane extends JTextComponent
 
   public JEditorPane(String type, String text)
   {
-    init(createEditorKitForContentType(type));
+    init();
+    setEditorKit(createEditorKitForContentType(type));
     setText(text);
   }
 
   public JEditorPane(URL url) throws IOException
   {
-    this();
+    init ();
+    setEditorKit (createEditorKitForContentType("text/html"));;
     setPage(url);
   }
   
   /**
-   * Called by the constructors to set the EditorKit and set up the 
-   * default bindings for content types and EditorKits.
-   * 
-   * @param kit the initial EditorKit
+   * Called by the constructors to set up the default bindings for content 
+   * types and EditorKits.
    */
-  void init(EditorKit kit)
+  void init()
   {
-    setEditorKit(kit);
     editorMap = new HashMap();
     registerMap = new HashMap();
     registerEditorKitForContentType("application/rtf",
