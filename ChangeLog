@@ -1,3 +1,24 @@
+2005-12-08  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/html/BlockView.java:
+	New class added.
+	(BlockView): Implemented.
+	(setParent): Implemented.
+	(calculateMajorAxisRequirements): Added, not fully implemented.
+	(calculateMinorAxisRequirements): Likewise.
+	(layoutMinorAxis): Likewise.
+	(paint): Implemented, but some code is commented out since
+	StyleSheet is not yet implemented.
+	(getAttributes): Likewise.
+	(getResizeWeight): Implemented.
+	(getAlignment): Implemented.
+	(changedUpdate): Implemented.
+	(getPreferredSpan): Implemented.
+	(getMinimumSpan): Implemented.
+	(getMaximumSpan): Implemented.
+	(setPropertiesFromAttributes): Added, not implemented yet. Need
+	to wait for StyleSheet to be implemented.
+
 2005-12-08  Tom Tromey  <tromey@redhat.com>
 
 	* javax/security/auth/login/LoginContext.java (LoginContext): New
