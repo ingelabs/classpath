@@ -1,3 +1,9 @@
+2005-12-09  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/html/HTMLEditorKit.java
+	(getViewFactory): Fixed class name of ViewFactory returned.
+	(HTMLFactory): Fixed class name to match API.
+
 2005-12-08  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/html/HTMLEditorKit.java

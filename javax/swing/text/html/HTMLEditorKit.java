@@ -268,9 +268,9 @@ public class HTMLEditorKit
   public static final String PARA_INDENT_RIGHT = "html-para-indent-right";
 
   /**
-   * The ViewFactory for HTMLViewFactory.
+   * The ViewFactory for HTMLFactory.
    */
-  HTMLViewFactory viewFactory;
+  HTMLFactory viewFactory;
   
   /**
    * Create a text storage model for this type of editor.
@@ -374,7 +374,7 @@ public class HTMLEditorKit
   public ViewFactory getViewFactory()
   {
     if (viewFactory == null)
-      viewFactory = new HTMLViewFactory();
+      viewFactory = new HTMLFactory();
     return viewFactory;
   }
   
@@ -382,7 +382,7 @@ public class HTMLEditorKit
    * A {@link ViewFactory} that is able to create {@link View}s for
    * the <code>Element</code>s that are supported.
    */
-  static class HTMLViewFactory
+  public static class HTMLFactory
     implements ViewFactory
   {
     /**
