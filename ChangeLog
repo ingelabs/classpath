@@ -1,3 +1,38 @@
+2005-12-09  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/html/CSS.java:
+	Fixed class signature.
+	* javax/swing/text/html/HTMLEditorKit.java:
+	Fixed class signature.
+	(LinkController): New class added with only stubs. Functions
+	are not implmented yet.
+	(InsertHTMLTextAction): New class. Constructors implemented.
+	(insertHTML): Implemented.
+	(insertAtBoundary): Added, not yet implemented.
+	(insertAtBoundry): Implemented.
+	(actionPerformed): Added, not yet implemented.
+	(HTMLTextAction): New class.
+	(getHTMLDocument): Implemented.
+	(getHTMLEditorKit): Implemented.
+	(getElementsAt): Implemented.
+	(elementCountToTag): Added, not yet implemented.
+	(findElementMatchingTag): Likewise.
+	(getViewFactory): Implemented.
+	(HTMLFactory): Moved to beginning of class, with other inner classes.
+	(ParserCallBack): Added constructor, not yet implemented.
+	(clone): Added, not yet implemented. Calls super.
+	(createInputAttributes): Likewise.
+	(install): Likewise.
+	(deinstall): Likewise.
+	(getActions): Likewise.
+	(getInputAttributes): Likewise.
+	(getDefaultCursor): Implemented.
+	(getLinkCursor): Implemented.
+	(SetLinkCursor): Implemented.
+	(setDefaultLinkCursor): Implemented.
+	(AccessibleContext): Can't implement until AccessibleHTML is
+	implemented. Currently, returns null because accessibility is not supported.
+
 2005-12-09  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JEditorPane.java:
