@@ -1,5 +1,12 @@
 2005-12-09  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/text/html/HTMLDocument.java
+	(getReader): Added function. Not implemented. It was
+	added so a certain mauve test committed compiles with
+	classpath fine.
+
+2005-12-09  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/text/html/HTMLEditorKit.java
 	(getViewFactory): Fixed class name of ViewFactory returned.
 	(HTMLFactory): Fixed class name to match API.
