@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -876,9 +877,36 @@ public class JEditorPane extends JTextComponent
       }
   }
 
+  /**
+   * Sets the text of the JEditorPane.  The argument <code>t</code>
+   * is expected to be in the format of the current EditorKit.  This removes
+   * the content of the current document and uses the EditorKit to read in the
+   * new text.  This allows the EditorKit to handle the String rather than just
+   * inserting in plain text.
+   * 
+   * @param t the text to display in this JEditorPane
+   */
   public void setText(String t)
   {
-    super.setText(t);
+    try
+    {
+      // Remove the current content.
+      Document doc = getDocument();
+      doc.remove(0, doc.getLength());
+      if (t == null || t == "")
+        return;
+      
+      // Let the EditorKit read the text into the Document.
+      getEditorKit().read(new StringReader(t), doc, 0);
+    }
+    catch (BadLocationException ble)
+    {
+      // TODO: Don't know what to do here.
+    }
+    catch (IOException ioe)
+    {
+      // TODO: Don't know what to do here.
+    }
   }
 
   /**

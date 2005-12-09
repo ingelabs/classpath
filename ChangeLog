@@ -1,3 +1,9 @@
+2005-12-09  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/JEditorPane.java:
+	(setText): Allow the EditorKit to read the text into the Document,
+	allowing for other than plain text.
+
 2005-12-09  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/html/HTMLDocument.java
