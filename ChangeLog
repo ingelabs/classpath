@@ -1,3 +1,7 @@
+2005-12-11  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* lib/copy-vmresources.sh.in: Added some '.' after find. 
+	
 2005-12-09  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/html/CSS.java:
