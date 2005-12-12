@@ -15,6 +15,13 @@
 	(getPreferredSize): Don't check for the minimumSize. According to
 	a mauve test, this is not necessary.
 
+2005-12-12  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/XMLInputFactoryImpl.java,
+	  gnu/xml/stream/CRLFReader.java,
+	  gnu/xml/stream/XMLInputStreamReader.java,
+	  gnu/xml/stream/XMLParser.java: New StAX parser.
+
 2005-12-11  Mark Wielaard  <mark@klomp.org>
 
 	* doc/hacking.texinfo: Add section on branches.
