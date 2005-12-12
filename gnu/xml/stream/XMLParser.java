@@ -105,11 +105,11 @@ public class XMLParser
   private final static int LIT_DISABLE_EREF = 64;
   private final static int LIT_PUBID = 256;
 
-  private final static int ATTRIBUTE_DEFAULT_UNDECLARED = 30;
-  private final static int ATTRIBUTE_DEFAULT_SPECIFIED = 31;
-  private final static int ATTRIBUTE_DEFAULT_IMPLIED = 32;
-  private final static int ATTRIBUTE_DEFAULT_REQUIRED = 33;
-  private final static int ATTRIBUTE_DEFAULT_FIXED = 34;
+  final static int ATTRIBUTE_DEFAULT_UNDECLARED = 30;
+  final static int ATTRIBUTE_DEFAULT_SPECIFIED = 31;
+  final static int ATTRIBUTE_DEFAULT_IMPLIED = 32;
+  final static int ATTRIBUTE_DEFAULT_REQUIRED = 33;
+  final static int ATTRIBUTE_DEFAULT_FIXED = 34;
 
   private Input input;
   private LinkedList inputStack = new LinkedList();
@@ -131,7 +131,7 @@ public class XMLParser
   private Boolean xmlStandalone;
   private boolean xml11;
 
-  private Doctype doctype;
+  Doctype doctype;
   private boolean expandPE, peIsError;
 
   private boolean stringInterning = true;
@@ -386,6 +386,20 @@ public class XMLParser
           }
       }
     return null;
+  }
+
+  boolean isAttributeDeclared(int index)
+  {
+    if (doctype == null)
+      return false;
+    Attribute a = (Attribute) attrs.get(index);
+    String qn = ("".equals(a.prefix)) ? a.localName :
+      a.prefix + ":" + a.localName;
+    String elementName = buf.toString();
+    LinkedHashMap attlist = (LinkedHashMap) doctype.attlists.get(elementName);
+    if (attlist == null)
+      return false;
+    return attlist.containsKey(qn);
   }
   
   public String getCharacterEncodingScheme()
@@ -1077,7 +1091,7 @@ public class XMLParser
     //System.out.print("\n(+input:"+input.systemId+")"); 
   }
 
-  private String absolutize(String base, String href)
+  static String absolutize(String base, String href)
   {
     if (href == null)
       return null;
