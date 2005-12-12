@@ -1,3 +1,9 @@
+2005-12-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(getPreferredSize): Don't check for the minimumSize. According to
+	a mauve test, this is not necessary.
+
 2005-12-11  Mark Wielaard  <mark@klomp.org>
 
 	* doc/hacking.texinfo: Add section on branches.
@@ -306,7 +312,7 @@
 2005-12-01  Anthony Green  <green@redhat.com>
 
         PR bootstrap/25207
-        * configure.ac: Make sure we have an alsa library in addition to
+	* configure.ac: Make sure we have an alsa library in addition to
         the headers.  This extra test is required for systems with
         multilibs.
 
@@ -537,7 +543,8 @@
 	appropriate size String for the table.
 	(getPreferredSize): Implemented.
 	(getMinimumSize): Implemented.
-	(addControlButtons): Added action listeners for detailButton and listButton.
+	(addControlButtons): Added action listeners for detailButton and
+	listButton.
 	(setDirectorySelected): Added API documentation.
 	(getDirectoryName): Likewise.
 	(setDirectoryName): Likewise.
@@ -549,12 +556,14 @@
 	(init): Layout should not be set to FlowLayout. JDK sets it to null.
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
 	(mouseClicked): Changed to call completeEditing when double-clicked.
-	(editFile): Fixed to add an action listener to the editing field. Editing
-	for filechooser now works.
-	(completeEditing): Fixed renaming to create a new file object and rescan the
-	directory if renaming was successful. Added code to cancel editing as well.
-	(EditingActionListener): New class to listen for notify action and to complete
-	editing when enter is pressed. Otherwise, editing is cancelled.
+	(editFile): Fixed to add an action listener to the editing field.
+	Editing	for filechooser now works.
+	(completeEditing): Fixed renaming to create a new file object and
+	rescan the directory if renaming was successful. Added code to cancel
+	editing as well.
+	(EditingActionListener): New class to listen for notify action and
+	to complete editing when enter is pressed. Otherwise, editing is
+	cancelled.
 	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
 	(MetalDividerLayout): Changed to public.
 	(MetalDividerLayout.init): Likewise.
@@ -579,10 +588,8 @@
 
 	* native/jni/java-io/javaio.c, native/jni/java-io/javaio.h:
 	Removed.
-
 	* native/jni/java-io/java_io_VMFile.c: Removed dependency on
 	javaio.h
-
 	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
 	Likewise.
 	
@@ -661,8 +668,8 @@
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
 	(propertyChange): Implemented MULTI_SELECTION_ENABLED_CHANGED_PROPERTY
 	property change.
-	(getListCellRendererComponent): Set opaque property, so background color
-	on cell is painted.
+	(getListCellRendererComponent): Set opaque property, so background
+	color on cell is painted.
 	(SingleClickListener.init): Implemented.
 	(installStrings): Fixed tooltip text strings.
 
@@ -825,8 +832,8 @@
 
 2005-11-25  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
-        * native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c 
-        (save_to_stream): Added missing DeleteLocalRef call.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c 
+	(save_to_stream): Added missing DeleteLocalRef call.
 
 2005-11-24  Sven de Marothy  <sven@physto.se>
 
@@ -943,9 +950,10 @@
 	(paintBottomTabBorder): Likewise.
 	(paintTabBackground): Added call to paint the highlight below the tab.
 	(getColorForGap): Added code to return selected color, if selected.
-	(shouldFillGap): Changed to return false. With JDK, gap is never filled in
-	MetalL&F.
-	(paintHighlightBelowTab): Implemented to paint the highlight on selected tabs.
+	(shouldFillGap): Changed to return false. With JDK, gap is never
+	filled in MetalL&F.
+	(paintHighlightBelowTab): Implemented to paint the highlight on
+	selected tabs.
 	(calculateMaxTabHeight): Removed.
 	(getTabLabelShiftX): Removed.
 	(getTabLabelShiftY): Removed.
