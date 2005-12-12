@@ -1,5 +1,11 @@
 2005-12-12  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/ViewportLayout.java
+	(layoutContainer): Always check and adjust the size, not only when
+	portSize >= view.minSize.
+
+2005-12-12  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(getPreferredSize): Don't check for the minimumSize. According to
 	a mauve test, this is not necessary.
