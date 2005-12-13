@@ -68,6 +68,7 @@ import javax.swing.text.ParagraphView;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 import javax.swing.text.StyledEditorKit;
+import javax.swing.text.TextAction;
 import javax.swing.text.View;
 import javax.swing.text.ViewFactory;
 import javax.swing.text.html.parser.ParserDelegator;
@@ -739,6 +740,13 @@ public class HTMLEditorKit
   public static final String PARA_INDENT_RIGHT = "html-para-indent-right";
   
   /**
+   * Actions for HTML 
+   */
+  private static final Action[] defaultActions = {
+    // FIXME: Add default actions for html
+  };
+  
+  /**
    * The ViewFactory for HTMLFactory.
    */
   HTMLFactory viewFactory;
@@ -997,8 +1005,7 @@ public class HTMLEditorKit
    */
   public Action[] getActions()
   {
-    // FIXME: should return different actions, see static fields.
-    return super.getActions();
+    return TextAction.augmentList(super.getActions(), defaultActions);
   }
   
   /**

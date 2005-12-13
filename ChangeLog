@@ -1,3 +1,21 @@
+2005-12-13  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/AbstractAction.java:
+	(putValue): Fixed check, should use .equals when comparing
+	objects.
+	* javax/swing/text/StyledEditorKit.java
+	(UnderlineAction): Fixed name.
+	(ItalicAction): Likewise.
+	(BoldAction): Likewise.
+	(getActions): Added more default actions.
+	* javax/swing/text/html/HTMLDocument.java:
+	Removed unneeded import statement.
+	* javax/swing/text/html/HTMLEditorKit.java:
+	Added new field
+	(getActions): Fixed to use augmentList to combine
+	the actions from the super class with the ones from
+	this class.
+
 2005-12-13  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/XIncludeFilter.java,

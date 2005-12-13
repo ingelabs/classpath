@@ -41,7 +41,6 @@ package javax.swing.text.html;
 import java.net.URL;
 
 import java.io.IOException;
-import java.io.StringReader;
 
 import java.util.HashMap;
 import java.util.Stack;
