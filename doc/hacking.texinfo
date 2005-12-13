@@ -848,11 +848,13 @@ differ from the trunk.)
 @item Requirements for patch email to classpath-patches and for paperwork
 @strong{cannot} be lifted. See @ref{Requirements}.
 
-@item A branch should not see it as ``private'' or
-``may be broken at random times''. It should be as much as possible
+@item A branch should not be seen as ``private'' or
+``may be completely broken''. It should be as much as possible
 something that you work on with a team (and if there is no team - yet
 - then there is nothing as bad as having a completely broken build to
-get others to help out).
+get others to help out). There can of course be occasional breakage, but
+it should be planned and explained. And you can certainly have a rule
+like ``please ask me before committing to this branch''.
 
 @item Merges from the trunk to a branch are at the discretion of the
 branch maintainer.

@@ -1,3 +1,8 @@
+2005-12-13  Mark Wielaard  <mark@klomp.org>
+
+	* doc/hacking.texinfo (Branches): Explain "broken" branches a bit
+	more.
+
 2005-12-12  Dalibor Topic  <robilad@kaffe.org>
 
 	Fixes bug #25353
