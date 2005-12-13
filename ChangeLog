@@ -1,3 +1,26 @@
+2005-12-13  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/html/HTMLDocument.java:
+	(tokenThreshold): New field.
+	(parser): New field.
+	(getParser): New API method.
+	(setParser): New API method.
+	(getTokenThreshold): New API method.
+	(setTokenThreshold): New API method.
+	(getReader(int, int, int, HTML.Tag)): New API method, not implemented.
+	(HTMLReader): New API class, partially implemented.
+	(HTMLReader.BlockAction): New API class, not implemented.
+	(HTMLReader.CharacterAction): Likewise.
+	(HTMLReader.FormAction): Likewise.
+	(HTMLReader.HiddenAction): Likewise.
+	(HTMLReader.IsindexAction): Likewise.
+	(HTMLReader.ParagraphAction): Likewise.
+	(HTMLReader.PreAction): Likewise.
+	(HTMLReader.SpecialAction): Likewise.
+	(HTMLReader.TagAction): New API class, implemented.
+	* javax/swing/text/html/HTMLEditorKit.java:
+	(createDefaultDocument): Set the parser for the new HTMLDocument.
+	
 2005-12-13  Mark Wielaard  <mark@klomp.org>
 
 	* doc/hacking.texinfo: Add @bullet to all @itemize lists.

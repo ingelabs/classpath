@@ -741,6 +741,7 @@ public class HTMLEditorKit
   public Document createDefaultDocument()
   {
     HTMLDocument document = new HTMLDocument();
+    document.setParser(getParser());
     return document;
   }
 
