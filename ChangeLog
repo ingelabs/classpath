@@ -1,3 +1,9 @@
+2005-12-13  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/XIncludeFilter.java,
+	  gnu/xml/stream/XMLStreamWriterImpl.java,
+	  gnu/xml/stream/XMLParser.java: XInclude fixes.
+
 2005-12-13  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/html/HTMLDocument.java:

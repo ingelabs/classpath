@@ -82,6 +82,8 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import gnu.java.net.CRLFInputStream;
+
 /**
  * An XML parser.
  *
@@ -422,7 +424,9 @@ public class XMLParser
 
   public String getEncoding()
   {
-    return (input.forceReader) ? null : input.inputEncoding;
+    if (input.forceReader)
+      return null;
+    return (input.inputEncoding == null) ? "UTF-8" : input.inputEncoding;
   }
 
   public int getEventType()
@@ -506,7 +510,7 @@ public class XMLParser
         int ci = qName.indexOf(':');
         if (ci == -1)
           return null;
-        String prefix = qName.substring(ci + 1);
+        String prefix = qName.substring(0, ci);
         return getNamespaceURI(prefix);
       default:
         return null;
@@ -611,7 +615,7 @@ public class XMLParser
 
   public String getVersion()
   {
-    return xmlVersion;
+    return (xmlVersion == null) ? "1.0" : xmlVersion;
   }
 
   public boolean hasName()
@@ -720,7 +724,14 @@ public class XMLParser
   {
     if (!lookahead)
       {
-        next();
+        try
+          {
+            next();
+          }
+        catch (NoSuchElementException e)
+          {
+            event = -1;
+          }
         lookahead = true;
       }
     return event != -1;
@@ -2496,57 +2507,64 @@ public class XMLParser
   public static void main(String[] args)
     throws Exception
   {
+    boolean xIncludeAware = false;
+    if (args.length > 1 && "-x".equals(args[1]))
+      xIncludeAware = true;
     XMLParser p = new XMLParser(new java.io.FileInputStream(args[0]), args[0]);
+    XMLStreamReader reader = p;
+    if (xIncludeAware)
+      reader = new XIncludeFilter(p, args[0], true, true, true);
     try
       {
         int event;
-        do
+        //do
+        while (reader.hasNext())
           {
-            event = p.next();
+            event = reader.next();
             switch (event)
               {
               case XMLStreamConstants.START_DOCUMENT:
-                System.out.println("START_DOCUMENT version="+p.getVersion()+
-                                   " encoding="+p.getEncoding());
+                System.out.println("START_DOCUMENT version="+reader.getVersion()+
+                                   " encoding="+reader.getEncoding());
                 break;
               case XMLStreamConstants.END_DOCUMENT:
                 System.out.println("END_DOCUMENT");
                 break;
               case XMLStreamConstants.START_ELEMENT:
-                System.out.println("START_ELEMENT "+p.getName());
-                int l = p.getNamespaceCount();
+                System.out.println("START_ELEMENT "+reader.getName());
+                int l = reader.getNamespaceCount();
                 for (int i = 0; i < l; i++)
-                  System.out.println("\tnamespace "+p.getNamespacePrefix(i)+
-                                     "='"+p.getNamespaceURI(i)+"'");
-                l = p.getAttributeCount();
+                  System.out.println("\tnamespace "+reader.getNamespacePrefix(i)+
+                                     "='"+reader.getNamespaceURI(i)+"'");
+                l = reader.getAttributeCount();
                 for (int i = 0; i < l; i++)
-                  System.out.println("\tattribute "+p.getAttributeQName(i)+
-                                     "='"+p.getAttributeValue(i)+"'");
+                  System.out.println("\tattribute "+reader.getAttributeQName(i)+
+                                     "='"+reader.getAttributeValue(i)+"'");
                 break;
               case XMLStreamConstants.END_ELEMENT:
-                System.out.println("END_ELEMENT "+p.getName());
+                System.out.println("END_ELEMENT "+reader.getName());
                 break;
               case XMLStreamConstants.CHARACTERS:
-                System.out.println("CHARACTERS '"+p.getText()+"'");
+                System.out.println("CHARACTERS '"+reader.getText()+"'");
                 break;
               case XMLStreamConstants.CDATA:
-                System.out.println("CDATA '"+p.getText()+"'");
+                System.out.println("CDATA '"+reader.getText()+"'");
                 break;
               case XMLStreamConstants.SPACE:
-                System.out.println("SPACE '"+p.getText()+"'");
+                System.out.println("SPACE '"+reader.getText()+"'");
                 break;
               case XMLStreamConstants.DTD:
-                System.out.println("DTD "+p.getText());
+                System.out.println("DTD "+reader.getText());
                 break;
               case XMLStreamConstants.ENTITY_REFERENCE:
-                System.out.println("ENTITY_REFERENCE "+p.getText());
+                System.out.println("ENTITY_REFERENCE "+reader.getText());
                 break;
               case XMLStreamConstants.COMMENT:
-                System.out.println("COMMENT '"+p.getText()+"'");
+                System.out.println("COMMENT '"+reader.getText()+"'");
                 break;
               case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                System.out.println("PROCESSING_INSTRUCTION "+p.getPITarget()+
-                                   " "+p.getPIData());
+                System.out.println("PROCESSING_INSTRUCTION "+reader.getPITarget()+
+                                   " "+reader.getPIData());
                 break;
               case XMLStreamConstants.START_ENTITY:
                 System.out.println("START_ENTITY");
@@ -2558,11 +2576,11 @@ public class XMLParser
                 System.out.println("Unknown event: "+event);
               }
           }
-        while (event != -1 && event != XMLStreamConstants.END_DOCUMENT);
+        //while (event != XMLStreamConstants.END_DOCUMENT);
       }
     catch (XMLStreamException e)
       {
-        Location l = p.getLocation();
+        Location l = reader.getLocation();
         System.out.println("At line "+l.getLineNumber()+
                            ", column "+l.getColumnNumber()+
                            " of "+l.getLocationURI());
@@ -2698,6 +2716,7 @@ public class XMLParser
         {
           try
             {
+              in = new CRLFInputStream(in);
               reader = new XMLInputStreamReader(in, defaultEncoding);
             }
           catch (UnsupportedEncodingException e)
@@ -2710,8 +2729,10 @@ public class XMLParser
             }
         }
       else
-        forceReader = true;
-      reader = new CRLFReader(reader);
+        {
+          forceReader = true;
+          reader = new CRLFReader(reader);
+        }
       this.reader = reader;
     }
 
@@ -2725,7 +2746,7 @@ public class XMLParser
     void mark(int len)
       throws IOException
     {
-      //System.out.println("mark");
+      //System.out.println("  mark:"+len);
       markOffset = offset;
       markLine = line;
       markColumn = column;
@@ -2784,7 +2805,7 @@ public class XMLParser
     void reset()
       throws IOException
     {
-      //System.out.println("reset");
+      //System.out.println("  reset");
       reader.reset();
       offset = markOffset;
       line = markLine;
@@ -2884,9 +2905,13 @@ public class XMLParser
     private void setInputEncoding(String encoding)
       throws UnsupportedEncodingException
     {
-      inputEncoding = encoding;
-      reader = new XMLInputStreamReader((XMLInputStreamReader) reader, encoding);
-      reader = new CRLFReader(reader);
+      if (!encoding.equals(inputEncoding) &&
+          reader instanceof XMLInputStreamReader)
+        {
+          inputEncoding = encoding;
+          reader = new XMLInputStreamReader((XMLInputStreamReader) reader,
+                                            encoding);
+        }
     }
 
   }
