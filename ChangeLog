@@ -1,5 +1,9 @@
 2005-12-13  Mark Wielaard  <mark@klomp.org>
 
+	* doc/hacking.texinfo: Add @bullet to all @itemize lists.
+
+2005-12-13  Mark Wielaard  <mark@klomp.org>
+
 	* doc/hacking.texinfo (Branches): Explain "broken" branches a bit
 	more.
 
