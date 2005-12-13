@@ -1,6 +1,12 @@
 2005-12-13  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/html/HTMLDocument.java
+	(getReader): Implemented.
+	(getReader): Implemented.
+
+2005-12-13  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/html/HTMLDocument.java
 	(BlockElement.getName): Should use getAttribute because the API says
 	that this function can return null.
 	(RunElement): New class implemented.

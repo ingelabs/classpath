@@ -1132,8 +1132,7 @@ public class HTMLDocument extends DefaultStyledDocument
    */
   public HTMLEditorKit.ParserCallback getReader(int pos)
   {
-    // FIXME: Not implemented.
-    return null;
+    return new HTMLReader(pos);
   }  
   
   /**
@@ -1152,7 +1151,6 @@ public class HTMLDocument extends DefaultStyledDocument
                                                 int pushDepth,
                                                 HTML.Tag insertTag)
   {
-    // FIXME: Not Implemented.
-    return null;
+    return new HTMLReader(pos, popDepth, pushDepth, insertTag);
   }  
 }
