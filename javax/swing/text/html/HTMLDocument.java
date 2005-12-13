@@ -308,10 +308,57 @@ public class HTMLDocument extends DefaultStyledDocument
       return null;
     }
     
+    /**
+     * Gets the name of the element.
+     * 
+     * @return the name of the element if it exists, null otherwise.
+     */
     public String getName()
     {
-      //FIXME: this is supposed to do something different from the super class
-      return super.getName();
+      return (String) getAttribute(NameAttribute); 
+    }
+  }
+  
+  /**
+   * RunElement represents a section of text that has a set of 
+   * HTML character level attributes assigned to it.
+   */
+  public class RunElement extends AbstractDocument.LeafElement
+  {
+    
+    /**
+     * Constructs an element that has no children. It represents content
+     * within the document.
+     * 
+     * @param parent - parent of this
+     * @param a - elements attributes
+     * @param start - the start offset >= 0
+     * @param end - the end offset 
+     */
+    public RunElement(Element parent, AttributeSet a, int start, int end)
+    {
+      super(parent, a, start, end);
+    }
+    
+    /**
+     * Gets the name of the element.
+     * 
+     * @return the name of the element if it exists, null otherwise.
+     */
+    public String getName()
+    {
+      return (String) getAttribute(NameAttribute);      
+    }
+    
+    /**
+     * Gets the resolving parent. HTML attributes do not inherit at the
+     * model level, so this method returns null.
+     * 
+     * @return null
+     */
+    public AttributeSet getResolveParent()
+    {
+      return null;
     }
   }
   
@@ -319,7 +366,6 @@ public class HTMLDocument extends DefaultStyledDocument
    * A reader to load an HTMLDocument with HTML structure.
    * 
    * @author Anthony Balkissoon abalkiss at redhat dot com
-   *
    */
   public class HTMLReader extends HTMLEditorKit.ParserCallback
   {
