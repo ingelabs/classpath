@@ -1,3 +1,11 @@
+2005-12-12  Dalibor Topic  <robilad@kaffe.org>
+
+	Fixes bug #25353
+	* m4/acinclude.m4: Added JIKESWARNINGS makefile variable. 
+	Only add +Pno-shadow to JIKESWARNINGS if not using jikes 1.19.
+	* lib/Makefile.am: Use JIKESWARNINGS instead of explicitely
+	listing the warnings.
+
 2005-12-12  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/SAXParser.java,
