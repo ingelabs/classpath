@@ -365,7 +365,7 @@ public class HTMLEditorKit
         EditorKit d = e.getEditorKit();
         if (d instanceof HTMLEditorKit)
           return (HTMLEditorKit) d;
-        throw new IllegalArgumentException("Document is not a HTMLEditorKit.");
+        throw new IllegalArgumentException("EditorKit is not a HTMLEditorKit.");
       }
       
       /**

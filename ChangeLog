@@ -1,6 +1,11 @@
 2005-12-13  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/html/HTMLEditorKit.java
+	(getHTMLEditorKit): Fixed typo.
+
+2005-12-13  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/html/HTMLEditorKit.java
 	(insertHTML): Fixed catching of exceptions.
 	(getHTMLDocument): Likewise.
 	(getHTMLEditorKit): Likewise.
