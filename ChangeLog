@@ -1,3 +1,10 @@
+2005-12-13  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/XIncludeFilter.java,
+	  gnu/xml/stream/XMLInputFactoryImpl.java,
+	  gnu/xml/stream/XMLParser.java: Addition of XInclude filter.
+
 2005-12-13  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/html/HTMLDocument.java
