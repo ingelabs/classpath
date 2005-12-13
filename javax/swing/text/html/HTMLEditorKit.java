@@ -60,6 +60,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.BoxView;
 import javax.swing.text.ComponentView;
 import javax.swing.text.Document;
+import javax.swing.text.EditorKit;
 import javax.swing.text.Element;
 import javax.swing.text.IconView;
 import javax.swing.text.LabelView;
@@ -249,9 +250,15 @@ public class HTMLEditorKit
           super.getHTMLEditorKit(editor).insertHTML(doc, offset, html,
                                                     popDepth, pushDepth, addTag);
         }
-        catch (Exception e)
+      catch (IOException e)
         {
-          throw new RuntimeException(e);
+          throw (RuntimeException) new RuntimeException("Parser is null.")
+                                    .initCause(e);
+        }
+      catch (BadLocationException ex)
+        {
+          throw (RuntimeException) new RuntimeException("BadLocationException: "
+                                                        + offset).initCause(ex);
         }
       }
       
@@ -341,14 +348,10 @@ public class HTMLEditorKit
        */
       protected HTMLDocument getHTMLDocument(JEditorPane e)
       {
-        try
-        {
-          return (HTMLDocument) e.getDocument();
-        }
-        catch (Exception ex)
-        {
-          throw new IllegalArgumentException("Document is not a HTMLDocument.");
-        }
+        Document d = e.getDocument();
+        if (d instanceof HTMLDocument)
+          return (HTMLDocument) d;
+        throw new IllegalArgumentException("Document is not a HTMLDocument.");
       }
       
       /**
@@ -359,15 +362,10 @@ public class HTMLEditorKit
        */
       protected HTMLEditorKit getHTMLEditorKit(JEditorPane e) 
       {
-        try
-        {
-          return (HTMLEditorKit) e.getEditorKit();
-        }
-        catch (Exception ex)
-        {
-          throw new IllegalArgumentException(
-                                             "EditorKit is not a HTMLEditorKit.");
-        }
+        EditorKit d = e.getEditorKit();
+        if (d instanceof HTMLEditorKit)
+          return (HTMLEditorKit) d;
+        throw new IllegalArgumentException("Document is not a HTMLDocument.");
       }
       
       /**

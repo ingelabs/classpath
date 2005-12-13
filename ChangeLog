@@ -1,5 +1,12 @@
 2005-12-13  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/text/html/HTMLEditorKit.java
+	(insertHTML): Fixed catching of exceptions.
+	(getHTMLDocument): Likewise.
+	(getHTMLEditorKit): Likewise.
+
+2005-12-13  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/AbstractAction.java:
 	(putValue): Fixed check, should use .equals when comparing
 	objects.
