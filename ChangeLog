@@ -1,3 +1,15 @@
+2005-12-13  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/html/HTMLDocument.java
+	(getElement): Implemented.
+	(getElement): Implemented.
+	(setInnerHTML): Added, not fully implemented.
+	(setOuterHTML): Likewise.
+	(insertBeforeStart): Likewise.
+	(insertAfterStart): Likewise.
+	(insertBeforeEnd): Likewise.
+	(insertAfterEnd): Likewise.
+
 2005-12-13  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/SAXParser.java,

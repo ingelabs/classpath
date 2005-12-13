@@ -39,6 +39,10 @@ exception statement from your version. */
 package javax.swing.text.html;
 
 import java.net.URL;
+
+import java.io.IOException;
+import java.io.StringReader;
+
 import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
@@ -1153,4 +1157,170 @@ public class HTMLDocument extends DefaultStyledDocument
   {
     return new HTMLReader(pos, popDepth, pushDepth, insertTag);
   }  
+  
+  /**
+   * Gets the child element that contains the attribute with the value or null.
+   * Not thread-safe.
+   * 
+   * @param e - the element to begin search at
+   * @param attribute - the desired attribute
+   * @param value - the desired value
+   * @return the element found with the attribute and value specified or null
+   * if it is not found.
+   */
+  public Element getElement(Element e, Object attribute, Object value)
+  {
+    if (e != null)
+      {
+        if (e.getAttributes().containsAttribute(attribute, value))
+          return e;
+        
+        int count = e.getElementCount();
+        for (int j = 0; j < count; j++)
+          {
+            Element child = e.getElement(j);
+            if (child.getAttributes().containsAttribute(attribute, value))
+              return child;
+            
+            return getElement(child, attribute, value);
+          }
+      }
+    return null;
+  }
+  
+  /**
+   * Returns the element that has the given id Attribute. If it is not found, 
+   * null is returned. This method works on an Attribute, not a character tag.
+   * This is not thread-safe.
+   * 
+   * @param attrId - the Attribute id to look for
+   * @return the element that has the given id.
+   */
+  public Element getElement(String attrId)
+  {
+    Element root = getDefaultRootElement();
+    return getElement(root, HTML.getAttributeKey(attrId) , attrId);
+  }
+  
+  /**
+   * Replaces the children of the given element with the contents of
+   * the string. The document must have an HTMLEditorKit.Parser set.
+   * This will be seen as at least two events, n inserts followed by a remove.
+   * 
+   * @param elem - the brance element whose children will be replaced
+   * @param htmlText - the string to be parsed and assigned to element.
+   * @throws BadLocationException
+   * @throws IOException
+   * @throws IllegalArgumentException - if elem is a leaf 
+   * @throws IllegalStateException - if an HTMLEditorKit.Parser has not been set
+   */
+  public void setInnerHTML(Element elem, String htmlText) 
+    throws BadLocationException, IOException
+  {
+    if (elem.isLeaf())
+      throw new IllegalArgumentException("Element is a leaf");
+    if (parser == null)
+      throw new IllegalStateException("Parser has not been set");
+    // FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
+    System.out.println("setInnerHTML not implemented");
+  }
+  
+  /**
+   * Replaces the given element in the parent with the string. When replacing
+   * a leaf, this will attempt to make sure there is a newline present if one is
+   * needed. This may result in an additional element being inserted.
+   * This will be seen as at least two events, n inserts followed by a remove.
+   * The HTMLEditorKit.Parser must be set.
+   * 
+   * @param elem - the branch element whose parent will be replaced
+   * @param htmlText - the string to be parsed and assigned to elem
+   * @throws BadLocationException
+   * @throws IOException
+   * @throws IllegalStateException - if parser is not set
+   */
+  public void setOuterHTML(Element elem, String htmlText) 
+    throws BadLocationException, IOException
+    {
+      if (parser == null)
+        throw new IllegalStateException("Parser has not been set");
+      // FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
+      System.out.println("setOuterHTML not implemented");
+    }
+  
+  /**
+   * Inserts the string before the start of the given element.
+   * The parser must be set.
+   * 
+   * @param elem - the element to be the root for the new text.
+   * @param htmlText - the string to be parsed and assigned to elem
+   * @throws BadLocationException
+   * @throws IOException
+   * @throws IllegalStateException - if parser has not been set
+   */
+  public void insertBeforeStart(Element elem, String htmlText)
+      throws BadLocationException, IOException
+  {
+    if (parser == null)
+      throw new IllegalStateException("Parser has not been set");
+    //  FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
+    System.out.println("insertBeforeStart not implemented");
+  }
+  
+  /**
+   * Inserts the string at the end of the element. If elem's children
+   * are leaves, and the character at elem.getEndOffset() - 1 is a newline, 
+   * then it will be inserted before the newline. The parser must be set.
+   * 
+   * @param elem - the element to be the root for the new text
+   * @param htmlText - the text to insert
+   * @throws BadLocationException
+   * @throws IOException
+   * @throws IllegalStateException - if parser is not set
+   */
+  public void insertBeforeEnd(Element elem, String htmlText)
+      throws BadLocationException, IOException
+  {
+    if (parser == null)
+      throw new IllegalStateException("Parser has not been set");
+    //  FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
+    System.out.println("insertBeforeEnd not implemented");
+  }
+  
+  /**
+   * Inserts the string after the end of the given element.
+   * The parser must be set.
+   * 
+   * @param elem - the element to be the root for the new text
+   * @param htmlText - the text to insert
+   * @throws BadLocationException
+   * @throws IOException
+   * @throws IllegalStateException - if parser is not set
+   */
+  public void insertAfterEnd(Element elem, String htmlText)
+      throws BadLocationException, IOException
+  {
+    if (parser == null)
+      throw new IllegalStateException("Parser has not been set");
+    //  FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
+    System.out.println("insertAfterEnd not implemented");
+  }
+  
+  /**
+   * Inserts the string at the start of the element.
+   * The parser must be set.
+   * 
+   * @param elem - the element to be the root for the new text
+   * @param htmlText - the text to insert
+   * @throws BadLocationException
+   * @throws IOException
+   * @throws IllegalStateException - if parser is not set
+   */
+  public void insertAfterStart(Element elem, String htmlText)
+      throws BadLocationException, IOException
+  {
+    if (parser == null)
+      throw new IllegalStateException("Parser has not been set");
+    //  FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
+    System.out.println("insertAfterStart not implemented");
+  }
 }
