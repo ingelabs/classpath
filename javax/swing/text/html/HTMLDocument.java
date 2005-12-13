@@ -372,11 +372,11 @@ public class HTMLDocument extends DefaultStyledDocument
    * @author Anthony Balkissoon abalkiss at redhat dot com
    */
   public class HTMLReader extends HTMLEditorKit.ParserCallback
-  {
+  {    
     /** Holds the current character attribute set **/
-    protected MutableAttributeSet charAttr;
+    protected MutableAttributeSet charAttr = new SimpleAttributeSet();
     
-    protected Vector parseBuffer;
+    protected Vector parseBuffer = new Vector();
     
     /** A stack for character attribute sets **/
     Stack charAttrStack = new Stack();
@@ -385,7 +385,12 @@ public class HTMLDocument extends DefaultStyledDocument
     HashMap tagToAction;
     
     /** Tells us whether we've received the '</html>' tag yet **/
-    boolean endHTMLEncountered = false;    
+    boolean endHTMLEncountered = false;
+    
+    /** Variables related to the constructor with explicit insertTag **/
+    int popDepth, pushDepth, offset;
+    HTML.Tag insertTag;
+    boolean insertTagEncountered = false;
     
     public class TagAction
     {
@@ -416,8 +421,8 @@ public class HTMLDocument extends DefaultStyledDocument
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
-        // FIXME: Implement.
-        System.out.println ("BlockAction.start not implemented");
+        // Tell the parse buffer to open a new block for this tag.
+        blockOpen(t, a);
       }
       
       /**
@@ -426,8 +431,8 @@ public class HTMLDocument extends DefaultStyledDocument
        */
       public void end(HTML.Tag t)
       {
-        // FIXME: Implement.
-        System.out.println ("BlockAction.end not implemented");
+        // Tell the parse buffer to close this block.
+        blockClose(t);
       }
     }
     
@@ -439,8 +444,18 @@ public class HTMLDocument extends DefaultStyledDocument
        */
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
-        // FIXME: Implement.
-        System.out.println ("CharacterAction.start not implemented");
+        // Put the old attribute set on the stack.
+        pushCharacterStyle();
+        
+        // And create the new one by adding the attributes in <code>a</code>.
+        // FIXME: The next part is commented out due to bugs in other areas.
+        // The bugs may be in the way we handle ElementChange objects or in
+        // the logic in FlowView, but uncommenting these lines causes some
+        // out of bounds errors in FlowView
+        /*
+        if (a != null)
+          charAttr.addAttribute(t, a.copyAttributes());
+          */
       }
       
       /**
@@ -449,8 +464,7 @@ public class HTMLDocument extends DefaultStyledDocument
        */
       public void end(HTML.Tag t)
       {
-        // FIXME: Implement.
-        System.out.println ("CharacterAction.end not implemented");
+        popCharacterStyle();
       } 
     }
     
@@ -647,7 +661,8 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("HeadAction.start not implemented");
+        System.out.println ("HeadAction.start not implemented: "+t);
+        super.start(t, a);
       }
       
       /**
@@ -657,7 +672,8 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("HeadAction.end not implemented");
+        System.out.println ("HeadAction.end not implemented: "+t);
+        super.end(t);
       } 
     }
     
@@ -778,14 +794,19 @@ public class HTMLDocument extends DefaultStyledDocument
     
     public HTMLReader(int offset)
     {
-      // FIXME: What to do with offset?
-      initTags();
+      this (offset, 0, 0, null);
     }
     
     public HTMLReader(int offset, int popDepth, int pushDepth,
                       HTML.Tag insertTag)
     {
-      // FIXME: Implement
+      System.out.println ("HTMLReader created with pop: "+popDepth
+                          + " push: "+pushDepth + " offset: "+offset
+                          + " tag: "+insertTag);
+      this.insertTag = insertTag;
+      this.offset = offset;
+      this.popDepth = popDepth;
+      this.pushDepth = pushDepth;
       initTags();
     }
     
@@ -923,8 +944,11 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public void flush() throws BadLocationException
     {
-      // FIXME: Implement.
-      System.out.println ("HTMLReader.flush not implemented yet");
+      ElementSpec[] elements = new ElementSpec[parseBuffer.size()];
+      parseBuffer.copyInto(elements);
+      parseBuffer.removeAllElements();
+      insert(offset, elements);
+      offset += HTMLDocument.this.getLength() - offset;
     }
     
     /**
@@ -936,8 +960,8 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public void handleText(char[] data, int pos)
     {
-      // FIXME: Implement.
-      System.out.println ("HTMLReader.handleText not implemented yet");
+      if (data != null && data.length > 0)
+        addContent(data, 0, data.length);
     }
     
     /**
@@ -1111,8 +1135,31 @@ public class HTMLDocument extends DefaultStyledDocument
     protected void addContent(char[] data, int offs, int length,
                               boolean generateImpliedPIfNecessary)
     {
-      // FIXME: Implement
-      System.out.println ("HTMLReader.addContent not implemented yet");
+      // Copy the attribute set, don't use the same object because 
+      // it may change
+      AttributeSet attributes = null;
+      if (charAttr != null)
+        attributes = charAttr.copyAttributes();
+
+      ElementSpec element = new ElementSpec(attributes, ElementSpec.ContentType,
+                                            data, offs, length);
+      
+      // Add the element to the buffer
+      parseBuffer.addElement(element);
+
+      // FIXME: We should really only flush the buffer once we've buffered
+      // more elements than the token threshold.  This is currently the only
+      // way to get text to actually show up and is helping in the development
+      // of this package.
+      try
+        {
+          System.out.println ("FIXME: buffer elements");
+          flush();
+        }
+      catch (BadLocationException ble)
+        {
+          // TODO: what to do here?
+        }
     }
     
     /**

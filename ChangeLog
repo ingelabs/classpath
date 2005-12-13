@@ -1,3 +1,23 @@
+2005-12-13  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/html/HTMLDocument.java:
+	(HTMLReader.charAttr): Initialize this variable.
+	(HTMLReader.parseBuffer): Initialize this variable.
+	(HTMLReader.popDepth): New field.
+	(HTMLReader.pushDepth): Likewise.
+	(HTMLReader.offset): Likewise.
+	(HTMLReader.insertTag): Likewise.
+	(HTMLReader.insertTagEncountered): Likewise.
+	(HTMLReader.BlockAction.start): Implemented.
+	(HTMLReader.BlockAction.end): Implemented.
+	(HTMLReader.CharacterAction.start): Implemented.
+	(HTMLReader.CharacterAction.end): Implemented.
+	(HTMLReader(int)): Call other constructor with default arguments.
+	(HTMLReader(int, int, int, HTML.Tag)): Save the arguments.
+	(HTMLReader.flush): Implemented.
+	(HTMLReader.handleText): Implemented.
+	(HTMLReader.addContent): Implemented.			
+
 2005-12-13  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/html/HTMLDocument.java
