@@ -1,3 +1,27 @@
+2005-12-14  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	(insert): Put writeLock/writeUnlock combo in a try/finally block. Group
+	all inserts together so that we can add the appropriate ElementEdit to
+	the DocumentEvent.
+	* javax/swing/text/html/HTMLDocument.java:
+	(debug): New field.
+	(print): New method. Changed all System.out.println calls to calls to 
+	this method so that they can be turned on and off via the debug 
+	variable.
+	(HTMLReader.CharacterAction.start): Uncommented code that adds the 
+	argument attributes to the current attributes.
+	(HTMLReader.HeadAction): Changed superclass to BlockAction instead of
+	TagAction.
+	(HTMLReader.blockOpen): Implemented.
+	(HTMLReader.blockClose): Implemented.
+	(HTMLReader.addContent): Added calls to printBuffer so if the debug
+	variable is true we can see what the buffer looks like before and
+	after adding content.  Also put in the proper check so that we only 
+	flush the buffer if we've buffered the appropriate number of elements
+	first.
+	(printBuffer): New method.
+
 2005-12-14  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/XIncludeFilter.java: Fix event flow on fallback.

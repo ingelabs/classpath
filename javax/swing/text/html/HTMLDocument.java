@@ -391,6 +391,15 @@ public class HTMLDocument extends DefaultStyledDocument
     HTML.Tag insertTag;
     boolean insertTagEncountered = false;
     
+    /** A temporary variable that helps with the printing out of debug information **/
+    boolean debug = false;
+    
+    void print (String line)
+    {
+      if (debug)
+        System.out.println (line);
+    }
+    
     public class TagAction
     {
       /**
@@ -447,14 +456,8 @@ public class HTMLDocument extends DefaultStyledDocument
         pushCharacterStyle();
         
         // And create the new one by adding the attributes in <code>a</code>.
-        // FIXME: The next part is commented out due to bugs in other areas.
-        // The bugs may be in the way we handle ElementChange objects or in
-        // the logic in FlowView, but uncommenting these lines causes some
-        // out of bounds errors in FlowView
-        /*
         if (a != null)
-          charAttr.addAttribute(t, a.copyAttributes());
-          */
+          charAttr.addAttribute(t, a.copyAttributes());          
       }
       
       /**
@@ -476,7 +479,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("FormAction.start not implemented");
+        print ("FormAction.start not implemented");
       }
       
       /**
@@ -486,7 +489,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("FormAction.end not implemented");
+        print ("FormAction.end not implemented");
       } 
     }
     
@@ -499,7 +502,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("HiddenAction.start not implemented");
+        print ("HiddenAction.start not implemented");
       }
       
       /**
@@ -509,7 +512,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("HiddenAction.end not implemented");
+        print ("HiddenAction.end not implemented");
       } 
     }
     
@@ -522,7 +525,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("IsindexAction.start not implemented");
+        print ("IsindexAction.start not implemented");
       }
       
       /**
@@ -532,7 +535,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("IsindexAction.end not implemented");
+        print ("IsindexAction.end not implemented");
       } 
     }
     
@@ -545,7 +548,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("ParagraphAction.start not implemented");
+        print ("ParagraphAction.start not implemented");
       }
       
       /**
@@ -555,7 +558,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("ParagraphAction.end not implemented");
+        print ("ParagraphAction.end not implemented");
       } 
     }
     
@@ -568,7 +571,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("PreAction.start not implemented");
+        print ("PreAction.start not implemented");
       }
       
       /**
@@ -578,7 +581,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("PreAction.end not implemented");
+        print ("PreAction.end not implemented");
       } 
     }
     
@@ -591,7 +594,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("SpecialAction.start not implemented");
+        print ("SpecialAction.start not implemented");
       }
       
       /**
@@ -601,7 +604,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("SpecialAction.end not implemented");
+        print ("SpecialAction.end not implemented");
       }                
     }
     
@@ -614,7 +617,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("AreaAction.start not implemented");
+        print ("AreaAction.start not implemented");
       }
       
       /**
@@ -624,7 +627,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("AreaAction.end not implemented");
+        print ("AreaAction.end not implemented");
       } 
     }
     
@@ -637,7 +640,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("BaseAction.start not implemented");
+        print ("BaseAction.start not implemented");
       }
       
       /**
@@ -647,11 +650,11 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("BaseAction.end not implemented");
+        print ("BaseAction.end not implemented");
       } 
     }
     
-    class HeadAction extends TagAction
+    class HeadAction extends BlockAction
     {
       /**
        * This method is called when a start tag is seen for one of the types
@@ -660,7 +663,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("HeadAction.start not implemented: "+t);
+        print ("HeadAction.start not implemented: "+t);
         super.start(t, a);
       }
       
@@ -671,7 +674,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("HeadAction.end not implemented: "+t);
+        print ("HeadAction.end not implemented: "+t);
         super.end(t);
       } 
     }
@@ -685,7 +688,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("LinkAction.start not implemented");
+        print ("LinkAction.start not implemented");
       }
       
       /**
@@ -695,7 +698,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("LinkAction.end not implemented");
+        print ("LinkAction.end not implemented");
       } 
     }
     
@@ -708,7 +711,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("MapAction.start not implemented");
+        print ("MapAction.start not implemented");
       }
       
       /**
@@ -718,7 +721,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("MapAction.end not implemented");
+        print ("MapAction.end not implemented");
       } 
     }
     
@@ -731,7 +734,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("MetaAction.start not implemented");
+        print ("MetaAction.start not implemented");
       }
       
       /**
@@ -741,7 +744,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("MetaAction.end not implemented");
+        print ("MetaAction.end not implemented");
       } 
     }
     
@@ -754,7 +757,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("StyleAction.start not implemented");
+        print ("StyleAction.start not implemented");
       }
       
       /**
@@ -764,7 +767,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("StyleAction.end not implemented");
+        print ("StyleAction.end not implemented");
       } 
     }
     
@@ -777,7 +780,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void start(HTML.Tag t, MutableAttributeSet a)
       {
         // FIXME: Implement.
-        System.out.println ("TitleAction.start not implemented");
+        print ("TitleAction.start not implemented");
       }
       
       /**
@@ -787,7 +790,7 @@ public class HTMLDocument extends DefaultStyledDocument
       public void end(HTML.Tag t)
       {
         // FIXME: Implement.
-        System.out.println ("TitleAction.end not implemented");
+        print ("TitleAction.end not implemented");
       } 
     }    
     
@@ -799,7 +802,7 @@ public class HTMLDocument extends DefaultStyledDocument
     public HTMLReader(int offset, int popDepth, int pushDepth,
                       HTML.Tag insertTag)
     {
-      System.out.println ("HTMLReader created with pop: "+popDepth
+      print ("HTMLReader created with pop: "+popDepth
                           + " push: "+pushDepth + " offset: "+offset
                           + " tag: "+insertTag);
       this.insertTag = insertTag;
@@ -1056,8 +1059,8 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public void handleEndOfLineString(String eol)
     {
-      // FIXME: Implement
-      System.out.println ("HTMLReader.handleEndOfLineString not implemented yet");
+      // FIXME: Implement.
+      print ("HTMLReader.handleEndOfLineString not implemented yet");
     }
     
     /**
@@ -1069,7 +1072,7 @@ public class HTMLDocument extends DefaultStyledDocument
     protected void textAreaContent(char[] data)
     {
       // FIXME: Implement.
-      System.out.println ("HTMLReader.textAreaContent not implemented yet");
+      print ("HTMLReader.textAreaContent not implemented yet");
     }
     
     /**
@@ -1080,7 +1083,7 @@ public class HTMLDocument extends DefaultStyledDocument
     protected void preContent(char[] data)
     {
       // FIXME: Implement
-      System.out.println ("HTMLReader.preContent not implemented yet");
+      print ("HTMLReader.preContent not implemented yet");
     }
     
     /**
@@ -1092,8 +1095,10 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     protected void blockOpen(HTML.Tag t, MutableAttributeSet attr)
     {
-      // FIXME: Implement
-      System.out.println ("HTMLReader.blockOpen not implemented yet");
+      printBuffer();
+      ElementSpec element = new ElementSpec(attr.copyAttributes(), ElementSpec.StartTagType);
+      parseBuffer.addElement(element);
+      printBuffer();
     }
     
     /**
@@ -1104,8 +1109,10 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     protected void blockClose(HTML.Tag t)
     {
-      // FIXME: Implement
-      System.out.println ("HTMLReader.blockClose not implement yet");
+      printBuffer();
+      ElementSpec element = new ElementSpec(null, ElementSpec.EndTagType);
+      parseBuffer.addElement(element);
+      printBuffer();
     }
     
     /**
@@ -1143,21 +1150,21 @@ public class HTMLDocument extends DefaultStyledDocument
       ElementSpec element = new ElementSpec(attributes, ElementSpec.ContentType,
                                             data, offs, length);
       
+      printBuffer();
       // Add the element to the buffer
       parseBuffer.addElement(element);
+      printBuffer();
 
-      // FIXME: We should really only flush the buffer once we've buffered
-      // more elements than the token threshold.  This is currently the only
-      // way to get text to actually show up and is helping in the development
-      // of this package.
-      try
+      if (parseBuffer.size() > HTMLDocument.this.getTokenThreshold())
         {
-          System.out.println ("FIXME: buffer elements");
-          flush();
-        }
-      catch (BadLocationException ble)
-        {
-          // TODO: what to do here?
+          try
+            {
+              flush();
+            }
+          catch (BadLocationException ble)
+            {
+              // TODO: what to do here?
+            }
         }
     }
     
@@ -1170,7 +1177,15 @@ public class HTMLDocument extends DefaultStyledDocument
     protected void addSpecialElement(HTML.Tag t, MutableAttributeSet a)
     {
       // FIXME: Implement
-      System.out.println ("HTMLReader.addSpecialElement not implemented yet");
+      print ("HTMLReader.addSpecialElement not implemented yet");
+    }
+    
+    void printBuffer()
+    {      
+      print ("\n*********BUFFER**********");
+      for (int i = 0; i < parseBuffer.size(); i ++)
+        print ("  "+parseBuffer.get(i));
+      print ("***************************");
     }
   }
   
