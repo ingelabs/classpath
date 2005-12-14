@@ -1,3 +1,14 @@
+2005-12-14  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* java/io/ObjectOutputStream.java
+	(writeClassDescription): Throw an InvalidClassException if
+	fields is INVALID_FIELDS.
+	(lookup): Added some documentation.
+
+	* java/io/ObjectStreamClass.java
+	(setFields): Make fields as INVALID if we detect duplicate
+	entries in serialPersistentFields.
+	
 2005-12-14  Roman Kennke  <kennke@aicas.com>
 
 	Reported by Ingo Proetel <proetel@aicas.com>
