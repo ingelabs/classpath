@@ -1,3 +1,9 @@
+2005-12-14  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/25389:
+	* java/io/File.java (File): Throw IllegalArgumentException if URI is
+	non-hierarchical.
+
 2005-12-13  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/html/HTMLEditorKit.java
