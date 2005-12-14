@@ -1,3 +1,8 @@
+2005-12-14  Riccardo Mottola  <riccardo@kaffe.org>
+
+	* native/fdlibm/ieeefp.h: Fixed detection of big endian on
+	powerpc.
+
 2005-12-14  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java:
