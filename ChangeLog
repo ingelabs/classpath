@@ -1,3 +1,25 @@
+2005-12-14  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(cached): New field.
+	(parent): New field.
+	(GdkGraphics(GdkGraphics)): Moved state-copy code to new method
+	copyState().
+	(create): Added re-use of old graphics.
+	(nativeDispose): Renamed native dispose method to nativeDispose().
+	(dispose): New non-native implementation used for caching.
+	(finalize): Overridden to correctly dispose unused graphics.
+	(copyState): New non-native method to correctly copy the non-native
+	state.
+	(nativeCopyState): Renamed native copyState method to
+	nativeCopyState().
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
+	(copyState): Renamed to nativeCopyState.
+	(dispose): Renamed to nativeDispose.
+	* include/gnu_java_awt_peer_gtk_GdkGraphics.h
+	(copyState): Renamed to nativeCopyState.
+	(dispose): Renamed to nativeDispose.
+
 2005-12-14  Riccardo Mottola  <riccardo@kaffe.org>
 
 	* native/fdlibm/ieeefp.h: Fixed detection of big endian on
