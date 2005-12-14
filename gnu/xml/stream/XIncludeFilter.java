@@ -607,13 +607,9 @@ class XIncludeFilter
                             depth--;
                           }
                       }
-                    // Return next event
-                    return next();
                   }
                 else
-                  {
-                    inInclude = true;
-                  }
+                  inInclude = true;
               }
             else if (inInclude && "fallback".equals(localName))
               {
@@ -627,6 +623,7 @@ class XIncludeFilter
                 throw new XMLStreamException("illegal xi element '" +
                                              localName + "'");
               }
+            return next();
           }
         break;
       case XMLStreamConstants.END_ELEMENT:
@@ -648,6 +645,7 @@ class XIncludeFilter
               }
             else if ("fallback".equals(localName))
               inFallback = false;
+            return next();
           }
         break;
       }

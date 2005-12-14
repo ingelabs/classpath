@@ -745,6 +745,12 @@ public class XMLParser
         lookahead = false;
         return event;
       }
+    if (event == XMLStreamConstants.END_ELEMENT)
+      {
+        // Pop namespace context
+        if (namespaceAware)
+          namespaces.removeFirst();
+      }
     try
       {
         switch (state)
@@ -767,6 +773,11 @@ public class XMLParser
                 readPI();
                 event = XMLStreamConstants.PROCESSING_INSTRUCTION;
               }
+            else if (tryRead(TEST_CDATA))
+              {
+                readCDSect();
+                event = XMLStreamConstants.CDATA;
+              }
             else if (tryRead(TEST_START_ELEMENT))
               {
                 state = readStartElement();
@@ -777,19 +788,12 @@ public class XMLParser
                 readReference();
                 event = XMLStreamConstants.ENTITY_REFERENCE;
               }
-            else if (tryRead(TEST_CDATA))
-              {
-                readCDSect();
-                event = XMLStreamConstants.CDATA;
-              }
             else
               event = readCharData();
             break;
           case EMPTY_ELEMENT:
             state = stack.isEmpty() ? MISC : CONTENT;
             event = XMLStreamConstants.END_ELEMENT;
-            // Pop namespace context
-            namespaces.removeFirst();
             break;
           case INIT: // XMLDecl?
             input.init();
@@ -1969,9 +1973,6 @@ public class XMLParser
     require(expected);
     skipWhitespace();
     require('>');
-    // Pop namespace context
-    if (namespaceAware)
-      namespaces.removeFirst();
     // Make element name available
     buf.setLength(0);
     buf.append(expected);
