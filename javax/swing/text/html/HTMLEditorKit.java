@@ -118,7 +118,7 @@ public class HTMLEditorKit
        */
       public void mouseDragged(MouseEvent e)
       {
-        // FIXME: Not implemented.        
+        // FIXME: Not implemented.     
       }
       
       /**
@@ -240,42 +240,45 @@ public class HTMLEditorKit
        * @param addTag -
        *          the first tag to start inserting into document
        */
-      protected void insertHTML(JEditorPane editor, HTMLDocument doc,
-                                int offset, String html,
-                                int popDepth, int pushDepth,
-                                HTML.Tag addTag)
+      protected void insertHTML(JEditorPane editor, HTMLDocument doc, int offset,
+                              String html, int popDepth, int pushDepth,
+                              HTML.Tag addTag)
       {
-        try 
-        {
-          super.getHTMLEditorKit(editor).insertHTML(doc, offset, html,
-                                                    popDepth, pushDepth, addTag);
-        }
-      catch (IOException e)
-        {
-          throw (RuntimeException) new RuntimeException("Parser is null.")
-                                    .initCause(e);
-        }
-      catch (BadLocationException ex)
-        {
-          throw (RuntimeException) new RuntimeException("BadLocationException: "
-                                                        + offset).initCause(ex);
-        }
+        try
+          {
+            super.getHTMLEditorKit(editor).insertHTML(doc, offset, html,
+                                                      popDepth, pushDepth, addTag);
+          }
+        catch (IOException e)
+          {
+            throw (RuntimeException) new RuntimeException("Parser is null.").initCause(e);
+          }
+        catch (BadLocationException ex)
+          {
+            throw (RuntimeException) new RuntimeException("BadLocationException: "
+                                              + offset).initCause(ex);
+          }
       }
       
       /**
-       * Invoked when inserting at a boundary. Determines the number of pops, 
+       * Invoked when inserting at a boundary. Determines the number of pops,
        * and then the number of pushes that need to be performed. The it calls
        * insertHTML.
        * 
-       * @param editor - the editor to use to get the editorkit
+       * @param editor -
+       *          the editor to use to get the editorkit
        * @param doc -
        *          the Document to insert the HTML into.
        * @param offset -
        *          where to begin inserting the HTML.
-       * @param insertElement - the element to insert
-       * @param html - the html to insert
-       * @param parentTag - the parent tag
-       * @param addTag - the first tag
+       * @param insertElement -
+       *          the element to insert
+       * @param html -
+       *          the html to insert
+       * @param parentTag -
+       *          the parent tag
+       * @param addTag -
+       *          the first tag
        */
       protected void insertAtBoundary(JEditorPane editor,
                                       HTMLDocument doc, int offset,
@@ -583,6 +586,7 @@ public class HTMLEditorKit
      */
     public ParserCallback()
     {
+      // Nothing to do here.
     }
     
     /**
@@ -590,6 +594,7 @@ public class HTMLEditorKit
      */
     public void flush() throws BadLocationException
     {
+      // Nothing to do here.
     }
 
     /**
@@ -599,6 +604,7 @@ public class HTMLEditorKit
      */
     public void handleComment(char[] comment, int position)
     {
+      // Nothing to do here.
     }
 
     /**
@@ -609,6 +615,7 @@ public class HTMLEditorKit
      */
     public void handleEndOfLineString(String end_of_line)
     {
+      // Nothing to do here.
     }
 
     /**
@@ -620,6 +627,7 @@ public class HTMLEditorKit
      */
     public void handleEndTag(HTML.Tag tag, int position)
     {
+      // Nothing to do here.
     }
 
     /**
@@ -630,6 +638,7 @@ public class HTMLEditorKit
      */
     public void handleError(String message, int position)
     {
+      // Nothing to do here.
     }
 
     /**
@@ -642,6 +651,7 @@ public class HTMLEditorKit
     public void handleSimpleTag(HTML.Tag tag, MutableAttributeSet attributes,
                                 int position)
     {
+      // Nothing to do here.
     }
 
     /**
@@ -654,6 +664,7 @@ public class HTMLEditorKit
     public void handleStartTag(HTML.Tag tag, MutableAttributeSet attributes,
                                int position)
     {
+      // Nothing to do here.
     }
 
     /**
@@ -663,6 +674,7 @@ public class HTMLEditorKit
      */
     public void handleText(char[] text, int position)
     {
+      // Nothing to do here.
     }
   }
 
@@ -743,6 +755,11 @@ public class HTMLEditorKit
   private static final Action[] defaultActions = {
     // FIXME: Add default actions for html
   };
+  
+  /**
+   * The current style sheet.
+   */
+  StyleSheet styleSheet;
   
   /**
    * The ViewFactory for HTMLFactory.
@@ -1054,5 +1071,33 @@ public class HTMLEditorKit
   {
     // FIXME: Not implemented.
     return super.getInputAttributes();
+  }
+  
+  /**
+   * Get the set of styles currently being used to render the HTML elements. 
+   * By default the resource specified by DEFAULT_CSS gets loaded, and is 
+   * shared by all HTMLEditorKit instances.
+   * 
+   * @return the style sheet.
+   */
+  public StyleSheet getStyleSheet()
+  {
+    if (styleSheet == null)
+      styleSheet = new StyleSheet();
+    return styleSheet;
+  }
+  
+  /**
+   * Set the set of styles to be used to render the various HTML elements. 
+   * These styles are specified in terms of CSS specifications. Each document 
+   * produced by the kit will have a copy of the sheet which it can add the 
+   * document specific styles to. By default, the StyleSheet specified is shared 
+   * by all HTMLEditorKit instances. 
+   * 
+   * @param s - the new style sheet
+   */
+  public void setStyleSheet(StyleSheet s)
+  {
+    styleSheet = s;
   }
 }

@@ -1,3 +1,23 @@
+2005-12-15  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/html/BlockView.java
+	(paint): Partially implemented.
+	(getAttributes): Implemented.
+	(getStyleSheet): Partially implemented.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLDocument): New constructor, implemented.
+	(HTMLDocument): Likewise.
+	(HTMLDocument): Likewise.
+	(getStyleSheet): Implemented.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(insertHTML): Fixed indentation.
+	(ParserCallback): Added comments for all methods in this
+	inner class.
+	(getStyleSheet): Implemented.
+	(setStyleSheet): Implemented
+	* javax/swing/text/html/StyleSheet: New class, partially 
+	implemented.
+
 2005-12-15  Caolan McNamara  <caolanm@redhat.com>
 
 	PR classpath/25426:

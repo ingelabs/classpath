@@ -52,6 +52,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Element;
 import javax.swing.text.ElementIterator;
+import javax.swing.text.GapContent;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.html.HTML.Tag;
@@ -71,6 +72,52 @@ public class HTMLDocument extends DefaultStyledDocument
   boolean preservesUnknownTags = true;
   int tokenThreshold = Integer.MAX_VALUE;
   HTMLEditorKit.Parser parser;
+  StyleSheet styleSheet;
+  AbstractDocument.Content content;
+  
+  /**
+   * Constructs an HTML document using the default buffer size and a default
+   * StyleSheet.
+   */
+  public HTMLDocument()
+  {
+    this(new StyleSheet());
+  }
+  
+  /**
+   * Constructs an HTML document with the default content storage 
+   * implementation and the specified style/attribute storage mechanism.
+   * 
+   * @param styles - the style sheet
+   */
+  public HTMLDocument(StyleSheet styles)
+  {
+   this(new GapContent(BUFFER_SIZE_DEFAULT), styles);
+  }
+  
+  /**
+   * Constructs an HTML document with the given content storage implementation 
+   * and the given style/attribute storage mechanism.
+   * 
+   * @param c - the document's content
+   * @param styles - the style sheet
+   */
+  public HTMLDocument(AbstractDocument.Content c, StyleSheet styles)
+  {
+    this.content = c;
+    this.styleSheet = styles;
+  }
+  
+  /**
+   * Gets the style sheet with the document display rules (CSS) that were specified 
+   * in the HTML document.
+   * 
+   * @return - the style sheet
+   */
+  public StyleSheet getStyleSheet()
+  {
+    return styleSheet;
+  }
   
   /**
    * Returns the parser used by this HTMLDocument to insert HTML.
