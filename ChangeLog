@@ -1,5 +1,11 @@
 2005-12-15  Chris Burdess  <dog@gnu.org>
 
+	Fixes bug classpath/24496:
+	* java/util/Properties.java (loadFromXML): Use StAX instead of SAX
+	  to populate properties.
+
+2005-12-15  Chris Burdess  <dog@gnu.org>
+
 	* gnu/xml/stream/XMLParser.java: Report start-entity and end-entity
 	  events; read text declaration for external entities;
 	  handle XML namespace; handle xml:base; normalize CR/LF pairs
