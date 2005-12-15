@@ -1,3 +1,10 @@
+2005-12-15  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/XMLInputFactoryImpl.java,
+	  gnu/xml/stream/XMLParser.java: Permit setting extended properties
+	  via factory interfaces; make base-aware a parameter.
+
 2005-12-15  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java

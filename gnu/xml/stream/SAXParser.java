@@ -90,6 +90,11 @@ class SAXParser
   boolean namespaceAware;
   boolean xIncludeAware;
   boolean stringInterning = true;
+  boolean coalescing = true;
+  boolean replaceERefs = true;
+  boolean externalEntities = true;
+  boolean supportDTD = true;
+  boolean baseAware = true;
 
   XMLParser parser;
   XMLStreamReader reader;
@@ -254,12 +259,32 @@ class SAXParser
     String systemId = input.getSystemId();
     InputStream in = input.getByteStream();
     if (in != null)
-      parser = new XMLParser(in, systemId);
+      parser = new XMLParser(in, systemId,
+                             validating,
+                             namespaceAware,
+                             coalescing,
+                             replaceERefs,
+                             externalEntities,
+                             supportDTD,
+                             baseAware,
+                             stringInterning,
+                             this,
+                             this);
     else
       {
         Reader r = input.getCharacterStream();
         if (r != null)
-          parser = new XMLParser(r, systemId);
+          parser = new XMLParser(r, systemId,
+                                 validating,
+                                 namespaceAware,
+                                 coalescing,
+                                 replaceERefs,
+                                 externalEntities,
+                                 supportDTD,
+                                 baseAware,
+                                 stringInterning,
+                                 this,
+                                 this);
       }
     if (parser == null)
       {
@@ -267,16 +292,20 @@ class SAXParser
           throw new SAXException("No stream or system ID specified");
         systemId = XMLParser.absolutize(null, systemId);
         in = new URL(systemId).openStream();
-        parser = new XMLParser(in, systemId);
+        parser = new XMLParser(in, systemId,
+                               validating,
+                               namespaceAware,
+                               coalescing,
+                               replaceERefs,
+                               externalEntities,
+                               supportDTD,
+                               baseAware,
+                               stringInterning,
+                               this,
+                               this);
       }
     reader = parser;
     
-    parser.setValidating(validating);
-    parser.setNamespaceAware(namespaceAware);
-    parser.setStringInterning(stringInterning);
-    parser.setResolver(this);
-    parser.setReporter(this);
-
     if (xIncludeAware)
       reader = new XIncludeFilter(parser, systemId, namespaceAware,
                                   validating, true);

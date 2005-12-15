@@ -139,21 +139,22 @@ public class XMLParser
   Doctype doctype;
   private boolean expandPE, peIsError;
 
-  private boolean stringInterning = true;
-  private boolean coalescing = false;
-  private boolean replaceERefs = true;
-  private boolean externalEntities = true;
-  private boolean supportDTD = true;
-  private boolean namespaceAware = true;
+  private final boolean validating; // TODO
+  private final boolean stringInterning;
+  private final boolean coalescing;
+  private final boolean replaceERefs;
+  private final boolean externalEntities;
+  private final boolean supportDTD;
+  private final boolean namespaceAware;
+  private final boolean baseAware;
 
-  private XMLReporter reporter;
-  private XMLResolver resolver;
+  private final XMLReporter reporter;
+  private final XMLResolver resolver;
 
   private static final String TEST_START_ELEMENT = "<";
   private static final String TEST_END_ELEMENT = "</";
   private static final String TEST_COMMENT = "<!--";
   private static final String TEST_PI = "<?";
-  private static final String TEST_REFERENCE = "&";
   private static final String TEST_CDATA = "<![CDATA[";
   private static final String TEST_XML_DECL = "<?xml ";
   private static final String TEST_DOCTYPE_DECL = "<!DOCTYPE";
@@ -176,59 +177,54 @@ public class XMLParser
     PREDEFINED_ENTITIES.put("quot", "\"");
   }
 
-  public XMLParser(InputStream in, String systemId)
+  public XMLParser(InputStream in, String systemId,
+                   boolean validating,
+                   boolean namespaceAware,
+                   boolean coalescing,
+                   boolean replaceERefs,
+                   boolean externalEntities,
+                   boolean supportDTD,
+                   boolean baseAware,
+                   boolean stringInterning,
+                   XMLReporter reporter,
+                   XMLResolver resolver)
   {
+    this.validating = validating;
+    this.namespaceAware = namespaceAware;
+    this.coalescing = coalescing;
+    this.replaceERefs = replaceERefs;
+    this.externalEntities = externalEntities;
+    this.supportDTD = supportDTD;
+    this.baseAware = baseAware;
+    this.stringInterning = stringInterning;
+    this.reporter = reporter;
+    this.resolver = resolver;
     pushInput(new Input(in, null, systemId, null));
   }
 
-  public XMLParser(Reader reader, String systemId)
+  public XMLParser(Reader reader, String systemId,
+                   boolean validating,
+                   boolean namespaceAware,
+                   boolean coalescing,
+                   boolean replaceERefs,
+                   boolean externalEntities,
+                   boolean supportDTD,
+                   boolean baseAware,
+                   boolean stringInterning,
+                   XMLReporter reporter,
+                   XMLResolver resolver)
   {
-    pushInput(new Input(null, reader, null, systemId, null));
-  }
-
-  public void setStringInterning(boolean stringInterning)
-  {
-    this.stringInterning = stringInterning;
-  }
-
-  public void setValidating(boolean validating)
-  {
-    // TODO
-  }
-
-  public void setNamespaceAware(boolean namespaceAware)
-  {
+    this.validating = validating;
     this.namespaceAware = namespaceAware;
-  }
-
-  public void setCoalescing(boolean coalescing)
-  {
     this.coalescing = coalescing;
-  }
-
-  public void setReplacingEntityReferences(boolean flag)
-  {
-    replaceERefs = flag;
-  }
-
-  public void setExternalEntities(boolean flag)
-  {
-    externalEntities = flag;
-  }
-
-  public void setSupportDTD(boolean flag)
-  {
-    supportDTD = flag;
-  }
-
-  public void setReporter(XMLReporter reporter)
-  {
+    this.replaceERefs = replaceERefs;
+    this.externalEntities = externalEntities;
+    this.supportDTD = supportDTD;
+    this.baseAware = baseAware;
+    this.stringInterning = stringInterning;
     this.reporter = reporter;
-  }
-
-  public void setResolver(XMLResolver resolver)
-  {
     this.resolver = resolver;
+    pushInput(new Input(null, reader, null, systemId, null));
   }
 
   // -- NamespaceContext --
@@ -771,7 +767,8 @@ public class XMLParser
         if (namespaceAware)
           namespaces.removeFirst();
         // Pop base context
-        bases.removeFirst();
+        if (baseAware)
+          bases.removeFirst();
       }
     if (!startEntityStack.isEmpty())
       {
@@ -909,7 +906,10 @@ public class XMLParser
                 event = XMLStreamConstants.START_ELEMENT;
               }
             else
-              error("no root element");
+              {
+                char c = readCh();
+                error("no root element: +U"+Integer.toHexString(c));
+              }
             break;
           case MISC: // Comment | PI | S
             skipWhitespace();
@@ -1114,7 +1114,7 @@ public class XMLParser
         white = (c == ' ' || c == '\t' || c == '\n' || c == '\r');
         if (white)
           ret = true;
-        else if (c == -1)
+        else if (c == '\uffff')
           throw new EOFException();
       }
     while (white);
@@ -1151,11 +1151,14 @@ public class XMLParser
    */
   private String getXMLBase()
   {
-    for (Iterator i = bases.iterator(); i.hasNext(); )
+    if (baseAware)
       {
-        String base = (String) i.next();
-        if (base != null)
-          return base;
+        for (Iterator i = bases.iterator(); i.hasNext(); )
+          {
+            String base = (String) i.next();
+            if (base != null)
+              return base;
+          }
       }
     return input.systemId;
   }
@@ -1268,7 +1271,8 @@ public class XMLParser
   private void popInput()
   {
     Input old = (Input) inputStack.removeLast();
-    endEntityStack.addFirst(old.name);
+    if (startEntityStack.contains(old.name))
+      endEntityStack.addFirst(old.name);
     input = (Input) inputStack.getLast();
     //System.out.print("\n(-input:"+input.systemId+")"); 
     //System.out.println("popInput "+old.name);
@@ -1399,10 +1403,15 @@ public class XMLParser
             expandPE = true;
             skipWhitespace();
             expandPE = false;
-            if (tryRead('>'))
+            mark(1);
+            char c = readCh();
+            if (c == '>')
               break;
+            else if (c == '\uffff')
+              popInput();
             else
               {
+                reset();
                 peIsError = expandPE = true;
                 readMarkupdecl();
                 peIsError = expandPE = false;
@@ -1410,6 +1419,7 @@ public class XMLParser
           }
         if (inputStack.size() != 2)
           error("external subset has unmatched '>'");
+        popInput();
       }
 
     // Make rootName available for reading
@@ -1510,6 +1520,7 @@ public class XMLParser
     readContentspec(name);
     skipWhitespace();
     require('>');
+    //System.out.println("ElementDecl "+name);
   }
 
   private void readContentspec(String elementName)
@@ -1670,6 +1681,7 @@ public class XMLParser
         readAttDef(elementName);
         white = tryWhitespace();
       }
+    //System.out.println("AttlistDecl "+elementName);
   }
 
   /**
@@ -2022,8 +2034,11 @@ public class XMLParser
               }
           }
       }
-    String base = getAttributeValue(XMLConstants.XML_NS_URI, "base");
-    bases.addFirst(base);
+    if (baseAware)
+      {
+        String base = getAttributeValue(XMLConstants.XML_NS_URI, "base");
+        bases.addFirst(base);
+      }
     // make element name available for read
     buf.setLength(0);
     buf.append(elementName);
@@ -2355,6 +2370,25 @@ public class XMLParser
     skipWhitespace();
   }
 
+  private char literalReadCh()
+    throws IOException, XMLStreamException
+  {
+    char c = readCh();
+    while (c == '\uffff')
+      {
+        if (inputStack.size() > 1)
+          {
+            inputStack.removeLast();
+            input = (Input) inputStack.getLast();
+            // Don't issue end-entity
+            c = readCh();
+          }
+        else
+          throw new EOFException();
+      }
+    return c;
+  }
+
   private String readLiteral(int flags)
     throws IOException, XMLStreamException
   {
@@ -2366,7 +2400,7 @@ public class XMLParser
     if ((flags & LIT_DISABLE_PE) != 0)
       expandPE = false;
     boolean entities = false;
-    for (char c = readCh(); c != delim; c = readCh())
+    for (char c = literalReadCh(); c != delim; c = literalReadCh())
       {
         switch (c)
           {
@@ -2722,7 +2756,17 @@ public class XMLParser
     if (args.length > 1 && "-x".equals(args[1]))
       xIncludeAware = true;
     XMLParser p = new XMLParser(new java.io.FileInputStream(args[0]),
-                                absolutize(null, args[0]));
+                                absolutize(null, args[0]),
+                                false, // validating
+                                true, // namespaceAware
+                                true, // coalescing,
+                                true, // replaceERefs
+                                true, // externalEntities
+                                true, // supportDTD
+                                false, // baseAware
+                                true, // stringInterning
+                                null,
+                                null);
     XMLStreamReader reader = p;
     if (xIncludeAware)
       reader = new XIncludeFilter(p, args[0], true, true, true);
