@@ -1,3 +1,10 @@
+2005-12-15  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/XMLParser.java: Report start-entity and end-entity
+	  events; read text declaration for external entities;
+	  handle XML namespace; handle xml:base; normalize CR/LF pairs
+	  created as a result of mixed text and character entity references.
+
 2005-12-14  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java
