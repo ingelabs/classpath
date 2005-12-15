@@ -1,3 +1,78 @@
+2005-12-15  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/standard/PDLOverrideSupported.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	(ATTEMPTED): Fixed value of enum.
+	* javax/print/attribute/standard/PrinterIsAcceptingJobs.java,
+	* javax/print/attribute/standard/Severity.java,
+	* javax/print/attribute/standard/MultipleDocumentHandling.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.		
+	* javax/print/attribute/standard/Fidelity.java:
+	Added and updated javadocs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.	
+	(getName): Use correct ipp attribute name.	
+	* javax/print/attribute/standard/OrientationRequested.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(getOffset): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	* javax/print/attribute/standard/PrintQuality.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(getOffset): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	(DRAFT): Fixed value of enum.
+	(NORMAL): Likewise.
+	(HIGH): Likewise.
+	* javax/print/attribute/standard/Finishings.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(getOffset): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	(NONE): Fixed value of enum.	
+	(STAPLE): Likewise.
+	(COVER): Likewise.
+	(BIND): Likewise.
+	(SADDLE_STITCH): Likewise.
+	(EDGE_STITCH): Likewise.
+	(STAPLE_TOP_LEFT): Likewise.
+	(STAPLE_BOTTOM_LEFT): Likewise.
+	(STAPLE_TOP_RIGHT): Likewise.
+	(STAPLE_BOTTOM_RIGHT): Likewise.
+	(EDGE_STITCH_LEFT): Likewise.
+	(EDGE_STITCH_TOP): Likewise.
+	(EDGE_STITCH_RIGHT): Likewise.
+	(EDGE_STITCH_BOTTOM): Likewise.
+	(STAPLE_DUAL_LEFT): Likewise.
+	(STAPLE_DUAL_TOP): Likewise.
+	(STAPLE_DUAL_RIGHT): Likewise.
+	(STAPLE_DUAL_BOTTOM): Likewise.
+	* javax/print/attribute/standard/Sides.java:
+	Added and updated javadocs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	(DUPLEX): Fixed value of enum.
+	(TUMBLE): Likewise.	
+
 2005-12-15  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/AbstractDocument.java:
