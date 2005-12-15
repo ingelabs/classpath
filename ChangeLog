@@ -1,3 +1,9 @@
+2005-12-15  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/AbstractDocument.java:
+	(AbstractElement.getAttribute): If no attribute could be found in the 
+	AttributeSet hierarchy, then try the Element hierarchy instead.
+
 2005-12-15  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/html/HTMLDocument.java
