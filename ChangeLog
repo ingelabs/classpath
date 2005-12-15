@@ -1,5 +1,28 @@
 2005-12-15  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLDocument): Added a FIXME
+	(create): Added stub.
+	(createDefaultRoot): Likewise.
+	(createLeafElement): Likewise.
+	(createBranchElement): Likewise.
+	(insertUpdate): Likewise.
+	(setParagraphAttributes): Likewise.
+	(fireChangedUpdate): Likewise.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(LinkController): Removed FIXME
+	(mouseClicked): Added comment
+	(mouseDragged): Likewise.
+	(mouseMoved): Likewise.
+	(activateLink): Likewise.
+	(insertAtBoundary): Likewise.
+	(HTMLFactory): Added constructor.
+	(HTMLEditorKit): Added FIXME to constructor.
+	* javax/swing/text/html/StyleSheet.java
+	(removeStyleSheet): Fixed implementation.
+
+2005-12-15  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/text/html/BlockView.java
 	(paint): Partially implemented.
 	(getAttributes): Implemented.

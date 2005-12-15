@@ -96,7 +96,7 @@ public class HTMLEditorKit
        */
       public LinkController() 
       {
-        // FIXME: Anything to do here?
+        // Nothing to do here.
       }
       
       /**
@@ -108,6 +108,10 @@ public class HTMLEditorKit
        */
       public void mouseClicked(MouseEvent e)
       {
+        /*
+         These MouseInputAdapter methods generate mouse appropriate events around
+         hyperlinks (entering, exiting, and activating).
+         */
         // FIXME: Not implemented.
       }
       
@@ -118,6 +122,10 @@ public class HTMLEditorKit
        */
       public void mouseDragged(MouseEvent e)
       {
+        /*
+        These MouseInputAdapter methods generate mouse appropriate events around
+        hyperlinks (entering, exiting, and activating).
+        */
         // FIXME: Not implemented.     
       }
       
@@ -128,6 +136,10 @@ public class HTMLEditorKit
        */
       public void mouseMoved(MouseEvent e)
       {
+        /*
+        These MouseInputAdapter methods generate mouse appropriate events around
+        hyperlinks (entering, exiting, and activating).
+        */
         // FIXME: Not implemented.
       }
       
@@ -142,6 +154,10 @@ public class HTMLEditorKit
       protected void activateLink(int pos,
                                   JEditorPane editor)
       {
+        /*
+          This method creates and fires a HyperlinkEvent if the document is an
+          instance of HTMLDocument and the href tag of the link is not null.
+         */
         // FIXME: Not implemented.
       }
     }
@@ -286,7 +302,18 @@ public class HTMLEditorKit
                                       String html, HTML.Tag parentTag,
                                       HTML.Tag addTag)
       {
-        // FIXME: Not implemented.
+        /*
+        As its name implies, this protected method is used when HTML is inserted at a
+        boundary. (A boundary in this case is an offset in doc that exactly matches the
+        beginning offset of the parentTag.) It performs the extra work required to keep
+        the tag stack in shape and then calls insertHTML(). The editor and doc argu-
+        ments are the editor pane and document where the HTML should go. The offset
+        argument represents the cursor location or selection start in doc. The insert-
+        Element and parentTag arguments are used to calculate the proper number of
+        tag pops and pushes before inserting the HTML (via html and addTag, which are
+        passed directly to insertHTML()).
+        */
+        // FIXME: not implemented
       }
       
       /**
@@ -473,6 +500,15 @@ public class HTMLEditorKit
   public static class HTMLFactory
     implements ViewFactory
   {
+    
+    /**
+     * Constructor
+     */
+    public HTMLFactory()
+    {
+      // Do Nothing here.
+    }
+    
     /**
      * Creates a {@link View} for the specified <code>Element</code>.
      *
@@ -798,6 +834,9 @@ public class HTMLEditorKit
   {
     super();    
     styleContext = new StyleContext();
+    // FIXME: Should load default.css for style sheet,
+    // javax/swing/text/html/default.css
+    styleSheet = new StyleSheet();
   }
   
   /**

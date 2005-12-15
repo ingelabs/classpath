@@ -219,15 +219,25 @@ public class StyleSheet extends StyleContext
       styleSheet = null;
     else
       {
-        StyleSheet[] tmp = new StyleSheet[styleSheet.length - 1];
-        int j = 0;
         for (int i = 0; i < styleSheet.length; i++)
           {
             StyleSheet curr = styleSheet[i];
-            if (!curr.equals(ss))
+            if (curr.equals(ss))
               {
-                tmp[j] = curr;
-                j++;
+                StyleSheet[] tmp = new StyleSheet[styleSheet.length - 1];
+                if (i != 0 && i != (styleSheet.length - 1))
+                  {
+                    System.arraycopy(styleSheet, 0, tmp, 0, i);
+                    System.arraycopy(styleSheet, i + 1, tmp, i,
+                                     styleSheet.length - i - 1);
+                  }
+                else if (i == 0)
+                  System.arraycopy(styleSheet, 1, tmp, 0, styleSheet.length - 1);
+                else
+                  System.arraycopy(styleSheet, 0, tmp, 0, styleSheet.length - 1);
+                
+                styleSheet = tmp;
+                break;
               }
           }
       }

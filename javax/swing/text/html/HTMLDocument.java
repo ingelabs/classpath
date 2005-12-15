@@ -46,6 +46,8 @@ import java.util.HashMap;
 import java.util.Stack;
 import java.util.Vector;
 
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.UndoableEditEvent;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -81,6 +83,7 @@ public class HTMLDocument extends DefaultStyledDocument
    */
   public HTMLDocument()
   {
+    // FIXME: Should be using default style sheet from HTMLEditorKit
     this(new StyleSheet());
   }
   
@@ -117,6 +120,100 @@ public class HTMLDocument extends DefaultStyledDocument
   public StyleSheet getStyleSheet()
   {
     return styleSheet;
+  }
+  
+  /**
+   * Replaces the contents of the document with the given element specifications.
+   * This is called before insert if the loading is done in bursts. This is the
+   * only method called if loading the document entirely in one burst.
+   * 
+   * @param data - the date that replaces the content of the document
+   */
+  protected void create(DefaultStyledDocument.ElementSpec[] data)
+  {
+    // FIXME: Not implemented
+    System.out.println("create not implemented");
+    super.create(data);
+  }
+  
+  /**
+   * This method creates a root element for the new document.
+   * 
+   * @return the new default root
+   */
+  protected AbstractDocument.AbstractElement createDefaultRoot()
+  {
+    // FIXME: Not implemented
+    System.out.println("createDefaultRoot not implemented");
+    return super.createDefaultRoot();
+  }
+  
+  /**
+   * This method returns an HTMLDocument.RunElement object attached to
+   * parent representing a run of text from p0 to p1. The run has 
+   * attributes described by a.
+   * 
+   * @param parent - the parent element
+   * @param a - the attributes for the element
+   * @param p0 - the beginning of the range >= 0
+   * @param p1 - the end of the range >= p0
+   * @return the new element
+   */
+  protected Element createLeafElement(Element parent, AttributeSet a, int p0,
+                                      int p1)
+  {
+    // FIXME: Not implemented
+    System.out.println("createLeafElement not implemented");
+    return super.createLeafElement(parent, a, p0, p1);
+  }
+
+  /** This method returns an HTMLDocument.BlockElement object representing the
+   * attribute set a and attached to parent.
+   * 
+   * @param parent - the parent element
+   * @param a - the attributes for the element
+   * @return the new element
+   */
+  protected Element createBranchElement(Element parent, AttributeSet a)
+  {
+    // FIXME: Not implemented
+    System.out.println("createBranchElement not implemented");
+    return super.createBranchElement(parent, a);
+  }
+  
+  /**
+   * Inserts new elements in bulk. This is how elements get created in the
+   * document. The parsing determines what structure is needed and creates the
+   * specification as a set of tokens that describe the edit while leaving the
+   * document free of a write-lock. This method can then be called in bursts by
+   * the reader to acquire a write-lock for a shorter duration (i.e. while the
+   * document is actually being altered). 
+   * 
+   * @param offset - the starting offset 
+   * @param data - the element data
+   * @throws BadLocationException - if the given position does not
+   * represent a valid location in the associated document.
+   */
+  protected void insert(int offset, DefaultStyledDocument.ElementSpec[] data)
+    throws BadLocationException
+    {
+      super.insert(offset, data);
+    }
+  
+  /**
+   * Updates document structure as a result of text insertion. This will happen
+   * within a write lock. This implementation simply parses the inserted content
+   * for line breaks and builds up a set of instructions for the element buffer.
+   * 
+   * @param chng - a description of the document change
+   * @param attr - the attributes
+   */
+  protected void insertUpdate(AbstractDocument.DefaultDocumentEvent chng, 
+                              AttributeSet attr)
+  {
+    // FIXME: Not implemented
+    System.out.println("insertUpdate not implemented");
+    super.insertUpdate(chng, attr);    
   }
   
   /**
@@ -178,7 +275,7 @@ public class HTMLDocument extends DefaultStyledDocument
   public void setBase(URL u)
   {
     baseURL = u;
-    //TODO: also set the base of the StyleSheet
+    styleSheet.setBase(u);
   }
   
   /**
@@ -1430,5 +1527,52 @@ public class HTMLDocument extends DefaultStyledDocument
       throw new IllegalStateException("Parser has not been set");
     //  FIXME: Not implemented fully, use InsertHTML* in HTMLEditorKit?
     System.out.println("insertAfterStart not implemented");
+  }
+  
+  /**
+   * This method sets the attributes associated with the paragraph containing
+   * offset. If replace is false, s is merged with existing attributes. The
+   * length argument determines how many characters are affected by the new
+   * attributes. This is often the entire paragraph.
+   * 
+   * @param offset -
+   *          the offset into the paragraph (must be at least 0)
+   * @param length -
+   *          the number of characters affected (must be at least 0)
+   * @param s -
+   *          the attributes
+   * @param replace -
+   *          whether to replace existing attributes, or merge them
+   */
+  public void setParagraphAttributes(int offset, int length, AttributeSet s,
+                                     boolean replace)
+  {
+    //  FIXME: Not implemented.
+    System.out.println("setParagraphAttributes not implemented");
+    super.setParagraphAttributes(offset, length, s, replace);
+  }
+  
+  /**
+   * This method flags a change in the document.
+   * 
+   *  @param e - the Document event
+   */
+  protected void fireChangedUpdate(DocumentEvent e)
+  {
+    //  FIXME: Not implemented.
+    System.out.println("fireChangedUpdate not implemented");
+    super.fireChangedUpdate(e);    
+  }
+
+  /**
+   * This method fires an event intended to be caught by Undo listeners. It
+   * simply calls the super version inherited from DefaultStyledDocument. With
+   * this method, an HTML editor could easily provide undo support.
+   * 
+   * @param e - the UndoableEditEvent
+   */
+  protected void fireUndoableEditUpdate(UndoableEditEvent e)
+  {
+    super.fireUndoableEditUpdate(e);
   }
 }
