@@ -1,3 +1,10 @@
+2005-12-15  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(getPreferredSize): Protect the preferredSize field from
+	modification by creating a new Dimension object from it
+	before returning the value.
+
 2005-12-15  Chris Burdess  <dog@gnu.org>
 
 	Fixes bug classpath/24496:
