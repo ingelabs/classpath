@@ -24,6 +24,8 @@
 
 /* GCJ LOCAL: Include files.  */
 #include "ieeefp.h"
+/* CLASSPATH LOCAL: */
+#include "namespace.h"
 
 #include "mprec.h"
 

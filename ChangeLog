@@ -1,3 +1,12 @@
+2005-12-16  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/fdlibm/mprec.h, native/fdlibm/fdlibm.h: Added the
+	inclusion of namespace.h
+
+	* native/fdlibm/namespace.h: New file.
+
+	* scripts/build_mathnamespace, scripts/math_symbols: New files.
+
 2005-12-16  Keith Seitz  <keiths@redhat.com>
 
 	* vm/reference/gnu/classpath/jdwp/VMVirtualMachine.java
