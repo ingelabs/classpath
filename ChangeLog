@@ -1,3 +1,7 @@
+2005-12-16  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/ObjectInputStream.java: Organized imports.
+
 2005-12-15  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/standard/PDLOverrideSupported.java: 
