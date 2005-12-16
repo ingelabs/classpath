@@ -1,5 +1,10 @@
 2005-12-16  Roman Kennke  <kennke@aicas.com>
 
+	* native/jni/classpath/jcl.c:
+	Only redefine __attribute__ if it's not already defined.
+
+2005-12-16  Roman Kennke  <kennke@aicas.com>
+
 	* java/net/DatagramSocket.java
 	(DatagramSocket(SocketAddress)): Actually use the factory if one
 	is installed.
