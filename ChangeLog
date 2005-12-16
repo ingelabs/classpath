@@ -1,3 +1,24 @@
+2005-12-16  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/standard/JobImpressionsCompleted.java:
+	Added and updated javadocs to class and methods.
+	(getName): Fixed name returned by this attribute class.
+	* javax/print/attribute/standard/JobMediaSheetsCompleted.java,
+	* javax/print/attribute/standard/JobKOctetsProcessed.java,
+	* javax/print/attribute/standard/JobImpressions.java,
+	* javax/print/attribute/standard/JobKOctets.java, 
+	* javax/print/attribute/standard/JobMediaSheets.java,
+	* javax/print/attribute/standard/NumberOfInterveningJobs.java,
+	* javax/print/attribute/standard/JobPriority.java,
+	* javax/print/attribute/standard/JobPrioritySupported.java,
+	* javax/print/attribute/standard/NumberOfDocuments.java,
+	* javax/print/attribute/standard/QueuedJobCount.java,
+	* javax/print/attribute/standard/NumberUp.java,
+	* javax/print/attribute/standard/PagesPerMinuteColor.java,
+	* javax/print/attribute/standard/PagesPerMinute.java,
+	* javax/print/attribute/standard/Copies.java: 
+	Added and updated javadocs to class and methods.
+
 2005-12-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/StyledEditorKit.java
