@@ -583,8 +583,7 @@ public final class Class implements Serializable
   /**
    * Returns the <code>Package</code> in which this class is defined
    * Returns null when this information is not available from the
-   * classloader of this class or when the classloader of this class
-   * is null.
+   * classloader of this class.
    *
    * @return the package for this class, if it is available
    * @since 1.2

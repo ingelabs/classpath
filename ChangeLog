@@ -1,3 +1,7 @@
+2005-12-16  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Class.java (getPackage): Javadoc fix.
+
 2005-12-16  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/classpath/jcl.c:
