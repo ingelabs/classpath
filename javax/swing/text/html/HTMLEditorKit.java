@@ -1131,12 +1131,13 @@ public class HTMLEditorKit
     defaultCursor = cursor;
   }
   
+  /**
+   * Gets the input attributes used for the styled editing actions.
+   * 
+   * @return the attribute set
+   */
   public MutableAttributeSet getInputAttributes()
   {
-    if (inputAttributes != null)
-      inputAttributes.addAttributes(super.getInputAttributes());
-    else
-      inputAttributes = super.getInputAttributes();
     return inputAttributes;
   }
   

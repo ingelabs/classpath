@@ -714,9 +714,7 @@ public class StyledEditorKit extends DefaultEditorKit
   protected void createInputAttributes(Element element,
 				       MutableAttributeSet set)
   {
-    AttributeSet atts = element.getAttributes();
-    set.removeAttributes(set);
     // FIXME: Filter out component, icon and element name attributes.
-    set.addAttributes(atts);
+    set.addAttributes(element.getAttributes());
   }
 }

@@ -1,5 +1,16 @@
 2005-12-16  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/text/StyledEditorKit.java
+	(createInputAttributes): This should copy the element
+	attributes into the set, not clear out the set. Fixed
+	to match the API spec.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(getInputAttributes): Added API documentation. Fixed
+	implementation. Combining all input attributes should
+	not be done here.
+
+2005-12-16  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/text/html/HTMLDocument.java
 	(HTMLDocument): Fixed. The style sheet is initialized
 	using HTMLEditorKit.
