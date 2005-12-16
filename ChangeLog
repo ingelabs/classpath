@@ -1,3 +1,9 @@
+2005-12-16  Roman Kennke  <kennke@aicas.com>
+
+	* java/net/DatagramSocket.java
+	(DatagramSocket(SocketAddress)): Actually use the factory if one
+	is installed.
+
 2005-12-16  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/ObjectInputStream.java: Organized imports.
