@@ -1,3 +1,73 @@
+2005-12-16  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/standard/MediaSizeName.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): Implemented.
+	(getEnumValueTable): Implemented.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	* javax/print/attribute/standard/MediaName.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): Implemented.
+	(getEnumValueTable): Implemented.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	(NA_LETTER_WHITE): Fixed value of enum.
+	(NA_LETTER_TRANSPARENT): Likewise.
+	(ISO_A4_WHITE): Likewise.
+	(ISO_A4_TRANSPARENT): Likewise.
+	(serialVersionUID): New field.
+	* javax/print/attribute/standard/Media.java: 
+	Added and updated javadocs to class and methods.
+	(equals): New overridden method.
+	* javax/print/attribute/standard/MediaTray.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): Implemented.
+	(getEnumValueTable): Implemented.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	(TOP): Fixed value of enum.
+	(MIDDLE): Likewise.
+	(BOTTOM): Likewise.
+	(ENVELOPE): Likewise.
+	(LARGE_CAPACITY): Likewise.
+	(MAIN): Likewise.
+	(SIDE): Likewise.
+	(serialVersionUID): New field.
+	* javax/print/attribute/standard/PrinterState.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	(IDLE): Fixed value of enum.
+	(PROCESSING): Likewise.
+	(STOPPED): Likewise.
+	* javax/print/attribute/standard/JobState.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+	(PENDING): Fixed value of enum.
+	(PENDING_HELD): Likewise.
+	(PROCESSING): Likewise.
+	(PROCESSING_STOPPED): Likewise.
+	(CANCELED): Likewise.
+	(ABORTED): Likewise.
+	(COMPLETED): Likewise.
+	* javax/print/attribute/standard/SheetCollate.java,
+	* javax/print/attribute/standard/PresentationDirection.java,
+	* javax/print/attribute/standard/ReferenceUriSchemesSupported.java,
+	* javax/print/attribute/standard/PrinterStateReason.java,
+	* javax/print/attribute/standard/JobStateReason.java,
+	* javax/print/attribute/standard/JobSheets.java: 
+	Added and updated javadocs to class and methods.
+	(getStringTable): New overridden method.
+	(getEnumValueTable): New overridden method.
+	(stringTable): New field.
+	(enumValueTable): New field.
+
 2005-12-16  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/java-nio/java_nio.c
