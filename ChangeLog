@@ -1,3 +1,29 @@
+2005-12-16  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLDocument): Fixed. The style sheet is initialized
+	using HTMLEditorKit.
+	(HTMLDocument): Fixed to call this with null as the 
+	style sheet.
+	* javax/swing/text/html/HTMLEditorKit.java:
+	Added new fields.
+	(LinkController): Calls super constructor.
+	(InsertHTMLTextAction): Added comment.
+	(actionPerformed): Partially implemented.
+	(HTMLEditorKit): Fixed to initialize style sheet to
+	default.css.
+	(getParser): Fixed field name.
+	(read): Added code to set base for document.
+	(getContentType): Fixed to return field.
+	(createInputAttributes): Partially implemented.
+	(install): Added FIXME.
+	(deinstall): set field to null.
+	(getInputAttributes): Implemented.
+	* javax/swing/text/html/StyleSheet.java
+	(importStyleSheet): Partially implemented.
+	* javax/swing/text/html/default.css: New file. Default style
+	sheet for HTML.
+
 2005-12-16  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* native/fdlibm/mprec.h, native/fdlibm/fdlibm.h: Added the

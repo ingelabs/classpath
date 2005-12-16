@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing.text.html;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -96,7 +97,7 @@ public class HTMLEditorKit
        */
       public LinkController() 
       {
-        // Nothing to do here.
+        super();
       }
       
       /**
@@ -229,6 +230,8 @@ public class HTMLEditorKit
                                   HTML.Tag alternateAddTag) 
       {
         super(name);
+        // Fields are for easy access when the action is applied to an actual
+        // document.
         this.html = html;
         this.parentTag = parentTag;
         this.addTag = addTag;
@@ -350,13 +353,21 @@ public class HTMLEditorKit
        */
       public void actionPerformed(ActionEvent ae)
       {
-        // FIXME: Not implemented.
+        Object source = ae.getSource();
+        if (source instanceof JEditorPane)
+          {
+            JEditorPane pane = ((JEditorPane) source);
+            Document d = pane.getDocument();
+            if (d instanceof HTMLDocument)
+              insertHTML(pane, (HTMLDocument) d, 0, html, 0, 0, addTag);
+            // FIXME: is this correct parameters?
+          }
+        // FIXME: else not implemented
       }
-    }
+  }
   
   /**
-   * Abstract Action class that helps inserting HTML
-   * into an existing document.
+   * Abstract Action class that helps inserting HTML into an existing document.
    */
   public abstract static class HTMLTextAction
     extends StyledEditorKit.StyledTextAction
@@ -815,7 +826,7 @@ public class HTMLEditorKit
   /**
    * The parser.
    */
-  Parser parserDel;
+  Parser parser;
   
   /**
    * The mouse listener used for links.
@@ -826,6 +837,15 @@ public class HTMLEditorKit
    * Style context for this editor.
    */
   StyleContext styleContext;
+  
+  /** The content type */
+  String contentType = "text/html";
+  
+  /** The input attributes defined by default.css */
+  MutableAttributeSet inputAttributes;
+  
+  /** The editor pane used. */
+  JEditorPane editorPane;
     
   /**
    * Constructs an HTMLEditorKit, creates a StyleContext, and loads the style sheet.
@@ -834,9 +854,9 @@ public class HTMLEditorKit
   {
     super();    
     styleContext = new StyleContext();
-    // FIXME: Should load default.css for style sheet,
-    // javax/swing/text/html/default.css
     styleSheet = new StyleSheet();
+    styleSheet.importStyleSheet(getClass().getResource(DEFAULT_CSS));
+    // FIXME: Set inputAttributes with default.css    
   }
   
   /**
@@ -872,9 +892,9 @@ public class HTMLEditorKit
    */
   protected Parser getParser()
   {
-    if (parserDel == null)
-      parserDel = new ParserDelegator();
-    return parserDel;
+    if (parser == null)
+      parser = new ParserDelegator();
+    return parser;
   }
   
   /**
@@ -936,9 +956,11 @@ public class HTMLEditorKit
           throw new BadLocationException("Bad location", pos);
         if (parser == null)
           throw new IOException("Parser is null.");
-
-        ParserCallback pc = ((HTMLDocument) doc).getReader(pos);
-
+        
+        HTMLDocument hd = ((HTMLDocument) doc);
+        hd.setBase(editorPane.getPage());
+        ParserCallback pc = hd.getReader(pos);
+        
         // FIXME: What should ignoreCharSet be set to?
         
         // parser.parse inserts html into the buffer
@@ -983,7 +1005,7 @@ public class HTMLEditorKit
    */
   public String getContentType()
   {
-    return "text/html";
+    return contentType;
   } 
   
   /**
@@ -1008,8 +1030,8 @@ public class HTMLEditorKit
   protected void createInputAttributes(Element element,
                                        MutableAttributeSet set)
   {
-    // FIXME: Not implemented.
-    super.createInputAttributes(element, set);
+    set.addAttributes(element.getAttributes());
+    // FIXME: Not fully implemented.
   }
   
   /**
@@ -1022,6 +1044,8 @@ public class HTMLEditorKit
     super.install(c);
     mouseListener = new LinkController();
     c.addMouseListener(mouseListener);
+    editorPane = c;
+    // FIXME: need to set up hyperlinklistener object
   }
   
   /**
@@ -1035,6 +1059,7 @@ public class HTMLEditorKit
     super.deinstall(c);
     c.removeMouseListener(mouseListener);
     mouseListener = null;
+    editorPane = null;
   }
   
   /**
@@ -1108,8 +1133,11 @@ public class HTMLEditorKit
   
   public MutableAttributeSet getInputAttributes()
   {
-    // FIXME: Not implemented.
-    return super.getInputAttributes();
+    if (inputAttributes != null)
+      inputAttributes.addAttributes(super.getInputAttributes());
+    else
+      inputAttributes = super.getInputAttributes();
+    return inputAttributes;
   }
   
   /**

@@ -42,7 +42,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
 
@@ -261,14 +263,24 @@ public class StyleSheet extends StyleContext
    */
   public void importStyleSheet(URL url)
   {
-    // FIXME: Not implemented.   
+    try
+      {
+        // FIXME: Need to make sure url points to a valid CSS document.
+        loadRules(new BufferedReader(new InputStreamReader(url.openStream())),
+                  url);
+      }
+    catch (IOException ioe)
+      {
+        // Do nothing here.
+      }
   }
   
   /**
-   * Sets the  base url. All import statements that are relative, will be
+   * Sets the base url. All import statements that are relative, will be
    * relative to base.
    * 
-   * @param base - the base URL.
+   * @param base -
+   *          the base URL.
    */
   public void setBase(URL base)
   {

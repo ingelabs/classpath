@@ -83,8 +83,7 @@ public class HTMLDocument extends DefaultStyledDocument
    */
   public HTMLDocument()
   {
-    // FIXME: Should be using default style sheet from HTMLEditorKit
-    this(new StyleSheet());
+    this(null);
   }
   
   /**
@@ -108,6 +107,12 @@ public class HTMLDocument extends DefaultStyledDocument
   public HTMLDocument(AbstractDocument.Content c, StyleSheet styles)
   {
     this.content = c;
+    if (styles == null)
+      {
+        styles = new StyleSheet();
+        styles.importStyleSheet(getClass().getResource(HTMLEditorKit.
+                                                       DEFAULT_CSS));
+      }
     this.styleSheet = styles;
   }
   
