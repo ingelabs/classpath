@@ -1,3 +1,17 @@
+2005-12-16  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/event/EventManager.java (EventManager): Catch
+	all JdwpExceptions when initializing the event table.
+	(requestEvent): Update to allow throwing JdwpException from
+	VMVirtualMachine methods.
+	(deleteRequest): Likewise.
+	(clearRequests): Likewise.
+	* gnu/classpath/jdwp/Jdwp.java (notify): Catch exceptions
+	from sendEvent and _enforceSuspendPolicy.
+	(sendEvent): Do not catch IOException here.
+	(_enforceSuspendPolicy): Update to allow throwing JdwpException
+	from VMVirtualMachine methods.
+
 2005-12-16  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/standard/JobImpressionsCompleted.java:
