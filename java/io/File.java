@@ -396,7 +396,8 @@ public class File implements Serializable, Comparable
    * This method initializes a new <code>File</code> object to represent
    * a file corresponding to the specified <code>file:</code> protocol URI.
    *
-   * @param uri The uri.
+   * @param uri The URI
+   * @throws IllegalArgumentException if the URI is not hierarchical
    */
   public File(URI uri)
   {

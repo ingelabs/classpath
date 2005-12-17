@@ -1,3 +1,7 @@
+2005-12-17  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/File.java (File): Updated javadoc.
+
 2005-12-17  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* native/fdlibm/namespace.h: Regenerated.
