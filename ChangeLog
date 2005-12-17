@@ -1,5 +1,15 @@
 2005-12-16  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTable.java
+	(AccessibleJTable.getAccessibleRowAtIndex): New method.
+	(AccessibleJTable.getAccessibleColumnAtIndex): New method.
+	(AccessibleJTable.getAccessibleColumnAtIndex): New method.
+	(surrendersFocusOnKeystroke): New field.
+	(setSurrendersFocusOnKeystroke): New method.
+	(getSurrendersFocusOnKeystroke): New method.
+
+2005-12-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SwingUtilities.java
 	(processKeyBindings): New method. Processes keybindings for
 	non-JComponent derived components.
