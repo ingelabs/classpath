@@ -1,3 +1,8 @@
+2005-12-17  Mark Wielaard  <mark@klomp.org>
+
+	* lib/copy-vmresources.sh.in: Use dot '.' for find after changing
+	dir to target directory.
+
 2005-12-17  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/File.java (File): Updated javadoc.
