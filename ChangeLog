@@ -1,3 +1,9 @@
+2005-12-16  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/SwingUtilities.java
+	(processKeyBindings): New method. Processes keybindings for
+	non-JComponent derived components.
+
 2005-12-16  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/event/EventManager.java (EventManager): Catch
