@@ -1,3 +1,52 @@
+2005-12-17  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/standard/CopiesSupported.java: 
+	Added and updated javadocs to class and methods.
+	(CopiesSupported): Throw IllegalArgumentException if 
+	lowerBound is less than 1.
+	(CopiesSupported): Throw IllegalArgumentException if member less than 1.
+	(equals): New overridden method.
+	* javax/print/attribute/standard/JobKOctetsSupported.java: 
+	Added and updated javadocs to class and methods.
+	(JobKOctetsSupported): Throw IllegalArgumentException if 
+	lowerBound is less than 1.
+	(equals): New overridden method.
+	* javax/print/attribute/standard/JobImpressionsSupported.java: 
+	Added and updated javadocs to class and methods.
+	(JobImpressionsSupported): Throw IllegalArgumentException if 
+	lowerBound is less than 1.
+	(equals): New overridden method.
+	* javax/print/attribute/standard/JobMediaSheetsSupported.java: 
+	Added and updated javadocs to class and methods.
+	(JobMediaSheetsSupported): Throw IllegalArgumentException if 
+	lowerBound is less than 1.
+	(equals): New overridden method.
+	* javax/print/attribute/standard/PageRanges.java: 
+	Added and updated javadocs to class and methods.
+	(PageRanges): Throw IllegalArgumentException if member less than 1.
+	(PageRanges): Throw IAE if lowerBound is less than 1.
+	(PageRanges): Throw NPE if members is null.
+	(PageRanges): New constructor.
+	(equals): New overridden method.
+	* javax/print/attribute/standard/NumberUpSupported.java: 
+	Added and updated javadocs to class and methods.
+	(NumberUpSupported): Throw IllegalArgumentException if member less than 1.
+	(NumberUpSupported): Throw IAE if lowerbound less than 1.
+	(NumberUpSupported): Throw NPE if members is null.
+	(equals): New overridden method.
+	* javax/print/attribute/standard/JobHoldUntil.java,
+	* javax/print/attribute/standard/DateTimeAtProcessing.java,
+	* javax/print/attribute/standard/DateTimeAtCompleted.java,
+	* javax/print/attribute/standard/DateTimeAtCreation.java: 
+	Added and updated javadocs to class and methods.
+	* javax/print/attribute/standard/PrinterURI.java,
+	* javax/print/attribute/standard/PrinterMoreInfoManufacturer.java,
+	* javax/print/attribute/standard/PrinterMoreInfo.java,
+	* javax/print/attribute/standard/Destination.java,
+	* javax/print/attribute/standard/PrinterResolution.java: 
+	Added and updated javadocs to class and methods.
+	(equals): New overridden method.
+
 2005-12-17  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* java/io/ObjectOutputStream.java
