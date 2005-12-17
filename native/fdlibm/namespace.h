@@ -23,7 +23,6 @@
 #define erfc ClasspathMath_erfc
 #define gamma ClasspathMath_gamma
 #define hypot ClasspathMath_hypot
-#define isnan ClasspathMath_isnan
 #define finite ClasspathMath_finite
 #define j0 ClasspathMath_j0
 #define j1 ClasspathMath_j1

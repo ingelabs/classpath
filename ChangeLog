@@ -1,3 +1,12 @@
+2005-12-17  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/fdlibm/namespace.h: Regenerated.
+
+	* native/fdlibm/fdlibm.h
+	(isnan): Define explicitly isnan if it is not a macro.
+
+	* scripts/math_symbols: Removed isnan.
+	
 2005-12-17  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/standard/CopiesSupported.java: 

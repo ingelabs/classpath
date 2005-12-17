@@ -22,7 +22,6 @@ erf
 erfc
 gamma
 hypot
-isnan
 finite
 j0
 j1
