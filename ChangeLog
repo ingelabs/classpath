@@ -1,3 +1,9 @@
+2005-12-18  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/XMLParser.java: Various fixes post SAX conformance
+	testing.
+
 2005-12-18  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/standard/JobOriginatingUserName.java,

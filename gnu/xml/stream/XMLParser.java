@@ -366,14 +366,9 @@ public class XMLParser
   {
     if (doctype != null)
       {
-        LinkedHashMap attlist =
-          (LinkedHashMap) doctype.attlists.get(elementName);
-        if (attlist != null)
-          {
-            AttributeDecl att = (AttributeDecl) attlist.get(attName);
-            if (att != null)
-              return att.type;
-          }
+        AttributeDecl att = doctype.getAttributeDecl(elementName, attName);
+        if (att != null)
+          return att.type;
       }
     return null;
   }
@@ -408,10 +403,7 @@ public class XMLParser
     String qn = ("".equals(a.prefix)) ? a.localName :
       a.prefix + ":" + a.localName;
     String elementName = buf.toString();
-    LinkedHashMap attlist = (LinkedHashMap) doctype.attlists.get(elementName);
-    if (attlist == null)
-      return false;
-    return attlist.containsKey(qn);
+    return doctype.isAttributeDeclared(elementName, qn);
   }
   
   public String getCharacterEncodingScheme()
@@ -790,15 +782,6 @@ public class XMLParser
       }
     try
       {
-        if (!input.initialized)
-          {
-            input.init();
-            if (inputStack.size() > 1)
-              {
-                if (tryRead(TEST_XML_DECL))
-                  readTextDecl();
-              }
-          }
         //System.out.println("input="+input.name+" "+input.inputEncoding);
         switch (state)
           {
@@ -927,6 +910,10 @@ public class XMLParser
               {
                 if (event == XMLStreamConstants.END_DOCUMENT)
                   throw new NoSuchElementException();
+                char c = readCh();
+                if (c != '\uffff')
+                  error("Only comments and PIs may appear after " +
+                        "the root element");
                 event = XMLStreamConstants.END_DOCUMENT;
               }
             break;
@@ -981,17 +968,7 @@ public class XMLParser
   private char readCh()
     throws IOException, XMLStreamException
   {
-    int c = read();
-    /*if (c == -1)
-      {
-        if (inputStack.size() > 1)
-          {
-            popInput();
-            return readCh();
-          }
-        return (char) -1;
-      }*/
-    char ret = (char) c;
+    char c = (char) read();
     if (expandPE && c == '%')
       {
         if (peIsError)
@@ -999,7 +976,7 @@ public class XMLParser
         parsePEReference();
         return readCh();
       }
-    return ret;
+    return c;
   }
 
   private void require(char delim)
@@ -1092,6 +1069,10 @@ public class XMLParser
         while (!tryRead(delim))
           {
             char c = readCh();
+            if (c == '\uffff')
+              throw new EOFException();
+            else if (c < 32 && c != 10 && c != 9 && c != 13)
+              error("Illegal XML character:", Character.toString(c));
             buf.append(c);
           }
       }
@@ -1194,6 +1175,9 @@ public class XMLParser
       error("unable to resolve external entity",
             (ids.systemId != null) ? ids.systemId : ids.publicId);
     pushInput(new Input(in, ids.publicId, url, name, input.inputEncoding));
+    input.init();
+    if (tryRead(TEST_XML_DECL))
+      readTextDecl();
     //System.out.println("pushInput "+name+" "+url);
   }
 
@@ -1208,6 +1192,12 @@ public class XMLParser
   {
     if (href == null)
       return null;
+    int ci = href.indexOf(':');
+    if (ci > 1 && isLowercaseAscii(href.substring(0, ci)))
+      {
+        // href is absolute already
+        return href;
+      }
     if (base == null)
       base = "";
     else
@@ -1253,6 +1243,18 @@ public class XMLParser
           }
       }
     return base + href;
+  }
+
+  private static boolean isLowercaseAscii(String text)
+  {
+    int len = text.length();
+    for (int i = 0; i < len; i++)
+      {
+        char c = text.charAt(i);
+        if (c < 97 || c > 122)
+          return false;
+      }
+    return true;
   }
 
   private InputStream resolve(String url)
@@ -1500,6 +1502,9 @@ public class XMLParser
                   case ']':
                     if (tryRead("]>"))
                       nesting--;
+                    break;
+                  case '\uffff':
+                    throw new EOFException();
                   }
               }
             expandPE = true;
@@ -1527,9 +1532,9 @@ public class XMLParser
     throws IOException, XMLStreamException
   {
     if (tryRead("EMPTY"))
-      doctype.elements.put(elementName, "EMPTY");
+      doctype.addElementDecl(elementName, "EMPTY");
     else if (tryRead("ANY"))
-      doctype.elements.put(elementName, "ANY");
+      doctype.addElementDecl(elementName, "ANY");
     else
       {
         StringBuffer acc = new StringBuffer();
@@ -1562,7 +1567,7 @@ public class XMLParser
           }
         else
           readElements(acc);
-        doctype.elements.put(elementName, acc.toString());
+        doctype.addElementDecl(elementName, acc.toString());
       }
   }
 
@@ -1812,25 +1817,10 @@ public class XMLParser
     else
       value = readLiteral(flags);
     expandPE = saved;
-    /*if ("ENUMERATION".equals(type))
-      type = enumer;
-    else if ("NOTATION".equals(type))
-      type = "NOTATION " + enumer;*/
     // Register attribute def
-    LinkedHashMap attlist =
-      (LinkedHashMap) doctype.attlists.get(elementName);
-    if (attlist == null)
-      {
-        attlist = new LinkedHashMap();
-        doctype.attlists.put(elementName, attlist);
-      }
-    if (attlist.containsKey(name))
-      {
-        return;
-      }
     AttributeDecl attribute =
       new AttributeDecl(type, value, valueType, enumeration);
-    attlist.put(name, attribute);
+    doctype.addAttributeDecl(elementName, name, attribute);
   }
 
   private void readEntityDecl()
@@ -1861,7 +1851,7 @@ public class XMLParser
       {
         // Internal entity replacement text
         String value = readLiteral(flags);
-        doctype.entities.put(name, value);
+        doctype.addEntityDecl(name, value);
       }
     else
       {
@@ -1875,7 +1865,7 @@ public class XMLParser
             requireWhitespace();
             ids.notationName = readNmtoken(true);
           }
-        doctype.entities.put(name, ids);
+        doctype.addEntityDecl(name, ids);
       }
     // finish
     skipWhitespace();
@@ -1892,7 +1882,7 @@ public class XMLParser
     requireWhitespace();
     ExternalIds ids = readExternalIds(true, false);
     ids.notationName = notationName;
-    doctype.notations.put(notationName, ids);
+    doctype.addNotationDecl(notationName, ids);
     skipWhitespace();
     require('>');
   }
@@ -1969,7 +1959,11 @@ public class XMLParser
     attrs.clear();
     // Push namespace context
     if (namespaceAware)
-      namespaces.addFirst(new LinkedHashMap());
+      {
+        if (":".equals(elementName))
+          error("XML Namespaces forbids names consisting of a single colon");
+        namespaces.addFirst(new LinkedHashMap());
+      }
     // Read element content
     boolean white = tryWhitespace();
     mark(1);
@@ -1988,50 +1982,45 @@ public class XMLParser
     // supply defaulted attributes
     if (doctype != null)
       {
-        LinkedHashMap attlist =
-          (LinkedHashMap) doctype.attlists.get(elementName);
-        if (attlist != null)
+        for (Iterator i = doctype.attlistIterator(elementName); i.hasNext(); )
           {
-            for (Iterator i = attlist.entrySet().iterator(); i.hasNext(); )
+            Map.Entry entry = (Map.Entry) i.next();
+            String attName = (String) entry.getKey();
+            if (namespaceAware && attName.equals("xmlns"))
               {
-                Map.Entry entry = (Map.Entry) i.next();
-                String attName = (String) entry.getKey();
-                if (namespaceAware && attName.equals("xmlns"))
+                LinkedHashMap ctx =
+                  (LinkedHashMap) namespaces.getFirst();
+                if (ctx.containsKey(XMLConstants.DEFAULT_NS_PREFIX))
+                  continue; // namespace was specified
+              }
+            else if (namespaceAware && attName.startsWith("xmlns:"))
+              {
+                LinkedHashMap ctx =
+                  (LinkedHashMap) namespaces.getFirst();
+                if (ctx.containsKey(attName.substring(6)))
+                  continue; // namespace was specified
+              }
+            else
+              {
+                for (Iterator j = attrs.iterator(); j.hasNext(); )
                   {
-                    LinkedHashMap ctx =
-                      (LinkedHashMap) namespaces.getFirst();
-                    if (ctx.containsKey(XMLConstants.DEFAULT_NS_PREFIX))
-                      continue; // namespace was specified
+                    Attribute a = (Attribute) j.next();
+                    if (attName.equals(a.name))
+                      continue; // attribute was specified
                   }
-                else if (namespaceAware && attName.startsWith("xmlns:"))
-                  {
-                    LinkedHashMap ctx =
-                      (LinkedHashMap) namespaces.getFirst();
-                    if (ctx.containsKey(attName.substring(6)))
-                      continue; // namespace was specified
-                  }
-                else
-                  {
-                    for (Iterator j = attrs.iterator(); j.hasNext(); )
-                      {
-                        Attribute a = (Attribute) j.next();
-                        if (attName.equals(a.name))
-                          continue; // attribute was specified
-                      }
-                  }
-                AttributeDecl decl = (AttributeDecl) entry.getValue();
-                if (decl.value == null)
-                  continue;
-                Attribute attr =
-                  new Attribute(attName, decl.type, false, decl.value);
-                if (namespaceAware)
-                  {
-                    if (!addNamespace(attr))
-                      attrs.add(attr);
-                  }
-                else
+              }
+            AttributeDecl decl = (AttributeDecl) entry.getValue();
+            if (decl.value == null)
+              continue;
+            Attribute attr =
+              new Attribute(attName, decl.type, false, decl.value);
+            if (namespaceAware)
+              {
+                if (!addNamespace(attr))
                   attrs.add(attr);
               }
+            else
+              attrs.add(attr);
           }
       }
     if (baseAware)
@@ -2072,23 +2061,27 @@ public class XMLParser
       readLiteral(flags) : readLiteral(flags | LIT_NORMALIZE);
     // add attribute event
     Attribute attr = this.new Attribute(attributeName, type, true, value);
-    if (namespaceAware && attributeName.equals("xmlns"))
+    if (namespaceAware)
       {
-        LinkedHashMap ctx = (LinkedHashMap) namespaces.getFirst();
-        if (ctx.containsKey(XMLConstants.DEFAULT_NS_PREFIX))
-          error("duplicate default namespace");
-      }
-    else if (namespaceAware && attributeName.startsWith("xmlns:"))
-      {
-        LinkedHashMap ctx = (LinkedHashMap) namespaces.getFirst();
-        if (ctx.containsKey(attributeName.substring(6)))
-          error("duplicate namespace", attributeName.substring(6));
-      }
-    else
-      {
-        if (attrs.contains(attr))
+        if (attributeName.equals(":"))
+          error("XML Namespaces forbids names consisting of a single colon");
+        else if (attributeName.equals("xmlns"))
+          {
+            LinkedHashMap ctx = (LinkedHashMap) namespaces.getFirst();
+            if (ctx.containsKey(XMLConstants.DEFAULT_NS_PREFIX))
+              error("duplicate default namespace");
+          }
+        else if (attributeName.startsWith("xmlns:"))
+          {
+            LinkedHashMap ctx = (LinkedHashMap) namespaces.getFirst();
+            if (ctx.containsKey(attributeName.substring(6)))
+              error("duplicate namespace", attributeName.substring(6));
+          }
+        else if (attrs.contains(attr))
           error("duplicate attribute", attributeName);
       }
+    else if (attrs.contains(attr))
+      error("duplicate attribute", attributeName);
     if (namespaceAware)
       {
         if (!addNamespace(attr))
@@ -2344,7 +2337,7 @@ public class XMLParser
   {
     if (doctype != null)
       {
-        Object value = doctype.entities.get(name);
+        Object value = doctype.getEntity(name);
         if (value != null)
           {
             if (value instanceof String)
@@ -2531,7 +2524,7 @@ public class XMLParser
     require(';');
     if (doctype != null)
       {
-        Object entity = doctype.entities.get("%" + name);
+        Object entity = doctype.getEntity("%" + name);
         if (entity != null)
           {
             if (entity instanceof String)
@@ -2547,7 +2540,7 @@ public class XMLParser
     throws IOException, XMLStreamException
   {
     StringBuffer b = new StringBuffer();
-    for (char c = readCh(); c != ';'; c = readCh())
+    for (char c = readCh(); c != ';' && c != '\uffff'; c = readCh())
       b.append(c);
     try
       {
@@ -2890,16 +2883,104 @@ public class XMLParser
     final String rootName;
     final String publicId;
     final String systemId;
-    final LinkedHashMap elements = new LinkedHashMap();
-    final LinkedHashMap attlists = new LinkedHashMap();
-    final LinkedHashMap entities = new LinkedHashMap();
-    final LinkedHashMap notations = new LinkedHashMap();
+    private final LinkedHashMap elements = new LinkedHashMap();
+    private final LinkedHashMap attlists = new LinkedHashMap();
+    private final LinkedHashMap entities = new LinkedHashMap();
+    private final LinkedHashMap notations = new LinkedHashMap();
+    private final LinkedList entries = new LinkedList();
 
     Doctype(String rootName, String publicId, String systemId)
     {
       this.rootName = rootName;
       this.publicId = publicId;
       this.systemId = systemId;
+    }
+
+    void addElementDecl(String name, String model)
+    {
+      if (elements.containsKey(name))
+        return;
+      elements.put(name, model);
+      entries.add("E" + name);
+    }
+
+    void addAttributeDecl(String ename, String aname, AttributeDecl decl)
+    {
+      LinkedHashMap attlist = (LinkedHashMap) attlists.get(ename);
+      if (attlist == null)
+        {
+          attlist = new LinkedHashMap();
+          attlists.put(ename, attlist);
+        }
+      else if (attlist.containsKey(aname))
+        return;
+      attlist.put(aname, decl);
+      String key = "A" + ename;
+      if (!entries.contains(key))
+        entries.add(key);
+    }
+
+    void addEntityDecl(String name, String text)
+    {
+      if (entities.containsKey(name))
+        return;
+      entities.put(name, text);
+      entries.add("e" + name);
+    }
+    
+    void addEntityDecl(String name, ExternalIds ids)
+    {
+      if (entities.containsKey(name))
+        return;
+      entities.put(name, ids);
+      entries.add("e" + name);
+    }
+
+    void addNotationDecl(String name, ExternalIds ids)
+    {
+      if (notations.containsKey(name))
+        return;
+      notations.put(name, ids);
+      entries.add("n" + name);
+    }
+
+    String getElementModel(String name)
+    {
+      return (String) elements.get(name);
+    }
+
+    AttributeDecl getAttributeDecl(String ename, String aname)
+    {
+      LinkedHashMap attlist = (LinkedHashMap) attlists.get(ename);
+      return (attlist == null) ? null : (AttributeDecl) attlist.get(aname);
+    }
+
+    boolean isAttributeDeclared(String ename, String aname)
+    {
+      LinkedHashMap attlist = (LinkedHashMap) attlists.get(ename);
+      return (attlist == null) ? false : attlist.containsKey(aname);
+    }
+
+    Iterator attlistIterator(String ename)
+    {
+      LinkedHashMap attlist = (LinkedHashMap) attlists.get(ename);
+      return (attlist == null) ? Collections.EMPTY_LIST.iterator() :
+        attlist.entrySet().iterator();
+    }
+
+    Object getEntity(String name)
+    {
+      return entities.get(name);
+    }
+
+    ExternalIds getNotation(String name)
+    {
+      return (ExternalIds) notations.get(name);
+    }
+
+    Iterator entryIterator()
+    {
+      return entries.iterator();
     }
     
   }
@@ -2999,6 +3080,8 @@ public class XMLParser
     void init()
       throws IOException
     {
+      if (initialized)
+        return;
       if (!forceReader && in != null)
         detectEncoding();
       initialized = true;
