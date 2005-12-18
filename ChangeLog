@@ -1,5 +1,13 @@
 2005-12-17  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/text/html/HTMLDocument.java (flush): Qualify ElementSpec
+	type comming from DefaultStyledDocument.
+	(blockOpen): Likewise.
+	(blockClose): Likewise.
+	(addContent): Likewise.
+
+2005-12-17  Mark Wielaard  <mark@klomp.org>
+
 	* lib/copy-vmresources.sh.in: Use dot '.' for find after changing
 	dir to target directory.
 

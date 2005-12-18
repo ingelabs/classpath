@@ -1095,7 +1095,8 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public void flush() throws BadLocationException
     {
-      ElementSpec[] elements = new ElementSpec[parseBuffer.size()];
+      DefaultStyledDocument.ElementSpec[] elements;
+      elements = new DefaultStyledDocument.ElementSpec[parseBuffer.size()];
       parseBuffer.copyInto(elements);
       parseBuffer.removeAllElements();
       insert(offset, elements);
@@ -1245,7 +1246,9 @@ public class HTMLDocument extends DefaultStyledDocument
     protected void blockOpen(HTML.Tag t, MutableAttributeSet attr)
     {
       printBuffer();
-      ElementSpec element = new ElementSpec(attr.copyAttributes(), ElementSpec.StartTagType);
+      DefaultStyledDocument.ElementSpec element;
+      element = new DefaultStyledDocument.ElementSpec(attr.copyAttributes(),
+			DefaultStyledDocument.ElementSpec.StartTagType);
       parseBuffer.addElement(element);
       printBuffer();
     }
@@ -1259,7 +1262,9 @@ public class HTMLDocument extends DefaultStyledDocument
     protected void blockClose(HTML.Tag t)
     {
       printBuffer();
-      ElementSpec element = new ElementSpec(null, ElementSpec.EndTagType);
+      DefaultStyledDocument.ElementSpec element;
+      element = new DefaultStyledDocument.ElementSpec(null,
+				DefaultStyledDocument.ElementSpec.EndTagType);
       parseBuffer.addElement(element);
       printBuffer();
     }
@@ -1296,8 +1301,10 @@ public class HTMLDocument extends DefaultStyledDocument
       if (charAttr != null)
         attributes = charAttr.copyAttributes();
 
-      ElementSpec element = new ElementSpec(attributes, ElementSpec.ContentType,
-                                            data, offs, length);
+      DefaultStyledDocument.ElementSpec element;
+      element = new DefaultStyledDocument.ElementSpec(attributes,
+			      DefaultStyledDocument.ElementSpec.ContentType,
+                              data, offs, length);
       
       printBuffer();
       // Add the element to the buffer
