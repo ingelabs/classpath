@@ -1,5 +1,9 @@
 2005-12-17  Mark Wielaard  <mark@klomp.org>
 
+	* native/fdlibm/Makefile.am (libfdlibm_la_SOURCES): Add namespace.h
+
+2005-12-17  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/text/html/HTMLDocument.java (BlockElementgetName):
 	Qualify NameAttribute as comming from StyleConstants.
 	(RunElement.getName): Likewise.
