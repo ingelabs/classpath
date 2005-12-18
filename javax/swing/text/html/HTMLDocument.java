@@ -57,6 +57,7 @@ import javax.swing.text.ElementIterator;
 import javax.swing.text.GapContent;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.html.HTML.Tag;
 
 /**
@@ -467,7 +468,7 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public String getName()
     {
-      return (String) getAttribute(NameAttribute); 
+      return (String) getAttribute(StyleConstants.NameAttribute); 
     }
   }
   
@@ -499,7 +500,7 @@ public class HTMLDocument extends DefaultStyledDocument
      */
     public String getName()
     {
-      return (String) getAttribute(NameAttribute);      
+      return (String) getAttribute(StyleConstants.NameAttribute);      
     }
     
     /**
@@ -1399,7 +1400,9 @@ public class HTMLDocument extends DefaultStyledDocument
             if (child.getAttributes().containsAttribute(attribute, value))
               return child;
             
-            return getElement(child, attribute, value);
+            Element grandChild = getElement(child, attribute, value);
+            if (grandChild != null)
+              return grandChild;
           }
       }
     return null;
