@@ -1,3 +1,8 @@
+2005-12-18  Nicolas Geoffray <nicolas.geoffray@menlina.com>
+
+	* java/lang/Class.java (getModifiers): Only returns
+	interesting bits. 
+
 2005-12-18  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/SAXParser.java,

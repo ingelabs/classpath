@@ -836,7 +836,10 @@ public final class Class implements Serializable
    */
   public int getModifiers()
   {
-    return VMClass.getModifiers (this, false);
+    int mod = VMClass.getModifiers (this, false);
+    return (mod & (Modifier.PUBLIC | Modifier.PROTECTED | Modifier.PRIVATE |
+          Modifier.FINAL | Modifier.STATIC | Modifier.ABSTRACT |
+          Modifier.INTERFACE));
   }
   
   /**
