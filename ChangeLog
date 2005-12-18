@@ -1,3 +1,10 @@
+2005-12-18  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* libraries/javalib/external/classpath/lib/Makefile.am:
+	Replaced $(top_distdir) with $(distdir)/.. to make sure
+	that GNU Classpath's class library sources don't end up
+	in the wrong location in kaffe's tarball.
+
 2005-12-18  Nicolas Geoffray <nicolas.geoffray@menlina.com>
 
 	* java/lang/Class.java (getModifiers): Only returns
