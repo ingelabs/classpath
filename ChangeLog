@@ -1,3 +1,8 @@
+2005-12-19  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/standard/Media.java (equals): 
+	Reimplemented to allow future subclasses to behave correctly.
+
 2005-12-19  Roman Kennke  <kennke@aicas.com>
 
 	PR classpath/24195
