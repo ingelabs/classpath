@@ -1,3 +1,36 @@
+2005-12-19  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	(endOffset): New field.
+	(ElementBuffer.insert): If length is 0 return early.  Set the endOffset
+	variable here.
+	(ElementBuffer.insertContentTag): Added special case for when insertion
+	covers entire range of the current Element.  Replaced (offset + length)
+	with endOffset everywhere.  Added checks to see if the insertion has 
+	the same attributes as the surrounding Element(s), in which case we
+	don't split them, we join them.
+	(SectionElement.getName): Return the field SectionElementName instead 
+	of hardcoding a return value.
+	(getLogicalStyle): As the specs require, if the attributes from the 
+	resolve parent aren't of type Style, return null.
+	(setCharacterAttributes): Exit early if length is 0.  Obtain a 
+	write lock for the body of this method.  Changed the way we iterate
+	through the paragraphs to be more efficient and more intuitive.  Added
+	AttributeUndoableEdits to the DocumentEvent and fired the 
+	UndoableEditUpdate.
+	(setLogicalStyle): Return early if the Element is null.  Obtain a write
+	lock for the body of this method.  Fire the appropriate DocumentEvent.
+	(setParagraphAttributes): Changed the way we iterated through the 
+	paragraphs because it was incorrect and unintuitive.  Obtained a write
+	lock within a try/finally block.  Added AttributeUndoableEdits to the 
+	DocumentEvent and fired the event.
+	(insertUpdate): Changed the way we iterate because we cannot assume 
+	the Segment holds the characters starting from index 0.  Give the 
+	startTag the same attributes as the paragraph.  Removed the useless
+	offset += len line because len is 0.
+	(printElements): New temporary debugging method.
+	(attributeSetsAreSame): New method.
+
 2005-12-19  Dalibor Topic  <robilad@kaffe.org>
 
 	* native/fdlibm/mprec.h (DEBUG): Include stdlib.h for
