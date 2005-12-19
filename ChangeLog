@@ -1,3 +1,10 @@
+2005-12-19  Roman Kennke  <kennke@aicas.com>
+
+	PR classpath/24905
+	* javax/swing/JViewport.java
+	(paintSimple): Call paintComponent() before painting the child, so
+	the background gets cleared correctly.
+
 2005-12-19  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/standard/MediaPrintableArea.java:
