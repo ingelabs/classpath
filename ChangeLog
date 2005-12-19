@@ -1,3 +1,21 @@
+2005-12-19  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/standard/JobStateReasons.java: 
+	Added and updated javadocs to class and methods.
+	(JobStateReasons): New constructor.
+	(JobStateReasons): Likewise.
+	(JobStateReasons): Likewise.
+	(JobStateReasons): Likewise.
+	(add): New overridden method.
+	* javax/print/attribute/standard/PrinterStateReasons.java:
+	Added and updated javadocs to class and methods.
+	(PrinterStateReasons): New constructor.
+	(PrinterStateReasons): Likewise.
+	(PrinterStateReasons): Likewise.
+	(PrinterStateReasons): Likewise.
+	(printerStateReasonSet): New method.
+	(put): New overridden method.	
+
 2005-12-18  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* libraries/javalib/external/classpath/lib/Makefile.am:
