@@ -1,5 +1,25 @@
 2005-12-19  Wolfgang Baer  <WBaer@gmx.de>
 
+	* javax/print/attribute/standard/MediaPrintableArea.java:
+	Added and updated javadocs to class and methods.
+	(x): Use int as type.
+	(y): Likewise.
+	(width): Likewise.
+	(height): Likewise.
+	(MediaPrintableArea): Convert values to micrometers.
+	(MediaPrintableArea): Likewise.
+	(getX): Convert return value into choosen units.
+	(getY): Convert return value into choosen units.
+	(getWidth): Convert return value into choosen units.
+	(getHeight): Convert return value into choosen units.
+	(equals): New overridden method.
+	(toString): Likewise.
+	(hashCode): Likewise.
+	(toString): New method.
+	(getPrintableArea): Likewise.
+
+2005-12-19  Wolfgang Baer  <WBaer@gmx.de>
+
 	* javax/print/attribute/standard/Media.java (equals): 
 	Reimplemented to allow future subclasses to behave correctly.
 
