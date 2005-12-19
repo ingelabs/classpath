@@ -1,3 +1,13 @@
+2005-12-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installListeners): Install focus listener only on editor.
+	(configureArrowButton): Make arrow button not focusable.
+	(setPopupVisible): Request focus for the combobox editor or comboBox,
+	depending on whether the combobox is editable or not.
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(configureList): Make list not focusable.
+	
 2005-12-19  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/standard/JobStateReasons.java: 
