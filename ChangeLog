@@ -1,5 +1,12 @@
 2005-12-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(paintBackground): Also fill background for unselected items here.
+	(paintMenuItem): Call paintBackground() with the background
+	parameter.
+
+2005-12-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(findOverlapFreeParent): Fixed component lookup for painting.
 
