@@ -1,5 +1,10 @@
 2005-12-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(findOverlapFreeParent): Fixed component lookup for painting.
+
+2005-12-19  Roman Kennke  <kennke@aicas.com>
+
 	PR classpath/24905
 	* javax/swing/JViewport.java
 	(paintSimple): Call paintComponent() before painting the child, so
