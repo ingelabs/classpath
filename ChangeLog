@@ -1,5 +1,12 @@
 2005-12-19  Roman Kennke  <kennke@aicas.com>
 
+	PR classpath/24195
+	* javax/swing/text/DefaultStyledDocument.java
+	(setParagraphAttributes): Obtain lock for this operation. Exit loop
+	after last paragraph element.
+
+2005-12-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicComboBoxUI.java
 	(installListeners): Install focus listener only on editor.
 	(configureArrowButton): Make arrow button not focusable.
