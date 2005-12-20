@@ -1,3 +1,24 @@
+2005-12-20  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(pathWasExpanded): Removed unneeded revalidate call.
+	(pathWasCollapsed): Likewise.
+	(installUI): Fixed to check for null root.
+	(paint): Fixed to always update path.
+	(toggleExpandState): Removed call to update path.
+	(editingStopped): Likewise.
+	(editingCanceled): Likewise.
+	(treeStructureChanged): Likewise.
+	(treeExpanded): Likewise.
+	(treeCollapsed): Likewise.
+	(treeNodesChanged): Likewise.	
+	(treeNodesInserted): Likewise.
+	(treeNodesRemoved): Likewise.
+	(updateCurrentVisiblePath): Added check for null root. If root is null,
+	nothing should be painted or in the path.
+	* javax/swing/tree/DefaultTreeModel.java
+	(setRoot): Root can be null.
+
 2005-12-20  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	Fixes bug #25506
