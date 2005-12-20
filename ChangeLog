@@ -1,3 +1,11 @@
+2005-12-20  Lillian Angel <langel@redhat.com>
+	
+	* javax/swing/text/DefaultEditorKit.java:
+	Added implementation for beginLineAction and
+	endLineAction.
+	* javax/swing/text/JTextComponent.java
+	(JTextComponent): Added key bindings for HOME and END.
+
 2005-12-20  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java

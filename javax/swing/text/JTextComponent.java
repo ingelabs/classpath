@@ -945,6 +945,10 @@ public abstract class JTextComponent extends JComponent
                      new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 
                                                            KeyEvent.SHIFT_DOWN_MASK),
                                     DefaultEditorKit.selectionForwardAction),
+                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0),
+                                   DefaultEditorKit.beginLineAction),
+                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_END, 0),
+                                   DefaultEditorKit.endLineAction),
                      new KeyBinding(KeyStroke.getKeyStroke("typed \u007f"),
                                     DefaultEditorKit.deleteNextCharAction)
                                     },
