@@ -1,5 +1,12 @@
 2005-12-20  Anthony Balkissoon  <abalkiss@redhat.com>
 
+	Fixes bug #25506
+	* javax/swing/text/AbstractDocument.java:
+	(insertString): Fire insert update whether the DocumentEvent was
+	changed or not.
+
+2005-12-20  Anthony Balkissoon  <abalkiss@redhat.com>
+
 	* javax/swing/text/DefaultStyledDocument.java:
 	(ElementBuffer.insertContentTag): If the direction is 
 	OriginateDirection split all the time, don't check the attribute sets.
