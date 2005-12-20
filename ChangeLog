@@ -12,6 +12,33 @@
 
 2005-12-19  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/text/html/CSSParser.java
+	(CSSParser): Initialized tokenBuffer with some
+	arbitrary size. This makes append much more efficent since
+	a new array will not been created with each append.
+	(append): Fixed append to create a new larger array if
+	needed.
+	(nextToken): Finished implemented. Should decrease the
+	tokenBufferLength if an identifier was read. This way " and '
+	are not added to the buffer.
+	(parse): Implemented to call the appropriate parsing function
+	based on parameter.
+	(getNextStatement): Implemented.
+	(parseAtRule): Added some helpful comments for implementing.
+	(parseRuleSet): Likewise.
+	(parseIdentifiers): Likewise.
+	(readComment): Likewise.
+	* javax/swing/text/html/StyleSheet.java
+	(addRule): Implemented.
+	(loadRules): Implemented.
+	(importStyleSheet): Removed implementation for now. It causes
+	a loop. Added FIXME
+	(startRule): Implemented.
+	(handleProperty): Implemented.
+	(addSelector): Implemented.
+
+2005-12-19  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/text/html/BlockView.java
 	(getStyleSheet): Implemented.
 	* javax/swing/text/html/CSSParser.java: New private class,

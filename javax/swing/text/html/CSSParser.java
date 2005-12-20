@@ -149,7 +149,8 @@ class CSSParser
   /**
    * The character mapping in the document.
    */
-  private static final char[] charMapping = null; // FIXME
+  // FIXME: What is this used for?
+  private static final char[] charMapping = null;
 
   /**
    * Set to true if one character has been read ahead.
@@ -162,7 +163,7 @@ class CSSParser
   private int pushedChar;
 
   /**
-   *  Temporary place to hold identifiers.
+   * Temporary place to hold identifiers.
    */
   private StringBuffer unitBuffer;
 
@@ -212,6 +213,7 @@ class CSSParser
   CSSParser()
   {
     unitBuffer = new StringBuffer();
+    tokenBuffer = new char[10];
   }
 
   /**
@@ -221,12 +223,18 @@ class CSSParser
    */
   private void append(char c)
   {
-    char[] temp = new char[tokenBufferLength + 1];
-    if (tokenBuffer != null)
-      System.arraycopy(tokenBuffer, 0, temp, 0, tokenBufferLength);
-    temp[tokenBufferLength] = c;
+    if (tokenBuffer.length >= tokenBufferLength)
+      {
+        char[] temp = new char[tokenBufferLength * 2];
+        if (tokenBuffer != null)
+          System.arraycopy(tokenBuffer, 0, temp, 0, tokenBufferLength);
+
+        temp[tokenBufferLength] = c;
+        tokenBuffer = temp;
+      }
+    else
+      tokenBuffer[tokenBufferLength] = c;
     tokenBufferLength++;
-    tokenBuffer = temp;
   }
 
   /**
@@ -244,10 +252,12 @@ class CSSParser
     switch (next)
       {
       case '\"':
-        // FIXME: Not Implemented
+        if (tokenBufferLength > 0)
+          tokenBufferLength--;
         return IDENTIFIER;
       case '\'':
-        // FIXME: Not Implemented
+        if (tokenBufferLength > 0)
+          tokenBufferLength--;
         return IDENTIFIER;
       case '(':
         return PAREN_OPEN;
@@ -301,8 +311,18 @@ class CSSParser
   {
     this.reader = reader;
     this.callback = callback;
-    // call getNextStatement
-    // FIXME: Not fully implemented
+    
+    try
+    {
+      if (!parsingDeclaration)
+        while(getNextStatement());
+      else
+        parseDeclarationBlock();
+    }
+    catch (IOException ioe)
+    {
+      // Nothing to do here.
+    }
   }
 
   /**
@@ -329,16 +349,35 @@ class CSSParser
 
   /**
    * Gets the next statement, returning false if the end is reached.
-   * A statement is either an @ rule, or a ruleset.
+   * A statement is either an At-rule, or a ruleset.
    * 
-   * @return the next statement
+   * @return false if the end is reached
    * @throws IOException - any i/o error from the reader
    */
   private boolean getNextStatement() throws IOException
   {
-    // get next set and parseRuleSet
-    // FIXME: Not implemented
-    return false;
+    int c = nextToken((char) 0);
+    switch (c)
+      {
+        case PAREN_OPEN:
+        case BRACE_OPEN:
+        case BRACKET_OPEN:
+          parseTillClosed(c);
+          break;
+        case BRACKET_CLOSE:
+        case BRACE_CLOSE:
+        case PAREN_CLOSE:
+          throw new IOException("Not a proper statement.");
+        case IDENTIFIER:
+          if (tokenBuffer[0] == ('@'))
+            parseAtRule();
+          else
+            parseRuleSet();
+          break;  
+        case END:
+          return false;
+      }
+    return true;
   }
 
   /**
@@ -347,8 +386,18 @@ class CSSParser
    * @throws IOException - any i/o error from the reader
    */
   private void parseAtRule() throws IOException
-  {
+  {    
+    // An At-Rule begins with the "@" character followed immediately by a keyword. 
+    // Following the keyword separated by a space is an At-rule statement appropriate 
+    // to the At-keyword used. If the At-Rule is a simple declarative statement 
+    // (charset, import, fontdef), it is terminated by a semi-colon (";".) 
+    // If the At-Rule is a conditional or informative statement (media, page, font-face), 
+    // it is followed by optional arguments and then a style declaration block inside matching 
+    // curly braces ("{", "}".) At-Rules are sometimes nestable, depending on the context. 
+    // If any part of an At-Rule is not understood, it should be ignored.
+    
     // FIXME: Not Implemented
+    // call handleimport 
   }
 
   /**
@@ -360,6 +409,9 @@ class CSSParser
   private void parseRuleSet() throws IOException
   {
     // call parseDeclarationBlock
+    // call parse selectors
+    // call parse identifiers
+    // call startrule/endrule
     // FIXME: Not Implemented
   }
 
@@ -373,6 +425,7 @@ class CSSParser
   private boolean parseSelectors() throws IOException
   {
     // FIXME: Not Implemented
+    // call handleselector
     return false; 
   }
 
@@ -414,6 +467,7 @@ class CSSParser
   private int parseIdentifiers(char c, boolean wantsBlocks) throws IOException
   {
     // FIXME: Not implemented
+    // call handleproperty?
     return 0;
   }
 
@@ -461,7 +515,8 @@ class CSSParser
    */
   private void readComment() throws IOException
   {
-    // FIXME: Not Implemented
+    // Should ignore comments. Read until end of comment.
+    // FIXME: Not implemented
   }
 
   /**

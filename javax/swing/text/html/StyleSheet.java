@@ -42,9 +42,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringReader;
@@ -140,8 +138,15 @@ public class StyleSheet extends StyleContext
    */
   public void addRule(String rule)
   {
-    // call cssparser.parse
-    // FIXME: Not implemented.
+    CssParser cp = new CssParser();
+    try
+    {
+      cp.parse(base, new StringReader(rule), false, false);
+    }
+    catch (IOException io)
+    {
+      // Do nothing here.
+    }
   }
   
   /**
@@ -171,8 +176,8 @@ public class StyleSheet extends StyleContext
    */
   public void loadRules(Reader in, URL ref) throws IOException
   {
-    // FIXME: Not implemented.
-    // call parse
+    CssParser cp = new CssParser();
+    cp.parse(ref, in, false, false);
   }
   
   /**
@@ -268,16 +273,7 @@ public class StyleSheet extends StyleContext
    */
   public void importStyleSheet(URL url)
   {
-    try
-      {
-        // FIXME: Need to make sure url points to a valid CSS document.
-        loadRules(new BufferedReader(new InputStreamReader(url.openStream())),
-                  url);
-      }
-    catch (IOException ioe)
-      {
-        // Do nothing here.
-      }
+    // FIXME: Not implemented
   }
   
   /**
@@ -889,7 +885,7 @@ public class StyleSheet extends StyleContext
     */
    public void startRule()
    {
-     // FIXME: Not implemented
+     addSelector();
    }
 
    /**
@@ -920,6 +916,7 @@ public class StyleSheet extends StyleContext
    {
      // FIXME: Not implemented
      // add rules
+     propertyName = null;
    }
 
    /**
@@ -927,12 +924,14 @@ public class StyleSheet extends StyleContext
     */
    private void addSelector()
    {
-     Object[] selTokens = selectorTokens.toArray();
-     int length = selTokens.length;
-     Object[] sel = new Object[length];
-     System.arraycopy(selTokens, 0, sel, 0, length);
-     selectors.add(sel);
-     selectorTokens.clear();
+     int length = selectorTokens.size();
+     if (length > 0)
+       {
+         Object[] sel = new Object[length];
+         System.arraycopy(selectorTokens.toArray(), 0, sel, 0, length);
+         selectors.add(sel);
+         selectorTokens.clear();
+       }
    }
   }
 }
