@@ -1,3 +1,15 @@
+2005-12-20  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	(ElementBuffer.insertContentTag): If the direction is 
+	OriginateDirection split all the time, don't check the attribute sets.
+	Removed the special case for the first insertion.  These cases should
+	fall under the direction JoinPreviousDirection. Changed the comments to
+	reflect this.
+	(insertUpdate): Added a hack to get the right result when comparing
+	the attributes of the new ElementSpec to the attributes of either
+	the previous or next Element.
+
 2005-12-19  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/html/BlockView.java

@@ -866,89 +866,36 @@ public class DefaultStyledDocument extends AbstractDocument
               removed = new Element[0];
               index++;
             }
-          else if (current.getStartOffset() == offset
-                   && current.getEndOffset() - 1 == endOffset)
-            {
-              // This is if the new insertion covers the entire range of 
-              // <code>current</code>.  This will generally happen for the 
-              // first insertion into a new paragraph.
-              added = new Element[1];
-              added[0] = createLeafElement(paragraph, tagAtts,
-                                           offset, endOffset + 1);              
-            }
           else if (current.getStartOffset() == offset)
-            {                
+            { 
               // This is if the new insertion happens immediately before 
-              // the <code>current</code> Element.  In this case, if there is
-              // a split, there are 2 resulting Elements.
-              
-              AttributeSet splitAtts = splitRes[1].getAttributes();              
-              if (attributeSetsAreSame(tagAtts, splitAtts))
-                {
-                  // If the attributes of the adjacent Elements are the same
-                  // then we don't split them, we join them into one.
-                  added = new Element [1];
-                  added[0] = createLeafElement(paragraph, tagAtts, offset,
-                                               splitRes[1].getEndOffset());
-                }
-              else
-                {
-                  // Otherwise we have 2 resulting Elements.
-                  added = new Element[2];
-                  added[0] = createLeafElement(paragraph, tagAtts,
-                                               offset, endOffset);
-                  added[1] = splitRes[1];
-                }
+              // the <code>current</code> Element.  In this case there are 2 
+              // resulting Elements.              
+              added = new Element[2];
+              added[0] = createLeafElement(paragraph, tagAtts, offset,
+                                           endOffset);
+              added[1] = splitRes[1];
             }
-          else if (current.getEndOffset() == endOffset + 1)
+          else if (current.getEndOffset() == endOffset)
             {
               // This is if the new insertion happens right at the end of 
-              // the <code>current</code> Element.  In this case, if there is 
-              // a split, there are 2 resulting Elements.
-              AttributeSet splitAtts = splitRes[0].getAttributes();              
-              if (attributeSetsAreSame(tagAtts, splitAtts))
-                {
-                  // If the attributes are the same, no need to split.
-                  added = new Element [1];
-                  added[0] = createLeafElement(paragraph, tagAtts,
-                                               splitRes[0].getStartOffset(),
-                                               endOffset + 1);
-                }
-              else
-                {
-                  // Otherwise there are 2 resulting Elements.
-                  added = new Element[2];
-                  added[0] = splitRes[0];
-                  added[1] = createLeafElement(paragraph, tagAtts, offset,
-                                               endOffset + 1);
-                }
+              // the <code>current</code> Element.  In this case there are 
+              // 2 resulting Elements.
+              added = new Element[2];
+              added[0] = splitRes[0];
+              added[1] = createLeafElement(paragraph, tagAtts, offset,
+                                           endOffset);
             }
           else
             {
               // This is if the new insertion is in the middle of the 
-              // <code>current</code> Element.  In this case, if there is a 
-              // split, there will be 3 resulting Elements.  Note, since 
-              // <code>splitRes[0]</code> and <code>splitRes[1]</code> were 
-              // once the same Element, they have the same attributes.
-              AttributeSet split1Atts = splitRes[0].getAttributes();            
-              
-              if (attributeSetsAreSame(tagAtts, split1Atts))
-                {
-                  // If the attributes are the same, no need to split.
-                  added = new Element [1];
-                  added[0] = createLeafElement(paragraph, tagAtts,
-                                               splitRes[0].getStartOffset(),
-                                               splitRes[1].getEndOffset());
-                }
-              else
-                {
-                  // Otherwise there are 3 resulting Elements.
-                  added = new Element[3];
-                  added[0] = splitRes[0];
-                  added[1] = createLeafElement(paragraph, tagAtts, offset,
-                                               endOffset);
-                  added[2] = splitRes[1];
-                }
+              // <code>current</code> Element.  In this case 
+              // there will be 3 resulting Elements.
+              added = new Element[3];
+              added[0] = splitRes[0];
+              added[1] = createLeafElement(paragraph, tagAtts, offset,
+                                           endOffset);
+              added[2] = splitRes[1];
             }          
           paragraph.replace(index, removed.length, added);
           addEdit(paragraph, index, removed, added);
@@ -1529,10 +1476,11 @@ public class DefaultStyledDocument extends AbstractDocument
    */
   protected void insertUpdate(DefaultDocumentEvent ev, AttributeSet attr)
   {
-    super.insertUpdate(ev, attr);    
+    super.insertUpdate(ev, attr);
     int offset = ev.getOffset();
     int length = ev.getLength();
     int endOffset = offset + length;
+    Element newElement, newElement2;
     AttributeSet paragraphAttributes = 
       getParagraphElement(endOffset).getAttributes();
     Segment txt = new Segment();
@@ -1561,19 +1509,28 @@ public class DefaultStyledDocument extends AbstractDocument
           {
             ElementSpec spec = new ElementSpec(attr, ElementSpec.ContentType,
                                                len);
-
+            // FIXME: This is a hack.  Without this, our check to see if 
+            // prev.getAttributes was the same as the attribute set for the new
+            // ElementSpec was never true, because prev has an attribute key
+            // LeafElement(content) that contains its start and end offset as 
+            // the value.  Similarly for next.
+            newElement = createLeafElement(null, attr, prev.getStartOffset(),
+                                           prev.getEndOffset());
+            newElement2 = createLeafElement(null, attr, next.getStartOffset(),
+                                           next.getEndOffset());
+            
             // If we are at the last index, then check if we could probably be
             // joined with the next element.
             if (i == segmentEnd - 1)
               {
-                if (next.getAttributes().isEqual(attr))
+                if (next.getAttributes().isEqual(newElement2.getAttributes()))
                   spec.setDirection(ElementSpec.JoinNextDirection);
               }
             // If we are at the first new element, then check if it could be
             // joined with the previous element.
             else if (specs.size() == 0)
               {
-                if (prev.getAttributes().isEqual(attr))
+                if (prev.getAttributes().isEqual(newElement.getAttributes()))
                     spec.setDirection(ElementSpec.JoinPreviousDirection);
               }
 
@@ -1595,15 +1552,26 @@ public class DefaultStyledDocument extends AbstractDocument
     if (len > 0)
       {
         ElementSpec spec = new ElementSpec(attr, ElementSpec.ContentType, len);
+        
+        // FIXME: This is a hack.  Without this, our check to see if 
+        // prev.getAttributes was the same as the attribute set for the new
+        // ElementSpec was never true, because prev has an attribute key
+        // LeafElement(content) that contains its start and end offset as 
+        // the value.  Similarly for next.
+        newElement = createLeafElement(null, attr, prev.getStartOffset(),
+                                       prev.getEndOffset());
+        newElement2 = createLeafElement(null, attr, next.getStartOffset(),
+                                       next.getEndOffset());
+        
         // If we are at the first new element, then check if it could be
         // joined with the previous element.
         if (specs.size() == 0)
           {
-            if (prev.getAttributes().isEqual(attr))
+            if (prev.getAttributes().isEqual(newElement.getAttributes()))
               spec.setDirection(ElementSpec.JoinPreviousDirection);
           }
         // Check if we could probably be joined with the next element.
-        else if (next.getAttributes().isEqual(attr))
+        else if (next.getAttributes().isEqual(newElement2.getAttributes()))
           spec.setDirection(ElementSpec.JoinNextDirection);
 
         specs.add(spec);
