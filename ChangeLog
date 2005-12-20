@@ -1,3 +1,16 @@
+2005-12-19  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/html/BlockView.java
+	(getStyleSheet): Implemented.
+	* javax/swing/text/html/CSSParser.java: New private class,
+	partially implemented.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(createDefaultDocument): Fixed to create HTMLDocument with
+	default style sheet.
+	(getStyleSheet): Fixed to initialize style sheet if null.
+	* javax/swing/text/html/StyleSheet.java
+	(CssParser): New private inner class, partially implemented.
+
 2005-12-19  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java:
