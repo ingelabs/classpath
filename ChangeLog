@@ -1,3 +1,15 @@
+2005-12-21  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	(insertUpdate): If the AttributeSet argument is null use an empty 
+	AttributeSet for comparisons. No need to create a new LeafElement to 
+	compare AttributeSets (ie - remove the hack added yesterday).
+	* javax/swing/text/StyleContext.java:
+	(SmallAttributeSet.isEqual): Don't return false for null arguments, 
+	this should throw an NPE instead.  Also, for performance, check that
+	sizes are equal and one set contains the other, rather than checking 
+	that each set contains the other.
+
 2005-12-20  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicLookAndFeel.java

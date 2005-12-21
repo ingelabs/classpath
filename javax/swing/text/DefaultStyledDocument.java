@@ -834,7 +834,7 @@ public class DefaultStyledDocument extends AbstractDocument
 
           Element newEl1 = createLeafElement(paragraph,
                                              current.getAttributes(),
-                                             current.getStartOffset(),
+                                             current.getStartOffset(),  
                                              offset);
           Element newEl2 = createLeafElement(paragraph,
                                              current.getAttributes(),
@@ -844,7 +844,7 @@ public class DefaultStyledDocument extends AbstractDocument
           Element[] add = new Element[] {newEl1, newEl2};
           Element[] remove = new Element[] {current, next};
           paragraph.replace(currentIndex, 2, add);
-
+          
           // Add this action to the document event.
           addEdit(paragraph, currentIndex, remove, add);
         }
@@ -1477,6 +1477,9 @@ public class DefaultStyledDocument extends AbstractDocument
   protected void insertUpdate(DefaultDocumentEvent ev, AttributeSet attr)
   {
     super.insertUpdate(ev, attr);
+    // If the attribute set is null, use an empty attribute set.
+    if (attr == null)
+      attr = SimpleAttributeSet.EMPTY;
     int offset = ev.getOffset();
     int length = ev.getLength();
     int endOffset = offset + length;
@@ -1508,29 +1511,19 @@ public class DefaultStyledDocument extends AbstractDocument
         if (txt.array[i] == '\n')
           {
             ElementSpec spec = new ElementSpec(attr, ElementSpec.ContentType,
-                                               len);
-            // FIXME: This is a hack.  Without this, our check to see if 
-            // prev.getAttributes was the same as the attribute set for the new
-            // ElementSpec was never true, because prev has an attribute key
-            // LeafElement(content) that contains its start and end offset as 
-            // the value.  Similarly for next.
-            newElement = createLeafElement(null, attr, prev.getStartOffset(),
-                                           prev.getEndOffset());
-            newElement2 = createLeafElement(null, attr, next.getStartOffset(),
-                                           next.getEndOffset());
-            
+                                               len);          
             // If we are at the last index, then check if we could probably be
             // joined with the next element.
             if (i == segmentEnd - 1)
               {
-                if (next.getAttributes().isEqual(newElement2.getAttributes()))
+                if (next.getAttributes().isEqual(attr))
                   spec.setDirection(ElementSpec.JoinNextDirection);
               }
             // If we are at the first new element, then check if it could be
             // joined with the previous element.
             else if (specs.size() == 0)
               {
-                if (prev.getAttributes().isEqual(newElement.getAttributes()))
+                if (prev.getAttributes().isEqual(attr))
                     spec.setDirection(ElementSpec.JoinPreviousDirection);
               }
 
@@ -1551,27 +1544,16 @@ public class DefaultStyledDocument extends AbstractDocument
     // Create last element if last character hasn't been a newline.
     if (len > 0)
       {
-        ElementSpec spec = new ElementSpec(attr, ElementSpec.ContentType, len);
-        
-        // FIXME: This is a hack.  Without this, our check to see if 
-        // prev.getAttributes was the same as the attribute set for the new
-        // ElementSpec was never true, because prev has an attribute key
-        // LeafElement(content) that contains its start and end offset as 
-        // the value.  Similarly for next.
-        newElement = createLeafElement(null, attr, prev.getStartOffset(),
-                                       prev.getEndOffset());
-        newElement2 = createLeafElement(null, attr, next.getStartOffset(),
-                                       next.getEndOffset());
-        
+        ElementSpec spec = new ElementSpec(attr, ElementSpec.ContentType, len);              
         // If we are at the first new element, then check if it could be
         // joined with the previous element.
         if (specs.size() == 0)
           {
-            if (prev.getAttributes().isEqual(newElement.getAttributes()))
+            if (prev.getAttributes().isEqual(attr))
               spec.setDirection(ElementSpec.JoinPreviousDirection);
           }
         // Check if we could probably be joined with the next element.
-        else if (next.getAttributes().isEqual(newElement2.getAttributes()))
+        else if (next.getAttributes().isEqual(attr))
           spec.setDirection(ElementSpec.JoinNextDirection);
 
         specs.add(spec);
