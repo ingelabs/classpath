@@ -1,3 +1,8 @@
+2005-12-21  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Fixed key binding for TextField.focusInputMap.
+
 2005-12-21  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultEditorKit.java:
