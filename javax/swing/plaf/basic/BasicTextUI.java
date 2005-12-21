@@ -655,9 +655,7 @@ public abstract class BasicTextUI extends TextUI
     SwingUtilities.replaceUIActionMap(textComponent, createActionMap());
 
     InputMap focusInputMap = (InputMap) UIManager.get(getPropertyPrefix() + ".focusInputMap");
-    InputMapUIResource parentInputMap = new InputMapUIResource();
     ActionMap parentActionMap = new ActionMapUIResource();
-    KeyStroke[] keys = focusInputMap.allKeys();
     
     Action[] actions = textComponent.getActions();
     for (int j = 0; j < actions.length; j++)
@@ -666,16 +664,7 @@ public abstract class BasicTextUI extends TextUI
         parentActionMap.put(currAction.getValue(Action.NAME), currAction);
       }
     
-    for (int i = 0; i < keys.length; i++)
-      {
-        String act = (String) focusInputMap.get((KeyStroke) keys[i]);
-        parentInputMap.put(KeyStroke.getKeyStroke(act),act);
-      }
-    
-    parentInputMap.setParent(textComponent.getInputMap(JComponent.WHEN_FOCUSED).getParent());
-    parentActionMap.setParent(textComponent.getActionMap().getParent());
-    textComponent.getInputMap(JComponent.WHEN_FOCUSED).setParent(parentInputMap);
-    textComponent.getActionMap().setParent(parentActionMap);
+    SwingUtilities.replaceUIActionMap(textComponent, parentActionMap);
   }
   
   /**

@@ -99,7 +99,11 @@ public class UIDefaults extends Hashtable
       InputMapUIResource im = new InputMapUIResource ();
       for (int i = 0; 2*i+1 < bind.length; ++i)
         {
-          im.put (KeyStroke.getKeyStroke ((String) bind[2*i]),
+          Object curr = bind[2*i];
+          if (curr instanceof KeyStroke)
+            im.put((KeyStroke) curr, bind[2*i+1]);
+          else
+            im.put(KeyStroke.getKeyStroke((String) curr),
                   bind[2*i+1]);
         }
       return im;
