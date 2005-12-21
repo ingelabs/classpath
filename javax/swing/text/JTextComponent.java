@@ -906,53 +906,16 @@ public abstract class JTextComponent extends JComponent
   public JTextComponent()
   {
     Keymap defkeymap = getKeymap(DEFAULT_KEYMAP);
-    boolean creatingKeymap = false;
     if (defkeymap == null)
       {
         defkeymap = addKeymap(DEFAULT_KEYMAP, null);
         defkeymap.setDefaultAction(new DefaultEditorKit.DefaultKeyTypedAction());
-        creatingKeymap = true;
       }
 
     setFocusable(true);
     setEditable(true);
     enableEvents(AWTEvent.KEY_EVENT_MASK);
     updateUI();
-    
-    // need to do this after updateUI()
-    if (creatingKeymap)
-      loadKeymap(
-                 defkeymap,
-                 new KeyBinding[] {
-                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0),
-                                    DefaultEditorKit.backwardAction),
-                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0),
-                                    DefaultEditorKit.forwardAction),
-                     new KeyBinding(KeyStroke.getKeyStroke("typed \b"),
-                                    DefaultEditorKit.deletePrevCharAction),
-                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_X, 
-                                                           KeyEvent.CTRL_DOWN_MASK),
-                                    DefaultEditorKit.cutAction),
-                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_C, 
-                                                           KeyEvent.CTRL_DOWN_MASK),
-                                    DefaultEditorKit.copyAction),
-                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_V, 
-                                                           KeyEvent.CTRL_DOWN_MASK),
-                                    DefaultEditorKit.pasteAction),
-                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 
-                                                            KeyEvent.SHIFT_DOWN_MASK),
-                                     DefaultEditorKit.selectionBackwardAction),
-                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 
-                                                           KeyEvent.SHIFT_DOWN_MASK),
-                                    DefaultEditorKit.selectionForwardAction),
-                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0),
-                                   DefaultEditorKit.beginLineAction),
-                     new KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_END, 0),
-                                   DefaultEditorKit.endLineAction),
-                     new KeyBinding(KeyStroke.getKeyStroke("typed \u007f"),
-                                    DefaultEditorKit.deleteNextCharAction)
-                                    },
-                 getActions());
   }
 
   public void setDocument(Document newDoc)

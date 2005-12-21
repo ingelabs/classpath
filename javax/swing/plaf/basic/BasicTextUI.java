@@ -46,15 +46,20 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -62,6 +67,7 @@ import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.ActionMapUIResource;
+import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.TextUI;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.BadLocationException;
@@ -636,7 +642,7 @@ public abstract class BasicTextUI extends TextUI
    * Installs the keyboard actions on the text components.
    */
   protected void installKeyboardActions()
-  {    
+  {
     // load any bindings for the older Keymap interface
     Keymap km = JTextComponent.getKeymap(getKeymapName());
     if (km == null)
@@ -644,10 +650,104 @@ public abstract class BasicTextUI extends TextUI
     textComponent.setKeymap(km);
 
     // load any bindings for the newer InputMap / ActionMap interface
-    SwingUtilities.replaceUIInputMap(textComponent, 
-                                     JComponent.WHEN_FOCUSED,
+    SwingUtilities.replaceUIInputMap(textComponent, JComponent.WHEN_FOCUSED,
                                      getInputMap(JComponent.WHEN_FOCUSED));
-    SwingUtilities.replaceUIActionMap(textComponent, getActionMap());
+    SwingUtilities.replaceUIActionMap(textComponent, textComponent.getActionMap());
+
+    InputMap focusInputMap = textComponent.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMapUIResource parentInputMap = new InputMapUIResource();
+    ActionMap parentActionMap = new ActionMapUIResource();
+    Object keys[] = focusInputMap.allKeys();
+
+    for (int i = 0; i < keys.length; i++)
+      {
+        String act = (String) focusInputMap.get((KeyStroke) keys[i]);
+        Action[] actions = textComponent.getActions();
+        for (int j = 0; j < actions.length; j++)
+          {
+            Action currAction = actions[j];
+            if (currAction != null
+                && (currAction.getValue(Action.NAME).equals(act)))
+              parentActionMap.put(act, new ActionListenerProxy(currAction, act));
+          }
+        
+        parentInputMap.put(KeyStroke.getKeyStroke(((KeyStroke) keys[i]).getKeyCode(),
+                                                  convertModifiers(((KeyStroke) keys[i]).getModifiers())),
+                           act);
+        parentInputMap.put(KeyStroke.getKeyStroke(((KeyStroke) keys[i]).getKeyCode(),
+                                                  ((KeyStroke) keys[i]).getModifiers()),
+                           act);
+      }
+
+    parentInputMap.setParent(textComponent.getInputMap(JComponent.WHEN_FOCUSED).getParent());
+    parentActionMap.setParent(textComponent.getActionMap().getParent());
+    textComponent.getInputMap(JComponent.WHEN_FOCUSED).setParent(parentInputMap);
+    textComponent.getActionMap().setParent(parentActionMap);
+  }
+  
+  /**
+   * This class is used to mimic the behaviour of the JDK when registering
+   * keyboard actions. It is the same as the private class used in JComponent
+   * for the same reason. This class receives an action event and dispatches it
+   * to the true receiver after altering the actionCommand property of the
+   * event.
+   */
+  private static class ActionListenerProxy extends AbstractAction
+  {
+    ActionListener target;
+
+    String bindingCommandName;
+
+    public ActionListenerProxy(ActionListener li, String cmd)
+    {
+      target = li;
+      bindingCommandName = cmd;
+    }
+
+    public void actionPerformed(ActionEvent e)
+    {
+      ActionEvent derivedEvent = new ActionEvent(e.getSource(), e.getID(),
+                                                 bindingCommandName,
+                                                 e.getModifiers());
+      target.actionPerformed(derivedEvent);
+    }
+  }
+  
+  /**
+   * Converts the modifiers.
+   * 
+   * @param mod -
+   *          modifier to convert
+   * @returns the new modifier
+   */
+  private int convertModifiers(int mod)
+  {
+    if ((mod & KeyEvent.SHIFT_DOWN_MASK) != 0)
+      {
+        mod |= KeyEvent.SHIFT_MASK;
+        mod &= ~KeyEvent.SHIFT_DOWN_MASK;
+      }
+    if ((mod & KeyEvent.CTRL_DOWN_MASK) != 0)
+      {
+        mod |= KeyEvent.CTRL_MASK;
+        mod &= ~KeyEvent.CTRL_DOWN_MASK;
+      }
+    if ((mod & KeyEvent.META_DOWN_MASK) != 0)
+      {
+        mod |= KeyEvent.META_MASK;
+        mod &= ~KeyEvent.META_DOWN_MASK;
+      }
+    if ((mod & KeyEvent.ALT_DOWN_MASK) != 0)
+      {
+        mod |= KeyEvent.ALT_MASK;
+        mod &= ~KeyEvent.ALT_DOWN_MASK;
+      }
+    if ((mod & KeyEvent.ALT_GRAPH_DOWN_MASK) != 0)
+      {
+        mod |= KeyEvent.ALT_GRAPH_MASK;
+        mod &= ~KeyEvent.ALT_GRAPH_DOWN_MASK;
+      }
+    return mod;
   }
 
   /**
@@ -671,46 +771,6 @@ public abstract class BasicTextUI extends TextUI
       case JComponent.WHEN_FOCUSED:
         return (InputMap) UIManager.get(prefix + ".focusInputMap");
       }
-  }
-
-  /**
-   * Returns the ActionMap to be installed on the text component.
-   *
-   * @return the ActionMap to be installed on the text component
-   */
-  // FIXME: The UIDefaults have no entries for .actionMap, so this should
-  // be handled somehow different.
-  ActionMap getActionMap()
-  {
-    String prefix = getPropertyPrefix();
-    ActionMap am = (ActionMap) UIManager.get(prefix + ".actionMap");
-    if (am == null)
-      {
-        am = createActionMap();
-        // FIXME: Putting something in the UIDefaults map is certainly wrong.
-        // However, the whole method seems wrong and must be replaced by
-        // something that is less wrong.
-        UIManager.put(prefix + ".actionMap", am);
-      }
-    return am;
-  }
-
-  /**
-   * Creates an ActionMap to be installed on the text component.
-   *
-   * @return an ActionMap to be installed on the text component
-   */
-  ActionMap createActionMap()
-  {
-    Action[] actions = textComponent.getActions();
-    ActionMap am = new ActionMapUIResource();
-    for (int i = 0; i < actions.length; ++i)
-      {
-        String name = (String) actions[i].getValue(Action.NAME);
-        if (name != null)
-          am.put(name, actions[i]);
-      }
-    return am;
   }
 
   /**

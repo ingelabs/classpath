@@ -1,3 +1,19 @@
+2005-12-20  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initClassDefaults): Fixed typo.
+	(initComponentDefaults): Removed keyBindings defaults for
+	Text*. Added focusInputMap for Text*.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installKeyBoardActions): Added code to load the focusInputMap
+	and install all the actions for each key.
+	(ActionListenerProxy): New class implemented.
+	(converModifiers): New method to convert the modifiers.
+	(getActionMap): Removed function. Not needed.
+	(createActionMap): Likewise.
+	* javax/swing/text/JTextComponent.java
+	(JTextComponent): Removed code to load the keymap.
+
 2005-12-20  Lillian Angel <langel@redhat.com>
 	
 	* javax/swing/text/DefaultEditorKit.java:
