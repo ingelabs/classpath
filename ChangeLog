@@ -1,3 +1,9 @@
+2005-12-21  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultEditorKit.java:
+	(read): Changed the call to insertString to leave out the trailing
+	new line.
+
 2005-12-21  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/UIDefaults.java

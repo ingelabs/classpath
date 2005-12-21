@@ -948,7 +948,7 @@ public class DefaultEditorKit extends EditorKit
 	content.append("\n");
       }
     
-    document.insertString(offset, content.toString(),
+    document.insertString(offset, content.substring(0, content.length() - 1),
 			  SimpleAttributeSet.EMPTY);
   }
 
