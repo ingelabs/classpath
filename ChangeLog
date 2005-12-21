@@ -1,5 +1,11 @@
 2005-12-20  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added all key bindings for PasswordField
+	focusInputMap.
+
+2005-12-20  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/UIDefaults.java:
 	(LazyInputMap): InputMap should be an InputMapUIResource.
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
