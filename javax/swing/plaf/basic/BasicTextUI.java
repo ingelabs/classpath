@@ -652,33 +652,26 @@ public abstract class BasicTextUI extends TextUI
     // load any bindings for the newer InputMap / ActionMap interface
     SwingUtilities.replaceUIInputMap(textComponent, JComponent.WHEN_FOCUSED,
                                      getInputMap(JComponent.WHEN_FOCUSED));
-    SwingUtilities.replaceUIActionMap(textComponent, textComponent.getActionMap());
+    SwingUtilities.replaceUIActionMap(textComponent, createActionMap());
 
-    InputMap focusInputMap = textComponent.getInputMap(JComponent.WHEN_FOCUSED);
+    InputMap focusInputMap = (InputMap) UIManager.get(getPropertyPrefix() + ".focusInputMap");
     InputMapUIResource parentInputMap = new InputMapUIResource();
     ActionMap parentActionMap = new ActionMapUIResource();
-    Object keys[] = focusInputMap.allKeys();
-
+    KeyStroke[] keys = focusInputMap.allKeys();
+    
+    Action[] actions = textComponent.getActions();
+    for (int j = 0; j < actions.length; j++)
+      {
+        Action currAction = actions[j];
+        parentActionMap.put(currAction.getValue(Action.NAME), currAction);
+      }
+    
     for (int i = 0; i < keys.length; i++)
       {
         String act = (String) focusInputMap.get((KeyStroke) keys[i]);
-        Action[] actions = textComponent.getActions();
-        for (int j = 0; j < actions.length; j++)
-          {
-            Action currAction = actions[j];
-            if (currAction != null
-                && (currAction.getValue(Action.NAME).equals(act)))
-              parentActionMap.put(act, new ActionListenerProxy(currAction, act));
-          }
-        
-        parentInputMap.put(KeyStroke.getKeyStroke(((KeyStroke) keys[i]).getKeyCode(),
-                                                  convertModifiers(((KeyStroke) keys[i]).getModifiers())),
-                           act);
-        parentInputMap.put(KeyStroke.getKeyStroke(((KeyStroke) keys[i]).getKeyCode(),
-                                                  ((KeyStroke) keys[i]).getModifiers()),
-                           act);
+        parentInputMap.put(KeyStroke.getKeyStroke(act),act);
       }
-
+    
     parentInputMap.setParent(textComponent.getInputMap(JComponent.WHEN_FOCUSED).getParent());
     parentActionMap.setParent(textComponent.getActionMap().getParent());
     textComponent.getInputMap(JComponent.WHEN_FOCUSED).setParent(parentInputMap);
@@ -686,68 +679,21 @@ public abstract class BasicTextUI extends TextUI
   }
   
   /**
-   * This class is used to mimic the behaviour of the JDK when registering
-   * keyboard actions. It is the same as the private class used in JComponent
-   * for the same reason. This class receives an action event and dispatches it
-   * to the true receiver after altering the actionCommand property of the
-   * event.
-   */
-  private static class ActionListenerProxy extends AbstractAction
-  {
-    ActionListener target;
-
-    String bindingCommandName;
-
-    public ActionListenerProxy(ActionListener li, String cmd)
-    {
-      target = li;
-      bindingCommandName = cmd;
-    }
-
-    public void actionPerformed(ActionEvent e)
-    {
-      ActionEvent derivedEvent = new ActionEvent(e.getSource(), e.getID(),
-                                                 bindingCommandName,
-                                                 e.getModifiers());
-      target.actionPerformed(derivedEvent);
-    }
-  }
-  
-  /**
-   * Converts the modifiers.
+   * Creates an ActionMap to be installed on the text component.
    * 
-   * @param mod -
-   *          modifier to convert
-   * @returns the new modifier
+   * @return an ActionMap to be installed on the text component
    */
-  private int convertModifiers(int mod)
+  ActionMap createActionMap()
   {
-    if ((mod & KeyEvent.SHIFT_DOWN_MASK) != 0)
+    Action[] actions = textComponent.getActions();
+    ActionMap am = new ActionMapUIResource();
+    for (int i = 0; i < actions.length; ++i)
       {
-        mod |= KeyEvent.SHIFT_MASK;
-        mod &= ~KeyEvent.SHIFT_DOWN_MASK;
+        String name = (String) actions[i].getValue(Action.NAME);
+        if (name != null)
+          am.put(name, actions[i]);
       }
-    if ((mod & KeyEvent.CTRL_DOWN_MASK) != 0)
-      {
-        mod |= KeyEvent.CTRL_MASK;
-        mod &= ~KeyEvent.CTRL_DOWN_MASK;
-      }
-    if ((mod & KeyEvent.META_DOWN_MASK) != 0)
-      {
-        mod |= KeyEvent.META_MASK;
-        mod &= ~KeyEvent.META_DOWN_MASK;
-      }
-    if ((mod & KeyEvent.ALT_DOWN_MASK) != 0)
-      {
-        mod |= KeyEvent.ALT_MASK;
-        mod &= ~KeyEvent.ALT_DOWN_MASK;
-      }
-    if ((mod & KeyEvent.ALT_GRAPH_DOWN_MASK) != 0)
-      {
-        mod |= KeyEvent.ALT_GRAPH_MASK;
-        mod &= ~KeyEvent.ALT_GRAPH_DOWN_MASK;
-      }
-    return mod;
+    return am;
   }
 
   /**

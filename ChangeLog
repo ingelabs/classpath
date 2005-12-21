@@ -1,5 +1,21 @@
 2005-12-20  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/UIDefaults.java:
+	(LazyInputMap): InputMap should be an InputMapUIResource.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added all key bindings for Text*.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installKeyboardActions): Fixed call to replaceUIActionMap
+	to create a new ActionMap from textComponent's actions. Prevents
+	an infinite loop. Fixed loop to set the parentActionMap and the 
+	parentInputMap.
+	(ActionListenerProxy): Removed. No longer needed.
+	(convertModifiers): Likewise.
+	(creatActionMap): New function creates the action map to
+	be installed on the text component.
+
+2005-12-20  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
 	(initComponentDefaults): Added focusInputMap added
 	for PasswordField.
