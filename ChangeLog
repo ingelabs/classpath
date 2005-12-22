@@ -1,3 +1,16 @@
+2005-12-22  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	(ElementBuffer.insertContentTag): Get the attributes from the tag. 
+	Return early if direction is JoinNextDirection but there is no next 
+	Element.  
+	(createDefaultRoot): Don't call createBranchElement here just 
+	instantiate a new BranchElement.
+	(insertUpdate): Removed unneeded fields newElement, newElement2.  When
+	building the buffer ElementSpecs, no need to check each time if we 
+	should join to the previous or next Element, just check the first and
+	last ElementSpecs after the buffer has been completely built.
+
 2005-12-22  Tom Tromey  <tromey@redhat.com>
 
 	* .externalToolBuilders/ClasspathJar.launch: New file.

@@ -817,7 +817,7 @@ public class DefaultStyledDocument extends AbstractDocument
       prepareContentInsertion();
       int len = tag.getLength();
       int dir = tag.getDirection();
-      AttributeSet tagAtts = createLeafElement(null, null, 0, 0).getAttributes();
+      AttributeSet tagAtts = tag.getAttributes();
       if (dir == ElementSpec.JoinPreviousDirection)
         {
           // The mauve tests to this class show that a JoinPrevious insertion
@@ -832,19 +832,21 @@ public class DefaultStyledDocument extends AbstractDocument
           Element current = paragraph.getElement(currentIndex);
           Element next = paragraph.getElement(currentIndex + 1);
 
+          if (next == null)
+            return;
+
           Element newEl1 = createLeafElement(paragraph,
                                              current.getAttributes(),
-                                             current.getStartOffset(),  
+                                             current.getStartOffset(), 
                                              offset);
           Element newEl2 = createLeafElement(paragraph,
-                                             current.getAttributes(),
+                                             current.getAttributes(), 
                                              offset,
                                              next.getEndOffset());
 
-          Element[] add = new Element[] {newEl1, newEl2};
-          Element[] remove = new Element[] {current, next};
+          Element[] add = new Element[] { newEl1, newEl2 };
+          Element[] remove = new Element[] { current, next };
           paragraph.replace(currentIndex, 2, add);
-          
           // Add this action to the document event.
           addEdit(paragraph, currentIndex, remove, add);
         }
@@ -1148,8 +1150,7 @@ public class DefaultStyledDocument extends AbstractDocument
     // Use createBranchElement() and createLeafElement instead.
     SectionElement section = new SectionElement();
 
-    BranchElement paragraph =
-      (BranchElement) createBranchElement(section, null);
+    BranchElement paragraph = new BranchElement(section, null);
     paragraph.setResolveParent(getStyle(StyleContext.DEFAULT_STYLE));
     tmp = new Element[1];
     tmp[0] = paragraph;
@@ -1483,7 +1484,6 @@ public class DefaultStyledDocument extends AbstractDocument
     int offset = ev.getOffset();
     int length = ev.getLength();
     int endOffset = offset + length;
-    Element newElement, newElement2;
     AttributeSet paragraphAttributes = 
       getParagraphElement(endOffset).getAttributes();
     Segment txt = new Segment();
@@ -1503,7 +1503,7 @@ public class DefaultStyledDocument extends AbstractDocument
 
     Element prev = getCharacterElement(offset);
     Element next = getCharacterElement(endOffset);
-
+    
     int segmentEnd = txt.offset + txt.count;
     for (int i = txt.offset; i < segmentEnd; ++i)
       {
@@ -1512,21 +1512,6 @@ public class DefaultStyledDocument extends AbstractDocument
           {
             ElementSpec spec = new ElementSpec(attr, ElementSpec.ContentType,
                                                len);          
-            // If we are at the last index, then check if we could probably be
-            // joined with the next element.
-            if (i == segmentEnd - 1)
-              {
-                if (next.getAttributes().isEqual(attr))
-                  spec.setDirection(ElementSpec.JoinNextDirection);
-              }
-            // If we are at the first new element, then check if it could be
-            // joined with the previous element.
-            else if (specs.size() == 0)
-              {
-                if (prev.getAttributes().isEqual(attr))
-                    spec.setDirection(ElementSpec.JoinPreviousDirection);
-              }
-
             specs.add(spec);
 
             // Add ElementSpecs for the newline.
@@ -1542,22 +1527,20 @@ public class DefaultStyledDocument extends AbstractDocument
       }
 
     // Create last element if last character hasn't been a newline.
-    if (len > 0)
-      {
-        ElementSpec spec = new ElementSpec(attr, ElementSpec.ContentType, len);              
-        // If we are at the first new element, then check if it could be
-        // joined with the previous element.
-        if (specs.size() == 0)
-          {
-            if (prev.getAttributes().isEqual(attr))
-              spec.setDirection(ElementSpec.JoinPreviousDirection);
-          }
-        // Check if we could probably be joined with the next element.
-        else if (next.getAttributes().isEqual(attr))
-          spec.setDirection(ElementSpec.JoinNextDirection);
+    if (len > 0)                      
+      specs.add(new ElementSpec(attr, ElementSpec.ContentType, len));      
 
-        specs.add(spec);
-      }
+    // If we are at the last index, then check if we could probably be
+    // joined with the next element.
+    ElementSpec last = (ElementSpec) specs.lastElement();
+    if (next.getAttributes().isEqual(attr))
+      last.setDirection(ElementSpec.JoinNextDirection);    
+    
+    // If we are at the first new element, then check if it could be
+    // joined with the previous element.
+    ElementSpec first = (ElementSpec) specs.firstElement();
+    if (prev.getAttributes().isEqual(attr))
+      first.setDirection(ElementSpec.JoinPreviousDirection);
     
     ElementSpec[] elSpecs =
       (ElementSpec[]) specs.toArray(new ElementSpec[specs.size()]);
