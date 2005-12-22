@@ -39,7 +39,7 @@ $(top_srcdir)/include/gnu_xml_libxmlj_transform_GnomeTransformerFactory.h
 GTKPEER_H_FILES = \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h \
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_CairoGraphics.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics2D.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkRobotPeer.h \

@@ -1,3 +1,8 @@
+2005-12-21  Mark Wielaard  <mark@klomp.org>
+
+	* include/Makefile.am: Rename gnu_java_awt_peer_gtk_CairoGraphics.h
+	to gnu_java_awt_peer_gtk_GdkGraphics2D.h.
+
 2005-12-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* .project: Add ClasspathHeaders.launch.
