@@ -1,3 +1,11 @@
+2005-12-21  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added focusInputMaps for
+	Button, CheckBox, EditorPane, List, Slider, TabbedPane,
+	ToggleButton, Tree. Also, removed TODO comments that
+	dealt with icons. BasicLookAndFeel does not have icons.
+
 2005-12-22  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/nio/charset/Provider.java (provider): Wrap initialization
