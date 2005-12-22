@@ -1162,7 +1162,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "TextField.light", new ColorUIResource(highLight),
       "TextField.highlight", new ColorUIResource(light),
       "TextField.focusInputMap", new UIDefaults.LazyInputMap(new Object[] {
-         KeyStroke.getKeyStroke("ENTER"), "insert-break",
+         KeyStroke.getKeyStroke("ENTER"), "notify-field-accept",
          KeyStroke.getKeyStroke("LEFT"), "caret-backward",
          KeyStroke.getKeyStroke("RIGHT"), "caret-forward",
          KeyStroke.getKeyStroke("BACK_SPACE"), "delete-previous",
