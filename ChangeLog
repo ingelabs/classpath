@@ -1,4 +1,12 @@
 2005-12-21  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added focus input map for
+	EditorPane. Removed keyBindings.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(createKeyMap): Added check to prevent NPE.
+
+2005-12-21  Lillian Angel  <langel@redhat.com>
 
 	PR classpath/25517
 	* javax/swing/plaf/basic/BasicLookAndFeel.java

@@ -621,17 +621,21 @@ public abstract class BasicTextUI extends TextUI
    */
   protected Keymap createKeymap()
   {
+    JTextComponent.KeyBinding[] bindings = null;
     String prefix = getPropertyPrefix();
     InputMapUIResource m = (InputMapUIResource) UIManager.get(prefix + ".focusInputMap");
-    KeyStroke[] keys = m.keys(); 
-    int len = keys.length;
-    JTextComponent.KeyBinding[] bindings = new JTextComponent.KeyBinding[len];
-    for (int i = 0; i < len; i++)
+    if (m != null)
       {
-        KeyStroke curr = keys[i];
-        bindings[i] = new JTextComponent.KeyBinding(curr, (String) m.get(curr));
+        KeyStroke[] keys = m.keys();
+        int len = keys.length;
+        bindings = new JTextComponent.KeyBinding[len];
+        for (int i = 0; i < len; i++)
+          {
+            KeyStroke curr = keys[i];
+            bindings[i] = new JTextComponent.KeyBinding(curr,
+                                                        (String) m.get(curr));
+          }
       }
-    
     if (bindings == null)
       {
         bindings = new JTextComponent.KeyBinding[0];

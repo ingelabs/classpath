@@ -474,20 +474,14 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "EditorPane.font", new FontUIResource("Serif", Font.PLAIN, 12),
       "EditorPane.foreground", new ColorUIResource(Color.black),
       "EditorPane.inactiveForeground", new ColorUIResource(Color.gray),
-      "EditorPane.keyBindings", new JTextComponent.KeyBinding[] {
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_UP,
-                                                             0), "caret-up"),
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,
-                                                             0), "caret-down"),
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_UP,
-                                                             0), "page-up"),
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN,
-                                                             0), "page-down"),
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,
-                                                             0), "insert-break"),
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_TAB,
-                                                             0), "insert-tab")
-          },
+      "EditorPane.focusInputMap", new UIDefaults.LazyInputMap(new Object[] {
+            KeyStroke.getKeyStroke("UP"), "caret-up",
+            KeyStroke.getKeyStroke("DOWN"), "caret-down",
+            KeyStroke.getKeyStroke("PAGE_UP"), "page-up",
+            KeyStroke.getKeyStroke("PAGE_DOWN"), "page-down",
+            KeyStroke.getKeyStroke("ENTER"), "insert-break",
+            KeyStroke.getKeyStroke("TAB"), "insert-tab"
+          }),
       "EditorPane.margin", new InsetsUIResource(3, 3, 3, 3),
       "EditorPane.selectionBackground", new ColorUIResource(Color.black),
       "EditorPane.selectionForeground", new ColorUIResource(Color.white),
