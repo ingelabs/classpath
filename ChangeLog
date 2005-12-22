@@ -1,3 +1,8 @@
+2005-12-22  Tom Tromey  <tromey@redhat.com>
+
+	* .externalToolBuilders/ClasspathJar.launch: New file.
+	* .project: Updated.
+
 2005-12-21  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
