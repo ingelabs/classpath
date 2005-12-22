@@ -622,14 +622,20 @@ public abstract class BasicTextUI extends TextUI
   protected Keymap createKeymap()
   {
     String prefix = getPropertyPrefix();
-    JTextComponent.KeyBinding[] bindings = 
-      (JTextComponent.KeyBinding[]) UIManager.get(prefix + ".keyBindings");
+    InputMapUIResource m = (InputMapUIResource) UIManager.get(prefix + ".focusInputMap");
+    KeyStroke[] keys = m.keys(); 
+    int len = keys.length;
+    JTextComponent.KeyBinding[] bindings = new JTextComponent.KeyBinding[len];
+    for (int i = 0; i < len; i++)
+      {
+        KeyStroke curr = keys[i];
+        bindings[i] = new JTextComponent.KeyBinding(curr, (String) m.get(curr));
+      }
+    
     if (bindings == null)
       {
         bindings = new JTextComponent.KeyBinding[0];
-        // FIXME: Putting something into the defaults map is certainly wrong.
-        // Must be fixed somehow.
-        UIManager.put(prefix + ".keyBindings", bindings);
+        UIManager.put(prefix + ".focusInputMap", bindings);
       }
 
     Keymap km = JTextComponent.addKeymap(getKeymapName(), 
@@ -643,7 +649,7 @@ public abstract class BasicTextUI extends TextUI
    */
   protected void installKeyboardActions()
   {
-    // load any bindings for the older Keymap interface
+    // load key bindings for the older interface
     Keymap km = JTextComponent.getKeymap(getKeymapName());
     if (km == null)
       km = createKeymap();
@@ -653,10 +659,8 @@ public abstract class BasicTextUI extends TextUI
     SwingUtilities.replaceUIInputMap(textComponent, JComponent.WHEN_FOCUSED,
                                      getInputMap(JComponent.WHEN_FOCUSED));
     SwingUtilities.replaceUIActionMap(textComponent, createActionMap());
-
-    InputMap focusInputMap = (InputMap) UIManager.get(getPropertyPrefix() + ".focusInputMap");
-    ActionMap parentActionMap = new ActionMapUIResource();
     
+    ActionMap parentActionMap = new ActionMapUIResource();
     Action[] actions = textComponent.getActions();
     for (int j = 0; j < actions.length; j++)
       {

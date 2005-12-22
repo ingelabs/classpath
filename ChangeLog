@@ -1,5 +1,16 @@
 2005-12-21  Lillian Angel  <langel@redhat.com>
 
+	PR classpath/25517
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added focus map for FormattedTextField. Mauve
+	test updated for this.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(createKeyMap): Fixed to get key bindings from the input map. There
+	is not .keyBindings default in BasicL&F (same with the JDK).
+	(installKeyBoardActions): Removed unneeded code.	
+
+2005-12-21  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
 	(initComponentDefaults): Typo in mauve test. Reverted last patch.
 
