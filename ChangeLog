@@ -1,3 +1,15 @@
+2005-12-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* .project: Add ClasspathHeaders.launch.
+	* .externalToolBuilders/Autogen.launch: Run automatically when
+	Makefile.am or configure.ac is updated.
+	* .externalToolBuilders/CompileNative.launch: Run automatically.
+	* .externalToolBuilders/Configure.launch: Run automatically when
+	top-level Makefile.in changes.
+	* include/Makefile.am (CLASSDIR): New variable.  Replace lib
+	references with $(CLASSDIR).
+	* .externalToolBuilders/ClasspathHeaders.launch: New builder.
+
 2005-12-21  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
