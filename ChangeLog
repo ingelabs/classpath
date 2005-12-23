@@ -1,3 +1,10 @@
+2005-12-23  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* gnu/xml/dom/DomNode.java
+	(LiveNodeList.handleEvent,
+	LiveNodeList.item, LiveNodeList.getLength): Detach properly the
+	iterator xfrom the DomNode. 
+
 2005-12-23  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/SAXParser.java,
