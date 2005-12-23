@@ -1,3 +1,9 @@
+2005-12-23  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/XMLParser.java: Interim commit during W3C XML
+	  conformance testing.
+
 2005-12-22  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JInternalFrame.java
