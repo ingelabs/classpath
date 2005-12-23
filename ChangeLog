@@ -1,3 +1,8 @@
+2005-12-23  Mark Wielaard  <mark@klomp.org>
+
+	Implement workaround suggested in bug #25430.
+	* java/text/Bidi.java: New file.
+
 2005-12-23  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* gnu/xml/dom/DomNode.java
