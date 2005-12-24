@@ -1,3 +1,7 @@
+2005-12-24  Tom Tromey  <tromey@redhat.com>
+
+	* java/nio/charset/Charset.java (defaultCharset): Added @since.
+
 2005-12-24  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* gnu/xml/dom/DomNode.java
