@@ -131,6 +131,9 @@ public class XMLParser
   private StringBuffer nmtokenBuf = new StringBuffer();
   private StringBuffer literalBuf = new StringBuffer();
   private char[] tmpBuf = new char[1024];
+  
+  private ContentModel currentContentModel;
+  private LinkedList validationStack = new LinkedList();
 
   private String piTarget, piData;
 
@@ -141,7 +144,7 @@ public class XMLParser
   Doctype doctype;
   private boolean expandPE, peIsError;
 
-  private final boolean validating; // TODO
+  private final boolean validating;
   private final boolean stringInterning;
   private final boolean coalescing;
   private final boolean replaceERefs;
@@ -835,6 +838,8 @@ public class XMLParser
                   {
                     reset();
                     event = readCharData(null);
+                    if (validating)
+                      validatePCData(buf.toString());
                   }
               }
             break;
@@ -844,6 +849,8 @@ public class XMLParser
             buf.append(elementName);
             state = stack.isEmpty() ? MISC : CONTENT;
             event = XMLStreamConstants.END_ELEMENT;
+            if (validating)
+              endElementValidationHook();
             break;
           case INIT: // XMLDecl?
             if (tryRead(TEST_XML_DECL))
@@ -1586,11 +1593,12 @@ public class XMLParser
     throws IOException, XMLStreamException
   {
     if (tryRead("EMPTY"))
-      doctype.addElementDecl(elementName, "EMPTY");
+      doctype.addElementDecl(elementName, "EMPTY", new EmptyContentModel());
     else if (tryRead("ANY"))
-      doctype.addElementDecl(elementName, "ANY");
+      doctype.addElementDecl(elementName, "ANY", new AnyContentModel());
     else
       {
+        ContentModel model;
         StringBuffer acc = new StringBuffer();
         require('(');
         acc.append('(');
@@ -1599,11 +1607,17 @@ public class XMLParser
           {
             // mixed content
             acc.append("#PCDATA");
+            MixedContentModel mm = new MixedContentModel();
+            model = mm;
             skipWhitespace();
             if (tryRead(')'))
               {
-                acc.append(")*");
-                tryRead('*');
+                acc.append(")");
+                if (tryRead('*'))
+                  {
+                    mm.min = 0;
+                    mm.max = -1;
+                  }
               }
             else
               {
@@ -1612,27 +1626,32 @@ public class XMLParser
                     require('|');
                     acc.append('|');
                     skipWhitespace();
-                    acc.append(readNmtoken(true));
+                    String name = readNmtoken(true);
+                    acc.append(name);
+                    mm.addName(name);
                     skipWhitespace();
                   }
                 require('*');
                 acc.append(")*");
+                mm.min = 0;
+                mm.max = -1;
               }
           }
         else
-          readElements(acc);
-        doctype.addElementDecl(elementName, acc.toString());
+          model = readElements(acc);
+        doctype.addElementDecl(elementName, acc.toString(), model);
       }
   }
 
-  private void readElements(StringBuffer acc)
+  private ElementContentModel readElements(StringBuffer acc)
     throws IOException, XMLStreamException
   {
     char separator;
+    ElementContentModel model = new ElementContentModel();
     
     // Parse first content particle
     skipWhitespace();
-    readContentParticle(acc);
+    model.addContentParticle(readContentParticle(acc));
     // End or separator
     skipWhitespace();
     char c = readCh();
@@ -1644,15 +1663,25 @@ public class XMLParser
         c = readCh();
         switch (c)
           {
-          case '*':
-          case '+':
           case '?':
             acc.append(c);
+            model.min = 0;
+            model.max = 1;
+            break;
+          case '*':
+            acc.append(c);
+            model.min = 0;
+            model.max = -1;
+            break;
+          case '+':
+            acc.append(c);
+            model.min = 1;
+            model.max = -1;
             break;
           default:
             reset();
           }
-        return; // done
+        return model; // done
       case ',':
       case '|':
         separator = c;
@@ -1660,13 +1689,13 @@ public class XMLParser
         break;
       default:
         error("bad separator in content model", new Character(c));
-        return;
+        return model;
       }
     // Parse subsequent content particles
     while (true)
       {
         skipWhitespace();
-        readContentParticle(acc);
+        model.addContentParticle(readContentParticle(acc));
         skipWhitespace();
         c = readCh();
         if (c == ')')
@@ -1677,7 +1706,7 @@ public class XMLParser
         else if (c != separator)
           {
             error("bad separator in content model", new Character(c));
-            return;
+            return model;
           }
         else
           acc.append(c);
@@ -1688,40 +1717,64 @@ public class XMLParser
     switch (c)
       {
       case '?':
+        acc.append(c);
+        model.min = 0;
+        model.max = 1;
+        break;
       case '*':
+        acc.append(c);
+        model.min = 0;
+        model.max = -1;
+        break;
       case '+':
         acc.append(c);
-        return;
+        model.min = 1;
+        model.max = -1;
+        break;
       default:
         reset();
-        return;
       }
+    return model;
   }
 
-  private void readContentParticle(StringBuffer acc)
+  private ContentParticle readContentParticle(StringBuffer acc)
     throws IOException, XMLStreamException
   {
+    ContentParticle cp = new ContentParticle();
     if (tryRead('('))
       {
         acc.append('(');
-        readElements(acc);
+        cp.content = readElements(acc);
       }
     else
       {
-        acc.append(readNmtoken(true));
+        String name = readNmtoken(true);
+        acc.append(name);
+        cp.content = name;
         mark(1);
         char c = readCh();
         switch (c)
           {
           case '?':
+            acc.append(c);
+            cp.min = 0;
+            cp.max = 1;
+            break;
           case '*':
+            acc.append(c);
+            cp.min = 0;
+            cp.max = -1;
+            break;
           case '+':
             acc.append(c);
+            cp.min = 1;
+            cp.max = -1;
             break;
           default:
             reset();
           }
       }
+    return cp;
   }
 
   /**
@@ -2094,6 +2147,14 @@ public class XMLParser
               error("unbound attribute prefix", attr.prefix);
           }
       }
+    if (validating)
+      {
+        validateStartElement(elementName);
+        currentContentModel = doctype.getElementModel(elementName);
+        if (currentContentModel == null)
+          error("no element declaration", elementName);
+        validationStack.add(new LinkedList());
+      }
     // make element name available for read
     buf.setLength(0);
     buf.append(elementName);
@@ -2222,6 +2283,22 @@ public class XMLParser
     // Make element name available
     buf.setLength(0);
     buf.append(expected);
+    if (validating)
+      endElementValidationHook();
+  }
+
+  private void endElementValidationHook()
+    throws XMLStreamException
+  {
+    validateEndElement();
+    validationStack.removeLast();
+    if (stack.isEmpty())
+      currentContentModel = null;
+    else
+      {
+        String parent = (String) stack.getLast();
+        currentContentModel = doctype.getElementModel(parent);
+      }
   }
 
   /**
@@ -3227,6 +3304,136 @@ public class XMLParser
     throw new XMLStreamException(message);
   }
 
+  private void validateStartElement(String elementName)
+    throws XMLStreamException
+  {
+    if (currentContentModel == null)
+      return; // root element
+    if (doctype == null)
+      error("document does not specify a DTD");
+    switch (currentContentModel.type)
+      {
+      case ContentModel.EMPTY:
+        error("child element found in empty element", elementName);
+        break;
+      case ContentModel.ELEMENT:
+        LinkedList ctx = (LinkedList) validationStack.getLast();
+        ctx.add(elementName);
+        break;
+      case ContentModel.MIXED:
+        MixedContentModel mm = (MixedContentModel) currentContentModel;
+        if (!mm.containsName(elementName))
+          error("illegal element for content model", elementName);
+        break;
+      }
+  }
+
+  private void validateEndElement()
+    throws XMLStreamException
+  {
+    if (currentContentModel == null)
+      return; // root element
+    switch (currentContentModel.type)
+      {
+      case ContentModel.ELEMENT:
+        LinkedList ctx = (LinkedList) validationStack.getLast();
+        ElementContentModel ecm = (ElementContentModel) currentContentModel;
+        validateElementContent(ecm, ctx);
+        break;
+      }
+  }
+
+  private void validatePCData(String text)
+    throws XMLStreamException
+  {
+    switch (currentContentModel.type)
+      {
+      case ContentModel.EMPTY:
+        error("character data found in empty element", text);
+        break;
+      case ContentModel.ELEMENT:
+        boolean white = true;
+        int len = text.length();
+        for (int i = 0; i < len; i++)
+          {
+            char c = text.charAt(i);
+            if (c != ' ' && c != '\t' && c != '\n' && c != '\r')
+              {
+                white = false;
+                break;
+              }
+          }
+        if (!white)
+          error("character data found in element with element content", text);
+        break;
+      }
+  }
+
+  private void validateElementContent(ElementContentModel model,
+                                      LinkedList children)
+    throws XMLStreamException
+  {
+    // Use regular expression
+    StringBuffer buf = new StringBuffer();
+    for (Iterator i = children.iterator(); i.hasNext(); )
+      {
+        buf.append((String) i.next());
+        buf.append(' ');
+      }
+    String c = buf.toString();
+    String regex = createRegularExpression(model);
+    if (!c.matches(regex))
+      error("element content does not match expression "+regex, c);
+  }
+
+  private String createRegularExpression(ElementContentModel model)
+  {
+    if (model.regex == null)
+      {
+        StringBuffer buf = new StringBuffer();
+        buf.append('(');
+        for (Iterator i = model.contentParticles.iterator(); i.hasNext(); )
+          {
+            ContentParticle cp = (ContentParticle) i.next();
+            if (cp.content instanceof String)
+              {
+                buf.append('(');
+                buf.append((String) cp.content);
+                buf.append(' ');
+                buf.append(')');
+                if (cp.max == -1)
+                  {
+                    if (cp.min == 0)
+                      buf.append('*');
+                    else
+                      buf.append('+');
+                  }
+                else if (cp.min == 0)
+                  buf.append('?');
+              }
+            else
+              {
+                ElementContentModel ecm = (ElementContentModel) cp.content;
+                buf.append(createRegularExpression(ecm));
+              }
+            if (i.hasNext())
+              buf.append('|');
+          }
+        buf.append(')');
+        if (model.max == -1)
+          {
+            if (model.min == 0)
+              buf.append('*');
+            else
+              buf.append('+');
+          }
+        else if (model.min == 0)
+          buf.append('?');
+        model.regex = buf.toString();
+      }
+    return model.regex;
+  }
+
   public static void main(String[] args)
     throws Exception
   {
@@ -3235,7 +3442,7 @@ public class XMLParser
       xIncludeAware = true;
     XMLParser p = new XMLParser(new java.io.FileInputStream(args[0]),
                                 absolutize(null, args[0]),
-                                false, // validating
+                                true, // validating
                                 true, // namespaceAware
                                 true, // coalescing,
                                 true, // replaceERefs
@@ -3386,10 +3593,11 @@ public class XMLParser
       this.systemId = systemId;
     }
 
-    void addElementDecl(String name, String model)
+    void addElementDecl(String name, String text, ContentModel model)
     {
       if (elements.containsKey(name))
         return;
+      model.text = text;
       elements.put(name, model);
       entries.add("E" + name);
     }
@@ -3454,9 +3662,9 @@ public class XMLParser
       entries.add("p" + key);
     }
 
-    String getElementModel(String name)
+    ContentModel getElementModel(String name)
     {
-      return (String) elements.get(name);
+      return (ContentModel) elements.get(name);
     }
 
     AttributeDecl getAttributeDecl(String ename, String aname)
@@ -3520,6 +3728,106 @@ public class XMLParser
     String publicId;
     String systemId;
     String notationName;
+  }
+
+  abstract class ContentModel
+  {
+    static final int EMPTY = 0;
+    static final int ANY = 1;
+    static final int ELEMENT = 2;
+    static final int MIXED = 3;
+    
+    int min;
+    int max;
+    final int type;
+    String text;
+
+    ContentModel(int type)
+    {
+      this.type = type;
+      min = 1;
+      max = 1;
+    }
+    
+  }
+
+  class EmptyContentModel
+    extends ContentModel
+  {
+    
+    EmptyContentModel()
+    {
+      super(ContentModel.EMPTY);
+      min = 0;
+      max = 0;
+    }
+    
+  }
+
+  class AnyContentModel
+    extends ContentModel
+  {
+    
+    AnyContentModel()
+    {
+      super(ContentModel.ANY);
+      min = 0;
+      max = -1;
+    }
+    
+  }
+
+  class ElementContentModel
+    extends ContentModel
+  {
+
+    LinkedList contentParticles;
+    String regex; // regular expression cache
+    
+    ElementContentModel()
+    {
+      super(ContentModel.ELEMENT);
+      contentParticles = new LinkedList();
+    }
+
+    void addContentParticle(ContentParticle cp)
+    {
+      contentParticles.add(cp);
+    }
+    
+  }
+
+  class ContentParticle
+  {
+
+    int min = 1;
+    int max = 1;
+    Object content; // Name (String) or ElementContentModel
+    
+  }
+
+  class MixedContentModel
+    extends ContentModel
+  {
+
+    private HashSet names;
+    
+    MixedContentModel()
+    {
+      super(ContentModel.MIXED);
+      names = new HashSet();
+    }
+
+    void addName(String name)
+    {
+      names.add(name);
+    }
+
+    boolean containsName(String name)
+    {
+      return names.contains(name);
+    }
+    
   }
 
   class AttributeDecl

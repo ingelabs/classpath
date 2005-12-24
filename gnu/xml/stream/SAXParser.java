@@ -481,8 +481,9 @@ public class SAXParser
                         // Element decl
                         if (declHandler != null)
                           {
-                            String model = doctype.getElementModel(name);
-                            declHandler.elementDecl(name, model);
+                            XMLParser.ContentModel model =
+                              doctype.getElementModel(name);
+                            declHandler.elementDecl(name, model.text);
                           }
                       }
                     else if ('A' == c)
