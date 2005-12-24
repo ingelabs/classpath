@@ -1,3 +1,14 @@
+2005-12-24  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* gnu/xml/dom/DomNode.java
+	(listeners): Use a HashSet now.
+	(DomNode): Likewise.
+	(compact, trimSize): Reduced to nop with a HashSet.
+	(addEventListener, removeEventListener): Use HashSet
+	operations.
+	(dispatchEvent): Likewise.
+	(notifyNode): Likewise. 
+
 2005-12-24  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/SAXParser.java,
