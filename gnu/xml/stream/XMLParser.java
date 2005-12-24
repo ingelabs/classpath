@@ -777,12 +777,12 @@ public class XMLParser
               }
             else if (tryRead(TEST_COMMENT))
               {
-                readComment();
+                readComment(false);
                 event = XMLStreamConstants.COMMENT;
               }
             else if (tryRead(TEST_PI))
               {
-                readPI();
+                readPI(false);
                 event = XMLStreamConstants.PROCESSING_INSTRUCTION;
               }
             else if (tryRead(TEST_CDATA))
@@ -860,12 +860,12 @@ public class XMLParser
               }
             else if (tryRead(TEST_COMMENT))
               {
-                readComment();
+                readComment(false);
                 event = XMLStreamConstants.COMMENT;
               }
             else if (tryRead(TEST_PI))
               {
-                readPI();
+                readPI(false);
                 event = XMLStreamConstants.PROCESSING_INSTRUCTION;
               }
             else if (tryRead(TEST_START_ELEMENT))
@@ -883,12 +883,12 @@ public class XMLParser
             skipWhitespace();
             if (tryRead(TEST_COMMENT))
               {
-                readComment();
+                readComment(false);
                 event = XMLStreamConstants.COMMENT;
               }
             else if (tryRead(TEST_PI))
               {
-                readPI();
+                readPI(false);
                 event = XMLStreamConstants.PROCESSING_INSTRUCTION;
               }
             else
@@ -1056,8 +1056,20 @@ public class XMLParser
             char c = readCh();
             if (c == '\uffff')
               throw new EOFException();
-            else if (c < 32 && c != 10 && c != 9 && c != 13)
-              error("illegal XML character", Character.toString(c));
+            else if (input.xml11)
+              {
+                if (!isXML11Char((int) c))
+                  error("illegal XML 1.1 character", Character.toString(c));
+              }
+            else
+              {
+                if (c < 32 && c != 10 && c != 9 && c != 13)
+                  error("illegal XML character", Character.toString(c));
+                else if (c > '\ud7ff' && c < '\ue000')
+                  error("illegal XML character", Character.toString(c));
+                else if (c > '\ufffd')
+                  error("illegal XML character", Character.toString(c));
+              }
             buf.append(c);
           }
       }
@@ -1215,6 +1227,8 @@ public class XMLParser
   private void pushInput(Input input)
   {
     inputStack.addLast(input);
+    if (this.input != null)
+      input.xml11 = this.input.xml11;
     this.input = input;
     //System.out.println("\n(input:"+input.systemId+")"); 
   }
@@ -1326,7 +1340,12 @@ public class XMLParser
         if ("1.0".equals(v))
           input.xml11 = false;
         else if ("1.1".equals(v))
-          input.xml11 = true;
+          {
+            Input i1 = (Input) inputStack.getFirst();
+            if (!i1.xml11)
+              error("external entity specifies later version number");
+            input.xml11 = true;
+          }
         else
           throw new XMLStreamException("illegal XML version: " + v);
         requireWhitespace();
@@ -1495,12 +1514,12 @@ public class XMLParser
     else if (tryRead(TEST_PI))
       {
         expandPE = saved;
-        readPI();
+        readPI(true);
       }
     else if (tryRead(TEST_COMMENT))
       {
         expandPE = saved;
-        readComment();
+        readComment(true);
       }
     else if (tryRead("<!["))
       {
@@ -1995,8 +2014,9 @@ public class XMLParser
     // Push namespace context
     if (namespaceAware)
       {
-        if (":".equals(elementName))
-          error("XML Namespaces forbids names consisting of a single colon");
+        if (elementName.charAt(0) == ':' ||
+            elementName.charAt(elementName.length() - 1) == ':')
+          error("not a QName", elementName);
         namespaces.addFirst(new LinkedHashMap());
       }
     // Read element content
@@ -2056,6 +2076,24 @@ public class XMLParser
         String base = getAttributeValue(XMLConstants.XML_NS_URI, "base");
         bases.addFirst(base);
       }
+    if (namespaceAware)
+      {
+        // check prefix bindings
+        int ci = elementName.indexOf(':');
+        if (ci != -1)
+          {
+            String prefix = elementName.substring(0, ci);
+            if (getNamespaceURI(prefix) == null)
+              error("unbound element prefix", prefix);
+          }
+        for (Iterator i = attrs.iterator(); i.hasNext(); )
+          {
+            Attribute attr = (Attribute) i.next();
+            if (attr.prefix != null && getNamespaceURI(attr.prefix) == null &&
+                !XMLConstants.XMLNS_ATTRIBUTE.equals(attr.prefix))
+              error("unbound attribute prefix", attr.prefix);
+          }
+      }
     // make element name available for read
     buf.setLength(0);
     buf.append(elementName);
@@ -2102,8 +2140,9 @@ public class XMLParser
     Attribute attr = this.new Attribute(attributeName, type, true, value);
     if (namespaceAware)
       {
-        if (attributeName.equals(":"))
-          error("XML Namespaces forbids names consisting of a single colon");
+        if (attributeName.charAt(0) == ':' ||
+            attributeName.charAt(attributeName.length() - 1) == ':')
+          error("not a QName", attributeName);
         else if (attributeName.equals("xmlns"))
           {
             LinkedHashMap ctx = (LinkedHashMap) namespaces.getFirst();
@@ -2138,6 +2177,8 @@ public class XMLParser
         LinkedHashMap ctx = (LinkedHashMap) namespaces.getFirst();
         if (ctx.get(XMLConstants.DEFAULT_NS_PREFIX) != null)
           error("Duplicate default namespace declaration");
+        if (XMLConstants.XML_NS_URI.equals(attr.value))
+          error("can't bind XML namespace");
         ctx.put(XMLConstants.DEFAULT_NS_PREFIX, attr.value);
         return true;
       }
@@ -2147,6 +2188,19 @@ public class XMLParser
         if (ctx.get(attr.localName) != null)
           error("Duplicate namespace declaration for prefix",
                 attr.localName);
+        if (XMLConstants.XML_NS_PREFIX.equals(attr.localName))
+          {
+            if (!XMLConstants.XML_NS_URI.equals(attr.value))
+              error("can't redeclare xml prefix");
+            else
+              return false; // treat as attribute
+          }
+        if (XMLConstants.XML_NS_URI.equals(attr.value))
+          error("can't bind non-xml prefix to XML namespace");
+        if (XMLConstants.XMLNS_ATTRIBUTE.equals(attr.localName))
+          error("can't redeclare xmlns prefix");
+        if (XMLConstants.XMLNS_ATTRIBUTE_NS_URI.equals(attr.value))
+          error("can't bind non-xmlns prefix to XML Namespace namespace");
         ctx.put(attr.localName, attr.value);
         return true;
       }
@@ -2173,7 +2227,7 @@ public class XMLParser
   /**
    * Parse a comment.
    */
-  private void readComment()
+  private void readComment(boolean inDTD)
     throws IOException, XMLStreamException
   {
     boolean saved = expandPE;
@@ -2182,12 +2236,14 @@ public class XMLParser
     readUntil(TEST_END_COMMENT);
     require('>');
     expandPE = saved;
+    if (inDTD)
+      doctype.addComment(buf.toString());
   }
 
   /**
    * Parse a processing instruction.
    */
-  private void readPI()
+  private void readPI(boolean inDTD)
     throws IOException, XMLStreamException
   {
     boolean saved = expandPE;
@@ -2208,6 +2264,8 @@ public class XMLParser
         piData = buf.toString();
       }
     expandPE = saved;
+    if (inDTD)
+      doctype.addPI(piTarget, piData);
   }
 
   /**
@@ -2650,12 +2708,21 @@ public class XMLParser
     try
       {
         int ord = Integer.parseInt(b.toString(), base);
-        if ((ord < 0x20 && !(ord == 0x0a || ord == 0x09 || ord == 0x0d))
-            || (ord >= 0xd800 && ord <= 0xdfff)
-            || ord == 0xfffe || ord == 0xffff
-            || ord > 0x0010ffff)
-          error("illegal XML character reference" +
-                "U+" + Integer.toHexString(ord));
+        if (input.xml11)
+          {
+            if (!isXML11Char(ord))
+              error("illegal XML 1.1 character reference " +
+                    "U+" + Integer.toHexString(ord));
+          }
+        else
+          {
+            if ((ord < 0x20 && !(ord == 0x0a || ord == 0x09 || ord == 0x0d))
+                || (ord >= 0xd800 && ord <= 0xdfff)
+                || ord == 0xfffe || ord == 0xffff
+                || ord > 0x0010ffff)
+              error("illegal XML character reference " +
+                    "U+" + Integer.toHexString(ord));
+          }
         return Character.toChars(ord);
       }
     catch (NumberFormatException e)
@@ -2722,107 +2789,420 @@ public class XMLParser
     while (true);
   }
 
+  private boolean isXML11Char(int c)
+  {
+    return ((c >= 0x0001 && c <= 0xD7FF) ||
+            (c >= 0xE000 && c <= 0xFFFD) ||
+            (c >= 0x10000 && c <= 0x10FFFF));
+  }
+
+  private boolean isXML11RestrictedChar(int c)
+  {
+    return ((c >= 0x0001 && c <= 0x0008) ||
+            (c >= 0x000B && c <= 0x000C) ||
+            (c >= 0x000E && c <= 0x001F) ||
+            (c >= 0x007F && c <= 0x0084) ||
+            (c >= 0x0086 && c <= 0x009F));
+  }
+
   private boolean isNameStartCharacter(char c)
   {
     if (input.xml11)
-      {
-        if ((c < 0x0041 || c > 0x005a) &&
-            (c < 0x0061 || c > 0x007a) &&
-            c != ':' && c != '_' &&
-            (c < 0x00c0 || c > 0x00d6) &&
-            (c < 0x00d8 || c > 0x00f6) &&
-            (c < 0x00f8 || c > 0x02ff) &&
-            (c < 0x0370 || c > 0x037d) &&
-            (c < 0x037f || c > 0x1fff) &&
-            (c < 0x200c || c > 0x200d) &&
-            (c < 0x2070 || c > 0x218f) &&
-            (c < 0x2c00 || c > 0x2fef) &&
-            (c < 0x3001 || c > 0xd7ff) &&
-            (c < 0xf900 || c > 0xfdcf) &&
-            (c < 0xfdf0 || c > 0xfffd) &&
-            (c < 0x10000 || c > 0xeffff))
-          return false;
-      }
+      return ((c >= 0x0041 && c <= 0x005a) ||
+              (c >= 0x0061 && c <= 0x007a) ||
+              c == ':' |
+              c == '_' |
+              (c >= 0xC0 && c <= 0xD6) ||
+              (c >= 0xD8 && c <= 0xF6) ||
+              (c >= 0xF8 && c <= 0x2FF) ||
+              (c >= 0x370 && c <= 0x37D) ||
+              (c >= 0x37F && c <= 0x1FFF) ||
+              (c >= 0x200C && c <= 0x200D) ||
+              (c >= 0x2070 && c <= 0x218F) ||
+              (c >= 0x2C00 && c <= 0x2FEF) ||
+              (c >= 0x3001 && c <= 0xD7FF) ||
+              (c >= 0xF900 && c <= 0xFDCF) ||
+              (c >= 0xFDF0 && c <= 0xFFFD) ||
+              (c >= 0x10000 && c <= 0xEFFFF));
     else
-      {
-        int type = Character.getType(c);
-        switch (type)
-          {
-          case Character.LOWERCASE_LETTER: // Ll
-          case Character.UPPERCASE_LETTER: // Lu
-          case Character.OTHER_LETTER: // Lo
-          case Character.TITLECASE_LETTER: // Lt
-          case Character.LETTER_NUMBER: // Nl
-            if ((c > 0xf900 && c < 0xfffe) ||
-                (c >= 0x20dd && c <= 0x20e0))
-              {
-                // Compatibility area and Unicode 2.0 exclusions
-                return false;
-              }
-            break;
-          default:
-            if (c != ':' && c != '_' && (c < 0x02bb || c > 0x02c1) &&
-                c != 0x0559 && c != 0x06e5 && c != 0x06e6)
-              return false; 
-          }
-      }
-    return true;
+      return (c == '_' || c == ':' || isLetter(c));
   }
 
   private boolean isNameCharacter(char c)
   {
     if (input.xml11)
-      {
-        if ((c < 0x0041 || c > 0x005a) &&
-            (c < 0x0061 || c > 0x007a) &&
-            (c < 0x0030 || c > 0x0039) &&
-            c != ':' && c != '_' && c != '-' && c != '.' &&
-            (c < 0x00c0 || c > 0x00d6) &&
-            (c < 0x00d8 || c > 0x00f6) &&
-            (c < 0x00f8 || c > 0x02ff) &&
-            (c < 0x0370 || c > 0x037d) &&
-            (c < 0x037f || c > 0x1fff) &&
-            (c < 0x200c || c > 0x200d) &&
-            (c < 0x2070 || c > 0x218f) &&
-            (c < 0x2c00 || c > 0x2fef) &&
-            (c < 0x3001 || c > 0xd7ff) &&
-            (c < 0xf900 || c > 0xfdcf) &&
-            (c < 0xfdf0 || c > 0xfffd) &&
-            (c < 0x10000 || c > 0xeffff) &&
-            c != 0x00b7 && 
-            (c < 0x0300 || c > 0x036f) &&
-            (c < 0x203f || c > 0x2040))
-          return false;
-      }
+      return ((c >= 0x0041 && c <= 0x005a) ||
+              (c >= 0x0061 && c <= 0x007a) ||
+              (c >= 0x0030 && c <= 0x0039) ||
+              c == ':' |
+              c == '_' |
+              c == '-' |
+              c == '.' |
+              c == 0xB7 |
+              (c >= 0xC0 && c <= 0xD6) ||
+              (c >= 0xD8 && c <= 0xF6) ||
+              (c >= 0xF8 && c <= 0x2FF) ||
+              (c >= 0x300 && c <= 0x37D) ||
+              (c >= 0x37F && c <= 0x1FFF) ||
+              (c >= 0x200C && c <= 0x200D) ||
+              (c >= 0x203F && c <= 0x2040) ||
+              (c >= 0x2070 && c <= 0x218F) ||
+              (c >= 0x2C00 && c <= 0x2FEF) ||
+              (c >= 0x3001 && c <= 0xD7FF) ||
+              (c >= 0xF900 && c <= 0xFDCF) ||
+              (c >= 0xFDF0 && c <= 0xFFFD) ||
+              (c >= 0x10000 && c <= 0xEFFFF));
     else
-      {
-        int type = Character.getType(c);
-        switch (type)
-          {
-          case Character.LOWERCASE_LETTER: // Ll
-          case Character.UPPERCASE_LETTER: // Lu
-          case Character.DECIMAL_DIGIT_NUMBER: // Nd
-          case Character.OTHER_LETTER: // Lo
-          case Character.TITLECASE_LETTER: // Lt
-          case Character.LETTER_NUMBER: // Nl
-          case Character.COMBINING_SPACING_MARK: // Mc
-          case Character.ENCLOSING_MARK: // Me
-          case Character.NON_SPACING_MARK: // Mn
-          case Character.MODIFIER_LETTER: // Lm
-            if ((c > 0xf900 && c < 0xfffe) ||
-                (c >= 0x20dd && c <= 0x20e0))
-              return false;
-            break;
-          default:
-            if (c != '-' && c != '.' && c != ':' && c != '_' &&
-                c != 0x0387 && (c < 0x02bb || c > 0x02c1) && 
-                c != 0x0559 && c != 0x06e5 && c != 0x06e6 && c != 0x00b7)
-              return false;
-          }
-      }
-    return true;
+      return (c == '.' || c == '-' || c == '_' || c == ':' ||
+              isLetter(c) || isDigit(c) ||
+              isCombiningChar(c) || isExtender(c));
   }
 
+  public static boolean isLetter(char c)
+  {
+    if ((c >= 0x0041 && c <= 0x005A) ||
+        (c >= 0x0061 && c <= 0x007A) ||
+        (c >= 0x00C0 && c <= 0x00D6) ||
+        (c >= 0x00D8 && c <= 0x00F6) ||
+        (c >= 0x00F8 && c <= 0x00FF) ||
+        (c >= 0x0100 && c <= 0x0131) ||
+        (c >= 0x0134 && c <= 0x013E) ||
+        (c >= 0x0141 && c <= 0x0148) ||
+        (c >= 0x014A && c <= 0x017E) ||
+        (c >= 0x0180 && c <= 0x01C3) ||
+        (c >= 0x01CD && c <= 0x01F0) ||
+        (c >= 0x01F4 && c <= 0x01F5) ||
+        (c >= 0x01FA && c <= 0x0217) ||
+        (c >= 0x0250 && c <= 0x02A8) ||
+        (c >= 0x02BB && c <= 0x02C1) ||
+        c == 0x0386 ||
+        (c >= 0x0388 && c <= 0x038A) ||
+        c == 0x038C ||
+        (c >= 0x038E && c <= 0x03A1) ||
+        (c >= 0x03A3 && c <= 0x03CE) ||
+        (c >= 0x03D0 && c <= 0x03D6) ||
+        c == 0x03DA ||
+      c == 0x03DC ||
+        c == 0x03DE ||
+        c == 0x03E0 ||
+        (c >= 0x03E2 && c <= 0x03F3) ||
+        (c >= 0x0401 && c <= 0x040C) ||
+        (c >= 0x040E && c <= 0x044F) ||
+        (c >= 0x0451 && c <= 0x045C) ||
+        (c >= 0x045E && c <= 0x0481) ||
+        (c >= 0x0490 && c <= 0x04C4) ||
+        (c >= 0x04C7 && c <= 0x04C8) ||
+        (c >= 0x04CB && c <= 0x04CC) ||
+        (c >= 0x04D0 && c <= 0x04EB) ||
+        (c >= 0x04EE && c <= 0x04F5) ||
+        (c >= 0x04F8 && c <= 0x04F9) ||
+        (c >= 0x0531 && c <= 0x0556) ||
+        c == 0x0559 ||
+        (c >= 0x0561 && c <= 0x0586) ||
+        (c >= 0x05D0 && c <= 0x05EA) ||
+        (c >= 0x05F0 && c <= 0x05F2) ||
+        (c >= 0x0621 && c <= 0x063A) ||
+        (c >= 0x0641 && c <= 0x064A) ||
+        (c >= 0x0671 && c <= 0x06B7) ||
+        (c >= 0x06BA && c <= 0x06BE) ||
+        (c >= 0x06C0 && c <= 0x06CE) ||
+        (c >= 0x06D0 && c <= 0x06D3) ||
+        c == 0x06D5 ||
+        (c >= 0x06E5 && c <= 0x06E6) ||
+        (c >= 0x0905 && c <= 0x0939) ||
+        c == 0x093D ||
+        (c >= 0x0958 && c <= 0x0961) ||
+        (c >= 0x0985 && c <= 0x098C) ||
+        (c >= 0x098F && c <= 0x0990) ||
+        (c >= 0x0993 && c <= 0x09A8) ||
+        (c >= 0x09AA && c <= 0x09B0) ||
+        c == 0x09B2 ||
+        (c >= 0x09B6 && c <= 0x09B9) ||
+        (c >= 0x09DC && c <= 0x09DD) ||
+        (c >= 0x09DF && c <= 0x09E1) ||
+        (c >= 0x09F0 && c <= 0x09F1) ||
+        (c >= 0x0A05 && c <= 0x0A0A) ||
+        (c >= 0x0A0F && c <= 0x0A10) ||
+        (c >= 0x0A13 && c <= 0x0A28) ||
+        (c >= 0x0A2A && c <= 0x0A30) ||
+        (c >= 0x0A32 && c <= 0x0A33) ||
+        (c >= 0x0A35 && c <= 0x0A36) ||
+        (c >= 0x0A38 && c <= 0x0A39) ||
+        (c >= 0x0A59 && c <= 0x0A5C) ||
+        c == 0x0A5E ||
+        (c >= 0x0A72 && c <= 0x0A74) ||
+        (c >= 0x0A85 && c <= 0x0A8B) ||
+        c == 0x0A8D ||
+        (c >= 0x0A8F && c <= 0x0A91) ||
+        (c >= 0x0A93 && c <= 0x0AA8) ||
+        (c >= 0x0AAA && c <= 0x0AB0) ||
+        (c >= 0x0AB2 && c <= 0x0AB3) ||
+        (c >= 0x0AB5 && c <= 0x0AB9) ||
+        c == 0x0ABD ||
+        c == 0x0AE0 ||
+        (c >= 0x0B05 && c <= 0x0B0C) ||
+        (c >= 0x0B0F && c <= 0x0B10) ||
+        (c >= 0x0B13 && c <= 0x0B28) ||
+        (c >= 0x0B2A && c <= 0x0B30) ||
+        (c >= 0x0B32 && c <= 0x0B33) ||
+        (c >= 0x0B36 && c <= 0x0B39) ||
+        c == 0x0B3D ||
+        (c >= 0x0B5C && c <= 0x0B5D) ||
+        (c >= 0x0B5F && c <= 0x0B61) ||
+        (c >= 0x0B85 && c <= 0x0B8A) ||
+        (c >= 0x0B8E && c <= 0x0B90) ||
+        (c >= 0x0B92 && c <= 0x0B95) ||
+        (c >= 0x0B99 && c <= 0x0B9A) ||
+        c == 0x0B9C ||
+        (c >= 0x0B9E && c <= 0x0B9F) ||
+        (c >= 0x0BA3 && c <= 0x0BA4) ||
+        (c >= 0x0BA8 && c <= 0x0BAA) ||
+        (c >= 0x0BAE && c <= 0x0BB5) ||
+        (c >= 0x0BB7 && c <= 0x0BB9) ||
+        (c >= 0x0C05 && c <= 0x0C0C) ||
+        (c >= 0x0C0E && c <= 0x0C10) ||
+        (c >= 0x0C12 && c <= 0x0C28) ||
+        (c >= 0x0C2A && c <= 0x0C33) ||
+        (c >= 0x0C35 && c <= 0x0C39) ||
+        (c >= 0x0C60 && c <= 0x0C61) ||
+        (c >= 0x0C85 && c <= 0x0C8C) ||
+        (c >= 0x0C8E && c <= 0x0C90) ||
+        (c >= 0x0C92 && c <= 0x0CA8) ||
+        (c >= 0x0CAA && c <= 0x0CB3) ||
+        (c >= 0x0CB5 && c <= 0x0CB9) ||
+        c == 0x0CDE ||
+        (c >= 0x0CE0 && c <= 0x0CE1) ||
+        (c >= 0x0D05 && c <= 0x0D0C) ||
+        (c >= 0x0D0E && c <= 0x0D10) ||
+        (c >= 0x0D12 && c <= 0x0D28) ||
+        (c >= 0x0D2A && c <= 0x0D39) ||
+        (c >= 0x0D60 && c <= 0x0D61) ||
+        (c >= 0x0E01 && c <= 0x0E2E) ||
+        c == 0x0E30 ||
+        (c >= 0x0E32 && c <= 0x0E33) ||
+        (c >= 0x0E40 && c <= 0x0E45) ||
+        (c >= 0x0E81 && c <= 0x0E82) ||
+        c == 0x0E84 ||
+        (c >= 0x0E87 && c <= 0x0E88) ||
+        c == 0x0E8A ||
+        c == 0x0E8D ||
+        (c >= 0x0E94 && c <= 0x0E97) ||
+        (c >= 0x0E99 && c <= 0x0E9F) ||
+        (c >= 0x0EA1 && c <= 0x0EA3) ||
+        c == 0x0EA5 ||
+        c == 0x0EA7 ||
+        (c >= 0x0EAA && c <= 0x0EAB) ||
+        (c >= 0x0EAD && c <= 0x0EAE) ||
+        c == 0x0EB0 ||
+        (c >= 0x0EB2 && c <= 0x0EB3) ||
+        c == 0x0EBD ||
+        (c >= 0x0EC0 && c <= 0x0EC4) ||
+        (c >= 0x0F40 && c <= 0x0F47) ||
+        (c >= 0x0F49 && c <= 0x0F69) ||
+        (c >= 0x10A0 && c <= 0x10C5) ||
+        (c >= 0x10D0 && c <= 0x10F6) ||
+        c == 0x1100 ||
+        (c >= 0x1102 && c <= 0x1103) ||
+        (c >= 0x1105 && c <= 0x1107) ||
+        c == 0x1109 ||
+        (c >= 0x110B && c <= 0x110C) ||
+        (c >= 0x110E && c <= 0x1112) ||
+        c == 0x113C ||
+        c == 0x113E ||
+        c == 0x1140 ||
+        c == 0x114C ||
+        c == 0x114E ||
+        c == 0x1150 ||
+        (c >= 0x1154 && c <= 0x1155) ||
+        c == 0x1159 ||
+        (c >= 0x115F && c <= 0x1161) ||
+        c == 0x1163 ||
+        c == 0x1165 ||
+        c == 0x1167 ||
+        c == 0x1169 ||
+        (c >= 0x116D && c <= 0x116E) ||
+        (c >= 0x1172 && c <= 0x1173) ||
+        c == 0x1175 ||
+        c == 0x119E ||
+        c == 0x11A8 ||
+        c == 0x11AB ||
+        (c >= 0x11AE && c <= 0x11AF) ||
+        (c >= 0x11B7 && c <= 0x11B8) ||
+        c == 0x11BA ||
+        (c >= 0x11BC && c <= 0x11C2) ||
+        c == 0x11EB ||
+        c == 0x11F0 ||
+        c == 0x11F9 ||
+        (c >= 0x1E00 && c <= 0x1E9B) ||
+        (c >= 0x1EA0 && c <= 0x1EF9) ||
+        (c >= 0x1F00 && c <= 0x1F15) ||
+        (c >= 0x1F18 && c <= 0x1F1D) ||
+        (c >= 0x1F20 && c <= 0x1F45) ||
+        (c >= 0x1F48 && c <= 0x1F4D) ||
+        (c >= 0x1F50 && c <= 0x1F57) ||
+        c == 0x1F59 ||
+        c == 0x1F5B ||
+        c == 0x1F5D ||
+        (c >= 0x1F5F && c <= 0x1F7D) ||
+        (c >= 0x1F80 && c <= 0x1FB4) ||
+        (c >= 0x1FB6 && c <= 0x1FBC) ||
+        c == 0x1FBE ||
+        (c >= 0x1FC2 && c <= 0x1FC4) ||
+        (c >= 0x1FC6 && c <= 0x1FCC) ||
+        (c >= 0x1FD0 && c <= 0x1FD3) ||
+        (c >= 0x1FD6 && c <= 0x1FDB) ||
+        (c >= 0x1FE0 && c <= 0x1FEC) ||
+        (c >= 0x1FF2 && c <= 0x1FF4) ||
+        (c >= 0x1FF6 && c <= 0x1FFC) ||
+        c == 0x2126 ||
+        (c >= 0x212A && c <= 0x212B) ||
+        c == 0x212E ||
+        (c >= 0x2180 && c <= 0x2182) ||
+        (c >= 0x3041 && c <= 0x3094) ||
+        (c >= 0x30A1 && c <= 0x30FA) ||
+        (c >= 0x3105 && c <= 0x312C) ||
+        (c >= 0xAC00 && c <= 0xD7A3))
+        return true; // BaseChar
+    if ((c >= 0x4e00 && c <= 0x9fa5) ||
+        c == 0x3007 ||
+        (c >= 0x3021 && c <= 0x3029))
+      return true; // Ideographic
+    return false;
+  }
+
+  public static boolean isDigit(char c)
+  {
+    return ((c >= 0x0030 && c <= 0x0039) ||
+            (c >= 0x0660 && c <= 0x0669) ||
+            (c >= 0x06F0 && c <= 0x06F9) ||
+            (c >= 0x0966 && c <= 0x096F) ||
+            (c >= 0x09E6 && c <= 0x09EF) ||
+            (c >= 0x0A66 && c <= 0x0A6F) ||
+            (c >= 0x0AE6 && c <= 0x0AEF) ||
+            (c >= 0x0B66 && c <= 0x0B6F) ||
+            (c >= 0x0BE7 && c <= 0x0BEF) ||
+            (c >= 0x0C66 && c <= 0x0C6F) ||
+            (c >= 0x0CE6 && c <= 0x0CEF) ||
+            (c >= 0x0D66 && c <= 0x0D6F) ||
+            (c >= 0x0E50 && c <= 0x0E59) ||
+            (c >= 0x0ED0 && c <= 0x0ED9) ||
+            (c >= 0x0F20 && c <= 0x0F29));
+  }
+
+  public static boolean isCombiningChar(char c)
+  {
+    return ((c >= 0x0300 && c <= 0x0345) ||
+            (c >= 0x0360 && c <= 0x0361) ||
+            (c >= 0x0483 && c <= 0x0486) ||
+            (c >= 0x0591 && c <= 0x05A1) ||
+            (c >= 0x05A3 && c <= 0x05B9) ||
+            (c >= 0x05BB && c <= 0x05BD) ||
+            c == 0x05BF ||
+            (c >= 0x05C1 && c <= 0x05C2) ||
+            c == 0x05C4 ||
+            (c >= 0x064B && c <= 0x0652) ||
+            c == 0x0670 ||
+            (c >= 0x06D6 && c <= 0x06DC) ||
+            (c >= 0x06DD && c <= 0x06DF) ||
+            (c >= 0x06E0 && c <= 0x06E4) ||
+            (c >= 0x06E7 && c <= 0x06E8) ||
+            (c >= 0x06EA && c <= 0x06ED) ||
+            (c >= 0x0901 && c <= 0x0903) ||
+            c == 0x093C ||
+            (c >= 0x093E && c <= 0x094C) ||
+            c == 0x094D ||
+            (c >= 0x0951 && c <= 0x0954) ||
+            (c >= 0x0962 && c <= 0x0963) ||
+            (c >= 0x0981 && c <= 0x0983) ||
+            c == 0x09BC ||
+            c == 0x09BE ||
+            c == 0x09BF ||
+            (c >= 0x09C0 && c <= 0x09C4) ||
+            (c >= 0x09C7 && c <= 0x09C8) ||
+            (c >= 0x09CB && c <= 0x09CD) ||
+            c == 0x09D7 ||
+            (c >= 0x09E2 && c <= 0x09E3) ||
+            c == 0x0A02 ||
+            c == 0x0A3C ||
+            c == 0x0A3E ||
+            c == 0x0A3F ||
+            (c >= 0x0A40 && c <= 0x0A42) ||
+            (c >= 0x0A47 && c <= 0x0A48) ||
+            (c >= 0x0A4B && c <= 0x0A4D) ||
+            (c >= 0x0A70 && c <= 0x0A71) ||
+            (c >= 0x0A81 && c <= 0x0A83) ||
+            c == 0x0ABC ||
+            (c >= 0x0ABE && c <= 0x0AC5) ||
+            (c >= 0x0AC7 && c <= 0x0AC9) ||
+            (c >= 0x0ACB && c <= 0x0ACD) ||
+            (c >= 0x0B01 && c <= 0x0B03) ||
+            c == 0x0B3C ||
+            (c >= 0x0B3E && c <= 0x0B43) ||
+            (c >= 0x0B47 && c <= 0x0B48) ||
+            (c >= 0x0B4B && c <= 0x0B4D) ||
+            (c >= 0x0B56 && c <= 0x0B57) ||
+            (c >= 0x0B82 && c <= 0x0B83) ||
+            (c >= 0x0BBE && c <= 0x0BC2) ||
+            (c >= 0x0BC6 && c <= 0x0BC8) ||
+            (c >= 0x0BCA && c <= 0x0BCD) ||
+            c == 0x0BD7 ||
+            (c >= 0x0C01 && c <= 0x0C03) ||
+            (c >= 0x0C3E && c <= 0x0C44) ||
+            (c >= 0x0C46 && c <= 0x0C48) ||
+            (c >= 0x0C4A && c <= 0x0C4D) ||
+            (c >= 0x0C55 && c <= 0x0C56) ||
+            (c >= 0x0C82 && c <= 0x0C83) ||
+            (c >= 0x0CBE && c <= 0x0CC4) ||
+            (c >= 0x0CC6 && c <= 0x0CC8) ||
+            (c >= 0x0CCA && c <= 0x0CCD) ||
+            (c >= 0x0CD5 && c <= 0x0CD6) ||
+            (c >= 0x0D02 && c <= 0x0D03) ||
+            (c >= 0x0D3E && c <= 0x0D43) ||
+            (c >= 0x0D46 && c <= 0x0D48) ||
+            (c >= 0x0D4A && c <= 0x0D4D) ||
+            c == 0x0D57 ||
+            c == 0x0E31 ||
+            (c >= 0x0E34 && c <= 0x0E3A) ||
+            (c >= 0x0E47 && c <= 0x0E4E) ||
+            c == 0x0EB1 ||
+            (c >= 0x0EB4 && c <= 0x0EB9) ||
+            (c >= 0x0EBB && c <= 0x0EBC) ||
+            (c >= 0x0EC8 && c <= 0x0ECD) ||
+            (c >= 0x0F18 && c <= 0x0F19) ||
+            c == 0x0F35 ||
+            c == 0x0F37 ||
+            c == 0x0F39 ||
+            c == 0x0F3E ||
+            c == 0x0F3F ||
+            (c >= 0x0F71 && c <= 0x0F84) ||
+            (c >= 0x0F86 && c <= 0x0F8B) ||
+            (c >= 0x0F90 && c <= 0x0F95) ||
+            c == 0x0F97 ||
+            (c >= 0x0F99 && c <= 0x0FAD) ||
+            (c >= 0x0FB1 && c <= 0x0FB7) ||
+            c == 0x0FB9 ||
+            (c >= 0x20D0 && c <= 0x20DC) ||
+            c == 0x20E1 ||
+            (c >= 0x302A && c <= 0x302F) ||
+            c == 0x3099 ||
+            c == 0x309A);
+  }
+
+  public static boolean isExtender(char c)
+  {
+    return (c == 0x00B7 ||
+            c == 0x02D0 ||
+            c == 0x02D1 ||
+            c == 0x0387 ||
+            c == 0x0640 ||
+            c == 0x0E46 ||
+            c == 0x0EC6 ||
+            c == 0x3005 ||
+            (c >= 0x3031 && c <= 0x3035) ||
+            (c >= 0x309D && c <= 0x309E) ||
+            (c >= 0x30FC && c <= 0x30FE));
+  }
+  
   private String intern(String text)
   {
     return stringInterning ? text.intern() : text;
@@ -2962,7 +3342,7 @@ public class XMLParser
       if (ci == -1)
         {
           prefix = null;
-          localName = name;
+          localName = intern(name);
         }
       else
         {
@@ -2992,9 +3372,12 @@ public class XMLParser
     private final LinkedHashMap attlists = new LinkedHashMap();
     private final LinkedHashMap entities = new LinkedHashMap();
     private final LinkedHashMap notations = new LinkedHashMap();
+    private final LinkedHashMap comments = new LinkedHashMap();
+    private final LinkedHashMap pis = new LinkedHashMap();
     private final LinkedList entries = new LinkedList();
     private final HashSet externalEntities = new HashSet();
     private final HashSet externalNotations = new HashSet();
+    private int anon = 1;
 
     Doctype(String rootName, String publicId, String systemId)
     {
@@ -3057,6 +3440,20 @@ public class XMLParser
         externalNotations.add(name);
     }
 
+    void addComment(String text)
+    {
+      String key = Integer.toString(anon++);
+      comments.put(key, text);
+      entries.add("c" + key);
+    }
+
+    void addPI(String target, String data)
+    {
+      String key = Integer.toString(anon++);
+      pis.put(key, new String[] {target, data});
+      entries.add("p" + key);
+    }
+
     String getElementModel(String name)
     {
       return (String) elements.get(name);
@@ -3099,6 +3496,16 @@ public class XMLParser
     boolean isNotationExternal(String name)
     {
       return externalNotations.contains(name);
+    }
+
+    String getComment(String key)
+    {
+      return (String) comments.get(key);
+    }
+
+    String[] getPI(String key)
+    {
+      return (String[]) pis.get(key);
     }
 
     Iterator entryIterator()
@@ -3262,7 +3669,7 @@ public class XMLParser
       offset++;
       int ret = reader.read();
       //System.out.println("read1:"+((char) ret));
-      if (ret == 0x0d)
+      if (ret == 0x0d || (xml11 && ret == 0x85))
         ret = 0x0a;
       if (ret == 0x0a)
         {
@@ -3287,7 +3694,7 @@ public class XMLParser
           for (int i = 0; i < ret; i++)
             {
               char c = b[off + i];
-              if (c == 0x0d)
+              if (c == 0x0d || (xml11 && c == 0x85))
                 {
                   c = 0x0a;
                   b[off + i] = c;
@@ -3410,6 +3817,11 @@ public class XMLParser
       if (!encoding.equals(inputEncoding) &&
           reader instanceof XMLInputStreamReader)
         {
+          if (inputEncoding == "UTF-8" &&
+              (encoding.startsWith("UTF-16") ||
+               encoding.startsWith("UTF-32")))
+            throw new UnsupportedEncodingException("document is not in its " +
+                                                   "declared encoding");
           inputEncoding = encoding;
           reader = new XMLInputStreamReader((XMLInputStreamReader) reader,
                                             encoding);
