@@ -1,3 +1,9 @@
+2005-12-25  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/util/Collections.java
+	(binarySearch(List,Object,Comparator)): Changed comparison order
+	for improved compatibility.
+
 2005-12-25  Chris Burdess  <dog@gnu.org>
 
 	* resource/META-INF/services/javax.xml.parsers.SAXParserFactory:
