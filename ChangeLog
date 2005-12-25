@@ -1,3 +1,8 @@
+2005-12-25  Chris Burdess  <dog@gnu.org>
+
+	* resource/META-INF/services/javax.xml.parsers.SAXParserFactory:
+	  Revert to using aelfred2 driver by default.
+
 2005-12-24  Tom Tromey  <tromey@redhat.com>
 
 	* java/nio/charset/Charset.java (defaultCharset): Added @since.
