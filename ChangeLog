@@ -1,3 +1,7 @@
+2005-12-27  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/nio/SelectorImpl.java: Added import.
+
 2005-12-26  Anthony Green  <green@redhat.com>
 
 	* java/net/Socket.java (connect): Don't close the socket on
