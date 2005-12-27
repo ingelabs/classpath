@@ -3,6 +3,10 @@
 	* java/net/Socket.java (connect): Don't close the socket on
 	exceptions.
 
+	* gnu/java/nio/SocketChannelImpl.java (read): Compute the right amount 
+	of data to read (dst.remaining()).
+	* gnu/java/nio/DatagramChannelImpl.java (receive): Ditto.
+
 2005-12-25  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/util/Collections.java
