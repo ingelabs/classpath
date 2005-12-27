@@ -415,8 +415,6 @@ public class XMLParser
 
   public String getEncoding()
   {
-    if (input.forceReader)
-      return null;
     return (input.inputEncoding == null) ? "UTF-8" : input.inputEncoding;
   }
 
@@ -838,7 +836,7 @@ public class XMLParser
                   {
                     reset();
                     event = readCharData(null);
-                    if (validating)
+                    if (validating && doctype != null)
                       validatePCData(buf.toString());
                   }
               }
@@ -849,12 +847,13 @@ public class XMLParser
             buf.append(elementName);
             state = stack.isEmpty() ? MISC : CONTENT;
             event = XMLStreamConstants.END_ELEMENT;
-            if (validating)
+            if (validating && doctype != null)
               endElementValidationHook();
             break;
           case INIT: // XMLDecl?
             if (tryRead(TEST_XML_DECL))
               readXMLDecl();
+            input.finalizeEncoding();
             event = XMLStreamConstants.START_DOCUMENT;
             state = PROLOG;
             break;
@@ -920,6 +919,13 @@ public class XMLParser
         e2.initCause(e);
         throw e2;
       }
+  }
+
+  // package private
+
+  String getCurrentElement()
+  {
+    return (String) stack.getLast();
   }
 
   // private
@@ -989,21 +995,24 @@ public class XMLParser
     char[] chars = delim.toCharArray();
     int len = chars.length;
     mark(len);
-    int l2 = read(tmpBuf, 0, len);
-    if (l2 != len)
+    int off = 0;
+    do
       {
-        reset();
-        error("EOF before required string", delim);
-      }
-    else
-      {
-        for (int i = 0; i < chars.length; i++)
+        int l2 = read(tmpBuf, off, len - off);
+        if (l2 == -1)
           {
-            if (chars[i] != tmpBuf[i])
-              {
-                reset();
-                error("required string", delim);
-              }
+            reset();
+            error("EOF before required string", delim);
+          }
+        off += l2;
+      }
+    while (off < len);
+    for (int i = 0; i < chars.length; i++)
+      {
+        if (chars[i] != tmpBuf[i])
+          {
+            reset();
+            error("required string", delim);
           }
       }
   }
@@ -1035,11 +1044,24 @@ public class XMLParser
     char[] chars = test.toCharArray();
     int len = chars.length;
     mark(len);
+    int count = 0;
     int l2 = read(tmpBuf, 0, len);
-    if (l2 < len)
+    if (l2 == -1)
       {
         reset();
         return false;
+      }
+    count += l2;
+    while (count < len)
+      {
+        // force read
+        int c = read();
+        if (c == -1)
+          {
+            reset();
+            return false;
+          }
+        tmpBuf[count++] = (char) c;
       }
     for (int i = 0; i < len; i++)
       {
@@ -1227,6 +1249,7 @@ public class XMLParser
         input.init();
         if (tryRead(TEST_XML_DECL))
           readTextDecl();
+        input.finalizeEncoding();
       }
     //System.out.println("pushInput "+name+" "+url);
   }
@@ -1360,10 +1383,9 @@ public class XMLParser
     require("encoding");
     readEq();
     String enc = readLiteral(flags);
-    if (!input.forceReader)
-      input.setInputEncoding(enc);
     skipWhitespace();
     require("?>");
+    input.setInputEncoding(enc);
   }
 
   /**
@@ -1393,8 +1415,6 @@ public class XMLParser
           error("whitespace required before 'encoding='");
         readEq();
         xmlEncoding = readLiteral(flags);
-        if (!input.forceReader)
-          input.setInputEncoding(xmlEncoding);
         white = tryWhitespace();
       }
     
@@ -1414,6 +1434,8 @@ public class XMLParser
 
     skipWhitespace();
     require("?>");
+    if (xmlEncoding != null)
+      input.setInputEncoding(xmlEncoding);
   }
 
   /**
@@ -2147,7 +2169,7 @@ public class XMLParser
               error("unbound attribute prefix", attr.prefix);
           }
       }
-    if (validating)
+    if (validating && doctype != null)
       {
         validateStartElement(elementName);
         currentContentModel = doctype.getElementModel(elementName);
@@ -2283,7 +2305,7 @@ public class XMLParser
     // Make element name available
     buf.setLength(0);
     buf.append(expected);
-    if (validating)
+    if (validating && doctype != null)
       endElementValidationHook();
   }
 
@@ -3309,8 +3331,6 @@ public class XMLParser
   {
     if (currentContentModel == null)
       return; // root element
-    if (doctype == null)
-      error("document does not specify a DTD");
     switch (currentContentModel.type)
       {
       case ContentModel.EMPTY:
@@ -3869,7 +3889,7 @@ public class XMLParser
     
     InputStream in;
     Reader reader;
-    boolean forceReader, initialized;
+    boolean initialized;
     String inputEncoding;
     boolean xml11;
 
@@ -3891,38 +3911,25 @@ public class XMLParser
     }
     
     Input(InputStream in, Reader reader, String publicId, String systemId,
-          String name, String defaultEncoding)
+          String name, String inputEncoding)
     {
-      if (defaultEncoding == null)
-        defaultEncoding = "UTF-8";
-      if (in != null && !in.markSupported())
-        in = new BufferedInputStream(in);
-      this.in = in;
+      if (inputEncoding == null)
+        inputEncoding = "UTF-8";
+      this.inputEncoding = inputEncoding;
       this.publicId = publicId;
       this.systemId = systemId;
       this.name = name;
-      if (reader == null)
+      if (in != null)
         {
-          try
-            {
-              in = new CRLFInputStream(in);
-              reader = new XMLInputStreamReader(in, defaultEncoding);
-            }
-          catch (UnsupportedEncodingException e)
-            {
-              RuntimeException e2 =
-                new RuntimeException(defaultEncoding +
-                                     " charset not supported");
-              e2.initCause(e);
-              throw e2;
-            }
+          if (reader != null)
+            throw new IllegalStateException("both byte and char streams "+
+                                            "specified");
+          in = new CRLFInputStream(in);
+          in = new BufferedInputStream(in);
+          this.in = in;
         }
       else
-        {
-          forceReader = true;
-          reader = new CRLFReader(reader);
-        }
-      this.reader = reader;
+        this.reader = new CRLFReader(reader);
       initialized = false;
     }
 
@@ -3953,7 +3960,7 @@ public class XMLParser
     {
       if (initialized)
         return;
-      if (!forceReader && in != null)
+      if (in != null)
         detectEncoding();
       initialized = true;
     }
@@ -3965,7 +3972,10 @@ public class XMLParser
       markOffset = offset;
       markLine = line;
       markColumn = column;
-      reader.mark(len);
+      if (reader != null)
+        reader.mark(len);
+      else
+        in.mark(len);
     }
 
     /**
@@ -3975,9 +3985,10 @@ public class XMLParser
       throws IOException
     {
       offset++;
-      int ret = reader.read();
-      //System.out.println("read1:"+((char) ret));
-      if (ret == 0x0d || (xml11 && ret == 0x85))
+      int ret = (reader != null) ? reader.read() : in.read();
+      //if (ret != -1)
+      //  System.out.println("  read1:"+((char) ret));
+      if (ret == 0x0d || (xml11 && (ret == 0x85 || ret == 0x2028)))
         ret = 0x0a;
       if (ret == 0x0a)
         {
@@ -3995,14 +4006,28 @@ public class XMLParser
     int read(char[] b, int off, int len)
       throws IOException
     {
-      int ret = reader.read(b, off, len);
+      int ret;
+      if (reader != null)
+        ret = reader.read(b, off, len);
+      else
+        {
+          byte[] b2 = new byte[len];
+          ret = in.read(b2, 0, len);
+          if (ret != -1)
+            {
+              String s = new String(b2, 0, ret, inputEncoding);
+              char[] c = s.toCharArray();
+              ret = c.length;
+              System.arraycopy(c, 0, b, off, ret);
+            }
+        }
       if (ret != -1)
         {
-          //System.out.println("read:"+new String(b, off, ret));
+          //System.out.println("  read:"+new String(b, off, ret));
           for (int i = 0; i < ret; i++)
             {
               char c = b[off + i];
-              if (c == 0x0d || (xml11 && c == 0x85))
+              if (c == 0x0d || (xml11 && (c == 0x85 || c == 0x2028)))
                 {
                   c = 0x0a;
                   b[off + i] = c;
@@ -4023,7 +4048,10 @@ public class XMLParser
       throws IOException
     {
       //System.out.println("  reset");
-      reader.reset();
+      if (reader != null)
+        reader.reset();
+      else
+        in.reset();
       offset = markOffset;
       line = markLine;
       column = markColumn;
@@ -4066,33 +4094,46 @@ public class XMLParser
 
       // 4-byte encodings
       if (equals(SIGNATURE_UCS_4_1234, signature))
-        setInputEncoding("UTF-32BE");
+        {
+          in.read();
+          in.read();
+          in.read();
+          in.read();
+          setInputEncoding("UTF-32BE");
+        }
       else if (equals(SIGNATURE_UCS_4_4321, signature))
-        setInputEncoding("UTF-32LE");
+        {
+          in.read();
+          in.read();
+          in.read();
+          in.read();
+          setInputEncoding("UTF-32LE");
+        }
       else if (equals(SIGNATURE_UCS_4_2143, signature) ||
                equals(SIGNATURE_UCS_4_3412, signature))
         throw new UnsupportedEncodingException("unsupported UCS-4 byte ordering");
+      
       // 2-byte encodings
       else if (equals(SIGNATURE_UCS_2_12, signature))
         {
+          in.read();
+          in.read();
           setInputEncoding("UTF-16BE");
-          in.read();
-          in.read();
         }
       else if (equals(SIGNATURE_UCS_2_21, signature))
         {
+          in.read();
+          in.read();
           setInputEncoding("UTF-16LE");
-          in.read();
-          in.read();
         }
       else if (equals(SIGNATURE_UCS_2_12_NOBOM, signature))
         {
-          setInputEncoding("UTF-16BE");
+          //setInputEncoding("UTF-16BE");
           throw new UnsupportedEncodingException("no byte-order mark for UCS-2 entity");
         }
       else if (equals(SIGNATURE_UCS_2_21_NOBOM, signature))
         {
-          setInputEncoding("UTF-16LE");
+          //setInputEncoding("UTF-16LE");
           throw new UnsupportedEncodingException("no byte-order mark for UCS-2 entity");
         }
       // ASCII-derived encodings
@@ -4102,10 +4143,10 @@ public class XMLParser
         }
       else if (equals(SIGNATURE_UTF_8_BOM, signature))
         {
+          in.read();
+          in.read();
+          in.read();
           setInputEncoding("UTF-8");
-          in.read();
-          in.read();
-          in.read();
         }
     }
 
@@ -4119,37 +4160,27 @@ public class XMLParser
       return true;
     }
     
-    private void setInputEncoding(String encoding)
-      throws UnsupportedEncodingException
+    void setInputEncoding(String encoding)
+      throws IOException
     {
-      if (!encoding.equals(inputEncoding) &&
-          reader instanceof XMLInputStreamReader)
-        {
-          if (inputEncoding == "UTF-8" &&
-              (encoding.startsWith("UTF-16") ||
-               encoding.startsWith("UTF-32")))
-            throw new UnsupportedEncodingException("document is not in its " +
-                                                   "declared encoding");
-          inputEncoding = encoding;
-          reader = new XMLInputStreamReader((XMLInputStreamReader) reader,
-                                            encoding);
-        }
-      else
-        {
-          /*if (reporter != null)
-            {
-            try
-            {
-            reporter.report("unable to set input encoding '" + encoding +
-            "': input is specified as reader", "WARNING",
-            encoding, this);
-            }
-            catch (XMLStreamException e)
-            {
-          // Am I bothered?
-          }}*/
-          System.err.println("Can't set input encoding "+encoding);
-        }
+      if (encoding.equals(inputEncoding))
+        return;
+      if (reader != null)
+        throw new UnsupportedEncodingException("document is not in its " +
+                                               "declared encoding: " +
+                                               inputEncoding);
+      inputEncoding = encoding;
+      finalizeEncoding();
+    }
+
+    void finalizeEncoding()
+      throws IOException
+    {
+      if (reader != null)
+        return;
+      //reader = new XMLInputStreamReader(in, inputEncoding);
+      reader = new BufferedReader(new InputStreamReader(in, inputEncoding));
+      mark(1);
     }
 
   }

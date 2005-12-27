@@ -357,8 +357,10 @@ public class SAXParser
                 if (contentHandler != null)
                   {
                     char[] b = reader.getTextCharacters();
-                    // TODO determine whether whitespace is ignorable
-                    contentHandler.characters(b, 0, b.length);
+                    if (isIgnorableWhitespace(parser, b, false))
+                      contentHandler.ignorableWhitespace(b, 0, b.length);
+                    else
+                      contentHandler.characters(b, 0, b.length);
                   }
                 break;
               case XMLStreamConstants.CDATA:
@@ -367,8 +369,10 @@ public class SAXParser
                 if (contentHandler != null)
                   {
                     char[] b = reader.getTextCharacters();
-                    // TODO determine whether whitespace and ignorable
-                    contentHandler.characters(b, 0, b.length);
+                    if (isIgnorableWhitespace(parser, b, true))
+                      contentHandler.ignorableWhitespace(b, 0, b.length);
+                    else
+                      contentHandler.characters(b, 0, b.length);
                   }
                 if (lexicalHandler != null)
                   lexicalHandler.endCDATA();
@@ -617,6 +621,31 @@ public class SAXParser
           in.close();
         reset();
       }
+  }
+
+  private boolean isIgnorableWhitespace(XMLParser reader, char[] b,
+                                        boolean testCharacters)
+  {
+    XMLParser.Doctype doctype = reader.doctype;
+    if (doctype == null)
+      return false;
+    String currentElement = reader.getCurrentElement();
+    XMLParser.ContentModel model = doctype.getElementModel(currentElement);
+    if (model == null || model.type != XMLParser.ContentModel.ELEMENT)
+      return false;
+    boolean white = true;
+    if (testCharacters)
+      {
+        for (int i = 0; i < b.length; i++)
+          {
+            if (b[i] != ' ' && b[i] != '\t' && b[i] != '\n' && b[i] != '\r')
+              {
+                white = false;
+                break;
+              }
+          }
+      }
+    return white;
   }
 
   public void parse(String systemId)

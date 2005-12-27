@@ -1,3 +1,15 @@
+2005-12-27  Chris Burdess  <dog@gnu.org>
+
+	* gnu/java/net/CRLFInputStream.java,
+	  gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/XMLParser.java,
+	  resource/META-INF/services/javax.xml.parsers.SAXParserFactory:
+	  Fix XML parser stream issues. Add support for ignorable whitespace
+	  to SAX parser. Allow validating parser to parse invalid files.
+	* gnu/xml/stream/BufferedReader.java,
+	  gnu/xml/stream/XMLInputStreamReader.java: Move buffering
+	  functionality of XMLInputStreamReader to BufferedReader.
+
 2005-12-27  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/nio/SelectorImpl.java: Added import.
