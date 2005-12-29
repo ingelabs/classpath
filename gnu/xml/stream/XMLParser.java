@@ -130,7 +130,7 @@ public class XMLParser
   private StringBuffer buf = new StringBuffer();
   private StringBuffer nmtokenBuf = new StringBuffer();
   private StringBuffer literalBuf = new StringBuffer();
-  private char[] tmpBuf = new char[1024];
+  private int[] tmpBuf = new int[1024];
   
   private ContentModel currentContentModel;
   private LinkedList validationStack = new LinkedList();
@@ -800,11 +800,11 @@ public class XMLParser
               {
                 // Check for character reference or predefined entity
                 mark(8);
-                char c = readCh();
-                if (c == '&')
+                int c = readCh();
+                if (c == 0x26) // '&'
                   {
                     c = readCh();
-                    if (c == '#')
+                    if (c == 0x23) // '#'
                       {
                         reset();
                         event = readCharData(null);
@@ -881,8 +881,8 @@ public class XMLParser
               }
             else
               {
-                char c = readCh();
-                error("no root element: +U"+Integer.toHexString(c));
+                int c = readCh();
+                error("no root element: U+" + Integer.toHexString(c));
               }
             break;
           case MISC: // Comment | PI | S
@@ -901,8 +901,8 @@ public class XMLParser
               {
                 if (event == XMLStreamConstants.END_DOCUMENT)
                   throw new NoSuchElementException();
-                char c = readCh();
-                if (c != '\uffff')
+                int c = readCh();
+                if (c != -1)
                   error("Only comments and PIs may appear after " +
                         "the root element");
                 event = XMLStreamConstants.END_DOCUMENT;
@@ -952,7 +952,7 @@ public class XMLParser
     return ret;
   }
 
-  private int read(char[] b, int off, int len)
+  private int read(int[] b, int off, int len)
     throws IOException
   {
     int ret = input.read(b, off, len);
@@ -963,11 +963,11 @@ public class XMLParser
   /**
    * Parsed character read.
    */
-  private char readCh()
+  private int readCh()
     throws IOException, XMLStreamException
   {
-    char c = (char) read();
-    if (expandPE && c == '%')
+    int c = read();
+    if (expandPE && c == 0x25) // '%'
       {
         if (peIsError)
           error("PE reference within decl in internal subset.");
@@ -981,11 +981,12 @@ public class XMLParser
     throws IOException, XMLStreamException
   {
     mark(1);
-    char c = readCh();
+    int c = readCh();
     if (delim != c)
       {
         reset();
-        error("required character (got U+"+Integer.toHexString(c)+")", new Character(delim));
+        error("required character (got U+" + Integer.toHexString(c) + ")",
+              new Character(delim));
       }
   }
 
@@ -1024,7 +1025,7 @@ public class XMLParser
     throws IOException, XMLStreamException
   {
     mark(1);
-    char c = readCh();
+    int c = readCh();
     if (delim != c)
       {
         reset();
@@ -1082,24 +1083,28 @@ public class XMLParser
       {
         while (!tryRead(delim))
           {
-            char c = readCh();
-            if (c == '\uffff')
+            int c = readCh();
+            if (c == -1)
               throw new EOFException();
             else if (input.xml11)
               {
-                if (!isXML11Char((int) c))
-                  error("illegal XML 1.1 character", Character.toString(c));
+                if (!isXML11Char(c))
+                  error("illegal XML 1.1 character",
+                        "U+" + Integer.toHexString(c));
               }
             else
               {
-                if (c < 32 && c != 10 && c != 9 && c != 13)
-                  error("illegal XML character", Character.toString(c));
+                if (c < 0x20 && c != 0x09 && c != 0x0a && c != 0x0d)
+                  error("illegal XML character", 
+                        "U+" + Integer.toHexString(c));
                 else if (c > '\ud7ff' && c < '\ue000')
-                  error("illegal XML character", Character.toString(c));
+                  error("illegal XML character",
+                        "U+" + Integer.toHexString(c));
                 else if (c > '\ufffd')
-                  error("illegal XML character", Character.toString(c));
+                  error("illegal XML character",
+                        "U+" + Integer.toHexString(c));
               }
-            buf.append(c);
+            buf.append(Character.toChars(c));
           }
       }
     catch (EOFException e)
@@ -1117,11 +1122,11 @@ public class XMLParser
     do
       {
         mark(1);
-        char c = readCh();
-        white = (c == ' ' || c == '\t' || c == '\n' || c == '\r');
+        int c = readCh();
+        white = (c == 0x20 || c == 0x09 || c == 0x0a || c == 0x0d);
         if (white)
           ret = true;
-        else if (c == '\uffff')
+        else if (c == -1)
           {
             if (inputStack.size() > 1)
               popInput();
@@ -1144,13 +1149,13 @@ public class XMLParser
     do
       {
         mark(1);
-        char c = readCh();
-        while (c == '\uffff' && inputStack.size() > 1)
+        int c = readCh();
+        while (c == -1 && inputStack.size() > 1)
           {
             popInput();
             c = readCh();
           }
-        white = (c == ' ' || c == '\t' || c == '\n' || c == '\r');
+        white = (c == 0x20 || c == 0x09 || c == 0x0a || c == 0x0d);
       }
     while (white);
     reset();
@@ -1487,10 +1492,10 @@ public class XMLParser
             skipWhitespace();
             expandPE = false;
             mark(1);
-            char c = readCh();
-            if (c == '>')
+            int c = readCh();
+            if (c == 0x3e) // '>'
               break;
-            else if (c == '\uffff')
+            else if (c == -1)
               popInput();
             else
               {
@@ -1575,18 +1580,18 @@ public class XMLParser
             expandPE = false;
             for (int nesting = 1; nesting > 0; )
               {
-                char c = readCh();
+                int c = readCh();
                 switch (c)
                   {
-                  case '<':
+                  case 0x3c: // '<'
                     if (tryRead("!["))
                       nesting++;
                     break;
-                  case ']':
+                  case 0x5d: // ']'
                     if (tryRead("]>"))
                       nesting--;
                     break;
-                  case '\uffff':
+                  case -1:
                     throw new EOFException();
                   }
               }
@@ -1668,7 +1673,7 @@ public class XMLParser
   private ElementContentModel readElements(StringBuffer acc)
     throws IOException, XMLStreamException
   {
-    char separator;
+    int separator;
     ElementContentModel model = new ElementContentModel();
     
     // Parse first content particle
@@ -1676,27 +1681,27 @@ public class XMLParser
     model.addContentParticle(readContentParticle(acc));
     // End or separator
     skipWhitespace();
-    char c = readCh();
+    int c = readCh();
     switch (c)
       {
-      case ')':
+      case 0x29: // ')'
         acc.append(')');
         mark(1);
         c = readCh();
         switch (c)
           {
-          case '?':
-            acc.append(c);
+          case 0x3f: // '?'
+            acc.append('?');
             model.min = 0;
             model.max = 1;
             break;
-          case '*':
-            acc.append(c);
+          case 0x2a: // '*'
+            acc.append('*');
             model.min = 0;
             model.max = -1;
             break;
-          case '+':
-            acc.append(c);
+          case 0x2b: // '+'
+            acc.append('+');
             model.min = 1;
             model.max = -1;
             break;
@@ -1704,13 +1709,14 @@ public class XMLParser
             reset();
           }
         return model; // done
-      case ',':
-      case '|':
+      case 0x2c: // ','
+      case 0x7c: // '|'
         separator = c;
-        acc.append(c);
+        acc.append(Character.toChars(c));
         break;
       default:
-        error("bad separator in content model", new Character(c));
+        error("bad separator in content model",
+              "U+" + Integer.toHexString(c));
         return model;
       }
     // Parse subsequent content particles
@@ -1720,14 +1726,15 @@ public class XMLParser
         model.addContentParticle(readContentParticle(acc));
         skipWhitespace();
         c = readCh();
-        if (c == ')')
+        if (c == 0x29) // ')'
           {
             acc.append(')');
             break;
           }
         else if (c != separator)
           {
-            error("bad separator in content model", new Character(c));
+            error("bad separator in content model",
+                  "U+" + Integer.toHexString(c));
             return model;
           }
         else
@@ -1738,18 +1745,18 @@ public class XMLParser
     c = readCh();
     switch (c)
       {
-      case '?':
-        acc.append(c);
+      case 0x3f: // '?'
+        acc.append('?');
         model.min = 0;
         model.max = 1;
         break;
-      case '*':
-        acc.append(c);
+      case 0x2a: // '*'
+        acc.append('*');
         model.min = 0;
         model.max = -1;
         break;
-      case '+':
-        acc.append(c);
+      case 0x2b: // '+'
+        acc.append('+');
         model.min = 1;
         model.max = -1;
         break;
@@ -1774,21 +1781,21 @@ public class XMLParser
         acc.append(name);
         cp.content = name;
         mark(1);
-        char c = readCh();
+        int c = readCh();
         switch (c)
           {
-          case '?':
-            acc.append(c);
+          case 0x3f: // '?'
+            acc.append('?');
             cp.min = 0;
             cp.max = 1;
             break;
-          case '*':
-            acc.append(c);
+          case 0x2a: // '*'
+            acc.append('*');
             cp.min = 0;
             cp.max = -1;
             break;
-          case '+':
-            acc.append(c);
+          case 0x2b: // '+'
+            acc.append('+');
             cp.min = 1;
             cp.max = -1;
             break;
@@ -1974,9 +1981,9 @@ public class XMLParser
       name = "%" + name;
     requireWhitespace();
     mark(1);
-    char c = readCh();
+    int c = readCh();
     reset();
-    if (c == '"' || c == '\'')
+    if (c == 0x22 || c == 0x27) // " | '
       {
         // Internal entity replacement text
         String value = readLiteral(flags | LIT_DISABLE_EREF);
@@ -2022,7 +2029,7 @@ public class XMLParser
   private ExternalIds readExternalIds(boolean inNotation, boolean isSubset)
     throws IOException, XMLStreamException
   {
-    char c;
+    int c;
     int flags = LIT_DISABLE_CREF | LIT_DISABLE_PE | LIT_DISABLE_EREF;
     ExternalIds ids = new ExternalIds();
     
@@ -2036,7 +2043,7 @@ public class XMLParser
             mark(1);
             c = readCh();
             reset();
-            if (c == '"' || c == '\'')
+            if (c == 0x22 || c == 0x27) // " | '
               ids.systemId = absolutize(input.systemId, readLiteral(flags));
           }
         else
@@ -2047,15 +2054,15 @@ public class XMLParser
 
         for (int i = 0; i < ids.publicId.length(); i++)
           {
-            c = ids.publicId.charAt(i);
-            if (c >= 'a' && c <= 'z')
+            char d = ids.publicId.charAt(i);
+            if (d >= 'a' && d <= 'z')
               continue;
-            if (c >= 'A' && c <= 'Z')
+            if (d >= 'A' && d <= 'Z')
               continue;
-            if (" \r\n0123456789-' ()+,./:=?;!*#@$_%".indexOf(c) != -1)
+            if (" \r\n0123456789-' ()+,./:=?;!*#@$_%".indexOf(d) != -1)
               continue;
             error("illegal PUBLIC id character",
-                  "U+" + Integer.toHexString(c));
+                  "U+" + Integer.toHexString(d));
           }
       }
     else if (tryRead("SYSTEM"))
@@ -2097,8 +2104,8 @@ public class XMLParser
     // Read element content
     boolean white = tryWhitespace();
     mark(1);
-    char c = readCh();
-    while (c != '/' && c != '>')
+    int c = readCh();
+    while (c != 0x2f && c != 0x3e) // '/' | '>'
       {
         // Read attribute
         reset();
@@ -2184,9 +2191,9 @@ public class XMLParser
     stack.addLast(elementName);
     switch (c)
       {
-      case '>':
+      case 0x3e: // '>'
         return CONTENT;
-      case '/':
+      case 0x2f: // '/'
         require('>');
         return EMPTY_ELEMENT;
       }
@@ -2422,27 +2429,27 @@ public class XMLParser
           }
         for (int i = 0; i < len && !done; i++)
           {
-            char c = tmpBuf[i];
+            int c = tmpBuf[i];
             switch (c)
               {
-              case ' ':
-              case '\t':
-              case '\n':
-              case '\r':
-                buf.append(c);
+              case 0x20:
+              case 0x09:
+              case 0x0a:
+              case 0x0d:
+                buf.append(Character.toChars(c));
                 break; // whitespace
-              case '&':
+              case 0x26: // '&'
                 reset();
                 read(tmpBuf, 0, i);
                 // character reference?
                 mark(3);
                 c = readCh(); // &
                 c = readCh();
-                if (c == '#')
+                if (c == 0x23) // '#'
                   {
                     mark(1);
                     c = readCh();
-                    boolean hex = (c == 'x');
+                    boolean hex = (c == 0x78); // 'x'
                     if (!hex)
                       reset();
                     char[] ch = readCharacterRef(hex ? 16 : 10);
@@ -2451,10 +2458,10 @@ public class XMLParser
                       {
                         switch (ch[j])
                           {
-                          case ' ':
-                          case '\t':
-                          case '\n':
-                          case '\r':
+                          case 0x20:
+                          case 0x09:
+                          case 0x0a:
+                          case 0x0d:
                             break; // whitespace
                           default:
                             white = false;
@@ -2499,21 +2506,22 @@ public class XMLParser
                   }
                 entities = true;
                 break; // end of text sequence
-              case '>':
+              case 0x3e: // '>'
                 int l = buf.length();
                 if (l > 1 &&
                     buf.charAt(l - 1) == ']' &&
                     buf.charAt(l - 2) == ']')
                   error("Character data may not contain unescaped ']]>'");
-                buf.append(c);
+                buf.append(Character.toChars(c));
                 break;
-              case '<':
+              case 0x3c: // '<'
                 reset();
                 read(tmpBuf, 0, i);
                 done = true;
                 break; // end of text sequence
               default:
                 if ((c < 0x0020 || c > 0xfffd) ||
+                    (c >= 0xd800 && c < 0xdc00) ||
                     (input.xml11 && (c >= 0x007f) &&
                      (c <= 0x009f) && (c != 0x0085)))
                   {
@@ -2521,7 +2529,7 @@ public class XMLParser
                           "U+" + Integer.toHexString(c));
                   }
                 white = false;
-                buf.append(c);
+                buf.append(Character.toChars(c));
               }
           }
         // if text buffer >= 2MB, return it as a chunk
@@ -2588,11 +2596,11 @@ public class XMLParser
     skipWhitespace();
   }
 
-  private char literalReadCh()
+  private int literalReadCh()
     throws IOException, XMLStreamException
   {
-    char c = readCh();
-    while (c == '\uffff')
+    int c = readCh();
+    while (c == -1)
       {
         if (inputStack.size() > 1)
           {
@@ -2611,9 +2619,9 @@ public class XMLParser
     throws IOException, XMLStreamException
   {
     boolean saved = expandPE;
-    char delim = readCh();
-    if (delim != '\'' && delim != '"')
-      error("expected '\"' or \"'\"", new Character(delim));
+    int delim = readCh();
+    if (delim != 0x27 && delim != 0x22)
+      error("expected '\"' or \"'\"", "U+" + Integer.toHexString(delim));
     literalBuf.setLength(0);
     if ((flags & LIT_DISABLE_PE) != 0)
       expandPE = false;
@@ -2621,35 +2629,35 @@ public class XMLParser
     int inputStackSize = inputStack.size();
     do
       {
-        char c = literalReadCh();
+        int c = literalReadCh();
         if (c == delim && inputStackSize == inputStack.size())
           break;
         switch (c)
           {
-          case '\n':
-          case '\r':
+          case 0x0a:
+          case 0x0d:
             if ((flags & (LIT_ATTRIBUTE | LIT_PUBID)) != 0)
-              c = ' '; // normalize to space
+              c = 0x20; // normalize to space
             break;
-          case '\t':
+          case 0x09:
             if ((flags & LIT_ATTRIBUTE) != 0)
-              c = ' '; // normalize to space
+              c = 0x20; // normalize to space
             break;
-          case '&':
+          case 0x26: // '&'
             mark(2);
             c = readCh();
-            if (c == '#')
+            if (c == 0x23) // '#'
               {
                 if ((flags & LIT_DISABLE_CREF) != 0)
                   {
                     reset();
-                    c = '&';
+                    c = 0x26; // '&'
                   }
                 else
                   {
                     mark(1);
                     c = readCh();
-                    boolean hex = (c == 'x');
+                    boolean hex = (c == 0x78); // 'x'
                     if (!hex)
                       reset();
                     char[] ref = readCharacterRef(hex ? 16 : 10);
@@ -2657,11 +2665,11 @@ public class XMLParser
                       {
                         c = ref[i];
                         if ((flags & (LIT_ATTRIBUTE | LIT_PUBID)) != 0 &&
-                            (c == '\n' || c == '\r'))
-                          c = ' '; // normalize
-                        else if ((flags & LIT_ATTRIBUTE) != 0 && c == '\t')
-                          c = ' '; // normalize
-                        literalBuf.append(c);
+                            (c == 0x0a || c == 0x0d))
+                          c = 0x20; // normalize
+                        else if ((flags & LIT_ATTRIBUTE) != 0 && c == 0x09)
+                          c = 0x20; // normalize
+                        literalBuf.append(Character.toChars(c));
                       }
                     entities = true;
                     continue;
@@ -2672,7 +2680,7 @@ public class XMLParser
                 if ((flags & LIT_DISABLE_EREF) != 0)
                   {
                     reset();
-                    c = '&';
+                    c = 0x26; // '&'
                   }
                 else
                   {
@@ -2697,19 +2705,25 @@ public class XMLParser
                   }
               }
             break;
-          case '<':
+          case 0x3c: // '<'
             if ((flags & LIT_ATTRIBUTE) != 0)
               error("attribute values may not contain '<'");
             break;
-          case '\uffff':
+          case -1:
             if (inputStack.size() > 1)
               {
                 popInput();
                 continue;
               }
             throw new EOFException();
+          default:
+            if ((c < 0x0020 || c > 0xfffd) ||
+                (c >= 0xd800 && c < 0xdc00) ||
+                (input.xml11 && (c >= 0x007f) &&
+                 (c <= 0x009f) && (c != 0x0085)))
+              error("illegal character", "U+" + Integer.toHexString(c));
           }
-        literalBuf.append(c);
+        literalBuf.append(Character.toChars(c));
       }
     while (true);
     expandPE = saved;
@@ -2802,8 +2816,8 @@ public class XMLParser
     throws IOException, XMLStreamException
   {
     StringBuffer b = new StringBuffer();
-    for (char c = readCh(); c != ';' && c != '\uffff'; c = readCh())
-      b.append(c);
+    for (int c = readCh(); c != 0x3b && c != -1; c = readCh())
+      b.append(Character.toChars(c));
     try
       {
         int ord = Integer.parseInt(b.toString(), base);
@@ -2835,7 +2849,7 @@ public class XMLParser
     throws IOException, XMLStreamException
   {
     nmtokenBuf.setLength(0);
-    char c = readCh();
+    int c = readCh();
     if (isName)
       {
         if (!isNameStartCharacter(c))
@@ -2848,33 +2862,33 @@ public class XMLParser
           error("not a name character",
                 "U+" + Integer.toHexString(c));
       }
-    nmtokenBuf.append(c);
+    nmtokenBuf.append(Character.toChars(c));
     do
       {
         mark(1);
         c = readCh();
         switch (c)
           {
-          case '%':
-          case '<':
-          case '>':
-          case '&':
-          case ',':
-          case '|':
-          case '*':
-          case '+':
-          case '?':
-          case ')':
-          case '=':
-          case '\'':
-          case '"':
-          case '[':
-          case ' ':
-          case '\t':
-          case '\n':
-          case '\r':
-          case ';':
-          case '/':
+          case 0x25: // '%'
+          case 0x3c: // '<'
+          case 0x3e: // '>'
+          case 0x26: // '&'
+          case 0x2c: // ','
+          case 0x7c: // '|'
+          case 0x2a: // '*'
+          case 0x2b: // '+'
+          case 0x3f: // '?'
+          case 0x29: // ')'
+          case 0x3d: // '='
+          case 0x27: // '\''
+          case 0x22: // '"'
+          case 0x5b: // '['
+          case 0x20: // ' '
+          case 0x09: // '\t'
+          case 0x0a: // '\n'
+          case 0x0d: // '\r'
+          case 0x3b: // ';'
+          case 0x2f: // '/'
             reset();
             return intern(nmtokenBuf.toString());
           default:
@@ -2882,7 +2896,7 @@ public class XMLParser
               error("not a name character",
                     "U+" + Integer.toHexString(c));
             else
-              nmtokenBuf.append(c);
+              nmtokenBuf.append(Character.toChars(c));
           }
       }
     while (true);
@@ -2904,13 +2918,13 @@ public class XMLParser
             (c >= 0x0086 && c <= 0x009F));
   }
 
-  private boolean isNameStartCharacter(char c)
+  private boolean isNameStartCharacter(int c)
   {
     if (input.xml11)
       return ((c >= 0x0041 && c <= 0x005a) ||
               (c >= 0x0061 && c <= 0x007a) ||
-              c == ':' |
-              c == '_' |
+              c == 0x3a |
+              c == 0x5f |
               (c >= 0xC0 && c <= 0xD6) ||
               (c >= 0xD8 && c <= 0xF6) ||
               (c >= 0xF8 && c <= 0x2FF) ||
@@ -2924,19 +2938,19 @@ public class XMLParser
               (c >= 0xFDF0 && c <= 0xFFFD) ||
               (c >= 0x10000 && c <= 0xEFFFF));
     else
-      return (c == '_' || c == ':' || isLetter(c));
+      return (c == 0x5f || c == 0x3a || isLetter(c));
   }
 
-  private boolean isNameCharacter(char c)
+  private boolean isNameCharacter(int c)
   {
     if (input.xml11)
       return ((c >= 0x0041 && c <= 0x005a) ||
               (c >= 0x0061 && c <= 0x007a) ||
               (c >= 0x0030 && c <= 0x0039) ||
-              c == ':' |
-              c == '_' |
-              c == '-' |
-              c == '.' |
+              c == 0x3a |
+              c == 0x5f |
+              c == 0x2d |
+              c == 0x2e |
               c == 0xB7 |
               (c >= 0xC0 && c <= 0xD6) ||
               (c >= 0xD8 && c <= 0xF6) ||
@@ -2952,12 +2966,12 @@ public class XMLParser
               (c >= 0xFDF0 && c <= 0xFFFD) ||
               (c >= 0x10000 && c <= 0xEFFFF));
     else
-      return (c == '.' || c == '-' || c == '_' || c == ':' ||
+      return (c == 0x2e || c == 0x2d || c == 0x5f || c == 0x3a ||
               isLetter(c) || isDigit(c) ||
               isCombiningChar(c) || isExtender(c));
   }
 
-  public static boolean isLetter(char c)
+  public static boolean isLetter(int c)
   {
     if ((c >= 0x0041 && c <= 0x005A) ||
         (c >= 0x0061 && c <= 0x007A) ||
@@ -3169,7 +3183,7 @@ public class XMLParser
     return false;
   }
 
-  public static boolean isDigit(char c)
+  public static boolean isDigit(int c)
   {
     return ((c >= 0x0030 && c <= 0x0039) ||
             (c >= 0x0660 && c <= 0x0669) ||
@@ -3188,7 +3202,7 @@ public class XMLParser
             (c >= 0x0F20 && c <= 0x0F29));
   }
 
-  public static boolean isCombiningChar(char c)
+  public static boolean isCombiningChar(int c)
   {
     return ((c >= 0x0300 && c <= 0x0345) ||
             (c >= 0x0360 && c <= 0x0361) ||
@@ -3287,7 +3301,7 @@ public class XMLParser
             c == 0x309A);
   }
 
-  public static boolean isExtender(char c)
+  public static boolean isExtender(int c)
   {
     return (c == 0x00B7 ||
             c == 0x02D0 ||
@@ -3889,6 +3903,7 @@ public class XMLParser
     
     InputStream in;
     Reader reader;
+    UnicodeReader unicodeReader;
     boolean initialized;
     String inputEncoding;
     boolean xml11;
@@ -3929,7 +3944,10 @@ public class XMLParser
           this.in = in;
         }
       else
-        this.reader = new CRLFReader(reader);
+        {
+          this.reader = new CRLFReader(reader);
+          unicodeReader = new UnicodeReader(this.reader);
+        }
       initialized = false;
     }
 
@@ -3972,8 +3990,8 @@ public class XMLParser
       markOffset = offset;
       markLine = line;
       markColumn = column;
-      if (reader != null)
-        reader.mark(len);
+      if (unicodeReader != null)
+        unicodeReader.mark(len);
       else
         in.mark(len);
     }
@@ -3985,11 +4003,15 @@ public class XMLParser
       throws IOException
     {
       offset++;
-      int ret = (reader != null) ? reader.read() : in.read();
+      int ret = (unicodeReader != null) ? unicodeReader.read() : in.read();
       //if (ret != -1)
       //  System.out.println("  read1:"+((char) ret));
       if (ret == 0x0d || (xml11 && (ret == 0x85 || ret == 0x2028)))
-        ret = 0x0a;
+        {
+          // Normalize CR etc to LF
+          ret = 0x0a;
+        }
+      // Locator handling
       if (ret == 0x0a)
         {
           line++;
@@ -4003,12 +4025,12 @@ public class XMLParser
     /**
      * Block read.
      */
-    int read(char[] b, int off, int len)
+    int read(int[] b, int off, int len)
       throws IOException
     {
       int ret;
-      if (reader != null)
-        ret = reader.read(b, off, len);
+      if (unicodeReader != null)
+        ret = unicodeReader.read(b, off, len);
       else
         {
           byte[] b2 = new byte[len];
@@ -4016,19 +4038,21 @@ public class XMLParser
           if (ret != -1)
             {
               String s = new String(b2, 0, ret, inputEncoding);
-              char[] c = s.toCharArray();
+              int[] c = UnicodeReader.toCodePointArray(s);
               ret = c.length;
               System.arraycopy(c, 0, b, off, ret);
             }
         }
       if (ret != -1)
         {
+          // Locator handling
           //System.out.println("  read:"+new String(b, off, ret));
           for (int i = 0; i < ret; i++)
             {
-              char c = b[off + i];
+              int c = b[off + i];
               if (c == 0x0d || (xml11 && (c == 0x85 || c == 0x2028)))
                 {
+                  // Normalize CR etc to LF
                   c = 0x0a;
                   b[off + i] = c;
                 }
@@ -4048,8 +4072,8 @@ public class XMLParser
       throws IOException
     {
       //System.out.println("  reset");
-      if (reader != null)
-        reader.reset();
+      if (unicodeReader != null)
+        unicodeReader.reset();
       else
         in.reset();
       offset = markOffset;
@@ -4178,8 +4202,8 @@ public class XMLParser
     {
       if (reader != null)
         return;
-      //reader = new XMLInputStreamReader(in, inputEncoding);
       reader = new BufferedReader(new InputStreamReader(in, inputEncoding));
+      unicodeReader = new UnicodeReader(reader);
       mark(1);
     }
 
