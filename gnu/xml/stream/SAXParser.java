@@ -43,6 +43,7 @@ import java.io.Reader;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLEventReader;
@@ -630,6 +631,18 @@ public class SAXParser
     if (doctype == null)
       return false;
     String currentElement = reader.getCurrentElement();
+    // check for xml:space
+    int ac = reader.getAttributeCount();
+    for (int i = 0; i < ac; i++)
+      {
+        QName aname = reader.getAttributeQName(i);
+        if ("space".equals(aname.getLocalPart()) &&
+            XMLConstants.XML_NS_URI.equals(aname.getNamespaceURI()))
+          {
+            if ("preserve".equals(reader.getAttributeValue(i)))
+              return false;
+          }
+      }
     XMLParser.ContentModel model = doctype.getElementModel(currentElement);
     if (model == null || model.type != XMLParser.ContentModel.ELEMENT)
       return false;

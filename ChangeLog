@@ -1,3 +1,11 @@
+2005-12-29  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/XMLParser.java: Additional validity constraint
+	  checking; parameter entity recognition and replacement checks;
+	  checks for xml:space to determine whether whitespace is ignorable;
+	  better start- and end-entity event reporting.
+
 2005-12-28  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/CRLFReader.java: Fixed bug where pos > 0.
