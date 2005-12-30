@@ -1,5 +1,13 @@
 2005-12-30  Wolfgang Baer  <WBaer@gmx.de>
 
+	* javax/print/AttributeException.java,
+	* javax/print/URIException.java,
+	* javax/print/FlavorException.java,
+	* javax/print/PrintException.java:
+	Added and updated javadocs to class and methods.
+
+2005-12-30  Wolfgang Baer  <WBaer@gmx.de>
+
 	* javax/print/attribute/standard/package.html: Added description.
 	* javax/print/attribute/standard/MediaSize.java: 
 	Added and updated javadocs to class and methods.
