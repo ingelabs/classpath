@@ -1,3 +1,8 @@
+2005-12-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/Poa/gnuPOA.java (reference_to_servant): 
+	Throw WrongAdapter with explaining message.
+
 2005-12-31  Mark Wielaard  <mark@klomp.org>
 
 	* java/text/Bidi.java (requiresBidi): Also test against character
