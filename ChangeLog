@@ -1,3 +1,8 @@
+2005-12-31  Mark Wielaard  <mark@klomp.org>
+
+	* java/text/Bidi.java (requiresBidi): Also test against character
+	types L, EN, ES, ET, AN, CS, S and WS.
+
 2005-12-31  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/dom/DomNamedNodeMap.java,
