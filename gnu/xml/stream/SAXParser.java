@@ -147,9 +147,12 @@ public class SAXParser
       throw new IllegalStateException("parsing in progress");
     final String FEATURES = "http://xml.org/sax/features/";
     final String PROPERTIES = "http://xml.org/sax/properties/";
-    if ((FEATURES + "namespaces").equals(name) ||
-        (FEATURES + "namespace-prefixes").equals(name))
+    if ((FEATURES + "namespaces").equals(name))
       namespaceAware = Boolean.TRUE.equals(value);
+    else if ((FEATURES + "namespace-prefixes").equals(name))
+      {
+        // NOOP
+      }
     else if ((FEATURES + "string-interning").equals(name))
       stringInterning = Boolean.TRUE.equals(value);
     else if ((FEATURES + "use-attributes2").equals(name))
@@ -178,9 +181,10 @@ public class SAXParser
     final String GNU_PROPERTIES = "http://gnu.org/sax/properties/";
     if ((FEATURES + "is-standalone").equals(name))
       return xmlStandalone ? Boolean.TRUE : Boolean.FALSE;
-    if ((FEATURES + "namespaces").equals(name) ||
-        (FEATURES + "namespace-prefixes").equals(name))
+    if ((FEATURES + "namespaces").equals(name))
       return namespaceAware ? Boolean.TRUE : Boolean.FALSE;
+    if ((FEATURES + "namespace-prefixes").equals(name))
+      return Boolean.TRUE;
     if ((FEATURES + "string-interning").equals(name))
       return stringInterning ? Boolean.TRUE : Boolean.FALSE;
     if ((FEATURES + "use-attributes2").equals(name))
@@ -452,6 +456,20 @@ public class SAXParser
                     if (data == null)
                       data = "";
                     contentHandler.processingInstruction(target, data);
+                  }
+                break;
+              case XMLStreamConstants.START_ENTITY:
+                if (lexicalHandler != null)
+                  {
+                    String name = reader.getText();
+                    lexicalHandler.startEntity(name);
+                  }
+                break;
+              case XMLStreamConstants.END_ENTITY:
+                if (lexicalHandler != null)
+                  {
+                    String name = reader.getText();
+                    lexicalHandler.endEntity(name);
                   }
                 break;
               case XMLStreamConstants.START_DOCUMENT:

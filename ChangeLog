@@ -1,3 +1,12 @@
+2005-12-31  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/dom/DomNamedNodeMap.java,
+	  gnu/xml/dom/DomNode.java,
+	  gnu/xml/dom/ls/SAXEventSink.java,
+	  gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/XMLParser.java: Fix entity reference DOM construction
+	  and correct DOM tree normalisation.
+
 2005-12-30  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/AttributeException.java,

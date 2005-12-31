@@ -212,7 +212,7 @@ public class XMLParser
         ids = new HashSet();
         idrefs = new HashSet();
       }
-    pushInput(new Input(in, null, systemId, null));
+    pushInput(new Input(in, null, null, systemId, null, null, false));
   }
 
   public XMLParser(Reader reader, String systemId,
@@ -243,7 +243,7 @@ public class XMLParser
         ids = new HashSet();
         idrefs = new HashSet();
       }
-    pushInput(new Input(null, reader, null, systemId, null));
+    pushInput(new Input(null, reader, null, systemId, null, null, false));
   }
 
   // -- NamespaceContext --
@@ -1202,7 +1202,7 @@ public class XMLParser
   /**
    * Push the specified text input source.
    */
-  private void pushInput(String name, String text)
+  private void pushInput(String name, String text, boolean report)
     throws IOException, XMLStreamException
   {
     // Check for recursion
@@ -1216,15 +1216,15 @@ public class XMLParser
           }
       }
     else
-      startEntityStack.addFirst(name);
+      report = false;
     pushInput(new Input(null, new StringReader(text), input.publicId,
-                        input.systemId, name, input.inputEncoding));
+                        input.systemId, name, input.inputEncoding, report));
   }
 
   /**
    * Push the specified external input source.
    */
-  private void pushInput(String name, ExternalIds ids)
+  private void pushInput(String name, ExternalIds ids, boolean report)
     throws IOException, XMLStreamException
   {
     if (!externalEntities)
@@ -1250,8 +1250,8 @@ public class XMLParser
         if (name != null && !"".equals(name) && name.equals(ctx.name))
           error("entities may not be self-recursive", name);
       }
-    if (name != null && !"".equals(name))
-      startEntityStack.addFirst(name);
+    if (name == null || "".equals(name))
+      report = false;
     if (in == null && url != null && resolver != null)
       {
         if (resolver instanceof XMLResolver2)
@@ -1270,7 +1270,7 @@ public class XMLParser
       }
     else
       {
-        pushInput(new Input(in, ids.publicId, url, name, null));
+        pushInput(new Input(in, null, ids.publicId, url, name, null, report));
         input.init();
         if (tryRead(TEST_XML_DECL))
           readTextDecl();
@@ -1280,6 +1280,8 @@ public class XMLParser
 
   private void pushInput(Input input)
   {
+    if (input.report)
+      startEntityStack.addFirst(input.name);
     inputStack.addLast(input);
     if (this.input != null)
       input.xml11 = this.input.xml11;
@@ -1371,7 +1373,7 @@ public class XMLParser
   private void popInput()
   {
     Input old = (Input) inputStack.removeLast();
-    if (!"".equals(old.name))
+    if (old.report)
       endEntityStack.addFirst(old.name);
     input = (Input) inputStack.getLast();
   }
@@ -1495,8 +1497,8 @@ public class XMLParser
     // Parse external subset
     if (ids.systemId != null && externalEntities)
       {
-        pushInput("", ">");
-        pushInput("[dtd]", ids);
+        pushInput("", ">", false);
+        pushInput("[dtd]", ids, true);
         // loop until we get back to ">"
         while (true)
           {
@@ -2747,7 +2749,7 @@ public class XMLParser
                         //  expandEntity(entityName, false); //report start-entity
                         //else
                         //  reset(); // report reference
-                        pushInput("", "&" + entityName + ";");
+                        pushInput("", "&" + entityName + ";", false);
                         done = true;
                         break;
                       }
@@ -2834,12 +2836,12 @@ public class XMLParser
                 String text = (String) value;
                 if (inAttr && text.indexOf('<') != -1)
                   error("< in attribute value");
-                pushInput(name, text);
+                pushInput(name, text, !inAttr);
               }
             else if (inAttr)
               error("reference to external entity in attribute value", name);
             else
-              pushInput(name, (ExternalIds) value);
+              pushInput(name, (ExternalIds) value, !inAttr);
             return;
           }
       }
@@ -2946,23 +2948,20 @@ public class XMLParser
                 else
                   {
                     reset();
-                    if (replaceERefs || (flags & LIT_NORMALIZE) > 0)
-                      {
-                        String entityName = readNmtoken(true);
-                        require(';');
-                        String text =
-                          (String) PREDEFINED_ENTITIES.get(entityName);
-                        if (text != null)
-                          literalBuf.append(text);
-                        else
-                          expandEntity(entityName,
-                                       (flags & LIT_ATTRIBUTE) != 0);
-                        entities = true;
-                        continue;
-                      }
+                    //if (replaceERefs || (flags & LIT_NORMALIZE) > 0)
+                    //  {
+                    String entityName = readNmtoken(true);
+                    require(';');
+                    String text =
+                      (String) PREDEFINED_ENTITIES.get(entityName);
+                    if (text != null)
+                      literalBuf.append(text);
                     else
-                      error("parser is configured not to replace entity " +
-                            "references");
+                      expandEntity(entityName,
+                                   (flags & LIT_ATTRIBUTE) != 0);
+                    entities = true;
+                    continue;
+                    //  }
                   }
               }
             break;
@@ -3063,13 +3062,13 @@ public class XMLParser
               }
             if (entity instanceof String)
               {
-                pushInput(name, (String) entity);
+                pushInput(name, (String) entity, false);
                 //pushInput(name, " " + (String) entity + " ");
               }
             else
               {
                 //pushInput("", " ");
-                pushInput(name, (ExternalIds) entity);
+                pushInput(name, (ExternalIds) entity, false);
                 //pushInput("", " ");
               }
           }
@@ -4255,6 +4254,7 @@ public class XMLParser
     int column, markColumn;
     int offset, markOffset;
     final String publicId, systemId, name;
+    final boolean report; // report start- and end-entity
     
     InputStream in;
     Reader reader;
@@ -4263,25 +4263,8 @@ public class XMLParser
     String inputEncoding;
     boolean xml11;
 
-    Input(InputStream in, String publicId, String systemId, String name)
-    {
-      this(in, null, publicId, systemId, name, null);
-    }
-    
-    Input(InputStream in, String publicId, String systemId, String name,
-          String inputEncoding)
-    {
-      this(in, null, publicId, systemId, name, inputEncoding);
-    }
-    
     Input(InputStream in, Reader reader, String publicId, String systemId,
-          String name)
-    {
-      this(in, reader, publicId, systemId, name, null);
-    }
-    
-    Input(InputStream in, Reader reader, String publicId, String systemId,
-          String name, String inputEncoding)
+          String name, String inputEncoding, boolean report)
     {
       if (inputEncoding == null)
         inputEncoding = "UTF-8";
@@ -4289,6 +4272,7 @@ public class XMLParser
       this.publicId = publicId;
       this.systemId = systemId;
       this.name = name;
+      this.report = report;
       if (in != null)
         {
           if (reader != null)
