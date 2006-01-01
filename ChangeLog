@@ -1,3 +1,10 @@
+2006-01-01  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/Poa/AOM.java (add):
+	Changed parameter Object into gnuServantObject.
+	(Obj.object): Changed type to gnuServantObject.
+	(findObject): Rewritten.
+
 2006-01-01  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/jni/qt-peer/mainqtthread.cpp: Remove call to disable double
