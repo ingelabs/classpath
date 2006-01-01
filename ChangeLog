@@ -1,3 +1,11 @@
+2006-01-01  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/jni/qt-peer/mainqtthread.cpp: Remove call to disable double
+	buffering. Ability has gone in Qt-4.1.x.
+
+	* configure.ac (QT_CFLAGS): Check for 4.1.0 version and for QtCore
+	to have the right include flags.
+
 2006-01-01  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* java/security/MessageDigest.java (getInstance(String,String)):
