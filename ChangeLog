@@ -1,5 +1,13 @@
 2006-01-01  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* java/security/MessageDigest.java (getInstance(String,String)):
+	Use trimmed copy of provider name.
+	* gnu/java/security/Engine.java
+	(getInstance(String,String,Provider,Object[])): Use trimmed copy of
+	service and algorithm names.
+
+2006-01-01  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* java/net/InetAddress.java (getAllByName): use LOCALHOST if
 	localhost is null or is an empty string. Trim hostname before
 	lookup.
