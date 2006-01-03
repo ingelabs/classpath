@@ -1,5 +1,6 @@
 2006-01-03  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* AUTHORS: Added self.
 	* java/security/Security.java (getProvider): Ensures provider's name is
 	  not null, not an empty string, and is trimmed before usage.
 
