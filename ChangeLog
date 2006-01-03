@@ -1,5 +1,13 @@
 2006-01-03  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicListUI.java
+	(locationToIndex): Special case for when variable cell heights
+	are possible. (cellHeights is used instead of cellHeight).
+	(indexToLocation): Special case for when variable cell heights
+	are possible. (cellHeights is used instead of cellHeight).
+
+2006-01-03  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/DefaultStyledDocument.java
 	(ElementBuffer.remove): New method.
 	(ElementBuffer.removeUpdate): New method.

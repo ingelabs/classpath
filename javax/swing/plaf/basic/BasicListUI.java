@@ -1158,7 +1158,6 @@ public class BasicListUI extends ListUI
     int startIndex = list.locationToIndex(new Point(clip.x, clip.y));
     int endIndex = list.locationToIndex(new Point(clip.x + clip.width,
                                                   clip.y + clip.height));
-    
     for (int row = startIndex; row <= endIndex; ++row)
       {
         Rectangle bounds = getCellBounds(list, row, row);
@@ -1212,7 +1211,18 @@ public class BasicListUI extends ListUI
         // determine index for the given location
         int cellsPerColumn = numberOfItems / cellsPerRow + 1;
         int gridX = Math.min(location.x / cellWidth, cellsPerRow - 1);
-        int gridY = Math.min(location.y / cellHeight, cellsPerColumn);
+        int gridY;
+        if (cellHeight > 0)
+          gridY = Math.min(location.y / cellHeight, cellsPerColumn);
+        else
+          {
+            int posY = 0;
+            for (gridY = 0; posY + cellHeights[gridY] < location.y;)
+              {
+                posY += cellHeights[gridY];
+                gridY++;
+              }
+          }
         index = gridX + gridY * cellsPerRow;
         break;
       case JList.VERTICAL_WRAP:
@@ -1227,7 +1237,18 @@ public class BasicListUI extends ListUI
         int cellsPerRow2 = numberOfItems2 / visibleRows2 + 1;
 
         int gridX2 = Math.min(location.x / cellWidth, cellsPerRow2 - 1);
-        int gridY2 = Math.min(location.y / cellHeight, visibleRows2);
+        int gridY2;
+        if (cellHeight > 0)
+          gridY2 = Math.min(location.y / cellHeight, visibleRows2);
+        else
+          {
+            int posY = 0;
+            for (gridY2 = 0; posY + cellHeights[gridY2] < location.y;)
+              {
+                posY += cellHeights[gridY2];
+                gridY2++;
+              }
+          }
         index = gridY2 + gridX2 * visibleRows2;
         break;
       }
@@ -1261,7 +1282,15 @@ public class BasicListUI extends ListUI
         int gridX = index % numberOfCellsPerRow;
         int gridY = index / numberOfCellsPerRow;
         int locX = gridX * cellWidth;
-        int locY = gridY * cellHeight;
+        int locY;
+        if (cellHeight > 0)
+          locY = gridY * cellHeight;
+        else
+          {
+            locY = 0;
+            for (int y = 0; y < gridY; y++)
+              locY += cellHeights[gridY];
+          }
         loc = new Point(locX, locY);
         break;
       case JList.VERTICAL_WRAP:
@@ -1278,7 +1307,15 @@ public class BasicListUI extends ListUI
             int gridY2 = index % visibleRows2;
             int gridX2 = index / visibleRows2;
             int locX2 = gridX2 * cellWidth;
-            int locY2 = gridY2 * cellHeight;
+            int locY2;
+            if (cellHeight > 0)
+              locY2 = gridY2 * cellHeight;
+            else
+              {
+                locY2 = 0;
+                for (int y = 0; y < gridY2; y++)
+                  locY2 += cellHeights[gridY2];
+              }
             loc = new Point(locX2, locY2);
           }
         else
