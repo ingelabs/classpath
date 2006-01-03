@@ -1,5 +1,11 @@
 2006-01-03  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Fixed several defaults that differed
+	from the JDK.
+
+2006-01-03  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/tree/DefaultTreeSelectionModel.java
 	(DefaultTreeSelectionModel): Default should be DISCONTIGUOUS_TREE_SELECTION.
 
