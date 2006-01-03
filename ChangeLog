@@ -1,3 +1,9 @@
+2006-01-03  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JTextArea.java
+	(JTextArea(Document,text,int,int)): Only call setText() when text is
+	not null.
+
 2006-01-03  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicFileChooserUI.java
