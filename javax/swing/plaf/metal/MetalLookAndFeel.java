@@ -124,7 +124,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public String getDescription()
   {
-    return "Metal look and feel";
+    return "The Java(tm) Look and Feel";
   }
 
   /**
@@ -134,7 +134,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public String getID()
   {
-    return "MetalLookAndFeel";
+    return "Metal";
   }
 
   /**
@@ -144,7 +144,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public String getName()
   {
-    return "MetalLookAndFeel";
+    return "Metal";
   }
 
   public UIDefaults getDefaults()
@@ -154,7 +154,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
         LAF_defaults = super.getDefaults();
 
         // add custom theme entries to the table
-        theme.addCustomEntriesToTable(LAF_defaults);
+        if (theme != null)
+          theme.addCustomEntriesToTable(LAF_defaults);
       }
     
     // Returns the default values for this look and feel. 
@@ -168,7 +169,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getAcceleratorForeground()
   {
-    return theme.getAcceleratorForeground();
+    if (theme != null)
+      return theme.getAcceleratorForeground();
+    return null;
   }
 
   /**
@@ -179,7 +182,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getAcceleratorSelectedForeground()
   {
-    return theme.getAcceleratorSelectedForeground();
+    if (theme != null)
+      return theme.getAcceleratorSelectedForeground();
+    return null;
   }
 
   /**
@@ -189,7 +194,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getBlack()
   {
-    return theme.getBlack();
+    if (theme != null)
+      return theme.getBlack();
+    return null;
   }
 
   /**
@@ -199,7 +206,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getControl()
   {
-    return theme.getControl();
+    if (theme != null)
+      return theme.getControl();
+    return null;
   }
 
   /**
@@ -210,7 +219,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getControlDarkShadow()
   {
-    return theme.getControlDarkShadow();
+    if (theme != null)
+      return theme.getControlDarkShadow();
+    return null;
   }
 
   /**
@@ -220,7 +231,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getControlDisabled()
   {
-    return theme.getControlDisabled();
+    if (theme != null)
+      return theme.getControlDisabled();
+    return null;
   }
 
   /**
@@ -231,7 +244,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getControlHighlight()
   {
-    return theme.getControlHighlight();
+    if (theme != null)
+      return theme.getControlHighlight();
+    return null;
   }
 
   /**
@@ -242,7 +257,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getControlInfo()
   {
-    return theme.getControlInfo();
+    if (theme != null)
+      return theme.getControlInfo();
+    return null;
   }
 
   /**
@@ -253,7 +270,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getControlShadow()
   {
-    return theme.getControlShadow();
+    if (theme != null)
+      return theme.getControlShadow();
+    return null;
   }
 
   /**
@@ -263,7 +282,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getControlTextColor()
   {
-    return theme.getControlTextColor();
+    if (theme != null)
+      return theme.getControlTextColor();
+    return null;
   }
 
   /**
@@ -273,7 +294,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static FontUIResource getControlTextFont()
   {
-    return theme.getControlTextFont();
+    if (theme != null)
+      return theme.getControlTextFont();
+    return null;
   }
 
   /**
@@ -284,7 +307,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getDesktopColor()
   {
-    return theme.getDesktopColor();
+    if (theme != null)
+      return theme.getDesktopColor();
+    return null;
   }
 
   /**
@@ -295,7 +320,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getFocusColor()
   {
-    return theme.getFocusColor();
+    if (theme != null)
+      return theme.getFocusColor();
+    return null;
   }
 
   /**
@@ -306,7 +333,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getHighlightedTextColor()
   {
-    return theme.getHighlightedTextColor();
+    if (theme != null)
+      return theme.getHighlightedTextColor();
+    return null;
   }
 
   /**
@@ -317,7 +346,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getInactiveControlTextColor()
   {
-    return theme.getInactiveControlTextColor();
+    if (theme != null)
+      return theme.getInactiveControlTextColor();
+    return null;
   }
 
   /**
@@ -328,7 +359,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getInactiveSystemTextColor()
   {
-    return theme.getInactiveSystemTextColor();
+    if (theme != null)
+      return theme.getInactiveSystemTextColor();
+    return null;
   }
 
   /**
@@ -340,7 +373,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getMenuBackground()
   {
-    return theme.getMenuBackground();
+    if (theme != null)
+      return theme.getMenuBackground();
+    return null;
   }
 
   /**
@@ -353,7 +388,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getMenuDisabledForeground()
   {
-    return theme.getMenuDisabledForeground();
+    if (theme != null)
+      return theme.getMenuDisabledForeground();
+    return null;
   }
 
   /**
@@ -366,7 +403,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getMenuForeground()
   {
-    return theme.getMenuForeground();
+    if (theme != null)
+      return theme.getMenuForeground();
+    return null;
   }
 
   /**
@@ -379,7 +418,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getMenuSelectedBackground()
   {
-    return theme.getMenuSelectedBackground();
+    if (theme != null)
+      return theme.getMenuSelectedBackground();
+    return null;
   }
 
   /**
@@ -392,7 +433,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getMenuSelectedForeground()
   {
-    return theme.getMenuSelectedForeground();
+    if (theme != null)
+      return theme.getMenuSelectedForeground();
+    return null;
   }
 
   /**
@@ -402,7 +445,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static FontUIResource getMenuTextFont()
   {
-    return theme.getMenuTextFont();
+    if (theme != null)
+      return theme.getMenuTextFont();
+    return null;
   }
 
   /**
@@ -412,7 +457,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getPrimaryControl()
   {
-    return theme.getPrimaryControl();
+    if (theme != null)
+      return theme.getPrimaryControl();
+    return null;
   }
 
   /**
@@ -423,7 +470,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getPrimaryControlDarkShadow()
   {
-    return theme.getPrimaryControlDarkShadow();
+    if (theme != null)
+      return theme.getPrimaryControlDarkShadow();
+    return null;
   }
 
   /**
@@ -434,7 +483,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getPrimaryControlHighlight()
   {
-    return theme.getPrimaryControlHighlight();
+    if (theme != null)
+      return theme.getPrimaryControlHighlight();
+    return null;
   }
 
   /**
@@ -445,7 +496,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getPrimaryControlInfo()
   {
-    return theme.getPrimaryControlInfo();
+    if (theme != null)
+      return theme.getPrimaryControlInfo();
+    return null;
   }
 
   /**
@@ -456,7 +509,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getPrimaryControlShadow()
   {
-    return theme.getPrimaryControlShadow();
+    if (theme != null)
+      return theme.getPrimaryControlShadow();
+    return null;
   }
 
   /**
@@ -466,7 +521,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getSeparatorBackground()
   {
-    return theme.getSeparatorBackground();
+    if (theme != null)
+      return theme.getSeparatorBackground();
+    return null;
   }
 
   /**
@@ -476,7 +533,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getSeparatorForeground()
   {
-    return theme.getSeparatorForeground();
+    if (theme != null)
+      return theme.getSeparatorForeground();
+    return null;
   }
 
   /**
@@ -486,7 +545,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static FontUIResource getSubTextFont()
   {
-    return theme.getSubTextFont();
+    if (theme != null)
+      return theme.getSubTextFont();
+    return null;
   }
 
   /**
@@ -496,7 +557,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getSystemTextColor()
   {
-    return theme.getSystemTextColor();
+    if (theme != null)
+      return theme.getSystemTextColor();
+    return null;
   }
 
   /**
@@ -506,7 +569,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static FontUIResource getSystemTextFont()
   {
-    return theme.getSystemTextFont();
+    if (theme != null)
+      return theme.getSystemTextFont();
+    return null;
   }
 
   /**
@@ -516,7 +581,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getTextHighlightColor()
   {
-    return theme.getTextHighlightColor();
+    if (theme != null)
+      return theme.getTextHighlightColor();
+    return null;
   }
 
   /**
@@ -526,7 +593,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getUserTextColor()
   {
-    return theme.getUserTextColor();
+    if (theme != null)
+      return theme.getUserTextColor();
+    return null;
   }
 
   /**
@@ -536,7 +605,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static FontUIResource getUserTextFont()
   {
-    return theme.getUserTextFont();
+    if (theme != null)
+      return theme.getUserTextFont();
+    return null;
   }
 
   /**
@@ -546,7 +617,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getWhite()
   {
-    return theme.getWhite();
+    if (theme != null)
+      return theme.getWhite();
+    return null;
   }
 
   /**
@@ -556,7 +629,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getWindowBackground()
   {
-    return theme.getWindowBackground();
+    if (theme != null)
+      return theme.getWindowBackground();
+    return null;
   }
 
   /**
@@ -566,7 +641,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getWindowTitleBackground()
   {
-    return theme.getWindowTitleBackground();
+    if (theme != null)
+      return theme.getWindowTitleBackground();
+    return null;
   }
 
   /**
@@ -578,7 +655,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static FontUIResource getWindowTitleFont()
   {
-    return theme.getWindowTitleFont();
+    if (theme != null)
+      return theme.getWindowTitleFont();
+    return null;
   }
 
   /**
@@ -588,7 +667,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getWindowTitleForeground()
   {
-    return theme.getWindowTitleForeground();
+    if (theme != null)
+      return theme.getWindowTitleForeground();
+    return null;
   }
 
   /**
@@ -599,7 +680,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getWindowTitleInactiveBackground()
   {
-    return theme.getWindowTitleInactiveBackground();
+    if (theme != null)
+      return theme.getWindowTitleInactiveBackground();
+    return null;
   }
 
   /**
@@ -610,7 +693,9 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public static ColorUIResource getWindowTitleInactiveForeground()
   {
-    return theme.getWindowTitleInactiveForeground();
+    if (theme != null)
+      return theme.getWindowTitleInactiveForeground();
+    return null;
   }
 
   /**

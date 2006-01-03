@@ -1,3 +1,53 @@
+2006-01-03  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(getDescription): Fixed to return the correct string.
+	(getID): Likewise.
+	(getName): Likewise.
+	(getDefaults): Added check to avoid NPE.
+	(getAcceleratorForeground): Likewise.
+	(getAcceleratorSelectedForeground): Likewise.
+	(getBlack): Likewise.
+	(getControl): Likewise.
+	(getControlDarkShadow): Likewise.
+	(getControlDisabled): Likewise.
+	(getControlHighlight): Likewise.
+	(getControlInfo): Likewise.
+	(getControlShadow): Likewise.
+	(getControlTextColor): Likewise.
+	(getControlTextFont): Likewise.
+	(getDesktopColor): Likewise.
+	(getFocusColor): Likewise.
+	(getHighlightedTextColor): Likewise.
+	(getInactiveControlTextColor): Likewise.
+	(getInactiveSystemTextColor): Likewise.
+	(getMenuBackground): Likewise.
+	(getMenuDisabledForeground): Likewise.
+	(getMenuForeground): Likewise.
+	(getMenuSelectedBackground): Likewise.
+	(getMenuSelectedForeground): Likewise.
+	(getMenuTextFont): Likewise.
+	(getPrimaryControl): Likewise.
+	(getPrimaryControlDarkShadow): Likewise.
+	(getPrimaryControlHighlight): Likewise.
+	(getPrimaryControlInfo): Likewise.
+	(getPrimaryControlShadow): Likewise.
+	(getSeparatorBackground): Likewise.
+	(getSeparatorForeground): Likewise.
+	(getSubTextFont): Likewise.
+	(getSystemTextColor): Likewise.
+	(getSystemTextFont): Likewise.
+	(getTextHighlightColor): Likewise.
+	(getUserTextColor): Likewise.
+	(getUserTextFont): Likewise.
+	(getWhite): Likewise.
+	(getWindowBackground): Likewise.
+	(getWindowTitleBackground): Likewise.
+	(getWindowTitleFont): Likewise.
+	(getWindowTitleForeground): Likewise.
+	(getWindowTitleInactiveBackground): Likewise.
+	(getWindowTitleInactiveForeground): Likewise.
+
 2006-01-03  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JTextArea.java
