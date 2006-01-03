@@ -1,3 +1,21 @@
+2006-01-03  Lillian Angel  <langel@redhat.com>
+	
+	PR classpath/25480 PR classpath/25478
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(updateViewport): Made changes suggested by
+	Chris Lansdown.
+	* javax/swing/plaf/metal/MetalFileChooserUI.java:
+	Removed unneeded import.
+	(createList): Removed comment, JList wrapping 
+	now works.
+	(getPreferredSize): Made changes suggested by
+	Chris Lansdown. Uses fileListPanel, instead
+	of fileList.
+	(getMinimumSize): Uses fileListPanel, instead
+	of fileList.
+	* javax/swing/plaf/metal/MetalRadioButtonUI.java
+	(paintFocus): Fixed height.
+
 2006-01-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java
