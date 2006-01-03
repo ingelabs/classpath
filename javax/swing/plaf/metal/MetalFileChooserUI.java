@@ -38,8 +38,6 @@ exception statement from your version. */
 
 package javax.swing.plaf.metal;
 
-import gnu.java.security.action.SetAccessibleAction;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -1506,7 +1504,7 @@ public class MetalFileChooserUI
         fileListPanel = new JPanel(new BorderLayout());
         fileList = new JList(getModel());
         scrollPane = new JScrollPane(fileList);
-        // FIXME: fileList.setLayoutOrientation(JList.VERTICAL_WRAP);
+        fileList.setLayoutOrientation(JList.VERTICAL_WRAP);
         fileList.setCellRenderer(new FileRenderer());
       }
     else
@@ -1658,7 +1656,7 @@ public class MetalFileChooserUI
     Dimension tp = topPanel.getPreferredSize();
     Dimension bp = bottomPanel.getPreferredSize();
     Dimension bup = buttonPanel.getPreferredSize();
-    Dimension fl = fileList.getPreferredSize();
+    Dimension fl = fileListPanel.getPreferredSize();
     return new Dimension((tp.width +
         bp.width + bup.width + fl.width), 
         (tp.height + bp.height +
@@ -1675,7 +1673,7 @@ public class MetalFileChooserUI
     Dimension tp = topPanel.getMinimumSize();
     Dimension bp = bottomPanel.getMinimumSize();
     Dimension bup = buttonPanel.getMinimumSize();
-    Dimension fl = fileList.getMinimumSize();
+    Dimension fl = fileListPanel.getMinimumSize();
     return new Dimension((tp.width +
         bp.width + bup.width + fl.width), 
         (tp.height + bp.height +
