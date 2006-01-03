@@ -1243,7 +1243,8 @@ public class BasicListUI extends ListUI
         else
           {
             int posY = 0;
-            for (gridY2 = 0; posY + cellHeights[gridY2] < location.y;)
+            for (gridY2 = 0; gridY2 <= visibleRows2
+                             && posY + cellHeights[gridY2] < location.y;)
               {
                 posY += cellHeights[gridY2];
                 gridY2++;

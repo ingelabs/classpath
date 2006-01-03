@@ -1,6 +1,11 @@
 2006-01-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java
+	(locationToIndex): Added check to avoid ArrayOutOfBoundsException.
+
+2006-01-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java
 	(locationToIndex): Special case for when variable cell heights
 	are possible. (cellHeights is used instead of cellHeight).
 	(indexToLocation): Special case for when variable cell heights
