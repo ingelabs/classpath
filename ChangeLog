@@ -1,5 +1,12 @@
 2006-01-03  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.remove): New method.
+	(ElementBuffer.removeUpdate): New method.
+	(removeUpdate): New method.
+
+2006-01-03  Roman Kennke  <kennke@aicas.com>
+
 	* lib/Makefile.am:
 	(dist-hook): Preserve attributes of Java sources when copying to
 	dist dir.
