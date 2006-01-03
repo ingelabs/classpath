@@ -1,5 +1,16 @@
 2006-01-03  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/basic/BasicListUI.java
+	(getPreferredSize): The JDK adds some extra space to 
+	the list, so we should as well.
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(getPreferredSize): Should only take the fileListPanel's
+	width into account when getting the size. Also, the buttonPanel's
+	size should not be checked, since it is in the bottomPanel already.
+	(getMinimumSize): Likewise.
+
+2006-01-03  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/JList.java
 	(init): visibleRowCount should be 7, like the JDK.
 	* javax/swing/plaf/metal/MetalFileChooserUI.java

@@ -1087,6 +1087,7 @@ public class BasicListUI extends ListUI
     int layoutOrientation = list.getLayoutOrientation();
     Rectangle bounds = getCellBounds(list, 0, list.getModel().getSize() - 1);
     Dimension retVal = bounds.getSize();
+    retVal.width += cellWidth;
     Component parent = list.getParent();
     if ((visibleRows == -1) && (parent instanceof JViewport))
       {

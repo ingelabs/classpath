@@ -1653,14 +1653,10 @@ public class MetalFileChooserUI
   {
     Dimension tp = topPanel.getPreferredSize();
     Dimension bp = bottomPanel.getPreferredSize();
-    Dimension bup = buttonPanel.getPreferredSize();
     Dimension fl = fileListPanel.getPreferredSize();
-    return new Dimension((tp.width +
-        bp.width + bup.width + fl.width), 
-        (tp.height + bp.height +
-         bup.height + fl.height));
+    return new Dimension(fl.width, tp.height + bp.height + fl.height);
   }
-  
+
   /**
    * Returns the minimum size for the file chooser component.
    * 
@@ -1670,12 +1666,8 @@ public class MetalFileChooserUI
   {
     Dimension tp = topPanel.getMinimumSize();
     Dimension bp = bottomPanel.getMinimumSize();
-    Dimension bup = buttonPanel.getMinimumSize();
     Dimension fl = fileListPanel.getMinimumSize();
-    return new Dimension((tp.width +
-        bp.width + bup.width + fl.width), 
-        (tp.height + bp.height +
-         bup.height + fl.height));   
+    return new Dimension(fl.width, tp.height + bp.height + fl.height);
   }
   
   /**
