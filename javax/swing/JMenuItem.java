@@ -117,6 +117,13 @@ public class JMenuItem extends AbstractButton implements Accessible,
     super();
     super.setAction(action);
     init(null, null);
+    if (action != null)
+      {
+        setName((String) action.getValue(Action.NAME));
+        setAccelerator((KeyStroke) action.getValue(Action.ACCELERATOR_KEY));
+        setMnemonic(((Integer) action.getValue(Action.MNEMONIC_KEY)).intValue());
+        setActionCommand((String) action.getValue(Action.ACTION_COMMAND_KEY));
+      }
   }
 
   /**

@@ -1,5 +1,18 @@
 2006-01-03  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/AbstractAction.java
+	(AbstractAction): Fixed to pass in null. Should not be 
+	an empty string. Removed TODO comment.
+	(AbstractAction): Removed TODO comment.
+	* javax/swing/JList.java
+	(init): Default selection mode should be MULTIPLE_INTERVAL_SELECTION.
+	* javax/swing/JMenuItem.java
+	(JMenuItem): Set all defaults if the action passed in is not null.
+	* javax/swing/JProgressBar.java
+	(JProgressBar): Added check to prevent NPE.
+
+2006-01-03  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicListUI.java
 	(getPreferredSize): The JDK adds some extra space to 
 	the list, so we should as well.
