@@ -1,5 +1,9 @@
 2006-01-03  Mark Wielaard  <mark@klomp.org>
 
+	* org/omg/CORBA/INVALID_ACTIVITY.java: Remove non-ascii characters.
+
+2006-01-03  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/plaf/metal/MetalLookAndFeel.java (MetalLookAndFeel):
 	Always call createDefaultTheme().
 	(createDefaultTheme): Check whether theme is still null.
