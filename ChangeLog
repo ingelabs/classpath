@@ -1,5 +1,10 @@
 2006-01-03  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/tree/DefaultTreeSelectionModel.java
+	(DefaultTreeSelectionModel): Default should be DISCONTIGUOUS_TREE_SELECTION.
+
+2006-01-03  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/AbstractAction.java
 	(AbstractAction): Fixed to pass in null. Should not be 
 	an empty string. Removed TODO comment.
