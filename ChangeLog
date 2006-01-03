@@ -1,4 +1,12 @@
 2006-01-03  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JList.java
+	(init): visibleRowCount should be 7, like the JDK.
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(installComponents): No need to add the fileFilterCombo
+	to a panel. It can be added to the row directly.
+
+2006-01-03  Lillian Angel  <langel@redhat.com>
 	
 	PR classpath/25480 PR classpath/25478
 	* javax/swing/plaf/basic/BasicScrollPaneUI.java

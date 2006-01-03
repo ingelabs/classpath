@@ -1330,11 +1330,9 @@ public class MetalFileChooserUI
     row1.add(fileNamePanel);
     bottomPanel.add(row1);
     
-    JPanel filterPanel = new JPanel(new VerticalMidLayout());
-    filterPanel.add(fileFilterCombo);    
     JPanel row2 = new JPanel(new BorderLayout());
     row2.add(new JLabel(this.filterLabel), BorderLayout.WEST);
-    row2.add(filterPanel);
+    row2.add(fileFilterCombo);
     bottomPanel.add(row2);
     JPanel buttonPanel = new JPanel(new ButtonLayout());
     buttonPanel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 0));

@@ -1070,7 +1070,7 @@ public class JList extends JComponent implements Accessible, Scrollable
     layoutOrientation = VERTICAL;
     opaque = true;
     valueIsAdjusting = false;
-    visibleRowCount = 8;
+    visibleRowCount = 7;
 
     cellRenderer = new DefaultListCellRenderer();
     listListener = new ListListener();
