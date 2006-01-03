@@ -81,8 +81,7 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   public MetalLookAndFeel()
   {
-    if (theme == null)
-      createDefaultTheme();
+    createDefaultTheme();
   }
 
   /**
@@ -90,7 +89,8 @@ public class MetalLookAndFeel extends BasicLookAndFeel
    */
   protected void createDefaultTheme()
   {
-    setCurrentTheme(new DefaultMetalTheme());
+    if (theme == null)
+      setCurrentTheme(new DefaultMetalTheme());
   }
 
   /**
