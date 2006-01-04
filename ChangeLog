@@ -1,5 +1,12 @@
 2006-01-04  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JFileChooser.java
+	(showOpenDialog): Set fixed width on the dialog.
+	(showSaveDialog): Set fixed width on the dialog.
+	(showDialog): Set fixed width on the dialog.
+
+2006-01-04  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicListUI.java
 	(locationToIndex): Added FIXME about getVisibleRowCount() usage.
 	Adjusted iteration to not use visibleRowCount and instead iterate
