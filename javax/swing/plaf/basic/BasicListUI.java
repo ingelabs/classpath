@@ -1189,6 +1189,9 @@ public class BasicListUI extends ListUI
         break;
       case JList.HORIZONTAL_WRAP:
         // determine visible rows and cells per row
+        // FIXME: We really should not use getVisibleRowCount() here. Please
+        // refer to the (Sun) API docs of JList.setVisibleRowCount() for
+        // details.
         int visibleRows = list.getVisibleRowCount();
         int cellsPerRow = -1;
         int numberOfItems = list.getModel().getSize();
@@ -1244,7 +1247,7 @@ public class BasicListUI extends ListUI
         else
           {
             int posY = 0;
-            for (gridY2 = 0; gridY2 <= visibleRows2
+            for (gridY2 = 0; gridY2 <= cellHeights.length
                              && posY + cellHeights[gridY2] < location.y;)
               {
                 posY += cellHeights[gridY2];
@@ -1268,6 +1271,9 @@ public class BasicListUI extends ListUI
         break;
       case JList.HORIZONTAL_WRAP:
         // determine visible rows and cells per row
+        // FIXME: We really should not use getVisibleRowCount() here. Please
+        // refer to the (Sun) API docs of JList.setVisibleRowCount() for
+        // details.
         int visibleRows = list.getVisibleRowCount();
         int numberOfCellsPerRow = -1;
         if (visibleRows <= 0)
@@ -1315,7 +1321,7 @@ public class BasicListUI extends ListUI
             else
               {
                 locY2 = 0;
-                for (int y = 0; y < gridY2; y++)
+                for (int y = 0; gridY2 < cellHeights.length && y < gridY2; y++)
                   locY2 += cellHeights[gridY2];
               }
             loc = new Point(locX2, locY2);

@@ -1,5 +1,15 @@
 2006-01-04  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicListUI.java
+	(locationToIndex): Added FIXME about getVisibleRowCount() usage.
+	Adjusted iteration to not use visibleRowCount and instead iterate
+	over the real number of elements in cellHeights.
+	(indexToLocation): Added FIXME about getVisibleRowCount() usage.
+	Adjusted iteration to not use visibleRowCount and instead iterate
+	over the real number of elements in cellHeights.
+
+2006-01-04  Roman Kennke  <kennke@aicas.com>
+
 	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c,
 	* native/jni/java-net/gnu_java_net_VMPlainDatagramSocketImpl.c:
 	Added __attribute__((__unused__)) macros to avoid gcc warnings.
