@@ -556,6 +556,8 @@ AC_ARG_ENABLE([portable-native-sync],
               esac],
               [])
 
+AX_CREATE_STDINT_H([include/config-int.h])
+
 dnl -----------------------------------------------------------
 dnl output files
 dnl -----------------------------------------------------------
