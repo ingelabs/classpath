@@ -1,3 +1,10 @@
+2006-01-04  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Removed unneeded default.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Added and fixed several defaults.
+
 2006-01-04  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicHTML.java: New class.
