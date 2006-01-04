@@ -280,8 +280,9 @@ public class JMenuItem extends AbstractButton implements Accessible,
     if (! (this instanceof JMenu) && action != null)
       {
         setAccelerator((KeyStroke) (action.getValue(Action.ACCELERATOR_KEY)));
-        super.registerKeyboardAction(action, accelerator, 
-                                     JComponent.WHEN_IN_FOCUSED_WINDOW);
+        if (accelerator != null)
+          super.registerKeyboardAction(action, accelerator, 
+                                       JComponent.WHEN_IN_FOCUSED_WINDOW);
       }
   }
 

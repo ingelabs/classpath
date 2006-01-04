@@ -1,3 +1,11 @@
+2006-01-03  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JMenuItem.java (configurePropertiesFromAction): Only
+	register keyboard action when accelerator is not null.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java (propertyChange): Only
+	re-register accelerator if not null.
+	(installKeyboardActions): Only put accelerator in map when not null.
+
 2006-01-04  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
