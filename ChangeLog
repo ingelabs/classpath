@@ -1,5 +1,16 @@
 2006-01-04  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(propertyChange): Fixed to change the combo box label
+	appropriately. Also, fixed to set the textfield's text
+	correctly.
+	(editFile): Fixed size of editing field.
+	(installComponents): Correctly aligned all panels.
+	(installStrings): Fixed to set the label's text
+	appropriately depending on the dialog type.
+
+2006-01-04  Lillian Angel  <langel@redhat.com>
+
 	PR classpath/25473 
 	PR classpath/25479
 	* javax/swing/JTree.java
