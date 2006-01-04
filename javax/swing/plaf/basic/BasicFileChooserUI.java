@@ -669,7 +669,7 @@ public class BasicFileChooserUI extends FileChooserUI
   JButton accept;
 
   /** An optional accessory panel. */
-  JPanel accessoryPanel;
+  JPanel accessoryPanel = new JPanel();
 
   /** A property change listener. */
   PropertyChangeListener propertyChangeListener;

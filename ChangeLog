@@ -1,3 +1,15 @@
+2006-01-04  Lillian Angel  <langel@redhat.com>
+
+	PR classpath/25473 
+	PR classpath/25479
+	* javax/swing/JTree.java
+	(JTree): Because some L&F defaults have been updated,
+	the selectionMode for the tree needed to be set to SINGLE.
+	* javax/swing/plaf/basic/BasicFileChooserUI.java:
+	Initialized accessoryPanel.
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(installComponents): Added accessoryPanel to the filechooser.
+
 2006-01-04  Dalibor Topic  <robilad@kaffe.org>
 
 	* configure.ac: Added AX_CREATE_STDINT_H

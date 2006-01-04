@@ -1350,6 +1350,7 @@ public class MetalFileChooserUI
     buttonPanel.add(cancelButton);
     bottomPanel.add(buttonPanel);
     fc.add(bottomPanel, BorderLayout.SOUTH);
+    fc.add(getAccessoryPanel(), BorderLayout.EAST);
   }
   
   /**
@@ -1509,7 +1510,6 @@ public class MetalFileChooserUI
       {
         fileList.setModel(getModel());
         fileListPanel.removeAll();
-        scrollPane.setViewport(new JViewport());
         scrollPane.getViewport().setView(fileList);
       }
     fileListPanel.add(scrollPane);
@@ -1579,7 +1579,6 @@ public class MetalFileChooserUI
     while (rc > size)
       mod.removeRow(--rc);
 
-    scrollPane.setViewport(new JViewport());
     scrollPane.getViewport().setView(fileTable);
     scrollPane.setColumnHeaderView(fileTable.getTableHeader());
     scrollPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
