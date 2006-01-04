@@ -1,3 +1,22 @@
+2006-01-04  Roman Kennke  <kennke@aicas.com>
+
+	* vm/reference/gnu/java/net/VMPlainSocketImpl.java: New VM class.
+	* vm/reference/gnu/java/net/VMPlainDatagramSocketImpl.java:
+	New VM class.
+	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c: New file.
+	* native/jni/java-net/gnu_java_net_VMPlainDatagramSocketImpl.c:
+	New file.
+	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c:
+	Removed.
+	* native/jni/java-net/gnu_java_net_PlainSocketImpl.c: Removed.
+	* native/jni/java-net/Makefile.am: Adjusted for new source files.
+	* gnu/java/net/PlainDatagramSocketImpl.java: Use new VM interface.
+	* gnu/java/net/PlainSocketImpl.java: Use new VM interface.
+	* include/gnu_java_net_PlainDatagramSocketImpl.h: Removed.
+	* include/gnu_java_net_PlainSocketImpl.h: Removed.
+	* include/gnu_java_net_VMPlainDatagramSocketImpl.h: New header file.
+	* include/gnu_java_net_VMPlainSocketImpl.h: New header file.
+
 2006-01-04  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
