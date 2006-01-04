@@ -68,7 +68,9 @@ exception statement from your version. */
  * Creates a new stream or datagram socket
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_create(JNIEnv *env, jclass klass, jobject obj)
+Java_gnu_java_net_VMPlainSocketImpl_create(JNIEnv *env,
+					   jclass klass __attribute__ ((__unused__)),
+					   jobject obj)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -86,7 +88,9 @@ Java_gnu_java_net_VMPlainSocketImpl_create(JNIEnv *env, jclass klass, jobject ob
  * action as well.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_close(JNIEnv *env, jclass klass, jobject obj)
+Java_gnu_java_net_VMPlainSocketImpl_close(JNIEnv *env,
+					  jclass klass __attribute__ ((__unused__)),
+					  jobject obj)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -103,8 +107,10 @@ Java_gnu_java_net_VMPlainSocketImpl_close(JNIEnv *env, jclass klass, jobject obj
  * Connects to the specified destination.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_connect(JNIEnv *env, jclass klass, jobject obj, 
-                                          jobject addr, jint port)
+Java_gnu_java_net_VMPlainSocketImpl_connect(JNIEnv *env,
+					    jclass klass __attribute__ ((__unused__)),
+					    jobject obj, 
+					    jobject addr, jint port)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -123,8 +129,10 @@ Java_gnu_java_net_VMPlainSocketImpl_connect(JNIEnv *env, jclass klass, jobject o
  * variables. 
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_bind(JNIEnv *env, jclass klass, jobject obj, jobject addr,
-                                   jint port)
+Java_gnu_java_net_VMPlainSocketImpl_bind(JNIEnv *env,
+					 jclass klass __attribute__ ((__unused__)),
+					 jobject obj, jobject addr,
+					 jint port)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -142,7 +150,9 @@ Java_gnu_java_net_VMPlainSocketImpl_bind(JNIEnv *env, jclass klass, jobject obj,
  * connections allowed.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_listen(JNIEnv *env, jclass klass, jobject obj, jint queuelen)
+Java_gnu_java_net_VMPlainSocketImpl_listen(JNIEnv *env,
+					   jclass klass __attribute__ ((__unused__)),
+					   jobject obj, jint queuelen)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -160,7 +170,9 @@ Java_gnu_java_net_VMPlainSocketImpl_listen(JNIEnv *env, jclass klass, jobject ob
  * object. Note that we assume this is a PlainSocketImpl just like us.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_accept(JNIEnv *env, jclass klass, jobject obj, jobject impl)
+Java_gnu_java_net_VMPlainSocketImpl_accept(JNIEnv *env,
+					   jclass klass __attribute__ ((__unused__)),
+					   jobject obj, jobject impl)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -174,7 +186,9 @@ Java_gnu_java_net_VMPlainSocketImpl_accept(JNIEnv *env, jclass klass, jobject ob
 /*************************************************************************/
 
 JNIEXPORT jint JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_available(JNIEnv *env, jclass klass, jobject obj)
+Java_gnu_java_net_VMPlainSocketImpl_available(JNIEnv *env,
+					      jclass klass __attribute__ ((__unused__)),
+					      jobject obj)
 {
 #ifndef WITHOUT_NETWORK
   jclass   cls;
@@ -221,8 +235,10 @@ Java_gnu_java_net_VMPlainSocketImpl_available(JNIEnv *env, jclass klass, jobject
  * This method sets the specified option for a socket
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_setOption(JNIEnv *env,jclass klass, jobject obj, 
-                                        jint option_id, jobject val)
+Java_gnu_java_net_VMPlainSocketImpl_setOption(JNIEnv *env,
+					      jclass klass __attribute__ ((__unused__)),
+					      jobject obj, 
+					      jint option_id, jobject val)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -239,8 +255,10 @@ Java_gnu_java_net_VMPlainSocketImpl_setOption(JNIEnv *env,jclass klass, jobject 
  * This method gets the specified option for a socket
  */
 JNIEXPORT jobject JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_getOption(JNIEnv *env, jclass klass, jobject obj, 
-                                        jint option_id)
+Java_gnu_java_net_VMPlainSocketImpl_getOption(JNIEnv *env,
+					      jclass klass __attribute__ ((__unused__)),
+					      jobject obj, 
+					      jint option_id)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -258,8 +276,10 @@ Java_gnu_java_net_VMPlainSocketImpl_getOption(JNIEnv *env, jclass klass, jobject
  * Reads a buffer from a remote host
  */
 JNIEXPORT jint JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_read(JNIEnv *env, jclass klass, jobject obj, jarray buf,
-                                   jint offset, jint len)
+Java_gnu_java_net_VMPlainSocketImpl_read(JNIEnv *env,
+					 jclass klass __attribute__ ((__unused__)),
+					 jobject obj, jarray buf,
+					 jint offset, jint len)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -277,8 +297,10 @@ Java_gnu_java_net_VMPlainSocketImpl_read(JNIEnv *env, jclass klass, jobject obj,
  * Writes a buffer to the remote host
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_write(JNIEnv *env, jclass klass, jobject obj, jarray buf,
-                                    jint offset, jint len)
+Java_gnu_java_net_VMPlainSocketImpl_write(JNIEnv *env,
+					  jclass klass __attribute__ ((__unused__)),
+					  jobject obj, jarray buf,
+					  jint offset, jint len)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -290,7 +312,9 @@ Java_gnu_java_net_VMPlainSocketImpl_write(JNIEnv *env, jclass klass, jobject obj
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_shutdownInput (JNIEnv * env, jclass klass, jobject this)
+Java_gnu_java_net_VMPlainSocketImpl_shutdownInput (JNIEnv * env,
+						   jclass klass __attribute__ ((__unused__)),
+						   jobject this)
 {
 #ifndef WITHOUT_NETWORK
   assert (env != NULL);
@@ -302,7 +326,9 @@ Java_gnu_java_net_VMPlainSocketImpl_shutdownInput (JNIEnv * env, jclass klass, j
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainSocketImpl_shutdownOutput (JNIEnv * env, jclass klass, jobject this)
+Java_gnu_java_net_VMPlainSocketImpl_shutdownOutput (JNIEnv * env,
+						    jclass klass __attribute__ ((__unused__)),
+						    jobject this)
 {
 #ifndef WITHOUT_NETWORK
   assert (env != NULL);

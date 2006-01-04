@@ -68,7 +68,9 @@ exception statement from your version. */
  * Creates a new datagram socket
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainDatagramSocketImpl_create(JNIEnv *env, jclass klass, jobject obj)
+Java_gnu_java_net_VMPlainDatagramSocketImpl_create(JNIEnv *env,
+						   jclass klass __attribute__ ((__unused__))
+						   , jobject obj)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
@@ -85,7 +87,9 @@ Java_gnu_java_net_VMPlainDatagramSocketImpl_create(JNIEnv *env, jclass klass, jo
  * Close the socket.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainDatagramSocketImpl_close(JNIEnv *env, jclass klass, jobject obj)
+Java_gnu_java_net_VMPlainDatagramSocketImpl_close(JNIEnv *env,
+						  jclass klass __attribute__ ((__unused__)),
+						  jobject obj)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
@@ -102,7 +106,10 @@ Java_gnu_java_net_VMPlainDatagramSocketImpl_close(JNIEnv *env, jclass klass, job
  * Connects to the specified destination.
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainDatagramSocketImpl_connect(JNIEnv *env, jclass klass, jobject obj, jobject addr, jint port)
+Java_gnu_java_net_VMPlainDatagramSocketImpl_connect(JNIEnv *env,
+						    jclass klass __attribute__ ((__unused__)),
+						    jobject obj,
+						    jobject addr, jint port)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -121,7 +128,10 @@ Java_gnu_java_net_VMPlainDatagramSocketImpl_connect(JNIEnv *env, jclass klass, j
  * variables. 
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainDatagramSocketImpl_bind(JNIEnv *env, jclass klass, jobject obj, jint port, jobject addr)
+Java_gnu_java_net_VMPlainDatagramSocketImpl_bind(JNIEnv *env,
+						 jclass klass __attribute__ ((__unused__)),
+						 jobject obj,
+						 jint port, jobject addr)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
@@ -138,8 +148,11 @@ Java_gnu_java_net_VMPlainDatagramSocketImpl_bind(JNIEnv *env, jclass klass, jobj
  * This method sets the specified option for a socket
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainDatagramSocketImpl_setOption(JNIEnv *env, jclass klass, jobject obj, 
-                                                jint option_id, jobject val)
+Java_gnu_java_net_VMPlainDatagramSocketImpl_setOption(JNIEnv *env,
+						      jclass klass __attribute__ ((__unused__)),
+						      jobject obj, 
+						      jint option_id,
+						      jobject val)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
@@ -156,8 +169,10 @@ Java_gnu_java_net_VMPlainDatagramSocketImpl_setOption(JNIEnv *env, jclass klass,
  * This method sets the specified option for a socket
  */
 JNIEXPORT jobject JNICALL
-Java_gnu_java_net_VMPlainDatagramSocketImpl_getOption(JNIEnv *env, jclass klass, jobject obj, 
-                                                jint option_id)
+Java_gnu_java_net_VMPlainDatagramSocketImpl_getOption(JNIEnv *env,
+						      jclass klass __attribute__ ((__unused__)),
+						      jobject obj, 
+						      jint option_id)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
@@ -176,7 +191,7 @@ Java_gnu_java_net_VMPlainDatagramSocketImpl_getOption(JNIEnv *env, jclass klass,
  */
 JNIEXPORT void JNICALL
 Java_gnu_java_net_VMPlainDatagramSocketImpl_nativeReceive(JNIEnv     *env,
-                                                          jclass     klass,
+                                                          jclass     klass __attribute__ ((__unused__)),
                                                           jobject    obj,
                                                           jbyteArray arr,
                                                           jint       offset,
@@ -255,7 +270,7 @@ Java_gnu_java_net_VMPlainDatagramSocketImpl_nativeReceive(JNIEnv     *env,
  */
 JNIEXPORT void JNICALL
 Java_gnu_java_net_VMPlainDatagramSocketImpl_nativeSendTo(JNIEnv  *env,
-                                                         jclass  klass,
+                                                         jclass  klass __attribute__ ((__unused__)),
                                                          jobject obj, 
                                                          jobject addr,
                                                          jint    port,
@@ -302,8 +317,10 @@ Java_gnu_java_net_VMPlainDatagramSocketImpl_nativeSendTo(JNIEnv  *env,
  * Joins a multicast group
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainDatagramSocketImpl_join(JNIEnv *env, jclass klass, jobject obj, 
-                                           jobject addr)
+Java_gnu_java_net_VMPlainDatagramSocketImpl_join(JNIEnv *env,
+						 jclass klass __attribute__ ((__unused__)),
+						 jobject obj, 
+						 jobject addr)
 {
 #ifndef WITHOUT_NETWORK
   jint netAddress;
@@ -356,8 +373,10 @@ Java_gnu_java_net_VMPlainDatagramSocketImpl_join(JNIEnv *env, jclass klass, jobj
  * Leaves a multicast group
  */
 JNIEXPORT void JNICALL
-Java_gnu_java_net_VMPlainDatagramSocketImpl_leave(JNIEnv *env, jclass klass, jobject obj, 
-                                            jobject addr)
+Java_gnu_java_net_VMPlainDatagramSocketImpl_leave(JNIEnv *env,
+						  jclass klass __attribute__ ((__unused__)),
+						  jobject obj, 
+						  jobject addr)
 {
 #ifndef WITHOUT_NETWORK
   jint netAddress;
