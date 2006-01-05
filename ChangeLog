@@ -1,5 +1,11 @@
 2006-01-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(validateInvalidComponents): Search for the validate root
+	and start validating there.
+
+2006-01-05  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicListUI.java
 	(ComponentHandler): Removed unneeded class.
 	(ListDataHandler.contentsChanged): Revalidate instead of calling
