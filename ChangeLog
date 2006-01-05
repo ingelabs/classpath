@@ -1,3 +1,9 @@
+2006-01-05  Mark Wielaard  <mark@klomp.org>
+
+	* newsitems.txt: Add fosdem meeting.
+	* events/events.wml: Likewise.
+	* events/fosdem06.wml: New file.
+	
 2006-01-05  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/text/GapContent.java
