@@ -41,6 +41,7 @@ package javax.swing.plaf.basic;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -1080,34 +1081,62 @@ public class BasicListUI extends ListUI
    */
   public Dimension getPreferredSize(JComponent c)
   {
+    maybeUpdateLayoutState();
     int size = list.getModel().getSize();
-    if (size == 0)
-      return new Dimension(0, 0);
     int visibleRows = list.getVisibleRowCount();
     int layoutOrientation = list.getLayoutOrientation();
-    Rectangle bounds = getCellBounds(list, 0, list.getModel().getSize() - 1);
-    Dimension retVal = bounds.getSize();
-    retVal.width += cellWidth;
-    Component parent = list.getParent();
-    if ((visibleRows == -1) && (parent instanceof JViewport))
-      {
-        JViewport viewport = (JViewport) parent;
 
-        if (layoutOrientation == JList.HORIZONTAL_WRAP)
+    int h;
+    int w;
+    int maxCellHeight = cellHeight;
+    if (maxCellHeight <= 0)
+      {
+        for (int i = 0; i < cellHeights.length; i++)
+          maxCellHeight = Math.max(maxCellHeight, cellHeights[i]);
+      }
+    if (layoutOrientation == JList.HORIZONTAL_WRAP)
+      {
+        if (visibleRows > 0)
           {
-            int h = viewport.getSize().height;
-            int cellsPerCol = h / cellHeight;
-            int w = size / cellsPerCol * cellWidth;
-            retVal = new Dimension(w, h);
+            // We cast to double here to force double divisions.
+            double modelSize = size;
+            int neededColumns = (int) Math.ceil(modelSize / visibleRows); 
+            int adjustedRows = (int) Math.ceil(modelSize / neededColumns);
+            h = maxCellHeight * adjustedRows;
+            w = cellWidth * neededColumns;
           }
-        else if (layoutOrientation == JList.VERTICAL_WRAP)
+        else
           {
-            int w = viewport.getSize().width;
-            int cellsPerRow = Math.max(w / cellWidth, 1);
-            int h = size / cellsPerRow * cellHeight;
-            retVal = new Dimension(w, h);
+            int neededColumns = Math.min(1, list.getWidth() / cellWidth);
+            h = size / neededColumns * maxCellHeight;
+            w = neededColumns * cellWidth;
           }
       }
+    else if (layoutOrientation == JList.VERTICAL_WRAP)
+      {
+        if (visibleRows > 0)
+          h = visibleRows * maxCellHeight;
+        else
+          h = Math.max(list.getHeight(), maxCellHeight);
+        int neededColumns = list.getHeight() / maxCellHeight;
+        w = cellWidth * neededColumns;
+      }
+    else
+      {
+        if (list.getFixedCellWidth() > 0)
+          w = list.getFixedCellWidth();
+        else
+          w = cellWidth;
+        if (list.getFixedCellHeight() > 0)
+          // FIXME: We need to add some cellVerticalMargins here, according
+          // to the specs.
+          h = list.getFixedCellHeight() * size;
+        else
+          h = maxCellHeight * size;
+      }
+    Insets insets = list.getInsets();
+    Dimension retVal = new Dimension(w + insets.left + insets.right,
+                                     h + insets.top + insets.bottom);
     return retVal;
   }
 

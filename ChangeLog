@@ -1,5 +1,10 @@
 2006-01-04  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicListUI.java
+	(getPreferredSize): Rewritten to match the specs.
+
+2006-01-04  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JFileChooser.java
 	(showOpenDialog): Set fixed width on the dialog.
 	(showSaveDialog): Set fixed width on the dialog.
