@@ -833,7 +833,7 @@ public class DefaultCaret extends Rectangle
         Document doc = textComponent.getDocument();
         if (doc != null)
           this.dot = Math.min(dot, doc.getLength());
-        this.dot = Math.max(dot, 0);
+        this.dot = Math.max(this.dot, 0);
         this.mark = dot;
         handleHighlight();
         adjustVisibility(this);
