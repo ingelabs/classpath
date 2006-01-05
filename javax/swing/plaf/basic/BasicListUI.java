@@ -46,9 +46,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
@@ -62,7 +59,6 @@ import javax.swing.DefaultListSelectionModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JList;
-import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
@@ -86,21 +82,6 @@ import javax.swing.plaf.ListUI;
  */
 public class BasicListUI extends ListUI
 {
-
-  /**
-   * A helper class which listens for {@link ComponentEvent}s from
-   * the JList.
-   */
-  private class ComponentHandler extends ComponentAdapter {
-
-    /**
-     * Called when the component is hidden. Invalidates the internal
-     * layout.
-     */
-    public void componentResized(ComponentEvent ev) {
-      BasicListUI.this.damageLayout();
-    }
-  }
 
   /**
    * A helper class which listens for {@link FocusEvent}s
@@ -154,7 +135,7 @@ public class BasicListUI extends ListUI
      */
     public void contentsChanged(ListDataEvent e)
     {
-      BasicListUI.this.damageLayout();
+      list.revalidate();
     }
 
     /**
@@ -164,7 +145,7 @@ public class BasicListUI extends ListUI
      */
     public void intervalAdded(ListDataEvent e)
     {
-      BasicListUI.this.damageLayout();
+      list.revalidate();
     }
 
     /**
@@ -174,7 +155,7 @@ public class BasicListUI extends ListUI
      */
     public void intervalRemoved(ListDataEvent e)
     {
-      BasicListUI.this.damageLayout();
+      list.revalidate();
     }
   }
 
@@ -570,20 +551,19 @@ public class BasicListUI extends ListUI
         }
       // Update the updateLayoutStateNeeded flag.
       if (e.getPropertyName().equals("model"))
-        updateLayoutStateNeeded += modelChanged;
+        updateLayoutStateNeeded |= modelChanged;
       else if (e.getPropertyName().equals("selectionModel"))
-        updateLayoutStateNeeded += selectionModelChanged;
+        updateLayoutStateNeeded |= selectionModelChanged;
       else if (e.getPropertyName().equals("font"))
-        updateLayoutStateNeeded += fontChanged;
+        updateLayoutStateNeeded |= fontChanged;
       else if (e.getPropertyName().equals("fixedCellWidth"))
-        updateLayoutStateNeeded += fixedCellWidthChanged;
+        updateLayoutStateNeeded |= fixedCellWidthChanged;
       else if (e.getPropertyName().equals("fixedCellHeight"))
-        updateLayoutStateNeeded += fixedCellHeightChanged;
+        updateLayoutStateNeeded |= fixedCellHeightChanged;
       else if (e.getPropertyName().equals("prototypeCellValue"))
-        updateLayoutStateNeeded += prototypeCellValueChanged;
+        updateLayoutStateNeeded |= prototypeCellValueChanged;
       else if (e.getPropertyName().equals("cellRenderer"))
-        updateLayoutStateNeeded += cellRendererChanged;
-      BasicListUI.this.damageLayout();
+        updateLayoutStateNeeded |= cellRendererChanged;
     }
   }
 
@@ -648,11 +628,6 @@ public class BasicListUI extends ListUI
 
   /** The property change listener listening to the list. */
   protected PropertyChangeListener propertyChangeListener;
-
-
-  /** The component listener that receives notification for resizing the
-   * JList component.*/
-  private ComponentListener componentListener;
 
   /** Saved reference to the list this UI was created for. */
   protected JList list;
@@ -812,7 +787,7 @@ public class BasicListUI extends ListUI
     // Update the layout if necessary.
     maybeUpdateLayoutState();
 
-    int index = list.getModel().getSize() - 1;;
+    int index = list.getModel().getSize() - 1;
 
     // If a fixed cell height is set, then we can work more efficient.
     if (cellHeight > 0)
@@ -892,18 +867,6 @@ public class BasicListUI extends ListUI
   }
 
   /**
-   * Marks the current layout as damaged and requests revalidation from the
-   * JList.
-   * This is package-private to avoid an accessor method.
-   *
-   * @see #updateLayoutStateNeeded
-   */
-  void damageLayout()
-  {
-    updateLayoutStateNeeded = 1;
-  }
-
-  /**
    * Calls {@link #updateLayoutState} if {@link #updateLayoutStateNeeded}
    * is nonzero, then resets {@link #updateLayoutStateNeeded} to zero.
    */
@@ -976,12 +939,6 @@ public class BasicListUI extends ListUI
     if (propertyChangeListener == null)
       propertyChangeListener = createPropertyChangeListener();
     list.addPropertyChangeListener(propertyChangeListener);
-
-    // FIXME: Are these two really needed? At least they are not documented.
-    //keyListener = new KeyHandler();
-    componentListener = new ComponentHandler();
-    list.addComponentListener(componentListener);
-    //list.addKeyListener(keyListener);
   }
 
   /**
@@ -993,7 +950,6 @@ public class BasicListUI extends ListUI
     list.getModel().removeListDataListener(listDataListener);
     list.removeListSelectionListener(listSelectionListener);
     list.removeMouseListener(mouseInputListener);
-    //list.removeKeyListener(keyListener);
     list.removeMouseMotionListener(mouseInputListener);
     list.removePropertyChangeListener(propertyChangeListener);
   }
@@ -1118,7 +1074,7 @@ public class BasicListUI extends ListUI
           h = visibleRows * maxCellHeight;
         else
           h = Math.max(list.getHeight(), maxCellHeight);
-        int neededColumns = list.getHeight() / maxCellHeight;
+        int neededColumns = h / maxCellHeight;
         w = cellWidth * neededColumns;
       }
     else
@@ -1201,13 +1157,13 @@ public class BasicListUI extends ListUI
    * location lies outside the bounds of the list, the greatest index in the
    * list model is returned.
    *
-   * @param list the list which on which the computation is based on
+   * @param l the list which on which the computation is based on
    * @param location the coordinates
    *
    * @return the index of the list item that is located at the given
    *         coordinates or <code>-1</code> if the list model is empty
    */
-  public int locationToIndex(JList list, Point location)
+  public int locationToIndex(JList l, Point location)
   {
     int layoutOrientation = list.getLayoutOrientation();
     int index = -1;
@@ -1289,7 +1245,7 @@ public class BasicListUI extends ListUI
     return index;
   }
 
-  public Point indexToLocation(JList list, int index)
+  public Point indexToLocation(JList l, int index)
   {
     int layoutOrientation = list.getLayoutOrientation();
     Point loc = null;

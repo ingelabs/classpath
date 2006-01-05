@@ -1,3 +1,26 @@
+2006-01-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java
+	(ComponentHandler): Removed unneeded class.
+	(ListDataHandler.contentsChanged): Revalidate instead of calling
+	damageLayout().
+	(ListDataHandler.intervalAdded): Revalidate instead of calling
+	damageLayout().
+	(ListDataHandler.intervalRemoved): Revalidate instead of calling
+	damageLayout().
+	(PropertyChangeHandler.propertyChange): Or flags together instead
+	of adding them. Don't call damageLayout().
+	(componentListener): Removed unnecessary field.
+	(damageLayout): Removed unnecessary method.
+	(installListeners): Don't install unnecessary listeners.
+	(uninstallListeners): Dito.
+	(getPreferredSize): Don't ask for the real list height and
+	calculate with the previously calculated list height.
+	(locationToIndex): Renamed list parameter to l so that it doesn't
+	shadow the field with the same name.
+	(indexToLocation): Renamed list parameter to l so that it doesn't
+	shadow the field with the same name.
+
 2006-01-04  Tom Tromey  <tromey@redhat.com>
 
 	* include/.cvsignore: Ignore config-int.h.
