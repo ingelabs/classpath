@@ -1,3 +1,9 @@
+2006-01-05  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultCaret.java:
+	(setDot): Fixed paramater to Math.max to be this.dot and not the 
+	parameter dot.
+
 2006-01-05  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java
