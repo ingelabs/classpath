@@ -721,17 +721,39 @@ public class BasicListUI extends ListUI
     int maxIndex = Math.max(index1, index2);
     Point loc = indexToLocation(list, minIndex);
     Rectangle bounds = new Rectangle(loc.x, loc.y, cellWidth,
-                                     getRowHeight(minIndex));
-
+                                     getCellHeight(minIndex));
     for (int i = minIndex + 1; i <= maxIndex; i++)
       {
         Point hiLoc = indexToLocation(list, i);
         Rectangle hibounds = new Rectangle(hiLoc.x, hiLoc.y, cellWidth,
-                                       getRowHeight(i));
+                                           getCellHeight(i));
         bounds = bounds.union(hibounds);
       }
 
     return bounds;
+  }
+
+  /**
+   * Calculates the maximum cell height.
+   *
+   * @param index the index of the cell
+   *
+   * @return the maximum cell height
+   */
+  private int getCellHeight(int index)
+  {
+    int height = cellHeight;
+    if (height <= 0)
+      {
+        if (list.getLayoutOrientation() == JList.VERTICAL)
+          height = getRowHeight(index);
+        else
+          {
+            for (int j = 0; j < cellHeights.length; j++)
+              height = Math.max(height, cellHeights[j]);
+          }
+      }
+    return height;
   }
 
   /**
@@ -1141,9 +1163,10 @@ public class BasicListUI extends ListUI
     int lead = sel.getLeadSelectionIndex();
     Rectangle clip = g.getClipBounds();
 
-    int startIndex = list.locationToIndex(new Point(clip.x, clip.y));
-    int endIndex = list.locationToIndex(new Point(clip.x + clip.width,
-                                                  clip.y + clip.height));
+    int startIndex = locationToIndex(list, new Point(clip.x, clip.y));
+    int endIndex = locationToIndex(list, new Point(clip.x + clip.width,
+                                             clip.y + clip.height));
+    
     for (int row = startIndex; row <= endIndex; ++row)
       {
         Rectangle bounds = getCellBounds(list, row, row);
@@ -1174,71 +1197,27 @@ public class BasicListUI extends ListUI
         break;
       case JList.HORIZONTAL_WRAP:
         // determine visible rows and cells per row
-        // FIXME: We really should not use getVisibleRowCount() here. Please
-        // refer to the (Sun) API docs of JList.setVisibleRowCount() for
-        // details.
-        int visibleRows = list.getVisibleRowCount();
+        int maxCellHeight = getCellHeight(0);
+        int visibleRows = list.getHeight() / maxCellHeight;
         int cellsPerRow = -1;
         int numberOfItems = list.getModel().getSize();
-        Dimension listDim = list.getSize();
-        if (visibleRows <= 0)
-          {
-            try
-              {
-                cellsPerRow = listDim.width / cellWidth;
-              }
-            catch (ArithmeticException ex)
-              {
-                cellsPerRow = 1;
-              }
-          }
-        else
-          {
-            cellsPerRow = numberOfItems / visibleRows + 1;
-          }
+        cellsPerRow = numberOfItems / visibleRows + 1;
 
         // determine index for the given location
         int cellsPerColumn = numberOfItems / cellsPerRow + 1;
         int gridX = Math.min(location.x / cellWidth, cellsPerRow - 1);
-        int gridY;
-        if (cellHeight > 0)
-          gridY = Math.min(location.y / cellHeight, cellsPerColumn);
-        else
-          {
-            int posY = 0;
-            for (gridY = 0; posY + cellHeights[gridY] < location.y;)
-              {
-                posY += cellHeights[gridY];
-                gridY++;
-              }
-          }
+        int gridY = Math.min(location.y / maxCellHeight, cellsPerColumn);
         index = gridX + gridY * cellsPerRow;
         break;
       case JList.VERTICAL_WRAP:
         // determine visible rows and cells per column
-        int visibleRows2 = list.getVisibleRowCount();
-        if (visibleRows2 <= 0)
-          {
-            Dimension listDim2 = list.getSize();
-            visibleRows2 = listDim2.height / cellHeight;
-          }
+        int maxCellHeight2 = getCellHeight(0);
+        int visibleRows2 = list.getHeight() / maxCellHeight2;
         int numberOfItems2 = list.getModel().getSize();
         int cellsPerRow2 = numberOfItems2 / visibleRows2 + 1;
 
         int gridX2 = Math.min(location.x / cellWidth, cellsPerRow2 - 1);
-        int gridY2;
-        if (cellHeight > 0)
-          gridY2 = Math.min(location.y / cellHeight, visibleRows2);
-        else
-          {
-            int posY = 0;
-            for (gridY2 = 0; gridY2 <= cellHeights.length
-                             && posY + cellHeights[gridY2] < location.y;)
-              {
-                posY += cellHeights[gridY2];
-                gridY2++;
-              }
-          }
+        int gridY2 = Math.min(location.y / maxCellHeight2, visibleRows2);
         index = gridY2 + gridX2 * visibleRows2;
         break;
       }
@@ -1256,59 +1235,31 @@ public class BasicListUI extends ListUI
         break;
       case JList.HORIZONTAL_WRAP:
         // determine visible rows and cells per row
-        // FIXME: We really should not use getVisibleRowCount() here. Please
-        // refer to the (Sun) API docs of JList.setVisibleRowCount() for
-        // details.
-        int visibleRows = list.getVisibleRowCount();
+        int maxCellHeight = getCellHeight(0);
+        int visibleRows = list.getHeight() / maxCellHeight;
         int numberOfCellsPerRow = -1;
-        if (visibleRows <= 0)
-          {
-            Dimension listDim = list.getSize();
-            numberOfCellsPerRow = Math.max(listDim.width / cellWidth, 1);
-          }
-        else
-          {
-            int numberOfItems = list.getModel().getSize();
-            numberOfCellsPerRow = numberOfItems / visibleRows + 1;
-          }
+        int numberOfItems = list.getModel().getSize();
+        numberOfCellsPerRow = numberOfItems / visibleRows + 1;
+
         // compute coordinates inside the grid
         int gridX = index % numberOfCellsPerRow;
         int gridY = index / numberOfCellsPerRow;
         int locX = gridX * cellWidth;
         int locY;
-        if (cellHeight > 0)
-          locY = gridY * cellHeight;
-        else
-          {
-            locY = 0;
-            for (int y = 0; y < gridY; y++)
-              locY += cellHeights[gridY];
-          }
+        locY = gridY * maxCellHeight;
         loc = new Point(locX, locY);
         break;
       case JList.VERTICAL_WRAP:
         // determine visible rows and cells per column
-        int visibleRows2 = list.getVisibleRowCount();
-        if (visibleRows2 <= 0)
-          {
-            Dimension listDim2 = list.getSize();
-            visibleRows2 = listDim2.height / cellHeight;
-          }
+        int maxCellHeight2 = getCellHeight(0);
+        int visibleRows2 = list.getHeight() / maxCellHeight2;
         // compute coordinates inside the grid
         if (visibleRows2 > 0)
           {
             int gridY2 = index % visibleRows2;
             int gridX2 = index / visibleRows2;
             int locX2 = gridX2 * cellWidth;
-            int locY2;
-            if (cellHeight > 0)
-              locY2 = gridY2 * cellHeight;
-            else
-              {
-                locY2 = 0;
-                for (int y = 0; gridY2 < cellHeights.length && y < gridY2; y++)
-                  locY2 += cellHeights[gridY2];
-              }
+            int locY2 = gridY2 * maxCellHeight2;
             loc = new Point(locX2, locY2);
           }
         else

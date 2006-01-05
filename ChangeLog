@@ -1,5 +1,18 @@
 2006-01-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicListUI.java
+	(getCellHeight): New helper method.
+	(getCellBounds): Use new helper method for determining the cell
+	height.
+	(paint): Don't call list.indexToLocation() but instead call
+	directly into the same UI method.
+	(locationToIndex): Fixed calculation of # visible rows and handling
+	of cell heights.
+	(indexToLocation): Fixed calculation of # visible rows and handling
+	of cell heights.
+
+2006-01-05  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
 	(createList): Set VERTICAL_SCROLLBAR_NEVER mode on the JScrollPane
 	in the file chooser.
