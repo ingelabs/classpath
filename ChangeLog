@@ -1,3 +1,7 @@
+2006-01-04  Tom Tromey  <tromey@redhat.com>
+
+	* include/.cvsignore: Ignore config-int.h.
+
 2006-01-04  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java
