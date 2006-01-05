@@ -1,3 +1,9 @@
+2006-01-05  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/text/GapContent.java
+	(createPosition): No positions should be created inside the
+	gap. Fixed check to ensure this does not happen.
+
 2006-01-05  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/RepaintManager.java
