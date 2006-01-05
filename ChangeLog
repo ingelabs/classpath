@@ -1,3 +1,9 @@
+2006-01-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(createList): Set VERTICAL_SCROLLBAR_NEVER mode on the JScrollPane
+	in the file chooser.
+
 2006-01-05  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTextPane.java:
