@@ -1,5 +1,9 @@
 2006-01-06  Tom Tromey  <tromey@redhat.com>
 
+	* java/lang/String.java (codePointCount): Fixed javadoc.
+
+2006-01-06  Tom Tromey  <tromey@redhat.com>
+
 	* java/lang/String.java (contains): Added @since.
 
 2006-01-06  Ito Kazumitsu  <kaz@maczuka.gcd.org>  

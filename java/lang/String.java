@@ -1765,7 +1765,7 @@ public final class String implements Serializable, Comparable, CharSequence
 
   /**
    * Return the number of code points between two indices in the
-   * <code>StringBuffer</code>.  An unpaired surrogate counts as a
+   * <code>String</code>.  An unpaired surrogate counts as a
    * code point for this purpose.  Characters outside the indicated
    * range are not examined, even if the range ends in the middle of a
    * surrogate pair.
