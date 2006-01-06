@@ -1883,6 +1883,8 @@ public final class String implements Serializable, Comparable, CharSequence
    * described in s.
    * @param s the CharSequence
    * @return true iff this String contains s
+   * 
+   * @since 1.5
    */
   public boolean contains (CharSequence s)
   {
