@@ -1,3 +1,17 @@
+2006-01-06  Jeroen Frijters  <jeroen@frijters.net>
+
+	PR classpath/24858
+	* gnu/java/util/WeakIdentityHashMap.java: New file.
+	* java/lang/InheritableThreadLocal.java
+	(newChildThread): Modified to remove key indirection.
+	* java/lang/Thread.java
+	(locals): Changed type to WeakIdentityHashMap.
+	(getThreadLocals): Instantiate WeakIdentityHashMap instead of
+	WeakHashMap.
+	* java/lang/ThreadLocal.java
+	(key, Key): Removed.
+	(get, set): Changed to use "this" instead of "key".
+
 2006-01-06  Dalibor Topic  <robilad@kaffe.org>
 
 	* native/fdlibm/Makefile.am (libfdlibm_la_SOURCES): Removed java-assert.h.
