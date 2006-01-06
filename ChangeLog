@@ -1,3 +1,12 @@
+2006-01-06  Dalibor Topic  <robilad@kaffe.org>
+
+	* native/fdlibm/Makefile.am (libfdlibm_la_SOURCES): Removed java-assert.h.
+
+	* native/fdlibm/java-assert.h: Removed file.
+
+	* native/fdlibm/mprec.c: Include assert.h. Don't include java-assert.h.
+	Replaced use of JvAssert by assert.
+
 2006-01-05  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultCaret.java:
