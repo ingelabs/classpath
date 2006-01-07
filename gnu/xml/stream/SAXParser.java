@@ -147,6 +147,7 @@ public class SAXParser
       throw new IllegalStateException("parsing in progress");
     final String FEATURES = "http://xml.org/sax/features/";
     final String PROPERTIES = "http://xml.org/sax/properties/";
+    final String GNU_FEATURES = "http://gnu.org/sax/features/";
     if ((FEATURES + "namespaces").equals(name))
       namespaceAware = Boolean.TRUE.equals(value);
     else if ((FEATURES + "namespace-prefixes").equals(name))
@@ -169,6 +170,8 @@ public class SAXParser
       declHandler = (DeclHandler) value;
     else if ((PROPERTIES + "lexical-handler").equals(name))
       lexicalHandler = (LexicalHandler) value;
+    else if ((GNU_FEATURES + "xml-base").equals(name))
+      baseAware = Boolean.TRUE.equals(value);
     else
       throw new SAXNotSupportedException(name);
   }
@@ -178,6 +181,7 @@ public class SAXParser
   {
     final String FEATURES = "http://xml.org/sax/features/";
     final String PROPERTIES = "http://xml.org/sax/properties/";
+    final String GNU_FEATURES = "http://gnu.org/sax/features/";
     final String GNU_PROPERTIES = "http://gnu.org/sax/properties/";
     if ((FEATURES + "is-standalone").equals(name))
       return xmlStandalone ? Boolean.TRUE : Boolean.FALSE;
@@ -207,6 +211,8 @@ public class SAXParser
       return xmlVersion;
     if ((PROPERTIES + "lexical-handler").equals(name))
       return lexicalHandler;
+    if ((GNU_FEATURES + "xml-base").equals(name))
+      return baseAware ? Boolean.TRUE : Boolean.FALSE;
     if ((GNU_PROPERTIES + "document-xml-encoding").equals(name))
       return xmlEncoding;
     throw new SAXNotSupportedException(name);
