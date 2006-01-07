@@ -1,3 +1,7 @@
+2006-01-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/TableView.java: New file.
+
 2006-01-07  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/BufferedReader.java: Removed commented out code.
