@@ -75,6 +75,10 @@ import org.xml.sax.SAXException;
 /**
  * StAX filter for performing XInclude processing.
  *
+ * @see http://www.w3.org/TR/xinclude/
+ * @see http://www.w3.org/TR/xptr-framework/
+ * @see http://www.w3.org/TR/xptr-element/
+ *
  * @author <a href='mailto:dog@gnu.org'>Chris Burdess</a>
  */
 class XIncludeFilter

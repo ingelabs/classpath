@@ -1,5 +1,11 @@
 2006-01-07  Chris Burdess  <dog@gnu.org>
 
+	* gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/XIncludeFilter.java,
+	  gnu/xml/stream/XMLParser.java: Updated documentation.
+
+2006-01-07  Chris Burdess  <dog@gnu.org>
+
 	* AUTHORS: add self.
 
 2006-01-06  Casey Marshall  <csm@gnu.org>

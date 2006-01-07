@@ -642,6 +642,9 @@ public class SAXParser
       }
   }
 
+  /**
+   * Indicates whether the specified characters are ignorable whitespace.
+   */
   private boolean isIgnorableWhitespace(XMLParser reader, char[] b,
                                         boolean testCharacters)
   {
