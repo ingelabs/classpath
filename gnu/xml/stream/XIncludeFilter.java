@@ -672,6 +672,12 @@ class XIncludeFilter
       }
     return space;
   }
+
+  String getBaseURI()
+  {
+    String base = (String) getParent().getProperty("gnu.xml.stream.baseURI");
+    return (base == null) ? systemId : base;
+  }
   
   boolean includeResource(String href, String parse, String xpointer,
                           String encoding, String accept,
@@ -682,10 +688,11 @@ class XIncludeFilter
       {
         if (xpointer != null)
           throw new XMLStreamException("xpointer attribute not yet supported");
+        String base = getBaseURI();
         if (href == null || "".equals(href))
-          href = systemId;
+          href = base;
         else
-          href = XMLParser.absolutize(systemId, href);
+          href = XMLParser.absolutize(base, href);
         if (parse == null || "xml".equals(parse))
           {
             seen.clear();

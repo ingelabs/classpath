@@ -1,5 +1,13 @@
 2006-01-07  Chris Burdess  <dog@gnu.org>
 
+	* gnu/xml/stream/BufferedReader.java: Removed commented out code.
+	* gnu/xml/stream/XIncludeFilter.java: Correct XML Base behaviour.
+	* gnu/xml/stream/XMLParser.java: Make additional StAX properties
+	  available; correct handling of unparsed entity references;
+	  absolutize all base URIs; remove commented out code.
+
+2006-01-07  Chris Burdess  <dog@gnu.org>
+
 	* gnu/xml/stream/SAXParser.java,
 	  gnu/xml/stream/XMLParser.java: Add SAX property to return base
 	  URI of the current event.

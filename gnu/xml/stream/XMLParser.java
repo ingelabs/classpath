@@ -89,6 +89,18 @@ import gnu.java.net.CRLFInputStream;
 
 /**
  * An XML parser.
+ * This parser supports the following additional StAX properties:
+ * <table>
+ * <tr><td>gnu.xml.stream.stringInterning</td>
+ * <td>Boolean</td>
+ * <td>Indicates whether markup strings will be interned</td></tr>
+ * <tr><td>gnu.xml.stream.xmlBase</td>
+ * <td>Boolean</td>
+ * <td>Indicates whether XML Base processing will be performed</td></tr>
+ * <tr><td>gnu.xml.stream.baseURI</td>
+ * <td>String</td>
+ * <td>Returns the base URI of the current event</td></tr>
+ * </table>
  *
  * @see http://www.w3.org/TR/REC-xml/
  * @see http://www.w3.org/TR/xml11/
@@ -803,7 +815,12 @@ public class XMLParser
       return resolver;
     if (XMLInputFactory.SUPPORT_DTD.equals(name))
       return supportDTD ? Boolean.TRUE : Boolean.FALSE;
-    // TODO stringInterning
+    if ("gnu.xml.stream.stringInterning".equals(name))
+      return stringInterning ? Boolean.TRUE : Boolean.FALSE;
+    if ("gnu.xml.stream.xmlBase".equals(name))
+      return baseAware ? Boolean.TRUE : Boolean.FALSE;
+    if ("gnu.xml.stream.baseURI".equals(name))
+      return getXMLBase();
     return null;
   }
 
@@ -1053,7 +1070,7 @@ public class XMLParser
                           {
                             event = readCharData(text);
                           }
-                        else if (replaceERefs)
+                        else if (replaceERefs && !isUnparsedEntity(ref))
                           {
                             expandEntity(ref, false); //report start-entity
                             event = next();
@@ -1471,17 +1488,7 @@ public class XMLParser
     if (!externalEntities)
       return;
     InputStream in = null;
-    String base = getXMLBase();
-    String url = absolutize(base, ids.systemId);
-    // Unparsed entity?
-    boolean unparsedEntity = false;
-    if (ids.notationName != null)
-      {
-        ExternalIds notation = doctype.getNotation(ids.notationName);
-        if (notation == null)
-          error("reference to undeclared notation", ids.notationName);
-        unparsedEntity = true;
-      }
+    String url = absolutize(input.systemId, ids.systemId);
     // Check for recursion
     for (Iterator i = inputStack.iterator(); i.hasNext(); )
       {
@@ -1505,18 +1512,11 @@ public class XMLParser
     if (in == null)
       error("unable to resolve external entity",
             (ids.systemId != null) ? ids.systemId : ids.publicId);
-    if (unparsedEntity)
-      {
-        // TODO read unparsed entity into buf
-      }
-    else
-      {
-        pushInput(new Input(in, null, ids.publicId, url, name, null, report));
-        input.init();
-        if (tryRead(TEST_XML_DECL))
-          readTextDecl();
-        input.finalizeEncoding();
-      }
+    pushInput(new Input(in, null, ids.publicId, url, name, null, report));
+    input.init();
+    if (tryRead(TEST_XML_DECL))
+      readTextDecl();
+    input.finalizeEncoding();
   }
 
   /**
@@ -2535,7 +2535,6 @@ public class XMLParser
   private int readStartElement()
     throws IOException, XMLStreamException
   {
-    //System.err.println("readStartElement");
     // Read element name
     String elementName = readNmtoken(true);
     attrs.clear();
@@ -2627,8 +2626,9 @@ public class XMLParser
       }
     if (baseAware)
       {
-        String base = getAttributeValue(XMLConstants.XML_NS_URI, "base");
-        bases.addFirst(base);
+        String uri = getAttributeValue(XMLConstants.XML_NS_URI, "base");
+        String base = getXMLBase();
+        bases.addFirst(absolutize(base, uri));
       }
     if (namespaceAware)
       {
@@ -2693,7 +2693,6 @@ public class XMLParser
   private void readAttribute(String elementName)
     throws IOException, XMLStreamException
   {
-    //System.err.println("readAttribute");
     // Read attribute name
     String attributeName = readNmtoken(true);
     String type = getAttributeType(elementName, attributeName);
@@ -2853,7 +2852,6 @@ public class XMLParser
   private void readEndElement()
     throws IOException, XMLStreamException
   {
-    //System.err.println("readEndElement");
     // pop element off stack
     String expected = (String) stack.removeLast();
     require(expected);
@@ -3034,10 +3032,6 @@ public class XMLParser
                       buf.append(text);
                     else
                       {
-                        //if (replaceERefs)
-                        //  expandEntity(entityName, false); //report start-entity
-                        //else
-                        //  reset(); // report reference
                         pushInput("", "&" + entityName + ";", false);
                         done = true;
                         break;
@@ -3135,6 +3129,20 @@ public class XMLParser
           }
       }
     error("reference to undeclared entity", name);
+  }
+
+  /**
+   * Indicates whether the specified entity is unparsed.
+   */
+  private boolean isUnparsedEntity(String name)
+  {
+    if (doctype != null)
+      {
+        Object value = doctype.getEntity(name);
+        if (value != null && value instanceof ExternalIds)
+          return ((ExternalIds) value).notationName != null;
+      }
+    return false;
   }
 
   /**
@@ -3244,8 +3252,6 @@ public class XMLParser
                 else
                   {
                     reset();
-                    //if (replaceERefs || (flags & LIT_NORMALIZE) > 0)
-                    //  {
                     String entityName = readNmtoken(true);
                     require(';');
                     String text =
@@ -3257,7 +3263,6 @@ public class XMLParser
                                    (flags & LIT_ATTRIBUTE) != 0);
                     entities = true;
                     continue;
-                    //  }
                   }
               }
             break;
@@ -4948,8 +4953,6 @@ public class XMLParser
     {
       offset++;
       int ret = (unicodeReader != null) ? unicodeReader.read() : in.read();
-      //if (ret != -1)
-      //  System.out.println("  read1:"+((char) ret));
       if (ret == 0x0d || (xml11 && (ret == 0x85 || ret == 0x2028)))
         {
           // Normalize CR etc to LF
@@ -4990,7 +4993,6 @@ public class XMLParser
       if (ret != -1)
         {
           // Locator handling
-          //System.out.println("  read:"+new String(b, off, ret));
           for (int i = 0; i < ret; i++)
             {
               int c = b[off + i];
@@ -5015,7 +5017,6 @@ public class XMLParser
     void reset()
       throws IOException
     {
-      //System.out.println("  reset");
       if (unicodeReader != null)
         unicodeReader.reset();
       else
