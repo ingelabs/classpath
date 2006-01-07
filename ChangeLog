@@ -1,3 +1,8 @@
+2006-01-07  Paul Jenner  <psj@harker.dyndns.org>
+
+	Fixes bug #25711
+	* examples/Makefile.am: Corrected DESTDIR install paths.
+
 2006-01-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* org/omg/CORBA/INVALID_ACTIVITY.java: Removed non - 
