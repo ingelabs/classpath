@@ -1,5 +1,9 @@
 2006-01-06  Casey Marshall  <csm@gnu.org>
 
+	* AUTHORS: add myself.
+
+2006-01-06  Casey Marshall  <csm@gnu.org>
+
 	PR classpath/25699
 	* javax/crypto/CipherInputStream.java (logger): new constant.
 	(cipher): make final.
