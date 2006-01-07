@@ -1,3 +1,26 @@
+2006-01-06  Casey Marshall  <csm@gnu.org>
+
+	PR classpath/25699
+	* javax/crypto/CipherInputStream.java (logger): new constant.
+	(cipher): make final.
+	(outLength, inBuffer, inLength): removed.
+	(isStream): make final.
+	(VIRGIN, LIVING, DYING, DEAD, state): removed.
+	(eof): new field.
+	(<init>): call `super,' not `this;' remove `inBuffer' and
+	`outBuffer' initialization; init `eof;' add debug logging.
+	(<init>): call `this' with a new null cipher.
+	(available): fix javadoc to reflect the real semantics; if we
+	don't have a buffer, call `nextBlock.'
+	(close): synchronize.
+	(read): synchronize; fix testing for buffered data.
+	(read): synchronize; add `skip' semantics if first argument is
+	`null;' decrypt stream cipher data only if there is any; fix tests
+	for buffered data.
+	(skip): stop using `available' to see how many data are buffered.
+	(nextBlock): simplify to use cipher-allocated output buffers
+	instead of internally allocated ones.
+
 2006-01-06  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/String.java (codePointCount): Fixed javadoc.
