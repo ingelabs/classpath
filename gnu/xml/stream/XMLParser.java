@@ -1426,7 +1426,7 @@ public class XMLParser
   /**
    * Returns the current base URI for resolving external entities.
    */
-  private String getXMLBase()
+  String getXMLBase()
   {
     if (baseAware)
       {
