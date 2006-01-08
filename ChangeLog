@@ -1,3 +1,45 @@
+2006-01-08  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/beans/Statement.java: Doc fixes.
+	(doExecute): Workaround for Class.forName call.
+	(toString): Made output look more like on the JDK.
+	* java/beans/Expression.java: Doc fixes.
+	(toString): Made output look more like on the JDK.
+	* java/beans/PersistenceDelegate.java,
+	java/beans/DefaultPersistenceDelegate.java,
+	java/beans/Encoder.java,
+	java/beans/XMLEncoder.java: New file.
+	* gnu/java/beans/encoder/ArrayPersistenceDelegate.java,
+	gnu/java/beans/encoder/ClassPersistenceDelegate.java,
+	gnu/java/beans/encoder/CollectionPersistenceDelegate.java,
+	gnu/java/beans/encoder/Context.java,
+	gnu/java/beans/encoder/GenericScannerState.java,
+	gnu/java/beans/encoder/IgnoringScannerState.java,
+	gnu/java/beans/encoder/MapPersistenceDelegate.java,
+	gnu/java/beans/encoder/ObjectId.java,
+	gnu/java/beans/encoder/PrimitivePersistenceDelegate.java,
+	gnu/java/beans/encoder/ReportingScannerState.java,
+	gnu/java/beans/encoder/Root.java,
+	gnu/java/beans/encoder/ScanEngine.java,
+	gnu/java/beans/encoder/ScannerState.java,
+	gnu/java/beans/encoder/StAXWriter.java,
+	gnu/java/beans/encoder/Writer.java: New file.
+	* gnu/java/beans/encoder/elements/Array_Get.java,
+	gnu/java/beans/encoder/elements/Element.java,
+	gnu/java/beans/encoder/elements/List_Set.java,
+	gnu/java/beans/encoder/elements/Array_Set.java,
+	gnu/java/beans/encoder/elements/NullObject.java,
+	gnu/java/beans/encoder/elements/StaticMethodInvocation.java,
+	gnu/java/beans/encoder/elements/StaticFieldAccess.java,
+	gnu/java/beans/encoder/elements/StringReference.java,
+	gnu/java/beans/encoder/elements/ClassResolution.java,
+	gnu/java/beans/encoder/elements/ArrayInstantiation.java,
+	gnu/java/beans/encoder/elements/PrimitiveInstantiation.java,
+	gnu/java/beans/encoder/elements/ObjectReference.java,
+	gnu/java/beans/encoder/elements/ObjectInstantiation.java,
+	gnu/java/beans/encoder/elements/List_Get.java,
+	gnu/java/beans/encoder/elements/MethodInvocation.java: New file.
+
 2006-01-08  Chris Burdess  <dog@gnu.org>
 
 	* java/lang/Character.java (toChars,toCodePoint): Correct these
@@ -11498,6 +11540,11 @@
 	(paintBorder): Correctly set the Y offset for the border title.
 	(getMeasurements): Determine the correct Y offset for the border
 	title.
+
+2005-09-19  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/util/ResourceBundle.java: Changed type of bundleCache
+	to WeakHashMap.
 
 2005-09-19  Robert Schuster  <robertschuster@fsfe.org>
 
