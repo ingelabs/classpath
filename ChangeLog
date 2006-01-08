@@ -1,3 +1,7 @@
+2006-01-08  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/xmlj/Makefile.am (libxmlj_la_LIBADD): Add jcl.o.
+
 2006-01-07  Paul Jenner  <psj@harker.dyndns.org>
 
 	Fixes bug #25711
