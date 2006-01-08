@@ -1,3 +1,16 @@
+2006-01-08  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/SAXParser.java: Check standalone status for mixed
+	  content models from external entities.
+	* gnu/xml/stream/UnicodeReader.java: Report error instead of
+	  attempting to continue with unpaired surrogates.
+	* gnu/xml/stream/XMLParser.java: Don't normalize LF equivalents when
+	  resolving entities with character entity references; better
+	  checking of valid character ranges; don't report an error for URI
+	  fragments in notation declarations; check unbound namespace
+	  prefixes for elements and attributes, including XML 1.1 unbinding
+	  syntax; namespace-aware checking of attribute duplicates.
+
 2006-01-08  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/beans/Statement.java: Doc fixes.
