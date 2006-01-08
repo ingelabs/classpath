@@ -1,3 +1,7 @@
+2006-01-08  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/InheritableThreadLocal.java: Organized imports.
+
 2006-01-08  Ito Kazumitsu  <kaz@maczuka.gcd.org>  
 
 	Fixes bug #25679
