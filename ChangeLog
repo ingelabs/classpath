@@ -1,3 +1,17 @@
+2006-01-09  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Added new field.
+	(setRowHeight): Row height is set to the max height of
+	all the nodes, or 20 as a default value.
+	(getPathBounds): Cleaned up code.
+	(getMaxHeight): New helper function that gets the max 
+	height of all the rows.
+	(getClosestPathForLocation): Fixed to use getMaxHeight.
+	(updateCachedPreferredSize): Likewise.
+	(installUI): Shouldn't expand tree on startup.
+	(getNodeDimensions): Fixed to use getMaxHeight.	
+
 2006-01-09  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JList.java (setSelectedIndex): Clear selection when
