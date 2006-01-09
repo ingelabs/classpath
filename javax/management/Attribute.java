@@ -40,7 +40,7 @@ package javax.management;
 import java.io.Serializable;
 
 /**
- * Represents an MBean attribute, having the name and the assined value. The
+ * Represents an MBean attribute, having the name and the assigned value. The
  * MBean objects use this class to get and set attributes values.
  * 
  * @since 1.5
@@ -129,8 +129,8 @@ public class Attribute
    */
   public int hashCode()
   {
-    int n = m_name==null?0:m_name.hashCode();
-    int v = m_value==null?0:m_value.hashCode();
+    int n = m_name == null ? 0 : m_name.hashCode();
+    int v = m_value == null ? 0 : m_value.hashCode();
     
     return n ^ v;
   }
