@@ -1,3 +1,14 @@
+2006-01-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/Popup.java
+	(LightweightPopup.hide): Repaint the layered pane when popup is
+	removed.
+
+2006-01-09  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Container.java
+	(remove): Don't repaint the container here.
+
 2006-01-08  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/InheritableThreadLocal.java: Organized imports.
