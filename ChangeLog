@@ -1,5 +1,10 @@
 2006-01-09  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/JList.java (setSelectedIndex): Clear selection when
+	argument is negative.
+
+2006-01-08  Mark Wielaard  <mark@klomp.org>
+
 	* java/net/InetAddress.java (getInaddrAny): Explicitly set hostName.
 
 2006-01-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
