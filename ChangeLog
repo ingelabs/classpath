@@ -1,3 +1,20 @@
+2006-01-09  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c
+	(connect): Added stream parameter to _connect() call.
+	* native/jni/java-net/gnu_java_net_VMPlainDatagramSocketImpl.c
+	(connect): Added stream parameter to _connect() call.
+	* native/jni/java-net/javanet.c
+	(_javanet_create_localfd): Added stream parameter. Look up
+	fd field based on the stream parameter either in SocketImpl or
+	in DatagramSocketImpl.
+	(_javanet_connect): Added stream parameter. Call create_localfd
+	using this stream parameter. Set localPort field either in
+	SocketImpl or in DatagramSocketImpl, depending on the stream
+	flag.
+	* native/jni/java-net/javanet.c
+	(_javanet_connect): Added stream parameter.
+
 2006-01-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax.management.Attribute.java: Grammar and 
@@ -58,6 +75,12 @@
 2006-01-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax.management.Attribute.java: New file. 
+
+2006-01-09  Roman Kennke  <kennke@aicas.com>
+
+	* java/net/DatagramSocketImpl.java
+	(localPort): Renamed to localport for correct access from native
+	code.
 
 2006-01-09  Roman Kennke  <kennke@aicas.com>
 
