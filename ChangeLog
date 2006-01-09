@@ -1,3 +1,13 @@
+2006-01-09  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	(insertUpdate): Removed call to checkForInsertAfterNewline and instead
+	inlined this method because it needs to change the value of the 
+	finalStartTag and finalStartDirection variables.
+	(checkForInsertAfterNewline): Removed this method.
+	(handleInsertAfterNewline): Added case for making the start tag's 
+	direction JoinNextDirection.
+
 2006-01-09  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java:
