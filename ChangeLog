@@ -1,3 +1,7 @@
+2006-01-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax.management.Attribute.java: New file. 
+
 2006-01-09  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/Popup.java
