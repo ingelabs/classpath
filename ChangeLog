@@ -1,3 +1,9 @@
+2006-01-09  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/PlainDocument.java:
+	(insertUpdate): Handle special case of an insertion immediately 
+	following a newline character.
+
 2006-01-09  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c
