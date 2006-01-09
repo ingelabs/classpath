@@ -1,5 +1,12 @@
 2006-01-09  Robert Schuster  <robertschuster@fsfe.org>
 
+	* java/beans/Introspector.java:
+	(getBeanInfo(Class, int)): New method.
+	(getBeanInfo(Class, Class): Moved common code in a new method.
+	(merge): New method.
+
+2006-01-09  Robert Schuster  <robertschuster@fsfe.org>
+
 	* java/beans/XMLEncoder.java: Fix spelling mistakes.
 
 2006-01-09  Anthony Balkissoon  <abalkiss@redhat.com>
