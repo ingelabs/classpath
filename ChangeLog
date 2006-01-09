@@ -1,3 +1,9 @@
+2006-01-09  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/beans/EventSetDescriptor.java: Implemented the two 1.4
+	constructors.
+	(getGetListenerMethod): New method.
+
 2006-01-09  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/PlainDocument.java:

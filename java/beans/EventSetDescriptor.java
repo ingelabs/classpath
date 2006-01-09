@@ -42,6 +42,7 @@ import gnu.java.lang.ClassHelper;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.EventListener;
 import java.util.Vector;
 
 /**
@@ -94,6 +95,7 @@ public class EventSetDescriptor extends FeatureDescriptor {
 	private Class listenerType;
 	private MethodDescriptor[] listenerMethodDescriptors;
 	private Method[] listenerMethods;
+    private Method getListenerMethod;
 
 	private boolean unicast;
 	private boolean inDefaultEventSet = true;
@@ -190,7 +192,113 @@ public class EventSetDescriptor extends FeatureDescriptor {
 			throw new IntrospectionException("Listener remove method throws exceptions.");
 		}
 	}
+    
+    /** Create a new EventSetDescriptor.
+     * 
+     * <p>This variant of the constructor allows you to specify the names
+     * of the methods and adds no new constraints on top of the rules
+     * already described at the top of the class.</p>
+     * 
+     * <p>A valid GetListener method is public, flags no exceptions and
+     * has one argument which is of type <code>Class</code> 
+     * {@link java.awt.Component#getListeners(Class)} is such a method.</p>
+     * 
+     * <p>Note: The validity of the return value of the GetListener method
+     * is not checked.</p>
+     * 
+     * @param eventSourceClass the class containing the add and remove listener methods.
+     * @param eventSetName the programmatic name of the event set, generally starting
+     * with a lowercase letter (i.e. fooManChu instead of FooManChu).
+     * @param listenerType the class containing the event firing methods.
+     * @param listenerMethodNames the names of the even firing methods.
+     * @param addListenerMethodName the name of the add listener method.
+     * @param removeListenerMethodName the name of the remove listener method.
+     * @param getListenerMethodName Name of a method which returns the array of listeners.
+     * @exception IntrospectionException if listenerType is not an EventListener
+     *                                   or if methods are not found or are invalid.
+     * @since 1.4
+     */
+    public EventSetDescriptor(Class eventSourceClass,
+                           String eventSetName,
+                           Class listenerType,
+                           String[] listenerMethodNames,
+                           String addListenerMethodName,
+                           String removeListenerMethodName,
+                           String getListenerMethodName)
+      throws IntrospectionException {
+        this(eventSourceClass, eventSetName, listenerType, listenerMethodNames,
+             addListenerMethodName, removeListenerMethodName);
+        
+        Method newGetListenerMethod = null;
+        
+        try
+        {
+          newGetListenerMethod = eventSourceClass.getMethod(getListenerMethodName, new Class[] { Class.class });
+        } catch (NoSuchMethodException nsme)
+        {
+          throw (IntrospectionException)
+            new IntrospectionException("No method named "
+                                       + getListenerMethodName
+                                       + " in class " + listenerType
+                                       + " which can be used as"
+                                       + " getListenerMethod.")
+                                       .initCause(nsme);
+        }
+        
+        // Note: This does not check the return value (which
+        // should be EventListener[]) but the JDK does not either.
+        
+        getListenerMethod = newGetListenerMethod;
 
+    }
+    
+    /** Create a new EventSetDescriptor.
+     * 
+     * <p>This variant of the constructor allows you to specify the names
+     * of the methods and adds no new constraints on top of the rules
+     * already described at the top of the class.</p>
+     * 
+     * <p>A valid GetListener method is public, flags no exceptions and
+     * has one argument which is of type <code>Class</code> 
+     * {@link java.awt.Component#getListeners(Class)} is such a method.</p> 
+     * 
+     * <p>Note: The validity of the return value of the GetListener method
+     * is not checked.</p>
+     * 
+     * @param eventSetName the programmatic name of the event set, generally starting
+     * with a lowercase letter (i.e. fooManChu instead of FooManChu).
+     * @param listenerType the class containing the listenerMethods.
+     * @param listenerMethods the event firing methods.
+     * @param addListenerMethod the add listener method.
+     * @param removeListenerMethod the remove listener method.
+     * @param getListenerMethod The method which returns an array of the listeners.
+     * @exception IntrospectionException if the listenerType is not an EventListener,
+     *                                   or any of the methods are invalid.
+     * @since 1.4
+     **/
+    public EventSetDescriptor(String eventSetName,
+                              Class listenerType, Method[] listenerMethods,
+                              Method addListenerMethod,
+                              Method removeListenerMethod,
+                              Method getListenerMethod)
+      throws IntrospectionException
+    {
+        this(eventSetName, listenerType, listenerMethods, addListenerMethod,
+             removeListenerMethod);
+        
+        // Do no checks if the getListenerMethod is null. 
+        if (getListenerMethod.getParameterTypes().length != 1
+            || getListenerMethod.getParameterTypes()[0] != Class.class
+            || getListenerMethod.getExceptionTypes().length > 0
+            || !Modifier.isPublic(getListenerMethod.getModifiers()))
+        throw new IntrospectionException("GetListener method is invalid.");
+        
+        // Note: This does not check the return value (which
+        // should be EventListener[]) but the JDK does not either.
+        
+        this.getListenerMethod = getListenerMethod;
+    }
+    
 	/** Create a new EventSetDescriptor.
 	 ** This form of constructor allows you to explicitly say which methods do what, and
 	 ** no reflection is done by the EventSetDescriptor.  The methods are, however,
