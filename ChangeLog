@@ -1,3 +1,7 @@
+2006-01-09  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/beans/XMLEncoder.java: Fix spelling mistakes.
+
 2006-01-09  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java:
