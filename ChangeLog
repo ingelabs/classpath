@@ -1,3 +1,11 @@
+2006-01-09  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/nio/channels/FileChannelImpl.java (map): Throw correct
+	exception when channel is not readable or writable.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(mapImpl): Add PROT_WRITE when mode == 'c' (MAP_PRIVATE). Make sure
+	there is enough space to mmap().
+
 2006-01-09  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/beans/Introspector.java:
