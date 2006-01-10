@@ -1,5 +1,10 @@
 2006-01-10  Roman Kennke  <kennke@aicas.com>
 
+	* java/util/ArrayList.java
+	(DEFAULT_CAPACITY): Changed default capacity to 10, as specified.
+
+2006-01-10  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
 	(GdkGraphics2D(GdkGraphics2D)): Added null check for the bg
 	field to avoid NPE.
