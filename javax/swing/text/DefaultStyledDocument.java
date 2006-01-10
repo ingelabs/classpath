@@ -780,22 +780,57 @@ public class DefaultStyledDocument extends AbstractDocument
      * {@link #insert}.
      *
      * @param data the element specifications for the elements to be inserte
-     */
+     */ 
     protected void insertUpdate(ElementSpec[] data)
     {
+      if (data[0].getType() == ElementSpec.EndTagType)
+        {
+          // fracture deepest child here
+          Element curr = getDefaultRootElement();
+          int index = curr.getElementIndex(offset);
+          while (!curr.isLeaf())
+            {
+              index = curr.getElementIndex(offset);
+              curr = curr.getElement(index);
+            }
+
+          Element newEl1 = createLeafElement(curr.getParentElement(),
+                                             curr.getAttributes(),
+                                             curr.getStartOffset(), offset);
+          ((BranchElement) curr.getParentElement()).
+              replace(index, 1, new Element[] { newEl1 });
+        }
+      
       for (int i = 0; i < data.length; i++)
         {
+          BranchElement paragraph = (BranchElement) elementStack.peek();
           switch (data[i].getType())
             {
             case ElementSpec.StartTagType:
-              numStartTags++;
-              documentEvent.modified = true;
+              switch (data[i].getDirection())
+                {
+                case ElementSpec.JoinFractureDirection:
+                  insertFracture(data[i]);
+                  break;
+                case ElementSpec.JoinNextDirection:
+                  Element parent = paragraph.getParentElement();
+                  int index = parent.getElementIndex(offset);
+                  elementStack.push(parent.getElement(index + 1));
+                  break;
+                case ElementSpec.OriginateDirection:
+                  Element current = (Element) elementStack.peek();
+                  Element newParagraph =
+                    insertParagraph((BranchElement) current, offset);
+                  elementStack.push(newParagraph);
+                  break;
+                default:
+                  break;
+                }
               break;
             case ElementSpec.EndTagType:
-              numEndTags++;
-              documentEvent.modified = true;
+              elementStack.pop();
               break;
-            default:
+            case ElementSpec.ContentType:
               insertContentTag(data[i]);
               break;
             }
@@ -889,8 +924,83 @@ public class DefaultStyledDocument extends AbstractDocument
     }
     
     /**
+     * Inserts a fracture into the document structure.
+     * 
+     * @param tag - the element spec.
+     */
+    private void insertFracture(ElementSpec tag)
+    {
+      // This is the parent of the paragraph about to be fractured.  We will
+      // create a new child of this parent.
+      BranchElement parent = (BranchElement) elementStack.peek();
+      int parentIndex = parent.getElementIndex(offset);
+      
+      // This is the old paragraph.  We must remove all its children that 
+      // occur after offset and move them to a new paragraph.  We must
+      // also recreate its child that occurs at offset to have the proper
+      // end offset.  The remainder of this child will also go in the new
+      // paragraph.
+      BranchElement previous = (BranchElement) parent.getElement(parentIndex);
+      
+      // This is the new paragraph.
+      BranchElement newBranch = 
+        (BranchElement) createBranchElement(parent, previous.getAttributes());
+      
+      
+      // The steps we must take to properly fracture are:
+      // 1. Recreate the LeafElement at offset to have the correct end offset.
+      // 2. Create a new LeafElement with the remainder of the LeafElement in 
+      //    #1 ==> this is whatever was in that LeafElement to the right of the
+      //    inserted newline.
+      // 3. Find the paragraph at offset and remove all its children that 
+      //    occur _after_ offset.  These will be moved to the newly created
+      //    paragraph.
+      // 4. Move the LeafElement created in #2 and all the LeafElements removed
+      //    in #3 to the newly created paragraph.
+      // 5. Add the new paragraph to the parent.
+      int previousIndex = previous.getElementIndex(offset);
+      int numReplaced = previous.getElementCount() - previousIndex;
+      Element previousLeaf = previous.getElement(previousIndex);
+      AttributeSet prevLeafAtts = previous.getAttributes();
+      
+      // This recreates the child at offset to have the proper end offset.  
+      // (Step 1).
+      Element newPreviousLeaf = 
+        createLeafElement(previous, 
+                          prevLeafAtts, previousLeaf.getStartOffset(), 
+                          offset);
+      // This creates the new child, which is the remainder of the old child.  
+      // (Step 2).
+      
+      Element firstLeafInNewBranch = 
+        createLeafElement(newBranch, prevLeafAtts, 
+                          offset, previousLeaf.getEndOffset());
+      
+      // Now we move the new LeafElement and all the old children that occurred
+      // after the offset to the new paragraph.  (Step 4).
+      Element[] newLeaves = new Element[numReplaced];
+      newLeaves[0] = firstLeafInNewBranch;
+      for (int i = 1; i < numReplaced; i++)
+        {
+          newLeaves[i] = previous.getElement(previousIndex + i);
+        }
+      newBranch.replace(0, 0, newLeaves);
+      
+      // Now we remove the children after the offset from the previous 
+      // paragraph. (Step 3).
+      previous.replace(previousIndex, 
+                       previous.getElementCount() - previousIndex, 
+                       new Element[] { newPreviousLeaf });
+      
+      // Finally we add the new paragraph to the parent. (Step 5).
+      parent.replace(parentIndex + 1, 0, new Element[] { newBranch });
+      
+      // FIXME: Add the edits to the DocumentEvent via the addEdit method.
+    }
+    
+    /**
      * Inserts a content element into the document structure.
-     *
+     * 
      * @param tag the element spec
      */
     private void insertContentTag(ElementSpec tag)
@@ -930,10 +1040,6 @@ public class DefaultStyledDocument extends AbstractDocument
           paragraph.replace(currentIndex, 2, add);
           // Add this action to the document event.
           addEdit(paragraph, currentIndex, remove, add);
-        }
-      else if (dir == ElementSpec.JoinFractureDirection)
-        {
-          // TODO: What should be done here?
         }
       else if (dir == ElementSpec.OriginateDirection)
         {
@@ -1671,10 +1777,33 @@ public class DefaultStyledDocument extends AbstractDocument
     
     // If we are at the last index, then check if we could probably be
     // joined with the next element.
-    ElementSpec last = (ElementSpec) specs.lastElement();        
-    if (next.getAttributes().isEqual(attr)
-        && last.getType() == ElementSpec.ContentType)
-      last.setDirection(ElementSpec.JoinNextDirection);    
+    // This means:
+    //  - we must be a ContentTag
+    //  - if there is a next Element, we must have the same attributes
+    //  - if there is no next Element, but one will be created,
+    //    we must have the same attributes as the higher-level run.
+    ElementSpec last = (ElementSpec) specs.lastElement();
+    if (last.getType() == ElementSpec.ContentType)
+      {
+        Element currentRun = 
+          prevParagraph.getElement(prevParagraph.getElementIndex(offset));
+        if (currentRun.getEndOffset() == endOffset)
+          {
+            if (endOffset < getLength() && next.getAttributes().isEqual(attr)
+                && last.getType() == ElementSpec.ContentType)
+              last.setDirection(ElementSpec.JoinNextDirection);
+          }
+        else
+          {
+            if (finalStartTag != null
+                && finalStartTag.getDirection() == 
+                  ElementSpec.JoinFractureDirection
+                && currentRun.getAttributes().isEqual(attr))
+              {
+                last.setDirection(ElementSpec.JoinNextDirection);
+              }
+          }
+      }
     
     // If we are at the first new element, then check if it could be
     // joined with the previous element.

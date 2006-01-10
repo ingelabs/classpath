@@ -1,3 +1,15 @@
+2006-01-10  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	(ElementBuffer.insertUpdate): Rewritten to properly handle start and
+	end tags.
+	(ElementBuffer.insertFracture): New method.
+	(ElementBuffer.insertContentTag): Removed unnecessary case for 
+	JoinFractureDirection - this only applies to start tags, not content
+	tags.
+	(insertUpdate): Corrected conditions for setting direction to 
+	JoinNextDirection.
+
 2006-01-10  Roman Kennke  <kennke@aicas.com>
 
 	* Makefile.am (EXTRA_DIST): Added ChangeLog-2004.
