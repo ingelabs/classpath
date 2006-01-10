@@ -1,3 +1,14 @@
+2006-01-06  Jeroen Frijters  <jeroen@frijters.net>
+
+	PR classpath/24618
+	* java/util/AbstractMap.java
+	(equals(Object,Object)): Test for identity first.
+	* java/util/WeakHashMap.java
+	(WeakBucket.WeakEntry.equals): Use helper method to determine equality.
+	(WeakBucket.WeakEntry.toString): Fixed string representation of
+	null key.
+	(internalGet): Use helper method to determine equality.
+
 2006-01-09  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/beans/EventSetDescriptor.java: Implemented the two 1.4
