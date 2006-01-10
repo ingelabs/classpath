@@ -1,3 +1,8 @@
+2006-01-10  Robert Schuster  <robertschuster@fsfe.org>
+
+        * java/beans/EventSetDescriptor.java:
+        (getGetListenerMethod): New method.
+
 2006-01-10  Mark Wielaard  <mark@klomp.org>
 
 	* lib/Makefile.am (GCJX): Add -g to get linenumber info.

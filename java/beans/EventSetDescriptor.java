@@ -403,6 +403,14 @@ public class EventSetDescriptor extends FeatureDescriptor {
 		return removeListenerMethod;
 	}
 
+    /** Returns the method that retrieves the listeners or <code>null</code>
+     * if it does not exist.
+     */
+    public Method getGetListenerMethod()
+    {
+      return getListenerMethod;
+    }
+
 	/** Set whether or not multiple listeners may be added.
 	 ** @param unicast whether or not multiple listeners may be added.
 	 **/
