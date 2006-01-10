@@ -1,5 +1,10 @@
 2006-01-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(playSound): Added @since 1.4 to the API docs.
+
+2006-01-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicListUI.java
 	(maybeUpdateLayoutState): Also update the layout state, if the
 	list has been invalidated since the last update.
