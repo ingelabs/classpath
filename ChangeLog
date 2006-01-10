@@ -1,5 +1,12 @@
 2006-01-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/ViewportLayout.java
+	(layoutContainer): Fixed condition, so that Scrollable components
+	are always forced to have to Viewport size, when they
+	return true for getScrollableTracksViewportHeight() and ..Width().
+
+2006-01-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/RepaintManager.java
 	(validateInvalidComponents): Fixed condition to avoid NPE.
 
