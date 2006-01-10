@@ -1560,7 +1560,8 @@ _javanet_shutdownInput (JNIEnv * env, jobject this)
   /* Shutdown input stream of socket. */
   if (shutdown (fd, SHUT_RD) == -1)
     {
-      JCL_ThrowException (env, SOCKET_EXCEPTION, strerror (errno));
+      JCL_ThrowException (env, SOCKET_EXCEPTION,
+			  TARGET_NATIVE_LAST_ERROR_STRING());
       return;
     }
 }
@@ -1585,7 +1586,8 @@ _javanet_shutdownOutput (JNIEnv * env, jobject this)
   /* Shutdown output stream of socket. */
   if (shutdown (fd, SHUT_WR) == -1)
     {
-      JCL_ThrowException (env, SOCKET_EXCEPTION, strerror (errno));
+      JCL_ThrowException (env, SOCKET_EXCEPTION,
+			  TARGET_NATIVE_LAST_ERROR_STRING());
       return;
     }
 }

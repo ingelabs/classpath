@@ -1,3 +1,11 @@
+2006-01-10  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/java-net/javanet.c
+	(_javanet_shutdownOutput): Replaced strerror() with
+	TARGET_NATIVE_LAST_ERROR_STRING() for portability.
+	(_javanet_shutdownInput): Replaced strerror() with
+	TARGET_NATIVE_LAST_ERROR_STRING() for portability.
+
 2006-01-10  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/beans/EventSetDescriptor.java: Reformatted and
