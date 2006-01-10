@@ -1,5 +1,10 @@
 2006-01-10  Roman Kennke  <kennke@aicas.com>
 
+	* Makefile.am (EXTRA_DIST): Added ChangeLog-2004.
+	* ChangeLog-2005: New File.
+
+2006-01-10  Roman Kennke  <kennke@aicas.com>
+
 	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c
 	(get): Release the array with the correct pointer.
 	(put): Release the array with the correct pointer. Copy the array
