@@ -1,5 +1,11 @@
 2006-01-10  Roman Kennke  <kennke@aicas.com>
 
+	* java/util/StringTokenizer.java
+	(StringTokenizer(String, String, boolean)):
+	Don't trigger NPE here for conformance with the spec.
+
+2006-01-10  Roman Kennke  <kennke@aicas.com>
+
 	* java/util/ArrayList.java
 	(DEFAULT_CAPACITY): Changed default capacity to 10, as specified.
 
