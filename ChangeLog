@@ -1,3 +1,8 @@
+2006-01-10  Roman Kennke  <kennke@aicas.com>
+
+	* java/lang/SecurityManager.java
+	Fully qualified AWT class references in API docs.
+
 2006-01-10  Robert Schuster  <robertschuster@fsfe.org>
 
         * java/beans/EventSetDescriptor.java:
