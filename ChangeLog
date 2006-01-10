@@ -1,4 +1,4 @@
-2006-01-09  Jeroen Frijters  <jeroen@frijters.net>
+2006-01-10  Jeroen Frijters  <jeroen@frijters.net>
 
 	PR classpath/25727
 	* java/util/Hashtable.java
@@ -6,7 +6,7 @@
 	(containsKey, get, put, remove): Call equals on existing key.
 	(getEntry): Call equals on existing entry.
 
-2006-01-09  Jeroen Frijters  <jeroen@frijters.net>
+2006-01-10  Jeroen Frijters  <jeroen@frijters.net>
 
 	PR classpath/24618
 	* java/util/AbstractMap.java
