@@ -1,3 +1,7 @@
+2006-01-10  Mark Wielaard  <mark@klomp.org>
+
+	* lib/Makefile.am (GCJX): Add -g to get linenumber info.
+
 2006-01-10  Jeroen Frijters  <jeroen@frijters.net>
 
 	PR classpath/25727
