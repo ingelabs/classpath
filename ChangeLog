@@ -1,5 +1,11 @@
 2006-01-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicListUI.java
+	(maybeUpdateLayoutState): Also update the layout state, if the
+	list has been invalidated since the last update.
+
+2006-01-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/ComponentUI.java
 	(update): Fixed indendation.
 
