@@ -1,3 +1,29 @@
+2006-01-11  Roman Kennke  <kennke@aicas.com>
+
+	Reported by: Fridjof Siebert <siebert@aicas.com>
+	* java/util/Hashtable.java
+	(KEYS): Removed unneeded field.
+	(VALUES): Removed unneeded field.
+	(ENTRIES): Removed unneeded field.
+	(keys): Return a KeyEnumerator instance.
+	(elements): Returns a ValueEnumerator instance.
+	(toString): Use an EntryIterator instance.
+	(keySet): Return a KeyIterator instance.
+	(values): Return a ValueIterator instance.
+	(entrySet): Return an EntryIterator instance.
+	(hashCode): Use EntryIterator instance.
+	(rehash): Changed this loop to avoid redundant reads and make
+	it obvious that null checking is not needed.
+	(writeObject): Use EntryIterator instance.
+	(HashIterator): Removed class.
+	(Enumerator): Removed class.
+	(EntryIterator): New class.
+	(KeyIterator): New class.
+	(ValueIterator): New class.
+	(EntryEnumerator): New class.
+	(KeyEnumerator): New class.
+	(ValueEnumerator): New class.
+
 2006-01-11  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
