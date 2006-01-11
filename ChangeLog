@@ -1,3 +1,35 @@
+2006-01-11  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/transform/AttributeNode.java,
+	  gnu/xml/transform/ElementNode.java,
+	  gnu/xml/transform/LiteralNode.java,
+	  gnu/xml/transform/StreamSerializer.java,
+	  gnu/xml/transform/StrippingInstruction.java,
+	  gnu/xml/transform/Stylesheet.java,
+	  gnu/xml/transform/TransformerImpl.java,
+	  gnu/xml/transform/ValueOfNode.java,
+	  gnu/xml/xpath/Expr.java,
+	  gnu/xml/xpath/LocalNameFunction.java,
+	  gnu/xml/xpath/NameFunction.java,
+	  gnu/xml/xpath/NameTest.java,
+	  gnu/xml/xpath/NamespaceUriFunction.java,
+	  gnu/xml/xpath/NodeTypeTest.java,
+	  gnu/xml/xpath/SubstringFunction.java,
+	  javax/xml/namespace/QName.java: don't determine element namespace
+	  from namespace aliases when specified; better namespace handling
+	  when serializing elements; don't create HTML meta element unless
+	  head element exists; correct encoding of CDATA sections containing
+	  ']]>'; encode HTML character entity references; use ISO-Latin-1 as
+	  default encoding for HTML output; rewrite of XSLT
+	  strip-space/preserve-space handling; correct doctype-public and
+	  doctype-system output attributes; insert generated doctype before
+	  document element; fixed result tree whitespace stripping
+	  algorithm; fixed semantics of XPath name, local-name, and
+	  namespace-uri functions; name tests handle XML/XMLNS namespaces
+	  correctly; fixed semantics of processing-instruction node test.
+	* gnu/xml/transform/TransformerFactoryImpl.java: Add main method to
+	  aid debugging.
+
 2006-01-11  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java

@@ -1,5 +1,5 @@
 /* NameTest.java -- 
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004,2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -72,6 +72,13 @@ public final class NameTest
   }
 
   public boolean matches(Node node, int pos, int len)
+  /*{
+    boolean ret = matches2(node, pos, len);
+    System.out.println(toString()+" matches "+node+"? "+ret);
+    return ret;
+  }
+
+  public boolean matches2(Node node, int pos, int len)*/
   {
     switch (node.getNodeType())
       {
@@ -91,26 +98,29 @@ public final class NameTest
         return false;
       }
     if (any)
-      {
-        return true;
-      }
+      return true;
     String uri = qName.getNamespaceURI();
     String nodeUri = node.getNamespaceURI();
-    String nodeLocalName = node.getLocalName();
-    if (nodeLocalName != null && !equal(uri, nodeUri))
-      {
-        return false;
-      }
+    if (!equal(uri, nodeUri))
+      return false;
     if (anyLocalName)
-      {
-        return true;
-      }
+      return true;
     String localName = qName.getLocalPart();
-    if (nodeLocalName != null)
-      {
-        nodeLocalName = node.getNodeName();
-      }
+    String nodeLocalName = getLocalName(node);
     return (localName.equals(nodeLocalName));
+  }
+
+  private static final String getLocalName(Node node)
+  {
+    String localName = node.getLocalName();
+    if (localName == null)
+      {
+        localName = node.getNodeName();
+        int ci = localName.indexOf(':');
+        if (ci != -1)
+          localName = localName.substring(ci + 1);
+      }
+    return localName;
   }
 
   final boolean equal(String s1, String s2)
@@ -133,9 +143,7 @@ public final class NameTest
   public String toString ()
   {
     if (any)
-      {
-        return "*";
-      }
+      return "*";
     return qName.toString();
   }
   
