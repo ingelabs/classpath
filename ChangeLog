@@ -1,3 +1,10 @@
+2006-01-11  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(toString): Shouldn't append the '>' character here.
+	(createDefaultRoot): Should not set the resolve parent. This
+	causes problems when comparing attribute sets.
+
 2006-01-10  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java:

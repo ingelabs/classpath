@@ -367,7 +367,6 @@ public class DefaultStyledDocument extends AbstractDocument
     public String toString()
     {
       StringBuilder b = new StringBuilder();
-      b.append('<');
       switch (type)
         {
         case StartTagType:
@@ -1342,7 +1341,6 @@ public class DefaultStyledDocument extends AbstractDocument
     SectionElement section = new SectionElement();
 
     BranchElement paragraph = new BranchElement(section, null);
-    paragraph.setResolveParent(getStyle(StyleContext.DEFAULT_STYLE));
     tmp = new Element[1];
     tmp[0] = paragraph;
     section.replace(0, 0, tmp);
