@@ -1,6 +1,14 @@
 2006-01-11  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java:
+	(ElementBuffer.insertContentTag): Don't adjust the structure here.  
+	This will have been taken care of in insertFracture.  Added a comment
+	explaining that we need to add edits to the DocumentEvent and that
+	this may be the place to do it.
+
+2006-01-11  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
 	(ElementBuffer.insertUpdate): Properly recreate Elements if the first
 	tag is an end tag. Avoid NPE by pushing the proper Element on to the 
 	elementStack when there is a start tag with JoinNextDirection.

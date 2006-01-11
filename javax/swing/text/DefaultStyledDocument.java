@@ -798,14 +798,19 @@ public class DefaultStyledDocument extends AbstractDocument
                                              curr.getAttributes(),
                                              curr.getStartOffset(), offset);
           Element grandParent = parent.getParentElement();
-          BranchElement nextBranch = (BranchElement) grandParent.getElement(grandParent.getElementIndex(parent.getEndOffset()));
+          BranchElement nextBranch = 
+            (BranchElement) grandParent.getElement
+              (grandParent.getElementIndex(parent.getEndOffset()));
           Element firstLeaf = nextBranch.getElement(0);
           while (!firstLeaf.isLeaf())
             {
               firstLeaf = firstLeaf.getElement(0);
             }
           BranchElement parent2 = (BranchElement) firstLeaf.getParentElement();
-          Element newEl2 = createLeafElement(parent2, firstLeaf.getAttributes(), offset, firstLeaf.getEndOffset());
+          Element newEl2 = 
+            createLeafElement(parent2, 
+                              firstLeaf.getAttributes(), 
+                              offset, firstLeaf.getEndOffset());
           parent2.replace(0, 1, new Element[] { newEl2 });
           
           
@@ -1029,28 +1034,10 @@ public class DefaultStyledDocument extends AbstractDocument
         }
       else if (dir == ElementSpec.JoinNextDirection)
         {
-          BranchElement paragraph = (BranchElement) elementStack.peek();
-          int currentIndex = paragraph.getElementIndex(offset);
-          Element current = paragraph.getElement(currentIndex);
-          Element next = paragraph.getElement(currentIndex + 1);
-
-          if (next == null)
-            return;
-
-          Element newEl1 = createLeafElement(paragraph,
-                                             current.getAttributes(),
-                                             current.getStartOffset(), 
-                                             offset);
-          Element newEl2 = createLeafElement(paragraph,
-                                             current.getAttributes(), 
-                                             offset,
-                                             next.getEndOffset());
-
-          Element[] add = new Element[] { newEl1, newEl2 };
-          Element[] remove = new Element[] { current, next };
-          paragraph.replace(currentIndex, 2, add);
-          // Add this action to the document event.
-          addEdit(paragraph, currentIndex, remove, add);
+          // Doing nothing here gives us the proper structure.  
+          // However, edits must be added to the document event. 
+          // It is possible these should happen here, or also possible that
+          // they should happen in insertFracture.
         }
       else if (dir == ElementSpec.OriginateDirection)
         {
