@@ -1,3 +1,10 @@
+2006-01-11  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	(ElementBuffer.insertUpdate): Properly recreate Elements if the first
+	tag is an end tag. Avoid NPE by pushing the proper Element on to the 
+	elementStack when there is a start tag with JoinNextDirection.
+
 2006-01-11  Roman Kennke  <kennke@aicas.com>
 
 	Reported by: Fridjof Siebert <siebert@aicas.com>

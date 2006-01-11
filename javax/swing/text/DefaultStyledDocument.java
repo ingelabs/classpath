@@ -785,18 +785,31 @@ public class DefaultStyledDocument extends AbstractDocument
       if (data[0].getType() == ElementSpec.EndTagType)
         {
           // fracture deepest child here
-          Element curr = getDefaultRootElement();
+          BranchElement paragraph = (BranchElement) elementStack.peek();
+          Element curr = paragraph.getParentElement();
           int index = curr.getElementIndex(offset);
           while (!curr.isLeaf())
             {
               index = curr.getElementIndex(offset);
               curr = curr.getElement(index);
             }
-
-          Element newEl1 = createLeafElement(curr.getParentElement(),
+          Element parent = curr.getParentElement();
+          Element newEl1 = createLeafElement(parent,
                                              curr.getAttributes(),
                                              curr.getStartOffset(), offset);
-          ((BranchElement) curr.getParentElement()).
+          Element grandParent = parent.getParentElement();
+          BranchElement nextBranch = (BranchElement) grandParent.getElement(grandParent.getElementIndex(parent.getEndOffset()));
+          Element firstLeaf = nextBranch.getElement(0);
+          while (!firstLeaf.isLeaf())
+            {
+              firstLeaf = firstLeaf.getElement(0);
+            }
+          BranchElement parent2 = (BranchElement) firstLeaf.getParentElement();
+          Element newEl2 = createLeafElement(parent2, firstLeaf.getAttributes(), offset, firstLeaf.getEndOffset());
+          parent2.replace(0, 1, new Element[] { newEl2 });
+          
+          
+          ((BranchElement) parent).
               replace(index, 1, new Element[] { newEl1 });
         }
       
@@ -812,9 +825,8 @@ public class DefaultStyledDocument extends AbstractDocument
                   insertFracture(data[i]);
                   break;
                 case ElementSpec.JoinNextDirection:
-                  Element parent = paragraph.getParentElement();
-                  int index = parent.getElementIndex(offset);
-                  elementStack.push(parent.getElement(index + 1));
+                  int index = paragraph.getElementIndex(offset);
+                  elementStack.push(paragraph.getElement(index));
                   break;
                 case ElementSpec.OriginateDirection:
                   Element current = (Element) elementStack.peek();
