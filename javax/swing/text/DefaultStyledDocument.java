@@ -997,21 +997,25 @@ public class DefaultStyledDocument extends AbstractDocument
       Element[] newLeaves = new Element[numReplaced];
       newLeaves[0] = firstLeafInNewBranch;
       for (int i = 1; i < numReplaced; i++)
-        {
-          newLeaves[i] = previous.getElement(previousIndex + i);
-        }
+        newLeaves[i] = previous.getElement(previousIndex + i);
       newBranch.replace(0, 0, newLeaves);
-      
+      addEdit(newBranch, 0, null, newLeaves);
+            
       // Now we remove the children after the offset from the previous 
       // paragraph. (Step 3).
-      previous.replace(previousIndex, 
-                       previous.getElementCount() - previousIndex, 
-                       new Element[] { newPreviousLeaf });
+      int removeSize = previous.getElementCount() - previousIndex;
+      Element[] add = new Element[] { newPreviousLeaf };
+      Element[] remove = new Element[removeSize];
+      for (int j = 0; j < removeSize; j++)
+        remove[j] = previous.getElement(previousIndex + j);
+      previous.replace(previousIndex, removeSize, add);
+      addEdit(previous, previousIndex, remove, add);
       
       // Finally we add the new paragraph to the parent. (Step 5).
-      parent.replace(parentIndex + 1, 0, new Element[] { newBranch });
-      
-      // FIXME: Add the edits to the DocumentEvent via the addEdit method.
+      Element[] nb = new Element[] { newBranch };
+      int index = parentIndex + 1;
+      parent.replace(index, 0, nb);
+      addEdit(parent, index, null, nb);
     }
     
     /**

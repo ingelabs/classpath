@@ -1,3 +1,10 @@
+2006-01-11  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insertFracture): Added calls to addEdit for each time a structure 
+	is changed. addEdit is called on the newBranch, previous, and parent
+	structures.
+
 2006-01-11  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java:
