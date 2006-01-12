@@ -1005,6 +1005,11 @@ _javanet_recvfrom (JNIEnv * env, jobject this, jarray buf, int offset,
 	(*port) = from_port;
     }
 
+  /* zero bytes received means recv() noticed the other side orderly
+     closing the connection. */
+  if (received_bytes == 0)
+    received_bytes = -1;
+
   return (received_bytes);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */

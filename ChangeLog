@@ -1,5 +1,13 @@
 2006-01-12  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/java-net/javanet.c (_javanet_recvfrom): Return -1 when
+	other side orderly closed connection.
+	* vm/reference/gnu/java/net/VMPlainSocketImpl.java
+	(read(PlainSocketImpl)): Mask byte to return unsigned int. Return -1
+	when end of stream reached.
+
+2006-01-12  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/java-net/gnu_java_net_VMPlainDatagramSocketImpl.c:
 	Remove asserts.
 	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c: Likewise.
