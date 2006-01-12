@@ -1,3 +1,9 @@
+2005-01-12  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+	* resource/Makefile.am: Install 
+	logging.properties into $(prefix)/lib.
+	* resource/Makefile.am (securitydir): Changed to 
+	$(prefix)/lib/security.
+
 2006-01-12  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTextField.java
