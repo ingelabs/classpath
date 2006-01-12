@@ -1,3 +1,9 @@
+2006-01-12  Roman Kennke  <kennke@aicas.com>
+
+	* java/util/Hashtable.java
+	(KeyEnumerator.nextElement): Added null check to avoid NPE.
+	(ValueEnumerator.nextElement): Added null check to avoid NPE.
+
 2006-01-12  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/GapContent.java

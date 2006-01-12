@@ -1208,7 +1208,11 @@ public class Hashtable extends Dictionary
      */
     public Object nextElement()
     {
-      return ((HashEntry)super.nextElement()).key;
+      HashEntry entry = (HashEntry) super.nextElement();
+      Object retVal = null;
+      if (entry != null)
+        retVal = entry.key;
+      return retVal;
     }
   } // class KeyEnumerator
 
@@ -1236,7 +1240,11 @@ public class Hashtable extends Dictionary
      */
     public Object nextElement()
     {
-      return ((HashEntry)super.nextElement()).value;
+      HashEntry entry = (HashEntry) super.nextElement();
+      Object retVal = null;
+      if (entry != null)
+        retVal = entry.value;
+      return retVal;
     }
   } // class ValueEnumerator
 
