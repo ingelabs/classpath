@@ -1357,7 +1357,7 @@ public class XMLParser
               throw new EOFException();
             else if (input.xml11)
               {
-                if (!isXML11Char(c))
+                if (!isXML11Char(c) || isXML11RestrictedChar(c))
                   error("illegal XML 1.1 character",
                         "U+" + Integer.toHexString(c));
               }
@@ -3097,7 +3097,7 @@ public class XMLParser
               default:
                 if (input.xml11)
                   {
-                    if (!isXML11Char(c))
+                    if (!isXML11Char(c) || isXML11RestrictedChar(c))
                       error("illegal XML 1.1 character",
                             "U+" + Integer.toHexString(c));
                   }

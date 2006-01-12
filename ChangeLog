@@ -1,3 +1,8 @@
+2006-01-12  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/XMLParser.java: Corrected the handling of some XML
+	  1.1 character ranges.
+
 2006-01-12  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/TransferHandler.java:
