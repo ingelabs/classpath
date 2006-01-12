@@ -1,5 +1,14 @@
 2006-01-12  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/java-net/gnu_java_net_VMPlainDatagramSocketImpl.c:
+	Remove asserts.
+	* native/jni/java-net/gnu_java_net_VMPlainSocketImpl.c: Likewise.
+	* native/jni/java-net/java_net_VMInetAddress.c: Likewise.
+	* native/jni/java-net/java_net_VMNetworkInterface.c: Likewise.
+	* native/jni/java-net/javanet.c: Likewise.
+
+2006-01-12  Mark Wielaard  <mark@klomp.org>
+
 	* native/fdlibm/mprec.c (Balloc): Disable assert to workaround
 	PR classpath/23863.
 
