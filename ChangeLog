@@ -1,3 +1,9 @@
+2006-01-12  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #22802
+	* gnu/regexp/RE.java(initialize): Fixed the parsing of
+	character classes within a subexpression.
+
 2006-12-12  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
