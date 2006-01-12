@@ -1,3 +1,10 @@
+2006-12-12  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* configure.ac: Check for isnan.
+
+	* native/fdlibm/fdlibm.h: If we have a isnan function then do not
+	define the macro.
+
 2006-01-12  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/XMLParser.java: Corrected the handling of some XML
@@ -9,7 +16,8 @@
 	(TransferAction<init>): Call super constructor.  Fixes Mauve regression
 	gnu/testlet/javax/swing/JTextField/CopyPaste.
 
-2005-01-12  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+2006-01-12  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
 	* resource/Makefile.am: Install 
 	logging.properties into $(prefix)/lib.
 	* resource/Makefile.am (securitydir): Changed to 
