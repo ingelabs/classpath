@@ -140,7 +140,6 @@ class ElementAvailableFunction
         localName = name.substring(ci + 1);
       }
     uri = nsctx.getNamespaceURI(prefix);
-    System.err.println("**** element-avaliable: prefix="+prefix+" uri="+uri);
     if (Stylesheet.XSL_NS.equals(uri))
       {
         return elements.contains(localName) ?

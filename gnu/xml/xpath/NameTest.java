@@ -110,7 +110,7 @@ public final class NameTest
     return (localName.equals(nodeLocalName));
   }
 
-  private static final String getLocalName(Node node)
+  static String getLocalName(Node node)
   {
     String localName = node.getLocalName();
     if (localName == null)
@@ -123,7 +123,7 @@ public final class NameTest
     return localName;
   }
 
-  final boolean equal(String s1, String s2)
+  static boolean equal(String s1, String s2)
   {
     return (((s1 == null || s1.length() == 0) &&
              (s2 == null || s2.length() == 0)) ||

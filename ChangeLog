@@ -1,3 +1,15 @@
+2006-01-12  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/dom/DomNode.java,
+	  gnu/xml/transform/ElementAvailableFunction.java: Removed debugging
+	  output.
+	* gnu/xml/xpath/NameTest.java,
+	  gnu/xml/xpath/NamespaceTest.java,
+	  gnu/xml/xpath/Selector.java: Fix regression for namespace axis
+	  navigation.
+	* gnu/xml/transform/MessageNode.java: Use standard logging system
+	  for outputting messages.
+
 2006-01-12  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/InetAddress.java (DEFAULT_CACHE_SIZE): Removed.

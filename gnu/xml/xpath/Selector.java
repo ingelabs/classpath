@@ -85,11 +85,13 @@ public final class Selector
   public Selector(int axis, List tests)
   {
     this.axis = axis;
-    this.tests = new Test[tests.size()];
-    tests.toArray(this.tests);
-    if (axis == NAMESPACE &&
-        this.tests.length > 0 &&
-        this.tests[0] instanceof NameTest)
+    int len = tests.size();
+    this.tests = new Test[(len == 0) ? 1 : len];
+    if (len > 0)
+      tests.toArray(this.tests);
+    else
+      this.tests[0] = new NameTest(null, true, true);
+    if (axis == NAMESPACE && this.tests[0] instanceof NameTest)
       {
         NameTest nt = (NameTest) this.tests[0];
         this.tests[0] = new NamespaceTest(nt.qName, nt.anyLocalName, nt.any);
@@ -128,6 +130,8 @@ public final class Selector
       {
         int pos = getContextPosition(context);
         int len = getContextSize(context);
+        if (len == 0)
+          System.err.println("WARNING: context size is 0");
         for (int j = 0; j < tlen && len > 0; j++)
           {
             Test test = tests[j];
@@ -151,13 +155,17 @@ public final class Selector
   {
     if (ctx.getNodeType() == Node.ATTRIBUTE_NODE)
       {
-        Node parent = ((Attr) ctx).getOwnerElement();
-        return parent.getAttributes().getLength();
+        Node owner = ((Attr) ctx).getOwnerElement();
+        return owner.getAttributes().getLength();
       }
-    Node parent = ctx.getParentNode();
-    if (parent != null)
-      return parent.getChildNodes().getLength();
-    return 1;
+    int count = 1;
+    Node sib = ctx.getPreviousSibling();
+    for (; sib != null; sib = sib.getPreviousSibling())
+      count++;
+    sib = ctx.getNextSibling();
+    for (; sib != null; sib = sib.getNextSibling())
+      count++;
+    return count;
   }
 
   public Object evaluate(Node context, int pos, int len)
@@ -470,7 +478,7 @@ public final class Selector
         break;
       }
     if (tests.length == 0)
-      buf.append('*');
+      buf.append("[error]");
     else
       {
         for (int i = 0; i < tests.length; i++)

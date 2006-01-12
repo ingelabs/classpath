@@ -1991,13 +1991,6 @@ public abstract class DomNode
 
   public boolean isEqualNode(Node arg)
   {
-    boolean ret = isEqualNode2(arg);
-    System.err.println("isEqualNode("+toString()+","+arg.toString()+")="+ret);
-    return ret;
-  }
-
-  public boolean isEqualNode2(Node arg)
-  {
     if (this == arg)
       return true;
     if (arg == null)
