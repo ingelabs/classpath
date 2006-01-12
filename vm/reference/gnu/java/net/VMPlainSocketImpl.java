@@ -44,6 +44,7 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.SocketImpl;
 import java.net.SocketOptions;
+import java.net.UnknownHostException;
 
 import gnu.classpath.Configuration;
 
@@ -279,7 +280,7 @@ public final class VMPlainSocketImpl
     InetAddress addr = sockAddr.getAddress();
 
     if (addr == null)
-      throw new IllegalArgumentException("address is unresolved: " + sockAddr);
+      throw new UnknownHostException(sockAddr.getHostName());
 
     int port = sockAddr.getPort();
 
