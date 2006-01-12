@@ -1,3 +1,12 @@
+2006-01-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	(ElementBuffer.insertContentTag): If the direction is JoinNextDirection
+	and we haven't come immediately after a fracture, adjust the Element
+	offsets.  Added comment explaining the situation.
+	(insert): Return early if no ElementSpecs passed in.  Removed redundant
+	call to insertUpdate.  Fired the UndoableEditUpdate.
+
 2006-01-12  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #22802

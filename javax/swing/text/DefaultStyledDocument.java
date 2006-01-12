@@ -1038,10 +1038,37 @@ public class DefaultStyledDocument extends AbstractDocument
         }
       else if (dir == ElementSpec.JoinNextDirection)
         {
-          // Doing nothing here gives us the proper structure.  
-          // However, edits must be added to the document event. 
-          // It is possible these should happen here, or also possible that
-          // they should happen in insertFracture.
+          // FIXME:
+          // Have to handle JoinNext differently depending on whether
+          // or not it comes after a fracture.  If comes after a fracture, 
+          // the insertFracture method takes care of everything and nothing
+          // needs to be done here.  Otherwise, we need to adjust the
+          // Element structure.  For now, I check if the elementStack's 
+          // top Element is the immediate parent of the LeafElement at
+          // offset - if so, we did not come immediately after a 
+          // fracture.  This seems awkward and should probably be improved.
+          // We may be doing too much in insertFracture because we are 
+          // adjusting the offsets, the correct thing to do may be to 
+          // create a new branch element and push it on to element stack
+          // and then this method here can be more general.
+          
+          BranchElement paragraph = (BranchElement) elementStack.peek();
+          int index = paragraph.getElementIndex(offset);
+          Element target = paragraph.getElement(index);
+          if (target.isLeaf() && paragraph.getElementCount() > (index + 1))
+            {
+              Element next = paragraph.getElement(index + 1);
+              Element newEl1 = createLeafElement(paragraph,
+                                                 target.getAttributes(),
+                                                 target.getStartOffset(),
+                                                 offset);
+              Element newEl2 = createLeafElement(paragraph,
+                                                 next.getAttributes(), offset,
+                                                 next.getEndOffset());
+              Element[] add = new Element[] { newEl1, newEl2 };
+              paragraph.replace (index, 2, add);
+              addEdit(paragraph, index, new Element[] { target, next }, add);
+            }
         }
       else if (dir == ElementSpec.OriginateDirection)
         {
@@ -1933,6 +1960,8 @@ public class DefaultStyledDocument extends AbstractDocument
   protected void insert(int offset, ElementSpec[] data)
     throws BadLocationException
   {
+    if (data == null || data.length == 0)
+      return;
     try
       {
         // writeLock() and writeUnlock() should always be in a try/finally
@@ -1968,18 +1997,11 @@ public class DefaultStyledDocument extends AbstractDocument
                                    DocumentEvent.EventType.INSERT);
         ev.addEdit(edit);
 
-        for (int i = 0; i < data.length; i++)
-          {
-            ElementSpec spec = data[i];
-            AttributeSet atts = spec.getAttributes();
-            if (atts != null && atts.getAttributeCount() != 0)
-              insertUpdate(ev, atts);
-          }        
-
         // Finally we must update the document structure and fire the insert
         // update event.
         buffer.insert(offset, length, data, ev);
         fireInsertUpdate(ev);
+        fireUndoableEditUpdate(new UndoableEditEvent(this, ev));
       }
     finally
       {
