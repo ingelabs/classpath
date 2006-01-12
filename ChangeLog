@@ -1,5 +1,12 @@
 2006-01-12  Mark Wielaard  <mark@klomp.org>
 
+	* vm/reference/gnu/java/net/VMPlainDatagramSocketImpl.java (receive):
+	Use packet.getLength().
+	* native/jni/java-net/gnu_java_net_VMPlainDatagramSocketImpl.c
+	(nativeReceive): Check whether the receiver wants zero bytes.
+
+2006-01-12  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/java-net/javanet.c (_javanet_recvfrom): Return -1 when
 	other side orderly closed connection.
 	* vm/reference/gnu/java/net/VMPlainSocketImpl.java

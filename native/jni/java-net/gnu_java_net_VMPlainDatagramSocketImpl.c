@@ -211,6 +211,12 @@ Java_gnu_java_net_VMPlainDatagramSocketImpl_nativeReceive(JNIEnv     *env,
   /* Receive the packet */
   /* should we try some sort of validation on the length? */
   (*bytes_read) = _javanet_recvfrom(env, obj, arr, offset, length, &addr, port);
+
+  /* Special case the strange situation where the receiver didn't want any
+     bytes. */
+  if (length == 0 && (*bytes_read) == -1)
+    *bytes_read = 0;
+
   if ((*bytes_read) == -1)
     {
       (*env)->ReleaseIntArrayElements(env, receivedFromPort, (jint*)port, 0);
