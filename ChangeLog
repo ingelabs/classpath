@@ -1,3 +1,13 @@
+2006-12-12  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insertUpdate): Added check to check if attribute set is 
+	empty.
+	(insertUpdate): Added check to determine if last character
+	is a newline. If it is, we should not be fracturing.
+	(insert): Added check to determine if attribute set is empty.
+	If it is, insertUpdate should not be called.
+
 2006-12-12  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* configure.ac: Check for isnan.

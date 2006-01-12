@@ -1671,7 +1671,7 @@ public class DefaultStyledDocument extends AbstractDocument
   {
     super.insertUpdate(ev, attr);
     // If the attribute set is null, use an empty attribute set.
-    if (attr == null)
+    if (attr == null || attr.getAttributeCount() == 0)
       attr = SimpleAttributeSet.EMPTY;
     int offset = ev.getOffset();
     int length = ev.getLength();
@@ -1759,11 +1759,25 @@ public class DefaultStyledDocument extends AbstractDocument
     // If we are inserting after a newline then this value comes from 
     // handleInsertAfterNewline.
     if (finalStartTag != null)
-      {
+      {        
         if (prevCharWasNewline)
           finalStartTag.setDirection(finalStartDirection);
         else if (prevParagraph.getEndOffset() != endOffset)
-          finalStartTag.setDirection(ElementSpec.JoinFractureDirection);
+          {
+            try
+              {
+                String last = getText(endOffset - 1, 1);
+                if (!last.equals("\n"))
+                  finalStartTag.setDirection(ElementSpec.JoinFractureDirection);
+              }
+            catch (BadLocationException ble)
+              {
+                // This shouldn't happen.
+                AssertionError ae = new AssertionError();
+                ae.initCause(ble);
+                throw ae;
+              } 
+          }
         else
           {
             // If there is an element AFTER this one, then set the 
@@ -1958,7 +1972,7 @@ public class DefaultStyledDocument extends AbstractDocument
           {
             ElementSpec spec = data[i];
             AttributeSet atts = spec.getAttributes();
-            if (atts != null)
+            if (atts != null && atts.getAttributeCount() != 0)
               insertUpdate(ev, atts);
           }        
 
