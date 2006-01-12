@@ -1,3 +1,14 @@
+2006-01-12  Tom Tromey  <tromey@redhat.com>
+
+	* java/net/InetAddress.java (DEFAULT_CACHE_SIZE): Removed.
+	(DEFAULT_CACHE_PERIOD, DEFAULT_CACHE_PURGE_PCT): Likewise.
+	(cache_size, cache_period, cache_purge_pct, cache): Likewise.
+	(static initializer): Removed cache code.
+	(checkCacheFor, addToCache): Removed.
+	(getAllByName): Removed cache code.
+	(lookup_time): Removed.
+	(InetAddress): Updated.
+
 2006-01-12  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/dom/DomDocument.java,
