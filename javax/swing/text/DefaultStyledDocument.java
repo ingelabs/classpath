@@ -1698,7 +1698,7 @@ public class DefaultStyledDocument extends AbstractDocument
   {
     super.insertUpdate(ev, attr);
     // If the attribute set is null, use an empty attribute set.
-    if (attr == null || attr.getAttributeCount() == 0)
+    if (attr == null)
       attr = SimpleAttributeSet.EMPTY;
     int offset = ev.getOffset();
     int length = ev.getLength();
