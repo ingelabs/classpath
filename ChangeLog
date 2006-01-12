@@ -1,3 +1,11 @@
+2006-01-12  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTextField.java
+	(createDefaultModel): Moved installation of the filterNewlines
+	property to setDocument().
+	(setDocument): New method. Installs the filterNewlines property
+	on the document.
+
 2006-01-12  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/dom/DomNode.java,
