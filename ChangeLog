@@ -1,3 +1,9 @@
+2006-01-12  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/TransferHandler.java:
+	(TransferAction<init>): Call super constructor.  Fixes Mauve regression
+	gnu/testlet/javax/swing/JTextField/CopyPaste.
+
 2005-01-12  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 	* resource/Makefile.am: Install 
 	logging.properties into $(prefix)/lib.
