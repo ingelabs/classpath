@@ -1,3 +1,25 @@
+2006-01-12  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/dom/DomDocument.java,
+	  gnu/xml/dom/DomElement.java,
+	  gnu/xml/dom/DomNode.java,
+	  gnu/xml/stream/XMLParser.java,
+	  gnu/xml/transform/Bindings.java,
+	  gnu/xml/transform/ElementAvailableFunction.java,
+	  gnu/xml/transform/ElementNode.java,
+	  gnu/xml/transform/FunctionAvailableFunction.java,
+	  gnu/xml/transform/NamespaceProxy.java,
+	  gnu/xml/transform/StreamSerializer.java,
+	  gnu/xml/transform/Stylesheet.java,
+	  gnu/xml/transform/TransformerImpl.java,
+	  gnu/xml/xpath/Selector.java: Implement isEqualNode correctly for
+	  document and element nodes; correct coalescing semantics when parsing;
+	  attribute-sets can only refer to top-level variables and parameters;
+	  fix namespace retrieval during element-available and
+	  function-available functions; implement xsl:fallback for extension
+	  elements; tokenize whitespace correctly during whitespace stripping;
+	  correct following and previous node axes selectors.
+
 2006-01-12  Roman Kennke  <kennke@aicas.com>
 
 	* java/util/Hashtable.java

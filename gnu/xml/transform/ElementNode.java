@@ -206,6 +206,7 @@ final class ElementNode
                        Node parent, Node nextSibling, String attributeSet)
     throws TransformerException
   {
+    stylesheet.bindings.global = true;
     for (Iterator i = stylesheet.attributeSets.iterator(); i.hasNext(); )
       {
         AttributeSet as = (AttributeSet) i.next();
@@ -223,6 +224,7 @@ final class ElementNode
                             context, pos, len,
                             parent, nextSibling);
       }
+    stylesheet.bindings.global = false;
   }
 
   public boolean references(QName var)

@@ -1077,9 +1077,9 @@ class Stylesheet
         else if ("system-property".equals(localName) && (arity == 1))
           return new SystemPropertyFunction();
         else if ("element-available".equals(localName) && (arity == 1))
-          return new ElementAvailableFunction(this);
+          return new ElementAvailableFunction(new NamespaceProxy(current));
         else if ("function-available".equals(localName) && (arity == 1))
-          return new FunctionAvailableFunction(this);
+          return new FunctionAvailableFunction(new NamespaceProxy(current));
       }
     return null;
   }
@@ -1498,7 +1498,19 @@ class Stylesheet
         String prefix = node.getPrefix();
         if (extensionElementPrefixes.contains(prefix))
           {
-            // Pass over extension elements
+            // Check for xsl:fallback
+            for (Node ctx = node.getFirstChild(); ctx != null;
+                 ctx = ctx.getNextSibling())
+              {
+                String ctxUri = ctx.getNamespaceURI();
+                if (XSL_NS.equals(ctxUri) &&
+                    "fallback".equals(ctx.getLocalName()))
+                  {
+                    ctx = ctx.getFirstChild();
+                    return (ctx == null) ? null : parse(ctx);
+                  }
+              }
+            // Otherwise pass over extension element
             return null;
           }
         switch (node.getNodeType())

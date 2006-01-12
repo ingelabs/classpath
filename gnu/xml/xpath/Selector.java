@@ -1,5 +1,5 @@
 /* Selector.java -- 
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004,2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -111,16 +111,12 @@ public final class Selector
       {
       case CHILD:
         if (nodeType == Node.ATTRIBUTE_NODE)
-          {
-            return false;
-          }
+          return false;
         break;
       case ATTRIBUTE:
       case NAMESPACE:
         if (nodeType != Node.ATTRIBUTE_NODE)
-          {
-            return false;
-          }
+          return false;
         break;
       case DESCENDANT_OR_SELF:
         return true;
@@ -136,9 +132,7 @@ public final class Selector
           {
             Test test = tests[j];
             if (!test.matches(context, pos, len))
-              {
-                return false;
-              }
+              return false;
           }
       }
     return true;
@@ -149,9 +143,7 @@ public final class Selector
     int pos = 1;
     for (ctx = ctx.getPreviousSibling(); ctx != null;
          ctx = ctx.getPreviousSibling())
-      {
-        pos++;
-      }
+      pos++;
     return pos;
   }
 
@@ -164,9 +156,7 @@ public final class Selector
       }
     Node parent = ctx.getParentNode();
     if (parent != null)
-      {
-        return parent.getChildNodes().getLength();
-      }
+      return parent.getChildNodes().getLength();
     return 1;
   }
 
@@ -175,7 +165,6 @@ public final class Selector
     Set acc = new LinkedHashSet();
     addCandidates(context, acc);
     List candidates = new ArrayList(acc);
-    //Collections.sort(candidates, documentOrderComparator);
     List ret = filterCandidates(candidates, false);
     return ret;
   }
@@ -184,11 +173,8 @@ public final class Selector
   {
     Set acc = new LinkedHashSet();
     for (Iterator i = ns.iterator(); i.hasNext(); )
-      {
-        addCandidates((Node) i.next(), acc);
-      }
+      addCandidates((Node) i.next(), acc);
     List candidates = new ArrayList(acc);
-    //Collections.sort(candidates, documentOrderComparator);
     List ret = filterCandidates(candidates, true);
     return ret;
   }
@@ -230,17 +216,7 @@ public final class Selector
                       }
                   }
                 if (test.matches(node, i + 1, len))
-                  {
-                    successful.add(node);
-                  }
-                /*
-                   System.err.println("Testing "+node);
-                   int p = getContextPosition(node);
-                   int l = getContextSize(node);
-                   if (test.matches(node, p, l))
-                   {
-                   successful.add(node);
-                   }*/
+                  successful.add(node);
               }
             candidates = successful;
             len = candidates.size();
@@ -305,9 +281,7 @@ public final class Selector
       {
         acc.add(child);
         if (recurse)
-          {
-            addChildNodes(child, acc, recurse);
-          }
+          addChildNodes(child, acc, recurse);
         child = child.getNextSibling();
       }
   }
@@ -320,55 +294,62 @@ public final class Selector
       {
         acc.add(parent);
         if (recurse)
-          {
-            addParentNode(parent, acc, recurse);
-          }
+          addParentNode(parent, acc, recurse);
       }
   }
 
   void addFollowingNodes(Node context, Collection acc, boolean recurse)
   {
-    Node cur = context.getNextSibling();
+    if (context != null && recurse)
+      addChildNodes(context, acc, true);
+    Node cur = (context.getNodeType() == Node.ATTRIBUTE_NODE) ? null :
+      context.getNextSibling();
     while (cur != null)
       {
         acc.add(cur);
         if (recurse)
-          {
-            addChildNodes(cur, acc, true);
-          }
+          addChildNodes(cur, acc, true);
         cur = cur.getNextSibling();
       }
     if (recurse)
       {
-        context = (context.getNodeType() == Node.ATTRIBUTE_NODE) ?
-          ((Attr) context).getOwnerElement() : context.getParentNode();
-        if (context != null)
+        while (context != null)
           {
-            addFollowingNodes(context, acc, recurse);
+            context = (context.getNodeType() == Node.ATTRIBUTE_NODE) ?
+              ((Attr) context).getOwnerElement() : context.getParentNode();
+            if (context != null)
+              {
+                cur = context.getNextSibling();
+                while (cur != null)
+                  {
+                    acc.add(cur);
+                    if (recurse)
+                      addChildNodes(cur, acc, true);
+                    cur = cur.getNextSibling();
+                  }
+              }
           }
       }
   }
 
   void addPrecedingNodes(Node context, Collection acc, boolean recurse)
   {
-    Node cur = context.getPreviousSibling();
+    Node cur = (context.getNodeType() == Node.ATTRIBUTE_NODE) ? null :
+      context.getPreviousSibling();
     while (cur != null)
       {
         acc.add(cur);
         if (recurse)
-          {
-            addChildNodes(cur, acc, true);
-          }
+          addChildNodes(cur, acc, true);
         cur = cur.getPreviousSibling();
       }
     if (recurse)
       {
-        context = (context.getNodeType() == Node.ATTRIBUTE_NODE) ?
-          ((Attr) context).getOwnerElement() : context.getParentNode();
-        if (context != null)
-          {
-            addPrecedingNodes(context, acc, recurse);
-          }
+        cur = context;
+        cur = (cur.getNodeType() == Node.ATTRIBUTE_NODE) ?
+          ((Attr) cur).getOwnerElement() : cur.getParentNode();
+        if (cur != null)
+          addPrecedingNodes(cur, acc, recurse);
       }
   }
 
@@ -399,9 +380,7 @@ public final class Selector
           {
             Node attr = attrs.item(i);
             if (isNamespaceAttribute(attr))
-              {
-                acc.add(attr);
-              }
+              acc.add(attr);
           }
       }
   }
@@ -419,9 +398,7 @@ public final class Selector
     int len = tests.length;
     List tests2 = new ArrayList(len);
     for (int i = 0; i < len; i++)
-      {
-        tests2.add(tests[i].clone(context));
-      }
+      tests2.add(tests[i].clone(context));
     return new Selector(axis, tests2);
   }
 
@@ -430,9 +407,7 @@ public final class Selector
     for (int i = 0; i < tests.length; i++)
       {
         if (tests[i].references(var))
-          {
-            return true;
-          }
+          return true;
       }
     return false;
   }
@@ -451,13 +426,9 @@ public final class Selector
       case ATTRIBUTE:
         if (tests.length == 0 ||
             (tests[0] instanceof NameTest))
-          {
-            buf.append('@');
-          }
+          buf.append('@');
         else
-          {
-            buf.append("attribute::");
-          }
+          buf.append("attribute::");
         break;
       case CHILD:
         //buf.append("child::");
@@ -481,9 +452,7 @@ public final class Selector
         if (tests.length == 0 ||
             (tests[0] instanceof NodeTypeTest &&
              ((NodeTypeTest) tests[0]).type == 0))
-          {
-            return "..";
-          }
+          return "..";
         buf.append("parent::");
         break;
       case PRECEDING:
@@ -496,22 +465,16 @@ public final class Selector
         if (tests.length == 0 ||
             (tests[0] instanceof NodeTypeTest &&
              ((NodeTypeTest) tests[0]).type == 0))
-          {
-            return ".";
-          }
+          return ".";
         buf.append("self::");
         break;
       }
     if (tests.length == 0)
-      {
-        buf.append('*');
-      }
+      buf.append('*');
     else
       {
         for (int i = 0; i < tests.length; i++)
-          {
-            buf.append(tests[i]);
-          }
+          buf.append(tests[i]);
       }
     return buf.toString();
   }

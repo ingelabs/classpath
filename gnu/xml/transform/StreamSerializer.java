@@ -371,18 +371,18 @@ public class StreamSerializer
                   version = "1.0";
                 out.write(BRA);
                 out.write(0x3f);
-                out.write("xml version='".getBytes("US-ASCII"));
+                out.write("xml version=\"".getBytes("US-ASCII"));
                 out.write(version.getBytes("US-ASCII"));
-                out.write(APOS);
+                out.write(0x22);
                 if (!("UTF-8".equalsIgnoreCase(encoding)))
                   {
-                    out.write(" encoding='".getBytes("US-ASCII"));
+                    out.write(" encoding=\"".getBytes("US-ASCII"));
                     out.write(encoding.getBytes("US-ASCII"));
-                    out.write(APOS);
+                    out.write(0x22);
                   }
                 if ((doc != null && doc.getXmlStandalone()) ||
                     "yes".equals(node.getUserData("standalone")))
-                  out.write(" standalone='yes'".getBytes("US-ASCII"));
+                  out.write(" standalone=\"yes\"".getBytes("US-ASCII"));
                 out.write(0x3f);
                 out.write(KET);
                 out.write(encodeText(eol));

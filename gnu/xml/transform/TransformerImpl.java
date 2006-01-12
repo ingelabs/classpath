@@ -47,7 +47,6 @@ import java.net.MalformedURLException;
 import java.net.UnknownServiceException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -461,40 +460,42 @@ class TransformerImpl
    */
   private static String[] tokenizeWhitespace(String text)
   {
-    List acc = new ArrayList();
-    StringBuffer buf = new StringBuffer();
-    int state = 0; // 0=NONE 1=SPACE 2=TEXT
     int len = text.length();
+    int start = 0, end = len - 1;
+    // Find index of text start
     for (int i = 0; i < len; i++)
       {
         char c = text.charAt(i);
         boolean whitespace = (c == ' ' || c == '\n' || c == '\t' || c == '\r');
-        switch (state)
-          {
-          case 1: // SPACE
-            if (!whitespace)
-              {
-                acc.add(buf.toString());
-                buf.setLength(0);
-                state = 2;
-              }
-            break;
-          case 2: // TEXT
-            if (whitespace)
-              {
-                acc.add(buf.toString());
-                buf.setLength(0);
-                state = 1;
-              }
-            break;
-          case 0: // NONE
-            state = whitespace ? 1 : 2;
-            break;
-          }
-        buf.append(c);
+        if (whitespace)
+          start++;
+        else
+          break;
       }
-    acc.add(buf.toString());
-    return (String[]) acc.toArray(new String[acc.size()]);
+    if (start == end) // all whitespace
+      return new String[] { text };
+    // Find index of text end
+    for (int i = end; i > start; i--)
+      {
+        char c = text.charAt(i);
+        boolean whitespace = (c == ' ' || c == '\n' || c == '\t' || c == '\r');
+        if (whitespace)
+          end--;
+        else
+          break;
+      }
+    if (start == 0 && end == len - 1) // all non-whitespace
+      return new String[] { text };
+    // whitespace, then text, then whitespace
+    String[] ret = (start > 0 && end < len - 1) ?
+      new String[3] : new String[2];
+    int i = 0;
+    if (start > 0)
+      ret[i++] = text.substring(0, start);
+    ret[i++] = text.substring(start, end + 1);
+    if (end < len - 1)
+      ret[i++] = text.substring(end + 1);
+    return ret;
   }
 
   /**

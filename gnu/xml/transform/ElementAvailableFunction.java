@@ -140,12 +140,13 @@ class ElementAvailableFunction
         localName = name.substring(ci + 1);
       }
     uri = nsctx.getNamespaceURI(prefix);
+    System.err.println("**** element-avaliable: prefix="+prefix+" uri="+uri);
     if (Stylesheet.XSL_NS.equals(uri))
       {
         return elements.contains(localName) ?
           Boolean.TRUE : Boolean.FALSE;
-        // TODO extension elements
       }
+    // TODO extension elements
     return Boolean.FALSE;
   }
   
@@ -153,16 +154,12 @@ class ElementAvailableFunction
   {
     NamespaceContext n = nsctx;
     if (context instanceof NamespaceContext)
-      {
-        n = (NamespaceContext) context;
-      }
+      n = (NamespaceContext) context;
     ElementAvailableFunction f = new ElementAvailableFunction(n);
     int len = args.size();
     List args2 = new ArrayList(len);
     for (int i = 0; i < len; i++)
-      {
-        args2.add(((Expr) args.get(i)).clone(context));
-      }
+      args2.add(((Expr) args.get(i)).clone(context));
     f.setArguments(args2);
     return f;
   }
@@ -172,11 +169,14 @@ class ElementAvailableFunction
     for (Iterator i = args.iterator(); i.hasNext(); )
       {
         if (((Expr) i.next()).references(var))
-          {
-            return true;
-          }
+          return true;
       }
     return false;
+  }
+
+  public String toString()
+  {
+    return "element-available(" + args.get(0) + ")";
   }
 
 }
