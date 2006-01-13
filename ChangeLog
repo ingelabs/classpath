@@ -1,3 +1,15 @@
+2006-01-13  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	Removed unused fields.
+	(insert): Removed unused fields.
+	(endEdit): Removed, not needed.
+	(insertUpdate): Removed call to endEdit.
+	(prepareContentInsertion): Removed, not needed.
+	(insertContentTag): Removed call to prepareContentInsertion.
+	(printElements): Removed, not needed.
+	(attributeSetsAreSame): Removed, not needed.
+
 2006-01-13  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Set version to 0.20.

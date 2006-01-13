@@ -433,32 +433,10 @@ public class DefaultStyledDocument extends AbstractDocument
     private int endOffset;
 
     /**
-     * The number of inserted end tags. This is a counter which always gets
-     * incremented when an end tag is inserted. This is evaluated before
-     * content insertion to go up the element stack.
-     */
-    private int numEndTags;
-
-    /**
-     * The number of inserted start tags. This is a counter which always gets
-     * incremented when an end tag is inserted. This is evaluated before
-     * content insertion to go up the element stack.
-     */
-    private int numStartTags;
-
-    /**
      * The current position in the element tree. This is used for bulk inserts
      * using ElementSpecs.
      */
     private Stack elementStack;
-
-    /**
-     * Holds fractured elements during insertion of end and start tags.
-     * Inserting an end tag may lead to fracturing of the current paragraph
-     * element. The elements that have been cut off may be added to the
-     * next paragraph that is created in the next start tag.
-     */
-    Element[] fracture;
 
     /**
      * The ElementChange that describes the latest changes.
@@ -767,8 +745,6 @@ public class DefaultStyledDocument extends AbstractDocument
       elementStack.clear();
       elementStack.push(root);
       elementStack.push(root.getElement(root.getElementIndex(offset)));
-      numEndTags = 0;
-      numStartTags = 0;
       insertUpdate(data);
     }
 
@@ -850,40 +826,6 @@ public class DefaultStyledDocument extends AbstractDocument
               insertContentTag(data[i]);
               break;
             }
-        }
-      endEdit();
-    }
-
-    /**
-     * Finishes an insertion by possibly evaluating the outstanding start and
-     * end tags. However, this is only performed if the event has received any
-     * modifications.
-     */
-    private void endEdit()
-    {
-      if (documentEvent.modified)
-        prepareContentInsertion();
-    }
-
-    /**
-     * Evaluates the number of inserted end tags and performs the corresponding
-     * structural changes.
-     */
-    private void prepareContentInsertion()
-    {
-      while (numEndTags > 0)
-        {
-          elementStack.pop();
-          numEndTags--;
-        }
-
-      while (numStartTags > 0)
-        {
-          Element current = (Element) elementStack.peek();
-          Element newParagraph =
-            insertParagraph((BranchElement) current, offset);
-          elementStack.push(newParagraph);
-          numStartTags--;
         }
     }
 
@@ -1025,7 +967,6 @@ public class DefaultStyledDocument extends AbstractDocument
      */
     private void insertContentTag(ElementSpec tag)
     {
-      prepareContentInsertion();
       int len = tag.getLength();
       int dir = tag.getDirection();
       AttributeSet tagAtts = tag.getAttributes();
@@ -1921,35 +1862,6 @@ public class DefaultStyledDocument extends AbstractDocument
   {
     // Nothing to do here. This is intended to be overridden by subclasses.
   }
-
-  void printElements (Element start, int pad)
-  {
-    for (int i = 0; i < pad; i++)
-      System.out.print(" ");
-    if (pad == 0)
-      System.out.println ("ROOT ELEMENT ("+start.getStartOffset()+", "+start.getEndOffset()+")");
-    else if (start instanceof AbstractDocument.BranchElement)
-      System.out.println ("BranchElement ("+start.getStartOffset()+", "+start.getEndOffset()+")");
-    else
-      {
-        {
-          try
-            {
-              System.out.println ("LeafElement ("+start.getStartOffset()+", "
-                                  + start.getEndOffset()+"): "+ 
-                                  start.getDocument().
-                                  getText(start.getStartOffset(), 
-                                          start.getEndOffset() - 
-                                          start.getStartOffset()));
-            }
-          catch (BadLocationException ble)
-            {
-            }
-        }
-      }
-    for (int i = 0; i < start.getElementCount(); i ++)
-      printElements (start.getElement(i), pad+3);
-  }
   
   /**
    * Inserts a bulk of structured content at once.
@@ -2033,10 +1945,5 @@ public class DefaultStyledDocument extends AbstractDocument
         err.initCause(ex);
         throw err;
       }
-  }
-  
-  static boolean attributeSetsAreSame (AttributeSet a, AttributeSet b)
-  {
-    return (a == null && b == null) || (a != null && a.isEqual(b));
   }
 }
