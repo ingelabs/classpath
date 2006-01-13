@@ -352,8 +352,21 @@ setTreeLock(Object tree_lock)
 public boolean
 postEvent(Event event)
 {
-  // This is overridden by subclasses that support events.
-  return false;
+  boolean retVal = false;
+  MenuContainer parent = getParent();
+  if (parent == null)
+    {
+      if (this instanceof MenuBar)
+        {
+          MenuBar menuBar = (MenuBar) this;
+          if (menuBar.frame != null)
+            retVal = menuBar.frame.postEvent(event);
+        }
+    }
+  else
+    retVal = parent.postEvent(event);
+
+  return retVal;
 }
 /*************************************************************************/
 
@@ -364,6 +377,13 @@ postEvent(Event event)
   */
 public final void dispatchEvent(AWTEvent event)
 {
+  /* Convert AWT 1.1 event to AWT 1.0 event */
+  Event oldStyleEvent = Component.translateEvent(event);
+  if (oldStyleEvent != null)
+    {
+      postEvent(oldStyleEvent);
+    }
+
   // See comment in Component.dispatchEvent().
   dispatchEventImpl(event);
 }
@@ -380,15 +400,6 @@ public final void dispatchEvent(AWTEvent event)
  */
 void dispatchEventImpl(AWTEvent event)
 {
-  Event oldStyleEvent;
-
-  // This is overridden by subclasses that support events.
-  /* Convert AWT 1.1 event to AWT 1.0 event */
-  oldStyleEvent = Component.translateEvent(event);
-  if (oldStyleEvent != null)
-    {
-      postEvent(oldStyleEvent);
-    }
   /* Do local processing */
   processEvent(event);
 }

@@ -332,6 +332,7 @@ setMenuBar(MenuBar menuBar)
     invalidateTree ();
     ((FramePeer) peer).setMenuBar(menuBar);
   }
+  menuBar.frame = this;
   this.menuBar = menuBar;
 }
 

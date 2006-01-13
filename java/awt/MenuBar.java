@@ -91,6 +91,13 @@ private Vector menus = new Vector();
    */
   private transient AccessibleContext accessibleContext;
 
+  /**
+   * The frame that this menubar is associated with. We need to know this so
+   * that {@link MenuComponent#postEvent(Event)} can post the event to the
+   * frame if no other component processed the event.
+   */
+  Frame frame;
+
 /*************************************************************************/
 
 /*
@@ -303,6 +310,7 @@ removeNotify()
     Menu mi = (Menu) e.nextElement();
     mi.removeNotify();
   }
+  frame = null;
   super.removeNotify();
 }
 
