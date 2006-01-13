@@ -1,3 +1,37 @@
+2006-01-13  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/transform/AbstractNumberNode.java,
+	  gnu/xml/transform/ApplyImportsNode.java,
+	  gnu/xml/transform/ApplyTemplatesNode.java,
+	  gnu/xml/transform/AttributeNode.java,
+	  gnu/xml/transform/CallTemplateNode.java,
+	  gnu/xml/transform/ChooseNode.java,
+	  gnu/xml/transform/CommentNode.java,
+	  gnu/xml/transform/CopyNode.java,
+	  gnu/xml/transform/CopyOfNode.java,
+	  gnu/xml/transform/DocumentFunction.java,
+	  gnu/xml/transform/ElementNode.java,
+	  gnu/xml/transform/ForEachNode.java,
+	  gnu/xml/transform/IfNode.java,
+	  gnu/xml/transform/LiteralNode.java,
+	  gnu/xml/transform/MessageNode.java,
+	  gnu/xml/transform/OtherwiseNode.java,
+	  gnu/xml/transform/ParameterNode.java,
+	  gnu/xml/transform/ProcessingInstructionNode.java,
+	  gnu/xml/transform/Stylesheet.java,
+	  gnu/xml/transform/Template.java,
+	  gnu/xml/transform/TemplateNode.java,
+	  gnu/xml/transform/TextNode.java,
+	  gnu/xml/transform/TransformerImpl.java,
+	  gnu/xml/transform/ValueOfNode.java,
+	  gnu/xml/transform/WhenNode.java,
+	  gnu/xml/xpath/NodeTypeTest.java,
+	  gnu/xml/xpath/Selector.java: simplified debugging output; ignore
+	  with-param parameters when template does not define parameters; apply
+	  conflict resolution for templates; strip whitespace on documents
+	  retrieved via document() function; allow node() to match document
+	  nodes.
+
 2006-01-13  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/announce/20060113.wml: New file.

@@ -90,7 +90,7 @@ public final class Selector
     if (len > 0)
       tests.toArray(this.tests);
     else
-      this.tests[0] = new NameTest(null, true, true);
+      this.tests[0] = new NodeTypeTest((short) 0);
     if (axis == NAMESPACE && this.tests[0] instanceof NameTest)
       {
         NameTest nt = (NameTest) this.tests[0];

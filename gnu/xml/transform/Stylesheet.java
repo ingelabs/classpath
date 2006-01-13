@@ -408,7 +408,7 @@ class Stylesheet
   {
     if (debug)
       System.err.println("getTemplate: mode="+mode+" context="+context);
-    Set candidates = new TreeSet();
+    Template selected = null;
     for (Iterator j = templates.iterator(); j.hasNext(); )
       {
         Template t = (Template) j.next();
@@ -426,10 +426,22 @@ class Stylesheet
           }
         //System.err.println("\t"+context+" "+t+"="+isMatch);
         if (isMatch)
-          candidates.add(t);
+          {
+            // Conflict resolution
+            // @see http://www.w3.org/TR/xslt#conflict
+            if (selected == null)
+              selected = t;
+            else
+              {
+                if (t.precedence < selected.precedence ||
+                    t.priority < selected.priority)
+                  continue;
+                selected = t;
+              }
+          }
       }
     //System.err.println("\tcandidates="+candidates);
-    if (candidates.isEmpty())
+    if (selected == null)
       {
         // Apply built-in template
         // Current template is unchanged
@@ -451,32 +463,39 @@ class Stylesheet
             return null;
           }
       }
-    else
-      {
-        Template t = (Template) candidates.iterator().next();
-        // Set current template
-        currentTemplate = t;
-        if (debug)
-          System.err.println("\ttemplate="+t+" context="+context);
-        return t.node;
-      }
+    // Set current template
+    currentTemplate = selected;
+    if (debug)
+      System.err.println("\ttemplate="+currentTemplate+" context="+context);
+    return currentTemplate.node;
   }
 
   TemplateNode getTemplate(QName mode, QName name)
     throws TransformerException
   {
-    Set candidates = new TreeSet();
+    Template selected = null;
     for (Iterator j = templates.iterator(); j.hasNext(); )
       {
         Template t = (Template) j.next();
         boolean isMatch = t.matches(name);
         if (isMatch)
-          candidates.add(t);
+          {
+            // Conflict resolution
+            // @see http://www.w3.org/TR/xslt#conflict
+            if (selected == null)
+              selected = t;
+            else
+              {
+                if (t.precedence < selected.precedence ||
+                    t.priority < selected.priority)
+                  continue;
+                selected = t;
+              }
+          }
       }
-    if (candidates.isEmpty())
+    if (selected == null)
       return null;
-    Template t = (Template) candidates.iterator().next();
-    return t.node;
+    return selected.node;
   }
 
   /**
