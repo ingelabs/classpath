@@ -1,5 +1,10 @@
 2006-01-13  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/MenuComponent.java: Reformatted to better match our
+	coding style.
+
+2006-01-13  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Frame.java: Reformatted to better match our
 	coding style.
 
