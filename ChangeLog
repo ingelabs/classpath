@@ -1,3 +1,8 @@
+2005-01-13  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JMenuItem.java (JMenuItem(Action)): Check whether
+	name, accel, mnemonic and command are defined before setting.
+
 2005-01-12  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
