@@ -1,5 +1,26 @@
 2006-01-13  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/MenuBar.java: Reformatted to better match our
+	coding style.
+
+2006-01-13  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/MenuBar.java
+	(frame): New field.
+	(removeNotify): Clear frame field when beeing removed from the
+	frame.
+	* java/awt/Frame.java
+	(setMenuBar): Store a reference of the frame in the MenuBar.
+	* java/awt/MenuComponent.java
+	(postEvent): Implemented to forward the call to the parent until
+	a parent can handle the event.
+	(dispatchEvent): Moved handling of old style events from
+	dispatchEventImpl() to here.
+	(dispatchEventImpl): Moved handling of old style events to
+	dispatchEvent().
+
+2006-01-13  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(dispatchEvent): Moved handling of old style events from
 	dispatchEventImpl() to this method.
