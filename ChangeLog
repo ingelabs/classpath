@@ -1,5 +1,10 @@
 2005-01-13  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Set version to 0.20.
+	* NEWS: Add entries for all the new work done.
+
+2005-01-13  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/text/DefaultCaret.java: Chain all AssertionErrors.
 
 2005-01-13  Mark Wielaard  <mark@klomp.org>
