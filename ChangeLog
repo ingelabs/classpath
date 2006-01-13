@@ -1,3 +1,12 @@
+2006-01-13  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(dispatchEvent): Moved handling of old style events from
+	dispatchEventImpl() to this method.
+	(translateEvent): Removed unnecessary cast.
+	(dispatchEventImpl): Moved handling of old style events to
+	dispatchEvent().
+	
 2006-01-13  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
