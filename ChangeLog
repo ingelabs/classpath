@@ -1,5 +1,11 @@
 2005-01-13  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/security/Security.java
+	(getProperty): Added hack to skip security check when trusted
+	code is direct caller.
+
+2005-01-13  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/io/PrintStream.java
 	(line_separator, PrintStream(OutputStream,boolean)): Use
 	SystemProperties.
