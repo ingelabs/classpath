@@ -1,5 +1,11 @@
 2005-01-13  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/io/PrintStream.java
+	(line_separator, PrintStream(OutputStream,boolean)): Use
+	SystemProperties.
+
+2005-01-13  Jeroen Frijters  <jeroen@frijters.net>
+
 	* gnu/java/nio/charset/Provider.java: Added comment about its
 	special relation with CharsetProvider.
 	(static): Removed.
