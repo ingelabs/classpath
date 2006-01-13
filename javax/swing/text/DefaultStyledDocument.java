@@ -410,6 +410,33 @@ public class DefaultStyledDocument extends AbstractDocument
       return b.toString();
     }
   }
+  
+  /** 
+   * Instance of all editing information for an object in
+   * the Vector.
+   */
+  class Edit
+  {
+    /** The element to edit . */
+    Element e;
+    
+    /** The index of the change. */
+    int index;
+    
+    /** The removed elements. */
+    Element[] removed;
+    
+    /** The added elements. */
+    Element[] added;
+    
+    public Edit(Element e, int i, Element[] removed, Element[] added)
+    {
+      this.e = e;
+      this.index = i;
+      this.removed = removed;
+      this.added = added;
+    }
+  }
 
   /**
    * Performs all <em>structural</code> changes to the <code>Element</code>
@@ -594,7 +621,7 @@ public class DefaultStyledDocument extends AbstractDocument
               added = new Element[]{ res[0], res[1] };
             }
           par.replace(index, removed.length, added);
-          addEdit(par, index, removed, added);
+          edits.add(new Edit(par, index, removed, added));
         }
 
       int endOffset = offset + length;
@@ -617,7 +644,7 @@ public class DefaultStyledDocument extends AbstractDocument
               added = new Element[]{ res[0], res[1] };
             }
           par.replace(index, removed.length, added);
-          addEdit(par, index, removed, added);
+          edits.add(new Edit(par, index, removed, added));
         }
     }
 
@@ -683,7 +710,7 @@ public class DefaultStyledDocument extends AbstractDocument
                 }
 
               ((BranchElement) el).replace(index, removed.length, added);
-              addEdit(el, index, removed, added);
+              edits.add(new Edit(el, index, removed, added));
               BranchElement newPar =
                 (BranchElement) createBranchElement(el.getParentElement(),
                                                     el.getAttributes());
@@ -698,7 +725,7 @@ public class DefaultStyledDocument extends AbstractDocument
               added = new Element[0];
               ((BranchElement) el).replace(index, removed.length,
                                            added);
-              addEdit(el, index, removed, added);
+              edits.add(new Edit(el, index, removed, added));
               BranchElement newPar =
                 (BranchElement) createBranchElement(el.getParentElement(),
                                                     el.getAttributes());
@@ -742,10 +769,18 @@ public class DefaultStyledDocument extends AbstractDocument
       this.endOffset = offset + length;
       documentEvent = ev;
       // Push the root and the paragraph at offset onto the element stack.
+      edits.clear();
       elementStack.clear();
       elementStack.push(root);
       elementStack.push(root.getElement(root.getElementIndex(offset)));
       insertUpdate(data);
+      
+      int size = edits.size();
+      for (int i = 0; i < size; i++)
+        {
+          Edit curr = (Edit) edits.get(i);
+          addEdit(curr.e, curr.index, curr.removed, curr.added);
+        }
     }
 
     /**
@@ -779,16 +814,14 @@ public class DefaultStyledDocument extends AbstractDocument
               (grandParent.getElementIndex(parent.getEndOffset()));
           Element firstLeaf = nextBranch.getElement(0);
           while (!firstLeaf.isLeaf())
-            {
               firstLeaf = firstLeaf.getElement(0);
-            }
+          
           BranchElement parent2 = (BranchElement) firstLeaf.getParentElement();
           Element newEl2 = 
             createLeafElement(parent2, 
                               firstLeaf.getAttributes(), 
                               offset, firstLeaf.getEndOffset());
           parent2.replace(0, 1, new Element[] { newEl2 });
-          
           
           ((BranchElement) parent).
               replace(index, 1, new Element[] { newEl1 });
@@ -869,14 +902,14 @@ public class DefaultStyledDocument extends AbstractDocument
                 }
             }
           par.replace(index, removed.length, added);
-          addEdit(par, index, removed, added);
+          edits.add(new Edit(par, index, removed, added));
         }
       else
         {
           ret = createBranchElement(par, null);
           Element[] added = new Element[]{ ret };
           par.replace(index, 0, added);
-          addEdit(par, index, new Element[0], added);
+          edits.add(new Edit(par, index, new Element[0], added));
         }
       return ret;
     }
@@ -941,7 +974,7 @@ public class DefaultStyledDocument extends AbstractDocument
       for (int i = 1; i < numReplaced; i++)
         newLeaves[i] = previous.getElement(previousIndex + i);
       newBranch.replace(0, 0, newLeaves);
-      addEdit(newBranch, 0, null, newLeaves);
+      edits.add(new Edit(newBranch, 0, null, newLeaves));
             
       // Now we remove the children after the offset from the previous 
       // paragraph. (Step 3).
@@ -951,13 +984,13 @@ public class DefaultStyledDocument extends AbstractDocument
       for (int j = 0; j < removeSize; j++)
         remove[j] = previous.getElement(previousIndex + j);
       previous.replace(previousIndex, removeSize, add);
-      addEdit(previous, previousIndex, remove, add);
+      edits.add(new Edit(previous, previousIndex, remove, add));
       
       // Finally we add the new paragraph to the parent. (Step 5).
       Element[] nb = new Element[] { newBranch };
       int index = parentIndex + 1;
       parent.replace(index, 0, nb);
-      addEdit(parent, index, null, nb);
+      edits.add(new Edit(parent, index, null, nb));
     }
     
     /**
@@ -1008,7 +1041,7 @@ public class DefaultStyledDocument extends AbstractDocument
                                                  next.getEndOffset());
               Element[] add = new Element[] { newEl1, newEl2 };
               paragraph.replace (index, 2, add);
-              addEdit(paragraph, index, new Element[] { target, next }, add);
+              edits.add(new Edit(paragraph, index, new Element[] { target, next }, add));
             }
         }
       else if (dir == ElementSpec.OriginateDirection)
@@ -1061,7 +1094,7 @@ public class DefaultStyledDocument extends AbstractDocument
               added[2] = splitRes[1];
             }          
           paragraph.replace(index, removed.length, added);
-          addEdit(paragraph, index, removed, added);
+          edits.add(new Edit(paragraph, index, removed, added));
         }
       offset += len;
     }
@@ -1235,6 +1268,9 @@ public class DefaultStyledDocument extends AbstractDocument
    * Listens for changes on this document's styles and notifies styleChanged().
    */
   private StyleChangeListener styleChangeListener;
+  
+  /** Vector that contains all the edits. */
+  Vector edits = new Vector();
 
   /**
    * Creates a new <code>DefaultStyledDocument</code>.

@@ -1,3 +1,17 @@
+2006-01-13  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(Edit): New inner class.
+	(changeUpdate): Changed addEdit call to add a new
+	instance of Edit to the edits Vector, so addEdits can
+	be done later.
+	(split): Likewise.
+	(insertParagraph): Likewise.
+	(insertFracture): Likewise.
+	(insertContentTag): Likewise.
+	(insert): Added loop to go through edits Vector and perform
+	addEdit on each object.
+
 2006-01-13  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/transform/AbstractNumberNode.java,
