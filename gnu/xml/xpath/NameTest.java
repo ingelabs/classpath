@@ -72,13 +72,6 @@ public final class NameTest
   }
 
   public boolean matches(Node node, int pos, int len)
-  /*{
-    boolean ret = matches2(node, pos, len);
-    System.out.println(toString()+" matches "+node+"? "+ret);
-    return ret;
-  }
-
-  public boolean matches2(Node node, int pos, int len)*/
   {
     switch (node.getNodeType())
       {
