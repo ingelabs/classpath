@@ -1,13 +1,13 @@
-2005-01-13  Mark Wielaard  <mark@klomp.org>
+2006-01-13  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Set version to 0.20.
 	* NEWS: Add entries for all the new work done.
 
-2005-01-13  Mark Wielaard  <mark@klomp.org>
+2006-01-13  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/text/DefaultCaret.java: Chain all AssertionErrors.
 
-2005-01-13  Mark Wielaard  <mark@klomp.org>
+2006-01-13  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/regex/Pattern.java (Pattern): Chain REException.
 
@@ -15,19 +15,19 @@
 
 	* gnu/xml/xpath/NameTest.java: Removed debugging output.
 
-2005-01-13  Jeroen Frijters  <jeroen@frijters.net>
+2006-01-13  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/security/Security.java
 	(getProperty): Added hack to skip security check when trusted
 	code is direct caller.
 
-2005-01-13  Jeroen Frijters  <jeroen@frijters.net>
+2006-01-13  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/PrintStream.java
 	(line_separator, PrintStream(OutputStream,boolean)): Use
 	SystemProperties.
 
-2005-01-13  Jeroen Frijters  <jeroen@frijters.net>
+2006-01-13  Jeroen Frijters  <jeroen@frijters.net>
 
 	* gnu/java/nio/charset/Provider.java: Added comment about its
 	special relation with CharsetProvider.
@@ -39,12 +39,12 @@
 	(CharsetProvider): Add special case to skip security check for
 	built in providers.
 
-2005-01-13  Mark Wielaard  <mark@klomp.org>
+2006-01-13  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JMenuItem.java (JMenuItem(Action)): Check whether
 	name, accel, mnemonic and command are defined before setting.
 
-2005-01-12  Mark Wielaard  <mark@klomp.org>
+2006-01-12  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
 	(FileRenderer.getListCellRendererComponent): Set empty name and null
