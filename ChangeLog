@@ -1,3 +1,7 @@
+2005-01-13  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/regex/Pattern.java (Pattern): Chain REException.
+
 2006-01-13  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/xpath/NameTest.java: Removed debugging output.
