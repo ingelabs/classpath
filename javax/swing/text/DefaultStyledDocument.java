@@ -1343,8 +1343,6 @@ public class DefaultStyledDocument extends AbstractDocument
   protected AbstractDocument.AbstractElement createDefaultRoot()
   {
     Element[] tmp;
-    // FIXME: Create a SecionElement here instead of a BranchElement.
-    // Use createBranchElement() and createLeafElement instead.
     SectionElement section = new SectionElement();
 
     BranchElement paragraph = new BranchElement(section, null);
@@ -1589,12 +1587,11 @@ public class DefaultStyledDocument extends AbstractDocument
           int start = el.getStartOffset();
           int end = el.getEndOffset();
           DefaultDocumentEvent ev = 
-            new DefaultDocumentEvent (
-                                      start, 
+            new DefaultDocumentEvent (start, 
                                       end - start, 
                                       DocumentEvent.EventType.CHANGE);
-          // FIXME: Add an UndoableEdit to this event and fire it.
           fireChangedUpdate(ev);
+          fireUndoableEditUpdate(new UndoableEditEvent(this, ev));
         }
       else
         throw new 

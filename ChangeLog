@@ -1,6 +1,13 @@
 2006-01-13  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
+	(createDefaultRoot): Removed FIXME.
+	(setLogicalStyle): Added fireUndoableEditUpdate call and 
+	removed FIXME.
+
+2006-01-13  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
 	(Edit): New inner class.
 	(changeUpdate): Changed addEdit call to add a new
 	instance of Edit to the edits Vector, so addEdits can
