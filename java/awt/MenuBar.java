@@ -39,7 +39,6 @@ exception statement from your version. */
 package java.awt;
 
 import java.awt.peer.MenuBarPeer;
-import java.awt.peer.MenuComponentPeer;
 
 import java.io.Serializable;
 import java.util.Enumeration;
@@ -72,14 +71,6 @@ public class MenuBar extends MenuComponent
    * @serial The menus contained in this menu bar.
    */
   private Vector menus = new Vector();
-
-  /**
-   * The accessible context for this component.
-   *
-   * @see #getAccessibleContext()
-   * @serial ignored.
-   */
-  private transient AccessibleContext accessibleContext;
 
   /**
    * The frame that this menubar is associated with. We need to know this so
@@ -127,11 +118,11 @@ public class MenuBar extends MenuComponent
       menu.parent.remove(menu);
     menu.parent = this;
 
-    MenuBarPeer peer = (MenuBarPeer) getPeer ();
-    if (peer != null)
+    MenuBarPeer myPeer = (MenuBarPeer) getPeer ();
+    if (myPeer != null)
       {
         menu.addNotify();
-        peer.addHelpMenu(menu);
+        myPeer.addHelpMenu(menu);
       }
   }
 
@@ -234,7 +225,7 @@ public class MenuBar extends MenuComponent
   public void addNotify()
   {
     if (getPeer() == null)
-      setPeer((MenuComponentPeer) getToolkit().createMenuBar(this));
+      setPeer(getToolkit().createMenuBar(this));
     Enumeration e = menus.elements();
     while (e.hasMoreElements())
       {

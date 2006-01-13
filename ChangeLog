@@ -1,5 +1,14 @@
 2006-01-13  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/MenuBar.java
+	(accessibleContext): Removed unnecessary field. This is already
+	defined in MenuComponent.
+	(setHelpMenu): Renamed the peer variable to myPeer because it was
+	hiding a field of MenuComponent.
+	(addNotify): Removed unnecessary cast.
+
+2006-01-13  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/MenuBar.java: Reformatted to better match our
 	coding style.
 
