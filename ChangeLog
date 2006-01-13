@@ -1,3 +1,15 @@
+2005-01-13  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/nio/charset/Provider.java: Added comment about its
+	special relation with CharsetProvider.
+	(static): Removed.
+	* gnu/java/nio/charset/iconv/IconvProvider.java: Added comment about
+	its special relation with CharsetProvider.
+	(static): Removed.
+	* java/nio/charset/spi/CharsetProvider.java
+	(CharsetProvider): Add special case to skip security check for
+	built in providers.
+
 2005-01-13  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JMenuItem.java (JMenuItem(Action)): Check whether
