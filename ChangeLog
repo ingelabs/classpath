@@ -1,3 +1,9 @@
+2005-01-12  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(FileRenderer.getListCellRendererComponent): Set empty name and null
+	icon when File is null.
+
 2006-01-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/rmi/server/UnicastRef.java (newCall):
