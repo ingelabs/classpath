@@ -1,3 +1,8 @@
+2006-01-14  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/SAXParser.java: Ensure that parser is reset
+	  correctly when I/O and runtime exceptions occur during parsing.
+
 2006-01-13  Roman Kennke  <kennke@aicas.com>
 
 	* gnu/java/awt/peer/swing/SwingButtonPeer.java,
