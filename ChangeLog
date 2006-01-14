@@ -1,5 +1,24 @@
 2006-01-13  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/swing/SwingButtonPeer.java,
+	* gnu/java/awt/peer/swing/SwingCanvasPeer.java,
+	* gnu/java/awt/peer/swing/SwingComponent.java,
+	* gnu/java/awt/peer/swing/SwingComponentPeer.java,
+	* gnu/java/awt/peer/swing/SwingContainerPeer.java,
+	* gnu/java/awt/peer/swing/SwingFramePeer.java,
+	* gnu/java/awt/peer/swing/SwingLabelPeer.java,
+	* gnu/java/awt/peer/swing/SwingMenuBarPeer.java,
+	* gnu/java/awt/peer/swing/SwingMenuItemPeer.java,
+	* gnu/java/awt/peer/swing/SwingMenuPeer.java,
+	* gnu/java/awt/peer/swing/SwingPanelPeer.java,
+	* gnu/java/awt/peer/swing/SwingTextFieldPeer.java,
+	* gnu/java/awt/peer/swing/SwingToolkit.java,
+	* gnu/java/awt/peer/swing/SwingWindowPeer.java,
+	* gnu/java/awt/peer/swing/package.html:
+	New files. Implemented some basic AWT peers based on Swing.
+
+2006-01-13  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/peer/ComponentPeer.java: Added API docs all over.
 
 2006-01-13  Roman Kennke  <kennke@aicas.com>
