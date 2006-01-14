@@ -1,3 +1,8 @@
+2006-01-14  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/standard/MediaSize.java: 
+	(Other.TABLOID): New MediaSize added in 1.5
+
 2006-01-14  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/SAXParser.java: Ensure that parser is reset

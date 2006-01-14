@@ -1,5 +1,5 @@
 /* MediaSize.java -- 
-   Copyright (C) 2005  Free Software Foundation, Inc.
+   Copyright (C) 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -820,6 +820,13 @@ public class MediaSize extends Size2DSyntax
      * Japanese double postcard, 148 mm x 200 mm
      */
     public static final MediaSize JAPANESE_DOUBLE_POSTCARD = new MediaSize(148, 200, MediaSize.MM, MediaSizeName.JAPANESE_DOUBLE_POSTCARD);
+    
+    /**
+     * Tabloid size, 11 inch x 17 inch.
+     * @since 1.5
+     */
+    public static final MediaSize TABLOID = 
+      new MediaSize(11, 17, Size2DSyntax.INCH, MediaSizeName.TABLOID);
   }
 }
 
