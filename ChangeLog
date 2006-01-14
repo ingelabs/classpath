@@ -1,5 +1,11 @@
 2006-01-14  Wolfgang Baer  <WBaer@gmx.de>
 
+	Fixes bug #25387
+	* javax/print/Doc.java: Added and enhanced documentation.
+	* javax/print/SimpleDoc.java: New file.	
+
+2006-01-14  Wolfgang Baer  <WBaer@gmx.de>
+
 	* javax/print/attribute/standard/MediaSize.java: 
 	(Other.TABLOID): New MediaSize added in 1.5
 
