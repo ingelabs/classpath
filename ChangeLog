@@ -1,3 +1,9 @@
+2006-01-14  Anthony Green  <green@redhat.com>
+
+        * java/net/ServerSocket.java (accept): Remove bogus
+        security check.
+	(implAccept): Add FIXME comment.
+
 2006-01-14  Wolfgang Baer  <WBaer@gmx.de>
 
 	Fixes bug #25387
