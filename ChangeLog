@@ -1,3 +1,17 @@
+2006-01-16  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR classpath/25202
+	* gnu/javax/security/auth/login/ConfigFileTokenizer.java: New class.
+	* gnu/javax/security/auth/login/ConfigFileParser.java: New class.
+	* gnu/javax/security/auth/login/GnuConfiguration.java: New class.
+	* javax/security/auth/login/AppConfigurationEntry.java: Updated
+	  copyright year.
+	  (toString): Added method implementation.
+	  (LoginModuleControlFlag.toString): Removed class name from result.
+	* javax/security/auth/login/Configuration.java: Updated copyright year.
+	  (getConfig(): replaced calls to NullConfiguration with
+	  GnuConfiguration.
+
 2006-01-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/table/DefaultTableCellRenderer.java 
