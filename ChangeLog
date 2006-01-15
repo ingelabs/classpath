@@ -1,3 +1,8 @@
+2006-01-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/table/DefaultTableCellRenderer.java 
+	(getTableCellRendererComponent): Render null as the empty cell.
+
 2006-01-14  Anthony Green  <green@redhat.com>
 
         * java/net/ServerSocket.java (accept): Remove bogus
