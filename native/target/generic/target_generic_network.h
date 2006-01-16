@@ -520,7 +520,7 @@ Systems    : all
 #ifndef NEW_CP
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_CONNECT
   #ifndef WITHOUT_NETWORK
-    #define TARGET_NATIVE_NETWORK_CONNECT_GENERIC
+    #define TARGET_NATIVE_NETWORK_SOCKET_CONNECT_GENERIC
     #define TARGET_NATIVE_NETWORK_SOCKET_CONNECT(socketDescriptor,address,port,result) \
       do { \
         result=targetGenericNetwork_socketConnect(socketDescriptor,address,port); \
@@ -634,7 +634,7 @@ Systems    : all
 //??? address in network byte order?
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_ACCEPT
   #ifndef WITHOUT_NETWORK
-    #define TARGET_NATIVE_NETWORK_ACCEPT_GENERIC
+    #define TARGET_NATIVE_NETWORK_SOCKET_ACCEPT_GENERIC
     #define TARGET_NATIVE_NETWORK_SOCKET_ACCEPT(socketDescriptor,newSocketDescriptor,result) \
       do { \
         result=targetGenericNetwork_accept(socketDescriptor,&newSocketDescriptor); \
@@ -2003,13 +2003,13 @@ int targetGenericNetwork_socketOpenDatagram(void);
 int targetGenericNetwork_socketClose(int socketDescriptor);
 #endif /* TARGET_NATIVE_NETWORK_SOCKET_CLOSE_GENERIC */
 
-#ifdef TARGET_NATIVE_NETWORK_CONNECT_GENERIC
+#ifdef TARGET_NATIVE_NETWORK_SOCKET_CONNECT_GENERIC
 int targetGenericNetwork_socketConnect(int socketDescriptor, unsigned long address, unsigned int port);
-#endif /* TARGET_NATIVE_NETWORK_CONNECT_GENERIC */
+#endif /* TARGET_NATIVE_NETWORK_SOCKET_CONNECT_GENERIC */
 
-#ifdef TARGET_NATIVE_NETWORK_ACCEPT_GENERIC
+#ifdef TARGET_NATIVE_NETWORK_SOCKET_ACCEPT_GENERIC
 int targetGenericNetwork_accept(int socketDescriptor, int *newSocketDescriptor);
-#endif /* TARGET_NATIVE_NETWORK_ACCEPT_GENERIC */
+#endif /* TARGET_NATIVE_NETWORK_SOCKET_ACCEPT_GENERIC */
 
 #ifdef TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_GENERIC
 int targetGenericNetwork_receive(int socketDescriptor, char *buffer, unsigned long maxLength);

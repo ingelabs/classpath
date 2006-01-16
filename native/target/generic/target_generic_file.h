@@ -55,6 +55,8 @@ Systems    : all
 #include <stdlib.h>
 #include <assert.h>
 
+#include "jcl.h"
+
 #include "target_native.h"
 #include "target_native_math.h"
 

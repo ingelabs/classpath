@@ -62,10 +62,10 @@ Systems    : all
 
 /***************************** Datatypes *******************************/
 
-#if defined(TARGET_NATIVE_NETWORK_SOCKE_OPEN_STREAM_GENERIC) || \
+#if defined(TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM_GENERIC) || \
     defined(TARGET_NATIVE_NETWORK_SOCKET_CLOSE_GENERIC) || \
-    defined(TARGET_NATIVE_NETWORK_CONNECT_GENERIC) || \
-    defined(TARGET_NATIVE_NETWORK_ACCEPT_GENERIC)
+    defined(TARGET_NATIVE_NETWORK_SOCKET_CONNECT_GENERIC) || \
+    defined(TARGET_NATIVE_NETWORK_SOCKET_ACCEPT_GENERIC)
 typedef struct TsocketTimeout
   {
     struct TsocketTimeout *next;             // next node in list
@@ -76,19 +76,19 @@ typedef struct TsocketTimeout
 
 /***************************** Variables *******************************/
 
-#if defined(TARGET_NATIVE_NETWORK_SOCKE_OPEN_STREAM_GENERIC) || \
+#if defined(TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM_GENERIC) || \
     defined(TARGET_NATIVE_NETWORK_SOCKET_CLOSE_GENERIC) || \
-    defined(TARGET_NATIVE_NETWORK_CONNECT_GENERIC) || \
-    defined(TARGET_NATIVE_NETWORK_ACCEPT_GENERIC)
+    defined(TARGET_NATIVE_NETWORK_SOCKET_CONNECT_GENERIC) || \
+    defined(TARGET_NATIVE_NETWORK_SOCKET_ACCEPT_GENERIC)
 static TsocketTimeout *socketTimeoutList=NULL;
 #endif
 
 /****************************** Macros *********************************/
 
-#if defined(TARGET_NATIVE_NETWORK_SOCKE_OPEN_STREAM_GENERIC) || \
+#if defined(TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM_GENERIC) || \
     defined(TARGET_NATIVE_NETWORK_SOCKET_CLOSE_GENERIC) || \
-    defined(TARGET_NATIVE_NETWORK_CONNECT_GENERIC) || \
-    defined(TARGET_NATIVE_NETWORK_ACCEPT_GENERIC)
+    defined(TARGET_NATIVE_NETWORK_SOCKET_CONNECT_GENERIC) || \
+    defined(TARGET_NATIVE_NETWORK_SOCKET_ACCEPT_GENERIC)
 static TsocketTimeout *addSocketTimeout(int socketDescriptor)
 {
   TsocketTimeout *socketTimeout;
@@ -226,15 +226,17 @@ int targetGenericNetwork_socketClose(int socketDescriptor)
 }
 #endif /* TARGET_NATIVE_NETWORK_SOCKET_CLOSE_GENERIC */
 
-#ifdef TARGET_NATIVE_NETWORK_CONNECT_GENERIC
+#ifdef TARGET_NATIVE_NETWORK_SOCKET_CONNECT_GENERIC
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #ifdef HAVE_SYS_SELECT_H
   #include <sys/select.h>
 #endif
+#ifdef HAVE_FCNTL_H
+  #include <fcntl.h>
+#endif
 #include <sys/time.h>
-#include <fcntl.h>
 #include <errno.h>
 int targetGenericNetwork_socketConnect(int socketDescriptor, unsigned long address, unsigned int port)
 {
@@ -253,7 +255,7 @@ int targetGenericNetwork_socketConnect(int socketDescriptor, unsigned long addre
   socketAddress.sin_family      = AF_INET;
   socketAddress.sin_addr.s_addr = htonl(address);
   socketAddress.sin_port        = htons(((short)port));
-  #ifdef HAVE_SELECT
+  #if defined(HAVE_SELECT) && defined(HAVE_FCNTL_H) && defined(HAVE_FCNTL)
     socketTimeout=findSocketTimeout(socketDescriptor);
     if ((socketTimeout!=NULL) && (socketTimeout->milliseconds>0))
       {
@@ -315,20 +317,23 @@ int targetGenericNetwork_socketConnect(int socketDescriptor, unsigned long addre
       {
         result=(connect(socketDescriptor,(struct sockaddr*)&socketAddress,sizeof(socketAddress))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR;
       }
-  #else /* not HAVE_SELECT */
+  #else  /* not HAVE_SELECT && HAVE_FCNTL_H && HAVE_FCNTL */
     result=(connect(socketDescriptor,(struct sockaddr*)&socketAddress,sizeof(socketAddress))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR;
   #endif /* HAVE_SELECT */
 
   return result;
 }
-#endif /* TARGET_NATIVE_NETWORK_CONNECT_GENERIC */
+#endif /* TARGET_NATIVE_NETWORK_SOCKET_CONNECT_GENERIC */
 
-#ifdef TARGET_NATIVE_NETWORK_ACCEPT_GENERIC
+#ifdef TARGET_NATIVE_NETWORK_SOCKET_ACCEPT_GENERIC
 #include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #ifdef HAVE_SYS_SELECT_H
   #include <sys/select.h>
+#endif
+#ifdef HAVE_FCNTL_H
+  #include <fcntl.h>
 #endif
 #include <sys/time.h>
 int targetGenericNetwork_accept(int socketDescriptor, int *newSocketDescriptor)
@@ -397,7 +402,7 @@ int targetGenericNetwork_accept(int socketDescriptor, int *newSocketDescriptor)
 
   return result;
 }
-#endif /* TARGET_NATIVE_NETWORK_ACCEPT_GENERIC */
+#endif /* TARGET_NATIVE_NETWORK_SOCKET_ACCEPT_GENERIC */
 
 #ifdef TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_GENERIC
 #include <sys/types.h>

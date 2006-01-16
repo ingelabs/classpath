@@ -1,5 +1,13 @@
 2006-01-16  Roman Kennke  <kennke@aicas.com>
 
+	* native/target/generic/target_generic_file.h: Added missing
+	include.
+	* native/target/generic/target_generic_network.c: Fixed several
+	typos and includes.
+	* native/target/generic/target_generic_network.h: Likewise.
+
+2006-01-16  Roman Kennke  <kennke@aicas.com>
+
 	* native/target/Makefile.am: Adjusted SUBDIRS and DIST_SUBDIRS
 	to include the new targets.
 	* native/target/posix/Makefile.am: Fixed filenames.
