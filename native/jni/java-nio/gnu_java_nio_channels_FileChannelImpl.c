@@ -48,7 +48,7 @@ exception statement from your version. */
 #ifndef WITHOUT_FILESYSTEM
 #include "target_native_file.h"
 #endif
-#include "target_native_math_int.h"
+#include "target_native_math.h"
 
 #include "gnu_java_nio_channels_FileChannelImpl.h"
 

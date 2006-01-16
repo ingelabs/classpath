@@ -1,5 +1,5 @@
-/* ???.h - ???
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* target_native_math.h - Native methods for math operations
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,13 +36,13 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 /*
-Description: Linux target defintions of float/double constants/
+Description: Linux target defintions of int/int64 constants/
              macros/functions
 Systems    : all
 */
 
-#ifndef __TARGET_NATIVE_MATH_FLOAT__
-#define __TARGET_NATIVE_MATH_FLOAT__
+#ifndef __TARGET_NATIVE_MATH__
+#define __TARGET_NATIVE_MATH__
 
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
@@ -72,9 +72,9 @@ extern "C" {
 
 /* include rest of definitions from generic file (do not move it to 
    another position!) */
-#include "target_generic_math_float.h"
+#include "target_generic_math.h"
 
-#endif /* __TARGET_NATIVE_MATH_FLOAT__ */
+#endif /* __TARGET_NATIVE_MATH__ */
 
 /* end of file */
 

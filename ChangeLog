@@ -1,3 +1,25 @@
+2006-01-16  Roman Kennke  <kennke@aicas.com>
+
+	* native/target/generic/target_generic_math_float.h: Removed. This
+	file has been replaced by target_generic_math.h.
+	* native/target/generic/target_generic_math_int.h: Removed. This
+	file has been replaced by target_generic_math.h.
+	* native/target/generic/target_generic_math.h: New file. Replaces
+	the old _int and _float versions.
+	* native/target/Linux/target_native_math_float.h: Removed. This
+	file has been replaced by target_native_math.h.
+	* native/target/Linux/target_native_math_int.h: Removed. This
+	file has been replaced by target_native_math.h.
+	* native/target/Linux/target_native_math.h: New file. Replaces
+	the old _int and _float versions.
+	* native/target/Linux/Makefile.am: Adjusted for the changed
+	filenames.
+	* native/jni/java-io/java_io_VMFile.c: Include target_native_math.h
+	instead of target_native_math_int.h.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
+	Likewise.
+	* native/target/generic/target_generic_file.h: Likewise.
+
 2006-01-16  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/MutableAttributeSet.java: Updated API docs all over.

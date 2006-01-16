@@ -1,5 +1,5 @@
-/* generic_math_int64.h - Native methods for 64bit math operations
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* target_generic_math.h - Native methods for math operations
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,11 +41,11 @@ Description: generic target defintions of int/int64 constants/
 Systems    : all
 */
 
-#ifndef __TARGET_GENERIC_MATH_INT__
-#define __TARGET_GENERIC_MATH_INT__
+#ifndef __TARGET_GENERIC_MATH__
+#define __TARGET_GENERIC_MATH__
 
-/* check if target_native_math_int.h included */
-#ifndef __TARGET_NATIVE_MATH_INT__
+/* check if target_native_math.h included */
+#ifndef __TARGET_NATIVE_MATH__
   #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
 #endif
 
@@ -55,6 +55,8 @@ Systems    : all
 
 #include <stdlib.h>
 #include <assert.h>
+
+#include "jni.h"
 
 /****************** Conditional compilation switches *******************/
 
@@ -67,6 +69,13 @@ Systems    : all
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1
   #define TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1 -1LL
+#endif
+
+#ifndef TARGET_NATIVE_MATH_INT_UINT64_CONST_0
+  #define TARGET_NATIVE_MATH_INT_UINT64_CONST_0 0LL
+#endif
+#ifndef TARGET_NATIVE_MATH_INT_UINT64_CONST_1
+  #define TARGET_NATIVE_MATH_INT_UINT64_CONST_1 1LL
 #endif
 
 /***************************** Datatypes *******************************/
@@ -207,13 +216,20 @@ Systems    : all
   #define TARGET_NATIVE_MATH_INT_UINT32_TO_UINT64(v) ((jlong)(v))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_TO_INT32
-  #define TARGET_NATIVE_MATH_INT_INT64_TO_INT32(v)   ((jint )(v))
+  #define TARGET_NATIVE_MATH_INT_INT64_TO_INT32(v)   ((jint)(v))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32
   #define TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32(v) ((jint)(v))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_TO_DOUBLE
   #define TARGET_NATIVE_MATH_INT_INT64_TO_DOUBLE(v)  ((jdouble)(v))
+#endif
+
+#ifndef TARGET_NATIVE_MATH_INT_INT64_TO_UINT64
+  #define TARGET_NATIVE_MATH_INT_INT64_TO_UINT64(v)  ((jlong)(v))
+#endif
+#ifndef TARGET_NATIVE_MATH_INT_UINT64_TO_INT64
+  #define TARGET_NATIVE_MATH_INT_UINT64_TO_INT64(v)  ((jlong)(v))
 #endif
 
 /* combine/split int32 low/high values <-> int64 values */
@@ -232,29 +248,104 @@ Systems    : all
 #ifndef TARGET_NATIVE_MATH_INT_INT64_TO_INT32_LOW_HIGH
   #define TARGET_NATIVE_MATH_INT_INT64_TO_INT32_LOW_HIGH(v,low,high) \
     do { \
-      (high)=((v) & 0xFFFFffff00000000L) >> 32; \
-      (low) =((v) & 0x00000000FFFFffffL) >>  0; \
+      (high)=(jint)(((v) & 0xFFFFffff00000000LL) >> 32); \
+      (low) =(jint)(((v) & 0x00000000FFFFffffLL) >>  0); \
     } while (0)
 #endif
+/* NYI: we need unsigned here, but JNI does not support this */
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32_LOW_HIGH
   #define TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32_LOW_HIGH(v,low,high) \
     do { \
-      (high)=((v) & 0xFFFFffff00000000L) >> 32; \
-      (low) =((v) & 0x00000000FFFFffffL) >>  0; \
+      (high)=(jint)(((v) & 0xFFFFffff00000000LL) >> 32); \
+      (low) =(jint)(((v) & 0x00000000FFFFffffLL) >>  0); \
     } while (0)
+#endif
+
+/*---------------------------------------------------------------------*/
+
+/* NYI: OPTIMIZATION: it would be nice to check if isnan(), isinf(), finite() is
+available on the system, e. g. use HAVE_ISNAN, HAVE_ISINF, HAVE_FINITE
+*/
+
+/* test float/double values for NaN,Inf */
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_ISNAN
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_ISNAN(f) isnan(f)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_ISINF
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_ISINF(f) (isinf(f)!=0)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_POS_ISINF
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_POS_ISINF(f) (isinf(f)>0)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_NEG_ISINF
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_NEG_ISINF(f) (isinf(f)<0)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE(f) finite(f)
+#endif
+
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISNAN
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISNAN(d) isnan(d)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISINF
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISINF(d) (isinf(d)!=0)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_POS_ISINF
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_POS_ISINF(d) (isinf(d)>0)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_NEG_ISINF
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_NEG_ISINF(d) (isinf(d)<0)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE(d) finite(d)
+#endif
+
+/* division, modulo and multiplication operations (used to avoid unexcepted exceptions on some
+   targets; generic codes are direct operations without checks)
+*/
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_DIV
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_DIV(f0,f1) ((f0)/(f1))
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_MUL
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_MUL(f0,f1) ((f0)*(f1))
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_MOD
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_MOD(f0,f1) ((jfloat)fmod((jdouble)(f0),(jdouble)(f1)))
+#endif
+
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_DIV
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_DIV(d0,d1) ((d0)/(d1))
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_MUL
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_MUL(d0,d1) ((d0)*(d1))
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_MOD
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_MOD(d0,d1) fmod(d0,d1)
 #endif
 
 /***************************** Functions *******************************/
 
 #ifdef __cplusplus
-extern "C"
+extern "C" {
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __TARGET_GENERIC_MATH_INT__ */
+#endif /* __TARGET_GENERIC_MATH__ */
 
 /* end of file */
 

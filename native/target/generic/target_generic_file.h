@@ -61,7 +61,7 @@ extern "C" {
 #include <fcntl.h>
 
 #include "target_native.h"
-#include "target_native_math_int.h"
+#include "target_native_math.h"
 
 /****************** Conditional compilation switches *******************/
 
