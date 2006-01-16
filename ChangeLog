@@ -1,5 +1,9 @@
 2006-01-16  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/text/MutableAttributeSet.java: Updated API docs all over.
+
+2006-01-16  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/text/SimpleAttributeSet.java
 	(SimpleAttributeSet()): Initialise storage directly,
 	(SimpleAttributeSet(AttributeSet)): Removed null check and documented
