@@ -340,7 +340,7 @@ Systems    : all
 #ifndef NEW_CP
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM
   #ifndef WITHOUT_NETWORK
-    #define TARGET_NATIVE_NETWORK_SOCKE_OPEN_STREAM_GENERIC
+    #define TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM_GENERIC
     #define TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM(socketDescriptor,result) \
       do { \
         socketDescriptor=targetGenericNetwork_socketOpenStream(); \
@@ -1991,9 +1991,9 @@ Systems    : all
 extern "C" {
 #endif
 
-#ifdef TARGET_NATIVE_NETWORK_SOCKE_OPEN_STREAM_GENERIC
+#ifdef TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM_GENERIC
 int targetGenericNetwork_socketOpenStream(void);
-#endif /* TARGET_NATIVE_NETWORK_SOCKE_OPEN_STREAM_GENERIC */
+#endif /* TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM_GENERIC */
 
 #ifdef TARGET_NATIVE_NETWORK_SOCKET_OPEN_DATAGRAM_GENERIC
 int targetGenericNetwork_socketOpenDatagram(void);

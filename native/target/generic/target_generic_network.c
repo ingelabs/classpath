@@ -148,7 +148,7 @@ static TsocketTimeout *findSocketTimeout(int socketDescriptor)
 
 /*---------------------------------------------------------------------*/
 
-#ifdef TARGET_NATIVE_NETWORK_SOCKE_OPEN_STREAM_GENERIC
+#ifdef TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM_GENERIC
 #include <sys/types.h>
 #include <fcntl.h>
 int targetGenericNetwork_socketOpenStream(void)
@@ -170,7 +170,7 @@ int targetGenericNetwork_socketOpenStream(void)
 
   return socketDescriptor;
 }
-#endif /* TARGET_NATIVE_NETWORK_SOCKE_OPEN_STREAM_GENERIC */
+#endif /* TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM_GENERIC */
 
 #ifdef TARGET_NATIVE_NETWORK_SOCKET_OPEN_DATAGRAM_GENERIC
 #include <sys/types.h>
