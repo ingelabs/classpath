@@ -1,3 +1,24 @@
+2006-01-16  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 25770
+	* javax/swing/DefaultCellEditor.java
+	(delegate): Assign new instance immediately.
+	(DefaultCellEditor(JTextField textfield)): Require 2 clicks.
+	(getTableCellEditorComponent): Rewritten.
+	(prepareAsJTextField):New method (add listener only once).
+	* javax/swing/JTable.java
+	(editingCanceled): Rewritten.
+	(editingStopped ): Rewritten.
+	(rowAtPoint): Mind row margin.
+	(getCellRect): Mind row margin.
+	(getDefaultEditor): Removing JTextComponent border.
+	(editCellAt): Rewritten.
+	* javax/swing/plaf/basic/BasicTableUI.java (MouseInputHandler):
+	Activate editing mode by the mouse clicks.
+	(getMaximumSize): Mind row margin.
+	(getPreferredSize): Mind row margin.
+	(TableAction): Added 'stop editing' command. 
+
 2006-01-16  Roman Kennke  <kennke@aicas.com>
 
 	* jni/java-io/java_io_VMFile.c

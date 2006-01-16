@@ -215,9 +215,9 @@ public class DefaultCellEditor
   protected JComponent editorComponent;
 
   /**
-   * delegate
+   * The editor delegate (normally intialised only once).
    */
-  protected EditorDelegate delegate;
+  protected EditorDelegate delegate = new EditorDelegate();
 
   /**
    * clickCountToStart
@@ -232,7 +232,7 @@ public class DefaultCellEditor
   public DefaultCellEditor(JTextField textfield)
   {
     editorComponent = textfield;
-    clickCountToStart = 3;
+    clickCountToStart = 2;
   } // DefaultCellEditor()
 
   /**
@@ -386,13 +386,14 @@ public class DefaultCellEditor
   } // getTreeCellEditorComponent()
 
   /**
-   * getTableCellEditorComponent
+   * Get the cell editor component that will perform the editing session.
+   * If returned once, the same component should be returned again (reused).
    * 
-   * @param table TODO
-   * @param value TODO
-   * @param isSelected TODO
-   * @param row TODO
-   * @param column TODO
+   * @param table the table where the editing is performed
+   * @param value the current value of the table
+   * @param isSelected if true, the cell is currently selected
+   * @param row the row of the cell being edited
+   * @param column the column of the cell being edited
    *
    * @returns Component
    */
@@ -402,24 +403,42 @@ public class DefaultCellEditor
   {
     // NOTE: as specified by Sun, we don't call new() everytime, we return 
     // editorComponent on each call to getTableCellEditorComponent or
-    // getTreeCellEditorComponent.  However, currently JTextFields have a
-    // problem with getting rid of old text, so without calling new() there
-    // are some strange results.  If you edit more than one cell in the table
-    // text from previously edited cells may unexpectedly show up in the 
-    // cell you are currently editing.  This will be fixed automatically
-    // when JTextField is fixed.
+    // getTreeCellEditorComponent.  
     if (editorComponent instanceof JTextField)
-      {
-        ((JTextField)editorComponent).setText(value.toString());
-        delegate = new EditorDelegate();
-        ((JTextField)editorComponent).addActionListener(delegate);
-      }
-    else
-      {
-        // TODO
-      }
+      prepareAsJTextField(value);
     return editorComponent;
   } // getTableCellEditorComponent()
+  
+  /**
+   * Prepare the editorComponent as the text field.
+   * 
+   * @param value the value of the cell before editin.
+   */
+  private void prepareAsJTextField(Object value)
+  {
+    JTextField f = (JTextField) editorComponent;
+    if (value != null)
+      f.setText(value.toString());
+    else
+      // Default null to the empty string.
+      f.setText("");
 
+    // Do not register our listener again and again (resource leak).
+    ActionListener[] l = f.getActionListeners();
+    
+    boolean have = false;
+    for (int i = 0; i < l.length; i++)
+      {
+        // We cannot just remove all listeners as the user listeners 
+        // may be registered.
+        if (l[i]==delegate)
+          {
+            have = true;
+            break;
+          }
+      }
+    if (!have)
+      f.addActionListener(delegate);
+  }
 
 }

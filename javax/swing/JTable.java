@@ -1765,44 +1765,39 @@ public class JTable
   {
     repaint();
   }
-
+  
   public void editingCanceled (ChangeEvent event)
   {
-    if (rowBeingEdited > -1 && columnBeingEdited > -1)
+    if (editorComp!=null)
       {
-        if (getValueAt(rowBeingEdited, columnBeingEdited) instanceof JTextField)
-          {
-            remove ((Component)getValueAt(rowBeingEdited, columnBeingEdited));
-            setValueAt(oldCellValue, rowBeingEdited, columnBeingEdited);
-          }
-        rowBeingEdited = -1;
-        columnBeingEdited = -1;
+        remove(editorComp);
+        editorComp = null;
       }
-    editorTimer.stop();
-    editorComp = null;
-    cellEditor = null;
-    requestFocusInWindow(false);
-    repaint();
   }
-
+  
+  /**
+   * Finish the current editing session and update the table with the
+   * new value by calling {@link #setValueAt}.
+   * 
+   * @param event the change event
+   */
   public void editingStopped (ChangeEvent event)
   {
-    if (rowBeingEdited > -1 && columnBeingEdited > -1)
+    if (editorComp!=null)
       {
-        if (getValueAt(rowBeingEdited, columnBeingEdited) instanceof JTextField)
+        remove(editorComp);
+        if (editorComp instanceof JTextField)
           {
-            remove((Component)getValueAt(rowBeingEdited, columnBeingEdited));
-            setValueAt(((JTextField)editorComp).getText(), 
-                       rowBeingEdited, columnBeingEdited);
+            JTextField f = (JTextField) editorComp;
+            setValueAt(f.getText(), rowBeingEdited, columnBeingEdited);            
           }
-        rowBeingEdited = -1;
-        columnBeingEdited = -1;
+        else
+          {
+            /** TODO FIXME Handle the editor types other than text field. */
+          }
+        editorComp = null;
       }
-    editorTimer.stop();
-    editorComp = null;
-    cellEditor = null;
-    requestFocusInWindow(false);
-    repaint();
+    requestFocusInWindow();
   }
 
   public void tableChanged (TableModelEvent event)
@@ -1875,7 +1870,7 @@ public class JTable
     if (point != null)
       {
         int nrows = getRowCount();
-        int height = getRowHeight();
+        int height = getRowHeight() + getRowMargin();
         int y = point.y;
 
         for (int i = 0; i < nrows; ++i)
@@ -1925,7 +1920,7 @@ public class JTable
     if (includeSpacing)
       return new Rectangle(x, y, width, height);
     else
-      return new Rectangle(x, y, width - x_gap, height - y_gap);
+      return new Rectangle(x, y, width - x_gap, height - y_gap);      
   }
 
   public void clearSelection()
@@ -2025,7 +2020,10 @@ public class JTable
     else
       {
 	// FIXME: We have at least an editor for Object.class in our defaults.
-        TableCellEditor r = new DefaultCellEditor(new JTextField());
+        // The text field is without the border.
+        JTextField t = new JTextField();
+        t.setBorder(null);
+        TableCellEditor r = new DefaultCellEditor(t);
         defaultEditorsByColumnClass.put(columnClass, r);
         return r;
       }
@@ -3273,15 +3271,36 @@ public class JTable
    */
   public boolean editCellAt (int row, int column)
   {
+    // Complete the previous editing session, if still active.
+    if (isEditing())
+      editingStopped(new ChangeEvent("editingStopped"));
+    
+    // Select the row being edited.
+    getSelectionModel().setSelectionInterval(row, row);
     oldCellValue = getValueAt(row, column);
     setCellEditor(getCellEditor(row, column));
     editorComp = prepareEditor(cellEditor, row, column);
-    cellEditor.addCellEditorListener(this);
     rowBeingEdited = row;
     columnBeingEdited = column;
-    setValueAt(editorComp, row, column);
-    ((JTextField)editorComp).requestFocusInWindow(false);
-    editorTimer.start();
+    
+    if (editorComp instanceof JTextField)
+      {
+        JTextField t = (JTextField) editorComp;
+        Rectangle r = getCellRect(row, column, true);
+        // Place the text field so that it would not touch the table
+        // border.
+        int m = getRowMargin();
+        r.translate(m,m);
+        r.width-=m;
+        t.setBounds(r);
+        add(t);
+        t.requestFocusInWindow(false);
+      }
+    else
+      {
+        /** TODO FIXME editor component type is still resticted to JTextField */
+      }
+    
     return true;
   }
 

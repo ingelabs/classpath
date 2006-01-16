@@ -57,7 +57,9 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.CellEditor;
 import javax.swing.CellRendererPane;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -74,6 +76,7 @@ import javax.swing.plaf.ActionMapUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.TableUI;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -193,10 +196,31 @@ public class BasicTableUI extends TableUI
             colModel.setSelectionInterval(lo_col, hi_col);
         }
     }
-
-    public void mouseClicked(MouseEvent e) 
+    
+    /**
+     * For the double click, start the cell editor.
+     */
+    public void mouseClicked(MouseEvent e)
     {
-      // TODO: What should be done here, if anything?
+      Point p = e.getPoint();
+      int row = table.rowAtPoint(p);
+      int col = table.columnAtPoint(p);
+      if (table.isCellEditable(row, col))
+        {
+          // If the cell editor is the default editor, we request the
+          // number of the required clicks from it. Otherwise,
+          // require two clicks (double click).
+          TableCellEditor editor = table.getCellEditor(row, col);
+          if (editor instanceof DefaultCellEditor)
+            {
+              DefaultCellEditor ce = (DefaultCellEditor) editor;
+              if (e.getClickCount() < ce.getClickCountToStart())
+                return;
+            }
+          else if (e.getClickCount() < 2)
+            return;
+          table.editCellAt(row, col);
+        }
     }
 
     public void mouseDragged(MouseEvent e) 
@@ -354,7 +378,8 @@ public class BasicTableUI extends TableUI
       maxTotalColumnWidth += table.getColumnModel().getColumn(i).getMaxWidth();
     if (maxTotalColumnWidth == 0 || table.getRowCount() == 0)
       return null;
-    return new Dimension(maxTotalColumnWidth, table.getRowCount()*table.getRowHeight());
+    return new Dimension(maxTotalColumnWidth, table.getRowCount()*
+                         (table.getRowHeight()+table.getRowMargin()));
   }
 
   /**
@@ -380,7 +405,7 @@ public class BasicTableUI extends TableUI
   public Dimension getPreferredSize(JComponent comp) 
   {
     int width = table.getColumnModel().getTotalColumnWidth();
-    int height = table.getRowCount() * table.getRowHeight();
+    int height = table.getRowCount() * (table.getRowHeight()+table.getRowMargin());
     return new Dimension(width, height);
   }
 
@@ -854,6 +879,10 @@ public class BasicTableUI extends TableUI
           rowModel.setAnchorSelectionIndex(rowLead);
           colModel.setAnchorSelectionIndex(colLead);
         }
+      else if (command.equals("stopEditing"))
+        {
+          table.editingStopped(new ChangeEvent(command));
+        }
       else 
         {
           // If we're here that means we bound this TableAction class
@@ -1219,7 +1248,7 @@ public class BasicTableUI extends TableUI
     Rectangle clip = gfx.getClipBounds();
     TableColumnModel cols = table.getColumnModel();
 
-    int height = table.getRowHeight();
+    int height = table.getRowHeight() + table.getRowMargin();
     int x0 = 0, y0 = 0;
     int x = x0;
     int y = y0;
