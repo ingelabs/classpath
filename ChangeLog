@@ -1,3 +1,17 @@
+2006-01-16  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/XMLParser.java,
+	  gnu/xml/stream/XMLStreamWriterImpl.java: Thoroughly check
+	  XMLStreamWriter arguments for conformance to the XML specifications.
+	* gnu/xml/transform/Stylesheet.java,
+	  gnu/xml/transform/Template.java,
+	  gnu/xml/transform/TransformerImpl.java,
+	  gnu/xml/xpath/LangFunction.java,
+	  gnu/xml/xpath/Selector.java: better handling of template priorities;
+	  fix indents when pretty-printing; recursive tests for xml:lang.
+	* gnu/xml/util/XHTMLWriter.java,
+	  gnu/xml/util/XMLWriter.java: Deprecate old serializer classes.
+
 2006-01-16  Roman Kennke  <kennke@aicas.com>
 
 	* native/target/MinGW/.cvsignore: New file.
