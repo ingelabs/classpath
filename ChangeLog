@@ -1,3 +1,11 @@
+2006-01-16  Roman Kennke  <kennke@aicas.com>
+
+	* native/target/MinGW/.cvsignore
+	* native/target/RTEMS/.cvsignore
+	* native/target/SunOS/.cvsignore
+	* native/target/embOS/.cvsignore
+	* native/target/posix/.cvsignore
+
 2006-01-16  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/StyleConstants.java: Updated API docs all over.
