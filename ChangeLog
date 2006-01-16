@@ -1,5 +1,16 @@
 2006-01-16  Roman Kennke  <kennke@aicas.com>
 
+	* native/target/SunOS/target_native.h,
+	* native/target/SunOS/target_native_file.h,
+	* native/target/SunOS/target_native_io.h,
+	* native/target/SunOS/target_native_math.h,
+	* native/target/SunOS/target_native_memory.h,
+	* native/target/SunOS/target_native_misc.h,
+	* native/target/SunOS/target_native_network.h:
+	New files. Implement the target native layer for the SunOS platform.
+
+2006-01-16  Roman Kennke  <kennke@aicas.com>
+
 	* native/target/MinGW/target_native.h,
 	* native/target/MinGW/target_native_file.h,
 	* native/target/MinGW/target_native_io.h,
