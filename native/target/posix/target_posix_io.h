@@ -1,5 +1,5 @@
-/* target_generic_io.h - Native methods for generic I/O operations
-   Copyright (C) 1998, 2006 Free Software Foundation, Inc.
+/* target_posix_io.h - Native methods for POSIX I/O operations
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,13 +40,8 @@ Description: generic target defintions of miscellaneous functions
 Systems    : all
 */
 
-#ifndef __TARGET_GENERIC_IO__
-#define __TARGET_GENERIC_IO__
-
-/* check if target_native_io.h included */
-#ifndef __TARGET_NATIVE_IO__
-  #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
-#endif
+#ifndef __TARGET_POSIX_IO__
+#define __TARGET_POSIX_IO__
 
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
@@ -55,11 +50,11 @@ Systems    : all
 #include <stdlib.h>
 #include <assert.h>
 
+#include "jni.h"
+
 #include "target_native.h"
 
-#ifdef NEW_CP
-#include "../posix/target_posix_io.h"
-#endif
+#include "target_posix.h"
 
 /****************** Conditional compilation switches *******************/
 
@@ -72,58 +67,40 @@ Systems    : all
 /****************************** Macros *********************************/
 
 /***********************************************************************\
-* Name       : TARGET_NATIVE_IO_READ_STDIN
+* Name       : CP_IO_READ_STDIN
 * Purpose    : read data from stdin
-* Input      : -
-* Output     : -
+* Input      : buffer - buffer
+*              length - number of bytes to read
+* Output     : bytesRead - bytes read
+*              result    - CP_OK or CP_ERROR
 * Return     : -
 * Side-effect: unknown
 * Notes      : -
 \***********************************************************************/
 
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_IO_READ_STDIN
-  #ifndef HAVE_UNISTD_H
-    #error no unistd.h: read() not available
-  #endif
-  #include <unistd.h>
-  #define TARGET_NATIVE_IO_READ_STDIN(buffer,length,bytesRead,result) \
-    do { \
-      bytesRead=read(0,buffer,length); \
-      result=(bytesRead!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-    } while (0)
+#ifndef CP_IO_READ_STDIN
+  #define CP_IO_READ_STDIN_POSIX
+  #define CP_IO_READ_STDIN(buffer,length,bytesRead,result) \
+    (result) = cp_io_read_stdin(buffer,length,&bytesRead)
 #endif
-#else /* NEW_CP */
-    #define TARGET_NATIVE_IO_READ_STDIN(buffer,length,bytesWritten,result) \
-      CP_IO_READ_STDIN(buffer,length,bytesWritten,result)
-#endif /* NEW_CP */
 
 /***********************************************************************\
-* Name       : TARGET_NATIVE_IO_WRITE_STDOUT
+* Name       : CP_IO_WRITE_STDOUT
 * Purpose    : write data to stdout
-* Input      : -
-* Output     : -
+* Input      : buffer - buffer
+*              length - number of bytes to read
+* Output     : bytesWritten - bytes written
+*              result       - CP_OK or CP_ERROR
 * Return     : -
 * Side-effect: unknown
 * Notes      : -
 \***********************************************************************/
 
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_IO_WRITE_STDOUT
-  #ifndef HAVE_UNISTD_H
-    #error no unistd.h: write() not available
-  #endif
-  #include <unistd.h>
-  #define TARGET_NATIVE_IO_WRITE_STDOUT(buffer,length,bytesWritten,result) \
-    do { \
-      bytesWritten=write(1,buffer,length); \
-      result=(bytesWritten!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-    } while (0)
+#ifndef CP_IO_WRITE_STDOUT
+  #define CP_IO_WRITE_STDOUT_POSIX
+  #define CP_IO_WRITE_STDOUT(buffer,length,bytesWritten,result) \
+    (result) = cp_io_write_stdout(buffer,length,&bytesWritten)
 #endif
-#else /* NEW_CP */
-    #define TARGET_NATIVE_IO_WRITE_STDOUT(buffer,length,bytesWritten,result) \
-      CP_IO_WRITE_STDOUT(buffer,length,bytesWritten,result)
-#endif /* NEW_CP */
 
 /***********************************************************************\
 * Name       : write data to stderr
@@ -135,30 +112,18 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_IO_WRITE_STDERR
-  #ifndef HAVE_UNISTD_H
-    #error no unistd.h: write() not available
-  #endif
-  #include <unistd.h>
-  #define TARGET_NATIVE_IO_WRITE_STDERR(buffer,length,bytesWritten,result) \
-    do { \
-      bytesWritten=write(2,buffer,length); \
-      result=(bytesWritten!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-    } while (0)
+#ifndef CP_IO_WRITE_STDERR
+  #define CP_IO_WRITE_STDERR_POSIX
+  #define CP_IO_WRITE_STDERR(buffer,length,bytesWritten,result) \
+    (result) = cp_io_write_stderr(buffer,length,&bytesWritten)
 #endif
-#else /* NEW_CP */
-    #define TARGET_NATIVE_IO_WRITE_STDERR(buffer,length,bytesWritten,result) \
-      CP_IO_WRITE_STDERR(buffer,length,bytesWritten,result)
-#endif /* NEW_CP */
 
 /*---------------------------------------------------------------------*/
 
 /***********************************************************************\
-* Name       : TARGET_NATIVE_IO_PRINT
+* Name       : CP_IO_PRINT
 * Purpose    : print formated string to stdout
-* Input      : format - format string (like printf)
-*              args   - optional arguments
+* Input      : -
 * Output     : -
 * Return     : number of characters printed
 * Side-effect: unknown
@@ -175,30 +140,22 @@ Systems    : all
 *              string with variable parameters (like printf)
 \***********************************************************************/
 
-/* __PUBLIC_BEGIN__ */
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_IO_PRINT
-/* still not active, because of strange macro problem x=(TARGET_NATIVE_IO_PRINT_ERROR(...),b) */
-  #ifdef x__GNUC__
-    #include <stdio.h>
-    #define TARGET_NATIVE_IO_PRINT(format,args...) \
-      fprintf(stdout,format, ## args)
+#ifndef CP_IO_PRINT
+  #define CP_IO_PRINT_POSIX
+// NYI: UNDER DEVELOPMENT: broken if macro is called inside another macro?
+  #ifdef xxxCPP_VARARGS
+    #define CP_IO_PRINT(format,Args...) \
+      cp_io_printf(format, ## Args)
   #else
-    #define TARGET_NATIVE_IO_PRINT_GENERIC
-    #define TARGET_NATIVE_IO_PRINT targetGenericIO_printf
+    #define CP_IO_PRINT \
+      cp_io_printf
   #endif
 #endif
-#else /* NEW_CP */
-    #define TARGET_NATIVE_IO_PRINT \
-      CP_IO_PRINT
-#endif /* NEW_CP */
-/* __PUBLIC_END__ */
 
 /***********************************************************************\
-* Name       : TARGET_NATIVE_IO_PRINT_ERROR
+* Name       : CP_IO_PRINT_ERROR
 * Purpose    : print formated string to stderr
-* Input      : format - format string (like printf)
-*              args   - optional arguments
+* Input      : -
 * Output     : -
 * Return     : number of characters printed
 * Side-effect: unknown
@@ -215,24 +172,17 @@ Systems    : all
 *              string with variable parameters (like printf)
 \***********************************************************************/
 
-/* __PUBLIC_BEGIN__ */
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_IO_PRINT_ERROR
-/* still not active, because of strange macro problem x=(TARGET_NATIVE_IO_PRINT_ERROR(...),b) */
-  #ifdef x__GNUC__
-    #include <stdio.h>
-    #define TARGET_NATIVE_IO_PRINT_ERROR(format,args...) \
-      fprintf(stderr,format, ## args)
+#ifndef CP_IO_PRINT_ERROR
+  #define CP_IO_PRINT_ERROR_POSIX
+// NYI: UNDER DEVELOPMENT: broken if macro is called inside another macro?
+  #ifdef xxxCPP_VARARGS
+    #define CP_IO_PRINT_ERROR(format,Args...) \
+      cp_io_printf_stderr(format, ## Args)
   #else
-    #define TARGET_NATIVE_IO_PRINT_ERROR_GENERIC
-    #define TARGET_NATIVE_IO_PRINT_ERROR targetGenericIO_printf_stderr
+    #define CP_IO_PRINT_ERROR \
+      cp_io_printf_stderr
   #endif
 #endif
-#else /* NEW_CP */
-    #define TARGET_NATIVE_IO_PRINT_ERROR \
-      CP_IO_PRINT_ERROR
-#endif /* NEW_CP */
-/* __PUBLIC_END__ */
 
 /***************************** Functions *******************************/
 
@@ -240,22 +190,16 @@ Systems    : all
 extern "C" {
 #endif
 
-/* __PUBLIC_BEGIN__ */
-#ifdef TARGET_NATIVE_IO_PRINT_GENERIC
-int targetGenericIO_printf(const char *format, ...);
-#endif /* TARGET_NATIVE_IO_PRINT_GENERIC */
-/* __PUBLIC_END__ */
-
-/* __PUBLIC_BEGIN__ */
-#ifdef TARGET_NATIVE_IO_PRINT_ERROR_GENERIC
-int targetGenericIO_printf_stderr(const char *format, ...);
-#endif /* TARGET_NATIVE_IO_PRINT_ERROR_GENERIC */
-/* __PUBLIC_END__ */
+int cp_io_read_stdin(void *buffer, unsigned int length, unsigned int *bytesRead);
+int cp_io_write_stdout(const void *buffer, unsigned int length, unsigned int *bytesWritten);
+int cp_io_write_stderr(const void *buffer, unsigned int length, unsigned int *bytesWritten);
+int cp_io_printf(const char *Format, ...);
+int cp_io_printf_stderr(const char *Format, ...);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __TARGET_GENERIC_IO__ */
+#endif /* __TARGET_POSIX_IO__ */
 
 /* end of file */

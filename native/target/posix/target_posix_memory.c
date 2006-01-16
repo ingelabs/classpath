@@ -1,5 +1,5 @@
-/* ???.h - ???
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* target_posix_memory.c - Native methods for POSIX memory operations
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,18 +36,23 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 /*
-Description: Linux target defintions of miscellaneous functions
+Description: generic target defintions of memory functions
 Systems    : all
 */
 
-#ifndef __TARGET_NATIVE_IO__
-#define __TARGET_NATIVE_IO__
-
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
-#include <config.h>
+#include "config.h"
 
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
+#include <assert.h>
+
+#include "target_posix.h"
+
+#include "target_posix_memory.h"
 
 /****************** Conditional compilation switches *******************/
 
@@ -65,14 +70,95 @@ Systems    : all
 extern "C" {
 #endif
 
+#ifdef NEW_CP
+
+#ifdef CP_MEMORY_ALLOC_POSIX
+  void *cp_memory_alloc(unsigned long size)
+    {
+      return malloc(size);
+    }
+#endif
+
+#ifdef CP_MEMORY_REALLOC_POSIX
+  void *cp_memory_realloc(void *p, unsigned long size)
+    {
+      return realloc(p,size);
+    }
+#endif
+
+#ifdef CP_MEMORY_FREE_POSIX
+  void cp_memory_free(void *p)
+    {
+      assert(p != NULL);
+
+      free(p);
+    }
+#endif
+
+#ifdef CP_MEMORY_FILL_POSIX
+  #include <string.h>
+  void cp_memory_fill(void *p, char value, unsigned long size)
+    {
+      memset(p,value,size);
+    }
+#endif
+
+#ifdef CP_MEMORY_FILL_INT32_POSIX
+  #include <string.h>
+  void cp_memory_fill_int32(void *p, u_int32_t value, unsigned long n)
+    {
+      register u_int32_t *t;
+      register int       i;
+
+      t=(u_int32_t*)p;
+      for (i = 0; i < n; i++)
+      {
+        (*t) = value;
+        t++;
+      }
+    }
+#endif
+
+#ifdef CP_MEMORY_COPY_POSIX
+  #include <string.h>
+  void cp_memory_copy(const void *source, void *destination, unsigned long size)
+    {
+      memmove(destination,source,size);
+    }
+#endif
+
+#ifdef CP_MEMORY_FAST_COPY_POSIX
+  #include <string.h>
+  void cp_memory_fastCopy(const void *source, void *destination, unsigned long size)
+    {
+      memcpy(destination,source,size);
+    }
+#endif
+
+#ifdef CP_MEMORY_MAP_POSIX
+  #ifdef HAVE_SYS_MMAN_H
+    #include <sys/mman.h>
+  #endif
+  void *cp_memory_map(int filedescriptor, void *start, unsigned long length, unsigned long offset, int protection, int flags)
+    {
+      return mmap(start,length,protection,flags,filedescriptor,offset);
+    }
+#endif
+
+#ifdef CP_MEMORY_UNMAP_POSIX
+  #ifdef HAVE_SYS_MMAN_H
+    #include <sys/mman.h>
+  #endif
+  int cp_memory_unmap(void *start, unsigned long length)
+    {
+      return (munmap(start,length)==0)?CP_OK:CP_ERROR;
+    }
+#endif
+
+#endif /* NEW_CP */
+
 #ifdef __cplusplus
 }
 #endif
-
-/* include rest of definitions from generic file (do not move it to 
-   another position!) */
-#include "target_generic_io.h"
-
-#endif /* __TARGET_NATIVE_IO__ */
 
 /* end of file */

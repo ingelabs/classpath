@@ -1,5 +1,5 @@
-/* ???.h - ???
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* target_native_memory.h - Native memory methods
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,12 +36,12 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 /*
-Description: Linux target defintions of miscellaneous functions
+Description: Linux target defintions of memory functions
 Systems    : all
 */
 
-#ifndef __TARGET_NATIVE_IO__
-#define __TARGET_NATIVE_IO__
+#ifndef __TARGET_NATIVE_MEMORY__
+#define __TARGET_NATIVE_MEMORY__
 
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
@@ -71,8 +71,8 @@ extern "C" {
 
 /* include rest of definitions from generic file (do not move it to 
    another position!) */
-#include "target_generic_io.h"
+#include "target_generic_memory.h"
 
-#endif /* __TARGET_NATIVE_IO__ */
+#endif /* __TARGET_NATIVE_MEMORY__ */
 
 /* end of file */

@@ -632,7 +632,7 @@ Java_java_io_VMFile_list (JNIEnv * env, jobject obj
   max_filelist_count = REALLOC_SIZE;
 
   /* read the files from the directory */
-  TARGET_NATIVE_FILE_READ_DIR (handle, filename, result);
+  TARGET_NATIVE_FILE_READ_DIR (handle, filename, sizeof(filename), result);
   while (result == TARGET_NATIVE_OK)
     {
       if ((strcmp (filename, ".") != 0) && (strcmp (filename, "..") != 0))
@@ -668,7 +668,7 @@ Java_java_io_VMFile_list (JNIEnv * env, jobject obj
 	}
 
       /* read next directory entry */
-      TARGET_NATIVE_FILE_READ_DIR (handle, filename, result);
+      TARGET_NATIVE_FILE_READ_DIR (handle, filename, sizeof(filename), result);
     }
 
   /* close directory */

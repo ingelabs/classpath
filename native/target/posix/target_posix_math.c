@@ -1,5 +1,5 @@
-/* ???.h - ???
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* target_posix_math.c - Native methods for math operations
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,18 +36,23 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 /*
-Description: Linux target defintions of miscellaneous functions
+Description: POSIX target defintions of int/int64 constants/
+             macros/functions
 Systems    : all
 */
 
-#ifndef __TARGET_NATIVE_IO__
-#define __TARGET_NATIVE_IO__
-
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
-#include <config.h>
+#include "config.h"
 
 #include <stdlib.h>
+#include <assert.h>
+
+#include <jni.h>
+
+#include "target_posix.h"
+
+#include "target_posix_math.h"
 
 /****************** Conditional compilation switches *******************/
 
@@ -69,10 +74,5 @@ extern "C" {
 }
 #endif
 
-/* include rest of definitions from generic file (do not move it to 
-   another position!) */
-#include "target_generic_io.h"
-
-#endif /* __TARGET_NATIVE_IO__ */
-
 /* end of file */
+

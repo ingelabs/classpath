@@ -1,3 +1,48 @@
+2006-01-16  Roman Kennke  <kennke@aicas.com>
+
+	* jni/java-io/java_io_VMFile.c
+	(Java_java_io_VMFile_list): Use new 4 argument version of
+	TARGET_NATIVE_FILE_READ_DIR macro.
+	* target/Linux/target_native_io.h: Fixed comment at #endif.
+	* target/Linux/target_native_memory.h: New file. Contains
+	portability macros for memory operations.
+	* target/generic/target_generic.c: New file. Contains some functions
+	for portability.
+	* target/generic/target_generic.h: Use posix target and shorter macro
+	names if CP_NEW is set. 
+	* target/generic/target_generic_file.h: Use posix target and shorter
+	macro names if CP_NEW is set.
+	(TARGET_NATIVE_FILE_READ_DIR): New parameter for maxNameLength.
+	* target/generic/target_generic_io.c: New file. Contains some
+	functions for IO portability.
+	* target/generic/target_generic_io.h: Use posix target and shorter
+	macro names if CP_NEW is set.
+	* target/generic/target_generic_misc.c: New file. Contains some
+	functions for miscallaneaous portability issues.
+	* target/generic/target_generic_misc.h: Use posix target and shorter
+	macro names if CP_NEW is set.
+	* target/generic/target_generic_network.c: New file. Contains some
+	functions for networking portability.
+	* target/generic/target_generic_network.h: Use posix target and
+	shorter	macro names if CP_NEW is set.
+	* target/posix/Makefile.am,
+	* target/posix/target_posix.c,
+	* target/posix/target_posix.h,
+	* target/posix/target_posix_file.c,
+	* target/posix/target_posix_file.h,
+	* target/posix/target_posix_io.c,
+	* target/posix/target_posix_io.h,
+	* target/posix/target_posix_math.c,
+	* target/posix/target_posix_math.h,
+	* target/posix/target_posix_memory.c,
+	* target/posix/target_posix_memory.h,
+	* target/posix/target_posix_misc.c,
+	* target/posix/target_posix_misc.h,
+	* target/posix/target_posix_network.c,
+	* target/posix/target_posix_network.h:
+	New files. This implements the target native layer macros for
+	Posix-like systems.
+
 2006-01-16  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/SocketPermission.java (implies): Fix action checks.

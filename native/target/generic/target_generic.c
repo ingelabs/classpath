@@ -1,5 +1,5 @@
-/* ???.h - ???
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* target_generic.c - Native methods generic operations
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,18 +36,17 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 /*
-Description: Linux target defintions of miscellaneous functions
+Description: generic target global defintions
 Systems    : all
 */
 
-#ifndef __TARGET_NATIVE_IO__
-#define __TARGET_NATIVE_IO__
-
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
-#include <config.h>
+#include "config.h"
 
 #include <stdlib.h>
+
+#include "target_native.h"
 
 /****************** Conditional compilation switches *******************/
 
@@ -56,6 +55,11 @@ Systems    : all
 /***************************** Datatypes *******************************/
 
 /***************************** Variables *******************************/
+
+#ifdef TARGET_NATIVE_LAST_ERROR_GENERIC
+  int  targetNativeLastErrorCode=0;
+  char targetNativeLastErrorString[TARGET_NATIVE_MAX_ERROR_STRING_LENGTH];
+#endif
 
 /****************************** Macros *********************************/
 
@@ -69,10 +73,5 @@ extern "C" {
 }
 #endif
 
-/* include rest of definitions from generic file (do not move it to 
-   another position!) */
-#include "target_generic_io.h"
-
-#endif /* __TARGET_NATIVE_IO__ */
-
 /* end of file */
+
