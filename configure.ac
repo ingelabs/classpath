@@ -587,6 +587,11 @@ native/jni/midi-alsa/Makefile
 native/jni/midi-dssi/Makefile
 native/target/Makefile
 native/target/Linux/Makefile
+native/target/embOS/Makefile
+native/target/SunOS/Makefile
+native/target/RTEMS/Makefile
+native/target/MinGW/Makefile
+native/target/posix/Makefile
 native/target/generic/Makefile
 resource/Makefile
 scripts/Makefile
