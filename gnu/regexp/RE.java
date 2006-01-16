@@ -333,6 +333,11 @@ public class RE extends REToken {
     char ch;
     boolean quot = false;
 
+    // Saved syntax and flags.
+    RESyntax savedSyntax = null;
+    int savedCflags = 0;
+    boolean flagsSaved = false;
+
     while (index < pLength) {
       // read the next character unit (including backslash escapes)
       index = getCharUnit(pattern,index,unit,quot);
@@ -525,6 +530,86 @@ public class RE extends REToken {
               index += 2;
             }
             break;
+	  case 'i':
+	  case 'd':
+	  case 'm':
+	  case 's':
+	  // case 'u':  not supported
+	  // case 'x':  not supported
+	  case '-':
+            if (!syntax.get(RESyntax.RE_EMBEDDED_FLAGS)) break;
+	    // Set or reset syntax flags.
+	    int flagIndex = index + 1;
+	    int endFlag = -1;
+	    RESyntax newSyntax = new RESyntax(syntax);
+	    int newCflags = cflags;
+	    boolean negate = false;
+	    while (flagIndex < pLength && endFlag < 0) {
+	        switch(pattern[flagIndex]) {
+	  	case 'i':
+		  if (negate)
+		    newCflags &= ~REG_ICASE;
+		  else
+		    newCflags |= REG_ICASE;
+		  flagIndex++;
+		  break;
+	  	case 'd':
+		  if (negate)
+		    newSyntax.setLineSeparator(RESyntax.DEFAULT_LINE_SEPARATOR);
+		  else
+		    newSyntax.setLineSeparator("\n");
+		  flagIndex++;
+		  break;
+	  	case 'm':
+		  if (negate)
+		    newCflags &= ~REG_MULTILINE;
+		  else
+		    newCflags |= REG_MULTILINE;
+		  flagIndex++;
+		  break;
+	  	case 's':
+		  if (negate)
+		    newCflags &= ~REG_DOT_NEWLINE;
+		  else
+		    newCflags |= REG_DOT_NEWLINE;
+		  flagIndex++;
+		  break;
+	  	// case 'u': not supported
+	  	// case 'x': not supported
+	  	case '-':
+		  negate = true;
+		  flagIndex++;
+		  break;
+		case ':':
+		case ')':
+		  endFlag = pattern[flagIndex];
+		  break;
+		default:
+            	  throw new REException(getLocalizedMessage("repeat.no.token"), REException.REG_BADRPT, index);
+		}
+	    }
+	    if (endFlag == ')') {
+		syntax = newSyntax;
+		cflags = newCflags;
+		insens = ((cflags & REG_ICASE) > 0);
+		// This can be treated as though it were a comment.
+		comment = true;
+		index = flagIndex - 1;
+		break;
+	    }
+	    if (endFlag == ':') {
+		savedSyntax = syntax;
+		savedCflags = cflags;
+		flagsSaved = true;
+		syntax = newSyntax;
+		cflags = newCflags;
+		insens = ((cflags & REG_ICASE) > 0);
+		index = flagIndex -1;
+		// Fall through to the next case.
+	    }
+	    else {
+	        throw new REException(getLocalizedMessage("unmatched.paren"), REException.REG_ESUBREG,index);
+	    }
 	  case ':':
 	    if (syntax.get(RESyntax.RE_PURE_GROUPING)) {
 	      pure = true;
@@ -616,6 +701,12 @@ public class RE extends REToken {
 	  }
 
 	  index = nextIndex;
+	  if (flagsSaved) {
+	      syntax = savedSyntax;
+	      cflags = savedCflags;
+	      insens = ((cflags & REG_ICASE) > 0);
+	      flagsSaved = false;
+	  }
 	} // not a comment
       } // subexpression
     
