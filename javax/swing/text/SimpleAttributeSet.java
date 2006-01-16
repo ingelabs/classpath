@@ -62,21 +62,21 @@ public class SimpleAttributeSet
    */
   public SimpleAttributeSet()
   {
-    this(null);
+    tab = new Hashtable();
   }
   
   /**
    * Creates a new <code>SimpleAttributeSet</code> with the same attributes
    * and resolve parent as the specified set.
    * 
-   * @param a  the attributes.
+   * @param a  the attributes (<code>null</code> not permitted).
+   * 
+   * @throws NullPointerException if <code>a</code> is <code>null</code>.
    */
   public SimpleAttributeSet(AttributeSet a)
   {
-    // FIXME: null argument should throw NullPointerException
     tab = new Hashtable();
-    if (a != null)
-      addAttributes(a);
+    addAttributes(a);
   }
 
   /**
@@ -136,11 +136,18 @@ public class SimpleAttributeSet
    */
   public boolean containsAttribute(Object name, Object value)
   {
-    // FIXME: if the name is defined in this set, any match in the parent
-    // should be ignored
-    return (tab.containsKey(name) && tab.get(name).equals(value)) || 
-      (getResolveParent() != null && getResolveParent().
-       containsAttribute(name, value));
+    if (value == null)
+      throw new NullPointerException("Null 'value' argument.");
+    if (tab.containsKey(name))
+      return tab.get(name).equals(value);
+    else
+      {
+        AttributeSet p = getResolveParent();
+        if (p != null)
+          return p.containsAttribute(name, value);
+        else
+          return false;
+      }
   }
   
   /**
@@ -219,10 +226,9 @@ public class SimpleAttributeSet
     if (val != null) 
       return val;
 
-    // FIXME: The following instanceof check and cast is redundant
-    Object p = getResolveParent();
-    if (p != null && p instanceof AttributeSet)
-      return (((AttributeSet)p).getAttribute(name));
+    AttributeSet p = getResolveParent();
+    if (p != null)
+      return p.getAttribute(name);
 
     return null;
   }

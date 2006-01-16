@@ -1,3 +1,13 @@
+2006-01-16  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/text/SimpleAttributeSet.java
+	(SimpleAttributeSet()): Initialise storage directly,
+	(SimpleAttributeSet(AttributeSet)): Removed null check and documented
+	NullPointerException,
+	(containsAttribute): If key is found locally, don't check resolving
+	parent if the value doesn't match,
+	(getAttribute): Removed redundant instanceof and cast.
+
 2006-01-16  Gary Benson  <gbenson@redhat.com>
 
 	* java/lang/System.java (setSecurityManager): Ensure policy
