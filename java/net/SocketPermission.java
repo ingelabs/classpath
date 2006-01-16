@@ -40,6 +40,7 @@ package java.net;
 import java.io.Serializable;
 import java.security.Permission;
 import java.security.PermissionCollection;
+import java.util.StringTokenizer;
 
 
 /**
@@ -269,10 +270,11 @@ public final class SocketPermission extends Permission implements Serializable
 
     // Next check the actions
     String ourlist = getActions();
-    String theirlist = p.getActions();
+    StringTokenizer theirlist = new StringTokenizer(p.getActions(), ",");
 
-    if (! ourlist.startsWith(theirlist))
-      return false;
+    while (theirlist.hasMoreTokens())
+      if (ourlist.indexOf(theirlist.nextToken()) == -1)
+	return false;
 
     // Now check ports
     int ourfirstport = 0;

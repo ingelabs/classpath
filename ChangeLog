@@ -1,3 +1,7 @@
+2006-01-16  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/SocketPermission.java (implies): Fix action checks.
+
 2006-01-16  Roman Kennke  <kennke@aicas.com>
 
 	* native/target/generic/target_generic_math_float.h: Removed. This
