@@ -1,3 +1,12 @@
+2006-01-16  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/standard/MediaSize.java: 
+	(static_initializer): Added comment.
+	(MediaSize): Added javadoc to mention cache registration.
+	(MediaSize): Likewise.
+	(MediaSize): Likewise.
+	(MediaSize): Likewise.
+
 2006-01-16  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	PR classpath/25202
