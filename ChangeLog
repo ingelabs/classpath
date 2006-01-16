@@ -1,3 +1,15 @@
+2006-01-16  Roman Kennke  <kennke@aicas.com>
+
+	* native/target/Makefile.am: Include new targets.
+	* native/target/Linux/Makefile.am: Include new memory layer.
+	* native/target/MinGW/Makefile.am: New file. Includes MinGW in dist.
+	* native/target/RTEMS/Makefile.am: New file. Includes RTEMS in dist.
+	* native/target/SunOS/Makefile.am: New file. Includes SunOS in dist.
+	* native/target/embOS/Makefile.am: New file. Includes embOS in dist.
+	* native/target/generic/Makefile.am: Include new memory and math
+	layer.
+	* native/target/posix/Makefile.am: New file. Includes posix in dist.
+
 2006-01-16  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #22884
