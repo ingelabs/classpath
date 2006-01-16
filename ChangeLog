@@ -1,3 +1,7 @@
+2006-01-16  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/text/StyleConstants.java: Updated API docs all over.
+
 2006-01-16  Roman Kennke  <kennke@aicas.com>
 
 	* configure.ac: Include new target native directories in build.
