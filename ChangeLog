@@ -1,3 +1,53 @@
+2006-01-17  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	(pad): New debugging method.
+	(printElements): Likewise.
+	(printPendingEdits): Likewise.
+	(printElement): Likewise.
+	(Edit): Improved docs, moved this class to be an inner class of
+	ElementBuffer since it only applies within that scope.  Changed added 
+	and removed to be Vectors instead of arrays because we need to be able 
+	to add to them after construction.
+	(ElementBuffer): Updated docs with link to article that helped in this
+	classes implementation.
+	(ElementBuffer.Edit.getRemovedElements): New method.
+	(ElementBuffer.Edit.getAddedElements): Likewise.
+	(ElementBuffer.Edit.addRemovedElement): Likewise.
+	(ElementBuffer.Edit.addRemovedElements): Likewise.
+	(ElementBuffer.Edit.addAddedElement): Likewise.
+	(ElementBuffer.Edit.addAddedElements): Likewise.
+	(ElementBuffer.Edit<init>): Improved docs, call addRemovedElements and 
+	addAddedElements.
+	(ElementBuffer.getEditForParagraphAndIndex): New method.
+	(ElementBuffer.removeUpdate): Changed type of paragraph to 
+	BranchElement.  Corrected style of adding the edit to use the new Edit
+	facilities.
+	(ElementBuffer.changeUpdate): Changed style of adding the edit to use
+	the new Edit facilities.
+	(ElementBuffer.split): Likewise.
+	(ElementBuffer.insertParagraph): Likewise.
+	(ElementBuffer.insertContentTag): Likewise.
+	(ElementBuffer.insert): Push all BranchElements until the deepest one, 
+	not just the root and the first one. Apply the structural changes to 
+	the tree at the same time as updating the DocumentEvent.
+	(ElementBuffer.insertUpdate): Fixed docs.  Removed the special case 
+	handling of EndTags as the first ElementSpec.  Instead have to handle
+	ContentTags as a special case if they are the first ElementSpec and if
+	not have to fracture the tree.
+	(ElementBuffer.createFracture): New method.  May not be complete yet.
+	Added FIXME indicating what may remain to be done.
+	(ElementBuffer.insertFirstContentTag): New method.
+	(ElementBuffer.insertFracture): Added FIXME explaining what remains to
+	be done.  Changed the adding of edits to use the new Edit facilities.
+	Removed the adding of edits for Elements that weren't in the tree prior
+	to the insertion.
+	(insertUpdate): Removed incorrect condition for setting a StartTag's
+	direction to JoinNextDirection.
+	* javax/swing/text/StyleContent.java: 
+	(SmallAttributeSet.toString): Fixed an off-by-one error in the loop 
+	that was causing an ArrayOutOfBoundsException.
+
 2006-01-17  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
