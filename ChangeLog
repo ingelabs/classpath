@@ -1,6 +1,13 @@
 2006-01-17  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
-	*gnu/regexp/RETokenChar.java(chain):
+	Fixes bug #25817
+	* gnu/regexp/RETokenRange.java(constructor):
+	Keep lo and hi as they are.
+	(match): Changed the case insensitive comparison.
+
+2006-01-17  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/regexp/RETokenChar.java(chain):
 	Do not concatenate tokens whose insens flags are diffent.
 
 2006-01-17  Roman Kennke  <kennke@aicas.com>
