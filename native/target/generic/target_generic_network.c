@@ -412,7 +412,8 @@ int targetGenericNetwork_accept(int socketDescriptor, int *newSocketDescriptor)
   #include <sys/select.h>
 #endif
 #include <sys/time.h>
-int targetGenericNetwork_receive(int socketDescriptor, char *buffer, unsigned long maxLength)
+int targetGenericNetwork_receive(int socketDescriptor, signed char *buffer,
+				 unsigned long maxLength)
 {
   #ifdef HAVE_SELECT
     TsocketTimeout     *socketTimeout;
@@ -463,7 +464,11 @@ int targetGenericNetwork_receive(int socketDescriptor, char *buffer, unsigned lo
   #include <sys/select.h>
 #endif
 #include <sys/time.h>
-int targetGenericNetwork_receiveWithAddressPort(int socketDescriptor, char *buffer, unsigned long maxLength, unsigned long *address, unsigned int *port)
+int targetGenericNetwork_receiveWithAddressPort(int socketDescriptor,
+						signed char *buffer,
+						unsigned long maxLength,
+						unsigned long *address,
+						unsigned int *port)
 {
   #ifdef HAVE_SELECT
     TsocketTimeout     *socketTimeout;

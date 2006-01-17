@@ -1,5 +1,28 @@
 2006-01-17  Roman Kennke  <kennke@aicas.com>
 
+	* native/target/generic/target_generic_network.c:
+	(targetGenericNetwork_receive): Fixed signature to match the
+	corresponding .h file.
+	(targetGenericNetwork_receiveWithAddressPort): Fixed signature
+	to match the corresponding .h file.
+
+2006-01-17  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/classpath/jcl.c:
+	(JCL_malloc): Replaced calls to malloc with the corresponding
+	target layer macro.
+	(JCL_free): Replaced calls to free with the corresponding
+	target layer macro.
+	* native/jni/classpath/native_state.c:
+	(cp_gtk_init_state_table_with_size): Replaced calls to malloc and
+	calloc with the corresponding target layer macro.
+	(remove_node): Replaced calls to free with the corresponding
+	target layer macro.
+	(add_node): Replaced calls to malloc with the corresponding
+	target layer macro.
+
+2006-01-17  Roman Kennke  <kennke@aicas.com>
+
 	* native/jni/java-io/java_io_VMObjectStreamClass.c:
 	(getFieldReference): Use MALLOC/FREE macros for portability instead
 	of direct call to malloc() and free().
