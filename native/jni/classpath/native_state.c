@@ -36,8 +36,11 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 #include <stdlib.h>
-#include <assert.h>
 #include <jni.h>
+
+#include "target_native.h"
+#include "target_native_memory.h"
+
 #include "native_state.h"
 
 #define DEFAULT_TABLE_SIZE 97
@@ -57,10 +60,21 @@ cp_gtk_init_state_table_with_size (JNIEnv * env, jclass clazz, jint size)
   if (clazz_g == NULL)
     return NULL;
 
-  table = (struct state_table *) malloc (sizeof (struct state_table));
+  TARGET_NATIVE_MEMORY_ALLOC(table,struct state_table *,
+			     sizeof(struct state_table));
+  if (table == NULL)
+    return NULL;
+  
   table->size = size;
-  table->head = (struct state_node **) calloc (sizeof (struct state_node *),
-					       table->size);
+  TARGET_NATIVE_MEMORY_ALLOC(table->head,struct state_node **,
+			     sizeof(struct state_node *)*table->size);
+  if (table->head == NULL)
+    {
+      TARGET_NATIVE_MEMORY_FREE(table);
+      return NULL;
+    }
+  TARGET_NATIVE_MEMORY_FILL(table->head,0,
+			    sizeof(struct state_node *) * table->size);
   table->hash = hash;
   table->clazz = clazz_g;
 
@@ -89,7 +103,7 @@ remove_node (struct state_node **head, jint obj_id)
 	  else
 	    back_ptr->next = node->next;
 	  return_value = node->c_state;
-	  free (node);
+	  TARGET_NATIVE_MEMORY_FREE(node);
 	  return return_value;
 	}
       back_ptr = node;
@@ -159,7 +173,11 @@ add_node (struct state_node **head, jint obj_id, void *state)
 	}
     }
 
-  new_node = (struct state_node *) malloc (sizeof (struct state_node));
+  TARGET_NATIVE_MEMORY_ALLOC(new_node,struct state_node *,
+			     sizeof(struct state_node));
+  if (new_node == NULL)
+    return;
+
   new_node->key = obj_id;
   new_node->c_state = state;
   new_node->next = *head;

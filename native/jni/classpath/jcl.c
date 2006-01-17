@@ -95,7 +95,8 @@ JCL_ThrowException (JNIEnv * env, const char *className, const char *errMsg)
 JNIEXPORT void *JNICALL
 JCL_malloc (JNIEnv * env, size_t size)
 {
-  void *mem = malloc (size);
+  void *mem;
+  TARGET_NATIVE_MEMORY_ALLOC(mem,void *,size);
   if (mem == NULL)
     {
       JCL_ThrowException (env, "java/lang/OutOfMemoryError",
@@ -133,7 +134,7 @@ JCL_free (JNIEnv * env __attribute__ ((unused)), void *p)
 {
   if (p != NULL)
     {
-      free (p);
+      TARGET_NATIVE_MEMORY_FREE (p);
     }
 }
 
