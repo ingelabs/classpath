@@ -795,16 +795,17 @@ public class DefaultStyledDocument extends AbstractDocument
         }
       insertUpdate(data);
       
-      int size = edits.size();
-      
       // This for loop applies all the changes that were made and updates the 
       // DocumentEvent.
+      int size = edits.size();
       for (int i = 0; i < size; i++)
         {
-          Edit curr = (Edit) edits.get(i);                  
+          Edit curr = (Edit) edits.get(i);     
           BranchElement e = (BranchElement) curr.e;
-          e.replace(curr.index, curr.removed == null ? 0 : curr.removed.size(), curr.getAddedElements());
-          addEdit(e, curr.index, curr.getRemovedElements(), curr.getAddedElements());
+          Element[] removed = curr.getRemovedElements();
+          Element[] added = curr.getAddedElements();
+          e.replace(curr.index, removed.length, added);
+          addEdit(e, curr.index, removed, added);
         }
     }
 
@@ -1077,7 +1078,6 @@ public class DefaultStyledDocument extends AbstractDocument
       // Now we remove the children after the offset from the previous 
       // paragraph. (Step 3).
       int removeSize = previous.getElementCount() - previousIndex;
-      Element[] add = new Element[] { newPreviousLeaf };
       Element[] remove = new Element[removeSize];
       for (int j = 0; j < removeSize; j++)
         remove[j] = previous.getElement(previousIndex + j);
