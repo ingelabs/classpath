@@ -1,3 +1,44 @@
+2006-01-17  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
+	(Java_gnu_java_nio_channels_FileChannelImpl_init): Improved
+	exception messages a little.
+	(Java_gnu_java_nio_channels_FileChannelImpl_open): Provided
+	alternative implementation for systems without filesystems.
+	Replaced snprintf with the corresponding target native macro.
+	(Java_gnu_java_nio_channels_FileChannelImpl_implCloseChannel):
+	Only do something when we have a filesystem.
+	(Java_gnu_java_nio_channels_FileChannelImpl_available): Provided
+	alternative implementation for systems without filesystems.
+	(Java_gnu_java_nio_channels_FileChannelImpl_size): Provided
+	alternative implementation for systems without filesystems.
+	(Java_gnu_java_nio_channels_FileChannelImpl_implPosition): Provided
+	alternative implementation for systems without filesystems.
+	(Java_gnu_java_nio_channels_FileChannelImpl_seek):
+	Only do something when we have a filesystem.
+	(Java_gnu_java_nio_channels_FileChannelImpl_implTruncate):
+	Only do something when we have a filesystem.
+	(Java_gnu_java_nio_channels_FileChannelImpl_mapImpl): Provided
+	alternative implementation for systems without filesystems.
+	(Java_gnu_java_nio_channels_FileChannelImpl_read__):
+	Replaced ssize_t variables with jint. Provided
+	alternative implementation for systems without filesystems.
+	(Java_gnu_java_nio_channels_FileChannelImpl_read___3BII):
+	Replaced ssize_t variables with jint. Provided
+	alternative implementation for systems without filesystems.
+	(Java_gnu_java_nio_channels_FileChannelImpl_write__I):
+	Replaced ssize_t variables with jint. Provided
+	alternative implementation for systems without filesystems.
+	(Java_gnu_java_nio_channels_FileChannelImpl_force):
+	Only do something when we have a filesystem.
+	(Java_gnu_java_nio_channels_FileChannelImpl_write___3BII):
+	Replaced ssize_t variables with jint. Provided
+	alternative implementation for systems without filesystems.
+	(Java_gnu_java_nio_channels_FileChannelImpl_lock): Reimplemented
+	to use the corresponding target native macro.
+	(Java_gnu_java_nio_channels_FileChannelImpl_unlock): Reimplemented
+	to use the corresponding target native macro.
+
 2006-01-17  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultTextUI.java:
