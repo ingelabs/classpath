@@ -8,6 +8,15 @@ if CREATE_GTK_PEER_LIBRARIES
   JAWTDIR = jawt
 endif
 
-SUBDIRS = fdlibm $(JNIDIR) $(JAWTDIR) target
-DIST_SUBDIRS = fdlibm jni jawt target
+DIST_SUBDIRS = \
+	fdlibm \
+	jni \
+	jawt \
+	target
 
+# ATTENTION: target must be built before jni
+SUBDIRS = \
+	fdlibm \
+	target \
+	$(JNIDIR) \
+	$(JAWTDIR)

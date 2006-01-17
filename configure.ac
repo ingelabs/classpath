@@ -30,6 +30,17 @@ case "$host_os" in
 	;;
 esac
 
+dnl get the target for the native layer
+case "$target_os" in
+    linux* )
+        TARGET=Linux
+        ;;
+    * )
+        TARGET=generic
+        ;;
+esac
+AC_SUBST(TARGET)
+
 CLASSPATH_MODULE="${cp_module} -version-info ${LIBVERSION} -no-undefined"
 AC_SUBST(CLASSPATH_MODULE)
 
@@ -276,6 +287,8 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_HEADER_TIME
   AC_STRUCT_TM
   AC_STRUCT_TIMEZONE
+
+  TYPE_SOCKLEN_T
 
   AC_MSG_CHECKING([for tm_gmtoff in struct tm])
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <time.h>]],[[struct tm tim; tim.tm_gmtoff = 0;]])],

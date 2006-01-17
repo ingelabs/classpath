@@ -1,27 +1,24 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-TARGET = Linux
-# FIXME: How do I set these variables in configure?
-#if TARGET_LINUX
-#  TARGET = Linux
-#endif
+DIST_SUBDIRS = \
+	Linux \
+	SunOS \
+	RTEMS \
+	MinGW \
+	embOS \
+	posix \
+	generic 
 
-#if TARGET_SUNOS
-#  TARGET = SunOS
-#endif
+SUBDIRS = \
+	$(TARGET) \
+	generic
 
-#if TARGET_RTEMS
-#  TARGET = RTEMS
-#endif
-
-#if TARGET_MINGW
-#  TARGET = MinGW
-#endif
-
-#if TARGET_EMBOS
-#  TARGET = embOS
-#endif
-
-SUBDIRS = $(TARGET) generic
-DIST_SUBDIRS = Linux SunOS RTEMS MinGW embOS posix generic 
 EXTRA_DIST = readme.txt
+
+noinst_LTLIBRARIES = libtarget.la
+
+libtarget_la_SOURCES =
+
+libtarget_la_LIBADD = \
+	generic/libtargetgeneric.la
+	$(TARGET)/libtargetos.la

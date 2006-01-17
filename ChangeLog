@@ -1,3 +1,16 @@
+2006-01-17  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* configure.ac: Set TARGET.
+	* native/Makefile.am, native/jni/classpath/Makefile.am,
+	native/jni/gtk-peer/Makefile.am, native/jni/java-io/Makefile.am,
+	native/jni/java-lang/Makefile.am, native/jni/java-net/Makefile.am,
+	native/jni/java-nio/Makefile.am, native/jni/midi-dssi/Makefile.am,
+	native/jni/xmlj/Makefile.am, native/target/Makefile.am,
+	native/target/Linux/Makefile.am,
+	native/target/generic/Makefile.am,
+	native/target/posix/Makefile.am: Build libclasspath.so with jcl
+	and target stuff linked in and link it against lib*.so libraries.
+
 2006-01-17  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/java-net/javanet.c:

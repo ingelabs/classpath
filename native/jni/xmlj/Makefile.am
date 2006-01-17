@@ -1,22 +1,24 @@
-nativelib_LTLIBRARIES = libxmlj.la
+nativelib_LTLIBRARIES = \
+	libxmlj.la
 
 libxmlj_la_SOURCES = \
-xmlj_dom.c \
-xmlj_dom.h \
-xmlj_error.c \
-xmlj_error.h \
-xmlj_io.c \
-xmlj_io.h \
-xmlj_node.c \
-xmlj_node.h \
-xmlj_sax.c \
-xmlj_sax.h \
-xmlj_transform.c \
-xmlj_util.c \
-xmlj_util.h \
-xmlj_xpath.c
+	xmlj_dom.c \
+	xmlj_dom.h \
+	xmlj_error.c \
+	xmlj_error.h \
+	xmlj_io.c \
+	xmlj_io.h \
+	xmlj_node.c \
+	xmlj_node.h \
+	xmlj_sax.c \
+	xmlj_sax.h \
+	xmlj_transform.c \
+	xmlj_util.c \
+	xmlj_util.h \
+	xmlj_xpath.c
 
-libxmlj_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo
+libxmlj_la_LIBADD = \
+	$(top_builddir)/native/jni/classpath/libclasspath.la
 
 AM_LDFLAGS = @CLASSPATH_MODULE@ @XML_LIBS@ @XSLT_LIBS@
 AM_CPPFLAGS = @CLASSPATH_INCLUDES@
