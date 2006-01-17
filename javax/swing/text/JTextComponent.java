@@ -101,6 +101,9 @@ public abstract class JTextComponent extends JComponent
     /** The caret's offset. */
     int dot = 0;
     
+    /** The current JTextComponent. */
+    JTextComponent textComp = JTextComponent.this;
+    
     /**
      * Constructs an AccessibleJTextComponent. 
      * Adds a listener to track caret change.
@@ -108,7 +111,7 @@ public abstract class JTextComponent extends JComponent
     public AccessibleJTextComponent()
     {
       super();
-      // TODO: add listener 
+      textComp.addCaretListener(this);
     }
 
     /**
@@ -120,6 +123,7 @@ public abstract class JTextComponent extends JComponent
      */
     public int getCaretPosition()
     {
+      dot = textComp.getCaretPosition();
       return dot;
     }
 
@@ -130,7 +134,7 @@ public abstract class JTextComponent extends JComponent
      */
     public String getSelectedText()
     {
-      return null; // TODO
+      return textComp.getSelectedText();
     }
 
     /**
@@ -142,7 +146,9 @@ public abstract class JTextComponent extends JComponent
      */
     public int getSelectionStart()
     {
-      return 0; // TODO
+      if (getSelectedText() == null || (textComp.getText().equals("")))
+        return 0;
+      return textComp.getSelectionStart();
     }
 
     /**
@@ -155,7 +161,9 @@ public abstract class JTextComponent extends JComponent
      */
     public int getSelectionEnd()
     {
-      return 0; // TODO
+      if (getSelectedText() == null || (textComp.getText().equals("")))
+        return 0;
+      return textComp.getSelectionEnd();
     }
 
     /**
@@ -292,7 +300,7 @@ public abstract class JTextComponent extends JComponent
      */
     public int getCharCount()
     {
-      return 0; // TODO
+      return textComp.getText().length();
     }
 
    /** 
@@ -400,7 +408,7 @@ public abstract class JTextComponent extends JComponent
      */
     public void insertTextAtIndex(int index, String s)
     {
-      // TODO
+      replaceText(index, index, s);
     }
 
     /**
@@ -411,7 +419,14 @@ public abstract class JTextComponent extends JComponent
      */
     public String getTextRange(int start, int end)
     {
-      return null; // TODO
+      try
+      {
+        return textComp.getText(start, end - start);
+      }
+      catch (BadLocationException ble)
+      {
+        return "";
+      }
     }
 
     /**
@@ -422,7 +437,7 @@ public abstract class JTextComponent extends JComponent
      */
     public void delete(int start, int end)
     {
-      // TODO
+      replaceText(start, end, "");
     }
 
     /**
@@ -433,7 +448,8 @@ public abstract class JTextComponent extends JComponent
      */
     public void cut(int start, int end)
     {
-      // TODO
+      textComp.select(start, end);
+      textComp.cut();
     }
 
     /**
@@ -443,7 +459,8 @@ public abstract class JTextComponent extends JComponent
      */
     public void paste(int start)
     {
-      // TODO
+      textComp.setCaretPosition(start);
+      textComp.paste();
     }
 
     /**
@@ -455,18 +472,19 @@ public abstract class JTextComponent extends JComponent
      */
     public void replaceText(int start, int end, String s)
     {
-      // TODO
+      textComp.select(start, end);
+      textComp.replaceSelection(s);
     }
 
     /**
      * Select the text between two points.
      *
      * @param start the start position, inclusive
-     * @param stop the end position, exclusive
+     * @param end the end position, exclusive
      */
-    public void selectText(int start, int stop)
+    public void selectText(int start, int end)
     {
-      // TODO
+      textComp.select(start, end);
     }
 
     /**

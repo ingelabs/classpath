@@ -1,3 +1,21 @@
+2006-01-17  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/text/JTextComponent.java
+	(AccessibleJTextComponent): Implemented.
+	(getCaretPosition): Implemented.
+	(getSelectedText): Implemented.
+	(getSelectionStart): Implemented.
+	(getSelectionEnd): Implemented.
+	(getSelectionEnd): Implemented.
+	(getCharCount): Implemented.
+	(insertTextAtIndex): Implemented.
+	(getTextRange): Implemented.
+	(delete): Implemented.
+	(cut): Implemented.
+	(paste): Implemented.
+	(replaceText): Implemented.
+	(selectText): Implemented.
+
 2006-01-17  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java:
