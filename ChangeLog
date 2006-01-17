@@ -1,3 +1,24 @@
+2006-01-17  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/java-net/javanet.c:
+	(_javanet_connect): Changed type of some local variables to jint.
+	Fixed error handling to throw a SocketTimeoutException if the
+	connection attempt times out.
+	(_javanet_bind): Changed type of some local variables to jint.
+	(_javanet_accept): Likewise.
+	(_javanet_recvfrom): Likewise.
+	(_javanet_sendto): Fixed error handling to throw a
+	PortUnreachableException when connection is refused.
+	(_javanet_get_option): Changed type of some local variables to jint.
+	Implemented SOCKOPT_SO_BROADCAST.
+	(_javanet_shutdownInput): Replaced shutdown call with corresponding
+	target native macro.
+	(_javanet_shutdownOutput): Replaced shutdown call with corresponding
+	target native macro.
+	* native/jni/java-net/javanet.h:
+	Defined SOCKET_TIMEOUT_EXCEPTION, PORT_UNREACHABLE_EXCEPTION and
+	SOCKOPT_SO_BROADCAST.
+
 2006-01-17  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/text/JTextComponent.java

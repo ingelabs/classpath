@@ -51,7 +51,9 @@ exception statement from your version. */
 #define BIND_EXCEPTION "java/net/BindException"
 #define IO_EXCEPTION "java/io/IOException"
 #define SOCKET_EXCEPTION "java/net/SocketException"
+#define SOCKET_TIMEOUT_EXCEPTION "java/net/SocketTimeoutException"
 #define UNKNOWN_HOST_EXCEPTION "java/net/UnknownHostException"
+#define PORT_UNREACHABLE_EXCEPTION "java/net/PortUnreachableException"
 
 /* Socket Option Identifiers - Don't change or binary compatibility with 
                                the JDK will be broken! These also need to
@@ -63,6 +65,7 @@ exception statement from your version. */
 #define SOCKOPT_SO_SNDBUF 4097
 #define SOCKOPT_SO_RCVBUF 4098
 #define SOCKOPT_SO_REUSEADDR 4
+#define SOCKOPT_SO_BROADCAST 32
 #define SOCKOPT_IP_MULTICAST_IF 16
 #define SOCKOPT_SO_KEEPALIVE 8
 
