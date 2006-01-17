@@ -1,3 +1,29 @@
+2006-01-17  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/text/StyleConstants.java
+	(getAlignment): Removed isDefined() check, so that resolving parent is 
+	used for lookup,
+	(getBackground): Likewise, plus changed default value to Color.BLACK,
+	(getBidiLevel): Removed isDefined() check,
+	(getComponent): Likewise,
+	(getFirstLineIndent): Likewise,
+	(getFontFamily): Likewise,
+	(getFontSize): Likewise,
+	(getForeground): Likewise,
+	(getIcon): Likewise,
+	(getLeftIndent): Likewise,
+	(getLineSpacing): Likewise,
+	(getRightIndent): Likewise,
+	(getSpaceAbove): Likewise,
+	(getSpaceBelow): Likewise,
+	(getTabSet): Likewise,
+	(isBold): Likewise,
+	(isItalic): Likewise,
+	(isStrikeThrough): Likewise,
+	(isSubscript): Likewise,
+	(isSuperscript): Likewise,
+	(isUnderline): Likewise.
+
 2006-01-17  Gary Benson  <gbenson@redhat.com>
 
 	* java/lang/System.java (setSecurityManager): Catch

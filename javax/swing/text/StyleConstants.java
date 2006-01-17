@@ -196,8 +196,9 @@ public class StyleConstants
    */
   public static int getAlignment(AttributeSet a)
   {
-    if (a.isDefined(Alignment))
-      return ((Integer)a.getAttribute(Alignment)).intValue();
+    Integer i = (Integer) a.getAttribute(Alignment);
+    if (i != null)
+      return i.intValue();
     else
       return ALIGN_LEFT;      
   } 
@@ -214,10 +215,11 @@ public class StyleConstants
    */
   public static Color getBackground(AttributeSet a)
   {
-    if (a.isDefined(Background))
-      return (Color) a.getAttribute(Background);
+    Color c = (Color) a.getAttribute(Background);
+    if (c != null) 
+      return c;
     else
-      return Color.WHITE;
+      return Color.BLACK;
   } 
 
   /**
@@ -232,8 +234,9 @@ public class StyleConstants
    */  
   public static int getBidiLevel(AttributeSet a)
   {
-    if (a.isDefined(BidiLevel))
-      return ((Integer)a.getAttribute(BidiLevel)).intValue();
+    Integer i = (Integer) a.getAttribute(BidiLevel);
+    if (i != null)
+      return i.intValue();
     else
       return 0;
   } 
@@ -250,10 +253,11 @@ public class StyleConstants
    */    
   public static Component getComponent(AttributeSet a)
   {
-    if (a.isDefined(ComponentAttribute))
-      return (Component) a.getAttribute(ComponentAttribute);
+    Component c = (Component) a.getAttribute(ComponentAttribute);
+    if (c != null)
+      return c;
     else
-      return (Component) null;
+      return null;
   } 
 
   /**
@@ -268,10 +272,11 @@ public class StyleConstants
    */    
   public static float getFirstLineIndent(AttributeSet a)
   {
-    if (a.isDefined(FirstLineIndent))
-      return ((Float)a.getAttribute(FirstLineIndent)).floatValue();
+    Float f = (Float) a.getAttribute(FirstLineIndent);
+    if (f != null)
+      return f.floatValue();
     else
-      return 0.f;
+      return 0.0f;
   } 
 
   /**
@@ -286,8 +291,9 @@ public class StyleConstants
    */    
   public static String getFontFamily(AttributeSet a)
   {
-    if (a.isDefined(FontFamily))
-      return (String) a.getAttribute(FontFamily);
+    String ff = (String) a.getAttribute(FontFamily);
+    if (ff != null)
+      return ff;
     else
       return "Monospaced";
   } 
@@ -304,8 +310,9 @@ public class StyleConstants
    */  
   public static int getFontSize(AttributeSet a)
   {
-    if (a.isDefined(FontSize))
-      return ((Integer)a.getAttribute(FontSize)).intValue();
+    Integer i = (Integer) a.getAttribute(FontSize);
+    if (i != null)
+      return i.intValue();
     else
       return 12;
   } 
@@ -322,8 +329,9 @@ public class StyleConstants
    */
   public static Color getForeground(AttributeSet a)
   {
-    if (a.isDefined(Foreground))
-      return (Color) a.getAttribute(Foreground);
+    Color c = (Color) a.getAttribute(Foreground);
+    if (c != null)
+      return c;
     else
       return Color.BLACK;
   } 
@@ -340,10 +348,7 @@ public class StyleConstants
    */    
   public static Icon getIcon(AttributeSet a)
   {
-    if (a.isDefined(IconAttribute))
-      return (Icon) a.getAttribute(IconAttribute);
-    else
-      return (Icon) null;
+    return (Icon) a.getAttribute(IconAttribute);
   } 
 
   /**
@@ -358,10 +363,11 @@ public class StyleConstants
    */    
   public static float getLeftIndent(AttributeSet a)
   {
-    if (a.isDefined(LeftIndent))
-      return ((Float)a.getAttribute(LeftIndent)).floatValue();
+    Float f = (Float) a.getAttribute(LeftIndent);
+    if (f != null)
+      return f.floatValue();
     else
-      return 0.f;  
+      return 0.0f;
   } 
 
   /**
@@ -376,10 +382,11 @@ public class StyleConstants
    */    
   public static float getLineSpacing(AttributeSet a)
   {
-    if (a.isDefined(LineSpacing))
-      return ((Float)a.getAttribute(LineSpacing)).floatValue();
+    Float f = (Float) a.getAttribute(LineSpacing);
+    if (f != null)
+      return f.floatValue();
     else
-      return 0.f;  
+      return 0.0f;
   } 
 
   /**
@@ -394,10 +401,11 @@ public class StyleConstants
    */    
   public static float getRightIndent(AttributeSet a)
   {
-    if (a.isDefined(RightIndent))
-      return ((Float)a.getAttribute(RightIndent)).floatValue();
+    Float f = (Float) a.getAttribute(RightIndent);
+    if (f != null)
+      return f.floatValue();
     else
-      return 0.f;  
+      return 0.0f;
   } 
 
   /**
@@ -412,10 +420,11 @@ public class StyleConstants
    */    
   public static float getSpaceAbove(AttributeSet a)
   {
-    if (a.isDefined(SpaceAbove))
-      return ((Float)a.getAttribute(SpaceAbove)).floatValue();
-    else
-      return 0.f;  
+    Float f = (Float) a.getAttribute(SpaceAbove);
+    if (f != null)
+      return f.floatValue();
+    else 
+      return 0.0f;
   } 
 
   /**
@@ -430,10 +439,11 @@ public class StyleConstants
    */    
   public static float getSpaceBelow(AttributeSet a)
   {
-    if (a.isDefined(SpaceBelow))
-      return ((Float)a.getAttribute(SpaceBelow)).floatValue();
+    Float f = (Float) a.getAttribute(SpaceBelow);
+    if (f != null)
+      return f.floatValue();
     else
-      return 0.f;  
+      return 0.0f;
   } 
 
   /**
@@ -448,10 +458,10 @@ public class StyleConstants
    */    
   public static javax.swing.text.TabSet getTabSet(AttributeSet a)
   {
-    if (a.isDefined(StyleConstants.TabSet))
-      return (javax.swing.text.TabSet) a.getAttribute(StyleConstants.TabSet);
-    else
-      return (javax.swing.text.TabSet) null;
+    // I'm guessing that the fully qualified class name is to differentiate
+    // between the TabSet class and the TabSet (attribute) instance on some
+    // compiler...
+    return (javax.swing.text.TabSet) a.getAttribute(StyleConstants.TabSet);
   } 
 
   /**
@@ -466,10 +476,11 @@ public class StyleConstants
    */
   public static boolean isBold(AttributeSet a)
   {
-    if (a.isDefined(Bold))
-      return ((Boolean) a.getAttribute(Bold)).booleanValue();
+    Boolean b = (Boolean) a.getAttribute(Bold);
+    if (b != null)
+      return b.booleanValue();
     else
-      return false;    
+      return false;
   } 
 
   /**
@@ -484,10 +495,11 @@ public class StyleConstants
    */
   public static boolean isItalic(AttributeSet a)
   {
-    if (a.isDefined(Italic))
-      return ((Boolean) a.getAttribute(Italic)).booleanValue();
+    Boolean b = (Boolean) a.getAttribute(Italic);
+    if (b != null)
+      return b.booleanValue();
     else
-      return false;    
+      return false;
   } 
 
   /**
@@ -502,10 +514,11 @@ public class StyleConstants
    */
   public static boolean isStrikeThrough(AttributeSet a)
   {
-    if (a.isDefined(StrikeThrough))
-      return ((Boolean) a.getAttribute(StrikeThrough)).booleanValue();
+    Boolean b = (Boolean) a.getAttribute(StrikeThrough);
+    if (b != null)
+      return b.booleanValue();
     else
-      return false;    
+      return false;
   } 
 
   /**
@@ -520,10 +533,11 @@ public class StyleConstants
    */
   public static boolean isSubscript(AttributeSet a)
   {
-    if (a.isDefined(Subscript))
-      return ((Boolean) a.getAttribute(Subscript)).booleanValue();
+    Boolean b = (Boolean) a.getAttribute(Subscript);
+    if (b != null)
+      return b.booleanValue();
     else
-      return false;    
+      return false;
   } 
 
   /**
@@ -538,10 +552,11 @@ public class StyleConstants
    */
   public static boolean isSuperscript(AttributeSet a)
   {
-    if (a.isDefined(Superscript))
-      return ((Boolean) a.getAttribute(Superscript)).booleanValue();
-    else
-      return false;    
+    Boolean b = (Boolean) a.getAttribute(Superscript);
+    if (b != null)
+      return b.booleanValue();
+    else 
+      return false;
   } 
 
   /**
@@ -556,10 +571,11 @@ public class StyleConstants
    */
   public static boolean isUnderline(AttributeSet a)
   {
-    if (a.isDefined(Underline))
-      return ((Boolean) a.getAttribute(Underline)).booleanValue();
+    Boolean b = (Boolean) a.getAttribute(Underline);
+    if (b != null)
+      return b.booleanValue();
     else
-      return false;    
+      return false;
   } 
 
   /**
