@@ -1,4 +1,4 @@
-/* target_generic.c - Native methods generic operations
+/* targetgeneric.c - Native methods generic operations
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.

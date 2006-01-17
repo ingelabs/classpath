@@ -724,7 +724,7 @@ _javanet_bind (JNIEnv * env, jobject this, jobject addr, jint port,
 
   if (result != TARGET_NATIVE_OK)
     {
-      char *errorstr = TARGET_NATIVE_LAST_ERROR_STRING ();
+      const char *errorstr = TARGET_NATIVE_LAST_ERROR_STRING ();
       (*env)->ReleaseByteArrayElements (env, arr, octets, 0);
 
       JCL_ThrowException (env, BIND_EXCEPTION,
@@ -1218,7 +1218,7 @@ _javanet_set_option (JNIEnv * env, jobject this, jint option_id, jobject val)
 	TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_SNDBUF (fd, optval,
 							   result);
       else
-	TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_RCDBUF (fd, optval,
+	TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_RCVBUF (fd, optval,
 							   result);
       break;
 
@@ -1392,7 +1392,7 @@ _javanet_get_option (JNIEnv * env, jobject this, jint option_id)
 	TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_SNDBUF (fd, optval,
 							   result);
       else
-	TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_RCDBUF (fd, optval,
+	TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_RCVBUF (fd, optval,
 							   result);
       if (result != TARGET_NATIVE_OK)
 	{

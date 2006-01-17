@@ -204,7 +204,7 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef NEW_CP
-//NYI: OPTIMIZATION: reentrant?
+/* NYI: OPTIMIZATION: reentrant? */
 #ifndef TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_ADDRESS
   #ifndef WITHOUT_NETWORK
     #include <netdb.h>
@@ -255,7 +255,7 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-// NYI CHECK: stack usage
+/* NYI CHECK: stack usage */
 #ifndef NEW_CP
 #ifndef TARGET_NATIVE_NETWORK_GET_HOSTADDRESS_BY_NAME
   #ifndef WITHOUT_NETWORK
@@ -596,7 +596,7 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef NEW_CP
-//??? address in network byte order?
+/* ??? address in network byte order? */
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_LISTEN
   #ifndef WITHOUT_NETWORK
     #include <sys/socket.h>
@@ -631,7 +631,7 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef NEW_CP
-//??? address in network byte order?
+/* ??? address in network byte order? */
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_ACCEPT
   #ifndef WITHOUT_NETWORK
     #define TARGET_NATIVE_NETWORK_SOCKET_ACCEPT_GENERIC
@@ -2012,11 +2012,16 @@ int targetGenericNetwork_accept(int socketDescriptor, int *newSocketDescriptor);
 #endif /* TARGET_NATIVE_NETWORK_SOCKET_ACCEPT_GENERIC */
 
 #ifdef TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_GENERIC
-int targetGenericNetwork_receive(int socketDescriptor, char *buffer, unsigned long maxLength);
+int targetGenericNetwork_receive(int socketDescriptor, signed char *buffer,
+				 unsigned long maxLength);
 #endif /* TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_GENERIC */
 
 #ifdef TARGET_NATIVE_NETWORK_RECEIVE_WITH_ADDRESS_PORT_GENERIC
-int targetGenericNetwork_receiveWithAddressPort(int socketDescriptor, char *buffer, unsigned long maxLength, unsigned long *address, unsigned int *port);
+int targetGenericNetwork_receiveWithAddressPort(int socketDescriptor,
+						signed char *buffer,
+						unsigned long maxLength,
+						unsigned long *address,
+						unsigned int *port);
 #endif /* TARGET_NATIVE_NETWORK_RECEIVE_WITH_ADDRESS_PORT_GENERIC */
 
 #ifdef TARGET_NATIVE_NETWORK_SET_OPTION_SO_TIMEOUT_GENERIC

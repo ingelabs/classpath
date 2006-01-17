@@ -46,7 +46,7 @@ exception statement from your version. */
 
 #include "target_native.h"
 #ifndef WITHOUT_FILESYSTEM
-#include "target_native_file.h"
+  #include "target_native_file.h"
 #endif
 #include "target_native_math.h"
 
@@ -81,8 +81,7 @@ Java_java_io_VMFile_create (JNIEnv * env,
   TARGET_NATIVE_FILE_OPEN_CREATE (filename, fd, result);
   if (result != TARGET_NATIVE_OK)
     {
-      /* XXX ??? NYI */
-      if (errno != EEXIST)
+      if (TARGET_NATIVE_LAST_ERROR() != TARGET_NATIVE_ERROR_FILE_EXISTS)
 	JCL_ThrowException (env,
 			    "java/io/IOException",
 			    TARGET_NATIVE_LAST_ERROR_STRING ());
@@ -364,12 +363,14 @@ Java_java_io_VMFile_length (JNIEnv * env,
   TARGET_NATIVE_FILE_OPEN_READ (filename, tmpfd, result);
   if (result != TARGET_NATIVE_OK)
     {
+      (*env)->ReleaseStringUTFChars(env, name, filename);
       return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
     }
   TARGET_NATIVE_FILE_SIZE (tmpfd, length, result);
   if (result != TARGET_NATIVE_OK)
     {
       TARGET_NATIVE_FILE_CLOSE (tmpfd, result);
+      (*env)->ReleaseStringUTFChars(env, name, filename);
       return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
     }
   TARGET_NATIVE_FILE_CLOSE (tmpfd, result);
@@ -595,7 +596,7 @@ Java_java_io_VMFile_list (JNIEnv * env, jobject obj
   int result;
   char **filelist;
   void *handle;
-  const char *filename;
+  char filename[256];
   unsigned long int filelist_count, max_filelist_count;
   char **tmp_filelist;
   jclass str_clazz;
@@ -640,11 +641,13 @@ Java_java_io_VMFile_list (JNIEnv * env, jobject obj
 	  /* allocate more memory if necessary */
 	  if (filelist_count >= max_filelist_count)
 	    {
-	      tmp_filelist = (char **) JCL_realloc (env,
+              tmp_filelist = (char **) JCL_realloc (env,
 						    filelist,
-						    (max_filelist_count +
-						     REALLOC_SIZE) *
-						    sizeof (char *));
+                                                    max_filelist_count
+						    * sizeof (char *),
+                                                    (max_filelist_count
+						     + REALLOC_SIZE)
+						    * sizeof (char *));
 	      if (tmp_filelist == NULL)
 		{
 		  for (i = 0; i < filelist_count; i++)

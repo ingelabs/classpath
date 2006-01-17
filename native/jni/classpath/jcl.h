@@ -55,7 +55,8 @@ JNIEXPORT void JNICALL JCL_ThrowException (JNIEnv * env,
 					   const char *className,
 					   const char *errMsg);
 JNIEXPORT void *JNICALL JCL_malloc (JNIEnv * env, size_t size);
-JNIEXPORT void *JNICALL JCL_realloc (JNIEnv * env, void *ptr, size_t size);
+JNIEXPORT void *JNICALL JCL_realloc (JNIEnv * env, void *ptr, size_t oldsize,
+				     size_t newsize);
 JNIEXPORT void JNICALL JCL_free (JNIEnv * env, void *p);
 JNIEXPORT const char *JNICALL JCL_jstring_to_cstring (JNIEnv * env,
 						      jstring s);

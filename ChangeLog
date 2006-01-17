@@ -1,3 +1,46 @@
+2006-01-17  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/classpath/jcl.c: Added missing imports.
+	(JCL_realloc): Fixed signature to include oldsize. This is needed
+	for some targets. Make this function use the MEMORY_REALLOC macro
+	for portability.
+	* native/jni/classpath/jcl.h
+	(JCL_realloc): Adjusted signature.
+	* native/jni/java-io/java_io_VMFile.c:
+	(Java_java_io_VMFile_create): Use target layer macro for handling
+	errno, for portability.
+	(Java_java_io_VMFile_length): Release filename string in error cases
+	before returning.
+	(Java_java_io_VMFile_list): Initialize filename variable. Use new
+	version of JCL_realloc.
+	* native/jni/java-net/java_net_VMInetAddress.c:
+	(Java_java_net_VMInetAddress_getHostByName): Use renamed macro
+	TARGET_NATIVE_NETWORK_GET_HOSTADDRESS_BY_NAME.
+	* native/jni/java-net/javanet.c:
+	(_javanet_bind): Make errorstr variable const to avoid compiler
+	warning.
+	(_javanet_set_option): Fixed typo.
+	(_javanet_get_option): Fixed typo.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
+	(Java_gnu_java_nio_channels_FileChannelImpl_open): Made
+	error_string variable const to avoid compiler warning.
+	* native/target/generic/target_generic_file.h:
+	Replaced // comments with /* */ comments to avoid compiler warnings.
+	Added some spaces to make code better readable.
+	* native/target/generic/target_generic_memory.h:
+	Replaced // comments with /* */ comments to avoid compiler warnings.
+	* native/target/generic/target_generic_misc.c:
+	Removed unused TARGET_NATIVE_MISC_FORMAT_STRING macro. This caused
+	compiler warnings due to use of varargs.
+	* native/target/generic/target_generic_misc.h:
+	Removed unused TARGET_NATIVE_MISC_FORMAT_STRING macro. This caused
+	compiler warnings due to use of varargs.
+	* native/target/generic/target_generic_network.h:
+	Replaced // comments with /* */ comments to avoid compiler warnings.
+	(targetGenericNetwork_receive): Fixed signature to use signed chars
+	for buffer parameter to avoid warning when passing a jbyte to the
+	function.
+
 2006-01-17  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/StyleConstants.java

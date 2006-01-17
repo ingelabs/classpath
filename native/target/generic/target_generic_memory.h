@@ -291,7 +291,7 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-// NYI: OPTIMIZATION: assembly-inline?
+/* NYI: OPTIMIZATION: assembly-inline? */
 
 #ifndef NEW_CP
 #ifndef TARGET_NATIVE_MEMORY_FAST_COPY

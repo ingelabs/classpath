@@ -1122,7 +1122,7 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-// NYI: CLEANUP: CHECK
+/* NYI: CLEANUP: CHECK */
 #ifndef NEW_CP
 #ifndef TARGET_NATIVE_FILE_IS_EXECUTABLE
   #ifndef WITHOUT_FILESYSTEM
@@ -1490,7 +1490,7 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef NEW_CP
-//NYI: FUTURE PROBLEM: name as buffer?
+/* NYI: FUTURE PROBLEM: name as buffer? */
 #ifndef TARGET_NATIVE_FILE_READ_DIR
   #ifndef WITHOUT_FILESYSTEM
     #include <sys/types.h>
@@ -1499,9 +1499,9 @@ Systems    : all
       do { \
         struct dirent *__direntBuffer; \
         \
-        __direntBuffer=readdir((DIR*)handle); \
-        if (__direntBuffer!=NULL) { \
-          strncpy(name,__direntBuffer->d_name,maxNameLength); \
+        __direntBuffer = readdir((DIR*) handle); \
+        if (__direntBuffer != NULL) { \
+          strncpy(name, __direntBuffer->d_name, maxNameLength); \
           result=TARGET_NATIVE_OK; \
         } else { \
           result=TARGET_NATIVE_ERROR; \

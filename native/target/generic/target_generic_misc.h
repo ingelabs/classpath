@@ -81,51 +81,6 @@ Systems    : all
 /****************************** Macros *********************************/
 
 /***********************************************************************\
-* Name       : TARGET_NATIVE_MISC_FORMAT_STRING
-* Purpose    : format a string with arguments
-* Input      : buffer     - buffer for string
-*              bufferSize - size of buffer
-*              format     - format string (like printf)
-*              args       - optional arguments (GNU CPP only!)
-* Output     : -
-* Return     : length of formated string
-* Side-effect: unknown
-* Notes      : - this is a "safe" macro to format string; buffer-
-*                overflows will be avoided. Direct usage of e. g.
-*                snprintf() is not permitted because it is not ANSI C
-*                (not portable!)
-*              - if length of string is >= bufferSize the buffer was
-*                to small to format string completely!
-\***********************************************************************/
-
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_MISC_FORMAT_STRING
-  #if defined(__GNUC__) || defined(CPP_VARARGS)
-    #include <stdio.h>
-    #ifdef HAVE_SNPRINTF
-      #define TARGET_NATIVE_MISC_FORMAT_STRING(buffer,bufferSize,format,args...) \
-        snprintf(buffer,bufferSize,format, ## args)
-    #else
-      #define TARGET_NATIVE_MISC_FORMAT_STRING_GENERIC
-      #define TARGET_NATIVE_MISC_FORMAT_STRING(buffer,bufferSize,format,args...) \
-        targetGenericMisc_formatString(buffer,bufferSize,format, ## args)
-    #endif
-  #else
-    #define TARGET_NATIVE_MISC_FORMAT_STRING_GENERIC
-    #define TARGET_NATIVE_MISC_FORMAT_STRING \
-      targetGenericMisc_formatString
-  #endif
-#endif
-#else /* NEW_CP */
-#ifndef TARGET_NATIVE_MISC_FORMAT_STRING
-  #if defined(__GNUC__) || defined(CPP_VARARGS)
-    #define TARGET_NATIVE_MISC_FORMAT_STRING(buffer,bufferSize,format,args...) \
-      CP_MISC_FORMAT_STRING(buffer,bufferSize,format, ## args)
-  #endif
-#endif
-#endif /* NEW_CP */
-
-/***********************************************************************\
 * Name       : TARGET_NATIVE_MISC_FORMAT_STRING<n>
 * Purpose    : format a string (with a fixed number of) arguments
 * Input      : buffer     - buffer for string

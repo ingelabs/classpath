@@ -75,39 +75,6 @@ Systems    : all
 
 /***************************** Functions *******************************/
 
-#ifdef TARGET_NATIVE_MISC_FORMAT_STRING_GENERIC
-int targetGenericMisc_formatString(char *buffer, unsigned int bufferSize, const char *format,...)
-{
-  va_list arguments;
-  int     n;
-  char    *tmpBuffer;
-
-  assert(buffer!=NULL);
-  assert(format!=NULL);
-
-  va_start(arguments,format);
-  #ifdef HAVE_VSNPRINTF
-    n=vsnprintf(buffer,bufferSize,format,arguments);
-    if (n==-1) n=bufferSize;
-  #else
-    /* ToDo: how can we implement a safe format function without vsnprintf()
-       which does detect the number of characters formated?
-    */
-    TARGET_NATIVE_MEMORY_ALLOC(tmpBuffer,char*,4096);
-    n=vsprintf(tmpBuffer,format,arguments);
-    assert(n<=4096);
-    if (n<bufferSize)
-    {
-      TARGET_NATIVE_MEMORY_COPY(tmpBuffer,buffer,(n<bufferSize)?n:bufferSize);
-    }
-    TARGET_NATIVE_MEMORY_FREE(tmpBuffer);
-  #endif
-  va_end(arguments);
-
-  return n;
-}
-#endif /* TARGET_NATIVE_MISC_FORMAT_STRING_GENERIC */
-
 /* Put printed (decimal) representation of NUM in a buffer.
    BUFEND marks the end of the buffer, which must be at least 11 chars long.
    Returns the COUNT of chars written.  The result is in

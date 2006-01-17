@@ -214,10 +214,10 @@ Java_java_net_VMInetAddress_getHostByName (JNIEnv * env,
     }
 
   max_addresses = sizeof (addresses) / sizeof (addresses[0]);
-  TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_NAME (hostname,
-					      addresses,
-					      max_addresses,
-					      addresses_count, result);
+  TARGET_NATIVE_NETWORK_GET_HOSTADDRESS_BY_NAME (hostname,
+						 addresses,
+						 max_addresses,
+						 addresses_count, result);
   if (result != TARGET_NATIVE_OK)
     {
       JCL_ThrowException (env, UNKNOWN_HOST_EXCEPTION, (char *) hostname);

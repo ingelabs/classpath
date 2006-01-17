@@ -208,7 +208,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_open (JNIEnv * env,
   if (result != TARGET_NATIVE_OK)
     {
       char message[256]; /* Fixed size we don't need to malloc. */
-      char *error_string = TARGET_NATIVE_LAST_ERROR_STRING ();
+      const char *error_string = TARGET_NATIVE_LAST_ERROR_STRING ();
 
       snprintf(message, 256, "%s: %s", error_string, filename);
       /* We are only allowed to throw FileNotFoundException.  */
