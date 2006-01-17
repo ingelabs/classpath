@@ -42,6 +42,9 @@ exception statement from your version. */
 #include <stdlib.h>
 #include <string.h>
 
+#include "target_native.h"
+#include "target_native_memory.h"
+
 #include "java_io_VMObjectStreamClass.h"
 
 /*
@@ -179,7 +182,8 @@ getFieldReference (JNIEnv * env, jobject field, const char *type)
       if (type_name[0] != '[')
 	{
 	  /* XXX - FIXME - should not use dynamic allocation in core lib. */
-	  the_type = (char *) malloc (type_len + 3);
+          TARGET_NATIVE_MEMORY_ALLOC(the_type,char *,type_len + 3);
+	  assert(the_type!=NULL);
 	  the_type[0] = 'L';
 	  the_type[type_len + 1] = ';';
 	  the_type[type_len + 2] = '\0';
@@ -188,7 +192,8 @@ getFieldReference (JNIEnv * env, jobject field, const char *type)
       else
 	{
 	  /* XXX - FIXME - should not use dynamic allocation in core lib. */
-	  the_type = (char *) malloc (type_len + 1);
+          TARGET_NATIVE_MEMORY_ALLOC(the_type,char *,type_len + 1);
+          assert(the_type!=NULL);
 	  the_type[type_len] = '\0';
 	}
 
@@ -203,7 +208,7 @@ getFieldReference (JNIEnv * env, jobject field, const char *type)
 
       (*env)->ReleaseStringUTFChars (env, tname, type_name);
       fid = (*env)->GetFieldID (env, declaringClass, field_name, the_type);
-      free (the_type);
+      TARGET_NATIVE_MEMORY_FREE (the_type);
     }
   else
     {

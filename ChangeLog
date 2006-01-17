@@ -1,5 +1,11 @@
 2006-01-17  Roman Kennke  <kennke@aicas.com>
 
+	* native/jni/java-io/java_io_VMObjectStreamClass.c:
+	(getFieldReference): Use MALLOC/FREE macros for portability instead
+	of direct call to malloc() and free().
+
+2006-01-17  Roman Kennke  <kennke@aicas.com>
+
 	* native/jni/classpath/jcl.c: Added missing imports.
 	(JCL_realloc): Fixed signature to include oldsize. This is needed
 	for some targets. Make this function use the MEMORY_REALLOC macro
