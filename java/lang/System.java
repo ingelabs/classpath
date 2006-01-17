@@ -190,7 +190,7 @@ public final class System
 	  {
 	    Class.forName("java.security.Security");
 	  }
-	catch (Throwable t)
+	catch (ClassNotFoundException e)
 	  {
 	  }
       }
