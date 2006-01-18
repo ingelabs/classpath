@@ -189,6 +189,21 @@ AC_ARG_ENABLE([qt-peer],
               [COMPILE_QT_PEER=no])
 AM_CONDITIONAL(CREATE_QT_PEER_LIBRARIES, test "x${COMPILE_QT_PEER}" = xyes)
 
+dnl -----------------------------------------------------------
+dnl Posix layer (disabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([posix-layer],
+              [AS_HELP_STRING(--enable-posix-layer, build the target posix layer [default=no])],
+              [case "${enableval}" in
+                yes) ENABLE_POSIX=yes ;;
+                no) ENABLE_POSIX=no ;;
+                *) ENABLE_POSIX=yes ;;
+              esac],
+              [ENABLE_POSIX=no])
+AC_SUBST(CP_NEW)
+if test "x${ENABLE_POSIX}" = xyes; then
+  AC_DEFINE(CP_NEW, 1, [defined if the posix layer should be used])
+fi
 
 dnl -----------------------------------------------------------
 dnl Sets the native libraries installation dir

@@ -1,5 +1,10 @@
 2006-01-18  Roman Kennke  <kennke@aicas.com>
 
+	* configure.ac: Added --enable-posix-layer option to enable
+	build of the posix target layer.
+
+2006-01-18  Roman Kennke  <kennke@aicas.com>
+
 	* native/jni/java-net/java_net_VMInetAddress.c
 	(Java_java_net_VMInetAddress_lookupInaddrAny): Use target native macro
 	for INADDR_ANY.
