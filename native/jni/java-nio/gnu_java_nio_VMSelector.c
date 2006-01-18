@@ -38,12 +38,15 @@ exception statement from your version. */
 #include "config.h"
 
 /* <sys/types.h> needs to be included on OSX before <sys/select.h> */
-#if defined(HAVE_SYS_TYPES_H)
-#include <sys/types.h>
+#ifdef HAVE_SYS_TYPES_H
+  #include <sys/types.h>
 #endif
-
-#include <sys/select.h>
-#include <sys/time.h>
+#ifdef HAVE_SYS_SELECT_H
+  #include <sys/select.h>
+#endif            
+#ifdef HAVE_SYS_TIME_H
+  #include <sys/time.h>
+#endif
 
 #include <string.h>
 

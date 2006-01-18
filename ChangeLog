@@ -1,3 +1,32 @@
+2006-01-18  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/java-nio/gnu_java_nio_VMPipe.c:
+	Removed unnecessary include.
+	* native/jni/java-nio/gnu_java_nio_VMSelector.c:
+	Reorganized includes to only include sys/* headers when available.
+	* native/jni/java-nio/java_nio_MappedByteBufferImpl.c:
+	(get_pagesize): Return 0 when nothing else works.
+	(Java_java_nio_MappedByteBufferImpl_unmapImpl):
+	Replaced munmap() and strerror() with corresponding target macros.
+	(Java_java_nio_MappedByteBufferImpl_isLoadedImpl):
+	Replaced strerror() with corresponding target macro.
+	(Java_java_nio_MappedByteBufferImpl_forceImpl):
+	Replaced strerror() with corresponding target macro.
+	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c:
+	(Java_java_nio_VMDirectByteBuffer_allocate):
+	Replaced malloc() with the corresponding target macro.
+	(Java_java_nio_VMDirectByteBuffer_free):
+	Replaced free() with the corresponding target macro.
+	(Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_Pointer_2IB):
+	Add index to pointer when assigning the value.
+	(Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_Pointer_2I_3BII):
+	Replaced memcpy with corresponding target macro. Add index when
+	doing the memcpy, not when fetching the pointer.
+	(Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_Pointer_2I_3BII):
+	Replaced memcpy with corresponding target macro.
+	(Java_java_nio_VMDirectByteBuffer_shiftDown):
+	Replaced memmove with the corresponding target macro.
+
 2006-01-17  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/20198:

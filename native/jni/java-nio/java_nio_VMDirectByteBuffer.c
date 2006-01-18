@@ -36,12 +36,14 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 #include <config.h>
-#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <jni.h>
 #include <jcl.h>
+
+#include "target_native.h"
+#include "target_native_memory.h"
 
 #include "java_nio_VMDirectByteBuffer.h"
 
@@ -51,8 +53,7 @@ Java_java_nio_VMDirectByteBuffer_allocate
 {
   void *buffer;
 
-  buffer = malloc (capacity);
-
+  TARGET_NATIVE_MEMORY_ALLOC(buffer,void*,capacity);
   if (buffer == NULL)
     {
       JCL_ThrowException (env, "java/lang/OutOfMemoryError",
@@ -67,7 +68,7 @@ JNIEXPORT void JNICALL
 Java_java_nio_VMDirectByteBuffer_free
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)), jobject address)
 {
-  free (JCL_GetRawData (env, address));
+  TARGET_NATIVE_MEMORY_FREE(JCL_GetRawData (env, address));
 }
 
 JNIEXPORT jbyte JNICALL
@@ -83,8 +84,8 @@ Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_Pointer_2IB
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index, jbyte value)
 {
-  jbyte *pointer = (jbyte *) JCL_GetRawData (env, address) + index;
-  *pointer = value;
+  jbyte *pointer = (jbyte *) JCL_GetRawData (env, address);
+  *(pointer + index) = value;
 }
 
 JNIEXPORT void JNICALL
@@ -92,9 +93,9 @@ Java_java_nio_VMDirectByteBuffer_get__Lgnu_classpath_Pointer_2I_3BII
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint index, jbyteArray dst, jint dst_offset, jint dst_len)
 {
-  jbyte *src = (jbyte *) JCL_GetRawData (env, address) + index;
+  jbyte *src = (jbyte *) JCL_GetRawData (env, address);
   jbyte *_dst = (*env)->GetByteArrayElements (env, dst, NULL);
-  memcpy (_dst + dst_offset, src, dst_len);
+  TARGET_NATIVE_MEMORY_FAST_COPY(src + index,_dst + dst_offset,dst_len);
   (*env)->ReleaseByteArrayElements (env, dst, _dst, 0);
 }
 
@@ -105,7 +106,7 @@ Java_java_nio_VMDirectByteBuffer_put__Lgnu_classpath_Pointer_2I_3BII
 {
   jbyte *_src = (*env)->GetByteArrayElements (env, src, NULL);
   jbyte *dst = (jbyte *)JCL_GetRawData (env, address);
-  memcpy (dst + index, _src + src_offset, src_len);
+  TARGET_NATIVE_MEMORY_FAST_COPY(_src + src_offset,dst + index,src_len);
   (*env)->ReleaseByteArrayElements (env, src, _src, 0);
 }
 
@@ -114,9 +115,9 @@ Java_java_nio_VMDirectByteBuffer_shiftDown
   (JNIEnv * env, jclass clazz __attribute__ ((__unused__)),
    jobject address, jint dst_offset, jint src_offset, jint count)
 {
-  jbyte *dst = (jbyte *) JCL_GetRawData (env, address) + dst_offset;
-  jbyte *src = (jbyte *) JCL_GetRawData (env, address) + src_offset;
-  memmove (dst, src, count);
+  jbyte *dst = (jbyte *) JCL_GetRawData (env, address);
+  jbyte *src = (jbyte *) JCL_GetRawData (env, address);
+  TARGET_NATIVE_MEMORY_COPY(src + src_offset,dst + dst_offset,count);
 }
 
 JNIEXPORT jobject JNICALL
