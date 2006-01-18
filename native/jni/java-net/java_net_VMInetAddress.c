@@ -108,10 +108,10 @@ Java_java_net_VMInetAddress_lookupInaddrAny (JNIEnv * env,
   octets = (*env)->GetByteArrayElements (env, IParray, 0);
 
 #ifndef WITHOUT_NETWORK
-  TARGET_NATIVE_NETWORK_INT_TO_IPADDRESS_BYTES (INADDR_ANY,
-						octets[0],
-						octets[1],
-						octets[2], octets[3]);
+  TARGET_NATIVE_NETWORK_INT_TO_IPADDRESS_BYTES(TARGET_NATIVE_NETWORK_GET_IPADDRESS_ANY(),
+					       octets[0],
+					       octets[1],
+					       octets[2], octets[3]);
   (*env)->ReleaseByteArrayElements (env, IParray, octets, 0);
 #else /* not WITHOUT_NETWORK */
   octets[0] = 0;

@@ -1,5 +1,11 @@
 2006-01-18  Roman Kennke  <kennke@aicas.com>
 
+	* native/jni/java-net/java_net_VMInetAddress.c
+	(Java_java_net_VMInetAddress_lookupInaddrAny): Use target native macro
+	for INADDR_ANY.
+
+2006-01-18  Roman Kennke  <kennke@aicas.com>
+
 	* native/jni/java-util/java_util_VMTimeZone.c:
 	(Java_java_util_VMTimeZone_getSystemTimeZoneId): Rewritten
 	to use target native layer.
