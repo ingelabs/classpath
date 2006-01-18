@@ -1,3 +1,10 @@
+2006-01-17  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/20198:
+	* java/net/URLClassLoader.java (FileURLLoader): Added argument.
+	(JarURLLoader): Likewise.
+	(addURLImpl): Canonicalize file URLs.
+
 2006-01-17  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* configure.ac: Set TARGET.
