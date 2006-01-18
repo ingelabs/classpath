@@ -1,5 +1,12 @@
 2006-01-18  Roman Kennke  <kennke@aicas.com>
 
+	* native/jni/java-util/java_util_VMTimeZone.c:
+	(Java_java_util_VMTimeZone_getSystemTimeZoneId): Rewritten
+	to use target native layer.
+	(jint_to_charbuf): Removed unneeded helper function.
+
+2006-01-18  Roman Kennke  <kennke@aicas.com>
+
 	* native/jni/java-nio/gnu_java_nio_VMPipe.c:
 	Removed unnecessary include.
 	* native/jni/java-nio/gnu_java_nio_VMSelector.c:
