@@ -1,3 +1,14 @@
+2006-01-19  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #23212
+	* gnu/regexp/RE.java(initialize): Support escaped characters such as
+	\0123, \x1B, \u1234.
+	(getEscapedChar): New method.
+	(CharExpression): New inner class.
+	(getCharExpression): New Method.
+	* gnu/regexp/RESyntax.java(RE_OCTAL_CHAR, RE_HEX_CHAR,
+	RE_UNICODE_CHAR): New syntax bits.
+
 2006-01-19  Roman Kennke  <kennke@aicas.com>
 
 	* native/target/Makefile.am: Fixed so that posix stuff is really

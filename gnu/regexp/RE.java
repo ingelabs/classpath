@@ -409,6 +409,8 @@ public class RE extends REToken {
       else if ((unit.ch == '[') && !(unit.bk || quot)) {
 	Vector options = new Vector();
 	boolean negative = false;
+	// FIXME: lastChar == 0 means lastChar is not set. But what if
+	// \u0000 is used as a meaningful character?
 	char lastChar = 0;
 	if (index == pLength) throw new REException(getLocalizedMessage("unmatched.bracket"),REException.REG_EBRACK,index);
 	
@@ -432,6 +434,13 @@ public class RE extends REToken {
 	      options.addElement(new RETokenChar(subIndex,lastChar,insens));
 	      lastChar = '-';
 	    } else {
+	      if ((ch == '\\') && syntax.get(RESyntax.RE_BACKSLASH_ESCAPE_IN_LISTS)) {
+	        CharExpression ce = getCharExpression(pattern, index, pLength, syntax);
+	        if (ce == null)
+		  throw new REException("invalid escape sequence", REException.REG_ESCAPE, index);
+		ch = ce.ch;
+		index = index + ce.len - 1;
+	      }
 	      options.addElement(new RETokenRange(subIndex,lastChar,ch,insens));
 	      lastChar = 0;
 	      index++;
@@ -440,6 +449,8 @@ public class RE extends REToken {
             if (index == pLength) throw new REException(getLocalizedMessage("class.no.end"),REException.REG_EBRACK,index);
 	    int posixID = -1;
 	    boolean negate = false;
+	    // FIXME: asciiEsc == 0 means asciiEsc is not set. But what if
+	    // \u0000 is used as a meaningful character?
             char asciiEsc = 0;
 	    if (("dswDSW".indexOf(pattern[index]) != -1) && syntax.get(RESyntax.RE_CHAR_CLASS_ESC_IN_LISTS)) {
 	      switch (pattern[index]) {
@@ -460,19 +471,13 @@ public class RE extends REToken {
 		break;
 	      }
 	    }
-            else if ("nrt".indexOf(pattern[index]) != -1) {
-              switch (pattern[index]) {
-                case 'n':
-                  asciiEsc = '\n';
-                  break;
-                case 't':
-                  asciiEsc = '\t';
-                  break;
-                case 'r':
-                  asciiEsc = '\r';
-                  break;
-              }
-            }
+	    else {
+	      CharExpression ce = getCharExpression(pattern, index - 1, pLength, syntax);
+	      if (ce == null)
+		throw new REException("invalid escape sequence", REException.REG_ESCAPE, index);
+	      asciiEsc = ce.ch;
+	      index = index - 1 + ce.len - 1;
+	    }
 	    if (lastChar != 0) options.addElement(new RETokenChar(subIndex,lastChar,insens));
 	    
 	    if (posixID != -1) {
@@ -806,7 +811,19 @@ public class RE extends REToken {
 	else
 	  currentToken = setRepeated(currentToken,0,1,index);
       }
+
+      // OCTAL CHARACTER
+      //  \0377
 	
+      else if (unit.bk && (unit.ch == '0') && syntax.get(RESyntax.RE_OCTAL_CHAR)) {
+	CharExpression ce = getCharExpression(pattern, index - 2, pLength, syntax);
+	if (ce == null)
+	  throw new REException("invalid octal character", REException.REG_ESCAPE, index);
+	index = index - 2 + ce.len;
+	addToken(currentToken);
+	currentToken = new RETokenChar(subIndex,ce.ch,insens);
+      }
+
       // BACKREFERENCE OPERATOR
       //  \1 \2 ... \9
       // not available if RE_NO_BK_REFS is set
@@ -935,6 +952,19 @@ public class RE extends REToken {
 	  currentToken = new RETokenEnd(subIndex,null);
 	}
 
+        // HEX CHARACTER, UNICODE CHARACTER
+        //  \x1B, \u1234
+	
+	else if ((unit.bk && (unit.ch == 'x') && syntax.get(RESyntax.RE_HEX_CHAR)) ||
+		 (unit.bk && (unit.ch == 'u') && syntax.get(RESyntax.RE_UNICODE_CHAR))) {
+	  CharExpression ce = getCharExpression(pattern, index - 2, pLength, syntax);
+	  if (ce == null)
+	    throw new REException("invalid hex character", REException.REG_ESCAPE, index);
+	  index = index - 2 + ce.len;
+	  addToken(currentToken);
+	  currentToken = new RETokenChar(subIndex,ce.ch,insens);
+	}
+
 	// NON-SPECIAL CHARACTER (or escape to make literal)
         //  c | \* for example
 
@@ -967,6 +997,106 @@ public class RE extends REToken {
 	unit.ch = input[index++];
       else throw new REException(getLocalizedMessage("ends.with.backslash"),REException.REG_ESCAPE,index);
     return index;
+  }
+
+  private static char getEscapedChar(char[] input, int pos, int len, int radix) {
+    int ret = 0;
+    for (int i = pos; i < pos + len; i++) {
+	ret = ret * radix + Character.digit(input[i], radix);
+    }
+    return (char)ret;
+  }
+
+  /**
+   * This class represents various expressions for a character.
+   * "a"      : 'a' itself.
+   * "\0123"  : Octal char 0123
+   * "\x1b"   : Hex char 0x1b
+   * "\u1234" : Unicode char \u1234
+   */
+  private static class CharExpression {
+    /** character represented by this expression */
+    char ch;
+    /** String expression */
+    String expr;
+    /** length of this expression */
+    int len;
+    public String toString() { return expr; }
+  }
+
+  private CharExpression getCharExpression(char[] input, int pos, int lim,
+        RESyntax syntax) {
+    CharExpression ce = new CharExpression();
+    char c = input[pos];
+    if (c == '\\') {
+      if (pos + 1 >= lim) return null;
+      c = input[pos + 1];
+      switch(c) {
+      case 't':
+        ce.ch = '\t';
+        ce.len = 2;
+        break;
+      case 'n':
+        ce.ch = '\n';
+        ce.len = 2;
+        break;
+      case 'r':
+        ce.ch = '\r';
+        ce.len = 2;
+        break;
+      case 'x':
+      case 'u':
+        if ((c == 'x' && syntax.get(RESyntax.RE_HEX_CHAR)) ||
+            (c == 'u' && syntax.get(RESyntax.RE_UNICODE_CHAR))) {
+          int l = 0;
+          int expectedLength = (c == 'x' ? 2 : 4);
+          for (int i = pos + 2; i < pos + 2 + expectedLength; i++) {
+            if (i >= lim) break;
+            if (!((input[i] >= '0' && input[i] <= '9') ||
+                  (input[i] >= 'A' && input[i] <= 'F') ||
+                  (input[i] >= 'a' && input[i] <= 'f')))
+                break;
+	    l++;
+          }
+          if (l != expectedLength) return null;
+          ce.ch = getEscapedChar(input, pos + 2, l, 16);
+	  ce.len = l + 2;
+        }
+        else {
+          ce.ch = c;
+          ce.len = 2;
+        }
+        break;
+      case '0':
+        if (syntax.get(RESyntax.RE_OCTAL_CHAR)) {
+          int l = 0;
+          for (int i = pos + 2; i < pos + 2 + 3; i++) {
+            if (i >= lim) break;
+	    if (input[i] < '0' || input[i] > '7') break;
+            l++;
+          }
+          if (l == 3 && input[pos + 2] > '3') l--;
+          if (l <= 0) return null;
+          ce.ch = getEscapedChar(input, pos + 2, l, 8);
+          ce.len = l + 2;
+        }
+        else {
+          ce.ch = c;
+          ce.len = 2;
+        }
+        break;
+      default:
+        ce.ch = c;
+        ce.len = 2;
+        break;
+      }
+    }
+    else {
+      ce.ch = input[pos];
+      ce.len = 1;
+    }
+    ce.expr = new String(input, pos, ce.len);
+    return ce;
   }
 
   /**
