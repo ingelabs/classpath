@@ -1,3 +1,7 @@
+2006-01-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java (rowAtPoint): Rewritten.
+
 2006-01-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JWindow.java: Added API docs to the constructors.

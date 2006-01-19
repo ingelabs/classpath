@@ -1940,12 +1940,13 @@ public class JTable
   }
 
   /**
-   * Returns index of the row that contains specified point or 
-   * -1 if this table doesn't contain this point.
-   *
-   * @param point point to identify the row
-   * @return index of the row that contains specified point or 
-   * -1 if this table doesn't contain this point.
+   * Returns index of the row that contains specified point or -1 if this table
+   * doesn't contain this point.
+   * 
+   * @param point
+   *          point to identify the row
+   * @return index of the row that contains specified point or -1 if this table
+   *         doesn't contain this point.
    */
   public int rowAtPoint(Point point)
   {
@@ -1955,14 +1956,14 @@ public class JTable
         int height = getRowHeight() + getRowMargin();
         int y = point.y;
 
-        for (int i = 0; i < nrows; ++i)
-          {
-            if (0 <= y && y < height)
-              return i;
-            y -= height;
-          }
+        int r = y / height;
+        if (r < 0 || r > nrows)
+          return -1;
+        else
+          return r;
       }
-    return -1;
+    else
+      return -1;
   }
 
   /** 
