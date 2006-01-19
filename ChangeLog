@@ -1,3 +1,12 @@
+2006-01-19  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+	* configure.ac: Set TARGET to Linux per default.
+	* native/target/Makefile.am (libtarget_la_LIBADD): Removed
+	libtargetos.la.
+	* native/target/Linux/Makefile.am: Don't build a libtargetos.la.
+	* native/target/generic/Makefile.am (INCLUDES): Renamed to
+	AM_CPPFLAGS.
+	
 2006-01-19  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* java/security/interfaces/RSAMultiPrimePrivateCrtKey.java: Replaced

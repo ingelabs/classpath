@@ -1,6 +1,6 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-INCLUDES = -I$(top_srcdir)/native/target/$(TARGET)
+AM_CPPFLAGS = -I$(top_srcdir)/native/target/$(TARGET)
 
 EXTRA_DIST = \
 	target_generic_math.h \

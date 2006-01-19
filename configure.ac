@@ -36,7 +36,8 @@ case "$target_os" in
         TARGET=Linux
         ;;
     * )
-        TARGET=generic
+        dnl XXX change me when transition to target native layer is done
+        TARGET=Linux
         ;;
 esac
 AC_SUBST(TARGET)

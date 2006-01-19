@@ -8,7 +8,3 @@ EXTRA_DIST = \
 	target_native_memory.h \
 	target_native_network.h \
 	target_native_file.h
-
-noinst_LTLIBRARIES = libtargetos.la
-
-libtargetos_la_SOURCES =

@@ -21,4 +21,3 @@ libtarget_la_SOURCES =
 
 libtarget_la_LIBADD = \
 	generic/libtargetgeneric.la
-	$(TARGET)/libtargetos.la
