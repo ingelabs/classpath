@@ -41,7 +41,6 @@
 	* m4/acinclude.m4: Test also for ecj found before exiting configure
 	with no javac found error message. 
 
->>>>>>> 1.6121
 2006-01-19  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #23212
