@@ -133,7 +133,7 @@ public class JWindow extends Window implements Accessible, RootPaneContainer
    */
   public JWindow(Window owner)
   {
-    super(owner);
+    super(SwingUtilities.getOwnerFrame(owner));
     windowInit();
   }
 
@@ -152,7 +152,7 @@ public class JWindow extends Window implements Accessible, RootPaneContainer
    */
   public JWindow(Window owner, GraphicsConfiguration gc)
   {
-    super(owner, gc);
+    super(SwingUtilities.getOwnerFrame(owner), gc);
     windowInit();
   }
 

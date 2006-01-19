@@ -725,7 +725,7 @@ public class JFileChooser extends JComponent implements Accessible
   {
     Frame toUse = (Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent);
     if (toUse == null)
-      toUse = SwingUtilities.getOwnerFrame(null);
+      toUse = (Frame) SwingUtilities.getOwnerFrame(null);
 
     JDialog dialog = new JDialog(toUse);
     setSelectedFile(null);

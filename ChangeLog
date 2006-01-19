@@ -1,3 +1,19 @@
+2006-01-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JWindow.java
+	(JWindow(Window)): Fixed to accept null owner argument.
+	(JWindow(Window,GraphicsConfiguration)): Fixed to accept null
+	owner argument.
+	* javax/swing/SwingUtilities.java
+	(getOwnerFrame): Owner parameter and return value are fixed to
+	be of type Window for compatibity with the above JWindow
+	constructor.
+	* javax/swing/JDialog.java
+	(JDialog): Added cast to Frame to make sure the correct constructor
+	is called.
+	* javax/swing/JFileChooser.java
+	(createDialog): Added cast to Frame for JDialog constructor.
+
 2006-01-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (rowAtPoint): Rewritten.
