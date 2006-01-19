@@ -1,3 +1,8 @@
+2006-01-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java: Commenting method headers.
+	(EditorUpdateTimer): Removed.
+
 2006-01-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JDialog.java
@@ -36,6 +41,7 @@
 	* m4/acinclude.m4: Test also for ecj found before exiting configure
 	with no javac found error message. 
 
+>>>>>>> 1.6121
 2006-01-19  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #23212

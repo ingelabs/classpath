@@ -1561,7 +1561,8 @@ public class JTable
   }
 
   /**
-   * Creates a new <code>JTable</code> instance.
+   * Creates a new <code>JTable</code> instance with the given number
+   * of rows and columns.
    *
    * @param numRows an <code>int</code> value
    * @param numColumns an <code>int</code> value
@@ -1572,10 +1573,12 @@ public class JTable
   }
 
   /**
-   * Creates a new <code>JTable</code> instance.
+   * Creates a new <code>JTable</code> instance, storing the given data 
+   * array and heaving the given column names. To see the column names,
+   * you must place the JTable into the {@link JScrollPane}.
    *
-   * @param data an <code>Object[][]</code> value
-   * @param columnNames an <code>Object[]</code> value
+   * @param data an <code>Object[][]</code> the table data
+   * @param columnNames an <code>Object[]</code> the column headers
    */
   public JTable(Object[][] data, Object[] columnNames)
   {
@@ -1583,20 +1586,31 @@ public class JTable
   }
 
   /**
-   * Creates a new <code>JTable</code> instance.
-   *
-   * @param dm a <code>TableModel</code> value
+   * Creates a new <code>JTable</code> instance, using the given data model
+   * object that provides information about the table content. The table model
+   * object is asked for the table size, other features and also receives
+   * notifications in the case when the table has been edited by the user.
+   * 
+   * @param model
+   *          the table model.
    */
-  public JTable (TableModel dm)
+  public JTable (TableModel model)
   {
-    this(dm, null, null);
+    this(model, null, null);
   }
 
   /**
-   * Creates a new <code>JTable</code> instance.
-   *
-   * @param dm a <code>TableModel</code> value
-   * @param cm a <code>TableColumnModel</code> value
+   * Creates a new <code>JTable</code> instance, using the given model object
+   * that provides information about the table content. The table data model
+   * object is asked for the table size, other features and also receives
+   * notifications in the case when the table has been edited by the user. The
+   * table column model provides more detailed control on the table column
+   * related features.
+   * 
+   * @param dm
+   *          the table data mode
+   * @param cm
+   *          the table column model
    */
   public JTable (TableModel dm, TableColumnModel cm)
   {
@@ -1604,11 +1618,13 @@ public class JTable
   }
 
   /**
-   * Creates a new <code>JTable</code> instance.
+   * Creates a new <code>JTable</code> instance, providing data model,
+   * column model and list selection model. The list selection model
+   * manages the selections.
    *
-   * @param dm a <code>TableModel</code> value
-   * @param cm a <code>TableColumnModel</code> value
-   * @param sm a <code>ListSelectionModel</code> value
+   * @param dm data model (manages table data)
+   * @param cm column model (manages table columns)
+   * @param sm list selection model (manages table selections)
    */
   public JTable (TableModel dm, TableColumnModel cm, ListSelectionModel sm)
   {
@@ -1636,8 +1652,23 @@ public class JTable
     columnModel.getSelectionModel().setAnchorSelectionIndex(0);
     columnModel.getSelectionModel().setLeadSelectionIndex(0);
     updateUI();
-  }    
-
+  }
+  
+  /**
+   * Creates a new <code>JTable</code> instance that uses data and column
+   * names, stored in {@link Vector}s.
+   *
+   * @param data the table data
+   * @param columnNames the table column names.
+   */
+  public JTable(Vector data, Vector columnNames)
+  {
+    this(new DefaultTableModel(data, columnNames));
+  }  
+  
+  /**
+   * Initialize local variables to default values.
+   */
   protected void initializeLocalVars()
   {
     setTableHeader(createDefaultTableHeader());
@@ -1666,63 +1697,15 @@ public class JTable
     this.editingRow = -1;
     setIntercellSpacing(new Dimension(1,1));
   }
-
+  
   /**
-   * Creates a new <code>JTable</code> instance.
-   *
-   * @param data a <code>Vector</code> value
-   * @param columnNames a <code>Vector</code> value
+   * Add the new table column. The table column class allows to specify column
+   * features more precisely. You do not need the add columns to the table if
+   * the default column handling is sufficient.
+   * 
+   * @param column
+   *          the new column to add.
    */
-  public JTable(Vector data, Vector columnNames)
-  {
-    this(new DefaultTableModel(data, columnNames));
-  }
-
-  /**
-   * The timer that updates the editor component.
-   */
-  private class EditorUpdateTimer
-    extends Timer
-    implements ActionListener
-  {
-    /**
-     * Creates a new EditorUpdateTimer object with a default delay of 0.5 seconds.
-     */
-    public EditorUpdateTimer()
-    {
-      super(500, null);
-      addActionListener(this);
-    }
-
-    /**
-     * Lets the caret blink and repaints the table.
-     */
-    public void actionPerformed(ActionEvent ev)
-    {
-      Caret c = ((JTextField)JTable.this.editorComp).getCaret();
-      if (c != null)
-        c.setVisible(!c.isVisible());
-      JTable.this.repaint();
-    }
-
-    /**
-     * Updates the blink delay according to the current caret.
-     */
-    public void update()
-    {
-      stop();
-      Caret c = ((JTextField)JTable.this.editorComp).getCaret();
-      if (c != null)
-	{
-	  setDelay(c.getBlinkRate());
-	  if (((JTextField)JTable.this.editorComp).isEditable())
-	    start();
-	  else
-	    c.setVisible(false);
-	}
-    }
-  }
-
   public void addColumn(TableColumn column)
   {
     if (column.getHeaderValue() == null)
@@ -1746,7 +1729,12 @@ public class JTable
     JCheckBox box = new BooleanCellRenderer().getCheckBox();
     setDefaultEditor(Boolean.class, new DefaultCellEditor(box));
   }
-
+  
+  /**
+   * Create the default renderers for this table. The default method creates
+   * renderers for Boolean, Number, Double, Date and Icon.
+   *
+   */
   protected void createDefaultRenderers()
   {
     setDefaultRenderer(Boolean.class, new BooleanCellRenderer());
@@ -1764,58 +1752,102 @@ public class JTable
   {
     return new JScrollPane(table);
   }
-
+  
+  /**
+   * Create the default table column model that is used if the user-defined
+   * column model is not provided. The default method creates
+   * {@link DefaultTableColumnModel}.
+   * 
+   * @return the created table column model.
+   */
   protected TableColumnModel createDefaultColumnModel()
   {
     return new DefaultTableColumnModel();
   }
 
+  /**
+   * Create the default table data model that is used if the user-defined
+   * data model is not provided. The default method creates
+   * {@link DefaultTableModel}.
+   * 
+   * @return the created table data model.
+   */
   protected TableModel createDefaultDataModel()
   {
     return new DefaultTableModel();
   }
 
+  /**
+   * Create the default table selection model that is used if the user-defined
+   * selection model is not provided. The default method creates
+   * {@link DefaultListSelectionModel}.
+   * 
+   * @return the created table data model.
+   */
   protected ListSelectionModel createDefaultSelectionModel()
   {
     return new DefaultListSelectionModel();
   }
-
+  
+  /**
+   * Create the default table header, if the user - defined table header is not
+   * provided.
+   * 
+   * @return the default table header.
+   */
   protected JTableHeader createDefaultTableHeader()
   {
     return new JTableHeader(columnModel);
   }
- 
-  // listener support 
-
+  
+  /**
+   * Invoked when the column is added. Revalidates and repains the table.
+   */
   public void columnAdded (TableColumnModelEvent event)
   {
     revalidate();
     repaint();
   }
 
+  /**
+   * Invoked when the column margin is changed. 
+   * Revalidates and repains the table.
+   */
   public void columnMarginChanged (ChangeEvent event)
   {
     revalidate();
     repaint();
   }
 
+  /**
+   * Invoked when the column is moved. Revalidates and repains the table.
+   */
   public void columnMoved (TableColumnModelEvent event)
   {
     revalidate();
     repaint();
   }
 
+  /**
+   * Invoked when the column is removed. Revalidates and repains the table.
+   */
   public void columnRemoved (TableColumnModelEvent event)
   {
     revalidate();
     repaint();
   }
   
+  /**
+   * Invoked when the the column selection changes.
+   */
   public void columnSelectionChanged (ListSelectionEvent event)
   {
     repaint();
   }
   
+  /**
+   * Invoked when the editing is cancelled.
+   */
   public void editingCanceled (ChangeEvent event)
   {
     if (editorComp!=null)
@@ -1844,6 +1876,9 @@ public class JTable
     requestFocusInWindow();
   }
 
+  /**
+   * Invoked when the table changes.
+   */
   public void tableChanged (TableModelEvent event)
   {
     // update the column model from the table model if the structure has
@@ -1867,6 +1902,9 @@ public class JTable
     repaint();
   }
 
+  /**
+   * Invoked when another table row is selected.
+   */
   public void valueChanged (ListSelectionEvent event)
   {
     repaint();
@@ -2047,6 +2085,18 @@ public class JTable
   }
 
 
+  /**
+   * Get the cell editor, suitable for editing the given cell. The default
+   * method requests the editor from the column model. If the column model
+   * does not provide the editor, the call is forwarded to the 
+   * {@link getDefaultEditor(Class)} with the parameter, obtained from
+   * {@link TableModel#getColumnClass(int)}.
+   * 
+   * @param row the cell row
+   * @param column the cell column
+   * 
+   * @return the editor to edit that cell
+   */
   public TableCellEditor getCellEditor(int row, int column)
   {
     TableCellEditor editor = columnModel.getColumn(column).getCellEditor();
@@ -2056,7 +2106,15 @@ public class JTable
     
     return editor;
   }
-
+  
+  /**
+   * Get the default editor for editing values of the given type
+   * (String, Boolean and so on).
+   * 
+   * @param columnClass the class of the value that will be edited.
+   * 
+   * @return the editor, suitable for editing this data type
+   */
   public TableCellEditor getDefaultEditor(Class columnClass)
   {
     if (defaultEditorsByColumnClass.containsKey(columnClass))
@@ -2069,7 +2127,15 @@ public class JTable
         return r;
       }
   }
-
+  
+  /**
+   * Get the cell renderer for rendering the given cell.
+   * 
+   * @param row the cell row
+   * @param column the cell column
+   * 
+   * @return the cell renderer to render that cell.
+   */
   public TableCellRenderer getCellRenderer(int row, int column)
   {
     TableCellRenderer renderer =
@@ -2079,12 +2145,26 @@ public class JTable
 
     return renderer;
   }
-
+  
+  /**
+   * Set default renderer for rendering the given data type.
+   * 
+   * @param columnClass the data type (String, Boolean and so on) that must
+   * be rendered.
+   * @param rend the renderer that will rend this data type
+   */
   public void setDefaultRenderer(Class columnClass, TableCellRenderer rend)
   {
     defaultRenderersByColumnClass.put(columnClass, rend);
   }
-
+  
+  /**
+   * Get the default renderer for rendering the given data type.
+   * 
+   * @param columnClass the data that must be rendered
+   * 
+   * @return the appropriate defauld renderer for rendering that data type.
+   */
   public TableCellRenderer getDefaultRenderer(Class columnClass)
   {
     if (defaultRenderersByColumnClass.containsKey(columnClass))
