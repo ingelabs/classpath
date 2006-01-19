@@ -1214,28 +1214,12 @@ public class BasicTableUI extends TableUI
    * system beginning at <code>(0,0)</code> in the upper left corner of the
    * table
    * @param rend A cell renderer to paint with
-   * @param data The data to provide to the cell renderer
-   * @param rowLead The lead selection for the rows of the table.
-   * @param colLead The lead selection for the columns of the table.
    */
   void paintCell(Graphics g, int row, int col, Rectangle bounds,
-                 TableCellRenderer rend, TableModel data,
-                 int rowLead, int colLead)
+                 TableCellRenderer rend)
   {
     Component comp = table.prepareRenderer(rend, row, col);
     rendererPane.paintComponent(g, comp, table, bounds);
-
-    // FIXME: this is manual painting of the Caret, why doesn't the 
-    // JTextField take care of this itself?
-    if (comp instanceof JTextField)
-      {
-        Rectangle oldClip = g.getClipBounds();
-        g.translate(bounds.x, bounds.y);
-        g.clipRect(0, 0, bounds.width, bounds.height);
-        ((JTextField)comp).getCaret().paint(g);
-        g.translate(-bounds.x, -bounds.y);
-        g.setClip(oldClip);
-      }
   }
   
   public void paint(Graphics gfx, JComponent ignored) 
@@ -1256,7 +1240,8 @@ public class BasicTableUI extends TableUI
     Dimension gap = table.getIntercellSpacing();
     int ymax = clip.y + clip.height;
     int xmax = clip.x + clip.width;
-
+    Rectangle bounds = new Rectangle();
+    
     // paint the cell contents
     for (int c = 0; c < ncols && x < xmax; ++c)
       {
@@ -1265,18 +1250,16 @@ public class BasicTableUI extends TableUI
         int width = col.getWidth();
         int halfGapWidth = gap.width / 2;
         int halfGapHeight = gap.height / 2;
+        
         for (int r = 0; r < nrows && y < ymax; ++r)
           {
-            Rectangle bounds = new Rectangle(x + halfGapWidth,
-                                             y + halfGapHeight + 1,
-                                             width - gap.width + 1,
-                                             height - gap.height);
+            bounds.x = x + halfGapWidth;
+            bounds.y = y + halfGapHeight + 1;
+            bounds.width = width - gap.width + 1;
+            bounds.height = height - gap.height;
             if (bounds.intersects(clip))
               {           
-                paintCell(gfx, r, c, bounds, table.getCellRenderer(r, c),
-                          table.getModel(),
-                          table.getSelectionModel().getLeadSelectionIndex(),
-                          table.getColumnModel().getSelectionModel().getLeadSelectionIndex());
+                paintCell(gfx, r, c, bounds, table.getCellRenderer(r, c));
               }
             y += height;
           }

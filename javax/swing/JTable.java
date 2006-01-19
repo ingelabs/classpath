@@ -588,7 +588,7 @@ public class JTable
         return lastColumn;
       }
     }
-
+   
     /**
      * Creates a new <code>AccessibleJTable</code>.
      *
@@ -1006,11 +1006,30 @@ public class JTable
   private class BooleanCellRenderer
     extends DefaultTableCellRenderer
   {
-
     /**
      * The CheckBox that is used for rendering.
      */
-    private JCheckBox checkBox = new JCheckBox();
+    private final JCheckBox checkBox = new JCheckBox();
+    
+    /**
+     * The check box must have the text field background and be centered.
+     */
+    private BooleanCellRenderer()
+    {
+      // Render the checkbox identically as the text field.
+      JTextField f = new JTextField();
+      checkBox.setForeground(f.getForeground());
+      checkBox.setBackground(f.getBackground());
+      checkBox.setHorizontalAlignment(SwingConstants.CENTER);      
+    }
+    
+    /**
+     * Get the check box.
+     */
+    JCheckBox getCheckBox()
+    {
+      return checkBox;
+    }
 
     /**
      * Returns the component that is used for rendering the value.
@@ -1029,8 +1048,14 @@ public class JTable
                                                    boolean hasFocus, int row,
                                                    int column)
     {
-      Boolean boolValue = (Boolean) value;
-      checkBox.setSelected(boolValue.booleanValue());
+      // Null is rendered as false.
+      if (value == null)
+        checkBox.setSelected(false);
+      else
+        {
+          Boolean boolValue = (Boolean) value;
+          checkBox.setSelected(boolValue.booleanValue());
+        }
       return checkBox;
     }
   }
@@ -1204,8 +1229,47 @@ public class JTable
       return this;
     }
   }
+  
+    /**
+     * The JTable text component (used in editing) always has the table
+     * as its parent. The scrollRectToVisible must be adjusted taking the
+     * relative component position.
+     *
+     * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+     */
+    private class TableTextField extends JTextField
+    {
+      /**
+       * Create the text field without the border.
+       */
+      TableTextField()
+      {
+        setBorder(null);
+      }
+      
+      /**
+       * Scroll the table, making the given rectangle of this component
+       * visible. Mind the component position with relate to the table. 
+       * With not this method overridden, the scroll pane scrolls to the
+       * top left cornec (untranslated position of the caret) after the first
+       * keystroke.
+       */
+      public void scrollRectToVisible(Rectangle r)
+      {
+        // In private class we known that the rectangle data will not be
+        // reused and we need not to clone it.
+        r.translate(getX(), getY());
+        super.scrollRectToVisible(r);
+      }
+    }    
+  
 
   private static final long serialVersionUID = 3876025080382781659L;
+  
+  /**
+   * This table, for referring identically name methods from inner classes.
+   */
+  final JTable this_table = this;
 
 
   /**
@@ -1477,27 +1541,6 @@ public class JTable
   protected JTableHeader tableHeader;
 
   /**
-   * The row of the cell being edited.
-   */
-  int rowBeingEdited = -1;
-
-  /**
-   * The column of the cell being edited.
-   */
-  int columnBeingEdited = -1;
-
-  /**
-   * The action listener for the editor's Timer.
-   */
-  Timer editorTimer = new EditorUpdateTimer();
-
-  /**
-   * Stores the old value of a cell before it was edited, in case
-   * editing is cancelled
-   */
-  Object oldCellValue;
-
-  /**
    * The property handler for this table's columns.
    */
   TableColumnPropertyChangeHandler tableColumnPropertyChangeHandler =
@@ -1691,10 +1734,17 @@ public class JTable
     columnModel.addColumn(column);
     column.addPropertyChangeListener(tableColumnPropertyChangeHandler);
   }
-
+  
+  /**
+   * Create the default editors for this table. The default method creates
+   * the editor for Booleans.
+   * 
+   * Other fields are edited as strings at the moment.
+   */
   protected void createDefaultEditors()
   {
-    //FIXME: Create the editor object.
+    JCheckBox box = new BooleanCellRenderer().getCheckBox();
+    setDefaultEditor(Boolean.class, new DefaultCellEditor(box));
   }
 
   protected void createDefaultRenderers()
@@ -1771,6 +1821,7 @@ public class JTable
     if (editorComp!=null)
       {
         remove(editorComp);
+        repaint(editorComp.getBounds());        
         editorComp = null;
       }
   }
@@ -1785,16 +1836,9 @@ public class JTable
   {
     if (editorComp!=null)
       {
-        remove(editorComp);
-        if (editorComp instanceof JTextField)
-          {
-            JTextField f = (JTextField) editorComp;
-            setValueAt(f.getText(), rowBeingEdited, columnBeingEdited);            
-          }
-        else
-          {
-            /** TODO FIXME Handle the editor types other than text field. */
-          }
+        remove(editorComp);        
+        setValueAt(cellEditor.getCellEditorValue(), editingRow, editingColumn);            
+        repaint(editorComp.getBounds());
         editorComp = null;
       }
     requestFocusInWindow();
@@ -2019,10 +2063,7 @@ public class JTable
       return (TableCellEditor) defaultEditorsByColumnClass.get(columnClass);
     else
       {
-	// FIXME: We have at least an editor for Object.class in our defaults.
-        // The text field is without the border.
-        JTextField t = new JTextField();
-        t.setBorder(null);
+        JTextField t = new TableTextField();        
         TableCellEditor r = new DefaultCellEditor(t);
         defaultEditorsByColumnClass.put(columnClass, r);
         return r;
@@ -2972,6 +3013,14 @@ public class JTable
           cols[i] = columnModel.getColumn(i);
         distributeSpill(cols, spill);        
       }
+    
+    if (editorComp!=null)
+      moveToCellBeingEdited(editorComp);
+    
+    // Repaint fixes the invalid view after the first keystroke if the cell
+    // editing is started immediately after the program start or cell
+    // resizing. 
+    repaint();
   }
   
   /**
@@ -2981,7 +3030,7 @@ public class JTable
   {
     doLayout();
   }
-
+  
   /**
    * Obsolete since JDK 1.4. Please use <code>doLayout()</code>.
    */
@@ -3164,10 +3213,9 @@ public class JTable
   {
     if (!isCellEditable(row, column))
       return;
-
-    if (value instanceof Component)
-      add((Component)value);
     dataModel.setValueAt(value, row, convertColumnIndexToModel(column));
+    
+    repaint(getCellRect(row, column, true));
   }
 
   public TableColumn getColumn(Object identifier)
@@ -3275,33 +3323,37 @@ public class JTable
     if (isEditing())
       editingStopped(new ChangeEvent("editingStopped"));
     
-    // Select the row being edited.
-    getSelectionModel().setSelectionInterval(row, row);
-    oldCellValue = getValueAt(row, column);
+    editingRow = row;
+    editingColumn = column;
+
     setCellEditor(getCellEditor(row, column));
     editorComp = prepareEditor(cellEditor, row, column);
-    rowBeingEdited = row;
-    columnBeingEdited = column;
     
-    if (editorComp instanceof JTextField)
-      {
-        JTextField t = (JTextField) editorComp;
-        Rectangle r = getCellRect(row, column, true);
-        // Place the text field so that it would not touch the table
-        // border.
-        int m = getRowMargin();
-        r.translate(m,m);
-        r.width-=m;
-        t.setBounds(r);
-        add(t);
-        t.requestFocusInWindow(false);
-      }
-    else
-      {
-        /** TODO FIXME editor component type is still resticted to JTextField */
-      }
-    
+    // Remove the previous editor components, if present. Only one
+    // editor component at time is allowed in the table.
+    removeAll();
+    add(editorComp);    
+    moveToCellBeingEdited(editorComp);
+    scrollRectToVisible(editorComp.getBounds());
+    editorComp.requestFocusInWindow();
     return true;
+  }
+
+  /**
+   * Move the given component under the cell being edited. 
+   * The table must be in the editing mode.
+   * 
+   * @param component the component to move.
+   */
+  private void moveToCellBeingEdited(Component component)
+  {
+     Rectangle r = getCellRect(editingRow, editingColumn, true);
+     // Place the text field so that it would not touch the table
+     // border.
+     int m = getRowMargin();
+     r.translate(m,m);
+     r.width-=m;
+     component.setBounds(r);
   }
 
   /**
@@ -3362,7 +3414,7 @@ public class JTable
     // TODO: Implement functionality of this property (in UI impl).
     surrendersFocusOnKeystroke = value;
   }
-
+  
   /**
    * Returns whether cell editors of this table should receive keyboard focus
    * when the editor is activated by a keystroke. The default setting is

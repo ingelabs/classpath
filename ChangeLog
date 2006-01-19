@@ -1,3 +1,27 @@
+2006-01-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java (editingStopped, editingCancelled):
+	Repaint the edited cell.
+	(setValueAt): Do not add the value object to this container.
+	(editorTimer, rowBeingEdited, columnBeingEdited, oldCellValue): Removed.
+	(editingStopped): Use editingRow, editingColumn and not
+	rowBeingEdited, columnBeingEdited. (editValueAt): rewritten.
+	(doLayout): Move the editor component, if present, into the new
+	location and call repaint(). (moveToCellBeingEdited): new method.
+	(TableTextField): new inner class.
+	(getDefaultEditor): Instantiante TableTextField, not JTextField.
+	(setValueAt): Repaint the changed segment.
+	(createDefaultEditors): Implemented.
+	(BooleanCellRenderer): Center the checkbox and use the default foreground
+	and background colors.   
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(paintCell): Do not paint the caret here. Do not accept unused parameters.
+	(paint): No need to allocate rectangle for each cell.   
+	* javax/swing/DefaultCellEditor.java: Rewritten.         
+	* examples/gnu/classpath/examples/swing/Demo.java (mkTable):
+	Use TableDemo.java table example.
+	* examples/gnu/classpath/examples/swing/TableDemo.java: New file.
+
 2006-01-19  Roman Kennke  <kennke@aicas.com>
 
 	* configure.ac: Added/fixed --enable-posix-layer option to enable

@@ -59,8 +59,7 @@ import javax.swing.tree.TreeCellEditor;
  * some standard object types.
  * 
  * @author Andrew Selkirk
- *
- * @status mostly unimplemented
+ * @author Audrius Meskauskas
  */
 public class DefaultCellEditor
   extends AbstractCellEditor
@@ -76,10 +75,13 @@ public class DefaultCellEditor
   protected class EditorDelegate
     implements ActionListener, ItemListener, Serializable
   {
+    /**
+     * Use the serial version UID for interoperability.
+     */
     private static final long serialVersionUID = -1420007406015481933L;
 
     /**
-     * value
+     * The object value (updated when getting and setting the value).
      */
     protected Object value;
 
@@ -90,28 +92,30 @@ public class DefaultCellEditor
     {
       // Nothing to do here.
     }
-
+    
     /**
-     * setValue
+     * Set the value for the editor component. This method is normally
+     * overridden to set the value in the way, specific for the text
+     * component, check box or combo box.
      *
-     * @param value TODO
+     * @param aValue the value to set (String, Boolean or Number).
      */
-    public void setValue(Object value)
+    public void setValue(Object aValue)
     {
-      // TODO: should be setting the value in the editorComp
-      this.value = value;
+      value = aValue;
     }
 
-   /**
-     * getCellEditorValue
-     * 
-     * @returns Object
+    /**
+     * Get the value for the editor component. This method is normally
+     * overridden to obtain the value in the way, specific for the text
+     * component, check box or combo box.
+     *
+     * @return value the value of the component (String, Boolean or Number).
      */
     public Object getCellEditorValue()
     {
-      // TODO: should be getting the updated value from the editorComp
       return value;
-    } // getCellEditorValue()
+    } 
 
     /**
      * isCellEditable
@@ -208,16 +212,132 @@ public class DefaultCellEditor
         listeners[index].editingCanceled(changeEvent);
     }
   } // EditorDelegate
+  
+  /**
+   * Provides getter and setter methods to work with the text component.
+   * 
+   * @author Audrius Meskauskas (audriusa@Bioinformatics.org)
+   */
+  private class JTextFieldDelegate extends EditorDelegate
+  {
+    /**
+     * Use the serial version UID for interoperability.
+     */
+    private static final long serialVersionUID = 1;
+    
+    /**
+     * Set the value for the editor component.
+     *
+     * @param aValue the value to set (toString() will be called).
+     */
+    public void setValue(Object aValue)
+    {
+      value = aValue;
+      JTextField f = (JTextField) editorComponent;
+      if (value == null)
+        f.setText("");
+      else
+        f.setText(value.toString());
+    }
 
-	/**
+    /**
+     * Get the value for the editor component. 
+     *
+     * @return value the value of the component (String)
+     */
+    public Object getCellEditorValue()
+    {
+      JTextField f = (JTextField) editorComponent;
+      return value = f.getText();      
+    }     
+  }
+
+  /**
+   * Provides getter and setter methods to work with the combo box.
+   * 
+   * @author Audrius Meskauskas (audriusa@Bioinformatics.org) 
+   */
+  private class JComboBoxDelegate extends EditorDelegate
+  {
+    /**
+     * Use the serial version UID for interoperability.
+     */
+    private static final long serialVersionUID = 1;
+    
+    /**
+     * Set the value for the editor component.
+     *
+     * @param aValue the value to set.
+     */
+    public void setValue(Object aValue)
+    {
+      value = aValue;      
+      JComboBox c = (JComboBox) editorComponent;
+      if (value != null)
+        c.setSelectedItem(value);
+    }
+
+    /**
+     * Get the value for the editor component. 
+     *
+     * @return value the value of the component (as String)
+     */
+    public Object getCellEditorValue()
+    {
+      JComboBox c = (JComboBox) editorComponent;
+      return value = c.getSelectedItem();
+    }     
+  }
+
+  /**
+   * Provides getter and setter methods to work with the check box.
+   * 
+   * @author Audrius Meskauskas (audriusa@Bioinformatics.org) 
+   */
+  private class JCheckBoxDelegate extends EditorDelegate
+  {
+    /**
+     * Use the serial version UID for interoperability.
+     */
+    private static final long serialVersionUID = 1;
+    
+    /**
+     * Set the value for the editor component.
+     *
+     * @param value the value to set (must be Boolean).
+     */
+    public void setValue(Object value)
+    {
+      JCheckBox c = (JCheckBox) editorComponent;
+      
+      if (value == null)
+        c.setSelected(false);
+      else
+        c.setSelected( ((Boolean) value).booleanValue());
+    }
+
+    /**
+     * Get the value for the editor component. 
+     *
+     * @return value the value of the component (must be CharSequence)
+     */
+    public Object getCellEditorValue()
+    {
+      JCheckBox c = (JCheckBox) editorComponent;
+      value = c.isSelected() ? Boolean.TRUE : Boolean.FALSE;
+      return value;
+    }     
+  }
+  
+  /**
    * editorComponent
    */
   protected JComponent editorComponent;
 
   /**
-   * The editor delegate (normally intialised only once).
+   * The editor delegate.
    */
-  protected EditorDelegate delegate = new EditorDelegate();
+  protected EditorDelegate delegate;
 
   /**
    * clickCountToStart
@@ -225,36 +345,44 @@ public class DefaultCellEditor
   protected int clickCountToStart;
 
   /**
-   * Constructor DefaultCellEditor
+   * Create the DefaultCellEditor that uses the text field as its editor
+   * component (appropriate for the text content)
    * 
-   * @param textfield TODO
+   * @param the text field as will be used as the editor component.
    */
   public DefaultCellEditor(JTextField textfield)
   {
     editorComponent = textfield;
     clickCountToStart = 2;
+    delegate = new JTextFieldDelegate();
+    textfield.addActionListener(delegate);
   } // DefaultCellEditor()
 
   /**
-   * Constructor DefaultCellEditor
+   * Constructor DefaultCellEditor that uses the checkbox (appropriate
+   * for boolean values)
    * 
-   * @param checkbox TODO
+   * @param checkbox the checkbox that will be used with this editor.
    */
   public DefaultCellEditor(JCheckBox checkbox)
   {
     editorComponent = checkbox;
     clickCountToStart = 1;
+    delegate = new JCheckBoxDelegate();
+    checkbox.addActionListener(delegate);
   } // DefaultCellEditor()
 
   /**
-   * Constructor DefaultCellEditor
+   * Constructor DefaultCellEditor that uses the combo box.
    * 
-   * @param combobox TODO
+   * @param combobox the combo box that will be used with this editor.
    */
   public DefaultCellEditor(JComboBox combobox)
   {
     editorComponent = combobox;
     clickCountToStart = 1;
+    delegate = new JComboBoxDelegate();
+    combobox.addActionListener(delegate);
   } // DefaultCellEditor()
 
   /**
@@ -403,42 +531,9 @@ public class DefaultCellEditor
   {
     // NOTE: as specified by Sun, we don't call new() everytime, we return 
     // editorComponent on each call to getTableCellEditorComponent or
-    // getTreeCellEditorComponent.  
-    if (editorComponent instanceof JTextField)
-      prepareAsJTextField(value);
+    // getTreeCellEditorComponent.
+    delegate.setValue(value);
     return editorComponent;
   } // getTableCellEditorComponent()
-  
-  /**
-   * Prepare the editorComponent as the text field.
-   * 
-   * @param value the value of the cell before editin.
-   */
-  private void prepareAsJTextField(Object value)
-  {
-    JTextField f = (JTextField) editorComponent;
-    if (value != null)
-      f.setText(value.toString());
-    else
-      // Default null to the empty string.
-      f.setText("");
-
-    // Do not register our listener again and again (resource leak).
-    ActionListener[] l = f.getActionListeners();
-    
-    boolean have = false;
-    for (int i = 0; i < l.length; i++)
-      {
-        // We cannot just remove all listeners as the user listeners 
-        // may be registered.
-        if (l[i]==delegate)
-          {
-            have = true;
-            break;
-          }
-      }
-    if (!have)
-      f.addActionListener(delegate);
-  }
 
 }
