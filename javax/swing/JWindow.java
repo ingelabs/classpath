@@ -88,19 +88,19 @@ public class JWindow extends Window implements Accessible, RootPaneContainer
 
   public JWindow()
   {
-    super(SwingUtilities.getOwnerFrame());
+    super(SwingUtilities.getOwnerFrame(null));
     windowInit();
   }
 
   public JWindow(GraphicsConfiguration gc)
   {
-    super(SwingUtilities.getOwnerFrame(), gc);
+    super(SwingUtilities.getOwnerFrame(null), gc);
     windowInit();
   }
   
   public JWindow(Frame owner)
   {
-    super(owner);
+    super(SwingUtilities.getOwnerFrame(owner));
     windowInit();
   }
 

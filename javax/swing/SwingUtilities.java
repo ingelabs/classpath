@@ -1021,11 +1021,16 @@ public class SwingUtilities
    *
    * @return The common Frame 
    */
-  static Frame getOwnerFrame()
+  static Frame getOwnerFrame(Frame owner)
   {
-    if (ownerFrame == null)
-      ownerFrame = new OwnerFrame();
-    return ownerFrame;
+    Frame result = owner;
+    if (result == null)
+      {
+        if (ownerFrame == null)
+          ownerFrame = new OwnerFrame();
+        result = ownerFrame;
+      }
+    return result;
   }
 
   /**

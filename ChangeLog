@@ -1,5 +1,27 @@
 2006-01-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JDialog.java
+	(JDialog()): Call SwingUtilities.getOwnerFrame() with null.
+	(JDialog(Frame,String,boolean,GraphicsConfiguration)): Call
+	SwingUtilities.getOwnerFrame() with the owner argument.
+	* javax/swing/JFileChooser.java
+	(showOpenDialog(Component)): Call pack() on the dialog instead of
+	setting	a fixed height.
+	(showSaveDialog()): Likewise.
+	(showDialog()): Likewise.
+	(createDialog): Call SwingUtilities.getOwnerFrame() with null.
+	* javax/swing/JOptionPane.java: Call SwingUtilities.getOwnerFrame()
+	with null.
+	* javax/swing/JWindow.java
+	(JWindow()): Call SwingUtilities.getOwnerFrame() with null.
+	(JWindow(Frame)): Call SwingUtilities.getOwnerFrame() with owner
+	argument.
+	* javax/swing/SwingUtilities.java
+	(getOwnerFrame): Changed to take a owner parameter that is returned
+	as owner frame when not null.
+
+2006-01-19  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/swing/SwingFramePeer.java
 	(handleMouseEvent): Fixed handling of mouse events.
 	(handleMouseMotionEvent): Fixed handling of mouse events.
