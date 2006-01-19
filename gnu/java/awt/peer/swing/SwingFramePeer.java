@@ -155,11 +155,19 @@ public abstract class SwingFramePeer
   {
     Point p = ev.getPoint();
     Insets i = super.getInsets();
-    int menuHeight = menuBar.getHeight();
-    if (p.y >= i.top && p.y <= i.top + menuHeight)
-      menuBar.handleMouseEvent(ev);
-    else
-      super.handleMouseEvent(ev);
+    if (menuBar != null)
+      {
+        int menuHeight = menuBar.getHeight();
+        if (p.y >= i.top && p.y <= i.top + menuHeight)
+          menuBar.handleMouseEvent(ev);
+        else
+          {
+            ev.translatePoint(0, -menuHeight);
+            super.handleMouseMotionEvent(ev);
+          }
+      }
+
+    super.handleMouseEvent(ev);
   }
 
   /**
@@ -171,10 +179,18 @@ public abstract class SwingFramePeer
   {
     Point p = ev.getPoint();
     Insets i = super.getInsets();
-    int menuHeight = menuBar.getHeight();
-    if (p.y >= i.top && p.y <= i.top + menuHeight)
-      menuBar.handleMouseMotionEvent(ev);
-    else
-      super.handleMouseMotionEvent(ev);
+    if (menuBar != null)
+      {
+        int menuHeight = menuBar.getHeight();
+        if (p.y >= i.top && p.y <= i.top + menuHeight)
+          menuBar.handleMouseMotionEvent(ev);
+        else
+          {
+            ev.translatePoint(0, -menuHeight);
+            super.handleMouseMotionEvent(ev);
+          }
+      }
+
+    super.handleMouseMotionEvent(ev);
   }
 }

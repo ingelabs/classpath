@@ -1,5 +1,11 @@
 2006-01-19  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/swing/SwingFramePeer.java
+	(handleMouseEvent): Fixed handling of mouse events.
+	(handleMouseMotionEvent): Fixed handling of mouse events.
+
+2006-01-19  Roman Kennke  <kennke@aicas.com>
+
 	* native/target/generic/target_generic_misc.c:
 	(targetGenericMisc_formatString): Added missing method.
 
