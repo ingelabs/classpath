@@ -1,3 +1,25 @@
+2006-01-19  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* java/security/interfaces/RSAMultiPrimePrivateCrtKey.java: Replaced
+	  what looked like proprietary documentation with original or new one.
+	* java/security/spec/PSSParameterSpec.java: Likewise.
+	* java/security/spec/RSAMultiPrimePrivateCrtKeySpec.java: Likewise.
+	* java/security/spec/RSAOtherPrimeInfo.java: Likewise.
+	* java/security/AlgorithmParameterGenerator.java: Likewise.
+	* java/security/AlgorithmParameters.java: Likewise.
+	* java/security/Identity.java: Likewise.
+	* java/security/IdentityScope.java: Likewise.
+	* java/security/KeyFactory.java: Likewise.
+	* java/security/KeyPairGenerator.java: Likewise.
+	* java/security/MessageDigest.java: Likewise.
+	* java/security/Policy.java: Likewise.
+	* java/security/ProtectionDomain.java: Likewise.
+	* java/security/Security.java: Likewise.
+	* java/security/Signature.java: Likewise.
+	* java/security/SignatureSpi.java: Likewise.
+	* java/security/SignedObject.java: Likewise.
+	* java/security/Signer.java: Likewise.
+
 2006-01-18  Roman Kennke  <kennke@aicas.com>
 
 	* configure.ac: Added --enable-posix-layer option to enable
