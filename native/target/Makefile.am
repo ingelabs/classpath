@@ -1,5 +1,9 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
+if CREATE_POSIX
+  POSIXDIR = posix
+endif
+
 DIST_SUBDIRS = \
 	Linux \
 	SunOS \
@@ -11,7 +15,8 @@ DIST_SUBDIRS = \
 
 SUBDIRS = \
 	$(TARGET) \
-	generic
+	generic \
+	posix
 
 EXTRA_DIST = readme.txt
 

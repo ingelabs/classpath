@@ -1,3 +1,9 @@
+2006-01-19  Roman Kennke  <kennke@aicas.com>
+
+	* configure.ac: Added/fixed --enable-posix-layer option to enable
+	build of posix layer.
+	* native/target/Makefile.am: Added build for posix layer.
+
 2006-01-19  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* configure.ac: Set TARGET to Linux per default.

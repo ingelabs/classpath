@@ -32,9 +32,6 @@ esac
 
 dnl get the target for the native layer
 case "$target_os" in
-    linux* )
-        TARGET=Linux
-        ;;
     * )
         dnl XXX change me when transition to target native layer is done
         TARGET=Linux
@@ -201,10 +198,11 @@ AC_ARG_ENABLE([posix-layer],
                 *) ENABLE_POSIX=yes ;;
               esac],
               [ENABLE_POSIX=no])
-AC_SUBST(CP_NEW)
+AC_SUBST(NEW_CP)
 if test "x${ENABLE_POSIX}" = xyes; then
-  AC_DEFINE(CP_NEW, 1, [defined if the posix layer should be used])
+  AC_DEFINE(NEW_CP, 1, [defined if the posix layer should be used])
 fi
+AM_CONDITIONAL(CREATE_POSIX, test "x${ENABLE_POSIX}" = xyes)
 
 dnl -----------------------------------------------------------
 dnl Sets the native libraries installation dir
