@@ -1,3 +1,8 @@
+2006-01-19  Roman Kennke  <kennke@aicas.com>
+
+	* native/target/Makefile.am: Fixed so that posix stuff is really
+	only built when requested.
+
 2006-01-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (editingStopped, editingCancelled):

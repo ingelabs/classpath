@@ -16,7 +16,7 @@ DIST_SUBDIRS = \
 SUBDIRS = \
 	$(TARGET) \
 	generic \
-	posix
+	$(POSIXDIR)
 
 EXTRA_DIST = readme.txt
 
