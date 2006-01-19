@@ -1,5 +1,10 @@
 2006-01-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JOptionPane.java
+	Added cast to Frame for JDialog constructor.
+
+2006-01-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JWindow.java
 	(JWindow(Window)): Fixed to accept null owner argument.
 	(JWindow(Window,GraphicsConfiguration)): Fixed to accept null
