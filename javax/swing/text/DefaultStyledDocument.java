@@ -67,44 +67,7 @@ import javax.swing.undo.UndoableEdit;
 public class DefaultStyledDocument extends AbstractDocument
   implements StyledDocument
 {
-  // Prints some spaces.
-  // This is just debugging code that will be used temporarily.
-  static void pad(int pad)
-  {
-    for (int i = 0; i < pad; i++)
-      System.out.print(" ");
-  }
-
-  // Displays the Element hierarchy starting with <code>start</code>.
-  // This is just debugging code that will be used temporarily.
-  static void printElements (Element start, int pad)
-  {
-    pad(pad);
-    if (pad == 0)
-      System.out.println ("ROOT ELEMENT ("+start.getStartOffset()+", "
-                          + start.getEndOffset()+")");
-    else if (start instanceof AbstractDocument.BranchElement)
-      System.out.println ("BranchElement ("+start.getStartOffset()+", "
-                          + start.getEndOffset()+")");
-    else
-      {
-        try
-          {
-            System.out.println ("LeafElement ("+start.getStartOffset()+", "
-                                + start.getEndOffset()+"): "
-                                + start.getAttributes().getAttributeCount() + ": "
-                                + start.getDocument().
-                                getText(start.getStartOffset(), 
-                                        start.getEndOffset() - 
-                                        start.getStartOffset()));
-          }
-        catch (BadLocationException ble)
-          {
-          }
-      }
-    for (int i = 0; i < start.getElementCount(); i ++)
-      printElements (start.getElement(i), pad+3);
-  }
+  
   /**
    * An {@link UndoableEdit} that can undo attribute changes to an element.
    *
@@ -1091,45 +1054,6 @@ public class DefaultStyledDocument extends AbstractDocument
       elementStack.push(newBranch);
     }
     
-    /**
-     * This is a debugging method.  Since we don't apply changes immediately
-     * this method is helpful for debugging purposes so you can tell what the
-     * tree will look like after all edits are applied.
-     */
-    void printPendingEdits()
-    {
-      int size = edits.size();
-      System.out.println ("PENDING EDITS");
-      for (int i = 0; i < size; i++)
-        {
-          Edit edit = (Edit)edits.elementAt(i);
-          if (edit.e.isLeaf() || edit.e.getElementCount() > 0)
-            System.out.print(printElement(edit.e));
-          System.out.println("starting offset: "+edit.index);
-          if (edit.added != null)
-            for (int k = 0; k < edit.added.size(); k ++)
-              System.out.println ("added: "+printElement((Element)edit.added.elementAt(k)));
-          if (edit.removed != null)
-            for (int k = 0; k < edit.removed.size(); k ++)
-              System.out.println ("removed: "+printElement((Element)edit.removed.elementAt(k)));
-        }
-      System.out.println ("END PENDING EDITS"); 
-    }    
-        
-    /**
-     * This is a helper method for debugging.  To avoid NPE we can't just
-     * print BranchElements because they may have no children.  So this
-     * method prints Elements and handles the case of BranchElements with
-     * no children.
-     * @param e the Element to print
-     * @return a String describing the given Element
-     */
-    String printElement (Element e)
-    {
-      if (e.isLeaf() || e.getElementCount() > 0)
-        return e.toString();
-      return "BranchElement with no children";
-    }
     /**
      * Inserts a content element into the document structure.
      * 

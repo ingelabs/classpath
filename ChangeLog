@@ -1,3 +1,10 @@
+2006-01-20  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(pad): Removed, not needed.
+	(printElements): Likewise.
+	(printEdit): Likewise.
+
 2006-01-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/DefaultFormatter.java
