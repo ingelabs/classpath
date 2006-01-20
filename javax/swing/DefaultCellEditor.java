@@ -68,9 +68,15 @@ public class DefaultCellEditor
   private static final long serialVersionUID = 3564035141373880027L;
 
   /**
-   * Delegates a couple of method calls (such as {@link #isCellEditable}
-   * to the component it contains and listens for events that indicate
-   * that editing has stopped.
+   * This changeable module access the editor component in the component
+   * specific way. For instance, to set the value for JTextField, we need to 
+   * call setText(String), and for JCheckBox we need to call 
+   * setSelected(boolean). Each default editor has the component specific
+   * derivative of this class. These derivatives are private inner classes of
+   * the DefaultCellEditor.
+   * 
+   * The editor delegate is also set for the editor component as the action
+   * listener. It listens for the events that indicate that editing has stopped.
    */
   protected class EditorDelegate
     implements ActionListener, ItemListener, Serializable
@@ -118,11 +124,12 @@ public class DefaultCellEditor
     } 
 
     /**
-     * isCellEditable
+     * The default method returns true for the {@link MouseEvent} and false 
+     * for any other events.
      * 
-     * @param event TODO
+     * @param event the event to check
      *
-     * @returns boolean
+     * @returns true if the passed event is the mouse event and false otherwise
      */
     public boolean isCellEditable(EventObject event)
     {
@@ -133,20 +140,25 @@ public class DefaultCellEditor
     } // isCellEditable()
 
     /**
-     * shouldSelectCell
+     * Returns true to indicate that the editing cell can be selected.
      * 
-     * @param event TODO
+     * The default method returns true without action but may be overridden
+     * in derived classes for more specific behavior.
+     * 
+     * @param event unused in default method
      *
-     * @returns boolean
+     * @returns true always
      */
     public boolean shouldSelectCell(EventObject event)
     {
       // return true to indicate that the editing cell may be selected
       return true;
-    } // shouldSelectCell()
+    }
 
     /**
-     * stopCellEditing
+     * Finish the cell editing session. This method notifies the registered
+     * cell editor listeners (including the table) that the editing has been
+     * stopped. 
      * 
      * @returns boolean
      */
@@ -157,7 +169,11 @@ public class DefaultCellEditor
     } // stopCellEditing()
 
     /**
-     * cancelCellEditing
+     * Cancel the cell editing session. This method notifies the registered
+     * cell editor listeners (including the table) that the editing has been
+     * canceled. 
+     * 
+     * @returns boolean
      */
     public void cancelCellEditing()
     {
@@ -165,11 +181,11 @@ public class DefaultCellEditor
     } // cancelCellEditing()
 
     /**
-     * startCellEditing
+     * Start editing session and returns true to indicate the editing has begun.
+     * The default method returns true without action but may be overridden
+     * in derived classes for more specific behavior.
      * 
-     * @param event TODO
-     *
-     * @returns boolean
+     * @returns true, always
      */
     public boolean startCellEditing(EventObject event)
     {
@@ -178,9 +194,11 @@ public class DefaultCellEditor
     } // startCellEditing()
 
     /**
-     * actionPerformed
+     * This event is fired by the editor component (for instance, by pressing
+     * ENTER in the {@link JTextField}. The default method delegates call to
+     * the {@link #stopCellEditing}, finishing the editing session. 
      * 
-     * @param event TODO
+     * @param event unused in default method
      */
     public void actionPerformed(ActionEvent event)
     {
@@ -188,15 +206,20 @@ public class DefaultCellEditor
     } // actionPerformed()
 
     /**
-     * itemStateChanged
+     * This event is fired by the editor component.The default method delegates
+     * call to the {@link #stopCellEditing}, finishing the editing session. 
      * 
-     * @param event TODO
+     * @param event unused in default method
      */
     public void itemStateChanged(ItemEvent event)
     {
       stopCellEditing();
     } // itemStateChanged()
 
+    /**
+     * Notify the registered listeners (including the table) that the editing
+     * has been completed.
+     */
     void fireEditingStopped()
     {
       CellEditorListener[] listeners = getCellEditorListeners();
@@ -205,6 +228,10 @@ public class DefaultCellEditor
       
     }
     
+    /**
+     * Notify the registered listeners (including the table) that the editing
+     * has been canceled.
+     */
     void fireEditingCanceled()
     {
       CellEditorListener[] listeners = getCellEditorListeners();
@@ -330,17 +357,18 @@ public class DefaultCellEditor
   }
   
   /**
-   * editorComponent
+   * The Swing JComponent, performing the editing session.
    */
   protected JComponent editorComponent;
 
   /**
-   * The editor delegate.
+   * The editor delegate, responsible for listening the {@link #editorComponent}
+   * events and getting/setting its value.
    */
   protected EditorDelegate delegate;
 
   /**
-   * clickCountToStart
+   * The number of the mouse clicks, required to start the editing session.
    */
   protected int clickCountToStart;
 
@@ -386,9 +414,10 @@ public class DefaultCellEditor
   } // DefaultCellEditor()
 
   /**
-   * getComponent
+   * Get the component that performs the editing sessions. It is the same 
+   * component that was passed in constructor.
    * 
-   * @returns Component
+   * @returns the component, performing the editing sessions. 
    */
   public Component getComponent()
   {
@@ -396,9 +425,9 @@ public class DefaultCellEditor
   } // getComponent()
 
   /**
-   * getClickCountToStart
+   * Get the number of mouse clicks, required to start the editing session.
    * 
-   * @returns int
+   * @returns int the number of mouse clicks, required to start the session
    */
   public int getClickCountToStart()
   {
@@ -406,9 +435,9 @@ public class DefaultCellEditor
   } // getClickCountToStart()
 
   /**
-   * setClickCountToStart
+   * Set the number of mouse clicks, required to start the editing session.
    * 
-   * @param count TODO
+   * @param count the number of clicks, required to start the session
    */
   public void setClickCountToStart(int count)
   {
@@ -416,9 +445,10 @@ public class DefaultCellEditor
   } // setClickCountToStart()
 
   /**
-   * getCellEditorValue
+   * Get the value, currently being displayed by the editor component. The 
+   * call is forwarded to the {@link #delegate}.
    * 
-   * @returns Object
+   * @returns Object the value (class depends on the editor component)
    */
   public Object getCellEditorValue()
   {
@@ -426,11 +456,11 @@ public class DefaultCellEditor
   } // getCellEditorValue()
 
   /**
-   * isCellEditable
+   * Forwards call to the {@link #delegate}.
    * 
-   * @param event TODO
+   * @param event forwarded to the delegate.
    *
-   * @returns boolean
+   * @returns boolean returned by delegate
    */
   public boolean isCellEditable(EventObject event)
   {
@@ -438,11 +468,11 @@ public class DefaultCellEditor
   } // isCellEditable()
 
   /**
-   * shouldSelectCell
+   * Forwards call to the {@link #delegate}.
    * 
-   * @param event TODO
+   * @param event forwarded to the delegate.
    *
-   * @returns boolean
+   * @returns boolean returned by delegate
    */
   public boolean shouldSelectCell(EventObject event)
   {
@@ -450,9 +480,9 @@ public class DefaultCellEditor
   } // shouldSelectCell()
 
   /**
-   * stopCellEditing
+   * Forwards call to the {@link #delegate}.
    * 
-   * @returns boolean
+   * @returns boolean returned by delegate
    */
   public boolean stopCellEditing()
   {
@@ -460,7 +490,7 @@ public class DefaultCellEditor
   } // stopCellEditing()
 
   /**
-   * cancelCellEditing
+   * Forwards call to the {@link #delegate}.
    */
   public void cancelCellEditing()
   {
@@ -514,16 +544,18 @@ public class DefaultCellEditor
   } // getTreeCellEditorComponent()
 
   /**
-   * Get the cell editor component that will perform the editing session.
-   * If returned once, the same component should be returned again (reused).
+   * Get the cell editor component that will perform the editing session. If
+   * returned once, the same component is also returned on the repetetive calls
+   * again (reused).
    * 
    * @param table the table where the editing is performed
-   * @param value the current value of the table
+   * @param value the current value of the table. It is set as the initial 
+   *        component value.
    * @param isSelected if true, the cell is currently selected
    * @param row the row of the cell being edited
    * @param column the column of the cell being edited
-   *
-   * @returns Component
+   * 
+   * @returns Component the component that will perform the editing session
    */
   public Component getTableCellEditorComponent(JTable table, Object value,
                                                boolean isSelected, int row,

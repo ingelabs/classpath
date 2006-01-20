@@ -1,3 +1,7 @@
+2006-01-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/DefaultCellEditor.java: Commented.
+
 2006-01-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JOptionPane.java
