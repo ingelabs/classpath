@@ -1,3 +1,8 @@
+2006-01-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/DefaultFormatter.java
+	(DefaultFormatter): Don't set a value class.
+
 2006-01-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/DefaultCellEditor.java: Commented.
