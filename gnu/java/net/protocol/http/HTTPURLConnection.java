@@ -254,7 +254,7 @@ public class HTTPURLConnection
               }
           }
         
-        if (response.getCodeClass() == 3 && getInstanceFollowRedirects())
+        if (isRedirect(response) && getInstanceFollowRedirects())
           {
             // Follow redirect
             String location = response.getHeader("Location");
@@ -342,6 +342,12 @@ public class HTTPURLConnection
       }
     while (retry);
     connected = true;
+  }
+
+  private static boolean isRedirect(Response response)
+  {
+    int sc = response.getCode();
+    return (sc != 304 && (sc / 100) == 3);
   }
 
   /**
