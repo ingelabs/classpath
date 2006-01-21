@@ -1,5 +1,10 @@
 2006-01-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
+	(paint): Added painting of border if one is installed.
+
+2006-01-21  Roman Kennke  <kennke@aicas.com>
+
 	PR classpath/25843:
 	* javax/swing/plaf/basic/BasicBorders.java
 	(getSplitPaneDividerBorder): Use new border constructor
