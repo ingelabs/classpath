@@ -1,3 +1,10 @@
+2006-01-21  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/PopupFactory.java
+	(getPopup): If there is no Swing root found in any way, use a
+	heavyweight popup. This is useful for mixed Swing/AWT GUIs, or
+	for the Swing AWT peers.
+
 2006-01-20  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/net/protocol/http/HTTPURLConnection.java (connect):
