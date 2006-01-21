@@ -1,3 +1,10 @@
+2006-01-21  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* m4/acinclude.m4
+	(CLASSPATH_WITH_GLIBJ): Add support for fastjar.
+
+	* lib/Makefile.am: Likewise. 
+
 2006-01-21  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/PopupFactory.java

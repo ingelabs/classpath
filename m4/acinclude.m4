@@ -304,6 +304,19 @@ dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 [
   AC_PATH_PROG(ZIP, zip)
+  AC_ARG_WITH([fastjar],
+	      [AS_HELP_STRING([--with-fastjar=PATH], [define to use a fastjar style tool])],
+	      [
+		AC_MSG_CHECKING([for user supplied fastjar])
+		FASTJAR=${withval}
+		AC_MSG_RESULT([${FASTJAR}])
+	      ],
+	      [AC_PATH_PROG(FASTJAR, fastjar)])
+dnl We disable ZIP by default if we find fastjar.
+  if test x"${FASTJAR}" != x; then
+    ZIP=""
+  fi
+  
   AC_ARG_WITH([glibj],
               [AS_HELP_STRING([--with-glibj],[define what to install (zip|flat|both|none|build) [default=zip]])],
               [
