@@ -1,3 +1,41 @@
+2006-01-21  Roman Kennke  <kennke@aicas.com>
+
+	PR classpath/25843:
+	* javax/swing/plaf/basic/BasicBorders.java
+	(getSplitPaneDividerBorder): Use new border constructor
+	without arguments.
+	(SplitPaneDividerBorder.highlight): Removed unneeded field.
+	(SplitPaneDividerBorder.shadow): Removed unneeded field.
+	(SplitPaneDividerBorder()): Changed constructor to do nothing. The
+	colors are fetched dynamically in the paintBorder method.
+	(SplitPaneDividerBorder.paintBorder): Fetch colors dynamically from
+	the look and feel.
+	(SplitPaneDividerBorder.isBorderOpaque): Returns true
+	unconditionally.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added default for SplitPaneDivider.border.
+	* javax/swing/plaf/basic/BasicSplitPaneDivider.java
+	(tmpBorder): Removed unneeded inner class.
+	(BasicSplitPaneDivider): Removed setting of border.
+	(setSplitPaneUI): Don't add the mouse handler to the splitpane
+	itself.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(BasicHorizontalLayoutManager.layoutContainer): Mostly rewritten
+	to get behaviour right.
+	(BasicHorizontalLayoutManager.distributeExtraSpace): Removed
+	implementation. This must be rewritten since the layout now works
+	slightly different (basically, it shouldn't modify the sizes[]
+	here but instead the dividerLocation.
+	(dividerLocation): New field.
+	(installDefaults): Initialize border on divider.
+	(uninstallDefaults): Only remove background color and border from
+	splitPane if they are instances of UIDefaults (== not set by
+	application).
+	(setDividerLocation): Set the dividerLocation field instead of
+	doing stunt acts here.
+	(getDividerLocation): Return dividerLocation field.
+	(getMinimumDividerLocation): Fixed calculation of minimum location.
+	
 2006-01-21  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* m4/acinclude.m4
