@@ -1,3 +1,9 @@
+2006-01-22  Chris Burdes  <dog@gnu.org>
+
+	Fixes bug #25903
+	* gnu/xml/dom/DomDocumentBuilder.java: Default to using file URL
+	  representing current directory as base for relative URLs.
+
 2006-01-22  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #25837
