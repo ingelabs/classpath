@@ -1,3 +1,10 @@
+2006-01-22  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #25832,
+	reported by James Damour <James.Damour@corp.request.com>
+	* java/awt/Container.java (addImpl): Use empty string as name when
+	null constraints for LayoutManager.addLayoutComponent().
+
 2006-01-22  Chris Burdes  <dog@gnu.org>
 
 	Fixes bug #25903

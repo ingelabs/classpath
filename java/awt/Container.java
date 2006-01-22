@@ -1,5 +1,6 @@
 /* Container.java -- parent container class in AWT
-   Copyright (C) 1999, 2000, 2002, 2003, 2004, 2005  Free Software Foundation
+   Copyright (C) 1999, 2000, 2002, 2003, 2004, 2005, 2006
+   Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -385,6 +386,8 @@ public class Container extends Component
         // Notify the layout manager.
         if (layoutMgr != null)
           {
+	    // If we have a LayoutManager2 the constraints are "real",
+	    // otherwise they are the "name" of the Component to add.
             if (layoutMgr instanceof LayoutManager2)
               {
                 LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
@@ -393,7 +396,7 @@ public class Container extends Component
             else if (constraints instanceof String)
               layoutMgr.addLayoutComponent((String) constraints, comp);
             else
-              layoutMgr.addLayoutComponent(null, comp);
+              layoutMgr.addLayoutComponent("", comp);
           }
 
         // We previously only sent an event when this container is showing.
