@@ -825,12 +825,31 @@ public class RE extends REToken {
       }
 
       // BACKREFERENCE OPERATOR
-      //  \1 \2 ... \9
+      //  \1 \2 ... \9 and \10 \11 \12 ...
       // not available if RE_NO_BK_REFS is set
+      // Perl recognizes \10, \11, and so on only if enough number of
+      // parentheses have opened before it, otherwise they are treated
+      // as aliases of \010, \011, ... (octal characters).  In case of
+      // Sun's JDK, octal character expression must always begin with \0.
+      // We will do as JDK does. But FIXME, take a look at "(a)(b)\29".
+      // JDK treats \2 as a back reference to the 2nd group because
+      // there are only two groups. But in our poor implementation,
+      // we cannot help but treat \29 as a back reference to the 29th group.
 
       else if (unit.bk && Character.isDigit(unit.ch) && !syntax.get(RESyntax.RE_NO_BK_REFS)) {
 	addToken(currentToken);
-	currentToken = new RETokenBackRef(subIndex,Character.digit(unit.ch,10),insens);
+	int numBegin = index - 1;
+	int numEnd = pLength;
+	for (int i = index; i < pLength; i++) {
+	    if (! Character.isDigit(pattern[i])) {
+		numEnd = i;
+		break;
+	    }
+	}
+	int num = parseInt(pattern, numBegin, numEnd-numBegin, 10);
+
+	currentToken = new RETokenBackRef(subIndex,num,insens);
+	index = numEnd;
       }
 
       // START OF STRING OPERATOR
@@ -999,12 +1018,12 @@ public class RE extends REToken {
     return index;
   }
 
-  private static char getEscapedChar(char[] input, int pos, int len, int radix) {
+  private static int parseInt(char[] input, int pos, int len, int radix) {
     int ret = 0;
     for (int i = pos; i < pos + len; i++) {
 	ret = ret * radix + Character.digit(input[i], radix);
     }
-    return (char)ret;
+    return ret;
   }
 
   /**
@@ -1059,7 +1078,7 @@ public class RE extends REToken {
 	    l++;
           }
           if (l != expectedLength) return null;
-          ce.ch = getEscapedChar(input, pos + 2, l, 16);
+          ce.ch = (char)(parseInt(input, pos + 2, l, 16));
 	  ce.len = l + 2;
         }
         else {
@@ -1077,7 +1096,7 @@ public class RE extends REToken {
           }
           if (l == 3 && input[pos + 2] > '3') l--;
           if (l <= 0) return null;
-          ce.ch = getEscapedChar(input, pos + 2, l, 8);
+          ce.ch = (char)(parseInt(input, pos + 2, l, 8));
           ce.len = l + 2;
         }
         else {
@@ -1246,12 +1265,20 @@ public class RE extends REToken {
   
     /* Implements abstract method REToken.match() */
     boolean match(CharIndexed input, REMatch mymatch) { 
-	if (firstToken == null) return next(input, mymatch);
+	int origin = mymatch.index;
+	boolean b;
+	if (firstToken == null) {
+	    b = next(input, mymatch);
+	    if (b) mymatch.empty = (mymatch.index == origin);
+	    return b;
+	}
 
 	// Note the start of this subexpression
 	mymatch.start[subIndex] = mymatch.index;
 
-	return firstToken.match(input, mymatch);
+	b = firstToken.match(input, mymatch);
+	if (b) mymatch.empty = (mymatch.index == origin);
+	return b;
     }
   
   /**

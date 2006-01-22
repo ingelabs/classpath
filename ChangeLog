@@ -1,3 +1,18 @@
+2006-01-22  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #25837
+	* gnu/regexp/REMatch.java(empty): New boolean indicating
+	an empty string matched.
+	* gnu/regexp/RE.java(match): Sets empty flag when an empty
+	string matched.
+	(initialize): Support back reference \10, \11, and so on.
+	(parseInt): renamed from getEscapedChar and returns int.
+	* gnu/regexp/RETokenRepeated.java(match): Sets empty flag
+	when an empty string matched. Fixed a bug of the case where
+	an empty string matched. Added special handling of {0}.
+	* gnu/regexp/RETokenBackRef.java(match): Sets empty flag
+	when an empty string matched. Fixed the case insensitive matching.
+
 2006-01-21  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalSplitPaneDivider.java
