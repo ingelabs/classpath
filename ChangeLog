@@ -1,3 +1,18 @@
+2006-01-23  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/synth/ColorType.java,
+	* javax/swing/plaf/synth/Region.java,
+	* javax/swing/plaf/synth/SynthConstants.java,
+	* javax/swing/plaf/synth/SynthContext.java
+	* javax/swing/plaf/synth/SynthGraphicsUtils.java,
+	* javax/swing/plaf/synth/SynthLookAndFeel.java,
+	* javax/swing/plaf/synth/SynthPainter.java,
+	* javax/swing/plaf/synth/SynthStyle.java,
+	* javax/swing/plaf/synth/SynthStyleFactory.java,
+	* javax/swing/plaf/synth/package.html:
+	New files. Added the public API and framework classes for the
+	Synth look and feel.
+
 2006-01-23  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/Segment.java: API docs all over.
