@@ -1,3 +1,13 @@
+2006-01-23  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/regexp/REToken.java(empty): Made Cloneable.
+	* gnu/regexp/RETokenOneOf.java(match): RE.java(match):
+	Use separate methods matchN and matchP depending on the
+	boolean negative.
+	(matchN): New method used when negative. Done as before.
+	(matchP): New method used when not negative. Each token is
+	tried not by itself but by a clone of it.
+
 2006-01-23  Chris Burdess  <dog@gnu.org>
 
 	Fixes bug #25906
