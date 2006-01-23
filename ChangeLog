@@ -1,3 +1,16 @@
+2006-01-23  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	Formatted ElementBuffer and added new fields.
+	(remove): Added check to determine if length is 0.
+	(insertFirstContentTag): Initialized firstCreated to the element that is created 
+	by the first tag encountered. Removed check in JoinPreviousDirection case, no
+	longer needed. In OriginateDirection case, added a loop to remove all old leafs
+	that have been recreated.
+	(insertContentTag): Cleaned up code. Removed checks that did not do anything.
+	(insertFracture): Fixed up code, removed unneeded objects and checks. Added
+	FIXME tags to the lines that need to be rewritten.	
+
 2006-01-23  Mark Wielaard  <mark@klomp.org>
 
 	* examples/Makefile.am: Add support for fastjar.

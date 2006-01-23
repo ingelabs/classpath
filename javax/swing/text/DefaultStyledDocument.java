@@ -67,7 +67,7 @@ import javax.swing.undo.UndoableEdit;
 public class DefaultStyledDocument extends AbstractDocument
   implements StyledDocument
 {
-  
+    
   /**
    * An {@link UndoableEdit} that can undo attribute changes to an element.
    *
@@ -428,12 +428,15 @@ public class DefaultStyledDocument extends AbstractDocument
     /** Holds the offset for structural changes. */
     private int offset;
 
+    /** Holds the end offset for structural changes. */
+    private int endOffset;
+
     /** Holds the length of structural changes. */
     private int length;
     
-    /** Holds the end offset for structural changes. **/
-    private int endOffset;
-
+    /** Holds the element that was created by insertFirstContentTag. */
+    private Element firstCreated;
+    
     /**
      * The current position in the element tree. This is used for bulk inserts
      * using ElementSpecs.
@@ -448,8 +451,9 @@ public class DefaultStyledDocument extends AbstractDocument
     /**
      * Creates a new <code>ElementBuffer</code> for the specified
      * <code>root</code> element.
-     *
-     * @param root the root element for this <code>ElementBuffer</code>
+     * 
+     * @param root
+     *          the root element for this <code>ElementBuffer</code>
      */
     public ElementBuffer(Element root)
     {
@@ -459,7 +463,7 @@ public class DefaultStyledDocument extends AbstractDocument
 
     /**
      * Returns the root element of this <code>ElementBuffer</code>.
-     *
+     * 
      * @return the root element of this <code>ElementBuffer</code>
      */
     public Element getRootElement()
@@ -468,19 +472,20 @@ public class DefaultStyledDocument extends AbstractDocument
     }
 
     /**
-     * Updates the element structure of the document in response to removal of
-     * content. It removes the affected {@link Element}s from the document
-     * structure.
-     *
-     * This method sets some internal parameters and delegates the work
-     * to {@link #removeUpdate}.
-     *
-     * @param offs the offset from which content is remove
-     * @param len the length of the removed content
-     * @param ev the document event that records the changes
+     * Removes the content. This method sets some internal parameters and
+     * delegates the work to {@link #removeUpdate}.
+     * 
+     * @param offs
+     *          the offset from which content is remove
+     * @param len
+     *          the length of the removed content
+     * @param ev
+     *          the document event that records the changes
      */
     public void remove(int offs, int len, DefaultDocumentEvent ev)
     {
+      if (len == 0)
+        return;
       offset = offs;
       length = len;
       documentEvent = ev;
@@ -499,7 +504,7 @@ public class DefaultStyledDocument extends AbstractDocument
       Element[] empty = new Element[0];
       int removeStart = -1;
       int removeEnd = -1;
-      for (int i = startParagraph;  i < endParagraph; i++)
+      for (int i = startParagraph; i < endParagraph; i++)
         {
           BranchElement paragraph = (BranchElement) root.getElement(i);
           int contentStart = paragraph.getElementIndex(offset);
@@ -538,37 +543,16 @@ public class DefaultStyledDocument extends AbstractDocument
           Element[] removed = new Element[removeLen];
           for (int i = removeStart; i < removeEnd; i++)
             removed[i] = root.getElement(i);
-          Edit edit = getEditForParagraphAndIndex((BranchElement)root, removeStart);
+          Edit edit = getEditForParagraphAndIndex((BranchElement) root,
+                                                  removeStart);
           edit.addRemovedElements(removed);
         }
     }
 
     /**
-     * Modifies the element structure so that the specified interval starts
-     * and ends at an element boundary. Content and paragraph elements
-     * are split and created as necessary.
-     *
-     * This also updates the <code>DefaultDocumentEvent</code> to reflect the
-     * structural changes.
-     *
-     * The bulk work is delegated to {@link #changeUpdate()}.
-     *
-     * @param offset the start index of the interval to be changed
-     * @param length the length of the interval to be changed
-     * @param ev the <code>DefaultDocumentEvent</code> describing the change
-     */
-    public void change(int offset, int length, DefaultDocumentEvent ev)
-    {
-      this.offset = offset;
-      this.length = length;
-      documentEvent = ev;
-      changeUpdate();
-    }
-
-    /**
-     * Performs the actual work for {@link #change}.
-     * The elements at the interval boundaries are split up (if necessary)
-     * so that the interval boundaries are located at element boundaries.
+     * Performs the actual work for {@link #change}. The elements at the
+     * interval boundaries are split up (if necessary) so that the interval
+     * boundaries are located at element boundaries.
      */
     protected void changeUpdate()
     {
@@ -584,13 +568,13 @@ public class DefaultStyledDocument extends AbstractDocument
           if (res[0] == null)
             {
               removed = new Element[0];
-              added = new Element[]{ res[1] };
+              added = new Element[] { res[1] };
               index++;
             }
           else
             {
-              removed = new Element[]{ el };
-              added = new Element[]{ res[0], res[1] };
+              removed = new Element[] { el };
+              added = new Element[] { res[0], res[1] };
             }
           Edit edit = getEditForParagraphAndIndex(par, index);
           edit.addRemovedElements(removed);
@@ -609,12 +593,12 @@ public class DefaultStyledDocument extends AbstractDocument
           if (res[1] == null)
             {
               removed = new Element[0];
-              added = new Element[]{ res[1] };
+              added = new Element[] { res[1] };
             }
           else
             {
-              removed = new Element[]{ el };
-              added = new Element[]{ res[0], res[1] };
+              removed = new Element[] { el };
+              added = new Element[] { res[0], res[1] };
             }
           Edit edit = getEditForParagraphAndIndex(par, index);
           edit.addRemovedElements(removed);
@@ -622,6 +606,367 @@ public class DefaultStyledDocument extends AbstractDocument
         }
     }
 
+    /**
+     * Modifies the element structure so that the specified interval starts and
+     * ends at an element boundary. Content and paragraph elements are split and
+     * created as necessary. This also updates the
+     * <code>DefaultDocumentEvent</code> to reflect the structural changes.
+     * The bulk work is delegated to {@link #changeUpdate()}.
+     * 
+     * @param offset
+     *          the start index of the interval to be changed
+     * @param length
+     *          the length of the interval to be changed
+     * @param ev
+     *          the <code>DefaultDocumentEvent</code> describing the change
+     */
+    public void change(int offset, int length, DefaultDocumentEvent ev)
+    {
+      if (length == 0)
+        return;
+      this.offset = offset;
+      this.length = length;
+      documentEvent = ev;
+      changeUpdate();
+    }
+
+    /**
+     * Inserts new <code>Element</code> in the document at the specified
+     * position. Most of the work is done by {@link #insertUpdate}, after some
+     * fields have been prepared for it.
+     * 
+     * @param offset
+     *          the location in the document at which the content is inserted
+     * @param length
+     *          the length of the inserted content
+     * @param data
+     *          the element specifications for the content to be inserted
+     * @param ev
+     *          the document event that is updated to reflect the structural
+     *          changes
+     */
+    public void insert(int offset, int length, ElementSpec[] data,
+                       DefaultDocumentEvent ev)
+    {
+      if (length == 0)
+        return;
+      this.offset = offset;
+      this.endOffset = offset + length;
+      this.length = length;
+      documentEvent = ev;
+      // Push the root and the paragraph at offset onto the element stack.
+      edits.clear();
+      elementStack.clear();
+      Element current = root;
+      int index;
+      while (!current.isLeaf())
+        {
+          index = current.getElementIndex(offset);
+          elementStack.push(current);
+          current = current.getElement(index);
+        }
+      insertUpdate(data);
+
+      // This for loop applies all the changes that were made and updates the
+      // DocumentEvent.
+      int size = edits.size();
+      for (int i = 0; i < size; i++)
+        {
+          Edit curr = (Edit) edits.get(i);
+          BranchElement e = (BranchElement) curr.e;
+          Element[] removed = curr.getRemovedElements();
+          Element[] added = curr.getAddedElements();
+          e.replace(curr.index, removed.length, added);
+          addEdit(e, curr.index, removed, added);
+        }
+    }
+
+    /**
+     * Inserts new content
+     * 
+     * @param data
+     *          the element specifications for the elements to be inserted
+     */
+    protected void insertUpdate(ElementSpec[] data)
+    {
+      int i = 0;
+      if (data[0].getType() == ElementSpec.ContentType)
+        {
+          // If the first tag is content we must treat it separately to allow
+          // for joining properly to previous Elements and to ensure that
+          // no extra LeafElements are erroneously inserted.
+          i = 1;
+          insertFirstContentTag(data);
+        }
+      else
+        createFracture(data);
+
+      // Handle each ElementSpec individually.
+      for (; i < data.length; i++)
+        {
+          BranchElement paragraph = (BranchElement) elementStack.peek();
+          switch (data[i].getType())
+            {
+            case ElementSpec.StartTagType:
+              switch (data[i].getDirection())
+                {
+                case ElementSpec.JoinFractureDirection:
+                  // Fracture the tree and ensure the appropriate element
+                  // is on top of the stack.
+                  insertFracture(data[i]);
+                  break;
+                case ElementSpec.JoinNextDirection:
+                  // Push the next paragraph element onto the stack so
+                  // future insertions are added to it.
+                  int index = paragraph.getElementIndex(offset);
+                  elementStack.push(paragraph.getElement(index));
+                  break;
+                case ElementSpec.OriginateDirection:
+                  // Create a new paragraph and push it onto the stack.
+                  Element current = (Element) elementStack.peek();
+                  Element newParagraph = insertParagraph((BranchElement) current,
+                                                         offset);
+                  elementStack.push(newParagraph);
+                  break;
+                default:
+                  break;
+                }
+              break;
+            case ElementSpec.EndTagType:
+              elementStack.pop();
+              break;
+            case ElementSpec.ContentType:
+              insertContentTag(data[i]);
+              break;
+            }
+        }
+    }
+    
+    /**
+     * Inserts the first tag into the document.
+     * 
+     * @param data - the data to be inserted.
+     */
+    private void insertFirstContentTag(ElementSpec[] data)
+    {
+      ElementSpec first = data[0];
+      BranchElement paragraph = (BranchElement) elementStack.peek();
+      int index = paragraph.getElementIndex(offset);
+      Element current = paragraph.getElement(index);
+      int newEndOffset = offset + first.length;
+      Edit edit = getEditForParagraphAndIndex(paragraph, index);
+      boolean onlyContent = data.length == 1;
+      
+      switch (first.getDirection())
+        {
+        case ElementSpec.JoinPreviousDirection:
+          if (current.getEndOffset() != newEndOffset)
+            {
+              int end = newEndOffset;
+              if (onlyContent)
+                end = current.getEndOffset();
+              Element newEl1 = createLeafElement(paragraph,
+                                                 current.getAttributes(),
+                                                 current.getStartOffset(),
+                                                 end);
+              firstCreated = newEl1;
+              edit.addRemovedElement(current);
+              edit.addAddedElement(newEl1);
+            }
+          break;
+        case ElementSpec.JoinNextDirection:
+          if (offset != 0)
+            {
+              Element next = paragraph.getElement(index + 1);
+              Element[] removed = new Element[] { current, next };
+              Element newEl1 = createLeafElement(paragraph,
+                                                 current.getAttributes(),
+                                                 current.getStartOffset(),
+                                                 offset);
+              firstCreated = newEl1;
+              Element[] added = new Element[2];
+              added[0] = newEl1;
+              int end = newEndOffset;
+              if (onlyContent)
+                end = next.getEndOffset();
+              
+              added[1] = createLeafElement(paragraph, next.getAttributes(),
+                                             offset, end);
+              edit.addRemovedElements(removed);
+              edit.addAddedElements(added);
+            }
+          break;
+        case ElementSpec.OriginateDirection:
+          if (current.getStartOffset() != offset)
+            {
+              Element newEl1 = createLeafElement(paragraph,
+                                                 current.getAttributes(),
+                                                 current.getStartOffset(),
+                                                 offset);
+              firstCreated = newEl1;
+              edit.addAddedElement(newEl1);
+            }
+          Element newEl2 = createLeafElement(paragraph, first.getAttributes(),
+                                             offset, newEndOffset);
+          edit.addAddedElement(newEl2);
+          edit.addRemovedElement(current);
+          
+          if (current.getEndOffset() != newEndOffset && onlyContent)
+            {
+              // This means all the leaves that were there previously need
+              // to be recreated after all the new Elements are inserted.
+              Element newCurrent = createLeafElement(paragraph,
+                                                     current.getAttributes(),
+                                                     newEndOffset,
+                                                     current.getEndOffset());
+              edit.addAddedElement(newCurrent);
+            }
+          else if (!onlyContent)
+            {
+              int size = paragraph.getElementCount();
+              for (int i = index + 1; i < size; i++)
+                edit.addRemovedElement(paragraph.getElement(i));
+            }
+          break;
+        default:
+          break;
+        }
+      offset = newEndOffset;
+    }
+
+    /**
+     * Inserts a content element into the document structure.
+     * 
+     * @param tag the element spec
+     */
+    private void insertContentTag(ElementSpec tag)
+    {
+      int len = tag.getLength();
+      int dir = tag.getDirection();
+      AttributeSet tagAtts = tag.getAttributes();
+
+      if (dir == ElementSpec.JoinNextDirection)
+        {
+          BranchElement paragraph = (BranchElement) elementStack.peek();
+          int index = paragraph.getElementIndex(offset);
+          Element target = paragraph.getElement(index);
+          Edit edit = getEditForParagraphAndIndex(paragraph, index);
+          
+          if (paragraph.getStartOffset() > offset)
+            {
+              Element first = paragraph.getElement(0);
+              Element newEl = createLeafElement(paragraph,
+                                                first.getAttributes(), offset,
+                                                first.getEndOffset());
+              edit.addAddedElement(newEl);
+              edit.addRemovedElement(first);
+            }
+          else if (paragraph.getElementCount() > (index + 1))
+            {
+              Element next = paragraph.getElement(index + 1);
+              if (offset == target.getStartOffset())
+                {
+                  Element newEl = createLeafElement(paragraph,
+                                                    next.getAttributes(),
+                                                    offset, next.getEndOffset());
+                  edit.addAddedElement(newEl);
+                  edit.addRemovedElement(next);
+                  edit.addRemovedElement(target);
+                }
+              else
+                {
+                  Element newEl1 = createLeafElement(paragraph,
+                                                     target.getAttributes(),
+                                                     target.getStartOffset(),
+                                                     offset);
+                  Element newEl2 = createLeafElement(paragraph,
+                                                     next.getAttributes(),
+                                                     offset,
+                                                     next.getEndOffset());
+                  edit.addRemovedElement(target);
+                  edit.addRemovedElement(next);
+                  edit.addAddedElement(newEl1);
+                  edit.addAddedElement(newEl2);
+                }
+            }
+        }
+      else if (dir == ElementSpec.OriginateDirection)
+        {
+          BranchElement paragraph = (BranchElement) elementStack.peek();
+          int index = paragraph.getElementIndex(offset);
+          Element current = paragraph.getElement(index);
+
+          Element[] added;
+          Element[] removed = new Element[] { current };
+          Element[] splitRes = split(current, offset, length);
+          if (splitRes[0] == null)
+            {
+              added = new Element[2];
+              added[0] = createLeafElement(paragraph, tagAtts, offset,
+                                           endOffset);
+              added[1] = splitRes[1];
+              removed = new Element[0];
+              index++;
+            }
+          else if (current.getStartOffset() == offset)
+            {
+              // This is if the new insertion happens immediately before
+              // the <code>current</code> Element. In this case there are 2
+              // resulting Elements.
+              added = new Element[2];
+              added[0] = createLeafElement(paragraph, tagAtts, offset,
+                                           endOffset);
+              added[1] = splitRes[1];
+            }
+          else if (current.getEndOffset() == endOffset)
+            {
+              // This is if the new insertion happens right at the end of
+              // the <code>current</code> Element. In this case there are
+              // 2 resulting Elements.
+              added = new Element[2];
+              added[0] = splitRes[0];
+              added[1] = createLeafElement(paragraph, tagAtts, offset,
+                                           endOffset);
+            }
+          else
+            {
+              // This is if the new insertion is in the middle of the
+              // <code>current</code> Element. In this case
+              // there will be 3 resulting Elements.
+              added = new Element[3];
+              added[0] = splitRes[0];
+              added[1] = createLeafElement(paragraph, tagAtts, offset,
+                                           endOffset);
+              added[2] = splitRes[1];
+            }
+          Edit edit = getEditForParagraphAndIndex(paragraph, index);
+          edit.addRemovedElements(removed);
+          edit.addAddedElements(added);
+        }
+      offset += len;
+    }
+    
+    /**
+     * This method fractures the child at offset.
+     * @param data the ElementSpecs used for the entire insertion
+     */
+    private void createFracture(ElementSpec[] data)
+    {
+      // FIXME: This method is not complete.  We must handle the elementStack
+      // properly and make sure the appropriate Elements are pushed onto the 
+      // top of the stack so future inserts go to the appropriate paragraph.
+      BranchElement paragraph = (BranchElement)elementStack.peek();
+      int index = paragraph.getElementIndex(offset);
+      Element child = paragraph.getElement(index);
+      Edit edit = getEditForParagraphAndIndex(paragraph, index);
+      if (offset != 0)
+        {
+          Element newEl1 = createLeafElement(paragraph, child.getAttributes(), child.getStartOffset(), offset);
+          edit.addAddedElement(newEl1);
+        }
+      edit.addRemovedElement(child);
+    }
+    
     /**
      * Splits an element if <code>offset</code> is not already at its boundary.
      *
@@ -721,141 +1066,14 @@ public class DefaultStyledDocument extends AbstractDocument
         }
       return res;
     }
-
-    /**
-     * Inserts new <code>Element</code> in the document at the specified
-     * position.
-     *
-     * Most of the work is done by {@link #insertUpdate}, after some fields
-     * have been prepared for it.
-     *
-     * @param offset the location in the document at which the content is
-     *        inserted
-     * @param length the length of the inserted content
-     * @param data the element specifications for the content to be inserted
-     * @param ev the document event that is updated to reflect the structural
-     *        changes
-     */
-    public void insert(int offset, int length, ElementSpec[] data,
-                       DefaultDocumentEvent ev)
-    {
-      if (length == 0)
-        return;
-      this.offset = offset;
-      this.length = length;
-      this.endOffset = offset + length;
-      documentEvent = ev;
-      // Push the root and the paragraph at offset onto the element stack.
-      edits.clear();
-      elementStack.clear();
-      Element current = root;
-      int index;
-      while (!current.isLeaf())
-        {
-          index = current.getElementIndex(offset);
-          elementStack.push(current);
-          current = current.getElement(index);
-        }
-      insertUpdate(data);
-      
-      // This for loop applies all the changes that were made and updates the 
-      // DocumentEvent.
-      int size = edits.size();
-      for (int i = 0; i < size; i++)
-        {
-          Edit curr = (Edit) edits.get(i);     
-          BranchElement e = (BranchElement) curr.e;
-          Element[] removed = curr.getRemovedElements();
-          Element[] added = curr.getAddedElements();
-          e.replace(curr.index, removed.length, added);
-          addEdit(e, curr.index, removed, added);
-        }
-    }
-
-    /**
-     * Performs the actual structural change for {@link #insert}. This
-     * creates a bunch of {@link Edit}s as specified by <code>data</code>
-     * and saves them in the edits Vector to be inserted at the end of the 
-     * {@link #insert} method.
-     *
-     * @param data the element specifications for the elements to be inserte
-     */ 
-    protected void insertUpdate(ElementSpec[] data)
-    {          
-      int i = 0;
-      if (data[0].getType() == ElementSpec.ContentType)
-        {
-          // If the first tag is content we must treat it separately to allow
-          // for joining properly to previous Elements and to ensure that
-          // no extra LeafElements are erroneously inserted.
-          i = 1;
-          insertFirstContentTag(data);
-        }
-      else
-        createFracture(data);
-      
-      // Handle each ElementSpec individually.
-      for (; i < data.length; i++)
-        {
-          BranchElement paragraph = (BranchElement) elementStack.peek();
-          switch (data[i].getType())
-            {
-            case ElementSpec.StartTagType:
-              switch (data[i].getDirection())
-                {
-                case ElementSpec.JoinFractureDirection:
-                  // Fracture the tree and ensure the appropriate element
-                  // is on top of the stack.
-                  insertFracture(data[i]);
-                  break;
-                case ElementSpec.JoinNextDirection:
-                  // Push the next paragraph element onto the stack so 
-                  // future insertions are added to it.
-                  int index = paragraph.getElementIndex(offset);
-                  elementStack.push(paragraph.getElement(index));
-                  break;
-                case ElementSpec.OriginateDirection:
-                  // Create a new paragraph and push it onto the stack.
-                  Element current = (Element) elementStack.peek();
-                  Element newParagraph =
-                    insertParagraph((BranchElement) current, offset);
-                  elementStack.push(newParagraph);
-                  break;
-                default:
-                  break;
-                }
-              break;
-            case ElementSpec.EndTagType:
-              elementStack.pop();
-              break;
-            case ElementSpec.ContentType:
-              insertContentTag(data[i]);
-              break;
-            }
-        }
-    }
-
-    /**
-     * This method fractures the child at offset.
-     * @param data the ElementSpecs used for the entire insertion
-     */
-    private void createFracture(ElementSpec[] data)
-    {
-      // FIXME: This method is not complete.  We must handle the elementStack
-      // properly and make sure the appropriate Elements are pushed onto the 
-      // top of the stack so future inserts go to the appropriate paragraph.
-      BranchElement paragraph = (BranchElement)elementStack.peek();
-      int index = paragraph.getElementIndex(offset);
-      Element child = paragraph.getElement(index);
-      Edit edit = getEditForParagraphAndIndex(paragraph, index);
-      if (offset != 0)
-        {
-          Element newEl1 = createLeafElement(paragraph, child.getAttributes(), child.getStartOffset(), offset);
-          edit.addAddedElement(newEl1);
-        }
-      edit.addRemovedElement(child);
-    }
     
+    /**
+     * Inserts a new paragraph.
+     * 
+     * @param par - paragraph to insert new paragraph at.
+     * @param offset - offset to insert at.
+     * @return new paragraph
+     */
     private Element insertParagraph(BranchElement par, int offset)
     {
       Element current = par.getElement(par.getElementIndex(offset));
@@ -907,70 +1125,6 @@ public class DefaultStyledDocument extends AbstractDocument
         }
       return ret;
     }
-        
-    private void insertFirstContentTag(ElementSpec[] data)
-    {      
-      // FIXME: This method is not complete.  It needs to properly recreate the
-      // leaves when the spec's direction is JoinPreviousDirection.
-      ElementSpec first = data[0];
-      BranchElement paragraph = (BranchElement) elementStack.peek();
-      int index = paragraph.getElementIndex(offset);
-      Element current = paragraph.getElement(index);
-      int newEndOffset = offset + first.length;
-      Edit edit = getEditForParagraphAndIndex(paragraph, index);
-      switch (first.getDirection())
-        {
-        case ElementSpec.JoinPreviousDirection:
-          if (current.getEndOffset() != newEndOffset)
-            {
-              Element newEl1 = createLeafElement(paragraph, current.getAttributes(), current.getStartOffset(), newEndOffset);              
-              edit.addRemovedElement(current);
-              edit.addAddedElement(newEl1);
-              if (current.getEndOffset() != newEndOffset)
-                {
-                  // This means all the leaves that were there previously need
-                  // to be recreated after all the new Elements are inserted.
-                }
-            }
-          break;
-        case ElementSpec.JoinNextDirection:
-          if (offset != 0)
-            {
-              Element next = paragraph.getElement(index + 1);
-              Element[] removed = new Element[] { current, next };
-              Element newEl1 = createLeafElement(paragraph, current.getAttributes(), current.getStartOffset(), offset);
-              Element[] added = new Element[2];
-              added[0] = newEl1;
-              if (data.length == 1)
-                added[1] = createLeafElement(paragraph, next.getAttributes(), offset, next.getEndOffset());
-              else
-                added[1] = createLeafElement(paragraph, next.getAttributes(), offset, newEndOffset);
-              edit.addRemovedElements(removed);
-              edit.addAddedElements(added);
-            }
-          break;
-        case ElementSpec.OriginateDirection:
-          if (current.getStartOffset() != offset)
-            {
-              Element newEl1 = createLeafElement(paragraph, current.getAttributes(), current.getStartOffset(), offset);
-              edit.addAddedElement(newEl1);
-            }
-          Element newEl2 = createLeafElement(paragraph, first.getAttributes(), offset, newEndOffset);
-          edit.addRemovedElement(current);
-          edit.addAddedElement(newEl2);
-          if (current.getEndOffset() != endOffset && (data.length == 1))
-            {
-              // This means all the leaves that were there previously need
-              // to be recreated after all the new Elements are inserted.
-              Element newCurrent = createLeafElement(paragraph, current.getAttributes(), newEndOffset, current.getEndOffset());
-              edit.addAddedElement(newCurrent);
-            }            
-          break;
-        default:
-          break;
-        }
-      offset = newEndOffset; 
-    }
     
     /**
      * Inserts a fracture into the document structure.
@@ -978,230 +1132,87 @@ public class DefaultStyledDocument extends AbstractDocument
      * @param tag - the element spec.
      */
     private void insertFracture(ElementSpec tag)
-    {
-      // FIXME: This method may be incomplete.  We must make sure the 
-      // appropriate edits were added and the correct paragraph element
-      // is pushed onto the top of the elementStack so future inserts go 
-      // to the right paragraph.
-      
-      // This is the parent of the paragraph about to be fractured.  We will
-      // create a new child of this parent.
-      BranchElement parent = (BranchElement) elementStack.peek();
-      int parentIndex = parent.getElementIndex(offset);
-      
-      // This is the old paragraph.  We must remove all its children that 
-      // occur after offset and move them to a new paragraph.  We must
-      // also recreate its child that occurs at offset to have the proper
-      // end offset.  The remainder of this child will also go in the new
-      // paragraph.
-      BranchElement previous = (BranchElement) parent.getElement(parentIndex);
-      
-      // This is the new paragraph.
-      BranchElement newBranch = 
-        (BranchElement) createBranchElement(parent, previous.getAttributes());
-      
-      
+    {   
       // The steps we must take to properly fracture are:
       // 1. Recreate the LeafElement at offset to have the correct end offset.
       // 2. Create a new LeafElement with the remainder of the LeafElement in 
       //    #1 ==> this is whatever was in that LeafElement to the right of the
       //    inserted newline.
       // 3. Find the paragraph at offset and remove all its children that 
-      //    occur _after_ offset.  These will be moved to the newly created
+      //    occur at and after offset.  These will be moved to the newly created
       //    paragraph.
       // 4. Move the LeafElement created in #2 and all the LeafElements removed
       //    in #3 to the newly created paragraph.
       // 5. Add the new paragraph to the parent.
+      BranchElement parent = (BranchElement) elementStack.peek();
+      int parentIndex = parent.getElementIndex(offset);
+      
+      BranchElement previous = (BranchElement) parent.getElement(parentIndex);
       int previousIndex = previous.getElementIndex(offset);
-      int numReplaced = previous.getElementCount() - previousIndex;
       Element previousLeaf = previous.getElement(previousIndex);
       AttributeSet prevLeafAtts = previous.getAttributes();
+      int numReplaced = previous.getElementCount() - previousIndex;
       
-      // This recreates the child at offset to have the proper end offset.  
-      // (Step 1).
-      Element newPreviousLeaf = 
-        createLeafElement(previous, 
-                          prevLeafAtts, previousLeaf.getStartOffset(), 
-                          offset);
-      // This creates the new child, which is the remainder of the old child.  
-      // (Step 2).
+      BranchElement newBranch = 
+        (BranchElement) createBranchElement(parent, prevLeafAtts);
       
-      Element firstLeafInNewBranch = 
-        createLeafElement(newBranch, prevLeafAtts, 
-                          offset, previousLeaf.getEndOffset());
+      int start = previousLeaf.getStartOffset();
+      if (firstCreated == null || (start != firstCreated.getStartOffset()
+          && offset != firstCreated.getEndOffset()))
+        {
+          Element newPreviousLeaf = createLeafElement(previous, prevLeafAtts,
+                                                      start, offset);
+          Edit edit2 = getEditForParagraphAndIndex(previous, previousIndex);
+          edit2.addRemovedElement(previousLeaf);
+          edit2.addAddedElement(newPreviousLeaf);
+        }
       
-      // Now we move the new LeafElement and all the old children that occurred
-      // after the offset to the new paragraph.  (Step 4).
-      Element[] newLeaves = new Element[numReplaced];
-      newLeaves[0] = firstLeafInNewBranch;
+      // FIXME!!!!!!!!!!!!!!
+      int newEndOffset = Math.min(previousLeaf.getEndOffset(), getLength());
+      if (offset == newEndOffset)
+        newEndOffset = previousLeaf.getEndOffset();
+      Element firstLeafInNewBranch = createLeafElement(newBranch, prevLeafAtts,
+                                                       offset, newEndOffset);
+      
+      Edit edit = getEditForParagraphAndIndex(newBranch, 0);
+      Element newLeaves = firstLeafInNewBranch;
+      if (newLeaves.getStartOffset() >= endOffset)
+        edit.addAddedElement(newLeaves);
+      
       for (int i = 1; i < numReplaced; i++)
-        newLeaves[i] = previous.getElement(previousIndex + i);
-      newBranch.replace(0, 0, newLeaves);
-            
-      // Now we remove the children after the offset from the previous 
-      // paragraph. (Step 3).
-      int removeSize = previous.getElementCount() - previousIndex;
-      Element[] remove = new Element[removeSize];
-      for (int j = 0; j < removeSize; j++)
-        remove[j] = previous.getElement(previousIndex + j);
-      Edit edit = getEditForParagraphAndIndex(previous, previousIndex);
-      edit.addRemovedElements(remove);
+        {
+          newLeaves = previous.getElement(previousIndex + i);
+          if (newLeaves.getStartOffset() >= endOffset)
+            edit.addAddedElement(newLeaves);
+        }
       
-      // Finally we add the new paragraph to the parent. (Step 5).
-      int index = parentIndex + 1;
-      Edit edit2 = getEditForParagraphAndIndex(parent, index);
-      edit2.addAddedElement(newBranch);
+      // FIXME!!!!!!!!!!!!!!!!!!!!
+      int loc = newLeaves.getEndOffset();
+      if (endOffset > offset)
+        {
+          Element newTempLeaf = createLeafElement(newBranch, null, loc, loc + 1);
+          newBranch.replace(0, 0, new Element[] { newTempLeaf });
+        }
+      
+      Edit edit3 = getEditForParagraphAndIndex(parent, parentIndex + 1);
+      edit3.addAddedElement(newBranch);
       elementStack.push(newBranch);
     }
     
     /**
-     * Inserts a content element into the document structure.
-     * 
-     * @param tag the element spec
-     */
-    private void insertContentTag(ElementSpec tag)
-    {
-      int len = tag.getLength();
-      int dir = tag.getDirection();
-      AttributeSet tagAtts = tag.getAttributes();
-      if (dir == ElementSpec.JoinPreviousDirection)
-        {
-          // The mauve tests to this class show that a JoinPrevious insertion
-          // does not add any edits to the document event. To me this means
-          // that nothing is done here. The previous element naturally should
-          // expand so that it covers the new characters.
-        }
-      else if (dir == ElementSpec.JoinNextDirection)
-        {
-          // FIXME:
-          // Have to handle JoinNext differently depending on whether
-          // or not it comes after a fracture.  If comes after a fracture, 
-          // the insertFracture method takes care of everything and nothing
-          // needs to be done here.  Otherwise, we need to adjust the
-          // Element structure.  For now, I check if the elementStack's 
-          // top Element is the immediate parent of the LeafElement at
-          // offset - if so, we did not come immediately after a 
-          // fracture.  This seems awkward and should probably be improved.
-          // We may be doing too much in insertFracture because we are 
-          // adjusting the offsets, the correct thing to do may be to 
-          // create a new branch element and push it on to element stack
-          // and then this method here can be more general.
-          
-          BranchElement paragraph = (BranchElement) elementStack.peek();
-          int index = paragraph.getElementIndex(offset);
-          Element target = paragraph.getElement(index);
-          if (target.isLeaf() && paragraph.getElementCount() > (index + 1))
-            {
-              Element next = paragraph.getElement(index + 1);
-              Element newEl1 = createLeafElement(paragraph,
-                                                 target.getAttributes(),
-                                                 target.getStartOffset(),
-                                                 offset);
-              Element newEl2 = createLeafElement(paragraph,
-                                                 next.getAttributes(), offset,
-                                                 next.getEndOffset());
-              Edit edit = getEditForParagraphAndIndex(paragraph, index);
-              edit.addRemovedElement(target);
-              edit.addRemovedElement(next);
-              edit.addAddedElement (newEl1);
-              edit.addAddedElement (newEl2);
-            }
-        }
-      else if (dir == ElementSpec.OriginateDirection)
-        {
-          BranchElement paragraph = (BranchElement) elementStack.peek();
-          int index = paragraph.getElementIndex(offset);
-          Element current = paragraph.getElement(index);
-          
-          Element[] added;
-          Element[] removed = new Element[] {current};
-          Element[] splitRes = split(current, offset, length);
-          if (splitRes[0] == null)
-            {
-              added = new Element[2];
-              added[0] = createLeafElement(paragraph, tagAtts,
-                                           offset, endOffset);
-              added[1] = splitRes[1];
-              removed = new Element[0];
-              index++;
-            }
-          else if (current.getStartOffset() == offset)
-            { 
-              // This is if the new insertion happens immediately before 
-              // the <code>current</code> Element.  In this case there are 2 
-              // resulting Elements.       
-              added = new Element[2];
-              added[0] = createLeafElement(paragraph, tagAtts, offset,
-                                           endOffset);
-              added[1] = splitRes[1];
-            }
-          else if (current.getEndOffset() == endOffset)
-            {
-              // This is if the new insertion happens right at the end of 
-              // the <code>current</code> Element.  In this case there are 
-              // 2 resulting Elements.
-              added = new Element[2];
-              added[0] = splitRes[0];
-              added[1] = createLeafElement(paragraph, tagAtts, offset,
-                                           endOffset);
-            }
-          else
-            {
-              // This is if the new insertion is in the middle of the 
-              // <code>current</code> Element.  In this case 
-              // there will be 3 resulting Elements.
-              added = new Element[3];
-              added[0] = splitRes[0];
-              added[1] = createLeafElement(paragraph, tagAtts, offset,
-                                           endOffset);
-              added[2] = splitRes[1];
-            }          
-          Edit edit = getEditForParagraphAndIndex(paragraph, index);
-          edit.addRemovedElements(removed);
-          edit.addAddedElements(added);
-        }
-      offset += len;
-    }
-    
-    /**
-     * Creates a copy of the element <code>clonee</code> that has the parent
-     * <code>parent</code>.
-     * @param parent the parent of the newly created Element
-     * @param clonee the Element to clone
-     * @return the cloned Element
-     */
-    public Element clone (Element parent, Element clonee)
-    {
-      // If the Element we want to clone is a leaf, then simply copy it
-      if (clonee.isLeaf())
-        return createLeafElement(parent, clonee.getAttributes(),
-                                 clonee.getStartOffset(), clonee.getEndOffset());
-      
-      // Otherwise create a new BranchElement with the desired parent and 
-      // the clonee's attributes
-      BranchElement result = (BranchElement) createBranchElement(parent, clonee.getAttributes());
-      
-      // And clone all the of clonee's children
-      Element[] children = new Element[clonee.getElementCount()];
-      for (int i = 0; i < children.length; i++)
-        children[i] = clone(result, clonee.getElement(i));
-      
-      // Make the cloned children the children of the BranchElement
-      result.replace(0, 0, children);
-      return result;
-    }
-
-    /**
      * Adds an ElementChange for a given element modification to the document
      * event. If there already is an ElementChange registered for this element,
-     * this method tries to merge the ElementChanges together. However, this
-     * is only possible if the indices of the new and old ElementChange are
-     * equal.
-     *
-     * @param e the element
-     * @param i the index of the change
-     * @param removed the removed elements, or <code>null</code>
-     * @param added the added elements, or <code>null</code>
+     * this method tries to merge the ElementChanges together. However, this is
+     * only possible if the indices of the new and old ElementChange are equal.
+     * 
+     * @param e
+     *          the element
+     * @param i
+     *          the index of the change
+     * @param removed
+     *          the removed elements, or <code>null</code>
+     * @param added
+     *          the added elements, or <code>null</code>
      */
     private void addEdit(Element e, int i, Element[] removed, Element[] added)
     {
@@ -1209,7 +1220,7 @@ public class DefaultStyledDocument extends AbstractDocument
       DocumentEvent.ElementChange ec = documentEvent.getChange(e);
 
       // Merge the existing stuff with the new stuff.
-      Element[] oldAdded = ec == null ? null: ec.getChildrenAdded();
+      Element[] oldAdded = ec == null ? null : ec.getChildrenAdded();
       Element[] newAdded;
       if (oldAdded != null && added != null)
         {
@@ -1225,6 +1236,7 @@ public class DefaultStyledDocument extends AbstractDocument
               i = ec.getIndex();
             }
           else
+            // FIXME: Not implemented.
             throw new AssertionError("Not yet implemented case.");
         }
       else if (added != null)
@@ -1234,7 +1246,7 @@ public class DefaultStyledDocument extends AbstractDocument
       else
         newAdded = new Element[0];
 
-      Element[] oldRemoved = ec == null ? null: ec.getChildrenRemoved();
+      Element[] oldRemoved = ec == null ? null : ec.getChildrenRemoved();
       Element[] newRemoved;
       if (oldRemoved != null && removed != null)
         {
@@ -1245,12 +1257,13 @@ public class DefaultStyledDocument extends AbstractDocument
               newRemoved = new Element[oldRemoved.length + removed.length];
               System.arraycopy(oldAdded, 0, newRemoved, 0, index);
               System.arraycopy(removed, 0, newRemoved, index, removed.length);
-              System.arraycopy(oldRemoved, index, newRemoved,
-                               index + removed.length,
+              System.arraycopy(oldRemoved, index, newRemoved, index
+                                                              + removed.length,
                                oldRemoved.length - index);
               i = ec.getIndex();
             }
           else
+            // FIXME: Not implemented.
             throw new AssertionError("Not yet implemented case.");
         }
       else if (removed != null)
@@ -1263,156 +1276,202 @@ public class DefaultStyledDocument extends AbstractDocument
       // Replace the existing edit for the element with the merged.
       documentEvent.addEdit(new ElementEdit(e, i, newRemoved, newAdded));
     }
-    
-    /** 
-     * Instance of all editing information for an object in the Vector.  This
-     * class is used to add information to the DocumentEvent associated with
-     * an insertion/removal/change as well as to store the changes that need 
-     * to be made so they can be made all at the same (appropriate) time.
+  }
+
+  /**
+   * This method looks through the Vector of Edits to see if there is already an
+   * Edit object associated with the given paragraph. If there is, then we
+   * return it. Otherwise we create a new Edit object, add it to the vector, and
+   * return it. Note: this method is package private to avoid accessors.
+   * 
+   * @param index
+   *          the index associated with the Edit we want
+   * @param para
+   *          the paragraph associated with the Edit we want
+   * @return the found or created Edit object
+   */
+  Edit getEditForParagraphAndIndex(BranchElement para, int index)
+  {
+    Edit curr;
+    int size = edits.size();
+    for (int i = 0; i < size; i++)
+      {
+        curr = (Edit) edits.elementAt(i);
+        if (curr.e.equals(para) && curr.index == index)
+          return curr;
+      }
+    curr = new Edit(para, index, null, null);
+    edits.add(curr);
+    return curr;
+  }
+
+  /**
+   * Creates a copy of the element <code>clonee</code> that has the parent
+   * <code>parent</code>.
+   * 
+   * @param parent
+   *          the parent of the newly created Element
+   * @param clonee
+   *          the Element to clone
+   * @return the cloned Element
+   */
+  public Element clone(Element parent, Element clonee)
+  {
+    // If the Element we want to clone is a leaf, then simply copy it
+    if (clonee.isLeaf())
+      return createLeafElement(parent, clonee.getAttributes(),
+                               clonee.getStartOffset(), clonee.getEndOffset());
+
+    // Otherwise create a new BranchElement with the desired parent and
+    // the clonee's attributes
+    BranchElement result = (BranchElement) createBranchElement(
+                                                               parent,
+                                                               clonee.getAttributes());
+
+    // And clone all the of clonee's children
+    Element[] children = new Element[clonee.getElementCount()];
+    for (int i = 0; i < children.length; i++)
+      children[i] = clone(result, clonee.getElement(i));
+
+    // Make the cloned children the children of the BranchElement
+    result.replace(0, 0, children);
+    return result;
+  }
+
+  /**
+   * Instance of all editing information for an object in the Vector. This class
+   * is used to add information to the DocumentEvent associated with an
+   * insertion/removal/change as well as to store the changes that need to be
+   * made so they can be made all at the same (appropriate) time.
+   */
+  class Edit
+  {
+    /** The element to edit . */
+    Element e;
+
+    /** The index of the change. */
+    int index;
+
+    /** The removed elements. */
+    Vector removed = new Vector();
+
+    /** The added elements. */
+    Vector added = new Vector();
+
+    /**
+     * Return an array containing the Elements that have been removed from the
+     * paragraph associated with this Edit.
+     * 
+     * @return an array of removed Elements
      */
-    class Edit
+    public Element[] getRemovedElements()
     {
-      /** The element to edit . */
-      Element e;
-      
-      /** The index of the change. */
-      int index;
-      
-      /** The removed elements. */
-      Vector removed = new Vector();
-      
-      /** The added elements. */
-      Vector added = new Vector();
-      
-      /**
-       * Return an array containing the Elements that have been removed
-       * from the paragraph associated with this Edit.
-       * @return an array of removed Elements
-       */
-      public Element[] getRemovedElements()
-      {
-        int size = removed.size();
-        Element[] removedElements = new Element[size];
-        for (int i = 0; i < size; i++)
-          removedElements[i] = (Element) removed.elementAt(i);
-        return removedElements;
-      }
-      
-      /**
-       * Return an array containing the Elements that have been added to the 
-       * paragraph associated with this Edit.
-       * @return an array of added Elements
-       */
-      public Element[] getAddedElements()
-      {
-        int size = added.size();
-        Element[] addedElements = new Element[size];
-        for (int i = 0; i < size; i++)
-          addedElements[i] = (Element) added.elementAt(i);
-        return addedElements;
-      }
-      
-      /**
-       * Adds one Element to the vector of removed Elements.
-       * @param e the Element to add
-       */
-      public void addRemovedElement (Element e)
-      {
-        if (!removed.contains(e))
-          removed.add(e);
-      }
-      
-      /**
-       * Adds each Element in the given array to the vector of 
-       * removed Elements
-       * @param e the array containing the Elements to be added
-       */
-      public void addRemovedElements (Element[] e)
-      {
-        if (e == null || e.length == 0)
-          return;
-        for (int i = 0; i < e.length; i++)
-          {
-            if (!removed.contains(e[i]))
-              removed.add(e[i]);
-          }
-      }
-      
-      /**
-       * Adds one Element to the vector of added Elements.
-       * @param e the Element to add
-       */
-      public void addAddedElement (Element e)
-      {
-        if (!added.contains(e))
-          added.add(e);
-      }
-      
-      /**
-       * Adds each Element in the given array to the vector of
-       * added Elements.
-       * @param e the array containing the Elements to be added
-       */
-      public void addAddedElements (Element[] e)
-      {
-        if (e == null || e.length == 0)
-          return;
-        for (int i = 0; i < e.length; i++)
-          {
-            if (!added.contains(e[i]))
-              added.add(e[i]);
-          }
-      }
-      
-      /**
-       * Creates a new Edit object with the given parameters
-       * @param e the paragraph Element associated with this Edit
-       * @param i the index within the paragraph where changes are started
-       * @param removed an array containing Elements that should be removed from
-       * the paragraph Element
-       * @param added an array containing Elements that should be added to the
-       * paragraph Element
-       */
-      public Edit(Element e, int i, Element[] removed, Element[] added)
-      {
-        this.e = e;
-        this.index = i;
-        addRemovedElements(removed);
-        addAddedElements(added);
-      }    
+      int size = removed.size();
+      Element[] removedElements = new Element[size];
+      for (int i = 0; i < size; i++)
+        removedElements[i] = (Element) removed.elementAt(i);
+      return removedElements;
     }
 
     /**
-     * This method looks through the Vector of Edits to see if there is already
-     * an Edit object associated with the given paragraph.  If there is,  
-     * then we return it.  Otherwise we create a new Edit object, add it to the 
-     * vector, and return it.  
+     * Return an array containing the Elements that have been added to the
+     * paragraph associated with this Edit.
      * 
-     * Note: this method is package private to avoid accessors.
-     * 
-     * @param index the index associated with the Edit we want
-     * @param para the paragraph associated with the Edit we want
-     * @return the found or created Edit object
+     * @return an array of added Elements
      */
-    private Edit getEditForParagraphAndIndex (BranchElement para, int index)
+    public Element[] getAddedElements()
     {
-      Edit curr;
-      int size = edits.size();
+      int size = added.size();
+      Element[] addedElements = new Element[size];
       for (int i = 0; i < size; i++)
+        addedElements[i] = (Element) added.elementAt(i);
+      return addedElements;
+    }
+
+    /**
+     * Adds one Element to the vector of removed Elements.
+     * 
+     * @param e
+     *          the Element to add
+     */
+    public void addRemovedElement(Element e)
+    {
+      if (!removed.contains(e))
+        removed.add(e);
+    }
+
+    /**
+     * Adds each Element in the given array to the vector of removed Elements
+     * 
+     * @param e
+     *          the array containing the Elements to be added
+     */
+    public void addRemovedElements(Element[] e)
+    {
+      if (e == null || e.length == 0)
+        return;
+      for (int i = 0; i < e.length; i++)
         {
-           curr = (Edit)edits.elementAt(i);
-           if (curr.e.equals(para) && curr.index == index)
-             return curr;
+          if (!removed.contains(e[i]))
+            removed.add(e[i]);
         }
-      curr = new Edit(para, index, null, null);
-      edits.add(curr);
-      return curr;
+    }
+
+    /**
+     * Adds one Element to the vector of added Elements.
+     * 
+     * @param e
+     *          the Element to add
+     */
+    public void addAddedElement(Element e)
+    {
+      if (!added.contains(e))
+        added.add(e);
+    }
+
+    /**
+     * Adds each Element in the given array to the vector of added Elements.
+     * 
+     * @param e
+     *          the array containing the Elements to be added
+     */
+    public void addAddedElements(Element[] e)
+    {
+      if (e == null || e.length == 0)
+        return;
+      for (int i = 0; i < e.length; i++)
+        {
+          if (!added.contains(e[i]))
+            added.add(e[i]);
+        }
+    }
+
+    /**
+     * Creates a new Edit object with the given parameters
+     * 
+     * @param e
+     *          the paragraph Element associated with this Edit
+     * @param i
+     *          the index within the paragraph where changes are started
+     * @param removed
+     *          an array containing Elements that should be removed from the
+     *          paragraph Element
+     * @param added
+     *          an array containing Elements that should be added to the
+     *          paragraph Element
+     */
+    public Edit(Element e, int i, Element[] removed, Element[] added)
+    {
+      this.e = e;
+      this.index = i;
+      addRemovedElements(removed);
+      addAddedElements(added);
     }
   }
 
   /**
-   * An element type for sections. This is a simple BranchElement with
-   * a unique name.
+   * An element type for sections. This is a simple BranchElement with a unique
+   * name.
    */
   protected class SectionElement extends BranchElement
   {    
@@ -1508,7 +1567,7 @@ public class DefaultStyledDocument extends AbstractDocument
    * @param context the <code>StyleContext</code> to use
    */
   public DefaultStyledDocument(AbstractDocument.Content content,
-			       StyleContext context)
+                   StyleContext context)
   {
     super(content, context);
     buffer = new ElementBuffer(createDefaultRoot());
@@ -1720,8 +1779,8 @@ public class DefaultStyledDocument extends AbstractDocument
    *     selection are overridden, otherwise they are merged
    */
   public void setCharacterAttributes(int offset, int length,
-				     AttributeSet attributes,
-				     boolean replace)
+                     AttributeSet attributes,
+                     boolean replace)
   {
     // Exit early if length is 0, so no DocumentEvent is created or fired.
     if (length == 0)
