@@ -1,3 +1,7 @@
+2006-01-23  Mark Wielaard  <mark@klomp.org>
+
+	* examples/Makefile.am (EXAMPLE_ZIP): Group cd and commands.
+
 2006-01-23  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/security/x509/X509Certificate.java (parse):
