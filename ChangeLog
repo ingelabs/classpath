@@ -1,5 +1,12 @@
 2006-01-23  Chris Burdess  <dog@gnu.org>
 
+	Fixes bug #25906
+	* gnu/xml/dom/DomCharacterData.java: Use a separate empty node list
+	  class to avoid getLength method contention.
+	* gnu/xml/stream/SAXParser.java: Rethrow correct exception.
+
+2006-01-23  Chris Burdess  <dog@gnu.org>
+
 	* native/jni/java-util/Makefile.am: Include library required
 	  explicitly by BSD systems.
 	* native/target/generic/target_generic_misc.h: Remove old commented
