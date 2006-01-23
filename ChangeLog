@@ -1,3 +1,7 @@
+2006-01-23  Mark Wielaard  <mark@klomp.org>
+
+	* examples/Makefile.am: Add support for fastjar.
+
 2006-01-23  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* gnu/regexp/REToken.java(empty): Made Cloneable.
