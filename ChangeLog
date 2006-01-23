@@ -1,3 +1,9 @@
+2006-01-23  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/security/x509/X509Certificate.java (parse):
+	Unconditionally read value; for version==1 case when reading
+	algorithm ID.
+
 2006-01-23  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/synth/ColorType.java,
