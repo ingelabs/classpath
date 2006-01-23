@@ -1167,7 +1167,7 @@ public class DefaultStyledDocument extends AbstractDocument
           edit2.addAddedElement(newPreviousLeaf);
         }
       
-      // FIXME!!!!!!!!!!!!!!
+      // FIXME
       int newEndOffset = Math.min(previousLeaf.getEndOffset(), getLength());
       if (offset == newEndOffset)
         newEndOffset = previousLeaf.getEndOffset();
@@ -1186,11 +1186,11 @@ public class DefaultStyledDocument extends AbstractDocument
             edit.addAddedElement(newLeaves);
         }
       
-      // FIXME!!!!!!!!!!!!!!!!!!!!
+      // FIXME
       int loc = newLeaves.getEndOffset();
       if (endOffset > offset)
         {
-          Element newTempLeaf = createLeafElement(newBranch, null, loc, loc + 1);
+          Element newTempLeaf = createLeafElement(newBranch, prevLeafAtts, loc, loc + 1);
           newBranch.replace(0, 0, new Element[] { newTempLeaf });
         }
       

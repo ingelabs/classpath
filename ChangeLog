@@ -1,4 +1,9 @@
 2006-01-23  Lillian Angel  <langel@redhat.com>
+	
+	* javax/swing/text/DefaultStyledDocument.java
+	(insertFracture): Set temp leaf's attributes to prevent an NPE.
+
+2006-01-23  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java:
 	Formatted ElementBuffer and added new fields.
