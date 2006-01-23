@@ -680,7 +680,7 @@ public class DefaultStyledDocument extends AbstractDocument
           addEdit(e, curr.index, removed, added);
         }
     }
-
+    
     /**
      * Inserts new content
      * 
@@ -760,11 +760,12 @@ public class DefaultStyledDocument extends AbstractDocument
       switch (first.getDirection())
         {
         case ElementSpec.JoinPreviousDirection:
-          if (current.getEndOffset() != newEndOffset)
+          int end = newEndOffset;
+          if (onlyContent)
+            end = current.getEndOffset();
+          
+          if (current.getEndOffset() != end)
             {
-              int end = newEndOffset;
-              if (onlyContent)
-                end = current.getEndOffset();
               Element newEl1 = createLeafElement(paragraph,
                                                  current.getAttributes(),
                                                  current.getStartOffset(),
@@ -786,7 +787,8 @@ public class DefaultStyledDocument extends AbstractDocument
               firstCreated = newEl1;
               Element[] added = new Element[2];
               added[0] = newEl1;
-              int end = newEndOffset;
+              
+              end = newEndOffset;
               if (onlyContent)
                 end = next.getEndOffset();
               
@@ -1157,7 +1159,7 @@ public class DefaultStyledDocument extends AbstractDocument
         (BranchElement) createBranchElement(parent, prevLeafAtts);
       
       int start = previousLeaf.getStartOffset();
-      if (firstCreated == null || (start != firstCreated.getStartOffset()
+      if (firstCreated != null && (start != firstCreated.getStartOffset()
           && offset != firstCreated.getEndOffset()))
         {
           Element newPreviousLeaf = createLeafElement(previous, prevLeafAtts,
@@ -1166,32 +1168,33 @@ public class DefaultStyledDocument extends AbstractDocument
           edit2.addRemovedElement(previousLeaf);
           edit2.addAddedElement(newPreviousLeaf);
         }
-      
-      // FIXME
+
+      // FIXME: This is a workaround... figure out how to determine newEndOffset
       int newEndOffset = Math.min(previousLeaf.getEndOffset(), getLength());
       if (offset == newEndOffset)
         newEndOffset = previousLeaf.getEndOffset();
-      Element firstLeafInNewBranch = createLeafElement(newBranch, prevLeafAtts,
-                                                       offset, newEndOffset);
       
-      Edit edit = getEditForParagraphAndIndex(newBranch, 0);
-      Element newLeaves = firstLeafInNewBranch;
-      if (newLeaves.getStartOffset() >= endOffset)
-        edit.addAddedElement(newLeaves);
-      
-      for (int i = 1; i < numReplaced; i++)
-        {
-          newLeaves = previous.getElement(previousIndex + i);
-          if (newLeaves.getStartOffset() >= endOffset)
-            edit.addAddedElement(newLeaves);
-        }
-      
-      // FIXME
-      int loc = newLeaves.getEndOffset();
       if (endOffset > offset)
         {
-          Element newTempLeaf = createLeafElement(newBranch, prevLeafAtts, loc, loc + 1);
+          Element newTempLeaf = createLeafElement(newBranch, prevLeafAtts,
+                                                  newEndOffset, ++newEndOffset);
           newBranch.replace(0, 0, new Element[] { newTempLeaf });
+        }
+      else
+        {
+          Element firstLeafInNewBranch = createLeafElement(newBranch,
+                                                           prevLeafAtts,
+                                                           offset, newEndOffset);
+          Edit edit = getEditForParagraphAndIndex(newBranch, 0);
+          Element newLeaves = firstLeafInNewBranch;
+          if (newLeaves.getStartOffset() >= endOffset)
+            edit.addAddedElement(newLeaves);
+          for (int i = 1; i < numReplaced; i++)
+            {
+              newLeaves = previous.getElement(previousIndex + i);
+              if (newLeaves.getStartOffset() >= endOffset)
+                edit.addAddedElement(newLeaves);
+            }
         }
       
       Edit edit3 = getEditForParagraphAndIndex(parent, parentIndex + 1);

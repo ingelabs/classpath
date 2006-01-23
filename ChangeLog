@@ -1,3 +1,15 @@
+2006-01-23  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insertFirstContentTag): Moved check outside of if-statement.
+	This should be checked before creating the new leaf element.
+	(insertFracture): Fixed check to prevent an NPE. The previous
+	leaf should only be recreated if it has been created by
+	insertFirstContentTag. Also, fixed up code: if the endOffset is
+	greater than the offset, then we need to create a temp leaf
+	as a place holder. Otherwise, the leaf elements should be
+	created normally.
+
 2006-01-23  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/SocketPermission.java: Almost completely rewritten.
