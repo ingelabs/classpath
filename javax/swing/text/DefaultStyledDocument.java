@@ -690,7 +690,8 @@ public class DefaultStyledDocument extends AbstractDocument
     protected void insertUpdate(ElementSpec[] data)
     {
       int i = 0;
-      if (data[0].getType() == ElementSpec.ContentType)
+      int type = data[0].getType();
+      if (type == ElementSpec.ContentType)
         {
           // If the first tag is content we must treat it separately to allow
           // for joining properly to previous Elements and to ensure that
@@ -698,7 +699,7 @@ public class DefaultStyledDocument extends AbstractDocument
           i = 1;
           insertFirstContentTag(data);
         }
-      else
+      else if (type == ElementSpec.StartTagType)
         createFracture(data);
 
       // Handle each ElementSpec individually.
@@ -900,15 +901,22 @@ public class DefaultStyledDocument extends AbstractDocument
 
           Element[] added;
           Element[] removed = new Element[] { current };
-          Element[] splitRes = split(current, offset, length);
+          Element[] splitRes = split(current, offset, len);
+          
           if (splitRes[0] == null)
             {
               added = new Element[2];
-              added[0] = createLeafElement(paragraph, tagAtts, offset,
+              added[0] = new LeafElement(paragraph, tagAtts, offset,
                                            endOffset);
               added[1] = splitRes[1];
               removed = new Element[0];
               index++;
+            }
+          else if (current.getStartOffset() == offset && current.getEndOffset() == endOffset)
+            {
+              added = new Element[1];
+              added[0] = new LeafElement(paragraph, tagAtts, offset,
+                                           endOffset);
             }
           else if (current.getStartOffset() == offset)
             {
@@ -916,7 +924,7 @@ public class DefaultStyledDocument extends AbstractDocument
               // the <code>current</code> Element. In this case there are 2
               // resulting Elements.
               added = new Element[2];
-              added[0] = createLeafElement(paragraph, tagAtts, offset,
+              added[0] = new LeafElement(paragraph, tagAtts, offset,
                                            endOffset);
               added[1] = splitRes[1];
             }
@@ -927,7 +935,7 @@ public class DefaultStyledDocument extends AbstractDocument
               // 2 resulting Elements.
               added = new Element[2];
               added[0] = splitRes[0];
-              added[1] = createLeafElement(paragraph, tagAtts, offset,
+              added[1] = new LeafElement(paragraph, tagAtts, offset,
                                            endOffset);
             }
           else
@@ -937,7 +945,7 @@ public class DefaultStyledDocument extends AbstractDocument
               // there will be 3 resulting Elements.
               added = new Element[3];
               added[0] = splitRes[0];
-              added[1] = createLeafElement(paragraph, tagAtts, offset,
+              added[1] = new LeafElement(paragraph, tagAtts, offset,
                                            endOffset);
               added[2] = splitRes[1];
             }
@@ -954,9 +962,6 @@ public class DefaultStyledDocument extends AbstractDocument
      */
     private void createFracture(ElementSpec[] data)
     {
-      // FIXME: This method is not complete.  We must handle the elementStack
-      // properly and make sure the appropriate Elements are pushed onto the 
-      // top of the stack so future inserts go to the appropriate paragraph.
       BranchElement paragraph = (BranchElement)elementStack.peek();
       int index = paragraph.getElementIndex(offset);
       Element child = paragraph.getElement(index);
@@ -1004,7 +1009,7 @@ public class DefaultStyledDocument extends AbstractDocument
           Element[] newAdded;
 
           int count = el.getElementCount();
-          if (!(result[1] == null))
+          if (result[1] != null)
             {
               // This is the case when we can keep the first element.
               if (result[0] == null)
@@ -1033,11 +1038,12 @@ public class DefaultStyledDocument extends AbstractDocument
               Edit edit = getEditForParagraphAndIndex((BranchElement)el, index);
               edit.addRemovedElements(removed);
               edit.addAddedElements(added);
+              
               BranchElement newPar =
                 (BranchElement) new BranchElement(el.getParentElement(),
                                                     el.getAttributes());
-              Edit edit2 = getEditForParagraphAndIndex(newPar, 0);
-              edit2.addAddedElements(newAdded);
+              
+              newPar.replace(0, 0, newAdded);
               res = new Element[]{ null, newPar };
             }
           else
@@ -1046,14 +1052,15 @@ public class DefaultStyledDocument extends AbstractDocument
               for (int i = index; i < count; ++i)
                 removed[i - index] = el.getElement(i);
               added = new Element[0];
+              
               Edit edit = getEditForParagraphAndIndex((BranchElement)el, index);
               edit.addRemovedElements(removed);
               edit.addAddedElements(added);
+              
               BranchElement newPar =
                 (BranchElement) new BranchElement(el.getParentElement(),
                                                     el.getAttributes());
-              Edit edit2 = getEditForParagraphAndIndex(newPar, 0);
-              edit2.addAddedElements(removed);
+              newPar.replace(0, 0, removed);
               res = new Element[]{ null, newPar };
             }
         }
@@ -1062,6 +1069,7 @@ public class DefaultStyledDocument extends AbstractDocument
           BranchElement par = (BranchElement) el.getParentElement();
           Element el1 = new LeafElement(par, el.getAttributes(),
                                           el.getStartOffset(), offset);
+          
           Element el2 = new LeafElement(par, el.getAttributes(),
                                           offset + space, el.getEndOffset());
           res = new Element[]{ el1, el2 };
@@ -1159,10 +1167,11 @@ public class DefaultStyledDocument extends AbstractDocument
         (BranchElement) createBranchElement(parent, prevLeafAtts);
       
       int start = previousLeaf.getStartOffset();
+      Element newPreviousLeaf = null;
       if (firstCreated != null && (start != firstCreated.getStartOffset()
           && offset != firstCreated.getEndOffset()))
         {
-          Element newPreviousLeaf = createLeafElement(previous, prevLeafAtts,
+          newPreviousLeaf = createLeafElement(previous, prevLeafAtts,
                                                       start, offset);
           Edit edit2 = getEditForParagraphAndIndex(previous, previousIndex);
           edit2.addRemovedElement(previousLeaf);
@@ -1173,11 +1182,11 @@ public class DefaultStyledDocument extends AbstractDocument
       int newEndOffset = Math.min(previousLeaf.getEndOffset(), getLength());
       if (offset == newEndOffset)
         newEndOffset = previousLeaf.getEndOffset();
-      
+
       if (endOffset > offset)
         {
           Element newTempLeaf = createLeafElement(newBranch, prevLeafAtts,
-                                                  newEndOffset, ++newEndOffset);
+                                                  newEndOffset, newEndOffset + 1);
           newBranch.replace(0, 0, new Element[] { newTempLeaf });
         }
       else
@@ -1188,7 +1197,7 @@ public class DefaultStyledDocument extends AbstractDocument
           Edit edit = getEditForParagraphAndIndex(newBranch, 0);
           Element newLeaves = firstLeafInNewBranch;
           if (newLeaves.getStartOffset() >= endOffset)
-            edit.addAddedElement(newLeaves);
+              edit.addAddedElement(newLeaves);
           for (int i = 1; i < numReplaced; i++)
             {
               newLeaves = previous.getElement(previousIndex + i);

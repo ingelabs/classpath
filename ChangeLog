@@ -1,3 +1,16 @@
+2006-01-23  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insertUpdate): Should only call createFracture with 
+	StartTagType. Added check.
+	(insertContentTag): Should use the tags length for splitting.
+	Also, added a check to determine if current's start and end offset are
+	equal to the offset and endOffset. If so, only one leaf element
+	should be added. 
+	(createFracture): Removed FIXME. This function is complete.
+	(split): Added calls to replace. Changed so the child is 
+	added immediately to the paragraph. Prevents NPEs.
+
 2006-01-23  Mark Wielaard  <mark@klomp.org>
 
 	* examples/Makefile.am (EXAMPLE_ZIP): Group cd and commands.
