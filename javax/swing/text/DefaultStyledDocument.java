@@ -1034,7 +1034,7 @@ public class DefaultStyledDocument extends AbstractDocument
               edit.addRemovedElements(removed);
               edit.addAddedElements(added);
               BranchElement newPar =
-                (BranchElement) createBranchElement(el.getParentElement(),
+                (BranchElement) new BranchElement(el.getParentElement(),
                                                     el.getAttributes());
               Edit edit2 = getEditForParagraphAndIndex(newPar, 0);
               edit2.addAddedElements(newAdded);
@@ -1050,7 +1050,7 @@ public class DefaultStyledDocument extends AbstractDocument
               edit.addRemovedElements(removed);
               edit.addAddedElements(added);
               BranchElement newPar =
-                (BranchElement) createBranchElement(el.getParentElement(),
+                (BranchElement) new BranchElement(el.getParentElement(),
                                                     el.getAttributes());
               Edit edit2 = getEditForParagraphAndIndex(newPar, 0);
               edit2.addAddedElements(removed);
@@ -1060,9 +1060,9 @@ public class DefaultStyledDocument extends AbstractDocument
       else if (el instanceof LeafElement)
         {
           BranchElement par = (BranchElement) el.getParentElement();
-          Element el1 = createLeafElement(par, el.getAttributes(),
+          Element el1 = new LeafElement(par, el.getAttributes(),
                                           el.getStartOffset(), offset);
-          Element el2 = createLeafElement(par, el.getAttributes(),
+          Element el2 = new LeafElement(par, el.getAttributes(),
                                           offset + space, el.getEndOffset());
           res = new Element[]{ el1, el2 };
         }

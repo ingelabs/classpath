@@ -1,6 +1,13 @@
 2006-01-23  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
+	(split): Should not use createLeafElement and createBranchElement here.
+	We should just instaniate the LeafElements and BranchElements instead 
+	to avoid the case where create*Element is overridden.
+
+2006-01-23  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
 	(insertFirstContentTag): Moved check outside of if-statement.
 	This should be checked before creating the new leaf element.
 	(insertFracture): Fixed check to prevent an NPE. The previous
