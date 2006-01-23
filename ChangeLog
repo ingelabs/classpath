@@ -1,3 +1,12 @@
+2006-01-23  Chris Burdess  <dog@gnu.org>
+
+	* native/jni/java-util/Makefile.am: Include library required
+	  explicitly by BSD systems.
+	* native/target/generic/target_generic_misc.h: Remove old commented
+	  out code.
+	* native/target/generic/target_generic_network.h: Fallbacks (to
+	  SO_NOSIGPIPE and then 0) for non-portable glibc MSG_NOSIGNAL.
+
 2006-01-22  Tom Tromey  <tromey@redhat.com>
 
 	* native/target/posix/.cvsignore: Added .deps.
@@ -9,7 +18,7 @@
 	* java/awt/Container.java (addImpl): Use empty string as name when
 	null constraints for LayoutManager.addLayoutComponent().
 
-2006-01-22  Chris Burdes  <dog@gnu.org>
+2006-01-22  Chris Burdess  <dog@gnu.org>
 
 	Fixes bug #25903
 	* gnu/xml/dom/DomDocumentBuilder.java: Default to using file URL

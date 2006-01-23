@@ -892,6 +892,15 @@ Systems    : all
     #include <sys/types.h>
     #include <sys/socket.h>
     #include <netinet/in.h>
+    #ifdef MSG_NOSIGNAL
+      #define HAVE_MSG_NOSIGNAL
+    #else /* MSG_NOSIGNAL */
+      #ifdef SO_NOSIGPIPE
+        #define MSG_NOSIGNAL SO_NOSIGPIPE
+      #else /* SO_NOSIGPIPE */
+        #define MSG_NOSIGNAL 0
+      #endif /* SO_NOSIGPIPE */
+    #endif /* MSG_NOSIGNAL */
     #define TARGET_NATIVE_NETWORK_SOCKET_SEND(socketDescriptor,buffer,length,bytesSent) \
       do { \
         bytesSent=send(socketDescriptor,buffer,length,MSG_NOSIGNAL); \
