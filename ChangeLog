@@ -1,3 +1,7 @@
+2006-01-23  Gary Benson  <gbenson@redhat.com>
+
+	* java/net/SocketPermission.java: Almost completely rewritten.
+
 2006-01-23  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/text/DefaultStyledDocument.java
