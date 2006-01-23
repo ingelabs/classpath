@@ -1,3 +1,7 @@
+2006-01-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/text/Segment.java: API docs all over.
+
 2006-01-23  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
