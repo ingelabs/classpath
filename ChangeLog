@@ -8,6 +8,9 @@
 	* java/beans/PersistenceDelegate:
 	(initialize): Use local variable as first argument as it was
 	intended once.
+	* java/beans/DefaultPersistenceDelegate:
+	(initialize): Added call to superclass' implementation, added
+	early return.
 
 2006-01-24  Tom Tromey  <tromey@redhat.com>
 
