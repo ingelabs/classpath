@@ -1,3 +1,9 @@
+2006-01-24  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/regex/PatternSyntaxException.java: Added @since.
+	* java/util/regex/Matcher.java (Matcher): Implements MatchResult.
+	* java/util/regex/MatchResult.java: New file.
+
 2006-01-24  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/StringContent.java: Added API docs all over, plus 
