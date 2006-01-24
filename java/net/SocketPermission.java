@@ -38,6 +38,9 @@ exception statement from your version. */
 
 package java.net;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.Permission;
 import java.security.PermissionCollection;
@@ -113,18 +116,16 @@ public final class SocketPermission extends Permission implements Serializable
 {
   static final long serialVersionUID = -7204263841984476862L;
 
-// FIXME: Needs serialization work, including readObject/writeObject methods.
-
   /**
    * A hostname (possibly wildcarded) or IP address (IPv4 or IPv6).
    */
-  private String host;
+  private transient String host;
 
   /**
    * A range of ports.
    */
-  private int minport;
-  private int maxport;
+  private transient int minport;
+  private transient int maxport;
 
   /**
    * Values used for minimum and maximum ports when one or both bounds
@@ -136,9 +137,17 @@ public final class SocketPermission extends Permission implements Serializable
   private static final int MAX_PORT = Integer.MAX_VALUE;
 
   /**
-   * A bitmask representing the actions for which we have permission
+   * The actions for which we have permission.  This field is present
+   * to make the serialized form correct and should not be used by
+   * anything other than writeObject: everything else should use
+   * actionmask.
    */
-  private int actions;
+  private String actions;
+
+  /**
+   * A bitmask representing the actions for which we have permission.
+   */
+  private transient int actionmask;
 
   /**
    * The available actions, in the canonical order required for getActions().
@@ -146,7 +155,7 @@ public final class SocketPermission extends Permission implements Serializable
   private static final String[] ACTIONS = new String[] {
     "connect", "listen", "accept", "resolve"};
 
-/**
+  /**
    * Initializes a new instance of <code>SocketPermission</code> with the
    * specified host/port combination and actions string.
    *
@@ -252,7 +261,7 @@ public final class SocketPermission extends Permission implements Serializable
    */
   private void setActions(String actionstring)
   {
-    actions = 0;
+    actionmask = 0;
 
     boolean resolve_needed = false;
     boolean resolve_present = false;
@@ -282,7 +291,7 @@ public final class SocketPermission extends Permission implements Serializable
       {
 	if (action.equals(ACTIONS[i]))
 	  {
-	    actions |= 1 << i;
+	    actionmask |= 1 << i;
 	    return;
 	  }
       }
@@ -309,7 +318,7 @@ public final class SocketPermission extends Permission implements Serializable
     else
       return false;
 
-    return p.actions == actions &&
+    return p.actionmask == actionmask &&
       p.minport == minport &&
       p.maxport == maxport &&
       p.host.equals(host);
@@ -323,7 +332,7 @@ public final class SocketPermission extends Permission implements Serializable
    */
   public int hashCode()
   {
-    return actions + minport + maxport + host.hashCode();
+    return actionmask + minport + maxport + host.hashCode();
   }
 
   /**
@@ -338,7 +347,7 @@ public final class SocketPermission extends Permission implements Serializable
 
     for (int i = 0; i < ACTIONS.length; i++)
       {
-	if ((actions & (1 << i)) != 0)
+	if ((actionmask & (1 << i)) != 0)
 	  {
 	    if (sb.length() != 0)
 	      sb.append(",");
@@ -398,7 +407,7 @@ public final class SocketPermission extends Permission implements Serializable
       return false;
 
     // Next check the actions
-    if ((p.actions & actions) != p.actions)
+    if ((p.actionmask & actionmask) != p.actionmask)
 	return false;
 
     // Then check the ports
@@ -441,5 +450,36 @@ public final class SocketPermission extends Permission implements Serializable
 
     // Didn't make it
     return false;
+  }
+
+  /**
+   * Deserializes a <code>SocketPermission</code> object from
+   * an input stream.
+   *
+   * @param input the input stream.
+   * @throws IOException if an I/O error occurs in the stream.
+   * @throws ClassNotFoundException if the class of the
+   *         serialized object could not be found.
+   */
+  private void readObject(ObjectInputStream input)
+    throws IOException, ClassNotFoundException
+  {
+    input.defaultReadObject();
+    setHostPort(getName());
+    setActions(actions);
+  }
+
+  /**
+   * Serializes a <code>SocketPermission</code> object to an
+   * output stream.
+   *
+   * @param output the output stream.
+   * @throws IOException if an I/O error occurs in the stream.
+   */
+  private void writeObject(ObjectOutputStream output)
+    throws IOException
+  {
+    actions = getActions();
+    output.defaultWriteObject();
   }
 }
