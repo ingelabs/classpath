@@ -1,3 +1,14 @@
+2006-01-24  Robert Schuster  <robertschuster@fsfe.org>
+
+	* java/beans/XMLEncoder.java:
+	(writeExpression): Added early return (fixes PR #25941).
+	* java/beans/Encoder: Removed unused imports.
+	(setupDefaultPersistenceDelegates): Removed unneccessary
+	PersistenceDelegates for subclasses.
+	* java/beans/PersistenceDelegate:
+	(initialize): Use local variable as first argument as it was
+	intended once.
+
 2006-01-24  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/regex/PatternSyntaxException.java: Added @since.
