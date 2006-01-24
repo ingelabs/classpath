@@ -1,3 +1,14 @@
+2006-01-24  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/SimpleDoc.java: Make class final.
+	* javax/print/attribute/standard/PrinterIsAcceptingJobs.java: Likewise.
+	* javax/print/attribute/DateTimeSyntax.java: 
+	(toString): New overridden method.
+	* javax/print/attribute/standard/JobStateReasons.java:
+	(add): Use the super.add method to avoid recursion.
+	* javax/print/attribute/standard/PrinterStateReasons.java: 
+	(put): Use the super.put method to avoid recursion.
+
 2006-01-24  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/beans/XMLEncoder.java:
