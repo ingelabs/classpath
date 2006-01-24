@@ -1,3 +1,8 @@
+2006-01-24  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/text/StringContent.java: Added API docs all over, plus 
+	minor reformatting.
+
 2006-01-24  Gary Benson  <gbenson@redhat.com>
 
 	* java/net/SocketPermission.java: Implemented serialization.
