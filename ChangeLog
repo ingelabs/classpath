@@ -1,3 +1,11 @@
+2006-01-24  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/text/StringContent.java
+	(remove): Modified argument check to prevent removal of last character,
+	(getChars): Removed null argument check to allow NullPointerException,
+	added API docs,
+	(checkLocation): Added API docs and white space.
+
 2006-01-23  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java

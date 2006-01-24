@@ -1,5 +1,5 @@
 /* StringContent.java --
-   Copyright (C) 2005 Free Software Foundation, Inc.
+   Copyright (C) 2005, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -254,7 +254,7 @@ public final class StringContent implements AbstractDocument.Content, Serializab
   
   public UndoableEdit remove(int where, int nitems) throws BadLocationException
   {
-    checkLocation(where, nitems);
+    checkLocation(where, nitems + 1);
     char[] temp = new char[(this.content.length - nitems)];
     this.count = this.count - nitems;
     RemoveUndo rundo = new RemoveUndo(where, new String(this.content, where, nitems));
@@ -284,25 +284,45 @@ public final class StringContent implements AbstractDocument.Content, Serializab
     return new String (this.content, where, len);
   }
   
-  public void getChars(int where, int len, Segment txt) throws BadLocationException
+  /**
+   * Updates <code>txt</code> to contain a direct reference to the underlying 
+   * character array.
+   * 
+   * @param where  the index of the first character.
+   * @param len  the number of characters.
+   * @param txt  a carrier for the return result (<code>null</code> not 
+   *             permitted).
+   *             
+   * @throws BadLocationException if the requested character range is not 
+   *                              within the bounds of the content.
+   * @throws NullPointerException if <code>txt</code> is <code>null</code>.
+   */
+  public void getChars(int where, int len, Segment txt) 
+    throws BadLocationException
   {
     checkLocation(where, len);
-    if (txt != null)
-      {
-        txt.array = this.content;
-        txt.offset = where;
-        txt.count = len;
-      }
+    txt.array = this.content;
+    txt.offset = where;
+    txt.count = len;
   }
 
-  // This is package-private to avoid an accessor method.
+  /** 
+   * A utility method that checks the validity of the specified character
+   * range.
+   * 
+   * @param where  the first character in the range.
+   * @param len  the number of characters in the range.
+   * 
+   * @throws BadLocationException if the specified range is not within the
+   *         bounds of the content.
+   */
   void checkLocation(int where, int len) throws BadLocationException
   {
     if (where < 0)
       throw new BadLocationException("Invalid location", 1);
     else if (where > this.count)
       throw new BadLocationException("Invalid location", this.count);
-    else if ((where + len)>this.count)
+    else if ((where + len) > this.count)
       throw new BadLocationException("Invalid range", this.count);
   }
   
