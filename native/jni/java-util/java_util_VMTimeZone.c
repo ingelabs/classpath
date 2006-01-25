@@ -37,17 +37,26 @@ exception statement from your version. */
 
 #include "config.h"
 
+#if TIME_WITH_SYS_TIME
+# include <sys/time.h>
+# include <time.h>
+#else
+# if HAVE_SYS_TIME_H
+#  include <sys/time.h>
+# else
+#  include <time.h>
+# endif
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-#include <jcl.h>
 #include <jni.h>
 
-#include "target_native.h"
-#include "target_native_misc.h"
-
 #include "java_util_VMTimeZone.h"
+
+static size_t jint_to_charbuf (char *bufend, jint num);
 
 /**
  * This method returns a time zone id string which is in the form
@@ -66,20 +75,149 @@ exception statement from your version. */
  * TimeZone object.
  */
 JNIEXPORT jstring JNICALL
-Java_java_util_VMTimeZone_getSystemTimeZoneId(JNIEnv *env,
-					      jclass clazz __attribute__ ((__unused__)))
+Java_java_util_VMTimeZone_getSystemTimeZoneId (JNIEnv * env,
+					       jclass clazz
+					       __attribute__ ((__unused__)))
 {
-  char buffer[64]; /* FIXME: large enough? (better not to use malloc(), because of possible failure!) */
-  int  result;
+  struct tm tim;
+#ifndef HAVE_LOCALTIME_R
+  struct tm *lt_tim;
+#endif
+#ifdef HAVE_TM_ZONE
+  int month;
+#endif
+  time_t current_time;
+  long tzoffset;
+  const char *tz1, *tz2;
+  char tzoff[11];
+  size_t tz1_len, tz2_len, tzoff_len;
+  char *tzid;
+  jstring retval;
 
-  TARGET_NATIVE_MISC_GET_TIMEZONE_STRING(buffer,sizeof(buffer),result);
-  if (result == TARGET_NATIVE_OK)
-  {
-    return (*env)->NewStringUTF (env, buffer);
-  }
-  else
-  {
-    return NULL;
-  }
+  time (&current_time);
+#ifdef HAVE_LOCALTIME_R
+  localtime_r (&current_time, &tim);
+#else
+  /* Fall back on non-thread safe localtime. */
+  lt_tim = localtime (&current_time);
+  memcpy (&tim, lt_tim, sizeof (struct tm));
+#endif
+  mktime (&tim);
+
+#ifdef HAVE_STRUCT_TM_TM_ZONE
+  /* We will cycle through the months to make sure we hit dst. */
+  month = tim.tm_mon;
+  tz1 = tz2 = NULL;
+  while (tz1 == NULL || tz2 == NULL)
+    {
+      if (tim.tm_isdst > 0)
+	tz2 = tim.tm_zone;
+      else if (tz1 == NULL)
+	{
+	  tz1 = tim.tm_zone;
+	  month = tim.tm_mon;
+	}
+
+      if (tz1 == NULL || tz2 == NULL)
+	{
+	  tim.tm_mon++;
+	  tim.tm_mon %= 12;
+	}
+
+      if (tim.tm_mon == month && tz2 == NULL)
+	tz2 = "";
+      else
+	mktime (&tim);
+    }
+  /* We want to make sure the tm struct we use later on is not dst. */
+  tim.tm_mon = month;
+  mktime (&tim);
+#elif defined (HAVE_TZNAME)
+  /* If dst is never used, tzname[1] is the empty string. */
+  tzset ();
+  tz1 = tzname[0];
+  tz2 = tzname[1];
+#else
+  /* Some targets have no concept of timezones. Assume GMT without dst. */
+  tz1 = "GMT";
+  tz2 = "";
+#endif
+
+#ifdef STRUCT_TM_HAS_GMTOFF
+  /* tm_gmtoff is the number of seconds that you must add to GMT to get
+     local time, we need the number of seconds to add to the local time
+     to get GMT. */
+  tzoffset = -1L * tim.tm_gmtoff;
+#elif HAVE_UNDERSCORE_TIMEZONE
+  /* On some systems _timezone is actually defined as time_t. */
+  tzoffset = (long) _timezone;
+#elif HAVE_TIMEZONE
+  /* timezone is secs WEST of UTC. */
+  tzoffset = timezone;
+#else
+  /* FIXME: there must be another global if neither tm_gmtoff nor timezone
+     is available, esp. if tzname is valid.
+     Richard Earnshaw <rearnsha@arm.com> has suggested using difftime to
+     calculate between gmtime and localtime (and accounting for possible
+     daylight savings time) as an alternative. */
+  tzoffset = 0L;
+#endif
+
+  if ((tzoffset % 3600) == 0)
+    tzoffset = tzoffset / 3600;
+
+  tz1_len = strlen (tz1);
+  tz2_len = strlen (tz2);
+  tzoff_len = jint_to_charbuf (tzoff + 11, tzoffset);
+  tzid = (char *) malloc (tz1_len + tz2_len + tzoff_len + 1);	/* FIXME alloc */
+  memcpy (tzid, tz1, tz1_len);
+  memcpy (tzid + tz1_len, tzoff + 11 - tzoff_len, tzoff_len);
+  memcpy (tzid + tz1_len + tzoff_len, tz2, tz2_len);
+  tzid[tz1_len + tzoff_len + tz2_len] = '\0';
+
+  retval = (*env)->NewStringUTF (env, tzid);
+  free (tzid);
+
+  return retval;
 }
 
+/* Put printed (decimal) representation of NUM in a buffer.
+   BUFEND marks the end of the buffer, which must be at least 11 chars long.
+   Returns the COUNT of chars written.  The result is in
+   (BUFEND - COUNT) (inclusive) upto (BUFEND) (exclusive).
+
+   Note that libgcj has a slightly different version called _Jv_FormatInt
+   that works on jchar buffers.
+*/
+
+static size_t
+jint_to_charbuf (char *bufend, jint num)
+{
+  register char *ptr = bufend;
+  jboolean isNeg;
+  if (num < 0)
+    {
+      isNeg = JNI_TRUE;
+      num = -(num);
+      if (num < 0)
+	{
+	  /* Must be MIN_VALUE, so handle this special case.
+	     FIXME use 'unsigned jint' for num. */
+	  *--ptr = '8';
+	  num = 214748364;
+	}
+    }
+  else
+    isNeg = JNI_FALSE;
+
+  do
+    {
+      *--ptr = (char) ((int) '0' + (num % 10));
+      num /= 10;
+    }
+  while (num > 0);
+
+  if (isNeg)
+    *--ptr = '-';
+  return bufend - ptr;
+}

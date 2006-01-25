@@ -50,6 +50,9 @@ exception statement from your version. */
 #include "target_native.h"
 #ifndef WITHOUT_NETWORK
 #include "target_native_network.h"
+#endif /* WITHOUT_NETWORK */
+
+#ifndef WITHOUT_NETWORK
 /* Need to have some value for SO_TIMEOUT */
 #ifndef SO_TIMEOUT
 #ifndef SO_RCVTIMEO
@@ -337,10 +340,10 @@ _javanet_set_remhost (JNIEnv * env, jobject this, int netaddr)
 /*
  * Returns a 32 bit Internet address for the passed in InetAddress object
  */
-#ifndef WITHOUT_NETWORK
 int
 _javanet_get_netaddr (JNIEnv * env, jobject addr)
 {
+#ifndef WITHOUT_NETWORK
   jclass cls = 0;
   jmethodID mid;
   jarray arr = 0;
@@ -397,8 +400,9 @@ _javanet_get_netaddr (JNIEnv * env, jobject addr)
   DBG ("_javanet_get_netaddr(): Done getting addr\n");
 
   return netaddr;
-}
+#else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
+}
 
 /*************************************************************************/
 
@@ -523,8 +527,8 @@ _javanet_connect (JNIEnv * env, jobject this, jobject addr, jint port,
 #ifndef WITHOUT_NETWORK
   int netaddr, fd;
   int result;
-  jint local_address, local_port;
-  jint remote_address, remote_port;
+  int local_address, local_port;
+  int remote_address, remote_port;
 
   DBG ("_javanet_connect(): Entered _javanet_connect\n");
 
@@ -548,24 +552,17 @@ _javanet_connect (JNIEnv * env, jobject this, jobject addr, jint port,
   DBG ("_javanet_connect(): Got native fd\n");
 
   /* Connect up */
-  TARGET_NATIVE_NETWORK_SOCKET_CONNECT (fd, netaddr, port, result);
-  if (result != TARGET_NATIVE_OK)
+  do
     {
-      switch (TARGET_NATIVE_LAST_ERROR())
+      TARGET_NATIVE_NETWORK_SOCKET_CONNECT (fd, netaddr, port, result);
+      if (result != TARGET_NATIVE_OK
+	  && (TARGET_NATIVE_LAST_ERROR ()
+	      != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL))
 	{
-	case TARGET_NATIVE_ERROR_TIMEDOUT:
-	  JCL_ThrowException(env,
-			     SOCKET_TIMEOUT_EXCEPTION,
-			     "connect timed out");
-	  break;
-	default:
-	  JCL_ThrowException(env,
-			     IO_EXCEPTION,
-			     TARGET_NATIVE_LAST_ERROR_STRING()
-			     );
-	  break;
+	  JCL_ThrowException (env, IO_EXCEPTION,
+			      TARGET_NATIVE_LAST_ERROR_STRING ());
+	  return;
 	}
-      return;
     }
   while (result != TARGET_NATIVE_OK);
 
@@ -671,7 +668,7 @@ _javanet_bind (JNIEnv * env, jobject this, jobject addr, jint port,
   jint fd;
   int tmpaddr;
   int result;
-  jint local_address, local_port;
+  int local_address, local_port;
 
   DBG ("_javanet_bind(): Entering native bind()\n");
 
@@ -727,7 +724,7 @@ _javanet_bind (JNIEnv * env, jobject this, jobject addr, jint port,
 
   if (result != TARGET_NATIVE_OK)
     {
-      const char *errorstr = TARGET_NATIVE_LAST_ERROR_STRING ();
+      char *errorstr = TARGET_NATIVE_LAST_ERROR_STRING ();
       (*env)->ReleaseByteArrayElements (env, arr, octets, 0);
 
       JCL_ThrowException (env, BIND_EXCEPTION,
@@ -807,8 +804,8 @@ _javanet_accept (JNIEnv * env, jobject this, jobject impl)
 #ifndef WITHOUT_NETWORK
   int fd, newfd;
   int result;
-  jint local_address, local_port;
-  jint remote_address, remote_port;
+  int local_address, local_port;
+  int remote_address, remote_port;
 
   /* Get the real file descriptor */
   fd = _javanet_get_int_field (env, this, "native_fd");
@@ -939,7 +936,7 @@ _javanet_recvfrom (JNIEnv * env, jobject this, jarray buf, int offset,
 #ifndef WITHOUT_NETWORK
   int fd;
   jbyte *p;
-  jint from_address, from_port;
+  int from_address, from_port;
   int received_bytes;
 
   DBG ("_javanet_recvfrom(): Entered _javanet_recvfrom\n");
@@ -1071,16 +1068,12 @@ _javanet_sendto (JNIEnv * env, jobject this, jarray buf, int offset, int len,
 
       if (bytes_sent < 0)
 	{
-	  if (TARGET_NATIVE_LAST_ERROR()
-	      == TARGET_NATIVE_ERROR_CONNECTION_REFUSED)
+	  if (TARGET_NATIVE_LAST_ERROR ()
+	      != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL)
 	    {
-	      JCL_ThrowException(env, PORT_UNREACHABLE_EXCEPTION,
-				 TARGET_NATIVE_LAST_ERROR_STRING());
-	    }
-	  else
-	    {
-	      JCL_ThrowException(env, IO_EXCEPTION,
-				 TARGET_NATIVE_LAST_ERROR_STRING());
+	      JCL_ThrowException (env, IO_EXCEPTION,
+				  TARGET_NATIVE_LAST_ERROR_STRING ());
+	      break;
 	    }
 	}
       else
@@ -1225,7 +1218,7 @@ _javanet_set_option (JNIEnv * env, jobject this, jint option_id, jobject val)
 	TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_SNDBUF (fd, optval,
 							   result);
       else
-	TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_RCVBUF (fd, optval,
+	TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_RCDBUF (fd, optval,
 							   result);
       break;
 
@@ -1323,7 +1316,7 @@ _javanet_get_option (JNIEnv * env, jobject this, jint option_id)
 #ifndef WITHOUT_NETWORK
   int fd;
   int flag, optval;
-  jint address;
+  int address;
   int result;
 
   /* Get the real file descriptor */
@@ -1399,7 +1392,7 @@ _javanet_get_option (JNIEnv * env, jobject this, jint option_id)
 	TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_SNDBUF (fd, optval,
 							   result);
       else
-	TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_RCVBUF (fd, optval,
+	TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_RCDBUF (fd, optval,
 							   result);
       if (result != TARGET_NATIVE_OK)
 	{
@@ -1468,22 +1461,6 @@ _javanet_get_option (JNIEnv * env, jobject this, jint option_id)
 
       break;
 
-      case SOCKOPT_SO_BROADCAST:
-        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST(fd,optval,result);
-        if (result != TARGET_NATIVE_OK)
-          {
-            JCL_ThrowException(env, SOCKET_EXCEPTION,
-			       TARGET_NATIVE_LAST_ERROR_STRING());
-            return NULL;
-          }
-
-        if (optval)
-          return(_javanet_create_boolean(env, JNI_TRUE));
-        else
-          return(_javanet_create_boolean(env, JNI_FALSE));
-
-        break;
-
     case SOCKOPT_SO_KEEPALIVE:
       TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_KEEP_ALIVE (fd, optval, result);
       if (result != TARGET_NATIVE_OK)
@@ -1505,18 +1482,15 @@ _javanet_get_option (JNIEnv * env, jobject this, jint option_id)
       return (0);
     }
 
-  return NULL;
+  return (0);
 #else /* not WITHOUT_NETWORK */
-  return NULL;
 #endif /* not WITHOUT_NETWORK */
 }
 
 void
 _javanet_shutdownInput (JNIEnv * env, jobject this)
 {
-#ifndef WITHOUT_NETWORK
   int fd;
-  int  result;
 
   /* Get the real file descriptor. */
   fd = _javanet_get_int_field (env, this, "native_fd");
@@ -1528,22 +1502,18 @@ _javanet_shutdownInput (JNIEnv * env, jobject this)
     }
 
   /* Shutdown input stream of socket. */
-  TARGET_NATIVE_NETWORK_SOCKET_SHUTDOWN_INPUT(fd, result);
-  if (result != TARGET_NATIVE_OK)
+  if (shutdown (fd, SHUT_RD) == -1)
     {
       JCL_ThrowException (env, SOCKET_EXCEPTION,
 			  TARGET_NATIVE_LAST_ERROR_STRING());
       return;
     }
-#endif /* not WITHOUT_NETWORK */
 }
 
 void
 _javanet_shutdownOutput (JNIEnv * env, jobject this)
 {
-#ifndef WITHOUT_NETWORK
   int fd;
-  int  result;
 
   /* Get the real file descriptor. */
   fd = _javanet_get_int_field (env, this, "native_fd");
@@ -1555,13 +1525,12 @@ _javanet_shutdownOutput (JNIEnv * env, jobject this)
     }
 
   /* Shutdown output stream of socket. */
-  TARGET_NATIVE_NETWORK_SOCKET_SHUTDOWN_OUTPUT(fd, result);
-  if (result != TARGET_NATIVE_OK)
-  {
-    JCL_ThrowException (env, SOCKET_EXCEPTION,
-			TARGET_NATIVE_LAST_ERROR_STRING());
-    return;
-  }
-#endif /* not WITHOUT_NETWORK */
+  if (shutdown (fd, SHUT_WR) == -1)
+    {
+      JCL_ThrowException (env, SOCKET_EXCEPTION,
+			  TARGET_NATIVE_LAST_ERROR_STRING());
+      return;
+    }
 }
+
 /* end of file */

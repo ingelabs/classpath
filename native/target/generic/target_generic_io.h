@@ -1,5 +1,5 @@
-/* target_generic_io.h - Native methods for generic I/O operations
-   Copyright (C) 1998, 2006 Free Software Foundation, Inc.
+/* generic_math_int64.h - Native methods for 64bit math operations
+   Copyright (C) 1998 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -57,10 +57,6 @@ Systems    : all
 
 #include "target_native.h"
 
-#ifdef NEW_CP
-#include "../posix/target_posix_io.h"
-#endif
-
 /****************** Conditional compilation switches *******************/
 
 /***************************** Constants *******************************/
@@ -71,186 +67,11 @@ Systems    : all
 
 /****************************** Macros *********************************/
 
-/***********************************************************************\
-* Name       : TARGET_NATIVE_IO_READ_STDIN
-* Purpose    : read data from stdin
-* Input      : -
-* Output     : -
-* Return     : -
-* Side-effect: unknown
-* Notes      : -
-\***********************************************************************/
-
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_IO_READ_STDIN
-  #ifndef HAVE_UNISTD_H
-    #error no unistd.h: read() not available
-  #endif
-  #include <unistd.h>
-  #define TARGET_NATIVE_IO_READ_STDIN(buffer,length,bytesRead,result) \
-    do { \
-      bytesRead=read(0,buffer,length); \
-      result=(bytesRead!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-    } while (0)
-#endif
-#else /* NEW_CP */
-    #define TARGET_NATIVE_IO_READ_STDIN(buffer,length,bytesWritten,result) \
-      CP_IO_READ_STDIN(buffer,length,bytesWritten,result)
-#endif /* NEW_CP */
-
-/***********************************************************************\
-* Name       : TARGET_NATIVE_IO_WRITE_STDOUT
-* Purpose    : write data to stdout
-* Input      : -
-* Output     : -
-* Return     : -
-* Side-effect: unknown
-* Notes      : -
-\***********************************************************************/
-
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_IO_WRITE_STDOUT
-  #ifndef HAVE_UNISTD_H
-    #error no unistd.h: write() not available
-  #endif
-  #include <unistd.h>
-  #define TARGET_NATIVE_IO_WRITE_STDOUT(buffer,length,bytesWritten,result) \
-    do { \
-      bytesWritten=write(1,buffer,length); \
-      result=(bytesWritten!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-    } while (0)
-#endif
-#else /* NEW_CP */
-    #define TARGET_NATIVE_IO_WRITE_STDOUT(buffer,length,bytesWritten,result) \
-      CP_IO_WRITE_STDOUT(buffer,length,bytesWritten,result)
-#endif /* NEW_CP */
-
-/***********************************************************************\
-* Name       : write data to stderr
-* Purpose    : write data to stderr
-* Input      : -
-* Output     : -
-* Return     : -
-* Side-effect: unknown
-* Notes      : -
-\***********************************************************************/
-
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_IO_WRITE_STDERR
-  #ifndef HAVE_UNISTD_H
-    #error no unistd.h: write() not available
-  #endif
-  #include <unistd.h>
-  #define TARGET_NATIVE_IO_WRITE_STDERR(buffer,length,bytesWritten,result) \
-    do { \
-      bytesWritten=write(2,buffer,length); \
-      result=(bytesWritten!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-    } while (0)
-#endif
-#else /* NEW_CP */
-    #define TARGET_NATIVE_IO_WRITE_STDERR(buffer,length,bytesWritten,result) \
-      CP_IO_WRITE_STDERR(buffer,length,bytesWritten,result)
-#endif /* NEW_CP */
-
-/*---------------------------------------------------------------------*/
-
-/***********************************************************************\
-* Name       : TARGET_NATIVE_IO_PRINT
-* Purpose    : print formated string to stdout
-* Input      : format - format string (like printf)
-*              args   - optional arguments
-* Output     : -
-* Return     : number of characters printed
-* Side-effect: unknown
-* Notes      : Even if printf() is an ANSI-C function a macro is used
-*              to be able to use some other output channels than stdout
-*              (e. g. a file or a serial port).
-*
-*              Hint: for non-gcc compilers only then name is defined and
-*              a function is inserted, because of variable number of
-*              arguments. Only the preprocessor of gcc support a
-*              feature for defining macros with variable parameters. To
-*              be able to use an other compiler the macro only replaces
-*              the name with some function implementing the output of a
-*              string with variable parameters (like printf)
-\***********************************************************************/
-
-/* __PUBLIC_BEGIN__ */
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_IO_PRINT
-/* still not active, because of strange macro problem x=(TARGET_NATIVE_IO_PRINT_ERROR(...),b) */
-  #ifdef x__GNUC__
-    #include <stdio.h>
-    #define TARGET_NATIVE_IO_PRINT(format,args...) \
-      fprintf(stdout,format, ## args)
-  #else
-    #define TARGET_NATIVE_IO_PRINT_GENERIC
-    #define TARGET_NATIVE_IO_PRINT targetGenericIO_printf
-  #endif
-#endif
-#else /* NEW_CP */
-    #define TARGET_NATIVE_IO_PRINT \
-      CP_IO_PRINT
-#endif /* NEW_CP */
-/* __PUBLIC_END__ */
-
-/***********************************************************************\
-* Name       : TARGET_NATIVE_IO_PRINT_ERROR
-* Purpose    : print formated string to stderr
-* Input      : format - format string (like printf)
-*              args   - optional arguments
-* Output     : -
-* Return     : number of characters printed
-* Side-effect: unknown
-* Notes      : Even if printf() is an ANSI-C function a macro is used
-*              to be able to use some other output channels than stderr
-*              (e. g. a file or a serial port).
-*
-*              Hint: for non-gcc compilers only then name is defined and
-*              a function is inserted, because of variable number of
-*              arguments. Only the preprocessor of gcc support a
-*              feature for defining macros with variable parameters. To
-*              be able to use an other compiler the macro only replaces
-*              the name with some function implementing the output of a
-*              string with variable parameters (like printf)
-\***********************************************************************/
-
-/* __PUBLIC_BEGIN__ */
-#ifndef NEW_CP
-#ifndef TARGET_NATIVE_IO_PRINT_ERROR
-/* still not active, because of strange macro problem x=(TARGET_NATIVE_IO_PRINT_ERROR(...),b) */
-  #ifdef x__GNUC__
-    #include <stdio.h>
-    #define TARGET_NATIVE_IO_PRINT_ERROR(format,args...) \
-      fprintf(stderr,format, ## args)
-  #else
-    #define TARGET_NATIVE_IO_PRINT_ERROR_GENERIC
-    #define TARGET_NATIVE_IO_PRINT_ERROR targetGenericIO_printf_stderr
-  #endif
-#endif
-#else /* NEW_CP */
-    #define TARGET_NATIVE_IO_PRINT_ERROR \
-      CP_IO_PRINT_ERROR
-#endif /* NEW_CP */
-/* __PUBLIC_END__ */
-
 /***************************** Functions *******************************/
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
 #endif
-
-/* __PUBLIC_BEGIN__ */
-#ifdef TARGET_NATIVE_IO_PRINT_GENERIC
-int targetGenericIO_printf(const char *format, ...);
-#endif /* TARGET_NATIVE_IO_PRINT_GENERIC */
-/* __PUBLIC_END__ */
-
-/* __PUBLIC_BEGIN__ */
-#ifdef TARGET_NATIVE_IO_PRINT_ERROR_GENERIC
-int targetGenericIO_printf_stderr(const char *format, ...);
-#endif /* TARGET_NATIVE_IO_PRINT_ERROR_GENERIC */
-/* __PUBLIC_END__ */
 
 #ifdef __cplusplus
 }

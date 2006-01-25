@@ -36,19 +36,22 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 #include <config.h>
+#include <errno.h>
 
 #include <jni.h>
 #include <jcl.h>
 
-#include <string.h>
-#ifdef HAVE_UNISTD_H
-  #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
-
-#include "target_native.h"
-#include "target_native_memory.h"
-
 #include "java_nio_MappedByteBufferImpl.h"
+
+#include <errno.h>
+#include <string.h>
+#include <stdlib.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif /* HAVE_UNISTD_H */
+#ifdef HAVE_SYS_MMAN_H
+#include <sys/mman.h>
+#endif /* HAVE_SYS_MMAN_H */
 
 #define IO_EXCEPTION "java/io/IOException"
 
@@ -70,8 +73,6 @@ get_pagesize (void)
   return getpagesize ();
 #elif defined (HAVE_SYSCONF)
   return sysconf (_SC_PAGESIZE);
-#else
-  return 0;
 #endif /* HAVE_GETPAGESIZE / HAVE_SYSCONF */
 }
 
@@ -134,17 +135,15 @@ Java_java_nio_MappedByteBufferImpl_unmapImpl (JNIEnv *env, jobject this)
 #ifdef HAVE_MUNMAP
   void *address;
   size_t size;
-  int result;
 
   get_raw_values (env, this, &address, &size);
 
   if (address == NULL)
     return;
 
-  TARGET_NATIVE_MEMORY_UNMAP(address,size,result);
-  if (result != TARGET_NATIVE_OK)
+  if (munmap (address, size) != 0)
     {
-      JCL_ThrowException (env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING ());
+      JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
       return;
     }
 #else
@@ -186,7 +185,7 @@ Java_java_nio_MappedByteBufferImpl_isLoadedImpl (JNIEnv * env, jobject this)
 #endif /* __cplusplus */
     {
       free (vec);
-      JCL_ThrowException (env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING ());
+      JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
       return JNI_FALSE;
     }
 
@@ -234,7 +233,7 @@ Java_java_nio_MappedByteBufferImpl_forceImpl (JNIEnv *env, jobject this)
   /* FIXME: is using MS_SYNC ok? Should we use MS_INVALIDATE? */
   if (msync (address, size, MS_SYNC) != 0)
     {
-      JCL_ThrowException (env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING ());
+      JCL_ThrowException (env, IO_EXCEPTION, strerror (errno));
     }
 #else
   JCL_ThrowException (env, IO_EXCEPTION,

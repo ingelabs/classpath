@@ -1,5 +1,5 @@
-/* target_native.h - General definitions for the embOS platform
-   Copyright (C) 2006 Free Software Foundation, Inc.
+/* generic_math_int64.h - Native methods for 64bit math operations
+   Copyright (C) 1998 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,18 +36,27 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 /*
-Description: embOS target global defintions
+Description: generic target defintions of float/double constants/
+             macros/functions
 Systems    : all
 */
 
-#ifndef __TARGET_NATIVE__
-#define __TARGET_NATIVE__
+#ifndef __TARGET_GENERIC_MATH_FLOAT__
+#define __TARGET_GENERIC_MATH_FLOAT__
+
+/* check if target_native_math_float.h included */
+#ifndef __TARGET_NATIVE_MATH_FLOAT__
+  #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
+#endif
 
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
-#include <config.h>
+#include "config.h"
 
 #include <stdlib.h>
+#include <assert.h>
+
+#include <jni.h>
 
 /****************** Conditional compilation switches *******************/
 
@@ -59,20 +68,63 @@ Systems    : all
 
 /****************************** Macros *********************************/
 
+/* test float/double values for NaN,Inf */
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_ISNAN
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_ISNAN(f) isnan(f)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_ISINF
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_ISINF(f) isinf(f)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE(f) finite(f)
+#endif
+
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISNAN
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISNAN(d) isnan(d)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISINF
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISINF(d) isinf(d)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE(d) finite(d)
+#endif
+
+/* division, modulo operations (used to avoid unexcepted exceptions on some
+   targets; generic codes are direct operations without checks)
+*/
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_DIV
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_DIV(f0,f1) ((f0)/(f1))
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_MOD
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_MOD(f0,f1) ((jfloat)fmod((jdouble)(f0),(jdouble)(f1)))
+#endif
+
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_DIV
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_DIV(d0,d1) ((d0)/(d1))
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_MOD
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_MOD(d0,d1) fmod(d0,d1)
+#endif
+
 /***************************** Functions *******************************/
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-/* include rest of definitions from generic file (do not move it to 
-   another position!) */
-#include "target_generic.h"
-
-#endif /* __TARGET_NATIVE__ */
+#endif /* __TARGET_GENERIC_MATH_FLOAT__ */
 
 /* end of file */
+

@@ -1,5 +1,5 @@
-/* target_native_misc.h - Miscallaneous operations for the SunOS platform
-   Copyright (C) 2006 Free Software Foundation, Inc.
+/* ???.h - ???
+   Copyright (C) 1998 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,12 +36,13 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 /*
-Description: Linux target defintions of miscellaneous functions
+Description: Linux target defintions of float/double constants/
+             macros/functions
 Systems    : all
 */
 
-#ifndef __TARGET_NATIVE_MISC__
-#define __TARGET_NATIVE_MISC__
+#ifndef __TARGET_NATIVE_MATH_FLOAT__
+#define __TARGET_NATIVE_MATH_FLOAT__
 
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
@@ -71,9 +72,9 @@ extern "C" {
 
 /* include rest of definitions from generic file (do not move it to 
    another position!) */
-#include "target_generic_misc.h"
+#include "target_generic_math_float.h"
 
-#endif /* __TARGET_NATIVE_MISC__ */
+#endif /* __TARGET_NATIVE_MATH_FLOAT__ */
 
 /* end of file */
 

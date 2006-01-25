@@ -30,15 +30,6 @@ case "$host_os" in
 	;;
 esac
 
-dnl get the target for the native layer
-case "$target_os" in
-    * )
-        dnl XXX change me when transition to target native layer is done
-        TARGET=Linux
-        ;;
-esac
-AC_SUBST(TARGET)
-
 CLASSPATH_MODULE="${cp_module} -version-info ${LIBVERSION} -no-undefined"
 AC_SUBST(CLASSPATH_MODULE)
 
@@ -187,22 +178,6 @@ AC_ARG_ENABLE([qt-peer],
               [COMPILE_QT_PEER=no])
 AM_CONDITIONAL(CREATE_QT_PEER_LIBRARIES, test "x${COMPILE_QT_PEER}" = xyes)
 
-dnl -----------------------------------------------------------
-dnl Posix layer (disabled by default)
-dnl -----------------------------------------------------------
-AC_ARG_ENABLE([posix-layer],
-              [AS_HELP_STRING(--enable-posix-layer, build the target posix layer [default=no])],
-              [case "${enableval}" in
-                yes) ENABLE_POSIX=yes ;;
-                no) ENABLE_POSIX=no ;;
-                *) ENABLE_POSIX=yes ;;
-              esac],
-              [ENABLE_POSIX=no])
-AC_SUBST(NEW_CP)
-if test "x${ENABLE_POSIX}" = xyes; then
-  AC_DEFINE(NEW_CP, 1, [defined if the posix layer should be used])
-fi
-AM_CONDITIONAL(CREATE_POSIX, test "x${ENABLE_POSIX}" = xyes)
 
 dnl -----------------------------------------------------------
 dnl Sets the native libraries installation dir
@@ -301,8 +276,6 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_HEADER_TIME
   AC_STRUCT_TM
   AC_STRUCT_TIMEZONE
-
-  TYPE_SOCKLEN_T
 
   AC_MSG_CHECKING([for tm_gmtoff in struct tm])
   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <time.h>]],[[struct tm tim; tim.tm_gmtoff = 0;]])],
@@ -614,11 +587,6 @@ native/jni/midi-alsa/Makefile
 native/jni/midi-dssi/Makefile
 native/target/Makefile
 native/target/Linux/Makefile
-native/target/embOS/Makefile
-native/target/SunOS/Makefile
-native/target/RTEMS/Makefile
-native/target/MinGW/Makefile
-native/target/posix/Makefile
 native/target/generic/Makefile
 resource/Makefile
 scripts/Makefile

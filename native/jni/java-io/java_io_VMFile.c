@@ -46,9 +46,9 @@ exception statement from your version. */
 
 #include "target_native.h"
 #ifndef WITHOUT_FILESYSTEM
-  #include "target_native_file.h"
+#include "target_native_file.h"
 #endif
-#include "target_native_math.h"
+#include "target_native_math_int.h"
 
 #include "java_io_VMFile.h"
 
@@ -81,7 +81,8 @@ Java_java_io_VMFile_create (JNIEnv * env,
   TARGET_NATIVE_FILE_OPEN_CREATE (filename, fd, result);
   if (result != TARGET_NATIVE_OK)
     {
-      if (TARGET_NATIVE_LAST_ERROR() != TARGET_NATIVE_ERROR_FILE_EXISTS)
+      /* XXX ??? NYI */
+      if (errno != EEXIST)
 	JCL_ThrowException (env,
 			    "java/io/IOException",
 			    TARGET_NATIVE_LAST_ERROR_STRING ());
@@ -363,14 +364,12 @@ Java_java_io_VMFile_length (JNIEnv * env,
   TARGET_NATIVE_FILE_OPEN_READ (filename, tmpfd, result);
   if (result != TARGET_NATIVE_OK)
     {
-      (*env)->ReleaseStringUTFChars(env, name, filename);
       return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
     }
   TARGET_NATIVE_FILE_SIZE (tmpfd, length, result);
   if (result != TARGET_NATIVE_OK)
     {
       TARGET_NATIVE_FILE_CLOSE (tmpfd, result);
-      (*env)->ReleaseStringUTFChars(env, name, filename);
       return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
     }
   TARGET_NATIVE_FILE_CLOSE (tmpfd, result);
@@ -596,7 +595,7 @@ Java_java_io_VMFile_list (JNIEnv * env, jobject obj
   int result;
   char **filelist;
   void *handle;
-  char filename[256];
+  const char *filename;
   unsigned long int filelist_count, max_filelist_count;
   char **tmp_filelist;
   jclass str_clazz;
@@ -633,7 +632,7 @@ Java_java_io_VMFile_list (JNIEnv * env, jobject obj
   max_filelist_count = REALLOC_SIZE;
 
   /* read the files from the directory */
-  TARGET_NATIVE_FILE_READ_DIR (handle, filename, sizeof(filename), result);
+  TARGET_NATIVE_FILE_READ_DIR (handle, filename, result);
   while (result == TARGET_NATIVE_OK)
     {
       if ((strcmp (filename, ".") != 0) && (strcmp (filename, "..") != 0))
@@ -641,13 +640,11 @@ Java_java_io_VMFile_list (JNIEnv * env, jobject obj
 	  /* allocate more memory if necessary */
 	  if (filelist_count >= max_filelist_count)
 	    {
-              tmp_filelist = (char **) JCL_realloc (env,
+	      tmp_filelist = (char **) JCL_realloc (env,
 						    filelist,
-                                                    max_filelist_count
-						    * sizeof (char *),
-                                                    (max_filelist_count
-						     + REALLOC_SIZE)
-						    * sizeof (char *));
+						    (max_filelist_count +
+						     REALLOC_SIZE) *
+						    sizeof (char *));
 	      if (tmp_filelist == NULL)
 		{
 		  for (i = 0; i < filelist_count; i++)
@@ -671,7 +668,7 @@ Java_java_io_VMFile_list (JNIEnv * env, jobject obj
 	}
 
       /* read next directory entry */
-      TARGET_NATIVE_FILE_READ_DIR (handle, filename, sizeof(filename), result);
+      TARGET_NATIVE_FILE_READ_DIR (handle, filename, result);
     }
 
   /* close directory */

@@ -73,6 +73,6 @@ extern "C" {
    another position!) */
 #include "target_generic_io.h"
 
-#endif /* __TARGET_NATIVE_IO__ */
+#endif /* __TARGET_NATIVE_MISC__ */
 
 /* end of file */

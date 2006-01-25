@@ -1,5 +1,5 @@
-/* target_native_memory.h - Memory operations for the embOS platform
-   Copyright (C) 2006 Free Software Foundation, Inc.
+/* ???.h - ???
+   Copyright (C) 1998 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,12 +36,13 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 /*
-Description: embOS target defintions of memory functions
+Description: Linux target defintions of int/int64 constants/
+             macros/functions
 Systems    : all
 */
 
-#ifndef __TARGET_NATIVE_MEMORY__
-#define __TARGET_NATIVE_MEMORY__
+#ifndef __TARGET_NATIVE_MATH_INT__
+#define __TARGET_NATIVE_MATH_INT__
 
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
@@ -71,8 +72,9 @@ extern "C" {
 
 /* include rest of definitions from generic file (do not move it to 
    another position!) */
-#include "target_generic_memory.h"
+#include "target_generic_math_int.h"
 
-#endif /* __TARGET_NATIVE_MEMORY__ */
+#endif /* __TARGET_NATIVE_MATH_INT__ */
 
 /* end of file */
+

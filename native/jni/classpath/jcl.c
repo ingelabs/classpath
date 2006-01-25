@@ -40,14 +40,7 @@ exception statement from your version. */
 
 #include <stdlib.h>
 #include <stdio.h>
-
-#include "target_native.h"
-#include "target_native_io.h"
-#include "target_native_memory.h"
-#include "target_native_misc.h"
-
 #include <jcl.h>
-
 
 #ifndef __GNUC__
   #ifndef __attribute__
@@ -95,8 +88,7 @@ JCL_ThrowException (JNIEnv * env, const char *className, const char *errMsg)
 JNIEXPORT void *JNICALL
 JCL_malloc (JNIEnv * env, size_t size)
 {
-  void *mem;
-  TARGET_NATIVE_MEMORY_ALLOC(mem,void *,size);
+  void *mem = malloc (size);
   if (mem == NULL)
     {
       JCL_ThrowException (env, "java/lang/OutOfMemoryError",
@@ -106,27 +98,17 @@ JCL_malloc (JNIEnv * env, size_t size)
   return mem;
 }
 
-/* The __attribute__((__unused__)) for oldsize is kind of a hack that is
- * necessary to make the compiler silent. However, the problem is that we
- * don't know if the parameter is used or not, this depends on which target
- * we compile for. TARGET_NATIVE_MEMORY_REALLOC may or may not use this
- * parameter. This problem will hopefully be solved when we switch the target
- * native layer to using functions instead of macros. */
 JNIEXPORT void *JNICALL
-JCL_realloc (JNIEnv * env, void *ptr,
-	     size_t oldsize __attribute__((__unused__)), size_t newsize)
+JCL_realloc (JNIEnv * env, void *ptr, size_t size)
 {
-  void *newptr;
-
-  TARGET_NATIVE_MEMORY_REALLOC(ptr, newptr, void*, oldsize, newsize);
-  if (newptr == 0)
+  ptr = realloc (ptr, size);
+  if (ptr == 0)
     {
       JCL_ThrowException (env, "java/lang/OutOfMemoryError",
 			  "malloc() failed.");
       return NULL;
     }
-
-  return newptr;
+  return (ptr);
 }
 
 JNIEXPORT void JNICALL
@@ -134,7 +116,7 @@ JCL_free (JNIEnv * env __attribute__ ((unused)), void *p)
 {
   if (p != NULL)
     {
-      TARGET_NATIVE_MEMORY_FREE (p);
+      free (p);
     }
 }
 
