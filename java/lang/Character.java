@@ -1739,6 +1739,79 @@ public final class Character implements Serializable, Comparable
                | (1 << MODIFIER_LETTER)
                | (1 << OTHER_LETTER))) != 0;
   }
+  
+  /**
+   * Returns the number of Unicode code points in the specified range of the
+   * given CharSequence.  The first char in the range is at position
+   * beginIndex and the last one is at position endIndex - 1.  Paired 
+   * surrogates (supplementary characters are represented by a pair of chars - 
+   * one from the high surrogates and one from the low surrogates) 
+   * count as just one code point.
+   * @param seq the CharSequence to inspect
+   * @param beginIndex the beginning of the range
+   * @param endIndex the end of the range
+   * @return the number of Unicode code points in the given range of the 
+   * sequence
+   * @throws NullPointerException if seq is null
+   * @throws IndexOutOfBoundsException if beginIndex is negative, endIndex is
+   * larger than the length of seq, or if beginIndex is greater than endIndex.
+   * @since 1.5
+   */
+  public static int codePointCount(CharSequence seq, int beginIndex,
+                                   int endIndex)
+  {
+    int len = seq.length();
+    if (beginIndex < 0 || endIndex > len || beginIndex > endIndex)
+      throw new IndexOutOfBoundsException();
+        
+    int count = 0;
+    for (int i = beginIndex; i < endIndex; i++)
+      {
+        count++;
+        // If there is a pairing, count it only once.
+        if (isHighSurrogate(seq.charAt(i)) && (i + 1) < endIndex
+            && isLowSurrogate(seq.charAt(i + 1)))
+          i ++;
+      }    
+    return count;
+  }
+  
+  /**
+   * Returns the number of Unicode code points in the specified range of the
+   * given char array.  The first char in the range is at position
+   * offset and the length of the range is count.  Paired surrogates
+   * (supplementary characters are represented by a pair of chars - 
+   * one from the high surrogates and one from the low surrogates) 
+   * count as just one code point.
+   * @param a the char array to inspect
+   * @param offset the beginning of the range
+   * @param count the length of the range
+   * @return the number of Unicode code points in the given range of the 
+   * array
+   * @throws NullPointerException if a is null
+   * @throws IndexOutOfBoundsException if offset or count is negative or if 
+   * offset + countendIndex is larger than the length of a.
+   * @since 1.5
+   */
+  public static int codePointCount(char[] a, int offset,
+                                   int count)
+  {
+    int len = a.length;
+    int end = offset + count;
+    if (offset < 0 || count < 0 || end > len)
+      throw new IndexOutOfBoundsException();
+        
+    int counter = 0;
+    for (int i = offset; i < end; i++)
+      {
+        counter++;
+        // If there is a pairing, count it only once.
+        if (isHighSurrogate(a[i]) && (i + 1) < end
+            && isLowSurrogate(a[i + 1]))
+          i ++;
+      }    
+    return counter;
+  }
 
   /**
    * Determines if a character is a Unicode letter or a Unicode digit. This

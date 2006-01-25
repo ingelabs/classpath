@@ -1,3 +1,9 @@
+2006-01-25  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/lang/Character.java:
+	(codePointCount(char[], int, int)): New API method.
+	(codePointCount(CharSequence, int, int)): Likewise.
+
 2006-01-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 25205
