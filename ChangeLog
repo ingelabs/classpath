@@ -1,5 +1,13 @@
 2006-01-25  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JSplitPane.java
+	(addImpl): Removed invalidate() and layout() call.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(PropertyHandler.propertyChange): Remove layoutContainer() and
+	repaint() call.
+
+2006-01-25  Roman Kennke  <kennke@aicas.com>
+
 	* configure.ac
 	* native/Makefile.am
 	* native/jni/classpath/Makefile.am

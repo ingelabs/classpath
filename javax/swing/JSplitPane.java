@@ -345,8 +345,6 @@ public class JSplitPane extends JComponent implements Accessible
 
         super.addImpl(comp, constraints, index);
       }
-    invalidate();
-    layout();
   }
 
   /**

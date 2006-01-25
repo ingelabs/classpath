@@ -823,8 +823,6 @@ public class BasicSplitPaneUI extends SplitPaneUI
           if (prop <= 1 && prop >= 0)
             splitPane.setDividerLocation(prop);
         }
-      layoutManager.layoutContainer(splitPane);
-      splitPane.repaint();
       // Don't have to deal with continuous_layout - only
       // necessary in dragging modes (and it's checked
       // every time you drag there)
