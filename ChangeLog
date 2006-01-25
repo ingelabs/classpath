@@ -1,5 +1,30 @@
 2006-01-25  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/FormView.java: New file.
+
+2006-01-25  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JSplitPane.java
+	(addImpl): Call resetToPreferredSizes() when no dividerLocation
+	has been set in order to set an initial layout.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(BasicHorizontalLayoutManager.layoutContainer): Fixed error for
+	layout of the right component.
+	(BasicHorizontalLayoutManager.resetToPreferredSizes): Set the
+	dividerLocation to the size of the left component.
+	(createDefaultNonContinuousLayoutDivider): Fetch the color from
+	the UIManager.
+	(setDividerLocation): Don't validate the location here. Sometimes
+	the divider needs to be set to an invalid location.
+	(startDragging): Don't revalidate and repaint here.
+	(finishDraggingTo): Don't repaint here. Also, don't call
+	dragDividerTo() here.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added SplitPaneDivider.draggingColor
+	default value.
+
+2006-01-25  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JSplitPane.java
 	(addImpl): Removed invalidate() and layout() call.
 	* javax/swing/plaf/basic/BasicSplitPaneUI.java
