@@ -114,6 +114,7 @@ import javax.swing.tree.TreeSelectionModel;
  * @see javax.swing.JTree
  * @author Lillian Angel (langel@redhat.com)
  * @author Sascha Brawer (brawer@dandelis.ch)
+ * @author Audrius Meskauskas (audriusa@bioinformatics.org)
  */
 public class BasicTreeUI extends TreeUI
 {
@@ -224,12 +225,6 @@ public class BasicTreeUI extends TreeUI
 
   /** Set to true if the editor has a different size than the renderer. */
   protected boolean editorHasDifferentSize;
-
-  /** The action listener for the editor's Timer. */
-  Timer editorTimer = new EditorUpdateTimer();
-
-  /** The new value of the node after editing. */
-  Object newVal;
 
   /** The action bound to KeyStrokes. */
   TreeAction action;
@@ -796,7 +791,10 @@ public class BasicTreeUI extends TreeUI
   public boolean stopEditing(JTree tree)
   {
     if (isEditing(tree))
-      completeEditing(true, false, false);
+      {
+        completeEditing(false, false, true);
+        finish();
+      }
     return !isEditing(tree);
   }
 
@@ -807,9 +805,12 @@ public class BasicTreeUI extends TreeUI
    *          is the tree to cancel the editing session on.
    */
   public void cancelEditing(JTree tree)
-  {
-    if (isEditing(tree))
-      completeEditing(false, true, false);
+  {   
+      // There is no need to send the cancel message to the editor,
+      // as the cancellation event itself arrives from it. This would
+      // only be necessary when cancelling the editing programatically.
+      completeEditing(false, false, false);
+      finish();
   }
 
   /**
@@ -1246,7 +1247,7 @@ public class BasicTreeUI extends TreeUI
   protected void pathWasExpanded(TreePath path)
   {
     validCachedPreferredSize = false;
-    tree.repaint();
+    tree.repaint();   
   }
 
   /**
@@ -1621,7 +1622,14 @@ public class BasicTreeUI extends TreeUI
       }
 
     if (messageTree)
-      treeModel.valueForPathChanged(tree.getLeadSelectionPath(), newVal);
+      {
+        TreeCellEditor editor = getCellEditor();
+        if (editor != null)
+          {
+            Object value = editor.getCellEditorValue();
+            treeModel.valueForPathChanged(tree.getLeadSelectionPath(), value);
+          }
+      }
   }
 
   /**
@@ -1636,44 +1644,46 @@ public class BasicTreeUI extends TreeUI
    */
   protected boolean startEditing(TreePath path, MouseEvent event)
   {
-    int x;
-    int y;
-    if (event == null)
-      {
-        Rectangle bounds = getPathBounds(tree, path);
-        x = bounds.x;
-        y = bounds.y;
-      }
-    else
-      {
-        x = event.getX();
-        y = event.getY();
-      }
-
+    // Force to recalculate the maximal row height.
+    maxHeight = 0;
+    
+    // Force to recalculate the cached preferred size.    
+    validCachedPreferredSize = false;    
+    
     updateCellEditor();
     TreeCellEditor ed = getCellEditor();
+
     if (ed != null && ed.shouldSelectCell(event) && ed.isCellEditable(event))
       {
+        Rectangle bounds = getPathBounds(tree, path);
+
+        // Extend the right boundary till the tree width.
+        bounds.width = tree.getWidth() - bounds.x;
+
         editingPath = path;
         editingRow = tree.getRowForPath(editingPath);
 
-        Object val = editingPath.getLastPathComponent();
-        cellEditor.addCellEditorListener(cellEditorListener);
+        Object value = editingPath.getLastPathComponent();
+
         stopEditingInCompleteEditing = false;
         boolean expanded = tree.isExpanded(editingPath);
         isEditing = true;
-        editingComponent = ed.getTreeCellEditorComponent(tree, val, true,
+        editingComponent = ed.getTreeCellEditorComponent(tree, value, true,
                                                          expanded,
                                                          isLeaf(editingRow),
                                                          editingRow);
-        editingComponent.getParent().setVisible(true);
-        editingComponent.getParent().validate();
-        tree.add(editingComponent.getParent());
-        editingComponent.getParent().validate();
-        validCachedPreferredSize = false;
+        
+        // Remove all previous components (if still present). Only one
+        // container with the editing component inside is allowed in the tree.
+        tree.removeAll();
+        
+        // The editing component must be added to its container. We add the 
+        // container, not the editing component itself.
+        Component container = editingComponent.getParent();
+        container.setBounds(bounds);
+        tree.add(container);
+        editingComponent.requestFocus();
 
-        ((JTextField) editingComponent).requestFocusInWindow(false);
-        editorTimer.start();
         return true;
       }
     return false;
@@ -1922,7 +1932,7 @@ public class BasicTreeUI extends TreeUI
         tree.clearSelection();
 
       if (tree.isEditing() && !e.getActionCommand().equals("startEditing"))
-        tree.cancelEditing();
+        tree.stopEditing();
 
       tree.scrollPathToVisible(lead);
     }
@@ -1957,51 +1967,7 @@ public class BasicTreeUI extends TreeUI
     }
   }
 
-  /**
-   * The timer that updates the editor component.
-   */
-  private class EditorUpdateTimer extends Timer implements ActionListener
-  {
-    /**
-     * Creates a new EditorUpdateTimer object with a default delay of 0.3
-     * seconds.
-     */
-    public EditorUpdateTimer()
-    {
-      super(300, null);
-      addActionListener(this);
-    }
-
-    /**
-     * Lets the caret blink and repaints the table.
-     */
-    public void actionPerformed(ActionEvent ev)
-    {
-      Caret c = ((JTextField) editingComponent).getCaret();
-      if (c != null)
-        c.setVisible(!c.isVisible());
-      tree.repaint();
-    }
-
-    /**
-     * Updates the blink delay according to the current caret.
-     */
-    public void update()
-    {
-      stop();
-      Caret c = ((JTextField) editingComponent).getCaret();
-      if (c != null)
-        {
-          setDelay(c.getBlinkRate());
-          if (((JTextField) editingComponent).isEditable())
-            start();
-          else
-            c.setVisible(false);
-        }
-    }
-  }
-
-  /**
+   /**
    * Updates the preferred size when scrolling, if necessary.
    */
   public class ComponentHandler extends ComponentAdapter implements
@@ -2089,29 +2055,7 @@ public class BasicTreeUI extends TreeUI
      */
     public void editingStopped(ChangeEvent e)
     {
-      editingPath = null;
-      editingRow = -1;
-      stopEditingInCompleteEditing = false;
-      if (editingComponent != null)
-        {
-          tree.remove(editingComponent.getParent());
-          editingComponent = null;
-        }
-      if (cellEditor != null)
-        {
-          newVal = ((JTextField) getCellEditor().getCellEditorValue()).getText();
-          completeEditing(false, false, true);
-          if (cellEditor instanceof DefaultTreeCellEditor)
-            tree.removeTreeSelectionListener((DefaultTreeCellEditor) cellEditor);
-          cellEditor.removeCellEditorListener(cellEditorListener);
-          setCellEditor(null);
-          createdCellEditor = false;
-        }
-      isEditing = false;
-      tree.requestFocusInWindow(false);
-      editorTimer.stop();
-      validCachedPreferredSize = false;
-      tree.repaint();
+      stopEditing(tree);
     }
 
     /**
@@ -2123,25 +2067,7 @@ public class BasicTreeUI extends TreeUI
      */
     public void editingCanceled(ChangeEvent e)
     {
-      editingPath = null;
-      editingRow = -1;
-      stopEditingInCompleteEditing = false;
-      if (editingComponent != null)
-        tree.remove(editingComponent.getParent());
-      editingComponent = null;
-      if (cellEditor != null)
-        {
-          if (cellEditor instanceof DefaultTreeCellEditor)
-            tree.removeTreeSelectionListener((DefaultTreeCellEditor) cellEditor);
-          cellEditor.removeCellEditorListener(cellEditorListener);
-          setCellEditor(null);
-          createdCellEditor = false;
-        }
-      tree.requestFocusInWindow(false);
-      editorTimer.stop();
-      isEditing = false;
-      validCachedPreferredSize = false;
-      tree.repaint();
+      cancelEditing(tree);
     }
   }// CellEditorHandler
 
@@ -2686,7 +2612,7 @@ public class BasicTreeUI extends TreeUI
   public class TreeHomeAction extends AbstractAction
   {
 
-    /** direction is either home or end */
+    /** The direction, either home or end */
     protected int direction;
 
     /**
@@ -2983,7 +2909,7 @@ public class BasicTreeUI extends TreeUI
     public void valueChanged(TreeSelectionEvent event)
     {
       if (tree.isEditing())
-        tree.cancelEditing();
+        tree.stopEditing();
     }
   }// TreeSelectionHandler
 
@@ -3650,25 +3576,14 @@ public class BasicTreeUI extends TreeUI
         if (row != 0)
           bounds.x += gap;
         bounds.width = preferredSize.width + bounds.x;
-        if (editingComponent != null && editingPath != null && isEditing(tree)
-            && node.equals(editingPath.getLastPathComponent()))
-          {
-            rendererPane.paintComponent(g, editingComponent.getParent(), null,
-                                        bounds);
-          }
-        else
-          {
-            TreeCellRenderer dtcr = tree.getCellRenderer();
-            if (dtcr == null)
-              dtcr = createDefaultCellRenderer();
+        TreeCellRenderer dtcr = tree.getCellRenderer();
+        if (dtcr == null)
+          dtcr = createDefaultCellRenderer();
 
-            Component c = dtcr.getTreeCellRendererComponent(tree, node,
-                                                            selected,
-                                                            isExpanded, isLeaf,
-                                                            row,
-                                                            tree.hasFocus());
-            rendererPane.paintComponent(g, c, c.getParent(), bounds);
-          }
+        Component c = dtcr.getTreeCellRendererComponent(tree, node, selected,
+                                                        isExpanded, isLeaf,
+                                                        row, tree.hasFocus());
+        rendererPane.paintComponent(g, c, c.getParent(), bounds);
       }
   }
 
@@ -3801,4 +3716,22 @@ public class BasicTreeUI extends TreeUI
       }
     return null;
   }
+  
+    /**
+     * Finish the editing session.
+     */
+  void finish()
+  {
+    editingPath = null;
+    editingRow = -1;
+    stopEditingInCompleteEditing = false;
+    isEditing = false;
+    tree.removeAll();
+    validCachedPreferredSize = false;
+    
+    // Repaint the region, where was the editing component.
+    tree.repaint(editingComponent.getParent().getBounds());
+    editingComponent = null;
+  }
+  
 } // BasicTreeUI

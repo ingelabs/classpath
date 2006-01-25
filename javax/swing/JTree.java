@@ -2497,8 +2497,9 @@ public class JTree extends JComponent implements Scrollable, Accessible
   {
     TreeUI ui = getUI();
 
-    if (ui != null)
-      return ui.stopEditing(this);
+    if (isEditing())
+      if (ui != null)
+        return ui.stopEditing(this);
 
     return false;
   }
@@ -2506,9 +2507,10 @@ public class JTree extends JComponent implements Scrollable, Accessible
   public void cancelEditing()
   {
     TreeUI ui = getUI();
-
-    if (ui != null)
-      ui.cancelEditing(this);
+      
+    if (isEditing())
+      if (ui != null)
+        ui.cancelEditing(this);
   }
 
   public void startEditingAtPath(TreePath path)

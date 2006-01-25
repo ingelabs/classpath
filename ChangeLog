@@ -1,3 +1,40 @@
+2006-01-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 25205
+	* javax/swing/DefaultCellEditor.java (getTreeCellEditorComponent): 
+	Rewritten.
+	* javax/swing/JTree.java (stopEditing, cancelEditing): Return without 
+	action if not editing.
+	* javax/swing/plaf/basic/BasicTreeUI.java 
+	(CellEditorHandler.editingCancelled): Delegate to cancelEditing.
+	(CellEditorHandler.editingStopped): Delegate to stopEditing.
+	(EditorUpdateTimer): Removed.
+	(TreeAction.actionPerformed): Stop and not cancel the current editing 
+	when starting editing another node.
+	(editorTimer, newVal): Removed.
+	(cancelEditing): Do not send the cancel message.
+	(completeEditing): Obtain the edited value from the editor.
+	(finish): New method.
+	(paintRow): Do not paint the editing component here.
+	(startEditing, stopEditing): Rewritten.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(DefaultTextField): Added SVUID.
+	(EditorContainer): Rewritten.
+	(RealEditorListener): New inner class.
+	(ICON_TEXT_GAP, TREE_ICON_GAP: New constants).
+	(constructor): Add cell editor listener. Do not instantiate timer.
+	(actionPerformed): Return without action.
+	(cancelCellEditing): Rewritten.
+	(createTreeCellEditor): Add cell editor listener to the editor.
+	(getCellEditorValue): Request the value from the realEditor.
+	(isCellEditable): Removed timer management.
+	(prepareForEditing): Remove all components befor adding the 
+	editingComponent.
+	(startEditingTimer): Start only if it is not null.
+	(stopCellEditing): Rewritten.
+	(stopEditingTimer): New method.
+	(valueChanged): Do not configure editing component here.
+
 2006-01-25  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/FormView.java: New file.
