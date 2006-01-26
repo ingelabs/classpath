@@ -1,3 +1,7 @@
+2006-01-26  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/ObjectView.java: New file.
+
 2006-01-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java (MouseHandler.mousePressed): 
