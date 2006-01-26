@@ -1,3 +1,10 @@
+2006-01-26  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #25970 reported by Michael Kay <mike@saxonica.com>
+	* java/math/BigDecimal.java (compareTo): Don't strip trailing zeros.
+	Add trailing zeros to the fraction of the decimal with the smallest
+	scale.
+
 2006-01-26  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/ObjectView.java: New file.
