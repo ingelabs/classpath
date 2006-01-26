@@ -45,6 +45,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.awt.Label;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -118,6 +119,14 @@ import javax.swing.tree.TreeSelectionModel;
  */
 public class BasicTreeUI extends TreeUI
 {
+  /**
+   * The tree cell editing may be started by the single mouse click on the
+   * selected cell. To separate it from the double mouse click, the editing
+   * session starts after this time (in ms) after that single click, and only
+   * no other clicks were performed during that time.
+   */
+  static int WAIT_TILL_EDITING = 900;  
+  
   /** Collapse Icon for the tree. */
   protected transient Icon collapsedIcon;
 
@@ -261,6 +270,20 @@ public class BasicTreeUI extends TreeUI
   private TreeExpansionListener treeExpansionListener;
 
   private TreeModelListener treeModelListener;
+  
+  /**
+   * This timer fires the editing action after about 1200 ms if not reset during
+   * that time. It handles the editing start with the single mouse click 
+   * (and not the double mouse click) on the selected tree node.
+   */
+  Timer startEditTimer;
+  
+  /**
+   * The special value of the mouse event is sent indicating that this is not
+   * just the mouse click, but the mouse click on the selected node. Sending
+   * such event forces to start the cell editing session.
+   */
+  static final MouseEvent EDIT = new MouseEvent(new Label(), 7,7,7,7,7,7, false);
 
   /**
    * Creates a new BasicTreeUI object.
@@ -298,7 +321,7 @@ public class BasicTreeUI extends TreeUI
   {
     return new BasicTreeUI();
   }
-
+  
   /**
    * Returns the Hash color.
    * 
@@ -1646,14 +1669,16 @@ public class BasicTreeUI extends TreeUI
   {
     // Force to recalculate the maximal row height.
     maxHeight = 0;
-    
-    // Force to recalculate the cached preferred size.    
-    validCachedPreferredSize = false;    
-    
+
+    // Force to recalculate the cached preferred size.
+    validCachedPreferredSize = false;
+
     updateCellEditor();
     TreeCellEditor ed = getCellEditor();
 
-    if (ed != null && ed.shouldSelectCell(event) && ed.isCellEditable(event))
+    if (ed != null
+        && (event == EDIT || ed.shouldSelectCell(event)) 
+        && ed.isCellEditable(event))
       {
         Rectangle bounds = getPathBounds(tree, path);
 
@@ -1672,12 +1697,12 @@ public class BasicTreeUI extends TreeUI
                                                          expanded,
                                                          isLeaf(editingRow),
                                                          editingRow);
-        
+
         // Remove all previous components (if still present). Only one
         // container with the editing component inside is allowed in the tree.
         tree.removeAll();
-        
-        // The editing component must be added to its container. We add the 
+
+        // The editing component must be added to its container. We add the
         // container, not the editing component itself.
         Component container = editingComponent.getParent();
         container.setBounds(bounds);
@@ -2187,7 +2212,15 @@ public class BasicTreeUI extends TreeUI
      *          is the mouse event that occured
      */
     public void mousePressed(MouseEvent e)
-    {
+    { 
+      // Any mouse click cancels the previous waiting edit action, initiated
+      // by the single click on the selected node.
+      if (startEditTimer != null)
+        {
+          startEditTimer.stop();
+          startEditTimer = null;
+        }
+      
       Point click = e.getPoint();
       TreePath path = getClosestPathForLocation(tree, click.x, click.y);
 
@@ -2224,9 +2257,37 @@ public class BasicTreeUI extends TreeUI
             {
               if (inBounds)
                 {
-                  selectPath(tree, path);
-                  if (e.getClickCount() == 2 && !isLeaf(row))
-                    toggleExpandState(path);
+                  TreePath currentLead = tree.getLeadSelectionPath();
+                  if (
+                      currentLead != null && 
+                      currentLead.equals(path) &&
+                      e.getClickCount() == 1 &&
+                      tree.isEditable()
+                      )
+                    {
+                      // Schedule the editing session.
+                      final TreePath editPath = path;
+                      
+                      if (startEditTimer != null)
+                        startEditTimer.stop();
+                       
+                       startEditTimer = new Timer(WAIT_TILL_EDITING,
+                         new ActionListener()
+                           {
+                            public void actionPerformed(ActionEvent e)
+                            {
+                               startEditing(editPath, EDIT);                              
+                            }
+                          });
+                       startEditTimer.setRepeats(false);
+                       startEditTimer.start();
+                    }
+                  else
+                    {
+                      selectPath(tree, path);
+                      if (e.getClickCount() == 2 && !isLeaf(row))
+                        toggleExpandState(path);
+                    }
                 }
 
               if (cntlClick)
@@ -3733,5 +3794,4 @@ public class BasicTreeUI extends TreeUI
     tree.repaint(editingComponent.getParent().getBounds());
     editingComponent = null;
   }
-  
 } // BasicTreeUI

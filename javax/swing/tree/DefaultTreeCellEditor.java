@@ -88,6 +88,12 @@ public class DefaultTreeCellEditor
   static int TREE_ICON_GAP = ICON_TEXT_GAP;
   
   /**
+   * The number of the fast mouse clicks, required to start the editing 
+   * session.
+   */
+  static int CLICK_COUNT_TO_START = 3;
+  
+  /**
    * This container that appears on the tree during editing session.
    * It contains the editing component displays various other editor - 
    * specific parts like editing icon. 
@@ -515,7 +521,7 @@ public class DefaultTreeCellEditor
                                               boolean leaf, int row)
   {
     if (realEditor == null)
-      createTreeCellEditor();
+      realEditor = createTreeCellEditor();
 
     return realEditor.getTreeCellEditorComponent(tree, value, isSelected,
                                                         expanded, leaf, row);
@@ -781,9 +787,11 @@ public class DefaultTreeCellEditor
    */
   protected TreeCellEditor createTreeCellEditor()
   {
-    realEditor = new DefaultCellEditor(new DefaultTreeCellEditor.DefaultTextField(
+    DefaultCellEditor editor = new DefaultCellEditor(new DefaultTreeCellEditor.DefaultTextField(
                                   UIManager.getBorder("Tree.selectionBorder")));
-    realEditor.addCellEditorListener(new RealEditorListener());
-    return realEditor;
+    editor.addCellEditorListener(new RealEditorListener());
+    editor.setClickCountToStart(CLICK_COUNT_TO_START);
+    realEditor = editor;
+    return editor;
   }
 }

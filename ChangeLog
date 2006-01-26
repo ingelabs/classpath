@@ -1,3 +1,14 @@
+2006-01-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java (MouseHandler.mousePressed): 
+	Call startEditing when appropriate.
+	(WAIT_TILL_EDITING, EDIT, startEditTimer): New fields.
+	(startEditing): Always edit if directly ordered from 
+	MouseHandler.mousePressed.
+	* javax/swing/tree/DefaultTreeCellEditor.java (CLICK_COUNT_TO_START): 
+	New field. (createTreeCellEditor): Set click count to start.
+	(getTreeCellEditorComponent): Assing realEditor directly.
+
 2006-01-25  Casey Marshall  <csm@gnu.org>
 
 	Merging GNU Crypto and Jessie.
