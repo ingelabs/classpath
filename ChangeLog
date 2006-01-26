@@ -1,3 +1,9 @@
+2006-01-25  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/net/protocol/http/ChunkedInputStream.java (read):
+	Fixed calculation of number of bytes to read.
+	(size, count, meta, eof): Document.
+
 2006-01-25  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/lang/Character.java:
