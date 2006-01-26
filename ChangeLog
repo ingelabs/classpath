@@ -1,10 +1,29 @@
+2006-01-26  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer): Added fields.
+	(remove): Initialized pos.
+	(change): Likewise.
+	(insert): Likewise.
+	(insertUpdate): Incremented pos. Fixed check, createFracture should
+	be called on first tag if it is not ContentType.
+	(insertFirstContentTag): Reworked to use proper offsets and
+	set offset accordingly. This might need more work in the future.
+	(insertContentTag): Likewise. Fixed to use pos, instead of 
+	offset.
+	(createFracture): Fixed to recreate other leaves. Still needs
+	more work.
+	(insertFracture): Reimplemented.
+	(recreateAfterFracture): New method.
+	(getParagraphElement): Reimplemented, more efficent.
+
 2006-01-26  Christian Thalinger  <twisti@complang.tuwien.ac.at>
 
 	* native/jni/java-lang/java_lang_VMDouble.c (doubleToLongBits)
 	(doubleToRawLongBits, longBitsToDouble): Swap the byte
 	ordering for little-endian arms without VFP.
 
-2006-01-27  Raif S. Naffah  <raif@swiftdsl.com.au>
+2006-01-26  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	PR classpath/25981
 	* gnu/javax/crypto/jce/GnuCrypto.java (run): Added KeyGenerator entries.
