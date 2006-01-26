@@ -892,6 +892,8 @@ public class DefaultStyledDocument extends AbstractDocument implements
           Element newEl1 = createLeafElement(paragraph, first.getAttributes(),
                                              offset, newEndOffset);
           edit.addAddedElement(newEl1);
+          // FIXME!!!
+          System.out.println("INSERT FIRST CONTENT TAG FIXME");
           if (current.getEndOffset() != endOffset)
             {
               // recreate all other leaves
@@ -959,6 +961,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
      */
     private void createFracture(ElementSpec[] data)
     {
+      System.out.println("CREATE FRACTURE FIXME!!!!!!!!!!!!");
       BranchElement paragraph = (BranchElement) elementStack.peek();
       int index = paragraph.getElementIndex(offset);
       Element child = paragraph.getElement(index);
@@ -983,9 +986,9 @@ public class DefaultStyledDocument extends AbstractDocument implements
               Element newEl2 = createLeafElement(newB, atts, offset,
                                                  child.getEndOffset());
               newB.replace(0, 0, new Element[] { newEl2 });
-              Edit e = getEditForParagraphAndIndex(newB, 0);
+              Edit e = getEditForParagraphAndIndex(parent, parIndex);
               e.addAddedElement(newB);
-              elementStack.push(newB);
+             // FIXME: is this needed? elementStack.push(newB);
             }
           else
             {

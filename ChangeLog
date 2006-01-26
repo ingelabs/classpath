@@ -1,6 +1,12 @@
 2006-01-26  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
+	(createFracture): Commented out a known problem,
+	added FIXME tag.
+
+2006-01-26  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
 	(ElementBuffer): Added fields.
 	(remove): Initialized pos.
 	(change): Likewise.
