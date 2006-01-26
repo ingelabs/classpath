@@ -1,3 +1,8 @@
+2006-01-27  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR classpath/25981
+	* gnu/javax/crypto/jce/GnuCrypto.java (run): Added KeyGenerator entries.
+
 2006-01-26  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #25970 reported by Michael Kay <mike@saxonica.com>

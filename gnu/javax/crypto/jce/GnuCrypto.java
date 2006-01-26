@@ -410,6 +410,31 @@ public final class GnuCrypto extends Provider
         put("AlgorithmParameters.BlockCipherParameters",
             gnu.javax.crypto.jce.params.BlockCipherParameters.class.getName());
 
+
+        // KeyGenerator Adapter implementations
+        put("KeyGenerator.Anubis",
+            gnu.javax.crypto.jce.key.AnubisKeyGeneratorImpl.class.getName());
+        put("KeyGenerator.Blowfish",
+            gnu.javax.crypto.jce.key.BlowfishKeyGeneratorImpl.class.getName());
+        put("KeyGenerator.Cast5",
+            gnu.javax.crypto.jce.key.Cast5KeyGeneratorImpl.class.getName());
+        put("KeyGenerator.DES",
+            gnu.javax.crypto.jce.key.DESKeyGeneratorImpl.class.getName());
+        put("KeyGenerator.Khazad",
+            gnu.javax.crypto.jce.key.KhazadKeyGeneratorImpl.class.getName());
+        put("KeyGenerator.Rijndael",
+            gnu.javax.crypto.jce.key.RijndaelKeyGeneratorImpl.class.getName());
+        put("KeyGenerator.Serpent",
+            gnu.javax.crypto.jce.key.SerpentKeyGeneratorImpl.class.getName());
+        put("KeyGenerator.Square",
+            gnu.javax.crypto.jce.key.SquareKeyGeneratorImpl.class.getName());
+        put("KeyGenerator.TripleDES",
+            gnu.javax.crypto.jce.key.TripleDESKeyGeneratorImpl.class.getName());
+        put("Alg.Alias.KeyGenerator.AES", "Rijndael");
+        put("Alg.Alias.KeyGenerator.DESede", "TripleDES");
+        put("Alg.Alias.KeyGenerator.3-DES", "TripleDES");
+        put("Alg.Alias.KeyGenerator.3DES", "TripleDES");
+
         // MAC
         put("Mac.HMAC-MD2", gnu.javax.crypto.jce.mac.HMacMD2Spi.class.getName());
         put("Mac.HMAC-MD4", gnu.javax.crypto.jce.mac.HMacMD4Spi.class.getName());
