@@ -1,3 +1,14 @@
+2006-01-27  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/lang/Character.java:
+	(offsetByCodePoints(CharSequence, int, int)): New API method.
+	(offsetByCodePoints(char[], int, int, int, int)): Likewise.
+	(toChars): Throw the Exception that the docs say we throw.
+	(codePointAt): Fixed an off-by-one error in the bounds of the if 
+	statement.
+	* java/lang/String.java:
+	(String(int[], int, int)): New API constructor.
+
 2006-01-27  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java

@@ -1741,6 +1741,136 @@ public final class Character implements Serializable, Comparable
   }
   
   /**
+   * Returns the index into the given CharSequence that is offset
+   * <code>codePointOffset</code> code points from <code>index</code>.
+   * @param seq the CharSequence
+   * @param index the start position in the CharSequence
+   * @param codePointOffset the number of code points offset from the start
+   * position
+   * @return the index into the CharSequence that is codePointOffset code 
+   * points offset from index
+   * 
+   * @throws NullPointerException if seq is null
+   * @throws IndexOutOfBoundsException if index is negative or greater than the
+   * length of the sequence.
+   * @throws IndexOutOfBoundsException if codePointOffset is positive and the 
+   * subsequence from index to the end of seq has fewer than codePointOffset
+   * code points
+   * @throws IndexOutOfBoundsException if codePointOffset is negative and the
+   * subsequence from the start of seq to index has fewer than 
+   * (-codePointOffset) code points
+   * @since 1.5
+   */
+  public static int offsetByCodePoints(CharSequence seq,
+                                       int index,
+                                       int codePointOffset)
+  {
+    int len = seq.length();
+    if (index < 0 || index > len)
+      throw new IndexOutOfBoundsException();
+    
+    int numToGo = codePointOffset;
+    int offset = index;
+    int adjust = 1;
+    if (numToGo >= 0)
+      {
+        for (; numToGo > 0; offset++)
+          {
+            numToGo--;
+            if (Character.isHighSurrogate(seq.charAt(offset))
+                && (offset + 1) < len
+                && Character.isLowSurrogate(seq.charAt(offset + 1)))
+              offset++;
+          }
+        return offset;
+      }
+    else
+      {
+        numToGo *= -1;
+        for (; numToGo > 0;)
+          {
+            numToGo--;
+            offset--;
+            if (Character.isLowSurrogate(seq.charAt(offset))
+                && (offset - 1) >= 0
+                && Character.isHighSurrogate(seq.charAt(offset - 1)))
+              offset--;
+          }
+        return offset;
+      }
+  }
+  
+  /**
+   * Returns the index into the given char subarray that is offset
+   * <code>codePointOffset</code> code points from <code>index</code>.
+   * @param a the char array
+   * @param start the start index of the subarray
+   * @param count the length of the subarray
+   * @param index the index to be offset
+   * @param codePointOffset the number of code points offset from <code>index
+   * </code>
+   * @return the index into the char array
+   * 
+   * @throws NullPointerException if a is null
+   * @throws IndexOutOfBoundsException if start or count is negative or if
+   * start + count is greater than the length of the array
+   * @throws IndexOutOfBoundsException if index is less than start or larger 
+   * than start + count
+   * @throws IndexOutOfBoundsException if codePointOffset is positive and the
+   * subarray from index to start + count - 1 has fewer than codePointOffset
+   * code points.
+   * @throws IndexOutOfBoundsException if codePointOffset is negative and the
+   * subarray from start to index - 1 has fewer than (-codePointOffset) code
+   * points
+   * @since 1.5
+
+   */
+  public static int offsetByCodePoints(char[] a,
+                                       int start,
+                                       int count,
+                                       int index,
+                                       int codePointOffset)
+  {
+    int len = a.length;
+    int end = start + count;
+    if (start < 0 || count < 0 || end > len || index < start || index > end)
+      throw new IndexOutOfBoundsException();
+    
+    int numToGo = codePointOffset;
+    int offset = index;
+    int adjust = 1;
+    if (numToGo >= 0)
+      {
+        for (; numToGo > 0; offset++)
+          {
+            numToGo--;
+            if (Character.isHighSurrogate(a[offset])
+                && (offset + 1) < len
+                && Character.isLowSurrogate(a[offset + 1]))
+              offset++;
+          }
+        return offset;
+      }
+    else
+      {
+        numToGo *= -1;
+        for (; numToGo > 0;)
+          {
+            numToGo--;
+            offset--;
+            if (Character.isLowSurrogate(a[offset])
+                && (offset - 1) >= 0
+                && Character.isHighSurrogate(a[offset - 1]))
+              offset--;
+            if (offset < start)
+              throw new IndexOutOfBoundsException();
+          }
+        return offset;
+      }
+
+  }
+  
+  /**
    * Returns the number of Unicode code points in the specified range of the
    * given CharSequence.  The first char in the range is at position
    * beginIndex and the last one is at position endIndex - 1.  Paired 
@@ -2447,6 +2577,9 @@ public final class Character implements Serializable, Comparable
    */
   public static char[] toChars(int codePoint)
   {
+    if (!isValidCodePoint(codePoint))
+      throw new IllegalArgumentException("Illegal Unicode code point : "
+                                         + codePoint);
     char[] result = new char[charCount(codePoint)];
     int ignore = toChars(codePoint, result, 0);
     return result;
@@ -2664,7 +2797,7 @@ public final class Character implements Serializable, Comparable
    */
   public static int codePointAt(char[] chars, int index, int limit)
   {
-    if (index < 0 || index >= limit || limit < 0 || limit >= chars.length)
+    if (index < 0 || index >= limit || limit < 0 || limit > chars.length)
       throw new IndexOutOfBoundsException();
     char high = chars[index];
     if (! isHighSurrogate(high) || ++index >= limit)
