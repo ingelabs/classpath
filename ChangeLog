@@ -1,3 +1,15 @@
+2006-01-27  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insertFirstContentTag): Removed check, not needed. This
+	still needs to be fixed for some cases. Added call to
+	recreateLeaves.
+	(createFracture): Added call to recreateLeaves.
+	(recreateLeaves): New method used to recreate all the
+	leaves after the initial insertion. This still needs 
+	more work.
+	(handleInsertAfterNewline): Removed else, not needed.
+
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JLayeredPane.java

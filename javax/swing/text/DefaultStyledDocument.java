@@ -830,6 +830,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
       int newEndOffset = offset + first.length;
       boolean onlyContent = data.length == 1;
       Edit edit = getEditForParagraphAndIndex(paragraph, index);
+      
       switch (first.getDirection())
         {
         case ElementSpec.JoinPreviousDirection:
@@ -842,18 +843,8 @@ public class DefaultStyledDocument extends AbstractDocument implements
 
               edit.addAddedElement(newEl1);
               edit.addRemovedElement(current);
-
-              if (current.getEndOffset() != endOffset)
-                {
-                  // recreate all other leaves
-                  Element newEl2 = createLeafElement(paragraph,
-                                                     current.getAttributes(),
-                                                     newEndOffset,
-                                                     current.getEndOffset());
-                  edit.addAddedElement(newEl2);
-                }
+              offset = newEndOffset;
             }
-          offset = newEndOffset;
           break;
         case ElementSpec.JoinNextDirection:
           if (offset != 0)
@@ -889,16 +880,11 @@ public class DefaultStyledDocument extends AbstractDocument implements
           Element newEl1 = createLeafElement(paragraph, first.getAttributes(),
                                              offset, newEndOffset);
           edit.addAddedElement(newEl1);
+          
           if (current.getEndOffset() != endOffset)
-            {
-              // recreate all other leaves
-              Element newEl2 = createLeafElement(paragraph,
-                                                 current.getAttributes(),
-                                                 newEndOffset,
-                                                 current.getEndOffset());
-              edit.addAddedElement(newEl2);
-            }
-          offset = newEndOffset;
+            recreateLeaves(newEndOffset, onlyContent);
+          else
+            offset = newEndOffset;
           break;
         }
     }
@@ -985,11 +971,67 @@ public class DefaultStyledDocument extends AbstractDocument implements
           Element newEl1 = createLeafElement(paragraph, atts,
                                              child.getStartOffset(), offset);
           edit.addAddedElement(newEl1);
+          
+          if (child.getEndOffset() != endOffset)
+            recreateLeaves(offset, (data.length == 1));
         }
       edit.addRemovedElement(child);
-      // FIXME: may be incomplete
     }
 
+    /**
+     * Recreates a specified part of a the tree after a new leaf
+     * has been inserted.
+     * 
+     * @param start - where to start recreating from
+     * @param onlyContent - true if this is the only content to insert.
+     */
+    private void recreateLeaves(int start, boolean onlyContent)
+    {
+      BranchElement paragraph = (BranchElement) elementStack.peek();
+      int index = paragraph.getElementIndex(start);
+      Element child = paragraph.getElement(index);
+      AttributeSet atts = child.getAttributes();
+      
+      if (!onlyContent)
+        {
+          BranchElement parent = (BranchElement) paragraph.getParentElement();
+          int parIndex = parent.getElementIndex(start) + 1;
+          BranchElement newBranch = (BranchElement) createBranchElement(paragraph,
+                                                                        atts);
+          Element newLeaf = createLeafElement(newBranch, atts, start, 
+                                              child.getEndOffset());
+          
+          // no need to remove the remainder of the leaf here, it has been done.
+          newBranch.replace(0, 0, new Element[] { newLeaf });
+          Edit edit = getEditForParagraphAndIndex(parent, parIndex);
+          edit.addAddedElement(newBranch);
+          
+          // FIXME: Not implemented totally
+          
+          int parSize = paragraph.getElementCount();
+          index++;
+          int remove = parSize - index;
+          Element[] removed = new Element[remove];
+          int s = 0;
+          for (int j = index; j < parSize; j++)
+            removed[s++] = paragraph.getElement(j);
+          edit.addRemovedElements(removed);
+          
+          Element[] added = recreateAfterFracture(removed, paragraph, 0, 
+                                        child.getEndOffset());
+          Edit edit2 = getEditForParagraphAndIndex(paragraph, parSize);
+          edit2.addAddedElements(added);
+          elementStack.push(newBranch);
+        }
+      else
+        {
+          Element newLeaf = createLeafElement(paragraph, atts, start, 
+                                              child.getEndOffset());
+          Edit edit = getEditForParagraphAndIndex(paragraph, index);
+          edit.addAddedElement(newLeaf);
+        }
+    }
+    
     /**
      * Splits an element if <code>offset</code> is not already at its
      * boundary.
@@ -2184,11 +2226,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
         Element parent = paragraph.getParentElement();
         if (parent.getElementCount() > (parent.getElementIndex(offset) + 1))
           return ElementSpec.JoinNextDirection;
-      }
-    else
-      {
-        // FIXME: What to do here?
-        System.out.println("handleInsertAfterNewline: else reached -> Not implemented.");
       }
     return ElementSpec.OriginateDirection;
   }
