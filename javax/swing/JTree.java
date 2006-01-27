@@ -2740,7 +2740,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
    * 
    * @return a String representation of this JTree
    */
-  public String paramString()
+  protected String paramString()
   {
     // TODO: this is completely legal, but it would possibly be nice
     // to return some more content, like the tree structure, some properties

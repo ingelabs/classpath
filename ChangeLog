@@ -1,5 +1,47 @@
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/AbstractButton.java
+	(ButtonChangeListener.ButtonChangeListener()): Made constructor
+	package private.
+	* javax/swing/ImageIcon.java
+	(component): Made field final.
+	(tracker): Made field final.
+	* javax/swing/JApplet.java
+	(AccessibleJApplet.AccessibleJApplet): Made constructor protected.
+	* javax/swing/JCheckBox.java
+	(AccessibleJCheckBox.AccessibleJCheckBox): Made constructor
+	protected.
+	* javax/swing/JDialog.java
+	(AccessibleJDialog.AccessibleJDialog): Made constructor protected.
+	* javax/swing/JFrame.java
+	(AccessibleJFrame.AccessibleJFrame): Made constructor protected.
+	* javax/swing/JLayeredPane.java
+	(AccessibleJLayered.AccessibleJLayeredPane): Made constructor
+	protected.
+	(DEFAULT_LAYER): Made field final.
+	(PALETTE_LAYER): Made field final.
+	(MODAL_LAYER): Made field final.
+	(POPUP_LAYER): Made field final.
+	(DRAG_LAYER): Made field final.
+	* javax/swing/JMenu.java
+	(ActionChangeListener): Made class private.
+	* javax/swing/JOptionPane.java
+	(UNITITIALIZED_VALUE): Made field final.
+	* javax/swing/JPanel.java
+	(AccessibleJPanel.AccessibleJPanel): Made constructor protected.
+	* javax/swing/JPopupMenu.java
+	(ActionChangeListener): Made class private.
+	* javax/swing/JTree.java
+	(paramString): Made method protected.
+	* javax/swing/JViewport.java
+	(AccessibleJViewport.AccessibleJViewport): Made constructor protected.
+	* javax/swing/JWindow.java
+	(AccessibleJWindow.AccessibleJWindow): Made constructor protected.
+	* javax/swing/RepaintManager.java
+	(RepaintWorker): Made class private.
+
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/swing/SwingComponentPeer.java
 	(handleEvent): Removed debug statement.
 

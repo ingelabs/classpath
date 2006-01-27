@@ -113,7 +113,7 @@ public class JViewport extends JComponent implements Accessible
     /**
      * Creates a new instance of <code>AccessibleJViewport</code>.
      */
-    public AccessibleJViewport()
+    protected AccessibleJViewport()
     {
       // Nothing to do here.
     }
