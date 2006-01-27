@@ -69,6 +69,7 @@ public class ComboBoxDemo
     }
   }
 
+  private JPanel content;
   private JCheckBox comboState1;  
   private JComboBox combo1;
   private JComboBox combo2;
@@ -120,15 +121,18 @@ public class ComboBoxDemo
    */       
   JPanel createContent() 
   {
-    JPanel content = new JPanel(new BorderLayout());
-    JPanel panel = new JPanel(new GridLayout(6, 1));
-    panel.add(createPanel1());
-    panel.add(createPanel2());
-    panel.add(createPanel3());
-    panel.add(createPanel4());
-    panel.add(createPanel5());
-    panel.add(createPanel6());
-    content.add(panel);
+    if (content == null)
+      {
+        content = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new GridLayout(6, 1));
+        panel.add(createPanel1());
+        panel.add(createPanel2());
+        panel.add(createPanel3());
+        panel.add(createPanel4());
+        panel.add(createPanel5());
+        panel.add(createPanel6());
+        content.add(panel);
+      }
     return content;        
   }
     

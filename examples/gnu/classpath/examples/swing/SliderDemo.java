@@ -35,7 +35,9 @@ import javax.swing.JSlider;
 
 public class SliderDemo extends JFrame implements ActionListener 
 {
-   
+
+  private JPanel content;
+
   JSlider hslider1;
   JSlider hslider2;
   JSlider hslider3;
@@ -59,13 +61,13 @@ public class SliderDemo extends JFrame implements ActionListener
   public SliderDemo(String frameTitle) 
   {
     super(frameTitle);
-    JPanel content = createContent();
+    JPanel cont = createContent();
     JPanel closePanel = new JPanel();
     JButton closeButton = new JButton("Close");
     closeButton.setActionCommand("CLOSE");
     closeButton.addActionListener(this);
     closePanel.add(closeButton);
-    content.add(closePanel, BorderLayout.SOUTH);
+    cont.add(closePanel, BorderLayout.SOUTH);
     getContentPane().add(content);
   }
        
@@ -78,20 +80,23 @@ public class SliderDemo extends JFrame implements ActionListener
    */       
   JPanel createContent() 
   {
-    JPanel content = new JPanel(new BorderLayout());
-    JPanel panel = new JPanel(new GridLayout(1, 2));
-    panel.add(createHorizontalPanel());
-    panel.add(createVerticalPanel());
-    enabledCheckBox = new JCheckBox("Enabled");
-    enabledCheckBox.setSelected(true);
-    enabledCheckBox.setActionCommand("TOGGLE_ENABLED");
-    enabledCheckBox.addActionListener(this);
-    JPanel checkBoxPanel = new JPanel();
-    checkBoxPanel.add(enabledCheckBox);
-    JPanel panel2 = new JPanel(new BorderLayout());
-    panel2.add(panel);
-    panel2.add(checkBoxPanel, BorderLayout.SOUTH);
-    content.add(panel2);
+    if (content == null)
+      {
+        content = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new GridLayout(1, 2));
+        panel.add(createHorizontalPanel());
+        panel.add(createVerticalPanel());
+        enabledCheckBox = new JCheckBox("Enabled");
+        enabledCheckBox.setSelected(true);
+        enabledCheckBox.setActionCommand("TOGGLE_ENABLED");
+        enabledCheckBox.addActionListener(this);
+        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel.add(enabledCheckBox);
+        JPanel panel2 = new JPanel(new BorderLayout());
+        panel2.add(panel);
+        panel2.add(checkBoxPanel, BorderLayout.SOUTH);
+        content.add(panel2);
+      }
     return content;        
   }
     

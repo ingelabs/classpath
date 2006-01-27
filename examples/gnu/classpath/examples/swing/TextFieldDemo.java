@@ -107,6 +107,8 @@ public class TextFieldDemo
     }
   }
 
+  private JPanel content;
+
   /**
    * The left aligned textfields and state buttons.
    */
@@ -180,15 +182,18 @@ JPanel textFieldPanel1;
    */       
   JPanel createContent() 
   {
-    JPanel content = new JPanel(new BorderLayout());
-    JPanel panel = new JPanel(new GridLayout(5, 1));
-    panel.add(createLeftAlignedPanel());
-    panel.add(createRightAlignedPanel());
-    panel.add(createCenteredPanel());
-    panel.add(createCustomColoredPanel());
-    panel.add(createMiscPanel());
-    content.add(panel);
-    //content.setPreferredSize(new Dimension(400, 300));
+    if (content == null)
+      {
+        content = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new GridLayout(5, 1));
+        panel.add(createLeftAlignedPanel());
+        panel.add(createRightAlignedPanel());
+        panel.add(createCenteredPanel());
+        panel.add(createCustomColoredPanel());
+        panel.add(createMiscPanel());
+        content.add(panel);
+        //content.setPreferredSize(new Dimension(400, 300));
+      }
     return content;        
   }
     

@@ -1,3 +1,27 @@
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
+	* examples/gnu/classpath/examples/swing/ButtonDemo.java
+	(createContent): Only create new content if we don't have one
+	already.
+	* examples/gnu/classpath/examples/swing/ComboBoxDemo.java
+	(createContent): Only create new content if we don't have one
+	already.
+	* examples/gnu/classpath/examples/swing/FileChooserDemo.java
+	(createContent): Only create new content if we don't have one
+	already.
+	* examples/gnu/classpath/examples/swing/ScrollBarDemo.java
+	(createContent): Only create new content if we don't have one
+	already.
+	* examples/gnu/classpath/examples/swing/SliderDemo.java
+	(createContent): Only create new content if we don't have one
+	already.
+	* examples/gnu/classpath/examples/swing/TableDemo.java
+	(createContent): Only create new content if we don't have one
+	already.
+	* examples/gnu/classpath/examples/swing/TextFieldDemo.java
+	(createContent): Only create new content if we don't have one
+	already.
+
 2006-01-27  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java

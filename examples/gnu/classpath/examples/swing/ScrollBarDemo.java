@@ -40,6 +40,8 @@ public class ScrollBarDemo
   implements ActionListener 
 {
 
+  private JPanel content;
+
   /**
    * Creates a new demo instance.
    * 
@@ -67,9 +69,12 @@ public class ScrollBarDemo
    */       
   JPanel createContent() 
   {
-    JPanel content = new JPanel(new BorderLayout());
-    JPanel panel = createScrollBarPanel();
-    content.add(panel);
+    if (content == null)
+      {
+        content = new JPanel(new BorderLayout());
+        JPanel panel = createScrollBarPanel();
+        content.add(panel);
+      }
     return content;        
   }
     

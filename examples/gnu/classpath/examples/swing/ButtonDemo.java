@@ -46,6 +46,8 @@ public class ButtonDemo
   implements ActionListener 
 {
  
+  private JPanel content;
+
   private JCheckBox buttonState;  
   private JButton button1;
   private JButton button2;
@@ -95,13 +97,16 @@ public class ButtonDemo
    */       
   JPanel createContent() 
   {
-    JPanel content = new JPanel(new BorderLayout());
-    JPanel panel = new JPanel(new GridLayout(4, 1));
-    panel.add(createButtonPanel());
-    panel.add(createTogglePanel());
-    panel.add(createCheckBoxPanel());
-    panel.add(createRadioPanel());
-    content.add(panel);
+    if (content == null)
+      {
+        content = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new GridLayout(4, 1));
+        panel.add(createButtonPanel());
+        panel.add(createTogglePanel());
+        panel.add(createCheckBoxPanel());
+        panel.add(createRadioPanel());
+        content.add(panel);
+      }
     return content;        
   }
     

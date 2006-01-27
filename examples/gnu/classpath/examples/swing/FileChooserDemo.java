@@ -63,7 +63,9 @@ public class FileChooserDemo extends JFrame implements ActionListener
         return false;
     }
   }
-    
+
+  private JPanel content;
+
   /** A label to display the selected file. */
   JLabel selectedFileLabel;
     
@@ -102,52 +104,56 @@ public class FileChooserDemo extends JFrame implements ActionListener
    * added if this demo is being run as a standalone demo).
    */
   JPanel createContent()
-  {      
-    JPanel panel = new JPanel(new BorderLayout());
-     
-    // create a panel of buttons to select the different styles of file 
-    // chooser...
-    JPanel buttonPanel = new JPanel(new GridLayout(5, 1));
-    JButton openButton = new JButton("Open...");
-    openButton.setActionCommand("OPEN");
-    openButton.addActionListener(this);
-    buttonPanel.add(openButton);
-    JButton saveButton = new JButton("Save...");
-    saveButton.setActionCommand("SAVE");
-    saveButton.addActionListener(this);
-    buttonPanel.add(saveButton);
-    JButton queryButton = new JButton("Select Directory...");
-    queryButton.setActionCommand("SELECT_DIRECTORY");
-    queryButton.addActionListener(this);
-    buttonPanel.add(queryButton);
-    JButton openJavaButton = new JButton("Open Java file...");
-    openJavaButton.setActionCommand("OPEN_JAVA");
-    openJavaButton.addActionListener(this);
-    buttonPanel.add(openJavaButton);
-    JButton openMultiButton = new JButton("Open multiple files...");
-    openMultiButton.setActionCommand("OPEN_MULTI");
-    openMultiButton.addActionListener(this);
-    buttonPanel.add(openMultiButton);
-    panel.add(buttonPanel, BorderLayout.WEST);
-    
-    // create a panel to display the selected file(s) and the return code
-    JPanel displayPanel = new JPanel(new BorderLayout());
-     
-    selectedFileLabel = new JLabel("-");
-    selectedFileLabel.setBorder(BorderFactory.createTitledBorder("Selected File/Directory: "));
-    displayPanel.add(selectedFileLabel, BorderLayout.NORTH);
+  {
+    if (content == null)
+      {
+        JPanel panel = new JPanel(new BorderLayout());
         
-    selectedFilesList = new JList();
-    JScrollPane sp = new JScrollPane(selectedFilesList);
-    sp.setBorder(BorderFactory.createTitledBorder("Selected Files: "));
-    displayPanel.add(sp);
-
-    returnCodeLabel = new JLabel("0");
-    returnCodeLabel.setBorder(BorderFactory.createTitledBorder("Return Code:"));
-    displayPanel.add(returnCodeLabel, BorderLayout.SOUTH);
+        // create a panel of buttons to select the different styles of file 
+        // chooser...
+        JPanel buttonPanel = new JPanel(new GridLayout(5, 1));
+        JButton openButton = new JButton("Open...");
+        openButton.setActionCommand("OPEN");
+        openButton.addActionListener(this);
+        buttonPanel.add(openButton);
+        JButton saveButton = new JButton("Save...");
+        saveButton.setActionCommand("SAVE");
+        saveButton.addActionListener(this);
+        buttonPanel.add(saveButton);
+        JButton queryButton = new JButton("Select Directory...");
+        queryButton.setActionCommand("SELECT_DIRECTORY");
+        queryButton.addActionListener(this);
+        buttonPanel.add(queryButton);
+        JButton openJavaButton = new JButton("Open Java file...");
+        openJavaButton.setActionCommand("OPEN_JAVA");
+        openJavaButton.addActionListener(this);
+        buttonPanel.add(openJavaButton);
+        JButton openMultiButton = new JButton("Open multiple files...");
+        openMultiButton.setActionCommand("OPEN_MULTI");
+        openMultiButton.addActionListener(this);
+        buttonPanel.add(openMultiButton);
+        panel.add(buttonPanel, BorderLayout.WEST);
         
-    panel.add(displayPanel);
-    return panel;        
+        // create a panel to display the selected file(s) and the return code
+        JPanel displayPanel = new JPanel(new BorderLayout());
+        
+        selectedFileLabel = new JLabel("-");
+        selectedFileLabel.setBorder(BorderFactory.createTitledBorder("Selected File/Directory: "));
+        displayPanel.add(selectedFileLabel, BorderLayout.NORTH);
+        
+        selectedFilesList = new JList();
+        JScrollPane sp = new JScrollPane(selectedFilesList);
+        sp.setBorder(BorderFactory.createTitledBorder("Selected Files: "));
+        displayPanel.add(sp);
+        
+        returnCodeLabel = new JLabel("0");
+        returnCodeLabel.setBorder(BorderFactory.createTitledBorder("Return Code:"));
+        displayPanel.add(returnCodeLabel, BorderLayout.SOUTH);
+        
+        panel.add(displayPanel);
+        content = panel;
+      }
+    return content;        
   }
     
   /**
