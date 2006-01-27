@@ -1,3 +1,8 @@
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JLayeredPane.java
+	(inserIndexForLayer): Fixed direction of search.
+
 2006-01-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTree.java (constructor): Put EXPANDED for the root 
