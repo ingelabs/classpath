@@ -1,3 +1,7 @@
+2006-01-27  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Set version to 0.21-pre.
+
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
 	PR classpath/25968
