@@ -1,5 +1,16 @@
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(installDefaults): Removed requestFocusInWindow() call.
+	* javax/swing/JComponent.java
+	(requestFocusInWindow(boolean)): Made method protected.
+	(printComponent): Made method protected.
+	(printChildren): Made method protected.
+	(printComponent): Made method protected.
+	(printBorder): Made method protected.
+
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/AbstractButton.java
 	(ButtonChangeListener.ButtonChangeListener()): Made constructor
 	package private.

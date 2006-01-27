@@ -1295,7 +1295,6 @@ public class BasicTreeUI extends TreeUI
     leftChildIndent = UIManager.getInt("Tree.leftChildIndent");
     setRowHeight(UIManager.getInt("Tree.rowHeight"));
     tree.setRowHeight(getRowHeight());
-    tree.requestFocusInWindow(false);
     tree.setScrollsOnExpand(UIManager.getBoolean("Tree.scrollsOnExpand"));
     setExpandedIcon(UIManager.getIcon("Tree.expandedIcon"));
     setCollapsedIcon(UIManager.getIcon("Tree.collapsedIcon"));

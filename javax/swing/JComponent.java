@@ -2879,7 +2879,7 @@ public abstract class JComponent extends Container implements Serializable
    *
    * @since 1.4
    */
-  public boolean requestFocusInWindow(boolean temporary)
+  protected boolean requestFocusInWindow(boolean temporary)
   {
     return super.requestFocusInWindow(temporary);
   }
@@ -3098,7 +3098,7 @@ public abstract class JComponent extends Container implements Serializable
    *
    * @since 1.3
    */
-  public void printComponent(Graphics g)
+  protected void printComponent(Graphics g)
   {
     paintComponent(g);
   }
@@ -3112,7 +3112,7 @@ public abstract class JComponent extends Container implements Serializable
    *
    * @since 1.3
    */
-  public void printChildren(Graphics g)
+  protected void printChildren(Graphics g)
   {
     paintChildren(g);
   }
@@ -3126,7 +3126,7 @@ public abstract class JComponent extends Container implements Serializable
    *
    * @since 1.3
    */
-  public void printBorder(Graphics g)
+  protected void printBorder(Graphics g)
   {
     paintBorder(g);
   }
