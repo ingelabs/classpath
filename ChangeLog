@@ -1,3 +1,8 @@
+2006-01-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTree.java (constructor): Put EXPANDED for the root 
+	node into nodeStates.
+
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JLayeredPane.java
