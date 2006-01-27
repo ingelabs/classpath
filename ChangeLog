@@ -25,7 +25,13 @@
 	recreateAfterFracture.
 	(recreateAfterFracture): Changed to return an array of the
 	elements to be added. This prevents an assertion error.
-
+	(contains): New function checks if an element is already in 
+	the Vector. Vector's contain function was not enough to use.
+	(addAddedElement): Changed to use new contains function.
+	(addAddedElements): Likewise.
+	(addRemovedElement): Likewise.
+	(addRemovedElements): Likewise.        
+	
 2006-01-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 25520
