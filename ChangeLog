@@ -1,5 +1,9 @@
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
+	* examples/gnu/classpath/examples/swing/MiniDemo.java: New file.
+
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
 	* examples/gnu/classpath/examples/swing/ButtonDemo.java
 	(createContent): Only create new content if we don't have one
 	already.
