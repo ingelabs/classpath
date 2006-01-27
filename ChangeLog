@@ -1,5 +1,16 @@
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java
+	(PopupMenuHandler.popupMenuWillBecomeInvisible):
+	Fixed to also handle non-Swing toplevel containers.
+	(PopupMenuHandler.popupMenuWillBecomeVisible):
+	Fixed to also handle non-Swing toplevel containers.
+	* javax/swing/Popup.java
+	(JWindowPopup.JWindowPopup()): Correctly set parent window on
+	popup.
+
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java
 	(InternalFramePropertyChangeListener): Don't implement
 	VetoableChangeListener.
