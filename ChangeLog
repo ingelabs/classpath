@@ -1,7 +1,12 @@
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/swing/SwingComponentPeer.java
+	(handleEvent): Removed debug statement.
+
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
-	(coalescePaintEvent): Don't try to optimize coalescing. This hurts
+	(coalescePaintEvents): Don't try to optimize coalescing. This hurts
 	more than it helps.
 
 2006-01-26  Lillian Angel  <langel@redhat.com>

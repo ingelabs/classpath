@@ -330,7 +330,6 @@ public class SwingComponentPeer
     {
       case PaintEvent.UPDATE:
       case PaintEvent.PAINT:
-        System.err.println("Paint event");
         Graphics g = getGraphics();
         Rectangle clip = ((PaintEvent)e).getUpdateRect();
         g.clipRect(clip.x, clip.y, clip.width, clip.height);
