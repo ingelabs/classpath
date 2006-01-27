@@ -1,5 +1,15 @@
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/SwingUtilities.java
+	(calculateInsetArea): Removed unneeded method. The method
+	calculateInnerArea has the same purpose and is actually specified.
+	(calculateInnerArea): Rewritten to not use calculateInsetArea.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(paintMenuItem): Use SwingUtilities.calculateInnerArea() instead
+	of SwingUtilities.calculateInsetArea().
+
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	(installDefaults): Removed requestFocusInWindow() call.
 	* javax/swing/JComponent.java
