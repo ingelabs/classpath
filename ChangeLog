@@ -1,5 +1,10 @@
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(createList): Don't set scrollbar policy.
+
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicPopupMenuUI.java
 	(PopupMenuHandler.popupMenuWillBecomeInvisible):
 	Fixed to also handle non-Swing toplevel containers.
