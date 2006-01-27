@@ -1,5 +1,18 @@
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
+	PR classpath/25968
+	* javax/swing/JComponent.java
+	(findOverlapFreeParent): Improved the algorithm to make better use
+	of the optimizedDrawingEnabled flag.
+	* javax/swing/JLayeredPane.java
+	(isOptimizedDrawingEnabled): Reimplemented to match the specs.
+	* javax/swing/JViewport.java
+	(computeBlit): Fixed check to decide if blitting is possible or not,
+	so that it doesn't blit if nothing was scrolled (in order to
+	update the buffer when the view updates itself).
+
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalFileChooserUI.java
 	(createList): Don't set scrollbar policy.
 

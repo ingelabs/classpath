@@ -711,13 +711,39 @@ public class JLayeredPane extends JComponent implements Accessible
   }
 
   /**
-   * Overridden to return <code>false</code>, since <code>JLayeredPane</code>
-   * cannot guarantee that its children don't overlap.
+   * Returns <code>false</code> if components in this layered pane can overlap,
+   * otherwise <code>true</code>.
    *
-   * @return <code>false</code>
+   * @return <code>false</code> if components in this layered pane can overlap,
+   *         otherwise <code>true</code>
    */
   public boolean isOptimizedDrawingEnabled()
   {
-    return false;
+    int numChildren = getComponentCount();
+    boolean result = false;
+    // We implement a heuristic here in order to return a quick result:
+    // - For 0 or 1 children it is clear that they do not overlap, return true.
+    // - For 2 children we check their bounding rectangles and if they don't
+    //   interect, return true.
+    // - For more than 2 children we return false. Comparing all the bounding
+    //   rectangles costs too much time and in most cases this will return
+    //   false anyway, since JLayeredPane are mostly used in JRootPane and then
+    //   have at least one child (the contentPane) that takes up the whole
+    //   area of the JLayeredPane.
+    switch (numChildren)
+    {
+      case 0:
+      case 1:
+        result = true;
+        break;
+      case 2:
+        Rectangle r1 = getComponent(0).getBounds();
+        Rectangle r2 = getComponent(1).getBounds();
+        result = !r1.intersects(r2);
+        break;
+      default:
+        result = false;
+    }
+    return result;
   }
 }
