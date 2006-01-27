@@ -1,3 +1,30 @@
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JLayeredPane.java
+	(FRAME_CONTENT_LAYER): Made field final.
+	(componentToLayer): Made field private.
+	(rectCache): Removed field.
+	(layers): Removed field.
+	(JLayeredPane()): Removed initialization of removed fields.
+	(getLayer): Rewritten to make use of client properties in
+	JComponents and to be more straighforward.
+	(static getLayer): Rewritten to make use of client properties in
+	JComponents.
+	(layerToRange): Removed method.
+	(incrLayer): Removed method.
+	(decrLayer): Removed method.
+	(highestLayer): Rewritten to be more straightforward.
+	(lowestLayer): Rewritten to be more straightforward.
+	(getPosition): Rewritten to be more straightforward.
+	(getComponentsInLayer): Rewritten to be more straightforward.
+	(getComponentCountInLayer): Rewritten to be more straightforward.
+	(getIndexOf): Rewritten to be more straightforward.
+	(inserIndexForLayer): Rewritten to be more straightforward.
+	(remove): Rewritten to be more straightforward.
+	(setLayer): Rewritten to be more straightforward.
+	(addImpl): Rewritten to be more straightforward.
+	(putLayer): Rewritten to be more straightforward.
+
 2006-01-27  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/lang/Character.java:
