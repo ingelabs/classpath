@@ -1,5 +1,16 @@
 2006-01-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(InternalFramePropertyChangeListener): Don't implement
+	VetoableChangeListener.
+	(InternalFramePropertyChangeListener.vetoableChange): Removed.
+	(internalFrameVetoableChangeListener): Removed unneeded field.
+	(installListeners): Don't install vetoableChangeListener.
+	* javax/swing/event/DocumentEvent.java
+	(EventType): Made class final.
+
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SwingUtilities.java
 	(calculateInsetArea): Removed unneeded method. The method
 	calculateInnerArea has the same purpose and is actually specified.
