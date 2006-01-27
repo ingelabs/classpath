@@ -411,39 +411,16 @@ public class JLayeredPane extends JComponent implements Accessible
    */
   public void setPosition(Component c, int position)
   {
-    int layer = getLayer (c);
-    int[] range = layerToRange(new Integer(layer));
-    if (range[0] == range[1])
-      throw new IllegalArgumentException ();
+    int currentPos = getPosition(c);
+    if (currentPos == position)
+      return;
 
-    int top = range[0];
-    int bot = range[1];
-    if (position == -1)
-      position = (bot - top) - 1;
-    int targ = Math.min(top + position, bot-1);
-    int curr = -1;
-
-    Component[] comps = getComponents();
-    for (int i = top; i < bot; ++i)
-      {
-        if (comps[i] == c)
-          {
-            curr = i;
-            break;
-          }
-      }
-    if (curr == -1)
-      // should have found it
-      throw new IllegalArgumentException();
-
-    if (curr == 0)
-      super.swapComponents(curr, targ);
-    else
-      while (curr > 0)
-        super.swapComponents (curr, --curr);
-    
-    revalidate();
-    repaint();
+    int layer = getLayer(c);
+    int i1 = position;
+    int i2 = getPosition(c);
+    int incr = (i1 - i2) / Math.abs(i1 - i2);
+    for (int p = i2; p != i1; p += incr)
+      swapComponents(p, p + incr, layer);
   }
     
   /**
@@ -745,5 +722,29 @@ public class JLayeredPane extends JComponent implements Accessible
         result = false;
     }
     return result;
+  }
+
+  /**
+   * Swaps the components at position i and j, in the specified layer.
+   *
+   * @param i the position of the 1st component in its layer
+   * @param j the position of the 2nd component in its layer
+   * @param layer the layer in which the components reside
+   */
+  private void swapComponents (int i, int j, int layer)
+  {
+    int p1 = Math.min(i, j);
+    int p2 = Math.max(i, j);
+    Component[] layerComps = getComponentsInLayer(layer);
+    int layerOffs = getIndexOf(layerComps[0]);
+    Component c1 = layerComps[p1];
+    Component c2 = layerComps[p2];
+    // remove() wants the real index.
+    remove(p2 + layerOffs);
+    remove(p1 + layerOffs);
+    // add() wants the position within the layer.
+    Integer l = new Integer(layer);
+    add(c2, l, p1);
+    add(c1, l, p2);
   }
 }

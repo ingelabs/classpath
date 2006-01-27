@@ -1,3 +1,11 @@
+2006-01-27  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Container.java
+	(swapComponents): Removed unspecified method.
+	* javax/swing/JLayeredPane.java
+	(setPosition): Reimplemented correctly.
+	(swapComponents): New helper method.
+
 2006-01-27  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Set version to 0.21-pre.
