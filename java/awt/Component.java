@@ -4925,16 +4925,6 @@ p   * <li>the set of backward traversal keys
     Rectangle r1 = queuedEvent.getUpdateRect();
     Rectangle r2 = newEvent.getUpdateRect();
     Rectangle union = r1.union(r2);
-
-    int r1a = r1.width * r1.height;
-    int r2a = r2.width * r2.height;
-    int ua  = union.width * union.height;
-
-    if (ua > (r1a+r2a)*2)
-      return null;
-    /* The 2 factor should maybe be reconsidered. Perhaps 3/2
-       would be better? */
-
     newEvent.setUpdateRect(union);
     return newEvent;
   }
