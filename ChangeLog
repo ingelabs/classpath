@@ -1,3 +1,20 @@
+2006-01-27  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insert): Moved this loop to insertUpdate.
+	(insertUpdate): Likewise. Fixed variable
+	names. Incremented pos if new paragraph
+	is inserted.
+	(split): Changed edits to use replace instead. Prevents
+	assertion errors.
+	(insertFirstContentTag): Removed else.
+	(insertContentTag): Implemented else for JoinNextDirection.
+	(createFracture): Fixed up code, still not fully complete.
+	(insertFracture): Fixed to use return value from 
+	recreateAfterFracture.
+	(recreateAfterFracture): Changed to return an array of the
+	elements to be added. This prevents an assertion error.
+
 2006-01-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 25520
