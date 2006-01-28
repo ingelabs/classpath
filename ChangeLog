@@ -1,3 +1,9 @@
+2006-01-28  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/mac/HMac.java (clone): Implement Cloneable.
+	* gnu/java/security/Registry.java: Changed value of GNU_SECURITY to
+	  "GNU".
+
 2006-01-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java (updateCachedPreferredSize):
