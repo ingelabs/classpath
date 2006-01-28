@@ -1,3 +1,7 @@
+2006-01-28  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/javax/crypto/mac/HMac.java (clone): Cast cloned ipad to byte[].
+
 2006-01-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/classpath/examples/swing/Demo.java (mkTree): Make a larger tree.

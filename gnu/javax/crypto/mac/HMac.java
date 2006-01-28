@@ -137,7 +137,7 @@ public class HMac extends BaseMac implements Cloneable
     HMac result = new HMac((IMessageDigest) underlyingHash.clone());
     result.ipadHash = this.ipadHash;
     result.opadHash = this.opadHash;
-    result.ipad = this.ipad.clone();
+    result.ipad = (byte[]) this.ipad.clone();
 
     return result;
   }
