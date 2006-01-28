@@ -1,5 +1,8 @@
 2006-01-28  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/jce/mac/MacAdapter.java (MacAdapter(IMac, Map)): New
+	constructor for cloning purposes.
+	(clone): New implementation that ensures cloning.
 	* gnu/javax/crypto/mac/HMac.java (clone): Implement Cloneable.
 	* gnu/java/security/Registry.java: Changed value of GNU_SECURITY to
 	  "GNU".
