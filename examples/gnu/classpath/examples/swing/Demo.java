@@ -947,37 +947,16 @@ public class Demo
     return editorPane;
   }
   
-  private static JTree mkTree()
+  /**
+   * Create the tree.
+   * 
+   * @return thr scroll pane, containing the tree.
+   */
+  private static JComponent mkTree()
   {
     DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root node");
-    DefaultMutableTreeNode child1 = new DefaultMutableTreeNode("Child node 1");
-    DefaultMutableTreeNode child11 =
-      new DefaultMutableTreeNode("Child node 1.1");
-    DefaultMutableTreeNode child12 =
-      new DefaultMutableTreeNode("Child node 1.2");
-    DefaultMutableTreeNode child13 =
-      new DefaultMutableTreeNode("Child node 1.3");
-    DefaultMutableTreeNode child2 = new DefaultMutableTreeNode("Child node 2");
-    DefaultMutableTreeNode child21 =
-      new DefaultMutableTreeNode("Child node 2.1");
-    DefaultMutableTreeNode child22 =
-      new DefaultMutableTreeNode("Child node 2.2");
-    DefaultMutableTreeNode child23 =
-      new DefaultMutableTreeNode("Child node 2.3");
-    DefaultMutableTreeNode child24 =
-      new DefaultMutableTreeNode("Child node 2.4");
-
-    DefaultMutableTreeNode child3 = new DefaultMutableTreeNode("Child node 3");
-    root.add(child1);
-    root.add(child2);
-    root.add(child3);
-    child1.add(child11);
-    child1.add(child12);
-    child1.add(child13);
-    child2.add(child21);
-    child2.add(child22);
-    child2.add(child23);
-    child2.add(child24);
+    
+    addChildren("Node", root, 12);
 
     JTree tree = new JTree(root);
     tree.setLargeModel(true);
@@ -985,7 +964,33 @@ public class Demo
     dtsm.setSelectionMode(DefaultTreeSelectionModel.SINGLE_TREE_SELECTION);
     tree.setSelectionModel(dtsm);
     
-    return tree;
+    // Make it editable.
+    tree.setEditable(true);
+    
+    JComponent t = mkScrollPane(tree);
+    t.setPreferredSize(new Dimension(200,200));
+    return t;
+  }
+  
+  /**
+   * Add the specified number of children to this parent node. For each
+   * child, the method is called recursively adding the nChildren-3 number of 
+   * grandchildren.
+   * 
+   * @param parent the parent node
+   * @param nChildren the number of children
+   */
+  private static void addChildren(String name, DefaultMutableTreeNode parent,
+                                                int nChildren)
+  {
+    for (int i = 0; i < nChildren; i++)
+      {
+        String child_name = parent+"."+i;
+        DefaultMutableTreeNode child = new DefaultMutableTreeNode
+         (child_name);
+        parent.add(child);
+        addChildren(child_name, child, nChildren-3);
+      }
   }
   
   /**

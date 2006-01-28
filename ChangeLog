@@ -1,3 +1,8 @@
+2006-01-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/classpath/examples/swing/Demo.java (mkTree): Make a larger tree.
+	(addChildren): New method.
+
 2006-01-28  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/jce/mac/MacAdapter.java (MacAdapter(IMac, Map)): New
