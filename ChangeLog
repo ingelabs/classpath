@@ -1,5 +1,11 @@
 2006-01-28  Mark Wielaard  <mark@klomp.org>
 
+	Reported by Dimitri Fontaine <dimitri@dalibo.com>
+	* java/awt/print/NoPrinterJob.java: New (fake) class.
+	* java/awt/print/PrinterJob.java (getPrinterJob): Return NoPrinterJob.
+
+2006-01-28  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/javax/crypto/mac/HMac.java (clone): Cast cloned ipad to byte[].
 
 2006-01-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
