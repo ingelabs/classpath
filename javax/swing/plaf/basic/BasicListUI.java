@@ -720,12 +720,19 @@ public class BasicListUI extends ListUI
     int minIndex = Math.min(index1, index2);
     int maxIndex = Math.max(index1, index2);
     Point loc = indexToLocation(list, minIndex);
-    Rectangle bounds = new Rectangle(loc.x, loc.y, cellWidth,
+
+    // When the layoutOrientation is VERTICAL, then the width == the list
+    // width. Otherwise the cellWidth field is used.
+    int width = cellWidth;
+    if (l.getLayoutOrientation() == JList.VERTICAL)
+      width = l.getWidth();
+
+    Rectangle bounds = new Rectangle(loc.x, loc.y, width,
                                      getCellHeight(minIndex));
     for (int i = minIndex + 1; i <= maxIndex; i++)
       {
         Point hiLoc = indexToLocation(list, i);
-        Rectangle hibounds = new Rectangle(hiLoc.x, hiLoc.y, cellWidth,
+        Rectangle hibounds = new Rectangle(hiLoc.x, hiLoc.y, width,
                                            getCellHeight(i));
         bounds = bounds.union(hibounds);
       }
@@ -894,7 +901,7 @@ public class BasicListUI extends ListUI
    */
   protected void maybeUpdateLayoutState()
   {
-    if (updateLayoutStateNeeded != 0 || !list.isValid())
+    if (updateLayoutStateNeeded != 0)
       {
         updateLayoutState();
         updateLayoutStateNeeded = 0;
