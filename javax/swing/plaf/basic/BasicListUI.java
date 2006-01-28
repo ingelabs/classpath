@@ -890,8 +890,6 @@ public class BasicListUI extends ListUI
             Dimension dim = flyweight.getPreferredSize();
             cellWidth = Math.max(cellWidth, dim.width);
           }
-        if (list.getLayoutOrientation() == JList.VERTICAL)
-          cellWidth = Math.max(cellWidth, list.getSize().width);
       }
   }
 

@@ -1,6 +1,11 @@
 2006-01-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java
+	(updateLayoutState): Removed unneeded special case for VERTICAL.
+
+2006-01-28  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java
 	(getCellBounds): Determine correct list width when having a
 	layoutOrientation of VERTICAL.
 	(maybeUpdateLayoutState): Don't consider the validation state of
