@@ -1,3 +1,16 @@
+2006-01-29  Robert Schuster  <robertschuster@fsfe.org>
+
+	* gnu/java/beans/decoder/DefaultExceptionListener.java: Moved to
+	parent package.
+	* gnu/java/beans/DefaultExceptionListener.java: Constant public field
+	INSTANCE added.
+	* java/beans/XMLDecoder.java:
+	(setExceptionListener): Use shared DefaultExceptionListener
+	instance.
+	* java/beans/Encoder.java:
+	(setExceptionListener): Use shared DefaultExceptionListener
+	instance.
+
 2006-01-29  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/ScrollPaneLayout.java
@@ -8,7 +21,7 @@
 	* java/net/SocketPermission.java (setActions): Trim and lower case
 	action.
 
-2006-01-30  Raif S. Naffah  <raif@swiftdsl.com.au>
+2006-01-29  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/util/Prime2.java (passEulerCriterion): Was
 	incorrectly failing primality test for some known primes. Fixed.
