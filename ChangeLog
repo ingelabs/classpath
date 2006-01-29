@@ -1,3 +1,13 @@
+2006-01-30  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/util/Prime2.java (passEulerCriterion): Was
+	incorrectly failing primality test for some known primes. Fixed.
+	(passFermatLittleTheorem): Removed.
+	(passMillerRabin): Removed.
+	(isProbablePrime): Cache primes that pass the primality tests.
+	Use BigInteger.isProbablePrime(int) for primality tests.
+	(debugBI): New static debugging method.
+
 2006-01-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java
