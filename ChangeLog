@@ -1,3 +1,8 @@
+2006-01-29  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/ScrollPaneLayout.java
+	(minimumLayoutSize): Rewritten to match JDKs behaviour.
+
 2006-01-29  Mark Wielaard  <mark@klomp.org>
 
 	* java/net/SocketPermission.java (setActions): Trim and lower case
