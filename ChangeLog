@@ -992,6 +992,8 @@
 
 	* java/beans/XMLEncoder.java:
 	(writeExpression): Added early return (fixes PR #25941).
+	(setExceptionListener, anonymous Class): Removed printStackTrace
+	call.
 	* java/beans/Encoder: Removed unused imports.
 	(setupDefaultPersistenceDelegates): Removed unneccessary
 	PersistenceDelegates for subclasses.
