@@ -1,3 +1,8 @@
+2006-01-30  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/xml/transform/ApplyTemplatesNode.java (clone): Check whether
+	sortKeys is null.
+
 2006-01-30  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JLayeredPane.java
