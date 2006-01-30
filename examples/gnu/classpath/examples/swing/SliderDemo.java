@@ -1,5 +1,5 @@
 /* SliderDemo.java -- An example showing JSlider in various configurations.
-   Copyright (C) 2005,  Free Software Foundation, Inc.
+   Copyright (C) 2005, 2006,  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath examples.
 
@@ -61,13 +61,26 @@ public class SliderDemo extends JFrame implements ActionListener
   public SliderDemo(String frameTitle) 
   {
     super(frameTitle);
-    JPanel cont = createContent();
+    content = createContent();
+    // initFrameContent() is only called (from main) when running this app 
+    // standalone
+  }
+  
+  /**
+   * When the demo is run independently, the frame is displayed, so we should
+   * initialise the content panel (including the demo content and a close 
+   * button).  But when the demo is run as part of the Swing activity board,
+   * only the demo content panel is used, the frame itself is never displayed,
+   * so we can avoid this step.
+   */
+  public void initFrameContent()
+  {
     JPanel closePanel = new JPanel();
     JButton closeButton = new JButton("Close");
     closeButton.setActionCommand("CLOSE");
     closeButton.addActionListener(this);
     closePanel.add(closeButton);
-    cont.add(closePanel, BorderLayout.SOUTH);
+    content.add(closePanel, BorderLayout.SOUTH);
     getContentPane().add(content);
   }
        
@@ -247,6 +260,7 @@ public class SliderDemo extends JFrame implements ActionListener
   public static void main(String[] args) 
   {
     SliderDemo app = new SliderDemo("Slider Demo");
+    app.initFrameContent();
     app.pack();
     app.setVisible(true);
   }

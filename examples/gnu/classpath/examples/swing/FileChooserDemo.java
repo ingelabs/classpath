@@ -1,5 +1,5 @@
 /* FileChooserDemo.java -- An example showing file choosers in Swing.
-   Copyright (C) 2005,  Free Software Foundation, Inc.
+   Copyright (C) 2005, 2006,  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath examples.
 
@@ -87,6 +87,19 @@ public class FileChooserDemo extends JFrame implements ActionListener
   {
     super(frameTitle);
     JPanel content = createContent();
+    // initFrameContent() is only called (from main) when running this app 
+    // standalone
+  }
+  
+  /**
+   * When the demo is run independently, the frame is displayed, so we should
+   * initialise the content panel (including the demo content and a close 
+   * button).  But when the demo is run as part of the Swing activity board,
+   * only the demo content panel is used, the frame itself is never displayed,
+   * so we can avoid this step.
+   */
+  public void initFrameContent() 
+  {
     JPanel closePanel = new JPanel();
     JButton closeButton = new JButton("Close");
     closeButton.setActionCommand("CLOSE");
@@ -227,6 +240,7 @@ public class FileChooserDemo extends JFrame implements ActionListener
   public static void main(String[] args) 
   {
     FileChooserDemo app = new FileChooserDemo("File Chooser Demo");
+    app.initFrameContent();
     app.pack();
     app.setVisible(true);
   }

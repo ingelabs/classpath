@@ -1,5 +1,17 @@
 2006-01-30  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* examples/gnu/classpath/examples/swing/ButtonDemo.java
+	(ButtonDemo): Move content initialisation to new method,
+	(initFrameContent): New method,
+	(main): Call initFrameContent(),
+	* examples/gnu/classpath/examples/swing/ComboBoxDemo.java: Likewise,
+	* examples/gnu/classpath/examples/swing/FileChooserDemo.java: Likewise,
+	* examples/gnu/classpath/examples/swing/ScrollBarDemo.java: Likewise,
+	* examples/gnu/classpath/examples/swing/SliderDemo.java: Likewise,
+	* examples/gnu/classpath/examples/swing/TextFieldDemo.java: Likewise.
+
+2006-01-30  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* examples/gnu/classpath/examples/swing/Demo.java
 	(Demo): Set frame size,
 	(mkButtonBar): Removed stacked sub-panels.
