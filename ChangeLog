@@ -1,3 +1,23 @@
+2006-01-30  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java:
+	Added new fields.
+	(insert): Initialized fields. Removed call to addEdit, 
+	and created ElementEdit instead.
+	(insertUpdate): Added check for fracturing. If the
+	fracturing was not successful, we should push the
+	last element back on the stack.
+	(insertParagraph): Fixed call to getEditForParagraphAndIndex.
+	Also, changed replace calls to use Edit.
+	(insertFirstContentTag): Removed unneeded check and fixed call
+	to recreateLeaves.
+	(insertContent): Fixed check to use new fields. Added code in
+	to check if leaves overlap.
+	(createFracture): Fixed call to recreateLeaves.
+	(recreateLeaves): Fixed code and cleaned it up a bit.
+	(insertFracture): Set fracNotCreated field.
+	(addEdit): Removed, this method is not needed.
+
 2006-01-30  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JRootPane.java
