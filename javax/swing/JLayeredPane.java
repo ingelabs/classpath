@@ -496,7 +496,7 @@ public class JLayeredPane extends JComponent implements Accessible
   protected int insertIndexForLayer(int layer, int position)
   {
     Component[] components = getComponents();
-    int index = components.length;
+    int index = 0;
 
     // Try to find the start index of the specified layer.
     int p = -1;
@@ -504,13 +504,13 @@ public class JLayeredPane extends JComponent implements Accessible
       {
         int l = getLayer(components[i]);
         if (l < layer)
-          index = i;
+          index++;
         // If we are in the layer we look for, try to find the position.
         else if (l == layer)
           {
             p++;
             if (p >= position)
-              index = i;
+              index++;
             else
               break;
           }

@@ -1,3 +1,9 @@
+2006-01-30  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JLayeredPane.java
+	(insertIndexForLayer): Fixed algorithm to correctly insert
+	components within same layer and -1 position.
+
 2006-01-30  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #24876
