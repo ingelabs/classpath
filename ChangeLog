@@ -1,3 +1,9 @@
+2006-01-30  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/mac/HMac.java (clone): Clone ipadHash, opadHash, and
+	the ipad buffer.
+	* gnu/javax/crypto/mac/BaseMac.java (clone): Clone underlyingHash.
+
 2006-01-30  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
         
         PR 26027
