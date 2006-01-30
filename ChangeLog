@@ -1,5 +1,12 @@
 2006-01-30  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JRootPane.java
+	(RootLayout.prefSize): Removed caching for preferredSize.
+	(RootLayout.invalidateLayout): Likewise.
+	(RootLayout.preferredLayoutSize): Likewise.	
+
+2006-01-30  Roman Kennke  <kennke@aicas.com>
+
 	PR classpath/26035
 	* javax/swing/JFrame.java
 	(frameInit): Handle the defaultLookAndFeelDecorated flag.
