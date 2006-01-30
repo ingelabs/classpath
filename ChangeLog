@@ -1,3 +1,7 @@
+2006-01-30  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/Cursor.java (toString): Include name and type.
+
 2006-01-30  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/mac/HMac.java (clone): Clone ipadHash, opadHash, and
