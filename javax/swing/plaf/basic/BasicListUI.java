@@ -135,6 +135,7 @@ public class BasicListUI extends ListUI
      */
     public void contentsChanged(ListDataEvent e)
     {
+      updateLayoutStateNeeded |= modelChanged;
       list.revalidate();
     }
 
@@ -145,6 +146,7 @@ public class BasicListUI extends ListUI
      */
     public void intervalAdded(ListDataEvent e)
     {
+      updateLayoutStateNeeded |= modelChanged;
       list.revalidate();
     }
 
@@ -155,6 +157,7 @@ public class BasicListUI extends ListUI
      */
     public void intervalRemoved(ListDataEvent e)
     {
+      updateLayoutStateNeeded |= modelChanged;
       list.revalidate();
     }
   }
@@ -541,17 +544,21 @@ public class BasicListUI extends ListUI
      */
     public void propertyChange(PropertyChangeEvent e)
     {
-      if (e.getSource() == BasicListUI.this.list)
+      if (e.getPropertyName().equals("model"))
         {
           if (e.getOldValue() != null && e.getOldValue() instanceof ListModel)
-            ((ListModel) e.getOldValue()).removeListDataListener(BasicListUI.this.listDataListener);
-
+            {
+              ListModel oldModel = (ListModel) e.getOldValue();
+              oldModel.removeListDataListener(listDataListener);
+            }
           if (e.getNewValue() != null && e.getNewValue() instanceof ListModel)
-            ((ListModel) e.getNewValue()).addListDataListener(BasicListUI.this.listDataListener);
+            {
+              ListModel newModel = (ListModel) e.getNewValue();
+              newModel.addListDataListener(BasicListUI.this.listDataListener);
+            }
+
+          updateLayoutStateNeeded |= modelChanged;
         }
-      // Update the updateLayoutStateNeeded flag.
-      if (e.getPropertyName().equals("model"))
-        updateLayoutStateNeeded |= modelChanged;
       else if (e.getPropertyName().equals("selectionModel"))
         updateLayoutStateNeeded |= selectionModelChanged;
       else if (e.getPropertyName().equals("font"))
@@ -899,7 +906,7 @@ public class BasicListUI extends ListUI
    */
   protected void maybeUpdateLayoutState()
   {
-    if (updateLayoutStateNeeded != 0 || !list.isValid())
+    if (updateLayoutStateNeeded != 0)
       {
         updateLayoutState();
         updateLayoutStateNeeded = 0;

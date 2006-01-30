@@ -1,3 +1,17 @@
+2006-01-30  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicListUI.java
+	(ListDataHandler.contentsChanged): Update the
+	updateLayoutStateNeeded flag.
+	(ListDataHandler.intervalAdded): Update the
+	updateLayoutStateNeeded flag.
+	(ListDataHandler.intervalRemoved): Update the
+	updateLayoutStateNeeded flag.
+	(PropertyChangeHandler.propertyChange): Correctly update the
+	listeners on new list model.
+	(maybeUpdateLayoutState): Don't consider the validation state
+	of the list.
+
 2006-01-30  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/xml/transform/ApplyTemplatesNode.java (clone): Check whether
