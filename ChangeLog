@@ -1,3 +1,12 @@
+2006-01-30  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JProgressBar.java (orientation): Always set by
+	constructor.
+	(JProgressBar(int)): Document default on 'illegal' value.
+	(JProgressBar(int, int, int)): Likewise and set orientation to
+	HORIZONTAL when 'illegal'.
+	(setOrientation): Likewise.
+
 2006-01-30  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicListUI.java

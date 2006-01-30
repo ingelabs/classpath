@@ -174,8 +174,8 @@ public class JProgressBar extends JComponent implements SwingConstants,
   /** Whether the ProgressBar is determinate. */
   private transient boolean indeterminate = false;
 
-  /** The orientation of the ProgressBar */
-  protected int orientation = HORIZONTAL;
+  /** The orientation of the ProgressBar. Always set by constructor. */
+  protected int orientation;
 
   /** Whether borders should be painted. */
   protected boolean paintBorder = true;
@@ -208,10 +208,9 @@ public class JProgressBar extends JComponent implements SwingConstants,
    * Creates a new JProgressBar object with a minimum of 0,
    * a maximum of 100, and the given orientation.
    *
-   * @param orientation The orientation of the JProgressBar.
-   * 
-   * @throws IllegalArgumentException if <code>orientation</code> is not either
-   *         {@link #HORIZONTAL} or {@link #VERTICAL}.
+   * @param orientation The orientation of the JProgressBar. Can be either
+   * {@link #HORIZONTAL} or {@link #VERTICAL}. Defaults to
+   * <code>HORIZONTAL</code> when any other value is given.
    */
   public JProgressBar(int orientation)
   {
@@ -236,16 +235,17 @@ public class JProgressBar extends JComponent implements SwingConstants,
    *
    * @param minimum The minimum of the JProgressBar.
    * @param maximum The maximum of the JProgressBar.
-   * @param orientation The orientation of the JProgressBar.
-   * 
-   * @throws IllegalArgumentException if <code>orientation</code> is not either
-   *         {@link #HORIZONTAL} or {@link #VERTICAL}.
+   * @param orientation The orientation of the JProgressBar. Can be either
+   * {@link #HORIZONTAL} or {@link #VERTICAL}. Defaults to
+   * <code>HORIZONTAL</code> when any other value is given.
    */
   public JProgressBar(int orientation, int minimum, int maximum)
   {
     model = new DefaultBoundedRangeModel(minimum, 0, minimum, maximum);
     if (orientation != HORIZONTAL && orientation != VERTICAL)
-      throw new IllegalArgumentException(orientation + " is not a legal orientation");    
+      this.orientation = HORIZONTAL;
+    else
+      this.orientation = orientation;
     setOrientation(orientation);
     changeListener = createChangeListener();
     model.addChangeListener(changeListener);
@@ -315,12 +315,14 @@ public class JProgressBar extends JComponent implements SwingConstants,
    * This method changes the orientation property. The orientation of the 
    * JProgressBar can be either horizontal or vertical.
    *
-   * @param orientation The orientation of the JProgressBar.
+   * @param orientation The orientation of the JProgressBar. Can be either
+   * {@link #HORIZONTAL} or {@link #VERTICAL}. Defaults to
+   * <code>HORIZONTAL</code> when any other value is given.
    */
   public void setOrientation(int orientation)
   {
     if (orientation != VERTICAL && orientation != HORIZONTAL)
-      throw new IllegalArgumentException("orientation must be one of VERTICAL or HORIZONTAL");
+      orientation = HORIZONTAL;
     if (this.orientation != orientation)
       {
 	int oldOrientation = this.orientation;
