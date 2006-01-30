@@ -1,3 +1,25 @@
+2006-01-30  Roman Kennke  <kennke@aicas.com>
+
+	PR classpath/26035
+	* javax/swing/JFrame.java
+	(frameInit): Handle the defaultLookAndFeelDecorated flag.
+	* javax/swing/plaf/metal/MetalRootPaneUI.java
+	(MetalFrameBorder): New inner class, provides the border for
+	top level containers with L&F decorations.
+	(MetalTitlePane): New inner class, provides the title pane for
+	top level containers with L&F decorations.
+	(MetalRootLayout): New inner class. Used to layout the root pane
+	when L&F window decorations are enabled.
+	(installUI): New method. Handles window decorations.
+	(uninstallUI): New method. Handles window decorations.
+	(propertyChange): Handles window decorations.
+	(installWindowDecorations): New method. Handles window
+	decorations.
+	(uninstallWindowDecorations): New method. Handles window
+	decorations.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(getSupportsWindowDecorations): Overridden to return true.
+
 2006-01-30  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JProgressBar.java (JProgressBar(int)): Document
