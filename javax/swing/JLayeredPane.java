@@ -503,7 +503,7 @@ public class JLayeredPane extends JComponent implements Accessible
     for (int i = 0; i < components.length; i++)
       {
         int l = getLayer(components[i]);
-        if (l < layer)
+        if (l > layer)
           index++;
         // If we are in the layer we look for, try to find the position.
         else if (l == layer)
