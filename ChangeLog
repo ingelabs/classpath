@@ -1,3 +1,19 @@
+2006-01-30  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #24876
+	* gnu/regexp/gnu/regexp/RE.java(REG_TRY_ENTIRE_MATCH):
+	New execution flag.
+	(getMatchImpl): if REG_TRY_ENTIRE_MATCH is set, add an
+	implicit RETokenEnd at the end of the regexp chain.
+	Do not select the longest match, but select the first match.
+	(match): Do not take care of REMatch.empty.
+	* gnu/regexp/REMatch.java(empty): To be used only in RETokenRepeated.
+	* gnu/regexp/RETokenOneOf.java: Corrected a typo in a comment.
+	* gnu/regexp/RETokenBackRef.java: Do not take care of REMatch.empty.
+	* gnu/regexp/RETokenRepeated.java (match): Rewrote stingy matching.
+	Do not take care of REMatch.empty. Set and check REMatch.empty
+	when trying to match the single token.
+
 2006-01-30  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/Cursor.java (toString): Include name and type.

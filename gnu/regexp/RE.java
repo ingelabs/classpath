@@ -217,6 +217,13 @@ public class RE extends REToken {
    */
   public static final int REG_NO_INTERPOLATE = 128;
 
+  /**
+   * Execution flag.
+   * Try to match the whole input string. An implicit match-end operator
+   * is added to this regexp.
+   */
+  public static final int REG_TRY_ENTIRE_MATCH = 256;
+
   /** Returns a string representing the version of the gnu.regexp package. */
   public static final String version() {
     return VERSION;
@@ -1265,20 +1272,14 @@ public class RE extends REToken {
   
     /* Implements abstract method REToken.match() */
     boolean match(CharIndexed input, REMatch mymatch) { 
-	int origin = mymatch.index;
-	boolean b;
 	if (firstToken == null) {
-	    b = next(input, mymatch);
-	    if (b) mymatch.empty = (mymatch.index == origin);
-	    return b;
+	    return next(input, mymatch);
 	}
 
 	// Note the start of this subexpression
 	mymatch.start[subIndex] = mymatch.index;
 
-	b = firstToken.match(input, mymatch);
-	if (b) mymatch.empty = (mymatch.index == origin);
-	return b;
+	return firstToken.match(input, mymatch);
     }
   
   /**
@@ -1337,23 +1338,34 @@ public class RE extends REToken {
   }
 
   REMatch getMatchImpl(CharIndexed input, int anchor, int eflags, StringBuffer buffer) {
+      boolean tryEntireMatch = ((eflags & REG_TRY_ENTIRE_MATCH) != 0);
+      RE re = (tryEntireMatch ? (RE) this.clone() : this);
+      if (tryEntireMatch) {
+	  re.chain(new RETokenEnd(0, null));
+      }
       // Create a new REMatch to hold results
       REMatch mymatch = new REMatch(numSubs, anchor, eflags);
       do {
 	  // Optimization: check if anchor + minimumLength > length
 	  if (minimumLength == 0 || input.charAt(minimumLength-1) != CharIndexed.OUT_OF_BOUNDS) {
-	      if (match(input, mymatch)) {
-		  // Find longest match of them all to observe leftmost longest
-		  REMatch longest = mymatch;
+	      if (re.match(input, mymatch)) {
+		  REMatch best = mymatch;
+		  // We assume that the match that coms first is the best.
+		  // And the following "The longer, the better" rule has
+		  // been commented out. The longest is not neccesarily
+		  // the best. For example, "a" out of "aaa" is the best
+		  // match for /a+?/.
+		  /*
+		  // Find best match of them all to observe leftmost longest
 		  while ((mymatch = mymatch.next) != null) {
-		      if (mymatch.index > longest.index) {
-			  longest = mymatch;
+		      if (mymatch.index > best.index) {
+		   	best = mymatch;
 		      }
 		  }
-		  
-		  longest.end[0] = longest.index;
-		  longest.finish(input);
-		  return longest;
+		  */
+		  best.end[0] = best.index;
+		  best.finish(input);
+		  return best;
 	      }
 	  }
 	  mymatch.clear(++anchor);

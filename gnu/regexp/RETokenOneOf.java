@@ -98,7 +98,7 @@ final class RETokenOneOf extends REToken {
     REMatch last = null;
     REToken tk;
     for (int i=0; i < options.size(); i++) {
-	// In ordaer that the backtracking can work,
+	// In order that the backtracking can work,
 	// each option must be chained to the next token.
 	// But the chain method has some side effect, so
 	// we use clones.

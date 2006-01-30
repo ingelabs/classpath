@@ -84,6 +84,8 @@ final class RETokenRepeated extends REToken {
 	return (min * token.getMinimumLength());
     }
 
+    boolean stopMatchingIfSatisfied = true;
+
     // We do need to save every possible point, but the number of clone()
     // invocations here is really a killer for performance on non-stingy
     // repeat operators.  I'm open to suggestions...
@@ -93,7 +95,6 @@ final class RETokenRepeated extends REToken {
     // the subexpression back-reference operator allow that?
 
     boolean match(CharIndexed input, REMatch mymatch) {
-	int origin = mymatch.index;
 	// number of times we've matched so far
 	int numRepeats = 0; 
 	
@@ -113,19 +114,35 @@ final class RETokenRepeated extends REToken {
 	REMatch recurrent;
 	int lastIndex = mymatch.index;
 
+	// {0} needs some special treatment.
+	if (alwaysEmpty) {
+	    REMatch result = matchRest(input, newMatch);
+	    if (result != null) {
+	        mymatch.assignFrom(result);
+	        return true;
+	    }
+	    else {
+	        return false;
+	    }
+	}
+
 	do {
-	    // Check for stingy match for each possibility.
-	    if ((stingy && (numRepeats >= min)) || alwaysEmpty) {
-		REMatch result = matchRest(input, newMatch);
-		if (result != null) {
-		    mymatch.assignFrom(result);
-		    mymatch.empty = (mymatch.index == origin);
-		    return true;
-		}
-		else {
-	    	// Special case of {0}. It must always match an empty string.
-		    if (alwaysEmpty) return false;
-		}
+	    // We want to check something like  
+	    //    if (stingy && (numRepeats >= min))
+	    // and neglect the further matching.  But experience tells
+	    // such neglection may cause incomplete matching.
+	    // For example, if we neglect the seemingly unnecessay
+	    // matching, /^(b+?|a){1,2}?c/ cannot match "bbc".
+	    // On the other hand, if we do not stop the unnecessary
+	    // matching, /(([a-c])b*?\2)*/ matches "ababbbcbc"
+	    // entirely when we wan to find only "ababb".
+	    // In order to make regression tests pass, we do as we did.
+	    if (stopMatchingIfSatisfied && stingy && (numRepeats >= min)) {
+	        REMatch result = matchRest(input, newMatch);
+	        if (result != null) {
+	            mymatch.assignFrom(result);
+	            return true;
+	        }
 	    }
 
 	    doables = null;
@@ -134,7 +151,9 @@ final class RETokenRepeated extends REToken {
 	    // try next repeat at all possible positions
 	    for (current = newMatch; current != null; current = current.next) {
 		recurrent = (REMatch) current.clone();
+		int origin = recurrent.index;
 		if (token.match(input, recurrent)) {
+		    if (recurrent.index == origin) recurrent.empty = true;
 		    // add all items in current to doables array
 		    if (doables == null) {
 			doables = recurrent;
@@ -222,8 +241,11 @@ final class RETokenRepeated extends REToken {
 	    // desired.
 	    indexCount = 1;
 	}
+	if (stingy) {
+	    posIndex = (posIndex - indexCount - 1);
+	}
 	while (indexCount-- > 0) {
-	    --posIndex;
+	    if (stingy) ++posIndex; else --posIndex;
 	    newMatch = (REMatch) positions.elementAt(posIndex);
 	    results = matchRest(input, newMatch);
 	    if (results != null) {
@@ -233,6 +255,7 @@ final class RETokenRepeated extends REToken {
 		} else {
 		    // Order these from longest to shortest
 		    // Start by assuming longest (more repeats)
+		    // If stingy the order is shortest to longest.
 		    allResultsLast.next = results;
 		}
 		// Find new doablesLast
@@ -246,7 +269,6 @@ final class RETokenRepeated extends REToken {
 	}
 	if (allResults != null) {
 	    mymatch.assignFrom(allResults); // does this get all?
-	    mymatch.empty = (mymatch.index == origin);
 	    return true;
 	}
 	// If we fall out, no matches.

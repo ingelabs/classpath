@@ -67,7 +67,8 @@ public final class REMatch implements Serializable, Cloneable {
     int[] start; // start positions (relative to offset) for each (sub)exp.
     int[] end;   // end positions for the same
     REMatch next; // other possibility (to avoid having to use arrays)
-    boolean empty; // empty string matched
+    boolean empty; // empty string matched. This flag is used only within
+		   // RETokenRepeated.
 
     public Object clone() {
 	try {
@@ -89,7 +90,6 @@ public final class REMatch implements Serializable, Cloneable {
 	index = other.index;
 	// need to deep clone?
 	next = other.next;
-	empty = other.empty;
     }
 
     REMatch(int subs, int anchor, int eflags) {
@@ -126,7 +126,6 @@ public final class REMatch implements Serializable, Cloneable {
 	    start[i] = end[i] = -1;
 	}
 	next = null; // cut off alternates
-	empty = false;
     }
     
     /**
