@@ -1,3 +1,8 @@
+2006-01-30  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/ViewportLayout.java
+	(minimumLayoutSize): Rewritten to unconditionally return (4,4).
+
 2006-01-30  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JProgressBar.java (orientation): Always set by
