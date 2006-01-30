@@ -1,3 +1,10 @@
+2006-01-30  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JProgressBar.java (JProgressBar(int)): Document
+	IllegalArgumentException when orientation is illegal.
+	(JProgressBar(int, int, int)): Likewise and throw exception.
+	(setOrientation): Likewise.
+
 2006-01-30  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/ViewportLayout.java
