@@ -1,3 +1,9 @@
+2006-01-30  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(Demo): Set frame size,
+	(mkButtonBar): Removed stacked sub-panels.
+
 2006-01-30  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java:

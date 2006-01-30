@@ -1,5 +1,5 @@
 /* SwingDemo.java -- An example of using the javax.swing UI.
-   Copyright (C) 2003, 2004  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004, 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath examples.
 
@@ -715,6 +715,7 @@ public class Demo
     main.add(mkButtonBar());
     component.add(main, BorderLayout.CENTER);
     frame.pack();
+    frame.setSize(800, 600);
     frame.show();
   }
 
@@ -1004,33 +1005,30 @@ public class Demo
   
   private JPanel mkButtonBar()
   {    
-    JPanel panel = new JPanel (new GridLayout(2, 1));
-    JPanel panelA = new JPanel(new FlowLayout());
-    JPanel panelB = new JPanel(new FlowLayout());
-
+    JPanel panel = new JPanel(new FlowLayout());
     new PopUpAction("Buttons",
 		    (new ButtonDemo("Button Demo")).createContent(),
-		    panelA);
+		    panel);
     
     new PopUpAction("Toggles",
 		    mkToggle("cool and refreshing"),
-		    panelA);
+		    panel);
 
     new PopUpAction("Checkbox",
 		    mkCheckbox("ice cold"),
-		    panelA);
+		    panel);
 
     new PopUpAction("Radio",
 		    mkRadio("delicious"),
-		    panelA);
+		    panel);
 
     new PopUpAction("Slider",
 		    (new SliderDemo("Slider Demo")).createContent(),
-		    panelA);
+		    panel);
 
     new PopUpAction("ProgressBar",
             ProgressBarDemo.createContent(),
-             panelA);
+             panel);
 
 
     new PopUpAction("List",
@@ -1042,60 +1040,60 @@ public class Demo
                                                "that",
                                                "wraps",
                                                "over"}),
-		    panelA);
+		    panel);
 
     new PopUpAction("Scrollbar",
 		    (new ScrollBarDemo("ScrollBar Demo")).createContent(),
-		    panelA);
+		    panel);
 
     new PopUpAction("Viewport",
 		    mkViewportBox(mkBigButton("View Me!")),
-		    panelA);
+		    panel);
 
     new PopUpAction("ScrollPane",
 		    mkScrollPane(mkBigButton("Scroll Me!")),
-		    panelA);
+		    panel);
 
     new PopUpAction("TabPane",
 		    mkTabs(new String[] {"happy",
 					 "sad",
 					 "indifferent"}),
-		    panelB);
+		    panel);
 
     new PopUpAction("Spinner",
 		    mkSpinner(),
-		    panelB);
+		    panel);
 
     new PopUpAction("TextField",
 		    (new TextFieldDemo("TextField Demo")).createContent(),
-		    panelB);
+		    panel);
 
     new PopUpAction("FileChooser",
                     (new FileChooserDemo("FileChooser Demo")).createContent(),
-                    panelB);
+                    panel);
 
     new PopUpAction("ColorChooser",
 		    mkColorChooser(),
-		    panelB);
+		    panel);
 
     new PopUpAction("ComboBox",
 		    (new ComboBoxDemo("ComboBox Demo")).createContent(),
-		    panelB);
+		    panel);
 
     new PopUpAction("Editor",
                     mkEditorPane(),
-                    panelB);
+                    panel);
     
     new PopUpAction("Tree",
                     mkTree(),
-                    panelB);
+                    panel);
     
     new PopUpAction("Table",
                     mkTable(),
-                    panelB);
+                    panel);
     
     JButton exitDisposer = mkDisposerButton(frame);
-    panelB.add(exitDisposer);
+    panel.add(exitDisposer);
     exitDisposer.addActionListener(new ActionListener()
       {
 	public void actionPerformed(ActionEvent e)
@@ -1103,8 +1101,6 @@ public class Demo
 	  System.exit(1);
 	}
       });
-    panel.add(panelA);
-    panel.add(panelB);
     return panel;
   }
 }
