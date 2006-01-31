@@ -1,5 +1,15 @@
 2006-01-31  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/text/PlainView.java
+	(paint): Call drawLine with baseline coordinates.
+	(drawLine): Documented and indented this method.
+	(drawUnselecetedText): Documented and indented this method.
+	* javax/swing/plaf/text/Utilites.java
+	(drawTabbedText): The coordinates denote the baseline of the text
+	not the upper left corner.
+
+2006-01-31  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(createKeymap): Don't store KeyBindings[] as focusInputMap in
 	UIManager. Added FIXME regarding the implementation of this method.
