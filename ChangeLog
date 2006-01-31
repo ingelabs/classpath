@@ -1,3 +1,16 @@
+2006-01-31  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/UnicodeReader.java,
+	  gnu/xml/stream/XIncludeFilter.java,
+	  gnu/xml/stream/XMLParser.java: Fix case where resolved InputSource
+	  only resolved the system ID not the stream. Make some utility methods
+	  public and static for use by other private XML APIs.
+	* java/lang/ClassNotFoundException.java: Ensure that initCause can be
+	  called without throwing IllegalStateException.
+	* java/util/logging/SimpleFormatter.java: Write thrown exception if
+	  provided.
+
 2006-01-31  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #22873
