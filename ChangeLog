@@ -1,5 +1,11 @@
 2006-01-31  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
+	Fixes bug #22873
+	* gnu/regexp/REMatch(toString(int)): Throw IndexOutOfBoundsException
+	for an invalid index and return null for a skipped group.
+
+2006-01-31  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
 	Fixes bug #26002
 	* gnu/regexp/gnu/regexp/RE.java(initialize): Parse /\p{prop}/.
 	(NamedProperty): New inner class.

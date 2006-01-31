@@ -179,7 +179,9 @@ public final class REMatch implements Serializable, Cloneable {
      * @param sub Index of the subexpression.
      */
     public String toString(int sub) {
-	if ((sub >= start.length) || (start[sub] == -1)) return "";
+	if ((sub >= start.length) || sub < 0)
+	    throw new IndexOutOfBoundsException("No group " + sub);
+	if (start[sub] == -1) return null;
 	return (matchedText.substring(start[sub],end[sub]));
     }
     
