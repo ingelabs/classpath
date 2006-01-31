@@ -573,7 +573,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
     {
       // Split up the element at the start offset if necessary.
       Element el = getCharacterElement(offset);
-      Element[] res = split(el, offset, 0);
+      Element[] res = split(el, offset, 0, el.getElementIndex(offset));
       BranchElement par = (BranchElement) el.getParentElement();
       if (res[1] != null)
         {
@@ -599,7 +599,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
 
       int endOffset = offset + length;
       el = getCharacterElement(endOffset);
-      res = split(el, endOffset, 0);
+      res = split(el, endOffset, 0, el.getElementIndex(endOffset));
       par = (BranchElement) el.getParentElement();
       if (res[1] != null)
         {
@@ -789,7 +789,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
     private Element insertParagraph(BranchElement par, int offset)
     {
       Element current = par.getElement(par.getElementIndex(offset));
-      Element[] res = split(current, offset, 0);
+      Element[] res = split(current, offset, 0, 0);
       int index = par.getElementIndex(offset);
       Edit e = getEditForParagraphAndIndex(par, index + 1);
       Element ret;
@@ -905,9 +905,8 @@ public class DefaultStyledDocument extends AbstractDocument implements
           Element newEl1 = createLeafElement(paragraph, first.getAttributes(),
                                              offset, newEndOffset);
           edit.addAddedElement(newEl1);
-          
           if (current.getEndOffset() != endOffset)
-            recreateLeaves(newEndOffset, data);
+              recreateLeaves(newEndOffset, data);
           else
             offset = newEndOffset;
           break;
@@ -971,17 +970,16 @@ public class DefaultStyledDocument extends AbstractDocument implements
         }
       else if (!origParCreated || dir != ElementSpec.OriginateDirection)
         {
+          // FIXME: insert TestTag4
           int end = pos + len;
           Element leaf = createLeafElement(paragraph, tag.getAttributes(), pos, end);
           edit.addAddedElement(leaf);
           
-          // check if there is an overlap with the next element.
+          // recreate all others
           Element next = paragraph.getElement(index);
-          if (pos >= next.getStartOffset() && pos < next.getEndOffset())
+          if (next != null && next.isLeaf())
             {
-              Element nextLeaf = createLeafElement(paragraph, next.getAttributes(),
-                                               end, next.getEndOffset());
-              edit.addAddedElement(nextLeaf);
+              recreateLeaves(end, new ElementSpec[] { tag });
               edit.addRemovedElement(next);              
             }
         }
@@ -1008,8 +1006,8 @@ public class DefaultStyledDocument extends AbstractDocument implements
           Element newEl1 = createLeafElement(paragraph, atts,
                                              child.getStartOffset(), offset);
           edit.addAddedElement(newEl1);
-          edit.addRemovedElement(child);
           
+          edit.addRemovedElement(child);
           if (child.getEndOffset() != endOffset)
             recreateLeaves(offset, data);
         }
@@ -1075,6 +1073,8 @@ public class DefaultStyledDocument extends AbstractDocument implements
      *          the offset at which to possibly split
      * @param space
      *          the amount of space to create between the splitted parts
+     * @param editIndex 
+     *          the index of the edit to use
      * @return An array of elements which represent the split result. This array
      *         has two elements, the two parts of the split. The first element
      *         might be null, which means that the element which should be
@@ -1082,7 +1082,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
      *         null, which means that the offset is already at an element
      *         boundary and the element doesn't need to be splitted.
      */
-    private Element[] split(Element el, int offset, int space)
+    private Element[] split(Element el, int offset, int space, int editIndex)
     {
       // If we are at an element boundary, then return an empty array.
       if ((offset == el.getStartOffset() || offset == el.getEndOffset())
@@ -1097,7 +1097,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
         {
           int index = el.getElementIndex(offset);
           Element child = el.getElement(index);
-          Element[] result = split(child, offset, space);
+          Element[] result = split(child, offset, space, editIndex);
           Element[] removed;
           Element[] added;
           Element[] newAdded;
@@ -1130,33 +1130,29 @@ public class DefaultStyledDocument extends AbstractDocument implements
                   if (ind != 0)
                     newAdded[ind] = el2;
                 }
-
-              Edit edit = getEditForParagraphAndIndex((BranchElement) el, index);
+              
+              Edit edit = getEditForParagraphAndIndex((BranchElement) el, editIndex);
               edit.addRemovedElements(removed);
               edit.addAddedElements(added);
-
+              
               BranchElement newPar = (BranchElement) new BranchElement(el.getParentElement(),
                                                                        el.getAttributes());
               newPar.replace(0, 0, newAdded);
               res = new Element[] { null, newPar };
             }
           else
-
             {
               removed = new Element[count - index];
               for (int i = index; i < count; ++i)
                 removed[i - index] = el.getElement(i);
-              added = new Element[0];
-
-              Edit edit = getEditForParagraphAndIndex((BranchElement) el, index);
+              
+              Edit edit = getEditForParagraphAndIndex((BranchElement) el, editIndex);
               edit.addRemovedElements(removed);
-              edit.addAddedElements(added);
-
+              
               BranchElement newPar = (BranchElement) new BranchElement(el.getParentElement(),
                                                                        el.getAttributes());
               newPar.replace(0, 0, removed);
               res = new Element[] { null, newPar };
-
             }
         }
       else if (el instanceof LeafElement)
@@ -1165,8 +1161,8 @@ public class DefaultStyledDocument extends AbstractDocument implements
           Element el1 = createLeafElement(par, el.getAttributes(),
                                           el.getStartOffset(), offset);
 
-          Element el2 = createLeafElement(par, el.getAttributes(), offset
-                                                                   + space,
+          Element el2 = createLeafElement(par, el.getAttributes(), 
+                                          offset + space,
                                           el.getEndOffset());
           res = new Element[] { el1, el2 };
         }

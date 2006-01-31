@@ -1,3 +1,14 @@
+2006-01-31  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(changeUpdate): Fixed calls to split to incorporate 
+	new parameter.
+	(insertParagraph): Likewise. Uses 0 as editIndex
+	because inserting into a new paragraph.
+	(insertContentTag): Fixed check to use 
+	recreateLeaves. Added a FIXME comment.
+	(split): Added a new parameter for edits.
+
 2006-01-31  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicRootPaneUI.java
