@@ -593,6 +593,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
             }
           Edit edit = getEditForParagraphAndIndex(par, index);
           edit.addRemovedElements(removed);
+
           edit.addAddedElements(added);
         }
 
@@ -666,17 +667,19 @@ public class DefaultStyledDocument extends AbstractDocument implements
     {
       if (length == 0)
         return;
+      
       this.offset = offset;
       this.pos = offset;
       this.endOffset = offset + length;
       this.length = length;
       documentEvent = ev;
-      // Push the root and the paragraph at offset onto the element stack.
+      
       edits.removeAllElements();
       elementStack.removeAllElements();
       lastFractured = null;
       origParCreated = false;
       fracNotCreated = false;
+      
       insertUpdate(data);
 
       // This for loop applies all the changes that were made and updates the
@@ -702,6 +705,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
      */
     protected void insertUpdate(ElementSpec[] data)
     {
+      // Push the root and the paragraph at offset onto the element stack.
       origParCreated = false;
       Element current = root;
       int index;
@@ -822,7 +826,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
                   added = new Element[] { res[0], ret, res[1] };
                 }
             }
-          
+
           e.addAddedElements(added);
           e.addRemovedElements(removed);
         }
@@ -958,7 +962,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
               if (next != null)
                 {
                   Element nextLeaf = next.getElement(0);
-                  Edit e = getEditForParagraphAndIndex(next, 0);
+                  Edit e = getEditForParagraphAndIndex(next, 0);   
                   Element newEl2 = createLeafElement(next, atts, pos, nextLeaf.getEndOffset());
                   e.addAddedElement(newEl2);
                   e.addRemovedElement(nextLeaf);
@@ -1049,7 +1053,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
           Element[] added = recreateAfterFracture(removed, newBranch, 0, child.getEndOffset());
           edit = getEditForParagraphAndIndex(newBranch, 1);
           edit.addAddedElements(added);
-          elementStack.push(newBranch);
           lastFractured = newLeaf;
           offset = newBranch.getEndOffset();
         }
@@ -1134,7 +1137,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
 
               BranchElement newPar = (BranchElement) new BranchElement(el.getParentElement(),
                                                                        el.getAttributes());
-
               newPar.replace(0, 0, newAdded);
               res = new Element[] { null, newPar };
             }
@@ -1150,8 +1152,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
               edit.addRemovedElements(removed);
               edit.addAddedElements(added);
 
-              BranchElement newPar = (BranchElement) new BranchElement(
-                                                                       el.getParentElement(),
+              BranchElement newPar = (BranchElement) new BranchElement(el.getParentElement(),
                                                                        el.getAttributes());
               newPar.replace(0, 0, removed);
               res = new Element[] { null, newPar };
@@ -1260,8 +1261,8 @@ public class DefaultStyledDocument extends AbstractDocument implements
 
           Element[] added = new Element[] { leftBranch, rightBranch };
           Edit edit = getEditForParagraphAndIndex(parent, parentIndex);
-          edit.addAddedElements(added);
           edit.addRemovedElements(removed);
+          edit.addAddedElements(added);
           added = recreateAfterFracture(removed, parent, 1, 
                                         rightBranch.getEndOffset());
           Edit edit2 = getEditForParagraphAndIndex(parent, parent.getElementCount());
@@ -1864,8 +1865,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
         // writeUnlock() should always be in try/finally block to make
         // sure that locking happens in a balanced manner.
         writeLock();
-        DefaultDocumentEvent ev = new DefaultDocumentEvent(
-                                                           offset,
+        DefaultDocumentEvent ev = new DefaultDocumentEvent(offset,
                                                            length,
                                                            DocumentEvent.EventType.CHANGE);
 
@@ -1928,8 +1928,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
             ael.setResolveParent(style);
             int start = el.getStartOffset();
             int end = el.getEndOffset();
-            DefaultDocumentEvent ev = new DefaultDocumentEvent(
-                                                               start,
+            DefaultDocumentEvent ev = new DefaultDocumentEvent(start,
                                                                end - start,
                                                                DocumentEvent.EventType.CHANGE);
             fireChangedUpdate(ev);
@@ -1970,8 +1969,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
         writeLock();
 
         // Create a DocumentEvent to use for changedUpdate().
-        DefaultDocumentEvent ev = new DefaultDocumentEvent(
-                                                           offset,
+        DefaultDocumentEvent ev = new DefaultDocumentEvent(offset,
                                                            length,
                                                            DocumentEvent.EventType.CHANGE);
 
@@ -2264,8 +2262,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
                                                  contentBuffer.toString());
 
         // Create the DocumentEvent with the ElementEdit added
-        DefaultDocumentEvent ev = new DefaultDocumentEvent(
-                                                           offset,
+        DefaultDocumentEvent ev = new DefaultDocumentEvent(offset,
                                                            length,
                                                            DocumentEvent.EventType.INSERT);
         ev.addEdit(edit);

@@ -1,3 +1,11 @@
+2006-01-31  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insert): Removed comment.
+	(insertUpdate): Added comment.
+	(recreateLeaves): Removed call to push newBranch onto the
+	stack. This does not need to be done here.
+
 2006-01-31  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/SAXParser.java,
