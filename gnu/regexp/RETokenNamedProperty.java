@@ -44,6 +44,51 @@ final class RETokenNamedProperty extends REToken {
   boolean negate;
   Handler handler;
 
+  // Grouped properties
+  static final byte[] LETTER = new byte[]
+  { Character.LOWERCASE_LETTER,
+    Character.UPPERCASE_LETTER,
+    Character.TITLECASE_LETTER,
+    Character.MODIFIER_LETTER,
+    Character.OTHER_LETTER };
+  
+  static final byte[] MARK = new byte[]
+  { Character.NON_SPACING_MARK,
+    Character.COMBINING_SPACING_MARK,
+    Character.ENCLOSING_MARK };
+  
+  static final byte[] SEPARATOR = new byte[]
+  { Character.SPACE_SEPARATOR,
+    Character.LINE_SEPARATOR,
+    Character.PARAGRAPH_SEPARATOR };
+  
+  static final byte[] SYMBOL = new byte[]
+  { Character.MATH_SYMBOL,
+    Character.CURRENCY_SYMBOL,
+    Character.MODIFIER_SYMBOL,
+    Character.OTHER_SYMBOL };
+  
+  static final byte[] NUMBER = new byte[]
+  { Character.DECIMAL_DIGIT_NUMBER,
+    Character.LETTER_NUMBER,
+    Character.OTHER_NUMBER };
+  
+  static final byte[] PUNCTUATION = new byte[]
+  { Character.DASH_PUNCTUATION,
+    Character.START_PUNCTUATION,
+    Character.END_PUNCTUATION,
+    Character.CONNECTOR_PUNCTUATION,
+    Character.OTHER_PUNCTUATION,
+    Character.INITIAL_QUOTE_PUNCTUATION,
+    Character.FINAL_QUOTE_PUNCTUATION};
+  
+  static final byte[] OTHER = new byte[]
+  { Character.CONTROL,
+    Character.FORMAT,
+    Character.PRIVATE_USE,
+    Character.SURROGATE,
+    Character.UNASSIGNED };
+
   RETokenNamedProperty(int subIndex, String name, boolean insens, boolean negate) throws REException {
     super(subIndex);
     this.name = name;
@@ -108,6 +153,23 @@ final class RETokenNamedProperty extends REToken {
       if (name.startsWith("Is")) {
           name = name.substring(2);
       }
+
+      // "grouped properties"
+      if (name.equals("L"))
+	  return new UnicodeCategoriesHandler(LETTER);
+      if (name.equals("M"))
+	  return new UnicodeCategoriesHandler(MARK);
+      if (name.equals("Z"))
+	  return new UnicodeCategoriesHandler(SEPARATOR);
+      if (name.equals("S"))
+	  return new UnicodeCategoriesHandler(SYMBOL);
+      if (name.equals("N"))
+	  return new UnicodeCategoriesHandler(NUMBER);
+      if (name.equals("P"))
+	  return new UnicodeCategoriesHandler(PUNCTUATION);
+      if (name.equals("C"))
+	  return new UnicodeCategoriesHandler(OTHER);
+
       if (name.equals("Mc"))
           return new UnicodeCategoryHandler(Character.COMBINING_SPACING_MARK);
       if (name.equals("Pc"))
@@ -199,5 +261,18 @@ final class RETokenNamedProperty extends REToken {
           return Character.getType(c) == category;
       }
   }
- 
+
+  private static class UnicodeCategoriesHandler extends Handler {
+      public UnicodeCategoriesHandler(byte[] categories) {
+          this.categories = categories;
+      }
+      private byte[] categories;
+      public boolean includes(char c) {
+	  int category = Character.getType(c);
+          for (int i = 0; i < categories.length; i++)
+              if (category == categories[i])
+	          return true;
+	  return false;
+      }
+  }
 }

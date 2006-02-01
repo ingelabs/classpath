@@ -1210,7 +1210,10 @@ public class RE extends REToken {
 	return new RETokenNamedProperty(subIndex, np.name, insens, np.negate);
     }
     catch (REException e) {
-	throw new REException(e.getMessage(), REException.REG_ESCAPE, index);
+	REException ree;
+	ree = new REException(e.getMessage(), REException.REG_ESCAPE, index);
+	ree.initCause(e);
+	throw ree;
     }
   }
 

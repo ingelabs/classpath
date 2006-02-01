@@ -1,3 +1,11 @@
+2006-02-01  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/regexp/RE.java (getRETokenNamedProperty): Chain exception.
+	* gnu/regexp/RETokenNamedProperty.java (LETTER, MARK, SEPARATOR,
+	SYMBOL, NUMBER, PUNCTUATION, OTHER): New final byte[] fields.
+	(getHandler): Check for grouped properties L, M, Z, S, N, P or C.
+	(UnicodeCategoriesHandler): New private static class.
+	
 2006-02-01  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java:
