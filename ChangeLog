@@ -1,3 +1,11 @@
+2006-02-01  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* doc/unicode/Blocks-4.0.0.txt: New file.
+	* java/lang/Character.java: Regenerated inner class UnicodeBlock from 
+	scripts/unicode-blocks.pl and doc/unicode/Blocks-4.0.0.txt.
+	* scripts/unicode-blocks.pl: Copied this over from the generics branch
+	but replaced some 1.5-only features (such as enum).
+
 2006-01-31  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/PasswordView.java
