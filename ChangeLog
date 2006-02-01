@@ -1,5 +1,11 @@
 2006-01-31  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTextField.java
+	(getPreferredSize): Also include textfield's insets in width
+	calculation.
+
+2006-01-31  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(getPreferredSize): Include the textcomponent's insets in
 	preferredSize.
