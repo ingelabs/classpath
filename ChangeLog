@@ -1,3 +1,16 @@
+2006-02-01  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insertParagraph): Cleaned up code.
+	(insertFirstContentTag): Fixed call to recreateLeaves.
+	(insertContentTag): Added check to code to determine where
+	content should be inserted with respect to next element.
+	(createFracture): Removed check, recreateLeaves is called in 
+	other places when needed.
+	(recreateLeaves): Added new parameter for paragraph instead
+	of checking the stack. Removed editing for newBranch, replaced
+	with a replace call.
+
 2006-02-01  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* doc/unicode/Blocks-4.0.0.txt: New file.
