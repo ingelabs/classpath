@@ -1,5 +1,13 @@
 2006-02-01  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/text/DefaultStyledDocument.java:
+	Removed unneeded fields.
+	(insertUpdate): Removed field initialization.
+	(insertContentTag): Rewrote part of function. Still
+	not complete.
+
+2006-02-01  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/text/DefaultStyledDocument.java
 	(insertParagraph): Cleaned up code.
 	(insertFirstContentTag): Fixed call to recreateLeaves.

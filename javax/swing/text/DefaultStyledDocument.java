@@ -445,9 +445,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
     /** Holds the element that was last fractured. */
     private Element lastFractured;
     
-    /** True if a paragraph was already created for the originate direction. */
-    private boolean origParCreated;
-    
     /** True if a fracture was not created during a insertFracture call. */
     private boolean fracNotCreated;
 
@@ -677,7 +674,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
       edits.removeAllElements();
       elementStack.removeAllElements();
       lastFractured = null;
-      origParCreated = false;
       fracNotCreated = false;
       
       insertUpdate(data);
@@ -706,7 +702,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
     protected void insertUpdate(ElementSpec[] data)
     {
       // Push the root and the paragraph at offset onto the element stack.
-      origParCreated = false;
       Element current = root;
       int index;
       while (!current.isLeaf())
@@ -765,7 +760,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
                   // Create a new paragraph and push it onto the stack.
                   Element newParagraph = insertParagraph(paragraph, offset);
                   elementStack.push(newParagraph);
-                  origParCreated = true;
                   break;
                 }
               break;
@@ -968,27 +962,31 @@ public class DefaultStyledDocument extends AbstractDocument implements
                 }
             }
         }
-      else if (!origParCreated || dir != ElementSpec.OriginateDirection)
+      else
         {
           int end = pos + len;
           Element leaf = createLeafElement(paragraph, tag.getAttributes(), pos,
                                            end);
+          boolean onlyContent = true;
+          BranchElement toRec = paragraph;
+          if (!target.isLeaf())
+            {
+              onlyContent = false;
+              toRec = (BranchElement) target;
+            }
+          
           if (pos > target.getStartOffset())
-            {
-              // put it after the target
-              edit = getEditForParagraphAndIndex(paragraph,
-                                                 paragraph.getElementCount());
-              edit.addAddedElement(leaf);
-              recreateLeaves(end, (BranchElement) target, false);
-            }
-          else
-            {
-              // put it before the target
-              edit = getEditForParagraphAndIndex(paragraph, index);
-              edit.addAddedElement(leaf);
-              recreateLeaves(end, paragraph, true);
-              edit.addRemovedElement(target);
-            }
+            index++;
+          
+          edit = getEditForParagraphAndIndex(paragraph, index);
+          edit.addAddedElement(leaf);
+          
+          if (end != toRec.getEndOffset())
+            recreateLeaves(end, toRec, onlyContent);
+
+          // FIXME: this is not fully correct
+          if (target.isLeaf())
+            edit.addRemovedElement(target);
         }
                             
       pos += len;
@@ -1007,7 +1005,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
       Element child = paragraph.getElement(index);
       Edit edit = getEditForParagraphAndIndex(paragraph, index);
       AttributeSet atts = data[0].getAttributes();
-
+      
       if (offset != 0)
         {
           Element newEl1 = createLeafElement(paragraph, atts,
