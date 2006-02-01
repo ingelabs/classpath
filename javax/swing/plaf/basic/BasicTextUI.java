@@ -788,7 +788,9 @@ public abstract class BasicTextUI extends TextUI
     float w = v.getPreferredSpan(View.X_AXIS);
     float h = v.getPreferredSpan(View.Y_AXIS);
 
-    return new Dimension((int) w, (int) h);
+    Insets i = c.getInsets();
+    return new Dimension((int) w + i.left + i.right,
+                         (int) h + i.top + i.bottom);
   }
 
   /**
