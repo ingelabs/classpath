@@ -495,6 +495,10 @@ public class JLayeredPane extends JComponent implements Accessible
    */
   protected int insertIndexForLayer(int layer, int position)
   {
+    // position < 0 means insert at greatest position within layer.
+    if (position < 0)
+      position = Integer.MAX_VALUE;
+
     Component[] components = getComponents();
     int index = 0;
 
@@ -509,7 +513,7 @@ public class JLayeredPane extends JComponent implements Accessible
         else if (l == layer)
           {
             p++;
-            if (p >= position)
+            if (p < position)
               index++;
             else
               break;
@@ -580,9 +584,15 @@ public class JLayeredPane extends JComponent implements Accessible
    * Integer}, specifying the layer to which the component will be added
    * (at the bottom position).
    *
-   * @param comp the component to add.
-   * @param layerConstraint an integer specifying the layer to add the component to.
-   * @param index an ignored parameter, for compatibility.
+   * The argument <code>index</code> specifies the position within the layer
+   * at which the component should be added, where <code>0</code> is the top
+   * position greater values specify positions below that and <code>-1</code>
+   * specifies the bottom position.
+   *
+   * @param comp the component to add
+   * @param layerConstraint an integer specifying the layer to add the
+   *        component to
+   * @param index the position within the layer
    */
   protected void addImpl(Component comp, Object layerConstraint, int index) 
   {
