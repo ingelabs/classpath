@@ -264,4 +264,42 @@ public final class REMatch implements Serializable, Cloneable {
 	if (pos < input.length()) output.append(input.charAt(pos));
 	return output.toString();
     }
+
+    static class REMatchList {
+        REMatch head;
+	REMatch tail;
+        REMatchList() {
+	    head = tail = null;
+	}
+	/* Not used now. But we may need this some day?
+	void addHead(REMatch newone) {
+            if (head == null) {
+                head = newone;
+                tail = newone;
+                while (tail.next != null) {
+                    tail = tail.next;
+                }
+            }
+	    else {
+                REMatch tmp = newone;
+                while (tmp.next != null) tmp = tmp.next;
+                tmp.next = head;
+	        head = newone;
+	    }
+	}
+	*/
+	void addTail(REMatch newone) {
+            if (head == null) {
+                head = newone;
+                tail = newone;
+            }
+            else {
+                tail.next = newone;
+            }
+            while (tail.next != null) {
+                tail = tail.next;
+            }
+	}
+    }
+
 }
