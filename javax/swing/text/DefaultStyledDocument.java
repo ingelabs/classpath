@@ -727,7 +727,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
           createFracture(data);
           i = 0;
         }
-
       // Handle each ElementSpec individually.
       for (; i < data.length; i++)
         {
@@ -753,7 +752,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
                 case ElementSpec.JoinNextDirection:
                   // Push the next paragraph element onto the stack so
                   // future insertions are added to it.
-                  int ix = paragraph.getElementIndex(offset);
+                  int ix = paragraph.getElementIndex(pos) + 1;
                   elementStack.push(paragraph.getElement(ix));
                   break;
                 default:
@@ -766,11 +765,11 @@ public class DefaultStyledDocument extends AbstractDocument implements
                       br = (BranchElement) createBranchElement(paragraph,
                                                                data[i].getAttributes());
                       e.added.add(br);
+                      elementStack.push(br);
                     }
                   else
                     // need to add leaves to paragraph now
                     br = insertParagraph(paragraph, pos);
-                  elementStack.push(br);
                   break;
                 }
               break;

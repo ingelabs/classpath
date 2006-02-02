@@ -1,6 +1,12 @@
 2006-02-02  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
+	(insertUpdate): JoinNextDirection should push the 
+	'next' paragraph on the stack.
+
+2006-02-02  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
 	(insertUpdate): Rewrote code for Originate. This prevents
 	leaves being created multiple times. If it is on the last 
 	ElementSpec, the leaves need to be created right then; 
