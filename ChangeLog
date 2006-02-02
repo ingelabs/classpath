@@ -1,3 +1,16 @@
+2006-02-01  Casey Marshall  <csm@gnu.org>
+
+	toString fix suggested by ???.
+	* gnu/java/security/der/DERValue.java
+	(getLength, getEncoded, getEncodedLength): throw an exception,
+	don't initialize `encoded' to a bogus value.
+	(toString): return a more helpful string.
+
+	Partial fix for PR classpath/25144.
+	* gnu/java/security/der/DERWriter.java (write): if the value is
+	the pseudo-value used for CONSTRUCTED, write the encoded value
+	directly.
+	
 2006-02-01  Tom Tromey  <tromey@redhat.com>
 
 	* java/security/Security.java (loadProviders): Use system class
