@@ -1,5 +1,13 @@
 2006-02-01  Casey Marshall  <csm@gnu.org>
 
+	Partial fix for PR classpath/25143.
+	* javax/crypto/EncryptedPrivateKeyInfo.java (algName): new field.
+	(<init>): fill in `algName,' derive `algOid' from `algName.'
+	(getOid): new method.
+	(encode): embed NULL value for parameters if `params' is `null.'
+
+2006-02-01  Casey Marshall  <csm@gnu.org>
+
 	Tag check and OTHER_NAME fixes suggested by ???.
 	* gnu/java/security/x509/ext/GeneralNames.java (<init>): fix tag
 	check; fix OTHER_NAME parsing; fix DIRECTORY_NAME parsing.
