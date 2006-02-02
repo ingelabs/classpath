@@ -1,3 +1,8 @@
+2006-02-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* examples/gnu/classpath/examples/CORBA/swing/x5/PlayingDesk.java 
+	(friendsMove):	Call repaint() only after endOfGame is assigned.
+
 2006-02-02  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #25769 reported by Artemus Harper <subanark@gmail.com>
