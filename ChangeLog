@@ -1,3 +1,14 @@
+2006-02-02  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(insertUpdate): Rewrote code for Originate. This prevents
+	leaves being created multiple times. If it is on the last 
+	ElementSpec, the leaves need to be created right then; 
+	otherwise, only a branch is created.
+	(insertContentTag): Rewrote to add new leaf directly if
+	this is a branch with no children. Otherwise, it
+	recreates the remainder of the tree as before.
+
 2006-02-02  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* gnu/regexp/REMatch.java(REMatchList): New inner utility class

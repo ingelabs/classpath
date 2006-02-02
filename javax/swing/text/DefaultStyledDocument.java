@@ -757,9 +757,20 @@ public class DefaultStyledDocument extends AbstractDocument implements
                   elementStack.push(paragraph.getElement(ix));
                   break;
                 default:
-                  // Create a new paragraph and push it onto the stack.
-                  Element newParagraph = insertParagraph(paragraph, offset);
-                  elementStack.push(newParagraph);
+                  Element br = null;
+                  if (data.length > i + 1)
+                    {
+                      // leaves will be added to paragraph later
+                      int x = paragraph.getElementIndex(pos) + 1;
+                      Edit e = getEditForParagraphAndIndex(paragraph, x);
+                      br = (BranchElement) createBranchElement(paragraph,
+                                                               data[i].getAttributes());
+                      e.added.add(br);
+                    }
+                  else
+                    // need to add leaves to paragraph now
+                    br = insertParagraph(paragraph, pos);
+                  elementStack.push(br);
                   break;
                 }
               break;
@@ -772,12 +783,14 @@ public class DefaultStyledDocument extends AbstractDocument implements
             }
         }
     }
-
+    
     /**
      * Inserts a new paragraph.
      * 
-     * @param par - the parent
-     * @param offset - the offset
+     * @param par -
+     *          the parent
+     * @param offset -
+     *          the offset
      * @return the new paragraph
      */
     private Element insertParagraph(BranchElement par, int offset)
@@ -831,7 +844,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
         }
       return ret;
     }
-
+    
     /**
      * Inserts the first tag into the document.
      * 
@@ -919,12 +932,13 @@ public class DefaultStyledDocument extends AbstractDocument implements
       int len = tag.getLength();
       int dir = tag.getDirection();
       AttributeSet tagAtts = tag.getAttributes();
-      int index = paragraph.getElementIndex(pos);
-      Element target = paragraph.getElement(index);
-      Edit edit = getEditForParagraphAndIndex(paragraph, index);
       
       if (dir == ElementSpec.JoinNextDirection)
         {
+          int index = paragraph.getElementIndex(pos);
+          Element target = paragraph.getElement(index);
+          Edit edit = getEditForParagraphAndIndex(paragraph, index);
+          
           if (paragraph.getStartOffset() > pos)
             {
               Element first = paragraph.getElement(0);
@@ -962,31 +976,42 @@ public class DefaultStyledDocument extends AbstractDocument implements
                 }
             }
         }
-      else
+      else 
         {
           int end = pos + len;
-          Element leaf = createLeafElement(paragraph, tag.getAttributes(), pos,
-                                           end);
-          boolean onlyContent = true;
-          BranchElement toRec = paragraph;
-          if (!target.isLeaf())
+          Element leaf = createLeafElement(paragraph, tag.getAttributes(), pos, end);
+          
+          // Check for overlap with other leaves/branches
+          if (paragraph.getElementCount() > 0)
             {
-              onlyContent = false;
-              toRec = (BranchElement) target;
-            }
-          
-          if (pos > target.getStartOffset())
-            index++;
-          
-          edit = getEditForParagraphAndIndex(paragraph, index);
-          edit.addAddedElement(leaf);
-          
-          if (end != toRec.getEndOffset())
-            recreateLeaves(end, toRec, onlyContent);
+              int index = paragraph.getElementIndex(pos);
+              Element target = paragraph.getElement(index);
+              boolean onlyContent = target.isLeaf();
+              
+              BranchElement toRec = paragraph;
+              if (!onlyContent)
+                toRec = (BranchElement) target;
 
-          // FIXME: this is not fully correct
-          if (target.isLeaf())
-            edit.addRemovedElement(target);
+              // Check if we should place the leaf before or after target
+              if (pos > target.getStartOffset())
+                index++;
+
+              Edit edit = getEditForParagraphAndIndex(paragraph, index);
+              edit.addAddedElement(leaf);
+
+              if (end != toRec.getEndOffset())
+                {
+                  recreateLeaves(end, toRec, onlyContent);
+                  
+                  if (onlyContent)
+                    edit.addRemovedElement(target);
+                }
+            }
+          else
+            {
+              Edit edit = getEditForParagraphAndIndex(paragraph, paragraph.getElementCount());
+              edit.addAddedElement(leaf);
+            }
         }
                             
       pos += len;
@@ -1154,6 +1179,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
               
               BranchElement newPar = (BranchElement) new BranchElement(el.getParentElement(),
                                                                        el.getAttributes());
+                                                               
               newPar.replace(0, 0, removed);
               res = new Element[] { null, newPar };
             }
