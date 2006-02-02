@@ -1,3 +1,33 @@
+2006-02-02  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/RepaintManager.java
+	Made fields private.
+	(RepaintWorker.run): Enclosed work stuff in try finally block in
+	order to clean up correctly if invalidation or painting fails,
+	otherwise we would get no more RepaintWorkers onto the EventQueue.
+	Also, now the RepaintWorker is marked 'dead' only after it has
+	finished its work, avoid more than one RepaintWorker on the queue.
+	(ComponentComparator.compareTo): Compare dirty rectangle sizes
+	instead of hierarchy depths.
+	(workDirtyComponents): Removed unused field.
+	(repaintOrder): Removed unused field.
+	(workRepaintOrder): Removed unused field.
+	(workInvalidComponents): Removed unused field.
+	(RepaintManager()): Removed initialization of removed fields.
+	(addInvalidComponent): Fine tuned synchronization.
+	(removeInvalidComponent): Fine tune synchronization.
+	(addDirtyRegion): Short circuit invalid dirty regions. Fine tuned
+	synchronization. Don't manager repaintOrder here.
+	(insertRepaintOrder): Removed method.
+	(markCompletelyClean): Fine tuned synchronization.
+	(validateInvalidComponents): Dont use a working copy of the
+	invalidComponents list, instead fine tuned synchronization on this
+	list. Also, don't search validateRoot, this is already done in
+	addInvalidComponent().
+	(paintDirtyRegions): Compute repaint order here, based on size of
+	damaged regions. Fine tuned synchronization. Avoid use of working
+	copies of dirtyComponent.
+
 2006-02-02  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
