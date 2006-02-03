@@ -1,4 +1,9 @@
 2006-02-03  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicColorChooserUI.java:
+	chooser field should be protected, not package-private.	
+
+2006-02-03  Lillian Angel  <langel@redhat.com>
 	
 	* javax/swing/text/DefaultStyledDocument.java
 	(changeUpdate): Cleaned up code.
