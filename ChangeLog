@@ -1,7 +1,13 @@
-2006-02-03  Raif S. Naffah  <raif@swiftdsl.com.au>
+2006-02-03  Mark Wielaard  <mark@klomp.org>
 
-        * java/security/KeyPairGenerator.java (getInstance): Test for
-        instanceof KeyPairGenerator before KeyPairGeneratorSpi.
+	* javax/swing/event/SwingPropertyChangeSupport.java
+	(propertyListeners): Change type to HashMap.
+	(SwingPropertyChangeSupport): Allocate HashMap.
+
+2006-02-03  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* java/security/KeyPairGenerator.java (getInstance): Test for
+	instanceof KeyPairGenerator before KeyPairGeneratorSpi.
 
 2006-02-02  Roman Kennke  <kennke@aicas.com>
 
