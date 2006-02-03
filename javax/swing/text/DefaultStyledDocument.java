@@ -572,9 +572,10 @@ public class DefaultStyledDocument extends AbstractDocument implements
       Element el = getCharacterElement(offset);
       Element[] res = split(el, offset, 0, el.getElementIndex(offset));
       BranchElement par = (BranchElement) el.getParentElement();
+      int index = par.getElementIndex(offset);
+      Edit edit = getEditForParagraphAndIndex(par, index);
       if (res[1] != null)
         {
-          int index = par.getElementIndex(offset);
           Element[] removed;
           Element[] added;
           if (res[0] == null)
@@ -588,7 +589,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
               removed = new Element[] { el };
               added = new Element[] { res[0], res[1] };
             }
-          Edit edit = getEditForParagraphAndIndex(par, index);
           edit.addRemovedElements(removed);
 
           edit.addAddedElements(added);
@@ -598,9 +598,8 @@ public class DefaultStyledDocument extends AbstractDocument implements
       el = getCharacterElement(endOffset);
       res = split(el, endOffset, 0, el.getElementIndex(endOffset));
       par = (BranchElement) el.getParentElement();
-      if (res[1] != null)
+      if (res[0] != null)
         {
-          int index = par.getElementIndex(offset);
           Element[] removed;
           Element[] added;
           if (res[1] == null)
@@ -613,7 +612,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
               removed = new Element[] { el };
               added = new Element[] { res[0], res[1] };
             }
-          Edit edit = getEditForParagraphAndIndex(par, index);
           edit.addRemovedElements(removed);
           edit.addAddedElements(added);
         }
@@ -675,7 +673,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
       elementStack.removeAllElements();
       lastFractured = null;
       fracNotCreated = false;
-      
       insertUpdate(data);
 
       // This for loop applies all the changes that were made and updates the
@@ -727,6 +724,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
           createFracture(data);
           i = 0;
         }
+      
       // Handle each ElementSpec individually.
       for (; i < data.length; i++)
         {
@@ -745,7 +743,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
                     {
                       if (lastFractured != null)
                         elementStack.push(lastFractured.getParentElement());
-                     else
+                      else
                         elementStack.push(paragraph.getElement(0));
                     }
                   break;
@@ -778,6 +776,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
               break;
             case ElementSpec.ContentType:
               insertContentTag(data[i]);
+              offset = pos;
               break;
             }
         }
@@ -1007,10 +1006,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
                 }
             }
           else
-            {
-              Edit edit = getEditForParagraphAndIndex(paragraph, paragraph.getElementCount());
-              edit.addAddedElement(leaf);
-            }
+            paragraph.replace(0, 0, new Element[] { leaf });
         }
                             
       pos += len;
@@ -1065,7 +1061,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
           int parSize = parent.getElementCount();
           Edit edit = getEditForParagraphAndIndex(parent, parSize);
           edit.addAddedElement(newBranch);
-          
+            
           int paragraphSize = paragraph.getElementCount();
           Element[] removed = new Element[paragraphSize - (index + 1)];
           int s = 0;
@@ -1074,7 +1070,6 @@ public class DefaultStyledDocument extends AbstractDocument implements
           
           edit = getEditForParagraphAndIndex(paragraph, index);
           edit.addRemovedElements(removed);
-          
           Element[] added = recreateAfterFracture(removed, newBranch, 0, child.getEndOffset());
           newBranch.replace(1, 0, added);
           
@@ -1211,55 +1206,74 @@ public class DefaultStyledDocument extends AbstractDocument implements
       AttributeSet parentAtts = parent.getAttributes();
       Element toFracture = parent.getElement(parentIndex);
       int parSize = parent.getElementCount();
-      // recreate left-side of branch and all its children before offset
-      // add the fractured leaves to the right branch
-      BranchElement leftBranch = new BranchElement(parent, parentAtts);
-      BranchElement rightBranch = new BranchElement(parent, parentAtts);
+      Edit edit = getEditForParagraphAndIndex(parent, parentIndex);
 
       Element frac = toFracture;
       int leftIns = 0;
       int indexOfFrac = toFracture.getElementIndex(offset);
       int size = toFracture.getElementCount();
-      if (!toFracture.isLeaf())
-        {
-          // add all non-fracture elements to the branches
-          if (indexOfFrac > 0)
-            {
-              Element[] add = new Element[indexOfFrac];
-              for (int i = 0; i < indexOfFrac; i++)
-                add[i] = toFracture.getElement(i);
-              leftIns = add.length;
-              leftBranch.replace(0, 0, add);
-            }
 
-          int count = size - indexOfFrac - 1;
-          if (count > 0)
-            {
-              Element[] add = new Element[count];
-              int j = 0;
-              int i = indexOfFrac + 1;
-              while (j < count)
-                add[j++] = toFracture.getElement(i++);
-              rightBranch.replace(0, 0, add);
-            }
+      // gets the leaf that falls along the fracture
+      frac = toFracture.getElement(indexOfFrac);
+      while (!frac.isLeaf())
+        frac = frac.getElement(frac.getElementIndex(offset));
 
-          // gets the leaf that falls along the fracture
-          frac = toFracture.getElement(indexOfFrac);
-          while (!frac.isLeaf())
-            frac = frac.getElement(frac.getElementIndex(offset));
-        }
-
+      AttributeSet atts = frac.getAttributes();
       int fracStart = frac.getStartOffset();
       int fracEnd = frac.getEndOffset();
       if (offset > fracStart && offset < fracEnd)
         {
-          // fracture the leaf and split among 2 branches
-          AttributeSet atts = frac.getAttributes();
-          // replaces old leaf.
-          Element leftFracturedLeaf = createLeafElement(leftBranch, atts,
-                                                        fracStart, offset);
-          leftBranch.replace(leftIns, 0, new Element[] { leftFracturedLeaf });
+          // recreate left-side of branch and all its children before offset
+          // add the fractured leaves to the right branch
+          BranchElement rightBranch = new BranchElement(parent, parentAtts);
+          
+          // Check if left branch has already been edited. If so, we only
+          // need to create the right branch.
+          BranchElement leftBranch = null;
+          Element[] added = null;
+          if (edit.added.size() > 0 || edit.removed.size() > 0)
+            {
+              added = new Element[] { rightBranch };
+              
+              // don't try to remove left part of tree
+              parentIndex++;
+            }
+          else
+            {
+              leftBranch = new BranchElement(parent, parentAtts);
+              added = new Element[] { leftBranch, rightBranch };
 
+              // add fracture to leftBranch
+              Element leftFracturedLeaf = createLeafElement(leftBranch, atts,
+                                                            fracStart, offset);
+              leftBranch.replace(leftIns, 0, new Element[] { leftFracturedLeaf });
+            }
+          
+          if (!toFracture.isLeaf())
+            {
+              // add all non-fracture elements to the branches
+              if (indexOfFrac > 0 && leftBranch != null)
+                {
+                  Element[] add = new Element[indexOfFrac];
+                  for (int i = 0; i < indexOfFrac; i++)
+                    add[i] = toFracture.getElement(i);
+                  leftIns = add.length;
+                  leftBranch.replace(0, 0, add);
+                }
+
+              int count = size - indexOfFrac - 1;
+              if (count > 0)
+                {
+                  Element[] add = new Element[count];
+                  int j = 0;
+                  int i = indexOfFrac + 1;
+                  while (j < count)
+                    add[j++] = toFracture.getElement(i++);
+                  rightBranch.replace(0, 0, add);
+                }
+            }
+          
+          // add to fracture to rightBranch          
           // Check if we can join the right frac leaf with the next leaf
           int rm = 0;
           int end = fracEnd;
@@ -1278,22 +1292,24 @@ public class DefaultStyledDocument extends AbstractDocument implements
           // recreate those elements after parentIndex and add/remove all
           // new/old elements to parent
           int remove = parSize - parentIndex;
-          Element[] removed = new Element[remove];
-          int s = 0;
-          for (int j = parentIndex; j < parSize; j++)
-            removed[s++] = parent.getElement(j);
-
-          Element[] added = new Element[] { leftBranch, rightBranch };
-          Edit edit = getEditForParagraphAndIndex(parent, parentIndex);
-          edit.addRemovedElements(removed);
+          Element[] removed = new Element[0];
+          Element[] added2 = new Element[0];
+          if (remove > 0)
+            {
+              removed = new Element[remove];
+              int s = 0;
+              for (int j = parentIndex; j < parSize; j++)
+                removed[s++] = parent.getElement(j);
+              edit.addRemovedElements(removed);
+              added2 = recreateAfterFracture(removed, parent, 1,
+                                            rightBranch.getEndOffset());
+            }
+          
           edit.addAddedElements(added);
-          added = recreateAfterFracture(removed, parent, 1, 
-                                        rightBranch.getEndOffset());
-          Edit edit2 = getEditForParagraphAndIndex(parent, parent.getElementCount());
-          edit2.addAddedElements(added);
+          edit.addAddedElements(added2);
           elementStack.push(rightBranch);
           lastFractured = rightFracturedLeaf;
-        }       
+        }
       else
         fracNotCreated = true;
     }
@@ -1355,7 +1371,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
    * return it. Note: this method is package private to avoid accessors.
    * 
    * @param index
-   *          the index associated with the Edit we want
+   *          the index associated with the Edit we want to create
    * @param para
    *          the paragraph associated with the Edit we want
    * @return the found or created Edit object
@@ -1367,7 +1383,7 @@ public class DefaultStyledDocument extends AbstractDocument implements
     for (int i = 0; i < size; i++)
       {
         curr = (Edit) edits.elementAt(i);
-        if (curr.e.equals(para) && curr.index == index)
+        if (curr.e.equals(para))
           return curr;
       }
     curr = new Edit(para, index, null, null);
