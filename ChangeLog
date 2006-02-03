@@ -107,13 +107,14 @@
 
 2006-02-01  Casey Marshall  <csm@gnu.org>
 
-	Tag check and OTHER_NAME fixes suggested by ???.
+	Tag check and OTHER_NAME fixes suggested by Rafael Teixeira
+	<monoman@gmail.com>.	
 	* gnu/java/security/x509/ext/GeneralNames.java (<init>): fix tag
 	check; fix OTHER_NAME parsing; fix DIRECTORY_NAME parsing.
 
 2006-02-01  Casey Marshall  <csm@gnu.org>
 
-	toString fix suggested by ???.
+	toString fix suggested by Rafael Teixeira <monoman@gmail.com>.
 	* gnu/java/security/der/DERValue.java
 	(getLength, getEncoded, getEncodedLength): throw an exception,
 	don't initialize `encoded' to a bogus value.
