@@ -1,3 +1,15 @@
+2006-02-04  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Container.java
+	(getComponentZOrder): New method.
+	(setComponentZOrder): New method.
+	* javax/swing/JLayeredPane.java
+	(setPosition): Reimplemented to use setComponentZOrder().
+	(getIndexOf): Reimplemented to use getComponentZOrder().
+	(addImpl): Pass layerContraint to super call. Important for possibly
+	installed layout managers.
+	(swapComponents): Remove unneeded method.
+
 2006-02-04  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/jce/sig/DSSKeyPairGeneratorSpi.java: Implement
