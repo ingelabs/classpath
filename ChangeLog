@@ -1,5 +1,19 @@
 2006-02-04  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/java/security/jce/sig/DSSKeyPairGeneratorSpi.java: Implement
+	DSAKeyPairGenerator.
+	(initialize(int,SecureRandom)): Call initialize(keysize, false, random).
+	(initialize(AlgorithmParameterSpec,SecureRandom)): More explicit error
+	message.
+	Surround call to adaptee in a try/catch.
+	(initialize((DSAParams,SecureRandom)): New method.
+	(initialize(int,boolean,SecureRandom)): New method.
+	* gnu/java/security/jce/sig/KeyPairGeneratorAdapter.java: Extends
+	KeyPairGenerator rather than KeyPairGeneratorSpi.
+	(KeyPairGeneratorAdapter): Call super with algorithm name.
+
+2006-02-04  Raif S. Naffah  <raif@swiftdsl.com.au>
+
         * gnu/javax/crypto/sasl/srp/SRPServer.java (prng): New field.
         (getDefaultPRNG): New method.
         (parseO): Use method above.
