@@ -1,3 +1,9 @@
+2006-02-04  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/regexp/RETokenNamedProperty.java(getHandler): Check for
+	a Unicode block if the name starts with "In".
+	(UnicodeBlockHandler): New inner class.
+
 2006-02-04  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Container.java

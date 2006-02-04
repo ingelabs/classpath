@@ -148,7 +148,14 @@ final class RETokenNamedProperty extends REToken {
          return new POSIXHandler(name);
       }
       if (name.startsWith("In")) {
-          throw new REException("Unicode block is not supported yet", REException.REG_ESCAPE, 0); 
+	  try {
+	      name = name.substring(2);
+	      Character.UnicodeBlock block = Character.UnicodeBlock.forName(name);
+	      return new UnicodeBlockHandler(block);
+	  }
+	  catch (IllegalArgumentException e) {
+              throw new REException("Invalid Unicode block name: " + name, REException.REG_ESCAPE, 0);
+	  }
       }
       if (name.startsWith("Is")) {
           name = name.substring(2);
@@ -275,4 +282,16 @@ final class RETokenNamedProperty extends REToken {
 	  return false;
       }
   }
+
+  private static class UnicodeBlockHandler extends Handler {
+      public UnicodeBlockHandler(Character.UnicodeBlock block) {
+	  this.block = block;
+      }
+      private Character.UnicodeBlock block;
+      public boolean includes(char c) {
+	  Character.UnicodeBlock cblock = Character.UnicodeBlock.of(c);
+	  return (cblock != null && cblock.equals(block));
+      }
+  }
+
 }
