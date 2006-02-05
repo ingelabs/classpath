@@ -1,3 +1,10 @@
+2006-02-05  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #26101
+	reported by Egon Willighagen <egon.willighagen@gmail.com>
+	* javax/swing/DefaultListCellRenderer.java
+	(getListCellRendererComponent): Turn null value into empty string.
+
 2006-02-04  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* gnu/regexp/RETokenNamedProperty.java(getHandler): Check for
