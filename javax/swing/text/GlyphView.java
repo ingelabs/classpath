@@ -277,35 +277,38 @@ public class GlyphView extends View implements TabableView, Cloneable
     public void paint(GlyphView view, Graphics g, Shape a, int p0,
                       int p1)
     {
+      Color oldColor = g.getColor();
       int height = (int) getHeight(view);
       Segment txt = view.getText(p0, p1);
       Rectangle bounds = a.getBounds();
-
       TabExpander tabEx = null;
       View parent = view.getParent();
       if (parent instanceof TabExpander)
         tabEx = (TabExpander) parent;
 
-      // Fill the background of the text run.
-      Color background = view.getBackground();
-      g.setColor(background);
       int width = Utilities.getTabbedTextWidth(txt, g.getFontMetrics(),
                                                bounds.x, tabEx, txt.offset);
-      g.fillRect(bounds.x, bounds.y, width, height);
-
+      // Fill the background of the text run.
+      Color background = view.getBackground();
+      if (background != null)
+        {
+          g.setColor(background);
+          g.fillRect(bounds.x, bounds.y, width, height);
+        }
       // Draw the actual text.
       g.setColor(view.getForeground());
       g.setFont(view.getFont());
+      int ascent = g.getFontMetrics().getAscent();
       if (view.isSuperscript())
         // TODO: Adjust font for superscripting.
-        Utilities.drawTabbedText(txt, bounds.x, bounds.y - height / 2, g, tabEx,
-                                   txt.offset);
+        Utilities.drawTabbedText(txt, bounds.x, bounds.y + ascent - height / 2,
+                                 g, tabEx, txt.offset);
       else if (view.isSubscript())
         // TODO: Adjust font for subscripting.
-        Utilities.drawTabbedText(txt, bounds.x, bounds.y + height / 2, g, tabEx,
-                                 txt.offset);
+        Utilities.drawTabbedText(txt, bounds.x, bounds.y + ascent + height / 2,
+                                 g, tabEx, txt.offset);
       else
-        Utilities.drawTabbedText(txt, bounds.x, bounds.y, g, tabEx,
+        Utilities.drawTabbedText(txt, bounds.x, bounds.y + ascent, g, tabEx,
                                  txt.offset);
 
       if (view.isStikeThrough())
@@ -320,6 +323,7 @@ public class GlyphView extends View implements TabableView, Cloneable
           g.drawLine(bounds.x, bounds.y + lineHeight, bounds.height + width,
                      bounds.y + lineHeight);
         }
+      g.setColor(oldColor);
     }
 
     /**
@@ -771,7 +775,11 @@ public class GlyphView extends View implements TabableView, Cloneable
   {
     Element el = getElement();
     AttributeSet atts = el.getAttributes();
-    return StyleConstants.getBackground(atts);
+    // We cannot use StyleConstants.getBackground() here, because that returns
+    // BLACK as default (when background == null). What we need is the
+    // background setting of the text component instead, which is what we get
+    // when background == null anyway.
+    return (Color) atts.getAttribute(StyleConstants.Background);
   }
 
   /**

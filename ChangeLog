@@ -1,5 +1,18 @@
 2006-02-06  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/GlyphView.java:
+	(DefaultGlyphPainter.paint): Store/restore Graphics color setting.
+	Only fill background if there is a background set on the view.
+	Call Utilities.drawTabbedText with the baseline height, rather than
+	the upper left corner of the view rectangle.
+	(getBackground): Return null if no background is set.
+	* javax/swing/text/GlyphView.java:
+	(setPropertiesFromAttributes): Use null for background when no
+	background is set. StyleConstants.getBackground() doesn't work
+	for this, because it returns Color.BLACK in that case.
+
+2006-02-06  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Container.java
 	(changeSupport): Removed duplicate (from Component) field.
 	(addPropertyChangeListener): Call super.
