@@ -1,3 +1,10 @@
+2006-02-06  Wolfgang Baer  <WBaer@gmx.de>
+
+	* native/jni/java-net/javanet.c (_javanet_connect):
+	Throw ConnectException instead of IOException if connection failed.
+	* native/jni/java-net/javanet.h:
+	Add a define for java.net.ConnectException
+
 2006-02-05  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #26101
