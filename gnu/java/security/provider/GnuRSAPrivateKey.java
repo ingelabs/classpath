@@ -39,6 +39,7 @@ exception statement from your version. */
 package gnu.java.security.provider;
 
 import gnu.java.security.OID;
+import gnu.java.security.Registry;
 import gnu.java.security.der.DER;
 import gnu.java.security.der.DERValue;
 
@@ -154,7 +155,7 @@ class GnuRSAPrivateKey implements RSAPrivateCrtKey
     pki.add(new DERValue(DER.INTEGER, BigInteger.ZERO));
     ArrayList alg = new ArrayList(2);
     alg.add(new DERValue(DER.OBJECT_IDENTIFIER,
-                         new OID("1.2.840.113549.1.1.1")));
+                         new OID(Registry.RSA_OID_STRING)));
     alg.add(new DERValue(DER.NULL, null));
     pki.add(new DERValue(DER.CONSTRUCTED|DER.SEQUENCE, alg));
     pki.add(new DERValue(DER.OCTET_STRING, pk.getEncoded()));

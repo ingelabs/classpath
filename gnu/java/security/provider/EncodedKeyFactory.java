@@ -39,6 +39,7 @@ exception statement from your version. */
 package gnu.java.security.provider;
 
 import gnu.java.security.OID;
+import gnu.java.security.Registry;
 import gnu.java.security.der.BitString;
 import gnu.java.security.der.DERReader;
 import gnu.java.security.der.DERValue;
@@ -75,9 +76,9 @@ public class EncodedKeyFactory extends KeyFactorySpi
   // Constants.
   // ------------------------------------------------------------------------
 
-  private static final OID ID_DSA = new OID("1.2.840.10040.4.1");
-  private static final OID ID_RSA = new OID("1.2.840.113549.1.1.1");
-  private static final OID ID_DH  = new OID("1.2.840.10046.2.1");
+  private static final OID ID_DSA = new OID(Registry.DSA_OID_STRING);
+  private static final OID ID_RSA = new OID(Registry.RSA_OID_STRING);
+  private static final OID ID_DH  = new OID(Registry.DH_OID_STRING);
 
   // Instance methods.
   // ------------------------------------------------------------------------

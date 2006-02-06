@@ -39,6 +39,7 @@ exception statement from your version. */
 package gnu.java.security.provider;
 
 import gnu.java.security.OID;
+import gnu.java.security.Registry;
 import gnu.java.security.der.BitString;
 import gnu.java.security.der.DER;
 import gnu.java.security.der.DERValue;
@@ -97,7 +98,7 @@ public class GnuDSAPublicKey implements DSAPublicKey
         ArrayList spki = new ArrayList(2);
         ArrayList alg = new ArrayList(2);
         alg.add(new DERValue(DER.OBJECT_IDENTIFIER,
-                new OID("1.2.840.113549.1.1.1")));
+                             new OID(Registry.DSA_OID_STRING)));
         ArrayList params = new ArrayList(3);
         params.add(new DERValue(DER.INTEGER, p));
         params.add(new DERValue(DER.INTEGER, q));

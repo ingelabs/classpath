@@ -39,6 +39,7 @@ exception statement from your version. */
 package gnu.java.security.provider;
 
 import gnu.java.security.OID;
+import gnu.java.security.Registry;
 import gnu.java.security.der.BitString;
 import gnu.java.security.der.DER;
 import gnu.java.security.der.DERValue;
@@ -98,7 +99,7 @@ class GnuRSAPublicKey implements RSAPublicKey
     DERValue rsapk = new DERValue(DER.SEQUENCE|DER.CONSTRUCTED, key);
     ArrayList alg = new ArrayList(2);
     alg.add(new DERValue(DER.OBJECT_IDENTIFIER,
-                         new OID("1.2.840.113549.1.1.1")));
+                         new OID(Registry.RSA_OID_STRING)));
     alg.add(new DERValue(DER.NULL, null));
     ArrayList spki = new ArrayList(2);
     spki.add(new DERValue(DER.SEQUENCE|DER.CONSTRUCTED, alg));

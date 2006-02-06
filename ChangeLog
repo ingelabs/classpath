@@ -1,3 +1,31 @@
+2006-02-07  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/provider/GnuDSAPublicKey.java (getEncoded): Use
+	Registry constant.
+	* gnu/java/security/provider/GnuDSAPrivateKey.java (getEncoded):
+	Likewise.
+	* gnu/java/security/provider/GnuRSAPrivateKey.java (getEncoded):
+	Likewise.
+	* gnu/java/security/provider/GnuRSAPublicKey.java (getEncoded):
+	Likewise.
+	* gnu/java/security/provider/EncodedKeyFactory.java
+	(ID_DSA): Redefined in terms of Registry constant.
+	(ID_DSA): Redefined in terms of Registry constant.
+	(ID_DH): Redefined in terms of Registry constant.
+	* gnu/java/security/Registry.java (X509_ENCODING): New constant.
+	(PKCS8_ENCODING): Likewise.
+	(ASN1_ENCODING): Likewise.
+	(RAW_ENCODING_SHORT_NAME): Likewise.
+	(X509_ENCODING_SORT_NAME): Likewise.
+	(PKCS8_ENCODING_SHORT_NAME): Likewise.
+	(ASN1_ENCODING_SHORT_NAME): Likewise.
+	(X509_ENCODING_ID): Likewise.
+	(PKCS8_ENCODING_ID): Likewise.
+	(ASN1_ENCODING_ID): Likewise.
+	(DSA_OID_STRING): Likewise.
+	(RSA_OID_STRING): Likewise.
+	(DH_OID_STRING): Likewise.
+
 2006-02-06  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/GlyphView.java:
@@ -112,6 +140,7 @@
 	* java/io/ObjectInputStream.java
 	(readNextBlock()): Handle TC_RESET.
 
+>>>>>>> 1.6278
 2006-02-06  Wolfgang Baer  <WBaer@gmx.de>
 	
 	* javax/print/attribute/standard/Compression.java,
