@@ -1,5 +1,11 @@
 2006-02-06  Jeroen Frijters  <jeroen@frijters.net>
 
+	Fixes PR 25313
+	* java/net/InetAddress.java
+	(readResolve): Implemented.
+
+2006-02-06  Jeroen Frijters  <jeroen@frijters.net>
+
 	Fixes PR 26121
 	* java/io/ObjectInputStream.java
 	(readNextBlock()): Handle TC_RESET.
