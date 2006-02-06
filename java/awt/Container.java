@@ -102,7 +102,6 @@ public class Container extends Component
 
   /* Anything else is non-serializable, and should be declared "transient". */
   transient ContainerListener containerListener;
-  transient PropertyChangeSupport changeSupport; 
 
   /** The focus traversal policy that determines how focus is
       transferred between this Container and its children. */
@@ -1541,28 +1540,18 @@ public class Container extends Component
     if (orientation == null)
       throw new NullPointerException ();
   }
-  
+
   public void addPropertyChangeListener (PropertyChangeListener listener)
   {
-    if (listener == null)
-      return;
-
-    if (changeSupport == null)
-      changeSupport = new PropertyChangeSupport (this);
-
-    changeSupport.addPropertyChangeListener (listener);
+    // TODO: Why is this overridden?
+    super.addPropertyChangeListener(listener);
   }
-  
-  public void addPropertyChangeListener (String name,
+
+  public void addPropertyChangeListener (String propertyName,
                                          PropertyChangeListener listener)
   {
-    if (listener == null)
-      return;
-    
-    if (changeSupport == null)
-      changeSupport = new PropertyChangeSupport (this);
-
-    changeSupport.addPropertyChangeListener (name, listener);
+    // TODO: Why is this overridden?
+    super.addPropertyChangeListener(propertyName, listener);
   }
 
 

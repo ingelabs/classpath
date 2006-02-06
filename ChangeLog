@@ -1,3 +1,9 @@
+2006-02-06  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Container.java
+	(changeSupport): Removed duplicate (from Component) field.
+	(addPropertyChangeListener): Call super.
+
 2006-02-06  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* java/util/regex/Matcher.java(matches):
