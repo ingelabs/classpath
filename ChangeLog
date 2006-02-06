@@ -1,5 +1,30 @@
 2006-02-06  Wolfgang Baer  <WBaer@gmx.de>
+	
+	* javax/print/attribute/standard/Compression.java,
+	* javax/print/attribute/standard/Finishings.java, 
+	* javax/print/attribute/standard/JobMediaSheets.java,
+	* javax/print/attribute/standard/JobSheets.java,
+	* javax/print/attribute/standard/JobState.java,
+	* javax/print/attribute/standard/JobStateReason.java,
+	* javax/print/attribute/standard/ReferenceUriSchemesSupported.java,
+	* javax/print/attribute/standard/PrintQuality.java,
+	* javax/print/attribute/standard/Media.java,
+	* javax/print/attribute/standard/MultipleDocumentHandling.java,
+	* javax/print/attribute/standard/PrinterStateReason.java,
+	* javax/print/attribute/standard/PDLOverrideSupported.java: 
+	(getName): Make method final.
+	(getCategory): Likewise.
+	* javax/print/attribute/standard/MediaSize.java: 
+	(getName): Make method final.
+	(getCategory): Likewise.
+	(ISO): Added private default constructor.
+	(NA): Likewise.
+	(JIS): Likewise.
+	(Other): Likewise.
+	(Engineering): Likewise.
 
+2006-02-06  Wolfgang Baer  <WBaer@gmx.de>
+	
 	* native/jni/java-net/javanet.c (_javanet_connect):
 	Throw ConnectException instead of IOException if connection failed.
 	* native/jni/java-net/javanet.h:
