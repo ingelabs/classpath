@@ -1,5 +1,5 @@
 /* Matcher.java -- Instance of a regular expression applied to a char sequence.
-   Copyright (C) 2002, 2004 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package java.util.regex;
 
+import gnu.regexp.RE;
 import gnu.regexp.REMatch;
 
 /**
@@ -233,10 +234,15 @@ public final class Matcher implements MatchResult
    */
   public boolean matches ()
   {
-    if (lookingAt())
+    match = pattern.getRE().getMatch(input, 0, RE.REG_TRY_ENTIRE_MATCH);
+    if (match != null)
       {
-	if (position == input.length())
-	  return true;
+	if (match.getStartIndex() == 0)
+	  {
+	    position = match.getEndIndex();
+	    if (position == input.length())
+	        return true;
+	  }
 	match = null;
       }
     return false;

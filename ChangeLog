@@ -1,5 +1,10 @@
 2006-02-06  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
+	* java/util/regex/Matcher.java(matches):
+	set RE.REG_TRY_ENTIRE_MATCH as an execution flag of getMatch.
+
+2006-02-06  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
 	Fixes bug #25812
  	* gnu/regexp/CharIndexed.java(lookBehind),(length): New method.
 	* gnu/regexp/CharIndexedCharArray.java
