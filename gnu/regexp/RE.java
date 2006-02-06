@@ -136,6 +136,7 @@ public class RE extends REToken {
 
     /** Minimum length, in characters, of any possible match. */
     private int minimumLength;
+    private int maximumLength;
 
   /**
    * Compilation flag. Do  not  differentiate  case.   Subsequent
@@ -280,12 +281,13 @@ public class RE extends REToken {
   }
 
   // internal constructor used for alternation
-  private RE(REToken first, REToken last,int subs, int subIndex, int minLength) {
+  private RE(REToken first, REToken last,int subs, int subIndex, int minLength, int maxLength) {
     super(subIndex);
     firstToken = first;
     lastToken = last;
     numSubs = subs;
     minimumLength = minLength;
+    maximumLength = maxLength;
     addToken(new RETokenEndSub(subIndex));
   }
 
@@ -371,8 +373,9 @@ public class RE extends REToken {
 	   && !syntax.get(RESyntax.RE_LIMITED_OPS)) {
 	// make everything up to here be a branch. create vector if nec.
 	addToken(currentToken);
-	RE theBranch = new RE(firstToken, lastToken, numSubs, subIndex, minimumLength);
+	RE theBranch = new RE(firstToken, lastToken, numSubs, subIndex, minimumLength, maximumLength);
 	minimumLength = 0;
+	maximumLength = 0;
 	if (branches == null) {
 	    branches = new Vector();
 	}
@@ -533,7 +536,10 @@ public class RE extends REToken {
 	boolean pure = false;
 	boolean comment = false;
         boolean lookAhead = false;
+        boolean lookBehind = false;
+        boolean independent = false;
         boolean negativelh = false;
+        boolean negativelb = false;
 	if ((index+1 < pLength) && (pattern[index] == '?')) {
 	  switch (pattern[index+1]) {
           case '!':
@@ -548,6 +554,34 @@ public class RE extends REToken {
             if (syntax.get(RESyntax.RE_LOOKAHEAD)) {
               pure = true;
               lookAhead = true;
+              index += 2;
+            }
+            break;
+	  case '<':
+	    // We assume that if the syntax supports look-ahead,
+	    // it also supports look-behind.
+	    if (syntax.get(RESyntax.RE_LOOKAHEAD)) {
+		index++;
+		switch (pattern[index +1]) {
+		case '!':
+		  pure = true;
+		  negativelb = true;
+		  lookBehind = true;
+		  index += 2;
+		  break;
+		case '=':
+		  pure = true;
+		  lookBehind = true;
+		  index += 2;
+		}
+	    }
+	    break;
+	  case '>':
+	    // We assume that if the syntax supports look-ahead,
+	    // it also supports independent group.
+            if (syntax.get(RESyntax.RE_LOOKAHEAD)) {
+              pure = true;
+              independent = true;
               index += 2;
             }
             break;
@@ -713,12 +747,19 @@ public class RE extends REToken {
 	    numSubs++;
 	  }
 
-	  int useIndex = (pure || lookAhead) ? 0 : nextSub + numSubs;
+	  int useIndex = (pure || lookAhead || lookBehind || independent) ?
+			 0 : nextSub + numSubs;
 	  currentToken = new RE(String.valueOf(pattern,index,endIndex-index).toCharArray(),cflags,syntax,useIndex,nextSub + numSubs);
 	  numSubs += ((RE) currentToken).getNumSubs();
 
           if (lookAhead) {
 	      currentToken = new RETokenLookAhead(currentToken,negativelh);
+	  }
+          else if (lookBehind) {
+	      currentToken = new RETokenLookBehind(currentToken,negativelb);
+	  }
+          else if (independent) {
+	      currentToken = new RETokenIndependent(currentToken);
 	  }
 
 	  index = nextIndex;
@@ -1026,9 +1067,10 @@ public class RE extends REToken {
     addToken(currentToken);
       
     if (branches != null) {
-	branches.addElement(new RE(firstToken,lastToken,numSubs,subIndex,minimumLength));
+	branches.addElement(new RE(firstToken,lastToken,numSubs,subIndex,minimumLength, maximumLength));
 	branches.trimToSize(); // compact the Vector
 	minimumLength = 0;
+	maximumLength = 0;
 	firstToken = lastToken = null;
 	addToken(new RETokenOneOf(subIndex,branches,false));
     } 
@@ -1295,6 +1337,10 @@ public class RE extends REToken {
    */
   public int getMinimumLength() {
       return minimumLength;
+  }
+
+  public int getMaximumLength() {
+      return maximumLength;
   }
 
   /**
@@ -1651,6 +1697,12 @@ public class RE extends REToken {
   private void addToken(REToken next) {
     if (next == null) return;
     minimumLength += next.getMinimumLength();
+    int nmax = next.getMaximumLength();
+    if (nmax < Integer.MAX_VALUE && maximumLength < Integer.MAX_VALUE)
+	maximumLength += nmax;
+    else 
+	maximumLength = Integer.MAX_VALUE;
+
     if (firstToken == null) {
 	lastToken = firstToken = next;
     } else {

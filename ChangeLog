@@ -1,3 +1,32 @@
+2006-02-06  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #25812
+ 	* gnu/regexp/CharIndexed.java(lookBehind),(length): New method.
+	* gnu/regexp/CharIndexedCharArray.java
+	(lookBehind),(length): Implemented.
+	* gnu/regexp/CharIndexedInputStream.java: Likewise.
+	* gnu/regexp/CharIndexedString.java: Likewise.
+	* gnu/regexp/CharIndexedStringBuffer.java: Likewise.
+	* gnu/regexp/REToken.java(getMaximumLength): New method.
+	* gnu/regexp/RE.java(internal constructor RE): Added new argument
+	maxLength.
+	(initialize): Parse (?<=X), (?<!X), (?>X).
+	(getMaximumLength): Implemented.
+	* gnu/regexp/RETokenAny.java(getMaximumLength): Implemented.
+	* gnu/regexp/RETokenChar.java: Likewise.
+	* gnu/regexp/RETokenEnd.java: Likewise.
+	* gnu/regexp/RETokenEndSub.java: Likewise.
+	* gnu/regexp/RETokenLookAhead.java: Likewise.
+	* gnu/regexp/RETokenNamedProperty.java: Likewise.
+	* gnu/regexp/RETokenOneOf.java: Likewise.
+	* gnu/regexp/RETokenPOSIX.java: Likewise.
+	* gnu/regexp/RETokenRange.java: Likewise.
+	* gnu/regexp/RETokenRepeated.java: Likewise.
+	* gnu/regexp/RETokenStart.java: Likewise.
+	* gnu/regexp/RETokenWordBoundary.java: Likewise.
+	* gnu/regexp/RETokenIndependent.java: New file.
+	* gnu/regexp/RETokenLookBehind.java: New file.
+
 2006-02-06  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java
