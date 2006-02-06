@@ -1,5 +1,14 @@
 2006-02-07  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* .settings/org.eclipse.jdt.core.prefs:
+	Force a line split on extends and implements.
+	Force a white-space after unary operators.
+	Don't force a new-line after @params.
+	Add new-line at end-of-file.
+	* scripts/eclipse-gnu.xml: Export version of the above named GNU.
+
+2006-02-07  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/java/security/provider/GnuDSAPublicKey.java (getEncoded): Use
 	Registry constant.
 	* gnu/java/security/provider/GnuDSAPrivateKey.java (getEncoded):
