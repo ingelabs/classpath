@@ -4485,6 +4485,109 @@ p   * <li>the set of backward traversal keys
   }
 
   /**
+   * Report a change in a bound property to any registered property listeners.
+   *
+   * @param propertyName the property that changed
+   * @param oldValue the old property value
+   * @param newValue the new property value
+   *
+   * @since 1.5
+   */
+  protected void firePropertyChange(String propertyName, byte oldValue,
+                                    byte newValue)
+  {
+    if (changeSupport != null)
+      changeSupport.firePropertyChange(propertyName, new Byte(oldValue),
+                                       new Byte(newValue));
+  }
+
+  /**
+   * Report a change in a bound property to any registered property listeners.
+   *
+   * @param propertyName the property that changed
+   * @param oldValue the old property value
+   * @param newValue the new property value
+   *
+   * @since 1.5
+   */
+  protected void firePropertyChange(String propertyName, char oldValue,
+                                    char newValue)
+  {
+    if (changeSupport != null)
+      changeSupport.firePropertyChange(propertyName, new Character(oldValue),
+                                       new Character(newValue));
+  }
+
+  /**
+   * Report a change in a bound property to any registered property listeners.
+   *
+   * @param propertyName the property that changed
+   * @param oldValue the old property value
+   * @param newValue the new property value
+   *
+   * @since 1.5
+   */
+  protected void firePropertyChange(String propertyName, short oldValue,
+                                    short newValue)
+  {
+    if (changeSupport != null)
+      changeSupport.firePropertyChange(propertyName, new Short(oldValue),
+                                       new Short(newValue));
+  }
+
+  /**
+   * Report a change in a bound property to any registered property listeners.
+   *
+   * @param propertyName the property that changed
+   * @param oldValue the old property value
+   * @param newValue the new property value
+   *
+   * @since 1.5
+   */
+  protected void firePropertyChange(String propertyName, long oldValue,
+                                    long newValue)
+  {
+    if (changeSupport != null)
+      changeSupport.firePropertyChange(propertyName, new Long(oldValue),
+                                       new Long(newValue));
+  }
+
+  /**
+   * Report a change in a bound property to any registered property listeners.
+   *
+   * @param propertyName the property that changed
+   * @param oldValue the old property value
+   * @param newValue the new property value
+   *
+   * @since 1.5
+   */
+  protected void firePropertyChange(String propertyName, float oldValue,
+                                    float newValue)
+  {
+    if (changeSupport != null)
+      changeSupport.firePropertyChange(propertyName, new Float(oldValue),
+                                       new Float(newValue));
+  }
+
+
+  /**
+   * Report a change in a bound property to any registered property listeners.
+   *
+   * @param propertyName the property that changed
+   * @param oldValue the old property value
+   * @param newValue the new property value
+   *
+   * @since 1.5
+   */
+  protected void firePropertyChange(String propertyName, double oldValue,
+                                    double newValue)
+  {
+    if (changeSupport != null)
+      changeSupport.firePropertyChange(propertyName, new Double(oldValue),
+                                       new Double(newValue));
+  }
+
+  /**
    * Sets the text layout orientation of this component. New components default
    * to UNKNOWN (which behaves like LEFT_TO_RIGHT). This method affects only
    * the current component, while

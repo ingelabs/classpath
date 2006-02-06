@@ -1,5 +1,15 @@
 2006-02-06  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Component.java
+	(firePropertyChange(String,byte,byte)): New method.
+	(firePropertyChange(String,char,char)): New method.
+	(firePropertyChange(String,short,short)): New method.
+	(firePropertyChange(String,long,long)): New method.
+	(firePropertyChange(String,float,float)): New method.
+	(firePropertyChange(String,double,double)): New method.
+
+2006-02-06  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(AccessibleJComponent.changeSupport): Changed to be a
 	java.beans.PropertyChangeSupport rather than
