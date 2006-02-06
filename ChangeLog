@@ -1,5 +1,30 @@
 2006-02-06  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(AccessibleJComponent.changeSupport): Changed to be a
+	java.beans.PropertyChangeSupport rather than
+	SwingPropertyChangeSupport.
+	(AccessibleJComponent.AccesibleJComponent()): Change initialization
+	of above field.
+	(changeSupport): Removed unneeded field.
+	(removePropertyChangeListener): Removed unneeded methods.
+	(addPropertyChangeListener): Removed unneeded methods.
+	(getPropertyChangeListeners): Removed unneeded methods.
+	(firePropertyChange(String,boolean,boolean)): Changed to simply
+	call super. Added specnote.
+	(firePropertyChange(String,char,char)): Changed to simply
+	call super. Added specnote.
+	(firePropertyChange(String,int,int)): Changed to simply
+	call super. Added specnote.
+	(firePropertyChange(String,byte,byte)): Removed.
+	(firePropertyChange(String,Object,Object)): Removed.
+	(firePropertyChange(String,double,double)): Removed.
+	(firePropertyChange(String,float,float)): Removed.
+	(firePropertyChange(String,long,long)): Removed.
+	(firePropertyChange(String,short,short)): Removed.
+
+2006-02-06  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/event/SwingPropertyChangeSupport.java
 	(listeners): Removed field.
 	(propertyListeners): Removed field.

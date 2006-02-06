@@ -68,6 +68,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.peer.LightweightPeer;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.io.Serializable;
@@ -88,7 +89,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.EventListenerList;
-import javax.swing.event.SwingPropertyChangeSupport;
 import javax.swing.plaf.ComponentUI;
 
 /**
@@ -165,11 +165,11 @@ public abstract class JComponent extends Container implements Serializable
     /**
      * Manages the property change listeners;
      */
-    private SwingPropertyChangeSupport changeSupport;
+    private PropertyChangeSupport changeSupport;
 
     protected AccessibleJComponent()
     {
-      changeSupport = new SwingPropertyChangeSupport(this);
+      changeSupport = new PropertyChangeSupport(this);
     }
 
     /**
@@ -528,14 +528,6 @@ public abstract class JComponent extends Container implements Serializable
   protected EventListenerList listenerList = new EventListenerList();
 
   /** 
-   * Support for {@link PropertyChangeEvent} events. This is constructed
-   * lazily when the component gets its first {@link
-   * PropertyChangeListener} subscription; until then it's an empty slot.
-   */
-  private SwingPropertyChangeSupport changeSupport;
-
-
-  /** 
    * Storage for "client properties", which are key/value pairs associated
    * with this component by a "client", such as a user application or a
    * layout manager. This is lazily constructed when the component gets its
@@ -697,36 +689,6 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
-   * Unregister a <code>PropertyChangeListener</code>.
-   *
-   * @param listener The listener to register
-   *
-   * @see #addPropertyChangeListener(PropertyChangeListener)
-   * @see #changeSupport
-   */
-  public void removePropertyChangeListener(PropertyChangeListener listener)
-  {
-    if (changeSupport != null)
-      changeSupport.removePropertyChangeListener(listener);
-  }
-
-  /**
-   * Unregister a <code>PropertyChangeListener</code>.
-   *
-   * @param propertyName The property name to unregister the listener from
-   * @param listener The listener to unregister
-   *
-   * @see #addPropertyChangeListener(String, PropertyChangeListener)
-   * @see #changeSupport
-   */
-  public void removePropertyChangeListener(String propertyName,
-                                           PropertyChangeListener listener)
-  {
-    if (changeSupport != null)
-      changeSupport.removePropertyChangeListener(propertyName, listener);
-  }
-
-  /**
    * Unregister a <code>VetoableChangeChangeListener</code>.
    *
    * @param listener The listener to unregister
@@ -748,24 +710,6 @@ public abstract class JComponent extends Container implements Serializable
   public void addAncestorListener(AncestorListener listener)
   {
     listenerList.add(AncestorListener.class, listener);
-  }
-
-  /**
-   * Register a <code>PropertyChangeListener</code>. This listener will
-   * receive any PropertyChangeEvent, regardless of property name. To
-   * listen to a specific property name, use {@link
-   * #addPropertyChangeListener(String,PropertyChangeListener)} instead.
-   *
-   * @param listener The listener to register
-   *
-   * @see #removePropertyChangeListener(PropertyChangeListener)
-   * @see #changeSupport
-   */
-  public void addPropertyChangeListener(PropertyChangeListener listener)
-  {
-    if (changeSupport == null)
-      changeSupport = new SwingPropertyChangeSupport(this);
-    changeSupport.addPropertyChangeListener(listener);
   }
 
   /**
@@ -845,134 +789,48 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
-   * Return all <code>PropertyChangeListener</code> objects registered to listen
-   * for a particular property.
-   *
-   * @param property The property to return the listeners of
-   *
-   * @return The set of <code>PropertyChangeListener</code> objects in 
-   *     {@link #changeSupport} registered to listen on the specified property
-   */
-  public PropertyChangeListener[] getPropertyChangeListeners(String property)
-  {
-    return changeSupport == null ? new PropertyChangeListener[0]
-                          : changeSupport.getPropertyChangeListeners(property);
-  }
-
-  /**
    * A variant of {@link #firePropertyChange(String,Object,Object)} 
    * for properties with <code>boolean</code> values.
+   *
+   * @specnote It seems that in JDK1.5 all property related methods have been 
+   *           moved to java.awt.Component, except this and 2 others. We call
+   *           super here. I guess this will also be removed in one of the next
+   *           releases.
    */
   public void firePropertyChange(String propertyName, boolean oldValue,
                                  boolean newValue)
   {
-    if (changeSupport != null)
-      changeSupport.firePropertyChange(propertyName, Boolean.valueOf(oldValue),
-                                       Boolean.valueOf(newValue));
-  }
-
-  /**
-   * A variant of {@link #firePropertyChange(String,Object,Object)} 
-   * for properties with <code>byte</code> values.
-   */
-  public void firePropertyChange(String propertyName, byte oldValue,
-                                 byte newValue)
-  {
-    if (changeSupport != null)
-      changeSupport.firePropertyChange(propertyName, new Byte(oldValue),
-                                       new Byte(newValue));
+    super.firePropertyChange(propertyName, oldValue, newValue);
   }
 
   /**
    * A variant of {@link #firePropertyChange(String,Object,Object)} 
    * for properties with <code>char</code> values.
+   *
+   * @specnote It seems that in JDK1.5 all property related methods have been 
+   *           moved to java.awt.Component, except this and 2 others. We call
+   *           super here. I guess this will also be removed in one of the next
+   *           releases.
    */
   public void firePropertyChange(String propertyName, char oldValue,
                                  char newValue)
   {
-    if (changeSupport != null)
-      changeSupport.firePropertyChange(propertyName, new Character(oldValue),
-                                       new Character(newValue));
-  }
-
-  /**
-   * A variant of {@link #firePropertyChange(String,Object,Object)} 
-   * for properties with <code>double</code> values.
-   */
-  public void firePropertyChange(String propertyName, double oldValue,
-                                 double newValue)
-  {
-    if (changeSupport != null)
-      changeSupport.firePropertyChange(propertyName, new Double(oldValue),
-                                       new Double(newValue));
-  }
-
-  /**
-   * A variant of {@link #firePropertyChange(String,Object,Object)} 
-   * for properties with <code>float</code> values.
-   */
-  public void firePropertyChange(String propertyName, float oldValue,
-                                 float newValue)
-  {
-    if (changeSupport != null)
-      changeSupport.firePropertyChange(propertyName, new Float(oldValue),
-                                       new Float(newValue));
+    super.firePropertyChange(propertyName, oldValue, newValue);
   }
 
   /**
    * A variant of {@link #firePropertyChange(String,Object,Object)} 
    * for properties with <code>int</code> values.
+   *
+   * @specnote It seems that in JDK1.5 all property related methods have been 
+   *           moved to java.awt.Component, except this and 2 others. We call
+   *           super here. I guess this will also be removed in one of the next
+   *           releases.
    */
   public void firePropertyChange(String propertyName, int oldValue,
                                  int newValue)
   {
-    if (changeSupport != null)
-      changeSupport.firePropertyChange(propertyName, new Integer(oldValue),
-                                       new Integer(newValue));
-  }
-
-  /**
-   * A variant of {@link #firePropertyChange(String,Object,Object)} 
-   * for properties with <code>long</code> values.
-   */
-  public void firePropertyChange(String propertyName, long oldValue,
-                                 long newValue)
-  {
-    if (changeSupport != null)
-      changeSupport.firePropertyChange(propertyName, new Long(oldValue),
-                                       new Long(newValue));
-  }
-
-  /**
-   * Call {@link PropertyChangeListener#propertyChange} on all listeners
-   * registered to listen to a given property. Any method which changes
-   * the specified property of this component should call this method.
-   *
-   * @param propertyName The property which changed
-   * @param oldValue The old value of the property
-   * @param newValue The new value of the property
-   *
-   * @see #changeSupport
-   * @see #addPropertyChangeListener(PropertyChangeListener)
-   * @see #removePropertyChangeListener(PropertyChangeListener)
-   */
-  protected void firePropertyChange(String propertyName, Object oldValue,
-                                    Object newValue)
-  {
-    if (changeSupport != null)
-      changeSupport.firePropertyChange(propertyName, oldValue, newValue);
-  }
-
-  /**
-   * A variant of {@link #firePropertyChange(String,Object,Object)} 
-   * for properties with <code>short</code> values.
-   */
-  public void firePropertyChange(String propertyName, short oldValue,
-                                 short newValue)
-  {
-    if (changeSupport != null)
-      changeSupport.firePropertyChange(propertyName, new Short(oldValue),
-                                       new Short(newValue));
+    super.firePropertyChange(propertyName, oldValue, newValue);
   }
 
   /**
@@ -3043,19 +2901,6 @@ public abstract class JComponent extends Container implements Serializable
   public int getWidth()
   {
     return super.getWidth();
-  }
-
-  /**
-   * Return all <code>PropertyChangeListener</code> objects registered.
-   *
-   * @return The set of <code>PropertyChangeListener</code> objects
-   */
-  public PropertyChangeListener[] getPropertyChangeListeners()
-  {
-    if (changeSupport == null)
-      return new PropertyChangeListener[0];
-    else
-      return changeSupport.getPropertyChangeListeners();
   }
 
   /**
