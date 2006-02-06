@@ -1596,7 +1596,14 @@ public class ObjectInputStream extends InputStream
 
   private void readNextBlock() throws IOException
   {
-    readNextBlock(this.realInputStream.readByte());
+    byte marker = this.realInputStream.readByte();
+    while (marker == TC_RESET)
+      {
+        if(dump) dumpElementln("RESET");
+        clearHandles();
+        marker = this.realInputStream.readByte();
+      }
+    readNextBlock(marker);
   }
 
   private void readNextBlock(byte marker) throws IOException

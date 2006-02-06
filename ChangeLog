@@ -1,3 +1,9 @@
+2006-02-06  Jeroen Frijters  <jeroen@frijters.net>
+
+	Fixes PR 26121
+	* java/io/ObjectInputStream.java
+	(readNextBlock()): Handle TC_RESET.
+
 2006-02-06  Wolfgang Baer  <WBaer@gmx.de>
 	
 	* javax/print/attribute/standard/Compression.java,
