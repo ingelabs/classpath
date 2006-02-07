@@ -1,4 +1,10 @@
-2006-02-06  Roman Kennke  <kennke@aicas.com>
+2006-02-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTextPane.java
+	(setCharacterAttributes): Replace input attributes when
+	replace==true.
+
+2006-02-07  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java
 	(firePropertyChange(String,byte,byte)): Made method public.
