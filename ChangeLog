@@ -1,5 +1,11 @@
 2006-02-07  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/CellRendererPane.java
+	(paintComponent): Enclosed painting in try finally to properly
+	clean up even when throwing an exception.
+
+2006-02-07  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/UIManager.java
 	(listeners): Made this an instance of
 	java.beans.PropertyChangeSupport instead of the obsoleted
