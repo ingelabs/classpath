@@ -1,5 +1,15 @@
 2006-02-07  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(paint): Acquire read lock on the document before calling
+	paintSafely.
+	(paintSafely): Added comment about what this method does.
+	(paintBackground): Implemented to actually paint the background.
+	(update): Overridden to _not_ paint the background. This is done
+	in paintBackground in this UI.
+
+2006-02-07  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/View.java
 	(forwardUpdate): Don't notify newly added child views as specified.
 

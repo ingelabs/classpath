@@ -66,6 +66,7 @@ import javax.swing.plaf.ActionMapUIResource;
 import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.TextUI;
 import javax.swing.plaf.UIResource;
+import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
@@ -816,18 +817,49 @@ public abstract class BasicTextUI extends TextUI
   }
 
   /**
-   * Paints the text component.
+   * Paints the text component. This acquires a read lock on the model and then
+   * calls {@link #paintSafely(Graphics)} in order to actually perform the
+   * painting.
    *
    * @param g the <code>Graphics</code> context to paint to
    * @param c not used here
    */
   public final void paint(Graphics g, JComponent c)
   {
-    paintSafely(g);
+    try
+      {
+        Document doc = textComponent.getDocument();
+        if (doc instanceof AbstractDocument)
+          {
+            AbstractDocument aDoc = (AbstractDocument) doc;
+            aDoc.readLock();
+          }
+        
+        paintSafely(g);
+      }
+    finally
+      {
+        Document doc = textComponent.getDocument();
+        if (doc instanceof AbstractDocument)
+          {
+            AbstractDocument aDoc = (AbstractDocument) doc;
+            aDoc.readUnlock();
+          }
+      }
   }
 
   /**
-   * Actually performs the painting.
+   * This paints the text component while beeing sure that the model is not
+   * modified while painting.
+   *
+   * The following is performed in this order:
+   * <ol>
+   * <li>If the text component is opaque, the background is painted by
+   * calling {@link #paintBackground(Graphics)}.</li>
+   * <li>If there is a highlighter, the highlighter is painted.</li>
+   * <li>The view hierarchy is painted.</li>
+   * <li>The Caret is painter.</li>
+   * </ol>
    *
    * @param g the <code>Graphics</code> context to paint to
    */
@@ -840,7 +872,7 @@ public abstract class BasicTextUI extends TextUI
       paintBackground(g);
 
     if (highlighter != null
-	&& textComponent.getSelectionStart() != textComponent.getSelectionEnd())
+        && textComponent.getSelectionStart() != textComponent.getSelectionEnd())
       highlighter.paint(g);
 
     rootView.paint(g, getVisibleEditorRect());
@@ -856,10 +888,23 @@ public abstract class BasicTextUI extends TextUI
    */
   protected void paintBackground(Graphics g)
   {
-    // This method does nothing. All the background filling is done by the
-    // ComponentUI update method. However, the method is called by paint
-    // to provide a way for subclasses to draw something different (e.g.
-    // background images etc) on the background.
+    Color old = g.getColor();
+    g.setColor(textComponent.getBackground());
+    g.fillRect(0, 0, textComponent.getWidth(), textComponent.getHeight());
+    g.setColor(old);
+  }
+
+  /**
+   * Overridden for better control over background painting. This now simply
+   * calls {@link #paint} and this delegates the background painting to
+   * {@link #paintBackground}.
+   *
+   * @param g the graphics to use
+   * @param c the component to be painted
+   */
+  public void update(Graphics g, JComponent c)
+  {
+    paint(g, c);
   }
 
   /**
