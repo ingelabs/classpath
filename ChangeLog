@@ -1,3 +1,15 @@
+2006-02-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.preferenceChange): Changed view parameter to view so
+	that it doesn't hide a field of that class.
+	(RootView.getViewCount): Rewritten to clean up ECJ warning.
+	(RootView.modelToView): Removed unnecessary cast from View to View.
+	(PropertyChangeHandler): Made inner class private.
+	(updateHandler): Made field private.
+	(getVisibleEditorRect): Removed unneeded local variable that
+	shadowed a field with the same name and purpose.
+
 2006-02-07  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/JTextComponent.java:
