@@ -1,5 +1,11 @@
 2006-02-07  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/AbstractDocument.java
+	(insertString): Enclose locking/unlocking in try-finally block
+	and also keep locked while notifying the listeners.
+
+2006-02-07  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/GlyphView.java
 	(GlyphView): Initialize startOffset and endOffset with -1 (indicating
 	element boundary).
