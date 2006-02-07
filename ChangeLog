@@ -1,3 +1,8 @@
+2006-02-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/View.java
+	(forwardUpdate): Don't notify newly added child views as specified.
+
 2006-02-07  Robert Schuster  <robertschuster@fsfe.org>
 
 	* gnu/java/beans/decoder/DefaultExceptionListener.java: Removed.

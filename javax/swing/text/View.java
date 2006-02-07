@@ -40,7 +40,6 @@ package javax.swing.text;
 
 import java.awt.Container;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.Shape;
 
 import javax.swing.SwingConstants;
@@ -392,6 +391,10 @@ public abstract class View implements SwingConstants
    * of the change to the model. This calles {@link #forwardUpdateToView}
    * for each View that must be forwarded to.
    *
+   * If <code>ec</code> is not <code>null</code> (this means there have been
+   * structural changes to the element that this view is responsible for) this
+   * method should recognize this and don't notify newly added child views.
+   *
    * @param ec the ElementChange describing the element changes (may be
    *           <code>null</code> if there were no changes)
    * @param ev the DocumentEvent describing the changes to the model
@@ -404,8 +407,23 @@ public abstract class View implements SwingConstants
                                DocumentEvent ev, Shape shape, ViewFactory vf)
   {
     int count = getViewCount();
+    int index = -1;
+    int addLength = -1;
+    if (ec != null)
+      {
+        index = ec.getIndex();
+        addLength = ec.getChildrenAdded().length;
+      }
+
     for (int i = 0; i < count; i++)
       {
+        // Skip newly added child views.
+        if (index >= 0 && index == i && addLength > 0)
+          {
+            // We add addLengt - 1 here because the for loop does add 1 more.
+            i += addLength - 1;
+            continue;
+          }
         View child = getView(i);
         forwardUpdateToView(child, ev, shape, vf);
       }
