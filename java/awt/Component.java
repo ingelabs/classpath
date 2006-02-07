@@ -4493,7 +4493,7 @@ p   * <li>the set of backward traversal keys
    *
    * @since 1.5
    */
-  protected void firePropertyChange(String propertyName, byte oldValue,
+  public void firePropertyChange(String propertyName, byte oldValue,
                                     byte newValue)
   {
     if (changeSupport != null)
@@ -4510,7 +4510,7 @@ p   * <li>the set of backward traversal keys
    *
    * @since 1.5
    */
-  protected void firePropertyChange(String propertyName, char oldValue,
+  public void firePropertyChange(String propertyName, char oldValue,
                                     char newValue)
   {
     if (changeSupport != null)
@@ -4527,7 +4527,7 @@ p   * <li>the set of backward traversal keys
    *
    * @since 1.5
    */
-  protected void firePropertyChange(String propertyName, short oldValue,
+  public void firePropertyChange(String propertyName, short oldValue,
                                     short newValue)
   {
     if (changeSupport != null)
@@ -4544,7 +4544,7 @@ p   * <li>the set of backward traversal keys
    *
    * @since 1.5
    */
-  protected void firePropertyChange(String propertyName, long oldValue,
+  public void firePropertyChange(String propertyName, long oldValue,
                                     long newValue)
   {
     if (changeSupport != null)
@@ -4561,7 +4561,7 @@ p   * <li>the set of backward traversal keys
    *
    * @since 1.5
    */
-  protected void firePropertyChange(String propertyName, float oldValue,
+  public void firePropertyChange(String propertyName, float oldValue,
                                     float newValue)
   {
     if (changeSupport != null)
@@ -4579,8 +4579,8 @@ p   * <li>the set of backward traversal keys
    *
    * @since 1.5
    */
-  protected void firePropertyChange(String propertyName, double oldValue,
-                                    double newValue)
+  public void firePropertyChange(String propertyName, double oldValue,
+                                 double newValue)
   {
     if (changeSupport != null)
       changeSupport.firePropertyChange(propertyName, new Double(oldValue),

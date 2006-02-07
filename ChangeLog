@@ -1,3 +1,13 @@
+2006-02-06  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(firePropertyChange(String,byte,byte)): Made method public.
+	(firePropertyChange(String,char,char)): Made method public.
+	(firePropertyChange(String,short,short)): Made method public.
+	(firePropertyChange(String,long,long)): Made method public.
+	(firePropertyChange(String,float,float)): Made method public.
+	(firePropertyChange(String,double,double)): Made method public.
+
 2006-02-06  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/CORBA/NamingService/NamingServiceTransient.java (main): Use
