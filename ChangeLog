@@ -1,3 +1,7 @@
+2006-02-07  Robert Schuster  <robertschuster@fsfe.org>
+
+	* gnu/java/beans/decoder/DefaultExceptionListener.java: Removed.
+
 2006-02-07  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
@@ -778,8 +782,6 @@
 
 2006-01-29  Robert Schuster  <robertschuster@fsfe.org>
 
-	* gnu/java/beans/decoder/DefaultExceptionListener.java: Moved to
-	parent package.
 	* gnu/java/beans/DefaultExceptionListener.java: Constant public field
 	INSTANCE added.
 	* java/beans/XMLDecoder.java:
