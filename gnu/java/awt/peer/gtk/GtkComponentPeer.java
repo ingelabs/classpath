@@ -303,29 +303,30 @@ public class GtkComponentPeer extends GtkGenericPeer
       {
       case PaintEvent.PAINT:
       case PaintEvent.UPDATE:
-        {
-          try 
-            {
-              Graphics g = getGraphics ();
-          
-              // Some peers like GtkFileDialogPeer are repainted by Gtk itself
-              if (g == null)
-                break;
+      {
+        try
+          {
+            Graphics g = getGraphics();
 
-              g.setClip (((PaintEvent) event).getUpdateRect());
+            // Some peers like GtkFileDialogPeer are repainted by Gtk itself
+            if (g == null)
+              break;
 
-              if (id == PaintEvent.PAINT)
-                awtComponent.paint (g);
-              else
-                awtComponent.update (g);
-
-              g.dispose ();
-            }
-          catch (InternalError e)
-            {
-              System.err.println (e);
-            }
-        }
+            g.setClip(((PaintEvent) event).getUpdateRect());
+            if (awtComponent.getWidth() > 0 && awtComponent.getHeight() > 0)
+              {
+                if (id == PaintEvent.PAINT)
+                  awtComponent.paint(g);
+                else
+                  awtComponent.update(g);
+              }
+            g.dispose();
+          }
+        catch (InternalError e)
+          {
+            System.err.println(e);
+          }
+      }
         break;
       case KeyEvent.KEY_PRESSED:
         ke = (KeyEvent) event;

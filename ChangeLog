@@ -1,3 +1,9 @@
+2006-02-07  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(handleEvent): Added check. Should not paint or update the 
+	component if it's width and height are both 0.	
+
 2006-02-07  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/AbstractDocument.java
