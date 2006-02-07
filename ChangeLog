@@ -1,3 +1,10 @@
+2006-02-07  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/DefaultEditorToolkit.java: Changed behavior
+	of actions "delete-next" and "delete-previous", added new TextAction
+	implementations for "selection-begin", "selection-begin-line",
+	"selection-end" and "selection-end-line".
+
 2006-02-07  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
