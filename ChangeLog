@@ -1,5 +1,15 @@
 2006-02-07  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/GlyphView.java
+	(GlyphView): Initialize startOffset and endOffset with -1 (indicating
+	element boundary).
+	(getStartOffset): Return element boundary if startOffset < 0.
+	(getEndOffset): Return element boundary if endOffset < 0.
+	(createFragment): Set startOffset and endOffset fields of fragment
+	if one of p0 or p1 is not at the element boundary.
+
+2006-02-07  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/CellRendererPane.java
 	(paintComponent): Enclosed painting in try finally to properly
 	clean up even when throwing an exception.
