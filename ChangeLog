@@ -1,3 +1,44 @@
+2006-02-07  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/key/KeyPairCodecFactory.java (getEncodingName): New
+	method.
+	(getEncodingShortName): Likewise.
+	* gnu/java/security/key/IKeyPairCodec.java (X509_FORMAT): New constant.
+	(PKCS8_FORMAT): Likewise.
+	(ASN1_FORMAT): Likewise.
+	* gnu/java/security/key/dss/DSSPublicKey.java (DSSPublicKey(4)): Call
+	constructor with 5 arguments.
+	(DSSPublicKey(5)): New constructor.
+	(valueOf): Handle ASN.1 encoding.
+	(getEncoded): Likewise.
+	* gnu/java/security/key/dss/DSSPrivateKey.java (DSSPrivateKey(4)): Call
+	constructor with 5 arguments.
+	(DSSPrivateKey(5)): New constructor.
+	(valueOf): Handle ASN.1 encoding.
+	(getEncoded): Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairX509Codec.java: New file.
+	* gnu/java/security/key/dss/DSSKeyPairPKCS8Codec.java: Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairGenerator.java
+	(PREFERRED_ENCODING_FORMAT): New constant.
+	(DEFAULT_ENCODING_FORMAT): Likewise.
+	(preferredFormat): New field.
+	(setup): Handle preferred format ID.
+	(generate): Use new ctors with 5 arguments.
+	* gnu/java/security/key/dss/DSSKey.java (DSSKey): Now accepts a format
+	ID as an additional argument.
+	(defaultFormat): new field.
+	(getFormat): Returns the preferred format as a short string.
+	* gnu/java/security/jce/sig/DSSKeyFactory.java: New file.
+	* gnu/java/security/jce/sig/EncodedKeyFactory.java (engineGetKeySpec):
+	Likewise
+	* gnu/java/security/jce/sig/DSSKeyPairGeneratorSpi.java
+	(initialize(AlgorithmParameterSpec)): Set ASN.1 as the preferred
+	encoding format.
+	(initialize(int,boolean,SecureRandom)): Likewise.
+	* gnu/java/security/der/DERWriter.java (writeBitString): Use
+	writeLength() instead of write().
+	return buf.length + 1 instead of buf.length.
+
 2006-02-07  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java
