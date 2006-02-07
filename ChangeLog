@@ -1,3 +1,9 @@
+2006-02-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.insert): Only register change when the element
+	actually changed.
+
 2006-02-07  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/key/KeyPairCodecFactory.java (getEncodingName): New

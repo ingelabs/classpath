@@ -684,9 +684,14 @@ public class DefaultStyledDocument extends AbstractDocument implements
           BranchElement e = (BranchElement) curr.e;
           Element[] removed = curr.getRemovedElements();
           Element[] added = curr.getAddedElements();
-          e.replace(curr.index, removed.length, added);
-          ElementEdit ee = new ElementEdit(e, curr.index, removed, added);
-          ev.addEdit(ee);
+          // FIXME: We probably shouldn't create the empty Element[] in the
+          // first place.
+          if (removed.length > 0 || added.length > 0)
+            {
+              e.replace(curr.index, removed.length, added);
+              ElementEdit ee = new ElementEdit(e, curr.index, removed, added);
+              ev.addEdit(ee);
+            }
         }
     }
 
