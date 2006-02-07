@@ -1,3 +1,10 @@
+2006-02-07  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/UIManager.java
+	(listeners): Made this an instance of
+	java.beans.PropertyChangeSupport instead of the obsoleted
+	SwingPropertyChangeSupport.
+
 2006-02-07  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/DefaultEditorToolkit.java: Changed behavior
