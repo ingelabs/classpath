@@ -1,3 +1,21 @@
+2006-02-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* examples/gnu/classpath/examples/CORBA/swing/x5/_GameManagerImpl_Tie.java,
+	examples/gnu/classpath/examples/CORBA/swing/x5/_PlayerImpl_Tie.java:
+	Documenting the code generator.
+	* gnu/CORBA/IOR.java (toStringFormatted, 
+	CodeSet_component.toStringFormatted): New methods.
+	* tools/Makefile.am (TOOLS_JAVA_FILES, READMES): Rewritten.
+	* tools/gnu/classpath/tools/giop/README: Rewritten.
+	* tools/gnu/classpath/tools/giop/GRMIC.java (main): Rewritten. 
+	(printHelpAndExit): Removed.
+	*tools/gnu/classpath/tools/giop/IorParser.java,
+	tools/gnu/classpath/tools/giop/IorParser.txt,
+	tools/gnu/classpath/tools/giop/NameService.java,
+	tools/gnu/classpath/tools/giop/NamingService.txt,
+	tools/gnu/classpath/tools/HelpPrinter.java: New files.
+	NEWS: Added note about GIOP tools.
+
 2006-02-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* .classpath: New source patch (tools).

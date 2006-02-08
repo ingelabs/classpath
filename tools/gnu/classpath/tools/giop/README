@@ -2,6 +2,12 @@ This package defines GIOP tools for creating the applications that use this
 protocol. It provides necessary support for org.omg.* and javax.rmi.* 
 packages.
 
-The list of tools:
+All GIOP tools support the --help option.
 
-* GRMIC - RMI-IIOP stub and tie generator.
+The list of the currently available tools:
+
+* GRMIC -                RMI-IIOP stub and tie generator.
+* NameService  -         GIOP naming service (currently transient, but the
+                         persistent fuctionality may be added in the future).
+* IorParser -            Parses the stringified form of the interoperable 
+                         object references (IOR's).

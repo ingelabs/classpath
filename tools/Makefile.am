@@ -20,7 +20,7 @@ endif
 endif
 
 # All our example java source files
-TOOLS_JAVA_FILES = $(srcdir)/gnu/classpath/tools/*/*.java $(srcdir)/gnu/classpath/tools/*/*/*.java
+TOOLS_JAVA_FILES = $(srcdir)/gnu/classpath/tools/*.java $(srcdir)/gnu/classpath/tools/*/*.java $(srcdir)/gnu/classpath/tools/*/*/*.java
 
 
 # The zip files with classes we want to produce.
@@ -34,7 +34,7 @@ TOOLS_TEMPLATES = $(srcdir)/gnu/classpath/tools/giop/grmic/templates/*.jav
 TOOLS_HELPS = $(srcdir)/gnu/classpath/tools/giop/*.txt
 
 # The tool specific README files.
-READMES = $(srcdir)/gnu/classpath/tools/giop/README.txt
+READMES = $(srcdir)/gnu/classpath/tools/giop/README
 
 # All the files we find "interesting"
 ALL_TOOLS_FILES = $(TOOLS_JAVA_FILES) $(TOOLS_TEMPLATES) $(READMES)

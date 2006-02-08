@@ -6,6 +6,10 @@ New in release 0.21 (to be released)
   3 and TLS version 1. These roughly complement the public
   `java.security.' `javax.crypto,' and `javax.net.ssl' packages, and
   are service providers implementing the underlying algorithms.
+ 
+ * The new folder tools now contains GIOP tools, providing necessary support
+   for development using org.omg.* and javax.rmi.CORBA.* packages: GIOP
+   stub and tie code generator, IOR parser and naming service.
 
 New in release 0.20 (Jan 13, 2006)
 

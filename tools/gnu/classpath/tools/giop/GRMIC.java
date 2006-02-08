@@ -37,14 +37,12 @@ exception statement from your version. */
 
 package gnu.classpath.tools.giop;
 
+import gnu.classpath.tools.HelpPrinter;
 import gnu.classpath.tools.giop.grmic.GiopRmicCompiler;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 /**
@@ -63,25 +61,28 @@ public class GRMIC
   /**
    * The GRMIC compiler methods
    * 
-   * @param args
-   *          the compiler parameters.
+   * @param args the compiler parameters.
    */
   public static void main(String[] args)
   {
     boolean noWrite = false;
     boolean verbose = false;
 
+    String HelpPath = "giop/GRMIC.txt";
+
+    HelpPrinter.checkHelpKey(args, HelpPath);
+
     File output = new File(".");
 
     if (args.length == 0)
       {
-        printHelpAndExit();
+        HelpPrinter.printHelpAndExit(HelpPath);
       }
     else
       {
         GiopRmicCompiler compiler = new GiopRmicCompiler();
 
-        int cl = -1;
+        int cl = - 1;
 
         Options: for (int i = 0; i < args.length; i++)
           {
@@ -95,8 +96,6 @@ public class GRMIC
                 printVersion();
                 System.exit(0);
               }
-            else if (c.equals("-help"))
-              printHelpAndExit();
             else if (c.equals("-nowrite"))
               noWrite = true;
             else if (c.equals("-nowarn"))
@@ -115,7 +114,7 @@ public class GRMIC
                     i++;
                   }
                 else
-                  printHelpAndExit();
+                  HelpPrinter.printHelpAndExit(HelpPath);
               }
             else if (c.charAt(0) != '-')
             // No more options - start of class list.
@@ -126,7 +125,7 @@ public class GRMIC
           }
 
         if (cl < 0)
-          printHelpAndExit();
+          HelpPrinter.printHelpAndExit(HelpPath);
 
         if (verbose)
           System.out.println("Compiling to " + output.getAbsolutePath());
@@ -156,10 +155,10 @@ public class GRMIC
                 // Generate stub.
                 String stub = compiler.generateStub();
                 String subName = "_" + compiler.getStubName() + "_Stub.java";
-                
+
                 compiler.reset();
                 compiler.compile(c);
-                
+
                 // Generate tie
                 String tie = compiler.generateTie();
                 String tieName = "_" + compiler.name(c) + "_Tie.java";
@@ -170,10 +169,11 @@ public class GRMIC
                 try
                   {
                     fw.mkdirs();
-                    OutputStream out = new FileOutputStream(new File(fw, subName));
+                    OutputStream out = new FileOutputStream(new File(fw,
+                                                                     subName));
                     out.write(stub.getBytes());
                     out.close();
-                    
+
                     out = new FileOutputStream(new File(fw, tieName));
                     out.write(tie.getBytes());
                     out.close();
@@ -187,31 +187,6 @@ public class GRMIC
               }
           }
       }
-  }
-  
-  /**
-   * Prints the help message and terminates.
-   */
-  public static void printHelpAndExit()
-  {
-    printVersion();    
-    InputStream in = GRMIC.class.getResourceAsStream("GRMIC.txt");
-    BufferedReader r = new BufferedReader(new InputStreamReader(in));
-
-    try
-      {
-        String s;
-        while ((s = r.readLine()) != null)
-          {
-            System.out.println(s);
-          }
-        r.close();
-      }
-    catch (IOException e)
-      {
-        System.err.print("Resource loading is broken:");
-        e.printStackTrace();
-      }    
   }
   
   /**
