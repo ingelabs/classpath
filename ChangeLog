@@ -1,3 +1,10 @@
+2006-02-08  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Choice.java
+	(select): Fixed up code, added some checks to prevent errors.
+	(dispatchEventImpl): Removed. This function is not needed. It 
+	causes several assertion errors.
+
 2006-02-08  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/PlainView.java
