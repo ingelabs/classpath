@@ -1,5 +1,9 @@
 2006-02-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	*tools/Makefile.am (ALL_TOOLS_FILES): Add $(TOOLS_HELPS).
+
+2006-02-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* examples/gnu/classpath/examples/CORBA/swing/x5/_GameManagerImpl_Tie.java,
 	examples/gnu/classpath/examples/CORBA/swing/x5/_PlayerImpl_Tie.java:
 	Documenting the code generator.

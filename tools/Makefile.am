@@ -37,7 +37,7 @@ TOOLS_HELPS = $(srcdir)/gnu/classpath/tools/giop/*.txt
 READMES = $(srcdir)/gnu/classpath/tools/giop/README
 
 # All the files we find "interesting"
-ALL_TOOLS_FILES = $(TOOLS_JAVA_FILES) $(TOOLS_TEMPLATES) $(READMES)
+ALL_TOOLS_FILES = $(TOOLS_JAVA_FILES) $(TOOLS_TEMPLATES) $(TOOLS_HELPS) $(READMES)
 
 # Some architecture independent data to be installed.
 TOOLS_DATA = $(TOOLS_ZIP)
