@@ -87,6 +87,12 @@ public class SpinnerDateModel extends AbstractSpinnerModel
   public SpinnerDateModel(Date value, Comparable start, Comparable end,
                           int calendarField)
   {
+    if (value == null) 
+      throw new IllegalArgumentException("Null 'value' argument.");
+    if (start != null && value.compareTo(start) < 0)
+      throw new IllegalArgumentException("Require value on or after start.");
+    if (end != null && value.compareTo(end) > 0)
+      throw new IllegalArgumentException("Require value on or before end.");
     date = Calendar.getInstance();
     date.setTime(value);
     this.start = start;
@@ -167,9 +173,9 @@ public class SpinnerDateModel extends AbstractSpinnerModel
     prevCal.setTime(date.getTime());
     prevCal.roll(calendarField, false);
     Date prevDate = prevCal.getTime();
-    if (end != null)
-      if (end.compareTo(prevDate) > 0)
-	return null;
+    if (start != null)
+      if (start.compareTo(prevDate) > 0)
+        return null;
     return prevDate;
   }
 
@@ -231,7 +237,11 @@ public class SpinnerDateModel extends AbstractSpinnerModel
   {
     if (! (value instanceof Date) || value == null)
       throw new IllegalArgumentException("Value not a date.");
-    date.setTime((Date) value);
-    fireStateChanged();
+    
+    if (!date.getTime().equals(value)) 
+      {
+        date.setTime((Date) value);
+        fireStateChanged();
+      }
   }
 }

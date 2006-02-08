@@ -1,3 +1,12 @@
+2006-02-08  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/SpinnerDateModel.java
+	(SpinnerDateModel(Date, Comparable, Comparable, int)): Added argument
+	checks,
+	(getPreviousValue): Check result against start, not end,
+	(setValue): Check that value actually changes before firing 
+	ChangeEvent.
+
 2006-02-08  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Choice.java
