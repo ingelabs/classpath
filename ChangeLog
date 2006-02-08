@@ -1,3 +1,14 @@
+2006-02-08  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/SpinnerNumberModel.java
+	(SpinnerNumberModel(Number, Comparable, Comparable, Number): Allow 
+	maximum and minimum to take null values,
+	(setValue): Only fire ChangeEvent if new value is different to old 
+	value,
+	(setMinimum): Fixed test for updating value,
+	(setMaximum): Likewise,
+	(setStepSize): Likewise.
+
 2006-02-08  Tom Tromey  <tromey@redhat.com>
 
 	* tools/.cvsignore: Added Makefile.in.
