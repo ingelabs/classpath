@@ -1,3 +1,25 @@
+2006-02-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* .classpath: New source patch (tools).
+	* Makefile.am (SUBDIRS, DIST_SUBDIRS): added "tools".
+	* configure.ac (AC_CONFIG_FILES): added tools/Makefile
+	* gnu/classpath/tools/Makefile.am,
+	gnu/classpath/tools/giop/GRMIC.java
+	gnu/classpath/tools/giop/GRMIC.txt,
+	gnu/classpath/tools/giop/README,
+	gnu/classpath/tools/giop/grmic/CompilationError.java,
+	gnu/classpath/tools/giop/grmic/Generator.java,
+	gnu/classpath/tools/giop/grmic/GiopIo.java,
+	gnu/classpath/tools/giop/grmic/GiopRmicCompiler.java,
+	gnu/classpath/tools/giop/grmic/MethodGenerator.java,
+	gnu/classpath/tools/giop/grmic/templates/ImplTie.jav,
+	gnu/classpath/tools/giop/grmic/templates/Stub.jav,
+	gnu/classpath/tools/giop/grmic/templates/StubMethod.jav,
+	gnu/classpath/tools/giop/grmic/templates/StubMethodVoid.jav,
+	gnu/classpath/tools/giop/grmic/templates/Tie.jav,
+	gnu/classpath/tools/giop/grmic/templates/TieMethod.jav,
+	gnu/classpath/tools/giop/grmic/templates/TieMethodVoid.jav: New files.
+
 2006-02-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/BasicStroke.java: Updated API docs all over,

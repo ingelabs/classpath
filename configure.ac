@@ -594,6 +594,7 @@ scripts/classpath.spec
 lib/Makefile
 lib/gen-classlist.sh
 lib/copy-vmresources.sh
+tools/Makefile
 examples/Makefile
 examples/Makefile.jawt])
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])

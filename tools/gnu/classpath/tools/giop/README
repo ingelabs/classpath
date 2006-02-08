@@ -1,0 +1,7 @@
+This package defines GIOP tools for creating the applications that use this
+protocol. It provides necessary support for org.omg.* and javax.rmi.* 
+packages.
+
+The list of tools:
+
+* GRMIC - RMI-IIOP stub and tie generator.
