@@ -1,3 +1,9 @@
+2006-02-08  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(handleEvent): Fixed check to determine if height or
+	width is less than 1.
+
 2006-02-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	*tools/Makefile.am (ALL_TOOLS_FILES): Add $(TOOLS_HELPS).
