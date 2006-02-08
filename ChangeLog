@@ -1,3 +1,7 @@
+2006-02-08  Tom Tromey  <tromey@redhat.com>
+
+	* tools/.cvsignore: Added Makefile.in.
+
 2006-02-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* java/rmi/server/RemoteRef.java,
