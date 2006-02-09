@@ -681,18 +681,18 @@ public abstract class AbstractDocument implements Document, Serializable
       new DefaultDocumentEvent(offset, length,
 			       DocumentEvent.EventType.REMOVE);
     
-    removeUpdate(event);
-
-    boolean shouldFire = content.getString(offset, length).length() != 0;
-    
-    writeLock();
-    UndoableEdit temp = content.remove(offset, length);
-    writeUnlock();
-    
-    postRemoveUpdate(event);
-    
-    if (shouldFire)
-      fireRemoveUpdate(event);
+    try
+      {
+        writeLock();
+        UndoableEdit temp = content.remove(offset, length);
+        removeUpdate(event);
+        postRemoveUpdate(event);
+        fireRemoveUpdate(event);
+      }
+    finally
+      {
+        writeUnlock();
+      } 
   }
 
   /**

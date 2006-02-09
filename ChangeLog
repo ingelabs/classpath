@@ -1,3 +1,9 @@
+2006-02-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AbstractDocument.java
+	(remove): Perform all operations within a write lock and in the
+	correct order.
+
 2006-02-09  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollbarPeer.c
