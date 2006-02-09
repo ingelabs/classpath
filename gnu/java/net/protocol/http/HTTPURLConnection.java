@@ -449,21 +449,31 @@ public class HTTPURLConnection
 
   public String getRequestProperty(String key)
   {
+    if (key == null)
+      return null;
+    
     return requestHeaders.getValue(key);
   }
 
   public Map getRequestProperties()
   {
+    if (connected)
+      throw new IllegalStateException("Already connected");
+    
     return requestHeaders;
   }
 
   public void setRequestProperty(String key, String value)
   {
+    super.setRequestProperty(key, value);
+    
     requestHeaders.put(key, value);
   }
 
   public void addRequestProperty(String key, String value)
   {
+    super.addRequestProperty(key, value);
+    
     String old = requestHeaders.getValue(key);
     if (old == null)
       {

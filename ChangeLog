@@ -1,5 +1,16 @@
 2006-02-09  Wolfgang Baer  <WBaer@gmx.de>
 
+	* java/net/URLConnection.java:
+	(setAllowUserInteraction): Throw IllegalStateException if connected.
+	(getRequestProperty): Document return value if key is null.
+	* gnu/java/net/protocol/http/HTTPURLConnection.java:
+	(getRequestProperty): Return null if key is null.
+	(getRequestProperties): Throw IllegalStateException if connected.
+	(setRequestProperty): Call super method for exception tests.
+	(addRequestProperty): Likewise.
+
+2006-02-09  Wolfgang Baer  <WBaer@gmx.de>
+
 	* gnu/java/net/protocol/http/Request.java:
 	(Request): Remove initialization of removed field.
 	(requestBodyNegotiationThreshold): Removed now unused field.
