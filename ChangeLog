@@ -1,3 +1,12 @@
+2006-02-09  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(handleEvent): Added more to check to prevent assertion errors.
+	* gnu/java/awt/peer/gtk/GtkPanelPeer.java
+	(handleEvent): Likewise.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(handleEvent): Likewise.
+
 2006-02-09  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JTable.java (tableChanged): Interpret null event as

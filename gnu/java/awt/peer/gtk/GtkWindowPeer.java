@@ -244,11 +244,16 @@ public class GtkWindowPeer extends GtkContainerPeer
     if (event.getID() == PaintEvent.UPDATE)
       {
         Graphics g = getGraphics();
-        if (!awtComponent.isShowing() || g == null)
+        if (!awtComponent.isShowing() || awtComponent.getWidth() < 1 
+            || awtComponent.getHeight() < 1 || g == null)
           return;
+        
+        g.setClip(((PaintEvent) event).getUpdateRect());
         
         // Do not want to clear anything before painting.
         awtComponent.paint(g);
+        
+        g.dispose();
       }
     else
       super.handleEvent(event);

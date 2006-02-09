@@ -308,12 +308,9 @@ public class GtkComponentPeer extends GtkGenericPeer
           {
             Graphics g = getGraphics();
 
-            if (awtComponent.getWidth() < 1 || awtComponent.getHeight() < 1)
+            if (!awtComponent.isShowing()  || awtComponent.getWidth() < 1 
+                || awtComponent.getHeight() < 1 || g == null)
               break; 
-
-            // Some peers like GtkFileDialogPeer are repainted by Gtk itself
-            if (g == null)
-              break;
 
             g.setClip(((PaintEvent) event).getUpdateRect());
 
