@@ -1,5 +1,10 @@
 2006-02-09  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/SpinnerDateModel.java: Updated API docs all over,
+	* javax/swing/SpinnerNumberModel.java: Likewise.
+
+2006-02-09  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/SpinnerDateModel.java: Removed tabs,
 	* javax/swing/SpinnerNumberModel.java: Likewise.
 
