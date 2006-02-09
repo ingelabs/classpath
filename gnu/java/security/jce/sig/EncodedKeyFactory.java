@@ -41,6 +41,8 @@ package gnu.java.security.jce.sig;
 import gnu.java.security.Registry;
 import gnu.java.security.key.dss.DSSPrivateKey;
 import gnu.java.security.key.dss.DSSPublicKey;
+import gnu.java.security.key.rsa.GnuRSAPrivateKey;
+import gnu.java.security.key.rsa.GnuRSAPublicKey;
 
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
@@ -79,7 +81,14 @@ public class EncodedKeyFactory
       {
       }
 
-    // FIXME: try RSA
+    // try RSA
+    try
+    {
+      return GnuRSAPublicKey.valueOf(input);
+    }
+  catch (InvalidParameterException ignored)
+    {
+    }
 
     // FIXME: try DH
 
@@ -103,7 +112,14 @@ public class EncodedKeyFactory
       {
       }
 
-    // FIXME: try RSA
+    // try RSA
+    try
+    {
+      return GnuRSAPrivateKey.valueOf(input);
+    }
+  catch (InvalidParameterException ignored)
+    {
+    }
 
     // FIXME: try DH
 

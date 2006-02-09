@@ -1,4 +1,4 @@
-/* DSSKeyPairPKCS8Codec.java -- PKCS#8 Encoding/Decoding handler
+/* RSAKeyPairPKCS8Codec.java -- PKCS#8 Encoding/Decoding handler
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,16 +36,7 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.java.security.key.dss;
-
-import gnu.java.security.OID;
-import gnu.java.security.Registry;
-import gnu.java.security.der.DER;
-import gnu.java.security.der.DERReader;
-import gnu.java.security.der.DERValue;
-import gnu.java.security.der.DERWriter;
-import gnu.java.security.key.IKeyPairCodec;
-import gnu.java.security.util.Util;
+package gnu.java.security.key.rsa;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -55,16 +46,22 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
 
+import gnu.java.security.OID;
+import gnu.java.security.Registry;
+import gnu.java.security.der.DER;
+import gnu.java.security.der.DERReader;
+import gnu.java.security.der.DERValue;
+import gnu.java.security.der.DERWriter;
+import gnu.java.security.key.IKeyPairCodec;
+
 /**
  * An implementation of an {@link IKeyPairCodec} that knows how to encode /
- * decode PKCS#8 ASN.1 external representation of DSS private keys.
- *
- * @author Casey Marshall (rsdio@metastatic.org)
+ * decode PKCS#8 ASN.1 external representation of RSA private keys.
  */
-public class DSSKeyPairPKCS8Codec
+public class RSAKeyPairPKCS8Codec
     implements IKeyPairCodec
 {
-  private static final OID DSA_ALG_OID = new OID(Registry.DSA_OID_STRING);
+  private static final OID RSA_ALG_OID = new OID(Registry.RSA_OID_STRING);
 
   // implicit 0-arguments constructor
 
@@ -91,7 +88,7 @@ public class DSSKeyPairPKCS8Codec
   }
 
   /**
-   * Returns the PKCS#8 ASN.1 <i>PrivateKeyInfo</i> representation of a DSA
+   * Returns the PKCS#8 ASN.1 <i>PrivateKeyInfo</i> representation of an RSA
    * private key. The ASN.1 specification is as follows:
    * 
    * <pre>
@@ -105,47 +102,78 @@ public class DSSKeyPairPKCS8Codec
    *     algorithm   OBJECT IDENTIFIER,
    *     parameters  ANY DEFINED BY algorithm OPTIONAL
    *   }
-   *
-   *   DssParams ::= SEQUENCE {
-   *     p   INTEGER,
-   *     q   INTEGER,
-   *     g   INTEGER
+   * </pre>
+   * 
+   * <p>The <i>privateKey</i> field, which is an OCTET STRING, contains the
+   * DER-encoded form of the RSA private key defined as:</p>
+   * 
+   * <pre>
+   *   RSAPrivateKey ::= SEQUENCE {
+   *     version                 INTEGER, -- MUST be 0
+   *     modulus                 INTEGER, -- n
+   *     publicExponent          INTEGER, -- e
+   *     privateExponent         INTEGER, -- d
+   *     prime1                  INTEGER, -- p
+   *     prime2                  INTEGER, -- q
+   *     exponent1               INTEGER, -- d mod (p-1)
+   *     exponent2               INTEGER, -- d mod (q-1)
+   *     coefficient             INTEGER, -- (inverse of q) mod p
    *   }
    * </pre>
    * 
    * @return the DER encoded form of the ASN.1 representation of the
-   *         <i>PrivateKeyInfo</i> field in an X.509 certificate.
+   *         <i>PrivateKeyInfo</i> field for an RSA {@link PrivateKey}..
    * @throw InvalidParameterException if an error occurs during the marshalling
    *        process.
    */
   public byte[] encodePrivateKey(PrivateKey key)
   {
-    if (! (key instanceof DSSPrivateKey))
+    if (! (key instanceof GnuRSAPrivateKey))
       throw new IllegalArgumentException("Wrong key type");
+
+    GnuRSAPrivateKey pk = (GnuRSAPrivateKey) key;
+    BigInteger n = pk.getN();
+    BigInteger e = pk.getE();
+    BigInteger d = pk.getPrivateExponent();
+    BigInteger p = pk.getPrimeP();
+    BigInteger q = pk.getPrimeQ();
+    BigInteger dP = pk.getPrimeExponentP();
+    BigInteger dQ = pk.getPrimeExponentQ();
+    BigInteger qInv = pk.getCrtCoefficient();
 
     DERValue derVersion = new DERValue(DER.INTEGER, BigInteger.ZERO);
 
-    DERValue derOID = new DERValue(DER.OBJECT_IDENTIFIER, DSA_ALG_OID);
+    DERValue derOID = new DERValue(DER.OBJECT_IDENTIFIER, RSA_ALG_OID);
 
-    DSSPrivateKey pk = (DSSPrivateKey) key;
-    BigInteger p = pk.getParams().getP();
-    BigInteger q = pk.getParams().getQ();
-    BigInteger g = pk.getParams().getG();
-    BigInteger x = pk.getX();
-
-    ArrayList params = new ArrayList(3);
-    params.add(new DERValue(DER.INTEGER, p));
-    params.add(new DERValue(DER.INTEGER, q));
-    params.add(new DERValue(DER.INTEGER, g));
-    DERValue derParams = new DERValue(DER.CONSTRUCTED | DER.SEQUENCE, params);
-
-    ArrayList algorithmID = new ArrayList(2);
+    ArrayList algorithmID = new ArrayList(1);
     algorithmID.add(derOID);
-    algorithmID.add(derParams);
     DERValue derAlgorithmID = new DERValue(DER.CONSTRUCTED | DER.SEQUENCE,
                                            algorithmID);
 
-    DERValue derPrivateKey = new DERValue(DER.OCTET_STRING, Util.trim(x));
+    DERValue derRSAVersion = new DERValue(DER.INTEGER, BigInteger.ZERO);
+    DERValue derN = new DERValue(DER.INTEGER, n);
+    DERValue derE = new DERValue(DER.INTEGER, e);
+    DERValue derD = new DERValue(DER.INTEGER, d);
+    DERValue derP = new DERValue(DER.INTEGER, p);
+    DERValue derQ = new DERValue(DER.INTEGER, q);
+    DERValue derDP = new DERValue(DER.INTEGER, dP);
+    DERValue derDQ = new DERValue(DER.INTEGER, dQ);
+    DERValue derQInv = new DERValue(DER.INTEGER, qInv);
+
+    ArrayList rsaPrivateKey = new ArrayList();
+    rsaPrivateKey.add(derRSAVersion);
+    rsaPrivateKey.add(derN);
+    rsaPrivateKey.add(derE);
+    rsaPrivateKey.add(derD);
+    rsaPrivateKey.add(derP);
+    rsaPrivateKey.add(derQ);
+    rsaPrivateKey.add(derDP);
+    rsaPrivateKey.add(derDQ);
+    rsaPrivateKey.add(derQInv);
+    DERValue derRSAPrivateKey = new DERValue(DER.CONSTRUCTED | DER.SEQUENCE,
+                                             rsaPrivateKey);
+    byte[] pkBytes = derRSAPrivateKey.getEncoded();
+    DERValue derPrivateKey = new DERValue(DER.OCTET_STRING, pkBytes);
 
     ArrayList pki = new ArrayList(3);
     pki.add(derVersion);
@@ -160,10 +188,10 @@ public class DSSKeyPairPKCS8Codec
         DERWriter.write(baos, derPKI);
         result = baos.toByteArray();
       }
-    catch (IOException e)
+    catch (IOException x)
       {
         InvalidParameterException y = new InvalidParameterException();
-        y.initCause(e);
+        y.initCause(x);
         throw y;
       }
 
@@ -176,9 +204,9 @@ public class DSSKeyPairPKCS8Codec
   }
 
   /**
-   * @param input the byte array to unmarshall into a valid DSS
+   * @param input the byte array to unmarshall into a valid RSA
    *          {@link PrivateKey} instance. MUST NOT be null.
-   * @return a new instance of a {@link DSSPrivateKey} decoded from the
+   * @return a new instance of a {@link GnuRSAPrivateKey} decoded from the
    *         <i>PrivateKeyInfo</i> material fed as <code>input</code>.
    * @throw InvalidParameterException if an exception occurs during the
    *        unmarshalling process.
@@ -188,7 +216,7 @@ public class DSSKeyPairPKCS8Codec
     if (input == null)
       throw new InvalidParameterException("Input bytes MUST NOT be null");
 
-    BigInteger version, p, q, g, x;
+    BigInteger version, n, e, d, p, q, dP, dQ, qInv;
     DERReader der = new DERReader(input);
     try
       {
@@ -196,9 +224,7 @@ public class DSSKeyPairPKCS8Codec
         checkIsConstructed(derPKI, "Wrong PrivateKeyInfo field");
 
         DERValue derVersion = der.read();
-        if (! (derVersion.getValue() instanceof BigInteger))
-          throw new InvalidParameterException("Wrong Version field");
-
+        checkIsBigInteger(derVersion, "Wrong Version field");
         version = (BigInteger) derVersion.getValue();
         if (version.compareTo(BigInteger.ZERO) != 0)
           throw new InvalidParameterException("Unexpected Version: " + version);
@@ -208,33 +234,56 @@ public class DSSKeyPairPKCS8Codec
 
         DERValue derOID = der.read();
         OID algOID = (OID) derOID.getValue();
-        if (! algOID.equals(DSA_ALG_OID))
+        if (! algOID.equals(RSA_ALG_OID))
           throw new InvalidParameterException("Unexpected OID: " + algOID);
 
-        DERValue derParams = der.read();
-        checkIsConstructed(derParams, "Wrong DSS Parameters field");
-
         DERValue val = der.read();
-        checkIsBigInteger(val, "Wrong P field");
+        byte[] pkBytes = (byte[]) val.getValue();
+
+        der = new DERReader(pkBytes);
+        DERValue derRSAPrivateKey = der.read();
+        checkIsConstructed(derRSAPrivateKey, "Wrong RSAPrivateKey field");
+        
+        val = der.read();
+        checkIsBigInteger(val, "Wrong RSAPrivateKey Version field");
+        version = (BigInteger) val.getValue();
+        if (version.compareTo(BigInteger.ZERO) != 0)
+          throw new InvalidParameterException("Unexpected RSAPrivateKey Version: "
+                                              + version);
+
+        val = der.read();
+        checkIsBigInteger(val, "Wrong modulus field");
+        n = (BigInteger) val.getValue();
+        val = der.read();
+        checkIsBigInteger(val, "Wrong publicExponent field");
+        e = (BigInteger) val.getValue();
+        val = der.read();
+        checkIsBigInteger(val, "Wrong privateExponent field");
+        d = (BigInteger) val.getValue();
+        val = der.read();
+        checkIsBigInteger(val, "Wrong prime1 field");
         p = (BigInteger) val.getValue();
         val = der.read();
-        checkIsBigInteger(val, "Wrong Q field");
+        checkIsBigInteger(val, "Wrong prime2 field");
         q = (BigInteger) val.getValue();
         val = der.read();
-        checkIsBigInteger(val, "Wrong G field");
-        g = (BigInteger) val.getValue();
-
+        checkIsBigInteger(val, "Wrong exponent1 field");
+        dP = (BigInteger) val.getValue();
         val = der.read();
-        byte[] xBytes = (byte[]) val.getValue();
-        x = new BigInteger(1, xBytes);
+        checkIsBigInteger(val, "Wrong exponent2 field");
+        dQ = (BigInteger) val.getValue();
+        val = der.read();
+        checkIsBigInteger(val, "Wrong coefficient field");
+        qInv = (BigInteger) val.getValue();
       }
-    catch (IOException e)
+    catch (IOException x)
       {
         InvalidParameterException y = new InvalidParameterException();
-        y.initCause(e);
+        y.initCause(x);
         throw y;
       }
 
-    return new DSSPrivateKey(Registry.PKCS8_ENCODING_ID, p, q, g, x);
+    return new GnuRSAPrivateKey(Registry.PKCS8_ENCODING_ID, n, e, d, p, q,
+                                dP, dQ, qInv);
   }
 }

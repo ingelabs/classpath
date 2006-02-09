@@ -1,3 +1,38 @@
+2006-02-09  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/key/rsa/RSAKeyPairX509Codec.java: New file.
+	* gnu/java/security/key/rsa/RSAKeyPairPKCS8Codec.java: Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairGenerator.java
+	(PREFERRED_ENCODING_FORMAT): New constant.
+	(DEFAULT_ENCODING_FORMAT): Likewise.
+	(preferredFormat): New field.
+	(setup): Add support for preferred encoding format.
+	(generate): Call key constructors with explicit format identifier.
+	* gnu/java/security/key/rsa/GnuRSAPublicKey.java (GnuRSAPublicKey(2)): 
+	Call constructor with 3 arguments..
+	(GnuRSAPublicKey(3)): New constructor.
+	(valueOf): Added support for ASN.1 format.
+	(getEncoded): Likewise.
+	* gnu/java/security/key/rsa/GnuRSAPrivateKey.java (GnuRSAPrivateKey(4)):
+	Call constructor with 5 arguments.
+	(GnuRSAPrivateKey(5)): New constructor.
+	(GnuRSAPrivateKey(9)): New constructor.
+	(valueOf): Added support for ASN.1 format.
+	(getEncoded): Likewise.
+	* gnu/java/security/key/rsa/GnuRSAKey.java (defaultFormat): New field.
+	(GnuRSAKey): Modified constructor.
+	(getFormat): Return preferred format identifier.
+	* gnu/java/security/key/dss/DSSKeyPairPKCS8Codec.java
+	(decodePrivateKey): Fixed documentation.
+	Check Version field.
+	* gnu/java/security/jce/sig/RSAKeyPairGeneratorSpi.java
+	(initialize(int,SecureRandom)): Set ASN.1 as the preferred encoding
+	format.
+	(initialize(AlgorithmParameterSpec,SecureRandom)): Likewise.
+	* gnu/java/security/jce/sig/EncodedKeyFactory.java
+	(engineGeneratePublic): Added support for RSA.
+	(engineGeneratePrivate): Likewise.
+
 2006-02-09  Wolfgang Baer  <WBaer@gmx.de>
 
 	* java/net/URLConnection.java:
