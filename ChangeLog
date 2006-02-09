@@ -1,3 +1,13 @@
+2006-02-09  Wolfgang Baer  <WBaer@gmx.de>
+
+	* gnu/java/net/protocol/http/Request.java:
+	(Request): Remove initialization of removed field.
+	(requestBodyNegotiationThreshold): Removed now unused field.
+	(setRequestBodyNegotiationThreshold): Remove now unused method.
+	(dispatch): Do not use 'Expect 100-continue' header if content-length
+	is over a treshold. If user specified 'Expect 100-continue' still
+	initialize the expectingContinue variable.
+
 2006-02-08  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/SpinnerNumberModel.java
