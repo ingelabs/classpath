@@ -5,6 +5,7 @@
 
 2006-02-09  Wolfgang Baer  <WBaer@gmx.de>
 
+	Fixes bug #26081
 	* gnu/java/net/protocol/http/HTTPURLConnection.java: 
 	(isRedirect): Removed, moved to Response.java.
 	(connect): If error condition redirect responseSink to errorSink.
