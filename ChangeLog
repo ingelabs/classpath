@@ -1,3 +1,32 @@
+2006-02-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/BoxView.java
+	(getAxis): Added @since tag.
+	(setAxis): Added @since tag.
+	(layoutChanged): Added @since tag.
+	(isLayoutValid): Added @since tag.
+	(paint): Don't call setSize here. This is done in RootView already.
+	(getMaximumSpan): Reimplemented to return the requirements'
+	maximum size. Added API docs.
+	(getMinimumSpan): New method.
+	(layout): Fixed layout order.
+	(modelToView): Call layout instead of setSize here.
+	(getResizeWeight): New method.
+	(getChildAllocation): New method.
+	(forwardUpdate): New method.
+	(viewToModel): New method.
+	(flipEastEndWestEnds): New method.
+	* javax/swing/text/CompositeView.java
+	(modelToView): Made this method more robust by returning a default
+	location if it's not possible to calculate one via the children.
+	This default location returns the left or right edge of this
+	view.
+	(createDefaultLocation): New helper method.
+	* javax/swing/text/IconView.java
+	(modelToView): Don't throw BadLocationException. This should
+	really only be thrown if the position is outside the document
+	model, not if it's outside the view's boundary.
+
 2006-02-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* tools/makefile.am: Handle rmi and giop folders separately.
@@ -63,6 +92,16 @@
 
 	* javax/swing/JTable.java (tableChanged): Interpret null event as
 	"everything changed".
+
+2006-02-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/DefaultCaret.java
+	(DocumentHandler.removeUpdate): When update policy is
+	'on eventqueue', and the update doesn't come from the
+	event queue, check if the current dot location is still
+	valid.
+	(moveDot): Make sure the new dot location is valid.
+	(setDot): Set the mark the same as the dot.
 
 2006-02-09  Roman Kennke  <kennke@aicas.com>
 

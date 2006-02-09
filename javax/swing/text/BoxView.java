@@ -43,6 +43,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 
 import javax.swing.SizeRequirements;
+import javax.swing.event.DocumentEvent;
 
 /**
  * An implementation of {@link CompositeView} that arranges its children in
@@ -115,6 +116,8 @@ public class BoxView
    * Returns the axis along which this <code>BoxView</code> is laid out.
    *
    * @return the axis along which this <code>BoxView</code> is laid out
+   *
+   * @since 1.3
    */
   public int getAxis()
   {
@@ -128,6 +131,8 @@ public class BoxView
    * {@link View#Y_AXIS}.
    *
    * @param axis the axis along which this <code>BoxView</code> is laid out
+   *
+   * @since 1.3
    */
   public void setAxis(int axis)
   {
@@ -147,6 +152,8 @@ public class BoxView
    * {@link View#Y_AXIS}.
    *
    * @param axis an <code>int</code> value
+   *
+   * @since 1.3
    */
   public void layoutChanged(int axis)
   {
@@ -166,6 +173,8 @@ public class BoxView
    *
    * @return <code>true</code> if the layout along the specified
    *         <code>axis</code> is valid, <code>false</code> otherwise
+   *
+   * @since 1.4
    */
   protected boolean isLayoutValid(int axis)
   {
@@ -264,12 +273,6 @@ public class BoxView
    */
   public void paint(Graphics g, Shape a)
   {
-    // Adjust size if the size is changed.
-    Rectangle bounds = a.getBounds();
-
-    if (bounds.width != getWidth() || bounds.height != getHeight())
-      setSize(bounds.width, bounds.height);
-
     Rectangle inside = getInsideAllocation(a);
     Rectangle copy = new Rectangle(inside);
     int count = getViewCount();
@@ -305,12 +308,54 @@ public class BoxView
     return requirements[axis].preferred;
   }
 
+  /**
+   * Returns the maximum span of this view along the specified axis.
+   * This calculates the maximum span using
+   * {@link #calculateMajorAxisRequirements} or
+   * {@link #calculateMinorAxisRequirements} (depending on the axis) and
+   * returns the resulting maximum span.
+   *
+   * @param axis the axis
+   *
+   * @return the maximum span of this view along the specified axis
+   */
   public float getMaximumSpan(int axis)
   {
-    if (axis == getAxis())
-      return getPreferredSpan(axis);
-    else
-      return Integer.MAX_VALUE;
+    if (!isLayoutValid(axis))
+      {
+        if (axis == myAxis)
+          requirements[axis] = calculateMajorAxisRequirements(axis,
+                                                           requirements[axis]);
+        else
+          requirements[axis] = calculateMinorAxisRequirements(axis,
+                                                           requirements[axis]);
+      }
+    return requirements[axis].maximum;
+  }
+
+  /**
+   * Returns the minimum span of this view along the specified axis.
+   * This calculates the minimum span using
+   * {@link #calculateMajorAxisRequirements} or
+   * {@link #calculateMinorAxisRequirements} (depending on the axis) and
+   * returns the resulting minimum span.
+   *
+   * @param axis the axis
+   *
+   * @return the minimum span of this view along the specified axis
+   */
+  public float getMinimumSpan(int axis)
+  {
+    if (!isLayoutValid(axis))
+      {
+        if (axis == myAxis)
+          requirements[axis] = calculateMajorAxisRequirements(axis,
+                                                           requirements[axis]);
+        else
+          requirements[axis] = calculateMinorAxisRequirements(axis,
+                                                           requirements[axis]);
+      }
+    return requirements[axis].minimum;
   }
 
   /**
@@ -506,34 +551,51 @@ public class BoxView
   protected void layout(int width, int height)
   {
     int[] newSpan = new int[]{ width, height };
+    int count = getViewCount();
 
-    // Update major axis as appropriate.
-    if (! isLayoutValid(myAxis) || newSpan[myAxis] != span[myAxis])
-      {
-        requirements[myAxis] = calculateMajorAxisRequirements(myAxis,
-                                                         requirements[myAxis]);
-        layoutMajorAxis(newSpan[myAxis], myAxis, offsets[myAxis],
-                        spans[myAxis]);
-        span[myAxis] = newSpan[myAxis];
-      }
-
-    // Update minor axis as appropriate.
+    // Update minor axis as appropriate. We need to first update the minor
+    // axis layout because that might affect the children's preferences along
+    // the major axis.
     int minorAxis = myAxis == X_AXIS ? Y_AXIS : X_AXIS;
-    if (! isLayoutValid(minorAxis))
+    if ((! isLayoutValid(minorAxis)) || newSpan[minorAxis] != span[minorAxis])
       {
         requirements[minorAxis] = calculateMinorAxisRequirements(minorAxis,
                                                       requirements[minorAxis]);
         layoutMinorAxis(newSpan[minorAxis], minorAxis, offsets[minorAxis],
                         spans[minorAxis]);
         span[myAxis] = newSpan[myAxis];
+
+        // Update the child view's sizes.
+        for (int i = 0; i < count; ++i)
+          {
+            getView(i).setSize(spans[X_AXIS][i], spans[Y_AXIS][i]);
+          }
+        layoutValid[minorAxis] = true;
       }
 
-    // Update the child view's sizes.
-    int count = getViewCount();
-    for (int i = 0; i < count; ++i)
+
+    // Update major axis as appropriate.
+    if ((! isLayoutValid(myAxis)) || newSpan[myAxis] != span[myAxis])
       {
-        getView(i).setSize(spans[X_AXIS][i], spans[Y_AXIS][i]);
+        requirements[myAxis] = calculateMajorAxisRequirements(myAxis,
+                                                         requirements[myAxis]);
+        layoutMajorAxis(newSpan[myAxis], myAxis, offsets[myAxis],
+                        spans[myAxis]);
+        span[myAxis] = newSpan[myAxis];
+
+        // Update the child view's sizes.
+        for (int i = 0; i < count; ++i)
+          {
+            getView(i).setSize(spans[X_AXIS][i], spans[Y_AXIS][i]);
+          }
+        layoutValid[myAxis] = true;
       }
+
+
+    assert layoutValid[myAxis] == true
+           : "Major axis layout must be valid after layout";
+    assert layoutValid[minorAxis] == true
+    : "Minor axis layout must be valid after layout";
   }
 
   /**
@@ -730,11 +792,72 @@ public class BoxView
       throws BadLocationException
   {
     // Make sure everything is allocated properly and then call super
-    if (!isAllocationValid())
+    if (! isAllocationValid())
       {
         Rectangle bounds = a.getBounds();
-        setSize(bounds.width, bounds.height);
+        layout(bounds.width, bounds.height);
       }
     return super.modelToView(pos, a, bias);
+  }
+
+  /**
+   * Returns the resize weight of this view. A value of <code>0</code> or less
+   * means this view is not resizeable. Positive values make the view
+   * resizeable. This implementation returns <code>0</code> for the major
+   * axis and <code>1</code> for the minor axis of this box view.
+   *
+   * @param axis the axis
+   *
+   * @return the resizability of this view along the specified axis
+   *
+   * @throws IllegalArgumentException if <code>axis</code> is invalid
+   */
+  public int getResizeWeight(int axis)
+  {
+    if (axis != X_AXIS && axis != Y_AXIS)
+      throw new IllegalArgumentException("Illegal axis argument");
+    int weight = 1;
+    if (axis == myAxis)
+      weight = 0;
+    return weight;
+  }
+
+  /**
+   * Returns the child allocation for the child view with the specified
+   * <code>index</code>. If the layout is invalid, this returns
+   * <code>null</code>.
+   *
+   * @param index the child view index
+   * @param a the allocation to this view
+   *
+   * @return the child allocation for the child view with the specified
+   *         <code>index</code> or <code>null</code> if the layout is invalid
+   *         or <code>a</code> is null
+   */
+  public Shape getChildAllocation(int index, Shape a)
+  {
+    Shape ret = null;
+    if (isAllocationValid() && a != null)
+      ret = super.getChildAllocation(index, a);
+    return ret;
+  }
+
+  protected void forwardUpdate(DocumentEvent.ElementChange ec, DocumentEvent e,
+                               Shape a, ViewFactory vf)
+  {
+    // FIXME: What to do here?
+    super.forwardUpdate(ec, e, a, vf);
+  }
+
+  public int viewToModel(float x, float y, Shape a, Position.Bias[] bias)
+  {
+    // FIXME: What to do here?
+    return super.viewToModel(x, y, a, bias);
+  }
+
+  protected boolean flipEastAndWestEnds(int position, Position.Bias bias)
+  {
+    // FIXME: What to do here?
+    return super.flipEastAndWestAtEnds(position, bias);
   }
 }
