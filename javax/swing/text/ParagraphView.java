@@ -63,10 +63,15 @@ public class ParagraphView extends FlowView implements TabExpander
     {
       super(el, X_AXIS);
     }
+
     public float getAlignment(int axis)
     {
       // FIXME: This is very likely not 100% correct. Work this out.
       return 0.0F;
+    }
+    protected void loadChildren(ViewFactory vf)
+    {
+      // Do nothing here. The children are added while layouting.
     }
   }
 

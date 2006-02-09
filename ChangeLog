@@ -1,5 +1,77 @@
 2006-02-09  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/BoxView.java
+	(myAxis): Made field private.
+	(xLayoutValid): Replaced by layoutValid array.
+	(yLayoutValid): Replaced by layoutValid array.
+	(layoutValid): New field.
+	(spansX): Replaced by spans array.
+	(spansY): Replaced by spans array.
+	(spans): New field.
+	(offsetsX): Replaced by offsets array.
+	(offsetsY): Replaced by offsets array.
+	(offsets): New field.
+	(requirements): New field.
+	(BoxView): Initialize new fields.
+	(layoutChanged): Rewritten to use the layoutValid array.
+	(isLayoutValid): Rewritten to use the layoutValid array.
+	(replace): Use the new arrays.
+	(getPreferredSpan): Rewritten to call calculateXXXRequirements
+	instead of baselineRequirements.
+	(baselineRequirements): Rewritten to calculate baseline requirements.
+	(baselineLayout): Rewritten to calculate baseline layout.
+	(childAllocation): Use new arrays.
+	(layout): Rewritten. Only update the layout if necessary.
+	(layoutMajorAxis): Directly set layoutValid.
+	(layoutMinorAxis): Directly set layoutValid. Use cached size
+	requirements.
+	(getWidth): Use new span array.
+	(getHeight): Likewise.
+	(setSize): Rewritten to simply call layout().
+	(validateLayout): Removed unneeded method.
+	(getSpan): Use new arrays.
+	(getOffset): Use new arrays.
+	(getAlignment): Use cached requirements if possible.
+	(preferenceChanged): Use new arrays.
+	* javax/swing/text/FlowView.java
+	(FlowStrategy.insertUpdate): Do nothing here.
+	(FlowStrategy.removeUpdate): Do nothing here.
+	(FlowStrategy.changedUpdate): Do nothing here.
+	(FlowStrategy.layoutRow): Rewritten.
+	(FlowStrategy.createView): Rewritten.
+	(FlowStrategy.adjustRow): New method.
+	(LogicalView.getViewIndex): Fixed condition for finding child
+	view.
+	(layoutDirty): New field indicating the state of the layout.
+	(FlowView): Initialize new field.
+	(loadChildren): Set parent on logical view so that preferenceChanges
+	get propagated upwards.
+	(layout): Rewritten to match the specs.
+	(insertUpdate): Set layout to dirty.
+	(removeUpdate): Set layout to dirty.
+	(changedUpdate): Set layout to dirty.
+	* javax/swing/text/GlyphView.java
+	(getBreakWeight): Rewritten to use the Utilities class. Commented
+	out though because that is broken.
+	(insertUpdate): Call preferenceChanged on this object instead of
+	parent.
+	* javax/swing/text/ParagraphView.java
+	(Row.loadChildren): Overridden to be a noop to prevent initial
+	creation of child views. This is carried out by the flow layout.
+	* javax/swing/text/View.java
+	(getPreferredSpan): Added API docs.
+	(getResizeWeight): Added API docs.
+	(getMaximumSpan): Added API docs. Rewritten to only have one exit
+	point.
+	(getMinimumSpan): Added API docs. Rewritten to return 0 when
+	resizable instead of Integer.MAX_VALUE.
+	(getAlignment): Added API docs.
+	(replace): Added API docs.
+	(forwardUpdate): Rewritten to only notify child views that need to
+	be notified.
+
+2006-02-09  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(RootView.paint): Call setSize() before painting the view.
 

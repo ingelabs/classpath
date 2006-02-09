@@ -567,7 +567,7 @@ public class GlyphView extends View implements TabableView, Cloneable
                                tabEx, 0.F);
       }
     else
-      span = painter.getHeight(this); 
+      span = painter.getHeight(this);
     return span;
   }
 
@@ -936,23 +936,24 @@ public class GlyphView extends View implements TabableView, Cloneable
       weight = super.getBreakWeight(axis, pos, len);
     else
       {
-        // Determine the model locations at pos and pos + len.
-        int spanX = (int) getPreferredSpan(X_AXIS);
-        int spanY = (int) getPreferredSpan(Y_AXIS);
-        Rectangle dummyAlloc = new Rectangle(0, 0, spanX, spanY);
-        Position.Bias[] biasRet = new Position.Bias[1];
-        int offset1 = viewToModel(pos, spanY / 2, dummyAlloc, biasRet);
-        int offset2 = viewToModel(pos, spanY / 2, dummyAlloc, biasRet);
-        Segment txt = getText(offset1, offset2);
-        BreakIterator lineBreaker = BreakIterator.getLineInstance();
-        lineBreaker.setText(txt);
-        int breakLoc = lineBreaker.previous();
-        if (breakLoc == offset1)
-          weight = View.BadBreakWeight;
-        else if(breakLoc ==  BreakIterator.DONE)
-          weight = View.GoodBreakWeight;
-        else
-          weight = View.ExcellentBreakWeight;
+        // FIXME: Commented out because the Utilities.getBreakLocation method
+        // is still buggy. The GoodBreakWeight is a reasonable workaround for
+        // now.
+//        int startOffset = getStartOffset();
+//        int endOffset = getEndOffset() - 1;
+//        Segment s = getText(startOffset, endOffset);
+//        Container c = getContainer();
+//        FontMetrics fm = c.getFontMetrics(c.getFont());
+//        int x0 = (int) pos;
+//        int x = (int) (pos + len);
+//        int breakLoc = Utilities.getBreakLocation(s, fm, x0, x,
+//                                                  getTabExpander(),
+//                                                  startOffset);
+//        if (breakLoc == startOffset || breakLoc == endOffset)
+//          weight = GoodBreakWeight;
+//        else
+//          weight = ExcellentBreakWeight;
+        weight = GoodBreakWeight;
       }
     return weight;
   }
@@ -975,8 +976,8 @@ public class GlyphView extends View implements TabableView, Cloneable
   /**
    * Receives notification that some text has been inserted within the
    * text fragment that this view is responsible for. This calls
-   * {@link View#preferenceChanged(View, boolean, boolean)} on the parent for
-   * width.
+   * {@link View#preferenceChanged(View, boolean, boolean)} for the
+   * direction in which the glyphs are rendered.
    *
    * @param e the document event describing the change; not used here
    * @param a the view allocation on screen; not used here
@@ -984,7 +985,7 @@ public class GlyphView extends View implements TabableView, Cloneable
    */
   public void insertUpdate(DocumentEvent e, Shape a, ViewFactory vf)
   {
-    getParent().preferenceChanged(this, true, false);
+    preferenceChanged(this, true, false);
   }
 
   /**
