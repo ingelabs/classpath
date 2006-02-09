@@ -30,9 +30,16 @@ TOOLS_ZIP = tools.zip
 BUILT_SOURCES = $(TOOLS_ZIP)
 
 # The templates that must be included into the generated zip file.
-# This covers both tools/giop/grmic/templates and tools/rmi/rmic/templates:
-TOOLS_TEMPLATES = $(srcdir)/gnu/classpath/tools/*/*/templates/*.jav
-TOOLS_HELPS = $(srcdir)/gnu/classpath/tools/giop/*.txt
+GRMIC_TEMPLATES = $(srcdir)/gnu/classpath/tools/giop/grmic/templates/*.jav 
+RMIC_TEMPLATES = $(srcdir)/gnu/classpath/tools/rmi/rmic/templates/*.jav
+
+TOOLS_TEMPLATES = $(GRMIC_TEMPLATES) $(RMIC_TEMPLATES)
+
+# This covers the built-in help texts, both for giop and rmic subpackages.
+GIOP_HELPS = $(srcdir)/gnu/classpath/tools/giop/*.txt
+RMI_HELPS = $(srcdir)/gnu/classpath/tools/rmi/*.txt
+
+TOOLS_HELPS = $(GIOP_HELPS) $(RMI_HELPS)
 
 # The tool specific README files.
 READMES = $(srcdir)/gnu/classpath/tools/giop/README
@@ -89,8 +96,11 @@ dist-hook:
 # And copy the template files we use to the classes dir so they get also included.
 $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 	mkdir -p classes/gnu/classpath/tools/giop/grmic/templates
-	cp $(TOOLS_TEMPLATES) classes/gnu/classpath/tools/*/*/templates
-	cp $(TOOLS_HELPS) classes/gnu/classpath/tools/giop/
+	mkdir -p classes/gnu/classpath/tools/rmi/rmic/templates
+	cp $(RMIC_TEMPLATES) classes/gnu/classpath/tools/rmi/rmic/templates
+	cp $(GRMIC_TEMPLATES) classes/gnu/classpath/tools/giop/grmic/templates	
+	cp $(RMI_HELPS) classes/gnu/classpath/tools/rmi/
+	cp $(GIOP_HELPS) classes/gnu/classpath/tools/giop/
 	$(JCOMPILER) -d classes $(TOOLS_JAVA_FILES) 
 	(cd classes; \
 	if test "$(ZIP)" != ""; then $(ZIP) -r ../$(TOOLS_ZIP) .; fi; \

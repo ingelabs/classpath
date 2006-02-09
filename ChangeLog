@@ -1,3 +1,7 @@
+2006-02-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* tools/makefile.am: Handle rmi and giop folders separately.
+
 2006-02-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/SpinnerDateModel.java: Updated API docs all over,
