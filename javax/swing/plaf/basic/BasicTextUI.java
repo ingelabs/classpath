@@ -246,7 +246,11 @@ public abstract class BasicTextUI extends TextUI
     public void paint(Graphics g, Shape s)
     {
       if (view != null)
-        view.paint(g, s);
+        {
+          Rectangle b = s.getBounds();
+          view.setSize(b.width, b.height);
+          view.paint(g, s);
+        }
     }
 
 
