@@ -1,3 +1,12 @@
+2006-02-09  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkPanelPeer.java
+	(handleEvent): Added code to handle PaintEvent.UPDATE.
+	Sun does not call update(Graphics g) on Panels.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(handleEvent): New method. Added code to handle PaintEvent.UPDATE.
+	Sun does not call update(Graphics g) on Panels.
+
 2006-02-09  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/BoxView.java
