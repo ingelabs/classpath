@@ -75,7 +75,8 @@ public final class Matcher implements MatchResult
     assertMatchOp();
     sb.append(input.subSequence(appendPosition,
 				match.getStartIndex()).toString());
-    sb.append(match.substituteInto(replacement));
+    sb.append(RE.getReplacement(replacement, match,
+	RE.REG_REPLACE_USE_BACKSLASHESCAPE));
     appendPosition = match.getEndIndex();
     return this;
   }
@@ -190,7 +191,8 @@ public final class Matcher implements MatchResult
   {
     reset();
     // Semantics might not quite match
-    return pattern.getRE().substitute(input, replacement, position);
+    return pattern.getRE().substitute(input, replacement, position,
+	RE.REG_REPLACE_USE_BACKSLASHESCAPE);
   }
 
   /**
@@ -199,7 +201,8 @@ public final class Matcher implements MatchResult
   public String replaceAll (String replacement)
   {
     reset();
-    return pattern.getRE().substituteAll(input, replacement, position);
+    return pattern.getRE().substituteAll(input, replacement, position,
+	RE.REG_REPLACE_USE_BACKSLASHESCAPE);
   }
   
   public int groupCount ()

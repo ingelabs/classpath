@@ -142,7 +142,7 @@ public class RE extends REToken {
    * Compilation flag. Do  not  differentiate  case.   Subsequent
    * searches  using  this  RE will be case insensitive.
    */
-  public static final int REG_ICASE = 2;
+  public static final int REG_ICASE = 0x02;
 
   /**
    * Compilation flag. The match-any-character operator (dot)
@@ -150,14 +150,14 @@ public class RE extends REToken {
    * bit RE_DOT_NEWLINE (see RESyntax for details).  This is equivalent to
    * the "/s" operator in Perl.
    */
-  public static final int REG_DOT_NEWLINE = 4;
+  public static final int REG_DOT_NEWLINE = 0x04;
 
   /**
    * Compilation flag. Use multiline mode.  In this mode, the ^ and $
    * anchors will match based on newlines within the input. This is
    * equivalent to the "/m" operator in Perl.
    */
-  public static final int REG_MULTILINE = 8;
+  public static final int REG_MULTILINE = 0x08;
 
   /**
    * Execution flag.
@@ -186,14 +186,14 @@ public class RE extends REToken {
    * //  m4.toString(): "fool"<BR>
    * </CODE>
    */
-  public static final int REG_NOTBOL = 16;
+  public static final int REG_NOTBOL = 0x10;
 
   /**
    * Execution flag.
    * The match-end operator ($) does not match at the end
    * of the input string. Useful for matching on substrings.
    */
-  public static final int REG_NOTEOL = 32;
+  public static final int REG_NOTEOL = 0x20;
 
   /**
    * Execution flag.
@@ -207,7 +207,7 @@ public class RE extends REToken {
    * the example under REG_NOTBOL.  It also affects the use of the \&lt;
    * and \b operators.
    */
-  public static final int REG_ANCHORINDEX = 64;
+  public static final int REG_ANCHORINDEX = 0x40;
 
   /**
    * Execution flag.
@@ -216,14 +216,24 @@ public class RE extends REToken {
    * the corresponding subexpressions.  For example, you may want to
    * replace all matches of "one dollar" with "$1".
    */
-  public static final int REG_NO_INTERPOLATE = 128;
+  public static final int REG_NO_INTERPOLATE = 0x80;
 
   /**
    * Execution flag.
    * Try to match the whole input string. An implicit match-end operator
    * is added to this regexp.
    */
-  public static final int REG_TRY_ENTIRE_MATCH = 256;
+  public static final int REG_TRY_ENTIRE_MATCH = 0x0100;
+
+  /**
+   * Execution flag.
+   * The substitute and substituteAll methods will treat the
+   * character '\' in the replacement as an escape to a literal
+   * character. In this case "\n", "\$", "\\", "\x40" and "\012"
+   * will become "n", "$", "\", "x40" and "012" respectively.
+   * This flag has no effect if REG_NO_INTERPOLATE is set on.
+   */
+  public static final int REG_REPLACE_USE_BACKSLASHESCAPE = 0x0200;
 
   /** Returns a string representing the version of the gnu.regexp package. */
   public static final String version() {
@@ -1614,8 +1624,7 @@ public class RE extends REToken {
     StringBuffer buffer = new StringBuffer();
     REMatch m = getMatchImpl(input,index,eflags,buffer);
     if (m==null) return buffer.toString();
-    buffer.append( ((eflags & REG_NO_INTERPOLATE) > 0) ?
-		   replace : m.substituteInto(replace) );
+    buffer.append(getReplacement(replace, m, eflags));
     if (input.move(m.end[0])) {
       do {
 	buffer.append(input.charAt(0));
@@ -1676,8 +1685,7 @@ public class RE extends REToken {
     StringBuffer buffer = new StringBuffer();
     REMatch m;
     while ((m = getMatchImpl(input,index,eflags,buffer)) != null) {
-	buffer.append( ((eflags & REG_NO_INTERPOLATE) > 0) ?
-		       replace : m.substituteInto(replace) );
+      buffer.append(getReplacement(replace, m, eflags));
       index = m.getEndIndex();
       if (m.end[0] == 0) {
 	char ch = input.charAt(0);
@@ -1692,6 +1700,39 @@ public class RE extends REToken {
     }
     return buffer.toString();
   }
+
+  public static String getReplacement(String replace, REMatch m, int eflags) {
+    if ((eflags & REG_NO_INTERPOLATE) > 0)
+      return replace;
+    else {
+      if ((eflags & REG_REPLACE_USE_BACKSLASHESCAPE) > 0) {
+        StringBuffer sb = new StringBuffer();
+        int l = replace.length();
+        for (int i = 0; i < l; i++) {
+	    char c = replace.charAt(i);
+            switch(c) {
+            case '\\':
+              i++;
+              // Let StringIndexOutOfBoundsException be thrown.
+              sb.append(replace.charAt(i));
+              break;
+            case '$':
+	      int i1 = i + 1;
+	      while (i1 < replace.length() &&
+		Character.isDigit(replace.charAt(i1))) i1++;
+              sb.append(m.substituteInto(replace.substring(i, i1)));
+              i = i1 - 1;
+              break;
+            default:
+              sb.append(c);
+            }
+        }
+        return sb.toString();
+      }
+      else
+        return m.substituteInto(replace);
+    }
+  }	
   
   /* Helper function for constructor */
   private void addToken(REToken next) {

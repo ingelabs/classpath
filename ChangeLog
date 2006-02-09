@@ -1,3 +1,15 @@
+2006-02-09  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	Fixes bug #26112
+	* gnu/regexp/RE.java(REG_REPLACE_USE_BACKSLASHESCAPE): New execution
+	flag which enables backslash escape in a replacement.
+	(getReplacement): New public static method. 
+	(substituteImpl),(substituteAllImpl): Use getReplacement.
+	* gnu/regexp/REMatch.java(substituteInto): Replace $n even if n>=10.
+	* java/util/regex/Matcher.java(appendReplacement)
+	Use RE#getReplacement.
+	(replaceFirst),(replaceAll): Use RE.REG_REPLACE_USE_BACKSLASHESCAPE.
+
 2006-02-09  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/key/rsa/RSAKeyPairX509Codec.java: New file.
