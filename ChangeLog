@@ -1,3 +1,10 @@
+2006-02-09  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollbarPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create): Make sure max is
+	creater than min, adjusting page_size if necessary.
+	(Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues): Likewise.
+
 2006-02-09  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkPanelPeer.java
