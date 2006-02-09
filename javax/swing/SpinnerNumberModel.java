@@ -128,13 +128,13 @@ public class SpinnerNumberModel extends AbstractSpinnerModel
       throw new IllegalArgumentException("value may not be null");
     if (minimum != null)
       {
-	if (minimum.compareTo(value) > 0)
-	  throw new IllegalArgumentException("minimum is not <= value");
+        if (minimum.compareTo(value) > 0)
+          throw new IllegalArgumentException("minimum is not <= value");
       }
     if (maximum != null)
       {
-	if (maximum.compareTo(value) < 0)
-	  throw new IllegalArgumentException("maximum is not >= value");
+        if (maximum.compareTo(value) < 0)
+          throw new IllegalArgumentException("maximum is not >= value");
       }
 
     this.value = value;
@@ -244,8 +244,8 @@ public class SpinnerNumberModel extends AbstractSpinnerModel
   {
     if (minimum != null ? !minimum.equals(newMinimum) : newMinimum != null)
       {
-	minimum = newMinimum;
-	fireStateChanged();
+        minimum = newMinimum;
+        fireStateChanged();
       }
   }
 
@@ -258,8 +258,8 @@ public class SpinnerNumberModel extends AbstractSpinnerModel
   {
     if (maximum != null ? !maximum.equals(newMaximum) : newMaximum != null)
       {
-	maximum = newMaximum;
-	fireStateChanged();
+        maximum = newMaximum;
+        fireStateChanged();
       }
   }
 
@@ -275,8 +275,8 @@ public class SpinnerNumberModel extends AbstractSpinnerModel
 
     if (!stepSize.equals(newStepSize))
       {
-	stepSize = newStepSize;
-	fireStateChanged();
+        stepSize = newStepSize;
+        fireStateChanged();
       }
   }
 }

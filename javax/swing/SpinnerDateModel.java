@@ -158,7 +158,7 @@ public class SpinnerDateModel extends AbstractSpinnerModel
     Date nextDate = nextCal.getTime();
     if (end != null)
       if (end.compareTo(nextDate) < 0)
-	return null;
+        return null;
     return nextDate;
   }
 
@@ -193,8 +193,8 @@ public class SpinnerDateModel extends AbstractSpinnerModel
 
     if (this.calendarField != calendarField)
       {
-	this.calendarField = calendarField;
-	fireStateChanged();
+        this.calendarField = calendarField;
+        fireStateChanged();
       }
   }
 
@@ -208,8 +208,8 @@ public class SpinnerDateModel extends AbstractSpinnerModel
   {
     if (this.start != start)
       {
-	this.start = start;
-	fireStateChanged();
+        this.start = start;
+        fireStateChanged();
       }
   }
 
@@ -223,8 +223,8 @@ public class SpinnerDateModel extends AbstractSpinnerModel
   {
     if (this.end != end)
       {
-	this.end = end;
-	fireStateChanged();
+        this.end = end;
+        fireStateChanged();
       }
   }
 
