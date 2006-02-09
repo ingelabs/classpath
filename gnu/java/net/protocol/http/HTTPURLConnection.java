@@ -254,7 +254,7 @@ public class HTTPURLConnection
               }
           }
         
-        if (isRedirect(response) && getInstanceFollowRedirects())
+        if (response.isRedirect() && getInstanceFollowRedirects())
           {
 	    // Read the response body, if there is one.  If the
 	    // redirect points us back at the same server, we will use
@@ -349,22 +349,13 @@ public class HTTPURLConnection
           {
             responseSink = response.getBody();
             
-            if (response.getCode() == 404)
-	      {
-		errorSink = responseSink;
-		throw new FileNotFoundException(url.toString());
-	      }
+            if (response.isError())
+	      errorSink = responseSink;
           }
       }
     while (retry);
     connected = true;
-  }
-
-  private static boolean isRedirect(Response response)
-  {
-    int sc = response.getCode();
-    return (sc != 304 && (sc / 100) == 3);
-  }
+  }  
 
   /**
    * Returns a connection, from the pool if necessary.
@@ -525,6 +516,17 @@ public class HTTPURLConnection
       {
         throw new ProtocolException("doInput is false");
       }
+    
+    if (response.isError())
+      {
+        int code = response.getCode();
+        if (code == 404 || code == 410)
+          throw new FileNotFoundException(url.toString());
+      
+        throw new IOException("Server returned HTTP response code " + code
+                              + " for URL " + url.toString());
+      }
+    
     return responseSink;
   }
 

@@ -1,3 +1,13 @@
+2006-02-09  Wolfgang Baer  <WBaer@gmx.de>
+
+	* gnu/java/net/protocol/http/HTTPURLConnection.java: 
+	(isRedirect): Removed, moved to Response.java.
+	(connect): If error condition redirect responseSink to errorSink.
+	(getInputStream): If error condition throw IOException, for the error
+	codes 404 and 410 throw a FileNotFoundException.	
+	* gnu/java/net/protocol/http/Response.java (isError): New method.
+	(isRedirect): New method, moved from HTTPURLConnection.java.
+
 2006-02-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* tools/Makefile.am: Add tools/gnu/classpath/tools/rmi folder.
