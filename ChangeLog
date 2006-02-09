@@ -1,3 +1,25 @@
+2006-02-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* tools/Makefile.am: Add tools/gnu/classpath/tools/rmi folder.
+	* tools/gnu/classpath/tools/giop/GRMIC.txt: Explain it called from RMIC.
+	* tools/gnu/classpath/tools/giop/grmic/Generator.java (getResource): 
+	Better diagnostic.
+	* tools/gnu/classpath/tools/giop/grmic/GiopRmicCompiler.java:
+	Rewritten.
+	* tools/gnu/classpath/tools/giop/grmic/MethodGenerator.java: Implement
+	AbstractMethodGenerator.
+	* tools/gnu/classpath/tools/AbstractMethodGenerator.java,
+	tools/gnu/classpath/tools/rmi/RMIC.java,
+	tools/gnu/classpath/tools/rmi/RMIC.txt,
+	tools/gnu/classpath/tools/rmi/rmic/RmiMethodGenerator.java,
+	tools/gnu/classpath/tools/rmi/rmic/RmicCompiler.java,
+	tools/gnu/classpath/tools/rmi/rmic/WrapUnWrapper.java,
+	tools/gnu/classpath/tools/rmi/rmic/templates/Stub_12.jav,
+	tools/gnu/classpath/tools/rmi/rmic/templates/Stub_12Method.jav,
+	tools/gnu/classpath/tools/rmi/rmic/templates/Stub_12MethodVoid.jav: 
+	New files.
+	* NEWS: Corrected entry about the tools.
+
 2006-02-09  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java

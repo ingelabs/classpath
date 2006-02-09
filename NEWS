@@ -7,9 +7,10 @@ New in release 0.21 (to be released)
   `java.security.' `javax.crypto,' and `javax.net.ssl' packages, and
   are service providers implementing the underlying algorithms.
  
- * The new folder tools now contains GIOP tools, providing necessary support
-   for development using org.omg.* and javax.rmi.CORBA.* packages: GIOP
-   stub and tie code generator, IOR parser and naming service.
+* The new folder tools now contains GIOP and RMI tools, providing necessary
+  support for development using org.omg.*, javax.rmi.CORBA.* and java.rmi.* 
+  packages. The toll set includes GIOP and RMI stub and tie code generators,
+  IOR parser and GIOP naming service. 
 
 New in release 0.20 (Jan 13, 2006)
 

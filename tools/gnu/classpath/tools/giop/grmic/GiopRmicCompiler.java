@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.classpath.tools.giop.grmic;
 
+import gnu.classpath.tools.AbstractMethodGenerator;
+
 import java.lang.reflect.Method;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -55,60 +57,60 @@ import java.util.TreeSet;
 public class GiopRmicCompiler extends Generator
 {
   /** The package name. */
-  String packag;
+  protected String packag;
 
   /**
    * The "basic" name (normally, the interface name, unless several Remote -
    * derived interfaces are implemented.
    */
-  String name;
+  protected String name;
 
   /**
    * The name (without package) of the class, passed as the parameter.
    */
-  String implName;
+  protected String implName;
   
   /**
    * The proposed name for the stub.
    */
-  String stubName;
+  protected String stubName;
 
   /**
    * The Remote's, implemented by this class.
    */
-  Collection implementedRemotes = new HashSet();
+  protected Collection implementedRemotes = new HashSet();
 
   /**
    * The extra classes that must be imported.
    */
-  Collection extraImports = new HashSet();
+  protected Collection extraImports = new HashSet();
 
   /**
    * The methods we must implement.
    */
-  Collection methods = new HashSet();
+  protected Collection methods = new HashSet();
 
   /**
    * The map of all code generator variables.
    */
-  Properties vars = new Properties();
+  public Properties vars = new Properties();
   
   /**
    * If this flag is set (true by default), the compiler generates the Servant
    * based classes. If set to false, the compiler generates the old style
    * ObjectImpl based classes.
    */
-  boolean poaMode = true;
+  protected boolean poaMode = true;
   
   /**
    * If this flag is set (true by default), the compiler emits warnings.
    */
-  boolean warnings = true;
+  protected boolean warnings = true;
   
   /**
    * Verbose output
    */
-  boolean verbose = false;
+  protected boolean verbose = false;
 
   /**
    * Clear data, preparing for the next compilation.
@@ -206,10 +208,22 @@ public class GiopRmicCompiler extends Generator
                                              + ", does not throw "
                                              + RemoteException.class.getName());
               }
-            MethodGenerator mm = new MethodGenerator(m[i], this);
+            AbstractMethodGenerator mm = createMethodGenerator(m[i]);
             methods.add(mm);
           }
       }
+  }
+  
+  /**
+   * Create the method generator for the given method.
+   * 
+   * @param m the method
+   * 
+   * @return the created method generator
+   */
+  protected AbstractMethodGenerator createMethodGenerator(Method m)
+  {
+    return new MethodGenerator(m, this);
   }
 
   /**
@@ -315,7 +329,7 @@ public class GiopRmicCompiler extends Generator
     Iterator iter = methods.iterator();
     while (iter.hasNext())
       {
-        MethodGenerator m = (MethodGenerator) iter.next();
+        AbstractMethodGenerator m = (AbstractMethodGenerator) iter.next();
         b.append(m.generateStubMethod());
       }
 
@@ -366,7 +380,7 @@ public class GiopRmicCompiler extends Generator
     Iterator iter = methods.iterator();
     while (iter.hasNext())
       {
-        MethodGenerator m = (MethodGenerator) iter.next();
+        AbstractMethodGenerator m = (AbstractMethodGenerator) iter.next();
         b.append(m.generateTieMethod());
       }
 

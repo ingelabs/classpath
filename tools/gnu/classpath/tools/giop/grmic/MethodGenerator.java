@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.classpath.tools.giop.grmic;
 
+import gnu.classpath.tools.AbstractMethodGenerator;
+
 import java.lang.reflect.Method;
 import java.util.Properties;
 
@@ -46,7 +48,7 @@ import java.util.Properties;
  * 
  * @author Audrius Meskauskas, Lithuania (audriusa@Bioinformatics.org)
  */
-public class MethodGenerator
+public class MethodGenerator implements AbstractMethodGenerator
 {
   /**
    * The method being defined.

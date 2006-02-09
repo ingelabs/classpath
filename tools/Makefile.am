@@ -29,8 +29,9 @@ TOOLS_ZIP = tools.zip
 # Extra objects that will not exist until configure-time
 BUILT_SOURCES = $(TOOLS_ZIP)
 
-# the templates that must be included into the generated zip file
-TOOLS_TEMPLATES = $(srcdir)/gnu/classpath/tools/giop/grmic/templates/*.jav
+# The templates that must be included into the generated zip file.
+# This covers both tools/giop/grmic/templates and tools/rmi/rmic/templates:
+TOOLS_TEMPLATES = $(srcdir)/gnu/classpath/tools/*/*/templates/*.jav
 TOOLS_HELPS = $(srcdir)/gnu/classpath/tools/giop/*.txt
 
 # The tool specific README files.
@@ -88,7 +89,7 @@ dist-hook:
 # And copy the template files we use to the classes dir so they get also included.
 $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 	mkdir -p classes/gnu/classpath/tools/giop/grmic/templates
-	cp $(TOOLS_TEMPLATES) classes/gnu/classpath/tools/giop/grmic/templates
+	cp $(TOOLS_TEMPLATES) classes/gnu/classpath/tools/*/*/templates
 	cp $(TOOLS_HELPS) classes/gnu/classpath/tools/giop/
 	$(JCOMPILER) -d classes $(TOOLS_JAVA_FILES) 
 	(cd classes; \

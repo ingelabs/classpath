@@ -56,13 +56,18 @@ public class Generator
   /**
    * Get resource with the given name, as string.
    * 
-   * @param name
-   *          the resource name
+   * @param name the resource name
    * @return the resourse string (in subfolder /templates).
    */
   public String getResource(String name)
   {
-    InputStream in = getClass().getResourceAsStream("templates/" + name);
+    String resourcePath = "templates/" + name;
+    InputStream in = getClass().getResourceAsStream(resourcePath);
+
+    if (in == null)
+      throw new InternalError(getClass().getName() + ": no resource "
+                              + resourcePath);
+
     BufferedReader r = new BufferedReader(new InputStreamReader(in));
     StringBuffer b = new StringBuffer();
 

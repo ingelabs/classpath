@@ -1,3 +1,4 @@
+GIOP stub and tie generator source code generator for javax.rmi.*, omg.org.*
 
 Copyright 2006 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
@@ -22,5 +23,6 @@ Usage: grmic <options> <class names>
  and <class names> can include one or more non abstract classes that implement
  Remote and are accessible via current class path.
 
-This tool generates the source code that must be compiled with java compiler. 
+* This tool generates the source code that must be compiled with java compiler. 
+* GRMIC is invoked from RMIC if the -iiop or -giop keys are specified.
 
