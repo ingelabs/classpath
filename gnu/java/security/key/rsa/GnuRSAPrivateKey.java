@@ -57,7 +57,7 @@ import java.security.interfaces.RSAPrivateKey;
  *    Jakob Jonsson and Burt Kaliski.</li>
  * </ol>
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
     RSAPrivateCrtKey
@@ -146,9 +146,9 @@ public class GnuRSAPrivateKey extends GnuRSAKey implements PrivateKey,
    * @param qInv the Chinese Remainder Theorem coefiicient. A positive integer
    * less than <code>p</code>, satisfying <code>q * qInv = 1 (mod p)</code>.
    */
-  GnuRSAPrivateKey(int preferredFormat, BigInteger n, BigInteger e,
-                   BigInteger d, BigInteger p, BigInteger q, BigInteger dP,
-                   BigInteger dQ, BigInteger qInv)
+  public GnuRSAPrivateKey(int preferredFormat, BigInteger n, BigInteger e,
+                          BigInteger d, BigInteger p, BigInteger q,
+                          BigInteger dP, BigInteger dQ, BigInteger qInv)
   {
     super(preferredFormat == Registry.ASN1_ENCODING_ID ? Registry.PKCS8_ENCODING_ID
                                                        : preferredFormat,

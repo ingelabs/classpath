@@ -38,9 +38,13 @@ exception statement from your version. */
 
 package gnu.java.security.jce.sig;
 
+import gnu.java.security.Registry;
+import gnu.java.security.key.dss.DSSKeyPairPKCS8Codec;
+import gnu.java.security.key.dss.DSSKeyPairX509Codec;
 import gnu.java.security.key.dss.DSSPrivateKey;
 import gnu.java.security.key.dss.DSSPublicKey;
 
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactorySpi;
@@ -52,6 +56,8 @@ import java.security.spec.DSAPrivateKeySpec;
 import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
 /**
  * DSA key factory.
@@ -65,45 +71,139 @@ public class DSSKeyFactory extends KeyFactorySpi
   protected PublicKey engineGeneratePublic(KeySpec keySpec)
       throws InvalidKeySpecException
   {
-    if (!(keySpec instanceof DSAPublicKeySpec))
-      throw new InvalidKeySpecException();
+    if (keySpec instanceof DSAPublicKeySpec)
+      {
+        DSAPublicKeySpec spec = (DSAPublicKeySpec) keySpec;
+        BigInteger p = spec.getP();
+        BigInteger q = spec.getQ();
+        BigInteger g = spec.getG();
+        BigInteger y = spec.getY();
+        return new DSSPublicKey(Registry.X509_ENCODING_ID, p, q, g, y);
+      }
 
-    return new DSSPublicKey(((DSAPublicKeySpec) keySpec).getY(),
-                            ((DSAPublicKeySpec) keySpec).getP(),
-                            ((DSAPublicKeySpec) keySpec).getQ(),
-                            ((DSAPublicKeySpec) keySpec).getG());
+    if (keySpec instanceof X509EncodedKeySpec)
+      {
+        X509EncodedKeySpec spec = (X509EncodedKeySpec) keySpec;
+        byte[] encoded = spec.getEncoded();
+        PublicKey result;
+        try
+          {
+            result = new DSSKeyPairX509Codec().decodePublicKey(encoded);
+          }
+        catch (RuntimeException x)
+          {
+            InvalidKeySpecException y = new InvalidKeySpecException();
+            y.initCause(x);
+            throw y;
+          }
+      }
+
+    throw new InvalidKeySpecException("Unsupported (public) key specification");
   }
 
   protected PrivateKey engineGeneratePrivate(KeySpec keySpec)
       throws InvalidKeySpecException
   {
-    if (!(keySpec instanceof DSAPrivateKeySpec))
-      throw new InvalidKeySpecException();
+    if (keySpec instanceof DSAPrivateKeySpec)
+      {
+        DSAPrivateKeySpec spec = (DSAPrivateKeySpec) keySpec;
+        BigInteger p = spec.getP();
+        BigInteger q = spec.getQ();
+        BigInteger g = spec.getG();
+        BigInteger x = spec.getX();
+        return new DSSPrivateKey(Registry.PKCS8_ENCODING_ID, p, q, g, x);
+      }
 
-    return new DSSPrivateKey(((DSAPrivateKeySpec) keySpec).getX(),
-                             ((DSAPrivateKeySpec) keySpec).getP(),
-                             ((DSAPrivateKeySpec) keySpec).getQ(),
-                             ((DSAPrivateKeySpec) keySpec).getG());
+    if (keySpec instanceof PKCS8EncodedKeySpec)
+      {
+        PKCS8EncodedKeySpec spec = (PKCS8EncodedKeySpec) keySpec;
+        byte[] encoded = spec.getEncoded();
+        PrivateKey result;
+        try
+          {
+            result = new DSSKeyPairPKCS8Codec().decodePrivateKey(encoded);
+          }
+        catch (RuntimeException x)
+          {
+            InvalidKeySpecException y = new InvalidKeySpecException();
+            y.initCause(x);
+            throw y;
+          }
+      }
+
+    throw new InvalidKeySpecException("Unsupported (private) key specification");
   }
 
   protected KeySpec engineGetKeySpec(Key key, Class keySpec)
       throws InvalidKeySpecException
   {
-    if ((key instanceof DSAPublicKey)
-        && keySpec.isAssignableFrom(DSAPublicKeySpec.class))
-      return new DSAPublicKeySpec(((DSAPublicKey) key).getY(),
-                                  ((DSAPublicKey) key).getParams().getP(),
-                                  ((DSAPublicKey) key).getParams().getQ(),
-                                  ((DSAPublicKey) key).getParams().getG());
+    if (key instanceof DSAPublicKey)
+      {
+        if (keySpec.isAssignableFrom(DSAPublicKeySpec.class))
+          {
+            DSAPublicKey dsaKey = (DSAPublicKey) key;
+            BigInteger p = dsaKey.getParams().getP();
+            BigInteger q = dsaKey.getParams().getQ();
+            BigInteger g = dsaKey.getParams().getG();
+            BigInteger y = dsaKey.getY();
+            return new DSAPublicKeySpec(y, p, q, g);
+          }
 
-    if ((key instanceof DSAPrivateKey)
-        && keySpec.isAssignableFrom(DSAPrivateKeySpec.class))
-      return new DSAPrivateKeySpec(((DSAPrivateKey) key).getX(),
-                                   ((DSAPrivateKey) key).getParams().getP(),
-                                   ((DSAPrivateKey) key).getParams().getQ(),
-                                   ((DSAPrivateKey) key).getParams().getG());
+        if (keySpec.isAssignableFrom(X509EncodedKeySpec.class))
+          {
+            if (key instanceof DSSPublicKey)
+              {
+                DSSPublicKey dssKey = (DSSPublicKey) key;
+                byte[] encoded = dssKey.getEncoded(Registry.X509_ENCODING_ID);
+                return new X509EncodedKeySpec(encoded);
+              }
 
-    throw new InvalidKeySpecException();
+            if (Registry.X509_ENCODING_SORT_NAME.equalsIgnoreCase(key.getFormat()))
+              {
+                byte[] encoded = key.getEncoded();
+                return new X509EncodedKeySpec(encoded);
+              }
+
+            throw new InvalidKeySpecException("Wrong key type or unsupported (public) key specification");
+          }
+
+        throw new InvalidKeySpecException("Unsupported (public) key specification");
+      }
+
+    if (key instanceof DSAPrivateKey)
+      {
+        if (keySpec.isAssignableFrom(DSAPrivateKeySpec.class))
+          {
+            DSAPrivateKey dsaKey = (DSAPrivateKey) key;
+            BigInteger p = dsaKey.getParams().getP();
+            BigInteger q = dsaKey.getParams().getQ();
+            BigInteger g = dsaKey.getParams().getG();
+            BigInteger x = dsaKey.getX();
+            return new DSAPrivateKeySpec(x, p, q, g);
+          }
+
+        if (keySpec.isAssignableFrom(PKCS8EncodedKeySpec.class))
+          {
+            if (key instanceof DSSPrivateKey)
+              {
+                DSSPrivateKey dssKey = (DSSPrivateKey) key;
+                byte[] encoded = dssKey.getEncoded(Registry.PKCS8_ENCODING_ID);
+                return new PKCS8EncodedKeySpec(encoded);
+              }
+
+            if (Registry.PKCS8_ENCODING_SHORT_NAME.equalsIgnoreCase(key.getFormat()))
+              {
+                byte[] encoded = key.getEncoded();
+                return new PKCS8EncodedKeySpec(encoded);
+              }
+
+            throw new InvalidKeySpecException("Wrong key type or unsupported (private) key specification");
+          }
+
+        throw new InvalidKeySpecException("Unsupported (private) key specification");
+      }
+
+    throw new InvalidKeySpecException("Wrong key type or unsupported key specification");
   }
 
   protected Key engineTranslateKey(Key key) throws InvalidKeyException
@@ -112,17 +212,25 @@ public class DSSKeyFactory extends KeyFactorySpi
       return key;
 
     if (key instanceof DSAPublicKey)
-      return new DSSPublicKey(((DSAPublicKey) key).getY(),
-                              ((DSAPublicKey) key).getParams().getP(),
-                              ((DSAPublicKey) key).getParams().getQ(),
-                              ((DSAPublicKey) key).getParams().getG());
+      {
+        DSAPublicKey dsaKey = (DSAPublicKey) key;
+        BigInteger p = dsaKey.getParams().getP();
+        BigInteger q = dsaKey.getParams().getQ();
+        BigInteger g = dsaKey.getParams().getG();
+        BigInteger y = dsaKey.getY();
+        return new DSSPublicKey(Registry.X509_ENCODING_ID, p, q, g, y);
+      }
 
     if (key instanceof DSAPrivateKey)
-      return new DSSPrivateKey(((DSAPrivateKey) key).getX(),
-                               ((DSAPrivateKey) key).getParams().getP(),
-                               ((DSAPrivateKey) key).getParams().getQ(),
-                               ((DSAPrivateKey) key).getParams().getG());
+      {
+        DSAPrivateKey dsaKey = (DSAPrivateKey) key;
+        BigInteger p = dsaKey.getParams().getP();
+        BigInteger q = dsaKey.getParams().getQ();
+        BigInteger g = dsaKey.getParams().getG();
+        BigInteger x = dsaKey.getX();
+        return new DSSPrivateKey(Registry.PKCS8_ENCODING_ID, p, q, g, x);
+      }
 
-    throw new InvalidKeyException();
+    throw new InvalidKeyException("Wrong key type");
   }
 }

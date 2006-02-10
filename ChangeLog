@@ -1,3 +1,14 @@
+2006-02-10  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/key/rsa/GnuRSAPrivateKey.java (GnuRSAPrivateKey(9)):
+	Made it public.
+	* gnu/java/security/jce/sig/RSAKeyFactory.java: New file.
+	* gnu/java/security/jce/sig/DSSKeyFactory.java (engineGeneratePublic):
+	Added support for encoded key specifications.
+	(engineGeneratePrivate): Likewise.
+	(engineGetKeySpec): Likewise.
+	(engineTranslateKey): Corrected order of MPIs and use ctors with 5 args.
+
 2006-02-10  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/Utilities.java:
