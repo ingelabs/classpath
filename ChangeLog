@@ -1,5 +1,10 @@
 2006-02-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.clone): New method.
+
+2006-02-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/ParagraphView.java
 	(findOffsetToCharactersInString): New method.
 	(getClosestPositionTo): New method.
