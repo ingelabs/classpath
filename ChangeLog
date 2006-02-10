@@ -1,3 +1,10 @@
+2006-02-10  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/GapContent.java
+	(updateUndoPositions): New method.
+	* javax/swing/text/StringContent.java
+	(updateUndoPositions): New method.
+
 2006-02-10  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/key/rsa/GnuRSAPrivateKey.java (GnuRSAPrivateKey(9)):
