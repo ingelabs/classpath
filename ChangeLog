@@ -1,5 +1,10 @@
 2006-02-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/StyleContext.java
+	(registerStaticAttributeKey): New static method.
+
+2006-02-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/DefaultStyledDocument.java
 	(ElementBuffer.clone): New method.
 
