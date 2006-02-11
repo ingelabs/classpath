@@ -1,3 +1,13 @@
+2006-02-11  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* tools/gnu/classpath/tools/giop/grmic/GiopRmicCompiler.java
+	* tools/gnu/classpath/tools/giop/grmic/MethodGenerator.java
+	* tools/gnu/classpath/tools/giop/grmic/templates/Tie.jav,
+	tools/gnu/classpath/tools/giop/grmic/templates/TieMethod.jav,
+	tools/gnu/classpath/tools/giop/grmic/templates/TieMethodVoid.jav:
+	Rewritten.
+	* tools/gnu/classpath/tools/giop/grmic/HashFinder.java: New file.
+
 2006-02-11  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/java/security/jce/sig/EncodedKeyFactory.java

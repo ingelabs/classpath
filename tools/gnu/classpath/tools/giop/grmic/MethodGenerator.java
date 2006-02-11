@@ -59,6 +59,17 @@ public class MethodGenerator implements AbstractMethodGenerator
    * The parent code generator.
    */
   GiopRmicCompiler rmic;
+  
+  /**
+   * The previous method in the list, null for the first element. 
+   * Used to avoid repretetive inclusion of the same hash code label.
+   */
+  MethodGenerator previous = null;
+  
+  /**
+   * The hash character position.
+   */
+  int hashCharPosition;
 
   /**
    * Create the new method generator for the given method.
@@ -215,6 +226,11 @@ public class MethodGenerator implements AbstractMethodGenerator
     vars.put("#argument_names", getArgumentNames());
 
     vars.put("#argument_write", getStubParaWriteStatement());
+    
+    if (previous == null || previous.getHashChar()!=getHashChar())
+      vars.put("#hashCodeLabel","    case '"+getHashChar()+"':");
+    else
+      vars.put("#hashCodeLabel","    // also '"+getHashChar()+"':");
 
     if (method.getReturnType().equals(void.class))
       templateName = "TieMethodVoid.jav";
@@ -244,7 +260,7 @@ public class MethodGenerator implements AbstractMethodGenerator
 
     for (int i = 0; i < args.length; i++)
       {
-        b.append("            ");
+        b.append("                ");
         b.append(rmic.name(args[i]));
         b.append(" ");
         b.append("p"+i);
@@ -273,5 +289,13 @@ public class MethodGenerator implements AbstractMethodGenerator
         b.append("\n");
       }
     return b.toString();
+  }
+  
+  /**
+   * Get the hash char.
+   */
+  public char getHashChar()
+  {
+    return getGiopMethodName().charAt(hashCharPosition);
   }
 }

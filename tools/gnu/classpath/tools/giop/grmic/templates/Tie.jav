@@ -164,8 +164,11 @@ public class _#nameImpl_Tie extends Servant implements Tie
     try
       {
         InputStream in =(InputStream) parameter_stream;
-          
-#tie_methods          
+        switch (method.charAt(#hashCharPos))
+          {
+#tie_methods
+            default: break;
+          }
           
        throw new BAD_OPERATION("No such method: '"+method+"'");
       }

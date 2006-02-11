@@ -42,7 +42,10 @@ import gnu.classpath.tools.AbstractMethodGenerator;
 import java.lang.reflect.Method;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Properties;
@@ -54,7 +57,8 @@ import java.util.TreeSet;
  * 
  * @author Audrius Meskauskas, Lithuania (audriusa@Bioinformatics.org)
  */
-public class GiopRmicCompiler extends Generator
+public class GiopRmicCompiler
+    extends Generator implements Comparator
 {
   /** The package name. */
   protected String packag;
@@ -69,7 +73,7 @@ public class GiopRmicCompiler extends Generator
    * The name (without package) of the class, passed as the parameter.
    */
   protected String implName;
-  
+
   /**
    * The proposed name for the stub.
    */
@@ -94,19 +98,19 @@ public class GiopRmicCompiler extends Generator
    * The map of all code generator variables.
    */
   public Properties vars = new Properties();
-  
+
   /**
    * If this flag is set (true by default), the compiler generates the Servant
    * based classes. If set to false, the compiler generates the old style
    * ObjectImpl based classes.
    */
   protected boolean poaMode = true;
-  
+
   /**
    * If this flag is set (true by default), the compiler emits warnings.
    */
   protected boolean warnings = true;
-  
+
   /**
    * Verbose output
    */
@@ -123,7 +127,7 @@ public class GiopRmicCompiler extends Generator
     methods.clear();
     vars.clear();
   }
-  
+
   /**
    * Compile the given class (the instance of Remote), generating the stub and
    * tie for it.
@@ -154,16 +158,16 @@ public class GiopRmicCompiler extends Generator
     // Drop the Impl suffix, if one exists.
     if (name.endsWith("Impl"))
       name = name.substring(0, name.length() - "Impl".length());
-    
+
     stubName = name;
 
     vars.put("#name", name);
     vars.put("#package", packag);
     vars.put("#implName", implName);
-    
+
     if (verbose)
       System.out.println("Package " + packag + ", name " + name + " impl "
-                       + implName);
+                         + implName);
 
     // Get the implemented remotes.
     Class[] interfaces = remote.getInterfaces();
@@ -172,7 +176,7 @@ public class GiopRmicCompiler extends Generator
       {
         if (Remote.class.isAssignableFrom(interfaces[i]))
           {
-            if (!interfaces[i].equals(Remote.class))
+            if (! interfaces[i].equals(Remote.class))
               {
                 implementedRemotes.add(interfaces[i]);
               }
@@ -202,7 +206,7 @@ public class GiopRmicCompiler extends Generator
                     remEx = true;
                     break;
                   }
-                if (!remEx)
+                if (! remEx)
                   throw new CompilationError(m[i].getName() + ", defined in "
                                              + c.getName()
                                              + ", does not throw "
@@ -213,7 +217,7 @@ public class GiopRmicCompiler extends Generator
           }
       }
   }
-  
+
   /**
    * Create the method generator for the given method.
    * 
@@ -259,9 +263,9 @@ public class GiopRmicCompiler extends Generator
     else
       {
         String n = nameIt.getName();
-        if (!nameIt.isArray() && !nameIt.isPrimitive())
-          if (!n.startsWith("java.lang")
-              && !(packag != null && n.startsWith(packag)))
+        if (! nameIt.isArray() && ! nameIt.isPrimitive())
+          if (! n.startsWith("java.lang")
+              && ! (packag != null && n.startsWith(packag)))
             extraImports.add(n);
 
         int p = n.lastIndexOf('.');
@@ -340,7 +344,7 @@ public class GiopRmicCompiler extends Generator
     String output = replaceAll(template, vars);
     return output;
   }
-  
+
   /**
    * Get the list of all interfaces, implemented by the class, that are
    * derived from Remote.
@@ -351,14 +355,14 @@ public class GiopRmicCompiler extends Generator
   {
     StringBuffer b = new StringBuffer();
     Iterator iter = implementedRemotes.iterator();
-    
+
     while (iter.hasNext())
       {
-        b.append(name( (Class) iter.next() ) );
+        b.append(name((Class) iter.next()));
         if (iter.hasNext())
           b.append(", ");
       }
-    
+
     return b.toString();
   }
 
@@ -376,11 +380,39 @@ public class GiopRmicCompiler extends Generator
       template = getResource("ImplTie.jav");
 
     // Generate methods.
-    StringBuffer b = new StringBuffer();
+    HashFinder hashFinder = new HashFinder();
+
+    // Find the hash character position:
     Iterator iter = methods.iterator();
+    String[] names = new String[methods.size()];
+    int p = 0;
+
+    for (int i = 0; i < names.length; i++)
+      names[i] = ((MethodGenerator) iter.next()).getGiopMethodName();
+
+    int hashCharPosition = hashFinder.findHashCharPosition(names);
+
+    iter = methods.iterator();
+    while (iter.hasNext())
+      ((MethodGenerator) iter.next()).hashCharPosition = hashCharPosition;
+
+    vars.put("#hashCharPos", Integer.toString(hashCharPosition));
+
+    ArrayList sortedMethods = new ArrayList(methods);
+    Collections.sort(sortedMethods, this);
+
+    iter = sortedMethods.iterator();
+
+    StringBuffer b = new StringBuffer();
+
+    MethodGenerator prev = null;
+
     while (iter.hasNext())
       {
-        AbstractMethodGenerator m = (AbstractMethodGenerator) iter.next();
+        MethodGenerator m = (MethodGenerator) iter.next();
+        m.previous = prev;
+        m.hashCharPosition = hashCharPosition;
+        prev = m;
         b.append(m.generateTieMethod());
       }
 
@@ -392,7 +424,14 @@ public class GiopRmicCompiler extends Generator
     return output;
   }
 
-  
+  public int compare(Object a, Object b)
+  {
+    MethodGenerator g1 = (MethodGenerator) a;
+    MethodGenerator g2 = (MethodGenerator) b;
+
+    return g1.getHashChar() - g2.getHashChar();
+  }
+
   /**
    * Import the extra classes, used as the method parameters and return values.
    * 
@@ -418,7 +457,7 @@ public class GiopRmicCompiler extends Generator
       }
     return b.toString();
   }
-  
+
   /**
    * If this flag is set (true by default), the compiler generates the Servant
    * based classes. If set to false, the compiler generates the old style
@@ -426,9 +465,9 @@ public class GiopRmicCompiler extends Generator
    */
   public void setPoaMode(boolean mode)
   {
-     poaMode = mode; 
+    poaMode = mode;
   }
-  
+
   /**
    * Set the verbose output mode (false by default)
    * 
@@ -438,7 +477,7 @@ public class GiopRmicCompiler extends Generator
   {
     verbose = isVerbose;
   }
-  
+
   /**
    * If this flag is set (true by default), the compiler emits warnings.
    */
@@ -446,7 +485,7 @@ public class GiopRmicCompiler extends Generator
   {
     warnings = warn;
   }
-  
+
   /**
    * Get the package name.
    */
@@ -454,7 +493,7 @@ public class GiopRmicCompiler extends Generator
   {
     return packag;
   }
-  
+
   /**
    * Get the proposed stub name
    */
