@@ -1,5 +1,6 @@
 /* GtkComponentPeer.java -- Implements ComponentPeer with GTK
-   Copyright (C) 1998, 1999, 2002, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002, 2004, 2005, 2006
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -86,8 +87,6 @@ public class GtkComponentPeer extends GtkGenericPeer
   Insets insets;
 
   boolean isInRepaint;
-
-  static final Timer repaintTimer = new Timer (true);
 
   /* this isEnabled differs from Component.isEnabled, in that it
      knows if a parent is disabled.  In that case Component.isEnabled 
@@ -383,25 +382,42 @@ public class GtkComponentPeer extends GtkGenericPeer
     if (x == 0 && y == 0 && width == 0 && height == 0)
       return;
 
-    repaintTimer.schedule(new RepaintTimerTask(x, y, width, height), tm);
+    if (tm <= 0)
+      q().postEvent(new PaintEvent(awtComponent, PaintEvent.UPDATE,
+				   new Rectangle(x, y, width, height)));
+    else
+      RepaintTimerTask.schedule(tm, x, y, width, height, awtComponent);
   }
 
-  private class RepaintTimerTask extends TimerTask
+  /**
+   * Used for scheduling delayed paint updates on the event queue.
+   */
+  private static class RepaintTimerTask extends TimerTask
   {
-    private int x, y, width, height;
+    private static final Timer repaintTimer = new Timer(true);
 
-    RepaintTimerTask(int x, int y, int width, int height)
+    private int x, y, width, height;
+    private Component awtComponent;
+
+    RepaintTimerTask(Component c, int x, int y, int width, int height)
     {
       this.x = x;
       this.y = y;
       this.width = width;
       this.height = height;
+      this.awtComponent = c;
     }
 
     public void run()
     {
       q().postEvent (new PaintEvent (awtComponent, PaintEvent.UPDATE,
                                      new Rectangle (x, y, width, height)));
+    }
+
+    static void schedule(long tm, int x, int y, int width, int height,
+			 Component c)
+    {
+      repaintTimer.schedule(new RepaintTimerTask(c, x, y, width, height), tm);
     }
   }
 
