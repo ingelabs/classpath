@@ -44,15 +44,20 @@ import gnu.java.security.key.dss.DSSPublicKey;
 import gnu.java.security.key.rsa.GnuRSAPrivateKey;
 import gnu.java.security.key.rsa.GnuRSAPublicKey;
 
+import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
 import java.security.Key;
 import java.security.KeyFactorySpi;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.DSAPrivateKeySpec;
+import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.RSAPrivateCrtKeySpec;
+import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 /**
@@ -67,8 +72,14 @@ public class EncodedKeyFactory
   protected PublicKey engineGeneratePublic(KeySpec keySpec)
       throws InvalidKeySpecException
   {
+    if (keySpec instanceof DSAPublicKeySpec)
+      return decodeDSSPublicKey((DSAPublicKeySpec) keySpec);
+
+    if (keySpec instanceof RSAPublicKeySpec)
+      return decodeRSAPublicKey((RSAPublicKeySpec) keySpec);
+
     if (! (keySpec instanceof X509EncodedKeySpec))
-      throw new InvalidKeySpecException("only supports X.509 key specs");
+      throw new InvalidKeySpecException("Unsupported key specification");
 
     byte[] input = ((X509EncodedKeySpec) keySpec).getEncoded();
 
@@ -83,12 +94,12 @@ public class EncodedKeyFactory
 
     // try RSA
     try
-    {
-      return GnuRSAPublicKey.valueOf(input);
-    }
-  catch (InvalidParameterException ignored)
-    {
-    }
+      {
+        return GnuRSAPublicKey.valueOf(input);
+      }
+    catch (InvalidParameterException ignored)
+      {
+      }
 
     // FIXME: try DH
 
@@ -98,8 +109,14 @@ public class EncodedKeyFactory
   protected PrivateKey engineGeneratePrivate(KeySpec keySpec)
       throws InvalidKeySpecException
   {
+    if (keySpec instanceof DSAPrivateKeySpec)
+      return decodeDSSPrivateKey((DSAPrivateKeySpec) keySpec);
+
+    if (keySpec instanceof RSAPrivateCrtKeySpec)
+      return decodeRSAPrivateKey((RSAPrivateCrtKeySpec) keySpec);
+
     if (! (keySpec instanceof PKCS8EncodedKeySpec))
-      throw new InvalidKeySpecException("only supports PKCS8 key specs");
+      throw new InvalidKeySpecException("Unsupported key specification");
 
     byte[] input = ((PKCS8EncodedKeySpec) keySpec).getEncoded();
 
@@ -114,12 +131,12 @@ public class EncodedKeyFactory
 
     // try RSA
     try
-    {
-      return GnuRSAPrivateKey.valueOf(input);
-    }
-  catch (InvalidParameterException ignored)
-    {
-    }
+      {
+        return GnuRSAPrivateKey.valueOf(input);
+      }
+    catch (InvalidParameterException ignored)
+      {
+      }
 
     // FIXME: try DH
 
@@ -145,5 +162,64 @@ public class EncodedKeyFactory
   protected Key engineTranslateKey(Key key) throws InvalidKeyException
   {
     throw new InvalidKeyException("Key translation not supported");
+  }
+
+  /**
+   * @param spec an instance of {@link DSAPublicKeySpec} to decode.
+   * @return an instance of {@link DSSPublicKey} constructed from the
+   * information in the designated key-specification.
+   */
+  private DSSPublicKey decodeDSSPublicKey(DSAPublicKeySpec spec)
+  {
+    BigInteger p = spec.getP();
+    BigInteger q = spec.getQ();
+    BigInteger g = spec.getG();
+    BigInteger y = spec.getY();
+    return new DSSPublicKey(Registry.X509_ENCODING_ID, p, q, g, y);
+  }
+
+  /**
+   * @param spec an instance of {@link RSAPublicKeySpec} to decode.
+   * @return an instance of {@link GnuRSAPublicKey} constructed from the
+   * information in the designated key-specification.
+   */
+  private GnuRSAPublicKey decodeRSAPublicKey(RSAPublicKeySpec spec)
+  {
+    BigInteger n = spec.getModulus();
+    BigInteger e = spec.getPublicExponent();
+    return new GnuRSAPublicKey(Registry.X509_ENCODING_ID, n, e);
+  }
+
+  /**
+   * @param spec an instance of {@link DSAPrivateKeySpec} to decode.
+   * @return an instance of {@link DSSPrivateKey} constructed from the
+   * information in the designated key-specification. 
+   */
+  private PrivateKey decodeDSSPrivateKey(DSAPrivateKeySpec spec)
+  {
+    BigInteger p = spec.getP();
+    BigInteger q = spec.getQ();
+    BigInteger g = spec.getG();
+    BigInteger x = spec.getX();
+    return new DSSPrivateKey(Registry.PKCS8_ENCODING_ID, p, q, g, x);
+  }
+
+  /**
+   * @param spec an instance of {@link RSAPrivateCrtKeySpec} to decode.
+   * @return an instance of {@link GnuRSAPrivateKey} constructed from the
+   * information in the designated key-specification.
+   */
+  private PrivateKey decodeRSAPrivateKey(RSAPrivateCrtKeySpec spec)
+  {
+    BigInteger n = spec.getModulus();
+    BigInteger e = spec.getPublicExponent();
+    BigInteger d = spec.getPrivateExponent();
+    BigInteger p = spec.getPrimeP();
+    BigInteger q = spec.getPrimeQ();
+    BigInteger dP = spec.getPrimeExponentP();
+    BigInteger dQ = spec.getPrimeExponentQ();
+    BigInteger qInv = spec.getCrtCoefficient();
+    return new GnuRSAPrivateKey(Registry.PKCS8_ENCODING_ID,
+                                n, e, d, p, q, dP, dQ, qInv);
   }
 }

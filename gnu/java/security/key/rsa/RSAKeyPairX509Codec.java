@@ -167,9 +167,12 @@ public class RSAKeyPairX509Codec
     return result;
   }
 
+  /**
+   * @throws InvalidParameterException ALWAYS.
+   */
   public byte[] encodePrivateKey(PrivateKey key)
   {
-    throw new IllegalArgumentException("Wrong format for private keys");
+    throw new InvalidParameterException("Wrong format for private keys");
   }
 
   /**
@@ -201,7 +204,7 @@ public class RSAKeyPairX509Codec
 
         OID algOID = (OID) derOID.getValue();
         if (! algOID.equals(RSA_ALG_OID))
-          throw new IllegalArgumentException("Unexpected OID: " + algOID);
+          throw new InvalidParameterException("Unexpected OID: " + algOID);
 
         DERValue val = der.read();
         if (! (val.getValue() instanceof BitString))
@@ -230,8 +233,11 @@ public class RSAKeyPairX509Codec
     return new GnuRSAPublicKey(Registry.X509_ENCODING_ID, n, e);
   }
 
+  /**
+   * @throws InvalidParameterException ALWAYS.
+   */
   public PrivateKey decodePrivateKey(byte[] input)
   {
-    throw new IllegalArgumentException("Wrong format for private keys");
+    throw new InvalidParameterException("Wrong format for private keys");
   }
 }

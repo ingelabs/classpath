@@ -1,3 +1,29 @@
+2006-02-11  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/jce/sig/EncodedKeyFactory.java
+	(engineGeneratePublic): Added support for raw key-specifications.
+	(engineGeneratePrivate): Likewise.
+	(decodeDSSPublicKey): New method.
+	(decodeRSAPublicKey): Likewise.
+	(decodeDSSPrivateKey): Likewise.
+	(decodeRSAPrivateKey): Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairX509Codec.java
+	(encodePrivateKey): Throw InvalidParameterException.
+	(decodePublicKey): Likewise.
+	(decodePrivateKey): Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairPKCS8Codec.java
+	(encodePublicKey): Likewise.
+	(encodePrivateKey): Likewise.
+	(decodePublicKey): Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairX509Codec.java
+	(encodePrivateKey): Likewise.
+	(decodePublicKey): Likewise.
+	(decodePrivateKey): Likewise.
+	* gnu/java/security/key/dss/DSSKeyPairPKCS8Codec.java
+	(encodePublicKey): Likewise.
+	(encodePrivateKey): Likewise.
+	(decodePublicKey): Likewise.
+
 2006-02-10  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/StyleContext.java
