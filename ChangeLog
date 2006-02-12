@@ -1,3 +1,10 @@
+2006-02-12  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/classpath/ServiceProviderLoadingAction.java: Javadoc fix.
+	* gnu/classpath/ServiceFactory.java (ServiceIterator): Javadoc fix.
+	(securityContext): Likewise.
+	(log): Likewise.
+
 2006-02-12  Dalibor Topic  <robilad@kaffe.org>
 
 	Fixes PR 26218.
