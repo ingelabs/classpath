@@ -1,3 +1,11 @@
+2006-02-12  Dalibor Topic  <robilad@kaffe.org>
+
+	Fixes PR 26218.
+
+	* gnu/java/net/protocol/file/Connection.java (unquote):
+	Convert Unicode characters outside basic plane to UTF-8,
+	rather than throwing an exception.
+
 2006-02-12  Tom Tromey  <tromey@redhat.com>
 
 	* javax/sound/sampled/LineEvent.java (readObject): New method.
