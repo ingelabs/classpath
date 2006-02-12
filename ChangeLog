@@ -1,3 +1,9 @@
+2006-02-12  Tom Tromey  <tromey@redhat.com>
+
+	* javax/sound/sampled/LineEvent.java (readObject): New method.
+	(writeObject): Likewise.
+	(serialVersionUID): New field.
+
 2006-02-12  Mark Wielaard  <mark@klomp.org>
 
 	* java/beans/PropertyChangeSupport.java (addPropertyChangeListener):
