@@ -44,6 +44,9 @@ import gnu.java.security.key.dss.DSSPublicKey;
 import gnu.java.security.key.rsa.GnuRSAPrivateKey;
 import gnu.java.security.key.rsa.GnuRSAPublicKey;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
@@ -60,6 +63,11 @@ import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
+import javax.crypto.interfaces.DHPrivateKey;
+import javax.crypto.interfaces.DHPublicKey;
+import javax.crypto.spec.DHPrivateKeySpec;
+import javax.crypto.spec.DHPublicKeySpec;
+
 /**
  * A factory for keys encoded in either the X.509 format (for public keys) or
  * the PKCS#8 format (for private keys).
@@ -69,6 +77,118 @@ public class EncodedKeyFactory
 {
   // implicit 0-arguments constructor
 
+  // Class methods
+  // --------------------------------------------------------------------------
+
+  private static Object invokeConstructor(String className, Object[] params)
+      throws InvalidKeySpecException
+  {
+    Class clazz = getConcreteClass(className);
+    try
+      {
+        Constructor ctor = getConcreteCtor(clazz);
+        Object result = ctor.newInstance(params);
+        return result;
+      }
+    catch (InstantiationException x)
+      {
+        InvalidKeySpecException y = new InvalidKeySpecException();
+        y.initCause(x);
+        throw y;
+      }
+    catch (IllegalAccessException x)
+      {
+        InvalidKeySpecException y = new InvalidKeySpecException();
+        y.initCause(y);
+        throw y;
+      }
+    catch (InvocationTargetException x)
+      {
+        InvalidKeySpecException y = new InvalidKeySpecException();
+        y.initCause(x);
+        throw y;
+      }
+  }
+
+  private static Class getConcreteClass(String className)
+      throws InvalidKeySpecException
+  {
+    try
+      {
+        Class result = Class.forName(className);
+        return result;
+      }
+    catch (ClassNotFoundException x)
+      {
+        InvalidKeySpecException y = new InvalidKeySpecException();
+        y.initCause(x);
+        throw y;
+      }
+  }
+
+  private static Constructor getConcreteCtor(Class clazz)
+      throws InvalidKeySpecException
+  {
+    try
+      {
+        Constructor result = clazz.getConstructor(new Class[] {int.class,
+                                                               BigInteger.class,
+                                                               BigInteger.class,
+                                                               BigInteger.class,
+                                                               BigInteger.class});
+        return result;
+      }
+    catch (NoSuchMethodException x)
+      {
+        InvalidKeySpecException y = new InvalidKeySpecException();
+        y.initCause(x);
+        throw y;
+      }
+  }
+
+  private static Object invokeValueOf(String className, byte[] encoded)
+      throws InvalidKeySpecException
+  {
+    Class clazz = getConcreteClass(className);
+    try
+      {
+        Method valueOf = getValueOfMethod(clazz);
+        Object result = valueOf.invoke(null, new Object[] { encoded });
+        return result;
+      }
+    catch (IllegalAccessException x)
+      {
+        InvalidKeySpecException y = new InvalidKeySpecException();
+        y.initCause(x);
+        throw y;
+      }
+    catch (InvocationTargetException x)
+      {
+        InvalidKeySpecException y = new InvalidKeySpecException();
+        y.initCause(x);
+        throw y;
+      }
+  }
+
+  private static Method getValueOfMethod(Class clazz)
+      throws InvalidKeySpecException
+  {
+    try
+      {
+        Method result = clazz.getMethod("valueOf", new Class[] {byte[].class});
+        return result;
+      }
+    catch (NoSuchMethodException x)
+      {
+        InvalidKeySpecException y = new InvalidKeySpecException();
+        y.initCause(x);
+        throw y;
+      }
+  }
+
+  // Instance methods
+  // --------------------------------------------------------------------------
+
   protected PublicKey engineGeneratePublic(KeySpec keySpec)
       throws InvalidKeySpecException
   {
@@ -77,6 +197,9 @@ public class EncodedKeyFactory
 
     if (keySpec instanceof RSAPublicKeySpec)
       return decodeRSAPublicKey((RSAPublicKeySpec) keySpec);
+
+    if (keySpec instanceof DHPublicKeySpec)
+      return decodeDHPublicKey((DHPublicKeySpec) keySpec);
 
     if (! (keySpec instanceof X509EncodedKeySpec))
       throw new InvalidKeySpecException("Unsupported key specification");
@@ -101,9 +224,8 @@ public class EncodedKeyFactory
       {
       }
 
-    // FIXME: try DH
-
-    throw new InvalidKeySpecException();
+    // try DH
+    return decodeDHPublicKey(input);
   }
 
   protected PrivateKey engineGeneratePrivate(KeySpec keySpec)
@@ -114,6 +236,9 @@ public class EncodedKeyFactory
 
     if (keySpec instanceof RSAPrivateCrtKeySpec)
       return decodeRSAPrivateKey((RSAPrivateCrtKeySpec) keySpec);
+
+    if (keySpec instanceof DHPrivateKeySpec)
+      return decodeDHPrivateKey((DHPrivateKeySpec) keySpec);
 
     if (! (keySpec instanceof PKCS8EncodedKeySpec))
       throw new InvalidKeySpecException("Unsupported key specification");
@@ -138,9 +263,8 @@ public class EncodedKeyFactory
       {
       }
 
-    // FIXME: try DH
-
-    throw new InvalidKeySpecException();
+    // try DH
+    return decodeDHPrivateKey(input);
   }
 
   protected KeySpec engineGetKeySpec(Key key, Class keySpec)
@@ -191,6 +315,43 @@ public class EncodedKeyFactory
   }
 
   /**
+   * @param spec an instance of {@link DHPublicKeySpec} to decode.
+   * @return an instance of a {@link DHPublicKey} constructed from the
+   *         information in the designated key-specification.
+   * @throws InvalidKeySpecException if no concrete implementation of the
+   *           {@link DHPublicKey} interface exists at run-time, or if an
+   *           exception occurs during its instantiation.
+   */
+  private DHPublicKey decodeDHPublicKey(DHPublicKeySpec spec)
+      throws InvalidKeySpecException
+  {
+    BigInteger p = spec.getP();
+    BigInteger g = spec.getG();
+    BigInteger y = spec.getY();
+    Object[] params = new Object[] {new Integer(Registry.X509_ENCODING_ID),
+                                    null, p, g, y};
+    Object obj = invokeConstructor("gnu.javax.crypto.key.dh.GnuDHPublicKey",
+                                   params);
+    return (DHPublicKey) obj;
+  }
+
+  /**
+   * @param encoded the bytes to decode.
+   * @return an instance of a {@link DHPublicKey} constructed from the
+   *         information in the designated key-specification.
+   * @throws InvalidKeySpecException if no concrete implementation of the
+   *           {@link DHPublicKey} interface exists at run-time, or if an
+   *           exception occurs during its instantiation.
+   */
+  private DHPublicKey decodeDHPublicKey(byte[] encoded)
+      throws InvalidKeySpecException
+  {
+    Object obj = invokeValueOf("gnu.javax.crypto.key.dh.GnuDHPublicKey",
+                               encoded);
+    return (DHPublicKey) obj;
+  }
+
+  /**
    * @param spec an instance of {@link DSAPrivateKeySpec} to decode.
    * @return an instance of {@link DSSPrivateKey} constructed from the
    * information in the designated key-specification. 
@@ -221,5 +382,42 @@ public class EncodedKeyFactory
     BigInteger qInv = spec.getCrtCoefficient();
     return new GnuRSAPrivateKey(Registry.PKCS8_ENCODING_ID,
                                 n, e, d, p, q, dP, dQ, qInv);
+  }
+
+  /**
+   * @param spec an instance of {@link DHPrivateKeySpec} to decode.
+   * @return an instance of a {@link DHPrivateKey} constructed from the
+   *         information in the designated key-specification.
+   * @throws InvalidKeySpecException if no concrete implementation of the
+   *           {@link DHPrivateKey} interface exists at run-time, or if an
+   *           exception occurs during its instantiation.
+   */
+  private DHPrivateKey decodeDHPrivateKey(DHPrivateKeySpec spec)
+      throws InvalidKeySpecException
+  {
+    BigInteger p = spec.getP();
+    BigInteger g = spec.getG();
+    BigInteger x = spec.getX();
+    Object[] params = new Object[] {new Integer(Registry.PKCS8_ENCODING_ID),
+                                    null, p, g, x};
+    Object obj = invokeConstructor("gnu.javax.crypto.key.dh.GnuDHPrivateKey",
+                                   params);
+    return (DHPrivateKey) obj;
+  }
+
+  /**
+   * @param encoded the bytes to decode.
+   * @return an instance of a {@link DHPrivateKey} constructed from the
+   *         information in the designated key-specification.
+   * @throws InvalidKeySpecException if no concrete implementation of the
+   *           {@link DHPrivateKey} interface exists at run-time, or if an
+   *           exception occurs during its instantiation.
+   */
+  private DHPrivateKey decodeDHPrivateKey(byte[] encoded)
+      throws InvalidKeySpecException
+  {
+    Object obj = invokeValueOf("gnu.javax.crypto.key.dh.GnuDHPrivateKey",
+                               encoded);
+    return (DHPrivateKey) obj;
   }
 }

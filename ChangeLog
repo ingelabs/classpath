@@ -1,3 +1,50 @@
+2006-02-12  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/key/dh/GnuDHPublicKey.java
+	(GnuDHPublicKey(4)): Call constructor with 5 arguments.
+	(GnuDHPublicKey): New constructor.
+	(getEncoded): Removed.
+	(valueOf): Added support for ASN.1 encoding.
+	(getEncoded(int)): Likewise.
+	(equals): New method.
+	* gnu/javax/crypto/key/dh/GnuDHPrivateKey.java
+	(GnuDHPrivateKey(4)): Call constructor with 5 arguments.
+	(GnuDHPrivateKey(5)): New constructor.
+	(getEncoded): Removed.
+	(valueOf): Added support for ASN.1 encoding.
+	(getEncoded(int)): Likewise.
+	(equals): New method.
+	* gnu/javax/crypto/key/dh/GnuDHKeyPairGenerator.java
+	(PREFERRED_ENCODING_FORMAT): New constant.
+	(DEFAULT_ENCODING_FORMAT): Likewise.
+	(preferredFormat): New field.
+	(setup): Handle preferred encoding format identifier.
+	(generate): Call constructors with format identifier.
+	* gnu/javax/crypto/key/dh/GnuDHKey.java (defaultFormat): New field.
+	(GnuDHKey): Added an int argument.
+	(getEncoded): New method.
+	(getFormat): New implementation.
+	(getEncoded(int)): New abstract method.
+	* gnu/javax/crypto/key/dh/DHKeyPairX509Codec.java: New file.
+	* gnu/javax/crypto/key/dh/DHKeyPairPKCS8Codec.java: Likewise.
+	* gnu/javax/crypto/jce/GnuCrypto.java (run): Added mappings for DH
+	key-pair generator and key-factory.
+	* gnu/javax/crypto/jce/sig/DHKeyPairGeneratorSpi.java: New file.
+	* gnu/javax/crypto/jce/sig/DHKeyFactory.java: Likewise.
+	* gnu/java/security/jce/sig/KeyPairGeneratorAdapter.java: Made it public.
+	* gnu/java/security/jce/sig/EncodedKeyFactory.java
+	(invokeConstructor): New method.
+	(getConcreteClass): Likewise.
+	(getConcreteCtor): Likewise.
+	(invokeValueOf): Likewise.
+	(getValueOfMethod): Likewise.
+	(engineGeneratePublic): Add support for DH keys.
+	(engineGeneratePrivate): Likewise.
+	(decodeDHPublicKey(DHPublicKeySpec)): New method.
+	(decodeDHPublicKey(byte[])): Likewise.
+	(decodeDHPrivateKey(DHPrivateKeySpec)): Likewise.
+	(decodeDHPrivateKey(byte[])): Likewise.
+
 2006-02-11  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (repaintTimer):
