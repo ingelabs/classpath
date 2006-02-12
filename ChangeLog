@@ -1,3 +1,7 @@
+2006-02-12  Olivier Jolly <olivier.jolly@pcedev.com>
+
+	* AUTHORS: add self.
+
 2006-02-12  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/classpath/ServiceProviderLoadingAction.java: Javadoc fix.
