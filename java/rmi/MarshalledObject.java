@@ -47,7 +47,16 @@ import java.io.IOException;
 import java.io.Serializable;
 
 /**
- * FIXME - doc missing
+ * A <code>MarshalledObject</code> consists of a serialized object which is
+ * marshalled according to the RMI specification.
+ * <p>
+ * An object passed to the constructor is serialized and tagged with the needed
+ * URL to retrieve its class definition for remote usage. If the object is a 
+ * remote reference its stub is serialized instead. The instance of this 
+ * marshalled object can be later retrieved by its <code>get()</code> method.
+ * </p>
+ *
+ * @author unknown
  */
 public final class MarshalledObject
   implements Serializable
@@ -59,7 +68,13 @@ public final class MarshalledObject
   byte[] locBytes;
   int hash;
 
-  public MarshalledObject(Object obj) throws java.io.IOException
+  /**
+   * Constructs a <code>MarshalledObject</code> from the given object.
+   * 
+   * @param obj the object to marshal
+   * @throws IOException if an I/O error during serialization occurs.
+   */
+  public MarshalledObject(Object obj) throws IOException
   {
     ByteArrayOutputStream objStream = new ByteArrayOutputStream();
     RMIMarshalledObjectOutputStream stream = 
@@ -79,6 +94,16 @@ public final class MarshalledObject
         hash = hash * 31 + locBytes[i];
   }
 
+  /**
+   * Checks if the given object is equal to this marshalled object.
+   * 
+   * <p>Marshalled objects are considered equal if they contain the
+   * same serialized object. Codebase annotations where the class 
+   * definition can be downloaded are ignored in the equals test.</p>
+   *
+   * @param obj the object to compare.   
+   * @return <code>true</code> if equal, <code>false</code> otherwise.
+   */
   public boolean equals(Object obj)
   {
     if (! (obj instanceof MarshalledObject))
@@ -102,6 +127,15 @@ public final class MarshalledObject
     return true;
   }
 
+  /**
+   * Constructs and returns a copy of the internal serialized object.
+   * 
+   * @return The deserialized object.
+   * 
+   * @throws IOException if an I/O exception occurs during deserialization.
+   * @throws ClassNotFoundException if the class of the deserialized object 
+   * cannot be found.
+   */
   public Object get() throws IOException, ClassNotFoundException
   {
     if (objBytes == null)

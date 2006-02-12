@@ -1,3 +1,16 @@
+2006-02-12  Wolfgang Baer  <WBaer@gmx.de>
+
+	* java/rmi/MarshalledObject.java: Added api docs to the class.
+	* java/rmi/Remote.java: Added interface api docs.
+	* java/rmi/package.html: Added package description.
+	* java/rmi/AccessException.java: Minor api doc fixes.
+	* java/rmi/NoSuchObjectException.java: Likewise.
+	* java/rmi/AlreadyBoundException.java: Likewise.
+	* java/rmi/RemoteException.java: Likewise.
+	* java/rmi/NotBoundException.java: Likewise.
+	* java/rmi/RMISecurityException.java: Likewise.
+	* java/rmi/StubNotFoundException.java: Likewise.	
+
 2006-02-12  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (postKeyEvent): Call
