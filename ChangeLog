@@ -1,5 +1,11 @@
 2006-02-12  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/io/InputStream.java
+	(read(byte[],int,int)): Changed argument validation to prevent
+	integer overflow. Remove redundant check.
+
+2006-02-12  Jeroen Frijters  <jeroen@frijters.net>
+
 	Fixes PR 26220
 	* java/io/InputStreamReader.java
 	(InputStreamReader(InputStream)): Use SystemProperties.
