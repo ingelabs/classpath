@@ -1,3 +1,11 @@
+2006-02-12  Mark Wielaard  <mark@klomp.org>
+
+	* java/beans/PropertyChangeSupport.java (addPropertyChangeListener):
+	Silently ignores null listener.
+	(addPropertyChangeListener(String, PropertyChangeListener): Likewise.
+	(getPropertyChangeListeners): Returns empty PropertyChangeListener
+	array for null propertyName.
+
 2006-02-12  Wolfgang Baer  <WBaer@gmx.de>
 
 	* java/rmi/MarshalledObject.java: Added api docs to the class.
