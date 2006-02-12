@@ -608,7 +608,6 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
         if (q == null)
           {
             q = new EventQueue();
-            GtkGenericPeer.enableQueue (q);
           }
       }    
     return q;

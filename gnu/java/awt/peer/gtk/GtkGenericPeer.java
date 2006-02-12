@@ -52,9 +52,6 @@ public class GtkGenericPeer
   // The widget or other java-side object we wrap.
   protected Object awtWidget;
 
-  // Global event queue.
-  protected static EventQueue q = null;
-
   // Dispose of our native state.
   public native void dispose ();
 
@@ -66,12 +63,6 @@ public class GtkGenericPeer
   protected GtkGenericPeer (Object awtWidget)
   {
     this.awtWidget = awtWidget;
-  }
-
-  public static void enableQueue (EventQueue sq) 
-  {
-    if (q == null)
-      q = sq;
   }
 
   protected void postActionEvent (String command, int mods) 

@@ -47,6 +47,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -587,6 +588,8 @@ public class GtkComponentPeer extends GtkGenericPeer
     KeyEvent keyEvent = new KeyEvent (awtComponent, id, when, mods,
                                       keyCode, keyChar, keyLocation);
 
+    EventQueue q = q();
+
     // Also post a KEY_TYPED event if keyEvent is a key press that
     // doesn't represent an action or modifier key.
     if (keyEvent.getID () == KeyEvent.KEY_PRESSED
@@ -595,15 +598,17 @@ public class GtkComponentPeer extends GtkGenericPeer
             && keyCode != KeyEvent.VK_CONTROL
             && keyCode != KeyEvent.VK_ALT))
       {
-        synchronized (q)
-          {
-            q().postEvent (keyEvent);
-            q().postEvent (new KeyEvent (awtComponent, KeyEvent.KEY_TYPED, when, mods,
-                                        KeyEvent.VK_UNDEFINED, keyChar, keyLocation));
+        synchronized(q)
+	  {
+	    q.postEvent(keyEvent);
+	    keyEvent = new KeyEvent(awtComponent, KeyEvent.KEY_TYPED, when,
+				    mods, KeyEvent.VK_UNDEFINED, keyChar,
+				    keyLocation);
+	    q.postEvent(keyEvent);
           }
       }
     else
-      q().postEvent (keyEvent);
+      q.postEvent(keyEvent);
   }
 
   protected void postFocusEvent (int id, boolean temporary)
