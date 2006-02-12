@@ -1,3 +1,14 @@
+2006-02-12  Jeroen Frijters  <jeroen@frijters.net>
+
+	Fixes PR 26220
+	* java/io/InputStreamReader.java
+	(InputStreamReader(InputStream)): Use SystemProperties.
+	(InputStreamReader(InputStream,Charset)): Corrected @since tag.
+	Throw NullPointerException if in is null.
+	Added maxBytesPerChar initialisation.
+	(InputStreamReader(InputStream,CharsetDecoder)): Corrected @since tag.
+	Throw NullPointerException if in is null.
+
 2006-02-12  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/key/dh/GnuDHPublicKey.java
