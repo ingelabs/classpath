@@ -1,3 +1,7 @@
+2006-02-13  Tom Tromey  <tromey@redhat.com>
+
+	* .classpath: Updated for external/relaxngDatatype.
+
 2006-02-13  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/stream/UnicodeReader.java,
