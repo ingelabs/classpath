@@ -1,5 +1,25 @@
 2006-02-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(offscreenBuffers): New field.
+	(doubleBuffer): Removed field.
+	(repaintUnderway): New field.
+	(commitRequests): New field.
+	(RepaintManager): Initialize new fields.
+	(paintDirtyRegions): Handle repaintUnderway flag. Commit
+	buffers when done.
+	(getOffscreenBuffer): Returns the offscreen buffer for the
+	corresponding root component.
+	(commitBuffer): New method.
+	(commitRemainingBuffers): New method.
+	* javax/swing/JComponent.java
+	(paint): Call paintDoubleBuffered with the current clip.
+	(paintImmediately2): Don't paint on screen here.
+	(paintDoubleBuffered): Rewritten for real double buffering.
+	(paintSimple): Draw to screen in this method.
+
+2006-02-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JRootPane.java
 	(JRootPane): Set opaque property to true.
 

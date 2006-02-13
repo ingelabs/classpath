@@ -1549,7 +1549,10 @@ public abstract class JComponent extends Container implements Serializable
     // screen.
     if (!isPaintingDoubleBuffered && isDoubleBuffered()
         && rm.isDoubleBufferingEnabled())
-      paintDoubleBuffered(g);
+      {
+        Rectangle clip = g.getClipBounds();
+        paintDoubleBuffered(clip);
+      }
     else
       {
         if (g.getClip() == null)
@@ -1750,33 +1753,29 @@ public abstract class JComponent extends Container implements Serializable
   void paintImmediately2(Rectangle r)
   {
     RepaintManager rm = RepaintManager.currentManager(this);
-    Graphics g = getGraphics();
-    g.setClip(r.x, r.y, r.width, r.height);
     if (rm.isDoubleBufferingEnabled() && isDoubleBuffered())
-      paintDoubleBuffered(g);
+      paintDoubleBuffered(r);
     else
-      paintSimple(g);
-    g.dispose();
+      paintSimple(r);
   }
 
   /**
    * Performs double buffered repainting.
-   *
-   * @param g the graphics context to paint to
    */
-  void paintDoubleBuffered(Graphics g)
+  private void paintDoubleBuffered(Rectangle r)
   {
-    
-    Rectangle r = g.getClipBounds();
-    if (r == null)
-      r = new Rectangle(0, 0, getWidth(), getHeight());
     RepaintManager rm = RepaintManager.currentManager(this);
 
     // Paint on the offscreen buffer.
-    Image buffer = rm.getOffscreenBuffer(this, getWidth(), getHeight());
+    Component root = SwingUtilities.getRoot(this);
+    Image buffer = rm.getOffscreenBuffer(this, root.getWidth(),
+                                         root.getHeight());
+    //Rectangle targetClip = SwingUtilities.convertRectangle(this, r, root);
+    Point translation = SwingUtilities.convertPoint(this, 0, 0, root);
     Graphics g2 = buffer.getGraphics();
-    g2 = getComponentGraphics(g2);
+    g2.translate(translation.x, translation.y);
     g2.setClip(r.x, r.y, r.width, r.height);
+    g2 = getComponentGraphics(g2);
     isPaintingDoubleBuffered = true;
     try
       {
@@ -1787,20 +1786,27 @@ public abstract class JComponent extends Container implements Serializable
         isPaintingDoubleBuffered = false;
         g2.dispose();
       }
-    
+
     // Paint the buffer contents on screen.
-    g.drawImage(buffer, 0, 0, this);
+    rm.commitBuffer(root, new Rectangle(translation.x + r.x,
+                                        translation.y + r.y, r.width,
+                                        r.height));
   }
 
   /**
    * Performs normal painting without double buffering.
    *
-   * @param g the graphics context to use
+   * @param r the area that should be repainted
    */
-  void paintSimple(Graphics g)
+  void paintSimple(Rectangle r)
   {
+    Graphics g = getGraphics();
     Graphics g2 = getComponentGraphics(g);
+    g2.setClip(r);
     paint(g2);
+    g2.dispose();
+    if (g != g2)
+      g.dispose();
   }
 
   /**
