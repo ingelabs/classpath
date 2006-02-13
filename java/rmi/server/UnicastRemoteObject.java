@@ -79,8 +79,7 @@ public Object clone() throws CloneNotSupportedException {
 }
 
 public static RemoteStub exportObject(Remote obj) throws RemoteException {
-	UnicastServerRef sref = (UnicastServerRef)((RemoteObject)obj).getRef();
-	return (sref.exportObject(obj));
+	return (RemoteStub) exportObject(obj, 0);
 }
 
   public static Remote exportObject(Remote obj, int port) throws RemoteException 

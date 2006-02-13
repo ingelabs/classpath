@@ -1,3 +1,8 @@
+2006-02-13  Roman Kennke  <kennke@aicas.com>
+
+	* java/rmi/server/UnicastRemoteObject.java
+	(exportObject(Remote)): Forward method call to export(Remote,int).
+
 2006-02-13  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* include/Makefile.am:
