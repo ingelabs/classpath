@@ -1,5 +1,38 @@
 2006-02-13  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/peer/gtk/GtkGenericPeer.java (awtWidget): Made field
+	final.
+	(gtkWidgetModifyFont(Font)): New protected helper method.
+	(gtkWidgetModifyFont(String,int,int)): Made protected and document.
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java (gtkWidgetModifyFont): Made
+	protected and document.
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java (gtkWidgetModifyFont):
+	Likewise.
+	* gnu/java/awt/peer/gtk/GtkLabelPeer.java (gtkWidgetModifyFont):
+	Likewise.
+	* gnu/java/awt/peer/gtk/GtkListPeer.java (gtkWidgetModifyFont):
+	Likewise.
+	* gnu/java/awt/peer/gtk/GtkMenuBarPeer.java (create): Made protected.
+	(setFont): Removed method. Done in GtkMenuComponent.
+	* gnu/java/awt/peer/gtk/GtkMenuComponentPeer.java (create): Made
+	abstract and protected.
+	(setFont): Made private, add implementation.
+	(setFont(Font)): Implemented.
+	* gnu/java/awt/peer/gtk/GtkMenuItemPeer.java (gtkWidgetModifyFont):
+	Made protected and document.
+	(create): Made protected.
+	(setFont): Removed method. Done in GtkMenuComponent.
+	* gnu/java/awt/peer/gtk/GtkTextAreaPeer.java
+	(gtkWidgetModifyFont): Made protected and document.
+	* gnu/java/awt/peer/gtk/GtkTextFieldPeer.java (gtkWidgetModifyFont):
+	Removed, similar to GtkGenericPeer super class implementation.
+	* include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h: Regenerated.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextFieldPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkWidgetModifyFont):
+	Removed.
+
+2006-02-13  Mark Wielaard  <mark@klomp.org>
+
 	* java/lang/Math.java (static): Explicitly call
 	System.loadLibrary("javalang").
 

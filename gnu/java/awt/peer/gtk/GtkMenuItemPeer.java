@@ -1,5 +1,5 @@
 /* GtkMenuItemPeer.java -- Implements MenuItemPeer with GTK+
-   Copyright (C) 1999, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1999, 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -51,9 +51,13 @@ public class GtkMenuItemPeer extends GtkMenuComponentPeer
 {
   native void create (String label);
   native void connectSignals ();
-  native void gtkWidgetModifyFont (String name, int style, int size);
 
-  void create ()
+  /**
+   * Overridden to set font on menu item label.
+   */
+  protected native void gtkWidgetModifyFont(String name, int style, int size);
+
+  protected void create()
   {
     create (((MenuItem) awtWidget).getLabel());
   }
@@ -66,21 +70,6 @@ public class GtkMenuItemPeer extends GtkMenuComponentPeer
 
     if (item.getParent() instanceof Menu && ! (item instanceof Menu))
       connectSignals();
-  }
-
-  void setFont ()
-  {
-    MenuComponent mc = ((MenuComponent) awtWidget);
-    Font f = mc.getFont ();
-
-    if (f == null)
-      {
-        MenuComponent parent = (MenuComponent) mc.getParent ();
-        Font pf = parent.getFont ();
-        gtkWidgetModifyFont (pf.getName (), pf.getStyle (), pf.getSize ());
-      }
-    else
-      gtkWidgetModifyFont(f.getName(), f.getStyle(), f.getSize());
   }
 
   void setParent (MenuItem item)

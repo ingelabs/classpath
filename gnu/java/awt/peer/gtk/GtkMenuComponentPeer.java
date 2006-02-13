@@ -1,5 +1,5 @@
 /* GtkMenuComponentPeer.java -- Implements MenuComponentPeer with GTK+
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,18 +39,35 @@ exception statement from your version. */
 package gnu.java.awt.peer.gtk;
 
 import java.awt.Font;
+import java.awt.MenuComponent;
+import java.awt.MenuContainer;
 import java.awt.peer.MenuComponentPeer;
 
-public class GtkMenuComponentPeer extends GtkGenericPeer
+public abstract class GtkMenuComponentPeer extends GtkGenericPeer
   implements MenuComponentPeer
 {
-  void create ()
-  {
-    throw new RuntimeException ();
-  }
+  protected abstract void create ();
 
-  void setFont ()
+  /**
+   * Sets font based on MenuComponent font, or containing menu(bar)
+   * parent font.
+   */
+  private void setFont()
   {
+    MenuComponent mc = ((MenuComponent) awtWidget);
+    Font f = mc.getFont ();
+    
+    if (f == null)
+      {
+        MenuContainer parent = mc.getParent ();
+	// Submenus inherit the font of their containing Menu(Bar).
+	if (parent instanceof MenuComponent)
+	  f = parent.getFont ();
+      }
+    if (f != null)
+      {
+	gtkWidgetModifyFont(f);
+      }
   }
 
   public GtkMenuComponentPeer (Object awtWidget)
@@ -60,10 +77,15 @@ public class GtkMenuComponentPeer extends GtkGenericPeer
     setFont ();
   }
 
+  /**
+   * Removes the awtWidget components from the native state tables.
+   * Subclasses should call <code>super.dispose()</code> if they don't
+   * remove these themselves.
+   */
   public native void dispose();
 
   public void setFont(Font font)
   {
-  // FIXME: implement  
+    gtkWidgetModifyFont(font);
   }
 }

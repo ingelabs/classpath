@@ -1,5 +1,5 @@
 /* GtkMenuBarPeer.java -- Implements MenuBarPeer with GTK+
-   Copyright (C) 1999, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1999, 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -49,21 +49,12 @@ public class GtkMenuBarPeer extends GtkMenuComponentPeer
   implements MenuBarPeer
 {
 
-  native void create ();
+  protected native void create ();
   native void addMenu (MenuPeer menu);
 
   public GtkMenuBarPeer (MenuBar target)
   {
     super (target);
-  }
-
-  void setFont ()
-  {
-    MenuComponent mc = (MenuComponent) awtWidget;
-    Font f = mc.getFont ();
-
-    if (f == null)
-      mc.setFont (new Font ("Dialog", Font.PLAIN, 12));
   }
 
   // FIXME: remove this method or replace it with one that does
