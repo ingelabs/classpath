@@ -1,3 +1,24 @@
+2006-02-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalBorders.java
+	(ButtonBorder.getBorderInsets(Component)): Return insets directly,
+	(ButtonBorder.getBorderInsets(Component, Insets)): Don't check for null
+	insets argument,
+	(Flush3DBorder.borderInsets): New field,
+	(Flush3DBorder.getBorderInsets(Component)): Return insets directly,
+	(Flush3DBorder.getBorderInsets(Component, Insets)): Don't check for 
+	null insets argument, and populate result from borderInsets,
+	(PaletteBorder.borderInsets): New field,
+	(PaletteBorder.getBorderInsets(Component)): Return insets directly,
+	(PaletteBorder.getBorderInsets(Component, Insets)): Don't check for 
+	null insets argument, and populate result from borderInsets,
+	(InternalFrameBorder.borderInsets): New field,
+	(InternalFrameBorder.getBorderInsets(Component)): Return insets 
+	directly,
+	(InternalFrameBorder.getBorderInsets(Component, Insets)): Don't check 
+	for null insets argument, and populate result from borderInsets,
+	(MenuItemBorder.borderInsets): Initialise to correct value.
+
 2006-02-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/AsyncBoxView.java: New file.
