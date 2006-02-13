@@ -1,3 +1,9 @@
+2006-02-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AbstractDocument.java
+	(readUnlock): Don't attempt to unlock when the current threads also
+	holds a write lock.
+
 2006-02-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java
