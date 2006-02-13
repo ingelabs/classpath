@@ -1,3 +1,10 @@
+2006-02-13  Wolfgang Baer  <WBaer@gmx.de>
+
+	* java/awt/print/PrinterGraphics.java: Reformatted.
+	* java/awt/print/Paper.java: Likewise.
+	* java/awt/print/PageFormat.java: Likewise.
+	* java/awt/print/Pageable.java: Likewise.
+
 2006-02-13  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/BorderLayout.java
