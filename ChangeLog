@@ -1,6 +1,12 @@
 2006-02-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/AbstractDocument.java
+	(setParent): Added API docs. Call setParent(null) on children before
+	disconnecting this view from the View hierarchy.
+
+2006-02-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AbstractDocument.java
 	(readUnlock): Don't attempt to unlock when the current threads also
 	holds a write lock.
 
