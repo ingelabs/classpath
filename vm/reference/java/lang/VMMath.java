@@ -1,5 +1,5 @@
-/* java.lang.Math -- common mathematical functions, native allowed (VMMath)
-   Copyright (C) 1998, 2001, 2002, 2003, 2006 Free Software Foundation, Inc.
+/* VMMath.java -- Common mathematical functions.
+   Copyright (C) 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,247 +40,15 @@ package java.lang;
 
 import gnu.classpath.Configuration;
 
-import java.util.Random;
-
-/**
- * Helper class containing useful mathematical functions and constants.
- * <P>
- *
- * Note that angles are specified in radians.  Conversion functions are
- * provided for your convenience.
- *
- * @author Paul Fisher
- * @author John Keiser
- * @author Eric Blake (ebb9@email.byu.edu)
- * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
- * @since 1.0
- */
-public final class Math
+class VMMath
 {
-  /**
-   * Math is non-instantiable
-   */
-  private Math()
+
+  static
   {
-  }
-
-  /**
-   * A random number generator, initialized on first use.
-   */
-  private static Random rand;
-
-  /**
-   * The most accurate approximation to the mathematical constant <em>e</em>:
-   * <code>2.718281828459045</code>. Used in natural log and exp.
-   *
-   * @see #log(double)
-   * @see #exp(double)
-   */
-  public static final double E = 2.718281828459045;
-
-  /**
-   * The most accurate approximation to the mathematical constant <em>pi</em>:
-   * <code>3.141592653589793</code>. This is the ratio of a circle's diameter
-   * to its circumference.
-   */
-  public static final double PI = 3.141592653589793;
-
-  /**
-   * Take the absolute value of the argument.
-   * (Absolute value means make it positive.)
-   * <P>
-   *
-   * Note that the the largest negative value (Integer.MIN_VALUE) cannot
-   * be made positive.  In this case, because of the rules of negation in
-   * a computer, MIN_VALUE is what will be returned.
-   * This is a <em>negative</em> value.  You have been warned.
-   *
-   * @param i the number to take the absolute value of
-   * @return the absolute value
-   * @see Integer#MIN_VALUE
-   */
-  public static int abs(int i)
-  {
-    return (i < 0) ? -i : i;
-  }
-
-  /**
-   * Take the absolute value of the argument.
-   * (Absolute value means make it positive.)
-   * <P>
-   *
-   * Note that the the largest negative value (Long.MIN_VALUE) cannot
-   * be made positive.  In this case, because of the rules of negation in
-   * a computer, MIN_VALUE is what will be returned.
-   * This is a <em>negative</em> value.  You have been warned.
-   *
-   * @param l the number to take the absolute value of
-   * @return the absolute value
-   * @see Long#MIN_VALUE
-   */
-  public static long abs(long l)
-  {
-    return (l < 0) ? -l : l;
-  }
-
-  /**
-   * Take the absolute value of the argument.
-   * (Absolute value means make it positive.)
-   * <P>
-   *
-   * This is equivalent, but faster than, calling
-   * <code>Float.intBitsToFloat(0x7fffffff & Float.floatToIntBits(a))</code>.
-   *
-   * @param f the number to take the absolute value of
-   * @return the absolute value
-   */
-  public static float abs(float f)
-  {
-    return (f <= 0) ? 0 - f : f;
-  }
-
-  /**
-   * Take the absolute value of the argument.
-   * (Absolute value means make it positive.)
-   *
-   * This is equivalent, but faster than, calling
-   * <code>Double.longBitsToDouble(Double.doubleToLongBits(a)
-   *       &lt;&lt; 1) &gt;&gt;&gt; 1);</code>.
-   *
-   * @param d the number to take the absolute value of
-   * @return the absolute value
-   */
-  public static double abs(double d)
-  {
-    return (d <= 0) ? 0 - d : d;
-  }
-
-  /**
-   * Return whichever argument is smaller.
-   *
-   * @param a the first number
-   * @param b a second number
-   * @return the smaller of the two numbers
-   */
-  public static int min(int a, int b)
-  {
-    return (a < b) ? a : b;
-  }
-
-  /**
-   * Return whichever argument is smaller.
-   *
-   * @param a the first number
-   * @param b a second number
-   * @return the smaller of the two numbers
-   */
-  public static long min(long a, long b)
-  {
-    return (a < b) ? a : b;
-  }
-
-  /**
-   * Return whichever argument is smaller. If either argument is NaN, the
-   * result is NaN, and when comparing 0 and -0, -0 is always smaller.
-   *
-   * @param a the first number
-   * @param b a second number
-   * @return the smaller of the two numbers
-   */
-  public static float min(float a, float b)
-  {
-    // this check for NaN, from JLS 15.21.1, saves a method call
-    if (a != a)
-      return a;
-    // no need to check if b is NaN; < will work correctly
-    // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
-    if (a == 0 && b == 0)
-      return -(-a - b);
-    return (a < b) ? a : b;
-  }
-
-  /**
-   * Return whichever argument is smaller. If either argument is NaN, the
-   * result is NaN, and when comparing 0 and -0, -0 is always smaller.
-   *
-   * @param a the first number
-   * @param b a second number
-   * @return the smaller of the two numbers
-   */
-  public static double min(double a, double b)
-  {
-    // this check for NaN, from JLS 15.21.1, saves a method call
-    if (a != a)
-      return a;
-    // no need to check if b is NaN; < will work correctly
-    // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
-    if (a == 0 && b == 0)
-      return -(-a - b);
-    return (a < b) ? a : b;
-  }
-
-  /**
-   * Return whichever argument is larger.
-   *
-   * @param a the first number
-   * @param b a second number
-   * @return the larger of the two numbers
-   */
-  public static int max(int a, int b)
-  {
-    return (a > b) ? a : b;
-  }
-
-  /**
-   * Return whichever argument is larger.
-   *
-   * @param a the first number
-   * @param b a second number
-   * @return the larger of the two numbers
-   */
-  public static long max(long a, long b)
-  {
-    return (a > b) ? a : b;
-  }
-
-  /**
-   * Return whichever argument is larger. If either argument is NaN, the
-   * result is NaN, and when comparing 0 and -0, 0 is always larger.
-   *
-   * @param a the first number
-   * @param b a second number
-   * @return the larger of the two numbers
-   */
-  public static float max(float a, float b)
-  {
-    // this check for NaN, from JLS 15.21.1, saves a method call
-    if (a != a)
-      return a;
-    // no need to check if b is NaN; > will work correctly
-    // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
-    if (a == 0 && b == 0)
-      return a - -b;
-    return (a > b) ? a : b;
-  }
-
-  /**
-   * Return whichever argument is larger. If either argument is NaN, the
-   * result is NaN, and when comparing 0 and -0, 0 is always larger.
-   *
-   * @param a the first number
-   * @param b a second number
-   * @return the larger of the two numbers
-   */
-  public static double max(double a, double b)
-  {
-    // this check for NaN, from JLS 15.21.1, saves a method call
-    if (a != a)
-      return a;
-    // no need to check if b is NaN; > will work correctly
-    // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
-    if (a == 0 && b == 0)
-      return a - -b;
-    return (a > b) ? a : b;
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+	System.loadLibrary("javalang");
+      }
   }
 
   /**
@@ -291,10 +59,7 @@ public final class Math
    * @param a the angle (in radians)
    * @return sin(a)
    */
-  public static double sin(double a)
-  {
-    return VMMath.sin(a);
-  }
+  public static native double sin(double a);
 
   /**
    * The trigonometric function <em>cos</em>. The cosine of NaN or infinity is
@@ -303,10 +68,7 @@ public final class Math
    * @param a the angle (in radians)
    * @return cos(a)
    */
-  public static double cos(double a)
-  {
-    return VMMath.cos(a);
-  }
+  public static native double cos(double a);
 
   /**
    * The trigonometric function <em>tan</em>. The tangent of NaN or infinity
@@ -316,10 +78,7 @@ public final class Math
    * @param a the angle (in radians)
    * @return tan(a)
    */
-  public static double tan(double a)
-  {
-    return VMMath.tan(a);
-  }
+  public static native double tan(double a);
 
   /**
    * The trigonometric function <em>arcsin</em>. The range of angles returned
@@ -330,10 +89,7 @@ public final class Math
    * @param a the sin to turn back into an angle
    * @return arcsin(a)
    */
-  public static double asin(double a)
-  {
-    return VMMath.asin(a);
-  }
+  public static native double asin(double a);
 
   /**
    * The trigonometric function <em>arccos</em>. The range of angles returned
@@ -344,10 +100,7 @@ public final class Math
    * @param a the cos to turn back into an angle
    * @return arccos(a)
    */
-  public static double acos(double a)
-  {
-    return VMMath.acos(a);
-  }
+  public static native double acos(double a);
 
   /**
    * The trigonometric function <em>arcsin</em>. The range of angles returned
@@ -359,10 +112,7 @@ public final class Math
    * @return arcsin(a)
    * @see #atan2(double, double)
    */
-  public static double atan(double a)
-  {
-    return VMMath.atan(a);
-  }
+  public static native double atan(double a);
 
   /**
    * A special version of the trigonometric function <em>arctan</em>, for
@@ -411,10 +161,7 @@ public final class Math
    * @return <em>theta</em> in the conversion of (x, y) to (r, theta)
    * @see #atan(double)
    */
-  public static double atan2(double y, double x)
-  {
-    return VMMath.atan2(y,x);
-  }
+  public static native double atan2(double y, double x);
 
   /**
    * Take <em>e</em><sup>a</sup>.  The opposite of <code>log()</code>. If the
@@ -428,10 +175,7 @@ public final class Math
    * @see #log(double)
    * @see #pow(double, double)
    */
-  public static double exp(double a)
-  {
-    return VMMath.exp(a);
-  }
+  public static native double exp(double a);
 
   /**
    * Take ln(a) (the natural log).  The opposite of <code>exp()</code>. If the
@@ -447,10 +191,7 @@ public final class Math
    * @return the natural log of <code>a</code>
    * @see #exp(double)
    */
-  public static double log(double a)
-  {
-    return VMMath.log(a);
-  }
+  public static native double log(double a);
 
   /**
    * Take a square root. If the argument is NaN or negative, the result is
@@ -458,18 +199,13 @@ public final class Math
    * infinity; and if the result is either zero, the result is the same.
    * This is accurate within the limits of doubles.
    *
-   * <p>For a cube root, use <code>cbrt</code>.  For other roots, use
-   * <code>pow(a, 1 / rootNumber)</code>.</p>
+   * <p>For other roots, use pow(a, 1 / rootNumber).
    *
    * @param a the numeric argument
    * @return the square root of the argument
-   * @see #cbrt(double)
    * @see #pow(double, double)
    */
-  public static double sqrt(double a)
-  {
-    return VMMath.sqrt(a);
-  }
+  public static native double sqrt(double a);
 
   /**
    * Raise a number to a power. Special cases:<ul>
@@ -539,10 +275,7 @@ public final class Math
    * @param b the power to raise it to
    * @return a<sup>b</sup>
    */
-  public static double pow(double a, double b)
-  {
-    return VMMath.pow(a,b);
-  }
+  public static native double pow(double a, double b);
 
   /**
    * Get the IEEE 754 floating point remainder on two numbers. This is the
@@ -558,10 +291,7 @@ public final class Math
    * @return the IEEE 754-defined floating point remainder of x/y
    * @see #rint(double)
    */
-  public static double IEEEremainder(double x, double y)
-  {
-    return VMMath.IEEEremainder(x,y);
-  }
+  public static native double IEEEremainder(double x, double y);
 
   /**
    * Take the nearest integer that is that is greater than or equal to the
@@ -572,10 +302,7 @@ public final class Math
    * @param a the value to act upon
    * @return the nearest integer &gt;= <code>a</code>
    */
-  public static double ceil(double a)
-  {
-    return VMMath.ceil(a);
-  }
+  public static native double ceil(double a);
 
   /**
    * Take the nearest integer that is that is less than or equal to the
@@ -585,10 +312,7 @@ public final class Math
    * @param a the value to act upon
    * @return the nearest integer &lt;= <code>a</code>
    */
-  public static double floor(double a)
-  {
-    return VMMath.floor(a);
-  }
+  public static native double floor(double a);
 
   /**
    * Take the nearest integer to the argument.  If it is exactly between
@@ -598,94 +322,6 @@ public final class Math
    * @param a the value to act upon
    * @return the nearest integer to <code>a</code>
    */
-  public static double rint(double a)
-  {
-    return VMMath.rint(a);
-  }
-
-  /**
-   * Take the nearest integer to the argument.  This is equivalent to
-   * <code>(int) Math.floor(a + 0.5f)</code>. If the argument is NaN, the result
-   * is 0; otherwise if the argument is outside the range of int, the result
-   * will be Integer.MIN_VALUE or Integer.MAX_VALUE, as appropriate.
-   *
-   * @param a the argument to round
-   * @return the nearest integer to the argument
-   * @see Integer#MIN_VALUE
-   * @see Integer#MAX_VALUE
-   */
-  public static int round(float a)
-  {
-    // this check for NaN, from JLS 15.21.1, saves a method call
-    if (a != a)
-      return 0;
-    return (int) floor(a + 0.5f);
-  }
-
-  /**
-   * Take the nearest long to the argument.  This is equivalent to
-   * <code>(long) Math.floor(a + 0.5)</code>. If the argument is NaN, the
-   * result is 0; otherwise if the argument is outside the range of long, the
-   * result will be Long.MIN_VALUE or Long.MAX_VALUE, as appropriate.
-   *
-   * @param a the argument to round
-   * @return the nearest long to the argument
-   * @see Long#MIN_VALUE
-   * @see Long#MAX_VALUE
-   */
-  public static long round(double a)
-  {
-    // this check for NaN, from JLS 15.21.1, saves a method call
-    if (a != a)
-      return 0;
-    return (long) floor(a + 0.5d);
-  }
-
-  /**
-   * Get a random number.  This behaves like Random.nextDouble(), seeded by
-   * System.currentTimeMillis() when first called. In other words, the number
-   * is from a pseudorandom sequence, and lies in the range [+0.0, 1.0).
-   * This random sequence is only used by this method, and is threadsafe,
-   * although you may want your own random number generator if it is shared
-   * among threads.
-   *
-   * @return a random number
-   * @see Random#nextDouble()
-   * @see System#currentTimeMillis()
-   */
-  public static synchronized double random()
-  {
-    if (rand == null)
-      rand = new Random();
-    return rand.nextDouble();
-  }
-
-  /**
-   * Convert from degrees to radians. The formula for this is
-   * radians = degrees * (pi/180); however it is not always exact given the
-   * limitations of floating point numbers.
-   *
-   * @param degrees an angle in degrees
-   * @return the angle in radians
-   * @since 1.2
-   */
-  public static double toRadians(double degrees)
-  {
-    return (degrees * PI) / 180;
-  }
-
-  /**
-   * Convert from radians to degrees. The formula for this is
-   * degrees = radians * (180/pi); however it is not always exact given the
-   * limitations of floating point numbers.
-   *
-   * @param rads an angle in radians
-   * @return the angle in degrees
-   * @since 1.2
-   */
-  public static double toDegrees(double rads)
-  {
-    return (rads * 180) / PI;
-  }
+  public static native double rint(double a);
 
 }
