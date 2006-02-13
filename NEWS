@@ -12,6 +12,9 @@ New in release 0.21 (to be released)
   packages. The toll set includes GIOP and RMI stub and tie code generators,
   IOR parser and GIOP naming service. 
 
+* RELAX NG pluggable XML schema datatype library API and an implementation
+  for XML Schema Datatypes (http://www.w3.org/TR/xmlschema-2/).
+
 New in release 0.20 (Jan 13, 2006)
 
 * New StAX pull parser and SAX-over-StAX driver. Lots of DOM, SAX/StAX,

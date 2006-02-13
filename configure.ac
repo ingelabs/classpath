@@ -568,6 +568,7 @@ doc/api/Makefile
 external/Makefile
 external/sax/Makefile
 external/w3c_dom/Makefile
+external/relaxngDatatype/Makefile
 gnu/classpath/Configuration.java
 include/Makefile
 native/Makefile
