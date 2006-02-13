@@ -57,6 +57,21 @@ import java.util.Random;
  */
 public final class Math
 {
+
+  // FIXME - This is here because we need to load the "javalang" system
+  // library somewhere late in the bootstrap cycle. We cannot do this
+  // from VMSystem or VMRuntime since those are used to actually load
+  // the library. This is mainly here because historically Math was
+  // late enough in the bootstrap cycle to start using System after it
+  // was initialized (called from the java.util classes).
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary("javalang");
+      }
+  }
+
   /**
    * Math is non-instantiable
    */
