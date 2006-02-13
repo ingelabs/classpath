@@ -1,3 +1,7 @@
+2006-02-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AsyncBoxView.java: New file.
+
 2006-02-13  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	Fixes bug #26166
