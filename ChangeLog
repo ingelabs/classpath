@@ -1,3 +1,10 @@
+2006-02-13  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/BorderLayout.java
+	(layoutContainer): Rewrote part of this function to 
+	properly set the bounds of the components.
+	(setBounds): Removed method, not needed.
+
 2006-02-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/DefaultStyledDocument.java
