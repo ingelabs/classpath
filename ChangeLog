@@ -1,5 +1,12 @@
 2006-02-13  Lillian Angel  <langel@redhat.com>
 
+	* java/awt/Component.java
+	(repaint): Reverted last change.
+	(repaint): Likewise.
+	(repaint): Likewise.
+
+2006-02-13  Lillian Angel  <langel@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GtkPanelPeer.java
 	(handleEvent): Made more efficent by handling paint event and
 	setting the clip for the graphics.
