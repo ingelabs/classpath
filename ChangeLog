@@ -1,3 +1,7 @@
+2006-02-13  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/StreamPrintServiceFactory.java: New file.
+
 2006-02-13  Tom Tromey  <tromey@redhat.com>
 
 	* tools/.cvsignore: Added Makefile.
