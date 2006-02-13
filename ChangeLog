@@ -1,5 +1,11 @@
 2006-02-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.clone): Fixed replace call.
+	(clone): Removed method.
+
+2006-02-13  Roman Kennke  <kennke@aicas.com>
+
 	* java/rmi/server/UnicastRemoteObject.java: Reformatted.
 
 2006-02-13  Roman Kennke  <kennke@aicas.com>
