@@ -1882,8 +1882,7 @@ public abstract class Component
    */
   public void repaint()
   {   
-    if (isShowing())
-      repaint(0, 0, 0, width, height);
+    repaint(0, 0, 0, width, height);
   }
 
   /**
@@ -1897,8 +1896,7 @@ public abstract class Component
    */
   public void repaint(long tm)
   {
-    if (isShowing())
-      repaint(tm, 0, 0, width, height);
+    repaint(tm, 0, 0, width, height);
   }
 
   /**
@@ -1915,8 +1913,7 @@ public abstract class Component
    */
   public void repaint(int x, int y, int w, int h)
   {
-    if (isShowing())
-      repaint(0, x, y, w, h);
+    repaint(0, x, y, w, h);
   }
 
   /**

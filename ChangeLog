@@ -1,3 +1,15 @@
+2006-02-13  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkPanelPeer.java
+	(handleEvent): Made more efficent by handling paint event and
+	setting the clip for the graphics.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java
+	(handleEvent): Likewise.
+	* java/awt/Component.java
+	(repaint): No need to call isShowing, it is done in the other repaint call.
+	(repaint): Likewise.
+	(repaint): Likewise.
+
 2006-02-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/AbstractDocument.java

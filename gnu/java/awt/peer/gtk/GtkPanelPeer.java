@@ -56,33 +56,39 @@ public class GtkPanelPeer extends GtkContainerPeer
     super (p);
   }
 
-  public void handleEvent (AWTEvent event)
+  public void handleEvent(AWTEvent event)
   {
     int id = event.getID();
-
     switch (id)
       {
       case MouseEvent.MOUSE_PRESSED:
-        awtComponent.requestFocusInWindow ();
+        awtComponent.requestFocusInWindow();
         break;
+      case PaintEvent.UPDATE:
+      case PaintEvent.PAINT:
+      {
+        try
+          {
+            Graphics g = getGraphics();
+            if (! awtComponent.isShowing() || awtComponent.getWidth() < 1
+                || awtComponent.getHeight() < 1 || g == null)
+              return;
+
+            g.setClip(((PaintEvent) event).getUpdateRect());
+
+            // Do not want to clear anything before painting.);
+            awtComponent.paint(g);
+
+            g.dispose();
+            return;
+          }
+        catch (InternalError e)
+          {
+            System.err.println(e);
+          }
       }
-    
-    if (event.getID() == PaintEvent.UPDATE)
-      {        
-        Graphics g = getGraphics();
-        if (!awtComponent.isShowing() || awtComponent.getWidth() < 1 
-            || awtComponent.getHeight() < 1 || g == null)
-          return;
-        
-        g.setClip(((PaintEvent) event).getUpdateRect());
-        
-        // Do not want to clear anything before painting.
-        awtComponent.paint(g);
-        
-        g.dispose();
       }
-    else
-      super.handleEvent (event);
+    super.handleEvent(event);
   }
 
   native void connectSignals ();
