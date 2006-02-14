@@ -1,3 +1,8 @@
+2006-02-14  Stuart Ballard  <stuart.a.ballard@gmail.com>
+
+	* javax/swing/undo/StateEdit.java (RCSID): Match Sun's value.
+	* javax/swing/undo/StateEditable.java (RCSID): Likewise.
+
 2006-02-13  Tom Tromey  <tromey@redhat.com>
 
 	* vm/reference/java/lang/reflect/Method.java: Javadoc fix.
