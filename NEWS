@@ -9,8 +9,8 @@ New in release 0.21 (to be released)
  
 * The new folder tools now contains GIOP and RMI tools, providing necessary
   support for development using org.omg.*, javax.rmi.CORBA.* and java.rmi.* 
-  packages. The toll set includes GIOP and RMI stub and tie code generators,
-  IOR parser and GIOP naming service. 
+  packages. The toll set includes GIOP and RMI stub and tie source code
+  generators, IOR parser and both transient and persistent GIOP naming services. 
 
 * RELAX NG pluggable XML schema datatype library API and an implementation
   for XML Schema Datatypes (http://www.w3.org/TR/xmlschema-2/).
