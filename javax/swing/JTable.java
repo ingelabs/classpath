@@ -1959,7 +1959,7 @@ public class JTable
         int y = point.y;
 
         int r = y / height;
-        if (r < 0 || r > nrows)
+        if (r < 0 || r >= nrows)
           return -1;
         else
           return r;
