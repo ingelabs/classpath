@@ -1230,58 +1230,35 @@ public class BasicTableUI extends TableUI
       return;
 
     Rectangle clip = gfx.getClipBounds();
-    TableColumnModel cols = table.getColumnModel();
 
-    int height = table.getRowHeight() + table.getRowMargin();
-    int x0 = 0, y0 = 0;
-    int x = x0;
-    int y = y0;
-
-    Dimension gap = table.getIntercellSpacing();
-    int ymax = clip.y + clip.height;
-    int xmax = clip.x + clip.width;
-    Rectangle bounds = new Rectangle();
-    
+    Point p1 = new Point(clip.x, clip.y);
+    int c0 = table.columnAtPoint(p1);
+    int r0 = table.rowAtPoint(p1);
+    Point p2 = new Point(clip.x + clip.width, clip.y + clip.height);
+    int cn = table.columnAtPoint(p2);
+    int rn = table.rowAtPoint(p2);
+    Rectangle bounds;
     // paint the cell contents
-    for (int c = 0; c < ncols && x < xmax; ++c)
-      {
-        y = y0;
-        TableColumn col = cols.getColumn(c);
-        int width = col.getWidth();
-        int halfGapWidth = gap.width / 2;
-        int halfGapHeight = gap.height / 2;
-        
-        for (int r = 0; r < nrows && y < ymax; ++r)
-          {
-            bounds.x = x + halfGapWidth;
-            bounds.y = y + halfGapHeight + 1;
-            bounds.width = width - gap.width + 1;
-            bounds.height = height - gap.height;
-            if (bounds.intersects(clip))
-              {           
-                paintCell(gfx, r, c, bounds, table.getCellRenderer(r, c));
-              }
-            y += height;
-          }
-        x += width;
-      }
-
-    // tighten up the x and y max bounds
-    ymax = y;
-    xmax = x;
-
     Color grid = table.getGridColor();    
+    for (int c = c0; c <= cn; ++c)
+      {
+        for (int r = r0; r <= rn; ++r)
+          {
+            bounds = table.getCellRect(r, c, false);
+            paintCell(gfx, r, c, bounds, table.getCellRenderer(r, c));
+          }
+      }
 
     // paint vertical grid lines
     if (grid != null && table.getShowVerticalLines())
       {    
-        x = x0;
         Color save = gfx.getColor();
         gfx.setColor(grid);
-        for (int c = 0; c < ncols && x < xmax; ++c)
+        for (int c = c0; c < cn; ++c)
           {
-            x += cols.getColumn(c).getWidth();
-            gfx.drawLine(x, y0, x, ymax);
+            bounds = table.getCellRect(0, c, true);
+            gfx.drawLine(bounds.x + bounds.width, p1.y,
+                         bounds.x + bounds.width, p2.y);
           }
         gfx.setColor(save);
       }
@@ -1289,13 +1266,13 @@ public class BasicTableUI extends TableUI
     // paint horizontal grid lines    
     if (grid != null && table.getShowHorizontalLines())
       {    
-        y = y0;
         Color save = gfx.getColor();
         gfx.setColor(grid);
-        for (int r = 0; r < nrows && y < ymax; ++r)
+        for (int r = r0; r < rn; ++r)
           {
-            y += height;
-            gfx.drawLine(x0, y, xmax, y);
+            bounds = table.getCellRect(r, 0, true);
+            gfx.drawLine(p1.x, bounds.y + bounds.height,
+                         p2.x, bounds.y + bounds.height);
           }
         gfx.setColor(save);
       }

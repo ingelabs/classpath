@@ -1,5 +1,12 @@
 2006-02-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(paint): Determine the cells that need painting based on the
+	current clip. Use getCellRect() for calculating the cell
+	bounds.
+
+2006-02-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTable.java
 	(rectCache): New field.
 	(getCellRect): Returns cached Rectangle instance.
