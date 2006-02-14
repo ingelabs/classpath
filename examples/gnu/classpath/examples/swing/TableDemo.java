@@ -45,7 +45,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /**
  * Displays the editable table. The first column consists of check boxes.
@@ -62,7 +65,7 @@ public class TableDemo extends JFrame
   /**
    * The initial column count for this table.
    */ 
-  static int cols = 8;
+  static int cols = 7;
   
   
   /**
@@ -137,7 +140,7 @@ public class TableDemo extends JFrame
    * The table being displayed.
    */
   JTable table = new JTable();
-  
+ 
   /**
    * The table model.
    */
@@ -171,7 +174,6 @@ public class TableDemo extends JFrame
       {
         JPanel p = new JPanel();
         p.setLayout(new BorderLayout());
-        table.setModel(model);
         values = new Object[rows][];
         for (int i = 0; i < values.length; i++)
           {
@@ -183,6 +185,21 @@ public class TableDemo extends JFrame
             values [i][0] = i % 2 == 0? Boolean.TRUE : Boolean.FALSE;
           }
         
+        table.setModel(model);        
+        
+        // Make the columns with gradually increasing width:
+        DefaultTableColumnModel cm = new DefaultTableColumnModel();
+        for (int i = 0; i < cols; i++)
+          {
+            int w = 100+20*i;
+            TableColumn column = new TableColumn(i);
+            column.setPreferredWidth(w);
+            column.setHeaderValue("Width +"+(20*i));
+            cm.addColumn(column);            
+          }
+
+        table.setColumnModel(cm);
+
         // Create the table, place it into scroll pane and place
         // the pane into this frame.
         JScrollPane scroll = new JScrollPane();

@@ -1,3 +1,10 @@
+2006-02-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* examples/gnu/classpath/examples/swing/TableDemo.java:
+	Making the columns variable width.
+	* javax/swing/JTable.java (distributeSpill, doLayout):
+	  Call getPreferredSize and not getSize().
+
 2006-02-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/DefaultCellEditor.java

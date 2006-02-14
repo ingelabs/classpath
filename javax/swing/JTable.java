@@ -3022,7 +3022,7 @@ public class JTable
     for (int i = 0; i < cols.length; i++)
       {
         if (cols[i] != null)
-          cols[i].setWidth(cols[i].getWidth() + average);
+          cols[i].setWidth(cols[i].getPreferredWidth() + average);
       }
   }
 
@@ -3044,7 +3044,7 @@ public class JTable
     for (int i = 0; i < ncols; ++i)
       {
         TableColumn col = columnModel.getColumn(i);
-        int p = col.getWidth();
+        int p = col.getPreferredWidth();
         pref[i] = p;
         prefSum += p;
         if (resizingColumn == col)
