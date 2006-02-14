@@ -1,5 +1,6 @@
 /* MenuBar.java -- An AWT menu bar class
-   Copyright (C) 1999, 2000, 2001, 2002, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002, 2004, 2005, 2006
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -71,13 +72,6 @@ public class MenuBar extends MenuComponent
    * @serial The menus contained in this menu bar.
    */
   private Vector menus = new Vector();
-
-  /**
-   * The frame that this menubar is associated with. We need to know this so
-   * that {@link MenuComponent#postEvent(Event)} can post the event to the
-   * frame if no other component processed the event.
-   */
-  Frame frame;
 
   /**
    * Initializes a new instance of <code>MenuBar</code>.
@@ -250,7 +244,6 @@ public class MenuBar extends MenuComponent
         Menu mi = (Menu) e.nextElement();
         mi.removeNotify();
       }
-    frame = null;
     super.removeNotify();
   }
 

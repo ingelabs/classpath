@@ -1,3 +1,11 @@
+2006-02-14  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/Frame.java (setMenuBar): Update MenuBar parent.
+	(remove): If menu component is the current MenuBar remove it,
+	otherwise call super.remove().
+	* java/awt/MenuBar.java (frame): Remove field.
+	* java/awt/MenuComponent.java (postEvent): Use getParent() always.
+
 2006-02-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* tools/gnu/classpath/tools/giop/NameServicePersistent.java: Refer
