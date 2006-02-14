@@ -1,5 +1,15 @@
 2006-02-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JViewport.java
+	(isPaintRoot): New field.
+	(repaint): Only call super here. Also added a comment regarding
+	the diversion from the JDK.
+	(paintBlit): Implemented real blitting.
+	(paintImmediately2): New method. Overrides the same package private
+	method in JComponent.
+
+2006-02-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTableUI.java
 	(paint): Check for boundary cases when determining the painting
 	area.
