@@ -1,3 +1,17 @@
+2006-02-14  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #23931
+	* gnu/java/awt/peer/gtk/GtkImage.java (errorImage): New static field.
+	(getErrorImage): New static method.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (GtkErrorImage): Removed.
+	(bufferedImageOrError): Renamed to ...
+	(imageOrError): Renamed from bufferedImageOrError, takes Image.
+	Returns GtkImage.getErrorImage() when argument null.
+	(createImage(String)): Always use imageOrError.
+	(createImage(URL)): Likewise.
+	(createImage(ImageProducer)): Likewise.
+	(createImage(byte[],int,int)): Likewise.
+
 2006-02-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicCheckBoxMenuItemUI.java: Removed
