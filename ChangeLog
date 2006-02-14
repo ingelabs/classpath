@@ -1,3 +1,17 @@
+2006-02-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* NEWS: Updated tool status.
+	* gnu/CORBA/NamingService/NamingMap.java (Map): Made protected.
+	(constructor, bind, rebind): Rewritten.  
+	* gnu/CORBA/NamingService/TransientContext.java: Rewritten.
+	* tools/gnu/classpath/tools/giop/README: Updated.
+	* tools/gnu/classpath/tools/giop/NameServicePersistent.java,
+	tools/gnu/classpath/tools/giop/NamingServicePersistent.txt,
+	tools/gnu/classpath/tools/giop/nameservice/PersistentContext.java,
+	tools/gnu/classpath/tools/giop/nameservice/PersistentContextMap.java,
+	tools/gnu/classpath/tools/giop/nameservice/PersistentMap.java: 
+	New files.
+
 2006-02-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComponent.java

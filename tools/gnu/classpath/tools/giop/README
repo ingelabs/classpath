@@ -7,7 +7,12 @@ All GIOP tools support the --help option.
 The list of the currently available tools:
 
 * GRMIC -                RMI-IIOP stub and tie generator.
-* NameService  -         GIOP naming service (currently transient, but the
-                         persistent fuctionality may be added in the future).
+* NameService  -         GIOP transient naming service (this tool is called 
+                         tnameserv in Sun's package).
+* NameService  -         GIOP persistent naming service (this tool is called 
+                         orbd in Sun's package).
 * IorParser -            Parses the stringified form of the interoperable 
                          object references (IOR's).
+* RMIC -                 RMI stub and tie source code generator (complements
+                         the ASM based bytecode generator in the separate
+                         tools package).
