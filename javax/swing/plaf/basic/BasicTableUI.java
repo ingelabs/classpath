@@ -57,14 +57,12 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
-import javax.swing.CellEditor;
 import javax.swing.CellRendererPane;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
@@ -78,8 +76,6 @@ import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.TableUI;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public class BasicTableUI extends TableUI
@@ -1231,12 +1227,22 @@ public class BasicTableUI extends TableUI
 
     Rectangle clip = gfx.getClipBounds();
 
+    // Determine the range of cells that are within the clip bounds.
     Point p1 = new Point(clip.x, clip.y);
     int c0 = table.columnAtPoint(p1);
+    if (c0 == -1)
+      c0 = 0;
     int r0 = table.rowAtPoint(p1);
+    if (r0 == -1)
+      r0 = 0;
     Point p2 = new Point(clip.x + clip.width, clip.y + clip.height);
     int cn = table.columnAtPoint(p2);
+    if (cn == -1)
+      cn = table.getColumnCount() - 1;
     int rn = table.rowAtPoint(p2);
+    if (rn == -1)
+      rn = table.getRowCount() - 1;
+
     Rectangle bounds;
     // paint the cell contents
     Color grid = table.getGridColor();    
