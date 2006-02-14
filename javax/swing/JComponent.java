@@ -1,5 +1,5 @@
 /* JComponent.java -- Every component in swing inherits from this class.
-   Copyright (C) 2002, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2005, 2006,  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -763,7 +763,10 @@ public abstract class JComponent extends Container implements Serializable
    */
   public EventListener[] getListeners(Class listenerType)
   {
-    return listenerList.getListeners(listenerType);
+    if (listenerType == PropertyChangeListener.class)
+      return getPropertyChangeListeners();
+    else
+      return listenerList.getListeners(listenerType);
   }
 
   /**
