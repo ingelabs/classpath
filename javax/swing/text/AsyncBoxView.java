@@ -359,11 +359,6 @@ public class AsyncBoxView
     private View childView;
 
     /**
-     * The locator for the child view.
-     */
-    private ChildLocator locator;
-
-    /**
      * Indicates if the minor axis requirements of this child view are valid
      * or not.
      */
@@ -427,7 +422,6 @@ public class AsyncBoxView
     public ChildState(View view)
     {
       childView = view;
-      locator = new ChildLocator();
     }
 
     /**
@@ -799,7 +793,7 @@ public class AsyncBoxView
   /**
    * The child locator for this view.
    */
-  private ChildLocator locator;
+  protected ChildLocator locator;
 
   /**
    * Creates a new <code>AsyncBoxView</code> that represents the specified

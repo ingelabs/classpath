@@ -1,5 +1,12 @@
 2006-02-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/AsyncBoxView.java
+	(ChildState.locator): Removed wrong field.
+	(ChildState): Removed initialization of removed field.
+	(locator): Changed access modifier to be protected as specified.
+
+2006-02-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/ToolTipManager.java: Removed unneeded imports.
 	* javax/swing/Timer.java: Some small reindention.
 	(task): Made package private to avoid synthetic accessor method.
