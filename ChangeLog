@@ -1,5 +1,11 @@
 2006-02-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/ToolTipManager.java: Removed unneeded imports.
+	* javax/swing/Timer.java: Some small reindention.
+	(task): Made package private to avoid synthetic accessor method.
+
+2006-02-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SwingUtilities.java
 	(layoutCompoundLabel): Dont set textIconGap to 0 when there is
 	no icon.
