@@ -1,5 +1,5 @@
 /* Menu.java -- A Java AWT Menu
-   Copyright (C) 1999, 2002, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002, 2004, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -220,15 +220,15 @@ getItem(int index)
 public MenuItem
 add(MenuItem item)
 {
-  items.addElement(item);
   if (item.parent != null)
-    {
-      item.parent.remove(item);
-    }
-  item.parent = this;
+    item.parent.remove(item);
+
+  items.addElement(item);
+  item.setParent(this);
 
   if (peer != null)
     {
+      item.addNotify();
       MenuPeer mp = (MenuPeer) peer;
       mp.addItem(item);
     }
@@ -266,26 +266,32 @@ insert(MenuItem item, int index)
   if (index < 0)
     throw new IllegalArgumentException("Index is less than zero");
 
-  MenuPeer peer = (MenuPeer) getPeer();
-  if (peer == null)
-    return;
-
   int count = getItemCount ();
 
   if (index >= count)
-    peer.addItem (item);
+    add(item);
   else
     {
-      for (int i = count - 1; i >= index; i--)
-        peer.delItem (i);
+      if (item.parent != null)
+	item.parent.remove(item);
+      
+      items.insertElementAt(item, index);
+      item.setParent(this);
 
-      peer.addItem (item);
+      MenuPeer peer = (MenuPeer) getPeer();
+      if (peer == null)
+	return;
+
+      for (int i = count - 1; i >= index; i--)
+        peer.delItem(i);
+
+      item.addNotify();
+      peer.addItem(item);
 
       for (int i = index; i < count; i++)
-        peer.addItem ((MenuItem) items.elementAt (i));
+        peer.addItem((MenuItem) items.elementAt (i));
     }
 
-  items.insertElementAt(item, index);
 }
 
 /*************************************************************************/
@@ -344,11 +350,15 @@ insertSeparator(int index)
 public synchronized void
 remove(int index)
 {
-  items.removeElementAt(index);
+  MenuItem item = (MenuItem) items.remove(index);
 
-  MenuPeer mp = (MenuPeer)getPeer();
+  MenuPeer mp = (MenuPeer) getPeer();
   if (mp != null)
-    mp.delItem(index);
+    {
+      mp.delItem(index);
+      item.removeNotify();
+    }
+  item.setParent(null);
 }
 
 /*************************************************************************/
