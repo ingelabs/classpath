@@ -811,7 +811,6 @@ public class SwingUtilities
 
     if (icon == null)
       {
-        textIconGap = 0;
         iconR.width = 0;
         iconR.height = 0;
       }
