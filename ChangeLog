@@ -1,3 +1,10 @@
+2006-02-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JLayeredPane.java
+	(removeAll): New method. Avoid potential memory leak.
+	(isOptimizedDrawingEnabled): Replaced heuristic with accurate
+	calculation.
+
 2006-02-14  Stuart Ballard  <stuart.a.ballard@gmail.com>
 
 	* javax/swing/undo/StateEdit.java (RCSID): Match Sun's value.
