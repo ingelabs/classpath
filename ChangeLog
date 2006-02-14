@@ -1,5 +1,15 @@
 2006-02-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicCheckBoxMenuItemUI.java: Removed
+	unneeded imports.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java: Likewise.
+	* javax/swing/plaf/basic/BasicRadioButtonMenuItemUI.java: Likewise.
+	* javax/swing/plaf/basic/BasicRootPaneUI.java: Likewise.
+	* javax/swing/plaf/basic/BasicSplitPaneDivider.java: Likewise.
+	* javax/swing/plaf/basic/BasicHTML.java: Fixed API comment.
+
+2006-02-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/AsyncBoxView.java
 	(ChildState.locator): Removed wrong field.
 	(ChildState): Removed initialization of removed field.

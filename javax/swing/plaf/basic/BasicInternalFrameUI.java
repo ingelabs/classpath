@@ -54,8 +54,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 
 import javax.swing.DefaultDesktopManager;
 import javax.swing.DesktopManager;
