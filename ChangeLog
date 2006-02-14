@@ -1,5 +1,10 @@
 2006-02-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/DefaultCellEditor.java
+	(DefaultCellEditor): API doc fixlet.
+
+2006-02-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JViewport.java
 	(isPaintRoot): New field.
 	(repaint): Only call super here. Also added a comment regarding
