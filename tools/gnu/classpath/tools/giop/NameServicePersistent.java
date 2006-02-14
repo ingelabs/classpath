@@ -97,7 +97,7 @@ public class NameServicePersistent
    */
   public static void main(String[] args)
   {
-    HelpPrinter.checkHelpKey(args, "giop/NamingServicePersistent.txt");
+    HelpPrinter.checkHelpKey(args, "giop/NameServicePersistent.txt");
     System.out.println("Please use --help for options.");
 
     int port = PORT;

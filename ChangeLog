@@ -1,5 +1,12 @@
 2006-02-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* tools/gnu/classpath/tools/giop/NameServicePersistent.java: Refer
+	to NameServicePersistent.
+	* tools/gnu/classpath/tools/giop/NameServicePersistent.txt: New file.
+	* tools/gnu/classpath/tools/giop/NamingServicePersistent.txt: Deleted.
+
+2006-02-14  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* NEWS: Updated tool status.
 	* gnu/CORBA/NamingService/NamingMap.java (Map): Made protected.
 	(constructor, bind, rebind): Rewritten.  
