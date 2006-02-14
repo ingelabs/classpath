@@ -46,8 +46,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -86,7 +84,6 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
-import javax.swing.text.Caret;
 
 public class JTable
   extends JComponent
@@ -1553,6 +1550,11 @@ public class JTable
   private boolean surrendersFocusOnKeystroke = false;
 
   /**
+   * A Rectangle object to be reused in {@link #getCellRect}. 
+   */
+  private Rectangle rectCache = new Rectangle();
+
+  /**
    * Creates a new <code>JTable</code> instance.
    */
   public JTable ()
@@ -2001,9 +2003,10 @@ public class JTable
       x += columnModel.getColumn(i).getWidth();
 
     if (includeSpacing)
-      return new Rectangle(x, y, width, height);
+      rectCache.setBounds(x, y, width, height);
     else
-      return new Rectangle(x, y, width - x_gap, height - y_gap);      
+      rectCache.setBounds(x, y, width - x_gap, height - y_gap);
+    return rectCache;
   }
 
   public void clearSelection()
@@ -2090,7 +2093,7 @@ public class JTable
    * Get the cell editor, suitable for editing the given cell. The default
    * method requests the editor from the column model. If the column model
    * does not provide the editor, the call is forwarded to the 
-   * {@link getDefaultEditor(Class)} with the parameter, obtained from
+   * {@link #getDefaultEditor(Class)} with the parameter, obtained from
    * {@link TableModel#getColumnClass(int)}.
    * 
    * @param row the cell row
