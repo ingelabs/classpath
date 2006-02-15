@@ -1263,8 +1263,8 @@ public class BasicTableUI extends TableUI
         for (int c = c0; c < cn; ++c)
           {
             bounds = table.getCellRect(0, c, true);
-            gfx.drawLine(bounds.x + bounds.width, p1.y,
-                         bounds.x + bounds.width, p2.y);
+            gfx.drawLine(bounds.x + bounds.width - 1, p1.y,
+                         bounds.x + bounds.width - 1, p2.y);
           }
         gfx.setColor(save);
       }
@@ -1277,8 +1277,8 @@ public class BasicTableUI extends TableUI
         for (int r = r0; r < rn; ++r)
           {
             bounds = table.getCellRect(r, 0, true);
-            gfx.drawLine(p1.x, bounds.y + bounds.height,
-                         p2.x, bounds.y + bounds.height);
+            gfx.drawLine(p1.x, bounds.y + bounds.height - 1,
+                         p2.x, bounds.y + bounds.height - 1);
           }
         gfx.setColor(save);
       }

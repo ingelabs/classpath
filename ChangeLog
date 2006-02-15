@@ -1,3 +1,9 @@
+2006-02-15  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(paint): Paint vertical and horizontal lines one pixel shifted
+	left/top.
+
 2006-02-15  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/util/zip/ZipFile.java
