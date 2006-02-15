@@ -1,6 +1,12 @@
 2006-02-15  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JInternalFrame.java
+	(setClosed): Call dispose to actually make the frame invisible
+	and unselected.
+
+2006-02-15  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JInternalFrame.java
 	(dispose): Call setVisible(false) instead of hide.
 	(doDefaultCloseOperation): Likewise.
 

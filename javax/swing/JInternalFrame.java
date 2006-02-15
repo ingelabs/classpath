@@ -1257,13 +1257,14 @@ public class JInternalFrame extends JComponent implements Accessible,
   {
     if (b && ! isClosed())
       {
-	fireInternalFrameEvent(InternalFrameEvent.INTERNAL_FRAME_CLOSING);
-	fireVetoableChange(IS_CLOSED_PROPERTY, false, true);
+        fireInternalFrameEvent(InternalFrameEvent.INTERNAL_FRAME_CLOSING);
+        fireVetoableChange(IS_CLOSED_PROPERTY, false, true);
 
-	isClosed = b;
+        isClosed = b;
+        dispose();
 
-	firePropertyChange(IS_CLOSED_PROPERTY, false, true);
-	fireInternalFrameEvent(InternalFrameEvent.INTERNAL_FRAME_CLOSED);
+        firePropertyChange(IS_CLOSED_PROPERTY, false, true);
+        fireInternalFrameEvent(InternalFrameEvent.INTERNAL_FRAME_CLOSED);
       }
   }
 
