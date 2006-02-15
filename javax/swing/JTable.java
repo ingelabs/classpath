@@ -3030,7 +3030,31 @@ public class JTable
           cols[i].setWidth(cols[i].getPreferredWidth() + average);
       }
   }
-
+  
+  /**
+   * This distributes the superfluous width in a table, setting the width of the
+   * column being resized strictly to its preferred width.
+   */
+  private void distributeSpillResizing(TableColumn[] cols, int spill,
+                                       TableColumn resizeIt)
+  {
+    int average = spill / (cols.length-1);
+    for (int i = 0; i < cols.length; i++)
+      {
+        if (cols[i] != null && !cols[i].equals(resizeIt))
+          cols[i].setWidth(cols[i].getPreferredWidth() + average);
+      }
+    resizeIt.setWidth(resizeIt.getPreferredWidth());
+  }  
+  
+  /**
+   * Set the widths of all columns, taking they preferred widths into
+   * consideration. The excess space, if any, will be distrubuted between
+   * all columns. This method also handles special cases when one of the
+   * collumns is currently being resized.
+   * 
+   * @see TableColumn#setPreferredWidth(int)
+   */
   public void doLayout()
   {
     TableColumn resizingColumn = null;
@@ -3079,14 +3103,14 @@ public class JTable
             cols = new TableColumn[ncols];
             for (int i = 0; i < ncols; ++i)
               cols[i] = columnModel.getColumn(i);
-            distributeSpill(cols, spill);
+            distributeSpillResizing(cols, spill, resizingColumn);
             break;
 
           case AUTO_RESIZE_SUBSEQUENT_COLUMNS:
             cols = new TableColumn[ncols];
             for (int i = rCol; i < ncols; ++i)
               cols[i] = columnModel.getColumn(i);
-            distributeSpill(cols, spill);
+            distributeSpillResizing(cols, spill, resizingColumn);
             break;
 
           case AUTO_RESIZE_OFF:

@@ -39,14 +39,18 @@ exception statement from your version. */
 package javax.swing.plaf.basic;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 import javax.swing.CellRendererPane;
 import javax.swing.JComponent;
 import javax.swing.LookAndFeel;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
@@ -59,7 +63,12 @@ import javax.swing.table.TableColumnModel;
 
 public class BasicTableHeaderUI extends TableHeaderUI
 {
-
+  /**
+   * The width of the space (in both direction) around the column boundary,
+   * where mouse cursor changes shape into "resize"
+   */
+  static int COLUMN_BOUNDARY_TOLERANCE = 3;
+  
   public static ComponentUI createUI(JComponent h)
   {
     return new BasicTableHeaderUI();
@@ -70,41 +79,172 @@ public class BasicTableHeaderUI extends TableHeaderUI
   protected CellRendererPane rendererPane;
   protected Border cellBorder;
 
-  public class MouseInputHandler implements MouseInputListener
+  /**
+   * Handles column movement and rearrangement by mouse. The same instance works
+   * both as mouse listener and the mouse motion listner.
+   */
+  public class MouseInputHandler
+      implements MouseInputListener
   {
+    /**
+     * If true, the cursor is being already shown in the alternative "resize"
+     * shape.
+     */
+    boolean showingResizeCursor;
+    
+    /**
+     * The position, from where the cursor is dragged during resizing.
+     */
+    int draggingFrom = -1;
+    
+    /**
+     * The previous preferred width of the column.
+     */
+    int prevPrefWidth = -1;
+    
+    /**
+     * The timer to coalesce column resizing events.
+     */
+    Timer timer;
+    
     public void mouseClicked(MouseEvent e)
     {
       // TODO: Implement this properly.
     }
-
+   
+    /**
+     * If being in the resizing mode, handle resizing.
+     */
     public void mouseDragged(MouseEvent e)
     {
-      // TODO: Implement this properly.
+      TableColumn resizeIt = header.getResizingColumn();
+      if (resizeIt != null)
+        {
+          // The timer is intialised on demand.
+          if (timer == null)
+            {
+              // The purpose of timer is to coalesce events. If the queue
+              // is free, the repaint event is fired immediately. 
+              timer = new Timer(1, new ActionListener()
+              {
+                public void actionPerformed(ActionEvent e)
+                {
+                  header.getTable().doLayout();
+                  header.repaint();
+                }
+              });
+              timer.setRepeats(false);
+              timer.setCoalesce(true);
+            }
+          resizeIt.setPreferredWidth(prevPrefWidth + e.getX() - draggingFrom);
+          timer.restart();
+        }
     }
 
     public void mouseEntered(MouseEvent e)
     {
       // TODO: Implement this properly.
     }
-
+    
+    /**
+     * Reset drag information of the column resizing.
+     */
     public void mouseExited(MouseEvent e)
     {
-      // TODO: Implement this properly.
+      header.setResizingColumn(null);
+      showingResizeCursor = false;
+      if (timer!=null)
+        timer.stop();
     }
 
+    /**
+     * Change the mouse cursor if the mouse if above the column boundary.
+     */
     public void mouseMoved(MouseEvent e)
     {
-      // TODO: Implement this properly.
-    }
+      // When dragging, the functionality is handled by the mouseDragged.
+      if (e.getButton()!=0)
+        return;
+      
+      TableColumnModel model = header.getColumnModel();
+      int n = model.getColumnCount();
+      if (n < 2)
+        // It must be at least two columns to have at least one boundary.
+        // Otherwise, nothing to do.
+        return;
 
+      boolean onBoundary = false;
+
+      int x = e.getX();
+      int a = x - COLUMN_BOUNDARY_TOLERANCE;
+      int b = x + COLUMN_BOUNDARY_TOLERANCE;
+
+      int p = 0;
+      
+      Scan: for (int i = 0; i < n - 1; i++)
+        {
+          p += model.getColumn(i).getWidth();
+
+          if (p >= a && p <= b)
+            {
+              TableColumn column = model.getColumn(i);
+              onBoundary = true;
+              
+              draggingFrom = x;
+              prevPrefWidth = column.getWidth();
+              header.setResizingColumn(column);
+              break Scan;
+            }
+        }
+
+      if (onBoundary != showingResizeCursor)
+        {
+          // Change the cursor shape, if needed.
+          if (onBoundary)
+            {
+              
+              if (p < x)
+                header.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
+              else
+                header.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+            }
+          else
+            {
+              header.setCursor(Cursor.getDefaultCursor());
+              header.setResizingColumn(null);
+            }
+
+          showingResizeCursor = onBoundary;
+        }
+    }
+    
+    /**
+     * Starts the dragging/resizing procedure.
+     */
     public void mousePressed(MouseEvent e)
     {
-      // TODO: Implement this properly.
+      TableColumn resizingColumn = header.getResizingColumn();
+      if (resizingColumn!=null)
+        resizingColumn.setPreferredWidth(resizingColumn.getWidth());
     }
-
+    
+    /**
+     * Set all column preferred width to the current width to prevend abrupt
+     * width changes during the next resize.
+     */
     public void mouseReleased(MouseEvent e)
     {
-      // TODO: Implement this properly.
+      TableColumnModel model = header.getColumnModel();
+      int n = model.getColumnCount();
+      if (n>2)
+        {
+          TableColumn c;
+          for (int i = 0; i < n; i++)
+            {
+              c = model.getColumn(i);
+              c.setPreferredWidth(c.getWidth());
+            }
+        }
     }
   }
 
@@ -131,9 +271,15 @@ public class BasicTableHeaderUI extends TableHeaderUI
     // TODO: Implement this properly.
   }
 
+  /**
+   * Add the mouse listener and the mouse motion listener to the table
+   * header. The listeners support table column resizing and rearrangement
+   * by mouse.
+   */
   protected void installListeners()
   {
     header.addMouseListener(mouseInputListener);
+    header.addMouseMotionListener(mouseInputListener);
   }
 
   public void installUI(JComponent c)
@@ -156,10 +302,14 @@ public class BasicTableHeaderUI extends TableHeaderUI
   {
     // TODO: Implement this properly.
   }
-
+  
+  /**
+   * Remove the previously installed listeners.
+   */
   protected void uninstallListeners()
   {
     header.removeMouseListener(mouseInputListener);
+    header.removeMouseMotionListener(mouseInputListener);
   }
 
   public void uninstallUI(JComponent c)
@@ -168,7 +318,10 @@ public class BasicTableHeaderUI extends TableHeaderUI
     uninstallKeyboardActions();
     uninstallDefaults();
   }
-
+  
+  /**
+   * Repaint the table header. 
+   */
   public void paint(Graphics gfx, JComponent c)
   {
     TableColumnModel cmod = header.getColumnModel();
