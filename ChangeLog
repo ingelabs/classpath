@@ -1,3 +1,8 @@
+2006-02-15  Olivier Jolly  <olivier.jolly@pcedev.com>
+
+	* java/io/ObjectOutputStream.java (writeClassDescriptor):
+	Call assignNewHandle() after writing Proxy class.
+
 2006-02-15  Olivier jolly  <olivier.jolly@pcedev.com>
 
 	Fixes bug #14144
