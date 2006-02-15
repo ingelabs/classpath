@@ -1702,8 +1702,11 @@ public class JTable
   
   /**
    * Add the new table column. The table column class allows to specify column
-   * features more precisely. You do not need the add columns to the table if
-   * the default column handling is sufficient.
+   * features more precisely, setting the preferred width, column data type
+   * (column class) and table headers.
+   * 
+   * There is no need the add columns to the table if the default column 
+   * handling is sufficient.
    * 
    * @param column
    *          the new column to add.
@@ -3183,48 +3186,109 @@ public class JTable
     revalidate();
     repaint();
   }
-
+  
+  /**
+   * Get the class (datatype) of the column. The cells are rendered and edited
+   * differently, depending from they data type.
+   * 
+   * @param column the column
+   * 
+   * @return the class, defining data type of that column (String.class for
+   * String, Boolean.class for boolean and so on).
+   */
   public Class getColumnClass(int column)
   {
     return getModel().getColumnClass(column);
   }
   
+  /**
+   * Get the name of the column. If the column has the column identifier set,
+   * the return value is the result of the .toString() method call on that
+   * identifier. If the identifier is not explicitly set, the returned value
+   * is calculated by 
+   * {@link javax.swing.table.AbstractTableModel#getColumnName(int)}.
+   * 
+   * @param column the column
+   * 
+   * @return the name of that column.
+   */
   public String getColumnName(int column)
   {
     int modelColumn = columnModel.getColumn(column).getModelIndex();
     return dataModel.getColumnName(modelColumn);
   }
-
+  
+  /**
+   * Get the column, currently being edited
+   * 
+   * @return the column, currently being edited.
+   */
   public int getEditingColumn()
   {
     return editingColumn;
   }
-
+  
+  /**
+   * Set the column, currently being edited
+   * 
+   * @param column the column, currently being edited.
+   */
   public void setEditingColumn(int column)
   {
     editingColumn = column;
   }
   
+  /**
+   * Get the row currently being edited.
+   * 
+   * @return the row, currently being edited.
+   */
   public int getEditingRow()
   {
     return editingRow;
   }
-
-  public void setEditingRow(int column)
+  
+  /**
+   * Set the row currently being edited.
+   * 
+   * @param row the row, that will be edited
+   */
+  public void setEditingRow(int row)
   {
-    editingRow = column;
+    editingRow = row;
   }
   
+  /**
+   * Get the editor component that is currently editing one of the cells
+   * 
+   * @return the editor component or null, if none of the cells is being
+   * edited.
+   */
   public Component getEditorComponent()
   {
     return editorComp;
   }
   
+  /**
+   * Check if one of the table cells is currently being edited.
+   * 
+   * @return true if there is a cell being edited.
+   */
   public boolean isEditing()
   {
     return editorComp != null;
   }
-
+  
+  /**
+   * Set the default editor for the given column class (column data type).
+   * By default, String is handled by text field and Boolean is handled by
+   * the check box.
+   *  
+   * @param columnClass the column data type
+   * @param editor the editor that will edit this data type
+   * 
+   * @see TableModel#getColumnClass(int)
+   */
   public void setDefaultEditor(Class columnClass, TableCellEditor editor)
   {
     if (editor != null)
@@ -3232,7 +3296,7 @@ public class JTable
     else
       defaultEditorsByColumnClass.remove(columnClass);
   }
-
+  
   public void addColumnSelectionInterval(int index0, int index1)
   {
     if ((index0 < 0 || index0 > (getColumnCount()-1)
@@ -3287,21 +3351,49 @@ public class JTable
     getSelectionModel().removeSelectionInterval(index0, index1);
   }
   
+  /**
+   * Checks if the given column is selected.
+   * 
+   * @param column the column
+   * 
+   * @return true if the column is selected (as reported by the selection
+   * model, associated with the column model), false otherwise.
+   */
   public boolean isColumnSelected(int column)
   {
     return getColumnModel().getSelectionModel().isSelectedIndex(column);
   }
-
+  
+  /**
+   * Checks if the given row is selected.
+   * 
+   * @param row the row
+   * 
+   * @return true if the row is selected (as reported by the selection model),
+   * false otherwise.
+   */
   public boolean isRowSelected(int row)
   {
     return getSelectionModel().isSelectedIndex(row);
   }
-
+  
+  /**
+   * Checks if the given cell is selected. The cell is selected if both
+   * the cell row and the cell column are selected.
+   * 
+   * @param row the cell row
+   * @param column the cell column
+   * 
+   * @return true if the cell is selected, false otherwise
+   */
   public boolean isCellSelected(int row, int column)
   {
     return isRowSelected(row) && isColumnSelected(column);
   }
   
+  /**
+   * Select all table.
+   */
   public void selectAll()
   {
     // rowLead and colLead store the current lead selection indices
@@ -3316,12 +3408,30 @@ public class JTable
     addColumnSelectionInterval(colLead,colLead);
     addRowSelectionInterval(rowLead, rowLead);
   }
-
+  
+  /**
+   * Get the cell value at the given position.
+   * 
+   * @param row the row to get the value
+   * @param column the actual column number (not the model index) 
+   * to get the value.
+   * 
+   * @return the cell value, as returned by model.
+   */
   public Object getValueAt(int row, int column)
   {
     return dataModel.getValueAt(row, convertColumnIndexToModel(column));
   }
-
+  
+  /**
+   * Set value for the cell at the given position. If the cell is not 
+   * editable, this method returns without action. The modified cell is
+   * repainted.
+   * 
+   * @param value the value to set
+   * @param row the row of the cell being modified
+   * @param column the column of the cell being modified
+   */
   public void setValueAt(Object value, int row, int column)
   {
     if (!isCellEditable(row, column))
@@ -3330,7 +3440,19 @@ public class JTable
     
     repaint(getCellRect(row, column, true));
   }
-
+  
+  /**
+   * Get table column with the given identified.
+   * 
+   * @param identifier the column identifier
+   * 
+   * @return the table column with this identifier
+   * 
+   * @throws IllegalArgumentException if <code>identifier</code> is 
+   *         <code>null</code> or there is no column with that identifier.
+   * 
+   * @see TableColumn#setIdentifier(Object)
+   */
   public TableColumn getColumn(Object identifier)
   {
     return columnModel.getColumn(columnModel.getColumnIndex(identifier));
@@ -3343,7 +3465,7 @@ public class JTable
    * @param row  the row index.
    * @param column  the column index.
    *
-   * @return A boolean.
+   * @return true if the cell is editable, false otherwise.
    */
   public boolean isCellEditable(int row, int column)
   {

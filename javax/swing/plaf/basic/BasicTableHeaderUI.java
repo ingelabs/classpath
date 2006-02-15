@@ -61,6 +61,9 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+/**
+ * Basic pluggable look and feel interface for JTableHeader.
+ */
 public class BasicTableHeaderUI extends TableHeaderUI
 {
   /**
@@ -73,10 +76,26 @@ public class BasicTableHeaderUI extends TableHeaderUI
   {
     return new BasicTableHeaderUI();
   }
-
+  
+  /**
+   * The table header that is using this interface.
+   */
   protected JTableHeader header;
+  
+  /**
+   * The mouse input listener, responsible for mouse manipulations with
+   * the table header.
+   */
   protected MouseInputListener mouseInputListener;
+  
+  /**
+   * Paint the header cell.
+   */
   protected CellRendererPane rendererPane;
+  
+  /**
+   * The header cell border.
+   */
   protected Border cellBorder;
 
   /**
@@ -107,9 +126,12 @@ public class BasicTableHeaderUI extends TableHeaderUI
      */
     Timer timer;
     
+    /**
+     * Returns without action, part of the MouseInputListener interface.
+     */
     public void mouseClicked(MouseEvent e)
     {
-      // TODO: Implement this properly.
+      // Nothing to do.
     }
    
     /**
@@ -141,9 +163,12 @@ public class BasicTableHeaderUI extends TableHeaderUI
         }
     }
 
+    /**
+     * Returns without action, part of the MouseInputListener interface.
+     */
     public void mouseEntered(MouseEvent e)
     {
-      // TODO: Implement this properly.
+      // Nothing to do.
     }
     
     /**
@@ -247,12 +272,21 @@ public class BasicTableHeaderUI extends TableHeaderUI
         }
     }
   }
-
+ 
+  /**
+   * Create and return the mouse input listener.
+   * 
+   * @return the mouse listener ({@link MouseInputHandler}, if not 
+   * overridden.
+   */
   protected MouseInputListener createMouseInputListener()
   {
     return new MouseInputHandler();
   }
-
+  
+  /**
+   * Construct a new BasicTableHeaderUI, create mouse listeners.
+   */
   public BasicTableHeaderUI()
   {
     mouseInputListener = createMouseInputListener();
