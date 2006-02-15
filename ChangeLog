@@ -1,3 +1,10 @@
+2006-02-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* examples/gnu/classpath/examples/swing/TableDemo.java
+	(TModel, createContent): Explain which value appears in the header.
+	* javax/swing/JTable.java (setColumnModel): Only set the
+	column header value if the getHeaderValue() returns null.
+
 2006-02-14  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #23931

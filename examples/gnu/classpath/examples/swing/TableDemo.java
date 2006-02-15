@@ -48,7 +48,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 
 /**
  * Displays the editable table. The first column consists of check boxes.
@@ -115,11 +114,13 @@ public class TableDemo extends JFrame
     }
     
     /**
-     * The column name.
+     * The column name, as suggested by model. This header should not be
+     * visible, as it is overridden by setting the header name with
+     * {@link TableColumn#setHeaderValue} in {@link TableDemo#createContent}.
      */
     public String getColumnName(int column)
     {
-     return "Demo "+column;
+       return "Error "+column;
     }
     
     /**
@@ -191,10 +192,16 @@ public class TableDemo extends JFrame
         DefaultTableColumnModel cm = new DefaultTableColumnModel();
         for (int i = 0; i < cols; i++)
           {
-            int w = 100+20*i;
             TableColumn column = new TableColumn(i);
-            column.setPreferredWidth(w);
+            
+            // Showing the variable width columns.
+            int width = 100+20*i;
+            column.setPreferredWidth(width);
+            
+            // If we do not set the header value here, the value, returned
+            // by model, is used.
             column.setHeaderValue("Width +"+(20*i));
+            
             cm.addColumn(column);            
           }
 

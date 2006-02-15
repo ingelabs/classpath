@@ -2763,8 +2763,13 @@ public class JTable
     if (dataModel != null && columnModel != null)
       {
         int ncols = getColumnCount();
+        TableColumn column;
         for (int i = 0; i < ncols; ++i)
-          columnModel.getColumn(i).setHeaderValue(dataModel.getColumnName(i));
+          {
+            column = columnModel.getColumn(i); 
+            if (column.getHeaderValue()==null)
+              column.setHeaderValue(dataModel.getColumnName(i));
+          }
       }
 
     // according to Sun's spec we also have to set the tableHeader's
