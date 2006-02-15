@@ -1,3 +1,83 @@
+2006-02-15  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* gnu/java/lang/CharData.java: Regenerated from 
+	doc/unicode/UnicodeData-4.0.0.txt, doc/unicode/SpecialCasing-4.0.0.txt
+	and scripts/unicode-muncher.pl.
+	* java/lang/Character.java: 
+	(PrivateUseCharacters): New private static class.
+	(UnassignedCharacters): Likewise.
+	(blocks): Changed from char[] to char[][] to reflect the changes in 
+	gnu/java/lang/CharData.  There is now one char[] per Unicode code
+	plane.
+	(data): Likewise.
+	(numValue): Likewise.
+	(upper): Likewise.
+	(lower): Likewise.
+	(direction): Likewise.
+	(readChar): Replaced this method with new method readCodePoint.
+	(readCodePoint): New method.
+	(isLowerCase(char)): Redirected to new isLowerCase(int).
+	(isLowerCase(int)): New method.
+	(isUpperCase(char)): Redirected to new isUpperCase(int).
+	(isUpperCase(int)): New method.
+	(isTitleCase(char)): Redirected to new isTitleCase(int).
+	(isTitleCase(int)): New method.
+	(isDigit(char)): Redirected to new isDigit(int).
+	(isDigit(int)): New method.
+	(isDefined(char)): Redirected to new isDefined(int).
+	(isDefined(int)): New method.
+	(isLetter(char)): Redirected to new isLetter(int).
+	(isLetter(int)): New method.
+	(isLetterOrDigit(char)): Redirected to new isLetterOrDigit(int).
+	(isLetterOrDigit(int)): New method.
+	(isJavaIdentifierStart(char)): Redirected to new 
+	isJavaIdentifierStart(int).
+	(isJavaIdentifierStart(int)): New method.
+	(isJavaIdentifierPart(char)): Redirected to new 
+	isJavaIdentifierPart(int).
+	(isJavaIdentifierPart(int)): New method.
+	(isUnicodeIdentifierStart(char)): Redirected to new
+	isUnicodeIdentifierStart(int).
+	(isUnicodeIdentifierStart(int)): New method.
+	(isUnicodeIdentifierPart(char)): Redirected to new 
+	isUnicodeIdentifierPart(int).
+	(isUnicodeIdentifierPart(int)): New method.
+	(isIdentifierIgnorable(char)): Redirected to new
+	isIdentifierIgnorable(int).
+	(isIdentifierIgnorable(int)): New method.
+	(toLowerCase(char)): Changed access to lower to correspond with new
+	char[][] type of lower.
+	(toLowerCase(int)) New method.
+	(toUpperCase(char)): Changed access to upper to correspond with new
+	char[][] type of upper.
+	(toUpperCase(int)): New method.
+	(toTitleCase(int)): New method.
+	(digit(char, int)): Replaced call to readChar with call to 
+	readCodePoint and changed access to numValue to reflect new char[][]
+	type of numValue. 
+	(digit(int, int)): New method.
+	(getNumericValue(char)): Changed access to numValue to reflect new
+	char[][] type of numValue.
+	(getNumericValue(int)): New method.
+	(isSpaceChar(char)): Redirected to new isSpaceChar(int).
+	(isSpaceChar(int)): New method.
+	(isWhitespace(char)): Redirected to new isWhitespace(int).
+	(isWhitespace(int)): New method.
+	(isISOControl(char)): Redirected to new isISOControl(int).
+	(isISOControl(int)): New method.
+	(getType(char)): Redirected to new getType(int).
+	(getType(int)): New method.
+	(getDirectionality(char)): Redirected to new getDirectionality(int).
+	(getDirectionality(int)): New method.
+	(isMirrored(char)): Changed call to readChar to readCodePoint.
+	(isMirrored(int)): New method.
+	* java/lang/String.java:
+	(upperCaseExpansion): Changed access to Character.direction to reflect
+	new char[][] type of direction.
+	(offsetByCodePoints): New method.
+	* scripts/unicode-muncher.pl: Adapted this script to handle Unicode 
+	4.0.0 which introduced supplementary character assignments.  
+
 2006-02-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java,
