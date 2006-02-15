@@ -51,6 +51,61 @@ final class DurationType
   extends AtomicSimpleType
 {
 
+  static class Duration
+    implements Comparable
+  {
+    int years;
+    int months;
+    int days;
+    int minutes;
+    float seconds;
+
+    public int hashCode()
+    {
+      int hc = years;
+      hc = hc * 31 + months;
+      hc = hc * 31 + days;
+      hc = hc * 31 + minutes;
+      hc = hc * 31 + new Float(seconds).hashCode();
+      return hc;
+    }
+
+    public boolean equals(Object other)
+    {
+      if (other instanceof Duration)
+        {
+          Duration duration = (Duration) other;
+          return duration.years ==years &&
+            duration.months == months &&
+            duration.days == days &&
+            duration.minutes == minutes &&
+            duration.seconds == seconds;
+        }
+      return false;
+    }
+
+    public int compareTo(Object other)
+    {
+      if (other instanceof Duration)
+        {
+          Duration duration = (Duration) other;
+          if (duration.years != years)
+            return years - duration.years;
+          if (duration.months != months)
+            return months - duration.months;
+          if (duration.days != days)
+            return days - duration.days;
+          if (duration.minutes != minutes)
+            return minutes = duration.minutes;
+          if (duration.seconds == seconds)
+            return 0;
+          return (seconds < duration.seconds) ? -1 : 1;
+        }
+      return 0;
+    }
+    
+  }
+
   static final int[] CONSTRAINING_FACETS = {
     Facet.PATTERN,
     Facet.ENUMERATION,
@@ -116,5 +171,69 @@ final class DurationType
       }
   }
   
+  public Object createValue(String value, ValidationContext context) {
+    boolean negative = false;
+    int days = 0, months = 0, years = 0;
+    int minutes = 0;
+    float seconds = 0.0f;
+    int len = value.length();
+    char expect = 'P';
+    boolean seenT = false;
+    int start = 0;
+    for (int i = 0; i < len; i++)
+      {
+        char c = value.charAt(i);
+        if (c == '-' && expect == 'P')
+          {
+            negative = true;
+            continue;
+          }
+        if (c == expect)
+          {
+            if (c == 'P')
+              expect = 'Y';
+            else if (c == 'Y')
+              {
+                expect = 'M';
+                years = Integer.parseInt(value.substring(start, i));
+              }
+            else if (c == 'M' && !seenT)
+              expect = 'D';
+            else if (c == 'D')
+              expect = 'T';
+            else if (c == 'T')
+              {
+                expect = 'H';
+                seenT = true;
+              }
+            else if (c == 'H')
+              expect = 'M';
+            else if (c == 'M' && seenT)
+              expect = 'S';
+            else if (c == 'S')
+              {
+                if (i + 1 != len)
+                  return null;
+              }
+            start = i + 1;
+            continue;
+          }
+        if (c >= 0x30 && c <= 0x39 && expect != 'P' && expect != 'T')
+          continue;
+        return null;
+      }
+    if (negative)
+      {
+        days = days * -1;
+        minutes = minutes * -1;
+        seconds = seconds * -1.0f;
+      }
+    Duration duration = new Duration();
+    duration.days = days;
+    duration.minutes = minutes;
+    duration.seconds = seconds;
+    return duration;
+  }
+
 }
 

@@ -97,5 +97,16 @@ final class DoubleType
       }
   }
   
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        return new Double(literal);
+      }
+    catch (NumberFormatException e)
+      {
+        return null;
+      }
+  }
+  
 }
 

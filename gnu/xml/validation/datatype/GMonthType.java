@@ -51,6 +51,38 @@ final class GMonthType
   extends AtomicSimpleType
 {
 
+  static class GMonth
+    implements Comparable
+  {
+
+    int month;
+
+    public int hashCode()
+    {
+      return month;
+    }
+
+    public boolean equals(Object other)
+    {
+      if (other instanceof GMonth)
+        return ((GMonth) other).month == month;
+      return false;
+    }
+
+    public int compareTo(Object other)
+    {
+      if (other instanceof GMonth)
+        {
+          GMonth gm = (GMonth) other;
+          if (gm.month == month)
+            return 0;
+          return (month < gm.month) ? -1 : 1;
+        }
+      return 0;
+    }
+    
+  }
+
   static final int[] CONSTRAINING_FACETS = {
     Facet.PATTERN,
     Facet.ENUMERATION,
@@ -112,6 +144,19 @@ final class GMonthType
         break;
       default:
         throw new DatatypeException("illegal GMonth value");
+      }
+  }
+  
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        GMonth ret = new GMonth();
+        ret.month = Integer.parseInt(literal.substring(2));
+        return ret;
+      }
+    catch (Exception e)
+      {
+        return null;
       }
   }
   

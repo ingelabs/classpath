@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package gnu.xml.validation.datatype;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Set;
 import javax.xml.XMLConstants;
@@ -102,6 +103,17 @@ final class DecimalType
           continue;
         else
           throw new DatatypeException(i, "invalid decimal value");
+      }
+  }
+  
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        return new BigDecimal(literal);
+      }
+    catch (NumberFormatException e)
+      {
+        return null;
       }
   }
   

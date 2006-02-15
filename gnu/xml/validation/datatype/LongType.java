@@ -118,5 +118,16 @@ final class LongType
       }
   }
   
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        return new Long(literal);
+      }
+    catch (NumberFormatException e)
+      {
+        return null;
+      }
+  }
+  
 }
 

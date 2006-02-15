@@ -51,6 +51,38 @@ final class GDayType
   extends AtomicSimpleType
 {
 
+  static class GDay
+    implements Comparable
+  {
+
+    int day;
+
+    public int hashCode()
+    {
+      return day;
+    }
+
+    public boolean equals(Object other)
+    {
+      if (other instanceof GDay)
+        return ((GDay) other).day == day;
+      return false;
+    }
+
+    public int compareTo(Object other)
+    {
+      if (other instanceof GDay)
+        {
+          GDay gd = (GDay) other;
+          if (gd.day == day)
+            return 0;
+          return (day < gd.day) ? -1 : 1;
+        }
+      return 0;
+    }
+    
+  }
+
   static final int[] CONSTRAINING_FACETS = {
     Facet.PATTERN,
     Facet.ENUMERATION,
@@ -123,6 +155,19 @@ final class GDayType
         break;
       default:
         throw new DatatypeException("invalid GDay value");
+      }
+  }
+  
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        GDay ret = new GDay();
+        ret.day = Integer.parseInt(literal.substring(3));
+        return ret;
+      }
+    catch (Exception e)
+      {
+        return null;
       }
   }
   

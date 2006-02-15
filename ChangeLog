@@ -1,3 +1,41 @@
+2006-02-15  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/validation/datatype/BooleanType.java,
+	  gnu/xml/validation/datatype/ByteType.java,
+	  gnu/xml/validation/datatype/DateTimeType.java,
+	  gnu/xml/validation/datatype/DateType.java,
+	  gnu/xml/validation/datatype/DecimalType.java,
+	  gnu/xml/validation/datatype/DoubleType.java,
+	  gnu/xml/validation/datatype/DurationType.java,
+	  gnu/xml/validation/datatype/FloatType.java,
+	  gnu/xml/validation/datatype/GDayType.java,
+	  gnu/xml/validation/datatype/GMonthDayType.java,
+	  gnu/xml/validation/datatype/GMonthType.java,
+	  gnu/xml/validation/datatype/GYearMonthType.java,
+	  gnu/xml/validation/datatype/GYearType.java,
+	  gnu/xml/validation/datatype/IntType.java,
+	  gnu/xml/validation/datatype/IntegerType.java,
+	  gnu/xml/validation/datatype/LongType.java,
+	  gnu/xml/validation/datatype/MaxExclusiveFacet.java,
+	  gnu/xml/validation/datatype/MaxInclusiveFacet.java,
+	  gnu/xml/validation/datatype/MinExclusiveFacet.java,
+	  gnu/xml/validation/datatype/MinInclusiveFacet.java,
+	  gnu/xml/validation/datatype/NegativeIntegerType.java,
+	  gnu/xml/validation/datatype/NonNegativeIntegerType.java,
+	  gnu/xml/validation/datatype/NonPositiveIntegerType.java,
+	  gnu/xml/validation/datatype/PositiveIntegerType.java,
+	  gnu/xml/validation/datatype/ShortType.java,
+	  gnu/xml/validation/datatype/SimpleType.java,
+	  gnu/xml/validation/datatype/TimeType.java,
+	  gnu/xml/validation/datatype/TypeBuilder.java,
+	  gnu/xml/validation/datatype/UnsignedByteType.java,
+	  gnu/xml/validation/datatype/UnsignedIntType.java,
+	  gnu/xml/validation/datatype/UnsignedLongType.java,
+	  gnu/xml/validation/datatype/UnsignedShortType.java: Provide value
+	  objects for datatypes. Make maxExclusive,minExclusive,maxInclusive,
+	  minInclusive facets use the value space of the base type, and
+	  implement.
+
 2006-02-15  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.c

@@ -82,5 +82,10 @@ final class BooleanType
       throw new DatatypeException("invalid boolean value");
   }
   
+  public Object createValue(String literal, ValidationContext context) {
+    return ("1".equals(literal) || "true".equals(literal)) ? Boolean.TRUE :
+      Boolean.FALSE;
+  }
+  
 }
 

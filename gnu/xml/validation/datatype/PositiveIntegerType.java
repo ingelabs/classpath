@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package gnu.xml.validation.datatype;
 
+import java.math.BigInteger;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import org.relaxng.datatype.DatatypeException;
@@ -92,6 +93,17 @@ final class PositiveIntegerType
         else if (c >= 0x30 && c <= 0x39)
           continue;
         throw new DatatypeException(i, "invalid positive integer value");
+      }
+  }
+  
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        return new BigInteger(literal);
+      }
+    catch (NumberFormatException e)
+      {
+        return null;
       }
   }
   

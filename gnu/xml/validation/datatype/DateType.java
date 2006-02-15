@@ -37,6 +37,9 @@ exception statement from your version. */
 
 package gnu.xml.validation.datatype;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import org.relaxng.datatype.DatatypeException;
@@ -123,6 +126,95 @@ final class DateType
         break;
       default:
         throw new DatatypeException("invalid date value");
+      }
+  }
+  
+  public Object createValue(String value, ValidationContext context) {
+    int len = value.length();
+    int state = 0;
+    int start = 0;
+    Calendar cal = new GregorianCalendar();
+    cal.set(Calendar.HOUR, 0);
+    cal.set(Calendar.MINUTE, 0);
+    cal.set(Calendar.SECOND, 0);
+    try
+      {
+        for (int i = 0; i < len; i++)
+          {
+            char c = value.charAt(i);
+            if (c == '-' && i == 0)
+              {
+                start++;
+                continue;
+              }
+            if (c >= 0x30 && c <= 0x39)
+              continue;
+            switch (state)
+              {
+              case 0: // year
+                if (c == '-')
+                  {
+                    cal.set(Calendar.YEAR,
+                            Integer.parseInt(value.substring(0, i)));
+                    state = 1;
+                    start = i + 1;
+                    continue;
+                  }
+                break;
+              case 1: // month
+                if (c == '-')
+                  {
+                    cal.set(Calendar.MONTH,
+                            Integer.parseInt(value.substring(start, i)));
+                    state = 2;
+                    start = i + 1;
+                    continue;
+                  }
+                break;
+              case 2: // day
+                if (c == 'T')
+                  {
+                    cal.set(Calendar.DATE,
+                            Integer.parseInt(value.substring(start, i)));
+                    state = 7;
+                    start = i + 1;
+                    continue;
+                  }
+                break;
+              }
+          }
+        // end of input
+        if (len - start > 0 && state == 7)
+          {
+            // Timezone
+            String timezone = value.substring(len - start);
+            int i = timezone.indexOf(':');
+            if (i == -1)
+              {
+                if ("Z".equals(timezone))
+                  timezone = "UTC";
+                TimeZone tz = TimeZone.getTimeZone(timezone);
+                if (tz == null)
+                  return null;
+                cal.set(Calendar.ZONE_OFFSET, tz.getRawOffset());
+              }
+            else
+              {
+                String tzh = timezone.substring(0, i);
+                String tzm = timezone.substring(i + 1);
+                int offset = Integer.parseInt(tzh) * 360000;
+                if (offset < 0)
+                  offset -= Integer.parseInt(tzm) * 60000;
+                else
+                  offset += Integer.parseInt(tzm) * 60000;
+                cal.set(Calendar.ZONE_OFFSET, offset);
+              }
+          }
+        return cal.getTime();
+      }
+    catch (NumberFormatException e)
+      {
+        return null;
       }
   }
   

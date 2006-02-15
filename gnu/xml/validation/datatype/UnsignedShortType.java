@@ -107,5 +107,16 @@ final class UnsignedShortType
       }
   }
   
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        return new Short(literal);
+      }
+    catch (NumberFormatException e)
+      {
+        return null;
+      }
+  }
+  
 }
 

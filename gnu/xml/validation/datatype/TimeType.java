@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package gnu.xml.validation.datatype;
 
+import java.util.TimeZone;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import org.relaxng.datatype.DatatypeException;
@@ -50,6 +51,43 @@ import org.relaxng.datatype.ValidationContext;
 final class TimeType
   extends AtomicSimpleType
 {
+
+  static class Time
+    implements Comparable
+  {
+    int minutes;
+    float seconds;
+
+    public int hashCode()
+    {
+      return minutes * 31 + new Float(seconds).hashCode();
+    }
+
+    public boolean equals(Object other)
+    {
+      if (other instanceof Time)
+        {
+          Time time = (Time) other;
+          return time.minutes == minutes && time.seconds == seconds;
+        }
+      return false;
+    }
+
+    public int compareTo(Object other)
+    {
+      if (other instanceof Time)
+        {
+          Time time = (Time) other;
+          if (time.minutes != minutes)
+            return minutes - time.minutes;
+          if (time.seconds == seconds)
+            return 0;
+          return (seconds < time.seconds) ? -1 : 1;
+        }
+      return 0;
+    }
+    
+  }
 
   static final int[] CONSTRAINING_FACETS = {
     Facet.PATTERN,
@@ -177,6 +215,87 @@ final class TimeType
         break;
       default:
         throw new DatatypeException(len, "invalid time value");
+      }
+  }
+  
+  public Object createValue(String value, ValidationContext context) {
+    int len = value.length();
+    int state = 3;
+    int start = 0;
+    Time time = new Time();
+    try
+      {
+        for (int i = 0; i < len; i++)
+          {
+            char c = value.charAt(i);
+            if (c >= 0x30 && c <= 0x39)
+              continue;
+            switch (state)
+              {
+              case 3: // hour
+                if (c == ':')
+                  {
+                    time.minutes =
+                      Integer.parseInt(value.substring(start, i)) * 60;
+                    state = 4;
+                    start = i + 1;
+                    continue;
+                  }
+                break;
+              case 4: // minute
+                if (c == ':')
+                  {
+                    time.minutes +=
+                      Integer.parseInt(value.substring(start, i));
+                    state = 5;
+                    start = i + 1;
+                    continue;
+                  }
+                break;
+              case 5: // second
+                if (c == ' ')
+                  {
+                    time.seconds =
+                      Float.parseFloat(value.substring(start, i));
+                    state = 7;
+                    start = i + 1;
+                    continue;
+                  }
+                break;
+              }
+          }
+        // end of input
+        if (len - start > 0 && state == 7)
+          {
+            // Timezone
+            String timezone = value.substring(len - start);
+            int i = timezone.indexOf(':');
+            if (i == -1)
+              {
+                if ("Z".equals(timezone))
+                  timezone = "UTC";
+                TimeZone tz = TimeZone.getTimeZone(timezone);
+                if (tz == null)
+                  return null;
+                time.minutes += tz.getRawOffset();
+              }
+            else
+              {
+                String tzh = timezone.substring(0, i);
+                String tzm = timezone.substring(i + 1);
+                int offset = Integer.parseInt(tzh) * 60;
+                if (offset < 0)
+                  offset -= Integer.parseInt(tzm);
+                else
+                  offset += Integer.parseInt(tzm);
+                time.minutes += offset;
+              }
+          }
+        return time;
+      }
+    catch (NumberFormatException e)
+      {
+        return null;
       }
   }
   

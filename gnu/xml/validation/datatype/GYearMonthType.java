@@ -51,6 +51,46 @@ final class GYearMonthType
   extends AtomicSimpleType
 {
 
+  static class GYearMonth
+    implements Comparable
+  {
+
+    int year;
+    int month;
+
+    public int hashCode()
+    {
+      return year * 31 + month;
+    }
+
+    public boolean equals(Object other)
+    {
+      if (other instanceof GYearMonth)
+        {
+          GYearMonth gmy = (GYearMonth) other;
+          return gmy.year == year && gmy.month == month;
+        }
+      return false;
+    }
+
+    public int compareTo(Object other)
+    {
+      if (other instanceof GYearMonth)
+        {
+          GYearMonth gmy = (GYearMonth) other;
+          if (gmy.year == year)
+            {
+              if (gmy.month == month)
+                return 0;
+              return (month < gmy.month) ? -1 : 1;
+            }
+          return (year < gmy.year) ? -1 : 1;
+        }
+      return 0;
+    }
+    
+  }
+
   static final int[] CONSTRAINING_FACETS = {
     Facet.PATTERN,
     Facet.ENUMERATION,
@@ -113,6 +153,23 @@ final class GYearMonthType
         break;
       default:
         throw new DatatypeException("illegal GYear value");
+      }
+  }
+  
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        int offset = 5;
+        if (literal.charAt(0) == '-')
+          offset++;
+        GYearMonth ret = new GYearMonth();
+        ret.year = Integer.parseInt(literal.substring(0, offset));
+        ret.month = Integer.parseInt(literal.substring(offset + 1));
+        return ret;
+      }
+    catch (Exception e)
+      {
+        return null;
       }
   }
   

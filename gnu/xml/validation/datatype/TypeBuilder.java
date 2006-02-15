@@ -80,13 +80,13 @@ public class TypeBuilder
     else if ("whiteSpace".equals(name))
       type.facets.add(parseWhiteSpaceFacet(value));
     else if ("maxInclusive".equals(name))
-      type.facets.add(parseMaxInclusiveFacet(value));
+      type.facets.add(parseMaxInclusiveFacet(value, context));
     else if ("maxExclusive".equals(name))
-      type.facets.add(parseMaxExclusiveFacet(value));
+      type.facets.add(parseMaxExclusiveFacet(value, context));
     else if ("minExclusive".equals(name))
-      type.facets.add(parseMinExclusiveFacet(value));
+      type.facets.add(parseMinExclusiveFacet(value, context));
     else if ("minInclusive".equals(name))
-      type.facets.add(parseMinInclusiveFacet(value));
+      type.facets.add(parseMinInclusiveFacet(value, context));
     else if ("totalDigits".equals(name))
       type.facets.add(parseTotalDigitsFacet(value));
     else if ("fractionDigits".equals(name))
@@ -171,7 +171,8 @@ public class TypeBuilder
     throw new DatatypeException("argument must be preserve, replace, or collapse");
   }
 
-  MaxInclusiveFacet parseMaxInclusiveFacet(String value)
+  MaxInclusiveFacet parseMaxInclusiveFacet(String value,
+                                           ValidationContext context)
     throws DatatypeException
   {
     int si = value.indexOf(' ');
@@ -183,10 +184,11 @@ public class TypeBuilder
         fixed = true;
         value = value.substring(0, si);
       }
-    return new MaxInclusiveFacet(Integer.parseInt(value), fixed, null);
+    return new MaxInclusiveFacet(type.createValue(value, context), fixed, null);
   }
   
-  MaxExclusiveFacet parseMaxExclusiveFacet(String value)
+  MaxExclusiveFacet parseMaxExclusiveFacet(String value,
+                                           ValidationContext context)
     throws DatatypeException
   {
     int si = value.indexOf(' ');
@@ -198,10 +200,11 @@ public class TypeBuilder
         fixed = true;
         value = value.substring(0, si);
       }
-    return new MaxExclusiveFacet(Integer.parseInt(value), fixed, null);
+    return new MaxExclusiveFacet(type.createValue(value, context), fixed, null);
   }
   
-  MinExclusiveFacet parseMinExclusiveFacet(String value)
+  MinExclusiveFacet parseMinExclusiveFacet(String value,
+                                           ValidationContext context)
     throws DatatypeException
   {
     int si = value.indexOf(' ');
@@ -213,10 +216,11 @@ public class TypeBuilder
         fixed = true;
         value = value.substring(0, si);
       }
-    return new MinExclusiveFacet(Integer.parseInt(value), fixed, null);
+    return new MinExclusiveFacet(type.createValue(value, context), fixed, null);
   }
   
-  MinInclusiveFacet parseMinInclusiveFacet(String value)
+  MinInclusiveFacet parseMinInclusiveFacet(String value,
+                                           ValidationContext context)
     throws DatatypeException
   {
     int si = value.indexOf(' ');
@@ -228,7 +232,7 @@ public class TypeBuilder
         fixed = true;
         value = value.substring(0, si);
       }
-    return new MinInclusiveFacet(Integer.parseInt(value), fixed, null);
+    return new MinInclusiveFacet(type.createValue(value, context), fixed, null);
   }
   
   TotalDigitsFacet parseTotalDigitsFacet(String value)

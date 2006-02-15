@@ -118,5 +118,16 @@ final class ByteType
       }
   }
   
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        return new Byte(literal);
+      }
+    catch (NumberFormatException e)
+      {
+        return null;
+      }
+  }
+  
 }
 

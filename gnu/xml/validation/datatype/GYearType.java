@@ -51,6 +51,38 @@ final class GYearType
   extends AtomicSimpleType
 {
 
+  static class GYear
+    implements Comparable
+  {
+
+    int year;
+
+    public int hashCode()
+    {
+      return year;
+    }
+
+    public boolean equals(Object other)
+    {
+      if (other instanceof GYear)
+        return ((GYear) other).year == year;
+      return false;
+    }
+
+    public int compareTo(Object other)
+    {
+      if (other instanceof GYear)
+        {
+          GYear gy = (GYear) other;
+          if (gy.year == year)
+            return 0;
+          return (year < gy.year) ? -1 : 1;
+        }
+      return 0;
+    }
+    
+  }
+
   static final int[] CONSTRAINING_FACETS = {
     Facet.PATTERN,
     Facet.ENUMERATION,
@@ -100,6 +132,19 @@ final class GYearType
         break;
       default:
         throw new DatatypeException("invalid GYear value");
+      }
+  }
+  
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        GYear ret = new GYear();
+        ret.year = Integer.parseInt(literal);
+        return ret;
+      }
+    catch (Exception e)
+      {
+        return null;
       }
   }
   

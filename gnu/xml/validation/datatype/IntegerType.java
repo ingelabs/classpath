@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package gnu.xml.validation.datatype;
 
+import java.math.BigInteger;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import org.relaxng.datatype.DatatypeException;
@@ -91,6 +92,17 @@ final class IntegerType
         else if (c == '-' && i == 0)
           continue;
         throw new DatatypeException(i, "invalid integer value");
+      }
+  }
+  
+  public Object createValue(String literal, ValidationContext context) {
+    try
+      {
+        return new BigInteger(literal);
+      }
+    catch (NumberFormatException e)
+      {
+        return null;
       }
   }
   

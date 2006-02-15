@@ -37,6 +37,10 @@ exception statement from your version. */
 
 package gnu.xml.validation.datatype;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Date;
+
 /**
  * The <code>minExclusive</code> facet.
  *
@@ -46,11 +50,11 @@ public final class MinExclusiveFacet
   extends Facet
 {
   
-  public final int value;
+  public final Object value;
 
   public final boolean fixed;
 
-  public MinExclusiveFacet(int value, boolean fixed, Annotation annotation)
+  public MinExclusiveFacet(Object value, boolean fixed, Annotation annotation)
   {
     super(MIN_EXCLUSIVE, annotation);
     this.value = value;
@@ -59,13 +63,48 @@ public final class MinExclusiveFacet
   
   public int hashCode()
   {
-    return value;
+    return value.hashCode();
   }
 
   public boolean equals(Object other)
   {
     return (other instanceof MinExclusiveFacet &&
-            ((MinExclusiveFacet) other).value == value);
+            ((MinExclusiveFacet) other).value.equals(value));
+  }
+  
+  boolean matches(Object test)
+  {
+    if (value instanceof Date)
+      {
+        Date dvalue = (Date) value;
+        if (!(test instanceof Date))
+          return false;
+        return ((Date) test).after(dvalue);
+      }
+    else if (value instanceof BigInteger)
+      {
+        BigInteger ivalue = (BigInteger) value;
+        if (!(test instanceof BigInteger))
+          return false;
+        return ((BigInteger) test).compareTo(ivalue) > 0;
+      }
+    else if (value instanceof BigDecimal)
+      {
+        BigDecimal dvalue = (BigDecimal) value;
+        if (!(test instanceof BigDecimal))
+          return false;
+        return ((BigDecimal) test).compareTo(dvalue) > 0;
+      }
+    else if (value instanceof Comparable)
+      {
+        if (!(test.getClass().equals(value.getClass())))
+          return false;
+        return ((Comparable) test).compareTo(value) > 0;
+      }
+    Number nvalue = (Number) value;
+    if (!(test instanceof Number))
+      return false;
+    return ((Number) test).doubleValue() > nvalue.doubleValue();
   }
   
 }

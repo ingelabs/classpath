@@ -139,8 +139,9 @@ public class SimpleType
   public void checkValid(String value, ValidationContext context)
     throws DatatypeException
   {
-    if (facets != null)
+    if (facets != null && !facets.isEmpty())
       {
+        Object parsedValue = createValue(value, context);
         for (Iterator i = facets.iterator(); i.hasNext(); )
           {
             Facet facet = (Facet) i.next();
@@ -174,10 +175,24 @@ public class SimpleType
                 // TODO
                 break;
               case Facet.MAX_INCLUSIVE:
+                MaxInclusiveFacet xif = (MaxInclusiveFacet) facet;
+                if (!xif.matches(parsedValue))
+                  throw new DatatypeException("beyond upper bound");
+                break;
               case Facet.MAX_EXCLUSIVE:
+                MaxExclusiveFacet xef = (MaxExclusiveFacet) facet;
+                if (!xef.matches(parsedValue))
+                  throw new DatatypeException("beyond upper bound");
+                break;
               case Facet.MIN_EXCLUSIVE:
+                MinExclusiveFacet nef = (MinExclusiveFacet) facet;
+                if (!nef.matches(parsedValue))
+                  throw new DatatypeException("beyond lower bound");
+                break;
               case Facet.MIN_INCLUSIVE:
-                // TODO
+                MinInclusiveFacet nif = (MinInclusiveFacet) facet;
+                if (!nif.matches(parsedValue))
+                  throw new DatatypeException("beyond lower bound");
                 break;
               case Facet.TOTAL_DIGITS:
                 TotalDigitsFacet tdf = (TotalDigitsFacet) facet;
@@ -216,19 +231,16 @@ public class SimpleType
     throw new UnsupportedOperationException();
   }
   
-  // TODO createValue
   public Object createValue(String literal, ValidationContext context) {
-    throw new UnsupportedOperationException();
+    return literal;
   }
   
-  // TODO sameValue
   public boolean sameValue(Object value1, Object value2) {
-    throw new UnsupportedOperationException();
+    return value1.equals(value2);
   }
   
-  // TODO valueHashCode
   public int valueHashCode(Object value) {
-    throw new UnsupportedOperationException();
+    return value.hashCode();
   }
 
   public int getIdType()
