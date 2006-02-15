@@ -1600,7 +1600,7 @@ public abstract class Component
     if (prefSize == null)
       {
         if (peer == null)
-          prefSize = size();
+          prefSize = minimumSize();
         else
           prefSize = peer.getPreferredSize();
       }
