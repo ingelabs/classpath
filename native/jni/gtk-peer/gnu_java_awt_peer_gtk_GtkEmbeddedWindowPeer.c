@@ -44,14 +44,14 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create
   (JNIEnv *env, jobject obj, jlong socket_id)
 {
-  GtkWidget *window;
+  GtkWindow *window;
   GtkWidget *fixed;
 
   gdk_threads_enter ();
 
   NSA_SET_GLOBAL_REF (env, obj);
 
-  window = gtk_plug_new ((GdkNativeWindow) socket_id);
+  window = GTK_WINDOW (gtk_plug_new ((GdkNativeWindow) socket_id));
 
   gtk_window_set_decorated (window, FALSE);
 

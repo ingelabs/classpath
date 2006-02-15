@@ -1,3 +1,9 @@
+2006-02-15  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create):
+	gtk_plug_new() returns a GtkWindow.
+
 2006-02-15  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/SpinnerNumberModel.java
