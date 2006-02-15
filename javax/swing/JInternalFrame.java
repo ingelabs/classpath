@@ -616,7 +616,7 @@ public class JInternalFrame extends JComponent implements Accessible,
    */
   public void dispose()
   {
-    hide();
+    setVisible(false);
     JDesktopPane pane = getDesktopPane();
     if (pane != null)
       pane.setSelectedFrame(null);
@@ -647,11 +647,11 @@ public class JInternalFrame extends JComponent implements Accessible,
     switch (getDefaultCloseOperation())
       {
       case HIDE_ON_CLOSE:
-	hide();
-	break;
+	    setVisible(false);
+	    break;
       case DISPOSE_ON_CLOSE:
-	dispose();
-	break;
+	    dispose();
+	    break;
       }
   }
 
