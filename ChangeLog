@@ -1,3 +1,14 @@
+2006-02-15  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/util/zip/ZipFile.java
+	(checkZipFile): Inlined readLeInt and rewritten for robustness.
+	(readLeShort(DataInput,byte[]), readLeInt(DataInput,byte[],
+	readLeShort(byte[],int), readLeInt(byte[],int)): Removed.
+	(readEntries): Rewritten to use PartialInputStream.
+	(locBuf, checkLocalHeader): Removed.
+	(getInputStream): Rewritten to use new PartialInputStream.
+	(PartialInputStream): Rewritten to do buffering.
+
 2006-02-15  Michael Koch  <konqueror@gmx.de>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.c
