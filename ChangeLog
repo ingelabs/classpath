@@ -1,3 +1,9 @@
+2006-02-15  Olivier jolly  <olivier.jolly@pcedev.com>
+
+	Fixes bug #14144
+	* java/io/ObjectInputStream.java (readClassDescriptor):
+	Class doesn't have to be abstract for first_nonserial.
+
 2006-02-15  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JInternalFrame.java
