@@ -1394,6 +1394,84 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetBounds
 }
 
 JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetLocation
+  (JNIEnv *env, jobject obj, jint x, jint y)
+{
+  gdk_threads_enter ();
+
+  Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetLocationUnlocked
+    (env, obj, x, y);
+
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetLocationUnlocked
+  (JNIEnv *env, jobject obj, jint x, jint y)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gtk_window_move (GTK_WINDOW(ptr), x, y);
+
+  if (GTK_WIDGET (ptr)->window != NULL)
+    gdk_window_move (GTK_WIDGET (ptr)->window, x, y);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetLocation
+  (JNIEnv *env, jobject obj, jint x, jint y)
+{
+  gdk_threads_enter ();
+
+  Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetLocationUnlocked
+    (env, obj, x, y);
+
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetLocationUnlocked
+  (JNIEnv *env, jobject obj, jint x, jint y)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gtk_window_move (GTK_WINDOW(ptr), x, y);
+
+  if (GTK_WIDGET (ptr)->window != NULL)
+    gdk_window_move (GTK_WIDGET (ptr)->window, x, y);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetLocation
+  (JNIEnv *env, jobject obj, jint x, jint y)
+{
+  gdk_threads_enter ();
+
+  Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetLocationUnlocked
+    (env, obj, x, y);
+
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetLocationUnlocked
+  (JNIEnv *env, jobject obj, jint x, jint y)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gtk_window_move (GTK_WINDOW(ptr), x, y);
+
+  if (GTK_WIDGET (ptr)->window != NULL)
+    gdk_window_move (GTK_WIDGET (ptr)->window, x, y);
+}
+
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetBoundsUnlocked
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
 {

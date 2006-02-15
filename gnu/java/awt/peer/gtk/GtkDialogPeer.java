@@ -62,16 +62,6 @@ public class GtkDialogPeer extends GtkWindowPeer
     g.translate (-insets.left, -insets.top);
     return g;
   }  
-
-  public void setVisible (boolean b)
-  {
-    // Prevent the window manager from automatically placing this
-    // window when it is shown.
-    setBounds(awtComponent.getX(), awtComponent.getY(),
-              awtComponent.getWidth(), awtComponent.getHeight());
-    
-    super.setVisible(b);
-  }
   
   protected void postMouseEvent(int id, long when, int mods, int x, int y, 
 				int clickCount, boolean popupTrigger)

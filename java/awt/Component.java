@@ -900,7 +900,7 @@ public abstract class Component
         // Avoid NullPointerExceptions by creating a local reference.
         ComponentPeer currentPeer=peer;
         if (currentPeer != null)
-            currentPeer.setVisible(true);
+            currentPeer.show();
 
         // The JDK repaints the component before invalidating the parent.
         // So do we.
@@ -1598,16 +1598,18 @@ public abstract class Component
   public Dimension preferredSize()
   {
     if (prefSize == null)
-      if (peer == null)
-	return new Dimension(width, height);
-      else 
-        prefSize = peer.getPreferredSize();
+      {
+        if (peer == null)
+          prefSize = size();
+        else
+          prefSize = peer.getPreferredSize();
+      }
     return prefSize;
   }
 
   /**
    * Returns the component's minimum size.
-   *
+   * 
    * @return the component's minimum size
    * @see #getPreferredSize()
    * @see LayoutManager
