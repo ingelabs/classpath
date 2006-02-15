@@ -1619,11 +1619,10 @@ public abstract class JComponent extends Container implements Serializable
     // optimizedDrawingEnabled (== it tiles its children).
     if (! isOptimizedDrawingEnabled())
       {
-        Rectangle clip = g.getClipBounds();
         for (int i = 0; i < children.length; i++)
           {
             Rectangle childBounds = children[i].getBounds();
-            if (children[i].isOpaque()
+            if (children[i].isOpaque() && children[i].isVisible()
                 && SwingUtilities.isRectangleContainingRectangle(childBounds,
                                                             g.getClipBounds()))
               {
@@ -2206,12 +2205,8 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void repaint(long tm, int x, int y, int width, int height)
   {
-    Rectangle dirty = new Rectangle(x, y, width, height);
-    Rectangle vis = getVisibleRect();
-    dirty = dirty.intersection(vis);
-    RepaintManager.currentManager(this).addDirtyRegion(this, dirty.x, dirty.y,
-                                                       dirty.width,
-                                                       dirty.height);
+    RepaintManager.currentManager(this).addDirtyRegion(this, x, y, width,
+                                                       height);
   }
 
   /**
@@ -2223,8 +2218,7 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void repaint(Rectangle r)
   {
-    repaint((long) 0, (int) r.getX(), (int) r.getY(), (int) r.getWidth(),
-            (int) r.getHeight());
+    repaint(0, r.x, r.y, r.width, r.height);
   }
 
   /**
