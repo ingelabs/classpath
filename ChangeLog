@@ -1,3 +1,11 @@
+2006-02-15  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(paintChildren): Also check for the visibility of a child component
+	to avoid artifacts.
+	(repaint): Simply add this component to the RepaintManager rather than
+	trying to do useless optimization here.
+
 2006-02-15  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JSpinner.java
