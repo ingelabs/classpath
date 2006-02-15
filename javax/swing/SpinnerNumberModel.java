@@ -204,8 +204,12 @@ public class SpinnerNumberModel extends AbstractSpinnerModel
       num = new Short((short) (value.shortValue() + stepSize.shortValue()));
     else
       num = new Byte((byte) (value.byteValue() + stepSize.byteValue()));
-
-    return maximum.compareTo(num) >= 0 ? num : null;
+    
+    // check upper bound if set
+    if ((maximum != null) && maximum.compareTo(num) < 0)
+      num = null;
+    
+    return num;
   }
 
   /**
@@ -232,8 +236,12 @@ public class SpinnerNumberModel extends AbstractSpinnerModel
       num = new Short((short) (value.shortValue() - stepSize.shortValue()));
     else
       num = new Byte((byte) (value.byteValue() - stepSize.byteValue()));
+    
+    // check lower bound if set
+    if ((minimum != null) && minimum.compareTo(num) > 0)
+      num = null;
 
-    return minimum.compareTo(num) <= 0 ? num : null;
+    return num;
   }
 
   /**
