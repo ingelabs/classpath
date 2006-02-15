@@ -1,5 +1,6 @@
 /* gtkwindowpeer.c -- Native implementation of GtkWindowPeer
-   Copyright (C) 1998, 1999, 2002, 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002, 2004, 2005, 2006
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -1437,20 +1438,20 @@ window_get_frame_extents (GtkWidget *window,
 
   /* Guess frame extents in case _NET_FRAME_EXTENTS is not
      supported. */
-  if (gtk_window_get_decorated (GTK_WINDOW (window)))
-    {
-      *top = 23;
-      *left = 6;
-      *bottom = 6;
-      *right = 6;
-    }
-  else
+  if (!gtk_window_get_decorated (GTK_WINDOW (window)))
     {
       *top = 0;
       *left = 0;
       *bottom = 0;
       *right = 0;
+
+      return;
     }
+
+  *top = 23;
+  *left = 6;
+  *bottom = 6;
+  *right = 6;
 
   /* Request that the window manager set window's
      _NET_FRAME_EXTENTS property. */
