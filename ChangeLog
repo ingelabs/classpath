@@ -1,3 +1,9 @@
+2006-02-15  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create):
+	Downcast gtk_plug_new result when used.
+
 2006-02-15  Olivier Jolly  <olivier.jolly@pcedev.com>
 
 	* java/io/ObjectOutputStream.java (writeClassDescriptor):
