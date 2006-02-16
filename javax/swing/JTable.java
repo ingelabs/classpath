@@ -85,6 +85,15 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+/**
+ * The table component, displaying information, organized in rows and columns.
+ * The table can be placed in the scroll bar and have the optional header
+ * that is always visible. Cell values may be editable after double clicking
+ * on the cell. Cell columns may have various data types, that are 
+ * displayed and edited by the different renderers and editors. It is possible
+ * to set different column width. The columns are also resizeable by 
+ * dragging the column boundary in the header.
+ */
 public class JTable
   extends JComponent
   implements TableModelListener, Scrollable, TableColumnModelListener,
@@ -1991,6 +2000,9 @@ public class JTable
                                int column,
                                boolean includeSpacing)
   {
+    // moveToCellBeingEdited expects the cached value and clones it.
+    // If the caching would be removed later, uplate moveToCellBeingEdited
+    // as well.
     int height = getRowHeight(row);
     int width = columnModel.getColumn(column).getWidth();
     int x_gap = columnModel.getColumnMargin();
@@ -3585,10 +3597,11 @@ public class JTable
      Rectangle r = getCellRect(editingRow, editingColumn, true);
      // Place the text field so that it would not touch the table
      // border.
-     int m = getRowMargin();
-     r.translate(m,m);
-     r.width-=m;
-     component.setBounds(r);
+     r.width--;
+     r.height--;
+
+     // Clone rectangle as getCellRect returns the cached value.
+     component.setBounds(new Rectangle(r));
   }
 
   /**

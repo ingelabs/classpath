@@ -1,3 +1,8 @@
+2006-02-16  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java (moveToCellBeingEdited): Clone the value,
+	returned by getCellRect. To not translate the component.
+
 2006-02-16  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComponent.java
