@@ -3078,7 +3078,6 @@ public class JTable
     if (ncols < 1)
       return;
 
-    int[] pref = new int[ncols];
     int prefSum = 0;
     int rCol = -1;
 
@@ -3089,7 +3088,6 @@ public class JTable
       {
         TableColumn col = columnModel.getColumn(i);
         int p = col.getPreferredWidth();
-        pref[i] = p;
         prefSum += p;
         if (resizingColumn == col)
           rCol = i;
@@ -3122,10 +3120,34 @@ public class JTable
             break;
 
           case AUTO_RESIZE_SUBSEQUENT_COLUMNS:
-            cols = new TableColumn[ncols];
-            for (int i = rCol; i < ncols; ++i)
-              cols[i] = columnModel.getColumn(i);
-            distributeSpillResizing(cols, spill, resizingColumn);
+            
+            // Subtract the width of the non-resized columns from the spill.
+            int w = 0;
+            int wp = 0;
+            TableColumn column;
+            for (int i = 0; i < rCol; i++)
+              {
+                column = columnModel.getColumn(i);
+                w += column.getWidth();
+                wp+= column.getPreferredWidth();
+              }
+
+            // The number of columns right from the column being resized.
+            int n = ncols-rCol-1;
+            if (n>0)
+              {
+                // If there are any columns on the right sied to resize.
+                spill = (getWidth()-w) - (prefSum-wp);
+                int average = spill / n;
+            
+                 // For all columns right from the column being resized:
+                for (int i = rCol+1; i < ncols; i++)
+                  {
+                    column = columnModel.getColumn(i);
+                    column.setWidth(column.getPreferredWidth() + average);
+                  }
+              }
+            resizingColumn.setWidth(resizingColumn.getPreferredWidth());
             break;
 
           case AUTO_RESIZE_OFF:
@@ -3149,6 +3171,7 @@ public class JTable
     // editing is started immediately after the program start or cell
     // resizing. 
     repaint();
+    getTableHeader().repaint();
   }
   
   /**

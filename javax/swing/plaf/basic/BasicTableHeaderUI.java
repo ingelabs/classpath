@@ -152,7 +152,6 @@ public class BasicTableHeaderUI extends TableHeaderUI
                 public void actionPerformed(ActionEvent e)
                 {
                   header.getTable().doLayout();
-                  header.repaint();
                 }
               });
               timer.setRepeats(false);

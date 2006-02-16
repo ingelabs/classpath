@@ -1,3 +1,11 @@
+2006-02-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java (doLayout): 
+	case AUTO_RESIZE_SUBSEQUENT_COLUMNS rewritten. Repaint the header
+	on exit.
+	javax/swing/plaf/basic/BasicTableHeaderUI.java 
+	(MouseInputHandler.mouseDragged): Do not repaint the header.
+
 2006-02-16  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JViewport.java
