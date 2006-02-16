@@ -1,5 +1,14 @@
 2006-02-16  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(TabbedPaneLayout.calculateTabRects): Expand tabRuns array when
+	tabCount gets greater than tabRuns.length.
+	(TabbedPaneScrollLayout.calculateTabRects): Expand tabRuns array
+	when tabCount gets greater than tabRuns.length.
+	(paintTabArea): Don't set tabCount == runCount.
+
+2006-02-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(installUI): Moved installation of PropertyChangeListener
 	to installListeners(). Call modelChanged() after everything is
