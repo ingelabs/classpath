@@ -1,5 +1,9 @@
 2006-02-16  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/InlineView.java: New file.
+
+2006-02-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTabbedPane.java
 	(AccessibleJTable.getAccessibleChild): Implemented to return
 	the Page instance for the specified index.
