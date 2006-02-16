@@ -14,6 +14,8 @@ New in release 0.21 (to be released)
 
 * RELAX NG pluggable XML schema datatype library API and an implementation
   for XML Schema Datatypes (http://www.w3.org/TR/xmlschema-2/).
+  
+* JTable columns are rearrangeable and resizeable with mouse.
 
 New in release 0.20 (Jan 13, 2006)
 

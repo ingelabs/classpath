@@ -2120,10 +2120,11 @@ public class JTable
    */
   public TableCellEditor getCellEditor(int row, int column)
   {
-    TableCellEditor editor = columnModel.getColumn(column).getCellEditor();
+    int mcolumn = convertColumnIndexToModel(column);
+    TableCellEditor editor = columnModel.getColumn(mcolumn).getCellEditor();
 
     if (editor == null)
-      editor = getDefaultEditor(dataModel.getColumnClass(column));
+      editor = getDefaultEditor(dataModel.getColumnClass(mcolumn));
     
     return editor;
   }
@@ -2159,10 +2160,11 @@ public class JTable
    */
   public TableCellRenderer getCellRenderer(int row, int column)
   {
+    int mcolumn = convertColumnIndexToModel(column);
     TableCellRenderer renderer =
-      columnModel.getColumn(column).getCellRenderer();
+      columnModel.getColumn(mcolumn).getCellRenderer();
     if (renderer == null)
-      renderer = getDefaultRenderer(getColumnClass(column));
+      renderer = getDefaultRenderer(getColumnClass(mcolumn));
 
     return renderer;
   }
@@ -2197,7 +2199,19 @@ public class JTable
         return r;
       }
   }
-
+  
+  /**
+   * Convert the table model index into the table column number.
+   * The model number need not match the real column position. The columns
+   * may be rearranged by the user with mouse at any time by dragging the
+   * column headers.
+   *
+   * @param vc the column number (0=first).
+   * 
+   * @return the table column model index of this column.
+   * 
+   * @see TableColumn#getModelIndex()
+   */
   public int convertColumnIndexToModel(int vc)
   {
     if (vc < 0)
@@ -2205,7 +2219,19 @@ public class JTable
     else
       return columnModel.getColumn(vc).getModelIndex();
   }
-
+  
+  /**
+   * Convert the table column number to the table column model index.
+   * The model number need not match the real column position. The columns
+   * may be rearranged by the user with mouse at any time by dragging the
+   * column headers.
+   *  
+   * @param mc the table column index (0=first).
+   * 
+   * @return the table column number in the model
+   * 
+   * @see TableColumn#getModelIndex() 
+   */
   public int convertColumnIndexToView(int mc)
   {
     if (mc < 0)
@@ -2218,7 +2244,16 @@ public class JTable
       }
     return -1;
   }
-
+  
+  /**
+   * Prepare the renderer for rendering the given cell.
+   * 
+   * @param renderer the renderer being prepared
+   * @param row the row of the cell being rendered
+   * @param column the column of the cell being rendered
+   * 
+   * @return the component which .paint() method will paint the cell.
+   */
   public Component prepareRenderer(TableCellRenderer renderer,
                                    int row,
                                    int column)

@@ -97,7 +97,12 @@ public class BasicTableHeaderUI extends TableHeaderUI
    * The header cell border.
    */
   protected Border cellBorder;
-
+  
+  /**
+   * If not null, one of the columns is currently being dragged.
+   */
+  Rectangle draggingHeaderRect;
+  
   /**
    * Handles column movement and rearrangement by mouse. The same instance works
    * both as mouse listener and the mouse motion listner.
@@ -107,25 +112,32 @@ public class BasicTableHeaderUI extends TableHeaderUI
   {
     /**
      * If true, the cursor is being already shown in the alternative "resize"
-     * shape.
+     * shape. 
      */
     boolean showingResizeCursor;
+
+    /**
+     * The position, from where the cursor is dragged during resizing. Double
+     * purpose field (absolute value during resizing and relative offset during
+     * column dragging).
+     */
+    int draggingFrom = - 1;
     
     /**
-     * The position, from where the cursor is dragged during resizing.
+     * The number of the column being dragged.
      */
-    int draggingFrom = -1;
-    
+    int draggingColumnNumber;    
+
     /**
      * The previous preferred width of the column.
      */
-    int prevPrefWidth = -1;
-    
+    int prevPrefWidth = - 1;
+
     /**
      * The timer to coalesce column resizing events.
      */
     Timer timer;
-    
+
     /**
      * Returns without action, part of the MouseInputListener interface.
      */
@@ -133,7 +145,7 @@ public class BasicTableHeaderUI extends TableHeaderUI
     {
       // Nothing to do.
     }
-   
+
     /**
      * If being in the resizing mode, handle resizing.
      */
@@ -146,7 +158,7 @@ public class BasicTableHeaderUI extends TableHeaderUI
           if (timer == null)
             {
               // The purpose of timer is to coalesce events. If the queue
-              // is free, the repaint event is fired immediately. 
+              // is free, the repaint event is fired immediately.
               timer = new Timer(1, new ActionListener()
               {
                 public void actionPerformed(ActionEvent e)
@@ -160,6 +172,11 @@ public class BasicTableHeaderUI extends TableHeaderUI
           resizeIt.setPreferredWidth(prevPrefWidth + e.getX() - draggingFrom);
           timer.restart();
         }
+      else if (draggingHeaderRect != null)
+        {
+          draggingHeaderRect.x = e.getX() + draggingFrom;
+          header.repaint();
+        }
     }
 
     /**
@@ -169,14 +186,16 @@ public class BasicTableHeaderUI extends TableHeaderUI
     {
       // Nothing to do.
     }
-    
+
     /**
      * Reset drag information of the column resizing.
      */
     public void mouseExited(MouseEvent e)
     {
-      if (header.getResizingColumn()!=null)
+      if (header.getResizingColumn() != null)
         endResizing();
+      if (header.getDraggedColumn() != null)
+        endDragging(null);
     }
 
     /**
@@ -185,9 +204,9 @@ public class BasicTableHeaderUI extends TableHeaderUI
     public void mouseMoved(MouseEvent e)
     {
       // When dragging, the functionality is handled by the mouseDragged.
-      if (e.getButton()!=0)
+      if (e.getButton() != 0)
         return;
-      
+
       TableColumnModel model = header.getColumnModel();
       int n = model.getColumnCount();
       if (n < 2)
@@ -202,7 +221,7 @@ public class BasicTableHeaderUI extends TableHeaderUI
       int b = x + COLUMN_BOUNDARY_TOLERANCE;
 
       int p = 0;
-      
+
       Scan: for (int i = 0; i < n - 1; i++)
         {
           p += model.getColumn(i).getWidth();
@@ -211,7 +230,7 @@ public class BasicTableHeaderUI extends TableHeaderUI
             {
               TableColumn column = model.getColumn(i);
               onBoundary = true;
-              
+
               draggingFrom = x;
               prevPrefWidth = column.getWidth();
               header.setResizingColumn(column);
@@ -224,7 +243,7 @@ public class BasicTableHeaderUI extends TableHeaderUI
           // Change the cursor shape, if needed.
           if (onBoundary)
             {
-              
+
               if (p < x)
                 header.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
               else
@@ -239,35 +258,71 @@ public class BasicTableHeaderUI extends TableHeaderUI
           showingResizeCursor = onBoundary;
         }
     }
-    
+
     /**
      * Starts the dragging/resizing procedure.
      */
     public void mousePressed(MouseEvent e)
     {
       TableColumn resizingColumn = header.getResizingColumn();
-      if (resizingColumn!=null)
+      if (resizingColumn != null)
         resizingColumn.setPreferredWidth(resizingColumn.getWidth());
+      else
+        {
+          // If not resizing, then dragging.
+          TableColumnModel model = header.getColumnModel();
+          int n = model.getColumnCount(); 
+          if (n < 2)
+            // It must be at least two columns to change the column location.
+            return;
+
+          boolean onBoundary = false;
+
+          int x = e.getX();
+          int p = 0;
+          int col = - 1;
+
+          Scan: for (int i = 0; i < n; i++)
+            {
+              p += model.getColumn(i).getWidth();
+              if (p > x)
+                {
+                  col = i;
+                  break Scan;
+                }
+            }
+          if (col < 0)
+            return;
+
+          TableColumn dragIt = model.getColumn(col);
+          header.setDraggedColumn(dragIt);
+
+          draggingFrom = (p - dragIt.getWidth()) - x;
+          draggingHeaderRect = new Rectangle(header.getHeaderRect(col));
+          draggingColumnNumber = col;
+        }
     }
-    
+
     /**
      * Set all column preferred width to the current width to prevend abrupt
      * width changes during the next resize.
      */
     public void mouseReleased(MouseEvent e)
     {
-      if (header.getResizingColumn()!=null)
+      if (header.getResizingColumn() != null)
         endResizing();
+      if (header.getDraggedColumn() != null)
+        endDragging(e);
     }
-    
+
     /**
      * Stop resizing session.
      */
     void endResizing()
     {
-      TableColumnModel model = header.getColumnModel();     
+      TableColumnModel model = header.getColumnModel();
       int n = model.getColumnCount();
-      if (n>2)
+      if (n > 2)
         {
           TableColumn c;
           for (int i = 0; i < n; i++)
@@ -278,17 +333,57 @@ public class BasicTableHeaderUI extends TableHeaderUI
         }
       header.setResizingColumn(null);
       showingResizeCursor = false;
-      if (timer!=null)
+      if (timer != null)
         timer.stop();
       header.setCursor(Cursor.getDefaultCursor());
+    }
+
+    /**
+     * Stop the dragging session.
+     * 
+     * @param e the "mouse release" mouse event, needed to determing the final
+     *          location for the dragged column.
+     */
+    void endDragging(MouseEvent e)
+    {
+      header.setDraggedColumn(null);
+
+      // Return if the mouse have left the header area while pressed.
+      if (e == null)
+        {
+          header.repaint(draggingHeaderRect);
+          draggingHeaderRect = null;
+          return;
+        }
+      else
+        draggingHeaderRect = null;
+
+      TableColumnModel model = header.getColumnModel();
+
+      // Find where have we dragged the column.
+      int x = e.getX();
+      int p = 0;
+      int col = - 1;
+      int n = model.getColumnCount();
+
+      Scan: for (int i = 0; i < n; i++)
+        {
+          p += model.getColumn(i).getWidth();
+          if (p > x)
+            {
+              col = i;
+              break Scan;
+            }
+        }
+      if (col >= 0)
+        header.getTable().moveColumn(draggingColumnNumber, col);
     }
   }
  
   /**
    * Create and return the mouse input listener.
    * 
-   * @return the mouse listener ({@link MouseInputHandler}, if not 
-   * overridden.
+   * @return the mouse listener ({@link MouseInputHandler}, if not overridden.
    */
   protected MouseInputListener createMouseInputListener()
   {
@@ -404,10 +499,26 @@ public class BasicTableHeaderUI extends TableHeaderUI
                                         bounds.width, bounds.height);
           }
       }
-
+    
+    // This displays a running rectangle that is much simplier than the total
+    // animation, as it is seen in Sun's application.
+    // TODO animate the collumn dragging like in Sun's jre.
+    if (draggingHeaderRect!=null)
+      {
+        gfx.setColor(header.getForeground()); 
+        gfx.drawRect(draggingHeaderRect.x, draggingHeaderRect.y+2,
+                     draggingHeaderRect.width-1, draggingHeaderRect.height-6);
+      }
   }
   
-  public Dimension getPreferredSize(JComponent c)
+  /**
+   * Get the preferred header size.
+   * 
+   * @param ignored unused
+   * 
+   * @return the preferred size of the associated header.
+   */
+  public Dimension getPreferredSize(JComponent ignored)
   {
     TableColumnModel cmod = header.getColumnModel();
     TableCellRenderer defaultRend = header.getDefaultRenderer();
