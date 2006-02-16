@@ -1,5 +1,20 @@
 2006-02-16  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTabbedPane.java
+	(AccessibleJTable.getAccessibleChild): Implemented to return
+	the Page instance for the specified index.
+	(Page): Changed to implement Accessible and extend
+	AccessibleContext.
+	(Page.getAccessibleContext): New method.
+	(Page.getAccessibleRole): New method.
+	(Page.getAccessibleStateSet): New method.
+	(Page.getAccessibleIndexInParent): New method.
+	(Page.getAccessibleChildrenCount): New method.
+	(Page.getAccessibleChild): New methdod.
+	(Page.getLocale): New method.
+
+2006-02-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(TabbedPaneLayout.calculateTabRects): Expand tabRuns array when
 	tabCount gets greater than tabRuns.length.
