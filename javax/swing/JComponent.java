@@ -64,7 +64,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
 import java.awt.peer.LightweightPeer;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -555,7 +554,7 @@ public abstract class JComponent extends Container implements Serializable
    * so that it doesn't get modified in another context within the same
    * method call chain.
    */
-  private static transient Rectangle rectCache;
+  private transient Rectangle rectCache;
 
   /**
    * The default locale of the component.
@@ -1379,9 +1378,8 @@ public abstract class JComponent extends Container implements Serializable
       {
         ((JComponent) c).computeVisibleRect(rect);
         rect.translate(-getX(), -getY());
-        Rectangle2D.intersect(rect,
-                              new Rectangle(0, 0, getWidth(), getHeight()),
-                              rect);
+        rect = SwingUtilities.computeIntersection(0, 0, getWidth(),
+                                                  getHeight(), rect);
       }
     else
       rect.setRect(0, 0, getWidth(), getHeight());
@@ -1397,9 +1395,10 @@ public abstract class JComponent extends Container implements Serializable
    */
   public Rectangle getVisibleRect()
   {
-    Rectangle r = new Rectangle();
-    computeVisibleRect(r);
-    return r;
+    if (rectCache == null)
+      rectCache = new Rectangle();
+    computeVisibleRect(rectCache);
+    return rectCache;
   }
 
   /**
@@ -2205,8 +2204,12 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void repaint(long tm, int x, int y, int width, int height)
   {
-    RepaintManager.currentManager(this).addDirtyRegion(this, x, y, width,
-                                                       height);
+    // TODO: Maybe add this visibleRect stuff to RepaintManager.
+     Rectangle r = getVisibleRect();
+     Rectangle dirty = SwingUtilities.computeIntersection(x, y, width, height, r);
+     RepaintManager.currentManager(this).addDirtyRegion(this, dirty.x, dirty.y,
+                                                        dirty.width,
+                                                        dirty.height);
   }
 
   /**
