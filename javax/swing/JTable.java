@@ -985,9 +985,9 @@ public class JTable
   class TableColumnPropertyChangeHandler implements PropertyChangeListener
   {
     /**
-     * Receives notification that a property of the observed TableColumns
-     * has changed.
-     *
+     * Receives notification that a property of the observed TableColumns has
+     * changed.
+     * 
      * @param ev the property change event
      */
     public void propertyChange(PropertyChangeEvent ev)
@@ -995,13 +995,15 @@ public class JTable
       if (ev.getPropertyName().equals("preferredWidth"))
         {
           JTableHeader header = getTableHeader();
-	  if (header != null)
-	    {
-	      TableColumn col = (TableColumn) ev.getSource();
-	      header.setResizingColumn(col);
-	      doLayout();
-	      header.setResizingColumn(null);
-	    }
+          if (header != null)
+            // Do nothing if the table is in the resizing mode.
+            if (header.getResizingColumn() == null)
+              {
+                TableColumn col = (TableColumn) ev.getSource();
+                header.setResizingColumn(col);
+                doLayout();
+                header.setResizingColumn(null);
+              }
         }
     }
   }
@@ -3171,7 +3173,8 @@ public class JTable
     // editing is started immediately after the program start or cell
     // resizing. 
     repaint();
-    getTableHeader().repaint();
+    if (tableHeader!=null)
+      tableHeader.repaint();
   }
   
   /**

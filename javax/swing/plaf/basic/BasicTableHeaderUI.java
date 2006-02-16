@@ -175,10 +175,8 @@ public class BasicTableHeaderUI extends TableHeaderUI
      */
     public void mouseExited(MouseEvent e)
     {
-      header.setResizingColumn(null);
-      showingResizeCursor = false;
-      if (timer!=null)
-        timer.stop();
+      if (header.getResizingColumn()!=null)
+        endResizing();
     }
 
     /**
@@ -258,7 +256,16 @@ public class BasicTableHeaderUI extends TableHeaderUI
      */
     public void mouseReleased(MouseEvent e)
     {
-      TableColumnModel model = header.getColumnModel();
+      if (header.getResizingColumn()!=null)
+        endResizing();
+    }
+    
+    /**
+     * Stop resizing session.
+     */
+    void endResizing()
+    {
+      TableColumnModel model = header.getColumnModel();     
       int n = model.getColumnCount();
       if (n>2)
         {
@@ -269,6 +276,11 @@ public class BasicTableHeaderUI extends TableHeaderUI
               c.setPreferredWidth(c.getWidth());
             }
         }
+      header.setResizingColumn(null);
+      showingResizeCursor = false;
+      if (timer!=null)
+        timer.stop();
+      header.setCursor(Cursor.getDefaultCursor());
     }
   }
  

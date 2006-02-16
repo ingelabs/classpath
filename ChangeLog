@@ -1,3 +1,13 @@
+2006-02-16  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java 
+	(TableColumnPropertyChangeHandler.propertyChange): Return without
+	action if table header resizing column in not null. (doLayout):
+	Only repaint the header if it is not null.	
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java 
+	(MouseInputHandler.mouseExited, MouseInputHandler.mouseReleased):
+	Rewritten. (MouseInputHandler.endResizing): New method.
+
 2006-02-16  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/InlineView.java: New file.
