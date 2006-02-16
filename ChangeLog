@@ -1,3 +1,7 @@
+2006-02-16  Gary Benson  <gbenson@redhat.com>
+
+	* java/lang/Thread.java (stop): Add a missing access check.
+
 2006-02-16  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/JTextComponent.java:
