@@ -1,4 +1,15 @@
-2006-02-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+2006-02-16  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installUI): Moved installation of PropertyChangeListener
+	to installListeners(). Call modelChanged() after everything is
+	is installed.
+	(installListeners): Install PropertyChangeListener here.
+	(uninstallUI): Moved uninstallation of PropertyChangeListener
+	to uninstallListeners.
+	(uninstallListeners): Uninstall PropertyChangeListener here.
+
+2006-02-16  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (doLayout): 
 	case AUTO_RESIZE_SUBSEQUENT_COLUMNS rewritten. Repaint the header
