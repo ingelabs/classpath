@@ -1,3 +1,9 @@
+2006-02-16  David Daney  <ddaney@avtrex.com>
+
+	PR classpath/26312
+	* gnu/java/net/protocol/http/ChunkedInputStream.java (read): Mask
+	return value with 0xff.
+
 2006-02-16  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/event/EventRequest.java (getFilters): New method.
