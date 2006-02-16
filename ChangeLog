@@ -1,5 +1,10 @@
 2006-02-16  Keith Seitz  <keiths@redhat.com>
 
+	* gnu/classpath/jdwp/event/EventRequest.java (getFilters): New method.
+	(matches): Use Iterator instead of ListIterator.
+
+2006-02-16  Keith Seitz  <keiths@redhat.com>
+
 	* gnu/classpath/jdwp/Jdwp.java (_doInitialization): Name the packet
 	processor thread for easier debugging.
 	(_enforceSuspendPolicy): Suspend the current thread, not the JDWP
