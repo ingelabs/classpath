@@ -1,3 +1,13 @@
+2006-02-16  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/JTextComponent.java:
+	(replaceSelection): Added code to update the magic caret position.
+	* javax/swing/text/DefaultEditorKit.java: Added code to update
+	the magic caret position of the text component in all relevant
+	movement actions, make use of the magic caret position in up
+	and down movements and selections, simplified some actions
+	(code-wise).
+
 2006-02-15  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* gnu/java/lang/CharData.java: Regenerated from 
@@ -260,6 +270,7 @@
 	(Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create):
 	gtk_plug_new() returns a GtkWindow.
 
+>>>>>>> 1.6413
 2006-02-15  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/SpinnerNumberModel.java
