@@ -1,5 +1,5 @@
 /* JdwpId.java -- base class for all object ID types
-   Copyright (C) 2005 Free Software Foundation
+   Copyright (C) 2005, 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -122,9 +122,13 @@ public abstract class JdwpId
   }
 
   /**
-   * Returns size of this type (used by IDSizes)
+   * Returns size of this type (used by IDSizes). Default sizes
+   * for all IDs are 8 bytes (long).
    */
-  public abstract int size ();
+  public static int size ()
+  {
+    return 8;
+  }
 
   /**
    * Writes the contents of this type to the <code>DataOutputStream</code>

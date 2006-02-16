@@ -1,3 +1,14 @@
+2006-02-16  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/id/JdwpId.java (size): Make static. Return
+	default size of eight bytes.
+	* gnu/classpath/jdwp/id/ObjectId.java (size): Remove.
+	* gnu/classpath/jdwp/id/ReferenceTypeId.java (size): Remove.
+	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
+	(executeIDsizes): Use new static methods.
+	* vm/reference/gnu/classpath/jdwp/VMFrame.java (size): New static
+	method.
+	
 2006-02-16  David Daney  <ddaney@avtrex.com>
 
 	PR classpath/26312
