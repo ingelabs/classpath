@@ -52,10 +52,7 @@ public class VMFrame
   /**
    * Returns the size of a frame ID over JDWP
    */
-  public static int size ()
-  {
-    return 8;
-  }
+  public static final int SIZE = 8;
 
   // The object this frame resides in
   private Object obj;

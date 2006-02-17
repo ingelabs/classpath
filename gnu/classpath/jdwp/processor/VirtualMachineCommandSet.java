@@ -40,9 +40,7 @@ exception statement from your version. */
 package gnu.classpath.jdwp.processor;
 
 import gnu.classpath.jdwp.JdwpConstants;
-//import gnu.classpath.jdwp.VMField;
 import gnu.classpath.jdwp.VMFrame;
-//import gnu.classpath.jdwp.VMMethod;
 import gnu.classpath.jdwp.VMVirtualMachine;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.exception.JdwpInternalErrorException;
@@ -301,11 +299,11 @@ public class VirtualMachineCommandSet
   private void executeIDsizes(ByteBuffer bb, DataOutputStream os)
     throws JdwpException, IOException
   {
-    os.writeInt(ObjectId.size ()); // fieldId FIXME
-    os.writeInt(ObjectId.size ()); // methodId FIXME
-    os.writeInt(ObjectId.size ()); // objectId
-    os.writeInt(ReferenceTypeId.size ()); // referenceTypeId
-    os.writeInt(VMFrame.size ()); // frameId
+    os.writeInt(ObjectId.SIZE); // fieldId FIXME
+    os.writeInt(ObjectId.SIZE); // methodId FIXME
+    os.writeInt(ObjectId.SIZE); // objectId
+    os.writeInt(ReferenceTypeId.SIZE); // referenceTypeId
+    os.writeInt(VMFrame.SIZE); // frameId
   }
 
   private void executeSuspend(ByteBuffer bb, DataOutputStream os)

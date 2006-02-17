@@ -51,6 +51,11 @@ import java.lang.ref.SoftReference;
 public abstract class JdwpId
 {
   /**
+   * The size of an ID. The default is 8 bytes (a long).
+   */
+   public static final int SIZE = 8;
+
+  /**
    * ID assigned to this object
    */
   protected long _id;
@@ -119,15 +124,6 @@ public abstract class JdwpId
   public boolean equals (JdwpId id)
   {
     return (id.getId () == getId ());
-  }
-
-  /**
-   * Returns size of this type (used by IDSizes). Default sizes
-   * for all IDs are 8 bytes (long).
-   */
-  public static int size ()
-  {
-    return 8;
   }
 
   /**

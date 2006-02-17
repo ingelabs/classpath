@@ -1,3 +1,12 @@
+2006-02-17  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/id/JdwpId.java (size): Remove.
+	(SIZE): New constant.
+	* gnu/classpath/jdwp/processor/VirtualMachineCommandSet.java
+	(executeIDsizes): Use SIZE constant.
+	* vm/reference/gnu/classpath/jdwp/VMFrame.java (size): Remove.
+	(SIZE): New constant.
+
 2006-02-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (IconCellRenderer): Set the component
