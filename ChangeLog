@@ -1,5 +1,15 @@
 2006-02-17  Jeroen Frijters  <jeroen@frijters.net>
 
+	Fixes PR 25752
+	* gnu/java/net/protocol/ftp/FTPURLConnection.java
+	(connect): Changed to use SystemProperties.
+	(getInputStream): Try changeWorkingDirectory to figure out if
+	url is a directory, if not use retrieve.
+	(getOutputStream): Don't worry about directories, simply always
+	try to do a store.
+
+2006-02-17  Jeroen Frijters  <jeroen@frijters.net>
+
 	* gnu/java/net/protocol/ftp/ActiveModeDTP.java
 	(ActiveModeDTP): Mark accept thread as daemon.
 
