@@ -1,3 +1,7 @@
+2006-02-17  Michael Koch  <konqueror@gmx.de>
+
+	* tools/.cvsignore: Ignore tools.zip.
+
 2006-02-16  Keith Seitz  <keiths@redhat.com>
 
 	* vm/reference/gnu/classpath/jdwp/VMIdManager.java (newReferenceTypeId):
