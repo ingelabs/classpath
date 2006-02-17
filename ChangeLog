@@ -1,5 +1,13 @@
 2006-02-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/html/HTMLEditorKit.java
+	(HTMLFactory.create): Create InlineView for content tags.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.flush): Call create() on first flush and insert
+	on subsequent flushes.
+
+2006-02-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/AbstractDocument.java
 	(BranchElement.getStartOffset): Implemented workaround for wrong
 	NPE.

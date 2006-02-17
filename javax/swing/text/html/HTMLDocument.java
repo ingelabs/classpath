@@ -1134,7 +1134,11 @@ public class HTMLDocument extends DefaultStyledDocument
       elements = new DefaultStyledDocument.ElementSpec[parseBuffer.size()];
       parseBuffer.copyInto(elements);
       parseBuffer.removeAllElements();
-      insert(offset, elements);
+      if (offset == 0)
+        create(elements);
+      else
+        insert(offset, elements);
+
       offset += HTMLDocument.this.getLength() - offset;
     }
     
