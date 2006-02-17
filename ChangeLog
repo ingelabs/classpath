@@ -1,3 +1,20 @@
+2006-02-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AbstractDocument.java
+	(BranchElement.getStartOffset): Implemented workaround for wrong
+	NPE.
+	(BranchElement.getEndOffset): Implemented workaround for wrong
+	NPE.
+	(ElementBuffer.split): Use createBranchElement() instead of
+	new BranchElement().
+	(ElementBuffer.insertFracture): Use createBranchElement() instead of
+	new BranchElement().
+	(ElementBuffer.recreateAfterFracture): Use createBranchElement()
+	instead of new BranchElement().
+	(createDefaultRoot): Use createBranchElement() and createLeafElement
+	instead of the constructors.
+	(create): Rewritten.
+
 2006-02-17  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/id/JdwpId.java (size): Remove.

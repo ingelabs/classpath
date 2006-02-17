@@ -1707,9 +1707,12 @@ public abstract class AbstractDocument implements Document, Serializable
      */
     public int getEndOffset()
     {
+      int end = 0;
       if (getElementCount() == 0)
-        throw new NullPointerException("This BranchElement has no children.");
-      return children[children.length - 1].getEndOffset();
+        end = getLength(); // FIXME: That ain't correct, fix it.
+      else
+        end = children[children.length - 1].getEndOffset();
+      return end;
     }
 
     /**
@@ -1734,9 +1737,12 @@ public abstract class AbstractDocument implements Document, Serializable
      */
     public int getStartOffset()
     {
+      int start = 0;
       if (getElementCount() == 0)
-        throw new NullPointerException("This BranchElement has no children.");
-      return children[0].getStartOffset();
+        start = 0; // FIXME: That ain't correct, fix it.
+      else
+        start = children[0].getStartOffset();
+      return start;
     }
 
     /**
