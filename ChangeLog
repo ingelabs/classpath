@@ -1,3 +1,8 @@
+2006-02-17  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/net/protocol/ftp/ActiveModeDTP.java
+	(ActiveModeDTP): Mark accept thread as daemon.
+
 2006-02-17  Michael Koch  <konqueror@gmx.de>
 
 	* tools/.cvsignore: Ignore tools.zip.
