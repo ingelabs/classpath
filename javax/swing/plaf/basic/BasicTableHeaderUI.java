@@ -152,7 +152,7 @@ public class BasicTableHeaderUI extends TableHeaderUI
     public void mouseDragged(MouseEvent e)
     {
       TableColumn resizeIt = header.getResizingColumn();
-      if (resizeIt != null)
+      if (resizeIt != null && header.getResizingAllowed())
         {
           // The timer is intialised on demand.
           if (timer == null)
@@ -172,7 +172,7 @@ public class BasicTableHeaderUI extends TableHeaderUI
           resizeIt.setPreferredWidth(prevPrefWidth + e.getX() - draggingFrom);
           timer.restart();
         }
-      else if (draggingHeaderRect != null)
+      else if (draggingHeaderRect != null && header.getReorderingAllowed())
         {
           draggingHeaderRect.x = e.getX() + draggingFrom;
           header.repaint();
@@ -192,9 +192,9 @@ public class BasicTableHeaderUI extends TableHeaderUI
      */
     public void mouseExited(MouseEvent e)
     {
-      if (header.getResizingColumn() != null)
+      if (header.getResizingColumn() != null && header.getResizingAllowed())
         endResizing();
-      if (header.getDraggedColumn() != null)
+      if (header.getDraggedColumn() != null && header.getReorderingAllowed())
         endDragging(null);
     }
 
@@ -204,58 +204,60 @@ public class BasicTableHeaderUI extends TableHeaderUI
     public void mouseMoved(MouseEvent e)
     {
       // When dragging, the functionality is handled by the mouseDragged.
-      if (e.getButton() != 0)
-        return;
-
-      TableColumnModel model = header.getColumnModel();
-      int n = model.getColumnCount();
-      if (n < 2)
-        // It must be at least two columns to have at least one boundary.
-        // Otherwise, nothing to do.
-        return;
-
-      boolean onBoundary = false;
-
-      int x = e.getX();
-      int a = x - COLUMN_BOUNDARY_TOLERANCE;
-      int b = x + COLUMN_BOUNDARY_TOLERANCE;
-
-      int p = 0;
-
-      Scan: for (int i = 0; i < n - 1; i++)
+      if (e.getButton() == 0 && header.getResizingAllowed())
         {
-          p += model.getColumn(i).getWidth();
+          TableColumnModel model = header.getColumnModel();
+          int n = model.getColumnCount();
+          if (n < 2)
+            // It must be at least two columns to have at least one boundary.
+            // Otherwise, nothing to do.
+            return;
 
-          if (p >= a && p <= b)
+          boolean onBoundary = false;
+
+          int x = e.getX();
+          int a = x - COLUMN_BOUNDARY_TOLERANCE;
+          int b = x + COLUMN_BOUNDARY_TOLERANCE;
+
+          int p = 0;
+
+          Scan: for (int i = 0; i < n - 1; i++)
             {
-              TableColumn column = model.getColumn(i);
-              onBoundary = true;
+              p += model.getColumn(i).getWidth();
 
-              draggingFrom = x;
-              prevPrefWidth = column.getWidth();
-              header.setResizingColumn(column);
-              break Scan;
+              if (p >= a && p <= b)
+                {
+                  TableColumn column = model.getColumn(i);
+                  onBoundary = true;
+
+                  draggingFrom = x;
+                  prevPrefWidth = column.getWidth();
+                  header.setResizingColumn(column);
+                  break Scan;
+                }
             }
-        }
 
-      if (onBoundary != showingResizeCursor)
-        {
-          // Change the cursor shape, if needed.
-          if (onBoundary)
+          if (onBoundary != showingResizeCursor)
             {
+              // Change the cursor shape, if needed.
+              if (onBoundary)
+                {
 
-              if (p < x)
-                header.setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
+                  if (p < x)
+                    header.setCursor(Cursor.getPredefinedCursor
+                                     (Cursor.W_RESIZE_CURSOR));
+                  else
+                    header.setCursor(Cursor.getPredefinedCursor
+                                     (Cursor.E_RESIZE_CURSOR));
+                }
               else
-                header.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
-            }
-          else
-            {
-              header.setCursor(Cursor.getDefaultCursor());
-              header.setResizingColumn(null);
-            }
+                {
+                  header.setCursor(Cursor.getDefaultCursor());
+                  header.setResizingColumn(null);
+                }
 
-          showingResizeCursor = onBoundary;
+              showingResizeCursor = onBoundary;
+            }
         }
     }
 
@@ -264,14 +266,20 @@ public class BasicTableHeaderUI extends TableHeaderUI
      */
     public void mousePressed(MouseEvent e)
     {
-      TableColumn resizingColumn = header.getResizingColumn();
-      if (resizingColumn != null)
-        resizingColumn.setPreferredWidth(resizingColumn.getWidth());
-      else
+      if (header.getResizingAllowed())
         {
-          // If not resizing, then dragging.
+          TableColumn resizingColumn = header.getResizingColumn();
+          if (resizingColumn != null)
+            {
+              resizingColumn.setPreferredWidth(resizingColumn.getWidth());
+              return;
+            }
+        }
+
+      if (header.getReorderingAllowed())
+        {
           TableColumnModel model = header.getColumnModel();
-          int n = model.getColumnCount(); 
+          int n = model.getColumnCount();
           if (n < 2)
             // It must be at least two columns to change the column location.
             return;
@@ -309,9 +317,9 @@ public class BasicTableHeaderUI extends TableHeaderUI
      */
     public void mouseReleased(MouseEvent e)
     {
-      if (header.getResizingColumn() != null)
+      if (header.getResizingColumn() != null && header.getResizingAllowed())
         endResizing();
-      if (header.getDraggedColumn() != null)
+      if (header.getDraggedColumn() != null &&  header.getReorderingAllowed())
         endDragging(e);
     }
 

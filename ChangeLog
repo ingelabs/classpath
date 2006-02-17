@@ -1,3 +1,9 @@
+2006-02-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java (MouseInputHandler):
+	Rewritten.
+	* javax/swing/table/JTableHeader.java: Documenting related methods.
+
 2006-02-17  Jeroen Frijters  <jeroen@frijters.net>
 
 	Fixes PR 25752
