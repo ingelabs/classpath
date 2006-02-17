@@ -1,3 +1,16 @@
+2006-02-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/HTMLDocument.java
+	(createDefaultRoot): Implemented.
+	(createLeafElement): Implemented.
+	(createBranchElement): Implemented.
+	(BlockElement.getName): Fixed to handle HTML.Tag objects as name.
+	(RunElement.getName): Fixed to handle HTML.Tag objects as name.
+	(HTMLReader.ParagraphAction.start): Call blockOpen at the very least.
+	(HTMLReader.ParagraphAction.end): Call blockClose at the very least.
+	(HTMLReader.blockOpen): Add name attribute with the current tag.
+	(HTMLReader.addContent): Add name attribute with HTML.Tag.CONTENT.
+
 2006-02-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTableHeaderUI.java (MouseInputHandler):
