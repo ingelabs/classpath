@@ -1,3 +1,13 @@
+2006-02-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java (IconCellRenderer): Set the component
+	text to empty string. (createDefaultRenderers): Register
+	IconCellRenderer also for ImageIcon. 
+	(getCellEditor(int, int), getCellRenderer(int, int)):
+	Use model index for data model and column index for column model.
+	(getColumnClass): Convert to model index before requesting class
+	from model. 
+
 2006-02-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/HTMLDocument.java

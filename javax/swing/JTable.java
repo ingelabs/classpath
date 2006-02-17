@@ -1233,6 +1233,7 @@ public class JTable
         {
           Icon iconValue = (Icon) value;
           setIcon(iconValue);
+          setText("");
         }
       return this;
     }
@@ -1748,7 +1749,7 @@ public class JTable
   
   /**
    * Create the default renderers for this table. The default method creates
-   * renderers for Boolean, Number, Double, Date and Icon.
+   * renderers for Boolean, Number, Double, Date, Icon and ImageIcon.
    *
    */
   protected void createDefaultRenderers()
@@ -1759,6 +1760,7 @@ public class JTable
     setDefaultRenderer(Double.class, new FloatCellRenderer());
     setDefaultRenderer(Date.class, new DateCellRenderer());
     setDefaultRenderer(Icon.class, new IconCellRenderer());
+    setDefaultRenderer(ImageIcon.class, new IconCellRenderer());    
   }
   
   /**
@@ -2108,24 +2110,25 @@ public class JTable
 
   /**
    * Get the cell editor, suitable for editing the given cell. The default
-   * method requests the editor from the column model. If the column model
-   * does not provide the editor, the call is forwarded to the 
+   * method requests the editor from the column model. If the column model does
+   * not provide the editor, the call is forwarded to the
    * {@link #getDefaultEditor(Class)} with the parameter, obtained from
    * {@link TableModel#getColumnClass(int)}.
    * 
    * @param row the cell row
    * @param column the cell column
-   * 
    * @return the editor to edit that cell
    */
   public TableCellEditor getCellEditor(int row, int column)
   {
-    int mcolumn = convertColumnIndexToModel(column);
-    TableCellEditor editor = columnModel.getColumn(mcolumn).getCellEditor();
+    TableCellEditor editor = columnModel.getColumn(column).getCellEditor();
 
     if (editor == null)
-      editor = getDefaultEditor(dataModel.getColumnClass(mcolumn));
-    
+      {
+        int mcolumn = convertColumnIndexToModel(column);
+        editor = getDefaultEditor(dataModel.getColumnClass(mcolumn));
+      }
+
     return editor;
   }
   
@@ -2155,25 +2158,24 @@ public class JTable
    * 
    * @param row the cell row
    * @param column the cell column
-   * 
    * @return the cell renderer to render that cell.
    */
   public TableCellRenderer getCellRenderer(int row, int column)
   {
-    int mcolumn = convertColumnIndexToModel(column);
-    TableCellRenderer renderer =
-      columnModel.getColumn(mcolumn).getCellRenderer();
+    TableCellRenderer renderer = columnModel.getColumn(column).getCellRenderer();
     if (renderer == null)
-      renderer = getDefaultRenderer(getColumnClass(mcolumn));
-
+      {
+        int mcolumn = convertColumnIndexToModel(column);
+        renderer = getDefaultRenderer(dataModel.getColumnClass(mcolumn));
+      }
     return renderer;
   }
   
   /**
    * Set default renderer for rendering the given data type.
    * 
-   * @param columnClass the data type (String, Boolean and so on) that must
-   * be rendered.
+   * @param columnClass the data type (String, Boolean and so on) that must be
+   *          rendered.
    * @param rend the renderer that will rend this data type
    */
   public void setDefaultRenderer(Class columnClass, TableCellRenderer rend)
@@ -3264,14 +3266,14 @@ public class JTable
    * Get the class (datatype) of the column. The cells are rendered and edited
    * differently, depending from they data type.
    * 
-   * @param column the column
+   * @param column the column (not the model index).
    * 
    * @return the class, defining data type of that column (String.class for
    * String, Boolean.class for boolean and so on).
    */
   public Class getColumnClass(int column)
   {
-    return getModel().getColumnClass(column);
+    return getModel().getColumnClass(convertColumnIndexToModel(column));
   }
   
   /**
