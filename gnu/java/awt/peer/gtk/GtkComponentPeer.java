@@ -460,26 +460,17 @@ public class GtkComponentPeer extends GtkGenericPeer
     // non-lightweight.
     boolean lightweightChild = false;
     Insets i;
-    while (parent.isLightweight ())
+    while (parent.isLightweight())
       {
-	lightweightChild = true;
+        lightweightChild = true;
 
-        next_parent = parent.getParent ();
+        next_parent = parent.getParent();
 
-	i = ((Container) parent).getInsets ();
+        i = ((Container) parent).getInsets();
+        new_x += parent.getX() + i.left;
+        new_y += parent.getY() + i.top;
 
-        if (next_parent instanceof Window)
-          {
-            new_x += i.left;
-            new_y += i.top;
-          }
-        else
-          {
-            new_x += parent.getX () + i.left;
-            new_y += parent.getY () + i.top;
-          }
-
-	parent = next_parent;
+        parent = next_parent;
       }
 
     // We only need to convert from Java to GTK coordinates if we're

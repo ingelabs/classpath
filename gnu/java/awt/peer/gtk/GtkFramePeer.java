@@ -77,7 +77,10 @@ public class GtkFramePeer extends GtkWindowPeer
         removeMenuBarPeer ();
         insets.top -= menuBarHeight;
         menuBarHeight = 0;
-        awtComponent.validate ();
+        // if component has already been validated, we need to revalidate.
+        // otherwise, it will be validated when it is shown.
+        if (awtComponent.isValid())
+          awtComponent.validate ();
         gtkFixedSetVisible (true);
       }
     else if (bar != null && menuBar == null)
@@ -92,7 +95,10 @@ public class GtkFramePeer extends GtkWindowPeer
           setMenuBarWidth (menuBar, menuBarWidth);
         menuBarHeight = getMenuBarHeight ();
         insets.top += menuBarHeight;
-        awtComponent.validate ();
+        // if component has already been validated, we need to revalidate.
+        // otherwise, it will be validated when it is shown.
+        if (awtComponent.isValid())
+          awtComponent.validate ();
         gtkFixedSetVisible (true);
       }
     else if (bar != null && menuBar != null)
