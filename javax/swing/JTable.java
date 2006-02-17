@@ -1255,7 +1255,7 @@ public class JTable
       {
         setBorder(null);
       }
-      
+    
       /**
        * Scroll the table, making the given rectangle of this component
        * visible. Mind the component position with relate to the table. 
@@ -2022,9 +2022,9 @@ public class JTable
       x += columnModel.getColumn(i).getWidth();
 
     if (includeSpacing)
-      rectCache.setBounds(x, y, width, height);
+      rectCache.setBounds(x, y, width, height +y_gap);
     else
-      rectCache.setBounds(x, y, width - x_gap, height - y_gap);
+      rectCache.setBounds(x, y, width - x_gap, height);
     return rectCache;
   }
 
@@ -3660,9 +3660,14 @@ public class JTable
      Rectangle r = getCellRect(editingRow, editingColumn, true);
      // Place the text field so that it would not touch the table
      // border.
-     r.width--;
-     r.height--;
-
+     
+     // TODO Figure out while 5 and which constant should here be.
+     int xOffset = 5;
+     r.x+=xOffset;
+     r.y++;
+     r.width -=xOffset;
+     r.height --;
+     
      // Clone rectangle as getCellRect returns the cached value.
      component.setBounds(new Rectangle(r));
   }

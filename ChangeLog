@@ -1,3 +1,10 @@
+2006-02-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java (getCellRect): return +rowMargin if spacing
+	is included. (moveToCellBeingEdited): Adjusted to start editing at the
+	same location where was the initial text.
+	* javax/swing/plaf/basic/BasicTableUI.java (paint): Rewritten.
+
 2006-02-17  Chris Burdess  <dog@gnu.org>
 
 	Fixes PRs 26319, 26320, 26321, 26322, 26325

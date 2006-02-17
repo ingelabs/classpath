@@ -76,6 +76,7 @@ import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.TableUI;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public class BasicTableUI extends TableUI
@@ -1218,6 +1219,9 @@ public class BasicTableUI extends TableUI
     rendererPane.paintComponent(g, comp, table, bounds);
   }
   
+  /**
+   * Paint the associated table.
+   */
   public void paint(Graphics gfx, JComponent ignored) 
   {
     int ncols = table.getColumnCount();
@@ -1243,28 +1247,55 @@ public class BasicTableUI extends TableUI
     if (rn == -1)
       rn = table.getRowCount() - 1;
 
-    Rectangle bounds;
+    TableColumnModel cmodel = table.getColumnModel();
+    int [] widths = new int[cn+1];
+    for (int i = c0; i <=cn ; i++)
+      {
+        widths[i] = cmodel.getColumn(i).getWidth();
+      }
+    
+    Rectangle bounds = table.getCellRect(r0, c0, false);
+    bounds.height = table.getRowHeight()+table.getRowMargin();
+    
+    // The left boundary of the area being repainted.
+    int left = bounds.x;
+    
+    // The top boundary of the area being repainted.
+    int top = bounds.y;
+    
+    // The bottom boundary of the area being repainted.
+    int bottom;
+    
+    // The cell height.
+    int height = bounds.height;
+    
     // paint the cell contents
     Color grid = table.getGridColor();    
-    for (int c = c0; c <= cn; ++c)
+    for (int r = r0; r <= rn; ++r)
       {
-        for (int r = r0; r <= rn; ++r)
+        for (int c = c0; c <= cn; ++c)
           {
-            bounds = table.getCellRect(r, c, false);
+            bounds.width = widths[c];
             paintCell(gfx, r, c, bounds, table.getCellRenderer(r, c));
+            bounds.x += widths[c];
           }
+        bounds.y += height;
+        bounds.x = left;
       }
+    
+    bottom = bounds.y;
 
     // paint vertical grid lines
     if (grid != null && table.getShowVerticalLines())
       {    
         Color save = gfx.getColor();
         gfx.setColor(grid);
-        for (int c = c0; c < cn; ++c)
+        int x = left;
+        
+        for (int c = c0; c <= cn; ++c)
           {
-            bounds = table.getCellRect(0, c, true);
-            gfx.drawLine(bounds.x + bounds.width - 1, p1.y,
-                         bounds.x + bounds.width - 1, p2.y);
+            gfx.drawLine(x, top, x, bottom);
+            x += widths[c];
           }
         gfx.setColor(save);
       }
@@ -1274,11 +1305,11 @@ public class BasicTableUI extends TableUI
       {    
         Color save = gfx.getColor();
         gfx.setColor(grid);
-        for (int r = r0; r < rn; ++r)
+        int y = top;
+        for (int r = r0; r <= rn; ++r)
           {
-            bounds = table.getCellRect(r, 0, true);
-            gfx.drawLine(p1.x, bounds.y + bounds.height - 1,
-                         p2.x, bounds.y + bounds.height - 1);
+            gfx.drawLine(left, y, p2.x, y);
+            y += height;
           }
         gfx.setColor(save);
       }
