@@ -1,3 +1,18 @@
+2006-02-17  Chris Burdess  <dog@gnu.org>
+
+	Fixes PRs 26319, 26320, 26321, 26322, 26325
+	* gnu/xml/stream/SAXParser.java: On error, reset parser before
+	  rethrowing exception.
+	* gnu/xml/stream/XMLParser.java: Only report "illegal use of
+	  1.1-style prefix unbinding in 1.0 document" error for xmlns
+	  prefixes, not xmlns attributes. Fix a problem with empty namespace
+	  stack at the end of a document. Permit parameter entity references
+	  in element and attribute-list definition name area. Corrected
+	  normalisation of whitespace character entity references in CDATA
+	  attribute values. Fixed number of characters read following a
+	  reset when detecting end of character data with characters after a
+	  Unicode surrogate pair.
+
 2006-02-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/HTMLEditorKit.java
