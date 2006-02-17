@@ -1,3 +1,10 @@
+2006-02-16  Keith Seitz  <keiths@redhat.com>
+
+	* vm/reference/gnu/classpath/jdwp/VMIdManager.java (newReferenceTypeId):
+	Set the ID's reference.
+	(<clinit>): Remove comments for field, method, and frame ID types,
+	which will not be handled by VMIdManager.
+
 2006-02-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (getCellEditor, getCellRenderer):
