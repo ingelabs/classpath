@@ -1,5 +1,11 @@
 2006-02-18  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/JRootPane.java (layoutContainer): Get contentPane
+	through getContentPane().
+	(preferredLayoutSize): Likewise.
+
+2006-02-18  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/JMenuBar.java (paintBorder): Check whether border is
 	actually set before painting.
 

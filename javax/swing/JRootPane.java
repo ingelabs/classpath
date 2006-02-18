@@ -245,7 +245,7 @@ public class JRootPane extends JComponent implements Accessible
       layeredPane.setBounds(layeredPaneBounds);
       if (menuBar != null)
         menuBar.setBounds(menuBarBounds);
-      contentPane.setBounds(contentPaneBounds);
+      getContentPane().setBounds(contentPaneBounds);
     }
 
     /**
@@ -284,7 +284,7 @@ public class JRootPane extends JComponent implements Accessible
       Dimension prefSize = new Dimension();
       Insets i = getInsets();
       prefSize = new Dimension(i.left + i.right, i.top + i.bottom);
-      Dimension contentPrefSize = contentPane.getPreferredSize();
+      Dimension contentPrefSize = getContentPane().getPreferredSize();
       prefSize.width += contentPrefSize.width;
       prefSize.height += contentPrefSize.height;
       if (menuBar != null)
