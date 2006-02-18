@@ -1,5 +1,10 @@
 2006-02-18  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/JMenuBar.java (paintBorder): Check whether border is
+	actually set before painting.
+
+2006-02-18  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/text/html/HTMLDocument.java (addContent):
 	Fully qualify AbstractDocument.AttributeContext and
 	DefaultStyledDocument.ElementSpec.ContentType for gcj 4.0.
