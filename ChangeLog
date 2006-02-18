@@ -1,5 +1,11 @@
 2006-02-18  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/text/html/HTMLDocument.java (addContent):
+	Fully qualify AbstractDocument.AttributeContext and
+	DefaultStyledDocument.ElementSpec.ContentType for gcj 4.0.
+
+2006-02-18  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/datatransfer/DataFlavor.java (tryToLoadClass): Rewritten.
 	(getRepresentationClassFromMime): Add exception cause to
 	IllegalArgumentException.
