@@ -1,5 +1,13 @@
 2006-02-18  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/dnd/DragSource.java (getDefaultDragSource): Return new
+	DragSource.
+	(NoDragGestureRecognizer): New static class.
+	(createDragGestureRecognizer): Return NoDragGestureRecognizer when
+	Toolkit doesn't support drag and drop.
+
+2006-02-18  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/AbstractAction.java (AbstractAction()): Nothing to do.
 	(AbstractAction(String)): Just call putValue() for NAME.
 	(putValue): Nothing to do is old and new value are both null.
