@@ -1,3 +1,9 @@
+2006-02-18  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/datatransfer/DataFlavor.java (tryToLoadClass): Rewritten.
+	(getRepresentationClassFromMime): Add exception cause to
+	IllegalArgumentException.
+
 2006-02-17  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java:
