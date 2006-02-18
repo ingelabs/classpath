@@ -1,5 +1,11 @@
 2006-02-18  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/AbstractAction.java (AbstractAction()): Nothing to do.
+	(AbstractAction(String)): Just call putValue() for NAME.
+	(putValue): Nothing to do is old and new value are both null.
+
+2006-02-18  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/JRootPane.java (layoutContainer): Get contentPane
 	through getContentPane().
 	(preferredLayoutSize): Likewise.

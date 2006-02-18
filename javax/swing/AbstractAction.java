@@ -1,5 +1,5 @@
 /* AbstractAction.java --
-   Copyright (C) 2002, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -74,12 +74,11 @@ public abstract class AbstractAction
   private transient HashMap store = new HashMap();
 
   /**
-   * Creates a new action with an empty string for the name.  All other 
-   * properties are initialised to <code>null</code>
+   * Creates a new action with no properties set.
    */
   public AbstractAction()
   {
-    this(null);
+    // Nothing to do.
   }
 
   /**
@@ -90,7 +89,7 @@ public abstract class AbstractAction
    */
   public AbstractAction(String name)
   {
-    this(name, null);
+    putValue(NAME, name);
   }
 
   /**
@@ -174,7 +173,7 @@ public abstract class AbstractAction
   public void putValue(String key, Object value)
   {
     Object old = getValue(key);
-    if (old == null || !old.equals(value))
+    if ((old == null && value != null) || (old != null && !old.equals(value)))
     {
       store.put(key, value);
       firePropertyChange(key, old, value);
