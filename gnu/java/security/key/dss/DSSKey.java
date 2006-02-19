@@ -40,7 +40,7 @@ package gnu.java.security.key.dss;
 
 import gnu.java.security.Registry;
 import gnu.java.security.key.IKeyPairCodec;
-import gnu.java.security.key.KeyPairCodecFactory;
+import gnu.java.security.util.FormatUtil;
 
 import java.math.BigInteger;
 import java.security.Key;
@@ -60,7 +60,7 @@ import java.security.spec.DSAParameterSpec;
  * the relevant <code>getEncoded()</code> methods of each of the private and
  * public keys.</p>
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * @see DSSPrivateKey#getEncoded
  * @see DSSPublicKey#getEncoded
  */
@@ -147,7 +147,7 @@ public abstract class DSSKey implements Key, DSAKey
 
   public String getFormat()
   {
-    return KeyPairCodecFactory.getEncodingShortName(defaultFormat);
+    return FormatUtil.getEncodingShortName(defaultFormat);
   }
 
   // Other instance methods --------------------------------------------------

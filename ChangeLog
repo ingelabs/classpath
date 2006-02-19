@@ -1,3 +1,70 @@
+2006-02-19  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/key/OutgoingMessage.java (writePublicKey): Handle new
+	internal format.
+	(writePrivateKey): Likewise.
+	(writeKey): New method.
+	(getKeyType): Likewise.
+	* gnu/javax/crypto/key/IncomingMessage.java (readPublicKey): Handle new
+	internal format.
+	(readPrivateKey): Likewise.
+	(getKeyPairCodec): New method.
+	* gnu/javax/crypto/key/srp6/SRPKey.java (getFormat): Always return Raw.
+	* gnu/javax/crypto/key/dh/GnuDHKey.java (getFormat): Use FormatUtil.
+	* gnu/java/security/Registry.java (RSA_SIG_PREFIX): New constant.
+	(RSA_PSS_ENCODING): Likewise..
+	(RSA_PKCS1_V1_5_ENCODING): Likewise.
+	(RSA_PSS_SIG): Redefined using other constants.
+	(RSA_PKCS1_V1_5_SIG): Likewise.
+	(MAGIC_RAW_RSA_PKCS1V1_5_SIGNATURE): New constant.
+	* gnu/java/security/util/FormatUtil.java: New file.
+	* gnu/java/security/sig/SignatureFactory.java (names): New field.
+	(getInstance): Let RSASignatureFactory handle RSA signature names.
+	(getNames): Handle new RSA signature (with format) names.
+	* gnu/java/security/sig/SignatureCodecFactory.java: New file.
+	* gnu/java/security/sig/BaseSignature.java (BaseSignature): Add check
+	for null md.
+	(name): Include hash algorithm name.
+	* gnu/java/security/sig/rsa/RSASignatureFactory.java: New file.
+	* gnu/java/security/sig/rsa/RSAPSSSignature.java
+	(RSAPSSSignature): Call constructor with IMessageDigest.
+	(RSAPSSSignature(ImessageDigest,int)): New constructor.
+	* gnu/java/security/sig/rsa/RSAPKCS1V1_5SignatureRawCodec.java: New
+	file.
+	* gnu/java/security/sig/rsa/RSAPKCS1V1_5SignatureX509Codec.java:
+	Likewise.
+	* gnu/java/security/sig/rsa/RSAPKCS1V1_5Signature.java
+	(RSAPKCS1V1_5Signature(String)): Call constructor with IMessageDigest.
+	(RSAPKCS1V1_5Signature(IMessageDigest)): New constructor.
+	* gnu/java/security/sig/rsa/EMSA_PKCS1_V1_5.java (getInstance): Added
+	hash algorithm name to exception.
+	* gnu/java/security/sig/dss/DSSSignatureX509Codec.java: New file.
+	* gnu/java/security/key/KeyPairCodecFactory.java
+	(names): New class field.
+	(getInstance(Sitrng)): Deconstruct and call getInstance(String,String).
+	(getInstance(String,String)): New method.
+	(getInstance(String,int)): New method.
+	(getInstance(byte[])): Removed.
+	(getInstance(Key)): Handle new formats.
+	(getNames): Likewise.
+	(getEncodingName(int)): Moved to FormatUtil.
+	(getEncodingShortName(int)): Likewise.
+	(getRawCodec(String)): New method.
+	(getX509Codec(String)): Likewise.
+	(getPKCS8Codec(String)): Likewise.
+	(getRawCodec(Key)): Likewise.
+	(getX509Codec(Key)): Likewise.
+	(getPKCS8Codec(Key)): Likewise.
+	* gnu/java/security/key/dss/DSSKey.java (getFormat): Use FormatUtil.
+	* gnu/java/security/key/rsa/GnuRSAKey.java (getFormat): Likewise.
+	* gnu/java/security/jce/sig/SHA512withRSA.java: New File.
+	* gnu/java/security/jce/sig/SHA384withRSA.java: Likewise.
+	* gnu/java/security/jce/sig/SHA256withRSA.java: Likewise.
+	* gnu/java/security/jce/sig/SHA160withRSA.java: Likewise.
+	* gnu/java/security/jce/sig/SHA160withDSS.java: Likewsie.
+	* gnu/java/security/jce/sig/MD5withRSA.java: Likewise.
+	* gnu/java/security/jce/sig/MD2withRSA.java: Likewise.
+
 2006-02-18  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/dnd/DragSource.java (getDefaultDragSource): Return new
