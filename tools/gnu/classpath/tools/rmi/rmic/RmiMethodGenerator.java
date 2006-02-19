@@ -39,6 +39,7 @@
 package gnu.classpath.tools.rmi.rmic;
 
 import gnu.classpath.tools.AbstractMethodGenerator;
+import gnu.java.rmi.server.RMIHashes;
 
 import java.lang.reflect.Method;
 import java.util.Properties;
@@ -284,19 +285,15 @@ public class RmiMethodGenerator
    */
   public String getMethodHashCode()
   {
-    // Using the reliable chechsum method as this is a code generator, as
-    // the code will be generated once, but is likely to be used much more
-    // frequently.
-    Adler32 adler = new Adler32();
-
-    adler.update(method.getDeclaringClass().getName().getBytes());
-    adler.update(method.getName().getBytes());
-
-    Class[] args = method.getParameterTypes();
-    for (int i = 0; i < args.length; i++)
-      {
-        adler.update(args[i].getName().getBytes());
-      }
-    return adler.getValue() + "L";
+    return RMIHashes.getMethodHash(method)+"L";
   }
+  
+  /**
+   * Additional processing of the stub name (nothing to do for JRMP stubs).
+   */
+  public String convertStubName(String name)
+  {
+    return name;
+  }
+  
 }

@@ -163,7 +163,7 @@ public class RMIC
 
                 // Generate stub.
                 String stub = compiler.generateStub();
-                String subName = "_" + compiler.getStubName() + "_Stub.java";
+                String subName = compiler.getStubName() + "_Stub.java";
 
                 if (noWrite)
                   continue Compile;

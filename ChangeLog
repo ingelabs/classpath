@@ -1,5 +1,16 @@
 2006-02-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/classpath/tools/giop/grmic/GiopRmicCompiler.java (compile):
+	Call convertStubName. (convertStubName): New method.
+	* gnu/classpath/tools/rmi/RMIC.java (main): Stub name fix.
+	* gnu/classpath/tools/rmi/rmic/RmiMethodGenerator.java 
+	(convertStubName): New method.
+	(getMethodHashCode): 
+	Use existing gnu.java.rmi.server.RMIHashes.getMethodHash.
+	* gnu/classpath/tools/rmi/rmic/templates/Stub_12.jav: Stub name fix.
+
+2006-02-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* java/rmi/server/UnicastRemoteObject.java: Documenting. 
 
 2006-02-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>

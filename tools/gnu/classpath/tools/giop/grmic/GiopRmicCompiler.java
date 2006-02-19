@@ -154,10 +154,8 @@ public class GiopRmicCompiler
         packag = s.substring(0, p);
         implName = name = s.substring(p + 1);
       }
-
-    // Drop the Impl suffix, if one exists.
-    if (name.endsWith("Impl"))
-      name = name.substring(0, name.length() - "Impl".length());
+     
+    name = convertStubName(name);
 
     stubName = name;
 
@@ -500,5 +498,17 @@ public class GiopRmicCompiler
   public String getStubName()
   {
     return stubName;
+  }
+  
+  /**
+   * Additional processing of the stub name.
+   */
+  public String convertStubName(String name)
+  {
+    // Drop the Impl suffix, if one exists.
+    if (name.endsWith("Impl"))
+      return name.substring(0, name.length() - "Impl".length());
+    else
+      return name;
   }
 }
