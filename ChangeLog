@@ -1,5 +1,9 @@
 2006-02-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* java/rmi/server/UnicastRemoteObject.java: Documenting. 
+
+2006-02-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/java/rmi/server/UnicastServerRef.java: Reformatted.
 
 2006-02-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
