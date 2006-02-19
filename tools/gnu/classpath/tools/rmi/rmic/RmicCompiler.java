@@ -171,5 +171,12 @@ public class RmicCompiler extends GiopRmicCompiler
     addZeroSizeObjecArray = false;
     super.reset();
   }
-  
+
+  /**
+   * Additional processing of the stub name (nothing to do for JRMP stubs).
+   */
+  public String convertStubName(String name)
+  {
+    return name;
+  }  
 }

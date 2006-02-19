@@ -40,7 +40,7 @@ public final class #name_Stub
         catch (NoSuchMethodException nex)
           {
              NoSuchMethodError err = new NoSuchMethodError(
-               "_#name_Stub class initialization failed");
+               "#name_Stub class initialization failed");
              err.initCause(nex);
              throw err;
           }  

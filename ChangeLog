@@ -1,5 +1,12 @@
 2006-02-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/classpath/tools/rmi/rmic/RmicCompiler.java (convertStubName): 
+	New method.
+	* gnu/classpath/tools/rmi/rmic/templates/Stub_12.jav: 
+	Another stub name fix.
+
+2006-02-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/classpath/tools/giop/grmic/GiopRmicCompiler.java (compile):
 	Call convertStubName. (convertStubName): New method.
 	* gnu/classpath/tools/rmi/RMIC.java (main): Stub name fix.
