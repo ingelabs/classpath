@@ -1,3 +1,9 @@
+2006-02-19  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java (endValidate): Set
+	Parent and Bounds of our children if either or parent is showing, or
+	we are a Window and are showing ourselves now.
+
 2006-02-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/classpath/tools/rmi/rmic/RmicCompiler.java (convertStubName): 

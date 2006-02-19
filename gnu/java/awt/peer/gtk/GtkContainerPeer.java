@@ -1,5 +1,5 @@
 /* GtkContainerPeer.java -- Implements ContainerPeer with GTK
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -67,10 +67,13 @@ public class GtkContainerPeer extends GtkComponentPeer
   {
     Component parent = awtComponent.getParent ();
 
-    // Only set our parent on the GTK side if our parent on the AWT
-    // side is not showing.  Otherwise the gtk peer will be shown
-    // before we've had a chance to position and size it properly.
-    if (parent != null && parent.isShowing ())
+    // We only set our parent on the GTK side if our parent on the AWT
+    // side is not showing in the constuctor.  Otherwise the gtk peer will
+    // be shown  before we've had a chance to position and size it properly.
+    // So we set it here at the end of validation.
+    if ((parent != null && parent.isShowing())
+	|| (awtComponent instanceof Window
+	    && ((Window) awtComponent).isShowing()))
       {
         Component[] components = ((Container) awtComponent).getComponents ();
         int ncomponents = components.length;
