@@ -1,5 +1,5 @@
 /* UnicastServerRef.java --
-   Copyright (c) 1996, 1997, 1998, 1999, 2002, 2003, 2004
+   Copyright (c) 1996, 1997, 1998, 1999, 2002, 2003, 2004, 2006
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -56,250 +56,307 @@ import java.rmi.server.Skeleton;
 import java.util.Hashtable;
 
 public class UnicastServerRef
-	extends UnicastRef 
-	implements ServerRef{ //SHOULD implement ServerRef
+    extends UnicastRef
+    implements ServerRef
+{ // SHOULD implement ServerRef
 
-final static private Class[] stubprototype = new Class[] { RemoteRef.class };
+  /**
+   * Use GNU Classpath v 0.20 SVUID for interoperability
+   */
+  private static final long serialVersionUID = - 5585608108300801246L;
 
-Remote myself; //save the remote object itself
-private Skeleton skel;
-private RemoteStub stub;
-private Hashtable methods = new Hashtable();
+  final static private Class[] stubprototype = new Class[] { RemoteRef.class };
 
-/**
- * Used by serialization.
- */
-UnicastServerRef()
-{
-}
+  Remote myself; // save the remote object itself
 
-public UnicastServerRef(ObjID id, int port, RMIServerSocketFactory ssf) throws RemoteException {
-	super(id);
-	manager = UnicastConnectionManager.getInstance(port, ssf);
-}
+  private Skeleton skel;
 
-public RemoteStub exportObject(Remote obj) throws RemoteException {
-	if (myself == null) {
-		myself = obj;
-		// Save it to server manager, to let client calls in the same VM to issue
-		//  local call
-		manager.serverobj = obj;
+  private RemoteStub stub;
 
-		// Find and install the stub
-		Class cls = obj.getClass();
-		Class expCls;
-		try {
-			// where ist the _Stub? (check superclasses also)
-			expCls = findStubSkelClass(cls); 
-		} catch (Exception ex) {
-			throw new RemoteException("can not find stubs for class: " + cls, ex);
-		}
+  private Hashtable methods = new Hashtable();
 
-		stub = (RemoteStub)getHelperClass(expCls, "_Stub");
-		if (stub == null) {
-			throw new RemoteException("failed to export: " + cls);
-		}
+  /**
+   * Used by serialization.
+   */
+  UnicastServerRef()
+  {
+  }
 
-		// Find and install the skeleton (if there is one)
-		skel = (Skeleton)getHelperClass(expCls, "_Skel");
+  public UnicastServerRef(ObjID id, int port, RMIServerSocketFactory ssf)
+      throws RemoteException
+  {
+    super(id);
+    manager = UnicastConnectionManager.getInstance(port, ssf);
+  }
 
-		// Build hash of methods which may be called.
-		buildMethodHash(obj.getClass(), true);
+  public RemoteStub exportObject(Remote obj) throws RemoteException
+  {
+    if (myself == null)
+      {
+        myself = obj;
+        // Save it to server manager, to let client calls in the same VM to
+        // issue
+        // local call
+        manager.serverobj = obj;
 
-		// Export it.
-		UnicastServer.exportObject(this);
-	}
+        // Find and install the stub
+        Class cls = obj.getClass();
+        Class expCls;
+        try
+          {
+            // where ist the _Stub? (check superclasses also)
+            expCls = findStubSkelClass(cls);
+          }
+        catch (Exception ex)
+          {
+            throw new RemoteException("can not find stubs for class: " + cls,
+                                      ex);
+          }
 
-	return (stub);
-}
+        stub = (RemoteStub) getHelperClass(expCls, "_Stub");
+        if (stub == null)
+          {
+            throw new RemoteException("failed to export: " + cls);
+          }
 
-public RemoteStub exportObject(Remote remote, Object obj)
-        throws RemoteException
-{
-    //FIX ME
-	return exportObject(remote);
-}
+        // Find and install the skeleton (if there is one)
+        skel = (Skeleton) getHelperClass(expCls, "_Skel");
 
-public RemoteStub getStub(){
+        // Build hash of methods which may be called.
+        buildMethodHash(obj.getClass(), true);
+
+        // Export it.
+        UnicastServer.exportObject(this);
+      }
+
+    return (stub);
+  }
+
+  public RemoteStub exportObject(Remote remote, Object obj)
+      throws RemoteException
+  {
+    // FIX ME
+    return exportObject(remote);
+  }
+
+  public RemoteStub getStub()
+  {
     return stub;
-}
+  }
 
-
-public boolean unexportObject(Remote obj, boolean force) {
+  public boolean unexportObject(Remote obj, boolean force)
+  {
     // Remove all hashes of methods which may be called.
     buildMethodHash(obj.getClass(), false);
     return UnicastServer.unexportObject(this, force);
-}
+  }
 
-/**
-*
-*  The Subs/Skels might not there for the actual class, but maybe 
-*  for one of the superclasses.
-*
-*/
-private Class findStubSkelClass(Class startCls) throws Exception {
-	Class cls = startCls;
+  /**
+   * The Subs/Skels might not there for the actual class, but maybe for one of
+   * the superclasses.
+   */
+  private Class findStubSkelClass(Class startCls) throws Exception
+  {
+    Class cls = startCls;
 
-	while (true) {
-		try {
-			String stubClassname = cls.getName() + "_Stub";
-			ClassLoader cl = cls.getClassLoader();
-			Class scls = cl == null ? Class.forName(stubClassname)
-						: cl.loadClass(stubClassname);
-			return cls; // found it
-		} catch (ClassNotFoundException e) {
-			Class superCls = cls.getSuperclass();
-			if (superCls == null 
-				|| superCls == java.rmi.server.UnicastRemoteObject.class) 
-			{
-				throw new Exception("Neither " + startCls 
-					+ " nor one of their superclasses (like" + cls + ")" 
-					+ " has a _Stub");
-			}
-			cls = superCls;
-		}
-	}
-}
+    while (true)
+      {
+        try
+          {
+            String stubClassname = cls.getName() + "_Stub";
+            ClassLoader cl = cls.getClassLoader();
+            Class scls = cl == null ? Class.forName(stubClassname)
+                                   : cl.loadClass(stubClassname);
+            return cls; // found it
+          }
+        catch (ClassNotFoundException e)
+          {
+            Class superCls = cls.getSuperclass();
+            if (superCls == null
+                || superCls == java.rmi.server.UnicastRemoteObject.class)
+              {
+                throw new Exception("Neither " + startCls
+                                    + " nor one of their superclasses (like"
+                                    + cls + ")" + " has a _Stub");
+              }
+            cls = superCls;
+          }
+      }
+  }
 
+  private Object getHelperClass(Class cls, String type)
+  {
+    try
+      {
+        String classname = cls.getName();
+        ClassLoader cl = cls.getClassLoader();
+        Class scls = cl == null ? Class.forName(classname + type)
+                               : cl.loadClass(classname + type);
+        if (type.equals("_Stub"))
+          {
+            try
+              {
+                // JDK 1.2 stubs
+                Constructor con = scls.getConstructor(stubprototype);
+                return (con.newInstance(new Object[] { this }));
+              }
+            catch (NoSuchMethodException e)
+              {
+              }
+            catch (InstantiationException e)
+              {
+              }
+            catch (IllegalAccessException e)
+              {
+              }
+            catch (IllegalArgumentException e)
+              {
+              }
+            catch (InvocationTargetException e)
+              {
+              }
+            // JDK 1.1 stubs
+            RemoteStub stub = (RemoteStub) scls.newInstance();
+            UnicastRemoteStub.setStubRef(stub, this);
+            return (stub);
+          }
+        else
+          {
+            // JDK 1.1 skel
+            return (scls.newInstance());
+          }
+      }
+    catch (ClassNotFoundException e)
+      {
+      }
+    catch (InstantiationException e)
+      {
+      }
+    catch (IllegalAccessException e)
+      {
+      }
+    return (null);
+  }
 
+  public String getClientHost() throws ServerNotActiveException
+  {
+    return RemoteServer.getClientHost();
+  }
 
-private Object getHelperClass(Class cls, String type) {
-	try {   
-	    String classname = cls.getName();
-		ClassLoader cl = cls.getClassLoader();
-		Class scls = cl == null ? Class.forName(classname + type)
-					: cl.loadClass(classname + type);
-		if (type.equals("_Stub")) {
-			try {
-				// JDK 1.2 stubs
-				Constructor con = scls.getConstructor(stubprototype);
-				return (con.newInstance(new Object[]{this}));
-			}
-			catch (NoSuchMethodException e) {
-			}
-			catch (InstantiationException e) {
-			}
-			catch (IllegalAccessException e) {
-			}
-			catch (IllegalArgumentException e) {
-			}
-			catch (InvocationTargetException e) {
-			}
-			// JDK 1.1 stubs
-			RemoteStub stub = (RemoteStub)scls.newInstance();
-			UnicastRemoteStub.setStubRef(stub, this);
-			return (stub);
-		}
-		else {
-			// JDK 1.1 skel
-			return (scls.newInstance());
-		}
-	}
-	catch (ClassNotFoundException e) {
-	}
-	catch (InstantiationException e) {
-	}
-	catch (IllegalAccessException e) {
-	}
-	return (null);
-}
+  private void buildMethodHash(Class cls, boolean build)
+  {
+    Method[] meths = cls.getMethods();
+    for (int i = 0; i < meths.length; i++)
+      {
+        /* Don't need to include any java.xxx related stuff */
+        if (meths[i].getDeclaringClass().getName().startsWith("java."))
+          {
+            continue;
+          }
+        long hash = RMIHashes.getMethodHash(meths[i]);
+        if (build)
+          methods.put(new Long(hash), meths[i]);
+        else
+          methods.remove(new Long(hash));
+        // System.out.println("meth = " + meths[i] + ", hash = " + hash);
+      }
+  }
 
-
-
-public String getClientHost() throws ServerNotActiveException {
-	return RemoteServer.getClientHost();
-}
-
-private void buildMethodHash(Class cls, boolean build) {
-	Method[] meths = cls.getMethods();
-	for (int i = 0; i < meths.length; i++) {
-		/* Don't need to include any java.xxx related stuff */
-		if (meths[i].getDeclaringClass().getName().startsWith("java.")) {
-			continue;
-		}
-		long hash = RMIHashes.getMethodHash(meths[i]);
-		if(build)
-		    methods.put(new Long (hash), meths[i]);
-		else
-		    methods.remove(new Long (hash));
-//System.out.println("meth = " + meths[i] + ", hash = " + hash);
-	}
-}
-
-Class getMethodReturnType(int method, long hash) throws Exception
-{
-    if (method == -1) {
-        Method meth = (Method)methods.get(new Long (hash));
+  Class getMethodReturnType(int method, long hash) throws Exception
+  {
+    if (method == - 1)
+      {
+        Method meth = (Method) methods.get(new Long(hash));
         return meth.getReturnType();
-    }else
-        return null;
-}
+      }
+    else
+      return null;
+  }
 
-public Object incomingMessageCall(UnicastConnection conn, int method, long hash) throws Exception {
-//System.out.println("method = " + method + ", hash = " + hash);
-	// If method is -1 then this is JDK 1.2 RMI - so use the hash
-	// to locate the method
-	if (method == -1) {
-		Method meth = (Method)methods.get(new Long (hash));
-//System.out.println("class = " + myself.getClass() + ", meth = " + meth);
-		if (meth == null) {
-			throw new NoSuchMethodException();
-		}
+  public Object incomingMessageCall(UnicastConnection conn, int method,
+                                    long hash) throws Exception
+  {
+    // System.out.println("method = " + method + ", hash = " + hash);
+    // If method is -1 then this is JDK 1.2 RMI - so use the hash
+    // to locate the method
+    if (method == - 1)
+      {
+        Method meth = (Method) methods.get(new Long(hash));
+        // System.out.println("class = " + myself.getClass() + ", meth = " +
+        // meth);
+        if (meth == null)
+          {
+            throw new NoSuchMethodException();
+          }
 
-		ObjectInputStream in = conn.getObjectInputStream();
-		int nrargs = meth.getParameterTypes().length;
-		Object[] args = new Object[nrargs];
-		for (int i = 0; i < nrargs; i++) {
-			/** 
-			 * For debugging purposes - we don't handle CodeBases
-			 * quite right so we don't always find the stubs.  This
-			 * lets us know that.
-			 */
-			try {
-				// need to handle primitive types
-				args[i] = ((RMIObjectInputStream)in).readValue(meth.getParameterTypes()[i]);
-				
-			}
-			catch (Exception t) {
-				t.printStackTrace();
-				throw t;
-			}
-		}
-		//We must reinterpret the exception thrown by meth.invoke()
-		//return (meth.invoke(myself, args));
-		Object ret = null;
-		try{
-		    ret = meth.invoke(myself, args);
-		}catch(InvocationTargetException e){
-                    Throwable cause = e.getTargetException();
-                    if (cause instanceof Exception) {
-                        throw (Exception)cause;
-                    }
-                    else if (cause instanceof Error) {
-                        throw (Error)cause;
-                    }
-                    else {
-                        throw new Error("The remote method threw a java.lang.Throwable that is neither java.lang.Exception nor java.lang.Error.", e);
-                    }
-		}
-		return ret;
-	}
-	// Otherwise this is JDK 1.1 style RMI - we find the skeleton
-	// and invoke it using the method number.  We wrap up our
-	// connection system in a UnicastRemoteCall so it appears in a
-	// way the Skeleton can handle.
-	else {
-		if (skel == null) {
-			throw new NoSuchMethodException();
-		}
-		UnicastRemoteCall call = new UnicastRemoteCall(conn);
-		skel.dispatch(myself, call, method, hash);		  
-		if (!call.isReturnValue())
-		  return RMIVoidValue.INSTANCE;
-		else
-		  return (call.returnValue());
-	}
-}
+        ObjectInputStream in = conn.getObjectInputStream();
+        int nrargs = meth.getParameterTypes().length;
+        Object[] args = new Object[nrargs];
+        for (int i = 0; i < nrargs; i++)
+          {
+            /**
+             * For debugging purposes - we don't handle CodeBases quite right so
+             * we don't always find the stubs. This lets us know that.
+             */
+            try
+              {
+                // need to handle primitive types
+                args[i] = ((RMIObjectInputStream) in)
+                  .readValue(meth.getParameterTypes()[i]);
+
+              }
+            catch (Exception t)
+              {
+                t.printStackTrace();
+                throw t;
+              }
+          }
+        //We must reinterpret the exception thrown by meth.invoke()
+        //return (meth.invoke(myself, args));
+        Object ret = null;
+        try
+          {
+            ret = meth.invoke(myself, args);
+          }
+        catch (InvocationTargetException e)
+          {
+            Throwable cause = e.getTargetException();
+            if (cause instanceof Exception)
+              {
+                throw (Exception) cause;
+              }
+            else if (cause instanceof Error)
+              {
+                throw (Error) cause;
+              }
+            else
+              {
+                throw new Error(
+                  "The remote method threw a java.lang.Throwable that"+
+                  " is neither java.lang.Exception nor java.lang.Error.",
+                  e);
+              }
+          }
+        return ret;
+      }
+    // Otherwise this is JDK 1.1 style RMI - we find the skeleton
+    // and invoke it using the method number.  We wrap up our
+    // connection system in a UnicastRemoteCall so it appears in a
+    // way the Skeleton can handle.
+    else
+      {
+        if (skel == null)
+          {
+            throw new NoSuchMethodException();
+          }
+        UnicastRemoteCall call = new UnicastRemoteCall(conn);
+        skel.dispatch(myself, call, method, hash);
+        if (! call.isReturnValue())
+          return RMIVoidValue.INSTANCE;
+        else
+          return (call.returnValue());
+      }
+  }
 
 }
 
