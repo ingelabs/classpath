@@ -908,7 +908,7 @@ public class DefaultEditorKit extends EditorKit
 	  {
         int offs = t.getCaretPosition() - 1;
         
-        if(offs > 0)
+        if(offs >= 0)
           {
             Caret c = t.getCaret();
             c.moveDot(offs);

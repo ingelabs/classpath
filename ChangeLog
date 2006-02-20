@@ -1,8 +1,13 @@
+2006-02-20  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/DefaultEditorKit.java: Fixed comparison
+	in backward selection action.
+
 2006-02-20  Olivier Jolly  <olivier.jolly@pcedev.com>
 
-    * java/lang/reflect/Proxy.java
-    (ProxyData.getProxyData): Skipped overriding of core methods.
-    (ProxyData.isCoreObjectMethod): New method.
+	* java/lang/reflect/Proxy.java:
+	(ProxyData.getProxyData): Skipped overriding of core methods.
+	(ProxyData.isCoreObjectMethod): New method.
 
 2006-02-20  Mark Wielaard  <mark@klomp.org>
 
