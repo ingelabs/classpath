@@ -690,8 +690,10 @@ public abstract class AbstractDocument implements Document, Serializable
     try
       {
         writeLock();
-        UndoableEdit temp = content.remove(offset, length);
+        
+        // The order of the operations below is critical!        
         removeUpdate(event);
+        UndoableEdit temp = content.remove(offset, length);
         postRemoveUpdate(event);
         fireRemoveUpdate(event);
       }
