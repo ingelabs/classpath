@@ -557,7 +557,7 @@ public class GapContent
 
     assert newGapEnd > gapEnd : "The new gap end must be greater than the "
                                 + "old gap end.";
-    setPositionsInRange(gapEnd, newGapEnd - gapEnd, newGapEnd + 1);
+    setPositionsInRange(gapEnd, newGapEnd - gapEnd, newGapEnd);
     gapEnd = newGapEnd;
   }
 
