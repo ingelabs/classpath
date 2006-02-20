@@ -1,3 +1,9 @@
+2006-02-20  Lillian Angel  <langel@redhat.com>
+
+	* java/swt/Window.java
+	(show): Calling show() on the owned windows caused problems.
+	Changed back to get the peer and call setVisible.
+
 2006-02-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTextUI.java

@@ -299,7 +299,10 @@ public class Window extends Container implements Accessible
               {
                 Window w = (Window) (((Reference) e.next()).get());
                 if (w != null)
-                  w.show();
+                  {
+                    if (w.isVisible())
+                      w.getPeer().setVisible(true);
+                  }
                 else
                   // Remove null weak reference from ownedWindows.
                   // Unfortunately this can't be done in the Window's
