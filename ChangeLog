@@ -1,3 +1,10 @@
+2006-02-20  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(begin_drawing_operation): Output stacktrace and return on bad cairo
+	status.
+	(end_drawing_operation): Likewise. And reset cairo_t.
+
 2006-02-20  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/DefaultEditorKit.java: Fixed comparison
