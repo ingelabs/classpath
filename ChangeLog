@@ -1,3 +1,7 @@
+2006-02-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/Option.java: New class.
+
 2006-02-20  Lillian Angel  <langel@redhat.com>
 
 	* java/swt/Window.java
