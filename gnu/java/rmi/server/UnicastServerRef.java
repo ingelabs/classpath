@@ -43,36 +43,54 @@ import java.io.ObjectInputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.ObjID;
 import java.rmi.server.RMIServerSocketFactory;
+import java.rmi.server.RemoteObjectInvocationHandler;
 import java.rmi.server.RemoteRef;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.RemoteStub;
 import java.rmi.server.ServerNotActiveException;
-import java.rmi.server.ServerRef;
 import java.rmi.server.Skeleton;
+import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 public class UnicastServerRef
     extends UnicastRef
-    implements ServerRef
-{ // SHOULD implement ServerRef
+{ 
 
   /**
    * Use GNU Classpath v 0.20 SVUID for interoperability
    */
   private static final long serialVersionUID = - 5585608108300801246L;
-
-  final static private Class[] stubprototype = new Class[] { RemoteRef.class };
-
+  
+  /**
+   * The class array, defining parameters of the jdk 1.2 RMI stub constructor. 
+   */
+  private static final Class[] stubprototype = new Class[] { RemoteRef.class };
+  
+  /**
+   * The exported remote object itself.
+   */
   Remote myself; // save the remote object itself
-
+  
+  /**
+   * The skeleton (if any), associated with the exported remote object.
+   */
   private Skeleton skel;
-
-  private RemoteStub stub;
-
+  
+  /**
+   * The stub, associated with the exported remote object (may be proxy class).
+   */
+  private Remote stub;
+  
+  /**
+   * The method table (RMI hash code to method) of the methods of the 
+   * exported object.
+   */
   private Hashtable methods = new Hashtable();
 
   /**
@@ -88,8 +106,20 @@ public class UnicastServerRef
     super(id);
     manager = UnicastConnectionManager.getInstance(port, ssf);
   }
-
-  public RemoteStub exportObject(Remote obj) throws RemoteException
+  
+  /**
+   * Export the object and return its remote stub. The method tries to locate
+   * existing stubs and skeletons. If this fails, the method instantiates the
+   * proxy stub class.
+   * 
+   * Stubs and skeletons are always ignored (even if present) if the 
+   * java.rmi.server.ignoreStubClasses property is set to true.
+   * 
+   * @param obj the object being exported.
+   * @return the stub (existing class or proxy) of the exported object.
+   * @throws RemoteException if the export failed due any reason
+   */
+  public Remote exportObject(Remote obj) throws RemoteException
   {
     if (myself == null)
       {
@@ -99,28 +129,36 @@ public class UnicastServerRef
         // local call
         manager.serverobj = obj;
 
-        // Find and install the stub
-        Class cls = obj.getClass();
-        Class expCls;
-        try
+        String ignoreStubs;
+        
+        ClassLoader loader =obj.getClass().getClassLoader(); 
+        
+        // Stubs are always searched for the bootstrap classes that may have
+        // obsolete pattern and may still need also skeletons.
+        if (loader==null)
+          ignoreStubs = "false";
+        else
+          ignoreStubs = System.getProperty("java.rmi.server.ignoreStubClasses", 
+                                           "false");
+        
+        if (! ignoreStubs.equals("true"))
           {
+            // Find and install the stub
+            Class cls = obj.getClass();
+
             // where ist the _Stub? (check superclasses also)
-            expCls = findStubSkelClass(cls);
-          }
-        catch (Exception ex)
-          {
-            throw new RemoteException("can not find stubs for class: " + cls,
-                                      ex);
+            Class expCls = expCls = findStubSkelClass(cls);
+
+            if (expCls != null)
+              {
+                stub = (RemoteStub) getHelperClass(expCls, "_Stub");
+                // Find and install the skeleton (if there is one)
+                skel = (Skeleton) getHelperClass(expCls, "_Skel");
+              }
           }
 
-        stub = (RemoteStub) getHelperClass(expCls, "_Stub");
         if (stub == null)
-          {
-            throw new RemoteException("failed to export: " + cls);
-          }
-
-        // Find and install the skeleton (if there is one)
-        skel = (Skeleton) getHelperClass(expCls, "_Skel");
+          stub = createProxyStub(obj.getClass(), this);
 
         // Build hash of methods which may be called.
         buildMethodHash(obj.getClass(), true);
@@ -129,21 +167,27 @@ public class UnicastServerRef
         UnicastServer.exportObject(this);
       }
 
-    return (stub);
+    return stub;
   }
-
-  public RemoteStub exportObject(Remote remote, Object obj)
-      throws RemoteException
-  {
-    // FIX ME
-    return exportObject(remote);
-  }
-
-  public RemoteStub getStub()
+  
+  /**
+   * Get the stub (actual class or proxy) of the exported remote object.
+   * 
+   * @return the remote stub (null if exportObject has not been called).
+   */
+  public Remote getStub()
   {
     return stub;
   }
-
+  
+  /**
+   * Unexport the object (remove methods from the method hashcode table 
+   * and call UnicastServer.unexportObject.
+   * 
+   * @param obj the object being unexported
+   * @param force passed to the UnicastServer.unexportObject.
+   * @return value, returned by the UnicastServer.unexportObject.
+   */
   public boolean unexportObject(Remote obj, boolean force)
   {
     // Remove all hashes of methods which may be called.
@@ -152,10 +196,13 @@ public class UnicastServerRef
   }
 
   /**
+   * Return the class in the hierarchy for that the stub class is defined.
    * The Subs/Skels might not there for the actual class, but maybe for one of
    * the superclasses.
+   * 
+   * @return the class having stub defined, null if none.
    */
-  private Class findStubSkelClass(Class startCls) throws Exception
+  private Class findStubSkelClass(Class startCls)
   {
     Class cls = startCls;
 
@@ -175,15 +222,26 @@ public class UnicastServerRef
             if (superCls == null
                 || superCls == java.rmi.server.UnicastRemoteObject.class)
               {
-                throw new Exception("Neither " + startCls
-                                    + " nor one of their superclasses (like"
-                                    + cls + ")" + " has a _Stub");
+                return null;
               }
             cls = superCls;
           }
       }
   }
-
+  
+  /**
+   * Get the helper (assisting) class with the given type. 
+   * 
+   * @param cls the class, for that the helper class is requested. This class
+   * and the requested helper class must share the same class loader.
+   * 
+   * @param type the type of the assisting helper. The only currently supported
+   * non deprecated value is "_Stub" (load jdk 1.1 or 1.2 RMI stub). Another
+   * (deprecated) value is "_Skel" (load skeleton).
+   * 
+   * @return the instantiated instance of the helper class or null if the
+   * helper class cannot be found or instantiated.
+   */
   private Object getHelperClass(Class cls, String type)
   {
     try
@@ -242,7 +300,16 @@ public class UnicastServerRef
   {
     return RemoteServer.getClientHost();
   }
-
+  
+  /**
+   * Build the method has code table and put it into {@link #methods}
+   * (mapping RMI hashcode tos method). The same method is used to remove
+   * the table.
+   * 
+   * @param cls the class for that the method table is built. 
+   * @param build if true, the class methods are added to the table. If 
+   * false, they are removed from the table.
+   */
   private void buildMethodHash(Class cls, boolean build)
   {
     Method[] meths = cls.getMethods();
@@ -357,6 +424,52 @@ public class UnicastServerRef
           return (call.returnValue());
       }
   }
+  
+  /**
+   * Create the 1.2 proxy stub in the case when the pre-generated stub is not
+   * available of the system is explicitly instructed to use proxy stubs.
+   * 
+   * @param stubFor the class for that the proxy class must be constructed.
+   * @param reference the remote reference, used to find the given object
+   * 
+   * @return the applicable proxy stub.
+   * 
+   * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
+   */
+  Remote createProxyStub(Class stubFor, RemoteRef reference)
+  {
+    // Collect all interfaces, implemented by stubFor and derived from
+    // Remote (also Remote itself):
+    HashSet interfaces = new HashSet();
+    Class c = stubFor;
+    Class[] intfs;
+
+    while (c != null)
+      {
+        intfs = c.getInterfaces();
+        for (int i = 0; i < intfs.length; i++)
+          {
+            if (Remote.class.isAssignableFrom(intfs[i]))
+              interfaces.add(intfs[i]);
+          }
+        c = c.getSuperclass();
+      }
+
+    intfs = new Class[interfaces.size()];
+    Iterator it = interfaces.iterator();
+
+    for (int i = 0; i < intfs.length; i++)
+      intfs[i] = (Class) it.next();
+    
+    RemoteObjectInvocationHandler handler = 
+      new RemoteObjectInvocationHandler(reference);
+    
+    Object proxy = 
+      Proxy.newProxyInstance(stubFor.getClassLoader(), intfs, handler);
+
+    return (Remote) proxy;
+  }
+  
 
 }
 

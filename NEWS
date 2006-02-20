@@ -7,15 +7,17 @@ New in release 0.21 (to be released)
   `java.security.' `javax.crypto,' and `javax.net.ssl' packages, and
   are service providers implementing the underlying algorithms.
  
-* The new folder tools now contains GIOP and RMI tools, providing necessary
-  support for development using org.omg.*, javax.rmi.CORBA.* and java.rmi.* 
-  packages. The toll set includes GIOP and RMI stub and tie source code
+* The new folder tools includes GIOP and RMI stub and tie source code
   generators, IOR parser and both transient and persistent GIOP naming services. 
 
 * RELAX NG pluggable XML schema datatype library API and an implementation
   for XML Schema Datatypes (http://www.w3.org/TR/xmlschema-2/).
   
 * JTable columns are rearrangeable and resizeable with mouse.
+
+* Added experimental support for dynamic creation of the RMI stubs using proxy
+  classes. The rmic compiler is no longer required (unless for research
+  and specific stubs).
 
 New in release 0.20 (Jan 13, 2006)
 

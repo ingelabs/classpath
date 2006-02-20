@@ -125,14 +125,14 @@ public class UnicastRemoteObject extends RemoteServer
     //this.csf = csf;
     //this.ssf = ssf;
     this.ref = new UnicastServerRef(new ObjID(), port, serverSocketFactory);
-    exportObject(this);
+    exportObject(this, port);
   }
 
   protected UnicastRemoteObject(RemoteRef ref)
     throws RemoteException
   {
 	super((UnicastServerRef) ref);
-	exportObject(this);
+	exportObject(this, 0);
   }
 
   public Object clone()
@@ -143,7 +143,12 @@ public class UnicastRemoteObject extends RemoteServer
   
   /**
    * Export object, making it available for the remote calls at the 
-   * anonymous port.
+   * anonymous port. 
+   * 
+   * This method returns the instance of the abstract class, not an interface.
+   * Hence it will not work with the proxy stubs that are supported since
+   * jdk 1.5 (such stubs cannot be derived from the RemoteStub). Only use
+   * this method if you are sure that the stub class will be accessible.
    * 
    * @param obj the object being exported.
    * 
@@ -161,6 +166,13 @@ public class UnicastRemoteObject extends RemoteServer
    * Export object, making it available for the remote calls at the 
    * specified port.
    * 
+   * Since jdk 1.5 this method does not longer require the stub class to be
+   * present. If such class is not found, the stub is replaced by the 
+   * dynamically constructed proxy class. No attempt to find and load the stubs
+   * is made if the system property java.rmi.server.ignoreStubClasses
+   * is set to true (set to reduce the starting time if the stubs are 
+   * surely not present and exclusively 1.2 RMI is used).
+   * 
    * @param obj the object being exported.
    * @param port the remote object port
    * 
@@ -177,6 +189,13 @@ public class UnicastRemoteObject extends RemoteServer
   /**
    * Create and export the new remote object, making it available at the
    * given port, using sockets, produced by the specified factories.
+   * 
+   * Since jdk 1.5 this method does not longer require the stub class to be
+   * present. If such class is not found, the stub is replaced by the 
+   * dynamically constructed proxy class. No attempt to find and load the stubs
+   * is made if the system property java.rmi.server.ignoreStubClasses
+   * is set to true (set to reduce the starting time if the stubs are 
+   * surely not present and exclusively 1.2 RMI is used).
    * 
    * @param port the port, on that the object should become available.
    * Zero means anonymous port.

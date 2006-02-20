@@ -1,3 +1,15 @@
+2006-02-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/rmi/server/RMIObjectInputStream.java (resolveProxyClass):
+	Expect that proxy interfaces may have different class loaders.
+	* gnu/java/rmi/server/UnicastServerRef.java: Rewritten.
+	* java/rmi/registry/Registry.java,
+	* java/rmi/server/UnicastRemoteObject.java: 
+	Documented about proxy stubs.
+	* gnu/java/rmi/server/CombinedClassLoader.java,
+	java/rmi/server/RemoteObjectInvocationHandler.java: New files.
+	* NEWS: Added entry.
+
 2006-02-19  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GtkContainerPeer.java (endValidate): Set
