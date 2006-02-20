@@ -46,6 +46,10 @@ import java.awt.peer.MenuComponentPeer;
 public abstract class GtkMenuComponentPeer extends GtkGenericPeer
   implements MenuComponentPeer
 {
+  /**
+   * Creates the associated gtk+ widget and stores it in the nsa table
+   * for this peer. Called by the constructor.
+   */
   protected abstract void create ();
 
   /**
@@ -55,7 +59,7 @@ public abstract class GtkMenuComponentPeer extends GtkGenericPeer
   private void setFont()
   {
     MenuComponent mc = ((MenuComponent) awtWidget);
-    Font f = mc.getFont ();
+    Font f = mc.getFont();
     
     if (f == null)
       {
@@ -64,17 +68,21 @@ public abstract class GtkMenuComponentPeer extends GtkGenericPeer
 	if (parent instanceof MenuComponent)
 	  f = parent.getFont ();
       }
-    if (f != null)
-      {
-	gtkWidgetModifyFont(f);
-      }
+
+    setFont(f);
   }
 
-  public GtkMenuComponentPeer (Object awtWidget)
+  /**
+   * Will call the abstract <code>create()</code> that needs to be
+   * overridden by subclasses, to create the MenuComponent. It will
+   * then correctly setup the font for the component based on the
+   * component and/or its containing parent component.
+   */
+  public GtkMenuComponentPeer(MenuComponent component)
   {
-    super (awtWidget);
-    create ();
-    setFont ();
+    super(component);
+    create();
+    setFont();
   }
 
   /**
@@ -84,8 +92,13 @@ public abstract class GtkMenuComponentPeer extends GtkGenericPeer
    */
   public native void dispose();
 
+  /**
+   * Sets the font for this particular MenuComponent only (not any
+   * containing items, if any).
+   */
   public void setFont(Font font)
   {
-    gtkWidgetModifyFont(font);
+    if (font != null)
+      gtkWidgetModifyFont(font);
   }
 }

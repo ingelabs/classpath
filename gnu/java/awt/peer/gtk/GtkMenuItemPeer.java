@@ -49,59 +49,71 @@ import java.awt.peer.MenuPeer;
 public class GtkMenuItemPeer extends GtkMenuComponentPeer
   implements MenuItemPeer
 {
-  native void create (String label);
-  native void connectSignals ();
+  /**
+   * Creates the associated gtk+ widget and stores it in the nsa table
+   * for this peer. Called by the create() method with the label name
+   * of the associated MenuItem. Needs to be overridden my subclasses
+   * that want to create a different gtk+ widget.
+   */
+  protected native void create (String label);
+
+  /**
+   * Called from constructor to enable signals from an item. If a
+   * subclass needs different (or no) signals connected this method
+   * should be overridden.
+   */
+  protected native void connectSignals ();
 
   /**
    * Overridden to set font on menu item label.
    */
   protected native void gtkWidgetModifyFont(String name, int style, int size);
 
+  /**
+   * Creates the associated gtk+ widget and stores it in the nsa table
+   * for this peer. Called by the (super class) constructor.
+   * Overridden to get the label if the assiociated MenuItem and to
+   * call create(String).
+   */
   protected void create()
   {
     create (((MenuItem) awtWidget).getLabel());
   }
 
-  public GtkMenuItemPeer (MenuItem item)
+  /**
+   * Creates a new GtkMenuItemPeer associated with the given MenuItem.
+   * It will call create(), setFont(), setEnabled() and
+   * connectSignals() in that order.
+   */
+  public GtkMenuItemPeer(MenuItem item)
   {
-    super (item);
-    setEnabled (item.isEnabled ());
-    setParent (item);
-
-    if (item.getParent() instanceof Menu && ! (item instanceof Menu))
-      connectSignals();
+    super(item);
+    setEnabled (item.isEnabled());
+    connectSignals();
   }
 
-  void setParent (MenuItem item)
+  /**
+   * Calls setEnabled(false).
+   */
+  public void disable()
   {
-    // add ourself differently, based on what type of parent we have
-    // yes, the typecasting here is nasty.
-    Object parent = item.getParent ();
-    if (parent instanceof MenuBar)
-      {
-	((GtkMenuBarPeer)((MenuBar)parent).getPeer ()).addMenu ((MenuPeer) this);
-      }
-    else // parent instanceof Menu
-      {
-	((GtkMenuPeer)((Menu)parent).getPeer ()).addItem (this, 
-							  item.getShortcut ());
-      }
+    setEnabled(false);
   }
 
-  public void disable ()
+  /**
+   * Calls setEnabled(true).
+   */
+  public void enable()
   {
-    setEnabled (false);
-  }
-
-  public void enable ()
-  {
-    setEnabled (true);
+    setEnabled(true);
   }
 
   public native void setEnabled(boolean b);
-
   public native void setLabel(String label);
 
+  /**
+   * Callback setup through connectSignals().
+   */
   protected void postMenuActionEvent ()
   {
     postActionEvent (((MenuItem)awtWidget).getActionCommand (), 0);

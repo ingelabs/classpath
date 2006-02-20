@@ -101,18 +101,21 @@ public class MenuBar extends MenuComponent
    */
   public synchronized void setHelpMenu(Menu menu)
   {
+    MenuBarPeer myPeer = (MenuBarPeer) getPeer ();
+
     if (helpMenu != null)
       {
-        helpMenu.removeNotify();
-        helpMenu.parent = null;
+	if (myPeer != null)
+	  helpMenu.removeNotify();
+        helpMenu.setParent(null);
       }
     helpMenu = menu;
 
-    if (menu.parent != null)
-      menu.parent.remove(menu);
-    menu.parent = this;
+    MenuContainer parent = menu.getParent();
+    if (parent != null)
+      parent.remove(menu);
+    menu.setParent(this);
 
-    MenuBarPeer myPeer = (MenuBarPeer) getPeer ();
     if (myPeer != null)
       {
         menu.addNotify();
@@ -131,15 +134,20 @@ public class MenuBar extends MenuComponent
    */
   public synchronized Menu add(Menu menu)
   {
-    if (menu.parent != null)
-      menu.parent.remove(menu);
+    MenuBarPeer myPeer = (MenuBarPeer) getPeer ();
 
-    menu.parent = this;
+    MenuContainer parent = menu.getParent();
+    if (parent != null)
+      parent.remove(menu);
+
     menus.addElement(menu);
+    menu.setParent(this);
 
-    if (peer != null)
-      menu.addNotify();
-
+    if (myPeer != null)
+      {
+        menu.addNotify();
+        myPeer.addMenu(menu);
+      }
     return menu;
   }
 
@@ -150,16 +158,16 @@ public class MenuBar extends MenuComponent
    */
   public synchronized void remove(int index)
   {
-    Menu m = (Menu) menus.get(index);
-    menus.remove(index);
-    m.removeNotify();
-    m.parent = null;
+    Menu m = (Menu) menus.remove(index);
+    MenuBarPeer mp = (MenuBarPeer) getPeer();
 
-    if (peer != null)
-      {
-        MenuBarPeer mp = (MenuBarPeer) peer;
-        mp.delMenu(index);
-      }
+    if (mp != null)
+      m.removeNotify();
+
+    m.setParent(null);
+
+    if (mp != null)
+      mp.delMenu(index);
   }
 
   /**
@@ -218,18 +226,25 @@ public class MenuBar extends MenuComponent
    */
   public void addNotify()
   {
-    if (getPeer() == null)
-      setPeer(getToolkit().createMenuBar(this));
+    MenuBarPeer peer = (MenuBarPeer) getPeer();
+    if (peer == null)
+      {
+	peer = getToolkit().createMenuBar(this);
+	setPeer(peer);
+      }
+
     Enumeration e = menus.elements();
     while (e.hasMoreElements())
       {
         Menu mi = (Menu)e.nextElement();
         mi.addNotify();
+	peer.addMenu(mi);
       }
+
     if (helpMenu != null)
       {
         helpMenu.addNotify();
-        ((MenuBarPeer) peer).addHelpMenu(helpMenu);
+        peer.addHelpMenu(helpMenu);
       }
   }
 

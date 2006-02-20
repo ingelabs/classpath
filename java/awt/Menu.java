@@ -220,8 +220,9 @@ getItem(int index)
 public MenuItem
 add(MenuItem item)
 {
-  if (item.parent != null)
-    item.parent.remove(item);
+  MenuContainer parent = item.getParent();
+  if (parent != null)
+    parent.remove(item);
 
   items.addElement(item);
   item.setParent(this);
@@ -272,8 +273,9 @@ insert(MenuItem item, int index)
     add(item);
   else
     {
-      if (item.parent != null)
-	item.parent.remove(item);
+      MenuContainer parent = item.getParent();
+      if (parent != null)
+	parent.remove(item);
       
       items.insertElementAt(item, index);
       item.setParent(this);
@@ -403,14 +405,21 @@ removeAll()
 public void
 addNotify()
 {
+  MenuPeer peer = (MenuPeer) getPeer();
   if (peer == null)
-    peer = getToolkit().createMenu(this);
+    {
+      peer = getToolkit().createMenu(this);
+      setPeer(peer);
+    }
+
   Enumeration e = items.elements();
   while (e.hasMoreElements())
   {
     MenuItem mi = (MenuItem)e.nextElement();
     mi.addNotify();
-  }    
+    peer.addItem(mi);
+  }
+
   super.addNotify ();
 }
 

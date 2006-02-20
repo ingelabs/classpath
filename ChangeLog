@@ -1,3 +1,49 @@
+2006-02-20  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/Menu.java (add(MenuItem)): Use item.getParent() to get
+	parent field.
+	(insert): Likewise.
+	(addNotify): Add the item after addNotifying it.
+	* java/awt/MenuBar.java (setHelpMenu): Only call removeNotify() when
+	there is a peer. Use getParent() and setParent() to manipulate parent
+	field.
+	(add(Menu)): Use getParent() and setParent() to manipulate parent
+	field. Call addNotify() and addMenu() when there is a peer.
+	(remove(int)): Call removeNotify() and delMenu() when there is a peer.
+	(addNotify): Use getPeer()/setPeer(). Call addMenu() and addHelpMenu()
+	when there is a peer.
+	* gnu/java/awt/peer/gtk/GtkMenuComponentPeer.java (create): Document.
+	(GtkMenuComponentPeer): Document. Take MenuComponent as argument.
+	(setFont): Call setFont(Font).
+	(setFont(Font)): Document. Only set font when not null.
+	* gnu/java/awt/peer/gtk/GtkMenuItemPeer.java (create): Document. Made
+	protected.
+	(connectSignals): Likewise.
+	(GtkMenuItemPeer): Document. Don't try to add item. Always call
+	connectSignals().
+	* gnu/java/awt/peer/gtk/GtkCheckboxMenuItemPeer.java (create): Make
+	protected.
+	(postMenuActionEvent): Document.
+	* gnu/java/awt/peer/gtk/GtkMenuPeer.java (create): Document. Made
+	protected.
+	(addItem): Document. Made private.
+	(addTearOff): Made private.
+	(connectSignals): New protected overridden method.
+	(GtkMenuPeer): Correctly cast setupAccelGroup() arguments.
+	* gnu/java/awt/peer/gtk/GtkMenuBarPeer.java (hasHelpMenu): New field.
+	(create): Document.
+	(addMenu): Made private, take GtkMenuPeer as argument and document.
+	(GtkMenuBarPeer): Document.
+	(nativeSetHelpMenu): Removed.
+	(addHelpMenu): Implement.
+	(delMenu): Document.
+	(addMenu): Implement.
+	* gnu/java/awt/peer/gtk/GtkPopupMenuPeer.java (setParent): Removed.
+	* include/gnu_java_awt_peer_gtk_GtkMenuBarPeer.h: Regenerated.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuBarPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkMenuBarPeer_nativeSetHelpMenu):
+	Removed.
+
 2006-02-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/rmi/server/RMIObjectInputStream.java (resolveProxyClass):
@@ -684,7 +730,6 @@
 	(Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create):
 	gtk_plug_new() returns a GtkWindow.
 
->>>>>>> 1.6413
 2006-02-15  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/SpinnerNumberModel.java
