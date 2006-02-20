@@ -943,7 +943,18 @@ public abstract class BasicTextUI extends TextUI
   public void damageRange(JTextComponent t, int p0, int p1,
                           Position.Bias firstBias, Position.Bias secondBias)
   {
-    // TODO: Implement me.
+    try
+      {
+        Rectangle l1 = modelToView(t, p0, firstBias);
+        Rectangle l2 = modelToView(t, p1, secondBias);
+        t.repaint(l1.union(l2));
+      }
+    catch (BadLocationException ex)
+      {
+        AssertionError err = new AssertionError("Unexpected bad location");
+        err.initCause(ex);
+        throw err;
+      }
   }
 
   /**
