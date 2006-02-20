@@ -1,3 +1,7 @@
+2006-02-20  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/nio/charset/Provider.java (Provider): Package private.
+
 2006-02-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/Option.java: New class.
