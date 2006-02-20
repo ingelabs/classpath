@@ -1,6 +1,13 @@
 2006-02-20  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/GapContent.java:
+	(shiftGapEndUp): Reverted.
+	* javax/swing/text/AbstractDocument.java:
+	(remove): Reverted.
+
+2006-02-20  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/GapContent.java:
 	(shiftGapEndUp): Corrected new mark value.
 	* javax/swing/text/AbstractDocument.java:
 	(remove): Changed order of operations.
