@@ -1,3 +1,25 @@
+2006-02-21  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicTextUI.java:
+	(paint): Remove unneccessary part of the if-expression.
+	(damageRange): Added case where the range spans multiple lines.
+	* javax/swing/text/DefaultCaret.java:
+	(clearHighlight): New method.
+	(handleHighlight): Removed unneccessary part of the if-expression.
+	(setDot): Use clearHighlight method.
+	* javax/swing/text/DefaultHighlighter.java: Use ArrayList instead
+        of Vector.
+        (paint): Prevented calling size() on every loop iteration, fixed
+        calculation of allocation area bounds.
+        (getHighlights): Implemented.
+	(removeHighlight): Mark damaged area in textcomponent.
+	(addHighlight): Mark damaged area in textcomponent.
+	(changeHighlight): Mark damaged area in textcomponent.
+        (DefaultHighlighter.HighlightEntry): Made it a real
+        Highlighter.Highlight implementation.
+        (DefaultHighlighter.DefaultHighlightPainter.paint): Fixed
+        calculations.
+
 2006-02-20  Stuart Ballard  <stuart.a.ballard@gmail.com>
 
 	* java/util/zip/ZipConstants.java
