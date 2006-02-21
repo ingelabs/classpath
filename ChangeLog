@@ -1,3 +1,15 @@
+2006-02-21  Wolfgang Baer  <WBaer@gmx.de>
+
+	* java/awt/CardLayout.java:
+	(first): Updated api documentation.
+	(last): Likewise.
+	(next): Likewise.
+	(previous): Likewise.
+	(show): Clarified api docs. Return if name is null. Throw
+	IllegalArgumentException if layout of container is not this.
+	(gotoComponent): Updated api documentation. Throw
+	IllegalArgumentException if layout of container is not this.
+
 2006-02-21  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/NavigationFilter.java
