@@ -1,3 +1,19 @@
+2006-02-21  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/Component.java (translateEvent): Translate
+	AdjustmentEvents to 1.0 Events.
+	* java/awt/Scrollbar.java (dispatchEventImpl): Set valueIsAdjusting.
+	Call setValue() before processing event.
+	* gnu/java/awt/peer/gtk/GtkScrollbarPeer.java (setValues): Check
+	whether we are currently changing and being called back from the
+	Scrollbar component.
+	(setBarValues): New native method.
+	(postAdjustmentEvent): Mark AdjustmentEvent as user generated.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollbarPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues): Renamed to
+	Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setBarValue
+	* include/gnu_java_awt_peer_gtk_GtkScrollbarPeer.h: Regenerated.
+
 2006-02-21  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/View.java

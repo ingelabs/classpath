@@ -1,5 +1,6 @@
 /* Component.java -- a graphics component
-   Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004  Free Software Foundation
+   Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2006
+   Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -40,6 +41,7 @@ package java.awt;
 
 import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
@@ -4875,6 +4877,25 @@ p   * <li>the set of backward traversal keys
             translated = new Event (target, when, oldID,
                                     0, 0, oldKey, oldMods);
           }
+      }
+    else if (e instanceof AdjustmentEvent)
+      {
+	AdjustmentEvent ae = (AdjustmentEvent) e;
+	int type = ae.getAdjustmentType();
+	int oldType;
+	if (type == AdjustmentEvent.BLOCK_DECREMENT)
+	  oldType = Event.SCROLL_PAGE_UP;
+	else if (type == AdjustmentEvent.BLOCK_INCREMENT)
+	  oldType = Event.SCROLL_PAGE_DOWN;
+	else if (type == AdjustmentEvent.TRACK)
+	  oldType = Event.SCROLL_ABSOLUTE;
+	else if (type == AdjustmentEvent.UNIT_DECREMENT)
+	  oldType = Event.SCROLL_LINE_UP;
+	else if (type == AdjustmentEvent.UNIT_INCREMENT)
+	  oldType = Event.SCROLL_LINE_DOWN;
+	else
+	  oldType = type;
+	translated = new Event(target, oldType, new Integer(ae.getValue()));
       }
     else if (e instanceof ActionEvent)
       translated = new Event (target, Event.ACTION_EVENT,

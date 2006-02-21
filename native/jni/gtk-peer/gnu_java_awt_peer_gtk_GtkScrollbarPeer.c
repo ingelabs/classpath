@@ -1,5 +1,5 @@
 /* gtkscrollbarpeer.c -- Native implementation of GtkScrollbarPeer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -179,7 +179,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setPageIncrement
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setBarValues
   (JNIEnv *env, jobject obj, jint value, jint visible, jint min, jint max)
 {
   void *ptr;
