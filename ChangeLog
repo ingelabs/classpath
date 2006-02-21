@@ -1,3 +1,7 @@
+2006-02-21  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/StreamPrintService.java: Added and enhanced documentation.
+
 2006-02-21  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/WrappedPlainView.java
