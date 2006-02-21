@@ -1,3 +1,13 @@
+2006-02-20  Stuart Ballard  <stuart.a.ballard@gmail.com>
+
+	* java/util/zip/ZipConstants.java
+	(LOCSIG): Change type to long.
+	(EXTSIG): Likewise.
+	(CENSIG): Likewise.
+	(ENDSIG): Likewise.
+	* java/util/zip/ZipOutputStream.java
+	(writeLeInt(long)): New method.
+
 2006-02-21  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/javax/net/ssl/provider/PRNG.java: Removed.
