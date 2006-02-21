@@ -179,7 +179,7 @@ public abstract class BasicTextUI extends TextUI
         view.setParent(null);
       
       if (v != null)
-        v.setParent(null);
+        v.setParent(this);
 
       view = v;
     }
@@ -964,7 +964,7 @@ public abstract class BasicTextUI extends TextUI
         // The reference implementation does not throw an exception, too.
         p0 = Math.min(p0, t.getDocument().getLength());
         p1 = Math.min(p1, t.getDocument().getLength());
-        
+
         Rectangle l1 = modelToView(t, p0, firstBias);
         Rectangle l2 = modelToView(t, p1, secondBias);
         if (l1.y == l2.y)
@@ -1217,7 +1217,6 @@ public abstract class BasicTextUI extends TextUI
   protected final void setView(View view)
   {
     rootView.setView(view);
-    view.setParent(rootView);
     textComponent.revalidate();
     textComponent.repaint();
   }

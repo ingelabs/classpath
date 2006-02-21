@@ -1,5 +1,12 @@
 2006-02-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.setView): Call setParent() on the view with this as
+	argument instead of null.
+	(setView): Don't set root view's parent here.
+
+2006-02-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/AbstractDocument.java
 	(AbstractElement.getAttribute): Use getResolveParent() to fetch
 	the resolving parent.
