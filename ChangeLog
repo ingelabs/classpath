@@ -1,5 +1,79 @@
 2006-02-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/AbstractDocument.java
+	(AbstractElement.getAttribute): Use getResolveParent() to fetch
+	the resolving parent.
+	(AbstractElement.getResolveParent): Fixed to handle possible null
+	parent.
+	* javax/swing/text/BoxView.java
+	(childReqs): New field.
+	(paint): Added debugging code (commented out).
+	(getPreferredSpan): Rewritten to use new update* methods.
+	(getMaximumSpan): Rewritten to return Integer.MAX_VALUE
+	for the minor axis and preferredSpan for the major axis.
+	(getMinimumSpan): Rewritten to use new update* methods.
+	(baselineRequirements): Rewritten to avoid creation of 
+	unnecessary SizeRequirements objects.
+	(baselineLayout): Rewritten to use new update* methods.
+	(calculateMajorAxisRequirements): Rewritten to avoid creation of 
+	unnecessary SizeRequirements objects.
+	(calculateMinorAxisRequirements): Rewritten to avoid creation of 
+	unnecessary SizeRequirements objects.
+	(layout): Some robustness fixes for the layout. Turned AssertionErrors
+	into warnings.
+	(layoutMajorAxis): Rewritten to use new update* methods.
+	(layoutMinorAxis): Rewritten to use new update* methods.
+	(getChildRequirements): Replaced by the update* methods.
+	(getAlignment): Use update* methods.
+	(updateChildRequirements): New methods. Updates the child requirements
+	if necessary.
+	(updateRequirements): New methods. Updates the BoxView requirements
+	if necessary.
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.insert): Added warning for illegal replacement operation.
+	* javax/swing/text/FlowView.java
+	(layoutRow): When offset doesn't change, return -1.
+	(LogicalView): Now subclasses BoxView.
+	(loadChildren): Let the CompositeView.setParent() load the children
+	of the logicalView.
+	(calculateMinorRequirements): New overridden method.
+	* javax/swing/text/GlyphView.java
+	(DefaultGlyphPainter.paint): Fixed typo.
+	(startOffset): Made field private.
+	(endOffset): Made field private.
+	(paint): Call getStartOffset() and getEndOffset() instead of the
+	element methods.
+	(isStrikeThrough): Fixed typo.
+	(breakView): Use Utilities.getBreakLocation() to determine best
+	break location.
+	(changedUpdate): Call preferencedChange on this instead of parent.
+	(removeUpdate): Call preferencedChange on this instead of parent.
+	* javax/swing/text/ParagraphView.java
+	(Row.getAlignment): For Y_AXIS, call super.
+	(getAlignment): Likewise.
+	* javax/swing/text/Utilities.java
+	(getBreakLocation): Set Segment object directly on the BreakIterator.
+	* javax/swing/text/html/HTML.java
+	(Attribute): Made class non-serializable and final as specified.
+	(Attribute(String)): Made constructor private.
+	(Attribute.compareTo): Removed.
+	(Attribute.equals): Removed.
+	(Attribute.hashCode): Removed.
+	(Tag): Made class non-comparable and non-serializable as specified.
+	(Tag.compareTo): Removed.
+	(Tag.equals): Removed.
+	(Tag.hashCode): Removed.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.blockOpen): Add tag as name attribute to element.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(HTMLFactory.create): Create NullView for <head> tags, removed unused
+	fallback.
+	* javax/swing/text/html/InlineView.java
+	(setPropertiesFromAttributes): Call super.
+	* javax/swing/text/html/NullView.java: New class.
+
+2006-02-21  Roman Kennke  <kennke@aicas.com>
+
 	PR classpath/26368
 	* javax/swing/text/GapContent.java
 	(GapContentPosition): Made class private.

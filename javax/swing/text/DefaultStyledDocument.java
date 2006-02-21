@@ -729,9 +729,20 @@ public class DefaultStyledDocument extends AbstractDocument implements
           // first place.
           if (removed.length > 0 || added.length > 0)
             {
-              e.replace(curr.index, removed.length, added);
-              ElementEdit ee = new ElementEdit(e, curr.index, removed, added);
-              ev.addEdit(ee);
+              if (curr.index + removed.length <= e.getElementCount())
+                {
+                  e.replace(curr.index, removed.length, added);
+                  ElementEdit ee = new ElementEdit(e, curr.index, removed, added);
+                  ev.addEdit(ee);
+                }
+              else
+                {
+                  System.err.println("WARNING: Tried to replace elements ");
+                  System.err.print("beyond boundaries: elementCount: ");
+                  System.err.println(e.getElementCount());
+                  System.err.print("index: " + curr.index);
+                  System.err.println(", removed.length: " + removed.length);
+                }
             }
         }
     }

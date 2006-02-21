@@ -475,7 +475,7 @@ public class HTMLDocument extends DefaultStyledDocument
   {
     public BlockElement (Element parent, AttributeSet a)
     {
-      super (parent, a);
+      super(parent, a);
     }
     
     /**
@@ -1286,13 +1286,15 @@ public class HTMLDocument extends DefaultStyledDocument
     {
       printBuffer();
       DefaultStyledDocument.ElementSpec element;
-      attr.addAttribute(StyleConstants.NameAttribute, t);
-      element = new DefaultStyledDocument.ElementSpec(attr,
+      AttributeContext ctx = getAttributeContext();
+      AttributeSet copy = attr.copyAttributes();
+      copy = ctx.addAttribute(copy, StyleConstants.NameAttribute, t);
+      element = new DefaultStyledDocument.ElementSpec(copy,
                                DefaultStyledDocument.ElementSpec.StartTagType);
       parseBuffer.addElement(element);
       printBuffer();
     }
-    
+
     /**
      * Instructs the parse buffer to close the block element associated with 
      * the given HTML.Tag

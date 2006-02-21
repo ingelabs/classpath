@@ -41,11 +41,7 @@ package javax.swing.text;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.text.BreakIterator;
-
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 /**
  * A set of utilities to deal with text. This is used by several other classes
@@ -516,8 +512,8 @@ public class Utilities
   {
     int mark = Utilities.getTabbedTextOffset(s, metrics, x0, x, e, startOffset);
     BreakIterator breaker = BreakIterator.getWordInstance();
-    breaker.setText(s.toString());
-    
+    breaker.setText(s);
+
     // If mark is equal to the end of the string, just use that position
     if (mark == s.count)
       return mark;

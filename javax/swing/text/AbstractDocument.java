@@ -1345,11 +1345,11 @@ public abstract class AbstractDocument implements Document, Serializable
     public Object getAttribute(Object key)
     {
       Object result = attributes.getAttribute(key);
-      if (result == null && element_parent != null)
+      if (result == null)
         {
-          AttributeSet parentSet = element_parent.getAttributes();
-          if (parentSet != null)
-            result = parentSet.getAttribute(key);
+          AttributeSet resParent = getResolveParent();
+          if (resParent != null)
+            result = resParent.getAttribute(key);
         }
       return result;
     }
@@ -1386,9 +1386,7 @@ public abstract class AbstractDocument implements Document, Serializable
      */
     public AttributeSet getResolveParent()
     {
-      if (attributes.getResolveParent() != null)
-        return attributes.getResolveParent();
-      return element_parent.getAttributes();
+      return attributes.getResolveParent();
     }
 
     /**
