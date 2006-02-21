@@ -1,3 +1,7 @@
+2006-02-21  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/javax/net/ssl/provider/PRNG.java: Removed.
+
 2006-02-20  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
