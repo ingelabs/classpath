@@ -1,3 +1,23 @@
+2006-02-21  Roman Kennke  <kennke@aicas.com>
+
+	PR classpath/26368
+	* javax/swing/text/GapContent.java
+	(GapContentPosition): Made class private.
+	(InsertUndo): Made class private.
+	(UndoRemove): Made class private.
+	(WeakPositionComparator): New inner class.
+	(positions): Made field private.
+	(createPosition): Clear up GC'ed positions before creating
+	a new one. Store position as WeakReference.
+	(getPositionsInRange): Changed to handle WeakReference
+	positions.
+	(setPositionsInRange): Changed to handle WeakReference
+	positions.
+	(adjustPositionsInRange): Changed to handle WeakReference
+	positions.
+	(dumpPositions): Handle WeakReference positions.
+	(clearPositionReferences): New method.
+
 2006-02-21  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/basic/BasicTextUI.java:
