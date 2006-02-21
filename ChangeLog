@@ -1,3 +1,9 @@
+2006-02-21  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/WrappedPlainView.java
+	(calculateBreakPosition): Changed to use the view's allocation instead
+	of the container's preferredSize.
+
 2006-02-21  Wolfgang Baer  <WBaer@gmx.de>
 
 	* java/awt/CardLayout.java:
