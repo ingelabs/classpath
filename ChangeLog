@@ -1,3 +1,8 @@
+2006-02-22  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/RepaintManager.java
+	(addInvalidComponent): Also consider the component itself.
+
 2006-02-22  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/text/html/HTMLDocument.java (createDefaultRoot): Fully

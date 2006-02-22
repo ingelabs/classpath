@@ -343,7 +343,7 @@ public class RepaintManager
    */
   public void addInvalidComponent(JComponent component)
   {
-    Component ancestor = component.getParent();
+    Component ancestor = component;
 
     while (ancestor != null
            && (! (ancestor instanceof JComponent)
