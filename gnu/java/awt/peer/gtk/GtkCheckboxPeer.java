@@ -42,6 +42,8 @@ import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
 import java.awt.peer.CheckboxPeer;
 
+import java.awt.event.ItemEvent;
+
 public class GtkCheckboxPeer extends GtkComponentPeer
   implements CheckboxPeer
 {
@@ -49,7 +51,6 @@ public class GtkCheckboxPeer extends GtkComponentPeer
   public GtkCheckboxGroupPeer old_group;
   // The current state of the GTK checkbox.
   private boolean currentState;  
-  private boolean changing = false;
 
   public native void create (GtkCheckboxGroupPeer group);
   public native void nativeSetCheckboxGroup (GtkCheckboxGroupPeer group);
@@ -75,23 +76,24 @@ public class GtkCheckboxPeer extends GtkComponentPeer
     CheckboxGroup g = checkbox.getCheckboxGroup ();
     old_group = GtkCheckboxGroupPeer.getCheckboxGroupPeer (g);
     create (old_group);
-    gtkToggleButtonSetActive (checkbox.getState ());
+    currentState = checkbox.getState();
+    gtkToggleButtonSetActive(currentState);
     gtkButtonSetLabel (checkbox.getLabel ());
   }
 
-  public void setState (boolean state)
+  /**
+   * Sets native GtkCheckButton is state is different from current
+   * state.  Will set currentState to state to prevent posting an
+   * event since events should only be posted for user initiated
+   * clicks on the GtkCheckButton.
+   */
+  synchronized public void setState (boolean state)
   {
-    // prevent item_toggled_cb -> postItemEvent ->
-    // awtComponent.setState -> this.setState ->
-    // gtkToggleButtonSetActive self-deadlock on the GDK lock.
-    if (changing && Thread.currentThread() == GtkToolkit.mainThread)
-      {
-        changing = false;
-        return;
-      }
-
     if (currentState != state)
-      gtkToggleButtonSetActive (state);
+      {
+	currentState = state;
+	gtkToggleButtonSetActive(state);
+      }
   }
 
   public void setLabel (String label)
@@ -115,22 +117,15 @@ public class GtkCheckboxPeer extends GtkComponentPeer
   // Override the superclass postItemEvent so that the peer doesn't
   // need information that we have.
   // called back by native side: item_toggled_cb
-  public void postItemEvent (Object item, int stateChange)
+  synchronized public void postItemEvent(Object item, boolean state)
   {
-    Checkbox currentCheckBox = ((Checkbox)awtComponent);
-    // A firing of the event is only desired if the state has changed due to a 
-    // button press. The currentCheckBox's state must be different from the 
-    // one that the stateChange is changing to. 
-    // stateChange = 1 if it goes from false -> true
-    // stateChange = 2 if it goes from true -> false
-    if (( !currentCheckBox.getState() && stateChange == 1)
-        || (currentCheckBox.getState() && stateChange == 2))
-    {
-      super.postItemEvent (awtComponent, stateChange);
-      currentState = !currentCheckBox.getState();
-      changing = true;
-      currentCheckBox.setState(currentState);
-    }
+    // Only fire event is state actually changed.
+    if (currentState != state)
+      {
+	currentState = state;
+	super.postItemEvent(awtComponent,
+			    state ? ItemEvent.SELECTED : ItemEvent.DESELECTED);
+      }
   }
 
   public void dispose ()
