@@ -1,5 +1,10 @@
 2006-02-22  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/DefaultHighlighter.java:
+	(changeHighlight): Added code to minimize the damaged area.
+
+2006-02-22  Robert Schuster  <robertschuster@fsfe.org>
+
         * javax/swing/text/PlainDocument.java:
         (getPreferredSpan): Added missing 'break'.
         statement which corrects an unwanted fall through.
