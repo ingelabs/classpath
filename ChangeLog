@@ -1,5 +1,12 @@
 2006-02-22  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/Utilities.java:
+	(getPositionAbove): Prefer first value by changing comparison
+	from < to <=.
+	(getPositionBelow): Dito.
+
+2006-02-22  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/text/DefaultEditorKit.java: Added checks and fallback
 	behavior when magic caret position is null.
 

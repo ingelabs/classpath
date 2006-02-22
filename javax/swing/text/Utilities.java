@@ -592,7 +592,7 @@ public class Utilities
     int offsXNext = c.modelToView(offs+1).getLocation().x;
     
     // Chose the one which is nearer to us and return its offset.
-    if (Math.abs(offsX-x) < Math.abs(offsXNext-x))
+    if (Math.abs(offsX-x) <= Math.abs(offsXNext-x))
       return offs;
     else
       return offs+1;
@@ -629,14 +629,14 @@ public class Utilities
     
     if (offs == c.getDocument().getLength())
       return offs;
-    
+
     // Find out the real x positions of the calculated character and its
     // neighbour.
     int offsX = c.modelToView(offs).getLocation().x;
     int offsXNext = c.modelToView(offs+1).getLocation().x;
     
     // Chose the one which is nearer to us and return its offset.
-    if (Math.abs(offsX-x) < Math.abs(offsXNext-x))
+    if (Math.abs(offsX-x) <= Math.abs(offsXNext-x))
       return offs;
     else
       return offs+1;
