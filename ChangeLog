@@ -1,5 +1,10 @@
 2006-02-22  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTextField.java
+	(isValidateRoot): New method.
+
+2006-02-22  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JEditorPane.java
 	(getPreferredSize): Rewritten to behave like the reference impl.
 	(getScrollableTracksViewportWidth): Likewise.
