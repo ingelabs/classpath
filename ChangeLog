@@ -1,3 +1,27 @@
+2006-02-23  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/DocFlavor.java: Added documentation all over.
+	(BYTE_ARRAY.TEXT_HTML_HOST): Include host charset encoding to mimetype.
+	(BYTE_ARRAY.TEXT_PLAIN_HOST): Likewise.
+	(INPUT_STREAM.TEXT_HTML_HOST): Likewise.
+	(INPUT_STREAM.TEXT_PLAIN_HOST): Likewise.
+	(URL.TEXT_HTML_HOST): Likewise.
+	(URL.TEXT_PLAIN_HOST): Likewise.
+	(hostEncoding): Initialize with host default charset encoding.
+	(mediaSubtype): Made transient.
+	(mediaType): Likewise.
+	(params): Made transient. Changed type to TreeMap.
+	(className): Removed, changed to myClassName.
+	(myClassName): New field as defined in serialized form.
+	(DocFlavor): Adapted to new variable types, names.
+	(parseMimeType): Reimplemented.
+	(getParameter): Search with lowercase name.
+	(getRepresentationClassName): Adapted to changed variable name.
+	(hashCode): Likewise.
+	(toString): Reimplemented.
+	(readObject): New method for serialization.
+	(writeObject): Likewise.
+
 2006-02-23  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/RepaintManager.java
