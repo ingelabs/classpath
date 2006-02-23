@@ -1,5 +1,5 @@
 
-/* @(#)s_fabs.c 1.3 95/01/18 */
+/* @(#)w_hypot.c 1.3 95/01/18 */
 /*
  * ====================================================
  * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
@@ -12,18 +12,28 @@
  */
 
 /*
- * fabs(x) returns the absolute value of x.
+ * wrapper hypot(x,y)
  */
 
 #include "fdlibm.h"
 
+
 #ifdef __STDC__
-	double fabs(double x)
+	double hypot(double x, double y)/* wrapper hypot */
 #else
-	double fabs(x)
-	double x;
+	double hypot(x,y)		/* wrapper hypot */
+	double x,y;
 #endif
 {
-	__HI(x) &= 0x7fffffff;
-        return x;
+#ifdef _IEEE_LIBM
+	return __ieee754_hypot(x,y);
+#else
+	double z;
+	z = __ieee754_hypot(x,y);
+	if(_LIB_VERSION == _IEEE_) return z;
+	if((!finite(z))&&finite(x)&&finite(y))
+	    return __kernel_standard(x,y,4); /* hypot overflow */
+	else
+	    return z;
+#endif
 }

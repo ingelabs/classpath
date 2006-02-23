@@ -25,6 +25,14 @@ JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_IEEEremainder (JNIEnv *env, jcla
 JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_ceil (JNIEnv *env, jclass, jdouble);
 JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_floor (JNIEnv *env, jclass, jdouble);
 JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_rint (JNIEnv *env, jclass, jdouble);
+JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_cbrt (JNIEnv *env, jclass, jdouble);
+JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_cosh (JNIEnv *env, jclass, jdouble);
+JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_expm1 (JNIEnv *env, jclass, jdouble);
+JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_hypot (JNIEnv *env, jclass, jdouble, jdouble);
+JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_log10 (JNIEnv *env, jclass, jdouble);
+JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_log1p (JNIEnv *env, jclass, jdouble);
+JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_sinh (JNIEnv *env, jclass, jdouble);
+JNIEXPORT jdouble JNICALL Java_java_lang_VMMath_tanh (JNIEnv *env, jclass, jdouble);
 
 #ifdef __cplusplus
 }

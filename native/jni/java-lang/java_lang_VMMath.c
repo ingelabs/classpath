@@ -160,3 +160,66 @@ Java_java_lang_VMMath_rint
   return rint (x);
 }
 
+JNIEXPORT jdouble JNICALL
+Java_java_lang_VMMath_cbrt
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jdouble x)
+{
+  return cbrt (x);
+}
+
+JNIEXPORT jdouble JNICALL
+Java_java_lang_VMMath_cosh 
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jdouble x)
+{
+  return cosh (x);
+}
+
+JNIEXPORT jdouble JNICALL
+Java_java_lang_VMMath_expm1 
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jdouble x)
+{
+  return expm1 (x);
+}
+
+JNIEXPORT jdouble JNICALL
+Java_java_lang_VMMath_hypot 
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jdouble x, jdouble y)
+{
+  return hypot (x, y);
+}
+
+JNIEXPORT jdouble JNICALL
+Java_java_lang_VMMath_log10
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jdouble x)
+{
+  return log10 (x);
+}
+
+JNIEXPORT jdouble JNICALL
+Java_java_lang_VMMath_log1p 
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jdouble x)
+{
+  return log1p (x);
+}
+
+JNIEXPORT jdouble JNICALL
+Java_java_lang_VMMath_sinh 
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jdouble x)
+{
+  return sinh (x);
+}
+
+JNIEXPORT jdouble JNICALL
+Java_java_lang_VMMath_tanh 
+  (JNIEnv * env __attribute__ ((__unused__)),
+   jclass cls __attribute__ ((__unused__)), jdouble x)
+{
+  return tanh (x);
+}

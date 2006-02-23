@@ -1,10 +1,10 @@
 
-/* @(#)e_asin.c 5.1 93/09/24 */
+/* @(#)e_asin.c 1.4 96/03/07 */
 /*
  * ====================================================
  * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
  *
- * Developed at SunPro, a Sun Microsystems, Inc. business.
+ * Developed at SunSoft, a Sun Microsystems, Inc. business.
  * Permission to use, copy, modify, and distribute this
  * software is freely granted, provided that this notice 
  * is preserved.
@@ -18,7 +18,7 @@
  *		asin(x) = x + x*x^2*R(x^2)
  *	where
  *		R(x^2) is a rational approximation of (asin(x)-x)/x^3 
- *	and its remez error is bounded by
+ *	and its Remes error is bounded by
  *		|(asin(x)-x)/x^3 - R(x^2)| < 2^(-58.75)
  *
  *	For x in [0.5,1]
@@ -43,8 +43,6 @@
 
 
 #include "fdlibm.h"
-
-#ifndef _DOUBLE_IS_32BITS
 
 #ifdef __STDC__
 static const double 
@@ -75,14 +73,12 @@ qS4 =  7.70381505559019352791e-02; /* 0x3FB3B8C5, 0xB12E9282 */
 	double x;
 #endif
 {
-	double t = 0., w, p, q, c, r, s;
-	int32_t hx,ix;
-	GET_HIGH_WORD(hx,x);
+	double t,w,p,q,c,r,s;
+	int hx,ix;
+	hx = __HI(x);
 	ix = hx&0x7fffffff;
 	if(ix>= 0x3ff00000) {		/* |x|>= 1 */
-	    uint32_t lx;
-	    GET_LOW_WORD(lx,x);
-	    if(((ix-0x3ff00000)|lx)==0)
+	    if(((ix-0x3ff00000)|__LO(x))==0)
 		    /* asin(1)=+-pi/2 with inexact */
 		return x*pio2_hi+x*pio2_lo;	
 	    return (x-x)/(x-x);		/* asin(|x|>1) is NaN */   
@@ -101,13 +97,13 @@ qS4 =  7.70381505559019352791e-02; /* 0x3FB3B8C5, 0xB12E9282 */
 	t = w*0.5;
 	p = t*(pS0+t*(pS1+t*(pS2+t*(pS3+t*(pS4+t*pS5)))));
 	q = one+t*(qS1+t*(qS2+t*(qS3+t*qS4)));
-	s = __ieee754_sqrt(t);
+	s = sqrt(t);
 	if(ix>=0x3FEF3333) { 	/* if |x| > 0.975 */
 	    w = p/q;
 	    t = pio2_hi-(2.0*(s+s*w)-pio2_lo);
 	} else {
 	    w  = s;
-	    SET_LOW_WORD(w,0);
+	    __LO(w) = 0;
 	    c  = (t-w*w)/(s+w);
 	    r  = p/q;
 	    p  = 2.0*s*r-(pio2_lo-2.0*c);
@@ -116,5 +112,3 @@ qS4 =  7.70381505559019352791e-02; /* 0x3FB3B8C5, 0xB12E9282 */
 	}    
 	if(hx>0) return t; else return -t;    
 }
-
-#endif /* defined(_DOUBLE_IS_32BITS) */

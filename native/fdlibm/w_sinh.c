@@ -1,5 +1,5 @@
 
-/* @(#)s_fabs.c 1.3 95/01/18 */
+/* @(#)w_sinh.c 1.3 95/01/18 */
 /*
  * ====================================================
  * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
@@ -11,19 +11,28 @@
  * ====================================================
  */
 
-/*
- * fabs(x) returns the absolute value of x.
+/* 
+ * wrapper sinh(x)
  */
 
 #include "fdlibm.h"
 
 #ifdef __STDC__
-	double fabs(double x)
+	double sinh(double x)		/* wrapper sinh */
 #else
-	double fabs(x)
+	double sinh(x)			/* wrapper sinh */
 	double x;
 #endif
 {
-	__HI(x) &= 0x7fffffff;
-        return x;
+#ifdef _IEEE_LIBM
+	return __ieee754_sinh(x);
+#else
+	double z; 
+	z = __ieee754_sinh(x);
+	if(_LIB_VERSION == _IEEE_) return z;
+	if(!finite(z)&&finite(x)) {
+	    return __kernel_standard(x,x,25); /* sinh overflow */
+	} else
+	    return z;
+#endif
 }
