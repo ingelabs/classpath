@@ -1,3 +1,55 @@
+2006-02-23  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/attribute/standard/MediaSize.java: 
+	(media): Field renamed to mediaName for serialization.
+	(MediaSize): Adapted to new fieldname.
+	(getMediaSizeName): Likewise.
+	* javax/print/attribute/HashAttributeSet.java: 
+	(interfaceName): Field renamed to myInterface for serialization.
+	(HashAttributeSet): Adapted to the new fieldname.
+	(add): Likewise.
+	(addAll): Likewise.
+	(addInternal): Likewise.
+	(attributeMap): Made transient.
+	(readObject): New serialization method.
+	(writeObject): Likewise.
+	* javax/print/attribute/AttributeSetUtilities.java: 
+	(SynchronizedAttributeSet.set): Field renamed to attrset for serialization.
+	(SynchronizedAttributeSet.add): Adapted to the new fieldname.
+	(SynchronizedAttributeSet.addAll): Likewise.
+	(SynchronizedAttributeSet.clear): Likewise.
+	(SynchronizedAttributeSet.containsKey): Likewise.
+	(SynchronizedAttributeSet.containsValue): Likewise.	
+	(SynchronizedAttributeSet.equals): Likewise.
+	(SynchronizedAttributeSet.get): Likewise.
+	(SynchronizedAttributeSet.hashCode): Likewise.	
+	(SynchronizedAttributeSet.isEmpty): Likewise.
+	(SynchronizedAttributeSet.remove): Likewise.	
+	(SynchronizedAttributeSet.size): Likewise.	
+	(SynchronizedAttributeSet.toArray): Likewise.	
+	(UnmodifiableAttributeSet.set): Field renamed to attrset for serialization.
+	(UnmodifiableAttributeSet.add): Adapted to the new fieldname.
+	(UnmodifiableAttributeSet.addAll): Likewise.
+	(UnmodifiableAttributeSet.clear): Likewise.
+	(UnmodifiableAttributeSet.containsKey): Likewise.
+	(UnmodifiableAttributeSet.containsValue): Likewise.	
+	(UnmodifiableAttributeSet.equals): Likewise.
+	(UnmodifiableAttributeSet.get): Likewise.
+	(UnmodifiableAttributeSet.hashCode): Likewise.	
+	(UnmodifiableAttributeSet.isEmpty): Likewise.
+	(UnmodifiableAttributeSet.remove): Likewise.	
+	(UnmodifiableAttributeSet.size): Likewise.	
+	(UnmodifiableAttributeSet.toArray): Likewise.	
+	* javax/print/attribute/standard/MediaPrintableArea.java: 
+	(width): Field renamed to w for serialization.
+	(height): Field renamed to h for serialization. 
+	(MediaPrintableArea): Adapted to the new fieldnames.	
+	(MediaPrintableArea): Likewise.
+	(equals): Likewise.
+	(hashCode): Likewise.
+	(getHeight): Likewise.
+	(getWidth): Likewise.
+
 2006-02-23  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* include/java_lang_VMMath.h:
