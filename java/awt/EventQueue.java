@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package java.awt;
 
+import java.awt.event.AWTEventListenerProxy;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.InputMethodEvent;
@@ -459,6 +460,8 @@ public class EventQueue
     else if (evt instanceof InvocationEvent)
       lastWhen = ((InvocationEvent) evt).getWhen();
 
+    globalDispatchEvent(evt);
+
     if (evt instanceof ActiveEvent)
       {
         ActiveEvent active_evt = (ActiveEvent) evt;
@@ -478,6 +481,25 @@ public class EventQueue
             MenuComponent srccmp = (MenuComponent) source;
             srccmp.dispatchEvent(evt);
           }
+      }
+  }
+
+  /**
+   * Dispatches events to listeners registered to the current Toolkit.
+   *
+   * @param ev the event to dispatch
+   */
+  private void globalDispatchEvent(AWTEvent ev)
+  {
+    Toolkit toolkit = Toolkit.getDefaultToolkit();
+    // We do not use the accessor methods here because they create new
+    // arrays each time. We must be very efficient, so we access this directly.
+    AWTEventListenerProxy[] l = toolkit.awtEventListeners;
+    for (int i = 0; i < l.length; ++i)
+      {
+        AWTEventListenerProxy proxy = l[i];
+        if ((proxy.getEventMask() & AWTEvent.eventIdToMask(ev.getID())) != 0)
+          proxy.eventDispatched(ev);
       }
   }
 

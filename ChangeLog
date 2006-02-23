@@ -1,3 +1,21 @@
+2006-02-23  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/AWTEvent.java
+	(eventIdToMask): New utility method.
+	* java/awt/EventQueue.java
+	(dispatchEvent): Also globally dispatch events via the toolkit.
+	(globalDispatchEvent): New method.
+	* java/awt/Toolkit.java
+	(awtEventListeners): New field.
+	(Toolkit()): Initialize new field.
+	(createComponent): Create GLightweightPeer here.
+	(addAWTEventListener): Implemented and documented.
+	(removeAWTEventListener): Implemented and documented.
+	(getAWTEventListeners): Implemented and documented both method
+	variants.
+	* java/awt/event/AWTEventListenerProxy.java
+	(eventDispatched): Don't filter events here.
+
 2006-02-23  Chris Burdess  <dog@gnu.org>
 
 	Fixes PR 26410
