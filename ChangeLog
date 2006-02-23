@@ -1,5 +1,20 @@
 2006-02-23  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(PopupHelper): New inner class.
+	(popupHelper): New field.
+	(initialize): New method.
+	(uninitialize): New method.
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java
+	(mouseInputListener): Removed field.
+	(PopupMenuHandler.popupMenuWillBecomeInvisible): Removed
+	handling of GlassPane.
+	(PopupMenuHandler.popupMenuWillBecomeVisible): Removed
+	handling of GlassPane.
+	(MouseInputHandler): Removed class.
+
+2006-02-23  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/AWTEvent.java
 	(eventIdToMask): New utility method.
 	* java/awt/EventQueue.java
