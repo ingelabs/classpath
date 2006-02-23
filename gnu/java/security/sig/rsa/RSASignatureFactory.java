@@ -114,9 +114,15 @@ public class RSASignatureFactory
         for (Iterator it = hashNames.iterator(); it.hasNext();)
           {
             String mdName = (String) it.next();
-            hs.add(Registry.RSA_PKCS1_V1_5_SIG + "-" + mdName);
             hs.add(Registry.RSA_PSS_SIG + "-" + mdName);
           }
+
+        hs.add(Registry.RSA_PKCS1_V1_5_SIG + "-" + Registry.MD2_HASH);
+        hs.add(Registry.RSA_PKCS1_V1_5_SIG + "-" + Registry.MD5_HASH);
+        hs.add(Registry.RSA_PKCS1_V1_5_SIG + "-" + Registry.SHA160_HASH);
+        hs.add(Registry.RSA_PKCS1_V1_5_SIG + "-" + Registry.SHA256_HASH);
+        hs.add(Registry.RSA_PKCS1_V1_5_SIG + "-" + Registry.SHA384_HASH);
+        hs.add(Registry.RSA_PKCS1_V1_5_SIG + "-" + Registry.SHA512_HASH);
 
         names = Collections.unmodifiableSet(hs);
       }

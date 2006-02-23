@@ -1,3 +1,66 @@
+2006-02-23  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/key/dh/GnuDHKeyPairGenerator.java
+	(DEFAULT_PRIME_SIZE): Made public.
+	(DEFAULT_EXPONENT_SIZE): Likewise.
+	(setup): Handle DHParameterSpec as well.
+	* gnu/javax/crypto/key/dh/GnuDHKey.java (getEncoded): Return
+	defaultFormat instead of Raw.
+	* gnu/javax/crypto/key/dh/DHKeyPairX509Codec.java
+	(checkIsConstructed): Removed.
+	(checkIsBigInteger): Likewise.
+	(decodePublicKey): Use DerUtil.
+	* gnu/javax/crypto/key/dh/DHKeyPairPKCS8Codec.java
+	(checkIsConstructed): Removed.
+	(checkIsBigInteger): Likewise.
+	(decodePrivateKey): Use DerUtil.
+	* gnu/javax/crypto/jce/GnuCrypto.java (run): Updated mapping of
+	KeyAgreement.DH.
+	Added mappings for AlgorithmParameters.DH and
+	AlgorithmParameterGenerator.DH.
+	* gnu/javax/crypto/jce/DiffieHellmanImpl.java: New file.
+	* gnu/javax/crypto/jce/sig/DHParametersGenerator.java: Likewise.
+	* gnu/javax/crypto/jce/sig/DHParameters.java: Likewise.
+	* gnu/javax/crypto/jce/sig/DHKeyFactory.java (engineGeneratePrivate):
+	Return result.
+	(engineGeneratePublic): Likewise.
+	* gnu/java/security/util/DerUtil.java: New file.
+	* gnu/java/security/sig/rsa/RSASignatureFactory.java (getNames):
+	Include only valid RSA PKCS1 (v1.5) signature names.
+	* gnu/java/security/sig/rsa/RSAPKCS1V1_5SignatureX509Codec.java
+	(RSAPKCS1V1_5SignatureX509Codec): Removed.
+	(checkIsConstructed): Likewise.
+	* gnu/java/security/sig/dss/DSSSignatureX509Codec.java
+	(checkIsConstructed): Removed.
+	(checkIsBigInteger): Likewise.
+	(decodeSignature): Use DerUtil.
+	* gnu/java/security/key/rsa/RSAKeyPairX509Codec.java
+	(checkIsConstructed): Removed.
+	(checkIsBigInteger): Likewise.
+	(decodePublicKey): Use DerUtil.
+	* gnu/java/security/key/rsa/RSAKeyPairPKCS8Codec.java
+	(checkIsConstructed): Removed.
+	(checkIsBigInteger): Likewise.
+	(decodePrivateKey): Use DerUtil.
+	* gnu/java/security/key/dss/DSSKeyPairX509Codec.java
+	(checkIsConstructed): Removed.
+	(checkIsBigInteger): Likewise.
+	(decodePublicKey): Use DerUtil.
+	* gnu/java/security/key/dss/DSSKeyPairPKCS8Codec.java
+	(checkIsConstructed): Removed.
+	(checkIsBigInteger): Likewise.
+	(decodePrivateKey): Use DerUtil.
+	* gnu/java/security/key/dss/DSSKeyPairGenerator.java
+	(DEFAULT_MODULUS_LENGTH): Made it public.
+	* gnu/java/security/key/dss/DSSKey.java (getEncoded): Return
+	defaultFormat instead of Raw.
+	* gnu/java/security/jce/sig/DSSParametersGenerator.java: New file.
+	* gnu/java/security/jce/sig/DSSParameters.java: Likewise..
+	* gnu/java/security/jce/sig/DSSKeyFactory.java (engineGeneratePrivate):
+	Return result.
+	(engineGeneratePublic): Likewise.
+	* gnu/javax/crypto/DiffieHellmanImpl: Removed.
+
 2006-02-22  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/Checkbox.java (setState): Check that state actually changed

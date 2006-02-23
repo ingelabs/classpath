@@ -45,6 +45,7 @@ import gnu.java.security.der.DERReader;
 import gnu.java.security.der.DERValue;
 import gnu.java.security.der.DERWriter;
 import gnu.java.security.sig.ISignatureCodec;
+import gnu.java.security.util.DerUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -87,18 +88,6 @@ public class DSSSignatureX509Codec
     implements ISignatureCodec
 {
   // implicit 0-arguments constructor
-
-  private static void checkIsConstructed(DERValue v, String msg)
-  {
-    if (! v.isConstructed())
-      throw new InvalidParameterException(msg);
-  }
-
-  private static void checkIsBigInteger(DERValue v, String msg)
-  {
-    if (! (v.getValue() instanceof BigInteger))
-      throw new InvalidParameterException(msg);
-  }
 
   public int getFormatID()
   {
@@ -182,13 +171,13 @@ public class DSSSignatureX509Codec
         der = new DERReader(sBytes);
 
         DERValue derDssSigValue = der.read();
-        checkIsConstructed(derDssSigValue, "Wrong Dss-Sig-Value field");
+        DerUtil.checkIsConstructed(derDssSigValue, "Wrong Dss-Sig-Value field");
 
         DERValue val = der.read();
-        checkIsBigInteger(val, "Wrong R field");
+        DerUtil.checkIsBigInteger(val, "Wrong R field");
         r = (BigInteger) val.getValue();
         val = der.read();
-        checkIsBigInteger(val, "Wrong S field");
+        DerUtil.checkIsBigInteger(val, "Wrong S field");
         s = (BigInteger) val.getValue();
       }
     catch (IOException x)

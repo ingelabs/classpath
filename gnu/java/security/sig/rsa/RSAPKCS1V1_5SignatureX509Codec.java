@@ -79,16 +79,7 @@ import java.security.InvalidParameterException;
 public class RSAPKCS1V1_5SignatureX509Codec
     implements ISignatureCodec
 {
-  public RSAPKCS1V1_5SignatureX509Codec()
-  {
-    super();
-  }
-
-  private static void checkIsConstructed(DERValue v, String msg)
-  {
-    if (! v.isConstructed())
-      throw new InvalidParameterException(msg);
-  }
+  // default 0-arguments constructor
 
   public int getFormatID()
   {

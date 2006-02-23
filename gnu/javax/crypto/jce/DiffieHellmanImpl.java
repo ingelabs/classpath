@@ -1,5 +1,5 @@
 /* DiffieHellmanImpl.java -- implementation of the Diffie-Hellman key agreement.
-   Copyright (C) 2005  Free Software Foundation, Inc.
+   Copyright (C) 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,16 +36,11 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.javax.crypto;
-
-import gnu.java.security.provider.GnuDHPublicKey;
+package gnu.javax.crypto.jce;
 
 import java.math.BigInteger;
-
-import java.security.Key;
 import java.security.InvalidKeyException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.Key;
 import java.security.SecureRandom;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -57,13 +52,13 @@ import javax.crypto.spec.DHParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 /**
- * The Diffie-Hellman key agreement.
- *
+ * The JCE implementation of a 2-party Diffie-Hellman key agreement.
+ * 
  * @author Casey Marshall (csm@gnu.org)
  */
-public final class DiffieHellmanImpl extends KeyAgreementSpi
+public final class DiffieHellmanImpl
+    extends KeyAgreementSpi
 {
-
   /** The private key being used for this agreement. */
   private DHPrivateKey key;
 
@@ -74,86 +69,87 @@ public final class DiffieHellmanImpl extends KeyAgreementSpi
   private boolean last_phase_done;
 
   /** Trivial default constructor. */
-  public DiffieHellmanImpl ()
+  public DiffieHellmanImpl()
   {
+    super();
+
     key = null;
     result = null;
     last_phase_done = false;
   }
 
-  // KeyAgreementSpi methods.
-
-  protected Key engineDoPhase (final Key incoming, final boolean lastPhase)
-    throws InvalidKeyException
+  protected Key engineDoPhase(Key incoming, boolean lastPhase)
+      throws InvalidKeyException
   {
     if (key == null)
-      throw new IllegalStateException ("not initialized");
-    if (last_phase_done)
-      throw new IllegalStateException ("last phase already done");
+      throw new IllegalStateException("Not initialized");
 
-    if (!(incoming instanceof DHPublicKey))
-      throw new InvalidKeyException ("expecting javax.crypto.interfaces.DHPublicKey");
+    if (last_phase_done)
+      throw new IllegalStateException("Last phase already done");
+
+    if (! (incoming instanceof DHPublicKey))
+      throw new InvalidKeyException("Key MUST be a DHPublicKey");
+
     DHPublicKey pub = (DHPublicKey) incoming;
     DHParameterSpec s1 = key.getParams();
     DHParameterSpec s2 = pub.getParams();
-    if (!s1.getG().equals (s2.getG())
-        || !s1.getP().equals (s2.getP())
+    if (! s1.getG().equals(s2.getG()) || ! s1.getP().equals(s2.getP())
         || s1.getL() != s2.getL())
-      throw new InvalidKeyException ("supplied key is not compatible");
+      throw new InvalidKeyException("Incompatible key");
 
-    result = pub.getY().modPow (key.getX(), s1.getP());
-    if (lastPhase)
-      {
-	last_phase_done = true;
-	return null;
-      }
+    result = pub.getY().modPow(key.getX(), s1.getP());
+    if (! lastPhase)
+      throw new IllegalArgumentException("This key-agreement MUST be concluded in one step only");
 
-    throw new IllegalArgumentException ("only supports two-party Diffie Hellman");
+    last_phase_done = true;
+    return null;
   }
 
-  protected byte[] engineGenerateSecret ()
+  protected byte[] engineGenerateSecret()
   {
-    if (result == null || !last_phase_done)
-      throw new IllegalStateException ("not finished");
+    if (result == null || ! last_phase_done)
+      throw new IllegalStateException("Not finished");
 
-    byte[] buf = result.toByteArray ();
+    byte[] buf = result.toByteArray();
     if (buf[0] == 0x00)
       {
-	byte[] buf2 = new byte[buf.length - 1];
-	System.arraycopy (buf, 1, buf2, 0, buf2.length);
-	buf = buf2;
+        byte[] buf2 = new byte[buf.length - 1];
+        System.arraycopy(buf, 1, buf2, 0, buf2.length);
+        buf = buf2;
       }
+
     return buf;
   }
 
-  protected int engineGenerateSecret (final byte[] secret, final int offset)
+  protected int engineGenerateSecret(byte[] secret, int offset)
   {
     byte[] s = engineGenerateSecret();
-    System.arraycopy (s, 0, secret, offset, s.length);
+    System.arraycopy(s, 0, secret, offset, s.length);
     return s.length;
   }
 
-  protected SecretKey engineGenerateSecret (final String algorithm)
-    throws InvalidKeyException
+  protected SecretKey engineGenerateSecret(String algorithm)
+      throws InvalidKeyException
   {
     byte[] s = engineGenerateSecret();
-    return new SecretKeySpec (s, algorithm);
+    return new SecretKeySpec(s, algorithm);
   }
 
-  protected void engineInit (final Key key, final SecureRandom random)
-    throws InvalidKeyException
+  protected void engineInit(Key key, SecureRandom random)
+      throws InvalidKeyException
   {
-    if (!(key instanceof DHPrivateKey))
-      throw new InvalidKeyException ("not a javax.crypto.interfaces.DHPrivateKey");
+    if (! (key instanceof DHPrivateKey))
+      throw new InvalidKeyException("Key MUST be a DHPrivateKey");
+
     this.key = (DHPrivateKey) key;
     result = null;
     last_phase_done = false;
   }
 
-  protected void engineInit (final Key key, final AlgorithmParameterSpec params,
-                             final SecureRandom random)
-    throws InvalidKeyException
+  protected void engineInit(Key key, AlgorithmParameterSpec params,
+                            SecureRandom random)
+      throws InvalidKeyException
   {
-    engineInit (key, random);
+    engineInit(key, random);
   }
 }
