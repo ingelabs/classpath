@@ -1390,18 +1390,16 @@ public abstract class Component
     int oldy = this.y;
     int oldwidth = this.width;
     int oldheight = this.height;
-
-    if (this.x == x && this.y == y
-        && this.width == width && this.height == height)
-      return;
-    invalidate ();
+    
+   invalidate ();
+    
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     if (peer != null)
       peer.setBounds (x, y, width, height);
-
+    
     // Erase old bounds and repaint new bounds for lightweights.
     if (isLightweight() && isShowing())
       {
@@ -5127,9 +5125,9 @@ p   * <li>the set of backward traversal keys
     s.writeObject(null);
   }
 
-
+  
   // Nested classes.
-
+  
   /**
    * This class provides accessibility support for subclasses of container.
    *

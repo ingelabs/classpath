@@ -1,3 +1,22 @@
+2006-02-23  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/GLightweightPeer.java
+	(repaint): Scott's proposed fix. Send repaint to the
+	component's parent.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(setBounds): Removed next_parent, not needed. Removed
+	lightweightChild, we always need to compensate for the
+	menu bar's height.
+	* java/awt/Component.java
+	(setBounds): Removed check. Caused lots of problems, because some
+	components were not being invalidated. Components should be
+	invalidated when they are resized or moved, and in some cases,
+	when a parent is resized/moved, the components do not know
+	about it and do not adjust.
+	* java/awt/Graphics.java
+	(hitClip): Scott's proposed fix. Added check to handle a 
+	null clip.
+
 2006-02-23  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/attribute/standard/MediaSize.java: 

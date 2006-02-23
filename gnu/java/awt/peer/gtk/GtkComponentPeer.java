@@ -445,8 +445,7 @@ public class GtkComponentPeer extends GtkGenericPeer
     int new_y = y;
 
     Component parent = awtComponent.getParent ();
-    Component next_parent;
-
+    
     // Heavyweight components that are children of one or more
     // lightweight containers have to be handled specially.  Because
     // calls to GLightweightPeer.setBounds do nothing, GTK has no
@@ -457,24 +456,19 @@ public class GtkComponentPeer extends GtkGenericPeer
     // so we need to continue adding offsets until we reach a
     // container whose position GTK knows -- that is, the first
     // non-lightweight.
-    boolean lightweightChild = false;
-    Insets i;
+    Insets i;    
     while (parent.isLightweight())
       {
-        lightweightChild = true;
-
-        next_parent = parent.getParent();
-
         i = ((Container) parent).getInsets();
+        
         new_x += parent.getX() + i.left;
         new_y += parent.getY() + i.top;
-
-        parent = next_parent;
+        
+        parent = parent.getParent();
       }
-
     // We only need to convert from Java to GTK coordinates if we're
     // placing a heavyweight component in a Window.
-    if (parent instanceof Window && !lightweightChild)
+    if (parent instanceof Window)
       {
         GtkWindowPeer peer = (GtkWindowPeer) parent.getPeer ();
         // important: we want the window peer's insets here, not the
@@ -486,9 +480,10 @@ public class GtkComponentPeer extends GtkGenericPeer
         int menuBarHeight = 0;
         if (peer instanceof GtkFramePeer)
           menuBarHeight = ((GtkFramePeer) peer).getMenuBarHeight ();
-
-        new_x = x - insets.left;
-        new_y = y - insets.top + menuBarHeight;
+        
+        new_x -= insets.left;
+        new_y -= insets.top;
+        new_y += menuBarHeight;
       }
 
     setNativeBounds (new_x, new_y, width, height);
