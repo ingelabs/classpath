@@ -19,6 +19,12 @@ New in release 0.21 (to be released)
   classes. The rmic compiler is no longer required (unless for research
   and specific stubs).
 
+Runtime interface changes:
+
+* A new class, VMMath, is now available which separates the native
+  mathematical functions from java.lang.Math.  The previous fdlibm
+  implementation now forms the reference material for this class.
+
 New in release 0.20 (Jan 13, 2006)
 
 * New StAX pull parser and SAX-over-StAX driver. Lots of DOM, SAX/StAX,
