@@ -88,6 +88,11 @@ public class Container extends Component
   Dimension maxSize;
 
   /**
+   * Keeps track if the Container was cleared during a paint/update.
+   */
+  private boolean backCleared;
+
+  /**
    * @since 1.4
    */
   boolean focusCycleRoot;
@@ -754,16 +759,17 @@ public class Container extends Component
    * a superclass method so that lightweight components are properly
    * drawn.
    *
-   * @param g The graphics context for this paint job.
+   * @param g - The graphics context for this paint job.
    */
   public void paint(Graphics g)
   {
     if (!isShowing())
       return;
 
-    // Visit heavyweights as well, in case they were
-    // erased when we cleared the background for this container.
-    visitChildren(g, GfxPaintVisitor.INSTANCE, false);
+    // Visit heavyweights if the background was cleared
+    // for this container.
+    visitChildren(g, GfxPaintVisitor.INSTANCE, !backCleared);
+    backCleared = false;
   }
 
   /**
@@ -794,8 +800,11 @@ public class Container extends Component
     // also not cleared. So we do a check on !(peer instanceof LightweightPeer)
     // instead.
     ComponentPeer p = peer;
-    if (p != null && !(p instanceof LightweightPeer))
-      g.clearRect(0, 0, getWidth(), getHeight());
+    if (p != null && ! (p instanceof LightweightPeer))
+      {
+        g.clearRect(0, 0, getWidth(), getHeight());
+        backCleared = true;
+      }
 
     paint(g);
   }
@@ -1654,17 +1663,17 @@ public class Container extends Component
   private void visitChildren(Graphics gfx, GfxVisitor visitor,
                              boolean lightweightOnly)
   {
-    synchronized (getTreeLock ())
+    synchronized (getTreeLock())
       {
         for (int i = ncomponents - 1; i >= 0; --i)
           {
             Component comp = component[i];
             boolean applicable = comp.isVisible()
-              && (comp.isLightweight() || !lightweightOnly);
-
+                                 && (comp.isLightweight() || ! lightweightOnly);
+            
             if (applicable)
               visitChild(gfx, visitor, comp);
-	  }
+          }
       }
   }
 
@@ -1685,10 +1694,9 @@ public class Container extends Component
                           Component comp)
   {
     Rectangle bounds = comp.getBounds();
-
+    
     if(!gfx.hitClip(bounds.x,bounds.y, bounds.width, bounds.height))
       return;
-
     Graphics g2 = gfx.create(bounds.x, bounds.y, bounds.width,
                              bounds.height);
     try

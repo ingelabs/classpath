@@ -1,5 +1,15 @@
 2006-02-24  Lillian Angel  <langel@redhat.com>
 
+	* java/awt/Container.java:
+	Added new field. True if Container has been cleared and
+	heavyweights need to be repainted.
+	(paint): Fixed comment. Fixed to use backCleared and 
+	reset backCleared.
+	(update): Set backCleared to true after the background
+	of the container has been cleared.
+
+2006-02-24  Lillian Angel  <langel@redhat.com>
+
 	* java/awt/TextField.java
 	(addNotify): Added call to super.
 
