@@ -1391,7 +1391,11 @@ public abstract class Component
     int oldwidth = this.width;
     int oldheight = this.height;
     
-   invalidate ();
+    if (this.x == x && this.y == y && this.width == width
+        && this.height == height)
+      return;
+
+    invalidate();
     
     this.x = x;
     this.y = y;
@@ -3434,6 +3438,8 @@ public abstract class Component
   {
     if (peer == null)
       peer = getToolkit().createComponent(this);
+    else if (parent != null && parent.isLightweight())
+      new HeavyweightInLightweightListener(parent);
     /* Now that all the children has gotten their peers, we should
        have the event mask needed for this component and its
        lightweight subcomponents. */
@@ -5127,6 +5133,73 @@ p   * <li>the set of backward traversal keys
 
   
   // Nested classes.
+  
+  /**
+   * This class fixes the bounds for a Heavyweight component that
+   * is placed inside a Lightweight container. When the lightweight is
+   * moved or resized, setBounds for the lightweight peer does nothing.
+   * Therefore, it was never moved on the screen. This class is 
+   * attached to the lightweight, and it adjusts the position and size
+   * of the peer when notified.
+   * This is the same for show and hide.
+   */
+  class HeavyweightInLightweightListener
+      implements ComponentListener
+  {
+    
+    /**
+     * Constructor. Adds component listener to lightweight parent.
+     * 
+     * @param parent - the lightweight container.
+     */
+    public HeavyweightInLightweightListener(Container parent)
+    {
+      parent.addComponentListener(this);
+    }
+    
+    /**
+     * This method is called when the component is resized.
+     * 
+     * @param event the <code>ComponentEvent</code> indicating the resize
+     */
+    public void componentResized(ComponentEvent event)
+    {
+      // Nothing to do here, componentMoved will be called.
+    }
+
+    /**
+     * This method is called when the component is moved.
+     * 
+     * @param event the <code>ComponentEvent</code> indicating the move
+     */
+    public void componentMoved(ComponentEvent event)
+    {
+      if (peer != null)
+        peer.setBounds(x, y, width, height);
+    }
+
+    /**
+     * This method is called when the component is made visible.
+     * 
+     * @param event the <code>ComponentEvent</code> indicating the visibility
+     */
+    public void componentShown(ComponentEvent event)
+    {
+      if (isShowing())
+        peer.show();
+    }
+
+    /**
+     * This method is called when the component is hidden.
+     * 
+     * @param event the <code>ComponentEvent</code> indicating the visibility
+     */
+    public void componentHidden(ComponentEvent event)
+    {
+      if (!isShowing())
+        peer.hide();
+    }
+  }
   
   /**
    * This class provides accessibility support for subclasses of container.

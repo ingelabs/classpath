@@ -1,3 +1,11 @@
+2006-02-24  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Component.java
+	(reshape): Reverted last patch. Should have check here.
+	(addNotify): Added check. If parent is lightweight, then
+	initialize listener on the parent.
+	(HeavyweightInLightweightListener): New class.
+
 2006-02-24  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicComboPopup.java
