@@ -1,10 +1,22 @@
+2006-02-24  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(PopupHelper.autoClosePopups): New field.
+	(PopupHelper.mousePressed): Also autoclose any registered popups.
+	(PopupHelper.registerForAutoClose): New method.
+	(PopupHelper.autoClosePopups): New method.
+	(popupHelper): Changed type of field to PopupHelper.
+	(registerForAutoClose): New method.
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(show): Register this popup for autoclosing.
+
 2006-02-24  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/mac/TMMH16.java (clone): New method.
 	* gnu/java/security/prng/MDGenerator.java (clone): New method.
 	* gnu/java/security/prng/BasePRNG.java (clone): Clone buffer.
 
-2006-02-23  Roman Kennke  <kennke@aicas.com>
+2006-02-24  Roman Kennke  <kennke@aicas.com>
 
 	Reported by Ingo Proetel <proetel@aicas.com>
 	* java/util/logging/LogManager.java

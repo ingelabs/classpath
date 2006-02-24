@@ -52,7 +52,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.WeakHashMap;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -63,9 +66,11 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.LookAndFeel;
 import javax.swing.MenuSelectionManager;
+import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
@@ -99,6 +104,11 @@ public abstract class BasicLookAndFeel extends LookAndFeel
   {
 
     /**
+     * Registered popups for autoclose.
+     */
+    private WeakHashMap autoClosePopups = new WeakHashMap();
+
+    /**
      * Receives an event from the event queue.
      *
      * @param event
@@ -120,12 +130,52 @@ public abstract class BasicLookAndFeel extends LookAndFeel
      */
     private void mousePressed(MouseEvent ev)
     {
+      // Autoclose all menus managed by the MenuSelectionManager.
       MenuSelectionManager m = MenuSelectionManager.defaultManager();
       Component target = ev.getComponent();
       if (target instanceof Container)
         target = ((Container) target).findComponentAt(ev.getPoint());
       if (! m.isComponentPartOfCurrentMenu(target))
         m.clearSelectedPath();
+
+      // Handle other registered popup instances, like ComboBox popups.
+      autoClosePopups(ev, target);
+    }
+
+    /**
+     * Registers Popup and its content to be autoclosed when a mouseclick
+     * occurs outside of the popup.
+     *
+     * @param popup the popup to be autoclosed when clicked outside
+     */
+    void registerForAutoClose(JPopupMenu popup)
+    {
+      autoClosePopups.put(popup, null);
+    }
+
+    /**
+     * Automatically closes all popups that are not 'hit' by the mouse event.
+     *
+     * @param ev the mouse event
+     * @param target the target of the mouse event
+     */
+    private void autoClosePopups(MouseEvent ev, Component target)
+    {
+      if (autoClosePopups.size() != 0)
+        {
+          Set popups = autoClosePopups.keySet();
+          Iterator i = popups.iterator();
+          while (i.hasNext())
+            {
+              JPopupMenu popup = (JPopupMenu) i.next();
+              if (!(target == popup
+                    || SwingUtilities.isDescendingFrom(target, popup)))
+                {
+                  popup.setVisible(false);
+                  i.remove();
+                }
+            }
+        }
     }
   }
 
@@ -192,7 +242,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
   /**
    * Helps closing menu popups when user clicks outside of the menu area.
    */
-  private transient AWTEventListener popupHelper;
+  private transient PopupHelper popupHelper;
 
   private ActionMap audioActionMap;
 
@@ -1597,5 +1647,18 @@ public abstract class BasicLookAndFeel extends LookAndFeel
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     toolkit.removeAWTEventListener(popupHelper);
     popupHelper = null;
+  }
+
+  /**
+   * Registers a JPopupMenu for autoclosing when a mouseclick occurs outside
+   * of the JPopupMenu. This must be called when the popup gets opened. The
+   * popup is unregistered from autoclosing as soon as it either got closed
+   * by this helper, or when it has been garbage collected.
+   *
+   * @param popup the popup menu to autoclose
+   */
+  void registerForAutoClose(JPopupMenu popup)
+  {
+    popupHelper.registerForAutoClose(popup);
   }
 }
