@@ -660,4 +660,18 @@ public class JRootPane extends JComponent implements Accessible
     windowDecorationStyle = style;
     firePropertyChange("windowDecorationStyle", oldStyle, style);
   }
+
+  /**
+   * This returns <code>true</code> if the <code>glassPane</code> is not
+   * visible because then the root pane can guarantee to tile its children
+   * (the only other direct child is a JLayeredPane which must figure its
+   * <code>optimizeDrawingEnabled</code> state on its own).
+   *
+   * @return <code>true</code> if the <code>glassPane</code> is not
+   *         visible
+   */
+  public boolean isOptimizedDrawingEnable()
+  {
+    return ! glassPane.isVisible();
+  }
 }

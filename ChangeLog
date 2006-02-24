@@ -1,5 +1,11 @@
 2006-02-23  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JRootPane.java
+	(isOptimizedDrawingEnabled): Implemented to return true
+	when the glassPane is not visible.
+
+2006-02-23  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
 	(PopupHelper): New inner class.
 	(popupHelper): New field.
