@@ -1,3 +1,16 @@
+2006-02-24  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Container.java:
+	(dispatcher): Removed field.
+	(dispatchEventImpl): Removed lightweight dispatching.
+	(addNotifyContainerChildren): Removed LightweightDispatcher
+	handling.
+	(LightweightDispatcher): Removed class.
+	* java/awt/LightweightDispatcher.java: New class.
+	* java/awt/Toolkit.java
+	(Toolkit): Install LightweightDispatcher in global listener
+	array.
+
 2006-02-24  Chris Burdess  <dog@gnu.org>
 
 	Fixes PR 26324

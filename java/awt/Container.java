@@ -43,7 +43,6 @@ import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.peer.ComponentPeer;
 import java.awt.peer.ContainerPeer;
 import java.awt.peer.LightweightPeer;
@@ -61,8 +60,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.accessibility.Accessible;
-
-import gnu.java.awt.AWTUtilities;
 
 /**
  * A generic window toolkit object that acts as a container for other objects.
@@ -87,8 +84,6 @@ public class Container extends Component
   int ncomponents;
   Component[] component;
   LayoutManager layoutMgr;
-
-  LightweightDispatcher dispatcher;
 
   Dimension maxSize;
 
@@ -1708,10 +1703,6 @@ public class Container extends Component
 
   void dispatchEventImpl(AWTEvent e)
   {
-    // Give lightweight dispatcher a chance to handle it.
-    if (dispatcher != null && dispatcher.handleEvent (e))
-      return;
-
     if ((e.id <= ContainerEvent.CONTAINER_LAST
              && e.id >= ContainerEvent.CONTAINER_FIRST)
         && (containerListener != null
@@ -1802,15 +1793,6 @@ public class Container extends Component
             component[i].addNotify();
             if (component[i].isLightweight ())
 	      {
-
-                // If we're not lightweight, and we just got a lightweight
-                // child, we need a lightweight dispatcher to feed it events.
-                if (!this.isLightweight() && dispatcher == null) 
-                  dispatcher = new LightweightDispatcher (this);
-
-                if (dispatcher != null)
-                  dispatcher.enableEvents(component[i].eventMask);
-
 		enableEvents(component[i].eventMask);
 		if (peer != null && !isLightweight ())
 		  enableEvents (AWTEvent.PAINT_EVENT_MASK);
@@ -2057,229 +2039,3 @@ public class Container extends Component
     } // class AccessibleContainerHandler
   } // class AccessibleAWTContainer
 } // class Container
-
-/**
- * There is a helper class implied from stack traces called
- * LightweightDispatcher, but since it is not part of the public API,
- * rather than mimic it exactly we write something which does "roughly
- * the same thing".
- */
-class LightweightDispatcher implements Serializable
-{
-  private static final long serialVersionUID = 5184291520170872969L;
-  private Container nativeContainer;
-  private Cursor nativeCursor;
-  private long eventMask;
-  
-  private transient Component pressedComponent;
-  private transient Component lastComponentEntered;
-  private transient int pressCount;
-  
-  LightweightDispatcher(Container c)
-  {
-    nativeContainer = c;
-  }
-
-  void enableEvents(long l)
-  {
-    eventMask |= l;
-  }
-
-  /**
-   * Returns the deepest visible descendent of parent that contains the 
-   * specified location and that is not transparent and MouseListener-less.
-   * @param parent the root component to begin the search
-   * @param x the x coordinate
-   * @param y the y coordinate
-   * @return null if <code>parent</code> doesn't contain the location, 
-   * parent if parent is not a container or has no child that contains the
-   * location, otherwise the appropriate component from the conditions
-   * above.
-   */
-  Component getDeepestComponentForMouseEventAt(Component parent, int x, int y)
-  {
-    if (parent == null || (! parent.contains(x, y)))
-      return null;
-
-    if (! (parent instanceof Container))
-      return parent;
-
-    Container c = (Container) parent;
-    return c.findComponentForMouseEventAt(x, y);
-  }
-  
-  Component acquireComponentForMouseEvent(MouseEvent me)
-  {
-    int x = me.getX ();
-    int y = me.getY ();
-
-    Component mouseEventTarget = null;
-    // Find the candidate which should receive this event.
-    Component parent = nativeContainer;
-    Component candidate = null;
-    Point p = me.getPoint();
-    while (candidate == null && parent != null)
-      {
-        candidate = getDeepestComponentForMouseEventAt(parent, p.x, p.y);
-        if (candidate == null || (candidate.eventMask & me.getID()) == 0)
-          {
-            candidate = null;
-            p = AWTUtilities.convertPoint(parent, p.x, p.y, parent.parent);
-            parent = parent.parent;
-          }
-      }
-
-    // If the only candidate we found was the native container itself,
-    // don't dispatch any event at all.  We only care about the lightweight
-    // children here.
-    if (candidate == nativeContainer)
-      candidate = null;
-
-    // If our candidate is new, inform the old target we're leaving.
-    if (lastComponentEntered != null
-        && lastComponentEntered.isShowing()
-        && lastComponentEntered != candidate)
-      {
-        // Old candidate could have been removed from 
-        // the nativeContainer so we check first.
-        if (AWTUtilities.isDescendingFrom(lastComponentEntered,
-                                          nativeContainer))
-          {
-            Point tp = AWTUtilities.convertPoint(nativeContainer, 
-                                                 x, y, lastComponentEntered);
-            MouseEvent exited = new MouseEvent (lastComponentEntered, 
-                                                MouseEvent.MOUSE_EXITED,
-                                                me.getWhen (), 
-                                                me.getModifiersEx (), 
-                                                tp.x, tp.y,
-                                                me.getClickCount (),
-                                                me.isPopupTrigger (),
-                                                me.getButton ());
-            lastComponentEntered.dispatchEvent (exited); 
-          }
-        lastComponentEntered = null;
-      }
-
-    // If we have a candidate, maybe enter it.
-    if (candidate != null)
-      {
-        mouseEventTarget = candidate;
-        if (candidate.isLightweight() 
-            && candidate.isShowing()
-            && candidate != nativeContainer
-            && candidate != lastComponentEntered)
-	  {
-            lastComponentEntered = mouseEventTarget;
-            Point cp = AWTUtilities.convertPoint(nativeContainer, 
-                                                 x, y, lastComponentEntered);
-            MouseEvent entered = new MouseEvent (lastComponentEntered, 
-                                                 MouseEvent.MOUSE_ENTERED,
-                                                 me.getWhen (), 
-                                                 me.getModifiersEx (), 
-                                                 cp.x, cp.y,
-                                                 me.getClickCount (),
-                                                 me.isPopupTrigger (),
-                                                 me.getButton ());
-            lastComponentEntered.dispatchEvent (entered);
-          }
-      }
-
-    // Check which buttons where pressed except the last button that
-    // changed state.
-    int modifiers = me.getModifiersEx() & (MouseEvent.BUTTON1_DOWN_MASK
-                                           | MouseEvent.BUTTON2_DOWN_MASK
-                                           | MouseEvent.BUTTON3_DOWN_MASK);
-    switch(me.getButton())
-      {
-      case MouseEvent.BUTTON1:
-        modifiers &= ~MouseEvent.BUTTON1_DOWN_MASK;
-        break;
-      case MouseEvent.BUTTON2:
-        modifiers &= ~MouseEvent.BUTTON2_DOWN_MASK;
-        break;
-      case MouseEvent.BUTTON3:
-        modifiers &= ~MouseEvent.BUTTON3_DOWN_MASK;
-        break;
-      }
-
-    if (me.getID() == MouseEvent.MOUSE_RELEASED
-        || me.getID() == MouseEvent.MOUSE_PRESSED && modifiers > 0
-        || me.getID() == MouseEvent.MOUSE_DRAGGED)
-      {
-        // If any of the following events occur while a button is held down,
-        // they should be dispatched to the same component to which the
-        // original MOUSE_PRESSED event was dispatched:
-        //   - MOUSE_RELEASED: This is important for correct dragging
-        //     behaviour, otherwise the release goes to an arbitrary component
-        //     outside of the dragged component. OTOH, if there is no mouse
-        //     drag while the mouse is pressed, the component under the mouse
-        //     is the same as the previously pressed component anyway.
-        //   - MOUSE_PRESSED: another button pressed while the first is held
-        //     down
-        //   - MOUSE_DRAGGED
-        if (AWTUtilities.isDescendingFrom(pressedComponent, nativeContainer))
-          mouseEventTarget = pressedComponent;
-      }
-    else if (me.getID() == MouseEvent.MOUSE_CLICKED)
-      {
-        // Don't dispatch CLICKED events whose target is not the same as the
-        // target for the original PRESSED event.
-        if (candidate != pressedComponent)
-          {
-            mouseEventTarget = null;
-            pressCount = 0;
-          }
-        else if (pressCount == 0)
-          pressedComponent = null;
-      }
-    return mouseEventTarget;
-  }
-
-  boolean handleEvent(AWTEvent e)
-  {
-    if (e instanceof MouseEvent)
-      {
-        MouseEvent me = (MouseEvent) e;
-
-        // Make the LightWeightDispatcher reentrant. This is necessary when
-        // a lightweight component does its own modal event queue.
-        Component mouseEventTarget = acquireComponentForMouseEvent(me);
-
-        // Avoid dispatching ENTERED and EXITED events twice.
-        if (mouseEventTarget != null
-            && mouseEventTarget.isShowing()
-            && e.getID() != MouseEvent.MOUSE_ENTERED
-            && e.getID() != MouseEvent.MOUSE_EXITED)
-          {
-            switch (e.getID())
-              {
-              case MouseEvent.MOUSE_PRESSED:
-                if (pressCount++ == 0)
-                  pressedComponent = mouseEventTarget;
-                break;
-              case MouseEvent.MOUSE_RELEASED:
-                // Clear our memory of the original PRESSED event, only if
-                // we're not expecting a CLICKED event after this. If
-                // there is a CLICKED event after this, it will do clean up.
-                if (--pressCount == 0
-                    && mouseEventTarget != pressedComponent)
-                  {
-                    pressedComponent = null;
-                    pressCount = 0;
-                  }
-                break;
-              }
-
-            MouseEvent newEvt =
-              AWTUtilities.convertMouseEvent(nativeContainer, me,
-                                             mouseEventTarget);
-            mouseEventTarget.dispatchEvent(newEvt);
-
-            if (newEvt.isConsumed())
-              e.consume();
-          }
-      }
-
-    return e.isConsumed();
-  }
-}

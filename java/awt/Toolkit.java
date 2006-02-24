@@ -128,7 +128,11 @@ public abstract class Toolkit
    */
   public Toolkit()
   {
-    awtEventListeners = new AWTEventListenerProxy[0];
+    awtEventListeners = new AWTEventListenerProxy[1];
+    awtEventListeners[0] =
+      new AWTEventListenerProxy(AWTEvent.MOUSE_EVENT_MASK
+                                | AWTEvent.MOUSE_MOTION_EVENT_MASK,
+                                new LightweightDispatcher());
   }
 
   /**
