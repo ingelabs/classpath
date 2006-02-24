@@ -1,3 +1,9 @@
+2006-02-24  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/mac/TMMH16.java (clone): New method.
+	* gnu/java/security/prng/MDGenerator.java (clone): New method.
+	* gnu/java/security/prng/BasePRNG.java (clone): Clone buffer.
+
 2006-02-23  Roman Kennke  <kennke@aicas.com>
 
 	Reported by Ingo Proetel <proetel@aicas.com>

@@ -271,6 +271,30 @@ public class TMMH16 extends BaseMac implements Cloneable
     return valid.booleanValue();
   }
 
+  // Cloneable interface implementation ---------------------------------------
+
+  public Object clone() throws CloneNotSupportedException
+  {
+    TMMH16 result = (TMMH16) super.clone();
+
+    if (this.keystream != null)
+      result.keystream = (IRandom) this.keystream.clone();
+
+    if (this.prefix != null)
+      result.prefix = this.prefix.clone();
+
+    if (this.context != null)
+      result.context = this.context.clone();
+
+    if (this.K0 != null)
+      result.K0 = this.K0.clone();
+
+    if (this.Ki != null)
+      result.Ki = this.Ki.clone();
+
+    return result;
+  }
+
   // own methods -------------------------------------------------------------
 
   /**
