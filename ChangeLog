@@ -1,3 +1,14 @@
+2006-02-24  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/security/prng/BasePRNG.java:
+	(clone()): Added cast of buffer to byte[].
+	* gnu/javax/crypto/mac/TMMH16.java:
+	(clone()): Fixed casting of cloned arrays.
+	* native/fdlibm/fdlibm.h:
+	Added missing defines from old fdlibm.h needed by Darwin.
+	(GET_FLOAT_WORD(i,d)): Re-added.
+	(SET_FLOAT_WORD(d,i)): Re-added.
+	
 2006-02-24  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Container.java:
