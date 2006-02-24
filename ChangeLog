@@ -1,5 +1,10 @@
 2006-02-24  Lillian Angel  <langel@redhat.com>
 
+	* java/awt/TextField.java
+	(addNotify): Added call to super.
+
+2006-02-24  Lillian Angel  <langel@redhat.com>
+
 	* java/awt/Component.java
 	(reshape): Reverted last patch. Should have check here.
 	(addNotify): Added check. If parent is lightweight, then
