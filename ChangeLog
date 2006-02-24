@@ -1,5 +1,14 @@
 2006-02-23  Roman Kennke  <kennke@aicas.com>
 
+	Reported by Ingo Proetel <proetel@aicas.com>
+	* java/util/logging/LogManager.java
+	(addLogger): Search the parent loggers for log level
+	configuration and inherit that.
+	(readConfiguration): Provide minimal default configuration
+	if no configuration can be found otherwise.
+
+2006-02-23  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JRootPane.java
 	(isOptimizedDrawingEnabled): Implemented to return true
 	when the glassPane is not visible.
