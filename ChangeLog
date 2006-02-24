@@ -1,3 +1,18 @@
+2006-02-24  David Daney  <ddaney@avtrex.com>
+
+	PR classpath/26082
+	* gnu/java/net/protocol/http/HTTPConnection.java (pool): Changed to
+	type Pool.
+	(Pool): New inner class.
+	(timeLastUsed): New field.
+	(setPool): Changed parameter type to Pool.
+	(release): Moved pool management logic to new class Pool.
+	* gnu/java/net/protocol/http/HTTPURLConnection.java (connectionPool):
+	Removed.
+	(maxConnections) : Removed.
+	(GetHTTPPropertiesAction.run): Don't initialize maxConnections.
+	(getConnection):  Moved pool management logic to HTTPConnection.Pool.
+
 2006-02-24  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Container.java:
