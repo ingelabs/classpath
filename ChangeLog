@@ -1,3 +1,19 @@
+2006-02-25  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/regexp/REMatch.java(matchFlags): New int field used as
+	option flags passed to match methods.
+	(MF_FIND_ALL): New flag.
+	* gnu/regexp/RETokenOneOf.java(matchP): Unless MF_FIND_ALL is set,
+	do not try other possibilties once a match is found.
+	* gnu/regexp/RETokenRepeated.java(findDoables): Set MF_FIND_ALL
+	so that all possibilities can be found.
+	(match): Rewritten using new methods matchMinimum and _match.
+	(_match): New method which performs a depth-first recursive search.
+	(matchMinimum): New method.
+	(initVisited), (visitedContains), (addVisited): New methods for
+	manipulating an array of icharacter positions which _match has
+	already visited.
+
 2006-02-24  David Daney  <ddaney@avtrex.com>
 
 	PR classpath/26082
