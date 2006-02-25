@@ -1,3 +1,12 @@
+2006-02-25  Chris Burdess  <dog@gnu.org>
+
+	* gnu/java/net/CRLFInputStream.java,
+	  gnu/java/net/LineInputStream.java: Streams that use mark
+	  capabilities on the underlying stream do not expose mark
+	  functionality themselves.
+	* gnu/xml/stream/CRLFReader.java: Fix incorrect end condition when
+	  off > 0.
+
 2006-02-25  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* gnu/regexp/REMatch.java(matchFlags): New int field used as
