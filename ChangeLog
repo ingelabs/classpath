@@ -1,5 +1,36 @@
 2006-02-26  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* java/security/SecureRandom.java (SecureRandom): Use GNU-CRYPTO class
+	as the fallback SPI.
+	* gnu/java/security/provider/Gnu.java (run): Replaced mappings with new
+	ones referencing GNU-CRYPTO classes.
+	* gnu/java/security/provider/PKIXCertPathValidatorImpl.java
+	(engineValidate): Use GNU-CRYPTO class.
+	* gnu/java/security/provider/DiffieHellmanKeyFactoryImpl: Removed.
+	* gnu/java/security/provider/DiffieHellmanKeyPairGeneratorImpl: Likewise.
+	* gnu/java/security/provider/DSAKeyFactory: Likewise.
+	* gnu/java/security/provider/DSAKeyPairGenerator: Likewise.
+	* gnu/java/security/provider/DSAParameters: Likewise.
+	* gnu/java/security/provider/DSASignature: Likewise.
+	* gnu/java/security/provider/EncodedKeyFactory: Likewise.
+	* gnu/java/security/provider/GnuDHPublicKey: Likewise.
+	* gnu/java/security/provider/GnuDSAPrivateKey: Likewise.
+	* gnu/java/security/provider/GnuDSAPublicKey: Likewise.
+	* gnu/java/security/provider/GnuRSAPrivateKey: Likewise.
+	* gnu/java/security/provider/GnuRSAPublicKey: Likewise.
+	* gnu/java/security/provider/MD2withRSA: Likewise.
+	* gnu/java/security/provider/MD4withRSA: Likewise.
+	* gnu/java/security/provider/MD5: Likewise.
+	* gnu/java/security/provider/MD5withRSA: Likewise.
+	* gnu/java/security/provider/RSA: Likewise.
+	* gnu/java/security/provider/RSAKeyFactory: Likewise.
+	* gnu/java/security/provider/SHA: Likewise.
+	* gnu/java/security/provider/SHA1PRNG: Likewise.
+	* gnu/java/security/provider/SHA1withRSA: Likewise.
+	* gnu/javax/crypto/GnuDHPrivateKey: Likewise.
+
+2006-02-26  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/java/security/jce/sig/EncodedKeyFactory.java (log): New field.
 	(engineGeneratePublic): Added logging.
 	(engineGeneratePrivate): Likewise.
