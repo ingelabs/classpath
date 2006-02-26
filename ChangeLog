@@ -1,3 +1,7 @@
+2006-02-26  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* java/util/logging/FileHandler.java: Fixed a javadoc reference.
+
 2006-02-25  Chris Burdess  <dog@gnu.org>
 
 	* gnu/java/net/CRLFInputStream.java,
