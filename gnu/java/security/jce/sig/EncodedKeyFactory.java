@@ -62,6 +62,8 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.crypto.interfaces.DHPrivateKey;
 import javax.crypto.interfaces.DHPublicKey;
@@ -75,6 +77,8 @@ import javax.crypto.spec.DHPublicKeySpec;
 public class EncodedKeyFactory
     extends KeyFactorySpi
 {
+  private static final Logger log = Logger.getLogger(EncodedKeyFactory.class.getName());
+
   // implicit 0-arguments constructor
 
   // Class methods
@@ -192,79 +196,105 @@ public class EncodedKeyFactory
   protected PublicKey engineGeneratePublic(KeySpec keySpec)
       throws InvalidKeySpecException
   {
+    log.entering(this.getClass().getName(), "engineGeneratePublic()", keySpec);
+
+    PublicKey result = null;
     if (keySpec instanceof DSAPublicKeySpec)
-      return decodeDSSPublicKey((DSAPublicKeySpec) keySpec);
-
-    if (keySpec instanceof RSAPublicKeySpec)
-      return decodeRSAPublicKey((RSAPublicKeySpec) keySpec);
-
-    if (keySpec instanceof DHPublicKeySpec)
-      return decodeDHPublicKey((DHPublicKeySpec) keySpec);
-
-    if (! (keySpec instanceof X509EncodedKeySpec))
-      throw new InvalidKeySpecException("Unsupported key specification");
-
-    byte[] input = ((X509EncodedKeySpec) keySpec).getEncoded();
-
-    // try DSS
-    try
+      result = decodeDSSPublicKey((DSAPublicKeySpec) keySpec);
+    else if (keySpec instanceof RSAPublicKeySpec)
+      result = decodeRSAPublicKey((RSAPublicKeySpec) keySpec);
+    else if (keySpec instanceof DHPublicKeySpec)
+      result = decodeDHPublicKey((DHPublicKeySpec) keySpec);
+    else
       {
-        return DSSPublicKey.valueOf(input);
-      }
-    catch (InvalidParameterException ignored)
-      {
+        if (! (keySpec instanceof X509EncodedKeySpec))
+          throw new InvalidKeySpecException("Unsupported key specification");
+
+        byte[] input = ((X509EncodedKeySpec) keySpec).getEncoded();
+        boolean ok = false;
+        // try DSS
+        try
+          {
+            result = DSSPublicKey.valueOf(input);
+            ok = true;
+          }
+        catch (InvalidParameterException ignored)
+          {
+            log.log(Level.FINE, "Exception in DSSPublicKey.valueOf(). Ignore",
+                    ignored);
+          }
+
+        if (! ok) // try RSA
+          try
+            {
+              result = GnuRSAPublicKey.valueOf(input);
+              ok = true;
+            }
+          catch (InvalidParameterException ignored)
+            {
+              log.log(Level.FINE,
+                      "Exception in GnuRSAPublicKey.valueOf(). Ignore",
+                      ignored);
+            }
+
+          if (! ok) // try DH
+            result = decodeDHPublicKey(input);
       }
 
-    // try RSA
-    try
-      {
-        return GnuRSAPublicKey.valueOf(input);
-      }
-    catch (InvalidParameterException ignored)
-      {
-      }
-
-    // try DH
-    return decodeDHPublicKey(input);
+    log.exiting(this.getClass().getName(), "engineGeneratePublic()", result);
+    return result;
   }
 
   protected PrivateKey engineGeneratePrivate(KeySpec keySpec)
       throws InvalidKeySpecException
   {
+    log.entering(this.getClass().getName(), "engineGeneratePrivate()", keySpec);
+
+    PrivateKey result = null;
     if (keySpec instanceof DSAPrivateKeySpec)
-      return decodeDSSPrivateKey((DSAPrivateKeySpec) keySpec);
-
-    if (keySpec instanceof RSAPrivateCrtKeySpec)
-      return decodeRSAPrivateKey((RSAPrivateCrtKeySpec) keySpec);
-
-    if (keySpec instanceof DHPrivateKeySpec)
-      return decodeDHPrivateKey((DHPrivateKeySpec) keySpec);
-
-    if (! (keySpec instanceof PKCS8EncodedKeySpec))
-      throw new InvalidKeySpecException("Unsupported key specification");
-
-    byte[] input = ((PKCS8EncodedKeySpec) keySpec).getEncoded();
-
-    // try DSS
-    try
+      result = decodeDSSPrivateKey((DSAPrivateKeySpec) keySpec);
+    else if (keySpec instanceof RSAPrivateCrtKeySpec)
+      result = decodeRSAPrivateKey((RSAPrivateCrtKeySpec) keySpec);
+    else if (keySpec instanceof DHPrivateKeySpec)
+      result = decodeDHPrivateKey((DHPrivateKeySpec) keySpec);
+    else
       {
-        return DSSPrivateKey.valueOf(input);
-      }
-    catch (InvalidParameterException ignored)
-      {
+        if (! (keySpec instanceof PKCS8EncodedKeySpec))
+          throw new InvalidKeySpecException("Unsupported key specification");
+
+        byte[] input = ((PKCS8EncodedKeySpec) keySpec).getEncoded();
+        boolean ok = false;
+        // try DSS
+        try
+          {
+            result = DSSPrivateKey.valueOf(input);
+            ok = true;
+          }
+        catch (InvalidParameterException ignored)
+          {
+            log.log(Level.FINE, "Exception in DSSPrivateKey.valueOf(). Ignore",
+                    ignored);
+          }
+
+        if (! ok) // try RSA
+          try
+            {
+              result = GnuRSAPrivateKey.valueOf(input);
+              ok = true;
+            }
+          catch (InvalidParameterException ignored)
+            {
+              log.log(Level.FINE,
+                      "Exception in GnuRSAPrivateKey.valueOf(). Ignore",
+                      ignored);
+            }
+
+        if (! ok) // try DH
+          result = decodeDHPrivateKey(input);
       }
 
-    // try RSA
-    try
-      {
-        return GnuRSAPrivateKey.valueOf(input);
-      }
-    catch (InvalidParameterException ignored)
-      {
-      }
-
-    // try DH
-    return decodeDHPrivateKey(input);
+    log.exiting(this.getClass().getName(), "engineGeneratePrivate()", result);
+    return result;
   }
 
   protected KeySpec engineGetKeySpec(Key key, Class keySpec)
