@@ -1,3 +1,17 @@
+2006-02-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/RepaintManager.java
+	(currentRepaintManagers): Made field private.
+	(rectCache): New field.
+	(addDirtyRegion): Clip dirty rectangle with visible rectangle of
+	component. Changed Rectangle handling to avoid unnecessary new
+	Rectangle instances.
+	(getOffscreenBuffer): Create buffer with size of the root window.
+	Respect the maximum buffer size here.
+	(commitBuffer): Align the regions so that they are inside the buffer
+	image and inside the clip. This avoids problems with a bug in GTKImage.
+	Fixed Rectangle handling to avoid creation of new Rectangle instances.
+
 2006-02-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* native/fdlibm/e_acos.c,
