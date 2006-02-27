@@ -1,5 +1,13 @@
 2006-02-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/SwingUtilities.java
+	(computeIntersection): Changed to store result in rect, instead of
+	creating new Rectangle instances. Fixed API docs accordingly.
+	(computeUnion): Changed to store result in rect, instead of
+	creating new Rectangle instances. Fixed API docs accordingly.
+
+2006-02-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JViewport.java
 	(static_init): Changed default scrollmode to BLIT.
 	(paintSimple): Added some clipping to avoid painting problems.
