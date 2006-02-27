@@ -1,5 +1,16 @@
 2006-02-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(rectCache): Made field static to save memory.
+	(getVisibleRect): Don't use rectCache and create new Rectangle
+	instance instead.
+	(repaint(Rectangle)): Directly call RepaintManager.addDirtyRegion().
+	(repaint(long,int,int,int,int)): Directly call
+	RepaintManager.addDirtyRegion(). The visibleRect check is now
+	performed in the RepaintManager.
+
+2006-02-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/RepaintManager.java
 	(currentRepaintManagers): Made field private.
 	(rectCache): New field.

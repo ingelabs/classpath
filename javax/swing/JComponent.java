@@ -554,7 +554,7 @@ public abstract class JComponent extends Container implements Serializable
    * so that it doesn't get modified in another context within the same
    * method call chain.
    */
-  private transient Rectangle rectCache;
+  private static transient Rectangle rectCache;
 
   /**
    * The default locale of the component.
@@ -1389,16 +1389,15 @@ public abstract class JComponent extends Container implements Serializable
    * Return the component's visible rectangle in a new {@link Rectangle},
    * rather than via a return slot.
    *
-   * @return The component's visible rectangle
+   * @return the component's visible rectangle
    *
    * @see #computeVisibleRect(Rectangle)
    */
   public Rectangle getVisibleRect()
   {
-    if (rectCache == null)
-      rectCache = new Rectangle();
-    computeVisibleRect(rectCache);
-    return rectCache;
+    Rectangle r = new Rectangle();
+    computeVisibleRect(r);
+    return r;
   }
 
   /**
@@ -2204,12 +2203,8 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void repaint(long tm, int x, int y, int width, int height)
   {
-    // TODO: Maybe add this visibleRect stuff to RepaintManager.
-     Rectangle r = getVisibleRect();
-     Rectangle dirty = SwingUtilities.computeIntersection(x, y, width, height, r);
-     RepaintManager.currentManager(this).addDirtyRegion(this, dirty.x, dirty.y,
-                                                        dirty.width,
-                                                        dirty.height);
+     RepaintManager.currentManager(this).addDirtyRegion(this, x, y, width,
+                                                        height);
   }
 
   /**
@@ -2221,7 +2216,8 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void repaint(Rectangle r)
   {
-    repaint(0, r.x, r.y, r.width, r.height);
+    RepaintManager.currentManager(this).addDirtyRegion(this, r.x, r.y, r.width,
+                                                       r.height);
   }
 
   /**
