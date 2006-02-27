@@ -41,8 +41,6 @@ package gnu.java.awt.peer.gtk;
 import java.awt.Dialog;
 import java.awt.FileDialog;
 import java.awt.Graphics;
-import java.awt.Window;
-import java.awt.event.ComponentEvent;
 import java.awt.peer.FileDialogPeer;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -117,13 +115,9 @@ public class GtkFileDialogPeer extends GtkDialogPeer implements FileDialogPeer
     // is not absolute, let's construct it based on current directory.
     currentFile = fileName;
     if (fileName.indexOf(FS) == 0)
-      {
-        nativeSetFile (fileName);
-      }
+      nativeSetFile(fileName);
     else
-      {
-        nativeSetFile (nativeGetDirectory() + FS + fileName);
-      }
+      nativeSetFile(nativeGetDirectory() + FS + fileName);
   }
 
   public void setDirectory (String directory)
@@ -132,26 +126,25 @@ public class GtkFileDialogPeer extends GtkDialogPeer implements FileDialogPeer
        the only way we have to set the directory in FileDialog is by
        calling its setDirectory which will call us back. */
     if ((directory == null && currentDirectory == null)
-        || (directory != null && directory.equals (currentDirectory)))
+        || (directory != null && directory.equals(currentDirectory)))
       return;
 
-    if (directory == null || directory.equals (""))
+    if (directory == null || directory.equals(""))
       {
         currentDirectory = FS;
-        nativeSetFile (FS);
-	return;
+        nativeSetDirectory(FS);
+        return;
       }
     
     // GtkFileChooser requires absolute directory names. If the given directory
     // name is not absolute, construct it based on current directory if it is not
-    // null.
-    // Otherwise, use FS.
+    // null. Otherwise, use FS.
     if (directory.indexOf(FS) == 0)
       nativeSetDirectory(directory);
     else if (currentDirectory == null)
       nativeSetDirectory(FS + directory);
     else
-      nativeSetDirectory(currentDirectory + FS + directory);
+      nativeSetDirectory(nativeGetDirectory() + FS + directory);
     currentDirectory = directory;
   }
 
