@@ -1,5 +1,12 @@
 2006-02-27  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JViewport.java
+	(static_init): Changed default scrollmode to BLIT.
+	(paintSimple): Added some clipping to avoid painting problems.
+	(paintBlit): Added some clipping to avoid painting problems.
+
+2006-02-27  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(rectCache): Made field static to save memory.
 	(getVisibleRect): Don't use rectCache and create new Rectangle

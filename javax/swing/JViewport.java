@@ -48,6 +48,7 @@ import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.Serializable;
@@ -265,7 +266,7 @@ public class JViewport extends JComponent implements Accessible
   {
     String scrollModeProp =
       SystemProperties.getProperty("gnu.javax.swing.JViewport.scrollMode",
-                         "BACKINGSTORE");
+                         "BLIT");
     if (scrollModeProp.equalsIgnoreCase("simple"))
       defaultScrollMode = SIMPLE_SCROLL_MODE;
     else if (scrollModeProp.equalsIgnoreCase("backingstore"))
@@ -808,6 +809,8 @@ public class JViewport extends JComponent implements Accessible
 
     Point pos = getViewPosition();
     Component view = getView();
+    Shape oldClip = g.getClip();
+    g.clipRect(0, 0, getWidth(), getHeight());
     boolean translated = false;
     try
       {
@@ -819,6 +822,7 @@ public class JViewport extends JComponent implements Accessible
       {
         if (translated)
           g.translate (pos.x, pos.y);
+        g.setClip(oldClip);
       }
   }
 
@@ -914,16 +918,22 @@ public class JViewport extends JComponent implements Accessible
                    cachedBlitTo.x - cachedBlitFrom.x,
                    cachedBlitTo.y - cachedBlitFrom.y);
         // Now paint the part that becomes newly visible.
-        g.setClip(cachedBlitPaint.x, cachedBlitPaint.y,
+        Shape oldClip = g.getClip();
+        g.clipRect(cachedBlitPaint.x, cachedBlitPaint.y,
                   cachedBlitPaint.width, cachedBlitPaint.height);
-        paintSimple(g);
+        try
+          {
+            paintSimple(g);
+          }
+        finally
+          {
+            g.setClip(oldClip);
+          }
       }
     // If blitting is not possible for some reason, fall back to repainting
     // everything.
     else
-      {
-        paintSimple(g);
-      }
+      paintSimple(g);
     lastPaintPosition.setLocation(getViewPosition());
   }
 
