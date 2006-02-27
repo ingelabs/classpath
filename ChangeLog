@@ -1,3 +1,10 @@
+2006-02-27  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
+	(setDirectory): GtkFileChooser requires an absolute directory
+	name. Added a check to make the directory passed to nativeSetDirectory
+	is absolute.
+
 2006-02-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/SwingUtilities.java
