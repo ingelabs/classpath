@@ -1,5 +1,20 @@
 2006-02-27  David Daney  <ddaney@avtrex.com>
 
+	PR classpath/26312
+	* gnu/java/net/protocol/http/ChunkedInputStream.java (imports): Cleaned
+	up.
+	(ChunkedInputStream): Extend InputStream.
+	(in): New field.
+	(headers): Moved to top of class.
+	(constructor): Save referenct to in.
+	(read(byte[])): Removed method.
+	(read(byte[], int, int)): Made synchronized and throw IOException
+	on error parsing chunk header.
+	(available): New method.
+	(close): New method.
+
+2006-02-27  David Daney  <ddaney@avtrex.com>
+
 	* gnu/java/net/protocol/http/HTTPURLConnection.java
 	(imports): Cleaned up.
 	(GetHTTPPropertiesAction): Removed, and moved contents to ...
