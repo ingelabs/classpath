@@ -48,6 +48,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static const double 
 #else
@@ -69,8 +71,9 @@ C6  = -1.13596475577881948265e-11; /* 0xBDA8FAE9, 0xBE8838D4 */
 #endif
 {
 	double a,hz,z,r,qx;
-	int ix;
-	ix = __HI(x)&0x7fffffff;	/* ix = |x|'s high word*/
+	int32_t ix;
+	GET_HIGH_WORD(ix, x);
+	ix &= 0x7fffffff;	/* ix = |x|'s high word*/
 	if(ix<0x3e400000) {			/* if x < 2**27 */
 	    if(((int)x)==0) return one;		/* generate inexact */
 	}
@@ -82,11 +85,11 @@ C6  = -1.13596475577881948265e-11; /* 0xBDA8FAE9, 0xBE8838D4 */
 	    if(ix > 0x3fe90000) {		/* x > 0.78125 */
 		qx = 0.28125;
 	    } else {
-	        __HI(qx) = ix-0x00200000;	/* x/4 */
-	        __LO(qx) = 0;
+	      INSERT_WORDS(qx,ix-0x00200000,0);
 	    }
 	    hz = 0.5*z-qx;
 	    a  = one-qx;
 	    return a - (hz - (z*r-x*y));
 	}
 }
+#endif /* defined(_DOUBLE_IS_32BITS) */

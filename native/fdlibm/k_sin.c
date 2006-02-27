@@ -41,6 +41,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static const double 
 #else
@@ -62,8 +64,9 @@ S6  =  1.58969099521155010221e-10; /* 0x3DE5D93A, 0x5ACFD57C */
 #endif
 {
 	double z,r,v;
-	int ix;
-	ix = __HI(x)&0x7fffffff;	/* high word of x */
+	int32_t ix;
+	GET_HIGH_WORD(ix,x);
+	ix &=0x7fffffff;	/* high word of x */
 	if(ix<0x3e400000)			/* |x| < 2**-27 */
 	   {if((int)x==0) return x;}		/* generate inexact */
 	z	=  x*x;
@@ -72,3 +75,4 @@ S6  =  1.58969099521155010221e-10; /* 0x3DE5D93A, 0x5ACFD57C */
 	if(iy==0) return x+v*(S1+z*r);
 	else      return x-((z*(half*y-v*r)-y)-v*S1);
 }
+#endif /* defined(_DOUBLE_IS_32BITS) */

@@ -46,6 +46,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 static const double xxx[] = {
 		 3.33333333333334091986e-01,	/* 3FD55555, 55555563 */
 		 1.33333333333201242699e-01,	/* 3FC11111, 1110FE7A */
@@ -73,13 +75,15 @@ static const double xxx[] = {
 double
 __kernel_tan(double x, double y, int iy) {
 	double z, r, v, w, s;
-	int ix, hx;
+	int32_t ix, hx;
 
-	hx = __HI(x);		/* high word of x */
+	GET_HIGH_WORD(hx,x); /* high word of x */
 	ix = hx & 0x7fffffff;			/* high word of |x| */
 	if (ix < 0x3e300000) {			/* x < 2**-28 */
 		if ((int) x == 0) {		/* generate inexact */
-			if (((ix | __LO(x)) | (iy + 1)) == 0)
+		        uint32_t low;
+			GET_LOW_WORD(low,x);
+			if (((ix | low) | (iy + 1)) == 0)
 				return one / fabs(x);
 			else {
 				if (iy == 1)
@@ -88,10 +92,10 @@ __kernel_tan(double x, double y, int iy) {
 					double a, t;
 
 					z = w = x + y;
-					__LO(z) = 0;
+					SET_LOW_WORD(z,0);
 					v = y - (z - x);
 					t = a = -one / w;
-					__LO(t) = 0;
+					SET_LOW_WORD(t,0);
 					s = one + t * z;
 					return t + a * (s + t * v);
 				}
@@ -138,11 +142,12 @@ __kernel_tan(double x, double y, int iy) {
 		/* compute -1.0 / (x+r) accurately */
 		double a, t;
 		z = w;
-		__LO(z) = 0;
+		SET_LOW_WORD(z,0);
 		v = r - (z - x);	/* z+v = r+x */
 		t = a = -1.0 / w;	/* a = -1.0/w */
-		__LO(t) = 0;
+		SET_LOW_WORD(t,0);
 		s = 1.0 + t * z;
 		return t + a * (s + t * v);
 	}
 }
+#endif /* defined(_DOUBLE_IS_32BITS) */

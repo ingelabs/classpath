@@ -41,6 +41,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static const double 
 #else
@@ -61,17 +63,17 @@ pi_lo   = 1.2246467991473531772E-16; /* 0x3CA1A626, 0x33145C07 */
 #endif
 {  
 	double z;
-	int k,m,hx,hy,ix,iy;
-	unsigned lx,ly;
+	int32_t k,m,hx,hy,ix,iy;
+	uint32_t lx,ly;
 
-	hx = __HI(x); ix = hx&0x7fffffff;
-	lx = __LO(x);
-	hy = __HI(y); iy = hy&0x7fffffff;
-	ly = __LO(y);
+	EXTRACT_WORDS(hx,lx,x);
+	ix = hx&0x7fffffff;
+	EXTRACT_WORDS(hy,ly,y);
+	iy = hy&0x7fffffff;
 	if(((ix|((lx|-lx)>>31))>0x7ff00000)||
 	   ((iy|((ly|-ly)>>31))>0x7ff00000))	/* x or y is NaN */
 	   return x+y;
-	if((hx-0x3ff00000|lx)==0) return atan(y);   /* x=1.0 */
+	if(((hx-0x3ff00000)|lx)==0) return atan(y);   /* x=1.0 */
 	m = ((hy>>31)&1)|((hx>>30)&2);	/* 2*sign(x)+sign(y) */
 
     /* when y = 0 */
@@ -114,10 +116,16 @@ pi_lo   = 1.2246467991473531772E-16; /* 0x3CA1A626, 0x33145C07 */
 	else z=atan(fabs(y/x));		/* safe to do y/x */
 	switch (m) {
 	    case 0: return       z  ;	/* atan(+,+) */
-	    case 1: __HI(z) ^= 0x80000000;
+	    case 1: { 
+	              uint32_t zh;
+	              GET_HIGH_WORD(zh,z);
+	              SET_HIGH_WORD(z, zh ^ 0x80000000);
+	            }
 		    return       z  ;	/* atan(-,+) */
 	    case 2: return  pi-(z-pi_lo);/* atan(+,-) */
 	    default: /* case 3 */
 	    	    return  (z-pi_lo)-pi;/* atan(-,-) */
 	}
 }
+
+#endif /* defined(_DOUBLE_IS_32BITS) */

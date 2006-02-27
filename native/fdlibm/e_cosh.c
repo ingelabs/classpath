@@ -34,6 +34,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static const double one = 1.0, half=0.5, huge = 1.0e300;
 #else
@@ -48,11 +50,11 @@ static double one = 1.0, half=0.5, huge = 1.0e300;
 #endif
 {	
 	double t,w;
-	int ix;
-	unsigned lx;
+	int32_t ix;
+	uint32_t lx;
 
     /* High word of |x|. */
-	ix = __HI(x);
+	GET_HIGH_WORD(ix,x);
 	ix &= 0x7fffffff;
 
     /* x is INF or NaN */
@@ -87,3 +89,4 @@ static double one = 1.0, half=0.5, huge = 1.0e300;
     /* |x| > overflowthresold, cosh(x) overflow */
 	return huge*huge;
 }
+#endif /* defined(_DOUBLE_IS_32BITS) */

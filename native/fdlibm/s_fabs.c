@@ -17,6 +17,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 	double fabs(double x)
 #else
@@ -24,6 +26,11 @@
 	double x;
 #endif
 {
-	__HI(x) &= 0x7fffffff;
+        uint32_t hx;
+
+	GET_HIGH_WORD(hx,x);
+	SET_HIGH_WORD(x, hx & 0x7fffffff);
         return x;
 }
+
+#endif /* _DOUBLE_IS_32BITS */

@@ -37,6 +37,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static const double 
 #else
@@ -65,11 +67,13 @@ qS4 =  7.70381505559019352791e-02; /* 0x3FB3B8C5, 0xB12E9282 */
 #endif
 {
 	double z,p,q,r,w,s,c,df;
-	int hx,ix;
-	hx = __HI(x);
+	int32_t hx,ix;
+	GET_HIGH_WORD(hx,x);
 	ix = hx&0x7fffffff;
 	if(ix>=0x3ff00000) {	/* |x| >= 1 */
-	    if(((ix-0x3ff00000)|__LO(x))==0) {	/* |x|==1 */
+	    int32_t lx; 
+	    GET_LOW_WORD(lx,x);
+	    if(((ix-0x3ff00000)|lx)==0) {	/* |x|==1 */
 		if(hx>0) return 0.0;		/* acos(1) = 0  */
 		else return pi+2.0*pio2_lo;	/* acos(-1)= pi */
 	    }
@@ -86,15 +90,15 @@ qS4 =  7.70381505559019352791e-02; /* 0x3FB3B8C5, 0xB12E9282 */
 	    z = (one+x)*0.5;
 	    p = z*(pS0+z*(pS1+z*(pS2+z*(pS3+z*(pS4+z*pS5)))));
 	    q = one+z*(qS1+z*(qS2+z*(qS3+z*qS4)));
-	    s = sqrt(z);
+	    s = __ieee754_sqrt(z);
 	    r = p/q;
 	    w = r*s-pio2_lo;
 	    return pi - 2.0*(s+w);
 	} else {			/* x > 0.5 */
 	    z = (one-x)*0.5;
-	    s = sqrt(z);
+	    s = __ieee754_sqrt(z);
 	    df = s;
-	    __LO(df) = 0;
+	    SET_LOW_WORD(df,0);
 	    c  = (z-df*df)/(s+df);
 	    p = z*(pS0+z*(pS1+z*(pS2+z*(pS3+z*(pS4+z*pS5)))));
 	    q = one+z*(qS1+z*(qS2+z*(qS3+z*qS4)));
@@ -103,3 +107,4 @@ qS4 =  7.70381505559019352791e-02; /* 0x3FB3B8C5, 0xB12E9282 */
 	    return 2.0*(df+w);
 	}
 }
+#endif /* defined(_DOUBLE_IS_32BITS) */

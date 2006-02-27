@@ -75,6 +75,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static const double
 #else
@@ -106,17 +108,19 @@ P5   =  4.13813679705723846039e-08; /* 0x3E663769, 0x72BEA4D0 */
 #endif
 {
 	double y,hi,lo,c,t;
-	int k,xsb;
-	unsigned hx;
+	int32_t k,xsb;
+	uint32_t hx;
 
-	hx  = __HI(x);	/* high word of x */
+	GET_HIGH_WORD(hx,x);	/* high word of x */
 	xsb = (hx>>31)&1;		/* sign bit of x */
 	hx &= 0x7fffffff;		/* high word of |x| */
 
     /* filter out non-finite argument */
 	if(hx >= 0x40862E42) {			/* if |x|>=709.78... */
             if(hx>=0x7ff00000) {
-		if(((hx&0xfffff)|__LO(x))!=0) 
+	        uint32_t lx;
+	        GET_LOW_WORD(lx,x);
+		if(((hx&0xfffff)|lx)!=0) 
 		     return x+x; 		/* NaN */
 		else return (xsb==0)? x:0.0;	/* exp(+-inf)={inf,0} */
 	    }
@@ -129,7 +133,7 @@ P5   =  4.13813679705723846039e-08; /* 0x3E663769, 0x72BEA4D0 */
 	    if(hx < 0x3FF0A2B2) {	/* and |x| < 1.5 ln2 */
 		hi = x-ln2HI[xsb]; lo=ln2LO[xsb]; k = 1-xsb-xsb;
 	    } else {
-		k  = (int)(invln2*x+halF[xsb]);
+		k  = (int32_t)(invln2*x+halF[xsb]);
 		t  = k;
 		hi = x - t*ln2HI[0];	/* t*ln2HI is exact here */
 		lo = t*ln2LO[0];
@@ -147,10 +151,15 @@ P5   =  4.13813679705723846039e-08; /* 0x3E663769, 0x72BEA4D0 */
 	if(k==0) 	return one-((x*c)/(c-2.0)-x); 
 	else 		y = one-((lo-(x*c)/(2.0-c))-hi);
 	if(k >= -1021) {
-	    __HI(y) += (k<<20);	/* add k to y's exponent */
+	    uint32_t hy;
+	    GET_HIGH_WORD(hy, y);
+	    SET_HIGH_WORD(y, hy + (k<<20));	/* add k to y's exponent */
 	    return y;
 	} else {
-	    __HI(y) += ((k+1000)<<20);/* add k to y's exponent */
+	    uint32_t hy;
+	    GET_HIGH_WORD(hy, y);
+	    SET_HIGH_WORD(y, hy + ((k+1000)<<20));/* add k to y's exponent */
 	    return y*twom1000;
 	}
 }
+#endif /* defined(_DOUBLE_IS_32BITS) */

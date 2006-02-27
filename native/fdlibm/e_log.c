@@ -64,6 +64,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static const double
 #else
@@ -80,8 +82,12 @@ Lg5 = 1.818357216161805012e-01,  /* 3FC74664 96CB03DE */
 Lg6 = 1.531383769920937332e-01,  /* 3FC39A09 D078C69F */
 Lg7 = 1.479819860511658591e-01;  /* 3FC2F112 DF3E5244 */
 
+#ifdef __STDC__  
+static const double zero   =  0.0;  
+#else
 static double zero   =  0.0;
-
+#endif  
+ 
 #ifdef __STDC__
 	double __ieee754_log(double x)
 #else
@@ -90,11 +96,10 @@ static double zero   =  0.0;
 #endif
 {
 	double hfsq,f,s,z,R,w,t1,t2,dk;
-	int k,hx,i,j;
-	unsigned lx;
+	int32_t k,hx,i,j;
+	uint32_t lx;
 
-	hx = __HI(x);		/* high word of x */
-	lx = __LO(x);		/* low  word of x */
+	EXTRACT_WORDS(hx,lx,x);
 
 	k=0;
 	if (hx < 0x00100000) {			/* x < 2**-1022  */
@@ -102,18 +107,24 @@ static double zero   =  0.0;
 		return -two54/zero;		/* log(+-0)=-inf */
 	    if (hx<0) return (x-x)/zero;	/* log(-#) = NaN */
 	    k -= 54; x *= two54; /* subnormal number, scale up x */
-	    hx = __HI(x);		/* high word of x */
+	    GET_HIGH_WORD(hx,x);		/* high word of x */
 	} 
 	if (hx >= 0x7ff00000) return x+x;
 	k += (hx>>20)-1023;
 	hx &= 0x000fffff;
 	i = (hx+0x95f64)&0x100000;
-	__HI(x) = hx|(i^0x3ff00000);	/* normalize x or x/2 */
+	SET_HIGH_WORD(x,hx|(i^0x3ff00000));	/* normalize x or x/2 */
 	k += (i>>20);
 	f = x-1.0;
 	if((0x000fffff&(2+hx))<3) {	/* |f| < 2**-20 */
-	    if(f==zero) if(k==0) return zero;  else {dk=(double)k;
-				 return dk*ln2_hi+dk*ln2_lo;}
+	    if(f==zero) { 
+	      if(k==0) 
+		return zero;  
+	      else {
+		dk=(double)k;
+		return dk*ln2_hi+dk*ln2_lo;
+	      }
+	    }
 	    R = f*f*(0.5-0.33333333333333333*f);
 	    if(k==0) return f-R; else {dk=(double)k;
 	    	     return dk*ln2_hi-((R-dk*ln2_lo)-f);}
@@ -137,3 +148,4 @@ static double zero   =  0.0;
 		     return dk*ln2_hi-((s*(f-R)-dk*ln2_lo)-f);
 	}
 }
+#endif /* defined(_DOUBLE_IS_32BITS) */

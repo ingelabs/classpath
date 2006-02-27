@@ -82,6 +82,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static	const double	one	= 1.0, tiny=1.0e-300;
 #else
@@ -96,12 +98,11 @@ static	double	one	= 1.0, tiny=1.0e-300;
 #endif
 {
 	double z;
-	int 	sign = (int)0x80000000; 
-	unsigned r,t1,s1,ix1,q1;
-	int ix0,s0,q,m,t,i;
+	int32_t 	sign = (int)0x80000000; 
+	uint32_t r,t1,s1,ix1,q1;
+	int32_t ix0,s0,q,m,t,i;
 
-	ix0 = __HI(x);			/* high word of x */
-	ix1 = __LO(x);		/* low word of x */
+	EXTRACT_WORDS(ix0,ix1,x);
 
     /* take care of Inf and NaN */
 	if((ix0&0x7ff00000)==0x7ff00000) {			
@@ -158,7 +159,7 @@ static	double	one	= 1.0, tiny=1.0e-300;
 	    t  = s0;
 	    if((t<ix0)||((t==ix0)&&(t1<=ix1))) { 
 		s1  = t1+r;
-		if(((t1&sign)==sign)&&(s1&sign)==0) s0 += 1;
+		if(((t1&sign)==(uint32_t)sign)&&(s1&sign)==0) s0 += 1;
 		ix0 -= t;
 		if (ix1 < t1) ix0 -= 1;
 		ix1 -= t1;
@@ -174,9 +175,9 @@ static	double	one	= 1.0, tiny=1.0e-300;
 	    z = one-tiny; /* trigger inexact flag */
 	    if (z>=one) {
 	        z = one+tiny;
-	        if (q1==(unsigned)0xffffffff) { q1=0; q += 1;}
+	        if (q1==(uint32_t)0xffffffff) { q1=0; q += 1;}
 		else if (z>one) {
-		    if (q1==(unsigned)0xfffffffe) q+=1;
+		    if (q1==(uint32_t)0xfffffffe) q+=1;
 		    q1+=2; 
 		} else
 	            q1 += (q1&1);
@@ -186,10 +187,10 @@ static	double	one	= 1.0, tiny=1.0e-300;
 	ix1 =  q1>>1;
 	if ((q&1)==1) ix1 |= sign;
 	ix0 += (m <<20);
-	__HI(z) = ix0;
-	__LO(z) = ix1;
+	INSERT_WORDS(z,ix0,ix1);
 	return z;
 }
+#endif /* defined(_DOUBLE_IS_32BITS) */
 
 /*
 Other methods  (use floating-point arithmetic)

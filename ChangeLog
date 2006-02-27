@@ -1,3 +1,48 @@
+2006-02-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* native/fdlibm/e_acos.c,
+	* native/fdlibm/e_asin.c,
+	* native/fdlibm/e_atan2.c,
+	* native/fdlibm/e_cosh.c,
+	* native/fdlibm/e_exp.c,
+	* native/fdlibm/e_fmod.c,
+	* native/fdlibm/e_hypot.c,
+	* native/fdlibm/e_log.c,
+	* native/fdlibm/e_log10.c,
+	* native/fdlibm/e_rem_pio2.c,
+	* native/fdlibm/e_remainder.c,
+	* native/fdlibm/e_sinh.c,
+	* native/fdlibm/e_sqrt.c,
+	* native/fdlibm/k_cos.c,
+	* native/fdlibm/k_sin.c,
+	* native/fdlibm/k_tan.c,
+	* native/fdlibm/s_atan.c,
+	* native/fdlibm/s_cbrt.c,
+	* native/fdlibm/s_ceil.c,
+	* native/fdlibm/s_copysign.c,
+	* native/fdlibm/s_cos.c,
+	* native/fdlibm/s_expm1.c,
+	* native/fdlibm/s_fabs.c,
+	* native/fdlibm/s_finite.c,
+	* native/fdlibm/s_floor.c,
+	* native/fdlibm/s_log1p.c,
+	* native/fdlibm/s_rint.c,
+	* native/fdlibm/s_scalbn.c,
+	* native/fdlibm/s_sin.c,
+	* native/fdlibm/s_tan.c,
+	* native/fdlibm/s_tanh.c:
+	Fixed to call our macros rather than __HI and __LO.
+	* native/fdlibm/fdlibm.h:
+	Reintroduced previous extraction code.
+	(EXTRACT_WORDS(ix0,ix1,d)): Readded.
+	(GET_HIGH_WORD(i,d)): Readded.
+	(GET_LOW_WORD(i,d)): Readded.
+	(INSERT_WORDS(d,ix0,ix1)): Readded.
+	(SET_HIGH_WORD(d,i)): Readded.
+	(SET_LOW_WORD(d,i)): Readded.
+	* native/jni/gtk-peer/gthread-jni.c:
+	Use Glib macros to convert integers/pointers portably.
+	
 2006-02-26  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* java/security/SecureRandom.java (SecureRandom): Use GNU-CRYPTO class

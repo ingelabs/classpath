@@ -78,6 +78,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static const double
 #else
@@ -104,9 +106,9 @@ static double zero = 0.0;
 #endif
 {
 	double hfsq,f,c,s,z,R,u;
-	int k,hx,hu,ax;
+	int32_t k,hx,hu,ax;
 
-	hx = __HI(x);		/* high word of x */
+	GET_HIGH_WORD(hx,x); /* high word of x */
 	ax = hx&0x7fffffff;
 
 	k = 1;
@@ -129,22 +131,22 @@ static double zero = 0.0;
 	if(k!=0) {
 	    if(hx<0x43400000) {
 		u  = 1.0+x; 
-	        hu = __HI(u);		/* high word of u */
+		GET_HIGH_WORD(hu,u); /* high word of u */
 	        k  = (hu>>20)-1023;
 	        c  = (k>0)? 1.0-(u-x):x-(u-1.0);/* correction term */
 		c /= u;
 	    } else {
 		u  = x;
-	        hu = __HI(u);		/* high word of u */
+		GET_HIGH_WORD(hu,u); /* high word of u */
 	        k  = (hu>>20)-1023;
 		c  = 0;
 	    }
 	    hu &= 0x000fffff;
 	    if(hu<0x6a09e) {
-	        __HI(u) = hu|0x3ff00000;	/* normalize u */
+	        SET_HIGH_WORD(u, hu|0x3ff00000);	/* normalize u */
 	    } else {
 	        k += 1; 
-	        __HI(u) = hu|0x3fe00000;	/* normalize u/2 */
+		SET_HIGH_WORD(u, hu|0x3fe00000);	/* normalize u/2 */
 	        hu = (0x00100000-hu)>>2;
 	    }
 	    f = u-1.0;
@@ -163,3 +165,4 @@ static double zero = 0.0;
 	if(k==0) return f-(hfsq-s*(hfsq+R)); else
 		 return k*ln2_hi-((hfsq-(s*(hfsq+R)+(k*ln2_lo+c)))-f);
 }
+#endif /* _DOUBLE_IS_32BITS */  

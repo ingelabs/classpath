@@ -19,6 +19,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 	double copysign(double x, double y)
 #else
@@ -26,6 +28,10 @@
 	double x,y;
 #endif
 {
-	__HI(x) = (__HI(x)&0x7fffffff)|(__HI(y)&0x80000000);
+        uint32_t hx, hy;
+	GET_HIGH_WORD(hx, x);
+	GET_HIGH_WORD(hy, y);
+	SET_HIGH_WORD(x, (hx&0x7fffffff)|(hy&0x80000000));
         return x;
 }
+#endif /* _DOUBLE_IS_32BITS */

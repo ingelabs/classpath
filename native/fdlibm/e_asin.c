@@ -44,6 +44,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static const double 
 #else
@@ -74,11 +76,13 @@ qS4 =  7.70381505559019352791e-02; /* 0x3FB3B8C5, 0xB12E9282 */
 #endif
 {
 	double t,w,p,q,c,r,s;
-	int hx,ix;
-	hx = __HI(x);
+	int32_t hx,ix;
+	GET_HIGH_WORD(hx,x);
 	ix = hx&0x7fffffff;
 	if(ix>= 0x3ff00000) {		/* |x|>= 1 */
-	    if(((ix-0x3ff00000)|__LO(x))==0)
+	    uint32_t lx;
+	    GET_LOW_WORD(lx,x);
+	    if(((ix-0x3ff00000)|lx)==0)
 		    /* asin(1)=+-pi/2 with inexact */
 		return x*pio2_hi+x*pio2_lo;	
 	    return (x-x)/(x-x);		/* asin(|x|>1) is NaN */   
@@ -97,13 +101,13 @@ qS4 =  7.70381505559019352791e-02; /* 0x3FB3B8C5, 0xB12E9282 */
 	t = w*0.5;
 	p = t*(pS0+t*(pS1+t*(pS2+t*(pS3+t*(pS4+t*pS5)))));
 	q = one+t*(qS1+t*(qS2+t*(qS3+t*qS4)));
-	s = sqrt(t);
+	s = __ieee754_sqrt(t);
 	if(ix>=0x3FEF3333) { 	/* if |x| > 0.975 */
 	    w = p/q;
 	    t = pio2_hi-(2.0*(s+s*w)-pio2_lo);
 	} else {
 	    w  = s;
-	    __LO(w) = 0;
+	    SET_LOW_WORD(w,0);
 	    c  = (t-w*w)/(s+w);
 	    r  = p/q;
 	    p  = 2.0*s*r-(pio2_lo-2.0*c);
@@ -112,3 +116,4 @@ qS4 =  7.70381505559019352791e-02; /* 0x3FB3B8C5, 0xB12E9282 */
 	}    
 	if(hx>0) return t; else return -t;    
 }
+#endif /* defined(_DOUBLE_IS_32BITS) */

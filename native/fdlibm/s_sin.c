@@ -44,6 +44,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 	double sin(double x)
 #else
@@ -52,10 +54,10 @@
 #endif
 {
 	double y[2],z=0.0;
-	int n, ix;
+	int32_t n, ix;
 
     /* High word of x. */
-	ix = __HI(x);
+	GET_HIGH_WORD(ix,x);
 
     /* |x| ~< pi/4 */
 	ix &= 0x7fffffff;
@@ -76,3 +78,4 @@
 	    }
 	}
 }
+#endif /* _DOUBLE_IS_32BITS */

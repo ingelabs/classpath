@@ -14,13 +14,15 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 /* cbrt(x)
  * Return cube root of x
  */
 #ifdef __STDC__
-static const unsigned 
+static const uint32_t 
 #else
-static unsigned 
+static uint32_t
 #endif
 	B1 = 715094163, /* B1 = (682-0.03306235651)*2**20 */
 	B2 = 696219795; /* B2 = (664-0.03306235651)*2**20 */
@@ -43,26 +45,30 @@ G =  3.57142857142857150787e-01; /* 5/14      = 0x3FD6DB6D, 0xB6DB6DB7 */
 	double x;
 #endif
 {
-	int	hx;
+	int32_t	hx, lx, ht;
 	double r,s,t=0.0,w;
-	unsigned sign;
+	uint32_t sign;
 
 
-	hx = __HI(x);		/* high word of x */
+	GET_HIGH_WORD(hx,x); /* high word of x */
 	sign=hx&0x80000000; 		/* sign= sign(x) */
 	hx  ^=sign;
 	if(hx>=0x7ff00000) return(x+x); /* cbrt(NaN,INF) is itself */
-	if((hx|__LO(x))==0) 
+	GET_LOW_WORD(lx, x);
+	if((hx|lx)==0) 
 	    return(x);		/* cbrt(0) is itself */
 
-	__HI(x) = hx;	/* x <- |x| */
+	SET_HIGH_WORD(x,hx); /* x <- |x| */
     /* rough cbrt to 5 bits */
 	if(hx<0x00100000) 		/* subnormal number */
-	  {__HI(t)=0x43500000; 		/* set t= 2**54 */
-	   t*=x; __HI(t)=__HI(t)/3+B2;
+	  {
+	    SET_HIGH_WORD(t,0x43500000); 		/* set t= 2**54 */
+	    t*=x; 
+	    GET_HIGH_WORD(ht,t);
+	    SET_HIGH_WORD(t,ht/3+B2);
 	  }
 	else
-	  __HI(t)=hx/3+B1;	
+	  SET_HIGH_WORD(t,hx/3+B1);	
 
 
     /* new cbrt to 23 bits, may be implemented in single precision */
@@ -71,8 +77,9 @@ G =  3.57142857142857150787e-01; /* 5/14      = 0x3FD6DB6D, 0xB6DB6DB7 */
 	t*=G+F/(s+E+D/s);	
 
     /* chopped to 20 bits and make it larger than cbrt(x) */ 
-	__LO(t)=0; __HI(t)+=0x00000001;
-
+	SET_LOW_WORD(t,0);
+	GET_HIGH_WORD(ht,t);
+	SET_HIGH_WORD(t,ht + 0x00000001);
 
     /* one step newton iteration to 53 bits with error less than 0.667 ulps */
 	s=t*t;		/* t*t is exact */
@@ -82,6 +89,8 @@ G =  3.57142857142857150787e-01; /* 5/14      = 0x3FD6DB6D, 0xB6DB6DB7 */
 	t=t+t*r;
 
     /* retore the sign bit */
-	__HI(t) |= sign;
+	GET_HIGH_WORD(ht,t);
+	SET_HIGH_WORD(t,ht|sign);
 	return(t);
 }
+#endif /* _DOUBLE_IS_32BITS */

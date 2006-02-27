@@ -37,6 +37,8 @@
 
 #include "fdlibm.h"
 
+#ifndef _DOUBLE_IS_32BITS
+
 #ifdef __STDC__
 static const double one=1.0, two=2.0, tiny = 1.0e-300;
 #else
@@ -51,10 +53,10 @@ static double one=1.0, two=2.0, tiny = 1.0e-300;
 #endif
 {
 	double t,z;
-	int jx,ix;
+	int32_t jx,ix;
 
     /* High word of |x|. */
-	jx = __HI(x);
+	GET_HIGH_WORD(jx,x);
 	ix = jx&0x7fffffff;
 
     /* x is INF or NaN */
@@ -80,3 +82,4 @@ static double one=1.0, two=2.0, tiny = 1.0e-300;
 	}
 	return (jx>=0)? z: -z;
 }
+#endif /* _DOUBLE_IS_32BITS */  
