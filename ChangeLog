@@ -1,5 +1,12 @@
 2006-02-27  David Daney  <ddaney@avtrex.com>
 
+	PR classpath/25851
+	* gnu/java/net/protocol/http/HTTPURLConnection.java (imports) Cleaned
+	up.
+	(getRequestProperties): Rewrote.
+
+2006-02-27  David Daney  <ddaney@avtrex.com>
+
 	PR classpath/26312
 	* gnu/java/net/protocol/http/ChunkedInputStream.java (imports): Cleaned
 	up.

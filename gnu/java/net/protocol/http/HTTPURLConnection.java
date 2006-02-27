@@ -48,8 +48,10 @@ import java.io.OutputStream;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -420,7 +422,21 @@ public class HTTPURLConnection
     if (connected)
       throw new IllegalStateException("Already connected");
     
-    return requestHeaders;
+    HashMap m = new HashMap(requestHeaders);
+    Iterator it = m.entrySet().iterator();
+    while (it.hasNext())
+      {
+        Map.Entry e = (Map.Entry)it.next();
+        String s = (String)e.getValue();
+        String sa[] = s.split(",");
+        ArrayList l = new ArrayList(sa.length);
+        for (int i = 0; i < sa.length; i++)
+          {
+            l.add(sa[i].trim());
+          }
+        e.setValue(Collections.unmodifiableList(l));
+      }
+    return Collections.unmodifiableMap(m);
   }
 
   public void setRequestProperty(String key, String value)
