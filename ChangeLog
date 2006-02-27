@@ -1,3 +1,10 @@
+2006-02-27  David Daney  <ddaney@avtrex.com>
+
+	* gnu/java/net/protocol/http/HTTPURLConnection.java
+	(imports): Cleaned up.
+	(GetHTTPPropertiesAction): Removed, and moved contents to ...
+	(constructor): ... Here, using SystemProperties instead of System.
+	
 2006-02-27  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java

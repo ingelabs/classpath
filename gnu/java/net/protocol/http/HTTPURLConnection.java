@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.net.protocol.http;
 
+import gnu.classpath.SystemProperties;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,8 +47,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.security.cert.Certificate;
 import java.util.Collections;
 import java.util.Date;
@@ -101,35 +101,23 @@ public class HTTPURLConnection
   {
     super(url);
     requestHeaders = new Headers();
-    AccessController.doPrivileged(this.new GetHTTPPropertiesAction());
-  }
-
-  class GetHTTPPropertiesAction
-    implements PrivilegedAction
-  {
-
-    public Object run()
-    {
-      proxyHostname = System.getProperty("http.proxyHost");
-      if (proxyHostname != null && proxyHostname.length() > 0)
-        {
-          String port = System.getProperty("http.proxyPort");
-          if (port != null && port.length() > 0)
-            {
-              proxyPort = Integer.parseInt(port);
-            }
-          else
-            {
-              proxyHostname = null;
-              proxyPort = -1;
-            }
-        }
-      agent = System.getProperty("http.agent");
-      String ka = System.getProperty("http.keepAlive");
-      keepAlive = !(ka != null && "false".equals(ka));
-      return null;
-    }
-
+    proxyHostname = SystemProperties.getProperty("http.proxyHost");
+    if (proxyHostname != null && proxyHostname.length() > 0)
+      {
+        String port = SystemProperties.getProperty("http.proxyPort");
+        if (port != null && port.length() > 0)
+          {
+            proxyPort = Integer.parseInt(port);
+          }
+        else
+          {
+            proxyHostname = null;
+            proxyPort = -1;
+          }
+      }
+    agent = SystemProperties.getProperty("http.agent");
+    String ka = SystemProperties.getProperty("http.keepAlive");
+    keepAlive = !(ka != null && "false".equals(ka));
   }
 
   public void connect()
