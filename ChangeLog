@@ -1,5 +1,13 @@
 2006-02-28  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/ViewportLayout.java
+	(layoutContainer): Should not extend container to be 
+	minimum size. Mauve test shows that the preferred size
+	and the size of the viewport can be set smaller than
+	the minimum.
+
+2006-02-28  Lillian Angel  <langel@redhat.com>
+
 	PR classpath/25675
 	* javax/swing/JList.java
 	(getPreferredScrollableViewportSize): Added a check to determine

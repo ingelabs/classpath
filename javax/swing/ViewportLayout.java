@@ -193,18 +193,6 @@ public class ViewportLayout implements LayoutManager, Serializable
     if (overextension > 0)
       portBounds.x -= overextension;
 
-    // If the calculated view size was smaller than the minimum size,
-    // extend till the minimum size.
-    if (viewPref.height<viewMinimum.height)
-      {
-        viewPref.height = viewMinimum.height;
-      }
-    
-    if (viewPref.width<viewMinimum.width)
-      {
-        viewPref.width = viewMinimum.width;
-      }
-
     port.setViewSize(viewPref);
     port.setViewPosition(portBounds.getLocation());
   }
