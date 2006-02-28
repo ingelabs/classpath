@@ -1793,8 +1793,17 @@ public class JList extends JComponent implements Accessible, Scrollable
     //If the layout orientation is not VERTICAL, then this will 
     //return the value from getPreferredSize. The current ListUI is 
     //expected to override getPreferredSize to return an appropriate value.
-    if (getLayoutOrientation() != VERTICAL)
-      return getPreferredSize();        
+    int orient = getLayoutOrientation();
+    Dimension pref = getPreferredSize();
+    if (orient == VERTICAL_WRAP)
+      {
+        if (fixedCellWidth == -1)
+          return new Dimension(getCellBounds(0, 0).width * 3, pref.height);
+        else
+          return new Dimension(fixedCellWidth, pref.height);
+      }
+    if (orient != VERTICAL)
+      return pref;        
 
     int size = getModel().getSize();
     

@@ -1,5 +1,13 @@
 2006-02-28  Lillian Angel  <langel@redhat.com>
 
+	PR classpath/25675
+	* javax/swing/JList.java
+	(getPreferredScrollableViewportSize): Added a check to determine
+	if orientation is VERTICAL_WRAP. If it is, we should only 
+	show 3 columns. 
+
+2006-02-28  Lillian Angel  <langel@redhat.com>
+
 	PR classpath/26003
 	* javax/swing/ViewportLayout.java:
 	Patch submitted by Audrius Meskauskas
