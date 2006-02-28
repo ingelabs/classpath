@@ -1,3 +1,21 @@
+2006-02-28  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/BranchElement.java
+	(startOffset): New field.
+	(endOffset): New field.
+	(BranchElement): Initialize new fields.
+	(getEndOffset): Rewritten to possibly return cached values
+	if element has no children.
+	(getStartOffset): Rewritten to possibly return cached values
+	if element has no children.
+	* javax/swing/text/LeafElement.java
+	(startDelta): New field.
+	(endDelta): New field.
+	(LeafElement): Handle possible delta of start/endOffset when
+	these parameters lie outside the document range.
+	(getStartOffset): Handle possible startDelta.
+	(getEndOffset): Handle possible startDelta.
+
 2006-02-28  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* NEWS: Added line about Unicode 4.0.0 support.
