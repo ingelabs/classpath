@@ -656,7 +656,7 @@
 
 2006-02-22  Robert Schuster  <robertschuster@fsfe.org>
 
-        * javax/swing/text/PlainDocument.java:
+        * javax/swing/text/PlainView.java:
         (getPreferredSpan): Added missing 'break'.
         statement which corrects an unwanted fall through.
         (updateDamage): Update maxLineLength correctly when text is
