@@ -67,6 +67,7 @@ public class GtkFileDialogPeer extends GtkDialogPeer implements FileDialogPeer
 
     FileDialog fd = (FileDialog) awtComponent;
     
+    nativeSetDirectory(System.getProperty("user.dir"));
     setDirectory(fd.getDirectory());
     setFile(fd.getFile());
 
@@ -139,13 +140,11 @@ public class GtkFileDialogPeer extends GtkDialogPeer implements FileDialogPeer
     // GtkFileChooser requires absolute directory names. If the given directory
     // name is not absolute, construct it based on current directory if it is not
     // null. Otherwise, use FS.
+    currentDirectory = directory;
     if (directory.indexOf(FS) == 0)
       nativeSetDirectory(directory);
-    else if (currentDirectory == null)
-      nativeSetDirectory(FS + directory);
     else
       nativeSetDirectory(nativeGetDirectory() + FS + directory);
-    currentDirectory = directory;
   }
 
   public void setFilenameFilter (FilenameFilter filter)

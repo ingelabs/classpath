@@ -1,3 +1,9 @@
+2006-02-28  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
+	(create): Initially set the directory to the current working directory.
+	(setDirectory): Removed else-if. No need for this check.
+
 2006-02-28  Tom Tromey  <tromey@redhat.com>
 
 	* .project: Run java builder before header generation.
