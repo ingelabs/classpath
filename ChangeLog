@@ -1,3 +1,14 @@
+2006-02-28  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(getPreferredSize): Fixed add a fixed space between the buttons
+	instead of something related to min/max.
+	(installComponents): Create and install buttons here.
+	(installDefaults): Don't create buttons here.
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	(getMinimumThumbSize): Return (0,0) when UI is not yet installed.
+	(getPreferredSize): New method.
+
 2006-02-28  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java
