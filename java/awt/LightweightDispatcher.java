@@ -40,8 +40,8 @@ package java.awt;
 
 import gnu.java.awt.AWTUtilities;
 
-import java.awt.event.AWTEventListener;
 import java.awt.event.MouseEvent;
+import java.util.WeakHashMap;
 
 /**
  * Redispatches mouse events to lightweight components. The native peers know
@@ -52,8 +52,14 @@ import java.awt.event.MouseEvent;
  * @author Roman Kennke (kennke@aicas.com)
  */
 class LightweightDispatcher
-  implements AWTEventListener
 {
+
+  /**
+   * Maps thread groups to lightweight dispatcher instances. We need to
+   * have one instance per thread group so that 2 or more applets or otherwise
+   * separated applications (like in OSGI) do not interfer with each other.
+   */
+  private static WeakHashMap instances = new WeakHashMap();
 
   /**
    * The component that is the start of a mouse dragging. All MOUSE_DRAGGED
@@ -69,17 +75,49 @@ class LightweightDispatcher
   private Component lastTarget;
 
   /**
+   * Returns an instance of LightweightDispatcher for the current thread's
+   * thread group.
+   *
+   * @return an instance of LightweightDispatcher for the current thread's
+   *         thread group
+   */
+  static LightweightDispatcher getInstance()
+  {
+    Thread t = Thread.currentThread();
+    ThreadGroup tg = t.getThreadGroup();
+    LightweightDispatcher instance = (LightweightDispatcher) instances.get(tg);
+    if (instance == null)
+      {
+        instance = new LightweightDispatcher();
+        instances.put(tg, instance);
+      }
+    return instance;
+  }
+
+  /**
+   * Creates a new LightweightDispatcher. This is private to prevent access
+   * from outside. Use {@link #getInstance()} instead.
+   */
+  private LightweightDispatcher()
+  {
+    // Nothing to do here.
+  }
+  
+  /**
    * Receives notification if a mouse event passes along the eventqueue.
    *
    * @param event the event
    */
-  public void eventDispatched(AWTEvent event)
+  public boolean dispatchEvent(AWTEvent event)
   {
+    boolean dispatched = false;
     if (event instanceof MouseEvent && event.getSource() instanceof Window)
       {
         MouseEvent mouseEvent = (MouseEvent) event;
         handleMouseEvent(mouseEvent);
+        dispatched = true;
       }
+    return dispatched;
   }
 
   /**
@@ -116,8 +154,6 @@ class LightweightDispatcher
                              ev.isPopupTrigger());
             target.dispatchEvent(mouseEntered);
           }
-        lastTarget = target;
-
         
         switch (ev.getID())
         {
@@ -129,6 +165,14 @@ class LightweightDispatcher
               target = dragTarget;
             dragTarget = null;
             break;
+          case MouseEvent.MOUSE_CLICKED:
+            // When we receive a MOUSE_CLICKED, we set the target to the
+            // previous target, which must have been a MOUSE_RELEASED event.
+            // This is necessary for the case when the MOUSE_RELEASED has
+            // caused the original target (like an internal component) go
+            // away.
+            target = lastTarget;
+            break;
           case MouseEvent.MOUSE_DRAGGED:
             target = dragTarget;
             break;
@@ -136,6 +180,8 @@ class LightweightDispatcher
             // Do nothing in other cases.
             break;
         }
+
+        lastTarget = target;
 
         Point targetCoordinates =
           AWTUtilities.convertPoint(window, ev.getX(), ev.getY(), target);

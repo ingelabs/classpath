@@ -128,11 +128,7 @@ public abstract class Toolkit
    */
   public Toolkit()
   {
-    awtEventListeners = new AWTEventListenerProxy[1];
-    awtEventListeners[0] =
-      new AWTEventListenerProxy(AWTEvent.MOUSE_EVENT_MASK
-                                | AWTEvent.MOUSE_MOTION_EVENT_MASK,
-                                new LightweightDispatcher());
+    awtEventListeners = new AWTEventListenerProxy[0];
   }
 
   /**
@@ -1184,6 +1180,26 @@ public abstract class Toolkit
       }
 
     return (AWTEventListener[] ) l.toArray(new AWTEventListener[l.size()]);
+  }
+
+
+  /**
+   * Dispatches events to listeners registered to this Toolkit. This is called
+   * by {@link Component#dispatchEventImpl(AWTEvent)} in order to dispatch
+   * events globally.
+   *
+   * @param ev the event to dispatch
+   */
+  void globalDispatchEvent(AWTEvent ev)
+  {
+    // We do not use the accessor methods here because they create new
+    // arrays each time. We must be very efficient, so we access this directly.
+    for (int i = 0; i < awtEventListeners.length; ++i)
+      {
+        AWTEventListenerProxy proxy = awtEventListeners[i];
+        if ((proxy.getEventMask() & AWTEvent.eventIdToMask(ev.getID())) != 0)
+          proxy.eventDispatched(ev);
+      }
   }
 
   /**

@@ -1711,13 +1711,18 @@ public class Container extends Component
 
   void dispatchEventImpl(AWTEvent e)
   {
-    if ((e.id <= ContainerEvent.CONTAINER_LAST
-             && e.id >= ContainerEvent.CONTAINER_FIRST)
-        && (containerListener != null
-            || (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0))
-      processEvent(e);
-    else
-      super.dispatchEventImpl(e);
+    boolean dispatched =
+      LightweightDispatcher.getInstance().dispatchEvent(e);
+    if (! dispatched)
+      {
+        if ((e.id <= ContainerEvent.CONTAINER_LAST
+            && e.id >= ContainerEvent.CONTAINER_FIRST)
+            && (containerListener != null
+                || (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0))
+          processEvent(e);
+        else
+          super.dispatchEventImpl(e);
+      }
   }
 
   /**

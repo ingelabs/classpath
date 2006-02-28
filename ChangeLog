@@ -1,3 +1,29 @@
+2006-02-28  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(dispatchEventImpl): Let the Toolkit dispatch global events.
+	* java/awt/Container.java
+	(dispatchEventImpl): Let the LightweightDispatcher handle events
+	first.
+	* java/awt/EventQueue.java
+	(dispatchEvent): Don't do the global event dispatching here. This
+	is moved to the Component.
+	(globalDispatchEvent): Moved this method to Toolkit.
+	* java/awt/LightweightDispatcher.java
+	(instances): New field.
+	(getInstance): New method. Delivers an instance of
+	LightweightDispatcher.
+	(LightweightDispatcher): Made default constructor private.
+	(dispatchEvent): New method. Replaces the eventDispatched method.
+	This now returns true when the event was actually dispatched.
+	(eventDispatched): Replaced by dispatchEvent.
+	(handleMouseEvent): Send MOUSE_CLICKED to the same component that
+	received the last MOUSE_RELEASED.
+	* java/awt/Toolkit.java
+	(Toolkit): Don't register LightweightDispatcher as global event
+	handler.
+	(globalDispatchEvent): Moved here from EventQueue.
+
 2006-02-27  David Daney  <ddaney@avtrex.com>
 
 	PR classpath/25851
