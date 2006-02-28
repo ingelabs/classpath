@@ -1,3 +1,7 @@
+2006-02-28  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/ServiceUIFactory.java: Added documentation to class.
+
 2006-02-28  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	PR classpath/26434
