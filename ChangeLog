@@ -1,5 +1,9 @@
 2006-03-01  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/classpath/debug/Simple1LineFormatter.java: New file.
+
+2006-03-01  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/java/security/sig/rsa/RSAPKCS1V1_5SignatureX509Codec.java:
 	Amended class documentation.
 	(encodeSignature): Emit the ASN.1 raw bytes not the DER-encoded BIT
