@@ -1,3 +1,11 @@
+2006-02-28  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	PR classpath/26434
+	* javax/swing/DefaultListSelectionModel.java:
+	(addSelectionInterval): Return early if either of the arguments is -1.
+	(removeSelectionInterval): Likewise.
+	(setSelectionInterval): Likewise.
+
 2006-02-28  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/DefaultFormatter.java
