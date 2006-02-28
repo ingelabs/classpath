@@ -1,3 +1,15 @@
+2006-02-28  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkMenuBar): Removed 'Toggles', 'Checkbox' and 'Radio' actions, 
+	connected 'Spinner' action to SpinnerDemo, 
+	(mkCheckbox): Removed,
+	(mkRadio): Likewise,
+	(mkSpinner): Likewise,
+	(mkToggle): Likewise,
+	(mkButtonBar): Removed 'Toggles', 'Checkbox' and 'Radio' actions,
+	connected 'Spinner' action to SpinnerDemo.
+
 2006-02-28  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/print/ServiceUIFactory.java: Added documentation to class.
