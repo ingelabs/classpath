@@ -7,6 +7,8 @@ New in release 0.21 (to be released)
   `java.security.' `javax.crypto,' and `javax.net.ssl' packages, and
   are service providers implementing the underlying algorithms.
  
+* Unicode 4.0.0 is supported.
+
 * The new folder tools includes GIOP and RMI stub and tie source code
   generators, IOR parser and both transient and persistent GIOP naming services. 
 

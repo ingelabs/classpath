@@ -1,3 +1,7 @@
+2006-02-28  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* NEWS: Added line about Unicode 4.0.0 support.
+
 2006-02-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/SwingUtilities.java
