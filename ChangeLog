@@ -1,3 +1,15 @@
+2006-02-28  Lillian Angel  <langel@redhat.com>
+
+	PR classpath/26003
+	* javax/swing/ViewportLayout.java:
+	Patch submitted by Audrius Meskauskas
+	(addLayoutComponent): Added documentation.
+	(removeLayoutComponent): Likewise.
+	(preferredLayoutSize): Likewise.
+	(minimumLayoutSize): Likewise.
+	(layoutContainer): Fixed code, so view is set
+	to the right position when inside a scrollpane.	
+
 2006-02-28  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/math/BigInteger.java:
