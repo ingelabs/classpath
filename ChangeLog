@@ -1,3 +1,35 @@
+2006-02-28  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/util/prefs/MemoryBasedPreferences.java (childrenNamesSpi):
+	Javadoc fix.
+	* gnu/java/util/prefs/EventDispatcher.java: New file.
+	* gnu/java/util/prefs/NodeWriter.java (NodeWriter): Removed.
+	(NodeWriter): Specify UTF-8.
+	(writeHeader): Emit DOCTYPE.
+	* java/util/prefs/Preferences.java (getFactory): Add cause to
+	exception.
+	(exportNode): Documented.
+	(exportSubtree): Likewise.
+	(importPreferences): Likewise.
+	* java/util/prefs/NodeChangeEvent.java (readObject): New method.
+	(writeObject): Likewise.
+	* java/util/prefs/PreferenceChangeEvent.java (readObject): New method.
+	(writeObject): Likewise.
+	* java/util/prefs/AbstractPreferences.java (putBoolean): Use 1.4 code.
+	(nodeListeners): New field.
+	(preferenceListeners): Likewise.
+	(addNodeChangeListener): Implemented.
+	(addPreferenceChangeListener): Likewise.
+	(removeNodeChangeListener): Likewise.
+	(removePreferenceChangeListener): Likewise.
+	(fire): New methods.
+	(put): Fire event.
+	(remove): Likewise.
+	(purge): Likewise.  Fixed synchronization.
+	(removeNode): Fixed synchronization.
+	(getNode): Fire event.
+	(flushNode): Fixed synchronization.
+
 2006-02-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/BranchElement.java
