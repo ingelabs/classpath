@@ -1,3 +1,20 @@
+2006-03-01  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/sig/rsa/RSAPKCS1V1_5SignatureX509Codec.java:
+	Amended class documentation.
+	(encodeSignature): Emit the ASN.1 raw bytes not the DER-encoded BIT
+	STRING.
+	(decodeSignature): Parse the ASN.1 raw bytes of a BIT STRING and not
+	a BIT STRING construct.
+	* gnu/java/security/sig/dss/DSSSignatureX509Codec.java: Amended class
+	documentation.
+	(encodeSignature): Emit the ASN.1 raw bytes not the DER-encoded BIT
+	STRING.
+	(decodeSignature): Parse the ASN.1 raw bytes of a BIT STRING and not
+	a BIT STRING construct.
+	* gnu/java/security/jce/sig/SignatureAdapter.java (log): New field.
+	(engineVerify): Added logging.
+
 2006-02-28  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java
