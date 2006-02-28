@@ -1,3 +1,14 @@
+2006-02-28  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/math/BigInteger.java:
+	Committed patch by Rafael: 
+	developer.classpath.org/pipermail/classpath-patches/
+	2006-February/000473.html
+	(signum): Return early 0 if words == null and ival == 0.
+	(readObject): Handle special case of magnitude.length or signum being
+	0.
+	(writeObject): If signum is zero return a zero-sized byte[].
+
 2006-02-28  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
