@@ -1,3 +1,12 @@
+2006-02-28  Roman Kennke  <kennke@aicas.com>
+
+	PR classpath/25675
+	* javax/swing/JList.java
+	(getPreferredScrollableViewportSize): Restored specified behaviour.
+	* javax/swing/plaf/metal/MetalFileChooserUI.java
+	(createList): Set filelist panel's preferredSize, so that it doesn't
+	get size into infinity for big lists.
+
 2006-02-28  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/ViewportLayout.java
