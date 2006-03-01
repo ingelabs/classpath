@@ -1,3 +1,10 @@
+2006-03-01  Lillian Angel  <langel@redhat.com>
+
+	* javax/imageio/ImageWriteParam.java: 
+	Added documentation for fields.
+	* javax/imageio/plugins/bmp/BMPImageWriteParam.java:
+	New class implemented.
+
 2006-03-01  Tom Tromey  <tromey@redhat.com>
 
 	* NEWS: Mention java.util.prefs update.
