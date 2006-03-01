@@ -1,5 +1,9 @@
 2006-03-01  Tom Tromey  <tromey@redhat.com>
 
+	* NEWS: Mention java.util.prefs update.
+
+2006-03-01  Tom Tromey  <tromey@redhat.com>
+
 	* gnu/java/nio/channels/FileChannelImpl.java (position): Fixed typo.
 	* java/nio/charset/UnmappableCharacterException.java:
 	(serialVersionUID): New field.

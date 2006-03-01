@@ -21,6 +21,9 @@ New in release 0.21 (to be released)
   classes. The rmic compiler is no longer required (unless for research
   and specific stubs).
 
+* The default back end for java.util.prefs has been changed.  The new default
+  is capable of saving and restoring preferences to and from the file system.
+
 Runtime interface changes:
 
 * A new class, VMMath, is now available which separates the native
