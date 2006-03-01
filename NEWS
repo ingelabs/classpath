@@ -24,6 +24,8 @@ New in release 0.21 (to be released)
 * The default back end for java.util.prefs has been changed.  The new default
   is capable of saving and restoring preferences to and from the file system.
 
+* javax.imageio.plugins.bmp implementation.
+
 Runtime interface changes:
 
 * A new class, VMMath, is now available which separates the native

@@ -1,5 +1,9 @@
 2006-03-01  Lillian Angel  <langel@redhat.com>
 
+	* NEWS: javax.imageio.plugins.bmp implementation.
+
+2006-03-01  Lillian Angel  <langel@redhat.com>
+
 	* javax/imageio/ImageWriteParam.java: 
 	Added documentation for fields.
 	* javax/imageio/plugins/bmp/BMPImageWriteParam.java:
