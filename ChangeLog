@@ -1,3 +1,20 @@
+2006-03-01  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/prefs/Preferences.java (defaultFactoryClass): Use
+	FileBasedFactory.
+	* gnu/java/util/prefs/FileBasedPreferences.java: New file.
+	* java/util/prefs/AbstractPreferences.java (removeSpi): Typo fix.
+	(clear): Likewise.
+	(putSpi): Likewise.
+	(newNode): Likewise.
+	(node): Likewise.
+	* gnu/java/util/prefs/MemoryBasedFactory.java: Typo fix.
+	* gnu/java/util/prefs/FileBasedFactory.java (systemPreferences): New
+	field.
+	(systemRoot): Use it.
+	(userPreferences): New field.
+	(userRoot): Use it.
+
 2006-03-01  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/util/ResourceBundle.java

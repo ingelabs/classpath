@@ -70,7 +70,7 @@ public abstract class AbstractPreferences extends Preferences {
     /**
      * Set to true in the contructor if the node did not exist in the backing
      * store when this preference node object was created. Should be set in
-     * the contructor of a subclass. Defaults to false. Used to fire node
+     * the constructor of a subclass. Defaults to false. Used to fire node
      * changed events.
      */
     protected boolean newNode = false;
@@ -268,7 +268,7 @@ public abstract class AbstractPreferences extends Preferences {
      * @exception IllegalArgumentException if the path contains two or more
      * consecutive '/' characters, ends with a '/' charactor and is not the
      * string "/" (indicating the root node) or any name on the path is more
-     * then 80 characters long
+     * than 80 characters long
      */
     public Preferences node(String path) {
         synchronized(lock) {
@@ -973,7 +973,7 @@ public abstract class AbstractPreferences extends Preferences {
      * Removes all entries from this preferences node. May need access to the
      * backing store to get and clear all entries.
      * <p>
-     * The result will be immediatly visible in this VM, but may not be
+     * The result will be immediately visible in this VM, but may not be
      * immediatly written to the backing store.
      * <p>
      * This implementation locks this node, checks that the node has not been
@@ -1326,7 +1326,7 @@ public abstract class AbstractPreferences extends Preferences {
     /**
      * Sets the value of the given preferences entry for this node.
      * The implementation is not required to propagate the change to the
-     * backing store immediatly. It may not throw an exception when it tries
+     * backing store immediately. It may not throw an exception when it tries
      * to write to the backing store and that operation fails, the failure
      * should be registered so a later invocation of <code>flush()</code>
      * or <code>sync()</code> can signal the failure.
@@ -1339,7 +1339,7 @@ public abstract class AbstractPreferences extends Preferences {
     /**
      * Removes the given key entry from this preferences node.
      * The implementation is not required to propagate the change to the
-     * backing store immediatly.  It may not throw an exception when it tries
+     * backing store immediately.  It may not throw an exception when it tries
      * to write to the backing store and that operation fails, the failure
      * should be registered so a later invocation of <code>flush()</code>
      * or <code>sync()</code> can signal the failure.

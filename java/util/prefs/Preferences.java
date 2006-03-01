@@ -90,12 +90,9 @@ public abstract class Preferences {
     /**
      * Default PreferencesFactory class used when the system property
      * "java.util.prefs.PreferencesFactory" is not set.
-	 * <p>
-	 * XXX - Currently set to MemoryBasedFactory, should be changed
-	 * when FileBasedPreferences backend works.
      */
     private static final String defaultFactoryClass
-        = "gnu.java.util.prefs.MemoryBasedFactory";
+        = "gnu.java.util.prefs.FileBasedFactory";
 
     /** Permission needed to access system or user root. */
     private static final Permission prefsPermission
