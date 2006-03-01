@@ -693,7 +693,10 @@ public class DefaultCaret extends Rectangle
     if (comp == null)
       return;
 
-    int dot = getDot();
+    // Make sure the dot has a sane position.
+    dot = Math.min(dot, textComponent.getDocument().getLength());
+    dot = Math.max(dot, 0);
+
     Rectangle rect = null;
 
     try
@@ -702,10 +705,10 @@ public class DefaultCaret extends Rectangle
       }
     catch (BadLocationException e)
       {
-        AssertionError ae;
-	ae = new AssertionError("Unexpected bad caret location: " + dot);
-	ae.initCause(e);
-        throw ae;
+    	AssertionError ae;
+    	ae = new AssertionError("Unexpected bad caret location: " + dot);
+    	ae.initCause(e);
+    	throw ae;
       }
 
     if (rect == null)

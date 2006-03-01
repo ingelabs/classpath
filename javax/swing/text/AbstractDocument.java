@@ -2096,13 +2096,13 @@ public abstract class AbstractDocument implements Document, Serializable
                        int end)
     {
       super(parent, attributes);
+      int len = content.length();
       startDelta = 0;
-      if (start > getLength())
-        startDelta = start - getLength();
+      if (start > len)
+        startDelta = start - len;
       endDelta = 0;
-      if (end > getLength())
-        endDelta = end - getLength();
-
+      if (end > len)
+        endDelta = end - len;
       try
 	    {
 		  startPos = createPosition(start - startDelta);

@@ -1,3 +1,37 @@
+2006-03-01  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/AbstractDocument.java
+	(LeafElement.LeafElement): Handle delta with respect to content
+	length not document length.
+	* javax/swing/text/CompositeView.java
+	(getViewIndex): Handle bias correctly.
+	* javax/swing/text/DefaultCaret.java
+	(paint): Align caret position to document bounds to avoid trouble
+	when removing large portions of content.
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.insertFirstContentTag): Use pos instead of offset.
+	(ElementBuffer.createFracture): Copy old childs attribute. The
+	ElementSpec usually doesn't carry attribute information.
+	Use pos instead of offset.
+	(ElementBuffer.insertFracture): Use pos instead of offset.
+	(createDefaultRootElement): Don't use create* and instead directly
+	instantiate the elements.
+	(handleInsertAfterNewline): Compare the paragraphs startOffset
+	rather than previous paragraphs endOffset.
+	* javax/swing/text/JTextComponent.java
+	(getScrollableTracksViewportWidth): Remove unnecessary cast to
+	JViewport.
+	(getScrollableTracksViewportHeight): Remove unnecessary cast to
+	JViewport.
+	* javax/swing/text/PlainView.java
+	(damageLineRange): Avoid creating new Rectangle by using
+	SwingUtilities.
+	* javax/swing/text/View.java
+	(forwardUpdate): Correct the use of bias.
+	(modelToView): Avoid new Rectangles by using SwingUtilities.
+	(dump): Made (temprorarily) protected for use in BasicTextUI.
+	(dump(int)): Dump out the element of the view.
+
 2006-03-01  Lillian Angel  <langel@redhat.com>
 
 	* NEWS: javax.imageio.plugins.bmp implementation.
