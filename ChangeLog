@@ -1,3 +1,10 @@
+2006-03-02  Lillian Angel <langel@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkMenuPeer_delItem): Changed to 
+	use the submenu to get the list of children. This now works
+	in the same way as addItem.
+
 2006-03-02  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/lang/StringBuilder.java:
