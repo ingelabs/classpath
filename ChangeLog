@@ -1,5 +1,30 @@
 2006-03-01  Tom Tromey  <tromey@redhat.com>
 
+	* vm/reference/java/net/VMNetworkInterface.java: Organized imports.
+	* vm/reference/java/net/VMInetAddress.java: Organized imports.
+	* vm/reference/java/lang/reflect/VMProxy.java (getProxyClass): Added
+	imports for javadoc.
+	(getProxyClass): Javadoc fixes.
+	(getProxyData): Likewise.
+	(generateProxyClass): Likewise.
+	* vm/reference/java/lang/VMSystem.java (setIn): Javadoc fix.
+	(setOut): Likewise.
+	(setErr): Likewise.
+	* vm/reference/java/lang/VMProcess.java: Javadoc fixes.
+	* vm/reference/java/lang/VMClassLoader.java (getResources): Javadoc
+	fix.
+	* vm/reference/java/lang/VMClass.java (getComponentType): Import for
+	javadoc.
+	(getModifiers): Likewise.
+	(getDeclaredClasses): Javadoc fix.
+	(getDeclaredFields): Likewise.
+	(getDeclaredMethods): Likewise.
+	(getDeclaredConstructors): Likewise.
+	* vm/reference/gnu/classpath/VMSystemProperties.java (preInit):
+	Javadoc fix.
+
+2006-03-01  Tom Tromey  <tromey@redhat.com>
+
 	* gnu/java/net/protocol/http/ResponseHeaderHandler.java: Javadoc fix.
 	* gnu/java/net/protocol/http/HTTPConnection.java: Organized imports.
 	(getVersion): Javadoc fix.
