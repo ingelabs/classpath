@@ -1,3 +1,11 @@
+2006-03-02  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/lang/StringBuilder.java:
+	(codePointAt): New method.
+	(codePointBefore): Likewise.
+	(codePointCount): Likewise.
+	(trimToSize): Likewise.
+
 2006-03-02  Tom Tromey  <tromey@redhat.com>
 
 	* java/rmi/server/RMIClassLoader.java (getProviderInstance): Wrote.
