@@ -1,3 +1,12 @@
+2006-03-01  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/net/protocol/http/ResponseHeaderHandler.java: Javadoc fix.
+	* gnu/java/net/protocol/http/HTTPConnection.java: Organized imports.
+	(getVersion): Javadoc fix.
+	(get): Likewise.
+	* gnu/java/net/protocol/http/Headers.java: Organized imports.
+	* gnu/java/net/protocol/ftp/FTPURLConnection.java: Organized imports.
+
 2006-03-01  David Daney  <ddaney@avtrex.com>
 
 	* java/net/URL.java (URL(URL, String, URLStreamHandler)): Treat spec
