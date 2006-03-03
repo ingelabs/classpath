@@ -1,3 +1,13 @@
+2006-03-03  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (GtkComponentPeer):
+	Always call setParentAndBounds().
+	(setComponentBounds): Always call setBounds().
+	(setBounds): Call setVisible().
+	(setVisible): If no pixels are showing then don't make it visible.
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java (endValidate): No need
+	to call setParentAndBounds() anymore.
+
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JInternalFrame.java

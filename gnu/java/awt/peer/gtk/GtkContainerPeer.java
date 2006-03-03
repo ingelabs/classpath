@@ -65,32 +65,6 @@ public class GtkContainerPeer extends GtkComponentPeer
 
   public void endValidate ()
   {
-    Component parent = awtComponent.getParent ();
-
-    // We only set our parent on the GTK side if our parent on the AWT
-    // side is not showing in the constuctor.  Otherwise the gtk peer will
-    // be shown  before we've had a chance to position and size it properly.
-    // So we set it here at the end of validation.
-    if ((parent != null && parent.isShowing())
-	|| (awtComponent instanceof Window
-	    && ((Window) awtComponent).isShowing()))
-      {
-        Component[] components = ((Container) awtComponent).getComponents ();
-        int ncomponents = components.length;
-
-        for (int i = 0; i < ncomponents; i++)
-          {
-            ComponentPeer peer = components[i].getPeer ();
-
-            // Skip lightweight peers.
-            if (peer instanceof GtkComponentPeer)
-              ((GtkComponentPeer) peer).setParentAndBounds ();
-          }
-
-        // GTK windows don't have parents.
-        if (!(awtComponent instanceof Window))
-          setParentAndBounds ();
-      }
   }
 
   public Insets getInsets() 

@@ -145,12 +145,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
     Component parent = awtComponent.getParent ();
 
-    // Only set our parent on the GTK side if our parent on the AWT
-    // side is not showing.  Otherwise the gtk peer will be shown
-    // before we've had a chance to position and size it properly.
-    if (awtComponent instanceof Window
-        || (parent != null && ! parent.isShowing ()))
-      setParentAndBounds ();
+    setParentAndBounds ();
 
     setNativeEventMask ();
 
@@ -201,11 +196,6 @@ public class GtkComponentPeer extends GtkGenericPeer
   void setComponentBounds ()
   {
     Rectangle bounds = awtComponent.getBounds ();
-
-    if (bounds.x == 0 && bounds.y == 0
-        && bounds.width == 0 && bounds.height == 0)
-      return;
-
     setBounds (bounds.x, bounds.y, bounds.width, bounds.height);
   }
 
@@ -487,6 +477,10 @@ public class GtkComponentPeer extends GtkGenericPeer
       }
 
     setNativeBounds (new_x, new_y, width, height);
+
+    // If the height or width were (or are now) smaller than zero
+    // then we want to adjust the visibility.
+    setVisible(awtComponent.isVisible());
   }
 
   void setCursor ()
@@ -537,6 +531,13 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void setVisible (boolean b)
   {
+    // Only really set visible when component is bigger than zero pixels.
+    if (b)
+      {
+        Rectangle bounds = awtComponent.getBounds();
+	b = (bounds.width > 0) && (bounds.height > 0);
+      }
+
     if (Thread.currentThread() == GtkToolkit.mainThread)
       setVisibleNativeUnlocked (b);
     else
