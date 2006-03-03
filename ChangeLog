@@ -1,3 +1,7 @@
+2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/event/TableModelListener.java: Updated API docs.
+
 2006-03-03  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/Component.java (addNotify): Expand documentation.
