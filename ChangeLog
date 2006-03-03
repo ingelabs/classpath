@@ -1,3 +1,7 @@
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
+	* NEWS: Added paragraph about Swing improvements.
+
 2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/AbstractAction.java: Updated API docs all over,
@@ -6,6 +10,12 @@
 	* javax/swing/UnsupportedLookAndFeelException.java
 	(UnsupportedLookAndFeelException): Changed argument name, updated API
 	docs.
+
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalUtils.java
+	(fillMetalPattern): Added switch to not use Graphics2D methods,
+	even if they are available.
 
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 

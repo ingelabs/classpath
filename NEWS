@@ -1,5 +1,14 @@
 New in release 0.21 (to be released)
 
+* Swing improvements: JTable columns are rearrangeable and resizeable with
+  mouse. Painting and scrolling are now much faster.
+  Support for styled text has been improved, including some very basic HTML
+  support. JFileChooser is now usable. Global event dispatching has been
+  implemented. Memory consumption of Swing components has been reduced.
+  Lots of general bugfixes.
+  Added new system property to turn of Graphics2D use in Swing, even
+  if Graphics2D is available: -Dgnu.javax.swing.noGraphics2D .
+
 * GNU Crypto and Jessie have been merged into Classpath; this will
   provide Classpath with a wide array of cryptographic algorithms
   (ciphers, message digests, etc.) and implementations of SSL version
@@ -15,8 +24,6 @@ New in release 0.21 (to be released)
 * RELAX NG pluggable XML schema datatype library API and an implementation
   for XML Schema Datatypes (http://www.w3.org/TR/xmlschema-2/).
   
-* JTable columns are rearrangeable and resizeable with mouse.
-
 * Added experimental support for dynamic creation of the RMI stubs using proxy
   classes. The rmic compiler is no longer required (unless for research
   and specific stubs).
