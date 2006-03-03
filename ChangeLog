@@ -1,3 +1,9 @@
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicHTML.java
+	(HTMLRootView): New inner class.
+	(createHTMLView): Embed view inside a HTMLRootView.
+
 2006-03-03  Wolfgang Baer  <WBaer@gmx.de>
 
 	* gnu/java/net/protocol/jar/Connection.java: 
