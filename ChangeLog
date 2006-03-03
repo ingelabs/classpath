@@ -1,3 +1,45 @@
+2006-03-03  Chris Burdess  <dog@gnu.org>
+
+	Fixes PR 26503
+	* gnu/xml/stream/EntityReferenceImpl.java,
+	  gnu/xml/stream/FilteredEventReader.java,
+	  gnu/xml/stream/SAXParser.java,
+	  gnu/xml/stream/XIncludeFilter.java,
+	  gnu/xml/stream/XMLEventAllocatorImpl.java,
+	  gnu/xml/stream/XMLEventFactoryImpl.java,
+	  gnu/xml/stream/XMLEventImpl.java,
+	  gnu/xml/stream/XMLEventReaderImpl.java,
+	  gnu/xml/stream/XMLEventWriterImpl.java,
+	  gnu/xml/stream/XMLInputFactoryImpl.java,
+	  gnu/xml/stream/XMLOutputFactoryImpl.java,
+	  gnu/xml/stream/XMLParser.java,
+	  javax/xml/stream/EventFilter.java,
+	  javax/xml/stream/Location.java,
+	  javax/xml/stream/StreamFilter.java,
+	  javax/xml/stream/XMLEventFactory.java,
+	  javax/xml/stream/XMLEventReader.java,
+	  javax/xml/stream/XMLEventWriter.java,
+	  javax/xml/stream/XMLInputFactory.java,
+	  javax/xml/stream/XMLOutputFactory.java,
+	  javax/xml/stream/XMLReporter.java,
+	  javax/xml/stream/XMLResolver.java,
+	  javax/xml/stream/XMLStreamConstants.java,
+	  javax/xml/stream/XMLStreamReader.java,
+	  javax/xml/stream/events/EntityDeclaration.java,
+	  javax/xml/stream/events/EntityReference.java,
+	  javax/xml/stream/events/XMLEvent.java,
+	  javax/xml/stream/util/EventReaderDelegate.java,
+	  javax/xml/stream/util/ReaderDelegate.java: Updated to final version of
+	  StAX API as specified in JWSDP 2.0.
+	* gnu/xml/stream/EndEntityImpl.java,
+	  gnu/xml/stream/LocationImpl.java,
+	  gnu/xml/stream/StartEntityImpl.java,
+	  gnu/xml/stream/XMLStreamReaderImpl.java,
+	  javax/xml/stream/XMLFilter.java,
+	  javax/xml/stream/XMLIterator.java,
+	  javax/xml/stream/events/EndEntity.java,
+	  javax/xml/stream/events/StartEntity.java: Removed legacy files.
+
 2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/CellEditor.java: API doc updates,

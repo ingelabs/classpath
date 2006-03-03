@@ -92,8 +92,7 @@ import org.xml.sax.ext.Locator2;
  */
 public class SAXParser
   extends javax.xml.parsers.SAXParser
-  implements XMLReader, Attributes2, Locator2, XMLReporter,
-             XMLParser.XMLResolver2
+  implements XMLReader, Attributes2, Locator2, XMLReporter, XMLResolver
 {
 
   ContentHandler contentHandler;
@@ -323,6 +322,7 @@ public class SAXParser
                              supportDTD,
                              baseAware,
                              stringInterning,
+                             true,
                              this,
                              this);
     else
@@ -338,6 +338,7 @@ public class SAXParser
                                  supportDTD,
                                  baseAware,
                                  stringInterning,
+                                 true,
                                  this,
                                  this);
       }
@@ -357,6 +358,7 @@ public class SAXParser
                                supportDTD,
                                baseAware,
                                stringInterning,
+                               true,
                                this,
                                this);
       }
@@ -486,14 +488,14 @@ public class SAXParser
                     contentHandler.processingInstruction(target, data);
                   }
                 break;
-              case XMLStreamConstants.START_ENTITY:
+              case XMLParser.START_ENTITY:
                 if (lexicalHandler != null)
                   {
                     String name = reader.getText();
                     lexicalHandler.startEntity(name);
                   }
                 break;
-              case XMLStreamConstants.END_ENTITY:
+              case XMLParser.END_ENTITY:
                 if (lexicalHandler != null)
                   {
                     String name = reader.getText();
@@ -688,7 +690,7 @@ public class SAXParser
     int ac = reader.getAttributeCount();
     for (int i = 0; i < ac; i++)
       {
-        QName aname = reader.getAttributeQName(i);
+        QName aname = reader.getAttributeName(i);
         if ("space".equals(aname.getLocalPart()) &&
             XMLConstants.XML_NS_URI.equals(aname.getNamespaceURI()))
           {
@@ -729,7 +731,7 @@ public class SAXParser
     int len = reader.getAttributeCount();
     for (int i = 0; i < len; i++)
       {
-        QName q = reader.getAttributeQName(i);
+        QName q = reader.getAttributeName(i);
         String localName = q.getLocalPart();
         String prefix = q.getPrefix();
         String qn = ("".equals(prefix)) ? localName : prefix + ":" + localName;
@@ -744,7 +746,7 @@ public class SAXParser
     int len = reader.getAttributeCount();
     for (int i = 0; i < len; i++)
       {
-        QName q = reader.getAttributeQName(i);
+        QName q = reader.getAttributeName(i);
         String ln = q.getLocalPart();
         String u = q.getNamespaceURI();
         if (u == null && uri != null)
@@ -764,12 +766,12 @@ public class SAXParser
 
   public String getLocalName(int index)
   {
-    return reader.getAttributeName(index);
+    return reader.getAttributeLocalName(index);
   }
 
   public String getQName(int index)
   {
-    QName q = reader.getAttributeQName(index);
+    QName q = reader.getAttributeName(index);
     String localName = q.getLocalPart();
     String prefix = q.getPrefix();
     return ("".equals(prefix)) ? localName : prefix + ":" + localName;
@@ -867,13 +869,14 @@ public class SAXParser
 
   public String getPublicId()
   {
-    return null;
+    Location l = reader.getLocation();
+    return l.getPublicId();
   }
 
   public String getSystemId()
   {
     Location l = reader.getLocation();
-    return l.getLocationURI();
+    return l.getSystemId();
   }
   
   public String getEncoding()
@@ -888,13 +891,8 @@ public class SAXParser
 
   // -- XMLResolver --
   
-  public InputStream resolve(String uri)
-    throws XMLStreamException
-  {
-    return resolve(null, uri);
-  }
-
-  public InputStream resolve(String publicId, String systemId)
+  public Object resolveEntity(String publicId, String systemId,
+                              String baseURI, String namespace)
     throws XMLStreamException
   {
     if (entityResolver != null)
