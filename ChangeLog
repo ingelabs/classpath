@@ -1,3 +1,8 @@
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/RepaintManager.java
+	(commitBuffer): Added null check for clip.
+
 2006-03-02  Lillian Angel <langel@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c

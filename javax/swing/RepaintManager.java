@@ -636,9 +636,10 @@ public class RepaintManager
             Graphics g = root.getGraphics();
             Image buffer = (Image) offscreenBuffers.get(root);
             Rectangle clip = g.getClipBounds();
-            area = SwingUtilities.computeIntersection(clip.x, clip.y,
-                                                      clip.width, clip.height,
-                                                      area);
+            if (clip != null)
+              area = SwingUtilities.computeIntersection(clip.x, clip.y,
+                                                        clip.width, clip.height,
+                                                        area);
             int dx1 = area.x;
             int dy1 = area.y;
             int dx2 = area.x + area.width;
