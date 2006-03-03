@@ -1,5 +1,36 @@
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicHTML.java
+	(isHTMLString): Check for string beeing null.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(BasicInternalFrameListener.internalFrameActivated): Implemented.
+	(BasicInternalFrameListener.internalFrameDeactivated): Implemented.
+	(InternalFrameLayout): Don't touch the glass pane here.
+	(installUI): Fix handling of glass pane.
+	* javax/swing/plaf/basic/BasicLabelUI.java
+	(vr): New field.
+	(ir): New field.
+	(tr): New field.
+	(BasicLabelUI): Initialize new fields.
+	(getPreferredSize): Avoid creating new Rectangles by using
+	SwingUtilities method.
+	(paint): Avoid creating new Rectangles by reusing
+	new fields. Added some preliminary handling of HTML inside the
+	label.
+	(installComponents): Handle HTML by calling BasicHTML.updateRenderer.
+	(uninstallComponents): Clear HTML renderer.
+	(propertyChange): Check for HTML text and install renderer if
+	appropriate.
+	* javax/swing/plaf/basic/BasicListUI.java
+	(getCellBounds): Avoid creating new Rectangle by using SwingUtilities
+	method.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.getStartOffset): Implemented.
+	(RootView.getEndOffset): Implemented.
+	(RootView.getDocument): Implemented.
+
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/DefaultStyledDocument.java
 	(ElementBuffer.inserUpdate): Added check for zero-length
 	element.

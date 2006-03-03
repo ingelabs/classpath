@@ -423,7 +423,7 @@ public class BasicHTML
   {
     // We consider a string to be HTML if it contains both the '<' and '>'
     // character at least once.
-    return s.contains("<") && s.contains(">");
+    return (s != null) && s.contains("<") && s.contains(">");
   }
 
   /**

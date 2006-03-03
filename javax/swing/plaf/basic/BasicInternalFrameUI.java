@@ -92,7 +92,7 @@ public class BasicInternalFrameUI extends InternalFrameUI
      */
     public void internalFrameActivated(InternalFrameEvent e)
     {
-      // FIXME: Implement.
+      frame.getGlassPane().setVisible(false);
     }
 
     /**
@@ -122,7 +122,7 @@ public class BasicInternalFrameUI extends InternalFrameUI
      */
     public void internalFrameDeactivated(InternalFrameEvent e)
     {
-      // FIXME: Implement.
+      frame.getGlassPane().setVisible(true);
     }
 
     /**
@@ -462,8 +462,6 @@ public class BasicInternalFrameUI extends InternalFrameUI
       dims.width -= insets.left + insets.right;
       dims.height -= insets.top + insets.bottom;
 
-      frame.getRootPane().getGlassPane().setBounds(0, 0, dims.width,
-                                                   dims.height);
       int nh = 0;
       int sh = 0;
       int ew = 0;
@@ -1128,13 +1126,14 @@ public class BasicInternalFrameUI extends InternalFrameUI
       {
         frame = (JInternalFrame) c;
 
-        ((JComponent) frame.getRootPane().getGlassPane()).setOpaque(false);
-        frame.getRootPane().getGlassPane().setVisible(true);
-
         installDefaults();
         installListeners();
         installComponents();
         installKeyboardActions();
+
+        ((JComponent) frame.getRootPane().getGlassPane()).setOpaque(false);
+        if (! frame.isSelected())
+          frame.getRootPane().getGlassPane().setVisible(true);
 
         frame.setOpaque(true);
         frame.invalidate();

@@ -365,6 +365,38 @@ public abstract class BasicTextUI extends TextUI
     {
       return view.getNextVisualPositionFrom(pos, b, a, d, biasRet);
     }
+
+    /**
+     * Returns the startOffset of this view, which is always the beginning
+     * of the document.
+     *
+     * @return the startOffset of this view
+     */
+    public int getStartOffset()
+    {
+      return 0;
+    }
+
+    /**
+     * Returns the endOffset of this view, which is always the end
+     * of the document.
+     *
+     * @return the endOffset of this view
+     */
+    public int getEndOffset()
+    {
+      return getDocument().getLength();
+    }
+
+    /**
+     * Returns the document associated with this view.
+     *
+     * @return the document associated with this view
+     */
+    public Document getDocument()
+    {
+      return textComponent.getDocument();
+    }
   }
 
   /**
