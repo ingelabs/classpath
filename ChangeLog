@@ -1,5 +1,9 @@
 2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/event/TableColumnModelEvent.java: Reformatted.
+
+2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/event/TableModelListener.java: Updated API docs.
 
 2006-03-03  Mark Wielaard  <mark@klomp.org>
