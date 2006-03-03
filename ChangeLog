@@ -1,3 +1,47 @@
+2006-03-03  Tom Tromey  <tromey@redhat.com>
+
+	* javax/naming/NamingException.java (getExplanation): Javadoc fix.
+	* javax/naming/spi/ResolveResult.java,
+	javax/naming/event/NamingExceptionEvent.java,
+	javax/naming/event/NamingEvent.java,
+	javax/naming/directory/SearchResult.java,
+	javax/naming/directory/SearchControls.java,
+	javax/naming/directory/SchemaViolationException.java,
+	javax/naming/directory/NoSuchAttributeException.java,
+	javax/naming/directory/ModificationItem.java,
+	javax/naming/directory/InvalidSearchFilterException.java,
+	javax/naming/directory/InvalidSearchControlsException.java,
+	javax/naming/directory/InvalidAttributesException.java,
+	javax/naming/directory/InvalidAttributeIdentifierException.java,
+	javax/naming/directory/AttributeModificationException.java,
+	javax/naming/directory/AttributeInUseException.java,
+	javax/naming/TimeLimitExceededException.java,
+	javax/naming/SizeLimitExceededException.java,
+	javax/naming/PartialResultException.java,
+	javax/naming/Reference.java,
+	javax/naming/ServiceUnavailableException.java,
+	javax/naming/OperationNotSupportedException.java,
+	javax/naming/NotContextException.java,
+	javax/naming/NoPermissionException.java,
+	javax/naming/NoInitialContextException.java,
+	javax/naming/NameNotFoundException.java,
+	javax/naming/NameAlreadyBoundException.java,
+	javax/naming/NameClassPair.java,
+	javax/naming/MalformedLinkException.java,
+	javax/naming/LinkLoopException.java,
+	javax/naming/LinkException.java,
+	javax/naming/LimitExceededException.java,
+	javax/naming/InvalidNameException.java,
+	javax/naming/InterruptedNamingException.java,
+	javax/naming/InsufficientResourcesException.java,
+	javax/naming/ContextNotEmptyException.java,
+	javax/naming/ConfigurationException.java,
+	javax/naming/CannotProceedException.java,
+	javax/naming/CommunicationException.java,
+	javax/naming/Binding.java,
+	javax/naming/AuthenticationNotSupportedException.java,
+	javax/naming/AuthenticationException.java: Added serialVersionUID.
+
 2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/event/TableColumnModelEvent.java: Reformatted.
