@@ -1,3 +1,12 @@
+2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/AbstractAction.java: Updated API docs all over,
+	* javax/swing/AbstractCellRenderer.java: Minor reformatting, plus
+	(stopCellEditing): Minor API doc correction,
+	* javax/swing/UnsupportedLookAndFeelException.java
+	(UnsupportedLookAndFeelException): Changed argument name, updated API
+	docs.
+
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicHTML.java
