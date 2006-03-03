@@ -1,5 +1,11 @@
 2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/event/ListSelectionEvent.java
+	(toString): Implemented,
+	plus updated API docs all over.
+
+2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/event/ListSelectionEvent.java: Reformatted and fixed
 	API doc warnings,
 	* javax/swing/event/ListSelectionListener.java: Updated API docs.
