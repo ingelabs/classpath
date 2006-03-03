@@ -1,5 +1,39 @@
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/DefaultStyledDocument.java
+	(ElementBuffer.inserUpdate): Added check for zero-length
+	element.
+	* javax/swing/text/DefaultStyledDocument.java
+	(setIndex): Improved exception message.
+	* javax/swing/text/TableView.java
+	Made class abstract.
+	(TableRow.replace): Probably extend columnRequirements
+	arrays.
+	(TableRow.layoutMinorAxis): Call super.layoutMinorAxis instead
+	of super.layoutMajorAxis.
+	(columnRequirements): Made field package private.
+	(TableView): Do not load any child views here.
+	(layoutColumns): Implemented this method.
+	(updateColumnRequirements): New helper method.
+	* javax/swing/text/Utilities.java
+	(getBreakLocation): Also take offset into account when
+	finding end location.
+	* javax/swing/text/html/HTMLDocument.java
+	(HTMLReader.parseStack): New field.
+	(HTMLReader.blockOpen): Properly handle p-implied tags.
+	(HTMLReader.blockClose): Properly handle p-implied and empty tags.
+	(HTMLReader.addContent): Insert p-implied when adding content to
+	a block element.
+	* javax/swing/text/html/HTMLEditorKit.java
+	(HTMLFactory.create): Create HTMLTableView for <table> tags and
+	ParagraphView for TD tags. Print out warning for tags that don't have
+	matching view yet and create NullView for them.
+	(read): Only set document base when document != null.
+	* javax/swing/text/html/HTMLTableView.java:
+	New class
+
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicHTML.java
 	(HTMLRootView): New inner class.
 	(createHTMLView): Embed view inside a HTMLRootView.

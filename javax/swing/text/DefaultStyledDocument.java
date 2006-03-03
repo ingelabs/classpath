@@ -814,7 +814,9 @@ public class DefaultStyledDocument extends AbstractDocument implements
                   if (data.length > i + 1)
                     {
                       // leaves will be added to paragraph later
-                      int x = paragraph.getElementIndex(pos) + 1;
+                      int x = 0;
+                      if (paragraph.getElementCount() > 0)
+                        x = paragraph.getElementIndex(pos) + 1;
                       Edit e = getEditForParagraphAndIndex(paragraph, x);
                       br = (BranchElement) createBranchElement(paragraph,
                                                                data[i].getAttributes());

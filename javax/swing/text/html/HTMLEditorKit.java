@@ -551,6 +551,10 @@ public class HTMLEditorKit
             view = new InlineView(element);
           else if (tag == HTML.Tag.HEAD)
             view = new NullView(element);
+          else if (tag.equals(HTML.Tag.TABLE))
+            view = new HTMLTableView(element);
+          else if (tag.equals(HTML.Tag.TD))
+            view = new ParagraphView(element);
 
           /*
           else if (tag.equals(HTML.Tag.MENU) || tag.equals(HTML.Tag.DIR)
@@ -562,8 +566,6 @@ public class HTMLEditorKit
             view = new HRuleView(element);
           else if (tag.equals(HTML.Tag.BR))
             view = new BRView(element);
-          else if (tag.equals(HTML.Tag.TABLE))
-            view = new TableView(element);
           else if (tag.equals(HTML.Tag.INPUT) || tag.equals(HTML.Tag.SELECT)
                    || tag.equals(HTML.Tag.TEXTAREA))
             view = new FormView(element);
@@ -573,7 +575,12 @@ public class HTMLEditorKit
             view = new FrameSetView(element);
           else if (tag.equals(HTML.Tag.FRAME))
             view = new FrameView(element); */
-        }      
+        }
+      if (view == null)
+        {
+          System.err.println("missing tag->view mapping for: " + element);
+          view = new NullView(element);
+        }
       return view;
     }
   }
@@ -941,7 +948,8 @@ public class HTMLEditorKit
           throw new IOException("Parser is null.");
         
         HTMLDocument hd = ((HTMLDocument) doc);
-        hd.setBase(editorPane.getPage());
+        if (editorPane != null)
+          hd.setBase(editorPane.getPage());
         ParserCallback pc = hd.getReader(pos);
         
         // FIXME: What should ignoreCharSet be set to?
