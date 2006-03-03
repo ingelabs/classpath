@@ -1,7 +1,8 @@
 New in release 0.21 (to be released)
 
 * Swing improvements: JTable columns are rearrangeable and resizeable with
-  mouse. Painting and scrolling are now much faster.
+  mouse. Painting and scrolling are now much faster. Plain text components
+  now support highlighting and copy+paste to the system clipboard.
   Support for styled text has been improved, including some very basic HTML
   support. JFileChooser is now usable. Global event dispatching has been
   implemented. Memory consumption of Swing components has been reduced.

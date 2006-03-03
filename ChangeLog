@@ -1,5 +1,10 @@
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 
+	* NEWS: Added comment about text highlighting and copy+paste
+	in Swing.
+
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTabbedPane.java
 	(remove(int)): Call super.remove(int) instead of remove(Component).
 	Avoids a stack overflow.
