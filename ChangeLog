@@ -1,5 +1,10 @@
 2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/CellEditor.java: API doc updates,
+	* javax/swing/DefaultCellEditor.java: Likewise.
+
+2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/AbstractListModel.java:
 	(AbstractListModel): Added API docs,
 	(fireContentsChanged): Minor API doc correction,
