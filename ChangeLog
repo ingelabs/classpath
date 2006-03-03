@@ -1,3 +1,25 @@
+2006-03-03  Tom Tromey  <tromey@redhat.com>
+
+	* java/security/SignatureException.java (SignatureException): New
+	constructors.
+	* java/security/ProviderException.java (ProviderException): New
+	constructors.
+	* java/security/NoSuchAlgorithmException.java
+	(NoSuchAlgorithmException): New constructors.
+	* java/security/KeyStoreException.java (KeyStoreException): New
+	constructors.
+	* java/security/KeyManagementException.java (KeyManagementException):
+	New constructors.
+	* java/security/InvalidKeyException.java (InvalidKeyException): New
+	constructors.
+	* java/security/KeyException.java (KeyException): New constructors.
+	* java/security/InvalidAlgorithmParameterException.java
+	(InvalidAlgorithmParameterException): New constructors.
+	* java/security/DigestException.java (DigestException): New
+	constructors.
+	* java/security/GeneralSecurityException.java
+	(GeneralSecurityException): New constructors.
+
 2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/event/CaretEvent.java: Reformatting and fixed API doc 
