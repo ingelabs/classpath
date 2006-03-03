@@ -1,5 +1,9 @@
 2006-03-03  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/Component.java (addNotify): Expand documentation.
+
+2006-03-03  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (GtkComponentPeer):
 	Always call setParentAndBounds().
 	(setComponentBounds): Always call setBounds().

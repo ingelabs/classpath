@@ -3426,10 +3426,11 @@ public abstract class Component
   }
 
   /**
-   * Called to inform this component it has been added to a container.
-   * A native peer - if any - is created at this time. This method is
-   * called automatically by the AWT system and should not be called by
-   * user level code.
+   * Called when the parent of this Component is made visible or when
+   * the Component is added to an already visible Container and needs
+   * to be shown.  A native peer - if any - is created at this
+   * time. This method is called automatically by the AWT system and
+   * should not be called by user level code.
    *
    * @see #isDisplayable()
    * @see #removeNotify()
