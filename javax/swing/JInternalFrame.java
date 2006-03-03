@@ -559,6 +559,8 @@ public class JInternalFrame extends JComponent implements Accessible,
     this.iconable = iconifiable;
     storedBounds = new Rectangle();
     setRootPane(createRootPane());
+    // JInternalFrames are invisible by default.
+    setVisible(false);
     updateUI();
     setRootPaneCheckingEnabled(true); // Done the init stage, now adds go to content pane.
   }
@@ -1629,27 +1631,27 @@ public class JInternalFrame extends JComponent implements Accessible,
   {
     if (! isVisible())
       {
-	super.show();
+        super.show();
 
-	JDesktopPane pane = getDesktopPane();
-	if (pane != null)
-	  pane.setSelectedFrame(this);
-	else
-	  {
-	    try
-	      {
-		setSelected(true);
-	      }
-	    catch (PropertyVetoException e)
-	      {
-		// Do nothing. if they don't want to be selected.
-	      }
-	  }
-	if (isFirstTimeVisible)
-	  {
-	    isFirstTimeVisible = false;
-	    fireInternalFrameEvent(InternalFrameEvent.INTERNAL_FRAME_OPENED);
-	  }
+        JDesktopPane pane = getDesktopPane();
+        if (pane != null)
+          pane.setSelectedFrame(this);
+        else
+          {
+            try
+              {
+                setSelected(true);
+              }
+            catch (PropertyVetoException e)
+              {
+                // Do nothing. if they don't want to be selected.
+              }
+          }
+        if (isFirstTimeVisible)
+          {
+            isFirstTimeVisible = false;
+            fireInternalFrameEvent(InternalFrameEvent.INTERNAL_FRAME_OPENED);
+          }
       }
   }
 

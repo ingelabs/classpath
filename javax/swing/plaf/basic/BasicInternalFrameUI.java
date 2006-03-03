@@ -522,18 +522,6 @@ public class BasicInternalFrameUI extends InternalFrameUI
     }
 
     /**
-     * This method returns the maximum layout size.
-     * 
-     * @param c
-     *          The Container to find a maximum layout size for.
-     * @return The maximum dimensions for the JInternalFrame.
-     */
-    public Dimension maximumLayoutSize(Container c)
-    {
-      return preferredLayoutSize(c);
-    }
-
-    /**
      * Th8is method returns the preferred layout size.
      * 
      * @param c
@@ -1167,8 +1155,6 @@ public class BasicInternalFrameUI extends InternalFrameUI
       frame.setLayout(internalFrameLayout);
       LookAndFeel.installBorder(frame, "InternalFrame.border");
       frame.setFrameIcon(UIManager.getIcon("InternalFrame.icon"));
-      // InternalFrames are invisible by default.
-      frame.setVisible(false);
   }
 
   /**

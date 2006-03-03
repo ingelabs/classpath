@@ -1,5 +1,13 @@
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JInternalFrame.java
+	(JInternalFrame): Set frame invisible.
+	(show): Reformatted.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(installDefaults): Do not set invisible here.
+
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Toolkit.java
 	(getScreenInsets): Return (0,0,0,0) here.
 
