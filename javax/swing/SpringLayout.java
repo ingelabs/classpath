@@ -1,5 +1,5 @@
 /* SpringLayout.java -- 
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -343,8 +343,8 @@ public class SpringLayout implements LayoutManager2
 
   /**
    * Adds a layout component and a constraint object to this layout.
-   * This method is usually only called by a {@java.awt.Container}s add
-   * Method.
+   * This method is usually only called by a {@link java.awt.Container}s add
+   * method.
    *
    * @param component the component to be added.
    * @param constraint the constraint to be set.
@@ -357,8 +357,8 @@ public class SpringLayout implements LayoutManager2
 
   /**
    * Adds a layout component and a constraint object to this layout.
-   * This method is usually only called by a {@java.awt.Container}s add
-   * Method. This method does nothing, since SpringLayout does not manage
+   * This method is usually only called by a {@link java.awt.Container}s add
+   * method. This method does nothing, since SpringLayout does not manage
    * String-indexed components.
    *
    * @param name  the name.

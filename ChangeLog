@@ -1,5 +1,9 @@
 2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/SpringLayout.java: Fixed API doc warnings.
+
+2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/event/ListSelectionEvent.java
 	(toString): Implemented,
 	plus updated API docs all over.
