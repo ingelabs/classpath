@@ -1,3 +1,9 @@
+2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/event/ListSelectionEvent.java: Reformatted and fixed
+	API doc warnings,
+	* javax/swing/event/ListSelectionListener.java: Updated API docs.
+
 2006-03-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
     * gnu/java/rmi/dgc/DGCImpl.java,

@@ -1,5 +1,5 @@
 /* ListSelectionEvent.java --
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,7 +37,6 @@ exception statement from your version. */
 
 package javax.swing.event;
 
-// Imports
 import java.util.EventObject;
 
 /**
@@ -45,82 +44,74 @@ import java.util.EventObject;
  * @author Andrew Selkirk
  * @author Ronald Veldema
  */
-public class ListSelectionEvent extends EventObject {
+public class ListSelectionEvent extends EventObject 
+{
 
-	//-------------------------------------------------------------
-	// Variables --------------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * firstIndex
+   */
+  private int firstIndex = 0;
 
-	/**
-	 * firstIndex
-	 */
-	private int		firstIndex	= 0;
-	
-	/**
-	 * lastIndex
-	 */
-	private int		lastIndex	= 0;
-	
-	/**
-	 * isAdjusting
-	 */
-	private boolean	isAdjusting	= false;
+  /**
+   * lastIndex
+   */
+  private int lastIndex = 0;
 
-	//-------------------------------------------------------------
-	// Initialization ---------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * isAdjusting
+   */
+  private boolean isAdjusting = false;
 
-	/**
-	 * Constructor ListSelectionEvent
-	 * @param source Source
-	 * @param firstIndex First index
-	 * @param lastIndex Last index
-	 * @param isAdjusting Is Adjusting?
-	 */
-	public ListSelectionEvent(Object source, int firstIndex,
-								int lastIndex, boolean isAdjusting) {
-		super(source);
-		this.firstIndex		= firstIndex;
-		this.lastIndex		= lastIndex;
-		this.isAdjusting	= isAdjusting;
-	} // ListSelectionEvent()
+  /**
+   * Constructor ListSelectionEvent
+   * @param source Source
+   * @param firstIndex First index
+   * @param lastIndex Last index
+   * @param isAdjusting Is Adjusting?
+   */
+  public ListSelectionEvent(Object source, int firstIndex,
+      int lastIndex, boolean isAdjusting) 
+  {
+    super(source);
+    this.firstIndex = firstIndex;
+    this.lastIndex = lastIndex;
+    this.isAdjusting = isAdjusting;
+  }
+ 
+  /**
+   * getFirstIndex
+   * @return firstIndex
+   */
+  public int getFirstIndex() 
+  {
+    return firstIndex;
+  }
 
+  /**
+   * getLastIndex
+   * @return lastIndex
+   */
+  public int getLastIndex() 
+  {
+    return lastIndex;
+  }
 
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * getValueIsAdjusting
+   * @return isAdjusting
+   */
+  public boolean getValueIsAdjusting() 
+  {
+    return isAdjusting;
+  }
 
-	/**
-	 * getFirstIndex
-	 * @returns firstIndex
-	 */
-	public int getFirstIndex() {
-		return firstIndex;
-	} // getFirstIndex()
+  /**
+   * String representation
+   * @return String representation
+   */
+  public String toString() 
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * getLastIndex
-	 * @returns lastIndex
-	 */
-	public int getLastIndex() {
-		return lastIndex;
-	} // getLastIndex()
-
-	/**
-	 * getValueIsAdjusting
-	 * @returns isAdjusting
-	 */
-	public boolean getValueIsAdjusting() {
-		return isAdjusting;
-	} // getValueIsAdjusting()
-
-	/**
-	 * String representation
-	 * @returns String representation
-	 */
-	public String toString() {
-		return null; // TODO
-	} // toString()
-
-
-} // ListSelectionEvent
+}
