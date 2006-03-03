@@ -1,3 +1,9 @@
+2006-03-03  Wolfgang Baer  <WBaer@gmx.de>
+
+	* gnu/java/net/protocol/jar/Connection.java: 
+	(connect): Throw FileNotFoundException.
+	(getInputStream): Remove duplicated code.
+
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/RepaintManager.java
