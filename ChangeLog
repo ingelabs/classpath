@@ -1,3 +1,9 @@
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(distributeSpillResizing): Avoid ArithmeticException by checking
+	divisor.
+
 2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/package.html: Added package description.
