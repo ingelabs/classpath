@@ -1,3 +1,17 @@
+2006-03-03  David Daney  <ddaney@avtrex.com>
+
+	* gnu/java/net/protocol/http/HTTPURLConnection.java
+	(getRequestProperties): Rewrote.
+	(addRequestProperty): Rewrote.
+	(getHeaderFields): Rewrote.
+	(getHeaderField): Rewrote.
+	(getHeaderFieldKey): Rewrote.
+	(getHeaderField): Removed useless cast.
+	* gnu/java/net/protocol/http/Headers.java: Entire class rewritten.
+	* gnu/java/net/protocol/http/Request.java (dispatch): Use new Headers
+	interface.
+	(notifyHeaderHandlers): Use new Headers interface.
+
 2006-03-03  Tom Tromey  <tromey@redhat.com>
 
 	* javax/naming/NamingException.java (getExplanation): Javadoc fix.

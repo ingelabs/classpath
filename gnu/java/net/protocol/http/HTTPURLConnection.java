@@ -422,20 +422,7 @@ public class HTTPURLConnection
     if (connected)
       throw new IllegalStateException("Already connected");
     
-    HashMap m = new HashMap(requestHeaders);
-    Iterator it = m.entrySet().iterator();
-    while (it.hasNext())
-      {
-        Map.Entry e = (Map.Entry)it.next();
-        String s = (String)e.getValue();
-        String sa[] = s.split(",");
-        ArrayList l = new ArrayList(sa.length);
-        for (int i = 0; i < sa.length; i++)
-          {
-            l.add(sa[i].trim());
-          }
-        e.setValue(Collections.unmodifiableList(l));
-      }
+    Map m = requestHeaders.getAsMap();
     return Collections.unmodifiableMap(m);
   }
 
@@ -449,16 +436,7 @@ public class HTTPURLConnection
   public void addRequestProperty(String key, String value)
   {
     super.addRequestProperty(key, value);
-    
-    String old = requestHeaders.getValue(key);
-    if (old == null)
-      {
-        requestHeaders.put(key, value);
-      }
-    else
-      {
-        requestHeaders.put(key, old + "," + value);
-      }
+    requestHeaders.addValue(key, value);
   }
 
   public OutputStream getOutputStream()
@@ -533,17 +511,9 @@ public class HTTPURLConnection
             return null;
           }
       }
-    Headers headers = response.getHeaders();
-    LinkedHashMap ret = new LinkedHashMap();
-    ret.put(null, Collections.singletonList(getStatusLine(response)));
-    for (Iterator i = headers.entrySet().iterator(); i.hasNext(); )
-      {
-        Map.Entry entry = (Map.Entry) i.next();
-        String key = (String) entry.getKey();
-        String value = (String) entry.getValue();
-        ret.put(key, Collections.singletonList(value));
-      }
-    return Collections.unmodifiableMap(ret);
+    Map m = response.getHeaders().getAsMap();
+    m.put(null, Collections.singletonList(getStatusLine(response)));
+    return Collections.unmodifiableMap(m);
   }
 
   String getStatusLine(Response response)
@@ -571,20 +541,7 @@ public class HTTPURLConnection
       {
         return getStatusLine(response);
       }
-    Iterator i = response.getHeaders().entrySet().iterator();
-    Map.Entry entry;
-    int count = 1;
-    do
-      {
-        if (!i.hasNext())
-          {
-            return null;
-          }
-        entry = (Map.Entry) i.next();
-        count++;
-      }
-    while (count <= index);
-    return (String) entry.getValue();
+    return response.getHeaders().getHeaderValue(index - 1);
   }
 
   public String getHeaderFieldKey(int index)
@@ -600,24 +557,8 @@ public class HTTPURLConnection
             return null;
           }
       }
-    if (index == 0)
-      {
-        return null;
-      }
-    Iterator i = response.getHeaders().entrySet().iterator();
-    Map.Entry entry;
-    int count = 1;
-    do
-      {
-        if (!i.hasNext())
-          {
-            return null;
-          }
-        entry = (Map.Entry) i.next();
-        count++;
-      }
-    while (count <= index);
-    return (String) entry.getKey();
+    // index of zero is the status line.
+    return response.getHeaders().getHeaderName(index - 1);
   }
 
   public String getHeaderField(String name)
@@ -633,7 +574,7 @@ public class HTTPURLConnection
             return null;
           }
       }
-    return (String) response.getHeader(name);
+    return response.getHeader(name);
   }
 
   public long getHeaderFieldDate(String name, long def)
