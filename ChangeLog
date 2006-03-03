@@ -1,5 +1,18 @@
 2006-03-03  Tom Tromey  <tromey@redhat.com>
 
+	* java/security/spec/InvalidKeySpecException.java
+	(InvalidKeySpecException): New constructors.
+	* java/security/cert/CertificateParsingException.java
+	(CertificateParsingException): New constructors.
+	* java/security/cert/CertificateEncodingException.java
+	(CertificateEncodingException): New constructors.
+	* java/security/cert/CertificateException.java (CertificateException):
+	New constructors.
+	* java/security/cert/CRLException.java (CRLException): New
+	constructors.
+
+2006-03-03  Tom Tromey  <tromey@redhat.com>
+
 	* java/security/SignatureException.java (SignatureException): New
 	constructors.
 	* java/security/ProviderException.java (ProviderException): New
