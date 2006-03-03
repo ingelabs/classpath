@@ -38,9 +38,26 @@ endif # FOUND_JIKES
 
 JAVAH = $(USER_JAVAH) -jni -classpath .:$(USER_CLASSLIB)
 
+if CREATE_COLLECTIONS
+COLLECTIONS = collections.jar
+
+collections.jar: mkcollections.pl
+	./mkcollections.pl $(top_srcdir)
+if FOUND_GCJ
+	$(GCJ) -C `$(FIND) $(COLLECTIONS_PREFIX) -name '*' -type f -print`
+else
+	$(JAVAC) `$(FIND) $(COLLECTIONS_PREFIX) -name '*' -type f -print`
+endif
+	if test "$(FASTJAR)" != ""; then \
+	  $(FASTJAR) cf $@ $(COLLECTIONS_PREFIX); \
+	else \
+	  echo "fastjar not found" > collections.jar; \
+	fi
+endif # CREATE_COLLECTIONS
+
 if INSTALL_GLIBJ_ZIP
 
-glibj_DATA = glibj.zip
+glibj_DATA = glibj.zip $(COLLECTIONS)
 
 endif # INSTALL_GLIBJ_ZIP
 

@@ -1,3 +1,14 @@
+2006-03-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* NEWS: Add entry for --enable-collections.
+	* configure.ac: Add --enable-collections option.
+	* lib/Makefile.am (collections.jar): New target.
+	(glibj_DATA): Add $(COLLECTIONS).
+	* lib/mkcollections.pl.in (destpath): Set from COLLECTION_PREFIX
+	configure substitution.
+	(classpath): Read from command line.
+	(javautilclasses): Remove BasicMapEntry.  Add RandomAccess.
+
 2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/SpringLayout.java: Fixed API doc warnings.

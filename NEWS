@@ -34,6 +34,9 @@ New in release 0.21 (to be released)
 
 * javax.imageio.plugins.bmp implementation.
 
+* Added --enable-collections configure option which builds
+  "collections.jar", a 1.1 VM compatibility jar.
+
 Runtime interface changes:
 
 * A new class, VMMath, is now available which separates the native
