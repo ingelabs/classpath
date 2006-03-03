@@ -1,3 +1,9 @@
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/FlowView.java
+	(FlowStrategy.layoutRow): Added check for rowCount == 0.
+	(FlowStrategy.getLogicalView): Made method protected.
+
 2006-03-03  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/validation/relaxng/AnyNameNameClass.java,
