@@ -1,3 +1,52 @@
+2006-03-03  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/validation/relaxng/AnyNameNameClass.java,
+	  gnu/xml/validation/relaxng/AttributePattern.java,
+	  gnu/xml/validation/relaxng/ChoiceNameClass.java,
+	  gnu/xml/validation/relaxng/ChoicePattern.java,
+	  gnu/xml/validation/relaxng/DataPattern.java,
+	  gnu/xml/validation/relaxng/Define.java,
+	  gnu/xml/validation/relaxng/ElementPattern.java,
+	  gnu/xml/validation/relaxng/EmptyPattern.java,
+	  gnu/xml/validation/relaxng/FullSyntaxBuilder.java,
+	  gnu/xml/validation/relaxng/Grammar.java,
+	  gnu/xml/validation/relaxng/GrammarException.java,
+	  gnu/xml/validation/relaxng/GrammarValidator.java,
+	  gnu/xml/validation/relaxng/GroupPattern.java,
+	  gnu/xml/validation/relaxng/InterleavePattern.java,
+	  gnu/xml/validation/relaxng/ListPattern.java,
+	  gnu/xml/validation/relaxng/NSNameNameClass.java,
+	  gnu/xml/validation/relaxng/NameClass.java,
+	  gnu/xml/validation/relaxng/NameNameClass.java,
+	  gnu/xml/validation/relaxng/NotAllowedPattern.java,
+	  gnu/xml/validation/relaxng/OneOrMorePattern.java,
+	  gnu/xml/validation/relaxng/Param.java,
+	  gnu/xml/validation/relaxng/Pattern.java,
+	  gnu/xml/validation/relaxng/RELAXNGSchemaFactory.java,
+	  gnu/xml/validation/relaxng/RefPattern.java,
+	  gnu/xml/validation/relaxng/TextPattern.java,
+	  gnu/xml/validation/relaxng/ValuePattern.java: New RELAX NG grammar
+	  builder and data model.
+	* gnu/xml/validation/xmlschema/AnyAttribute.java,
+	  gnu/xml/validation/xmlschema/AttributeDeclaration.java,
+	  gnu/xml/validation/xmlschema/AttributeUse.java,
+	  gnu/xml/validation/xmlschema/ComplexType.java,
+	  gnu/xml/validation/xmlschema/ElementDeclaration.java,
+	  gnu/xml/validation/xmlschema/Particle.java,
+	  gnu/xml/validation/xmlschema/ValidationException.java,
+	  gnu/xml/validation/xmlschema/XMLSchema.java,
+	  gnu/xml/validation/xmlschema/XMLSchemaAttributeTypeInfo.java,
+	  gnu/xml/validation/xmlschema/XMLSchemaBuilder.java,
+	  gnu/xml/validation/xmlschema/XMLSchemaElementTypeInfo.java,
+	  gnu/xml/validation/xmlschema/XMLSchemaSchemaFactory.java,
+	  gnu/xml/validation/xmlschema/XMLSchemaTypeInfo.java,
+	  gnu/xml/validation/xmlschema/XMLSchemaTypeInfoProvider.java,
+	  gnu/xml/validation/xmlschema/XMLSchemaValidator.java,
+	  gnu/xml/validation/xmlschema/XMLSchemaValidatorHandler.java: New
+	  W3C XML Schema builder and schema components.
+	* javax/xml/validation/SchemaFactory.java: Recognise RELAX NG and W3C
+	  XML Schema namespace URIs.
+
 2006-03-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* NEWS: Add entry for --enable-collections.
