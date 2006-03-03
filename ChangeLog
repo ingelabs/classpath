@@ -1,3 +1,17 @@
+2006-03-03  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/event/CaretEvent.java: Reformatting and fixed API doc 
+	warnings,
+	* javax/swing/event/DocumentEvent.java: Likewise,
+	* javax/swing/event/EventListenerList.java: Likewise,
+	* javax/swing/event/MenuDragMouseEvent.java: Likewise,
+	* javax/swing/event/MenuKeyEvent.java: Likewise,
+	* javax/swing/event/TableColumnModelEvent.java: Likewise,
+	* javax/swing/event/TreeExpansionEvent.java: Likewise,
+	* javax/swing/event/TreeModelEvent.java: Likewise,
+	* javax/swing/event/TreeSelectionEvent.java: Likewise,
+	* javax/swing/event/UndoableEditEvent.java: Likewise.
+
 2006-03-03  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/Insets.java (set): New method.

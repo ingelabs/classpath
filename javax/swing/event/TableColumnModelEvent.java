@@ -74,7 +74,7 @@ public class TableColumnModelEvent extends EventObject
 
   /**
    * getFromIndex.
-   * @returns From index
+   * @return From index
    */
   public int getFromIndex() 
   {
@@ -83,7 +83,7 @@ public class TableColumnModelEvent extends EventObject
 
   /**
    * getToIndex. 
-   * @returns To index
+   * @return To index
    */
   public int getToIndex() 
   {
