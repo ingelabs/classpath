@@ -1,5 +1,10 @@
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Toolkit.java
+	(getScreenInsets): Return (0,0,0,0) here.
+
+2006-03-03  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/FlowView.java
 	(FlowStrategy.layoutRow): Added check for rowCount == 0.
 	(FlowStrategy.getLogicalView): Made method protected.

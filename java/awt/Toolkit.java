@@ -473,7 +473,7 @@ public abstract class Toolkit
    */
   public Insets getScreenInsets(GraphicsConfiguration gc)
   {
-    return null;
+    return new Insets(0, 0, 0, 0);
   }
 
   /**
