@@ -1,3 +1,9 @@
+2006-03-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+    * gnu/java/rmi/dgc/DGCImpl.java,
+    java/rmi/dgc/DGC.java,
+    java/rmi/dgc/Lease.java: Formatted and commented.
+
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 
 	* NEWS: Added comment about text highlighting and copy+paste
