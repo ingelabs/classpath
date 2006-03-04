@@ -45,6 +45,8 @@ import java.io.IOException;
  * exception is thrown instead of this exception.
  *
  * @author Casey Marshall (rsdio@metastatic.org)
+ * 
+ * @since 1.4
  */
 public class SSLException extends IOException
 {
@@ -53,17 +55,34 @@ public class SSLException extends IOException
   // Constructor.
   // ------------------------------------------------------------------
 
+  /**
+   * Create a new instance with a descriptive error message.
+   *
+   * @param message the descriptive error message
+   */
   public SSLException(String message)
   {
     super(message);
   }
   
+  /**
+   * Create a new instance with a descriptive error message and
+   * a cause.
+   * @param message the descriptive error message
+   * @param cause the cause
+   * @since 1.5
+   */
   public SSLException(String message, Throwable cause)
   {
     super(message);
     initCause(cause);
   }
   
+  /**
+   * Create a new instance with a cause.
+   * @param cause the cause
+   * @since 1.5
+   */
   public SSLException(Throwable cause)
   {
     super(cause == null ? null : cause.toString());

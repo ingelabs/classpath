@@ -1,5 +1,10 @@
 2006-03-03  Tom Tromey  <tromey@redhat.com>
 
+	* javax/net/ssl/SSLException.java: Added missing @since.
+	Wrote javadoc.
+
+2006-03-03  Tom Tromey  <tromey@redhat.com>
+
 	* javax/net/ssl/SSLException.java (SSLException): New constructors.
 	(serialVersionUID): New field.
 
