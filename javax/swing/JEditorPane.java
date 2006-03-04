@@ -926,7 +926,7 @@ public class JEditorPane extends JTextComponent
       // Remove the current content.
       Document doc = getDocument();
       doc.remove(0, doc.getLength());
-      if (t == null || t == "")
+      if (t == null || t.equals(""))
         return;
       
       // Let the EditorKit read the text into the Document.

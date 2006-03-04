@@ -1,5 +1,11 @@
 2006-03-04  Mark Wielaard  <mark@klomp.org>
 
+	Fixes bug #26460 reported by Beat Wolf <asraniel@fryx.ch>.
+	* javax/swing/JEditorPane.java (setText): Check for empty String
+	with equals(), not equality (==).
+
+2006-03-04  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/text/html/HTMLDocument.java: Qualify ElementSpec as
 	DefaultStyledDocument.ElementSpec for gcj 4.0.x.
 
