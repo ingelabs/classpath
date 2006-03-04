@@ -1,3 +1,10 @@
+2006-03-04  Tom Tromey  <tromey@redhat.com>
+
+	* java/beans/PropertyDescriptor.java (createPropertyEditor): New
+	method.
+	(findConstructor): Likewise.
+	(instantiateClass): Likewise.
+
 2006-03-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/rmi/dgc/DGCImpl.java:  More comments, boilerplate fix.
