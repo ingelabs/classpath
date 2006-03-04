@@ -1,5 +1,5 @@
 /* SAXParser.java -- 
-   Copyright (C) 2005  Free Software Foundation, Inc.
+   Copyright (C) 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -657,17 +657,26 @@ public class SAXParser
       }
     catch (Exception e)
       {
-        if (!startDocumentDone && contentHandler != null)
-          contentHandler.startDocument();
         SAXParseException e2 = new SAXParseException(e.getMessage(), this);
         e2.initCause(e);
-        if (errorHandler != null)
-          errorHandler.fatalError(e2);
-        if (contentHandler != null)
-          contentHandler.endDocument();
+        try
+          {
+            if (!startDocumentDone && contentHandler != null)
+              contentHandler.startDocument();
+            if (errorHandler != null)
+              errorHandler.fatalError(e2);
+            if (contentHandler != null)
+              contentHandler.endDocument();
+          }
+        catch (SAXException sex)
+          {
+            // Ignored, we will rethrow the original exception.
+          }
         reset();
         if (opened)
           in.close();
+        if (e instanceof SAXException)
+          throw (SAXException) e;
         if (e instanceof IOException)
           throw (IOException) e;
         else
