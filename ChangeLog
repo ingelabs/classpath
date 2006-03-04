@@ -1,5 +1,10 @@
 2006-03-04  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/Container.java (remove(int)): Always call removeNotify()
+	on removed Component.
+
+2006-03-04  Mark Wielaard  <mark@klomp.org>
+
 	Fixes bug #26460 reported by Beat Wolf <asraniel@fryx.ch>.
 	* javax/swing/JEditorPane.java (setText): Check for empty String
 	with equals(), not equality (==).

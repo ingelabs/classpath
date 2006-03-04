@@ -410,8 +410,7 @@ public class Container extends Component
         for (int j = 0; j < list.length; j++)
               r.removeComponentListener(list[j]);
         
-        if (r.isShowing())
-          r.removeNotify();
+        r.removeNotify();
 
         System.arraycopy(component, index + 1, component, index,
                          ncomponents - index - 1);
