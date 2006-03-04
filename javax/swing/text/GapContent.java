@@ -607,7 +607,7 @@ public class GapContent
    * 
    * @return the allocated buffer array
    */
-  protected Object getArray()
+  protected final Object getArray()
   {
     return buffer;
   }

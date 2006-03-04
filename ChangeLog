@@ -1,5 +1,10 @@
 2006-03-04  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/text/GapContent.java
+	(getArray): Mark as final.
+
+2006-03-04  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/text/StyleConstants.java
 	(CharacterConstants.Background): Marked final,
 	(CharacterConstants.BidiLevel): Likewise,
