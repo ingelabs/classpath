@@ -1,7 +1,10 @@
 2006-03-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/rmi/dgc/DGCImpl.java:  More comments, boilerplate fix.
-	* java/rmi/dgc/Lease.java: Boilerplate fix. 
+	(dirty): Do not synchronize on Hashtable. Use the passed (requested) 
+	lease value and not always the default one.
+ 	(LeaseRecord): Remember the array of objects, marked as dirty.
+ 	java/rmi/dgc/Lease.java: Boilerplate fix.
 
 2006-03-05  Raif S. Naffah  <raif@swiftdsl.com.au>
 
