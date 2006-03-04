@@ -1,3 +1,10 @@
+2006-03-04  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/SpringLayout.java (Constraints): New constructor.
+	* javax/swing/Spring.java (width): New method.
+	(height): Likewise.
+	(scale): Likewise.
+
 2006-03-04  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/net/protocol/http/HTTPConnection.java (Pool.get): Remove

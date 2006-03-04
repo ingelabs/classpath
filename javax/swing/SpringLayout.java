@@ -150,6 +150,25 @@ public class SpringLayout implements LayoutManager2
     }
 
     /**
+     * Create a new Constraints object which tracks the indicated
+     * component.  The x and y positions for this Constraints object
+     * are constant Springs created with the component's location at
+     * the time this constructor is called.  The width and height
+     * of this Constraints are Springs created using
+     * {@link Spring#width(Component)} and {@link Spring#height(Component)},
+     * respectively.
+     * @param component the component to track
+     * @since 1.5
+     */
+    public Constraints(Component component)
+    {
+      this(Spring.constant(component.getX()),
+           Spring.constant(component.getY()),
+           Spring.width(component),
+           Spring.height(component));
+    }
+
+    /**
      * Returns the constraint for the edge with the <code>edgeName</code>.
      * This is expected to be one of
      * {@link #EAST}, {@link #WEST}, {@link #NORTH} or {@link #SOUTH}.
