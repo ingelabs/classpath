@@ -1,5 +1,5 @@
 /* SSLException.java -- generic SSL exception.
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -48,6 +48,7 @@ import java.io.IOException;
  */
 public class SSLException extends IOException
 {
+  private static final long serialVersionUID = 4511006460650708967L;
 
   // Constructor.
   // ------------------------------------------------------------------
@@ -55,5 +56,17 @@ public class SSLException extends IOException
   public SSLException(String message)
   {
     super(message);
+  }
+  
+  public SSLException(String message, Throwable cause)
+  {
+    super(message);
+    initCause(cause);
+  }
+  
+  public SSLException(Throwable cause)
+  {
+    super(cause == null ? null : cause.toString());
+    initCause(cause);
   }
 }
