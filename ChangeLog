@@ -1,3 +1,8 @@
+2006-03-05  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* java/util/jar/Attributes.java (putValue): Made it public and updated
+	method documentation.
+
 2006-03-04  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/Container.java (remove(int)): Always call removeNotify()
