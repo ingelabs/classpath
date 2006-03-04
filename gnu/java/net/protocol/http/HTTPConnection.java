@@ -488,6 +488,7 @@ public class HTTPConnection
           if (matches(cc, host, port, secure))
             {
               c = cc;
+              it.remove();
               break;
             }
         }

@@ -1,5 +1,10 @@
 2006-03-04  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/net/protocol/http/HTTPConnection.java (Pool.get): Remove
+	existing connection from pool before returning.
+
+2006-03-04  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/xml/stream/SAXParser.java (parse(InputSource)): Ignore
 	exceptions thrown by handlers while cleaning up and rethrow original
 	exception.
