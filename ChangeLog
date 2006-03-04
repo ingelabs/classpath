@@ -1,3 +1,8 @@
+2006-03-04  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/rmi/dgc/DGCImpl.java:  More comments, boilerplate fix.
+	* java/rmi/dgc/Lease.java: Boilerplate fix. 
+
 2006-03-05  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* java/util/jar/Attributes.java (putValue): Made it public and updated
@@ -297,9 +302,9 @@
 
 2006-03-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-    * gnu/java/rmi/dgc/DGCImpl.java,
-    java/rmi/dgc/DGC.java,
-    java/rmi/dgc/Lease.java: Formatted and commented.
+	* gnu/java/rmi/dgc/DGCImpl.java,
+	java/rmi/dgc/DGC.java,
+	java/rmi/dgc/Lease.java: Formatted and commented.
 
 2006-03-03  Roman Kennke  <kennke@aicas.com>
 
