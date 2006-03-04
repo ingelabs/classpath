@@ -1,3 +1,35 @@
+2006-03-04  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/text/StyleConstants.java
+	(CharacterConstants.Background): Marked final,
+	(CharacterConstants.BidiLevel): Likewise,
+	(CharacterConstants.Bold): Likewise,
+	(CharacterConstants.ComponentAttribute): Likewise,
+	(CharacterConstants.Family): Likewise,
+	(CharacterConstants.Size): Likewise,
+	(CharacterConstants.Foreground): Likewise,
+	(CharacterConstants.IconAttribute): Likewise,
+	(CharacterConstants.Italic): Likewise,
+	(CharacterConstants.StrikeThrough): Likewise,
+	(CharacterConstants.Subscript): Likewise,
+	(CharacterConstants.Superscript): Likewise,
+	(CharacterConstants.Underline): Likewise,
+	(ColorConstants.Foreground): Likewise,
+	(ColorConstants.Background): Likewise,
+	(FontConstants.Bold): Likewise,
+	(FontConstants.Family): Likewise,
+	(FontConstants.Italic): Likewise,
+	(FontConstants.Size): Likewise,
+	(ParagraphConstants.Alignment): Likewise,
+	(ParagraphConstants.FirstLineIndent): Likewise,
+	(ParagraphConstants.LeftIndent): Likewise,
+	(ParagraphConstants.LineSpacing): Likewise,
+	(ParagraphConstants.Orientation): Likewise,
+	(ParagraphConstants.RightIndent): Likewise,
+	(ParagraphConstants.SpaceAbove): Likewise,
+	(ParagraphConstants.SpaceBelow): Likewise,
+	(ParagraphConstants.TabSet): Likewise.	
+
 2006-03-03  Tom Tromey  <tromey@redhat.com>
 
 	* javax/net/ssl/SSLException.java: Added missing @since.
