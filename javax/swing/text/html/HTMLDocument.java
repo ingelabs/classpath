@@ -136,7 +136,7 @@ public class HTMLDocument extends DefaultStyledDocument
    * 
    * @param data - the date that replaces the content of the document
    */
-  protected void create(ElementSpec[] data)
+  protected void create(DefaultStyledDocument.ElementSpec[] data)
   {
     // Once the super behaviour is properly implemented it should be sufficient
     // to simply call super.create(data).
@@ -1297,7 +1297,7 @@ public class HTMLDocument extends DefaultStyledDocument
       // we must also close the p-implied.
       if (parseStack.size() > 0 && parseStack.peek() == HTML.Tag.IMPLIED)
         {
-          element = new ElementSpec(null,
+          element = new DefaultStyledDocument.ElementSpec(null,
                                     DefaultStyledDocument.ElementSpec.EndTagType);
           parseBuffer.addElement(element);
           parseStack.pop();
@@ -1326,14 +1326,17 @@ public class HTMLDocument extends DefaultStyledDocument
 
       // If the previous tag is a start tag then we insert a synthetic
       // content tag.
-      ElementSpec prev = (ElementSpec) parseBuffer.get(parseBuffer.size() - 1);
-      if (prev.getType() == ElementSpec.StartTagType)
+      DefaultStyledDocument.ElementSpec prev;
+      prev = (DefaultStyledDocument.ElementSpec)
+	      parseBuffer.get(parseBuffer.size() - 1);
+      if (prev.getType() == DefaultStyledDocument.ElementSpec.StartTagType)
         {
           AbstractDocument.AttributeContext ctx = getAttributeContext();
           AttributeSet attributes = ctx.getEmptySet();
           attributes = ctx.addAttribute(attributes, StyleConstants.NameAttribute,
                                         HTML.Tag.CONTENT);
-          element = new ElementSpec(attributes, ElementSpec.ContentType,
+          element = new DefaultStyledDocument.ElementSpec(attributes,
+			  DefaultStyledDocument.ElementSpec.ContentType,
                                     new char[0], 0, 0);
           parseBuffer.add(element);
         }
@@ -1341,7 +1344,7 @@ public class HTMLDocument extends DefaultStyledDocument
       // we must also close the p-implied.
       else if (parseStack.peek() == HTML.Tag.IMPLIED)
         {
-          element = new ElementSpec(null,
+          element = new DefaultStyledDocument.ElementSpec(null,
                                  DefaultStyledDocument.ElementSpec.EndTagType);
           parseBuffer.addElement(element);
           if (parseStack.size() > 0)
@@ -1401,7 +1404,8 @@ public class HTMLDocument extends DefaultStyledDocument
           attributes = ctx.addAttribute(attributes,
                                         StyleConstants.NameAttribute,
                                         HTML.Tag.IMPLIED);
-          element = new ElementSpec(attributes, ElementSpec.StartTagType);
+          element = new DefaultStyledDocument.ElementSpec(attributes,
+                       DefaultStyledDocument.ElementSpec.StartTagType);
           parseBuffer.add(element);
           parseStack.push(HTML.Tag.IMPLIED);
         }

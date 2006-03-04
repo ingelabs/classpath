@@ -1,3 +1,8 @@
+2006-03-04  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/text/html/HTMLDocument.java: Qualify ElementSpec as
+	DefaultStyledDocument.ElementSpec for gcj 4.0.x.
+
 2006-03-04  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/GapContent.java
