@@ -1,5 +1,10 @@
 2006-03-05  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/colorchooser/ColorSelectionModel.java: Reformatted and
+	added API docs all over.
+
+2006-03-05  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/filechooser/FileFilter.java: 
 	(accept): Fixed API doc tag,
 	(getDescription): Likewise,
