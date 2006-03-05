@@ -1,3 +1,11 @@
+2006-03-05  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/filechooser/FileFilter.java: 
+	(accept): Fixed API doc tag,
+	(getDescription): Likewise,
+	* javax/swing/filechooser/FileView.java:
+	(isTraversable): Fixed API doc tag.
+
 2006-03-05  Tom Tromey  <tromey@redhat.com>
 
 	* vm/reference/java/lang/reflect/Constructor.java (toString): Use
