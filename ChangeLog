@@ -1,3 +1,14 @@
+2006-03-05  Tom Tromey  <tromey@redhat.com>
+
+	* vm/reference/java/lang/reflect/Constructor.java (toString): Use
+	ClassHelper.getUserName.
+	* vm/reference/java/lang/reflect/Method.java (toString): Use
+	ClassHelper.getUserName.
+	(getUserTypeName): Removed.
+	* gnu/java/lang/ClassHelper.java (getUserName): New method.
+	* vm/reference/java/lang/reflect/Field.java (toString): Use
+	ClassHelper.getUserName.
+
 2006-03-05  Olivier Jolly  <olivier.jolly@pcedev.com>
 
 	Fixes PR 22813
