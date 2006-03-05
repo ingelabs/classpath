@@ -1,5 +1,10 @@
 2006-03-05  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/DefaultFocusManager.java: Fixed bad API doc tags,
+	* javax/swing/FocusManager.java: Likewise.
+
+2006-03-05  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/undo/StateEditable.java
 	(restoreState): Fixed bad API doc tag,
 	* javax/swing/undo/UndoableEdit.java: Copied API doc comments from
