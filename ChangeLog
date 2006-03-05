@@ -1,5 +1,13 @@
 2006-03-05  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/metal/MetalComboBoxButton.java
+	(MetalComboBoxButton(JComboBox, Icon, boolean, CellRendererPane, 
+	JList)): Fixed API doc tag,
+	* javax/swing/plaf/metal/MetalInternalFrameTitlePane
+	(createLayout): Fixed API doc warning.
+
+2006-03-05  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/DefaultFocusManager.java: Fixed bad API doc tags,
 	* javax/swing/FocusManager.java: Likewise.
 
