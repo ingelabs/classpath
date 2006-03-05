@@ -1,3 +1,9 @@
+2006-03-05  Olivier Jolly  <olivier.jolly@pcedev.com>
+
+	Fixes PR 22813
+	* java/net/URLClassLoader.java (FileURLLoader.getResource):	
+	Allows directories as valid resources.
+
 2006-03-04  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac (VERSION): Set to 0.90-pre.
