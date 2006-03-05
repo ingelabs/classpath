@@ -1,5 +1,17 @@
 2006-03-05  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/undo/StateEditable.java
+	(restoreState): Fixed bad API doc tag,
+	* javax/swing/undo/UndoableEdit.java: Copied API doc comments from
+	AbstractUndoableEdit.java,
+	* javax/swing/undo/UndoableEditSupport.java
+	(createCompoundEdit): Fixed bad API doc tag,
+	* javax/swing/undo/UndoManager.java
+	(editToBeUndone): Fixed bad API doc tag,
+	(editToBeRedone): Likewise.
+
+2006-03-05  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/ComboBoxUI.java: Fixed typo in class description, 
 	and corrected a bad API doc tag.
 
