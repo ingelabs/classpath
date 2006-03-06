@@ -1,5 +1,11 @@
 2006-03-06  Mark Wielaard  <mark@klomp.org>
 
+	* doc/www.gnu.org/announce/20060306.wml: New file.
+	* doc/www.gnu.org/newsitems.txt: Add 0.90 release announcement.
+	* doc/www.gnu.org/downloads/downloads.wml: Add 0.90.
+
+2006-03-06  Mark Wielaard  <mark@klomp.org>
+
 	* NEWS: Fix typo.
 
 2006-03-06  David Gilbert  <david.gilbert@object-refinery.com>
