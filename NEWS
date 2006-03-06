@@ -7,7 +7,7 @@ New in release 0.90 (March 6, 2006)
   improved, including some very basic HTML support. JFileChooser is
   now usable. Global event dispatching has been implemented. Memory
   consumption of Swing components has been reduced. Lots of general
-  bugfixes. Added new system property to turn of Graphics2D use in
+  bugfixes. Added new system property to turn off Graphics2D use in
   Swing, even if Graphics2D is available: gnu.javax.swing.noGraphics2D
 
 * AWT. Improved support for mixing "lightweigth" and "heavyweight"
