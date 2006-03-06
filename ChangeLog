@@ -1,3 +1,20 @@
+2006-03-06  Wolfgang Baer  <WBaer@gmx.de>
+
+	* gnu/java/net/protocol/http/HTTPURLConnection.java: Organized imports.
+	(getRequestProperty): Remove duplicated null check.
+	* java/net/URLConnection.java: 
+	(URLConnection): Javadoc fix.
+	(addRequestProperty): Likewise.
+	(getDefaultRequestProperty): Likewise.
+	(getHeaderField): Likewise.
+	(getHeaderFieldDate): Likewise.
+	(getHeaderFieldKey): Likewise.
+	(getHeaderFields): Likewise.
+	(getRequestProperties): Likewise.
+	(getRequestProperty): Likewise.
+	(setDefaultRequestProperty): Likewise.
+	(setRequestProperty): Likewise.
+
 2006-03-06  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/plaf/synth/Region.java (FILE_CHOOSER): Renamed.
