@@ -1,5 +1,11 @@
 2006-03-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/java/rmi/server/CombinedClassLoader.java (findClass,
+	findLibrary, findResouce, findResources): check all loaders in
+	array.
+
+2006-03-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	PR 25526
 	* gnu/java/rmi/dgc/DGCImpl.java (LeaseRecord, leaseCache): Removed. 
 	(RefProtector):	new inner class. (dirty): Rewritten.
