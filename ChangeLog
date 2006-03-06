@@ -1,5 +1,11 @@
 2006-03-06  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/plaf/basic/BasicTextUI.java:
+	(damageRange): Rewritten if-expressions to correctly identify the
+	break condition.
+
+2006-03-06  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/text/DefaultCaret.java:
 	(mouseDragged): Do selection when shift is pressed.
 	(mouseClicked): Implemented.
