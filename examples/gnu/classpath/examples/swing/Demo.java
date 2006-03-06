@@ -232,9 +232,34 @@ public class Demo
                     mkTable(),
                     examples);
 
+    final JMenuItem vmMenu;
+    
     help.add(new JMenuItem("just play with the widgets"));
     help.add(new JMenuItem("and enjoy the sensation of"));
     help.add(new JMenuItem("your neural connections growing"));
+    help.add(new JSeparator());
+    help.add(vmMenu = new JMenuItem("Really, which VM is this running on?"));
+    vmMenu.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent ae)
+          {
+            String message = "This is "
+                             + System.getProperty("java.vm.name")
+                             + " Version "
+                             + System.getProperty("java.vm.version")
+                             + " distributed by "
+                             + System.getProperty("java.vm.vendor");
+                         
+            String gnuClasspath = System.getProperty("gnu.classpath.version");
+            if(gnuClasspath != null)
+              message += "\nThe runtime's libraries are "
+                         + "kindly provided by the "
+                         + "members of GNU Classpath and are in version "
+                         + gnuClasspath + ".";
+                         
+                         JOptionPane.showMessageDialog(vmMenu, message);
+            }
+      });
 
     bar.add(file);
     bar.add(edit);
