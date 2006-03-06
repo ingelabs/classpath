@@ -1,5 +1,5 @@
 /* PlainDocument.java --
-   Copyright (C) 2002, 2004  Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,6 +40,15 @@ package javax.swing.text;
 
 import java.util.ArrayList;
 
+/**
+ * A simple document class which maps lines to {@link Element}s.
+ *
+ * @author Anthony Balkissoon (abalkiss@redhat.com)
+ * @author Graydon Hoare (graydon@redhat.com)
+ * @author Roman Kennke (roman@kennke.org)
+ * @author Michael Koch (konqueror@gmx.de)
+ * @author Robert Schuster (robertschuster@fsfe.org)
+ */
 public class PlainDocument extends AbstractDocument
 {
   private static final long serialVersionUID = 4758290289196893664L;
@@ -109,6 +118,7 @@ public class PlainDocument extends AbstractDocument
                               AttributeSet attributes)
   {
     int offset = event.getOffset();
+    int eventLength = event.getLength();
     int end = offset + event.getLength();
     int oldElementIndex, elementIndex = rootElement.getElementIndex(offset);
     Element firstElement = rootElement.getElement(elementIndex);
@@ -161,24 +171,25 @@ public class PlainDocument extends AbstractDocument
     Element[] added;
     try 
       {
-        String str = content.getString(0, content.length());
+        String str = content.getString(offset, eventLength);
         ArrayList elts = new ArrayList();
 
         // Determine how many NEW lines were added by finding the newline
         // characters within the newly inserted text
         int j = firstElement.getStartOffset();
-        int i = str.indexOf('\n', offset);
+        int i = str.indexOf('\n', 0);
+        int contentLength = content.length();
           
-        while (i != -1 && i <= end)
+        while (i != -1 && i <= eventLength)
           {            
             // For each new line, create a new element
             elts.add(createLeafElement(rootElement, SimpleAttributeSet.EMPTY,
-                                       j, i + 1));
+                                       j, offset + i + 1));
                   
-            j = i + 1;
-            if (j >= str.length())
+            j = offset + i + 1;
+            if (j >= contentLength)
                 break;
-            i = str.indexOf('\n', j);
+            i = str.indexOf('\n', i + 1);
           }
 
         // If there were new lines added we have to add an ElementEdit to 
