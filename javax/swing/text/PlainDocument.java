@@ -110,17 +110,19 @@ public class PlainDocument extends AbstractDocument
   {
     int offset = event.getOffset();
     int end = offset + event.getLength();
-    int elementIndex = rootElement.getElementIndex(offset);
+    int oldElementIndex, elementIndex = rootElement.getElementIndex(offset);
     Element firstElement = rootElement.getElement(elementIndex);
-    
+    oldElementIndex = elementIndex;
+        
     // If we're inserting immediately after a newline we have to fix the 
-    // Element structure.
-    if (offset > 0)
+    // Element structure (but only if we are dealing with a line which
+    // has not existed as Element before).
+    if (offset > 0 && firstElement.getStartOffset() != offset)
       {
         try
         {
           String s = getText(offset - 1, 1);
-          if (s.equals("\n"))
+          if (s.equals("\n") )
             {
               int newEl2EndOffset = end;
               boolean replaceNext = false;
@@ -166,26 +168,35 @@ public class PlainDocument extends AbstractDocument
         // characters within the newly inserted text
         int j = firstElement.getStartOffset();
         int i = str.indexOf('\n', offset);
+          
         while (i != -1 && i <= end)
           {            
             // For each new line, create a new element
             elts.add(createLeafElement(rootElement, SimpleAttributeSet.EMPTY,
                                        j, i + 1));
+                  
             j = i + 1;
             if (j >= str.length())
-              break;
+                break;
             i = str.indexOf('\n', j);
           }
+
         // If there were new lines added we have to add an ElementEdit to 
         // the DocumentEvent and we have to call rootElement.replace to 
         // insert the new lines
         if (elts.size() != 0)
           {
+            // If we have created new lines test whether there are remaining
+            // characters in firstElement after the inserted text and if so
+            // create a new element for them.
+            if (j < firstElement.getEndOffset())
+              elts.add(createLeafElement(rootElement, SimpleAttributeSet.EMPTY, j, firstElement.getEndOffset()));
+
             // Set up the ElementEdit by filling the added and removed 
             // arrays with the proper Elements
             added = new Element[elts.size()];
-            for (int k = 0; k < elts.size(); ++k)
-              added[k] = (Element) elts.get(k);
+            elts.toArray(added);
+            
             removed[0] = firstElement;
             
             // Now create and add the ElementEdit
@@ -204,6 +215,7 @@ public class PlainDocument extends AbstractDocument
         ae.initCause(e);
         throw ae;
       }
+    
     super.insertUpdate(event, attributes);
   }
 

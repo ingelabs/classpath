@@ -1,3 +1,10 @@
+2006-03-06  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/PlainDocument.java:
+	(insertUpdate): Extended if-expression, added
+	code to generate another Element when newly inserted characters
+	and old ones will be on the same line.
+
 2006-03-05  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/GapContent.java:
