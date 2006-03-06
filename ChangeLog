@@ -1,3 +1,16 @@
+2006-03-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 25526
+	* gnu/java/rmi/dgc/DGCImpl.java (LeaseRecord, leaseCache): Removed. 
+	(RefProtector):	new inner class. (dirty): Rewritten.
+	* gnu/java/rmi/server/UnicastRef.java (dgcId, dgcInterfaceHash,
+	dgcSequence, DIRTY, this_id): New fields. (equals, hashCode, notifyDGC):
+	new methods. (readExternal): Create LeaseRenewingTask if non local.
+	* gnu/java/rmi/server/UnicastServer.java (objects): 
+	Use WeakHashMap. (refcache): Use WeakIdentityHashMap. 
+	(getExported): New method.
+	* gnu/java/rmi/dgc/LeaseRenewingTask.java: New file.
+
 2006-03-06  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/announce/20060306.wml: New file.
