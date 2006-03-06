@@ -1,3 +1,7 @@
+2006-03-06  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/plaf/synth/SynthPainter.java: Finished.
+
 2006-03-06  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #26568 reported by Paul Jenner <psj@harker.dyndns.org>
