@@ -1,3 +1,10 @@
+2006-03-06  Christian Thalinger <twisti@complang.tuwien.ac.at>
+
+	* configure.ac: Check for FREETYPE2.  This is a reverted patch and
+	is required on Darwin.
+	* native/jni/gtk-peer/Makefile.am (AM_LDFLAGS): Added FREETYPE2.
+	(AM_CFLAGS): Likewise.
+
 2006-03-06  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/tree/FixedHeightLayoutCache.java: Reformatted and fixed
