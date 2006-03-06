@@ -1,5 +1,10 @@
 2006-03-06  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/plaf/synth/Region.java (FILE_CHOOSER): Renamed.
+	(FORMATTED_TEXT_FIELD): Likewise.
+
+2006-03-06  Tom Tromey  <tromey@redhat.com>
+
 	* javax/swing/plaf/synth/SynthPainter.java: Finished.
 
 2006-03-06  Mark Wielaard  <mark@klomp.org>
