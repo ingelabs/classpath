@@ -1,3 +1,9 @@
+2006-03-06  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/plaf/synth/SynthLookAndFeel.java (getDescription): 
+	Javadoc fix.
+	(getName): Likewise.
+
 2006-03-06  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac (VERSION): Set to 0.91-pre.
