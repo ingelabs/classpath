@@ -1,3 +1,8 @@
+2006-03-06  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac (VERSION): Set to 0.91-pre.
+	* NEWS: Add updates for 0.90 release.
+
 2006-03-06  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/PlainDocument.java: Fix copyright header,
