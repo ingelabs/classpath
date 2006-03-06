@@ -1,3 +1,9 @@
+2006-03-06  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/DefaultCaret.java:
+	(mouseDragged): Do selection when shift is pressed.
+	(mouseClicked): Implemented.
+
 2006-03-06  Dalibor Topic  <robilad@kaffe.org>
 
 	* libraries/javalib/external/classpath/java/net/URI.java (quote):
