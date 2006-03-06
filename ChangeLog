@@ -1,3 +1,12 @@
+2006-03-06  Lillian Angel  <langel@redhat.com>
+	
+	PR classpath/26569
+	* java/awt/List.java
+	(preferredSize): Return the size of the list if the peer is null.
+	* gnu/java/awt/peer/gtk/GtkListPeer.java
+	(preferredSize): Code was returning the minimum size of the list.
+	Added adjustment to the width of the list so it is a proper size.
+
 2006-03-06  Wolfgang Baer  <WBaer@gmx.de>
 
 	* gnu/java/net/protocol/http/HTTPURLConnection.java: Organized imports.
