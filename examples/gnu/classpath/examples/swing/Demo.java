@@ -207,6 +207,10 @@ public class Demo
     new PopUpAction("TextField",
 		    (new TextFieldDemo("TextField Demo")).createContent(),
 		    examples);
+    
+    new PopUpAction("TextArea",
+                    (new TextAreaDemo("TextArea Demo")).createContent(),
+                    examples);
 
     new PopUpAction("FileChooser",
                     (new FileChooserDemo("FileChooser Demo")).createContent(),
@@ -727,7 +731,6 @@ public class Demo
     main.add(mkButtonBar());
     component.add(main, BorderLayout.CENTER);
     frame.pack();
-    frame.setSize(800, 600);
     frame.show();
   }
 
@@ -983,7 +986,7 @@ public class Demo
   
   private JPanel mkButtonBar()
   {    
-    JPanel panel = new JPanel(new FlowLayout());
+    JPanel panel = new JPanel(new GridLayout(3, 1, 5, 5));
     new PopUpAction("Buttons",
 		    (new ButtonDemo("Button Demo")).createContent(),
 		    panel);
@@ -1030,8 +1033,12 @@ public class Demo
 		    new SpinnerDemo("Spinner Demo").createContent(), panel);
 
     new PopUpAction("TextField",
-		    (new TextFieldDemo("TextField Demo")).createContent(),
-		    panel);
+                    (new TextFieldDemo("TextField Demo")).createContent(),
+                    panel);
+    
+    new PopUpAction("TextArea",
+                    (new TextAreaDemo("TextArea Demo")).createContent(),
+                    panel);
 
     new PopUpAction("FileChooser",
                     (new FileChooserDemo("FileChooser Demo")).createContent(),
