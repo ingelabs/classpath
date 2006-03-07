@@ -1,5 +1,19 @@
 2006-03-07  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/tree/DefaultMutableTreeNode.java: API docs all over plus
+	(clone): Reimplemented,
+	(add): Throw IllegalArgumentException if child is an ancestor,
+	(remove(int)): Set child's parent to null,
+	(remove(MutableTreeNode)): Check arguments and set child's parent to 
+	null,
+	(insert): Check allowsChildren flag, check for null argument, and
+	check for a node that is an ancestor,
+	(getIndex): Throw IllegalArgumentException for null argument,
+	(setAllowsChildren): If setting to false, remove existing children,
+	(removeAllChildren): Set parent to null for removed children.
+
+2006-03-07  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/tree/TreeNode.java: Reformatted and added API docs all
 	over.
 
