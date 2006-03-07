@@ -1,3 +1,8 @@
+2006-03-06  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/StrictMath.java (ulp): New methods.
+	* java/lang/Math.java (ulp): New methods.
+
 2006-03-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/rmi/server/UnicastRef.java,
