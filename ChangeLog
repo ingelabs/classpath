@@ -1,3 +1,21 @@
+2006-03-08  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* java/util/jar/Manifest.java: Removed unused imports.
+	(CRLF): New constant.
+	(read): Added method documentation.
+	Use UTF-8 encoding instead of 8859_1.
+	(write): Added method documentation.
+	Use BufferedOutputStream (w/ 4K buffer) instead of PrintWriter.
+	(write_main_section): Replace PrintWriter arg with OutputStream.
+	Replace JarException with IOException.
+	(write_version_info): Likewise.
+	(write_main_attributes): Likewise.
+	(write_attribute_entry): Likewise.
+	(write_individual_sections): Likewise.
+	(write_entry_attributes): Likewise.
+	(write_header): Replace PrintWriter arg with OutputStream.
+	Re-implemented.
+
 2006-03-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/tree/DefaultMutableTreeNode.java
