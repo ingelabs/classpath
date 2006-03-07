@@ -1,3 +1,8 @@
+2006-03-07  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/tree/TreeNode.java: Reformatted and added API docs all
+	over.
+
 2006-03-06  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/StrictMath.java (ulp): New methods.
