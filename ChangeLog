@@ -1,3 +1,13 @@
+2006-03-07  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/System.java (clearProperty): New method, merged from
+	generics branch.
+	(getProperty): Removed 'else'.
+	(getProperty): Check for empty key.
+	(setProperty): Likewise.
+	* gnu/classpath/SystemProperties.java (remove): New method, merged
+	from generics branch.
+
 2006-03-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* java/rmi/server/UID.java: New file (replacing). 
