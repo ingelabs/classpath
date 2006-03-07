@@ -1,3 +1,7 @@
+2006-03-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* java/rmi/server/UID.java: New file (replacing). 
+
 2006-03-08  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* java/util/jar/Manifest.java: Removed unused imports.
