@@ -796,9 +796,11 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * getFirstChild
+   * Returns the first child node belonging to this tree node.
    *
-   * @return TreeNode
+   * @return The first child node.
+   * 
+   * @throws NoSuchElementException if this tree node has no children.
    */
   public TreeNode getFirstChild()
   {
@@ -806,9 +808,11 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * getLastChild
+   * Returns the last child node belonging to this tree node.
    *
-   * @return TreeNode
+   * @return The last child node.
+   * 
+   * @throws NoSuchElementException if this tree node has no children.
    */
   public TreeNode getLastChild()
   {
@@ -816,16 +820,20 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * getChildAfter
+   * Returns the next child after the specified <code>node</code>, or 
+   * <code>null</code> if there is no child after the specified 
+   * <code>node</code>.
    *
-   * @param node TODO
+   * @param node  a child of this node (<code>null</code> not permitted).
    *
-   * @return TreeNode
+   * @return The next child, or <code>null</code>.
+   * 
+   * @throws IllegalArgumentException if <code>node</code> is not a child of 
+   *     this node, or is <code>null</code>.
    */
   public TreeNode getChildAfter(TreeNode node)
   {
-    if (node == null
-        || node.getParent() != this)
+    if (node == null || node.getParent() != this)
       throw new IllegalArgumentException();
 
     int index = getIndex(node) + 1;
@@ -837,16 +845,20 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * getChildBefore
+   * Returns the previous child before the specified <code>node</code>, or 
+   * <code>null</code> if there is no child before the specified 
+   * <code>node</code>.
    *
-   * @param node TODO
+   * @param node  a child of this node (<code>null</code> not permitted).
    *
-   * @return TreeNode
+   * @return The previous child, or <code>null</code>.
+   * 
+   * @throws IllegalArgumentException if <code>node</code> is not a child of 
+   *     this node, or is <code>null</code>.
    */
   public TreeNode getChildBefore(TreeNode node)
   {
-    if (node == null
-        || node.getParent() != this)
+    if (node == null || node.getParent() != this)
       throw new IllegalArgumentException();
 
     int index = getIndex(node) - 1;
@@ -858,25 +870,31 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * isNodeSibling
+   * Returns <code>true</code> if this tree node and <code>node</code> share
+   * the same parent.  If <code>node</code> is this tree node, the method
+   * returns <code>true</code> and if <code>node</code> is <code>null</code>
+   * this method returns <code>false</code>.
    *
-   * @param node TODO
+   * @param node  the node (<code>null</code> permitted).
    *
-   * @return boolean
+   * @return A boolean.
    */
   public boolean isNodeSibling(TreeNode node)
   {
     if (node == null)
       return false;
-
+    if (node == this)
+      return true;
     return (node.getParent() == getParent()
             && getParent() != null);
   }
 
   /**
-   * getSiblingCount
+   * Returns the number of siblings for this tree node.  If the tree node has
+   * a parent, this method returns the child count for the parent, otherwise
+   * it returns <code>1</code>.
    *
-   * @return int
+   * @return The sibling count.
    */
   public int getSiblingCount()
   {
@@ -887,9 +905,11 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * getNextSibling
+   * Returns the next sibling for this tree node.  If this node has no parent,
+   * or this node is the last child of its parent, this method returns 
+   * <code>null</code>.  
    *
-   * @return DefaultMutableTreeNode
+   * @return The next sibling, or <code>null</code>.
    */
   public DefaultMutableTreeNode getNextSibling()
   {
@@ -905,9 +925,11 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * getPreviousSibling
+   * Returns the previous sibling for this tree node.  If this node has no 
+   * parent, or this node is the first child of its parent, this method returns 
+   * <code>null</code>.  
    *
-   * @return DefaultMutableTreeNode
+   * @return The previous sibling, or <code>null</code>.
    */
   public DefaultMutableTreeNode getPreviousSibling()
   {
@@ -923,9 +945,10 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * isLeaf
+   * Returns <code>true</code> if this tree node is a lead node (that is, it 
+   * has no children), and <code>false</otherwise>.
    *
-   * @return boolean
+   * @return A boolean.
    */
   public boolean isLeaf()
   {
@@ -933,9 +956,11 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * getFirstLeaf
+   * Returns the first leaf node that is a descendant of this node.  Recall 
+   * that a node is its own descendant, so if this node has no children then 
+   * it is returned as the first leaf.
    *
-   * @return DefaultMutableTreeNode
+   * @return The first leaf node.
    */
   public DefaultMutableTreeNode getFirstLeaf()
   {
@@ -948,9 +973,11 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * getLastLeaf
+   * Returns the last leaf node that is a descendant of this node.  Recall 
+   * that a node is its own descendant, so if this node has no children then 
+   * it is returned as the last leaf.
    *
-   * @return DefaultMutableTreeNode
+   * @return The first leaf node.
    */
   public DefaultMutableTreeNode getLastLeaf()
   {
@@ -967,33 +994,37 @@ public class DefaultMutableTreeNode
   }
 
   /**
-   * getNextLeaf
+   * Returns the next leaf node after this tree node. 
    *
-   * @return DefaultMutableTreeNode
+   * @return The next leaf node, or <code>null</code>.
    */
   public DefaultMutableTreeNode getNextLeaf()
   {
-    if (parent == null)
-      return null;
-
-    // TODO: Fix implementation.
+    // if there is a next sibling, return its first leaf
+    DefaultMutableTreeNode sibling = getNextSibling();
+    if (sibling != null)
+      return sibling.getFirstLeaf();
+    // otherwise move up one level and try again...
+    if (parent != null)
+      return ((DefaultMutableTreeNode) parent).getNextLeaf();
     return null;
-    //return parent.getChildAfter(this);
   }
 
   /**
-   * getPreviousLeaf
+   * Returns the previous leaf node before this tree node.
    *
-   * @return DefaultMutableTreeNode
+   * @return The previous leaf node, or <code>null</code>.
    */
   public DefaultMutableTreeNode getPreviousLeaf()
   {
-    if (parent == null)
-      return null;
-
-    // TODO: Fix implementation.
+    // if there is a previous sibling, return its last leaf
+    DefaultMutableTreeNode sibling = getPreviousSibling();
+    if (sibling != null)
+      return sibling.getLastLeaf();
+    // otherwise move up one level and try again...
+    if (parent != null)
+      return ((DefaultMutableTreeNode) parent).getPreviousLeaf();
     return null;
-    //return parent.getChildBefore(this);
   }
 
   /**

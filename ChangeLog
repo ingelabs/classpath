@@ -1,3 +1,20 @@
+2006-03-07  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/tree/DefaultMutableTreeNode.java
+	(getFirstChild): Updated API docs,
+	(getLastChild): Likewise,
+	(getChildAfter): Likewise,
+	(getChildBefore): Likewise,
+	(isNodeSibling): Return true if node == this,
+	(getSiblingCount): Updated API docs,
+	(getNextSibling): Likewise,
+	(getPreviousSibling): Likewise,
+	(isLeaf): Likewise,
+	(getFirstLeaf): Likewise,
+	(getLastLeaf): Likewise,
+	(getNextLeaf): Implemented,
+	(getPreviousLeaf): Implemented.
+
 2006-03-07  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/image/ColorModel.java (getComponents): Javadoc fix.
