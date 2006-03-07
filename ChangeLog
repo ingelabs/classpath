@@ -1,3 +1,11 @@
+2006-03-07  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/image/ColorModel.java (getComponents): Javadoc fix.
+	* java/awt/datatransfer/FlavorEvent.java: Added missing @since.
+	* java/awt/dnd/DropTargetEvent.java (serialVersionUID): New field.
+	* java/awt/DefaultFocusTraversalPolicy.java (serialVersionUID): New
+	field.
+
 2006-03-07  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/tree/DefaultMutableTreeNode.java: API docs all over plus
