@@ -1,6 +1,12 @@
 2006-03-08  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/GridBagLayout.java
+	(GetLayoutInfo): If the last component added had gridwidth == REMAINDER,
+	then the next item should be set to current_y (not 0).
+
+2006-03-08  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/GridBagLayout.java
 	(GetLayoutInfo): If gridy is RELATIVE and there is no component
 	in the bottom-most spot of the column, we need to place that component
 	at the y-location of the other components in that row. If there are
