@@ -123,6 +123,7 @@ public final class UID
                   {
                   }
                 uidCounter = Short.MIN_VALUE;
+                time = last = System.currentTimeMillis();
               }
 
             count = uidCounter++;
