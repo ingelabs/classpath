@@ -1,3 +1,10 @@
+2006-03-08  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/InetSocketAddress.java
+	(InetSocketAddress(String,int,resolve)): New private contructor.
+	(InetSocketAddress(String,int)): Use new private constructor.
+	(createUnresolved): New method.
+
 2006-03-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* java/rmi/server/UID.java (constructor): Assing last and time fields
