@@ -1,3 +1,11 @@
+2006-03-08  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/GridBagLayout.java
+	(GetLayoutInfo): If gridy is RELATIVE and there is no component
+	in the bottom-most spot of the column, we need to place that component
+	at the y-location of the other components in that row. If there are
+	no other components in that row, then place it at y = 0.
+
 2006-03-08  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/ProgressMonitor.java: Updated API docs,

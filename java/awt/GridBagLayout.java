@@ -356,10 +356,9 @@ public class GridBagLayout
           // If component is not visible we dont have to care about it.
           if (!component.isVisible())
             continue;
-		
+
           GridBagConstraints constraints =
               lookupInternalConstraints(component);
-
           int cellx = sumIntArray(info.colWidths, constraints.gridx);
           int celly = sumIntArray(info.rowHeights, constraints.gridy);
           int cellw = sumIntArray(info.colWidths,
@@ -398,8 +397,8 @@ public class GridBagLayout
               break;
 	    }
 
-          int x;
-          int y;
+          int x = 0;
+          int y = 0;
 
           switch(constraints.anchor)
 	    {
@@ -440,7 +439,6 @@ public class GridBagLayout
               y = celly + (cellh - dim.height) / 2;
               break;
 	    }
-
           component.setBounds(info.pos_x + x, info.pos_y + y, dim.width, dim.height);
 	}
 
@@ -485,11 +483,10 @@ public class GridBagLayout
       for (int i = 0; i < components.length; i++)
 	{
           Component component = components [i];
-		
           // If component is not visible we dont have to care about it.
           if (!component.isVisible())
             continue;
-		
+
           // When looking up the constraint for the first time, check the
           // original unmodified constraint.  After the first time, always
           // refer to the internal modified constraint.
@@ -560,7 +557,16 @@ public class GridBagLayout
               // this column. We want to add this component below it.
               // If this column is empty, add to the 0 position.
               if (!lastInCol.containsKey(new Integer(constraints.gridx))) 
-                y = 0;
+                {
+                  if (lastInRow.containsKey(new Integer(constraints.gridx)))
+                  {
+                    Component lastComponent = (Component) lastInRow.get(new Integer(constraints.gridx));
+                    GridBagConstraints lastConstraints = lookupInternalConstraints(lastComponent);
+                    y = lastConstraints.gridy;
+                  }
+                else
+                  y = 0;
+                }
               else
                 {
                   Component lastComponent = (Component)lastInCol.get(new Integer(constraints.gridx));
