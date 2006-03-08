@@ -1,5 +1,9 @@
 2006-03-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* java/rmi/server/UID.java (getMachineId): Include the host IP address.
+    
+2006-03-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* java/rmi/server/ObjID.java: Documented and autoformatted.
 
 2006-03-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
