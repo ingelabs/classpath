@@ -56,25 +56,10 @@ TOOLSdir = $(pkgdatadir)/tools
 # Make sure all sources and icons are also installed so users can use them.
 # (Be careful to strip off the srcdir part of the path when installing.)
 install-data-local:
-	srcdir_cnt=`echo $(srcdir) | wc -c`; \
-	for file in $(ALL_TOOLS_FILES); do \
-	  f=`echo $$file | cut -c$$srcdir_cnt-`; \
-	  fdir=`dirname $$f`; \
-	  if test ! -d $(DESTDIR)$(pkgdatadir)/tools/$$fdir; then \
-	    echo "$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/tools/$$fdir"; \
-	    $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/tools/$$fdir; \
-	  fi; \
-	  echo "$(INSTALL_DATA) $$file $(DESTDIR)$(pkgdatadir)/tools/$$f"; \
-	  $(INSTALL_DATA) $$file $(DESTDIR)$(pkgdatadir)/tools/$$f; \
-	done
+	cp $(srcdir)/README $(DESTDIR)$(pkgdatadir)/tools/README
 
 uninstall-local:
-	srcdir_cnt=`echo $(srcdir) | wc -c`; \
-	for file in $(ALL_TOOLS_FILES); do \
-	  f=`echo $$file | cut -c$$srcdir_cnt-`; \
-	  echo "rm -f $(DESTDIR)$(pkgdatadir)/tools/$$f"; \
-	  rm -f $(DESTDIR)$(pkgdatadir)/tools/$$f; \
-	done
+	rm $(DESTDIR)$(pkgdatadir)/tools/README
 
 # Make sure everything is included in the distribution.
 EXTRA_DIST = Makefile.am
