@@ -1,5 +1,9 @@
 2006-03-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* java/rmi/server/ObjID.java: Documented and autoformatted.
+
+2006-03-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	PR 26584
 	* tools/Makefile.am (install-data-local,
 	uninstall-local): Install/uninstall the tools/README only.
