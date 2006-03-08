@@ -1,7 +1,7 @@
 /* VMVirtualMachine.java -- A reference implementation of a JDWP virtual
    machine
 
-   Copyright (C) 2005 Free Software Foundation
+   Copyright (C) 2005, 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -197,6 +197,19 @@ public class VMVirtualMachine
   public static native int getClassStatus (Class clazz)
     throws JdwpException;
 
+  /**
+   * A factory method for getting valid virtual machine methods
+   * which may be passed to/from the debugger.
+   *
+   * @param rid      the ID of the type in which the method is defined
+   * @param methodId the ID of the desired method
+   * @return the desired internal representation of the method
+   * @throws InvalidMethodException if the method is not defined
+   *           in the class
+   * @throws JdwpException for any other error
+   */
+  public static native VMMethod getClassMethod(Class klass, long id)
+    throws JdwpException;
 
   /**
    * Returns the thread's call stack

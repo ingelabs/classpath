@@ -1,3 +1,9 @@
+2006-03-08  Keith Seitz  <keiths@redhat.com>
+
+	* vm/reference/gnu/classpath/jdwp/VMMethod.java: New file.
+	* vm/reference/gnu/classpath/jdwp/VMVirtualMachine.java
+	(getClassMethod): New method.
+
 2006-03-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* java/rmi/server/UID.java (getMachineId): Include the host IP address.
