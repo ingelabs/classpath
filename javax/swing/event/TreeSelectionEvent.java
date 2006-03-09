@@ -41,41 +41,56 @@ package javax.swing.event;
 import java.util.EventObject;
 
 import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 /**
- * TreeSelectionEvent
+ * An event that carries information about a change to a 
+ * {@link TreeSelectionModel}.
+ * 
+ * @see TreeSelectionListener
+ * 
  * @author Andrew Selkirk
- * @version	1.0
  */
 public class TreeSelectionEvent extends EventObject {
 
   /**
-   * paths
+   * The paths that have been added or removed from the selection.
    */
   protected TreePath[] paths;
 
   /**
-   * areNew
+   * Flags indicating if the paths were added (<code>true</code>) or removed
+   * (<code>false</code>) from the selection.
    */
   protected boolean[] areNew;
 
   /**
-   * oldLeadSelectionPath
+   * The old lead selection path (may be <code>null</code>).
    */
   protected TreePath oldLeadSelectionPath;
 
   /**
-   * newLeadSelectionPath
+   * The new lead selection path (may be <code>null</code>).
    */
   protected TreePath newLeadSelectionPath;
 
   /**
-   * Constructor TreeSelectionEvent
-   * @param source TODO
-   * @param paths TODO
-   * @param areNew TODO
-   * @param oldLeadSelectionPath TODO
-   * @param newLeadSelectionPath TODO
+   * Creates a new <code>TreeSelectionEvent</code>.
+   * 
+   * @param source  the source (usually a {@link TreeSelectionModel}, 
+   *                <code>null</code> not permitted).
+   * @param paths  an array of the paths that have been added to or removed 
+   *     from the selection.
+   * @param areNew  a flag for each path where <code>true</code> indicates the
+   *     corresponding path has been added to the selection and 
+   *     <code>false</code> indicates the path has been removed.
+   * @param oldLeadSelectionPath  the old lead selection path (<code>null</code>
+   *     permitted).
+   * @param newLeadSelectionPath  the new lead selection path (<code>null</code>
+   *     permitted).
+   *
+   * @throws IllegalArgumentException if <code>source</code> is 
+   *     <code>null</code>.
    */
   public TreeSelectionEvent(Object source, TreePath[] paths,
 			    boolean[] areNew, TreePath oldLeadSelectionPath,
@@ -89,12 +104,21 @@ public class TreeSelectionEvent extends EventObject {
   }
 
   /**
-   * Constructor TreeSelectionEvent
-   * @param source TODO
-   * @param path TODO
-   * @param isNew TODO
-   * @param oldLeadSelectionPath TODO
-   * @param newLeadSelectionPath TODO
+   * Creates a new <code>TreeSelectionEvent</code>.
+   * 
+   * @param source  the event source (usually a {@link TreeSelectionModel},
+   *     <code>null</code> not permitted).
+   * @param path  the path.
+   * @param isNew <code>true</code> indicates that <code>path</code> has been 
+   *     added to the selection, and <code>false</code> indicates that it has 
+   *     been removed.
+   * @param oldLeadSelectionPath  the old lead selection path (<code>null</code>
+   *     permitted).
+   * @param newLeadSelectionPath  the new lead selection path (<code>null</code>
+   *     permitted).
+   *                              
+   * @throws IllegalArgumentException if <code>source</code> is 
+   *     <code>null</code>.
    */
   public TreeSelectionEvent(Object source, TreePath path,
 			    boolean isNew, TreePath oldLeadSelectionPath,
@@ -108,7 +132,11 @@ public class TreeSelectionEvent extends EventObject {
   }
 
   /**
-   * @return the first path element
+   * Returns the first path element.
+   * 
+   * @return The first path element.
+   * 
+   * @see #getPaths()
    */
   public TreePath getPath()
   {
@@ -116,8 +144,11 @@ public class TreeSelectionEvent extends EventObject {
   } 
 
   /**
+   * Returns an array of the paths that changed in the selection.
    * 
-   * @return the paths with selection changed
+   * @return The paths that changed in the selection.
+   * 
+   * @see #isAddedPath(TreePath)
    */
   public TreePath[] getPaths()
   {
@@ -125,7 +156,13 @@ public class TreeSelectionEvent extends EventObject {
   } 
 
   /**
-   * @return true if the first path is added to the selection, false otherwise
+   * Returns <code>true</code> if the path returned by {@link #getPath()} has
+   * been added to the selection, and <code>false</code> if it has been
+   * removed.
+   * 
+   * @return A boolean.
+   * 
+   * @see #isAddedPath(int)
    */
   public boolean isAddedPath()
   {
@@ -133,8 +170,19 @@ public class TreeSelectionEvent extends EventObject {
   } 
 
   /**
-   * @param path the path to check
-   * @return true if the path is added to the selection, false otherwise
+   * Returns <code>true</code> if <code>path</code> has been added to the 
+   * selection, and <code>false</code> if the path has been removed from the
+   * selection.
+   * 
+   * @param path  the path to check.
+   * 
+   * @return A flag indicating whether the path has been added to, or removed
+   *     from, the selection.
+   *     
+   * @throw IllegalArgumentException if <code>path</code> is not one of the
+   *     paths in {@link #getPaths()}.
+   *     
+   * @see #isAddedPath(int)
    */
   public boolean isAddedPath(TreePath path)
   {
@@ -146,8 +194,18 @@ public class TreeSelectionEvent extends EventObject {
   } 
 
   /**
-   * @param index the index'th path
-   * @return true if the path is added to the selection, false otherwise
+   * Returns <code>true</code> if the path at the specified index has been 
+   * added to the selection, and <code>false</code> if the path has been 
+   * removed from the selection.
+   * 
+   * @param index  the path index.
+   * 
+   * @return A flag indicating whether the path has been added to, or removed
+   *     from, the selection.
+   *     
+   * @since 1.3
+   * 
+   * @see #isAddedPath(TreePath)
    */
   public boolean isAddedPath(int index)
   {
@@ -155,7 +213,11 @@ public class TreeSelectionEvent extends EventObject {
   }
 
   /**
-   * @return the previous lead selection path
+   * Returns the old lead selection path.
+   * 
+   * @return The old lead selection path (possibly <code>null</code>).
+   * 
+   * @see #getNewLeadSelectionPath()
    */
   public TreePath getOldLeadSelectionPath()
   {
@@ -163,7 +225,11 @@ public class TreeSelectionEvent extends EventObject {
   } 
 
   /**
-   * @return the current lead selection path
+   * Returns the new lead selection path.
+   * 
+   * @return The new lead selection path (possibly <code>null</code>).
+   * 
+   * @see #getOldLeadSelectionPath()
    */
   public TreePath getNewLeadSelectionPath()
   {
@@ -171,8 +237,15 @@ public class TreeSelectionEvent extends EventObject {
   }
 
   /**
-   * @param source the new event source
-   * @return a cloned event with another event source
+   * Creates a shallow copy of this <code>TreeSelectionEvent</code>, replacing
+   * the source with <code>source</code>.
+   * 
+   * @param source  the new event source (<code>null</code> not permitted).
+   * 
+   * @return A cloned event with another event source.
+   * 
+   * @throws IllegalArgumentException if <code>source</code> is 
+   *     <code>null</code>.
    */
   public Object cloneWithSource(Object source)
   {
