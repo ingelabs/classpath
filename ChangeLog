@@ -1,5 +1,26 @@
 2006-03-09  Lillian Angel  <langel@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(get_widget): New function.
+	(gtkWidgetSetParent): Changed to use new function.
+	(gtkWidgetSetCursorUnlocked): Likewise.
+	(gtkWidgetSetSensitive): Likewise.
+	(gtkWidgetRequestFocus): Likewise.
+	(gtkWindowGetLocationOnScreen): Likewise.
+	(gtkWidgetGetDimensions): Likewise.
+	(gtkWidgetGetPreferredDimensions): Likewise.
+	(setNativeBounds): Likewise.
+	(gtkWidgetGetBackground): Likewise.
+	(gtkWidgetGetForeground): Likewise.
+	(gtkWidgetSetBackground): Likewise.
+	(gtkWidgetSetForeground): Likewise.
+	(setVisibleNativeUnlocked): Likewise.
+	(isEnabled): Likewise.
+	(isRealized): Likewise.
+	(setNativeEventMask): Likewise.
+
+2006-03-09  Lillian Angel  <langel@redhat.com>
+
 	PR Classpath\22163
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c
 	(create): Added combobox widget to an event box.

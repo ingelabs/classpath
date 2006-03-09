@@ -73,6 +73,7 @@ exception statement from your version. */
 
 static GtkWidget *find_fg_color_widget (GtkWidget *widget);
 static GtkWidget *find_bg_color_widget (GtkWidget *widget);
+static GtkWidget *get_widget (GtkWidget *widget);
 
 static jmethodID postMouseEventID;
 static jmethodID setCursorID;
@@ -245,7 +246,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursorUnlocked
       gdk_cursor_type = GDK_LEFT_PTR;
     }
       
-  widget = GTK_WIDGET(ptr);
+  widget = get_widget(GTK_WIDGET(ptr));
 
   gdk_cursor = gdk_cursor_new (gdk_cursor_type);
   gdk_window_set_cursor (widget->window, gdk_cursor);
@@ -265,9 +266,9 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetParent
 
   ptr = NSA_GET_PTR (env, obj);
   parent_ptr = NSA_GET_PTR (env, parent);
-
+  
   widget = GTK_WIDGET (ptr);
-  parent_widget = GTK_WIDGET (parent_ptr);
+  parent_widget = get_widget(GTK_WIDGET (parent_ptr));
 
   if (widget->parent == NULL)
     {
@@ -310,7 +311,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetSensitive
 
   ptr = NSA_GET_PTR (env, obj);
 
-  gtk_widget_set_sensitive (GTK_WIDGET (ptr), sensitive);
+  gtk_widget_set_sensitive (get_widget(GTK_WIDGET (ptr)), sensitive);
 
   gdk_threads_leave ();
 }
@@ -325,7 +326,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetRequestFocus
 
   ptr = NSA_GET_PTR (env, obj);
   
-  gtk_widget_grab_focus (GTK_WIDGET (ptr));
+  gtk_widget_grab_focus (get_widget(GTK_WIDGET (ptr)));
 
   gdk_threads_leave ();
 }
@@ -361,11 +362,11 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetDispatchKeyEvent
     }
 
   if (GTK_IS_BUTTON (ptr))
-    event->key.window = GTK_BUTTON (ptr)->event_window;
-  else if (GTK_IS_SCROLLED_WINDOW (ptr))
-    event->key.window = GTK_WIDGET (GTK_SCROLLED_WINDOW (ptr)->container.child)->window;
+    event->key.window = GTK_BUTTON (get_widget(GTK_WIDGET (ptr)))->event_window;
+  else if (GTK_IS_SCROLLED_WINDOW (get_widget(GTK_WIDGET (ptr))))
+    event->key.window = GTK_WIDGET (GTK_SCROLLED_WINDOW (get_widget(GTK_WIDGET (ptr)))->container.child)->window;
   else
-    event->key.window = GTK_WIDGET (ptr)->window;
+    event->key.window = get_widget(GTK_WIDGET (ptr))->window;
 
   event->key.send_event = 0;
   event->key.time = (guint32) when;
@@ -441,10 +442,10 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetDispatchKeyEvent
      so we don't want to resend it. */
   if (!GTK_IS_WINDOW (ptr))
     {
-      if (GTK_IS_SCROLLED_WINDOW (ptr))
-        gtk_widget_event (GTK_WIDGET (GTK_SCROLLED_WINDOW (ptr)->container.child), event);
+      if (GTK_IS_SCROLLED_WINDOW (get_widget(GTK_WIDGET (ptr))))
+        gtk_widget_event (GTK_WIDGET (GTK_SCROLLED_WINDOW (get_widget(GTK_WIDGET (ptr)))->container.child), event);
       else
-        gtk_widget_event (GTK_WIDGET (ptr), event);
+        gtk_widget_event (get_widget(GTK_WIDGET (ptr)), event);
     }
 
   gdk_threads_leave ();
@@ -465,7 +466,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWindowGetLocationOnScreen
   ptr = NSA_GET_PTR (env, obj);
   point = (*env)->GetIntArrayElements (env, jpoint, 0);
 
-  gdk_window_get_root_origin (GTK_WIDGET (ptr)->window, point, point+1);
+  gdk_window_get_root_origin (get_widget(GTK_WIDGET (ptr))->window, point, point+1);
 
   (*env)->ReleaseIntArrayElements(env, jpoint, point, 0);
 
@@ -488,7 +489,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen
   ptr = NSA_GET_PTR (env, obj);
   point = (*env)->GetIntArrayElements (env, jpoint, 0);
 
-  widget = GTK_WIDGET(ptr);
+  widget = get_widget(GTK_WIDGET (ptr));
   while(gtk_widget_get_parent(widget) != NULL)
     widget = gtk_widget_get_parent(widget);
   gdk_window_get_position (GTK_WIDGET(widget)->window, point, point+1);
@@ -519,7 +520,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions
   dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   dims[0] = dims[1] = 0;
 
-  gtk_widget_size_request (GTK_WIDGET (ptr), &requisition);
+  gtk_widget_size_request (get_widget(GTK_WIDGET (ptr)), &requisition);
 
   dims[0] = requisition.width;
   dims[1] = requisition.height;
@@ -551,10 +552,10 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetPreferredDimensions
   /* Widgets that extend GtkWindow such as GtkFileChooserDialog may have
      a default size.  These values seem more useful then the natural
      requisition values, particularly for GtkFileChooserDialog. */
-  if (GTK_IS_WINDOW (ptr))
+  if (GTK_IS_WINDOW (get_widget(GTK_WIDGET (ptr))))
     {
       gint width, height;
-      gtk_window_get_default_size (GTK_WINDOW (ptr), &width, &height);
+      gtk_window_get_default_size (GTK_WINDOW (get_widget(GTK_WIDGET (ptr))), &width, &height);
 
       dims[0] = width;
       dims[1] = height;
@@ -562,14 +563,14 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetPreferredDimensions
   else
     {
       /* Save the widget's current size request. */
-      gtk_widget_size_request (GTK_WIDGET (ptr), &current_req);
+      gtk_widget_size_request (get_widget(GTK_WIDGET (ptr)), &current_req);
 
       /* Get the widget's "natural" size request. */
-      gtk_widget_set_size_request (GTK_WIDGET (ptr), -1, -1);
-      gtk_widget_size_request (GTK_WIDGET (ptr), &natural_req);
+      gtk_widget_set_size_request (get_widget(GTK_WIDGET (ptr)), -1, -1);
+      gtk_widget_size_request (get_widget(GTK_WIDGET (ptr)), &natural_req);
 
       /* Reset the widget's size request. */
-      gtk_widget_set_size_request (GTK_WIDGET (ptr),
+      gtk_widget_set_size_request (get_widget(GTK_WIDGET (ptr)),
 			           current_req.width, current_req.height);
 
       dims[0] = natural_req.width;
@@ -656,7 +657,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetForeground
 
   ptr = NSA_GET_PTR (env, obj);
 
-  fg = GTK_WIDGET (ptr)->style->fg[GTK_STATE_NORMAL];
+  fg = get_widget(GTK_WIDGET (ptr))->style->fg[GTK_STATE_NORMAL];
 
   array = (*env)->NewIntArray (env, 3);
 
@@ -766,7 +767,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_isEnabled
 
   ptr = NSA_GET_PTR (env, obj);
 
-  ret_val = GTK_WIDGET_IS_SENSITIVE (GTK_WIDGET (ptr));
+  ret_val = GTK_WIDGET_IS_SENSITIVE (get_widget(GTK_WIDGET (ptr)));
 
   gdk_threads_leave ();
 
@@ -790,7 +791,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_isRealized
       return FALSE;
     }
 
-  ret_val = GTK_WIDGET_REALIZED (GTK_WIDGET (ptr));
+  ret_val = GTK_WIDGET_REALIZED (get_widget(GTK_WIDGET (ptr)));
 
   gdk_threads_leave ();
 
@@ -841,7 +842,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeEventMask
 
   ptr = NSA_GET_PTR (env, obj);
 
-  gtk_widget_add_events (GTK_WIDGET (ptr),
+  gtk_widget_add_events (get_widget(GTK_WIDGET (ptr)),
                          GDK_POINTER_MOTION_MASK
 			 | GDK_BUTTON_MOTION_MASK
 			 | GDK_BUTTON_PRESS_MASK
@@ -855,6 +856,19 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeEventMask
                          | GDK_FOCUS_CHANGE_MASK);
 
   gdk_threads_leave ();
+}
+
+static GtkWidget *
+get_widget (GtkWidget *widget)
+{
+  GtkWidget *w;
+
+  if (GTK_IS_EVENT_BOX (widget))
+    w = gtk_bin_get_child (GTK_BIN(widget));
+  else
+    w = widget;
+
+  return w;
 }
 
 /* FIXME: these functions should be implemented by overridding the
