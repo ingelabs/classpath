@@ -43,15 +43,10 @@ package gnu.classpath.jdwp;
 
 import gnu.classpath.jdwp.event.EventRequest;
 import gnu.classpath.jdwp.exception.JdwpException;
-import gnu.classpath.jdwp.exception.InvalidClassException;
-import gnu.classpath.jdwp.exception.InvalidObjectException;
-import gnu.classpath.jdwp.id.ObjectId;
-import gnu.classpath.jdwp.id.ReferenceTypeId;
 import gnu.classpath.jdwp.util.LineTable;
 import gnu.classpath.jdwp.util.MethodResult;
 import gnu.classpath.jdwp.util.VariableTable;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

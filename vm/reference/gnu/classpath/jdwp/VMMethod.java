@@ -44,7 +44,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import gnu.classpath.jdwp.exception.JdwpException;
-import gnu.classpath.jdwp.id.ReferenceTypeId;
 import gnu.classpath.jdwp.util.LineTable;
 import gnu.classpath.jdwp.util.VariableTable;
 

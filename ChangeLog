@@ -1,3 +1,15 @@
+2006-03-09  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/Jdwp.java: Remove unused imports.
+	* gnu/classpath/jdwp/event/EventRequest.java: Likewise.
+	* gnu/classpath/jdwp/event/filters/ClassMatchFilter.java: Likewise.
+	* gnu/classpath/jdwp/event/filters/ThreadOnlyFilter.java: Likewise.
+	* gnu/classpath/jdwp/processor/ThreadReferenceCommandSet.java: Likewise.
+	* gnu/classpath/jdwp/transport/ITransport.java: Likewise.
+	* vm/reference/gnu/classpath/jdwp/VMIdManager.java: Likewise.
+	* vm/reference/gnu/classpath/jdwp/VMMethod.java: Likewise.
+	* vm/reference/gnu/classpath/jdwp/VMVirtualMachine.java: Likewise.
+
 2006-03-09  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/JList.java (ensureIndexIsVisible): Check whether cell

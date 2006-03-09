@@ -48,11 +48,9 @@ import gnu.classpath.jdwp.id.*;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.SoftReference;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
 
 /**
  * This class manages objects and referencetypes that are reported
