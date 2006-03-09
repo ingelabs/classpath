@@ -1,3 +1,8 @@
+2006-03-09  Arnaud Vandyck  <avdyk@gnu.org>
+
+	* .classpath: added exclude pattern on source folders
+	(Makefiles, README and .cvsignore)
+
 2006-03-08  Keith Seitz  <keiths@redhat.com>
 
 	* vm/reference/gnu/classpath/jdwp/VMMethod.java: New file.
