@@ -5,6 +5,12 @@
 
 2006-03-09  Lillian Angel  <langel@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollPanePeer.c
+	(getHScrollbarHeight): Fixed property name.
+	(getVScrollbarHeight): Likewise.
+
+2006-03-09  Lillian Angel  <langel@redhat.com>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
 	(get_widget): New function.
 	(gtkWidgetSetParent): Changed to use new function.

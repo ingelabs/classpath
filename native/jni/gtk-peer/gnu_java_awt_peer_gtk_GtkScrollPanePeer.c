@@ -148,7 +148,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getHScrollbarHeight
   sw = GTK_SCROLLED_WINDOW (scrollpane_get_widget (GTK_WIDGET (ptr)));
 
   gtk_widget_size_request (sw->hscrollbar, &requisition);
-  gtk_widget_style_get (GTK_WIDGET (sw), "scrollpane_spacing", &spacing, NULL);
+  gtk_widget_style_get (GTK_WIDGET (sw), "scrollbar_spacing", &spacing, NULL);
   height = requisition.height + spacing;
 
   gdk_threads_leave ();
@@ -173,7 +173,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getVScrollbarWidth
   sw = GTK_SCROLLED_WINDOW (scrollpane_get_widget (GTK_WIDGET (ptr)));
 
   gtk_widget_size_request (sw->vscrollbar, &requisition);
-  gtk_widget_style_get (GTK_WIDGET (sw), "scrollpane_spacing", &spacing, NULL);
+  gtk_widget_style_get (GTK_WIDGET (sw), "scrollbar_spacing", &spacing, NULL);
   width = requisition.width + spacing;
 
   gdk_threads_leave ();
