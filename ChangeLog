@@ -1,3 +1,46 @@
+2006-03-09  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GtkClipboard.java (clipboard, selection):
+	New static field.
+	(stringMimeType, imageMimeType, filesMimeType): Initialize directly.
+	(canCache): Likewise.
+	(GtkClipboard): Take String argument.
+	(getInstance): Removed.
+	(getClipboardInstance, getSelectionInstance): New static methods.
+	(setSystemContents): Make synchronized. Takes boolean argument.
+	(initNativeState): Add clipboard and selection.
+	* gnu/java/awt/peer/gtk/GtkClipboardNotifier.java
+	(announceClipboardChange, announcePrimaryChange): New static field.
+	(announce): Take GtkClipboard as argument.
+	(run): Check which clipboard to announce change for.
+	* gnu/java/awt/peer/gtk/GtkSelection.java (clipboard): New final
+	boolean field.
+	(GtkSelection): Take GtkClipboard as argument.
+	(requestText, requestImage, requestURIs, requestBytes): Add boolean
+	clipboard argument.
+	(requestMimeTypes): Likewise.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (getSystemSelection):
+	New method.
+	* java/awt/Toolkit.java (getSystemSelection): Document.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c
+	(cp_gtk_selection_instance): New var.
+	(current_selection, owner): Removed.
+	(clipboard_owner_change_cb): Use clipboard argument.
+	(initNativeState): Store clipboard and selection instances. Cache
+	setSystemContentsID, provideContentID, provideTextID, provideImageID,
+	and provideURIsID.
+	(clipboard_get_func): Use clipboard argument.
+	(clipboard_clear_func): Likewise. Always call method.
+	(advertiseContent): Don't cache method ids here. Check whether to
+	use clpboard or selection. Don't set owner or current_selection.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkSelection.c
+	(requestText, requestImage, requestURIs, requestBytes): Use extra
+	boolean argument to select clipboard.
+	* native/jni/gtk-peer/gtkpeer.h (cp_gtk_selection): New extern.
+	(cp_gtk_clipboard_instance, cp_gtk_selection_instance): Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkClipboard.h: Regenerate.
+	* include/gnu_java_awt_peer_gtk_GtkSelection.h: Likewise.
+
 2006-03-09  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/Jdwp.java: Remove unused imports.
