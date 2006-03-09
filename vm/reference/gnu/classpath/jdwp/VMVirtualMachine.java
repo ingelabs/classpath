@@ -42,6 +42,7 @@ exception statement from your version. */
 package gnu.classpath.jdwp;
 
 import gnu.classpath.jdwp.event.EventRequest;
+import gnu.classpath.jdwp.exception.InvalidMethodException;
 import gnu.classpath.jdwp.exception.JdwpException;
 import gnu.classpath.jdwp.util.LineTable;
 import gnu.classpath.jdwp.util.MethodResult;
@@ -196,8 +197,8 @@ public class VMVirtualMachine
    * A factory method for getting valid virtual machine methods
    * which may be passed to/from the debugger.
    *
-   * @param rid      the ID of the type in which the method is defined
-   * @param methodId the ID of the desired method
+   * @param klass the class in which the method is defined
+   * @param id    the ID of the desired method
    * @return the desired internal representation of the method
    * @throws InvalidMethodException if the method is not defined
    *           in the class
@@ -214,7 +215,7 @@ public class VMVirtualMachine
    * @param  length  number of frames to return (-1 for all frames)
    * @return a list of frames
    */
-  public static native ArrayList getFrames (Thread thread, int strart,
+  public static native ArrayList getFrames (Thread thread, int start,
 					    int length)
     throws JdwpException;
 

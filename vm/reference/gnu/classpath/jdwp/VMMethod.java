@@ -166,7 +166,7 @@ public class VMMethod
    * Returns a VMMethod from the ID in the byte buffer
    *
    * @param klass the method's declaring class
-   * @param a ByteBuffer containing the method's ID
+   * @param bb    a ByteBuffer containing the method's ID
    * @throws JdwpException for any errors creating the method
    * @throws IOException for any errors reading from the buffer
    */

@@ -1,3 +1,33 @@
+2006-03-09  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/event/EventManager.java: Update javadoc.
+	* gnu/classpath/jdwp/event/ThreadStartEvent.java
+	(ThreadStartEvent): Likewise.
+	* gnu/classpath/jdwp/event/VmDeathEvent.java (VmDeathEvent): Likewise.
+	* gnu/classpath/jdwp/event/filters/ConditionalFilter.java
+	(ConditionalFilter): Likewise.
+	* gnu/classpath/jdwp/event/filters/ExceptionOnlyFilter.java
+	(ExceptionOnlyFilter): Likewise.
+	* gnu/classpath/jdwp/event/filters/FieldOnlyFilter.java
+	(FieldOnlyFilter): Likewise.
+	* gnu/classpath/jdwp/event/filters/StepFilter.java (getDepth): Likewise.
+	(getSize): Likewise.
+	(StepFilter): Likewise.
+	* gnu/classpath/jdwp/id/JdwpId.java: Likewise (for _tag).
+	* gnu/classpath/jdwp/transport/JdwpPacket.java
+	(JdwpPacket): Likewise.
+	(fromBytes): Likewise.
+	* gnu/classpath/jdwp/transport/JdwpReplyPacket.java
+	(JdwpReplyPacket): Likewise.
+	* gnu/classpath/jdwp/util/Value.java (getUntaggedObj): Likewise.
+	* vm/reference/gnu/classpath/jdwp/VMIdManager.java
+	(getReferenceType): Likewise.
+	(newObjectId): Likewise.
+	* vm/reference/gnu/classpath/jdwp/VMMethod.java (readId): Likewise.
+	* vm/reference/gnu/classpath/jdwp/VMVirtualMachine.java
+	(getFrames): Fix typo in parameter name and update javadoc.
+	(getClassMethod): Update javadoc.
+
 2006-03-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/event/TreeSelectionEvent.java: Updated API docs,
