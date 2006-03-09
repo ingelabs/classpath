@@ -1,3 +1,71 @@
+2006-03-09  Lillian Angel  <langel@redhat.com>
+
+	PR Classpath\22163
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c
+	(create): Added combobox widget to an event box.
+	(connectSignals): Added call to choice_get_widget to get the
+	combobox out of the event box.
+	(append): Likewise.
+	(nativeRemoveAll): Likewise.
+	(nativeRemove): Likwise.
+	(nativeAdd): Likewise.
+	(selectNative): Likewise.
+	(choice_get_widget): New function.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkListPeer.c
+	(create): Added list scroll window widget to an event box.
+	(connectSignals): Changed call to use new function to get the
+	correct widget out of the event box.
+	(getWidgetModifyFont): Likewise.
+	(getWidgetRequestFocus): Likewise.
+	(append): Likewise.
+	(add): Likewise.
+	(delItems): Likewise.
+	(select): Likewise.
+	(deselect): Likewise.
+	(getSize): Likewise.
+	(getSelectedIndexes): Likewise.
+	(makeVisible): Likewise.
+	(setMultipleMode): Likewise.
+	(list_get_widget): New function.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollPanePeer.c
+	(create): Added scrollpane to an eventbox.
+	(setScrollPosition): Changed call to use new function to get the
+	correct widget out of the event box.
+	(gtkScrolledWindowSetHScrollIncrement): Likewise.
+	(gtkScrolledWindowSetVScrollIncrement): Likewise.
+	(getHScrollbarHeight): Likewise.
+	(getVScrollbarWidth): Likewise.
+	(setPolicy): Likewise.
+	(scrollpane_get_widget): New function.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollbarPeer.c
+	(connectSignals): Changed call to use new function to get the
+	correct widget out of the event box.
+	(create): Added scrollbar to an eventbox.
+	(setLineIncrement): Changed call to use new function to get the
+	correct widget out of the event box.
+	(setPageIncrement): Likewise.
+	(setBarValues): Likewise.
+	(scrollbar_get_widget): New function.
+	* native/jni/gtk-peer/gnu_java_gnu_java_awt_peer_gtk_GtkTextAreaPeer.c
+	(create): Added text area scroll window widget to an event box.
+	(connectSignals): Changed call to use new function to get the
+	correct widget out of the event box.
+	(insert): Likewise.
+	(replaceRange): Likewise.
+	(gtkWidgetModifyFont): Likewise.
+	(gtkWidgetRequestFocus): Likewise.
+	(getHScrollbarHeight): Likewise.
+	(getVScrollbarWidth): Likewise.
+	(getCaretPosition): Likewise.
+	(setCaretPosition):Likewise.
+	(getSelectionStart): Likewise.
+	(getSelectionEnd): Likewise.
+	(select): Likewise.
+	(setEditable): Likewise.
+	(getText): Likewise.
+	(setText): Likewise.
+	(textarea_get_widget): New function.
+
 2006-03-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* java/rmi/dgc/VMID.java: 
