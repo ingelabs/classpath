@@ -1,5 +1,14 @@
 2006-03-10  Lillian Angel  <langel@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c
+	(comboboxgroup_get_widget): New function.
+	(removed): Fixed to use new function to get the correct widget.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(nativeSetCheckboxGroup): Reverted last patch to use get_widget
+	function.
+
+2006-03-10  Lillian Angel  <langel@redhat.com>
+
 	* java/awt/GridBagLayout.java
 	(ArrangeGrid): Added checks to determine if component
 	is placed last in a row or column. If so, the location
