@@ -1,3 +1,10 @@
+2006-03-10  Roman Kennke  <kennke@aicas.com>
+
+	Reported by Fridjof Siebert <siebert@aicas.com>
+	* java/awt/MediaTracker.java
+	(removeImage): Only set prev to e when the the images of the
+	entries are not the same. This avoids a potentially corrupt list.
+
 2006-03-10  Chris Burdess  <dog@gnu.org>
 
 	PR 26620:
