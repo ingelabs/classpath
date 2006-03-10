@@ -1,3 +1,9 @@
+2006-03-10  Chris Burdess  <dog@gnu.org>
+
+	PR 26620:
+	* gnu/xml/transform/TransformerImpl.java: Suspend wellformedness
+	  checking while reindenting.
+
 2006-03-10  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/plugins/jpeg/JPEGHuffmanTable.java: New file.
