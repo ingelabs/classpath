@@ -91,7 +91,7 @@ class MetalUtils
                                 Color light, Color dark)
   {
     if (g instanceof Graphics2D
-      && SystemProperties.getProperty("gnu.javax.swing.noGraphics2D") != null)
+      && SystemProperties.getProperty("gnu.javax.swing.noGraphics2D") == null)
       fillMetalPattern2D((Graphics2D) g, x, y, w, h, light, dark);
     else
       {

@@ -1,5 +1,21 @@
 2006-03-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalBorders.java
+	(RolloverButtonBorder.paintBorder): Only call super here.
+	* javax/swing/plaf/metal/MetalButtonListener.java
+	(propertyChange): Only call super here.
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(update): Changed condition from isOpaque() to isContentAreaFilled()
+	for the gradient fill.
+	* javax/swing/plaf/metal/MetalToggleButtonUI.java
+	(paintText): API doc fix. Makes paintText not deprecated as specified
+	but adds comment that this is obsolete.
+	* javax/swing/plaf/metal/MetalUtils.java
+	(fillMetalPattern): Fixed condition so that the Java2D is not
+	used when the noGraphics2D property is set.
+
+2006-03-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalLookAndFeel.java
 	(createDefaultTheme): Set OceanTheme as default metal theme.
 

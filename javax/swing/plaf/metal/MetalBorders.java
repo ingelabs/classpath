@@ -1025,14 +1025,10 @@ public class MetalBorders
     public void paintBorder(Component c, Graphics g, int x, int y, int w, 
             int h)
     {
-      boolean mouseIsOver = false;
-      if (c instanceof AbstractButton)
-        {
-          ButtonModel bmodel = ((AbstractButton) c).getModel();
-          mouseIsOver = bmodel.isRollover();
-        }
-      if (mouseIsOver)
-        super.paintBorder(c, g, x, y, w, h);
+      // TODO: What should be done here? Obviously the ButtonBorder already
+      // handles the rollover state in Sun's impl. Maybe this is only there
+      // for backwards compatibility.
+      super.paintBorder(c, g, x, y, w, h);
     }
   }
   
