@@ -1,5 +1,14 @@
 2006-03-09  Tom Tromey  <tromey@redhat.com>
 
+	PR classpath/26585:
+	* tools/Makefile.am (TOOLSdir): Don't put tools.zip in tools
+	subdir.  Added README.
+	(install-data-local): Removed.
+	(uninstall-local): Likewise.
+	(EXTRA_DIST): Removed.
+
+2006-03-09  Tom Tromey  <tromey@redhat.com>
+
 	PR classpath/26623:
 	* native/jni/qt-peer/Makefile.am (nativeexeclib_LTLIBRARIES):
 	Renamed.
