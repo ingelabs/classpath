@@ -1,3 +1,14 @@
+2006-03-10  Lillian Angel  <langel@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(create): Put checkbox widget into an event box so it paints properly.
+	(connectSignals): Fixed to use new function.
+	(nativeSetCheckboxGroup): Likewise.
+	(gtkToggleButtonSetActive): Likewise.
+	(gtkWidgetModifyFont): Likewise.
+	(gtkButtonSetLabel): Likewise.
+	(combobox_get_widget): New function.
+
 2006-03-10  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/rtf/package.html: New file.
