@@ -1,3 +1,10 @@
+2006-03-10  Wolfgang Baer  <WBaer@gmx.de>
+
+	* gnu/java/net/protocol/http/Headers.java: Added documentation all over.
+	(dateFormat): Made private.
+	(put): Replace only the last occurance and the value.
+	(putAll): Save one iteration. Clarified documentation.
+
 2006-03-10  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/zip/InflaterInputStream.java (read): Replace with libgcj
