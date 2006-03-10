@@ -226,8 +226,8 @@ public class OceanTheme extends DefaultMetalTheme
       {new Double(0.3), new Double(0.0), new ColorUIResource(221, 232, 243),
        new ColorUIResource(Color.WHITE), new ColorUIResource(184, 207, 229)}));
     defaults.put("ScrollBar.gradient", Arrays.asList(new Object[]
-      {new Double(1.0), new Double(0.0), new ColorUIResource(Color.WHITE),
-       new ColorUIResource(218, 218, 218), new ColorUIResource(218, 218, 218)}));
+      {new Double(0.3), new Double(0.0), new ColorUIResource(221, 232, 243),
+       new ColorUIResource(Color.WHITE), new ColorUIResource(184, 207, 229)}));
     defaults.put("Slider.gradient", Arrays.asList(new Object[]
       {new Double(0.3), new Double(0.2), new ColorUIResource(200, 221, 242),
        new ColorUIResource(Color.WHITE), new ColorUIResource(184, 207, 229)}));

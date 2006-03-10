@@ -1,5 +1,14 @@
 2006-03-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/OceanTheme.java
+	(addCustomEntriesToTable): Fixed ScrollBar.gradient value.
+	* javax/swing/plaf/metal/MetalScrollBarUI.java
+	(paintThumb): Only draw Metal pattern if theme is not OceanTheme.
+	(paintThumbHorizontal): Added handling of OceanTheme.
+	(paintThumbVertical): Added handling of OceanTheme.
+
+2006-03-10  Roman Kennke  <kennke@aicas.com>
+
 	Reported by Fridjof Siebert <siebert@aicas.com>
 	* java/awt/MediaTracker.java
 	(removeImage): Only set prev to e when the the images of the
