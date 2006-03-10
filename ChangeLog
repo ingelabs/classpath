@@ -1,5 +1,10 @@
 2006-03-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(createDefaultTheme): Set OceanTheme as default metal theme.
+
+2006-03-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/WrappedPlainView.java
 	(metrics): Made field package private to avoid accessor method.
 	(WrappedLine.paint): Call drawLine with y offset of the font ascent.
