@@ -1,5 +1,13 @@
 2006-03-10  Lillian Angel  <langel@redhat.com>
 
+	* java/awt/GridBagLayout.java
+	(ArrangeGrid): Added checks to determine if component
+	is placed last in a row or column. If so, the location
+	of the last component should be used to get the location
+	of the current component.
+
+2006-03-10  Lillian Angel  <langel@redhat.com>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
 	(nativeSetCheckboxGroup): No need to use new function here.
 	Should just pass in pointer.
