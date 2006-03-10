@@ -1,3 +1,10 @@
+2006-03-10  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/zip/InflaterInputStream.java (read): Replace with libgcj
+	implementation.
+	* java/util/zip/GZIPInputStream.java (readHeader): Use DEFLATED,
+	not '8'.
+
 2006-03-10  Lillian Angel  <langel@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c
