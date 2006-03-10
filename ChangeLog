@@ -1,3 +1,13 @@
+2006-03-10  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/WrappedPlainView.java
+	(metrics): Made field package private to avoid accessor method.
+	(WrappedLine.paint): Call drawLine with y offset of the font ascent.
+	The drawLine (righly) interprets the y parameter as the baseline.
+	* javax/swing/text/Utilities.java
+	(getBreakLocation): Don't consider the offset. The returned value
+	for getTabbedTextOffset is already relative to the offset.
+
 2006-03-10  Wolfgang Baer  <WBaer@gmx.de>
 
 	* gnu/java/net/protocol/http/Headers.java: Added documentation all over.
