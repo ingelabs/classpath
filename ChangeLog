@@ -1,3 +1,29 @@
+2006-03-09  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/26623:
+	* native/jni/qt-peer/Makefile.am (nativeexeclib_LTLIBRARIES):
+	Renamed.
+	* native/jni/midi-alsa/Makefile.am (nativeexeclib_LTLIBRARIES):
+	Renamed.
+	* native/jni/java-net/Makefile.am (nativeexeclib_LTLIBRARIES):
+	Renamed.
+	* native/jni/java-lang/Makefile.am (nativeexeclib_LTLIBRARIES):
+	Renamed.
+	* native/jni/xmlj/Makefile.am (nativeexeclib_LTLIBRARIES):
+	Renamed.
+	* native/jni/gtk-peer/Makefile.am (nativeexeclib_LTLIBRARIES):
+	Renamed.
+	* native/jni/midi-dssi/Makefile.am (nativeexeclib_LTLIBRARIES):
+	Renamed.
+	* native/jni/java-io/Makefile.am (nativeexeclib_LTLIBRARIES):
+	Renamed.
+	* native/jni/java-nio/Makefile.am (nativeexeclib_LTLIBRARIES):
+	Renamed.
+	* native/jni/java-util/Makefile.am (nativeexeclib_LTLIBRARIES):
+	Renamed.
+	* native/jawt/Makefile.am (nativeexeclib_LTLIBRARIES): Renamed.
+	* configure.ac (nativeexeclibdir): Renamed from nativelibdir.
+
 2006-03-09  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/processor/MethodCommandSet.java
