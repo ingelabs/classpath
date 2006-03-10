@@ -1,3 +1,16 @@
+2006-03-10  Lillian Angel  <langel@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(nativeSetCheckboxGroup): No need to use new function here.
+	Should just pass in pointer.
+
+2006-03-10  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/GridBagLayout.java
+	(distributeSizeAndWeight): Change else if to else. This
+	allows for components to be added to a new row when 
+	their gridheight is REMAINDER.
+
 2006-03-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* java/rmi/activation/ActivationDesc.java,

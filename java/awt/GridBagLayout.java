@@ -786,7 +786,7 @@ public class GridBagLayout
             height += constraints.insets.top + constraints.insets.bottom;
 
           height += constraints.ipady;
-
+          
           distributeSizeAndWeight(height,
                                   constraints.weighty, 
                                   constraints.gridy,
@@ -916,7 +916,7 @@ public class GridBagLayout
           sizes[start] = Math.max(sizes[start], size);
           weights[start] = Math.max(weights[start], weight);
         }
-      else if (span > 1)
+      else
         {
           int numOccupied = span;
           int lastOccupied = -1;

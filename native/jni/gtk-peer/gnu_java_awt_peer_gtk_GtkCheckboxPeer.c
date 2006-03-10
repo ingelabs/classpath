@@ -127,18 +127,16 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup
 {
   GtkRadioButton *button;
   void *native_group, *ptr;
-  GtkWidget *bin;
 
   gdk_threads_enter ();
 
   ptr = NSA_GET_PTR (env, obj);
-  bin = combobox_get_widget (GTK_WIDGET (ptr));
   
   /* FIXME: we can't yet switch between a checkbutton and a
      radiobutton.  However, AWT requires this.  For now we just
      crash.  */
 
-  button = GTK_RADIO_BUTTON (bin);
+  button = GTK_RADIO_BUTTON (ptr);
 
   native_group = NSA_GET_PTR (env, group);
   if (native_group == NULL)
