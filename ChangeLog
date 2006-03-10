@@ -1,5 +1,17 @@
 2006-03-09  Keith Seitz  <keiths@redhat.com>
 
+	* gnu/classpath/jdwp/processor/MethodCommandSet.java
+	(executeVariableTable): Use VMMethod instead of reflection.
+	(executeLineTable): Likewise.
+	* gnu/classpath/jdwp/processor/ReferenceTypeCommandSet.java
+	(executeMethods): Rewrite to use new VMVirtualMachine.getAllClassMethods.
+	* vm/reference/gnu/classpath/jdwp/VMVirtualMachine.java
+	(getLineTable): Removed. Now resides in VMMethod.
+	(getVarTable): Likewise.
+	(getAllClassMethods): New method.
+	
+2006-03-09  Keith Seitz  <keiths@redhat.com>
+
 	* gnu/classpath/jdwp/event/EventManager.java: Update javadoc.
 	* gnu/classpath/jdwp/event/ThreadStartEvent.java
 	(ThreadStartEvent): Likewise.
