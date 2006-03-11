@@ -51,7 +51,8 @@ import javax.swing.tree.TreeSelectionModel;
  * 
  * @author Andrew Selkirk
  */
-public class TreeSelectionEvent extends EventObject {
+public class TreeSelectionEvent extends EventObject 
+{
 
   /**
    * The paths that have been added or removed from the selection.
@@ -188,9 +189,9 @@ public class TreeSelectionEvent extends EventObject {
   {
     for (int i = paths.length - 1; i >= 0; i--)
       if (paths[i].equals(path))
-	return areNew[i];
+        return areNew[i];
 
-    return false;
+    throw new IllegalArgumentException("Unknown 'path' argument.");
   } 
 
   /**
@@ -249,9 +250,8 @@ public class TreeSelectionEvent extends EventObject {
    */
   public Object cloneWithSource(Object source)
   {
-    return new TreeSelectionEvent (source, paths, areNew,
-				   oldLeadSelectionPath,
-				   newLeadSelectionPath);
+    return new TreeSelectionEvent (source, paths, areNew, oldLeadSelectionPath,
+        newLeadSelectionPath);
   } 
 
 } 

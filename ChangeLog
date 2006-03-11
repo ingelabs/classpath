@@ -1,5 +1,12 @@
 2006-03-11  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/event/TreeSelectionEvent.java
+	(isAddedPath(TreePath)): Throw IllegalArgumentException if path is
+	not one of the added/removed paths,
+	(cloneWithSource): Reformatted.
+
+2006-03-11  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/tree/TreeCellEditor.java: Added API docs,
 	* javax/swing/tree/TreeCellRenderer.java: Likewise.
 
