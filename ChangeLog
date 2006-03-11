@@ -1,3 +1,8 @@
+2006-03-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/tree/TreeCellEditor.java: Added API docs,
+	* javax/swing/tree/TreeCellRenderer.java: Likewise.
+
 2006-03-10  Casey Marshall  <csm@gnu.org>
 
 	Fixes PR 23768.
