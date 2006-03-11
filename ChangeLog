@@ -1,3 +1,8 @@
+2006-03-11  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/zip/InflaterInputStream.java: Reverted previous
+	patch.
+
 2006-03-11  Mark Wielaard  <mark@klomp.org>
 
 	* java/text/AttributedCharacterIterator.java (Attribute.readResolve):

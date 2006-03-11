@@ -186,35 +186,31 @@ public class InflaterInputStream extends FilterInputStream
       throw new IOException("stream closed");
     if (len == 0)
       return 0;
-    if (inf.finished())
-      return - 1;
 
     int count = 0;
-    while (count == 0)
+    for (;;)
       {
-        if (inf.needsInput())
-          fill();
+	
+	try
+	  {
+	    count = inf.inflate(b, off, len);
+	  } 
+	catch (DataFormatException dfe) 
+	  {
+	    throw new ZipException(dfe.getMessage());
+	  }
 
-        try
-          {
-            count = inf.inflate(b, off, len);
-          }
-        catch (DataFormatException dfe)
-          {
-            throw new ZipException(dfe.getMessage());
-          }
-        if (count == 0)
-          {
-            if (this.len == - 1)
-              {
-                // Couldn't get any more data to feed to the Inflater
-                return - 1;
-              }
-            if (inf.needsDictionary())
-              throw new ZipException("Inflater needs Dictionary");
-          }
+	if (count > 0)
+	  return count;
+	
+	if (inf.needsDictionary()
+	    | inf.finished())
+	  return -1;
+	else if (inf.needsInput())
+	  fill();
+	else
+	  throw new InternalError("Don't know what to do");
       }
-    return count;
   }
 
   /**
