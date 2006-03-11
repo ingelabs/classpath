@@ -1,3 +1,12 @@
+2006-03-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/DefaultSingleSelectionModel.java: API docs all over, plus
+	(changeEvent): Initialise in fireStateChange(),
+	(setSelectedIndex): Check if change is made before firing event,
+	(clearSelection): Delegate to setSelectedIndex(),
+	(fireStateChanged): Initialise changeEvent if necessary,
+	* javax/swing/SingleSelectionModel.java: API docs all over.
+
 2006-03-11  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/zip/InflaterInputStream.java: Reverted previous
