@@ -1,3 +1,29 @@
+2006-03-11  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/regexp/BacktrackStack.java: New file.
+	* gnu/regexp/RE.java(findMatch): New method.
+	* gnu/regexp/REMatch.java(next,matchFlags,MF_FIND_ALL,
+	REMatchList): Removed. (backtrackStack): New field.
+	* gnu/regexp/REToken.java(match): Changed from an abstract
+	method to an ordinary method defined with the new method
+	matchThis. (matchThis, getNext, findMatch, returnsFixedLengthMatches,
+	findFixedLengthMatches, backtrack, toString): New methods.
+	* gnu/regexp/RETokenAny.java: Inplemented new methods of REToken.
+	* gnu/regexp/RETokenBackRef.java: Likewise.
+	* gnu/regexp/RETokenChar.java: Likewise.
+	* gnu/regexp/RETokenEnd.java: Likewise.
+	* gnu/regexp/RETokenEndSub.java: Likewise.
+	* gnu/regexp/RETokenIndependent.java: Likewise.
+	* gnu/regexp/RETokenLookAhead.java: Likewise.
+	* gnu/regexp/RETokenLookBehind.java: Likewise.
+	* gnu/regexp/RETokenNamedProperty.java: Likewise.
+	* gnu/regexp/RETokenPOSIX.java: Likewise.
+	* gnu/regexp/RETokenRange.java: Likewise.
+	* gnu/regexp/RETokenStart.java: Likewise.
+	* gnu/regexp/RETokenWordBoundary.java: Likewise
+	* gnu/regexp/RETokenOneOf.java: Rewriten.
+	* gnu/regexp/RETokenRepeated.java: Rewriten.
+
 2006-03-10  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java

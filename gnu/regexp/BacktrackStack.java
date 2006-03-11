@@ -1,4 +1,4 @@
-/* gnu/regexp/RETokenLookBehind.java
+/* gnu/regexp/BacktrackStack.java
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,72 +35,78 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package gnu.regexp;
 
 /**
- * @author Ito Kazumitsu
+ * An instance of this class represents a stack
+ * used for backtracking.
+ *
+ * @author Ito Kazumitsu</A>
  */
-final class RETokenLookBehind extends REToken
-{
-  REToken re;
-  boolean negative;
+final class BacktrackStack {
 
-  RETokenLookBehind(REToken re, boolean negative) throws REException {
-    super(0);
-    this.re = re;
-    this.negative = negative;
-  }
-
-  int getMaximumLength() {
-    return 0;
-  }
-
-  REMatch matchThis(CharIndexed input, REMatch mymatch)
-  {
-    int max = re.getMaximumLength();
-    CharIndexed behind = input.lookBehind(mymatch.index, max);
-    REMatch trymatch = (REMatch)mymatch.clone();
-    REMatch trymatch1 = (REMatch)mymatch.clone();
-    REMatch newMatch = null;
-    int curIndex = trymatch.index + behind.length() - input.length();
-    trymatch.index = 0;
-    RETokenMatchHereOnly stopper = new RETokenMatchHereOnly(curIndex);
-    REToken re1 = (REToken) re.clone();
-    re1.chain(stopper);
-    if (re1.match(behind, trymatch)) {
-      if (negative) return null;
-      return mymatch;
-    }
-    else {
-      if (negative) return mymatch;
-      return null;
-    }
-  }
-
-    void dump(StringBuffer os) {
-	os.append("(?<");
-	os.append(negative ? '!' : '=');
-	re.dumpAll(os);
-	os.append(')');
-    }
-
-    private static class RETokenMatchHereOnly extends REToken {
-
-        int getMaximumLength() { return 0; }
-
-	private int index;
-
-	RETokenMatchHereOnly(int index) {
-	    super(0);
-	    this.index = index;
+    /** A set of data to be used for backtracking. */
+    static class Backtrack {
+        /** REToken to which to go back */
+        REToken token;
+	/** CharIndexed on which matches are being searched for. */
+	CharIndexed input;
+	/** REMatch to be used by the REToken token. */
+	REMatch match;
+	/** Some parameter used by the token's backtrack method. */
+	Object param;
+        Backtrack(REToken token, CharIndexed input, REMatch match, Object param) {
+	    this.token = token;
+	    this.input = input;
+	    //  REMatch may change before backtracking is needed. So we
+	    //  keep a clone of it.
+	    this.match = (REMatch) match.clone();
+	    this.param = param;
 	}
-
-	REMatch matchThis(CharIndexed input, REMatch mymatch) {
-	    return (index == mymatch.index ? mymatch : null);
-	}
-
-        void dump(StringBuffer os) {}
-
     }
+
+    Backtrack[] stack;
+    private int size;
+    private int capacity;
+    private static final int INITIAL_CAPACITY = 32;
+    private static final int CAPACITY_INCREMENT = 16;
+
+    BacktrackStack() {
+        stack = new Backtrack[INITIAL_CAPACITY];
+	size = 0;
+	capacity = INITIAL_CAPACITY;
+    }
+
+    boolean empty() {
+	return size == 0;
+    }
+
+    Backtrack peek() {
+	return stack[size - 1];
+    }
+
+    Backtrack pop() {
+	Backtrack bt = stack[--size];
+	stack[size] = null;
+	return bt;
+    }
+
+    void clear() {
+	for (int i = 0; i < size; i++) {
+	    stack[i] = null;
+	}
+	size = 0;
+    }
+
+    void push(Backtrack bt) {
+        if (size >= capacity) {
+	    capacity +=  CAPACITY_INCREMENT;
+	    Backtrack[] newStack = new Backtrack[capacity];
+	    System.arraycopy(stack, 0, newStack, 0, size);
+	    stack = newStack;
+	}
+	stack[size++] = bt;
+    }
+
 }
-
