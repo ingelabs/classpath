@@ -1,3 +1,9 @@
+2006-03-12  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/print/MultiDocPrintService.java, 
+	* javax/print/MultiDocPrintJob.java, 
+	* javax/print/MultiDoc.java: Added and enhanced documentation.
+
 2006-03-12  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* java/rmi/activation/ActivationID.java (uid): New field.
