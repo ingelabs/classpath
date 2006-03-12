@@ -1,3 +1,9 @@
+2006-03-12  Chris Burdess  <dog@gnu.org>
+
+	Fixes PR 26652
+	* gnu/xml/stream/XMLParser.java: Fix for case when both reader and
+	  encoding are specified.
+
 2006-03-11  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/DefaultSingleSelectionModel.java: API docs all over, plus

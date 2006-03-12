@@ -4965,6 +4965,7 @@ public class XMLParser
     Reader reader;
     UnicodeReader unicodeReader;
     boolean initialized;
+    boolean encodingDetected;
     String inputEncoding;
     boolean xml11;
 
@@ -5174,6 +5175,7 @@ public class XMLParser
           in.read();
           in.read();
           setInputEncoding("UTF-32BE");
+          encodingDetected = true;
         }
       else if (equals(SIGNATURE_UCS_4_4321, signature))
         {
@@ -5182,6 +5184,7 @@ public class XMLParser
           in.read();
           in.read();
           setInputEncoding("UTF-32LE");
+          encodingDetected = true;
         }
       else if (equals(SIGNATURE_UCS_4_2143, signature) ||
                equals(SIGNATURE_UCS_4_3412, signature))
@@ -5193,12 +5196,14 @@ public class XMLParser
           in.read();
           in.read();
           setInputEncoding("UTF-16BE");
+          encodingDetected = true;
         }
       else if (equals(SIGNATURE_UCS_2_21, signature))
         {
           in.read();
           in.read();
           setInputEncoding("UTF-16LE");
+          encodingDetected = true;
         }
       else if (equals(SIGNATURE_UCS_2_12_NOBOM, signature))
         {
@@ -5214,6 +5219,7 @@ public class XMLParser
       else if (equals(SIGNATURE_UTF_8, signature))
         {
           // UTF-8 input encoding implied, TextDecl
+          encodingDetected = true;
         }
       else if (equals(SIGNATURE_UTF_8_BOM, signature))
         {
@@ -5221,6 +5227,7 @@ public class XMLParser
           in.read();
           in.read();
           setInputEncoding("UTF-8");
+          encodingDetected = true;
         }
     }
 
@@ -5242,7 +5249,7 @@ public class XMLParser
       if ("UTF-16".equalsIgnoreCase(encoding) &&
           inputEncoding.startsWith("UTF-16"))
         return;
-      if (reader != null)
+      if (encodingDetected)
         throw new UnsupportedEncodingException("document is not in its " +
                                                "declared encoding " +
                                                inputEncoding +
