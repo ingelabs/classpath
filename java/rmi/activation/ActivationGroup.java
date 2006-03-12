@@ -43,6 +43,10 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+/**
+ * The entity that receives the request to activate object and activates it.
+ * Frequently there is one activation group per virtual machine.
+ */
 public abstract class ActivationGroup extends UnicastRemoteObject
   implements ActivationInstantiator
 {
@@ -52,12 +56,26 @@ protected ActivationGroup(ActivationGroupID groupID) throws RemoteException {
 	throw new Error("Not implemented");
 }
 
+public abstract void activeObject(ActivationID id, Remote obj) throws ActivationException, UnknownObjectException, RemoteException;
+
 public boolean inactiveObject(ActivationID id) throws ActivationException, UnknownObjectException, RemoteException {
 	throw new Error("Not implemented");
 }
 
-public abstract void activeObject(ActivationID id, Remote obj) throws ActivationException, UnknownObjectException, RemoteException;
-
+/**
+ * Create the new instance of the activation group, using the class name and
+ * location information, stored in the passed descriptor. The method expects the
+ * group class to have the two parameter constructor, the first parameter being
+ * the {@link ActivationGroupID} and the second the {@link MarshalledObject}.
+ * This method is normally called from the
+ * 
+ * @param id the activation group id
+ * @param desc the group descriptor, providing the information, necessary to
+ *          create the group
+ * @param incarnation the incarnation number
+ * @return the created group instance
+ * @throws ActivationException if the activation fails due any reason
+ */
 public static ActivationGroup createGroup(ActivationGroupID id, ActivationGroupDesc desc, long incarnation) throws ActivationException {
 	throw new Error("Not implemented");
 }

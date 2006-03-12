@@ -1,3 +1,17 @@
+2006-03-12  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* java/rmi/activation/ActivationID.java (uid): New field.
+	(writeExternal, readExternal): New methods. 
+	(equals, hashCode): Rewritten.
+	* java/rmi/activation/ActivationInstantiator.java,
+	* java/rmi/activation/ActivationSystem.java,
+	* java/rmi/activation/Activator.java,
+	* java/rmi/activation/Activatable.java,
+	* java/rmi/activation/ActivationGroup.java,
+	* java/rmi/activation/ActivationGroupDesc.java: 
+	Documented and autoformatted.
+	* java/rmi/activation/package.html: Added content.
+	
 2006-03-12  Chris Burdess  <dog@gnu.org>
 
 	Fixes PR 26652

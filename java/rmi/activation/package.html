@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <!-- package.html - describes classes in java.rmi.activation package.
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,7 +40,27 @@ exception statement from your version. -->
 <head><title>GNU Classpath - java.rmi.activation</title></head>
 
 <body>
-<p></p>
+In the previous Classpath releases, an instance of a UnicastRemoteObject
+could be accessed from a server that:
+<ul>
+<li>has created an instance of that object<li>
+<li>has been running <i>all<i> the time</li>
+</ul>
+Since the comming of the activation system, the object implementation can also
+be activated and executed on demand rather than running all time. The RMI client
+code for activatable objects is no different than the code for accessing
+non-activatable remote objects. Activation is a server-side implementation
+decision.
 
+In order for an object to be activated, the "activatable" object class 
+(independently if it extends the {@link Activatable} class or not) defines a 
+special public constructor that takes two arguments, its activation identifier 
+({@link ActivationID}) and its activation data ({@link java.rmi.MarshalledObject}), 
+supplied in the activation descriptor used during registration. When an 
+activation group activates a remote object, it constructs the object via 
+this special constructor. The remote object implementation may use the 
+activation data to initialize itself in a needed manner. The remote object may
+also retain its activation identifier, so that it can inform the activation 
+group when it becomes inactive (via a call to the Activatable.inactive method).
 </body>
 </html>

@@ -1,5 +1,5 @@
 /* ActivationID.java --
-   Copyright (c) 1996, 1997, 1998, 1999 Free Software Foundation, Inc.
+   Copyright (c) 1996, 1997, 1998, 1999, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,38 +35,125 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package java.rmi.activation;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.UID;
 
-public class ActivationID implements Serializable
+/**
+ * Denotes the object that can be activated over time. The instance of the
+ * ActivationID for the given object can be obtained in the following ways:
+ * <ul>
+ * <li>via {@link Activatable#register(ActivationDesc)}</li>
+ * <li>via Activatable constructor</li>
+ * <li>via Activatable.exportObject
+ * <li>
+ * </ul>
+ * An instance of the ActivationID has the {@link UID} as its component and
+ * hence is globally unique.
+ */
+public class ActivationID
+    implements Serializable
 {
-  static final long serialVersionUID = -4608673054848209235L;
+  /**
+   * Use SVUID for interoperability.
+   */
+  static final long serialVersionUID = - 4608673054848209235L;
 
-private Activator activator;
+  /**
+   * The activator.
+   */
+  private transient Activator activator;
+  
+  /**
+   * The UID, making this instance unique.
+   */
+  private transient UID uid; 
 
-public ActivationID(Activator activator) {
-	this.activator = activator;
-}
 
-public Remote activate(boolean force) throws ActivationException, UnknownObjectException, RemoteException {
-	throw new Error("Not implemented");
-}
-
-public int hashCode() {
-	return (activator.hashCode());
-}
-
-public boolean equals(Object obj) {
-	if (obj instanceof ActivationID) {
-		ActivationID that = (ActivationID)obj;
-		if (this.activator.equals(that.activator)) {
-			return (true);
-		}
-	}
-	return (false);
-}
+  /**
+   * Create a new instance with the given activator.
+   * 
+   * @param an_activator tha activator that should activate the object.
+   */
+  public ActivationID(Activator an_activator)
+  {
+    activator = an_activator;
+  }
+   
+  /**
+   * Activate the object.
+   * 
+   * @param force if true, always contact the group. Otherwise, the cached
+   * value may be returned.
+   * 
+   * @return the activated object
+   * 
+   * @throws UnknownObjectException if the object is unknown
+   * @throws ActivationException if the activation has failed
+   * @throws RemoteException if the remote call has failed
+   */
+  public Remote activate(boolean force) throws ActivationException,
+      UnknownObjectException, RemoteException
+  {
+    throw new Error("Not implemented");
+  }
+  
+  /**
+   * Returns the hash code of the activator.
+   */
+  public int hashCode()
+  {
+    return uid.hashCode();
+  }
+  
+  /**
+   * Compares the activators for equality.
+   */
+  public boolean equals(Object obj)
+  {
+    if (obj instanceof ActivationID)
+      {
+        ActivationID that = (ActivationID) obj;
+        return uid.equals(that.uid) && activator.equals(that.activator);
+      }
+    else
+      return false;
+  }
+  
+  /**
+   * Read the object from the input stream.
+   * 
+   * @param in the stream to read from
+   * 
+   * @throws IOException if thrown by the stream
+   * @throws ClassNotFoundException
+   */
+  private void readObject(ObjectInputStream in) throws IOException,
+      ClassNotFoundException
+  {
+     uid = (UID) in.readObject();
+     // TODO not complete!
+  }
+  
+  /**
+   * Write the object to the output stream.
+   * 
+   * @param out the stream to write int
+   * @throws IOException if thrown by the stream
+   * @throws ClassNotFoundException
+   */
+  private void writeObject(ObjectOutputStream out) throws IOException,
+      ClassNotFoundException
+  {
+    out.writeObject(uid);
+     // TODO not complete!
+  };
 
 }

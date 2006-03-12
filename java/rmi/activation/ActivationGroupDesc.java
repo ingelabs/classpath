@@ -1,5 +1,6 @@
-/* ActivationGroupDesc.java --
-   Copyright (c) 1996, 1997, 1998, 1999, 2004  Free Software Foundation, Inc.
+/* ActivationGroupDesc.java -- the RMI activation group descriptor
+   Copyright (c) 1996, 1997, 1998, 1999, 2004, 2006
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -42,93 +43,139 @@ import java.io.Serializable;
 import java.rmi.MarshalledObject;
 import java.util.Properties;
 
-public final class ActivationGroupDesc implements Serializable
+/**
+ * Contains information, necessary to create of recreate the activation objects.
+ * The group descriptor contains:
+ * <ul>
+ * <li>The name of the group's class. This class is derived from the
+ * {@link ActivationGroup}.</li>
+ * <li>The group class code location.</li>
+ * <li>The marshalled object that contains the group specific initialization
+ * information</li>
+ * </ul>
+ * The groups are created by the {@link ActivationGroup#createGroup} method that
+ * expectes the group class to have the two parameter constructor, the first
+ * parameter being the {@link ActivationGroupID} and the second the
+ * {@link MarshalledObject}.
+ */
+public final class ActivationGroupDesc
+    implements Serializable
 {
-  static final long serialVersionUID = -4936225423168276595L;
+  /**
+   * Use the SVUID for interoperability.
+   */
+  static final long serialVersionUID = - 4936225423168276595L;
 
-public static class CommandEnvironment
-	implements Serializable {
+  public static class CommandEnvironment
+      implements Serializable
+  {
 
-static final long serialVersionUID = 6165754737887770191L;
-  
-private String cmdpath;
-private String[] argv;
+    /**
+     * Use the SVUID for interoperability.
+     */
+    static final long serialVersionUID = 6165754737887770191L;
 
-public CommandEnvironment(String cmdpath, String[] argv) {
-	this.cmdpath = cmdpath;
-	this.argv = argv;
-}
+    private String cmdpath;
 
-public String getCommandPath() {
-	return (cmdpath);
-}
+    private String[] argv;
 
-public String[] getCommandOptions() {
-	return (argv);
-}
+    public CommandEnvironment(String commandPatch, String[] args)
+    {
+      cmdpath = commandPatch;
+      argv = args;
+    }
 
-public boolean equals(Object obj) {
-	if (!(obj instanceof CommandEnvironment)) {
-		return (false);
-	}
-	CommandEnvironment that = (CommandEnvironment)obj;
-	
-	if (!this.cmdpath.equals(that.cmdpath)) {
-		return (false);
-	}
+    public String getCommandPath()
+    {
+      return cmdpath;
+    }
 
-	int len = this.argv.length;
-	if (len != that.argv.length) {
-		return (false);
-	}
-	for (int i = 0; i < len; i++) {
-		if (!this.argv[i].equals(that.argv[i])) {
-			return (false);
-		}
-	}
-	return (true);
-}
+    public String[] getCommandOptions()
+    {
+      return argv;
+    }
 
-public int hashCode() {
-	return (cmdpath.hashCode()); // Not a very good hash code.
-}
+    public boolean equals(Object obj)
+    {
+      if (! (obj instanceof CommandEnvironment))
+        {
+          return (false);
+        }
+      CommandEnvironment that = (CommandEnvironment) obj;
 
-}
+      if (! this.cmdpath.equals(that.cmdpath))
+        {
+          return (false);
+        }
 
-public ActivationGroupDesc(Properties overrides, ActivationGroupDesc.CommandEnvironment cmd) {
-	throw new Error("Not implemented");
-}
+      int len = this.argv.length;
+      if (len != that.argv.length)
+        {
+          return (false);
+        }
+      for (int i = 0; i < len; i++)
+        {
+          if (! this.argv[i].equals(that.argv[i]))
+            {
+              return (false);
+            }
+        }
+      return (true);
+    }
 
-public ActivationGroupDesc(String className, String location, MarshalledObject data, Properties overrides, ActivationGroupDesc.CommandEnvironment cmd) {
-	throw new Error("Not implemented");
-}
+    public int hashCode()
+    {
+      return cmdpath.hashCode(); // Not a very good hash code.
+    }
 
-public String getClassName() {
-	throw new Error("Not implemented");
-}
+  }
 
-public String getLocation() {
-	throw new Error("Not implemented");
-}
+  public ActivationGroupDesc(Properties overrides,
+                             ActivationGroupDesc.CommandEnvironment cmd)
+  {
+    throw new Error("Not implemented");
+  }
 
-public MarshalledObject getData() {
-	throw new Error("Not implemented");
-}
+  public ActivationGroupDesc(String className, String location,
+                             MarshalledObject data, Properties overrides,
+                             ActivationGroupDesc.CommandEnvironment cmd)
+  {
+    throw new Error("Not implemented");
+  }
 
-public Properties getPropertyOverrides() {
-	throw new Error("Not implemented");
-}
+  public String getClassName()
+  {
+    throw new Error("Not implemented");
+  }
 
-public ActivationGroupDesc.CommandEnvironment getCommandEnvironment() {
-	throw new Error("Not implemented");
-}
+  public String getLocation()
+  {
+    throw new Error("Not implemented");
+  }
 
-public boolean equals(Object obj) {
-	throw new Error("Not implemented");
-}
+  public MarshalledObject getData()
+  {
+    throw new Error("Not implemented");
+  }
 
-public int hashCode() {
-	throw new Error("Not implemented");
-}
+  public Properties getPropertyOverrides()
+  {
+    throw new Error("Not implemented");
+  }
+
+  public ActivationGroupDesc.CommandEnvironment getCommandEnvironment()
+  {
+    throw new Error("Not implemented");
+  }
+
+  public boolean equals(Object obj)
+  {
+    throw new Error("Not implemented");
+  }
+
+  public int hashCode()
+  {
+    throw new Error("Not implemented");
+  }
 
 }
