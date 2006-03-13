@@ -1,4 +1,4 @@
-/* ActivationDecc.java --
+/* ActivationDesc.java -- record with info to activate an object
    Copyright (c) 1996, 1997, 1998, 1999 Free Software Foundation, Inc.
    
 This file is part of GNU Classpath.

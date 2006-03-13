@@ -1,5 +1,5 @@
-/* ActivationGroup.java --
-   Copyright (c) 1996, 1997, 1998, 1999 Free Software Foundation, Inc.
+/* ActivationGroup.java -- the RMI activation group.
+   Copyright (c) 1996, 1997, 1998, 1999, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 

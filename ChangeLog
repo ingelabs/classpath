@@ -1,3 +1,13 @@
+2006-03-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* java/rmi/activation/ActivationGroupDesc.java: Implemented.
+	java/rmi/activation/ActivationDesc.java.java,
+	java/rmi/activation/ActivationGroup.java,
+	java/rmi/activation/ActivationID.java,
+	java/rmi/activation/ActivationMonitor.java,
+	java/rmi/activation/ActivationSystem.java,
+	java/rmi/activation/package.html: Documenting.
+
 2006-03-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JInternalFrame.java

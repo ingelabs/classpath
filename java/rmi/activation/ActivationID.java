@@ -1,4 +1,4 @@
-/* ActivationID.java --
+/* ActivationID.java -- the object activation identifier
    Copyright (c) 1996, 1997, 1998, 1999, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -57,6 +57,8 @@ import java.rmi.server.UID;
  * </ul>
  * An instance of the ActivationID has the {@link UID} as its component and
  * hence is globally unique.
+ * 
+ * @author Audrius Meskauskas (audriusa@bioinformatics.org) (from stub)
  */
 public class ActivationID
     implements Serializable

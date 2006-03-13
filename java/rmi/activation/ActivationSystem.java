@@ -1,4 +1,4 @@
-/* ActivationSystem.java -- Registers groups and objects to be activated.
+/* ActivationSystem.java -- registers groups and objects to be activated.
    Copyright (c) 1996, 1997, 1998, 1999, 2004, 2006
    Free Software Foundation, Inc.
 
