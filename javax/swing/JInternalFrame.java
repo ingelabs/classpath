@@ -1594,6 +1594,9 @@ public class JInternalFrame extends JComponent implements Accessible,
 	if (selected)
 	  restoreSubcomponentFocus();
 
+    if (isShowing())
+	  repaint();
+
 	firePropertyChange(IS_SELECTED_PROPERTY, ! isSelected, isSelected);
 
 	if (isSelected)

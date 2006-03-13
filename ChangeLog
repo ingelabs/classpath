@@ -1,5 +1,11 @@
 2006-03-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JInternalFrame.java
+	(setSelected): Repaint frame when it is showing and the selection
+	state changes.
+
+2006-03-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/AbstractButton.java
 	(AbstractAccessibleButton.getAccessibleRelationSet): Return super....()
 	instead of null.
