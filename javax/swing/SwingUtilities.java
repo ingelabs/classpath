@@ -600,20 +600,46 @@ public class SwingUtilities
    */
   public static void updateComponentTreeUI(Component comp)
   {
-    if (comp == null)
-      return;
-    
-    if (comp instanceof Container)
-      {
-        Component[] children = ((Container)comp).getComponents();
-        for (int i = 0; i < children.length; ++i)
-          updateComponentTreeUI(children[i]);
-      }
-
+    updateComponentTreeUIImpl(comp);
     if (comp instanceof JComponent)
-      ((JComponent)comp).updateUI();
+      {
+        JComponent jc = (JComponent) comp;
+        jc.revalidate();
+      }
+    else
+      {
+        comp.invalidate();
+        comp.validate();
+      }
+    comp.repaint();
   }
 
+  /**
+   * Performs the actual work for {@link #updateComponentTreeUI(Component)}.
+   * This calls updateUI() on c if it is a JComponent, and then walks down
+   * the component tree and calls this method on each child component.
+   *
+   * @param c the component to update the UI
+   */
+  private static void updateComponentTreeUIImpl(Component c)
+  {
+    if (c instanceof JComponent)
+      {
+        JComponent jc = (JComponent) c;
+        jc.updateUI();
+      }
+
+    Component[] components = null;
+    if (c instanceof JMenu)
+      components = ((JMenu) c).getMenuComponents();
+    else if (c instanceof Container)
+      components = ((Container) c).getComponents();
+    if (components != null)
+      {
+        for (int i = 0; i < components.length; ++i)
+          updateComponentTreeUIImpl(components[i]);
+      }
+  }
 
   /**
    * <p>Layout a "compound label" consisting of a text string and an icon
@@ -1128,7 +1154,9 @@ public class SwingUtilities
             child = parent;
             parent = child.getParent();
           }
-        child.setParent(uiActionMap);
+        // Sanity check to avoid loops.
+        if (child != uiActionMap)
+          child.setParent(uiActionMap);
       }
   }
 
@@ -1170,7 +1198,9 @@ public class SwingUtilities
             child = parent;
             parent = parent.getParent();
           }
-        child.setParent(uiInputMap);
+        // Sanity check to avoid loops.
+        if (child != uiInputMap)
+          child.setParent(uiInputMap);
       }
   }
 

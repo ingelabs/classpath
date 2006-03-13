@@ -1,3 +1,14 @@
+2006-03-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/SwingUtilities.java
+	(updateComponentTreeUI): Rewritten to be more robust. Handling of
+	menus and non-Swing components is improved.
+	(updateComponentTreeUIImpl): New helper method.
+	(replaceUIActionMap): Added check for uiActionMap==parent to
+	avoid loop.
+	(replaceUIInputMap): Added check for uiInputMap==parent to
+	avoid loop.
+
 2006-03-13  Wolfgang Baer  <WBaer@gmx.de>
 
 	* gnu/classpath/debug/Component.java: 
