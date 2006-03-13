@@ -1,5 +1,10 @@
 2006-03-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/accessibility/AccessibleContext.java
+	(getAccessibleRelationSet): Return empty set instead of null.
+
+2006-03-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/ImageIcon.java
 	(loadImage): Remove completed images from the MediaTracker. This
 	avoids a potential memory leak.
