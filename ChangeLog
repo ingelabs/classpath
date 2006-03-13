@@ -1,5 +1,11 @@
 2006-03-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/AbstractButton.java
+	(AbstractAccessibleButton.getAccessibleRelationSet): Return super....()
+	instead of null.
+
+2006-03-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/accessibility/AccessibleContext.java
 	(getAccessibleRelationSet): Return empty set instead of null.
 
