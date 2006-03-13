@@ -1,3 +1,10 @@
+2006-03-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/SwingUtilities.java
+	(calculateInnerArea): handle null component, and replace 
+	getLocalBounds() with getBounds(Rectangle) to avoid unnecessary object
+	creation.
+
 2006-03-13  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JColorChooser.java

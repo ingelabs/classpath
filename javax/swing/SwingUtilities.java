@@ -1,5 +1,5 @@
 /* SwingUtilities.java --
-   Copyright (C) 2002, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2005, 2006,  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -91,23 +91,23 @@ public class SwingUtilities
    * of the <em>component's</em> coordinate system, where (0,0) is the
    * upper left corner of the component's bounds.
    *
-   * @param c The component to measure the bounds of
-   * @param r A Rectangle to store the return value in, or
-   * <code>null</code>
+   * @param c  the component to measure the bounds of (if <code>null</code>, 
+   *     this method returns <code>null</code>).
+   * @param r  a carrier to store the return value in (if <code>null</code>, a
+   *     new <code>Rectangle</code> instance is created).
    *
-   * @return The calculated area inside the component and its border
-   * insets
+   * @return The calculated area inside the component and its border insets.
    */
   public static Rectangle calculateInnerArea(JComponent c, Rectangle r)
   {
-    Rectangle b = getLocalBounds(c);
-    if (r == null)
-      r = new Rectangle();
+    if (c == null)
+      return null;
+    r = c.getBounds(r);
     Insets i = c.getInsets();
-    r.x = b.x + i.left;
-    r.width = b.width - i.left - i.right;
-    r.y = b.y + i.top;
-    r.height = b.height - i.top - i.bottom;
+    r.x = i.left;
+    r.width = r.width - i.left - i.right;
+    r.y = i.top;
+    r.height = r.height - i.top - i.bottom;
     return r;
   }
 
