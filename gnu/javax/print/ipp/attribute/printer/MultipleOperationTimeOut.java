@@ -1,6 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<!-- package.html - describes classes in javax.print.event package.
-   Copyright (C) 2003, 2005, 2006 Free Software Foundation, Inc.
+/* MultipleOperationTimeOut.java -- 
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -34,23 +33,54 @@ module.  An independent module is a module which is not derived from
 or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. -->
+exception statement from your version. */
 
-<html>
-<head><title>GNU Classpath - javax.print.event</title></head>
 
-<body>
-Provides events and listeners to be used with the Java Print Service API.
-<p>
-The provided listeners are used to register with print services and/or
-print jobs to receive state information or to monitor the progress of
-print jobs. Print jobs don't need to be implemented synchronous and
-therefore should be monitored to know if they succeed or fail. For this
-common task the <a href="PrintJobAdapter.html">PrintJobAdapter</a> class 
-is provided.
-</p>
-<p>
-<b>Since:</b> 1.4
-</p>
-</body>
-</html>
+package gnu.javax.print.ipp.attribute.printer;
+
+import javax.print.attribute.Attribute;
+import javax.print.attribute.IntegerSyntax;
+
+/**
+ * MultipleOperationTimeOut attribute as described in RFC 2911 section
+ * 4.4.31 provides the minimum time ins second a printer object waits
+ * before time out and recovery. The printer object waits e.g. for
+ * additional SendDocument or SendUri operations.
+ * 
+ * @author Wolfgang Baer (WBaer@gmx.de)
+ */
+public final class MultipleOperationTimeOut extends IntegerSyntax 
+  implements Attribute
+{
+
+  /**
+   * Creates a <code>MultipleOperationTimeOut</code> with the given value.
+   *
+   * @param value the integer to set
+   */
+  public MultipleOperationTimeOut(int value)
+  {
+    super(value);
+  }
+
+  /**
+   * Returns category of this class.
+   *
+   * @return The class <code>MultipleOperationTimeOut</code> itself.
+   */
+  public Class getCategory()
+  {
+    return MultipleOperationTimeOut.class;
+  }
+
+  /**
+   * Returns the name of this attribute.
+   *
+   * @return The name "multiple-operation-time-out".
+   */
+  public String getName()
+  {
+    return "multiple-operation-time-out";
+  }
+
+}

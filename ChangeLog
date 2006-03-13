@@ -1,3 +1,118 @@
+2006-03-13  Wolfgang Baer  <WBaer@gmx.de>
+
+	* gnu/classpath/debug/Component.java: 
+	(IPP) New component for IPP debugging. 
+	(EVERYTHING): Adapted to include IPP.
+	* javax/print/PrintServiceLookup.java: 
+	(registerServiceProvider): New method.
+	(registerService): Likewise.
+	(lookupPrintServices): Likewise.
+	(lookupMultiDocPrintServices): Likewise.
+	(lookupDefaultPrintService): Likewise.
+	(static_initializer): Likewise.
+	(printServiceLookups): New field for found service providers.
+	(printServices): New field for application registered providers.
+	(systemProvider): New field for the system provider.	
+	* javax/print/ServiceUI.java: New file.	
+	* javax/print/package.html: Added more usage content.
+	* javax/print/event/package.html: Likewise.
+	* javax/print/attribute/package.html: Likewise.
+	* javax/print/attribute/standard/package.html: Likewise.
+	* gnu/javax/print/PrintUriException.java,
+	gnu/javax/print/PrintFlavorException.java,
+	gnu/javax/print/PrinterDialog.java,
+	gnu/javax/print/PrintAttributeException.java,
+	gnu/javax/print/CupsPrintServiceLookup.java,
+	gnu/javax/print/CupsServer.java,
+	gnu/javax/print/CupsPrintService.java,
+	gnu/javax/print/CupsMediaMapping.java,
+	gnu/javax/print/CupsIppOperation.java:
+	New implementation files of the Java Print Service API.
+	* gnu/javax/print/ipp/IppValueTag.java,
+	gnu/javax/print/ipp/MultiDocPrintJobImpl.java,
+	gnu/javax/print/ipp/IppStatusCode.java,
+	gnu/javax/print/ipp/IppUtilities.java,
+	gnu/javax/print/ipp/IppResponse.java,
+	gnu/javax/print/ipp/IppException.java,
+	gnu/javax/print/ipp/IppPrintService.java,
+	gnu/javax/print/ipp/IppRequest.java,
+	gnu/javax/print/ipp/IppMultiDocPrintService.java,
+	gnu/javax/print/ipp/IppDelimiterTag.java,
+	gnu/javax/print/ipp/DocPrintJobImpl.java:
+	New files of the IPP client implementation.
+	* gnu/javax/print/ipp/attribute/UnknownAttribute.java,
+	gnu/javax/print/ipp/attribute/StatusMessage.java,
+	gnu/javax/print/ipp/attribute/RequestedAttributes.java,
+	gnu/javax/print/ipp/attribute/NaturalLanguageSyntax.java,
+	gnu/javax/print/ipp/attribute/DocumentAccessError.java,
+	gnu/javax/print/ipp/attribute/DetailedStatusMessage.java,
+	gnu/javax/print/ipp/attribute/DefaultValueAttribute.java,
+	gnu/javax/print/ipp/attribute/CharsetSyntax.java: 
+	New attribute syntax/role files of the printing implementation.
+	* gnu/javax/print/ipp/attribute/supported/UriSecuritySupported.java,
+	gnu/javax/print/ipp/attribute/supported/UriAuthenticationSupported.java,
+	gnu/javax/print/ipp/attribute/supported/SidesSupported.java,
+	gnu/javax/print/ipp/attribute/supported/PrintQualitySupported.java,
+	gnu/javax/print/ipp/attribute/supported/PrinterUriSupported.java,
+	gnu/javax/print/ipp/attribute/supported/PrinterResolutionSupported.java,
+	gnu/javax/print/ipp/attribute/supported/PageRangesSupported.java,
+	gnu/javax/print/ipp/attribute/supported/
+	OrientationRequestedSupported.java, 
+	gnu/javax/print/ipp/attribute/supported/OperationsSupported.java,
+	gnu/javax/print/ipp/attribute/supported/
+	MultipleDocumentHandlingSupported.java, 
+	gnu/javax/print/ipp/attribute/supported/
+	MultipleDocumentJobsSupported.java, 
+	gnu/javax/print/ipp/attribute/supported/MediaSupported.java,
+	gnu/javax/print/ipp/attribute/supported/JobSheetsSupported.java,
+	gnu/javax/print/ipp/attribute/supported/JobHoldUntilSupported.java,
+	gnu/javax/print/ipp/attribute/supported/IppVersionsSupported.java,
+	gnu/javax/print/ipp/attribute/supported/
+	GeneratedNaturalLanguageSupported.java,
+	gnu/javax/print/ipp/attribute/supported/FinishingsSupported.java,
+	gnu/javax/print/ipp/attribute/supported/DocumentFormatSupported.java,
+	gnu/javax/print/ipp/attribute/supported/CompressionSupported.java,
+	gnu/javax/print/ipp/attribute/supported/CharsetSupported.java:
+	New supported attribute files.
+	* gnu/javax/print/ipp/attribute/printer/CharsetConfigured.java,
+	gnu/javax/print/ipp/attribute/printer/DocumentFormat.java,
+	gnu/javax/print/ipp/attribute/printer/MultipleOperationTimeOut.java,
+	gnu/javax/print/ipp/attribute/printer/NaturalLanguageConfigured.java,
+	gnu/javax/print/ipp/attribute/printer/PrinterCurrentTime.java,
+	gnu/javax/print/ipp/attribute/printer/PrinterDriverInstaller.java,
+	gnu/javax/print/ipp/attribute/printer/PrinterStateMessage.java,
+	gnu/javax/print/ipp/attribute/printer/PrinterUpTime.java:
+	New printer description attribute files.
+	* gnu/javax/print/ipp/attribute/job/AttributesCharset.java,
+	gnu/javax/print/ipp/attribute/job/AttributesNaturalLanguage.java,
+	gnu/javax/print/ipp/attribute/job/JobDetailedStatusMessages.java,
+	gnu/javax/print/ipp/attribute/job/JobDocumentAccessErrors.java,
+	gnu/javax/print/ipp/attribute/job/JobPrinterUri.java,
+	gnu/javax/print/ipp/attribute/job/JobId.java,
+	gnu/javax/print/ipp/attribute/job/JobMoreInfo.java,
+	gnu/javax/print/ipp/attribute/job/JobUri.java,
+	gnu/javax/print/ipp/attribute/job/JobStateMessage.java:
+	New job description attribute files.
+	* gnu/javax/print/ipp/attribute/defaults/CopiesDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/DocumentFormatDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/FinishingsDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/JobHoldUntilDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/JobPriorityDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/JobSheetsDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/MediaDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/
+	MultipleDocumentHandlingDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/NumberUpDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/OrientationRequestedDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/PrinterResolutionDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/PrintQualityDefault.java,
+	gnu/javax/print/ipp/attribute/defaults/SidesDefault.java:
+	New default printing attribute files.
+	* resource/gnu/javax/print/PrinterDialog.properties: New file.
+	* resource/gnu/javax/print/PrinterDialog_de.properties: Likewise.
+	* examples/gnu/classpath/examples/print/Demo.java: 
+	New demo application of the current implemented functionality.
+
 2006-03-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* java/rmi/activation/ActivationGroupDesc.java: Implemented.

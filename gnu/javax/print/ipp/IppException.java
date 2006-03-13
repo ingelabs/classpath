@@ -1,6 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<!-- package.html - describes classes in javax.print.event package.
-   Copyright (C) 2003, 2005, 2006 Free Software Foundation, Inc.
+/* IppException.java -- 
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -34,23 +33,56 @@ module.  An independent module is a module which is not derived from
 or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. -->
+exception statement from your version. */
 
-<html>
-<head><title>GNU Classpath - javax.print.event</title></head>
 
-<body>
-Provides events and listeners to be used with the Java Print Service API.
-<p>
-The provided listeners are used to register with print services and/or
-print jobs to receive state information or to monitor the progress of
-print jobs. Print jobs don't need to be implemented synchronous and
-therefore should be monitored to know if they succeed or fail. For this
-common task the <a href="PrintJobAdapter.html">PrintJobAdapter</a> class 
-is provided.
-</p>
-<p>
-<b>Since:</b> 1.4
-</p>
-</body>
-</html>
+package gnu.javax.print.ipp;
+
+import javax.print.PrintException;
+
+/**
+ * <code>IppException</code> signals exception thrown by
+ * the IPP implementation for various things like a failed
+ * ipp request or a wrapped io exception.
+ * 
+ * @author Wolfgang Baer (WBaer@gmx.de)
+ */
+public class IppException extends PrintException
+{
+  /**
+   * Creates an <code>IppException</code>.
+   */
+  public IppException()
+  {
+    super();
+  }
+
+  /**
+   * Creates an <code>IppException</code>.
+   * @param s the message of the exception.
+   */
+  public IppException(String s)
+  {
+    super(s);
+  }
+  
+  /**
+   * Creates an <code>IppException</code>.
+   * @param e the exception cause this one.
+   */
+  public IppException(Exception e)
+  {
+    super(e);
+  }
+
+  /**
+   * Creates an <code>IppException</code>.
+   * @param s the message of the exception.
+   * @param e the exception cause this one.
+   */
+  public IppException(String s, Exception e)
+  {
+    super(s, e);
+  }
+
+}

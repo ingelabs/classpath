@@ -1,6 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<!-- package.html - describes classes in javax.print.event package.
-   Copyright (C) 2003, 2005, 2006 Free Software Foundation, Inc.
+/* AttributesNaturalLanguage.java -- 
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -34,23 +33,63 @@ module.  An independent module is a module which is not derived from
 or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. -->
+exception statement from your version. */
 
-<html>
-<head><title>GNU Classpath - javax.print.event</title></head>
 
-<body>
-Provides events and listeners to be used with the Java Print Service API.
-<p>
-The provided listeners are used to register with print services and/or
-print jobs to receive state information or to monitor the progress of
-print jobs. Print jobs don't need to be implemented synchronous and
-therefore should be monitored to know if they succeed or fail. For this
-common task the <a href="PrintJobAdapter.html">PrintJobAdapter</a> class 
-is provided.
-</p>
-<p>
-<b>Since:</b> 1.4
-</p>
-</body>
-</html>
+package gnu.javax.print.ipp.attribute.job;
+
+
+import gnu.javax.print.ipp.attribute.NaturalLanguageSyntax;
+
+import javax.print.attribute.Attribute;
+
+/**
+ * AttributesNaturalLanguage attribute as described in RFC 2911 chapter
+ * 3.1.4 Character Set and Natural Language Operation Attributes.
+ * <p>
+ * This operation attribute identifies the natural language used
+ * by any text and name attribute supplied by the client in the request.
+ * The printer object should use this natural language for the response 
+ * to this request.
+ * </p>
+ * 
+ * @author Wolfgang Baer (WBaer@gmx.de)
+ */
+public final class AttributesNaturalLanguage extends NaturalLanguageSyntax 
+  implements Attribute
+{
+  
+  /** Defines the default language EN */
+  public static final AttributesNaturalLanguage EN = 
+    new AttributesNaturalLanguage("en");
+
+  /**
+   * Creates a <code>AttributesNaturalLanguage</code> object.
+   * 
+   * @param value the language string value.
+   */
+  public AttributesNaturalLanguage(String value)
+  {
+    super(value);
+  }
+
+  /**
+   * Returns category of this class.
+   *
+   * @return The class <code>AttributesNaturalLanguage</code> itself.
+   */
+  public Class getCategory()
+  {
+    return AttributesNaturalLanguage.class;
+  }
+
+  /**
+   * Returns the name of this attribute.
+   *
+   * @return The name "attributes-natural-language".
+   */
+  public String getName()
+  {
+    return "attributes-natural-language";
+  }
+}

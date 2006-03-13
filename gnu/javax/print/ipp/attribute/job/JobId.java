@@ -1,6 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<!-- package.html - describes classes in javax.print.event package.
-   Copyright (C) 2003, 2005, 2006 Free Software Foundation, Inc.
+/* JobId.java -- 
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -34,23 +33,55 @@ module.  An independent module is a module which is not derived from
 or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. -->
+exception statement from your version. */
 
-<html>
-<head><title>GNU Classpath - javax.print.event</title></head>
 
-<body>
-Provides events and listeners to be used with the Java Print Service API.
-<p>
-The provided listeners are used to register with print services and/or
-print jobs to receive state information or to monitor the progress of
-print jobs. Print jobs don't need to be implemented synchronous and
-therefore should be monitored to know if they succeed or fail. For this
-common task the <a href="PrintJobAdapter.html">PrintJobAdapter</a> class 
-is provided.
-</p>
-<p>
-<b>Since:</b> 1.4
-</p>
-</body>
-</html>
+package gnu.javax.print.ipp.attribute.job;
+
+import javax.print.attribute.Attribute;
+import javax.print.attribute.IntegerSyntax;
+
+/**
+ * The <code>JobId</code> attribute contains the ID of a
+ * print job created or currently being processed.
+ * 
+ * @author Wolfgang Baer (WBaer@gmx.de)
+ */
+public final class JobId extends IntegerSyntax implements Attribute
+{
+
+  /**
+   * Creates a <code>IntegerSyntax</code> with the given value.
+   *
+   * @param value the integer to set
+   * @throws IllegalArgumentException if value is &lt; 1
+   */
+  public JobId(int value)
+  {
+    super(value);
+    
+    if (value < 1)
+      throw new IllegalArgumentException("job-id may not be less than 1");
+  }
+
+  /**
+   * Returns category of this class.
+   *
+   * @return The class <code>JobId</code> itself.
+   */
+  public Class getCategory()
+  {
+    return JobId.class;
+  }
+
+  /**
+   * Returns the name of this attribute.
+   *
+   * @return The name "job-id".
+   */
+  public String getName()
+  {
+    return "job-id";
+  }
+
+}
