@@ -292,7 +292,6 @@ public class JPopupMenu extends JComponent implements Accessible, MenuElement
   public void updateUI()
   {
     setUI((PopupMenuUI) UIManager.getUI(this));
-    invalidate();
   }
 
   /**

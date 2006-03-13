@@ -3260,8 +3260,6 @@ public class JTable
   public void updateUI()
   {
     setUI((TableUI) UIManager.getUI(this));
-    revalidate();
-    repaint();
   }
   
   /**

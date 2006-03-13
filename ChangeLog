@@ -1,5 +1,45 @@
 2006-03-13  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JColorChooser.java
+	(updateUI): Don't call revalidate().
+	* javax/swing/JComboBox.java
+	(updateUI): Don't call invalidate().
+	* javax/swing/JDesktopPane.java
+	(updateUI): Don't call invalidate().
+	* javax/swing/JFileChooser.java
+	(updateUI): Don't call revalidate().
+	* javax/swing/JMenu.java
+	(updateUI): Don't call invalidate().
+	* javax/swing/JMenuBar.java
+	(updateUI): Don't call invalidate().
+	* javax/swing/JMenuItem.java
+	(updateUI): Don't call invalidate().
+	* javax/swing/JOptionPane.java
+	(updateUI): Don't call invalidate().
+	* javax/swing/JPopupMenu.java
+	(updateUI): Don't call invalidate().
+	* javax/swing/JProgressBar.java
+	(updateUI): Don't call invalidate().
+	* javax/swing/JScrollBar.java
+	(updateUI): Don't call invalidate() and repaint().
+	* javax/swing/JScrollPane.java
+	(updateUI): Rewritten to be like the other updateUI()
+	methods.
+	* javax/swing/JSlider.java
+	(updateUI): Don't call invalidate() and repaint().
+	* javax/swing/JSplitPane.java
+	(updateUI): Don't call invalidate() and repaint().
+	* javax/swing/JTabbedPane.java
+	(updateUI): Don't call invalidate().
+	* javax/swing/JTable.java
+	(updateUI): Don't call revalidate() and repaint().
+	* javax/swing/JToolBar.java
+	(updateUI): Don't call revalidate() and repaint().
+	* javax/swing/JToolTip.java
+	(updateUI): Don't call revalidate() and repaint().
+
+2006-03-13  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/SwingUtilities.java
 	(updateComponentTreeUI): Rewritten to be more robust. Handling of
 	menus and non-Swing components is improved.

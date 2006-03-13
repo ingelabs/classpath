@@ -481,9 +481,7 @@ public class JToolBar extends JComponent implements SwingConstants, Accessible
   public void updateUI()
   {
     setUI((ToolBarUI) UIManager.getUI(this));
-    revalidate();
-    repaint();
-  } // updateUI()
+  }
 
   /**
    * This method returns the String identifier for the UI class to the used
