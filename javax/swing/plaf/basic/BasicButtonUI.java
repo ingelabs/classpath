@@ -173,7 +173,8 @@ public class BasicButtonUI extends ButtonUI
       b.setFont(null);
     b.setForeground(null);
     b.setBackground(null);
-    b.setBorder(null);
+    if (b.getBorder() instanceof UIResource)
+      b.setBorder(null);
     b.setIconTextGap(defaultTextIconGap);
     b.setMargin(null);
   }
@@ -308,7 +309,7 @@ public class BasicButtonUI extends ButtonUI
    * @param c The component to paint the state of
    */
   public void paint(Graphics g, JComponent c)
-  {      
+  {
     AbstractButton b = (AbstractButton) c;
 
     Rectangle tr = new Rectangle();

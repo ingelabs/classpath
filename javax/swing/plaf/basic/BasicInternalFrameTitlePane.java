@@ -340,7 +340,7 @@ public class BasicInternalFrameTitlePane extends JComponent
      *
      * @return True if this Component can receive focus.
      */
-    public boolean isFocusTransversable()
+    public boolean isFocusTraversable()
     {
       return true;
     }

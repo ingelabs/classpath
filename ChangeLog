@@ -1,3 +1,46 @@
+2006-03-13  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(uninstallDefaults): Only uninstall border if it's a UIResource.
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+	(SystemMenuBar.isFocusTraversable): Fixed typo in signature.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(installUI): Don't touch the opaque flag of the glassPane and
+	the frame. Don't invalidate.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(installUI): Don't touch the opaque flag of the glassPane.
+	* javax/swing/plaf/basic/BasicMenuBarUI.java
+	(properyChangeListener): Made field private.
+	(ChangeHandler): Made class private.
+	(ContainerHandler): Made class private.
+	(PropertyChangeHandler): Made class private.
+	* javax/swing/plaf/basic/BasicMenuUI.java
+	(MenuHandler): Made class private.
+	(PropertyChangeHandler): Removed unneeded class.
+	(MenuDragMouseHandler): Made class private.
+	(MenuKeyHandler): Made class private.
+	* javax/swing/plaf/basic/BasicPanelUI.java
+	(installDefaults): Made method protected. Don't set opaque
+	flag.
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(TrackListener.shouldScroll): Made method private.
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java
+	(BasicHorizontalLayoutManager.BasicHorizontalLayoutManager):
+	Made constructor package private.
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java
+	(cellBorder): Made field private.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installDefaults): Don't make component opaque.
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(createNonRollOverBorder): Don't create UIResource border.
+	(createRollOverBorder): Don't create UIResource border.
+	(installComponents): Moved setRolloverBorders call here.
+	(installDefaults): Moved setRolloverBorders call from here.
+	(installUI): Don't make toolbar opaque.
+	(setBorderToNonRollover): Handle AbstractButton instead of
+	JButton here.
+	(uninstallComponents): Don't nullify class fields here.
+
 2006-03-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/SwingUtilities.java
