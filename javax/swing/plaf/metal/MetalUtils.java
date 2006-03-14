@@ -161,7 +161,7 @@ class MetalUtils
 
   /**
    * Paints the typical Metal gradient. See {@link #paintGradient(Graphics,
-   * int, int, int, int, double, double, Color, Color, Color, int)}
+   * int, int, int, int, float, float, Color, Color, Color, int)}
    * for more details.
    *
    * The parameters are fetched from the UIManager using the key
@@ -181,8 +181,8 @@ class MetalUtils
                             int dir, String uiProp)
   {
     List params = (List) UIManager.get(uiProp);
-    double g1 = ((Double) params.get(0)).doubleValue();
-    double g2 = ((Double) params.get(1)).doubleValue();
+    float g1 = ((Float) params.get(0)).floatValue();
+    float g2 = ((Float) params.get(1)).floatValue();
     Color c1 = (Color) params.get(2);
     Color c2 = (Color) params.get(3);
     Color c3 = (Color) params.get(4);
@@ -222,8 +222,8 @@ class MetalUtils
    * @param dir the direction of the gradient, either
    *        {@link SwingConstants#HORIZONTAL} or {@link SwingConstants#VERTICAL}
    */
-  static void paintGradient(Graphics g, int x, int y, int w, int h, double g1,
-                            double g2, Color c1, Color c2, Color c3, int dir)
+  static void paintGradient(Graphics g, int x, int y, int w, int h, float g1,
+                            float g2, Color c1, Color c2, Color c3, int dir)
   {
     if (dir == SwingConstants.HORIZONTAL)
       paintHorizontalGradient(g, x, y, w, h, g1, g2, c1, c2, c3);
@@ -233,7 +233,7 @@ class MetalUtils
 
   /**
    * Paints a horizontal gradient. See {@link #paintGradient(Graphics, int,
-   * int, int, int, double, double, Color, Color, Color, int)} for details.
+   * int, int, int, float, float, Color, Color, Color, int)} for details.
    *
    * @param x the X coordinate of the upper left corner of the rectangle
    * @param y the Y coordinate of the upper left corner of the rectangle
@@ -246,7 +246,7 @@ class MetalUtils
    * @param c3 the color 3
    */
   static void paintHorizontalGradient(Graphics g, int x, int y, int w, int h,
-                                      double g1, double g2, Color c1, Color c2,
+                                      float g1, float g2, Color c1, Color c2,
                                       Color c3)
   {
     // Calculate the coordinates.
@@ -321,7 +321,7 @@ class MetalUtils
 
   /**
    * Paints a vertical gradient. See {@link #paintGradient(Graphics, int, int,
-   * int, int, double, double, Color, Color, Color, int)} for details.
+   * int, int, float, float, Color, Color, Color, int)} for details.
    *
    * @param x the X coordinate of the upper left corner of the rectangle
    * @param y the Y coordinate of the upper left corner of the rectangle

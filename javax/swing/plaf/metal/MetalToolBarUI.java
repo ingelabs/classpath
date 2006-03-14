@@ -46,6 +46,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.ComponentUI;
@@ -224,5 +225,38 @@ public class MetalToolBarUI extends BasicToolBarUI
       // BasicToolBarUI.DockingListener
       super.mouseDragged(e);
     }
+  }
+
+  /**
+   * Installs the UI on the toolbar. This calls super and sets the rollover
+   * property according to the <code>UIManager</code> property
+   * &quot;ToolBar.isRollover&quot;.
+   *
+   * @param c the component to install the UI on
+   */
+  public void installUI(JComponent c)
+  {
+    super.installUI(c);
+    if (c instanceof JToolBar)
+      {
+        JToolBar tb = (JToolBar) c;
+        tb.setRollover(UIManager.getBoolean("ToolBar.isRollover"));
+      }
+  }
+
+  /**
+   * Uninstalls the UI from the toolbar. This calls super and resets the
+   * rollover property.
+   *
+   * @param c the component to uninstall the UI from
+   */
+  public void uninstallUI(JComponent c)
+  {
+    if (c instanceof JToolBar)
+      {
+        JToolBar tb = (JToolBar) c;
+        tb.setRollover(false);
+      }
+    super.uninstallUI(c);
   }
 }

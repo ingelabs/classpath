@@ -1,5 +1,25 @@
 2006-03-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalBorders.java
+	(getToolBarButtonBorder): Don't create a UIResource border
+	here.
+	* javax/swing/plaf/metal/MetalToolBarUI.java
+	(installUI): New overridden method. Installs the rollover property.
+	(uninstallUI): New overridden method. Resets the rollover property.
+	* javax/swing/plaf/metal/MetalUtils.java
+	(paintGradient): Fetch Float values from the UIManager. Adjusted
+	method signatures accordingly.
+	(paintHorizontalGradient): Adjusted signature to accept float
+	instead of double.
+	(paintVerticalGradient): Adjusted signature to accept float
+	instead of double.
+	* javax/swing/plaf/metal/OceanTheme.java
+	(addCustomEntriesToTable): Added missing UIDefaults entries,
+	except of Icons. Fixed gradient entries to use Float instead
+	of Double.
+
+2006-03-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JInternalFrame.java
 	(JInternalFrame): Make JInternalFrame opaque.
 	* javax/swing/JToolBarFrame.java

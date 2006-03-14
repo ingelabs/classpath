@@ -59,6 +59,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicBorders;
@@ -1516,8 +1517,7 @@ public class MetalBorders
       {
         Border outer = new ButtonBorder();
         Border inner = new RolloverMarginBorder();
-        toolbarButtonBorder = new BorderUIResource.CompoundBorderUIResource
-          (outer, inner);
+        toolbarButtonBorder = new CompoundBorder(outer, inner);
       }
     return toolbarButtonBorder;
   }
