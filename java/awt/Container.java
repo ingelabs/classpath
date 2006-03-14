@@ -388,10 +388,6 @@ public class Container extends Component
         ContainerListener[] listeners = getContainerListeners();
         for (int i = 0; i < listeners.length; i++)
           listeners[i].componentAdded(ce);
-
-        // Repaint this container.
-        repaint(comp.getX(), comp.getY(), comp.getWidth(),
-                comp.getHeight());
       }
   }
 
