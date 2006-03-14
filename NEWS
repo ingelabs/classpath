@@ -7,6 +7,8 @@ New in release 0.91 (UNRELEASED)
   jobs and support for client-formatted print data. An example application
   (see: examples/gnu/classpath/examples/print/Demo) has been added to show 
   the API usage for service discovery and printing of files.
+* Free Swing improvements: Support for OceanTheme has been mostly completed
+  and turned on as default Metal theme.
 
 New in release 0.90 (March 6, 2006)
 

@@ -1,5 +1,9 @@
 2006-03-14  Roman Kennke  <kennke@aicas.com>
 
+	* NEWS: Added note about OceanTheme support.
+
+2006-03-14  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalIconFactory.java
 	(HorizontalSliderThumbIcon.gradientMask): New field
 	(HorizontalSliderThumbIcon.paintIcon): Added support for the
