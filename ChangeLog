@@ -1,3 +1,11 @@
+2006-03-14  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #26641
+	* java/awt/LightweightDispatcher.java (dispatchEvent): Return result
+	of handleMouseEvent.
+	(handleMouseEvent): Return boolean to indicate whether we handled the
+	event by passing it to a lightweight.
+
 2006-03-14  Wolfgang Baer  <WBaer@gmx.de>
 
 	* org/omg/PortableInterceptor/ORBInitInfoPackage/ObjectIdHelper.java,
