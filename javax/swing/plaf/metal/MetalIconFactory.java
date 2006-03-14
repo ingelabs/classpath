@@ -756,6 +756,17 @@ public class MetalIconFactory implements Serializable
   {
 
     /**
+     * This is used as a mask when painting the gradient. See
+     * {@link MetalUtils#paintGradient(java.awt.Graphics, int, int, int, int,
+     *  float, float, java.awt.Color, java.awt.Color, java.awt.Color, int,
+     *  int[][])} for details.
+     */
+    private static int[][] gradientMask = new int[][] {{3, 7}, {1, 9}, {1, 9},
+                                                       {0, 10}, {0, 10}, {0, 10},
+                                                       {0, 10}, {1, 9}, {1, 9},
+                                                       {3, 7}};
+
+    /**
      * Returns the width of the icon in pixels.
      *
      * @return the width of the icon in pixels
@@ -788,12 +799,13 @@ public class MetalIconFactory implements Serializable
     public void paintIcon(Component c, Graphics g, int x, int y) 
     {
       if (UIManager.get("RadioButton.gradient") != null)
-        MetalUtils.paintGradient(g, x, y, getIconWidth(), getIconHeight(),
-                              SwingConstants.VERTICAL, "RadioButton.gradient");
+        MetalUtils.paintGradient(g, x + 2, y + 2, 8, 8,
+                              SwingConstants.VERTICAL, "RadioButton.gradient",
+                              gradientMask);
 
       Color savedColor = g.getColor();
       JRadioButton b = (JRadioButton) c;
-      
+
       // draw outer circle
       if (b.isEnabled())
         g.setColor(MetalLookAndFeel.getControlDarkShadow());

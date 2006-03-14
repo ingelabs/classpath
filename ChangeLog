@@ -1,3 +1,13 @@
+2006-03-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalUtils.java
+	(paintGradient): Added support for 'masked' gradients.
+	(paintHorizontalGradient): Likewise.
+	(paintVerticalGradient): Likewise.
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(RadioButtonIcon.gradientMask): New field.
+	(RadioButtonIcon.paintIcon): Added mask for gradient painting.
+
 2006-03-14  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #26645.
