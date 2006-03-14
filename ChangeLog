@@ -1,5 +1,28 @@
 2006-03-14  Wolfgang Baer  <WBaer@gmx.de>
 
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/ObjectIdHelper.java,
+	* org/omg/PortableServer/ServantActivatorPOA.java,
+	* org/omg/PortableServer/ServantLocatorPOA.java: 
+	Make class abstract and minor api docs fixlets.
+	* org/omg/PortableServer/ForwardRequest.java, 
+	* org/omg/PortableServer/ServantLocatorPackage/CookieHolder.java, 
+	* org/omg/PortableServer/POAPackage/AdapterAlreadyExists.java, 
+	* org/omg/PortableServer/POAPackage/AdapterNonExistent.java, 
+	* org/omg/PortableServer/POAPackage/InvalidPolicy.java, 
+	* org/omg/PortableServer/POAPackage/NoServant.java, 
+	* org/omg/PortableServer/POAPackage/ObjectAlreadyActive.java, 
+	* org/omg/PortableServer/POAPackage/ObjectNotActive.java, 
+	* org/omg/PortableServer/POAPackage/ServantAlreadyActive.java, 
+	* org/omg/PortableServer/POAPackage/ServantNotActive.java, 
+	* org/omg/PortableServer/POAPackage/WrongAdapter.java, 
+	* org/omg/PortableServer/POAPackage/WrongPolicy.java, 
+	* org/omg/PortableServer/POAManagerPackage/AdapterInactive.java, 
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/InvalidName.java,
+	* org/omg/PortableInterceptor/ORBInitInfoPackage/DuplicateName.java,
+	* org/omg/PortableServer/CurrentPackage/NoContext.java: Make class final.
+
+2006-03-14  Wolfgang Baer  <WBaer@gmx.de>
+
 	* NEWS: Added entry about printing support.
 
 2006-03-14  David Gilbert  <david.gilbert@object-refinery.com>
