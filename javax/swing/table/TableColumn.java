@@ -56,8 +56,9 @@ public class TableColumn
   static final long serialVersionUID = -6113660025878112608L;
 
   /**
-   * The name for the <code>columnWidth</code> property.  Note that the typo
-   * in the name value is deliberate, to match the specification.
+   * The name for the <code>columnWidth</code> property.  This field is
+   * obsolete and no longer used.  Note also that the typo in the value 
+   * string is deliberate, to match the specification.
    */
   public static final String COLUMN_WIDTH_PROPERTY = "columWidth";
 
@@ -127,7 +128,8 @@ public class TableColumn
   protected TableCellEditor cellEditor;
 
   /**
-   * isResizable
+   * A flag that determines whether or not the column is resizable (the default
+   * is <code>true</code>).
    */
   protected boolean isResizable = true;
 
@@ -383,9 +385,14 @@ public class TableColumn
   }
 
   /**
-   * setWidth
+   * Sets the width for the column and sends a {@link PropertyChangeEvent} 
+   * (with the property name 'width') to all registered listeners.  If the new
+   * width falls outside the range getMinWidth() to getMaxWidth() it is 
+   * adjusted to the appropriate boundary value.
    * 
-   * @param newWidth the width
+   * @param newWidth the width.
+   * 
+   * @see #getWidth()
    */
   public void setWidth(int newWidth)
   {
@@ -409,9 +416,11 @@ public class TableColumn
   }
 
   /**
-   * getWidth
+   * Returns the width for the column (the default value is <code>75</code>).
    * 
-   * @return int
+   * @return The width.
+   *
+   * @see #setWidth(int)
    */
   public int getWidth()
   {
@@ -419,9 +428,14 @@ public class TableColumn
   }
 
   /**
-   * setPreferredWidth
+   * Sets the preferred width for the column and sends a 
+   * {@link PropertyChangeEvent} to all registered listeners.  If necessary,
+   * the supplied value will be adjusted to fit in the range 
+   * {@link #getMinWidth()} to {@link #getMaxWidth()}.
    * 
-   * @param preferredWidth the preferred width
+   * @param preferredWidth  the preferred width.
+   * 
+   * @see #getPreferredWidth()
    */
   public void setPreferredWidth(int preferredWidth)
   {
@@ -438,9 +452,12 @@ public class TableColumn
   }
 
   /**
-   * getPreferredWidth
+   * Returns the preferred width for the column (the default value is 
+   * <code>75</code>).
    * 
-   * @return the preferred width
+   * @return The preferred width.
+   * 
+   * @see #setPreferredWidth(int)
    */
   public int getPreferredWidth()
   {
@@ -448,22 +465,39 @@ public class TableColumn
   }
 
   /**
-   * Sets the minimum width for the column and, if necessary, updates the
-   * <code>width</code> and <code>preferredWidth</code>.
+   * Sets the minimum width for the column and sends a 
+   * {@link PropertyChangeEvent} (with the property name 'minWidth') to all
+   * registered listeners.  If the current <code>width</code> and/or 
+   * <code>preferredWidth</code> are less than the new minimum width, they are
+   * adjusted accordingly.
    * 
-   * @param minWidth the minimum width
+   * @param minWidth  the minimum width (negative values are treated as 0).
+   * 
+   * @see #getMinWidth()
    */
   public void setMinWidth(int minWidth)
   {
-    this.minWidth = minWidth;
-    setWidth(getWidth());
-    setPreferredWidth(getPreferredWidth());
+    if (minWidth < 0)
+      minWidth = 0;
+    if (this.minWidth != minWidth)
+      {
+        if (width < minWidth)
+          setWidth(minWidth);
+        if (preferredWidth < minWidth)
+          setPreferredWidth(minWidth);
+        int oldValue = this.minWidth;
+        this.minWidth = minWidth;
+        firePropertyChange("minWidth", oldValue, minWidth);
+      }
   }
 
   /**
-   * Returns the <code>TableColumn</code>'s minimum width.
+   * Returns the <code>TableColumn</code>'s minimum width.  The default value
+   * is <code>15</code>.
    * 
    * @return The minimum width.
+   * 
+   * @see #setMinWidth(int)
    */
   public int getMinWidth()
   {
