@@ -1,3 +1,9 @@
+2006-03-14  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/table/TableColumn.java
+	(setMaxWidth): Updated width and preferredWidth if necessary,
+	(getMaxWidth): Updated API docs.
+
 2006-03-14  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicSliderUI.java

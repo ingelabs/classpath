@@ -505,22 +505,37 @@ public class TableColumn
   }
 
   /**
-   * Sets the maximum width and, if necessary, updates the <code>width</code>
-   * and <code>preferredWidth</code>.
+   * Sets the maximum width for the column and sends a 
+   * {@link PropertyChangeEvent} (with the property name 'maxWidth') to all
+   * registered listeners.  If the current <code>width</code> and/or 
+   * <code>preferredWidth</code> are greater than the new maximum width, they 
+   * are adjusted accordingly.
    * 
-   * @param maxWidth the maximum width
+   * @param maxWidth the maximum width.
+   * 
+   * @see #getMaxWidth()
    */
   public void setMaxWidth(int maxWidth)
   {
-    this.maxWidth = maxWidth;
-    setWidth(getWidth());
-    setPreferredWidth(getPreferredWidth());
+    if (this.maxWidth != maxWidth)
+      {
+        if (width > maxWidth)
+          setWidth(maxWidth);
+        if (preferredWidth > maxWidth)
+          setPreferredWidth(maxWidth);
+        int oldValue = this.maxWidth;
+        this.maxWidth = maxWidth;
+        firePropertyChange("maxWidth", oldValue, maxWidth);
+       }
   }
 
   /**
-   * Returns the maximum width.
+   * Returns the maximum width for the column.  The default value is
+   * {@link Integer#MAX_VALUE}.
    * 
-   * @return The maximum width.
+   * @return The maximum width for the column.
+   * 
+   * @see #setMaxWidth(int)
    */
   public int getMaxWidth()
   {
