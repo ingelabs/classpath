@@ -1,5 +1,15 @@
 2006-03-14  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(TrackListener.mouseDragged): Only process event when slider is
+	enabled.
+	(TrackListener.mouseReleased): Only process event when slider is
+	enabled.
+	(TrackListener.mousePressed): Only process event when slider is
+	enabled.
+
+2006-03-14  Roman Kennke  <kennke@aicas.com>
+
 	* NEWS: Added note about OceanTheme support.
 
 2006-03-14  Roman Kennke  <kennke@aicas.com>
