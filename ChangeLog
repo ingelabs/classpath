@@ -1,5 +1,11 @@
 2006-03-14  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/table/TableColumn.java
+	(setResizable): Fire PropertyChangeEvent if the flag value changes,
+	(isResizable): Updated API docs.
+
+2006-03-14  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/LookAndFeel.java: Updated API docs.
 
 2006-03-14  Roman Kennke  <kennke@aicas.com>

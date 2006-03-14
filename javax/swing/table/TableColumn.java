@@ -1,5 +1,5 @@
 /* TableColumn.java --
-   Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2005, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -49,7 +49,6 @@ import javax.swing.event.SwingPropertyChangeSupport;
  * width, minimum width, preferred width and maximum width.
  * 
  * @author	Andrew Selkirk
- * @version	1.0
  */
 public class TableColumn
   implements Serializable
@@ -495,21 +494,32 @@ public class TableColumn
   }
 
   /**
-   * setResizable
+   * Sets the flag that controls whether or not the column is resizable, and
+   * sends a {@link PropertyChangeEvent} (with the property name 'isResizable')
+   * to all registered listeners.
    * 
    * @param isResizable <code>true</code> if this column is resizable,
-   * <code>false</code> otherwise
+   * <code>false</code> otherwise.
+   * 
+   * @see #getResizable()
    */
   public void setResizable(boolean isResizable)
   {
-    this.isResizable = isResizable;
+    if (this.isResizable != isResizable)
+      {
+        this.isResizable = isResizable;
+        changeSupport.firePropertyChange("isResizable", !this.isResizable, 
+            isResizable);
+      }
   }
 
   /**
-   * getResizable
+   * Returns the flag that controls whether or not the column is resizable.
    * 
    * @return <code>true</code> if this column is resizable,
-   * <code>false</code> otherwise
+   * <code>false</code> otherwise.
+   * 
+   * @see #setResizable(boolean)
    */
   public boolean getResizable()
   {
