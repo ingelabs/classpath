@@ -1,3 +1,7 @@
+2006-03-14  Wolfgang Baer  <WBaer@gmx.de>
+
+	* NEWS: Added entry about printing support.
+
 2006-03-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/table/TableColumn.java
