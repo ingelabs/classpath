@@ -1,3 +1,10 @@
+2006-03-14  Roman Kennke  <kennke@aicas.com>
+
+	* examples/gnu/classpath/examples/swing/Demo.java
+	Removed static initializer.
+	(mkMenuBar): Made method non-static. Added themes menu.
+	(ChangeThemeAction): New inner class, used to change themes.
+
 2006-03-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/table/TableColumn.java

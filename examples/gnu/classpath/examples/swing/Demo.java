@@ -31,6 +31,7 @@ import javax.swing.border.*;
 
 import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.plaf.metal.MetalTheme;
 import javax.swing.plaf.metal.OceanTheme;
 
 import java.net.URL;
@@ -39,60 +40,6 @@ public class Demo
 {
   JFrame frame;
   static Color blueGray = new Color(0xdc, 0xda, 0xd5);
-
-  static
-  {
-    try
-      {
-        if (System.getProperty("swing.defaultlaf") == null)
-          {
-            StringBuffer text = new StringBuffer();
-            text.append("You may change the Look and Feel of this\n");
-            text.append("Demo by setting the system property\n");
-            text.append("-Dswing.defaultlaf=<LAFClassName>\n");
-	    text.append("\n");
-            text.append("Possible values for <LAFClassName> are:\n");
-	    text.append("\n");
-            text.append("* javax.swing.plaf.metal.MetalLookAndFeel\n");
-            text.append("  the default GNU Classpath L&F\n");
-	    text.append("\n");
-            text.append("* gnu.classpath.examples.swing.GNULookAndFeel\n");
-            text.append("  the GNU Look and Feel\n");
-            text.append("  (derived from javax.swing.plaf.basic.BasicLookAndFeel)\n");
-	    text.append("\n");
-            text.append("MetalLookAndFeel supports different Themes.\n");
-	    text.append("DefaultMetalTheme (the default) and OceanTheme (in development)\n");
-
-	    final String DEFAULT = "MetalLookAndFeel (default)";
-	    final String OCEAN = "MetalLookAndFeel (Ocean)";
-	    final String GNU = "GNULookAndFeel";
-	    final String[] lafs = new String[] { DEFAULT, OCEAN, GNU };
-
-	    int laf = JOptionPane.showOptionDialog(null, text /* textPane */,
-						   "Look and Feel choice",
-						   JOptionPane.OK_OPTION,
-						   JOptionPane.QUESTION_MESSAGE,
-						   null, lafs, DEFAULT);
-        if (laf == 0)
-          {
-            MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
-            UIManager.setLookAndFeel(new MetalLookAndFeel());
-          }
-	    if (laf == 1)
-	      {
-	        MetalLookAndFeel.setCurrentTheme(new OceanTheme());
-	        UIManager.setLookAndFeel(new MetalLookAndFeel());
-	      }
-	    else if (laf == 2)
-	      UIManager.setLookAndFeel(new GNULookAndFeel());
-          }
-      }
-    catch (UnsupportedLookAndFeelException e)
-      {
-        System.err.println("Cannot install GNULookAndFeel, exiting");
-        System.exit(1);
-      }
-  }
 
   static Icon stockIcon(String s)
   {
@@ -111,7 +58,7 @@ public class Demo
     return new ImageIcon(url, name);
   }
 
-  static JMenuBar mkMenuBar()
+  JMenuBar mkMenuBar()
   {
     JMenuBar bar = new JMenuBar();
     
@@ -265,9 +212,25 @@ public class Demo
             }
       });
 
+    // Create themes menu.
+    JMenu themes = new JMenu("Themes");
+    ButtonGroup themesGroup = new ButtonGroup();
+    JRadioButtonMenuItem ocean =
+      new JRadioButtonMenuItem(new ChangeThemeAction(new OceanTheme()));
+    ocean.setSelected(MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme);
+    themes.add(ocean);
+    themesGroup.add(ocean);
+    JRadioButtonMenuItem steel =
+      new JRadioButtonMenuItem(new ChangeThemeAction(new DefaultMetalTheme()));
+    ocean.setSelected(MetalLookAndFeel.getCurrentTheme()
+                      instanceof DefaultMetalTheme);
+    themes.add(steel);
+    themesGroup.add(steel);
+    
     bar.add(file);
     bar.add(edit);
     bar.add(examples);
+    bar.add(themes);
     bar.add(help);
     return bar;
   }
@@ -731,6 +694,7 @@ public class Demo
     main.add(mkButtonBar());
     component.add(main, BorderLayout.CENTER);
     frame.pack();
+    SwingUtilities.updateComponentTreeUI(frame);
     frame.show();
   }
 
@@ -1074,5 +1038,47 @@ public class Demo
 	}
       });
     return panel;
+  }
+
+  /**
+   * This Action is used to switch Metal themes.
+   */
+  class ChangeThemeAction extends AbstractAction
+  {
+    /**
+     * The theme to switch to.
+     */
+    MetalTheme theme;
+
+    /**
+     * Creates a new ChangeThemeAction for the specified theme.
+     *
+     * @param t the theme to switch to
+     */
+    ChangeThemeAction(MetalTheme t)
+    {
+      theme = t;
+      putValue(NAME, t.getName());
+    }
+
+    /**
+     * Changes the theme to the one specified in the constructor.
+     *
+     * @param event the action event that triggered this action
+     */
+    public void actionPerformed(ActionEvent event)
+    {
+      MetalLookAndFeel.setCurrentTheme(theme);
+      try
+        {
+          UIManager.setLookAndFeel(new MetalLookAndFeel());
+        }
+      catch (UnsupportedLookAndFeelException ex)
+        {
+          ex.printStackTrace();
+        }
+      SwingUtilities.updateComponentTreeUI(frame);
+    }
+    
   }
 }
