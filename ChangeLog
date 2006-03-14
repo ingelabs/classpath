@@ -1,3 +1,28 @@
+2006-03-14  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/table/TableColumn.java
+	(COLUMN_WIDTH_PROPERTY): Updated API docs,
+	(width): Likewise.
+	(minWidth): Likewise,
+	(preferredWidth): Likewise,
+	(maxWidth): Likewise,
+	(headerRenderer): Likewise,
+	(cellRenderer): Likewise,
+	(cellEditor): Likewise,
+	(changeSupport): Likewise,
+	(firePropertyChange(String, Object, Object)): Removed,
+	(firePropertyChange(String, int. int)): Likewise,
+	(firePropertyChange(String, boolean, boolean)): Likewise,
+	(setModelIndex): Fire property change,
+	(setHeaderValue): Call changeSupport directly to generate event,
+	(setHeaderRenderer): Likewise,
+	(setCellRenderer): Likewise,
+	(setWidth): Likewise,
+	(setPreferredWidth): Likewise,
+	(setMinWidth): Likewise,
+	(setMaxWidth): Likewise,
+	(createDefaultHeaderRenderer): Added API docs.
+
 2006-03-14  Roman Kennke  <kennke@aicas.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java
