@@ -1,3 +1,16 @@
+2006-03-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalIconFactory.java
+	(HorizontalSliderThumbIcon.gradientMask): New field
+	(HorizontalSliderThumbIcon.paintIcon): Added support for the
+	OceanTheme.
+	(VerticalSliderThumbIcon.gradientMask): New field
+	(VerticalSliderThumbIcon.paintIcon): Added support for the
+	OceanTheme.
+	* javax/swing/plaf/metal/MetalUtils.java
+	(paintHorizontalGradient): Fixed painting of 'masked' gradients.
+	(paintVerticalGradient): Fixed painting of 'masked' gradients.
+
 2006-03-14  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #26641

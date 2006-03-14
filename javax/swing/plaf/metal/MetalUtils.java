@@ -336,8 +336,8 @@ class MetalUtils
         g.setColor(interpolated);
         if (mask != null)
           {
-            y0 = mask[xc - x0][0];
-            y1 = mask[xc - x0][1];
+            y0 = mask[xc - x0][0] + y;
+            y1 = mask[xc - x0][1] + y;
           }
         g.drawLine(xc, y0, xc, y1);
       }
@@ -349,10 +349,10 @@ class MetalUtils
       }
     else
       {
-        for (xc = x1; xc < x2 - x1; xc++)
+        for (xc = x1; xc < x2; xc++)
           {
-            y0 = mask[xc - x0][0];
-            y1 = mask[xc - x0][1];
+            y0 = mask[xc - x0][0] + y;
+            y1 = mask[xc - x0][1] + y;
             g.drawLine(xc, y0, xc, y1);
           }
       }
@@ -374,10 +374,10 @@ class MetalUtils
         g.setColor(interpolated);
         if (mask != null)
           {
-            y0 = mask[xc - x0][0];
-            y1 = mask[xc - x0][1];
+            y0 = mask[xc - x0][0] + y;
+            y1 = mask[xc - x0][1] + y;
           }
-        g.drawLine(xc, y, xc, y + h);
+        g.drawLine(xc, y0, xc, y1);
       }
 
     // Paint third gradient area (c1->c3).
@@ -397,10 +397,10 @@ class MetalUtils
         g.setColor(interpolated);
         if (mask != null)
           {
-            y0 = mask[xc - x0][0];
-            y1 = mask[xc - x0][1];
+            y0 = mask[xc - x0][0] + y;
+            y1 = mask[xc - x0][1] + y;
           }
-        g.drawLine(xc, y, xc, y + h);
+        g.drawLine(xc, y0, xc, y1);
       }
   }
 
@@ -455,8 +455,8 @@ class MetalUtils
         g.setColor(interpolated);
         if (mask != null)
           {
-            x0 = mask[yc - y0][0];
-            x1 = mask[yc - y0][1];
+            x0 = mask[yc - y0][0] + x;
+            x1 = mask[yc - y0][1] + x;
           }
         g.drawLine(x0, yc, x1, yc);
       }
@@ -468,10 +468,10 @@ class MetalUtils
       }
     else
       {
-        for (yc = y1; yc < y2 - y1; yc++)
+        for (yc = y1; yc < y2; yc++)
           {
-            x0 = mask[yc - y0][0];
-            x1 = mask[yc - y0][1];
+            x0 = mask[yc - y0][0] + x;
+            x1 = mask[yc - y0][1] + x;
             g.drawLine(x0, yc, x1, yc);
           }
       }
@@ -493,8 +493,8 @@ class MetalUtils
         g.setColor(interpolated);
         if (mask != null)
           {
-            x0 = mask[yc - y0][0];
-            x1 = mask[yc - y0][1];
+            x0 = mask[yc - y0][0] + x;
+            x1 = mask[yc - y0][1] + x;
           }
         g.drawLine(x0, yc, x1, yc);
       }
@@ -516,8 +516,8 @@ class MetalUtils
         g.setColor(interpolated);
         if (mask != null)
           {
-            x0 = mask[yc - y0][0];
-            x1 = mask[yc - y0][1];
+            x0 = mask[yc - y0][0] + x;
+            x1 = mask[yc - y0][1] + x;
           }
         g.drawLine(x0, yc, x1, yc);
       }
