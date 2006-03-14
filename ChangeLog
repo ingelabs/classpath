@@ -1,3 +1,10 @@
+2006-03-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JInternalFrame.java
+	(JInternalFrame): Make JInternalFrame opaque.
+	* javax/swing/JToolBarFrame.java
+	(JToolBar): Make JToolBar opaque.
+
 2006-03-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/tree/TreeNode.java: Fixed bad API doc tags,

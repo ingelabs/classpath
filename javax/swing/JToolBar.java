@@ -426,8 +426,9 @@ public class JToolBar extends JComponent implements SwingConstants, Accessible
     setOrientation(orientation);
     setLayout(new DefaultToolBarLayout());
     revalidate();
+    setOpaque(true);
     updateUI();
-  } // JToolBar()
+  }
 
   /**
    * This method adds a new JButton that performs the given Action to the

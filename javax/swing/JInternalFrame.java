@@ -559,8 +559,9 @@ public class JInternalFrame extends JComponent implements Accessible,
     this.iconable = iconifiable;
     storedBounds = new Rectangle();
     setRootPane(createRootPane());
-    // JInternalFrames are invisible by default.
+    // JInternalFrames are invisible and opaque by default.
     setVisible(false);
+    setOpaque(true);
     updateUI();
     setRootPaneCheckingEnabled(true); // Done the init stage, now adds go to content pane.
   }
@@ -1595,7 +1596,7 @@ public class JInternalFrame extends JComponent implements Accessible,
 	  restoreSubcomponentFocus();
 
     if (isShowing())
-	  repaint();
+      repaint();
 
 	firePropertyChange(IS_SELECTED_PROPERTY, ! isSelected, isSelected);
 
