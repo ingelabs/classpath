@@ -1,5 +1,11 @@
 2006-03-15  Keith Seitz  <keiths@redhat.com>
 
+	* gnu/classpath/jdwp/event/filters/LocationOnlyFilter.java:
+	Update javadoc.
+	(matches): Implement.
+
+2006-03-15  Keith Seitz  <keiths@redhat.com>
+
 	* gnu/classpath/jdwp/event/BreakpointEvent.java: New file.
 	
 	* gnu/classpath/jdwp/exception/NativeMethodException.java: New file.
