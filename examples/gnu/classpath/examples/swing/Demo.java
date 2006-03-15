@@ -41,7 +41,7 @@ public class Demo
   JFrame frame;
   static Color blueGray = new Color(0xdc, 0xda, 0xd5);
 
-  static Icon stockIcon(String s)
+  private static Icon stockIcon(String s)
   {
     return getIcon("/gnu/classpath/examples/icons/stock-" + s + ".png", s);
   }
@@ -51,14 +51,14 @@ public class Demo
     return getIcon("/gnu/classpath/examples/icons/big-" + s + ".png", s);
   }
 
-  static Icon getIcon(String location, String name)
+  private static Icon getIcon(String location, String name)
   {
     URL url = Demo.class.getResource(location);
     if (url == null) System.err.println("WARNING " + location + " not found.");
     return new ImageIcon(url, name);
   }
 
-  JMenuBar mkMenuBar()
+  private JMenuBar mkMenuBar()
   {
     JMenuBar bar = new JMenuBar();
     
@@ -107,81 +107,28 @@ public class Demo
     edit.add(preferences);
 
     JMenu examples = new JMenu("Examples");
-    new PopUpAction("Buttons",
-		    (new ButtonDemo("Button Demo")).createContent(),
-		    examples);
+    examples.add(new JMenuItem(new PopupAction("Buttons",
+                                             ButtonDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("Slider",
+                                             SliderDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("ProgressBar",
+                                        ProgressBarDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("Scrollbar",
+                                          ScrollBarDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("Spinner",
+                                            SpinnerDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("TextField",
+                                          TextFieldDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("TextArea",
+                                           TextAreaDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("FileChooser",
+                                        FileChooserDemo.createDemoFactory())));
 
-    new PopUpAction("Slider",
-		    (new SliderDemo("Slider Demo")).createContent(),
-		    examples);
+    examples.add(new JMenuItem(new PopupAction("ComboBox",
+                                           ComboBoxDemo.createDemoFactory())));
 
-    new PopUpAction("ProgressBar",
-                    ProgressBarDemo.createContent(),
-                    examples);
-
-    new PopUpAction("List",
-		    mkListPanel(new String[] { "hello",
-					       "this",
-					       "is",
-					       "a",
-					       "list",
-                                               "that",
-                                               "wraps",
-                                               "over"}),
-		    examples);
-
-    new PopUpAction("Scrollbar",
-		    (new ScrollBarDemo("ScrollBarDemo")).createContent(),
-		    examples);
-
-    new PopUpAction("Viewport",
-		    mkViewportBox(mkBigButton("View Me!")),
-		    examples);
-
-    new PopUpAction("ScrollPane",
-                    mkScrollPane(mkBigButton("Scroll Me!")),
-                    examples);
-
-    new PopUpAction("TabPane",
-		    mkTabs(new String[] {"happy",
-					 "sad",
-					 "indifferent"}),
-		    examples);
-
-    new PopUpAction("Spinner",
-		    new SpinnerDemo("Spinner Demo").createContent(), examples);
-
-    new PopUpAction("TextField",
-		    (new TextFieldDemo("TextField Demo")).createContent(),
-		    examples);
-    
-    new PopUpAction("TextArea",
-                    (new TextAreaDemo("TextArea Demo")).createContent(),
-                    examples);
-
-    new PopUpAction("FileChooser",
-                    (new FileChooserDemo("FileChooser Demo")).createContent(),
-                    examples);
-
-    new PopUpAction("ColorChooser",
-		    mkColorChooser(),
-		    examples);
-
-    new PopUpAction("ComboBox",
-		    (new ComboBoxDemo("ComboBox Demo")).createContent(),
-		    examples);
-
-    new PopUpAction("Editor",
-                    mkEditorPane(),
-                    examples);
-    
-    new PopUpAction("Tree",
-                    mkTree(),
-                    examples);
-
-    new PopUpAction("Table",
-                    mkTable(),
-                    examples);
+    examples.add(new JMenuItem(new PopupAction("Table",
+                                              TableDemo.createDemoFactory())));
 
     final JMenuItem vmMenu;
     
@@ -235,7 +182,7 @@ public class Demo
     return bar;
   }
 
-  static void triggerDialog(final JButton but, final String dir)
+  private static void triggerDialog(final JButton but, final String dir)
   {
     but.addActionListener(new ActionListener()
       {
@@ -269,7 +216,7 @@ public class Demo
     return bar;
   }
 
-  static String valign2str(int a)
+  private static String valign2str(int a)
   {
     switch (a)
       {
@@ -299,9 +246,9 @@ public class Demo
       }
   }
 
-  static JButton mkButton(String title, Icon icon, 
-                          int hAlign, int vAlign,
-                          int hPos, int vPos)
+  private static JButton mkButton(String title, Icon icon, 
+                                  int hAlign, int vAlign,
+                                  int hPos, int vPos)
   {    
     JButton b;
     if (icon == null)
@@ -416,7 +363,7 @@ public class Demo
     }
   }
 
-  public static JScrollPane mkScrollPane(JComponent inner)
+  private static JScrollPane mkScrollPane(JComponent inner)
   {
     JScrollPane jsp;
     jsp = new JScrollPane(inner,
@@ -694,7 +641,6 @@ public class Demo
     main.add(mkButtonBar());
     component.add(main, BorderLayout.CENTER);
     frame.pack();
-    SwingUtilities.updateComponentTreeUI(frame);
     frame.show();
   }
 
@@ -712,38 +658,14 @@ public class Demo
     SwingUtilities.invokeLater(new LaterMain());
   }
 
-  public static JList mkList(Object[] elts)
-  {
-    JList list = new JList(elts);
-    list.setFont(new Font("Luxi", Font.PLAIN, 14));
-    return list;
-  }
-
-  public static JTabbedPane mkTabs(String[] names)
-  {
-    JTabbedPane tabs = new JTabbedPane();
-    for (int i = 0; i < names.length; ++i)
-      {
-        tabs.addTab(names[i], mkButton(names[i]));
-      }
-    return tabs;
-  }
-
-  public static JComboBox mkComboBox(String[] names)
-  {
-    JComboBox box = new JComboBox(names);
-    return box;
-  }
-
-  public static JButton mkBigButton(String title)
+  private static JButton mkBigButton(String title)
   {
     JButton b = new JButton(title);
     b.setMargin(new Insets(5,5,5,5));
-    //b.setFont(new Font("Luxi", Font.PLAIN, 14));
     return b;
   }
 
-  public static JPanel mkPanel(JComponent[] inners)
+  private static JPanel mkPanel(JComponent[] inners)
   {
     JPanel p = new JPanel();
     for (int i = 0; i < inners.length; ++i)
@@ -753,85 +675,7 @@ public class Demo
     return p;
   }
 
-  public static JScrollBar mkScrollBar()
-  {
-    JScrollBar scrollbar = new JScrollBar();
-    return scrollbar;
-  }
-
-  public static JPanel mkViewportBox(final JComponent inner)
-  {
-    final JViewport port = new JViewport();
-    port.setView(inner);
-    JButton left = mkBigButton("left");
-    JButton right = mkBigButton("right");
-    
-    left.addActionListener(new ActionListener()
-      {
-        public void actionPerformed(ActionEvent e)
-        {
-          Point p = port.getViewPosition();
-          port.setViewPosition(new Point(p.x - 10, p.y));
-        }
-      });
-
-    right.addActionListener(new ActionListener()
-      {
-        public void actionPerformed(ActionEvent e)
-        {
-          Point p = port.getViewPosition();
-          port.setViewPosition(new Point(p.x + 10, p.y));
-        }
-      });
- 
-    return mkPanel(new JComponent[] {port, left, right});
-  }
-
-  public static JPanel mkListPanel(Object[] elts)
-  {
-    final DefaultListModel mod = new DefaultListModel();
-    final JList list1 = new JList(mod);
-    list1.setLayoutOrientation(JList.VERTICAL_WRAP);
-    list1.setVisibleRowCount(4);
-    final JList list2 = new JList(mod);
-    list2.setLayoutOrientation(JList.VERTICAL_WRAP);
-    list2.setVisibleRowCount(4);
-
-    list2.setSelectionModel(list1.getSelectionModel());
-    for (int i = 0; i < elts.length; ++i)
-      mod.addElement(elts[i]);
-    list1.setCellRenderer(new LabelCellRenderer());
-    list2.setCellRenderer(new CheckCellRenderer());
-
-    JButton add = mkBigButton("add element");
-    add.addActionListener(new ActionListener()
-      {
-        int i = 0;
-        public void actionPerformed(ActionEvent e)
-        {
-          mod.addElement("new element " + i);
-          ++i;
-        }
-      });
-
-    JButton del = mkBigButton("delete selected");
-    del.addActionListener(new ActionListener()
-      {
-        public void actionPerformed(ActionEvent e)
-        {
-          for (int i = 0; i < mod.getSize(); ++i)
-            if (list1.isSelectedIndex(i))
-              mod.remove(i);
-        }
-      });
-
-    return mkPanel(new JComponent[] {list1, //mkScrollPane(list1), 
-                                     list2, //mkScrollPane(list2), 
-                                     mkPanel(new JComponent[] {add, del})});
-  }
-
-
-  public static JButton mkDisposerButton(final JFrame c)
+  static JButton mkDisposerButton(final JFrame c)
   {
     JButton close = mkBigButton("Close");
     close.addActionListener(new ActionListener()
@@ -849,50 +693,52 @@ public class Demo
     return new JColorChooser();
   }
 
-  private static class PopUpAction
-    implements ActionListener
+  /**
+   * This action brings up a new Window with the specified content.
+   */
+  private static class PopupAction
+    extends AbstractAction
   {
-    private JComponent inner;
-    private String name;
+    /**
+     * The component to be shown.
+     */
+    private DemoFactory demoFactory;
 
-    PopUpAction(String n, JComponent i, JMenu m)
+    /**
+     * Creates a new PopupAction with the specified name and showing the
+     * component created by the specified DemoFactory when activated.
+     *
+     * @param n the name of the action
+     * @param factory the demo factory
+     */
+    PopupAction(String n, DemoFactory factory)
     {
-      name = n;
-      inner = i;
-
-      JMenuItem item = new JMenuItem(name);
-      item.addActionListener(this);
-      m.add(item);
+      putValue(NAME, n);
+      demoFactory = factory;
     }
 
-    PopUpAction(String n, JComponent i, JPanel p)
-    {
-      name = n;
-      inner = i;
-
-      JButton b = mkBigButton(name);
-      b.addActionListener(this);
-      p.add(b);
-    }
-
+    /**
+     * Brings up the new window showing the component stored in the
+     * constructor.
+     *
+     * @param e the action event that triggered the action
+     */
     public void actionPerformed(ActionEvent e)
     {
-      JFrame frame = new JFrame(name);
+      JFrame frame = new JFrame((String) getValue(NAME));
       frame.getContentPane().setLayout(new BorderLayout());
-      frame.getContentPane().add(inner, BorderLayout.CENTER);
+      frame.getContentPane().add(demoFactory.createDemo(),
+                                 BorderLayout.CENTER);
       frame.getContentPane().add(mkDisposerButton(frame), BorderLayout.SOUTH);
       frame.pack();
+      // TODO: Maybe find a more elegant solution to the problem that the
+      // component stored in the PopupAction must at some point have
+      // its theme updated.
+      SwingUtilities.updateComponentTreeUI(frame);
       frame.show();
     }
   }
 
-  private static JEditorPane mkEditorPane()
-  {
-    JEditorPane editorPane = new JEditorPane();
-    editorPane.setEditable(true);
-    return editorPane;
-  }
-  
   /**
    * Create the tree.
    * 
@@ -939,95 +785,29 @@ public class Demo
       }
   }
   
-  /**
-   * Make a sample table component.
-   */
-  private static JPanel mkTable()
-  {
-    return new TableDemo("Table demo, double click to edit")
-                      .createContent();
-  }
-  
   private JPanel mkButtonBar()
   {    
     JPanel panel = new JPanel(new GridLayout(3, 1, 5, 5));
-    new PopUpAction("Buttons",
-		    (new ButtonDemo("Button Demo")).createContent(),
-		    panel);
-
-    new PopUpAction("Slider",
-		    (new SliderDemo("Slider Demo")).createContent(),
-		    panel);
-
-    new PopUpAction("ProgressBar",
-            ProgressBarDemo.createContent(),
-             panel);
-
-
-    new PopUpAction("List",
-		    mkListPanel(new String[] { "hello",
-					       "this",
-					       "is",
-					       "a",
-					       "list",
-                                               "that",
-                                               "wraps",
-                                               "over"}),
-		    panel);
-
-    new PopUpAction("Scrollbar",
-		    (new ScrollBarDemo("ScrollBar Demo")).createContent(),
-		    panel);
-
-    new PopUpAction("Viewport",
-		    mkViewportBox(mkBigButton("View Me!")),
-		    panel);
-
-    new PopUpAction("ScrollPane",
-		    mkScrollPane(mkBigButton("Scroll Me!")),
-		    panel);
-
-    new PopUpAction("TabPane",
-		    mkTabs(new String[] {"happy",
-					 "sad",
-					 "indifferent"}),
-		    panel);
-
-    new PopUpAction("Spinner", 
-		    new SpinnerDemo("Spinner Demo").createContent(), panel);
-
-    new PopUpAction("TextField",
-                    (new TextFieldDemo("TextField Demo")).createContent(),
-                    panel);
-    
-    new PopUpAction("TextArea",
-                    (new TextAreaDemo("TextArea Demo")).createContent(),
-                    panel);
-
-    new PopUpAction("FileChooser",
-                    (new FileChooserDemo("FileChooser Demo")).createContent(),
-                    panel);
-
-    new PopUpAction("ColorChooser",
-		    mkColorChooser(),
-		    panel);
-
-    new PopUpAction("ComboBox",
-		    (new ComboBoxDemo("ComboBox Demo")).createContent(),
-		    panel);
-
-    new PopUpAction("Editor",
-                    mkEditorPane(),
-                    panel);
-    
-    new PopUpAction("Tree",
-                    mkTree(),
-                    panel);
-    
-    new PopUpAction("Table",
-                    mkTable(),
-                    panel);
-    
+    panel.add(new JButton(new PopupAction("Buttons",
+                                          ButtonDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("Slider",
+                                          SliderDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("ProgressBar",
+                                        ProgressBarDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("ScrollBar",
+                                          ScrollBarDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("Spinner",
+                                          SpinnerDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("TextField",
+                                          TextFieldDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("TextArea",
+                                          TextAreaDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("FileChooser",
+                                        FileChooserDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("ComboBox",
+                                          ComboBoxDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("Table",
+                                          TableDemo.createDemoFactory())));
     JButton exitDisposer = mkDisposerButton(frame);
     panel.add(exitDisposer);
     exitDisposer.addActionListener(new ActionListener()

@@ -1,4 +1,22 @@
-2006-03-14  Roman Kennke  <kennke@aicas.com>
+2006-03-15  Roman Kennke  <kennke@aicas.com>
+
+	* examples/gnu/classpath/examples/swing/ButtonDemo.java,
+	* examples/gnu/classpath/examples/swing/ComboBoxDemo.java,
+	* examples/gnu/classpath/examples/swing/FileChooserDemo.java,
+	* examples/gnu/classpath/examples/swing/ProgressBarDemo.java,
+	* examples/gnu/classpath/examples/swing/ScrollBarDemo.java,
+	* examples/gnu/classpath/examples/swing/SliderDemo.java,
+	* examples/gnu/classpath/examples/swing/SpinnerDemo.java,
+	* examples/gnu/classpath/examples/swing/TableDemo.java,
+	* examples/gnu/classpath/examples/swing/TextAreaDemo.java,
+	* examples/gnu/classpath/examples/swing/TextFieldDemo.java:
+	Reworked to implemented DemoFactory and lazy loading of Sub-demos.
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	Cleaned up. Reworked handling of Sub-demos to load lazily.
+	* examples/gnu/classpath/examples/swing/DemoFactory.java:
+	New interface. Used for loading the subdemos lazily.
+
+2006-03-15  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicToolBarUI.java
 	(PropertyListener.propertyChange): Added null check to avoid NPE.

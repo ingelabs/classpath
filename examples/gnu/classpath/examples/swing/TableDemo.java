@@ -41,10 +41,12 @@ package gnu.classpath.examples.swing;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -54,7 +56,7 @@ import javax.swing.table.TableColumn;
  * 
  * @author Audrius Meskauskas (audriusa@bioinformatics.org)
  */
-public class TableDemo extends JFrame
+public class TableDemo extends JPanel
 { 
   /**
    * The initial row count for this table.
@@ -135,8 +137,6 @@ public class TableDemo extends JFrame
     }    
   }
 
-  private JPanel content;
-
   /**
    * The table being displayed.
    */
@@ -154,13 +154,11 @@ public class TableDemo extends JFrame
   
   /**
    * Create the table demo with the given titel.
-   * 
-   * @param title the frame title.
    */
-  public TableDemo(String title)
+  public TableDemo()
   {
-    super(title);
-    getContentPane().add(createContent(), BorderLayout.CENTER);
+    super();
+    createContent();
   }
   
   /**
@@ -169,55 +167,49 @@ public class TableDemo extends JFrame
    * the bottom of the panel if they want to (a close button is added if this
    * demo is being run as a standalone demo).
    */
-  JPanel createContent()
+  private void createContent()
   {
-    if (content == null)
+    setLayout(new BorderLayout());
+    values = new Object[rows][];
+    for (int i = 0; i < values.length; i++)
       {
-        JPanel p = new JPanel();
-        p.setLayout(new BorderLayout());
-        values = new Object[rows][];
-        for (int i = 0; i < values.length; i++)
+        values[i] = new Object[cols];
+        for (int j = 1; j < cols; j++)
           {
-            values[i] = new Object[cols];
-            for (int j = 1; j < cols; j++)
-              {
-                values[i][j] = "" + ((char) ('a' + j)) + i;
-              }
-            values [i][0] = i % 2 == 0? Boolean.TRUE : Boolean.FALSE;
+            values[i][j] = "" + ((char) ('a' + j)) + i;
           }
-        
-        table.setModel(model);        
-        
-        // Make the columns with gradually increasing width:
-        DefaultTableColumnModel cm = new DefaultTableColumnModel();
-        for (int i = 0; i < cols; i++)
-          {
-            TableColumn column = new TableColumn(i);
-            
-            // Showing the variable width columns.
-            int width = 100+20*i;
-            column.setPreferredWidth(width);
-            
-            // If we do not set the header value here, the value, returned
-            // by model, is used.
-            column.setHeaderValue("Width +"+(20*i));
-            
-            cm.addColumn(column);            
-          }
-
-        table.setColumnModel(cm);
-
-        // Create the table, place it into scroll pane and place
-        // the pane into this frame.
-        JScrollPane scroll = new JScrollPane();
-        
-        // The horizontal scroll bar is never needed.
-        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scroll.getViewport().add(table);
-        p.add(scroll, BorderLayout.CENTER);
-        content = p;
+        values [i][0] = i % 2 == 0? Boolean.TRUE : Boolean.FALSE;
       }
-    return content;
+        
+    table.setModel(model);        
+        
+    // Make the columns with gradually increasing width:
+    DefaultTableColumnModel cm = new DefaultTableColumnModel();
+    for (int i = 0; i < cols; i++)
+      {
+        TableColumn column = new TableColumn(i);
+            
+        // Showing the variable width columns.
+        int width = 100+20*i;
+        column.setPreferredWidth(width);
+            
+        // If we do not set the header value here, the value, returned
+        // by model, is used.
+        column.setHeaderValue("Width +"+(20*i));
+            
+        cm.addColumn(column);            
+      }
+
+    table.setColumnModel(cm);
+
+    // Create the table, place it into scroll pane and place
+    // the pane into this frame.
+    JScrollPane scroll = new JScrollPane();
+        
+    // The horizontal scroll bar is never needed.
+    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    scroll.getViewport().add(table);
+    add(scroll, BorderLayout.CENTER);
   }
   
   /**
@@ -228,9 +220,33 @@ public class TableDemo extends JFrame
    */
   public static void main(String[] args)
   {
-    TableDemo frame = new TableDemo("Table double click on the cell to edit.");
-    frame.setSize(new Dimension(640, 100));
-    frame.validate();
-    frame.setVisible(true);
+    SwingUtilities.invokeLater
+    (new Runnable()
+     {
+       public void run()
+       {
+         TableDemo demo = new TableDemo();
+         JFrame frame = new JFrame();
+         frame.getContentPane().add(demo);
+         frame.setSize(new Dimension(640, 100));
+         frame.setVisible(true);
+       }
+     });
+  }
+
+  /**
+   * Returns a DemoFactory that creates a TableDemo.
+   *
+   * @return a DemoFactory that creates a TableDemo
+   */
+  public static DemoFactory createDemoFactory()
+  {
+    return new DemoFactory()
+    {
+      public JComponent createDemo()
+      {
+        return new TableDemo();
+      }
+    };
   }
 }
