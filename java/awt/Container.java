@@ -965,9 +965,9 @@ public class Container extends Component
    * unless the point does not exist within this container, in which
    * case <code>null</code> is returned.
    * 
-   * The top-most child component is returned in the case where components overlap.
-   * This is determined by finding the component closest to (x,y) and contains 
-   * that location. Heavyweight components take precedence of lightweight components.
+   * When components overlap, the first component is returned. The component
+   * that is closest to (x, y), containing that location, is returned. 
+   * Heavyweight components take precedence of lightweight components.
    * 
    * This function does not ignore invisible components. If there is an invisible
    * component at (x,y), it will be returned.
@@ -991,9 +991,9 @@ public class Container extends Component
    * unless the point does not exist within this container, in which
    * case <code>null</code> is returned.
    * 
-   * The top-most child component is returned in the case where components overlap.
-   * This is determined by finding the component closest to (x,y) and contains 
-   * that location. Heavyweight components take precedence of lightweight components.
+   * When components overlap, the first component is returned. The component
+   * that is closest to (x, y), containing that location, is returned. 
+   * Heavyweight components take precedence of lightweight components.
    * 
    * This function does not ignore invisible components. If there is an invisible
    * component at (x,y), it will be returned.
