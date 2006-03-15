@@ -1,3 +1,8 @@
+2006-03-15  Chris Burdess  <dog@gnu.org>
+
+	Fixes PR 26700
+	* gnu/xml/stream/XMLParser.java: Fix for detectEncoding false positive.
+
 2006-03-15  Roman Kennke  <kennke@aicas.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java:

@@ -5219,7 +5219,6 @@ public class XMLParser
       else if (equals(SIGNATURE_UTF_8, signature))
         {
           // UTF-8 input encoding implied, TextDecl
-          encodingDetected = true;
         }
       else if (equals(SIGNATURE_UTF_8_BOM, signature))
         {
