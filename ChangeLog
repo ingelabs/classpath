@@ -1,3 +1,9 @@
+2006-03-15  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/event/BreakpointEvent.java: New file.
+	
+	* gnu/classpath/jdwp/exception/NativeMethodException.java: New file.
+
 2006-03-15  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/StrictMath.java (signum): New methods.
