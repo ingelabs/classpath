@@ -1,5 +1,10 @@
 2006-03-15  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/table/TableColumn.java
+	(sizeWidthToFit): Implemented.
+
+2006-03-15  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/table/TableColumn.java: API docs updated all over, plus
 	(setIdentifier): Fire required PropertyChangeEvent,
 	(setCellEditor): Likewise.

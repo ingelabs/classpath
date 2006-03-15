@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing.table;
 
+import java.awt.Component;
+import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
@@ -584,11 +586,23 @@ public class TableColumn
   }
 
   /**
-   * sizeWidthToFit
+   * Sets the minimum, maximum, preferred and current width to match the
+   * minimum, maximum and preferred width of the header renderer component.
+   * If there is no header renderer component, this method does nothing.
    */
   public void sizeWidthToFit()
   {
-    // TODO
+    if (headerRenderer == null)
+      return;
+    Component c = headerRenderer.getTableCellRendererComponent(null, 
+        getHeaderValue(), false, false, 0, 0);
+    Dimension min = c.getMinimumSize();
+    Dimension max = c.getMaximumSize();
+    Dimension pref = c.getPreferredSize();
+    setMinWidth(min.width);
+    setMaxWidth(max.width);
+    setPreferredWidth(pref.width);
+    setWidth(pref.width);
   }
 
   /**
