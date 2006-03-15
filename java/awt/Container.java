@@ -964,6 +964,12 @@ public class Container extends Component
    * child component claims the point, the container itself is returned,
    * unless the point does not exist within this container, in which
    * case <code>null</code> is returned.
+   * 
+   * The top-most child component is returned in the case where there is overlap
+   * in the components. This is determined by finding the component closest to 
+   * the index 0 that claims to contain the given point via Component.contains(), 
+   * except that Components which are lightweight take precedence over 
+   * those which are not.
    *
    * @param x The X coordinate of the point.
    * @param y The Y coordinate of the point.
@@ -983,7 +989,13 @@ public class Container extends Component
    * child component claims the point, the container itself is returned,
    * unless the point does not exist within this container, in which
    * case <code>null</code> is returned.
-   *
+   * 
+   * The top-most child component is returned in the case where there is overlap
+   * in the components. This is determined by finding the component closest to 
+   * the index 0 that claims to contain the given point via Component.contains(), 
+   * except that Components which are lightweight take precedence over 
+   * those which are not.
+   * 
    * @param x The x position of the point to return the component at.
    * @param y The y position of the point to return the component at.
    *
@@ -998,12 +1010,9 @@ public class Container extends Component
       {
         if (!contains (x, y))
           return null;
+        
         for (int i = 0; i < ncomponents; ++i)
           {
-            // Ignore invisible children...
-            if (!component[i].isVisible ())
-              continue;
-
             int x2 = x - component[i].x;
             int y2 = y - component[i].y;
             if (component[i].contains (x2, y2))
@@ -1021,6 +1030,12 @@ public class Container extends Component
    * unless the point does not exist within this container, in which
    * case <code>null</code> is returned.
    *
+   * The top-most child component is returned in the case where there is overlap
+   * in the components. This is determined by finding the component closest to 
+   * the index 0 that claims to contain the given point via Component.contains(), 
+   * except that Components which are lightweight take precedence over 
+   * those which are not.
+   * 
    * @param p The point to return the component at.
    * @return The component containing the specified point, or <code>null</code>
    * if there is no such point.
@@ -1030,6 +1045,23 @@ public class Container extends Component
     return getComponentAt (p.x, p.y);
   }
 
+  /**
+   * Locates the visible child component that contains the specified position. 
+   * The top-most child component is returned in the case where there is overlap
+   * in the components. If the containing child component is a Container,
+   * this method will continue searching for the deepest nested child 
+   * component. Components which are not visible are ignored during the search.
+   * 
+   * The findComponentAt method is different from getComponentAt in that getComponentAt
+   * only searches the Container's immediate children; if the containing component is 
+   * a Container, findComponentAt will search that child to find a nested component.
+   * 
+   * @param x - x coordinate
+   * @param y - y coordinate
+   * @return null if the component does not contain the position. 
+   * If there is no child component at the requested point and the point is 
+   * within the bounds of the container the container itself is returned.
+   */
   public Component findComponentAt(int x, int y)
   {
     synchronized (getTreeLock ())
@@ -1063,53 +1095,21 @@ public class Container extends Component
   }
   
   /**
-   * Finds the visible child component that contains the specified position.
-   * The top-most child is returned in the case where there is overlap.
-   * If the top-most child is transparent and has no MouseListeners attached,
-   * we discard it and return the next top-most component containing the
-   * specified position.
-   * @param x the x coordinate
-   * @param y the y coordinate
-   * @return null if the <code>this</code> does not contain the position,
-   * otherwise the top-most component (out of this container itself and 
-   * its descendants) meeting the criteria above.
+   * Locates the visible child component that contains the specified position. 
+   * The top-most child component is returned in the case where there is overlap
+   * in the components. If the containing child component is a Container,
+   * this method will continue searching for the deepest nested child 
+   * component. Components which are not visible are ignored during the search.
+   * 
+   * The findComponentAt method is different from getComponentAt in that getComponentAt
+   * only searches the Container's immediate children; if the containing component is 
+   * a Container, findComponentAt will search that child to find a nested component.
+   * 
+   * @param p - the component's location
+   * @return null if the component does not contain the position. 
+   * If there is no child component at the requested point and the point is 
+   * within the bounds of the container the container itself is returned.
    */
-  Component findComponentForMouseEventAt(int x, int y)
-  {
-    synchronized (getTreeLock())
-      {
-        if (!contains(x, y))
-          return null;
-          
-        for (int i = 0; i < ncomponents; ++i)
-          {
-            // Ignore invisible children...
-            if (!component[i].isVisible())
-              continue;
-
-            int x2 = x - component[i].x;
-            int y2 = y - component[i].y;
-            // We don't do the contains() check right away because
-            // findComponentAt would redundantly do it first thing.
-            if (component[i] instanceof Container)
-              {
-                Container k = (Container) component[i];
-                Component r = k.findComponentForMouseEventAt(x2, y2);
-                if (r != null)
-                  return r;
-              }
-            else if (component[i].contains(x2, y2))
-              return component[i];
-          }
-
-        //don't return transparent components with no MouseListeners
-        if (getMouseListeners().length == 0
-            && getMouseMotionListeners().length == 0)
-          return null;
-        return this;
-      }
-  }
-
   public Component findComponentAt(Point p)
   {
     return findComponentAt(p.x, p.y);
