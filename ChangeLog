@@ -1,3 +1,8 @@
+2006-03-14  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(PropertyListener.propertyChange): Added null check to avoid NPE.
+
 2006-03-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/table/TableColumn.java

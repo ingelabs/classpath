@@ -1229,8 +1229,8 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
     public void propertyChange(PropertyChangeEvent e)
     {
       // FIXME: need name properties so can change floatFrame title.
-      if (e.getPropertyName().equals("rollover"))
-	setRolloverBorders(toolBar.isRollover());
+      if (e.getPropertyName().equals("rollover") && toolBar != null)
+        setRolloverBorders(toolBar.isRollover());
     }
   }
 
