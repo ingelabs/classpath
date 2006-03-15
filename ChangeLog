@@ -1,3 +1,11 @@
+2006-03-13  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Container.java
+	(getComponentAt): Fixed documentation.
+	(getComponentAt): Likewise.
+	(findComponentAt): Likewise.
+	(findComponentAt): Likewise.
+
 2006-03-15  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java

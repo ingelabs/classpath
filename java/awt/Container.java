@@ -965,11 +965,12 @@ public class Container extends Component
    * unless the point does not exist within this container, in which
    * case <code>null</code> is returned.
    * 
-   * The top-most child component is returned in the case where there is overlap
-   * in the components. This is determined by finding the component closest to 
-   * the index 0 that claims to contain the given point via Component.contains(), 
-   * except that Components which are not lightweight take precedence over 
-   * those which are.
+   * The top-most child component is returned in the case where components overlap.
+   * This is determined by finding the component closest to (x,y) and contains 
+   * that location. Heavyweight components take precedence of lightweight components.
+   * 
+   * This function does not ignore invisible components. If there is an invisible
+   * component at (x,y), it will be returned.
    *
    * @param x The X coordinate of the point.
    * @param y The Y coordinate of the point.
@@ -990,11 +991,12 @@ public class Container extends Component
    * unless the point does not exist within this container, in which
    * case <code>null</code> is returned.
    * 
-   * The top-most child component is returned in the case where there is overlap
-   * in the components. This is determined by finding the component closest to 
-   * the index 0 that claims to contain the given point via Component.contains(), 
-   * except that Components which are not lightweight take precedence over 
-   * those which are.
+   * The top-most child component is returned in the case where components overlap.
+   * This is determined by finding the component closest to (x,y) and contains 
+   * that location. Heavyweight components take precedence of lightweight components.
+   * 
+   * This function does not ignore invisible components. If there is an invisible
+   * component at (x,y), it will be returned.
    * 
    * @param x The x position of the point to return the component at.
    * @param y The y position of the point to return the component at.
@@ -1044,11 +1046,12 @@ public class Container extends Component
    * unless the point does not exist within this container, in which
    * case <code>null</code> is returned.
    *
-   * The top-most child component is returned in the case where there is overlap
-   * in the components. This is determined by finding the component closest to 
-   * the index 0 that claims to contain the given point via Component.contains(), 
-   * except that Components which are not lightweight take precedence over 
-   * those which are.
+   * The top-most child component is returned in the case where components overlap.
+   * This is determined by finding the component closest to (x,y) and contains 
+   * that location. Heavyweight components take precedence of lightweight components.
+   * 
+   * This function does not ignore invisible components. If there is an invisible
+   * component at (x,y), it will be returned.
    * 
    * @param p The point to return the component at.
    * @return The component containing the specified point, or <code>null</code>
@@ -1066,9 +1069,8 @@ public class Container extends Component
    * this method will continue searching for the deepest nested child 
    * component. Components which are not visible are ignored during the search.
    * 
-   * The findComponentAt method is different from getComponentAt in that getComponentAt
-   * only searches the Container's immediate children; if the containing component is 
-   * a Container, findComponentAt will search that child to find a nested component.
+   * findComponentAt differs from getComponentAt, because it recursively 
+   * searches a Container's children.
    * 
    * @param x - x coordinate
    * @param y - y coordinate
@@ -1115,9 +1117,8 @@ public class Container extends Component
    * this method will continue searching for the deepest nested child 
    * component. Components which are not visible are ignored during the search.
    * 
-   * The findComponentAt method is different from getComponentAt in that getComponentAt
-   * only searches the Container's immediate children; if the containing component is 
-   * a Container, findComponentAt will search that child to find a nested component.
+   * findComponentAt differs from getComponentAt, because it recursively 
+   * searches a Container's children.
    * 
    * @param p - the component's location
    * @return null if the component does not contain the position. 
