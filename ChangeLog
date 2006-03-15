@@ -1,3 +1,27 @@
+2006-03-15  Roman Kennke  <kennke@aicas.com>
+
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	(desktop): New field.
+	(mkMenuBar): Added new subdemos.
+	(mkButtonWorld): Removed.
+	(CheckCellRenderer): Moved to ListDemo.
+	(LabelCellRenderer): Moved to ListDemo.
+	(mkTreeWorld): Moved to TreeDemo.
+	(mkDesktopWorld): Removed.
+	(mkTabWorld): Moved to TabbedPaneDemo.
+	(mkTabbedPane): Removed.
+	(Demo): Replaced 'worlds' tabbed pane with desktop.
+	(PopupAction): Made class non-static.
+	(PopupAction.actionPerformed): Bring up subdemos in internal
+	frame.
+	(mkButtonBar): Added new demos.
+	(createDesktop): New method.
+	* examples/gnu/classpath/examples/swing/DemoDesktop.java: New class.
+	* examples/gnu/classpath/examples/swing/ListDemo.java: New demo.
+	* examples/gnu/classpath/examples/swing/TreeDemo.java: New demo.
+	* examples/gnu/classpath/examples/swing/TabbedPaneDemo.java: New demo.
+	* examples/gnu/classpath/examples/swing/badge.png: New image file.
+
 2006-03-15  Lillian Angel  <langel@redhat.com>
 	
 	* java/awt/Container.java

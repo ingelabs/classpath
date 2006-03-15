@@ -27,7 +27,6 @@ import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.tree.*;
-import javax.swing.border.*;
 
 import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -39,6 +38,13 @@ import java.net.URL;
 public class Demo
 {
   JFrame frame;
+
+  /**
+   * The main desktop. This is package private to avoid synthetic accessor
+   * method.
+   */
+  JDesktopPane desktop;
+
   static Color blueGray = new Color(0xdc, 0xda, 0xd5);
 
   private static Icon stockIcon(String s)
@@ -129,6 +135,12 @@ public class Demo
 
     examples.add(new JMenuItem(new PopupAction("Table",
                                               TableDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("List",
+                                               ListDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("TabbedPane",
+                                         TabbedPaneDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("Tree",
+                                               TreeDemo.createDemoFactory())));
 
     final JMenuItem vmMenu;
     
@@ -277,92 +289,6 @@ public class Demo
   }
 
 
-  static JPanel mkButtonWorld()
-  {
-    Icon ii = bigStockIcon("home");
-    int CENTER = SwingConstants.CENTER;
-    int TOP = SwingConstants.TOP;
-    int BOTTOM = SwingConstants.BOTTOM;
-
-    int[] valigns = new int[] {SwingConstants.CENTER,
-                               SwingConstants.TOP,
-                               SwingConstants.BOTTOM};
-
-    int[] haligns = new int[] {SwingConstants.CENTER,
-                               SwingConstants.RIGHT,
-                               SwingConstants.LEFT};
-
-    Border[] borders = new Border[] { 
-      new SoftBevelBorder(BevelBorder.RAISED),
-      new SoftBevelBorder(BevelBorder.LOWERED),
-      new BevelBorder(BevelBorder.RAISED),
-      
-      LineBorder.createBlackLineBorder(),
-      new MatteBorder(2, 2, 2, 2, Color.GREEN),
-      LineBorder.createGrayLineBorder(),
-      
-      new BevelBorder(BevelBorder.LOWERED),
-      new EtchedBorder(EtchedBorder.RAISED),
-      new EtchedBorder(EtchedBorder.LOWERED)      
-    };
-
-    JComponent[] comps = new JComponent[3*3];
-
-    int q = 0;
-
-    JPanel panel = new JPanel();
-    panel.setLayout(new GridLayout(3, 3));
-
-    for (int i = 0; i < 3; ++i)
-      for (int j = 0; j < 3; ++j)
-        {
-          JButton b = mkButton(halign2str(haligns[i])
-                               + valign2str(valigns[j]),
-                               ii,
-                               -1, -1, haligns[i], valigns[j]);
-          b.setBorder(borders[q++]);
-          JPanel tmp = new JPanel();
-          tmp.setBorder(new MatteBorder(5, 5, 5, 5, blueGray));
-          tmp.add(b);
-          panel.add(tmp);
-        }
-    
-    return panel;
-  }
-
-  private static class CheckCellRenderer 
-    extends JCheckBox implements ListCellRenderer
-  {
-    public Component getListCellRendererComponent(JList list,
-                                                  Object value,
-                                                  int index,
-                                                  boolean isSelected,
-                                                  boolean cellHasFocus)
-    {
-      setSelected(isSelected);
-      setText(value.toString());
-      
-      return this;
-    }
-  }
-
-  private static class LabelCellRenderer 
-    extends DefaultListCellRenderer
-  {
-    public Component getListCellRendererComponent(JList list,
-                                                  Object value,
-                                                  int index,
-                                                  boolean isSelected,
-                                                  boolean cellHasFocus)
-    {
-      Component c = super.getListCellRendererComponent(list, value, index, 
-                                                       isSelected,
-						       cellHasFocus);
-      
-      return c;
-    }
-  }
-
   private static JScrollPane mkScrollPane(JComponent inner)
   {
     JScrollPane jsp;
@@ -371,261 +297,6 @@ public class Demo
 			  JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     
     return jsp;
-  }
-
-  private static JPanel mkTreeWorld()
-  {     
-    // non-leafs
-    DefaultMutableTreeNode root = new DefaultMutableTreeNode("Exotic Subsistence");
-    DefaultMutableTreeNode fruit = new DefaultMutableTreeNode("Interesting Fruit");
-    DefaultMutableTreeNode veg = new DefaultMutableTreeNode("Extraordinary Vegetables");
-    DefaultMutableTreeNode liq = new DefaultMutableTreeNode("Peculiar Liquids");
-    
-    // leafs
-    DefaultMutableTreeNode f1 = new DefaultMutableTreeNode("Abiu");
-    DefaultMutableTreeNode f2 = new DefaultMutableTreeNode("Bamboo Shoots");
-    DefaultMutableTreeNode f3 = new DefaultMutableTreeNode("Breadfruit");
-    DefaultMutableTreeNode f4 = new DefaultMutableTreeNode("Canistel");
-    DefaultMutableTreeNode f5 = new DefaultMutableTreeNode("Duku");
-    DefaultMutableTreeNode f6 = new DefaultMutableTreeNode("Guava");
-    DefaultMutableTreeNode f7 = new DefaultMutableTreeNode("Jakfruit");
-    DefaultMutableTreeNode f8 = new DefaultMutableTreeNode("Quaribea");
-    
-    DefaultMutableTreeNode v1 = new DefaultMutableTreeNode("Amaranth");
-    DefaultMutableTreeNode v2 = new DefaultMutableTreeNode("Kiwano");
-    DefaultMutableTreeNode v3 = new DefaultMutableTreeNode("Leeks");
-    DefaultMutableTreeNode v4 = new DefaultMutableTreeNode("Luffa");
-    DefaultMutableTreeNode v5 = new DefaultMutableTreeNode("Chayote");
-    DefaultMutableTreeNode v6 = new DefaultMutableTreeNode("Jicama");
-    DefaultMutableTreeNode v7 = new DefaultMutableTreeNode("Okra");
-    
-    DefaultMutableTreeNode l1 = new DefaultMutableTreeNode("Alcoholic");
-    DefaultMutableTreeNode l11 = new DefaultMutableTreeNode("Caipirinha");
-    DefaultMutableTreeNode l21 = new DefaultMutableTreeNode("Mojito");
-    DefaultMutableTreeNode l31 = new DefaultMutableTreeNode("Margarita");
-    DefaultMutableTreeNode l41 = new DefaultMutableTreeNode("Martini");
-    DefaultMutableTreeNode l5 = new DefaultMutableTreeNode("Non Alcoholic");
-    DefaultMutableTreeNode l55 = new DefaultMutableTreeNode("Babaji");
-    DefaultMutableTreeNode l65 = new DefaultMutableTreeNode("Chikita");
-    
-    root.add(fruit);
-    root.add(veg);
-    root.add(liq);
-    fruit.add(f1);
-    fruit.add(f2);
-    fruit.add(f3);
-    fruit.add(f4);
-    fruit.add(f5);
-    fruit.add(f6);
-    fruit.add(f7);
-    fruit.add(f8);
-    veg.add(v1);
-    veg.add(v2);
-    veg.add(v3);
-    veg.add(v4);
-    veg.add(v5);
-    veg.add(v6);
-    veg.add(v7);
-    liq.add(l1);
-    l1.add(l11);
-    l1.add(l21);
-    l1.add(l31);
-    l1.add(l41);
-    liq.add(l5);
-    l5.add(l55);
-    l5.add(l65);
-
-    final JTree tree = new JTree(root);
-    tree.setLargeModel(true);
-    tree.setEditable(true);
-    DefaultTreeSelectionModel dtsm = new DefaultTreeSelectionModel();
-    dtsm.setSelectionMode(DefaultTreeSelectionModel.SINGLE_TREE_SELECTION);
-    tree.setSelectionModel(dtsm);
-    
-    // buttons to add and delete
-    JButton add = mkButton("add element");
-    add.addActionListener(new ActionListener()
-      {
-        public void actionPerformed(ActionEvent e)
-        {
-           for (int i = 0; i < tree.getRowCount(); i++)
-           {
-              if (tree.isRowSelected(i))
-              {
-                 TreePath p = tree.getPathForRow(i);
-                 DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.
-                                                  getLastPathComponent();
-                 n.add(new DefaultMutableTreeNode("New Element"));
-                 tree.repaint();
-                 break;
-              }
-           }
-        }
-      });
-
-
-    JPanel p1 = new JPanel(); 
-    p1.setLayout(new BorderLayout());
-    
-    JPanel p2 = new JPanel(); 
-    p2.add(add);
-
-    p1.add(p2, BorderLayout.NORTH);
-    p1.add(mkScrollPane(tree), BorderLayout.CENTER);
-    
-    return p1;
-  }
-  
-  public static JPanel mkListWorld()
-  {
-
-    String foo[] = new String[] { 
-      "non alcoholic ",
-      "carbonated ",
-      "malted ",
-      "fresh squeezed ",
-      "imported ",
-      "high fructose ",
-      "enriched "
-    };
-    
-    String bar[] = new String[] { 
-      "orange juice",
-      "ginger beer",
-      "yak milk",
-      "corn syrup",
-      "herbal remedy"
-    };
-
-    final DefaultListModel mod = new DefaultListModel();
-    final JList list1 = new JList(mod);
-    final JList list2 = new JList(mod);
-
-    list2.setSelectionModel(list1.getSelectionModel());
-    for (int i = 0; i < bar.length; ++i)
-      for (int j = 0; j < foo.length; ++j)
-        mod.addElement(foo[j] + bar[i]);
-
-    list1.setCellRenderer(new LabelCellRenderer());
-    list2.setCellRenderer(new CheckCellRenderer());
-
-    JButton add = mkButton("add element");
-    add.addActionListener(new ActionListener()
-      {
-        int i = 0;
-        public void actionPerformed(ActionEvent e)
-        {
-          mod.addElement("new element " + i);
-          ++i;
-        }
-      });
-
-    JButton del = mkButton("delete selected");
-    del.addActionListener(new ActionListener()
-      {
-        public void actionPerformed(ActionEvent e)
-        {
-          for (int i = 0; i < mod.getSize(); ++i)
-            if (list1.isSelectedIndex(i))
-              mod.remove(i);
-        }
-      });
-
-
-    JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-    splitter.add(mkScrollPane(list1), JSplitPane.LEFT);
-    splitter.add(mkScrollPane(list2), JSplitPane.RIGHT);
-
-    JPanel p1 = new JPanel(); 
-    p1.setLayout(new BorderLayout());
-
-    JPanel p2 = new JPanel(); 
-    p2.setLayout(new GridLayout(1, 2));
-    p2.add(add);
-    p2.add(del);
-
-    p1.add(p2, BorderLayout.NORTH);
-    p1.add(splitter, BorderLayout.CENTER);
-    return p1;
-  }
-
-
-  static JPanel mkDesktopWorld()
-  {
-    
-    final JDesktopPane desk = new JDesktopPane();
-    desk.setDesktopManager(new DefaultDesktopManager());
-    desk.setPreferredSize(new Dimension(300,300));
-    desk.setMinimumSize(new Dimension(300,300));
-    JButton but = mkButton("add frame");
-    but.addActionListener(new ActionListener()
-      {
-        int i = 10;
-        public void actionPerformed(ActionEvent e)
-        {
-          JInternalFrame f;
-	  f = new JInternalFrame("internal", true, true, true, true);
-          f.getContentPane().setLayout(new BorderLayout());
-          f.getContentPane().add(mkToolBar(), BorderLayout.NORTH);
-          f.getContentPane().add(mkButton(bigStockIcon("fullscreen")),
-				 BorderLayout.CENTER);
-          desk.add(f);
-          f.setBounds(i, i, 250, 200);
-	  f.setVisible(true);
-          i += 30;
-        }
-      });
-    
-    JPanel panel = new JPanel();
-    panel.setLayout(new BorderLayout());
-    panel.add(desk, BorderLayout.CENTER);
-    panel.add(but, BorderLayout.NORTH);
-    but.doClick();
-    but.doClick();
-    JInternalFrame palette = new JInternalFrame("Palette", true, true, true, 
-        true);
-    palette.putClientProperty("JInternalFrame.isPalette", Boolean.TRUE);
-    desk.add(palette, JDesktopPane.PALETTE_LAYER);
-    JLabel label = new JLabel("This is a floating palette!");
-    palette.getContentPane().add(label);
-    palette.pack();
-    palette.setVisible(true);
-    return panel;
-  }
-
-  static JPanel mkTabWorld() 
-  {
-    JPanel panel = new JPanel(new GridLayout(2, 2));
-    panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-    JTabbedPane tabs1 = new JTabbedPane(SwingConstants.TOP);
-    tabs1.add("Top Item 1", new JButton("Button"));
-    tabs1.add("Top Item 2", new JButton("Button"));
-    JTabbedPane tabs2 = new JTabbedPane(SwingConstants.LEFT);
-    tabs2.add("Left Item 1", new JButton("Button"));
-    tabs2.add("Left Item 2", new JButton("Button"));
-    JTabbedPane tabs3 = new JTabbedPane(SwingConstants.BOTTOM);
-    tabs3.add("Bottom Item 1", new JButton("Button"));
-    tabs3.add("Bottom Item 2", new JButton("Button"));
-    JTabbedPane tabs4 = new JTabbedPane(SwingConstants.RIGHT);
-    tabs4.add("Right Item 1", new JButton("Button"));
-    tabs4.add("Right Item 2", new JButton("Button"));
-    panel.add(tabs1);
-    panel.add(tabs2);
-    panel.add(tabs3);
-    panel.add(tabs4);
-    return panel;        
-  }
-
-  static JTabbedPane mkTabbedPane()
-  {
-    JTabbedPane tabs = new JTabbedPane();
-    
-    tabs.add("Button world!", mkButtonWorld());
-    tabs.add("List world!", mkListWorld());
-    tabs.add("Desktop world!", mkDesktopWorld());
-    tabs.add("Tree world!", mkTreeWorld());
-    tabs.add("Tab world!", mkTabWorld());
-    return tabs;
   }
 
   public Demo()
@@ -637,7 +308,8 @@ public class Demo
     component.add(mkToolBar(), BorderLayout.NORTH);
     JPanel main = new JPanel();
     main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
-    main.add(mkTabbedPane());
+    desktop = createDesktop();
+    main.add(desktop);
     main.add(mkButtonBar());
     component.add(main, BorderLayout.CENTER);
     frame.pack();
@@ -696,7 +368,7 @@ public class Demo
   /**
    * This action brings up a new Window with the specified content.
    */
-  private static class PopupAction
+  private class PopupAction
     extends AbstractAction
   {
     /**
@@ -725,17 +397,15 @@ public class Demo
      */
     public void actionPerformed(ActionEvent e)
     {
-      JFrame frame = new JFrame((String) getValue(NAME));
-      frame.getContentPane().setLayout(new BorderLayout());
-      frame.getContentPane().add(demoFactory.createDemo(),
-                                 BorderLayout.CENTER);
-      frame.getContentPane().add(mkDisposerButton(frame), BorderLayout.SOUTH);
+      JInternalFrame frame = new JInternalFrame((String) getValue(NAME));
+      frame.setClosable(true);
+      frame.setIconifiable(true);
+      frame.setMaximizable(true);
+      frame.setResizable(true);
+      frame.setContentPane(demoFactory.createDemo());
       frame.pack();
-      // TODO: Maybe find a more elegant solution to the problem that the
-      // component stored in the PopupAction must at some point have
-      // its theme updated.
-      SwingUtilities.updateComponentTreeUI(frame);
-      frame.show();
+      desktop.add(frame);
+      frame.setVisible(true);
     }
   }
 
@@ -808,6 +478,12 @@ public class Demo
                                           ComboBoxDemo.createDemoFactory())));
     panel.add(new JButton(new PopupAction("Table",
                                           TableDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("List",
+                                          ListDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("TabbedPane",
+                                         TabbedPaneDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("Tree",
+                                          TreeDemo.createDemoFactory())));
     JButton exitDisposer = mkDisposerButton(frame);
     panel.add(exitDisposer);
     exitDisposer.addActionListener(new ActionListener()
@@ -818,6 +494,18 @@ public class Demo
 	}
       });
     return panel;
+  }
+
+  /**
+   * Creates and returns the main desktop.
+   *
+   * @return the main desktop
+   */
+  private JDesktopPane createDesktop()
+  {
+    JDesktopPane d = new DemoDesktop();
+    d.setPreferredSize(new Dimension(900, 500));
+    return d;
   }
 
   /**
