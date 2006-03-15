@@ -1,3 +1,9 @@
+2006-03-15  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java
+	(PropertyChangeHandler.propertyChange): Call enableActions().
+	Fixed 'iconable' property name.
+
 2006-03-15  Chris Burdess  <dog@gnu.org>
 
 	Fixes PR 26700
