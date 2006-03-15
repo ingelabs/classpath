@@ -255,7 +255,7 @@ public class BasicInternalFrameUI extends InternalFrameUI
       else if (e.getSource() == titlePane)
         {
           Rectangle fBounds = frame.getBounds();
-
+          frame.putClientProperty("bufferedDragging", Boolean.TRUE);
           dm.dragFrame(frame, e.getX() - xOffset + b.x, e.getY() - yOffset
                                                         + b.y);
         }
@@ -326,7 +326,10 @@ public class BasicInternalFrameUI extends InternalFrameUI
       if (e.getSource() == frame && frame.isResizable())
         dm.endResizingFrame(frame);
       else if (e.getSource() == titlePane)
-        dm.endDraggingFrame(frame);
+        {
+          dm.endDraggingFrame(frame);
+          frame.putClientProperty("bufferedDragging", null);
+        }
     }
 
     /**
