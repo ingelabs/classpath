@@ -968,8 +968,8 @@ public class Container extends Component
    * The top-most child component is returned in the case where there is overlap
    * in the components. This is determined by finding the component closest to 
    * the index 0 that claims to contain the given point via Component.contains(), 
-   * except that Components which are lightweight take precedence over 
-   * those which are not.
+   * except that Components which are not lightweight take precedence over 
+   * those which are.
    *
    * @param x The X coordinate of the point.
    * @param y The Y coordinate of the point.
@@ -993,8 +993,8 @@ public class Container extends Component
    * The top-most child component is returned in the case where there is overlap
    * in the components. This is determined by finding the component closest to 
    * the index 0 that claims to contain the given point via Component.contains(), 
-   * except that Components which are lightweight take precedence over 
-   * those which are not.
+   * except that Components which are not lightweight take precedence over 
+   * those which are.
    * 
    * @param x The x position of the point to return the component at.
    * @param y The y position of the point to return the component at.
@@ -1011,13 +1011,27 @@ public class Container extends Component
         if (!contains (x, y))
           return null;
         
+        // First find the component closest to (x,y) that is a heavyweight.
         for (int i = 0; i < ncomponents; ++i)
           {
-            int x2 = x - component[i].x;
-            int y2 = y - component[i].y;
-            if (component[i].contains (x2, y2))
-              return component[i];
+            Component comp = component[i];
+            int x2 = x - comp.x;
+            int y2 = y - comp.y;
+            if (comp.contains (x2, y2) && !comp.isLightweight())
+              return comp;
           }
+        
+        // if a heavyweight component is not found, look for a lightweight
+        // closest to (x,y).
+        for (int i = 0; i < ncomponents; ++i)
+          {
+            Component comp = component[i];
+            int x2 = x - comp.x;
+            int y2 = y - comp.y;
+            if (comp.contains (x2, y2) && comp.isLightweight())
+              return comp;
+          }
+        
         return this;
       }
   }
@@ -1033,8 +1047,8 @@ public class Container extends Component
    * The top-most child component is returned in the case where there is overlap
    * in the components. This is determined by finding the component closest to 
    * the index 0 that claims to contain the given point via Component.contains(), 
-   * except that Components which are lightweight take precedence over 
-   * those which are not.
+   * except that Components which are not lightweight take precedence over 
+   * those which are.
    * 
    * @param p The point to return the component at.
    * @return The component containing the specified point, or <code>null</code>
