@@ -1239,7 +1239,11 @@ public class JInternalFrame extends JComponent implements Accessible,
    */
   public void setClosable(boolean b)
   {
-    closable = b;
+    if (closable != b)
+      {
+        closable = b;
+        firePropertyChange("closable", ! closable, closable);
+      }
   }
 
   /**
@@ -1397,7 +1401,11 @@ public class JInternalFrame extends JComponent implements Accessible,
    */
   public void setIconifiable(boolean b)
   {
-    iconable = b;
+    if (iconable != b)
+      {
+        iconable = b;
+        firePropertyChange("iconable", ! iconable, iconable);
+      }
   }
 
   /**
@@ -1462,7 +1470,11 @@ public class JInternalFrame extends JComponent implements Accessible,
    */
   public void setMaximizable(boolean b)
   {
-    maximizable = b;
+    if (maximizable != b)
+      {
+        maximizable = b;
+        firePropertyChange("maximizable", ! maximizable, maximizable);
+      }
   }
 
   /**
@@ -1539,7 +1551,11 @@ public class JInternalFrame extends JComponent implements Accessible,
    */
   public void setResizable(boolean b)
   {
-    resizable = b;
+    if (b != resizable)
+      {
+        resizable = b;
+        firePropertyChange("resizable", ! resizable, resizable);
+      }
   }
 
   /**

@@ -1,3 +1,11 @@
+2006-03-15  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JInternalFrame.java
+	(setClosable): Made this property bound.
+	(setResizable): Made this property bound.
+	(setIconifiable): Made this property bound.
+	(setMaximizable): Made this property bound.
+
 2006-03-15  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/table/TableColumn.java
