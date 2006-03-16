@@ -1,3 +1,7 @@
+2006-03-16  Anthony Balkissoon  <abalkiss@redhat.com>
+
+	* java/lang/Character.java: Updated header comment.
+
 2006-03-16  Tom Tromey  <tromey@redhat.com>
 
 	* javax/sound/sampled/AudioSystem.java (getAudioFileFormat): New
