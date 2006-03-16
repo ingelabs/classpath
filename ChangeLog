@@ -1,3 +1,15 @@
+2006-03-16  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GdkFontMetrics.java (getLeading): Always
+	return 0.
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java (getFontMetrics): Get
+	font metrics through toolkit.
+	* gnu/java/awt/peer/gtk/GdkGraphics.java (getFontMetrics):
+	Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(getFontMetrics): To calculate Java logical ascent and descent
+	values, average Pango ink and logical values.
+
 2006-03-16  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* java/lang/Character.java: Updated header comment.

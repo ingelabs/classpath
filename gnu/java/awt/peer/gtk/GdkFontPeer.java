@@ -43,6 +43,7 @@ import gnu.java.awt.peer.ClasspathFontPeer;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Toolkit;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.font.LineMetrics;
@@ -301,7 +302,9 @@ public class GdkFontPeer extends ClasspathFontPeer
 
   public FontMetrics getFontMetrics (Font font)
   {
-    return new GdkFontMetrics (font);
+    // Get the font metrics through GtkToolkit to take advantage of
+    // the metrics cache.
+    return Toolkit.getDefaultToolkit().getFontMetrics (font);
   }
 
 }
