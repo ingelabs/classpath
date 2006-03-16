@@ -1,3 +1,10 @@
+2006-03-16  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR classpath/26606
+	Commit patch by Caolan McNamara  <caolanm@redhat.com>
+	* javax/swing/Spring.java: Complete implementation
+	* javax/swing/SpringLayout.java: Likewise.
+
 2006-03-16  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/Jdwp.java (_mainThread): Not needed. Removed
