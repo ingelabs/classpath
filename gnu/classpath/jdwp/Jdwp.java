@@ -80,9 +80,6 @@ public class Jdwp
   // (-Xrunjdwp:..suspend=<boolean>)
   private static final String _PROPERTY_SUSPEND = "suspend";
 
-  // User's main application thread
-  private Thread _mainThread;
-
   // Connection to debugger
   private JdwpConnection _connection;
 
@@ -141,11 +138,9 @@ public class Jdwp
    * Configures the back-end
    *
    * @param configArgs  a string of configury options
-   * @param mainThread  the main application thread
    */
-  public void configure (String configArgs, Thread mainThread)
+  public void configure (String configArgs)
   {
-    _mainThread = mainThread;
     _processConfigury (configArgs);
   }
 
@@ -281,17 +276,6 @@ public class Jdwp
     try
       {
 	_doInitialization ();
-
-	_mainThread.start ();
-
-	_mainThread.join ();
-      }
-    catch (InterruptedException ie)
-      {
-	/* Shutting down. If we're in server mode, we should
-	   prepare for a new connection. Otherwise, we should
-	   simply exit. */
-	// FIXME
       }
     catch (Throwable t)
       {

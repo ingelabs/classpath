@@ -1,3 +1,10 @@
+2006-03-16  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/Jdwp.java (_mainThread): Not needed. Removed
+	all references.
+	(run): Remove catch clause for InterruptedException. It is no
+	longer necessary.
+
 2006-03-16  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
