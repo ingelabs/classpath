@@ -1,3 +1,29 @@
+2006-03-15  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/image/RescaleOp.java (getRenderingHints): Now final.
+	* java/awt/image/LookupOp.java (filter): Now final.
+	(getBounds2D): Likewise.
+	(getPoint2D): Likewise.
+	(getTable): Likewise.
+	(getRenderingHints): Likewise.
+	* java/awt/image/ConvolveOp.java (filter): Now final.
+	(getBounds2D): Likewise.
+	(getKernel): Likewise.
+	(getPoint2D): Likewise.
+	(getRenderingHints): Likewise.
+	* java/awt/image/BandCombineOp.java (getPoint2D): Now final.
+	(getMatrix): Likewise.
+	(getBounds2D): Likewise.
+	(getRenderingHints): Likewise.
+	* java/awt/image/AffineTransformOp.java (getPoint2D): Now final.
+	* java/awt/Button.java (AccessibleAWTButton.serialVersionUID): Now
+	private.
+	* java/awt/dnd/DropTargetContext.java (TransferableProxy): Now
+	protected.
+	* java/awt/dnd/DropTarget.java (DropTargetAutoScroller): Now
+	protected.
+	* java/awt/MenuItem.java (AccessibleAWTMenuItem): Now protected.
+
 2006-03-15  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/event/filters/LocationOnlyFilter.java:
