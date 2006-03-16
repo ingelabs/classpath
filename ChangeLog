@@ -1,3 +1,45 @@
+2006-03-15  Tom Tromey  <tromey@redhat.com>
+
+	* javax/sound/midi/Track.java (Track): New constructor.
+	(events): Now package-private.
+	* javax/sound/midi/MidiUnavailableException.java
+	(MidiUnavailableException): Removed invalid constructors.
+	* javax/sound/midi/MidiSystem.java (MidiSystem): New constructor.
+	* javax/sound/midi/InvalidMidiDataException.java
+	(InvalidMidiDataException): Removed invalid constructors.
+	* javax/sound/midi/Sequencer.java (hashCode): Now final.
+	* javax/sound/midi/SysexMessage.java (SysexMessage): Now protected.
+	* javax/sound/midi/ShortMessage.java (ShortMessage): Now protected.
+	(SYSTEM_EXCLUSIVE): Removed.
+	(getDataLength): Updated.
+	* javax/sound/midi/MidiDevice.java (Info): Now protected.
+	(equals): Now final
+	(getName): Now final.
+	(getVendor): Now final.
+	(getDescription): Likewise.
+	(hashCode): Likewise.
+	(getVersion): Likewise.
+	(toString): Likewise.
+	* javax/sound/midi/MetaMessage.java (MetaMessage): Now protected.
+	* javax/sound/sampled/ReverbType.java (getDecayTime): Now final.
+	(getEarlyReflectionDelay): Likewise.
+	(getEarlyReflectionIntensity): Likewise.
+	(getLateReflectionDelay): Likewise.
+	(getLateReflectionIntensity): Likewise.
+	(toString): Likewise.
+	* javax/sound/sampled/Port.java (toString): Now final.
+	* javax/sound/sampled/LineEvent.java (getFramePosition): Now final.
+	(getLine): Likewise.
+	(getType): Likewise.
+	* javax/sound/sampled/Mixer.java (Info): Now protected.
+	(getDescription): Now final.
+	(getName): Likewise.
+	(getVendor): Likewise.
+	(getVersion): Likewise.
+	(toString): Likewise.
+	* javax/sound/sampled/Control.java: Now abstract.
+	(Type.toString): Now final.
+
 2006-03-15  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/util/LineTable.java (lines): Remove all occurances
