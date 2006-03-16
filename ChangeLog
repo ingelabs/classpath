@@ -1,5 +1,17 @@
 2006-03-16  Roman Kennke  <kennke@aicas.com>
 
+	* java/text/DateFormatSymbols.java
+	(setAmPmStrings): Added null check and throw NPE.
+	(setEras): Likewise.
+	(setLocalPatternChars): Likewise.
+	(setMonths): Likewise.
+	(setShortMonths): Likewise.
+	(setShortWeekdays): Likewise.
+	(setWeekdays): Likewise.
+	(setZoneStrings): Likewise.
+
+2006-03-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/DefaultDesktopManager.java
 	(iconifyFrame): Repaint after removing the frame.
 	(removeIconFor): Repaint after removing the icon.
