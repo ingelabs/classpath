@@ -112,6 +112,16 @@ public class Jdwp
   }
 
   /**
+   * Get the thread group used by JDWP threads
+   * 
+   * @return the thread group
+   */
+  public ThreadGroup getJdwpThreadGroup()
+  {
+    return _group;
+  }
+  
+  /**
    * Should the virtual machine suspend on startup?
    */
   public static boolean suspendOnStartup ()

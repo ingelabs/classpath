@@ -1,3 +1,11 @@
+2006-03-16  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/Jdwp.java (getJdwpThreadGroup): New method.
+	* vm/reference/gnu/classpath/jdwp/VMVirtualMachine.java
+	(suspendAllThreads): Use Jdwp.getJdwpThreadGroup.
+	Don't suspend the current thread unless it is not part of the JDWP
+	thread group.
+
 2006-03-16  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GdkFontMetrics.java (getLeading): Always

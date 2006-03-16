@@ -73,7 +73,7 @@ public class VMVirtualMachine
   {
     // Our JDWP thread group -- don't suspend any of those threads
     Thread current = Thread.currentThread ();
-    ThreadGroup jdwpGroup = current.getThreadGroup ();
+    ThreadGroup jdwpGroup = Jdwp.getDefault().getJdwpThreadGroup();
 
     // Find the root ThreadGroup
     ThreadGroup group = jdwpGroup;
@@ -105,7 +105,8 @@ public class VMVirtualMachine
       }
 
     // Now suspend the current thread
-    suspendThread (current);
+    if (current.getThreadGroup() != jdwpGroup)
+      suspendThread (current);
   }
 
   /**
