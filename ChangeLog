@@ -1,5 +1,15 @@
 2006-03-15  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* examples/gnu/classpath/examples/awt/AnimationApplet.java: New
+	example.
+	* examples/gnu/classpath/examples/swing/FillRect.java: Likewise.
+	* examples/gnu/classpath/examples/awt/Demo.java: Add
+	AnimationApplet demo.
+	* examples/gnu/classpath/examples/swing/Demo.java: Add FillRect
+	demo.
+
+2006-03-15  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	PR classpath/26486
 	* gnu/java/awt/peer/gtk/GtkCanvasPeer.java (getGraphics): Remove
 	method.
