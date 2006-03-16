@@ -1,5 +1,12 @@
 2006-03-16  Roman Kennke  <kennke@aicas.com>
 
+	* java/util/zip/ZipFile.java
+	(openFile): New helper method.
+	(ZipFile): Use new openFile method to ensure the proper
+	exception is thrown. This applies for all overloaded constructors.
+
+2006-03-16  Roman Kennke  <kennke@aicas.com>
+
 	* java/text/DateFormatSymbols.java
 	(setAmPmStrings): Added null check and throw NPE.
 	(setEras): Likewise.
