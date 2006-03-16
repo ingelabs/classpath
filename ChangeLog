@@ -1,3 +1,11 @@
+2006-03-15  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/util/Location.java: Rewrite using VMMethod.
+	(Location): Index is a long, not an int.
+	(getMethod): New method.
+	(getIndex): New method.
+	(toString): New method.
+
 2006-03-15  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/image/RescaleOp.java (getRenderingHints): Now final.
