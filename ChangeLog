@@ -1,3 +1,10 @@
+2006-03-16  Mark Wielaard  <mark@klomp.org>
+
+	* examples/gnu/classpath/examples/swing/badge.png: Removed.
+	* examples/gnu/classpath/examples/icons/badge.png: Added.
+	* examples/gnu/classpath/examples/swing/DemoDesktop.java: Use badge
+	from icon directory.
+
 2006-03-15  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* examples/gnu/classpath/examples/awt/AnimationApplet.java: New

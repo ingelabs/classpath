@@ -64,7 +64,8 @@ public class DemoDesktop
   DemoDesktop()
   {
     super();
-    image = new ImageIcon(getClass().getResource("badge.png"));
+    String badge = "/gnu/classpath/examples/icons/badge.png";
+    image = new ImageIcon(getClass().getResource(badge));
   }
 
   /**
