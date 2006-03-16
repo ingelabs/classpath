@@ -298,7 +298,13 @@ Java_gnu_java_awt_peer_gtk_GdkFontPeer_getFontMetrics
   pango_ascent = MAX(0, pango_ascent);
   pango_descent = MAX(0, pango_descent);
 
-  native_metrics[FONT_METRICS_ASCENT] = java_ascent;
+  /* Pango monospaced fonts have smaller ascent metrics than Sun's so
+     we return the logical ascent for monospaced fonts. */
+  if (!strcmp (pango_font_description_get_family (pfont->desc),
+               "Courier"))
+    native_metrics[FONT_METRICS_ASCENT] = pango_ascent;
+  else
+    native_metrics[FONT_METRICS_ASCENT] = java_ascent;
 
   native_metrics[FONT_METRICS_MAX_ASCENT] = pango_ascent;
 
