@@ -1,5 +1,15 @@
 2006-03-15  Tom Tromey  <tromey@redhat.com>
 
+	* java/beans/beancontext/BeanContextSupport.java (BCSChild): New
+	constructor.
+	(BCSIterator): Likewise.
+	* java/beans/beancontext/BeanContextServicesSupport.java (BCSSChild):
+	New constructor.
+	(BCSSProxyServiceProvider): Likewise.
+	(BCSSServiceProvider): Likewise.
+
+2006-03-15  Tom Tromey  <tromey@redhat.com>
+
 	* javax/sound/midi/Track.java (Track): New constructor.
 	(events): Now package-private.
 	* javax/sound/midi/MidiUnavailableException.java
