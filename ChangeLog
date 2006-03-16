@@ -1,3 +1,19 @@
+2006-03-16  Roman Kennke  <kennke@aicas.com>
+
+	* gnu/javax/swing/plaf/gnu/GNULookAndFeel.java
+	Moved from examples into gnu.javax.swing.. namespace.
+	* examples/gnu/classpath/examples/swing/GNULookAndFeel.java
+	Moved to gnu.javax.swing.. namespace.
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	(themesMenu): New field. Used to disable theme switch in
+	non-Metal-L&Fs.
+	(mkMenuBar): Added L&F menu.
+	(ChangeThemeAction.actionPerformed): Only switch theme when
+	in Metal L&F.
+	(ChangeLAFAction): New class used for changing themes.
+	* javax/swing/UIManager.java
+	(installed): Added GNU L&F as installed L&F.
+
 2006-03-16  Mark Wielaard  <mark@klomp.org>
 
 	* examples/gnu/classpath/examples/swing/badge.png: Removed.

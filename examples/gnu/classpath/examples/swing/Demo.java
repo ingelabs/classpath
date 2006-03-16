@@ -45,6 +45,12 @@ public class Demo
    */
   JDesktopPane desktop;
 
+  /**
+   * The themes menu. This is implemented as a field so that the L&F switcher
+   * can disable the menu when a non-Metal L&F is selected.
+   */
+  JMenu themesMenu;
+
   static Color blueGray = new Color(0xdc, 0xda, 0xd5);
 
   private static Icon stockIcon(String s)
@@ -171,25 +177,41 @@ public class Demo
             }
       });
 
+    // Create L&F menu.
+    JMenu lafMenu = new JMenu("Look and Feel");
+    ButtonGroup lafGroup = new ButtonGroup();
+    UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
+    String currentLaf = UIManager.getLookAndFeel().getClass().getName();
+    for (int i = 0; i < lafs.length; ++i)
+      {
+        UIManager.LookAndFeelInfo laf = lafs[i];
+        ChangeLAFAction action = new ChangeLAFAction(laf);
+        JRadioButtonMenuItem lafItem = new JRadioButtonMenuItem(action);
+        boolean selected = laf.getClassName().equals(currentLaf);
+        lafItem.setSelected(selected);
+        lafMenu.add(lafItem);
+      }
+
     // Create themes menu.
-    JMenu themes = new JMenu("Themes");
+    themesMenu = new JMenu("Themes");
     ButtonGroup themesGroup = new ButtonGroup();
     JRadioButtonMenuItem ocean =
       new JRadioButtonMenuItem(new ChangeThemeAction(new OceanTheme()));
     ocean.setSelected(MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme);
-    themes.add(ocean);
+    themesMenu.add(ocean);
     themesGroup.add(ocean);
     JRadioButtonMenuItem steel =
       new JRadioButtonMenuItem(new ChangeThemeAction(new DefaultMetalTheme()));
     ocean.setSelected(MetalLookAndFeel.getCurrentTheme()
                       instanceof DefaultMetalTheme);
-    themes.add(steel);
+    themesMenu.add(steel);
     themesGroup.add(steel);
     
     bar.add(file);
     bar.add(edit);
     bar.add(examples);
-    bar.add(themes);
+    bar.add(lafMenu);
+    bar.add(themesMenu);
     bar.add(help);
     return bar;
   }
@@ -539,13 +561,59 @@ public class Demo
       MetalLookAndFeel.setCurrentTheme(theme);
       try
         {
-          UIManager.setLookAndFeel(new MetalLookAndFeel());
+          // Only switch theme if we have a metal L&F. It is still necessary
+          // to install a new MetalLookAndFeel instance.
+          if (UIManager.getLookAndFeel() instanceof MetalLookAndFeel)
+            UIManager.setLookAndFeel(new MetalLookAndFeel());
         }
       catch (UnsupportedLookAndFeelException ex)
         {
           ex.printStackTrace();
         }
       SwingUtilities.updateComponentTreeUI(frame);
+    }
+    
+  }
+
+  /**
+   * This Action is used to switch Metal themes.
+   */
+  class ChangeLAFAction extends AbstractAction
+  {
+    /**
+     * The theme to switch to.
+     */
+    private UIManager.LookAndFeelInfo laf;
+
+    /**
+     * Creates a new ChangeLAFAction for the specified L&F.
+     *
+     * @param l the L&F to switch to
+     */
+    ChangeLAFAction(UIManager.LookAndFeelInfo l)
+    {
+      laf = l;
+      putValue(NAME, laf.getName());
+    }
+
+    /**
+     * Changes the theme to the one specified in the constructor.
+     *
+     * @param event the action event that triggered this action
+     */
+    public void actionPerformed(ActionEvent event)
+    {
+      try
+        {
+          UIManager.setLookAndFeel(laf.getClassName());
+        }
+      catch (Exception ex)
+        {
+          ex.printStackTrace();
+        }
+      SwingUtilities.updateComponentTreeUI(frame);
+      themesMenu.setEnabled(laf.getClassName()
+                           .equals("javax.swing.plaf.metal.MetalLookAndFeel"));
     }
     
   }
