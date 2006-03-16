@@ -1,3 +1,10 @@
+2006-03-15  Keith Seitz  <keiths@redhat.com>
+
+	* gnu/classpath/jdwp/util/LineTable.java (lines): Remove all occurances
+	of this redundant variable.
+	(LineTable): Assert that the number of line numbers and the number of
+	code indicies is the same.
+
 2006-03-15  Tom Tromey  <tromey@redhat.com>
 
 	* javax/imageio/stream/ImageOutputStreamImpl.java (flushBits): Now
