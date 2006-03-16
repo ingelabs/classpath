@@ -1190,7 +1190,7 @@ public class JInternalFrame extends JComponent implements Accessible,
   {
     // If we're removing the root pane, use super.remove.  Otherwise
     // pass it on to the content pane instead.
-    if (comp==rootPane)
+    if (comp==rootPane || ! isRootPaneCheckingEnabled())
       super.remove(comp);
     else
       getContentPane().remove(comp);

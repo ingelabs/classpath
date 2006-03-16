@@ -1,5 +1,10 @@
 2006-03-16  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JInternalFrame.java
+	(remove): Respect the rootPaneCheckingEnabled flag here.
+
+2006-03-16  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/javax/swing/plaf/gnu/GNULookAndFeel.java
 	Moved from examples into gnu.javax.swing.. namespace.
 	* examples/gnu/classpath/examples/swing/GNULookAndFeel.java
