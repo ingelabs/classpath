@@ -1,3 +1,7 @@
+2006-03-16  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/image/ConvolveOp.java (getBounds2D): Now final.
+
 2006-03-16  Roman Kennke  <kennke@aicas.com>
 
 	* java/util/zip/ZipFile.java

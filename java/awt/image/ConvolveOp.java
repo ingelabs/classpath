@@ -317,7 +317,7 @@ public class ConvolveOp implements BufferedImageOp, RasterOp
   /* (non-Javadoc)
    * @see java.awt.image.RasterOp#getBounds2D(java.awt.image.Raster)
    */
-  public Rectangle2D getBounds2D(Raster src)
+  public final Rectangle2D getBounds2D(Raster src)
   {
     return src.getBounds();
   }
