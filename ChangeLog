@@ -1,3 +1,38 @@
+2006-03-15  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR classpath/26486
+	* gnu/java/awt/peer/gtk/GtkCanvasPeer.java (getGraphics): Remove
+	method.
+	(handleEvent): Likewise.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (isInRepaint):
+	Remove field.
+	(beginNativeRepaint): Remove method.
+	(endNativeRepaint): Likewise.
+	(handleEvent): Call paintComponent and updateComponent.
+	(paintComponent): New method.
+	(updateComponent): Likewise.
+	(repaint): Return early if width or height is less than one.
+	(postExposeEvent): Remove isInRepaint reference.
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java: (getGraphics):
+	Remove method.
+	* gnu/java/awt/peer/gtk/GtkDialogPeer.java (getGraphics): Inherit
+	from GtkWindowPeer.
+	(postMouseEvent): Likewise.
+	(postExposeEvent): Likewise.
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java (updateComponent):
+	Override to do nothing.
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (getGraphics): Inherit
+	from GtkWindowPeer.
+	(postMouseEvent): Likewise.
+	(postExposeEvent): Likewise.
+	* gnu/java/awt/peer/gtk/GtkPanelPeer.java (handleEvent): Inherit
+	paint and update handling from GtkComponentPeer.
+	(updateComponent): Override to call paintComponent.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c: Replace
+	gdk_flush calls with schedule_flush calls.
+	(flush): New function.
+	(schedule_flush): Likewise.
+
 2006-03-15  Tom Tromey  <tromey@redhat.com>
 
 	* java/beans/beancontext/BeanContextSupport.java (BCSChild): New

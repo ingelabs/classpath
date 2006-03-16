@@ -86,8 +86,6 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   Insets insets;
 
-  boolean isInRepaint;
-
   /* this isEnabled differs from Component.isEnabled, in that it
      knows if a parent is disabled.  In that case Component.isEnabled 
      may return true, but our isEnabled will always return false */
@@ -176,16 +174,6 @@ public class GtkComponentPeer extends GtkGenericPeer
       gtkWidgetSetParent (p);
   }
 
-  void beginNativeRepaint ()
-  {
-    isInRepaint = true;
-  }
-
-  void endNativeRepaint ()
-  {
-    isInRepaint = false;
-  }
-
   /*
    * Set the bounds of this peer's AWT Component based on dimensions
    * returned by the native windowing system.  Most Components impose
@@ -250,6 +238,8 @@ public class GtkComponentPeer extends GtkGenericPeer
     return getToolkit().getFontMetrics(font);
   }
 
+  // getGraphics may be overridden by derived classes but it should
+  // never return null.
   public Graphics getGraphics ()
   {
     if (GtkToolkit.useGraphics2D ())
@@ -291,30 +281,10 @@ public class GtkComponentPeer extends GtkGenericPeer
     switch (id)
       {
       case PaintEvent.PAINT:
+        paintComponent((PaintEvent) event);
+        break;
       case PaintEvent.UPDATE:
-      {
-        try
-          {
-            Graphics g = getGraphics();
-
-            if (!awtComponent.isShowing()  || awtComponent.getWidth() < 1 
-                || awtComponent.getHeight() < 1 || g == null)
-              break; 
-
-            g.setClip(((PaintEvent) event).getUpdateRect());
-
-            if (id == PaintEvent.PAINT)
-              awtComponent.paint(g);
-            else
-              awtComponent.update(g);
-                
-            g.dispose();
-          }
-        catch (InternalError e)
-          {
-            System.err.println(e);
-          }
-      }
+        updateComponent((PaintEvent) event);
         break;
       case KeyEvent.KEY_PRESSED:
         ke = (KeyEvent) event;
@@ -328,7 +298,49 @@ public class GtkComponentPeer extends GtkGenericPeer
         break;
       }
   }
-  
+
+  // This method and its overrides are the only methods in the peers
+  // that should call awtComponent.paint.
+  protected void paintComponent (PaintEvent event)
+  {
+    // Do not call Component.paint if the component is not showing or
+    // if its bounds form a degenerate rectangle.
+    if (!awtComponent.isShowing()
+        || (awtComponent.getWidth() < 1 || awtComponent.getHeight() < 1))
+      return;
+
+    // Creating and disposing a GdkGraphics every time paint is called
+    // seems expensive.  However, the graphics state does not carry
+    // over between calls to paint, and resetting the graphics object
+    // may even be more costly than simply creating a new one.
+    GdkGraphics g = (GdkGraphics) getGraphics();
+
+    g.setClip(event.getUpdateRect());
+
+    awtComponent.paint(g);
+
+    g.dispose();
+  }
+
+  // This method and its overrides are the only methods in the peers
+  // that should call awtComponent.update.
+  protected void updateComponent (PaintEvent event)
+  {
+    // Do not call Component.update if the component is not showing or
+    // if its bounds form a degenerate rectangle.
+    if (!awtComponent.isShowing()
+        || (awtComponent.getWidth() < 1 || awtComponent.getHeight() < 1))
+      return;
+
+    GdkGraphics g = (GdkGraphics) getGraphics();
+
+    g.setClip(event.getUpdateRect());
+
+    awtComponent.update(g);
+
+    g.dispose();
+  }
+
   public boolean isFocusTraversable () 
   {
     return true;
@@ -369,7 +381,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void repaint (long tm, int x, int y, int width, int height)
   {
-    if (x == 0 && y == 0 && width == 0 && height == 0)
+    if (width < 1 || height < 1)
       return;
 
     if (tm <= 0)
@@ -563,8 +575,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   protected void postExposeEvent (int x, int y, int width, int height)
   {
-    if (!isInRepaint)
-      q().postEvent (new PaintEvent (awtComponent, PaintEvent.PAINT,
+    q().postEvent (new PaintEvent (awtComponent, PaintEvent.PAINT,
                                    new Rectangle (x, y, width, height)));
   }
 
