@@ -1,3 +1,16 @@
+2006-03-15  Tom Tromey  <tromey@redhat.com>
+
+	* javax/imageio/stream/ImageOutputStreamImpl.java (flushBits): Now
+	final.
+	* javax/imageio/stream/ImageOutputStream.java (flushBefore): Javadoc
+	fix.
+	* java/util/zip/ZipFile.java (ENDNRD): New constant.
+	* java/util/zip/ZipConstants.java (ENDNRD, ENDDCD): Removed.
+	* java/util/zip/Inflater.java (end): Not deprecated.
+	* java/util/zip/Deflater.java (end): Not deprecated.
+	* java/text/Bidi.java (Bidi): Now final.
+	* java/nio/MappedByteBuffer.java (finalize): Now protected.
+
 2006-03-15  Keith Seitz  <keiths@redhat.com>
 
 	* gnu/classpath/jdwp/util/Location.java: Rewrite using VMMethod.

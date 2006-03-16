@@ -47,7 +47,7 @@ package java.text;
  * Annex #9: The Bidirectional Algorithm</a>. A full implementation is
  * <a href="http://fribidi.org/">GNU FriBidi</a>.
  */
-public class Bidi
+public final class Bidi
 {
   /**
    * Returns false if all characters in the text between start and end

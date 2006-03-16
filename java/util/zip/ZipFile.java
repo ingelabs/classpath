@@ -75,6 +75,11 @@ public class ZipFile implements ZipConstants
    */
   public static final int OPEN_DELETE = 0x4;
 
+  /**
+   * This field isn't defined in the JDK's ZipConstants, but should be.
+   */
+  static final int ENDNRD =  4;
+
   // Name of this zip file.
   private final String name;
 
