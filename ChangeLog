@@ -1,5 +1,11 @@
 2006-03-16  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/DefaultDesktopManager.java
+	(iconifyFrame): Repaint after removing the frame.
+	(removeIconFor): Repaint after removing the icon.
+
+2006-03-16  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JInternalFrame.java
 	(remove): Respect the rootPaneCheckingEnabled flag here.
 
