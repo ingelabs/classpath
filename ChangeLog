@@ -1,5 +1,13 @@
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalComboBoxEditor.java
+	(MetalComboBoxEditorBorder.paintBorder): Implemented special
+	border painting for the Ocean theme.
+	(MetalComboBoxEditor): Create editor directly instead of going
+	to super.
+	
+2006-03-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/text/JTextComponent.java
 	(JTextComponent): Make text components opaque.
 

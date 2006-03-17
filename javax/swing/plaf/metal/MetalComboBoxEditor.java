@@ -79,16 +79,31 @@ public class MetalComboBoxEditor extends BasicComboBoxEditor
         int h)
     {
       g.translate(x, y);
-      g.setColor(MetalLookAndFeel.getControlDarkShadow());
-      g.drawLine(0, 0, w - 1, 0);
-      g.drawLine(0, 0, 0, h - 2);
-      g.drawLine(0, h - 2, w - 1, h - 2);
-      g.setColor(MetalLookAndFeel.getControlHighlight());
-      g.drawLine(1, 1, w - 1, 1);
-      g.drawLine(1, 1, 1, h - 1);
-      g.drawLine(1, h - 1, w - 1, h - 1);
-      g.setColor(MetalLookAndFeel.getControl());
-      g.drawLine(1, h - 2, 1, h - 2);
+      if (MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme)
+        {
+          g.setColor(MetalLookAndFeel.getControlDarkShadow());
+          g.drawLine(0, 0, w - 1, 0);
+          g.drawLine(0, 0, 0, h - 1);
+          g.drawLine(0, h - 1, w - 1, h - 1);
+          g.setColor(MetalLookAndFeel.getControlShadow());
+          g.drawLine(1, 1, w - 2, 1);
+          g.drawLine(1, 1, 1, h - 2);
+          g.drawLine(1, h - 2, w - 1, h - 2);
+          g.drawLine(w - 1, 1, w - 1, h - 2);
+        }
+      else
+        {
+          g.setColor(MetalLookAndFeel.getControlDarkShadow());
+          g.drawLine(0, 0, w - 1, 0);
+          g.drawLine(0, 0, 0, h - 2);
+          g.drawLine(0, h - 2, w - 1, h - 2);
+          g.setColor(MetalLookAndFeel.getControlHighlight());
+          g.drawLine(1, 1, w - 1, 1);
+          g.drawLine(1, 1, 1, h - 1);
+          g.drawLine(1, h - 1, w - 1, h - 1);
+          g.setColor(MetalLookAndFeel.getControl());
+          g.drawLine(1, h - 2, 1, h - 2);
+        }
       g.translate(-x, -y);
     }
 
@@ -134,7 +149,7 @@ public class MetalComboBoxEditor extends BasicComboBoxEditor
    */
   public MetalComboBoxEditor()
   {
-    super();
+    editor = new JTextField("", 9);
     editor.setBorder(new MetalComboBoxEditorBorder());
   }
   
