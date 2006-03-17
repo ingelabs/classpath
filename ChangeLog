@@ -1,5 +1,10 @@
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/JTextComponent.java
+	(JTextComponent): Make text components opaque.
+
+2006-03-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalComboBoxUI.java
 	(MetalComboBoxLayoutManager.layoutContainer): Forward to
 	layoutComboBox().
