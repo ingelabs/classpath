@@ -1,5 +1,13 @@
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalComboBoxEditor.java
+	(MetalComboBoxEditorBorder): Made this a subclass of AbstractBorder
+	instead of Flush3DBorder.
+	(paintBorder): Fixed border painting.
+	(editorBorderInsets): Fixed border's insets.
+
+2006-03-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalComboBoxButton.java
 	(rendererPane): Documented.
 	(MetalComboBoxButton): Set enabled flag from ComboBox.
