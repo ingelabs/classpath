@@ -459,10 +459,10 @@ public class SpringLayout implements LayoutManager2
     private String edgeName;
     private Component c;
 
-//     protected String springdebug()
-//     {
-//         return "DeferredSpring of edge" + edgeName + " of " + "something";
-//     }
+    public String toString()
+    {
+      return "DeferredSpring of edge" + edgeName + " of " + "something";
+    }
 
     public DeferredSpring(SpringLayout s, String edge, Component component)
     {
@@ -537,10 +537,10 @@ public class SpringLayout implements LayoutManager2
         c = component;
     }
 
-//     protected String springdebug()
-//     {
-//         return "DeferredWidth of " + "something";
-//     }
+    public String toString()
+    {
+      return "DeferredWidth of " + "something";
+    }
 
     //clip max to a value we can do meaningful calculation with
     public int getMaximumValue() 
@@ -564,10 +564,10 @@ public class SpringLayout implements LayoutManager2
   {
     private Component c;
 
-//     protected String springdebug()
-//     {
-//         return "DeferredHeight of " + "something";
-//     }
+    public String toString()
+    {
+        return "DeferredHeight of " + "something";
+    }
 
     public DeferredHeight(Component component)
     {

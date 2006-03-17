@@ -71,8 +71,6 @@ public abstract class Spring
     // Nothing to do here.
   }
 
-  //  protected abstract String springdebug();
-
   /**
    * Creates a Spring which min, pref and max values are all the same.
    * These kind of Springs are 'struts'.
@@ -352,10 +350,10 @@ public abstract class Spring
     /** The actual value of the spring. */
     private int value;
 
-//     protected String springdebug()
-//     {
-//         return "SimpleSpring of " + value;
-//     }
+    public String toString()
+    {
+      return "SimpleSpring of " + value;
+    }
 
     /**
      * Creates a new SimpleSpring object.
@@ -441,10 +439,10 @@ public abstract class Spring
     /** The current value for this Spring. */
     private int value;
 
-//     protected String springdebug()
-//     {
-//         return "AddSpring of " + s1.springdebug() + " and " + s2.springdebug();
-//     }
+    public String toString()
+    {
+      return "AddSpring of " + s1 + " and " + s2;
+    }
 
     /**
      * Creates a new AddSpring object.
@@ -553,10 +551,10 @@ public abstract class Spring
     /** The Spring from which to calculate the negation. */
     private final Spring s;
 
-//     protected String springdebug()
-//     {
-//         return "MinusSpring of " + s.springdebug();
-//     }
+    public String toString()
+    {
+      return "MinusSpring of " + s;
+    }
 
     /**
      * Creates a new MinusSpring object.
@@ -634,10 +632,10 @@ public abstract class Spring
     private final Spring s1;
     private final Spring s2;
 
-//     protected String springdebug()
-//     {
-//         return "MaxSpring of " + s1.springdebug() + " and " + s2.springdebug();
-//     }
+    public String toString()
+    {
+      return "MaxSpring of " + s1 + " and " + s2;
+    }
 
     /** The current value of this Spring. */
     private int value;

@@ -1,3 +1,9 @@
+2006-03-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/swing/Spring.java: Uncomment springdebug methods and
+	rename them toString.
+	* javax/swing/SpringLayout.java: Likewise.
+
 2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/FieldView.java:
