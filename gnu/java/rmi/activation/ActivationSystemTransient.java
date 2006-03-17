@@ -99,7 +99,7 @@ public class ActivationSystemTransient
   /**
    * Set to true to print the event messages to console.
    */
-  static boolean debug = true;
+  static boolean debug = false;
   
   /**
    * This group should not be instantiated outside the group code.

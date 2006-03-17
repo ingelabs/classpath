@@ -1,3 +1,8 @@
+2006-03-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/rmi/activation/ActivationSystemTransient.java (debug):
+	Set to false.
+
 2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/DefaultEditorKit.java: Refactored anonymous
