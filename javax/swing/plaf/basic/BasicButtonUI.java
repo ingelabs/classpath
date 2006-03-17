@@ -156,7 +156,8 @@ public class BasicButtonUI extends ButtonUI
     LookAndFeel.installColorsAndFont(b, prefix + "background",
                                      prefix + "foreground", prefix + "font");
     LookAndFeel.installBorder(b, prefix + "border");
-    b.setMargin(UIManager.getInsets(prefix + "margin"));
+    if (b.getMargin() == null || b.getMargin() instanceof UIResource)
+      b.setMargin(UIManager.getInsets(prefix + "margin"));
     b.setIconTextGap(UIManager.getInt(prefix + "textIconGap"));
     b.setInputMap(JComponent.WHEN_FOCUSED, 
                   (InputMap) UIManager.get(prefix + "focusInputMap"));
@@ -176,7 +177,8 @@ public class BasicButtonUI extends ButtonUI
     if (b.getBorder() instanceof UIResource)
       b.setBorder(null);
     b.setIconTextGap(defaultTextIconGap);
-    b.setMargin(null);
+    if (b.getMargin() instanceof UIResource)
+      b.setMargin(null);
   }
 
   protected BasicButtonListener listener;
