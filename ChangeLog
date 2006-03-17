@@ -1,5 +1,20 @@
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalComboBoxUI.java
+	(MetalComboBoxLayoutManager.layoutContainer): Forward to
+	layoutComboBox().
+	(MetalPropertyChangeListener.propertyChange): Update focusable
+	flag according to the enable and editable state.
+	(editablePropertyChanged): Removed unnecessary code.
+	(getMinimumSize): Rewritten to correctly compute the
+	size, respecting the insets of the components and the icon,
+	the visual properties of the combobox, etc.
+	(configureEditor): Update listeners correctly.
+	(unconfigureEditor): Update listeners correctly.
+	(layoutComboBox): Implemented.
+
+2006-03-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalComboBoxEditor.java
 	(MetalComboBoxEditorBorder): Made this a subclass of AbstractBorder
 	instead of Flush3DBorder.
