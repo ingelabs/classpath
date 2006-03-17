@@ -1,7 +1,8 @@
-2006-03-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
 
-	* gnu/java/rmi/activation/ActivationSystemTransient.java (debug):
-	Set to false.
+	* javax/swing/text/DefaultCaret.java:
+	(mouseClicked) Use setDot() and moveDot() instead of
+	JTextComponent.select().
 
 2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
 
