@@ -1,3 +1,25 @@
+2006-03-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* java/rmi/activation/Activatable.java: Implemented.
+	java/rmi/activation/ActivationDesc.java: Implemented.
+	java/rmi/activation/ActivationGroup.java: Implemented.
+	java/rmi/activation/ActivationGroupDesc.java: Implemented.
+	java/rmi/activation/ActivationID.java: Implemented.
+	java/rmi/activation/ActivationSystem.java: Implemented.
+	* gnu/java/rmi/server/UnicastServerRef.java 
+	(exportObject, incommingMessageCall): Documented.
+	* java/rmi/activation/package.html: Documented.
+	* java/rmi/server/ObjID.java (objNum, space): Made package
+	protected.
+	* gnu/java/rmi/server/UnicastServer.java: Rewritten.
+	* gnu/java/rmi/server/CombinedClassLoader.java (constructor):
+	Iteration bug fix.
+	* gnu/java/rmi/activation/ActivationSystemTransient.java: New file.
+	gnu/java/rmi/activation/BidiTable.java: New file.
+	gnu/java/rmi/activation/DefaultActivationGroup.java: New file.
+	gnu/java/rmi/activation/DefaultActivationSystem.java: New file.
+	gnu/java/rmi/server/ActivatableServerRef.java: New file.
+
 2006-03-17  Mark Wielaard  <mark@klomp.org>
 
 	* java/security/BasicPermission.java (BasicPermission): Check

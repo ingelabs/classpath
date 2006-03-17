@@ -39,13 +39,21 @@ exception statement from your version. */
 
 package java.rmi.activation;
 
+import gnu.java.rmi.server.ActivatableServerRef;
+import gnu.java.rmi.server.UnicastServer;
+import gnu.java.rmi.server.UnicastServerRef;
+
+import java.lang.reflect.Field;
 import java.rmi.MarshalledObject;
 import java.rmi.NoSuchObjectException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.ObjID;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
+import java.rmi.server.RemoteObject;
 import java.rmi.server.RemoteServer;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * A common ancestor for the implementations of the activatable objects. Such
@@ -57,6 +65,8 @@ import java.rmi.server.RemoteServer;
  * to use to implement and manage activatable objects. It also contains methods
  * for making activatable remote objects that are not derived from the 
  * Activatable class.
+ * 
+ * @author Audrius Meskauskas (audriusa@bioinformatics.org) (from stub) 
  */
 public abstract class Activatable
     extends RemoteServer
@@ -66,6 +76,11 @@ public abstract class Activatable
    * Use SVUID for interoperability.
    */
   static final long serialVersionUID = - 3120617863591563455L;
+  
+  /**
+   * The object activation id.
+   */
+  final ActivationID id;
   
   /**
    * This constructor is used to register export the object on the given port. A
@@ -92,7 +107,10 @@ public abstract class Activatable
                         boolean restart, int port) throws ActivationException,
       RemoteException
   {
-    throw new Error("Not implemented");
+    ActivationDesc descriptor = new ActivationDesc(getClass().getName(),
+                                                   codebase, data, restart);
+    id = obtainId(descriptor);
+    exportObject(this, id, port);
   }
 
   /**
@@ -120,7 +138,10 @@ public abstract class Activatable
                         RMIServerSocketFactory ssf) throws ActivationException,
       RemoteException
   {
-    throw new Error("Not implemented");
+    ActivationDesc descriptor = new ActivationDesc(getClass().getName(),
+                                                   codebase, data, restart);
+    id = obtainId(descriptor);
+    exportObject(this, id, port);
   }
 
   /**
@@ -131,13 +152,24 @@ public abstract class Activatable
    * {@link MarshalledObject}). As a side effect, the object is exported and is
    * available to accept incomming calls.
    * 
-   * @param id the activation id
+   * @param anId the activation id
    * @param port the port, on which the activatable will be listening
-   * @throws RemoteException
+   * @throws RemoteException if the activation failed.
    */
-  protected Activatable(ActivationID id, int port) throws RemoteException
+  protected Activatable(ActivationID anId, int port) throws RemoteException
   {
-    throw new Error("Not implemented");
+    id = anId;
+    try
+      {
+        exportObject(this, anId, port);
+      }
+    catch (Exception e)
+      {
+        e.printStackTrace();
+        RemoteException acex = 
+          new RemoteException("cannot export Activatable", e);
+        throw acex;
+      }
   }
 
   /**
@@ -149,32 +181,52 @@ public abstract class Activatable
    * {@link MarshalledObject}). As a side effect, the object is exported and is
    * available to accept incomming calls.
    * 
-   * @param id the activation id
+   * @param anId the activation id
    * @param port the port, on which the activatable will be listening
    * @param csf the client socket factory
    * @param ssf the server socket factory
    * 
    * @throws RemoteException if the remote call failed
    */
-  protected Activatable(ActivationID id, int port, RMIClientSocketFactory csf,
+  protected Activatable(ActivationID anId, int port, RMIClientSocketFactory csf,
                         RMIServerSocketFactory ssf) throws RemoteException
   {
-    throw new Error("Not implemented");
+    id = anId;
+    try
+      {
+        exportObject(this, anId, port, csf, ssf);
+      }
+    catch (Exception e)
+      {
+        RemoteException acex = new RemoteException();
+        acex.initCause(e);
+        throw acex;
+      }
   }
   
   /**
    * Get the objects activation identifier.
    * 
-   * @return the ob
+   * @return the object activation identifier
    */
   protected ActivationID getID()
   {
-    throw new Error("Not implemented");
+    return id;
   }
   
   /**
-   * This method registers an activatable object without having to first create
-   * the object. The object will be activated on demand.
+   * Obtain the activation Id from the activation descriptor bu registering
+   * within the current group.
+   */
+  static ActivationID obtainId(ActivationDesc descriptor) throws RemoteException,
+      UnknownGroupException, ActivationException
+  {
+    return ActivationGroup.currentGroupID().getSystem().registerObject(descriptor);
+  }
+  
+  /**
+   * This method registers an activatable object. The object is expected to
+   * be on the anonymous port (null client and server socket factories).
    * 
    * @param desc the object description.
    * @return the remote stub for the activatable object (the first call on this
@@ -186,7 +238,8 @@ public abstract class Activatable
   public static Remote register(ActivationDesc desc)
       throws UnknownGroupException, ActivationException, RemoteException
   {
-    throw new Error("Not implemented");
+    ActivationID id = obtainId(desc);
+    return id.activate(false);
   }
   
   /**
@@ -204,7 +257,9 @@ public abstract class Activatable
   public static boolean inactive(ActivationID id)
       throws UnknownObjectException, ActivationException, RemoteException
   {
-    throw new Error("Not implemented");
+    if (id.group!=null)
+      id.group.inactiveObject(id);
+    return UnicastRemoteObject.unexportObject(id.activate(false), false);
   }
   
   /**
@@ -218,7 +273,8 @@ public abstract class Activatable
   public static void unregister(ActivationID id) throws UnknownObjectException,
       ActivationException, RemoteException
   {
-    throw new Error("Not implemented");
+    ActivationGroup.currentGroupId.getSystem().unregisterObject(id);
+    UnicastServer.unregisterActivatable(id);
   }
   
   /**
@@ -245,7 +301,11 @@ public abstract class Activatable
                                           boolean restart, int port)
       throws ActivationException, RemoteException
   {
-    throw new Error("Not implemented");
+    ActivationDesc descriptor = new ActivationDesc(obj.getClass().getName(),
+                                                   location, data, restart);
+    ActivationID id = obtainId(descriptor);
+    Remote stub = exportObject(obj, id, port);    
+    return id;
   }
 
   /**
@@ -276,7 +336,12 @@ public abstract class Activatable
                                           RMIServerSocketFactory ssf)
       throws ActivationException, RemoteException
   {
-    throw new Error("Not implemented");
+    ActivationDesc descriptor = new ActivationDesc(obj.getClass().getName(),
+                                                   location, data, restart);
+    ActivationID id = obtainId(descriptor);
+    Remote stub = exportObject(obj, id, port, csf, ssf);    
+    return id;
+
   }
 
   /**
@@ -297,7 +362,8 @@ public abstract class Activatable
   public static Remote exportObject(Remote obj, ActivationID id, int port)
       throws RemoteException
   {
-    throw new Error("Not implemented");
+    Remote stub = export(id, obj, port, null);
+    return stub;
   }
 
   /**
@@ -322,11 +388,15 @@ public abstract class Activatable
                                     RMIServerSocketFactory ssf)
       throws RemoteException
   {
-    throw new Error("Not implemented");
+    Remote stub = export(id, obj, port, ssf); 
+    return stub;
+
   }
 
   /**
-   * Make the remote object unavailable for incoming calls.
+   * Make the remote object unavailable for incoming calls. This method also
+   * unregisters the object, so it cannot be activated again by incomming call
+   * (unless registered).
    * 
    * @param obj the object to unexport
    * @param force if true, cancel all pending or running calls to that object
@@ -338,7 +408,93 @@ public abstract class Activatable
   public static boolean unexportObject(Remote obj, boolean force)
       throws NoSuchObjectException
   {
-    throw new Error("Not implemented");
+    Object aref = UnicastServer.getExportedRef(obj);
+    
+    // Unregister it also (otherwise will be activated during the subsequent
+    // call.
+    if (aref instanceof ActivatableServerRef)
+      {
+        ActivatableServerRef aar = (ActivatableServerRef) aref;
+        UnicastServer.unregisterActivatable(aar.actId);
+      }
+    return UnicastRemoteObject.unexportObject(obj, force);
   }
+  
+  static Remote exportObject(Remote obj, int port, 
+                             RMIServerSocketFactory serverSocketFactory) 
+    throws RemoteException
+  {
+    UnicastServerRef sref = null;
+    if (obj instanceof RemoteObject)
+      sref = (UnicastServerRef) ((RemoteObject) obj).getRef();
 
+    if (sref == null)
+      sref = new UnicastServerRef(new ObjID(), port, serverSocketFactory);
+
+    Remote stub = sref.exportObject(obj);
+    // addStub(obj, stub); 
+    // TODO Need to change the place of the stub repository
+    return stub;
+  }
+  
+  /**
+   * Create and export the new remote object, making it available at the given
+   * port, using sockets, produced by the specified factories.
+   * 
+   * @param port the port, on that the object should become available. Zero
+   *          means anonymous port.
+   * @param serverSocketFactory the server socket factory
+   */
+  public static Remote export(ActivationID id, Remote obj, int port,
+                              RMIServerSocketFactory serverSocketFactory)
+      throws RemoteException
+  {
+    UnicastServerRef sref = null;
+    if (obj instanceof RemoteObject)
+      sref = (UnicastServerRef) ((RemoteObject) obj).getRef();
+
+    if (sref == null)
+      sref = new ActivatableServerRef(makeId(id), id, port, serverSocketFactory);
+
+    Remote stub = sref.exportObject(obj);
+    // addStub(obj, stub); // need probably the stub repository elsewhere
+    return stub;
+  }  
+  
+  /**
+   * Make the object ID from the activation ID. The same activation ID always
+   * produces the identical object id.
+   * 
+   * @param aid the activation id
+   * 
+   * @return the object id
+   */
+  public static ObjID makeId(ActivationID aid)
+  {
+    ObjID id = new ObjID(0);
+    
+    // The fields of both ObjID and ActivationID must be package private,
+    // so we need to use the reflection to access them anyway.
+    // Probably other implementations use some very different approach.
+    
+    try
+      {
+        Field idUid =  ObjID.class.getDeclaredField("space");
+        Field aidUid = ActivationID.class.getDeclaredField("uid");
+        
+        aidUid.setAccessible(true);
+        idUid.setAccessible(true);
+        
+        idUid.set(id, aidUid.get(aid));
+      }
+    catch (Exception e)
+      {
+        InternalError ierr = new InternalError("Unable to set UID field");
+        ierr.initCause(e);
+        throw ierr;
+      }
+    
+    return id;
+  }  
+  
 }

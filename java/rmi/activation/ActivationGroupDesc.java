@@ -39,6 +39,8 @@ exception statement from your version. */
 
 package java.rmi.activation;
 
+import gnu.java.rmi.activation.DefaultActivationGroup;
+
 import java.io.Serializable;
 import java.rmi.MarshalledObject;
 import java.util.Arrays;
@@ -216,7 +218,9 @@ public final class ActivationGroupDesc
   transient long hash;
   
   /**
-   * Create the new activation group descriptor.
+   * Create the new activation group descriptor that will use the default
+   * activation group implementation with the given properties and
+   * environment.
    * 
    * @param aProperties the properties that override the system properties
    * @param environment the command line (and parameters), indicating, where to
@@ -228,7 +232,8 @@ public final class ActivationGroupDesc
   public ActivationGroupDesc(Properties aProperties,
                              ActivationGroupDesc.CommandEnvironment environment)
   {
-    this(null, null, null, aProperties, environment);
+    this(DefaultActivationGroup.class.getName(), null, null, aProperties,
+         environment);
   }
   
   /**

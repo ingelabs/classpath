@@ -71,13 +71,19 @@ public class ActivationID
   /**
    * The activator.
    */
-  private transient Activator activator;
+  transient Activator activator;
   
   /**
    * The UID, making this instance unique.
    */
-  private transient UID uid; 
-
+  transient UID uid; 
+  
+  /**
+   * The activation group that has activated the object with this
+   * activation id. The field is filled in inside the group and is used
+   * to notify the group about the request to inactivated the object.
+   */
+  transient ActivationGroup group;
 
   /**
    * Create a new instance with the given activator.
@@ -87,16 +93,15 @@ public class ActivationID
   public ActivationID(Activator an_activator)
   {
     activator = an_activator;
+    uid = new UID();
   }
    
   /**
    * Activate the object.
    * 
-   * @param force if true, always contact the group. Otherwise, the cached
-   * value may be returned.
-   * 
+   * @param force if true, always contact the group. Otherwise, the cached value
+   *          may be returned.
    * @return the activated object
-   * 
    * @throws UnknownObjectException if the object is unknown
    * @throws ActivationException if the activation has failed
    * @throws RemoteException if the remote call has failed
@@ -104,7 +109,20 @@ public class ActivationID
   public Remote activate(boolean force) throws ActivationException,
       UnknownObjectException, RemoteException
   {
-    throw new Error("Not implemented");
+        try
+          {
+            return (Remote) activator.activate(this, force).get();
+          }
+        catch (IOException e)
+          {
+            ActivationException acex = new ActivationException("id "+uid, e);
+            throw acex;            
+          }
+        catch (ClassNotFoundException e)
+          {
+            ActivationException acex = new ActivationException("id "+uid, e);
+            throw acex;
+          }
   }
   
   /**
@@ -112,7 +130,7 @@ public class ActivationID
    */
   public int hashCode()
   {
-    return uid.hashCode();
+    return uid == null ? 0 : uid.hashCode();
   }
   
   /**
@@ -123,7 +141,7 @@ public class ActivationID
     if (obj instanceof ActivationID)
       {
         ActivationID that = (ActivationID) obj;
-        return uid.equals(that.uid) && activator.equals(that.activator);
+        return eq(uid, that.uid) && eq(activator, that.activator);
       }
     else
       return false;
@@ -157,5 +175,17 @@ public class ActivationID
     out.writeObject(uid);
      // TODO not complete!
   };
+  
+  /**
+   * Compare by .equals if both a and b are not null, compare directly if at
+   * least one of them is null.
+   */
+  static final boolean eq(Object a, Object b)
+  {
+    if (a == null || b == null)
+      return a == b;
+    else
+      return a.equals(b);
+  }  
 
 }

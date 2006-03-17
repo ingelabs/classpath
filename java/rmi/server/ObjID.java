@@ -93,12 +93,12 @@ public final class ObjID
    * The object Id (either well-known value or the value of the incrementing
    * object counter.
    */
-  private long objNum;
+  long objNum;
 
   /**
    * The object unique identifier, generated individually for each object.
    */
-  private UID space;
+  UID space;
 
   /**
    * Create the new object id, unique for this host.

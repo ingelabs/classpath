@@ -43,13 +43,18 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
+ * <p>
  * The ActivationSystem registers groups and activatable objects to be activated
  * within those groups. The ActivationSystem cooperates with both the Activator,
  * which activates objects registered via the ActivationSystem, and the
  * ActivationMonitor, which obtains information about active and inactive
- * objects and inactive groups. As a security mean, all methods in this
- * interface throw {@link java.rmi.AccessException} if called from the client
- * that is not reside on the same host as the activation system.
+ * objects and inactive groups.
+ * </p>
+ * <p>
+ * The activation system if frequently a remote object. As a security mean, all
+ * methods in this interface throw {@link java.rmi.AccessException} if called
+ * from the client that is not reside on the same host as the activation system.
+ * </p>
  */
 public interface ActivationSystem
     extends Remote
