@@ -1,5 +1,16 @@
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalComboBoxButton.java
+	(rendererPane): Documented.
+	(MetalComboBoxButton): Set enabled flag from ComboBox.
+	Set focusable flag from ComboBox's enabled flag.
+	(isFocusTraversable): Make button focus traversable if
+	ComboBox is not editable but enable.
+	(paintComponent): Fixed painting to correctly adjust
+	the boxes of the renderer and button.
+
+2006-03-17  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicButtonUI.java
 	(installDefaults): Only install UI margin if installed margin
 	is null or a UIResource.
