@@ -1,3 +1,18 @@
+2006-03-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxRenderer.java
+	(noFocusBorder): Make border with insets of (1,1,1,1).
+	(BasicComboBoxRenderer): Make renderer opaque.
+	No need to explicitly set alignment.
+	(getListCellRendererComponent): Rewritten to correctly initialize
+	color and font.
+
+2006-03-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JPopupMenu.java
+	(setVisible): Handle JPopupMenu opening and closing via
+	the MenuSelectionHandler.
+
 2006-03-17  Wolfgang Baer  <WBaer@gmx.de>
 
 	* org/omg/DynamicAny/DynAnyPackage/InvalidValue.java: Now final.
