@@ -1,3 +1,39 @@
+2006-03-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(BasicComboPopup): Create listeners here.
+	Configure components here.
+	(show): Correctly calculate bounds using computePopupBounds().
+	Make scroller fixed-size. Removed special autocloser handling.
+	(hide): Rewritten to use MenuSelectionHandler.
+	(createList): Don't set selection mode here.
+	(configureList): Correctly install colors and fonts and selectionMode.
+	(createScroller): Set scrollpane policies.
+	(configureScroller): Make scroller and scrollbar not-focusable.
+	(configurePopup): Make popup opaque and borderPainted.
+	(installComboBoxListeners): Don't install mouse listener on ComboBox.
+	(delegateFocus): Implemented.
+	(convertMouseEvent): Implemented.
+	(updateListBoxSelectionForEvent): Implemented to also handle
+	autoscrolling.
+	(InvocationMouseHandler.mousePressed): Delegate focus correctly.
+	Only open popup on left mouse-click.
+	(InvocationMouseHandler.mouseReleased): Rewritten.
+	(InvocationMouseMotionHandler.mouseDragged): Rewritten to better
+	support autoscrolling.
+	(ItemHandler.itemStateChanged): Implemented to sync selection with
+	the comboBox.
+	(ListMouseHandler.mouseReleased): Fetch selected index directly
+	from list.
+	(ListMouseMotionHandler.mouseMoved): Only update when mouse is inside
+	the list box.
+	(PropertyChangeHandler.propertyChange): Don't revalidate/repaint here.
+	When model changes, then update listeners correctly.
+	(uninstallListeners): Don't uninstall list listeners.
+	(uninstallComboBoxListeners): Don't uninstall mouse listeners
+	from comboBox.
+	(syncSelection): New helper method.
+
 2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/PlainView.java:
@@ -9,6 +45,42 @@
 	* javax/swing/text/Utilities.java:
 	(drawTabbedText): Add 'pixelWidth' to the return value, store
 	constant value of for-loop in local variable.
+
+2006-03-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(BasicComboPopup): Create listeners here.
+	Configure components here.
+	(show): Correctly calculate bounds using computePopupBounds().
+	Make scroller fixed-size. Removed special autocloser handling.
+	(hide): Rewritten to use MenuSelectionHandler.
+	(createList): Don't set selection mode here.
+	(configureList): Correctly install colors and fonts and selectionMode.
+	(createScroller): Set scrollpane policies.
+	(configureScroller): Make scroller and scrollbar not-focusable.
+	(configurePopup): Make popup opaque and borderPainted.
+	(installComboBoxListeners): Don't install mouse listener on ComboBox.
+	(delegateFocus): Implemented.
+	(convertMouseEvent): Implemented.
+	(updateListBoxSelectionForEvent): Implemented to also handle
+	autoscrolling.
+	(InvocationMouseHandler.mousePressed): Delegate focus correctly.
+	Only open popup on left mouse-click.
+	(InvocationMouseHandler.mouseReleased): Rewritten.
+	(InvocationMouseMotionHandler.mouseDragged): Rewritten to better
+	support autoscrolling.
+	(ItemHandler.itemStateChanged): Implemented to sync selection with
+	the comboBox.
+	(ListMouseHandler.mouseReleased): Fetch selected index directly
+	from list.
+	(ListMouseMotionHandler.mouseMoved): Only update when mouse is inside
+	the list box.
+	(PropertyChangeHandler.propertyChange): Don't revalidate/repaint here.
+	When model changes, then update listeners correctly.
+	(uninstallListeners): Don't uninstall list listeners.
+	(uninstallComboBoxListeners): Don't uninstall mouse listeners
+	from comboBox.
+	(syncSelection): New helper method.
 
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
