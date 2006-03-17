@@ -324,6 +324,7 @@ public class Demo
   public Demo()
   {
     frame = new JFrame("Swing Activity Board");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setJMenuBar(mkMenuBar());
     JComponent component = (JComponent) frame.getContentPane();
     component.setLayout(new BorderLayout());
