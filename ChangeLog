@@ -1,3 +1,10 @@
+2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/DefaultEditorKit.java: Refactored anonymous
+	inner classes into package-private inner classes, added actions
+	for caret movement and selection to the next and previous word
+	and an action which selects the whole text.
+
 2006-03-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/swing/Spring.java: Uncomment springdebug methods and
