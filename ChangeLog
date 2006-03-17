@@ -1,3 +1,62 @@
+2006-03-17  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(mouseListener): Removed field.
+	(buttonBackground): Removed field.
+	(buttonShadow): Removed field.
+	(buttonDarkShadow): Removed field.
+	(buttonHighlight): Removed field.
+	(BasicComboBoxUI): Initialize currentValuePane and cachedMinimumSize.
+	(installUI): Initialize and configure renderer and editor here.
+	(uninstallUI): Close popup before uninitializing.
+	Message popup that we are uninitializing. Clear layout.
+	(installDefaults): Install UI border. Don't install colors.
+	(installListeners): Install listeners fetched from the popup.
+	Remove handling of mouseListener.
+	(uninstallDefaults): Uninstall border. Don't handle colors.
+	(uninstallListeners): Don't handle mouseListener. Uninstall
+	listener from the popup.
+	(createMouseListener): Removed method.
+	(createRenderer): Create UIResource.
+	(installComponents): Cleaned up.
+	(uninstallComponents): Only remove renderer when it is
+	a UIResource.
+	(addEditor): Remove editor before adding new one.
+	Fetch editor from comboBox.
+	(removeEditor): Only do something when editor != null. Unconfigure
+	editor before removing.
+	(configureEditor): Add key listener. Call comboBox.configureEditor.
+	(unconfigureEditor): Removed key listener.
+	(configureArrowButton): Only handle when arrowButton != null.
+	Add mouse listeners to arrow button.
+	(unconfigureArrowButton): Remove listeners.
+	(createArrowButton): Don't handle colors here.
+	(setPopupVisible): Don't handle focus here.
+	(paint): Only paint when comboBox is not editable. Update
+	hasFocus flag.
+	(getPreferredSize): Implemented to be minimumSize + 4 pixels width.
+	(getMinimumSize): Respect insets here.
+	(getMaximumSize): Return preferredSize with width of 32767.
+	(getInsets): Return ComboBox insets.
+	(paintCurrentValue): Paint using currentValuePane.
+	Install correct colors. Don't revalidate.
+	(paintCurrentValueBackground): Implemented.
+	(getDefaultSize): Reimplemented using a default renderer.
+	(getDisplaySize): Reimplemented to use renderer.
+	(ComboBoxLayoutManager.preferredLayoutSize): Forward to component.
+	(ComboBoxLayoutManager.minimumLayoutSize): Forward to component.
+	(ComboBoxLayoutManager.layoutContainer): Fixed layout.
+	(FocusHandler.focusGained): Don't invalidate minimumSize.
+	(FocusHandler.focusLost): Don't invalidate minimumSize.
+	Only close popup if focus change is not temporary.
+	(ItemHandler.itemStateChanged): Don't invalidate minimumSize.
+	Reconfigure editor if not null.
+	(ListDataHandler.contentsChanged): Revalidate and reconfigure
+	editor if necessary.
+	(ListDataHandler.intervalAdded): Fixed updating of the display size.
+	(ListDataHandler.intervalRemoved): Forward to contentsChanged.
+	(MouseHandler): Removed unnecessary class.
+
 2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
 
 	* examples/gnu/classpath/examples/swing/Demo.java:
