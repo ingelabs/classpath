@@ -1,3 +1,20 @@
+2006-03-17  Wolfgang Baer  <WBaer@gmx.de>
+
+	* org/omg/DynamicAny/DynAnyPackage/InvalidValue.java: Now final.
+	* org/omg/DynamicAny/DynAnyPackage/TypeMismatch.java: Likewise.
+	* org/omg/DynamicAny/DynAnyFactoryPackage/InconsistentTypeCode.java: 
+	Likewise.	
+	* org/omg/CORBA/portable/RemarshalException.java: Likewise
+	* org/omg/CORBA/TypeCodePackage/BadKind.java: Likewise.
+	* org/omg/CORBA/TypeCodePackage/Bounds.java: Likewise.
+	* org/omg/CORBA/ORBPackage/InvalidName.java: Likewise.
+	* org/omg/CORBA/ORBPackage/InconsistentTypeCode.java: Likewise.
+	* org/omg/CORBA/DynAnyPackage/TypeMismatch.java: Likewise.
+	* org/omg/CORBA/DynAnyPackage/InvalidValue.java: Likewise.
+	* org/omg/CORBA/DynAnyPackage/InvalidSeq.java: Likewise.
+	* org/omg/CORBA/DynAnyPackage/Invalid.java: Likewise.
+	* org/omg/Dynamic/Parameter.java: Now final, javadoc fixes.
+
 2006-03-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* java/rmi/activation/Activatable.java: Implemented.
