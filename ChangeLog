@@ -1,3 +1,15 @@
+2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/PlainView.java:
+	(drawLine): Rewritten.
+	(drawSelectedText): Corrected last argument for
+	Utilities.drawTabbedText() call.
+	(paint): Store start and end of selection in object variables,
+	store constant values of for-loop in local variables.
+	* javax/swing/text/Utilities.java:
+	(drawTabbedText): Add 'pixelWidth' to the return value, store
+	constant value of for-loop in local variable.
+
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxRenderer.java
