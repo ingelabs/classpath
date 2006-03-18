@@ -1,3 +1,20 @@
+2006-03-18  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/regexp/REMatch.java(matchedCharIndexed): New field,
+	(start, end): Added comment about the negative values of them,
+	(finish): Saves the input text in matchedCharIndexed,
+	(toString): If the start or end index is out of bounds of the
+	matched text, get the substring from matchedCharIndexed.
+	Added special handlings in case start/end index < -1,
+	(getSubStartIndex, getStartIndex, getSubEndIndex, getEndIndex):
+	Added special handlings in case start/end index < -1,
+	* gnu/regexp/RETokenLookAhead.java(matchThis): Return the newly
+	found match, but keep the index as the original match.
+	* gnu/regexp/RETokenLookBehind.java(matchThis): Return the newly
+	found match, but keep the index as the original match.
+	* gnu/regexp/RETokenBackRef.java(matchThis): Added special handlings
+	in case start/end index < -1.
+
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalComboBoxEditor.java

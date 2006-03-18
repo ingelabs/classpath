@@ -57,6 +57,8 @@ final class RETokenBackRef extends REToken {
 	b = mymatch.start[num];
 	e = mymatch.end[num];
 	if ((b==-1)||(e==-1)) return null; // this shouldn't happen, but...
+	if (b < 0) b += 1;
+	if (e < 0) e += 1;
 	for (int i=b; i<e; i++) {
 	    char c1 = input.charAt(mymatch.index+i-b);
 	    char c2 = input.charAt(i);

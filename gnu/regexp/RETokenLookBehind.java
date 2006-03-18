@@ -62,14 +62,24 @@ final class RETokenLookBehind extends REToken
     REMatch trymatch = (REMatch)mymatch.clone();
     REMatch trymatch1 = (REMatch)mymatch.clone();
     REMatch newMatch = null;
-    int curIndex = trymatch.index + behind.length() - input.length();
+    int diff = behind.length() - input.length();
+    int curIndex = trymatch.index + diff;
     trymatch.index = 0;
     RETokenMatchHereOnly stopper = new RETokenMatchHereOnly(curIndex);
     REToken re1 = (REToken) re.clone();
     re1.chain(stopper);
     if (re1.match(behind, trymatch)) {
       if (negative) return null;
-      return mymatch;
+      for (int i = 0; i < trymatch.start.length; i++) {
+	  if (trymatch.start[i] != -1 && trymatch.end[i] != -1) {
+	      trymatch.start[i] -= diff;
+	      if (trymatch.start[i] < 0) trymatch.start[i] -= 1;
+	      trymatch.end[i] -= diff;
+	      if (trymatch.end[i] < 0) trymatch.end[i] -= 1;
+	  }
+      }
+      trymatch.index = mymatch.index;
+      return trymatch;
     }
     else {
       if (negative) return mymatch;
