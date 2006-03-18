@@ -1,3 +1,8 @@
+2006-03-18  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/MetalToolBarUI.java
+	(update): Added overridden method to support OceanTheme.
+
 2006-03-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTableUI.java (KeyHandler.keyTyped): 

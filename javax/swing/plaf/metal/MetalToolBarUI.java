@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing.plaf.metal;
 
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.ContainerListener;
 import java.awt.event.MouseEvent;
@@ -46,6 +47,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.MouseInputListener;
@@ -258,5 +260,39 @@ public class MetalToolBarUI extends BasicToolBarUI
         tb.setRollover(false);
       }
     super.uninstallUI(c);
+  }
+
+  /**
+   * Paints the background of the component if necessary and then calls
+   * <code>paint(g, c)</code>.
+   *
+   * This is overridden to implement the OceanTheme gradient when an OceanTheme
+   * is installed.
+   *
+   * @param g the graphics to use
+   * @param c the component to paint.
+   *
+   * @since 1.5
+   */
+  public void update(Graphics g, JComponent c)
+  {
+    // TODO: Sun's implementation uses the MenuBar.gradient here.
+    // I would consider this a bug, but implement it like this
+    // for compatibility.
+    if (MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme
+        && UIManager.get("MenuBar.gradient") != null)
+      {
+        if (c.isOpaque())
+          {
+            MetalUtils.paintGradient(g, 0, 0, c.getWidth(), c.getHeight(),
+                                     SwingConstants.VERTICAL,
+                                     "MenuBar.gradient");
+          }
+        paint(g, c);
+      }
+    else
+      {
+        super.update(g, c);
+      }
   }
 }
