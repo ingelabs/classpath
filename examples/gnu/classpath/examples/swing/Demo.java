@@ -509,6 +509,9 @@ public class Demo
                                           TreeDemo.createDemoFactory())));
     JButton exitDisposer = mkDisposerButton(frame);
     panel.add(exitDisposer);
+    
+    panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 
+                                       panel.getPreferredSize().height));
     exitDisposer.addActionListener(new ActionListener()
       {
 	public void actionPerformed(ActionEvent e)
