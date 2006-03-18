@@ -1018,19 +1018,7 @@ public class JTable
      * The CheckBox that is used for rendering.
      */
     private final JCheckBox checkBox = new JCheckBox();
-    
-    /**
-     * The check box must have the text field background and be centered.
-     */
-    private BooleanCellRenderer()
-    {
-      // Render the checkbox identically as the text field.
-      JTextField f = new JTextField();
-      checkBox.setForeground(f.getForeground());
-      checkBox.setBackground(f.getBackground());
-      checkBox.setHorizontalAlignment(SwingConstants.CENTER);      
-    }
-    
+   
     /**
      * Get the check box.
      */
@@ -1041,14 +1029,13 @@ public class JTable
 
     /**
      * Returns the component that is used for rendering the value.
-     *
+     * 
      * @param table the JTable
      * @param value the value of the object
      * @param isSelected is the cell selected?
      * @param hasFocus has the cell the focus?
      * @param row the row to render
      * @param column the cell to render
-     * 
      * @return this component (the default table cell renderer)
      */
     public Component getTableCellRendererComponent(JTable table, Object value,
@@ -1056,6 +1043,32 @@ public class JTable
                                                    boolean hasFocus, int row,
                                                    int column)
     {
+      if (isSelected)
+        {
+          checkBox.setBackground(table.getSelectionBackground());
+          checkBox.setForeground(table.getSelectionForeground());
+        }
+      else
+        {
+          checkBox.setBackground(table.getBackground());
+          checkBox.setForeground(table.getForeground());
+        }
+
+      if (hasFocus)
+        {
+          checkBox.setBorder(
+            UIManager.getBorder("Table.focusCellHighlightBorder"));
+          if (table.isCellEditable(row, column))
+            {
+              checkBox.setBackground(
+                UIManager.getColor("Table.focusCellBackground"));
+              checkBox.setForeground(
+                UIManager.getColor("Table.focusCellForeground"));
+            }
+        }
+      else
+        checkBox.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
       // Null is rendered as false.
       if (value == null)
         checkBox.setSelected(false);
