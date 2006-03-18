@@ -1,3 +1,8 @@
+2006-03-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax.swing.JTable.java (TableTextField.scrollRectToVisible):
+	Return without action.
+
 2006-03-18  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (paintComponent):

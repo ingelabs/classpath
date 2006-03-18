@@ -1257,18 +1257,14 @@ public class JTable
       }
     
       /**
-       * Scroll the table, making the given rectangle of this component
-       * visible. Mind the component position with relate to the table. 
        * With not this method overridden, the scroll pane scrolls to the
        * top left cornec (untranslated position of the caret) after the first
-       * keystroke.
+       * keystroke. 
        */
       public void scrollRectToVisible(Rectangle r)
       {
-        // In private class we known that the rectangle data will not be
-        // reused and we need not to clone it.
-        r.translate(getX(), getY());
-        super.scrollRectToVisible(r);
+        // Do nothing here. If the editing session starts outside the visible
+        // bounds, the editCellAt will scroll.
       }
     }    
   
