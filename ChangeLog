@@ -1,5 +1,12 @@
 2006-03-18  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(show): Substract insets from scroller width.
+	(getPopupHeightForRowCount): If height==0, return a default of 100
+	instead for empty ComboBoxes.
+
+2006-03-18  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicLookAndFeel.java
 	(PopupHelper.autoClosePopups): Removed field.
 	(PopupHelper.mousePressed): Removed processing of registered
