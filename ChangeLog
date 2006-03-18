@@ -1,3 +1,9 @@
+2006-03-18  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (paintComponent):
+	Don't cast graphics object to GdkGraphics.
+	(updateComponent): Likewise.
+
 2006-03-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* examples/gnu/classpath/examples/swing/TableDemo.java

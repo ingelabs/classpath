@@ -313,7 +313,7 @@ public class GtkComponentPeer extends GtkGenericPeer
     // seems expensive.  However, the graphics state does not carry
     // over between calls to paint, and resetting the graphics object
     // may even be more costly than simply creating a new one.
-    GdkGraphics g = (GdkGraphics) getGraphics();
+    Graphics g = getGraphics();
 
     g.setClip(event.getUpdateRect());
 
@@ -332,7 +332,7 @@ public class GtkComponentPeer extends GtkGenericPeer
         || (awtComponent.getWidth() < 1 || awtComponent.getHeight() < 1))
       return;
 
-    GdkGraphics g = (GdkGraphics) getGraphics();
+    Graphics g = getGraphics();
 
     g.setClip(event.getUpdateRect());
 
