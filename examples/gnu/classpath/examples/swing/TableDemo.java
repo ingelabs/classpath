@@ -41,12 +41,14 @@ package gnu.classpath.examples.swing;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -76,11 +78,12 @@ public class TableDemo extends JPanel
   {
     
     /**
-     * Return true if the cell is editable. All cells are editable.
+     * Return true if the cell is editable. 
+     * Icons are not editable, other cells are editable.
      */
-    public boolean isCellEditable(int parm1, int parm2)
+    public boolean isCellEditable(int row, int column)
     {
-      return true;
+      return column!=1;
     }
     
     /**
@@ -126,12 +129,15 @@ public class TableDemo extends JPanel
     }
     
     /**
-     * The first column contains booleans, others - default class.
+     * The first column contains booleans, the second - icons, 
+     * others - default class.
      */
     public Class getColumnClass(int column)
     {
       if (column == 0)
         return Boolean.class;
+      else if (column == 1)
+        return Icon.class;
       else
         return super.getColumnClass(column);
     }    
@@ -171,14 +177,24 @@ public class TableDemo extends JPanel
   {
     setLayout(new BorderLayout());
     values = new Object[rows][];
+    
+    // The icons that appear in the icon column.
+    Icon[] icons = new Icon[]
+      {                            
+        MetalIconFactory.getTreeComputerIcon(),
+        MetalIconFactory.getTreeHardDriveIcon(),
+        MetalIconFactory.getTreeFolderIcon(),
+      }; 
+    
     for (int i = 0; i < values.length; i++)
       {
         values[i] = new Object[cols];
-        for (int j = 1; j < cols; j++)
+        for (int j = 2; j < cols; j++)
           {
             values[i][j] = "" + ((char) ('a' + j)) + i;
           }
         values [i][0] = i % 2 == 0? Boolean.TRUE : Boolean.FALSE;
+        values [i][1] = icons [ i % icons.length ]; 
       }
         
     table.setModel(model);        
@@ -190,7 +206,7 @@ public class TableDemo extends JPanel
         TableColumn column = new TableColumn(i);
             
         // Showing the variable width columns.
-        int width = 100+20*i;
+        int width = 100+10*i;
         column.setPreferredWidth(width);
             
         // If we do not set the header value here, the value, returned

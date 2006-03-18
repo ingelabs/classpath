@@ -1,5 +1,13 @@
 2006-03-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* examples/gnu/classpath/examples/swing/TableDemo.java
+	(TModel.getColumnClass): Set second column to Icon.
+	(TModel.isCellEditable): Say icons are not editable.
+	(createContent): Fill the in second column with some icons from 
+	MetalIconFactory.
+
+2006-03-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* examples/gnu/classpath/examples/swing/Demo.java
 	(mkButtonBar): Set maximal button bar height to the preferred height.
 
