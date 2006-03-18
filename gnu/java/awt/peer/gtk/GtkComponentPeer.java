@@ -63,6 +63,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.awt.event.PaintEvent;
 import java.awt.event.TextEvent;
 import java.awt.image.BufferedImage;
@@ -571,6 +572,19 @@ public class GtkComponentPeer extends GtkGenericPeer
   {
     q().postEvent(new MouseEvent(awtComponent, id, when, mods, x, y, 
 			       clickCount, popupTrigger));
+  }
+
+  /**
+   * Callback for component_scroll_cb.
+   */
+  protected void postMouseWheelEvent(int id, long when, int mods,
+				     int x, int y, int clickCount,
+				     boolean popupTrigger,
+				     int type, int amount, int rotation) 
+  {
+    q().postEvent(new MouseWheelEvent(awtComponent, id, when, mods,
+				      x, y, clickCount, popupTrigger,
+				      type, amount, rotation));
   }
 
   protected void postExposeEvent (int x, int y, int width, int height)

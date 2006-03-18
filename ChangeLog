@@ -1,3 +1,21 @@
+2006-03-18  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/Component.java (eventTypeEnabled): Handle
+	MouseEvent.MOUSE_WHEEL.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (postMouseWheelEvent):
+	New callback method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(AWT_MOUSE_WHEEL): New constant.
+	(AWT_WHEEL_UNIT_SCROLL): Likewise.
+	(postMouseWheelEventID): New static variable.
+	(cp_gtk_component_init_jni): Record postMouseWheelEventID.
+	(cp_gtk_component_connect_mouse_signals): Connect scroll-event.
+	(button_number): Renamed to ...
+	(button_number_direction): variable to hold button number or scroll
+	direction.
+	(component_button_press_cb): Use button_number_direction.
+	(component_scroll_cb): New static callback function.
+
 2006-03-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax.swing.JTable.java (TableTextField.scrollRectToVisible):

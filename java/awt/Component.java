@@ -5002,6 +5002,9 @@ p   * <li>the set of backward traversal keys
       case MouseEvent.MOUSE_DRAGGED:
         return (mouseMotionListener != null
                 || (eventMask & AWTEvent.MOUSE_MOTION_EVENT_MASK) != 0);
+      case MouseEvent.MOUSE_WHEEL:
+        return (mouseWheelListener != null
+                || (eventMask & AWTEvent.MOUSE_WHEEL_EVENT_MASK) != 0);
         
       case FocusEvent.FOCUS_GAINED:
       case FocusEvent.FOCUS_LOST:

@@ -1,5 +1,5 @@
 /* gtkcomponentpeer.c -- Native implementation of GtkComponentPeer
-   Copyright (C) 1998, 1999, 2002, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002, 2004, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -67,6 +67,9 @@ exception statement from your version. */
 #define AWT_MOUSE_ENTERED  504
 #define AWT_MOUSE_EXITED   505
 #define AWT_MOUSE_DRAGGED  506
+#define AWT_MOUSE_WHEEL    507
+
+#define AWT_WHEEL_UNIT_SCROLL 0
 
 #define AWT_FOCUS_GAINED 1004
 #define AWT_FOCUS_LOST 1005
@@ -76,6 +79,7 @@ static GtkWidget *find_bg_color_widget (GtkWidget *widget);
 static GtkWidget *get_widget (GtkWidget *widget);
 
 static jmethodID postMouseEventID;
+static jmethodID postMouseWheelEventID;
 static jmethodID setCursorID;
 static jmethodID postExposeEventID;
 static jmethodID postFocusEventID;
@@ -90,6 +94,11 @@ cp_gtk_component_init_jni (void)
 
   postMouseEventID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), gtkcomponentpeer,
                                                "postMouseEvent", "(IJIIIIZ)V");
+
+  postMouseWheelEventID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(),
+						        gtkcomponentpeer,
+						        "postMouseWheelEvent",
+							"(IJIIIIZIII)V");
 
   setCursorID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), gtkcomponentpeer,
                                            "setCursor", "()V");
@@ -110,6 +119,9 @@ static gboolean component_button_release_cb (GtkWidget *widget,
 static gboolean component_motion_notify_cb (GtkWidget *widget,
                                             GdkEventMotion *event,
                                             jobject peer);
+static gboolean component_scroll_cb (GtkWidget *widget,
+				     GdkEventScroll *event,
+				     jobject peer);
 static gboolean component_enter_notify_cb (GtkWidget *widget,
                                            GdkEventCrossing *event,
                                            jobject peer);
@@ -932,6 +944,9 @@ cp_gtk_component_connect_mouse_signals (GObject *ptr, jobject *gref)
 
   g_signal_connect (G_OBJECT (ptr), "motion-notify-event",
                     G_CALLBACK (component_motion_notify_cb), *gref);
+
+  g_signal_connect (G_OBJECT (ptr), "scroll-event",
+                    G_CALLBACK (component_scroll_cb), *gref);
 }
 
 void
@@ -944,11 +959,11 @@ cp_gtk_component_connect_signals (GObject *ptr, jobject *gref)
 
 /* These variables are used to keep track of click counts.  The AWT
    allows more than a triple click to occur but GTK doesn't report
-   more-than-triple clicks. */
+   more-than-triple clicks.  Also used for keeping track of scroll events.*/
 static jint click_count = 1;
 static guint32 button_click_time = 0;
 static GdkWindow *button_window = NULL;
-static guint button_number = -1;
+static guint button_number_direction = -1;
 static int hasBeenDragged;
 
 static gboolean
@@ -963,14 +978,14 @@ component_button_press_cb (GtkWidget *widget __attribute__((unused)),
 
   if ((event->time < (button_click_time + MULTI_CLICK_TIME))
       && (event->window == button_window)
-      && (event->button == button_number))
+      && (event->button == button_number_direction))
     click_count++;
   else
     click_count = 1;
       
   button_click_time = event->time;
   button_window = event->window;
-  button_number = event->button;
+  button_number_direction = event->button;
 
   (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
                                 postMouseEventID,
@@ -1065,6 +1080,45 @@ component_motion_notify_cb (GtkWidget *widget __attribute__((unused)),
                                     0,
                                     JNI_FALSE);
     }
+  return FALSE;
+}
+
+static gboolean
+component_scroll_cb (GtkWidget *widget __attribute__((unused)),
+		     GdkEventScroll *event,
+		     jobject peer)
+{
+  int rotation;
+  /** Record click count for specific direction. */
+  if ((event->time < (button_click_time + MULTI_CLICK_TIME))
+      && (event->window == button_window)
+      && (event->direction == button_number_direction))
+    click_count++;
+  else
+    click_count = 1;
+      
+  button_click_time = event->time;
+  button_window = event->window;
+  button_number_direction = event->direction;
+
+  if (event->direction == GDK_SCROLL_UP
+      || event->direction == GDK_SCROLL_LEFT)
+    rotation = -1;
+  else
+    rotation = 1;
+
+  (*cp_gtk_gdk_env())->CallVoidMethod (cp_gtk_gdk_env(), peer,
+				       postMouseWheelEventID,
+				       AWT_MOUSE_WHEEL, 
+				       (jlong)event->time,
+				       cp_gtk_state_to_awt_mods (event->state),
+				       (jint)event->x,
+				       (jint)event->y, 
+				       click_count, 
+				       JNI_FALSE,
+				       AWT_WHEEL_UNIT_SCROLL,
+				       1 /* amount */,
+				       rotation);
   return FALSE;
 }
 
