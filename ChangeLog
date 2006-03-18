@@ -1,3 +1,8 @@
+2006-03-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax.swing.JTable.java (TableTextField): Set border.
+	(moveToCellBeingEdited): Do not adjust the editor boundaries
+
 2006-03-18  Michael Koch  <konqueror@gmx.de>
 
 	* resource/gnu/java/locale/LocaleInformation_aa.properties,
@@ -93,6 +98,11 @@
 	found match, but keep the index as the original match.
 	* gnu/regexp/RETokenBackRef.java(matchThis): Added special handlings
 	in case start/end index < -1.
+	
+2006-03-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/rmi/activation/ActivationSystemTransient.java (debug):
+	Set to false. 	
 
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
@@ -143,17 +153,8 @@
 
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
-	* javax/swing/plaf/basic/BasicButtonUI.java
-	(installDefaults): Only install UI margin if installed margin
-	is null or a UIResource.
-	(uninstallDefaults): Only uninstall margin if it's
-	a UIResource.
-
-2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
-
-	* javax/swing/text/DefaultCaret.java:
-	(mouseClicked) Use setDot() and moveDot() instead of
-	JTextComponent.select().
+	* gnu/java/rmi/activation/ActivationSystemTransient.java (debug):
+	Set to false.
 
 2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
 

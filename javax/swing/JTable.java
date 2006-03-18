@@ -1253,7 +1253,7 @@ public class JTable
        */
       TableTextField()
       {
-        setBorder(null);
+        setBorder(BorderFactory.createLineBorder(getGridColor(), 2));
       }
     
       /**
@@ -3658,16 +3658,6 @@ public class JTable
   private void moveToCellBeingEdited(Component component)
   {
      Rectangle r = getCellRect(editingRow, editingColumn, true);
-     // Place the text field so that it would not touch the table
-     // border.
-     
-     // TODO Figure out while 5 and which constant should here be.
-     int xOffset = 5;
-     r.x+=xOffset;
-     r.y++;
-     r.width -=xOffset;
-     r.height --;
-     
      // Clone rectangle as getCellRect returns the cached value.
      component.setBounds(new Rectangle(r));
   }
