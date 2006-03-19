@@ -1,3 +1,10 @@
+2006-03-19  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JColorChooser.java
+	(createDialog): Create JDialog instead of ModalDialog. Make this
+	dialog modal by calling setModal(true).
+	(ModalDialog): Removed unnecessary inner class.
+
 2006-03-19  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/font/NumericShaper.java: Rewrote.
@@ -17,20 +24,20 @@
 	If Scrollable tracks dimension, set view size to the port size. 
 	If port is larger than the view, move the view to the top/left.
 
-2006-03-18  Roman Kennke  <kennke@aicas.com>
+2006-03-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/MenuSelectionManager.java
 	(isComponentPartOfCurrentMenu): Also consider the first element
 	in a menu selection list. Make a isDescendentFrom check instead
 	of simple equals to also catch sub components.
 
-2006-03-18  Roman Kennke  <kennke@aicas.com>
+2006-03-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JComboBox.java
 	(actionPerformed): Fetch selected item directly from the editor
 	instead of trying to get it from the event.
 
-2006-03-18  Roman Kennke  <kennke@aicas.com>
+2006-03-19  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxEditor.java
 	(listener): Removed field.
