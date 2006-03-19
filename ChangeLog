@@ -1,5 +1,13 @@
 2006-03-19  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicFileChooserUI.java
+	(ApproveSelectionAction.actionPerformed): Added case for when
+	nothing has been selected but the user has typed a filename
+	into the textfield.
+	(getFileName): Return the value of the text field.
+
+2006-03-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JColorChooser.java
 	(createDialog): Create JDialog instead of ModalDialog. Make this
 	dialog modal by calling setModal(true).
