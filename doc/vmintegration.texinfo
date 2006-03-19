@@ -200,6 +200,7 @@ implementation.
 * java.nio::
 * java.nio.channels::
 * gnu.java.nio::
+* java.lang.reflect::
 * Classpath Callbacks::
 @end menu
 
@@ -1111,7 +1112,7 @@ in a @code{FileInputStream}.
 in a @code{FileOutputStream}.
 @end itemize
 
-@node gnu.java.nio, Classpath Callbacks, java.nio.channels, Classpath Hooks
+@node gnu.java.nio, java.lang.reflect, java.nio.channels, Classpath Hooks
 @section gnu.java.nio
 
 The @code{gnu.java.nio} class provides Classpath implementations of the
@@ -1142,7 +1143,25 @@ operation to be performed.  This is represented by the @code{static}
 @code{native} method, @code{select(int[],int[],int[],long)}, and a default
 implementation of this is provided.
 
-@node Classpath Callbacks, , gnu.java.nio, Classpath Hooks
+@node java.lang.reflect, Classpath Callbacks, gnu.java.nio, Classpath Hooks
+@section @code{java.lang.reflect}
+@code{java.lang.reflect} provides the interface to Java's reflection
+facilities.  Via reflection, programmers can obtain type information about
+a particular instance at runtime or dynamically create new instances.
+
+@menu
+* java.lang.reflect.VMArray::
+@end menu
+
+@node java.lang.reflect.VMArray,,,java.lang.reflect
+@subsection @code{java.lang.reflect.VMArray}
+
+The @code{VMArray} class provides a hook, @code{createObjectArray},
+which the VM uses to generate a new non-primitive array of a
+particular class and size.  The default implementation simply passes
+the job down to the standard JNI function, @code{NewObjectArray}.
+
+@node Classpath Callbacks, , java.lang.reflect, Classpath Hooks
 Some of the classes you implement for the VM will need to call back to
 package-private methods in Classpath:
 

@@ -132,7 +132,7 @@ $(top_srcdir)/include/java_lang_VMFloat.h \
 $(top_srcdir)/include/java_lang_VMMath.h \
 $(top_srcdir)/include/java_lang_VMProcess.h \
 $(top_srcdir)/include/java_lang_VMSystem.h \
-$(top_srcdir)/include/java_lang_reflect_Array.h \
+$(top_srcdir)/include/java_lang_reflect_VMArray.h \
 $(top_srcdir)/include/java_net_VMInetAddress.h \
 $(top_srcdir)/include/java_net_VMNetworkInterface.h \
 $(top_srcdir)/include/java_nio_VMDirectByteBuffer.h \
@@ -188,8 +188,8 @@ $(top_srcdir)/include/java_lang_VMProcess.h: $(top_srcdir)/vm/reference/java/lan
 	$(JAVAH) -o $@ java.lang.VMProcess
 $(top_srcdir)/include/java_lang_VMSystem.h: $(top_srcdir)/vm/reference/java/lang/VMSystem.java
 	$(JAVAH) -o $@ java.lang.VMSystem
-$(top_srcdir)/include/java_lang_reflect_Array.h: $(top_srcdir)/java/lang/reflect/Array.java
-	$(JAVAH) -o $@ java.lang.reflect.Array
+$(top_srcdir)/include/java_lang_reflect_VMArray.h: $(top_srcdir)/vm/reference/java/lang/reflect/VMArray.java
+	$(JAVAH) -o $@ java.lang.reflect.VMArray
 $(top_srcdir)/include/java_net_VMInetAddress.h: $(top_srcdir)/vm/reference/java/net/VMInetAddress.java
 	$(JAVAH) -o $@ java.net.VMInetAddress
 $(top_srcdir)/include/java_net_VMNetworkInterface.h: $(top_srcdir)/vm/reference/java/net/VMNetworkInterface.java

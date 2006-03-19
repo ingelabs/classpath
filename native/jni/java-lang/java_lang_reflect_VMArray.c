@@ -45,7 +45,7 @@ exception statement from your version. */
 #include <config.h>
 #include <stddef.h>
 
-#include "java_lang_reflect_Array.h"
+#include "java_lang_reflect_VMArray.h"
 
 /*
  * Class:     java_lang_reflect_Array
@@ -53,7 +53,7 @@ exception statement from your version. */
  * Signature: (Ljava/lang/Class;I)Ljava/lang/Object;
  */
 JNIEXPORT jobject JNICALL
-Java_java_lang_reflect_Array_createObjectArray
+Java_java_lang_reflect_VMArray_createObjectArray
   (JNIEnv * env,
    jclass thisClass __attribute__ ((__unused__)),
    jclass arrayType, jint arrayLength)
