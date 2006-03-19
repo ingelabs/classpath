@@ -1,5 +1,14 @@
 2006-03-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	Implement MouseWheelListener. (ROWS_PER_WHEEL_CLICK):
+	New field. MouseInputHandler.mouseWheelMoved): New method.
+	(installListeners): Register MouseInputHandler as
+	wheel listener also.
+	
+2006-03-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 26746
 	* javax/swing/ViewportLayout.java (layoutContainer):
 	If Scrollable tracks dimension, set view size to the port size. 
 	If port is larger than the view, move the view to the top/left.
