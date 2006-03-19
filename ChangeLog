@@ -1,3 +1,7 @@
+2006-03-19  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/font/NumericShaper.java: Rewrote.
+
 2006-03-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTableUI.java:
