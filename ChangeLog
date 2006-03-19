@@ -1,5 +1,12 @@
 2006-03-18  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/MenuSelectionManager.java
+	(isComponentPartOfCurrentMenu): Also consider the first element
+	in a menu selection list. Make a isDescendentFrom check instead
+	of simple equals to also catch sub components.
+
+2006-03-18  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComboBox.java
 	(actionPerformed): Fetch selected item directly from the editor
 	instead of trying to get it from the event.
