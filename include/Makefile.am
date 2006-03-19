@@ -117,8 +117,8 @@ $(SOUND_H_FILES) \
 $(XMLJ_H_FILES) \
 $(GTKPEER_H_FILES) \
 $(QTPEER_H_FILES) \
-$(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h \
-$(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h \
+$(top_srcdir)/include/gnu_java_net_VMPlainDatagramSocketImpl.h \
+$(top_srcdir)/include/gnu_java_net_VMPlainSocketImpl.h \
 $(top_srcdir)/include/gnu_java_nio_VMPipe.h \
 $(top_srcdir)/include/gnu_java_nio_VMSelector.h \
 $(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h \
@@ -164,10 +164,10 @@ $(top_srcdir)/include/gnu_javax_sound_midi_alsa_%.h: $(top_builddir)/$(CLASSDIR)
 $(top_srcdir)/include/gnu_javax_sound_midi_dssi_%.h: $(top_builddir)/$(CLASSDIR)/gnu/javax/sound/midi/dssi/%.class
 	$(JAVAH) -o $@ gnu.javax.sound.midi.dssi.$*
 
-$(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h: $(top_srcdir)/gnu/java/net/PlainDatagramSocketImpl.java
-	$(JAVAH) -o $@ gnu.java.net.PlainDatagramSocketImpl
-$(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h: $(top_srcdir)/gnu/java/net/PlainSocketImpl.java
-	$(JAVAH) -o $@ gnu.java.net.PlainSocketImpl
+$(top_srcdir)/include/gnu_java_net_VMPlainDatagramSocketImpl.h: $(top_srcdir)/vm/reference/gnu/java/net/VMPlainDatagramSocketImpl.java
+	$(JAVAH) -o $@ gnu.java.net.VMPlainDatagramSocketImpl
+$(top_srcdir)/include/gnu_java_net_VMPlainSocketImpl.h: $(top_srcdir)/vm/reference/gnu/java/net/VMPlainSocketImpl.java
+	$(JAVAH) -o $@ gnu.java.net.VMPlainSocketImpl
 $(top_srcdir)/include/gnu_java_nio_VMPipe.h: $(top_srcdir)/vm/reference/gnu/java/nio/VMPipe.java
 	$(JAVAH) -o $@ gnu.java.nio.VMPipe
 $(top_srcdir)/include/gnu_java_nio_VMSelector.h: $(top_srcdir)/vm/reference/gnu/java/nio/VMSelector.java

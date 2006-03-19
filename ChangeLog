@@ -1,5 +1,12 @@
 2006-03-19  Mark Wielaard  <mark@klomp.org>
 
+	* include/Makefile.am: Rename PlainDatagramSocketImpl to
+	VMPlainDatagramSocketImpl and PlainSocketImpl to VMPlainSocketImpl.
+	* include/gnu_java_net_VMPlainDatagramSocketImpl.h: Regenerated.
+	* include/gnu_java_net_VMPlainSocketImpl.h: Likewise.
+
+2006-03-19  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/awt/peer/gtk/GdkFontPeer.java (getPostScriptName): Return
 	familyName.
 	* gnu/java/awt/peer/gtk/GtkFontPeer.java: Removed unused file.
