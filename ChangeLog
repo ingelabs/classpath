@@ -1,3 +1,9 @@
+2006-03-19  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java (getPostScriptName): Return
+	familyName.
+	* gnu/java/awt/peer/gtk/GtkFontPeer.java: Removed unused file.
+
 2006-03-19  Michael Koch  <konqueror@gmx.de>
 
 	* resource/gnu/java/locale/LocaleInformation_aa_ET.properties,

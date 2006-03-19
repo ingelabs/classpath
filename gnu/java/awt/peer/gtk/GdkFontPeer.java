@@ -1,5 +1,5 @@
 /* GdkFontPeer.java -- Implements FontPeer with GTK+
-   Copyright (C) 1999, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1999, 2004, 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -158,7 +158,7 @@ public class GdkFontPeer extends ClasspathFontPeer
 
   public String getPostScriptName(Font font)
   {
-    return null;
+    return this.familyName;
   }
 
   public boolean canDisplay (Font font, char c)
