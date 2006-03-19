@@ -1,3 +1,9 @@
+2006-03-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/ViewportLayout.java (layoutContainer):
+	If Scrollable tracks dimension, set view size to the port size. 
+	If port is larger than the view, move the view to the top/left.
+
 2006-03-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/MenuSelectionManager.java
