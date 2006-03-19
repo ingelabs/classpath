@@ -112,6 +112,7 @@ public class MetalComboBoxButton
     iconOnly = onlyIcon;
     listBox = list;
     rendererPane = pane;
+    setRolloverEnabled(false);
     setEnabled(comboBox.isEnabled());
     setFocusable(comboBox.isEnabled());
   }
@@ -187,7 +188,7 @@ public class MetalComboBoxButton
    */
   public boolean isFocusTraversable()
   {
-    return !comboBox.isEditable() && comboBox.isEnabled();
+    return false;
   }
   
   /**

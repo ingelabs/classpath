@@ -1,10 +1,38 @@
+2006-03-18  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxEditor.java
+	(listener): Removed field.
+	(BasicComboBoxEditor): Removed initialization of listener field.
+	(addActionListener): Add listener directly to editor.
+	(removeActionListener): Remove listener directly from editor.
+	(ComboBoxEditorListener): Removed class.
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(getPreferredSize): Fixed to return the minimumSize.
+	(getMinimumSize): Improved code for more clearness.
+	(getMaximumSize): Return (32767,32767) as requested by the mauve test.
+	(rectangleForCurrentValue): Correctly respect insets.
+	(getDefaultSize): Return preferredSize here. Dont override height
+	with 100.
+	(getDisplaySize): Moved around code for more clearness. Added
+	handling of prototype renderer.
+	(ComboBoxLayoutManager.layoutContainer): Set editor bounds after
+	arrowButton bounds since the former depends on the latter.
+	* javax/swing/plaf/metal/MetalComboBoxButton.java:
+	(MetalComboBoxButton): Make button rollover disabled.
+	(isFocusTraversable): Return false unconditionally.
+	* javax/swing/plaf/metal/MetalComboBoxEditor.java:
+	(EditorTextField): New class. Fixes the size properties.
+	(MetalComboBoxEditor): Create instance of EditorTextField.
+	* javax/swing/plaf/metal/MetalComboBoxUI.java:
+	(getMinimumSize): Fixed editable size.
+
 2006-03-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (BooleanCellRenderer): Rewritten.
 
 2006-03-18  Roman Kennke  <kennke@aicas.com>
 
-	* javax/swing/plaf/basic/MetalToolBarUI.java
+	* javax/swing/plaf/metal/MetalToolBarUI.java
 	(update): Added overridden method to support OceanTheme.
 
 2006-03-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>

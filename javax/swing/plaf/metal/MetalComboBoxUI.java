@@ -306,14 +306,8 @@ public class MetalComboBoxUI extends BasicComboBoxUI
       {
         d = super.getMinimumSize(c);
         Insets arrowMargin = arrowButton.getMargin();
-        Insets comboInsets = comboBox.getInsets();
-        if (editor instanceof JComponent)
-          {
-            Insets editorInsets = ((JComponent) editor).getInsets();
-            d.height += editorInsets.top + editorInsets.bottom;
-          }
         d.height += arrowMargin.top + arrowMargin.bottom;
-        d.height += comboInsets.top + comboInsets.bottom;
+        d.width += arrowMargin.left + arrowMargin.right;
       }
     else
       {
