@@ -1,5 +1,14 @@
 2006-03-19  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/javax/swing/plaf/metal/CustomizableTheme.java: New class.
+	* examples/gnu/classpath/examples/swing/MetalThemeEditor.java:
+	New class.
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkButtonBar): Hook up theme editor.
+	(mkMenuBar): Hook up theme editor.
+
+2006-03-19  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicFileChooserUI.java
 	(ApproveSelectionAction.actionPerformed): Added case for when
 	nothing has been selected but the user has typed a filename

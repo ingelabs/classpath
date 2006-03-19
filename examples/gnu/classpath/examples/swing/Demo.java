@@ -147,6 +147,8 @@ public class Demo
                                          TabbedPaneDemo.createDemoFactory())));
     examples.add(new JMenuItem(new PopupAction("Tree",
                                                TreeDemo.createDemoFactory())));
+    examples.add(new JMenuItem(new PopupAction("Theme Editor",
+                                       MetalThemeEditor.createDemoFactory())));
 
     final JMenuItem vmMenu;
     
@@ -507,6 +509,8 @@ public class Demo
                                          TabbedPaneDemo.createDemoFactory())));
     panel.add(new JButton(new PopupAction("Tree",
                                           TreeDemo.createDemoFactory())));
+    panel.add(new JButton(new PopupAction("Theme Editor",
+                                       MetalThemeEditor.createDemoFactory())));
     JButton exitDisposer = mkDisposerButton(frame);
     panel.add(exitDisposer);
     
