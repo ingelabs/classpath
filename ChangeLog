@@ -1,3 +1,14 @@
+2006-03-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* vm/reference/gnu/classpath/Unsafe.java:
+	Documented.
+	(getUnsafe()): Updated to handle security.
+
+2006-03-19  Tom Tromey  <tromey@redhat.com>
+
+	* vm/reference/gnu/classpath/Unsafe.java:
+	New class to handle low-level facilities for concurrency.
+
 2006-03-19  Mark Wielaard  <mark@klomp.org>
 
 	* include/Makefile.am: Rename PlainDatagramSocketImpl to
@@ -118,7 +129,7 @@
 	resource/gnu/java/locale/LocaleInformation_zh.properties,
 	resource/gnu/java/locale/LocaleInformation_zh_Hant.properties:
 	More updates for CLDR 1.3.
-
+	
 2006-03-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* doc/vmintegration.texinfo:
