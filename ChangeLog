@@ -1,5 +1,30 @@
 2006-03-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	(TabbedPaneLayout.normalizeTabRuns): New method.
+	(createLayoutManager): Return the Metal TabbedPaneLayout, not super.
+	(paintTabBorder): Replaced if-else chain with switch.
+	(paintTopTabBorder): Rewritten to correctly paint tab. Also support
+	Ocean theme.
+	(paintBottomTabBorder): Rewritten to correctly paint tab. Also support
+	Ocean theme.
+	(paintLeftTabBorder): Rewritten to correctly paint tab. Also support
+	Ocean theme.
+	(paintRightTabBorder): Rewritten to correctly paint tab. Also support
+	Ocean theme.
+	(paintTabBackground): Fetch background color from the TabbedPane.
+	Fixed painting and improved by not using fillPolygon, and instead
+	using fillRectangle. Replaced if-else chain with switch.
+	(calculateMaxTabHeight): Added overridden method with FIXME.
+	(getTabRunOverlay): Overridden to provide overlay for LEFT or RIGHT
+	placement.
+	(paintContentBorderTopEdge): Added stub with FIXME.
+	(paintContentBorderBottomEdge): Added stub with FIXME.
+	(paintContentBorderLeftEdge): Added stub with FIXME.
+	(paintContentBorderRightEdge): Added stub with FIXME.
+
+2006-03-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(tabsOpaque): New field.
 	(installDefaults): Fetch tabsOpaque property from UIManager.
