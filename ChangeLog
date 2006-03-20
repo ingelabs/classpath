@@ -1,6 +1,12 @@
 2006-03-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(calculateTabHeight): Not need to use SwingUtilities here.
+	(getTabInsets): Do not rotate insets.
+
+2006-03-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(paint): Make sure the layout is valid before painting.
 	(paintTabArea): Made tab painting more straightforward and efficient.
 

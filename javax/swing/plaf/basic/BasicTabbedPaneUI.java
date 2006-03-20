@@ -2601,24 +2601,14 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   protected int calculateTabHeight(int tabPlacement, int tabIndex,
                                    int fontHeight)
   {
+    // FIXME: Handle HTML somehow.
+
+    int height = fontHeight;
     Icon icon = getIconForTab(tabIndex);
-    Insets insets = getTabInsets(tabPlacement, tabIndex);
-
-    int height = 0;
+    Insets tabInsets = getTabInsets(tabPlacement, tabIndex);
     if (icon != null)
-      {
-        Rectangle vr = new Rectangle();
-        Rectangle ir = new Rectangle();
-        Rectangle tr = new Rectangle();
-        layoutLabel(tabPlacement, getFontMetrics(), tabIndex,
-                    tabPane.getTitleAt(tabIndex), icon, vr, ir, tr,
-                    tabIndex == tabPane.getSelectedIndex());
-        height = tr.union(ir).height;
-      }
-    else
-      height = fontHeight;
-
-    height += insets.top + insets.bottom;
+      height = Math.max(height, icon.getIconHeight());
+    height += tabInsets.top + tabInsets.bottom + 2;
     return height;
   }
 
@@ -2751,9 +2741,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
    */
   protected Insets getTabInsets(int tabPlacement, int tabIndex)
   {
-    Insets target = new Insets(0, 0, 0, 0);
-    rotateInsets(tabInsets, target, tabPlacement);
-    return target;
+    return tabInsets;
   }
 
   /**
