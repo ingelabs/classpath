@@ -1,3 +1,13 @@
+2006-03-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java (ROWS_PER_WHEEL_CLICK): Removed.
+	(getScrollableUnitIncrement): Rewritten.
+	* javax/swing/JTree.java (ROWS_PER_WHEEL_CLICK): Removed.
+	(getScrollableUnitIncrement): Rewritten.
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java
+	(ROWS_PER_WHEEL_CLICK): New field. 
+	(MouseWheelHandler.mouseWheelMoved): Rewritten.
+
 2006-03-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java

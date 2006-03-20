@@ -1325,12 +1325,6 @@ public class JTable
    * in the table) to provide or absorb excess space requirements.
    */
   public static final int AUTO_RESIZE_LAST_COLUMN = 3;
-  
-  /**
-   * The number of rows to scroll per mouse wheel click. From impression,
-   * Sun seems using the value 3.
-   */
-  static int ROWS_PER_WHEEL_CLICK = 3;  
 
   /**
    * A table mapping {@link java.lang.Class} objects to 
@@ -2105,7 +2099,9 @@ public class JTable
   
   /**
    * Return the preferred scrolling amount (in pixels) for the given scrolling
-   * direction and orientation.
+   * direction and orientation. This method handles a partially exposed row by
+   * returning the distance required to completely expose the item. When
+   * scrolling the top item is completely exposed.
    * 
    * @param visibleRect the currently visible part of the component.
    * @param orientation the scrolling orientation
@@ -2113,22 +2109,24 @@ public class JTable
    *          The values greater than one means that more mouse wheel or similar
    *          events were generated, and hence it is better to scroll the longer
    *          distance.
+   * @author Audrius Meskauskas (audriusa@bioinformatics.org)
    */
   public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation,
                                         int direction)
   {
     int h = (rowHeight + rowMargin);
-    int delta = h * ROWS_PER_WHEEL_CLICK * direction;
-    
-    // Round so that the top would start from the row boundary 
+    int delta = h * direction;
+
+    // Round so that the top would start from the row boundary
     if (orientation == SwingConstants.VERTICAL)
       {
-        int near = ((visibleRect.y + delta +h/2) / h) * h;
+        // Completely expose the top row
+        int near = ((visibleRect.y + delta + h / 2) / h) * h;
         int diff = visibleRect.y + delta - near;
         delta -= diff;
       }
     return delta;
-    // TODO when scrollng horizontally, scroll into the column boundary.    
+    // TODO when scrollng horizontally, scroll into the column boundary.
   }
 
   /**

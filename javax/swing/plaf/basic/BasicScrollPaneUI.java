@@ -43,7 +43,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.MouseWheelEvent;
@@ -251,7 +250,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
 
       boolean tracksHeight = scrollable != null
                              && scrollable.getScrollableTracksViewportHeight();
-      int wheel = e.getWheelRotation();
+      int wheel = e.getWheelRotation() * ROWS_PER_WHEEL_CLICK;
       int delta;
 
       // If possible, scroll vertically.
@@ -366,6 +365,12 @@ public class BasicScrollPaneUI extends ScrollPaneUI
    * not implement Scrollable.
    */
   static int SCROLL_NON_SCROLLABLES = 10;
+  
+  /**
+   * The number of rows to scroll per mouse wheel click. From impression,
+   * Sun seems using the value 3.
+   */
+  static int ROWS_PER_WHEEL_CLICK = 3;     
 
   /** The Scrollpane for which the UI is provided by this class. */
   protected JScrollPane scrollpane;

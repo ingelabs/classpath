@@ -1347,12 +1347,6 @@ public class JTree extends JComponent implements Scrollable, Accessible
   }
 
   private static final long serialVersionUID = 7559816092864483649L;
-  
-  /**
-   * The number of rows to scroll per mouse wheel click. From impression,
-   * Sun seems using the value 3.
-   */
-  static int ROWS_PER_WHEEL_CLICK = 3;    
 
   public static final String CELL_EDITOR_PROPERTY = "cellEditor";
 
@@ -1630,7 +1624,8 @@ public class JTree extends JComponent implements Scrollable, Accessible
   
   /**
    * Return the preferred scrolling amount (in pixels) for the given scrolling
-   * direction and orientation.
+   * direction and orientation. This method handles a partially exposed row by
+   * returning the distance required to completely expose the item.
    * 
    * @param visibleRect the currently visible part of the component.
    * @param orientation the scrolling orientation
@@ -1638,8 +1633,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
    *          The values greater than one means that more mouse wheel or similar
    *          events were generated, and hence it is better to scroll the longer
    *          distance.
-   *          
-   * @author Audrius Meskauskas (audriusa@bioinformatics.org)          
+   * @author Audrius Meskauskas (audriusa@bioinformatics.org)
    */
   public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation,
                                         int direction)
@@ -1649,19 +1643,17 @@ public class JTree extends JComponent implements Scrollable, Accessible
     // Round so that the top would start from the row boundary
     if (orientation == SwingConstants.VERTICAL)
       {
-        int row = getClosestRowForLocation(visibleRect.x, visibleRect.y);
+        // One pixel down, otherwise picks another row too high.
+        int row = getClosestRowForLocation(visibleRect.x, visibleRect.y + 1);
         row = row + direction;
         if (row < 0)
           row = 0;
-        if (row > getRowCount())
-          row = getRowCount();
-        
+
         Rectangle newTop = getRowBounds(row);
         delta = newTop.y - visibleRect.y;
       }
     else
-      delta = direction * ROWS_PER_WHEEL_CLICK * rowHeight == 0 ? 20
-                                                               : rowHeight;
+      delta = direction * rowHeight == 0 ? 20 : rowHeight;
     return delta;
   }
 
