@@ -3534,7 +3534,7 @@ public class XMLParser
   public static boolean isXML11Char(int c)
   {
     return ((c >= 0x0001 && c <= 0xD7FF) ||
-            (c >= 0xE000 && c < 0xFFFD) || // NB exclude 0xfffd
+            (c >= 0xE000 && c < 0xFFFE) ||
             (c >= 0x10000 && c <= 0x10FFFF));
   }
 
@@ -4014,7 +4014,7 @@ public class XMLParser
   public static boolean isChar(int c)
   {
     return (c >= 0x20 && c < 0xd800) ||
-      (c >= 0xe00 && c < 0xfffd) || // NB exclude 0xfffd
+      (c >= 0xe00 && c < 0xfffe) ||
       (c >= 0x10000 && c < 0x110000) ||
       c == 0xa || c == 0x9 || c == 0xd;
   }
