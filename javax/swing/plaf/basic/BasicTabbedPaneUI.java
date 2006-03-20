@@ -1803,9 +1803,9 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         int start = tabRuns[i];
         int next;
         if (i == runCount - 1)
-          next = 0;
+          next = tabRuns[0];
         else
-          next = i + 1;
+          next = tabRuns[i + 1];
         int end = (next != 0 ? next - 1 : tabCount - 1);
         for (int j = start; j <= end; ++j)
           {

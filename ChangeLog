@@ -1,6 +1,12 @@
 2006-03-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(paintTabArea): Look up tab run indices in tabRuns array instead
+	of using the index directly.
+
+2006-03-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
 	(paintTab): Fixed painting.
 	(paintText): Fixed text painting.
 	(paintFocusIndicator): Fixed painting of the focus rectangle.
