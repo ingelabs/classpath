@@ -1,3 +1,9 @@
+2006-03-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTabbedPane.java
+	(Pane.getBackground): When no background was explicitly set, return
+	the JTabbedPane's background.
+
 2006-03-20  Wolfgang Baer  <WBaer@gmx.de>
 
 	* org/omg/CORBA/ACTIVITY_COMPLETED.java,

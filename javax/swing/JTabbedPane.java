@@ -379,7 +379,12 @@ public class JTabbedPane extends JComponent implements Serializable,
      */
     public Color getBackground()
     {
-      return bg;
+      Color background;
+      if (bg == null)
+        background = component.getBackground();
+      else
+        background = bg;
+      return background;
     }
 
     /**
