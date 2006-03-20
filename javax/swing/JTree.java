@@ -1627,11 +1627,42 @@ public class JTree extends JComponent implements Scrollable, Accessible
   {
     return new Dimension (getPreferredSize().width, getVisibleRowCount()*getRowHeight());
   }
-
-  public int getScrollableUnitIncrement(Rectangle visibleRect,
-                                        int orientation, int direction)
+  
+  /**
+   * Return the preferred scrolling amount (in pixels) for the given scrolling
+   * direction and orientation.
+   * 
+   * @param visibleRect the currently visible part of the component.
+   * @param orientation the scrolling orientation
+   * @param direction the scrolling direction (negative - up, positive -down).
+   *          The values greater than one means that more mouse wheel or similar
+   *          events were generated, and hence it is better to scroll the longer
+   *          distance.
+   *          
+   * @author Audrius Meskauskas (audriusa@bioinformatics.org)          
+   */
+  public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation,
+                                        int direction)
   {
-    return rowHeight*ROWS_PER_WHEEL_CLICK;
+    int delta;
+
+    // Round so that the top would start from the row boundary
+    if (orientation == SwingConstants.VERTICAL)
+      {
+        int row = getClosestRowForLocation(visibleRect.x, visibleRect.y);
+        row = row + direction;
+        if (row < 0)
+          row = 0;
+        if (row > getRowCount())
+          row = getRowCount();
+        
+        Rectangle newTop = getRowBounds(row);
+        delta = newTop.y - visibleRect.y;
+      }
+    else
+      delta = direction * ROWS_PER_WHEEL_CLICK * rowHeight == 0 ? 20
+                                                               : rowHeight;
+    return delta;
   }
 
   public int getScrollableBlockIncrement(Rectangle visibleRect,

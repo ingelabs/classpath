@@ -2104,23 +2104,31 @@ public class JTable
   }
   
   /**
-   * Get the amount to scroll per one mouse wheel click.
+   * Return the preferred scrolling amount (in pixels) for the given scrolling
+   * direction and orientation.
+   * 
+   * @param visibleRect the currently visible part of the component.
+   * @param orientation the scrolling orientation
+   * @param direction the scrolling direction (negative - up, positive -down).
+   *          The values greater than one means that more mouse wheel or similar
+   *          events were generated, and hence it is better to scroll the longer
+   *          distance.
    */
-  public int getScrollableUnitIncrement(Rectangle visibleRect, 
-                                        int orientation, int direction)
+  public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation,
+                                        int direction)
   {
+    int h = (rowHeight + rowMargin);
+    int delta = h * ROWS_PER_WHEEL_CLICK * direction;
+    
+    // Round so that the top would start from the row boundary 
     if (orientation == SwingConstants.VERTICAL)
       {
-        return (rowHeight + rowMargin) * ROWS_PER_WHEEL_CLICK;
+        int near = ((visibleRect.y + delta +h/2) / h) * h;
+        int diff = visibleRect.y + delta - near;
+        delta -= diff;
       }
-    else
-      {
-        int sum = 0;
-        for (int i = 0; i < getColumnCount(); ++i)
-          sum += columnModel.getColumn(0).getWidth();
-        int inc = getColumnCount() == 0 ? 10 : sum / getColumnCount();
-        return inc;
-      }
+    return delta;
+    // TODO when scrollng horizontally, scroll into the column boundary.    
   }
 
   /**

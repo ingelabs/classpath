@@ -232,7 +232,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
     /**
      * Use to compute the visible rectangle.
      */
-    Rectangle rect = new Rectangle();
+    final Rectangle rect = new Rectangle();
 
     /**
      * Scroll with the mouse whell.
@@ -252,15 +252,15 @@ public class BasicScrollPaneUI extends ScrollPaneUI
       boolean tracksHeight = scrollable != null
                              && scrollable.getScrollableTracksViewportHeight();
       int wheel = e.getWheelRotation();
+      int delta;
 
       // If possible, scroll vertically.
       if (bar != null && ! tracksHeight)
         {
-          int y, delta;
           if (scrollable != null)
             {
-              scrollpane.getViewport().computeVisibleRect(rect);
-              delta = wheel * scrollable.getScrollableUnitIncrement(
+              bounds(target);
+              delta = scrollable.getScrollableUnitIncrement(
                 rect, SwingConstants.VERTICAL, wheel);
             }
           else
@@ -268,14 +268,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
               // Scroll non scrollables.
               delta = wheel * SCROLL_NON_SCROLLABLES;
             }
-          y = bar.getValue() + delta;
-
-          if (y < bar.getMinimum())
-            y = bar.getMinimum();
-          if (y > bar.getMaximum())
-            y = bar.getMaximum();
-
-          bar.setValue(y);
+          scroll(bar, delta);
         }
       // If not, try to scroll horizontally
       else
@@ -286,11 +279,10 @@ public class BasicScrollPaneUI extends ScrollPaneUI
 
           if (bar != null && ! tracksWidth)
             {
-              int x, delta;
               if (scrollable != null)
                 {
-                  scrollpane.getViewport().computeVisibleRect(rect);
-                  delta = wheel * scrollable.getScrollableUnitIncrement(
+                  bounds(target);
+                  delta = scrollable.getScrollableUnitIncrement(
                      rect, SwingConstants.HORIZONTAL, wheel);
                 }
               else
@@ -298,16 +290,49 @@ public class BasicScrollPaneUI extends ScrollPaneUI
                   // Scroll non scrollables.
                   delta = wheel * SCROLL_NON_SCROLLABLES;
                 }
-              x = bar.getValue() + delta;
-
-              if (x < bar.getMinimum())
-                x = bar.getMinimum();
-              if (x > bar.getMaximum())
-                x = bar.getMaximum();
-
-              bar.setValue(x);
+              scroll(bar, delta);
             }
         }
+    }
+    
+    /**
+     * Place the component bounds into rect. The x and y values 
+     * need to be reversed.
+     * 
+     * @param target the target being scrolled
+     */
+    final void bounds(Component target)
+    {
+      // Viewport bounds, translated by the scroll bar positions.
+      target.getParent().getBounds(rect);
+      rect.x = getValue(scrollpane.getHorizontalScrollBar());
+      rect.y = getValue(scrollpane.getVerticalScrollBar());
+    }
+    
+    /**
+     * Get the scroll bar value or null if there is no such scroll bar.
+     */
+    final int getValue(JScrollBar bar)
+    {
+      return bar != null ? bar.getValue() : 0;
+    }
+    
+    /**
+     * Scroll the given distance.
+     * 
+     * @param bar the scrollbar to scroll
+     * @param delta the distance
+     */
+    final void scroll(JScrollBar bar, int delta)
+    {
+      int y = bar.getValue() + delta;
+
+      if (y < bar.getMinimum())
+        y = bar.getMinimum();
+      if (y > bar.getMaximum())
+        y = bar.getMaximum();
+
+      bar.setValue(y);
     }
   }
   
