@@ -1,3 +1,11 @@
+2006-03-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(paintTab): Fixed painting.
+	(paintText): Fixed text painting.
+	(paintFocusIndicator): Fixed painting of the focus rectangle.
+	(paintContentBorder): Fixed painting of the content area.
+
 2006-03-20  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java (pixbufLock): New

@@ -1835,49 +1835,34 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   protected void paintTab(Graphics g, int tabPlacement, Rectangle[] rects,
                           int tabIndex, Rectangle iconRect, Rectangle textRect)
   {
+    Rectangle rect = rects[tabIndex];
+    boolean isSelected = tabIndex == tabPane.getSelectedIndex();
+    // Paint background if necessary.
+    if (tabPane.isOpaque())
+      {
+        paintTabBackground(g, tabPlacement, tabIndex, rect.x, rect.y,
+                           rect.width, rect.height, isSelected);
+      }
+
+    // Paint border.
+    paintTabBorder(g, tabPlacement, tabIndex, rect.x, rect.y, rect.width,
+                   rect.height, isSelected);
+
+
+    // Layout label.
     FontMetrics fm = getFontMetrics();
     Icon icon = getIconForTab(tabIndex);
     String title = tabPane.getTitleAt(tabIndex);
-    boolean isSelected = tabIndex == tabPane.getSelectedIndex();
-    calcRect = getTabBounds(tabPane, tabIndex);
-
-    int x = calcRect.x;
-    int y = calcRect.y;
-    int w = calcRect.width;
-    int h = calcRect.height;
-    if (getRunForTab(tabPane.getTabCount(), tabIndex) == 1)
-      {
-        Insets insets = getTabAreaInsets(tabPlacement);
-        switch (tabPlacement)
-        {
-        case TOP:
-          h += insets.bottom;
-          break;
-        case LEFT:
-          w += insets.right;
-          break;
-        case BOTTOM:
-          y -= insets.top;
-          h += insets.top;
-          break;
-        case RIGHT:
-          x -= insets.left;
-          w += insets.left;
-          break;
-        }
-      }
-
-    layoutLabel(tabPlacement, fm, tabIndex, title, icon, calcRect, iconRect,
+    layoutLabel(tabPlacement, fm, tabIndex, title, icon, rect, iconRect,
                 textRect, isSelected);
-    paintTabBackground(g, tabPlacement, tabIndex, x, y, w, h, isSelected);
-    paintTabBorder(g, tabPlacement, tabIndex, x, y, w, h, isSelected);
-
-    // FIXME: Paint little folding corner and jagged edge clipped tab.
-    if (icon != null)
-      paintIcon(g, tabPlacement, tabIndex, icon, iconRect, isSelected);
-    if (title != null && ! title.equals(""))
-      paintText(g, tabPlacement, tabPane.getFont(), fm, tabIndex, title,
-                textRect, isSelected);
+    // Paint the text.
+    paintText(g, tabPlacement, tabPane.getFont(), fm, tabIndex, title,
+              textRect, isSelected);
+    // Paint icon if necessary.
+    paintIcon(g, tabPlacement, tabIndex, icon, iconRect, isSelected);
+    // Paint focus indicator.
+    paintFocusIndicator(g, tabPlacement, rects, tabIndex, iconRect, textRect,
+                        isSelected);
   }
 
   /**
@@ -1949,6 +1934,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
                            FontMetrics metrics, int tabIndex, String title,
                            Rectangle textRect, boolean isSelected)
   {
+    g.setFont(font);
     View textView = getTextViewForTab(tabIndex);
     if (textView != null)
       {
@@ -1956,22 +1942,18 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         return;
       }
 
-    Color fg = tabPane.getForegroundAt(tabIndex);
-    if (fg == null)
-      fg = tabPane.getForeground();
-    Color bg = tabPane.getBackgroundAt(tabIndex);
-    if (bg == null)
-      bg = tabPane.getBackground();
-
-    Color saved_color = g.getColor();
-    Font f = g.getFont();
-    g.setFont(font);
-
-    if (tabPane.isEnabledAt(tabIndex))
+    int mnemIndex = tabPane.getDisplayedMnemonicIndexAt(tabIndex);
+    if (tabPane.isEnabled() && tabPane.isEnabledAt(tabIndex))
       {
+        Color fg = tabPane.getForegroundAt(tabIndex);
+        if (isSelected && (fg instanceof UIResource))
+          {
+            Color selectionForeground =
+              UIManager.getColor("TabbedPane.selectionForeground");
+            if (selectionForeground != null)
+              fg = selectionForeground;
+          }
         g.setColor(fg);
-
-        int mnemIndex = tabPane.getDisplayedMnemonicIndexAt(tabIndex);
 
         if (mnemIndex != -1)
           BasicGraphicsUtils.drawStringUnderlineCharAt(g, title, mnemIndex,
@@ -1983,10 +1965,8 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
       }
     else
       {
+        Color bg = tabPane.getBackgroundAt(tabIndex);
         g.setColor(bg.brighter());
-
-        int mnemIndex = tabPane.getDisplayedMnemonicIndexAt(tabIndex);
-
         if (mnemIndex != -1)
           BasicGraphicsUtils.drawStringUnderlineCharAt(g, title, mnemIndex,
                                                        textRect.x, textRect.y);
@@ -2001,9 +1981,6 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         else
           g.drawString(title, textRect.x + 1, textRect.y + 1);
       }
-
-    g.setColor(saved_color);
-    g.setFont(f);
   }
 
   /**
@@ -2056,14 +2033,45 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
                                      Rectangle iconRect, Rectangle textRect,
                                      boolean isSelected)
   {
-    Color saved = g.getColor();
-    calcRect = iconRect.union(textRect);
+    if (tabPane.hasFocus() && isSelected)
+      {
+        Rectangle rect = rects[tabIndex];
+        // The focus rectangle.
+        int x;
+        int y;
+        int w;
+        int h;
 
-    g.setColor(focus);
-
-    g.drawRect(calcRect.x, calcRect.y, calcRect.width, calcRect.height);
-
-    g.setColor(saved);
+        g.setColor(focus);
+        switch (tabPlacement)
+        {
+        case LEFT:
+          x = rect.x + 3;
+          y = rect.y + 3;
+          w = rect.width - 5;
+          h = rect.height - 6;
+          break;
+        case RIGHT:
+          x = rect.x + 2;
+          y = rect.y + 3;
+          w = rect.width - 6;
+          h = rect.height - 5;
+          break;
+        case BOTTOM:
+          x = rect.x + 3;
+          y = rect.y + 2;
+          w = rect.width - 6;
+          h = rect.height - 5;
+          break;
+        case TOP:
+        default:
+          x = rect.x + 3;
+        y = rect.y + 3;
+        w = rect.width - 6;
+        h = rect.height - 5;
+        }
+        BasicGraphicsUtils.drawDashedRect(g, x, y, w, h);
+      }
   }
 
   /**
@@ -2156,10 +2164,44 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   protected void paintContentBorder(Graphics g, int tabPlacement,
                                     int selectedIndex)
   {
-    int x = contentRect.x;
-    int y = contentRect.y;
-    int w = contentRect.width;
-    int h = contentRect.height;
+    int width = tabPane.getWidth();
+    int height = tabPane.getHeight();
+    Insets insets = tabPane.getInsets();
+    Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
+
+    // Calculate coordinates of content area.
+    int x = insets.left;
+    int y = insets.top;
+    int w = width - insets.left - insets.right;
+    int h = height - insets.top - insets.bottom;
+
+    switch (tabPlacement)
+    {
+    case LEFT:
+      x += calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
+      w -= (x - insets.left);
+      break;
+    case RIGHT:
+      w -= calculateTabAreaWidth(tabPlacement, runCount, maxTabWidth);
+      break;
+    case BOTTOM:
+      h -= calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
+      break;
+    case TOP:
+    default:
+      y += calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight);
+      h -= (y - insets.top);
+    }
+
+    // Fill background if necessary.
+    if (tabPane.isOpaque())
+      {
+        Color bg = UIManager.getColor("TabbedPane.contentAreaColor");
+        g.setColor(bg);
+        g.fillRect(x, y, w, h);
+      }
+
+    // Paint border.
     paintContentBorderTopEdge(g, tabPlacement, selectedIndex, x, y, w, h);
     paintContentBorderLeftEdge(g, tabPlacement, selectedIndex, x, y, w, h);
     paintContentBorderBottomEdge(g, tabPlacement, selectedIndex, x, y, w, h);
