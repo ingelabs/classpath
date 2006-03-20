@@ -1347,6 +1347,12 @@ public class JTree extends JComponent implements Scrollable, Accessible
   }
 
   private static final long serialVersionUID = 7559816092864483649L;
+  
+  /**
+   * The number of rows to scroll per mouse wheel click. From impression,
+   * Sun seems using the value 3.
+   */
+  static int ROWS_PER_WHEEL_CLICK = 3;    
 
   public static final String CELL_EDITOR_PROPERTY = "cellEditor";
 
@@ -1625,13 +1631,13 @@ public class JTree extends JComponent implements Scrollable, Accessible
   public int getScrollableUnitIncrement(Rectangle visibleRect,
                                         int orientation, int direction)
   {
-    return 1;
+    return rowHeight*ROWS_PER_WHEEL_CLICK;
   }
 
   public int getScrollableBlockIncrement(Rectangle visibleRect,
                                          int orientation, int direction)
   {
-    return 1;
+    return getScrollableUnitIncrement(visibleRect, orientation, direction);
   }
 
   public boolean getScrollableTracksViewportHeight()

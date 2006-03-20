@@ -1325,7 +1325,12 @@ public class JTable
    * in the table) to provide or absorb excess space requirements.
    */
   public static final int AUTO_RESIZE_LAST_COLUMN = 3;
-
+  
+  /**
+   * The number of rows to scroll per mouse wheel click. From impression,
+   * Sun seems using the value 3.
+   */
+  static int ROWS_PER_WHEEL_CLICK = 3;  
 
   /**
    * A table mapping {@link java.lang.Class} objects to 
@@ -2097,25 +2102,26 @@ public class JTable
     else
       return true;
   }
-
-  public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction)
+  
+  /**
+   * Get the amount to scroll per one mouse wheel click.
+   */
+  public int getScrollableUnitIncrement(Rectangle visibleRect, 
+                                        int orientation, int direction)
   {
-    // FIXME: I don't exactly know what sun does here. in both cases they
-    // pick values which do *not* simply expose the next cell in a given
-    // scroll direction.
-
     if (orientation == SwingConstants.VERTICAL)
-      return direction * rowHeight;
+      {
+        return (rowHeight + rowMargin) * ROWS_PER_WHEEL_CLICK;
+      }
     else
       {
         int sum = 0;
         for (int i = 0; i < getColumnCount(); ++i)
           sum += columnModel.getColumn(0).getWidth();
         int inc = getColumnCount() == 0 ? 10 : sum / getColumnCount();
-        return direction * inc;
+        return inc;
       }
   }
-
 
   /**
    * Get the cell editor, suitable for editing the given cell. The default

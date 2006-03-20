@@ -52,8 +52,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -64,10 +62,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JScrollBar;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.LookAndFeel;
@@ -85,13 +80,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 public class BasicTableUI extends TableUI
-{ 
-  /**
-   * The number of the table lines to scroll per one mouse wheel click
-   * (from impressions Sun seems scrolling three lines per click.
-   */
-  static int ROWS_PER_WHEEL_CLICK = 3;
-  
+{
   public static ComponentUI createUI(JComponent comp) 
   {
     return new BasicTableUI();
@@ -99,7 +88,7 @@ public class BasicTableUI extends TableUI
 
   protected FocusListener focusListener;  
   protected KeyListener keyListener;   
-  protected MouseInputListener	mouseInputListener;   
+  protected MouseInputListener  mouseInputListener;   
   protected CellRendererPane rendererPane;   
   protected JTable table;
 
@@ -183,8 +172,7 @@ public class BasicTableUI extends TableUI
     }
   }
 
-  public class MouseInputHandler 
-    implements MouseInputListener, MouseWheelListener
+  public class MouseInputHandler implements MouseInputListener
   {
     Point begin, curr;
 
@@ -308,40 +296,6 @@ public class BasicTableUI extends TableUI
           begin = null;
           curr = null;
         }
-    }
-    
-    /**
-     * Scroll vertically with the mouse whell, the defined number of
-     * rows per wheel click.
-     * 
-     * @author Audrius Meskauskas (audriusa@Bioinformatics.org)
-     */
-    public void mouseWheelMoved(MouseWheelEvent e)
-    {
-      if (table.getParent() instanceof JViewport)
-        if (table.getParent().getParent() instanceof JScrollPane)
-          {
-            JScrollPane pane = (JScrollPane) table.getParent().getParent();
-            JScrollBar scroll = pane.getVerticalScrollBar();
-
-            if (scroll != null)
-              {
-                int v = e.getWheelRotation() * ROWS_PER_WHEEL_CLICK;
-                int h = table.getRowHeight()
-                        + table.getIntercellSpacing().height;
-                int delta = v * h;
-                int y = pane.getVerticalScrollBar().getValue();
-                
-                // Round to the whole number of the table rows.
-                y = ((y + delta+h/2)/h)*h;
-                
-                if (y < scroll.getMinimum())
-                  y = scroll.getMinimum();
-                if (y > scroll.getMaximum())
-                  y = scroll.getMaximum();
-                pane.getVerticalScrollBar().setValue(y);
-              }
-          }
     }
   }
 
@@ -1204,7 +1158,6 @@ public class BasicTableUI extends TableUI
       mouseInputListener = createMouseInputListener();
     table.addMouseListener(mouseInputListener);    
     table.addMouseMotionListener(mouseInputListener);
-    table.addMouseWheelListener( (MouseWheelListener) mouseInputListener);
     if (propertyChangeListener == null)
       propertyChangeListener = new PropertyChangeHandler();
     table.addPropertyChangeListener(propertyChangeListener);
