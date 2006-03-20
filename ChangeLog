@@ -1,3 +1,25 @@
+2006-03-20  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(MouseHandler.mousePressed): Rewritten for clearer and simpler
+	code.
+	(MouseHandler.mouseEntered): Implemented to set the rollover tab.
+	(MouseHandler.mouseMoved): Implemented to set the rollover tab.
+	(MouseHandler.mouseExited): Implemented to unset the rollover tab.
+	(TabbedPaneLayout.calculateLayoutInfo): Don't set the component's
+	bounds here. That is moved into layoutContainer().
+	(calculateSize): Correctly respect insets. Made code slightly more
+	clear and efficient.
+	(calculateTabRects): Rewritten completely. The old code was
+	not quite right and unstable in some situations.
+	(layoutContainer): Moved layout of tabbed pane's subcomponents
+	here.
+	(tabRunsDirty): New field.
+	(rolloverTab): New field.
+	(tabForCoordinate): Rewritten for simplicity and correctness.
+	(setRolloverTab): New method.
+	(getRolloverTab): New method.
+
 2006-03-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (getScrollableUnitIncrement): Rewritten.
