@@ -1,3 +1,7 @@
+2006-03-20  Tom Tromey  <tromey@redhat.com>
+
+	* .classpath: Build gnu.javax.swing.plaf.
+
 2006-03-20  Lillian Angel  <langel@redhat.com>
 
 	* gnu/javax/imageio/bmp/BMPDecoder.java:
