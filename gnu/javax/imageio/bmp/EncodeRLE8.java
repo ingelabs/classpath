@@ -1,5 +1,5 @@
-/* DecodeRGB24.java --
-   Copyright (C)  2005  Free Software Foundation, Inc.
+/* EncodeRGB32.java -- 
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,43 +35,50 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package gnu.javax.imageio.bmp;
 
 import java.io.IOException;
-import javax.imageio.stream.ImageInputStream;
-import java.awt.image.BufferedImage;
-import java.awt.Dimension;
 
-public class DecodeRGB24 extends BMPDecoder {
+import javax.imageio.IIOImage;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.metadata.IIOMetadata;
+import javax.imageio.stream.ImageOutputStream;
 
-    public DecodeRGB24(BMPFileHeader fh, BMPInfoHeader ih){
-	super(fh, ih);
-    }
+public class EncodeRLE8
+    extends BMPEncoder
+{
+  protected BMPInfoHeader infoHeader;
+  protected BMPFileHeader fileHeader;
+  protected long offset;
 
-    public BufferedImage decode(ImageInputStream in) throws IOException, BMPException {
-	skipToImage(in);
-        
-	Dimension d = infoHeader.getSize();
-	int h = (int)d.getHeight();
-	int w = (int)d.getWidth();
-	BufferedImage image = new BufferedImage(w, h, 
-						BufferedImage.TYPE_INT_RGB);
-	// BMP scanlines are padded to dword offsets
-	int scansize = ((w*3 & 3) != 0)? w*3 + 4 - (w*3 & 3): w*3;
-	int[] data = new int[w*h];
-
-	for(int y=h-1;y>=0;y--){
-	    byte[] scanline = new byte[scansize];
-	    if(in.read(scanline) != scansize)
-		throw new IOException("Couldn't read image data.");
-
-	    for(int x=0;x<w;x++)
-		data[x + y*w] = scanline[x*3] + 
-		    (scanline[x*3+1] << 8) +
-		    (scanline[x*3+2] << 16);
-	}
-	image.setRGB(0, 0, w, h, data, 0, w);
-	return image;
-    }
-
+  /**
+   * Constructs an instance of this class.
+   * 
+   * @param fh - the file header to use.
+   * @param ih - the info header to use.
+   */
+  public EncodeRLE8(BMPFileHeader fh, BMPInfoHeader ih)
+  {
+    super();
+    fileHeader = fh;
+    infoHeader = ih;
+    offset = BMPFileHeader.SIZE + BMPInfoHeader.SIZE;
+  }
+  
+  /**
+   * The image encoder.
+   * 
+   * @param o - the image output stream
+   * @param streamMetadata - metadata associated with this stream, or
+   * null
+   * @param image - an IIOImage containing image data.
+   * @param param - image writing parameters, or null
+   * @exception IOException if a write error occurs
+   */
+  public void encode(ImageOutputStream o, IIOMetadata streamMetadata,
+                     IIOImage image, ImageWriteParam param) throws IOException
+  {
+    // FIXME: Not implemented.
+  }
 }

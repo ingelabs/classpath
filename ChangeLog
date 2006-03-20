@@ -1,3 +1,47 @@
+2006-03-20  Lillian Angel  <langel@redhat.com>
+
+	* gnu/javax/imageio/bmp/BMPDecoder.java:
+	Removed unneeded import.
+	* gnu/javax/imageio/bmp/BMPEncoder.java:
+	New class.
+	* gnu/javax/imageio/bmp/BMPFileHeader.java
+	(BMPFileHeader): New constructor used to create info header
+	for an output stream.
+	(write): Fixed indexes.
+	* gnu/javax/imageio/bmp/BMPImageReaderSpi.java:
+	Initialized writerSpiNames field.
+	* gnu/javax/imageio/bmp/BMPImageWriter.java:
+	New class.
+	* gnu/javax/imageio/bmp/BMPImageWriterSpi.java:
+	New class.
+	* gnu/javax/imageio/bmp/BMPInfoHeader.java:
+	Change visibility for fields.
+	(BMPInfoHeader): New constructor used to create
+	file header for an output stream.
+	(intToDWord): New method. Converts an int to a
+	double word.
+	(intToWord): New method. Converts an int to a word.
+	* gnu/javax/imageio/bmp/DecodeBF32.java:
+	Removed unneeded imports.
+	* gnu/javax/imageio/bmp/EncodeRGB1.java:
+	New class.
+	* gnu/javax/imageio/bmp/EncodeRGB16.java:
+	New class.
+	* gnu/javax/imageio/bmp/EncodeRGB24.java:
+	New class.
+	* gnu/javax/imageio/bmp/EncodeRGB32.java:
+	New class.
+	* gnu/javax/imageio/bmp/EncodeRGB4.java:
+	New class.
+	* gnu/javax/imageio/bmp/EncodeRGB8.java:
+	New class.
+	* gnu/javax/imageio/bmp/EncodeRLE4.java:
+	New class.
+	* gnu/javax/imageio/bmp/EncodeRLE8.java:
+	New class.
+	* javax/imageio/ImageIO.java:
+	Fixed comment.
+
 2006-03-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
