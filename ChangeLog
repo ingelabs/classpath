@@ -1,5 +1,17 @@
 2006-03-20  Tom Tromey  <tromey@redhat.com>
 
+	* java/security/cert/PKIXCertPathChecker.java: Javadoc fix.
+	* java/security/cert/CertStoreSpi.java: Added import for javadoc.
+	(CertStoreSpi): Updated throws clause.
+	* java/security/cert/CertPathValidatorSpi.java: Added import for
+	javadoc.
+	(engineValidate): Updated 'throws' clause.
+	* java/security/cert/PKIXParameters.java: Javadoc fix.
+	* java/security/cert/X509CertSelector.java
+	(setAuthorityKeyIdentifier): Javadoc fix.
+
+2006-03-20  Tom Tromey  <tromey@redhat.com>
+
 	* .classpath: Build gnu.javax.swing.plaf.
 
 2006-03-20  Lillian Angel  <langel@redhat.com>
