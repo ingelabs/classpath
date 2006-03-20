@@ -1403,6 +1403,12 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   private int rolloverTab;
 
   /**
+   * Determines if tabs are painted opaque or not. This can be adjusted using
+   * the UIManager property 'TabbedPane.tabsOpaque'.
+   */
+  private boolean tabsOpaque;
+
+  /**
    * Creates a new BasicTabbedPaneUI object.
    */
   public BasicTabbedPaneUI()
@@ -1617,6 +1623,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     selectedTabPadInsets = UIManager.getInsets("TabbedPane.tabbedPaneTabPadInsets");
     tabAreaInsets = UIManager.getInsets("TabbedPane.tabAreaInsets");
     contentBorderInsets = UIManager.getInsets("TabbedPane.tabbedPaneContentBorderInsets");
+    tabsOpaque = UIManager.getBoolean("TabbedPane.tabsOpaque");
 
     calcRect = new Rectangle();
     tabRuns = new int[10];
@@ -1838,7 +1845,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     Rectangle rect = rects[tabIndex];
     boolean isSelected = tabIndex == tabPane.getSelectedIndex();
     // Paint background if necessary.
-    if (tabPane.isOpaque())
+    if (tabsOpaque || tabPane.isOpaque())
       {
         paintTabBackground(g, tabPlacement, tabIndex, rect.x, rect.y,
                            rect.width, rect.height, isSelected);

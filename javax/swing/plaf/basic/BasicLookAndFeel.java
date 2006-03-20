@@ -1114,6 +1114,7 @@ public abstract class BasicLookAndFeel extends LookAndFeel
       "TabbedPane.shadow", new ColorUIResource(shadow),
       "TabbedPane.tabbedPaneContentBorderInsets", new InsetsUIResource(3, 2, 1, 2),
       "TabbedPane.tabbedPaneTabPadInsets", new InsetsUIResource(1, 1, 1, 1),
+      "TabbedPane.tabsOpaque", Boolean.TRUE,
       "TabbedPane.tabAreaInsets", new InsetsUIResource(3, 2, 0, 2),
       "TabbedPane.tabInsets", new InsetsUIResource(0, 4, 1, 4),
       "TabbedPane.tabRunOverlay", new Integer(2),

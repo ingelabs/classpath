@@ -1,5 +1,14 @@
 2006-03-20  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(tabsOpaque): New field.
+	(installDefaults): Fetch tabsOpaque property from UIManager.
+	(paintTab): Fill tab background when tabsOpaque property is true.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Added TabbedPane.tabsOpaque property.
+
+2006-03-20  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTabbedPane.java
 	(Pane.getBackground): When no background was explicitly set, return
 	the JTabbedPane's background.
