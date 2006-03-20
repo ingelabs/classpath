@@ -1770,6 +1770,9 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
    */
   public void paint(Graphics g, JComponent c)
   {
+    if (!tabPane.isValid())
+      tabPane.validate();
+
     if (tabPane.getTabCount() == 0)
       return;
     if (tabPane.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT)
@@ -1795,42 +1798,26 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     // Please note: the ordering of the painting is important. 
     // we WANT to paint the outermost run first and then work our way in.
     int tabCount = tabPane.getTabCount();
-    int currRun = 1;
-    
-    if (tabCount < 1)
-      return;
-    
-    if (runCount > 1)
-      currRun = 0;    
-    for (int i = 0; i < runCount; i++)
+    for (int i = runCount - 1; i >= 0; --i)
       {
-        int first = lastTabInRun(tabCount, getPreviousTabRun(currRun)) + 1;
-        if (isScroll)
-          first = currentScrollLocation;
-        else if (first == tabCount)
-          first = 0;
-        int last = lastTabInRun(tabCount, currRun);
-        if (isScroll)
+        int start = tabRuns[i];
+        int next;
+        if (i == runCount - 1)
+          next = 0;
+        else
+          next = i + 1;
+        int end = (next != 0 ? next - 1 : tabCount - 1);
+        for (int j = start; j <= end; ++j)
           {
-            for (int k = first; k < tabCount; k++)
+            if (j != selectedIndex)
               {
-                if (rects[k].x + rects[k].width - rects[first].x > viewport
-                    .getWidth())
-                  {
-                    last = k;
-                    break;
-                  }
+                paintTab(g, tabPlacement, rects, j, ir, tr);
               }
           }
-
-        for (int j = first; j <= last; j++)
-          {
-            if (j != selectedIndex || isScroll)
-              paintTab(g, tabPlacement, rects, j, ir, tr);
-          }
-        currRun = getPreviousTabRun(currRun);
       }
-    if (! isScroll)
+
+    // Paint selected tab in front of every other tab.
+    if (selectedIndex >= 0)
       paintTab(g, tabPlacement, rects, selectedIndex, ir, tr);
   }
 
