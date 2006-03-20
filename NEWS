@@ -10,6 +10,13 @@ New in release 0.91 (UNRELEASED)
 * Free Swing improvements: Support for OceanTheme has been mostly completed
   and turned on as default Metal theme.
 
+Runtime interface changes:
+
+* A new class, VMArray, is now available which separates the native
+  array creation method from java.lang.reflect.Array.  
+* A new class, gnu.classpath.Unsafe, is provided for handling the
+  new low-level operations required by java.util.concurrent.
+
 New in release 0.90 (March 6, 2006)
 
 * Free Swing improvements: JTable columns are rearrangeable and
