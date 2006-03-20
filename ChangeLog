@@ -1,3 +1,42 @@
+2006-03-20  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GdkPixbufDecoder.java (pixbufLock): New
+	static lock Object field.
+	(produce): Synchronize on pixbufLock when calling initState(),
+	pumpBytes() and pumpDone().
+	(finalize): Likewise when calling finish().
+	(GdkPixbufWriter.write): Likewise when calling streamImage().
+	* gnu/java/awt/peer/gtk/GtkImage.java (GtkImage(String)): Likewise
+	when calling loadPixbuf. Chain exception.
+	(GtkImage(byte[])): Likewise when calling loadImageFromData.
+	(GtkImage(URL)): Likewise.
+	(GtkImage(int,int)): Likewise when calling createPixmap().
+	(GtkImage(GtkImage,int,int,int)): Likewise when calling
+	createScaledPixmap().
+	(GtkImage(Pointer)): Likewise when calling createFromPixbuf().
+	(setImage): Likewise when calling createPixmap() and setPixels().
+	(getSource): Likewise when calling getPixels().
+	(flush): Likewise when calling freePixmap().
+	(finalize): Likewise.
+	(drawImage): Likewise when calling drawPixelsScaledFlipped() and
+	drawPixelsScaledFlipped().
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c
+	(Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_initState): Remove
+	gdk_threads_enter/leave().
+	(Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_finish): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_pumpDone): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_streamImage): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_pumpBytes): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c
+	(Java_gnu_java_awt_peer_gtk_GtkImage_loadPixbuf): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkImage_loadImageFromData): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkImage_createFromPixbuf): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkImage_getPixels): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkImage_setPixels): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkImage_createPixmap): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkImage_freePixmap): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkImage_createScaledPixmap): Likewise.
+
 2006-03-20  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
