@@ -1,5 +1,14 @@
 2006-03-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalComboBoxButton.java
+	(setEnabled): Update colors of button correctly.
+	* javax/swing/plaf/metal/MetalComboBoxUI.java
+	(MetalPropertyChangeListener.propertyChange): Update the colors
+	of the list and the button when any of the color properties
+	of the ComboBox change.
+
+2006-03-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicButtonUI.java
 	(uninstallDefaults): Only nullify button colors if they are
 	not UIResource instances.

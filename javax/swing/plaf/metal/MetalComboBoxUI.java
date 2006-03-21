@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing.plaf.metal;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -130,7 +131,7 @@ public class MetalComboBoxUI extends BasicComboBoxUI
       String name = e.getPropertyName();
       if (name.equals("editable"))
         editablePropertyChanged(e);
-      if (name.equals("enabled"))
+      else if (name.equals("enabled"))
         {
           if (arrowButton instanceof MetalComboBoxButton)
             {
@@ -138,6 +139,18 @@ public class MetalComboBoxUI extends BasicComboBoxUI
                                        && comboBox.isEnabled());
               comboBox.repaint();
             }
+        }
+      else if (name.equals("background"))
+        {
+          Color c = (Color) e.getNewValue();
+          arrowButton.setBackground(c);
+          listBox.setBackground(c);
+        }
+      else if (name.equals("foreground"))
+        {
+          Color c = (Color) e.getNewValue();
+          arrowButton.setForeground(c);
+          listBox.setForeground(c);
         }
     }
   }
