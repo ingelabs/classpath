@@ -1,5 +1,10 @@
 2006-03-21  Robert Schuster  <robertschuster@fsfe.org>
 
+        * javax/swing/text/DefaultHighlighter.java:
+        (DefaultHighlighter.DefaultHighlightPainter.paint): Rewritten.
+
+2006-03-21  Robert Schuster  <robertschuster@fsfe.org>
+
         * javax/swing/text/DefaultCaret.java: Added class variable denoting
         the textcomponent having a selection.
         (clearSelection): Clear 'componentWithSelection' variable.
