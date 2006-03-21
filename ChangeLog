@@ -194,7 +194,7 @@
 
 2006-03-20  Chris Burdess  <dog@gnu.org>
 
-	Fixes PR 11070
+	Fixes PR 26761
 	* gnu/xml/stream/XMLParser.java: Permit U+fffd as XML Char.
 
 2006-03-20  Roman Kennke  <kennke@aicas.com>
