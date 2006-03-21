@@ -41,6 +41,8 @@ package javax.swing.text.html;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -82,6 +84,24 @@ public class FormView
   extends ComponentView
   implements ActionListener
 {
+
+  protected class MouseEventListener
+    extends MouseAdapter
+  {
+    /**
+     * Creates a new <code>MouseEventListener</code>.
+     */
+    protected MouseEventListener()
+    {
+      // Nothing to do here.
+    }
+
+    public void mouseReleased(MouseEvent ev)
+    {
+      String data = getImageData(ev.getPoint());
+      imageSubmit(data);
+    }
+  }
 
   /**
    * If the value attribute of an <code>&lt;input type=&quot;submit&quot;&gt>
