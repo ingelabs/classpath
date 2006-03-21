@@ -269,9 +269,8 @@ public abstract class JComponent extends Container implements Serializable
      */
     public String getAccessibleDescription()
     {
-      // TODO: Figure out what exactly to return here. It's possible that this
-      // method simply should return null.
-      return null;
+      // TODO: Figure out how this differs from the super method.
+      return super.getAccessibleDescription();
     }
 
     /**

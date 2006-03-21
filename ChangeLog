@@ -1,3 +1,15 @@
+2006-03-21  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JComponent.java
+	(AccessibleJComponent.getAccessibleDescription): Call super,
+	* javax/swing/JToolTip.java: API doc updates all over, plus
+	(AccessibleJToolTip.getAccessibleDescription): Implemented,
+	(AccessibleJToolTip.getAccessibleRole): Implemented,
+	(getAccessibleContext): Implemented,
+	(paramString): Reimplemented,
+	(setComponent): Fire PropertyChangeEvent,
+	(setTipText): Likewise.
+
 2006-03-20  Tom Tromey  <tromey@redhat.com>
 
 	* java/security/cert/PKIXCertPathChecker.java: Javadoc fix.
