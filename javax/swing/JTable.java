@@ -1946,21 +1946,18 @@ public class JTable
    */
   public int columnAtPoint(Point point)
   {
-    if (point != null)
-      {
-        int ncols = getColumnCount();
-        Dimension gap = getIntercellSpacing();
-        TableColumnModel cols = getColumnModel();
-        int x = point.x;
+    int ncols = getColumnCount();
+    Dimension gap = getIntercellSpacing();
+    TableColumnModel cols = getColumnModel();
+    int x = point.x;
 
-        for (int i = 0; i < ncols; ++i)
-          {
-            int width = cols.getColumn(i).getWidth()
-                        + (gap == null ? 0 : gap.width);
-            if (0 <= x && x < width)
-              return i;
-            x -= width;
-          }
+    for (int i = 0; i < ncols; ++i)
+      {
+        int width = cols.getColumn(i).getWidth()
+                    + (gap == null ? 0 : gap.width);
+        if (0 <= x && x < width)
+          return i;
+        x -= width;
       }
     return -1;
   }
@@ -1969,8 +1966,7 @@ public class JTable
    * Returns index of the row that contains specified point or -1 if this table
    * doesn't contain this point.
    * 
-   * @param point
-   *          point to identify the row
+   * @param point point to identify the row
    * @return index of the row that contains specified point or -1 if this table
    *         doesn't contain this point.
    */
