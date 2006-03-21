@@ -817,41 +817,302 @@ public class MetalTabbedPaneUI extends BasicTabbedPaneUI
 
   /**
    * Paints the upper edge of the content border.
+   *
+   * @param g the graphics to use for painting
+   * @param tabPlacement the tab placement
+   * @param selectedIndex the index of the selected tab
+   * @param x the upper left coordinate of the content area
+   * @param y the upper left coordinate of the content area
+   * @param w the width of the content area
+   * @param h the height of the content area
    */
   protected void paintContentBorderTopEdge(Graphics g, int tabPlacement,
                                            int selectedIndex, int x, int y,
                                            int w, int h)
   {
-    // FIXME: Implement me.
+    Color oceanSelectedBorder =
+      UIManager.getColor("TabbedPane.borderHightlightColor");
+    boolean isOcean = MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme;
+    if (isOcean)
+      {
+        g.setColor(oceanSelectedBorder);
+      }
+    else
+      {
+        g.setColor(selectHighlight);
+      }
+
+    Rectangle rect = selectedIndex < 0 ? null :
+                                         getTabBounds(selectedIndex, calcRect);
+
+    // If tabs are not placed on TOP, or if the selected tab is not in the
+    // run directly above the content or the selected tab is not visible,
+    // then we draw an unbroken line.
+    if (tabPlacement != TOP || selectedIndex < 0
+        || rect.y  + rect.height + 1 < y || rect.x < x ||rect.x > x + w)
+      {
+        g.drawLine(x, y, x + w - 2, y);
+        if (isOcean && tabPlacement == TOP)
+          {
+            g.setColor(MetalLookAndFeel.getWhite());
+            g.drawLine(x, y + 1, x + w - 2, y + 1);
+          }
+      }
+    else
+      {
+        boolean isLast = isLastTabInRun(selectedIndex);
+        if (isLast)
+          {
+            g.drawLine(x, y, rect.x + 1, y);
+          }
+        else
+          {
+            g.drawLine(x, y, rect.x, y);
+          }
+
+        int right = x + w - 1;
+        if (rect.x + rect.width < right - 1)
+          {
+            if (isLast)
+              {
+                g.drawLine(rect.x + rect.width - 1, y, right - 1, y);
+              }
+            else
+              {
+                g.drawLine(rect.x + rect.width, y, right - 1, y);
+              }
+          }
+        else
+          {
+            g.setColor(shadow);
+            g.drawLine(x + w - 2, y, x + w - 2, y);
+          }
+
+        // When in OceanTheme, draw another white line.
+        if (isOcean)
+          {
+            g.setColor(MetalLookAndFeel.getWhite());
+            if (isLast)
+              {
+                g.drawLine(x, y + 1, rect.x + 1, y + 1);
+              }
+            else
+              {
+                g.drawLine(x, y + 1, rect.x, y + 1);
+              }
+
+            if (rect.x + rect.width < right - 1)
+              {
+                if (isLast)
+                  {
+                    g.drawLine(rect.x + rect.width - 1, y + 1, right - 1,
+                               y + 1);
+                  }
+                else
+                  {
+                    g.drawLine(rect.x + rect.width, y + 1, right - 1, y + 1);
+                  }
+              }
+            else
+              {
+                g.setColor(shadow);
+                g.drawLine(x + w - 2, y + 1, x + w - 2, y + 1);
+              }
+          }
+      }
   }
 
   /**
    * Paints the lower edge of the content border.
+   *
+   * @param g the graphics to use for painting
+   * @param tabPlacement the tab placement
+   * @param selectedIndex the index of the selected tab
+   * @param x the upper left coordinate of the content area
+   * @param y the upper left coordinate of the content area
+   * @param w the width of the content area
+   * @param h the height of the content area
    */
   protected void paintContentBorderBottomEdge(Graphics g, int tabPlacement,
                                               int selectedIndex, int x, int y,
                                               int w, int h)
   {
-    // FIXME: Implement me.
+    g.setColor(darkShadow);
+    
+    // If tabs are not placed on BOTTOM, or if the selected tab is not in the
+    // run directly below the content or the selected tab is not visible,
+    // then we draw an unbroken line.
+    Rectangle rect = selectedIndex < 0 ? null :
+                                         getTabBounds(selectedIndex, calcRect);
+    boolean isOcean = MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme;
+    Color oceanSelectedBorder =
+      UIManager.getColor("TabbedPane.borderHightlightColor");
+    if (tabPlacement != BOTTOM || selectedIndex < 0 || rect.y - 1 > h
+        || rect.x < x || rect.x > x + w)
+      {
+        if (isOcean && tabPlacement == BOTTOM)
+          {
+            g.setColor(oceanSelectedBorder);
+          }
+        g.drawLine(x, y + h - 1, x + w - 1, y + h - 1);
+      }
+    else
+      {
+        boolean isLast = isLastTabInRun(selectedIndex);
+        if (isOcean)
+          {
+            g.setColor(oceanSelectedBorder);
+          }
+
+        int bottom = y + h - 1;
+        int right = x + w - 1;
+        if (isLast)
+          {
+            g.drawLine(x, bottom, rect.x, bottom);
+          }
+        else
+          {
+            g.drawLine(x, bottom, rect.x - 1, bottom);
+          }
+
+        if (rect.x + rect.width < x + w - 2)
+          {
+            if (isLast)
+              {
+                g.drawLine(rect.x + rect.width - 1, bottom, right, bottom);
+              }
+            else
+              {
+                g.drawLine(rect.x + rect.width, bottom, right, bottom);
+              }
+          }
+      }
   }
 
   /**
    * Paints the left edge of the content border.
+   *
+   * @param g the graphics to use for painting
+   * @param tabPlacement the tab placement
+   * @param selectedIndex the index of the selected tab
+   * @param x the upper left coordinate of the content area
+   * @param y the upper left coordinate of the content area
+   * @param w the width of the content area
+   * @param h the height of the content area
    */
   protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement,
                                             int selectedIndex, int x, int y,
                                             int w, int h)
   {
-    // FIXME: Implement me.
+    boolean isOcean = MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme;
+    Color oceanSelectedBorder =
+      UIManager.getColor("TabbedPane.borderHightlightColor");
+    Rectangle rect = selectedIndex < 0 ? null :
+      getTabBounds(selectedIndex, calcRect);
+
+    if (isOcean)
+      {
+        g.setColor(oceanSelectedBorder);
+      }
+    else
+      {
+        g.setColor(selectHighlight);
+      }
+
+    // If tabs are not placed on LEFT, or if the selected tab is not in the
+    // run directly left to the content or the selected tab is not visible,
+    // then we draw an unbroken line.
+    if (tabPlacement != LEFT || selectedIndex < 0
+        || rect.x + rect.width + 1 < x || rect.y < y || rect.y > y + h)
+      {
+        g.drawLine(x, y + 1, x, y + h - 2);
+        if (isOcean && tabPlacement == LEFT)
+          {
+            g.setColor(MetalLookAndFeel.getWhite());
+            g.drawLine(x, y + 1, x, y + h - 2);
+          }       
+      }
+    else
+      {
+        g.drawLine(x, y, x, rect.y + 1);
+        if (rect.y + rect.height < y + h - 2)
+          {
+            g.drawLine(x, rect.y + rect.height + 1, x, y + h + 2);
+          }
+        if (isOcean)
+          {
+            g.setColor(MetalLookAndFeel.getWhite());
+            g.drawLine(x + 1, y + 1, x + 1, rect.y + 1);
+            if (rect.y + rect.height < y + h - 2)
+              {
+                g.drawLine(x + y, rect.y + rect.height + 1, x + 1, y + h + 2);
+              }
+          }
+      }
+    
   }
 
   /**
    * Paints the right edge of the content border.
+   *
+   * @param g the graphics to use for painting
+   * @param tabPlacement the tab placement
+   * @param selectedIndex the index of the selected tab
+   * @param x the upper left coordinate of the content area
+   * @param y the upper left coordinate of the content area
+   * @param w the width of the content area
+   * @param h the height of the content area
    */
   protected void paintContentBorderRightEdge(Graphics g, int tabPlacement,
                                              int selectedIndex, int x, int y,
                                              int w, int h)
   {
-    // FIXME: Implement me.
+    g.setColor(darkShadow);
+    Rectangle rect = selectedIndex < 0 ? null :
+      getTabBounds(selectedIndex, calcRect);
+    boolean isOcean = MetalLookAndFeel.getCurrentTheme() instanceof OceanTheme;
+    Color oceanSelectedBorder =
+      UIManager.getColor("TabbedPane.borderHightlightColor");
+
+    // If tabs are not placed on RIGHT, or if the selected tab is not in the
+    // run directly right to the content or the selected tab is not visible,
+    // then we draw an unbroken line.
+    if (tabPlacement != RIGHT || selectedIndex < 0 || rect.x - 1 > w
+        || rect.y < y || rect.y > y + h)
+      {
+        if (isOcean && tabPlacement == RIGHT)
+          {
+            g.setColor(oceanSelectedBorder);
+          }
+        g.drawLine(x + w - 1, y, x + w - 1, y + h - 1);
+      }
+    else
+      {
+        if (isOcean)
+          {
+            g.setColor(oceanSelectedBorder);
+          }
+        g.drawLine(x + w - 1, y, x + w - 1, rect.y);
+
+        if (rect.y + rect.height < y + h - 2)
+          {
+            g.drawLine(x + w - 1, rect.y + rect.height, x + w - 1, y + h - 2);
+          }
+      }
+  }
+
+  /**
+   * Determines if the specified tab is the last tab in its tab run.
+   *
+   * @param tabIndex the index of the tab
+   *
+   * @return if the specified tab is the last tab in its tab run
+   */
+  private boolean isLastTabInRun(int tabIndex)
+  {
+    int count = tabPane.getTabCount();
+    int run = getRunForTab(count, tabIndex);
+    int lastIndex = lastTabInRun(count, run);
+    return tabIndex == lastIndex;
   }
 }

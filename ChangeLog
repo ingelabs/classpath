@@ -1,5 +1,14 @@
 2006-03-21  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	(paintContentBorderTopEdge): Implemented.
+	(paintContentBorderBottomEdge): Implemented.
+	(paintContentBorderLeftEdge): Implemented.
+	(paintContentBorderRightEdge): Implemented.
+	(isLastTabInRun): New helper method.
+
+2006-03-21  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTabbedPane.java
 	(Page.getForeground): Fall back to returning the tabbed pane's
 	foreground if no foreground has been exclicitly set.
