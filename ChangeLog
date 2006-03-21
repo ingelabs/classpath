@@ -1,3 +1,13 @@
+2006-03-21  Robert Schuster  <robertschuster@fsfe.org>
+
+        * javax/swing/text/DefaultCaret.java: Added class variable denoting
+        the textcomponent having a selection.
+        (clearSelection): Clear 'componentWithSelection' variable.
+        (handleSelection): Clear selection of current component having a
+        selection before setting a new selection in another component.
+	(mouseDragged): Only react on left mouse button.
+	(mouseClicked): Only react on left mouse button.
+
 2006-03-21  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
