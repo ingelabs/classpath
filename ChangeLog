@@ -1,3 +1,7 @@
+2006-03-21  Tom Tromey  <tromey@redhat.com>
+
+	* java/text/Bidi.java: Completed.
+
 2006-03-21  Anthony Balkissoon  <abalkiss@redhat.com>
 
 	* javax/swing/JTable.java:
