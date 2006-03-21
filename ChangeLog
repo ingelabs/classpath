@@ -784,6 +784,12 @@
 	* gnu/java/rmi/activation/ActivationSystemTransient.java (debug):
 	Set to false. 	
 
+2006-03-17  Robert Schuster  <robertschuster@fsfe.org>
+  	 
+	* javax/swing/text/DefaultCaret.java:
+	(mouseClicked) Use setDot() and moveDot() instead of
+	JTextComponent.select().
+
 2006-03-17  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalComboBoxEditor.java
