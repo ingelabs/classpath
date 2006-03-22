@@ -130,31 +130,74 @@ public abstract class SynthStyle
     // FIXME: Implement this correctly.
   }
 
+  /**
+   * A convenience method to fetch an integer property.
+   * If the property's value is a {@link Number}, then the
+   * integer value is returned.  Otherwise, the default value
+   * is returned.
+   * @param ctx the context
+   * @param key the key to fetch
+   * @param defaultValue the default value
+   * @return the integer value of the property, or the default value
+   */
   public int getInt(SynthContext ctx, Object key, int defaultValue)
-    throws NotImplementedException
   {
-    // FIXME: Implement this correctly.
-    return -1;
+    Object obj = get(ctx, key);
+    if (obj instanceof Number)
+      return ((Number) obj).intValue();
+    return defaultValue;
   }
 
-  public boolean getBoolean(SynthContext ctx, Object key, boolean defaultValue)
-    throws NotImplementedException
+  /**
+   * A convenience method to fetch an integer property.
+   * If the property's value is a {@link Boolean}, then the
+   * value is returned.  Otherwise, the default value
+   * is returned.
+   * @param ctx the context
+   * @param key the key to fetch
+   * @param defaultValue the default value
+   * @return the boolean value of the property, or the default value
+   */
+  public boolean getBoolean(SynthContext ctx, Object key,
+                            boolean defaultValue)
   {
-    // FIXME: Implement this correctly.
-    return false;
+    Object obj = get(ctx, key);
+    if (obj instanceof Boolean)
+      return ((Boolean) obj).booleanValue();
+    return defaultValue;
   }
 
+  /**
+   * A convenience method to fetch an Icon-valued property.
+   * If the property's value is an {@link Icon}, then the
+   * value is returned.  Otherwise, null is returned.
+   * @param ctx the context
+   * @param key the key to fetch
+   * @return the icon, or null
+   */
   public Icon getIcon(SynthContext ctx, Object key)
-    throws NotImplementedException
   {
-    // FIXME: Implement this correctly.
+    Object obj = get(ctx, key);
+    if (key instanceof Icon)
+      return (Icon) obj;
     return null;
   }
 
+  /**
+   * A convenience method to fetch a String property.
+   * If the property's value is a {@link String}, then the
+   * value is returned.  Otherwise, the default value
+   * is returned.
+   * @param ctx the context
+   * @param key the key to fetch
+   * @param defaultValue the default value
+   * @return the String value of the property, or the default value
+   */
   public String getString(SynthContext ctx, Object key, String defaultValue)
-    throws NotImplementedException
   {
-    // FIXME: Implement this correctly.
-    return null;
+    Object obj = get(ctx, key);
+    if (obj instanceof String)
+      return (String) obj;
+    return defaultValue;
   }
 }

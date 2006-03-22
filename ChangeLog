@@ -1,3 +1,10 @@
+2006-03-22  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/plaf/synth/SynthStyle.java (getInt): Implemented.
+	(getBoolean): Likewise.
+	(getString): Likewise.
+	(getIcon): Likewise.
+
 2006-03-22  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #26301
