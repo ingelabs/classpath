@@ -1,3 +1,16 @@
+2006-03-23  Roman Kennke  <kennke@aicas.com>
+
+	PR 26805
+	* gnu/java/security/Registry.java
+	(PKCS5_PAD): Added pad PKCS#5 algorithm.
+	* gnu/javax/crypto/pad/PadFactory.java
+	(getInstance): For PKCS#5, also return PKCS#7 pad
+	algorithm.
+	(getNames): Added PKCS#5.
+	* javax/crypto/KeyGenerator.java
+	(getInstance): Initialize key generator before returning
+	it.
+
 2006-03-23  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* gnu/regexp/RE.java(REG_X_COMMENTS): New copilation flag,
