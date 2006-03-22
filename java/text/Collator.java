@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.text;
 
+import gnu.classpath.NotImplementedException;
+
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -243,8 +245,8 @@ public abstract class Collator implements Comparator, Cloneable
    * @return The list of locales for which <code>Collator</code>'s exist.
    */
   public static synchronized Locale[] getAvailableLocales ()
+    throws NotImplementedException
   {
-    // FIXME
     Locale[] l = new Locale[1];
     l[0] = Locale.US;
     return l;

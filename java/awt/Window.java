@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.awt;
 
+import gnu.classpath.NotImplementedException;
+
 import java.awt.event.ComponentEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.WindowAdapter;
@@ -1032,6 +1034,7 @@ public class Window extends Container implements Accessible
    * @deprecated
    */
   public void applyResourceBundle(ResourceBundle rb)
+    throws NotImplementedException
   {
     throw new Error ("Not implemented");
   }

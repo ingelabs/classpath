@@ -1,3 +1,94 @@
+2006-03-22  Tom Tromey  <tromey@redhat.com>
+
+	* doc/hacking.texinfo (Source Code Style Guide): Mention
+	NotImplementedException.
+	* javax/imageio/stream/MemoryCacheImageOutputStream.java
+	(flushBefore): Mark as stub.
+	(read): Likewise.
+	* javax/imageio/stream/MemoryCacheImageInputStream.java (flushBefore):
+	Mark as stub.
+	* javax/imageio/stream/ImageOutputStreamImpl.java (flushBits): Mark
+	as stub.
+	(write): Likewise.
+	(writeBit): Likewise.
+	(writeChars): Likewise.
+	(writeUTF): Likewise.
+	* javax/imageio/stream/FileCacheImageOutputStream.java (read): Mark
+	as stub.
+	(read): Likewise.
+	* java/net/URLConnection.java (getContent): Mark as stub.
+	* java/awt/Window.java (applyResourceBundle): Mark as stub.
+	* java/awt/TexturePaint.java (createContext): Mark as stub.
+	(getTransparency): Mark as stub.
+	* java/awt/ScrollPaneAdjustable.java (paramString): Mark as stub.
+	* java/awt/GridBagLayout.java (AdjustForGravity): Mark as stub.
+	* java/awt/GraphicsConfiguration.java (getBufferCapabilities): Mark as
+	stub.
+	(getImageCapabilities): Likewise.
+	* java/awt/BasicStroke.java (createStrokedShape): Mark as stub.
+	* java/awt/AlphaComposite.java (createContext): Mark as stub.
+	* java/awt/image/renderable/RenderableImageProducer.java: Mark all
+	methods as stubs.
+	* java/awt/font/TextMeasurer.java (deleteChar): Mark as stub.
+	(getAdvanceBetween): Likewise.
+	(getLayout): Likewise.
+	(insertChar): Likewise.
+	(getLineBreakIndex): Likewise.
+	* java/awt/font/ShapeGraphicAttribute.java (draw): Mark as stub.
+	(getAdvance): Likewise.
+	(getAscent): Likewise.
+	(getDescent): Likewise.
+	* java/awt/font/LineBreakMeasurer.java (deleteChar): Mark as stub.
+	(insertChar): Likewise.
+	(nextLayout): Likewise.
+	(nextLayout): Likewise.
+	(nextOffset): Likewise.
+	(nextOffset): Likewise.
+	* java/awt/font/ImageGraphicAttribute.java (draw): Mark as stub.
+	(equals): Likewise.
+	(getAdvance): Likewise.
+	(getAscent): Likewise.
+	(getBounds): Likewise.
+	(getDescent): Likewise.
+	(hashCode): Likewise.
+	(ImageGraphicAttribute): Likewise.
+	* java/awt/font/GraphicAttribute.java (getBounds): Mark as stub.
+	(getJustificationInfo): Likewise.
+	* java/awt/font/GlyphVector.java (getGlyphCharIndex): Mark as stub.
+	(getGlyphCharIndices): Likewise.
+	(getGlyphOutline): Likewise.
+	(getGlyphPixelBounds): Likewise.
+	(getLayoutFlags): Likewise.
+	(getPixelBounds): Likewise.
+	* java/awt/font/GlyphMetrics.java (getLSB): Mark as stub.
+	(getRSB): Likewise.
+	* java/nio/channels/Channels.java (newWriter): Mark as stub.
+	* java/awt/dnd/DragSourceContext.java: Marked most methods as stubs.
+	* java/awt/dnd/DragGestureRecognizer.java (fireDragGestureRecognized):
+	Mark as stub.
+	(resetRecognizer): Likewise.
+	* java/awt/datatransfer/SystemFlavorMap.java (getFlavorsForNative):
+	Mark as stub.
+	(getNativesForFlavor): Likewise.
+	* javax/swing/plaf/synth/SynthStyle.java: Mark all methods as stub.s
+	* javax/swing/plaf/synth/SynthLookAndFeel.java (updateStyles): Mark
+	as stub.
+	(getRegion): Likewise.
+	(createUI): Likewise.
+	(initialize): Likewise.
+	(uninitialize): Likewise.
+	(getDefaults): Likewise.
+	(load): Likewise.
+	(shouldUpdateStyleOnAncestorChanged): Likewise.
+	* javax/swing/plaf/synth/SynthGraphicsUtils.java (getMinimumSize):
+	Mark as stub.
+	(getPreferredSize): Likewise.
+	(getMaximumSize): Likewise.
+	(paintText): Likewise.
+	* java/text/RuleBasedCollator.java (getCollationElementIterator): Mark
+	as stub.
+	* java/text/Collator.java (getAvailableLocales): Mark as stub.
+
 2006-03-22  Wolfgang Baer  <WBaer@gmx.de>
 
 	* java/io/ObjectStreamConstants.java: Added since tag.
@@ -13,7 +104,7 @@
 	(BMPInfoHeader): Removed debug lines.
 	* gnu/javax/imageio/bmp/EncodeRLE4.java
 	(encode): Implemented.
-	(uncompress): New function implemented to 
+	(uncompress): New function implemented to
 	uncompress the image before encoding.
 	* gnu/javax/imageio/bmp/EncodeRLE8.java
 	(encode): Implemented.

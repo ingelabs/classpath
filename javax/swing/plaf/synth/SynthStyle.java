@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing.plaf.synth;
 
+import gnu.classpath.NotImplementedException;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Insets;
@@ -58,17 +60,20 @@ public abstract class SynthStyle
    * Creates a new <code>SynthStyle</code> object.
    */
   public SynthStyle()
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
   }
 
   public SynthGraphicsUtils getGraphicsUtils(SynthContext ctx)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return null;
   }
 
   public Color getColor(SynthContext ctx, ColorType type)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return null;
@@ -77,6 +82,7 @@ public abstract class SynthStyle
   public abstract Color getColorForState(SynthContext ctx, ColorType type);
 
   public Font getFont(SynthContext ctx)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return null;
@@ -85,58 +91,68 @@ public abstract class SynthStyle
   public abstract Font getFontForState(SynthContext ctx);
 
   public Insets getInsets(SynthContext ctx)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return null;
   }
 
   public SynthPainter getPainted(SynthContext ctx)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return null;
   }
 
   public boolean isOpaque(SynthContext ctx)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return true;
   }
 
   public Object get(SynthContext ctx, Object key)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return null;
   }
 
   public void installDefaults(SynthContext ctx)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
   }
 
   public void uninstallDefaults(SynthContext ctx)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
   }
 
   public int getInt(SynthContext ctx, Object key, int defaultValue)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return -1;
   }
 
   public boolean getBoolean(SynthContext ctx, Object key, boolean defaultValue)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return false;
   }
 
   public Icon getIcon(SynthContext ctx, Object key)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return null;
   }
 
   public String getString(SynthContext ctx, Object key, String defaultValue)
+    throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return null;

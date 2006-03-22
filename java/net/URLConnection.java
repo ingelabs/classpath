@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.net;
 
+import gnu.classpath.NotImplementedException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -459,7 +461,8 @@ public abstract class URLConnection
    * @exception UnknownServiceException If the protocol does not support the
    * content type
    */
-  public Object getContent(Class[] classes) throws IOException
+  public Object getContent(Class[] classes)
+    throws IOException, NotImplementedException
   {
     // FIXME: implement this
     return getContent();

@@ -1,5 +1,5 @@
-/* GraphicAttribute.java
-   Copyright (C) 2003 Free Software Foundation, Inc.
+/* NotImplementedException.java -- Marker for stub methods
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,53 +36,26 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package java.awt.font;
-
-import gnu.classpath.NotImplementedException;
-
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
+package gnu.classpath;
 
 /**
- * @author Michael Koch
+ * This class is used as a marker to indicate that a given method
+ * is merely a stub, requiring implementation.  For historical
+ * reasons, GNU Classpath includes a number of stub methods.  We
+ * don't wish to remove them, but we do want to make them easily
+ * discoverable.  JAPI will notice methods declared as throwing
+ * this exception and mark them appropriately.
  */
-public abstract class GraphicAttribute
+public class NotImplementedException
+    extends RuntimeException
 {
-  public static final int BOTTOM_ALIGNMENT = -2;
-  public static final int CENTER_BASELINE = 1;
-  public static final int HANGING_BASELINE = 2;
-  public static final int ROMAN_BASELINE = 0;
-  public static final int TOP_ALIGNMENT = -1;
+  private static final long serialVersionUID = 5112972057211125814L;
 
-  private int alignment;
-  
-  protected GraphicAttribute (int alignment)
+  /**
+   * This class is not instantiable.  It should only be used
+   * in a method 'throws' clause -- not actually ever thrown.
+   */
+  private NotImplementedException()
   {
-    this.alignment = alignment;
-  }
-
-  public abstract void draw (Graphics2D graphics, float x, float y);
-
-  public abstract float getAdvance ();
-
-  public final int getAlignment ()
-  {
-    return alignment;
-  }
-
-  public abstract float getAscent ();
-
-  public Rectangle2D getBounds ()
-    throws NotImplementedException
-  {
-    throw new Error ("not implemented");
-  }
-
-  public abstract float getDescent ();
-
-  public GlyphJustificationInfo getJustificationInfo ()
-    throws NotImplementedException
-  {
-    throw new Error ("not implemented");
   }
 }
