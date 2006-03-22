@@ -1,3 +1,16 @@
+2006-03-21  Lillian Angel  <langel@redhat.com>
+
+	* gnu/javax/imageio/bmp/BMPInfoHeader.java
+	(BMPInfoHeader): Removed debug lines.
+	* gnu/javax/imageio/bmp/EncodeRLE4.java
+	(encode): Implemented.
+	(uncompress): New function implemented to 
+	uncompress the image before encoding.
+	* gnu/javax/imageio/bmp/EncodeRLE8.java
+	(encode): Implemented.
+	(uncompress): New function implemented to
+	uncompress the image before encoding.
+
 2006-03-21  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/html/FormView.java
