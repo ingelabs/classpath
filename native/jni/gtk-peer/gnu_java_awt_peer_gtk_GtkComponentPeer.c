@@ -192,19 +192,19 @@ state_to_awt_mods_with_button_states (guint state)
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor 
-  (JNIEnv *env, jobject obj, jint type) 
+  (JNIEnv *env, jobject obj, jint type, jobject image, jint x, jint y) 
 {
   gdk_threads_enter ();
 
   Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursorUnlocked
-    (env, obj, type);
+    (env, obj, type, image, x, y);
 
   gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursorUnlocked
-  (JNIEnv *env, jobject obj, jint type) 
+  (JNIEnv *env, jobject obj, jint type, jobject image, jint x, jint y) 
 {
   void *ptr;
   GtkWidget *widget;
@@ -260,7 +260,14 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursorUnlocked
       
   widget = get_widget(GTK_WIDGET(ptr));
 
-  gdk_cursor = gdk_cursor_new (gdk_cursor_type);
+  if (image == NULL)
+    gdk_cursor = gdk_cursor_new (gdk_cursor_type);
+  else
+    gdk_cursor
+      = gdk_cursor_new_from_pixbuf (gdk_drawable_get_display (widget->window),
+				    cp_gtk_image_get_pixbuf (env, image),
+				    x, y);
+
   gdk_window_set_cursor (widget->window, gdk_cursor);
   gdk_cursor_unref (gdk_cursor);
 }

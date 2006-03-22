@@ -1,3 +1,18 @@
+2006-03-22  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #26301
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (gtkWidgetSetCursor):
+	Takes GtkImage, x and y coordinates.
+	(gtkWidgetSetCursorUnlocked): Likewise.
+	(GtkComponentPeer): Set cursor when set.
+	(setCursor): Handle GtkCursor.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (createCustomCursor):
+	New method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(gtkWidgetSetCursor): Takes GtkImage, x and y coordinates.
+	(gtkWidgetSetCursorUnlocked): Likewise. Handle custom image.
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: Regenerated.
+
 2006-03-23  Roman Kennke  <kennke@aicas.com>
 
 	PR 26805
