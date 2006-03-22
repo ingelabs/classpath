@@ -1,5 +1,15 @@
 2006-03-22  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/plaf/synth/SynthPainter.java
+	(paintScrollBarThumbBackground): Added 'orientation' argument.
+	(paintScrollBarThumbBorder): Likewise.
+	(paintSliderThumbBackground): Likewise.
+	(paintSliderThumbBorder): Likewise.
+	(paintTabbedPaneTabBackground): Added 'index' argument.
+	(paintTabbedPaneTabBorder): Likewise.
+
+2006-03-22  Tom Tromey  <tromey@redhat.com>
+
 	* java/awt/ScrollPaneAdjustable.java (paramString): Implemented.
 	(toString): New method.
 
