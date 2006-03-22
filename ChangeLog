@@ -1,3 +1,8 @@
+2006-03-21  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/text/html/FormView.java
+	(getImageData): New helper method.
+
 2006-03-21  Tom Tromey  <tromey@redhat.com>
 
 	* vm/reference/gnu/classpath/Unsafe.java (arrayBaseOffset): Javadoc
