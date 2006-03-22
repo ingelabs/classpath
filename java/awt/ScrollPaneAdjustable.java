@@ -38,8 +38,6 @@ exception statement from your version. */
 
 package java.awt;
 
-import gnu.classpath.NotImplementedException;
-
 import java.awt.event.AdjustmentListener;
 import java.io.Serializable;
 
@@ -179,9 +177,17 @@ public class ScrollPaneAdjustable
   }
 
   public String paramString ()
-    throws NotImplementedException
   {
-    throw new Error ("not implemented");
+    return ("scrollpane=" + sp + ", orientation=" + orientation
+            + ", value=" + value + ", minimum=" + minimum
+            + ", maximum=" + maximum + ", visibleAmount=" + visibleAmount
+            + ", unitIncrement=" + unitIncrement
+            + ", blockIncrement=" + blockIncrement);
+  }
+
+  public String toString()
+  {
+    return getClass().getName() + "[" + paramString() + "]";
   }
 
   /**

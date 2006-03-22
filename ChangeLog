@@ -1,5 +1,10 @@
 2006-03-22  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/ScrollPaneAdjustable.java (paramString): Implemented.
+	(toString): New method.
+
+2006-03-22  Tom Tromey  <tromey@redhat.com>
+
 	* doc/hacking.texinfo (Source Code Style Guide): Mention
 	NotImplementedException.
 	* javax/imageio/stream/MemoryCacheImageOutputStream.java
