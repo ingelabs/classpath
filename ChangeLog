@@ -1,5 +1,15 @@
 2006-03-22  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/plaf/synth/ColorType.java (MAX_COUNT): No longer
+	constant.
+	* javax/swing/plaf/synth/SynthStyle.java (getColorForState): Now
+	protected.
+	(getFontForState): Likewise.
+	(getInsets): Added 'result' argument.
+	(getPainter): Renamed.
+
+2006-03-22  Tom Tromey  <tromey@redhat.com>
+
 	* javax/swing/plaf/synth/SynthPainter.java
 	(paintScrollBarThumbBackground): Added 'orientation' argument.
 	(paintScrollBarThumbBorder): Likewise.

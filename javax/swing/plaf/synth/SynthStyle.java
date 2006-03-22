@@ -79,7 +79,7 @@ public abstract class SynthStyle
     return null;
   }
 
-  public abstract Color getColorForState(SynthContext ctx, ColorType type);
+  protected abstract Color getColorForState(SynthContext ctx, ColorType type);
 
   public Font getFont(SynthContext ctx)
     throws NotImplementedException
@@ -88,16 +88,16 @@ public abstract class SynthStyle
     return null;
   }
 
-  public abstract Font getFontForState(SynthContext ctx);
+  protected abstract Font getFontForState(SynthContext ctx);
 
-  public Insets getInsets(SynthContext ctx)
+  public Insets getInsets(SynthContext ctx, Insets result)
     throws NotImplementedException
   {
     // FIXME: Implement this correctly.
     return null;
   }
 
-  public SynthPainter getPainted(SynthContext ctx)
+  public SynthPainter getPainter(SynthContext ctx)
     throws NotImplementedException
   {
     // FIXME: Implement this correctly.
