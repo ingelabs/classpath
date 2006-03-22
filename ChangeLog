@@ -4,7 +4,7 @@
 
 2006-03-22  Mark Wielaard  <mark@klomp.org>
 
-	Fixes bug #26301
+	Fixes bug #26527
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (gtkWidgetSetCursor):
 	Takes GtkImage, x and y coordinates.
 	(gtkWidgetSetCursorUnlocked): Likewise.
