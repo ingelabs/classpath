@@ -1,3 +1,11 @@
+2006-03-22  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #26301
+	* gnu/java/awt/peer/GLightweightPeer.java: Extend MouseAdapter.
+	(GLightweightPeer(Component)): Install MouseListener.
+	(setCursor): Implement.
+	(mouseEntered): New method.
+
 2006-03-22  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/plaf/synth/ColorType.java (MAX_COUNT): No longer
