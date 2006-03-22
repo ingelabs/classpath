@@ -236,6 +236,13 @@ public class RE extends REToken {
    */
   public static final int REG_REPLACE_USE_BACKSLASHESCAPE = 0x0200;
 
+  /**
+   * Compilation flag. Allow whitespace and comments in pattern.
+   * This is equivalent to the "/x" operator in Perl.
+   */
+
+  public static final int REG_X_COMMENTS = 0x0400;
+
   /** Returns a string representing the version of the gnu.regexp package. */
   public static final String version() {
     return VERSION;
@@ -373,6 +380,31 @@ public class RE extends REToken {
       if (quot)
       	unit.bk = false;
 
+      if (((cflags & REG_X_COMMENTS) > 0) && (!unit.bk) && (!quot)) {
+	if (Character.isWhitespace(unit.ch)) {
+	     continue;
+	}
+	if (unit.ch == '#') {
+	  for (int i = index; i < pLength; i++) {
+	    if (pattern[i] == '\n') {
+	      index = i + 1;
+	      continue;
+	    }
+	    else if (pattern[i] == '\r') {
+	      if (i + 1 < pLength && pattern[i + 1] == '\n') {
+		index = i + 2;
+	      }
+	      else {
+		index = i + 1;
+	      }
+	      continue;
+	    }
+	  }
+	  index = pLength;
+	  continue;
+	}
+      }
+
       // ALTERNATION OPERATOR
       //  \| or | (if RE_NO_BK_VBAR) or newline (if RE_NEWLINE_ALT)
       //  not available if RE_LIMITED_OPS is set
@@ -497,7 +529,7 @@ public class RE extends REToken {
 	  case 'm':
 	  case 's':
 	  // case 'u':  not supported
-	  // case 'x':  not supported
+	  case 'x':
 	  case '-':
             if (!syntax.get(RESyntax.RE_EMBEDDED_FLAGS)) break;
 	    // Set or reset syntax flags.
@@ -537,7 +569,13 @@ public class RE extends REToken {
 		  flagIndex++;
 		  break;
 	  	// case 'u': not supported
-	  	// case 'x': not supported
+	  	case 'x':
+		  if (negate)
+		    newCflags &= ~REG_X_COMMENTS;
+		  else
+		    newCflags |= REG_X_COMMENTS;
+		  flagIndex++;
+		  break;
 	  	case '-':
 		  negate = true;
 		  flagIndex++;

@@ -1,3 +1,10 @@
+2006-03-23  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/regexp/RE.java(REG_X_COMMENTS): New copilation flag,
+	(initialize): Ignore whiltespaces and comments if REG_X_COMMENTS is set.
+	* java/util/regex/Pattern.java(constructor): Set RE.REG_X_COMMENTS
+	if COMMENTS is set.
+
 2006-03-22  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/plaf/synth/SynthStyle.java (getInt): Implemented.
