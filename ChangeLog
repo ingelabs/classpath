@@ -1,3 +1,7 @@
+2006-03-23  Tom Tromey  <tromey@redhat.com>
+
+	* java/net/URLConnection.java (getContent(Class[])): Implemented.
+
 2006-03-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* tools/gnu/classpath/tools/giop/GRMIC.java (main): Accept -force.
