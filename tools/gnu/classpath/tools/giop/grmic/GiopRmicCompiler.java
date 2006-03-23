@@ -115,6 +115,11 @@ public class GiopRmicCompiler
    * Verbose output
    */
   protected boolean verbose = false;
+  
+  /**
+   * Force mode - do not check the exceptions
+   */
+  protected boolean force = false;
 
   /**
    * Clear data, preparing for the next compilation.
@@ -204,7 +209,7 @@ public class GiopRmicCompiler
                     remEx = true;
                     break;
                   }
-                if (! remEx)
+                if (! remEx && !force)
                   throw new CompilationError(m[i].getName() + ", defined in "
                                              + c.getName()
                                              + ", does not throw "
@@ -482,6 +487,14 @@ public class GiopRmicCompiler
   public void setWarnings(boolean warn)
   {
     warnings = warn;
+  }
+  
+  /**
+   * Set the error ignore mode.
+   */
+  public void setForce(boolean isforce)
+  {
+    force = isforce;
   }
 
   /**

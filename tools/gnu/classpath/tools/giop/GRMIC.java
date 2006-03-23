@@ -105,6 +105,10 @@ public class GRMIC
                 verbose = true;
                 compiler.setVerbose(true);
               }
+            else if (c.equals("-force"))
+              {
+                compiler.setForce(true);
+              }
             else if (c.equals("-d"))
               {
                 int f = i + 1;
