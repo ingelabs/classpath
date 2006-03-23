@@ -1,3 +1,18 @@
+2006-03-23  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTabbedPane.java
+	(Page.getBackground): Return the JTabbedPane's background,
+	rather than the page's component background.
+	(Page.getForeground): Return the JTabbedPane's foreground,
+	rather than the page's component foreground.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(uninstallUI): Don't set colors to null.
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	(paintTabBackground): Correctly determine the tab background.
+	(getUnselectedBackground): New helper method to
+	handle the UI property 'TabbedPane.unselectedBackground'
+	correctly.
+
 2006-03-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java

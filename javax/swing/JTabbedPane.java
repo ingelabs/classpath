@@ -381,7 +381,7 @@ public class JTabbedPane extends JComponent implements Serializable,
     {
       Color background;
       if (bg == null)
-        background = component.getBackground();
+        background = JTabbedPane.this.getBackground();
       else
         background = bg;
       return background;
@@ -406,7 +406,7 @@ public class JTabbedPane extends JComponent implements Serializable,
     {
       Color foreground;
       if (fg == null)
-        foreground = component.getForeground();
+        foreground = JTabbedPane.this.getForeground();
       else
         foreground = fg;
       return foreground;

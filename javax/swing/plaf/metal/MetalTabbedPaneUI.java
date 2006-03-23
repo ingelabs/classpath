@@ -47,6 +47,7 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.UIResource;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 
 /**
@@ -658,7 +659,7 @@ public class MetalTabbedPaneUI extends BasicTabbedPaneUI
     if (isSelected)
       g.setColor(selectColor);
     else
-      g.setColor(tabPane.getBackgroundAt(tabIndex));
+      g.setColor(getUnselectedBackground(tabIndex));
 
     switch (tabPlacement)
     {
@@ -1114,5 +1115,27 @@ public class MetalTabbedPaneUI extends BasicTabbedPaneUI
     int run = getRunForTab(count, tabIndex);
     int lastIndex = lastTabInRun(count, run);
     return tabIndex == lastIndex;
+  }
+
+  /**
+   * Returns the background for an unselected tab. This first asks the
+   * JTabbedPane for the background at the specified tab index, if this
+   * is an UIResource (that means, it is inherited from the JTabbedPane)
+   * and the TabbedPane.unselectedBackground UI property is not null,
+   * this returns the value of the TabbedPane.unselectedBackground property,
+   * otherwise the value returned by the JTabbedPane.
+   *
+   * @param tabIndex the index of the tab for which we query the background
+   *
+   * @return the background for an unselected tab
+   */
+  private Color getUnselectedBackground(int tabIndex)
+  {
+    Color bg = tabPane.getBackgroundAt(tabIndex);
+    Color unselectedBackground =
+      UIManager.getColor("TabbedPane.unselectedBackground");
+    if (bg instanceof UIResource && unselectedBackground != null)
+      bg = unselectedBackground;
+    return bg;
   }
 }
