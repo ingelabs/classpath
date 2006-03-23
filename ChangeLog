@@ -1,5 +1,45 @@
 2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/awt/Component.java
+	(getAccessibleName): Just return accessibleName,
+	* javax/swing/AbstractButton.java
+	(getAccessibleStateSet): Mark as stub,
+	(getAccessibleName): Implemented,
+	(getAcessibleIcon): Mark as stub,
+	(getAccessibleRelationSet): Likewise,
+	(getAccessibleAction): Likewise,
+	(getAccessibleValue): Likewise,
+	(getAccessibleActionCount): Likewise,
+	(getAccessibleActionDescription): Likewise,
+	(doAccessibleAction): Likewise,
+	(getCurrentAccessibleValue): Likewise,
+	(setCurrentAccessibleValue): Likewise,
+	(getMinimumAccessibleValue): Likewise,
+	(getMaximumAccessibleValue): Likewise,
+	(getAccessibleText): Likewise,
+	(getIndexAtPoint): Likewise,
+	(getCharacterBounds): Likewise,
+	(getCharCount): Likewise,
+	(getCaretPosition): Likewise,
+	(getAtIndex): Likewise,
+	(getAfterIndex): Likewise,
+	(getBeforeIndex): Likewise,
+	(getCharacterAttribute): Likewise,
+	(getSelectionStart): Likewise,
+	(getSelectionEnd): Likewise,
+	(getSelectedText): Likewise,
+	(getTextRectangle): Likewise,
+	(setIconTextGap): Fire PropertyChangeEvent, not state changed,
+	(getIconTextGap): Added @since 1.4,
+	(setContentAreaFilled): Reordered code to make event sequence match
+	reference implementation,
+	* javax/swing/JButton.java
+	(getSelectedObjects): Removed,
+	*javax/swing/JComponent.java
+	(getAccessibleName): Call super.
+
+2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JProgressBar.java
 	(AccessibleJProgressBar.getAccessibleStateSet): Implemented,
 	(AccessibleJProgressBar.getAccessibleRole): Added API docs,

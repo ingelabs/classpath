@@ -5292,7 +5292,7 @@ p   * <li>the set of backward traversal keys
      */
     public String getAccessibleName()
     {
-      return accessibleName == null ? getName() : accessibleName;
+      return accessibleName;
     }
 
     /**
