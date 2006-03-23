@@ -24,6 +24,8 @@
         only when mouse event was not yet consumed.
         * javax/swing/text/DefaultCaret.java:
 	(mousePressed): Rewritten.
+	(setDot): Changed order of operations.
+	(moveDot): Dito.
 
 2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
 
