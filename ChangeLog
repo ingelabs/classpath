@@ -1,3 +1,15 @@
+2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JProgressBar.java
+	(AccessibleJProgressBar.getAccessibleStateSet): Implemented,
+	(AccessibleJProgressBar.getAccessibleRole): Added API docs,
+	(AccessibleJProgressBar.getAccessibleValue): Implemented,
+	(AccessibleJProgressBar.getCurrentAccessibleValue): Likewise,
+	(AccessibleJProgressBar.setCurrentAccessibleValue): Likewise,
+	(AccessibleJProgressBar.getMinimumAccessibleValue): Likewise,
+	(AccessibleJProgressBar.getMaximumAccessibleValue): Likewise,
+	(getAccessibleContext): Added API docs.
+
 2006-03-23  Robert Schuster  <robertschuster@fsfe.org>
 
         * javax/swing/plaf/basic/BasicTextUI.java:
