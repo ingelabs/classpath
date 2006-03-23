@@ -52,6 +52,7 @@ import java.util.Hashtable;
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
 import javax.accessibility.AccessibleStateSet;
 import javax.accessibility.AccessibleValue;
 import javax.swing.event.ChangeEvent;
@@ -118,10 +119,9 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   private static final long serialVersionUID = -1441275936141218479L;
 
   /**
-   * DOCUMENT ME!
+   * Provides the accessibility features for the <code>JSlider</code>
+   * component.
    */
-  // FIXME: This inner class is a complete stub and needs to be implemented
-  // properly.
   protected class AccessibleJSlider extends JComponent.AccessibleJComponent
     implements AccessibleValue
   {
@@ -136,82 +136,96 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
     }
 
     /**
-     * DOCUMENT ME!
+     * Returns a set containing the current state of the {@link JSlider} 
+     * component.
      *
-     * @return DOCUMENT ME!
+     * @return The accessible state set.
      */
     public AccessibleStateSet getAccessibleStateSet()
-      throws NotImplementedException
     {
-      return null;
+      AccessibleStateSet result = super.getAccessibleStateSet();
+      if (orientation == JSlider.HORIZONTAL)
+        result.add(AccessibleState.HORIZONTAL);
+      else if (orientation == JSlider.VERTICAL)
+        result.add(AccessibleState.VERTICAL);
+      return result;
     }
 
     /**
-     * DOCUMENT ME!
+     * Returns the accessible role for the <code>JSlider</code> component.
      *
-     * @return DOCUMENT ME!
+     * @return {@link AccessibleRole#SLIDER}.
      */
     public AccessibleRole getAccessibleRole()
       throws NotImplementedException
     {
-      return null;
+      return AccessibleRole.SLIDER;
     }
 
     /**
-     * DOCUMENT ME!
+     * Returns an object that provides access to the accessible value.
      *
-     * @return DOCUMENT ME!
+     * @return The accessible value.
      */
     public AccessibleValue getAccessibleValue()
-      throws NotImplementedException
     {
-      return null;
+      return this;
     }
 
     /**
-     * DOCUMENT ME!
+     * Returns the current value of the {@link JSlider} component, as an
+     * {@link Integer}.
      *
-     * @return DOCUMENT ME!
+     * @return The current value of the {@link JSlider} component.
      */
     public Number getCurrentAccessibleValue()
-      throws NotImplementedException
     {
-      return null;
+      return new Integer(getValue());
     }
 
     /**
-     * setCurrentAccessibleValue
+     * Sets the current value of the {@link JSlider} component and sends a
+     * {@link PropertyChangeEvent} (with the property name 
+     * {@link AccessibleContext#ACCESSIBLE_VALUE_PROPERTY}) to all registered
+     * listeners.  If the supplied value is <code>null</code>, this method 
+     * does nothing and returns <code>false</code>.
      *
-     * @param value0 TODO
+     * @param value  the new slider value (<code>null</code> permitted).
      *
-     * @return boolean
+     * @return <code>true</code> if the slider value is updated, and 
+     *     <code>false</code> otherwise.
      */
-    public boolean setCurrentAccessibleValue(Number value0)
-      throws NotImplementedException
+    public boolean setCurrentAccessibleValue(Number value)
     {
-      return false;
+      if (value == null)
+        return false;
+      Number oldValue = getCurrentAccessibleValue();
+      setValue(value.intValue());
+      firePropertyChange(AccessibleContext.ACCESSIBLE_VALUE_PROPERTY, oldValue, 
+                         new Integer(getValue()));
+      return true;
     }
 
     /**
-     * getMinimumAccessibleValue
+     * Returns the minimum value of the {@link JSlider} component, as an
+     * {@link Integer}.
      *
-     * @return Number
+     * @return The minimum value of the {@link JSlider} component.
      */
     public Number getMinimumAccessibleValue()
-      throws NotImplementedException
     {
-      return null;
+      return new Integer(getMinimum());
     }
 
     /**
-     * getMaximumAccessibleValue
+     * Returns the maximum value of the {@link JSlider} component, as an
+     * {@link Integer}.
      *
-     * @return Number
+     * @return The maximum value of the {@link JSlider} component.
      */
     public Number getMaximumAccessibleValue()
-      throws NotImplementedException
     {
-      return null;
+      return new Integer(getMaximum());
     }
   }
 
@@ -933,9 +947,10 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   }
 
   /**
-   * DOCUMENT ME!
+   * Returns the object that provides accessibility features for this
+   * <code>JSlider</code> component.
    *
-   * @return DOCUMENT ME!
+   * @return The accessible context (an instance of {@link AccessibleJSlider}).
    */
   public AccessibleContext getAccessibleContext()
   {

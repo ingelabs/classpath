@@ -67,7 +67,6 @@ import java.awt.event.MouseEvent;
 import java.awt.peer.LightweightPeer;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.io.Serializable;
@@ -161,14 +160,9 @@ public abstract class JComponent extends Container implements Serializable
     protected ContainerListener accessibleContainerHandler;
     protected FocusListener accessibleFocusHandler;
 
-    /**
-     * Manages the property change listeners;
-     */
-    private PropertyChangeSupport changeSupport;
-
     protected AccessibleJComponent()
     {
-      changeSupport = new PropertyChangeSupport(this);
+      // nothing to do here
     }
 
     /**
@@ -178,7 +172,8 @@ public abstract class JComponent extends Container implements Serializable
      */
     public void addPropertyChangeListener(PropertyChangeListener listener)
     {
-      changeSupport.addPropertyChangeListener(listener);
+      // TODO: figure out what is done differently here, if anything...
+      super.addPropertyChangeListener(listener);
     }
 
     /**
@@ -188,7 +183,8 @@ public abstract class JComponent extends Container implements Serializable
      */
     public void removePropertyChangeListener(PropertyChangeListener listener)
     {
-      changeSupport.removePropertyChangeListener(listener);
+      // TODO: figure out what is done differently here, if anything...
+      super.removePropertyChangeListener(listener);
     }
 
     /**

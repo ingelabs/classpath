@@ -1,3 +1,20 @@
+2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JComponent.java
+	(AccessibleJComponent.changeSupport): Removed field,
+	(AccessibleJComponent.AccessibleJComponent): Updated for removed field,
+	(AccessibleJComponent.addPropertyChangeListener): Call super,
+	(AccessibleJComponent.removePropertyChangeListener): Likewise,
+	* javax/swing/JSlider.java
+	(AccessibleJSlider.getAccessibleStateSet): Implemented,
+	(AccessibleJSlider.getAccessibleRole): Likewise,
+	(AccessibleJSlider.getAccessibleValue): Likewise,
+	(AccessibleJSlider.getCurrentAccessibleValue): Likewise,
+	(AccessibleJSlider.setCurrentAccessibleValue): Likewise,
+	(AccessibleJSlider.getMinimumAccessibleValue): Likewise,
+	(AccessibleJSlider.getMaximumAccessibleValue): Likewise,
+	(getAccessibleContext): Added API docs.
+
 2006-03-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/rmi/activation/ActivationSystemTransient.java
