@@ -471,10 +471,35 @@ public class DefaultCaret extends Rectangle
    */
   public void mousePressed(MouseEvent event)
   {
-    if (event.isShiftDown())
-      moveCaret(event);
-    else
-      positionCaret(event);
+    int button = event.getButton();
+    
+    // The implementation assumes that consuming the event makes the AWT event
+    // mechanism forget about this event instance and not transfer focus.
+    // By observing how the RI reacts the following behavior has been
+    // implemented (in regard to text components):
+    // - a left-click moves the caret
+    // - a left-click when shift is held down expands the selection
+    // - a right-click or click with any additionaly mouse button
+    //   on a text component is ignored
+    // - a middle-click positions the caret and pastes the clipboard
+    //   contents.
+    // - a middle-click when shift is held down is ignored
+    
+    if (button == MouseEvent.BUTTON1)
+      if (event.isShiftDown())
+        moveCaret(event);
+      else
+        positionCaret(event);
+      else if(button == MouseEvent.BUTTON2)
+        if (event.isShiftDown())
+          event.consume();
+        else
+          {
+            positionCaret(event);
+            textComponent.paste();
+          }
+      else
+        event.consume();
   }
 
   /**
@@ -934,8 +959,8 @@ public class DefaultCaret extends Rectangle
         this.dot = Math.max(this.dot, 0);
         
         handleHighlight();
-        adjustVisibility(this);
         appear();
+        adjustVisibility(this);
       }
   }
 
@@ -959,8 +984,8 @@ public class DefaultCaret extends Rectangle
         this.mark = this.dot;
         
         clearHighlight();
-        adjustVisibility(this);
         appear();
+        adjustVisibility(this);
       }
   }
   
