@@ -1,3 +1,10 @@
+2006-03-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(BorderListener.showingResizeCursor): New field.
+	(BorderListener.mouseMoved, BorderListner.mouseExited):
+	Implemented.
+
 2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JComboBox.java
