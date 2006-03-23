@@ -1,5 +1,12 @@
 2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/filechooser/UnixFileSystemView.java
+	(getSystemDisplayName): Mark as stub,
+	(getSystemIcon): Likewise,
+	(getSystemTypeDescription): Likewise.
+
+2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/tree/AbstractLayoutCache.java
 	(getNodeDimensions): Mark as stub,
 	(getPreferredHeight): Likewise,
