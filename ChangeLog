@@ -1,3 +1,32 @@
+2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/tree/AbstractLayoutCache.java
+	(getNodeDimensions): Mark as stub,
+	(getPreferredHeight): Likewise,
+	(getPreferredWidth): Likewise,
+	(getRowsForPaths): Likewise,
+	(isFixedRowHeight): Likewise,
+	* javax/swing/tree/DefaultTreeModel.java
+	(reload()): Mark as stub,
+	(reload(TreeNode)): Likewise,
+	(nodeStructureChanged): Likewise,
+	* javax/swing/tree/DefaultTreeSelectionModel.java
+	(clone): Mark as stub,
+	(setRowMapper): Likewise,
+	(setSelectionPaths): Likewise,
+	(isRowSelected): Likewise,
+	(resetRowSelection): Likewise,
+	(insureRowContinuity): Likewise,
+	(arePathsContiguous): Likewise,
+	(canPathsBeAdded): Likewise,
+	(canPathsBeRemoved): Likewise,
+	(notifyPathChange): Likewise,
+	(updateLeadIndex): Likewise,
+	(insureUniqueness): Likewise,
+	* javax/swing/tree/FixedHeightLayoutCache.java: Marked all methods as
+	stubs,
+	* javax/swing/tree/VariableHeightLayoutCache.java: Likewise.
+
 2006-03-22  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/text/StyleContext.java (getStaticAttribute): Mark as
