@@ -1,3 +1,43 @@
+2006-03-22  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/text/StyleContext.java (getStaticAttribute): Mark as
+	stub.
+	(getStaticAttributeKey): Likewise.
+	(readAttributeSet): Likewise.
+	(writeAttributeSet): Likewise.
+	(readAttributes): Likewise.
+	(writeAttributes): Likewise.
+	* javax/swing/text/html/HTMLEditorKit.java (insertAtBoundary): Mark
+	as stub.
+	* javax/swing/text/html/HTMLDocument.java (setParagraphAttributes):
+	Mark as stub.
+	(fireChangedUpdate): Likewise.
+	(start): Likewise.
+	(end): Likewise.
+	(handleEndOfLineString): Likewise.
+	(textAreaContent): Likewise.
+	(preContent): Likewise.
+	(addSpecialElement): Likewise.
+	(setInnerHTML): Likewise.
+	(setOuterHTML): Likewise.
+	(insertBeforeStart): Likewise.
+	(insertBeforeEnd): Likewise.
+	(insertAfterEnd): Likewise.
+	(insertAfterStart): Likewise.
+	* javax/swing/table/JTableHeader.java (AccessibleJTableHeaderEntry):
+	Mark all methods as stub.s
+	* javax/swing/plaf/metal/MetalTreeUI.java (decodeLineStyle): Mark
+	as stub.
+	(paintHorizontalSeparators): Likewise.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java (loadSystemColors):
+	Mark as stub.
+	* javax/swing/MenuSelectionManager.java (processKeyEvent): Mark as
+	stub.
+	* java/beans/beancontext/BeanContextSupport.java: Mark most methods
+	as stubs.
+	* java/beans/beancontext/BeanContextServicesSupport.java: Mark most
+	methods as stubs.
+
 2006-03-22  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GtkCursor.java: New class.
