@@ -1,5 +1,24 @@
 2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JComboBox.java
+	(selectWithKeyChar): Mark as stub,
+	* javax/swing/JFileChooser.java
+	(setDragEnabled): Mark as stub,
+	(getDragEnabled): Likewise,
+	* javax/swing/JSlider.java
+	(AccessibleJSlider.getAccessibleStateSet): Mark as stub,
+	(AccessibleJSlider.getAccessibleRole): Likewise,
+	(AccessibleJSlider.getAccessibleValue): Likewise,
+	(AccessibleJSlider.getCurrentAccessibleValue): Likewise,
+	(AccessibleJSlider.setCurrentAccessibleValue): Likewise,
+	(AccessibleJSlider.getMinimumAccessibleValue): Likewise,
+	(AccessibleJSlider.getMaximumAccessibleValue): Likewise,
+	* javax/swing/UIManager.java
+	(installLookAndFeel): Mark as stub,
+	(setInstalledLookAndFeels): Likewise.
+
+2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/filechooser/UnixFileSystemView.java
 	(getSystemDisplayName): Mark as stub,
 	(getSystemIcon): Likewise,

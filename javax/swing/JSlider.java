@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing;
 
+import gnu.classpath.NotImplementedException;
+
 import java.awt.Dimension;
 import java.awt.MenuContainer;
 import java.awt.image.ImageObserver;
@@ -139,6 +141,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
      * @return DOCUMENT ME!
      */
     public AccessibleStateSet getAccessibleStateSet()
+      throws NotImplementedException
     {
       return null;
     }
@@ -149,6 +152,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
      * @return DOCUMENT ME!
      */
     public AccessibleRole getAccessibleRole()
+      throws NotImplementedException
     {
       return null;
     }
@@ -159,6 +163,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
      * @return DOCUMENT ME!
      */
     public AccessibleValue getAccessibleValue()
+      throws NotImplementedException
     {
       return null;
     }
@@ -169,6 +174,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
      * @return DOCUMENT ME!
      */
     public Number getCurrentAccessibleValue()
+      throws NotImplementedException
     {
       return null;
     }
@@ -181,6 +187,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
      * @return boolean
      */
     public boolean setCurrentAccessibleValue(Number value0)
+      throws NotImplementedException
     {
       return false;
     }
@@ -191,6 +198,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
      * @return Number
      */
     public Number getMinimumAccessibleValue()
+      throws NotImplementedException
     {
       return null;
     }
@@ -201,6 +209,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
      * @return Number
      */
     public Number getMaximumAccessibleValue()
+      throws NotImplementedException
     {
       return null;
     }
