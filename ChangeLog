@@ -1,5 +1,11 @@
 2006-03-23  Robert Schuster  <robertschuster@fsfe.org>
 
+        * javax/swing/plaf/basic/BasicTextUI.java:
+        (FocusListener.focusLost): Put current selection into the system
+        clipboard.
+
+2006-03-23  Robert Schuster  <robertschuster@fsfe.org>
+
         * java/awt/Component.java:
         (processMouseEvent): Remove call to consume event.
         (dispatchEventImpl): Handle specific events first, do focus request
