@@ -99,12 +99,12 @@ public class ActivationSystemTransient
   /**
    * Set to true to print the event messages to console.
    */
-  static boolean debug = false;
+  public static boolean debug = false;
   
   /**
    * This group should not be instantiated outside the group code.
    */
-  private ActivationSystemTransient()
+  protected ActivationSystemTransient()
   {
   }
   
@@ -133,7 +133,8 @@ public class ActivationSystemTransient
 
     ActivationDesc desc = (ActivationDesc) descriptions.get(id);
     if (desc == null)
-      throw new UnknownObjectException(id == null ? "null" : id.toString());
+      throw new UnknownObjectException("Activating unknown object  "+
+                                       id == null ? "null" : id.toString());
 
     ActivationInstantiator group = 
       (ActivationInstantiator) groupInstantiators.get(desc.getGroupID());
@@ -145,8 +146,8 @@ public class ActivationSystemTransient
         ActivationGroupDesc adesc = (ActivationGroupDesc) groupDescs.get(gid);
 
         if (adesc == null)
-          throw new UnknownGroupException("Unknown group, " + gid + " for "
-                                          + id+" this "+this);
+          throw new UnknownGroupException("Activating unknown group " 
+                                          + gid + " for "+ id+" this "+this);
 
         synchronized (ActivationSystemTransient.class)
           {
@@ -190,7 +191,8 @@ public class ActivationSystemTransient
   {
     ActivationDesc desc = (ActivationDesc) descriptions.get(id);
     if (desc == null)
-      throw new UnknownObjectException(id == null ? "null" : id.toString());
+      throw new UnknownObjectException("No desc for "+
+                                       id == null ? "null" : id.toString());
     return desc;
   }
   

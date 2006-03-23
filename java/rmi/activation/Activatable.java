@@ -215,13 +215,20 @@ public abstract class Activatable
   }
   
   /**
-   * Obtain the activation Id from the activation descriptor bu registering
+   * Obtain the activation Id from the activation descriptor by registering
    * within the current group.
    */
-  static ActivationID obtainId(ActivationDesc descriptor) throws RemoteException,
-      UnknownGroupException, ActivationException
+  static ActivationID obtainId(ActivationDesc descriptor)
+      throws RemoteException, UnknownGroupException, ActivationException
   {
-    return ActivationGroup.currentGroupID().getSystem().registerObject(descriptor);
+    ActivationGroupID id = descriptor.getGroupID();
+    ActivationSystem system;
+
+    if (id != null)
+      system = id.getSystem();
+    else
+      system = ActivationGroup.currentGroupID().getSystem();
+    return system.registerObject(descriptor);
   }
   
   /**

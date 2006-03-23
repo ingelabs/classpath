@@ -162,6 +162,11 @@ public abstract class ActivationGroup
                                             long incarnation)
       throws ActivationException
   {
+    // If the activation system is not yet set, set it to the system.
+    // passed in the group id.
+    if (system == null)
+      system = id.system;
+    
     ActivationGroup group = null;
 
     // TODO at the moment all groups are created on the current jre and the
@@ -177,9 +182,9 @@ public abstract class ActivationGroup
           }
         catch (ClassNotFoundException e)
           {
-            ActivationException acex = new ActivationException("Cannot load "
-                                                               + desc.className);
-            acex.initCause(e);
+            ActivationException acex = new ActivationException(
+              "Cannot load " + desc.className);
+            acex.detail = e;
             throw acex;
           }
       }
@@ -189,16 +194,14 @@ public abstract class ActivationGroup
     try
       {
         Constructor constructor = groupClass.getConstructor(cConstructorTypes);
-        group = (ActivationGroup) constructor.newInstance(new Object[] {
-                                                                        id,
-                                                                        desc.data });
+        group = (ActivationGroup) constructor.newInstance(
+          new Object[] { id, desc.data });
       }
     catch (Exception e)
       {
         ActivationException acex = new ActivationException(
-                                                           "Cannot instantiate "
-                                                               + desc.className);
-        acex.initCause(e);
+          "Cannot instantiate " + desc.className);
+        acex.detail = e;
         throw acex;
       }
 
@@ -211,7 +214,7 @@ public abstract class ActivationGroup
     catch (RemoteException e)
       {
         ActivationException acex = new ActivationException("createGroup");
-        acex.initCause(e);
+        acex.detail = e;
         throw acex;
       }
   }

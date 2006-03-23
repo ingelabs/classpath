@@ -360,7 +360,8 @@ public class UnicastServerRef
         // meth);
         if (meth == null)
           {
-            throw new NoSuchMethodException();
+            throw new NoSuchMethodException(
+              myself.getClass().getName()+" hash "+hash);
           }
 
         ObjectInputStream in = conn.getObjectInputStream();
@@ -420,9 +421,8 @@ public class UnicastServerRef
     else
       {
         if (skel == null)
-          {
-            throw new NoSuchMethodException();
-          }
+          throw new NoSuchMethodException("JDK 1.1 call - Skeleton required");
+        
         UnicastRemoteCall call = new UnicastRemoteCall(conn);
         skel.dispatch(myself, call, method, hash);
         if (! call.isReturnValue())

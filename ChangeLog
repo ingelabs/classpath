@@ -1,3 +1,31 @@
+2006-03-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/rmi/activation/ActivationSystemTransient.java
+	(debug): Made public. (constructor): Made protected.
+	(activate, getActivationDesc): Throw more informative exceptions.
+	* gnu/java/rmi/server/UnicastConnectionManager.java (toString):
+	New method.
+	* gnu/java/rmi/server/UnicastRef.java (remoteToString): 
+	Stub, implemented.
+	* gnu/java/rmi/server/UnicastServer.java (incomingMessageCall):
+	Documented.
+	* gnu/java/rmi/server/UnicastServerRef.java (incomingMessageCall):
+	Better exception.
+	* java/rmi/activation/Activatable.java (obtainId): Use the activation
+	system, passed in the activation descriptor field.
+	* java/rmi/activation/ActivationGroup.java (createGroup): Likewise.
+	* java/rmi/activation/ActivationGroupID.java (system, uid): Changed
+	to package private final. (equals): Compare uid, not the system. 
+	(hashCode): Forward to uid.hashCode(). toString(): New method.
+	* java/rmi/activation/ActivationID.java (readObject, writeObject):
+	Rewritten. (equals): Compare UID only. toString(): New method.
+	* java/rmi/server/ObjID.java (eq): New method. (equals): Compare also
+	UID (space). (hashCode, toString): Rewritten.
+	* java/rmi/server/RemoteObjectInvocationHandler.java (noArgs): 
+	New method. (invoke): Treat null as an empty array for parameters.
+	* java/rmi/server/UID.java (toString): Rewritten. (hashCode):
+	Include count, do not include the static machineId.
+
 2006-03-23  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/URLConnection.java (getContent(Class[])): Implemented.
