@@ -1,3 +1,7 @@
+2006-03-24  Mark Wielaard  <mark@klomp.org>
+
+	* NEWS: Add cursor and selection improvements.
+
 2006-03-23  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/Component.java
