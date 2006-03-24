@@ -959,7 +959,11 @@ public class JTabbedPane extends JComponent implements Serializable,
    */
   public Component getSelectedComponent()
   {
-    return getComponentAt(getSelectedIndex());
+    int selectedIndex = getSelectedIndex();
+    Component selected = null;
+    if (selectedIndex >= 0)
+      selected = getComponentAt(selectedIndex);
+    return selected;
   }
 
   /**

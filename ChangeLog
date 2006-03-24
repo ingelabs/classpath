@@ -1,3 +1,9 @@
+2006-03-24  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTabbedPane.java
+	(getSelectedComponent): Return null when no component is
+	selected.
+
 2006-03-24  Mark Wielaard  <mark@klomp.org>
 
 	* NEWS: Add cursor and selection improvements.
