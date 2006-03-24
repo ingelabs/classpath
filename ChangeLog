@@ -1,3 +1,26 @@
+2006-03-24  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/rmi/activation/ActivationSystemTransient.java:
+	Inherit from Activator.
+
+2006-03-24  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/rmi/activation/DefaultActivationGroup.java (newInstance):
+	Print debug message if debug flag is set.
+	* gnu/java/rmi/activation/DefaultActivationSystem.java: Rewritten.
+	* gnu/java/rmi/server/ActivatableServerRef.java (activate): assign
+	detail, do not call iniCause(). (exportClass): New method.
+	* gnu/java/rmi/server/CombinedClassLoader.java (constructor):
+	Ignore null (bootstrap) class loader.
+	* gnu/java/rmi/server/UnicastServerRef.java (methods, skel, stub,
+	buildMethodHash, findStubSkelClass, getHelperClass): Changed 
+	visibility to protected.
+	* java/rmi/activation/Activatable.java (export, register): Rewritten.
+	(toStub): New method.
+	* java/rmi/activation/ActivationGroup.java (getSystem): Rewritten.
+	* java/rmi/activation/ActivationSystem.java (SYSTEM_PORT): 
+	Explained property java.rmi.activation.port.
+
 2006-03-24  Tom Tromey  <tromey@redhat.com>
 
 	* .externalToolBuilders/CreateLocaleData.launch: Updated.
