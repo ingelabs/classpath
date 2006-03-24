@@ -1,3 +1,18 @@
+2006-03-24  Tom Tromey  <tromey@redhat.com>
+
+	* .externalToolBuilders/CreateLocaleData.launch: Updated.
+	* gnu/java/locale/.cvsignore: New file.
+	* lib/Makefile.am (LocaleData.java): Put in gnu/java/locale.
+	* java/util/Locale.java (getAvailableLocales): Clone result.
+	(getISOCountries): Likewise.
+	(getISOLanguages): Likewise.
+	* scripts/generate-locale-list.sh: Make class public.  Added new
+	array.
+	* gnu/java/locale/LocaleHelper.java (getCollatorLocales): New method.
+	(getLocaleCount): Likewise.
+	* java/text/Collator.java (getInstance): Javadoc typo fix.
+	(getAvailableLocales): Wrote.
+
 2006-03-24  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTabbedPane.java
