@@ -1,5 +1,36 @@
 2006-03-25  Michael Koch  <konqueror@gmx.de>
 
+	* resource/gnu/java/locale/LocaleInformation_az.properties,
+	resource/gnu/java/locale/LocaleInformation_bs.properties,
+	resource/gnu/java/locale/LocaleInformation_byn.properties,
+	resource/gnu/java/locale/LocaleInformation_byn_ER.properties,
+	resource/gnu/java/locale/LocaleInformation_el_CY.properties,
+	resource/gnu/java/locale/LocaleInformation_gez.properties,
+	resource/gnu/java/locale/LocaleInformation_gez_ER.properties,
+	resource/gnu/java/locale/LocaleInformation_gez_ET.properties,
+	resource/gnu/java/locale/LocaleInformation_haw.properties,
+	resource/gnu/java/locale/LocaleInformation_haw_US.properties,
+	resource/gnu/java/locale/LocaleInformation_kok.properties,
+	resource/gnu/java/locale/LocaleInformation_kok_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_sid.properties,
+	resource/gnu/java/locale/LocaleInformation_sid_ET.properties,
+	resource/gnu/java/locale/LocaleInformation_sl_SI.properties,
+	resource/gnu/java/locale/LocaleInformation_sr_BA_Cyrl.properties,
+	resource/gnu/java/locale/LocaleInformation_sr_BA_Latn.properties,
+	resource/gnu/java/locale/LocaleInformation_sr_Cyrl.properties,
+	resource/gnu/java/locale/LocaleInformation_syr.properties,
+	resource/gnu/java/locale/LocaleInformation_syr_SY.properties,
+	resource/gnu/java/locale/LocaleInformation_tig.properties,
+	resource/gnu/java/locale/LocaleInformation_tig_ER.properties,
+	resource/gnu/java/locale/LocaleInformation_uz_AF_Arab.properties,
+	resource/gnu/java/locale/LocaleInformation_uz_Arab.properties,
+	resource/gnu/java/locale/LocaleInformation_uz_Latn.properties,
+	resource/gnu/java/locale/LocaleInformation_wal.properties,
+	resource/gnu/java/locale/LocaleInformation_wal_ET.properties:
+	New locales.
+
+2006-03-25  Michael Koch  <konqueror@gmx.de>
+
 	* resource/gnu/java/locale/LocaleInformation_fa.properties,
 	resource/gnu/java/locale/LocaleInformation_kn.properties,
 	resource/gnu/java/locale/LocaleInformation_kn_IN.properties,
