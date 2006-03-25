@@ -1,3 +1,15 @@
+2006-03-25  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JScrollBar.java
+	(AccessibleJScrollBar.getAccessibleStateSet): Implemented,
+	(AccessibleJScrollBar.getAccessibleRole): Likewise,
+	(AccessibleJScrollBar.getAccessibleValue): Likewise,
+	(AccessibleJScrollBar.getCurrentAccessibleValue): Likewise,
+	(AccessibleJScrollBar.setCurrentAccessibleValue): Likewise,
+	(AccessibleJScrollBar.getMinimumAccessibleValue): Likewise,
+	(AccessibleJScrollBar.getMaximumAccessibleValue): Likewise,
+	(getAccessibleContext): Updated API docs.
+
 2006-03-25  Tom Tromey  <tromey@redhat.com>
 
 	* .externalToolBuilders/CreateLocaleData.launch: Run if resource files
