@@ -1,3 +1,9 @@
+2006-03-25  Roman Kennke  <kennke@aicas.com>
+
+	* java/util/GregorianCalender.java
+	(computeTime): Fix comparison to correctly calculate the
+	calendar.
+
 2006-03-25  Wolfgang Baer  <WBaer@gmx.de>
 
 	Fixes bug #26837
