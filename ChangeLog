@@ -1,5 +1,15 @@
 2006-03-25  Michael Koch  <konqueror@gmx.de>
 
+	* resource/gnu/java/locale/LocaleInformation_ar_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_ar_IQ.properties,
+	resource/gnu/java/locale/LocaleInformation_ar_KW.properties,
+	resource/gnu/java/locale/LocaleInformation_ar_LY.properties,
+	resource/gnu/java/locale/LocaleInformation_mn_MN.properties,
+	resource/gnu/java/locale/LocaleInformation_uz_AF.properties:
+	Removed locales.
+
+2006-03-25  Michael Koch  <konqueror@gmx.de>
+
 	* resource/gnu/java/locale/LocaleInformation_az.properties,
 	resource/gnu/java/locale/LocaleInformation_bs.properties,
 	resource/gnu/java/locale/LocaleInformation_byn.properties,
