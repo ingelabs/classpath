@@ -1,3 +1,8 @@
+2006-03-25  Tom Tromey  <tromey@redhat.com>
+
+	* javax/naming/ldap/StartTlsRequest.java: New file.
+	* javax/naming/ldap/StartTlsResponse.java: New file.
+
 2006-03-25  Olivier Jolly  <olivier.jolly@pcedev.com>
 
     * java/net/URLClassLoader.java (FileURLLoader.getResource): Added test
