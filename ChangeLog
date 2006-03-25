@@ -1,5 +1,28 @@
 2006-03-25  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/java/util/jar/JarUtils.java: New file.
+	* java/util/jar/Manifest.java (CRLF): Removed.
+	(read_main_section): Likewise.
+	(read_version_info): Likewise.
+	(expect_header(String,BufferedReader)): Likewise.
+	(expect_header(String,BufferedReader,String)): Likewise.
+	(read_header_value): Likewise.
+	(read_attributes): Likewise.
+	(read_attribute): Likewise.
+	(read_individual_sections): Likewise.
+	(read_section_name): Likewise.
+	(write_main_section): Likewise.
+	(write_version_info): Likewise.
+	(write_header): Likewise.
+	(write_main_attributes): Likewise.
+	(write_attribute_entry): Likewise.
+	(write_individual_sections): Likewise.
+	(write_entry_attributes): Likewise.
+	(read): use JarUtils.
+	(write): Likewise.
+
+2006-03-25  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/java/security/pkcs/SignerInfo.java (log): New field.
 	(DEBUG): Removed.
 	(debug): Likewise.
