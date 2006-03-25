@@ -1,3 +1,38 @@
+2006-03-24  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JButton.java
+	(def): Replaced field with defaultCapable field.
+	(is_def): Removed field.
+	(JButton): Initialize defaultCapable with true.
+	(isDefaultButton): Documented and implemented method by querying
+	the button's root pane if present.
+	(isDefaultCapable): Changed def field to defaultCapable.
+	Added documentation.
+	(paramString): Call isDefaultButton() instead of accessing field,
+	which got removed.
+	(setDefaultCapable): Changed def field to defaultCapable.
+	Added documentation.
+	* javax/swing/JRootPane.java
+	(setDefaultButton): Only change the default button if the
+	new button is defaultCapable.
+	* javax/swing/plaf/basic/BasicRootPaneUI.java
+	(DefaultPressAction): New class.
+	(DefaultReleaseAction): New class.
+	(installKeyboardActions): Implemented.
+	(uninstallKeyboardActions): Implemented.
+	(propertyChange): Implemented.
+	* javax/swing/plaf/metal/MetalBorders.java
+	(ButtonBorder.paintBorder): 'Outsourced' default theme
+	painting to paintDefaultButtonBorder().
+	(ButtonBorder.paintDefaultButtonBorder): New helper method
+	to paint the border in the default theme. This also fixes
+	painting of the border for default buttons.
+	(ButtonBorder.paintOceanButtonBorder): Added support for
+	default button painting. Fixed border for pressed/default state.
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(update): Only paint gradient when in OceanTheme and when the
+	button is not armed.
+
 2006-03-24  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/rmi/activation/ActivationSystemTransient.java:
