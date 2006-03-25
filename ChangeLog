@@ -1,3 +1,15 @@
+2006-03-24  Tom Tromey  <tromey@redhat.com>
+
+	* javax/imageio/stream/ImageOutputStreamImpl.java (writeBytes):
+	Rewrote.
+	(writeChar): Removed useless cast.
+	(writeChars(String)): Implemented.
+	(writeDouble): Rewrote.
+	(writeFloat): Likewise.
+	(writeUTF): Implemented.
+	* javax/imageio/stream/ImageInputStreamImpl.java (byteOrder): Default
+	to big endian.
+
 2006-03-24  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JButton.java
