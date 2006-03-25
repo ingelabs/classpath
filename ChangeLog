@@ -1,3 +1,12 @@
+2006-03-25  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/InputMap.java
+	(allKeys): Check if parent keys is null.
+	* javax/swing/KeyboardManager.java
+	(registerEntireMap): Also register map's parent keys.
+	* javax/swing/plaf/metal/MetalRootPaneUI.java
+	(propertyChange): Also call super.propertyChange().
+
 2006-03-25  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* tools/gnu/classpath/tools/jarsigner/HashUtils.java: New file.
