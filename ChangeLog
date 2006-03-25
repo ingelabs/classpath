@@ -1,5 +1,10 @@
 2006-03-25  Tom Tromey  <tromey@redhat.com>
 
+	* .externalToolBuilders/CreateLocaleData.launch: Run if resource files
+	change or if generator script changes.
+
+2006-03-25  Tom Tromey  <tromey@redhat.com>
+
 	* javax/naming/ldap/StartTlsRequest.java: New file.
 	* javax/naming/ldap/StartTlsResponse.java: New file.
 
