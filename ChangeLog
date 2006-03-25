@@ -1,3 +1,10 @@
+2006-03-25  Olivier Jolly  <olivier.jolly@pcedev.com>
+
+    * java/net/URLClassLoader.java (FileURLLoader.getResource): Added test
+    to validate all components of a resource path.
+    (FileURLLoader.walkPathComponents): Helper which ensures that we are
+    allowed to walk through every component of a resource path.
+    
 2006-03-25  Michael Koch  <konqueror@gmx.de>
 
 	* NEWS: Added item for CLDR 1.3 update.
