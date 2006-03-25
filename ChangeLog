@@ -1,3 +1,38 @@
+2006-03-25  Michael Koch  <konqueror@gmx.de>
+
+	* resource/gnu/java/locale/LocaleInformation_ar_JO.properties,
+	resource/gnu/java/locale/LocaleInformation_ar_QA.properties,
+	resource/gnu/java/locale/LocaleInformation_ar_SA.properties,
+	resource/gnu/java/locale/LocaleInformation_ar_SY.properties,
+	resource/gnu/java/locale/LocaleInformation_ar_TN.properties,
+	resource/gnu/java/locale/LocaleInformation_ar_YE.properties,
+	resource/gnu/java/locale/LocaleInformation_as_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_be_BY.properties,
+	resource/gnu/java/locale/LocaleInformation_bn_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_en.properties,
+	resource/gnu/java/locale/LocaleInformation_en_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_en_PK.properties,
+	resource/gnu/java/locale/LocaleInformation_en_US_POSIX.properties,
+	resource/gnu/java/locale/LocaleInformation_es_PY.properties,
+	resource/gnu/java/locale/LocaleInformation_fa.properties,
+	resource/gnu/java/locale/LocaleInformation_fa_AF.properties,
+	resource/gnu/java/locale/LocaleInformation_fa_IR.properties,
+	resource/gnu/java/locale/LocaleInformation_gu_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_hi_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_ja_JP.properties,
+	resource/gnu/java/locale/LocaleInformation_kn_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_mr_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_or_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_pa.properties,
+	resource/gnu/java/locale/LocaleInformation_pa_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_ps_AF.properties,
+	resource/gnu/java/locale/LocaleInformation_ru_RU.properties,
+	resource/gnu/java/locale/LocaleInformation_sa.properties,
+	resource/gnu/java/locale/LocaleInformation_sa_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_ta_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_te_IN.properties:
+	Updated currency formats.
+
 2006-03-25  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/AbstractDocument.java
