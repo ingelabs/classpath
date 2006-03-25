@@ -1,5 +1,14 @@
 2006-03-25  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/gnu/classpath/tools/jarsigner/HashUtils.java: New file.
+	* tools/gnu/classpath/tools/jarsigner/JarSigner.java: Likewise.
+	* tools/gnu/classpath/tools/jarsigner/JarVerifier.java: Likewise.
+	* tools/gnu/classpath/tools/jarsigner/Main.java (Main): Likewise.
+	* tools/gnu/classpath/tools/jarsigner/SFHelper.java: Likewise.
+	* tools/gnu/classpath/tools/jarsigner/jarsigner.txt: Likewise.
+
+2006-03-25  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/java/util/jar/JarUtils.java: New file.
 	* java/util/jar/Manifest.java (CRLF): Removed.
 	(read_main_section): Likewise.
