@@ -1,5 +1,19 @@
 2006-03-25  Michael Koch  <konqueror@gmx.de>
 
+	* resource/gnu/java/locale/LocaleInformation_fa.properties,
+	resource/gnu/java/locale/LocaleInformation_kn.properties,
+	resource/gnu/java/locale/LocaleInformation_kn_IN.properties,
+	resource/gnu/java/locale/LocaleInformation_ko.properties,
+	resource/gnu/java/locale/LocaleInformation_sl.properties,
+	resource/gnu/java/locale/LocaleInformation_so.properties,
+	resource/gnu/java/locale/LocaleInformation_so_DJ.properties,
+	resource/gnu/java/locale/LocaleInformation_so_ET.properties,
+	resource/gnu/java/locale/LocaleInformation_so_SO.properties,
+	resource/gnu/java/locale/LocaleInformation_sr.properties:
+	Random fixes I forgot to commit before.
+
+2006-03-25  Michael Koch  <konqueror@gmx.de>
+
 	* resource/gnu/java/locale/LocaleInformation_ar_JO.properties,
 	resource/gnu/java/locale/LocaleInformation_ar_QA.properties,
 	resource/gnu/java/locale/LocaleInformation_ar_SA.properties,
