@@ -1,3 +1,35 @@
+2006-03-25  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/java/security/pkcs/SignerInfo.java (log): New field.
+	(DEBUG): Removed.
+	(debug): Likewise.
+	(SignerInfo(BERReader)): Updated javadoc.
+	Use JDK logging.
+	(SignerInfo(X500Principal,BigInteger,OID,byte[],OID,byte[],byte[])):
+	New constructor.
+	(encode): New method.
+	* gnu/java/security/pkcs/PKCS7SignedData.java (log): New field.
+	(PKCS7_DATA): Removed.
+	(DEBUG): Likewise.
+	(debug): Likewise.
+	(PKCS7SignedData(BERReader)): Updated javadoc.
+	Use JDK logging.
+	(PKCS7SignedData(Set,PKCS7Data,Certificate[],X509CRL[],Set)): New
+	constructor.
+	(encode): New method.
+	* gnu/java/security/pkcs/PKCS7Data.java: New file.
+	* gnu/java/security/key/dss/DSSKeyPairPKCS8Codec.java (log): New field.
+	(encodePrivateKey): Encode x (private MPN) as an OCTET STRING.
+	(decodePrivateKey): Decode x from an OCTET STRING.
+	* gnu/java/security/key/dss/DSSPublicKey.java (str): New field.
+	(toString): New method.
+	* gnu/java/security/key/dss/DSSPrivateKey.java (DEBUG): New field.
+	(str): Likewise.
+	(toString): New method.
+	* gnu/java/security/key/dss/DSSKey.java (str): New Field.
+	(toString): New method.
+	* gnu/java/security/provider/DSAParameterGenerator.java: Removed.
+
 2006-03-25  Roman Kennke  <kennke@aicas.com>
 
 	* java/util/GregorianCalender.java
