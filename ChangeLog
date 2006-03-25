@@ -1,5 +1,19 @@
 2006-03-25  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/AbstractDocument.java
+	(getAttributeContext): Made method final.
+	(getCurrentWriter): Likewise.
+	(getEndPosition): Likewise.
+	(getProperty): Likewise.
+	(getStartPosition): Likewise.
+	(putProperty): Likewise.
+	(readLock): Likewise.
+	(readUnlock): Likewise.
+	(writeLock): Likewise.
+	(writeUnlock): Likewise.
+
+2006-03-25  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/InputMap.java
 	(allKeys): Check if parent keys is null.
 	* javax/swing/KeyboardManager.java
