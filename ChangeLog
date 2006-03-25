@@ -1,3 +1,13 @@
+2006-03-25  Wolfgang Baer  <WBaer@gmx.de>
+
+	Fixes bug #26837
+	* java/awt/Window.java:         
+	(setFocusCycleRoot): New overriden method.
+	(isFocusCycleRoot): Likewise.
+	(getFocusCycleRootAncestor): Likewise.
+	* java/awt/Container.java:
+	(getFocusTraversalPolicy): Check also for anchestor == null.
+
 2006-03-25  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #26863 reported by John K Peterson <johnandtina@byu.net>

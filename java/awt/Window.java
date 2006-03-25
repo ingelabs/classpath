@@ -1146,6 +1146,47 @@ public class Window extends Container implements Accessible
   {
     this.focusableWindowState = focusableWindowState;
   }
+  
+  /**
+   * Check whether this Container is a focus cycle root.
+   * Returns always <code>true</code> as Windows are the 
+   * root of the focus cycle.
+   *
+   * @return Always <code>true</code>.
+   *
+   * @since 1.4
+   */
+  public final boolean isFocusCycleRoot()
+  {
+    return true;
+  }
+
+  /**
+   * Set whether or not this Container is the root of a focus
+   * traversal cycle. Windows are the root of the focus cycle
+   * and therefore this method does nothing.
+   * 
+   * @param focusCycleRoot ignored.
+   *
+   * @since 1.4
+   */
+  public final void setFocusCycleRoot(boolean focusCycleRoot)
+  {
+    // calls to the method are ignored
+  }
+
+  /**
+   * Returns the root container that owns the focus cycle where this
+   * component resides. Windows have no ancestors and this method
+   * returns always <code>null</code>.
+   *
+   * @return Always <code>null</code>.
+   * @since 1.4
+   */
+  public final Container getFocusCycleRootAncestor()
+  {
+    return null;
+  }
 
   /**
    * Generate a unique name for this window.
