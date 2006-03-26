@@ -966,9 +966,15 @@ public class RE extends REToken {
 	}
 
 	// END OF STRING OPERATOR
-        //  \Z
+        //  \Z, \z
 
-	else if (unit.bk && (unit.ch == 'Z') && syntax.get(RESyntax.RE_STRING_ANCHORS)) {
+	// FIXME: \Z and \z are different in that if the input string
+	// ends with a line terminator, \Z matches the position before
+	// the final terminator.  This special behavior of \Z is yet
+	// to be implemented.
+
+	else if (unit.bk && (unit.ch == 'Z' || unit.ch == 'z') &&
+		 syntax.get(RESyntax.RE_STRING_ANCHORS)) {
 	  addToken(currentToken);
 	  currentToken = new RETokenEnd(subIndex,null);
 	}
@@ -997,6 +1003,15 @@ public class RE extends REToken {
 	  index = index - 2 + np.len;
 	  addToken(currentToken);
 	  currentToken = getRETokenNamedProperty(subIndex,np,insens,index);
+	}
+
+	// END OF PREVIOUS MATCH
+        //  \G
+
+	else if (unit.bk && (unit.ch == 'G') &&
+		 syntax.get(RESyntax.RE_STRING_ANCHORS)) {
+	  addToken(currentToken);
+	  currentToken = new RETokenEndOfPreviousMatch(subIndex);
 	}
 
 	// NON-SPECIAL CHARACTER (or escape to make literal)
@@ -1552,7 +1567,7 @@ public class RE extends REToken {
 	}
 
 	// Note the start of this subexpression
-	mymatch.start[subIndex] = mymatch.index;
+	mymatch.start1[subIndex] = mymatch.index;
 
 	return firstToken.match(input, mymatch);
     }
@@ -1562,8 +1577,6 @@ public class RE extends REToken {
 	  mymatch.backtrackStack = new BacktrackStack();
 	boolean b = match(input, mymatch);
 	if (b) {
-	    // mymatch.backtrackStack.push(new REMatch.Backtrack(
-	    //     this, input, mymatch, null));
 	    return mymatch;
 	}
 	return null;
@@ -1652,6 +1665,7 @@ public class RE extends REToken {
 		  */
 		  best.end[0] = best.index;
 		  best.finish(input);
+		  input.setLastMatch(best);
 		  return best;
 	      }
 	  }
@@ -2003,19 +2017,23 @@ public class RE extends REToken {
   }
 
   // Cast input appropriately or throw exception
-  private static CharIndexed makeCharIndexed(Object input, int index) {
+  // This method was originally a private method, but has been made
+  // public because java.util.regex.Matcher uses this.
+  public static CharIndexed makeCharIndexed(Object input, int index) {
       // We could let a String fall through to final input, but since
       // it's the most likely input type, we check it first.
+      // The case where input is already an instance of CharIndexed is
+      // also supposed to be very likely.
     if (input instanceof String)
       return new CharIndexedString((String) input,index);
+    else if (input instanceof CharIndexed)
+	return (CharIndexed) input; // do we lose index info?
     else if (input instanceof char[])
       return new CharIndexedCharArray((char[]) input,index);
     else if (input instanceof StringBuffer)
       return new CharIndexedStringBuffer((StringBuffer) input,index);
     else if (input instanceof InputStream)
       return new CharIndexedInputStream((InputStream) input,index);
-    else if (input instanceof CharIndexed)
-	return (CharIndexed) input; // do we lose index info?
     else 
 	return new CharIndexedString(input.toString(), index);
   }

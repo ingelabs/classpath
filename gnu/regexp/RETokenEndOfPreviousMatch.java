@@ -1,5 +1,5 @@
-/* gnu/regexp/CharIndexedCharArray.java
-   Copyright (C) 1998-2001, 2004, 2006 Free Software Foundation, Inc.
+/*  gnu/regexp/RETokenEndOfPreviousMatch.java
+    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,46 +36,37 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.regexp;
-import java.io.Serializable;
 
-class CharIndexedCharArray implements CharIndexed, Serializable {
-    private char[] s;
-    private int anchor;
-    
-    CharIndexedCharArray(char[] str, int index) {
-	s = str;
-	anchor = index;
-    }
-    
-    public char charAt(int index) {
-	int pos = anchor + index;
-	return ((pos < s.length) && (pos >= 0)) ? s[pos] : OUT_OF_BOUNDS;
-    }
-    
-    public boolean isValid() {
-	return (anchor < s.length);
-    }
-    
-    public boolean move(int index) {
-	return ((anchor += index) < s.length);
-    }
-    
-    public CharIndexed lookBehind(int index, int length) {
-	if (length > (anchor + index)) length = anchor + index;
-	return new CharIndexedCharArray(s, anchor + index - length);
+class RETokenEndOfPreviousMatch extends RETokenStart {
+
+    RETokenEndOfPreviousMatch(int subIndex) {
+	super(subIndex, null);
     }
 
-    public int length() {
-	return s.length - anchor;
+    int getMaximumLength() {
+        return 0;
+    }
+    
+    REMatch matchThis(CharIndexed input, REMatch mymatch) {
+	REMatch lastMatch = input.getLastMatch();
+	if (lastMatch == null) return super.matchThis(input, mymatch);
+	if (input.getAnchor()+mymatch.index ==
+		lastMatch.anchor+lastMatch.index) {
+	    return mymatch;
+	}
+	else {
+	    return null;
+	}
     }
 
-    private REMatch lastMatch;
-    public void setLastMatch(REMatch match) {
-	lastMatch = (REMatch)match.clone();
-	lastMatch.anchor = anchor;
+    boolean returnsFixedLengthmatches() { return true; }
+
+    int findFixedLengthMatches(CharIndexed input, REMatch mymatch, int max) {
+        if (matchThis(input, mymatch) != null) return max;
+	else return 0;
     }
-    public REMatch getLastMatch() { return lastMatch; }
-
-    public int getAnchor() { return anchor; }
-
+    
+    void dump(StringBuffer os) {
+	os.append("\\G");
+    }
 }

@@ -1,3 +1,28 @@
+2006-03-26  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/regexp/CharIndexed.java(setLastMatch, getLastMatch, getAnchor):
+	New methods.
+	* gnu/regexp/CharIndexedCharArray.java(setLastMatch, getLastMatch,
+	getAnchor): New methods.
+	* gnu/regexp/CharIndexedInputStream.java(setLastMatch, getLastMatch,
+	getAnchor): New methods.
+	* gnu/regexp/CharIndexedString.java(setLastMatch, getLastMatch,
+	getAnchor): New methods.
+	* gnu/regexp/CharIndexedStringBuffer.java(setLastMatch, getLastMatch,
+	getAnchor): New methods.
+	* gnu/regexp/REMatch.java(start1): New field.
+	* gnu/regexp/RE.java(initialize): Added support for \z and \G,
+	(match): set the starting position to start1[] instead of start[],
+	(getMatchImpl): Set the found REMatch to the input,
+	(makeCharIndexed): Made public.
+	* gnu/regexp/RETokenEndOfPreviousMatch.java: New file.
+	* gnu/regexp/RETokenEndSub.java(matchThis, findMatch):
+	set the value of start[] copying from start1[].
+	* gnu/regexp/RETokenLookBehind.java(matchThis): Added the settings of
+	offset.
+	* java/util/regex/Matcher.java(inputCharIndexed): New field
+	to be used as a parameter of the RE#getMatch.
+
 2006-03-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/rmi/activation/DefaultActivationGroup.java: 
