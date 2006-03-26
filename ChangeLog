@@ -1,5 +1,10 @@
 2006-03-26  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/gnu/classpath/tools/jarsigner/Main.java (setupSigningParams):
+	Ask user for keystore password if one was not provided.
+
+2006-03-26  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* tools/README: Added Security tools section.
 	Documented the jarsigner tool.
 

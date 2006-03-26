@@ -329,7 +329,16 @@ public class Main
     else
       store = KeyStore.getInstance(ksType);
 
-    if (ksPassword != null)
+    if (ksPassword == null)
+      {
+        // ask the user to provide one
+        CallbackHandler handler = new ConsoleCallbackHandler();
+        PasswordCallback pcb = new PasswordCallback("Enter keystore password: ",
+                                                    false);
+        handler.handle(new Callback[] { pcb });
+        ksPasswordChars = pcb.getPassword();
+      }
+    else
       ksPasswordChars = ksPassword.toCharArray();
 
     URL url = new URL(ksURL);
