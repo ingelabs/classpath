@@ -1,3 +1,7 @@
+2006-03-26  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/InputStream.java (InputStream): Implements Closeable.
+	
 2006-03-26  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* gnu/regexp/CharIndexed.java(setLastMatch, getLastMatch, getAnchor):
