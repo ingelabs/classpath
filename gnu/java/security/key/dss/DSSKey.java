@@ -60,7 +60,6 @@ import java.security.spec.DSAParameterSpec;
  * the relevant <code>getEncoded()</code> methods of each of the private and
  * public keys.</p>
  *
- * @version $Revision: 1.5 $
  * @see DSSPrivateKey#getEncoded
  * @see DSSPublicKey#getEncoded
  */

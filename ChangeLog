@@ -1,3 +1,43 @@
+2006-03-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/security/jce/hash/HavalSpi.java,
+	* gnu/java/security/jce/hash/MD2Spi.java,
+	* gnu/java/security/jce/hash/MD4Spi.java,
+	* gnu/java/security/jce/hash/MD5Spi.java,
+	* gnu/java/security/jce/hash/MessageDigestAdapter.java,
+	* gnu/java/security/jce/hash/RipeMD128Spi.java,
+	* gnu/java/security/jce/hash/RipeMD160Spi.java,
+	* gnu/java/security/jce/hash/Sha160Spi.java,
+	* gnu/java/security/jce/hash/Sha256Spi.java,
+	* gnu/java/security/jce/hash/Sha384Spi.java,
+	* gnu/java/security/jce/hash/Sha512Spi.java,
+	* gnu/java/security/jce/hash/TigerSpi.java,
+	* gnu/java/security/jce/hash/WhirlpoolSpi.java,
+	* gnu/java/security/jce/sig/DSSKeyPairGeneratorSpi.java,
+	* gnu/java/security/jce/sig/DSSRawSignatureSpi.java,
+	* gnu/java/security/jce/sig/KeyPairGeneratorAdapter.java,
+	* gnu/java/security/jce/sig/RSAPSSRawSignatureSpi.java,
+	* gnu/java/security/jce/sig/SignatureAdapter.java,
+	* gnu/java/security/key/IKeyPairCodec.java,
+	* gnu/java/security/key/IKeyPairGenerator.java,
+	* gnu/java/security/key/KeyPairGeneratorFactory.java,
+	* gnu/java/security/key/dss/DSSKey.java,
+	* gnu/java/security/key/dss/DSSKeyPairRawCodec.java,
+	* gnu/java/security/key/dss/DSSPrivateKey.java,
+	* gnu/java/security/key/dss/DSSPublicKey.java,
+	* gnu/java/security/key/dss/FIPS186.java,
+	* gnu/java/security/key/rsa/GnuRSAKey.java,
+	* gnu/java/security/key/rsa/GnuRSAPrivateKey.java,
+	* gnu/java/security/key/rsa/GnuRSAPublicKey.java,
+	* gnu/java/security/sig/ISignature.java,
+	* gnu/java/security/sig/ISignatureCodec.java,
+	* gnu/java/security/sig/dss/DSSSignature.java,
+	* gnu/java/security/sig/dss/DSSSignatureRawCodec.java,
+	* gnu/java/security/sig/rsa/RSAPSSSignature.java,
+	* gnu/java/security/sig/rsa/RSAPSSSignatureRawCodec.java,
+	* gnu/java/security/util/Util.java:
+	Remove CVS revision tags.
+
 2006-03-26  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/InputStream.java (InputStream): Implements Closeable.
