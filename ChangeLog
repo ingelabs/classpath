@@ -1,3 +1,11 @@
+2006-03-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/java/rmi/activation/DefaultActivationGroup.java: 
+	Documented the default jre spawning strategy (none).
+	* java/rmi/activation/ActivationGroup.java (currentGroupId,
+	getSystem): Obtain the acticivation system from the 
+	DefaultActivationSystem.
+
 2006-03-26  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* tools/gnu/classpath/tools/jarsigner/Main.java (setupSigningParams):
