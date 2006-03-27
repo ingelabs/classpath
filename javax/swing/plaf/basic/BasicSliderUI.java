@@ -1,5 +1,5 @@
 /* BasicSliderUI.java --
-   Copyright (C) 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006,  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,6 +37,8 @@ exception statement from your version. */
 
 
 package javax.swing.plaf.basic;
+
+import gnu.classpath.NotImplementedException;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -204,6 +206,7 @@ public class BasicSliderUI extends SliderUI
      * @param e A {@link FocusEvent}.
      */
     public void focusGained(FocusEvent e)
+      throws NotImplementedException
     {
       // FIXME: implement.
     }
@@ -215,6 +218,7 @@ public class BasicSliderUI extends SliderUI
      * @param e A {@link FocusEvent}.
      */
     public void focusLost(FocusEvent e)
+      throws NotImplementedException
     {
       // FIXME: implement.
     }
@@ -864,6 +868,7 @@ public class BasicSliderUI extends SliderUI
    *        installed.
    */
   protected void installKeyboardActions(JSlider slider)
+    throws NotImplementedException
   {
     // FIXME: implement.
   }
@@ -876,6 +881,7 @@ public class BasicSliderUI extends SliderUI
    *        uninstalled.
    */
   protected void uninstallKeyboardActions(JSlider slider)
+    throws NotImplementedException
   {
     // FIXME: implement.
   }

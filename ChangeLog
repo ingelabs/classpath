@@ -1,5 +1,13 @@
 2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(FocusHandler.focusGained): Marked as stub,
+	(FocusHandler.focusLost): Likewise,
+	(installKeyboardActions): Likewise,
+	(uninstallKeyBoardActions): Likewise.
+
+2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JSlider.java: Replaced TABs with spaces.
 
 2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
