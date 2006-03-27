@@ -1,3 +1,19 @@
+2006-03-27  Lillian Angel  <langel@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_nativeDispose):
+	Added check for colormap. Prevents assertion error.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_setFGColor):
+	Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_nativeCopyState):
+	Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__II):
+	Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_initFromImage):
+	Likewise.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_initStateUnlocked):
+	Likewise.
+
 2006-03-27  Dalibor Topic  <robilad@kaffe.org>
 
 	* m4/acinclude.m4 (CLASSPATH_FIND_JAVAC): Use 
