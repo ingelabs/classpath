@@ -1,3 +1,11 @@
+2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JSlider.java
+	(AccessibleJSlider.AccessibleJSlider): Minor API doc edit,
+	(AccessibleJSlider.getAccessibleRole): Removed declaration of 
+	NotImplementedException,
+	(AccessibleJSlider.getAccessibleValue): Updated API docs.
+
 2006-03-26  Tom Tromey  <tromey@redhat.com>
 
 	* NEWS: Updated.

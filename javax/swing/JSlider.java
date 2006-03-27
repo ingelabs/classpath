@@ -128,7 +128,7 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
     private static final long serialVersionUID = -6301740148041106789L;
   
     /**
-     * Creates a new AccessibleJSlider object.
+     * Creates a new <code>AccessibleJSlider</code> instance.
      */
     protected AccessibleJSlider()
     {
@@ -157,13 +157,14 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
      * @return {@link AccessibleRole#SLIDER}.
      */
     public AccessibleRole getAccessibleRole()
-      throws NotImplementedException
     {
       return AccessibleRole.SLIDER;
     }
 
     /**
-     * Returns an object that provides access to the accessible value.
+     * Returns an object that provides access to the current, minimum and 
+     * maximum values for the {@link JSlider}.  Since this class implements 
+     * {@link AccessibleValue}, it returns itself.
      *
      * @return The accessible value.
      */
