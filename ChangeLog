@@ -1,3 +1,8 @@
+2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(getThumbSize): Removed TODO and updated API docs.
+
 2006-03-27  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/DefaultCaret.java:

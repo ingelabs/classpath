@@ -1201,13 +1201,17 @@ public class BasicSliderUI extends SliderUI
   }
 
   /**
-   * This method returns the size of the thumbRect.
+   * Returns the size of the slider's thumb.  The size is hard coded to
+   * <code>11 x 20</code> for horizontal sliders, and <code>20 x 11</code> for 
+   * vertical sliders. Note that a new instance of {@link Dimension} is 
+   * returned for every call to this method (this seems wasteful, but 
+   * {@link Dimension} instances are not immutable, so this is probably 
+   * unavoidable).
    *
-   * @return The dimensions of the thumb.
+   * @return The size of the slider's thumb.
    */
   protected Dimension getThumbSize()
   {
-    // TODO: shouldn't create new objects every time
     if (slider.getOrientation() == JSlider.HORIZONTAL)
       return new Dimension(11, 20);
     else
