@@ -198,7 +198,7 @@ public class PlainView extends View implements TabExpander
               // and ends behind the line: First part unselected, second
               // part selected.
               x = drawUnselectedText(g, x, y, startOffset, selectionStart);
-              drawSelectedText(g, x, y, selectionStart, selectionEnd);
+              drawSelectedText(g, x, y, selectionStart, endOffset);
             }
         else
           // Selection is behind this line: Draw completely unselected text.

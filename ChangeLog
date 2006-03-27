@@ -1,3 +1,9 @@
+2006-03-27  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/PlainView.java:
+	(drawLine): Use 'endOffset' instead of 'selectionEnd'
+	for painting the selected line.
+
 2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicSliderUI.java
@@ -9,28 +15,6 @@
 	(mouseClicked): Word selection rewritten.
 	(paint): Draw line inside the bounding rectangle.
 	(damage): Retrieve caret height from line height.
-
-2006-03-27  Roman Kennke  <kennke@aicas.com>
-
-	* javax/swing/RepaintManager.java
-	(commitBuffer): Use simple drawImage() method instead of the
-	scaling version.
-
-2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
-
-	* javax/swing/plaf/basic/BasicSliderUI.java
-	(FocusHandler.focusGained): Marked as stub,
-	(FocusHandler.focusLost): Likewise,
-	(installKeyboardActions): Likewise,
-	(uninstallKeyBoardActions): Likewise.
-
-2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
-
-	* javax/swing/JSlider.java: Replaced TABs with spaces.
-
-2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
-
-	* javax/swing/JSlider.java: Updated API docs all over.
 
 2006-03-28  Raif S. Naffah  <raif@swiftdsl.com.au>
 
