@@ -399,19 +399,20 @@ public class DefaultCaret extends Rectangle
               }
             else
               {
-                int nextWord = Utilities.getNextWord(t, newDot);
+                int wordStart = Utilities.getWordStart(t, newDot);
                 
                 // When the mouse points at the offset of the first character
                 // in a word Utilities().getPreviousWord will not return that
                 // word but we want to select that. We have to use
-                // Utilities.nextWord() to get it.
-                if (newDot == nextWord)
+                // Utilities.getWordStart() to get it.
+                if (newDot == wordStart)
                   {
-                    setDot(nextWord);
-                    moveDot(Utilities.getNextWord(t, nextWord));
+                    setDot(wordStart);
+                    moveDot(Utilities.getWordEnd(t, wordStart));
                   }
                 else
                   {
+                    int nextWord = Utilities.getNextWord(t, newDot);
                     int previousWord = Utilities.getPreviousWord(t, newDot);
                     int previousWordEnd = Utilities.getWordEnd(t, previousWord);
                     
@@ -833,7 +834,7 @@ public class DefaultCaret extends Rectangle
     if (visible)
       {
         g.setColor(textComponent.getCaretColor());
-        g.drawLine(rect.x, rect.y, rect.x, rect.y + rect.height);
+        g.drawLine(rect.x, rect.y, rect.x, rect.y + rect.height - 1);
       }
   }
 
@@ -1100,7 +1101,16 @@ public class DefaultCaret extends Rectangle
     // must set a valid value here, since otherwise the painting mechanism
     // sets a zero clip and never calls paint.
     if (height <= 0)
-      height = getComponent().getHeight();
+      try
+        {
+          height = textComponent.modelToView(dot).height;
+        }
+      catch (BadLocationException ble)
+        {
+          // Should not happen.
+          throw new InternalError("Caret location not within document range.");
+        }
+      
     repaint();
   }
 

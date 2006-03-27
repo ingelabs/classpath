@@ -1,3 +1,10 @@
+2006-03-27  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/DefaultCaret.java:
+	(mouseClicked): Word selection rewritten.
+	(paint): Draw line inside the bounding rectangle.
+	(damage): Retrieve caret height from line height.
+
 2006-03-27  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/RepaintManager.java
