@@ -1,5 +1,9 @@
 2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JSlider.java: Replaced TABs with spaces.
+
+2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JSlider.java: Updated API docs all over.
 
 2006-03-28  Raif S. Naffah  <raif@swiftdsl.com.au>

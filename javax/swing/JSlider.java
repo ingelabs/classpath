@@ -347,7 +347,8 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   {
     sliderModel = new DefaultBoundedRangeModel(value, 0, minimum, maximum);
     if (orientation != HORIZONTAL && orientation != VERTICAL)
-      throw new IllegalArgumentException(orientation + " is not a legal orientation");
+      throw new IllegalArgumentException(orientation 
+                                         + " is not a legal orientation");
     this.orientation = orientation;
     changeListener = createChangeListener();
     sliderModel.addChangeListener(changeListener);
@@ -451,13 +452,13 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   {
     return new ChangeListener()
       {
-	public void stateChanged(ChangeEvent ce)
-	{
-	  // No need to trigger a repaint since the UI listens to the model
-	  // as well. All we need to do is pass on the stateChanged event 
-	  // to our listeners.
-	  fireStateChanged();
-	}
+        public void stateChanged(ChangeEvent ce)
+        {
+          // No need to trigger a repaint since the UI listens to the model
+          // as well. All we need to do is pass on the stateChanged event 
+          // to our listeners.
+          fireStateChanged();
+        }
       };
   }
 
@@ -500,8 +501,8 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
       changeEvent = new ChangeEvent(this);
     for (int i = changeListeners.length - 2; i >= 0; i -= 2)
       {
-	if (changeListeners[i] == ChangeListener.class)
-	  ((ChangeListener) changeListeners[i + 1]).stateChanged(changeEvent);
+        if (changeListeners[i] == ChangeListener.class)
+          ((ChangeListener) changeListeners[i + 1]).stateChanged(changeEvent);
       }
   }
 
@@ -551,11 +552,11 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
     // and bork the next time it tries to access the model.
     if (model != sliderModel)
       {
-	BoundedRangeModel oldModel = sliderModel;
-	sliderModel = model;
-	oldModel.removeChangeListener(changeListener);
-	sliderModel.addChangeListener(changeListener);
-	firePropertyChange("model", oldModel, sliderModel);
+        BoundedRangeModel oldModel = sliderModel;
+        sliderModel = model;
+        oldModel.removeChangeListener(changeListener);
+        sliderModel.addChangeListener(changeListener);
+        firePropertyChange("model", oldModel, sliderModel);
       }
   }
 
@@ -713,13 +714,13 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   public void setOrientation(int orientation)
   {
     if (orientation != VERTICAL && orientation != HORIZONTAL)
-      throw new IllegalArgumentException("orientation must be one of: VERTICAL, HORIZONTAL");
+      throw new IllegalArgumentException(
+          "orientation must be one of: VERTICAL, HORIZONTAL");
     if (orientation != this.orientation)
       {
-	int oldOrientation = this.orientation;
-	this.orientation = orientation;
-	firePropertyChange("orientation", oldOrientation,
-	                   this.orientation);
+        int oldOrientation = this.orientation;
+        this.orientation = orientation;
+        firePropertyChange("orientation", oldOrientation, this.orientation);
       }
   }
 
@@ -748,9 +749,9 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   {
     if (table != labelTable)
       {
-	Dictionary oldTable = labelTable;
-	labelTable = table;
-	firePropertyChange("labelTable", oldTable, labelTable);
+        Dictionary oldTable = labelTable;
+        labelTable = table;
+        firePropertyChange("labelTable", oldTable, labelTable);
       }
   }
 
@@ -764,8 +765,8 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
       return;
     for (Enumeration list = labelTable.elements(); list.hasMoreElements();)
       {
-	JLabel label = (JLabel) list.nextElement();
-	label.updateUI();
+        JLabel label = (JLabel) list.nextElement();
+        label.updateUI();
       }
   }
 
@@ -816,17 +817,17 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
 
     for (int i = start; i <= max; i += increment)
       {
-	label = new JLabel(String.valueOf(i));
-	label.setVerticalAlignment(CENTER);
-	label.setHorizontalAlignment(CENTER);
-	
-	// Make sure these labels have the width and height
-	// they want.
-	dim = label.getPreferredSize();
-	label.setBounds(label.getX(), label.getY(),
-	                (int) dim.getWidth(),
-			(int) dim.getHeight()); 
-	table.put(new Integer(i), label);
+        label = new JLabel(String.valueOf(i));
+        label.setVerticalAlignment(CENTER);
+        label.setHorizontalAlignment(CENTER);
+        
+        // Make sure these labels have the width and height
+        // they want.
+        dim = label.getPreferredSize();
+        label.setBounds(label.getX(), label.getY(),
+                        (int) dim.getWidth(),
+                        (int) dim.getHeight()); 
+        table.put(new Integer(i), label);
       }
     return table;
   }
@@ -863,9 +864,9 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   {
     if (isInverted != inverted)
       {
-	boolean oldInverted = isInverted;
-	isInverted = inverted;
-	firePropertyChange("inverted", oldInverted, isInverted);
+        boolean oldInverted = isInverted;
+        isInverted = inverted;
+        firePropertyChange("inverted", oldInverted, isInverted);
       }
   }
 
@@ -895,10 +896,9 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   {
     if (majorTickSpacing != spacing)
       {
-	int oldSpacing = majorTickSpacing;
-	majorTickSpacing = spacing;
-	firePropertyChange("majorTickSpacing", oldSpacing,
-	                   majorTickSpacing);
+        int oldSpacing = majorTickSpacing;
+        majorTickSpacing = spacing;
+        firePropertyChange("majorTickSpacing", oldSpacing, majorTickSpacing);
       }
   }
 
@@ -929,10 +929,9 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   {
     if (minorTickSpacing != spacing)
       {
-	int oldSpacing = minorTickSpacing;
-	minorTickSpacing = spacing;
-	firePropertyChange("minorTickSpacing", oldSpacing,
-	                   minorTickSpacing);
+        int oldSpacing = minorTickSpacing;
+        minorTickSpacing = spacing;
+        firePropertyChange("minorTickSpacing", oldSpacing, minorTickSpacing);
       }
   }
 
@@ -964,8 +963,8 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   {
     if (snap != snapToTicks)
       {
-	snapToTicks = snap;
-	firePropertyChange("snapToTicks", !snap, snap);
+        snapToTicks = snap;
+        firePropertyChange("snapToTicks", !snap, snap);
       }
   }
 
@@ -999,9 +998,9 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   {
     if (paint != paintTicks)
       {
-	boolean oldPaintTicks = paintTicks;
-	paintTicks = paint;
-	firePropertyChange("paintTicks", oldPaintTicks, paintTicks);
+        boolean oldPaintTicks = paintTicks;
+        paintTicks = paint;
+        firePropertyChange("paintTicks", oldPaintTicks, paintTicks);
       }
   }
 
@@ -1061,10 +1060,10 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
   {
     if (paint != paintLabels)
       {
-	paintLabels = paint;
+        paintLabels = paint;
         if (paint && majorTickSpacing > 0)
           labelTable = createStandardLabels(majorTickSpacing);
-	firePropertyChange("paintLabels", !paint, paint);
+        firePropertyChange("paintLabels", !paint, paint);
       }
   }
 
