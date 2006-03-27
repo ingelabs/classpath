@@ -1,3 +1,9 @@
+2006-03-27  Dalibor Topic  <robilad@kaffe.org>
+
+	* m4/acinclude.m4 (CLASSPATH_FIND_JAVAC): Use 
+	AC_MSG_ERROR instead of echoing the error message 
+	that no compiler has been found manually.
+
 2006-03-27  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/PlainView.java:
