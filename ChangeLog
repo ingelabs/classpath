@@ -1,3 +1,9 @@
+2006-03-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/RepaintManager.java
+	(commitBuffer): Use simple drawImage() method instead of the
+	scaling version.
+
 2006-03-27  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicSliderUI.java
