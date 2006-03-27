@@ -63,6 +63,7 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
 import gnu.classpath.SystemProperties;
+import gnu.classpath.tools.HelpPrinter;
 import gnu.java.security.OID;
 import gnu.java.security.Registry;
 import gnu.javax.security.auth.callback.ConsoleCallbackHandler;
@@ -166,6 +167,10 @@ public class Main
       UnrecoverableKeyException, UnsupportedCallbackException
   {
     log.entering("Main", "processArgs", args);
+
+    HelpPrinter.checkHelpKey(args, HELP_PATH);
+    if (args == null || args.length == 0)
+      HelpPrinter.printHelpAndExit(HELP_PATH);
 
     int limit = args.length;
     log.finest("args.length=" + limit);

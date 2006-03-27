@@ -99,3 +99,5 @@ Usage:
                 implementation of the Security Provider capable of managing a
                 Key Store of the designated, or default, type.
 
+   -help        Prints this help text. 
+
