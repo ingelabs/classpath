@@ -164,7 +164,7 @@ public class PlainView extends View implements TabExpander
       {
         Element line = getElement().getElement(lineIndex);
         int startOffset = line.getStartOffset();
-        int endOffset = line.getEndOffset();
+        int endOffset = line.getEndOffset() - 1;
         
         if (selectionStart <= startOffset)
           // Selection starts before the line ...
@@ -325,7 +325,7 @@ public class PlainView extends View implements TabExpander
       {
         Element child = el.getElement(i);
         int start = child.getStartOffset();
-        int end = child.getEndOffset();
+        int end = child.getEndOffset() - 1;
         try
           {
             el.getDocument().getText(start, end - start, seg);
@@ -518,7 +518,7 @@ public class PlainView extends View implements TabExpander
       {
         Element child = newElements[i];
         int start = child.getStartOffset();
-        int end = child.getEndOffset();
+        int end = child.getEndOffset() - 1;
         try
           {
             el.getDocument().getText(start, end - start, seg);
@@ -637,7 +637,7 @@ public class PlainView extends View implements TabExpander
    * @returna {@link Segment} object, that can be used to fetch text from
    *          the document
    */
-  protected Segment getLineBuffer()
+  protected final Segment getLineBuffer()
   {
     if (lineBuffer == null)
       lineBuffer = new Segment();
