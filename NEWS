@@ -23,6 +23,10 @@ Runtime interface changes:
   array creation method from java.lang.reflect.Array.  
 * A new class, gnu.classpath.Unsafe, is provided for handling the
   new low-level operations required by java.util.concurrent.
+* The reference implementations of Method, Constructor, and Field
+  now have a new native getModifiersInternal() method.  The public
+  getModifiers() method in each case has been rewritten in terms of
+  this method.
 
 New in release 0.90 (March 6, 2006)
 

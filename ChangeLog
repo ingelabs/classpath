@@ -1,3 +1,27 @@
+2006-03-26  Tom Tromey  <tromey@redhat.com>
+
+	* NEWS: Updated.
+	* vm/reference/java/lang/reflect/Method.java (METHOD_MODIFIERS):
+	New constant.
+	(getModifiersInternal): Renamed from getModifiers.
+	(getModifiers): New method.
+	(isBridge): Likewise.
+	(isSynthetic): Likewise.
+	(isVarArgs): Likewise.
+	* vm/reference/java/lang/reflect/Field.java (FIELD_MODIFIERS):
+	New constant.
+	(getModifiersInternal): Renamed from getModifiers.
+	(getModifiers): New method.
+	(isSynthetic): Likewise.
+	(isEnumConstant): Likewise.
+	* vm/reference/java/lang/reflect/Constructor.java
+	(getModifiersInternal): Renamed from getModifiers.
+	(getModifiers): New method
+	(CONSTRUCTOR_MODIFIERS): New constant.
+	(isSynthetic): New method.
+	(isVarArgs): Likewise.
+	* java/lang/reflect/Member.java (isSynthetic): New method.
+
 2006-03-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* gnu/java/security/jce/hash/HavalSpi.java,
