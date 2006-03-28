@@ -919,7 +919,7 @@ public class BoxView
     return super.viewToModel(x, y, a, bias);
   }
 
-  protected boolean flipEastAndWestEnds(int position, Position.Bias bias)
+  protected boolean flipEastAndWestAtEnds(int position, Position.Bias bias)
   {
     // FIXME: What to do here?
     return super.flipEastAndWestAtEnds(position, bias);

@@ -1,5 +1,24 @@
 2006-03-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/text/AsyncBoxView.java
+	(setEstimatedMajorSpan): Made method protected.
+	(getEstimatedMajorSpan): Made method protected.
+	* javax/swing/text/BoxView.java
+	(flipEastAndWestAtEnds): Fixed typo.
+	* javax/swing/text/InternationalFormatter.java
+	(getActions): Made method protected.
+	* javax/swing/text/Position.java
+	(Bias): Made class final.
+	* javax/swing/text/html/HTML.java
+	(MEDIA): Made field package private. Not specified.
+	(NOBR): Made field package private. Not specified.
+	* javax/swing/text/html/NullView.java
+	Made class package private.
+	* javax/swing/text/html/parser/Entity.java
+	Made class non-serializable as specified.
+
+2006-03-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalButtonUI.java
 	(update): Don't paint gradient if the background color is
 	no UIResource. Removed double getModel() call. Don't check for
