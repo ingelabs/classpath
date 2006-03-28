@@ -1,5 +1,12 @@
 2006-03-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(update): Don't paint gradient if the background color is
+	no UIResource. Removed double getModel() call. Don't check for
+	OceanTheme.
+
+2006-03-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicMenuItemUI.java
 	(paint): Call paintMenuItem with the selectionBackground as
 	parameter.
