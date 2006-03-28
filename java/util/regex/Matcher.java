@@ -40,7 +40,6 @@ package java.util.regex;
 
 import gnu.regexp.RE;
 import gnu.regexp.REMatch;
-import gnu.regexp.CharIndexed;
 
 /**
  * Instance of a regular expression applied to a char sequence.
@@ -51,10 +50,6 @@ public final class Matcher implements MatchResult
 {
   private Pattern pattern;
   private CharSequence input;
-  // We use CharIndexed as an input object to the getMatch method in order
-  // that /\G/ (the end of the previous match) may work.  The information
-  // of the previous match is stored in the CharIndexed object.
-  private CharIndexed inputCharIndexed;
   private int position;
   private int appendPosition;
   private REMatch match;
@@ -63,7 +58,6 @@ public final class Matcher implements MatchResult
   {
     this.pattern = pattern;
     this.input = input;
-    this.inputCharIndexed = RE.makeCharIndexed(input, 0);
   }
   
   /**
@@ -125,7 +119,7 @@ public final class Matcher implements MatchResult
   public boolean find ()
   {
     boolean first = (match == null);
-    match = pattern.getRE().getMatch(inputCharIndexed, position);
+    match = pattern.getRE().getMatch(input, position);
     if (match != null)
       {
 	int endIndex = match.getEndIndex();
@@ -156,7 +150,7 @@ public final class Matcher implements MatchResult
    */
   public boolean find (int start)
   {
-    match = pattern.getRE().getMatch(inputCharIndexed, start);
+    match = pattern.getRE().getMatch(input, start);
     if (match != null)
       {
 	position = match.getEndIndex();
@@ -218,7 +212,7 @@ public final class Matcher implements MatchResult
  
   public boolean lookingAt ()
   {
-    match = pattern.getRE().getMatch(inputCharIndexed, 0);
+    match = pattern.getRE().getMatch(input, 0);
     if (match != null)
       {
 	if (match.getStartIndex() == 0)
@@ -243,7 +237,7 @@ public final class Matcher implements MatchResult
    */
   public boolean matches ()
   {
-    match = pattern.getRE().getMatch(inputCharIndexed, 0, RE.REG_TRY_ENTIRE_MATCH);
+    match = pattern.getRE().getMatch(input, 0, RE.REG_TRY_ENTIRE_MATCH);
     if (match != null)
       {
 	if (match.getStartIndex() == 0)

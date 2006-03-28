@@ -1,3 +1,7 @@
+2006-03-28  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* java/util/regex/Matcher.java: Reverted.
+
 2006-03-28  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/text/AsyncBoxView.java
