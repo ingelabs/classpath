@@ -541,7 +541,7 @@ public class BasicMenuItemUI extends MenuItemUI
    */
   public void paint(Graphics g, JComponent c)
   {
-    paintMenuItem(g, c, checkIcon, arrowIcon, c.getBackground(),
+    paintMenuItem(g, c, checkIcon, arrowIcon, selectionBackground,
                   c.getForeground(), defaultTextIconGap);
   }
 
@@ -560,16 +560,18 @@ public class BasicMenuItemUI extends MenuItemUI
     // Menu item is considered to be highlighted when it is selected.
     // But we don't want to paint the background of JCheckBoxMenuItems
     ButtonModel mod = menuItem.getModel();
-    if (menuItem.isContentAreaFilled())
+    Color saved = g.getColor();
+    if (mod.isArmed() || ((menuItem instanceof JMenu) && mod.isSelected()))
       {
-        if ((menuItem.isSelected() && checkIcon == null) || (mod != null && 
-            mod.isArmed())
-            && (menuItem.getParent() instanceof MenuElement))
-          g.setColor(selectionBackground);
-        else
-          g.setColor(bgColor);
+        g.setColor(bgColor);
         g.fillRect(0, 0, menuItem.getWidth(), menuItem.getHeight());
-      } 
+      }
+    else if (menuItem.isOpaque())
+      {
+        g.setColor(menuItem.getBackground());
+        g.fillRect(0, 0, menuItem.getWidth(), menuItem.getHeight());
+      }
+    g.setColor(saved);
   }
 
   /**

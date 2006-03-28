@@ -1,5 +1,13 @@
 2006-03-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(paint): Call paintMenuItem with the selectionBackground as
+	parameter.
+	(paintBackground): Fixed the condition and color for the background
+	painting.
+
+2006-03-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
 	(tabsOpaque): New field.
 	(paintLeftTabBorder): Paint some parts only when the tabs are
