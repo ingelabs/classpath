@@ -1,5 +1,12 @@
 2006-03-28  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalButtonUI.java
+	(update): Paint gradient only when the background color
+	is not a UIResource and if the button is neither armed nor
+	pressed and if the button is contentAreaFilled.
+
+2006-03-28  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JLayeredPane.java
 	(addImpl): Repaint added component.
 
