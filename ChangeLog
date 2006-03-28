@@ -1,3 +1,13 @@
+2006-03-28  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java
+	(tabsOpaque): New field.
+	(paintLeftTabBorder): Paint some parts only when the tabs are
+	opaque. Determine the tab background using the paintLeftTabBorder()
+	helper method.
+	(paintRightTabBorder): Likewise.
+	(installDefaults): Fetch tabsOpaque property from the UIDefaults.
+
 2006-03-27  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/rmi/activation/ActivationGroup_Stub.java:
@@ -35,6 +45,12 @@
 	* m4/acinclude.m4 (CLASSPATH_FIND_JAVAC): Use 
 	AC_MSG_ERROR instead of echoing the error message 
 	that no compiler has been found manually.
+
+2006-03-27  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/RepaintManager.java
+	(commitBuffer): Use simple drawImage() method instead of the
+	scaling version.
 
 2006-03-27  Robert Schuster  <robertschuster@fsfe.org>
 
