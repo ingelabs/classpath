@@ -1,3 +1,9 @@
+2006-03-29  Robert Schuster  <robertschuster@fsfe.org>
+
+	PR 26888
+	* javax/swing/text/GapContent.java:
+	(replace): Added call to resetMarksAtZero.
+
 2006-03-29  Roman Kennke  <kennke@aicas.com>
 
 	PR 23527
