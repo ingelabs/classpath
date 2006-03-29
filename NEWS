@@ -1,5 +1,7 @@
 New in release 0.91 (UNRELEASED)
 
+* Experimental activation (java.rmi.activation) support, including RMI
+  activation daemon and persistent naming service tools.
 * Experimental printing support: The API implementation of the javax.print 
   packages has been finished and work on the printing provider implementation
   started. Currently supported features from the Java Print Service API are 

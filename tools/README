@@ -39,6 +39,9 @@ in gnu.classpath.tools.rmi package):
                          research and backward-compatibile applications, as
                          Classpath supports the 1.5 feature to replace such 
                          stubs by proxy classes.
+* REGISTRY -             The persistent RMI naming service.                                                   
+* RMID -                 The persistent RMI activation daemon, supports the
+                         java.rmi.activation package.
   
 == Security tools ==
 
