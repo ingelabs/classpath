@@ -1,3 +1,9 @@
+2006-03-29  Tom Tromey  <tromey@redhat.com>
+
+	PR gcc/26901:
+	* tools/Makefile.am (JCOMPILER): Added encoding options.
+	* examples/Makefile.am (JCOMPILER): Added encoding options.
+
 2006-03-29  Gary Benson  <gbenson@redhat.com>
 
 	Partial fix for PR classpath/24895
