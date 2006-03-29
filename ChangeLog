@@ -1,3 +1,9 @@
+2006-03-29  Mark Wielaard  <mark@klomp.org>
+
+	Partial fix for bug #26848 (pack).
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (setVisible):
+	Always show instances of Window.
+
 2006-03-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JSlider.java

@@ -567,7 +567,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   public void setVisible (boolean b)
   {
     // Only really set visible when component is bigger than zero pixels.
-    if (b)
+    if (b && ! (awtComponent instanceof Window))
       {
         Rectangle bounds = awtComponent.getBounds();
 	b = (bounds.width > 0) && (bounds.height > 0);
