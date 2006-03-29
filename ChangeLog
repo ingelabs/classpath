@@ -1,3 +1,8 @@
+2006-03-29  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(setCursorID): Removed unused static variable.
+
 2006-03-29  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicSliderUI.java: Reformatted.

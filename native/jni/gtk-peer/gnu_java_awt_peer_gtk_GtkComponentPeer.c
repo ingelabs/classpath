@@ -80,7 +80,6 @@ static GtkWidget *get_widget (GtkWidget *widget);
 
 static jmethodID postMouseEventID;
 static jmethodID postMouseWheelEventID;
-static jmethodID setCursorID;
 static jmethodID postExposeEventID;
 static jmethodID postFocusEventID;
 
@@ -99,9 +98,6 @@ cp_gtk_component_init_jni (void)
 						        gtkcomponentpeer,
 						        "postMouseWheelEvent",
 							"(IJIIIIZIII)V");
-
-  setCursorID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), gtkcomponentpeer,
-                                           "setCursor", "()V");
 
   postExposeEventID = (*cp_gtk_gdk_env())->GetMethodID (cp_gtk_gdk_env(), gtkcomponentpeer,
                                                  "postExposeEvent", "(IIII)V");
