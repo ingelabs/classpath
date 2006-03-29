@@ -1,3 +1,10 @@
+2006-03-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* tools/gnu/classpath/tools/rmi/rmic/templates/Stub_12Method.jav:
+	Do not use initCause with UnexpectedException.
+	* tools/gnu/classpath/tools/rmi/rmic/templates/Stub_12MethodVoid.jav:
+	Likewise. 
+
 2006-03-29  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
