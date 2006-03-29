@@ -1,3 +1,7 @@
+2006-03-29  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicSliderUI.java: Reformatted.
+
 2006-03-29  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #26527
