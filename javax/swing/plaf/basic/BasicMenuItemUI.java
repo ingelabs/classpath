@@ -40,6 +40,7 @@ package javax.swing.plaf.basic;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -216,6 +217,12 @@ public class BasicMenuItemUI extends MenuItemUI
   private Rectangle checkIconRect;
 
   /**
+   * A rectangle used for temporary storage to avoid creation of new
+   * rectangles.
+   */
+  private Rectangle cachedRect;
+
+  /**
    * A class to handle PropertChangeEvents for the JMenuItem
    * @author Anthony Balkissoon abalkiss at redhat dot com.   
    */
@@ -281,6 +288,7 @@ public class BasicMenuItemUI extends MenuItemUI
     arrowIconRect = new Rectangle();
     checkIconRect = new Rectangle();
     accelRect = new Rectangle();
+    cachedRect = new Rectangle();
   }
 
   /**
@@ -417,50 +425,69 @@ public class BasicMenuItemUI extends MenuItemUI
                                                int defaultTextIconGap)
   {
     JMenuItem m = (JMenuItem) c;
-    Dimension d = BasicGraphicsUtils.getPreferredButtonSize(m,
-                                                            defaultTextIconGap);
-    
-    // if menu item has accelerator then take accelerator's size into account
-    // when calculating preferred size.
-    KeyStroke accelerator = m.getAccelerator();
-    Rectangle rect;
+    String accelText = getAcceleratorString(m);
 
-    if (accelerator != null)
+    // Layout the menu item. The result gets stored in the rectangle
+    // fields of this class.
+    layoutMenuItem(m, accelText);
+
+    // The union of the text and icon areas is the label area.
+    cachedRect.setBounds(textRect);
+    Rectangle pref = SwingUtilities.computeUnion(iconRect.x, iconRect.y,
+                                                 iconRect.width,
+                                                 iconRect.height,
+                                                 cachedRect);
+
+    // Find the widest menu item text and accelerator and store it in
+    // client properties of the parent, so that we can align the accelerators
+    // properly. Of course, we only need can do this, if the parent is
+    // a JComponent and this menu item is not a toplevel menu.
+    Container parent = m.getParent();
+    if (parent != null && parent instanceof JComponent
+        && !(m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
       {
-        rect = getAcceleratorRect(
-                                  accelerator,
-                                  m.getToolkit().getFontMetrics(acceleratorFont));
+        JComponent p = (JComponent) parent;
 
-        // add width of accelerator's text
-        d.width += rect.width + defaultAcceleratorLabelGap;
-
-        // adjust the heigth of the preferred size if necessary
-        if (d.height < rect.height)
-          d.height = rect.height;
-      }
-
-    if (checkIcon != null)
-      {
-        d.width += checkIcon.getIconWidth() + defaultTextIconGap;
-
-        if (checkIcon.getIconHeight() > d.height)
-          d.height = checkIcon.getIconHeight();
-      }
-
-    if (arrowIcon != null && (c instanceof JMenu))
-      {
-        int pWidth = m.getParent().getWidth();
-        if (!((JMenu)c).isTopLevelMenu() && d.width < pWidth)
-          d.width = pWidth
-          - m.getInsets().left - m.getInsets().right;
+        // The widest text so far.
+        Integer maxTextWidth = (Integer) p.getClientProperty("maxTextWidth");
+        int maxTextValue = maxTextWidth == null ? 0 : maxTextWidth.intValue();
+        if (pref.width < maxTextValue)
+          pref.width = maxTextValue;
         else
-          d.width += arrowIcon.getIconWidth() + MenuGap;
-        
-        if (arrowIcon.getIconHeight() > d.height)
-          d.height = arrowIcon.getIconHeight();
+          p.putClientProperty("maxTextWidth", new Integer(pref.width));
+
+        // The widest accelerator so far.
+        Integer maxAccelWidth = (Integer) p.getClientProperty("maxAccelWidth");
+        int maxAccelValue = maxAccelWidth == null ? 0
+                                                  : maxAccelWidth.intValue();
+        if (accelRect.width > maxAccelValue)
+          {
+            maxAccelValue = accelRect.width;
+            p.putClientProperty("maxAccelWidth", new Integer(accelRect.width));
+          }
+        pref.width += maxAccelValue;
+        pref.width += defaultTextIconGap;
       }
-    
-    return d;
+
+    // Add arrow and check size if appropriate.
+    if (! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
+      {
+        pref.width += checkIconRect.width;
+        pref.width += defaultTextIconGap;
+        pref.width += arrowIconRect.width;
+        pref.width += defaultTextIconGap;
+      }
+
+    // Add a gap ~2 times as wide as the defaultTextIconGap.
+    pref.width += 2 * defaultTextIconGap;
+
+    // Respect the insets of the menu item.
+    Insets i = m.getInsets();
+    pref.width += i.left + i.right;
+    pref.height += i.top + i.bottom;
+
+    // Return a copy, so that nobody messes with our textRect.
+    return pref.getSize();
   }
 
   /**
@@ -636,108 +663,19 @@ public class BasicMenuItemUI extends MenuItemUI
                                Color foreground, int defaultTextIconGap)
   {
     JMenuItem m = (JMenuItem) c;
-    int width = m.getWidth();
-    int height = m.getHeight();
-
-    // Reset rectangles.
-    iconRect.setBounds(0, 0, 0, 0);
-    textRect.setBounds(0, 0, 0, 0);
-    accelRect.setBounds(0, 0, 0, 0);
-    checkIconRect.setBounds(0, 0, 0, 0);
-    arrowIconRect.setBounds(0, 0, 0, 0);
-    viewRect.setBounds(0, 0, width, height);
-
-    // Substract insets to the view rect.
-    Insets insets = m.getInsets();
-    viewRect.x += insets.left;
-    viewRect.y += insets.top;
-    viewRect.width -= (insets.left + insets.right);
-    viewRect.height -= (insets.top + insets.bottom);
 
     // Fetch fonts.
     Font oldFont = g.getFont();
     Font font = c.getFont();
     g.setFont(font);
-    FontMetrics fm = m.getFontMetrics(font);
     FontMetrics accelFm = m.getFontMetrics(acceleratorFont);
 
     // Create accelerator string.
-    KeyStroke accel = m.getAccelerator();
-    String accelText = "";
-    if (accel != null)
-      {
-        int mods = accel.getModifiers();
-        if (mods > 0)
-          {
-            accelText = KeyEvent.getKeyModifiersText(mods);
-            accelText += acceleratorDelimiter;
-          }
-        int keycode = accel.getKeyCode();
-        if (keycode != 0)
-          accelText += KeyEvent.getKeyText(keycode);
-        else
-          accelText += accel.getKeyChar();
-      }
-    // Layout text and icon.
-    String text = m.getText();
-    SwingUtilities.layoutCompoundLabel(m, fm, text, m.getIcon(),
-                                       m.getVerticalAlignment(),
-                                       m.getHorizontalAlignment(),
-                                       m.getVerticalTextPosition(),
-                                       m.getHorizontalTextPosition(),
-                                       viewRect, iconRect, textRect,
-                                       defaultTextIconGap);
+    String accelText = getAcceleratorString(m);
 
-    // Initialize accelerator width and height.
-    if (! accelText.equals(""))
-      {
-        accelRect.width = accelFm.stringWidth(accelText);
-        accelRect.height = accelFm.getHeight();
-      }
-
-    // Initialize check and arrow icon width and height.
-    if (! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
-      {
-        if (checkIcon != null)
-          {
-            checkIconRect.width = checkIcon.getIconWidth();
-            checkIconRect.height = checkIcon.getIconHeight();
-          }
-        if (arrowIcon != null)
-          {
-            arrowIconRect.width = arrowIcon.getIconWidth();
-            arrowIconRect.height = arrowIcon.getIconHeight();
-          }
-      }
-
-    Rectangle labelRect = iconRect.union(textRect);
-    textRect.x += defaultTextIconGap;
-    iconRect.x += defaultTextIconGap;
-
-    // Layout accelerator rect.
-    accelRect.x = viewRect.x + viewRect.width - arrowIconRect.width
-      - defaultTextIconGap - accelRect.width;
-    // Layout check and arrow icons only when not in toplevel menu.
-    if (! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
-      {
-        checkIconRect.x = viewRect.x + defaultTextIconGap;
-        textRect.x += defaultTextIconGap + checkIconRect.width;
-        iconRect.x += defaultTextIconGap + checkIconRect.width;
-        arrowIconRect.x = viewRect.x + viewRect.width - defaultTextIconGap
-          - arrowIconRect.width;
-      }
-
-    // Align the accelerator text and all the icons vertically centered to
-    // the menu text.
-    accelRect.y = labelRect.y + (labelRect.height / 2)
-      - (accelRect.height / 2);
-    if (! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
-      {
-        arrowIconRect.y = labelRect.y + (labelRect.height / 2)
-          - (arrowIconRect.height / 2);
-        checkIconRect.y = labelRect.y + (labelRect.height / 2)
-          - (checkIconRect.height / 2);
-      }
+    // Layout menu item. The result gets stored in the rectangle fields
+    // of this class.
+    layoutMenuItem(m, accelText);
 
     // Paint the background.
     paintBackground(g, m, background);
@@ -781,6 +719,7 @@ public class BasicMenuItemUI extends MenuItemUI
       }
 
     // Paint the text.
+    String text = m.getText();
     if (text != null)
       {
         // Handle HTML.
@@ -798,6 +737,22 @@ public class BasicMenuItemUI extends MenuItemUI
     // Paint accelerator text.
     if (! accelText.equals(""))
       {
+        // Align the accelerator text. In getPreferredMenuItemSize() we
+        // store a client property 'maxAccelWidth' in the parent which holds
+        // the maximum accelerator width for the children of this parent.
+        // We use this here to align the accelerators properly.
+        int accelOffset = 0;
+        Container parent = m.getParent();
+        if (parent != null && parent instanceof JComponent)
+          {
+            JComponent p = (JComponent) parent;
+            Integer maxAccelWidth =
+              (Integer) p.getClientProperty("maxAccelWidth");
+            int maxAccelValue = maxAccelWidth == null ? 0
+                                                    : maxAccelWidth.intValue();
+            accelOffset = maxAccelValue - accelRect.width;
+          }
+
         g.setFont(acceleratorFont);
         if (! m.isEnabled())
           {
@@ -811,7 +766,7 @@ public class BasicMenuItemUI extends MenuItemUI
             else
               g.setColor(acceleratorForeground);
           }
-        g.drawString(accelText, accelRect.x,
+        g.drawString(accelText, accelRect.x - accelOffset,
                      accelRect.y + accelFm.getAscent());
       }
 
@@ -1256,5 +1211,135 @@ public class BasicMenuItemUI extends MenuItemUI
       menuItem.revalidate();
       menuItem.repaint();
     }
+  }
+
+  /**
+   * A helper method to create the accelerator string from the menu item's
+   * accelerator property. The returned string is empty if there is
+   * no accelerator defined.
+   *
+   * @param m the menu item
+   *
+   * @return the accelerator string, not null
+   */
+  private String getAcceleratorString(JMenuItem m)
+  {
+    // Create accelerator string.
+    KeyStroke accel = m.getAccelerator();
+    String accelText = "";
+    if (accel != null)
+      {
+        int mods = accel.getModifiers();
+        if (mods > 0)
+          {
+            accelText = KeyEvent.getKeyModifiersText(mods);
+            accelText += acceleratorDelimiter;
+          }
+        int keycode = accel.getKeyCode();
+        if (keycode != 0)
+          accelText += KeyEvent.getKeyText(keycode);
+        else
+          accelText += accel.getKeyChar();
+      }
+    return accelText;
+  }
+
+  /**
+   * A helper method that lays out the menu item. The layout is stored
+   * in the fields of this class.
+   *
+   * @param m the menu item to layout
+   * @param accelText the accelerator text
+   */
+  private void layoutMenuItem(JMenuItem m, String accelText)
+  {
+    int width = m.getWidth();
+    int height = m.getHeight();
+
+    // Reset rectangles.
+    iconRect.setBounds(0, 0, 0, 0);
+    textRect.setBounds(0, 0, 0, 0);
+    accelRect.setBounds(0, 0, 0, 0);
+    checkIconRect.setBounds(0, 0, 0, 0);
+    arrowIconRect.setBounds(0, 0, 0, 0);
+    viewRect.setBounds(0, 0, width, height);
+
+    // Substract insets to the view rect.
+    Insets insets = m.getInsets();
+    viewRect.x += insets.left;
+    viewRect.y += insets.top;
+    viewRect.width -= (insets.left + insets.right);
+    viewRect.height -= (insets.top + insets.bottom);
+
+    // Fetch the fonts.
+    Font font = m.getFont();
+    FontMetrics fm = m.getFontMetrics(font);
+    FontMetrics accelFm = m.getFontMetrics(acceleratorFont);
+
+    String text = m.getText();
+    SwingUtilities.layoutCompoundLabel(m, fm, text, m.getIcon(),
+                                       m.getVerticalAlignment(),
+                                       m.getHorizontalAlignment(),
+                                       m.getVerticalTextPosition(),
+                                       m.getHorizontalTextPosition(),
+                                       viewRect, iconRect, textRect,
+                                       defaultTextIconGap);
+
+    // Initialize accelerator width and height.
+    if (! accelText.equals(""))
+      {
+        accelRect.width = accelFm.stringWidth(accelText);
+        accelRect.height = accelFm.getHeight();
+      }
+
+    // Initialize check and arrow icon width and height.
+    if (! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
+      {
+        if (checkIcon != null)
+          {
+            checkIconRect.width = checkIcon.getIconWidth();
+            checkIconRect.height = checkIcon.getIconHeight();
+          }
+        if (arrowIcon != null)
+          {
+            arrowIconRect.width = arrowIcon.getIconWidth();
+            arrowIconRect.height = arrowIcon.getIconHeight();
+          }
+      }
+
+    // The union of the icon and text of the menu item is the 'label area'.
+    cachedRect.setBounds(textRect);
+    Rectangle labelRect = SwingUtilities.computeUnion(iconRect.x,
+                                                      iconRect.y,
+                                                      iconRect.width,
+                                                      iconRect.height,
+                                                      cachedRect);
+    textRect.x += defaultTextIconGap;
+    iconRect.x += defaultTextIconGap;
+
+    // Layout accelerator rect.
+    accelRect.x = viewRect.x + viewRect.width - arrowIconRect.width
+      - defaultTextIconGap - accelRect.width;
+    // Layout check and arrow icons only when not in toplevel menu.
+    if (! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
+      {
+        checkIconRect.x = viewRect.x + defaultTextIconGap;
+        textRect.x += defaultTextIconGap + checkIconRect.width;
+        iconRect.x += defaultTextIconGap + checkIconRect.width;
+        arrowIconRect.x = viewRect.x + viewRect.width - defaultTextIconGap
+          - arrowIconRect.width;
+      }
+
+    // Align the accelerator text and all the icons vertically centered to
+    // the menu text.
+    accelRect.y = labelRect.y + (labelRect.height / 2)
+      - (accelRect.height / 2);
+    if (! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
+      {
+        arrowIconRect.y = labelRect.y + (labelRect.height / 2)
+          - (arrowIconRect.height / 2);
+        checkIconRect.y = labelRect.y + (labelRect.height / 2)
+          - (checkIconRect.height / 2);
+      }
   }
 }

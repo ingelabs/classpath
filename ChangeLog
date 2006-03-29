@@ -1,3 +1,19 @@
+2006-03-29  Roman Kennke  <kennke@aicas.com>
+
+	PR 23527
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(cachedRect): New field.
+	(BasicMenuItemUI): Initialize cachedRect field.
+	(getPreferredMenuItemSize): Use layoutMenuItem() helper method
+	to determine layout. Store maximum accelerator and text width
+	in client properties of parent to allow correct alignment
+	of accelerators among menu items of one menu.
+	(paintMenuItem): Outsourced menu item layout into layoutMenuItem
+	method. Align accelerators according to the values calculated
+	in getPreferredMenuItemSize.
+	(getAcceleratorString) New helper method.
+	(layoutMenuItem): New helper method.
+
 2006-03-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/java/rmi/activation/ActivationSystemTransient.java: Rewritten.
