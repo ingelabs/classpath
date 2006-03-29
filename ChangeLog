@@ -1,3 +1,19 @@
+2006-03-29  Roman Kennke  <kennke@aicas.com>
+
+	PR 23527
+	* javax/swing/plaf/basic/BasicMenuItemUI.java
+	(viewRect): New field.
+	(textRect): New field.
+	(accelRect): New field.
+	(iconRect): New field.
+	(arrowIconRect): New field.
+	(checkIconRect): New field.
+	(BasicMenuItemUI): Initialize new fields.
+	(paintMenuItem): Rewritten to correctly layout and paint
+	the menu item in a more straightforward way. Use cached rectangle
+	objects for layout.
+	(paintAccelerator): Pulled inside the paintMenuItem method.
+
 2006-03-29  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* tools/gnu/classpath/tools/rmi/rmic/templates/Stub_12Method.jav:

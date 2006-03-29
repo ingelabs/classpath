@@ -82,6 +82,7 @@ import javax.swing.plaf.ActionMapUIResource;
 import javax.swing.plaf.ComponentInputMapUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.MenuItemUI;
+import javax.swing.text.View;
 
 /**
  * UI Delegate for JMenuItem.
@@ -183,7 +184,37 @@ public class BasicMenuItemUI extends MenuItemUI
   
   /** A PropertyChangeListener to make UI updates after property changes **/
   PropertyChangeHandler propertyChangeListener;
-  
+
+  /**
+   * The view rectangle used for layout of the menu item.
+   */
+  private Rectangle viewRect;
+
+  /**
+   * The rectangle that holds the area of the label.
+   */
+  private Rectangle textRect;
+
+  /**
+   * The rectangle that holds the area of the accelerator.
+   */
+  private Rectangle accelRect;
+
+  /**
+   * The rectangle that holds the area of the icon.
+   */
+  private Rectangle iconRect;
+
+  /**
+   * The rectangle that holds the area of the icon.
+   */
+  private Rectangle arrowIconRect;
+
+  /**
+   * The rectangle that holds the area of the check icon.
+   */
+  private Rectangle checkIconRect;
+
   /**
    * A class to handle PropertChangeEvents for the JMenuItem
    * @author Anthony Balkissoon abalkiss at redhat dot com.   
@@ -242,6 +273,14 @@ public class BasicMenuItemUI extends MenuItemUI
     menuKeyListener = createMenuKeyListener(menuItem);
     itemListener = new ItemHandler();
     propertyChangeListener = new PropertyChangeHandler();
+
+    // Initialize rectangles for layout.
+    viewRect = new Rectangle();
+    textRect = new Rectangle();
+    iconRect = new Rectangle();
+    arrowIconRect = new Rectangle();
+    checkIconRect = new Rectangle();
+    accelRect = new Rectangle();
   }
 
   /**
@@ -597,87 +636,195 @@ public class BasicMenuItemUI extends MenuItemUI
                                Color foreground, int defaultTextIconGap)
   {
     JMenuItem m = (JMenuItem) c;
-    Rectangle tr = new Rectangle(); // text rectangle
-    Rectangle ir = new Rectangle(); // icon rectangle
-    Rectangle vr = new Rectangle(); // view rectangle
-    Rectangle br = new Rectangle(); // border rectangle
-    Rectangle ar = new Rectangle(); // accelerator rectangle
-    Rectangle cr = new Rectangle(); // checkIcon rectangle
+    int width = m.getWidth();
+    int height = m.getHeight();
 
-    int vertAlign = m.getVerticalAlignment();
-    int horAlign = m.getHorizontalAlignment();
-    int vertTextPos = m.getVerticalTextPosition();
-    int horTextPos = m.getHorizontalTextPosition();
-    
-    Font f = m.getFont();
-    g.setFont(f);
-    FontMetrics fm = g.getFontMetrics(f);
-    SwingUtilities.calculateInnerArea(m, vr);
-    paintBackground(g, m, background);
+    // Reset rectangles.
+    iconRect.setBounds(0, 0, 0, 0);
+    textRect.setBounds(0, 0, 0, 0);
+    accelRect.setBounds(0, 0, 0, 0);
+    checkIconRect.setBounds(0, 0, 0, 0);
+    arrowIconRect.setBounds(0, 0, 0, 0);
+    viewRect.setBounds(0, 0, width, height);
 
-    /*
-     * MenuItems insets are equal to menuItems margin, space between text and
-     * menuItems border. We need to paint insets region as well.
-     */
+    // Substract insets to the view rect.
     Insets insets = m.getInsets();
-    br.x -= insets.left;
-    br.y -= insets.top;
-    br.width += insets.right + insets.left;
-    br.height += insets.top + insets.bottom;
+    viewRect.x += insets.left;
+    viewRect.y += insets.top;
+    viewRect.width -= (insets.left + insets.right);
+    viewRect.height -= (insets.top + insets.bottom);
 
-    // If this menu item is a JCheckBoxMenuItem then paint check icon
-    if (checkIcon != null)
+    // Fetch fonts.
+    Font oldFont = g.getFont();
+    Font font = c.getFont();
+    g.setFont(font);
+    FontMetrics fm = m.getFontMetrics(font);
+    FontMetrics accelFm = m.getFontMetrics(acceleratorFont);
+
+    // Create accelerator string.
+    KeyStroke accel = m.getAccelerator();
+    String accelText = "";
+    if (accel != null)
       {
-        SwingUtilities.layoutCompoundLabel(m, fm, null, checkIcon, vertAlign,
-                                           horAlign, vertTextPos, horTextPos,
-                                           vr, cr, tr, defaultTextIconGap);
-        checkIcon.paintIcon(m, g, cr.x, cr.y);
-        // We need to calculate position of the menu text and position of
-        // user menu icon if there exists one relative to the check icon.
-        // So we need to adjust view rectangle s.t. its starting point is at
-        // checkIcon.width + defaultTextIconGap.
-        vr.x = cr.x + cr.width + defaultTextIconGap;
+        int mods = accel.getModifiers();
+        if (mods > 0)
+          {
+            accelText = KeyEvent.getKeyModifiersText(mods);
+            accelText += acceleratorDelimiter;
+          }
+        int keycode = accel.getKeyCode();
+        if (keycode != 0)
+          accelText += KeyEvent.getKeyText(keycode);
+        else
+          accelText += accel.getKeyChar();
+      }
+    // Layout text and icon.
+    String text = m.getText();
+    SwingUtilities.layoutCompoundLabel(m, fm, text, m.getIcon(),
+                                       m.getVerticalAlignment(),
+                                       m.getHorizontalAlignment(),
+                                       m.getVerticalTextPosition(),
+                                       m.getHorizontalTextPosition(),
+                                       viewRect, iconRect, textRect,
+                                       defaultTextIconGap);
+
+    // Initialize accelerator width and height.
+    if (! accelText.equals(""))
+      {
+        accelRect.width = accelFm.stringWidth(accelText);
+        accelRect.height = accelFm.getHeight();
       }
 
-    // if this is a submenu, then paint arrow icon to indicate it.
-    if (arrowIcon != null && (c instanceof JMenu))
+    // Initialize check and arrow icon width and height.
+    if (! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
       {
-        if (!((JMenu) c).isTopLevelMenu())
+        if (checkIcon != null)
           {
-            int width = arrowIcon.getIconWidth();
-            int height = arrowIcon.getIconHeight();
-            int offset = (vr.height - height) / 2;
-            arrowIcon.paintIcon(m, g, vr.width - width, vr.y + offset);
+            checkIconRect.width = checkIcon.getIconWidth();
+            checkIconRect.height = checkIcon.getIconHeight();
+          }
+        if (arrowIcon != null)
+          {
+            arrowIconRect.width = arrowIcon.getIconWidth();
+            arrowIconRect.height = arrowIcon.getIconHeight();
           }
       }
 
-    // paint text and user menu icon if it exists
-    Icon i = m.getIcon();
-    SwingUtilities.layoutCompoundLabel(c, fm, m.getText(), i, vertAlign,
-                                       horAlign, vertTextPos, horTextPos, vr,
-                                       ir, tr, defaultTextIconGap);
-    if (i != null)
-      i.paintIcon(c, g, ir.x, ir.y);
-    paintText(g, m, tr, m.getText());
+    Rectangle labelRect = iconRect.union(textRect);
+    textRect.x += defaultTextIconGap;
+    iconRect.x += defaultTextIconGap;
 
-    // paint accelerator
-    String acceleratorText = "";
-
-    if (m.getAccelerator() != null)
+    // Layout accelerator rect.
+    accelRect.x = viewRect.x + viewRect.width - arrowIconRect.width
+      - defaultTextIconGap - accelRect.width;
+    // Layout check and arrow icons only when not in toplevel menu.
+    if (! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
       {
-        acceleratorText = getAcceleratorText(m.getAccelerator());
-        fm = g.getFontMetrics(acceleratorFont);
-        ar.width = fm.stringWidth(acceleratorText);
-        ar.x = br.width - ar.width;
-        vr.x = br.width - ar.width - defaultTextIconGap;
-
-        SwingUtilities.layoutCompoundLabel(m, fm, acceleratorText, null,
-                                           vertAlign, horAlign, vertTextPos,
-                                           horTextPos, vr, ir, ar,
-                                           defaultTextIconGap);
-
-        paintAccelerator(g, m, ar, acceleratorText);
+        checkIconRect.x = viewRect.x + defaultTextIconGap;
+        textRect.x += defaultTextIconGap + checkIconRect.width;
+        iconRect.x += defaultTextIconGap + checkIconRect.width;
+        arrowIconRect.x = viewRect.x + viewRect.width - defaultTextIconGap
+          - arrowIconRect.width;
       }
+
+    // Align the accelerator text and all the icons vertically centered to
+    // the menu text.
+    accelRect.y = labelRect.y + (labelRect.height / 2)
+      - (accelRect.height / 2);
+    if (! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
+      {
+        arrowIconRect.y = labelRect.y + (labelRect.height / 2)
+          - (arrowIconRect.height / 2);
+        checkIconRect.y = labelRect.y + (labelRect.height / 2)
+          - (checkIconRect.height / 2);
+      }
+
+    // Paint the background.
+    paintBackground(g, m, background);
+
+    Color oldColor = g.getColor();
+
+    // Paint the check icon.
+    if (checkIcon != null)
+      {
+        checkIcon.paintIcon(m, g, checkIconRect.x, checkIconRect.y);
+      }
+
+    // Paint the icon.
+    ButtonModel model = m.getModel();
+    if (m.getIcon() != null)
+      {
+        // Determine icon depending on the menu item
+        // state (normal/disabled/pressed).
+        Icon icon;
+        if (! m.isEnabled())
+          {
+            icon = m.getDisabledIcon();
+          }
+        else if (model.isPressed() && model.isArmed())
+          {
+            icon = m.getPressedIcon();
+            if (icon == null)
+              {
+                icon = m.getIcon();
+              }
+          }
+        else
+          {
+            icon = m.getIcon();
+          }
+
+        if (icon != null)
+          {
+            icon.paintIcon(m, g, iconRect.x, iconRect.y);
+          }
+      }
+
+    // Paint the text.
+    if (text != null)
+      {
+        // Handle HTML.
+        View html = (View) m.getClientProperty(BasicHTML.propertyKey);
+        if (html != null)
+          {
+            html.paint(g, textRect);
+          }
+        else
+          {
+            paintText(g, m, textRect, text);
+          }
+      }
+
+    // Paint accelerator text.
+    if (! accelText.equals(""))
+      {
+        g.setFont(acceleratorFont);
+        if (! m.isEnabled())
+          {
+            // Paint accelerator disabled.
+            g.setColor(disabledForeground);
+          }
+        else
+          {
+            if (m.isArmed() || (m instanceof JMenu && m.isSelected()))
+              g.setColor(acceleratorSelectionForeground);
+            else
+              g.setColor(acceleratorForeground);
+          }
+        g.drawString(accelText, accelRect.x,
+                     accelRect.y + accelFm.getAscent());
+      }
+
+    // Paint arrow.
+    if (arrowIcon != null
+        && ! (m instanceof JMenu && ((JMenu) m).isTopLevelMenu()))
+      {
+        arrowIcon.paintIcon(m, g, arrowIconRect.x, arrowIconRect.y);
+      }
+
+    g.setFont(oldFont);
+    g.setColor(oldColor);
+
   }
 
   /**
@@ -859,37 +1006,6 @@ public class BasicMenuItemUI extends MenuItemUI
     int width = fm.stringWidth(getAcceleratorText(accelerator));
     int height = fm.getHeight();
     return new Rectangle(0, 0, width, height);
-  }
-
-  /**
-   * Paints accelerator inside menu item
-   * 
-   * @param g
-   *          The graphics context used to paint the border
-   * @param menuItem
-   *          Menu item for which to draw accelerator
-   * @param acceleratorRect
-   *          rectangle representing position of the accelerator relative to the
-   *          menu item
-   * @param acceleratorText
-   *          accelerator's text
-   */
-  private void paintAccelerator(Graphics g, JMenuItem menuItem,
-                                Rectangle acceleratorRect,
-                                String acceleratorText)
-  {
-    g.setFont(acceleratorFont);
-    FontMetrics fm = g.getFontMetrics(acceleratorFont);
-
-    if (menuItem.isEnabled())
-      g.setColor(acceleratorForeground);
-    else
-      // FIXME: should fix this to use 'disabledForeground', but its
-      // default value in BasicLookAndFeel is null.
-      g.setColor(Color.gray);
-
-    BasicGraphicsUtils.drawString(g, acceleratorText, 0, acceleratorRect.x,
-                                  acceleratorRect.y + fm.getAscent());
   }
 
   /**
