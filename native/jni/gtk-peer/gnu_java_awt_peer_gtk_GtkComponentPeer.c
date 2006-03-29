@@ -270,6 +270,9 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursorUnlocked
 
   gdk_window_set_cursor (widget->window, gdk_cursor);
   gdk_cursor_unref (gdk_cursor);
+
+  /* Make sure the cursor is replaced on screen. */
+  gdk_flush();
 }
 
 JNIEXPORT void JNICALL
