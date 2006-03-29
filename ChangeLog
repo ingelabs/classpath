@@ -1,3 +1,8 @@
+2006-03-29  Gary Benson  <gbenson@redhat.com>
+
+	Partial fix for PR classpath/24895
+	* java/io/FilePermission.java (implies): Canonicalize paths.
+
 2006-03-29  Robert Schuster  <robertschuster@fsfe.org>
 
 	PR 26888
