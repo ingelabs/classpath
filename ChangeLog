@@ -1,3 +1,33 @@
+2006-03-29  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JSlider.java
+	(setPaintLabels): Only create standard labels if labelTable is null,
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(PropertyChangeHandler.propertyChange): Recalculate geometry for 
+	"paintTicks" property change,
+	(calculateThumbSize): Updated API docs,
+	(calculateContentRect): Likewise,
+	(calculateTrackBuffer): Take into account the lowest and highest 
+	labels when calculating buffer space,
+	(calculateTrackRect): Include labels, if visible, in the calculation of
+	the trackRect position,
+	(calculateTickRect): Height is zero if ticks are not painted,
+	(calculateLabelRect): Use max dimensions of actual labels,
+	(getWidthOfHighValueLabel): Use preferred size,
+	(getWidthOfLowValueLabel): Likewise,
+	(getHeightOfHighValueLabel): Likewise,
+	(getHeightOfLowValueLabel): Likewise,
+	(drawInverted): Just return slider setting,
+	(getHighestValueLabel): Updated API docs,
+	(paintTicks): Removed redundant (and buggy) code, replaced with calls 
+	to xPositionForValue() and yPositionForValue(),
+	(paintHorizontalLabel): Removed full qualification of class name,
+	(paintVerticalLabel): Likewise,
+	(xPositionForValue): Reimplemented,
+	(yPositionForValue): Reimplemented,
+	* javax/swing/plaf/metal/MetalSliderUI.java
+	(paintTrack): Made track one pixel longer.
+
 2006-03-29  Tom Tromey  <tromey@redhat.com>
 
 	PR gcc/26901:
