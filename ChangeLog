@@ -1,3 +1,13 @@
+2006-03-29  Lillian Angel  <langel@redhat.com>
+
+	Partial fix for bug #26929
+	* gnu/java/awt/peer/gtk/GtkPanelPeer.java
+	(updateComponent): Removed. We want to clear the panel
+	before painting.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRect): Fixed typo.
+	Should set the background to the saved background color.
+
 2006-03-29  Mark Wielaard  <mark@klomp.org>
 
 	Partial fix for bug #26848 (pack).

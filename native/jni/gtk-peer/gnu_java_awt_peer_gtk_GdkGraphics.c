@@ -505,7 +505,7 @@ Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRect
   else
     {
       gdk_gc_get_values (g->gc, &saved);
-      gdk_gc_set_foreground (g->gc, &(saved.background));
+      gdk_gc_set_background (g->gc, &(saved.background));
       gdk_draw_rectangle (g->drawable, g->gc, TRUE, 
 			  x + g->x_offset, y + g->y_offset, width, height);
       gdk_gc_set_foreground (g->gc, &(saved.foreground));
