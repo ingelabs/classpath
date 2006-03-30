@@ -1,5 +1,10 @@
 2006-03-30  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JTabbedPane.java
+	(removeTabAt): Removed debug code.
+
+2006-03-30  Roman Kennke  <kennke@aicas.com>
+
 	PR 26045
 	* javax/swing/plaf/basic/BasicTextUI.java
 	(installKeyboardActions): Simply call getKeymap() and install this.

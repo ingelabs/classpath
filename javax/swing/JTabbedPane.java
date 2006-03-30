@@ -1170,8 +1170,6 @@ public class JTabbedPane extends JComponent implements Serializable,
     // - When the last tab is removed, then we have an index==0, which gets
     //   decremented to -1, which means no selection, which is 100% perfect.
     int selectedIndex = getSelectedIndex();
-    System.err.println("index: " + index);
-    System.err.println("selectedIndex: " + selectedIndex);
     if (selectedIndex >= index)
       setSelectedIndex(selectedIndex - 1);
 
