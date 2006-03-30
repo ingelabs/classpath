@@ -1,3 +1,9 @@
+2006-03-30  Chris Burdess  <dog@gnu.org>
+
+	* javax/xml/datatype/DatatypeFactory.java (newDurationDayTime): Fix
+	  method signature.
+	* javax/xml/validation/SchemaFactoryLoader.java: New file.
+
 2006-03-30  Mark Wielaard  <mark@klomp.org>
 
 	PR 23527
