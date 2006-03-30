@@ -1,3 +1,12 @@
+2006-03-30  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JTabbedPane.java
+	(removeTabAt): Adjust selection correctly when removing a tab
+	before the selected tab. Also remove the component from the
+	container, not only the tab object. Repaint and revalidate the
+	component after the removal.
+	(removeAll): Set selection to -1 before removing the tabs.
+
 2006-03-29  Lillian Angel  <langel@redhat.com>
 
 	Partial fix for bug #26929
