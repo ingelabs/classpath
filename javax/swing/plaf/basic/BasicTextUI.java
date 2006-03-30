@@ -696,33 +696,23 @@ public abstract class BasicTextUI extends TextUI
    */
   protected Keymap createKeymap()
   {
-    // FIXME: It seems to me that this method implementation is wrong. It seems
-    // to fetch the focusInputMap and transform it to the KeyBinding/Keymap
-    // implemenation. I would think that it should be done the other way,
-    // fetching the keybindings (from prefix + ".bindings") and transform
-    // it to the newer InputMap/ActionMap implementation.
-    JTextComponent.KeyBinding[] bindings = null;
-    String prefix = getPropertyPrefix();
-    InputMapUIResource m = (InputMapUIResource) UIManager.get(prefix + ".focusInputMap");
-    if (m != null)
+    String keymapName = getKeymapName();
+    Keymap keymap = JTextComponent.getKeymap(keymapName);
+    if (keymap == null)
       {
-        KeyStroke[] keys = m.keys();
-        int len = keys.length;
-        bindings = new JTextComponent.KeyBinding[len];
-        for (int i = 0; i < len; i++)
+        Keymap parentMap =
+          JTextComponent.getKeymap(JTextComponent.DEFAULT_KEYMAP);
+        keymap = JTextComponent.addKeymap(keymapName, parentMap);
+        Object val = UIManager.get(getPropertyPrefix() + ".keyBindings");
+        if (val != null && val instanceof JTextComponent.KeyBinding[])
           {
-            KeyStroke curr = keys[i];
-            bindings[i] = new JTextComponent.KeyBinding(curr,
-                                                        (String) m.get(curr));
+            JTextComponent.KeyBinding[] bindings =
+              (JTextComponent.KeyBinding[]) val;
+            JTextComponent.loadKeymap(keymap, bindings,
+                                      getComponent().getActions());
           }
       }
-    if (bindings == null)
-      bindings = new JTextComponent.KeyBinding[0];
-
-    Keymap km = JTextComponent.addKeymap(getKeymapName(), 
-                                         JTextComponent.getKeymap(JTextComponent.DEFAULT_KEYMAP));    
-    JTextComponent.loadKeymap(km, bindings, textComponent.getActions());
-    return km;    
+    return keymap;
   }
 
   /**
@@ -730,11 +720,8 @@ public abstract class BasicTextUI extends TextUI
    */
   protected void installKeyboardActions()
   {
-    // load key bindings for the older interface
-    Keymap km = JTextComponent.getKeymap(getKeymapName());
-    if (km == null)
-      km = createKeymap();
-    textComponent.setKeymap(km);
+    // This is only there for backwards compatibility.
+    textComponent.setKeymap(createKeymap());
 
     // load any bindings for the newer InputMap / ActionMap interface
     SwingUtilities.replaceUIInputMap(textComponent, JComponent.WHEN_FOCUSED,

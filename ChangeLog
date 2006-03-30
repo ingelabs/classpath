@@ -1,5 +1,12 @@
 2006-03-30  Roman Kennke  <kennke@aicas.com>
 
+	PR 26045
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installKeyboardActions): Simply call getKeymap() and install this.
+	(createKeymap): Reimplemented to fetch a keymap from the UIManager.
+
+2006-03-30  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JTabbedPane.java
 	(removeTabAt): Adjust selection correctly when removing a tab
 	before the selected tab. Also remove the component from the
