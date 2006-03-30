@@ -1,5 +1,5 @@
 /* Window.java --
-   Copyright (C) 1999, 2000, 2002, 2003, 2004  Free Software Foundation
+   Copyright (C) 1999, 2000, 2002, 2003, 2004, 2006  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -622,10 +622,25 @@ public class Window extends Container implements Accessible
 	    || windowStateListener != null
 	    || (eventMask & AWTEvent.WINDOW_EVENT_MASK) != 0))
       processEvent(e);
-    else if (e.id == ComponentEvent.COMPONENT_RESIZED)
-      validate ();
-    else
-      super.dispatchEventImpl(e);
+    else 
+      {
+	if (e.id == ComponentEvent.COMPONENT_RESIZED
+	    || e.id == ComponentEvent.COMPONENT_MOVED)
+	  {
+	    Rectangle bounds = peer.getBounds();
+	    x = bounds.x;
+	    y = bounds.y;
+	    height = bounds.height;
+	    width = bounds.width;
+	    
+	    if (e.id == ComponentEvent.COMPONENT_RESIZED)
+	      {
+		invalidate();
+		validate();
+	      }
+	  }
+	super.dispatchEventImpl(e);
+      }
   }
 
   /**

@@ -1,3 +1,32 @@
+2006-03-30  Mark Wielaard  <mark@klomp.org>
+
+	PR 23527
+	* java/awt/Window.java (dispatchEventImpl): On ComponentEvents
+	adjust bounds. On resize invalidate and validate container.
+	Always pass on ComponentEvents to Container super class.
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (setBounds): Adjust for
+	menuBar and pass to GtkWindowPeer super class.
+	(postConfigureEvent): Adjust menu bar width. Adjust y and height
+	bounds and pass to GtkWindowPeer super class.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java (x, y, width, height):
+	New fields for local bounds.
+	(getX, getY): New methods.
+	(getWidth): Don't call into awtComponent.
+	(getHeight): Likewise.
+	(create): Cache local bounds.
+	(setLocation): Documented, made protected and just call
+	nativeSetLocation.
+	(setLocationUnlocked): Removed unused method.
+	(setBoundsUnlocked): Likewise.
+	(setBounds): Check whether bounds actually changed and cache local
+	bounds.
+	(setSize): Documented and made protected.
+	(setResizable): Documented and cache local bounds.
+	(postConfigureEvent): Update local bounds. Don't call awtComponent
+	directly but post ComponentEvents.
+	(show): Cache local bounds.
+	(getBounds): Override to return cached bounds.
+
 2006-03-30  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java
