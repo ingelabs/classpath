@@ -13,7 +13,7 @@
 
 2006-03-30  Mark Wielaard  <mark@klomp.org>
 
-	PR 23527
+	PR 26848
 	* java/awt/Window.java (dispatchEventImpl): On ComponentEvents
 	adjust bounds. On resize invalidate and validate container.
 	Always pass on ComponentEvents to Container super class.
