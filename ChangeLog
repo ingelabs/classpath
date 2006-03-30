@@ -1,3 +1,13 @@
+2006-03-30  Lillian Angel  <langel@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(drawImage): Added check to prevent NPE.
+	(drawImage): Likewise.
+	(drawImage): Likewise.
+	* java/awt/Choice.java
+	(dispatchEventImpl): New function. selectedIndex was
+	not being updated properly otherwise.
+
 2006-03-30  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/JTabbedPane.java
