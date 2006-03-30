@@ -1651,13 +1651,22 @@ public class JTable
   public JTable (TableModel dm, TableColumnModel cm, ListSelectionModel sm)
   {
     boolean autoCreate = false;
+    TableColumnModel columnModel;
     if (cm != null)
-        setColumnModel(cm);
+        columnModel = cm;
     else 
       {
-        setColumnModel(createDefaultColumnModel());
+        columnModel = createDefaultColumnModel();
         autoCreate = true;
-      }        
+      }
+    
+    // Initialise the intercelar spacing before setting the column model to
+    // avoid firing unnecessary events.
+    // The initial incellar spacing is new Dimenstion(1,1). 
+    rowMargin = 1;
+    columnModel.setColumnMargin(1);
+    setColumnModel(columnModel);
+    
     setSelectionModel(sm == null ? createDefaultSelectionModel() : sm);
     setModel(dm == null ? createDefaultDataModel() : dm);
     setAutoCreateColumnsFromModel(autoCreate);
@@ -1717,7 +1726,6 @@ public class JTable
     this.showVerticalLines = true;
     this.editingColumn = -1;
     this.editingRow = -1;
-    setIntercellSpacing(new Dimension(1,1));
   }
   
   /**

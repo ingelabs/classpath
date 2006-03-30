@@ -1,3 +1,10 @@
+2006-03-30  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax.swing.JTable (constructor): Initialize column
+	model column margin and table row margin before setting the
+	table column model. (initialiseLocalVars): Do not call 
+	setIntercellSpacing.
+
 2006-03-30  Chris Burdess  <dog@gnu.org>
 
 	* javax/xml/datatype/DatatypeFactory.java (newDurationDayTime): Fix
