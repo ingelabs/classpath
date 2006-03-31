@@ -1,3 +1,12 @@
+2006-03-31  David Gilbert  <david.gilbert@object-refinery.com>
+
+	Fixes bug #26955
+	* java/awt/geom/Point2D.java
+	(distanceSq(double, double)): Fixed order of arguments,
+	(distanceSq(Point2D)): Likewise,
+	(distance(double, double)): Likewise,
+	(distance(Point2D)): Likewise.
+
 2006-03-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/plugins/jpeg/JPEGQTable.java: New file.
