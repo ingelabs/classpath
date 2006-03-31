@@ -1,3 +1,9 @@
+2006-03-31  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Component.java
+	(translateEvent): oldKey should be the value of the
+	key char.
+
 2006-03-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (columnSelectionChanged):

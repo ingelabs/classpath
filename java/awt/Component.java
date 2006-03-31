@@ -4875,7 +4875,7 @@ p   * <li>the set of backward traversal keys
                 oldKey = Event.UP;
                 break;
               default:
-                oldKey = newKey;
+                oldKey = (int) ((KeyEvent) e).getKeyChar();
               }
 
             translated = new Event (target, when, oldID,
