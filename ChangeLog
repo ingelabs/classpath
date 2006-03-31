@@ -1,5 +1,15 @@
 2006-03-31  David Gilbert  <david.gilbert@object-refinery.com>
 
+	Fixes bug #26951
+	* javax/swing/DefaultComboBoxModel.java
+	(DefaultComboBoxModel(Vector)): Call getSize() instead of 
+	vector.size(),
+	(addElement): Call list.addElement() rather than list.add(), and only
+	update selected item if it is currently null,
+	(removeElementAt): Update selected item, then remove the element.
+
+2006-03-31  David Gilbert  <david.gilbert@object-refinery.com>
+
 	Fixes bug #26955
 	* java/awt/geom/Point2D.java
 	(distanceSq(double, double)): Fixed order of arguments,
