@@ -1886,6 +1886,7 @@ public class JTable
     
     int idx0 = event.getFirstIndex();
     int idxn = event.getLastIndex();
+    System.out.println("IDX "+idx0+"-"+idxn);
     int i;
 
     for (i = 0; i < idx0; i++)
@@ -1896,7 +1897,7 @@ public class JTable
     for (i = idx0; i <= idxn; i++)
       xn += columnModel.getColumn(i).getWidth();
     
-    repaint(x0, 0, xn, getHeight());
+    repaint(x0, 0, xn-x0, getHeight());
   }
  
   /**
