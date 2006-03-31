@@ -1,3 +1,13 @@
+2006-03-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java (columnSelectionChanged):
+	Removed print statement.
+	* javax/swing/DefaultListSelectionModel.java
+	(addSelectionInterval, removeSelectionInterval):
+	Fire the difference between selection. (setLeadSelectionIndex):
+	Fire the difference and mark current and previous lead
+	selection indexes for repaint.
+
 2006-03-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/plugins/jpeg/JPEGHuffmanTable.java: Eliminate

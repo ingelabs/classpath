@@ -1886,7 +1886,6 @@ public class JTable
     
     int idx0 = event.getFirstIndex();
     int idxn = event.getLastIndex();
-    System.out.println("IDX "+idx0+"-"+idxn);
     int i;
 
     for (i = 0; i < idx0; i++)

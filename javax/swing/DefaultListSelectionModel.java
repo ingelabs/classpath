@@ -286,8 +286,14 @@ public class DefaultListSelectionModel implements Cloneable,
     int beg = sel.nextSetBit(0), end = -1;
     for(int i=beg; i >= 0; i=sel.nextSetBit(i+1)) 
       end = i;
-    if (sel.equals(oldSel) == false)
-      fireValueChanged(beg, end, valueIsAdjusting);    
+    
+    BitSet old = (BitSet) oldSel;
+    
+    // The new and previous lead location requires repainting.
+    old.set(oldLeadIndex, !sel.get(oldLeadIndex));
+    old.set(leadSelectionIndex, !sel.get(leadSelectionIndex));
+    
+    fireDifference(sel, old);
   }
 
   /**
@@ -492,8 +498,7 @@ public class DefaultListSelectionModel implements Cloneable,
         leadSelectionIndex = index1;
         anchorSelectionIndex = index0;
         sel.set(lo, hi+1);
-        if (sel.equals(oldSel) == false)
-          fireValueChanged(lo, hi, valueIsAdjusting);
+        fireDifference(sel, (BitSet) oldSel);
       }
   }
 
@@ -530,8 +535,8 @@ public class DefaultListSelectionModel implements Cloneable,
     //TODO: will probably need MouseDragged to test properly and know if this works
     setAnchorSelectionIndex(index0);
     leadSelectionIndex = index1;
-    if (sel.equals(oldSel) == false)
-      fireValueChanged(lo, hi, valueIsAdjusting);
+    
+    fireDifference(sel, (BitSet) oldSel);
   }
 
   /**
