@@ -1,3 +1,10 @@
+2006-03-31  Tom Tromey  <tromey@redhat.com>
+
+	* lib/split-for-gcj.sh: Updated for multi-field format.
+	* lib/Makefile.am (CLEANFILES): Added classes.2.
+	* lib/gen-classlist.sh.in (GCJ): Removed.  Create classes.1 and
+	classes.2 using multiple fields.
+
 2006-03-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (columnSelectionChanged):
