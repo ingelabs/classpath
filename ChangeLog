@@ -1,3 +1,15 @@
+2006-03-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/DefaultListSelectionModel.java (fireDifference):
+	New method. (clearSelection): Rewritten. (setSelectionInterval):
+	Fire the difference between current and new selection.
+	* javax/swing/JTable.java (columnSelectionChanged, valueChanged):
+	Only repaint the region, where selection has been changed.
+	* javax/swing/plaf/basic/BasicTableUI.java 
+	(TableAction.actionPerformed): Do not change the column selection
+	when only row selection change is wanted (and in reverse) and 
+	do not call the repaint() here.
+
 2006-03-31  David Gilbert  <david.gilbert@object-refinery.com>
 
 	Fixes bug #26951

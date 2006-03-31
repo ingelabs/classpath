@@ -1872,13 +1872,33 @@ public class JTable
   }
   
   /**
-   * Invoked when the the column selection changes.
+   * Invoked when the the column selection changes, repaints the changed
+   * columns. It is not recommended to override this method, register the
+   * listener instead.
    */
   public void columnSelectionChanged (ListSelectionEvent event)
   {
-    repaint();
+    // Does not make sense for the table with the single column.
+    if (getColumnCount() < 2)
+      return;
+    
+    int x0 = 0;
+    
+    int idx0 = event.getFirstIndex();
+    int idxn = event.getLastIndex();
+    int i;
+
+    for (i = 0; i < idx0; i++)
+      x0 += columnModel.getColumn(i).getWidth();
+    
+    int xn = x0;
+    
+    for (i = idx0; i <= idxn; i++)
+      xn += columnModel.getColumn(i).getWidth();
+    
+    repaint(x0, 0, xn, getHeight());
   }
-  
+ 
   /**
    * Invoked when the editing is cancelled.
    */
@@ -1937,11 +1957,19 @@ public class JTable
   }
 
   /**
-   * Invoked when another table row is selected.
+   * Invoked when another table row is selected. It is not recommended
+   * to override thid method, register the listener instead.
    */
   public void valueChanged (ListSelectionEvent event)
   {
-    repaint();
+    // Does not make sense for the table with the single row.
+    if (getRowCount() < 2)
+      return;
+    
+    int y_gap = rowMargin;
+    int y0 = (getRowHeight() + y_gap) * (event.getFirstIndex());
+    int yn = (getRowHeight() + y_gap) * (event.getLastIndex()+1);
+    repaint(0, y0, getWidth(), yn-y0);
   }
 
  /**
