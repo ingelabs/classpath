@@ -1,3 +1,11 @@
+2006-03-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/plugins/jpeg/JPEGQTable.java: New file.
+	* javax/imageio/plugins/jpeg/JPEGHuffmanTable.java
+	(ACChrominanceLengths, ACChrominanceValues, ACLuminanceLengths,
+	ACLuminanceValues, DCChrominanceLengths, DCChrominanceValues,
+	DCLuminanceLengths, DCLuminanceValues): Remove fields.
+
 2006-03-30  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax.swing.JTable (constructor): Initialize column
