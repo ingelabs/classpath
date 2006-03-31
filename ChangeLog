@@ -1,3 +1,18 @@
+2006-03-31  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/gnu/classpath/tools/jarsigner/SFHelper.java (updateEntry): Use
+	Attributes.putValue(String,String).
+	(finishSigning): Likewise.
+	* gnu/java/util/jar/JarUtils.java (MANIFEST_VERSION): New constant.
+	(SIGNATURE_VERSION): Likewise.
+	(readSFManifest): Use local string constant.
+	(readMainSection): Likewise.
+	(readVersionInfo): Likewise.
+	* java/util/jar/Attributes.java (MANIFEST_VERSION):
+	Redefined using JarUtils constant.
+	(SIGNATURE_VERSION): Likewise.
+	(putValue(Name,String)): Made it private.
+
 2006-03-31  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/DefaultListSelectionModel.java (fireDifference):

@@ -331,7 +331,7 @@ public class SFHelper
         manifest.getEntries().put(name, mainfestAttributes);
       }
 
-    mainfestAttributes.putValue(Main.DIGEST_ATTR, hash);
+    mainfestAttributes.putValue(Main.DIGEST, hash);
 
     // hash the newly added 2-header block and add it as an attribute to .SF
 
@@ -343,7 +343,7 @@ public class SFHelper
         sfEntries.put(name, sfAttributes);
       }
 
-    sfAttributes.putValue(Main.DIGEST_ATTR, sfHash);
+    sfAttributes.putValue(Main.DIGEST, sfHash);
     log.finest("Name: " + name);
     log.finest(Main.DIGEST + ": " + sfHash);
     log.finest("");
@@ -366,7 +366,7 @@ public class SFHelper
     baos.flush();
     String manifestHash = util.hashByteArray(baos.toByteArray());
     log.fine("Hashed Manifest " + manifestHash);
-    sfMainAttributes.putValue(Main.DIGEST_MANIFEST_ATTR, manifestHash);
+    sfMainAttributes.putValue(Main.DIGEST_MANIFEST, manifestHash);
 
     this.state = FINISHED;
   }

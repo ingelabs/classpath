@@ -67,6 +67,18 @@ public abstract class JarUtils
   public static final String DSA_SUFFIX = ".DSA";
   public static final String SF_SUFFIX = ".SF";
   public static final String NAME = "Name";
+
+  /**
+   * The original string representation of the manifest version attribute name.
+   */ 
+  public static final String MANIFEST_VERSION = "Manifest-Version";
+
+  /**
+   * The original string representation of the signature version attribute
+   * name.
+   */
+  public static final String SIGNATURE_VERSION = "Signature-Version";
+
   /** Platform-independent line-ending. */
   public static final byte[] CRLF = new byte[] { 0x0D, 0x0A };
   private static final String DEFAULT_MF_VERSION = "1.0";
@@ -99,7 +111,7 @@ public abstract class JarUtils
     try
       {
         String version = expectHeader(version_header, br);
-        attr.putValue(Name.SIGNATURE_VERSION, version);
+        attr.putValue(SIGNATURE_VERSION, version);
         if (! DEFAULT_SF_VERSION.equals(version))
           log.warning("Unexpected version number: " + version
                       + ". Continue (but may fail later)");
@@ -130,7 +142,7 @@ public abstract class JarUtils
     // attributes of Manifest.
     // XXX (rsn): why 0.0 and not 1.0?
     if (attr.getValue(Name.MANIFEST_VERSION) == null)
-      attr.putValue(Name.MANIFEST_VERSION, "0.0");
+      attr.putValue(MANIFEST_VERSION, "0.0");
   }
 
   private static void readIndividualSections(Map entries, BufferedReader br)
@@ -157,7 +169,7 @@ public abstract class JarUtils
     try
       {
         String value = expectHeader(version_header, br);
-        attr.putValue(Name.MANIFEST_VERSION, value);
+        attr.putValue(MANIFEST_VERSION, value);
       }
     catch (IOException ioe)
       {
