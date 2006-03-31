@@ -1,3 +1,13 @@
+2006-03-31  Lillian Angel  <langel@redhat.com>
+	
+	PR classpath/26924
+	* gnu/java/awt/peer/gtk/GtkCanvasPeer.java
+	(realize): New native function.
+	* include/gnu_java_awt_peer_gtk_GtkCanvasPeer.h:
+	Added new function declaration.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCanvasPeer.c
+	(realize): New function.
+
 2006-03-31  Robert Schuster  <robertschuster@fsfe.org>
 	
 	* javax/swing/text/GapContent.java:
