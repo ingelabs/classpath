@@ -280,6 +280,9 @@ public class Main
   {
     log.entering("Main", "setupCommonParams");
 
+    if (jarFileName == null)
+      HelpPrinter.printHelpAndExit(HELP_PATH);
+
     File jar = new File(jarFileName);
     if (! jar.exists())
       throw new FileNotFoundException(jarFileName);
@@ -349,6 +352,9 @@ public class Main
     URL url = new URL(ksURL);
     InputStream stream = url.openStream();
     store.load(stream, ksPasswordChars);
+
+    if (alias == null)
+      HelpPrinter.printHelpAndExit(HELP_PATH);
 
     if (! store.containsAlias(alias))
       throw new SecurityException("Designated alias [" + alias
