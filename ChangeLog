@@ -1,3 +1,9 @@
+2006-03-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/plugins/jpeg/JPEGHuffmanTable.java: Eliminate
+	unnecessary copying.
+	* javax/imageio/plugins/jpeg/JPEGQTable.java: Likewise.
+
 2006-03-31  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Component.java

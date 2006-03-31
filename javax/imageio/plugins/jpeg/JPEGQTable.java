@@ -66,7 +66,7 @@ public class JPEGQTable
         24, 35, 55, 64,  81, 104, 113,  92,
         49, 64, 78, 87, 103, 121, 120, 101,
         72, 92, 95, 98, 112, 100, 103,  99
-      });
+      }, false);
 
   /**
    * The standard JPEG luminance quantization table, scaled by
@@ -89,7 +89,7 @@ public class JPEGQTable
         99, 99, 99, 99, 99, 99, 99, 99,
         99, 99, 99, 99, 99, 99, 99, 99,
         99, 99, 99, 99, 99, 99, 99, 99
-      });
+      }, false);
 
   /**
    * The standard JPEG chrominance quantization table, scaled by
@@ -99,20 +99,37 @@ public class JPEGQTable
     K2Chrominance.getScaledInstance(0.5f, true);
 
   /**
-   * Construct a new JPEG quantization table.
+   * Construct a new JPEG quantization table.  A copy is created of
+   * the table argument.
    *
-   * @param table the 64-element value table, stored in natural order.
+   * @param table the 64-element value table, stored in natural order
    *
    * @throws IllegalArgumentException if the table is null or if
    * table's length is not equal to 64.
    */
   public JPEGQTable(int[] table)
   {
+    this(checkTable(table), true);
+  }
+
+  /**
+   * Private constructor that avoids unnecessary copying and argument
+   * checking.
+   *
+   * @param table the 64-element value table, stored in natural order
+   * @param copy true if a copy should be created of the given table
+   */
+  private JPEGQTable(int[] table, boolean copy)
+  {
+    this.table = copy ? (int[]) table.clone() : table;
+  }
+
+  private static int[] checkTable(int[] table)
+  {
     if (table == null || table.length != 64)
       throw new IllegalArgumentException("invalid JPEG quantization table");
 
-    this.table = new int[table.length];
-    System.arraycopy(table, 0, this.table, 0, table.length);
+    return table;
   }
 
   /**
@@ -122,9 +139,7 @@ public class JPEGQTable
    */
   public int[] getTable()
   {
-    int[] tableCopy = new int[table.length];
-    System.arraycopy(table, 0, tableCopy, 0, table.length);
-    return tableCopy;
+    return (int[]) table.clone();
   }
 
   /**
@@ -153,7 +168,9 @@ public class JPEGQTable
           scaledTable[i] = max;
       }
 
-    return new JPEGQTable(scaledTable);
+    // Do not copy scaledTable.  It is already a copy because we used
+    // getTable to retrieve it.
+    return new JPEGQTable(scaledTable, false);
   }
 
   /**
