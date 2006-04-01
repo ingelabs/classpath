@@ -1,5 +1,28 @@
 2006-04-02  Robert Schuster  <robertschuster@fsfe.org>
 
+	PR #26676
+	* javax/swing/text/Utilities.java:
+	(getTabbedTextOffset): Added check to decrement pos not below zero,
+	changed	'>' comparison to '>='.
+	* javax/swing/text/WrappedPlainView.java:
+	(lineHeight): New field.
+	(calculateBreakPosition): Throw InternalError in catch block, removed
+	unneeded brackets, use specific version of
+	Utilities.getTabbedTextOffset.
+	(paint): Set various properties neccessary for drawing.
+	(WrappedLine.paint): Removed code to set field of outer class.
+	(WrappedLine.modelToView): Removed unneeded expression from
+	if-statement.
+	(WrappedLine.viewToModel): Initialize end with endOffset - 1, removed
+	-1 from return statement, copy only a subset into the Segment, removed
+	special	handling of mark value - just return it, simplified
+	incrementation of currLineStart.
+	(WrappedLine.insertUpdate): Recalculate numLines, report preference change
+	to parent view.
+	(WrappedLine.removeUpdate): Dito.
+
+2006-04-02  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/text/Segment.java:
 	(toString): Return empty string when array is null.
 

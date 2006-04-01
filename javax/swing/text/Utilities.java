@@ -238,14 +238,14 @@ public class Utilities
     // At the end of the for loop, this holds the requested model location
     int pos;
     int currentX = x0;
-
+    
     for (pos = 0; pos < s.count; pos++)
       {
         char nextChar = s.array[s.offset+pos];
         
         if (nextChar == 0)
           {
-            if (! round)
+            if (! round && pos > 0)
               pos--;
             break;
           }
@@ -259,14 +259,13 @@ public class Utilities
               currentX = (int) te.nextTabStop(currentX, pos);
           }
         
-        if (currentX > x)
+        if (currentX >= x)
           {
-            if (! round)
+            if (! round && pos > 0)
               pos--;
             break;
           }
       }
-    
     return pos + p0;
   }
 
