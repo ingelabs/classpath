@@ -1,5 +1,12 @@
 2006-04-01  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/CompositeView.java: Fixed copyright header.
+	* javax/swing/text/BoxView.java: Fixed copyright header.
+	* javax/swing/text/WrappedPlainView.java: Fixed copyright header.
+	* javax/swing/text/Utilities.java: Fixed copyright header.
+
+2006-04-01  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/text/CompositeView.java:
 	(modelToView): Throw BadLocationException when no child
 	view can be found, restructed to throw exception as early
