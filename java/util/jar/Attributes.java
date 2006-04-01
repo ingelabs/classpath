@@ -67,7 +67,8 @@ import java.util.Set;
  * @see java.util.jar.Attributes.Name
  * @author Mark Wielaard (mark@klomp.org)
  */
-public class Attributes implements Cloneable, Map
+public class Attributes
+  implements Cloneable, java.util.Map // Fully qualified for jikes 1.22
 {
 
   // Fields
