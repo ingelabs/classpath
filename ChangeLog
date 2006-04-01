@@ -1,3 +1,7 @@
+2006-04-01  Tom Tromey  <tromey@redhat.com>
+
+	* java/security/cert/Certificate.java (serialVersionUID): Fixed.
+
 2006-04-01  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/CompositeView.java: Fixed copyright header.
