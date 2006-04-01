@@ -621,8 +621,22 @@ public class Utilities
     if(offs == -1)
       return -1;
 
-    // Effectively calculates the y value of the previous line.
-    Point pt = c.modelToView(offs+1).getLocation();
+    Point pt = null;
+    
+    // Note: Some views represent the position after the last
+    // typed character others do not. Converting offset 3 in "a\nb"
+    // in a PlainView will return a valid rectangle while in a
+    // WrappedPlainView this will throw a BadLocationException.
+    // This behavior has been observed in the RI.
+    try
+      {
+        // Effectively calculates the y value of the next line.
+        pt = c.modelToView(offs+1).getLocation();
+      }
+    catch(BadLocationException ble)
+      {
+        return offset;
+      }
     
     pt.x = x;
     

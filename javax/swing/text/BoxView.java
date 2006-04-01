@@ -595,6 +595,8 @@ public class BoxView
         childAllocation(i, copy);
         if (copy.contains(x, y))
           {
+            // Modify r on success.
+            r.setBounds(copy);
             result = getView(i);
             break;
           }

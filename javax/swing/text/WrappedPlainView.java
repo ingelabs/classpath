@@ -582,20 +582,18 @@ public class WrappedPlainView extends BoxView implements TabExpander
         return currLineStart;
       if (y > rect.y + rect.height)
         return end - 1;
+      
+      // Note: rect.x and rect.width do not represent the width of painted
+      // text but the area where text *may* be painted. This means the width
+      // is most of the time identical to the component's width.
 
       while (true)
         {
           int currLineEnd = calculateBreakPosition(currLineStart, end);
           // If we're at the right y-position that means we're on the right
           // logical line and we should look for the character
-          if (y >= rect.y && y <= rect.y + lineHeight)
+          if (y >= rect.y && y < rect.y + lineHeight)
             {
-              // Check if the x position is to the left or right of the text
-              if (x < rect.x)
-                return currLineStart;
-              if (x > rect.x + rect.width)
-                return currLineEnd - 1;
-
               try
                 {
                   getDocument().getText(currLineStart, end - currLineStart, s);
@@ -605,10 +603,15 @@ public class WrappedPlainView extends BoxView implements TabExpander
                   // Shouldn't happen
                 }
               
-              return Utilities.getTabbedTextOffset(s, metrics, rect.x,
+              int mark = Utilities.getTabbedTextOffset(s, metrics, rect.x,
                                                    (int) x,
                                                    WrappedPlainView.this,
                                                    currLineStart);
+              
+              // WrappedPlainView does not represent the last possible offset
+              // in the document. Se we should never return that offset.
+              // Behavior observed in the RI.
+              return (mark == end) ? end - 1 : mark;
             }
           // Increment rect.y so we're checking the next logical line
           rect.y += lineHeight;

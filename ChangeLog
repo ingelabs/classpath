@@ -1,5 +1,24 @@
 2006-04-01  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/CompositeView.java:
+	(modelToView): Throw BadLocationException when no child
+	view can be found, restructed to throw exception as early
+	as possible.
+	(viewToModel): Use mutable allocation as argument for viewToModel
+	call on child view.
+	* javax/swing/text/BoxView.java:
+	(getViewAtPoint): Call setBounds() r before method returns with
+	suitable child view.
+	* javax/swing/text/Utilities.java:
+	(getPositionBelow): Added try-catch-block around modelToView call,
+	added method return when BadLocationException was thrown.
+	* javax/swing/text/WrappedPlainView.java:
+	(WrappedLine.viewToModel): Changed '<' to '<=' in if-expression,
+	added note about meaning of rect.x and rect.width, removed unneeded
+	checks, added code to not return the last possible document offset.
+
+2006-04-01  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/text/WrappedPlainView.java:
 	(WrappedLine.viewToModel): Change < to <= in if-statement,
 	removed addition of currLineStart to return value.
