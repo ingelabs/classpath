@@ -17,8 +17,8 @@
 	-1 from return statement, copy only a subset into the Segment, removed
 	special	handling of mark value - just return it, simplified
 	incrementation of currLineStart.
-	(WrappedLine.insertUpdate): Recalculate numLines, report preference change
-	to parent view.
+	(WrappedLine.insertUpdate): Recalculate numLines, report preference
+	change to parent view.
 	(WrappedLine.removeUpdate): Dito.
 
 2006-04-02  Robert Schuster  <robertschuster@fsfe.org>
