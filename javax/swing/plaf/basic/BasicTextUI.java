@@ -1028,7 +1028,10 @@ public abstract class BasicTextUI extends TextUI
         Rectangle l1 = modelToView(t, p0, firstBias);
         Rectangle l2 = modelToView(t, p1, secondBias);
         if (l1.y == l2.y)
-          t.repaint(l1.union(l2));
+          {
+            SwingUtilities.computeUnion(l2.x, l2.y, l2.width, l2.height, l1);
+            t.repaint(l1);
+          }
         else
           {
             // The two rectangles lie on different lines and we need a
