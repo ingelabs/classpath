@@ -20,7 +20,7 @@
 	(getPositionBelow): Added try-catch-block around modelToView call,
 	added method return when BadLocationException was thrown.
 	* javax/swing/text/WrappedPlainView.java:
-	(WrappedLine.viewToModel): Changed '<' to '<=' in if-expression,
+	(WrappedLine.viewToModel): Changed '<=' to '<' in if-expression,
 	added note about meaning of rect.x and rect.width, removed unneeded
 	checks, added code to not return the last possible document offset.
 
