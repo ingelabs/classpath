@@ -588,14 +588,14 @@ public class WrappedPlainView extends BoxView implements TabExpander
           int currLineEnd = calculateBreakPosition(currLineStart, end);
           // If we're at the right y-position that means we're on the right
           // logical line and we should look for the character
-          if (y >= rect.y && y < rect.y + lineHeight)
+          if (y >= rect.y && y <= rect.y + lineHeight)
             {
               // Check if the x position is to the left or right of the text
               if (x < rect.x)
                 return currLineStart;
               if (x > rect.x + rect.width)
                 return currLineEnd - 1;
-              
+
               try
                 {
                   getDocument().getText(currLineStart, end - currLineStart, s);
@@ -604,11 +604,11 @@ public class WrappedPlainView extends BoxView implements TabExpander
                 {
                   // Shouldn't happen
                 }
-              int mark = Utilities.getTabbedTextOffset(s, metrics, rect.x,
-                                                       (int) x,
-                                                       WrappedPlainView.this,
-                                                       currLineStart);
-              return currLineStart + mark;
+              
+              return Utilities.getTabbedTextOffset(s, metrics, rect.x,
+                                                   (int) x,
+                                                   WrappedPlainView.this,
+                                                   currLineStart);
             }
           // Increment rect.y so we're checking the next logical line
           rect.y += lineHeight;

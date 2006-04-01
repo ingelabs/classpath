@@ -1,3 +1,12 @@
+2006-04-01  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/WrappedPlainView.java:
+	(WrappedLine.viewToModel): Change < to <= in if-statement,
+	removed addition of currLineStart to return value.
+	* javax/swing/text/BoxView.java:
+	(getViewAtPoint): Use copy instead of r for method call
+	which modifies the second argument.
+
 2006-04-01  Mark Wielaard  <mark@klomp.org>
 
 	Fixes PR26973

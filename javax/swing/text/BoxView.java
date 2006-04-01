@@ -591,7 +591,8 @@ public class BoxView
     for (int i = 0; i < count; ++i)
       {
         copy.setBounds(r);
-        childAllocation(i, r);
+        // The next call modifies copy.
+        childAllocation(i, copy);
         if (copy.contains(x, y))
           {
             result = getView(i);
