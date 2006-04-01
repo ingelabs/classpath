@@ -1,5 +1,10 @@
 2006-04-02  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/Segment.java:
+	(toString): Return empty string when array is null.
+
+2006-04-02  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/plaf/basic/BasicTextUI.java:
 	(damageRange): Use SwingUtilities.computeUnion to avoid
 	unneccessary Rectangle instantiation.
