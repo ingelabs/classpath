@@ -87,9 +87,18 @@ endif # INSTALL_CLASS_FILES
 
 .PHONY: genclasses
 
+if USE_PREBUILT_GLIBJ_ZIP
+
+glibj.zip:
+	cp $(PATH_TO_GLIBJ_ZIP) .
+
+else
+
 glibj.zip: classes compile-classes resources
 	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip gnu java javax org META-INF > /dev/null; fi
 	if test "$(FASTJAR)" != ""; then $(FASTJAR) cf glibj.zip gnu java javax org META-INF; fi
+
+endif # USE_PREBUILT_GLIBJ_ZIP
 
 resources: copy-vmresources.sh
 	if ! [ -e gnu ]; then mkdir gnu; fi

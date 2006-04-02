@@ -1,26 +1,25 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
+GLIBJ_CLASSPATH='$(top_builddir)/lib':'$(top_builddir)/lib/glibj.zip'
+
 # Setup the compiler to use the GNU Classpath library we just build
 if FOUND_GCJ
-JCOMPILER = $(GCJ) -encoding UTF-8 --bootclasspath '$(top_builddir)/lib' --classpath . -C
+JCOMPILER = $(GCJ) -encoding UTF-8 --bootclasspath $(GLIBJ_CLASSPATH) --classpath . -C
 else
 if FOUND_JIKES
-JCOMPILER = $(JIKES) $(JIKESENCODING) -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_builddir)/lib:.
+JCOMPILER = $(JIKES) $(JIKESENCODING) -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(GLIBJ_CLASSPATH):.
 else
 if FOUND_GCJX
-JCOMPILER = $(GCJX) -encoding UTF-8 -bootclasspath '' -sourcepath '' -classpath $(top_builddir)/lib:.
+JCOMPILER = $(GCJX) -encoding UTF-8 -bootclasspath '' -sourcepath '' -classpath $(GLIBJ_CLASSPATH):.
 else
 if FOUND_ECJ
-JCOMPILER = $(ECJ) -encoding UTF-8 -bootclasspath '$(top_builddir)/lib' -classpath .
+JCOMPILER = $(ECJ) -encoding UTF-8 -bootclasspath $(GLIBJ_CLASSPATH) -classpath .
 else
 error dunno how to setup the JCOMPILER and compile
 endif
 endif
 endif
 endif
-
-bin_SCRIPTS = jarsigner.sh
-EXTRA_DIST = jarsigner.sh.in
 
 # All our example java source files
 TOOLS_JAVA_FILES = $(srcdir)/gnu/classpath/tools/*.java $(srcdir)/gnu/classpath/tools/*/*.java $(srcdir)/gnu/classpath/tools/*/*/*.java
@@ -33,7 +32,7 @@ TOOLS_ZIP = tools.zip
 BUILT_SOURCES = $(TOOLS_ZIP)
 
 # The templates that must be included into the generated zip file.
-GRMIC_TEMPLATES = $(srcdir)/gnu/classpath/tools/giop/grmic/templates/*.jav
+GRMIC_TEMPLATES = $(srcdir)/gnu/classpath/tools/giop/grmic/templates/*.jav 
 RMIC_TEMPLATES = $(srcdir)/gnu/classpath/tools/rmi/rmic/templates/*.jav
 
 TOOLS_TEMPLATES = $(GRMIC_TEMPLATES) $(RMIC_TEMPLATES)
@@ -41,9 +40,8 @@ TOOLS_TEMPLATES = $(GRMIC_TEMPLATES) $(RMIC_TEMPLATES)
 # This covers the built-in help texts, both for giop and rmic subpackages.
 GIOP_HELPS = $(srcdir)/gnu/classpath/tools/giop/*.txt
 RMI_HELPS = $(srcdir)/gnu/classpath/tools/rmi/*.txt
-SECURITY_HELPS = $(srcdir)/gnu/classpath/tools/jarsigner/*.txt
 
-TOOLS_HELPS = $(GIOP_HELPS) $(RMI_HELPS) $(SECURITY_HELPS)
+TOOLS_HELPS = $(GIOP_HELPS) $(RMI_HELPS)
 
 # The tool specific README files.
 READMES = $(srcdir)/gnu/classpath/tools/giop/README
@@ -78,13 +76,11 @@ dist-hook:
 $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 	mkdir -p classes/gnu/classpath/tools/giop/grmic/templates
 	mkdir -p classes/gnu/classpath/tools/rmi/rmic/templates
-	mkdir -p classes/gnu/classpath/tools/jarsigner
 	cp $(RMIC_TEMPLATES) classes/gnu/classpath/tools/rmi/rmic/templates
-	cp $(GRMIC_TEMPLATES) classes/gnu/classpath/tools/giop/grmic/templates
+	cp $(GRMIC_TEMPLATES) classes/gnu/classpath/tools/giop/grmic/templates	
 	cp $(RMI_HELPS) classes/gnu/classpath/tools/rmi/
 	cp $(GIOP_HELPS) classes/gnu/classpath/tools/giop/
-	cp $(SECURITY_HELPS) classes/gnu/classpath/tools/jarsigner/
-	$(JCOMPILER) -d classes $(TOOLS_JAVA_FILES)
+	$(JCOMPILER) -d classes $(TOOLS_JAVA_FILES) 
 	(cd classes; \
 	if test "$(ZIP)" != ""; then $(ZIP) -r ../$(TOOLS_ZIP) .; fi; \
 	if test "$(FASTJAR)" != ""; then $(FASTJAR) cf ../$(TOOLS_ZIP) .; fi; \

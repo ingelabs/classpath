@@ -584,6 +584,33 @@ AC_ARG_ENABLE([portable-native-sync],
 
 AX_CREATE_STDINT_H([include/config-int.h])
 
+dnl -----------------------------------------------------------------------
+dnl                    Support for using a prebuilt class library
+dnl -----------------------------------------------------------------------
+AC_ARG_WITH([glibj_zip],
+            AS_HELP_STRING([--with-glibj-zip=ABS.PATH],
+                           [use prebuilt glibj.zip class library]))
+
+case "$with_glibj_zip" in
+"")
+        use_glibj_zip=false
+        ;;
+"no" )
+        use_glibj_zip=false
+        ;;
+"yes")
+        AC_MSG_ERROR([Please suply an absolute path to a prebuilt glibj.zip])
+        ;;
+*)
+        use_glibj_zip=true
+        PATH_TO_GLIBJ_ZIP=$with_glibj_zip
+	;;
+esac;
+
+AM_CONDITIONAL(USE_PREBUILT_GLIBJ_ZIP, test x$use_glibj_zip = xtrue)
+AC_SUBST(PATH_TO_GLIBJ_ZIP)
+
+
 dnl -----------------------------------------------------------
 dnl output files
 dnl -----------------------------------------------------------
