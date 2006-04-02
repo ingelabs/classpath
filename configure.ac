@@ -293,7 +293,7 @@ if test "x${COMPILE_JNI}" = xyes; then
 		  strerror_r \
                   fcntl \
 		  mmap munmap mincore msync madvise getpagesize sysconf \
-		  isnan])
+		  ])
 
   AC_HEADER_TIME
   AC_STRUCT_TM
