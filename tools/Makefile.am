@@ -19,14 +19,8 @@ endif
 endif
 endif
 
-bin_SCRIPTS = jarsigner
-CLEANFILES = $(bin_SCRIPTS)
+bin_SCRIPTS = jarsigner.sh
 EXTRA_DIST = jarsigner.sh.in
-
-jarsigner: $(srcdir)/jarsigner.sh
-	rm -f $(bindir)/jarsigner
-	cat $(srcdir)/jarsigner.sh > $(bindir)/jarsigner
-	chmod ugo+x $(bindir)/jarsigner
 
 # All our example java source files
 TOOLS_JAVA_FILES = $(srcdir)/gnu/classpath/tools/*.java $(srcdir)/gnu/classpath/tools/*/*.java $(srcdir)/gnu/classpath/tools/*/*/*.java
