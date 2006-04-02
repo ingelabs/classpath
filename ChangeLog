@@ -1,5 +1,12 @@
 2006-04-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* configure.ac: Added tools/jarsigner.sh to AC_CONFIG_FILES.
+	* tools/Makefile.am: Generate jarsigner shell script.
+	* tools/jarsigner.sh.in: New template.
+	* tools/.cvsignore: Added jarsigner.sh.
+
+2006-04-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* tools/gnu/classpath/tools/jarsigner/HashUtils.java: Use GPL.
 	* tools/gnu/classpath/tools/jarsigner/SFHelper.java: Likewise.
 	* tools/gnu/classpath/tools/jarsigner/JarVerifier.java: Likewise.
