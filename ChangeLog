@@ -1,3 +1,21 @@
+2006-04-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	tools/gnu/classpath/tools/giop/GRMIC.java,
+	tools/gnu/classpath/tools/giop/IorParser.java,
+	tools/gnu/classpath/tools/giop/grmic/CompilationError.java,
+	tools/gnu/classpath/tools/giop/grmic/Generator.java,
+	tools/gnu/classpath/tools/giop/grmic/GiopIo.java,
+	tools/gnu/classpath/tools/giop/grmic/GiopRmicCompiler.java,
+	tools/gnu/classpath/tools/giop/grmic/HashFinder.java,
+	tools/gnu/classpath/tools/giop/grmic/MethodGenerator.java,
+	tools/gnu/classpath/tools/rmi/RMIC.java,
+	tools/gnu/classpath/tools/rmi/rmic/RmiMethodGenerator.java,
+	tools/gnu/classpath/tools/rmi/rmic/RmicCompiler.java,
+	tools/gnu/classpath/tools/rmi/rmic/WrapUnWrapper.java: Removed
+	linking exception from the licensing header.
+	* tools/gnu/classpath/tools/rmi/rmid/ActivationSystemImpl_Stub.java:
+	Added licensing header.
+
 2006-04-02  Mark Wielaard  <mark@klomp.org>
 
 	* tools/Makefile.am (bin_SCRIPTS): Renamed to jarsigner.sh.
