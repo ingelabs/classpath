@@ -1,3 +1,12 @@
+2006-04-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/gnu/classpath/tools/jarsigner/HashUtils.java: Use GPL.
+	* tools/gnu/classpath/tools/jarsigner/SFHelper.java: Likewise.
+	* tools/gnu/classpath/tools/jarsigner/JarVerifier.java: Likewise.
+	* tools/gnu/classpath/tools/jarsigner/JarSigner.java: Likewise.
+	* tools/gnu/classpath/tools/jarsigner/Main.java: Likewise.
+	Re-organised imports.
+
 2006-04-01  Bernhard Rosenkraenzer  <bero@arklinux.org>
 
 	PR classpath/25924:
