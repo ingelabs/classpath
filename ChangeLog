@@ -1,3 +1,33 @@
+2006-04-03  Rafael H. Schloming  <rafaels@redhat.com>
+
+	Fixes bug #26668
+	* java/util/logging/Level.java (parse): Document.
+	* java/util/logging/LogManager.java (rootLogger): Removed.
+	(LogManager): Just set loggers to new HashMap.
+	(getLogManager): Make synchronized. Create and init LogManager if it
+	doesn't exist yet.
+	(static): Removed block.
+	(MANAGER_PROPERTY): New private final string.
+	(makeLogManager): Use new property string, move warning to
+	createInstance() method.
+	(CONFIG_PROPERTY): New private final string.
+	(initLogManager): New method.
+	(addLogger): Use Logger.root, not rootLogger.
+	(findAncestor): Likewise.
+	(readConfiguration): Move warning to createInstance() method.
+	Add handlers directly to Logger.root. Warn about bad level values.
+	(getClassProperty): Use new locateClass() method.
+	(getInstanceProperty): Only catch specific newInstance Errors.
+	(createInstance): Make private and takes a string to use in warning
+	messages. Use new locateClass() method and generate appropriate
+	warning message.
+	(warn): New methods.
+	(locateClass): Locates a class through the context class loader and
+	system class loader as backup.
+	* java/util/logging/Logger.java (root): New static final field.
+	(Logger): Set parent to root.
+	(setParent): Directly check root field.
+
 2006-04-02  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/Segment.java:
