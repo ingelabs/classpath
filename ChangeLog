@@ -1,3 +1,10 @@
+2006-04-03  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/26971:
+	* javax/naming/directory/BasicAttribute.java: Added missing @since.
+	(BasicAttributeEnumeration.where): Initialize to 0.
+	(BasicAttributeEnumeration.nextElement): Post-increment 'where'.
+
 2006-04-03  Lillian Angel  <langel@redhat.com>
 
 	PR classpath/24596 and PR classpath/26930

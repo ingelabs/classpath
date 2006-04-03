@@ -48,6 +48,7 @@ import javax.naming.OperationNotSupportedException;
 /**
  * @author Tom Tromey (tromey@redhat.com)
  * @date June 20, 2001
+ * @since 1.3
  */
 public class BasicAttribute implements Attribute
 {
@@ -301,7 +302,7 @@ public class BasicAttribute implements Attribute
   // Used when enumerating this attribute.
   private class BasicAttributeEnumeration implements NamingEnumeration
   {
-    int where = -1;
+    int where = 0;
 
     public BasicAttributeEnumeration ()
     {
@@ -328,10 +329,9 @@ public class BasicAttribute implements Attribute
 
     public Object nextElement () throws NoSuchElementException
     {
-      if (where + 1 >= values.size ())
+      if (where == values.size ())
 	throw new NoSuchElementException ("no more elements");
-      ++where;
-      return values.get (where);
+      return values.get (where++);
     }
   }
 }
