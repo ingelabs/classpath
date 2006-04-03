@@ -71,7 +71,7 @@ JNIEXPORT void * JNICALL JCL_GetRawData (JNIEnv * env, jobject rawdata);
 
 /* Simple debug macro */
 #ifdef DEBUG
-#define DBG(x) fprintf(stderr, (x));
+#define DBG(x) fprintf(stderr, "%s", (x));
 #else
 #define DBG(x)
 #endif
