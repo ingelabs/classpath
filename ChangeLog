@@ -1,3 +1,12 @@
+2006-04-03  Tom Tromey  <tromey@redhat.com>
+
+	* javax/security/auth/kerberos/ServicePermission.java: New file.
+	* javax/security/auth/kerberos/DelegationPermission.java: New file.
+	* javax/security/auth/kerberos/KerberosKey.java: New file.
+	* javax/security/auth/kerberos/KeyImpl.java: New file.
+	* javax/security/auth/kerberos/KerberosTicket.java: New file.
+	* javax/security/auth/kerberos/KerberosPrincipal.java: New file.
+
 2006-04-03  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GtkClipboard.java: Add support for
