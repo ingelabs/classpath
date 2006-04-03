@@ -1,3 +1,10 @@
+2006-04-03  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_getGlyphVector):
+	Replaced g_free() with pango_item_free() to avoid problems
+	with the allocator.
+
 2006-04-03  Rafael H. Schloming  <rafaels@redhat.com>
 
 	Fixes bug #26668
