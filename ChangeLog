@@ -1,3 +1,122 @@
+2006-04-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/lang/reflect/ClassSignatureParser.java,
+	* gnu/java/lang/reflect/FieldSignatureParser.java,
+	* gnu/java/lang/reflect/GenericSignatureParser.java,
+	* gnu/java/lang/reflect/MethodSignatureParser.java,
+	* gnu/java/lang/reflect/TypeImpl.java,
+	* java/lang/Class.java,
+	* java/lang/reflect/GenericDeclaration.java,
+	* java/lang/reflect/MalformedParameterizedTypeException.java,
+	* java/lang/reflect/TypeVariable.java,
+	* java/util/Arrays.java,
+	* vm/reference/java/lang/VMClass.java,
+	* vm/reference/java/lang/reflect/Constructor.java,
+	* vm/reference/java/lang/reflect/Method.java:
+	Incorporate changes from the generics branch.
+
+2005-10-01  Jeroen Frijters  <jeroen@frijters.net>
+
+	* vm/reference/java/lang/reflect/Constructor.java
+	(getSignature): New method.
+	(getGenericExceptionTypes): New method.
+	(getGenericParameterTypes): New method.
+	* vm/reference/java/lang/reflect/Method.java
+	(getSignature): New method.
+	(getGenericExceptionTypes): New method.
+	(getGenericParameterTypes): New method.
+	(getGenericReturnType): New method.
+
+2005-09-30  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/lang/reflect/FieldSignatureParser.java: New file.
+	* gnu/java/lang/reflect/ClassSignatureParser.java,
+	gnu/java/lang/reflect/GenericSignatureParser.java,
+	gnu/java/lang/reflect/MethodSignatureParser.java:
+	Finished implementation.
+
+2005-09-25  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/lang/reflect/ClassSignatureParser.java,
+	gnu/java/lang/reflect/GenericSignatureParser.java,
+	gnu/java/lang/reflect/MethodSignatureParser.java: New files.
+	* java/lang/Class.java
+	(getGenericInterfaces, getGenericSuperclass, getTypeParameters):
+	Implemented.
+	* vm/reference/java/lang/VMClass.java
+	(getSimpleName, getDeclaredAnnotations, getCanonicalName,
+	getEnclosingClass, getEnclosingConstructor, getEnclosingMethod,
+	isAnonymousClass, isLocalClass, isMemberClass):
+	Removed generic types from signatures.
+	(getGenericInterfaces, getGenericSuperclass, getTypeParameters):
+	Removed.
+	(getClassSignature): New method.
+	* vm/reference/java/lang/reflect/Constructor.java
+	(getTypeParameters): Implemented.
+	* vm/reference/java/lang/reflect/Method.java
+	(getTypeParameters, getSignature): New methods.
+
+2005-06-09  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/lang/Class.java:
+	(asSubclass(Class)): Documented.
+	(getCanonicalName()): Implemented.
+	(getEnclosingClass()): Implemented.
+	(getEnclosingConstructor()): Implemented.
+	(getEnclosingMethod()): Implemented.
+	(getGenericInterfaces()): Implemented.
+	(getGenericSuperclass()): Implemented.
+	(getTypeParameters()): Implemented.
+	(isAnonymousClass()): Implemented.
+	(isLocalClass()): Implemented.
+	(isMemberClass()): Implemented.
+	* vm/reference/java/lang/VMClass.java:
+	(getSuperClass(Class<?>)): Updated return type.
+	(getSimpleName(Class<?>)): Use VM methods directly.
+	(getCanonicalName(Class<?>)): Implemented.
+	(getEnclosingClass(Class<?>)): New native method.
+	(getEnclosingConstructor(Class<?>)): New native method.
+	(getEnclosingMethod(Class<?>)): New native method.
+	(getGenericInterfaces(Class<?>)): New native method.
+	(getGenericSuperclass(Class<?>)): New native method.
+	(getTypeParameters(Class<T>)): New native method.
+	(isAnonymousClass(Class<?>)): New native method.
+	(isLocalClass(Class<?>)): New native method.
+	(isMemberClass(Class<?>)): New native method.
+	* vm/reference/java/lang/reflect/Constructor.java:
+	(getTypeParameters()): Changed to native method.
+
+2005-05-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/lang/Class.java:
+	(getSimpleName()): Implemented.
+	* vm/reference/java/lang/VMClass.java:
+	(getSimpleName()): Reference implementation.
+
+2005-04-20  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/Arrays.java (hashCode): New methods.
+	(deepHashCode): New method.
+	(deepEquals): Likewise.
+	(toString): New methods.
+	(deepToString): New method.
+
+2005-04-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/lang/Class.java:
+	(isEnum()): New method implemented.
+	(isSynthetic()): New method implemented.
+	(isAnnotation()): New method implemented.
+	* vm/reference/java/lang/VMClass.java:
+	(isEnum()): New native method.
+	(isSynthetic()): New native method.
+	(isAnnotation()): New native method.
+
+2005-03-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/lang/Class.java:
+	Implements java.lang.reflect.Type
+
 2006-04-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/plugins/jpeg/JPEGImageReadParam.java: New file.
