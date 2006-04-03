@@ -1,3 +1,7 @@
+2006-04-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/plugins/jpeg/JPEGImageReadParam.java: New file.
+
 2006-04-03  Tom Tromey  <tromey@redhat.com>
 
 	* javax/security/auth/kerberos/ServicePermission.java: New file.
