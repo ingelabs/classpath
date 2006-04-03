@@ -1,5 +1,9 @@
 2006-04-03  Dalibor Topic  <robilad@kaffe.org>
 
+	* INSTALL: Documented --with-glibj-zip option.
+
+2006-04-03  Dalibor Topic  <robilad@kaffe.org>
+
 	Fixed all pscan warnings.
 
 	* native/jni/classpath/jcl.c (JCL_ThrowException),
