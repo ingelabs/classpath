@@ -1,3 +1,33 @@
+2006-04-03  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/gnu/classpath/tools/jarsigner/Main.java: Removed unused imports.
+	(provider): Made it protected.
+	(providerInstalled): New field.
+	(Main): Made it a 0-arguments constructor.
+	Removed throws clasue.
+	(main): Removed throws clause.
+	Call processArgs(args) after constructing instance.
+	Call teardown() before existing.
+	(processArgs): Added javadoc.
+	Reduced to throws Exception.
+	(start): Likewise.
+	(teardown): New method.
+	(setupCommonParams): Added javadoc.
+	Install designated provider if not already installed.
+	(installNewProvider): New method.
+	(setupSigningParams): Added javadoc.
+	Instantiate the KeyStore using type only.
+	* tools/gnu/classpath/tools/jarsigner/JarSigner.java:
+	Removed unused imports.
+	(start): Reduced to throws Exception.
+	* tools/gnu/classpath/tools/jarsigner/JarVerifier.java (start): Likewise.
+	* tools/gnu/classpath/tools/jarsigner/HashUtils.java:
+	Re-organized imports.
+	* gnu/java/security/key/KeyPairGeneratorFactory.java (getInstance):
+	Test ignoring case.
+	(getNames): Add "dsa" as an algorithm provided by this Factory.
+	(makeInstance): Construct IllegalArgumentException with 2 arguments.
+
 2006-04-03  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
