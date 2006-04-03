@@ -1,3 +1,8 @@
+2006-04-03  Mark Wielaard  <mark@klomp.org>
+
+	* lib/gen-classlist.sh.in: Use classes.tmp, not classes.2
+	as temporary file name.
+
 2006-04-03  Dalibor Topic  <robilad@kaffe.org>
 
 	* INSTALL: Documented --with-glibj-zip option.
