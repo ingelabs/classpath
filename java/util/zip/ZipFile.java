@@ -445,7 +445,16 @@ public class ZipFile implements ZipConstants
       case ZipOutputStream.STORED:
 	return inp;
       case ZipOutputStream.DEFLATED:
-	return new InflaterInputStream(inp, new Inflater(true));
+        final int sz = (int) entry.getSize();
+        return new InflaterInputStream(inp, new Inflater(true))
+        {
+          public int available() throws IOException
+          {
+            if (super.available() != 0)
+              return sz;
+            return 0;
+          }
+        };
       default:
 	throw new ZipException("Unknown compression method " + method);
       }
@@ -551,6 +560,7 @@ public class ZipFile implements ZipConstants
           pos = 0;
           fillBuffer();
         }
+      
       return buffer[pos++] & 0xFF;
     }
 
@@ -581,7 +591,7 @@ public class ZipFile implements ZipConstants
           len -= remain;
           totalBytesRead += remain;
         }
-
+      
       return totalBytesRead;
     }
 
