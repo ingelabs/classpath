@@ -1,4 +1,4 @@
-/* gnu/regexp/CharIndexedString.java
+/* gnu/regexp/CharIndexedCharSequence.java
    Copyright (C) 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -36,9 +36,47 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.regexp;
+import java.io.Serializable;
 
-class CharIndexedString extends CharIndexedCharSequence {
-    CharIndexedString(String str, int index) {
-	super(str, index);
+class CharIndexedCharSequence implements CharIndexed, Serializable {
+    private CharSequence s;
+    private int anchor;
+    private int len;
+    
+    CharIndexedCharSequence(CharSequence s, int index) {
+	this.s = s;
+	len = s.length();
+	anchor = index;
     }
+
+    public char charAt(int index) {
+	int pos = anchor + index;
+	return ((pos < len) && (pos >= 0)) ? s.charAt(pos) : OUT_OF_BOUNDS;
+    }
+    
+    public boolean isValid() {
+	return (anchor < len);
+    }
+    
+    public boolean move(int index) {
+	return ((anchor += index) < len);
+    }
+
+    public CharIndexed lookBehind(int index, int length) {
+	if (length > (anchor + index)) length = anchor + index;
+	return new CharIndexedCharSequence(s, anchor + index - length);
+    }
+
+    public int length() {
+	return len - anchor;
+    }
+
+    private REMatch lastMatch;
+    public void setLastMatch(REMatch match) {
+	lastMatch = (REMatch)match.clone();
+	lastMatch.anchor = anchor;
+    }
+    public REMatch getLastMatch() { return lastMatch; }
+    public int getAnchor() { return anchor; }
+    public void setAnchor(int anchor) { this.anchor = anchor; }
 }

@@ -1,3 +1,18 @@
+2006-04-04  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/regexp/CharIndexed.java(setAnchor): New method.
+	* gnu/regexp/CharIndexedInputStream.java(setAnchor): New method.
+	* gnu/regexp/CharIndexedCharSequence.java: New file.
+	* gnu/regexp/CharIndexedCharArray.java: Rewritten as an extention of
+	gnu.regexp.CharIndexedCharSequence.
+	* gnu/regexp/CharIndexedString.java: Likewise.
+	* gnu/regexp/CharIndexedStringBuffer.java: Likewise.
+	* gnu/regexp/RE.java(makeCharIndexed): Make a new CharIndexed
+	using CharIndexedCharSequence. Use setAnchor when the input
+	object is already a CharIndexed.
+	* java/util/regex/Matcher.java(inputCharIndexed): New field
+	to be used as a parameter of the RE#getMatch.
+
 2006-04-04  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/SampleModel.java: Reformatted.

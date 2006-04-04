@@ -79,12 +79,17 @@ import java.util.Vector;
  * <P>
  *
  * These methods all have similar argument lists.  The input can be a
- * String, a character array, a StringBuffer, or an
+ * CharIndexed, String, a character array, a StringBuffer, or an
  * InputStream of some sort.  Note that when using an
  * InputStream, the stream read position cannot be guaranteed after
  * attempting a match (this is not a bug, but a consequence of the way
  * regular expressions work).  Using an REMatchEnumeration can
  * eliminate most positioning problems.
+ *
+ * Although the input object can be of various types, it is recommended
+ * that it should be a CharIndexed because {@link CharIndexed#getLastMatch()}
+ * can show the last match found on this input, which helps the expression
+ * \G work as the end of the previous match.
  *
  * <P>
  *
@@ -2020,14 +2025,21 @@ public class RE extends REToken {
   // This method was originally a private method, but has been made
   // public because java.util.regex.Matcher uses this.
   public static CharIndexed makeCharIndexed(Object input, int index) {
-      // We could let a String fall through to final input, but since
-      // it's the most likely input type, we check it first.
-      // The case where input is already an instance of CharIndexed is
-      // also supposed to be very likely.
-    if (input instanceof String)
+      // The case where input is already a CharIndexed is supposed
+      // be the most likely because this is the case with
+      // java.util.regex.Matcher.
+      // We could let a String or a CharSequence fall through
+      // to final input, but since it'a very likely input type, 
+      // we check it first.
+    if (input instanceof CharIndexed) {
+	CharIndexed ci = (CharIndexed) input;
+	ci.setAnchor(index);
+	return ci;
+    }
+    else if (input instanceof CharSequence)
+      return new CharIndexedCharSequence((CharSequence) input,index);
+    else if (input instanceof String)
       return new CharIndexedString((String) input,index);
-    else if (input instanceof CharIndexed)
-	return (CharIndexed) input; // do we lose index info?
     else if (input instanceof char[])
       return new CharIndexedCharArray((char[]) input,index);
     else if (input instanceof StringBuffer)
