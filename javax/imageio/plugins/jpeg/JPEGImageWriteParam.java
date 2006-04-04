@@ -70,7 +70,7 @@ public class JPEGImageWriteParam
   /**
    * Localized messages are stored in separate files.
    */
-  private static ResourceBundle messages;
+  private ResourceBundle messages;
 
   /**
    * Construct a JPEGImageWriteParam with the following state: tiling

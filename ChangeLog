@@ -1,3 +1,8 @@
+2006-04-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/plugins/jpeg/JPEGImageWriteParam.java (messages):
+	Remove static modifier.
+
 2006-04-04  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/ComponentSampleModel.java: Reformatted.
