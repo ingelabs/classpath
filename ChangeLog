@@ -1,3 +1,7 @@
+2006-04-04  Tom Tromey  <tromey@redhat.com>
+
+	* lib/gen-classlist.sh.in: Correct handle generated files.
+
 2006-04-04  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* gnu/regexp/CharIndexed.java(setAnchor): New method.
