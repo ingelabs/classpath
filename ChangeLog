@@ -1,3 +1,16 @@
+2006-04-04  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/ComponentSampleModel.java
+	(ComponentSampleModel(int, int, int, int, int[])): Added API 
+	documentation,
+	(ComponentSampleModel(int, int, int, int, int[], int[]): Throw 
+	IllegalArgumentException for DataBuffer.TYPE_UNDEFINED, take copies
+	of the bandOffsets and bankIndices arguments, added API documentation,
+	* java/awt/image/SampleModel.java
+	(SampleModel(int, int, int, int): Throw IllegalArgumentException for
+	unrecognised dataTypes, w * h exceeds Integer.MAX_VALUE, and numBands
+	less than or equal to zero, added API documentation.
+
 2006-04-04  Lillian Angel  <langel@redhat.com>
 
 	* java/util/zip/ZipFile.java

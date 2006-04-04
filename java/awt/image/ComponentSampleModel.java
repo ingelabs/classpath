@@ -1,4 +1,4 @@
-/* Copyright (C) 2000, 2002  Free Software Foundation
+/* Copyright (C) 2000, 2002, 2006,  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -78,6 +78,42 @@ public class ComponentSampleModel extends SampleModel
   
   private boolean tightPixelPacking = false;
   
+  /**
+   * Creates a new sample model that assumes that all bands are stored in a 
+   * single bank of the {@link DataBuffer}.
+   * <p>
+   * Note that the <code>bandOffsets</code> array is copied to internal storage
+   * to prevent subsequent changes to the array from affecting this object.
+   * 
+   * @param dataType  the data type (one of {@link DataBuffer#TYPE_BYTE},
+   *   {@link DataBuffer#TYPE_USHORT}, {@link DataBuffer#TYPE_SHORT},
+   *   {@link DataBuffer#TYPE_INT}, {@link DataBuffer#TYPE_FLOAT} or 
+   *   {@link DataBuffer#TYPE_DOUBLE}).
+   * @param w  the width in pixels.
+   * @param h  the height in pixels.
+   * @param pixelStride  the number of data elements in the step from a sample
+   *   in one pixel to the corresponding sample in the next pixel.
+   * @param scanlineStride  the number of data elements in the step from a 
+   *   sample in a pixel to the corresponding sample in the pixel in the next
+   *   row.
+   * @param bandOffsets  the offset to the first element for each band, with 
+   *   the size of the array defining the number of bands (<code>null</code>
+   *   not permitted).
+   *   
+   * @throws IllegalArgumentException if <code>dataType</code> is not one of
+   *   the specified values.
+   * @throws IllegalArgumentException if <code>w</code> is less than or equal
+   *   to zero.
+   * @throws IllegalArgumentException if <code>h</code> is less than or equal 
+   *   to zero.
+   * @throws IllegalArgumentException if <code>w * h</code> exceeds
+   *   {@link Integer#MAX_VALUE}.
+   * @throws IllegalArgumentException if <code>pixelStride</code> is negative.
+   * @throws IllegalArgumentException if <code>scanlineStride</code> is less 
+   *   than or equal to zero.
+   * @throws IllegalArgumentException if <code>bandOffsets</code> has zero 
+   *   length.
+   */
   public ComponentSampleModel(int dataType,
                               int w, int h,
                               int pixelStride,
@@ -88,6 +124,44 @@ public class ComponentSampleModel extends SampleModel
          new int[bandOffsets.length], bandOffsets);
   }
     
+  /**
+   * Creates a new sample model that assumes that all bands are stored in a 
+   * single bank of the {@link DataBuffer}.
+   * 
+   * @param dataType  the data type (one of {@link DataBuffer#TYPE_BYTE},
+   *   {@link DataBuffer#TYPE_USHORT}, {@link DataBuffer#TYPE_SHORT},
+   *   {@link DataBuffer#TYPE_INT}, {@link DataBuffer#TYPE_FLOAT} or 
+   *   {@link DataBuffer#TYPE_DOUBLE}).
+   * @param w  the width in pixels.
+   * @param h  the height in pixels.
+   * @param pixelStride  the number of data elements in the step from a sample
+   *   in one pixel to the corresponding sample in the next pixel.
+   * @param scanlineStride  the number of data elements in the step from a 
+   *   sample in a pixel to the corresponding sample in the pixel in the next
+   *   row.
+   * @param bankIndices  the index of the bank in which each band is stored 
+   *   (<code>null</code> not permitted).  This array is copied to internal
+   *   storage so that subsequent updates to the array do not affect the sample 
+   *   model.
+   * @param bandOffsets  the offset to the first element for each band, with 
+   *   the size of the array defining the number of bands (<code>null</code>
+   *   not permitted).  This array is copied to internal storage so that 
+   *   subsequent updates to the array do not affect the sample model.
+   *   
+   * @throws IllegalArgumentException if <code>dataType</code> is not one of
+   *   the specified values.
+   * @throws IllegalArgumentException if <code>w</code> is less than or equal
+   *   to zero.
+   * @throws IllegalArgumentException if <code>h</code> is less than or equal 
+   *   to zero.
+   * @throws IllegalArgumentException if <code>w * h</code> exceeds
+   *   {@link Integer#MAX_VALUE}.
+   * @throws IllegalArgumentException if <code>pixelStride</code> is negative.
+   * @throws IllegalArgumentException if <code>scanlineStride</code> is less 
+   *   than or equal to zero.
+   * @throws IllegalArgumentException if <code>bandOffsets</code> has zero 
+   *   length.
+   */
   public ComponentSampleModel(int dataType,
                               int w, int h,
                               int pixelStride,
@@ -96,12 +170,17 @@ public class ComponentSampleModel extends SampleModel
                               int[] bandOffsets)
   {
     super(dataType, w, h, bandOffsets.length);
+    
+    // super permits DataBuffer.TYPE_UNDEFINED but this class doesn't...
+    if (dataType == DataBuffer.TYPE_UNDEFINED)
+      throw new IllegalArgumentException("Unsupported dataType.");
+    
     if ((pixelStride < 0) || (scanlineStride < 0) || (bandOffsets.length < 1) 
         || (bandOffsets.length != bankIndices.length))
       throw new IllegalArgumentException();
     
-    this.bandOffsets = bandOffsets;
-    this.bankIndices = bankIndices;
+    this.bandOffsets = (int[]) bandOffsets.clone();
+    this.bankIndices = (int[]) bankIndices.clone();
     this.numBands = bandOffsets.length;
 
     this.numBanks = 0;

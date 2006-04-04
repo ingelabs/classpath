@@ -57,15 +57,43 @@ public abstract class SampleModel
    */
   protected int dataType;
 
+  /**
+   * Creates a new sample model with the specified attributes.
+   * 
+   * @param dataType  the data type (one of {@link DataBuffer#TYPE_BYTE},
+   *   {@link DataBuffer#TYPE_USHORT}, {@link DataBuffer#TYPE_SHORT},
+   *   {@link DataBuffer#TYPE_INT}, {@link DataBuffer#TYPE_FLOAT}, 
+   *   {@link DataBuffer#TYPE_DOUBLE} or {@link DataBuffer#TYPE_UNDEFINED}).
+   * @param w  the width in pixels (must be greater than zero).
+   * @param h  the height in pixels (must be greater than zero).
+   * @param numBands  the number of bands (must be greater than zero).
+   * 
+   * @throws IllegalArgumentException if <code>dataType</code> is not one of 
+   *   the listed values.
+   * @throws IllegalArgumentException if <code>w</code> is less than or equal
+   *   to zero.
+   * @throws IllegalArgumentException if <code>h</code> is less than or equal 
+   *   to zero.
+   * @throws IllegalArgumentException if <code>w * h</code> is greater than
+   *   {@link Integer#MAX_VALUE}.
+   */
   public SampleModel(int dataType, int w, int h, int numBands)
   {
+    if (dataType != DataBuffer.TYPE_UNDEFINED)
+      if (dataType < DataBuffer.TYPE_BYTE || dataType > DataBuffer.TYPE_DOUBLE)
+        throw new IllegalArgumentException("Unrecognised 'dataType' argument.");
+    
     if ((w <= 0) || (h <= 0)) 
       throw new IllegalArgumentException((w <= 0 ? " width<=0" : " width is ok")
-                                         +(h <= 0 ? " height<=0" : " height is ok"));
+          + (h <= 0 ? " height<=0" : " height is ok"));
 	
-    // FIXME: How can an int be greater than Integer.MAX_VALUE?
-    // FIXME: How do we identify an unsupported data type?
+    long area = (long) w * (long) h;
+    if (area > Integer.MAX_VALUE)
+      throw new IllegalArgumentException("w * h exceeds Integer.MAX_VALUE.");
 
+    if (numBands <= 0)
+      throw new IllegalArgumentException("Requires numBands > 0.");
+      
     this.dataType = dataType;
     this.width = w;
     this.height = h;
