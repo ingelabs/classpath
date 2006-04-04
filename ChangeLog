@@ -1,5 +1,9 @@
 2006-04-04  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/awt/image/SampleModel.java: Reformatted.
+
+2006-04-04  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/image/ComponentSampleModel.java
 	(ComponentSampleModel(int, int, int, int, int[])): Added API 
 	documentation,
