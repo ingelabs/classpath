@@ -445,13 +445,14 @@ public class ZipFile implements ZipConstants
       case ZipOutputStream.STORED:
 	return inp;
       case ZipOutputStream.DEFLATED:
+        final Inflater inf = new Inflater(true);
         final int sz = (int) entry.getSize();
-        return new InflaterInputStream(inp, new Inflater(true))
+        return new InflaterInputStream(inp, inf)
         {
           public int available() throws IOException
           {
             if (super.available() != 0)
-              return sz;
+              return sz - inf.getTotalOut();
             return 0;
           }
         };

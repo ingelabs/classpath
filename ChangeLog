@@ -1,3 +1,11 @@
+2006-04-04  Lillian Angel  <langel@redhat.com>
+
+	* java/util/zip/ZipFile.java
+	(getInputStream): Fixed to return size of ZipEntry
+	minus the total bytes read. This guarantees that the 
+	right value is returned even if some bytes have already
+	been read.
+
 2006-04-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/plugins/jpeg/JPEGImageWriteParam.java (messages):
