@@ -49,6 +49,9 @@ import javax.imageio.ImageReadParam;
  * decoding tables then JPEGImageReadParam will be ignored.
  * JPEGImageReadParam cannot be used to retrieve the tables from a
  * stream.  Instead, use IIOMetadata for this purpose.
+ *
+ * A JPEGImageReadParam instance is retrieved from the built-in JPEG
+ * ImageReader using the getDefaultImageReadParam method.
  */
 public class JPEGImageReadParam
   extends ImageReadParam

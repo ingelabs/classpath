@@ -1,3 +1,15 @@
+2006-04-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/plugins/jpeg/JPEGImageWriteParam.java: New file.
+	* javax/imageio/plugins/jpeg/JPEGImageReadParam.java: Add
+	retrieval instructions to javadoc header.
+	* javax/imageio/ImageWriteParam.java: Fix javadoc for
+	compressionType field.
+	* lib/Makefile.am (propertydirs): Add javax directory.
+	(propertyfiles): Likewise.
+	* resource/javax/imageio/plugins/jpeg/MessagesBundle.properties:
+	New file.
+
 2006-04-03  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/26971:
