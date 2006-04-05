@@ -447,8 +447,6 @@ public abstract class AbstractButton extends JComponent
         state.add(AccessibleState.PRESSED);
       if (isSelected())
         state.add(AccessibleState.CHECKED);
-      if (isFocusOwner())
-        state.add(AccessibleState.FOCUSED);
 
       return state;
     }

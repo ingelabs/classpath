@@ -1,5 +1,11 @@
 2006-04-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/AbstractButton.java
+	(AccessibleAbstractButton.getAccessibleStateSet): Removed handling
+	of the focused state. This is already done in AccessibleAWTComponent.
+
+2006-04-05  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(accessibleContext): Fixed API doc for this field.
 	(AccessibleJComponent.AccessibleFocusHandler): Fixed API docs.
@@ -61,7 +67,6 @@
 	* gnu/java/net/DefaultContentHandlerFactory.java: New file,
 	from libgcj.
 
->>>>>>> 1.7023
 2006-04-05  Bryce McKinlay  <mckinlay@redhat.com>
 
 	PR classpath/27028
