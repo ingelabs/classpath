@@ -81,6 +81,7 @@ import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleExtendedComponent;
 import javax.accessibility.AccessibleKeyBinding;
 import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
 import javax.accessibility.AccessibleStateSet;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -173,18 +174,40 @@ public abstract class JComponent extends Container implements Serializable
      */
     public void addPropertyChangeListener(PropertyChangeListener listener)
     {
-      // TODO: figure out what is done differently here, if anything...
+      // Tests seem to indicate that this method also sets up the other two
+      // handlers.
+      if (accessibleContainerHandler == null)
+        {
+          accessibleContainerHandler = new AccessibleContainerHandler();
+          addContainerListener(accessibleContainerHandler);
+        }
+      if (accessibleFocusHandler == null)
+        {
+          accessibleFocusHandler = new AccessibleFocusHandler();
+          addFocusListener(accessibleFocusHandler);
+        }
       super.addPropertyChangeListener(listener);
     }
 
     /**
-     * Removes a propery change listener from the list of registered listeners.
+     * Removes a property change listener from the list of registered listeners.
      *
      * @param listener the listener to remove
      */
     public void removePropertyChangeListener(PropertyChangeListener listener)
     {
-      // TODO: figure out what is done differently here, if anything...
+      // Tests seem to indicate that this method also resets the other two
+      // handlers.
+      if (accessibleContainerHandler != null)
+        {
+          removeContainerListener(accessibleContainerHandler);
+          accessibleContainerHandler = null;
+        }
+      if (accessibleFocusHandler != null)
+        {
+          removeFocusListener(accessibleFocusHandler);
+          accessibleFocusHandler = null;
+        }
       super.removePropertyChangeListener(listener);
     }
 
@@ -195,14 +218,11 @@ public abstract class JComponent extends Container implements Serializable
      */
     public int getAccessibleChildrenCount()
     {
-      int count = 0;
-      Component[] children = getComponents();
-      for (int i = 0; i < children.length; ++i)
-        {
-          if (children[i] instanceof Accessible)
-            count++;
-        }
-      return count;
+      // TODO: The functionality should be performed in the superclass.
+      // Find out why this is overridden. However, it is very well possible
+      // that this is left over from times when there was no such superclass
+      // method.
+      return super.getAccessibleChildrenCount();
     }
 
     /**
@@ -214,18 +234,11 @@ public abstract class JComponent extends Container implements Serializable
      */
     public Accessible getAccessibleChild(int i)
     {
-      int index = 0;
-      Component[] children = getComponents();
-      Accessible found = null;
-      for (int j = 0; index != i; j++)
-        {
-          if (children[j] instanceof Accessible)
-            index++;
-          if (index == i)
-            found = (Accessible) children[index];
-        }
-      // TODO: Figure out what to do when i is not a valid index.
-      return found;
+      // TODO: The functionality should be performed in the superclass.
+      // Find out why this is overridden. However, it is very well possible
+      // that this is left over from times when there was no such superclass
+      // method.
+      return super.getAccessibleChild(i);
     }
 
     /**
@@ -235,9 +248,12 @@ public abstract class JComponent extends Container implements Serializable
      */
     public AccessibleStateSet getAccessibleStateSet()
     {
-      // FIXME: Figure out which states should be set here, and which are
-      // inherited from the super class.
-      return super.getAccessibleStateSet();
+      AccessibleStateSet state = super.getAccessibleStateSet();
+      if (isOpaque())
+        {
+          state.add(AccessibleState.OPAQUE);
+        }
+      return state;
     }
 
     /**
@@ -253,8 +269,33 @@ public abstract class JComponent extends Container implements Serializable
      */
     public String getAccessibleName()
     {
-      // TODO: Figure out what exactly to return here.
-      return super.getAccessibleName();
+      String name = super.getAccessibleName();
+
+      // There are two fallbacks provided by the JComponent in the case the
+      // superclass returns null:
+      // - If the component is inside a titled border, then it inherits the
+      //   name from the border title.
+      // - If the component is not inside a titled border but has a label
+      //   (via JLabel.setLabelFor()), then it gets the name from the label's
+      //   accessible context.
+
+      if (name == null)
+        {
+          name = getTitledBorderText();
+        }
+
+      if (name == null)
+        {
+          Object l = getClientProperty(JLabel.LABEL_PROPERTY);
+          if (l instanceof Accessible)
+            {
+              AccessibleContext labelCtx =
+                ((Accessible) l).getAccessibleContext();
+              name = labelCtx.getAccessibleName();
+            }
+        }
+
+      return name;
     }
 
     /**
@@ -265,8 +306,32 @@ public abstract class JComponent extends Container implements Serializable
      */
     public String getAccessibleDescription()
     {
-      // TODO: Figure out how this differs from the super method.
-      return super.getAccessibleDescription();
+      // There are two fallbacks provided by the JComponent in the case the
+      // superclass returns null:
+      // - If the component has a tooltip, then inherit the description from
+      //   the tooltip.
+      // - If the component is not inside a titled border but has a label
+      //   (via JLabel.setLabelFor()), then it gets the name from the label's
+      //   accessible context.
+      String descr = super.getAccessibleDescription();
+
+      if (descr == null)
+        {
+          descr = getToolTipText();
+        }
+
+      if (descr == null)
+        {
+          Object l = getClientProperty(JLabel.LABEL_PROPERTY);
+          if (l instanceof Accessible)
+            {
+              AccessibleContext labelCtx =
+                ((Accessible) l).getAccessibleContext();
+              descr = labelCtx.getAccessibleName();
+            }
+        }
+
+      return descr;
     }
 
     /**
@@ -278,7 +343,6 @@ public abstract class JComponent extends Container implements Serializable
      */
     public AccessibleRole getAccessibleRole()
     {
-      // TODO: Check if this is correct.
       return AccessibleRole.SWING_COMPONENT;
     }
 
@@ -344,7 +408,8 @@ public abstract class JComponent extends Container implements Serializable
      */
     public AccessibleKeyBinding getAccessibleKeyBinding()
     {
-      // TODO: Implement this properly.
+      // The reference implementation seems to always return null here,
+      // independent of the key bindings of the JComponent. So do we.
       return null;
     }
   }
