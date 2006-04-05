@@ -1,5 +1,9 @@
 2006-04-04  Tom Tromey  <tromey@redhat.com>
 
+	* java/net/MimeTypeMapper.java (MimeTypeMapper): Fixed indices.
+
+2006-04-04  Tom Tromey  <tromey@redhat.com>
+
 	* java/net/MimeTypeMapper.java (mime_types): No longer static.
 	(MimeTypeMapper): Initialize.
 	(fillFromFile): New method.

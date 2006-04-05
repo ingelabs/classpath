@@ -238,7 +238,7 @@ class MimeTypeMapper implements FileNameMap
   public MimeTypeMapper()
   {
     for (int i = 0; i < mime_strings.length; i++)
-      mime_types.put(mime_strings[i][1], mime_strings[i][0]);
+      mime_types.put(mime_strings[i][0], mime_strings[i][1]);
 
     // Now read from /etc/mime.types, if it exists.  Entries found
     // here override our internal ones.
