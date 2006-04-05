@@ -223,6 +223,24 @@ public class JSplitPane extends JComponent implements Accessible
   private transient double resizeWeight;
 
   /**
+   * Indicates if the dividerSize property has been set by a client program or
+   * by the UI.
+   *
+   * @see #setUIProperty(String, Object)
+   * @see LookAndFeel#installProperty(JComponent, String, Object)
+   */
+  private boolean clientDividerSizeSet = false;
+
+  /**
+   * Indicates if the oneTouchExpandable property has been set by a client
+   * program or by the UI.
+   *
+   * @see #setUIProperty(String, Object)
+   * @see LookAndFeel#installProperty(JComponent, String, Object)
+   */
+  private boolean clientOneTouchExpandableSet = false;
+
+  /**
    * Creates a new JSplitPane object with the given orientation, layout mode,
    * and left and right components.
    *
@@ -672,6 +690,7 @@ public class JSplitPane extends JComponent implements Accessible
    */
   public void setDividerSize(int newSize)
   {
+    clientDividerSizeSet = true;
     if (newSize != dividerSize)
       {
         int oldSize = dividerSize;
@@ -723,6 +742,7 @@ public class JSplitPane extends JComponent implements Accessible
    */
   public void setOneTouchExpandable(boolean newValue)
   {
+    clientOneTouchExpandableSet = true;
     if (newValue != oneTouchExpandable)
       {
         boolean oldValue = oneTouchExpandable;
@@ -821,5 +841,43 @@ public class JSplitPane extends JComponent implements Accessible
   public String getUIClassID()
   {
     return "SplitPaneUI";
+  }
+
+  /**
+   * Helper method for
+   * {@link LookAndFeel#installProperty(JComponent, String, Object)}.
+   * 
+   * @param propertyName the name of the property
+   * @param value the value of the property
+   *
+   * @throws IllegalArgumentException if the specified property cannot be set
+   *         by this method
+   * @throws ClassCastException if the property value does not match the
+   *         property type
+   * @throws NullPointerException if <code>c</code> or
+   *         <code>propertyValue</code> is <code>null</code>
+   */
+  void setUIProperty(String propertyName, Object value)
+  {
+    if (propertyName.equals("dividerSize"))
+      {
+        if (! clientDividerSizeSet)
+          {
+            setDividerSize(((Integer) value).intValue());
+            clientDividerSizeSet = false;
+          }
+      }
+    else if (propertyName.equals("oneTouchExpandable"))
+      {
+        if (! clientOneTouchExpandableSet)
+          {
+            setOneTouchExpandable(((Boolean) value).booleanValue());
+            clientOneTouchExpandableSet = false;
+          }
+      }
+    else
+      {
+        super.setUIProperty(propertyName, value);
+      }
   }
 }

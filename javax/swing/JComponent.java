@@ -611,6 +611,24 @@ public abstract class JComponent extends Container implements Serializable
   boolean isCompletelyDirty = false;
 
   /**
+   * Indicates if the opaque property has been set by a client program or by
+   * the UI.
+   *
+   * @see #setUIProperty(String, Object)
+   * @see LookAndFeel#installProperty(JComponent, String, Object)
+   */
+  private boolean clientOpaqueSet = false;
+
+  /**
+   * Indicates if the autoscrolls property has been set by a client program or
+   * by the UI.
+   *
+   * @see #setUIProperty(String, Object)
+   * @see LookAndFeel#installProperty(JComponent, String, Object)
+   */
+  private boolean clientAutoscrollsSet = false;
+
+  /**
    * Creates a new <code>JComponent</code> instance.
    */
   public JComponent()
@@ -2544,6 +2562,7 @@ public abstract class JComponent extends Container implements Serializable
   public void setAutoscrolls(boolean a)
   {
     autoscrolls = a;
+    clientAutoscrollsSet = true;
   }
 
   /**
@@ -2737,6 +2756,7 @@ public abstract class JComponent extends Container implements Serializable
   {
     boolean oldOpaque = opaque;
     opaque = isOpaque;
+    clientOpaqueSet = true;
     firePropertyChange("opaque", oldOpaque, opaque);
   }
 
@@ -3411,5 +3431,45 @@ public abstract class JComponent extends Container implements Serializable
     km.clearBindingsForComp(changed.getComponent());
     km.registerEntireMap((ComponentInputMap) 
                          getInputMap(WHEN_IN_FOCUSED_WINDOW));
+  }
+
+  /**
+   * Helper method for
+   * {@link LookAndFeel#installProperty(JComponent, String, Object)}.
+   * 
+   * @param propertyName the name of the property
+   * @param value the value of the property
+   *
+   * @throws IllegalArgumentException if the specified property cannot be set
+   *         by this method
+   * @throws ClassCastException if the property value does not match the
+   *         property type
+   * @throws NullPointerException if <code>c</code> or
+   *         <code>propertyValue</code> is <code>null</code>
+   */
+  void setUIProperty(String propertyName, Object value)
+  {
+    if (propertyName.equals("opaque"))
+      {
+        if (! clientOpaqueSet)
+          {
+            setOpaque(((Boolean) value).booleanValue());
+            clientOpaqueSet = false;
+          }
+      }
+    else if (propertyName.equals("autoscrolls"))
+      {
+        if (! clientAutoscrollsSet)
+          {
+            setAutoscrolls(((Boolean) value).booleanValue());
+            clientAutoscrollsSet = false;
+          }
+      }
+    else
+      {
+        throw new IllegalArgumentException
+            ("Unsupported property for LookAndFeel.installProperty(): "
+             + propertyName);
+      }
   }
 }

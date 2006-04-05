@@ -1,5 +1,49 @@
 2006-04-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/LookAndFeel.java
+	(installProperty): New method. Allows primitive typed properties
+	to be handled like UIResources.
+	* javax/swing/AbstractButton.java
+	(clientBorderPaintedSet): New field.
+	(clientRolloverEnabledSet): New field.
+	(clientIconTextGapSet): New field.
+	(clientContentAreaFilledSet): New field.
+	(setRolloverEnabled): Set the client field to true.
+	(setBorderPainted): Likewise.
+	(setIconTextGap): Likewise.
+	(setContentAreaFilled): Likewise.
+	(setUIProperty): New helper method.
+	* javax/swing/JComponent.java
+	(clientOpaqueSet): New field.
+	(clientAutoscrollsSet): New field.
+	(setAutoscrolls): Set the client field to true.
+	(setOpaque): Likewise.
+	(setUIProperty): New helper method.
+	* javax/swing/JDesktopPane.java
+	(clientDragModeSet): New field.
+	(setDragMode): Set the client field to true.
+	(setUIProperty): New helper method.
+	* javax/swing/JSplitPane.java
+	(clientDividerSizeSet): New field.
+	(clientOneTouchExpandableSet): New field.
+	(setDividerSize): Set the client field to true.
+	(setOneTouchExpandable): Likewise.
+	(setUIProperty): New helper method.
+	* javax/swing/JTable.java
+	(clientRowHeightSet): New field.
+	(setRowHeight): Set the client field to true.
+	(setUIProperty): New helper method.
+	* javax/swing/JTree.java
+	(clientRowHeightSet): New field.
+	(clientScrollsOnExpandSet): New field.
+	(clientShowsRootHandlesSet): New field.
+	(setRowHeight): Set the client field to true.
+	(setShowsRootHandles): Likewise.
+	(setScrollsOnExpand): Likewise.
+	(setUIProperty): New helper method.
+
+2006-04-05  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(getFont): Don't request the font from the peer's graphics. The
 	graphics should instead get the font from the Component, which might

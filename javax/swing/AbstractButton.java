@@ -277,6 +277,42 @@ public abstract class AbstractButton extends JComponent
   protected ChangeEvent changeEvent = new ChangeEvent(this);
   
   /**
+   * Indicates if the borderPainted property has been set by a client
+   * program or by the UI.
+   *
+   * @see #setUIProperty(String, Object)
+   * @see LookAndFeel#installProperty(JComponent, String, Object)
+   */
+  private boolean clientBorderPaintedSet = false;
+
+  /**
+   * Indicates if the rolloverEnabled property has been set by a client
+   * program or by the UI.
+   *
+   * @see #setUIProperty(String, Object)
+   * @see LookAndFeel#installProperty(JComponent, String, Object)
+   */
+  private boolean clientRolloverEnabledSet = false;
+
+  /**
+   * Indicates if the iconTextGap property has been set by a client
+   * program or by the UI.
+   *
+   * @see #setUIProperty(String, Object)
+   * @see LookAndFeel#installProperty(JComponent, String, Object)
+   */
+  private boolean clientIconTextGapSet = false;
+
+  /**
+   * Indicates if the contentAreaFilled property has been set by a client
+   * program or by the UI.
+   *
+   * @see #setUIProperty(String, Object)
+   * @see LookAndFeel#installProperty(JComponent, String, Object)
+   */
+  private boolean clientContentAreaFilledSet = false;
+
+  /**
    * Fired in a PropertyChangeEvent when the "borderPainted" property changes.
    */
   public static final String BORDER_PAINTED_CHANGED_PROPERTY = "borderPainted";
@@ -939,6 +975,7 @@ public abstract class AbstractButton extends JComponent
    */
   public void setRolloverEnabled(boolean r)
   {
+    clientRolloverEnabledSet = true;
     if (rollOverEnabled != r)
       {
         rollOverEnabled = r;
@@ -1171,6 +1208,7 @@ public abstract class AbstractButton extends JComponent
    */
   public void setBorderPainted(boolean b)
   {
+    clientBorderPaintedSet = true;
     if (borderPainted == b)
       return;
     boolean old = borderPainted;
@@ -1321,6 +1359,7 @@ public abstract class AbstractButton extends JComponent
    */
   public void setIconTextGap(int i)
   {
+    clientIconTextGapSet = true;
     if (iconTextGap == i)
       return;
     
@@ -1954,6 +1993,7 @@ public abstract class AbstractButton extends JComponent
    */
   public void setContentAreaFilled(boolean b)
   {
+    clientContentAreaFilledSet = true;
     if (contentAreaFilled == b)
       return;
     
@@ -2080,5 +2120,59 @@ public abstract class AbstractButton extends JComponent
       throw new IllegalArgumentException();
 
     multiClickThreshhold = threshhold;
+  }
+
+  /**
+   * Helper method for
+   * {@link LookAndFeel#installProperty(JComponent, String, Object)}.
+   * 
+   * @param propertyName the name of the property
+   * @param value the value of the property
+   *
+   * @throws IllegalArgumentException if the specified property cannot be set
+   *         by this method
+   * @throws ClassCastException if the property value does not match the
+   *         property type
+   * @throws NullPointerException if <code>c</code> or
+   *         <code>propertyValue</code> is <code>null</code>
+   */
+  void setUIProperty(String propertyName, Object value)
+  {
+    if (propertyName.equals("borderPainted"))
+      {
+        if (! clientBorderPaintedSet)
+          {
+            setBorderPainted(((Boolean) value).booleanValue());
+            clientBorderPaintedSet = false;
+          }
+      }
+    else if (propertyName.equals("rolloverEnabled"))
+      {
+        if (! clientRolloverEnabledSet)
+          {
+            setRolloverEnabled(((Boolean) value).booleanValue());
+            clientRolloverEnabledSet = false;
+          }
+      }
+    else if (propertyName.equals("iconTextGap"))
+      {
+        if (! clientIconTextGapSet)
+          {
+            setIconTextGap(((Integer) value).intValue());
+            clientIconTextGapSet = false;
+          }
+      }
+    else if (propertyName.equals("contentAreaFilled"))
+      {
+        if (! clientContentAreaFilledSet)
+          {
+            setContentAreaFilled(((Boolean) value).booleanValue());
+            clientContentAreaFilledSet = false;
+          }
+      }
+    else
+      {
+        super.setUIProperty(propertyName, value);
+      }
   }
 }
