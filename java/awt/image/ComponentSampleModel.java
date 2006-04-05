@@ -38,6 +38,8 @@ package java.awt.image;
 
 import gnu.java.awt.Buffers;
 
+import java.util.Arrays;
+
 /* FIXME: This class does not yet support data type TYPE_SHORT */
 
 /**
@@ -863,5 +865,70 @@ public class ComponentSampleModel extends SampleModel
   public void setSample(int x, int y, int b, int s, DataBuffer data)
   {
     data.setElem(bankIndices[b], getOffset(x, y, b), s);
+  }
+  
+  /**
+   * Tests this sample model for equality with an arbitrary object.  Returns
+   * <code>true</code> if and only if:
+   * <ul>
+   * <li><code>obj</code> is not <code>null</code>;</li>
+   * <li><code>obj</code> is an instance of <code>ComponentSampleModel</code>;
+   *   </li>
+   * <li>both models have the same values for the <code>dataType</code>,
+   *   <code>width</code>, <code>height</code>, <code>pixelStride</code>,
+   *   <code>scanlineStride</code>, <code>bandOffsets</code> and
+   *   <code>bankIndices</code> fields.</li>
+   * </ul>
+   * 
+   * @param obj  the object to test (<code>null</code> permitted).
+   * 
+   * @return <code>true</code> if this sample model is equal to 
+   *   <code>obj</code>, and <code>false</code> otherwise.
+   */
+  public boolean equals(Object obj)
+  {
+    if (obj == null)
+      return false;
+    if (! (obj instanceof ComponentSampleModel))
+      return false;
+    ComponentSampleModel that = (ComponentSampleModel) obj;
+    if (this.dataType != that.dataType)
+      return false;
+    if (this.width != that.width)
+      return false;
+    if (this.height != that.height)
+      return false;
+    if (this.pixelStride != that.pixelStride)
+      return false;
+    if (this.scanlineStride != that.scanlineStride)
+      return false;
+    if (! Arrays.equals(this.bandOffsets, that.bandOffsets))
+      return false;
+    if (! Arrays.equals(this.bankIndices, that.bankIndices))
+      return false;
+    // couldn't find any difference, so...
+    return true;
+  }
+  
+  /**
+   * Returns a hash code for this sample model.
+   * 
+   * @return The hash code.
+   */
+  public int hashCode()
+  {
+    // this computation is based on the method described in Chapter 3
+    // of Joshua Bloch's Effective Java...
+    int result = 17;
+    result = 37 * result + dataType;
+    result = 37 * result + width;
+    result = 37 * result + height;
+    result = 37 * result + pixelStride;
+    result = 37 * result + scanlineStride;
+    for (int i = 0; i < bandOffsets.length; i++)
+      result = 37 * result + bandOffsets[i];
+    for (int i = 0; i < bankIndices.length; i++)
+      result = 37 * result + bankIndices[i];
+    return result;
   }
 }
