@@ -1,3 +1,15 @@
+2006-04-05  Tom Tromey  <tromey@redhat.com>
+
+	* java/net/MimeTypeMapper.java (MimeTypeMapper): Look for system
+	property with mime.types name.
+	* gnu/classpath/SystemProperties.java: Set
+	gnu.classpath.mime.types.file if not already set.
+	* java/net/URLConnection.java (defaultFactory): New field.
+	(guessContentTypeFromStream): Mark as unimplemented.
+	(getContentHandler): Updated with libgcj's implementation.
+	* gnu/java/net/DefaultContentHandlerFactory.java: New file,
+	from libgcj.
+
 2006-04-05  Bryce McKinlay  <mckinlay@redhat.com>
 
 	PR classpath/27028

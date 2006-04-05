@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package java.net;
 
+import gnu.classpath.SystemProperties;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
@@ -240,18 +242,19 @@ class MimeTypeMapper implements FileNameMap
     for (int i = 0; i < mime_strings.length; i++)
       mime_types.put(mime_strings[i][0], mime_strings[i][1]);
 
-    // Now read from /etc/mime.types, if it exists.  Entries found
+    // Now read from the system mime database, if it exists.  Entries found
     // here override our internal ones.
     try
       {
-        fillFromFile(mime_types, "/etc/mime.types");
+        // On Linux this usually means /etc/mime.types.
+        String file
+          = SystemProperties.getProperty("gnu.classpath.mime.types.file");
+        if (file != null)
+          fillFromFile(mime_types, file);
       }
     catch (IOException ignore)
       {
       }
-    
-    // FIXME: should read ~/.mime.types.
-    // FIXME: should consider having a mime.types in $JAVA_HOME/lib/.
   }
 
   public static void fillFromFile (Map table, String fname) 
@@ -323,6 +326,9 @@ class MimeTypeMapper implements FileNameMap
   public static void main(String[] args) throws IOException
   {
     TreeMap map = new TreeMap();
+    // It is fine to hard-code the name here.  This is only ever
+    // used by maintainers, who can hack it if they need to re-run
+    // it.
     fillFromFile(map, "/etc/mime.types");
     Iterator it = map.keySet().iterator();
     boolean first = true;
