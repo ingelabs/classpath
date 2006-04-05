@@ -1,3 +1,7 @@
+2006-04-05  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/image/ComponentSampleModel.java: Added API docs all over.
+
 2006-04-04  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/MimeTypeMapper.java (MimeTypeMapper): Fixed indices.
