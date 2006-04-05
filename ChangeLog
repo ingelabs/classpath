@@ -1,5 +1,10 @@
 2006-04-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JComboBox.java
+	(selectWithKeyChar): Implemented stubbed method.
+
+2006-04-05  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/LookAndFeel.java
 	(installProperty): New method. Allows primitive typed properties
 	to be handled like UIResources.
