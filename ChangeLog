@@ -1,5 +1,10 @@
 2006-04-05  Tom Tromey  <tromey@redhat.com>
 
+	* java/util/zip/ZipFile.java (available): Defer to super if
+	entry's size is unknown.
+
+2006-04-05  Tom Tromey  <tromey@redhat.com>
+
 	* java/net/MimeTypeMapper.java (MimeTypeMapper): Look for system
 	property with mime.types name.
 	* gnu/classpath/SystemProperties.java: Set

@@ -451,6 +451,8 @@ public class ZipFile implements ZipConstants
         {
           public int available() throws IOException
           {
+            if (sz == -1)
+              return super.available();
             if (super.available() != 0)
               return sz - inf.getTotalOut();
             return 0;
