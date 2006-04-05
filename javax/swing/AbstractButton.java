@@ -57,12 +57,14 @@ import java.io.Serializable;
 import javax.accessibility.AccessibleAction;
 import javax.accessibility.AccessibleIcon;
 import javax.accessibility.AccessibleRelationSet;
+import javax.accessibility.AccessibleState;
 import javax.accessibility.AccessibleStateSet;
 import javax.accessibility.AccessibleText;
 import javax.accessibility.AccessibleValue;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ButtonUI;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.AttributeSet;
 
 
@@ -426,10 +428,29 @@ public abstract class AbstractButton extends JComponent
       // Nothing to do here yet.
     }
 
+    /**
+     * Returns the accessible state set of this object. In addition to the
+     * superclass's states, the <code>AccessibleAbstractButton</code>
+     * supports the following states: {@link AccessibleState#ARMED},
+     * {@link AccessibleState#FOCUSED}, {@link AccessibleState#PRESSED} and
+     * {@link AccessibleState#CHECKED}.
+     *
+     * @return the curren state of this accessible object
+     */
     public AccessibleStateSet getAccessibleStateSet()
-      throws NotImplementedException
     {
-      return null; // TODO
+      AccessibleStateSet state = super.getAccessibleStateSet();
+
+      if (getModel().isArmed())
+        state.add(AccessibleState.ARMED);
+      if (getModel().isPressed())
+        state.add(AccessibleState.PRESSED);
+      if (isSelected())
+        state.add(AccessibleState.CHECKED);
+      if (isFocusOwner())
+        state.add(AccessibleState.FOCUSED);
+
+      return state;
     }
 
     /**
@@ -456,64 +477,162 @@ public abstract class AbstractButton extends JComponent
       return super.getAccessibleRelationSet();
     }
 
+    /**
+     * Returns the accessible action associated with this object. For buttons,
+     * this will be <code>this</code>.
+     *
+     * @return <code>this</code>
+     */
     public AccessibleAction getAccessibleAction()
-      throws NotImplementedException
     {
-      return null; // TODO
+      return this;
     }
 
+    /**
+     * Returns the accessible value of this AccessibleAbstractButton, which
+     * is always <code>this</code>.
+     *
+     * @return the accessible value of this AccessibleAbstractButton, which
+     *         is always <code>this</code>
+     */
     public AccessibleValue getAccessibleValue()
-      throws NotImplementedException
     {
-      return null; // TODO
+      return this;
     }
 
+    /**
+     * Returns the number of accessible actions that are supported by this
+     * object. Buttons support one action by default ('press button'), so this
+     * method always returns <code>1</code>.
+     *
+     * @return <code>1</code>, the number of supported accessible actions
+     */
     public int getAccessibleActionCount()
-      throws NotImplementedException
     {
-      return 0; // TODO
+      return 1;
     }
 
-    public String getAccessibleActionDescription(int value0)
-      throws NotImplementedException
+    /**
+     * Returns a description for the action with the specified index or
+     * <code>null</code> if such action does not exist.
+     *
+     * @param actionIndex the zero based index to the actions
+     *
+     * @return a description for the action with the specified index or
+     *         <code>null</code> if such action does not exist
+     */
+    public String getAccessibleActionDescription(int actionIndex)
     {
-      return null; // TODO
+      String descr = null;
+      if (actionIndex == 0)
+        {
+          // FIXME: Supply localized descriptions in the UIDefaults.
+          descr = UIManager.getString("AbstractButton.clickText");
+        }
+      return descr;
     }
 
-    public boolean doAccessibleAction(int value0)
-      throws NotImplementedException
+    /**
+     * Performs the acccessible action with the specified index on this object.
+     * Since buttons have only one action by default (which is to press the
+     * button), this method performs a 'press button' when the specified index
+     * is <code>0</code> and nothing otherwise.
+     *
+     * @param actionIndex a zero based index into the actions of this button
+     *
+     * @return <code>true</code> if the specified action has been performed
+     *         successfully, <code>false</code> otherwise
+     */
+    public boolean doAccessibleAction(int actionIndex)
     {
-      return false; // TODO
+      boolean retVal = false;
+      if (actionIndex == 0)
+        {
+          doClick();
+          retVal = true;
+        }
+      return retVal;
     }
 
+    /**
+     * Returns the current value of this object as a number. This
+     * implementation returns an <code>Integer(1)</code> if the button is
+     * selected, <code>Integer(0)</code> if the button is not selected.
+     *
+     * @return the current value of this object as a number
+     */
     public Number getCurrentAccessibleValue()
-      throws NotImplementedException
     {
-      return null; // TODO
+      Integer retVal;
+      if (isSelected())
+        retVal = new Integer(1);
+      else
+        retVal = new Integer(0);
+      return retVal;
     }
 
-    public boolean setCurrentAccessibleValue(Number value0)
-      throws NotImplementedException
+    /**
+     * Sets the current accessible value as object. If the specified number 
+     * is 0 the button will be deselected, otherwise the button will
+     * be selected.
+     *
+     * @param value 0 for deselected button, other for selected button
+     *
+     * @return <code>true</code> if the value has been set, <code>false</code>
+     *         otherwise
+     */
+    public boolean setCurrentAccessibleValue(Number value)
     {
-      return false; // TODO
+      boolean retVal = false;
+      if (value != null)
+        {
+          if (value.intValue() == 0)
+            setSelected(false);
+          else
+            setSelected(true);
+          retVal = true;
+        }
+      return retVal;
     }
 
+    /**
+     * Returns the minimum accessible value for the AccessibleAbstractButton,
+     * which is <code>0</code>.
+     *
+     * @return the maxinimum accessible value for the AccessibleAbstractButton,
+     *         which is <code>1</code>
+     */
     public Number getMinimumAccessibleValue()
-      throws NotImplementedException
     {
-      return null; // TODO
+      return new Integer(0);
     }
 
+    /**
+     * Returns the maximum accessible value for the AccessibleAbstractButton,
+     * which is <code>1</code>.
+     *
+     * @return the maximum accessible value for the AccessibleAbstractButton,
+     *         which is <code>1</code>
+     */
     public Number getMaximumAccessibleValue()
-      throws NotImplementedException
     {
-      return null; // TODO
+      return new Integer(1);
     }
 
+    /**
+     * Returns the accessible text for this AccessibleAbstractButton. This
+     * will be <code>null</code> if the button has a non-HTML label, otherwise
+     * <code>this</code>.
+     *
+     * @return the accessible text for this AccessibleAbstractButton
+     */
     public AccessibleText getAccessibleText()
-      throws NotImplementedException
     {
-      return null; // TODO
+      AccessibleText accessibleText = null;
+      if (getClientProperty(BasicHTML.propertyKey) != null)
+        accessibleText = this;
+
+      return accessibleText;
     }
 
     public int getIndexAtPoint(Point value0)

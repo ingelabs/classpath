@@ -1,5 +1,21 @@
 2006-04-05  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/AbstractButton.java
+	(AccessibleAbstractButton.getAccessibleStateSet): Implemented stub.
+	(AccessibleAbstractButton.doAccessibleAction): Implemented stub.
+	(AccessibleAbstractButton.getAccessibleAction): Implemented stub.
+	(AccessibleAbstractButton.getAccessibleActionCount): Implemented stub.
+	(AccessibleAbstractButton.getAccessibleActionDescription):
+	Implemented stub.
+	(AccessibleAbstractButton.getAccessibleText): Implemented stub.
+	(AccessibleAbstractButton.getAccessibleAction): Implemented stub.
+	(AccessibleAbstractButton.getCurrentAccessibleValue): Implemented stub.
+	(AccessibleAbstractButton.setCurrentAccessibleValue): Implemented stub.
+	(AccessibleAbstractButton.getMinimumAccessibleValue): Implemented stub.
+	(AccessibleAbstractButton.getMaximumAccessibleValue): Implemented stub.
+
+2006-04-05  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComboBox.java
 	(selectWithKeyChar): Implemented stubbed method.
 
