@@ -1,5 +1,12 @@
 2006-04-05  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/awt/image/ComponentSampleModel.java
+	(getBankIndices): Return a copy of the array, not a reference to the
+	original,
+	(getBandOffsets): Likewise.
+
+2006-04-05  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/awt/image/ComponentSampleModel.java: Added API docs all over.
 
 2006-04-04  Tom Tromey  <tromey@redhat.com>

@@ -348,23 +348,25 @@ public class ComponentSampleModel extends SampleModel
 
   /**
    * Returns the indices of the bank(s) in the {@link DataBuffer} used to 
-   * store the samples for each band.
+   * store the samples for each band.  The returned array is a copy, so that
+   * altering it will not impact the sample model.
    * 
    * @return The bank indices.
    */
   public final int[] getBankIndices()
   {
-    return bankIndices;
+    return (int[]) bankIndices.clone();
   }
 
   /**
-   * Returns the offsets to the first sample in each band.
+   * Returns the offsets to the first sample in each band.  The returned array
+   * is a copy, so that altering it will not impact the sample model.
    * 
    * @return The offsets.
    */
   public final int[] getBandOffsets()
   {
-    return bandOffsets;
+    return (int[]) bandOffsets.clone();
   }
 
   /**
