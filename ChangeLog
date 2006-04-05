@@ -1,3 +1,49 @@
+2006-04-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(accessibleContext): Fixed API doc for this field.
+	(AccessibleJComponent.AccessibleFocusHandler): Fixed API docs.
+	(AccessibleJComponent.AccessibleFocusHandler.focusGained):
+	Implemented and added API docs.
+	(AccessibleJComponent.AccessibleFocusHandler.focusLost):
+	Implemented and added API docs.
+	(AccessibleJComponent.AccessibleContainerHandler): Fixed API docs.
+	(AccessibleJComponent.AccessibleContainerHandler.componentAdded):
+	Implemented and added API docs.
+	(AccessibleJComponent.AccessibleContainerHandler.componentRemoved):
+	Implemented and added API docs.
+	(AccessibleJComponent.accessibleContainerHandler): Added API docs.
+	(AccessibleJComponent.accessibleFocusHandler): Added API docs.
+	(AccessibleJComponent.addPropertyChangeListener): Added API docs.
+	(AccessibleJComponent.removePropertyChangeListener): Added API docs.
+	(AccessibleJComponent.getAccessibleStateSet): Simply return
+	super here. Added comment about this.
+
+2006-04-05  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JComponent.java
+	(AccessibleJComponent.addPropertyChangeListener): Install
+	ContainerHandler and FocusHandler here.
+	(AccessibleJComponent.removePropertyChangeListener): Uninstall
+	ContainerHandler and FocusHandler here.
+	(AccessibleJComponent.getAccessibleChildrenCount): Replaced
+	by super.getAccessibleChildrenCount().
+	(AccessibleJComponent.getAccessibleChild): Replaced
+	by super.getAccessibleChild().
+	(AccessibleJComponent.getAccessibleStateSet): Implemented by
+	adding OPAQUE to the supported states.
+	(AccessibleJComponent.getAccessibleName): Added titled border
+	and label fallbacks.
+	(AccessibleJComponent.getAccessibleDescription): Added tooltip
+	and label fallbacks.
+	(AccessibleJComponent.getAccessibleRole): Removed TODO.
+	(AccessibleJComponent.getAccessibleKeyBinding): Added comment
+	explaining why return null seems correct here.
+	* javax/swing/JLabel.java
+	(LABEL_PROPERTY): New constant.
+	(setLabelFor): Store label in labeled component's client properties
+	for the AccessibleJComponent to read.
+
 2006-04-05  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/zip/ZipFile.java (available): Defer to super if
@@ -15,6 +61,7 @@
 	* gnu/java/net/DefaultContentHandlerFactory.java: New file,
 	from libgcj.
 
+>>>>>>> 1.7023
 2006-04-05  Bryce McKinlay  <mckinlay@redhat.com>
 
 	PR classpath/27028

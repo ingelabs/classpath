@@ -105,7 +105,7 @@ public abstract class JComponent extends Container implements Serializable
   private static final long serialVersionUID = -7908749299918704233L;
 
   /** 
-   * Accessibility support is currently missing.
+   * The accessible context of this <code>JComponent</code>.
    */
   protected AccessibleContext accessibleContext;
 
@@ -118,57 +118,142 @@ public abstract class JComponent extends Container implements Serializable
     implements AccessibleExtendedComponent
   {
     /**
-     * Accessibility support for <code>JComponent</code>'s focus handler.
+     * Receives notification if the focus on the JComponent changes and
+     * fires appropriate PropertyChangeEvents to listeners registered with
+     * the AccessibleJComponent.
      */
     protected class AccessibleFocusHandler 
       implements FocusListener
     {
+      /**
+       * Creates a new AccessibleFocusHandler.
+       */
       protected AccessibleFocusHandler()
       {
-        // TODO: Implement this properly.
+        // Nothing to do here.
       }
+
+      /**
+       * Receives notification when the JComponent gained focus and fires
+       * a PropertyChangeEvent to listeners registered on the
+       * AccessibleJComponent with a property name of
+       * {@link AccessibleContext#ACCESSIBLE_STATE_PROPERTY} and a new value
+       * of {@link AccessibleState#FOCUSED}.
+       */
       public void focusGained(FocusEvent event)
       {
-        // TODO: Implement this properly.
+        AccessibleJComponent.this.firePropertyChange
+          (AccessibleContext.ACCESSIBLE_STATE_PROPERTY, null,
+           AccessibleState.FOCUSED);
       }
+
+      /**
+       * Receives notification when the JComponent lost focus and fires
+       * a PropertyChangeEvent to listeners registered on the
+       * AccessibleJComponent with a property name of
+       * {@link AccessibleContext#ACCESSIBLE_STATE_PROPERTY} and an old value
+       * of {@link AccessibleState#FOCUSED}.
+       */
       public void focusLost(FocusEvent valevent)
       {
-        // TODO: Implement this properly.
+        AccessibleJComponent.this.firePropertyChange
+          (AccessibleContext.ACCESSIBLE_STATE_PROPERTY,
+           AccessibleState.FOCUSED, null);
       }
     }
 
     /**
-     * Accessibility support for <code>JComponent</code>'s container handler.
+     * Receives notification if there are child components are added or removed
+     * from the JComponent and fires appropriate PropertyChangeEvents to
+     * interested listeners on the AccessibleJComponent.
      */
     protected class AccessibleContainerHandler 
       implements ContainerListener
     {
+      /**
+       * Creates a new AccessibleContainerHandler.
+       */
       protected AccessibleContainerHandler()
       {
-        // TODO: Implement this properly.
+        // Nothing to do here.
       }
+
+      /**
+       * Receives notification when a child component is added to the
+       * JComponent and fires a PropertyChangeEvent on listeners registered
+       * with the AccessibleJComponent with a property name of
+       * {@link AccessibleContext#ACCESSIBLE_CHILD_PROPERTY}.
+       *
+       * @param event the container event
+       */
       public void componentAdded(ContainerEvent event)
       {
-        // TODO: Implement this properly.
+        Component c = event.getChild();
+        if (c != null && c instanceof Accessible)
+          {
+            AccessibleContext childCtx = c.getAccessibleContext();
+            AccessibleJComponent.this.firePropertyChange
+              (AccessibleContext.ACCESSIBLE_CHILD_PROPERTY, null, childCtx);
+          }
       }
-      public void componentRemoved(ContainerEvent valevent)
+
+      /**
+       * Receives notification when a child component is removed from the
+       * JComponent and fires a PropertyChangeEvent on listeners registered
+       * with the AccessibleJComponent with a property name of
+       * {@link AccessibleContext#ACCESSIBLE_CHILD_PROPERTY}.
+       *
+       * @param event the container event
+       */
+      public void componentRemoved(ContainerEvent event)
       {
-        // TODO: Implement this properly.
+        Component c = event.getChild();
+        if (c != null && c instanceof Accessible)
+          {
+            AccessibleContext childCtx = c.getAccessibleContext();
+            AccessibleJComponent.this.firePropertyChange
+              (AccessibleContext.ACCESSIBLE_CHILD_PROPERTY, childCtx, null);
+          }
       }
     }
 
     private static final long serialVersionUID = -7047089700479897799L;
-  
+
+    /**
+     * Receives notification when a child component is added to the
+     * JComponent and fires a PropertyChangeEvent on listeners registered
+     * with the AccessibleJComponent.
+     *
+     * @specnote AccessibleAWTContainer has a protected field with the same
+     *           name. Looks like a bug or nasty misdesign to me.
+     */
     protected ContainerListener accessibleContainerHandler;
+
+    /**
+     * Receives notification if the focus on the JComponent changes and
+     * fires appropriate PropertyChangeEvents to listeners registered with
+     * the AccessibleJComponent.
+     *
+     * @specnote AccessibleAWTComponent has a protected field
+     *           accessibleAWTFocusHandler. Looks like a bug or nasty misdesign
+     *           to me.
+     */
     protected FocusListener accessibleFocusHandler;
 
+    /**
+     * Creates a new AccessibleJComponent.
+     */
     protected AccessibleJComponent()
     {
-      // nothing to do here
+      // Nothing to do here.
     }
 
     /**
      * Adds a property change listener to the list of registered listeners.
+     *
+     * This sets up the {@link #accessibleContainerHandler} and
+     * {@link #accessibleFocusHandler} fields and calls
+     * <code>super.addPropertyChangeListener(listener)</code>.
      *
      * @param listener the listener to add
      */
@@ -191,6 +276,10 @@ public abstract class JComponent extends Container implements Serializable
 
     /**
      * Removes a property change listener from the list of registered listeners.
+     *
+     * This uninstalls the {@link #accessibleContainerHandler} and
+     * {@link #accessibleFocusHandler} fields and calls
+     * <code>super.removePropertyChangeListener(listener)</code>.
      *
      * @param listener the listener to remove
      */
@@ -248,12 +337,10 @@ public abstract class JComponent extends Container implements Serializable
      */
     public AccessibleStateSet getAccessibleStateSet()
     {
-      AccessibleStateSet state = super.getAccessibleStateSet();
-      if (isOpaque())
-        {
-          state.add(AccessibleState.OPAQUE);
-        }
-      return state;
+      // TODO: The only JComponent property that is (theoretically) handled
+      // here seems to be 'opaque'. However, we already handle this in
+      // AccessibleAWTComponent and do not need to handle it here too.
+      return super.getAccessibleStateSet();
     }
 
     /**
