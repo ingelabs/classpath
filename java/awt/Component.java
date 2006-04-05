@@ -1075,8 +1075,6 @@ public abstract class Component
     Component p = parent;
     if (p != null)
       return p.getFont();
-    if (peer != null)
-      return peer.getGraphics().getFont();
     return null;
   }
 
@@ -4078,14 +4076,9 @@ public abstract class Component
    */
   public Container getFocusCycleRootAncestor ()
   {
-    if (this instanceof Window
-	&& ((Container) this).isFocusCycleRoot ())
-      return (Container) this;
-
     Container parent = getParent ();
 
-    while (parent != null
-	   && !parent.isFocusCycleRoot ())
+    while (parent != null && !parent.isFocusCycleRoot())
       parent = parent.getParent ();
 
     return parent;
@@ -4113,9 +4106,32 @@ public abstract class Component
    */
   public void nextFocus ()
   {
-    KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager ();
+    // Find the nearest valid (== showing && focusable && enabled) focus
+    // cycle root ancestor and the focused component in it.
+    Container focusRoot = getFocusCycleRootAncestor();
+    Component focusComp = this;
+    while (focusRoot != null
+           && ! (focusRoot.isShowing() && focusRoot.isFocusable()
+                 && focusRoot.isEnabled()))
+      {
+        focusComp = focusRoot;
+        focusRoot = focusComp.getFocusCycleRootAncestor();
+      }
 
-    manager.focusNextComponent (this);
+    if (focusRoot != null)
+      {
+        // First try to get the componentBefore from the policy.
+        FocusTraversalPolicy policy = focusRoot.getFocusTraversalPolicy();
+        Component nextFocus = policy.getComponentAfter(focusRoot, focusComp);
+
+        // If this fails, then ask for the defaultComponent.
+        if (nextFocus == null)
+          nextFocus = policy.getDefaultComponent(focusRoot);
+
+        // Request focus on this component, if not null.
+        if (nextFocus != null)
+          nextFocus.requestFocus();
+      }
   }
 
   /**
@@ -4127,9 +4143,32 @@ public abstract class Component
    */
   public void transferFocusBackward ()
   {
-    KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager ();
+    // Find the nearest valid (== showing && focusable && enabled) focus
+    // cycle root ancestor and the focused component in it.
+    Container focusRoot = getFocusCycleRootAncestor();
+    Component focusComp = this;
+    while (focusRoot != null
+           && ! (focusRoot.isShowing() && focusRoot.isFocusable()
+                 && focusRoot.isEnabled()))
+      {
+        focusComp = focusRoot;
+        focusRoot = focusComp.getFocusCycleRootAncestor();
+      }
 
-    manager.focusPreviousComponent (this);
+    if (focusRoot != null)
+      {
+        // First try to get the componentBefore from the policy.
+        FocusTraversalPolicy policy = focusRoot.getFocusTraversalPolicy();
+        Component nextFocus = policy.getComponentBefore(focusRoot, focusComp);
+
+        // If this fails, then ask for the defaultComponent.
+        if (nextFocus == null)
+          nextFocus = policy.getDefaultComponent(focusRoot);
+
+        // Request focus on this component, if not null.
+        if (nextFocus != null)
+          nextFocus.requestFocus();
+      }
   }
 
   /**
@@ -4143,9 +4182,63 @@ public abstract class Component
    */
   public void transferFocusUpCycle ()
   {
-    KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager ();
+    // Find the nearest focus cycle root ancestor that is itself
+    // focusable, showing and enabled.
+    Container focusCycleRoot = getFocusCycleRootAncestor();
+    while (focusCycleRoot != null &&
+           ! (focusCycleRoot.isShowing() && focusCycleRoot.isFocusable()
+              && focusCycleRoot.isEnabled()))
+      {
+        focusCycleRoot = focusCycleRoot.getFocusCycleRootAncestor();
+      }
 
-    manager.upFocusCycle (this);
+    KeyboardFocusManager fm =
+      KeyboardFocusManager.getCurrentKeyboardFocusManager();
+
+    if (focusCycleRoot != null)
+      {
+        // If we found a focus cycle root, then we make this the new
+        // focused component, and make it's focus cycle root the new
+        // global focus cycle root. If the found root has no focus cycle
+        // root ancestor itself, then the component will be both the focused
+        // component and the new global focus cycle root.
+        Container focusCycleAncestor =
+          focusCycleRoot.getFocusCycleRootAncestor();
+        Container globalFocusCycleRoot;
+        if (focusCycleAncestor == null)
+          globalFocusCycleRoot = focusCycleRoot;
+        else
+          globalFocusCycleRoot = focusCycleAncestor;
+
+        fm.setGlobalCurrentFocusCycleRoot(globalFocusCycleRoot);
+        focusCycleRoot.requestFocus();
+      }
+    else
+      {
+        // If this component has no applicable focus cycle root, we try
+        // find the nearest window and set this as the new global focus cycle
+        // root and the default focus component of this window the new focused
+        // component.
+        Container cont;
+        if (this instanceof Container)
+          cont = (Container) this;
+        else
+          cont = getParent();
+
+        while (cont != null && !(cont instanceof Window))
+          cont = cont.getParent();
+
+        if (cont != null)
+          {
+            FocusTraversalPolicy policy = cont.getFocusTraversalPolicy();
+            Component focusComp = policy.getDefaultComponent(cont);
+            if (focusComp != null)
+              {
+                fm.setGlobalCurrentFocusCycleRoot(cont);
+                focusComp.requestFocus();
+              }
+          }
+      }
   }
 
   /**

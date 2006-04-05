@@ -1,3 +1,27 @@
+2006-04-05  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(getFont): Don't request the font from the peer's graphics. The
+	graphics should instead get the font from the Component, which might
+	result in a loop.
+	(getFocusCycleAncestor): Don't special case Window.
+	(nextFocus): Moved implementation from the DefaultKeyboardFocusManager
+	to here. Correctly determine the focus cycle root.
+	(transferFocusBackward): Likewise.
+	(transferFocusUpCycle): Likewise.
+	* java/awt/Container.java
+	(transferFocusDownCycle): Moved implementation from
+	DefaultKeyboardFocusManager to here.
+	* java/awt/DefaultKeyboardFocusManager.java
+	(focusPreviousComponent): Moved implementation to
+	Component.transferFocusBackward().
+	(focusNextComponent): Moved implementation to
+	Component.nextFocus().
+	(upFocusCycle): Moved implementation to
+	Component.transferFocusUpCycle().
+	(downFocusCycle): Moved implementation to
+	Container.transferFocusDownCycle().
+
 2006-04-05  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/image/ComponentSampleModel.java
