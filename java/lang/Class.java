@@ -1294,6 +1294,21 @@ public final class Class
   }
 
   /**
+   * Returns the specified object, cast to this <code>Class</code>' type.
+   *
+   * @param obj the object to cast
+   * @throws ClassCastException  if obj is not an instance of this class
+   * @since 1.5
+   */
+  /* FIXME[GENERICS]: Should be T cast(Object obj) */
+  public Object cast(Object obj)
+  {
+    if (obj != null && ! isInstance(obj))
+      throw new ClassCastException();
+    return obj; /* FIXME[GENERICS]: Should be cast to T */
+  }
+
+  /**
    * Like <code>getField(String)</code> but without the security checks and
    * returns null instead of throwing NoSuchFieldException.
    */
