@@ -1,3 +1,14 @@
+2006-04-06  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/image/renderable/RenderableImageProducer.java
+	(image, context, consumers): New fields.
+	(RenderableImageProducer): Implemented.
+	(setRenderContext): Likewise.
+	(addConsumer): Likewise.
+	(isConsumer): Likewise.
+	(removeConsumer): Likewise.
+	(startProduction): Likewise.
+
 2006-04-06  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Component.java
