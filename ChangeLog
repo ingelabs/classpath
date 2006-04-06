@@ -1,4 +1,12 @@
 2006-04-06  Wolfgang Baer  <WBaer@gmx.de>
+	
+	* javax/naming/Binding.java: Added API docs.
+	* javax/naming/NameClassPair.java: Added API docs.
+	(fullName): New field.
+	(setNameInNamespace): New 1.5 method.
+	(getNameInNamespace): Likewise.
+
+2006-04-06  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/naming/CompositeName.java: 
 	(readObject): New deserialization method.
