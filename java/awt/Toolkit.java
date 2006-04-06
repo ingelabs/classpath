@@ -1259,9 +1259,9 @@ public abstract class Toolkit
            {
              try
                {
-                 File propsFile = new File(System.getProperty("java.home")
-                                           + sep + "lib" + sep
-                                           + "accessibility.properties");
+                 File propsFile =
+                   new File(System.getProperty("gnu.classpath.home.url")
+                            + sep + "accessibility.properties");
                  FileInputStream in = new FileInputStream(propsFile);
                  props.load(in);
                  in.close();

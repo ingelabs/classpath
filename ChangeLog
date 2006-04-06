@@ -1,3 +1,14 @@
+2006-04-06  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Toolkit.java
+	(initAccessibility): Use the 'gnu.classpath.home.url' property
+	to determine the system confiuration directory.
+	* java/awt/Component.java
+	(dispatchEvent): Trigger Toolkit dispatching here.
+	(dispatchEventImpl): Moved Toolkit dispatching to dispatchEvent,
+	so it can't be overridden by subclasses and is performed in
+	any case.
+
 2006-04-06  Wolfgang Baer  <WBaer@gmx.de>
 	
 	* javax/naming/Binding.java: Added API docs.

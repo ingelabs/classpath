@@ -2313,6 +2313,10 @@ public abstract class Component
     if (oldEvent != null)
       postEvent (oldEvent);
 
+    // Give toolkit a chance to dispatch the event
+    // to globally registered listeners.
+    Toolkit.getDefaultToolkit().globalDispatchEvent(e);
+
     // Some subclasses in the AWT package need to override this behavior,
     // hence the use of dispatchEventImpl().
     dispatchEventImpl(e);
@@ -5014,10 +5018,6 @@ p   * <li>the set of backward traversal keys
 
   void dispatchEventImpl(AWTEvent e)
   {
-    // Give toolkit a chance to dispatch the event
-    // to globally registered listeners.
-    Toolkit.getDefaultToolkit().globalDispatchEvent(e);
-
     // This boolean tells us not to process focus events when the focus
     // opposite component is the same as the focus component.
     boolean ignoreFocus = 
