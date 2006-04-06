@@ -1,3 +1,19 @@
+2006-04-06  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Component.java
+	(AccessibleAWTComponent.getAccessibleStateSet): Don't handle opaque
+	state here. This is only done in JComponent.
+	* javax/swing/JComponent.java
+	(AccessibleJComponent.getAccessibleStateSet): Handle opaque flag
+	here.
+	(getNextFocusableComponent): Implemented stub method.
+	(grabFocus): Implemented stub method.
+	(unregisterKeyboardAction): Implemented stub method.
+	(setNextFocusableComponent): Implemented stub method.
+	* javax/swing/CompatibilityFocusTraversalPolicy.java: New file.
+	This is a helper class for providing compatibility with the older
+	Swing focus API.
+
 2006-04-06  Wolfgang Baer  <WBaer@gmx.de>
 
 	Fixes bug #26995

@@ -337,10 +337,14 @@ public abstract class JComponent extends Container implements Serializable
      */
     public AccessibleStateSet getAccessibleStateSet()
     {
-      // TODO: The only JComponent property that is (theoretically) handled
-      // here seems to be 'opaque'. However, we already handle this in
-      // AccessibleAWTComponent and do not need to handle it here too.
-      return super.getAccessibleStateSet();
+      // Note: While the java.awt.Component has an 'opaque' property, it
+      // seems that it is not added to the accessible state set there, even
+      // if this property is true. However, it is handled for JComponent, so
+      // we add it here.
+      AccessibleStateSet state = super.getAccessibleStateSet();
+      if (isOpaque())
+        state.add(AccessibleState.OPAQUE);
+      return state;
     }
 
     /**
@@ -1393,7 +1397,12 @@ public abstract class JComponent extends Container implements Serializable
    */
   public Component getNextFocusableComponent()
   {
-    return null;
+    Container focusRoot = this;
+    if (! this.isFocusCycleRoot())
+      focusRoot = getFocusCycleRootAncestor();
+
+    FocusTraversalPolicy policy  = focusRoot.getFocusTraversalPolicy();
+    return policy.getComponentAfter(focusRoot, this);
   }
 
   /**
@@ -1587,7 +1596,7 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void grabFocus()
   {
-    // TODO: Implement this properly.
+    requestFocus();
   }
 
   /**
@@ -2575,7 +2584,20 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void unregisterKeyboardAction(KeyStroke aKeyStroke)
   {
-    // FIXME: Must be implemented.
+    ActionMap am = getActionMap();
+    // This loops through the conditions WHEN_FOCUSED,
+    // WHEN_ANCESTOR_OF_FOCUSED_COMPONENT and WHEN_IN_FOCUSED_WINDOW.
+    for (int cond = 0; cond < 3; cond++)
+      {
+        InputMap im = getInputMap(cond);
+        if (im != null)
+          {
+            Object action = im.get(aKeyStroke);
+            if (action != null && am != null)
+              am.remove(action);
+            im.remove(aKeyStroke);
+          }
+      }
   }
 
 
@@ -2853,7 +2875,29 @@ public abstract class JComponent extends Container implements Serializable
    */
   public void setNextFocusableComponent(Component aComponent)
   {
-    // TODO: Implement this properly.
+    Container focusRoot = this;
+    if (! this.isFocusCycleRoot())
+      focusRoot = getFocusCycleRootAncestor();
+
+    FocusTraversalPolicy policy  = focusRoot.getFocusTraversalPolicy();
+    if (policy instanceof CompatibilityFocusTraversalPolicy)
+      {
+        policy = new CompatibilityFocusTraversalPolicy(policy);
+        focusRoot.setFocusTraversalPolicy(policy);
+      }
+    CompatibilityFocusTraversalPolicy p =
+      (CompatibilityFocusTraversalPolicy) policy;
+
+    Component old = getNextFocusableComponent();
+    if (old != null)
+      {
+        p.removeNextFocusableComponent(this, old);
+      }
+
+    if (aComponent != null)
+      {
+        p.addNextFocusableComponent(this, aComponent);
+      }
   }
 
   /**

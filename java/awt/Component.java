@@ -5425,8 +5425,10 @@ p   * <li>the set of backward traversal keys
         s.add(AccessibleState.FOCUSABLE);
       if (isFocusOwner())
         s.add(AccessibleState.FOCUSED);
-      if (isOpaque())
-        s.add(AccessibleState.OPAQUE);
+      // Note: While the java.awt.Component has an 'opaque' property, it
+      // seems that it is not added to the accessible state set here, even
+      // if this property is true. However, it is handled for
+      // javax.swing.JComponent, so we add it there.
       if (Component.this.isShowing())
         s.add(AccessibleState.SHOWING);
       if (Component.this.isVisible())
