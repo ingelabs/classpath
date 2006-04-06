@@ -264,7 +264,7 @@ public final class Class
     ClassLoader loader = VMClass.getClassLoader(this);
     // Check if we may get the classloader
     SecurityManager sm = SecurityManager.current;
-    if (sm != null)
+    if (loader != null && sm != null)
       {
         // Get the calling classloader
 	ClassLoader cl = VMStackWalker.getCallingClassLoader();
