@@ -1,5 +1,12 @@
 2006-04-06  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Toolkit.java
+	(getDefaultToolkit): Initialize accessibility after setting
+	up the toolkit.
+	(initAccessibility): New helper method to setup accessibility.
+
+2006-04-06  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/AbstractButton.java
 	(AccessibleAbstractButton.getAccessibleIcon): Implemented stub.
 	(AccessibleAbstractButton.getAccessibleRelationSet): Implemented
