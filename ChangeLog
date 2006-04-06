@@ -1,5 +1,9 @@
 2006-04-05  Tom Tromey  <tromey@redhat.com>
 
+	* javax/security/auth/kerberos/ServicePermission.java: Now final.
+
+2006-04-05  Tom Tromey  <tromey@redhat.com>
+
 	PR libgcj/26625:
 	* lib/Makefile.am (compile-classes): Touch the output file.
 
@@ -57,6 +61,7 @@
 
 2006-04-05  Tom Tromey  <tromey@redhat.com>
 
+>>>>>>> 1.7026
 	* java/util/zip/ZipFile.java (available): Defer to super if
 	entry's size is unknown.
 
