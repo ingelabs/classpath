@@ -1,5 +1,13 @@
 2006-04-06  Wolfgang Baer  <WBaer@gmx.de>
 
+	Fixes bug #26995
+	* javax/naming/directory/BasicAttribute.java,
+	* javax/naming/directory/BasicAttributes.java: 
+	(readObject): New deserialization method.
+	(writeObject): New serialization method.
+
+2006-04-06  Wolfgang Baer  <WBaer@gmx.de>
+
 	* javax/xml/validation/SchemaFactory.java: Corrected since tag.
 	(getErrorHandler): Made method abstract.
 	(setErrorHanlder): Likewise.

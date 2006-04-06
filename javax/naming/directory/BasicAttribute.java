@@ -1,5 +1,5 @@
 /* BasicAttribute.java --
-   Copyright (C) 2000, 2001, 2004  Free Software Foundation, Inc.
+   Copyright (C) 2000, 2001, 2004, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,6 +38,9 @@ exception statement from your version. */
 
 package javax.naming.directory;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.NoSuchElementException;
 import java.util.Vector;
 
@@ -298,7 +301,25 @@ public class BasicAttribute implements Attribute
 
     return one.equals (two);
   }
+  
+  private void readObject(ObjectInputStream s)
+    throws IOException, ClassNotFoundException
+  {
+    s.defaultReadObject();
+    int size = s.readInt();
+    values = new Vector(size);
+    for (int i=0; i < size; i++)
+      values.add(s.readObject());
+  }
 
+  private void writeObject(ObjectOutputStream s) throws IOException
+  {
+    s.defaultWriteObject();
+    s.writeInt(values.size());
+    for (int i=0; i < values.size(); i++)
+      s.writeObject(values.get(i));    
+  }
+  
   // Used when enumerating this attribute.
   private class BasicAttributeEnumeration implements NamingEnumeration
   {
