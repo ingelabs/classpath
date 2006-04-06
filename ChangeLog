@@ -1,5 +1,23 @@
 2006-04-06  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/AbstractButton.java
+	(AccessibleAbstractButton.getAccessibleIcon): Implemented stub.
+	(AccessibleAbstractButton.getAccessibleRelationSet): Implemented
+	stub.
+	(AccessibleAbstractButton.getIndexAtPoint): Implemented stub.
+	(AccessibleAbstractButton.getAccessibleIcon): Implemented stub.
+	(AccessibleAbstractButton.getCharacterBounds): Implemented stub.
+	(AccessibleAbstractButton.getCharCount): Implemented stub.
+	(AccessibleAbstractButton.getCaretPosition): Implemented stub.
+	(AccessibleAbstractButton.getCharacterAttribute): Implemented stub.
+	(AccessibleAbstractButton.getSelectionStart): Implemented stub.
+	(AccessibleAbstractButton.getSelectionEnd): Implemented stub.
+	(AccessibleAbstractButton.getSelectedText): Implemented stub.
+	(AccessibleAbstractButton.getTextRectangle): Removed unneeded
+	private method.
+
+2006-04-06  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Component.java
 	(AccessibleAWTComponent.getAccessibleStateSet): Don't handle opaque
 	state here. This is only done in JComponent.

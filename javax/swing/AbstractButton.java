@@ -45,6 +45,7 @@ import java.awt.Insets;
 import java.awt.ItemSelectable;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -53,9 +54,13 @@ import java.awt.image.ImageObserver;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
+import java.util.Enumeration;
 
+import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleAction;
+import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleIcon;
+import javax.accessibility.AccessibleRelation;
 import javax.accessibility.AccessibleRelationSet;
 import javax.accessibility.AccessibleState;
 import javax.accessibility.AccessibleStateSet;
@@ -66,6 +71,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ButtonUI;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Position;
+import javax.swing.text.View;
 
 
 /**
@@ -462,17 +470,61 @@ public abstract class AbstractButton extends JComponent
       return result;
     }
 
+    /**
+     * Returns the accessible icons of this object. If the AbstractButton's
+     * icon is an Accessible, and it's AccessibleContext is an AccessibleIcon,
+     * then this AccessibleIcon is returned, otherwise <code>null</code>.
+     *
+     * @return the accessible icons of this object, or <code>null</code> if
+     *         there is no accessible icon
+     */
     public AccessibleIcon[] getAccessibleIcon()
-      throws NotImplementedException
     {
-      return null; // TODO
+      AccessibleIcon[] ret = null;
+      Icon icon = getIcon();
+      if (icon instanceof Accessible)
+        {
+          AccessibleContext ctx = ((Accessible) icon).getAccessibleContext();
+          if (ctx instanceof AccessibleIcon)
+            {
+              ret = new AccessibleIcon[]{ (AccessibleIcon) ctx };
+            }
+        }
+      return ret;
     }
 
+    /**
+     * Returns the accessible relations of this AccessibleAbstractButton.
+     * If the AbstractButton is part of a ButtonGroup, then all the buttons
+     * in this button group are added as targets in a MEMBER_OF relation,
+     * otherwise an empty relation set is returned (from super).
+     *
+     * @return the accessible relations of this AccessibleAbstractButton
+     */
     public AccessibleRelationSet getAccessibleRelationSet()
-      throws NotImplementedException
     {
-      // TODO: What should be modified here?
-      return super.getAccessibleRelationSet();
+      AccessibleRelationSet relations = super.getAccessibleRelationSet();
+      ButtonModel model = getModel();
+      if (model instanceof DefaultButtonModel)
+        {
+          ButtonGroup group = ((DefaultButtonModel) model).getGroup();
+          if (group != null)
+            {
+              Object[] target = new Object[group.getButtonCount()];
+              Enumeration els = group.getElements();
+              
+              for (int index = 0; els.hasMoreElements(); ++index)
+                {
+                  target[index] = els.nextElement();
+                }
+
+              AccessibleRelation rel =
+                new AccessibleRelation(AccessibleRelation.MEMBER_OF);
+              rel.setTarget(target);
+              relations.add(rel);
+            }
+        }
+      return relations;
     }
 
     /**
@@ -633,28 +685,85 @@ public abstract class AbstractButton extends JComponent
       return accessibleText;
     }
 
-    public int getIndexAtPoint(Point value0)
-      throws NotImplementedException
+    /**
+     * Returns the index of the label's character at the specified point,
+     * relative to the local bounds of the button. This only works for
+     * HTML labels.
+     *
+     * @param p the point, relative to the buttons local bounds
+     *
+     * @return the index of the label's character at the specified point
+     */
+    public int getIndexAtPoint(Point p)
     {
-      return 0; // TODO
+      int index = -1;
+      View view = (View) getClientProperty(BasicHTML.propertyKey);
+      if (view != null)
+        {
+          Rectangle shape = new Rectangle(0, 0, getWidth(), getHeight());
+          index = view.viewToModel(p.x, p.y, shape, new Position.Bias[1]);
+        }
+      return index;
     }
 
-    public Rectangle getCharacterBounds(int value0)
-      throws NotImplementedException
+    /**
+     * Returns the bounds of the character at the specified index of the
+     * button's label. This will only work for HTML labels.
+     *
+     * @param i the index of the character of the label
+     *
+     * @return the bounds of the character at the specified index of the
+     *         button's label
+     */
+    public Rectangle getCharacterBounds(int i)
     {
-      return null; // TODO
+      Rectangle rect = null;
+      View view = (View) getClientProperty(BasicHTML.propertyKey);
+      if (view != null)
+        {
+          Rectangle shape = new Rectangle(0, 0, getWidth(), getHeight());
+          try
+            {
+              Shape s = view.modelToView(i, shape, Position.Bias.Forward);
+              rect = s.getBounds();
+            }
+          catch (BadLocationException ex)
+            {
+              rect = null;
+            }
+        }
+      return rect;
     }
 
+    /**
+     * Returns the number of characters in the button's label.
+     *
+     * @return the bounds of the character at the specified index of the
+     *         button's label
+     */
     public int getCharCount()
-      throws NotImplementedException
     {
-      return 0; // TODO
+      int charCount;
+      View view = (View) getClientProperty(BasicHTML.propertyKey);
+      if (view != null)
+        {
+          charCount = view.getDocument().getLength();
+        }
+      else
+        {
+          charCount = getAccessibleName().length();
+        }
+      return charCount;
     }
 
+    /**
+     * This always returns <code>-1</code> since there is no caret in a button.
+     *
+     * @return <code>-1</code> since there is no caret in a button
+     */
     public int getCaretPosition()
-      throws NotImplementedException
     {
-      return 0; // TODO
+      return -1;
     }
 
     public String getAtIndex(int value0, int value1)
@@ -675,34 +784,57 @@ public abstract class AbstractButton extends JComponent
       return null; // TODO
     }
 
-    public AttributeSet getCharacterAttribute(int value0)
-      throws NotImplementedException
+    /**
+     * Returns the text attribute for the character at the specified character
+     * index.
+     *
+     * @param i the character index
+     *
+     * @return the character attributes for the specified character or
+     *         <code>null</code> if the character has no attributes
+     */
+    public AttributeSet getCharacterAttribute(int i)
     {
-      return null; // TODO
+      AttributeSet atts = null;
+      View view = (View) getClientProperty(BasicHTML.propertyKey); 
+      if (view != null)
+        {
+          
+        }
+      return atts;
     }
 
+    /**
+     * This always returns <code>-1</code> since
+     * button labels can't be selected.
+     *
+     * @return <code>-1</code>, button labels can't be selected
+     */
     public int getSelectionStart()
-      throws NotImplementedException
     {
-      return 0; // TODO
+      return -1;
     }
 
+    /**
+     * This always returns <code>-1</code> since
+     * button labels can't be selected.
+     *
+     * @return <code>-1</code>, button labels can't be selected
+     */
     public int getSelectionEnd()
-      throws NotImplementedException
     {
-      return 0; // TODO
+      return -1;
     }
 
+    /**
+     * Returns the selected text. This always returns <code>null</code> since
+     * button labels can't be selected.
+     *
+     * @return <code>null</code>, button labels can't be selected
+     */
     public String getSelectedText()
-      throws NotImplementedException
     {
-      return null; // TODO
-    }
-
-    private Rectangle getTextRectangle()
-      throws NotImplementedException
-    {
-      return null; // TODO
+      return null;
     }
   }
 
