@@ -5712,7 +5712,7 @@ p   * <li>the set of backward traversal keys
      */
     public Point getLocation()
     {
-      return Component.this.isShowing() ? Component.this.getLocation() : null;
+      return Component.this.getLocation();
     }
 
     /**
@@ -5736,7 +5736,7 @@ p   * <li>the set of backward traversal keys
      */
     public Rectangle getBounds()
     {
-      return Component.this.isShowing() ? Component.this.getBounds() : null;
+      return Component.this.getBounds();
     }
 
     /**
@@ -5759,7 +5759,7 @@ p   * <li>the set of backward traversal keys
      */
     public Dimension getSize()
     {
-      return Component.this.isShowing() ? Component.this.getSize() : null;
+      return Component.this.getSize();
     }
 
     /**

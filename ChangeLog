@@ -1,5 +1,21 @@
 2006-04-06  Roman Kennke  <kennke@aicas.com>
 
+	* java/awt/Component.java
+	(AccessibleAWTComponent.getBounds): Return the component
+	bounds regardless of its showing state.
+	(AccessibleAWTComponent.getLocation): Return the component
+	location regardless of its showing state.
+	(AccessibleAWTComponent.getSize): Return the component
+	size regardless of its showing state.
+
+2006-04-06  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/JRootPane.java
+	(getAccessibleContext): New method. Provides an accessibleContext
+	for JRootPanes.
+
+2006-04-06  Roman Kennke  <kennke@aicas.com>
+
 	* java/awt/Toolkit.java
 	(initAccessibility): Use the 'gnu.classpath.home.url' property
 	to determine the system confiuration directory.
