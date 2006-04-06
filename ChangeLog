@@ -1,3 +1,25 @@
+2006-04-06  Wolfgang Baer  <WBaer@gmx.de>
+
+	* javax/xml/validation/SchemaFactory.java: Corrected since tag.
+	(getErrorHandler): Made method abstract.
+	(setErrorHanlder): Likewise.
+	* gnu/xml/validation/relaxng/RELAXNGSchemaFactory.java
+	(getErrorHandler): Implement abstract method from superclass.
+	(setErrorHandler): Likewise.
+	(errorHandler): New field.
+	* gnu/xml/validation/xmlschema/XMLSchemaSchemaFactory.java: 	
+	(getErrorHandler): Implement abstract method from superclass.
+	(setErrorHandler): Likewise.
+	(errorHandler): New field.	
+	* javax/xml/XMLConstants.java: Corrected since tag.
+	(XMLConstants): Added private constructor.
+	* javax/xml/datatype/Duration.java: Corrected since tag.
+	(multiply): Made method abstract.
+	* javax/xml/datatype/DatatypeConstants.java: Corrected since tag.
+	(DatatypeConstants): Added private constructor.
+	* javax/xml/xpath/XPathConstants.java: Corrected since tag.
+	(XPathConstants): Added private constructor.
+
 2006-04-05  Tom Tromey  <tromey@redhat.com>
 
 	* javax/security/auth/kerberos/ServicePermission.java: Now final.
