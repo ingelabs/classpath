@@ -1,3 +1,16 @@
+2006-04-08  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	PR classpath/27071
+	* gnu/java/security/hash/Whirlpool.java: Updated documentation.
+	(DIGEST0): Use version 3 test vector.
+	(Sd): Removed.
+	(S_box): New field: Version 3 S-box values.
+	(<clinit>): Use Version 3 circulant matrix to construct lookup tables.
+	(transform): Formating.
+	(padBuffer): Likewise.
+	(getResult): Likewise.
+	(selfTest): Likewise.
+
 2006-04-07  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/InvalidPropertiesFormatException.java
