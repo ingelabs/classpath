@@ -447,17 +447,28 @@ public class Dialog extends Window
     this.undecorated = undecorated;
   }
 
+  /**
+   * Accessibility support for <code>Dialog</code>.
+   */
   protected class AccessibleAWTDialog
       extends AccessibleAWTWindow
   {
     private static final long serialVersionUID = 4837230331833941201L;
 
+    /**
+     * Gets the role of this object.
+     * @return AccessibleRole.DIALOG 
+     */
     public AccessibleRole getAccessibleRole()
     {
       return AccessibleRole.DIALOG;
     }
 
-    public AccessibleStateSet getAccessibleState()
+    /**
+     * Gets the state set of this object.
+     * @return The current state of this dialog.
+     */
+    public AccessibleStateSet getAccessibleStateSet()
     {
       AccessibleStateSet states = super.getAccessibleStateSet();
       if (isResizable())

@@ -1,5 +1,16 @@
 2006-04-07  Wolfgang Baer  <WBaer@gmx.de>
 
+	* java/awt/Dialog.java 
+	(AccessibleAWTDialog): Added api docs
+	(AccessibleAWTDialog.getAccessibleStateSet):
+	 Renamed from getAccessibleState.
+	* java/awt/Frame.java 
+	(AccessibleAWTFrame): Added api docs
+	(AccessibleAWTFrame.getAccessibleStateSet):
+	 Renamed from getAccessibleState.
+
+2006-04-07  Wolfgang Baer  <WBaer@gmx.de>
+
 	* java/awt/Dialog.java: Reformatted.
 
 2006-04-07  Lillian Angel  <langel@redhat.com>
