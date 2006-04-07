@@ -5071,6 +5071,15 @@ p   * <li>the set of backward traversal keys
 
     switch (type)
       {
+      case HierarchyEvent.HIERARCHY_CHANGED:
+        return (hierarchyListener != null 
+            || (eventMask & AWTEvent.HIERARCHY_EVENT_MASK) != 0);
+        
+      case HierarchyEvent.ANCESTOR_MOVED:
+      case HierarchyEvent.ANCESTOR_RESIZED:
+        return (hierarchyBoundsListener != null 
+            || (eventMask & AWTEvent.HIERARCHY_BOUNDS_EVENT_MASK) != 0);
+        
       case ComponentEvent.COMPONENT_HIDDEN:
       case ComponentEvent.COMPONENT_MOVED:
       case ComponentEvent.COMPONENT_RESIZED:

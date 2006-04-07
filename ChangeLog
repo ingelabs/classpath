@@ -1,3 +1,9 @@
+2006-04-07  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/Component.java
+	(eventTypeEnabled): Added code for HierarchyEvent.HIERARCHY_CHANGED,
+	HierarchyEvent.ANCESTOR_MOVED and HierarchyEvent.ANCESTOR_RESIZED.
+
 2006-04-07  Tom Tromey  <tromey@redhat.com>
 
 	* java/beans/beancontext/BeanContextMembershipEvent.java
