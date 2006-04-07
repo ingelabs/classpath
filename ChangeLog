@@ -1,3 +1,56 @@
+2006-04-07  Tom Tromey  <tromey@redhat.com>
+
+	* java/beans/beancontext/BeanContextMembershipEvent.java
+	(serialVersionUID): New field.
+	* java/beans/beancontext/BeanContextServicesSupport.java
+	(addBeanContextServicesListener): Synchronize.
+	(addService): Implemented.
+	(createBCSChild): Implemented.
+	(BCSSChild): Added arguments.
+	(fireServiceAdded): Implemented.
+	(fireServiceRevoked): Implemented.
+	(getCurrentServiceSelectors): Implemented.
+	(hasService): Implemented.
+	(removeBeanContextServicesListener): Implemented.
+	(serviceAvailable): Implemented.
+	(serviceRevoked): Implemented.
+	* java/beans/beancontext/BeanContextSupport.java (BCSChild): Added
+	arguments.
+	(createBCSChild): Implemented.
+	(BeanContextSupport): 
+	(addBeanContextMembershipListener): Synchronize.
+	(fireChildrenAdded): Implemented.
+	(fireChildrenRemoved): Implemented.
+	(BeanContextSupport): Use default locale.
+	(isEmpty): Implemented.
+	(isDesignTime): Implemented.
+	(size): Implemented.
+	(toArray): Synchronized.
+	(toArray): Likewise.
+	(iterator): Likewise.
+	(BCSIterator): Implemented.
+	(bcsChildren): Implemented.
+	(validatePendingAdd): Implemented.
+	(validatePendingRemove): Likewise.
+	(childJustAddedHook): Implemented.
+	(childJustRemovedHook): Likewise.
+	(classEquals): Likewise.
+	(toArray): Mark as stub.
+	(setDesignTime): Implemented.
+	(copyChildren): Implemented.
+	(containsKey): Implemented.
+	(contains): Likewise.
+	(containsAll): Likewise.
+	(getResource): Implemented.
+	(getResourceAsStream): Likewise.
+	(removeBeanContextMembershipListener): Likewise.
+	* java/beans/beancontext/BeanContextServiceRevokedEvent.java
+	(serialVersionUID): New field.
+	* java/beans/beancontext/BeanContextServiceAvailableEvent.java
+	(serialVersionUID): New field.
+	* java/beans/beancontext/BeanContext.java (instantiateChild): Javadoc
+	fix.
+
 2006-04-06  Roman Kennke  <kennke@aicas.com>
 
 	PR 26937
