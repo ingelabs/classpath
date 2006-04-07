@@ -1,3 +1,7 @@
+2006-04-07  Wolfgang Baer  <WBaer@gmx.de>
+
+	* java/awt/Dialog.java: Reformatted.
+
 2006-04-07  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Component.java
