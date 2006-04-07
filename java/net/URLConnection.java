@@ -50,7 +50,6 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Hashtable;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;

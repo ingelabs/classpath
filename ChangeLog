@@ -1,3 +1,27 @@
+2006-04-07  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/InvalidPropertiesFormatException.java
+	(serialVersionUID): New field.
+	(readObject, writeObject): New methods.
+	* java/util/Arrays.java (toString): Javadoc fixes.
+	* java/net/URLConnection.java: Cleaned up imports.
+	* java/lang/reflect/ParameterizedType.java: Javadoc fix.
+	* java/lang/reflect/MalformedParameterizedTypeException.java
+	(serialVersionUID): New field.
+	* java/lang/reflect/GenericSignatureFormatError.java
+	(serialVersionUID): New field.
+	* java/lang/Class.java (Class): Javado fixes.
+	(getComponentType): Likewise.
+	(getGenericInterfaces): Likewise.
+	(getTypeParameters): Likewise.
+	* java/io/CharArrayWriter.java (append): Javadoc fixes.
+	* java/lang/annotation/AnnotationFormatError.java (serialVersionUID):
+	New field.
+	* java/lang/TypeNotPresentException.java (serialVersionUID): New
+	field.
+	* java/lang/EnumConstantNotPresentException.java (serialVersionUID):
+	New field.
+
 2006-04-07  Wolfgang Baer  <WBaer@gmx.de>
 
 	* java/awt/Dialog.java 

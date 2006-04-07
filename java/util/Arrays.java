@@ -2654,7 +2654,7 @@ public class Arrays
   /**
    * Returns a String representation of the argument array.  Returns "null"
    * if <code>a</code> is null.
-   * @param a the array to represent
+   * @param v the array to represent
    * @return a String representing this array
    * @since 1.5
    */
@@ -2676,7 +2676,7 @@ public class Arrays
   /**
    * Returns a String representation of the argument array.  Returns "null"
    * if <code>a</code> is null.
-   * @param a the array to represent
+   * @param v the array to represent
    * @return a String representing this array
    * @since 1.5
    */
@@ -2698,7 +2698,7 @@ public class Arrays
   /**
    * Returns a String representation of the argument array.  Returns "null"
    * if <code>a</code> is null.
-   * @param a the array to represent
+   * @param v the array to represent
    * @return a String representing this array
    * @since 1.5
    */
@@ -2720,7 +2720,7 @@ public class Arrays
   /**
    * Returns a String representation of the argument array.  Returns "null"
    * if <code>a</code> is null.
-   * @param a the array to represent
+   * @param v the array to represent
    * @return a String representing this array
    * @since 1.5
    */
@@ -2742,7 +2742,7 @@ public class Arrays
   /**
    * Returns a String representation of the argument array.  Returns "null"
    * if <code>a</code> is null.
-   * @param a the array to represent
+   * @param v the array to represent
    * @return a String representing this array
    * @since 1.5
    */
@@ -2764,7 +2764,7 @@ public class Arrays
   /**
    * Returns a String representation of the argument array.  Returns "null"
    * if <code>a</code> is null.
-   * @param a the array to represent
+   * @param v the array to represent
    * @return a String representing this array
    * @since 1.5
    */
@@ -2786,7 +2786,7 @@ public class Arrays
   /**
    * Returns a String representation of the argument array.  Returns "null"
    * if <code>a</code> is null.
-   * @param a the array to represent
+   * @param v the array to represent
    * @return a String representing this array
    * @since 1.5
    */
@@ -2808,7 +2808,7 @@ public class Arrays
   /**
    * Returns a String representation of the argument array.  Returns "null"
    * if <code>a</code> is null.
-   * @param a the array to represent
+   * @param v the array to represent
    * @return a String representing this array
    * @since 1.5
    */
@@ -2830,7 +2830,7 @@ public class Arrays
   /**
    * Returns a String representation of the argument array.  Returns "null"
    * if <code>a</code> is null.
-   * @param a the array to represent
+   * @param v the array to represent
    * @return a String representing this array
    * @since 1.5
    */
