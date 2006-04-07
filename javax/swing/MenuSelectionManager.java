@@ -363,7 +363,7 @@ public class MenuSelectionManager
       {
 	oldSelectedItem = (MenuElement) selectedPath.get(i);
 
-	if (path[i].equals(oldSelectedItem))
+	if ((i + 1) < path.length && path[i + 1].equals(oldSelectedItem))
 	  break;
 
 	oldSelectedItem.menuSelectionChanged(false);

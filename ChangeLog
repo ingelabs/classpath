@@ -1,3 +1,9 @@
+2006-04-06  Roman Kennke  <kennke@aicas.com>
+
+	PR 26937
+	* javax/swing/MenuSelectionManager.java
+	(setSelectedPath): Search one more item in the loop.
+	
 2006-04-06  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/image/renderable/RenderableImageProducer.java
