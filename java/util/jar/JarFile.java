@@ -1,5 +1,5 @@
 /* JarFile.java - Representation of a jar file
-   Copyright (C) 2000, 2003, 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 2000, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -105,6 +105,13 @@ public class JarFile extends ZipFile
 
   /** The suffix for signature files. */
   private static final String SF_SUFFIX = ".SF";
+
+  /**
+   * The security provider to use for signature verification.
+   * We need a known fallback to be able to read any signed jar file
+   * (which might contain the user selected security provider).
+   */
+  private static final Gnu provider = new Gnu();
 
   // Signature OIDs.
   private static final OID MD2_OID = new OID("1.2.840.113549.2.2");
@@ -632,7 +639,6 @@ public class JarFile extends ZipFile
     Signature sig = null;
     try
       {
-        Gnu provider = new Gnu ();
         OID alg = signerInfo.getDigestEncryptionAlgorithmId();
         if (alg.equals(DSA_ENCRYPTION_OID))
           {
@@ -758,7 +764,7 @@ public class JarFile extends ZipFile
         try
           {
             byte[] hash = Base64InputStream.decode((String) e.getValue());
-            MessageDigest md = MessageDigest.getInstance(alg, new Gnu ());
+            MessageDigest md = MessageDigest.getInstance(alg, provider);
             md.update(entryBytes);
             byte[] hash2 = md.digest();
             if (DEBUG)
@@ -941,9 +947,9 @@ public class JarFile extends ZipFile
               hashes.add(Base64InputStream.decode((String) e.getValue()));
               try
                 {
-                  md.add(MessageDigest.getInstance
-                         (key.substring(0, key.length() - DIGEST_KEY_SUFFIX.length()),
-                          new Gnu ()));
+                  int length = key.length() - DIGEST_KEY_SUFFIX.length();
+                  String alg = key.substring(0, length);
+                  md.add(MessageDigest.getInstance(alg, provider));
                 }
               catch (NoSuchAlgorithmException nsae)
                 {
