@@ -1,3 +1,10 @@
+2006-04-07  Casey Marshall  <csm@gnu.org>
+
+	Fixes PR classpath/24464	
+	* java/util/jar/JarFile.java (verify, verifyHashes,
+	EntryInputStream.<init>): pass the Gnu provider directly to
+	`getInstance.'
+
 2006-04-08  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	PR classpath/27071

@@ -42,6 +42,7 @@ import gnu.java.io.Base64InputStream;
 import gnu.java.security.OID;
 import gnu.java.security.pkcs.PKCS7SignedData;
 import gnu.java.security.pkcs.SignerInfo;
+import gnu.java.security.provider.Gnu;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -631,24 +632,25 @@ public class JarFile extends ZipFile
     Signature sig = null;
     try
       {
+        Gnu provider = new Gnu ();
         OID alg = signerInfo.getDigestEncryptionAlgorithmId();
         if (alg.equals(DSA_ENCRYPTION_OID))
           {
             if (!signerInfo.getDigestAlgorithmId().equals(SHA1_OID))
               return;
-            sig = Signature.getInstance("SHA1withDSA");
+            sig = Signature.getInstance("SHA1withDSA", provider);
           }
         else if (alg.equals(RSA_ENCRYPTION_OID))
           {
             OID hash = signerInfo.getDigestAlgorithmId();
             if (hash.equals(MD2_OID))
-              sig = Signature.getInstance("md2WithRsaEncryption");
+              sig = Signature.getInstance("md2WithRsaEncryption", provider);
             else if (hash.equals(MD4_OID))
-              sig = Signature.getInstance("md4WithRsaEncryption");
+              sig = Signature.getInstance("md4WithRsaEncryption", provider);
             else if (hash.equals(MD5_OID))
-              sig = Signature.getInstance("md5WithRsaEncryption");
+              sig = Signature.getInstance("md5WithRsaEncryption", provider);
             else if (hash.equals(SHA1_OID))
-              sig = Signature.getInstance("sha1WithRsaEncryption");
+              sig = Signature.getInstance("sha1WithRsaEncryption", provider);
             else
               return;
           }
@@ -756,7 +758,7 @@ public class JarFile extends ZipFile
         try
           {
             byte[] hash = Base64InputStream.decode((String) e.getValue());
-            MessageDigest md = MessageDigest.getInstance(alg);
+            MessageDigest md = MessageDigest.getInstance(alg, new Gnu ());
             md.update(entryBytes);
             byte[] hash2 = md.digest();
             if (DEBUG)
@@ -940,7 +942,8 @@ public class JarFile extends ZipFile
               try
                 {
                   md.add(MessageDigest.getInstance
-                         (key.substring(0, key.length() - DIGEST_KEY_SUFFIX.length())));
+                         (key.substring(0, key.length() - DIGEST_KEY_SUFFIX.length()),
+                          new Gnu ()));
                 }
               catch (NoSuchAlgorithmException nsae)
                 {
