@@ -1,3 +1,11 @@
+2006-04-08  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetBoundsUnlocked):
+	Only resize window if actual width or height value changes.
+	Avoids nasty flicker when only setLocation() is beeing called
+	on a window.
+
 2006-04-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/GIOP/MessageHeader.java (read): Throw more informative
