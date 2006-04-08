@@ -1,3 +1,9 @@
+2006-04-08  Wolfgang Baer  <WBaer@gmx.de>
+
+	* java/awt/Dialog.java: Improved documentation all over.
+	(Dialog(Frame)): If gc is null use the owners GraphicsConfiguration.
+	(Dialog(Dialog)): Likewise.
+
 2006-04-08  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/jar/JarFile.java (provider): New static field.

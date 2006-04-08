@@ -47,7 +47,14 @@ import javax.accessibility.AccessibleState;
 import javax.accessibility.AccessibleStateSet;
 
 /**
- * A dialog box widget class.
+ * <code>Dialog</code> provides a top-level window normally used to receive 
+ * user input in applications.
+ * <p>
+ * A dialog always has another top-level window as owner and is only visible
+ * if this owner is visible to the user. The default layout of dialogs is the 
+ * <code>BorderLayout</code>. Dialogs can be modal (blocks user input to other
+ * components) or non-modal (user input in other components are allowed).
+ * </p> 
  * 
  * @author Aaron M. Renn (arenn@urbanophile.com)
  * @author Tom Tromey (tromey@redhat.com)
@@ -163,7 +170,9 @@ public class Dialog extends Window
    * @param title The title string for this dialog box.
    * @param modal <code>true</code> if this dialog box is modal,
    * <code>false</code> otherwise.
-   * @param gc The <code>GraphicsConfiguration</code> object to use.
+   * @param gc The <code>GraphicsConfiguration</code> object to use. If 
+   * <code>null</code> the <code>GraphicsConfiguration</code> of the target 
+   * frame is used.
    * 
    * @exception IllegalArgumentException If owner is null, the
    *              GraphicsConfiguration is not a screen device or
@@ -173,7 +182,7 @@ public class Dialog extends Window
   public Dialog(Frame parent, String title, boolean modal,
                 GraphicsConfiguration gc)
   {
-    super(parent, gc);
+    super(parent, (gc == null) ? parent.getGraphicsConfiguration() : gc);
 
     // A null title is equivalent to an empty title
     this.title = (title != null) ? title : "";
@@ -186,6 +195,8 @@ public class Dialog extends Window
   /**
    * Initializes a new instance of <code>Dialog</code> with the specified,
    * parent, that is resizable.
+   * 
+   * @param owner The parent frame of this dialog box.
    * 
    * @exception IllegalArgumentException If parent is null. This exception is
    * always thrown when GraphicsEnvironment.isHeadless() returns true.
@@ -201,6 +212,9 @@ public class Dialog extends Window
    * Initializes a new instance of <code>Dialog</code> with the specified,
    * parent and title, that is resizable.
    * 
+   * @param owner The parent frame of this dialog box.
+   * @param title The title string for this dialog box.
+   * 
    * @exception IllegalArgumentException If parent is null. This exception is
    *              always thrown when GraphicsEnvironment.isHeadless() returns
    *              true.
@@ -214,6 +228,11 @@ public class Dialog extends Window
   /**
    * Initializes a new instance of <code>Dialog</code> with the specified,
    * parent, title and modality, that is resizable.
+   * 
+   * @param owner The parent frame of this dialog box.
+   * @param title The title string for this dialog box.
+   * @param modal <code>true</code> if this dialog box is modal,
+   * <code>false</code> otherwise.
    * 
    * @exception IllegalArgumentException If parent is null. This exception is
    * always thrown when GraphicsEnvironment.isHeadless() returns true.
@@ -229,6 +248,14 @@ public class Dialog extends Window
    * parent, title, modality and <code>GraphicsConfiguration</code>, that is
    * resizable.
    * 
+   * @param parent The parent frame of this dialog box.
+   * @param title The title string for this dialog box.
+   * @param modal <code>true</code> if this dialog box is modal,
+   * <code>false</code> otherwise.
+   * @param gc The <code>GraphicsConfiguration</code> object to use. If 
+   * <code>null</code> the <code>GraphicsConfiguration</code> of the target 
+   * frame is used.
+   * 
    * @exception IllegalArgumentException If parent is null, the
    * GraphicsConfiguration is not a screen device or 
    * GraphicsEnvironment.isHeadless() returns true.
@@ -238,7 +265,7 @@ public class Dialog extends Window
   public Dialog(Dialog parent, String title, boolean modal,
                 GraphicsConfiguration gc)
   {
-    super(parent, parent.getGraphicsConfiguration());
+    super(parent, (gc == null) ? parent.getGraphicsConfiguration() : gc);
 
     // A null title is equivalent to an empty title
     this.title = (title != null) ? title : "";
@@ -261,7 +288,8 @@ public class Dialog extends Window
   /**
    * Sets the title of this dialog box to the specified string.
    * 
-   * @param title The new title.
+   * @param title the new title. If <code>null</code> an empty
+   * title will be set.
    */
   public synchronized void setTitle(String title)
   {
@@ -291,7 +319,7 @@ public class Dialog extends Window
    * peer is created.
    * 
    * @param modal <code>true</code> to make this dialog box modal,
-   * <code>false</code> to make it non-modal.
+   * <code>false</code> to make it non-modal. 
    */
   public void setModal(boolean modal)
   {
@@ -341,6 +369,8 @@ public class Dialog extends Window
    * dialog is hidden by someone calling hide or dispose. If this is the event
    * dispatching thread we must ensure that another event thread runs while the
    * one which invoked this method is blocked.
+   * 
+   * @deprecated Use {@link Component#setVisible(boolean)} instead.
    */
   public synchronized void show()
   {
@@ -386,6 +416,8 @@ public class Dialog extends Window
   /**
    * Hides the Dialog and then causes show() to return if it is currently
    * blocked.
+   * 
+   * @deprecated Use {@link Component#setVisible(boolean)} instead.
    */
   public synchronized void hide()
   {
@@ -425,6 +457,9 @@ public class Dialog extends Window
   /**
    * Returns whether this frame is undecorated or not.
    * 
+   * @return <code>true</code> if this dialog is undecorated,
+   * <code>false</code> otherwise.
+   * 
    * @since 1.4
    */
   public boolean isUndecorated()
@@ -435,6 +470,9 @@ public class Dialog extends Window
   /**
    * Disables or enables decorations for this frame. This method can only be
    * called while the frame is not displayable.
+   * 
+   * @param undecorated <code>true</code> to disable dialog decorations,
+   * <code>false</code> otherwise.
    * 
    * @exception IllegalComponentStateException If this frame is displayable.
    * @since 1.4
