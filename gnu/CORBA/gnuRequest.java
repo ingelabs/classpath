@@ -833,7 +833,9 @@ public class gnuRequest extends Request implements Cloneable
         request_part.buffer.writeTo(socketOutput);
 
         socketOutput.flush();
-        if (!socket.isClosed())
+        // If the message is sent one way, we do not care about the response
+        // that may never come.
+        if (!socket.isClosed() && !oneWay)
           {
             MessageHeader response_header = new MessageHeader();
             InputStream socketInput = socket.getInputStream();
@@ -937,6 +939,10 @@ public class gnuRequest extends Request implements Cloneable
     throws SystemException, ForwardRequest
   {
     RawReply response = submit();
+    
+    // If this is a one way message, do not care about the response.
+    if (oneWay && response == EMPTY)
+      return;
 
     if (m_rph == null)
       m_rph = response.header.create_reply_header();

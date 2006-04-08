@@ -273,19 +273,29 @@ public class MessageHeader
    * Read the header from the stream.
    * 
    * @param istream a stream to read from.
-   * 
    * @throws MARSHAL if this is not a GIOP 1.0 header.
    */
-  public void read(java.io.InputStream istream)
-    throws MARSHAL
+  public void read(java.io.InputStream istream) throws MARSHAL
   {
     try
       {
         byte[] xMagic = new byte[MAGIC.length];
-        istream.read(xMagic);
-        if (!Arrays.equals(xMagic, MAGIC))
+        int r = istream.read(xMagic);
+        if (! Arrays.equals(xMagic, MAGIC))
           {
-            MARSHAL m = new MARSHAL("Not a GIOP message");
+            StringBuffer b = new StringBuffer();
+            if (r == - 1)
+              b.append("Immediate EOF");
+            else
+              {
+                b.append(r + " bytes: ");
+                for (int i = 0; i < xMagic.length; i++)
+                  {
+                    b.append(Integer.toHexString(xMagic[i] & 0xFF));
+                    b.append(' ');
+                  }
+              }
+            MARSHAL m = new MARSHAL("Not a GIOP message: " + b);
             m.minor = Minor.Giop;
             throw m;
           }
