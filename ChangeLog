@@ -1,3 +1,9 @@
+2006-04-08  Mark Wielaard  <mark@klomp.org>
+
+	PR 27081
+	* java/lang/StackTraceElement.java (toString): Don't add space
+	between type and source indicator.
+
 2006-04-07  Casey Marshall  <csm@gnu.org>
 
 	Fixes PR classpath/24464	
