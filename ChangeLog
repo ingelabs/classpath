@@ -1,5 +1,10 @@
 2006-04-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/CORBA/GIOP/MessageHeader.java (read): Throw more informative
+	exception if the magic sequence does not match.
+
+2006-04-08  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/CORBA/gnuRequest.java (p_invoke, submit): Do not try to read
 	response for the one way messages.
 
