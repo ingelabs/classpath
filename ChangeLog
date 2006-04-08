@@ -1,3 +1,9 @@
+2006-04-08  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/AbstractAction.java
+	(readObject): Removed unneeded method.
+	(writeObject): Removed unneeded method.
+
 2006-04-08  Wolfgang Baer  <WBaer@gmx.de>
 
 	* javax/swing/plaf/synth/SynthPainter.java: 
