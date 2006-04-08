@@ -1,5 +1,15 @@
 2006-04-08  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/MenuSelectionManager.java
+	(processKeyEvent): Implemented stub method.
+	* javax/swing/JMenu.java
+	(processKeyEvent): Implemented stub method.
+	* javax/swing/JMenu.java
+	(processKeyEvent): Implemented stub method.
+	(processMenuKeyEvent): Implemented stub method.
+
+2006-04-08  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/AbstractAction.java
 	(readObject): Removed unneeded method.
 	(writeObject): Removed unneeded method.
