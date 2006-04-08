@@ -61,7 +61,7 @@ public class AccessibleRelation extends AccessibleBundle
    * @see #LABELED_BY
    * @see #MEMBER_OF
    */
-  public static final String LABEL_FOR = "labelFor";
+  public static final String LABEL_FOR;
 
   /**
    * Indicates the object is labeled by other objects.
@@ -72,7 +72,7 @@ public class AccessibleRelation extends AccessibleBundle
    * @see #LABEL_FOR
    * @see #MEMBER_OF
    */
-  public static final String LABELED_BY = "labeledBy";
+  public static final String LABELED_BY;
 
   /**
    * Indicates an object is a member of a group of target objects.
@@ -83,7 +83,7 @@ public class AccessibleRelation extends AccessibleBundle
    * @see #LABEL_FOR
    * @see #LABELED_BY
    */
-  public static final String MEMBER_OF = "memberOf";
+  public static final String MEMBER_OF;
 
   /**
    * Indicates an object is a controller for other objects.
@@ -94,7 +94,7 @@ public class AccessibleRelation extends AccessibleBundle
    * @see #LABELED_BY
    * @see #MEMBER_OF
    */
-  public static final String CONTROLLER_FOR = "controllerFor";
+  public static final String CONTROLLER_FOR;
 
   /**
    * Indicates an object is controlled by other objects.
@@ -105,7 +105,7 @@ public class AccessibleRelation extends AccessibleBundle
    * @see #LABELED_BY
    * @see #MEMBER_OF
    */
-  public static final String CONTROLLED_BY = "controlledBy";
+  public static final String CONTROLLED_BY;
 
   /** Indicates that the label target group has changed. */
   public static final String LABEL_FOR_PROPERTY = "labelForProperty";
@@ -124,6 +124,16 @@ public class AccessibleRelation extends AccessibleBundle
 
   /** An empty set of targets. */
   private static final Object[] EMPTY_TARGETS = { };
+  
+  static
+    {
+      // not constants in JDK
+      LABEL_FOR = "labelFor";
+      LABELED_BY = "labeledBy";
+      MEMBER_OF = "memberOf";
+      CONTROLLER_FOR = "controllerFor";
+      CONTROLLED_BY = "controlledBy";
+    }
 
   /**
    * The related objects.

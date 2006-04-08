@@ -1,5 +1,15 @@
 2006-04-08  Wolfgang Baer  <WBaer@gmx.de>
 
+	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java: 
+	(CLOSE_CMD, ICONIFY_CMD, MAXIMIZE_CMD, MOVE_CMD, RESTORE_CMD, SIZE_CMD):
+	No longer constants.
+	(static_initializer): Added to initialize above fields.
+	* javax/accessibility/AccessibleRelation.java (LABEL_FOR, LABELED_BY, 
+	MEMBER_OF, CONTROLLER_FOR, CONTROLLED_BY): No longer constants.
+	(static_initializer): Added to initialize above fields.
+
+2006-04-08  Wolfgang Baer  <WBaer@gmx.de>
+
 	* java/awt/Dialog.java: Improved documentation all over.
 	(Dialog(Frame)): If gc is null use the owners GraphicsConfiguration.
 	(Dialog(Dialog)): Likewise.
