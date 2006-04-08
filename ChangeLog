@@ -1,5 +1,10 @@
 2006-04-08  Wolfgang Baer  <WBaer@gmx.de>
 
+	* javax/swing/plaf/synth/SynthPainter.java: 
+	(paintSplitPaneDividerBorder): Removed.
+
+2006-04-08  Wolfgang Baer  <WBaer@gmx.de>
+
 	* javax/swing/plaf/basic/BasicInternalFrameTitlePane.java: 
 	(CLOSE_CMD, ICONIFY_CMD, MAXIMIZE_CMD, MOVE_CMD, RESTORE_CMD, SIZE_CMD):
 	No longer constants.
