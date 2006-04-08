@@ -1,5 +1,17 @@
 2006-04-08  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/plaf/metal/MetalRootPaneUI.java
+	(MetalTitlePane.MouseHandler): New inner class to handle dragging
+	of frames.
+	(MetalTitlePane.installListeners): Don't register a focus listener
+	on the window. This is a potential memory leak and must be
+	implemented on a different way. Install mouse listener here.
+	(installWindowDecorations): Fixed assertion condition. Always
+	insert the window decoration at index#1 in the layered 
+	pane.
+
+2006-04-08  Roman Kennke  <kennke@aicas.com>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
 	(Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetBoundsUnlocked):
 	Only resize window if actual width or height value changes.
