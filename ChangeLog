@@ -1,3 +1,22 @@
+2006-04-09  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/plaf/metal/MetalRootPaneUI.java
+	(MetalTitlePane.IconifyAction): New inner class.
+	(MetalTitlePane.MaximizeAction): New inner class.
+	(MetalTitlePane.createActions): Create iconifyAction and
+	maximizeAction.
+	(MetalRootLayout.titlePane): New field.
+	(MetalRootLayout.MetalRootLayout): Take titlePane parameter in
+	constructor.
+	(MetalRootLayout.preferredLayoutSize): Changed to not make
+	assumptions about the actual component order.
+	(MetalRootLayout.layoutContainer): Changed to not make
+	assumptions about the actual component order.
+	(installWindowDecorations): Pass the titlePane as parameter to
+	the MetalRootLayout constructor.
+	(uninstallWindowDecorations): Changed to not make
+	assumptions about the actual component order.
+
 2006-04-08  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalRootPaneUI.java

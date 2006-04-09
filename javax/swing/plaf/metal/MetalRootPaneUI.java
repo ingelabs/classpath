@@ -300,6 +300,45 @@ public class MetalRootPaneUI
     }
 
     /**
+     * This action is performed when the iconify button is pressed.
+     */
+    private class IconifyAction
+      extends AbstractAction
+    {
+
+      public void actionPerformed(ActionEvent event)
+      {
+        Window w = SwingUtilities.getWindowAncestor(rootPane);
+        if (w instanceof Frame)
+          {
+            Frame f = (Frame) w;
+            int state = f.getExtendedState();
+            f.setExtendedState(Frame.ICONIFIED);
+          }
+      }
+        
+    }
+
+    /**
+     * This action is performed when the maximize button is pressed.
+     */
+    private class MaximizeAction
+      extends AbstractAction
+    {
+
+      public void actionPerformed(ActionEvent event)
+      {
+        Window w = SwingUtilities.getWindowAncestor(rootPane);
+        if (w instanceof Frame)
+          {
+            Frame f = (Frame) w;
+            int state = f.getExtendedState();
+            f.setExtendedState(Frame.MAXIMIZED_BOTH);
+          }
+      }
+    }
+
+    /**
      * This helper class is used to create the minimize, maximize and close
      * buttons in the top right corner of the Title Pane. These buttons are
      * special since they cannot be given focus and have no border.
@@ -552,6 +591,8 @@ public class MetalRootPaneUI
     private void createActions()
     {
       closeAction = new CloseAction();
+      iconifyAction = new IconifyAction();
+      maximizeAction = new MaximizeAction();
     }
 
     private void assembleSystemMenu()
@@ -735,6 +776,21 @@ public class MetalRootPaneUI
      */
     private Dimension prefSize;
 
+    /**
+     * The title pane for l&f decorated frames.
+     */
+    private MetalTitlePane titlePane;
+
+    /**
+     * Creates a new MetalRootLayout.
+     *
+     * @param tp the title pane
+     */
+    MetalRootLayout(MetalTitlePane tp)
+    {
+      titlePane = tp;
+    }
+
     public void addLayoutComponent(Component component, Object constraints)
     {
       // Nothing to do here.
@@ -783,12 +839,8 @@ public class MetalRootPaneUI
     {
       JRootPane rp = (JRootPane) parent;
       JLayeredPane layeredPane = rp.getLayeredPane();
-      Component contentPane = layeredPane.getComponent(0);
-      Component titlePane = layeredPane.getComponent(1);
-      Component menuBar = null;
-      if (layeredPane.getComponentCount() > 2
-          && layeredPane.getComponent(2) instanceof JMenuBar)
-        menuBar = layeredPane.getComponent(2);
+      Component contentPane = rp.getContentPane();
+      Component menuBar = rp.getJMenuBar();
 
       // We must synchronize here, otherwise we cannot guarantee that the
       // prefSize is still non-null when returning.
@@ -825,12 +877,8 @@ public class MetalRootPaneUI
     {
       JRootPane rp = (JRootPane) parent;
       JLayeredPane layeredPane = rp.getLayeredPane();
-      Component contentPane = layeredPane.getComponent(0);
-      Component titlePane = layeredPane.getComponent(1);
-      Component menuBar = null;
-      if (layeredPane.getComponentCount() > 2
-          && layeredPane.getComponent(2) instanceof JMenuBar)
-        menuBar = layeredPane.getComponent(2);
+      Component contentPane = rp.getContentPane();
+      Component menuBar = rp.getJMenuBar();
       Component glassPane = rp.getGlassPane();
 
       if (glassPaneBounds == null || layeredPaneBounds == null
@@ -995,11 +1043,13 @@ public class MetalRootPaneUI
   private void installWindowDecorations(JRootPane rp)
   {
     rp.setBorder(new MetalFrameBorder());
-    rp.setLayout(new MetalRootLayout());
+    MetalTitlePane titlePane = new MetalTitlePane(rp);
+    rp.setLayout(new MetalRootLayout(titlePane));
     // We should have a contentPane already.
     assert rp.getLayeredPane().getComponentCount() > 0
            : "We should have a contentPane already";
-    rp.getLayeredPane().add(new MetalTitlePane(rp),
+
+    rp.getLayeredPane().add(titlePane,
                             JLayeredPane.FRAME_CONTENT_LAYER, 1);
   }
 
@@ -1012,6 +1062,14 @@ public class MetalRootPaneUI
   private void uninstallWindowDecorations(JRootPane rp)
   {
     rp.setBorder(null);
-    rp.getLayeredPane().remove(1);
+    JLayeredPane lp = rp.getLayeredPane();
+    for (int i = lp.getComponentCount() - 1; i >= 0; --i)
+      {
+        if (lp.getComponent(i) instanceof MetalTitlePane)
+          {
+            lp.remove(i);
+            break;
+          }
+      }
   }
 }
