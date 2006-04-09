@@ -371,7 +371,7 @@ public class MessageHeader
       }
     catch (IOException ex)
       {
-        MARSHAL t = new MARSHAL();
+        MARSHAL t = new MARSHAL(ex.getMessage());
         t.minor = Minor.Header;
         t.initCause(ex);
         throw t;
