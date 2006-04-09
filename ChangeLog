@@ -1,3 +1,54 @@
+2006-04-09  Wolfgang Baer  <WBaer@gmx.de>
+
+	* org/omg/PortableServer/ServantLocatorPOA.java: 
+	(preinvoke, postinvoke): Remove default implementation.
+	* org/omg/PortableServer/ServantActivatorPOA.java: 
+	(incarnate, etherealize): Remove default implementation.	
+	* org/omg/PortableInterceptor/ObjectReferenceFactory.java: 
+	Extends from ValueBase and not from ObjectReferenceFactoryOperations.
+	(make_object): Moved method from ObjectReferenceFactoryOperations.
+	* org/omg/PortableInterceptor/ObjectReferenceFactoryOperations.java: 
+	Removed unspecified interface.	
+	* org/omg/DynamicAny/_DynAnyStub.java:
+	(_DynAnyStub(Delegate)): Removed constructor.
+	* org/omg/DynamicAny/_DynArrayStub.java,
+	* org/omg/DynamicAny/_DynAnyFactoryStub.java,
+	* org/omg/DynamicAny/_DynEnumStub.java,
+	* org/omg/DynamicAny/_DynFixedStub.java,
+	* org/omg/DynamicAny/_DynSequenceStub.java,
+	* org/omg/DynamicAny/_DynStructStub.java,
+	* org/omg/DynamicAny/_DynUnionStub.java,
+	* org/omg/DynamicAny/_DynValueStub.java: 
+	Extend from ObjectImpl and not from _DynAnyStub.
+	(type, next, destroy, copy, rewind, assign, component_count, 
+	current_component, equal, from_any, get_any, get_boolean, get_char, 
+	get_double, get_dyn_any, get_float, get_long, get_longlong, get_octet, 
+	get_reference, get_short, get_string, get_typecode, get_ulong, 
+	get_ulonglong, get_ushort, get_val, get_wchar, get_wstring, insert_any,
+	insert_boolean, insert_char, insert_double, insert_dyn_any, insert_float,
+	insert_long, insert_longlong, insert_octet, insert_reference, 
+	insert_short, insert_string, insert_typecode, insert_ulong, 
+	insert_ulonglong, insert_ushort, insert_val, insert_wchar, 
+	insert_wstring, seek, to_any): New methods copied from _DynAnyStub.		
+	* org/omg/CosNaming/_BindingIteratorStub.java:
+	(_BindingIteratorStub(Delegate)): Made package private.
+	* org/omg/CosNaming/_NamingContextExtStub.java:
+	(_NamingContextExtStub(Delegate)): Made package private.
+	* org/omg/CosNaming/_NamingContextStub.java:
+	(_NamingContextStub(Delegate)): Made package private.
+	(throw4, throw5): Likewise.
+	* gnu/CORBA/NamingService/NameParser.java (resolve): 
+	Adapt to package private constructor. Use _set_delegate instead.	
+	* org/omg/CosNaming/NamingContextOperations.java: Do not extend IDLEntity.
+	* org/omg/CORBA/ORB.java: 
+	(create_recursive_sequence_tc): Made abstract.
+	(get_default_context): Likewise.
+	* gnu/CORBA/OrbRestricted.java: 
+	(create_recursive_sequence_tc): New moved method.
+	(get_default_context): Likewise.	
+	* org/omg/CORBA/ParameterMode.java: 
+	(PARAM_IN, PARAM_OUT, PARAM_INOUT): Made final.	
+
 2006-04-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/GIOP/MessageHeader.java (write): 
