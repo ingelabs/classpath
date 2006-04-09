@@ -1,3 +1,17 @@
+2006-04-09  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/SizeSequence.java
+	(sizes): Don't initialise here,
+	(SizeSequence(int, int)): Initialise sizes field,
+	(SizeSequence(int[])): Clone argument instead of calling setSizes(),
+	(setSize): Do nothing when index is out of bounds,
+	(getIndex): Implemented,
+	(setSizes): Reimplemented,
+	(getSizes): Likewise,
+	(insertEntries): Likewise,
+	(removeEntries): Likewise,
+	plus added API docs all over.
+
 2006-04-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org
 
 	* gnu/CORBA/gnuRequest.java (submit): Do not read any response after
