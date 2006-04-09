@@ -594,7 +594,7 @@ public class gnuRequest extends Request implements Cloneable
   {
     final gnuRequest cloned = Clone();
     cloned.oneWay = true;
-
+    
     new Thread()
       {
         public void run()
@@ -788,20 +788,21 @@ public synchronized RawReply submit()
 
         if (socket == null)
           {
-            // The BindException may be thrown under very heavy parallel
+            // The IOException may be thrown under very heavy parallel
             // load. For some time, just wait, exceptiong the socket to free.
             Open: for (int i = 0; i < PAUSE_STEPS; i++)
               {
                 try
                   {
                     if (orb instanceof OrbFunctional)
-                      socket = ((OrbFunctional) orb).socketFactory.createClientSocket(
-                        ior.Internet.host, ior.Internet.port);
+                      socket = ((OrbFunctional) orb).socketFactory.
+                        createClientSocket(
+                          ior.Internet.host, ior.Internet.port);
                     else
                       socket = new Socket(ior.Internet.host, ior.Internet.port);
                     break Open;
                   }
-                catch (BindException ex)
+                catch (IOException ex)
                   {
                     try
                       {
@@ -833,23 +834,11 @@ public synchronized RawReply submit()
         request_part.buffer.writeTo(socketOutput);
 
         socketOutput.flush();
-        if (!socket.isClosed())
+        if (!socket.isClosed() && !oneWay)
           {
             MessageHeader response_header = new MessageHeader();
             InputStream socketInput = socket.getInputStream();
-            try
-              {
-                response_header.read(socketInput);
-              }
-            catch (MARSHAL eof)
-              {
-                // If the message is sent one way, we do not care about the
-                // response that may never come.
-                if (oneWay && eof.minor == Minor.EOF)
-                  return EMPTY;                    
-                else
-                  throw eof;
-              }
+            response_header.read(socketInput);
 
             byte[] r;
             if (orb instanceof OrbFunctional)

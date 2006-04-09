@@ -1,3 +1,8 @@
+2006-04-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org
+
+	* gnu/CORBA/gnuRequest.java (submit): Do not read any response after
+	one way message and retry after any IOException.
+
 2006-04-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/CORBA/CDR/EncapsulationStream.java (constructor):
