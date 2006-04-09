@@ -51,6 +51,7 @@ import org.omg.CORBA.MARSHAL;
 import org.omg.CORBA.portable.IDLEntity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -275,19 +276,25 @@ public class MessageHeader
    * @param istream a stream to read from.
    * @throws MARSHAL if this is not a GIOP 1.0 header.
    */
-  public void read(java.io.InputStream istream) throws MARSHAL
+  public void read(java.io.InputStream istream) 
+    throws MARSHAL, EOFException
   {
     try
       {
         byte[] xMagic = new byte[MAGIC.length];
         int r = istream.read(xMagic);
+        int minor;
         if (! Arrays.equals(xMagic, MAGIC))
           {
             StringBuffer b = new StringBuffer();
             if (r == - 1)
-              b.append("Immediate EOF");
+              {
+                b.append("Immediate EOF");
+                minor = Minor.EOF;
+              }
             else
               {
+                minor = Minor.Giop;
                 b.append(r + " bytes: ");
                 for (int i = 0; i < xMagic.length; i++)
                   {
@@ -296,7 +303,7 @@ public class MessageHeader
                   }
               }
             MARSHAL m = new MARSHAL("Not a GIOP message: " + b);
-            m.minor = Minor.Giop;
+            m.minor = minor;
             throw m;
           }
 

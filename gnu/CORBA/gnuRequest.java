@@ -83,6 +83,7 @@ import org.omg.PortableInterceptor.ClientRequestInterceptorOperations;
 import org.omg.PortableInterceptor.ForwardRequest;
 import org.omg.PortableInterceptor.InvalidSlot;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -717,12 +718,11 @@ public class gnuRequest extends Request implements Cloneable
    * property ({@link #setIOR(IOR)} before calling this method.
    * 
    * @throws BAD_INV_ORDER, minor code 0, if the IOR has not been previously set
-   * or if the direct argument addition is mixed with the direct argument
-   * writing into the output stream.
-   * 
+   *           or if the direct argument addition is mixed with the direct
+   *           argument writing into the output stream.
    * @return the server response in binary form.
    */
-  public synchronized RawReply submit()
+public synchronized RawReply submit()
     throws ForwardRequest
   {
     gnu.CORBA.GIOP.MessageHeader header = new gnu.CORBA.GIOP.MessageHeader();
@@ -833,13 +833,23 @@ public class gnuRequest extends Request implements Cloneable
         request_part.buffer.writeTo(socketOutput);
 
         socketOutput.flush();
-        // If the message is sent one way, we do not care about the response
-        // that may never come.
-        if (!socket.isClosed() && !oneWay)
+        if (!socket.isClosed())
           {
             MessageHeader response_header = new MessageHeader();
             InputStream socketInput = socket.getInputStream();
-            response_header.read(socketInput);
+            try
+              {
+                response_header.read(socketInput);
+              }
+            catch (MARSHAL eof)
+              {
+                // If the message is sent one way, we do not care about the
+                // response that may never come.
+                if (oneWay && eof.minor == Minor.EOF)
+                  return EMPTY;                    
+                else
+                  throw eof;
+              }
 
             byte[] r;
             if (orb instanceof OrbFunctional)

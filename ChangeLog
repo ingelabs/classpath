@@ -1,3 +1,10 @@
+2006-04-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/CORBA/gnuRequest.java (submit): Try to read the response for the
+	one way message, but ignore if EOF was received.
+	* gnu/CORBA/GIOP/MessageHeader.java (read): Set the minor code to
+	Minor.EOF if the end of file is received instead of the header.
+
 2006-04-09  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/plaf/metal/MetalRootPaneUI.java
