@@ -150,7 +150,7 @@ public class AccessibleRelation extends AccessibleBundle
    * Indicates that an object embeds another object.
    * @since 1.5
    */
-  public static final String EMBEDS = "embedsBy";
+  public static final String EMBEDS = "embeds";
 
   /**
    * Indicates that the {@link #EMBEDS} property changed.
@@ -200,13 +200,13 @@ public class AccessibleRelation extends AccessibleBundle
    * Indicates that one object is a subwindow of another object.
    * @since 1.5
    */
-  public static final String SUBWINDOW_OF = "subWindowOf";
+  public static final String SUBWINDOW_OF = "subwindowOf";
 
   /**
    * Indicates that the {@link #SUBWINDOW_OF} property changed.
    * @since 1.5
    */
-  public static final String SUBWINDOW_OF_PROPERTY = "subWindowOfProperty";
+  public static final String SUBWINDOW_OF_PROPERTY = "subwindowOfProperty";
 
   /** An empty set of targets. */
   private static final Object[] EMPTY_TARGETS = { };

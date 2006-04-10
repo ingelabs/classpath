@@ -58,5 +58,5 @@ public interface AccessibleStreamable
    * be used, returns null.
    * @param flavor the data flavor
    */
-  InputStream getInputStream(DataFlavor flavor);
+  InputStream getStream(DataFlavor flavor);
 }
