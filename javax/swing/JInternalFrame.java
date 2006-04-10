@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing;
 
+import gnu.classpath.NotImplementedException;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Graphics;
@@ -92,6 +94,7 @@ public class JInternalFrame extends JComponent implements Accessible,
      * @return DOCUMENT ME!
      */
     public String getAccessibleName()
+      throws NotImplementedException
     {
       return null;
     }
@@ -102,6 +105,7 @@ public class JInternalFrame extends JComponent implements Accessible,
      * @return DOCUMENT ME!
      */
     public AccessibleRole getAccessibleRole()
+      throws NotImplementedException
     {
       return null;
     }
@@ -112,6 +116,7 @@ public class JInternalFrame extends JComponent implements Accessible,
      * @return DOCUMENT ME!
      */
     public AccessibleValue getAccessibleValue()
+      throws NotImplementedException
     {
       return null;
     }
@@ -122,6 +127,7 @@ public class JInternalFrame extends JComponent implements Accessible,
      * @return DOCUMENT ME!
      */
     public Number getCurrentAccessibleValue()
+      throws NotImplementedException
     {
       return null;
     }
@@ -132,6 +138,7 @@ public class JInternalFrame extends JComponent implements Accessible,
      * @return DOCUMENT ME!
      */
     public Number getMaximumAccessibleValue()
+      throws NotImplementedException
     {
       return null;
     }
@@ -142,6 +149,7 @@ public class JInternalFrame extends JComponent implements Accessible,
      * @return DOCUMENT ME!
      */
     public Number getMinimumAccessibleValue()
+      throws NotImplementedException
     {
       return null;
     }
@@ -154,6 +162,7 @@ public class JInternalFrame extends JComponent implements Accessible,
      * @return DOCUMENT ME!
      */
     public boolean setCurrentAccessibleValue(Number n)
+      throws NotImplementedException
     {
       return false;
     }
@@ -186,6 +195,7 @@ public class JInternalFrame extends JComponent implements Accessible,
        * @return DOCUMENT ME!
        */
       public AccessibleRole getAccessibleRole()
+        throws NotImplementedException
       {
 	return null;
       }
@@ -196,6 +206,7 @@ public class JInternalFrame extends JComponent implements Accessible,
        * @return DOCUMENT ME!
        */
       public AccessibleValue getAccessibleValue()
+        throws NotImplementedException
       {
 	return null;
       }
@@ -206,6 +217,7 @@ public class JInternalFrame extends JComponent implements Accessible,
        * @return DOCUMENT ME!
        */
       public Number getCurrentAccessibleValue()
+        throws NotImplementedException
       {
 	return null;
       }
@@ -216,6 +228,7 @@ public class JInternalFrame extends JComponent implements Accessible,
        * @return DOCUMENT ME!
        */
       public Number getMaximumAccessibleValue()
+        throws NotImplementedException
       {
 	return null;
       }
@@ -226,6 +239,7 @@ public class JInternalFrame extends JComponent implements Accessible,
        * @return DOCUMENT ME!
        */
       public Number getMinimumAccessibleValue()
+        throws NotImplementedException
       {
 	return null;
       }
@@ -238,6 +252,7 @@ public class JInternalFrame extends JComponent implements Accessible,
        * @return DOCUMENT ME!
        */
       public boolean setCurrentAccessibleValue(Number n)
+        throws NotImplementedException
       {
 	return false;
       }
