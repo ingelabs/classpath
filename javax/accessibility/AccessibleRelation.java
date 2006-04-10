@@ -122,6 +122,92 @@ public class AccessibleRelation extends AccessibleBundle
   /** Indicates that the controlling objects have changed. */
   public static final String CONTROLLED_BY_PROPERTY = "controlledByProperty";
 
+  /**
+   * Indicates that an object is a child of another object.
+   * @since 1.5
+   */
+  public static final String CHILD_NODE_OF = "childNodeOf";
+
+  /**
+   * Indicates that the ancestry relationship has changed.
+   * @since 1.5
+   */
+  public static final String CHILD_NODE_OF_PROPERTY = "childNodeOfProperty";
+
+  /**
+   * Indicates that an object is embedded by another object.
+   * @since 1.5
+   */
+  public static final String EMBEDDED_BY = "embeddedBy";
+
+  /**
+   * Indicates that the {@link #EMBEDDED_BY} property changed.
+   * @since 1.5
+   */
+  public static final String EMBEDDED_BY_PROPERTY = "embeddedByProperty";
+
+  /**
+   * Indicates that an object embeds another object.
+   * @since 1.5
+   */
+  public static final String EMBEDS = "embedsBy";
+
+  /**
+   * Indicates that the {@link #EMBEDS} property changed.
+   * @since 1.5
+   */
+  public static final String EMBEDS_PROPERTY = "embedsProperty";
+
+  /**
+   * Indicates that one object directly follows another object,
+   * as in a paragraph flow.
+   * @since 1.5
+   */
+  public static final String FLOWS_FROM = "flowsFrom";
+
+  /**
+   * Indicates that the {@link #FLOWS_FROM} property changed.
+   * @since 1.5
+   */
+  public static final String FLOWS_FROM_PROPERTY = "flowsFromProperty";
+
+  /**
+   * Indicates that one object comes directly before another object,
+   * as in a paragraph flow.
+   * @since 1.5
+   */
+  public static final String FLOWS_TO = "flowsTo";
+
+  /**
+   * Indicates that the {@link #FLOWS_TO} property changed.
+   * @since 1.5
+   */
+  public static final String FLOWS_TO_PROPERTY = "flowsToProperty";
+
+  /**
+   * Indicates that one object is a parent window of another object.
+   * @since 1.5
+   */
+  public static final String PARENT_WINDOW_OF = "parentWindowOf";
+
+  /**
+   * Indicates that the {@link #PARENT_WINDOW_OF} property changed.
+   * @since 1.5
+   */
+  public static final String PARENT_WINDOW_OF_PROPERTY = "parentWindowOfProperty";
+
+  /**
+   * Indicates that one object is a subwindow of another object.
+   * @since 1.5
+   */
+  public static final String SUBWINDOW_OF = "subWindowOf";
+
+  /**
+   * Indicates that the {@link #SUBWINDOW_OF} property changed.
+   * @since 1.5
+   */
+  public static final String SUBWINDOW_OF_PROPERTY = "subWindowOfProperty";
+
   /** An empty set of targets. */
   private static final Object[] EMPTY_TARGETS = { };
   

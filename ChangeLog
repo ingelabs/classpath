@@ -1,3 +1,22 @@
+2006-04-10  Tom Tromey  <tromey@redhat.com>
+
+	* javax/accessibility/AccessibleTextSequence.java: New file.
+	* javax/accessibility/AccessibleRelation.java (CHILD_NODE_OF): New
+	field.
+	(CHILD_NODE_OF_PROPERTY, EMBEDDED_BY, EMBEDDED_BY_PROPERTY, EMBEDS,
+	EMBEDS_PROPERTY, FLOWS_FROM, FLOWS_FROM_PROPERTY, FLOWS_TO,
+	FLOWS_TO_PROPERTY, PARENT_WINDOW_OF, PARENT_WINDOW_OF_PROPERTY,
+	SUBWINDOW_OF, SUBWINDOW_OF_PROPERTY): Likewise.
+	* javax/accessibility/AccessibleExtendedText.java: New file.
+	* javax/accessibility/AccessibleContext.java
+	(ACCESSIBLE_COMPONENT_BOUNDS_CHANGED): New field.
+	(ACCESSIBLE_INVALIDATE_CHILDREN): Likewise.
+	(ACCESSIBLE_TEXT_ATTRIBUTES_CHANGED): Likewise.
+	* javax/accessibility/AccessibleAttributeSequence.java: New file.
+	* javax/accessibility/AccessibleStreamable.java: New file.
+	* javax/accessibility/AccessibleText.java (getIndexAtPoint): Javadoc
+	fix.
+
 2006-04-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/tree/AbstractLayoutCache.java 
