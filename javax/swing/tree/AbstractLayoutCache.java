@@ -51,366 +51,367 @@ import javax.swing.event.TreeModelEvent;
  * @author Andrew Selkirk
  */
 public abstract class AbstractLayoutCache
-		implements RowMapper
+  implements RowMapper
 {
-	/**
-	 * class NodeDimensions
-	 */
-	public abstract static class NodeDimensions
-	{
-		/**
-		 * Creates <code>NodeDimensions</code> object.
-		 */
-		public NodeDimensions()
-		{
-			// Do nothing here.
-		}
+  /**
+   * class NodeDimensions
+   */
+  public abstract static class NodeDimensions
+  {
+    /**
+     * Creates <code>NodeDimensions</code> object.
+     */
+    public NodeDimensions()
+    {
+      // Do nothing here.
+    }
 
-		/**
-		 * getNodeDimensions
-		 * 
-		 * @param value0 TODO
-		 * @param value1 TODO
-		 * @param value2 TODO
-		 * @param value3 TODO
-		 * @param value4 TODO
-		 * @return Rectangle
-		 */
-		public abstract Rectangle getNodeDimensions(Object value0, int value1,
-				int value2, boolean value3, Rectangle value4);
-	}
+    /**
+     * getNodeDimensions
+     * 
+     * @param value0 TODO
+     * @param value1 TODO
+     * @param value2 TODO
+     * @param value3 TODO
+     * @param value4 TODO
+     * @return Rectangle
+     */
+    public abstract Rectangle getNodeDimensions(Object value0, int value1,
+                                                int value2, boolean value3,
+                                                Rectangle value4);
+  }
 
-	/**
-	 * nodeDimensions
-	 */
-	protected NodeDimensions nodeDimensions;
+  /**
+   * nodeDimensions
+   */
+  protected NodeDimensions nodeDimensions;
 
-	/**
-	 * treeModel
-	 */
-	protected TreeModel treeModel;
+  /**
+   * treeModel
+   */
+  protected TreeModel treeModel;
 
-	/**
-	 * treeSelectionModel
-	 */
-	protected TreeSelectionModel treeSelectionModel;
+  /**
+   * treeSelectionModel
+   */
+  protected TreeSelectionModel treeSelectionModel;
 
-	/**
-	 * rootVisible
-	 */
-	protected boolean rootVisible;
+  /**
+   * rootVisible
+   */
+  protected boolean rootVisible;
 
-	/**
-	 * rowHeight
-	 */
-	protected int rowHeight;
+  /**
+   * rowHeight
+   */
+  protected int rowHeight;
 
-	/**
-	 * Constructor AbstractLayoutCache
-	 */
-	public AbstractLayoutCache()
-	{
-		// Do nothing here.
-	}
+  /**
+   * Constructor AbstractLayoutCache
+   */
+  public AbstractLayoutCache()
+  {
+    // Do nothing here.
+  }
 
-	/**
-	 * setNodeDimensions
-	 * 
-	 * @param dimensions TODO
-	 */
-	public void setNodeDimensions(NodeDimensions dimensions)
-	{
-		nodeDimensions = dimensions;
-	}
+  /**
+   * setNodeDimensions
+   * 
+   * @param dimensions TODO
+   */
+  public void setNodeDimensions(NodeDimensions dimensions)
+  {
+    nodeDimensions = dimensions;
+  }
 
-	/**
-	 * getNodeDimensions
-	 * 
-	 * @return NodeDimensions
-	 */
-	public NodeDimensions getNodeDimensions()
-	{
-		return nodeDimensions;
-	}
+  /**
+   * getNodeDimensions
+   * 
+   * @return NodeDimensions
+   */
+  public NodeDimensions getNodeDimensions()
+  {
+    return nodeDimensions;
+  }
 
-	/**
-	 * getNodeDimensions
-	 * 
-	 * @param value TODO
-	 * @param row TODO
-	 * @param depth TODO
-	 * @param expanded TODO
-	 * @param bounds TODO
-	 * 
-	 * @return Rectangle
-	 */
-	protected Rectangle getNodeDimensions(Object value, int row, int depth,
-			boolean expanded, Rectangle bounds)
+  /**
+   * getNodeDimensions
+   * 
+   * @param value TODO
+   * @param row TODO
+   * @param depth TODO
+   * @param expanded TODO
+   * @param bounds TODO
+   * 
+   * @return Rectangle
+   */
+  protected Rectangle getNodeDimensions(Object value, int row, int depth,
+                                        boolean expanded, Rectangle bounds)
     throws NotImplementedException
-	{
-		if (bounds == null)
-			return new Rectangle();
-		return null;
-		// TODO		
-	}
+  {
+    if (bounds == null)
+      return new Rectangle();
+    return null;
+    // TODO		
+  }
 
-	/**
-	 * Sets the model that provides the tree data.
-	 * 
-	 * @param model the model
-	 */
-	public void setModel(TreeModel model)
-	{
-		treeModel = model;
-	}
+  /**
+   * Sets the model that provides the tree data.
+   * 
+   * @param model the model
+   */
+  public void setModel(TreeModel model)
+  {
+    treeModel = model;
+  }
 
-	/**
-	 * Returns the model that provides the tree data.
-	 * 
-	 * @return the model
-	 */
-	public TreeModel getModel()
-	{
-		return treeModel;
-	}
+  /**
+   * Returns the model that provides the tree data.
+   * 
+   * @return the model
+   */
+  public TreeModel getModel()
+  {
+    return treeModel;
+  }
 
-	/**
-	 * setRootVisible
-	 * 
-	 * @param visible <code>true</code> if root should be visible,
-	 * <code>false</code> otherwise
-	 */
-	public void setRootVisible(boolean visible)
-	{
-		rootVisible = visible;
-	}
+  /**
+   * setRootVisible
+   * 
+   * @param visible <code>true</code> if root should be visible,
+   * <code>false</code> otherwise
+   */
+  public void setRootVisible(boolean visible)
+  {
+    rootVisible = visible;
+  }
 
-	/**
-	 * isRootVisible
-	 * 
-	 * @return <code>true</code> if root is visible,
-	 * <code>false</code> otherwise
-	 */
-	public boolean isRootVisible()
-	{
-		return rootVisible;
-	}
+  /**
+   * isRootVisible
+   * 
+   * @return <code>true</code> if root is visible,
+   * <code>false</code> otherwise
+   */
+  public boolean isRootVisible()
+  {
+    return rootVisible;
+  }
 
-	/**
-	 * setRowHeight
-	 * 
-	 * @param height the row height
-	 */
-	public void setRowHeight(int height)
-	{
-		rowHeight = height;
-	}
+  /**
+   * setRowHeight
+   * 
+   * @param height the row height
+   */
+  public void setRowHeight(int height)
+  {
+    rowHeight = height;
+  }
 
-	/**
-	 * getRowHeight
-	 * 
-	 * @return the row height
-	 */
-	public int getRowHeight()
-	{
-		return rowHeight;
-	}
+  /**
+   * getRowHeight
+   * 
+   * @return the row height
+   */
+  public int getRowHeight()
+  {
+    return rowHeight;
+  }
 
-	/**
-	 * setSelectionModel
-	 * 
-	 * @param model the model
-	 */
-	public void setSelectionModel(TreeSelectionModel model)
-	{
-		treeSelectionModel = model;
-	}
+  /**
+   * setSelectionModel
+   * 
+   * @param model the model
+   */
+  public void setSelectionModel(TreeSelectionModel model)
+  {
+    treeSelectionModel = model;
+  }
 
-	/**
-	 * getSelectionModel
-	 * 
-	 * @return the model
-	 */
-	public TreeSelectionModel getSelectionModel()
-	{
-		return treeSelectionModel;
-	}
+  /**
+   * getSelectionModel
+   * 
+   * @return the model
+   */
+  public TreeSelectionModel getSelectionModel()
+  {
+    return treeSelectionModel;
+  }
 
-	/**
-	 * getPreferredHeight
-	 * 
-	 * @return int
-	 */
-	public int getPreferredHeight() 
-      throws NotImplementedException
-	{
-		return 0; // TODO
-	}
+  /**
+   * getPreferredHeight
+   * 
+   * @return int
+   */
+  public int getPreferredHeight() 
+    throws NotImplementedException
+  {
+    return 0; // TODO
+  }
 
-	/**
-	 * getPreferredWidth
-	 * 
-	 * @param value0 TODO
-	 * 
-	 * @return int
-	 */
-	public int getPreferredWidth(Rectangle value0) 
-      throws NotImplementedException
-	{
-		return 0; // TODO
-	}
+  /**
+   * getPreferredWidth
+   * 
+   * @param value0 TODO
+   * 
+   * @return int
+   */
+  public int getPreferredWidth(Rectangle value0) 
+    throws NotImplementedException
+  {
+    return 0; // TODO
+  }
 
-	/**
-	 * isExpanded
-	 * 
-	 * @param value0 TODO
-	 * 
-	 * @return boolean
-	 */
-	public abstract boolean isExpanded(TreePath value0);
+  /**
+   * isExpanded
+   * 
+   * @param value0 TODO
+   * 
+   * @return boolean
+   */
+  public abstract boolean isExpanded(TreePath value0);
 
-	/**
-	 * getBounds
-	 * 
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * 
-	 * @return Rectangle
-	 */
-	public abstract Rectangle getBounds(TreePath value0, Rectangle value1);
+  /**
+   * getBounds
+   * 
+   * @param value0 TODO
+   * @param value1 TODO
+   * 
+   * @return Rectangle
+   */
+  public abstract Rectangle getBounds(TreePath value0, Rectangle value1);
 
-	/**
-	 * getPathForRow
-	 * 
-	 * @param row the row
-	 * 
-	 * @return the tree path
-	 */
-	public abstract TreePath getPathForRow(int row);
+  /**
+   * getPathForRow
+   * 
+   * @param row the row
+   * 
+   * @return the tree path
+   */
+  public abstract TreePath getPathForRow(int row);
 
-	/**
-	 * getRowForPath
-	 * 
-	 * @param path the tree path
-	 * 
-	 * @return the row
-	 */
-	public abstract int getRowForPath(TreePath path);
+  /**
+   * getRowForPath
+   * 
+   * @param path the tree path
+   * 
+   * @return the row
+   */
+  public abstract int getRowForPath(TreePath path);
 
-	/**
-	 * getPathClosestTo
-	 * 
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * 
-	 * @return the tree path
-	 */
-	public abstract TreePath getPathClosestTo(int value0, int value1);
+  /**
+   * getPathClosestTo
+   * 
+   * @param value0 TODO
+   * @param value1 TODO
+   * 
+   * @return the tree path
+   */
+  public abstract TreePath getPathClosestTo(int value0, int value1);
 
-	/**
-	 * getVisiblePathsFrom
-	 * 
-	 * @param path the tree path
-	 * 
-	 * @return Enumeration
-	 */
-	public abstract Enumeration getVisiblePathsFrom(TreePath path);
+  /**
+   * getVisiblePathsFrom
+   * 
+   * @param path the tree path
+   * 
+   * @return Enumeration
+   */
+  public abstract Enumeration getVisiblePathsFrom(TreePath path);
 
-	/**
-	 * getVisibleChildCount
-	 * 
-	 * @param path the tree path
-	 * 
-	 * @return int
-	 */
-	public abstract int getVisibleChildCount(TreePath path);
+  /**
+   * getVisibleChildCount
+   * 
+   * @param path the tree path
+   * 
+   * @return int
+   */
+  public abstract int getVisibleChildCount(TreePath path);
 
-	/**
-	 * setExpandedState
-	 * 
-	 * @param value0 TODO
-	 * 
-	 * @param value1 TODO
-	 */
-	public abstract void setExpandedState(TreePath value0, boolean value1);
+  /**
+   * setExpandedState
+   * 
+   * @param value0 TODO
+   * 
+   * @param value1 TODO
+   */
+  public abstract void setExpandedState(TreePath value0, boolean value1);
 
-	/**
-	 * getExpandedState
-	 * 
-	 * @param path the tree path
-	 * 
-	 * @return boolean
-	 */
-	public abstract boolean getExpandedState(TreePath path);
+  /**
+   * getExpandedState
+   * 
+   * @param path the tree path
+   * 
+   * @return boolean
+   */
+  public abstract boolean getExpandedState(TreePath path);
 
-	/**
-	 * getRowCount
-	 * 
-	 * @return the number of rows
-	 */
-	public abstract int getRowCount();
+  /**
+   * getRowCount
+   * 
+   * @return the number of rows
+   */
+  public abstract int getRowCount();
 
-	/**
-	 * invalidateSizes
-	 */
-	public abstract void invalidateSizes();
+  /**
+   * invalidateSizes
+   */
+  public abstract void invalidateSizes();
 
-	/**
-	 * invalidatePathBounds
-	 * 
-	 * @param path the tree path
-	 */
-	public abstract void invalidatePathBounds(TreePath path);
+  /**
+   * invalidatePathBounds
+   * 
+   * @param path the tree path
+   */
+  public abstract void invalidatePathBounds(TreePath path);
 
-	/**
-	 * treeNodesChanged
-	 * 
-	 * @param event the event to send
-	 */
-	public abstract void treeNodesChanged(TreeModelEvent event);
+  /**
+   * treeNodesChanged
+   * 
+   * @param event the event to send
+   */
+  public abstract void treeNodesChanged(TreeModelEvent event);
 
-	/**
-	 * treeNodesInserted
-	 * 
-	 * @param event the event to send
-	 */
-	public abstract void treeNodesInserted(TreeModelEvent event);
+  /**
+   * treeNodesInserted
+   * 
+   * @param event the event to send
+   */
+  public abstract void treeNodesInserted(TreeModelEvent event);
 
-	/**
-	 * treeNodesRemoved
-	 * 
-	 * @param event the event to send
-	 */
-	public abstract void treeNodesRemoved(TreeModelEvent event);
+  /**
+   * treeNodesRemoved
+   * 
+   * @param event the event to send
+   */
+  public abstract void treeNodesRemoved(TreeModelEvent event);
 
-	/**
-	 * treeStructureChanged
-	 * 
-	 * @param event the event to send
-	 */
-	public abstract void treeStructureChanged(TreeModelEvent event);
+  /**
+   * treeStructureChanged
+   * 
+   * @param event the event to send
+   */
+  public abstract void treeStructureChanged(TreeModelEvent event);
 
-	/**
-	 * getRowsForPaths
-	 * 
-	 * @param paths the tree paths
-	 * 
-	 * @return an array of rows
-	 */
-	public int[] getRowsForPaths(TreePath[] paths)
-      throws NotImplementedException
-	{
-		return null; // TODO
-	}
+  /**
+   * getRowsForPaths
+   * 
+   * @param paths the tree paths
+   * 
+   * @return an array of rows
+   */
+  public int[] getRowsForPaths(TreePath[] paths)
+    throws NotImplementedException
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * isFixedRowHeight
-	 * 
-	 * @return boolean
-	 */
-	protected boolean isFixedRowHeight()
-      throws NotImplementedException
-	{
-		return false; // TODO
-	}
+  /**
+   * isFixedRowHeight
+   * 
+   * @return boolean
+   */
+  protected boolean isFixedRowHeight()
+    throws NotImplementedException
+  {
+    return false; // TODO
+  }
 }

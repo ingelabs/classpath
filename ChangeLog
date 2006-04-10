@@ -1,5 +1,9 @@
 2006-04-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/tree/AbstractLayoutCache.java: Reformatted.
+
+2006-04-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JInternalFrame.java
 	(AccessibleJInternalFrame): Marked all stubbed methods as such
 	by adding throws NotImplementedException.
