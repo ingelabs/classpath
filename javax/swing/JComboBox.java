@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing;
 
+import gnu.classpath.NotImplementedException;
+
 import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -1223,26 +1225,31 @@ public class JComboBox extends JComponent implements ItemSelectable,
     }
 
     public int getAccessibleChildrenCount()
+      throws NotImplementedException
     {
       return 0;
     }
 
     public Accessible getAccessibleChild(int value0)
+      throws NotImplementedException
     {
       return null;
     }
 
     public AccessibleSelection getAccessibleSelection()
+      throws NotImplementedException
     {
       return null;
     }
 
     public Accessible getAccessibleSelection(int value0)
+      throws NotImplementedException
     {
       return null;
     }
 
     public boolean isAccessibleChildSelected(int value0)
+      throws NotImplementedException
     {
       return false;
     }
@@ -1253,46 +1260,55 @@ public class JComboBox extends JComponent implements ItemSelectable,
     }
 
     public AccessibleAction getAccessibleAction()
+      throws NotImplementedException
     {
       return null;
     }
 
     public String getAccessibleActionDescription(int value0)
+      throws NotImplementedException
     {
       return null;
     }
 
     public int getAccessibleActionCount()
+      throws NotImplementedException
     {
       return 0;
     }
 
     public boolean doAccessibleAction(int value0)
+      throws NotImplementedException
     {
       return false;
     }
 
     public int getAccessibleSelectionCount()
+      throws NotImplementedException
     {
       return 0;
     }
 
     public void addAccessibleSelection(int value0)
+      throws NotImplementedException
     {
       // TODO: Implement this properly.
     }
 
     public void removeAccessibleSelection(int value0)
+      throws NotImplementedException
     {
       // TODO: Implement this properly.
     }
 
     public void clearAccessibleSelection()
+      throws NotImplementedException
     {
       // TODO: Implement this properly.
     }
 
     public void selectAllAccessibleSelection()
+      throws NotImplementedException
     {
       // TODO: Implement this properly.
     }
