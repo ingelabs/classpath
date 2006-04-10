@@ -1,3 +1,9 @@
+2006-04-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/tree/DefaultTreeSelectionModel.java:
+	Documented and autoformatted. (insureUniqueness):
+	Removed stub marking.
+
 2006-04-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/SizeSequence.java
