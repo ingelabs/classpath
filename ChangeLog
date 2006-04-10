@@ -1,5 +1,12 @@
 2006-04-10  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/JFileChooser.java
+	(getAccessibleContext): Don't create a new instance on each
+	call, instead store the accessible context in the
+	accessibleContext field.
+
+2006-04-10  Roman Kennke  <kennke@aicas.com>
+
 	* javax/swing/JComboBox.java
 	(AccessibleJComboBox): Marked all stubbed methods as such
 	by adding throws NotImplementedException.
