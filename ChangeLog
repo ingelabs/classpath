@@ -1,5 +1,12 @@
 2006-04-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/swing/tree/DefaultTreeSelectionModel.java
+	(addSelectionPaths, setSelectionPaths): Call 
+	insureUniqueness. (clone, setRowMapper): Implemented.
+	* TreePath (path): Marked final.
+
+2006-04-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/swing/tree/DefaultTreeSelectionModel.java:
 	Documented and autoformatted. (insureUniqueness):
 	Removed stub marking.

@@ -133,15 +133,21 @@ public class DefaultTreeSelectionModel
   /**
    * Creates a clone of this DefaultTreeSelectionModel with the same selection.
    * The cloned instance will have the same registered listeners, the listeners
-   * themselves will not be cloned.
+   * themselves will not be cloned. The selection will be cloned.
    * 
    * @exception CloneNotSupportedException should not be thrown here
-   * @return a clone of this DefaultTreeSelectionModel
+   * @return a copy of this DefaultTreeSelectionModel
    */
-  public Object clone() throws CloneNotSupportedException,
-      NotImplementedException
+  public Object clone() throws CloneNotSupportedException
   {
-    return null; // TODO
+    DefaultTreeSelectionModel cloned = 
+      (DefaultTreeSelectionModel) super.clone();
+    
+    // Clone the selection and the list selection model.
+    cloned.selection = (TreePath[]) selection.clone();
+    cloned.listSelectionModel = 
+      (DefaultListSelectionModel) listSelectionModel.clone();
+    return cloned;
   }
 
   /**
@@ -181,12 +187,12 @@ public class DefaultTreeSelectionModel
   /**
    * Sets the RowMapper that should be used to map between paths and their rows.
    * 
-   * @param rowMapper the RowMapper to set
+   * @param mapper the RowMapper to set
    * @see RowMapper
    */
-  public void setRowMapper(RowMapper rowMapper) throws NotImplementedException
+  public void setRowMapper(RowMapper mapper)
   {
-    // TODO
+    rowMapper = mapper;
   }
 
   /**
@@ -252,6 +258,8 @@ public class DefaultTreeSelectionModel
   public void setSelectionPaths(TreePath[] paths)
       throws NotImplementedException
   {
+    // Must be called, as defined in JDK API 1.4.
+    insureUniqueness();
     // TODO
   }
 
@@ -291,6 +299,9 @@ public class DefaultTreeSelectionModel
    */
   public void addSelectionPaths(TreePath[] paths)
   {
+    // Must be called, as defined in JDK API 1.4.
+    insureUniqueness();
+    
     if (paths != null)
       {
         TreePath v0 = null;
