@@ -1,5 +1,10 @@
 2006-04-10  Tom Tromey  <tromey@redhat.com>
 
+	* java/io/CharArrayWriter.java (append): Javadoc fix.
+	(append): Likewise.
+
+2006-04-10  Tom Tromey  <tromey@redhat.com>
+
 	* javax/accessibility/AccessibleTextSequence.java: New file.
 	* javax/accessibility/AccessibleRelation.java (CHILD_NODE_OF): New
 	field.
