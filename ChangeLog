@@ -1,3 +1,9 @@
+2006-04-10  Roman Kennke  <kennke@aicas.com>
+
+	* javax/swing/ActionMap.java
+	(readObject): Removed.
+	(writeObject): Removed.
+
 2006-04-10  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/tree/DefaultTreeSelectionModel.java
