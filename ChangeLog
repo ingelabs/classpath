@@ -1,3 +1,11 @@
+2006-04-11  Bryce McKinlay  <mckinlay@redhat.com>
+
+	* java/io/DataOutputStream.java (writeUTF): Re-use fixed length byte
+	buffer. Loop only once to determine Utf8 length	when possible. Make
+	the inner loop bounded by buf.length.
+	(getUTFlength): New private method.
+	(buf): New private field.
+
 2006-04-11  Lillian Angel  <langel@redhat.com>
 
 	* gnu/xml/dom/DomNodeIterator.java
