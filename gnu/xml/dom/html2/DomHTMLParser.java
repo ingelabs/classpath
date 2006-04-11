@@ -124,9 +124,10 @@ public class DomHTMLParser
     try
       {
         document = new DomHTMLDocument();
-
+        document.setCheckWellformedness(false);
+        
         cursor = document;
-
+        
         parse(input);
 
         DomHTMLDocument h = document;

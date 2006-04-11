@@ -1,3 +1,40 @@
+2006-04-11  Lillian Angel  <langel@redhat.com>
+
+	* gnu/xml/dom/DomNodeIterator.java
+	(nextNode): Moved line of code to avoid an infinite loop.
+	* gnu/xml/dom/html2/DomHTMLAppletElement.java
+	(getCls): New function.
+	(setCls): Likewise.
+	(getSrc): Likewise.
+	(setSrc): Likewise.
+	* gnu/xml/dom/html2/DomHTMLDocument.java:
+	Added DomHTMLEmbedElement to map.
+	(getApplets): Added node name, 'embed'.
+	* gnu/xml/dom/html2/DomHTMLEmbedElement.java:
+	New class.
+	* gnu/xml/dom/html2/DomHTMLObjectElement.java
+	(getJavaCode): New function.
+	(setJavaCode): Likewise.
+	(getObject): Likewise.
+	(setObject): Likewise.
+	(getJavaObject): Likewise.
+	(setJavaObject): Likewise.
+	(getJavaArchive): Likewise.
+	(setJavaArchive): Likewise.
+	(getJavaCodeBase): Likewise.
+	(setJavaCodeBase): Likewise.
+	(getJavaType): Likewise.
+	(setJavaType): Likewise.
+	(setMayscript): Likewise.
+	(getMayscript): Likewise.
+	(setScriptable): Likewise.
+	(getScriptable): Likewise.
+	* gnu/xml/dom/html2/DomHTMLParser.java
+	(parseDocument): Should not check for well formedness
+	when parsing an html document.
+	* java/awt/Window.java
+	(dispatchEvent): Added check to avoid NPE.
+
 2006-04-10  Tom Tromey  <tromey@redhat.com>
 
 	* javax/accessibility/AccessibleStreamable.java (getStream): Fixed
