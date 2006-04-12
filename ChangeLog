@@ -1,3 +1,9 @@
+2006-04-12  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/event/InternalFrameEvent.java:
+	(paramString): Implemented,
+	updated API docs all over.
+	
 2006-04-12  Casey Marshall  <csm@gnu.org>
 
 	* gnu/javax/crypto/prng/Fortuna.java (setup): call `fillBlock.'
