@@ -450,7 +450,7 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
     if (buf == null)
       buf = new byte[512];
     
-    while (i < len)
+    do
       {
 	while (i < len && pos < buf.length - 3)
 	  {
@@ -483,6 +483,7 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
 	write(buf, 0, pos);
 	pos = 0;
      }
+    while (i < len);
   }
 
 } // class DataOutputStream
