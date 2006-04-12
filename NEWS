@@ -29,6 +29,8 @@ Runtime interface changes:
   now have a new native getModifiersInternal() method.  The public
   getModifiers() method in each case has been rewritten in terms of
   this method.
+* The reference implementation of VMThread has been updated to handle
+  the new Thread.UncaughtExceptionHandler support.
 
 New in release 0.90 (March 6, 2006)
 

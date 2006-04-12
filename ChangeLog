@@ -1,3 +1,31 @@
+2006-04-12  Mark Wielaard  <mark@klomp.org>
+
+	Port UncaughtExceptionHandler support from generics branch.
+	* NEWS: Document Thread.UncaughtExceptionHandler VMThread change.
+
+2006-04-12  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/lang/Thread.java:
+	(setUncaughtExceptionHandler(UncaughtExceptionHandler):
+	Added docs and security check.
+	(getUncaughtExceptionHandler()): Documented.
+	(setDefaultUncaughtExceptionHandler(UncaughtExceptionHandler):
+	Added docs and security check.
+	(getDefaultUncaughtExceptionHandler()): Documented.
+	(getId()): Documented.
+
+2006-04-12  Tom Tromey  <tromey@redhat.com>
+
+	* vm/reference/java/lang/VMThread.java (run): Use thread's
+	uncaught handler.
+	* java/lang/Thread.java (defaultHandler): New field.
+	(setDefaultUncaughtExceptionHandler,
+	getDefaultUncaughtExceptionHandler, setUncaughtExceptionHandler,
+	getUncaughtExceptionHandler): New methods.
+	* java/lang/ThreadGroup.java (ThreadGroup): Implements
+	UncaughtExceptionHandler.
+	(uncaughtException): Use getDefaultUncaughtExceptionHandler.
+
 2006-04-11  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* java/io/DataOutputStream.java (writeUTF): Re-use fixed length byte

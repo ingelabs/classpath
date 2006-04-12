@@ -123,7 +123,10 @@ final class VMThread
 	    {
 		try
 		{
-		    thread.group.uncaughtException(thread, t);
+		  Thread.UncaughtExceptionHandler handler = thread.getUncaughtExceptionHandler();
+		  if (handler == null)
+		    handler = thread.group;
+		  handler.uncaughtException(thread, t);
 		}
 		catch(Throwable ignore)
 		{
