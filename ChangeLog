@@ -1,3 +1,12 @@
+2006-04-12  Casey Marshall  <csm@gnu.org>
+
+	Fixes PR classpath/24481.
+	* gnu/java/security/jce/prng/SecureRandomAdapter.java (<init>):
+	initialize the adaptee.
+	(setSeed): call `addRandomBytes;' don't re-initialize the adaptee.
+	* gnu/java/security/prng/MDGenerator.java (addRandomByte,
+	addRandomBytes): new methods.
+
 2006-04-12  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/DataOutputStream.java (writeUTF): Correctly handle zero
