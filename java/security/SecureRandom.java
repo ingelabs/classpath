@@ -1,5 +1,6 @@
 /* SecureRandom.java --- Secure Random class implementation
-   Copyright (C) 1999, 2001, 2002, 2003, 2005  Free Software Foundation, Inc.
+   Copyright (C) 1999, 2001, 2002, 2003, 2005, 2006
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -71,6 +72,7 @@ public class SecureRandom extends Random
   int randomBytesUsed = 0;
   SecureRandomSpi secureRandomSpi = null;
   byte[] state = null;
+  private String algorithm;
 
   // Constructors.
   // ------------------------------------------------------------------------
@@ -111,6 +113,7 @@ public class SecureRandom extends Random
                         secureRandomSpi = (SecureRandomSpi) Class.
                           forName(classname).newInstance();
                         provider = p[i];
+                        algorithm = key.substring(13); // Minus SecureRandom.
                         return;
                       }
                     catch (ThreadDeath death)
@@ -128,6 +131,7 @@ public class SecureRandom extends Random
 
     // Nothing found. Fall back to SHA1PRNG
     secureRandomSpi = new Sha160RandomSpi();
+    algorithm = "Sha160";
   }
 
   /**
@@ -159,8 +163,18 @@ public class SecureRandom extends Random
    */
   protected SecureRandom(SecureRandomSpi secureRandomSpi, Provider provider)
   {
+    this(secureRandomSpi, provider, "unknown");
+  }
+
+  /**
+   * Private constructor called from the getInstance() method.
+   */
+  private SecureRandom(SecureRandomSpi secureRandomSpi, Provider provider,
+		       String algorithm)
+  {
     this.secureRandomSpi = secureRandomSpi;
     this.provider = provider;
+    this.algorithm = algorithm;
   }
 
   // Class methods.
@@ -243,7 +257,7 @@ public class SecureRandom extends Random
       {
         return new SecureRandom((SecureRandomSpi)
           Engine.getInstance(SECURE_RANDOM, algorithm, provider),
-          provider);
+          provider, algorithm);
       }
     catch (java.lang.reflect.InvocationTargetException ite)
       {
@@ -266,6 +280,18 @@ public class SecureRandom extends Random
   public final Provider getProvider()
   {
     return provider;
+  }
+
+  /**
+   * Returns the algorithm name used or "unknown" when the algorithm
+   * used couldn't be determined (as when constructed by the protected
+   * 2 argument constructor).
+   *
+   * @since 1.5
+   */
+  public String getAlgorithm()
+  {
+    return algorithm;
   }
 
   /**

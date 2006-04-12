@@ -1,5 +1,14 @@
 2006-04-12  Mark Wielaard  <mark@klomp.org>
 
+	* java/security/SecureRandom.java (algorithm): New private field.
+	(SecureRandom): Initialize algorithm.
+	(SecureRandom(SecureRandomSpi,Provider,String)): New private
+	constructor.
+	(getInstance): Call 3 argument constructor.
+	(getAlgorithm): New method.
+
+2006-04-12  Mark Wielaard  <mark@klomp.org>
+
 	Port UncaughtExceptionHandler support from generics branch.
 	* NEWS: Document Thread.UncaughtExceptionHandler VMThread change.
 
