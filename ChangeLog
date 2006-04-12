@@ -1,5 +1,10 @@
 2006-04-12  Casey Marshall  <csm@gnu.org>
 
+	* gnu/javax/crypto/prng/Fortuna.java (setup): call `fillBlock.'
+	(Generator.setup): call `fillBlock.'
+
+2006-04-12  Casey Marshall  <csm@gnu.org>
+
 	Fixes PR classpath/24481.
 	* gnu/java/security/jce/prng/SecureRandomAdapter.java (<init>):
 	initialize the adaptee.
