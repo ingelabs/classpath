@@ -1,3 +1,15 @@
+2006-04-12  Lillian Angel  <langel@redhat.com>
+
+	* gnu/xml/dom/DomDocument.java
+	(checkNCName): Removed unneeded part of check.
+	* gnu/xml/dom/DomNode.java
+	(dispatchEvent): Added code to grow ancestors array
+	if needed. Changed checks to use depth of node instead.
+	Fixes an infinite loop and segmentation fault.
+	* gnu/xml/dom/html2/DomHTMLParser.java
+	(handleEndTag): No need to use/make a copy of the node.
+	Causes an infinite loop.
+
 2006-04-12  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/27131:
