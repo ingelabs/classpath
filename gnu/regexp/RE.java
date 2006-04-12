@@ -245,8 +245,12 @@ public class RE extends REToken {
    * Compilation flag. Allow whitespace and comments in pattern.
    * This is equivalent to the "/x" operator in Perl.
    */
-
   public static final int REG_X_COMMENTS = 0x0400;
+
+  /**
+   * Compilation flag. If set, REG_ICASE is effective only for US-ASCII.
+   */
+  public static final int REG_ICASE_USASCII = 0x0800;
 
   /** Returns a string representing the version of the gnu.regexp package. */
   public static final String version() {
@@ -347,6 +351,7 @@ public class RE extends REToken {
     // Precalculate these so we don't pay for the math every time we
     // need to access them.
     boolean insens = ((cflags & REG_ICASE) > 0);
+    boolean insensUSASCII = ((cflags & REG_ICASE_USASCII) > 0);
 
     // Parse pattern into tokens.  Does anyone know if it's more efficient
     // to use char[] than a String.charAt()?  I'm assuming so.
@@ -458,6 +463,7 @@ public class RE extends REToken {
         else {
           addToken(currentToken);
           currentToken = new RETokenChar(subIndex,unit.ch,insens);
+	  if (insensUSASCII) currentToken.unicodeAware = false;
         } 
       }
       
@@ -533,7 +539,7 @@ public class RE extends REToken {
 	  case 'd':
 	  case 'm':
 	  case 's':
-	  // case 'u':  not supported
+	  case 'u':
 	  case 'x':
 	  case '-':
             if (!syntax.get(RESyntax.RE_EMBEDDED_FLAGS)) break;
@@ -573,7 +579,13 @@ public class RE extends REToken {
 		    newCflags |= REG_DOT_NEWLINE;
 		  flagIndex++;
 		  break;
-	  	// case 'u': not supported
+	  	case 'u':
+		  if (negate)
+		    newCflags |= REG_ICASE_USASCII;
+		  else
+		    newCflags &= ~REG_ICASE_USASCII;
+		  flagIndex++;
+		  break;
 	  	case 'x':
 		  if (negate)
 		    newCflags &= ~REG_X_COMMENTS;
@@ -597,6 +609,7 @@ public class RE extends REToken {
 		syntax = newSyntax;
 		cflags = newCflags;
 		insens = ((cflags & REG_ICASE) > 0);
+		insensUSASCII = ((cflags & REG_ICASE_USASCII) > 0);
 		// This can be treated as though it were a comment.
 		comment = true;
 		index = flagIndex - 1;
@@ -609,6 +622,7 @@ public class RE extends REToken {
 		syntax = newSyntax;
 		cflags = newCflags;
 		insens = ((cflags & REG_ICASE) > 0);
+		insensUSASCII = ((cflags & REG_ICASE_USASCII) > 0);
 		index = flagIndex -1;
 		// Fall through to the next case.
 	    }
@@ -717,6 +731,7 @@ public class RE extends REToken {
 	      syntax = savedSyntax;
 	      cflags = savedCflags;
 	      insens = ((cflags & REG_ICASE) > 0);
+	      insensUSASCII = ((cflags & REG_ICASE_USASCII) > 0);
 	      flagsSaved = false;
 	  }
 	} // not a comment
@@ -829,6 +844,7 @@ public class RE extends REToken {
 	index = index - 2 + ce.len;
 	addToken(currentToken);
 	currentToken = new RETokenChar(subIndex,ce.ch,insens);
+	if (insensUSASCII) currentToken.unicodeAware = false;
       }
 
       // BACKREFERENCE OPERATOR
@@ -856,6 +872,7 @@ public class RE extends REToken {
 	int num = parseInt(pattern, numBegin, numEnd-numBegin, 10);
 
 	currentToken = new RETokenBackRef(subIndex,num,insens);
+	if (insensUSASCII) currentToken.unicodeAware = false;
 	index = numEnd;
       }
 
@@ -904,6 +921,7 @@ public class RE extends REToken {
       else if (unit.bk && (unit.ch == 'd') && syntax.get(RESyntax.RE_CHAR_CLASS_ESCAPES)) {
 	addToken(currentToken);
 	currentToken = new RETokenPOSIX(subIndex,RETokenPOSIX.DIGIT,insens,false);
+	if (insensUSASCII) currentToken.unicodeAware = false;
       }
 
       // NON-DIGIT OPERATOR
@@ -912,6 +930,7 @@ public class RE extends REToken {
 	else if (unit.bk && (unit.ch == 'D') && syntax.get(RESyntax.RE_CHAR_CLASS_ESCAPES)) {
 	  addToken(currentToken);
 	  currentToken = new RETokenPOSIX(subIndex,RETokenPOSIX.DIGIT,insens,true);
+	  if (insensUSASCII) currentToken.unicodeAware = false;
 	}
 
 	// NEWLINE ESCAPE
@@ -936,6 +955,7 @@ public class RE extends REToken {
 	else if (unit.bk && (unit.ch == 's') && syntax.get(RESyntax.RE_CHAR_CLASS_ESCAPES)) {
 	  addToken(currentToken);
 	  currentToken = new RETokenPOSIX(subIndex,RETokenPOSIX.SPACE,insens,false);
+	  if (insensUSASCII) currentToken.unicodeAware = false;
 	}
 
 	// NON-WHITESPACE OPERATOR
@@ -944,6 +964,7 @@ public class RE extends REToken {
 	else if (unit.bk && (unit.ch == 'S') && syntax.get(RESyntax.RE_CHAR_CLASS_ESCAPES)) {
 	  addToken(currentToken);
 	  currentToken = new RETokenPOSIX(subIndex,RETokenPOSIX.SPACE,insens,true);
+	  if (insensUSASCII) currentToken.unicodeAware = false;
 	}
 
 	// TAB ESCAPE
@@ -960,6 +981,7 @@ public class RE extends REToken {
 	else if (unit.bk && (unit.ch == 'w') && syntax.get(RESyntax.RE_CHAR_CLASS_ESCAPES)) {
 	  addToken(currentToken);
 	  currentToken = new RETokenPOSIX(subIndex,RETokenPOSIX.ALNUM,insens,false);
+	  if (insensUSASCII) currentToken.unicodeAware = false;
 	}
 
 	// NON-ALPHANUMERIC OPERATOR
@@ -968,6 +990,7 @@ public class RE extends REToken {
 	else if (unit.bk && (unit.ch == 'W') && syntax.get(RESyntax.RE_CHAR_CLASS_ESCAPES)) {
 	  addToken(currentToken);
 	  currentToken = new RETokenPOSIX(subIndex,RETokenPOSIX.ALNUM,insens,true);
+	  if (insensUSASCII) currentToken.unicodeAware = false;
 	}
 
 	// END OF STRING OPERATOR
@@ -995,6 +1018,7 @@ public class RE extends REToken {
 	  index = index - 2 + ce.len;
 	  addToken(currentToken);
 	  currentToken = new RETokenChar(subIndex,ce.ch,insens);
+	  if (insensUSASCII) currentToken.unicodeAware = false;
 	}
 
 	// NAMED PROPERTY
@@ -1008,6 +1032,7 @@ public class RE extends REToken {
 	  index = index - 2 + np.len;
 	  addToken(currentToken);
 	  currentToken = getRETokenNamedProperty(subIndex,np,insens,index);
+	  if (insensUSASCII) currentToken.unicodeAware = false;
 	}
 
 	// END OF PREVIOUS MATCH
@@ -1025,6 +1050,7 @@ public class RE extends REToken {
 	else {  // not a special character
 	  addToken(currentToken);
 	  currentToken = new RETokenChar(subIndex,unit.ch,insens);
+	  if (insensUSASCII) currentToken.unicodeAware = false;
 	} 
       } // end while
 
@@ -1065,6 +1091,7 @@ public class RE extends REToken {
 		throws REException {
 
 	boolean insens = ((cflags & REG_ICASE) > 0);
+	boolean insensUSASCII = ((cflags & REG_ICASE_USASCII) > 0);
 	Vector options = new Vector();
 	Vector addition = new Vector();
 	boolean additionAndAppeared = false;
@@ -1094,7 +1121,9 @@ public class RE extends REToken {
 	  if ((ch == '-') && (lastCharIsSet)) {
 	    if (index == pLength) throw new REException(getLocalizedMessage("class.no.end"),REException.REG_EBRACK,index);
 	    if ((ch = pattern[index]) == ']') {
-	      options.addElement(new RETokenChar(subIndex,lastChar,insens));
+	      RETokenChar t = new RETokenChar(subIndex,lastChar,insens);
+	      if (insensUSASCII) t.unicodeAware = false;
+	      options.addElement(t);
 	      lastChar = '-';
 	    } else {
 	      if ((ch == '\\') && syntax.get(RESyntax.RE_BACKSLASH_ESCAPE_IN_LISTS)) {
@@ -1104,7 +1133,9 @@ public class RE extends REToken {
 		ch = ce.ch;
 		index = index + ce.len - 1;
 	      }
-	      options.addElement(new RETokenRange(subIndex,lastChar,ch,insens));
+	      RETokenRange t = new RETokenRange(subIndex,lastChar,ch,insens);
+	      if (insensUSASCII) t.unicodeAware = false;
+	      options.addElement(t);
 	      lastChar = 0; lastCharIsSet = false;
 	      index++;
 	    }
@@ -1147,12 +1178,20 @@ public class RE extends REToken {
 	      asciiEsc = ce.ch; asciiEscIsSet = true;
 	      index = index - 1 + ce.len - 1;
 	    }
-	    if (lastCharIsSet) options.addElement(new RETokenChar(subIndex,lastChar,insens));
+	    if (lastCharIsSet) {
+	      RETokenChar t = new RETokenChar(subIndex,lastChar,insens);
+	      if (insensUSASCII) t.unicodeAware = false;
+	      options.addElement(t);
+	    }
 	    
 	    if (posixID != -1) {
-	      options.addElement(new RETokenPOSIX(subIndex,posixID,insens,negate));
+	      RETokenPOSIX t = new RETokenPOSIX(subIndex,posixID,insens,negate);
+	      if (insensUSASCII) t.unicodeAware = false;
+	      options.addElement(t);
 	    } else if (np != null) {
-	      options.addElement(getRETokenNamedProperty(subIndex,np,insens,index));
+	      RETokenNamedProperty t = getRETokenNamedProperty(subIndex,np,insens,index);
+	      if (insensUSASCII) t.unicodeAware = false;
+	      options.addElement(t);
 	    } else if (asciiEscIsSet) {
 	      lastChar = asciiEsc; lastCharIsSet = true;
 	    } else {
@@ -1163,8 +1202,11 @@ public class RE extends REToken {
 	    StringBuffer posixSet = new StringBuffer();
 	    index = getPosixSet(pattern,index+1,posixSet);
 	    int posixId = RETokenPOSIX.intValue(posixSet.toString());
-	    if (posixId != -1)
-	      options.addElement(new RETokenPOSIX(subIndex,posixId,insens,false));
+	    if (posixId != -1) {
+	      RETokenPOSIX t = new RETokenPOSIX(subIndex,posixId,insens,false);
+	      if (insensUSASCII) t.unicodeAware = false;
+	      options.addElement(t);
+	    }
 	  } else if ((ch == '[') && (syntax.get(RESyntax.RE_NESTED_CHARCLASS))) {
 		ParseCharClassResult result = parseCharClass(
 		    subIndex, pattern, index, pLength, cflags, syntax, 0);
@@ -1217,14 +1259,22 @@ public class RE extends REToken {
 			result.index: result.index - 1);
 		}
 	  } else {
-	    if (lastCharIsSet) options.addElement(new RETokenChar(subIndex,lastChar,insens));
+	    if (lastCharIsSet) {
+	      RETokenChar t = new RETokenChar(subIndex,lastChar,insens);
+	      if (insensUSASCII) t.unicodeAware = false;
+	      options.addElement(t);
+	    }
 	    lastChar = ch; lastCharIsSet = true;
 	  }
 	  if (index == pLength) throw new REException(getLocalizedMessage("class.no.end"),REException.REG_EBRACK,index);
 	} // while in list
 	// Out of list, index is one past ']'
 	    
-	if (lastCharIsSet) options.addElement(new RETokenChar(subIndex,lastChar,insens));
+	if (lastCharIsSet) {
+	  RETokenChar t = new RETokenChar(subIndex,lastChar,insens);
+	  if (insensUSASCII) t.unicodeAware = false;
+	  options.addElement(t);
+	}
 	   
 	ParseCharClassResult result = new ParseCharClassResult(); 
 	// Create a new RETokenOneOf

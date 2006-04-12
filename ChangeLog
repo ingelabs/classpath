@@ -1,3 +1,20 @@
+2006-04-12  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/regexp/REToken.java(unicodeAware): New field,
+	(toLowerCase, toUpperCase): New methods.
+	* gnu/regexp/RETokenBackRef.java, gnu/regexp/RETokenChar.java,
+	gnu/regexp/RETokenNamedProperty.java, gnu/regexp/RETokenRange.java:
+	Use toLowerCase and toUpperCase defined in REToken instead of
+	those defined in java.lang.Character.
+	* gnu/regexp/gnu/regexp/RE.java(REG_ICASE_USASCII): New flag.
+	(initialize): Sets unicodeAware of the generated REToken to false if
+	REG_ICASE_USASCII is set.
+	* gnu/regexp/RETokenChar.java(constructor): Don't convert the character
+	to lower case and keep the original value.
+	(matchOneString): Use the new method charEquals to compare characters.
+	(charEquals): New method to compare characters.
+	* java/util/regex/Pattern.java: Sets the flag REG_ICASE_USASCII to true.
+
 2006-04-12  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/event/InternalFrameEvent.java:
