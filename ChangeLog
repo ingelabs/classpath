@@ -1,3 +1,14 @@
+2006-04-14  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JSplitPane.java
+	(AccessibleJSplitPane.getAccessibleStateSet): Implemented,
+	(AccessibleJSplitPane.getAccessibleRole): Implemented,
+	(AccessibleJSplitPane.getAccessibleValue): Implemented,
+	(AccessibleJSplitPane.getCurrentAccessibleValue): Implemented,
+	(AccessibleJSplitPane.setCurrentAccessibleValue): Implemented,
+	(AccessibleJSplitPane.getMinimumAccessibleValue): Implemented,
+	(AccessibleJSplitPane.getMaximumAccessibleValue): Implemented.
+
 2006-04-13  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 	
 	* gnu/javax/crypto/assembly/Assembly.java,
