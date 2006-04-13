@@ -1,6 +1,6 @@
 2006-04-13  Robert Schuster  <robertschuster@fsfe.org>
 
-	PR 26947
+	PR 26967
 	* javax/swing/JTextField.java: Removed scrollOffset variable.
 	(JTextField): Moved up initialization of horizontalVisibility field.
 	(getScrollOffset): Implemented.
