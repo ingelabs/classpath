@@ -1,5 +1,10 @@
 2006-04-13  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/FieldView.java:
+	(checkContainer): Call updateVisibility() at the end.
+
+2006-04-13  Robert Schuster  <robertschuster@fsfe.org>
+
 	* java/awt/event/MouseEvent.java:
 	(paramString): Add value of 'consumed' variable in string.
 

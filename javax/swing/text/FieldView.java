@@ -45,6 +45,8 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.JTextField;
@@ -97,6 +99,9 @@ public class FieldView extends PlainView
         // and needs to be recalculated (e.g. a different font setting is
         // not taken into account).
         calculateHorizontalSpan();
+        
+        // Initializes the BoundedRangeModel properly.
+        updateVisibility();
       }
     
   }
