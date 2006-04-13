@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package javax.swing.tree;
 
+import gnu.javax.swing.tree.GnuPath;
+
 import java.awt.Rectangle;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -51,8 +53,11 @@ import javax.swing.event.TreeModelEvent;
  * The fixed height tree layout. This class requires the NodeDimensions to be
  * set and ignores the row height property.
  * 
+ * @specnote the methods, of this class, returning TreePath, actually returns
+ * the derived class GnuPath that provides additional information for optimized
+ * painting. See the GnuPath code for details.
+ * 
  * @author Audrius Meskauskas
- * @author Andrew Selkirk 
  */
 public class VariableHeightLayoutCache
                 extends AbstractLayoutCache
@@ -109,8 +114,23 @@ public class VariableHeightLayoutCache
      */
     private TreePath path;
     
+    /**
+     * Get the path for this node. The derived class is returned,
+     * making check for the last child of some parent easier.
+     */
     TreePath getPath()
     {
+      boolean lastChild = false;
+      if (parent!=null)
+        {
+          int nc = treeModel.getChildCount(parent);
+          if (nc > 0)
+            {
+              int n = treeModel.getIndexOfChild(parent, node);
+              if (n == nc-1)
+                lastChild = true;
+            }
+        }
       if (path == null)
         {
           LinkedList lpath = new LinkedList();
@@ -123,7 +143,7 @@ public class VariableHeightLayoutCache
               else
                 rp = null;
             }
-          path = new TreePath(lpath.toArray());
+          path = new GnuPath(lpath.toArray(), lastChild);
         }
       return path;
     }
@@ -162,6 +182,16 @@ public class VariableHeightLayoutCache
    * If true, the row map must be recomputed before using.
    */
   boolean dirty;
+  
+  /**
+   * The cumulative height of all rows.
+   */
+  int totalHeight;
+  
+  /**
+   * The maximal width.
+   */
+  int maximalWidth;
 
   /**
    * Creates the unitialised instance. Before using the class, the row height
@@ -193,6 +223,8 @@ public class VariableHeightLayoutCache
   {
     nodes.clear();
     row2node.clear();
+    
+    totalHeight = maximalWidth = 0;
 
     Object root = treeModel.getRoot();
 
@@ -206,7 +238,7 @@ public class VariableHeightLayoutCache
         for (int i = 0; i < sc; i++)
           {
             Object child = treeModel.getChild(root, i);
-            countRows(child, root, 0);
+            countRows(child, root, 1);
           }
       }
     dirty = false;
@@ -220,9 +252,11 @@ public class VariableHeightLayoutCache
     Integer n = new Integer(row2node.size());
     row2node.put(n, node);
     
-    nodes.put(node, new NodeRecord(n.intValue(), depth, node, parent));
-
-    if (expanded.contains(node))
+    NodeRecord nr = new NodeRecord(n.intValue(), depth, node, parent);
+    nodes.put(node, nr);
+     
+    // For expanded nodes and for the root node.
+    if (expanded.contains(node) || parent == null)
       {
         int sc = treeModel.getChildCount(node);
         int deeper = depth+1;
@@ -287,8 +321,7 @@ public class VariableHeightLayoutCache
    * Get bounds for the given tree path.
    * 
    * @param path the tree path
-   * @param rect the rectangle, specifying the area where the path should be
-   *          displayed.
+   * @param rect the rectangle that will be reused to return the result.
    * @return Rectangle the bounds of the last line, defined by the given path.
    */
   public Rectangle getBounds(TreePath path, Rectangle rect)
@@ -298,8 +331,10 @@ public class VariableHeightLayoutCache
     Object last = path.getLastPathComponent();
     NodeRecord r = (NodeRecord) nodes.get(last);
     if (r == null)
-      // This node is not visible.
-      return new Rectangle();
+    // This node is not visible.
+      {
+        rect.x = rect.y = rect.width = rect.height = 0;
+      }
     else
       {
         if (r.bounds == null)
@@ -308,8 +343,10 @@ public class VariableHeightLayoutCache
                                               r.isExpanded, rect);
             r.bounds = dim;
           }
-        return r.bounds;
+
+        rect.setRect(r.bounds);
       }
+    return rect;
   } 
 
   /**
@@ -522,5 +559,43 @@ public class VariableHeightLayoutCache
   {
     rootVisible = visible;
     dirty = true;
+  }
+
+  /**
+   * Get the sum of heights for all rows.
+   */
+  public int getPreferredHeight()
+  {
+    if (dirty)
+      update();
+    totalHeight = 0;
+    Enumeration en = nodes.elements();
+    while (en.hasMoreElements())
+      {
+        NodeRecord nr = (NodeRecord) en.nextElement();
+        Rectangle r = nr.getBounds();
+        totalHeight += r.height;
+      }
+    return totalHeight;
+  }
+
+  /**
+   * Get the maximal width.
+   */
+  public int getPreferredWidth(Rectangle value)
+  {
+    if (dirty)
+      update();
+    
+    maximalWidth = 0;
+    Enumeration en = nodes.elements();
+    while (en.hasMoreElements())
+      {
+        NodeRecord nr = (NodeRecord) en.nextElement();
+        Rectangle r = nr.getBounds();
+        if (r.x + r.width > maximalWidth)
+          maximalWidth = r.x + r.width;
+      }
+    return maximalWidth;
   }
 }

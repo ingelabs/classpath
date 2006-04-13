@@ -1646,7 +1646,7 @@ public class JTree extends JComponent implements Scrollable, Accessible
    */
   public Dimension getPreferredScrollableViewportSize()
   {
-    return new Dimension (getPreferredSize().width, getVisibleRowCount()*getRowHeight());
+    return getPreferredSize();
   }
   
   /**

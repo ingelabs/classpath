@@ -197,7 +197,7 @@ public class FixedHeightLayoutCache
         for (int i = 0; i < sc; i++)
           {
             Object child = treeModel.getChild(root, i);
-            countRows(child, root, 0);
+            countRows(child, root, 1);
           }
       }
     dirty = false;
@@ -213,7 +213,7 @@ public class FixedHeightLayoutCache
     
     nodes.put(node, new NodeRecord(n.intValue(), depth, node, parent));
 
-    if (expanded.contains(node))
+    if (expanded.contains(node) || parent == null)
       {
         int sc = treeModel.getChildCount(node);
         int deeper = depth+1;

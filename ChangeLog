@@ -1,3 +1,16 @@
+2006-04-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+ 
+	* javax/swing/JTree.java (getPreferredSize): Return the
+	cloned instance.
+	* javax/swing/ViewportLayout.java (layoutContainer):
+	Do not manage the view size and location if the view is
+	in the scroll pane. Also manage size and location for
+	Scrollable, if it is not in the scroll pane.
+	* javax/swing/plaf/basic/BasicTreeUI.java,
+	* javax/swing/tree/FixedHeightLayoutCache.java,
+	* javax/swing/tree/VariableHeightLayoutCache.java: Rewritten.
+	* gnu/javax/swing/tree/GnuPath.java: New file.
+
 2006-04-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JToolBar.java
