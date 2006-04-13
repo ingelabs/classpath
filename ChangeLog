@@ -1,4 +1,9 @@
 2006-04-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java (getPreferredSize): 
+	Removed debugging code.
+
+2006-04-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
  
 	* javax/swing/JTree.java (getPreferredSize): Return the
 	cloned instance.

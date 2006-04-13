@@ -1509,16 +1509,9 @@ public class BasicTreeUI
     if (! validCachedPreferredSize)
       {
         // Add the scrollbar dimensions to the preferred size.
-        int sw = UIManager.getInt("ScrollBar.width");
         preferredSize = new Dimension(treeState.getPreferredWidth(null),
                                       treeState.getPreferredHeight());
         validCachedPreferredSize = true;
-        System.out.println(sw+":"+preferredSize.width);        
-        //preferredSize.width +=17;//+= sw; 
-        // minus:  63 ok 62 ne ok
-        // plus: +10 dalinis +8 dalinis
-        // pref 173 bar 17
-        new Exception().printStackTrace();
       }
     return preferredSize;
   }
