@@ -1,3 +1,31 @@
+2006-04-13  Robert Schuster  <robertschuster@fsfe.org>
+
+	* examples/gnu/classpath/examples/swing/TextAreaDemo.java:
+	(createCustomColoredPanel): Set background color as demo intends,
+	changed custom selection color to red.
+	* examples/gnu/classpath/examples/swing/TextFieldDemo.java:
+	Replaced various single variables with a Compound instance, added
+	custom highlighter demo.
+	(TextFieldDemo.DemoHighlightPainter): New class (taken from
+	TextAreaDemo).
+	(TextFieldDemo.Compound): New class.
+	(createTextFieldCompound): New method.
+	(createLeftAlignedPanel): Rewritten.
+	(createRightAlignedPanel): Rewritten.
+	(createCenteredPanel): Rewritten.
+	(createCustomColoredPanel): Removed.
+	(createCustomColoredPanel1): New method.
+	(createCustomColoredPanel2): New method.
+	(createCustomBordersPanel): New method.
+	(createMiscPanel): Rewritten.
+	(actionPerformed): Rewritten.
+	(createContent): Add panels of new compounds to main panel, put
+	main panel in a JScrollPane.
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	(Demo): Put desktop in a scrollpane.
+	(mkMenuBar): Check availability of MetalLookAndFeel.getCurrentTheme()
+	method via reflection.
+
 2006-04-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalDesktopIconUI.java
