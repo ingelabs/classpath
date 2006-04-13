@@ -1,3 +1,9 @@
+2006-04-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/ScrollPaneLayout.java (layoutContainer):
+	Mind that the presence of one scroll bar may cause the
+	need for another.
+
 2006-04-12  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* gnu/regexp/REToken.java(unicodeAware): New field,
