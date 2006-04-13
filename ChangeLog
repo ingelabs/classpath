@@ -1,6 +1,11 @@
 2006-04-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JInternalFrame.java
+	(setTitle): Set old value to 'this.title', not 'title'.
+
+2006-04-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JInternalFrame.java
 	(AccessibleJInternalFrame.getAccessibleName): Implemented,
 	(AccessibleJInternalFrame.getAccessibleRole): Implemented,
 	(AccessibleJInternalFrame.getAccessibleValue): Implemented,

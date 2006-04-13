@@ -981,7 +981,7 @@ public class JInternalFrame extends JComponent implements Accessible,
   /**
    * Returns the frame's title.
    *
-   * @return The String displayed in the TitlePane of this JInternalFrame.
+   * @return The frame's title (can be <code>null</code>).
    * 
    * @see #setTitle(String)
    */
@@ -1662,10 +1662,13 @@ public class JInternalFrame extends JComponent implements Accessible,
   }
 
   /**
-   * This method sets the title displayed in the TitlePane of this
-   * JInternalFrame.
+   * Sets the title for the <code>JInternalFrame</code> and sends a 
+   * {@link PropertyChangeEvent} (with the property name 
+   * {@link #TITLE_PROPERTY}) to all registered listeners.
    *
-   * @param title The title displayed.
+   * @param title  the new title (<code>null</code> permitted).
+   * 
+   * @see #getTitle()
    */
   public void setTitle(String title)
   {
@@ -1673,9 +1676,9 @@ public class JInternalFrame extends JComponent implements Accessible,
       return;
     if (title == null || this.title == null || ! this.title.equals(title))
       {
-	String old = title;
-	this.title = title;
-	firePropertyChange(TITLE_PROPERTY, old, this.title);
+        String old = this.title;
+        this.title = title;
+        firePropertyChange(TITLE_PROPERTY, old, this.title);
       }
   }
 
