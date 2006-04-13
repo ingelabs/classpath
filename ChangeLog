@@ -1,3 +1,31 @@
+2006-04-13  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JInternalFrame.java
+	(AccessibleJInternalFrame.getAccessibleName): Implemented,
+	(AccessibleJInternalFrame.getAccessibleRole): Implemented,
+	(AccessibleJInternalFrame.getAccessibleValue): Implemented,
+	(AccessibleJInternalFrame.getCurrentAccessibleValue): Implemented,
+	(AccessibleJInternalFrame.getMaximumAccessibleValue): Implemented,
+	(AccessibleJInternalFrame.getMinimumAccessibleValue): Implemented,
+	(AccessibleJInternalFrame.setCurrentAccessibleValue): Implemented,
+	(JDesktopIcon.AccessibleJDesktopIcon.getAccessibleRole): Implemented,
+	(JDesktopIcon.AccessibleJDesktopIcon.getAccessibleValue): Implemented,
+	(JDesktopIcon.AccessibleJDesktopIcon.getCurrentAccessibleValue): 
+	Implemented,
+	(JDesktopIcon.AccessibleJDesktopIcon.getMaximumAccessibleValue): 
+	Implemented,
+	(JDesktopIcon.AccessibleJDesktopIcon.getMinimumAccessibleValue): 
+	Implemented,
+	(JDesktopIcon.AccessibleJDesktopIcon.setCurrentAccessibleValue): 
+	Implemented,
+	(JInternalFrame()): Use "" for default title,
+	(getAccessibleContext): Updated API docs,
+	(getDesktopIcon): Likewise,
+	(getLayer): Check for layer in client properties, and return 
+	DEFAULT_LAYER if no setting is found,
+	(getTitle): Updated API docs,
+	(setDesktopIcon): Fire property change event.
+
 2006-04-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/ScrollPaneLayout.java (layoutContainer):
