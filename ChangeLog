@@ -1,5 +1,10 @@
 2006-04-13  Robert Schuster  <robertschuster@fsfe.org>
 
+	* java/awt/event/MouseEvent.java:
+	(paramString): Add value of 'consumed' variable in string.
+
+2006-04-13  Robert Schuster  <robertschuster@fsfe.org>
+
 	PR 26967
 	* javax/swing/JTextField.java: Removed scrollOffset variable.
 	(JTextField): Moved up initialization of horizontalVisibility field.
