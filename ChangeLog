@@ -1,3 +1,26 @@
+2006-04-13  Robert Schuster  <robertschuster@fsfe.org>
+
+	PR 26947
+	* javax/swing/JTextField.java: Removed scrollOffset variable.
+	(JTextField): Moved up initialization of horizontalVisibility field.
+	(getScrollOffset): Implemented.
+	(setScrollOffset): Implemented.
+	(getHorizonztalVisibility): Removed note.
+	(scrollRectToVisible): New method.
+	* javax/swing/text/FieldView.java: Added cachedSpan variable.
+	(checkContainer): New method.
+	(updateVisibility): New method.
+	(calculateHorizontalSpan): New method.
+	(adjustAllocation): Removed unneeded local variables, added code
+	to handle scrolling.
+	(getPreferredSpan): Use new method calculateHorizontalSpan,
+	avoid calculation by returning cached value cachedSpan.
+	(paint): Added check whether the hosted component is a JTextField.
+	(insertUpdate): Invalidate cached span value, update visibility
+	if neccessary.
+	(removeUpdate): Dito.
+	(changeUpdate): Dito.
+
 2006-04-13  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JInternalFrame.java
