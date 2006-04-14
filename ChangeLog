@@ -1,5 +1,15 @@
 2006-04-14  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/DefaultCaret.java:
+	(getBypass): New method.
+	(moveDot): Rewritten.
+	(moveDotImpl): New method.
+	(setDot): Rewritten.
+	(setDotImpl): New method.
+	(DefaultCaret.Bypass): New class.
+
+2006-04-14  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/text/AbstractDocument.java:
 	(getBypass): New method.
 	(insertString): Rewritten.
