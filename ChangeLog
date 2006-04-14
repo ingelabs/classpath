@@ -1,3 +1,9 @@
+2006-04-14  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicTextFieldUI.java:
+	(propertyChanged): Added note, change color only if current background
+	is a ColorUIResource instance.
+
 2006-04-14  Tom Tromey  <tromey@redhat.com>
 
 	* java/beans/beancontext/BeanContextSupport.java (hasNext): No longer
