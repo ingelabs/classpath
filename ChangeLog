@@ -1,3 +1,15 @@
+2006-04-14  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/AbstractDocument.java:
+	(getBypass): New method.
+	(insertString): Rewritten.
+	(remove): Rewritten.
+	(replace): Rewritten.
+	(insertStringImpl): New method.
+	(removeImpl): New method.
+	(replaceImpl): New method.
+	(AbstractDocument.Bypass): New class.
+
 2006-04-14  Casey Marshall  <csm@gnu.org>
 
 	Fixes PR classpath/24642
