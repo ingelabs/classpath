@@ -1,3 +1,16 @@
+2006-04-14  Casey Marshall  <csm@gnu.org>
+
+	Fixes PR classpath/24642
+	* NEWS: add note about SecureRandom changes, and addition of
+	VMSecureRandom.
+	* java/security/SecureRandom.java (isSeeded): new field.
+	(setSeed, setSeed): set `isSeeded' to `true.'
+	(nextBytes): seed this instance if `isSeeded' is false.
+	(getSeed): call `generateSeed.'
+	(SECURERANDOM_SOURCE, JAVA_SECURITY_EGD, logger): new constants.
+	(generateSeed, generateSeed): new methods.
+	* vm/reference/java/security/VMSecureRandom.java: new file.
+
 2006-04-14  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/FieldView.java:

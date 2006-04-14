@@ -38,11 +38,19 @@ exception statement from your version. */
 
 package java.security;
 
+import gnu.classpath.SystemProperties;
 import gnu.java.security.Engine;
+import gnu.java.security.action.GetSecurityPropertyAction;
 import gnu.java.security.jce.prng.Sha160RandomSpi;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * An interface to a cryptographically secure pseudo-random number
@@ -73,6 +81,8 @@ public class SecureRandom extends Random
   SecureRandomSpi secureRandomSpi = null;
   byte[] state = null;
   private String algorithm;
+
+  private boolean isSeeded = false;
 
   // Constructors.
   // ------------------------------------------------------------------------
@@ -303,6 +313,7 @@ public class SecureRandom extends Random
   public void setSeed(byte[] seed)
   {
     secureRandomSpi.engineSetSeed(seed);
+    isSeeded = true;
   }
 
   /**
@@ -330,6 +341,7 @@ public class SecureRandom extends Random
 		       (byte) (0xff & seed)
         };
         secureRandomSpi.engineSetSeed(tmp);
+        isSeeded = true;
       }
   }
 
@@ -341,6 +353,8 @@ public class SecureRandom extends Random
    */
   public void nextBytes(byte[] bytes)
   {
+    if (!isSeeded)
+      setSeed(getSeed(32));
     randomBytesUsed += bytes.length;
     counter++;
     secureRandomSpi.engineNextBytes(bytes);
@@ -386,10 +400,8 @@ public class SecureRandom extends Random
   public static byte[] getSeed(int numBytes)
   {
     byte[] tmp = new byte[numBytes];
-
-    new Random().nextBytes(tmp);
+    generateSeed(tmp);
     return tmp;
-    //return secureRandomSpi.engineGenerateSeed( numBytes );
   }
 
   /**
@@ -404,4 +416,64 @@ public class SecureRandom extends Random
     return secureRandomSpi.engineGenerateSeed(numBytes);
   }
 
+  // Seed methods.
+
+  private static final String SECURERANDOM_SOURCE = "securerandom.source";
+  private static final String JAVA_SECURITY_EGD = "java.security.egd";
+  private static final Logger logger = Logger.getLogger(SecureRandom.class.getName());
+
+  private static int generateSeed(byte[] buffer)
+  {
+    return generateSeed(buffer, 0, buffer.length);
+  }
+
+  private static int generateSeed(byte[] buffer, int offset, int length)
+  {
+    URL sourceUrl = null;
+    String urlStr = null;
+
+    GetSecurityPropertyAction action = new GetSecurityPropertyAction(SECURERANDOM_SOURCE);
+    try
+      {
+        urlStr = (String) AccessController.doPrivileged(action);
+        if (urlStr != null)
+          sourceUrl = new URL(urlStr);
+      }
+    catch (MalformedURLException ignored)
+      {
+        logger.log(Level.WARNING, SECURERANDOM_SOURCE + " property is malformed: {0}", 
+                   urlStr);
+      }
+
+    if (sourceUrl == null)
+      {
+        try
+          {
+            urlStr = SystemProperties.getProperty(JAVA_SECURITY_EGD);
+            if (urlStr != null)
+              sourceUrl = new URL(urlStr);
+          }
+        catch (MalformedURLException mue)
+          {
+            logger.log(Level.WARNING, JAVA_SECURITY_EGD + " property is malformed: {0}",
+                       urlStr);
+          }
+      }
+
+    if (sourceUrl != null)
+      {
+        try
+          {
+            InputStream in = sourceUrl.openStream();
+            return in.read(buffer, offset, length);
+          }
+        catch (IOException ioe)
+          {
+            logger.log(Level.FINE, "error reading random bytes", ioe);
+          }
+      }
+
+    // If we get here, we did not get any seed from a property URL.
+    return VMSecureRandom.generateSeed(buffer, offset, length);
+  }
 }
