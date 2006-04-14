@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing.text;
 
+import gnu.classpath.NotImplementedException;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -358,6 +360,7 @@ public class DefaultHighlighter extends LayeredHighlighter
   public void paintLayeredHighlights(Graphics g, int p0, int p1,
                                      Shape viewBounds, JTextComponent editor,
                                      View view)
+  throws NotImplementedException
   {
     // TODO: Implement this properly.
   }

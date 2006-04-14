@@ -1,5 +1,10 @@
 2006-04-14  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/DefaultHighlighter.java:
+	(paintLayeredHighlights): Marked as stub.
+
+2006-04-14  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/plaf/basic/BasicTextFieldUI.java:
 	(propertyChanged): Added note, change color only if current background
 	is a ColorUIResource instance.
