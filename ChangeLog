@@ -1,5 +1,16 @@
 2006-04-14  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/FieldView.java:
+	(paint): Apply clipping rectangle of the allocation area
+	before painting the text.
+	* javax/swing/text/DefaultHighlighter.java:
+	(DefaultHighlighter.DefaultHighlightPainter): Use SwingUtilities to
+	compute union and intersection,	calculate intersection with allocation
+	area before painting, adjust x and width when painting multiple lines
+	by the range of the allocation area.
+
+2006-04-14  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/text/DefaultHighlighter.java:
 	(paintLayeredHighlights): Marked as stub.
 

@@ -47,6 +47,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.TextUI;
 
 public class DefaultHighlighter extends LayeredHighlighter
@@ -93,8 +94,18 @@ public class DefaultHighlighter extends LayeredHighlighter
         Rectangle l0 = ui.modelToView(t, p0, null);
         Rectangle l1 = ui.modelToView(t, p1, null);
         
+        // Note: The computed locations may lie outside of the allocation
+        // area if the text is scrolled.
+        
         if (l0.y == l1.y)
-          paintHighlight(g, l0.union(l1));
+          {
+            SwingUtilities.computeUnion(l0.x, l0.y, l0.width, l0.height, l1);
+
+            // Paint only inside the allocation area.
+            SwingUtilities.computeIntersection(rect.x, rect.y, rect.width, rect.height, l1);
+        
+            paintHighlight(g, l1);
+          }
         else
           {
             // 1. The line of p0 is painted from the position of p0
@@ -106,7 +117,11 @@ public class DefaultHighlighter extends LayeredHighlighter
             // position of p1.
             
             // Highlight first line until the end.
-            l0.width = rect.width - l0.x;
+            // If rect.x is non-zero the calculation will properly adjust the
+            // area to be painted.
+            l0.x -= rect.x;
+            l0.width = rect.width - l0.x - rect.x;
+            
             paintHighlight(g, l0);
             
             int posBelow = Utilities.getPositionBelow(t, p0, l0.x);

@@ -236,8 +236,13 @@ public class FieldView extends PlainView
       checkContainer();
 
     Shape newAlloc = adjustAllocation(s);
-
+    
+    // Set a clip to prevent drawing outside of the allocation area.
+    // TODO: Is there a better way to achieve this?
+    Shape clip = g.getClip();
+    g.setClip(s);
     super.paint(g, newAlloc);
+    g.setClip(clip);
   }
 
   public void insertUpdate(DocumentEvent ev, Shape shape, ViewFactory vf)
