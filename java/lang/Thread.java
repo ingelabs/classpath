@@ -1051,7 +1051,9 @@ public class Thread implements Runnable
    * <li>If this thread has its own handler, this is returned.</li>
    * <li>If not, then the handler of the thread's <code>ThreadGroup</code>
    * object is returned.</li>
-   * <li>If both are unavailable, then <code>null</code> is returned.</li>
+   * <li>If both are unavailable, then <code>null</code> is returned
+   *     (which can only happen when the thread was terminated since
+   *      then it won't have an associated thread group anymore).</li>
    * </ul>
    * 
    * @return the appropriate <code>UncaughtExceptionHandler</code> or
@@ -1060,7 +1062,7 @@ public class Thread implements Runnable
    */
   public UncaughtExceptionHandler getUncaughtExceptionHandler()
   {
-    return exceptionHandler;
+    return exceptionHandler != null ? exceptionHandler : group;
   }
 
   /** 

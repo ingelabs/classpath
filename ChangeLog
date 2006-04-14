@@ -1,3 +1,10 @@
+2006-04-14  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/Thread.java (getUncaughtExceptionHandler): Return
+	thread group when exceptionHandler isn't set.
+	* vm/reference/java/lang/VMThread.java (run): Use result of
+	thread.getUncaughtExceptionHandler directly.
+
 2006-04-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JSplitPane.java
