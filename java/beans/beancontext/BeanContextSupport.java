@@ -108,13 +108,11 @@ public class BeanContextSupport extends BeanContextChildSupport
     }
 
     public boolean hasNext ()
-      throws NotImplementedException
     {
       return child.hasNext();
     }
 
     public Object next ()
-      throws NotImplementedException
     {
       return child.next();
     }

@@ -1,5 +1,11 @@
 2006-04-14  Tom Tromey  <tromey@redhat.com>
 
+	* java/beans/beancontext/BeanContextSupport.java (hasNext): No longer
+	a stub.
+	(next): Likewise.
+
+2006-04-14  Tom Tromey  <tromey@redhat.com>
+
 	* javax/swing/JComboBox.java (AccessibleJComboBox): Now public.
 
 2006-04-14  Mark Wielaard  <mark@klomp.org>
