@@ -1219,7 +1219,11 @@ public class JComboBox extends JComponent implements ItemSelectable,
   {
     private static final long serialVersionUID = 8217828307256675666L;
 
-    protected AccessibleJComboBox()
+    /**
+     * @specnote This constructor was protected in 1.4, but made public
+     * in 1.5.
+     */
+    public AccessibleJComboBox()
     {
       // Nothing to do here.
     }

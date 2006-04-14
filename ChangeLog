@@ -1,3 +1,7 @@
+2006-04-14  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/JComboBox.java (AccessibleJComboBox): Now public.
+
 2006-04-14  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/Thread.java (getUncaughtExceptionHandler): Return
