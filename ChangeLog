@@ -1,3 +1,28 @@
+2006-04-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* javax/accessibility/AccessibleAction.java:
+	(DECREMENT): Added field.
+	(INCREMENT): Likewise.
+	(TOGGLE_EXPAND): Likewise.
+	* javax/accessibility/AccessibleRole.java:
+	(EDITBAR): Added field.
+	(FOOTER): Likewise.
+	(HEADER): Likewise.
+	(PARAGRAPH): Likewise.
+	(PROGRESS_MONITOR): Likewise.
+	(RULER): Likewise.
+	* javax/accessibility/AccessibleState.java:
+	(INDETERMINATE): Added field.
+	(MANAGES_DESCENDANTS): Likewise.
+	(TRUNCATED): Likewise.
+	* vm/reference/java/lang/reflect/Constructor.java:
+	Fixed copyright header to match generics branch.
+	* vm/reference/java/lang/reflect/Field.java:
+	Fixed copyright header to match generics branch.
+	(toGenericString()): Ported from generics branch.
+	(getGenericType()): Likewise.
+	(getSignature()): Likewise.
+
 2006-04-14  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/DefaultCaret.java:
