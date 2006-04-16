@@ -1,3 +1,18 @@
+2006-04-16  Casey Marshall  <csm@gnu.org>
+
+	* configure.ac (--enable-local-sockets): new enable argument.
+	(ENABLE_LOCAL_SOCKETS): new define.
+	* native/jni/java-net/Makefile.am (local_sources): new variable.
+	(lib_javanet_la_SOURCES): append `local_sources.'
+	* native/jni/java-net/gnu_java_net_local_LocalSocketImpl.c,
+	* native/jni/java-net/local.c,
+	* native/jni/java-net/local.h,
+	* include/gnu_java_net_local_LocalSocketImpl.h,
+	* gnu/java/net/local/LocalServerSocket.java,
+	* gnu/java/net/local/LocalSocket.java,
+	* gnu/java/net/local/LocalSocketAddress.java,
+	* gnu/java/net/local/LocalSocketImpl.java: new files.
+
 2006-04-15  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/accessibility/AccessibleAction.java:
