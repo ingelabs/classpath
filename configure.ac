@@ -612,6 +612,30 @@ AC_SUBST(PATH_TO_GLIBJ_ZIP)
 
 
 dnl -----------------------------------------------------------
+dnl Check if local socket support should be included.
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([local-sockets],
+              [AS_HELP_STRING(--enable-local-sockets,enables local (AF_LOCAL) socket API [default: no])],
+              [case "${enableval}" in
+                yes)
+                  ENABLE_LOCAL_SOCKETS=yes
+                  ;;
+                *)
+                  ENABLE_LOCAL_SOCKETS=no
+                  ;;
+               esac],
+              [])
+if test "x$ENABLE_LOCAL_SOCKETS" = "xyes"
+then
+  AC_CHECK_HEADER([sys/un.h])
+  AC_CHECK_FUNCS([read write bind listen accept shutdown], [],
+                 AC_MSG_ERROR([networking support not available]))
+  AC_DEFINE(ENABLE_LOCAL_SOCKETS, [1], [Define to enable support for local sockets.])
+fi
+AM_CONDITIONAL(ENABLE_LOCAL_SOCKETS, test "x$ENABLE_LOCAL_SOCKETS" = "xyes")
+
+
+dnl -----------------------------------------------------------
 dnl output files
 dnl -----------------------------------------------------------
 AC_CONFIG_FILES([Makefile
