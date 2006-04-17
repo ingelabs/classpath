@@ -1,5 +1,9 @@
 2006-04-17  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/util/Collection.java: Implemented java.lang.Iterable.
+
+2006-04-17  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/lang/Boolean.java: Implemented Comparable.
 	* java/lang/ClassLoader.java
 	(getResources): Not final anymore in 1.5.
