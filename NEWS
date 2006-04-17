@@ -42,6 +42,8 @@ Runtime interface changes:
   These are all optional (in the sense that the methods associated with them
   merely fail on use if the VM doesn't provide them, rather than the
   VM failing altogether), but VMs should aim to support them where possible.
+* The implementation of java.lang.instrument has been merged to the main
+  branch from the generics branch.
 
 New in release 0.90 (March 6, 2006)
 
