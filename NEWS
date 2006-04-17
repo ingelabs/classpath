@@ -37,6 +37,11 @@ Runtime interface changes:
 * A new class, java.security.VMSecureRandom, is now available that is
   used to generate random numbers for seeding cryptographically-secure
   pseudo-random number generators.
+* VMClass and the reference implementations of Method, Constructor and Field
+  now include a number of 1.5 methods imported from the generics branch.
+  These are all optional (in the sense that the methods associated with them
+  merely fail on use if the VM doesn't provide them, rather than the
+  VM failing altogether), but VMs should aim to support them where possible.
 
 New in release 0.90 (March 6, 2006)
 

@@ -275,9 +275,12 @@ VM should filter out non-public classes.
 @item @code{getDeclaredConstructors(Class,boolean)} -- And constructors.
 @item @code{getClassLoader(Class)} -- Returns the @code{ClassLoader} instance
 which is responsible for the specified class.
-@item @code{forName(String)} -- The VM should create a @code{Class} instance
-corresponding to the named class.  As noted in @ref{VM Hooks}, the internal
-content of the instance is the responsibility of the VM.
+@item @code{forName(String, boolean, ClassLoader)} -- The VM should create a
+@code{Class} instance corresponding to the named class.  As noted in
+@ref{VM Hooks}, the internal content of the instance is the
+responsibility of the VM.  The supplied class loader is recorded as that
+which loaded the class, and the boolean specifies whether or not to
+run the class initializer.
 @item @code{isArray(Class)} -- Another property test, corresponding to a
 class file flag.
 @item @code{initialize(Class)} -- The VM should initialize the class fully,
@@ -308,15 +311,44 @@ information stored in the class file.
 an inner or member class, or @code{null} if the instance refers to a top-level
 class.
 @end itemize
+@item 1.5
+@itemize @bullet
+@item @code{isSynthetic(Class)} -- Returns true if the flags for this class
+mark it as synthetic.
+@item @code{isAnnotation(Class)} -- Returns true if the flags for this class
+mark it as an annotation.
+@item @code{isEnum(Class)} -- Returns true if the flags for this class
+mark it as an enumeration.
+@item @code{getSimpleName(Class)} -- Returns the simple name of the class.
+A default implementation is provided, but a more efficient version may instead
+be provided by the VM.
+@item @code{getCanonicalName(Class)} -- Returns the canonical name of the
+class.  A default implementation is provided, but a more efficient
+version may instead be provided by the VM.
+@item @code{getEnclosingClass(Class)} -- Returns the immediately enclosing
+class (null for a top-level class).
+@item @code{getEnclosingConstructor(Class)} -- Returns the constructor
+which immediately encloses the supplied class.
+@item @code{getEnclosingMethod(Class)} -- Returns the method
+which immediately encloses the supplied class.
+@item @code{getClassSignature(Class)} -- Returns the generic signature of
+the class or null if there isn't one.
+@item @code{isAnonymousClass(Class)} -- Returns true if the class is an
+anonymous class.
+@item @code{isLocalClass(Class)} -- Returns true if the class is an
+local class.
+@item @code{isMemberClass(Class)} -- Returns true if the class is an
+member class.
+@end itemize
 @end itemize
 
 @node java.lang.VMObject, java.lang.VMClassLoader, java.lang.VMClass, java.lang
 @subsection @code{java.lang.VMObject}
 
-@code{VMObject} is the bridge between the low level @code{Object} facilities
-such as making a clone, getting the class of the object and the wait/notify
-semantics.  This is accomplished using the following @code{native}
-methods.
+@code{VMObject} is the bridge between the low level @code{Object}
+facilities such as making a clone, getting the class of the object and
+the wait/notify semantics.  This is accomplished using the following
+@code{native} methods.
 
 @itemize @bullet
 @item @code{getClass(Object)} -- Returns the @code{Class} instance for the
@@ -1004,14 +1036,14 @@ is optional.
 @section java.security
 
 The @code{java.security} package provides support for Java's security
-architecture.  At present, @code{VMAccessController} represents the sole
-VM hook for this.
+architecture.  
 
 @menu
 * java.security.VMAccessController::
+* java.security.VMSecureRandom::
 @end menu
 
-@node java.security.VMAccessController,,java.security,java.security
+@node java.security.VMAccessController,java.security.VMSecureRandom,java.security,java.security
 @subsection @code{java.security.VMAccessController}
 
 The @code{AccessController} is used to perform privileged actions.  Its
@@ -1033,6 +1065,23 @@ the top of the context stack.
 arrays of classes and method names.  The actual implementation returns
 an empty array, indicating that there are no permissions.
 @end itemize
+
+@node java.security.VMSecureRandom,,java.security.VMAccessController,,java.security
+@subsection @code{java.security.VMSecureRandom}
+
+The @code{VMSecureRandom} class is used to provide access to
+cryptographically secure random numbers.  The default implementation
+of the class runs eight threads that increment counters in a tight
+loop, and XORs each counter to produce one byte of seed data. This is
+not very efficient, and is not guaranteed to be random (the thread
+scheduler is probably deterministic, after all). VM implementors
+should provide a version of this class, which implements the method
+@code{generateSeed(byte[],int,int)}, so that it fills the buffer using
+a random seed from a system facility, such as a system entropy
+gathering device or hardware random number generator.  The parameters
+are the usual set of buffer, offset and length and the method returns
+the number of bytes actually generated, which may be less than that
+requested.
 
 @node java.net, java.nio, java.security, Classpath Hooks
 @section java.net
