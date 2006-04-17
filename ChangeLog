@@ -1,5 +1,59 @@
 2006-04-17  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicComboBoxUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicComboPopup.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicLabelUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicListUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicMenuBarUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicMenuUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicPopupMenuUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicScrollBarUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicScrollPaneUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicSplitPaneUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicTableUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicTextUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise,
+	* javax/swing/plaf/basic/BasicToolBarUI.java:
+	(installKeyboardActions): Marked as stub,
+	(uninstallKeyboardActions): Likewise.	
+
+2006-04-17  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicSliderUI.java
 	(installKeyboardActions): Implemented,
 	(uninstallKeyboardActions): Implemented,

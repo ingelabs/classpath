@@ -824,6 +824,7 @@ public abstract class BasicTextUI extends TextUI
    * this UI.
    */
   protected void uninstallKeyboardActions()
+    throws NotImplementedException
   {
     // FIXME: Uninstall keyboard actions here.
   }

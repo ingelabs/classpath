@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing.plaf.basic;
 
+import gnu.classpath.NotImplementedException;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -1734,6 +1736,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
    * This method installs keyboard actions for the JTabbedPane.
    */
   protected void installKeyboardActions()
+    throws NotImplementedException
   {
     // FIXME: Implement.
   }
@@ -1742,6 +1745,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
    * This method uninstalls keyboard actions for the JTabbedPane.
    */
   protected void uninstallKeyboardActions()
+    throws NotImplementedException
   {
     // FIXME: Implement.
   }
