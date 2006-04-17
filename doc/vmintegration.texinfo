@@ -1066,7 +1066,7 @@ arrays of classes and method names.  The actual implementation returns
 an empty array, indicating that there are no permissions.
 @end itemize
 
-@node java.security.VMSecureRandom,,java.security.VMAccessController,,java.security
+@node java.security.VMSecureRandom,,java.security.VMAccessController,java.security
 @subsection @code{java.security.VMSecureRandom}
 
 The @code{VMSecureRandom} class is used to provide access to
