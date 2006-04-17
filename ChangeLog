@@ -1,3 +1,11 @@
+2006-04-17  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JToolBar.java
+	(AccessibleJToolBar.AccessibleJToolBar()): Updated API docs,
+	(AccessibleJToolBar.getAccessibleStateSet): Implemented,
+	(AccessibleJToolBar.getAccessibleRole): Updated API docs,
+	(getAccessibleContext): Likewise.
+
 2006-04-17  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/lang/Enum.java: Documented.
