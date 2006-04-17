@@ -42,8 +42,11 @@ package java.lang;
 import gnu.classpath.SystemProperties;
 import gnu.classpath.Configuration;
 
+import gnu.java.lang.InstrumentationImpl;
+
 import java.io.File;
 import java.io.IOException;
+import java.lang.instrument.Instrumentation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.ProtectionDomain;
@@ -345,4 +348,45 @@ final class VMClassLoader
    * for this class.
    */
   static native Class findLoadedClass(ClassLoader cl, String name);
+
+  /**
+   * The Instrumentation object created by the vm when agents are defined.
+   */
+  static final Instrumentation instrumenter = null;
+
+  /**
+   * Call the transformers of the possible Instrumentation object. This
+   * implementation assumes the instrumenter is a
+   * <code>InstrumentationImpl</code> object. VM implementors would
+   * have to redefine this method if they provide their own implementation
+   * of the <code>Instrumentation</code> interface.
+   *
+   * @param loader the initiating loader
+   * @param name the name of the class
+   * @param data the data representing the classfile, in classfile format
+   * @param offset the offset into the data where the classfile starts
+   * @param len the length of the classfile data in the array
+   * @param pd the protection domain
+   * @return the new data representing the classfile
+   */
+  static final Class defineClassWithTransformers(ClassLoader loader,
+      String name, byte[] data, int offset, int len, ProtectionDomain pd)
+  {
+    
+    if (instrumenter != null)
+      {
+        byte[] modifiedData = new byte[len];
+        System.arraycopy(data, offset, modifiedData, 0, len);
+        modifiedData =
+          ((InstrumentationImpl)instrumenter).callTransformers(loader, name,
+            null, pd, modifiedData);
+        
+        return defineClass(loader, name, modifiedData, 0, modifiedData.length,
+            pd);
+      }
+    else
+      {
+        return defineClass(loader, name, data, offset, len, pd);
+      }
+  }
 }
