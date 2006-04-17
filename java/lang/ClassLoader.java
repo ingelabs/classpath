@@ -628,8 +628,9 @@ public abstract class ClassLoader
    * @return an enumaration of all resources found
    * @throws IOException if I/O errors occur in the process
    * @since 1.2
+   * @specnote this was <code>final</code> prior to 1.5
    */
-  public final Enumeration getResources(String name) throws IOException
+  public Enumeration getResources(String name) throws IOException
   {
     Enumeration parentResources;
     if (parent == null)

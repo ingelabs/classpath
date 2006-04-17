@@ -1,3 +1,13 @@
+2006-04-17  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/Boolean.java: Implemented Comparable.
+	* java/lang/ClassLoader.java
+	(getResources): Not final anymore in 1.5.
+	* java/lang/Enum.java, java/lang/Iterable.java:
+	Copied from generics branch.
+	* java/lang/Thread.java (destroy): Marked deprecated.
+	* java/lang/ThreadLocal.java (remove): New method.
+
 2006-04-17  Dalibor Topic  <robilad@kaffe.org>
 
         * configure.ac:
