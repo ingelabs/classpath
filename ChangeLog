@@ -1,3 +1,13 @@
+2006-04-17  Dalibor Topic  <robilad@kaffe.org>
+
+        * configure.ac:
+        Added CLASSPATH_CONVENIENCE substitution for convenience library LDFLAGS.
+
+        * native/fdlibm/Makefile.am,
+        native/jni/classpath/Makefile.am:
+        Don't use -module and -version-info for convenience libraries LDFLAGS.
+        Fixes libtool warnings.
+
 2006-04-17  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java:
