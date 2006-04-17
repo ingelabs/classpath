@@ -1,3 +1,35 @@
+2005-12-13  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/instrument/ClassDefinition.java: Reformatted.
+	* java/lang/instrument/UnmodifiableClassException.java: Reformatted.
+	* java/lang/instrument/IllegalClassFormatException.java: Reformatted.
+
+2005-12-13  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/instrument/ClassDefinition.java (ClassDefinition): Now
+	public.
+
+2005-12-05  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/instrument/Instrumentation.java (redefineClasses): Javadoc
+	fix.
+	* java/lang/instrument/ClassFileTransformer.java (transform): Javadoc
+	fix.
+
+2005-12-03  Nicolas Geoffray  <nicolas.geoffray@menlina.com>
+	
+	* java/lang/instrument: New directory.
+	* java/lang/instrument/ClassDefinition.java:
+	New file.
+	* java/lang/instrument/ClassFileTransformer.java:
+	New file.
+	* java/lang/instrument/IllegalClassFormatException.java:
+	New file.
+	* java/lang/instrument/Instrumentation.java:
+	New file.
+	* java/lang/instrument/UnmodifiableClassException.java:
+	New file.
+
 2006-04-16  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 	
 	* doc/vmintegration.texinfo:
