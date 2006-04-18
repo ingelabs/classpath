@@ -1,3 +1,12 @@
+2006-04-18  Roman Kennke  <kennke@aicas.com>
+
+	PR 27185
+	* javax/swing/JComponent.java
+	(paintChildrenWithOverlap): When one child is not opaque, propagate
+	the dirty rectangles to the next child.
+	(paintChildrenOptimized): Removed unnecessary 'optimization'.
+	This actually didn't work right and probably gained nothing.
+
 2006-04-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (getCallRect): Do not cache rectangles.
