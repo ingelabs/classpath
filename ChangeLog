@@ -1,5 +1,15 @@
 2006-04-18  Roman Kennke  <kennke@aicas.com>
 
+	* javax/swing/RepaintManager.java
+	(dirtyComponentsWork): New field.
+	(ComponentComparator): Use dirtyComponentsWork instead of
+	dirtyComponents.
+	(RepaintManager): Initialize new field.
+	(paintDirtyRegions): Swap dirtyComponents with dirtyComponentsWork
+	and work on the copy.
+
+2006-04-18  Roman Kennke  <kennke@aicas.com>
+
 	* gnu/java/awt/peer/swing/SwingComponentPeer.java
 	(setBounds): Call reshape().
 	* gnu/java/awt/peer/swing/SwingContainerPeer.java
