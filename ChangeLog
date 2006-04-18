@@ -1,7 +1,12 @@
 2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JSlider.java
+	(paramString): Reimplemented.
+
+2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JComboBox.java
-	(paramStr): Reimplemented,
+	(paramString): Reimplemented,
 	(getAccessibleContext): Added API docs,
 	(AccessibleJComboBox.getAccessibleRole): Likewise.
 
