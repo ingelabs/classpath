@@ -1,3 +1,10 @@
+2006-04-18  Robert Schuster  <robertschuster@fsfe.org>
+
+        * examples/gnu/classpath/examples/swing/NavigationFilterDemo.java:
+        New file.
+        * examples/gnu/classpath/examples/swing/Demo.java:
+        (mkMenuBar): Added NavigationFilter demo.
+
 2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JSeparator.java: Updated API docs all over, plus

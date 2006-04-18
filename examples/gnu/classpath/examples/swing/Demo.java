@@ -153,6 +153,9 @@ public class Demo
 
     examples.add(new JMenuItem(new PopupAction("DocumentFilter",
                                      DocumentFilterDemo.createDemoFactory())));
+
+    examples.add(new JMenuItem(new PopupAction("NavigationFilter",
+                                               NavigationFilterDemo.createDemoFactory())));
     
     final JMenuItem vmMenu;
     
