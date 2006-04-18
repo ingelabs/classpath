@@ -1,3 +1,10 @@
+2006-04-18  Robert Schuster  <robertschuster@fsfe.org>
+
+	* examples/gnu/classpath/examples/swing/DocumentFilterDemo.java:
+	New file.
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	(mkMenuBar): Added DocumenFilter demo.
+
 2006-04-18  Tom Tromey  <tromey@redhat.com>
 
 	* doc/www.gnu.org/include/layout.wml: Add FMJ.
