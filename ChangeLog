@@ -1,3 +1,7 @@
+2006-04-18  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicTextUI.java: Implemented.
+
 2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JPanel.java: Updated API docs all over, plus

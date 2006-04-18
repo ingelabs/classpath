@@ -1140,9 +1140,14 @@ public abstract class BasicTextUI extends TextUI
   public int getNextVisualPositionFrom(JTextComponent t, int pos,
                                        Position.Bias b, int direction,
                                        Position.Bias[] biasRet)
-    throws BadLocationException, NotImplementedException
+    throws BadLocationException
   {
-    return 0; // TODO: Implement me.
+    // A comment in the spec of NavigationFilter.getNextVisualPositionFrom()
+    // suggests that this method should be implemented by forwarding the call
+    // the root view.
+    return rootView.getNextVisualPositionFrom(pos, b,
+                                              getVisibleEditorRect(),
+                                              direction, biasRet);
   }
 
   /**
