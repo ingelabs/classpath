@@ -1,3 +1,9 @@
+2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JPanel.java: Updated API docs all over, plus
+	(JPanel(LayoutManager, boolean)): Pass on null layout, set 
+	double-buffer flag.
+
 2006-04-18  Robert Schuster  <robertschuster@fsfe.org>
 
 	* examples/gnu/classpath/examples/swing/DocumentFilterDemo.java:
