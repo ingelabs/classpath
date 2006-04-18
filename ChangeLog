@@ -1,3 +1,9 @@
+2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JSeparator.java: Updated API docs all over, plus
+	(setOrientation): Fire PropertyChangeEvent,
+	(paramString): Reimplemented.
+
 2006-04-18  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/basic/BasicTextUI.java: Implemented.
