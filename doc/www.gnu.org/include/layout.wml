@@ -128,6 +128,7 @@
 <menutitle>External Tools</menutitle>
 <menuitem><createlink name="External Packages" url="external.html#packages"></menuitem>
 <menuitem><createlink name="ClasspathX" url="http://www.gnu.org/software/classpathx/"></menuitem>
+<menuitem><createlink name="Free Media Project" url="http://fmj.sourceforge.net/"></menuitem>
 <menuitem><createlink name="Mauve" url="http://sources.redhat.com/mauve/"></menuitem>
 <menuitem><createlink name="Jessie" url="http://www.nongnu.org/jessie/"></menuitem>
 <menuitem><createlink name="Jalopy" url="external.html#jalopy"></menuitem>

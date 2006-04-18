@@ -1,3 +1,7 @@
+2006-04-18  Tom Tromey  <tromey@redhat.com>
+
+	* doc/www.gnu.org/include/layout.wml: Add FMJ.
+
 2006-04-18  Mark Wielaard  <mark@klomp.org>
 
 	Reported by John Sullivan (johns@fsf.org)
