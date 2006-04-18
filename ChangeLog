@@ -1,3 +1,10 @@
+2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JComboBox.java
+	(paramStr): Reimplemented,
+	(getAccessibleContext): Added API docs,
+	(AccessibleJComboBox.getAccessibleRole): Likewise.
+
 2006-04-18  Roman Kennke  <kennke@aicas.com>
 
 	* javax/swing/RepaintManager.java
