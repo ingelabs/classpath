@@ -150,6 +150,14 @@ public class DomDocument
   }
 
   /**
+   * Sets whether to check for document characters.
+   */
+  public void setCheckingCharacters(boolean flag)
+  {
+    checkingCharacters = flag;
+  }  
+  
+  /**
    * <b>DOM L1</b>
    * Returns the constant "#document".
    */

@@ -1,6 +1,15 @@
 2006-04-18  Lillian Angel  <langel@redhat.com>
 
 	* gnu/xml/dom/DomDocument.java
+	(setCheckingCharacters): New function used to set
+	checkingCharacters flag.
+	* gnu/xml/dom/html2/DomHTMLParser.java
+	(parseDocument): Added call to set checkingCharacters flag
+	to false.
+
+2006-04-18  Lillian Angel  <langel@redhat.com>
+
+	* gnu/xml/dom/DomDocument.java
 	(checkNCName): Reverted last patch. Added check for colon at
 	last position back in.
 
