@@ -1,5 +1,16 @@
 2006-04-18  Roman Kennke  <kennke@aicas.com>
 
+	* gnu/java/awt/peer/swing/SwingComponentPeer.java
+	(setBounds): Call reshape().
+	* gnu/java/awt/peer/swing/SwingContainerPeer.java
+	(SwingContainerPeer): Changed argument to be a Component
+	instead a Container.
+	(getInsets): Call insets().
+	(handleMouseEvent): Added null check to avoid NPE.
+	(handleMouseMotionEvent): Added null check to avoid NPE.
+	
+2006-04-18  Roman Kennke  <kennke@aicas.com>
+
 	PR 27185
 	* javax/swing/JComponent.java
 	(paintChildrenWithOverlap): When one child is not opaque, propagate
