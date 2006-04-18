@@ -1,3 +1,8 @@
+2006-04-18  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JTable.java (getCallRect): Do not cache rectangles.
+	(moveToCellBeingEdited): Do not clone the rectangle here.
+
 2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicSliderUI.java

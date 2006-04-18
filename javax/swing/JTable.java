@@ -2053,9 +2053,6 @@ public class JTable
                                int column,
                                boolean includeSpacing)
   {
-    // moveToCellBeingEdited expects the cached value and clones it.
-    // If the caching would be removed later, uplate moveToCellBeingEdited
-    // as well.
     int height = getRowHeight(row);
     int width = columnModel.getColumn(column).getWidth();
     int x_gap = columnModel.getColumnMargin();
@@ -2069,12 +2066,14 @@ public class JTable
 
     for (int i = 0; i < column; ++i)
       x += columnModel.getColumn(i).getWidth();
+    
+    Rectangle rect = new Rectangle();
 
     if (includeSpacing)
-      rectCache.setBounds(x, y, width, height +y_gap);
+      rect.setBounds(x, y, width, height +y_gap);
     else
-      rectCache.setBounds(x, y, width - x_gap, height);
-    return rectCache;
+      rect.setBounds(x, y, width - x_gap, height);
+    return rect;
   }
 
   public void clearSelection()
@@ -3722,8 +3721,7 @@ public class JTable
   private void moveToCellBeingEdited(Component component)
   {
      Rectangle r = getCellRect(editingRow, editingColumn, true);
-     // Clone rectangle as getCellRect returns the cached value.
-     component.setBounds(new Rectangle(r));
+     component.setBounds(r);
   }
 
   /**
