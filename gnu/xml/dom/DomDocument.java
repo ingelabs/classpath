@@ -535,10 +535,9 @@ public class DomDocument
     int index = name.indexOf(':');
     if (index != -1)
       {
-        if (index == 0 || name.lastIndexOf(':') != index)
+        if (index == 0 || index == (len - 1) || name.lastIndexOf(':') != index)
           {
-            throw new DomDOMException(DOMException.NAMESPACE_ERR,
-                                      name, null, 0);
+            throw new DomDOMException(DOMException.NAMESPACE_ERR, name, null, 0);
           }
       }
   }

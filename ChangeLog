@@ -1,3 +1,9 @@
+2006-04-18  Lillian Angel  <langel@redhat.com>
+
+	* gnu/xml/dom/DomDocument.java
+	(checkNCName): Reverted last patch. Added check for colon at
+	last position back in.
+
 2006-04-18  Robert Schuster  <robertschuster@fsfe.org>
 
         * examples/gnu/classpath/examples/swing/NavigationFilterDemo.java:
