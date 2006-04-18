@@ -1,5 +1,13 @@
 2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JInternalFrame.java
+	(JDesktopIcon.getAccessibleContext): Added API docs,
+	(getDefaultCloseOperation): Likewise,
+	(paramString): Added 'title' attribute,
+	(setDefaultCloseOperation): Added API docs.
+
+2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JSlider.java
 	(paramString): Reimplemented.
 
