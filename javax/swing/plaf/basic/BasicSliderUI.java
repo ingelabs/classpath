@@ -2347,7 +2347,7 @@ public class BasicSliderUI extends SliderUI
    */
   ActionMap getActionMap() 
   {
-    ActionMap map = (ActionMap) UIManager.get("JSlider.actionMap");
+    ActionMap map = (ActionMap) UIManager.get("Slider.actionMap");
 
     if (map == null) // first time here
       {
@@ -2375,10 +2375,12 @@ public class BasicSliderUI extends SliderUI
             new AbstractAction("positiveUnitIncrement") {
               public void actionPerformed(ActionEvent event)
               {
+                JSlider slider = (JSlider) event.getSource();
+                BasicSliderUI ui = (BasicSliderUI) slider.getUI();
                 if (slider.getInverted())
-                  scrollByUnit(BasicSliderUI.NEGATIVE_SCROLL);
+                  ui.scrollByUnit(BasicSliderUI.NEGATIVE_SCROLL);
                 else
-                  scrollByUnit(BasicSliderUI.POSITIVE_SCROLL);
+                  ui.scrollByUnit(BasicSliderUI.POSITIVE_SCROLL);
               }
             }
     );
@@ -2386,10 +2388,12 @@ public class BasicSliderUI extends SliderUI
             new AbstractAction("negativeUnitIncrement") {
               public void actionPerformed(ActionEvent event)
               {
+                JSlider slider = (JSlider) event.getSource();
+                BasicSliderUI ui = (BasicSliderUI) slider.getUI();
                 if (slider.getInverted())
-                  scrollByUnit(BasicSliderUI.POSITIVE_SCROLL);
+                  ui.scrollByUnit(BasicSliderUI.POSITIVE_SCROLL);
                 else
-                  scrollByUnit(BasicSliderUI.NEGATIVE_SCROLL);
+                  ui.scrollByUnit(BasicSliderUI.NEGATIVE_SCROLL);
               }
             }
     );
@@ -2397,10 +2401,12 @@ public class BasicSliderUI extends SliderUI
             new AbstractAction("positiveBlockIncrement") {
               public void actionPerformed(ActionEvent event)
               {
+                JSlider slider = (JSlider) event.getSource();
+                BasicSliderUI ui = (BasicSliderUI) slider.getUI();
                 if (slider.getInverted())
-                  scrollByBlock(BasicSliderUI.NEGATIVE_SCROLL);
+                  ui.scrollByBlock(BasicSliderUI.NEGATIVE_SCROLL);
                 else
-                  scrollByBlock(BasicSliderUI.POSITIVE_SCROLL);
+                  ui.scrollByBlock(BasicSliderUI.POSITIVE_SCROLL);
               }
             }
     );
@@ -2408,10 +2414,12 @@ public class BasicSliderUI extends SliderUI
             new AbstractAction("negativeBlockIncrement") {
               public void actionPerformed(ActionEvent event)
               {
+                JSlider slider = (JSlider) event.getSource();
+                BasicSliderUI ui = (BasicSliderUI) slider.getUI();
                 if (slider.getInverted())
-                  scrollByBlock(BasicSliderUI.POSITIVE_SCROLL);
+                  ui.scrollByBlock(BasicSliderUI.POSITIVE_SCROLL);
                 else
-                  scrollByBlock(BasicSliderUI.NEGATIVE_SCROLL);
+                  ui.scrollByBlock(BasicSliderUI.NEGATIVE_SCROLL);
               }
             }
     );
@@ -2419,6 +2427,7 @@ public class BasicSliderUI extends SliderUI
             new AbstractAction("minScroll") {
               public void actionPerformed(ActionEvent event)
               {
+                JSlider slider = (JSlider) event.getSource();
                 if (slider.getInverted())
                   slider.setValue(slider.getMaximum());
                 else
@@ -2430,6 +2439,7 @@ public class BasicSliderUI extends SliderUI
             new AbstractAction("maxScroll") {
               public void actionPerformed(ActionEvent event)
               {
+                JSlider slider = (JSlider) event.getSource();
                 if (slider.getInverted())
                   slider.setValue(slider.getMinimum());
                 else

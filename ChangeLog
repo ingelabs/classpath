@@ -1,3 +1,10 @@
+2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(getActionMap): Fixed lookup key,
+	(createActionMap): Modified actions to fetch slider/ui from the event
+	source.
+
 2006-04-17  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JToolBar.java
