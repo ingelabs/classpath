@@ -67,7 +67,7 @@ framework, compiles them with GCC, and loads them using a built-in
 ELF object file loader. 
 </project>
 
-<project url="http://www.ibm.com/developerworks/oss/jikesrvm/" name="Jikes RVM">
+<project url="http://jikesrvm.sourceforge.net/" name="Jikes RVM">
 Jikes RVM uses GNU Classpath for all of its libraries.  Instructions for using
 Classpath are provided in the Jikes RVM user's guide as of the Jikes RVM
 release 2.2.1 (4/7/03). Nightly regression tests are run against the latest
@@ -185,9 +185,9 @@ analyze, and change the code for one's purposes.</p>
 </entry>
 
 <entry name="IBM's Jikes RVM">
-<createlink url="http://www-124.ibm.com/developerworks/oss/jikesrvm/" name="Jikes RVM"> (the Jikes Research Virtual Machine) provides the research community with a flexible open testbed to prototype virtual machine technologies and experiment with a large variety of design alternatives. The virtual machine infrastructure in the Jikes RVM release was independently developed as part of the Jalapeño research project at the IBM T.J. Watson Research Center. 
+<createlink url="http://jikesrvm.sourceforge.net/" name="Jikes RVM"> (the Jikes Research Virtual Machine) provides the research community with a flexible open testbed to prototype virtual machine technologies and experiment with a large variety of design alternatives. The virtual machine infrastructure in the Jikes RVM release was independently developed as part of the Jalapeño research project at the IBM T.J. Watson Research Center. 
 
-<p>[<createlink name="Publications" url="http://www-124.ibm.com/developerworks/oss/jikesrvm/info/papers.shtml">]
+<p>[<createlink name="Publications" url="http://jikesrvm.sourceforge.net/info/papers.shtml">]
 </entry>
 
 <entry name="SableVM">

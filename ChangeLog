@@ -1,3 +1,8 @@
+2006-04-18  Mark Wielaard  <mark@klomp.org>
+
+	Reported by John Sullivan (johns@fsf.org)
+	* doc/www.gnu.org/stories.wml: Update JikesRVM location.
+
 2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JInternalFrame.java
