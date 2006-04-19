@@ -1,3 +1,11 @@
+2006-04-19  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JSplitPane.java
+	(getAccessibleContext): Added API docs,
+	(paramString): Reimplemented,
+	(setOrientation): Updated API docs,
+	(setResizeWeight): Added argument checking and event notification.
+
 2006-04-18  Casey Marshall  <csm@gnu.org>
 
 	Fixes PR classpath/25673	
