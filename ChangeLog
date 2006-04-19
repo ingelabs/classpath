@@ -1,3 +1,9 @@
+2006-04-18  Casey Marshall  <csm@gnu.org>
+
+	Fixes PR classpath/25673	
+	* java/security/KeyStore.java (getDefaultType): return "gkr" if no
+	property is set. Update JavaDoc to reflect this.
+
 2006-04-18  Lillian Angel  <langel@redhat.com>
 
 	* gnu/xml/dom/DomDocument.java
@@ -329,6 +335,10 @@
 	Added information on VMClass 1.5 additions and
 	VMSecureRandom.
 	
+2006-04-16  Casey Marshall  <csm@gnu.org>
+
+	* NEWS: add an entry mentioning local socket support.
+
 2006-04-16  Casey Marshall  <csm@gnu.org>
 
 	* configure.ac (--enable-local-sockets): new enable argument.
@@ -3805,6 +3815,21 @@
 
 	* vm/reference/gnu/classpath/Unsafe.java:
 	New class to handle low-level facilities for concurrency.
+
+2006-03-19  Michael Barker <mike@middlesoft.co.uk>
+	
+	* vm/reference/gnu/java/nio/VMChannel.java: Added, supports setting 
+	non-blocking and scatter-gather io operations.
+	* gnu/java/nio/PipeImpl.java: Retrofitted to use VMChannel
+	* gnu/java/nio/SelectorImpl.java
+	(register) Added condition for gnu.java.nio.SocketChannelSelectionKeyImpl
+	* gnu/java/nio/SocketChannelSelectionKeyImpl.java Added.
+	* gnu/java/nio/channels/FileChannelImpl.java: Retrofitted to use VMChannel
+	* java/nio/FileChannel.java
+	(read (ByteBuffer)) Changed to call abstract method.
+	(write (ByteBuffer)) Changed to call abstract method.
+	* include/gnu_java_nio_VMChannel.h: Added.
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c: Added.
 
 2006-03-19  Mark Wielaard  <mark@klomp.org>
 
