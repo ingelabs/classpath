@@ -1,3 +1,9 @@
+2006-04-19  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/DefaultCaret.java:
+	(DefaultCaret.Bypass.setDot): Call DefaultCaret.setDotImpl
+	instead of DefaultCaret.setDot.
+
 2006-04-19  Roman Kennke  <kennke@aicas.com>
 
 	* native/jni/java-net/local.c
