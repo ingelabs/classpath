@@ -535,7 +535,8 @@ public abstract class Toolkit
                                              default_toolkit_name);
     try
       {
-        Class cls = Class.forName(toolkit_name);
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+        Class cls = cl.loadClass(toolkit_name);
         Object obj = cls.newInstance();
         if (!(obj instanceof Toolkit))
           throw new AWTError(toolkit_name + " is not a subclass of " +

@@ -1,3 +1,9 @@
+2006-04-19  Roman Kennke  <kennke@aicas.com>
+
+	* java/awt/Toolkit.java
+	(getDefaultToolkit): Use system classloader to load the
+	toolkit.
+
 2006-04-19  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/DefaultCaret.java:
