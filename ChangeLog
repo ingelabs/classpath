@@ -1,5 +1,19 @@
 2006-04-19  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JMenu.java
+	(getAccessibleChildrenCount): Marked as stub,
+	(getAccessibleChild): Likewise,
+	(getAccessibleSelection): Likewise,
+	(getAccessibleSelection(int)): Likewise,
+	(isAccessibleChildSelected): Likewise,
+	(getAccessibleSelectionCount): Likewise,
+	(addAccessibleSelection): Likewise,
+	(removeAccessibleSelection): Likewise,
+	(clearAccessibleSelection): Likewise,
+	(selectAllAccessibleSelection): Likewise.
+
+2006-04-19  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JSplitPane.java
 	(getAccessibleContext): Added API docs,
 	(paramString): Reimplemented,
