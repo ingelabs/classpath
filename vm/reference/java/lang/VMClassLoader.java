@@ -1,6 +1,6 @@
 /* VMClassLoader.java -- Reference implementation of native interface
    required by ClassLoader
-   Copyright (C) 1998, 2001, 2002, 2004, 2005 Free Software Foundation
+   Copyright (C) 1998, 2001, 2002, 2004, 2005, 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -39,20 +39,23 @@ exception statement from your version. */
 
 package java.lang;
 
-import gnu.classpath.SystemProperties;
 import gnu.classpath.Configuration;
-
+import gnu.classpath.SystemProperties;
 import gnu.java.lang.InstrumentationImpl;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.instrument.Instrumentation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.ProtectionDomain;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.zip.ZipFile;
@@ -238,12 +241,46 @@ final class VMClassLoader
 
   /**
    * Returns a String[] of native package names. The default
-   * implementation returns an empty array, or you may decide
-   * this needs native help.
+   * implementation tries to load a list of package from
+   * the META-INF/INDEX.LIST file in the boot jar file.
+   * If not found or if any exception is raised, it returns
+   * an empty array. You may decide this needs native help.
    */
   private static String[] getBootPackages()
   {
-    return new String[0];
+    URL indexList = getResource("META-INF/INDEX.LIST");
+    if (indexList != null)
+      {
+        try
+          {
+            Set packageSet = new HashSet();
+            String line;
+            int lineToSkip = 3;
+            BufferedReader reader = new BufferedReader(
+                                                       new InputStreamReader(
+                                                                             indexList.openStream()));
+            while ((line = reader.readLine()) != null)
+              {
+                if (lineToSkip == 0)
+                  {
+                    if (line.length() == 0)
+                      lineToSkip = 1;
+                    else
+                      packageSet.add(line.replace('/', '.'));
+                  }
+                else
+                  lineToSkip--;
+              }
+            reader.close();
+            return (String[]) packageSet.toArray(new String[packageSet.size()]);
+          }
+        catch (IOException e)
+          {
+            return new String[0];
+          }
+      }
+    else
+      return new String[0];
   }
 
 

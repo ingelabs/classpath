@@ -1,3 +1,8 @@
+2006-04-19  Olivier Jolly  <olivier.jolly@pcedev.com>
+
+   * vm/reference/java/lang/VMClassLoader.java (getBootPackages): Loads
+   boot packages list from the META-INF/INDEX.LIST file if it exists. 
+
 2006-04-19  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	Suggested by Stephen White <stephen-gnu-crypto@randomstuff.org.uk>
