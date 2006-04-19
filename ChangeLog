@@ -1,3 +1,8 @@
+2006-04-19  Tom Tromey  <tromey@redhat.com>
+
+	* java/text/SimpleDateFormat.java (formatWithAttribute): Take absolute
+	value of 'pureMinutes'.  PR classpath/27189.
+
 2006-04-19  Olivier Jolly  <olivier.jolly@pcedev.com>
 
    * vm/reference/java/lang/VMClassLoader.java (getBootPackages): Loads
