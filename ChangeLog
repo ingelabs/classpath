@@ -1,3 +1,8 @@
+2006-04-19  Riccardo Mottola  <multix@gmail.com>
+
+	PR classpath/27062, PR classpath/25650:
+	* native/fdlibm/ieeefp.h: Check for _POWER and _IBMR2.
+
 2006-04-19  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/SimpleDateFormat.java (formatWithAttribute): Take absolute
