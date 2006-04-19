@@ -1,3 +1,7 @@
+2006-04-19  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JButton.java: Updated API docs all over.
+
 2006-04-19  Roman Kennke  <kennke@aicas.com>
 
 	* java/awt/Toolkit.java
