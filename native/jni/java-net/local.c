@@ -51,7 +51,6 @@ exception statement from your version.  */
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
-#include <errno.h>
 
 #include <stdio.h>
 
@@ -170,13 +169,25 @@ local_connect (int fd, char *path)
 int
 local_read (int fd, void *buf, int len)
 {
-  return read (fd, buf, len);
+  int count = -1;
+  do
+    {
+      count = read (fd, buf, len);
+    }
+  while (count == -1 && errno == EINTR);
+  return count;
 }
 
 int
 local_write (int fd, void *buf, int len)
 {
-  return write (fd, buf, len);
+  int count = -1;
+  do
+    {
+      count = write (fd, buf, len);
+    }
+  while (count == -1 && errno == EINTR);
+  return count;
 }
 
 #endif /* ENABLE_LOCAL_SOCKETS */

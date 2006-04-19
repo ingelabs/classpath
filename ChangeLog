@@ -1,3 +1,9 @@
+2006-04-19  Roman Kennke  <kennke@aicas.com>
+
+	* native/jni/java-net/local.c
+	(local_read): Handle EINTR correctly.
+	(local_write): Likewise.
+
 2006-04-19  Riccardo Mottola  <multix@gmail.com>
 
 	PR classpath/27062, PR classpath/25650:
