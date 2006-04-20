@@ -1,3 +1,12 @@
+2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/ImageIcon.java:
+	(AccessibleImageIcon.getAccessibleStateSet): Return null always,
+	(AccessibleImageIcon.getLocale): Declared exception and always return 
+	null,
+	(getAccessibleContext): Updated API docs,
+	plus updated API docs all over AccessibleImageIcon.
+
 2006-04-20  Roman Kennke  <kennke@aicas.com>
 
 	PR 27196
