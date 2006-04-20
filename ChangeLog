@@ -1,5 +1,12 @@
 2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/sql/DriverManager.java
+	(setLoginTimeout): Use incoming argument,
+	(setLogStream): Likewise,
+	(println): Fix API doc comment.
+
+2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JMenuItem.java
 	(paramString): Updated API docs,
 	(getAccessibleContext): Added API docs,
