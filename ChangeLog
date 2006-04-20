@@ -1,5 +1,14 @@
 2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/ActionMap.java: Removed unused imports,
+	* javax/swing/DefaultListSelectionModel.java
+	(clearSelection): Removed unused label,
+	* javax/swing/JScrollPane.java: Removed unused imports,
+	* javax/swing/UIManager.java: Likewise,
+	* javax/swing/table/DefaultTableCellRenderer.java: Likewise.
+
+2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicSpinnerUI.java: Removed unused imports,
 	* javax/swing/plaf/basic/BasicTextAreaUI.java: Likewise,
 	* javax/swing/plaf/basic/BasicTextFieldUI.java: Likewise,
