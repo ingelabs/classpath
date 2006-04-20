@@ -1,3 +1,16 @@
+2006-04-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(finish): Invalidate path bounds.
+	(getMaxHeight): Set the row height to the layout cache.
+	(startEditing): Do not request to recalculated 
+	row height and preferred size.
+	* javax/swing/tree/DefaultTreeCellEditor.java
+	(ICON_TEXT_GAP, ICON_TREE_GAP): Removed, replacing
+	with 0.
+	* javax/swing/tree/FixedHeightLayoutCache.java:
+	Rewritten.
+
 2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JDesktopPane.java

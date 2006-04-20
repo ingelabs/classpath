@@ -100,6 +100,7 @@ import javax.swing.plaf.TreeUI;
 import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.FixedHeightLayoutCache;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
@@ -668,7 +669,8 @@ public class BasicTreeUI
 
         maxHeight = Math.max(maxHeight, iconHeight + gap);
       }
-
+     
+    treeState.setRowHeight(maxHeight);
     return maxHeight;
   }
 
@@ -1508,8 +1510,9 @@ public class BasicTreeUI
   {
     if (! validCachedPreferredSize)
       {
+        Rectangle size = tree.getBounds();
         // Add the scrollbar dimensions to the preferred size.
-        preferredSize = new Dimension(treeState.getPreferredWidth(null),
+        preferredSize = new Dimension(treeState.getPreferredWidth(size),
                                       treeState.getPreferredHeight());
         validCachedPreferredSize = true;
       }
@@ -1598,12 +1601,6 @@ public class BasicTreeUI
    */
   protected boolean startEditing(TreePath path, MouseEvent event)
   {
-    // Force to recalculate the maximal row height.
-    maxHeight = 0;
-
-    // Force to recalculate the cached preferred size.
-    validCachedPreferredSize = false;
-
     updateCellEditor();
     TreeCellEditor ed = getCellEditor();
 
@@ -3298,15 +3295,17 @@ public class BasicTreeUI
    */
   void finish()
   {
+    treeState.invalidatePathBounds(treeState.getPathForRow(editingRow));
     editingPath = null;
     editingRow = - 1;
     stopEditingInCompleteEditing = false;
     isEditing = false;
+    Rectangle bounds = editingComponent.getParent().getBounds();
     tree.removeAll();
     validCachedPreferredSize = false;
-
     // Repaint the region, where was the editing component.
-    tree.repaint(editingComponent.getParent().getBounds());
+    tree.repaint(bounds);
     editingComponent = null;
+    tree.requestFocus();
   }
 } // BasicTreeUI
