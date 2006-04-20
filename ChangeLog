@@ -1,3 +1,12 @@
+2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JRadioButtonMenuItem.java
+	(paramString): Reimplemented,
+	(getAccessibleContext): API docs added,
+	(AccessibleJRadioButtonMenuItem.AccessibleJRadioButtonMenuItem()): 
+	Likewise,
+	(AccessibleJRadioButtonMenuItem.getAccessibleRole): Likewise.
+
 2006-04-20  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java
