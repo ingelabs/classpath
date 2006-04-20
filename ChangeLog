@@ -1,5 +1,25 @@
 2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* java/sql/Array.java: Fixed Eclipse API doc warnings,
+	* java/sql/Blob.java: Likewise,
+	* java/sql/CallableStatement.java: Likewise,
+	* java/sql/Clob.java: Likewise,
+	* java/sql/Connection.java: Likewise,
+	* java/sql/DatabaseMetaData.java: Likewise,
+	* java/sql/Date.java: Likewise,
+	* java/sql/Driver.java: Likewise,
+	* java/sql/PreparedStatement.java: Likewise,
+	* java/sql/ResultSet.java: Likewise,
+	* java/sql/ResultSetMetaData.java: Likewise,
+	* java/sql/SQLData.java: Likewise,
+	* java/sql/SQLOutput.java: Likewise,
+	* java/sql/SQLWarning.java: Likewise,
+	* java/sql/Statement.java: Likewise,
+	* java/sql/Time.java: Likewise,
+	* java/sql/Timestamp.java: Likewise.
+
+2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/sql/DriverManager.java
 	(setLoginTimeout): Use incoming argument,
 	(setLogStream): Likewise,

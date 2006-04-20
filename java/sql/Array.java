@@ -1,5 +1,5 @@
 /* Array.java -- Interface for accessing SQL array object
-   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -50,7 +50,7 @@ public interface Array
    * Returns the name of the SQL type of the elements in this
    * array.  This name is database specific.
    *
-   * @param The name of the SQL type of the elements in this array.
+   * @return The name of the SQL type of the elements in this array.
    * @exception SQLException If an error occurs.
    */
   String getBaseTypeName() throws SQLException;
@@ -94,7 +94,7 @@ public interface Array
    * The object returned will be an array of Java objects of
    * the appropriate types.
    *
-   * @param offset The offset into this array to start returning elements from.
+   * @param index The offset into this array to start returning elements from.
    * @param count The requested number of elements to return.
    * @return The requested portion of the array.
    * @exception SQLException If an error occurs.
@@ -110,7 +110,7 @@ public interface Array
    * <code>Map</code> will be used for overriding selected SQL type to
    * Java class mappings.
    *
-   * @param offset The offset into this array to start returning elements from.
+   * @param index The offset into this array to start returning elements from.
    * @param count The requested number of elements to return.
    * @param map A mapping of SQL types to Java classes.
    * @return The requested portion of the array.
@@ -154,8 +154,8 @@ public interface Array
    * the index into the array of that row's contents.  The second will be
    * the actual value of that array element.
    *
-   * @param offset The index into the array to start returning elements from.
-   * @param length The requested number of elements to return.
+   * @param index The index into the array to start returning elements from.
+   * @param count The requested number of elements to return.
    * @return The requested elements of this array as a <code>ResultSet</code>.
    * @exception SQLException If an error occurs.
    * @see ResultSet
@@ -173,8 +173,8 @@ public interface Array
    * will be used to override selected default mappings of SQL types to
    * Java classes.</p>
    *
-   * @param offset The index into the array to start returning elements from.
-   * @param length The requested number of elements to return.
+   * @param index The index into the array to start returning elements from.
+   * @param count The requested number of elements to return.
    * @param map A mapping of SQL types to Java classes.
    * @return The requested elements of this array as a <code>ResultSet</code>.
    * @exception SQLException If an error occurs.

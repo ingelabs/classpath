@@ -1,5 +1,5 @@
 /* CallableStatement.java -- A statement for calling stored procedures.
-   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -55,8 +55,8 @@ public interface CallableStatement extends PreparedStatement
    * This method registers the specified parameter as an output parameter
    * of the specified SQL type.
    *
-   * @param index The index of the parameter to register as output.
-   * @param type The SQL type value from <code>Types</code>.
+   * @param parameterIndex The index of the parameter to register as output.
+   * @param sqlType The SQL type value from <code>Types</code>.
    * @exception SQLException If an error occurs.
    */   
   void registerOutParameter(int parameterIndex, int sqlType)
@@ -66,8 +66,8 @@ public interface CallableStatement extends PreparedStatement
    * This method registers the specified parameter as an output parameter
    * of the specified SQL type and scale.
    *
-   * @param index The index of the parameter to register as output.
-   * @param type The SQL type value from <code>Types</code>.
+   * @param parameterIndex The index of the parameter to register as output.
+   * @param sqlType The SQL type value from <code>Types</code>.
    * @param scale The scale of the value that will be returned.
    * @exception SQLException If an error occurs.
    */   
@@ -88,7 +88,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>String</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>String</code>.
    * @exception SQLException If an error occurs.
    */
@@ -98,7 +98,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>boolean</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>boolean</code>.
    * @exception SQLException If an error occurs.
    */
@@ -108,7 +108,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>byte</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>byte</code>.
    * @exception SQLException If an error occurs.
    */
@@ -118,7 +118,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>short</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>short</code>.
    * @exception SQLException If an error occurs.
    */
@@ -128,7 +128,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>int</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>int</code>.
    * @exception SQLException If an error occurs.
    */
@@ -138,7 +138,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>long</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>long</code>.
    * @exception SQLException If an error occurs.
    */
@@ -148,7 +148,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>float</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>float</code>.
    * @exception SQLException If an error occurs.
    */
@@ -158,7 +158,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>double</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>double</code>.
    * @exception SQLException If an error occurs.
    */
@@ -192,7 +192,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>java.sql.Date</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>java.sql.Date</code>.
    * @exception SQLException If an error occurs.
    */
@@ -202,7 +202,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>java.sql.Time</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>java.sql.Time</code>.
    * @exception SQLException If an error occurs.
    */
@@ -212,7 +212,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>java.sql.Timestamp</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>java.sql.Timestamp</code>.
    * @exception SQLException If an error occurs.
    */
@@ -289,7 +289,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>Array</code>.
    *
-   * @param parameterIndex The index of the parameter to return.
+   * @param index The index of the parameter to return.
    * @return The parameter value as a <code>Array</code>.
    * @exception SQLException If an error occurs.
    * @since 1.2
@@ -324,7 +324,7 @@ public interface CallableStatement extends PreparedStatement
    * This method returns the value of the specified parameter as a Java
    * <code>java.sql.Timestamp</code>.
    *
-   * @param index The index of the parameter to return.
+   * @param parameterIndex The index of the parameter to return.
    * @return The parameter value as a <code>java.sql.Timestamp</code>.
    * @exception SQLException If an error occurs.
    * @since 1.2
@@ -336,9 +336,9 @@ public interface CallableStatement extends PreparedStatement
    * This method registers the specified parameter as an output parameter
    * of the specified SQL type.
    *
-   * @param index The index of the parameter to register as output.
-   * @param type The SQL type value from <code>Types</code>.
-   * @param name The user defined data type name.
+   * @param paramIndex The index of the parameter to register as output.
+   * @param sqlType The SQL type value from <code>Types</code>.
+   * @param typeName The user defined data type name.
    * @exception SQLException If an error occurs.
    * @since 1.2
    */

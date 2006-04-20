@@ -1,5 +1,5 @@
 /* Connection.java -- Manage a database connection.
-   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -101,7 +101,7 @@ public interface Connection
    * SQL string.  This method is designed for use with parameterized
    * statements.  The default result set type and concurrency will be used.
    *
-   * @param The SQL statement to use in creating this 
+   * @param sql  the SQL statement to use in creating this 
    *        <code>PreparedStatement</code>.
    * @return A new <code>PreparedStatement</code>.
    * @exception SQLException If an error occurs.
@@ -115,7 +115,7 @@ public interface Connection
    * stored procedures.  The default result set type and concurrency
    * will be used.
    *
-   * @param The SQL statement to use in creating this 
+   * @param sql  the SQL statement to use in creating this 
    *        <code>CallableStatement</code>.
    * @return A new <code>CallableStatement</code>.
    * @exception SQLException If an error occurs.
@@ -127,7 +127,7 @@ public interface Connection
    * This method converts the specified generic SQL statement into the
    * native grammer of the database this object is connected to.
    *
-   * @param The JDBC generic SQL statement.
+   * @param sql  the JDBC generic SQL statement.
    * @return The native SQL statement.
    * @exception SQLException If an error occurs.
    */
@@ -141,8 +141,8 @@ public interface Connection
    * @param autoCommit <code>true</code> to enable auto commit mode,
    *        <code>false</code> to disable it.
    * @exception SQLException If an error occurs.
-   * @see commit
-   * @see rollback
+   * @see #commit()
+   * @see #rollback()
    */
   void setAutoCommit(boolean autoCommit) throws SQLException;
 
@@ -156,8 +156,8 @@ public interface Connection
    *
    * @exception SQLException If an error occurs.
    *
-   * @see commit
-   * @see rollback
+   * @see #commit()
+   * @see #rollback()
    */
   boolean getAutoCommit() throws SQLException;
 
@@ -283,7 +283,7 @@ public interface Connection
    * <code>ResultSet</code> class.
    *
    * @param resultSetType The type of result set to use for this statement.
-   * @param resultSetConcurrency.  The type of concurrency to be used in
+   * @param resultSetConcurrency  the type of concurrency to be used in
    *        the result set for this statement.
    * @return A new <code>Statement</code> object.
    * @exception SQLException If an error occurs.
@@ -300,10 +300,10 @@ public interface Connection
    * Valid values for these parameters are specified in the
    * <code>ResultSet</code> class.
    *
-   * @param The SQL statement to use in creating this 
+   * @param sql  the SQL statement to use in creating this 
    *        <code>PreparedStatement</code>.
-   * @param resultSetType The type of result set to use for this statement.
-   * @param resultSetConcurrency.  The type of concurrency to be used in
+   * @param resultSetType  the type of result set to use for this statement.
+   * @param resultSetConcurrency  the type of concurrency to be used in
    *        the result set for this statement.
    * @return A new <code>PreparedStatement</code>.
    * @exception SQLException If an error occurs.
@@ -320,10 +320,10 @@ public interface Connection
    * will be used.  Valid values for these parameters are specified in the
    * <code>ResultSet</code> class.
    *
-   * @param The SQL statement to use in creating this 
+   * @param sql  the SQL statement to use in creating this 
    *        <code>PreparedStatement</code>.
    * @param resultSetType The type of result set to use for this statement.
-   * @param resultSetConcurrency.  The type of concurrency to be used in
+   * @param resultSetConcurrency  the type of concurrency to be used in
    *        the result set for this statement.
    * @return A new <code>CallableStatement</code>.
    * @exception SQLException If an error occurs.

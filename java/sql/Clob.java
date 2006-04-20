@@ -1,5 +1,5 @@
 /* Clob.java -- Access Character Large OBjects
-   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -63,7 +63,7 @@ public interface Clob
    * This method returns the specified portion of the CLOB as a 
    * <code>String</code>. 
    *
-   * @param offset The index into the CLOB (index values start at 1) to 
+   * @param pos The index into the CLOB (index values start at 1) to 
    *        start returning characters from.
    * @param length The requested number of characters to return.
    * @return The requested CLOB section, as a <code>String</code>.
@@ -99,7 +99,7 @@ public interface Clob
    *
    * @param searchstr The character pattern to search for, passed as a
    *        <code>String</code>.
-   * @param start.  The index into the CLOB to start search (indexes start
+   * @param start   The index into the CLOB to start search (indexes start
    *        at 1).
    * @return The index at which the pattern was found (indexes start at 1),
    *         or -1 if the pattern was not found.
@@ -115,7 +115,7 @@ public interface Clob
    *
    * @param searchstr The character pattern to search for, passed as a
    *        <code>Clob</code>.
-   * @param start.  The index into the CLOB to start search (indexes start
+   * @param start  The index into the CLOB to start search (indexes start
    *        at 1).
    * @return The index at which the pattern was found (indexes start at 1),
    *         or -1 if the pattern was not found.

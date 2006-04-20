@@ -1,5 +1,5 @@
 /* Blob.java -- Access a SQL Binary Large OBject.
-   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -82,7 +82,7 @@ public interface Blob
    * index into the BLOB.
    *
    * @param pattern The byte pattern to search for.
-   * @param offset The index into the BLOB to starting searching for the pattern.
+   * @param start The index into the BLOB to starting searching for the pattern.
    * @return The offset at which the pattern is first found, or -1 if the
    *         pattern is not found.
    * @exception SQLException If an error occurs.
@@ -97,7 +97,7 @@ public interface Blob
    *
    * @param pattern The <code>Blob</code> containing the byte pattern to
    *        search for.
-   * @param offset The index into the BLOB to starting searching for the pattern.
+   * @param start The index into the BLOB to starting searching for the pattern.
    * @return The offset at which the pattern is first found, or -1 if the
    *         pattern is not found.
    * @exception SQLException If an error occurs.

@@ -1,5 +1,5 @@
 /* DatabaseMetaData.java -- Information about the database itself.
-   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -1395,7 +1395,7 @@ public interface DatabaseMetaData
    *        or "" to return procedures from all catalogs.
    * @param schemaPattern A schema pattern for the schemas to return stored
    *        procedures from, or "" to return procedures from all schemas.
-   * @param namePattern The pattern of procedures names to return.
+   * @param procedureNamePattern The pattern of procedures names to return.
    * @returns A <code>ResultSet</code> with all the requested procedures.
    * @exception SQLException If an error occurs.
    */
@@ -1436,8 +1436,8 @@ public interface DatabaseMetaData
    *        or "" to return procedures from all catalogs.
    * @param schemaPattern A schema pattern for the schemas to return stored
    *        procedures from, or "" to return procedures from all schemas.
-   * @param namePattern The pattern of procedures names to return.
-   * @param columnPattern The pattern of column names to return.
+   * @param procedureNamePattern The pattern of procedures names to return.
+   * @param columnNamePattern The pattern of column names to return.
    * @returns A <code>ResultSet</code> with all the requested procedures.
    * @exception SQLException If an error occurs.
    */
@@ -1462,7 +1462,7 @@ public interface DatabaseMetaData
    *        or "" to return tables from all catalogs.
    * @param schemaPattern A schema pattern for the schemas to return tables
    *        from, or "" to return tables from all schemas.
-   * @param namePattern The pattern of table names to return.
+   * @param tableNamePattern The pattern of table names to return.
    * @param types The list of table types to include; null returns all types.
    * @returns A <code>ResultSet</code> with all the requested tables.
    * @exception SQLException If an error occurs.
@@ -1536,8 +1536,8 @@ public interface DatabaseMetaData
    * or "" to return tables from all catalogs.
    * @param schemaPattern A schema pattern for the schemas to return 
    * tables from, or "" to return tables from all schemas.
-   * @param namePattern The pattern of tables names to return.
-   * @param columnPattern The pattern of column names to return.
+   * @param tableNamePattern The pattern of tables names to return.
+   * @param columnNamePattern The pattern of column names to return.
    * @returns A <code>ResultSet</code> with all the requested tables.
    * @exception SQLException If an error occurs.
    */
@@ -1569,7 +1569,8 @@ public interface DatabaseMetaData
    * @param schema The schema to retrieve information from, or the empty string
    *        to return entities not associated with a schema.
    * @param table The table name to return information for.
-   * @param columnPattern A pattern of column names to return information for.
+   * @param columnNamePattern A pattern of column names to return information 
+   *     for.
    * @return A <code>ResultSet</code> with all the requested privileges.
    * @exception SQLException If an error occurs.
    */
@@ -1597,9 +1598,9 @@ public interface DatabaseMetaData
    * @param catalog The catalog to retrieve information from, or the empty string
    *        to return entities not associated with a catalog, or <code>null</code>
    *        to return information from all catalogs.
-   * @param schema The schema to retrieve information from, or the empty string
+   * @param schemaPattern The schema to retrieve information from, or the empty string
    *        to return entities not associated with a schema.
-   * @param tablePattern The table name pattern of tables to return 
+   * @param tableNamePattern The table name pattern of tables to return 
    *        information for.
    * @return A <code>ResultSet</code> with all the requested privileges.
    * @exception SQLException If an error occurs.
@@ -1635,7 +1636,6 @@ public interface DatabaseMetaData
    * @param schema The schema to retrieve information from, or the empty string
    * to return entities not associated with a schema.
    * @param table The table name to return information for.
-   * @param columnPattern A pattern of column names to return information for.
    * @param scope One of the best row id scope constants from this class.
    * @param nullable <code>true</code> to include columns that are nullable,
    * <code>false</code> otherwise.
@@ -1671,7 +1671,6 @@ public interface DatabaseMetaData
    * @param schema The schema to retrieve information from, or the empty string
    *        to return entities not associated with a schema.
    * @param table The table name to return information for.
-   * @param columnPattern A pattern of column names to return information for.
    * @return A <code>ResultSet</code> with the version columns.
    * @exception SQLException If an error occurs.
    */
@@ -1697,7 +1696,6 @@ public interface DatabaseMetaData
    * @param schema The schema to retrieve information from, or the empty string
    *        to return entities not associated with a schema.
    * @param table The table name to return information for.
-   * @param columnPattern A pattern of column names to return information for.
    * @return A <code>ResultSet</code> with the primary key columns.
    * @exception SQLException If an error occurs.
    */
@@ -1825,19 +1823,19 @@ public interface DatabaseMetaData
    * <code>importedKeyNotDeferrable</code>).</li>
    * </ol>
    *
-   * @param primCatalog The catalog to retrieve information from, or the empty string
+   * @param primaryCatalog The catalog to retrieve information from, or the empty string
    *        to return entities not associated with a catalog, or <code>null</code>
    *        to return information from all catalogs, on the exporting side.
-   * @param primSchema The schema to retrieve information from, or the empty string
+   * @param primarySchema The schema to retrieve information from, or the empty string
    *        to return entities not associated with a schema, on the exporting side.
-   * @param primTable The table name to return information for, on the exporting
+   * @param primaryTable The table name to return information for, on the exporting
    *        side.
-   * @param forCatalog The catalog to retrieve information from, or the empty string
+   * @param foreignCatalog The catalog to retrieve information from, or the empty string
    *        to return entities not associated with a catalog, or <code>null</code>
    *        to return information from all catalogs, on the importing side.
-   * @param forSchema The schema to retrieve information from, or the empty string
+   * @param foreignSchema The schema to retrieve information from, or the empty string
    *        to return entities not associated with a schema on the importing side.
-   * @param forTable The table name to return information for on the importing
+   * @param foreignTable The table name to return information for on the importing
    *        side.
    * @return A <code>ResultSet</code> with the requested information
    * @exception SQLException If an error occurs.
@@ -1924,7 +1922,7 @@ public interface DatabaseMetaData
    * @param table The table name to return information for.
    * @param unique <code>true</code> to return only unique indexes, 
    *        <code>false</code> otherwise.
-   * @param approx <code>true</code> if data values can be approximations,
+   * @param approximate <code>true</code> if data values can be approximations,
    *        <code>false</code> otherwise.
    * @return A <code>ResultSet</code> with the requested index information
    * @exception SQLException If an error occurs.
@@ -1954,8 +1952,8 @@ public interface DatabaseMetaData
    *
    * @param type The desired result type, which is one of the constants
    *        defined in <code>ResultSet</code>.
-   * @param concur The desired concurrency type, which is one of the constants
-   *        defined in <code>ResultSet</code>.
+   * @param concurrency The desired concurrency type, which is one of the 
+   *        constants defined in <code>ResultSet</code>.
    * @return <code>true</code> if the result set type is supported,
    *         <code>false</code> otherwise.
    * @exception SQLException If an error occurs.
@@ -2108,9 +2106,9 @@ public interface DatabaseMetaData
    * @param catalog The catalog to retrieve information from, or the empty string
    *        to return entities not associated with a catalog, or <code>null</code>
    *        to return information from all catalogs.
-   * @param schema The schema to retrieve information from, or the empty string
+   * @param schemaPattern The schema to retrieve information from, or the empty string
    *        to return entities not associated with a schema.
-   * @param typePattern The type name pattern to match.
+   * @param typeNamePattern The type name pattern to match.
    * @param types The type identifier patterns (from <code>Types</code>) to
    *        match.
    * @return A <code>ResultSet</code> with the requested type information
