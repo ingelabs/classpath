@@ -1069,9 +1069,9 @@ public class JSlider extends JComponent implements SwingConstants, Accessible,
 
   /**
    * Returns an implementation-dependent string describing the attributes of
-   * this <code>JComboBox</code>.
+   * this <code>JSlider</code>.
    *
-   * @return A string describing the attributes of this <code>JComboBox</code>
+   * @return A string describing the attributes of this <code>JSlider</code>
    *         (never <code>null</code>).
    */
   protected String paramString()

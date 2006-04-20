@@ -1,5 +1,17 @@
 2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JMenuItem.java
+	(paramString): Updated API docs,
+	(getAccessibleContext): Added API docs,
+	(AccessibleJMenuItem.stateChanged): Marked as stub,
+	(AccessibleJMenuItem.getAccessibleRole): Added API docs,
+	* javax/swing/JSlider.java
+	(paramString): Fix for API docs,
+	* javax/swing/JToolTip.java
+	(getAccessibleContext): Fix for API docs.
+
+2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JRadioButtonMenuItem.java
 	(paramString): Reimplemented,
 	(getAccessibleContext): API docs added,
