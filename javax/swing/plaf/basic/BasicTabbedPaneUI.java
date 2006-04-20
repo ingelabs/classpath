@@ -1954,6 +1954,8 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         return;
       }
 
+    int ascent = metrics.getAscent();
+
     int mnemIndex = tabPane.getDisplayedMnemonicIndexAt(tabIndex);
     if (tabPane.isEnabled() && tabPane.isEnabledAt(tabIndex))
       {
@@ -1970,10 +1972,9 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         if (mnemIndex != -1)
           BasicGraphicsUtils.drawStringUnderlineCharAt(g, title, mnemIndex,
                                                        textRect.x,
-                                                       textRect.y
-                                                       + metrics.getAscent());
+                                                       textRect.y + ascent);
         else
-          g.drawString(title, textRect.x, textRect.y + metrics.getAscent());
+          g.drawString(title, textRect.x, textRect.y + ascent);
       }
     else
       {
@@ -1981,17 +1982,19 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         g.setColor(bg.brighter());
         if (mnemIndex != -1)
           BasicGraphicsUtils.drawStringUnderlineCharAt(g, title, mnemIndex,
-                                                       textRect.x, textRect.y);
+                                                       textRect.x, textRect.y
+                                                       + ascent);
         else
-          g.drawString(title, textRect.x, textRect.y);
+          g.drawString(title, textRect.x, textRect.y + ascent);
 
         g.setColor(bg.darker());
         if (mnemIndex != -1)
           BasicGraphicsUtils.drawStringUnderlineCharAt(g, title, mnemIndex,
                                                        textRect.x + 1,
-                                                       textRect.y + 1);
+                                                       textRect.y + 1
+                                                       + ascent);
         else
-          g.drawString(title, textRect.x + 1, textRect.y + 1);
+          g.drawString(title, textRect.x + 1, textRect.y + 1 + ascent);
       }
   }
 
