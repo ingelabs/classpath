@@ -419,7 +419,7 @@ public class WrappedPlainView extends BoxView implements TabExpander
   class WrappedLine extends View
   { 
     /** Used to cache the number of lines for this View **/
-    int numLines;
+    int numLines = -1;
     
     public WrappedLine(Element elem)
     {
@@ -489,6 +489,10 @@ public class WrappedPlainView extends BoxView implements TabExpander
      */
     public float getPreferredSpan(int axis)
     {
+      // numLines may be invalid at this point and needs to be calculated.
+      if (numLines == -1)
+        determineNumLines();
+
       if (axis == X_AXIS)
         return getWidth();
       else if (axis == Y_AXIS)
@@ -632,6 +636,16 @@ public class WrappedPlainView extends BoxView implements TabExpander
      */
     void updateDamage (Rectangle a)
     {
+      // If the allocation area is empty we can't do anything useful.
+      // As determining the number of lines is impossible in that state we
+      // reset it to an invalid value which can then be recalculated at a
+      // later point.
+      if (a.isEmpty())
+        {
+          numLines = -1;
+          return;
+        }
+      
       int oldNumLines = numLines;
       determineNumLines();
       

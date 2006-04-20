@@ -1,3 +1,12 @@
+2006-04-20  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/WrappedPlainView.java: Initialize
+	WrappedLine.numLines with -1.
+	(WrappedPlainView.WrappedLine.getPreferredSpan): Check whether
+	numLines is -1 and reculcalate the value appropriately.
+	(WrappedPlainView.WrappedLine.updateDamage): Set numLines to -1 if
+	allocation area is empty.
+
 2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JTabbedPane.java
