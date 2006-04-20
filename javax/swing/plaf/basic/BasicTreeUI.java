@@ -1,5 +1,5 @@
 /* BasicTreeUI.java --
- Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
+ Copyright (C) 2002, 2004, 2005, 2006, Free Software Foundation, Inc.
 
  This file is part of GNU Classpath.
 
@@ -100,7 +100,6 @@ import javax.swing.plaf.TreeUI;
 import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.FixedHeightLayoutCache;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;

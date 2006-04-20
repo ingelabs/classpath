@@ -1,5 +1,13 @@
 2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicSpinnerUI.java: Removed unused imports,
+	* javax/swing/plaf/basic/BasicTextAreaUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicTextFieldUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicTextUI.java: Likewise,
+	* javax/swing/plaf/basic/BasicTreeUI.java: Likewise.
+
+2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* java/sql/Array.java: Fixed Eclipse API doc warnings,
 	* java/sql/Blob.java: Likewise,
 	* java/sql/CallableStatement.java: Likewise,
