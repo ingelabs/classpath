@@ -1026,7 +1026,7 @@ public class JList extends JComponent implements Accessible, Scrollable
    */
   public JList()
   {
-    init();
+    init(new DefaultListModel());
   }
 
   /**
@@ -1036,7 +1036,7 @@ public class JList extends JComponent implements Accessible, Scrollable
    */
   public JList(Object[] listData)
   {
-    init();
+    init(null);
     setListData(listData);
   }
 
@@ -1047,7 +1047,7 @@ public class JList extends JComponent implements Accessible, Scrollable
    */
   public JList(Vector listData)
   {
-    init();
+    init(null);
     setListData(listData);
   }
 
@@ -1058,11 +1058,15 @@ public class JList extends JComponent implements Accessible, Scrollable
    */
   public JList(ListModel listData)
   {
-    init();
-    setModel(listData);
+    init(listData);
   }
 
-  void init()
+  /**
+   * Initializes the list.
+   *
+   * @param m the list model to set
+   */
+  private void init(ListModel m)
   {
     dragEnabled = false;
     fixedCellHeight = -1;
@@ -1075,9 +1079,17 @@ public class JList extends JComponent implements Accessible, Scrollable
     cellRenderer = new DefaultListCellRenderer();
     listListener = new ListListener();
 
-    setModel(new DefaultListModel());
-    setSelectionModel(createSelectionModel());
-    setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    model = m;
+    if (model != null)
+      model.addListDataListener(listListener);
+
+    selectionModel = createSelectionModel();
+    if (selectionModel != null)
+      {
+        selectionModel.addListSelectionListener(listListener);
+        selectionModel.setSelectionMode
+                              (ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+      }
     setLayout(null);
     
     updateUI();
@@ -2140,7 +2152,14 @@ public class JList extends JComponent implements Accessible, Scrollable
    */
   public Rectangle getCellBounds(int index0, int index1)
   {
-    return getUI().getCellBounds(this, index0, index1);
+    ListUI ui = getUI();
+    Rectangle bounds = null;
+    if (ui != null)
+      {
+        bounds = ui.getCellBounds(this, index0, index1);
+      }
+    // When the UI is null, this method also returns null in the RI.
+    return bounds;
   }
 
   /**

@@ -1,3 +1,15 @@
+2006-04-20  Roman Kennke  <kennke@aicas.com>
+
+	PR 27222
+	* javax/swing/JList.java
+	(JList()): Call init() with DefaultListModel instance.
+	(JList(Object[])): Call init() with null.
+	(JList(Vector)): Call init() with null.
+	(JList(ListModel)): Call init() with model.
+	(init): Changed to take the model as argument. Don't call
+	setter methods and initialize stuff directly instead.
+	(getCellBounds): Check if UI is null.
+
 2006-04-20  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/WrappedPlainView.java: Initialize
