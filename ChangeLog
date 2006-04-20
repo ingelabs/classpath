@@ -1,3 +1,21 @@
+2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JTabbedPane.java
+	(AccessibleJTabbedPane.stateChanged): Marked as stub,
+	(AccessibleJTabbedPane.getAccessibleRole): Likewise,
+	(AccessibleJTabbedPane.getAccessibleChildrenCount): Likewise,
+	(AccessibleJTabbedPane.getAccessibleSelection): Likewise,
+	(AccessibleJTabbedPane.getAccessibleAt): Likewise,
+	(AccessibleJTabbedPane.getAccessibleSelectionCount): Likewise,
+	(AccessibleJTabbedPane.getAccessibleSelection(int)): Likewise,
+	(AccessibleJTabbedPane.isAccessibleChildSelected): Likewise,
+	(AccessibleJTabbedPane.addAccessibleSelection): Likewise,
+	(AccessibleJTabbedPane.removeAccessibleSelection): Likewise,
+	(AccessibleJTabbedPane.clearAccessibleSelection): Likewise,
+	(AccessibleJTabbedPane.selectAllAccessibleSelection): Likewise,
+	(Page.getAccessibleStateSet): Likewise,
+	(Page.getAccessibleIndexInParent): Likewise.
+
 2006-04-19  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JProgressBar.java
