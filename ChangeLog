@@ -1,5 +1,11 @@
 2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JDesktopPane.java
+	(paramString): Reimplemented,
+	plus API doc updates in AccessibleJDesktopPane.
+
+2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/ImageIcon.java:
 	(AccessibleImageIcon.getAccessibleStateSet): Return null always,
 	(AccessibleImageIcon.getLocale): Declared exception and always return 
