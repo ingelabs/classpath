@@ -1,3 +1,14 @@
+2006-04-20  Christian Thalinger  <twisti@complang.tuwien.ac.at>
+
+        * java/util/Locale.java (defaultLocale): Set to en_US per
+        default and use user.country but prioritize user.region if
+        defined.
+        (getLocale(String language, String country)): Renamed region to
+        country.
+        (getLocale(String language, String region, String variant)):
+        Likewise.
+        (getAvailableLocales): Likewise.
+
 2006-04-20  Roman Kennke  <kennke@aicas.com>
 
 	PR 27222
