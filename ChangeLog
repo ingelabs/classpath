@@ -1,3 +1,8 @@
+2006-04-20  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/Toolkit.java (getDefaultToolkit): Get classloader in
+	PrivilegedAction. Access awt.toolkit through SystemProperties.
+
 2006-04-20  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/ActionMap.java: Removed unused imports,
