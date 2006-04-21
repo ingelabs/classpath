@@ -35,7 +35,7 @@
 # obligated to do so.  If you do not wish to do so, delete this
 # exception statement from your version.
 
-
+# Note that the settings and ordering here are mirrored in Security.
 security.provider.1=gnu.java.security.provider.Gnu
 security.provider.2=gnu.javax.crypto.jce.GnuCrypto
 security.provider.3=gnu.javax.crypto.jce.GnuSasl
