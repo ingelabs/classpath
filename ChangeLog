@@ -1,5 +1,29 @@
 2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* gnu/javax/crypto/cipher/Anubis.java:
+	(selfTest): Use Boolean.valueOf() to avoid creating a new Boolean
+	instance,
+	* gnu/javax/crypto/cipher/Blowfish.java:
+	(selfTest): Likewise,
+	* gnu/javax/crypto/cipher/Cast5.java:
+	(selfTest): Likewise,
+	* gnu/javax/crypto/cipher/Khazad.java:
+	(selfTest): Likewise,
+	* gnu/javax/crypto/cipher/Rijndael.java:
+	(selfTest): Likewise,
+	* gnu/javax/crypto/cipher/Serpent.java:
+	(selfTest): Likewise,
+	* gnu/javax/crypto/cipher/Square.java:
+	(selfTest): Likewise,
+	* gnu/javax/crypto/cipher/Twofish.java:
+	(selfTest): Likewise,
+	* gnu/javax/crypto/mac/UMac32.java:
+	(selfTest): Likewise,
+	* gnu/javax/crypto/prng/CSPRNG.java:
+	(getSystemInstance): Likewise.
+
+2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* gnu/java/security/hash/Haval.java:
 	(selfTest): Use Boolean.valueOf() to avoid creating new Boolean 
 	instance,
