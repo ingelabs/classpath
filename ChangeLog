@@ -1,3 +1,31 @@
+2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* gnu/java/security/hash/Haval.java:
+	(selfTest): Use Boolean.valueOf() to avoid creating new Boolean 
+	instance,
+	* gnu/java/security/hash/MD2.java:
+	(selfTest): Likewise,
+	* gnu/java/security/hash/MD4.java:
+	(selfTest): Likewise,
+	* gnu/java/security/hash/MD5.java:
+	(selfTest): Likewise,
+	* gnu/java/security/hash/RipeMD128.java:
+	(selfTest): Likewise,
+	* gnu/java/security/hash/RipeMD160.java:
+	(selfTest): Likewise,
+	* gnu/java/security/hash/Sha160.java:
+	(selfTest): Likewise,
+	* gnu/java/security/hash/Sha256.java:
+	(selfTest): Likewise,
+	* gnu/java/security/hash/Sha384.java:
+	(selfTest): Likewise,
+	* gnu/java/security/hash/Sha512.java:
+	(selfTest): Likewise,
+	* gnu/java/security/hash/Tiger.java:
+	(selfTest): Likewise,
+	* gnu/java/security/hash/Whirlpool.java:
+	(selfTest): Likewise.
+
 2006-04-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java 
@@ -18,7 +46,7 @@
 	Pass the empty rectangle. (isFixedRowHeight): New method.
 	* javax/swing/tree/VariableHeightLayoutCache.java
 	(NodeRecord.getBounds):	Pass the empty rectangle.
-
+	
 2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* gnu/java/security/Properties.java
