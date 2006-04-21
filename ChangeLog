@@ -1,5 +1,10 @@
 2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* gnu/java/security/Properties.java
+	(init): Use Boolean.valueOf() to avoid creating new Boolean instances.
+
+2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* gnu/classpath/jdwp/util/Value.java
 	(getUntaggedObj(ByteBuffer, Class)): Use Boolean.valueOf() to avoid 
 	creating new Boolean instances.
