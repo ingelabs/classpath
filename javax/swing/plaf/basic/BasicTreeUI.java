@@ -2440,6 +2440,11 @@ public class BasicTreeUI
           treeState.setRootVisible(tree.isRootVisible());
           tree.repaint();
         }
+      if ((event.getPropertyName()).equals("selectionModel"))
+        {
+          TreeSelectionModel model = tree.getSelectionModel();
+          model.setRowMapper(treeState);
+        }
     }
   }
 

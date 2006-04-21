@@ -157,8 +157,7 @@ public class VariableHeightLayoutCache
       // not known. To work around this, it is assumed near infinitely large.
       if (bounds==null)
         bounds = getNodeDimensions(node, row, depth, isExpanded, 
-                                   new Rectangle(Integer.MAX_VALUE/2,
-                                                 Integer.MAX_VALUE/2));
+                                   new Rectangle());
       return bounds;      
     }
   }

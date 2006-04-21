@@ -1,3 +1,24 @@
+2006-04-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/plaf/basic/BasicTreeUI.java 
+	(PropertyChangeHandler.propertyChange): Set the row mapper
+	for the selection model.
+	* javax/swing/tree/AbstractLayoutCache.java 
+	(NodeDimensions.getNodeDimensions): Explained.
+	(getPreferredHeight, getPreferredWidth, isFixedRowHeight):
+	Implemented. (setRowHeight): Invalidate sizes. 
+	* javax/swing/tree/DefaultTreeSelectionModel.java
+	(addSelectionPath, addSelectionPaths): Update lead row.
+	(removeSelectionPath, removeSelectionPaths): Do nothing if
+	selection is empty.
+	(clone): Only clone list selection model if it is not null.
+	(getRow): New method. (isRowSelected, getLeadSelectionRow, 
+	setSelectionPath, setSelectionPaths, toString): Implemented.
+	* javax/swing/tree/FixedHeightLayoutCache.java (NodeRecord.getBounds):
+	Pass the empty rectangle. (isFixedRowHeight): New method.
+	* javax/swing/tree/VariableHeightLayoutCache.java
+	(NodeRecord.getBounds):	Pass the empty rectangle.
+
 2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* gnu/java/security/Properties.java

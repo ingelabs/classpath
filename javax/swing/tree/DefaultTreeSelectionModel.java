@@ -145,19 +145,33 @@ public class DefaultTreeSelectionModel
     
     // Clone the selection and the list selection model.
     cloned.selection = (TreePath[]) selection.clone();
-    cloned.listSelectionModel = 
-      (DefaultListSelectionModel) listSelectionModel.clone();
+    if (listSelectionModel!=null)
+      cloned.listSelectionModel = 
+        (DefaultListSelectionModel) listSelectionModel.clone();
     return cloned;
   }
 
   /**
    * Returns a string that shows this object's properties.
+   * The returned string lists the selected tree rows, if any.
    * 
    * @return a string that shows this object's properties
    */
   public String toString() throws NotImplementedException
   {
-    return null; // TODO
+    if (isSelectionEmpty())
+      return "[selection empty]";
+    else
+      {
+        StringBuffer b = new StringBuffer("selected rows: [");
+        for (int i = 0; i < selection.length; i++)
+          {
+            b.append(getRow(selection[i]));
+            b.append(' ');
+          }
+        b.append(", lead "+getLeadSelectionRow());
+        return b.toString();
+      }
   }
 
   /**
@@ -245,7 +259,46 @@ public class DefaultTreeSelectionModel
    */
   public void setSelectionPath(TreePath path)
   {
-    selection = new TreePath[] { path };
+    // The most frequently only one cell in the tree is selected.
+    if (selection!=null && selection.length==1)
+      selection [0] = path;
+    else
+      selection = new TreePath[] { path };
+    TreePath oldLead = leadPath;
+    TreeSelectionEvent event = 
+      new TreeSelectionEvent(this, path, true, oldLead, path);
+    leadIndex = 0;
+    leadRow = getRow(path);
+    leadPath = path;
+    fireValueChanged(event);
+  }
+  
+  /**
+   * Get the number of the tree row for the given path.
+   * 
+   * @param path the tree path
+   * @return the tree row for this path or -1 if the path is not visible.
+   */
+  int getRow(TreePath path)
+  {
+    RowMapper mapper = getRowMapper();
+
+    if (mapper instanceof AbstractLayoutCache)
+      {
+        // The absolute majority of cases, unless the TreeUI is very
+        // seriously rewritten
+        AbstractLayoutCache ama = (AbstractLayoutCache) mapper;
+        return ama.getRowForPath(path);
+      }
+    else
+      {
+        // Generic non optimized implementation.
+        int[] rows = mapper.getRowsForPaths(new TreePath[] { path });
+        if (rows.length == 0)
+          return - 1;
+        else
+          return rows[0];
+      }
   }
 
   /**
@@ -256,11 +309,11 @@ public class DefaultTreeSelectionModel
    * @param paths the paths to set as selection
    */
   public void setSelectionPaths(TreePath[] paths)
-      throws NotImplementedException
   {
     // Must be called, as defined in JDK API 1.4.
     insureUniqueness();
-    // TODO
+    removeSelectionPaths(selection);
+    addSelectionPaths(paths);
   }
 
   /**
@@ -285,6 +338,8 @@ public class DefaultTreeSelectionModel
             System.arraycopy(temp, 0, selection, 0, temp.length);
           }
         leadPath = path;
+        leadRow = getRow(path);
+        leadIndex = selection.length-1;
         fireValueChanged(new TreeSelectionEvent(this, path, true, leadPath,
                                                 path));
       }
@@ -321,6 +376,9 @@ public class DefaultTreeSelectionModel
                     System.arraycopy(temp, 0, selection, 0, temp.length);
                   }
                 leadPath = paths[paths.length - 1];
+                leadRow = getRow(leadPath);
+                leadIndex = selection.length-1;
+                
                 fireValueChanged(new TreeSelectionEvent(this, v0, true,
                                                         leadPath, paths[0]));
               }
@@ -336,6 +394,9 @@ public class DefaultTreeSelectionModel
    */
   public void removeSelectionPath(TreePath path)
   {
+    if (isSelectionEmpty())
+      return;
+    
     int index = - 1;
     if (isPathSelected(path))
       {
@@ -367,6 +428,8 @@ public class DefaultTreeSelectionModel
    */
   public void removeSelectionPaths(TreePath[] paths)
   {
+    if (isSelectionEmpty())
+      return;
     if (paths != null)
       {
         int index = - 1;
@@ -588,10 +651,35 @@ public class DefaultTreeSelectionModel
    * @param row the index of the row to check
    * @return <code>true</code> if the row is in this selection,
    *         <code>false</code> otherwise
+   * @throws NullPointerException if the row mapper is not set (can only happen
+   *           if the user has plugged in the custom incorrect TreeUI
+   *           implementation.
    */
-  public boolean isRowSelected(int row) throws NotImplementedException
+  public boolean isRowSelected(int row)
   {
-    return false; // TODO
+    // Return false if nothing is selected.
+    if (isSelectionEmpty())
+      return false;
+
+    RowMapper mapper = getRowMapper();
+
+    if (mapper instanceof AbstractLayoutCache)
+      {
+        // The absolute majority of cases, unless the TreeUI is very
+        // seriously rewritten
+        AbstractLayoutCache ama = (AbstractLayoutCache) mapper;
+        TreePath path = ama.getPathForRow(row);
+        return isPathSelected(path);
+      }
+    else
+      {
+        // Generic non optimized implementation.
+        int[] rows = mapper.getRowsForPaths(selection);
+        for (int i = 0; i < rows.length; i++)
+          if (rows[i] == row)
+            return true;
+        return false;
+      }
   }
 
   /**
@@ -612,7 +700,7 @@ public class DefaultTreeSelectionModel
     if ((rowMapper == null) || (leadPath == null))
       return - 1;
     else
-      return rowMapper.getRowsForPaths(new TreePath[] { leadPath })[0];
+      return getRow(leadPath);
   }
 
   /**
@@ -731,11 +819,28 @@ public class DefaultTreeSelectionModel
   }
 
   /**
-   * Updates the lead index instance field.
+   * Updates the lead selection row number after changing the lead selection
+   * path.
    */
-  protected void updateLeadIndex() throws NotImplementedException
+  protected void updateLeadIndex()
   {
-    // STUB
+    if (isSelectionEmpty())
+      {
+        leadRow = leadIndex = - 1;
+      }
+    else
+      {
+        leadRow = getRow(leadPath);
+        for (int i = 0; i < selection.length; i++)
+          {
+            if (selection[i].equals(leadPath))
+              {
+                leadIndex = i;
+                break;
+              }
+          }
+        leadIndex = leadRow;
+      }
   }
 
   /**

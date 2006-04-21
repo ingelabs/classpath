@@ -158,8 +158,7 @@ public class FixedHeightLayoutCache
       // not known. To work around this, it is assumed near infinitely large.
       if (bounds==null)
         bounds = getNodeDimensions(node, row, depth, isExpanded, 
-                                   new Rectangle(Integer.MAX_VALUE/2,
-                                                 Integer.MAX_VALUE/2));
+                                   new Rectangle());
       return bounds;      
     }
   }
@@ -599,4 +598,17 @@ public class FixedHeightLayoutCache
       }
     return maximalWidth;
   }
+  
+  /**
+   * Returns true if this layout supposes that all rows have the fixed
+   * height.
+   * 
+   * @return boolean true if all rows in the tree must have the fixed
+   * height (true by default).
+   */
+  protected boolean isFixedRowHeight()
+  {
+    return true; 
+  }
+  
 }
