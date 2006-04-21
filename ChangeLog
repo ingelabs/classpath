@@ -1,5 +1,10 @@
 2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/SpinnerDateModel.java: Updated API docs all over,
+	* javax/swing/SpinnerNumberModel.java: Likewise.
+
+2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/SpinnerDateModel.java
 	(SpinnerDateModel(Date, Comparable, Comparable, int)): Fix argument
 	checking to call compareTo() on start and end.
