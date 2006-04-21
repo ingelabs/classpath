@@ -1,7 +1,14 @@
+2006-04-21  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/reflect/AccessibleObject.java:
+	Implemented AnnotatedElement.
+	(getAnnotation, getAnnotations, getDeclaredAnnotations,
+	isAnnotationPresent): New methods.
+
 2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/border/AbstractBorder.java: API doc updates,
-	* javax/swing/border/BevelBorder.java: Likewise,
+ 	* javax/swing/border/BevelBorder.java: Likewise,
 	* javax/swing/border/CompoundBorder.java: Likewise,
 	* javax/swing/border/EtchedBorder.java: Likewise,
 	* javax/swing/border/LineBorder.java: Likewise,
