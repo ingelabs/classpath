@@ -106,9 +106,9 @@ public class SpinnerDateModel extends AbstractSpinnerModel
   {
     if (value == null) 
       throw new IllegalArgumentException("Null 'value' argument.");
-    if (start != null && value.compareTo(start) < 0)
+    if (start != null && start.compareTo(value) > 0)
       throw new IllegalArgumentException("Require value on or after start.");
-    if (end != null && value.compareTo(end) > 0)
+    if (end != null && end.compareTo(value) < 0)
       throw new IllegalArgumentException("Require value on or before end.");
     date = Calendar.getInstance();
     date.setTime(value);

@@ -1,3 +1,9 @@
+2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/SpinnerDateModel.java
+	(SpinnerDateModel(Date, Comparable, Comparable, int)): Fix argument
+	checking to call compareTo() on start and end.
+
 2006-04-21  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/reflect/AccessibleObject.java:
