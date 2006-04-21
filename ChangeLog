@@ -1,5 +1,15 @@
 2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/border/AbstractBorder.java: API doc updates,
+	* javax/swing/border/BevelBorder.java: Likewise,
+	* javax/swing/border/CompoundBorder.java: Likewise,
+	* javax/swing/border/EtchedBorder.java: Likewise,
+	* javax/swing/border/LineBorder.java: Likewise,
+	* javax/swing/border/MatteBorder.java: Likewise,
+	* javax/swing/border/TitledBorder.java: Likewise.
+
+2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* gnu/javax/crypto/cipher/Anubis.java:
 	(selfTest): Use Boolean.valueOf() to avoid creating a new Boolean
 	instance,
