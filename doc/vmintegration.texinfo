@@ -446,13 +446,15 @@ and direct memory manipulation than would have been achieved by using Java.
 @item @code{currentTimeMillis()} -- Gets the system time in milliseconds.
 @item @code{getenv(String)} -- Returns the value of the specified environment
 variable.
+@item @code{getenv()} -- Returns a list of `name=value' pairs which correspond
+to the environment variables.
 @end itemize
 @item Java Methods
 @itemize @bullet
 @item @code{makeStandardInputStream()} -- Helps provide the functionality of
-@code{System.in} by wrapping the appropriate file descriptor in a buffered
-file input stream.  VMs may choose to create the stream from the descriptor
-differently rather than using this method.
+@code{System.in} by wrapping the appropriate file descriptor in a
+buffered file input stream.  VMs may choose to create the stream from
+the descriptor differently rather than using this method.
 @item @code{makeStandardOutputStream()} -- Helps provide the functionality of
 @code{System.out} by wrapping the appropriate file descriptor in a buffered
 file output stream.  VMs may choose to create the stream from the descriptor
@@ -573,11 +575,14 @@ for all three by Classpath, making VM implementation optional.  These use
 the POSIX functions, @code{fork()}, @code{waitpid()} and @code{kill()}.
 
 @itemize @bullet
-@item @code{nativeSpawn(String[],String[],File)} -- The VM should create a
-new process which uses the specified command-line arguments, environment
-variables and working directory.  Unlike the other two methods, this
-method is linked to an instance, and must call @code{setProcessInfo()} with
-the results before returning.
+@item @code{nativeSpawn(String[],String[],File,boolean)} -- The VM should
+create a new process which uses the specified command-line arguments,
+environment variables and working directory.  Unlike the other two
+methods, this method is linked to an instance, and must call
+@code{setProcessInfo()} with the results before returning.  The
+boolean argument maps to the @code{redirectErrorStream} property of
+@code{java.lang.ProcessBuilder}.  When true, the output and error streams
+are merged.
 @item @code{nativeReap()} -- This is called to perform a reap of any
 zombie processes, and should not block, instead returning a boolean as to
 whether reaping actually took place.

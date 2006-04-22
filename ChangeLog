@@ -1,3 +1,156 @@
+2006-04-22  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* NEWS:
+	Mention changes to VMProcess and VMSystem.
+	* doc/vmintegration.texinfo:
+	Change documentation on VMProcess and VMSystem.
+	* java/lang/reflect/Modifier.java:
+	(toString(int,StringBuilder)): Merged from generics
+	branch.
+	* vm/reference/java/lang/reflect/Constructor.java
+	(toString()): Use StringBuilder.
+	(toGenericString()): Likewise.
+	* vm/reference/java/lang/reflect/Field.java:
+	(toString()): Use StringBuilder.
+	(toGenericString()): Likewise.
+	* vm/reference/java/lang/reflect/Method.java
+	(toString()): Use StringBuilder.
+	(toGenericString()): Likewise.
+	* include/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h,
+	* include/gnu_java_awt_peer_gtk_GdkFontPeer.h,
+	* include/gnu_java_awt_peer_gtk_GdkGraphics.h,
+	* include/gnu_java_awt_peer_gtk_GdkGraphics2D.h,
+	* include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h,
+	* include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h,
+	* include/gnu_java_awt_peer_gtk_GdkRobotPeer.h,
+	* include/gnu_java_awt_peer_gtk_GdkTextLayout.h,
+	* include/gnu_java_awt_peer_gtk_GtkButtonPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkCanvasPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkCheckboxPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkChoicePeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkClipboard.h,
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkFileDialogPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkFramePeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkGenericPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkImage.h,
+	* include/gnu_java_awt_peer_gtk_GtkLabelPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkListPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkMenuBarPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkMenuComponentPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkMenuItemPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkMenuPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkPanelPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkScrollPanePeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkScrollbarPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkSelection.h,
+	* include/gnu_java_awt_peer_gtk_GtkTextAreaPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h,
+	* include/gnu_java_awt_peer_gtk_GtkToolkit.h,
+	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h,
+	* include/gnu_java_awt_peer_qt_MainQtThread.h,
+	* include/gnu_java_awt_peer_qt_QMatrix.h,
+	* include/gnu_java_awt_peer_qt_QPainterPath.h,
+	* include/gnu_java_awt_peer_qt_QPen.h,
+	* include/gnu_java_awt_peer_qt_QtAudioClip.h,
+	* include/gnu_java_awt_peer_qt_QtButtonPeer.h,
+	* include/gnu_java_awt_peer_qt_QtCanvasPeer.h,
+	* include/gnu_java_awt_peer_qt_QtCheckboxPeer.h,
+	* include/gnu_java_awt_peer_qt_QtChoicePeer.h,
+	* include/gnu_java_awt_peer_qt_QtComponentPeer.h,
+	* include/gnu_java_awt_peer_qt_QtContainerPeer.h,
+	* include/gnu_java_awt_peer_qt_QtDialogPeer.h,
+	* include/gnu_java_awt_peer_qt_QtEmbeddedWindowPeer.h,
+	* include/gnu_java_awt_peer_qt_QtFileDialogPeer.h,
+	* include/gnu_java_awt_peer_qt_QtFontMetrics.h,
+	* include/gnu_java_awt_peer_qt_QtFontPeer.h,
+	* include/gnu_java_awt_peer_qt_QtFramePeer.h,
+	* include/gnu_java_awt_peer_qt_QtGraphics.h,
+	* include/gnu_java_awt_peer_qt_QtGraphicsEnvironment.h,
+	* include/gnu_java_awt_peer_qt_QtImage.h,
+	* include/gnu_java_awt_peer_qt_QtLabelPeer.h,
+	* include/gnu_java_awt_peer_qt_QtListPeer.h,
+	* include/gnu_java_awt_peer_qt_QtMenuBarPeer.h,
+	* include/gnu_java_awt_peer_qt_QtMenuComponentPeer.h,
+	* include/gnu_java_awt_peer_qt_QtMenuItemPeer.h,
+	* include/gnu_java_awt_peer_qt_QtMenuPeer.h,
+	* include/gnu_java_awt_peer_qt_QtPanelPeer.h,
+	* include/gnu_java_awt_peer_qt_QtPopupMenuPeer.h,
+	* include/gnu_java_awt_peer_qt_QtScreenDevice.h,
+	* include/gnu_java_awt_peer_qt_QtScrollPanePeer.h,
+	* include/gnu_java_awt_peer_qt_QtScrollbarPeer.h,
+	* include/gnu_java_awt_peer_qt_QtTextAreaPeer.h,
+	* include/gnu_java_awt_peer_qt_QtTextFieldPeer.h,
+	* include/gnu_java_awt_peer_qt_QtToolkit.h,
+	* include/gnu_java_awt_peer_qt_QtVolatileImage.h,
+	* include/gnu_java_awt_peer_qt_QtWindowPeer.h,
+	* include/gnu_javax_sound_midi_alsa_AlsaMidiDeviceProvider.h,
+	* include/gnu_javax_sound_midi_alsa_AlsaMidiSequencerDevice.h,
+	* include/gnu_javax_sound_midi_alsa_AlsaPortDevice.h,
+	* include/gnu_javax_sound_midi_dssi_DSSIMidiDeviceProvider.h,
+	* include/gnu_javax_sound_midi_dssi_DSSISynthesizer.h,
+	* include/gnu_xml_libxmlj_dom_GnomeAttr.h,
+	* include/gnu_xml_libxmlj_dom_GnomeDocument.h,
+	* include/gnu_xml_libxmlj_dom_GnomeDocumentBuilder.h,
+	* include/gnu_xml_libxmlj_dom_GnomeDocumentType.h,
+	* include/gnu_xml_libxmlj_dom_GnomeElement.h,
+	* include/gnu_xml_libxmlj_dom_GnomeEntity.h,
+	* include/gnu_xml_libxmlj_dom_GnomeNamedNodeMap.h,
+	* include/gnu_xml_libxmlj_dom_GnomeNode.h,
+	* include/gnu_xml_libxmlj_dom_GnomeNodeList.h,
+	* include/gnu_xml_libxmlj_dom_GnomeNotation.h,
+	* include/gnu_xml_libxmlj_dom_GnomeProcessingInstruction.h,
+	* include/gnu_xml_libxmlj_dom_GnomeTypeInfo.h,
+	* include/gnu_xml_libxmlj_dom_GnomeXPathExpression.h,
+	* include/gnu_xml_libxmlj_dom_GnomeXPathNSResolver.h,
+	* include/gnu_xml_libxmlj_dom_GnomeXPathNodeList.h,
+	* include/gnu_xml_libxmlj_dom_GnomeXPathResult.h,
+	* include/gnu_xml_libxmlj_sax_GnomeLocator.h,
+	* include/gnu_xml_libxmlj_sax_GnomeXMLReader.h,
+	* include/gnu_xml_libxmlj_transform_GnomeTransformer.h,
+	* include/gnu_xml_libxmlj_transform_GnomeTransformerFactory.h,
+	* include/java_lang_VMProcess.h,
+	* include/java_lang_VMSystem.h:
+	Regenerated with GCJ 4.1.
+
+2005-12-05  Casey Marshall <csm@gnu.org>
+
+	* native/jni/classpath/jcl.h (environ): define, or declare
+	'extern.'
+	* native/jni/java-lang/java_lang_VMProcess.c: include <jcl.h>.
+	Remove 'extern' define.
+	* native/jni/java-lang/java_lang_VMSystem.c
+	(Java_java_lang_VMSystem_environ): don't declare 'environ.'
+
+2005-09-25  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/System.java,
+	vm/reference/java/lang/VMSystem.java: Removed generic type
+	from VMSystem.environ() signature.
+
+2005-05-04  Tom Tromey  <tromey@redhat.com>
+
+	* native/jni/java-lang/java_lang_VMProcess.c
+	(Java_java_lang_VMProcess_nativeSpawn): Added 'redirect'
+	argument.  Use defines instead of contents.
+	* vm/reference/java/lang/VMProcess.java (redirect): New field.
+	(spawn): Updated.
+	(setProcessInfo): Updated.
+	(VMProcess): Added 'redirect' argument.
+	(nativeSpawn): Likewise.
+	(exec): New overload.
+
+2005-01-20  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* include/java_lang_VMSystem.h:
+	(Java_java_lang_VMSystem_environ): added
+	* vm/reference/java/lang/VMSystem.java:
+	(environ()): new native method
+
 2006-04-22  Casey Marshall  <csm@gnu.org>
 
 	Fixes PR classpath/27228.

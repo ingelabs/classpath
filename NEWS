@@ -44,6 +44,10 @@ Runtime interface changes:
   VM failing altogether), but VMs should aim to support them where possible.
 * The implementation of java.lang.instrument has been merged to the main
   branch from the generics branch.
+* The VM interfaces of the main branch and the generics branch are now
+  consistent with one another.  As a result, the main branch includes an
+  additional environ() function in VMSystem and an additional argument has
+  been added to nativeSpawn() in VMProcess.
 
 New in release 0.90 (March 6, 2006)
 
