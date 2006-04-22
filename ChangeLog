@@ -1,3 +1,22 @@
+2006-04-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/tree/DefaultTreeSelectionModel.java
+	(addSelectionPath): If the path cannot be added, set it.
+	(addSelectionPaths): Call insureRowContinuity.
+	(arePathsContiguous): Implemented.
+	(canPathBeAdded): New private method.
+	(canPathsBeAdded): Implemented.
+	(canPathsBeRemoved): Implemented.
+	(getPath): New private method.
+	(insureRowContinuity): Implemented.
+	(removeSelectionPath): Call insureRowContinuity.
+	(removeSelectionPaths): Call insureRowContinuity.
+	(resetRowSelection): Removed stub marking, not used in implementation 
+	(nothing to do there).
+	(selectOne): New private method.
+	(setSelectionMode) Call insureRowContinuity.
+	(setSelectionPaths) Remove the current selection by clearing it.
+
 2006-04-22  Carsten Neumann  <cn-develop@gmx.net>
 
 	* javax/sql/Array.java: Fixed eclipse API doc warnings, named method
