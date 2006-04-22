@@ -1,3 +1,13 @@
+2006-04-22  Casey Marshall  <csm@gnu.org>
+
+	Fixes PR classpath/27228.
+	* gnu/javax/crypto/jce/sig/DHKeyPairGeneratorSpi.java
+	(initialize): also accept `DHParameterSpec.'
+	* gnu/javax/crypto/key/dh/GnuDHKeyPairGenerator.java (setup):
+	handle a passed-in `DHParameterSpec' properly.
+	(generate): don't check if the random exponent is less than `q -
+	1' if no `q' was specified.
+
 2006-04-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTree.java (TreeSelectionRedirector.valueChanged):
