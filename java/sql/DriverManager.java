@@ -1,5 +1,6 @@
 /* DriverManager.java -- Manage JDBC drivers
-   Copyright (C) 1999, 2000, 2001, 2003, 2004, 2006, Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2003, 2004, 2006
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -312,20 +313,18 @@ public class DriverManager
   /**
    * This method sets the log stream in use by JDBC.
    *
-   * @param out The log stream in use by JDBC.
-   *
+   * @param stream The log stream in use by JDBC.
    * @deprecated Use <code>setLogWriter</code> instead.
    */
-  public static void setLogStream(PrintStream out)
+  public static void setLogStream(PrintStream stream)
   {
-    DriverManager.log_stream = out;
+    DriverManager.log_stream = stream;
   }
 
   /**
    * This method returns the log stream in use by JDBC.
    *
    * @return The log stream in use by JDBC.
-   *
    * @deprecated Use <code>getLogWriter()</code> instead.
    */
   public static PrintStream getLogStream()

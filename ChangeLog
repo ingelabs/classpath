@@ -1,3 +1,24 @@
+2006-04-22  Carsten Neumann  <cn-develop@gmx.net>
+
+	* javax/sql/Array.java: Fixed eclipse API doc warnings, named method
+	parameters consistendly, documented some methods.
+	* java/sql/Blob.java: Likewise.
+	* java/sql/CallableStatement.java: Likewise.
+	* java/sql/Clob.java: Likewise.
+	* java/sql/Connection.java: Likewise.
+	* java/sql/DatabaseMetaData.java: Likewise.
+	* java/sql/Date.java: Likewise.
+	* java/sql/Driver.java: Likewise.
+	* java/sql/PreparedStatement.java: Likewise.
+	* java/sql/ResultSet.java: Likewise.
+	* java/sql/ResultSetMetaData.java: Likewise.
+	* java/sql/SQLData.java: Likewise.
+	* java/sql/SQLOutput.java: Likewise.
+	* java/sql/SQLWarning.java: Likewise.
+	* java/sql/Statement.java: Likewise.
+	* java/sql/Time.java: Likewise.
+	* java/sql/Timestamp.java: Likewise.
+
 2006-04-21  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/27163:

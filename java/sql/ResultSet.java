@@ -1,5 +1,5 @@
 /* ResultSet.java -- A SQL statement result set.
-   Copyright (C) 1999, 2000, 2002, 2006, Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -692,7 +692,7 @@ public interface ResultSet
    * This method moves the result set position relative to the current row.
    * The offset can be positive or negative.
    *
-   * @param rows The relative row position to move to.
+   * @param rows The number of row positions to move.
    * @return <code>true</code> if the current position was changed,
    *         <code>false</code> otherwise.
    * @exception SQLException If an error occurs.
@@ -713,7 +713,9 @@ public interface ResultSet
    * This method provides a hint to the driver about which direction the
    * result set will be processed in. 
    *
-   * @param direction The direction in which rows will be processed. (Values?)
+   * @param direction The direction in which rows will be processed. The
+   *                  allowed values are the <code>FETCH_*</code> constants
+   *                  defined in this interface.
    * @exception SQLException If an error occurs.
    */
   void setFetchDirection(int direction) throws SQLException;
@@ -746,7 +748,7 @@ public interface ResultSet
 
   /**
    * This method returns the result set type of this result set.  This will
-   * be one of the TYPE_* constants defined in this interface.
+   * be one of the <code>TYPE_*</code> constants defined in this interface.
    *
    * @return The result set type.
    * @exception SQLException If an error occurs.
@@ -755,7 +757,7 @@ public interface ResultSet
 
   /**
    * This method returns the concurrency type of this result set.  This will
-   * be one of the CONCUR_* constants defined in this interface.
+   * be one of the <code>CONCUR_*</code> constants defined in this interface.
    *
    * @return The result set concurrency type.
    * @exception SQLException If an error occurs.
@@ -800,7 +802,7 @@ public interface ResultSet
    * does not update the actual database.  <code>updateRow</code> must be
    * called in order to do that.
    *
-   * param columnIndex The index of the column to update.
+   * @param columnIndex The index of the column to update.
    * @exception SQLException If an error occurs.
    */
   void updateNull(int columnIndex) throws SQLException;
@@ -811,10 +813,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateBoolean(int columnIndex, boolean x) throws SQLException;
+  void updateBoolean(int columnIndex, boolean value) throws SQLException;
 
   /**
    * This method updates the specified column to have a byte value.  This
@@ -822,10 +824,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateByte(int columnIndex, byte x) throws SQLException;
+  void updateByte(int columnIndex, byte value) throws SQLException;
 
   /**
    * This method updates the specified column to have a short value.  This
@@ -833,10 +835,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateShort(int columnIndex, short x) throws SQLException;
+  void updateShort(int columnIndex, short value) throws SQLException;
 
   /**
    * This method updates the specified column to have an int value.  This
@@ -844,10 +846,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateInt(int columnIndex, int x) throws SQLException;
+  void updateInt(int columnIndex, int value) throws SQLException;
 
   /**
    * This method updates the specified column to have a long value.  This
@@ -855,10 +857,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateLong(int columnIndex, long x) throws SQLException;
+  void updateLong(int columnIndex, long value) throws SQLException;
 
   /**
    * This method updates the specified column to have a float value.  This
@@ -866,10 +868,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateFloat(int columnIndex, float x) throws SQLException;
+  void updateFloat(int columnIndex, float value) throws SQLException;
 
   /**
    * This method updates the specified column to have a double value.  This
@@ -877,10 +879,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateDouble(int columnIndex, double x) throws SQLException;
+  void updateDouble(int columnIndex, double value) throws SQLException;
 
   /**
    * This method updates the specified column to have a BigDecimal value.  This
@@ -888,10 +890,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateBigDecimal(int columnIndex, BigDecimal x)
+  void updateBigDecimal(int columnIndex, BigDecimal value)
     throws SQLException;
 
   /**
@@ -900,10 +902,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateString(int columnIndex, String x) throws SQLException;
+  void updateString(int columnIndex, String value) throws SQLException;
 
   /**
    * This method updates the specified column to have a byte array value.  This
@@ -911,10 +913,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateBytes(int columnIndex, byte[] x) throws SQLException;
+  void updateBytes(int columnIndex, byte[] value) throws SQLException;
 
   /**
    * This method updates the specified column to have a java.sql.Date value.  This
@@ -922,10 +924,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateDate(int columnIndex, Date x) throws SQLException;
+  void updateDate(int columnIndex, Date value) throws SQLException;
 
   /**
    * This method updates the specified column to have a java.sql.Time value.  This
@@ -933,10 +935,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateTime(int columnIndex, Time x) throws SQLException;
+  void updateTime(int columnIndex, Time value) throws SQLException;
 
   /**
    * This method updates the specified column to have a java.sql.Timestamp value.  
@@ -944,10 +946,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateTimestamp(int columnIndex, Timestamp x)
+  void updateTimestamp(int columnIndex, Timestamp value)
     throws SQLException;
 
   /**
@@ -956,11 +958,11 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
-   * @param length The length of the stream.
+   * @param stream The stream from which the column value is updated.
+   * @param count The length of the stream.
    * @exception SQLException If an error occurs.
    */
-  void updateAsciiStream(int columnIndex, InputStream x, int length)
+  void updateAsciiStream(int columnIndex, InputStream stream, int count)
     throws SQLException;
 
   /**
@@ -969,11 +971,11 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
-   * @param length The length of the stream.
+   * @param stream The stream from which the column value is updated.
+   * @param count The length of the stream.
    * @exception SQLException If an error occurs.
    */
-  void updateBinaryStream(int columnIndex, InputStream x, int length)
+  void updateBinaryStream(int columnIndex, InputStream stream, int count)
     throws SQLException;
 
   /**
@@ -982,11 +984,11 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
-   * @param length The length of the stream.
+   * @param reader The reader from which the column value is updated.
+   * @param count The length of the stream.
    * @exception SQLException If an error occurs.
    */
-  void updateCharacterStream(int columnIndex, Reader x, int length)
+  void updateCharacterStream(int columnIndex, Reader reader, int count)
     throws SQLException;
 
   /**
@@ -995,11 +997,12 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
-   *
+   * @param value The new value of the column.
+   * @param scale The scale of the object in question, which is used only
+   *              for numeric type objects.
    * @exception SQLException If an error occurs.
    */
-  void updateObject(int columnIndex, Object x, int scale)
+  void updateObject(int columnIndex, Object value, int scale)
     throws SQLException;
 
   /**
@@ -1008,18 +1011,17 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnIndex The index of the column to update.
-   * @param x The new value of the column.
-
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateObject(int columnIndex, Object x) throws SQLException;
+  void updateObject(int columnIndex, Object value) throws SQLException;
 
   /**
    * This method updates the specified column to have a NULL value.  This
    * does not update the actual database.  <code>updateRow</code> must be
    * called in order to do that.
    *
-   * param columnName The name of the column to update.
+   * @param columnName The name of the column to update.
    * @exception SQLException If an error occurs.
    */
   void updateNull(String columnName) throws SQLException;
@@ -1030,10 +1032,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateBoolean(String columnName, boolean x) throws SQLException;
+  void updateBoolean(String columnName, boolean value) throws SQLException;
 
   /**
    * This method updates the specified column to have a byte value.  This
@@ -1041,10 +1043,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateByte(String columnName, byte x) throws SQLException;
+  void updateByte(String columnName, byte value) throws SQLException;
 
   /**
    * This method updates the specified column to have a short value.  This
@@ -1052,10 +1054,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateShort(String columnName, short x) throws SQLException;
+  void updateShort(String columnName, short value) throws SQLException;
 
   /**
    * This method updates the specified column to have an int value.  This
@@ -1063,10 +1065,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateInt(String columnName, int x) throws SQLException;
+  void updateInt(String columnName, int value) throws SQLException;
 
   /**
    * This method updates the specified column to have a long value.  This
@@ -1074,10 +1076,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateLong(String columnName, long x) throws SQLException;
+  void updateLong(String columnName, long value) throws SQLException;
 
   /**
    * This method updates the specified column to have a float value.  This
@@ -1085,10 +1087,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateFloat(String columnName, float x) throws SQLException;
+  void updateFloat(String columnName, float value) throws SQLException;
 
   /**
    * This method updates the specified column to have a double value.  This
@@ -1096,10 +1098,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateDouble(String columnName, double x) throws SQLException;
+  void updateDouble(String columnName, double value) throws SQLException;
 
   /**
    * This method updates the specified column to have a BigDecimal value.  This
@@ -1107,10 +1109,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateBigDecimal(String columnName, BigDecimal x)
+  void updateBigDecimal(String columnName, BigDecimal value)
     throws SQLException;
 
   /**
@@ -1119,10 +1121,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateString(String columnName, String x) throws SQLException;
+  void updateString(String columnName, String value) throws SQLException;
 
   /**
    * This method updates the specified column to have a byte array value.  This
@@ -1130,10 +1132,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateBytes(String columnName, byte[] x) throws SQLException;
+  void updateBytes(String columnName, byte[] value) throws SQLException;
 
   /**
    * This method updates the specified column to have a java.sql.Date value.  This
@@ -1141,10 +1143,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateDate(String columnName, Date x) throws SQLException;
+  void updateDate(String columnName, Date value) throws SQLException;
 
   /**
    * This method updates the specified column to have a java.sql.Time value.  This
@@ -1152,10 +1154,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateTime(String columnName, Time x) throws SQLException;
+  void updateTime(String columnName, Time value) throws SQLException;
 
   /**
    * This method updates the specified column to have a java.sql.Timestamp value.  
@@ -1163,10 +1165,10 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
    * @exception SQLException If an error occurs.
    */
-  void updateTimestamp(String columnName, Timestamp x)
+  void updateTimestamp(String columnName, Timestamp value)
     throws SQLException;
 
   /**
@@ -1175,11 +1177,11 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
-   * @param length The length of the stream.
+   * @param stream The stream from which the column value is updated.
+   * @param count The length of the stream.
    * @exception SQLException If an error occurs.
    */
-  void updateAsciiStream(String columnName, InputStream x, int length)
+  void updateAsciiStream(String columnName, InputStream stream, int count)
     throws SQLException;
 
   /**
@@ -1188,11 +1190,11 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
-   * @param length The length of the stream.
+   * @param stream The stream from which the column value is updated.
+   * @param count The length of the stream.
    * @exception SQLException If an error occurs.
    */
-  void updateBinaryStream(String columnName, InputStream x, int length)
+  void updateBinaryStream(String columnName, InputStream stream, int count)
     throws SQLException;
 
   /**
@@ -1201,24 +1203,11 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param reader The new value of the column.
-   * @param length The length of the stream.
-   *
+   * @param reader The reader from which the column value is updated.
+   * @param count The length of the stream.
    * @exception SQLException If an error occurs.
    */
-  void updateCharacterStream(String columnName, Reader reader,
-    int length) throws SQLException;
-
-  /**
-   * This method updates the specified column to have an Object value.  
-   * This does not update the actual database.  <code>updateRow</code> must be
-   * called in order to do that.
-   *
-   * @param columnName The name of the column to update.
-   * @param x The new value of the column.
-   * @exception SQLException If an error occurs.
-   */
-  void updateObject(String columnName, Object x, int scale)
+  void updateCharacterStream(String columnName, Reader reader, int count)
     throws SQLException;
 
   /**
@@ -1227,10 +1216,24 @@ public interface ResultSet
    * called in order to do that.
    *
    * @param columnName The name of the column to update.
-   * @param x The new value of the column.
+   * @param value The new value of the column.
+   * @param scale The scale of the object in question, which is used only
+   *              for numeric type objects.
    * @exception SQLException If an error occurs.
    */
-  void updateObject(String columnName, Object x) throws SQLException;
+  void updateObject(String columnName, Object value, int scale)
+    throws SQLException;
+
+  /**
+   * This method updates the specified column to have an Object value.  
+   * This does not update the actual database.  <code>updateRow</code> must be
+   * called in order to do that.
+   *
+   * @param columnName The name of the column to update.
+   * @param value The new value of the column.
+   * @exception SQLException If an error occurs.
+   */
+  void updateObject(String columnName, Object value) throws SQLException;
 
   /**
    * This method inserts the current row into the database.  The result set
@@ -1301,97 +1304,97 @@ public interface ResultSet
    * This method returns the value of the specified column as a Java
    * <code>Object</code> using the specified SQL type to Java type map.
    *
-   * @param i The index of the column to return.
+   * @param columnIndex The index of the column to return.
    * @param map The SQL type to Java type map to use.
    * @return The value of the column as an <code>Object</code>.
    * @exception SQLException If an error occurs.
    */
-  Object getObject(int i, Map map) throws SQLException;
+  Object getObject(int columnIndex, Map map) throws SQLException;
 
   /**
    * This method returns a <code>Ref</code> for the specified column which
    * represents the structured type for the column.
    *
-   * @param i  The index of the column to return.
+   * @param columnIndex The index of the column to return.
    * @return A <code>Ref</code> object for the column
    * @exception SQLException If an error occurs.
    */
-  Ref getRef(int i) throws SQLException;
+  Ref getRef(int columnIndex) throws SQLException;
 
   /**
    * This method returns the specified column value as a BLOB.
    *
-   * @param i The index of the column value to return.
+   * @param columnIndex The index of the column value to return.
    * @return The value of the column as a BLOB.
    * @exception SQLException If an error occurs.
    */
-  Blob getBlob(int i) throws SQLException;
+  Blob getBlob(int columnIndex) throws SQLException;
 
   /**
    * This method returns the specified column value as a CLOB.
    *
-   * @param i The index of the column value to return.
+   * @param columnIndex The index of the column value to return.
    * @return The value of the column as a CLOB.
    * @exception SQLException If an error occurs.
    */
-  Clob getClob(int i) throws SQLException;
+  Clob getClob(int columnIndex) throws SQLException;
 
   /**
    * This method returns the specified column value as an <code>Array</code>.
    *
-   * @param i The index of the column value to return.
+   * @param columnIndex The index of the column value to return.
    * @return The value of the column as an <code>Array</code>.
    * @exception SQLException If an error occurs.
    */
-  Array getArray(int i) throws SQLException;
+  Array getArray(int columnIndex) throws SQLException;
 
   /**
    * This method returns the value of the specified column as a Java
    * <code>Object</code> using the specified SQL type to Java type map.
    *
-   * @param colName The name of the column to return.
+   * @param columnName The name of the column to return.
    * @param map The SQL type to Java type map to use.
    * @return The value of the column as an <code>Object</code>.
    * @exception SQLException If an error occurs.
    */
-  Object getObject(String colName, Map map) throws SQLException;
+  Object getObject(String columnName, Map map) throws SQLException;
 
   /**
    * This method returns a <code>Ref</code> for the specified column which
    * represents the structured type for the column.
    *
-   * @param colName  The name of the column to return.
+   * @param columnName  The name of the column to return.
    * @return A <code>Ref</code> object for the column
    * @exception SQLException If an error occurs.
    */
-  Ref getRef(String colName) throws SQLException;
+  Ref getRef(String columnName) throws SQLException;
 
   /**
    * This method returns the specified column value as a BLOB.
    *
-   * @param colName The name of the column value to return.
+   * @param columnName The name of the column value to return.
    * @return The value of the column as a BLOB.
    * @exception SQLException If an error occurs.
    */
-  Blob getBlob(String colName) throws SQLException;
+  Blob getBlob(String columnName) throws SQLException;
 
   /**
    * This method returns the specified column value as a CLOB.
    *
-   * @param colName The name of the column value to return.
+   * @param columnName The name of the column value to return.
    * @return The value of the column as a CLOB.
    * @exception SQLException If an error occurs.
    */
-  Clob getClob(String colName) throws SQLException;
+  Clob getClob(String columnName) throws SQLException;
 
   /**
    * This method returns the specified column value as an <code>Array</code>.
    *
-   * @param colName The name of the column value to return.
+   * @param columnName The name of the column value to return.
    * @return The value of the column as an <code>Array</code>.
    * @exception SQLException If an error occurs.
    */
-  Array getArray(String colName) throws SQLException;
+  Array getArray(String columnName) throws SQLException;
 
   /**
    * This method returns the specified column value as a 
@@ -1476,52 +1479,132 @@ public interface ResultSet
     throws SQLException;
 
   /**
+   * This method returns the specified column value as a 
+   * <code>java.net.URL</code>.
+   * 
+   * @param columnIndex The index of the column value to return.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
   URL getURL(int columnIndex) throws SQLException;
 
   /**
+   * This method returns the specified column value as a
+   * <code>java.net.URL</code>.
+   * 
+   * @param columnName The name of the column value to return.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
   URL getURL(String columnName) throws SQLException;
 
   /**
+   * This method updates the specified column to have a 
+   * <code>java.sql.Ref</code> value. 
+   * This does not update the actual database. <code>updateRow</code> must be
+   * called in order to do that.
+   * 
+   * @parm columnIndex The index of the column value to update.
+   * @parm value The <code>java.sql.Ref</code> used to set the new value 
+   *             of the column.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
-  void updateRef(int columnIndex, Ref x) throws SQLException;
+  void updateRef(int columnIndex, Ref value) throws SQLException;
 
   /**
+   * This method updates the specified column to have a 
+   * <code>java.sql.Ref</code> value. 
+   * This does not update the actual database. <code>updateRow</code> must be
+   * called in order to do that.
+   * 
+   * @parm columnName The name of the column value to update.
+   * @parm value The <code>java.sql.Ref</code> used to set the new value 
+   *             of the column.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
-  void updateRef(String columnName, Ref x) throws SQLException;
+  void updateRef(String columnName, Ref value) throws SQLException;
 
   /**
+   * This method updates the specified column to have a 
+   * <code>java.sql.Blob</code> value. 
+   * This does not update the actual database. <code>updateRow</code> must be
+   * called in order to do that.
+   * 
+   * @parm columnIndex The index of the column value to update.
+   * @parm value The <code>java.sql.Blob</code> used to set the new value 
+   *             of the column.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
-  void updateBlob(int columnIndex, Blob x) throws SQLException;
+  void updateBlob(int columnIndex, Blob value) throws SQLException;
 
   /**
+   * This method updates the specified column to have a 
+   * <code>java.sql.Blob</code> value. 
+   * This does not update the actual database. <code>updateRow</code> must be
+   * called in order to do that.
+   * 
+   * @parm columnName The name of the column value to update.
+   * @parm value The <code>java.sql.Blob</code> used to set the new value 
+   *             of the column.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
-  void updateBlob(String columnName, Blob x) throws SQLException;
+  void updateBlob(String columnName, Blob value) throws SQLException;
 
   /**
+   * This method updates the specified column to have a 
+   * <code>java.sql.Clob</code> value. 
+   * This does not update the actual database. <code>updateRow</code> must be
+   * called in order to do that.
+   * 
+   * @parm columnIndex The index of the column value to update.
+   * @parm value The <code>java.sql.Clob</code> used to set the new value 
+   *             of the column.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
-  void updateClob(int columnIndex, Clob x) throws SQLException;
+  void updateClob(int columnIndex, Clob value) throws SQLException;
 
   /**
+   * This method updates the specified column to have a 
+   * <code>java.sql.Clob</code> value. 
+   * This does not update the actual database. <code>updateRow</code> must be
+   * called in order to do that.
+   * 
+   * @parm columnName The name of the column value to update.
+   * @parm value The <code>java.sql.Clob</code> used to set the new value 
+   *             of the column.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
-  void updateClob(String columnName, Clob x) throws SQLException;
+  void updateClob(String columnName, Clob value) throws SQLException;
 
   /**
+   * This method updates the specified column to have a 
+   * <code>java.sqlArray</code> value. 
+   * This does not update the actual database. <code>updateRow</code> must be
+   * called in order to do that.
+   * 
+   * @parm columnIndex The index of the column value to update.
+   * @parm value The new value of the column.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
-  void updateArray(int columnIndex, Array x) throws SQLException;
+  void updateArray(int columnIndex, Array value) throws SQLException;
 
   /**
+   * This method updates the specified column to have a 
+   * <code>java.sqlArray</code> value. 
+   * This does not update the actual database. <code>updateRow</code> must be
+   * called in order to do that.
+   * 
+   * @parm columnName The name of the column value to update.
+   * @parm value The new value of the column.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
-  void updateArray(String columnName, Array x) throws SQLException;
+  void updateArray(String columnName, Array value) throws SQLException;
 }

@@ -1,5 +1,5 @@
 /* PreparedStatement.java -- Interface for pre-compiled statements.
-   Copyright (C) 1999, 2000, 2006, Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -48,6 +48,8 @@ import java.util.Calendar;
  * statements.  This provides greater efficiency when calling the same
  * statement multiple times.  Parameters are allowed in a statement,
  * providings for maximum reusability.
+ * 
+ * <p> Note that in this class parameter indices start at 1, not 0.</p>
  *
  * @author Aaron M. Renn (arenn@urbanophile.com)
  */
@@ -75,180 +77,181 @@ public interface PreparedStatement extends Statement
    * This method populates the specified parameter with a SQL NULL value
    * for the specified type.
    *
-   * @param parameterIndex The index of the parameter to set.
-   * @param sqlType The SQL type identifier of the parameter from <code>Types</code>
+   * @param index The index of the parameter to set.
+   * @param sqlType The SQL type identifier of the parameter from 
+   *                <code>Types</code>
    *
    * @exception SQLException If an error occurs.
    */
-  void setNull(int parameterIndex, int sqlType) throws SQLException;
+  void setNull(int index, int sqlType) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>boolean</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setBoolean(int parameterIndex, boolean x) throws SQLException;
+  void setBoolean(int index, boolean value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>byte</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setByte(int parameterIndex, byte x) throws SQLException;
+  void setByte(int index, byte value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>short</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setShort(int parameterIndex, short x) throws SQLException;
+  void setShort(int index, short value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>int</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setInt(int parameterIndex, int x) throws SQLException;
+  void setInt(int index, int value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>long</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setLong(int parameterIndex, long x) throws SQLException;
+  void setLong(int index, long value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>float</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setFloat(int parameterIndex, float x) throws SQLException;
+  void setFloat(int index, float value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>double</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setDouble(int parameterIndex, double x) throws SQLException;
+  void setDouble(int index, double value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>java.math.BigDecimal</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setBigDecimal(int parameterIndex, BigDecimal x) throws
+  void setBigDecimal(int index, BigDecimal value) throws
       SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>String</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setString(int parameterIndex, String x) throws SQLException;
+  void setString(int index, String value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>byte</code> array value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setBytes(int parameterIndex, byte[] x) throws SQLException;
+  void setBytes(int index, byte[] value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>java.sql.Date</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setDate(int parameterIndex, Date x) throws SQLException;
+  void setDate(int index, Date value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>java.sql.Time</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setTime(int parameterIndex, Time x) throws SQLException;
+  void setTime(int index, Time value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>java.sql.Timestamp</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setTimestamp(int parameterIndex, Timestamp x)
+  void setTimestamp(int index, Timestamp value)
     throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * ASCII <code>InputStream</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
-   * @param length The number of bytes in the stream.
+   * @param index The index of the parameter value to set.
+   * @param stream The stream from which the parameter value is read.
+   * @param count The number of bytes in the stream.
    * @exception SQLException If an error occurs.
    */
-  void setAsciiStream(int parameterIndex, InputStream x, int length)
+  void setAsciiStream(int index, InputStream stream, int count)
     throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * Unicode UTF-8 <code>InputStream</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
-   * @param length The number of bytes in the stream.
+   * @param index The index of the parameter value to set.
+   * @param stream The stream from which the parameter value is read.
+   * @param count The number of bytes in the stream.
    * @exception SQLException If an error occurs.
    * @deprecated
    */
-  void setUnicodeStream(int parameterIndex, InputStream x, int length)
+  void setUnicodeStream(int index, InputStream stream, int count)
     throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * binary <code>InputStream</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
-   * @param length The number of bytes in the stream.
+   * @param index The index of the parameter value to set.
+   * @param stream The stream from which the parameter value is read.
+   * @param count The number of bytes in the stream.
    * @exception SQLException If an error occurs.
    */
-  void setBinaryStream(int parameterIndex, InputStream x, int length)
+  void setBinaryStream(int index, InputStream stream, int count)
     throws SQLException;
 
   /**
@@ -263,29 +266,29 @@ public interface PreparedStatement extends Statement
    * This method sets the specified parameter from the given Java
    * <code>Object</code> value.  The specified SQL object type will be used.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
-   * @param targetSqlType The SQL type to use for the parameter, from 
-   *     <code>Types</code>
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
+   * @param sqlType The SQL type to use for the parameter, from 
+   *                <code>Types</code>
    * @param scale The scale of the value, for numeric values only.
    * @exception SQLException If an error occurs.
    * @see Types
    */
-  void setObject(int parameterIndex, Object x, int targetSqlType,
-    int scale) throws SQLException;
+  void setObject(int index, Object value, int sqlType, int scale)
+    throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>Object</code> value.  The specified SQL object type will be used.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
-   * @param targetSqlType The SQL type to use for the parameter, from 
-   *     <code>Types</code>
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
+   * @param sqlType The SQL type to use for the parameter, from 
+   *                      <code>Types</code>
    * @exception SQLException If an error occurs.
    * @see Types
    */
-  void setObject(int parameterIndex, Object x, int targetSqlType)
+  void setObject(int index, Object value, int sqlType)
     throws SQLException;
 
   /**
@@ -293,11 +296,11 @@ public interface PreparedStatement extends Statement
    * <code>Object</code> value.  The default object type to SQL type mapping
    * will be used.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setObject(int parameterIndex, Object x) throws SQLException;
+  void setObject(int index, Object value) throws SQLException;
 
   /**
    * This method executes a prepared SQL query.
@@ -320,57 +323,59 @@ public interface PreparedStatement extends Statement
    * This method sets the specified parameter from the given Java
    * character <code>Reader</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param reader The reader for the parameter.
-   * @param length The number of bytes in the stream.
+   * @param index The index of the parameter value to set.
+   * @param reader The reader from which the parameter value is read.
+   * @param count The number of characters in the stream.
    * @exception SQLException If an error occurs.
    */
-  void setCharacterStream(int parameterIndex, Reader reader,
-    int length) throws SQLException;
+  void setCharacterStream(int index, Reader reader, int count)
+  throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>Ref</code> value.  The default object type to SQL type mapping
    * will be used.
    *
-   * @param i The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The <code>Ref</code> used to set the value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setRef(int i, Ref x) throws SQLException;
+  void setRef(int index, Ref value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>Blob</code> value.  The default object type to SQL type mapping
    * will be used.
    *
-   * @param i The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The <code>Blob</code> used to set the 
+   *             value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setBlob(int i, Blob x) throws SQLException;
+  void setBlob(int index, Blob value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>Clob</code> value.  The default object type to SQL type mapping
    * will be used.
    *
-   * @param i The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The <code>Clob</code> used to set the
+   *              value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setClob(int i, Clob x) throws SQLException;
+  void setClob(int index, Clob value) throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>Array</code> value.  The default object type to SQL type mapping
    * will be used.
    *
-   * @param i The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @exception SQLException If an error occurs.
    */
-  void setArray(int i, Array x) throws SQLException;
+  void setArray(int index, Array value) throws SQLException;
 
   /**
    * This method returns meta data for the result set from this statement.
@@ -384,56 +389,69 @@ public interface PreparedStatement extends Statement
    * This method sets the specified parameter from the given Java
    * <code>java.sql.Date</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @param cal The <code>Calendar</code> to use for timezone and locale.
    * @exception SQLException If an error occurs.
    */
-  void setDate(int parameterIndex, Date x, Calendar cal)
+  void setDate(int index, Date value, Calendar cal)
     throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>java.sql.Time</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @param cal The <code>Calendar</code> to use for timezone and locale.
    * @exception SQLException If an error occurs.
    */
-  void setTime(int parameterIndex, Time x, Calendar cal)
+  void setTime(int index, Time value, Calendar cal)
     throws SQLException;
 
   /**
    * This method sets the specified parameter from the given Java
    * <code>java.sql.Timestamp</code> value.
    *
-   * @param parameterIndex The index of the parameter value to set.
-   * @param x The value of the parameter.
+   * @param index The index of the parameter value to set.
+   * @param value The value of the parameter.
    * @param cal The <code>Calendar</code> to use for timezone and locale.
    * @exception SQLException If an error occurs.
    */
-  void setTimestamp(int parameterIndex, Timestamp x, Calendar cal)
+  void setTimestamp(int index, Timestamp value, Calendar cal)
     throws SQLException;
 
   /**
    * This method populates the specified parameter with a SQL NULL value
    * for the specified type.
    *
-   * @param paramIndex The index of the parameter to set.
-   * @param sqlType The SQL type identifier of the parameter from <code>Types</code>
+   * @param index The index of the parameter to set.
+   * @param sqlType The SQL type identifier of the parameter from
+   *                <code>Types</code>
    * @param typeName The name of the data type, for user defined types.
    * @exception SQLException If an error occurs.
    */
-  void setNull(int paramIndex, int sqlType, String typeName)
+  void setNull(int index, int sqlType, String typeName)
     throws SQLException;
 
   /**
+   * This method sets the specified parameter from the given Java
+   * <code>java.net.URL</code> value.
+   * 
+   * @param index The index of the parameter to set.
+   * @param value The value of the parameter.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
-  void setURL(int parameterIndex, URL x) throws SQLException;
+  void setURL(int index, URL value) throws SQLException;
 
   /**
+   * Returns information about the parameters set on this 
+   * <code>PreparedStatement</code> (see {@link ParameterMetaData} for a
+   * detailed description of the provided information).
+   * 
+   * @return Meta data for the parameters of this statement.
+   * @see ParameterMetaData
    * @since 1.4
    */
   ParameterMetaData getParameterMetaData() throws SQLException;

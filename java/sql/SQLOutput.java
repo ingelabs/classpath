@@ -1,5 +1,5 @@
 /* SQLOutput.java -- Write SQL values to a stream
-   Copyright (C) 1999, 2000, 2002, 2006, Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -173,28 +173,28 @@ public interface SQLOutput
    * This method writes the specified Java character stream
    * to the SQL stream.
    *
-   * @param value The value to write to the stream.
+   * @param stream The stream that holds the character data to write.
    * @exception SQLException If an error occurs.
    */
-  void writeCharacterStream(Reader value) throws SQLException;
+  void writeCharacterStream(Reader stream) throws SQLException;
 
   /**
    * This method writes the specified ASCII text stream
    * to the SQL stream.
    *
-   * @param value The value to write to the stream.
+   * @param stream The stream that holds the ASCII data to write.
    * @exception SQLException If an error occurs.
    */
-  void writeAsciiStream(InputStream value) throws SQLException;
+  void writeAsciiStream(InputStream stream) throws SQLException;
 
   /**
    * This method writes the specified uninterpreted binary byte stream
    * to the SQL stream.
    *
-   * @param value The value to write to the stream.
+   * @param stream The stream that holds the binary data to write.
    * @exception SQLException If an error occurs.
    */
-  void writeBinaryStream(InputStream value) throws SQLException;
+  void writeBinaryStream(InputStream stream) throws SQLException;
 
   /**
    * This method writes the specified Java <code>SQLData</code> object
@@ -209,17 +209,20 @@ public interface SQLOutput
    * This method writes the specified Java SQL <code>Ref</code> object
    * to the SQL stream.
    *
-   * @param value The value to write to the stream.
+   * @param value The <code>Ref</code> object to write to the stream.
    * @exception SQLException If an error occurs.
+   * @see Ref
    */
   void writeRef(Ref value) throws SQLException;
+
 
   /**
    * This method writes the specified Java SQL <code>Blob</code> object
    * to the SQL stream.
    *
-   * @param value The value to write to the stream.
+   * @param value The <code>Blob</code> object to write to the stream.
    * @exception SQLException If an error occurs.
+   * @see Blob
    */
   void writeBlob(Blob value) throws SQLException;
 
@@ -227,8 +230,9 @@ public interface SQLOutput
    * This method writes the specified Java SQL <code>Clob</code> object
    * to the SQL stream.
    *
-   * @param value The value to write to the stream.
+   * @param value The <code>Clob</code> object to write to the stream.
    * @exception SQLException If an error occurs.
+   * @see Clob
    */
   void writeClob(Clob value) throws SQLException;
 
@@ -236,8 +240,9 @@ public interface SQLOutput
    * This method writes the specified Java SQL <code>Struct</code> object
    * to the SQL stream.
    *
-   * @param value The value to write to the stream.
+   * @param value The <code>Struct</code> object to write to the stream.
    * @exception SQLException If an error occurs.
+   * @see Struct
    */
   void writeStruct(Struct value) throws SQLException;
 
@@ -251,6 +256,11 @@ public interface SQLOutput
   void writeArray(Array value) throws SQLException;
 
   /**
+   * This method writes the specified <code>java.net.URL</code> object to the 
+   * SQL stream.
+   * 
+   * @param value The value to write to the stream.
+   * @exception SQLException If an error occurs.
    * @since 1.4
    */
   void writeURL(URL value) throws SQLException;

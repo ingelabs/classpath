@@ -1,5 +1,5 @@
 /* Statement.java -- Interface for executing SQL statements.
-   Copyright (C) 1999, 2000, 2002, 2006, Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -91,10 +91,10 @@ public interface Statement
   /**
    * This method sets the limit for the maximum length of any column in bytes.
    *
-   * @param max The new maximum length of any column in bytes.
+   * @param maxSize The new maximum length of any column in bytes.
    * @exception SQLException If an error occurs.
    */
-  void setMaxFieldSize(int max) throws SQLException;
+  void setMaxFieldSize(int maxSize) throws SQLException;
 
   /**
    * This method returns the maximum possible number of rows in a result set.
@@ -108,20 +108,20 @@ public interface Statement
    * This method sets the maximum number of rows that can be present in a
    * result set.
    *
-   * @param max The maximum possible number of rows in a result set.
+   * @param maxRows The maximum possible number of rows in a result set.
    * @exception SQLException If an error occurs.
    */
-  void setMaxRows(int max) throws SQLException;
+  void setMaxRows(int maxRows) throws SQLException;
 
   /**
    * This method sets the local escape processing mode on or off.  The
    * default value is on.
    *
-   * @param enable <code>true</code> to enable local escape processing, 
-   *        <code>false</code> to disable it.
+   * @param escape <code>true</code> to enable local escape processing, 
+   *               <code>false</code> to disable it.
    * @exception SQLException If an error occurs.
    */
-  void setEscapeProcessing(boolean enable) throws SQLException;
+  void setEscapeProcessing(boolean escape) throws SQLException;
 
   /**
    * The method returns the number of seconds a statement may be in process
@@ -193,6 +193,9 @@ public interface Statement
    *         no result set (for example, if the statement was an UPDATE).
    * @exception SQLException If an error occurs.
    * @see #execute(String)
+   * @see #execute(String, int)
+   * @see #execute(String, int[])
+   * @see #execute(String, String[])
    */
   ResultSet getResultSet() throws SQLException;
 
@@ -204,6 +207,9 @@ public interface Statement
    *         count (for example, if the statement was a SELECT).
    * @exception SQLException If an error occurs.
    * @see #execute(String)
+   * @see #execute(String, int)
+   * @see #execute(String, int[])
+   * @see #execute(String, String[])
    */
   int getUpdateCount() throws SQLException;
 
@@ -216,6 +222,9 @@ public interface Statement
    *         update count).
    * @exception SQLException If an error occurs.
    * @see #execute(String)
+   * @see #execute(String, int)
+   * @see #execute(String, int[])
+   * @see #execute(String, String[])
    */
   boolean getMoreResults() throws SQLException;
 
@@ -241,11 +250,11 @@ public interface Statement
    * This method informs the driver how many rows it should fetch from the
    * database at a time.
    *
-   * @param rows The number of rows the driver should fetch at a time
-   *        to populate the result set.
+   * @param numRows The number of rows the driver should fetch at a time
+   *                to populate the result set.
    * @exception SQLException If an error occurs.
    */
-  void setFetchSize(int rows) throws SQLException;
+  void setFetchSize(int numRows) throws SQLException;
 
   /**
    * This method returns the number of rows the driver believes should be
