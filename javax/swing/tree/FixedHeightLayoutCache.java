@@ -377,6 +377,9 @@ public class FixedHeightLayoutCache
    */
   public int getRowForPath(TreePath path)
   {
+    if (path == null)
+      return -1;
+    
     if (dirty) update();
 
     NodeRecord r = (NodeRecord) nodes.get(path.getLastPathComponent());

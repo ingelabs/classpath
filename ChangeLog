@@ -1,5 +1,24 @@
 2006-04-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/swing/JTree.java (TreeSelectionRedirector.valueChanged):
+	Only repaint the patches, speficied in the passed event.
+	(expandPath): Do nothing if the path is already expanded.
+	(scrollPathToVisible): Only scroll to visible, do nothing else.
+	* javax/swing/plaf/basic/BasicTreeUI.java 
+	(TreeExpansionHandler.treeColapsed): Revalidate and repaint.
+	(TreeExpansionHandler.treeExpanded): Revalidate and repaint.
+	(TreeTraverseAction.actionPerformed): Collapse the node on the
+	action "selectParent". (selectPath): Rewritten.
+	* javax/swing/tree/DefaultTreeSelectionModel.java (clearSelection):
+	Fire change event. (notifyPathChange): Implemented. (setSelectionPath):
+	Do not reuse selection array.
+	* javax/swing/tree/FixedHeightLayoutCache.java (getRowForPath):
+	Accept null.
+	* javax/swing/tree/VariableHeightLayoutCache.java (getRowForPath):
+	Accept null.
+
+2006-04-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/swing/tree/DefaultTreeSelectionModel.java
 	(addSelectionPath): If the path cannot be added, set it.
 	(addSelectionPaths): Call insureRowContinuity.

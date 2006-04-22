@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EventListener;
 import java.util.HashSet;
@@ -64,6 +65,7 @@ import javax.swing.event.TreeSelectionListener;
  * expansion events.
  * 
  * @author Andrew Selkirk
+ * @author Audrius Meskauskas
  */
 public class DefaultTreeSelectionModel
     implements Cloneable, Serializable, TreeSelectionModel
@@ -264,16 +266,30 @@ public class DefaultTreeSelectionModel
   public void setSelectionPath(TreePath path)
   {
     // The most frequently only one cell in the tree is selected.
-    if (selection!=null && selection.length==1)
-      selection [0] = path;
-    else
-      selection = new TreePath[] { path };
+    TreePath[] ose = selection;
+    selection = new TreePath[] { path };
     TreePath oldLead = leadPath;
-    TreeSelectionEvent event = 
-      new TreeSelectionEvent(this, path, true, oldLead, path);
     leadIndex = 0;
     leadRow = getRow(path);
     leadPath = path;
+
+    TreeSelectionEvent event;
+
+    if (ose != null && ose.length > 0)
+      {
+        // The first item in the path list is the selected path.
+        // The remaining items are unselected pathes.
+        TreePath[] changed = new TreePath[ose.length + 1];
+        boolean[] news = new boolean[changed.length];
+        news[0] = true;
+        changed[0] = path;
+        System.arraycopy(ose, 0, changed, 1, ose.length);
+        event = new TreeSelectionEvent(this, changed, news, oldLead, path);
+      }
+    else
+      {
+        event = new TreeSelectionEvent(this, path, true, oldLead, path);
+      }
     fireValueChanged(event);
   }
   
@@ -538,12 +554,23 @@ public class DefaultTreeSelectionModel
   }
 
   /**
-   * Removes all paths from the selection.
+   * Removes all paths from the selection. Fire the unselection event.
    */
   public void clearSelection()
   {
-    leadPath = null;
-    selection = null;
+    if (! isSelectionEmpty())
+      {
+        TreeSelectionEvent event = new TreeSelectionEvent(
+          this, selection, new boolean[selection.length], leadPath, null);
+        leadPath = null;
+        selection = null;
+        fireValueChanged(event);
+      }
+    else
+      {
+        leadPath = null;
+        selection = null;
+      }
   }
 
   /**
@@ -924,15 +951,27 @@ public class DefaultTreeSelectionModel
   }
 
   /**
-   * notifyPathChange
+   * Notify the installed listeners that the given patches have changed. This
+   * method will call listeners if invoked, but it is not called from the
+   * implementation of this class.
    * 
-   * @param value0 TODO
-   * @param value1 TODO
+   * @param vPathes the vector of the changed patches
+   * @param oldLeadSelection the old selection index
    */
-  protected void notifyPathChange(Vector value0, TreePath value1)
-      throws NotImplementedException
+  protected void notifyPathChange(Vector vPathes, TreePath oldLeadSelection)
   {
-    // STUB
+    TreePath[] pathes = new TreePath[vPathes.size()];
+    for (int i = 0; i < pathes.length; i++)
+      pathes[i] = (TreePath) vPathes.get(i);
+
+    boolean[] news = new boolean[pathes.length];
+    for (int i = 0; i < news.length; i++)
+      news[i] = isPathSelected(pathes[i]);
+
+    TreeSelectionEvent event = new TreeSelectionEvent(this, pathes, news,
+                                                      oldLeadSelection,
+                                                      leadPath);
+    fireValueChanged(event);
   }
 
   /**

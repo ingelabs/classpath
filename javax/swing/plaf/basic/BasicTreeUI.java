@@ -1376,7 +1376,7 @@ public class BasicTreeUI
     JTree tree = (JTree) c;
 
     Rectangle clip = g.getClipBounds();
-
+    
     Insets insets = tree.getInsets();
 
     if (clip != null && treeModel != null)
@@ -2537,6 +2537,8 @@ public class BasicTreeUI
     {
       validCachedPreferredSize = false;
       treeState.setExpandedState(event.getPath(), true);
+      tree.revalidate();
+      tree.repaint();
     }
 
     /**
@@ -2548,6 +2550,8 @@ public class BasicTreeUI
     {
       validCachedPreferredSize = false;
       treeState.setExpandedState(event.getPath(), false);
+      tree.revalidate();
+      tree.repaint();
     }
   }// TreeExpansionHandler
 
@@ -2914,7 +2918,13 @@ public class BasicTreeUI
         return;
 
       if (e.getActionCommand().equals("selectParent"))
-        selectPath(tree, current.getParentPath());
+        {
+          current = current.getParentPath();
+          if (current == null)
+            return;
+          selectPath(tree, current);
+          tree.collapsePath(current);
+        }
       else if (e.getActionCommand().equals("selectChild"))
         {
           Object node = current.getLastPathComponent();
@@ -3019,23 +3029,18 @@ public class BasicTreeUI
   {
     if (path != null)
       {
-        if (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.SINGLE_TREE_SELECTION)
+        if (tree.getSelectionModel().getSelectionMode() == 
+          TreeSelectionModel.SINGLE_TREE_SELECTION)
           {
-            tree.getSelectionModel().clearSelection();
-            tree.addSelectionPath(path);
+            tree.setSelectionPath(path);
             tree.setLeadSelectionPath(path);
-          }
-        else if (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.CONTIGUOUS_TREE_SELECTION)
-          {
-            // TODO
           }
         else
           {
             tree.addSelectionPath(path);
             tree.setLeadSelectionPath(path);
-            tree.getSelectionModel().setSelectionMode(
-                                                      TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
           }
+        tree.makeVisible(path);
         tree.scrollPathToVisible(path);
       }
   }
