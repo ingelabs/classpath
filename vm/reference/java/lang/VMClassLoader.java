@@ -104,6 +104,7 @@ final class VMClassLoader
                   "GNU Classpath",
                   "GNU",
                   Configuration.CLASSPATH_VERSION,
+                  null,
                   null);
 
             definedPackages.put(packages[i], p);

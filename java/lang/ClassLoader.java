@@ -836,7 +836,7 @@ public abstract class ClassLoader
       throw new IllegalArgumentException("Package " + name
                                          + " already defined");
     Package p = new Package(name, specTitle, specVendor, specVersion,
-                            implTitle, implVendor, implVersion, sealed);
+                            implTitle, implVendor, implVersion, sealed, this);
     synchronized (definedPackages)
       {
         definedPackages.put(name, p);
