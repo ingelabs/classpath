@@ -39,10 +39,13 @@ exception statement from your version. */
 package gnu.classpath.examples.swing;
 
 import java.awt.BorderLayout;
+import java.awt.JobAttributes.DefaultSelectionType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.DebugGraphics;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -52,6 +55,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 public class TreeDemo
   extends JPanel
@@ -153,12 +157,30 @@ public class TreeDemo
            }
         }
       });
-
+    
+    final JCheckBox cbSingle = new JCheckBox("single selection");
+    cbSingle.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+      {
+        TreeSelectionModel model = tree.getSelectionModel();
+        if (cbSingle.isSelected())
+          model.setSelectionMode(
+            DefaultTreeSelectionModel.SINGLE_TREE_SELECTION);
+        else
+          model.setSelectionMode(
+            DefaultTreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+      }
+      });
 
     setLayout(new BorderLayout());
     
     JPanel p2 = new JPanel(); 
     p2.add(add);
+    p2.add(cbSingle);
+    
+    tree.getSelectionModel().
+      setSelectionMode(DefaultTreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 
     add(p2, BorderLayout.NORTH);
     add(new JScrollPane(tree), BorderLayout.CENTER);

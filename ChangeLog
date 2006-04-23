@@ -1,3 +1,17 @@
+2006-04-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* examples/gnu/classpath/examples/swing/TreeDemo.java:
+	(createContent): Added check box to swith between single and 
+	multiple selection.
+	* javax/swing/JTree.java (leadSelectionPath): Removed.
+	(addSelectionInterval): Explained. (getLeadSelectionPath):
+	Request the path from model. (getPathsBetweenRows): Explained.
+	(setLeadSelectionPath): Set the path in model.
+	* javax/swing/plaf/basic/BasicTreeUI.java 
+	(TreeIncrementAction.actionPerformed, isMultiSelectionEvent, 
+	isToggleSelectionEvent, selectPath, selectPathForEvent): Rewritten.
+	(MouseHandler.mousePressed): Call selectPathForEvent.
+
 2006-04-23  Jeroen Frijters  <jeroen@frijters.net>
 
 	* NEWS: Added entry about new Package constructor.

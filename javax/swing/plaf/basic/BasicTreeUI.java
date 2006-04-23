@@ -57,6 +57,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -1716,7 +1717,10 @@ public class BasicTreeUI
 
   /**
    * Returning true signifies a mouse event on the node should toggle the
-   * selection of only the row under the mouse.
+   * selection of only the row under the mouse. The BasisTreeUI treats the
+   * event as "toggle selection event" if the CTRL button was pressed while
+   * clicking. The event is not counted as toggle event if the associated
+   * tree does not support the multiple selection.
    * 
    * @param event is the MouseEvent performed on the row.
    * @return true signifies a mouse event on the node should toggle the
@@ -1724,12 +1728,18 @@ public class BasicTreeUI
    */
   protected boolean isToggleSelectionEvent(MouseEvent event)
   {
-    return (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.SINGLE_TREE_SELECTION);
+    return 
+      (tree.getSelectionModel().getSelectionMode() != 
+        TreeSelectionModel.SINGLE_TREE_SELECTION) &&
+      ((event.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0);  
   }
 
   /**
    * Returning true signifies a mouse event on the node should select from the
-   * anchor point.
+   * anchor point. The BasisTreeUI treats the event as "multiple selection
+   * event" if the SHIFT button was pressed while clicking. The event is not
+   * counted as multiple selection event if the associated tree does not support
+   * the multiple selection.
    * 
    * @param event is the MouseEvent performed on the node.
    * @return true signifies a mouse event on the node should select from the
@@ -1737,7 +1747,10 @@ public class BasicTreeUI
    */
   protected boolean isMultiSelectEvent(MouseEvent event)
   {
-    return (tree.getSelectionModel().getSelectionMode() == TreeSelectionModel.CONTIGUOUS_TREE_SELECTION);
+    return 
+      (tree.getSelectionModel().getSelectionMode() != 
+        TreeSelectionModel.SINGLE_TREE_SELECTION) &&
+      ((event.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0);  
   }
 
   /**
@@ -1759,15 +1772,19 @@ public class BasicTreeUI
    * row. If the even is a toggle selection event, the row is either selected,
    * or deselected. If the event identifies a multi selection event, the
    * selection is updated from the anchor point. Otherwise, the row is selected,
-   * and if the even specified a toggle event the row is expanded/collapsed.
+   * and the previous selection is cleared.</p>
    * 
    * @param path is the path selected for an event
    * @param event is the MouseEvent performed on the path.
+   * 
+   * @see #isToggleSelectionEvent(MouseEvent)
+   * @see #isMultiSelectEvent(MouseEvent)
    */
   protected void selectPathForEvent(TreePath path, MouseEvent event)
   {
     if (isToggleSelectionEvent(event))
       {
+        // The event selects or unselects the clicked row.
         if (tree.isPathSelected(path))
           tree.removeSelectionPath(path);
         else
@@ -1778,6 +1795,7 @@ public class BasicTreeUI
       }
     else if (isMultiSelectEvent(event))
       {
+        // The event extends selection form anchor till the clicked row.
         TreePath anchor = tree.getAnchorSelectionPath();
         if (anchor != null)
           {
@@ -1788,7 +1806,11 @@ public class BasicTreeUI
           tree.addSelectionPath(path);
       }
     else
-      tree.addSelectionPath(path);
+      {
+        // This is an ordinary event that just selects the clicked row.
+        tree.setSelectionPath(path);
+        tree.setAnchorSelectionPath(path);
+      }
   }
 
   /**
@@ -2167,23 +2189,22 @@ public class BasicTreeUI
                         startEditTimer.stop();
 
                       startEditTimer = new Timer(WAIT_TILL_EDITING,
-                                                 new ActionListener()
-                                                 {
-                                                   public void actionPerformed(
-                                                                               ActionEvent e)
-                                                   {
-                                                     startEditing(editPath,
-                                                                  EDIT);
-                                                   }
-                                                 });
+                        new ActionListener()
+                          {
+                            public void actionPerformed(ActionEvent e)
+                              {
+                                startEditing(editPath, EDIT);
+                              }
+                          });
                       startEditTimer.setRepeats(false);
                       startEditTimer.start();
                     }
                   else
                     {
-                      selectPath(tree, path);
                       if (e.getClickCount() == 2 && ! isLeaf(row))
                         toggleExpandState(path);
+                      else
+                        selectPathForEvent(path, e);
                     }
                 }
 
@@ -2648,8 +2669,9 @@ public class BasicTreeUI
       if (command.equals("selectPreviousChangeLead") && hasPrev)
         {
           newPath = treeState.getPathForRow(prevRow);
-          selectPath(tree, newPath);
+          tree.setSelectionPath(newPath);
           tree.setLeadSelectionPath(newPath);
+          tree.setAnchorSelectionPath(newPath);
         }
       else if (command.equals("selectPreviousExtendSelection") && hasPrev)
         {
@@ -2660,12 +2682,12 @@ public class BasicTreeUI
       else if (command.equals("selectPrevious") && hasPrev)
         {
           newPath = treeState.getPathForRow(prevRow);
-          selectPath(tree, newPath);
+          tree.setSelectionPath(newPath);
         }
       else if (command.equals("selectNext") && hasNext)
         {
           newPath = treeState.getPathForRow(nextRow);
-          selectPath(tree, newPath);
+          tree.setSelectionPath(newPath);
         }
       else if (command.equals("selectNextExtendSelection") && hasNext)
         {
@@ -2676,8 +2698,9 @@ public class BasicTreeUI
       else if (command.equals("selectNextChangeLead") && hasNext)
         {
           newPath = treeState.getPathForRow(nextRow);
-          selectPath(tree, newPath);
+          tree.setSelectionPath(newPath);
           tree.setLeadSelectionPath(newPath);
+          tree.setAnchorSelectionPath(newPath);          
         }
     }
 
@@ -3029,17 +3052,8 @@ public class BasicTreeUI
   {
     if (path != null)
       {
-        if (tree.getSelectionModel().getSelectionMode() == 
-          TreeSelectionModel.SINGLE_TREE_SELECTION)
-          {
-            tree.setSelectionPath(path);
-            tree.setLeadSelectionPath(path);
-          }
-        else
-          {
-            tree.addSelectionPath(path);
-            tree.setLeadSelectionPath(path);
-          }
+        tree.setSelectionPath(path);
+        tree.setLeadSelectionPath(path);
         tree.makeVisible(path);
         tree.scrollPathToVisible(path);
       }

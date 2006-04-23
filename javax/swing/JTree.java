@@ -1402,8 +1402,6 @@ public class JTree extends JComponent implements Scrollable, Accessible
 
   private TreePath anchorSelectionPath;
 
-  private TreePath leadSelectionPath;
-
   /**
    * This contains the state of all nodes in the tree. Al/ entries map the
    * TreePath of a note to to its state. Valid states are EXPANDED and
@@ -1568,7 +1566,15 @@ public class JTree extends JComponent implements Scrollable, Accessible
     TreeUI ui = getUI();
     return ui != null ? ui.getPathForRow(this, row) : null;
   }
-
+  
+  /**
+   * Get the pathes that are displayes between the two given rows.
+   * 
+   * @param index0 the starting row, inclusive
+   * @param index1 the ending row, inclusive
+   * 
+   * @return the array of the tree pathes
+   */
   protected TreePath[] getPathBetweenRows(int index0, int index1)
   {
     TreeUI ui = getUI();
@@ -2212,7 +2218,15 @@ public class JTree extends JComponent implements Scrollable, Accessible
 
     addSelectionPaths(paths);
   }
-
+  
+  /**
+   * Select all rows between the two given indexes, inclusive. The method
+   * will not select the inner leaves and braches of the currently collapsed
+   * nodes in this interval.
+   * 
+   * @param index0 the starting row, inclusive
+   * @param index1 the ending row, inclusive
+   */
   public void addSelectionInterval(int index0, int index1)
   {
     TreePath[] paths = getPathBetweenRows(index0, index1);
@@ -2268,7 +2282,10 @@ public class JTree extends JComponent implements Scrollable, Accessible
 
   public TreePath getLeadSelectionPath()
   {
-    return leadSelectionPath;
+    if (selectionModel == null)
+      return null;
+    else
+      return selectionModel.getLeadSelectionPath();
   }
 
   /**
@@ -2276,12 +2293,15 @@ public class JTree extends JComponent implements Scrollable, Accessible
    */
   public void setLeadSelectionPath(TreePath path)
   {
-    if (leadSelectionPath == path)
-      return;
-    
-    TreePath oldValue = leadSelectionPath;
-    leadSelectionPath = path;
-    firePropertyChange(LEAD_SELECTION_PATH_PROPERTY, oldValue, path);
+    if (selectionModel != null)
+      {
+        TreePath oldValue = selectionModel.getLeadSelectionPath();
+        if (path.equals(oldValue))
+          return;
+
+        selectionModel.addSelectionPath(path);
+        firePropertyChange(LEAD_SELECTION_PATH_PROPERTY, oldValue, path);
+      }
   }
 
   /**
