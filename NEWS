@@ -48,6 +48,11 @@ Runtime interface changes:
   consistent with one another.  As a result, the main branch includes an
   additional environ() function in VMSystem and an additional argument has
   been added to nativeSpawn() in VMProcess.
+* Annotation support is now available in the main branch, if the VM supports
+  it. The VM should implement VMClass.getDeclaredAnnotations,
+  Constructor.getAnnotation, Constructor.getDeclaredAnnotations,
+  Field.getAnnotation, Field.getDeclaredAnnotations, Method.getAnnotation and
+  Method.getDeclaredAnnotations.
 
 New in release 0.90 (March 6, 2006)
 

@@ -1,5 +1,16 @@
 2006-04-23  Jeroen Frijters  <jeroen@frijters.net>
 
+	* NEWS: Added information about annotation support.
+	* java/lang/Class.java: Implement AnnotatedElement.
+	(equals): Reformatted to match generics branch.
+	(getEnumConstants): Implemented.
+	(getAnnotation, getAnnotations, getDeclaredAnnotations,
+	isAnnotationPresent): Merged from generics branch.
+	* vm/reference/java/lang/VMClass.java (getDeclaredAnnotations):
+	New method.
+
+2006-04-23  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/lang/ClassLoader.java (definePackage): Added argument to
 	Package constructor.
 	* java/lang/Package.java (Package): Added ClassLoader argument.

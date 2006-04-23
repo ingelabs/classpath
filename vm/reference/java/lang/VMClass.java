@@ -1,5 +1,5 @@
 /* VMClass.java -- VM Specific Class methods
-   Copyright (C) 2003, 2004, 2005 Free Software Foundation
+   Copyright (C) 2003, 2004, 2005, 2006 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package java.lang;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -329,6 +330,20 @@ final class VMClass
     String fullName = getName(klass);
     return fullName.substring(fullName.lastIndexOf(".") + 1);
   }
+
+  /**
+   * Returns all annotations directly defined by the specified class.  If
+   * there are no annotations associated with this class, then a zero-length
+   * array will be returned.  The returned array may be modified by the client
+   * code, but this will have no effect on the annotation content of this
+   * class, and hence no effect on the return value of this method for
+   * future callers.
+   *
+   * @param klass the class whose annotations should be returned.
+   * @return the annotations directly defined by the specified class.
+   * @since 1.5
+   */
+  static native Annotation[] getDeclaredAnnotations(Class klass);
 
   /**
    * <p>
