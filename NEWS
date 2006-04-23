@@ -53,6 +53,9 @@ Runtime interface changes:
   Constructor.getAnnotation, Constructor.getDeclaredAnnotations,
   Field.getAnnotation, Field.getDeclaredAnnotations, Method.getAnnotation and
   Method.getDeclaredAnnotations.
+* java.lang.Package now has a new constructor that takes the defining
+  ClassLoader as an extra argument. If you use a custom version of
+  VMClassLoader, please switch it to use this constructor.
 
 New in release 0.90 (March 6, 2006)
 

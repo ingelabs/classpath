@@ -1,5 +1,11 @@
 2006-04-23  Jeroen Frijters  <jeroen@frijters.net>
 
+	* NEWS: Added entry about new Package constructor.
+	* java/lang/Package.java: Added compatibility constructor to ease
+	VM interface migration.
+
+2006-04-23  Jeroen Frijters  <jeroen@frijters.net>
+
 	* NEWS: Added information about annotation support.
 	* java/lang/Class.java: Implement AnnotatedElement.
 	(equals): Reformatted to match generics branch.

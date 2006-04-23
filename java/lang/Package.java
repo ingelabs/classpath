@@ -1,5 +1,6 @@
 /* Package.java -- information about a package
-   Copyright (C) 2000, 2001, 2002, 2003, 2005 Free Software Foundation, Inc.
+   Copyright (C) 2000, 2001, 2002, 2003, 2005, 2006
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -103,6 +104,17 @@ public class Package
 
   /** The class loader that defined this package */
   private ClassLoader loader;
+
+  /** @deprecated Please use the other constructor that takes the class loader
+   *              that defines the Package.
+   */
+  Package(String name,
+	  String specTitle, String specVendor, String specVersion,
+	  String implTitle, String implVendor, String implVersion, URL sealed)
+  {
+    this(name, specTitle, specVendor, specVersion, implTitle, implVendor,
+         implVersion, sealed, null);
+  }
 
   /**
    * A package local constructor for the Package class. All parameters except
