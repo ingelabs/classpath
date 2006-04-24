@@ -1,3 +1,46 @@
+2006-04-24  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java: Made implements
+	Cloneable.
+	(font): New field.
+	(clip): Changed clip to be in user space not in target space.
+	(isOptimized): Added flag to allow optimized drawing for
+	primitive operations (e.g. for Swing).
+	(AbstractGraphics2D()): Set foreground in init() to avoid trouble
+	with the paint context etc.
+	(draw): Clip the shape before drawing it.
+	(fill): Clip the shape before drawing it.
+	(setComposite): Update isOptimized flag.
+	(setPaint): Likewise.
+	(setStroke): Likewise.
+	(translate): Update the clip.
+	(rotate): Likewise.
+	(scale): Likewise.
+	(shear): Likewise.
+	(transform): Likewise.
+	(setTransform): Likewise.
+	(clip): Added optimization for rectangle clips.
+	(create): Implemented.
+	(clone): New method.
+	(setFont): Basic implementation.
+	(setClip): Update opimization flag.
+	(drawLine): Added possible optimization.
+	(fillRect): Added possible optimization.
+	(fillShape): Implemented shape-filling by filling the flattended
+	shape using polygon fill.
+	(drawPixel): Added basic painting.
+	(rawSetPixel): Changed signature to only take coordinates.
+	(rawSetForeground): New abstract method.
+	(getUserBounds): Implemented default for this method.
+	(rawDrawLine): New method.
+	(rawFillRect): New method.
+	(rawFillPolygon): New method.
+	(init): New method.
+	(updateOptimization): New method.
+	(computeIntersection): New method.
+	(updateClip): New method.
+	(clipShape): New method.
+
 2006-04-23  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* examples/gnu/classpath/examples/swing/TreeDemo.java:
@@ -11,6 +54,10 @@
 	(TreeIncrementAction.actionPerformed, isMultiSelectionEvent, 
 	isToggleSelectionEvent, selectPath, selectPathForEvent): Rewritten.
 	(MouseHandler.mousePressed): Call selectPathForEvent.
+
+2006-04-23  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java: New file.
 
 2006-04-23  Jeroen Frijters  <jeroen@frijters.net>
 

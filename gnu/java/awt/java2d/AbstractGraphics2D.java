@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package gnu.java.awt.java2d;
 
+import java.awt.AWTError;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -63,6 +64,8 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.NoninvertibleTransformException;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
@@ -82,6 +85,7 @@ import java.util.Map;
  */
 public abstract class AbstractGraphics2D
   extends Graphics2D
+  implements Cloneable
 {
 
   /**
@@ -100,6 +104,11 @@ public abstract class AbstractGraphics2D
   private Color background;
 
   /**
+   * The current font.
+   */
+  private Font font;
+
+  /**
    * The current composite setting.
    */
   private Composite composite;
@@ -110,7 +119,7 @@ public abstract class AbstractGraphics2D
   private Stroke stroke;
 
   /**
-   * The current clip. This clip is in target coordinate space.
+   * The current clip. This clip is in user coordinate space.
    */
   private Shape clip;
 
@@ -140,12 +149,27 @@ public abstract class AbstractGraphics2D
   private int[] pixel;
 
   /**
+   * Indicates if cerain graphics primitives can be rendered in an optimized
+   * fashion. This will be the case if the following conditions are met:
+   * - The transform may only be a translation, no rotation, shearing or
+   *   scaling.
+   * - The paint must be a solid color.
+   * - The composite must be an AlphaComposite.SrcOver.
+   * - The clip must be a Rectangle.
+   * - The stroke must be a plain BasicStroke().
+   *
+   * These conditions represent the standard settings of a new
+   * AbstractGraphics2D object and will be the most commonly used setting
+   * in Swing rendering and should therefore be optimized as much as possible.
+   */
+  private boolean isOptimized;
+
+  /**
    * Creates a new AbstractGraphics2D instance.
    */
   protected AbstractGraphics2D()
   {
     transform = new AffineTransform();
-    setPaint(Color.BLACK);
     background = Color.WHITE;
     composite = AlphaComposite.SrcOver;
     stroke = new BasicStroke();
@@ -163,8 +187,15 @@ public abstract class AbstractGraphics2D
    */
   public void draw(Shape shape)
   {
-    Shape strokedShape = stroke.createStrokedShape(shape);
-    fillShape(strokedShape);
+    // Clip the shape.
+    Shape clipped = clipShape(shape);
+    if (clipped != null)
+      {
+        // Stroke the shape.
+        Shape strokedShape = stroke.createStrokedShape(clipped);
+        // Fill the shape.
+        fillShape(strokedShape);
+      }
   }
 
   public boolean drawImage(Image image, AffineTransform xform, ImageObserver obs)
@@ -222,7 +253,9 @@ public abstract class AbstractGraphics2D
    */
   public void fill(Shape shape)
   {
-    fillShape(shape);
+    Shape clipped = clipShape(shape);
+    if (clipped != null)
+      fillShape(shape);
   }
 
   public boolean hit(Rectangle rect, Shape text, boolean onStroke)
@@ -241,7 +274,11 @@ public abstract class AbstractGraphics2D
     composite = comp;
     compositeContext = composite.createContext(getColorModel(),
                                                getDestinationColorModel(),
-                                               getRenderingHints());
+                                               renderingHints);
+    if (! (comp.equals(AlphaComposite.SrcOver)))
+      isOptimized = false;
+    else
+      updateOptimization();
   }
 
   /**
@@ -252,13 +289,14 @@ public abstract class AbstractGraphics2D
   public void setPaint(Paint p)
   {
     paint = p;
-    Rectangle deviceBounds = getDeviceBounds();
-    paintContext = paint.createContext(getColorModel(), deviceBounds,
-                                       getUserBounds(), transform,
-                                       getRenderingHints());
-    paintRaster = paintContext.getRaster(deviceBounds.x, deviceBounds.y,
-                                         deviceBounds.width,
-                                         deviceBounds.height);
+
+    if (paint != null && ! (paint instanceof Color))
+      isOptimized = false;
+    else
+      {
+        updateOptimization();
+        rawSetForeground((Color) paint);
+      }
   }
 
   /**
@@ -269,6 +307,10 @@ public abstract class AbstractGraphics2D
   public void setStroke(Stroke s)
   {
     stroke = s;
+    if (! stroke.equals(new BasicStroke()))
+      isOptimized = false;
+    else
+      updateOptimization();
   }
 
   /**
@@ -334,6 +376,24 @@ public abstract class AbstractGraphics2D
   public void translate(int x, int y)
   {
     transform.translate(x, y);
+
+    // Update the clip. We special-case rectangular clips here, because they
+    // are so common (e.g. in Swing).
+    if (clip != null)
+      {
+        if (clip instanceof Rectangle)
+          {
+            Rectangle r = (Rectangle) clip;
+            r.x -= x;
+            r.y -= y;
+          }
+        else
+          {
+            AffineTransform clipTransform = new AffineTransform();
+            clipTransform.translate(-x, -y);
+            updateClip(clipTransform);
+          }
+      }
   }
 
   /**
@@ -345,6 +405,24 @@ public abstract class AbstractGraphics2D
   public void translate(double tx, double ty)
   {
     transform.translate(tx, ty);
+
+    // Update the clip. We special-case rectangular clips here, because they
+    // are so common (e.g. in Swing).
+    if (clip != null)
+      {
+        if (clip instanceof Rectangle)
+          {
+            Rectangle r = (Rectangle) clip;
+            r.x -= tx;
+            r.y -= ty;
+          }
+        else
+          {
+            AffineTransform clipTransform = new AffineTransform();
+            clipTransform.translate(-tx, -ty);
+            updateClip(clipTransform);
+          }
+      }
   }
 
   /**
@@ -355,6 +433,13 @@ public abstract class AbstractGraphics2D
   public void rotate(double theta)
   {
     transform.rotate(theta);
+    if (clip != null)
+      {
+        AffineTransform clipTransform = new AffineTransform();
+        clipTransform.rotate(-theta);
+        updateClip(clipTransform);
+      }
+    updateOptimization();
   }
 
   /**
@@ -368,6 +453,13 @@ public abstract class AbstractGraphics2D
   public void rotate(double theta, double x, double y)
   {
     transform.rotate(theta, x, y);
+    if (clip != null)
+      {
+        AffineTransform clipTransform = new AffineTransform();
+        clipTransform.rotate(-theta, x, y);
+        updateClip(clipTransform);
+      }
+    updateOptimization();
   }
 
   /**
@@ -380,6 +472,13 @@ public abstract class AbstractGraphics2D
   public void scale(double scaleX, double scaleY)
   {
     transform.scale(scaleX, scaleY);
+    if (clip != null)
+      {
+        AffineTransform clipTransform = new AffineTransform();
+        clipTransform.scale(-scaleX, -scaleY);
+        updateClip(clipTransform);
+      }
+    updateOptimization();
   }
 
   /**
@@ -392,17 +491,35 @@ public abstract class AbstractGraphics2D
   public void shear(double shearX, double shearY)
   {
     transform.shear(shearX, shearY);
+    if (clip != null)
+      {
+        AffineTransform clipTransform = new AffineTransform();
+        clipTransform.shear(-shearX, -shearY);
+        updateClip(clipTransform);
+      }
+    updateOptimization();
   }
 
   /**
    * Transforms the coordinate system using the specified transform
    * <code>t</code>.
    *
-   * @param the transform
+   * @param t the transform
    */
   public void transform(AffineTransform t)
   {
     transform.concatenate(t);
+    try
+      {
+        AffineTransform clipTransform = t.createInverse();
+        updateClip(clipTransform);
+      }
+    catch (NoninvertibleTransformException ex)
+      {
+        // TODO: How can we deal properly with this?
+        ex.printStackTrace();
+      }
+    updateOptimization();
   }
 
   /**
@@ -412,7 +529,20 @@ public abstract class AbstractGraphics2D
    */
   public void setTransform(AffineTransform t)
   {
+    // Transform clip into target space using the old transform.
+    updateClip(transform);
     transform.setTransform(t);
+    // Transform the clip back into user space using the inverse new transform.
+    try
+      {
+        updateClip(transform.createInverse());
+      }
+    catch (NoninvertibleTransformException ex)
+      {
+        // TODO: How can we deal properly with this?
+        ex.printStackTrace();
+      }
+    updateOptimization();
   }
 
   /**
@@ -434,6 +564,7 @@ public abstract class AbstractGraphics2D
   {
     return paint;
   }
+
 
   /**
    * Returns the current composite.
@@ -458,7 +589,7 @@ public abstract class AbstractGraphics2D
   /**
    * Returns the current background.
    *
-   * @param the current background
+   * @return the current background
    */
   public Color getBackground()
   {
@@ -482,20 +613,35 @@ public abstract class AbstractGraphics2D
    */
   public void clip(Shape s)
   {
-    Area current;
-    if (clip instanceof Area)
-      current = (Area) clip;
-    else
-      current = new Area(clip);
+    // Initialize clip if not already present.
+    if (clip == null)
+      clip = s;
+    
+    // This is so common, let's optimize this. 
+    else if (clip instanceof Rectangle && s instanceof Rectangle)
+      {
+        Rectangle clipRect = (Rectangle) clip;
+        Rectangle r = (Rectangle) s;
+        computeIntersection(r.x, r.y, r.width, r.height, clipRect);
+      }
+   else
+     {
+       Area current;
+       if (clip instanceof Area)
+         current = (Area) clip;
+       else
+         current = new Area(clip);
 
-    Area intersect;
-    if (s instanceof Area)
-      intersect = (Area) s;
-    else
-      intersect = new Area(s);
+       Area intersect;
+       if (s instanceof Area)
+         intersect = (Area) s;
+       else
+         intersect = new Area(s);
 
-    current.intersect(intersect);
-    clip = current;
+       current.intersect(intersect);
+       clip = current;
+       isOptimized = false;
+     }
   }
 
   public FontRenderContext getFontRenderContext()
@@ -510,10 +656,46 @@ public abstract class AbstractGraphics2D
     throw new UnsupportedOperationException("Not yet implemented");
   }
 
+  /**
+   * Creates a copy of this graphics object.
+   *
+   * @return a copy of this graphics object
+   */
   public Graphics create()
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    AbstractGraphics2D copy = (AbstractGraphics2D) clone();
+    return copy;
+  }
+
+  /**
+   * Creates and returns a copy of this Graphics object. This should
+   * be overridden by subclasses if additional state must be handled when
+   * cloning. This is called by {@link #create()}.
+   *
+   * @return a copy of this Graphics object
+   */
+  protected Object clone()
+  {
+    try
+      {
+        AbstractGraphics2D copy = (AbstractGraphics2D) super.clone();
+        // Copy the clip. If it's a Rectangle, preserve that for optimization.
+        if (clip instanceof Rectangle)
+          copy.clip = new Rectangle((Rectangle) clip);
+        else
+          copy.clip = new GeneralPath(clip);
+
+        copy.renderingHints = new RenderingHints(renderingHints);
+        copy.transform = new AffineTransform(transform);
+        // The remaining state is inmmutable and doesn't need to be copied.
+        return copy;
+      }
+    catch (CloneNotSupportedException ex)
+      {
+        AWTError err = new AWTError("Unexpected exception while cloning");
+        err.initCause(ex);
+        throw err;
+      }
   }
 
   /**
@@ -555,10 +737,9 @@ public abstract class AbstractGraphics2D
     throw new UnsupportedOperationException("Not yet implemented");
   }
 
-  public void setFont(Font font)
+  public void setFont(Font f)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    font = f;
   }
 
   public FontMetrics getFontMetrics(Font font)
@@ -621,6 +802,10 @@ public abstract class AbstractGraphics2D
   public void setClip(Shape c)
   {
     clip = c;
+    if (! (clip instanceof Rectangle))
+      isOptimized = false;
+    else
+      updateOptimization();
   }
 
   public void copyArea(int x, int y, int width, int height, int dx, int dy)
@@ -637,8 +822,13 @@ public abstract class AbstractGraphics2D
    */
   public void drawLine(int x1, int y1, int x2, int y2)
   {
-    Line2D line = new Line2D.Double(x1, y1, x2, y2);
-    draw(line);
+    if (isOptimized)
+      rawDrawLine(x1, y1, x2, y2);
+    else
+      {
+        Line2D line = new Line2D.Double(x1, y1, x2, y2);
+        draw(line);
+      }
   }
 
   /**
@@ -651,7 +841,12 @@ public abstract class AbstractGraphics2D
    */
   public void fillRect(int x, int y, int width, int height)
   {
-    fill(new Rectangle(x, y, width, height));
+    if (isOptimized)
+      rawFillRect(x, y, width, height);
+    else
+      {
+        fill(new Rectangle(x, y, width, height));
+      }
   }
 
   /**
@@ -827,31 +1022,44 @@ public abstract class AbstractGraphics2D
   }
 
   /**
-   * Draws a shape that has already been stroked. This transforms the shape
-   * into the target coordinate space and forwards the resulting path iterator
-   * to {@link #drawPathIterator}.
+   * Fills the specified shape. The shape has already been clipped against the
+   * current clip.
    *
-   * @param s the stroked shape to draw
+   * @param s the shape to fill
    */
   protected void fillShape(Shape s)
   {
-    GeneralPath p = new GeneralPath(s);
-    Shape transformed = p.createTransformedShape(transform);
-
-    // Transform the bounding rectangle into target space.
-    Rectangle b = transformed.getBounds();
-    int x2 = b.x + b.width;
-    int y2 = b.y + b.height;
-
-    // Scan the target rectangle and draw every pixel that lies inside the
-    // Shape.
-    for (int y = b.y; y < y2; y++)
+    PathIterator path = s.getPathIterator(getTransform(), 1.0);
+    // Build up polygons and let the native backend render this using
+    // rawFillPolygon() which would provide a default implementation for
+    // drawPixel using a PolyScan algorithm.
+    double[] seg = new double[6];
+    // TODO: Optimize memory usage here.
+    int[] xpoints = new int[100];
+    int[] ypoints = new int[100];
+    int npoints = 0;
+    while (! path.isDone())
       {
-        for (int x = b.x; x < x2; x++)
+        int segType = path.currentSegment(seg);
+        if (segType == PathIterator.SEG_MOVETO)
           {
-            if (clip.contains(x, y) && transformed.contains(x, y))
-              drawPixel(x, y);
+            npoints = 0;
+            xpoints[npoints] = (int) seg[0];
+            ypoints[npoints] = (int) seg[1];
           }
+        else if (segType == PathIterator.SEG_CLOSE)
+          {
+            rawFillPolygon(xpoints, ypoints, npoints);
+            npoints = 0;
+          }
+        else if (segType == PathIterator.SEG_MOVETO
+            || segType == PathIterator.SEG_LINETO)
+          {
+            xpoints[npoints] = (int) seg[0];
+            ypoints[npoints] = (int) seg[1];
+            npoints++;
+          }
+        path.next();
       }
   }
 
@@ -866,9 +1074,14 @@ public abstract class AbstractGraphics2D
    */
   protected void drawPixel(int x, int y)
   {
-    int[] paintPixel = paintRaster.getPixel(x, y, pixel);
     // FIXME: Implement efficient compositing.
-    rawSetPixel(x, y, paintPixel[0], paintPixel[1], paintPixel[2]);
+    if (! (paint instanceof Color))
+      {
+        int[] paintPixel = paintRaster.getPixel(x, y, pixel);
+        Color c = new Color(paintPixel[0], paintPixel[1], paintPixel[2]);
+        rawSetForeground(c);
+      }
+    rawSetPixel(x, y);
   }
 
   /**
@@ -876,11 +1089,15 @@ public abstract class AbstractGraphics2D
    * 
    * @param x the x coordinate
    * @param y the y coordinate
-   * @param r the red component of the pixel
-   * @param g the green component of the pixel
-   * @param b the blue component of the pixel
    */
-  protected abstract void rawSetPixel(int x, int y, int r, int g, int b);
+  protected abstract void rawSetPixel(int x, int y);
+
+  /**
+   * Sets the foreground color for drawing.
+   *
+   * @param c the color to set
+   */
+  protected abstract void rawSetForeground(Color c);
 
   /**
    * Returns the color model of this Graphics object.
@@ -908,7 +1125,247 @@ public abstract class AbstractGraphics2D
    *
    * @return the bounds of the drawing area in user space
    */
-  protected abstract Rectangle2D getUserBounds();
+  protected Rectangle2D getUserBounds()
+  {
+    PathIterator pathIter = getDeviceBounds().getPathIterator(getTransform());
+    GeneralPath path = new GeneralPath();
+    path.append(pathIter, true);
+    return path.getBounds();
+
+  }
+  /**
+   * Draws a line in optimization mode. The implementation should respect the
+   * clip but can assume that it is a rectangle.
+   *
+   * @param x0 the starting point, X coordinate
+   * @param y0 the starting point, Y coordinate
+   * @param x1 the end point, X coordinate 
+   * @param y1 the end point, Y coordinate
+   */
+  protected void rawDrawLine(int x0, int y0, int x1, int y1)
+  {
+    // This is an implementation of Bresenham's line drawing algorithm.
+    int dy = y1 - y0;
+    int dx = x1 - x0;
+    int stepx, stepy;
+
+    if (dy < 0)
+      {
+        dy = -dy;
+        stepy = -1;
+      }
+    else
+      {
+        stepy = 1;
+      }
+    if (dx < 0)
+      {
+        dx = -dx;
+        stepx = -1;
+        }
+    else
+      {
+        stepx = 1;
+      }
+    dy <<= 1;
+    dx <<= 1;
+
+    drawPixel(x0, y0);
+    if (dx > dy)
+      {
+        int fraction = dy - (dx >> 1); // same as 2*dy - dx
+        while (x0 != x1)
+          {
+            if (fraction >= 0)
+              {
+                y0 += stepy;
+                fraction -= dx;
+              }
+            x0 += stepx;
+            fraction += dy;
+            drawPixel(x0, y0);
+          }
+      }
+    else
+      {
+        int fraction = dx - (dy >> 1);
+        while (y0 != y1)
+          {
+            if (fraction >= 0)
+              {
+                x0 += stepx;
+                fraction -= dy;
+              }
+            y0 += stepy;
+            fraction += dx;
+            drawPixel(x0, y0);
+          }
+      }
+  }
+
+  /**
+   * Fills a rectangle in optimization mode. The implementation should respect
+   * the clip but can assume that it is a rectangle.
+   *
+   * @param x the upper left corner, X coordinate
+   * @param y the upper left corner, Y coordinate
+   * @param w the width
+   * @param h the height
+   */
+  protected void rawFillRect(int x, int y, int w, int h)
+  {
+    int x2 = x + w;
+    int y2 = y + h;
+    for (int xc = x; xc < x2; xc++)
+      {
+        for (int yc = y; yc < y2; yc++)
+          {
+            drawPixel(xc, yc);
+          }
+      }
+  }
+
+  /**
+   * Fills the specified polygon. This should be overridden by backends
+   * that support accelerated (native) polygon filling, which is the
+   * case for most toolkit window and offscreen image implementations.
+   *
+   * The polygon is already clipped when this method is called.
+   *
+   * @param xpoints the x coordinates of the polygon points
+   * @param ypoints the y coordinates of the polygon points
+   * @param npoints the number of points
+   */
+  protected void rawFillPolygon(int[] xpoints, int[] ypoints, int npoints)
+  {
+    // FIXME: Provide default implementation here.
+  }
+
+
+  /**
+   * Initializes this graphics object. This must be called by subclasses in
+   * order to correctly initialize the state of this object.
+   */
+  protected void init()
+  {
+    setPaint(Color.RED);
+    isOptimized = true;
+  }
 
   //protected abstract Raster getDestinationRaster(int x, int y, int w, int h);
+
+  // Some helper methods.
+
+  /**
+   * Helper method to check and update the optimization conditions.
+   */
+  private void updateOptimization()
+  {
+    int transformType = transform.getType();
+    boolean optimizedTransform =
+      (transformType &
+      (AffineTransform.TYPE_TRANSLATION | AffineTransform.TYPE_IDENTITY)) != 0;
+
+    isOptimized = clip instanceof Rectangle
+                  && optimizedTransform && paint instanceof Color
+                  && composite == AlphaComposite.SrcOver
+                  && stroke.equals(new BasicStroke());
+  }
+
+  /**
+   * Calculates the intersection of two rectangles. The result is stored
+   * in <code>rect</code>. This is basically the same
+   * like {@link Rectangle#intersection(Rectangle)}, only that it does not
+   * create new Rectangle instances. The tradeoff is that you loose any data in
+   * <code>rect</code>.
+   *
+   * @param x upper-left x coodinate of first rectangle
+   * @param y upper-left y coodinate of first rectangle
+   * @param w width of first rectangle
+   * @param h height of first rectangle
+   * @param rect a Rectangle object of the second rectangle
+   *
+   * @throws NullPointerException if rect is null
+   *
+   * @return a rectangle corresponding to the intersection of the
+   *         two rectangles. An empty rectangle is returned if the rectangles
+   *         do not overlap
+   */
+  private static Rectangle computeIntersection(int x, int y, int w, int h,
+                                               Rectangle rect)
+  {
+    int x2 = (int) rect.x;
+    int y2 = (int) rect.y;
+    int w2 = (int) rect.width;
+    int h2 = (int) rect.height;
+
+    int dx = (x > x2) ? x : x2;
+    int dy = (y > y2) ? y : y2;
+    int dw = (x + w < x2 + w2) ? (x + w - dx) : (x2 + w2 - dx);
+    int dh = (y + h < y2 + h2) ? (y + h - dy) : (y2 + h2 - dy);
+
+    if (dw >= 0 && dh >= 0)
+      rect.setBounds(dx, dy, dw, dh);
+    else
+      rect.setBounds(0, 0, 0, 0);
+
+    return rect;
+  }
+
+  /**
+   * Helper method to transform the clip. This is called by the various
+   * transformation-manipulation methods to update the clip (which is in
+   * userspace) accordingly.
+   *
+   * The transform usually is the inverse transform that was applied to the
+   * graphics object.
+   *
+   * @param t the transform to apply to the clip
+   */
+  private void updateClip(AffineTransform t)
+  {
+    if (! (clip instanceof GeneralPath))
+      clip = new GeneralPath(clip);
+
+    GeneralPath p = (GeneralPath) clip;
+    p.transform(t);
+  }
+
+  /**
+   * Clips the specified shape using the current clip. If the resulting shape
+   * is empty, this will return <code>null</code>.
+   *
+   * @param s the shape to clip
+   *
+   * @return the clipped shape or <code>null</code> if the result is empty
+   */
+  private Shape clipShape(Shape s)
+  {
+    Shape clipped = null;
+
+    // Clip the shape if necessary.
+    if (clip != null)
+      {
+        Area a;
+        if (! (s instanceof Area))
+          a = new Area(s);
+        else
+          a = (Area) s;
+
+        Area clipArea;
+        if (! (clip instanceof Area))
+          clipArea = new Area(clip);
+        else
+          clipArea = (Area) clip;
+
+        a.intersect(clipArea);
+        if (! a.isEmpty())
+          clipped = a;
+      }
+    else
+      {
+        clipped = s;
+      }
+    return clipped;
+  }
 }
