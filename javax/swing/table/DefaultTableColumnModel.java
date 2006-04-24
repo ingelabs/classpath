@@ -114,26 +114,30 @@ public class DefaultTableColumnModel
   public DefaultTableColumnModel()
   {
     tableColumns = new Vector();
-    setSelectionModel(createSelectionModel());
+    selectionModel = createSelectionModel();
+    selectionModel.addListSelectionListener(this);
     columnMargin = 1;
     columnSelectionAllowed = false;
   }
 
   /**
    * Adds a column to the model and sends a {@link TableColumnModelEvent} to
-   * all registered listeners. 
+   * all registered listeners.  The model registers itself with the column as a
+   * {@link PropertyChangeListener} so that changes to the column width will
+   * invalidate the cached {@link #totalColumnWidth} value.
    *
-   * @param col  the column (<code>null</code> not permitted).
+   * @param column  the column (<code>null</code> not permitted).
    * 
    * @throws IllegalArgumentException if <code>col</code> is <code>null</code>.
    * 
    * @see #removeColumn(TableColumn)
    */
-  public void addColumn(TableColumn col)
+  public void addColumn(TableColumn column)
   {
-    if (col == null)
+    if (column == null)
       throw new IllegalArgumentException("Null 'col' argument.");
-    tableColumns.add(col);
+    tableColumns.add(column);
+    column.addPropertyChangeListener(this);
     invalidateWidthCache();
     fireColumnAdded(new TableColumnModelEvent(this, 0, 
                                               tableColumns.size() - 1));
@@ -144,17 +148,18 @@ public class DefaultTableColumnModel
    * to all registered listeners.  If the specified column is <code>null</code>
    * or does not belong to the model, this method does nothing.
    *
-   * @param col the column to be removed (<code>null</code> permitted).
+   * @param column the column to be removed (<code>null</code> permitted).
    * 
    * @see #addColumn(TableColumn)
    */
-  public void removeColumn(TableColumn col)
+  public void removeColumn(TableColumn column)
   {
-    int index = this.tableColumns.indexOf(col);
+    int index = this.tableColumns.indexOf(column);
     if (index < 0)
       return;
+    tableColumns.remove(column);
     fireColumnRemoved(new TableColumnModelEvent(this, index, 0));    
-    tableColumns.remove(col);
+    column.removePropertyChangeListener(this);
     invalidateWidthCache();
   }
 
@@ -313,14 +318,15 @@ public class DefaultTableColumnModel
    * 
    * @throws IllegalArgumentException if <code>model</code> is 
    *     <code>null</code>.
+   *     
+   * @see #getSelectionModel()
    */
   public void setSelectionModel(ListSelectionModel model)
   {
     if (model == null)
       throw new IllegalArgumentException();
     
-    // FIXME: we are registered as a listener with the existing model,
-    // so we should remove that before updating the model...
+    selectionModel.removeListSelectionListener(this);
     selectionModel = model;
     selectionModel.addListSelectionListener(this);
   }
@@ -570,14 +576,15 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * propertyChange handles changes occuring in the properties of the
-   * model's columns. 
+   * Receives notification of property changes for the columns in the model.
+   * If the <code>width</code> property for any column changes, we invalidate
+   * the {@link #totalColumnWidth} value here. 
    *
-   * @param evt PropertyChangeEvent
+   * @param event  the event.
    */
-  public void propertyChange(PropertyChangeEvent evt)
+  public void propertyChange(PropertyChangeEvent event)
   {
-    if (evt.getPropertyName().equals(TableColumn.COLUMN_WIDTH_PROPERTY))
+    if (event.getPropertyName().equals("width"))
 	  invalidateWidthCache(); 
   }
 

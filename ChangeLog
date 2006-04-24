@@ -1,3 +1,15 @@
+2006-04-24  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/table/DefaultTableColumnModel.java
+	(DefaultTableColumnModel): Set selection model field and add 'this' as
+	listener directly,
+	(addColumn): Add 'this' as a PropertyChangeListener,
+	(removeColumn): Remove column before firing event, and remove 'this' as
+	a PropertyChangeListener,
+	(setSelectionModel): Remove 'this' as a listener from old model, 
+	(propertyChange): Check for 'width' property rather than
+	TableColumn.COLUMN_WIDTH_PROPERTY.
+
 2006-04-24  Chris Burdess  <dog@gnu.org>
 
 	Fixes PR 27262
