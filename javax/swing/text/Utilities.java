@@ -515,20 +515,24 @@ public class Utilities
     BreakIterator breaker = BreakIterator.getWordInstance();
     breaker.setText(s);
 
-    // If mark is equal to the end of the string, just use that position
-    if (mark >= s.count)
+    // If startOffset and s.offset differ then we need to use
+    // that difference two convert the offset between the two metrics. 
+    int shift = startOffset - s.offset;
+    
+    // If mark is equal to the end of the string, just use that position.
+    if (mark >= shift + s.count)
       return mark;
     
     // Try to find a word boundary previous to the mark at which we 
-    // can break the text
-    int preceding = breaker.preceding(mark + 1);
+    // can break the text.
+    int preceding = breaker.preceding(mark + 1 - shift);
     
     if (preceding != 0)
-      return preceding;
-    else
-      // If preceding is 0 we couldn't find a suitable word-boundary so
-      // just break it on the character boundary
-      return mark;
+      return preceding + shift;
+    
+    // If preceding is 0 we couldn't find a suitable word-boundary so
+    // just break it on the character boundary
+    return mark;
   }
 
   /**

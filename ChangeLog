@@ -1,3 +1,22 @@
+2006-04-24  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/Utilities.java:
+	(getBreakLocation): Introduced shift variable, added notes.
+	* javax/swing/text/WrappedPlainView.java:
+	(calculateBreakPosition): Decrease allocation area bounds by insets,
+	added early return when allocation area is empty, provide start offset
+	as argument.
+	(WrappedPlainView.WrappedLine): Change default value for numLines to 1.
+	(WrappedPlainView.WrappedLine.paint): Added count variable, update
+	numLines after loop.
+	(WrappedPlainView.WrappedLine.determineNumLines): Added early return.
+	(WrappedPlainView.WrappedLine.getPreferredSpan): Removed if-statement.
+	(WrappedPlainView.WrappedLine.viewToModel): Changed note, removed
+	decreasing variable end by one, changed break condition in while-loop,
+	added check for return value.
+	(WrappedPlainView.WrappedLine.updateDamage): Set numLines to one if
+	allocation area is empty.
+
 2006-04-24  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/java2d/Segment.java: New file.
