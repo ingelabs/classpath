@@ -1,5 +1,5 @@
 /* DefaultTableColumnModel.java --
-   Copyright (C) 2002, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2005, 2006,  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -46,6 +46,7 @@ import java.util.EventListener;
 import java.util.Vector;
 
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.EventListenerList;
@@ -55,9 +56,9 @@ import javax.swing.event.TableColumnModelEvent;
 import javax.swing.event.TableColumnModelListener;
 
 /**
- * DefaultTableColumnModel
+ * A model that stores information about the columns used in a {@link JTable}.
+ * 
  * @author	Andrew Selkirk
- * @version	1.0
  */
 public class DefaultTableColumnModel
   implements TableColumnModel, PropertyChangeListener, ListSelectionListener,
@@ -66,12 +67,12 @@ public class DefaultTableColumnModel
   private static final long serialVersionUID = 6580012493508960512L;
 
   /**
-   * Columns that this model keeps track of.
+   * Storage for the table columns.
    */
   protected Vector tableColumns;
 
   /**
-   * Selection Model that keeps track of columns selection
+   * A selection model that keeps track of column selections.
    */
   protected ListSelectionModel selectionModel;
 
@@ -86,8 +87,11 @@ public class DefaultTableColumnModel
   protected EventListenerList listenerList = new EventListenerList();
 
   /**
-   * changeEvent is fired when change occurs in one of the columns properties
+   * A change event used when notifying listeners of a change to the 
+   * <code>columnMargin</code> field.  This single event is reused for all
+   * notifications.
    */
+  // FIXME: use lazy instantiation
   protected transient ChangeEvent changeEvent = new ChangeEvent(this);
 
   /**
@@ -101,7 +105,11 @@ public class DefaultTableColumnModel
   protected int totalColumnWidth;
 
   /**
-   * Constructor DefaultTableColumnModel
+   * Creates a new table column model with zero columns.  A default column 
+   * selection model is created by calling {@link #createSelectionModel()}.
+   * The default value for <code>columnMargin</code> is <code>1</code> and
+   * the defautl value for <code>columnSelectionAllowed</code> is 
+   * <code>false</code>.
    */
   public DefaultTableColumnModel()
   {
@@ -112,10 +120,14 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * addColumn adds column to the model. This method fires ColumnAdded 
-   * event to model's registered TableColumnModelListeners.
+   * Adds a column to the model and sends a {@link TableColumnModelEvent} to
+   * all registered listeners. 
    *
-   * @param col column to add
+   * @param col  the column (<code>null</code> not permitted).
+   * 
+   * @throws IllegalArgumentException if <code>col</code> is <code>null</code>.
+   * 
+   * @see #removeColumn(TableColumn)
    */
   public void addColumn(TableColumn col)
   {
@@ -123,14 +135,18 @@ public class DefaultTableColumnModel
       throw new IllegalArgumentException("Null 'col' argument.");
     tableColumns.add(col);
     invalidateWidthCache();
-    fireColumnAdded(new TableColumnModelEvent(this, 0, tableColumns.size() - 1));
+    fireColumnAdded(new TableColumnModelEvent(this, 0, 
+                                              tableColumns.size() - 1));
   }
 
   /**
-   * removeColumn removes table column from the model. This method fires 
-   * ColumnRemoved event to model's registered TableColumnModelListeners.
+   * Removes a column from the model and sends a {@link TableColumnModelEvent}
+   * to all registered listeners.  If the specified column is <code>null</code>
+   * or does not belong to the model, this method does nothing.
    *
-   * @param col column to be removed
+   * @param col the column to be removed (<code>null</code> permitted).
+   * 
+   * @see #addColumn(TableColumn)
    */
   public void removeColumn(TableColumn col)
   {
@@ -162,18 +178,22 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * setColumnMargin sets margin of the columns.
-   * @param m new column margin
+   * Sets the column margin then calls {@link #fireColumnMarginChanged()}.
+   * 
+   * @param margin  the column margin.
+   * 
+   * @see #getColumnMargin()
    */
-  public void setColumnMargin(int m)
+  public void setColumnMargin(int margin)
   {
-    columnMargin = m;
+    columnMargin = margin;
     fireColumnMarginChanged();
   }
 
   /**
-   * getColumnCount returns number of columns in the model
-   * @return int number of columns in the model
+   * Returns the number of columns in the model.
+   * 
+   * @return The column count.
    */
   public int getColumnCount()
   {
@@ -181,8 +201,9 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * getColumns
-   * @return Enumeration
+   * Returns an enumeration of the columns in the model.
+   * 
+   * @return An enumeration of the columns in the model.
    */
   public Enumeration getColumns()
   {
@@ -214,9 +235,16 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * getColumn returns column at the specified index
-   * @param i index of the column 
-   * @return TableColumn column at the specified index
+   * Returns the column at the specified index.
+   * 
+   * @param i  the column index (in the range from <code>0</code> to 
+   *     <code>N-1</code>, where <code>N</code> is the number of columns in 
+   *     the model).
+   * 
+   * @return The column at the specified index.
+   * 
+   * @throws ArrayIndexOutOfBoundsException if <code>i</code> is not within
+   *     the specified range.
    */
   public TableColumn getColumn(int i)
   {
@@ -224,8 +252,11 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * getColumnMargin returns column margin
-   * @return int column margin
+   * Returns the column margin.
+   * 
+   * @return The column margin.
+   * 
+   * @see #setColumnMargin(int)
    */
   public int getColumnMargin()
   {
@@ -233,16 +264,26 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * getColumnIndexAtX returns column that contains specified x-coordinate.
-   * @param x x-coordinate that column should contain
-   * @return int index of the column that contains specified x-coordinate relative
-   * to this column model
+   * Returns the index of the column that contains the specified x-coordinate,
+   * assuming that:
+   * <ul>
+   * <li>column zero begins at position zero;</li>
+   * <li>all columns appear in order;</li>
+   * <li>individual column widths are taken into account, but the column margin
+   *     is ignored.</li>
+   * </ul>
+   * If no column contains the specified position, this method returns 
+   * <code>-1</code>.
+   * 
+   * @param x  the x-position.
+   * 
+   * @return The column index, or <code>-1</code>.
    */
   public int getColumnIndexAtX(int x)
   {    
     for (int i = 0; i < tableColumns.size(); ++i)
       {
-        int w = ((TableColumn)tableColumns.get(i)).getWidth();
+        int w = ((TableColumn) tableColumns.get(i)).getWidth();
         if (0 <= x && x < w)
           return i;
         else
@@ -252,10 +293,10 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * getTotalColumnWidth returns total width of all the columns including
-   * column's margins.
+   * Returns total width of all the columns in the model, ignoring the
+   * {@link #columnMargin}.
    *
-   * @return total width of all the columns
+   * @return The total width of all the columns.
    */
   public int getTotalColumnWidth()
   {
@@ -265,24 +306,31 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * setSelectionModel sets selection model that will be used by this ColumnTableModel
-   * to keep track of currently selected columns
+   * Sets the selection model that will be used to keep track of the selected 
+   * columns.
    *
-   * @param model new selection model
-   * @exception IllegalArgumentException if model is null
+   * @param model  the selection model (<code>null</code> not permitted).
+   * 
+   * @throws IllegalArgumentException if <code>model</code> is 
+   *     <code>null</code>.
    */
   public void setSelectionModel(ListSelectionModel model)
   {
     if (model == null)
       throw new IllegalArgumentException();
     
+    // FIXME: we are registered as a listener with the existing model,
+    // so we should remove that before updating the model...
     selectionModel = model;
     selectionModel.addListSelectionListener(this);
   }
 
   /**
-   * getSelectionModel returns selection model
-   * @return ListSelectionModel selection model
+   * Returns the selection model used to track table column selections.
+   * 
+   * @return The selection model.
+   * 
+   * @see #setSelectionModel(ListSelectionModel)
    */
   public ListSelectionModel getSelectionModel()
   {
@@ -290,10 +338,11 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * setColumnSelectionAllowed sets whether column selection is allowed
-   * or not.
+   * Sets the flag that indicates whether or not column selection is allowed.
    *
-   * @param flag true if column selection is allowed and false otherwise
+   * @param flag  the new flag value.
+   * 
+   * @see #getColumnSelectionAllowed()
    */
   public void setColumnSelectionAllowed(boolean flag)
   {
@@ -301,10 +350,12 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * getColumnSelectionAllowed indicates whether column selection is 
-   * allowed or not.
+   * Returns <code>true</code> if column selection is allowed, and 
+   * <code>false</code> if column selection is not allowed.
    *
-   * @return boolean true if column selection is allowed and false otherwise.
+   * @return A boolean.
+   * 
+   * @see #setColumnSelectionAllowed(boolean)
    */
   public boolean getColumnSelectionAllowed()
   {
@@ -356,8 +407,11 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * getSelectedColumnCount returns number of currently selected columns
-   * @return int number of currently selected columns
+   * Returns the number of selected columns in the model.
+   * 
+   * @return The selected column count.
+   * 
+   * @see #getSelectionModel()
    */
   public int getSelectedColumnCount()
   {
@@ -395,10 +449,10 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * addColumnModelListener adds specified listener to the model's
-   * listener list
+   * Registers a listener with the model, so that it will receive
+   * {@link TableColumnModelEvent} notifications.
    *
-   * @param listener the listener to add
+   * @param listener the listener (<code>null</code> ignored).
    */
   public void addColumnModelListener(TableColumnModelListener listener)
   {
@@ -417,6 +471,13 @@ public class DefaultTableColumnModel
   }
 
   /**
+   * Returns an array containing the listeners that are registered with the
+   * model.  If there are no listeners, an empty array is returned.
+   * 
+   * @return An array containing the listeners that are registered with the
+   *     model.
+   *     
+   * @see #addColumnModelListener(TableColumnModelListener)
    * @since 1.4
    */
   public TableColumnModelListener[] getColumnModelListeners()
@@ -435,7 +496,7 @@ public class DefaultTableColumnModel
   {    
     TableColumnModelListener[] listeners = getColumnModelListeners();
 
-    for (int i=0; i< listeners.length; i++)
+    for (int i = 0; i < listeners.length; i++)
       listeners[i].columnAdded(e);        
   }
 
@@ -449,7 +510,7 @@ public class DefaultTableColumnModel
   {
     TableColumnModelListener[] listeners = getColumnModelListeners();
 
-    for (int i=0; i< listeners.length; i++)
+    for (int i = 0; i < listeners.length; i++)
       listeners[i].columnRemoved(e);        
   }
 
@@ -463,7 +524,7 @@ public class DefaultTableColumnModel
   {
     TableColumnModelListener[] listeners = getColumnModelListeners();
 
-    for (int i=0; i< listeners.length; i++)
+    for (int i = 0; i < listeners.length; i++)
       listeners[i].columnMoved(e);        
   }
 
@@ -478,26 +539,30 @@ public class DefaultTableColumnModel
   {
     EventListener [] listeners = getListeners(TableColumnModelListener.class);
     for (int i = 0; i < listeners.length; ++i)
-      ((TableColumnModelListener)listeners[i]).columnSelectionChanged(evt);
+      ((TableColumnModelListener) listeners[i]).columnSelectionChanged(evt);
   }
 
   /**
-   * fireColumnMarginChanged fires TableColumnModelEvent to model's
-   * registered TableColumnModelListeners to indicate that column margin
-   * was changed.
+   * Sends a {@link TableColumnModelEvent} to the model's registered 
+   * {@link TableColumnModelListener}s to indicate that the column margin
+   * was changed.  
    */
   protected void fireColumnMarginChanged()
   {
     EventListener [] listeners = getListeners(TableColumnModelListener.class);
     for (int i = 0; i < listeners.length; ++i)
-      ((TableColumnModelListener)listeners[i]).columnMarginChanged(changeEvent);
+      ((TableColumnModelListener) listeners[i]).columnMarginChanged(changeEvent);
   }
 
   /**
-   * getListeners returns currently registered listeners with this model.
-   * @param listenerType type of listeners to return
+   * Returns an array containing the listeners (of the specified type) that 
+   * are registered with this model.
+   * 
+   * @param listenerType  the listener type (must indicate a subclass of 
+   *     {@link EventListener}, <code>null</code> not permitted).
    *
-   * @return EventListener[] array of model's listeners of the specified type
+   * @return An array containing the listeners (of the specified type) that 
+   *     are registered with this model.
    */
   public EventListener[] getListeners(Class listenerType)
   {
@@ -513,12 +578,17 @@ public class DefaultTableColumnModel
   public void propertyChange(PropertyChangeEvent evt)
   {
     if (evt.getPropertyName().equals(TableColumn.COLUMN_WIDTH_PROPERTY))
-	invalidateWidthCache(); 
+	  invalidateWidthCache(); 
   }
 
   /**
-   * valueChanged handles changes in the selectionModel.
-   * @param e ListSelectionEvent
+   * Receives notification of the change to the list selection model, and 
+   * responds by calling 
+   * {@link #fireColumnSelectionChanged(ListSelectionEvent)}.
+   * 
+   * @param e  the list selection event.
+   * 
+   * @see #getSelectionModel()
    */
   public void valueChanged(ListSelectionEvent e)
   {
@@ -526,10 +596,11 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * createSelectionModel creates selection model that will keep track
-   * of currently selected column(s)
+   * Creates a default selection model to track the currently selected 
+   * column(s).  This method is called by the constructor and returns a new
+   * instance of {@link DefaultListSelectionModel}.
    *
-   * @return ListSelectionModel selection model of the columns
+   * @return A new default column selection model.
    */
   protected ListSelectionModel createSelectionModel()
   {    
@@ -537,9 +608,10 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * recalcWidthCache calculates total width of the columns.
-   * If the current cache of the total width is in invalidated state, 
-   * then width is recalculated. Otherwise nothing is done.
+   * Recalculates the total width of the columns, if the cached value is
+   * <code>-1</code>.  Otherwise this method does nothing.
+   * 
+   * @see #getTotalColumnWidth()
    */
   protected void recalcWidthCache()
   {
@@ -548,13 +620,15 @@ public class DefaultTableColumnModel
         totalColumnWidth = 0;
         for (int i = 0; i < tableColumns.size(); ++i)
           {
-            totalColumnWidth += ((TableColumn)tableColumns.get(i)).getWidth();
+            totalColumnWidth += ((TableColumn) tableColumns.get(i)).getWidth();
           }
       }
   }
 
   /**
-   * invalidateWidthCache
+   * Sets the {@link #totalColumnWidth} field to <code>-1</code>.
+   * 
+   * @see #recalcWidthCache()
    */
   private void invalidateWidthCache()
   {
