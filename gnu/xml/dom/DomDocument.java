@@ -243,6 +243,18 @@ public class DomDocument
         if (current.getNodeType() == ELEMENT_NODE)
           {
             DomElement element = (DomElement) current;
+            if (element.userIdAttrs != null)
+              {
+                for (Iterator i = element.userIdAttrs.iterator();
+                     i.hasNext(); )
+                  {
+                    Node idAttr = (Node) i.next();
+                    if (id.equals(idAttr.getNodeValue()))
+                      {
+                        return element;
+                      }
+                  }
+              }
             if (doctype != null)
               {
                 DTDElementTypeInfo info =
@@ -251,18 +263,6 @@ public class DomDocument
                     id.equals(element.getAttribute(info.idAttrName)))
                   {
                     return element;
-                  }
-                else if (element.userIdAttrs != null)
-                  {
-                    for (Iterator i = element.userIdAttrs.iterator();
-                         i.hasNext(); )
-                      {
-                        Node idAttr = (Node) i.next();
-                        if (id.equals(idAttr.getNodeValue()))
-                          {
-                            return element;
-                          }
-                      }
                   }
               }
             // xml:id

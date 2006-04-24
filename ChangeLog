@@ -1,3 +1,9 @@
+2006-04-24  Chris Burdess  <dog@gnu.org>
+
+	Fixes PR 27262
+	* gnu/xml/dom/DomDocument.java: getElementById returns user-defined ID
+	  attributes when no doctype exists.
+
 2006-04-24  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/event/ChangeEvent.java: Updated API docs,
