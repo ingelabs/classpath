@@ -1,3 +1,22 @@
+2006-04-24  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/java2d/Segment.java: New file.
+	* gnu/java/awt/java2d/CubicSegment.java: New file.
+	* gnu/java/awt/java2d/QuadSegment.java: New file.
+	* gnu/java/awt/java2d/LineSegment.java: New file.
+	* java/awt/BasicStroke.java
+	(start): New field.
+	(end): New field.
+	(createStrokedShape): Implemented.
+	(solidStroke): New method.
+	(dashedStroke): New method.
+	(capEnds): New method.
+	(convertPath): New method.
+	(addSegments): New method.
+	(capEnd): New method.
+	(lineIntersection): New method.
+	(joinSegments): New method.
+
 2006-04-24  Roman Kennke <kennke@aicas.com>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java: Made implements
