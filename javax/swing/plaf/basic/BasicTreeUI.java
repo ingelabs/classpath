@@ -2444,7 +2444,8 @@ public class BasicTreeUI
      */
     protected int getRowX(int row, int depth)
     {
-      return depth * rightChildIndent;
+      int iw = getCurrentControlIcon(null).getIconWidth();
+      return depth * (rightChildIndent + iw/2);
     }
   }// NodeDimensionsHandler
 
@@ -3209,9 +3210,7 @@ public class BasicTreeUI
       {
         Icon icon = getCurrentControlIcon(path);
         int iconW = icon.getIconWidth();
-        int x = bounds.x - rightChildIndent + iconW / 2;
-        if (x + iconW > bounds.x)
-          x = bounds.x - rightChildIndent - gap;
+        int x = bounds.x - iconW - gap;
         icon.paintIcon(tree, g, x, bounds.y + bounds.height / 2
                                    - icon.getIconHeight() / 2);
       }
@@ -3240,8 +3239,12 @@ public class BasicTreeUI
                                           boolean isLeaf)
   {
     if (row != 0)
-      paintHorizontalLine(g, tree, bounds.y + bounds.height / 2, bounds.x - gap
-                                                                 - 2, bounds.x);
+      {
+        Icon icon = getCurrentControlIcon(path);
+        int iconW = icon.getIconWidth();
+        paintHorizontalLine(g, tree, bounds.y + bounds.height / 2,
+                            bounds.x - iconW/2 - gap, bounds.x - gap);
+      }
   }
 
   /**
@@ -3261,7 +3264,7 @@ public class BasicTreeUI
     if (parent != null)
       {
         Rectangle parentBounds = getPathBounds(tree, parent);
-        paintVerticalLine(g, tree, parentBounds.x + gap + 2,
+        paintVerticalLine(g, tree, parentBounds.x + 2* gap, 
                           parentBounds.y + parentBounds.height / 2,
                           bounds.y + bounds.height / 2);
       }

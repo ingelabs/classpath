@@ -1,5 +1,16 @@
 2006-04-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(NodeDimensionsHandler.getRowX): Add half of the icon width.
+	(paintExpandControl): Always paint in one gap distance from the left
+	border of the path bounds.
+	(paintHorizontalPartOfLeg): Rewritted, taking the icon width
+	into consideration.
+	(paintVerticalPartOfLeg): Paint two gaps from the parent's bounds
+	left edge.
+
+2006-04-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/swing/plaf/basic/BasicTreeUI.java (paint): Rewritten.
 
 2006-04-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
