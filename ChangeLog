@@ -1,5 +1,9 @@
 2006-04-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/swing/plaf/basic/BasicTreeUI.java (paint): Rewritten.
+
+2006-04-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* gnu/javax/swing/text/html/parser/support/Parser.java (readAttributes):
 	Allow slashes (/) in the unquoted parameter value. 
 

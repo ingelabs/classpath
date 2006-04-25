@@ -1377,7 +1377,7 @@ public class BasicTreeUI
     JTree tree = (JTree) c;
 
     Rectangle clip = g.getClipBounds();
-    
+
     Insets insets = tree.getInsets();
 
     if (clip != null && treeModel != null)
@@ -1386,25 +1386,11 @@ public class BasicTreeUI
         int endIndex = tree.getClosestRowForLocation(clip.x + clip.width,
                                                      clip.y + clip.height);
 
-        for (int i = startIndex; i <= endIndex; i++)
-          {
-            TreePath path = treeState.getPathForRow(i);
-            boolean isLeaf = treeModel.isLeaf(path.getLastPathComponent());
-            boolean isExpanded = tree.isExpanded(path);
-
-            Rectangle bounds = getPathBounds(tree, path);
-
-            paintHorizontalPartOfLeg(g, clip, insets, bounds, path, i,
-                                     isExpanded, false, isLeaf);
-            paintRow(g, clip, insets, bounds, path, i, isExpanded, false,
-                     isLeaf);
-            if (isLastChild(path))
-              paintVerticalPartOfLeg(g, clip, insets, path);
-          }
-
         // Also paint dashes to the invisible nodes below:
         int rows = treeState.getRowCount();
 
+        // These should be painted first, otherwise they may cover
+        // the control icons.
         if (endIndex < rows)
           for (int i = endIndex + 1; i < rows; i++)
             {
@@ -1412,6 +1398,37 @@ public class BasicTreeUI
               if (isLastChild(path))
                 paintVerticalPartOfLeg(g, clip, insets, path);
             }
+
+        // The two loops are required to ensure that the lines are not
+        // painted over the other tree components.
+
+        int n = endIndex - startIndex + 1;
+        Rectangle[] bounds = new Rectangle[n];
+        boolean[] isLeaf = new boolean[n];
+        boolean[] isExpanded = new boolean[n];
+        TreePath[] path = new TreePath[n];
+        int k;
+
+        k = 0;
+        for (int i = startIndex; i <= endIndex; i++, k++)
+          {
+            path[k] = treeState.getPathForRow(i);
+            isLeaf[k] = treeModel.isLeaf(path[k].getLastPathComponent());
+            isExpanded[k] = tree.isExpanded(path[k]);
+            bounds[k] = getPathBounds(tree, path[k]);
+
+            paintHorizontalPartOfLeg(g, clip, insets, bounds[k], path[k], i,
+                                     isExpanded[k], false, isLeaf[k]);
+            if (isLastChild(path[k]))
+              paintVerticalPartOfLeg(g, clip, insets, path[k]);
+          }
+
+        k = 0;
+        for (int i = startIndex; i <= endIndex; i++, k++)
+          {
+            paintRow(g, clip, insets, bounds[k], path[k], i, isExpanded[k],
+                     false, isLeaf[k]);
+          }
       }
   }
 
