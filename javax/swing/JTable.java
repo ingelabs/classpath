@@ -2433,7 +2433,7 @@ public class JTable
 
   /**
    * Get the value of the <code>columnCount</code> property by
-   * delegation to the @{link #columnModel} field.
+   * delegation to the {@link #columnModel} field.
    *
    * @return The current value of the columnCount property
    */
@@ -2444,7 +2444,7 @@ public class JTable
 
   /**
    * Get the value of the <code>rowCount</code> property by
-   * delegation to the @{link #dataModel} field.
+   * delegation to the {@link #dataModel} field.
    *
    * @return The current value of the rowCount property
    */
@@ -2465,7 +2465,7 @@ public class JTable
 
   /**
    * Get the value of the <code>selectedColumn</code> property by
-   * delegation to the @{link #columnModel} field.
+   * delegation to the {@link #columnModel} field.
    *
    * @return The current value of the selectedColumn property
    */
@@ -2534,7 +2534,7 @@ public class JTable
 
   /**
    * Get the value of the <code>selectedColumnCount</code> property by
-   * delegation to the @{link #columnModel} field.
+   * delegation to the {@link #columnModel} field.
    *
    * @return The current value of the selectedColumnCount property
    */  
@@ -2545,7 +2545,7 @@ public class JTable
 
   /**
    * Get the value of the <code>selectedColumns</code> property by
-   * delegation to the @{link #columnModel} field.
+   * delegation to the {@link #columnModel} field.
    *
    * @return The current value of the selectedColumns property
    */
@@ -2566,7 +2566,7 @@ public class JTable
 
   /**
    * Get the value of the <code>selectedRowCount</code> property by
-   * delegation to the @{link #selectionModel} field.
+   * delegation to the {@link #selectionModel} field.
    *
    * @return The current value of the selectedRowCount property
    */
@@ -2577,7 +2577,7 @@ public class JTable
 
   /**
    * Get the value of the <code>selectedRows</code> property by
-   * delegation to the @{link #selectionModel} field.
+   * delegation to the {@link #selectionModel} field.
    *
    * @return The current value of the selectedRows property
    */

@@ -1,5 +1,11 @@
 2006-04-25  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JTable.java: Fixed API doc tags,
+	* javax/swing/text/AsyncBoxView.java: Likewise,
+	* javax/swing/text/FlowView.java: Likewise.
+
+2006-04-25  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/table/DefaultTableColumnModel.java
 	(moveColumn): Call fireColumnMoved() not fireColumnAdded.
 
