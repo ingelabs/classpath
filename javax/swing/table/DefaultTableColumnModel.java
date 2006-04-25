@@ -179,7 +179,7 @@ public class DefaultTableColumnModel
       throw new IllegalArgumentException("Index 'j' out of range.");
     Object column = tableColumns.remove(i);
     tableColumns.add(j, column);
-    fireColumnAdded(new TableColumnModelEvent(this, i, j));
+    fireColumnMoved(new TableColumnModelEvent(this, i, j));
   }
 
   /**
