@@ -58,6 +58,8 @@ import javax.swing.event.TableColumnModelListener;
 /**
  * A model that stores information about the columns used in a {@link JTable}.
  * 
+ * @see JTable#setColumnModel(TableColumnModel)
+ * 
  * @author	Andrew Selkirk
  */
 public class DefaultTableColumnModel
@@ -77,12 +79,12 @@ public class DefaultTableColumnModel
   protected ListSelectionModel selectionModel;
 
   /**
-   * Space between two columns. By default it is set to 1
+   * The space between the columns (the default value is <code>1</code>).
    */
   protected int columnMargin;
 
   /**
-   * listenerList keeps track of all listeners registered with this model
+   * Storage for the listeners registered with the model.
    */
   protected EventListenerList listenerList = new EventListenerList();
 
@@ -95,12 +97,12 @@ public class DefaultTableColumnModel
   protected transient ChangeEvent changeEvent = new ChangeEvent(this);
 
   /**
-   * Indicates whether columns can be selected 
+   * A flag that indicates whether or not columns can be selected. 
    */
   protected boolean columnSelectionAllowed;
 
   /**
-   * Total width of all the columns in this model
+   * The total width of all the columns in this model.
    */
   protected int totalColumnWidth;
 
@@ -108,7 +110,7 @@ public class DefaultTableColumnModel
    * Creates a new table column model with zero columns.  A default column 
    * selection model is created by calling {@link #createSelectionModel()}.
    * The default value for <code>columnMargin</code> is <code>1</code> and
-   * the defautl value for <code>columnSelectionAllowed</code> is 
+   * the default value for <code>columnSelectionAllowed</code> is 
    * <code>false</code>.
    */
   public DefaultTableColumnModel()
@@ -121,14 +123,16 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * Adds a column to the model and sends a {@link TableColumnModelEvent} to
-   * all registered listeners.  The model registers itself with the column as a
+   * Adds a column to the model then calls 
+   * {@link #fireColumnAdded(TableColumnModelEvent)} to notify the registered
+   * listeners.  The model registers itself with the column as a
    * {@link PropertyChangeListener} so that changes to the column width will
    * invalidate the cached {@link #totalColumnWidth} value.
    *
    * @param column  the column (<code>null</code> not permitted).
    * 
-   * @throws IllegalArgumentException if <code>col</code> is <code>null</code>.
+   * @throws IllegalArgumentException if <code>column</code> is 
+   *     <code>null</code>.
    * 
    * @see #removeColumn(TableColumn)
    */
@@ -144,9 +148,10 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * Removes a column from the model and sends a {@link TableColumnModelEvent}
-   * to all registered listeners.  If the specified column is <code>null</code>
-   * or does not belong to the model, this method does nothing.
+   * Removes a column from the model then calls
+   * {@link #fireColumnRemoved(TableColumnModelEvent)} to notify the registered
+   * listeners.  If the specified column does not belong to the model, or is 
+   * <code>null</code>, this method does nothing.
    *
    * @param column the column to be removed (<code>null</code> permitted).
    * 
@@ -164,11 +169,16 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * moveColumn moves column at index i to index j. This method fires
-   * ColumnMoved event to model's registered TableColumnModelListeners.
+   * Moves the column at index i to the position specified by index j, then 
+   * calls {@link #fireColumnMoved(TableColumnModelEvent)} to notify registered
+   * listeners.
    *
-   * @param i index of the column that will be moved
-   * @param j index of column's new location
+   * @param i index of the column that will be moved.
+   * @param j index of the column's new location.
+   * 
+   * @throws IllegalArgumentException if <code>i</code> or <code>j</code> are
+   *     outside the range <code>0</code> to <code>N-1</code>, where 
+   *     <code>N</code> is the column count.
    */
   public void moveColumn(int i, int j)
   {
@@ -183,7 +193,8 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * Sets the column margin then calls {@link #fireColumnMarginChanged()}.
+   * Sets the column margin then calls {@link #fireColumnMarginChanged()} to
+   * notify the registered listeners.
    * 
    * @param margin  the column margin.
    * 
@@ -242,7 +253,7 @@ public class DefaultTableColumnModel
   /**
    * Returns the column at the specified index.
    * 
-   * @param i  the column index (in the range from <code>0</code> to 
+   * @param columnIndex  the column index (in the range from <code>0</code> to 
    *     <code>N-1</code>, where <code>N</code> is the number of columns in 
    *     the model).
    * 
@@ -251,9 +262,9 @@ public class DefaultTableColumnModel
    * @throws ArrayIndexOutOfBoundsException if <code>i</code> is not within
    *     the specified range.
    */
-  public TableColumn getColumn(int i)
+  public TableColumn getColumn(int columnIndex)
   {
-    return (TableColumn) tableColumns.get(i);
+    return (TableColumn) tableColumns.get(columnIndex);
   }
 
   /**
@@ -269,8 +280,8 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * Returns the index of the column that contains the specified x-coordinate,
-   * assuming that:
+   * Returns the index of the column that contains the specified x-coordinate.
+   * This method assumes that:
    * <ul>
    * <li>column zero begins at position zero;</li>
    * <li>all columns appear in order;</li>
@@ -369,10 +380,9 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * getSelectedColumns returns array containing indexes of currently 
-   * selected columns
+   * Returns an array containing the indices of the selected columns.
    *
-   * @return int[] array containing indexes of currently selected columns
+   * @return An array containing the indices of the selected columns.
    */
   public int[] getSelectedColumns()
   {
@@ -466,10 +476,10 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * removeColumnModelListener removes specified listener from the model's 
-   * listener list.
+   * Deregisters a listener so that it no longer receives notification of 
+   * changes to this model.
    *
-   * @param listener the listener to remove
+   * @param listener  the listener to remove
    */
   public void removeColumnModelListener(TableColumnModelListener listener)
   {
@@ -493,10 +503,14 @@ public class DefaultTableColumnModel
   }	  
 
   /**
-   * fireColumnAdded fires TableColumnModelEvent to registered 
-   * TableColumnModelListeners to indicate that column was added
-   *
-   * @param e TableColumnModelEvent
+   * Sends the specified {@link TableColumnModelEvent} to all registered 
+   * listeners, to indicate that a column has been added to the model.  The
+   * event's <code>toIndex</code> attribute should contain the index of the
+   * added column.  
+   * 
+   * @param e  the event.
+   * 
+   * @see #addColumn(TableColumn)
    */
   protected void fireColumnAdded(TableColumnModelEvent e)
   {    
@@ -507,10 +521,14 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * fireColumnAdded fires TableColumnModelEvent to registered 
-   * TableColumnModelListeners to indicate that column was removed
-   *
-   * @param e TableColumnModelEvent
+   * Sends the specified {@link TableColumnModelEvent} to all registered 
+   * listeners, to indicate that a column has been removed from the model.  The
+   * event's <code>fromIndex</code> attribute should contain the index of the
+   * removed column.  
+   * 
+   * @param e  the event.
+   * 
+   * @see #removeColumn(TableColumn)
    */
   protected void fireColumnRemoved(TableColumnModelEvent e)
   {
@@ -521,10 +539,15 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * fireColumnAdded fires TableColumnModelEvent to registered 
-   * TableColumnModelListeners to indicate that column was moved
-   *
-   * @param e TableColumnModelEvent
+   * Sends the specified {@link TableColumnModelEvent} to all registered 
+   * listeners, to indicate that a column in the model has been moved.  The
+   * event's <code>fromIndex</code> attribute should contain the old column
+   * index, and the <code>toIndex</code> attribute should contain the new
+   * column index.  
+   * 
+   * @param e  the event.
+   * 
+   * @see #moveColumn(int, int)
    */
   protected void fireColumnMoved(TableColumnModelEvent e)
   {
@@ -535,23 +558,25 @@ public class DefaultTableColumnModel
   }
 
   /**
-   * fireColumnSelectionChanged fires TableColumnModelEvent to model's
-   * registered TableColumnModelListeners to indicate that different column 
-   * was selected.
+   * Sends the specified {@link ListSelectionEvent} to all registered listeners,
+   * to indicate that the column selections have changed.
    *
-   * @param evt ListSelectionEvent
+   * @param e  the event.
+   * 
+   * @see #valueChanged(ListSelectionEvent)
    */
-  protected void fireColumnSelectionChanged(ListSelectionEvent evt)
+  protected void fireColumnSelectionChanged(ListSelectionEvent e)
   {
     EventListener [] listeners = getListeners(TableColumnModelListener.class);
     for (int i = 0; i < listeners.length; ++i)
-      ((TableColumnModelListener) listeners[i]).columnSelectionChanged(evt);
+      ((TableColumnModelListener) listeners[i]).columnSelectionChanged(e);
   }
 
   /**
-   * Sends a {@link TableColumnModelEvent} to the model's registered 
-   * {@link TableColumnModelListener}s to indicate that the column margin
-   * was changed.  
+   * Sends a {@link ChangeEvent} to the model's registered listeners to 
+   * indicate that the column margin was changed.  
+   * 
+   * @see #setColumnMargin(int)
    */
   protected void fireColumnMarginChanged()
   {
