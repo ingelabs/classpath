@@ -55,6 +55,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.Toolkit;
 import java.awt.RenderingHints.Key;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
@@ -76,6 +77,8 @@ import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -222,28 +225,62 @@ public abstract class AbstractGraphics2D
     throw new UnsupportedOperationException("Not yet implemented");
   }
 
+  /**
+   * Draws the specified string at the specified location.
+   *
+   * @param text the string to draw
+   * @param x the x location, relative to the bounding rectangle of the text
+   * @param y the y location, relative to the bounding rectangle of the text
+   */
   public void drawString(String text, int x, int y)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    FontRenderContext ctx = getFontRenderContext();
+    GlyphVector gv = font.createGlyphVector(ctx, text.toCharArray());
+    drawGlyphVector(gv, x, y);
   }
 
+  /**
+   * Draws the specified string at the specified location.
+   *
+   * @param text the string to draw
+   * @param x the x location, relative to the bounding rectangle of the text
+   * @param y the y location, relative to the bounding rectangle of the text
+   */
   public void drawString(String text, float x, float y)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    FontRenderContext ctx = getFontRenderContext();
+    GlyphVector gv = font.createGlyphVector(ctx, text.toCharArray());
+    drawGlyphVector(gv, x, y);
   }
 
+  /**
+   * Draws the specified string (as AttributedCharacterIterator) at the
+   * specified location.
+   *
+   * @param iterator the string to draw
+   * @param x the x location, relative to the bounding rectangle of the text
+   * @param y the y location, relative to the bounding rectangle of the text
+   */
   public void drawString(AttributedCharacterIterator iterator, int x, int y)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    FontRenderContext ctx = getFontRenderContext();
+    GlyphVector gv = font.createGlyphVector(ctx, iterator);
+    drawGlyphVector(gv, x, y);
   }
 
+  /**
+   * Draws the specified string (as AttributedCharacterIterator) at the
+   * specified location.
+   *
+   * @param iterator the string to draw
+   * @param x the x location, relative to the bounding rectangle of the text
+   * @param y the y location, relative to the bounding rectangle of the text
+   */
   public void drawString(AttributedCharacterIterator iterator, float x, float y)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    FontRenderContext ctx = getFontRenderContext();
+    GlyphVector gv = font.createGlyphVector(ctx, iterator);
+    drawGlyphVector(gv, x, y);
   }
 
   /**
@@ -646,14 +683,32 @@ public abstract class AbstractGraphics2D
 
   public FontRenderContext getFontRenderContext()
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    //return new FontRenderContext(transform, false, false);
+    return new FontRenderContext(new AffineTransform(), false, false);
   }
 
-  public void drawGlyphVector(GlyphVector g, float x, float y)
+  /**
+   * Draws the specified glyph vector at the specified location.
+   *
+   * @param gv the glyph vector to draw
+   * @param x the location, x coordinate
+   * @param y the location, y coordinate
+   */
+  public void drawGlyphVector(GlyphVector gv, float x, float y)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    int numGlyphs = gv.getNumGlyphs();
+    AffineTransform t = new AffineTransform();
+    t.translate(x, y);
+
+    // TODO: We could use fill(gv.getOutline()), but that doesn't seem
+    // to work yet with the font infrastructure I use.
+    for (int i = 0; i < numGlyphs; i++)
+    {
+      //fill(gv.getGlyphVisualBounds(i));
+      GeneralPath p = new GeneralPath(gv.getGlyphOutline(i));
+      p.transform(t);
+      fill(p);
+    }
   }
 
   /**
@@ -731,21 +786,38 @@ public abstract class AbstractGraphics2D
     throw new UnsupportedOperationException("Not yet implemented");
   }
 
+  /**
+   * Returns the current font.
+   *
+   * @return the current font
+   */
   public Font getFont()
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    return font;
   }
 
+  /**
+   * Sets the font on this graphics object. When <code>f == null</code>, the
+   * current setting is not changed.
+   *
+   * @param f the font to set
+   */
   public void setFont(Font f)
   {
-    font = f;
+    if (f != null)
+      font = f;
   }
 
+  /**
+   * Returns the font metrics for the specified font.
+   *
+   * @param font the font for which to fetch the font metrics
+   *
+   * @return the font metrics for the specified font
+   */
   public FontMetrics getFontMetrics(Font font)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    return Toolkit.getDefaultToolkit().getFontMetrics(font);
   }
 
   /**
@@ -864,6 +936,7 @@ public abstract class AbstractGraphics2D
   {
     Paint savedForeground = getPaint();
     setPaint(getBackground());
+    //System.err.println("clearRect transform type: " + transform.getType());
     fillRect(x, y, width, height);
     setPaint(savedForeground);
   }
@@ -1034,33 +1107,53 @@ public abstract class AbstractGraphics2D
     // rawFillPolygon() which would provide a default implementation for
     // drawPixel using a PolyScan algorithm.
     double[] seg = new double[6];
-    // TODO: Optimize memory usage here.
-    int[] xpoints = new int[100];
-    int[] ypoints = new int[100];
-    int npoints = 0;
+
+    // TODO: Use ArrayList<PolyEdge> here when availble.
+    ArrayList segs = new ArrayList();
+    double segX = 0.; // The start point of the current edge.
+    double segY = 0.; 
+    double polyX = 0.; // The start point of the current polygon.
+    double polyY = 0.;
+
+    double minX = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxY = Integer.MIN_VALUE;
+
+    //System.err.println("fill polygon");
     while (! path.isDone())
       {
         int segType = path.currentSegment(seg);
+        minX = Math.min(minX, seg[0]);
+        maxX = Math.max(maxX, seg[0]);
+        minY = Math.min(minY, seg[1]);
+        maxY = Math.max(maxY, seg[1]);
+
+        //System.err.println("segment: " + segType + ", " + seg[0] + ", " + seg[1]);
         if (segType == PathIterator.SEG_MOVETO)
           {
-            npoints = 0;
-            xpoints[npoints] = (int) seg[0];
-            ypoints[npoints] = (int) seg[1];
+            segX = seg[0];
+            segY = seg[1];
+            polyX = seg[0];
+            polyY = seg[1];
           }
         else if (segType == PathIterator.SEG_CLOSE)
           {
-            rawFillPolygon(xpoints, ypoints, npoints);
-            npoints = 0;
+            // Close the polyline.
+            PolyEdge edge = new PolyEdge(segX, segY, polyX, polyY);
+            segs.add(edge);
           }
-        else if (segType == PathIterator.SEG_MOVETO
-            || segType == PathIterator.SEG_LINETO)
+        else if (segType == PathIterator.SEG_LINETO)
           {
-            xpoints[npoints] = (int) seg[0];
-            ypoints[npoints] = (int) seg[1];
-            npoints++;
+            PolyEdge edge = new PolyEdge(segX, segY, seg[0], seg[1]);
+            segs.add(edge);
+            segX = seg[0];
+            segY = seg[1];
           }
         path.next();
       }
+    if (segs.size() > 0)
+      rawFillShape(segs, minX, minY, maxX, maxY);
   }
 
   /**
@@ -1231,16 +1324,135 @@ public abstract class AbstractGraphics2D
    * case for most toolkit window and offscreen image implementations.
    *
    * The polygon is already clipped when this method is called.
-   *
-   * @param xpoints the x coordinates of the polygon points
-   * @param ypoints the y coordinates of the polygon points
-   * @param npoints the number of points
    */
-  protected void rawFillPolygon(int[] xpoints, int[] ypoints, int npoints)
+  protected void rawFillShape(ArrayList segs, double minX, double minY,
+                              double maxX, double maxY)
   {
-    // FIXME: Provide default implementation here.
+    // This is an implementation of a polygon scanline conversion algorithm
+    // described here:
+    // http://www.cs.berkeley.edu/~ug/slide/pipeline/assignments/scan/
+
+    // Create table of all edges.
+    // The edge buckets, sorted and indexed by their Y values.
+    ArrayList[] edgeTable = new ArrayList[(int) Math.ceil(maxY)
+                                          - (int) Math.ceil(minY) + 1];
+
+    for (Iterator i = segs.iterator(); i.hasNext();)
+      {
+        PolyEdge edge = (PolyEdge) i.next();
+
+        // Horizontal edges are not needed and make things only more
+        // complicated. Skip them.
+        if (Math.ceil(edge.y0) == Math.ceil(edge.y1))
+          continue;
+
+        int yindex = (int) ((int) Math.ceil(edge.y0) - (int) Math.ceil(minY));
+        if (edgeTable[yindex] == null) // Create bucket when needed.
+          edgeTable[yindex] = new ArrayList();
+        edgeTable[yindex].add(edge); // Add edge to the bucket of its line.
+      }
+
+    // TODO: The following could be useful for a future optimization.
+//    // Sort all the edges in the edge table within their buckets.
+//    for (int y = 0; y < edgeTable.length; y++)
+//      {
+//        if (edgeTable[y] != null)
+//          Collections.sort(edgeTable[y]);
+//      }
+
+    // The activeEdges list contains all the edges of the current scanline
+    // ordered by their intersection points with this scanline.
+    ArrayList activeEdges = new ArrayList();
+    PolyEdgeComparator comparator = new PolyEdgeComparator();
+
+    // Scan all relevant lines.
+    int minYInt = (int) Math.ceil(minY);
+    for (int y = minYInt; y <= maxY; y++)
+      {
+        ArrayList bucket = edgeTable[y - minYInt];
+        // Update all the x intersections in the current activeEdges table
+        // and remove entries that are no longer in the scanline.
+        for (Iterator i = activeEdges.iterator(); i.hasNext();)
+          {
+            PolyEdge edge = (PolyEdge) i.next();
+            if (y >= edge.y0 && y >= edge.y1)
+              i.remove();
+            else
+              {
+                edge.xIntersection += edge.slope;
+                //edge.xIntersection = edge.x0 + edge.slope * (y - edge.y0);
+                //System.err.println("edge.xIntersection: " + edge.xIntersection);
+              }
+          }
+
+        if (bucket != null)
+          activeEdges.addAll(bucket);
+
+        // Sort current edges. We are using a bubble sort, because the order
+        // of the intersections will not change in most situations. They
+        // will only change, when edges intersect each other.
+        int size = activeEdges.size();
+        if (size > 1)
+          {
+            for (int i = 1; i < size; i++)
+              {
+                PolyEdge e1 = (PolyEdge) activeEdges.get(i - 1);
+                PolyEdge e2 = (PolyEdge) activeEdges.get(i);
+                if (comparator.compare(e1, e2) > 0)
+                  {
+                    // Swap e2 with its left neighbor until it 'fits'.
+                    int j = i;
+                    do
+                      {
+                        activeEdges.set(j, e1);
+                        activeEdges.set(j - 1, e2);
+                        j--;
+                        if (j >= 1)
+                          e1 = (PolyEdge) activeEdges.get(j - 1);
+                      } while (j >= 1 && comparator.compare(e1, e2) > 0);
+                  }
+              }
+          }
+
+        // Now draw all pixels inside the polygon.
+        int x0 = 0; // Gets initialized in the first else branch below.
+        boolean active = false;
+        //System.err.println("scanline: " + y);
+        for (Iterator i = activeEdges.iterator(); i.hasNext();)
+          {
+            PolyEdge edge = (PolyEdge) i.next();
+            //System.err.println("edge: " + edge);
+            int x = (int) edge.xIntersection;
+            if (active)
+              {
+                fillScanline(x0, x, y);
+                active = false;
+              }
+            else
+              {
+                x0 = x;
+                active = true;
+              }
+          }
+      }
   }
 
+  /**
+   * Fills a horizontal line between x0 and x1 with the current paint and
+   * composize. Backends should override this if they want to accelerate
+   * general shape drawing. They should respect the current paint and
+   * composite though (or call super for these tasks). It is not necessary
+   * to clip the line.
+   *
+   * @param x0 the beginning of the scanline
+   * @param x1 the end of the scanline
+   * @param y the y coordinate of the line
+   */
+  protected void fillScanline(int x0, int x1, int y)
+  {
+    for (int x = x0; x < x1; x++)
+      drawPixel(x, y);
+  }
 
   /**
    * Initializes this graphics object. This must be called by subclasses in
@@ -1248,7 +1460,8 @@ public abstract class AbstractGraphics2D
    */
   protected void init()
   {
-    setPaint(Color.RED);
+    setPaint(Color.BLACK);
+    setFont(new Font("SansSerif", Font.PLAIN, 12));
     isOptimized = true;
   }
 

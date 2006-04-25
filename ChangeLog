@@ -1,3 +1,23 @@
+2006-04-25  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(drawString(String,int,int)): Implemented.
+	(drawString(String,float,float)): Implemented.
+	(drawString(AttributedCharacterIterator,int,int)): Implemented.
+	(drawString(AttributedCharacterIterator,float,float)): Implemented.
+	(getFontRenderContext): Implemented.
+	(drawGlyphVector): Implemented.
+	(getFont): Implemented.
+	(setFont): Don't change font setting when null.
+	(getFontMetrics): Implemented.
+	(fillShape): Re-written to fill call rawFillShape() with a list
+	of the edges instead of double arrays.
+	(rawFillShape): Implemented using a polygon scanline conversion.
+	(fillScanline): New helper method.
+	(init): Initialize foreground black. Set font.
+	* gnu/java/awt/java2d/PolyEdge.java: New file.
+	* gnu/java/awt/java2d/PolyEdgeComparator.java: New file.
+
 2006-04-25  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/table/DefaultTableColumnModel.java: More API doc updates.
