@@ -1,3 +1,8 @@
+2006-04-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* gnu/javax/swing/text/html/parser/support/Parser.java (readAttributes):
+	Allow slashes (/) in the unquoted parameter value. 
+
 2006-04-25  Roman Kennke <kennke@aicas.com>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java
