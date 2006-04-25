@@ -1,5 +1,10 @@
 2006-04-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/swing/plaf/basic/BasicTreeUI.java (MouseHandler.mousePressed):
+	If clicked on the other row, cancel the current editing session.
+
+2006-04-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/swing/plaf/basic/BasicTreeUI.java
 	(NodeDimensionsHandler.getRowX): Add half of the icon width.
 	(paintExpandControl): Always paint in one gap distance from the left

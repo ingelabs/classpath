@@ -2166,6 +2166,11 @@ public class BasicTreeUI
         {
           Rectangle bounds = getPathBounds(tree, path);
           int row = getRowForPath(tree, path);
+          
+          // Cancel the editing session if clicked on the different row.
+          if (tree.isEditing() && row != editingRow)
+            cancelEditing(tree);
+          
           boolean cntlClick = isLocationInExpandControl(path, click.x, click.y);
 
           boolean isLeaf = isLeaf(row);
