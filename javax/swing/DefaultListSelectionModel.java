@@ -555,6 +555,7 @@ public class DefaultListSelectionModel implements Cloneable,
     for (i = from; i>=0; i=sel.nextSetBit(i+1))
       to = i;
     
+    sel.clear();
     fireValueChanged(from, to, valueIsAdjusting);
   }
   
