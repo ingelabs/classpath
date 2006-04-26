@@ -1,3 +1,8 @@
+2006-04-26  Tom Tromey  <tromey@redhat.com>
+
+	* javax/net/ssl/HttpsURLConnection.java (HttpsURLConnection): Doesn't
+	throw IOException.
+
 2006-04-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/DefaultListSelectionModel.java
