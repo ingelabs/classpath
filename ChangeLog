@@ -1,3 +1,9 @@
+2006-04-26  Chris Burdess  <dog@gnu.org>
+
+	Fixes PR 27290
+	* javax/xml/datatype/DatatypeFactory.java: Use complete
+	  implementation resolution mechanism.
+
 2006-04-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/tree/DefaultTreeModel.java (nodeStructureChanged): 
