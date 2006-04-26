@@ -1,5 +1,31 @@
 2006-04-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/swing/JTree.java (setLeadSelectionPath):
+	Repaint the new and old lead pathes.
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(FocusHandler): Repaint the lead row when focus changes.
+	(PropertyChangeHandler): Use existing constants, not the
+	string literals for the property names.
+	(TreeIncrementAction): Shrink the selection when moving
+	from the selection edge to the selection anchor.
+	(TreeSelectionHandler.valueChanged): Repaint the 
+	new and old lead pathes.
+	(paintRow): Treat row as focused only if it is the lead row.
+	* javax/swing/tree/DefaultTreeCellRenderer.java
+	(getTreeCellRendererComponent): Set the vertical alignment to CENTER.
+	(paint): Rewritten.
+	* javax/swing/tree/DefaultTreeSelectionModel.java
+	(addSelectionPath): Event construction fix (old and new lead were
+	always the same).
+	(addSelectionPaths): Likewise.
+	* javax/swing/JComponent.java (setOpaque): Explained.
+	* javax/swing/tree/FixedHeightLayoutCache.java (getBounds):
+	Accept null.
+	* javax/swing/tree/VariableHeightLayoutCache.java (getBounds):
+	Accept null.
+
+2006-04-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* examples/gnu/classpath/examples/swing/TreeDemo.java
 	(createContent): Call DefaultTreeModel.reload(), not the
 	tree.repaint(). Expand the parent of the added node.
@@ -13221,7 +13247,7 @@
 	Added deprecated tag.
 	* javax/swing/text/JTextComponent.java
 	(AccessibleJTextComponent): Fixed API doc and
-	partially implemented.
+	partiall9 implemented.
 	(getCaretPosition): Fixed API doc and implemented.
 	(getSelectedText): Fixed API doc.
 	(getSelectionStart): Likewise.

@@ -325,6 +325,8 @@ public class VariableHeightLayoutCache
    */
   public Rectangle getBounds(TreePath path, Rectangle rect)
   {
+    if (path == null)
+      return null;
     if (dirty)
       update();
     Object last = path.getLastPathComponent();

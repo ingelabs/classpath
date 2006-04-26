@@ -2298,8 +2298,17 @@ public class JTree extends JComponent implements Scrollable, Accessible
         TreePath oldValue = selectionModel.getLeadSelectionPath();
         if (path.equals(oldValue))
           return;
-
-        selectionModel.addSelectionPath(path);
+       
+        // Repaint the previous and current rows with the lead selection path.
+        if (path != null)
+          {
+            repaint(getPathBounds(path));
+            selectionModel.addSelectionPath(path);
+          }
+        
+        if (oldValue!=null)
+          repaint(getPathBounds(oldValue));
+        
         firePropertyChange(LEAD_SELECTION_PATH_PROPERTY, oldValue, path);
       }
   }

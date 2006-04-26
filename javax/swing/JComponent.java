@@ -2924,9 +2924,12 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
-   * Set the value of the {@link #opaque} property.
+   * Set if the component should paint all pixels withing its bounds.
+   * If this property is set to false, the component expects the cleared
+   * background.
    *
-   * @param isOpaque The new value of the property
+   * @param isOpaque if true, paint all pixels. If false, expect the clean
+   * background. 
    *
    * @see ComponentUI#update
    */

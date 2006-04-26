@@ -341,6 +341,9 @@ public class DefaultTreeSelectionModel
    * is already selected and doesn't add the same path twice. If this changes
    * the selection the registered TreeSelectionListeners are notified.
    * 
+   * The lead path is changed to the added path. This also happen if the 
+   * passed path was already selected before.
+   * 
    * @param path the path to add to the selection
    */
   public void addSelectionPath(TreePath path)
@@ -358,11 +361,16 @@ public class DefaultTreeSelectionModel
             selection = new TreePath[temp.length];
             System.arraycopy(temp, 0, selection, 0, temp.length);
           }
+      }
+    
+     if (path!=leadPath)
+       {
+        TreePath oldLead = leadPath;
         leadPath = path;
         leadRow = getRow(path);
         leadIndex = selection.length - 1;
-        fireValueChanged(new TreeSelectionEvent(this, path, true, leadPath,
-                                                path));
+        fireValueChanged(new TreeSelectionEvent(this, path, true, oldLead,
+                                                leadPath));
       }
   }
 
@@ -396,12 +404,13 @@ public class DefaultTreeSelectionModel
                     selection = new TreePath[temp.length];
                     System.arraycopy(temp, 0, selection, 0, temp.length);
                   }
+               TreePath oldLead = leadPath;                
                 leadPath = paths[paths.length - 1];
                 leadRow = getRow(leadPath);
                 leadIndex = selection.length - 1;
 
                 fireValueChanged(new TreeSelectionEvent(this, v0, true,
-                                                        leadPath, paths[0]));
+                                                        oldLead, leadPath));
               }
           }
         insureRowContinuity();
@@ -732,10 +741,7 @@ public class DefaultTreeSelectionModel
    */
   public int getLeadSelectionRow()
   {
-    if ((rowMapper == null) || (leadPath == null))
-      return - 1;
-    else
-      return getRow(leadPath);
+    return leadRow;
   }
 
   /**

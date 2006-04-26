@@ -2053,24 +2053,38 @@ public class BasicTreeUI
 
     /**
      * Invoked when focus is activated on the tree we're in, redraws the lead
-     * row. Invoked when a component gains the keyboard focus.
+     * row. Invoked when a component gains the keyboard focus. The method
+     * repaints the lead row that is shown differently when the tree is in
+     * focus.
      * 
      * @param e is the focus event that is activated
      */
     public void focusGained(FocusEvent e)
     {
-      // TODO: Implement this properly.
+      repaintLeadRow();
     }
 
     /**
      * Invoked when focus is deactivated on the tree we're in, redraws the lead
-     * row. Invoked when a component loses the keyboard focus.
+     * row. Invoked when a component loses the keyboard focus. The method
+     * repaints the lead row that is shown differently when the tree is in
+     * focus.
      * 
      * @param e is the focus event that is deactivated
      */
     public void focusLost(FocusEvent e)
     {
-      // TODO: Implement this properly.
+      repaintLeadRow();
+    }
+    
+    /**
+     * Repaint the lead row.
+     */
+    void repaintLeadRow()
+    {
+      TreePath lead = tree.getLeadSelectionPath();
+      if (lead!=null)
+        tree.repaint(tree.getPathBounds(lead));
     }
   }
 
@@ -2479,21 +2493,22 @@ public class BasicTreeUI
      */
     public void propertyChange(PropertyChangeEvent event)
     {
-      if ((event.getPropertyName()).equals("rootVisible"))
+      String property = event.getPropertyName();
+      if (property.equals(JTree.ROOT_VISIBLE_PROPERTY))
         {
           validCachedPreferredSize = false;
           treeState.setRootVisible(tree.isRootVisible());
           tree.repaint();
         }
-      else if ((event.getPropertyName()).equals("selectionModel"))
+      else if (property.equals(JTree.SELECTION_MODEL_PROPERTY))
         {
-          TreeSelectionModel model = tree.getSelectionModel();
-          model.setRowMapper(treeState);
+          treeSelectionModel = tree.getSelectionModel();
+          treeSelectionModel.setRowMapper(treeState);
         }
-      else if ((event.getPropertyName()).equals("model"))
+      else if (property.equals(JTree.TREE_MODEL_PROPERTY))
         {
-          TreeModel model = tree.getModel();
-          model.addTreeModelListener(treeModelListener);
+          treeModel = tree.getModel();
+          treeModel.addTreeModelListener(treeModelListener);
         }
     }
   }
@@ -2699,12 +2714,20 @@ public class BasicTreeUI
         {
           newPath = treeState.getPathForRow(prevRow);
           tree.setSelectionPath(newPath);
-          tree.setLeadSelectionPath(newPath);
           tree.setAnchorSelectionPath(newPath);
+          tree.setLeadSelectionPath(newPath);
         }
       else if (command.equals("selectPreviousExtendSelection") && hasPrev)
         {
           newPath = treeState.getPathForRow(prevRow);
+
+          // If the new path is already selected, the selection shrinks,
+          // unselecting the previously current path.
+          if (tree.isPathSelected(newPath))
+            tree.getSelectionModel().removeSelectionPath(currentPath);
+
+          // This must be called in any case because it updates the model
+          // lead selection index.
           tree.addSelectionPath(newPath);
           tree.setLeadSelectionPath(newPath);
         }
@@ -2721,15 +2744,24 @@ public class BasicTreeUI
       else if (command.equals("selectNextExtendSelection") && hasNext)
         {
           newPath = treeState.getPathForRow(nextRow);
+
+          // If the new path is already selected, the selection shrinks,
+          // unselecting the previously current path.
+          if (tree.isPathSelected(newPath))
+            tree.getSelectionModel().removeSelectionPath(currentPath);
+
+          // This must be called in any case because it updates the model
+          // lead selection index.
           tree.addSelectionPath(newPath);
+
           tree.setLeadSelectionPath(newPath);
         }
       else if (command.equals("selectNextChangeLead") && hasNext)
         {
           newPath = treeState.getPathForRow(nextRow);
           tree.setSelectionPath(newPath);
+          tree.setAnchorSelectionPath(newPath);
           tree.setLeadSelectionPath(newPath);
-          tree.setAnchorSelectionPath(newPath);          
         }
     }
 
@@ -2894,7 +2926,24 @@ public class BasicTreeUI
     public void valueChanged(TreeSelectionEvent event)
     {
       if (tree.isEditing())
-        tree.stopEditing();
+        tree.cancelEditing();
+
+      TreePath op = event.getOldLeadSelectionPath();
+      TreePath np = event.getNewLeadSelectionPath();
+      
+      // Repaint of the changed lead selection path.
+      if (op != np)
+        {
+          Rectangle o = treeState.getBounds(event.getOldLeadSelectionPath(), 
+                                           new Rectangle());
+          Rectangle n = treeState.getBounds(event.getNewLeadSelectionPath(), 
+                                           new Rectangle());
+          
+          if (o!=null)
+            tree.repaint(o);
+          if (n!=null)
+            tree.repaint(n);
+        }
     }
   }// TreeSelectionHandler
 
@@ -3082,7 +3131,7 @@ public class BasicTreeUI
     if (path != null)
       {
         tree.setSelectionPath(path);
-        tree.setLeadSelectionPath(path);
+        tree.setLeadSelectionPath(path);        
         tree.makeVisible(path);
         tree.scrollPathToVisible(path);
       }
@@ -3311,9 +3360,15 @@ public class BasicTreeUI
     if (dtcr == null)
       dtcr = createDefaultCellRenderer();
 
+    boolean focused = false;
+    if (treeSelectionModel!= null)
+      focused = treeSelectionModel.getLeadSelectionRow() == row 
+        && tree.isFocusOwner();
+    
     Component c = dtcr.getTreeCellRendererComponent(tree, node, selected,
                                                     isExpanded, isLeaf, row,
-                                                    tree.hasFocus());
+                                                    focused);
+
     rendererPane.paintComponent(g, c, c.getParent(), bounds);
   }
 
