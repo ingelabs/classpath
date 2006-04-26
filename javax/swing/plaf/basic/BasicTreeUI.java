@@ -253,25 +253,25 @@ public class BasicTreeUI
   int maxHeight = 0;
 
   /** Listeners */
-  private PropertyChangeListener propertyChangeListener;
+  PropertyChangeListener propertyChangeListener;
 
-  private FocusListener focusListener;
+  FocusListener focusListener;
 
-  private TreeSelectionListener treeSelectionListener;
+  TreeSelectionListener treeSelectionListener;
 
-  private MouseListener mouseListener;
+  MouseListener mouseListener;
 
-  private KeyListener keyListener;
+  KeyListener keyListener;
 
-  private PropertyChangeListener selectionModelPropertyChangeListener;
+  PropertyChangeListener selectionModelPropertyChangeListener;
 
-  private ComponentListener componentListener;
+  ComponentListener componentListener;
 
   CellEditorListener cellEditorListener;
 
-  private TreeExpansionListener treeExpansionListener;
+  TreeExpansionListener treeExpansionListener;
 
-  private TreeModelListener treeModelListener;
+  TreeModelListener treeModelListener;
 
   /**
    * This timer fires the editing action after about 1200 ms if not reset during
@@ -1315,10 +1315,11 @@ public class BasicTreeUI
   public void installUI(JComponent c)
   {
     tree = (JTree) c;
+    treeModel = tree.getModel();
+
     prepareForUIInstall();
     super.installUI(c);
     installDefaults();
-
     installComponents();
     installKeyboardActions();
     installListeners();
@@ -2484,10 +2485,15 @@ public class BasicTreeUI
           treeState.setRootVisible(tree.isRootVisible());
           tree.repaint();
         }
-      if ((event.getPropertyName()).equals("selectionModel"))
+      else if ((event.getPropertyName()).equals("selectionModel"))
         {
           TreeSelectionModel model = tree.getSelectionModel();
           model.setRowMapper(treeState);
+        }
+      else if ((event.getPropertyName()).equals("model"))
+        {
+          TreeModel model = tree.getModel();
+          model.addTreeModelListener(treeModelListener);
         }
     }
   }

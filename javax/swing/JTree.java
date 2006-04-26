@@ -1508,8 +1508,8 @@ public class JTree extends JComponent implements Scrollable, Accessible
    */
   public JTree(TreeModel model)
   {
-    updateUI();
     setRootVisible(true);
+    // The setModel also calls the updateUI
     setModel(model);
     setSelectionModel(new EmptySelectionModel());
     selectionModel.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -2975,10 +2975,20 @@ public class JTree extends JComponent implements Scrollable, Accessible
   }
 
   /**
-   * Sent when the tree has changed enough that we need to resize the bounds, 
-   * but not enough that we need to remove the expanded node set (e.g nodes
-   * were expanded or collapsed, or nodes were inserted into the tree). You 
-   * should never have to invoke this, the UI will invoke this as it needs to. 
+   * <p>
+   * Sent when the tree has changed enough that we need to resize the bounds,
+   * but not enough that we need to remove the expanded node set (e.g nodes were
+   * expanded or collapsed, or nodes were inserted into the tree). You should
+   * never have to invoke this, the UI will invoke this as it needs to.
+   * </p>
+   * <p>
+   * If the tree uses {@link DefaultTreeModel}, you must call
+   * {@link DefaultTreeModel#reload(TreeNode)} or
+   * {@link DefaultTreeModel#reload()} after adding or removing nodes. Following
+   * the official Java 1.5 API standard, just calling treeDidChange, repaint()
+   * or revalidate() does <i>not</i> update the tree appearance properly.
+   * 
+   * @see DefaultTreeModel#reload()
    */
   public void treeDidChange()
   {

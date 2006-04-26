@@ -53,6 +53,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -133,9 +134,10 @@ public class TreeDemo
     final JTree tree = new JTree(root);
     tree.setLargeModel(true);
     tree.setEditable(true);
-    DefaultTreeSelectionModel dtsm = new DefaultTreeSelectionModel();
-    dtsm.setSelectionMode(DefaultTreeSelectionModel.SINGLE_TREE_SELECTION);
-    tree.setSelectionModel(dtsm);
+    final DefaultTreeSelectionModel selModel = new DefaultTreeSelectionModel();
+    selModel.setSelectionMode(
+      DefaultTreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
+    tree.setSelectionModel(selModel);
     
     // buttons to add and delete
     JButton add = new JButton("add element");
@@ -151,7 +153,16 @@ public class TreeDemo
                  DefaultMutableTreeNode n = (DefaultMutableTreeNode) p.
                                                   getLastPathComponent();
                  n.add(new DefaultMutableTreeNode("New Element"));
-                 tree.repaint();
+                 
+                 // The expansion state of the parent node does not change
+                 // by default. We will expand it manually, to ensure that the
+                 // added node is immediately visible.
+                 tree.expandPath(p);
+                  
+                 // Refresh the tree (.repaint would be not enough both in
+                 // Classpath and Sun implementations).
+                 DefaultTreeModel model = (DefaultTreeModel) tree.getModel();                 
+                 model.reload(n);
                  break;
               }
            }
@@ -163,12 +174,11 @@ public class TreeDemo
       {
         public void actionPerformed(ActionEvent e)
       {
-        TreeSelectionModel model = tree.getSelectionModel();
         if (cbSingle.isSelected())
-          model.setSelectionMode(
+          selModel.setSelectionMode(
             DefaultTreeSelectionModel.SINGLE_TREE_SELECTION);
         else
-          model.setSelectionMode(
+          selModel.setSelectionMode(
             DefaultTreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
       }
       });

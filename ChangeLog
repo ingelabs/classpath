@@ -1,3 +1,22 @@
+2006-04-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* examples/gnu/classpath/examples/swing/TreeDemo.java
+	(createContent): Call DefaultTreeModel.reload(), not the
+	tree.repaint(). Expand the parent of the added node.
+	* javax/swing/JTree.java (constructor): Do not call
+	UpdateUI (and documented why). (treeDidChange):
+	Added comment, excluding the misinterpretation of this method.
+	* javax/swing/plaf/basic/BasicTreeUI.java (componentListener,
+	focusListener, keyListener, mouseListener, propertyListener,
+	selectionModelPropertyChangeListener, treeModelListener,
+	treeSelectionListener): Made package private.
+	(PropertyChangeHandler): If the model changes, install the
+	listener on it. (installUI): Assign treeModel.
+	* javax/swing/tree/DefaultMutableTreeNode.java (add): Added
+	comment, excluding misinterpretation.
+	* javax/swing/tree/DefaultTreeModel.java (reload): Implemented.
+	(reload(TreeNode)): Implemented.
+
 2006-04-25  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java (MouseHandler.mousePressed):
