@@ -256,7 +256,7 @@ public class FixedHeightLayoutCache
     nodes.put(node, nr);
      
     // For expanded nodes and for the root node.
-    if (expanded.contains(node) || parent == null)
+    if (expanded.contains(node))
       {
         int sc = treeModel.getChildCount(node);
         int deeper = depth+1;
@@ -550,6 +550,8 @@ public class FixedHeightLayoutCache
   public void setModel(TreeModel newModel)
   {
     treeModel = newModel;
+    // The root node is expanded by default.
+    expanded.add(treeModel.getRoot());
     dirty = true;
   }
   

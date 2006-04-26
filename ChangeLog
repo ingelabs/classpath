@@ -1,3 +1,16 @@
+2006-04-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org
+
+	* javax/swing/plaf/basic/BasicTreeUI.java
+	(TreeAction.actionPerformed):Newly obtain the current lead
+	path that must stay visible.
+	(TreeTraverseAction.actionPerformed):Rewritten.
+	* javax/swing/tree/FixedHeightLayoutCache.java (countRows):
+	Do not treat root specially. (setModel): Assume the root node
+	initially expanded.
+	* javax/swing/tree/VariableHeightLayoutCache.java:(countRows):
+	Do not treat root specially. (setModel): Assume the root node
+	initially expanded.
+
 2006-04-26  Chris Burdess  <dog@gnu.org>
 
 	Fixes PR 27290

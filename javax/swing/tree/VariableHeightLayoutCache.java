@@ -254,8 +254,8 @@ public class VariableHeightLayoutCache
     NodeRecord nr = new NodeRecord(n.intValue(), depth, node, parent);
     nodes.put(node, nr);
      
-    // For expanded nodes and for the root node.
-    if (expanded.contains(node) || parent == null)
+    // For expanded nodes
+    if (expanded.contains(node))
       {
         int sc = treeModel.getChildCount(node);
         int deeper = depth+1;
@@ -548,6 +548,8 @@ public class VariableHeightLayoutCache
   public void setModel(TreeModel newModel)
   {
     treeModel = newModel;
+    // The root node is expanded by default.
+    expanded.add(treeModel.getRoot());
     dirty = true;
   }
   

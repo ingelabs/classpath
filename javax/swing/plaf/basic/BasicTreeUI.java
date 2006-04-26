@@ -1901,7 +1901,7 @@ public class BasicTreeUI
       if (tree.isEditing() && ! command.equals("startEditing"))
         tree.stopEditing();
 
-      tree.scrollPathToVisible(lead);
+      tree.scrollPathToVisible(tree.getLeadSelectionPath());
     }
   }
 
@@ -3020,21 +3020,38 @@ public class BasicTreeUI
 
       if (e.getActionCommand().equals("selectParent"))
         {
-          current = current.getParentPath();
           if (current == null)
             return;
-          selectPath(tree, current);
-          tree.collapsePath(current);
+
+          if (tree.isExpanded(current))
+            {
+              tree.collapsePath(current);
+            }
+          else
+            {
+              // If the node is not expanded (also, if it is a leaf node),
+              // we just select the parent.
+              TreePath parent = current.getParentPath();
+              if (parent != null)
+                tree.setSelectionPath(parent);
+            }
         }
       else if (e.getActionCommand().equals("selectChild"))
         {
           Object node = current.getLastPathComponent();
           int nc = treeModel.getChildCount(node);
-          if (nc > 0)
-            node = treeModel.getChild(node, 0);
-
-          TreePath path = current.pathByAddingChild(node);
-          selectPath(tree, path);
+          if (nc == 0 || treeState.isExpanded(current))
+            {
+              // If the node is leaf or it is already expanded,
+              // we just select the next row.
+              int nextRow = tree.getLeadSelectionRow() + 1;
+              if (nextRow <= tree.getRowCount())
+                tree.setSelectionRow(nextRow);
+            }
+          else
+            {
+              tree.expandPath(current);
+            }
         }
     }
 
