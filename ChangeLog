@@ -1,3 +1,10 @@
+2006-04-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/tree/DefaultTreeModel.java (nodeStructureChanged): 
+	Implemented.
+	* javax/swing/tree/DefaultTreeSelectionModel.java (toString):
+	Removed NoImplementException form the implemented method.
+
 2006-04-26  Tom Tromey  <tromey@redhat.com>
 
 	* javax/net/ssl/HttpsURLConnection.java (HttpsURLConnection): Doesn't

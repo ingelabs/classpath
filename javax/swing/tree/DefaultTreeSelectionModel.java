@@ -38,14 +38,11 @@ exception statement from your version. */
 
 package javax.swing.tree;
 
-import gnu.classpath.NotImplementedException;
-
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EventListener;
 import java.util.HashSet;
@@ -162,7 +159,7 @@ public class DefaultTreeSelectionModel
    * 
    * @return a string that shows this object's properties
    */
-  public String toString() throws NotImplementedException
+  public String toString() 
   {
     if (isSelectionEmpty())
       return "[selection empty]";

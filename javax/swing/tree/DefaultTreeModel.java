@@ -425,9 +425,18 @@ public class DefaultTreeModel
    * @param node that had its children and grandchildren changed.
    */
   public void nodeStructureChanged(TreeNode node)
-    throws NotImplementedException
   {
-    // TODO
+    int n = getChildCount(root);
+    int[] childIdx = new int[n];
+    Object[] children = new Object[n];
+
+    for (int i = 0; i < n; i++)
+      {
+        childIdx[i] = i;
+        children[i] = getChild(root, i);
+      }
+
+    fireTreeStructureChanged(this, new Object[] { root }, childIdx, children);
   }
 
   /**
