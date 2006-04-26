@@ -162,11 +162,14 @@ public class DefaultListSelectionModel implements Cloneable,
   /**
    * Sets the value of the {@link #selectionMode} property.
    *
-   * @param a The new value of the property
+   * @param mode The new value of the property
    */
-  public void setSelectionMode(int a)
+  public void setSelectionMode(int mode)
   {
-    selectionMode = a;
+    if (mode < ListSelectionModel.SINGLE_SELECTION 
+        || mode > ListSelectionModel.MULTIPLE_INTERVAL_SELECTION)
+      throw new IllegalArgumentException("Unrecognised mode: " + mode);
+    selectionMode = mode;
   }
 
   /**
@@ -777,6 +780,7 @@ public class DefaultListSelectionModel implements Cloneable,
     DefaultListSelectionModel model =
       (DefaultListSelectionModel) super.clone();
     model.sel = (BitSet) sel.clone();
+    model.listenerList = new EventListenerList();
     return model;
   }
 }

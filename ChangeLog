@@ -1,6 +1,12 @@
 2006-04-26  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/DefaultListSelectionModel.java
+	(clone): Initialise empty listener list,
+	(setSelectionMode): Throw IllegalArgumentException for bad input.
+
+2006-04-26  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/DefaultListSelectionModel.java
 	(clearSelection): Clear the Bitset.
 
 2006-04-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
