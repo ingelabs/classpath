@@ -16,11 +16,13 @@ New in release 0.91 (UNRELEASED)
 * Free Swing improvements: Support for OceanTheme has been mostly completed
   and turned on as default Metal theme. X11-style Copy and Paste behavior in
   text components with the middle mouse button. Support cursor changes on
-  various components when resizing.
+  various components when resizing. Support for Look and Feel window
+  decorations has been added.
 * Updated locale data information to CLDR 1.3.
 * Various bugs in Classpath's SecureRandom implementations have been
   fixed; that class now respects the "securerandom.source" security
   property and the "java.security.egd" system property.
+* Support for assistive technologies has been added to AWT and Swing.
 
 Runtime interface changes:
 
