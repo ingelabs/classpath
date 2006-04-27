@@ -1,3 +1,10 @@
+2006-04-27  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/image/renderable/RenderableImageProducer.java
+	(requestTopDownLeftRightResend): Implemented.
+	(run): Likewise.
+	(startProduction): Add new consumer.
+
 2006-04-27  Sven de Marothy  <sven@physto.se>
 
 	* javax/swing/JLabel.java (setIcon): Repaint on setting the icon.
