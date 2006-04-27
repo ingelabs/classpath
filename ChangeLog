@@ -1,5 +1,11 @@
 2006-04-27  Roman Kennke <kennke@aicas.com>
 
+	* java/awt/LightweightDispatcher.java
+	Dispatch events only to targets that have a mouselistener
+	attached. Changed to also handle null targets.
+
+2006-04-27  Roman Kennke <kennke@aicas.com>
+
 	* NEWS: Added entries about accessibility support and L&F
 	window decorations.
 
