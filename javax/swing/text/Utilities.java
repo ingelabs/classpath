@@ -238,34 +238,39 @@ public class Utilities
     // At the end of the for loop, this holds the requested model location
     int pos;
     int currentX = x0;
+    int width = 0;
     
     for (pos = 0; pos < s.count; pos++)
       {
         char nextChar = s.array[s.offset+pos];
         
         if (nextChar == 0)
-          {
-            if (! round && pos > 0)
-              pos--;
             break;
-          }
+        
         if (nextChar != '\t')
-          currentX += fm.charWidth(nextChar);
+          width = fm.charWidth(nextChar);
         else
           {
             if (te == null)
-              currentX += fm.charWidth(' ');
+              width = fm.charWidth(' ');
             else
-              currentX = (int) te.nextTabStop(currentX, pos);
+              width = ((int) te.nextTabStop(currentX, pos)) - currentX;
           }
         
-        if (currentX >= x)
+        if (round)
           {
-            if (! round && pos > 0)
-              pos--;
-            break;
+            if (currentX + (width>>1) > x)
+              break;
           }
+        else
+          {
+            if (currentX + width > x)
+              break;
+          }
+        
+        currentX += width;
       }
+
     return pos + p0;
   }
 
@@ -511,7 +516,7 @@ public class Utilities
                                            int x0, int x, TabExpander e,
                                            int startOffset)
   {
-    int mark = Utilities.getTabbedTextOffset(s, metrics, x0, x, e, startOffset);
+    int mark = Utilities.getTabbedTextOffset(s, metrics, x0, x, e, startOffset, false);
     BreakIterator breaker = BreakIterator.getWordInstance();
     breaker.setText(s);
 
