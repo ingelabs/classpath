@@ -1,4 +1,4 @@
-2006-04-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+2006-04-27  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/Utilities.java:
 	(getTabbedTextOffset): Introduced width variable, rewritten the check
