@@ -1,3 +1,7 @@
+2006-04-27  Sven de Marothy  <sven@physto.se>
+
+	* javax/swing/JLabel.java (setIcon): Repaint on setting the icon.
+
 2006-04-27  Roman Kennke <kennke@aicas.com>
 
 	* java/awt/LightweightDispatcher.java
