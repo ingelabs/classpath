@@ -121,26 +121,33 @@ public class FixedHeightLayoutCache
      */
     TreePath getPath()
     {
-      boolean lastChild = false;
-      if (parent!=null)
-        {
-          int nc = treeModel.getChildCount(parent);
-          if (nc > 0)
-            {
-              int n = treeModel.getIndexOfChild(parent, node);
-              if (n == nc-1)
-                lastChild = true;
-            }
-        }
       if (path == null)
         {
+          boolean lastChild = false;
+          if (parent != null)
+            {
+              int nc = treeModel.getChildCount(parent);
+              if (nc > 0)
+                {
+                  int n = treeModel.getIndexOfChild(parent, node);
+                  if (n == nc - 1)
+                    lastChild = true;
+                }
+            }
+
           LinkedList lpath = new LinkedList();
           NodeRecord rp = this;
           while (rp != null)
             {
               lpath.addFirst(rp.node);
               if (rp.parent != null)
-                rp = (NodeRecord) nodes.get(rp.parent);
+                {
+                  Object parent = rp.parent;
+                  rp = (NodeRecord) nodes.get(parent);
+                  // Add the root node, even if it is not visible.
+                  if (rp == null)
+                    lpath.addFirst(parent);
+                }
               else
                 rp = null;
             }
@@ -238,7 +245,7 @@ public class FixedHeightLayoutCache
         for (int i = 0; i < sc; i++)
           {
             Object child = treeModel.getChild(root, i);
-            countRows(child, root, 1);
+            countRows(child, root, 0);
           }
       }
     dirty = false;

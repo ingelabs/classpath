@@ -442,9 +442,14 @@ public class DefaultTreeSelectionModel
                                                             - index - 1);
         selection = new TreePath[temp.length];
         System.arraycopy(temp, 0, selection, 0, temp.length);
+        
+        // If the removed path was the lead path, set the lead path to null.
+        TreePath oldLead = leadPath;
+        if (path!=null && leadPath!=null && path.equals(leadPath))
+          leadPath = null;
 
-        fireValueChanged(new TreeSelectionEvent(this, path, false, leadPath,
-                                                path));
+        fireValueChanged(new TreeSelectionEvent(this, path, false, oldLead,
+                                                leadPath));
         insureRowContinuity();
       }
   }
@@ -463,6 +468,7 @@ public class DefaultTreeSelectionModel
       {
         int index = - 1;
         TreePath v0 = null;
+        TreePath oldLead = leadPath;
         for (int i = 0; i < paths.length; i++)
           {
             v0 = paths[i];
@@ -475,6 +481,8 @@ public class DefaultTreeSelectionModel
                         index = x;
                         break;
                       }
+                    if (leadPath != null && leadPath.equals(v0))
+                      leadPath = null;
                   }
                 TreePath[] temp = new TreePath[selection.length - 1];
                 System.arraycopy(selection, 0, temp, 0, index);
@@ -484,7 +492,7 @@ public class DefaultTreeSelectionModel
                 System.arraycopy(temp, 0, selection, 0, temp.length);
 
                 fireValueChanged(new TreeSelectionEvent(this, v0, false,
-                                                        leadPath, paths[0]));
+                                                        oldLead, leadPath));
               }
           }
         insureRowContinuity();

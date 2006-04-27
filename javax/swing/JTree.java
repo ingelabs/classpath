@@ -1953,9 +1953,19 @@ public class JTree extends JComponent implements Scrollable, Accessible
     if (rootVisible == flag)
       return;
 
+    // If the root is currently selected, unselect it
+    if (rootVisible && !flag)
+      {
+        TreeSelectionModel model = getSelectionModel();
+        // The root is always shown in the first row
+        TreePath rootPath = getPathForRow(0);
+        model.removeSelectionPath(rootPath);
+      }
+    
     boolean oldValue = rootVisible;
     rootVisible = flag;
     firePropertyChange(ROOT_VISIBLE_PROPERTY, oldValue, flag);
+    
   }
 
   public boolean getShowsRootHandles()

@@ -48,10 +48,13 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultTreeSelectionModel;
@@ -169,6 +172,7 @@ public class TreeDemo
         }
       });
     
+    // Demonstration of the various selection modes
     final JCheckBox cbSingle = new JCheckBox("single selection");
     cbSingle.addActionListener(new ActionListener()
       {
@@ -182,18 +186,49 @@ public class TreeDemo
             DefaultTreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
       }
       });
-
+    
+    // Demonstration of the root visibility changes
+    final JCheckBox cbRoot = new JCheckBox("root");
+    cbRoot.addActionListener(new ActionListener()
+      {
+        public void actionPerformed(ActionEvent e)
+      {
+        tree.setRootVisible(cbRoot.isSelected());
+      }
+      });
+    cbRoot.setSelected(true);
+    
+    // Demonstration of the tree selection listener.
+    final JLabel choice = new JLabel("Make a choice");
+    tree.getSelectionModel().addTreeSelectionListener(
+      new TreeSelectionListener()
+        {
+          public void valueChanged(TreeSelectionEvent event)
+          {
+            TreePath was = event.getOldLeadSelectionPath();
+            TreePath now = event.getNewLeadSelectionPath();
+            String swas = 
+              was == null ? "none":was.getLastPathComponent().toString();
+            String snow = 
+              now == null ? "none":now.getLastPathComponent().toString();
+            choice.setText("From "+swas+" to "+snow);
+          }
+        }
+      );
+    
     setLayout(new BorderLayout());
     
     JPanel p2 = new JPanel(); 
     p2.add(add);
     p2.add(cbSingle);
+    p2.add(cbRoot);
     
     tree.getSelectionModel().
       setSelectionMode(DefaultTreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 
     add(p2, BorderLayout.NORTH);
     add(new JScrollPane(tree), BorderLayout.CENTER);
+    add(choice, BorderLayout.SOUTH);
   }
 
   public void actionPerformed(ActionEvent e) 

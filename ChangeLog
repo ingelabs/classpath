@@ -1,3 +1,23 @@
+2006-04-27  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* examples/gnu/classpath/examples/swing/TreeDemo.java
+	(createContent): Added root visibility and selection listener demos.
+	* javax/swing/JTree.java (setRootVisible): If false, unselect
+	the root node, if it is selected.
+	* javax/swing/plaf/basic/BasicTreeUI.java 
+	(TreeTraverseAction.actionPerformed): Do not select the root if it
+	is not visible.
+	* javax/swing/tree/DefaultTreeSelectionModel.java (removeSelectionPath,
+	removeSelectionPaths): Reset lead to null if the current lead path is
+	removed from selection.
+	* javax/swing/tree/TreePath.java (getParentPath): Cache the parent path.
+	* javax/swing/tree/FixedHeightLayoutCache.java (NodeRecord.getPath):
+	Return the same path regardless is root visible or not. (update):
+	Reduce the identation if the root is not visible.
+	* javax/swing/tree/VariableHeightLayoutCache.java (NodeRecord.getPath):
+	Return the same path regardless is root visible or not. (update):
+	Reduce the identation if the root is not visible.
+
 2006-04-26  Audrius Meskauskas  <AudriusA@Bioinformatics.org
 
 	* javax/swing/plaf/basic/BasicTreeUI.java

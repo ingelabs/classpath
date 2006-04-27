@@ -2470,7 +2470,7 @@ public class BasicTreeUI
   }// NodeDimensionsHandler
 
   /**
-   * PropertyChangeListener for the tree. Updates the appropriate varaible, or
+   * PropertyChangeListener for the tree. Updates the appropriate variable, or
    * TreeState, based on what changes.
    */
   public class PropertyChangeHandler
@@ -3030,9 +3030,11 @@ public class BasicTreeUI
           else
             {
               // If the node is not expanded (also, if it is a leaf node),
-              // we just select the parent.
+              // we just select the parent. We do not select the root if it
+              // is not visible.
               TreePath parent = current.getParentPath();
-              if (parent != null)
+              if (parent != null && 
+                  !(parent.getPathCount()==1 && !tree.isRootVisible()) )
                 tree.setSelectionPath(parent);
             }
         }
