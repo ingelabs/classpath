@@ -2048,11 +2048,27 @@ public class JList extends JComponent implements Accessible, Scrollable
     return selectionModel.getLeadSelectionIndex();
   }
 
+  /**
+   * Returns the lowest item index in the current selection, or <code>-1</code>
+   * if there is no selection.
+   * 
+   * @return The index.
+   * 
+   * @see #getMaxSelectionIndex()
+   */
   public int getMinSelectionIndex()
   {
-    return selectionModel.getMaxSelectionIndex();
+    return selectionModel.getMinSelectionIndex();
   }
 
+  /**
+   * Returns the highest item index in the current selection, or 
+   * <code>-1</code> if there is no selection.
+   * 
+   * @return The index.
+   * 
+   * @see #getMinSelectionIndex()
+   */
   public int getMaxSelectionIndex()
   {
     return selectionModel.getMaxSelectionIndex();

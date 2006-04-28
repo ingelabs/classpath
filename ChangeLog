@@ -1,6 +1,12 @@
 2006-04-28  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JList.java
+	(getMinSelectionIndex): Return correct value, added API docs,
+	(getMaxSelectionIndex): Added API docs.
+
+2006-04-28  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JList.java
 	(JList(Object[])): Pass new model directly to init(),
 	(JList(Vector)): Likewise,
 	(JList(ListModel)): Renamed argument and updated API docs,
