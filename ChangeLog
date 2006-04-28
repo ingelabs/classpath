@@ -1,3 +1,8 @@
+2006-04-28  Sven de Marothy <sven@physto.se>
+
+	* javax/swing/JSpinner.java: Fix default text justification.
+	* javax/swing/plaf/basic/BasicSpinnerUI.java: Fix spinner layout size.
+
 2006-04-28  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JList.java
