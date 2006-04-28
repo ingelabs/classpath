@@ -1,3 +1,13 @@
+2006-04-28  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 27296
+	* javax/swing/ScrollPaneLayout.java (layoutContainer):
+	Decide about scroll bars from the preferred view size, not
+	the current size.
+	* javax/swing/ViewportLayout.java (layoutContainer):
+	Do not change returned preferred size. Do not treat JScrollPane
+	specially.
+
 2006-04-28  Sven de Marothy <sven@physto.se>
 
 	* java/awt/image/ReplicateScaleFilter.java: Fix comment. 
