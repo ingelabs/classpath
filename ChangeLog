@@ -1,3 +1,11 @@
+2006-04-28  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/StringBuilder.java
+	(ensureCapacity, getChars, append(StringBuffer),
+	append(char[],int,int), delete, replace, insert(int,char[],int,int),
+	insert(int,String), insert(int,char), trimToSize): Replaced
+	System.arraycopy calls with VMSystem.arraycopy.
+
 2006-04-27  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/image/renderable/RenderableImageProducer.java
