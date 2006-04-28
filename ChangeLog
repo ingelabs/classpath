@@ -1,6 +1,12 @@
 2006-04-28  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/View.java:
+	(getNextVisualPositionFrom): Call modelToView and viewToModel on parent
+	view.
+
+2006-04-28  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/View.java:
 	(getNextVisualPositionFrom): Rewritten.
 	* javax/swing/text/CompositeView.java:
 	(getNextEastWestVisualPositionFrom): Partly implemented.

@@ -734,6 +734,7 @@ public abstract class View implements SwingConstants
   {
     int ret = pos;
     Rectangle r;
+    View parent;
 
     switch (d)
     {
@@ -749,14 +750,16 @@ public abstract class View implements SwingConstants
         ret = Math.max(pos - 1, getStartOffset());
         break;
       case NORTH:
-        // Try to find a suitable offset by examining the area above. 
-        r =  modelToView(pos, a, b).getBounds();
-        ret = viewToModel(r.x, r.y - 1, a, biasRet);
+        // Try to find a suitable offset by examining the area above.
+        parent = getParent();
+        r =  parent.modelToView(pos, a, b).getBounds();
+        ret = parent.viewToModel(r.x, r.y - 1, a, biasRet);
         break;
       case SOUTH:
         // Try to find a suitable offset by examining the area below. 
-        r =  modelToView(pos, a, b).getBounds();
-        ret = viewToModel(r.x + r.width, r.y + r.height, a, biasRet);
+        parent = getParent();
+        r =  parent.modelToView(pos, a, b).getBounds();
+        ret = parent.viewToModel(r.x + r.width, r.y + r.height, a, biasRet);
         break;
       default:
         throw new IllegalArgumentException("Illegal value for d");
