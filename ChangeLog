@@ -1,3 +1,11 @@
+2006-04-28  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/View.java:
+	(getNextVisualPositionFrom): Rewritten.
+	* javax/swing/text/CompositeView.java:
+	(getNextEastWestVisualPositionFrom): Partly implemented.
+	(getNextNorthSouthVisualPositionFrom): Partly implemented.
+
 2006-04-28  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JList.java
