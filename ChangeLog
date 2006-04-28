@@ -1,5 +1,11 @@
 2006-04-28  Sven de Marothy <sven@physto.se>
 
+	* java/awt/image/ReplicateScaleFilter.java: Fix comment. 
+	* javax/swing/ProgressMonitor.java (actionPerformed): 
+	Avoid divide-by-zero.
+
+2006-04-28  Sven de Marothy <sven@physto.se>
+
 	* javax/swing/JSpinner.java: Fix default text justification.
 	* javax/swing/plaf/basic/BasicSpinnerUI.java: Fix spinner layout size.
 
