@@ -48,6 +48,7 @@ import java.text.BreakIterator;
  * inside this package.
  *
  * @author Roman Kennke (roman@ontographics.com)
+ * @author Robert Schuster (robertschuster@fsfe.org)
  */
 public class Utilities
 {
@@ -321,21 +322,31 @@ public class Utilities
     String text = c.getText();
     BreakIterator wb = BreakIterator.getWordInstance();
     wb.setText(text);
+        
     int last = wb.following(offs);
     int current = wb.next();
+    int cp;
+
     while (current != BreakIterator.DONE)
       {
         for (int i = last; i < current; i++)
           {
-            // FIXME: Should use isLetter(int) and text.codePointAt(int)
-            // instead, but isLetter(int) isn't implemented yet
-            if (Character.isLetter(text.charAt(i)))
+            cp = text.codePointAt(i);
+            
+            // Return the last found bound if there is a letter at the current
+            // location or is not whitespace (meaning it is a number or
+            // punctuation). The first case means that 'last' denotes the
+            // beginning of a word while the second case means it is the start
+            // of some else.
+            if (Character.isLetter(cp)
+                || !Character.isWhitespace(cp))
               return last;
           }
         last = current;
         current = wb.next();
       }
-    return BreakIterator.DONE;
+    
+    throw new BadLocationException("no more word", offs);
   }
 
   /**
@@ -364,9 +375,7 @@ public class Utilities
       {
         for (int i = last; i < offs; i++)
           {
-            // FIXME: Should use isLetter(int) and text.codePointAt(int)
-            // instead, but isLetter(int) isn't implemented yet
-            if (Character.isLetter(text.charAt(i)))
+            if (Character.isLetter(text.codePointAt(i)))
               return last;
           }
         last = current;

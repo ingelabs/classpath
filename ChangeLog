@@ -1,3 +1,10 @@
+2006-04-28  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/Utilities.java:
+	(getNextWord): Use codePointAt instead of charAt, added note, changed
+	if-expression, added throwing of exception.
+	(getPreviousWord): Use codePointAt instead of charAt.
+
 2006-04-28  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/StringBuilder.java
