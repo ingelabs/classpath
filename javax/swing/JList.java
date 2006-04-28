@@ -1129,6 +1129,8 @@ public class JList extends JComponent implements Accessible, Scrollable
    * #prototypeCellValue} property is set, but setting it explicitly
    * overrides the height computed from {@link #prototypeCellValue}.
    *
+   * @param h  the height.
+   * 
    * @see #getFixedCellHeight
    * @see #getPrototypeCellValue
    */
@@ -1139,7 +1141,7 @@ public class JList extends JComponent implements Accessible, Scrollable
 
     int old = fixedCellHeight;
     fixedCellHeight = h;
-    firePropertyChange("fixedCellWidth", old, h);
+    firePropertyChange("fixedCellHeight", old, h);
   }
 
 
