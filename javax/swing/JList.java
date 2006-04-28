@@ -1,5 +1,5 @@
 /* JList.java --
-   Copyright (C) 2002, 2003, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003, 2004, 2005, 2006,  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -1022,7 +1022,7 @@ public class JList extends JComponent implements Accessible, Scrollable
 
 
   /**
-   * Creates a new JList object.
+   * Creates a new <code>JList</code> object.
    */
   public JList()
   {
@@ -1030,44 +1030,48 @@ public class JList extends JComponent implements Accessible, Scrollable
   }
 
   /**
-   * Creates a new JList object.
+   * Creates a new <code>JList</code> object.
    *
-   * @param listData Initial data to populate the list with
+   * @param items  the initial list items.
    */
-  public JList(Object[] listData)
+  public JList(Object[] items)
   {
-    init(null);
-    setListData(listData);
+    init(createListModel(items));
   }
 
   /**
-   * Creates a new JList object.
+   * Creates a new <code>JList</code> object.
    *
-   * @param listData Initial data to populate the list with
+   * @param items  the initial list items.
    */
-  public JList(Vector listData)
+  public JList(Vector items)
   {
-    init(null);
-    setListData(listData);
+    init(createListModel(items));
   }
 
   /**
-   * Creates a new JList object.
+   * Creates a new <code>JList</code> object.
    *
-   * @param listData Initial data to populate the list with
+   * @param model  a model containing the list items (<code>null</code> not
+   *     permitted).
+   *     
+   * @throws IllegalArgumentException if <code>model</code> is 
+   *     <code>null</code>.
    */
-  public JList(ListModel listData)
+  public JList(ListModel model)
   {
-    init(listData);
+    init(model);
   }
 
   /**
    * Initializes the list.
    *
-   * @param m the list model to set
+   * @param m  the list model (<code>null</code> not permitted).
    */
   private void init(ListModel m)
   {
+    if (m == null)
+      throw new IllegalArgumentException("Null model not permitted.");
     dragEnabled = false;
     fixedCellHeight = -1;
     fixedCellWidth = -1;
@@ -1563,20 +1567,39 @@ public class JList extends JComponent implements Accessible, Scrollable
    * @param listData The object array to build a new list model on
    * @see #setModel
    */
-  public void setListData(final Object[] listData)
+  public void setListData(Object[] listData)
   {
-    setModel(new AbstractListModel()
-        {
-          public int getSize()
-          {
-            return listData.length;
-          }
+    setModel(createListModel(listData));
+  }
 
-          public Object getElementAt(int i)
-          {
-            return listData[i];
-          }
-        });
+  private ListModel createListModel(final Object[] items)
+  {
+    return new AbstractListModel()
+      {
+        public int getSize()
+        {
+          return items.length;
+        }
+        public Object getElementAt(int i)
+        {
+          return items[i];
+        }
+      };
+  }
+  
+  private ListModel createListModel(final Vector items)
+  {
+    return new AbstractListModel()
+      {
+        public int getSize()
+        {
+          return items.size();
+        }
+        public Object getElementAt(int i)
+        {
+          return items.get(i);
+        }
+      };
   }
 
   /**
@@ -1587,20 +1610,9 @@ public class JList extends JComponent implements Accessible, Scrollable
    * @param listData The object array to build a new list model on
    * @see #setModel
    */
-  public void setListData(final Vector listData)
+  public void setListData(Vector listData)
   {
-    setModel(new AbstractListModel()
-        {
-          public int getSize()
-          {
-            return listData.size();
-          }
-
-          public Object getElementAt(int i)
-          {
-            return listData.elementAt(i);
-          }
-        });
+    setModel(createListModel(listData));
   }
 
   /**
@@ -2223,5 +2235,29 @@ public class JList extends JComponent implements Accessible, Scrollable
           }
       }
     return index;
+  }
+  
+  /**
+   * Returns a string describing the attributes for the <code>JList</code>
+   * component, for use in debugging.  The return value is guaranteed to be 
+   * non-<code>null</code>, but the format of the string may vary between
+   * implementations.
+   *
+   * @return A string describing the attributes of the <code>JList</code>.
+   */
+  public String paramString()
+  {
+    StringBuffer sb = new StringBuffer(super.paramString());
+    sb.append(",fixedCellHeight=").append(getFixedCellHeight());
+    sb.append(",fixedCellWidth=").append(getFixedCellWidth());
+    sb.append(",selectionBackground=");
+    if (getSelectionBackground() != null)
+      sb.append(getSelectionBackground());
+    sb.append(",selectionForeground=");
+    if (getSelectionForeground() != null)
+      sb.append(getSelectionForeground());
+    sb.append(",visibleRowCount=").append(getVisibleRowCount());
+    sb.append(",layoutOrientation=").append(getLayoutOrientation());
+    return sb.toString();
   }
 }

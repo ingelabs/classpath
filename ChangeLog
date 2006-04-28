@@ -1,3 +1,16 @@
+2006-04-28  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JList.java
+	(JList(Object[])): Pass new model directly to init(),
+	(JList(Vector)): Likewise,
+	(JList(ListModel)): Renamed argument and updated API docs,
+	(init): Throw IllegalArgumentException for null argument,
+	(setListData(Object[])): Delegate model creation,
+	(setListData(Vector)): Likewise,
+	(createListModel(Object[])): New private method,
+	(createListModel(Vector)): New private method,
+	(paramString): Implemented.
+
 2006-04-28  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/Class.java (SYNTHETIC, ENUM, ANNOTATION): New fields.
