@@ -1,3 +1,13 @@
+2006-04-28  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Class.java (SYNTHETIC, ENUM, ANNOTATION): New fields.
+	(isEnum): Rewrote.
+	(isSynthetic): Likewise.
+	(isAnnotation): Likewise.
+	* vm/reference/java/lang/VMClass.java (isSynthetic): Removed.
+	(isAnnotation): Likewise.
+	(isEnum): Likewise.
+
 2006-04-28  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/View.java:
