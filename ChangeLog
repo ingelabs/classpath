@@ -1,5 +1,31 @@
 2006-04-29  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/java/security/provider/Gnu.java (run):
+	Add "RSA" as an alias to MD5withRSA.
+	* gnu/java/security/key/rsa/RSAKeyPairX509Codec.java (encodePublicKey):
+	Always encode a NULL as the value of an algorithm parameters field.
+	* gnu/java/security/key/rsa/RSAKeyPairPKCS8Codec.java (log): New field.
+	(encodePrivateKey): Added trace/log statements.
+	(decodePrivateKey): Likewise.
+	* gnu/java/security/key/rsa/RSAKeyPairGenerator.java (log): New field.
+	(setup): Added trace/log statements.
+	(generate): Likewise.
+	* gnu/java/security/key/rsa/GnuRSAPublicKey.java (str): New field.
+	(toString): New method.
+	* gnu/java/security/key/rsa/GnuRSAPrivateKey.java (DEBUG): New constant.
+	(str): New field.
+	(toString): New method.
+	* gnu/java/security/key/rsa/GnuRSAKey.java (str): New field.
+	(getEncoded): Use defaultFormat.
+	(toString): New method.
+	* gnu/java/security/key/dss/DSSKey.java (toString):
+	Include defaultFormat in string.
+	* gnu/java/security/jce/sig/RSAKeyFactory.java (engineGeneratePublic):
+	Break if successfully decoded public key.
+	(engineGeneratePrivate): Break if successfully decoded private key.
+
+2006-04-29  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* java/security/Security.java <clinit>: Add our Callback provider.
 	* resource/java/security/classpath.security: Likewise
 
