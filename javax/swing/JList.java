@@ -2261,7 +2261,7 @@ public class JList extends JComponent implements Accessible, Scrollable
    *
    * @return A string describing the attributes of the <code>JList</code>.
    */
-  public String paramString()
+  protected String paramString()
   {
     StringBuffer sb = new StringBuffer(super.paramString());
     sb.append(",fixedCellHeight=").append(getFixedCellHeight());
