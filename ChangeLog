@@ -1,5 +1,21 @@
 2006-04-29  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/jarsigner.sh.in: Changed license to GPL + Exception.
+	Use -Xbootclasspath/p instead of -cp when invoking the main class.
+	* tools/gnu/classpath/tools/jarsigner/Main.java:
+	Changed license to GPL + Exception.
+	(handler): New field.
+	(getCallbackHandler): New method.
+	(setupSigningParams): Use above method.
+	* tools/gnu/classpath/tools/jarsigner/HashUtils.java:
+	Changed license to GPL + Exception.
+	* tools/gnu/classpath/tools/jarsigner/SFHelper.java: Likewise.
+	* tools/gnu/classpath/tools/jarsigner/JarVerifier.java: Likewise.
+	* tools/gnu/classpath/tools/jarsigner/JarSigner.java: Likewise.
+	* tools/gnu/classpath/tools/jarsigner/jarsigner.txt: Updated copyright.
+
+2006-04-29  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/security/auth/callback/ConsoleCallbackHandler.java
 	(handleConfirmation): Use print instead of println.
 	(handleConfirmation): When case is YES_NO_OPTION, print default option

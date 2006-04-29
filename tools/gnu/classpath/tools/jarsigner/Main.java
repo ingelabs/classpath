@@ -16,7 +16,24 @@ General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with GNU Classpath; see the file COPYING.  If not, write to the
 Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301 USA. */
+02110-1301 USA.
+
+Linking this library statically or dynamically with other modules is
+making a combined work based on this library.  Thus, the terms and
+conditions of the GNU General Public License cover the whole
+combination.
+
+As a special exception, the copyright holders of this library give you
+permission to link this library with independent modules to produce an
+executable, regardless of the license terms of these independent
+modules, and to copy and distribute the resulting executable under
+terms of your choice, provided that you also meet, for each linked
+independent module, the terms and conditions of the license of that
+module.  An independent module is a module which is not derived from
+or based on this library.  If you modify this library, you may extend
+this exception to your version of the library, but you are not
+obligated to do so.  If you do not wish to do so, delete this
+exception statement from your version. */
 
 
 package gnu.classpath.tools.jarsigner;
@@ -96,6 +113,8 @@ public class Main
   private char[] passwordChars;
   private PrivateKey signerPrivateKey;
   private Certificate[] signerCertificateChain;
+  /** The callback handler to use when needing to interact with user. */
+  private CallbackHandler handler;
 
   private Main()
   {
@@ -423,10 +442,9 @@ public class Main
     if (ksPassword == null)
       {
         // ask the user to provide one
-        CallbackHandler handler = new ConsoleCallbackHandler();
         PasswordCallback pcb = new PasswordCallback("Enter keystore password: ",
                                                     false);
-        handler.handle(new Callback[] { pcb });
+        getCallbackHandler().handle(new Callback[] { pcb });
         ksPasswordChars = pcb.getPassword();
       }
     else
@@ -456,10 +474,9 @@ public class Main
         catch (UnrecoverableKeyException x)
           {
             // ask the user to provide one
-            CallbackHandler handler = new ConsoleCallbackHandler();
             PasswordCallback pcb = new PasswordCallback("Enter key password for "
                                                         + alias + ": ", false);
-            handler.handle(new Callback[] { pcb });
+            getCallbackHandler().handle(new Callback[] { pcb });
             passwordChars = pcb.getPassword();
             // take 2
             key = store.getKey(alias, passwordChars);
@@ -547,5 +564,75 @@ public class Main
   String getSignedJarFileName()
   {
     return this.signedJarFileName;
+  }
+
+  /**
+   * Return a CallbackHandler which uses the Console (System.in and System.out)
+   * for interacting with the user.
+   * <p>
+   * This method first finds all currently installed security providers capable
+   * of providing such service and then in turn attempts to instantiate the
+   * handler from those providers. As soon as one provider returns a non-null
+   * instance of the callback handler, the search stops and that instance is
+   * set to be used from now on.
+   * <p>
+   * If no installed providers were found, this method falls back on the GNU
+   * provider, by-passing the Security search mechanism. The default console
+   * callback handler implementation is {@link ConsoleCallbackHandler}.
+   * 
+   * @return a console-based {@link CallbackHandler}.
+   */
+  protected CallbackHandler getCallbackHandler()
+  {
+    if (handler == null)
+      {
+        String service = "CallbackHandler.Console"; //$NON-NLS-1$
+        Provider[] providers = Security.getProviders(service);
+        if (providers != null)
+          for (int i = 0; i < providers.length; i++)
+            {
+              Provider p = providers[i];
+              String className = p.getProperty(service);
+              if (className != null)
+                try
+                  {
+                    handler = (CallbackHandler) Class.forName(className).newInstance();
+                  }
+                catch (InstantiationException x)
+                  {
+                    log.fine("InstantiationException while creating [" //$NON-NLS-1$
+                             + className + "] from provider [" + p.getName() //$NON-NLS-1$
+                             + "]. Ignore"); //$NON-NLS-1$
+                  }
+                catch (IllegalAccessException x)
+                  {
+                    log.fine("IllegalAccessException while creating [" //$NON-NLS-1$
+                             + className + "] from provider [" + p.getName() //$NON-NLS-1$
+                             + "]. Ignore"); //$NON-NLS-1$
+                  }
+                catch (ClassNotFoundException x)
+                  {
+                    log.fine("ClassNotFoundException while creating [" //$NON-NLS-1$
+                             + className + "] from provider [" + p.getName() //$NON-NLS-1$
+                             + "]. Ignore"); //$NON-NLS-1$
+                  }
+
+                if (handler != null)
+                  {
+
+                    log.fine("Will use [" + handler.getClass().getName() //$NON-NLS-1$
+                             + "] from [" + p.getName() + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+                    break;
+                  }
+            }
+
+        if (handler == null)
+          {
+            log.fine("No console callback handler found. Will use ours"); //$NON-NLS-1$
+            handler = new ConsoleCallbackHandler();
+          }
+      }
+
+    return handler;
   }
 }
