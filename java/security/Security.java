@@ -106,6 +106,7 @@ public final class Security
 	      providers.addElement(new gnu.javax.crypto.jce.GnuCrypto());
               providers.addElement(new gnu.javax.crypto.jce.GnuSasl());
               providers.addElement(new gnu.javax.net.ssl.provider.Jessie());
+              providers.addElement(new gnu.javax.security.auth.callback.GnuCallbacks());
 	  }
     }
   // This class can't be instantiated.
