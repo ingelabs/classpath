@@ -1,5 +1,12 @@
 2006-04-29  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/java/security/x509/X500DistinguishedName.java: Updated copyright.
+	(putComponent): Handle O and OU components.
+	(getDer): Use correct (it2) iterator.
+	(readAttributeValue): Read next character and break if end-of-stream.
+
+2006-04-29  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/java/security/provider/Gnu.java (run):
 	Add "RSA" as an alias to MD5withRSA.
 	* gnu/java/security/key/rsa/RSAKeyPairX509Codec.java (encodePublicKey):
