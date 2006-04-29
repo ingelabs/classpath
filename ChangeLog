@@ -1,5 +1,13 @@
 2006-04-29  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/security/auth/callback/ConsoleCallbackHandler.java
+	(handleConfirmation): Use print instead of println.
+	(handleConfirmation): When case is YES_NO_OPTION, print default option
+	if one was set.
+	(handleLanguage): Use print instead of println.
+
+2006-04-29  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/java/security/x509/X500DistinguishedName.java: Updated copyright.
 	(putComponent): Handle O and OU components.
 	(getDer): Use correct (it2) iterator.
