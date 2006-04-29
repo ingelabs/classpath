@@ -1,5 +1,10 @@
 2006-04-29  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/gnu/classpath/tools/HelpPrinter.java (printHelp): New method.
+	(printHelpAndExit): Re-factored to use the above method.
+
+2006-04-29  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* tools/jarsigner.sh.in: Changed license to GPL + Exception.
 	Use -Xbootclasspath/p instead of -cp when invoking the main class.
 	* tools/gnu/classpath/tools/jarsigner/Main.java:
