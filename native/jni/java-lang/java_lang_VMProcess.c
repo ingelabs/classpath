@@ -263,7 +263,7 @@ Java_java_lang_VMProcess_nativeSpawn (JNIEnv * env, jobject this,
 	    }
 	  close (fds[1][1]);
 	}
-      if (pipe_count == 3)
+      if (pipe_count == 2)
 	{
 	  /* Duplicate stdout to stderr.  */
 	  if (dup2 (1, 2) == -1)
