@@ -1,3 +1,10 @@
+2006-04-30  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(lastTabInRun): Fix calculation of the last tab in a run. This
+	has caused painting problems sometimes, making the
+	last tab painted incorrectly.
+
 2006-04-30  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 27297
