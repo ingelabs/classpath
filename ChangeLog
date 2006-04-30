@@ -1,3 +1,28 @@
+2006-04-30  Sascha Brawer <sascha@brawer.ch>
+
+	* gnu/java/awt/font/FontDelegate.java,
+	* gnu/java/awt/font/FontFactory.java,
+	* gnu/java/awt/font/GNUGlyphVector.java,
+	* gnu/java/awt/font/opentype/CharGlyphMap.java,
+	* gnu/java/awt/font/opentype/GlyphNamer.java,
+	* gnu/java/awt/font/opentype/MacResourceFork.java,
+	* gnu/java/awt/font/opentype/NameDecoder.java,
+	* gnu/java/awt/font/opentype/OpenTypeFont.java,
+	* gnu/java/awt/font/opentype/OpenTypeFontFactory.java,
+	* gnu/java/awt/font/opentype/Scaler.java,
+	* gnu/java/awt/font/opentype/truetype/Fixed.java,
+	* gnu/java/awt/font/opentype/truetype/GlyphLoader.java,
+	* gnu/java/awt/font/opentype/truetype/GlyphLocator.java,
+	* gnu/java/awt/font/opentype/truetype/GlyphMeasurer.java,
+	* gnu/java/awt/font/opentype/truetype/TrueTypeScaler.java,
+	* gnu/java/awt/font/opentype/truetype/VirtualMachine.java,
+	* gnu/java/awt/font/opentype/truetype/Zone.java,
+	* gnu/java/awt/font/opentype/truetype/ZonePathIterator.java,
+	* gnu/java/awt/font/opentype/truetype/doc-files/ZonePathIterator-1.dia,
+	* gnu/java/awt/font/opentype/truetype/doc-files/ZonePathIterator-1.png:
+	New files. Imported font framework from:
+	http://www.brawer.ch/software/fonts/
+
 2006-04-30  Roman Kennke <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
