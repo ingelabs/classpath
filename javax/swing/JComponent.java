@@ -1862,8 +1862,8 @@ public abstract class JComponent extends Container implements Serializable
 
     // Go through children from top to bottom and find out their paint
     // rectangles.
-    int index = 0;
-    while (paintRectangles.size() > 0 && index < children.length)
+    for (int index = 0; paintRectangles.size() > 0 &&
+      index < children.length; index++)
       {
         Component comp = children[index];
         if (! comp.isVisible())
@@ -1964,8 +1964,6 @@ public abstract class JComponent extends Container implements Serializable
             paintRegions.add(componentRectangles);
             componentRectangles = new ArrayList();
           }
-
-        index++;
       }
 
     // paintingTile becomes true just before we start painting the component's
