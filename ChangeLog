@@ -1,5 +1,9 @@
 2006-05-01  Tom Tromey  <tromey@redhat.com>
 
+	* lib/.cvsignore: Added classes.2.
+
+2006-05-01  Tom Tromey  <tromey@redhat.com>
+
 	* java/util/jar/JarFile.java (provider): Now package-private.
 	* java/lang/Enum.java (compareTo): Javadoc fix.
 	* java/lang/Boolean.java (compareTo): Javadoc fix.
