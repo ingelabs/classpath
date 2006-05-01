@@ -1,3 +1,9 @@
+2006-05-01  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/jar/JarFile.java (provider): Now package-private.
+	* java/lang/Enum.java (compareTo): Javadoc fix.
+	* java/lang/Boolean.java (compareTo): Javadoc fix.
+
 2006-05-01  Lillian Angel  <langel@redhat.com>
 
 	* gnu/javax/swing/text/html/parser/support/Parser.java

@@ -182,7 +182,7 @@ public abstract class Enum
    * this returns a positive integer and one declared after yields a
    * negative integer.
    *
-   * @param e the enumeration constant to compare.
+   * @param o the enumeration constant to compare.
    * @return a negative integer if <code>e.ordinal < this.ordinal</code>,
    *         zero if <code>e.ordinal == this.ordinal</code> and a positive
    *         integer if <code>e.ordinal > this.ordinal</code>.

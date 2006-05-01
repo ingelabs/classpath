@@ -225,7 +225,7 @@ public final class Boolean implements Serializable, Comparable
   /**
    * Compares this Boolean to another.
    *
-   * @param b the Boolean to compare this Boolean to
+   * @param other the Boolean to compare this Boolean to
    * @return 0 if both Booleans represent the same value, a positive number 
    * if this Boolean represents true and the other false, and a negative
    * number otherwise.
