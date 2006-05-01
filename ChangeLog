@@ -1,3 +1,18 @@
+2006-05-01  Tom Tromey  <tromey@redhat.com>
+
+	* java/nio/ByteBufferImpl.java (compact): Don't reset position
+	in empty case.
+	* gnu/java/nio/ChannelReader.java (read): Synchronize.
+	(close): Synchronize.
+	* java/nio/ShortBufferImpl.java (compact): Rewrote.
+	* java/nio/LongBufferImpl.java (compact): Rewrote.
+	* java/nio/IntBufferImpl.java (compact): Rewrote.
+	* java/nio/FloatBufferImpl.java (compact): Rewrote.
+	* java/nio/DoubleBufferImpl.java (compact): Rewrote.
+	* java/nio/CharBufferImpl.java (compact): Rewrote.
+	* gnu/java/nio/ChannelWriter.java: New file.
+	* java/nio/channels/Channels.java (newWriter): Implemented.
+
 2006-05-01  Lillian Angel  <langel@redhat.com>
 
 	* java/util/SimpleTimeZone.java

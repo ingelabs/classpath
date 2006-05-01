@@ -120,13 +120,8 @@ final class ByteBufferImpl extends ByteBuffer
 	int count = remaining();
 	shiftDown(0, pos, count);
 	position(count);
-	limit(capacity());
       }
-    else
-      {
-	position(limit());
-	limit(capacity());
-      }
+    limit(capacity());
     return this;
   }
   
