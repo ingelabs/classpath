@@ -1,3 +1,16 @@
+2006-05-01  Lillian Angel  <langel@redhat.com>
+
+	* java/util/SimpleTimeZone.java
+	(SimpleTimeZone): Do not throw exception if startMonth == endMonth.
+	(SimpleTimeZone): Likewise.
+	(checkRule): Rewritten to properly check all values (more efficently). 
+	This code is now more stable, at least less buggy than before. Fixed
+	API documentation.
+	(setStartRule): Moved checkRule call to end.
+	(setStartRule): Likewise.
+	(setEndRule): Likewise.
+	(setEndRule): Likewise.
+
 2006-05-01  Tom Tromey  <tromey@redhat.com>
 
 	* lib/.cvsignore: Added classes.2.
