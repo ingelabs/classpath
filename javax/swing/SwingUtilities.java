@@ -376,21 +376,20 @@ public class SwingUtilities
   public static Component getRoot(Component comp)
   {
     Applet app = null;
-    Window win = null;
-
+    
     while (comp != null)
       {
-        if (win == null && comp instanceof Window)
-          win = (Window) comp;
+        // A Window cannot be in an applet, so 
+        // the Window returned would be encountered
+        // after the applet.
+        if (app == null && comp instanceof Window)
+          return (Window) comp;
         else if (comp instanceof Applet)
           app = (Applet) comp;
         comp = comp.getParent();
       }
-
-    if (win != null)
-      return win;
-    else
-      return app;
+    
+    return app;
   }
 
   /**

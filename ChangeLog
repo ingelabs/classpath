@@ -1,5 +1,12 @@
 2006-05-02  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/SwingUtilities.java
+	(getRoot): Should return the Applet if it exists.
+	Only return the Window if an Applet has not been
+	encountered.
+
+2006-05-02  Lillian Angel  <langel@redhat.com>
+
 	* gnu/javax/swing/text/html/parser/support/Parser.java
 	(readAttributes): Reverted Audrius' last patch. There is 
 	a slight difference in code between the NUMTOKEN and SLASH case. 
