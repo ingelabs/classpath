@@ -1,3 +1,38 @@
+2006-05-02  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(AA_SAMPLING): New constant.
+	(alpha): New field. Used in the antialiasing renderer.
+	(edgeTable): New field. Used in the antialiasing renderer.
+	(AbstractGraphics2D): Initialize rendering hints wrt
+	anti-aliasing.
+	(draw): Clip after stroking. Commented out clipping for now,
+	it seems to be buggy.
+	(fill): Commented out clipping for now, it seems to be buggy.
+	(setComposite): Don't create composite context.
+	(setPaint): Only change paint when parameter is not null.
+	(translate): Call setClip() so subclasses can update their clip
+	too.
+	(clip): Call setClip() so subclasses can update their clip
+	too.
+	(drawGlyphVector): Added clipping, but left it commented out
+	because it's buggy.
+	(getClipBounds): Returns null when clip is null.
+	(drawLine): Call rawDrawLine with translation applied.
+	(filLRect): Call rawFillRect with translation applied.
+	(fillShape): Added support for anti-aliasing.
+	(rawSetForeground(int,int,int)): New method.
+	(rawFillShape): A couple of painting fixes.
+	(fillScanline): Implemented to call rawDrawLine.
+	(fillShapeAntialias): New method. Implements an anti-aliasing
+	shape filler.
+	(fillScanlineAA): New method. Used for the anti-aliasing
+	shape filler.
+	(fillScanlineAlpha): New method. Used for the anti-aliasing
+	shape filler.
+	(init): Initialize clip with the device bounds.
+	(updateOptimization): Fixed the optimization condition.
+
 2006-05-02  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/GapContent.java:
