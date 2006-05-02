@@ -1,3 +1,9 @@
+2006-05-02  Roman Kennke <kennke@aicas.com>
+
+	PR 27326
+	* javax/swing/MenuSelectionManager.java
+	(setSelectedPath): Rewritten.
+
 2006-05-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* gnu/javax/swing/text/html/parser/support/Parser.java
