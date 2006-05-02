@@ -1,103 +1,116 @@
-Java ARchive (JAR) file signing and verification tool.
+NAME
+	jarsigner - Java ARchive (JAR) file signing and verification tool
 
-Copyright (C) 2006 Free Software Foundation, Inc.
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+SYNOPSIS
+	jarsigner [OPTION]... FILE ALIAS
+	jarsigner -verify [OPTION]... FILE
 
-Please report bugs at http://www.gnu.org/software/classpath/bugs.html
+DESCRIPTION
+	When the first form is used, the tool signs the designated JAR file.
+	The second form, on the other hand, is used to verify a previously
+	signed JAR file.
 
-Usage:
-  jarsigner [options] jar-file alias
-  jarsigner -verify [options] jar-file
+	FILE is the .JAR file to process; i.e. to sign if the first syntax form
+	is used, or to verify if the second syntax form is used instead.
 
- When the first form is used, the tool signs the designated <jar-file>. The
- second form, on the other hand, is used to verify a previously signed JAR
- file.
+	ALIAS must be a known Alias of a Key Entry in the designated key store.
+	The private key material associated with this Alias is then used for
+	signing the designated .JAR file.
 
- The <jar-file> is the JAR file to process; i.e. to sign if the first syntax
- form is used, or to verify if the second syntax form is used instead.
+SIGNING OPTIONS
+	-keystore URL
+		Use this option to specify the location of the key store to use.
+		The default value is a file URL referencing the file named
+		".keystore" (all lower case and without the enclosing quotes)
+		located in the path returned by the call to
+		java.lang.System#getProperty(String) using "user.home" as
+		argument.
 
- <alias> is the Keystore alias to use for signing the <jar-file>.
- 
+		If a URL was specified, but was found to be malformed --e.g.
+		missing protocol element-- the tool will attempt to use the URL
+		value as a file-name (with absolute or relative path-name) of a
+		key store --as if the protocol was "file:".
 
- When the tool is used for signing a JAR file, the possible <options> include:
-  -keystore URL
-                Indicates to the tool that the Keystore located at the
-                designated <URL> must be used.  When this option is missing,
-                the tool, by default, will look for a Keystore named
-                ".keystore" in the current User's home directory; i.e. the
-                value of the System property named "user.home".
+	-storetype STORE_TYPE
+		Use this option to specify the type of the key store to use.
+		The default value, if this option is omitted, is that of the
+		property "keystore.type" in the security properties file, which
+		is obtained by invoking the static method call getDefaultType()
+		in java.security.KeyStore.
 
-                If the <URL> is malformed --e.g. missing protocol element-- the
-                tool will attempt to use the <URL> value as a file-name (with
-                absolute or relative path-name) of a Keystore --as if the
-                protocol was "file:".
+	-storepass PASSWORD
+		Use this option to specify the password which will be used to
+		unlock the key store.  If this option is missing, the User will
+		be prompted to provide a password.
 
-  -storetype STORE_TYPE
-                Designates the type of Keystore to expect.  The default value
-                is that of the property "keystore.type" in the security
-                properties file, which is obtained by invoking the static
-                method call getDefaultType() in java.security.KeyStore.
+	-keypass PASSWORD
+		Use this option to specify the password which the tool will use
+		to unlock the Key Entry associated with the designated Alias.
 
-  -storepass PASSWORD
-                Designates the <PASSWORD> to use when accessing the Keystore.
-                If this option is missing, the User will be prompted to provide
-                one.
+		If this option is omitted, the tool will first attempt to unlock
+		the Key Entry using the same password protecting the key store.
+		If this fails, you will then be prompted to provide a password.
 
-  -keypass PASSWORD
-                Designates the <PASSWORD> protecting the private key to use,
-                from the Keystore, for signing the JAR file.  If this option is
-                missing, the User will be prompted to provide one.
+	-sigfile NAME
+		Use this option to designate a literal that will be used to
+		construct file names for both the .SF and .DSA signature files.
+		These files  will be generated, by the tool, and placed in the
+		META-INF directory of the signed JAR.  Permissible characters
+		for NAME must be in the range "a-zA-Z0-9_-".  All characters
+		will be converted to upper-case ones.
 
-  -sigfile NAME
-                Designates a literal that will be used to construct file names
-                for the .SF and .DSA signature files which will be generated
-                and placed in the MET-INF directory of the signed JAR.
-                Permissible characters for <NAME> must be in the range
-                "a-zA-Z0-9_-".  All characters will be converted by the tool to
-                upper-case ones.
+		If this option is missing, the first eight characters of the
+		ALIAS argument will be used.  When this is the case, any
+		character in ALIAS that is outside the permissible range of
+		characters will be replaced by an underscore.
 
-                If this option is missing, the first eight characters of the
-                <alias> argument will be used.  When this is the case, any
-                character in <alias> that is outside the permissible range of
-                characters will be replaced by an underscore.
+	-signedjar FILE_NAME
+		Use this option to specify the file name of the signed JAR.  If
+		this option is omitted, then the signed JAR will be named the
+		same as FILE; i.e. the input JAR file will be replaced with the
+		signed copy.
 
-  -signedjar FILE_NAME
-                If present, <FILE_NAME> will be used as the name of the signed
-                JAR.  If this option is not present, then the signed JAR will
-                be named the same as <jar-file>; i.e. the input JAR will be
-                replaced with the signed one.
+VERIFICATION OPTIONS
+	-verify
+		Use this option to indicate that the tool is to be used for
+		verification purposes.
 
+	-certs	This option is used in conjunction with the -verbose option.
+		When present, along with the -verbose option, the tool will
+		print more detailed information about the certificates of the
+		signer(s) being processed.
 
- When the tool is used for verifying a JAR file, the possible options include:
-   -verify      Indicates that the tool is to be used for verification purposes.
-   
-   -certs       This option is used in conjunction with the -verbose option.
-                When present, along with the -verbose option, the tool will
-                print more detailed information about the certificates of the
-                signer(s) being processed.
+COMMON OPTIONS
+	-verbose
+		Use this option to force the tool to generate more verbose
+		messages, during its processing.
 
+	-internalsf
+		When present, the tool will include --which otherwise it does
+		not-- the .SF file in the .DSA generated file.
 
- Other options, common to both signing and verification include:
-   -verbose     Specifies that the tool should generate more messages, during
-                its processing.
+	-sectionsonly
+		When present, the tool will include in the .SF generated file
+		--which otherwise it does not-- a header containing a hash of
+		the whole manifest file.  When that header is included, the
+		tool can quickly check, during verification, if the hash (in
+		the header) matches or not the manifest file.
 
-   -internalsf  When present, the tool will include --which otherwise it does
-                not-- the .SF file in the .DSA generated file.
+	-provider PROVIDER_CLASS_NAME
+		A fully qualified class name of a Security Provider to add to
+		the current list of Security Providers already installed in the
+		JVM in-use.  If a provider class is specified with this option,
+		and was successfully added to the runtime --i.e. it was not
+		already installed-- then the tool will attempt to remove this
+		Security Provider before exiting.
 
-   -sectionsonly
-                When present, the tool will include in the .SF generated file
-                --which otherwise it does not-- a header containing a hash of
-                the whole manifest file.  When that header is included, the
-                tool can quickly check, during verification, if the hash (in
-                the header) matches or not the manifest file.
+	-help	Prints this help text.
 
-   -provider PROVIDER_CLASS_NAME
-                Designates an implementation of the Provider interface to use
-                for obtaining cryptographic algorithm implementations required
-                by this tool to perform its functions; specifically the
-                implementation of the Security Provider capable of managing a
-                Key Store of the designated, or default, type.
+REPORTING BUGS
+	Please report bugs at http://www.gnu.org/software/classpath/bugs.html
 
-   -help        Prints this help text. 
-
+COPYRIGHT
+	Copyright (C) 2006 Free Software Foundation, Inc.
+	This is free software; see the source for copying conditions.  There is
+	NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+	PURPOSE.

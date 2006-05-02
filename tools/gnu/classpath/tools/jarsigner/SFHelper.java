@@ -96,7 +96,7 @@ public class SFHelper
   private static final int SF_GENERATED = 3;
   private static final int DSA_GENERATED = 4;
   /** http://asn1.elibel.tm.fr/cgi-bin/oid/display?oid=1.3.14.3.2.26&action=display */
-  private static final OID hashAlgorithmIdentifierSHA1 = new OID("1.3.14.3.2.26");
+  private static final OID hashAlgorithmIdentifierSHA1 = new OID("1.3.14.3.2.26"); //$NON-NLS-1$
 
   private int state;
   private JarFile jar;
@@ -137,12 +137,12 @@ public class SFHelper
   void writeSF(JarOutputStream jar) throws IOException
   {
     if (this.state != FINISHED)
-      throw new IllegalStateException("Helper is NOT finished");
+      throw new IllegalStateException(Messages.getString("SFHelper.1")); //$NON-NLS-1$
 
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
     JarUtils.writeSFManifest(sfMainAttributes, sfEntries, baos);
     sfBytes = baos.toByteArray();
-    log.finest("\n" + Util.dumpString(sfBytes, "+++ sfBytes "));
+    log.finest("\n" + Util.dumpString(sfBytes, "+++ sfBytes ")); //$NON-NLS-1$ //$NON-NLS-2$
     jar.write(sfBytes);
     jar.flush();
 
@@ -214,9 +214,9 @@ public class SFHelper
       throws IOException, CertificateEncodingException, CRLException
   {
     if (this.state != SF_GENERATED)
-      throw new IllegalStateException(".SF file has NOT been generated");
+      throw new IllegalStateException(Messages.getString("SFHelper.4")); //$NON-NLS-1$
 
-    log.finest("+++ signer private key = " + signerKey);
+    log.finest("+++ signer private key = " + signerKey); //$NON-NLS-1$
     ISignature signatureAlgorithm;
     ISignatureCodec signatureCodec;
     OID digestEncryptionAlgorithmOID;
@@ -233,7 +233,7 @@ public class SFHelper
         digestEncryptionAlgorithmOID = Main.RSA_SIGNATURE_OID;
       }
     else
-      throw new SecurityException("Unknown or unsupported private key algorithm");
+      throw new SecurityException(Messages.getString("SFHelper.6")); //$NON-NLS-1$
 
     Map signatureAttributes = new HashMap();
     signatureAttributes.put(ISignature.SIGNER_KEY, signerKey);
@@ -241,7 +241,7 @@ public class SFHelper
     signatureAlgorithm.update(sfBytes, 0, sfBytes.length);
     Object signature = signatureAlgorithm.sign();
     byte[] signedSFBytes = signatureCodec.encodeSignature(signature);
-    log.finest("\n" + Util.dumpString(signedSFBytes, "+++ signedSFBytes "));
+    log.finest("\n" + Util.dumpString(signedSFBytes, "+++ signedSFBytes ")); //$NON-NLS-1$ //$NON-NLS-2$
 
     Set digestAlgorithms = new HashSet();
     List digestAlgorithm = new ArrayList(2);
@@ -296,7 +296,7 @@ public class SFHelper
   void startSigning() throws IOException
   {
     if (this.state != READY)
-      throw new IllegalStateException("Helper is NOT ready");
+      throw new IllegalStateException(Messages.getString("SFHelper.9")); //$NON-NLS-1$
 
     Manifest oldManifest = jar.getManifest();
     this.manifest = oldManifest == null ? new Manifest()
@@ -317,12 +317,12 @@ public class SFHelper
   void updateEntry(JarEntry entry) throws IOException
   {
     if (this.state != STARTED)
-      throw new IllegalStateException("Helper is NOT started");
+      throw new IllegalStateException(Messages.getString("SFHelper.10")); //$NON-NLS-1$
       
     String name = entry.getName();
     InputStream jeis = jar.getInputStream(entry);
     String hash = util.hashStream(jeis);
-    log.finer("Hash of " + name + " = " + hash);
+    log.finer("Hash of " + name + " = " + hash); //$NON-NLS-1$ //$NON-NLS-2$
 
     Attributes mainfestAttributes = manifest.getAttributes(name);
     if (mainfestAttributes == null)
@@ -344,9 +344,9 @@ public class SFHelper
       }
 
     sfAttributes.putValue(Main.DIGEST, sfHash);
-    log.finest("Name: " + name);
-    log.finest(Main.DIGEST + ": " + sfHash);
-    log.finest("");
+    log.finest("Name: " + name); //$NON-NLS-1$
+    log.finest(Main.DIGEST + ": " + sfHash); //$NON-NLS-1$
+    log.finest(""); //$NON-NLS-1$
   }
 
   /**
@@ -356,7 +356,7 @@ public class SFHelper
   void finishSigning(boolean sectionsOnly) throws IOException
   {
     if (state != STARTED)
-      throw new IllegalStateException("Helper is NOT started");
+      throw new IllegalStateException(Messages.getString("SFHelper.10")); //$NON-NLS-1$
 
     if (sectionsOnly)
       return;
@@ -365,7 +365,7 @@ public class SFHelper
     manifest.write(baos);
     baos.flush();
     String manifestHash = util.hashByteArray(baos.toByteArray());
-    log.fine("Hashed Manifest " + manifestHash);
+    log.fine("Hashed Manifest " + manifestHash); //$NON-NLS-1$
     sfMainAttributes.putValue(Main.DIGEST_MANIFEST, manifestHash);
 
     this.state = FINISHED;

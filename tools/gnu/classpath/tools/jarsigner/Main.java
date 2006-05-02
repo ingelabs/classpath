@@ -40,6 +40,8 @@ package gnu.classpath.tools.jarsigner;
 
 import gnu.classpath.SystemProperties;
 import gnu.classpath.tools.HelpPrinter;
+import gnu.classpath.tools.common.CallbackUtil;
+import gnu.classpath.tools.common.ProviderUtil;
 import gnu.java.security.OID;
 import gnu.java.security.Registry;
 import gnu.javax.security.auth.callback.ConsoleCallbackHandler;
@@ -49,13 +51,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.security.AccessController;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.PrivilegedAction;
 import java.security.Provider;
 import java.security.Security;
 import java.security.UnrecoverableKeyException;
@@ -82,10 +82,10 @@ import javax.security.auth.callback.UnsupportedCallbackException;
 public class Main
 {
   private static final Logger log = Logger.getLogger(Main.class.getName());
-  private static final String HELP_PATH = "jarsigner/jarsigner.txt";
-  private static final Locale EN_US_LOCALE = new Locale("en", "US");
-  static final String DIGEST = "SHA1-Digest";
-  static final String DIGEST_MANIFEST = "SHA1-Digest-Manifest";
+  private static final String HELP_PATH = "jarsigner/jarsigner.txt"; //$NON-NLS-1$
+  private static final Locale EN_US_LOCALE = new Locale("en", "US"); //$NON-NLS-1$ //$NON-NLS-2$
+  static final String DIGEST = "SHA1-Digest"; //$NON-NLS-1$
+  static final String DIGEST_MANIFEST = "SHA1-Digest-Manifest"; //$NON-NLS-1$
   static final Name DIGEST_ATTR = new Name(DIGEST);
   static final Name DIGEST_MANIFEST_ATTR = new Name(DIGEST_MANIFEST);
   static final OID DSA_SIGNATURE_OID = new OID(Registry.DSA_OID_STRING);
@@ -123,7 +123,7 @@ public class Main
 
   public static final void main(String[] args)
   {
-    log.entering("Main", "main", args);
+    log.entering(Main.class.getName(), "main", args); //$NON-NLS-1$
 
     Main tool = new Main();
     try
@@ -133,18 +133,18 @@ public class Main
       }
     catch (SecurityException x)
       {
-        log.throwing("Main", "main", x);
-        System.err.println("jarsigner: " + x.getMessage());
+        log.throwing(Main.class.getName(), "main", x); //$NON-NLS-1$
+        System.err.println(Messages.getString("Main.7") + x.getMessage()); //$NON-NLS-1$
       }
     catch (Exception x)
       {
-        log.throwing("Main", "main", x);
-        System.err.println("jarsigner error: " + x);
+        log.throwing(Main.class.getName(), "main", x); //$NON-NLS-1$
+        System.err.println(Messages.getString("Main.9") + x); //$NON-NLS-1$
       }
 
     tool.teardown();
 
-    log.exiting("Main", "main");
+    log.exiting(Main.class.getName(), "main"); //$NON-NLS-1$
     // System.exit(0);
   }
 
@@ -159,46 +159,46 @@ public class Main
    */
   private void processArgs(String[] args) throws Exception
   {
-    log.entering("Main", "processArgs", args);
+    log.entering(this.getClass().getName(), "processArgs", args); //$NON-NLS-1$
 
     HelpPrinter.checkHelpKey(args, HELP_PATH);
     if (args == null || args.length == 0)
       HelpPrinter.printHelpAndExit(HELP_PATH);
 
     int limit = args.length;
-    log.finest("args.length=" + limit);
+    log.finest("args.length=" + limit); //$NON-NLS-1$
     int i = 0;
     String opt;
     while (i < limit)
       {
         opt = args[i++];
-        log.finest("args[" + (i - 1) + "]=" + opt);
+        log.finest("args[" + (i - 1) + "]=" + opt); //$NON-NLS-1$ //$NON-NLS-2$
         if (opt == null || opt.length() == 0)
           continue;
 
-        if ("-verify".equals(opt)) // -verify
+        if ("-verify".equals(opt)) // -verify //$NON-NLS-1$
           verify = true;
-        else if ("-keystore".equals(opt)) // -keystore URL
+        else if ("-keystore".equals(opt)) // -keystore URL //$NON-NLS-1$
           ksURL = args[i++];
-        else if ("-storetype".equals(opt)) // -storetype STORE_TYPE
+        else if ("-storetype".equals(opt)) // -storetype STORE_TYPE //$NON-NLS-1$
           ksType = args[i++];
-        else if ("-storepass".equals(opt)) // -storepass PASSWORD
+        else if ("-storepass".equals(opt)) // -storepass PASSWORD //$NON-NLS-1$
           ksPassword = args[i++];
-        else if ("-keypass".equals(opt)) // -keypass PASSWORD
+        else if ("-keypass".equals(opt)) // -keypass PASSWORD //$NON-NLS-1$
           password = args[i++];
-        else if ("-sigfile".equals(opt)) // -sigfile NAME
+        else if ("-sigfile".equals(opt)) // -sigfile NAME //$NON-NLS-1$
           sigFileName = args[i++];
-        else if ("-signedjar".equals(opt)) // -signedjar FILE_NAME
+        else if ("-signedjar".equals(opt)) // -signedjar FILE_NAME //$NON-NLS-1$
           signedJarFileName = args[i++];
-        else if ("-verbose".equals(opt)) // -verbose
+        else if ("-verbose".equals(opt)) // -verbose //$NON-NLS-1$
           verbose = true;
-        else if ("-certs".equals(opt)) // -certs
+        else if ("-certs".equals(opt)) // -certs //$NON-NLS-1$
           certs = true;
-        else if ("-internalsf".equals(opt)) // -internalsf
+        else if ("-internalsf".equals(opt)) // -internalsf //$NON-NLS-1$
           internalSF = true;
-        else if ("-sectionsonly".equals(opt)) // -sectionsonly
+        else if ("-sectionsonly".equals(opt)) // -sectionsonly //$NON-NLS-1$
           sectionsOnly = true;
-        else if ("-provider".equals(opt)) // -provider PROVIDER_CLASS_NAME
+        else if ("-provider".equals(opt)) // -provider PROVIDER_CLASS_NAME //$NON-NLS-1$
           providerClassName = args[i++];
         else
           {
@@ -211,43 +211,43 @@ public class Main
       }
 
     if (i < limit) // more options than needed
-      log.warning("Last argument is assumed at index #" + (i - 1)
-                  + ". Remaining arguments (" + args[i]
-                  + "...) will be ignored");
+      log.fine("Last argument is assumed at index #" + (i - 1) //$NON-NLS-1$
+               + ". Remaining arguments (" + args[i] //$NON-NLS-1$
+               + "...) will be ignored"); //$NON-NLS-1$
 
     setupCommonParams();
     if (verify)
       {
-        log.info("Will verify with the following parameters:");
-        log.info("     jar-file = '" + jarFileName + "'");
-        log.info("Options:");
-        log.info("     provider = '" + providerClassName + "'");
-        log.info("      verbose ? " + verbose);
-        log.info("        certs ? " + certs);
-        log.info("   internalsf ? " + internalSF);
-        log.info(" sectionsonly ? " + sectionsOnly);
+        log.finer("Will verify with the following parameters:"); //$NON-NLS-1$
+        log.finer("     jar-file = '" + jarFileName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("Options:"); //$NON-NLS-1$
+        log.finer("     provider = '" + providerClassName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("      verbose ? " + verbose); //$NON-NLS-1$
+        log.finer("        certs ? " + certs); //$NON-NLS-1$
+        log.finer("   internalsf ? " + internalSF); //$NON-NLS-1$
+        log.finer(" sectionsonly ? " + sectionsOnly); //$NON-NLS-1$
       }
     else // sign
       {
         setupSigningParams();
 
-        log.info("Will sign with the following parameters:");
-        log.info("     jar-file = '" + jarFileName + "'");
-        log.info("        alias = '" + alias + "'");
-        log.info("Options:");
-        log.info("     keystore = '" + ksURL + "'");
-        log.info("    storetype = '" + ksType + "'");
-        log.info("    storepass = '" + ksPassword + "'");
-        log.info("      keypass = '" + password + "'");
-        log.info("      sigfile = '" + sigFileName + "'");
-        log.info("    signedjar = '" + signedJarFileName + "'");
-        log.info("     provider = '" + providerClassName + "'");
-        log.info("      verbose ? " + verbose);
-        log.info("   internalsf ? " + internalSF);
-        log.info(" sectionsonly ? " + sectionsOnly);
+        log.finer("Will sign with the following parameters:"); //$NON-NLS-1$
+        log.finer("     jar-file = '" + jarFileName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("        alias = '" + alias + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("Options:"); //$NON-NLS-1$
+        log.finer("     keystore = '" + ksURL + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("    storetype = '" + ksType + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("    storepass = '" + ksPassword + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("      keypass = '" + password + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("      sigfile = '" + sigFileName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("    signedjar = '" + signedJarFileName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("     provider = '" + providerClassName + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+        log.finer("      verbose ? " + verbose); //$NON-NLS-1$
+        log.finer("   internalsf ? " + internalSF); //$NON-NLS-1$
+        log.finer(" sectionsonly ? " + sectionsOnly); //$NON-NLS-1$
       }
 
-    log.exiting("Main", "processArgs");
+    log.exiting(this.getClass().getName(), "processArgs"); //$NON-NLS-1$
   }
 
   /**
@@ -260,7 +260,7 @@ public class Main
    */
   private void start() throws Exception
   {
-    log.entering("Main", "start");
+    log.entering(this.getClass().getName(), "start"); //$NON-NLS-1$
 
     if (verify)
       {
@@ -273,7 +273,7 @@ public class Main
         js.start();
       }
 
-    log.exiting("Main", "start");
+    log.exiting(this.getClass().getName(), "start"); //$NON-NLS-1$
   }
 
   /**
@@ -287,24 +287,12 @@ public class Main
    */
   private void teardown()
   {
-    log.entering("Main", "teardown");
+    log.entering(this.getClass().getName(), "teardown"); //$NON-NLS-1$
 
     if (providerInstalled)
-      {
-        final String providerName = provider.getName();
-        log.info("About to remove provider: " + providerName);
-        // remove it. again we need to override security checks
-        AccessController.doPrivileged(new PrivilegedAction()
-        {
-          public Object run()
-          {
-            Security.removeProvider(providerName);
-            return null;
-          }
-        });
-      }
+      ProviderUtil.removeProvider(provider.getName());
 
-    log.exiting("Main", "teardown");
+    log.exiting(this.getClass().getName(), "teardown"); //$NON-NLS-1$
   }
 
   /**
@@ -329,7 +317,7 @@ public class Main
   private void setupCommonParams() throws InstantiationException,
       IllegalAccessException, ClassNotFoundException, IOException
   {
-    log.entering("Main", "setupCommonParams");
+    log.entering(this.getClass().getName(), "setupCommonParams"); //$NON-NLS-1$
 
     if (jarFileName == null)
       HelpPrinter.printHelpAndExit(HELP_PATH);
@@ -339,10 +327,10 @@ public class Main
       throw new FileNotFoundException(jarFileName);
 
     if (jar.isDirectory())
-      throw new IOException("JAR file [" + jarFileName
-                            + "] is NOT a file object");
+      throw new IOException(Messages.getFormattedString("Main.70", jarFileName)); //$NON-NLS-1$
+
     if (! jar.canRead())
-      throw new IOException("JAR file [" + jarFileName + "] is NOT readable");
+      throw new IOException(Messages.getFormattedString("Main.72", jarFileName)); //$NON-NLS-1$ //$NON-NLS-2$
 
     if (providerClassName != null && providerClassName.length() > 0)
       {
@@ -351,18 +339,18 @@ public class Main
         String providerName = provider.getName();
         Provider installedProvider = Security.getProvider(providerName);
         if (installedProvider != null)
-          log.info("Provider " + providerName + " is already installed");
+          log.finer("Provider " + providerName + " is already installed"); //$NON-NLS-1$ //$NON-NLS-2$
         else // install it
           installNewProvider();
       }
 
     if (! verbose && certs)
       {
-        log.warning("Option <certs> is set but <verbose> is not. Ignored");
+        log.fine("Option <certs> is set but <verbose> is not. Ignored"); //$NON-NLS-1$
         certs = false;
       }
 
-    log.exiting("Main", "setupCommonParams");
+    log.exiting(this.getClass().getName(), "setupCommonParams"); //$NON-NLS-1$
   }
 
   /**
@@ -372,23 +360,11 @@ public class Main
    */
   private void installNewProvider()
   {
-    log.entering("Main", "installNewProvider");
+    log.entering(this.getClass().getName(), "installNewProvider"); //$NON-NLS-1$
 
-    String providerName = provider.getName();
-    log.info("About to install new provider: " + providerName);
-    // we need to override security checks
-    Boolean result = (Boolean) AccessController.doPrivileged(new PrivilegedAction()
-    {
-      public Object run()
-      {
-        int actualPosition = Security.insertProviderAt(provider, 1);
-        return new Boolean(actualPosition != - 1);
-      }
-    });
-    log.info("Provider " + providerName + " installed successfully? " + result);
-    providerInstalled = result.booleanValue();
+    providerInstalled = ProviderUtil.addProvider(provider) != -1;
 
-    log.exiting("Main", "installNewProvider");
+    log.exiting(this.getClass().getName(), "installNewProvider"); //$NON-NLS-1$
   }
 
   /**
@@ -414,22 +390,21 @@ public class Main
       NoSuchAlgorithmException, CertificateException,
       UnsupportedCallbackException, UnrecoverableKeyException
   {
-    log.entering("Main", "setupSigningParams");
+    log.entering(this.getClass().getName(), "setupSigningParams"); //$NON-NLS-1$
 
     if (ksURL == null || ksURL.trim().length() == 0)
       {
-        String userHome = SystemProperties.getProperty("user.home");
+        String userHome = SystemProperties.getProperty("user.home"); //$NON-NLS-1$
         if (userHome == null || userHome.trim().length() == 0)
-          throw new SecurityException("Option '-keystore' is not defined or"
-                                      + " is an empty string, and 'user.home'"
-                                      + " is unknown");
-        ksURL = "file:" + userHome.trim() + "/.keystore";
+          throw new SecurityException(Messages.getString("Main.85")); //$NON-NLS-1$
+
+        ksURL = "file:" + userHome.trim() + "/.keystore"; //$NON-NLS-1$ //$NON-NLS-2$
       }
     else
       {
         ksURL = ksURL.trim();
-        if (ksURL.indexOf(":") == -1)
-          ksURL = "file:" + ksURL;
+        if (ksURL.indexOf(":") == -1) //$NON-NLS-1$
+          ksURL = "file:" + ksURL; //$NON-NLS-1$
       }
 
     if (ksType == null || ksType.trim().length() == 0)
@@ -442,7 +417,7 @@ public class Main
     if (ksPassword == null)
       {
         // ask the user to provide one
-        PasswordCallback pcb = new PasswordCallback("Enter keystore password: ",
+        PasswordCallback pcb = new PasswordCallback(Messages.getString("Main.92"), //$NON-NLS-1$
                                                     false);
         getCallbackHandler().handle(new Callback[] { pcb });
         ksPasswordChars = pcb.getPassword();
@@ -458,11 +433,11 @@ public class Main
       HelpPrinter.printHelpAndExit(HELP_PATH);
 
     if (! store.containsAlias(alias))
-      throw new SecurityException("Designated alias [" + alias
-                                  + "] MUST be known to the key store in use");
+      throw new SecurityException(Messages.getFormattedString("Main.6", alias)); //$NON-NLS-1$
+
     if (! store.isKeyEntry(alias))
-      throw new SecurityException("Designated alias [" + alias
-                                  + "] MUST be an Alias of a Key Entry");
+      throw new SecurityException(Messages.getFormattedString("Main.95", alias)); //$NON-NLS-1$
+
     Key key;
     if (password == null)
       {
@@ -474,8 +449,8 @@ public class Main
         catch (UnrecoverableKeyException x)
           {
             // ask the user to provide one
-            PasswordCallback pcb = new PasswordCallback("Enter key password for "
-                                                        + alias + ": ", false);
+            String prompt = Messages.getFormattedString("Main.97", alias); //$NON-NLS-1$
+            PasswordCallback pcb = new PasswordCallback(prompt, false);
             getCallbackHandler().handle(new Callback[] { pcb });
             passwordChars = pcb.getPassword();
             // take 2
@@ -489,8 +464,8 @@ public class Main
       }
 
     if (! (key instanceof PrivateKey))
-      throw new SecurityException("Key associated with " + alias
-                                  + " MUST be a private key");
+      throw new SecurityException(Messages.getFormattedString("Main.99", alias)); //$NON-NLS-1$
+
     signerPrivateKey = (PrivateKey) key;
     signerCertificateChain = store.getCertificateChain(alias);
     log.finest(String.valueOf(signerCertificateChain));
@@ -518,7 +493,7 @@ public class Main
     if (signedJarFileName == null)
       signedJarFileName = jarFileName;
 
-    log.exiting("Main", "setupSigningParams");
+    log.exiting(this.getClass().getName(), "setupSigningParams"); //$NON-NLS-1$
   }
 
   boolean isVerbose()
@@ -585,53 +560,7 @@ public class Main
   protected CallbackHandler getCallbackHandler()
   {
     if (handler == null)
-      {
-        String service = "CallbackHandler.Console"; //$NON-NLS-1$
-        Provider[] providers = Security.getProviders(service);
-        if (providers != null)
-          for (int i = 0; i < providers.length; i++)
-            {
-              Provider p = providers[i];
-              String className = p.getProperty(service);
-              if (className != null)
-                try
-                  {
-                    handler = (CallbackHandler) Class.forName(className).newInstance();
-                  }
-                catch (InstantiationException x)
-                  {
-                    log.fine("InstantiationException while creating [" //$NON-NLS-1$
-                             + className + "] from provider [" + p.getName() //$NON-NLS-1$
-                             + "]. Ignore"); //$NON-NLS-1$
-                  }
-                catch (IllegalAccessException x)
-                  {
-                    log.fine("IllegalAccessException while creating [" //$NON-NLS-1$
-                             + className + "] from provider [" + p.getName() //$NON-NLS-1$
-                             + "]. Ignore"); //$NON-NLS-1$
-                  }
-                catch (ClassNotFoundException x)
-                  {
-                    log.fine("ClassNotFoundException while creating [" //$NON-NLS-1$
-                             + className + "] from provider [" + p.getName() //$NON-NLS-1$
-                             + "]. Ignore"); //$NON-NLS-1$
-                  }
-
-                if (handler != null)
-                  {
-
-                    log.fine("Will use [" + handler.getClass().getName() //$NON-NLS-1$
-                             + "] from [" + p.getName() + "]"); //$NON-NLS-1$ //$NON-NLS-2$
-                    break;
-                  }
-            }
-
-        if (handler == null)
-          {
-            log.fine("No console callback handler found. Will use ours"); //$NON-NLS-1$
-            handler = new ConsoleCallbackHandler();
-          }
-      }
+      CallbackUtil.getConsoleHandler();
 
     return handler;
   }

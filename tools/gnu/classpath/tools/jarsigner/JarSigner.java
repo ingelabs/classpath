@@ -69,7 +69,7 @@ public class JarSigner
 
   void start() throws Exception
   {
-    log.entering("JarSigner", "start");
+    log.entering(this.getClass().getName(), "start"); //$NON-NLS-1$
 
     JarFile jarFile = new JarFile(main.getJarFileName());
     SFHelper sfHelper = new SFHelper(jarFile);
@@ -87,15 +87,15 @@ public class JarSigner
 
         sfHelper.updateEntry(je);
         if (main.isVerbose())
-          System.out.println("  signing: " + jeName);
+          System.out.println(Messages.getString("JarSigner.1") + jeName); //$NON-NLS-1$
       }
 
     sfHelper.finishSigning(main.isSectionsOnly());
     if (main.isVerbose())
-      System.out.println(" updating: " + JarFile.MANIFEST_NAME);
+      System.out.println(Messages.getString("JarSigner.2") + JarFile.MANIFEST_NAME); //$NON-NLS-1$
 
     // 2. write jar entries and manifest
-    File signedJarFile = File.createTempFile("gcp-", ".jar");
+    File signedJarFile = File.createTempFile("gcp-", ".jar"); //$NON-NLS-1$ //$NON-NLS-2$
     FileOutputStream fos = new FileOutputStream(signedJarFile);
     JarOutputStream outSignedJarFile = new JarOutputStream(fos,
                                                            sfHelper.getManifest());
@@ -107,7 +107,7 @@ public class JarSigner
             || jeName.endsWith(File.separator))
           continue;
 
-        log.finest("Processing " + jeName);
+        log.finest("Processing " + jeName); //$NON-NLS-1$
         JarEntry newEntry = new JarEntry(jeName);
         newEntry.setTime(je.getTime());
         outSignedJarFile.putNextEntry(newEntry);
@@ -119,19 +119,19 @@ public class JarSigner
     String signaturesFileName = main.getSigFileName();
     String sfFileName = JarUtils.META_INF + signaturesFileName
                         + JarUtils.SF_SUFFIX;
-    log.finest("Processing " + sfFileName);
+    log.finest("Processing " + sfFileName); //$NON-NLS-1$
     JarEntry sfEntry = new JarEntry(sfFileName);
     sfEntry.setTime(System.currentTimeMillis());
     outSignedJarFile.putNextEntry(sfEntry);
     sfHelper.writeSF(outSignedJarFile);
-    log.info("Created .SF file");
+    log.finer("Created .SF file"); //$NON-NLS-1$
     if (main.isVerbose())
-      System.out.println("   adding: " + sfFileName);
+      System.out.println(Messages.getString("JarSigner.8") + sfFileName); //$NON-NLS-1$
 
     // 4. create the .DSA file
     String dsaFileName = JarUtils.META_INF + signaturesFileName
                          + JarUtils.DSA_SUFFIX;
-    log.finest("Processing " + dsaFileName);
+    log.finest("Processing " + dsaFileName); //$NON-NLS-1$
     JarEntry dsaEntry = new JarEntry(dsaFileName);
     dsaEntry.setTime(System.currentTimeMillis());
     outSignedJarFile.putNextEntry(dsaEntry);
@@ -139,20 +139,20 @@ public class JarSigner
                       main.getSignerPrivateKey(),
                       main.getSignerCertificateChain(),
                       main.isInternalSF());
-    log.info("Created .DSA file");
+    log.finer("Created .DSA file"); //$NON-NLS-1$
     if (main.isVerbose())
-      System.out.println("   adding: " + dsaFileName);
+      System.out.println(Messages.getString("JarSigner.11") + dsaFileName); //$NON-NLS-1$
 
     // cleanup
     outSignedJarFile.close();
     fos.close();
     signedJarFile.renameTo(new File(main.getSignedJarFileName()));
-    log.info("Renamed signed JAR file");
+    log.finer("Renamed signed JAR file"); //$NON-NLS-1$
     if (main.isVerbose())
-      System.out.println(SystemProperties.getProperty("line.separator")
-                         + "jar signed.");
+      System.out.println(SystemProperties.getProperty("line.separator") //$NON-NLS-1$
+                         + Messages.getString("JarSigner.14")); //$NON-NLS-1$
 
-    log.exiting("JarSigner", "start");
+    log.exiting(this.getClass().getName(), "start"); //$NON-NLS-1$
   }
 
   private void copyFromTo(InputStream in, JarOutputStream out)

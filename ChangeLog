@@ -1,5 +1,52 @@
 2006-05-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/gnu/classpath/tools/jarsigner/jarsigner.txt: Re-arranged to
+	resemble more closely man-page style text.
+	* tools/gnu/classpath/tools/jarsigner/SFHelper.java:
+	Mark (Eclipse) strings that need not be externalised.
+	(writeSF): Likewise.
+	(writeDSA): Likewise.
+	Use package-private Messages class to provide i18n-ready strings.
+	(startSigning):
+	Use package-private Messages class to provide i18n-ready strings.
+	(updateEntry): Likewise.
+	Mark (Eclipse) strings that need not be externalised.
+	(finishSigning): Likewise.
+	* tools/gnu/classpath/tools/jarsigner/Main.java:
+	Mark (Eclipse) strings that need not be externalised.
+	(main): Do not use constant strings as class name.
+	Use package-private Messages class to provide i18n-ready strings.
+	Reduced logging level so INFO becomes FINER, and WARNING becomes FINE.
+	(processArgs): Do not use constant strings as class name.
+	Mark (Eclipse) strings that need not be externalised.
+	Reduced logging level so INFO becomes FINER, and WARNING becomes FINE.
+	(start): Do not use constant strings as class name.
+	(teardown): Likewise.
+	Use ProviderUtil.
+	(setupCommonParams): Do not use constant strings as class name.
+	Use package-private Messages class to provide i18n-ready strings.
+	Reduced logging level so INFO becomes FINER, and WARNING becomes FINE.
+	(installNewProvider): Do not use constant strings as class name.
+	Use ProviderUtil.
+	(setupSigningParams): Do not use constant strings as class name.
+	Use package-private Messages class to provide i18n-ready strings.
+	Mark (Eclipse) strings that need not be externalised.
+	(getCallbackHandler): Use CallbackUtil.
+	* tools/gnu/classpath/tools/jarsigner/JarSigner.java (start):
+	Use package-private Messages class to provide i18n-ready strings.
+	Reduced logging level so INFO becomes FINER, and WARNING becomes FINE.
+	* tools/gnu/classpath/tools/jarsigner/JarVerifier.java (start): Likewise.
+	(verifySF): Likewise.
+	(verifySFEntries): Do not use constant strings as class name.
+	Use Boolean.valueOf instead of new Boolean().
+	(verifySFEntry): Mark (Eclipse) strings that need not be externalised.
+	* resource/gnu/classpath/tools/jarsigner/MessageBundle.properties:
+	New file.
+	* tools/gnu/classpath/tools/jarsigner/package.html: Likewise.
+	* tools/gnu/classpath/tools/jarsigner/Messages.java: Likewise.
+
+2006-05-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* tools/gnu/classpath/tools/common/CallbackUtil.java: New file.
 	* tools/gnu/classpath/tools/common/ProviderUtil.java: Likewise.
 	* tools/gnu/classpath/tools/common/SecurityProviderInfo.java: Likewise.

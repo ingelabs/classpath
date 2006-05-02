@@ -94,7 +94,7 @@ public class JarVerifier
 
   void start() throws Exception
   {
-    log.entering("JarVerifier", "start");
+    log.entering(this.getClass().getName(), "start"); //$NON-NLS-1$
 
     String jarFileName = main.getJarFileName();
     jarFile = new JarFile(jarFileName);
@@ -110,7 +110,7 @@ public class JarVerifier
           continue;
 
         // only interested in .SF files in, and not deeper than, META-INF
-        String[] jeNameParts = jeName.split("/");
+        String[] jeNameParts = jeName.split("/"); //$NON-NLS-1$
         if (jeNameParts.length != 2)
           continue;
 
@@ -121,7 +121,7 @@ public class JarVerifier
 
     // 2. verify each one
     if (sfFiles.isEmpty())
-      System.out.println("jar is not signed.--no signature files found.");
+      System.out.println(Messages.getString("JarVerifier.2")); //$NON-NLS-1$
     else
       {
         int limit = sfFiles.size();
@@ -135,15 +135,17 @@ public class JarVerifier
           }
 
         if (count == 0)
-          System.out.println("jar verification failed.");
+          System.out.println(Messages.getString("JarVerifier.3")); //$NON-NLS-1$
         else if (count != limit)
-          System.out.println("jar partially verified --" + count + " of "
-                             + limit + " signers.");
+          System.out.println(Messages.getFormattedString("JarVerifier.4", //$NON-NLS-1$
+                                                         new Integer[] {Integer.valueOf(count),
+                                                                        Integer.valueOf(limit)}));
         else
-          System.out.println("jar verified --" + limit + " signer(s).");
+          System.out.println(Messages.getFormattedString("JarVerifier.7", //$NON-NLS-1$
+                                                         Integer.valueOf(limit)));
       }
 
-    log.exiting("JarVerifier", "start");
+    log.exiting(this.getClass().getName(), "start"); //$NON-NLS-1$
   }
 
   /**
@@ -160,15 +162,15 @@ public class JarVerifier
   private boolean verifySF(String sigFileName) throws CRLException,
       CertificateException, ZipException, IOException
   {
-    log.entering("JarVerifier", "verifySF");
-    log.finest("About to verify signature of " + sigFileName + "...");
+    log.entering(this.getClass().getName(), "verifySF"); //$NON-NLS-1$
+    log.finest("About to verify signature of " + sigFileName + "..."); //$NON-NLS-1$ //$NON-NLS-2$
 
     // 1. find the corresponding .DSA file for this .SF file
     JarEntry dsaEntry = jarFile.getJarEntry(JarUtils.META_INF + sigFileName
                                             + JarUtils.DSA_SUFFIX);
     if (dsaEntry == null)
-      throw new SecurityException("Signature Block missing for " + sigFileName);
-
+      throw new SecurityException(Messages.getFormattedString("JarVerifier.13", //$NON-NLS-1$
+                                                              sigFileName));
     // 2. read the .DSA file contents as a PKCS7 SignedData
     InputStream in = jarFile.getInputStream(dsaEntry);
     PKCS7SignedData pkcs7SignedData = new PKCS7SignedData(in);
@@ -177,19 +179,19 @@ public class JarVerifier
     //    this octet string is the digital signature of the .SF file contents
     Set signerInfos = pkcs7SignedData.getSignerInfos();
     if (signerInfos == null || signerInfos.isEmpty())
-      throw new SecurityException("At least one SignerInfo element MUST be "
-                                  + "present in a Signature Block (.DSA file)");
+      throw new SecurityException(Messages.getString("JarVerifier.14")); //$NON-NLS-1$
+
     SignerInfo signerInfo = (SignerInfo) signerInfos.iterator().next();
     byte[] encryptedDigest = signerInfo.getEncryptedDigest();
     if (encryptedDigest == null)
-      throw new SecurityException("Missing EncryptedDigest in Signature Block "
-                                  + "(.DSA file) first SignerInfo element");
-    log.finest("\n" + Util.dumpString(encryptedDigest, "--- signedSFBytes "));
+      throw new SecurityException(Messages.getString("JarVerifier.16")); //$NON-NLS-1$
+
+    log.finest("\n" + Util.dumpString(encryptedDigest, "--- signedSFBytes ")); //$NON-NLS-1$ //$NON-NLS-2$
 
     // 5. get the signer public key
     Certificate cert = pkcs7SignedData.getCertificates()[0];
     PublicKey verifierKey = cert.getPublicKey();
-    log.finest("--- verifier public key = " + verifierKey);
+    log.finest("--- verifier public key = " + verifierKey); //$NON-NLS-1$
 
     // 6. verify the signature file signature
     OID digestEncryptionAlgorithmOID = signerInfo.getDigestEncryptionAlgorithmId();
@@ -223,10 +225,10 @@ public class JarVerifier
         signatureAlgorithm.update(buffer, 0, n);
 
     boolean result = signatureAlgorithm.verify(herSignature);
-    log.info("Signature block [" + sigFileName + "] is "
-             + (result ? "" : "NOT ") + "OK");
+    log.finer("Signature block [" + sigFileName + "] is " //$NON-NLS-1$ //$NON-NLS-2$
+              + (result ? "" : "NOT ") + "OK"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-    log.exiting("JarVerifier", "verifySF", new Boolean(result));
+    log.exiting(this.getClass().getName(), "verifySF", Boolean.valueOf(result)); //$NON-NLS-1$
     return result;
   }
 
@@ -248,7 +250,7 @@ public class JarVerifier
    */
   private boolean verifySFEntries(String alias) throws IOException
   {
-    log.entering("JarVerifier", "verifySFEntries");
+    log.entering(this.getClass().getName(), "verifySFEntries"); //$NON-NLS-1$
 
     // 1. read the signature file
     JarEntry jarEntry = jarFile.getJarEntry(JarUtils.META_INF + alias
@@ -289,7 +291,8 @@ public class JarVerifier
             break;
         }
 
-    log.exiting("JarVerifier", "verifySFEntries", new Boolean(result));
+    log.exiting(this.getClass().getName(), "verifySFEntries",
+                Boolean.valueOf(result)); //$NON-NLS-1$
     return result;
   }
 
@@ -316,7 +319,7 @@ public class JarVerifier
   {
     String expectedValue = getEntryHash(JarFile.MANIFEST_NAME);
     boolean result = expectedValue.equalsIgnoreCase(hash);
-    log.finest("Is " + name + " OK? " + result);
+    log.finest("Is " + name + " OK? " + result); //$NON-NLS-1$ //$NON-NLS-2$
     return result;
   }
 
