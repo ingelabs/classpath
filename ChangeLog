@@ -1,3 +1,9 @@
+2006-05-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/gnu/classpath/tools/common/CallbackUtil.java: New file.
+	* tools/gnu/classpath/tools/common/ProviderUtil.java: Likewise.
+	* tools/gnu/classpath/tools/common/SecurityProviderInfo.java: Likewise.
+
 2006-05-01  Tom Tromey  <tromey@redhat.com>
 
 	* java/nio/ByteBufferImpl.java (compact): Don't reset position
