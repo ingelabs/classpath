@@ -1,3 +1,14 @@
+2006-05-02  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/GapContent.java:
+	(GapContent): Restrict size argument by 2.
+	(insertString): Changed expression from >= to >.
+	(remove): Changed right side of expression to 'length - 1', changed
+	exception message.
+	(getChars): Throw exception if where below 0.
+	(replace): Replaced call to setPositionsInRange() with
+	resetMarksAtZero(), removed note.
+
 2006-05-02  Roman Kennke <kennke@aicas.com>
 
 	PR 27326
