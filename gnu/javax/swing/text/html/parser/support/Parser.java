@@ -967,6 +967,35 @@ public class Parser
 
               // read unquoted attribute.
               case NUMTOKEN:
+                value = next;
+                optional(WS);
+
+                // Check maybe the opening quote is missing.
+                next = getTokenAhead();
+                if (bQUOTING.get(next.kind))
+                  {
+                    hTag = next;
+                    error("The value without opening quote is closed with '"
+                          + next.getImage() + "'");
+                    attrValue = value.getImage();
+                  }
+                else if (next.kind == SLASH)
+                // The slash in this context is treated as the ordinary
+                // character, not as a token. The slash may be part of
+                // the unquoted URL.
+                  {
+                    StringBuffer image = new StringBuffer(value.getImage());
+                    while (next.kind == NUMTOKEN || next.kind == SLASH)
+                      {
+                        image.append(getNextToken().getImage());
+                        next = getTokenAhead();
+                      }
+                    attrValue = image.toString();
+                  }
+                else
+                  attrValue = value.getImage();
+                break;
+
               case SLASH:
                 value = next;
                 optional(WS);

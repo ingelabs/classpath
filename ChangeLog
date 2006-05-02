@@ -1,3 +1,9 @@
+2006-05-02  Lillian Angel  <langel@redhat.com>
+
+	* gnu/javax/swing/text/html/parser/support/Parser.java
+	(readAttributes): Reverted Audrius' last patch. There is 
+	a slight difference in code between the NUMTOKEN and SLASH case. 
+
 2006-05-02  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/JTextComponent.java:
