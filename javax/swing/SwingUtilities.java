@@ -376,7 +376,7 @@ public class SwingUtilities
   public static Component getRoot(Component comp)
   {
     Applet app = null;
-    
+
     while (comp != null)
       {
         // A Window cannot be in an applet, so 
