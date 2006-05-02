@@ -1,5 +1,27 @@
 2006-05-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/keytool.sh.in: New file.
+	* tools/gnu/classpath/tools/keytool/CertReqCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/Command.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/DeleteCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/ExportCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/GenKeyCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/IdentityDBCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/ImportCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/KeyCloneCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/KeyPasswdCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/ListCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/Main.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/Messages.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/PrintCertCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/SelfCertCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/StorePasswdCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/keytool.txt: Likewise.
+	* tools/gnu/classpath/tools/keytool/package.html: Likewise.
+	* resource/gnu/classpath/tools/keytool/MessageBundle.properties: Likewise.
+
+2006-05-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* tools/gnu/classpath/tools/jarsigner/jarsigner.txt: Re-arranged to
 	resemble more closely man-page style text.
 	* tools/gnu/classpath/tools/jarsigner/SFHelper.java:
