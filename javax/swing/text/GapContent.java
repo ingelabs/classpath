@@ -376,14 +376,11 @@ public class GapContent
   {
     // check arguments
     int length = length();
-
-    if (where >= length - 1)
-      throw new BadLocationException("the where argument cannot be greater"
-          + " or equal than the content length - 1", where);
-    if ((where + nitems) > length)
+    
+    if ((where + nitems) >= length)
       throw new BadLocationException("where + nitems cannot be greater"
           + " than the content length", where + nitems);
-
+    
     String removedText = getString(where, nitems);
     replace(where, nitems, null, 0);
 

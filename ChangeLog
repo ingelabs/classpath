@@ -1,3 +1,10 @@
+2006-05-02  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/JTextComponent.java:
+	(setText): Throw InternalError from catch-block.
+	* javax/swing/text/GapContent.java:
+	(removed): Removed if-expression, changed '>' to '>='.
+
 2006-05-02  Roman Kennke <kennke@aicas.com>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java
