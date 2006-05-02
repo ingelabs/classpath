@@ -1,5 +1,10 @@
 2006-05-02  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/.cvsignore: Added keytool.sh.
+	* configure.ac: Added tools/keytool.sh to AC_CONFIG_FILES.
+
+2006-05-02  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* doc/tools.texinfo: New file.
 	* doc/Makefile.am: Generate tools documentation.
 

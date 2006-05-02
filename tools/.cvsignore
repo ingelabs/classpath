@@ -1,4 +1,5 @@
 jarsigner.sh
+keytool.sh
 Makefile.in
 Makefile
 tools.zip
