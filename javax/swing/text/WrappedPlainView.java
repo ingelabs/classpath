@@ -518,7 +518,11 @@ public class WrappedPlainView extends BoxView implements TabExpander
       if (axis == X_AXIS)
         return getWidth();
       else if (axis == Y_AXIS)
-        return numLines * metrics.getHeight();
+        {
+          if (metrics == null)
+            updateMetrics();
+          return numLines * metrics.getHeight();
+        }
       
       throw new IllegalArgumentException("Invalid axis for getPreferredSpan: "
                                          + axis);

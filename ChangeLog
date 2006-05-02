@@ -1,3 +1,13 @@
+2006-05-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/ScrollPaneLayout.java (layoutContainer):
+	Return without action if there is no view in the viewport.
+	* javax/swing/text/WrappedPlainView.java 
+	(WrappedLine.getPreferredSpan): If metrics == null, update
+	metrics.
+	* javax/swing/tree/DefaultTreeModel.java (constructors):
+	Do not call setRoot, assign the root node directly.
+
 2006-05-02  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/SwingUtilities.java
