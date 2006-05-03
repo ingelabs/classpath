@@ -1,5 +1,10 @@
 2006-05-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (drawRaster):
+	Set the current color again after drawing the raster.
+
+2006-05-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/swing/text/WrappedPlainView.java (WrappedLine.modelToView):
 	Do not check pos < currLineEnd if currLineStart == currLineEnd.
 
