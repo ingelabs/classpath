@@ -1,3 +1,21 @@
+2006-05-03  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicTextUI.java:
+	(changeUpdate): Added note.
+	(removeUpdate): Dito.
+	(insertUpdate): Dito.
+	(damageRange): Added if-block to return early.
+	(modelToView): Added check of getVisibleEditorRect's return value.
+	(getVisibleEditorRect): Return null instead of empty rectangle.
+	* javax/swing/text/DefaultCaret.java:
+	(clearHighlight): Removed if-clause to create a highlight entry if it
+	did not exist before.
+	* javax/swing/text/WrappedPlainView.java:
+	(WrappedLine.modelToView): Throw exception if allocation area is empty,
+	removed 2nd part of if-expression.
+	(WrappedLine.updateDamage): Added more documentation, added check
+	whether allocation area rectangle is null.
+
 2006-05-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JSplitPane.java (setDividerLocation(int)):
