@@ -1,3 +1,7 @@
+2006-05-03  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JList.java: Added/updated API docs.
+
 2006-05-03  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JComponent.java
