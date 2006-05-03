@@ -1,3 +1,10 @@
+2006-05-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* include/Makefile.am:
+	Added rules for gnu.java.net.local.LocalSocketImpl.h
+	* include/java_lang_VMSystem.h:
+	Regenerated correctly.
+	
 2006-05-03  Sven de Marothy <sven@physto.se>
        
 	PR 24023, 24701
