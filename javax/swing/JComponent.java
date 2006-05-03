@@ -2159,6 +2159,33 @@ public abstract class JComponent extends Container implements Serializable
   }
 
   /**
+   * Gets the root of the component given. If a parent of the 
+   * component is an instance of Applet, then the applet is 
+   * returned. The applet is considered the root for painting
+   * and adding/removing components. Otherwise, the root Window
+   * is returned if it exists.
+   * 
+   * @param comp - The component to get the root for.
+   * @return the parent root. An applet if it is a parent,
+   * or the root window. If neither exist, null is returned.
+   */
+  private Component getRoot(Component comp)
+  {
+      Applet app = null;
+      
+      while (comp != null)
+        {
+          if (app == null && comp instanceof Window)
+            return comp;
+          else if (comp instanceof Applet)
+            app = (Applet) comp;
+          comp = comp.getParent();
+        }
+      
+      return app;
+  }
+  
+  /**
    * Performs double buffered repainting.
    */
   private void paintDoubleBuffered(Rectangle r)
@@ -2166,7 +2193,7 @@ public abstract class JComponent extends Container implements Serializable
     RepaintManager rm = RepaintManager.currentManager(this);
 
     // Paint on the offscreen buffer.
-    Component root = SwingUtilities.getRoot(this);
+    Component root = getRoot(this);
     Image buffer = rm.getOffscreenBuffer(this, root.getWidth(),
                                          root.getHeight());
     //Rectangle targetClip = SwingUtilities.convertRectangle(this, r, root);

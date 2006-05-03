@@ -376,29 +376,27 @@ public class SwingUtilities
   public static Component getRoot(Component comp)
   {
     Applet app = null;
+    Window win = null;
 
     while (comp != null)
       {
-        // A Window cannot be in an applet, so 
-        // the Window returned would be encountered
-        // after the applet.
-        if (app == null && comp instanceof Window)
-          return (Window) comp;
+        if (win == null && comp instanceof Window)
+          win = (Window) comp;
         else if (comp instanceof Applet)
           app = (Applet) comp;
         comp = comp.getParent();
       }
     
+    if (win != null)
+      return win;
     return app;
   }
 
   /**
-   * Return true if a descends from b, in other words if b is an
-   * ancestor of a.
-   *
+   * Return true if a descends from b, in other words if b is an ancestor of a.
+   * 
    * @param a The child to search the ancestry of
    * @param b The potential ancestor to search for
-   *
    * @return true if a is a descendent of b, false otherwise
    */
   public static boolean isDescendingFrom(Component a, Component b)

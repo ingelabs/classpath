@@ -1,3 +1,17 @@
+2006-05-03  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JComponent.java
+	(getRoot): New private function. Gets the root appropriate
+	for painting. If an applet exists as a parent, then it is returned.
+	(paintDoubleBuffered): Changed to use new function.
+	* javax/swing/RepaintManager.java
+	(getRoot): New private function. Gets the root appropriate
+	for painting. If an applet exists as a parent, then it is returned.
+	(getOffscreenBuffer): Changed to use new function.
+	* javax/swing/SwingUtilties.java
+	(getRoot): Reverted last patch to return Window, even if 
+	an Applet exists.
+
 2006-05-03  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* gnu/javax/crypto/jce/keyring/GnuKeyring.java: Re-implemented using
