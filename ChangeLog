@@ -1,5 +1,13 @@
 2006-05-03  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/FieldView.java:
+	(adjustAllocation): Added if-block to return null when shape argument
+	is null.
+	* javax/swing/text/PlainView.java:
+	(updateDamage): Added if-block to return early if a is null.
+
+2006-05-03  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/plaf/basic/BasicTextUI.java:
 	(changeUpdate): Added note.
 	(removeUpdate): Dito.
