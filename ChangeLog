@@ -1,3 +1,8 @@
+2006-05-03  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JSplitPane.java (setDividerLocation(int)):
+	Reset to preferred sizes if the argument is negative.
+
 2006-05-03  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JList.java: Added/updated API docs.
