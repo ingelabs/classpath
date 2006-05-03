@@ -1,3 +1,26 @@
+2006-05-03  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/javax/crypto/jce/keyring/GnuKeyring.java: Re-implemented using
+	a pair of one public keyring and one private keyring.
+	* gnu/javax/crypto/keyring/GnuPublicKeyring.java (log): New field.
+	(containsCertificate): Added logging.
+	(getCertificate): Likewise.
+	(putCertificate): Likewsie.
+	(load): Likewise.
+	(store): Likewise.
+	* gnu/javax/crypto/keyring/GnuPrivateKeyring.java (log): New field.
+	(containsPrivateKey): Added logging.
+	(getPrivateKey): Likewise.
+	(putPrivateKey): Likewise.
+	(containsPublicKey): Likewise.
+	(getPublicKey): Likewise.
+	(putPublicKey): Likewise.
+	(containsCertPath): Likewise.
+	(getCertPath): Likewise.
+	(putCertPath): Likewise.
+	(load): Likewise.
+	(store): Likewise.
+
 2006-05-03  Roman Kennke <kennke@aicas.com>
 
 	* gnu/java/awt/java2d/AlphaCompositeContext.java: New class.
