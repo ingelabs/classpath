@@ -216,7 +216,7 @@ class ExportCmd extends Command
   {
     setOutputStreamParam(_certFileName);
     setKeyStoreParams(_providerClassName, _ksType, _ksPassword, _ksURL);
-    setAliasParam(alias);
+    setAliasParam(_alias);
 
     log.finer("-export handler will use the following options:");
     log.finer("  -alias=" + alias);

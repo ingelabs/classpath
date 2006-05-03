@@ -1,3 +1,8 @@
+2006-05-04  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/gnu/classpath/tools/keytool/ExportCmd.java (setup):
+	Use _alias instead of alias.
+
 2006-05-03  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* configure.ac:
