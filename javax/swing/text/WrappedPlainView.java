@@ -563,7 +563,8 @@ public class WrappedPlainView extends BoxView implements TabExpander
           // If pos is between currLineStart and currLineEnd then just find
           // the width of the text from currLineStart to pos and add that
           // to rect.x
-          if (pos >= currLineStart && pos < currLineEnd)
+          if (pos >= currLineStart && pos < currLineEnd || 
+              (currLineEnd==currLineStart) )            
             {             
               try
                 {
