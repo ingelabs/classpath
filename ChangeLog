@@ -1,3 +1,11 @@
+2006-05-03  Sven de Marothy <sven@physto.se>
+       
+	PR 24023, 24701
+	* java/awt/Image.java:
+	(getScaledInstance): Default to AreaAveraging for "smooth", 
+	don't thrown an error on illegal flag values.
+	* java/awt/image/AreaAveragingScaleFilter.java: Implement.
+
 2006-05-03  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/FieldView.java:
