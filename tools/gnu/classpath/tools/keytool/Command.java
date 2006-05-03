@@ -1140,7 +1140,7 @@ abstract class Command
   protected CallbackHandler getCallbackHandler()
   {
     if (handler == null)
-      CallbackUtil.getConsoleHandler();
+      handler = CallbackUtil.getConsoleHandler();
 
     return handler;
   }

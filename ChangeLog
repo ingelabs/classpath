@@ -1,3 +1,10 @@
+2006-05-03  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/gnu/classpath/tools/keytool/Command.java (getCallbackHandler):
+	Assign returned value to field handler.
+	* tools/gnu/classpath/tools/jarsigner/Main.java (getCallbackHandler):
+	Likewise.
+
 2006-05-02  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/ScrollPaneLayout.java (layoutContainer):
