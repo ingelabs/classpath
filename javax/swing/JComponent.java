@@ -1764,8 +1764,9 @@ public abstract class JComponent extends Container implements Serializable
             paintBorder(g2);
             paintChildren(g2);
             Rectangle clip = g2.getClipBounds();
-            if (clip.x == 0 && clip.y == 0 && clip.width == getWidth()
-                && clip.height == getHeight())
+            if (clip == null
+                || (clip.x == 0 && clip.y == 0 && clip.width == getWidth()
+                && clip.height == getHeight()))
               RepaintManager.currentManager(this).markCompletelyClean(this);
           }
       }

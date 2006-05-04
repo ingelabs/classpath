@@ -1,5 +1,10 @@
 2006-05-04  Roman Kennke <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(paint): Added null check to avoid NPE when clip == null.
+
+2006-05-04  Roman Kennke <kennke@aicas.com>
+
 	* javax/swing/AbstractButton.java
 	(addImpl): New method. Installs an OverlayLayout if no
 	other layout has been installed before.
