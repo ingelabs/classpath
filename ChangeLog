@@ -1,5 +1,22 @@
 2006-05-04  Roman Kennke <kennke@aicas.com>
 
+	* javax/swing/JLabel.java
+	(AccessibleJLabel.getSelectedText): Return null instead of "".
+	(AccessibleJLabel.getSelectionStart): Added comment why
+	return -1 is correct here.
+	(AccessibleJLabel.getSelectionEnd): Added comment why
+	return -1 is correct here.
+	(AccessibleJLabel.getCharacterAttribute): Added comment about what
+	to do here.
+	(AccessibleJLabel.getCharCount): Added comment about what
+	to do here.
+	(AccessibleJLabel.getCharacterBounds): Tagged as not implemented.
+	(AccessibleJLabel.getIndexAtPoint): Tagged as not implemented.
+	(paramString): Return super.paramString() here, this provides
+	a more meaningful output.
+
+2006-05-04  Roman Kennke <kennke@aicas.com>
+
 	* javax/swing/JComponent.java
 	(paint): Added null check to avoid NPE when clip == null.
 
