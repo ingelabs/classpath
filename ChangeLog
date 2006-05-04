@@ -1,5 +1,12 @@
 2006-05-04  Roman Kennke <kennke@aicas.com>
 
+	* javax/swing/table/DefaultTableCellModel.java
+	(noFocusBorder): Fixed width of empty border to 1.
+	(getTableCellRendererComponent): Don't change the colors for
+	focuses cells. Fixed border for focused cells.
+
+2006-05-04  Roman Kennke <kennke@aicas.com>
+
 	* javax/swing/JTable.java
 	(moveToCellBeingEdited): Adjust bounding box of editing component
 	to exactly cover the grid.
