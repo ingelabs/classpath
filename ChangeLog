@@ -1,3 +1,16 @@
+2006-05-04  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(moveToCellBeingEdited): Adjust bounding box of editing component
+	to exactly cover the grid.
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(paint): Paint grid to the bottom and right of the cells instead
+	of left and top. Adjust bounding box of cells accordingly.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(initComponentDefaults): Fixed color of JTable selection border.
+	* javax/swing/plaf/metal/OceanTheme.java
+	(addCustomEntriesToTable): Fixed color of JTable selection border.
+
 2006-05-04  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* tools/gnu/classpath/tools/keytool/ExportCmd.java (setup):

@@ -3721,6 +3721,13 @@ public class JTable
   private void moveToCellBeingEdited(Component component)
   {
      Rectangle r = getCellRect(editingRow, editingColumn, true);
+     // Adjust bounding box of the editing component, so that it lies
+     // 'above' the grid on all edges, not only right and bottom.
+     // The table grid is painted only at the right and bottom edge of a cell.
+     r.x -= 1;
+     r.y -= 1;
+     r.width += 1;
+     r.height += 1;
      component.setBounds(r);
   }
 
