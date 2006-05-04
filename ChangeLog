@@ -1,3 +1,10 @@
+2006-05-04  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JLabel.java
+	(JLabel): Pass in an empty string for the text parameter.
+	(JLabel): Likewise.
+	(JLabel): Likewise.
+
 2006-05-04  Roman Kennke <kennke@aicas.com>
 
 	* javax/swing/plaf/basic/BasicButtonListener.java

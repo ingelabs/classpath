@@ -344,7 +344,7 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
    */
   public JLabel()
   {
-    this(null, null, LEADING);
+    this("", null, LEADING);
   }
 
   /**
@@ -355,7 +355,7 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
    */
   public JLabel(Icon image)
   {
-    this(null, image, CENTER);
+    this("", image, CENTER);
   }
 
   /**
@@ -368,7 +368,7 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
    */
   public JLabel(Icon image, int horizontalAlignment)
   {
-    this(null, image, horizontalAlignment);
+    this("", image, horizontalAlignment);
   }
 
   /**
