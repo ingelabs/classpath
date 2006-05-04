@@ -1,5 +1,10 @@
 2006-05-04  Roman Kennke <kennke@aicas.com>
 
+	* javax/swing/JOptionPane.java
+	(AccessibleJOptionPane.getAccessibleRole): Implemented method.
+
+2006-05-04  Roman Kennke <kennke@aicas.com>
+
 	* javax/swing/JLabel.java
 	(AccessibleJLabel.getSelectedText): Return null instead of "".
 	(AccessibleJLabel.getSelectionStart): Added comment why
