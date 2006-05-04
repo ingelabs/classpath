@@ -1,6 +1,14 @@
 2006-05-04  Roman Kennke <kennke@aicas.com>
 
-	* javax/swing/table/DefaultTableCellModel.java
+	* javax/swing/AbstractButton.java
+	(addImpl): New method. Installs an OverlayLayout if no
+	other layout has been installed before.
+	(setLayout): New method. Detect if a client app installs a custom
+	layout.
+
+2006-05-04  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/table/DefaultTableCellRenderer.java
 	(noFocusBorder): Fixed width of empty border to 1.
 	(getTableCellRendererComponent): Don't change the colors for
 	focuses cells. Fixed border for focused cells.
