@@ -1,5 +1,10 @@
 2006-05-04  Roman Kennke <kennke@aicas.com>
 
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	(mouseEntered): Fixed conditions for changing states.
+
+2006-05-04  Roman Kennke <kennke@aicas.com>
+
 	* javax/swing/JOptionPane.java
 	(AccessibleJOptionPane.getAccessibleRole): Implemented method.
 
