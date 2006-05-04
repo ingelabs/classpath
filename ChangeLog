@@ -1,3 +1,20 @@
+2006-05-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/javax/imageio/jpeg/DCT.java,
+	gnu/javax/imageio/jpeg/HuffmanTable.java,
+	gnu/javax/imageio/jpeg/JPEGComponent.java,
+	gnu/javax/imageio/jpeg/JPEGDecoder.java,
+	gnu/javax/imageio/jpeg/JPEGException.java,
+	gnu/javax/imageio/jpeg/JPEGFrame.java,
+	gnu/javax/imageio/jpeg/JPEGImageInputStream.java,
+	gnu/javax/imageio/jpeg/JPEGImageReader.java,
+	gnu/javax/imageio/jpeg/JPEGImageReaderSpi.java,
+	gnu/javax/imageio/jpeg/JPEGMarker.java,
+	gnu/javax/imageio/jpeg/JPEGMarkerFoundException.java,
+	gnu/javax/imageio/jpeg/JPEGScan.java,
+	gnu/javax/imageio/jpeg/YCbCr_ColorSpace.java,
+	gnu/javax/imageio/jpeg/ZigZag.java: New files.
+
 2006-05-04  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JLabel.java
