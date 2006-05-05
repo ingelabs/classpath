@@ -1,5 +1,5 @@
 /* JOptionPane.java
-   Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -57,17 +57,15 @@ import javax.swing.plaf.OptionPaneUI;
 public class JOptionPane extends JComponent implements Accessible
 {
   /**
-   * DOCUMENT ME!
+   * Provides the accessibility features for the <code>JOptionPane</code>
+   * component.
    */
-  // FIXME: This inner class is a complete stub and needs to be implemented
-  // properly.
   protected class AccessibleJOptionPane extends JComponent.AccessibleJComponent
   {
-    /** DOCUMENT ME! */
     private static final long serialVersionUID = 686071432213084821L;
     
     /**
-     * Creates a new AccessibleJOptionPane object.
+     * Creates a new <code>AccessibleJOptionPane</code> instance.
      */
     protected AccessibleJOptionPane()
     {
@@ -86,7 +84,6 @@ public class JOptionPane extends JComponent implements Accessible
     }
   }
 
-  /** DOCUMENT ME! */
   private static final long serialVersionUID = 5231143276678566796L;
 
   /** The value returned when cancel option is selected. */
@@ -431,9 +428,11 @@ public class JOptionPane extends JComponent implements Accessible
   }
 
   /**
-   * DOCUMENT ME!
+   * Returns the object that provides accessibility features for this
+   * <code>JOptionPane</code> component.
    *
-   * @return DOCUMENT ME!
+   * @return The accessible context (an instance of 
+   *     {@link AccessibleJOptionPane}).
    */
   public AccessibleContext getAccessibleContext()
   {

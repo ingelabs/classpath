@@ -1,5 +1,9 @@
 2006-05-05  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JOptionPane.java: API doc updates.
+
+2006-05-05  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JToolBar.java
 	(paramString): Reimplemented.
 
