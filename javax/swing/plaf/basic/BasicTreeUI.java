@@ -1376,6 +1376,12 @@ public class BasicTreeUI
   public void paint(Graphics g, JComponent c)
   {
     JTree tree = (JTree) c;
+    
+    int rows = treeState.getRowCount();
+    
+    if (rows == 0)
+      // There is nothing to do if the tree is empty.
+      return;
 
     Rectangle clip = g.getClipBounds();
 
@@ -1387,9 +1393,7 @@ public class BasicTreeUI
         int endIndex = tree.getClosestRowForLocation(clip.x + clip.width,
                                                      clip.y + clip.height);
 
-        // Also paint dashes to the invisible nodes below:
-        int rows = treeState.getRowCount();
-
+        // Also paint dashes to the invisible nodes below.
         // These should be painted first, otherwise they may cover
         // the control icons.
         if (endIndex < rows)
