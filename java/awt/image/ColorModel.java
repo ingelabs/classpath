@@ -527,8 +527,8 @@ public abstract class ColorModel implements Transparency
                                           float[] normComponents,
                                           int normOffset)
   {
-    // subclasses has to implement this method.
-    throw new UnsupportedOperationException();
+    int[] components = getComponents(pixel, null, 0);
+    return getNormalizedComponents(components, 0, normComponents, normOffset);
   }
 
   /**

@@ -1,5 +1,10 @@
 2006-05-05  Roman Kennke <kennke@aicas.com>
 
+	* java/awt/image/ColorModel.java
+	(getNormalizedComponents): Implemented.
+
+2006-05-05  Roman Kennke <kennke@aicas.com>
+
 	* javax/swing/plaf/basic/BasicRadioButtonUI.java
 	(paint): Query the button model for it's state, not the
 	button itself.
