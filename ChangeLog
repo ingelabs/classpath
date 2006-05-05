@@ -1,3 +1,8 @@
+2006-05-05  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/JTable.java
+	(tableChanged): Sync selection model with table model changes.
+
 2006-05-05  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTreeUI.java (paint): Return early

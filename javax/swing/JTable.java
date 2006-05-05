@@ -1955,9 +1955,33 @@ public class JTable
     // affect the size parameters of the JTable. Otherwise we only need
     // to perform a repaint to update the view.
     if (event == null || event.getType() == TableModelEvent.INSERT)
-      revalidate();
+      {
+        // Sync selection model with data model.
+        if (event != null)
+          {
+            int first = event.getFirstRow();
+            if (first < 0)
+              first = 0;
+            int last = event.getLastRow();
+            if (last < 0)
+              last = getRowCount() - 1;
+            selectionModel.insertIndexInterval(first, last - first + 1, true);
+          }
+        revalidate();
+      }
     if (event == null || event.getType() == TableModelEvent.DELETE)
       {
+        // Sync selection model with data model.
+        if (event != null)
+          {
+            int first = event.getFirstRow();
+            if (first < 0)
+              first = 0;
+            int last = event.getLastRow();
+            if (last < 0)
+              last = getRowCount() - 1;
+            selectionModel.removeIndexInterval(first, last);
+          }
         if (dataModel.getRowCount() == 0)
           clearSelection();
         revalidate();
