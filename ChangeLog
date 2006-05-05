@@ -1,3 +1,12 @@
+2006-05-04  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/27375:
+	* java/util/zip/ZipFile.java (entries): Now a LinkedHashMap.
+	(readEntries): Updated.
+	(getEntries): Likewise.
+	(getEntry): Likewise.
+	(getInputStream): Likewise.
+
 2006-05-04  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/javax/imageio/jpeg/DCT.java,
