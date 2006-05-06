@@ -1,3 +1,14 @@
+2006-05-06  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/keytool.sh.in: Removed (renamed to keytool.in).
+	* tools/jarsigner.in: Removed (renamed to jarsigner.in).
+	* tools/Makefile.am: Include jarsigner and keytool classes in tools.zip.
+	Generate jarsigner and keytool scripts.
+	* tools/keytool.in: New file (renamed from keytool.sh.in).
+	* tools/jarsigner.in: New file (renamed from jarsigner.sh.in).
+	* tools/.cvsignore: Replaced *.sh with *
+	* configure.ac: Replaced tools/*.sh with tools/*.
+
 2006-05-05  Roman Kennke <kennke@aicas.com>
 
 	* java/awt/image/ColorModel.java
