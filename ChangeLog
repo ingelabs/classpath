@@ -1,5 +1,11 @@
 2006-05-06  Olivier Jolly  <olivier.jolly@pcedev.com>
 
+    Fixed PR27362
+    * java/util/Calendar.java (clear(int)): Forced internal state
+    completion before performing a field clearing.
+
+2006-05-06  Olivier Jolly  <olivier.jolly@pcedev.com>
+
 	* java/util/Collections.java(UnmodifiableMap.UnmodifiableEntrySet.
 	UnmodifiableMapEntry): New Map.Entry implementation which is immutable.
 	(UnmodifiableMap.UnmodifiableEntrySet.iterator,
