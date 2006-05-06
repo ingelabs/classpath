@@ -1,3 +1,9 @@
+2006-05-06  Sven de Marothy <sven@physto.se>
+
+    Fixed PR27454
+    * gnu/java/awt/peer/gtk/GtkImage: (drawPixels,drawPixelsScaled): 
+    Check for zero image sizes.
+	
 2006-05-06  Olivier Jolly  <olivier.jolly@pcedev.com>
 
     Fixed PR27362
