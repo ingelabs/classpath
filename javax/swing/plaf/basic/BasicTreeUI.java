@@ -98,6 +98,7 @@ import javax.swing.plaf.ActionMapUIResource;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.InputMapUIResource;
 import javax.swing.plaf.TreeUI;
+import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -279,6 +280,11 @@ public class BasicTreeUI
    * not the double mouse click) on the selected tree node.
    */
   Timer startEditTimer;
+  
+  /**
+   * The zero size icon, used for expand controls, if they are not visible.
+   */
+  static Icon nullIcon;
 
   /**
    * The special value of the mouse event is sent indicating that this is not
@@ -672,6 +678,20 @@ public class BasicTreeUI
      
     treeState.setRowHeight(maxHeight);
     return maxHeight;
+  }
+  
+  /**
+   * Get the tree node icon.
+   */
+  Icon getNodeIcon(TreePath path)
+  {
+    Object node = path.getLastPathComponent();
+    if (treeModel.isLeaf(node))
+      return UIManager.getIcon("Tree.leafIcon");
+    else if (treeState.getExpandedState(path))
+      return UIManager.getIcon("Tree.openIcon");
+    else
+      return UIManager.getIcon("Tree.closedIcon");
   }
 
   /**
@@ -1132,14 +1152,10 @@ public class BasicTreeUI
   protected void updateRenderer()
   {
     if (tree != null)
-      {
-        if (tree.getCellRenderer() == null)
-          {
-            if (currentCellRenderer == null)
-              currentCellRenderer = createDefaultCellRenderer();
-            tree.setCellRenderer(currentCellRenderer);
-          }
-      }
+      currentCellRenderer = tree.getCellRenderer();
+
+    if (currentCellRenderer == null)
+      currentCellRenderer = createDefaultCellRenderer();
   }
 
   /**
@@ -1206,6 +1222,7 @@ public class BasicTreeUI
 
     rightChildIndent = UIManager.getInt("Tree.rightChildIndent");
     leftChildIndent = UIManager.getInt("Tree.leftChildIndent");
+    totalChildIndent = rightChildIndent + leftChildIndent;
     setRowHeight(UIManager.getInt("Tree.rowHeight"));
     tree.setRowHeight(getRowHeight());
     tree.setScrollsOnExpand(UIManager.getBoolean("Tree.scrollsOnExpand"));
@@ -1332,10 +1349,11 @@ public class BasicTreeUI
     treeSelectionModel = tree.getSelectionModel();
     setRootVisible(tree.isRootVisible());
     treeState.setRootVisible(tree.isRootVisible());
+    updateExpandedDescendants(new TreePath(new Object[] { treeModel.getRoot() }));
 
     completeUIInstall();
   }
-
+  
   /**
    * Uninstall the defaults for the tree
    */
@@ -2080,7 +2098,7 @@ public class BasicTreeUI
     {
       repaintLeadRow();
     }
-    
+
     /**
      * Repaint the lead row.
      */
@@ -2450,10 +2468,11 @@ public class BasicTreeUI
 
       if (s != null)
         {
+          TreePath path = treeState.getPathForRow(row);
           size.x = getRowX(row, depth);
           size.width = SwingUtilities.computeStringWidth(fm, s);
-          size.width = size.width + getCurrentControlIcon(null).getIconWidth()
-                       + gap;
+          size.width = size.width + getCurrentControlIcon(path).getIconWidth()
+                       + gap + getNodeIcon(path).getIconWidth();
           size.height = getMaxHeight(tree);
           size.y = size.height * row;
         }
@@ -2468,8 +2487,7 @@ public class BasicTreeUI
      */
     protected int getRowX(int row, int depth)
     {
-      int iw = getCurrentControlIcon(null).getIconWidth();
-      return depth * (rightChildIndent + iw/2);
+      return depth * totalChildIndent;
     }
   }// NodeDimensionsHandler
 
@@ -2606,6 +2624,8 @@ public class BasicTreeUI
     {
       validCachedPreferredSize = false;
       treeState.setExpandedState(event.getPath(), true);
+      // The maximal cell height may change
+      maxHeight = 0;
       tree.revalidate();
       tree.repaint();
     }
@@ -2619,6 +2639,8 @@ public class BasicTreeUI
     {
       validCachedPreferredSize = false;
       treeState.setExpandedState(event.getPath(), false);
+      // The maximal cell height may change
+      maxHeight = 0;
       tree.revalidate();
       tree.repaint();
     }
@@ -3094,9 +3116,35 @@ public class BasicTreeUI
    */
   Icon getCurrentControlIcon(TreePath path)
   {
-    if (tree.isExpanded(path))
-      return expandedIcon;
-    return collapsedIcon;
+    if (hasControlIcons())
+      {
+        if (tree.isExpanded(path))
+          return expandedIcon;
+        else
+          return collapsedIcon;
+      }
+    else
+      {
+        if (nullIcon == null)
+          nullIcon = new Icon()
+          {
+            public int getIconHeight()
+            {
+              return 0;
+            }
+
+            public int getIconWidth()
+            {
+              return 0;
+            }
+
+            public void paintIcon(Component c, Graphics g, int x, int y)
+            {
+              // No action here.
+            }
+          };
+        return nullIcon;
+      }
   }
 
   /**
@@ -3323,10 +3371,8 @@ public class BasicTreeUI
   {
     if (row != 0)
       {
-        Icon icon = getCurrentControlIcon(path);
-        int iconW = icon.getIconWidth();
         paintHorizontalLine(g, tree, bounds.y + bounds.height / 2,
-                            bounds.x - iconW/2 - gap, bounds.x - gap);
+                            bounds.x - leftChildIndent - gap, bounds.x - gap);
       }
   }
 
@@ -3379,15 +3425,13 @@ public class BasicTreeUI
     paintExpandControl(g, clipBounds, insets, bounds, path, row, isExpanded,
                        hasBeenExpanded, isLeaf);
 
-    TreeCellRenderer dtcr = tree.getCellRenderer();
-    if (dtcr == null)
-      dtcr = createDefaultCellRenderer();
+    TreeCellRenderer dtcr = currentCellRenderer;
 
     boolean focused = false;
-    if (treeSelectionModel!= null)
-      focused = treeSelectionModel.getLeadSelectionRow() == row 
-        && tree.isFocusOwner();
-    
+    if (treeSelectionModel != null)
+      focused = treeSelectionModel.getLeadSelectionRow() == row
+                && tree.isFocusOwner();
+
     Component c = dtcr.getTreeCellRendererComponent(tree, node, selected,
                                                     isExpanded, isLeaf, row,
                                                     focused);

@@ -1,14 +1,27 @@
+2006-05-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 27298
+	* javax/swing/plaf/basic/BasicTreeUI.java (NodeDimensionsHandler.
+	getNodeDimensions): Mind the size of the node icon. (getRowX):
+	use totalChildIndent. (TreeExpansionHandler): Set maximal height
+	to zero on events. (nullIcon): New field. (getCurrentControlIcon):
+	Return nullIcon if there is no other icon. (getNodeIcon): New method.
+	(installDefaults): assign totalChildIndent. (installUI): Call
+	updateExpandedDescendants. (paintHorizontalPartOfLeg): Rewritten.
+	(paintRow): Rewritten. (updateRenderer): Do not set the renderer for
+	the tree.
+
 2006-05-06  Sven de Marothy <sven@physto.se>
 
-    Fixed PR27454
-    * gnu/java/awt/peer/gtk/GtkImage: (drawPixels,drawPixelsScaled): 
-    Check for zero image sizes.
+	Fixed PR27454
+	* gnu/java/awt/peer/gtk/GtkImage: (drawPixels,drawPixelsScaled): 
+	Check for zero image sizes.
 	
 2006-05-06  Olivier Jolly  <olivier.jolly@pcedev.com>
 
-    Fixed PR27362
-    * java/util/Calendar.java (clear(int)): Forced internal state
-    completion before performing a field clearing.
+	Fixed PR27362
+	* java/util/Calendar.java (clear(int)): Forced internal state
+	completion before performing a field clearing.
 
 2006-05-06  Olivier Jolly  <olivier.jolly@pcedev.com>
 
