@@ -1,3 +1,12 @@
+2006-05-06  Olivier Jolly  <olivier.jolly@pcedev.com>
+
+	* java/util/Collections.java(UnmodifiableMap.UnmodifiableEntrySet.
+	UnmodifiableMapEntry): New Map.Entry implementation which is immutable.
+	(UnmodifiableMap.UnmodifiableEntrySet.iterator,
+	UnmodifiableMap.UnmodifiableEntrySet.toArray,
+	UnmodifiableMap.UnmodifiableEntrySet.toArray(Object[])): Used
+	UnmodifiableMapEntry as part of their return value. 
+
 2006-05-06  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* tools/keytool.sh.in: Removed (renamed to keytool.in).
