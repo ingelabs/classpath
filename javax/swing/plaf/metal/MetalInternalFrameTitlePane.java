@@ -93,7 +93,11 @@ public class MetalInternalFrameTitlePane extends BasicInternalFrameTitlePane
     public void propertyChange(PropertyChangeEvent e)
     {
       String propName = e.getPropertyName();
-      if (propName.equals("JInternalFrame.isPalette"))
+      if (e.getPropertyName().equals(JInternalFrame.FRAME_ICON_PROPERTY))
+        {
+	  title.setIcon( frame.getFrameIcon() );
+        }
+      else if (propName.equals("JInternalFrame.isPalette"))
         {
           if (e.getNewValue().equals(Boolean.TRUE))
             setPalette(true);
@@ -262,7 +266,7 @@ public class MetalInternalFrameTitlePane extends BasicInternalFrameTitlePane
     paletteTitleHeight = UIManager.getInt("InternalFrame.paletteTitleHeight");
     paletteCloseIcon = UIManager.getIcon("InternalFrame.paletteCloseIcon");
     minIcon = MetalIconFactory.getInternalFrameAltMaximizeIcon(16);
-    
+
     title = new JLabel(frame.getTitle(), 
             MetalIconFactory.getInternalFrameDefaultMenuIcon(), 
             SwingConstants.LEFT);
@@ -383,8 +387,8 @@ public class MetalInternalFrameTitlePane extends BasicInternalFrameTitlePane
       paintPalette(g);
     else
       {
-        paintTitleBackground(g);
-        paintChildren(g);
+	paintTitleBackground(g);
+	paintChildren(g);
         Dimension d = getSize();
         if (frame.isSelected())
           g.setColor(MetalLookAndFeel.getPrimaryControlDarkShadow());
