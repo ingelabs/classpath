@@ -1,5 +1,11 @@
 2006-05-07  Roman Kennke <kennke@aicas.com>
 
+	* gnu/java/awt/java2d/AlphaCompositeContext.java
+	(compose): Fixed loops, conditions and logic to make compositing
+	work correctly.
+
+2006-05-07  Roman Kennke <kennke@aicas.com>
+
 	* java/awt/ColorPaintContext.java
 	(ColorPaintContext): Fixed filling of the raster.
 

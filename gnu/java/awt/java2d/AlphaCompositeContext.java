@@ -42,7 +42,6 @@ import java.awt.AWTError;
 import java.awt.AlphaComposite;
 import java.awt.CompositeContext;
 import java.awt.image.ColorModel;
-import java.awt.image.DataBuffer;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
@@ -180,7 +179,7 @@ public class AlphaCompositeContext
     int width = src.getWidth();
     int height = src.getHeight();
     int x1 = x0 + width;
-    int y1 = x0 + height;
+    int y1 = y0 + height;
 
     Object srcPixel = null;
     Object dstPixel = null;
@@ -213,36 +212,9 @@ public class AlphaCompositeContext
         for (int x = x0; x < x1; x++)
           {
             // Fetch source pixel.
-            switch (srcTransferType)
-            {
-              case DataBuffer.TYPE_INT:
-                srcPixel = src.getPixel(x, y, (int[]) srcPixel);
-                break;
-              case DataBuffer.TYPE_FLOAT:
-                srcPixel = src.getPixel(x, y, (float[]) srcPixel);
-                break;
-              case DataBuffer.TYPE_DOUBLE:
-                srcPixel = src.getPixel(x, y, (double[]) srcPixel);
-                break;
-              default:
-                throw new AWTError("Invalid transfer type for source raster");
-            }
+            srcPixel = src.getDataElements(x, y, (int[]) srcPixel);
             // Fetch destination pixel.
-            switch (dstTransferType)
-            {
-              case DataBuffer.TYPE_INT:
-                dstPixel = dstIn.getPixel(x, y, (int[]) dstPixel);
-                break;
-              case DataBuffer.TYPE_FLOAT:
-                dstPixel = dstIn.getPixel(x, y, (float[]) dstPixel);
-                break;
-              case DataBuffer.TYPE_DOUBLE:
-                dstPixel = dstIn.getPixel(x, y, (double[]) dstPixel);
-                break;
-              default:
-                throw new AWTError("Invalid transfer type for source raster");
-            }
-
+            dstPixel = dstIn.getDataElements(x, y, dstPixel);
             // Get normalized components. This is the only type that is
             // guaranteed to be supported by all ColorModels.
             srcComponents =
@@ -250,7 +222,7 @@ public class AlphaCompositeContext
             if (! srcColorModel.hasAlpha())
               srcComponents[srcComponentsLength - 1] = 1.0F;
             dstComponents =
-              dstColorModel.getNormalizedComponents(dstPixel, srcComponents, 0);
+              dstColorModel.getNormalizedComponents(dstPixel, dstComponents, 0);
             if (! dstColorModel.hasAlpha())
               dstComponents[dstComponentsLength - 1] = 1.0F;
 
@@ -259,17 +231,17 @@ public class AlphaCompositeContext
             srcComponents[srcComponentsLength - 1] *= compositeAlpha;
             if (srcColorModel.isAlphaPremultiplied())
               {
-                for (int i = srcComponentsLength - 2; i >= 0; i++)
+                for (int i = srcComponentsLength - 2; i >= 0; i--)
                   srcComponents[i] *= compositeAlpha;
               }
             else
               {
-                for (int i = srcComponentsLength - 2; i >= 0; i++)
+                for (int i = srcComponentsLength - 1; i >= 0; i--)
                   srcComponents[i] *= srcComponents[srcComponentsLength - 1];
               }
             if (! dstColorModel.isAlphaPremultiplied())
               {
-                for (int i = dstComponentsLength - 2; i >= 0; i++)
+                for (int i = dstComponentsLength - 2; i >= 0; i--)
                   dstComponents[i] *= dstComponents[dstComponents.length - 1];
               }
 
@@ -319,7 +291,7 @@ public class AlphaCompositeContext
             for (int i = 0; i < srcComponentsLength; i++)
               {
                 dstComponents[i] = srcComponents[i] * fs
-                                   + dstComponents[i] * fd; 
+                                   + dstComponents[i] * fd;
               }
 
             // Convert the result back when the destination is not
@@ -336,19 +308,7 @@ public class AlphaCompositeContext
             // Store the result in the destination raster.
             dstPixel = dstColorModel.getDataElements(dstComponents, 0,
                                                      dstPixel);
-            switch (dstTransferType)
-            {
-              case DataBuffer.TYPE_INT:
-                dstOut.setPixel(x, y, (int[] ) dstPixel);
-                break;
-              case DataBuffer.TYPE_FLOAT:
-                dstOut.setPixel(x, y, (float[] ) dstPixel);
-                break;
-              case DataBuffer.TYPE_DOUBLE:
-                dstOut.setPixel(x, y, (double[] ) dstPixel);
-                break;
-            }
-
+            dstOut.setDataElements(x, y, dstPixel);
           } // End X loop.
       } // End Y loop.
   }
