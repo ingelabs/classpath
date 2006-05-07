@@ -1,5 +1,9 @@
 2006-05-07  Roman Kennke <kennke@aicas.com>
 
+	* gnu/java/awt/java2d/RasterGraphics.java: New file.
+
+2006-05-07  Roman Kennke <kennke@aicas.com>
+
 	* gnu/java/awt/java2d/AbstractGraphics2D.java
 	(fillShape): Determine user space bounds of shape and feed them
 	into the actual rendering pipeline.
