@@ -1,5 +1,10 @@
 2006-05-07  Sven de Marothy <sven@physto.se>
 
+	Fixed PR27343
+	* java/util/Calendar.java (setTimeZone): Force recalculation.
+	
+2006-05-07  Sven de Marothy <sven@physto.se>
+
 	Fixed PR27463
 	* javax/swing/plaf/metal/MetalInternalFrameTitlePane.java
 	(propertyChange): Handle FRAME_ICON_PROPERTY property.
