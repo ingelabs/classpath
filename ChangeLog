@@ -1,3 +1,8 @@
+2006-05-07  Roman Kennke <kennke@aicas.com>
+
+	* java/awt/ColorPaintContext.java
+	(ColorPaintContext): Fixed filling of the raster.
+
 2006-05-07  Sven de Marothy <sven@physto.se>
 
 	Fixed PR27455
