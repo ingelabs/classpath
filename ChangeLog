@@ -1,3 +1,13 @@
+2006-05-07  Sven de Marothy <sven@physto.se>
+
+	Fixed PR27455
+	* gnu/java/awt/peer/GLightweightPeer.java (mouseEntered): Remove.
+	* java/awt/Component.java (processMouseEvent): 
+	Do lightweight cursor handling.
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java 
+	(endResizing,mouseMoved): Save and reset original cursor, not the 
+	default one.
+
 2006-05-07  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 27298
