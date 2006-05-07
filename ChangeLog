@@ -1,3 +1,12 @@
+2006-05-07  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* gnu/classpath/debug/Simple1LineFormatter.java (DAT_FORMAT): Removed.
+	(THREAD_FORMAT): Likewise.
+	(dateFormat): Added field.
+	(threadFormat): Added field.
+	(format): Initialize instance fields if null.
+	Use StringBuilder instead of StringBuffer.
+
 2006-05-07  Roman Kennke <kennke@aicas.com>
 
 	* gnu/java/awt/java2d/RasterGraphics.java: New file.
