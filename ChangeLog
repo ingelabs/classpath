@@ -1,5 +1,24 @@
 2006-05-07  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/keyring/PrimitiveEntry.java (PrimitiveEntry):
+	Use instance's field creationDate not the constructor's argument.
+	* gnu/javax/crypto/keyring/PasswordEncryptedEntry.java:
+	Removed unused imports.
+	Sorted imports.
+	(log): New field.
+	(decrypt): Added trace/debug/timing statements.
+	(encrypt): Likewise.
+	Use PRNG instead of instantiating every time a new SecureRandom.
+	* gnu/javax/crypto/keyring/PasswordAuthenticatedEntry.java:
+	Removed unused imports.
+	Sorted imports.
+	(log): New field.
+	(verify): Added trace/debug/timing statements.
+	(authenticate): Likewise.
+	Use PRNG instead of instantiating every time a new SecureRandom.
+
+2006-05-07  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/classpath/debug/Simple1LineFormatter.java (DAT_FORMAT): Removed.
 	(THREAD_FORMAT): Likewise.
 	(dateFormat): Added field.
