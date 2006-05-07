@@ -1,3 +1,9 @@
+2006-05-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	PR classpath/27435:
+	* java/util/zip/DeflaterEngine.java:
+	(deflateFast(boolean,boolean)): Empty buffer when full.
+	
 2006-05-07  Sven de Marothy <sven@physto.se>
 
 	Fixed PR27343
