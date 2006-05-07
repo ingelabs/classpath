@@ -1,5 +1,24 @@
 2006-05-07  Roman Kennke <kennke@aicas.com>
 
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(fillShape): Determine user space bounds of shape and feed them
+	into the actual rendering pipeline.
+	(rawSetPixel): Made non-abstract for now. Maybe remove later.
+	(rawSetForeground): Likewise.
+	(getDestinationColorModel): Removed.
+	(getDeviceBounds): Made non-abstract. Provide useful default impl.
+	(rawFillShape): Handle paint context.
+	(fillScanline): Implement painting and compositing.
+	(fillShapeAntialias): Handle paint context.
+	(fillScanlineAA): Implemented preliminary antialiasing based on
+	composite context. Not working yet.
+	(fillScanlineAlpha): Removed.
+	(init): Fetch destination raster.
+	(getDestinationRaster): New abstract method.
+	(updateRaster): New backend method.
+
+2006-05-07  Roman Kennke <kennke@aicas.com>
+
 	* gnu/java/awt/java2d/AlphaCompositeContext.java
 	(compose): Fixed loops, conditions and logic to make compositing
 	work correctly.

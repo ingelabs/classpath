@@ -42,12 +42,14 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.CompositeContext;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.PaintContext;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -73,6 +75,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.ImageObserver;
 import java.awt.image.Raster;
 import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
 import java.awt.image.renderable.RenderableImage;
 import java.text.AttributedCharacterIterator;
 import java.util.ArrayList;
@@ -146,6 +149,12 @@ public abstract class AbstractGraphics2D
    * A cached pixel array.
    */
   private int[] pixel;
+
+  /**
+   * The raster of the destination surface. This is where the painting is
+   * performed.
+   */
+  private WritableRaster destinationRaster;
 
   /**
    * Stores the alpha values for a scanline in the anti-aliasing shape
@@ -1154,6 +1163,8 @@ public abstract class AbstractGraphics2D
         antialias = (v == RenderingHints.VALUE_ANTIALIAS_ON);
       }
 
+    Rectangle2D userBounds = s.getBounds2D();
+
     // Flatten the path. TODO: Determine the best flattening factor
     // wrt to speed and quality.
     PathIterator path = s.getPathIterator(getTransform(), 1.0);
@@ -1210,9 +1221,9 @@ public abstract class AbstractGraphics2D
     if (segs.size() > 0)
       {
         if (antialias)
-          fillShapeAntialias(segs, minX, minY, maxX, maxY);
+          fillShapeAntialias(segs, minX, minY, maxX, maxY, userBounds);
         else
-          rawFillShape(segs, minX, minY, maxX, maxY);
+          rawFillShape(segs, minX, minY, maxX, maxY, userBounds);
       }
   }
 
@@ -1243,14 +1254,20 @@ public abstract class AbstractGraphics2D
    * @param x the x coordinate
    * @param y the y coordinate
    */
-  protected abstract void rawSetPixel(int x, int y);
+  protected void rawSetPixel(int x, int y)
+  {
+    // FIXME: Provide default implementation or remove method.
+  }
 
   /**
    * Sets the foreground color for drawing.
    *
    * @param c the color to set
    */
-  protected abstract void rawSetForeground(Color c);
+  protected void rawSetForeground(Color c)
+  {
+    // Probably remove method.
+  }
 
   protected void rawSetForeground(int r, int g, int b)
   {
@@ -1265,18 +1282,14 @@ public abstract class AbstractGraphics2D
   protected abstract ColorModel getColorModel();
 
   /**
-   * Returns the color model of the target device.
-   *
-   * @return the color model of the target device
-   */
-  protected abstract ColorModel getDestinationColorModel();
-
-  /**
    * Returns the bounds of the target.
    *
    * @return the bounds of the target
    */
-  protected abstract Rectangle getDeviceBounds();
+  protected Rectangle getDeviceBounds()
+  {
+    return destinationRaster.getBounds();
+  }
 
   /**
    * Returns the bounds of the drawing area in user space.
@@ -1391,7 +1404,7 @@ public abstract class AbstractGraphics2D
    * The polygon is already clipped when this method is called.
    */
   protected void rawFillShape(ArrayList segs, double minX, double minY,
-                              double maxX, double maxY)
+                              double maxX, double maxY, Rectangle2D userBounds)
   {
     // This is an implementation of a polygon scanline conversion algorithm
     // described here:
@@ -1399,6 +1412,13 @@ public abstract class AbstractGraphics2D
 
     // Create table of all edges.
     // The edge buckets, sorted and indexed by their Y values.
+
+    Rectangle deviceBounds = new Rectangle((int) minX, (int) minY,
+                                           (int) Math.ceil(maxX) - (int) minX,
+                                           (int) Math.ceil(maxY) - (int) minY);
+    PaintContext pCtx = paint.createContext(getColorModel(), deviceBounds,
+                                            userBounds, transform, renderingHints);
+
     ArrayList[] edgeTable = new ArrayList[(int) Math.ceil(maxY)
                                           - (int) Math.ceil(minY) + 1];
 
@@ -1492,7 +1512,7 @@ public abstract class AbstractGraphics2D
                   {
                     int x0 = (int) previous.xIntersection;
                     int x1 = (int) edge.xIntersection;
-                    fillScanline(x0, x1, y);
+                    fillScanline(pCtx, x0, x1, y);
                     previous = edge;
                     active = false;
                   }
@@ -1507,6 +1527,7 @@ public abstract class AbstractGraphics2D
               }
           }
       }
+    pCtx.dispose();
   }
 
   /**
@@ -1516,16 +1537,16 @@ public abstract class AbstractGraphics2D
    * @param x1 the right offset
    * @param y the scanline
    */
-  protected void fillScanline(int x0, int x1, int y)
+  protected void fillScanline(PaintContext pCtx, int x0, int x1, int y)
   {
-    if (paint instanceof Color && composite == AlphaComposite.SrcOver)
-      {
-        rawDrawLine(x0, y, x1, y);
-      }
-    else
-      {
-        throw new UnsupportedOperationException("Not yet implemented.");
-      }
+    Raster paintRaster = pCtx.getRaster(x0, y, x1 - x0, 1);
+    ColorModel paintColorModel = pCtx.getColorModel();
+    CompositeContext cCtx = composite.createContext(paintColorModel,
+                                                    getColorModel(),
+                                                    renderingHints);
+    cCtx.compose(paintRaster, destinationRaster, destinationRaster);
+    updateRaster(destinationRaster, x0, y, x1 - x0, 1);
+    cCtx.dispose();
   }
 
   /**
@@ -1538,14 +1559,22 @@ public abstract class AbstractGraphics2D
    * @param maxY the bounding box, lower Y
    */
   private void fillShapeAntialias(ArrayList segs, double minX, double minY,
-                                  double maxX, double maxY)
+                                  double maxX, double maxY,
+                                  Rectangle2D userBounds)
   {
     // This is an implementation of a polygon scanline conversion algorithm
     // described here:
     // http://www.cs.berkeley.edu/~ug/slide/pipeline/assignments/scan/
     // The antialiasing is implemented using a sampling technique, we do
     // not scan whole lines but fractions of the line.
-    
+
+    Rectangle deviceBounds = new Rectangle((int) minX, (int) minY,
+                                           (int) Math.ceil(maxX) - (int) minX,
+                                           (int) Math.ceil(maxY) - (int) minY);
+    PaintContext pCtx = paint.createContext(getColorModel(), deviceBounds,
+                                            userBounds, transform,
+                                            renderingHints);
+
     // This array will contain the oversampled transparency values for
     // each pixel in the scanline.
     int numScanlines = (int) Math.ceil(maxY) - (int) minY;
@@ -1701,10 +1730,12 @@ public abstract class AbstractGraphics2D
         firstSubline = 0;
         // Render full scanline.
         //System.err.println("scanline: " + y);
-        fillScanlineAA(alpha, (int) minX, (int) y, numScanlinePixels);
+        fillScanlineAA(alpha, (int) minX, (int) y, numScanlinePixels, pCtx);
       }
     if (paint instanceof Color && composite == AlphaComposite.SrcOver)
       rawSetForeground((Color) paint);
+
+    pCtx.dispose();
   }
 
   /**
@@ -1716,68 +1747,44 @@ public abstract class AbstractGraphics2D
    * @param x0 the beginning of the scanline
    * @param y the y coordinate of the line
    */
-  private void fillScanlineAA(int[] alpha, int x0, int y, int numScanlinePixels)
+  private void fillScanlineAA(int[] alpha, int x0, int y, int numScanlinePixels,
+                              PaintContext pCtx)
   {
-    int lastX = x0;
-    int lastAlpha = 0;
-    for (int i = 0; i < numScanlinePixels; i++)
+    // FIXME: This doesn't work. Fixit.
+    CompositeContext cCtx = composite.createContext(pCtx.getColorModel(),
+                                                    getColorModel(),
+                                                    renderingHints);
+    Raster paintRaster = pCtx.getRaster(x0, y, numScanlinePixels, 1);
+    System.err.println("paintColorModel: " + pCtx.getColorModel());
+    WritableRaster aaRaster = paintRaster.createCompatibleWritableRaster();
+    int numBands = paintRaster.getNumBands();
+    int[] pixels = new int[numScanlinePixels + paintRaster.getNumBands()];
+    pixels = paintRaster.getPixels(x0, y, numScanlinePixels, 1, pixels);
+    ColorModel cm = pCtx.getColorModel();
+    
+    double lastAlpha = 0.;
+    int lastAlphaInt = 0;
+    int[] components = new int[4];
+    
+    for (int i = 0; i < pixels.length; i++)
       {
-        if (alpha[i] == 0)
-          continue;
-        if (lastAlpha > 0)
+        if (alpha[i] != 0)
           {
-            //System.err.println("rawDrawScanline: " + lastX + ", " + (i+x0) + ", " + lastAlpha);
-            // TODO: Avoid double arithmetic. 
-            fillScanlineAlpha(lastX, i + x0, y, lastAlpha);
+            lastAlphaInt += alpha[i];
+            lastAlpha = lastAlphaInt / AA_SAMPLING;
           }
-        lastAlpha += alpha[i];
-        alpha[i] = 0;
-        lastX = i + x0;
+        components = cm.getComponents(pixel[i], components, 0);
+        components[0] = (int) (components[0] * lastAlpha);
+        pixel[i] = cm.getDataElement(components, 0);
       }
-    if (lastAlpha > 0)
-      // TODO: Avoid double arithmetic. 
-      fillScanlineAlpha(lastX, x0 + numScanlinePixels, y, lastAlpha);
+
+    aaRaster.setPixels(0, 0, numScanlinePixels, 1, pixels);
+    cCtx.compose(aaRaster, destinationRaster, destinationRaster);
+    updateRaster(destinationRaster, x0, y, numScanlinePixels, 1);
+
+    cCtx.dispose();
   }
 
-  /**
-   * Renders one scanline with alpha sampling for anti-aliased shape rendering.
-   *
-   * @param x0 the start offset
-   * @param x1 the end offset
-   * @param y the scanline
-   * @param sample the sample value, relative to AA_SAMPLING
-   */
-  private void fillScanlineAlpha(int x0, int x1, int y, int sample)
-  {
-    if (paint instanceof Color && composite == AlphaComposite.SrcOver)
-      {
-        // FIXME: We should composite over current pixels, not over the
-        // background color.
-        Color fg = (Color) paint;
-        if (sample < AA_SAMPLING)
-          {
-            Color bg = background;
-            int bgShare = (AA_SAMPLING - sample);
-            int red  = (fg.getRed() * sample + bg.getRed() * bgShare)
-                       / AA_SAMPLING;
-            int green = (fg.getGreen() * sample + bg.getGreen() * bgShare)
-                        / AA_SAMPLING;
-            int blue = (fg.getBlue() * sample + bg.getBlue() * bgShare)
-                       / AA_SAMPLING;
-            rawSetForeground(red, green, blue);
-            fillScanline(x0, x1 - 1, y);
-          }
-        else
-          {
-            rawSetForeground(fg);
-            fillScanline(x0, x1 - 1, y);
-          }
-      }
-    else
-      {
-        throw new UnsupportedOperationException("Not yet implemented");
-      }
-  }
 
   /**
    * Initializes this graphics object. This must be called by subclasses in
@@ -1792,9 +1799,38 @@ public abstract class AbstractGraphics2D
     // FIXME: Should not be necessary. A clip of null should mean
     // 'clip against device bounds.
     clip = getDeviceBounds();
+    destinationRaster = getDestinationRaster();
   }
 
-  //protected abstract Raster getDestinationRaster(int x, int y, int w, int h);
+  /**
+   * Returns a WritableRaster that is used by this class to perform the
+   * rendering in. It is not necessary that the target surface immediately
+   * reflects changes in the raster. Updates to the raster are notified via
+   * {@link #updateRaster}.
+   *
+   * @return the destination raster
+   */
+  protected abstract WritableRaster getDestinationRaster();
+
+  /**
+   * Notifies the backend that the raster has changed in the specified
+   * rectangular area. The raster that is provided in this method is always
+   * the same as the one returned in {@link #getDestinationRaster}.
+   * Backends that reflect changes to this raster directly don't need to do
+   * anything here.
+   *
+   * @param raster the updated raster, identical to the raster returned
+   *        by {@link #getDestinationRaster()}
+   * @param x the upper left corner of the updated region, X coordinate
+   * @param y the upper lef corner of the updated region, Y coordinate
+   * @param w the width of the updated region
+   * @param h the height of the updated region
+   */
+  protected void updateRaster(Raster raster, int x, int y, int w, int h)
+  {
+    // Nothing to do here. Backends that need to update their surface
+    // to reflect the change should override this method.
+  }
 
   // Some helper methods.
 
