@@ -1,3 +1,43 @@
+2006-05-08  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* configure.ac: Add support for building appletviewer.
+	* resource/gnu/classpath/tools/appletviewer/MessagesBundle.properties:
+	New file.
+	* resource/gnu/classpath/tools/appletviewer/MessagesBundle_de.properties:
+	New file.
+	* tools/appletviewer.c: New file. tools/appletviewer.sh.in: New
+	file.
+	* tools/gnu/classpath/tools/appletviewer/AppletClassLoader.java:
+	New file.
+	* tools/gnu/classpath/tools/appletviewer/AppletSecurityManager.java:
+	New file.
+	* tools/gnu/classpath/tools/appletviewer/AppletTag.java: New file.
+	* tools/gnu/classpath/tools/appletviewer/AppletWarning.java: New
+	file.
+	* tools/gnu/classpath/tools/appletviewer/CommonAppletContext.java:
+	New file.
+	* tools/gnu/classpath/tools/appletviewer/CommonAppletStub.java:
+	New file.
+	* tools/gnu/classpath/tools/appletviewer/ConsoleDialog.java: New
+	file.
+	* tools/gnu/classpath/tools/appletviewer/ErrorApplet.java: New
+	file.
+	* tools/gnu/classpath/tools/appletviewer/Main.java: New file.
+	* tools/gnu/classpath/tools/appletviewer/PluginAppletContext.java:
+	New file.
+	* tools/gnu/classpath/tools/appletviewer/PluginAppletViewer.java:
+	New file.
+	* tools/gnu/classpath/tools/appletviewer/PluginAppletWindow.java:
+	New file.
+	* tools/gnu/classpath/tools/appletviewer/StandaloneAppletContext.java:
+	New file.
+	* tools/gnu/classpath/tools/appletviewer/StandaloneAppletViewer.java:
+	New file.
+	* tools/gnu/classpath/tools/appletviewer/StandaloneAppletWindow.java:
+	New file.
+	* tools/gnu/classpath/tools/appletviewer/TagParser.java: New
+	file.
+
 2006-05-08  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/getopt/ClasspathToolParser.java: New file.

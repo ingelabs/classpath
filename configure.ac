@@ -674,6 +674,7 @@ scripts/classpath.spec
 lib/Makefile
 lib/gen-classlist.sh
 lib/copy-vmresources.sh
+tools/appletviewer
 tools/Makefile
 tools/jarsigner
 tools/keytool
@@ -681,6 +682,7 @@ examples/Makefile
 examples/Makefile.jawt])
 AC_CONFIG_COMMANDS([gen-classlist],[chmod 755 lib/gen-classlist.sh])
 AC_CONFIG_COMMANDS([copy-vmresources],[chmod 755 lib/copy-vmresources.sh])
+AC_CONFIG_COMMANDS([appletviewer],[chmod 755 tools/appletviewer])
 AC_CONFIG_COMMANDS([jarsigner],[chmod 755 tools/jarsigner])
 AC_CONFIG_COMMANDS([keytool],[chmod 755 tools/keytool])
 AC_OUTPUT
