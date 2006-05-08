@@ -1,3 +1,10 @@
+2006-05-08  Roman Kennke <kennke@aicas.com>
+
+	PR 27480
+	* javax/swing/ButtonGroup.java
+	(add): Check if new button is selected and if so, deselect other
+	buttons in the group.
+
 2006-05-08  Lillian Angel  <langel@redhat.com>
 
 	PR 27444
