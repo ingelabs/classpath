@@ -1,3 +1,21 @@
+2006-05-08  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/JComboBox.java
+	(AccessibleJComboBox.getAccessibleChildrenCount): Implemented.
+	(AccessibleJComboBox.getAccessibleChild): Implemented.
+	(AccessibleJComboBox.getAccessibleSelection()): Implemented.
+	(AccessibleJComboBox.getAccessibleSelection(int)): Implemented.
+	(AccessibleJComboBox.isAccessibleChildSelected): Implemented.
+	(AccessibleJComboBox.getAccessibleAction): Implemented.
+	(AccessibleJComboBox.getAccessibleActionDescription): Implemented.
+	(AccessibleJComboBox.getAccessibleActionCount): Implemented.
+	(AccessibleJComboBox.doAccessibleAction): Implemented.
+	(AccessibleJComboBox.getAccessibleSelectionCount): Implemented.
+	(AccessibleJComboBox.addAccessibleSelection): Implemented.
+	(AccessibleJComboBox.removeAccessibleSelection): Implemented.
+	(AccessibleJComboBox.clearAccessibleSelection): Implemented.
+	(AccessibleJComboBox.selectAllAccessibleSelection): Implemented.
+
 2006-05-08  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* configure.ac: Add support for building appletviewer.
