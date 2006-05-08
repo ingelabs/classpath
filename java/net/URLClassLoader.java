@@ -39,6 +39,7 @@ exception statement from your version. */
 
 package java.net;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
 import java.io.File;
@@ -46,6 +47,7 @@ import java.io.FileInputStream;
 import java.io.FilePermission;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.security.AccessControlContext;
 import java.security.AccessController;
 import java.security.CodeSource;
@@ -315,27 +317,50 @@ public class URLClassLoader extends SecureClassLoader
 	  
 	  jarfile =
 	    ((JarURLConnection) baseJarURL.openConnection()).getJarFile();
-	  
+          
 	  Manifest manifest;
 	  Attributes attributes;
 	  String classPathString;
 
+          this.classPath = new Vector();
+
+          // This goes through the cached jar files listed
+          // in the INDEX.LIST file. All the jars found are added
+          // to the classPath vector so they can be loaded.
+          String dir = "META-INF/INDEX.LIST";
+          jarfile.getEntry(dir);
+          BufferedReader br = new BufferedReader(new InputStreamReader(new URL(baseJarURL,
+                                                                               dir).openStream()));
+          String line = br.readLine();
+          while (line != null)
+            {
+              if (line.endsWith(".jar"))
+                {
+                  try
+                    {
+                      this.classPath.add(new URL(baseURL, line));
+                    }
+                  catch (java.net.MalformedURLException xx)
+                    {
+                      // Give up
+                    }
+                }
+              line = br.readLine();
+            }
+          
 	  if ((manifest = jarfile.getManifest()) != null
 	      && (attributes = manifest.getMainAttributes()) != null
 	      && ((classPathString 
 		   = attributes.getValue(Attributes.Name.CLASS_PATH)) 
 		  != null))
-	    {
-	      this.classPath = new Vector();
-	      
+	    {	      
 	      StringTokenizer st = new StringTokenizer(classPathString, " ");
 	      while (st.hasMoreElements ()) 
 		{  
 		  String e = st.nextToken ();
 		  try
 		    {
-		      URL url = new URL(baseURL, e);
-		      this.classPath.add(url);
+		      this.classPath.add(new URL(baseURL, e));
 		    } 
 		  catch (java.net.MalformedURLException xx)
 		    {

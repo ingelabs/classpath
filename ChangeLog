@@ -1,3 +1,10 @@
+2006-05-08  Lillian Angel  <langel@redhat.com>
+
+	PR 27444
+	* java/net/URLClassLoader.java
+	(JarURLLoader): Added code to go through 
+	META-INF/INDEX.LIST file to load all jars listed.
+
 2006-05-08  Roman Kennke <kennke@aicas.com>
 
 	PR 27461
