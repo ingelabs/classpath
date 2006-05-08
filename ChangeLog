@@ -1,5 +1,12 @@
 2006-05-08  Roman Kennke <kennke@aicas.com>
 
+	PR 27484
+	* javax/swing/DefaultDesktopManager.java
+	(closeFrame): Don't perform default close action on the frame
+	to prevent endless loop.
+
+2006-05-08  Roman Kennke <kennke@aicas.com>
+
 	PR 27485
 	* javax/swing/table/DefaultTableModel.java
 	(addExtraRows): New helper method.
