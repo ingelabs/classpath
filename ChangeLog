@@ -1,5 +1,16 @@
 2006-05-08  Roman Kennke <kennke@aicas.com>
 
+	PR 27485
+	* javax/swing/table/DefaultTableModel.java
+	(addExtraRows): New helper method.
+	(checkSize): New helper method.
+	(setRowCount): Use addExtraRows helper method.
+	(addColumn): Use addExtraRows helper method.
+	(getColumnName): Check and adjust size if necessary using
+	checkSize().
+
+2006-05-08  Roman Kennke <kennke@aicas.com>
+
 	PR 27486
 	* javax/swing/JTable.java
 	(setValueAt): Allow setting values even when table is editable.
