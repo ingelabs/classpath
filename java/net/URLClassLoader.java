@@ -328,27 +328,28 @@ public class URLClassLoader extends SecureClassLoader
           // in the INDEX.LIST file. All the jars found are added
           // to the classPath vector so they can be loaded.
           String dir = "META-INF/INDEX.LIST";
-          jarfile.getEntry(dir);
-          BufferedReader br = new BufferedReader(new InputStreamReader(new URL(baseJarURL,
-                                                                               dir).openStream()));
-          String line = br.readLine();
-          while (line != null)
+          if (jarfile.getEntry(dir) != null)
             {
-              if (line.endsWith(".jar"))
+              BufferedReader br = new BufferedReader(new InputStreamReader(new URL(baseJarURL,
+                                                                                   dir).openStream()));
+              String line = br.readLine();
+              while (line != null)
                 {
-                  try
+                  if (line.endsWith(".jar"))
                     {
-                      this.classPath.add(new URL(baseURL, line));
+                      try
+                        {
+                          this.classPath.add(new URL(baseURL, line));
+                        }
+                      catch (java.net.MalformedURLException xx)
+                        {
+                          // Give up
+                        }
                     }
-                  catch (java.net.MalformedURLException xx)
-                    {
-                      // Give up
-                    }
+                  line = br.readLine();
                 }
-              line = br.readLine();
             }
-          
-	  if ((manifest = jarfile.getManifest()) != null
+          else if ((manifest = jarfile.getManifest()) != null
 	      && (attributes = manifest.getMainAttributes()) != null
 	      && ((classPathString 
 		   = attributes.getValue(Attributes.Name.CLASS_PATH)) 
