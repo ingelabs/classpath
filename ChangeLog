@@ -1,3 +1,8 @@
+2006-05-08  Tom Tromey  <tromey@redhat.com>
+
+	* java/text/SimpleDateFormat.java (compileFormat): Added missing
+	space to error message.
+
 2006-05-08  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/AbstractButton.java: Fixed comment typos.
