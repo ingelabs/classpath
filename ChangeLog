@@ -1,5 +1,13 @@
 2006-05-08  Roman Kennke <kennke@aicas.com>
 
+	PR 27481
+	* javax/swing/JRootPane.java
+	(createContentPane): Set background of the content pane to null,
+	so that the content pane inherits its background from the
+	root pane.
+
+2006-05-08  Roman Kennke <kennke@aicas.com>
+
 	PR 27480
 	* javax/swing/ButtonGroup.java
 	(add): Check if new button is selected and if so, deselect other

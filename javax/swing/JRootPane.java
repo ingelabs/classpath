@@ -551,6 +551,7 @@ public class JRootPane extends JComponent implements Accessible
     JPanel p = new JPanel();
     p.setName(this.getName() + ".contentPane");
     p.setLayout(new BorderLayout());
+    p.setBackground(null);
     return p;
   }
 
