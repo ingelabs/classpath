@@ -1,5 +1,7 @@
 New in release 0.92
 
+* A 'jar' tool is now included.
+
 New in release 0.91 (UNRELEASED)
 
 * Experimental activation (java.rmi.activation) support, including RMI

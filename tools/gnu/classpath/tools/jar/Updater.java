@@ -40,10 +40,7 @@ package gnu.classpath.tools.jar;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -54,14 +51,7 @@ public class Updater
   {
     // Write all the new entries to a temporary file.
     File tmpFile = File.createTempFile("jarcopy", null);
-    ArrayList newEntries = writeCommandLineEntries(parameters, tmpFile);
-    HashSet set = new HashSet();
-    Iterator it = newEntries.iterator();
-    while (it.hasNext())
-      {
-        Entry entry = (Entry) it.next();
-        set.add(entry.name);
-      }
+    writeCommandLineEntries(parameters, tmpFile);
 
     // Now read the old file and copy extra entries to the new file.
     ZipFile zip = new ZipFile(parameters.archiveFile);
@@ -69,7 +59,7 @@ public class Updater
     while (e.hasMoreElements())
       {
         ZipEntry entry = (ZipEntry) e.nextElement();
-        if (set.contains(entry.getName()))
+        if (writtenItems.contains(entry.getName()))
           continue;
         writeFile(entry.isDirectory(), zip.getInputStream(entry),
                   zip.getName(), parameters.verbose);

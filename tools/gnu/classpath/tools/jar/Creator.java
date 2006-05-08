@@ -38,7 +38,10 @@
 
 package gnu.classpath.tools.jar;
 
+import gnu.classpath.SystemProperties;
+
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -47,6 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
@@ -56,6 +60,7 @@ public class Creator
     extends Action
 {
   ZipOutputStream outputStream;
+  HashSet writtenItems = new HashSet();
 
   private long copyFile(CRC32 crc, InputStream is, OutputStream output)
       throws IOException
@@ -76,8 +81,16 @@ public class Creator
   }
 
   protected void writeFile(boolean isDirectory, InputStream inputFile,
-                           String filename, boolean verbose) throws IOException
+                           String filename, boolean verbose)
+    throws IOException
   {
+    if (writtenItems.contains(filename))
+      {
+        if (verbose)
+          System.err.println("ignoring entry " + filename);
+        return;
+      }
+
     ByteArrayOutputStream out = new ByteArrayOutputStream();
     CRC32 crc = new CRC32();
     long size;
@@ -97,6 +110,7 @@ public class Creator
     outputStream.putNextEntry(entry);
     out.writeTo(outputStream);
     outputStream.closeEntry();
+    writtenItems.add(filename);
 
     if (verbose)
       {
@@ -106,7 +120,7 @@ public class Creator
           perc = 0;
         else
           perc = 100 - (100 * csize) / size;
-        System.out.println("adding: " + filename + " (in=" + size + ") (out="
+        System.err.println("adding: " + filename + " (in=" + size + ") (out="
                            + entry.getSize() + ") (stored " + perc + "%)");
       }
   }
@@ -140,7 +154,7 @@ public class Creator
         String[] files = entry.file.list();
         for (int i = 0; i < files.length; ++i)
           addEntries(result, new Entry(new File(entry.file, files[i]),
-                                       entry.name + '/' + files[i]));
+                                       entry.name + files[i]));
       }
     else
       result.add(entry);
@@ -158,27 +172,59 @@ public class Creator
     return allEntries;
   }
 
-  protected ArrayList writeCommandLineEntries(Main parameters, File zipFile)
+  private void writeCommandLineEntries(Main parameters, ZipOutputStream os)
       throws IOException
   {
-    outputStream = new ZipOutputStream(
-                                       new BufferedOutputStream(
-                                                                new FileOutputStream(
-                                                                                     zipFile)));
+    outputStream = os;
     outputStream.setMethod(parameters.storageMode);
+
+    writeManifest(parameters);
+
     ArrayList allEntries = getAllEntries(parameters);
-    Iterator it = parameters.entries.iterator();
+    Iterator it = allEntries.iterator();
     while (it.hasNext())
       {
         Entry entry = (Entry) it.next();
         writeFile(entry.file, entry.name, parameters.verbose);
       }
-    return allEntries;
+  }
+
+  protected void writeCommandLineEntries(Main parameters, File zipFile)
+    throws IOException
+  {
+      OutputStream os = new BufferedOutputStream(new FileOutputStream(zipFile));
+      writeCommandLineEntries(parameters, new ZipOutputStream(os));
+  }
+
+  protected void writeManifest(Main parameters) throws IOException
+  {
+    File manifestFile;
+    InputStream contents;
+    if (parameters.manifestFile != null)
+      {
+        // User specified a manifest file.
+        contents = new FileInputStream(parameters.manifestFile);
+      }
+    else if (! parameters.wantManifest)
+      {
+        // User didn't want a manifest.
+        return;
+      }
+    else
+      {
+        String desc = ("Manifest-Version: 1.0\n"
+                       + "Created-By: "
+                       + SystemProperties.getProperty("java.version")
+                       + " (GNU Classpath)\n\n");
+        contents = new ByteArrayInputStream(desc.getBytes("UTF-8"));
+      }
+    // Make the META-INF directory and the manifest file.
+    writeFile(true, null, "META-INF/", parameters.verbose);
+    writeFile(false, contents, "META-INF/MANIFEST.MF", parameters.verbose);
   }
 
   protected void close() throws IOException
   {
-    // FIXME: handle manifest options here.
     // FIXME: handle index file here ...?
     outputStream.finish();
     outputStream.close();
@@ -186,7 +232,10 @@ public class Creator
 
   public void run(Main parameters) throws IOException
   {
-    writeCommandLineEntries(parameters, parameters.archiveFile);
+    if (parameters.archiveFile == null || parameters.archiveFile.equals("-"))
+      writeCommandLineEntries(parameters, new ZipOutputStream(System.out));
+    else
+      writeCommandLineEntries(parameters, parameters.archiveFile);
     close();
   }
 }

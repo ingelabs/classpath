@@ -52,34 +52,34 @@ import java.util.zip.ZipOutputStream;
 
 public class Main
 {
-  // The mode of operation. This is the class representing
-  // the action; we make a new instance before using it. It
-  // must be a subclass of Action. 'null' means the mode
-  // has not yet been set.
+  /** The mode of operation. This is the class representing
+   * the action; we make a new instance before using it. It
+   * must be a subclass of Action. 'null' means the mode
+   * has not yet been set.  */
   Class operationMode;
 
-  // The archive file name.
+  /** The archive file name.  */
   File archiveFile;
 
-  // The zip storage mode.
+  /** The zip storage mode.  */
   int storageMode = ZipOutputStream.DEFLATED;
 
-  // True if we should read file names from stdin.
+  /** True if we should read file names from stdin.  */
   boolean readNamesFromStdin = false;
 
-  // True for verbose mode.
+  /** True for verbose mode.  */
   boolean verbose = false;
 
-  // True if we want a manifest file.
+  /** True if we want a manifest file.  */
   boolean wantManifest = true;
 
-  // Name of manifest file to use.
+  /** Name of manifest file to use.  */
   File manifestFile;
 
-  // A list of Entry objects, each describing a file to write.
+  /** A list of Entry objects, each describing a file to write.  */
   ArrayList entries = new ArrayList();
 
-  // Used only while parsing.
+  /** Used only while parsing, holds the first argument for -C.  */
   String changedDirectory;
 
   class HandleFile

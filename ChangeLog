@@ -1,3 +1,26 @@
+2006-05-08  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/jar/Updater.java (run): Updated.
+	* tools/gnu/classpath/tools/jar/Main.java: Use javadoc for fields.
+	* tools/gnu/classpath/tools/jar/Lister.java (listJar): Use
+	ZipInputStream.
+	(run): Updated.
+	* tools/gnu/classpath/tools/jar/Extractor.java (run): Use System.err
+	for verbose.
+	(run): Use ZipInputStream.
+	(initSet): New method.
+	(shouldExtract): Likewise.
+	(run): Use new methods.
+	* tools/gnu/classpath/tools/jar/Creator.java
+	(writeCommandLineEntries): New overload.
+	(writeFile): Use System.err for verbose.
+	(writeManifest): New method.
+	(writtenItems): New field.
+	(writeFile): Update it.
+	(writeCommandLineEntries): Return void.  Call writeManifest.
+	(addEntries): Don't add extra '/'.
+	* NEWS: Mention jar.
+
 2006-05-08  Lillian Angel  <langel@redhat.com>
 
 	* gnu/java/net/IndexListParser.java: New class.

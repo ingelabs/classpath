@@ -38,27 +38,28 @@
 
 package gnu.classpath.tools.jar;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 public class Lister
     extends Action
 {
-  private void listJar(File jarFile, boolean verbose) throws IOException
+  private void listJar(ZipInputStream zis, boolean verbose) throws IOException
   {
-    ZipFile zipFile = new ZipFile(jarFile);
-    Enumeration i = zipFile.entries();
     MessageFormat format = null;
     if (verbose)
       format = new MessageFormat(" {0,date,E M dd HH:mm:ss z yyyy} {1}");
-    while (i.hasMoreElements())
+    while (true)
       {
-        ZipEntry entry = (ZipEntry) i.nextElement();
+        ZipEntry entry = zis.getNextEntry();
+        if (entry == null)
+          break;
         if (verbose)
           {
             // No easy way to right-justify the size using
@@ -74,11 +75,16 @@ public class Lister
         else
           System.out.println(entry.getName());
       }
-    zipFile.close();
   }
 
   public void run(Main parameters) throws IOException
   {
-    listJar(parameters.archiveFile, parameters.verbose);
+    File file = parameters.archiveFile;
+    ZipInputStream zis;
+    if (file == null || "-".equals(file.getName()))
+      zis = new ZipInputStream(System.in);
+    else
+      zis = new ZipInputStream(new BufferedInputStream(new FileInputStream(file)));
+    listJar(zis, parameters.verbose);
   }
 }
