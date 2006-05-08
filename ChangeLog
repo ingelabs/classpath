@@ -1,5 +1,11 @@
 2006-05-08  Roman Kennke <kennke@aicas.com>
 
+	PR 27461
+	* javax/swing/ImageIcon.java
+	(ImageIcon(URL)): Set description to URL.toString().
+
+2006-05-08  Roman Kennke <kennke@aicas.com>
+
 	PR 27482
 	* javax/swing/JTable.java
 	(IconCellRenderer.getTableCellRendererComponent): Set icon to
