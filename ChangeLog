@@ -5,8 +5,8 @@
 	New file.
 	* resource/gnu/classpath/tools/appletviewer/MessagesBundle_de.properties:
 	New file.
-	* tools/appletviewer.c: New file. tools/appletviewer.sh.in: New
-	file.
+	* tools/appletviewer.c: New file.
+	* tools/appletviewer.in: New file.
 	* tools/gnu/classpath/tools/appletviewer/AppletClassLoader.java:
 	New file.
 	* tools/gnu/classpath/tools/appletviewer/AppletSecurityManager.java:
