@@ -1,3 +1,20 @@
+2006-05-08  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/getopt/ClasspathToolParser.java: New file.
+	* tools/gnu/classpath/tools/jar/Action.java: New file.
+	* tools/gnu/classpath/tools/jar/Creator.java: New file.
+	* tools/gnu/classpath/tools/jar/Entry.java: New file.
+	* tools/gnu/classpath/tools/jar/Extractor.java: New file.
+	* tools/gnu/classpath/tools/jar/Lister.java: New file.
+	* tools/gnu/classpath/tools/jar/Main.java: New file.
+	* tools/gnu/classpath/tools/jar/Updater.java: New file.
+	* tools/gnu/classpath/tools/getopt/Option.java: New file.
+	* tools/gnu/classpath/tools/getopt/OptionException.java: New file.
+	* tools/gnu/classpath/tools/getopt/OptionGroup.java: New file.
+	* tools/gnu/classpath/tools/getopt/Parser.java: New file.
+	* tools/gnu/classpath/tools/getopt/FileArgumentCallback.java: New
+	file.
+
 2006-05-08  Lillian Angel  <langel@redhat.com>
 
 	* java/net/URLClassLoader.java
