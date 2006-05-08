@@ -313,9 +313,6 @@ public abstract class AbstractGraphics2D
    */
   public void fill(Shape shape)
   {
-//    Shape clipped = clipShape(shape);
-//    if (clipped != null)
-//      fillShape(clipped, false);
     fillShape(shape, false);
   }
 
@@ -1164,66 +1161,19 @@ public abstract class AbstractGraphics2D
       }
 
     Rectangle2D userBounds = s.getBounds2D();
-
-    // Flatten the path. TODO: Determine the best flattening factor
-    // wrt to speed and quality.
-    PathIterator path = s.getPathIterator(getTransform(), 1.0);
-
-    // Build up polygons and let the native backend render this using
-    // rawFillShape() which would provide a default implementation for
-    // drawPixel using a PolyScan algorithm.
-    double[] seg = new double[6];
-
-    // TODO: Use ArrayList<PolyEdge> here when availble.
-    ArrayList segs = new ArrayList();
-    double segX = 0.; // The start point of the current edge.
-    double segY = 0.; 
-    double polyX = 0.; // The start point of the current polygon.
-    double polyY = 0.;
-
-    double minX = Integer.MAX_VALUE;
-    double maxX = Integer.MIN_VALUE;
-    double minY = Integer.MAX_VALUE;
-    double maxY = Integer.MIN_VALUE;
-
-    //System.err.println("fill polygon");
-    while (! path.isDone())
-      {
-        int segType = path.currentSegment(seg);
-        minX = Math.min(minX, seg[0]);
-        maxX = Math.max(maxX, seg[0]);
-        minY = Math.min(minY, seg[1]);
-        maxY = Math.max(maxY, seg[1]);
-
-        //System.err.println("segment: " + segType + ", " + seg[0] + ", " + seg[1]);
-        if (segType == PathIterator.SEG_MOVETO)
-          {
-            segX = seg[0];
-            segY = seg[1];
-            polyX = seg[0];
-            polyY = seg[1];
-          }
-        else if (segType == PathIterator.SEG_CLOSE)
-          {
-            // Close the polyline.
-            PolyEdge edge = new PolyEdge(segX, segY, polyX, polyY);
-            segs.add(edge);
-          }
-        else if (segType == PathIterator.SEG_LINETO)
-          {
-            PolyEdge edge = new PolyEdge(segX, segY, seg[0], seg[1]);
-            segs.add(edge);
-            segX = seg[0];
-            segY = seg[1];
-          }
-        path.next();
-      }
+    Rectangle2D deviceBounds = new Rectangle2D.Double();
+    ArrayList segs = getSegments(s, transform, deviceBounds, false);
+    Rectangle2D clipBounds = new Rectangle2D.Double();
+    ArrayList clipSegs = getSegments(clip, transform, clipBounds, true);
+    segs.addAll(clipSegs);
+    Rectangle2D inclClipBounds = new Rectangle2D.Double();
+    Rectangle2D.union(clipBounds, deviceBounds, inclClipBounds);
     if (segs.size() > 0)
       {
         if (antialias)
-          fillShapeAntialias(segs, minX, minY, maxX, maxY, userBounds);
+          fillShapeAntialias(segs, deviceBounds, userBounds);
         else
-          rawFillShape(segs, minX, minY, maxX, maxY, userBounds);
+          rawFillShape(segs, deviceBounds, userBounds, inclClipBounds);
       }
   }
 
@@ -1291,19 +1241,6 @@ public abstract class AbstractGraphics2D
     return destinationRaster.getBounds();
   }
 
-  /**
-   * Returns the bounds of the drawing area in user space.
-   *
-   * @return the bounds of the drawing area in user space
-   */
-  protected Rectangle2D getUserBounds()
-  {
-    PathIterator pathIter = getDeviceBounds().getPathIterator(getTransform());
-    GeneralPath path = new GeneralPath();
-    path.append(pathIter, true);
-    return path.getBounds();
-
-  }
   /**
    * Draws a line in optimization mode. The implementation should respect the
    * clip but can assume that it is a rectangle.
@@ -1403,8 +1340,9 @@ public abstract class AbstractGraphics2D
    *
    * The polygon is already clipped when this method is called.
    */
-  protected void rawFillShape(ArrayList segs, double minX, double minY,
-                              double maxX, double maxY, Rectangle2D userBounds)
+  protected void rawFillShape(ArrayList segs, Rectangle2D deviceBounds2D,
+                              Rectangle2D userBounds,
+                              Rectangle2D inclClipBounds)
   {
     // This is an implementation of a polygon scanline conversion algorithm
     // described here:
@@ -1413,19 +1351,25 @@ public abstract class AbstractGraphics2D
     // Create table of all edges.
     // The edge buckets, sorted and indexed by their Y values.
 
+    double minX = deviceBounds2D.getMinX();
+    double minY = deviceBounds2D.getMinY();
+    double maxX = deviceBounds2D.getMaxX();
+    double maxY = deviceBounds2D.getMaxY();
+    double icMinY = inclClipBounds.getMinY();
+    double icMaxY = inclClipBounds.getMaxY();
     Rectangle deviceBounds = new Rectangle((int) minX, (int) minY,
                                            (int) Math.ceil(maxX) - (int) minX,
                                            (int) Math.ceil(maxY) - (int) minY);
     PaintContext pCtx = paint.createContext(getColorModel(), deviceBounds,
                                             userBounds, transform, renderingHints);
 
-    ArrayList[] edgeTable = new ArrayList[(int) Math.ceil(maxY)
-                                          - (int) Math.ceil(minY) + 1];
+    ArrayList[] edgeTable = new ArrayList[(int) Math.ceil(icMaxY)
+                                          - (int) Math.ceil(icMinY) + 1];
 
     for (Iterator i = segs.iterator(); i.hasNext();)
       {
         PolyEdge edge = (PolyEdge) i.next();
-        int yindex = (int) ((int) Math.ceil(edge.y0) - (int) Math.ceil(minY));
+        int yindex = (int) ((int) Math.ceil(edge.y0) - (int) Math.ceil(icMinY));
         if (edgeTable[yindex] == null) // Create bucket when needed.
           edgeTable[yindex] = new ArrayList();
         edgeTable[yindex].add(edge); // Add edge to the bucket of its line.
@@ -1445,7 +1389,7 @@ public abstract class AbstractGraphics2D
     PolyEdgeComparator comparator = new PolyEdgeComparator();
 
     // Scan all relevant lines.
-    int minYInt = (int) Math.ceil(minY);
+    int minYInt = (int) Math.ceil(icMinY);
     for (int y = minYInt; y <= maxY; y++)
       {
         ArrayList bucket = edgeTable[y - minYInt];
@@ -1496,34 +1440,32 @@ public abstract class AbstractGraphics2D
         // Now draw all pixels inside the polygon.
         // This is the last edge that intersected the scanline.
         PolyEdge previous = null; // Gets initialized below.
-        boolean active = false;
+        boolean insideShape = false;
+        boolean insideClip = false;
         //System.err.println("scanline: " + y);
         for (Iterator i = activeEdges.iterator(); i.hasNext();)
           {
             PolyEdge edge = (PolyEdge) i.next();
-            // Only fill scanline, if the current edge actually intersects
-            // the scanline. There may be edges that lie completely
-            // within the current scanline.
-            //System.err.println("previous: " + previous);
-            //System.err.println("edge: " + edge);
-            if (active)
+            if (edge.y1 <= y)
+              continue;
+
+            // Draw scanline when we are inside the shape AND inside the
+            // clip.
+            if (insideClip && insideShape)
               {
-                if (edge.y1 > y)
-                  {
-                    int x0 = (int) previous.xIntersection;
-                    int x1 = (int) edge.xIntersection;
-                    fillScanline(pCtx, x0, x1, y);
-                    previous = edge;
-                    active = false;
-                  }
+                int x0 = (int) previous.xIntersection;
+                int x1 = (int) edge.xIntersection;
+                if (x0 < x1)
+                  fillScanline(pCtx, x0, x1, y);
               }
-            else
+            // Update state.
+            if (edge.y1 > y)
               {
-                if (edge.y1 > y)
-                  {
-                    previous = edge;
-                    active = true;
-                  }
+                previous = edge;
+                if (edge.isClip)
+                  insideClip = ! insideClip;
+                else
+                  insideShape = ! insideShape;
               }
           }
       }
@@ -1553,13 +1495,8 @@ public abstract class AbstractGraphics2D
    * Fills arbitrary shapes in an anti-aliased fashion.
    *
    * @param segs the line segments which define the shape which is to be filled
-   * @param minX the bounding box, left X
-   * @param minY the bounding box, upper Y
-   * @param maxX the bounding box, right X
-   * @param maxY the bounding box, lower Y
    */
-  private void fillShapeAntialias(ArrayList segs, double minX, double minY,
-                                  double maxX, double maxY,
+  private void fillShapeAntialias(ArrayList segs, Rectangle2D deviceBounds2D,
                                   Rectangle2D userBounds)
   {
     // This is an implementation of a polygon scanline conversion algorithm
@@ -1567,6 +1504,11 @@ public abstract class AbstractGraphics2D
     // http://www.cs.berkeley.edu/~ug/slide/pipeline/assignments/scan/
     // The antialiasing is implemented using a sampling technique, we do
     // not scan whole lines but fractions of the line.
+
+    double minX = deviceBounds2D.getMinX();
+    double minY = deviceBounds2D.getMinY();
+    double maxX = deviceBounds2D.getMaxX();
+    double maxY = deviceBounds2D.getMaxY();
 
     Rectangle deviceBounds = new Rectangle((int) minX, (int) minY,
                                            (int) Math.ceil(maxX) - (int) minX,
@@ -1912,40 +1854,74 @@ public abstract class AbstractGraphics2D
   }
 
   /**
-   * Clips the specified shape using the current clip. If the resulting shape
-   * is empty, this will return <code>null</code>.
+   * Converts the specified shape into a list of segments.
    *
-   * @param s the shape to clip
+   * @param s the shape to convert
+   * @param t the transformation to apply before converting
+   * @param deviceBounds an output parameter; holds the bounding rectangle of
+   *        s in device space after return
+   * @param isClip true when the shape is a clip, false for normal shapes;
+   *        this influences the settings in the created PolyEdge instances.
    *
-   * @return the clipped shape or <code>null</code> if the result is empty
+   * @return a list of PolyEdge that form the shape in device space
    */
-  private Shape clipShape(Shape s)
+  private ArrayList getSegments(Shape s, AffineTransform t,
+                                Rectangle2D deviceBounds, boolean isClip)
   {
-    Shape clipped = null;
+    // Flatten the path. TODO: Determine the best flattening factor
+    // wrt to speed and quality.
+    PathIterator path = s.getPathIterator(getTransform(), 1.0);
 
-    // Clip the shape if necessary.
-    if (clip != null)
+    // Build up polygons and let the native backend render this using
+    // rawFillShape() which would provide a default implementation for
+    // drawPixel using a PolyScan algorithm.
+    double[] seg = new double[6];
+
+    // TODO: Use ArrayList<PolyEdge> here when availble.
+    ArrayList segs = new ArrayList();
+    double segX = 0.; // The start point of the current edge.
+    double segY = 0.; 
+    double polyX = 0.; // The start point of the current polygon.
+    double polyY = 0.;
+
+    double minX = Integer.MAX_VALUE;
+    double maxX = Integer.MIN_VALUE;
+    double minY = Integer.MAX_VALUE;
+    double maxY = Integer.MIN_VALUE;
+
+    //System.err.println("fill polygon");
+    while (! path.isDone())
       {
-        Area a;
-        if (! (s instanceof Area))
-          a = new Area(s);
-        else
-          a = (Area) s;
+        int segType = path.currentSegment(seg);
+        minX = Math.min(minX, seg[0]);
+        maxX = Math.max(maxX, seg[0]);
+        minY = Math.min(minY, seg[1]);
+        maxY = Math.max(maxY, seg[1]);
 
-        Area clipArea;
-        if (! (clip instanceof Area))
-          clipArea = new Area(clip);
-        else
-          clipArea = (Area) clip;
-
-        a.intersect(clipArea);
-        if (! a.isEmpty())
-          clipped = a;
+        //System.err.println("segment: " + segType + ", " + seg[0] + ", " + seg[1]);
+        if (segType == PathIterator.SEG_MOVETO)
+          {
+            segX = seg[0];
+            segY = seg[1];
+            polyX = seg[0];
+            polyY = seg[1];
+          }
+        else if (segType == PathIterator.SEG_CLOSE)
+          {
+            // Close the polyline.
+            PolyEdge edge = new PolyEdge(segX, segY, polyX, polyY, isClip);
+            segs.add(edge);
+          }
+        else if (segType == PathIterator.SEG_LINETO)
+          {
+            PolyEdge edge = new PolyEdge(segX, segY, seg[0], seg[1], isClip);
+            segs.add(edge);
+            segX = seg[0];
+            segY = seg[1];
+          }
+        path.next();
       }
-    else
-      {
-        clipped = s;
-      }
-    return clipped;
+    deviceBounds.setRect(minX, minY, maxX - minX, maxY - minY);
+    return segs;
   }
 }

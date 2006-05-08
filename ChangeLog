@@ -1,5 +1,23 @@
 2006-05-08  Roman Kennke <kennke@aicas.com>
 
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(fill): Removed commented out code.
+	(fillShape): Also determine the outline of the clip and feed
+	it into the rendering method. Use new helper method for
+	converting the shapes into lists of segments.
+	(getUserBounds): Removed obsolete method.
+	(rawFillShape): Respect the clip when rendering shapes.
+	(fillShapeAntialias): Adjusted signature for new clipped rendering.
+	However, the implementation can't clip still.
+	(getSegments): New helper method for converting a shape into
+	a list of segments.
+	(clipShape): Removed obsolete method.
+	* gnu/java/awt/java2d/PolyEdge.java
+	(isClip): New field.
+	(PolyEdge): Added isField argument to constructor.
+
+2006-05-08  Roman Kennke <kennke@aicas.com>
+
 	PR 27481
 	* javax/swing/JRootPane.java
 	(createContentPane): Set background of the content pane to null,
