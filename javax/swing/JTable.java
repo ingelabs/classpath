@@ -1246,8 +1246,12 @@ public class JTable
         {
           Icon iconValue = (Icon) value;
           setIcon(iconValue);
-          setText("");
         }
+      else
+        {
+          setIcon(null);
+        }
+      setText("");
       return this;
     }
   }

@@ -1,5 +1,12 @@
 2006-05-08  Roman Kennke <kennke@aicas.com>
 
+	PR 27482
+	* javax/swing/JTable.java
+	(IconCellRenderer.getTableCellRendererComponent): Set icon to
+	null when cell value is null.
+
+2006-05-08  Roman Kennke <kennke@aicas.com>
+
 	PR 27484
 	* javax/swing/DefaultDesktopManager.java
 	(closeFrame): Don't perform default close action on the frame
