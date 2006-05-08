@@ -1,3 +1,9 @@
+2006-05-08  Roman Kennke <kennke@aicas.com>
+
+	PR 27486
+	* javax/swing/JTable.java
+	(setValueAt): Allow setting values even when table is editable.
+
 2006-05-08  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/SimpleDateFormat.java (compileFormat): Added missing

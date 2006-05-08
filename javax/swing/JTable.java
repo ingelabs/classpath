@@ -1893,8 +1893,13 @@ public class JTable
     
     int x0 = 0;
     
-    int idx0 = event.getFirstIndex();
-    int idxn = event.getLastIndex();
+    // We must limit the indices to the bounds of the JTable's model, because
+    // we might get values of -1 or greater then columnCount in the case
+    // when columns get removed.
+    int idx0 = Math.max(0, Math.min(getColumnCount() - 1,
+                                    event.getFirstIndex()));
+    int idxn = Math.max(0, Math.min(getColumnCount() - 1,
+                                    event.getLastIndex()));
     int i;
 
     for (i = 0; i < idx0; i++)
@@ -3586,8 +3591,7 @@ public class JTable
   }
   
   /**
-   * Set value for the cell at the given position. If the cell is not 
-   * editable, this method returns without action. The modified cell is
+   * Set value for the cell at the given position. The modified cell is
    * repainted.
    * 
    * @param value the value to set
@@ -3596,8 +3600,6 @@ public class JTable
    */
   public void setValueAt(Object value, int row, int column)
   {
-    if (!isCellEditable(row, column))
-      return;
     dataModel.setValueAt(value, row, convertColumnIndexToModel(column));
     
     repaint(getCellRect(row, column, true));
