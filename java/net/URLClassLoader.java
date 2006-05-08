@@ -39,7 +39,8 @@ exception statement from your version. */
 
 package java.net;
 
-import java.io.BufferedReader;
+import gnu.java.net.IndexListParser;
+
 import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
 import java.io.File;
@@ -47,7 +48,6 @@ import java.io.FileInputStream;
 import java.io.FilePermission;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.security.AccessControlContext;
 import java.security.AccessController;
 import java.security.CodeSource;
@@ -55,6 +55,7 @@ import java.security.PermissionCollection;
 import java.security.PrivilegedAction;
 import java.security.SecureClassLoader;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -323,32 +324,10 @@ public class URLClassLoader extends SecureClassLoader
 	  String classPathString;
 
           this.classPath = new Vector();
-
-          // This goes through the cached jar files listed
-          // in the INDEX.LIST file. All the jars found are added
-          // to the classPath vector so they can be loaded.
-          String dir = "META-INF/INDEX.LIST";
-          if (jarfile.getEntry(dir) != null)
-            {
-              BufferedReader br = new BufferedReader(new InputStreamReader(new URL(baseJarURL,
-                                                                                   dir).openStream()));
-              String line = br.readLine();
-              while (line != null)
-                {
-                  if (line.endsWith(".jar"))
-                    {
-                      try
-                        {
-                          this.classPath.add(new URL(baseURL, line));
-                        }
-                      catch (java.net.MalformedURLException xx)
-                        {
-                          // Give up
-                        }
-                    }
-                  line = br.readLine();
-                }
-            }
+          
+          ArrayList indexListHeaders = new IndexListParser(jarfile, baseJarURL, baseURL).getHeaders();
+          if (indexListHeaders.size() > 0)
+            this.classPath.addAll(indexListHeaders);
           else if ((manifest = jarfile.getManifest()) != null
 	      && (attributes = manifest.getMainAttributes()) != null
 	      && ((classPathString 
