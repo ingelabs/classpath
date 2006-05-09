@@ -125,108 +125,108 @@ class Main
   public static void main(String[] args) throws IOException
   {
     parser = new ClasspathToolParser("appletviewer", true);
-    parser.setHeader("usage: appletviewer [OPTION] --code=FILE | URL...");
-    
+    parser.setHeader("usage: appletviewer [OPTION] -code CODE | URL...");
+
     OptionGroup attributeGroup = new OptionGroup("Applet tag options");
 
     attributeGroup.add(new Option("code", Main.messages.getString
                                   ("gcjwebplugin.code_description"),
-                                   "<code attribute>")
-                           {
-                             public void parsed(String argument) throws OptionException
-                             {
-                               code = argument;
-                             }
-                           });
+                                  "CODE")
+      {
+        public void parsed(String argument) throws OptionException
+        {
+          code = argument;
+        }
+      });
     attributeGroup.add(new Option("codebase", Main.messages.getString
-                          ("gcjwebplugin.codebase_description"),
-                          "<codebase attribute>")
-                          {
-                            public void parsed(String argument) throws OptionException
-                            {
-                              codebase = argument;
-                            }
-                          });
+                                  ("gcjwebplugin.codebase_description"),
+                                  "CODEBASE")
+      {
+        public void parsed(String argument) throws OptionException
+        {
+          codebase = argument;
+        }
+      });
     attributeGroup.add(new Option("archive", Main.messages.getString
-                          ("gcjwebplugin.archive_description"),
-                          "<archive attribute>")
-                          {
-                            public void parsed(String argument) throws OptionException
-                            {
-                              archive = argument;
-                            }
-                          });
+                                  ("gcjwebplugin.archive_description"),
+                                  "ARCHIVE")
+      {
+        public void parsed(String argument) throws OptionException
+        {
+          archive = argument;
+        }
+      });
     attributeGroup.add(new Option("width", Main.messages.getString
-                          ("gcjwebplugin.width_description"),
-                          "<width attribute>")
-                          {
-                            public void parsed(String argument) throws OptionException
-                            {
-                              dimensions.width = Integer.parseInt(argument);
-                            }
-                          });
+                                  ("gcjwebplugin.width_description"),
+                                  "WIDTH")
+      {
+        public void parsed(String argument) throws OptionException
+        {
+          dimensions.width = Integer.parseInt(argument);
+        }
+      });
     attributeGroup.add(new Option("height", Main.messages.getString
-                          ("gcjwebplugin.height_description"),
-                          "<height attribute>")
-                          {
-                            public void parsed(String argument) throws OptionException
-                            {
-                              dimensions.height = Integer.parseInt(argument);
-                            }
-                          });
+                                  ("gcjwebplugin.height_description"),
+                                  "HEIGHT")
+      {
+        public void parsed(String argument) throws OptionException
+        {
+          dimensions.height = Integer.parseInt(argument);
+        }
+      });
     attributeGroup.add(new Option("param", Main.messages.getString
-                                   ("gcjwebplugin.param_description"),
-                                   "<name>,<value>")
-                                   {
-                                     public void parsed(String argument) throws OptionException
-                                     {
-                                       parameters.add(argument);
-                                     }
-                                   });
+                                  ("gcjwebplugin.param_description"),
+                                  "NAME,VALUE")
+      {
+        public void parsed(String argument) throws OptionException
+        {
+          parameters.add(argument);
+        }
+      });
     OptionGroup pluginGroup = new OptionGroup("Plugin option");
     pluginGroup.add(new Option("plugin", Main.messages.getString
-                                ("gcjwebplugin.plugin_description"),
-                                 "<input pipe>,<output pipe>")
-                                {
-                                  public void parsed(String argument) throws OptionException
-                                  {
-                                    pluginMode = true;
-                                    int comma = argument.indexOf(',');
-                                    pipeInName = argument.substring(0, comma);
-                                    pipeOutName = argument.substring(comma + 1);
-                                  }
-                                });
+                               ("gcjwebplugin.plugin_description"),
+                               "INPUT,OUTPUT")
+      {
+        public void parsed(String argument) throws OptionException
+        {
+          pluginMode = true;
+          int comma = argument.indexOf(',');
+          pipeInName = argument.substring(0, comma);
+          pipeOutName = argument.substring(comma + 1);
+        }
+      });
     OptionGroup debuggingGroup = new OptionGroup("Debugging option");
-    debuggingGroup.add(new Option ("verbose", Main.messages.getString
-                                   ("gcjwebplugin.verbose_description"),
-                                   null)
-                                   {
-                                     public void parsed(String argument) throws OptionException
-                                     {
-                                       verbose = true;
-                                     }
-                                   });
+    debuggingGroup.add(new Option("verbose", Main.messages.getString
+                                  ("gcjwebplugin.verbose_description"),
+                                  null)
+      {
+        public void parsed(String argument) throws OptionException
+        {
+          verbose = true;
+        }
+      });
     OptionGroup compatibilityGroup = new OptionGroup("Compatibility options");
     compatibilityGroup.add(new Option("debug", Main.messages.getString
                                       ("gcjwebplugin.debug_description"),
                                       null)
-                                   {
-                                     public void parsed(String argument) throws OptionException
-                                     {
-                                       // Currently ignored.
-                                     }
-                                   });
+      {
+        public void parsed(String argument) throws OptionException
+        {
+          // Currently ignored.
+        }
+      });
     compatibilityGroup.add(new Option("encoding", Main.messages.getString
                                       ("gcjwebplugin.encoding_description"),
-                                      "<character set>")
-                                   {
-                                     public void parsed(String argument) throws OptionException
-                                     {
-                                       // FIXME: We should probably be using
-                                       // java.nio.charset.CharsetDecoder to handle the encoding.  What
-                                       // is the status of Classpath's implementation?
-                                     }
-                                   });
+                                      "CHARSET")
+      {
+        public void parsed(String argument) throws OptionException
+        {
+          // FIXME: We should probably be using
+          // java.nio.charset.CharsetDecoder to handle the encoding.  What
+          // is the status of Classpath's implementation?
+        }
+      });
     parser.add(attributeGroup);
     parser.add(pluginGroup);
     parser.add(debuggingGroup);

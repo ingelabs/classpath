@@ -1,3 +1,10 @@
+2006-05-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* resource/gnu/classpath/tools/appletviewer/MessagesBundle.properties:
+	Clarify option descriptions.
+	* tools/gnu/classpath/tools/appletviewer/Main.java: Use all
+	uppercase for metasyntactic variables.
+
 2006-05-09  Robert Schuster  <robertschuster@fsfe.org>
 
 	Fixed PR24216.
