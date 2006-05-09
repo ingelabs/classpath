@@ -1,5 +1,10 @@
 2006-05-09  Tom Tromey  <tromey@redhat.com>
 
+	* tools/gnu/classpath/tools/getopt/Parser.java (printHelp): Skip
+	empty groups.
+
+2006-05-09  Tom Tromey  <tromey@redhat.com>
+
 	* tools/gnu/classpath/tools/getopt/OptionGroup.java (printHelp): 
 	Special case for '-J'.  Use space instead of '='.
 	* tools/gnu/classpath/tools/getopt/Parser.java (setHeader): Added

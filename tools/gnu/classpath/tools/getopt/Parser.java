@@ -189,8 +189,13 @@ public class Parser
     while (it.hasNext())
       {
         OptionGroup group = (OptionGroup) it.next();
-        group.printHelp(out, longOnly);
-        out.println();
+        // An option group might be empty, in which case we don't
+        // want to print it..
+        if (! group.options.isEmpty())
+          {
+            group.printHelp(out, longOnly);
+            out.println();
+          }
       }
 
     if (footerText != null)
