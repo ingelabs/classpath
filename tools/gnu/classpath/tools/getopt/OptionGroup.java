@@ -147,9 +147,16 @@ public class OptionGroup
               {
                 if (argName != null)
                   {
-                    out.print(' ');
+                    // This is a silly hack just for '-J'.  We don't
+                    // support joined options in general, but this option
+                    // is filtered out before argument processing can see it.
+                    if (option.getShortName() != 'J')
+                      {
+                        out.print(' ');
+                        ++column;
+                      }
                     out.print(argName);
-                    column += 1 + argName.length();
+                    column += argName.length();
                   }
                 out.print("  ");
               }
@@ -168,7 +175,7 @@ public class OptionGroup
             column += (longOnly ? 1 : 2) + option.getLongName().length();
             if (argName != null)
               {
-                out.print("=" + argName);
+                out.print(" " + argName);
                 column += 1 + argName.length();
               }
           }

@@ -120,6 +120,7 @@ public class Parser
       {
         // -J should be handled by the appletviewer wrapper binary.
         // We add it here so that it shows up in the --help output.
+        // Note that there is a special case for this in OptionGroup.
       }
     });
     add(finalGroup);

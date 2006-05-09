@@ -1,3 +1,10 @@
+2006-05-09  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/getopt/OptionGroup.java (printHelp): 
+	Special case for '-J'.  Use space instead of '='.
+	* tools/gnu/classpath/tools/getopt/Parser.java (setHeader): Added
+	comment.
+
 2006-05-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* configure.ac: Add --disable-plugin and --with-vm options.  Check
