@@ -39,7 +39,11 @@ exception statement from your version. */
 package gnu.java.awt.java2d;
 
 import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
+import java.awt.image.ImageObserver;
+import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
 /**
@@ -65,8 +69,10 @@ public class RasterGraphics
 
   public RasterGraphics(WritableRaster r, ColorModel cm)
   {
+    super();
     raster = r;
     colorModel = cm;
+    init();
   }
 
   /**
@@ -98,4 +104,21 @@ public class RasterGraphics
     return null;
   }
 
+  public boolean drawImage(Image image, int x, int y, ImageObserver observer)
+  {
+    // TODO: Hack to make ImageTest working and evaluate image rendering.
+    // Remove as soon as this is fully supported in AbstractGraphics2D.
+    if (image instanceof BufferedImage)
+      {
+        BufferedImage bImage = (BufferedImage) image;
+        Raster src = bImage.getRaster();
+        int srcX = src.getMinX();
+        int srcY = src.getMinY();
+        int w = src.getWidth();
+        int h = src.getHeight();
+        Object data = src.getDataElements(srcX, srcY, w, h, null);
+        raster.setDataElements(x, y, w, h, data);
+      }
+    return true;
+  }
 }

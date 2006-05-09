@@ -1,3 +1,10 @@
+2006-05-09  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/RasterGraphics.java
+	(RasterGraphics): Call init() and super().
+	(drawImage): Temporary drawImage impl until AbstractGraphics2D has
+	this.
+
 2006-05-09  Gary Benson  <gbenson@redhat.com>
 
 	* java/lang/Thread.java (Thread): Always perform threadgroup
