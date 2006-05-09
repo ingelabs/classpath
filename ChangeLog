@@ -1,3 +1,9 @@
+2006-05-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 27517
+	* tools/gnu/classpath/tools/giop/grmic/GiopRmicCompiler.java (compile): 
+	Do not demand all thrown exceptions to be an instance of RemoteException.
+
 2006-05-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* resource/gnu/classpath/tools/appletviewer/MessagesBundle.properties:

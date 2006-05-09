@@ -193,12 +193,12 @@ public class GiopRmicCompiler
                     remEx = true;
                     break;
                   }
-                if (! remEx && !force)
-                  throw new CompilationError(m[i].getName() + ", defined in "
-                                             + c.getName()
-                                             + ", does not throw "
-                                             + RemoteException.class.getName());
-              }
+	      }
+	    if (! remEx && !force)
+	      throw new CompilationError(m[i].getName() + ", defined in "
+					 + c.getName()
+					 + ", does not throw "
+					 + RemoteException.class.getName());
             AbstractMethodGenerator mm = createMethodGenerator(m[i]);
             methods.add(mm);
           }
