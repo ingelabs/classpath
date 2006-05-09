@@ -1,3 +1,10 @@
+2006-05-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* resource/gnu/classpath/tools/appletviewer/MessagesBundle.properties:
+	Use hash-style comments.
+	* resource/gnu/classpath/tools/appletviewer/MessagesBundle_de.properties:
+	Likewise.
+
 2006-05-09  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JLabel.java
