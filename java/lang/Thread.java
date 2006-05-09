@@ -347,8 +347,8 @@ public class Thread implements Runnable
 	if (group == null)
 	    group = current.group;
       }
-    else if (sm != null)
-	sm.checkAccess(group);
+    if (sm != null)
+      sm.checkAccess(group);
 
     this.group = group;
     // Use toString hack to detect null.
