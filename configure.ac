@@ -195,12 +195,24 @@ AC_ARG_ENABLE([qt-peer],
               [COMPILE_QT_PEER=no])
 AM_CONDITIONAL(CREATE_QT_PEER_LIBRARIES, test "x${COMPILE_QT_PEER}" = xyes)
 
+dnl -----------------------------------------------------------
+dnl Plugin (enabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([plugin],
+              [AS_HELP_STRING(--disable-plugin,compile gcjwebplugin (disabled by --disable-plugin) [default=yes])],
+              [case "${enableval}" in
+                yes) COMPILE_PLUGIN=yes ;;
+                no) COMPILE_PLUGIN=no ;;
+                *) COMPILE_PLUGIN=yes ;;
+              esac],
+              [COMPILE_PLUGIN=yes])
+AM_CONDITIONAL(CREATE_PLUGIN, test "x${COMPILE_PLUGIN}" = xyes)
 
 dnl -----------------------------------------------------------
 dnl Sets the native libraries installation dir
 dnl -----------------------------------------------------------
 AC_ARG_WITH([native-libdir],
-	    [AS_HELP_STRING(--with-native-libdir,sets the installation directore for native libraries [default='${libdir}/${PACKAGE}'])],
+	    [AS_HELP_STRING(--with-native-libdir,sets the installation directory for native libraries [default='${libdir}/${PACKAGE}'])],
 	    [
 	     nativeexeclibdir=${withval}
 	    ],
@@ -223,6 +235,20 @@ AC_ARG_WITH([glibj-dir],
 	    ])
 
 AC_SUBST(glibjdir)
+
+dnl -----------------------------------------------------------
+dnl Sets the VM name for use in tool wrapper scripts
+dnl -----------------------------------------------------------
+AC_ARG_WITH([vm],
+	    [AS_HELP_STRING(--with-vm,sets the VM binary name [default='${prefix}/bin/jamvm'])],
+	    [
+	     VM_BINARY=${withval}
+	    ],
+	    [
+	     VM_BINARY='${prefix}/bin/jamvm'
+	    ])
+
+AC_SUBST(VM_BINARY)
 
 dnl -----------------------------------------------------------
 dnl Regenerate headers at build time (disabled by default)
@@ -440,6 +466,19 @@ if test "x${COMPILE_JNI}" = xyes; then
     AC_MSG_NOTICE([Set QT_CFLAGS... $QT_CFLAGS])
     AC_SUBST(QT_CFLAGS)
     AC_SUBST(QT_LIBS)
+  fi
+
+  dnl Check for plugin support headers and libraries.
+  if test "x${COMPILE_PLUGIN}" = xyes; then
+    PKG_CHECK_MODULES(MOZILLA, mozilla-plugin)
+    PKG_CHECK_MODULES(GLIB, glib-2.0)
+
+    AC_SUBST(MOZILLA_CFLAGS)
+    AC_SUBST(MOZILLA_LIBS)
+    AC_SUBST(GLIB_CFLAGS)
+    AC_SUBST(GLIB_LIBS)
+
+    AC_SUBST(PLUGIN_DIR, $HOME/.mozilla/plugins/)
   fi
 fi
 
@@ -665,6 +704,7 @@ native/jni/qt-peer/Makefile
 native/jni/xmlj/Makefile
 native/jni/midi-alsa/Makefile
 native/jni/midi-dssi/Makefile
+native/plugin/Makefile
 native/target/Makefile
 native/target/Linux/Makefile
 native/target/generic/Makefile

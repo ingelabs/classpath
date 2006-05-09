@@ -1,3 +1,15 @@
+2006-05-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* configure.ac: Add --disable-plugin and --with-vm options.  Check
+	for plugin support headers and libraries.
+	* native/Makefile.am: Recurse into plugin directory.
+	* native/plugin/.cvsignore: New file.
+	* native/plugin/Makefile.am: New file.
+	* native/plugin/gcjwebplugin.cc: New file.
+	* tools/Makefile.am: Install appletviewer wrapper script.
+	* tools/appletviewer.in: Replace VM location heuristic with
+	VM_BINARY configure substitution.
+
 2006-05-09  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/getopt/OptionGroup.java (printHelp): Added

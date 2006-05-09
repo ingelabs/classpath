@@ -21,8 +21,8 @@ endif
 endif
 endif
 
-bin_SCRIPTS = jarsigner keytool
-EXTRA_DIST = jarsigner.in keytool.in
+bin_SCRIPTS = appletviewer jarsigner keytool
+EXTRA_DIST = appletviewer.in appletviewer.c jarsigner.in keytool.in
 
 # All our example java source files
 TOOLS_JAVA_FILES = $(srcdir)/gnu/classpath/tools/*.java $(srcdir)/gnu/classpath/tools/*/*.java $(srcdir)/gnu/classpath/tools/*/*/*.java
@@ -81,6 +81,7 @@ dist-hook:
 $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 	mkdir -p classes/gnu/classpath/tools/giop/grmic/templates
 	mkdir -p classes/gnu/classpath/tools/rmi/rmic/templates
+	mkdir -p classes/gnu/classpath/tools/appletviewer
 	mkdir -p classes/gnu/classpath/tools/jarsigner
 	mkdir -p classes/gnu/classpath/tools/keytool
 	cp $(RMIC_TEMPLATES) classes/gnu/classpath/tools/rmi/rmic/templates
