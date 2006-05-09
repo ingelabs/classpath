@@ -1,3 +1,8 @@
+2006-05-09  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/dom/DomNode.java: Permit comments and PIs in doctype nodes to
+	  be preserved during cloneNode.
+
 2006-05-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 27517
