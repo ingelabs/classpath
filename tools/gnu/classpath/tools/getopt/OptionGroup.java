@@ -84,12 +84,26 @@ public class OptionGroup
    * 
    * @param out the stream to which to print
    */
-  public void printHelp(PrintStream out)
+  public void printHelp(PrintStream out, boolean longOnly)
   {
     // Compute maximum lengths.
     int maxArgLen = 0;
-    int maxShortLen = 0;
-    Iterator it = options.iterator();
+    boolean shortOptionSeen = false;
+    Iterator it;
+
+    // The first pass only looks to see if we have a short option.
+    it = options.iterator();
+    while (it.hasNext())
+      {
+        Option option = (Option) it.next();
+        if (option.getShortName() != '\0')
+          {
+            shortOptionSeen = true;
+            break;
+          }
+      }
+
+    it = options.iterator();
     while (it.hasNext())
       {
         Option option = (Option) it.next();
@@ -100,21 +114,16 @@ public class OptionGroup
         // a short option if there is also a long name for
         // the option.
         int thisArgLen = 2;
-        if (option.getShortName() != '\0')
-          {
-            // The name of the option plus some padding.
-            thisArgLen += 4;
-          }
-        maxShortLen = Math.max(thisArgLen, maxShortLen);
+        if (shortOptionSeen)
+          thisArgLen += 4;
         if (option.getLongName() != null)
           {
-            // FIXME: different if parsing in 'long option only'
-            // mode.
-            thisArgLen += 2 + option.getLongName().length();
+            // Handle either '-' or '--'.
+            thisArgLen += 1 + option.getLongName().length();
+            if (! longOnly)
+              ++thisArgLen;
           }
-        // We only need to add the argument name in once,
-        // and we don't let it contribute to the width of
-        // the short name.
+        // Add in the width of the argument name.
         if (argName != null)
           thisArgLen += 1 + argName.length();
         maxArgLen = Math.max(maxArgLen, thisArgLen);
@@ -148,13 +157,15 @@ public class OptionGroup
               out.print(", ");
             column += 2;
           }
-        for (; column < maxShortLen; ++column)
+        // Indent the long option past the short options, if one
+        // was seen.
+        for (; column < (shortOptionSeen ? 6 : 2); ++column)
           out.print(' ');
         if (option.getLongName() != null)
           {
-            out.print("--");
+            out.print(longOnly ? "-" : "--");
             out.print(option.getLongName());
-            column += 2 + option.getLongName().length();
+            column += (longOnly ? 1 : 2) + option.getLongName().length();
             if (argName != null)
               {
                 out.print("=" + argName);

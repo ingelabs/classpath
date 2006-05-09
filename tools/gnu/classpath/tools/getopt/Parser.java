@@ -95,7 +95,10 @@ public class Parser
   {
     this.programName = programName;
     this.longOnly = longOnly;
-    defaultGroup.add(new Option("help", "print this help, then exit")
+
+    // Put standard options in their own section near the end.
+    OptionGroup finalGroup = new OptionGroup("Standard options");
+    finalGroup.add(new Option("help", "print this help, then exit")
     {
       public void parsed(String argument) throws OptionException
       {
@@ -103,7 +106,7 @@ public class Parser
         System.exit(0);
       }
     });
-    defaultGroup.add(new Option("version", "print version number, then exit")
+    finalGroup.add(new Option("version", "print version number, then exit")
     {
       public void parsed(String argument) throws OptionException
       {
@@ -111,6 +114,16 @@ public class Parser
         System.exit(0);
       }
     });
+    finalGroup.add(new Option('J', "pass argument to the Java runtime", "OPTION")
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        // -J should be handled by the appletviewer wrapper binary.
+        // We add it here so that it shows up in the --help output.
+      }
+    });
+    add(finalGroup);
+
     add(defaultGroup);
   }
 
@@ -155,7 +168,12 @@ public class Parser
   public synchronized void add(OptionGroup group)
   {
     options.addAll(group.options);
-    optionGroups.add(group);
+    // This ensures that the final group always appears at the end
+    // of the options.
+    if (optionGroups.isEmpty())
+      optionGroups.add(group);
+    else
+      optionGroups.add(optionGroups.size() - 1, group);
   }
 
   void printHelp(PrintStream out)
@@ -170,7 +188,7 @@ public class Parser
     while (it.hasNext())
       {
         OptionGroup group = (OptionGroup) it.next();
-        group.printHelp(out);
+        group.printHelp(out, longOnly);
         out.println();
       }
 

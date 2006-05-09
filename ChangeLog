@@ -1,3 +1,14 @@
+2006-05-09  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/getopt/OptionGroup.java (printHelp): Added
+	an initial pass to look for short options.  Added 'longOnly' option.
+	* tools/gnu/classpath/tools/appletviewer/Main.java (main): Removed -J
+	option.
+	* tools/gnu/classpath/tools/getopt/Parser.java (parsed): Put stadnard
+	options into final group.  Added -J.
+	(add): Insert new groups before final group.
+	(printHelp): Updated.
+
 2006-05-09  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 27518

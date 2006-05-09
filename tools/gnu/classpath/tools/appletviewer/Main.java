@@ -227,16 +227,6 @@ class Main
                                        // is the status of Classpath's implementation?
                                      }
                                    });
-    compatibilityGroup.add(new Option('J', Main.messages.getString
-                                      ("gcjwebplugin.j_description"),
-                                      "<virtual machine option>")
-                                   {
-                                     public void parsed(String argument) throws OptionException
-                                     {
-                                       // -J should be handled by the appletviewer wrapper binary.
-                                       // We add it here so that it shows up in the --help output.
-                                     }
-                                   });
     parser.add(attributeGroup);
     parser.add(pluginGroup);
     parser.add(debuggingGroup);
