@@ -1,5 +1,5 @@
 /* JLabel.java --
-   Copyright (C) 2002, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2005, 2006,  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -297,7 +297,6 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
     }
   }
 
-  /** DOCUMENT ME! */
   private static final long serialVersionUID = 5496508283662221534L;
 
   static final String LABEL_PROPERTY = "labeledBy";
@@ -452,14 +451,42 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
   }
 
   /**
-   * This method is used primarily for debugging purposes and returns a string
-   * that can be used to represent this label.
+   * Returns a string describing the attributes for the <code>JLabel</code>
+   * component, for use in debugging.  The return value is guaranteed to be 
+   * non-<code>null</code>, but the format of the string may vary between
+   * implementations.
    *
-   * @return A string to represent this label.
+   * @return A string describing the attributes of the <code>JLabel</code>.
    */
   protected String paramString()
   {
-    return super.paramString();
+    StringBuffer sb = new StringBuffer(super.paramString());
+    sb.append(",defaultIcon=");
+    if (icon != null)
+      sb.append(icon);
+    sb.append(",disabledIcon=");
+    if (disabledIcon != null)
+      sb.append(disabledIcon);
+    sb.append(",horizontalAlignment=");
+    sb.append(SwingUtilities.convertHorizontalAlignmentCodeToString(
+        horizontalAlignment));
+    sb.append(",horizontalTextPosition=");
+    sb.append(SwingUtilities.convertHorizontalAlignmentCodeToString(
+        horizontalTextPosition));
+    sb.append(",iconTextGap=").append(iconTextGap);
+    sb.append(",labelFor=");
+    if (labelFor != null)
+      sb.append(labelFor);
+    sb.append(",text=");
+    if (text != null)
+      sb.append(text);
+    sb.append(",verticalAlignment=");
+    sb.append(SwingUtilities.convertVerticalAlignmentCodeToString(
+        verticalAlignment));
+    sb.append(",verticalTextPosition=");
+    sb.append(SwingUtilities.convertVerticalAlignmentCodeToString(
+        verticalTextPosition));
+    return sb.toString();
   }
 
   /**
@@ -902,9 +929,10 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
   }
 
   /**
-   * DOCUMENT ME!
+   * Returns the object that provides accessibility features for this
+   * <code>JLabel</code> component.
    *
-   * @return The accessible context.
+   * @return The accessible context (an instance of {@link AccessibleJLabel}).
    */
   public AccessibleContext getAccessibleContext()
   {

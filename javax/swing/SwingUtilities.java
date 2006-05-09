@@ -1446,4 +1446,106 @@ public class SwingUtilities
     KeyboardManager km = KeyboardManager.getManager();
     return km.processKeyStroke(c, s, ev);
   }
+  
+  /**
+   * Returns a string representing one of the horizontal alignment codes
+   * defined in the {@link SwingConstants} interface.  The following table
+   * lists the constants and return values:
+   * <p>
+   * <table border="0">
+   * <tr>
+   *   <th>Code:</th><th>Returned String:</th>
+   * </tr>
+   * <tr>
+   *   <td>{@link SwingConstants#CENTER}</td>
+   *   <td><code>"CENTER"</code></td>
+   * </tr>
+   * <tr>
+   *   <td>{@link SwingConstants#LEFT}</td>
+   *   <td><code>"LEFT"</code></td>
+   * </tr>
+   * <tr>
+   *   <td>{@link SwingConstants#RIGHT}</td>
+   *   <td><code>"RIGHT"</code></td>
+   * </tr>
+   * <tr>
+   *   <td>{@link SwingConstants#LEADING}</td>
+   *   <td><code>"LEADING"</code></td>
+   * </tr>
+   * <tr>
+   *   <td>{@link SwingConstants#TRAILING}</td>
+   *   <td><code>"TRAILING"</code></td>
+   * </tr>
+   * </table>
+   * </p>
+   * If the supplied code is not one of those listed, this methods will throw
+   * an {@link IllegalArgumentException}.
+   * 
+   * @param code  the code.
+   * 
+   * @return A string representing the given code.
+   */
+  static String convertHorizontalAlignmentCodeToString(int code)
+  {
+    switch (code) 
+    {
+      case SwingConstants.CENTER: 
+        return "CENTER";
+      case SwingConstants.LEFT:
+        return "LEFT";
+      case SwingConstants.RIGHT:
+        return "RIGHT";
+      case SwingConstants.LEADING:
+        return "LEADING";
+      case SwingConstants.TRAILING:
+        return "TRAILING";
+      default:
+        throw new IllegalArgumentException("Unrecognised code: " + code);
+    }
+  }
+  
+  /**
+   * Returns a string representing one of the vertical alignment codes
+   * defined in the {@link SwingConstants} interface.  The following table
+   * lists the constants and return values:
+   * <p>
+   * <table border="0">
+   * <tr>
+   *   <th>Code:</th><th>Returned String:</th>
+   * </tr>
+   * <tr>
+   *   <td>{@link SwingConstants#CENTER}</td>
+   *   <td><code>"CENTER"</code></td>
+   * </tr>
+   * <tr>
+   *   <td>{@link SwingConstants#TOP}</td>
+   *   <td><code>"TOP"</code></td>
+   * </tr>
+   * <tr>
+   *   <td>{@link SwingConstants#BOTTOM}</td>
+   *   <td><code>"BOTTOM"</code></td>
+   * </tr>
+   * </table>
+   * </p>
+   * If the supplied code is not one of those listed, this methods will throw
+   * an {@link IllegalArgumentException}.
+   * 
+   * @param code  the code.
+   * 
+   * @return A string representing the given code.
+   */
+  static String convertVerticalAlignmentCodeToString(int code)
+  {
+    switch (code)
+    {
+      case SwingConstants.CENTER:
+        return "CENTER";
+      case SwingConstants.TOP:
+        return "TOP";
+      case SwingConstants.BOTTOM:
+        return "BOTTOM";
+      default:
+        throw new IllegalArgumentException("Unrecognised code: " + code);
+    }
+  }
 }
