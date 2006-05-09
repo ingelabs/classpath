@@ -1,5 +1,9 @@
 2006-05-09  Tom Tromey  <tromey@redhat.com>
 
+	* tools/.cvsignore: Added appletviewer.
+
+2006-05-09  Tom Tromey  <tromey@redhat.com>
+
 	* tools/gnu/classpath/tools/getopt/Parser.java (printHelp): Skip
 	empty groups.
 
