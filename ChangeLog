@@ -1,3 +1,10 @@
+2006-05-10  Roman Kennke <kennke@aicas.com>
+
+	PR 27481
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(installDefaults): Set background of content pane to null, if
+	no custom color has been installed by the application yet.
+
 2006-05-10  Sven de Marothy <sven@physto.se>
 
 	* java/awt/print/PrinterJob.java:

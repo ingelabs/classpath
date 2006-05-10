@@ -1205,6 +1205,15 @@ public class BasicInternalFrameUI extends InternalFrameUI
       frame.setLayout(internalFrameLayout);
       LookAndFeel.installBorder(frame, "InternalFrame.border");
       frame.setFrameIcon(UIManager.getIcon("InternalFrame.icon"));
+
+      // Let the content pane inherit the background color from its
+      // frame by setting the background to null.
+      Component contentPane = frame.getContentPane();
+      if (contentPane != null
+          && contentPane.getBackground() instanceof UIResource)
+        {
+          contentPane.setBackground(null);
+        }
   }
 
   /**
