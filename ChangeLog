@@ -1,3 +1,9 @@
+2006-05-10  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalRadioButtonUI.java
+	(installDefaults): Use getPropertyPrefix() to allow subclasses to 
+	modify the lookup key.
+
 2006-05-10  Lillian Angel  <langel@redhat.com>
 
 	* java/util/SimpleTimeZone.java: Reverted patch.
