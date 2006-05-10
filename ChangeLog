@@ -1,5 +1,10 @@
 2006-05-10  Roman Kennke <kennke@aicas.com>
 
+	* java/awt/ColorPaintContext.java
+	(getRaster): Create Raster with (0,0) as source location.
+
+2006-05-10  Roman Kennke <kennke@aicas.com>
+
 	* gnu/java/awt/java2d/AlphaCompositeContext.java
 	(compose): Don't premultiply alpha to alpha itself.
 
