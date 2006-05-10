@@ -224,28 +224,206 @@ public abstract class AbstractGraphics2D
     fillShape(strokedShape, false);
   }
 
+
+  /**
+   * Draws the specified image and apply the transform for image space ->
+   * user space conversion.
+   *
+   * This method is implemented to special case RenderableImages and
+   * RenderedImages and delegate to
+   * {@link #drawRenderableImage(RenderableImage, AffineTransform)} and
+   * {@link #drawRenderedImage(RenderedImage, AffineTransform)} accordingly.
+   * Other image types are not yet handled.
+   *
+   * @param image the image to be rendered
+   * @param xform the transform from image space to user space
+   * @param obs the image observer to be notified
+   */
   public boolean drawImage(Image image, AffineTransform xform, ImageObserver obs)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    boolean ret = false;
+    Rectangle areaOfInterest = new Rectangle(0, 0, image.getWidth(obs),
+                                             image.getHeight(obs));
+    return drawImageImpl(image, xform, obs, areaOfInterest);
   }
 
+  /**
+   * Draws the specified image and apply the transform for image space ->
+   * user space conversion. This method only draw the part of the image
+   * specified by <code>areaOfInterest</code>.
+   *
+   * This method is implemented to special case RenderableImages and
+   * RenderedImages and delegate to
+   * {@link #drawRenderableImage(RenderableImage, AffineTransform)} and
+   * {@link #drawRenderedImage(RenderedImage, AffineTransform)} accordingly.
+   * Other image types are not yet handled.
+   *
+   * @param image the image to be rendered
+   * @param xform the transform from image space to user space
+   * @param obs the image observer to be notified
+   * @param areaOfInterest the area in image space that is rendered
+   */
+  private boolean drawImageImpl(Image image, AffineTransform xform,
+                             ImageObserver obs, Rectangle areaOfInterest)
+  {
+    boolean ret;
+    if (image == null)
+      {
+        ret = true;
+      }
+    else if (image instanceof RenderedImage)
+      {
+        // FIXME: Handle the ImageObserver.
+        drawRenderedImageImpl((RenderedImage) image, xform, areaOfInterest);
+        ret = true;
+      }
+    else if (image instanceof RenderableImage)
+      {
+        // FIXME: Handle the ImageObserver.
+        drawRenderableImageImpl((RenderableImage) image, xform, areaOfInterest);
+        ret = true;
+      }
+    else
+      {
+        // FIXME: Implement rendering of other Image types.
+        ret = false;
+      }
+    return ret;
+  }
+
+  /**
+   * Renders a BufferedImage and applies the specified BufferedImageOp before
+   * to filter the BufferedImage somehow. The resulting BufferedImage is then
+   * passed on to {@link #drawRenderedImage(RenderedImage, AffineTransform)}
+   * to perform the final rendering.
+   *
+   * @param image the source buffered image
+   * @param op the filter to apply to the buffered image before rendering
+   * @param x the x coordinate to render the image to 
+   * @param y the y coordinate to render the image to 
+   */
   public void drawImage(BufferedImage image, BufferedImageOp op, int x, int y)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    BufferedImage filtered =
+      op.createCompatibleDestImage(image, image.getColorModel());
+    AffineTransform t = new AffineTransform();
+    t.translate(x, y);
+    drawRenderedImage(filtered, t);
   }
 
+  /**
+   * Renders the specified image to the destination raster. The specified
+   * transform is used to convert the image into user space. The transform
+   * of this AbstractGraphics2D object is used to transform from user space
+   * to device space.
+   * 
+   * The rendering is performed using the scanline algorithm that performs the
+   * rendering of other shapes and a custom Paint implementation, that supplies
+   * the pixel values of the rendered image.
+   *
+   * @param image the image to render to the destination raster
+   * @param xform the transform from image space to user space
+   */
   public void drawRenderedImage(RenderedImage image, AffineTransform xform)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    Rectangle areaOfInterest = new Rectangle(image.getMinX(),
+                                             image.getHeight(),
+                                             image.getWidth(),
+                                             image.getHeight());
+    drawRenderedImageImpl(image, xform, areaOfInterest);
   }
 
+  /**
+   * Renders the specified image to the destination raster. The specified
+   * transform is used to convert the image into user space. The transform
+   * of this AbstractGraphics2D object is used to transform from user space
+   * to device space. Only the area specified by <code>areaOfInterest</code>
+   * is finally rendered to the target.
+   * 
+   * The rendering is performed using the scanline algorithm that performs the
+   * rendering of other shapes and a custom Paint implementation, that supplies
+   * the pixel values of the rendered image.
+   *
+   * @param image the image to render to the destination raster
+   * @param xform the transform from image space to user space
+   */
+  private void drawRenderedImageImpl(RenderedImage image,
+                                     AffineTransform xform,
+                                     Rectangle areaOfInterest)
+  {
+    // First we compute the transformation. This is made up of 3 parts:
+    // 1. The areaOfInterest -> image space transform.
+    // 2. The image space -> user space transform.
+    // 3. The user space -> device space transform.
+    AffineTransform t = new AffineTransform();
+    t.translate(- areaOfInterest.x - image.getMinX(),
+                - areaOfInterest.y - image.getMinY());
+    t.concatenate(xform);
+    t.concatenate(transform);
+    AffineTransform it = null;
+    try
+      {
+        it = t.createInverse();
+      }
+    catch (NoninvertibleTransformException ex)
+      {
+        // Ignore -- we return if the transform is not invertible.
+      }
+    if (it != null)
+      {
+        // Transform the area of interest into user space.
+        GeneralPath aoi = new GeneralPath(areaOfInterest);
+        aoi.transform(xform);
+        // Render the shape using the standard renderer, but with a temporary
+        // ImagePaint.
+        ImagePaint p = new ImagePaint(image, it);
+        Paint savedPaint = paint;
+        try
+          {
+            paint = p;
+            fillShape(aoi, false);
+          }
+        finally
+          {
+            paint = savedPaint;
+          }
+      }
+  }
+
+  /**
+   * Renders a renderable image. This produces a RenderedImage, which is
+   * then passed to {@link #drawRenderedImage(RenderedImage, AffineTransform)}
+   * to perform the final rendering.
+   *
+   * @param image the renderable image to be rendered
+   * @param xform the transform from image space to user space
+   */
   public void drawRenderableImage(RenderableImage image, AffineTransform xform)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    Rectangle areaOfInterest = new Rectangle((int) image.getMinX(),
+                                             (int) image.getHeight(),
+                                             (int) image.getWidth(),
+                                             (int) image.getHeight());
+    drawRenderableImageImpl(image, xform, areaOfInterest);
+                                                       
+  }
+
+  /**
+   * Renders a renderable image. This produces a RenderedImage, which is
+   * then passed to {@link #drawRenderedImage(RenderedImage, AffineTransform)}
+   * to perform the final rendering. Only the area of the image specified
+   * by <code>areaOfInterest</code> is rendered.
+   *
+   * @param image the renderable image to be rendered
+   * @param xform the transform from image space to user space
+   */
+  private void drawRenderableImageImpl(RenderableImage image,
+                                       AffineTransform xform,
+                                       Rectangle areaOfInterest)
+  {
+    // TODO: Maybe make more clever usage of a RenderContext here.
+    RenderedImage rendered = image.createDefaultRendering();
+    drawRenderedImageImpl(rendered, xform, areaOfInterest);
   }
 
   /**
@@ -534,7 +712,7 @@ public abstract class AbstractGraphics2D
     if (clip != null)
       {
         AffineTransform clipTransform = new AffineTransform();
-        clipTransform.scale(-scaleX, -scaleY);
+        clipTransform.scale(1 / scaleX, 1 / scaleY);
         updateClip(clipTransform);
       }
     updateOptimization();
@@ -1084,47 +1262,146 @@ public abstract class AbstractGraphics2D
     fill(new Polygon(xPoints, yPoints, npoints));
   }
 
+  /**
+   * Draws the specified image at the specified location. This forwards
+   * to {@link #drawImage(Image, AffineTransform, ImageObserver)}.
+   *
+   * @param image the image to render
+   * @param x the x location to render to
+   * @param y the y location to render to
+   * @param observer the image observer to receive notification
+   */
   public boolean drawImage(Image image, int x, int y, ImageObserver observer)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    AffineTransform t = new AffineTransform();
+    t.translate(x, y);
+    return drawImage(image, t, observer);
   }
 
+  /**
+   * Draws the specified image at the specified location. The image
+   * is scaled to the specified width and height. This forwards
+   * to {@link #drawImage(Image, AffineTransform, ImageObserver)}.
+   *
+   * @param image the image to render
+   * @param x the x location to render to
+   * @param y the y location to render to
+   * @param width the target width of the image
+   * @param height the target height of the image
+   * @param observer the image observer to receive notification
+   */
   public boolean drawImage(Image image, int x, int y, int width, int height,
                            ImageObserver observer)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    AffineTransform t = new AffineTransform();
+    t.translate(x, y);
+    double scaleX = (double) image.getWidth(observer) / (double) width;
+    double scaleY = (double) image.getHeight(observer) / (double) height;
+    t.scale(scaleX, scaleY);
+    return drawImage(image, t, observer);
   }
 
+  /**
+   * Draws the specified image at the specified location. This forwards
+   * to {@link #drawImage(Image, AffineTransform, ImageObserver)}.
+   *
+   * @param image the image to render
+   * @param x the x location to render to
+   * @param y the y location to render to
+   * @param bgcolor the background color to use for transparent pixels
+   * @param observer the image observer to receive notification
+   */
   public boolean drawImage(Image image, int x, int y, Color bgcolor,
                            ImageObserver observer)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    AffineTransform t = new AffineTransform();
+    t.translate(x, y);
+    // TODO: Somehow implement the background option.
+    return drawImage(image, t, observer);
   }
 
+  /**
+   * Draws the specified image at the specified location. The image
+   * is scaled to the specified width and height. This forwards
+   * to {@link #drawImage(Image, AffineTransform, ImageObserver)}.
+   *
+   * @param image the image to render
+   * @param x the x location to render to
+   * @param y the y location to render to
+   * @param width the target width of the image
+   * @param height the target height of the image
+   * @param bgcolor the background color to use for transparent pixels
+   * @param observer the image observer to receive notification
+   */
   public boolean drawImage(Image image, int x, int y, int width, int height,
                            Color bgcolor, ImageObserver observer)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    AffineTransform t = new AffineTransform();
+    t.translate(x, y);
+    double scaleX = (double) image.getWidth(observer) / (double) width;
+    double scaleY = (double) image.getHeight(observer) / (double) height;
+    t.scale(scaleX, scaleY);
+    // TODO: Somehow implement the background option.
+    return drawImage(image, t, observer);
   }
 
+  /**
+   * Draws an image fragment to a rectangular area of the target.
+   *
+   * @param image the image to render
+   * @param dx1 the first corner of the destination rectangle
+   * @param dy1 the first corner of the destination rectangle
+   * @param dx2 the second corner of the destination rectangle
+   * @param dy2 the second corner of the destination rectangle
+   * @param sx1 the first corner of the source rectangle
+   * @param sy1 the first corner of the source rectangle
+   * @param sx2 the second corner of the source rectangle
+   * @param sy2 the second corner of the source rectangle
+   * @param observer the image observer to be notified
+   */
   public boolean drawImage(Image image, int dx1, int dy1, int dx2, int dy2,
                            int sx1, int sy1, int sx2, int sy2,
                            ImageObserver observer)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    int sx = Math.min(sx1, sx1);
+    int sy = Math.min(sy1, sy2);
+    int sw = Math.abs(sx1 - sx2);
+    int sh = Math.abs(sy1 - sy2);
+    int dx = Math.min(dx1, dx1);
+    int dy = Math.min(dy1, dy2);
+    int dw = Math.abs(dx1 - dx2);
+    int dh = Math.abs(dy1 - dy2);
+    
+    AffineTransform t = new AffineTransform();
+    t.translate(sx - dx, sy - dy);
+    double scaleX = (double) sw / (double) dw;
+    double scaleY = (double) sh / (double) dh;
+    t.scale(scaleX, scaleY);
+    Rectangle areaOfInterest = new Rectangle(sx, sy, sw, sh);
+    return drawImageImpl(image, t, observer, areaOfInterest);
   }
 
+  /**
+   * Draws an image fragment to a rectangular area of the target.
+   *
+   * @param image the image to render
+   * @param dx1 the first corner of the destination rectangle
+   * @param dy1 the first corner of the destination rectangle
+   * @param dx2 the second corner of the destination rectangle
+   * @param dy2 the second corner of the destination rectangle
+   * @param sx1 the first corner of the source rectangle
+   * @param sy1 the first corner of the source rectangle
+   * @param sx2 the second corner of the source rectangle
+   * @param sy2 the second corner of the source rectangle
+   * @param bgcolor the background color to use for transparent pixels
+   * @param observer the image observer to be notified
+   */
   public boolean drawImage(Image image, int dx1, int dy1, int dx2, int dy2,
                            int sx1, int sy1, int sx2, int sy2, Color bgcolor,
                            ImageObserver observer)
   {
-    // FIXME: Implement this.
-    throw new UnsupportedOperationException("Not yet implemented");
+    // FIXME: Do something with bgcolor.
+    return drawImage(image, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer);
   }
 
   /**
@@ -1486,7 +1763,8 @@ public abstract class AbstractGraphics2D
     CompositeContext cCtx = composite.createContext(paintColorModel,
                                                     getColorModel(),
                                                     renderingHints);
-    cCtx.compose(paintRaster, destinationRaster, destinationRaster);
+    WritableRaster targetChild = destinationRaster.createWritableTranslatedChild(-x0,- y);
+    cCtx.compose(paintRaster, targetChild, targetChild);
     updateRaster(destinationRaster, x0, y, x1 - x0, 1);
     cCtx.dispose();
   }
@@ -1740,8 +2018,8 @@ public abstract class AbstractGraphics2D
 
     // FIXME: Should not be necessary. A clip of null should mean
     // 'clip against device bounds.
-    clip = getDeviceBounds();
     destinationRaster = getDestinationRaster();
+    clip = getDeviceBounds();
   }
 
   /**
