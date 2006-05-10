@@ -1,3 +1,37 @@
+2006-05-10  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/AlphaCompositeContext.java
+	(compose): Don't premultiply alpha to alpha itself.
+
+2006-05-10  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	(drawImage(Image,AffineTransform,ImageObserver)): Implemented.
+	(drawImageImpl(Image,AffineTransform,ImageObserver,Rectangle)):
+	New method.
+	(drawImage(BufferedImage,BufferedImageOp,int,int)): Implemented.
+	(drawRenderedImage(RenderedImage,AffineTransform)): Implemented.
+	(drawRenderedImageImpl(RenderedImage,AffineTransform,Rectangle)):
+	New method.
+	(drawRenderableImage(RenderableImage,AffineTransform)): Implemented.
+	(drawRenderableImageImpl(RenderableImage,AffineTransform,Rectangle)):
+	New method.
+	(scale): Inverse transform by doing 1/scale instead of -scale.
+	(drawImage(Image,int,int,ImageObserver)): Implemented.
+	(drawImage(Image,int,int,int,int,ImageObserver)): Implemented.
+	(drawImage(Image,int,int,Color,ImageObserver)): Implemented.
+	(drawImage(Image,int,int,int,int,Color,ImageObserver)): Implemented.
+	(drawImage(Image,int,int,int,int,int,int,int,int,ImageObserver)):
+	Implemented.
+	(drawImage(Image,int,int,int,int,int,int,int,int,Color,ImageObserver)):
+	Implemented.
+	(fillScanline): Work on translated destination raster for
+	correct compositin.
+	(init): Fetch the clip after the destination raster is initialized.
+	* gnu/java/awt/java2d/ImagePaint.java: New file.
+	* gnu/java/awt/java2d/RasterGraphics
+	(drawImage): Removed.
+
 2006-05-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* resource/gnu/classpath/tools/appletviewer/MessagesBundle.properties:
