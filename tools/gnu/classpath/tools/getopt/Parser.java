@@ -39,8 +39,10 @@
 package gnu.classpath.tools.getopt;
 
 import java.io.PrintStream;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * An instance of this class is used to parse command-line options. It does "GNU
@@ -52,6 +54,9 @@ import java.util.Iterator;
  */
 public class Parser
 {
+  /** The maximum right column position. */
+  public static final int MAX_LINE_LENGTH = 80;
+
   private String programName;
 
   private String headerText;
@@ -81,6 +86,69 @@ public class Parser
   public Parser(String programName, String versionString)
   {
     this(programName, versionString, false);
+  }
+
+  /**
+   * Print a designated text to a {@link PrintStream}, eventually wrapping the
+   * lines of text so as to ensure that the width of each line does not overflow
+   * {@link #MAX_LINE_LENGTH} columns. The line-wrapping is done with a
+   * {@link BreakIterator} using the default {@link Locale}.
+   * <p>
+   * The text to print may contain <code>\n</code> characters. This method will
+   * force a line-break for each such character.
+   * 
+   * @param out the {@link PrintStream} destination of the formatted text.
+   * @param text the text to print.
+   * @see Parser#MAX_LINE_LENGTH
+   */
+  protected static void formatText(PrintStream out, String text)
+  {
+    formatText(out, text, Locale.getDefault());
+  }
+
+  /**
+   * Similar to the method with the same name and two arguments, except that the
+   * caller MUST specify a non-null {@link Locale} instance.
+   * <p>
+   * Print a designated text to a {@link PrintStream}, eventually wrapping the
+   * lines of text so as to ensure that the width of each line does not overflow
+   * {@link #MAX_LINE_LENGTH} columns. The line-wrapping is done with a
+   * {@link BreakIterator} using the designated {@link Locale}.
+   * <p>
+   * The text to print may contain <code>\n</code> characters. This method will
+   * force a line-break for each such character.
+   * 
+   * @param out the {@link PrintStream} destination of the formatted text.
+   * @param text the text to print.
+   * @param aLocale the {@link Locale} instance to use when constructing the
+   *          {@link BreakIterator}.
+   * @see Parser#MAX_LINE_LENGTH
+   */
+  protected static void formatText(PrintStream out, String text, Locale aLocale)
+  {
+    BreakIterator bit = BreakIterator.getLineInstance(aLocale);
+    String[] lines = text.split("\n");
+    for (int i = 0; i < lines.length; i++)
+      {
+        text = lines[i];
+        bit.setText(text);
+        int length = 0;
+        int finish;
+        int start = bit.first();
+        while ((finish = bit.next()) != BreakIterator.DONE)
+          {
+            String word = text.substring(start, finish);
+            length += word.length();
+            if (length >= MAX_LINE_LENGTH)
+              {
+                out.println();
+                length = word.length();
+              }
+            out.print(word);
+            start = finish;
+          }
+        out.println();
+      }
   }
 
   /**
@@ -177,11 +245,16 @@ public class Parser
       optionGroups.add(optionGroups.size() - 1, group);
   }
 
-  void printHelp(PrintStream out)
+  public void printHelp()
+  {
+    this.printHelp(System.out);
+  }
+
+  protected void printHelp(PrintStream out)
   {
     if (headerText != null)
       {
-        out.println(headerText);
+        formatText(out, headerText);
         out.println();
       }
 
@@ -199,7 +272,7 @@ public class Parser
       }
 
     if (footerText != null)
-      out.println(footerText);
+      formatText(out, footerText);
   }
 
   private String getArgument(String request) throws OptionException
