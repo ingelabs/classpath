@@ -1,3 +1,8 @@
+2006-05-10  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/BasicStroke.java
+	(equals): Fixed typo in HTML tag for API doc comment.
+
 2006-05-10  Gary Benson  <gbenson@redhat.com>
 
 	* java/lang/ThreadGroup.java (parent): Make package-private.
