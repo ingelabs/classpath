@@ -1,3 +1,11 @@
+2006-05-10  Gary Benson  <gbenson@redhat.com>
+
+	* java/lang/ThreadGroup.java (parent): Make package-private.
+	* java/lang/SecurityManager.java (checkAccess(Thread)):
+	Reference ThreadGroup.parent directly to avoid extra checks.
+	* java/lang/SecurityManager.java (checkAccess(ThreadGroup)):
+	Likewise.
+
 2006-05-10  Roman Kennke <kennke@aicas.com>
 
 	Reported by Ingo Proetel (proetel@aicas.com)
