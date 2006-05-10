@@ -1,6 +1,15 @@
 2006-05-10  Roman Kennke <kennke@aicas.com>
 
 	Reported by Ingo Proetel (proetel@aicas.com)
+	* java/awt/EventDispatchThread.java
+	(DEFAULT_PRIORITY): New constant field.
+	(EventDispatchThread()): Added gnu.awt.dispatchthread.priority
+	system property for adjusting the priority of the event
+	dispatch thread.
+
+2006-05-10  Roman Kennke <kennke@aicas.com>
+
+	Reported by Ingo Proetel (proetel@aicas.com)
 	* java/awt/image/ColorModel.java
 	(S_RGB_MODEL): New constant field.
 	(getRGBDefault): Return constant SRGBColorModel.
