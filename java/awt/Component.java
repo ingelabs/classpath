@@ -5052,6 +5052,10 @@ p   * <li>the set of backward traversal keys
                     .dispatchEvent(e))
                     return;
               case MouseEvent.MOUSE_PRESSED:
+                // A mouse click on an enabled lightweight component
+                // which has not yet been marked as consumed by any
+                // other mouse listener results in a focus traversal
+                // to that component.
                 if (isLightweight()
                     && isEnabled() && !e.isConsumed())
                     requestFocus();
