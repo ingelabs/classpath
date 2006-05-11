@@ -1,3 +1,22 @@
+2006-05-11  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/DefaultCaret.java: Made field 'textComponent'
+	package-private, added field 'active'.
+	(PropertyChangeHandler.propertyChange): Added variable 'name', added
+	cases to update field 'active'.
+	(mouseDragged): Added documentation, added if-clause to update
+	selection or caret position.
+	(mouseClicked): Added early return when text component is disabled.
+	(focusGained): Moved statements into an if-clause.
+	(focusLost): Added subexpression to if-clause.
+	(install): Preset value of 'active'.
+	(paint): Added subexpression to if-clause.
+	(isVisible): Extended return expression.
+	* javax/swing/text/JTextComponent.java:
+	(copy): Copy only if component is enabled.
+	(cut): Cut only if component is enabled and editable.
+	(paste): Dito.
+
 2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/multi/MultiComboBoxUI.java: Minor formatting change,
