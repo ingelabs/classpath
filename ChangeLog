@@ -1,5 +1,10 @@
 2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicCheckBoxUI.java
+	(getDefaultIcon): Removed this redundant method.
+
+2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicRadioButtonUI.java
 	(paint): Pass component size to paintFocus().
 
