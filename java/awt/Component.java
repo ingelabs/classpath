@@ -5052,7 +5052,8 @@ p   * <li>the set of backward traversal keys
                     .dispatchEvent(e))
                     return;
               case MouseEvent.MOUSE_PRESSED:
-                if (isLightweight() && !e.isConsumed())
+                if (isLightweight()
+                    && isEnabled() && !e.isConsumed())
                     requestFocus();
                 break;
               }
