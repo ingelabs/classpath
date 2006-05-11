@@ -1,3 +1,24 @@
+2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/metal/MetalBorders.java: Clean up formatting/style,
+	* javax/swing/plaf/metal/MetalButtonUI.java: Likewise,
+	* javax/swing/plaf/metal/MetalCheckBoxUI.java: Likewise,
+	* javax/swing/plaf/metal/MetalComboBoxButton.java: Likewise,
+	* javax/swing/plaf/metal/MetalComboBoxIcon.java: Likewise,
+	* javax/swing/plaf/metal/MetalFileChooserUI.java: Likewise,
+	* javax/swing/plaf/metal/MetalIconFactory.java: Likewise,
+	* javax/swing/plaf/metal/MetalInternalFrameTitlePane.java: Likewise,
+	* javax/swing/plaf/metal/MetalLookAndFeel.java: Likewise,
+	* javax/swing/plaf/metal/MetalPopupMenuSeparatorUI.java: Likewise,
+	* javax/swing/plaf/metal/MetalRootPaneUI.java: Likewise,
+	* javax/swing/plaf/metal/MetalScrollBarUI.java: Likewise,
+	* javax/swing/plaf/metal/MetalSeparatorUI.java: Likewise,
+	* javax/swing/plaf/metal/MetalSliderUI.java: Likewise,
+	* javax/swing/plaf/metal/MetalSplitPaneDivider.java: Likewise,
+	* javax/swing/plaf/metal/MetalTabbedPaneUI.java: Likewise,
+	* javax/swing/plaf/metal/MetalToolTipUI.java: Likewise,
+	* javax/swing/plaf/metal/MetalUtils.java: Likewise.
+
 2006-05-11  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/DefaultCaret.java: Made field 'textComponent'
