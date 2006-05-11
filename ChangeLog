@@ -1,6 +1,18 @@
 2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JFrame.java
+	(EXIT_ON_CLOSE): Added note to API docs,
+	(close_action): Renamed closeAction,
+	(JFrame()): Change title to "",
+	(JFrame(String)): Added API docs,
+	(getAccessibleContext): Likewise,
+	(getDefaultCloseOperation): Updated for renamed field, added API docs,
+	(processWindowEvent): Updated for renamed field,
+	(setDefaultCloseOperation): Likewise, and updated API docs.
+
+2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JFrame.java
 	(paramString): Reimplemented,
 	* javax/swing/SwingUtilities.java
 	(convertWindowConstantToString): New method.
