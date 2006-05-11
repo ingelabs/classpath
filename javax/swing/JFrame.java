@@ -301,9 +301,24 @@ public class JFrame extends Frame
     return close_action;
   }
 
+  /**
+   * Returns a string describing the attributes for the <code>JFrame</code>,
+   * for use in debugging.  The return value is guaranteed to be 
+   * non-<code>null</code>, but the format may vary between implementations.
+   * 
+   * @return A string describing the attributes of the <code>JFrame</code>.
+   */
   protected String paramString()
   {
-    return "JFrame";
+    StringBuffer sb = new StringBuffer(super.paramString());
+    sb.append(",defaultCloseOperation=");
+    sb.append(SwingUtilities.convertWindowConstantToString(
+        getDefaultCloseOperation()));
+    sb.append(",rootPane=");
+    if (rootPane != null)
+      sb.append(rootPane);
+    sb.append(",rootPaneCheckingEnabled=").append(rootPaneCheckingEnabled);
+    return sb.toString();
   }
 
   protected void processWindowEvent(WindowEvent e)

@@ -1,5 +1,12 @@
 2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JFrame.java
+	(paramString): Reimplemented,
+	* javax/swing/SwingUtilities.java
+	(convertWindowConstantToString): New method.
+
+2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/WindowConstants.java: Updated API docs.
 
 2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>

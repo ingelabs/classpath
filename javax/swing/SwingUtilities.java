@@ -1548,4 +1548,55 @@ public class SwingUtilities
         throw new IllegalArgumentException("Unrecognised code: " + code);
     }
   }
+  
+  /**
+   * Returns a string representing one of the default operation codes
+   * defined in the {@link WindowConstants} interface.  The following table
+   * lists the constants and return values:
+   * <p>
+   * <table border="0">
+   * <tr>
+   *   <th>Code:</th><th>Returned String:</th>
+   * </tr>
+   * <tr>
+   *   <td>{@link WindowConstants#DO_NOTHING_ON_CLOSE}</td>
+   *   <td><code>"DO_NOTHING_ON_CLOSE"</code></td>
+   * </tr>
+   * <tr>
+   *   <td>{@link WindowConstants#HIDE_ON_CLOSE}</td>
+   *   <td><code>"HIDE_ON_CLOSE"</code></td>
+   * </tr>
+   * <tr>
+   *   <td>{@link WindowConstants#DISPOSE_ON_CLOSE}</td>
+   *   <td><code>"DISPOSE_ON_CLOSE"</code></td>
+   * </tr>
+   * <tr>
+   *   <td>{@link WindowConstants#EXIT_ON_CLOSE}</td>
+   *   <td><code>"EXIT_ON_CLOSE"</code></td>
+   * </tr>
+   * </table>
+   * </p>
+   * If the supplied code is not one of those listed, this method will throw
+   * an {@link IllegalArgumentException}.
+   * 
+   * @param code  the code.
+   * 
+   * @return A string representing the given code.
+   */
+  static String convertWindowConstantToString(int code) 
+  {
+    switch (code)
+    {
+      case WindowConstants.DO_NOTHING_ON_CLOSE:
+        return "DO_NOTHING_ON_CLOSE";
+      case WindowConstants.HIDE_ON_CLOSE:
+        return "HIDE_ON_CLOSE";
+      case WindowConstants.DISPOSE_ON_CLOSE:
+        return "DISPOSE_ON_CLOSE";
+      case WindowConstants.EXIT_ON_CLOSE:
+        return "EXIT_ON_CLOSE";
+      default:
+        throw new IllegalArgumentException("Unrecognised code: " + code);
+    }
+  }
 }
