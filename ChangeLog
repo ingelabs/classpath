@@ -1,3 +1,9 @@
+2006-05-11  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/font/GNUGlyphVector.java
+	(GNUGlyphVector): Don't apply the font renderer context's
+	transform.
+
 2006-05-11  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/logging/Logger.java (global): Initialize inside static
