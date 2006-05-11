@@ -1,6 +1,12 @@
 2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
 
-	* javax/swing/plaf/basic/BasicCheckBoxUI: Added API docs plus,
+	* javax/swing/plaf/basic/BasicToggleButtonUI.java: Updated API docs,
+	(createUI): Removed 'final' qualifier for parameter,
+	(paint): Reformatted.
+
+2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicCheckBoxUI.java: Added API docs plus,
 	(createUI): Removed 'final' qualifier on method argument.
 
 2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
