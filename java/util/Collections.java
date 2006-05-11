@@ -4822,9 +4822,9 @@ public class Collections
       private static final class UnmodifiableMapEntry
           implements Map.Entry
       {
-        private final Entry e;
+        private final Map.Entry e;
 
-        private UnmodifiableMapEntry(Entry e)
+        private UnmodifiableMapEntry(Map.Entry e)
         {
           super();
           this.e = e;
@@ -4944,7 +4944,8 @@ public class Collections
             result = new UnmodifiableMapEntry[mapEntryResult.length];
             for (int i = 0; i < mapEntryResult.length; i++)
               {
-                result[i] = new UnmodifiableMapEntry((Entry) mapEntryResult[i]);
+                Map.Entry r = (Map.Entry) mapEntryResult[i];
+                result[i] = new UnmodifiableMapEntry(r);
               }
           }
         return result;
@@ -4960,7 +4961,7 @@ public class Collections
           {
             for (int i = 0; i < array.length; i++)
               {
-                array[i] = new UnmodifiableMapEntry((Entry) array[i]);
+                array[i] = new UnmodifiableMapEntry((Map.Entry) array[i]);
               }
           }
         return array;
