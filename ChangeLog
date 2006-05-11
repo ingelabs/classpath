@@ -1,3 +1,8 @@
+2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/basic/BasicRadioButtonUI.java
+	(paint): Pass component size to paintFocus().
+
 2006-05-11  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/awt/Component.java:
