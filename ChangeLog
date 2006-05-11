@@ -2441,7 +2441,8 @@
 
 2006-04-18  Robert Schuster  <robertschuster@fsfe.org>
 
-	* javax/swing/plaf/basic/BasicTextUI.java: Implemented.
+	* javax/swing/plaf/basic/BasicTextUI.java:
+	(getNextVisualPositionFrom): Implemented.
 
 2006-04-18  David Gilbert  <david.gilbert@object-refinery.com>
 
