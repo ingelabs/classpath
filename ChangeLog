@@ -1,3 +1,13 @@
+2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/plaf/multi/MultiComboBoxUI.java: Minor formatting change,
+	* javax/swing/plaf/multi/MultiFileChooserUI.java: Likewise,
+	* javax/swing/plaf/multi/MultiListUI.java: Likewise,
+	* javax/swing/plaf/multi/MultiLookAndFeel.java: Likewise,
+	* javax/swing/plaf/multi/MultiOptionPaneUI.java: Likewise,
+	* javax/swing/plaf/multi/MultiSplitPaneUI.java: Likewise,
+	* javax/swing/plaf/multi/MultiTabbedPaneUI.java: Likewise.	
+
 2006-05-11  Roman Kennke <kennke@aicas.com>
 
 	* gnu/java/awt/font/GNUGlyphVector.java
