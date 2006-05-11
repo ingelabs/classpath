@@ -1,3 +1,21 @@
+2006-05-11  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/ContainerOrderFocusTraversalPolicy.java
+	(getComponentAfter): Should not throw exception if
+	the ancestor is null. Added a check for this.
+	Also, changed to use new helper function, we should
+	iterate through all the components at least once.
+	(getNextAvailableComponent): New helper function.
+	(getPrevAvailableComponent): New helper function.
+	(getComponentBefore): Should not throw exception if
+	the ancestor is null. Added a check for this.
+	Also, changed to use new helper function, we should
+	iterate through all the components at least once.
+	(getFirstComponent): Changed check to manually check
+	fields. Calling accept() casts the object to a Component,
+	so different values may be returned.
+	(getLastComponent): Likewise.
+
 2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/metal/MetalBorders.java: Clean up formatting/style,
