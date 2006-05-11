@@ -199,7 +199,7 @@ class Main
     OptionGroup debuggingGroup = new OptionGroup("Debugging option");
     debuggingGroup.add(new Option("verbose", Main.messages.getString
                                   ("gcjwebplugin.verbose_description"),
-                                  null)
+                                  (String) null)
       {
         public void parsed(String argument) throws OptionException
         {
@@ -209,7 +209,7 @@ class Main
     OptionGroup compatibilityGroup = new OptionGroup("Compatibility options");
     compatibilityGroup.add(new Option("debug", Main.messages.getString
                                       ("gcjwebplugin.debug_description"),
-                                      null)
+                                      (String) null)
       {
         public void parsed(String argument) throws OptionException
         {

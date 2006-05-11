@@ -1,5 +1,10 @@
 2006-05-11  Mark Wielaard  <mark@klomp.org>
 
+	* tools/gnu/classpath/tools/appletviewer/Main.java (main): Cast
+	Option constructor null argument to String.
+
+2006-05-11  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/geom/GeneralPath.java (WIND_EVEN_ODD, WIND_NON_ZERO):
 	Fully qualify PathIterator constants
 
