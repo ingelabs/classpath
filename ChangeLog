@@ -1,5 +1,9 @@
 2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/WindowConstants.java: Updated API docs.
+
+2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/plaf/basic/BasicToggleButtonUI.java: Updated API docs,
 	(createUI): Removed 'final' qualifier for parameter,
 	(paint): Reformatted.
