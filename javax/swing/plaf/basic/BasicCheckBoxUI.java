@@ -38,19 +38,32 @@ exception statement from your version. */
 
 package javax.swing.plaf.basic;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 
+/**
+ * A UI delegate for the {@link JCheckBox} component.
+ */
 public class BasicCheckBoxUI extends BasicRadioButtonUI
 {  
   
-  public static ComponentUI createUI(final JComponent c)  {
+  /**
+   * Returns a UI delegate (that is, an instance of this class) for the 
+   * specified component.
+   * 
+   * @param c  the component (this should be a {@link JCheckBox}).
+   *     
+   * @return A new instance of <code>BasicCheckBoxUI</code>.
+   */
+  public static ComponentUI createUI(JComponent c)  {
     return new BasicCheckBoxUI();
   }
 
   /**
-   * Returns the prefix for entries in the {@link UIManager} defaults table.
+   * Returns the prefix for entries in the {@link UIManager} defaults table 
+   * (<code>"CheckBox."</code> in this case).
    *
    * @return "CheckBox."
    */
