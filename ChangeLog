@@ -1,3 +1,8 @@
+2006-05-11  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/logging/Logger.java (global): Initialize inside static
+	PrivilegedAction.
+
 2006-05-11  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JFrame.java

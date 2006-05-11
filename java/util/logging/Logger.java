@@ -41,6 +41,8 @@ package java.util.logging;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * A Logger is used for logging information about events. Usually, there
@@ -76,7 +78,20 @@ public class Logger
    * products are supposed to create and use their own Loggers, so
    * they can be controlled individually.
    */
-  public static final Logger global = getLogger("global");
+  public static final Logger global;
+
+  static
+    {
+      // Our class might be initialized from an unprivileged context
+      global = (Logger) AccessController.doPrivileged
+	(new PrivilegedAction()
+	  {
+	    public Object run()
+	    {
+	      return getLogger("global");
+	    }
+	  });
+    }
 
 
   /**
