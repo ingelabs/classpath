@@ -1,3 +1,7 @@
+2006-05-12  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JProgressBar.java: Updated API docs all over.
+
 2006-05-11  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/ContainerOrderFocusTraversalPolicy.java
