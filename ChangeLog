@@ -1,5 +1,14 @@
 2006-05-12  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/plaf/basic/BasicPanelUI.java
+	(sharedUI): New field,
+	(createUI): Return a shared instance rather than a new instance,
+	(installUI): Reformatted and added API docs,
+	(installDefaults): Install border if one is defined,
+	(uninstallDefaults): Uninstall border.
+
+2006-05-12  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JProgressBar.java: Updated API docs all over.
 
 2006-05-11  Lillian Angel  <langel@redhat.com>
