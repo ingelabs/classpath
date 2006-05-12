@@ -1,5 +1,16 @@
 2006-05-12  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/net/protocol/http/HTTPConnection.java (get): Add timeout parameter.
+	* gnu/java/net/protocol/http/HTTPURLConnection.java
+	(setConnectTimeout): New method.
+	(getConnection): Add timeout parameter.
+	*  java/net/URLConnection.java  
+	(getConnectTimeout, setConnectTimeout): Implement.
+	* native/target/generic/target_generic_network.h: 
+	Set correct socket parameters SO_SNDTIMEO and SO_RCVTIMEO.
+	
+2006-05-12  Sven de Marothy  <sven@physto.se>
+
 	* gnu/javax/print/CupsServer.java
 	(CupsServer): Make the Cups host configurable.
 	* java/lang/System.java: Document the system property.
