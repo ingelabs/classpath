@@ -1,3 +1,15 @@
+2006-05-12  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/border/TitledBorder.java
+	(paintBorder): Rewritten for simplicity and correctness.
+	(layoutBorderWithTitle): New helper method.
+	(paintBorderWithTitle): New helper method.
+	(getBorderInsets): Rewritten.
+	(getMinimumSize): Rewritten.
+	(getRealJustification): Removed.
+	(getMeasurements): Removed.
+	(Measurements): Removed.
+
 2006-05-12  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/plaf/basic/BasicPanelUI.java
