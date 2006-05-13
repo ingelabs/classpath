@@ -1,5 +1,5 @@
-/* PrinterJob.java -- This job is the printer control class
-   Copyright (C) 1999, 2004, 2005, 2006  Free Software Foundation, Inc.
+/* JavaPrinterJob.java -- AWT printing implemented on javax.print.
+   Copyright (C) 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,42 +36,91 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package java.awt.print;
+package gnu.java.awt.print;
 
-import gnu.java.awt.print.JavaPrinterJob;
-
+import java.util.Locale;
 import java.awt.HeadlessException;
+import java.awt.print.Pageable;
+import java.awt.print.Printable;
+import java.awt.print.PrinterGraphics;
+import java.awt.print.Book;
+import java.awt.print.PageFormat;
+import java.awt.print.Paper;
+import java.awt.print.PrinterJob;
+import java.awt.print.PrinterAbortException;
+import java.awt.print.PrinterException;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
 import javax.print.StreamPrintServiceFactory;
+import javax.print.ServiceUI;
+import javax.print.attribute.IntegerSyntax;
+import javax.print.attribute.TextSyntax;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.JobName;
+import javax.print.attribute.standard.RequestingUserName;
 
 /**
- * This class controls printing.
+ * This is the default implementation of PrinterJob
  *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Sven de Marothy
  */
-public abstract class PrinterJob
+public class JavaPrinterJob extends PrinterJob
 {
-  // The print service associated with this job
+  /**
+   * The print service associated with this job
+   */
   private PrintService printer = null;
 
   /**
-   * Creates a new print job.
-   *
-   * @return A <code>PrinterJob</code> object for the newly created print job.
+   * Printing options;
    */
-  public static PrinterJob getPrinterJob()
+  private PrintRequestAttributeSet attributes;
+
+  /**
+   * Available print services
+   */
+  private static PrintService[] services;
+
+  /**
+   * The actual print job.
+   */
+  private DocPrintJob printJob;
+
+  /**
+   * The Printable object to print.
+   */
+  private Printable printable;
+
+  /**
+   * Page format.
+   */
+  private PageFormat pageFormat;
+
+  static
   {
-    return new JavaPrinterJob();
+    // lookup all services without any constraints
+    services = PrintServiceLookup.lookupPrintServices
+      (DocFlavor.INPUT_STREAM.POSTSCRIPT, null);   
   }
 
+  private static final Class copyClass = (new Copies(1)).getClass();
+  private static final Class jobNameClass = (new JobName("", null)).getClass();
+  private static final Class userNameClass = (new RequestingUserName("", null)).getClass();
+  
   /**
    * Initializes a new instance of <code>PrinterJob</code>. 
    */
-  public PrinterJob()
+  public JavaPrinterJob()
   {
+    attributes = new HashPrintRequestAttributeSet();
+    setCopies(1);
+    setJobName("Java Printing");
+    pageFormat = new PageFormat(); // default page format.
   }
 
   /**
@@ -79,40 +128,57 @@ public abstract class PrinterJob
    *
    * @return The number of copies to be printed.
    */
-  public abstract int getCopies();
+  public int getCopies()
+  {
+    return ((IntegerSyntax)attributes.get( jobNameClass )).getValue();
+  }
 
   /**
    * Sets the number of copies to be printed.
    *
    * @param copies The number of copies to be printed.
    */
-  public abstract void setCopies(int copies);
+  public void setCopies(int copies)
+  {
+    attributes.add( new Copies( copies ) );
+  }
 
   /**
    * Returns the name of the print job.
    *
    * @return The name of the print job.
    */
-  public abstract String getJobName();
+  public String getJobName()
+  {
+    return ((TextSyntax)attributes.get( jobNameClass )).getValue();
+  }
 
   /**
    * Sets the name of the print job.
    *
    * @param job_name The name of the print job.
    */
-  public abstract void setJobName(String job_name);
+  public void setJobName(String job_name)
+  {
+    attributes.add( new JobName(job_name, Locale.getDefault()) );
+  }
 
   /**
    * Returns the printing user name.
    *
    * @return The printing username.
    */
-  public abstract String getUserName();
+  public String getUserName()
+  {
+    return ((TextSyntax)attributes.get( userNameClass )).getValue();
+  }
 
   /**
    * Cancels an in progress print job.
    */
-  public abstract void cancel();
+  public void cancel()
+  {
+  }
 
   /**
    * Tests whether or not this job has been cancelled.
@@ -120,17 +186,9 @@ public abstract class PrinterJob
    * @return <code>true</code> if this job has been cancelled, <code>false</code>
    * otherwise.
    */
-  public abstract boolean isCancelled();
-
-  /**
-   * Returns an instance of the default page which will have the default
-   * paper and orientation.
-   *
-   * @return A default instance of <code>PageFormat</code>.
-   */
-  public PageFormat defaultPage()
+  public boolean isCancelled()
   {
-    return new PageFormat();
+    return false;
   }
 
   /**
@@ -141,7 +199,10 @@ public abstract class PrinterJob
    *
    * @return A new default page format.
    */
-  public abstract PageFormat defaultPage(PageFormat page_format);
+  public PageFormat defaultPage(PageFormat page_format)
+  {
+    return new PageFormat();
+  }
 
   /**
    * Displays a dialog box to the user which allows the page format
@@ -151,23 +212,34 @@ public abstract class PrinterJob
    *
    * @return The modified <code>PageFormat</code>.
    */
-  public abstract PageFormat pageDialog(PageFormat page_format)
-    throws HeadlessException;
-
-  /**
-   * @since 1.4
-   */
-  public PageFormat pageDialog(PrintRequestAttributeSet attributes)
+  public PageFormat pageDialog(PageFormat page_format)
     throws HeadlessException
   {
-    // FIXME: Implement this for real.
-    return pageDialog((PageFormat) null);
+    return defaultPage(null);
   }
-  
+
   /**
    * Prints the pages.
    */
-  public abstract void print () throws PrinterException;
+  public void print() throws PrinterException
+  {
+    if( printable == null )
+      return;
+    JavaPrinterGraphics pg = new JavaPrinterGraphics( this, pageFormat );
+
+    printJob = printer.createPrintJob();
+    SpooledDocument doc = pg.spoolPostScript( printable );
+    try
+      {
+	printJob.print(doc, attributes);
+      }
+    catch (PrintException pe) 
+      {
+	PrinterException p = new PrinterException();
+	p.initCause(pe);
+	throw p;
+      }
+  }
 
   /**
    * Prints the page with given attributes.
@@ -175,7 +247,8 @@ public abstract class PrinterJob
   public void print (PrintRequestAttributeSet attributes)
     throws PrinterException
   {
-    print ();
+    this.attributes = attributes;
+    print();
   }
 
   /**
@@ -185,8 +258,10 @@ public abstract class PrinterJob
    * @return <code>false</code> if the user cancels the dialog box,
    * <code>true</code> otherwise.
    */
-  public abstract boolean printDialog()
-    throws HeadlessException;
+  public boolean printDialog() throws HeadlessException
+  {
+    return printDialog( attributes );
+  }
 
   /**
    * Displays a dialog box to the user which allows the print job
@@ -198,8 +273,23 @@ public abstract class PrinterJob
   public boolean printDialog(PrintRequestAttributeSet attributes)
     throws HeadlessException
   {
-    // FIXME: Implement this for real.
-    return printDialog();
+    PrintService chosenPrinter = ServiceUI.printDialog
+      (null, 50, 50, services, null, 
+       DocFlavor.INPUT_STREAM.POSTSCRIPT, attributes);
+
+    if( chosenPrinter != null )
+      {
+	try
+	  {
+	    setPrintService( chosenPrinter );
+	  }
+	catch(PrinterException pe)
+	  {
+	    // Should not happen.
+	  }
+	return true;
+      }
+    return false;
   }
 
   /**
@@ -207,7 +297,10 @@ public abstract class PrinterJob
    *
    * @param pageable The pages to be printed, which may not be <code>null</code>.
    */
-  public abstract void setPageable(Pageable pageable);
+  public void setPageable(Pageable pageable)
+  {
+    // FIXME
+  }
 
   /**
    * Sets this specified <code>Printable</code> as the one to use for
@@ -215,7 +308,10 @@ public abstract class PrinterJob
    *
    * @param printable The <code>Printable</code> for the print job.
    */
-  public abstract void setPrintable(Printable printable);
+  public void setPrintable(Printable printable)
+  {
+    this.printable = printable;
+  }
 
   /**
    * Sets the <code>Printable</code> and the page format for the pages
@@ -224,7 +320,11 @@ public abstract class PrinterJob
    * @param printable The <code>Printable</code> for the print job.
    * @param page_format The <code>PageFormat</code> for the print job.
    */
-  public abstract void setPrintable(Printable printable, PageFormat page_format);
+  public void setPrintable(Printable printable, PageFormat page_format)
+  {
+    this.printable = printable;
+    // FIXME
+  }
 
   /**
    * Makes any alterations to the specified <code>PageFormat</code>
@@ -235,55 +335,10 @@ public abstract class PrinterJob
    *
    * @return The validated <code>PageFormat</code>.
    */
-  public abstract PageFormat validatePage(PageFormat page_format);
-
-  /**
-   * Find and return 2D image print services.
-   * 
-   * This is the same as calling PrintServiceLookup.lookupPrintServices()
-   * with Pageable service-specified DocFlavor.
-   * @return Array of PrintService objects, could be empty.
-   * @since 1.4
-   */
-  public static PrintService[] lookupPrintServices()
+  public PageFormat validatePage(PageFormat page_format)
   {
-    return PrintServiceLookup.lookupPrintServices
-      (
-       new DocFlavor("application/x-java-jvm-local-objectref",
-		     "java.awt.print.Pageable"),
-       null);
-  }
-
-  /**
-   * Find and return 2D image stream print services.
-   * 
-   * This is the same as calling
-   * StreamPrintServiceFactory.lookupStreamPrintServices()
-   * with Pageable service-specified DocFlavor.
-   * @param mimeType The output format mime type, or null for any type.
-   * @return Array of stream print services, could be empty.
-   * @since 1.4
-   */
-  // FIXME:
-  // Enable when StreamPrintServiceFactory has lookupStreamServiceFactories
-//  public static StreamPrintServiceFactory[] lookupStreamPrintServices(String mimeType)
-//  {
-//    return StreamPrintServiceFactory.lookupStreamServiceFactories(
-//      new DocFlavor("application/x-java-jvm-local-objectref",
-//      "java.awt.print.Pageable"),
-//    	mimeType);
-//  }
-
-  /**
-   * Return the printer for this job.  If print services aren't supported by
-   * the subclass, returns null.
-   * 
-   * @return The associated PrintService.
-   * @since 1.4
-   */
-  public PrintService getPrintService()
-  {
-    return printer;
+    // FIXME
+    return page_format;
   }
 
   /**
@@ -298,6 +353,8 @@ public abstract class PrinterJob
   public void setPrintService(PrintService service)
     throws PrinterException
   {
+    if(!service.isDocFlavorSupported(DocFlavor.INPUT_STREAM.POSTSCRIPT))
+      throw new PrinterException("This printer service is not supported.");
     printer = service;
   }
 }

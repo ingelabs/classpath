@@ -1,3 +1,16 @@
+2006-05-13  Sven de Marothy  <sven@physto.se>
+
+	* gnu/javax/print/ipp/IppRequest.java (send): Set a timeout.
+	* java/awt/print/PrinterJob.java 
+	(getPrinterJob): Return a JavaPrinterJob
+	(setPrintService,getPrintService): Implement.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImage.c:
+	(getPixels): Gtk_threads_enter required.
+	* gnu/java/awt/print/JavaPrinterGraphics.java
+	* gnu/java/awt/print/JavaPrinterJob.java
+	* gnu/java/awt/print/SpooledDocumet.java: 
+	New files.
+	
 2006-05-13  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/TextAction.java:
