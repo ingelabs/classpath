@@ -1,5 +1,11 @@
 2006-05-13  Robert Schuster  <robertschuster@fsfe.org>
 
+	* examples/gnu/classpath/examples/swing/NavigationFilterDemo.java:
+	(WordFilter.getNextVisualPositionFrom): Added statement to check
+	for variable pt not being null.
+
+2006-05-13  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/text/Utilities.java:
 	(getNextWord): Fixed grammar in exception message.
 	(getPreviousWord): Changed expression in first if-clause, added sub-
