@@ -43,10 +43,9 @@ TOOLS_TEMPLATES = $(GRMIC_TEMPLATES) $(RMIC_TEMPLATES)
 # This covers the built-in help texts, both for giop and rmic subpackages.
 GIOP_HELPS = $(srcdir)/gnu/classpath/tools/giop/*.txt
 RMI_HELPS = $(srcdir)/gnu/classpath/tools/rmi/*.txt
-JARSIGNER_HELPS = $(srcdir)/gnu/classpath/tools/jarsigner/*.txt
 KEYTOOL_HELPS = $(srcdir)/gnu/classpath/tools/keytool/*.txt
 
-TOOLS_HELPS = $(GIOP_HELPS) $(RMI_HELPS) $(JARSIGNER_HELPS) $(KEYTOOL_HELPS)
+TOOLS_HELPS = $(GIOP_HELPS) $(RMI_HELPS) $(KEYTOOL_HELPS)
 
 # The tool specific README files.
 READMES = $(srcdir)/gnu/classpath/tools/giop/README
@@ -88,7 +87,6 @@ $(TOOLS_ZIP): $(TOOLS_JAVA_FILES)
 	cp $(GRMIC_TEMPLATES) classes/gnu/classpath/tools/giop/grmic/templates
 	cp $(RMI_HELPS) classes/gnu/classpath/tools/rmi/
 	cp $(GIOP_HELPS) classes/gnu/classpath/tools/giop/
-	cp $(JARSIGNER_HELPS) classes/gnu/classpath/tools/jarsigner/
 	cp $(KEYTOOL_HELPS) classes/gnu/classpath/tools/keytool/
 	$(JCOMPILER) -d classes $(TOOLS_JAVA_FILES)
 	(cd classes; \

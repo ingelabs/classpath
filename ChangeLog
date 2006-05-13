@@ -1,3 +1,22 @@
+2006-05-13  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* resource/gnu/classpath/tools/jarsigner/MessageBundle.properties:
+	Added help text.
+	* tools/Makefile.am (JARSIGNER_HELPS): Removed.
+	* tools/gnu/classpath/tools/jarsigner/jarsigner.txt: Removed.
+	* tools/gnu/classpath/tools/jarsigner/Main.java:
+	Increased visibility of fields used by parser anonymous classes.
+	(HELP_PATH): Removed.
+	(cmdLineParser): New field.
+	(main): Handle JVM exit status.
+	Handle command line parsing exceptions.
+	(processArgs): Use getopt command line parser.
+	(getParser): New method.
+	(setupCommonParams): Removed checks now handled by processArgs().
+	(setupSigningParams): Likewise.
+	* tools/gnu/classpath/tools/jarsigner/JarSigner.java (start):
+	Reuse an existing message-bundle constant.
+
 2006-05-12  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/net/protocol/jar/Connection.java (getHeaderField):
