@@ -1,3 +1,12 @@
+2006-05-13  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/Utilities.java:
+	(getNextWord): Fixed grammar in exception message.
+	(getPreviousWord): Changed expression in first if-clause, added sub-
+	expression to if-clause in while-loop.
+	(getWordStart): Changed expression in if-clause.
+	getNextVisualPositionFrom): Added package-private helper method.
+
 2006-05-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
  
 	* javax/swing/tree/DefaultTreeSelectionModel.java (leadRow):
