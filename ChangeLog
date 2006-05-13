@@ -1,3 +1,7 @@
+2006-05-13  Tom Tromey  <tromey@redhat.com>
+
+	* java/nio/ByteBufferImpl.java (compact): Always set position.
+
 2006-05-13  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/print/JavaPrinterGraphics.java
