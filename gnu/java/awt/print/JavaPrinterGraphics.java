@@ -60,6 +60,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.io.PrintWriter;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.io.FileOutputStream;
 import java.io.BufferedWriter;
 
 import gnu.java.awt.peer.gtk.GtkImage;
@@ -129,8 +131,12 @@ public class JavaPrinterGraphics extends Graphics implements PrinterGraphics
 	 // spool to a temporary file
 	 File temp = File.createTempFile("cpspool", ".ps");
 	 temp.deleteOnExit();
-	 
-	 PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(temp)));
+
+	 PrintWriter out = new PrintWriter
+	   (new BufferedWriter
+	    (new OutputStreamWriter
+	     (new FileOutputStream(temp), "ISO8859_1"), 1000000));
+
 	 writePSHeader(out);
 	 int status;
 	 int index = 0;

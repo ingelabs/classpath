@@ -1,6 +1,11 @@
 2006-05-13  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/print/JavaPrinterGraphics.java
+	(spoolPostScript): Use a faster writer.
+
+2006-05-13  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/print/JavaPrinterGraphics.java
 	(colorTripleHex): Reimplement better.
 
 2006-05-13  Sven de Marothy  <sven@physto.se>
