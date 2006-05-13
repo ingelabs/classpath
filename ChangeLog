@@ -1,5 +1,32 @@
 2006-05-13  Robert Schuster  <robertschuster@fsfe.org>
 
+	* javax/swing/text/TextAction.java:
+	(HorizontalMovementAction): New inner class.
+	(VerticalMovementAction): New inner class.
+	* javax/swing/text/DefaultEditorKit.java: Added assigning instances of
+	new inner classes to array 'defaultActions'.
+	(SelectionBeginWordAction): New inner class.
+	(SelectionEndWordAction): New inner class.
+	(BeginWordAction): New inner class.
+	(EndWordAction): New inner class.
+	(PreviousWordAction.actionPerformed): Rewritten.
+	(SelectLineAction): New inner class.
+	(SelectWordAction): New inner class.
+	(SelectionDownAction): Rewritten.
+	(SelectionUpAction): Rewritten.
+	(DownAction): Rewritten.
+	(UpAction): Rewritten.
+	(SelectionForwardAction): Rewritten.
+	(SelectionBackwardAction): Rewritten.
+	(ForwardAction): Rewritten.
+	(BackwardAction): Rewritten.
+	(BeginAction): New inner class.
+	(EndAction): New inner class.
+	(DefaultKeyTypedAction.actionPerformed): Use int variant of
+	Character.isISOControl.
+
+2006-05-13  Robert Schuster  <robertschuster@fsfe.org>
+
 	* examples/gnu/classpath/examples/swing/NavigationFilterDemo.java:
 	(WordFilter.getNextVisualPositionFrom): Added statement to check
 	for variable pt not being null.
