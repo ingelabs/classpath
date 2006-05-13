@@ -1,5 +1,10 @@
 2006-05-13  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/print/JavaPrinterGraphics.java
+	(colorTripleHex): Reimplement better.
+
+2006-05-13  Sven de Marothy  <sven@physto.se>
+
 	* javax/swing/text/html/HTMLDocument.java
 	(CharacterAction.start): Translate tag to StyleAttribute.
 	(pushCharacterStyle): Push copy of attributes onto stack.

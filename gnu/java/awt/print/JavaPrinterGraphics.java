@@ -224,7 +224,7 @@ public class JavaPrinterGraphics extends Graphics implements PrinterGraphics
     int n = 0;
     for (int j = 0; j < ySize; j++) {
       for (int i = 0; i < xSize; i++) {
-	out.print( colorTripleHex(new Color(pixels[j * xSize + i])) );
+	out.print( colorTripleHex(pixels[j * xSize + i]) );
 	if(((++n)%11) == 0) out.println();
       }
     }
@@ -238,13 +238,16 @@ public class JavaPrinterGraphics extends Graphics implements PrinterGraphics
   /**
    * Get a nonsperated hex RGB triple, e.g. FFFFFF = white 
    */
-  private String colorTripleHex(Color c){
+  private String colorTripleHex(int num){
     String s = "";
 
     try {
-      s = Integer.toString( ( c.getRed() & 0xFF ) + 0x100, 16).substring(1)
-	+ Integer.toString( ( c.getGreen() & 0xFF ) + 0x100, 16).substring(1)
-	+ Integer.toString( ( c.getBlue() & 0xFF ) + 0x100, 16).substring(1);
+      s = Integer.toHexString( ( num & 0x00FFFFFF ) );
+      if( s.length() < 6 )
+	{
+	  s = "000000"+s;
+	  return s.substring(s.length()-6);
+	}
     } catch (Exception e){
       s = "FFFFFF";
     }
