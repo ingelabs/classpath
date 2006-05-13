@@ -121,7 +121,7 @@ public class DefaultTreeSelectionModel
   /**
    * The row of the last added path according to the RowMapper.
    */
-  protected int leadRow;
+  protected int leadRow = -1;
 
   /**
    * Constructs a new DefaultTreeSelectionModel.

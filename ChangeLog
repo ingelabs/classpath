@@ -1,3 +1,8 @@
+2006-05-13  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+ 
+	* javax/swing/tree/DefaultTreeSelectionModel.java (leadRow):
+	Initialise to -1.
+
 2006-05-13  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* resource/gnu/classpath/tools/jarsigner/MessageBundle.properties:
