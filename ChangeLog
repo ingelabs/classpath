@@ -1,3 +1,11 @@
+2006-05-14  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/text/AbstractDocument.java:
+	(insertString): Flipped if-expression and its blocks.
+	(remove): Dito.
+	(replace): Flipped if-expression and its blocks, added note, invoke
+	insertString and remove instead of insertStringImpl and removeImpl.
+
 2006-05-13  Tom Tromey  <tromey@redhat.com>
 
 	* java/nio/ByteBufferImpl.java (compact): Always set position.
