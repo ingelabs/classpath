@@ -1,5 +1,13 @@
 2006-05-13  Sven de Marothy  <sven@physto.se>
 
+	* javax/swing/text/html/HTMLDocument.java
+	(CharacterAction.start): Translate tag to StyleAttribute.
+	(pushCharacterStyle): Push copy of attributes onto stack.
+	* gnu/javax/swing/text/html/CharacterAttributeTranslator.java:
+	New file
+
+2006-05-13  Sven de Marothy  <sven@physto.se>
+
 	* gnu/javax/print/ipp/IppRequest.java (send): Set a timeout.
 	* java/awt/print/PrinterJob.java 
 	(getPrinterJob): Return a JavaPrinterJob
