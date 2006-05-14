@@ -1,5 +1,10 @@
 2006-05-14  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/java-net/javanet.c (_javanet_accept): Don't use C++
+	comments.
+
+2006-05-14  Mark Wielaard  <mark@klomp.org>
+
 	PR 27459
 	* native/jni/java-net/javanet.c (_javanet_accept): Reset the
 	inherited timeout on socket.

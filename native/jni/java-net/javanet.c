@@ -835,7 +835,7 @@ _javanet_accept (JNIEnv * env, jobject this, jobject impl)
     }
   while (result != TARGET_NATIVE_OK);
 
-  // Reset the inherited timeout
+  /* Reset the inherited timeout. */
   TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT (newfd, 0, result);
 
   /* Populate instance variables */
