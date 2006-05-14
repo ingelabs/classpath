@@ -139,11 +139,11 @@ public class Main
         result = 0;
       }
     catch (OptionException x)
-    {
-      System.err.println(x.getMessage()); //$NON-NLS-1$
-      if (tool.cmdLineParser != null)
-        tool.cmdLineParser.printHelp();
-    }
+      {
+        System.err.println(x.getMessage()); //$NON-NLS-1$
+        if (tool.cmdLineParser != null)
+          tool.cmdLineParser.printHelp();
+      }
     catch (SecurityException x)
       {
         log.throwing(Main.class.getName(), "main", x); //$NON-NLS-1$

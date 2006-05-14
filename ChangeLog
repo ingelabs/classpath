@@ -1,5 +1,9 @@
 2006-05-14  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* tools/gnu/classpath/tools/jarsigner/Main.java (main): Formatting.
+
+2006-05-14  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* resource/gnu/classpath/tools/keytool/MessageBundle.properties:
 	Added help text.
 	* tools/gnu/classpath/tools/keytool/keytool.txt: Removed
