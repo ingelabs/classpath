@@ -1,3 +1,20 @@
+2006-05-13  Casey Marshall  <csm@gnu.org>
+
+	Patch by Michael Barker <mike@middlesoft.co.uk>.
+	* gnu/java/nio/PipeImpl.java: Retrofitted to use VMChannel.
+	* gnu/java/nio/SelectorImpl.java (register): Added condition for
+	gnu.java.nio.SocketChannelSelectionKeyImpl.
+	* gnu/java/nio/SocketChannelSelectionKeyImpl.java: new file.
+	* gnu/java/nio/channels/FileChannelImpl.java: retrofitted to use
+	VMChannel.
+	* include/gnu_java_nio_VMChannel.h: new file.
+	* java/nio/FileChannel.java (read,write): changed to call abstract
+	method.
+	* native/jni/java-nio/gnu_java_nio_VMChannel.c: new file.
+	* native/jni/java-nio/Makefile.am (libjavanio_SOURCES): add
+	`gnu_java_nio_VMChannel.c.'
+	* vm/reference/gnu/java/nio/VMChannel.java: new file.
+
 2006-05-14  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/text/AbstractDocument.java:
@@ -6422,21 +6439,6 @@
 
 	* vm/reference/gnu/classpath/Unsafe.java:
 	New class to handle low-level facilities for concurrency.
-
-2006-03-19  Michael Barker <mike@middlesoft.co.uk>
-	
-	* vm/reference/gnu/java/nio/VMChannel.java: Added, supports setting 
-	non-blocking and scatter-gather io operations.
-	* gnu/java/nio/PipeImpl.java: Retrofitted to use VMChannel
-	* gnu/java/nio/SelectorImpl.java
-	(register) Added condition for gnu.java.nio.SocketChannelSelectionKeyImpl
-	* gnu/java/nio/SocketChannelSelectionKeyImpl.java Added.
-	* gnu/java/nio/channels/FileChannelImpl.java: Retrofitted to use VMChannel
-	* java/nio/FileChannel.java
-	(read (ByteBuffer)) Changed to call abstract method.
-	(write (ByteBuffer)) Changed to call abstract method.
-	* include/gnu_java_nio_VMChannel.h: Added.
-	* native/jni/java-nio/gnu_java_nio_VMChannel.c: Added.
 
 2006-03-19  Mark Wielaard  <mark@klomp.org>
 
