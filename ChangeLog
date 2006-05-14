@@ -1,5 +1,12 @@
 2006-05-14  Tom Tromey  <tromey@redhat.com>
 
+	* tools/gnu/classpath/tools/jar/Indexer.java
+	(writeCommandLineEntries): Simplify insertion.
+	* tools/gnu/classpath/tools/jar/Main.java (run): Don't allow both
+	-m and -M.
+
+2006-05-14  Tom Tromey  <tromey@redhat.com>
+
 	PR classpath/27514:
 	* gnu/java/net/IndexListParser.java (JAR_INDEX_FILE): Renamed.  Now
 	constant.

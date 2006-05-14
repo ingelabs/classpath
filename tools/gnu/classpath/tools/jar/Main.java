@@ -217,6 +217,8 @@ public class Main
       throw new OptionException("must specify one of -t, -c, -u, -x, or -i");
     if (changedDirectory != null)
       throw new OptionException("-C argument requires both directory and filename");
+    if (! wantManifest && manifestFile != null)
+      throw new OptionException("can't specify both -m and -M");
     Action t = (Action) operationMode.newInstance();
     t.run(this);
   }

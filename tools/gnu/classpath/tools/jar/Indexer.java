@@ -127,8 +127,9 @@ public class Indexer
     indexJarFile(contents, parameters.archiveFile, parameters.verbose);
     if (contents.length() != 0)
       {
-        contents.insert(0, (IndexListParser.JAR_INDEX_VERSION_KEY 
-                            + "1.0\n\n"));
+        // Insert in reverse order to avoid computing anything.
+        contents.insert(0, "1.0\n\n");
+        contents.insert(0, IndexListParser.JAR_INDEX_VERSION_KEY);
         ByteArrayInputStream in
           = new ByteArrayInputStream(contents.toString().getBytes());
         writeFile(false, in, IndexListParser.JAR_INDEX_FILE, parameters.verbose);
