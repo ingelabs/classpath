@@ -1,5 +1,7 @@
 2006-05-14  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* resource/gnu/classpath/tools/keytool/MessageBundle.properties:
+	Added help text.
 	* tools/gnu/classpath/tools/keytool/keytool.txt: Removed
 	* tools/gnu/classpath/tools/keytool/StorePasswdCmd.java: 
 	Increased visibility of fields used by parser anonymous classes.
