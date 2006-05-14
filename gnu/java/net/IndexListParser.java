@@ -63,8 +63,9 @@ import java.util.jar.JarFile;
  */
 public class IndexListParser
 {
-  String filePath = "META-INF/INDEX.LIST";
-  String versInfo = "JarIndex-Version: ";
+  public static final String JAR_INDEX_FILE = "META-INF/INDEX.LIST";
+  public static final String JAR_INDEX_VERSION_KEY = "JarIndex-Version: ";
+
   double versionNumber;
   ArrayList headers = new ArrayList();
   
@@ -80,16 +81,16 @@ public class IndexListParser
     try
     {
     // Parse INDEX.LIST if it exists
-    if (jarfile.getEntry(filePath) != null)
+    if (jarfile.getEntry(JAR_INDEX_FILE) != null)
       {
         BufferedReader br = new BufferedReader(new InputStreamReader(new URL(baseJarURL,
-                                                                             filePath).openStream()));
+                                                                             JAR_INDEX_FILE).openStream()));
         
         // Must start with version info
         String line = br.readLine();
-        if (!line.startsWith(versInfo))
+        if (!line.startsWith(JAR_INDEX_VERSION_KEY))
           return;
-        versionNumber = Double.parseDouble(line.substring(versInfo.length()).trim());
+        versionNumber = Double.parseDouble(line.substring(JAR_INDEX_VERSION_KEY.length()).trim());
         
         // Blank line must be next
         line = br.readLine();
@@ -134,7 +135,7 @@ public class IndexListParser
    */
   public String getVersionInfo()
   {
-    return versInfo + getVersionNumber();
+    return JAR_INDEX_VERSION_KEY + getVersionNumber();
   }
   
   /**

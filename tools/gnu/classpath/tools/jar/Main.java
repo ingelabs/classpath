@@ -82,6 +82,14 @@ public class Main
   /** Used only while parsing, holds the first argument for -C.  */
   String changedDirectory;
 
+  void setArchiveFile(String filename) throws OptionException
+  {
+    if (archiveFile != null)
+      throw new OptionException("archive file name already set to "
+                                + archiveFile);
+    archiveFile = new File(filename);
+  }
+
   class HandleFile
       extends FileArgumentCallback
   {
@@ -112,24 +120,36 @@ public class Main
       this.mode = mode;
     }
 
+    public ModeOption(char shortName, String description, String argName,
+                      Class mode)
+    {
+      super(shortName, description, argName);
+      this.mode = mode;
+    }
+
     public void parsed(String argument) throws OptionException
     {
       if (operationMode != null)
         throw new OptionException("operation mode already specified");
       operationMode = mode;
+      // We know this is only the case for -i.
+      if (argument != null)
+        setArchiveFile(argument);
     }
   }
 
   private Parser initializeParser()
   {
     Parser p = new ClasspathToolParser("jar");
-    p.setHeader("Usage: jar -ctxu [OPTIONS] jar-file [-C DIR FILE] FILE...");
+    p.setHeader("Usage: jar -ctxui [OPTIONS] jar-file [-C DIR FILE] FILE...");
 
     OptionGroup grp = new OptionGroup("Operation mode");
     grp.add(new ModeOption('c', "create a new archive", Creator.class));
     grp.add(new ModeOption('x', "extract from archive", Extractor.class));
     grp.add(new ModeOption('t', "list archive contents", Lister.class));
     grp.add(new ModeOption('u', "update archive", Updater.class));
+    // Note that -i works in-place and explicitly requires a file name.
+    grp.add(new ModeOption('i', "compute archive index", "FILE", Indexer.class));
     p.add(grp);
 
     grp = new OptionGroup("Operation modifiers");
@@ -137,8 +157,7 @@ public class Main
     {
       public void parsed(String argument) throws OptionException
       {
-        // FIXME: error if already set.
-        archiveFile = new File(argument);
+        setArchiveFile(argument);
       }
     });
     grp.add(new Option('0', "store only; no ZIP compression")
@@ -182,7 +201,6 @@ public class Main
       }
     });
     p.add(grp);
-    // -i - need to parse classes
 
     return p;
   }
@@ -192,11 +210,11 @@ public class Main
   {
     Parser p = initializeParser();
     // Special hack to emulate old tar-style commands.
-    if (args[0].charAt(0) != '-')
+    if (args.length > 0 && args[0].charAt(0) != '-')
       args[0] = '-' + args[0];
     p.parse(args, new HandleFile());
     if (operationMode == null)
-      throw new OptionException("must specify one of -t, -c, -u, or -x");
+      throw new OptionException("must specify one of -t, -c, -u, -x, or -i");
     if (changedDirectory != null)
       throw new OptionException("-C argument requires both directory and filename");
     Action t = (Action) operationMode.newInstance();
@@ -213,6 +231,8 @@ public class Main
     catch (OptionException arg)
       {
         System.err.println("jar: " + arg.getMessage());
+        // FIXME: this should be pushed into the parser somehow.
+        System.err.println("Try 'jar --help' for more information");
         System.exit(1);
       }
     catch (Exception e)

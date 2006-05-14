@@ -38,10 +38,9 @@
 
 package gnu.classpath.tools.jar;
 
-import gnu.classpath.SystemProperties;
+import gnu.classpath.tools.getopt.OptionException;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,15 +51,19 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 public class Creator
     extends Action
 {
-  ZipOutputStream outputStream;
+  JarOutputStream outputStream;
   HashSet writtenItems = new HashSet();
+  // The manifest to use, or null if we don't want a manifest.
+  Manifest manifest;
 
   private long copyFile(CRC32 crc, InputStream is, OutputStream output)
       throws IOException
@@ -172,13 +175,12 @@ public class Creator
     return allEntries;
   }
 
-  private void writeCommandLineEntries(Main parameters, ZipOutputStream os)
+  private void writeCommandLineEntries(Main parameters)
       throws IOException
   {
-    outputStream = os;
-    outputStream.setMethod(parameters.storageMode);
-
-    writeManifest(parameters);
+    // We've already written the manifest, make sure to mark it.
+    writtenItems.add("META-INF/");
+    writtenItems.add(JarFile.MANIFEST_NAME);
 
     ArrayList allEntries = getAllEntries(parameters);
     Iterator it = allEntries.iterator();
@@ -189,53 +191,47 @@ public class Creator
       }
   }
 
-  protected void writeCommandLineEntries(Main parameters, File zipFile)
+  protected Manifest createManifest(Main parameters)
     throws IOException
   {
-      OutputStream os = new BufferedOutputStream(new FileOutputStream(zipFile));
-      writeCommandLineEntries(parameters, new ZipOutputStream(os));
-  }
-
-  protected void writeManifest(Main parameters) throws IOException
-  {
-    File manifestFile;
-    InputStream contents;
+    if (! parameters.wantManifest)
+      return null;
     if (parameters.manifestFile != null)
       {
         // User specified a manifest file.
-        contents = new FileInputStream(parameters.manifestFile);
+        InputStream contents = new FileInputStream(parameters.manifestFile);
+        return new Manifest(contents);
       }
-    else if (! parameters.wantManifest)
-      {
-        // User didn't want a manifest.
-        return;
-      }
-    else
-      {
-        String desc = ("Manifest-Version: 1.0\n"
-                       + "Created-By: "
-                       + SystemProperties.getProperty("java.version")
-                       + " (GNU Classpath)\n\n");
-        contents = new ByteArrayInputStream(desc.getBytes("UTF-8"));
-      }
-    // Make the META-INF directory and the manifest file.
-    writeFile(true, null, "META-INF/", parameters.verbose);
-    writeFile(false, contents, "META-INF/MANIFEST.MF", parameters.verbose);
+    return new Manifest();
+  }
+
+  protected void writeCommandLineEntries(Main parameters, OutputStream os)
+    throws IOException
+  {
+    manifest = createManifest(parameters);
+    outputStream = new JarOutputStream(os, manifest);
+    // FIXME: in Classpath this sets the method too late for the
+    // manifest file.
+    outputStream.setMethod(parameters.storageMode);
+    writeCommandLineEntries(parameters);
   }
 
   protected void close() throws IOException
   {
-    // FIXME: handle index file here ...?
     outputStream.finish();
     outputStream.close();
   }
 
-  public void run(Main parameters) throws IOException
+  public void run(Main parameters) throws IOException, OptionException
   {
     if (parameters.archiveFile == null || parameters.archiveFile.equals("-"))
-      writeCommandLineEntries(parameters, new ZipOutputStream(System.out));
+      writeCommandLineEntries(parameters, System.out);
     else
-      writeCommandLineEntries(parameters, parameters.archiveFile);
+      {
+        OutputStream os
+          = new BufferedOutputStream(new FileOutputStream(parameters.archiveFile));
+        writeCommandLineEntries(parameters, os);
+      }
     close();
   }
 }

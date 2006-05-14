@@ -1,3 +1,33 @@
+2006-05-14  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/27514:
+	* gnu/java/net/IndexListParser.java (JAR_INDEX_FILE): Renamed.  Now
+	constant.
+	(JAR_INDEX_VERSION_KEY): Likewise.
+	(IndexListParser): Updated.
+	(getVersionInfo): Likewise.
+	* tools/gnu/classpath/tools/jar/Indexer.java: New file.
+	* tools/gnu/classpath/tools/jar/Action.java (run): Now throws
+	OptionException.
+	* tools/gnu/classpath/tools/jar/Main.java (initializeParser): Handle
+	-i.
+	(ModeOption): New constructor.
+	(parsed): Updated.  Use setArchiveFile.
+	(setArchiveFile): New method.
+	(run): Handle no-argument case.
+	(main): Emit --help message on option error.
+	* tools/gnu/classpath/tools/jar/Updater.java (inputJar): New field.
+	(createManifest): New method.
+	(run): Updated.  Throws OptionException.  Correctly copy zip entry.
+	* tools/gnu/classpath/tools/jar/Creator.java (createManifest): New
+	method.
+	(writeManifest): Removed.
+	(outputStream): Now a JarOutputStream.
+	(writeCommandLineEntries): Changed parameters.  Updated callers.
+	(run): Throws OptionException.
+	* java/util/jar/JarOutputStream.java (putNextEntry): Typo fix.
+	* java/util/jar/Manifest.java (read): Typo fix.
+
 2006-05-14  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/JMenuItem.java
