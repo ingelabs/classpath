@@ -42,6 +42,7 @@ import gnu.classpath.SystemProperties;
 import gnu.classpath.tools.common.CallbackUtil;
 import gnu.classpath.tools.common.ProviderUtil;
 import gnu.classpath.tools.common.SecurityProviderInfo;
+import gnu.classpath.tools.getopt.Parser;
 import gnu.java.security.OID;
 import gnu.java.security.Registry;
 import gnu.java.security.der.BitString;
@@ -228,11 +229,18 @@ abstract class Command
    * 
    * @param args an array of options for this handler and possibly other
    *          commands and their options.
-   * @param startIndex the index of the first argument in <code>args</code> to
-   *          process.
-   * @return the index of the first unprocessed argument in <code>args</code>.
+   * @return the remaining un-processed <code>args</code>.
    */
-  abstract int processArgs(String[] args, int startIndex);
+  String[] processArgs(String[] args)
+  {
+    log.entering(this.getClass().getName(), "processArgs", args); //$NON-NLS-1$
+
+    Parser cmdOptionsParser = getParser();
+    String[] result = cmdOptionsParser.parse(args);
+
+    log.exiting(this.getClass().getName(), "processArgs", result); //$NON-NLS-1$
+    return result;
+  }
 
   /**
    * Initialize this concrete command handler for later invocation of the
@@ -344,6 +352,12 @@ abstract class Command
   }
 
   // parameter setup and validation methods -----------------------------------
+
+  /**
+   * @return a {@link Parser} that knows how to parse the concrete command's
+   *         options.
+   */
+  abstract Parser getParser();
 
   /**
    * Convenience method to setup the key store given its type, its password, its

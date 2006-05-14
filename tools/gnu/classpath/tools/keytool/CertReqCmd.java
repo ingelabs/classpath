@@ -38,6 +38,11 @@ exception statement from your version. */
 
 package gnu.classpath.tools.keytool;
 
+import gnu.classpath.tools.getopt.ClasspathToolParser;
+import gnu.classpath.tools.getopt.Option;
+import gnu.classpath.tools.getopt.OptionException;
+import gnu.classpath.tools.getopt.OptionGroup;
+import gnu.classpath.tools.getopt.Parser;
 import gnu.java.security.OID;
 import gnu.java.security.der.BitString;
 import gnu.java.security.der.DER;
@@ -170,15 +175,16 @@ import javax.security.auth.x500.X500Principal;
 class CertReqCmd extends Command
 {
   private static final Logger log = Logger.getLogger(CertReqCmd.class.getName());
-  private String _alias;
-  private String _sigAlgorithm;
-  private String _certReqFileName;
-  private String _password;
-  private String _ksType;
-  private String _ksURL;
-  private String _ksPassword;
-  private String _providerClassName;
-  private boolean nullAttributes;
+  private static final String ATTRIBUTES_OPT = "attributes"; //$NON-NLS-1$
+  protected String _alias;
+  protected String _sigAlgorithm;
+  protected String _certReqFileName;
+  protected String _password;
+  protected String _ksType;
+  protected String _ksURL;
+  protected String _ksPassword;
+  protected String _providerClassName;
+  protected boolean nullAttributes;
 
   // default 0-arguments constructor
 
@@ -246,44 +252,6 @@ class CertReqCmd extends Command
 
   // life-cycle methods -------------------------------------------------------
 
-  int processArgs(String[] args, int i)
-  {
-    int limit = args.length;
-    String opt;
-    while (++i < limit)
-      {
-        opt = args[i];
-        log.finest("args[" + i + "]=" + opt); //$NON-NLS-1$ //$NON-NLS-2$
-        if (opt == null || opt.length() == 0)
-          continue;
-
-        if ("-alias".equals(opt)) // -alias ALIAS //$NON-NLS-1$
-          _alias = args[++i];
-        else if ("-sigalg".equals(opt)) // -sigalg ALGORITHM //$NON-NLS-1$
-          _sigAlgorithm = args[++i];
-        else if ("-file".equals(opt)) // -file FILE_NAME //$NON-NLS-1$
-          _certReqFileName = args[++i];
-        else if ("-keypass".equals(opt)) // -keypass PASSWORD //$NON-NLS-1$
-          _password = args[++i];
-        else if ("-storetype".equals(opt)) // -storetype STORE_TYPE //$NON-NLS-1$
-          _ksType = args[++i];
-        else if ("-keystore".equals(opt)) // -keystore URL //$NON-NLS-1$
-          _ksURL = args[++i];
-        else if ("-storepass".equals(opt)) // -storepass PASSWORD //$NON-NLS-1$
-          _ksPassword = args[++i];
-        else if ("-provider".equals(opt)) // -provider PROVIDER_CLASS_NAME //$NON-NLS-1$
-          _providerClassName = args[++i];
-        else if ("-v".equals(opt)) //$NON-NLS-1$
-          verbose = true;
-        else if ("-attributes".equals(opt)) //$NON-NLS-1$
-          nullAttributes = true;
-        else
-          break;
-      }
-
-    return i;
-  }
-
   void setup() throws Exception
   {
     setOutputStreamParam(_certReqFileName);
@@ -345,6 +313,108 @@ class CertReqCmd extends Command
   }
 
   // own methods --------------------------------------------------------------
+
+  Parser getParser()
+  {
+    log.entering(this.getClass().getName(), "getParser"); //$NON-NLS-1$
+
+    Parser result = new ClasspathToolParser(Main.CERTREQ_CMD, true);
+    result.setHeader(Messages.getString("CertReqCmd.25")); //$NON-NLS-1$
+    result.setFooter(Messages.getString("CertReqCmd.24")); //$NON-NLS-1$
+    OptionGroup options = new OptionGroup(Messages.getString("CertReqCmd.23")); //$NON-NLS-1$
+    options.add(new Option(Main.ALIAS_OPT,
+                           Messages.getString("CertReqCmd.22"), //$NON-NLS-1$
+                           Messages.getString("CertReqCmd.21")) //$NON-NLS-1$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        _alias = argument;
+      }
+    });
+    options.add(new Option(Main.SIGALG_OPT,
+                           Messages.getString("CertReqCmd.20"), //$NON-NLS-1$
+                           Messages.getString("CertReqCmd.19")) //$NON-NLS-1$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        _sigAlgorithm = argument;
+      }
+    });
+    options.add(new Option(Main.FILE_OPT,
+                           Messages.getString("CertReqCmd.18"), //$NON-NLS-1$
+                           Messages.getString("CertReqCmd.17")) //$NON-NLS-1$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        _certReqFileName = argument;
+      }
+    });
+    options.add(new Option(Main.KEYPASS_OPT,
+                           Messages.getString("CertReqCmd.16"), //$NON-NLS-1$
+                           Messages.getString("CertReqCmd.9")) //$NON-NLS-1$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        _password = argument;
+      }
+    });
+    options.add(new Option(Main.STORETYPE_OPT,
+                           Messages.getString("CertReqCmd.14"), //$NON-NLS-1$
+                           Messages.getString("CertReqCmd.13")) //$NON-NLS-1$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        _ksType = argument;
+      }
+    });
+    options.add(new Option(Main.KEYSTORE_OPT,
+                           Messages.getString("CertReqCmd.12"), //$NON-NLS-1$
+                           Messages.getString("CertReqCmd.11")) //$NON-NLS-1$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        _ksURL = argument;
+      }
+    });
+    options.add(new Option(Main.STOREPASS_OPT,
+                           Messages.getString("CertReqCmd.10"), //$NON-NLS-1$
+                           Messages.getString("CertReqCmd.9")) //$NON-NLS-1$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        _ksPassword = argument;
+      }
+    });
+    options.add(new Option(Main.PROVIDER_OPT,
+                           Messages.getString("CertReqCmd.8"), //$NON-NLS-1$
+                           Messages.getString("CertReqCmd.7")) //$NON-NLS-1$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        _providerClassName = argument;
+      }
+    });
+    options.add(new Option(Main.VERBOSE_OPT,
+                           Messages.getString("CertReqCmd.6")) //$NON-NLS-1$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        verbose = true;
+      }
+    });
+    options.add(new Option(ATTRIBUTES_OPT,
+                           Messages.getString("CertReqCmd.5")) //$NON-NLS-1$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        nullAttributes = true;
+      }
+    });
+    result.add(options);
+
+    log.exiting(this.getClass().getName(), "getParser", result); //$NON-NLS-1$
+    return result;
+  }
 
   /**
    * @param aliasName

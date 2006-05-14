@@ -1,3 +1,57 @@
+2006-05-14  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/gnu/classpath/tools/keytool/keytool.txt: Removed
+	* tools/gnu/classpath/tools/keytool/StorePasswdCmd.java: 
+	Increased visibility of fields used by parser anonymous classes.
+	(processArgs): Removed.
+	(getParser): New method.
+	* tools/gnu/classpath/tools/keytool/SelfCertCmd.java: Likewise.
+	(setup): Mark (Eclipse) strings that need not be externalised.
+	(start): Likewise.
+	* tools/gnu/classpath/tools/keytool/PrintCertCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/Main.java: Amended to use getopt
+	command line option parsing.
+	* tools/gnu/classpath/tools/keytool/ListCmd.java: 
+	Increased visibility of fields used by parser anonymous classes.
+	(processArgs): Removed.
+	(setup): set 'all' local field.
+	(getParser): New method.
+	* tools/gnu/classpath/tools/keytool/KeyPasswdCmd.java: 
+	Increased visibility of fields used by parser anonymous classes.
+	(processArgs): Removed.
+	(getParser): New method.
+	* tools/gnu/classpath/tools/keytool/KeyCloneCmd.java: Likewise.
+	(setNewKeyPassword): Fixed comments.
+	* tools/gnu/classpath/tools/keytool/ImportCmd.java: 
+	Increased visibility of fields used by parser anonymous classes.
+	(processArgs): Removed.
+	(getParser): New method.
+	(findTrustInCACerts): Mark (Eclipse) strings that need not be
+	externalised.
+	* tools/gnu/classpath/tools/keytool/GenKeyCmd.java: 
+	Increased visibility of fields used by parser anonymous classes.
+	(processArgs): Removed.
+	(setup): Mark (Eclipse) strings that need not be externalised.
+	(getParser): New method.
+	* tools/gnu/classpath/tools/keytool/IdentityDBCmd.java: Likewise.
+	* tools/gnu/classpath/tools/keytool/DeleteCmd.java: 
+	Increased visibility of fields used by parser anonymous classes.
+	(processArgs): Removed.
+	(getParser): New method.
+	* tools/gnu/classpath/tools/keytool/CertReqCmd.java: Likewise.
+	(ATTRIBUTES_OPT): New constant.
+	* tools/gnu/classpath/tools/keytool/ExportCmd.java: 
+	Increased visibility of fields used by parser anonymous classes.
+	(processArgs): Removed.
+	(setup): Mark (Eclipse) strings that need not be externalised.
+	(start): Likewise.
+	Reduced logging level.
+	(getParser): New method.
+	* tools/gnu/classpath/tools/keytool/Command.java
+	(processArgs): Made it concrete.
+	(getParser): New abstract method.
+	* tools/Makefile.am (KEYTOOL_HELPS): Removed.
+
 2006-05-13  Casey Marshall  <csm@gnu.org>
 
 	Patch by Michael Barker <mike@middlesoft.co.uk>.
