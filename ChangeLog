@@ -1,3 +1,7 @@
+2006-05-14  Tom Tromey  <tromey@redhat.com>
+
+	* native/plugin/.cvsignore: Updated.
+
 2006-05-14  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/java-net/javanet.c (_javanet_accept): Don't use C++
