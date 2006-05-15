@@ -44,6 +44,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -111,7 +112,7 @@ public class Extractor
     // Open the input file.
     ZipInputStream zis;
     File zfile = parameters.archiveFile;
-    if (zfile == null || "-".equals(zfile.getName()))
+    if (zfile == null || "-".equals(zfile.getName())) //$NON-NLS-1$
       zis = new ZipInputStream(System.in);
     else
       {
@@ -132,7 +133,12 @@ public class Extractor
             if (file.mkdirs())
               {
                 if (parameters.verbose)
-                  System.err.println("  created: " + file);
+                  {
+                    String msg
+                      = MessageFormat.format(Messages.getString("Extractor.Created"), //$NON-NLS-1$
+                                             new Object[] { file });
+                    System.err.println(msg);
+                  }
               }
             continue;
           }
@@ -145,9 +151,13 @@ public class Extractor
 
         if (parameters.verbose)
           {
-            String leader = (entry.getMethod() == ZipEntry.STORED
-                             ? " extracted" : "  inflated");
-            System.err.println(leader + ": " + file);
+            String fmt;
+            if (entry.getMethod() == ZipEntry.STORED)
+              fmt = Messages.getString("Extractor.Extracted"); //$NON-NLS-1$
+            else
+              fmt = Messages.getString("Extractor.Inflated"); //$NON-NLS-1$
+            String msg = MessageFormat.format(fmt, new Object[] { file });
+            System.err.println(msg);
           }
       }
   }

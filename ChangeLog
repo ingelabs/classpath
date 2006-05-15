@@ -1,3 +1,15 @@
+2006-05-15  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/jar/Main.java (setArchiveFile): Use
+	MessageFormat.
+	* tools/gnu/classpath/tools/jar/Indexer.java (indexJarFile): Use
+	MessageFormat.
+	* tools/gnu/classpath/tools/jar/Extractor.java: Externalized strings.
+	(run): Use MessageFormat.
+	* resource/gnu/classpath/tools/jar/messages.properties: New file.
+	* tools/gnu/classpath/tools/jar/Creator.java: Externalized strings.
+	(writeFile): Use MessageFormat.
+
 2006-05-15  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/awt/Toolkit.java (getDefaultToolkit): Use Class.forName()

@@ -44,6 +44,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -61,7 +62,11 @@ public class Indexer
     throws IOException
   {
     if (verbose)
-      System.err.println("indexing: " + fileName);
+      {
+        String msg = MessageFormat.format(Messages.getString("Indexer.Indexing"), //$NON-NLS-1$
+                                          new Object[] { fileName });
+        System.err.println(msg);
+      }
     JarFile jf = new JarFile(fileName);
 
     // Index the files in this jar.
@@ -71,7 +76,7 @@ public class Indexer
       {
         JarEntry entry = (JarEntry) e.nextElement();
         String name = entry.getName();
-        if (name.startsWith("META-INF/"))
+        if (name.startsWith("META-INF/")) //$NON-NLS-1$
           continue;
         int index = name.lastIndexOf('/');
         if (index != -1)
@@ -102,7 +107,7 @@ public class Indexer
         String jars = attrs.getValue(Attributes.Name.CLASS_PATH);
         if (jars != null)
           {
-            StringTokenizer st = new StringTokenizer(jars, " ");
+            StringTokenizer st = new StringTokenizer(jars, " "); //$NON-NLS-1$
             while (st.hasMoreTokens())
               {
                 String name = st.nextToken();
@@ -127,7 +132,7 @@ public class Indexer
     if (contents.length() != 0)
       {
         // Insert in reverse order to avoid computing anything.
-        contents.insert(0, "1.0\n\n");
+        contents.insert(0, "1.0\n\n"); //$NON-NLS-1$
         contents.insert(0, IndexListParser.JAR_INDEX_VERSION_KEY);
         ByteArrayInputStream in
           = new ByteArrayInputStream(contents.toString().getBytes());

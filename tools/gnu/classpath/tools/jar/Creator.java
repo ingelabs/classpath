@@ -46,6 +46,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -88,7 +89,11 @@ public class Creator
     if (writtenItems.contains(filename))
       {
         if (verbose)
-          System.err.println("ignoring entry " + filename);
+          {
+            String msg = MessageFormat.format(Messages.getString("Creator.Ignoring"), //$NON-NLS-1$
+                                              new Object[] { filename });
+            System.err.println(msg);
+          }
         return;
       }
 
@@ -121,8 +126,15 @@ public class Creator
           perc = 0;
         else
           perc = 100 - (100 * csize) / size;
-        System.err.println("adding: " + filename + " (in=" + size + ") (out="
-                           + entry.getSize() + ") (stored " + perc + "%)");
+        String msg = MessageFormat.format(Messages.getString("Creator.Adding"), //$NON-NLS-1$
+                                          new Object[]
+                                            {
+                                              filename,
+                                              Long.valueOf(size),
+                                              Long.valueOf(entry.getSize()),
+                                              Long.valueOf(perc)
+                                            });
+        System.err.println(msg);
       }
   }
 
@@ -177,7 +189,7 @@ public class Creator
       throws IOException
   {
     // We've already written the manifest, make sure to mark it.
-    writtenItems.add("META-INF/");
+    writtenItems.add("META-INF/"); //$NON-NLS-1$
     writtenItems.add(JarFile.MANIFEST_NAME);
 
     ArrayList allEntries = getAllEntries(parameters);
@@ -222,7 +234,7 @@ public class Creator
 
   public void run(Main parameters) throws IOException
   {
-    if (parameters.archiveFile == null || parameters.archiveFile.equals("-"))
+    if (parameters.archiveFile == null || parameters.archiveFile.equals("-")) //$NON-NLS-1$
       writeCommandLineEntries(parameters, System.out);
     else
       {
