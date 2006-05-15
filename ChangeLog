@@ -1,3 +1,9 @@
+2006-05-15  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* NEWS: Announce inclusion of gcjwebplugin.
+	Announce inclusion of appletviewer.
+	* INSTALL: Note gcjwebplugin dependencies.
+
 2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/RepaintManager.java (paintDirtyRegions):
