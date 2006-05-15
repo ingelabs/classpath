@@ -1,3 +1,24 @@
+2006-05-15  Tom Tromey  <tromey@redhat.com>
+
+	* java/net/URLClassLoader.java: Moved inner classes to
+	gnu.java.net.loader.
+	(factoryCache): Changed type.
+	(URL_LOADER_PREFIX): New constant.
+	(URLClassLoader): Updated for new factoryCache.
+	(addURLImpl): Use reflection to search for a loader.
+	(findClass): Use getClass method on URLLoader.
+	(getURLStreamHandler): Removed.
+	* gnu/java/net/loader/URLLoader.java: New file, extracted
+	from URLClassLoader.
+	* gnu/java/net/loader/Resource.java: Likewise.
+	* gnu/java/net/loader/FileResource.java: Likewise.
+	* gnu/java/net/loader/FileURLLoaderjava: Likewise.
+	* gnu/java/net/loader/JarURLLoader.java: Likewise.
+	* gnu/java/net/loader/JarURLResource.java: Likewise.
+	* gnu/java/net/loader/RemoteURLLoader.java: Likewise.
+	* gnu/java/net/loader/RemoteResource.java: Likewise.
+	* gnu/java/net/loader/ULRStreamHandlerCache.java: New file.
+
 2006-05-15  Sven de Marothy  <sven@physto.se>
 
 	* native/target/generic/target_generic_network.h: 
