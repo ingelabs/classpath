@@ -136,44 +136,6 @@ public class RepaintManager
 
   }
 
-  /**
-   * Compares two components using their depths in the component hierarchy.
-   * A component with a lesser depth (higher level components) are sorted
-   * before components with a deeper depth (low level components). This is used
-   * to order paint requests, so that the higher level components are painted
-   * before the low level components get painted.
-   *
-   * @author Roman Kennke (kennke@aicas.com)
-   */
-  private class ComponentComparator implements Comparator
-  {
-
-    /**
-     * Compares two components.
-     *
-     * @param o1 the first component
-     * @param o2 the second component
-     *
-     * @return a negative integer, if <code>o1</code> is bigger in than
-     *         <code>o2</code>, zero, if both are at the same size and a
-     *         positive integer, if <code>o1</code> is smaller than
-     *         <code>o2</code> 
-     */
-    public int compare(Object o1, Object o2)
-    {
-      if (o1 instanceof JComponent && o2 instanceof JComponent)
-        {
-          JComponent c1 = (JComponent) o1;
-          Rectangle d1 = (Rectangle) dirtyComponentsWork.get(c1);
-          JComponent c2 = (JComponent) o2;
-          Rectangle d2 = (Rectangle) dirtyComponentsWork.get(c2);
-          return d2.width * d2.height - d1.width * d1.height;
-        }
-      throw new ClassCastException("This comparator can only be used with "
-                                   + "JComponents");
-    }
-  }
-
   /** 
    * A table storing the dirty regions of components.  The keys of this
    * table are components, the values are rectangles. Each component maps
@@ -196,11 +158,6 @@ public class RepaintManager
    * locking.
    */
   HashMap dirtyComponentsWork;
-
-  /**
-   * The comparator used for ordered inserting into the repaintOrder list. 
-   */
-  private transient Comparator comparator;
 
   /**
    * A single, shared instance of the helper class. Any methods which mark
@@ -583,7 +540,7 @@ public class RepaintManager
         someRemoved = false;
         // Where possible, do not repaint the component, extending the
         // parent repaint region instead.
-        for (int i = 0; i < components.length; i++)
+        Components: for (int i = 0; i < components.length; i++)
           if (components[i] != null)
             {
               Component c = (Component) components[i];
@@ -604,8 +561,7 @@ public class RepaintManager
                     Rectangle crect = (Rectangle) dirtyComponentsWork.get(c);
                     crect.translate(x, y);
                     prect.add(crect);
-                    c = p;
-                    p = p.getParent();
+                    continue Components;
                   }
                 else
                   {

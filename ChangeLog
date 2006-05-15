@@ -1,3 +1,10 @@
+2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/RepaintManager.java (paintDirtyRegions):
+	Break loop as soon as the component repaint is merged
+	with some parent. (ComponentComparator): Removed.
+	(comparator): Removed.
+
 2006-05-15  Roman Kennke <kennke@aicas.com>
 
 	* javax/swing/border/TitledBorder.java
