@@ -1,3 +1,10 @@
+2006-05-15  Tom Tromey  <tromey@redhat.com>
+
+	* resource/gnu/classpath/tools/jar/messages.properties: Fixed
+	argument indices.
+	* resource/gnu/classpath/tools/getopt/Messages.properties: Fixed
+	argument indices.
+
 2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JComponent.java (findOverlapParent): Stop loop at
