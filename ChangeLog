@@ -1,3 +1,9 @@
+2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/RepaintManager.java (addDirtyRegion):
+	If there is a lightweight parent, recursively add the corresponding
+	region of the parent instead.
+
 2006-05-15  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/Graphics2D.java: Added some API doc comments.

@@ -422,6 +422,16 @@ public class RepaintManager
   {
     if (w <= 0 || h <= 0 || !component.isShowing())
       return;
+    
+    Component parent = component.getParent();
+    if (parent instanceof JComponent)
+      {
+        // If there is a delegateable parent, add the parent region instead.
+        addDirtyRegion((JComponent) parent, x + component.getX(),
+                       y + component.getY(), w, h);
+        return;
+      }
+    
     component.computeVisibleRect(rectCache);
     SwingUtilities.computeIntersection(x, y, w, h, rectCache);
 
