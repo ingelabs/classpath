@@ -1,5 +1,9 @@
 2006-05-15  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/Graphics2D.java: Remove PrinterJob import.
+
+2006-05-15  Mark Wielaard  <mark@klomp.org>
+
 	* doc/www.gnu.org/announce/20060515.wml: New file.
 	* doc/www.gnu.org/newsitems.txt: Add 0.91 release announcement.
 	* doc/www.gnu.org/downloads/downloads.wml: Add 0.91.

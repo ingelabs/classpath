@@ -47,7 +47,6 @@ import java.awt.image.RenderedImage;
 import java.awt.image.renderable.RenderableImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
-import java.awt.print.PrinterJob;
 import java.text.AttributedCharacterIterator;
 import java.util.Map;
 
