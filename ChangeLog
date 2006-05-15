@@ -1,5 +1,10 @@
 2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/swing/DefaultDesktopManager.java (setBoundsForFrame):
+	Do not repaint nor revalidate here.
+
+2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/swing/RepaintManager.java (addDirtyRegion):
 	If there is a lightweight parent, recursively add the corresponding
 	region of the parent instead.
