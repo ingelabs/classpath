@@ -1,7 +1,12 @@
 2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
-	* javax/swing/DefaultDesktopManager.java (endDraggingFrame, endResizingFrame):
-	Do not repaint, unless in the outline mode.
+	* javax/swing/JTable.java (TableTextArea.scrollRectToVisible):
+	Removed.
+
+2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/DefaultDesktopManager.java (endDraggingFrame, 
+	endResizingFrame): Do not repaint, unless in the outline mode.
 
 2006-05-15  David Gilbert  <david.gilbert@object-refinery.com>
 

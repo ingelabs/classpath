@@ -1272,17 +1272,6 @@ public class JTable
       {
         setBorder(BorderFactory.createLineBorder(getGridColor(), 2));
       }
-    
-      /**
-       * With not this method overridden, the scroll pane scrolls to the
-       * top left cornec (untranslated position of the caret) after the first
-       * keystroke. 
-       */
-      public void scrollRectToVisible(Rectangle r)
-      {
-        // Do nothing here. If the editing session starts outside the visible
-        // bounds, the editCellAt will scroll.
-      }
     }    
   
 
