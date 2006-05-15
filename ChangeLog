@@ -1,6 +1,11 @@
 2006-05-15  Roman Kennke <kennke@aicas.com>
 
 	* javax/swing/border/TitledBorder.java
+	(paintBorderWithTitle): Fixed indentation.
+
+2006-05-15  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/border/TitledBorder.java
 	(layoutBorderWithTitle): Fetch border using getBorder() instead
 	of using the border field directly. Allows for the use of
 	an UI supplied border in the case when a null border was set.

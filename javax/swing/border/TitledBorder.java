@@ -40,7 +40,6 @@ package javax.swing.border;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -617,84 +616,84 @@ public class TitledBorder extends AbstractBorder
     int titleWidth = fm.stringWidth(getTitle());
 
     if (b != null)
-	      {
-	        // Paint border in segments, when the title is painted above the
-	        // border.
-	        if (((titlePosition == TOP || titlePosition == DEFAULT_POSITION)
-	             && (borderRect.y > textLoc.y - fontAscent))
-	            || (titlePosition == BOTTOM
-	                && borderRect.y + borderRect.height < textLoc.y + fontDescent))
-	          {
-	            Rectangle clip = new Rectangle();
-	            Rectangle saved = g.getClipBounds();
+      {
+        // Paint border in segments, when the title is painted above the
+        // border.
+        if (((titlePosition == TOP || titlePosition == DEFAULT_POSITION)
+            && (borderRect.y > textLoc.y - fontAscent))
+            || (titlePosition == BOTTOM
+                && borderRect.y + borderRect.height < textLoc.y + fontDescent))
+          {
+            Rectangle clip = new Rectangle();
+            Rectangle saved = g.getClipBounds();
 
-	            // Paint border left from the text.
-	            clip.setBounds(saved);
-	            SwingUtilities.computeIntersection(x, y, textLoc.x - x - 1,
-	                                               height, clip);
-	            if (! clip.isEmpty())
-	              {
-	                g.setClip(clip);
-	                b.paintBorder(c, g, borderRect.x, borderRect.y,
-	                              borderRect.width,
-	                              borderRect.height);
-	              }
-	            // Paint border right from the text.
-	            clip.setBounds(saved);
-	            SwingUtilities.computeIntersection(textLoc.x + titleWidth + 1, y,
-	                                      x + width - (textLoc.x + titleWidth +1),
-	                                      height, clip);
-	            if (! clip.isEmpty())
-	              {
-	                g.setClip(clip);
-	                b.paintBorder(c, g, borderRect.x, borderRect.y,
-	                              borderRect.width,
-	                              borderRect.height);
-	              }
+            // Paint border left from the text.
+            clip.setBounds(saved);
+            SwingUtilities.computeIntersection(x, y, textLoc.x - x - 1,
+                                               height, clip);
+            if (! clip.isEmpty())
+              {
+                g.setClip(clip);
+                b.paintBorder(c, g, borderRect.x, borderRect.y,
+                              borderRect.width,
+                              borderRect.height);
+              }
+            // Paint border right from the text.
+            clip.setBounds(saved);
+            SwingUtilities.computeIntersection(textLoc.x + titleWidth + 1, y,
+                                               x + width - (textLoc.x + titleWidth +1),
+                                               height, clip);
+            if (! clip.isEmpty())
+              {
+                g.setClip(clip);
+                b.paintBorder(c, g, borderRect.x, borderRect.y,
+                              borderRect.width,
+                              borderRect.height);
+              }
 
-	            if (titlePosition == TOP || titlePosition == DEFAULT_POSITION)
-	              {
-	                // Paint border below the text.
-	                clip.setBounds(saved);
-	                SwingUtilities.computeIntersection(textLoc.x - 1,
-	                                                   textLoc.y + fontDescent,
-	                                                   titleWidth + 2,
-	                                       y + height - textLoc.y - fontDescent,
-	                                       clip);
-	                if (! clip.isEmpty())
-	                  {
-	                    g.setClip(clip);
-	                    b.paintBorder(c, g, borderRect.x, borderRect.y,
-	                                  borderRect.width,
-	                                  borderRect.height);
-	                  }
+            if (titlePosition == TOP || titlePosition == DEFAULT_POSITION)
+              {
+                // Paint border below the text.
+                clip.setBounds(saved);
+                SwingUtilities.computeIntersection(textLoc.x - 1,
+                                                   textLoc.y + fontDescent,
+                                                   titleWidth + 2,
+                                                   y + height - textLoc.y - fontDescent,
+                                                   clip);
+                if (! clip.isEmpty())
+                  {
+                    g.setClip(clip);
+                    b.paintBorder(c, g, borderRect.x, borderRect.y,
+                                  borderRect.width,
+                                  borderRect.height);
+                  }
 	                
-	              }
-	            else
-	              {
-	                // Paint border above the text.
-	                clip.setBounds(saved);
-	                SwingUtilities.computeIntersection(textLoc.x - 1, y,
-	                                                   titleWidth + 2,
-	                                       textLoc.y - fontDescent -y,
-	                                       clip);
-	                if (! clip.isEmpty())
-	                  {
-	                    g.setClip(clip);
-	                    b.paintBorder(c, g, borderRect.x, borderRect.y,
-	                                  borderRect.width,
-	                                  borderRect.height);
-	                  }
+              }
+            else
+              {
+                // Paint border above the text.
+                clip.setBounds(saved);
+                SwingUtilities.computeIntersection(textLoc.x - 1, y,
+                                                   titleWidth + 2,
+                                                   textLoc.y - fontDescent -y,
+                                                   clip);
+                if (! clip.isEmpty())
+                  {
+                    g.setClip(clip);
+                    b.paintBorder(c, g, borderRect.x, borderRect.y,
+                                  borderRect.width,
+                                  borderRect.height);
+                  }
 	                
-	              }
-	            g.setClip(saved);
-	          }
-	        else
-	          {
-	            b.paintBorder(c, g, borderRect.x, borderRect.y, borderRect.width,
-	                          borderRect.height);
-	          }
-	      }
+              }
+            g.setClip(saved);
+          }
+        else
+          {
+            b.paintBorder(c, g, borderRect.x, borderRect.y, borderRect.width,
+                          borderRect.height);
+          }
+      }
   }
 
   /**
