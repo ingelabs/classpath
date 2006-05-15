@@ -40,6 +40,7 @@ package gnu.classpath.tools.getopt;
 
 import java.io.PrintStream;
 import java.text.BreakIterator;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
@@ -127,7 +128,7 @@ public class Parser
   protected static void formatText(PrintStream out, String text, Locale aLocale)
   {
     BreakIterator bit = BreakIterator.getLineInstance(aLocale);
-    String[] lines = text.split("\n");
+    String[] lines = text.split("\n"); //$NON-NLS-1$
     for (int i = 0; i < lines.length; i++)
       {
         text = lines[i];
@@ -165,8 +166,8 @@ public class Parser
     this.longOnly = longOnly;
 
     // Put standard options in their own section near the end.
-    OptionGroup finalGroup = new OptionGroup("Standard options");
-    finalGroup.add(new Option("help", "print this help, then exit")
+    OptionGroup finalGroup = new OptionGroup(Messages.getString("Parser.StdOptions")); //$NON-NLS-1$
+    finalGroup.add(new Option("help", Messages.getString("Parser.PrintHelp")) //$NON-NLS-1$ //$NON-NLS-2$
     {
       public void parsed(String argument) throws OptionException
       {
@@ -174,7 +175,7 @@ public class Parser
         System.exit(0);
       }
     });
-    finalGroup.add(new Option("version", "print version number, then exit")
+    finalGroup.add(new Option("version", Messages.getString("Parser.PrintVersion")) //$NON-NLS-1$ //$NON-NLS-2$
     {
       public void parsed(String argument) throws OptionException
       {
@@ -182,7 +183,7 @@ public class Parser
         System.exit(0);
       }
     });
-    finalGroup.add(new Option('J', "pass argument to the Java runtime", "OPTION")
+    finalGroup.add(new Option('J', Messages.getString("Parser.JArgument"), Messages.getString("Parser.JName")) //$NON-NLS-1$ //$NON-NLS-2$
     {
       public void parsed(String argument) throws OptionException
       {
@@ -299,7 +300,12 @@ public class Parser
   {
     ++currentIndex;
     if (currentIndex >= args.length)
-      throw new OptionException("option '" + request + "' requires an argument");
+      {
+        String message
+          = MessageFormat.format(Messages.getString("Parser.ArgReqd"), //$NON-NLS-1$
+                                 new Object[] { request });
+        throw new OptionException(request);
+      }
     return args[currentIndex];
   }
 
@@ -321,7 +327,11 @@ public class Parser
           }
       }
     if (found == null)
-      throw new OptionException("unrecognized option '" + real + "'");
+      {
+        String msg = MessageFormat.format(Messages.getString("Parser.Unrecognized"), //$NON-NLS-1$
+                                          new Object[] { real });
+        throw new OptionException(msg);
+      }
     String argument = null;
     if (found.getTakesArgument())
       {
@@ -332,8 +342,10 @@ public class Parser
       }
     else if (eq != - 1)
       {
-        throw new OptionException("option '" + real.substring(0, eq + index)
-                                  + "' doesn't allow an argument");
+        String msg
+          = MessageFormat.format(Messages.getString("Parser.NoArg"), //$NON-NLS-1$
+                                 new Object[] { real.substring(0, eq + index) });
+        throw new OptionException(msg);
       }
     found.parsed(argument);
   }
@@ -351,10 +363,14 @@ public class Parser
           }
       }
     if (found == null)
-      throw new OptionException("unrecognized option '-" + option + "'");
+      {
+        String msg = MessageFormat.format(Messages.getString("Parser.UnrecDash"), //$NON-NLS-1$
+                                          new Object[] { "" + option }); //$NON-NLS-1$
+        throw new OptionException(msg);
+      }
     String argument = null;
     if (found.getTakesArgument())
-      argument = getArgument("-" + option);
+      argument = getArgument("-" + option); //$NON-NLS-1$
     found.parsed(argument);
   }
 
@@ -383,12 +399,12 @@ public class Parser
           {
             if (args[currentIndex].length() == 0
                 || args[currentIndex].charAt(0) != '-'
-                || "-".equals(args[currentIndex]))
+                || "-".equals(args[currentIndex])) //$NON-NLS-1$
               {
                 files.notifyFile(args[currentIndex]);
                 continue;
               }
-            if ("--".equals(args[currentIndex]))
+            if ("--".equals(args[currentIndex])) //$NON-NLS-1$
               break;
             if (args[currentIndex].charAt(1) == '-')
               handleLongOption(args[currentIndex], 2);
@@ -405,10 +421,14 @@ public class Parser
       }
     catch (OptionException err)
       {
-        System.err.println(programName + ": " + err.getMessage());
-        System.err.println(programName + ": Try '" + programName
-                           + " " + (longOnly ? "-help" : "--help") 
-                           + "' for more information.");
+        System.err.println(programName + ": " + err.getMessage()); //$NON-NLS-1$
+        String fmt;
+        if (longOnly)
+          fmt = Messages.getString("Parser.TryHelpShort"); //$NON-NLS-1$
+        else
+          fmt = Messages.getString("Parser.TryHelpLong"); //$NON-NLS-1$
+        String msg = MessageFormat.format(fmt, new Object[] { programName });
+        System.err.println(programName + ": " + msg); //$NON-NLS-1$
         System.exit(1);
       }
   }

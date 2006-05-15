@@ -1,3 +1,17 @@
+2006-05-15  Tom Tromey  <tromey@redhat.com>
+
+	* tools/gnu/classpath/tools/getopt/Option.java (getDescription):
+	Removed old comment.
+	* tools/gnu/classpath/tools/getopt/ClasspathToolParser.java:
+	Externalized strings.
+	(getVersionString): Use MessageFormat.
+	* tools/gnu/classpath/tools/getopt/Messages.java: New file.
+	* resource/gnu/classpath/tools/getopt/Messages.properties: New file.
+	* tools/gnu/classpath/tools/getopt/Parser.java: Externalized strings.
+	(getArgument): Use a MessageFormat.
+	(handleLongOption): Likewise.
+	(parse): Likewise.
+
 2006-05-15  Robert Schuster  <robertschuster@fsfe.org>
 
 	Fixes PR 27197.
