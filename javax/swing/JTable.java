@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.swing;
 
+import gnu.classpath.NotImplementedException;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -163,6 +165,7 @@ public class JTable
        * @return the accessible row for the table cell
        */
       public AccessibleRole getAccessibleRole()
+        throws NotImplementedException
       {
         // TODO: What is the role of the table cell?
         return AccessibleRole.UNKNOWN;
@@ -174,6 +177,7 @@ public class JTable
        * @return the accessible state set of this accessible table cell
        */
       public AccessibleStateSet getAccessibleStateSet()
+        throws NotImplementedException
       {
         // TODO: What state shoiuld be returned here?
         return new AccessibleStateSet();
@@ -617,45 +621,47 @@ public class JTable
     }
 
     public Accessible getAccessibleSelection(int i)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return null;
     }
 
     public boolean isAccessibleChildSelected(int i)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return false;
     }
 
     public void addAccessibleSelection(int i)
+      throws NotImplementedException
     {
-      // TODO Auto-generated method stub
-      
+      // TODO Auto-generated method stub    
     }
 
     public void removeAccessibleSelection(int i)
+      throws NotImplementedException
     {
-      // TODO Auto-generated method stub
-      
+      // TODO Auto-generated method stub    
     }
 
     public void clearAccessibleSelection()
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
-      
     }
 
     public void selectAllAccessibleSelection()
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
-      
     }
 
     public void valueChanged(ListSelectionEvent event)
+      throws NotImplementedException
     {
-      // TODO Auto-generated method stub
-      
+      // TODO Auto-generated method stub 
     }
 
     /**
@@ -685,6 +691,7 @@ public class JTable
      * @param event the table model event
      */
     public void tableRowsInserted(TableModelEvent event)
+      throws NotImplementedException
     {
       // TODO: What to do here, if anything? This might be a hook method for
       // subclasses...
@@ -697,51 +704,52 @@ public class JTable
      * @param event the table model event
      */
     public void tableRowsDeleted(TableModelEvent event)
+      throws NotImplementedException
     {
       // TODO: What to do here, if anything? This might be a hook method for
       // subclasses...
     }
 
     public void columnAdded(TableColumnModelEvent event)
+      throws NotImplementedException
     {
-      // TODO Auto-generated method stub
-      
+      // TODO Auto-generated method stub    
     }
 
     public void columnMarginChanged(ChangeEvent event)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
-      
     }
 
     public void columnMoved(TableColumnModelEvent event)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
-      
     }
 
     public void columnRemoved(TableColumnModelEvent event)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
-      
     }
 
     public void columnSelectionChanged(ListSelectionEvent event)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
-      
     }
 
     public void editingCanceled(ChangeEvent event)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
-      
     }
 
     public void editingStopped(ChangeEvent event)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
-      
     }
 
     /**
@@ -785,150 +793,170 @@ public class JTable
     }
 
     public int getAccessibleRow(int index)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return 0;
     }
 
     public int getAccessibleColumn(int index)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return 0;
     }
 
     public int getAccessibleIndex(int r, int c)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return 0;
     }
 
     public Accessible getAccessibleCaption()
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return null;
     }
 
     public void setAccessibleCaption(Accessible caption)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
-      
     }
 
     public Accessible getAccessibleSummary()
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return null;
     }
 
     public void setAccessibleSummary(Accessible summary)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
-      
     }
 
     public int getAccessibleRowCount()
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return 0;
     }
 
     public int getAccessibleColumnCount()
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return 0;
     }
 
     public Accessible getAccessibleAt(int r, int c)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return null;
     }
 
     public int getAccessibleRowExtentAt(int r, int c)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return 0;
     }
 
     public int getAccessibleColumnExtentAt(int r, int c)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return 0;
     }
 
     public AccessibleTable getAccessibleRowHeader()
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return null;
     }
 
     public void setAccessibleRowHeader(AccessibleTable header)
+      throws NotImplementedException
     {
-      // TODO Auto-generated method stub
-      
+      // TODO Auto-generated method stub    
     }
 
     public AccessibleTable getAccessibleColumnHeader()
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return null;
     }
 
     public void setAccessibleColumnHeader(AccessibleTable header)
+      throws NotImplementedException
     {
-      // TODO Auto-generated method stub
-      
+      // TODO Auto-generated method stub    
     }
 
     public Accessible getAccessibleRowDescription(int r)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return null;
     }
 
     public void setAccessibleRowDescription(int r, Accessible description)
+      throws NotImplementedException
     {
-      // TODO Auto-generated method stub
-      
+      // TODO Auto-generated method stub    
     }
 
     public Accessible getAccessibleColumnDescription(int c)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return null;
     }
 
     public void setAccessibleColumnDescription(int c, Accessible description)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       
     }
 
     public boolean isAccessibleSelected(int r, int c)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return false;
     }
 
     public boolean isAccessibleRowSelected(int r)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return false;
     }
 
     public boolean isAccessibleColumnSelected(int c)
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return false;
     }
 
     public int[] getSelectedAccessibleRows()
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return null;
     }
 
     public int[] getSelectedAccessibleColumns()
+      throws NotImplementedException
     {
       // TODO Auto-generated method stub
       return null;

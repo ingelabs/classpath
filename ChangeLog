@@ -1,3 +1,7 @@
+2006-05-15  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JTable.java: Marked stub methods.
+
 2006-05-15  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* tools/gnu/classpath/tools/jarsigner/Main.java:
