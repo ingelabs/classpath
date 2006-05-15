@@ -1,3 +1,10 @@
+2006-05-15  Robert Schuster  <robertschuster@fsfe.org>
+
+	Fixes PR 27197.
+	* javax/swing/text/FieldView.java:
+	(paint): Calculate intersection between clip and allocation area and
+	set that as new clip.
+
 2006-05-15  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/text/JTextComponent.java: Marked stub methods.
