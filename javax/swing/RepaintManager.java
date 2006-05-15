@@ -64,12 +64,13 @@ import java.util.WeakHashMap;
  * double buffer surface is used by root components to paint
  * themselves.</p>
  *
- * <p>In general, painting is very confusing in swing. see <a
+ * <p>See <a
  * href="http://java.sun.com/products/jfc/tsc/articles/painting/index.html">this
  * document</a> for more details.</p>
  *
  * @author Roman Kennke (kennke@aicas.com)
  * @author Graydon Hoare (graydon@redhat.com)
+ * @author Audrius Meskauskas (audriusa@bioinformatics.org)
  */
 public class RepaintManager
 {
@@ -575,70 +576,78 @@ public class RepaintManager
         dirtyComponentsWork = swap;
       }
 
-    HashSet components = new HashSet(dirtyComponentsWork.keySet());
+    Object[] components = dirtyComponentsWork.keySet().toArray();
     boolean someRemoved;
-    boolean cRemoved;
-
     do
       {
-        Iterator en = components.iterator();
         someRemoved = false;
         // Where possible, do not repaint the component, extending the
         // parent repaint region instead.
-        en = components.iterator();
-        while (en.hasNext())
-          {
-            Component c = (Component) en.next();
-            cRemoved = false;
-            Component p = c.getParent();
-            int x = c.getX();
-            int y = c.getY();
+        for (int i = 0; i < components.length; i++)
+          if (components[i] != null)
+            {
+              Component c = (Component) components[i];
+              Component p = c.getParent();
+              int x = c.getX();
+              int y = c.getY();
 
-            while (p instanceof JComponent)
-              if (components.contains(p))
-                {
-                  // The parent of this component is already marked for
-                  // repainting.
-                  // We will not repaint this component.
-                  if (!cRemoved)
-                    {
-                      en.remove();
-                      cRemoved = true;
-                    }
-                  en = components.iterator();
-                  // We will repaint the parent instead.
-                  Rectangle prect = (Rectangle) dirtyComponentsWork.get(p);
-                  Rectangle crect = (Rectangle) dirtyComponentsWork.get(c);
-                  crect.translate(x, y);
-                  prect.add(crect);
-                  someRemoved = true;
-                  p = p.getParent();
-                }
-              else
-                {
-                  x += p.getX();
-                  y += p.getY();
-                  p = p.getParent();
-                }
-          }
+              while (p instanceof JComponent)
+                if (contains(components, p))
+                  {
+                    // The parent of this component is already marked for
+                    // repainting.
+                    // We will not repaint this component.
+                    components[i] = null;
+                    someRemoved = true;
+                    // We will repaint the parent instead.
+                    Rectangle prect = (Rectangle) dirtyComponentsWork.get(p);
+                    Rectangle crect = (Rectangle) dirtyComponentsWork.get(c);
+                    crect.translate(x, y);
+                    prect.add(crect);
+                    c = p;
+                    p = p.getParent();
+                  }
+                else
+                  {
+                    x += p.getX();
+                    y += p.getY();
+                    p = p.getParent();
+                  }
+            }
       }
     while (someRemoved);
 
     repaintUnderway = true;
-    for (Iterator i = components.iterator(); i.hasNext();)
+    for (int i = 0; i < components.length; i++)
       {
-        JComponent comp = (JComponent) i.next();
-        // If a component is marked completely clean in the meantime, then skip
-        // it.
-        Rectangle damaged = (Rectangle) dirtyComponentsWork.remove(comp);
-        if (damaged == null || damaged.isEmpty())
-          continue;
-        comp.paintImmediately(damaged);
+        JComponent comp = (JComponent) components[i];
+        if (comp != null)
+          {
+            // If a component is marked completely clean in the meantime, then
+            // skip it.
+            Rectangle damaged = (Rectangle) dirtyComponentsWork.remove(comp);
+            if (damaged == null || damaged.isEmpty())
+              continue;
+            comp.paintImmediately(damaged);
+          }
       }
 
     dirtyComponentsWork.clear();
     repaintUnderway = false;
     commitRemainingBuffers();
+  }
+  
+  /**
+   * The simple search of the object inside the array.
+   */
+  private static boolean contains(Object [] array, Object x)
+  {
+    for (int i = 0; i < array.length; i++)
+      {
+        if (array [i] == x)
+          return true;
+      }
+    return false;
   }
 
   /**
