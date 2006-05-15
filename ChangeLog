@@ -1,3 +1,16 @@
+2006-05-15  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/gnu/classpath/tools/jarsigner/Main.java:
+	Increased visibility of fields used by parser anonymous classes.
+	(KEYTOOL_TOOL): New constant.
+	(cmdLineParser): Changed type to ToolParser.
+	(fileAndAlias): new field.
+	(main): Don't catch OptionException.
+	(processArgs): Removed validation checks; now handled by ToolParser.
+	(getParser): Removed.
+	(ToolParserCallback): New inner class.
+	(ToolParser): Likewise.
+
 2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JTable.java (TableTextArea.scrollRectToVisible):
