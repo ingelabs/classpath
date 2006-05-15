@@ -50,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -424,13 +425,6 @@ public class RepaintManager
       return;
     
     Component parent = component.getParent();
-    if (parent instanceof JComponent)
-      {
-        // If there is a delegateable parent, add the parent region instead.
-        addDirtyRegion((JComponent) parent, x + component.getX(),
-                       y + component.getY(), w, h);
-        return;
-      }
     
     component.computeVisibleRect(rectCache);
     SwingUtilities.computeIntersection(x, y, w, h, rectCache);
@@ -564,8 +558,8 @@ public class RepaintManager
   }
 
   /**
-   * Repaint all regions of all components which have been marked dirty in
-   * the {@link #dirtyComponents} table.
+   * Repaint all regions of all components which have been marked dirty in the
+   * {@link #dirtyComponents} table.
    */
   public void paintDirtyRegions()
   {
@@ -581,17 +575,57 @@ public class RepaintManager
         dirtyComponentsWork = swap;
       }
 
-    ArrayList repaintOrder = new ArrayList(dirtyComponentsWork.size());;
-    // We sort the components by their size here. This way we have a good
-    // chance that painting the bigger components also paints the smaller
-    // components and we don't need to paint them twice.
-    repaintOrder.addAll(dirtyComponentsWork.keySet());
+    HashSet components = new HashSet(dirtyComponentsWork.keySet());
+    boolean someRemoved;
+    boolean cRemoved;
 
-    if (comparator == null)
-      comparator = new ComponentComparator();
-    Collections.sort(repaintOrder, comparator);
+    do
+      {
+        Iterator en = components.iterator();
+        someRemoved = false;
+        // Where possible, do not repaint the component, extending the
+        // parent repaint region instead.
+        en = components.iterator();
+        while (en.hasNext())
+          {
+            Component c = (Component) en.next();
+            cRemoved = false;
+            Component p = c.getParent();
+            int x = c.getX();
+            int y = c.getY();
+
+            while (p instanceof JComponent)
+              if (components.contains(p))
+                {
+                  // The parent of this component is already marked for
+                  // repainting.
+                  // We will not repaint this component.
+                  if (!cRemoved)
+                    {
+                      en.remove();
+                      cRemoved = true;
+                    }
+                  en = components.iterator();
+                  // We will repaint the parent instead.
+                  Rectangle prect = (Rectangle) dirtyComponentsWork.get(p);
+                  Rectangle crect = (Rectangle) dirtyComponentsWork.get(c);
+                  crect.translate(x, y);
+                  prect.add(crect);
+                  someRemoved = true;
+                  p = p.getParent();
+                }
+              else
+                {
+                  x += p.getX();
+                  y += p.getY();
+                  p = p.getParent();
+                }
+          }
+      }
+    while (someRemoved);
+
     repaintUnderway = true;
-    for (Iterator i = repaintOrder.iterator(); i.hasNext();)
+    for (Iterator i = components.iterator(); i.hasNext();)
       {
         JComponent comp = (JComponent) i.next();
         // If a component is marked completely clean in the meantime, then skip
@@ -601,6 +635,8 @@ public class RepaintManager
           continue;
         comp.paintImmediately(damaged);
       }
+
+    dirtyComponentsWork.clear();
     repaintUnderway = false;
     commitRemainingBuffers();
   }

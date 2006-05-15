@@ -3554,7 +3554,10 @@ public abstract class JComponent extends Container implements Serializable
     Rectangle currentClip = clip;
     Component found = this;
     Container parent = this; 
-    while (parent != null && !(parent instanceof Window))
+    // Path up is stopped at viewports, allowing to use viewport
+    // painting optimizations.
+    while (parent != null && !(parent instanceof Window) 
+        && !(parent instanceof JViewport))
       {
         Container newParent = parent.getParent();
         if (newParent == null || newParent instanceof Window)
