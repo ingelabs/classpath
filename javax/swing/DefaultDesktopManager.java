@@ -400,8 +400,8 @@ public class DefaultDesktopManager implements DesktopManager, Serializable
                           dragCache.width, dragCache.height);
         pane = null;
         dragCache = null;
+        component.repaint();        
       }
-    component.repaint();
   }
 
   /**
@@ -463,8 +463,8 @@ public class DefaultDesktopManager implements DesktopManager, Serializable
                           dragCache.width, dragCache.height);
         pane = null;
         dragCache = null;
+        component.repaint();        
       }
-    component.repaint();
   }
 
   /**
