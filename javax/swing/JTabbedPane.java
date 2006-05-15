@@ -1,5 +1,5 @@
 /* JTabbedPane.java --
-   Copyright (C) 2002, 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004, 2005, 2006,  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -1623,20 +1623,35 @@ public class JTabbedPane extends JComponent implements Serializable,
   }
 
   /**
-   * This method returns a string representation of this JTabbedPane. It is
-   * mainly used for debugging purposes.
+   * Returns a string describing the attributes for the 
+   * <code>JTabbedPane</code> component, for use in debugging.  The return 
+   * value is guaranteed to be non-<code>null</code>, but the format of the 
+   * string may vary between implementations.
    *
-   * @return A string representation of this JTabbedPane.
+   * @return A string describing the attributes of the 
+   *     <code>JTabbedPane</code>.
    */
   protected String paramString()
   {
-    return "JTabbedPane";
+    StringBuffer sb = new StringBuffer(super.paramString());
+    sb.append(",tabPlacement=");
+    if (tabPlacement == TOP)
+      sb.append("TOP");
+    if (tabPlacement == BOTTOM)
+      sb.append("BOTTOM");
+    if (tabPlacement == LEFT)
+      sb.append("LEFT");
+    if (tabPlacement == RIGHT)
+      sb.append("RIGHT");
+    return sb.toString();
   }
 
   /**
-   * DOCUMENT ME!
+   * Returns the object that provides accessibility features for this
+   * <code>JTabbedPane</code> component.
    *
-   * @return DOCUMENT ME!
+   * @return The accessible context (an instance of 
+   *         {@link AccessibleJTabbedPane}).
    */
   public AccessibleContext getAccessibleContext()
   {

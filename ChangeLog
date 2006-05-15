@@ -1,5 +1,11 @@
 2006-05-15  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/JTabbedPane.java
+	(paramString): Reimplemented,
+	(getAccessibleContext): Added API docs.
+
+2006-05-15  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/JFileChooser.java
 	(paramString): Reimplemented,
 	(getAccessibleContext): Updated API docs,
