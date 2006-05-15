@@ -1,3 +1,14 @@
+2006-05-15  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/border/TitledBorder.java
+	(layoutBorderWithTitle): Fetch border using getBorder() instead
+	of using the border field directly. Allows for the use of
+	an UI supplied border in the case when a null border was set.
+	Fixed component orientation.
+	(paintBorderWithTitle): Fetch border using getBorder() instead
+	of using the border field directly. Allows for the use of
+	an UI supplied border in the case when a null border was set.
+
 2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/RepaintManager.java (paintDirtyRegions): Rewritten.
@@ -2597,7 +2608,7 @@
 2006-04-21  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/border/AbstractBorder.java: API doc updates,
- 	* javax/swing/border/BevelBorder.java: Likewise,
+	* javax/swing/border/BevelBorder.java: Likewise,
 	* javax/swing/border/CompoundBorder.java: Likewise,
 	* javax/swing/border/EtchedBorder.java: Likewise,
 	* javax/swing/border/LineBorder.java: Likewise,
