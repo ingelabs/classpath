@@ -38,33 +38,29 @@ exception statement from your version. */
 
 package gnu.java.awt.print;
 
-import java.util.Locale;
 import java.awt.HeadlessException;
+import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
-import java.awt.print.PrinterGraphics;
-import java.awt.print.Book;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.PrinterJob;
-import java.awt.print.PrinterAbortException;
 import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.util.Locale;
+
 import javax.print.CancelablePrintJob;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
 import javax.print.DocFlavor;
 import javax.print.DocPrintJob;
 import javax.print.PrintException;
-import javax.print.StreamPrintServiceFactory;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import javax.print.ServiceUI;
-import javax.print.attribute.IntegerSyntax;
-import javax.print.attribute.TextSyntax;
-import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.IntegerSyntax;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.TextSyntax;
 import javax.print.attribute.standard.Copies;
 import javax.print.attribute.standard.JobName;
-import javax.print.attribute.standard.RequestingUserName;
 import javax.print.attribute.standard.OrientationRequested;
+import javax.print.attribute.standard.RequestingUserName;
 
 /**
  * This is the default implementation of PrinterJob
@@ -370,7 +366,7 @@ public class JavaPrinterJob extends PrinterJob
   public void setPrintable(Printable printable, PageFormat page_format)
   {
     this.printable = printable;
-    this.pageFormat = pageFormat;
+    this.pageFormat = page_format;
   }
 
   /**
