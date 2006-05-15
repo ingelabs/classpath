@@ -1,5 +1,24 @@
 2006-05-14  Tom Tromey  <tromey@redhat.com>
 
+	* tools/gnu/classpath/tools/jar/Updater.java (run): No longer throws
+	OptionException.
+	* tools/gnu/classpath/tools/jar/Creator.java (run): No longer throws
+	OptionException.
+	* tools/gnu/classpath/tools/jar/Action.java (run): No longer throws
+	OptionException.
+	* tools/gnu/classpath/tools/jar/Indexer.java (run): Removed.  Moved
+	validation to JarParser.
+	* tools/gnu/classpath/tools/jar/Main.java (JarParser): New class.
+	(run): Moved validation to JarParser.  Don't throw OptionException.
+	(initializeParser): Create a JarParser.
+	(main): Don't catch OptionException.
+	* tools/gnu/classpath/tools/getopt/Parser.java (printHelp): No longer
+	public.
+	(validate): New method.
+	(parse): Call it.  Print '-help' in error message when long-only.
+
+2006-05-14  Tom Tromey  <tromey@redhat.com>
+
 	* gnu/java/awt/print/JavaPrinterJob.java (setPrintable): Fixed
 	assignment.
 

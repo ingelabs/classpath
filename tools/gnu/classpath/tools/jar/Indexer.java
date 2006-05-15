@@ -38,7 +38,6 @@ exception statement from your version. */
 
 package gnu.classpath.tools.jar;
 
-import gnu.classpath.tools.getopt.OptionException;
 import gnu.java.net.IndexListParser;
 
 import java.io.ByteArrayInputStream;
@@ -134,16 +133,5 @@ public class Indexer
           = new ByteArrayInputStream(contents.toString().getBytes());
         writeFile(false, in, IndexListParser.JAR_INDEX_FILE, parameters.verbose);
       }
-  }
-
-  public void run(Main parameters) throws IOException, OptionException
-  {
-    if (! parameters.entries.isEmpty())
-      throw new OptionException("can't specify file arguments when using -i");
-    if (! parameters.wantManifest)
-      throw new OptionException("can't specify -M with -i");
-    if (parameters.manifestFile != null)
-      throw new OptionException("can't specify -m with -i");
-    super.run(parameters);
   }
 }

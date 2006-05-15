@@ -250,7 +250,7 @@ public class Parser
     this.printHelp(System.out);
   }
 
-  protected void printHelp(PrintStream out)
+  void printHelp(PrintStream out)
   {
     if (headerText != null)
       {
@@ -273,6 +273,26 @@ public class Parser
 
     if (footerText != null)
       formatText(out, footerText);
+  }
+
+  /**
+   * This method can be overridden by subclassses to provide some option
+   * validation.  It is called by the parser after all options have been
+   * parsed.  If an option validation problem is encountered, this should
+   * throw an {@link OptionException} whose message should be shown to
+   * the user.
+   * <p>
+   * It is better to do validation here than after {@link #parse(String[])}
+   * returns, because the parser will print a message referring the
+   * user to the <code>--help</code> option.
+   * <p>
+   * The base implementation does nothing.
+   * 
+   * @throws OptionException the error encountered
+   */
+  protected void validate() throws OptionException
+  {
+    // Base implementation does nothing.
   }
 
   private String getArgument(String request) throws OptionException
@@ -380,12 +400,15 @@ public class Parser
         // Add remaining arguments to leftovers.
         for (++currentIndex; currentIndex < args.length; ++currentIndex)
           files.notifyFile(args[currentIndex]);
+        // See if something went wrong.
+        validate();
       }
     catch (OptionException err)
       {
         System.err.println(programName + ": " + err.getMessage());
         System.err.println(programName + ": Try '" + programName
-                           + " --help' for more information.");
+                           + " " + (longOnly ? "-help" : "--help") 
+                           + "' for more information.");
         System.exit(1);
       }
   }

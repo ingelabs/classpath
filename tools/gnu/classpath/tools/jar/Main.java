@@ -138,9 +138,37 @@ public class Main
     }
   }
 
+  private class JarParser extends ClasspathToolParser
+  {
+    public JarParser(String name)
+    {
+      super(name);
+    }
+
+    protected void validate() throws OptionException
+    {
+      if (operationMode == null)
+        throw new OptionException("must specify one of -t, -c, -u, -x, or -i");
+      if (changedDirectory != null)
+        throw new OptionException("-C argument requires both directory and filename");
+      if (! wantManifest && manifestFile != null)
+        throw new OptionException("can't specify both -m and -M");
+      if (operationMode == Indexer.class)
+        {
+          // Some extra validation for -i.
+          if (! entries.isEmpty())
+            throw new OptionException("can't specify file arguments when using -i");
+          if (! wantManifest)
+            throw new OptionException("can't specify -M with -i");
+          if (manifestFile != null)
+            throw new OptionException("can't specify -m with -i");
+        }
+    }
+  }
+
   private Parser initializeParser()
   {
-    Parser p = new ClasspathToolParser("jar");
+    Parser p = new JarParser("jar");
     p.setHeader("Usage: jar -ctxui [OPTIONS] jar-file [-C DIR FILE] FILE...");
 
     OptionGroup grp = new OptionGroup("Operation mode");
@@ -205,20 +233,14 @@ public class Main
     return p;
   }
 
-  private void run(String[] args) throws OptionException,
-      InstantiationException, IllegalAccessException, IOException
+  private void run(String[] args)
+      throws InstantiationException, IllegalAccessException, IOException
   {
     Parser p = initializeParser();
     // Special hack to emulate old tar-style commands.
     if (args.length > 0 && args[0].charAt(0) != '-')
       args[0] = '-' + args[0];
     p.parse(args, new HandleFile());
-    if (operationMode == null)
-      throw new OptionException("must specify one of -t, -c, -u, -x, or -i");
-    if (changedDirectory != null)
-      throw new OptionException("-C argument requires both directory and filename");
-    if (! wantManifest && manifestFile != null)
-      throw new OptionException("can't specify both -m and -M");
     Action t = (Action) operationMode.newInstance();
     t.run(this);
   }
@@ -229,13 +251,6 @@ public class Main
     try
       {
         jarprogram.run(args);
-      }
-    catch (OptionException arg)
-      {
-        System.err.println("jar: " + arg.getMessage());
-        // FIXME: this should be pushed into the parser somehow.
-        System.err.println("Try 'jar --help' for more information");
-        System.exit(1);
       }
     catch (Exception e)
       {

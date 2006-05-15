@@ -38,8 +38,6 @@
 
 package gnu.classpath.tools.jar;
 
-import gnu.classpath.tools.getopt.OptionException;
-
 import java.io.IOException;
 
 public abstract class Action
@@ -49,5 +47,5 @@ public abstract class Action
   }
 
   public abstract void run(Main parameters)
-    throws IOException, OptionException;
+    throws IOException;
 }

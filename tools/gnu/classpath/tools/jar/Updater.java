@@ -38,8 +38,6 @@
 
 package gnu.classpath.tools.jar;
 
-import gnu.classpath.tools.getopt.OptionException;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,7 +64,7 @@ public class Updater
     return result;
   }
 
-  public void run(Main parameters) throws IOException, OptionException
+  public void run(Main parameters) throws IOException
   {
     // Set this early so that createManifest can use it.
     inputJar = new JarFile(parameters.archiveFile);

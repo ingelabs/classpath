@@ -38,8 +38,6 @@
 
 package gnu.classpath.tools.jar;
 
-import gnu.classpath.tools.getopt.OptionException;
-
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -222,7 +220,7 @@ public class Creator
     outputStream.close();
   }
 
-  public void run(Main parameters) throws IOException, OptionException
+  public void run(Main parameters) throws IOException
   {
     if (parameters.archiveFile == null || parameters.archiveFile.equals("-"))
       writeCommandLineEntries(parameters, System.out);
