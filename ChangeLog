@@ -1,3 +1,19 @@
+2006-05-15  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JTabbedPane.java
+	(AccessibleJTabbedPane.getAccessibleRole): Implemented,
+	(AccessibleJTabbedPane.getAccessibleChildrenCount): Implemented,
+	(AccessibleJTabbedPane.getAccessibleSelection()): Implemented,
+	(AccessibleJTabbedPane.getAccessibleAt): Implemented,
+	(AccessibleJTabbedPane.getAccessibleSelectionCount): Implemented,
+	(AccessibleJTabbedPane.getAccessibleSelection(int)): Implemented,
+	(AccessibleJTabbedPane.isAccessibleChildSelected): Implemented,
+	(AccessibleJTabbedPane.addAccessibleSelection): Implemented,
+	(AccessibleJTabbedPane.removeAccessibleSelection): Implemented,
+	(AccessibleJTabbedPane.clearAccessibleSelection): Implemented,
+	(AccessibleJTabbedPane.selectAllAccessibleSelection): Implemented,
+	(Page.getAccessibleName): Implemented.
+
 2006-05-15  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/DefaultDesktopManager.java (setBoundsForFrame):
