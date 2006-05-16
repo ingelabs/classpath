@@ -1,11 +1,21 @@
-2005-05-16  Lillian Angel  <langel@redhat.com>
+2006-06-16  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/JPopupMenu.java
+	(addMenuKeyListener): Implemented.
+	(removeMenuKeyListener): Implemented.
+	(getMenuKeyListeners): Implemented.
+	* javax/swing/ProgressMonitor.java:
+	Added new protected field.
+	(getAccessibleContext): Implemented.
+
+2006-05-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JFileChooser.java:
 	Added new private field.
 	(setDragEnabled): Implemented.
 	(getDragEnabled): Implemented.
 
-2005-05-16  Lillian Angel  <langel@redhat.com>
+2006-05-16  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/Window.java
 	(applyResourceBundle): Implemented.
