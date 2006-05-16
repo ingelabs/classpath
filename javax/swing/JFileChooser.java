@@ -37,8 +37,6 @@ exception statement from your version. */
 
 package javax.swing;
 
-import gnu.classpath.NotImplementedException;
-
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
