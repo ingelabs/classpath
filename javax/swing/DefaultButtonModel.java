@@ -371,7 +371,7 @@ public class DefaultButtonModel implements ButtonModel, Serializable
     if (e)
       stateMask = stateMask | ENABLED;
     else
-      stateMask = stateMask & (~ENABLED);
+      stateMask = stateMask & (~ENABLED) & (~ARMED) & (~PRESSED);
 
     // notify interested ChangeListeners
     fireStateChanged();

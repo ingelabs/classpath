@@ -1,3 +1,9 @@
+2006-05-16  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/DefaultButtonModel.java
+	(setSelected): If new SELECTED state is false, clear ARMED and PRESSED
+	states also.
+
 2006-05-16  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/JList.java (getSelectedValues):
