@@ -1,3 +1,8 @@
+2006-05-16  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/DefaultButtonModel.java
+	(setGroup): Removed event notification.
+
 2006-05-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java
