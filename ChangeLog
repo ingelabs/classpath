@@ -1,3 +1,17 @@
+2006-05-16  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/text/StyleContext.java:
+	Changed staticAttributeKeys  to be a Hashtable.
+	(getStaticAttribute): Implemented.
+	(getStaticAttributeKey): Implemented.
+	(readAttributeSet): Implemented.
+	(writeAttributeSet): Added FIXME. Not sure how
+	to implement this.
+	(readAttributes): Implemented.
+	(writeAttributes): Implemented.
+	(registerStaticAttibuteKey): Fixed to add key to 
+	the hash table.
+
 2006-05-16  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* javax/swing/DefaultButtonModel.java
