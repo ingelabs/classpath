@@ -1,3 +1,9 @@
+2006-05-17  Robert Schuster  <robertschuster@fsfe.org>
+
+	Fixes PR27626.
+	* java/awt/LightweightDispatcher.java:
+	(handleMouseEvent): Moved assignment into switch-block, added notes.
+
 2006-05-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/text/StyleContext.java:

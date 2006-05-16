@@ -121,7 +121,7 @@ class LightweightDispatcher
   /**
    * Handles all mouse events that are targetted at toplevel containers
    * (Window instances) and dispatches them to the correct lightweight child.
-   *
+   * 
    * @param ev the mouse event
    * @return whether or not we found a lightweight that handled the event.
    */
@@ -146,6 +146,7 @@ class LightweightDispatcher
                                  ev.getClickCount(), ev.isPopupTrigger());
                 lastTarget.dispatchEvent(mouseExited);
               }
+            
             if (target != null)
               {
                 Point p = AWTUtilities.convertPoint(window, ev.getX(), ev.getY(),
@@ -161,12 +162,16 @@ class LightweightDispatcher
         switch (ev.getID())
         {
           case MouseEvent.MOUSE_PRESSED:
-            dragTarget = target;
+            lastTarget = dragTarget = target;
             break;
           case MouseEvent.MOUSE_RELEASED:
             if (dragTarget != null)
-              target = dragTarget;
-            dragTarget = null;
+              {
+                target = dragTarget;
+                dragTarget = null;
+              }
+            
+            lastTarget = target;
             break;
           case MouseEvent.MOUSE_CLICKED:
             // When we receive a MOUSE_CLICKED, we set the target to the
@@ -174,17 +179,23 @@ class LightweightDispatcher
             // This is necessary for the case when the MOUSE_RELEASED has
             // caused the original target (like an internal component) go
             // away.
+            // This line is the reason why it is not possible to move the
+            // 'lastTarget = target' assignment before the switch-statement.
             target = lastTarget;
             break;
           case MouseEvent.MOUSE_DRAGGED:
+            // We consider only dragTarget for redispatching the event still
+            // we have to act in a way that the newly found target component
+            // was handled.
+            lastTarget = target;
             target = dragTarget;
             break;
           default:
-            // Do nothing in other cases.
+            // Only declare current target as the old value in all other
+            // cases.
+            lastTarget = target;
             break;
         }
-
-        lastTarget = target;
 
         if (target != null)
           {
@@ -195,6 +206,7 @@ class LightweightDispatcher
             ev.translatePoint(dx, dy);
             ev.setSource(target);
             target.dispatchEvent(ev);
+            
             // We reset the event, so that the normal event dispatching is not
             // influenced by this modified event.
             ev.setSource(window);
