@@ -1,5 +1,12 @@
 2005-05-16  Lillian Angel  <langel@redhat.com>
 
+	* javax/swing/JFileChooser.java:
+	Added new private field.
+	(setDragEnabled): Implemented.
+	(getDragEnabled): Implemented.
+
+2005-05-16  Lillian Angel  <langel@redhat.com>
+
 	* java/awt/Window.java
 	(applyResourceBundle): Implemented.
 

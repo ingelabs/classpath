@@ -41,6 +41,7 @@ import gnu.classpath.NotImplementedException;
 
 import java.awt.Component;
 import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -389,6 +390,13 @@ public class JFileChooser extends JComponent implements Accessible
    * @see #setSelectedFile(File)
    */
   private File selectedFile;
+  
+  /**
+   * The drag enabled property.
+   * @see #setDragEnabled(boolean)
+   * @see #getDragEnabled()
+   */
+  private boolean dragEnabled;
 
   /**
    * Creates a new <code>JFileChooser</code> object.
@@ -487,26 +495,31 @@ public class JFileChooser extends JComponent implements Accessible
   }
 
   /**
-   * DOCUMENT ME!
-   *
-   * @param b DOCUMENT ME!
+   * Sets the dragEnabled property, this disables/enables automatic drag
+   * handling (drag and drop) on this component. The default value of the
+   * dragEnabled property is false. 
+   * 
+   * Some look and feels might not support automatic drag and drop; they
+   * will ignore this property.
+   * 
+   * @param b - the new dragEnabled value
    */
   public void setDragEnabled(boolean b)
-    throws NotImplementedException
   {
-    // FIXME: Implement
+    if (b && GraphicsEnvironment.isHeadless())
+      throw new HeadlessException();
+    
+    dragEnabled = b;
   }
 
   /**
-   * DOCUMENT ME!
+   * Returns true if dragging is enabled.
    *
-   * @return DOCUMENT ME!
+   * @return true if dragging is enabled.
    */
   public boolean getDragEnabled()
-    throws NotImplementedException
   {
-    // FIXME: Implement
-    return false;
+    return dragEnabled;
   }
 
   /**
