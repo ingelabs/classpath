@@ -1,5 +1,5 @@
 /* BasicInternalFrameUI.java --
-   Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -57,6 +57,7 @@ import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
 
 import javax.swing.DefaultDesktopManager;
 import javax.swing.DesktopManager;
@@ -194,6 +195,20 @@ public class BasicInternalFrameUI extends InternalFrameUI
      */
     public void mouseClicked(MouseEvent e)
     {
+      // Do minimization/maximization when double-clicking in the title pane.
+      if (e.getSource() == titlePane && e.getClickCount() == 2)
+        try
+          {
+            if (frame.isMaximizable() && ! frame.isMaximum())
+              frame.setMaximum(true);
+            else if (frame.isMaximum())
+              frame.setMaximum(false);
+          }
+        catch (PropertyVetoException pve)
+          {
+            // We do nothing if the attempt has been vetoed.
+          }
+        
       // There is nothing to do when the mouse is clicked
       // on the border.
     }

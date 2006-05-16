@@ -1,6 +1,15 @@
 2006-05-17  Robert Schuster  <robertschuster@fsfe.org>
 
-	Fixes PR27626.
+	Fixes PR 26947.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java: Updated copyright
+	year.
+	(BorderListener.mouseClicked): Detect double-clicks in title pane,
+	copied code from
+	BasicInternalFrameTitlePaneUI.MaximizeAction.actionPerformed().
+
+2006-05-17  Robert Schuster  <robertschuster@fsfe.org>
+
+	Fixes PR 27626.
 	* java/awt/LightweightDispatcher.java:
 	(handleMouseEvent): Moved assignment into switch-block, added notes.
 
