@@ -1,3 +1,9 @@
+2006-05-16  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/27563:
+	* java/text/NumberFormat.java (getIntegerInstance): Use
+	"integerFormat", not "numberFormat".
+
 2006-06-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JPopupMenu.java
