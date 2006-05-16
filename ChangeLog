@@ -1,5 +1,11 @@
 2006-05-16  Roman Kennke <kennke@aicas.com>
 
+	* javax/swing/JTable.java
+	(valueChanged): Also repaint when table has only 1 row. Fixed
+	repaint rectangle to span the entire changed rows.
+
+2006-05-16  Roman Kennke <kennke@aicas.com>
+
 	PR 24031
 	* javax/swing/JOptionPane.java
 	(startModal): Rewritten. The events are now dispatched, even

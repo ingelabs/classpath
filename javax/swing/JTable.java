@@ -2021,14 +2021,14 @@ public class JTable
    */
   public void valueChanged (ListSelectionEvent event)
   {
-    // Does not make sense for the table with the single row.
-    if (getRowCount() < 2)
-      return;
-    
-    int y_gap = rowMargin;
-    int y0 = (getRowHeight() + y_gap) * (event.getFirstIndex());
-    int yn = (getRowHeight() + y_gap) * (event.getLastIndex()+1);
-    repaint(0, y0, getWidth(), yn-y0);
+    // Repaint the changed region.
+    int first = Math.max(0, Math.min(getRowCount() - 1, event.getFirstIndex()));
+    int last = Math.max(0, Math.min(getRowCount() - 1, event.getLastIndex()));
+    Rectangle rect1 = getCellRect(first, 0, false);
+    Rectangle rect2 = getCellRect(last, getColumnCount() - 1, false);
+    SwingUtilities.computeUnion(rect2.x, rect2.y, rect2.width, rect2.height,
+                                rect1);
+    repaint(rect2);
   }
 
  /**
@@ -2371,7 +2371,6 @@ public class JTable
                                    int row,
                                    int column)
   {
-
     boolean rowSelAllowed = getRowSelectionAllowed();
     boolean colSelAllowed = getColumnSelectionAllowed();
     boolean isSel = false;
