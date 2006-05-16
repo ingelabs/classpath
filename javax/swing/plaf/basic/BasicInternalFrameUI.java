@@ -259,6 +259,7 @@ public class BasicInternalFrameUI extends InternalFrameUI
           dm.resizeFrame(frame, cacheRect.x, cacheRect.y,
                          Math.max(min.width, cacheRect.width),
                          Math.max(min.height, cacheRect.height));
+          setCursor(e);
         }
       else if (e.getSource() == titlePane)
         {
@@ -267,7 +268,6 @@ public class BasicInternalFrameUI extends InternalFrameUI
           dm.dragFrame(frame, e.getX() - xOffset + b.x, e.getY() - yOffset
                                                         + b.y);
         }
-      setCursor(e);
     }
 
     /**

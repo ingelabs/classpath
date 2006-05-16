@@ -1,6 +1,12 @@
 2006-05-16  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java
+	(BorderListener.mouseDragged):Do not set cursor 
+	if the frame is being dragged.
+
+2006-05-16  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java
 	(BorderListener): Rewritten. (InternalFrameBorder):
 	Made package private.
 	(InternalFrameBorder.offset):
