@@ -1,3 +1,19 @@
+2006-05-16  Roman Kennke <kennke@aicas.com>
+
+	* javax/swing/JMenu.java
+	(AccessibleJMenu.getAccessibleChildrenCount): Implemented.
+	(AccessibleJMenu.getAccessibleChild): Implemented.
+	(AccessibleJMenu.getAccessibleSelection): Implemented.
+	(AccessibleJMenu.getAccessibleSelection(int)): Implemented.
+	(AccessibleJMenu.isAccessibleChildSelected): Implemented.
+	(AccessibleJMenu.getAccessibleRole): Documented.
+	(AccessibleJMenu.getAccessibleSelectionCount): Implemented.
+	(AccessibleJMenu.addAccessibleSelection): Implemented.
+	(AccessibleJMenu.removeAccessibleSelection): Implemented.
+	(AccessibleJMenu.clearAccessibleSelection): Implemented.
+	(AccessibleJMenu.selectAllAccessibleSelection): Implemented.
+	(createPath): New helper method.
+
 2006-05-15  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/URLClassLoader.java: Moved inner classes to
@@ -13154,7 +13170,7 @@
 	(AccessibleJComponent.changeSupport): Changed to be a
 	java.beans.PropertyChangeSupport rather than
 	SwingPropertyChangeSupport.
-	(AccessibleJComponent.AccesibleJComponent()): Change initialization
+	(AccessibleJComponent.AccessibleJComponent()): Change initialization
 	of above field.
 	(changeSupport): Removed unneeded field.
 	(removePropertyChangeListener): Removed unneeded methods.
