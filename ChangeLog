@@ -1,10 +1,29 @@
+2006-05-16  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java
+	(installKeyboardActions): Implemented.
+	(uninstallKeyboardActions): Implemented.
+	* javax/swing/plaf/basic/BasicComboPopup.java
+	(uninstallKeyboardActions): Removed FIXME. Nothing
+	to be done here.
+	(installKeyboardActions): Likewise.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(uninstallKeyboardActions): Implemented.
+	* javax/swing/plaf/basic/BasicTreeUI.java:
+	Added field for hashColor.
+	Marked stub methods.
+	(getHashColor): Implemented to use field.
+	(setHashColor): Likewise.
+	(getRowX): Implemented.
+	(NodeDimensions.getRowX): Changed to use BasicTreeUI.getRowX.	
+
 2006-05-16  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/27563:
 	* java/text/NumberFormat.java (getIntegerInstance): Use
 	"integerFormat", not "numberFormat".
 
-2006-06-16  Lillian Angel  <langel@redhat.com>
+2006-05-16  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/JPopupMenu.java
 	(addMenuKeyListener): Implemented.
