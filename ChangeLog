@@ -1,3 +1,12 @@
+2006-05-16  Roman Kennke <kennke@aicas.com>
+
+	PR 24031
+	* javax/swing/JOptionPane.java
+	(startModal): Rewritten. The events are now dispatched, even
+	when the event dispatch thread gets blocked by the call
+	to this method. Also, mouse events get intercepted outside the
+	internal frame.
+
 2006-05-16  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicInternalFrameUI.java
