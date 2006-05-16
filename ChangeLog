@@ -1,3 +1,8 @@
+2006-05-16  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/JList.java (getSelectedValues):
+	Ask the value for the indexed array element.
+
 2006-05-16  Roman Kennke <kennke@aicas.com>
 
 	* javax/swing/JTable.java
