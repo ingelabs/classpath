@@ -128,8 +128,35 @@ class LightweightDispatcher
   private boolean handleMouseEvent(MouseEvent ev)
   {
     Window window = (Window) ev.getSource();
-    Component target = window.findComponentAt(ev.getX(), ev.getY());
-    target = findTarget(target);
+    // Find the target for the mouse event. We first seach the deepest
+    // component at the specified location. The we go up to its parent and
+    // try to find a neighbor of the deepest component that is suitable as
+    // mouse event target (it must be showing, at that location and have either
+    // a MouseListener or MouseMotionListener installed). If no such component
+    // is found, then we walk up the container hierarchy and find the next
+    // container that has a MouseListener or MouseMotionListener installed.
+    Component deepest = window.findComponentAt(ev.getX(), ev.getY());
+    if (deepest == null)
+      return false;
+    Container parent = deepest.getParent();
+    Point loc = ev.getPoint();
+    loc = AWTUtilities.convertPoint(window, loc.x, loc.y, parent);
+    Component target = null;
+    if (parent != null)
+      {
+        target = findTarget(deepest.getParent(), loc);
+        while (target == null && parent != null)
+          {
+            if (parent.getMouseListeners().length > 0
+                || parent.getMouseMotionListeners().length > 0)
+              {
+                target = parent;
+              }
+            else
+              parent = parent.getParent();
+          }
+      }
+
     if (target == null || target.isLightweight())
       {
         // Dispatch additional MOUSE_EXITED and MOUSE_ENTERED if event target
@@ -221,19 +248,34 @@ class LightweightDispatcher
 
   /**
    * Finds the actual target for a mouseevent, starting at <code>c</code>.
-   * This searches upwards the component hierarchy until it finds a component
-   * that has a mouselistener attached.
+   * This searches through the children of the container and finds the first
+   * one which is showing, at the location from the mouse event and has
+   * a MouseListener or MouseMotionListener attached. If no such child component
+   * is found, null is returned.
    *
-   * @param c the component to start searching from
+   * @param c the container to search through
+   * @param loc the mouse event point
    *
-   * @return the actual receiver of the mouse event
+   * @return the actual receiver of the mouse event, or null, if no such
+   *         component has been found
    */
-  private Component findTarget(Component c)
+  private Component findTarget(Container c, Point loc)
   {
-    Component target = c;
-    while (target != null && target.getMouseListeners().length == 0)
+    Component[] children = c.getComponents();
+    Component target = null;
+    if (c != null)
       {
-        target = target.getParent();
+        for (int i = 0; i < children.length; i++)
+          {
+            Component child = children[i];
+            if (child.isShowing() && child.contains(loc)
+                && (child.getMouseListeners().length > 0 
+                    || child.getMouseMotionListeners().length > 0))
+              {
+                target = child;
+                break;
+              }
+          }
       }
     return target;
   }

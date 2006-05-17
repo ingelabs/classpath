@@ -1,3 +1,11 @@
+2006-05-17  Roman Kennke <kennke@aicas.com>
+
+	* java/awt/LightweightDispatcher.java
+	(handleMouseEvent): Fixed search algorithm for finding the
+	mouse event target.
+	(findTarget): Fixed search algorithm for finding the
+	mouse event target.
+
 2006-05-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/naming/spi/NamingManager.java: Documented.
@@ -61,6 +69,32 @@
 	(setHashColor): Likewise.
 	(getRowX): Implemented.
 	(NodeDimensions.getRowX): Changed to use BasicTreeUI.getRowX.	
+
+2006-05-16  Roman Kennke <kennke@aicas.com>
+
+	PR 26521
+	* javax/swing/JTable.java
+	(rowHeights): New field.
+	(initializeLocalVars): Call setRowHeigt instead of rowHeight=,
+	in order to initialize rowHeights correctly.
+	(tableChanged): Nullify rowHeights when model changes. Only
+	create default columns from model when corresponding property
+	is set. Sync table model with rowHeights as appropriate.
+	(valueChanged): Call repaint with the correct rectangle.
+	(rowAtPoint): Handle rowHeights.
+	(getCellRect): Mostly rewritten. Check for boundaries
+	of model and return (0,0,0,0) or (0,0,width,height) when outside.
+	Handle component orientation. Round correctly.
+	(getRowHeight(int)): Implemented for variable row height.
+	(setRowHeight(int,int)): Implemented for variable row height.
+	(setRowHeight(int)): Nullify rowHeights.
+	(setModel): Notify tableChanged().
+	* javax/swing/plaf/basic/BasicTableUI.java
+	(installDefaults): Create rendererPane in installUI.
+	(installUI): Create and install rendererPane.
+	(uninstallUI): Uninstall rendererPane and nullify rendererPane
+	and table.
+	(paint): Correctly handle rowMargin.
 
 2006-05-16  Tom Tromey  <tromey@redhat.com>
 
