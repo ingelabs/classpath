@@ -28,6 +28,12 @@
 
 2006-05-17  Lillian Angel  <langel@redhat.com>
 
+	* java/awt/GraphicsConfiguration.java
+	(getImageCapabilities): Implemented.
+	(getBufferCapabilities): Implemented.
+
+2006-05-17  Lillian Angel  <langel@redhat.com>
+
 	* javax/swing/plaf/basic/BasicSliderUI.java
 	(focusGained): Implemented.
 	(focusLost): Implemented.
