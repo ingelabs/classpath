@@ -46,8 +46,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.StringTokenizer;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
@@ -70,7 +70,9 @@ public class Indexer
     JarFile jf = new JarFile(fileName);
 
     // Index the files in this jar.
-    HashSet entries = new HashSet();
+    // The results look a little better if we keep them
+    // in insertion order.
+    LinkedHashSet entries = new LinkedHashSet();
     Enumeration e = jf.entries();
     while (e.hasMoreElements())
       {
