@@ -1,5 +1,10 @@
 2006-05-17  Roman Kennke <kennke@aicas.com>
 
+	* java/awt/LightweightDispatcher.java
+	(findTarget): Translate point to child components.
+
+2006-05-17  Roman Kennke <kennke@aicas.com>
+
 	PR 26368
 	* javax/swing/text/GapContent.java
 	(GapContentPosition): Do no more implement Comparable.

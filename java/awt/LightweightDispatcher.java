@@ -156,7 +156,6 @@ class LightweightDispatcher
               parent = parent.getParent();
           }
       }
-
     if (target == null || target.isLightweight())
       {
         // Dispatch additional MOUSE_EXITED and MOUSE_ENTERED if event target
@@ -265,10 +264,12 @@ class LightweightDispatcher
     Component target = null;
     if (c != null)
       {
+        Point childLoc;
         for (int i = 0; i < children.length; i++)
           {
             Component child = children[i];
-            if (child.isShowing() && child.contains(loc)
+            childLoc = AWTUtilities.convertPoint(c, loc.x, loc.y, child);
+            if (child.isShowing() && child.contains(childLoc)
                 && (child.getMouseListeners().length > 0 
                     || child.getMouseMotionListeners().length > 0))
               {
