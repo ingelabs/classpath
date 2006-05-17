@@ -1,3 +1,31 @@
+2006-05-17  Roman Kennke <kennke@aicas.com>
+
+	PR 26368
+	* javax/swing/text/GapContent.java
+	(GapContentPosition): Do no more implement Comparable.
+	(GapContentPosition.mark): Removed field.
+	(GapContentPosition.index): New field to hold the index into
+	the positions array.
+	(GapContentPosition(int)): Rewritten to use the new indirection
+	to the positions array.
+	(GapContentPosition.compareTo): Removed.
+	(GapContentPosition.getOffset): Synchronized. Fetch mark from
+	positionMarks array.
+	(WeakPositionComparator): Removed obsolete class.
+	(positions): Changed type to WeakHashMap.
+	(positionMarks): New field, holds the marks of the positions.
+	(GapContent): Initialize new fields.
+	(createPosition): Rewritten to use the new indirection
+	to the positions array.
+	(getPositionsInRange): Rewritten to use the new indirection
+	to the positions array.
+	(setPositionsInRange): Rewritten to use the new indirection
+	to the positions array.
+	(adjustPositionsInRange): Rewritten to use the new indirection
+	to the positions array.
+	(insertMark): New helper method.
+	(clearPositionReferences): Removed obsolete methods.
+
 2006-05-17  Lillian Angel  <langel@redhat.com>
 
 	* javax/swing/plaf/basic/BasicSliderUI.java
