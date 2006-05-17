@@ -1,3 +1,11 @@
+2006-05-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	PR 27383
+	* javax/naming/spi/NamingManager.java (getURLContext):
+	Always search for the factory class in all possible places
+	and use VMStackWalker.
+	(forName): New method.
+
 2006-05-17  Roman Kennke <kennke@aicas.com>
 
 	* java/awt/LightweightDispatcher.java
