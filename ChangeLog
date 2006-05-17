@@ -1,5 +1,12 @@
 2006-05-17  David Gilbert  <david.gilbert@object-refinery.com>
 
+	* javax/swing/border/AbstractBorder.java: Source code formatting fixes,
+	* javax/swing/border/BevelBorder.java: Likewise,
+	* javax/swing/border/CompoundBorder.java: Likewise,
+	* javax/swing/border/TitledBorder.java: Likewise.
+
+2006-05-17  David Gilbert  <david.gilbert@object-refinery.com>
+
 	* javax/swing/table/AbstractTableModel.java: Formatting fixes,
 	* javax/swing/table/DefaultTableModel.java: Likewise,
 	* javax/swing/table/TableCellEditor.java: Likewise,

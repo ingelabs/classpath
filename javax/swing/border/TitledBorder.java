@@ -641,8 +641,7 @@ public class TitledBorder extends AbstractBorder
             // Paint border right from the text.
             clip.setBounds(saved);
             SwingUtilities.computeIntersection(textLoc.x + titleWidth + 1, y,
-                                               x + width - (textLoc.x + titleWidth +1),
-                                               height, clip);
+                x + width - (textLoc.x + titleWidth + 1), height, clip);
             if (! clip.isEmpty())
               {
                 g.setClip(clip);
@@ -675,7 +674,7 @@ public class TitledBorder extends AbstractBorder
                 clip.setBounds(saved);
                 SwingUtilities.computeIntersection(textLoc.x - 1, y,
                                                    titleWidth + 2,
-                                                   textLoc.y - fontDescent -y,
+                                                   textLoc.y - fontDescent - y,
                                                    clip);
                 if (! clip.isEmpty())
                   {
