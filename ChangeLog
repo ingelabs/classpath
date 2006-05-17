@@ -1,3 +1,13 @@
+2006-05-17  Lillian Angel  <langel@redhat.com>
+
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(focusGained): Implemented.
+	(focusLost): Implemented.
+	(paint): Added code to paint the focus.
+	* javax/swing/plaf/metal/MetalSliderUI.java
+	(paintThumb): Added code to set the thumbColor.
+	(paintFocus): Implemented properly.
+
 2006-05-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	PR 27383
