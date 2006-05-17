@@ -1,3 +1,10 @@
+2006-05-17  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/table/AbstractTableModel.java: Formatting fixes,
+	* javax/swing/table/DefaultTableModel.java: Likewise,
+	* javax/swing/table/TableCellEditor.java: Likewise,
+	* javax/swing/table/TableCellRenderer.java: Likewise.
+
 2006-05-17  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/font/ImageGraphicAttribute.java:
