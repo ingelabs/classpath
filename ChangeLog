@@ -1,3 +1,9 @@
+2006-05-17  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/TexturePaint.java:
+	Added documentation for class and all functions.
+	(getTransparency): Implemented.
+
 2006-05-17  Roman Kennke <kennke@aicas.com>
 
 	* java/awt/LightweightDispatcher.java
