@@ -52,8 +52,18 @@ import javax.naming.Reference;
 import javax.naming.Referenceable;
 import javax.naming.StringRefAddr;
 
+/**
+ * Contains methods for creating context objects and objects referred to by
+ * location information. The location is specified in the scope of the
+ * certain naming or directory service.
+ */
 public class NamingManager
 {
+  /**
+   * The environment property into which getContinuationContext() stores the
+   * value of the CannotProceedException parameter. The value of this field
+   * is <i>java.naming.spi.CannotProceedException<i>.
+   */
   public static final String CPE = "java.naming.spi.CannotProceedException";
 
   private static InitialContextFactoryBuilder icfb;
@@ -65,12 +75,37 @@ public class NamingManager
   NamingManager ()
   {
   }
-
+  
+  /**
+   * Checks if the initial context factory builder has been set.
+   * 
+   * @return true if the builder has been set
+   * 
+   * @see #setInitialContextFactoryBuilder(InitialContextFactoryBuilder)
+   */
   public static boolean hasInitialContextFactoryBuilder ()
   {
     return icfb != null;
   }
   
+  /**
+   * Creates the initial context. If the initial object factory builder has
+   * been set with {@link #setObjectFactoryBuilder(ObjectFactoryBuilder)},
+   * the work is delegated to this builder. Otherwise, the method searches
+   * for the property Context.INITIAL_CONTEXT_FACTORY first in the passed
+   * table and then in the system properties. The value of this property is
+   * uses as a class name to install the context factory. The corresponding
+   * class must exist, be public and have the public parameterless constructor. 
+   * 
+   * @param environment the properties, used to create the context.
+   * 
+   * @return the created context
+   * 
+   * @throws NoInitialContextException if the initial builder is not set,
+   *           the property Context.INITIAL_CONTEXT_FACTORY is missing of the
+   *           class, named by this property, cannot be instantiated. 
+   * @throws NamingException if throws by the context factory
+   */
   public static Context getInitialContext (Hashtable environment)
     throws NamingException
   {
@@ -112,7 +147,35 @@ public class NamingManager
 
     return icf.getInitialContext (environment);
   }
-
+  
+  /**
+   * <p>Creates the URL context for the given URL scheme id.</p>
+   * 
+   * <p>The class name of the factory that creates the context has the naming 
+   * pattern scheme-idURLContextFactory. For instance, the factory for the
+   * "ftp" sheme should be named "ftpURLContextFactory". The 
+   * Context.URL_PKG_PREFIXES environment property contains the
+   * colon-separated list of the possible package prefixes. The package name
+   * is constructed concatenating the package prefix with the scheme id.</p> 
+   * 
+   * <p>If the factory class cannot be found in the specified packages, system
+   * will try to use the default internal factory for the given scheme.</p>
+   * 
+   * <p>After the factory is instantiated, its method 
+   * {@link ObjectFactory#getObjectInstance(Object, Name, Context, Hashtable)}
+   * is called to create and return the object instance.
+   * 
+   * @param refInfo passed to the factory
+   * @param name passed to the factory
+   * @param nameCtx passed to the factory
+   * @param scheme the url scheme that must be supported by the given context 
+   * @param environment the properties for creating the factory and context
+   *          (may be null)
+   *          
+   * @return the created context
+   * 
+   * @throws NamingException if thrown by the factory when creating the context.
+   */
   static Context getURLContext (Object refInfo,
 				Name name,
 				Context nameCtx,
@@ -182,7 +245,32 @@ public class NamingManager
 
     return null;
   }
-
+  
+  /**
+   * <p>Creates the URL context for the given URL scheme id.</p>
+   * 
+   * <p>The class name of the factory that creates the context has the naming 
+   * pattern scheme-idURLContextFactory. For instance, the factory for the
+   * "ftp" sheme should be named "ftpURLContextFactory". The 
+   * Context.URL_PKG_PREFIXES environment property contains the
+   * colon-separated list of the possible package prefixes. The package name
+   * is constructed concatenating the package prefix with the scheme id.</p> 
+   * 
+   * <p>If the factory class cannot be found in the specified packages, system
+   * will try to use the default internal factory for the given scheme.</p>
+   * 
+   * <p>After the factory is instantiated, its method 
+   * {@link ObjectFactory#getObjectInstance(Object, Name, Context, Hashtable)}
+   * is called to create and return the object instance.
+   * 
+   * @param scheme the url scheme that must be supported by the given context 
+   * @param environment the properties for creating the factory and context
+   *          (may be null)
+   *          
+   * @return the created context
+   * 
+   * @throws NamingException if thrown by the factory when creating the context.
+   */
   public static Context getURLContext (String scheme,
 				       Hashtable environment) 
        throws NamingException
@@ -190,6 +278,17 @@ public class NamingManager
     return getURLContext (null, null, null, scheme, environment);
   }
 
+  /**
+   * Sets the initial object factory builder.
+   * 
+   * @param builder the builder to set
+   * 
+   * @throws SecurityException if the builder cannot be installed due
+   *           security restrictions.
+   * @throws NamingException if the builder cannot be installed due other 
+   *           reasons
+   * @throws IllegalStateException if setting the builder repeatedly
+   */
   public static void setObjectFactoryBuilder (ObjectFactoryBuilder builder)
     throws NamingException
   {
@@ -198,7 +297,7 @@ public class NamingManager
       sm.checkSetFactory ();
     // Once the builder is installed it cannot be replaced.
     if (ofb != null)
-      throw new IllegalStateException ("builder already installed");
+      throw new IllegalStateException ("object factory builder already installed");
     if (builder != null)
       ofb = builder;
   }
@@ -312,7 +411,21 @@ public class NamingManager
     return obj == null ? refInfo : obj;
   }
 
-  public static void setInitialContextFactoryBuilder (InitialContextFactoryBuilder builder)
+  /**
+   * Sets the initial context factory builder.
+   * 
+   * @param builder the builder to set
+   * 
+   * @throws SecurityException if the builder cannot be installed due
+   *           security restrictions.
+   * @throws NamingException if the builder cannot be installed due other 
+   *           reasons
+   * @throws IllegalStateException if setting the builder repeatedly
+   * 
+   * @see #hasInitialContextFactoryBuilder()
+   */
+  public static void setInitialContextFactoryBuilder 
+    (InitialContextFactoryBuilder builder)
     throws NamingException
   {
     SecurityManager sm = System.getSecurityManager ();
@@ -320,11 +433,23 @@ public class NamingManager
       sm.checkSetFactory ();
     // Once the builder is installed it cannot be replaced.
     if (icfb != null)
-      throw new IllegalStateException ("builder already installed");
+      throw new IllegalStateException ("ctx factory builder already installed");
     if (builder != null)
       icfb = builder;
   }
-
+  
+  /**
+   * Creates a context in which the context operation must be continued.
+   * This method is used by operations on names that span multiple namespaces.
+   * 
+   * @param cpe the exception that triggered this continuation. This method
+   * obtains the environment ({@link CannotProceedException#getEnvironment()}
+   * and sets the environment property {@link #CPE} = cpe.
+   * 
+   * @return a non null context for continuing the operation
+   * 
+   * @throws NamingException if the naming problems have occured
+   */
   public static Context getContinuationContext (CannotProceedException cpe)
     throws NamingException
   {

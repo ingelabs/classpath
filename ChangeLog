@@ -1,3 +1,7 @@
+2006-05-17  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/naming/spi/NamingManager.java: Documented.
+
 2006-05-17  Mark Wielaard  <mark@klomp.org>
 
 	* THANKYOU: Add Trevor Linton <tlinton@xmission.com>.
