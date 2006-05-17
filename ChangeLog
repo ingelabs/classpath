@@ -1,3 +1,10 @@
+2006-05-17  Mark Wielaard  <mark@klomp.org>
+
+	* THANKYOU: Add Trevor Linton <tlinton@xmission.com>.
+	* gnu/javax/imageio/jpeg/DCT.java: Cleanup Todo copyright.
+	* gnu/javax/imageio/jpeg/YCbCr_ColorSpace.java: Likewise.
+	* gnu/javax/imageio/jpeg/ZigZag.java: Likewise.
+
 2006-05-17  Robert Schuster  <robertschuster@fsfe.org>
 
 	Fixes PR 26947.
