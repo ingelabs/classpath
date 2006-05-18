@@ -1,3 +1,14 @@
+2006-05-18  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicToolBarUI.java:
+	(navigateFocusedComp): Marked as stub.
+	(createRolloverBorder): Create a different Border instance, added note.
+	* javax/swing/plaf/metal/MetalBorders.java:
+	(ButtonBorder): Added documentation.
+	(ButtonBorder.paintDefaultButtonBorder): Added else-block.
+	(ButtonBorder.paintOceanButtonBorder): Added else-block, added
+	subexpression into if-else cascade, added note.
+
 2006-05-18  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/font/ShapeGraphicAttribute.java:

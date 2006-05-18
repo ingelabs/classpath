@@ -75,11 +75,14 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.ToolBarUI;
 import javax.swing.plaf.UIResource;
+import javax.swing.plaf.metal.MetalBorders;
 
 /**
  * This is the Basic Look and Feel UI class for JToolBar.
@@ -331,18 +334,12 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
    */
   protected Border createRolloverBorder()
   {
-    return new EtchedBorder()
-      {
-	public void paintBorder(Component c, Graphics g, int x, int y,
-	                        int width, int height)
-	{
-	  if (c instanceof JButton)
-	    {
-	      if (((JButton) c).getModel().isRollover())
-		super.paintBorder(c, g, x, y, width, height);
-	    }
-	}
-      };
+    // We can safely assume that the component on which this border
+    // will be installed is a AbstractButton (or subclass). So
+    // a MetalBorders.ButtonBorder will work on it.
+    return new CompoundBorder(
+                              new MetalBorders.ButtonBorder(),
+                              new EmptyBorder(3,3,3,3));
   }
 
   /**
@@ -745,6 +742,7 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
    * @param direction The direction to give focus to.
    */
   protected void navigateFocusedComp(int direction)
+    throws NotImplementedException
   {
     // FIXME: Implement.
   }
