@@ -1,5 +1,10 @@
 2006-05-18  Roman Kennke <kennke@aicas.com>
 
+	* javax/swing/CellRendererPane.java
+	(CellRendererPane): Set CellRendererPane to invisible.
+
+2006-05-18  Roman Kennke <kennke@aicas.com>
+
 	* gnu/java/awt/peer/gtk/GdkGraphics.java
 	(clipRect): Removed old intersection statement.
 
