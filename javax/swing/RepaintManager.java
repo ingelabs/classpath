@@ -47,8 +47,6 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.image.VolatileImage;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -77,7 +75,7 @@ public class RepaintManager
   /**
    * The current repaint managers, indexed by their ThreadGroups.
    */
-  private static WeakHashMap currentRepaintManagers;
+  static WeakHashMap currentRepaintManagers;
 
   /**
    * A rectangle object to be reused in damaged regions calculation.
@@ -151,13 +149,13 @@ public class RepaintManager
    * @see #markCompletelyClean
    * @see #markCompletelyDirty
    */
-  HashMap dirtyComponents;
+  private HashMap dirtyComponents;
 
   /**
    * The dirtyComponents which is used in paintDiryRegions to avoid unnecessary
    * locking.
    */
-  HashMap dirtyComponentsWork;
+  private HashMap dirtyComponentsWork;
 
   /**
    * A single, shared instance of the helper class. Any methods which mark
@@ -447,8 +445,7 @@ public class RepaintManager
   public void markCompletelyDirty(JComponent component)
   {
     Rectangle r = component.getBounds();
-    addDirtyRegion(component, r.x, r.y, r.width, r.height);
-    component.isCompletelyDirty = true;
+    addDirtyRegion(component, 0, 0, r.width, r.height);
   }
 
   /**
@@ -468,7 +465,6 @@ public class RepaintManager
       {
         dirtyComponents.remove(component);
       }
-    component.isCompletelyDirty = false;
   }
 
   /**
@@ -487,9 +483,13 @@ public class RepaintManager
    */
   public boolean isCompletelyDirty(JComponent component)
   {
-    if (! dirtyComponents.containsKey(component))
-      return false;
-    return component.isCompletelyDirty;
+    boolean retVal = false;
+    if (dirtyComponents.containsKey(component))
+      {
+        Rectangle dirtyRegion = (Rectangle) dirtyComponents.get(component);
+        retVal = dirtyRegion.equals(SwingUtilities.getLocalBounds(component));
+      }
+    return retVal;
   }
 
   /**
@@ -533,77 +533,75 @@ public class RepaintManager
         dirtyComponentsWork = swap;
       }
 
-    Object[] components = dirtyComponentsWork.keySet().toArray();
-    boolean someRemoved;
-    do
+    // Compile a set of repaint roots.
+    HashSet repaintRoots = new HashSet();
+    Set components = dirtyComponentsWork.keySet();
+    for (Iterator i = components.iterator(); i.hasNext();)
       {
-        someRemoved = false;
-        // Where possible, do not repaint the component, extending the
-        // parent repaint region instead.
-        Components: for (int i = 0; i < components.length; i++)
-          if (components[i] != null)
-            {
-              Component c = (Component) components[i];
-              Component p = c.getParent();
-              int x = c.getX();
-              int y = c.getY();
-
-              while (p instanceof JComponent)
-                if (contains(components, p))
-                  {
-                    // The parent of this component is already marked for
-                    // repainting.
-                    // We will not repaint this component.
-                    components[i] = null;
-                    someRemoved = true;
-                    // We will repaint the parent instead.
-                    Rectangle prect = (Rectangle) dirtyComponentsWork.get(p);
-                    Rectangle crect = (Rectangle) dirtyComponentsWork.get(c);
-                    crect.translate(x, y);
-                    prect.add(crect);
-                    continue Components;
-                  }
-                else
-                  {
-                    x += p.getX();
-                    y += p.getY();
-                    p = p.getParent();
-                  }
-            }
+        JComponent dirty = (JComponent) i.next();
+        compileRepaintRoots(dirtyComponentsWork, dirty, repaintRoots);
       }
-    while (someRemoved);
 
     repaintUnderway = true;
-    for (int i = 0; i < components.length; i++)
+    for (Iterator i = repaintRoots.iterator(); i.hasNext();)
       {
-        JComponent comp = (JComponent) components[i];
-        if (comp != null)
-          {
-            // If a component is marked completely clean in the meantime, then
-            // skip it.
-            Rectangle damaged = (Rectangle) dirtyComponentsWork.remove(comp);
-            if (damaged == null || damaged.isEmpty())
-              continue;
-            comp.paintImmediately(damaged);
-          }
+        JComponent comp = (JComponent) i.next();
+        Rectangle damaged = (Rectangle) dirtyComponentsWork.remove(comp);
+        if (damaged == null || damaged.isEmpty())
+          continue;
+        comp.paintImmediately(damaged);
       }
-
     dirtyComponentsWork.clear();
     repaintUnderway = false;
     commitRemainingBuffers();
   }
   
   /**
-   * The simple search of the object inside the array.
+   * Compiles a list of components that really get repainted. This is called
+   * once for each component in the dirtyComponents HashMap, each time with
+   * another <code>dirty</code> parameter. This searches up the component
+   * hierarchy of <code>dirty</code> to find the highest parent that is also
+   * marked dirty and merges the dirty regions.
+   *
+   * @param dirtyRegions the dirty regions 
+   * @param dirty the component for which to find the repaint root
+   * @param roots the list to which new repaint roots get appended
    */
-  private static boolean contains(Object [] array, Object x)
+  private void compileRepaintRoots(HashMap dirtyRegions, JComponent dirty,
+                                   HashSet roots)
   {
-    for (int i = 0; i < array.length; i++)
+    Component current = dirty;
+    Component root = dirty;
+
+    // Search the highest component that is also marked dirty.
+    Component parent;
+    while (true)
       {
-        if (array [i] == x)
-          return true;
+        parent = current.getParent();
+        if (parent == null || !(parent instanceof JComponent))
+          break;
+
+        current = parent;
+        // We can skip to the next up when this parent is not dirty.
+        if (dirtyRegions.containsKey(parent))
+          {
+            root = current;
+          }
       }
-    return false;
+
+    // Merge the rectangles of the root and the requested component if
+    // the are different.
+    if (root != dirty)
+      {
+        Rectangle dirtyRect = (Rectangle) dirtyRegions.get(dirty);
+        dirtyRect = SwingUtilities.convertRectangle(dirty, dirtyRect, root);
+        Rectangle rootRect = (Rectangle) dirtyRegions.get(root);
+        SwingUtilities.computeUnion(dirtyRect.x, dirtyRect.y, dirtyRect.width,
+                                    dirtyRect.height, rootRect);
+      }
+
+    // Adds the root to the roots set.
+    roots.add(root);
   }
 
   /**

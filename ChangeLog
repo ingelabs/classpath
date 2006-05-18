@@ -1,5 +1,27 @@
 2006-05-18  Roman Kennke <kennke@aicas.com>
 
+	* javax/swing/JComponent.java
+	(isCompletelyDirty): Removed.
+	(paint): Don't mark children as clean, this is no longer necessary.
+	(findOverlapFreeParent): Don't stop at Viewports, this breaks
+	painting when something overlaps the viewport (like a popup/menu).
+	* javax/swing/RepaintManager.java
+	(currentRepaintManagers): Made package private to avoid accessor
+	methods.
+	(dirtyComponents): Made private.
+	(dirtyComponentsWork): Made private.
+	(markCompletelyDirty): Fixed bounds of dirtyrect to be
+	component-local not parent-local. Do not set flag in JComponent.
+	(markCompletelyClean): Don't set JComponent flag.
+	(isCompletelyDirty): Rewritten to return true when the complete
+	component is marked dirty.
+	(paintDirtyRegions): Improved parent-merging so that the merged-in
+	components don't get painted too. 'Outsourced' the compilation
+	of the repaint root components.
+	(compileRepaintRoots): New helper method.
+
+2006-05-18  Roman Kennke <kennke@aicas.com>
+
 	PR 26368
 	* javax/swing/text/GapContent.java
 	(GapContentPosition(int)): Use adapted binarySearch method to

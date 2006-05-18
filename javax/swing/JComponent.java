@@ -760,13 +760,6 @@ public abstract class JComponent extends Container implements Serializable
   public static final int WHEN_IN_FOCUSED_WINDOW = 2;
 
   /**
-   * Indicates if this component is completely dirty or not. This is used
-   * by the RepaintManager's
-   * {@link RepaintManager#isCompletelyDirty(JComponent)} method.
-   */
-  boolean isCompletelyDirty = false;
-
-  /**
    * Indicates if the opaque property has been set by a client program or by
    * the UI.
    *
@@ -1763,11 +1756,6 @@ public abstract class JComponent extends Container implements Serializable
             paintComponent(g2);
             paintBorder(g2);
             paintChildren(g2);
-            Rectangle clip = g2.getClipBounds();
-            if (clip == null
-                || (clip.x == 0 && clip.y == 0 && clip.width == getWidth()
-                && clip.height == getHeight()))
-              RepaintManager.currentManager(this).markCompletelyClean(this);
           }
       }
   }
@@ -3556,8 +3544,7 @@ public abstract class JComponent extends Container implements Serializable
     Container parent = this; 
     // Path up is stopped at viewports, allowing to use viewport
     // painting optimizations.
-    while (parent != null && !(parent instanceof Window) 
-        && !(parent instanceof JViewport))
+    while (parent != null && !(parent instanceof Window))
       {
         Container newParent = parent.getParent();
         if (newParent == null || newParent instanceof Window)
