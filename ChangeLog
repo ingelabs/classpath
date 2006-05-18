@@ -1,3 +1,11 @@
+2006-05-18  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/font/GraphicAttribute.java:
+	Documented entire class.
+	(GraphicAttribute): Added check for alignment.
+	(getBounds): Implemented.
+	(getJustificationInfo): Implemented.
+
 2006-05-18  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/awt/LightweightDispatcher.java:
