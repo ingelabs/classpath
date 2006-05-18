@@ -1,3 +1,15 @@
+2006-05-18  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* gnu/java/awt/print/JavaPrinterGraphics.java
+	(drawImage(Image, int, int, Color, ImageObserver)): Fix endless loop,
+	(drawImage(Image, int, int, ImageObserver)): Likewise,
+	(drawImage(Image, int, int, int, int, Color, ImageObserver)): Likewise,
+	(drawImage(Image, int, int, int, int, ImageObserver)): Likewise,
+	(drawImage(Image, int, int, int, int, int, int, int, int, Color, 
+	ImageObserver)): Likewise,
+	(drawImage(Image, int, int, int, int, int, int, int, int, 
+	ImageObserver)): Likewise.
+
 2006-05-17  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/jar/Indexer.java (indexJarFile): Use a

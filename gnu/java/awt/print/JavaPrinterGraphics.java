@@ -37,35 +37,32 @@ exception statement from your version. */
 
 package gnu.java.awt.print;
 
-import java.awt.print.Pageable;
-import java.awt.print.PrinterGraphics;
-import java.awt.print.Printable;
-import java.awt.print.PrinterJob;
-import java.awt.print.Paper;
-import java.awt.print.PageFormat;
-import java.awt.print.PrinterException;
-import java.awt.geom.AffineTransform;
+import gnu.java.awt.peer.gtk.GtkImage;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Shape;
 import java.awt.Rectangle;
-import java.text.AttributedCharacterIterator;
-import java.awt.image.BufferedImage;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.image.ImageObserver;
 import java.awt.image.PixelGrabber;
-import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
-import java.io.PrintWriter;
-import java.io.FileWriter;
-import java.io.OutputStreamWriter;
-import java.io.FileOutputStream;
+import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
+import java.awt.print.Paper;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterGraphics;
+import java.awt.print.PrinterJob;
 import java.io.BufferedWriter;
-
-import gnu.java.awt.peer.gtk.GtkImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.text.AttributedCharacterIterator;
 
 /**
  * Graphics context to draw to PostScript.
@@ -360,38 +357,38 @@ public class JavaPrinterGraphics extends Graphics implements PrinterGraphics
   public boolean drawImage(Image img, int x, int y, Color bgcolor, 
 			   ImageObserver observer)
   {
-    return drawImage(img, x, y, bgcolor, observer);
+    return g.drawImage(img, x, y, bgcolor, observer);
   }
 
   public boolean drawImage(Image img, int x, int y, ImageObserver observer)
   {
-    return drawImage(img, x, y, observer);
+    return g.drawImage(img, x, y, observer);
   }
 
   public boolean drawImage(Image img, int x, int y, int width, int height, 
 			   Color bgcolor, ImageObserver observer)
   {
-    return drawImage(img, x, y, width, height, bgcolor, observer);
+    return g.drawImage(img, x, y, width, height, bgcolor, observer);
   }
 
   public boolean drawImage(Image img, int x, int y, int width, int height, 
 			   ImageObserver observer)
   {
-    return drawImage(img, x, y, width, height, observer);
+    return g.drawImage(img, x, y, width, height, observer);
   }
 
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, 
 			   int sx1, int sy1, int sx2, int sy2, Color bgcolor, 
 			   ImageObserver observer)
   {
-    return drawImage(img, dx1,  dy1,  dx2,  dy2,  
+    return g.drawImage(img, dx1,  dy1,  dx2,  dy2,  
 		     sx1,  sy1,  sx2,  sy2, bgcolor, observer);
   }
 
   public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, 
 			   int sx1, int sy1, int sx2, int sy2, ImageObserver observer)
   {
-    return drawImage(img, dx1,  dy1,  dx2,  dy2,  
+    return g.drawImage(img, dx1,  dy1,  dx2,  dy2,  
 		     sx1,  sy1,  sx2,  sy2, observer);
   }
 
