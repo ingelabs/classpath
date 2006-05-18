@@ -1,5 +1,10 @@
 2006-05-18  Robert Schuster  <robertschuster@fsfe.org>
 
+	* java/awt/LightweightDispatcher.java:
+	(handleMouseEvent): Added note, added subexpression to if-statement.
+
+2006-05-18  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/plaf/basic/BasicToolBarUI.java:
 	(navigateFocusedComp): Marked as stub.
 	(createRolloverBorder): Create a different Border instance, added note.

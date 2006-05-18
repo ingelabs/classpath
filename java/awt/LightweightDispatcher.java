@@ -173,7 +173,15 @@ class LightweightDispatcher
                 lastTarget.dispatchEvent(mouseExited);
               }
             
-            if (target != null)
+            // If a target exists dispatch the MOUSE_ENTERED event only if
+            // there is currently no component from which a drag operation
+            // started (dragTarget == null) or the target is that component
+            // (dragTarget == target)
+            // That way a user can click and hold on a button (putting it into
+            // the armed state), move the cursor above other buttons without
+            // affecting their rollover state and get back to the initial
+            // button.
+            if (target != null && (dragTarget == null || dragTarget == target))
               {
                 Point p = AWTUtilities.convertPoint(window, ev.getX(), ev.getY(),
                                                     target);
