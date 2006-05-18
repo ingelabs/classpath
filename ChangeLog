@@ -1,6 +1,11 @@
 2006-05-18  Roman Kennke <kennke@aicas.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(clipRect): Removed old intersection statement.
+
+2006-05-18  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
 	(clipRect): Don't use Rectangle.intersection() to avoid creating
 	2 unnecessary Rectangle instances and fix a clipping problem.
 	(computeIntersection): New helper method, adapted from SwingUtilities.

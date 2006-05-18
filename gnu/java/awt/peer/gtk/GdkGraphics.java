@@ -161,8 +161,7 @@ public class GdkGraphics extends Graphics
     if (component != null && ! component.isRealized ())
       return;
 
-    //computeIntersection(x, y, width, height, clip);
-    clip = clip.intersection(new Rectangle(x, y, width, height));
+    computeIntersection(x, y, width, height, clip);
     setClipRectangle (clip.x, clip.y, clip.width, clip.height);
   }
 
