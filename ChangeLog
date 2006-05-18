@@ -1,3 +1,8 @@
+2006-05-18  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/net/loader/JarURLLoader.java
+	(JarURLLoader): Use a slightly more efficient URL constructor.
+
 2006-05-18  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* gnu/java/awt/print/JavaPrinterGraphics.java

@@ -32,20 +32,14 @@ public final class JarURLLoader extends URLLoader
   {
     super(classloader, cache, factory, baseURL, absoluteUrl);
 
-    // Cache url prefix for all resources in this jar url.
-    String external = baseURL.toExternalForm();
-    StringBuffer sb = new StringBuffer(external.length() + 6);
-    sb.append("jar:");
-    sb.append(external);
-    sb.append("!/");
-    String jarURL = sb.toString();
-
     this.classPath = null;
     URL baseJarURL = null;
     JarFile jarfile = null;
     try
       {
-        baseJarURL = new URL(null, jarURL, cache.get(factory, "jar"));
+        // Cache url prefix for all resources in this jar url.
+        String base = baseURL.toExternalForm() + "!/";
+        baseJarURL = new URL("jar", "", -1, base, cache.get(factory, "jar"));
         
         jarfile =
           ((JarURLConnection) baseJarURL.openConnection()).getJarFile();
