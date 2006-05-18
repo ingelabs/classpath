@@ -1,3 +1,16 @@
+2006-05-18  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/font/ShapeGraphicAttribute.java:
+	Documented entire class.
+	(ShapeGraphicAttribute): Initialized bounds field.
+	(draw): Implemented.
+	(equals): Implemented.
+	(getAdvance): Implemented.
+	(getAscent): Implemented.
+	(getBounds): Implemented.
+	(getDescent): Implemented.
+	(hashCode): Implemented.
+
 2006-05-18  Roman Kennke <kennke@aicas.com>
 
 	* javax/swing/CellRendererPane.java
