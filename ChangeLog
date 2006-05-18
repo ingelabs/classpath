@@ -1,5 +1,26 @@
 2006-05-18  Roman Kennke <kennke@aicas.com>
 
+	PR 26368
+	* javax/swing/text/GapContent.java
+	(GapContentPosition(int)): Use adapted binarySearch method to
+	allow for having a greater array than number of entries.
+	(numMarks): New field, holds the end of the marks list.
+	(GapContent): Initialize positionMarks with size of 10 instead of 0.
+	(shiftGapStartDown): Adjusted for new setPositionsInRange signature.
+	(shiftGapEndUp): Adjusted for new setPositionsInRange signature.
+	(setPositionsInRange): Changed signature to narrow the purpose and
+	special cases inside. Reimplemented to crunch together equal marks.
+	(adjustPositionsInRange): Added assertion to make sure we do
+	not accidentally change the order of the mark. Added some debug
+	output for a special case of which I don't know if it even exists.
+	(resetMarksAtZero): Made impl simpler.
+	(dumpMarks): New debug helper method.
+	(insertMark): Grow array in bigger chunks to avoid excessive copying.
+	(binarySearch): New method. An adaption of Arrays.binarySearch()
+	that allows for an maxIndex parameter.
+
+2006-05-18  Roman Kennke <kennke@aicas.com>
+
 	* javax/swing/KeyboardManager.java
 	(topLevelLookup): Use WeakHashMap to avoid memory leak.
 
