@@ -1,5 +1,5 @@
 /* BasicToolBarUI.java --
-   Copyright (C) 2004, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -76,13 +76,11 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.ToolBarUI;
 import javax.swing.plaf.UIResource;
-import javax.swing.plaf.metal.MetalBorders;
+import javax.swing.plaf.basic.BasicBorders.ButtonBorder;
 
 /**
  * This is the Basic Look and Feel UI class for JToolBar.
@@ -313,8 +311,19 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
    */
   protected Border createNonRolloverBorder()
   {
-    return new EtchedBorder();
-  }
+    Border b = UIManager.getBorder("ToolBar.nonrolloverBorder");
+    
+    if (b == null)
+      {
+        b = new CompoundBorder(
+            new ButtonBorder(UIManager.getColor("Button.shadow"),
+                             UIManager.getColor("Button.darkShadow"),
+                             UIManager.getColor("Button.light"),
+                             UIManager.getColor("Button.highlight")),
+            BasicBorders.getMarginBorder());
+      }
+    
+    return b;  }
 
   /**
    * This method creates a new PropertyChangeListener for the JToolBar.
@@ -334,12 +343,19 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
    */
   protected Border createRolloverBorder()
   {
-    // We can safely assume that the component on which this border
-    // will be installed is a AbstractButton (or subclass). So
-    // a MetalBorders.ButtonBorder will work on it.
-    return new CompoundBorder(
-                              new MetalBorders.ButtonBorder(),
-                              new EmptyBorder(3,3,3,3));
+    Border b = UIManager.getBorder("ToolBar.rolloverBorder");
+    
+    if (b == null)
+      {
+        b = new CompoundBorder(
+            new ButtonBorder(UIManager.getColor("Button.shadow"),
+                             UIManager.getColor("Button.darkShadow"),
+                             UIManager.getColor("Button.light"),
+                             UIManager.getColor("Button.highlight")),
+            BasicBorders.getMarginBorder());
+      }
+    
+    return b;
   }
 
   /**
@@ -759,6 +775,10 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
       {
 	AbstractButton b = (AbstractButton) c;
 	b.setRolloverEnabled(false);
+
+        // Save old border in hashtable.
+        borders.put(b, b.getBorder());
+        
 	b.setBorder(nonRolloverBorder);
       }
   }
@@ -770,11 +790,11 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
    */
   protected void setBorderToNormal(Component c)
   {
-    if (c instanceof JButton)
+    if (c instanceof AbstractButton)
       {
-	JButton b = (JButton) c;
-	Border border = (Border) borders.get(b);
-	b.setBorder(border);
+        AbstractButton b = (AbstractButton) c;
+        b.setRolloverEnabled(true);
+        b.setBorder((Border) borders.remove(b));
       }
   }
 
@@ -785,11 +805,15 @@ public class BasicToolBarUI extends ToolBarUI implements SwingConstants
    */
   protected void setBorderToRollover(Component c)
   {
-    if (c instanceof JButton)
+    if (c instanceof AbstractButton)
       {
-	JButton b = (JButton) c;
-	b.setRolloverEnabled(true);
-	b.setBorder(rolloverBorder);
+        AbstractButton b = (AbstractButton) c;
+        b.setRolloverEnabled(false);
+        
+        // Save old border in hashtable.
+        borders.put(b, b.getBorder());
+        
+        b.setBorder(rolloverBorder);
       }
   }
 

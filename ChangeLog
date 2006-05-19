@@ -1,3 +1,16 @@
+2006-05-19  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/plaf/basic/BasicToolBarUI.java:
+	(createNonRolloverBorder): Rewritten.
+	(createRolloverBorder): Rewritten.
+	(setToNonRolloverBorder): Store old border instance in hashtable.
+	(setToRolloverBorder): Store old border instance in hashtable, use
+	AbstractButton instead of JButton in statements.
+	(setBorderToNormal): Rewritten.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java:
+	(initComponentDefaults): Added values for ToolBar.rolloverBorder and
+	ToolBar.nonrolloverBorder.
+
 2006-05-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/imageio/stream/ImageInputStreamImpl.java: Complete.
