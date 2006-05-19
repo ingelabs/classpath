@@ -67,6 +67,13 @@ class LightweightDispatcher
    * as well as the MOUSE_RELEASED event following the dragging.
    */
   private Component dragTarget;
+  
+  /**
+   * Stores the button number which started the drag operation. This is needed
+   * because we want to handle only one drag operation and only the button that
+   * started the dragging should be able to stop it (by a button release).
+   */
+  private int dragButton;
 
   /**
    * The last mouse event target. If the target changes, additional
@@ -196,10 +203,24 @@ class LightweightDispatcher
         switch (ev.getID())
         {
           case MouseEvent.MOUSE_PRESSED:
-            lastTarget = dragTarget = target;
+            // Handle the start of a drag operation or discard the event if
+            // one is already in progress. This prevents focus changes with the
+            // other mouse buttons when one is used for dragging.
+            if (dragTarget == null)
+              {
+                lastTarget = dragTarget = target;
+                
+                // Save the button that started the drag operation.
+                dragButton = ev.getButton();
+              }
+            else
+              return false;
+            
             break;
           case MouseEvent.MOUSE_RELEASED:
-            if (dragTarget != null)
+            // Stop the drag operation only when the button that started
+            // it was released.
+            if (dragTarget != null && dragButton == ev.getButton())
               {
                 target = dragTarget;
                 dragTarget = null;

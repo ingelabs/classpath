@@ -1,5 +1,12 @@
 2006-05-19  Robert Schuster  <robertschuster@fsfe.org>
 
+	* java/awt/LightweightDispatcher.java: Added field dragButton and
+	documentation for it.
+	(handleMouseEvent): Rewritten MOUSE_PRESSED case in switch-statement,
+	added subexpression to if-clause in MOUSE_RELEASED case.
+
+2006-05-19  Robert Schuster  <robertschuster@fsfe.org>
+
 	* javax/swing/metal/MetalButtonUI.java:
 	(update): Removed some subexpression from if-clause and call
 	updateWithGradient.
