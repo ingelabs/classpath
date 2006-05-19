@@ -3542,8 +3542,7 @@ public abstract class JComponent extends Container implements Serializable
     Rectangle currentClip = clip;
     Component found = this;
     Container parent = this; 
-    // Path up is stopped at viewports, allowing to use viewport
-    // painting optimizations.
+
     while (parent != null && !(parent instanceof Window))
       {
         Container newParent = parent.getParent();
@@ -3559,15 +3558,42 @@ public abstract class JComponent extends Container implements Serializable
             parent = newParent;
             continue;
           }
-        // If the parent is not optimizedDrawingEnabled, we must paint the
-        // parent.
+
+        // If the parent is not optimizedDrawingEnabled, we must check if the
+        // parent or some neighbor overlaps the current clip.
+
+        // This is the current clip converted to the parent's coordinate
+        // system. TODO: We can do this more efficiently by succesively
+        // cumulating the parent-child translations.
         Rectangle target = SwingUtilities.convertRectangle(found,
                                                            currentClip,
                                                            newParent);
-        found = newParent;
-        currentClip = target;
+
+        // We have an overlap if either:
+        // - The new parent itself doesn't completely cover the clip
+        //   (this can be the case with viewports).
+        // - If some higher-level (than the current) children of the new parent
+        //   intersect the target rectangle.
+        Rectangle parentRect = SwingUtilities.getLocalBounds(newParent);
+        boolean haveOverlap =
+          ! SwingUtilities.isRectangleContainingRectangle(parentRect, target);
+        if (! haveOverlap)
+          {
+            Component[] children = newParent.getComponents();
+            for (int i = 0; children[i] != parent && !haveOverlap; i++)
+              {
+                Rectangle childRect = children[i].getBounds();
+                haveOverlap = target.intersects(childRect);
+              }
+          }
+        if (haveOverlap)
+          {
+            found = newParent;
+            currentClip = target;
+          }
         parent = newParent;
       }
+    //System.err.println("overlapfree parent: " + found);
     return found;
   }
 
