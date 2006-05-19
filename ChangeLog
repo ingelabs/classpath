@@ -1,3 +1,10 @@
+2006-05-19  Robert Schuster  <robertschuster@fsfe.org>
+
+	* javax/swing/metal/MetalButtonUI.java:
+	(update): Removed some subexpression from if-clause and call
+	updateWithGradient.
+	(updateWithGradient): New method.
+
 2006-05-19  Roman Kennke <kennke@aicas.com>
 
 	* javax/swing/JComponent.java
