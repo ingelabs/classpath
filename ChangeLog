@@ -1,3 +1,17 @@
+2006-05-19  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/Thread.java
+	(contextClassLoaderIsSystemClassLoader): New field.
+	(Thread(ThreadGroup,Runnable)): Call createAnonymousThreadName.
+	(Thread(VMThread,String,int,boolean)): Call createAnonymousThreadName
+	and set contextClassLoaderIsSystemClassLoader.
+	(Thread(ThreadGroup,Runnable,String,long)):
+	Set contextClassLoaderIsSystemClassLoader.
+	(createAnonymousThreadName): New method.
+	(getContextClassLoader): Check contextClassLoaderIsSystemClassLoader
+	and fixed security check.
+	(setContextClassLoader): Clear contextClassLoaderIsSystemClassLoader.
+
 2006-05-19  Robert Schuster  <robertschuster@fsfe.org>
 
 	* javax/swing/plaf/basic/BasicToolBarUI.java:
