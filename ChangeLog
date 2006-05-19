@@ -1,3 +1,8 @@
+2006-05-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* javax/imageio/stream/ImageInputStreamImpl.java: Complete.
+	* javax/imageio/stream/MemoryCacheImageInputStream.java: Likewise.
+
 2006-05-18  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/font/GlyphMetrics.java
