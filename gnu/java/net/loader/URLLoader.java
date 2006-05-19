@@ -42,7 +42,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLStreamHandlerFactory;
 import java.security.CodeSource;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.jar.Manifest;
 
 /**
@@ -136,7 +136,11 @@ public abstract class URLLoader
     return null;
   }
 
-  public Vector getClassPath()
+  /**
+   * Return a list of new URLLoader objects representing any
+   * class path entries added by this container.
+   */
+  public ArrayList getClassPath()
   {
     return null;
   }

@@ -1,3 +1,24 @@
+2006-05-19  Tom Tromey  <tromey@redhat.com>
+
+	PR classpath/27444:
+	* gnu/java/net/loader/URLLoader.java (getClassPath): Documented.
+	Changed return type.
+	* java/net/URLClassLoader.java (urlloaders): Removed.
+	(addURLImpl): Updated.
+	* gnu/java/net/loader/JarURLLoader.java (initialized): New field.
+	(indexSet): Likewise.
+	(classPath): Changed type.
+	(JarURLLoader): New constructor.
+	(initialize): New method.
+	(getResource): Use index set if it exists.
+	(getClassPath): Updated.
+	* gnu/java/net/IndexListParser.java (IndexListParser): Avoid NPE.
+	(prefixes): New field.
+	(headers): Removed.
+	(IndexListParser): Fill in prefixes.
+	(clearAll): Clear prefixes.
+	(getHeaders): Changed return type.
+
 2006-05-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/swing/plaf/basic/BasicTableHeaderUI.java 

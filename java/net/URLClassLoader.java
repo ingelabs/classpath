@@ -61,9 +61,8 @@ import java.security.PermissionCollection;
 import java.security.PrivilegedAction;
 import java.security.SecureClassLoader;
 import java.security.cert.Certificate;
+import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Vector;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -129,14 +128,6 @@ import java.util.jar.Manifest;
 public class URLClassLoader extends SecureClassLoader
 {
   // Class Variables
-
-  /**
-   * A global cache to store mappings between URLLoader and URL,
-   * so we can avoid do all the homework each time the same URL
-   * comes.
-   * XXX - Keeps these loaders forever which prevents garbage collection.
-   */
-  private static HashMap urlloaders = new HashMap();
 
   /**
    * A cache to store mappings between handler factory and its
@@ -299,132 +290,114 @@ public class URLClassLoader extends SecureClassLoader
 	// Reset the toString() value.
 	thisString = null;
 
-        // Check global cache to see if there're already url loader
-        // for this url.
-        URLLoader loader = (URLLoader) urlloaders.get(newUrl);
-        if (loader == null)
+        // Create a loader for this URL.
+        URLLoader loader = null;
+        String file = newUrl.getFile();
+        String protocol = newUrl.getProtocol();
+
+        // If we have a file: URL, we want to make it absolute
+        // here, before we decide whether it is really a jar.
+        URL absoluteURL;
+        if ("file".equals (protocol))
           {
-            String file = newUrl.getFile();
-            String protocol = newUrl.getProtocol();
-
-	    // If we have a file: URL, we want to make it absolute
-	    // here, before we decide whether it is really a jar.
-	    URL absoluteURL;
-	    if ("file".equals (protocol))
-	      {
-		File dir = new File(file);
-		URL absUrl;
-		try
-		  {
-		    absoluteURL = dir.getCanonicalFile().toURL();
-		  }
-		catch (IOException ignore)
-		  {
-		    try
-		      {
-			absoluteURL = dir.getAbsoluteFile().toURL();
-		      }
-		    catch (MalformedURLException _)
-		      {
-			// This really should not happen.
-			absoluteURL = newUrl;
-		      }
-		  }
-	      }
-	    else
-	      {
-		// This doesn't hurt, and it simplifies the logic a
-		// little.
-		absoluteURL = newUrl;
-	      }
-
-            // First see if we can find a handler with the correct name.
+            File dir = new File(file);
+            URL absUrl;
             try
               {
-                Class handler = Class.forName(URL_LOADER_PREFIX + protocol);
-                Class[] argTypes = new Class[] { URLClassLoader.class,
-                                                 URLStreamHandlerCache.class,
-                                                 URLStreamHandlerFactory.class,
-                                                 URL.class,
-                                                 URL.class };
-                Constructor k = handler.getDeclaredConstructor(argTypes);
-                loader
-                  = (URLLoader) k.newInstance(new Object[] { this,
-                                                             factoryCache,
-                                                             factory,
-                                                             newUrl,
-                                                             absoluteURL });
+                absoluteURL = dir.getCanonicalFile().toURL();
               }
-            catch (ClassNotFoundException ignore)
+            catch (IOException ignore)
               {
-                // Fall through.
+                try
+                  {
+                    absoluteURL = dir.getAbsoluteFile().toURL();
+                  }
+                catch (MalformedURLException _)
+                  {
+                    // This really should not happen.
+                    absoluteURL = newUrl;
+                  }
               }
-            catch (NoSuchMethodException nsme)
-              {
-                // Programming error in the class library.
-                InternalError vme
-                  = new InternalError("couldn't find URLLoader constructor");
-                vme.initCause(nsme);
-                throw vme;
-              }
-            catch (InstantiationException inste)
-              {
-                // Programming error in the class library.
-                InternalError vme
-                  = new InternalError("couldn't instantiate URLLoader");
-                vme.initCause(inste);
-                throw vme;
-              }
-            catch (InvocationTargetException ite)
-              {
-                // Programming error in the class library.
-                InternalError vme
-                  = new InternalError("error instantiating URLLoader");
-                vme.initCause(ite);
-                throw vme;
-              }
-            catch (IllegalAccessException illae)
-              {
-                // Programming error in the class library.
-                InternalError vme
-                  = new InternalError("invalid access to URLLoader");
-                vme.initCause(illae);
-                throw vme;
-              }
-            
-            if (loader == null)
-              {
-                // If it is not a directory, use the jar loader.
-                if (! (file.endsWith("/") || file.endsWith(File.separator)))
-                  loader = new JarURLLoader(this, factoryCache, factory,
-                                            newUrl, absoluteURL);
-                else if ("file".equals(protocol))
-                  loader = new FileURLLoader(this, factoryCache, factory,
-                                             newUrl, absoluteURL);
-                else
-                  loader = new RemoteURLLoader(this, factoryCache, factory,
-                                               newUrl);
-              }
+          }
+        else
+          {
+            // This doesn't hurt, and it simplifies the logic a
+            // little.
+            absoluteURL = newUrl;
+          }
 
-            // Cache it.
-            urlloaders.put(newUrl, loader);
+        // First see if we can find a handler with the correct name.
+        try
+          {
+            Class handler = Class.forName(URL_LOADER_PREFIX + protocol);
+            Class[] argTypes = new Class[] { URLClassLoader.class,
+                                             URLStreamHandlerCache.class,
+                                             URLStreamHandlerFactory.class,
+                                             URL.class,
+                                             URL.class };
+            Constructor k = handler.getDeclaredConstructor(argTypes);
+            loader
+              = (URLLoader) k.newInstance(new Object[] { this,
+                                                         factoryCache,
+                                                         factory,
+                                                         newUrl,
+                                                         absoluteURL });
+          }
+        catch (ClassNotFoundException ignore)
+          {
+            // Fall through.
+          }
+        catch (NoSuchMethodException nsme)
+          {
+            // Programming error in the class library.
+            InternalError vme
+              = new InternalError("couldn't find URLLoader constructor");
+            vme.initCause(nsme);
+            throw vme;
+          }
+        catch (InstantiationException inste)
+          {
+            // Programming error in the class library.
+            InternalError vme
+              = new InternalError("couldn't instantiate URLLoader");
+            vme.initCause(inste);
+            throw vme;
+          }
+        catch (InvocationTargetException ite)
+          {
+            // Programming error in the class library.
+            InternalError vme
+              = new InternalError("error instantiating URLLoader");
+            vme.initCause(ite);
+            throw vme;
+          }
+        catch (IllegalAccessException illae)
+          {
+            // Programming error in the class library.
+            InternalError vme
+              = new InternalError("invalid access to URLLoader");
+            vme.initCause(illae);
+            throw vme;
+          }
+
+        if (loader == null)
+          {
+            // If it is not a directory, use the jar loader.
+            if (! (file.endsWith("/") || file.endsWith(File.separator)))
+              loader = new JarURLLoader(this, factoryCache, factory,
+                                        newUrl, absoluteURL);
+            else if ("file".equals(protocol))
+              loader = new FileURLLoader(this, factoryCache, factory,
+                                         newUrl, absoluteURL);
+            else
+              loader = new RemoteURLLoader(this, factoryCache, factory,
+                                           newUrl);
           }
 
 	urlinfos.add(loader);
-
-	Vector extraUrls = loader.getClassPath();
-	if (extraUrls != null)
-	  {
-	    Iterator it = extraUrls.iterator();
-	    while (it.hasNext())
-	      {
-		URL url = (URL)it.next();
-		URLLoader extraLoader = (URLLoader) urlloaders.get(url);
-		if (! urlinfos.contains (extraLoader))
-		  addURLImpl(url);
-	      }
-	  }
-
+	ArrayList extra = loader.getClassPath();
+        if (extra != null)
+          urlinfos.addAll(extra);
       }
   }
 
