@@ -1,3 +1,36 @@
+2006-05-19  Roman Kennke <kennke@aicas.com>
+
+	* gnu/java/awt/java2d/AbstractGraphics2D.java
+	Added class docs.
+	(pixel): Removed obsolete field.
+	(draw(Shape)): Removed commented out code.
+	(drawImage): Formatting.
+	(drawString): Added optimization hook.
+	(setPaint): Removed rawSetForeground().
+	(getFontRenderContext): Return context with correct transform.
+	(drawGlyphVector): Draw complete outline in one go.
+	(copyArea): Added optimization hook.
+	(clearRect): Added optimization hook.
+	(drawImage): Added optimization hook.
+	(fillShape): (Temporarily) Set antialiasing off by default for
+	font rendering. Adjust the shape by some bits to improve rendering.
+	Pass clip bounds to the render methods.
+	(drawPixel): Removed.
+	(rawSetPixel): Removed.
+	(rawSetForeground): Removed.
+	(rawDrawLine): Default impl calls standard pipeline.
+	(rawDrawString): New method, calls standard pipeline for rendering.
+	(rawClearRect): New method, calls standard pipeline for rendering.
+	(rawFillRect): New method, calls standard pipeline for rendering.
+	(rawDrawImage): New method, calls standard pipeline for rendering.
+	(rawCopyArea): New method.
+	(copyAreaImpl): New method.
+	(rawFillShape): Renamed to fillShapeImpl(). Small optimization
+	for rendering.
+	(fillShapeAntialias): Fixed AA rendering.
+	(fillScanlineAA): Fixed AA rendering.
+	(getSegments): Take offset into account.
+
 2006-05-19  Sven de Marothy  <sven@physto.se>
 
 	* javax/swing/text/AbstractWriter.java
