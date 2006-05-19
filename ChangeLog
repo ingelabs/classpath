@@ -1,3 +1,8 @@
+2006-05-19  Sven de Marothy  <sven@physto.se>
+
+	* javax/swing/text/AbstractWriter.java
+	(getText): Fix parameters (start, length) not (start, end).
+	
 2006-05-19  Tom Tromey  <tromey@redhat.com>
 
 	PR classpath/27444:
