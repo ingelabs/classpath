@@ -1,3 +1,14 @@
+2006-05-19  Lillian Angel  <langel@redhat.com>
+
+	* java/awt/font/GlyphVector.java
+	(getGlyphCharIndex): Implemented.
+	(getGlyphCharIndices): Implemented.
+	(getGlyphOutline): Implemented.
+	(getGlyphVisualBounds): Implemented.
+	(getGlyphVisualBounds): Implemented.
+	(getPixelBounds): Implemented.
+	(getLayoutFlags): Implemented.
+
 2006-05-19  Robert Schuster  <robertschuster@fsfe.org>
 
 	* java/awt/LightweightDispatcher.java: Added field dragButton and
