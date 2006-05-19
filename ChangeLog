@@ -1,3 +1,11 @@
+2006-05-19  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java 
+	(MouseInputHandler.mouseExitted): No nothing there.
+	(MouseInputHandler.endDragging): Move column to the
+	first/last position if released outside the horizontal
+	table range.
+
 2006-05-19  Lillian Angel  <langel@redhat.com>
 
 	* java/awt/font/GlyphVector.java
