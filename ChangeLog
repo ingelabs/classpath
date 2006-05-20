@@ -1,5 +1,11 @@
 2006-05-20  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/print/JavaPrinterJob.java 
+	(print): Use PostScriptGraphics2D.
+	* gnu/java/awt/print/PostScriptGraphics2D.java: New file.
+	
+2006-05-20  Sven de Marothy  <sven@physto.se>
+
 	* javax/swing/text/html/MinimalHTMLWriter.java: New file
 	
 2006-05-20  Raif S. Naffah  <raif@swiftdsl.com.au>

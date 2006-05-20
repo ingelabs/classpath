@@ -260,7 +260,7 @@ public class JavaPrinterJob extends PrinterJob
     if( printable == null && pageable == null ) // nothing to print?
       return;
 
-    JavaPrinterGraphics pg = new JavaPrinterGraphics( this );
+    PostScriptGraphics2D pg = new PostScriptGraphics2D( this );
     SpooledDocument doc = pg.spoolPostScript( printable, pageFormat, 
 					      pageable );
 
