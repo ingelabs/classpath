@@ -1,5 +1,19 @@
 2006-05-20  Tom Tromey  <tromey@redhat.com>
 
+	* tools/gnu/classpath/tools/native2ascii/Messages.java: New file.
+	* resource/gnu/classpath/tools/native2ascii/messages.properties: New
+	file.
+	* tools/gnu/classpath/tools/native2ascii/Native2ASCII.java
+	(HandleFile): New class.
+	(input, output, encoding, reversed): New fields.
+	(createParser): New method.
+	(run): Likewise.
+	(main): Use 'run'.
+	* tools/gnu/classpath/tools/getopt/FileArgumentCallback.java
+	(notifyFile): Throws OptionException.
+
+2006-05-20  Tom Tromey  <tromey@redhat.com>
+
 	* tools/gnu/classpath/tools/native2ascii/Native2ASCII.java: New file,
 	from cp-tools.
 

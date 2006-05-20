@@ -38,6 +38,12 @@
 
 package gnu.classpath.tools.native2ascii;
 
+import gnu.classpath.tools.getopt.ClasspathToolParser;
+import gnu.classpath.tools.getopt.FileArgumentCallback;
+import gnu.classpath.tools.getopt.Option;
+import gnu.classpath.tools.getopt.OptionException;
+import gnu.classpath.tools.getopt.Parser;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -54,51 +60,72 @@ import java.io.PrintWriter;
  */
 public class Native2ASCII
 {
-  public static void main(String[] args)
+  // Input file.
+  String input;
+  // Output file.
+  String output;
+  // Encoding to use.
+  String encoding;
+  // True for reverse operation.
+  boolean reversed;
+
+  private class HandleFile extends FileArgumentCallback
   {
-    String encoding = System.getProperty("file.encoding");
-    String input = null;
-    String output = null;
-    for (int i = 0; i < args.length; i++)
+    public HandleFile()
+    {
+    }
+
+    public void notifyFile(String fileArgument)
+      throws OptionException
+    {
+      if (input == null)
+        input = fileArgument;
+      else if (output == null)
+        output = fileArgument;
+      else
+        throw new OptionException(Messages.getString("Native2ASCII.TooManyFiles")); //$NON-NLS-1$
+    }
+  }
+
+  private Parser createParser()
+  {
+    Parser result = new ClasspathToolParser("native2ascii", true); //$NON-NLS-1$
+    result.setHeader(Messages.getString("Native2ASCII.Usage")); //$NON-NLS-1$
+
+    result.add(new Option("encoding", Messages.getString("Native2ASCII.EncodingHelp"), Messages.getString("Native2ASCII.EncodingArgName")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    {
+      public void parsed(String argument) throws OptionException
       {
-        if (args[i].equals("-encoding"))
-          {
-            i++;
-            if (i >= args.length)
-              {
-                System.err.println("encoding is missing");
-              }
-            else
-              {
-                encoding = args[i];
-              }
-          }
-        else if (args[i].equals("-reverse") || args[i].startsWith("-J"))
-          {
-            System.err.println(args[i] + ": not supported");
-          }
-        else
-          {
-            if (input == null)
-              {
-                input = args[i];
-              }
-            else if (output == null)
-              {
-                output = args[i];
-              }
-            else
-              {
-                System.err.println(args[i] + ": ignored");
-              }
-          }
+        if (encoding != null)
+          throw new OptionException(Messages.getString("Native2ASCII.EncodingSpecified")); //$NON-NLS-1$
+        encoding = argument;
       }
+    });
+    result.add(new Option("reversed", Messages.getString("Native2ASCII.ReversedHelp")) //$NON-NLS-1$ //$NON-NLS-2$
+    {
+      public void parsed(String argument) throws OptionException
+      {
+        reversed = true;
+      }
+    });
+
+    return result;
+  }
+
+  private void run(String[] args)
+  {
+    Parser argParser = createParser();
+    argParser.parse(args, new HandleFile());
+
+    if (encoding == null)
+      encoding = System.getProperty("file.encoding"); //$NON-NLS-1$
     try
       {
         InputStream is = (input == null ? System.in
-            : new FileInputStream(input));
+                                        : new FileInputStream(input));
         OutputStream os = (output == null ? (OutputStream) System.out
-            : new FileOutputStream(output));
+                                          : new FileOutputStream(output));
+
         BufferedReader rdr = new BufferedReader(new InputStreamReader(is,
                                                                       encoding));
         PrintWriter wtr = new PrintWriter(
@@ -115,17 +142,26 @@ public class Native2ASCII
             for (int i = 0; i < s.length(); i++)
               {
                 char c = s.charAt(i);
-                if ((int)c <= 127)
+                if (reversed
+                    && i + 6 < s.length()
+                    && s.charAt(i) == '\\'
+                    && s.charAt(i + 1) == 'u')
+                  {
+                    int num = Integer.parseInt(s.substring(i + 2, i + 6), 16);
+                    sb.append((char) num);
+                    i += 5;
+                  }
+                else if ((int)c <= 127 || reversed)
                   {
                     sb.append(c);
                   }
                 else
                   {
-                    sb.append("\\u");
+                    sb.append("\\u"); //$NON-NLS-1$
                     if ((int)c <= 0xff)
-                      sb.append("00");
+                      sb.append("00"); //$NON-NLS-1$
                     else if ((int)c <= 0xfff)
-                      sb.append("0");
+                      sb.append("0"); //$NON-NLS-1$
                     sb.append(Integer.toHexString((int) c));
                   }
               }
@@ -139,5 +175,11 @@ public class Native2ASCII
       {
         e.printStackTrace();
       }
+  }
+
+  public static void main(String[] args)
+  {
+    new Native2ASCII().run(args);
+    String encoding = System.getProperty("file.encoding"); //$NON-NLS-1$
   }
 }
