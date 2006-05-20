@@ -1,5 +1,12 @@
 2006-05-20  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/java/security/OID.java: Updated copyright year.
+	(OID): Removed unused Javadoc param tag.
+	* gnu/java/security/prng/PRNGFactory.java: Removed unused import.
+	* gnu/java/security/hash/MD4.java: Fixed a Javadoc link.
+
+2006-05-20  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/crypto/jce/keyring/GnuKeyring.java (engineAliases):
 	Formatting.
 	Added trace/debug statements.
