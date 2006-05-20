@@ -110,7 +110,7 @@ get_method_id(JNIEnv *env,  jclass clazz, const char *name,
 void
 JCL_print_buffer(JNIEnv *env __attribute__((__unused__)), struct JCL_buffer *buf)
 {
-  fprintf(stdout, "Buffer - type: %d, ptr: %d\n", buf->type, (int)buf->ptr);
+  fprintf(stdout, "Buffer - type: %d, ptr: %p\n", buf->type, buf->ptr);
   fflush(stdout);
 }
 
