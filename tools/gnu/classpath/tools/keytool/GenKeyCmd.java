@@ -316,11 +316,9 @@ class GenKeyCmd extends Command
     log.finer("  -keysize=" + keySize); //$NON-NLS-1$
     log.finer("  -sigalg=" + signatureAlgorithm.getAlgorithm()); //$NON-NLS-1$
     log.finer("  -dname=" + distinguishedName); //$NON-NLS-1$
-    log.finer("  -keypass=" + String.valueOf(keyPasswordChars)); //$NON-NLS-1$
     log.finer("  -validity=" + validityInDays); //$NON-NLS-1$
     log.finer("  -storetype=" + storeType); //$NON-NLS-1$
     log.finer("  -keystore=" + storeURL); //$NON-NLS-1$
-    log.finer("  -storepass=" + String.valueOf(storePasswordChars)); //$NON-NLS-1$
     log.finer("  -provider=" + provider); //$NON-NLS-1$
     log.finer("  -v=" + verbose); //$NON-NLS-1$
   }

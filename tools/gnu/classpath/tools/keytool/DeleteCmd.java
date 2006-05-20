@@ -163,7 +163,6 @@ class DeleteCmd extends Command
     log.finer("  -alias=" + alias); //$NON-NLS-1$
     log.finer("  -storetype=" + storeType); //$NON-NLS-1$
     log.finer("  -keystore=" + storeURL); //$NON-NLS-1$
-    log.finer("  -storepass=" + String.valueOf(storePasswordChars)); //$NON-NLS-1$
     log.finer("  -provider=" + provider); //$NON-NLS-1$
     log.finer("  -v=" + verbose); //$NON-NLS-1$
   }

@@ -274,12 +274,10 @@ class ImportCmd extends Command
     log.finer("-import handler will use the following options:"); //$NON-NLS-1$
     log.finer("  -alias=" + alias); //$NON-NLS-1$
     log.finer("  -file=" + _certFileName); //$NON-NLS-1$
-    log.finer("  -keypass=" + _password); //$NON-NLS-1$
     log.finer("  -noprompt=" + noPrompt); //$NON-NLS-1$
     log.finer("  -trustcacerts=" + trustCACerts); //$NON-NLS-1$
     log.finer("  -storetype=" + storeType); //$NON-NLS-1$
     log.finer("  -keystore=" + storeURL); //$NON-NLS-1$
-    log.finer("  -storepass=" + String.valueOf(storePasswordChars)); //$NON-NLS-1$
     log.finer("  -provider=" + provider); //$NON-NLS-1$
     log.finer("  -v=" + verbose); //$NON-NLS-1$
   }
@@ -675,7 +673,7 @@ class ImportCmd extends Command
     log.entering(this.getClass().getName(), "orderChain"); //$NON-NLS-1$
 
     LinkedList result = new LinkedList();
-    
+    // FIXME: really order it!
 
     log.entering(this.getClass().getName(), "orderChain", result); //$NON-NLS-1$
     return result;

@@ -194,14 +194,14 @@ abstract class Command
   public void doCommand() throws Exception
   {
     try
-    {
-      setup();
-      start();
-    }
+      {
+        setup();
+        start();
+      }
     finally
-    {
-      teardown();
-    }
+      {
+        teardown();
+      }
   }
 
   /**
@@ -500,7 +500,6 @@ abstract class Command
         storePasswordChars = pcb.getPassword();
         pcb.clearPassword();
       }
-    log.finest("storePasswordChars = [" + String.valueOf(storePasswordChars)+ "]"); //$NON-NLS-1$ //$NON-NLS-2$
   }
 
   /**
@@ -589,7 +588,7 @@ abstract class Command
     catch (IOException x)
     {
       log.fine("Exception while closing the key store input stream: " + x //$NON-NLS-1$
-                 + ". Ignore"); //$NON-NLS-1$
+               + ". Ignore"); //$NON-NLS-1$
     }
   }
 
@@ -984,7 +983,7 @@ abstract class Command
   protected void saveKeyStore(char[] password) throws IOException,
       KeyStoreException, NoSuchAlgorithmException, CertificateException
   {
-    log.entering(this.getClass().getName(), "saveKeyStore", String.valueOf(password)); //$NON-NLS-1$
+    log.entering(this.getClass().getName(), "saveKeyStore"); //$NON-NLS-1$
 
     URLConnection con = storeURL.openConnection();
     con.setDoOutput(true);

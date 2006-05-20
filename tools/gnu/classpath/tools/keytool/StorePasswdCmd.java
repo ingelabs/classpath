@@ -161,10 +161,8 @@ class StorePasswdCmd extends Command
     setNewKeystorePassword(_newPassword);
 
     log.finer("-storepasswd handler will use the following options:"); //$NON-NLS-1$
-    log.finer("  -new=" + String.valueOf(newStorePasswordChars)); //$NON-NLS-1$
     log.finer("  -storetype=" + storeType); //$NON-NLS-1$
     log.finer("  -keystore=" + storeURL); //$NON-NLS-1$
-    log.finer("  -storepass=" + String.valueOf(storePasswordChars)); //$NON-NLS-1$
     log.finer("  -provider=" + provider); //$NON-NLS-1$
     log.finer("  -v=" + verbose); //$NON-NLS-1$
   }

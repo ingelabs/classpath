@@ -123,7 +123,7 @@ class ListCmd extends Command
   protected String _ksURL;
   protected String _ksPassword;
   protected String _providerClassName;
-  private boolean rfc;
+  protected boolean rfc;
   private boolean all;
 
   // default 0-arguments constructor
@@ -190,7 +190,6 @@ class ListCmd extends Command
     log.finer("  -alias=" + alias); //$NON-NLS-1$
     log.finer("  -storetype=" + storeType); //$NON-NLS-1$
     log.finer("  -keystore=" + storeURL); //$NON-NLS-1$
-    log.finer("  -storepass=" + String.valueOf(storePasswordChars)); //$NON-NLS-1$
     log.finer("  -provider=" + provider); //$NON-NLS-1$
     log.finer("  -v=" + verbose); //$NON-NLS-1$
     log.finer("  -rfc=" + rfc); //$NON-NLS-1$
@@ -292,7 +291,7 @@ class ListCmd extends Command
     {
       public void parsed(String argument) throws OptionException
       {
-        verbose = true;
+        rfc = true;
       }
     });
     result.add(options);
@@ -359,7 +358,7 @@ class ListCmd extends Command
   private void print1Chain(Certificate[] chain, PrintWriter writer)
       throws CertificateEncodingException
   {
-    if (!verbose && !rfc)
+    if (! verbose && ! rfc)
       fingerprint(chain[0], writer);
     else
       {

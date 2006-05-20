@@ -1,3 +1,29 @@
+2006-05-20  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* tools/gnu/classpath/tools/keytool/ListCmd.java (rfc):
+	Increased visibility.
+	(setup): Do not trace/log passwords.
+	(parsed): Was not setting correct (rfc) field; fixed.
+	(print1Chain): Formatting.
+	* tools/gnu/classpath/tools/keytool/DeleteCmd.java (setup):
+	Do not trace/log passwords.
+	* tools/gnu/classpath/tools/keytool/ExportCmd.java (setup): Likewise.
+	* tools/gnu/classpath/tools/keytool/GenKeyCmd.java (setup): Likewise.
+	* tools/gnu/classpath/tools/keytool/IdentityDBCmd.java (setup): Likewise.
+	* tools/gnu/classpath/tools/keytool/KeyCloneCmd.java (setup): Likewise.
+	* tools/gnu/classpath/tools/keytool/StorePasswdCmd.java (setup): Likewise.
+	* tools/gnu/classpath/tools/keytool/ImportCmd.java (setup): Likewise.
+	(orderChain): Added FIXME.
+	* tools/gnu/classpath/tools/keytool/CertReqCmd.java (setup):
+	Do not trace/log passwords.
+	Removed commented out code.
+	* tools/gnu/classpath/tools/keytool/KeyPasswdCmd.java (setup): Likewise.
+	* tools/gnu/classpath/tools/keytool/SelfCertCmd.java (setup): Likewise.
+	* tools/gnu/classpath/tools/keytool/Command.java (doCommand): Formatting.
+	(setKeystoreURLParam): Likewise.
+	(setKeystorePasswordParam): Do not trace/log passwords.
+	(saveKeyStore): Likewise.
+
 2006-05-19  Roman Kennke <kennke@aicas.com>
 
 	* gnu/java/awt/java2d/AbstractGraphics2D.java

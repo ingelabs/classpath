@@ -209,16 +209,12 @@ class KeyCloneCmd extends Command
     setAliasParam(_alias);
     setKeyPasswordNoPrompt(_password);
     setDestinationAlias(_destAlias);
-//    setNewKeyPassword(_newPassword);
 
     log.finer("-keyclone handler will use the following options:"); //$NON-NLS-1$
     log.finer("  -alias=" + alias); //$NON-NLS-1$
     log.finer("  -dest=" + destinationAlias); //$NON-NLS-1$
-    log.finer("  -keypass=" + _password); //$NON-NLS-1$
-    log.finer("  -new=" + _newPassword); //$NON-NLS-1$
     log.finer("  -storetype=" + storeType); //$NON-NLS-1$
     log.finer("  -keystore=" + storeURL); //$NON-NLS-1$
-    log.finer("  -storepass=" + String.valueOf(storePasswordChars)); //$NON-NLS-1$
     log.finer("  -provider=" + provider); //$NON-NLS-1$
     log.finer("  -v=" + verbose); //$NON-NLS-1$
   }

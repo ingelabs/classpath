@@ -263,19 +263,15 @@ class SelfCertCmd extends Command
     setKeyStoreParams(_providerClassName, _ksType, _ksPassword, _ksURL);
     setAliasParam(_alias);
     setKeyPasswordNoPrompt(_password);
-//    setDName(_dName);
     setValidityParam(_validityStr);
-//    setSignatureAlgorithm(_sigAlgorithm);
 
     log.finer("-selfcert handler will use the following options:"); //$NON-NLS-1$
     log.finer("  -alias=" + alias); //$NON-NLS-1$
     log.finer("  -sigalg=" + _sigAlgorithm); //$NON-NLS-1$
     log.finer("  -dname=" + _dName); //$NON-NLS-1$
-    log.finer("  -keypass=" + _password); //$NON-NLS-1$
     log.finer("  -validity=" + validityInDays); //$NON-NLS-1$
     log.finer("  -storetype=" + storeType); //$NON-NLS-1$
     log.finer("  -keystore=" + storeURL); //$NON-NLS-1$
-    log.finer("  -storepass=" + String.valueOf(storePasswordChars)); //$NON-NLS-1$
     log.finer("  -provider=" + provider); //$NON-NLS-1$
     log.finer("  -v=" + verbose); //$NON-NLS-1$
   }

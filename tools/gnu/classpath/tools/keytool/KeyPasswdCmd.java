@@ -195,15 +195,12 @@ class KeyPasswdCmd extends Command
     setKeyStoreParams(_providerClassName, _ksType, _ksPassword, _ksURL);
     setAliasParam(_alias);
     setKeyPasswordNoPrompt(_password);
-//    setNewKeyPassword(_newPassword);
 
     log.finer("-keypasswd handler will use the following options:"); //$NON-NLS-1$
     log.finer("  -alias=" + alias); //$NON-NLS-1$
-    log.finer("  -keypass=" + _password); //$NON-NLS-1$
     log.finer("  -new=" + _newPassword); //$NON-NLS-1$
     log.finer("  -storetype=" + storeType); //$NON-NLS-1$
     log.finer("  -keystore=" + storeURL); //$NON-NLS-1$
-    log.finer("  -storepass=" + String.valueOf(storePasswordChars)); //$NON-NLS-1$
     log.finer("  -provider=" + provider); //$NON-NLS-1$
     log.finer("  -v=" + verbose); //$NON-NLS-1$
   }
