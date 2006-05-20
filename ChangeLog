@@ -1,5 +1,67 @@
 2006-05-20  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/keyring/PrivateKeyEntry.java: Formatting.
+	(toString): New method.
+	* gnu/javax/crypto/keyring/PasswordEncryptedEntry.java (decrypt):
+	Do not trace/log passwords.
+	Set masked to false before decoding envelope.
+	Do not set payload to null.
+	(encrypt): Set masked to true.
+	* gnu/javax/crypto/keyring/PasswordAuthenticatedEntry.java (verify):
+	Do not trace/log passwords.
+	Set masked to false before decoding envelope.
+	Do not set payload to null.
+	Added trace/debug statements.
+	(authenticate): Do not trace/log passwords.
+	Set masked to true.
+	Added trace/debug statements.
+	(getMac): Added trace/debug statements.
+	* gnu/javax/crypto/keyring/MaskableEnvelopeEntry.java
+	(remove(String)): Changed the signature to return a boolean.
+	(toString): New method.
+	* gnu/javax/crypto/keyring/GnuPublicKeyring.java (containsCertificate):
+	Formatting
+	(getCertificate): Likewise.
+	(putCertificate): Likewise.
+	(load): Likewise.
+	Do not trace/log passwords.
+	(store): Likewise.
+	* gnu/javax/crypto/keyring/GnuPrivateKeyring.java (getPrivateKey):
+	Do not trace/log passwords.
+	Added more trace/logging statements.
+	(putPrivateKey): Do not trace/log passwords.
+	Trace only key's class name.
+	Formatting.
+	(containsPublicKey): Formatting.
+	(getPublicKey): Likewise.
+	Trace only key's class name.
+	(putPublicKey): Trace only key's class name.
+	(containsCertPath): Formatting.
+	(getCertPath): Likewise.
+	(putCertPath): Likewise.
+	(load): Do not trace/log passwords.
+	Formatting.
+	(store): Likewise.
+	* gnu/javax/crypto/keyring/EnvelopeEntry.java (log): New field.
+	(add): Do not set payload to null.
+	Added trace/debug statements.
+	(containsAlias): Added trace/debug statements.
+	(get): Likewise.
+	(remove(Entry)): Likewise.
+	(remove(String)): Likewise.
+	Changed the signature to return a boolean.
+	Do not set payload to null unless really removed.
+	(toString): New method.
+	(decodeEnvelope): Clear entries before proceeding.
+	(makeAliasList): Added trace/debug statements.
+	Ensure only non-null aliases and alias-lists are added.
+	* gnu/javax/crypto/keyring/Entry.java (log): New field.
+	(TYPES): New constant.
+	(toString): New method.
+	(defaultDecode): Add trace/debug statement.
+
+2006-05-20  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* tools/gnu/classpath/tools/keytool/ListCmd.java (rfc):
 	Increased visibility.
 	(setup): Do not trace/log passwords.
