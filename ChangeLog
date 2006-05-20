@@ -1,5 +1,22 @@
 2006-05-20  Raif S. Naffah  <raif@swiftdsl.com.au>
 
+	* gnu/javax/crypto/jce/keyring/GnuKeyring.java (engineAliases):
+	Formatting.
+	Added trace/debug statements.
+	(engineSetCertificateEntry): Ensure alias is not already used for a Key
+	Entry.  Also ensure that any previous entry for this alias is removed
+	before a new one is added.
+	(engineGetKey): Do not trace/log passwords.
+	Trace key's class name only.
+	(engineSetKeyEntry): Ensure alias is not alredy used for a Trusted
+	Certificate Entry. Also ensure that previous entry for this alias is
+	removed before a new one is added.
+	(engineLoad): Do not trace/log passwords.
+	(engineStore): Likewise.
+	(engineSize): Use size of enumeration instead of collection size.
+
+2006-05-20  Raif S. Naffah  <raif@swiftdsl.com.au>
+
 	* gnu/javax/crypto/keyring/PrivateKeyEntry.java: Formatting.
 	(toString): New method.
 	* gnu/javax/crypto/keyring/PasswordEncryptedEntry.java (decrypt):
