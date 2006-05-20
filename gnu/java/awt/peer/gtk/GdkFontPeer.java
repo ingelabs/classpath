@@ -53,6 +53,8 @@ import java.text.StringCharacterIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.nio.ByteBuffer;
+import java.io.UnsupportedEncodingException;
 
 public class GdkFontPeer extends ClasspathFontPeer
 {
@@ -156,9 +158,58 @@ public class GdkFontPeer extends ClasspathFontPeer
     return null;
   }
 
+  /**
+   * Returns the bytes belonging to a TrueType/OpenType table,
+   * Parameters n,a,m,e identify the 4-byte ASCII tag of the table.
+   *
+   * Returns null if the font is not TT, the table is nonexistant, 
+   * or if some other unexpected error occured.
+   *
+   */
+  private native byte[] getTrueTypeTable(byte n, byte a, byte m, byte e);
+
+  /**
+   * Returns the PostScript name of the font, defaults to the familyName if 
+   * a PS name could not be retrieved.
+   */
   public String getPostScriptName(Font font)
   {
-    return this.familyName;
+    byte[] bits = getTrueTypeTable((byte)'n', (byte) 'a', 
+				   (byte) 'm', (byte) 'e');
+    try 
+      {
+	if(bits == null)
+	  return this.familyName;
+	String s = parsePSName(bits);
+	if( s == null )
+	  return this.familyName;
+	return s;
+      } 
+    catch(UnsupportedEncodingException e)
+      {
+	return this.familyName;
+      }
+  }
+
+  private String parsePSName(byte[] bits) throws UnsupportedEncodingException
+  {
+    ByteBuffer buf = ByteBuffer.wrap( bits );
+    int count = buf.getShort(2);
+    int stringOffset = buf.getShort(4);
+
+    for(int i = 0; i < count; i++)
+      if(buf.getShort(12 + 12 * i) == 6)
+	{
+	  int length = buf.getShort(14 + 12 * i);
+	  int offset = buf.getShort(16 + 12 * i);
+	  // Check if it's ASCII or Unicode
+	  if(bits[stringOffset + offset] == 0)
+	    return new String(bits, stringOffset + offset, length, "UTF-16BE");
+	  else
+	    return new String(bits, stringOffset + offset, length, "ASCII");
+	}
+
+    return null;
   }
 
   public boolean canDisplay (Font font, char c)
@@ -265,7 +316,13 @@ public class GdkFontPeer extends ClasspathFontPeer
 
   public int getNumGlyphs (Font font)
   {
-    throw new UnsupportedOperationException ();
+    byte[] data = getTrueTypeTable((byte)'m', (byte) 'a', 
+				   (byte)'x', (byte) 'p');
+    if( data == null )
+      return -1;
+
+    ByteBuffer buf = ByteBuffer.wrap( data );       
+    return buf.getShort(4);
   }
 
   public Rectangle2D getStringBounds (Font font, CharacterIterator ci, 

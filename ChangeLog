@@ -1,3 +1,15 @@
+2006-05-20  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java
+	(getTrueTypeTable): New native method.
+	(getPostScriptName): Reimplement.
+	(parsePSName): New method.
+	(getNumGlyphs): Implement.
+	* include/gnu_java_awt_peer_gtk_GdkFontPeer.h: New native method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+	(Java_gnu_java_awt_peer_gtk_GdkFontPeer_getTrueTypeTable):
+	New function. File is now explicitly dependent on FT2.
+	
 2006-05-20  Tom Tromey  <tromey@redhat.com>
 
 	* tools/gnu/classpath/tools/native2ascii/Messages.java: New file.
