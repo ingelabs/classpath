@@ -59,7 +59,12 @@ import java.util.Iterator;
 import java.util.Locale;
 
 /**
+ * This is a helper class for implementing a bean context.  It is
+ * intended to be used either by subclassing or by calling methods
+ * of this implementation from another.
+ *
  * @author Michael Koch
+ * @author Andrew John Hughes (gnu_andrew@member.fsf.org)
  * @since 1.2
  */
 public class BeanContextSupport extends BeanContextChildSupport
@@ -180,27 +185,94 @@ public class BeanContextSupport extends BeanContextChildSupport
     initialize ();
   }
 
-  public boolean add (Object targetChild)
+  /**
+   * <p>
+   * Add a child to the bean context.  A child can be a simple
+   * <code>Object</code>, a <code>BeanContextChild</code>
+   * or another <code>BeanContext</code>.  
+   * </p>
+   * <p>
+   * The children of a <code>BeanContext</code> form a set.  As
+   * a result, this method returns <code>false</code> if the given
+   * object is already a child of this context.
+   * </p>
+   * <p>
+   * If the child is a <code>BeanContextChild</code>, or a proxy
+   * for such a child, the <code>setBeanContext()</code> method
+   * is invoked on the child.  If this operation is vetoed by the
+   * child, via throwing a <code>PropertyVetoException</code>,
+   * then the current completion state of the <code>add()</code>
+   * operation is rolled back and a <code>IllegalStateException</code>
+   * is thrown.
+   * </p>
+   * <p>
+   * A <code>BeanContextMembershipEvent</code> is fired when the
+   * child is successfully added to the bean context.
+   * </p>
+   * <p>
+   * This method is synchronized over the global hierarchy lock.
+   * </p>
+   *
+   * @param targetChild the child to add.
+   * @return false if the child has already been added.
+   * @throws IllegalArgumentException if the child is null.
+   * @throws IllegalStateException if the child vetos the setting
+   *                               of its context.
+   */
+  public boolean add(Object targetChild)
   {
-    if (targetChild == null)
-      throw new IllegalArgumentException();
+    synchronized (globalHierarchyLock)
+      {
+	if (targetChild == null)
+	  throw new IllegalArgumentException();
 
-    BCSChild child;
-    synchronized (children)
-      {
-        if (children.containsKey(targetChild)
-            || ! validatePendingAdd(targetChild))
-          return false;
-        child = createBCSChild(targetChild, beanContextChildPeer);
-        children.put(targetChild, child);
+	BCSChild child;
+	synchronized (children)
+	  {
+	    if (children.containsKey(targetChild)
+		|| ! validatePendingAdd(targetChild))
+	      return false;
+	    child = createBCSChild(targetChild, beanContextChildPeer);
+	    children.put(targetChild, child);
+	  }
+	synchronized (targetChild)
+	  {
+	    BeanContextChild bcChild = null;
+	    if (targetChild instanceof BeanContextChild)
+	      bcChild = (BeanContextChild) targetChild;
+	    if (targetChild instanceof BeanContextProxy)
+	      bcChild = ((BeanContextProxy) targetChild).getBeanContextProxy();
+	    if (bcChild != null)
+	      try
+		{
+		  bcChild.setBeanContext(this);
+		  bcChild.addVetoableChangeListener("beanContext", this);
+		  bcChild.addPropertyChangeListener("beanContext", this);
+		}
+	      catch (PropertyVetoException e)
+		{
+		  synchronized (children)
+		    {
+		      children.remove(targetChild);
+		    }
+		  throw new IllegalStateException("The child refused to " +
+						  "associate itself with " +
+						  "this context.", e);
+		}
+	    if (targetChild instanceof Visibility)
+	      {
+		Visibility visibleChild = (Visibility) targetChild;
+		if (okToUseGui)
+		  visibleChild.okToUseGui();
+		else
+		  visibleChild.dontUseGui();
+	      }
+	    childJustAddedHook(targetChild, child);
+	  }
+	fireChildrenAdded(new BeanContextMembershipEvent(this,
+							 new Object[]{ targetChild }));
+	return true;
       }
-    synchronized (targetChild)
-      {
-        childJustAddedHook(targetChild, child);
-      }
-    fireChildrenAdded(new BeanContextMembershipEvent(this,
-                                                     new Object[] { targetChild }));
-    return true;
   }
 
   public boolean addAll (Collection c)
@@ -219,10 +291,18 @@ public class BeanContextSupport extends BeanContextChildSupport
       }
   }
 
-  public boolean avoidingGui ()
+  /**
+   * Returns true if this bean needs a GUI
+   * but is being prevented from using one.
+   *
+   * @return true if <code>needsGui()</code>
+   *              is true but the bean has been
+   *              told not to use it.
+   */
+  public boolean avoidingGui()
     throws NotImplementedException
   {
-    throw new Error ("Not implemented");
+    return needsGui() && (!okToUseGui);
   }
 
   protected Iterator bcsChildren ()
@@ -321,10 +401,13 @@ public class BeanContextSupport extends BeanContextChildSupport
     throw new Error ("Not implemented");
   }
 
-  public void dontUseGui ()
-    throws NotImplementedException
+  /**
+   * Informs this bean that is should not make
+   * use of the GUI.
+   */
+  public void dontUseGui()
   {
-    throw new Error ("Not implemented");
+    okToUseGui = false;
   }
 
   protected final void fireChildrenAdded (BeanContextMembershipEvent bcme)
@@ -459,16 +542,24 @@ public class BeanContextSupport extends BeanContextChildSupport
       }
   }
 
-  public boolean needsGui ()
-    throws NotImplementedException
+  /**
+   * Returns false as this bean does not a
+   * GUI for its operation.
+   *
+   * @return false
+   */
+  public boolean needsGui()
   {
-    throw new Error ("Not implemented");
+    return false;
   }
 
+  /**
+   * Informs this bean that it is okay to make use of
+   * the GUI.
+   */
   public void okToUseGui ()
-    throws NotImplementedException
   {
-    throw new Error ("Not implemented");
+    okToUseGui = true;
   }
 
   public void propertyChange (PropertyChangeEvent pce)
