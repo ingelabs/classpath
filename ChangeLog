@@ -1,3 +1,8 @@
+2006-05-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
+	* javax/naming/Referenceable.java: Documented.
+	* javax/naming/spi/NamingManager.java: Documented.
+
 2006-05-21  Raif S. Naffah  <raif@swiftdsl.com.au>
 
 	* doc/tools.texinfo: Replaced references to MessageBundle.properties

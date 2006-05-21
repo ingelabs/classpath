@@ -1,5 +1,6 @@
-/* NamingManager.java --
-   Copyright (C) 2000, 2001, 2002, 2003, 2004  Free Software Foundation, Inc.
+/* NamingManager.java -- Creates contexts and objects
+   Copyright (C) 2000, 2001, 2002, 2003, 2004,
+   2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -55,9 +56,10 @@ import javax.naming.Referenceable;
 import javax.naming.StringRefAddr;
 
 /**
- * Contains methods for creating context objects and objects referred to by
+ * Contains methods for creating contexts and objects referred to by
  * location information. The location is specified in the scope of the
- * certain naming or directory service.
+ * certain naming or directory service. This class only contais static
+ * methods and cannot be instantiated.
  */
 public class NamingManager
 {
@@ -379,7 +381,58 @@ public class NamingManager
       path += ":" + path2;
     return new StringTokenizer (path != null ? path : "", ":");
   }
-
+  
+  /**
+   * <p>Creates an object for the specified name context, environment and
+   * referencing context object.</p>
+   * <p>
+   * If the builder factory is set by 
+   * {@link #setObjectFactoryBuilder(ObjectFactoryBuilder)}, the call is
+   * delegated to that factory. Otherwise, the object is created using the
+   * following rules:
+   * <ul>
+   * <li>If the referencing object (refInfo) contains the factory class name,
+   *       the object is created by this factory. If the creation fails,
+   *       the parameter refInfo is returned as the method return value.</li>
+   * <li>If the referencing object has no factory class name, and the addresses
+   *       are StringRefAddrs having the address type "URL", the object is
+   *       created by the URL context factory. The used factory corresponds the
+   *       the naming schema of the each URL. If the attempt to create
+   *       the object this way is not successful, the subsequent rule is 
+   *       tried.</li>
+   * <li>  If the refInfo is not an instance of Reference or Referencable
+   *       (for example, null), the object is created by the factories,
+   *       specified in the Context.OBJECT_FACTORIES property of the 
+   *       environment and the provider resource file, associated with the
+   *       nameCtx. The value of this property is the colon separated list
+   *       of the possible factories. If none of the factories can be
+   *       loaded, the refInfo is returned.            
+   * </ul>
+   * </p>
+   * <p>The object factory must be public and have the public parameterless
+   * constructor.</p>
+   *  
+   * @param refInfo the referencing object, for which the new object must be
+   *          created (can be null). If not null, it is usually an instance of
+   *          the {@link Reference} or {@link Referenceable}.
+   * @param name the name of the object. The name is relative to
+   *          the nameCtx naming context. The value of this parameter can be
+   *          null if the name is not specified.
+   * @param nameCtx the naming context, in which scope the name of the new
+   *          object is specified. If this parameter is null, the name is
+   *          specified in the scope of the initial context.
+   * @param environment contains additional information for creating the object.
+   *          This paramter can be null if there is no need to provide any
+   *          additional information.
+   *        
+   * @return  the created object. If the creation fails, in some cases
+   *          the parameter refInfo may be returned.
+   * 
+   * @throws NamingException if the attempt to name the new object has failed
+   * @throws Exception if the object factory throws it. The object factory
+   *           only throws an exception if it does not want other factories
+   *           to be used to create the object.
+   */
   public static Object getObjectInstance (Object refInfo,
 					  Name name,
 					  Context nameCtx,
