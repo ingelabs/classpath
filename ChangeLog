@@ -1,5 +1,9 @@
 2006-05-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/naming/InitialContext.java: Documented.
+
+2006-05-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/naming/NameParser.java,
 	javax/naming/NamingEnumeration.java,
 	javax/naming/PartialResultException.java,
