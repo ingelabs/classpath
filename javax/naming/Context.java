@@ -342,18 +342,22 @@ public interface Context
 
   /**
    * Removes the naming subcontext from this naming context. Returns without
-   * action if such subcontext does not exist.
+   * action if such subcontext does not exist. The context being destroyed must
+   * be empty.
    * 
    * @param name the name of the subcontext beig removed.
+   * @throws ContextNotEmptyException if the named context is not empty.
    * @throws NamingException
    */
   void destroySubcontext(Name name) throws NamingException;
 
   /**
    * Removes the naming subcontext from this naming context. Returns without
-   * action if such subcontext does not exist.
+   * action if such subcontext does not exist. The context being destroyed must
+   * be empty.
    * 
    * @param name the name of the subcontext beig removed.
+   * @throws ContextNotEmptyException if the named context is not empty.
    * @throws NamingException
    */
   void destroySubcontext(String name) throws NamingException;

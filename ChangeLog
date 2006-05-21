@@ -1,5 +1,11 @@
 2006-05-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/naming/Context.java,
+	javax/naming/ContextNotEmptyException.java,
+	javax/naming/Reference.java: Documented.
+
+2006-05-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/swing/text/html/MinimalHTMLWriter.java
 	(writeComponent, writeImage): Declare that the method
 	may throw the IOException.
