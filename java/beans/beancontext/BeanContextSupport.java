@@ -40,6 +40,7 @@ package java.beans.beancontext;
 
 import gnu.classpath.NotImplementedException;
 
+import java.beans.Beans;
 import java.beans.DesignMode;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -517,10 +518,20 @@ public class BeanContextSupport extends BeanContextChildSupport
     children = new HashMap();
   }
 
+  /**
+   * This is a convenience method for instantiating a bean inside this
+   * context.  It delegates to the appropriate method in
+   * <code>java.beans.Beans</code> using the context's classloader.
+   *
+   * @param beanName the name of the class of bean to instantiate.
+   * @throws IOException if an I/O error occurs in loading the class.
+   * @throws ClassNotFoundException if the class, <code>beanName</code>,
+   *                                can not be found.
+   */
   public Object instantiateChild (String beanName)
-    throws IOException, ClassNotFoundException, NotImplementedException
+    throws IOException, ClassNotFoundException
   {
-    throw new Error ("Not implemented");
+    return Beans.instantiate(getClass().getClassLoader(), beanName, this);
   }
 
   public boolean isDesignTime ()
