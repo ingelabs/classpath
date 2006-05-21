@@ -40,6 +40,7 @@ package gnu.java.awt.peer.gtk;
 
 import gnu.classpath.Configuration;
 import gnu.java.awt.peer.ClasspathFontPeer;
+import gnu.java.awt.font.opentype.NameDecoder;
 
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -54,7 +55,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.nio.ByteBuffer;
-import java.io.UnsupportedEncodingException;
 
 public class GdkFontPeer extends ClasspathFontPeer
 {
@@ -80,6 +80,8 @@ public class GdkFontPeer extends ClasspathFontPeer
 	bundle = null;
       }
   }
+
+  private ByteBuffer nameTable = null;
 
   private native void initState ();
   private native void dispose ();
@@ -152,10 +154,26 @@ public class GdkFontPeer extends ClasspathFontPeer
     setFont (this.familyName, this.style, (int)this.size,
              GtkToolkit.useGraphics2D());
   }
-  
+
+  /**
+   * Unneeded, but implemented anyway.
+   */  
   public String getSubFamilyName(Font font, Locale locale)
   {
-    return null;
+    String name;
+    
+    if (locale == null)
+      locale = Locale.getDefault();
+    
+    name = getName(NameDecoder.NAME_SUBFAMILY, locale);
+    if (name == null)
+      {
+	name = getName(NameDecoder.NAME_SUBFAMILY, Locale.ENGLISH);
+	if ("Regular".equals(name))
+	  name = null;
+      }
+
+    return name;
   }
 
   /**
@@ -174,42 +192,37 @@ public class GdkFontPeer extends ClasspathFontPeer
    */
   public String getPostScriptName(Font font)
   {
-    byte[] bits = getTrueTypeTable((byte)'n', (byte) 'a', 
-				   (byte) 'm', (byte) 'e');
-    try 
-      {
-	if(bits == null)
-	  return this.familyName;
-	String s = parsePSName(bits);
-	if( s == null )
-	  return this.familyName;
-	return s;
-      } 
-    catch(UnsupportedEncodingException e)
-      {
-	return this.familyName;
-      }
+    String name = getName(NameDecoder.NAME_POSTSCRIPT, 
+			  /* any language */ null);
+    if( name == null )
+      return this.familyName;
+
+    return name;
   }
 
-  private String parsePSName(byte[] bits) throws UnsupportedEncodingException
+  /**
+   * Extracts a String from the font&#x2019;s name table.
+   *
+   * @param name the numeric TrueType or OpenType name ID.
+   *
+   * @param locale the locale for which names shall be localized, or
+   * <code>null</code> if the locale does mot matter because the name
+   * is known to be language-independent (for example, because it is
+   * the PostScript name).
+   */
+  private String getName(int name, Locale locale)
   {
-    ByteBuffer buf = ByteBuffer.wrap( bits );
-    int count = buf.getShort(2);
-    int stringOffset = buf.getShort(4);
+    if (nameTable == null)
+      {
+	byte[] data = getTrueTypeTable((byte)'n', (byte) 'a', 
+				       (byte) 'm', (byte) 'e');
+	if( data == null )
+	  return null;
 
-    for(int i = 0; i < count; i++)
-      if(buf.getShort(12 + 12 * i) == 6)
-	{
-	  int length = buf.getShort(14 + 12 * i);
-	  int offset = buf.getShort(16 + 12 * i);
-	  // Check if it's ASCII or Unicode
-	  if(bits[stringOffset + offset] == 0)
-	    return new String(bits, stringOffset + offset, length, "UTF-16BE");
-	  else
-	    return new String(bits, stringOffset + offset, length, "ASCII");
-	}
+	nameTable = ByteBuffer.wrap( data );
+      }
 
-    return null;
+    return NameDecoder.getName(nameTable, name, locale);
   }
 
   public boolean canDisplay (Font font, char c)

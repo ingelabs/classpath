@@ -1,5 +1,17 @@
 2006-05-20  Sven de Marothy  <sven@physto.se>
 
+	* gnu/java/awt/font/opentype/NameDecoder.java
+	Made class public.
+	(getName): Use getShort instead of getChar(), fix PS name.
+	(decodeName): New method.
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java
+	(getSubFamilyName): Implement.
+	(getPostScriptName): Use the NameDecoder class instead.
+	(parsePSName): Removed.
+	(getName): Added
+
+2006-05-20  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/awt/peer/gtk/GdkFontPeer.java
 	(getTrueTypeTable): New native method.
 	(getPostScriptName): Reimplement.
