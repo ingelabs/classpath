@@ -1,5 +1,9 @@
 2006-05-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/naming/Context.java: Documented.
+
+2006-05-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/naming/Referenceable.java: Documented.
 	* javax/naming/spi/NamingManager.java: Documented.
 
