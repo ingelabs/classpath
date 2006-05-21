@@ -1,3 +1,8 @@
+2006-05-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* gnu/java/net/loader/JarURLLoader.java:
+	Use Map.Entry instead of LinkedHashMap.Entry
+	
 2006-05-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/naming/Context.java: Documented.

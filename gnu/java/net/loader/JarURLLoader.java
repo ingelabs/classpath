@@ -11,6 +11,7 @@ import java.net.URLStreamHandlerFactory;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.jar.Attributes;
@@ -100,7 +101,7 @@ public final class JarURLLoader extends URLLoader
             Iterator it = indexMap.entrySet().iterator();
             while (it.hasNext())
               {
-                LinkedHashMap.Entry entry = (LinkedHashMap.Entry) it.next();
+                Map.Entry entry = (Map.Entry) it.next();
                 URL subURL = (URL) entry.getKey();
                 Set prefixes = (Set) entry.getValue();
                 if (subURL.equals(baseURL))
