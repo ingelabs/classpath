@@ -1,3 +1,21 @@
+2006-05-21  Raif S. Naffah  <raif@swiftdsl.com.au>
+
+	* doc/tools.texinfo: Replaced references to MessageBundle.properties
+	to messages.properties.
+	* resource/gnu/classpath/tools/jarsigner/MessageBundle.properties:
+	Renamed to messages.properties.
+	* resource/gnu/classpath/tools/keytool/MessageBundle.properties:
+	Likewise.
+	* resource/gnu/classpath/tools/jarsigner/messages.properties:
+	Renamed from MessageBundle.properties.
+	Added copyright notice.
+	* resource/gnu/classpath/tools/keytool/messages.properties:
+	Likewise.
+	* tools/gnu/classpath/tools/jarsigner/Messages.java
+	(BUNDLE_NAME): Use messages instead of MessageBundle properties file.
+	(getFormattedString): Fixed a spelling mistake.
+	* tools/gnu/classpath/tools/keytool/Messages.java: Likewise.
+
 2006-05-20  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/font/opentype/NameDecoder.java
