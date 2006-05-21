@@ -349,7 +349,7 @@ public class MinimalHTMLWriter extends AbstractWriter
   /**
    * Deliberately unimplemented, handles component elements.
    */ 
-  protected void writeComponent(Element elem)
+  protected void writeComponent(Element elem) throws IOException
   {
   }
 
@@ -357,7 +357,7 @@ public class MinimalHTMLWriter extends AbstractWriter
    * Deliberately unimplemented. 
    * Writes StyleConstants.IconElementName elements.
    */ 
-  protected void writeImage(Element elem)
+  protected void writeImage(Element elem) throws IOException
   {
   }
 
