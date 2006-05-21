@@ -1,5 +1,5 @@
 /* BeanContextSupport.java --
-   Copyright (C) 2003, 2005  Free Software Foundation, Inc.
+   Copyright (C) 2003, 2005, 2006  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -203,9 +203,17 @@ public class BeanContextSupport extends BeanContextChildSupport
    * child, via throwing a <code>PropertyVetoException</code>,
    * then the current completion state of the <code>add()</code>
    * operation is rolled back and a <code>IllegalStateException</code>
-   * is thrown.
+   * is thrown.  If the <code>BeanContextChild</code> is successfully
+   * added, then the context registers with its
+   * <code>PropertyChangeListener</code> and
+   * <code>VetoableChangeListener</code> for "beanContext" events.
    * </p>
    * <p>
+   * If the child implements <code>java.beans.Visibility</code>,
+   * then its ability to use a GUI is set based on that of
+   * this context.
+   * </p>
+   * <p> 
    * A <code>BeanContextMembershipEvent</code> is fired when the
    * child is successfully added to the bean context.
    * </p>
@@ -520,6 +528,11 @@ public class BeanContextSupport extends BeanContextChildSupport
     return designTime;
   }
 
+  /**
+   * Returns true if this bean context has no children.
+   *
+   * @return true if there are no children.
+   */
   public boolean isEmpty ()
   {
     synchronized (children)
@@ -562,10 +575,18 @@ public class BeanContextSupport extends BeanContextChildSupport
     okToUseGui = true;
   }
 
+  /**
+   * Subclasses may use this method to catch property changes
+   * arising from the children of this context.  At present,
+   * we just listen for the beans being assigned to a different
+   * context and remove them from here if such an event occurs.
+   *
+   * @param pce the property change event.
+   */
   public void propertyChange (PropertyChangeEvent pce)
-    throws NotImplementedException
   {
-    throw new Error ("Not implemented");
+    if (pce.getNewValue() != this)
+      remove(pce.getSource(), false);
   }
 
   public final void readChildren (ObjectInputStream ois)
@@ -574,18 +595,100 @@ public class BeanContextSupport extends BeanContextChildSupport
     throw new Error ("Not implemented");
   }
 
+  /**
+   * Remove the specified child from the context.  This is
+   * the same as calling <code>remove(Object,boolean)</code>
+   * with a request for the <code>setBeanContext()</code> method
+   * of the child to be called (i.e. the second argument is true).
+   *
+   * @param targetChild the child to remove.
+   */
   public boolean remove (Object targetChild)
   {
     return remove(targetChild, true);
   }
 
+  /**
+   * <p>
+   * Removes a child from the bean context.  A child can be a simple
+   * <code>Object</code>, a <code>BeanContextChild</code>
+   * or another <code>BeanContext</code>.  If the given child is not
+   * a child of this context, this method returns <code>false</code>.
+   * </p>
+   * <p>
+   * If the child is a <code>BeanContextChild</code>, or a proxy
+   * for such a child, the <code>setBeanContext()</code> method
+   * is invoked on the child (if specified).  If this operation is vetoed
+   * by the child, via throwing a <code>PropertyVetoException</code>,
+   * then the current completion state of the <code>remove()</code>
+   * operation is rolled back and a <code>IllegalStateException</code>
+   * is thrown.  If the <code>BeanContextChild</code> is successfully
+   * removed, then the context deregisters with its
+   * <code>PropertyChangeListener</code> and
+   * <code>VetoableChangeListener</code> for "beanContext" events.
+   * </p>
+   * <p> 
+   * A <code>BeanContextMembershipEvent</code> is fired when the
+   * child is successfully removed from the bean context.
+   * </p>
+   * <p>
+   * This method is synchronized over the global hierarchy lock.
+   * </p>
+   *
+   * @param targetChild the child to add.
+   * @param callChildSetBC true if the <code>setBeanContext()</code>
+   *                       method of the child should be called.
+   * @return false if the child doesn't exist.
+   * @throws IllegalArgumentException if the child is null.
+   * @throws IllegalStateException if the child vetos the setting
+   *                               of its context.
+   */
   protected boolean remove (Object targetChild, boolean callChildSetBC)
-    throws NotImplementedException
   {
-    if (targetChild == null)
-      throw new IllegalArgumentException();
-    
-    throw new Error ("Not implemented");
+    synchronized (globalHierarchyLock)
+      {
+	if (targetChild == null)
+	  throw new IllegalArgumentException();
+
+	BCSChild child;
+	synchronized (children)
+	  {
+	    if (!children.containsKey(targetChild)
+		|| !validatePendingRemove(targetChild))
+	      return false;
+	    child = (BCSChild) children.remove(targetChild);
+	  }
+	synchronized (targetChild)
+	  {
+	    BeanContextChild bcChild = null;
+	    if (targetChild instanceof BeanContextChild)
+	      bcChild = (BeanContextChild) targetChild;
+	    if (targetChild instanceof BeanContextProxy)
+	      bcChild = ((BeanContextProxy) targetChild).getBeanContextProxy();
+	    if (bcChild != null)
+	      try
+		{
+		  if (callChildSetBC)
+		    bcChild.setBeanContext(null);
+		  bcChild.removeVetoableChangeListener("beanContext", this);
+		  bcChild.removePropertyChangeListener("beanContext", this);
+		}
+	      catch (PropertyVetoException e)
+		{
+		  synchronized (children)
+		    {
+		      children.put(targetChild, child);
+		    }
+		  throw new IllegalStateException("The child refused to " +
+						  "disassociate itself with " +
+						  "this context.", e);
+		}
+	    childJustRemovedHook(targetChild, child);
+	  }
+	fireChildrenRemoved(new BeanContextMembershipEvent(this,
+							 new Object[]{ targetChild }));
+	return true;
+      }
   }
 
   public boolean removeAll (Collection c)
@@ -669,10 +772,16 @@ public class BeanContextSupport extends BeanContextChildSupport
     return true;
   }
 
+  /**
+   * Subclasses may use this method to veto changes arising
+   * from the children of this context.
+   *
+   * @param pce the vetoable property change event fired.
+   */
   public void vetoableChange (PropertyChangeEvent pce)
-    throws PropertyVetoException, NotImplementedException
+    throws PropertyVetoException
   {
-    throw new Error ("Not implemented");
+    /* Purposefully left empty */
   }
 
   public final void writeChildren (ObjectOutputStream oos)

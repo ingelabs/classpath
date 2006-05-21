@@ -1,6 +1,17 @@
 2006-05-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/beans/beancontext/BeanContextSupport.java:
+	(add(Object)): Add further documentation.
+	(isEmpty()): Documented.
+	(propertyChange(PropertyChangeEvent)): Implemented.
+	(remove(Object)): Documented.
+	(remove(Object,boolean)): Documented and implemented.
+	(vetoableChange(PropertyChangeEvent)): Marked as
+	implemented (only subclasses appear to need this).
+	
+2006-05-21  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/beans/beancontext/BeanContextSupport.java:
 	(add(Object)): Implement support for the child being
 	a BeanContextChild.
 	(avoidingGui()): Implemented.
