@@ -1,4 +1,11 @@
 2006-05-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+	
+	PR 26972
+	* javax/naming/InitialContext.java (colon_list): Changed type to
+	hashset. (use_properties): New field. (init(Hashtable)): Rewritten.
+	(merge): Rewritten.
+
+2006-05-21  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
 	* javax/naming/InitialContext.java: Documented.
 

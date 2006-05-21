@@ -1,5 +1,5 @@
-/* InitialContext.java --
-   Copyright (C) 2000, 2002, 2003, 2004 Free Software Foundation, Inc.
+/* InitialContext.java -- Initial naming context.
+   Copyright (C) 2000, 2002, 2003, 2004, 2006 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Properties;
 
@@ -73,6 +74,35 @@ public class InitialContext implements Context
    * The environment, associated with this initial context.
    */
   protected Hashtable myProps;
+  
+  /**
+   * The list of the properties, to that the second alternative value must
+   * be appended after the colon to the first possible value. Used in
+   * {@link #merge(Hashtable, Hashtable)}
+   */
+  static final HashSet colon_list;
+  static
+    {
+      colon_list = new HashSet();
+      colon_list.add(Context.OBJECT_FACTORIES);
+      colon_list.add(Context.URL_PKG_PREFIXES);
+      colon_list.add(Context.STATE_FACTORIES);
+    };  
+    
+   /**
+    * The properties that are searched in the agreed places in the
+    * {@link #init(Hashtable)} method.
+    */
+    static final String[] use_properties = 
+      {
+        Context.DNS_URL,
+        Context.INITIAL_CONTEXT_FACTORY,
+        Context.OBJECT_FACTORIES,
+        Context.PROVIDER_URL,
+        Context.STATE_FACTORIES,
+        Context.URL_PKG_PREFIXES,
+      };
+    
   
   /**
    * Creates the new initial context with the given properties.
@@ -113,123 +143,140 @@ public class InitialContext implements Context
   }
  
   /**
+   * <p>
    * Initialises the context, using the properties, specified in the passed
    * table.
+   * </p>
+   * The missing properties are additionally obtained (in order) from the
+   * following locations:
+   * <ul>
+   * <li>If the passed parameter contains the key Context.APPLET, its value
+   * must be the instance of the {@link Applet}. Then the properties are
+   * requested via {@link Applet#getParameter(String)}.</li>
+   * <li>The value of the system property is used.</li>
+   * <li>The resource "jndi.properties" is requested from the context class
+   * loader of the current thread</li>
+   * <li>The property file "jndi.properties" is read from the location,
+   * specified by the system property "gnu.classpath.home.url".
+   * </ul>
+   * </p>
    * 
-   * @param environment the table of the properties. The method modifies the
-   *          table and stores the reference to it. The caller must not later
-   *          reuse this structure for other purposes.
+   * @param environment the table of the properties, may be null. The method
+   *          modifies the table and stores the reference to it. The caller must
+   *          not later reuse this structure for other purposes.
    * @since 1.3
    */
-  protected void init (Hashtable environment)
-    throws NamingException
+  protected void init(Hashtable environment) throws NamingException
   {
-    // FIXME: Is this enough?
-    final String[] properties = {
-      Context.DNS_URL,
-      Context.INITIAL_CONTEXT_FACTORY,
-      Context.OBJECT_FACTORIES,
-      Context.PROVIDER_URL,
-      Context.STATE_FACTORIES,
-      Context.URL_PKG_PREFIXES,
-    };
-      
-    // Create myProps, cloning environment if needed.
+    // If is documented that the caller should not modify the environment.
     if (environment != null)
-      myProps = (Hashtable) environment.clone ();
+      myProps = environment;
     else
-      myProps = new Hashtable ();
-      
-    Applet napplet = (Applet) myProps.get (Context.APPLET);
-      
-    for (int i = properties.length - 1; i >= 0; i--)
+      myProps = new Hashtable();
+
+    Applet napplet = (Applet) myProps.get(Context.APPLET);
+
+    Properties pApplet = null;
+    if (napplet != null)
+      pApplet = new Properties();
+    Properties pSystem = new Properties();
+    Object value;
+
+    for (int i = use_properties.length - 1; i >= 0; i--)
       {
-	Object o = myProps.get (properties[i]);
-	  
-	if (o == null)
-	  {
-	    if (napplet != null)
-	      o = napplet.getParameter (properties[i]);
-	    if (o == null)
-	      o = System.getProperty (properties[i]);
-	    if (o != null)
-	      myProps.put (properties[i], o);
-	  }
+        String key = use_properties[i];
+        if (napplet != null)
+          {
+            value = napplet.getParameter(key);
+            if (value != null)
+              pApplet.put(key, value);
+          }
+        
+        value = System.getProperty(key);
+        if (value != null)
+          pSystem.put(key, value);
       }
+    
+    merge(myProps, pSystem);
+    if (pApplet != null)
+      merge(myProps, pApplet);
 
     try
       {
-	Enumeration ep = Thread.currentThread().getContextClassLoader().
-        getResources("jndi.naming");
-	while (ep.hasMoreElements ())
-	  {
-	    URL url = (URL) ep.nextElement ();
-	    Properties p = new Properties ();
-		    
-	    try
-	      {
-		InputStream is = url.openStream ();
-		p.load (is);
-		is.close ();
-	      }
-	    catch (IOException e)
-	      {
-	      }
+        Enumeration ep = Thread.currentThread().
+          getContextClassLoader().getResources("jndi.properties");
+        while (ep.hasMoreElements())
+          {
+            URL url = (URL) ep.nextElement();
+            Properties p = new Properties();
 
-	    merge (myProps, p);
-	  }
+            try
+              {
+                InputStream is = url.openStream();
+                p.load(is);
+                is.close();
+              }
+            catch (IOException e)
+              {
+                // Ignore.
+              }
+
+            merge(myProps, p);
+          }
       }
     catch (IOException e)
       {
+        // Ignore.
       }
 
     String home = System.getProperty("gnu.classpath.home.url");
     if (home != null)
       {
-	String url = home + "/jndi.properties";
-	Properties p = new Properties ();
-	
-	try
-	  {
-	    InputStream is = new URL(url).openStream();
-	    p.load (is);
-	    is.close ();
-	  }
-	catch (IOException e)
-	  {
-	    // Ignore.
-	  }
+        String url = home + "/jndi.properties";
+        Properties p = new Properties();
 
-	merge (myProps, p);
+        try
+          {
+            InputStream is = new URL(url).openStream();
+            p.load(is);
+            is.close();
+          }
+        catch (IOException e)
+          {
+            // Ignore.
+          }
+
+        merge(myProps, p);
       }
   }
-
-  // FIXME: Is this enough?
-  private static final String[] colon_list = 
-    {
-      Context.OBJECT_FACTORIES,
-      Context.URL_PKG_PREFIXES,
-      Context.STATE_FACTORIES
-    };
-
-  private static void merge (Hashtable h1, Hashtable h2)
+  
+  /**
+   * Merge the content of the two tables. If the second table contains the key
+   * that is missing in the first table, this key - value pair is copied to the
+   * first table. If both first and second tables contain the same key AND the
+   * {@link #colon_list} set also contains this key, the value from the second
+   * table is appended to the value from the first table after semicolon, and
+   * the resulted value replaces the value in the first table.
+   * 
+   * @param primary the first table to merge. The merged result is also stored
+   *          in this table.
+   * @param additional the second table, from where additional values are taken
+   */  
+  static void merge (Hashtable primary, Hashtable additional)
   {
-    Enumeration e2 = h2.keys();
+    Enumeration en = additional.keys();
     
-    while (e2.hasMoreElements())
+    while (en.hasMoreElements())
       {
-	String key2 = (String) e2.nextElement();
-	Object value1 = h1.get(key2);
-	if (value1 == null)
-	  h1.put(key2, h2.get(key2));
-	else if (key2.compareTo(colon_list[0]) == 0
-		 || key2.compareTo(colon_list[1]) == 0
-		 || key2.compareTo(colon_list[2]) == 0
-		 || key2.compareTo(colon_list[3]) == 0)
-	  {
-	    String value2 = (String) h2.get(key2);
-	    h1.put(key2, (String) value1 + ":" + value2);
-	  }
+        String key2 = (String) en.nextElement();
+        Object value1 = primary.get(key2);
+        if (value1 == null)
+          primary.put(key2, additional.get(key2));
+        else if (colon_list.contains(key2))
+          {
+            String value2 = (String) additional.get(key2);
+            primary.put(key2, (String) value1 + ":" + value2);
+          }
       }
   }
   
@@ -317,12 +364,12 @@ public class InitialContext implements Context
   {
     try
       {
-	return getURLOrDefaultInitCtx (name).lookup (name);
+        return getURLOrDefaultInitCtx (name).lookup (name);
       }
     catch (CannotProceedException cpe)
       {
-	Context ctx = NamingManager.getContinuationContext (cpe);
-	return ctx.lookup (cpe.getRemainingName());
+        Context ctx = NamingManager.getContinuationContext (cpe);
+        return ctx.lookup (cpe.getRemainingName());
       }
   }
 
@@ -330,14 +377,14 @@ public class InitialContext implements Context
   public Object lookup (String name) throws NamingException
   {
       try
-	{
-	  return getURLOrDefaultInitCtx (name).lookup (name);
-	}
+        {
+          return getURLOrDefaultInitCtx (name).lookup (name);
+        }
       catch (CannotProceedException cpe)
-	{
-	  Context ctx = NamingManager.getContinuationContext (cpe);
-	  return ctx.lookup (cpe.getRemainingName());
-	}
+        {
+          Context ctx = NamingManager.getContinuationContext (cpe);
+          return ctx.lookup (cpe.getRemainingName());
+        }
   }
 
   /** @inheritDoc */  
@@ -456,14 +503,14 @@ public class InitialContext implements Context
 
   /** @inheritDoc */  
   public String composeName (String name, 
-			     String prefix) throws NamingException
+                             String prefix) throws NamingException
   {
     return getURLOrDefaultInitCtx (name).composeName (name, prefix);
   }
   
   /** @inheritDoc */
   public Object addToEnvironment (String propName, 
-				  Object propVal) throws NamingException
+                                  Object propVal) throws NamingException
   {
     return myProps.put (propName, propVal);
   }
