@@ -78,6 +78,8 @@ public class JLabel extends JComponent implements Accessible, SwingConstants
      */
     public String getAccessibleName()
     {
+      if (accessibleName != null)
+        return accessibleName;
       if (text != null)
         return text;
       else

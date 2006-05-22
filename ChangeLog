@@ -1,3 +1,68 @@
+2006-05-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/accessibility/AccessibleContext.java
+	(getAccessibleComponent): Fixed typo in docs,
+	* javax/swing/JLabel.java:
+	(AccessibleJLabel.getAccessibleName): Check for explicit 
+	accessibleName,
+	* javax/swing/JTableHeader.java
+	(AccessibleJTableHeaderEntry.columnIndex): New field,
+	(AccessibleJTableHeaderEntry.parent): New field,
+	(AccessibleJTableHeaderEntry.table): New field,
+	(AccessibleJTableHeaderEntry.AccessibleJTableHeaderEntry()): 
+	Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleColumnHeaderRenderer): New 
+	utility method,
+	(AccessibleJTableHeaderEntry.addFocusListener): Implemented,
+	(AccessibleJTableHeaderEntry.addPropertyChangeListener): Implemented,
+	(AccessibleJTableHeaderEntry.contains): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleAction): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleAt): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleChild): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleChildrenCount): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleComponent): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleContext): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleDescription): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleIndexInParent): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleName): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleRole): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleSelection): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleStateSet): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleText): Implemented,
+	(AccessibleJTableHeaderEntry.getAccessibleValue): Implemented,
+	(AccessibleJTableHeaderEntry.getBackground): Implemented,
+	(AccessibleJTableHeaderEntry.getBounds): Implemented,
+	(AccessibleJTableHeaderEntry.getCursor): Implemented,
+	(AccessibleJTableHeaderEntry.getFont): Implemented,
+	(AccessibleJTableHeaderEntry.getFontMetrics): Implemented,
+	(AccessibleJTableHeaderEntry.getForeground): Implemented,
+	(AccessibleJTableHeaderEntry.getLocation): Implemented,
+	(AccessibleJTableHeaderEntry.getLocationOnScreen): Implemented,
+	(AccessibleJTableHeaderEntry.getSize): Implemented,
+	(AccessibleJTableHeaderEntry.isEnabled): Implemented,
+	(AccessibleJTableHeaderEntry.isFocusTraversable): Implemented,
+	(AccessibleJTableHeaderEntry.isShowing): Implemented,
+	(AccessibleJTableHeaderEntry.isVisible): Implemented,
+	(AccessibleJTableHeaderEntry.removeFocusListener): Implemented,
+	(AccessibleJTableHeaderEntry.removePropertyChangeListener): 
+	Implemented,
+	(AccessibleJTableHeaderEntry.requestFocus): Implemented,
+	(AccessibleJTableHeaderEntry.setAccessibleDescription): Implemented,
+	(AccessibleJTableHeaderEntry.setAccessibleName): Implemented,
+	(AccessibleJTableHeaderEntry.setBackground): Implemented,
+	(AccessibleJTableHeaderEntry.setBounds): Implemented,
+	(AccessibleJTableHeaderEntry.setCursor): Implemented,
+	(AccessibleJTableHeaderEntry.setEnabled): Implemented,
+	(AccessibleJTableHeaderEntry.setFont): Implemented,
+	(AccessibleJTableHeaderEntry.setForeground): Implemented,
+	(AccessibleJTableHeaderEntry.setLocation): Implemented,
+	(AccessibleJTableHeaderEntry.setSize): Implemented,
+	(AccessibleJTableHeaderEntry.setVisible): Implemented,
+	(AccessibleJTableHeader.getAccessibleRole): Implemented,
+	(AccessibleJTableHeader.getAccessibleChildrenCount): Implemented,
+	(AccessibleJTableHeader.getAccessibleChild): Implemented,
+	(AccessibleJTableHeader.getAccessibleAt): Implemented.
+
 2006-05-22  Tom Tromey  <tromey@redhat.com>
 
 	* NEWS: Updated.
