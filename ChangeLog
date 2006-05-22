@@ -1,5 +1,11 @@
 2006-05-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
 
+	* javax/swing/JTable.java (doLayout): In the column
+	resize mode, only repaing the changed part of the table.
+	(getLeftResizingBoundary): New method.
+
+2006-05-22  Audrius Meskauskas  <AudriusA@Bioinformatics.org>
+
 	* javax/naming/spi/InitialContextFactory.java,
 	javax/naming/spi/InitialContextFactoryBuilder.java,
 	javax/naming/spi/NamingManager.java,

@@ -3313,7 +3313,7 @@ public class JTable
   public void doLayout()
   {
     TableColumn resizingColumn = null;
-
+    
     int ncols = getColumnCount();
     if (ncols < 1)
       return;
@@ -3339,7 +3339,7 @@ public class JTable
       {
         TableColumn col;
         TableColumn [] cols;
-
+        
         switch (getAutoResizeMode())
           {
           case AUTO_RESIZE_LAST_COLUMN:
@@ -3401,19 +3401,43 @@ public class JTable
         TableColumn [] cols = new TableColumn[ncols];
         for (int i = 0; i < ncols; ++i)
           cols[i] = columnModel.getColumn(i);
-        distributeSpill(cols, spill);        
+        distributeSpill(cols, spill);
       }
     
     if (editorComp!=null)
       moveToCellBeingEdited(editorComp);
     
-    // Repaint fixes the invalid view after the first keystroke if the cell
-    // editing is started immediately after the program start or cell
-    // resizing. 
-    repaint();
-    if (tableHeader!=null)
-      tableHeader.repaint();
+    int leftBoundary = getLeftResizingBoundary();
+    int width = getWidth() - leftBoundary;
+    repaint(leftBoundary, 0, width, getHeight());
+    if (tableHeader != null)
+      tableHeader.repaint(leftBoundary, 0, width, tableHeader.getHeight());
   }
+  
+  /**
+   * Get the left boundary of the rectangle which changes during the column
+   * resizing.
+   */
+  int getLeftResizingBoundary()
+  {
+    if (tableHeader == null || getAutoResizeMode() == AUTO_RESIZE_ALL_COLUMNS)
+      return 0;
+    else
+      {
+        TableColumn resizingColumn = tableHeader.getResizingColumn();
+        if (resizingColumn == null)
+          return 0;
+
+        int rc = convertColumnIndexToView(resizingColumn.getModelIndex());
+        int p = 0;
+
+        for (int i = 0; i < rc; i++)
+          p += columnModel.getColumn(i).getWidth();
+        
+        return p;
+      }
+  }
+  
   
   /**
    * @deprecated Replaced by <code>doLayout()</code>
