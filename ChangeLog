@@ -1,3 +1,8 @@
+2006-05-22  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* javax/swing/JLabel.java
+	(AccessibleJLabel.getAccessibleRole): New method (override).
+
 2006-05-22  Tom Tromey  <tromey@redhat.com>
 
 	* resource/gnu/classpath/tools/serialver/messages.properties: New
